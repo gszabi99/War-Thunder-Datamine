@@ -304,7 +304,13 @@
         "ex_armor_turret_l_02_dm": {},
         "ex_armor_turret_l_03_dm": {},
         "ex_armor_turret_l_04_dm": {},
-        "ex_armor_turret_l_05_dm": {}
+        "ex_armor_turret_l_05_dm": {},
+        "ex_armor_01_dm": {},
+        "ex_armor_02_dm": {
+          "armorThickness": 20.0
+        },
+        "ex_armor_r_01_dm": {},
+        "ex_armor_l_01_dm": {}
       }
     },
     "gun": {
@@ -759,6 +765,18 @@
         "armorThickness": 10.0,
         "hp": 20.0
       }
+    },
+    "additional_timber": {
+      "armorClass": "ship_wood",
+      "armorThickness": 100.0,
+      "hp": 250.0,
+      "armorEffectiveThicknessMax": 100.0,
+      "ex_armor_r_02_dm": {},
+      "ex_armor_r_03_dm": {},
+      "ex_armor_r_04_dm": {},
+      "ex_armor_l_02_dm": {},
+      "ex_armor_l_03_dm": {},
+      "ex_armor_l_04_dm": {}
     }
   },
   "MetaParts": {
@@ -1927,155 +1945,6 @@
     "TrackSoundNameAi": "tracks_ai_tiger"
   },
   "class_tags": {},
-  "commonWeapons": {
-    "Weapon": [
-      {
-        "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/88mm_Kwk36_user_cannon.blk",
-        "emitter": "bone_gun_barrel",
-        "flash": "emtr_gun_flame",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "barrelDP": "gun_barrel_dm",
-        "breechDP": "cannon_breech_dm",
-        "speedYaw": 12.0,
-        "speedPitch": 4.0,
-        "fireConeAngle": 1.0,
-        "bullets": 92,
-        "salvoAmount": 100.0,
-        "ChainfireTime": 0.0,
-        "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 1000.0,
-        "AttackMaxRadius": 1000.0,
-        "AttackMaxHeight": 1000.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 1.5,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 0.0,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_turret",
-          "gun": "bone_gun",
-          "barrel": "bone_gun_barrel",
-          "gunnerDm": "gunner_dm"
-        },
-        "limits": {
-          "yaw": [
-            -180.0,
-            180.0
-          ],
-          "pitch": [
-            -8.0,
-            16.0
-          ]
-        },
-        "limitsTable": {
-          "lim1": [
-            -180.0,
-            -146.0,
-            -2.0,
-            16.0
-          ],
-          "lim2": [
-            -146.0,
-            -127.0,
-            -8.0,
-            16.0
-          ],
-          "lim3": [
-            -127.0,
-            -120.0,
-            -2.0,
-            16.0
-          ],
-          "lim4": [
-            -120.0,
-            -47.0,
-            -8.0,
-            16.0
-          ],
-          "lim5": [
-            -47.0,
-            -40.0,
-            -2.0,
-            16.0
-          ],
-          "lim6": [
-            -40.0,
-            36.0,
-            -8.0,
-            16.0
-          ],
-          "lim7": [
-            36.0,
-            46.0,
-            -2.0,
-            16.0
-          ],
-          "lim8": [
-            46.0,
-            140.0,
-            -8.0,
-            16.0
-          ],
-          "lim9": [
-            140.0,
-            180.0,
-            -2.0,
-            16.0
-          ]
-        }
-      },
-      {
-        "trigger": "gunner1",
-        "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
-        "emitter": "bone_mg_gun_twin",
-        "flash": "emtr_mg_flame_01",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "barrelDP": "gun_barrel_01_dm",
-        "useAnimFlashNode": true,
-        "speedYaw": 7.5,
-        "speedPitch": 2.0,
-        "fireConeAngle": [
-          1.0,
-          15.0
-        ],
-        "bullets": 4350,
-        "ChainfireTime": 3.0,
-        "DelayAfterShoot": 3.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 0.0,
-        "errMeasureVel": 0.0,
-        "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 0.0,
-        "errMeasureVelDir": 0.0,
-        "errTargettingOn100kmph": 0.0,
-        "errTargetting": 3.0,
-        "errExplTime": 0.0,
-        "turret": {
-          "head": "bone_mg_gun_twin",
-          "gun": "bone_mg_gun_twin",
-          "gunnerDm": "gunner_dm"
-        },
-        "limits": {
-          "yaw": [
-            -0.0,
-            0.0
-          ],
-          "pitch": [
-            -0.0,
-            0.0
-          ]
-        }
-      }
-    ]
-  },
   "weapon_presets": {
     "preset": {
       "name": "germ_pzkpfw_VI_ausf_h1_tiger_default",
@@ -2854,62 +2723,122 @@
     ],
     "detectionHeight": 2.86
   },
-  "skin": [
-    {
-      "name": "green",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green",
-      "descLocId": "skin/ger_camo_dunkelgelb_green/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green*"
+  "commonWeapons": {
+    "Weapon": [
+      {
+        "trigger": "gunner0",
+        "blk": "gameData/Weapons/groundModels_weapons/88mm_Kwk36_user_cannon.blk",
+        "emitter": "bone_gun_barrel",
+        "flash": "emtr_gun_flame",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_dm",
+        "breechDP": "cannon_breech_dm",
+        "speedYaw": 12.0,
+        "speedPitch": 4.0,
+        "fireConeAngle": 1.0,
+        "bullets": 92,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxDistance": 1000.0,
+        "AttackMaxRadius": 1000.0,
+        "AttackMaxHeight": 1000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_turret",
+          "gun": "bone_gun",
+          "barrel": "bone_gun_barrel",
+          "gunnerDm": "gunner_dm"
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            16.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -140.0,
+            -2.0,
+            16.0
+          ],
+          "lim2": [
+            -140.0,
+            140.0,
+            -8.0,
+            16.0
+          ],
+          "lim3": [
+            140.0,
+            180.0,
+            -2.0,
+            16.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner1",
+        "triggerGroup": "coaxial",
+        "blk": "gameData/Weapons/groundModels_weapons/7_92mm_MG34_user_machinegun.blk",
+        "emitter": "bone_mg_gun_twin",
+        "flash": "emtr_mg_flame_01",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "barrelDP": "gun_barrel_01_dm",
+        "useAnimFlashNode": true,
+        "speedYaw": 7.5,
+        "speedPitch": 2.0,
+        "fireConeAngle": [
+          1.0,
+          15.0
+        ],
+        "bullets": 4350,
+        "ChainfireTime": 3.0,
+        "DelayAfterShoot": 3.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_mg_gun_twin",
+          "gun": "bone_mg_gun_twin",
+          "gunnerDm": "gunner_dm"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            -0.0,
+            0.0
+          ]
+        }
       }
-    },
-    {
-      "name": "blots",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_blots*"
-      }
-    },
-    {
-      "name": "lines",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_lines*"
-      }
-    },
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_dunkelgelb*"
-      }
-    },
-    {
-      "name": "ger_camo_winter_waves",
-      "nameLocId": "skin/ger_camo_winter_waves_bicolor",
-      "descLocId": "skin/ger_camo_winter_waves_bicolor/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_waves_bicolor*"
-      }
-    },
-    {
-      "name": "grey",
-      "nameLocId": "skin/ger_camo_grey",
-      "descLocId": "skin/ger_camo_grey/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_grey*"
-      }
+    ],
+    "hideNodes": {
+      "node": "ex_decor_01"
     }
-  ],
+  },
   "modifications": {
     "new_tank_tracks": {},
     "new_tank_suspension": {},
@@ -2917,8 +2846,6 @@
     "new_tank_brakes": {},
     "new_tank_transmission": {},
     "new_tank_engine": {},
-    "tank_camouflage": {},
-    "tank_additional_armor": {},
     "manual_extinguisher": {},
     "tank_tool_kit": {},
     "new_tank_horizontal_aiming": {},
@@ -2987,53 +2914,17 @@
               "limitsTable": {
                 "lim1": [
                   -180.0,
-                  -146.0,
+                  -140.0,
                   -2.0,
                   16.0
                 ],
                 "lim2": [
-                  -146.0,
-                  -127.0,
-                  -8.0,
-                  16.0
-                ],
-                "lim3": [
-                  -127.0,
-                  -120.0,
-                  -2.0,
-                  16.0
-                ],
-                "lim4": [
-                  -120.0,
-                  -47.0,
-                  -8.0,
-                  16.0
-                ],
-                "lim5": [
-                  -47.0,
-                  -40.0,
-                  -2.0,
-                  16.0
-                ],
-                "lim6": [
-                  -40.0,
-                  36.0,
-                  -8.0,
-                  16.0
-                ],
-                "lim7": [
-                  36.0,
-                  46.0,
-                  -2.0,
-                  16.0
-                ],
-                "lim8": [
-                  46.0,
+                  -140.0,
                   140.0,
                   -8.0,
                   16.0
                 ],
-                "lim9": [
+                "lim3": [
                   140.0,
                   180.0,
                   -2.0,
@@ -3137,9 +3028,61 @@
                 ]
               }
             }
-          ]
+          ],
+          "hideNodes": {
+            "node": "ex_decor_01"
+          }
         }
       }
     }
-  }
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "ger_camo_dunkelgelb*",
+      "to": "ger_camo_dunkelgelb_green*"
+    },
+    "set_tex": {
+      "from": "pzkpfw_vi_ausf_h1_tiger_gun_c*",
+      "to": "pzkpfw_vi_ausf_h1_tiger_skin_east_gun_c*",
+      "param": "camo_skin_tex"
+    }
+  },
+  "skin": [
+    {
+      "name": "blots",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_blots*"
+      }
+    },
+    {
+      "name": "lines",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_lines*"
+      }
+    },
+    {
+      "name": "winter",
+      "nameLocId": "skin/winter",
+      "descLocId": "skin/winter/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_winter_dunkelgelb*"
+      }
+    },
+    {
+      "name": "ger_camo_winter_waves",
+      "nameLocId": "skin/ger_camo_winter_waves_bicolor",
+      "descLocId": "skin/ger_camo_winter_waves_bicolor/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_winter_waves_bicolor*"
+      }
+    }
+  ]
 }

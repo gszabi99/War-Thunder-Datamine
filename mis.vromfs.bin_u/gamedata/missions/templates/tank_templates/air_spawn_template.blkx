@@ -1621,6 +1621,53 @@
                 "ship": false
               }
             }
+          ],
+          "comment": {
+            "value": "aaa placement"
+          },
+          "triggerEnable": {
+            "target": "airfields_aaa_placement"
+          }
+        },
+        "else_actions": {}
+      },
+      "airfields_aaa_placement": {
+        "is_enabled": false,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "periodicEvent": {
+            "time": 1.0
+          }
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t1_airfield_aa_str",
+              "type": "squad"
+            },
+            {
+              "target": "@t2_airfield_aa_str",
+              "type": "squad"
+            }
+          ]
+        },
+        "actions": {
+          "unitSpawnOnObjectGroup": [
+            {
+              "type": "air_def",
+              "object": "@t1_airfield_aa_str",
+              "target": "@t1_airfield_str"
+            },
+            {
+              "type": "air_def",
+              "object": "@t2_airfield_aa_str",
+              "target": "@t2_airfield_str"
+            }
           ]
         },
         "else_actions": {}

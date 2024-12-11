@@ -33,7 +33,7 @@ let ilsKai24p = require("planeIlses/ilsKai24p.nut")
 let ilsF20 = require("planeIlses/ilsF20.nut")
 let ilsF117 = require("planeIlses/ilsF117.nut")
 let ilsSu34 = require("planeIlses/ilsSu34.nut")
-let ilsTyphoon = require("planeIlses/ilsTyphoon.nut")
+let {IlsTyphoon} = require("planeIlses/ilsTyphoon.nut")
 
 let ilsSetting = Computed(function() {
   let res = {
@@ -172,7 +172,7 @@ let planeIls = @(width, height) function() {
       (isF15e ? ilsF15e(width, height) : null),
       (isF117 ? ilsF117(width, height) : null),
       (isSu34 ? ilsSu34(width, height) : null),
-      (isTyphoon ? ilsTyphoon(width, height) : null),
+      (isTyphoon ? IlsTyphoon(width, height) : null),
       (isStockHeli ? StockHeliIls() : null),
     ]
   }

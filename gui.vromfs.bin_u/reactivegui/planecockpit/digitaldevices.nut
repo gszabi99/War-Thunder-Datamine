@@ -77,6 +77,8 @@ let devicesSetting = Computed(function() {
       padding = devBlk.getPoint2("padding", Point2(0, 0))
       formatStr = devBlk.getStr("format", "%d")
       value = valueStr
+      fontId = Fonts?[devBlk.getStr("font", "digital")] ?? Fonts.digital
+      mult = devBlk.getReal("multiplier", 1.0)
     }
     res.append(devInfo)
   }
@@ -96,8 +98,8 @@ let mkChildren = @(devices_config)
       padding = [v.padding.x, v.padding.y]
       color = Color(v.color.x, v.color.y, v.color.z)
       fontSize = v.fontSize
-      font = Fonts.digital
-      text = string.format(v.formatStr, watch.value)
+      font = v.fontId
+      text = string.format(v.formatStr, watch.value * v.mult)
       behavior = Behaviors.RtPropUpdate
       update = upd
     }

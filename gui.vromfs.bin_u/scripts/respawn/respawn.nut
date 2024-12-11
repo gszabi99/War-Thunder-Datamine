@@ -1781,7 +1781,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     if (isPointOfInterestSet()) {
       let tacticalMapObj = this.scene.findObject("tactical-map")
-      tacticalMapObj.cursor = "normal"
+      tacticalMapObj.cursor = isAllowedMoveCenter() ? "moveArrowCursor" : "normal"
     }
 
     if (this.isApplyPressed) {

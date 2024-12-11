@@ -22,81 +22,85 @@ let hasRadarTarget = Computed(@() RadarTargetDist.get() > 0.0)
 
 let AltThousandAngle = Computed(@() (BarAltitude.get() * metrToFeet % 1000 / 2.7777 - 90.0).tointeger())
 let BarAltValue = Computed(@() (BarAltitude.get() * metrToFeet * 0.1).tointeger())
-let altCircle = @(){
-  watch = IlsColor
-  size = [ph(16), ph(16)]
-  pos = [pw(65), ph(18.5)]
-  rendObj = ROBJ_VECTOR_CANVAS
-  color = IlsColor.get()
-  fillColor = Color(0, 0, 0, 0)
-  lineWidth = baseLineWidth * IlsLineScale.get() * 2.0
-  commands = [
-    [VECTOR_LINE, 50, 0, 50, 0],
-    [VECTOR_LINE, 50, 100, 50, 100],
-    [VECTOR_LINE, 20.6, 9.5, 20.6, 9.5],
-    [VECTOR_LINE, 2.4, 34.5, 2.4, 34.5],
-    [VECTOR_LINE, 2.4, 65.5, 2.4, 65.5],
-    [VECTOR_LINE, 20.6, 90.5, 20.6, 90.5],
-    [VECTOR_LINE, 80.6, 90.5, 80.6, 90.5],
-    [VECTOR_LINE, 97.6, 65.5, 97.6, 65.5],
-    [VECTOR_LINE, 97.6, 34.5, 97.6, 34.5],
-    [VECTOR_LINE, 80.6, 9.5, 80.6, 9.5]
-  ]
-  children = [
-    @() {
-      watch = [AltThousandAngle, IlsColor]
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = [pw(50), ph(50)]
-      pos = [pw(50), ph(50)]
-      color = IlsColor.get()
-      fillColor = Color(0, 0, 0, 0)
-      lineWidth = baseLineWidth * IlsLineScale.get()
-      commands = [
-        [VECTOR_LINE, 100 * cos(degToRad(AltThousandAngle.get())), 100 * sin(degToRad(AltThousandAngle.get())),
-          70 * cos(degToRad(AltThousandAngle.get())), 70 * sin(degToRad(AltThousandAngle.get()))]
-      ]
-    }
-    @(){
-      watch = BarAltValue
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      size = SIZE_TO_CONTENT
-      font = Fonts.hud
-      fontSize = 40
-      text = (BarAltValue.get() * 10).tostring()
-      hplace = ALIGN_CENTER
-      vplace = ALIGN_CENTER
-    }
-  ]
+function altCircle(lineWidth, color, fontSize) {
+  return @(){
+    watch = IlsColor
+    size = [ph(16), ph(16)]
+    pos = [pw(65), ph(18.5)]
+    rendObj = ROBJ_VECTOR_CANVAS
+    color
+    fillColor = Color(0, 0, 0, 0)
+    lineWidth
+    commands = [
+      [VECTOR_LINE, 50, 0, 50, 0],
+      [VECTOR_LINE, 50, 100, 50, 100],
+      [VECTOR_LINE, 20.6, 9.5, 20.6, 9.5],
+      [VECTOR_LINE, 2.4, 34.5, 2.4, 34.5],
+      [VECTOR_LINE, 2.4, 65.5, 2.4, 65.5],
+      [VECTOR_LINE, 20.6, 90.5, 20.6, 90.5],
+      [VECTOR_LINE, 80.6, 90.5, 80.6, 90.5],
+      [VECTOR_LINE, 97.6, 65.5, 97.6, 65.5],
+      [VECTOR_LINE, 97.6, 34.5, 97.6, 34.5],
+      [VECTOR_LINE, 80.6, 9.5, 80.6, 9.5]
+    ]
+    children = [
+      @() {
+        watch = [AltThousandAngle, IlsColor]
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = [pw(50), ph(50)]
+        pos = [pw(50), ph(50)]
+        color = IlsColor.get()
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = lineWidth * 0.5
+        commands = [
+          [VECTOR_LINE, 100 * cos(degToRad(AltThousandAngle.get())), 100 * sin(degToRad(AltThousandAngle.get())),
+            70 * cos(degToRad(AltThousandAngle.get())), 70 * sin(degToRad(AltThousandAngle.get()))]
+        ]
+      }
+      @(){
+        watch = BarAltValue
+        rendObj = ROBJ_TEXT
+        color = IlsColor.get()
+        size = SIZE_TO_CONTENT
+        font = Fonts.hud
+        fontSize
+        text = (BarAltValue.get() * 10).tostring()
+        hplace = ALIGN_CENTER
+        vplace = ALIGN_CENTER
+      }
+    ]
+  }
 }
 
 let AltitudeValue = Computed(@() (Altitude.get() * metrToFeet).tointeger())
-let altitude = {
-  size = [pw(10), ph(5)]
-  pos = [pw(78), ph(22.5)]
-  flow = FLOW_VERTICAL
-  children = [
-    @(){
-      watch = IlsColor
-      rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
-      color = IlsColor.get()
-      font = Fonts.hud
-      fontSize = 40
-      text = "R"
-      halign = ALIGN_CENTER
-    }
-    @(){
-      watch = AltitudeValue
-      rendObj = ROBJ_TEXT
-      size = [flex(), SIZE_TO_CONTENT]
-      color = IlsColor.get()
-      font = Fonts.hud
-      fontSize = 40
-      text = AltitudeValue.get().tostring()
-      halign = ALIGN_CENTER
-    }
-  ]
+function altitude(fontSize) {
+  return {
+    size = [pw(10), ph(5)]
+    pos = [pw(78), ph(22.5)]
+    flow = FLOW_VERTICAL
+    children = [
+      @(){
+        watch = IlsColor
+        rendObj = ROBJ_TEXT
+        size = [flex(), SIZE_TO_CONTENT]
+        color = IlsColor.get()
+        font = Fonts.hud
+        fontSize
+        text = "R"
+        halign = ALIGN_CENTER
+      }
+      @(){
+        watch = AltitudeValue
+        rendObj = ROBJ_TEXT
+        size = [flex(), SIZE_TO_CONTENT]
+        color = IlsColor.get()
+        font = Fonts.hud
+        fontSize
+        text = AltitudeValue.get().tostring()
+        halign = ALIGN_CENTER
+      }
+    ]
+  }
 }
 
 let airSymbol = @(){
@@ -136,44 +140,48 @@ let tvvLinked = @() {
 }
 
 let MachValue = Computed(@() (Mach.get() * 100.0).tointeger())
-let mach = {
-  size = [pw(10), ph(5)]
-  pos = [pw(5), ph(22.5)]
-  flow = FLOW_VERTICAL
-  children = [
-    @(){
-      watch = IlsColor
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      size = SIZE_TO_CONTENT
-      font = Fonts.hud
-      fontSize = 40
-      text = "M"
-      hplace = ALIGN_CENTER
-    }
-    @(){
-      watch = MachValue
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      size = SIZE_TO_CONTENT
-      font = Fonts.hud
-      fontSize = 40
-      text = format("%.2f", MachValue.get() * 0.01)
-      hplace = ALIGN_CENTER
-    }
-  ]
+function mach(fontSize) {
+  return {
+    size = [pw(10), ph(5)]
+    pos = [pw(5), ph(22.5)]
+    flow = FLOW_VERTICAL
+    children = [
+      @(){
+        watch = IlsColor
+        rendObj = ROBJ_TEXT
+        color = IlsColor.get()
+        size = SIZE_TO_CONTENT
+        font = Fonts.hud
+        fontSize
+        text = "M"
+        hplace = ALIGN_CENTER
+      }
+      @(){
+        watch = MachValue
+        rendObj = ROBJ_TEXT
+        color = IlsColor.get()
+        size = SIZE_TO_CONTENT
+        font = Fonts.hud
+        fontSize
+        text = format("%.2f", MachValue.get() * 0.01)
+        hplace = ALIGN_CENTER
+      }
+    ]
+  }
 }
 
 let SpeedVal = Computed(@() (Speed.get() * mpsToKnots).tointeger())
-let speed = @(){
-  watch = SpeedVal
-  rendObj = ROBJ_TEXT
-  size = SIZE_TO_CONTENT
-  pos = [pw(17), ph(24.5)]
-  color = IlsColor.get()
-  font = Fonts.hud
-  fontSize = 40
-  text = SpeedVal.get().tostring()
+function speed(fontSize) {
+  return @(){
+    watch = SpeedVal
+    rendObj = ROBJ_TEXT
+    size = SIZE_TO_CONTENT
+    pos = [pw(17), ph(24.5)]
+    color = IlsColor.get()
+    font = Fonts.hud
+    fontSize
+    text = SpeedVal.get().tostring()
+  }
 }
 
 function pitch(width, height, generateFunc) {
@@ -341,7 +349,7 @@ function compassWrap(width, height, generateFunc) {
   }
 }
 
-function getWeaponsElem(weaponSlotsV) {
+function getWeaponsElem(weaponSlotsV, fontSize) {
   let weapons = []
   let added = {}
   local selected = ""
@@ -364,7 +372,7 @@ function getWeaponsElem(weaponSlotsV) {
         rendObj = ROBJ_TEXT
         size = SIZE_TO_CONTENT
         color = IlsColor.get()
-        fontSize = 40
+        fontSize
         font = Fonts.hud
         text
         children = (isSelected ? @(){
@@ -391,7 +399,7 @@ function getWeaponsElem(weaponSlotsV) {
       rendObj = ROBJ_TEXT
       size = SIZE_TO_CONTENT
       color = IlsColor.get()
-      fontSize = 40
+      fontSize
       font = Fonts.hud
       text = format("G %d", GunBullets0.get())
     }
@@ -399,12 +407,14 @@ function getWeaponsElem(weaponSlotsV) {
   return weapons
 }
 
-let weapons = @(){
-  watch = [WeaponSlots, WeaponSlotsName, SelectedWeapSlot]
-  size = flex()
-  flow = FLOW_VERTICAL
-  pos = [pw(83), ph(80)]
-  children = getWeaponsElem(WeaponSlots.get())
+function weapons(font_size) {
+  return @(){
+    watch = [WeaponSlots, WeaponSlotsName, SelectedWeapSlot]
+    size = flex()
+    flow = FLOW_VERTICAL
+    pos = [pw(83), ph(80)]
+    children = getWeaponsElem(WeaponSlots.get(), font_size)
+  }
 }
 
 let distRate = Computed(@() (RadarTargetDistRate.get() * mpsToKnots).tointeger())
@@ -412,108 +422,111 @@ let aspect = Computed(@() format("% 2.0f%s", abs(RadarTargetAngle.get() * radToD
 let launchDistMaxPos = Computed(@() ((1.0 - AamLaunchZoneDistMax.get()) * 100.0).tointeger())
 let currentLaunchDistLen = Computed(@() ((1.0 - AamLaunchZoneDist.get()) * 100.0).tointeger())
 let targetDist = Computed(@() (RadarTargetDist.get() * metrToNavMile * 10.0).tointeger())
-let aamScale = @(){
-  watch = hasRadarTarget
-  size = [pw(10), ph(30)]
-  pos = [pw(83), ph(20)]
-  children = hasRadarTarget.get() ? [
-    {
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = flex()
-      color = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-      commands = [
-        [VECTOR_LINE, 50, 0, 50, 100],
-        [VECTOR_LINE, 40, 0, 60, 0],
-        [VECTOR_LINE, 40, 100, 60, 100]
-      ]
-    }
-    @(){
-      watch = DistanceMax
-      size = [flex(), SIZE_TO_CONTENT]
-      pos = [0, -30]
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      font = Fonts.hud
-      fontSize = 30
-      text = (DistanceMax.get() * metrToNavMile * 1000.0).tointeger().tostring()
-      halign = ALIGN_CENTER
-    }
-    @(){
-      watch = distRate
-      size = [flex(), SIZE_TO_CONTENT]
-      pos = [0, ph(102)]
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      font = Fonts.hud
-      fontSize = 30
-      text = format("%dkt", distRate.get())
-      halign = ALIGN_CENTER
-    }
-    @(){
-      watch = aspect
-      pos = [0, ph(110)]
-      size = [flex(), SIZE_TO_CONTENT]
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      fontSize = 30
-      text = aspect.get()
-      halign = ALIGN_CENTER
-    }
-    @(){
-      watch = launchDistMaxPos
-      rendObj = ROBJ_SOLID
-      size = [pw(20), baseLineWidth * IlsLineScale.get() * 0.5]
-      pos = [pw(40), ph(launchDistMaxPos.get())]
-      color = IlsColor.get()
-    }
-    @(){
-      watch = currentLaunchDistLen
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = flex()
-      color = IlsColor.get()
-      lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-      commands = [
-        [VECTOR_LINE, 60, currentLaunchDistLen.get(), 75, currentLaunchDistLen.get() - 2],
-        [VECTOR_LINE, 60, currentLaunchDistLen.get(), 75, currentLaunchDistLen.get() + 2]
-      ]
-      children = @(){
-        watch = targetDist
-        pos = [pw(76), ph(currentLaunchDistLen.get() - 2)]
-        rendObj = ROBJ_TEXT
-        color = IlsColor.get()
-        size = SIZE_TO_CONTENT
-        font = Fonts.hud
-        fontSize = 30
-        text = format("%.1fnm", targetDist.get() * 0.1)
-      }
-    }
-  ] : null
-}
-
-let canShoot = @() {
-  watch = GuidanceLockState
-  size = [pw(12), 40]
-  pos = [pw(83), ph(70)]
-  children = (GuidanceLockState.get() >= GuidanceLockResult.RESULT_TRACKING ? [
-    @() {
-      watch = IlsColor
-      size = SIZE_TO_CONTENT
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      fontSize = 40
-      font = Fonts.hud
-      text = "SHOOT"
-      padding = [3, 0]
-      hplace = ALIGN_CENTER
-      animations = [
-        { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.75, play = true, loop = true }
-      ]
-    }
-    {
+function aamScale(fontSize) {
+  return @(){
+    watch = hasRadarTarget
+    size = [pw(10), ph(30)]
+    pos = [pw(83), ph(20)]
+    children = hasRadarTarget.get() ? [
+      {
         rendObj = ROBJ_VECTOR_CANVAS
         size = flex()
         color = IlsColor.get()
+        lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+        commands = [
+          [VECTOR_LINE, 50, 0, 50, 100],
+          [VECTOR_LINE, 40, 0, 60, 0],
+          [VECTOR_LINE, 40, 100, 60, 100]
+        ]
+      }
+      @(){
+        watch = DistanceMax
+        size = [flex(), SIZE_TO_CONTENT]
+        pos = [0, -fontSize]
+        rendObj = ROBJ_TEXT
+        color = IlsColor.get()
+        font = Fonts.hud
+        fontSize
+        text = (DistanceMax.get() * metrToNavMile * 1000.0).tointeger().tostring()
+        halign = ALIGN_CENTER
+      }
+      @(){
+        watch = distRate
+        size = [flex(), SIZE_TO_CONTENT]
+        pos = [0, ph(102)]
+        rendObj = ROBJ_TEXT
+        color = IlsColor.get()
+        font = Fonts.hud
+        fontSize
+        text = format("%dkt", distRate.get())
+        halign = ALIGN_CENTER
+      }
+      @(){
+        watch = aspect
+        pos = [0, ph(110)]
+        size = [flex(), SIZE_TO_CONTENT]
+        rendObj = ROBJ_TEXT
+        color = IlsColor.get()
+        fontSize
+        text = aspect.get()
+        halign = ALIGN_CENTER
+      }
+      @(){
+        watch = launchDistMaxPos
+        rendObj = ROBJ_SOLID
+        size = [pw(20), baseLineWidth * IlsLineScale.get() * 0.5]
+        pos = [pw(40), ph(launchDistMaxPos.get())]
+        color = IlsColor.get()
+      }
+      @(){
+        watch = currentLaunchDistLen
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = flex()
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+        commands = [
+          [VECTOR_LINE, 60, currentLaunchDistLen.get(), 75, currentLaunchDistLen.get() - 2],
+          [VECTOR_LINE, 60, currentLaunchDistLen.get(), 75, currentLaunchDistLen.get() + 2]
+        ]
+        children = @(){
+          watch = targetDist
+          pos = [pw(77), ph(currentLaunchDistLen.get() - 3)]
+          rendObj = ROBJ_TEXT
+          color = IlsColor.get()
+          size = SIZE_TO_CONTENT
+          font = Fonts.hud
+          fontSize
+          text = format("%.1fnm", targetDist.get() * 0.1)
+        }
+      }
+    ] : null
+  }
+}
+
+function canShoot(fontSize, color) {
+  return @() {
+    watch = GuidanceLockState
+    size = [pw(12), fontSize]
+    pos = [pw(83), ph(70)]
+    children = (GuidanceLockState.get() >= GuidanceLockResult.RESULT_TRACKING ? [
+      @() {
+        watch = IlsColor
+        size = SIZE_TO_CONTENT
+        rendObj = ROBJ_TEXT
+        color
+        fontSize
+        font = Fonts.hud
+        text = "SHOOT"
+        padding = [3, 0]
+        hplace = ALIGN_CENTER
+        animations = [
+          { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.75, play = true, loop = true }
+        ]
+      }
+      {
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = flex()
+        color
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
         commands = [
           [VECTOR_LINE, 0, 0, 100, 0],
@@ -524,15 +537,16 @@ let canShoot = @() {
           [VECTOR_LINE, 100, 100, 100, 70]
         ]
       }
-  ]
-  : null)
+    ]
+    : null)
+  }
 }
 
 let radarMarks = @(){
   watch = IlsColor
   rendObj = ROBJ_DAS_CANVAS
   script = dasRadarMarks
-  drawFunc = "draw_radar_mark"
+  drawFunc = "draw_ils_radar_mark"
   setupFunc = "setup_data"
   size = flex()
   color = IlsColor.get()
@@ -544,22 +558,24 @@ let radarMarks = @(){
 let CalcFlightTime = Computed(@() AamLaunchZoneDistMaxVal.get() == 0 ? 0
   : round(AamTimeOfFlightMax.get() * (RadarTargetDist.get() / AamLaunchZoneDistMaxVal.get())).tointeger())
 let timeVisible = Computed(@() IsAamLaunchZoneVisible.get() && AamTimeOfFlightMax.get() > 0.0)
-let flightTime =  @() {
-  watch = timeVisible
-  pos = [pw(86), ph(66)]
-  size = [pw(5), ph(5)]
-  children = timeVisible.get() ?
-    @() {
-      watch = [CalcFlightTime, IlsColor]
-      rendObj = ROBJ_TEXT
-      halign = ALIGN_CENTER
-      size = flex()
-      color = IlsColor.get()
-      fontSize = 40
-      font = Fonts.hud
-      text = CalcFlightTime.get().tostring()
-    }
-  : null
+function flightTime(fontSize) {
+  return @() {
+    watch = timeVisible
+    pos = [pw(86), ph(66)]
+    size = [pw(5), ph(5)]
+    children = timeVisible.get() ?
+      @() {
+        watch = [CalcFlightTime, IlsColor]
+        rendObj = ROBJ_TEXT
+        halign = ALIGN_CENTER
+        size = flex()
+        color = IlsColor.get()
+        fontSize
+        font = Fonts.hud
+        text = CalcFlightTime.get().tostring()
+      }
+    : null
+  }
 }
 
 let aimPos = @(){
@@ -773,19 +789,19 @@ function IlsTyphoon(width, height) {
   return {
     size = [width, height]
     children = [
-      altCircle
-      altitude
+      altCircle(baseLineWidth * IlsLineScale.get() * 2.0, IlsColor.get(), 40)
+      altitude(40)
       airSymbol
       tvvLinked
-      mach
-      speed
+      mach(40)
+      speed(40)
       pitch(width, height, generatePitchLine)
       compassWrap(width, height, generateCompassMark)
-      weapons
-      aamScale
-      canShoot
+      weapons(40)
+      aamScale(30)
+      canShoot(40, IlsColor.get())
       radarMarks
-      flightTime
+      flightTime(40)
       aimPos
       gunImpactLine
       overload(height)
@@ -795,4 +811,14 @@ function IlsTyphoon(width, height) {
   }
 }
 
-return IlsTyphoon
+return {
+  IlsTyphoon
+  altCircle
+  altitude
+  weapons
+  mach
+  speed
+  aamScale
+  canShoot
+  flightTime
+}

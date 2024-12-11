@@ -2462,11 +2462,11 @@
   "sensors": {
     "fireDirecting": {
       "dmPartMain": "bridge_dm",
-      "dmPart": "rangefinder_01_dm",
-      "measureAccuracy": 0.85,
-      "targetLockTime": 20.0,
-      "calcTime": 12.0,
-      "rotationSpeed": 20.0,
+      "dmPart": "fire_director_01_dm",
+      "measureAccuracy": 1.0,
+      "targetLockTime": 15.0,
+      "calcTime": 8.0,
+      "rotationSpeed": 6.0,
       "shipIndicationOn": true,
       "triggerGroupUse": {
         "primary": true,
@@ -2477,7 +2477,7 @@
   },
   "commonWeapons": {
     "animatedBones": {
-      "node": "rangefinder_01"
+      "node": "fire_director_01"
     },
     "Weapon": [
       {
@@ -2534,13 +2534,13 @@
           "lim1": [
             -180.0,
             -162.0,
-            45.0,
+            0.0,
             60.0
           ],
           "lim2": [
             -162.0,
             -155.0,
-            15.0,
+            0.0,
             60.0
           ],
           "lim3": [
@@ -2588,16 +2588,58 @@
           "lim10": [
             155.0,
             162.0,
-            15.0,
+            0.0,
             60.0
           ],
           "lim11": [
             162.0,
             180.0,
-            45.0,
+            0.0,
             60.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -162.0
+            ],
+            "pitch": [
+              0.0,
+              45.0
+            ]
+          },
+          {
+            "yaw": [
+              -162.0,
+              -155.0
+            ],
+            "pitch": [
+              0.0,
+              15.0
+            ]
+          },
+          {
+            "yaw": [
+              162.0,
+              180.0
+            ],
+            "pitch": [
+              0.0,
+              45.0
+            ]
+          },
+          {
+            "yaw": [
+              155.0,
+              162.0
+            ],
+            "pitch": [
+              0.0,
+              15.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,
@@ -2662,7 +2704,7 @@
           "lim1": [
             -180.0,
             -178.0,
-            13.0,
+            5.0,
             60.0
           ],
           "lim2": [
@@ -2710,10 +2752,32 @@
           "lim9": [
             178.0,
             180.0,
-            13.0,
+            5.0,
             60.0
           ]
         },
+        "limitsDeadzone": [
+          {
+            "yaw": [
+              -180.0,
+              -178.0
+            ],
+            "pitch": [
+              5.0,
+              13.0
+            ]
+          },
+          {
+            "yaw": [
+              178.0,
+              180.0
+            ],
+            "pitch": [
+              5.0,
+              13.0
+            ]
+          }
+        ],
         "gunStabilizer": {
           "hasVerticalGunFreeMode": true,
           "hasHorizontal": true,

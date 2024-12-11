@@ -17,8 +17,7 @@
   "ilsNeedAllRadarScreenTarget": true,
   "rwrIndicator": "DASS",
   "mfdCamTads": true,
-  "hmdF16c": true,
-  "haveOpticTurret": true,
+  "hmdTyphoon": true,
   "needTpsNightVision": true,
   "viewDistKInSight": 6.0,
   "hasHelmetDesignator": true,
@@ -1890,10 +1889,10 @@
     "Range": 1200.0
   },
   "Sound": {
-    "Engine": "engine05_f100_pw_100_WEP",
+    "Engine": "engine05_ej200_WEP",
     "voiceWarningSystem": "betty",
     "gun": "gun_default",
-    "nozzleMoveSfx": "nozzle_moving_3",
+    "nozzleMoveSfx": "nozzle_turning",
     "nozzleAngleThreshold": 0.05
   },
   "rwr": {
@@ -1928,8 +1927,8 @@
     ],
     "hmdEnabledByDefault": true,
     "hmdBlockIlsArea": [
-      0.5,
-      -0.4,
+      0.47,
+      0.4,
       0.55,
       0.6
     ],
@@ -2490,7 +2489,8 @@
         "padding": [
           10.0,
           13.0
-        ]
+        ],
+        "multiplier": 0.5
       },
       "FUEL_REAR": {
         "pos": [
@@ -2512,7 +2512,8 @@
         "padding": [
           10.0,
           13.0
-        ]
+        ],
+        "multiplier": 0.5
       },
       "FUEL_TOTAL": {
         "pos": [
@@ -2599,22 +2600,6 @@
     "wingStrainLimitDown": 1.0
   },
   "nightVision": {
-    "sightThermal": [
-      {
-        "resolution": [
-          800,
-          600
-        ],
-        "noiseFactor": 0.04
-      },
-      {
-        "resolution": [
-          500,
-          300
-        ],
-        "noiseFactor": 0.05
-      }
-    ],
     "sightTPodThermal": {
       "resolution": [
         1200,
@@ -2642,23 +2627,6 @@
     }
   },
   "gunnerOpticFps": {
-    "TV": {
-      "pos": [
-        4.0,
-        -0.2,
-        0.0
-      ],
-      "head": "optic2_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -30.0,
-        30.0,
-        -30.0,
-        30.0
-      ],
-      "opticType": "",
-      "turretNo": 0
-    },
     "Target": {
       "pos": [
         0.2,
@@ -3092,26 +3060,13 @@
             "HideNodes": {
               "node": "pylon_4_off"
             },
-            "Weapon": [
-              {
-                "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
-                "emitter": "aim_9e_005",
-                "external": true,
-                "separate": true,
-                "bullets": 1,
-                "order": 14
-              },
-              {
-                "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
-                "emitter": "aim_9e_006",
-                "external": true,
-                "separate": true,
-                "bullets": 1,
-                "order": 16
-              }
-            ],
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/tmc_eurofighter_aim_9l.blk",
+              "emitter": "tmc_launcher_001",
+              "external": true,
+              "separate": true
+            },
             "BannedWeaponPreset": {
               "slot": 3,
               "preset": "paveway_iv_slot3_x2"
@@ -3154,26 +3109,13 @@
             "HideNodes": {
               "node": "pylon_4_off"
             },
-            "Weapon": [
-              {
-                "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_i_sidewinder.blk",
-                "emitter": "aim_9e_005",
-                "external": true,
-                "separate": true,
-                "bullets": 1,
-                "order": 14
-              },
-              {
-                "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_i_sidewinder.blk",
-                "emitter": "aim_9e_006",
-                "external": true,
-                "separate": true,
-                "bullets": 1,
-                "order": 16
-              }
-            ],
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/tmc_eurofighter_aim_9l_i.blk",
+              "emitter": "tmc_launcher_001",
+              "external": true,
+              "separate": true
+            },
             "BannedWeaponPreset": {
               "slot": 3,
               "preset": "paveway_iv_slot3_x2"
@@ -3684,6 +3626,7 @@
           "name": "litening",
           "reqModification": "gr_litening_iii_pod",
           "hasTargetingPod": true,
+          "removeGunnerOpticFps": 0,
           "ShowNodes": {
             "node": [
               "pylon_13",
@@ -4093,26 +4036,13 @@
             "HideNodes": {
               "node": "pylon_3_off"
             },
-            "Weapon": [
-              {
-                "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
-                "emitter": "aim_9e_008",
-                "external": true,
-                "separate": true,
-                "bullets": 1,
-                "order": 15
-              },
-              {
-                "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
-                "emitter": "aim_9e_007",
-                "external": true,
-                "separate": true,
-                "bullets": 1,
-                "order": 17
-              }
-            ],
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/tmc_eurofighter_aim_9l.blk",
+              "emitter": "tmc_launcher_002",
+              "external": true,
+              "separate": true
+            },
             "BannedWeaponPreset": {
               "slot": 11,
               "preset": "paveway_iv_slot11_x2"
@@ -4155,26 +4085,13 @@
             "HideNodes": {
               "node": "pylon_3_off"
             },
-            "Weapon": [
-              {
-                "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_i_sidewinder.blk",
-                "emitter": "aim_9e_008",
-                "external": true,
-                "separate": true,
-                "bullets": 1,
-                "order": 15
-              },
-              {
-                "trigger": "aam",
-                "blk": "gameData/Weapons/rocketGuns/us_aim9l_i_sidewinder.blk",
-                "emitter": "aim_9e_007",
-                "external": true,
-                "separate": true,
-                "bullets": 1,
-                "order": 17
-              }
-            ],
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/tmc_eurofighter_aim_9l_i.blk",
+              "emitter": "tmc_launcher_002",
+              "external": true,
+              "separate": true
+            },
             "BannedWeaponPreset": {
               "slot": 11,
               "preset": "paveway_iv_slot11_x2"

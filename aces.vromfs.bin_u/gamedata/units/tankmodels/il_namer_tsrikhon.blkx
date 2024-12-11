@@ -131,6 +131,9 @@
         "armorThickness": 10.0,
         "hidableInViewer": true
       },
+      "turret_20_top_dm": {
+        "armorThickness": 10.0
+      },
       "turret_17_back_dm": {
         "armorThickness": 10.0,
         "hidableInViewer": true
@@ -226,6 +229,9 @@
         "armorThickness": 10.0
       },
       "superstructure_bottom_dm": {
+        "armorThickness": 10.0
+      },
+      "turret_20_side_dm": {
         "armorThickness": 10.0
       },
       "turret_17_side_dm": {
@@ -419,7 +425,8 @@
       "ex_armor_r_07_dm": {},
       "ex_armor_r_08_dm": {},
       "ex_armor_r_09_dm": {},
-      "ex_armor_r_10_dm": {}
+      "ex_armor_r_10_dm": {},
+      "turret_20_back_dm": {}
     },
     "hull_ufp_slera": {
       "armorClass": "hull_side_special_armor",
@@ -502,7 +509,9 @@
       "ex_decor_l_04_dm": {},
       "ex_decor_r_04_dm": {},
       "ex_decor_r_06_dm": {},
-      "ex_decor_l_06_dm": {}
+      "ex_decor_l_06_dm": {},
+      "ex_armor_l_11_dm": {},
+      "ex_armor_r_11_dm": {}
     },
     "aps_sensors": {
       "armorClass": "RHA_tank",
@@ -2234,7 +2243,6 @@
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "showBulletsInHud": false,
         "turret": {
           "head": "bone_mg_twin",
           "gun": "bone_mg_twin",
@@ -3565,29 +3573,29 @@
       "fatalFire": false,
       "fatalExplosion": false,
       "shells": {
-        "wreckedPartId": 0,
-        "ammo_turret_12_dm": {
-          "count": 50
-        },
-        "ammo_turret_11_dm": {
-          "count": 50
-        },
-        "ammo_turret_10_dm": {
-          "count": 50
-        },
-        "ammo_turret_09_dm": {
-          "count": 50
-        },
-        "ammo_turret_08_dm": {
-          "count": 50
-        },
-        "ammo_turret_07_dm": {
+        "fireParamsPreset": "turret_bustle",
+        "ammo_turret_05_dm": {
           "count": 50
         },
         "ammo_turret_06_dm": {
           "count": 50
         },
-        "ammo_turret_05_dm": {
+        "ammo_turret_07_dm": {
+          "count": 50
+        },
+        "ammo_turret_08_dm": {
+          "count": 50
+        },
+        "ammo_turret_09_dm": {
+          "count": 50
+        },
+        "ammo_turret_10_dm": {
+          "count": 50
+        },
+        "ammo_turret_11_dm": {
+          "count": 50
+        },
+        "ammo_turret_12_dm": {
           "count": 50
         }
       }
@@ -3598,6 +3606,7 @@
       "fatalExplosion": true,
       "shells": [
         {
+          "fireParamsPreset": "turret_bustle",
           "ammoLoadedInGun": true,
           "fatalFire": false,
           "fatalExplosion": false,
@@ -3954,7 +3963,6 @@
               "errTargettingOn100kmph": 0.0,
               "errTargetting": 3.0,
               "errExplTime": 0.0,
-              "showBulletsInHud": false,
               "turret": {
                 "head": "bone_mg_twin",
                 "gun": "bone_mg_twin",

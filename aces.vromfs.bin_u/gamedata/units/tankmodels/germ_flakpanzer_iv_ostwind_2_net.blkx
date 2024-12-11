@@ -1348,8 +1348,8 @@
         "armorClass": "tank_traks",
         "armorThickness": 20.0,
         "hp": 150.0,
-        "ex_armor_01_dm": {},
-        "ex_armor_02_dm": {}
+        "ex_armor_07_dm": {},
+        "ex_armor_08_dm": {}
       }
     },
     "gun": {
@@ -2910,80 +2910,6 @@
       "from": "ger_camo_dunkelgelb*"
     }
   },
-  "skin": [
-    {
-      "name": "green",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green",
-      "descLocId": "skin/ger_camo_dunkelgelb_green/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green*"
-      }
-    },
-    {
-      "name": "blots",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_blots*"
-      }
-    },
-    {
-      "name": "lines",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_lines*"
-      }
-    },
-    {
-      "name": "winter",
-      "nameLocId": "skin/winter",
-      "descLocId": "skin/winter/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_dunkelgelb*"
-      }
-    },
-    {
-      "name": "ger_camo_winter_waves",
-      "nameLocId": "skin/ger_camo_winter_waves_bicolor",
-      "descLocId": "skin/ger_camo_winter_waves_bicolor/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_winter_waves_bicolor*"
-      }
-    },
-    {
-      "name": "hinterhalt_daimler",
-      "nameLocId": "skin/ger_camo_hinterhalt_daimler",
-      "descLocId": "skin/ger_camo_hinterhalt_daimler/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_hinterhalt_daimler*"
-      }
-    },
-    {
-      "name": "ger_camo_dunkelgelb_green_braun_lines_mhn",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_lines_mhn*"
-      }
-    },
-    {
-      "name": "ger_camo_dunkelgelb_green_braun_blots_man",
-      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man",
-      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man/desc",
-      "replace_tex": {
-        "from": "ger_camo_dunkelgelb*",
-        "to": "ger_camo_dunkelgelb_green_braun_blots_man*"
-      }
-    }
-  ],
   "ammoStowages": {
     "ammo1": {
       "weaponTrigger": "gunner0",
@@ -3014,32 +2940,6 @@
         }
       }
     }
-  },
-  "modifications": {
-    "new_tank_tracks": {},
-    "new_tank_suspension": {},
-    "new_tank_filter": {},
-    "new_tank_brakes": {},
-    "new_tank_transmission": {},
-    "new_tank_engine": {},
-    "manual_extinguisher": {},
-    "tank_tool_kit": {},
-    "new_tank_horizontal_aiming": {},
-    "new_tank_vertical_aiming": {},
-    "art_support": {},
-    "aa_new_gun": {},
-    "tank_medical_kit": {
-      "image": "#ui/gameuiskin#tank_reinforcement_ger"
-    },
-    "tank_medical_kit_expendable": {
-      "image": "#ui/gameuiskin#tank_reinforcement_ger"
-    },
-    "37mm_ger_flak36_HE_ammo_pack": {},
-    "37mm_ger_flak36_AP_ammo_pack": {},
-    "37mm_ger_mgr_HE_ammo_pack": {},
-    "37mm_ger_flak36_HE": {},
-    "37mm_ger_flak36_AP": {},
-    "37mm_ger_mgr_HE": {}
   },
   "sound": {
     "EngineName": "engine_panzer4",
@@ -3306,5 +3206,147 @@
         }
       }
     ]
-  }
+  },
+  "modifications": {
+    "new_tank_tracks": {},
+    "new_tank_suspension": {},
+    "new_tank_filter": {},
+    "new_tank_brakes": {},
+    "new_tank_transmission": {},
+    "new_tank_engine": {},
+    "ostketten_tank_tracks": {
+      "invertEnableLogic": false,
+      "turn_it_off": false,
+      "effects": {
+        "mulFrontalStaticFriction": 1.02,
+        "mulFrontalSlidingFriction": 1.05,
+        "mulSideRotMinSpd": 1.05,
+        "mulSideRotMaxSpd": 1.05,
+        "mulSideRotMinFric": 0.95,
+        "mulSideRotMaxFric": 0.95,
+        "tracks": {
+          "width": 0.56,
+          "trackMesh": "ger_ostketten_phys_track_line",
+          "nonSymmetricMesh": true
+        },
+        "hideNodes": {
+          "node": [
+            "track_l",
+            "track_r",
+            "ex_armor_body_l_09",
+            "ex_armor_body_r_09"
+          ]
+        },
+        "damagePartsOverride": {
+          "tracks": {
+            "hpMult": 1.2,
+            "track_l_01_dm": {},
+            "track_r_01_dm": {}
+          }
+        }
+      },
+      "disableModEffects": {
+        "hideNodes": {
+          "node": [
+            "track_l_01",
+            "track_r_01"
+          ]
+        }
+      }
+    },
+    "manual_extinguisher": {},
+    "tank_tool_kit": {},
+    "new_tank_horizontal_aiming": {},
+    "new_tank_vertical_aiming": {},
+    "art_support": {},
+    "aa_new_gun": {},
+    "tank_medical_kit": {
+      "image": "#ui/gameuiskin#tank_reinforcement_ger"
+    },
+    "tank_medical_kit_expendable": {
+      "image": "#ui/gameuiskin#tank_reinforcement_ger"
+    },
+    "37mm_ger_flak36_HE_ammo_pack": {},
+    "37mm_ger_flak36_AP_ammo_pack": {},
+    "37mm_ger_mgr_HE_ammo_pack": {},
+    "37mm_ger_flak36_HE": {},
+    "37mm_ger_flak36_AP": {},
+    "37mm_ger_mgr_HE": {}
+  },
+  "default_skin": {
+    "replace_tex": {
+      "from": "ger_camo_dunkelgelb*",
+      "to": "ger_camo_hinterhalt_daimler*"
+    },
+    "set_tex": {
+      "from": "flpz_iv_ostwind_2_turret_c*",
+      "to": "flpz_iv_ostwind_2_skin_turret_c*",
+      "param": "camo_skin_tex"
+    }
+  },
+  "skin": [
+    {
+      "name": "green",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green",
+      "descLocId": "skin/ger_camo_dunkelgelb_green/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green*"
+      }
+    },
+    {
+      "name": "blots",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_blots*"
+      }
+    },
+    {
+      "name": "lines",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_lines*"
+      }
+    },
+    {
+      "name": "winter",
+      "nameLocId": "skin/winter",
+      "descLocId": "skin/winter/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_winter_dunkelgelb*"
+      }
+    },
+    {
+      "name": "ger_camo_winter_waves",
+      "nameLocId": "skin/ger_camo_winter_waves_bicolor",
+      "descLocId": "skin/ger_camo_winter_waves_bicolor/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_winter_waves_bicolor*"
+      }
+    },
+    {
+      "name": "ger_camo_dunkelgelb_green_braun_lines_mhn",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_lines_mhn/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_lines_mhn*"
+      }
+    },
+    {
+      "name": "ger_camo_dunkelgelb_green_braun_blots_man",
+      "nameLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man",
+      "descLocId": "skin/ger_camo_dunkelgelb_green_braun_blots_man/desc",
+      "replace_tex": {
+        "from": "ger_camo_dunkelgelb*",
+        "to": "ger_camo_dunkelgelb_green_braun_blots_man*"
+      }
+    }
+  ]
 }

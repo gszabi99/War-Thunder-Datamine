@@ -1,0 +1,137 @@
+from "%rGui/globals/ui_library.nut" import *
+let { isInVr } = require("%rGui/style/screenState.nut")
+let { altCircle, altitude, weapons, mach, speed, aamScale, canShoot, flightTime } = require("%rGui/planeIlses/ilsTyphoon.nut")
+let { floor } = require("%sqstd/math.nut")
+let dasRadarMarks = load_das("%rGui/planeIlses/ilsTyphoonUtil.das")
+let { Roll, Tangage } = require("%rGui/planeState/planeFlyState.nut")
+let { sin, cos, PI } = require("math")
+let { cvt } = require("dagor.math")
+let { TATargetVisible } = require("%rGui/airState.nut")
+let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
+
+let baseColor = isInVr ? Color(10, 255, 10, 30) : Color(10, 255, 10, 10)
+let baseLineWidth = floor(LINE_WIDTH + 0.5)
+
+let radarMarks = {
+  rendObj = ROBJ_DAS_CANVAS
+  script = dasRadarMarks
+  drawFunc = "draw_hmd_radar_mark"
+  setupFunc = "setup_data"
+  size = flex()
+  color = baseColor
+  font = Fonts.hud
+  fontSize = 20
+  lineWidth = baseLineWidth
+  markSize = 20.0
+}
+
+let addAngle = Computed(@() cvt(Tangage.get(), -90.0, 90.0, -75.0, 75.0).tointeger())
+let addAnglePi = Computed(@() addAngle.get() * PI / 180.0)
+let rollPitch = @(){
+  watch = addAngle
+  rendObj = ROBJ_VECTOR_CANVAS
+  size = [ph(20), ph(20)]
+  pos = [pw(50), ph(50)]
+  color = baseColor
+  fillColor = 0
+  lineWidth = baseLineWidth
+  behavior = Behaviors.RtPropUpdate
+  commands = [
+    [VECTOR_SECTOR, 0, 0, 100, 100, addAngle.get(), 180 - addAngle.get()],
+    [VECTOR_LINE, 100 * cos(addAnglePi.get()), 100 * sin(addAnglePi.get()), 110 * cos(addAnglePi.get()), 110 * sin(addAnglePi.get())],
+    [VECTOR_LINE, 100 * cos(PI - addAnglePi.get()), 100 * sin(PI - addAnglePi.get()), 110 * cos(PI - addAnglePi.get()), 110 * sin(PI - addAnglePi.get())]
+  ]
+  update = @() {
+    transform = {
+      rotate = Roll.get()
+      pivot = [0, 0]
+    }
+  }
+}
+
+let airSymbol = {
+  rendObj = ROBJ_VECTOR_CANVAS
+  size = [pw(2), ph(5)]
+  pos = [pw(49), ph(45)]
+  color = baseColor
+  fillColor = 0
+  commands = [
+    [VECTOR_POLY, 50, 0, 100, 100, 0, 100],
+    [VECTOR_LINE, 50, 50, 50, 120]
+  ]
+}
+
+function ccrpReticle(width, height) {
+  return @() {
+    watch = TATargetVisible
+    size = [ph(3), ph(3)]
+    children = TATargetVisible.get() ? [
+      {
+        size = flex()
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = baseColor
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = baseLineWidth
+        commands = [
+          [VECTOR_POLY, 0, -100, 100, 100, -100, 100],
+          [VECTOR_LINE, 0, -50, 60, 70],
+          [VECTOR_LINE, 20, 70, 60, 70],
+          [VECTOR_LINE, 0, -50, -60, 70],
+          [VECTOR_LINE, -20, 70, -60, 70],
+          [VECTOR_LINE, 100, 50, 170, 20],
+          [VECTOR_LINE, 150, -10, 170, 20],
+          [VECTOR_LINE, -100, 50, -170, 20],
+          [VECTOR_LINE, -150, -10, -170, 20],
+          [VECTOR_LINE, 120, 100, 190, 120],
+          [VECTOR_LINE, 185, 150, 190, 120],
+          [VECTOR_LINE, -120, 100, -190, 120],
+          [VECTOR_LINE, -185, 150, -190, 120],
+        ]
+      }
+    ] : null
+    animations = [
+      { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "aim_lock_limit" }
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = function() {
+      local target = [TargetX.get() - width * 0.25, TargetY.get() - height * 0.2]
+      let leftBorder = 0
+      let rightBorder = width * 0.5
+      let topBorder = 0
+      let bottomBorder = height * 0.6
+      if (target[0] < leftBorder || target[0] > rightBorder || target[1] < topBorder || target[1] > bottomBorder)
+        anim_start("aim_lock_limit")
+      else
+        anim_request_stop("aim_lock_limit")
+      target = [clamp(target[0], leftBorder, rightBorder), clamp(target[1], topBorder, bottomBorder)]
+      return {
+        transform = {
+          translate = target
+        }
+      }
+    }
+  }
+}
+
+function hmd(width, height) {
+  return {
+    size = [width * 0.5, height * 0.6]
+    pos = [width * 0.25, height * 0.2]
+    children = [
+      altCircle(baseLineWidth * 2.0, baseColor, 30)
+      altitude(30)
+      weapons(30)
+      mach(30)
+      speed(30)
+      aamScale(20)
+      radarMarks
+      canShoot(30, baseColor)
+      flightTime(30)
+      rollPitch
+      airSymbol
+      ccrpReticle(width, height)
+    ]
+  }
+}
+
+return hmd

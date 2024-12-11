@@ -326,6 +326,9 @@ function ccrpReticle(width, height) {
         ] : []
       }
     ] : null
+    animations = [
+      { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "aim_lock_limit" }
+    ]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {

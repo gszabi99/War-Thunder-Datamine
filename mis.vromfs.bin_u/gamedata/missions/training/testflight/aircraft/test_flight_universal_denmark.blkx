@@ -20,18 +20,17 @@
         0.0
       ],
       "air_spawn_point": 1,
-      "target_rank_index": 0,
-      "is_high": false,
+      "target_rank_index": 1,
       "is_airfield_spawn": false,
       "is_ship_spawn": false,
       "availableSpawnPoints": "0; 1; 2; 3; 4; 5; 6; 7; 8",
       "aircraft_ship_name": "",
-      "locName": "missions/test_flight_denmark",
-      "restoreType": "manual",
-      "optionalTakeOff": false,
       "pressure": 760.0,
       "temperature": 15.0,
-      "altitude": 30.0
+      "altitude": 30.0,
+      "locName": "missions/test_flight_denmark",
+      "restoreType": "manual",
+      "optionalTakeOff": false
     },
     "atmosphere": {
       "pressure": 760.0,
@@ -243,7 +242,7 @@
             1600.45
           ]
         ],
-        "unit_class": "dynaf_pg_1line_3000_green",
+        "unit_class": "dynaf_pg_1line_ground",
         "objLayer": 2,
         "props": {
           "army": 1,
@@ -434,7 +433,7 @@
       ],
       "props": {}
     },
-    "airfield00plane": {
+    "airfield00plane_high": {
       "type": "Sphere",
       "tm": [
         [
@@ -481,12 +480,12 @@
         [
           21866.6,
           1.48743,
-          1335.8
+          1614.04
         ]
       ],
       "props": {}
     },
-    "airfield_spawnpoint": {
+    "airfield_spawnpoint_high": {
       "type": "Sphere",
       "tm": [
         [
@@ -2016,7 +2015,7 @@
       "objLayer": 0,
       "props": {}
     },
-    "spawn_area07": {
+    "spawn_area07_high": {
       "type": "Sphere",
       "tm": [
         [
@@ -2042,7 +2041,7 @@
       ],
       "props": {}
     },
-    "spawn_area07_heli": {
+    "spawn_area07_high_heli": {
       "type": "Sphere",
       "tm": [
         [
@@ -2171,6 +2170,84 @@
         ]
       ],
       "objLayer": 0,
+      "props": {}
+    },
+    "airfield_spawnpoint_low": {
+      "type": "Sphere",
+      "tm": [
+        [
+          185.299,
+          0.0,
+          136.756
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -136.756,
+          0.0,
+          185.299
+        ],
+        [
+          23635.7,
+          48.9133,
+          1663.86
+        ]
+      ],
+      "props": {}
+    },
+    "airfield00plane_low": {
+      "type": "Sphere",
+      "tm": [
+        [
+          229.849,
+          0.0,
+          14.3977
+        ],
+        [
+          0.0,
+          230.3,
+          0.0
+        ],
+        [
+          -14.3977,
+          0.0,
+          229.849
+        ],
+        [
+          23871.2,
+          48.9133,
+          1696.39
+        ]
+      ],
+      "props": {}
+    },
+    "spawn_area07_low": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -229.87,
+          0.613267,
+          -14.0461
+        ],
+        [
+          0.0,
+          230.081,
+          10.0455
+        ],
+        [
+          14.0595,
+          10.0268,
+          -229.651
+        ],
+        [
+          29373.5,
+          500.0,
+          2041.45
+        ]
+      ],
       "props": {}
     }
   },
