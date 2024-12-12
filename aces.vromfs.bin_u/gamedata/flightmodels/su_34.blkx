@@ -3023,6 +3023,10 @@
         "blk": "gameData/FlightModels/weaponPresets/su_34_bomb_fab_1500.blk"
       },
       {
+        "name": "su_34_bomb_fab_3000",
+        "blk": "gameData/FlightModels/weaponPresets/su_34_bomb_fab_3000.blk"
+      },
+      {
         "name": "su_34_bomb_zab_500",
         "blk": "gameData/FlightModels/weaponPresets/su_34_bomb_zab_500.blk"
       },
@@ -3053,6 +3057,10 @@
       {
         "name": "su_34_bomb_upab_1500b",
         "blk": "gameData/FlightModels/weaponPresets/su_34_bomb_upab_1500b.blk"
+      },
+      {
+        "name": "su_34_bomb_umpk_3000",
+        "blk": "gameData/FlightModels/weaponPresets/su_34_bomb_umpk_3000.blk"
       }
     ]
   },
@@ -3081,6 +3089,12 @@
         "pylon_1_aku_170_launcher_gear_10",
         "pylon_1_aku_170_launcher_gear_11",
         "pylon_1_aku_170_launcher_gear_12",
+        "pylon_1_aku_58",
+        "pylon_1_aku_58_fin1",
+        "pylon_1_aku_58_fin2",
+        "pylon_1_aku_58_fin3",
+        "pylon_1_aku_58_fin4",
+        "pylon_1_aku_58_fin5",
         "pylon_1_aku_470",
         "pylon_1_aku_470_fin1",
         "pylon_1_aku_470_fin2",
@@ -5420,7 +5434,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bombs_heavy_middle",
             "name": "fab_1500_slot4",
             "reqModification": "su_fab_1500_upab_1500",
             "ShowNodes": {
@@ -6396,6 +6410,50 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
+            "iconType": "guided_bomb_large_laser",
+            "name": "kab_500lg_slot7",
+            "reqModification": "su_kab_500lg",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_bd4_uskm_1_b",
+                "pylon_1_bd4_uskm_1_b_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_kab_500lg.blk",
+              "emitter": "pylon_1_kab_1500_l",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 7
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_jdam",
+            "name": "upab_500b_slot7",
+            "reqModification": "su_fab_500_upab_500b",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_bd4_uskm_1_b",
+                "pylon_1_bd4_uskm_1_b_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_upab_500b.blk",
+              "emitter": "pylon_1_kab_1500_l",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 7
+            }
+          },
+          {
             "iconType": "guided_bomb_black",
             "name": "kab_1500kr_slot7",
             "reqModification": "su_27_kab_1500",
@@ -6462,6 +6520,53 @@
             }
           },
           {
+            "iconType": "glide_bombs_heavy_middle",
+            "name": "umpk_3000_slot7",
+            "reqModification": "su_fab_3000_umpk_3000",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_bd4_uskm_1_b",
+                "pylon_1_bd4_uskm_1_b_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_umpk_3000.blk",
+              "emitter": "pylon_1_kab_1500_l",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 2
+            }
+          },
+          {
+            "iconType": "glide_bombs_middle",
+            "name": "grom2_slot7",
+            "reqModification": "su_grom",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_aku_58",
+                "pylon_1_aku_58_fin1",
+                "pylon_1_aku_58_fin2",
+                "pylon_1_aku_58_fin3",
+                "pylon_1_aku_58_fin4",
+                "pylon_1_aku_58_fin5"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/su_grom_2.blk",
+              "emitter": "pylon_1_aku_58_grom_e1_missile",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "order": 2
+            }
+          },
+          {
             "iconType": "bombs_small_group",
             "name": "ofab_100_x3_slot7",
             "ShowNodes": {
@@ -6509,7 +6614,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bombs_heavy_middle",
             "name": "fab_1500_slot7",
             "reqModification": "su_fab_1500_upab_1500",
             "ShowNodes": {
@@ -6522,6 +6627,28 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab_1500m_54.blk",
+              "emitter": "pylon_1_kab_1500_l",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 2
+            }
+          },
+          {
+            "iconType": "bombs_heavy",
+            "name": "fab_3000_slot7",
+            "reqModification": "su_fab_3000_umpk_3000",
+            "ShowNodes": {
+              "node": [
+                "pylon_1",
+                "pylon_1_bd4_uskm_1_b",
+                "pylon_1_bd4_uskm_1_b_holder"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab_3000m_54.blk",
               "emitter": "pylon_1_kab_1500_l",
               "bullets": 1,
               "external": true,
@@ -7812,7 +7939,7 @@
             }
           },
           {
-            "iconType": "bombs_heavy",
+            "iconType": "bombs_heavy_middle",
             "name": "fab_1500_slot9",
             "reqModification": "su_fab_1500_upab_1500",
             "ShowNodes": {
@@ -9640,6 +9767,11 @@
       "prevModification": "su_kab_1500l",
       "reqModification": "su_kab_500lg",
       "tier": 3
+    },
+    "su_fab_3000_umpk_3000": {
+      "modClass": "weapon",
+      "prevModification": "su_27_kab_1500",
+      "tier": 4
     },
     "su_x25l_29l": {
       "modClass": "weapon",

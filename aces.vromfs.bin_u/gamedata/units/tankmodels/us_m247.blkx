@@ -512,7 +512,8 @@
       },
       "power_system_dm": {
         "hp": 60.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "powersystem_internal"
       }
     },
     "cannon_breech": {
@@ -1585,6 +1586,63 @@
             }
           }
         ]
+      },
+      {
+        "name": "power_system_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.1
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true,
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": [
+              "electronic_equipment_dm",
+              "fire_control_system_dm"
+            ]
+          }
+        }
       }
     ]
   },
@@ -1803,12 +1861,18 @@
         "turretIndex": 0,
         "designationFromBody": true,
         "designationTurretIndex": 0,
-        "dmPart": "antenna_target_location_dm"
+        "dmPart": [
+          "antenna_target_location_dm",
+          "electronic_equipment_dm"
+        ]
       },
       {
         "blk": "gameData/sensors/us_m_247_track.blk",
         "turretIndex": 0,
-        "dmPart": "antenna_target_tagging_dm",
+        "dmPart": [
+          "antenna_target_tagging_dm",
+          "electronic_equipment_dm"
+        ],
         "powerButtonIdx": -1
       }
     ]
@@ -1838,6 +1902,10 @@
         "jammedReloadTime": 15.0,
         "barrelDP": "gun_barrel_01_dm",
         "breechDP": "cannon_breech_01_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "recoilOffset": 0.25,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -1864,8 +1932,15 @@
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
           "loaderDm": "loader_01_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm",
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm",
           "selfDirectedPart": {
             "node": "antenna_target_tagging_mount",
             "limits": [
@@ -1970,6 +2045,10 @@
         "jammedReloadTime": 15.0,
         "barrelDP": "gun_barrel_02_dm",
         "breechDP": "cannon_breech_02_dm",
+        "stabilizerDmPart": [
+          "fire_control_system_dm",
+          "power_system_dm"
+        ],
         "recoilOffset": 0.25,
         "recoilMultiplier": 0.7,
         "defaultYaw": 0.0,
@@ -2000,8 +2079,15 @@
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
           "loaderDm": "loader_02_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "fire_control_system_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "fire_control_system_dm"
+          ],
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -2934,6 +3020,7 @@
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
+        "rangefinderDmPart": "fire_control_system_dm",
         "distanceError": [
           1.0,
           1.0,
@@ -2982,12 +3069,18 @@
               "turretIndex": 0,
               "designationFromBody": true,
               "designationTurretIndex": 0,
-              "dmPart": "antenna_target_location_dm"
+              "dmPart": [
+                "antenna_target_location_dm",
+                "electronic_equipment_dm"
+              ]
             },
             {
               "blk": "gameData/sensors/us_m_247_track.blk",
               "turretIndex": 0,
-              "dmPart": "antenna_target_tagging_dm",
+              "dmPart": [
+                "antenna_target_tagging_dm",
+                "electronic_equipment_dm"
+              ],
               "powerButtonIdx": -1
             },
             {
@@ -3047,6 +3140,10 @@
               "jammedReloadTime": 15.0,
               "barrelDP": "gun_barrel_01_dm",
               "breechDP": "cannon_breech_01_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "recoilOffset": 0.25,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3073,8 +3170,15 @@
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
                 "loaderDm": "loader_01_dm",
-                "verDriveDm": "drive_turret_v_dm",
-                "horDriveDm": "drive_turret_h_dm",
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm",
                 "selfDirectedPart": {
                   "node": "antenna_target_tagging_mount",
                   "limits": [
@@ -3179,6 +3283,10 @@
               "jammedReloadTime": 15.0,
               "barrelDP": "gun_barrel_02_dm",
               "breechDP": "cannon_breech_02_dm",
+              "stabilizerDmPart": [
+                "fire_control_system_dm",
+                "power_system_dm"
+              ],
               "recoilOffset": 0.25,
               "recoilMultiplier": 0.7,
               "defaultYaw": 0.0,
@@ -3209,8 +3317,15 @@
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
                 "loaderDm": "loader_02_dm",
-                "verDriveDm": "drive_turret_v_dm",
-                "horDriveDm": "drive_turret_h_dm"
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "fire_control_system_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "fire_control_system_dm"
+                ],
+                "shootingDmPart": "fire_control_system_dm"
               },
               "limits": {
                 "yaw": [

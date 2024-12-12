@@ -322,8 +322,7 @@
       "turret_02_bottom_dm": {
         "armorClass": "aluminum_armor_AMS_4050A",
         "armorThickness": 20.0,
-        "createSecondaryShatters": false,
-        "hidableInViewer": true
+        "createSecondaryShatters": false
       },
       "turret_07_back_dm": {},
       "turret_05_side_dm": {},
@@ -1879,7 +1878,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/25mm_Oerlikon_KBA_Dardo_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/25mm_cn25_m811_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2047,9 +2046,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 24600.0,
+      "Empty": 24100.0,
       "Fuel": 1000.0,
-      "TakeOff": 25600.0,
+      "TakeOff": 25100.0,
       "momentOfInertia": [
         2.0,
         2.0,
@@ -2082,7 +2081,9 @@
       "horsePowers": 550.0,
       "maxRPM": 2400.0,
       "minRPM": 900.0,
-      "rpmTau": 1.9
+      "rpmTau": 1.9,
+      "manufacturer": "volvo",
+      "model": "d12"
     },
     "mechanics": {
       "maxBrakeForce": 130000.0,
@@ -2090,6 +2091,9 @@
       "mainGearRatio": 5.42,
       "sideGearRatio": 1.0,
       "tracked": false,
+      "manufacturer": "zf",
+      "model": "7hp_902",
+      "type": "auto",
       "gearRatios": {
         "ratio": [
           -2.75,
@@ -2134,12 +2138,12 @@
         "wheel_l_04": "bone_wheel_l_04"
       },
       "steeringDeflection": {
-        "wheel_l_01": 20.0,
-        "wheel_r_01": 20.0,
-        "wheel_l_02": 10.0,
-        "wheel_r_02": 10.0,
-        "wheel_l_04": -10.0,
-        "wheel_r_04": -10.0,
+        "wheel_l_01": 24.0,
+        "wheel_r_01": 24.0,
+        "wheel_l_02": 13.0,
+        "wheel_r_02": 13.0,
+        "wheel_l_04": -13.0,
+        "wheel_r_04": -13.0,
         "steeringTau": 1000000.0,
         "steeringSpd": 1.0,
         "steeringNeutralSpd": 3.0
@@ -2944,7 +2948,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/25mm_Oerlikon_KBA_Dardo_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/25mm_cn25_m811_user_cannon.blk",
               "emitter": "bone_gun_barrel",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,

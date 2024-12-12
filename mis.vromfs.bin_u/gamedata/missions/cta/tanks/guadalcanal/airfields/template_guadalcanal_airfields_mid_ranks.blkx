@@ -22,7 +22,35 @@
   "imports": {},
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "airfield_aaa_spawn_settings": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSpawnOnObjectGroup": [
+          {
+            "type": "air_def",
+            "object": "t1_airfield_aaa_squad",
+            "target": "t1_airfield"
+          },
+          {
+            "type": "air_def",
+            "object": "t2_airfield_aaa_squad",
+            "target": "t2_airfield"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
   },
   "mission_objectives": {
     "isCategory": true,
@@ -122,7 +150,7 @@
             -3001.03
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -136,6 +164,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -178,7 +208,7 @@
             -3182.32
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -192,6 +222,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -234,7 +266,7 @@
             -3467.42
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -248,6 +280,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -290,7 +324,7 @@
             -3657.89
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -304,6 +338,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -346,7 +382,7 @@
             -3766.71
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -360,6 +396,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -402,7 +440,7 @@
             -4273.01
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -416,6 +454,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -454,11 +494,11 @@
           ],
           [
             -9667.58,
-            45.0231,
+            99.171,
             -4303.94
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -472,6 +512,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -514,7 +556,7 @@
             -4499.8
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -528,6 +570,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -570,7 +614,7 @@
             -4694.22
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -584,6 +628,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -626,7 +672,7 @@
             -4804.98
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -640,6 +686,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 1,
           "count": 1,
@@ -682,7 +730,7 @@
             -7750.02
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -696,6 +744,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -738,7 +788,7 @@
             -7368.68
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -752,6 +802,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -794,7 +846,7 @@
             -7152.22
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -808,6 +860,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -850,7 +904,7 @@
             -6850.03
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -864,6 +918,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -906,7 +962,7 @@
             -7543.6
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -920,6 +976,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -962,7 +1020,7 @@
             -7612.76
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -976,6 +1034,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1018,7 +1078,7 @@
             -8396.2
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1032,6 +1092,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1074,7 +1136,7 @@
             -8133.04
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1088,6 +1150,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1130,7 +1194,7 @@
             -7913.22
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1144,6 +1208,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1186,7 +1252,7 @@
             -8272.46
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1200,6 +1266,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -1245,7 +1313,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_airfield_aaa_small_01",
             "t1_airfield_aaa_small_02",
@@ -1257,7 +1324,8 @@
             "t1_airfield_aaa_big_02",
             "t1_airfield_aaa_big_03",
             "t1_airfield_aaa_big_04"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -1285,7 +1353,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_airfield_aaa_small_01",
             "t2_airfield_aaa_small_02",
@@ -1297,7 +1364,8 @@
             "t2_airfield_aaa_big_02",
             "t2_airfield_aaa_big_03",
             "t2_airfield_aaa_big_04"
-          ]
+          ],
+          "object_marking": 0
         }
       }
     ]

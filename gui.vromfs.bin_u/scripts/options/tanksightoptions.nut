@@ -97,9 +97,9 @@ let textSizeMultOptions = {
 }
 
 let reticleLineWidthOpts = {
-  idx = 1,
+  idx = 0,
   options = [
-    {value = 0.5, text = "0.5"}
+    {value = 0.0, text = "#tankSight/reticle/defaultWidth"}
     {value = 1.0, text = "1.0"}
     {value = 1.5, text = "1.5"}
     {value = 2.0, text = "2.0"}

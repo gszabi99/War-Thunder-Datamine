@@ -5,8 +5,6 @@
   "haveCCIPForRocket": true,
   "gyroSight": true,
   "haveCCIPForGun": true,
-  "haveOpticTurret": true,
-  "isBwOpticSight": true,
   "jetEnginePowerFullScale": true,
   "gearSinkRangeLR": 0.157,
   "gearSinkRangeC": 0.308,
@@ -2059,13 +2057,11 @@
     "gun": "gun_default"
   },
   "cockpit": {
-    "targetingPodFov": [
-      12.0,
-      2.9
-    ],
-    "sightInFov": 50.5,
-    "sightOutFov": 40.5,
-    "sightFov": 7.0,
+    "zoomOutFov": 22.46,
+    "zoomInFov": 22.46,
+    "sightInFov": 5.66,
+    "sightOutFov": 37.46,
+    "sightFov": 5.5,
     "headPos": [
       3.55,
       0.78,
@@ -2316,9 +2312,14 @@
             1.0,
             1.0
           ],
+          "monoDisplayColor": [
+            0.37,
+            0.45,
+            0.4
+          ],
           "page": [
             {
-              "type": "thermal",
+              "type": "night_vision",
               "turretIdx": 0
             },
             {
@@ -2342,29 +2343,36 @@
     }
   },
   "gunnerOpticFps": {
-    "pos": [
-      0.3,
-      -0.2,
-      0.0
-    ],
-    "head": "optic1_turret",
-    "crosshairPreset": "test_crosshair",
-    "angularLimits": [
-      -0.1,
-      0.1,
-      -0.1,
-      0.1
-    ],
-    "opticType": "tv",
-    "turretNo": 0
+    "TV": {
+      "pos": [
+        0.3,
+        -0.2,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -0.1,
+        0.1,
+        -0.1,
+        0.1
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "index": 1
+    }
   },
   "nightVision": {
-    "sightThermal": {
+    "sightIr": {
       "resolution": [
         500,
         300
       ],
-      "noiseFactor": 0.05
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.05,
+      "turretNo": 0,
+      "nvIndex": 1
     }
   },
   "sensors": {
@@ -2471,7 +2479,6 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "name": "dummy_common",
-          "hasTargetingPod": true,
           "Weapon": {
             "dummy": true,
             "trigger": "gunner0",

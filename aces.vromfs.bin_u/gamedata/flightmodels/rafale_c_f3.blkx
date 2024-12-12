@@ -1850,7 +1850,7 @@
     ]
   },
   "ikPilot": {
-    "model": "usaf_pilot_1977_1991_char",
+    "model": "usaf_pilot_1985_2011_jhmcs_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -1966,7 +1966,7 @@
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": false,
     "ilsTextureSize": [
-      1280,
+      1024,
       1024
     ],
     "mfdTextureSize": [
@@ -2113,8 +2113,7 @@
             },
             {
               "type": "radar",
-              "scale": 0.6,
-              "customRadar": "su27tactic"
+              "customRadar": "rafaelRadar"
             }
           ]
         },
@@ -2142,8 +2141,7 @@
             },
             {
               "type": "radar",
-              "scale": 0.6,
-              "customRadar": "su27tactic"
+              "customRadar": "rafaelRadar"
             },
             {
               "type": "ils_duplicate"
@@ -2176,13 +2174,11 @@
             },
             {
               "type": "radar",
-              "scale": 0.6,
-              "hideRadarBackground": true
+              "customRadar": "rafaelRadar"
             },
             {
               "type": "radar",
-              "scale": 0.6,
-              "customRadar": "su27tactic"
+              "customRadar": "rafaelRadar"
             },
             {
               "type": "ils_duplicate"
@@ -2480,7 +2476,9 @@
         "pylon_adp_192",
         "damocles_pod",
         "optic1_gun",
-        "optic1_turret"
+        "optic1_turret",
+        "pylon_rafale_fuse_mica_001_lift",
+        "pylon_rafale_fuse_mica_002_lift"
       ]
     },
     "HideDmParts": {
@@ -2543,10 +2541,8 @@
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 16,
-                "external": [
-                  true,
-                  true
-                ],
+                "external": true,
+                "separate": true,
                 "bulletsCartridge": 1
               },
               {
@@ -2607,10 +2603,8 @@
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 16,
-                "external": [
-                  true,
-                  true
-                ],
+                "external": true,
+                "separate": true,
                 "bulletsCartridge": 1
               },
               {
@@ -2946,14 +2940,14 @@
             "external": true,
             "separate": true,
             "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
-            "emitter": "rocket_mica_006",
+            "emitter": "rocket_mica_004",
             "bullets": 1
           }
         }
       },
       {
         "index": 5,
-        "tier": 7,
+        "tier": 5,
         "order": 9,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
@@ -3010,10 +3004,7 @@
             "name": "ptb_2",
             "showInWeaponMenu": true,
             "ShowNodes": {
-              "node": [
-                "pylon_rafale_wing_001",
-                "pylon_rafale_wing_001_nose"
-              ]
+              "node": "pylon_rafale_central"
             },
             "ShowDmParts": {
               "node": "tank7_dm"

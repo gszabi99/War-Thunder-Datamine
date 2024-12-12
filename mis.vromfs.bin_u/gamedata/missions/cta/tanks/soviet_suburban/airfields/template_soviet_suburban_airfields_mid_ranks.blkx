@@ -18,7 +18,35 @@
   "imports": {},
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "airfield_aaa_spawn_settings": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSpawnOnObjectGroup": [
+          {
+            "type": "air_def",
+            "object": "t1_airfield_aaa_squad",
+            "target": "t1_airfield"
+          },
+          {
+            "type": "air_def",
+            "object": "t2_airfield_aaa_squad",
+            "target": "t2_airfield"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
   },
   "mission_objectives": {
     "isCategory": true,
@@ -118,7 +146,7 @@
             -10647.1
           ]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "ussr_37mm_61k_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -176,7 +204,7 @@
             -10203.5
           ]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "ussr_37mm_61k_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -234,7 +262,7 @@
             -10049.6
           ]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "ussr_37mm_61k_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -292,7 +320,7 @@
             -10656.4
           ]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "ussr_37mm_61k_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -350,7 +378,7 @@
             -9721.41
           ]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "ussr_37mm_61k_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -408,7 +436,7 @@
             -10078.2
           ]
         ],
-        "unit_class": "ussr_37mm_61k_airfield",
+        "unit_class": "ussr_37mm_61k_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -466,7 +494,7 @@
             -10194.6
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -524,7 +552,7 @@
             -10361.3
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -582,7 +610,7 @@
             -9844.01
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -640,7 +668,7 @@
             -10942.7
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -698,7 +726,7 @@
             12668.0
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -756,7 +784,7 @@
             11803.8
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -814,7 +842,7 @@
             12466.1
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -872,7 +900,7 @@
             13439.8
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -930,7 +958,7 @@
             12294.1
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -988,7 +1016,7 @@
             12563.2
           ]
         ],
-        "unit_class": "germ_37mm_flak43_airfield",
+        "unit_class": "germ_37mm_flak43_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1046,7 +1074,7 @@
             12067.1
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1104,7 +1132,7 @@
             13281.1
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1162,7 +1190,7 @@
             11733.3
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,
@@ -1220,7 +1248,7 @@
             13614.3
           ]
         ],
-        "unit_class": "germ_88mm_flak36",
+        "unit_class": "germ_88mm_flak36_noground",
         "objLayer": 1,
         "closed_waypoints": false,
         "isShipSpline": false,

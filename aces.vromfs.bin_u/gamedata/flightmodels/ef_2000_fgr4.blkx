@@ -55,11 +55,11 @@
   "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_jac.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
-  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
-  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map_jac.blk",
+  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map_jac.blk",
   "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
   "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
   "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
@@ -1807,7 +1807,7 @@
     ]
   },
   "ikPilot": {
-    "model": "usaf_pilot_1977_1991_char",
+    "model": "usaf_pilot_1985_2011_jhmcs_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2788,7 +2788,9 @@
         "tsc_adapter_006",
         "litening_2_pod",
         "optic2_turret",
-        "optic2_gun"
+        "optic2_gun",
+        "pylon9",
+        "pylon9_holder"
       ]
     },
     "HideDmParts": {
@@ -2877,10 +2879,8 @@
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 32,
-                "external": [
-                  true,
-                  true
-                ],
+                "external": true,
+                "separate": true,
                 "bulletsCartridge": 1
               },
               {
@@ -2969,10 +2969,8 @@
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
                 "bullets": 32,
-                "external": [
-                  true,
-                  true
-                ],
+                "external": true,
+                "separate": true,
                 "bulletsCartridge": 1
               },
               {
@@ -3655,8 +3653,8 @@
           "removeGunnerOpticFps": 0,
           "ShowNodes": {
             "node": [
-              "pylon_13",
-              "pylon_13_holder",
+              "pylon9",
+              "pylon9_holder",
               "litening_2_pod",
               "optic2_turret",
               "optic2_gun"
@@ -5424,7 +5422,7 @@
     "emtr_break_wing1_l_from": [
       -1.08074,
       -0.335718,
-      2.42035
+      2.12035
     ],
     "emtr_break_wing1_l_to": [
       -1.08074,
@@ -5434,7 +5432,7 @@
     "emtr_break_wing2_l_from": [
       -1.08074,
       -0.335718,
-      3.72502
+      3.92502
     ],
     "emtr_break_wing2_l_to": [
       -1.08074,
@@ -5454,7 +5452,7 @@
     "emtr_break_wing1_r_from": [
       -1.08074,
       -0.335718,
-      -2.42035
+      -2.12035
     ],
     "emtr_break_wing1_r_to": [
       -1.08074,
@@ -5464,7 +5462,7 @@
     "emtr_break_wing2_r_from": [
       -1.08074,
       -0.335718,
-      -3.72502
+      -3.92502
     ],
     "emtr_break_wing2_r_to": [
       -1.08074,
@@ -5472,13 +5470,13 @@
       -4.43495
     ],
     "emtr_break_wing_tail": [
-      -5.75456,
+      -5.36272,
       0.0,
       0.0
     ],
     "finCut": true,
     "emtr_break_tail_from": [
-      -5.75456,
+      -5.36272,
       0.0577993,
       0.00000175359
     ],

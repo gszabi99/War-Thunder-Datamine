@@ -8,6 +8,7 @@ require math
 require DagorMath
 require FlightModelWrap
 require DagorSystem
+require Mission
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
 
@@ -27,7 +28,7 @@ def foreach_screen_targets(blk : block<(target : RadarScreenTarget const const#)
     for t in targets
       invoke(blk, t)
 
-def draw_radar_mark(var ctx : GuiContext&; data : CanvasParams&; is_ils : bool)
+def draw_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; is_ils : bool)
   let hero = get_controlled_hero()
   if hero == null || hero.isDelayed
     return
@@ -40,9 +41,16 @@ def draw_radar_mark(var ctx : GuiContext&; data : CanvasParams&; is_ils : bool)
     var screenPos = float2(0.)
     let visible = is_ils ? screen_to_ils_pos(target.pos, screenPos) : world_to_hmd_screen(target.worldPos, screenPos)
     if visible
-      let lt = screenPos - float2(markSize)
-      let rb = screenPos + float2(markSize)
+      let limited = (screenPos.x < rdata.pos.x + markSize * 1.5 || screenPos.y < rdata.pos.y + markSize * 1.5 ||
+       screenPos.x > rdata.pos.x + rdata.size.x - markSize * 1.5 || screenPos.y > rdata.pos.y + rdata.size.y - markSize * 1.5)
       if target.isTracked
+        if limited
+          if fract(float(get_total_time()) * 2.) < 0.5
+            return
+        screenPos.x = clamp(screenPos.x, rdata.pos.x + markSize * 1.5, rdata.pos.x + rdata.size.x - markSize * 1.5)
+        screenPos.y = clamp(screenPos.y, rdata.pos.y + markSize * 1.5, rdata.pos.y + rdata.size.y - markSize * 1.5)
+        let lt = screenPos - float2(markSize)
+        let rb = screenPos + float2(markSize)
         ctx |> render_frame(lt.x, lt.y, rb.x, rb.y, data.lineWidth)
         let l1 <- to_array_move([[float2[]
           screenPos + float2(-markSize * 1.2, -markSize * 1.2);
@@ -65,6 +73,11 @@ def draw_radar_mark(var ctx : GuiContext&; data : CanvasParams&; is_ils : bool)
         ctx |> render_line_aa(l3, true, data.lineWidth, float2(0.), data.color)
         ctx |> render_line_aa(l4, true, data.lineWidth, float2(0.), data.color)
       elif target.isEnemy
+        if limited && fract(float(get_total_time()) * 2.) < 0.5
+          return
+        if target.isDetected
+          screenPos.x = clamp(screenPos.x, rdata.pos.x + markSize * 1.5, rdata.pos.x + rdata.size.x - markSize * 1.5)
+          screenPos.y = clamp(screenPos.y, rdata.pos.y + markSize * 1.5, rdata.pos.y + rdata.size.y - markSize * 1.5)
         let diamond <- to_array_move([[float2[]
           screenPos + float2(markSize, 0.);
           screenPos + float2(0., markSize);
@@ -104,8 +117,8 @@ def draw_radar_mark(var ctx : GuiContext&; data : CanvasParams&; is_ils : bool)
 
 [export]
 def draw_hmd_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
-  draw_radar_mark(ctx, data, false)
+  draw_radar_mark(ctx, rdata, data, false)
 
 [export]
 def draw_ils_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
-  draw_radar_mark(ctx, data, true)
+  draw_radar_mark(ctx, rdata, data, true)

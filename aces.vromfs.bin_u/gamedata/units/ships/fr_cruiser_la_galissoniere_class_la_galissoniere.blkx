@@ -1301,8 +1301,11 @@
         "fireParamsPreset": "ship_bridge",
         "hp": 1050.0
       },
-      "radio_station_dm": {
-        "hp": 830.0
+      "radio_station_01_dm": {
+        "hp": 687.0
+      },
+      "radio_station_02_dm": {
+        "hp": 687.0
       },
       "fire_control_room_01_dm": {
         "napalmDamageMult": 0.0,
@@ -1507,6 +1510,9 @@
         "hp": 7000.0
       },
       "fuel_tank_05_dm": {
+        "hp": 4158.0
+      },
+      "fuel_tank_06_dm": {
         "hp": 3000.0
       }
     },
@@ -1555,6 +1561,10 @@
       },
       "armor_cit_09_dm": {
         "armorThickness": 18.0,
+        "hp": 10000.0
+      },
+      "armor_cit_10_dm": {
+        "armorThickness": 25.0,
         "hp": 10000.0
       }
     },
@@ -1727,15 +1737,15 @@
         "hp": 10000.0
       },
       "turret_01_back_dm": {
-        "armorThickness": 45.0,
+        "armorThickness": 40.0,
         "hp": 10000.0
       },
       "turret_02_back_dm": {
-        "armorThickness": 45.0,
+        "armorThickness": 40.0,
         "hp": 10000.0
       },
       "turret_03_back_dm": {
-        "armorThickness": 45.0,
+        "armorThickness": 40.0,
         "hp": 10000.0
       },
       "turret_01_bottom_dm": {
@@ -1967,10 +1977,10 @@
       "fireProtectionHp": 10.0,
       "armorThrough": 250.0,
       "ammunition_storage_shells_01_dm": {
-        "hp": 1900.0
+        "hp": 2500.0
       },
       "ammunition_storage_shells_02_dm": {
-        "hp": 1900.0
+        "hp": 2500.0
       },
       "ammunition_storage_shells_03_dm": {
         "hp": 1900.0
@@ -1982,10 +1992,10 @@
       "fireProtectionHp": 10.0,
       "armorThrough": 250.0,
       "ammunition_storage_charges_01_dm": {
-        "hp": 4700.0
+        "hp": 3600.0
       },
       "ammunition_storage_charges_02_dm": {
-        "hp": 4700.0
+        "hp": 3600.0
       },
       "ammunition_storage_charges_03_dm": {
         "hp": 3701.0
@@ -2131,7 +2141,7 @@
     "sailor3": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 54
+      "crew": 52
     },
     "sailor4": {
       "dmPart": "compartment_03_dm",
@@ -2184,9 +2194,9 @@
       "crew": 5
     },
     "sailor14": {
-      "dmPart": "radio_station_dm",
+      "dmPart": "radio_station_01_dm",
       "role": "sailor",
-      "crew": 8
+      "crew": 7
     },
     "sailor15": {
       "dmPart": "ammunition_storage_aux_01_dm",
@@ -2216,22 +2226,22 @@
     "sailor20": {
       "dmPart": "engine_room_01_dm",
       "role": "sailor",
-      "crew": 46
+      "crew": 45
     },
     "sailor21": {
       "dmPart": "engine_room_02_dm",
       "role": "sailor",
-      "crew": 46
+      "crew": 45
     },
     "sailor22": {
       "dmPart": "transmission_01_dm",
       "role": "sailor",
-      "crew": 46
+      "crew": 45
     },
     "sailor23": {
       "dmPart": "transmission_02_dm",
       "role": "sailor",
-      "crew": 46
+      "crew": 45
     },
     "sailor24": {
       "dmPart": "tt_01_dm",
@@ -2262,6 +2272,11 @@
       "dmPart": "fire_director_03_dm",
       "role": "sailor",
       "crew": 5
+    },
+    "sailor30": {
+      "dmPart": "radio_station_02_dm",
+      "role": "sailor",
+      "crew": 7
     }
   },
   "DamageEffects": {
@@ -2778,15 +2793,15 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 8800000.0,
+      "Empty": 9300000.0,
       "momentOfInertia": [
-        60.0,
-        1440.0,
+        62.0,
+        1450.0,
         900.0
       ],
       "CenterOfGravity": [
         -4.1,
-        -1.3,
+        -0.1,
         0.0
       ]
     },
@@ -2797,15 +2812,15 @@
         "row": [
           [
             4.5,
-            7.7
+            7.8
           ],
           [
             9.0,
-            16.0
+            15.6
           ],
           [
             18.22,
-            28.5
+            27.5
           ]
         ]
       },
@@ -2817,11 +2832,11 @@
           ],
           [
             4.0,
-            10.5
+            10.0
           ],
           [
             8.0,
-            17.5
+            16.0
           ]
         ]
       },
@@ -2898,7 +2913,7 @@
       -112.0
     ],
     "headPosOnShooting": [
-      40.0,
+      50.0,
       28.0,
       0.0
     ],
@@ -5994,7 +6009,7 @@
       {
         "trigger": "gunner12",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/navalModels_weapons/13_2mm_76_model1929_naval_user_machinegun.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_hotchkiss_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_28",
         "flash": "emtr_gun_flame_28",
         "useEmitter": true,
@@ -6003,9 +6018,9 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": true,
-        "speedYaw": 75.0,
-        "speedPitch": 65.0,
-        "bullets": 1800,
+        "speedYaw": 15.0,
+        "speedPitch": 10.0,
+        "bullets": 1500,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
@@ -6106,7 +6121,7 @@
       {
         "trigger": "gunner13",
         "triggerGroup": "machinegun",
-        "blk": "gameData/Weapons/navalModels_weapons/13_2mm_76_model1929_naval_user_machinegun.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_hotchkiss_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_29",
         "flash": "emtr_gun_flame_29",
         "useEmitter": true,
@@ -6115,9 +6130,9 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "isBulletBelt": true,
-        "speedYaw": 75.0,
-        "speedPitch": 65.0,
-        "bullets": 1800,
+        "speedYaw": 15.0,
+        "speedPitch": 10.0,
+        "bullets": 1500,
         "useGunnerTargetingQuality": false,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
@@ -6235,46 +6250,14 @@
         },
         "limits": {
           "yaw": [
-            -180.0,
-            180.0
+            -145.0,
+            145.0
           ],
           "pitch": [
             0.0,
             0.0
           ]
-        },
-        "limitsDeadzone": [
-          {
-            "yaw": [
-              -55.0,
-              55.0
-            ],
-            "pitch": [
-              0.0,
-              0.0
-            ]
-          },
-          {
-            "yaw": [
-              145.0,
-              180.0
-            ],
-            "pitch": [
-              0.0,
-              0.0
-            ]
-          },
-          {
-            "yaw": [
-              -180.0,
-              -145.0
-            ],
-            "pitch": [
-              0.0,
-              0.0
-            ]
-          }
-        ]
+        }
       }
     ]
   },
@@ -8077,7 +8060,7 @@
       "shells": {
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_02_dm": {
-          "count": 20000
+          "count": 19400
         }
       }
     },

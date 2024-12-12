@@ -5,17 +5,17 @@ let { Speed, BarAltitude, Tangage, Altitude, Mach, Roll, CompassValue,
 let { sin, cos, round, abs, floor, PI } = require("math")
 let { cvt } = require("dagor.math")
 let { degToRad } = require("%sqstd/math_ex.nut")
-let { mpsToKnots, baseLineWidth, metrToFeet, metrToNavMile, radToDeg } = require("ilsConstants.nut")
+let { mpsToKnots, baseLineWidth, metrToFeet, metrToNavMile, radToDeg, weaponTriggerName } = require("ilsConstants.nut")
 let { IlsColor, IlsLineScale, RadarTargetDist, BombCCIPMode, RocketMode, CannonMode, TargetPosValid,
  TargetPos, IlsPosSize, AirCannonMode, AimLockPos, AimLockValid, BombingMode,
- RadarTargetDistRate, TvvMark, RadarTargetAngle } = require("%rGui/planeState/planeToolsState.nut")
+ RadarTargetDistRate, TvvMark, RadarTargetAngle, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
 let { IsAamLaunchZoneVisible, AamLaunchZoneDistMaxVal, DistanceMax,
   AamLaunchZoneDistMax, AamLaunchZoneDist, AamTimeOfFlightMax, AamLaunchZoneDistMinVal } = require("%rGui/radarState.nut")
 let { format } = require("string")
 let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { GunBullets0, WeaponSlotsCnt, WeaponSlotsName, WeaponSlots, SelectedWeapSlot, BulletImpactLineEnable,
- BulletImpactPoints, AdlPoint } = require("%rGui/planeState/planeWeaponState.nut")
+ BulletImpactPoints, AdlPoint, WeaponSlotsTrigger } = require("%rGui/planeState/planeWeaponState.nut")
 let dasRadarMarks = load_das("%rGui/planeIlses/ilsTyphoonUtil.das")
 
 let hasRadarTarget = Computed(@() RadarTargetDist.get() > 0.0)
@@ -349,23 +349,28 @@ function compassWrap(width, height, generateFunc) {
   }
 }
 
+let gunMode = Computed(@() CannonMode.get() || AirCannonMode.get())
 function getWeaponsElem(weaponSlotsV, fontSize) {
   let weapons = []
   let added = {}
   local selected = ""
   foreach (i, weaponName in WeaponSlotsName.get()) {
-    if (weaponName == null)
+    if (weaponName == null || WeaponSlotsTrigger.get()[i] > weaponTriggerName.GUIDED_BOMBS_TRIGGER)
       continue
+    let locName = loc_checked($"{weaponName}/typhoon/short")
     if (SelectedWeapSlot.get() == weaponSlotsV[i])
-      selected = weaponName
-    if (weaponName not in added)
-      added[weaponName] <- WeaponSlotsCnt.get()?[i] ?? 0
+      selected = locName
+    if (locName not in added)
+      added[locName] <- {
+        count = WeaponSlotsCnt.get()?[i] ?? 0
+        name = weaponName
+      }
     else
-      added[weaponName] += WeaponSlotsCnt.get()?[i] ?? 0
+      added[locName].count += WeaponSlotsCnt.get()?[i] ?? 0
   }
   foreach (k, v in added) {
-    let isSelected = selected == k
-    let text = format("%s %d", loc_checked(isSelected ? $"{k}/typhoon" : $"{k}/typhoon/short"), v)
+    let isSelected = selected == k && !gunMode.get()
+    let text = format("%s %d", isSelected ? loc_checked($"{v.name}/typhoon") : k, v.count)
     weapons.append(
       @() {
         watch = IlsColor
@@ -401,7 +406,22 @@ function getWeaponsElem(weaponSlotsV, fontSize) {
       color = IlsColor.get()
       fontSize
       font = Fonts.hud
-      text = format("G %d", GunBullets0.get())
+      text = format(gunMode.get() ? "GUN %d" : "G %d", GunBullets0.get())
+      children = gunMode.get() ? @(){
+        watch = IlsColor
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = flex()
+        color = IlsColor.get()
+        lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+        commands = [
+          [VECTOR_LINE, 0, 0, 100, 0],
+          [VECTOR_LINE, 0, 100, 100, 100],
+          [VECTOR_LINE, 0, 0, 0, 30],
+          [VECTOR_LINE, 0, 100, 0, 70],
+          [VECTOR_LINE, 100, 0, 100, 30],
+          [VECTOR_LINE, 100, 100, 100, 70]
+        ]
+      } : null
     }
   )
   return weapons
@@ -409,7 +429,7 @@ function getWeaponsElem(weaponSlotsV, fontSize) {
 
 function weapons(font_size) {
   return @(){
-    watch = [WeaponSlots, WeaponSlotsName, SelectedWeapSlot]
+    watch = [WeaponSlots, WeaponSlotsName, SelectedWeapSlot, gunMode]
     size = flex()
     flow = FLOW_VERTICAL
     pos = [pw(83), ph(80)]
@@ -578,27 +598,6 @@ function flightTime(fontSize) {
   }
 }
 
-let aimPos = @(){
-  watch = AimLockValid
-  size = flex()
-  children = AimLockValid.get() ? {
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = [pw(3), ph(3)]
-    color = IlsColor.get()
-    fillColor = 0
-    lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-    commands = [
-      [VECTOR_POLY, 0, -100, 100, 100, -100, 100]
-    ]
-    behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = AimLockPos
-      }
-    }
-  } : null
-}
-
 function getBulletImpactLineCommand() {
   let commands = []
   for (local i = 0; i < BulletImpactPoints.get().len() - 2; ++i) {
@@ -700,8 +699,56 @@ function overload(height) {
   }
 }
 
+function aimPos(width, height) {
+  return @() {
+    watch = AimLockValid
+    size = [ph(3), ph(3)]
+    children = AimLockValid.get() ? [
+      @(){
+        watch = IlsColor
+        size = flex()
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = IlsColor.get()
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+        commands = [
+          [VECTOR_POLY, 0, -100, 100, 100, -100, 100],
+          [VECTOR_LINE, 0, -50, 60, 70],
+          [VECTOR_LINE, 20, 70, 60, 70],
+          [VECTOR_LINE, 0, -50, -60, 70],
+          [VECTOR_LINE, -20, 70, -60, 70],
+          [VECTOR_LINE, 100, 50, 170, 20],
+          [VECTOR_LINE, 150, -10, 170, 20],
+          [VECTOR_LINE, -100, 50, -170, 20],
+          [VECTOR_LINE, -150, -10, -170, 20],
+          [VECTOR_LINE, 120, 100, 190, 120],
+          [VECTOR_LINE, 185, 150, 190, 120],
+          [VECTOR_LINE, -120, 100, -190, 120],
+          [VECTOR_LINE, -185, 150, -190, 120],
+        ]
+      }
+    ] : null
+    animations = [
+      { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "aim_lock_limit" }
+    ]
+    behavior = Behaviors.RtPropUpdate
+    update = function() {
+      if (AimLockPos[0] < 0 || AimLockPos[0] > width || AimLockPos[1] < 0 || AimLockPos[1] > height)
+        anim_start("aim_lock_limit")
+      else
+        anim_request_stop("aim_lock_limit")
+      let target = [clamp(AimLockPos[0], height * 0.03, width - height * 0.03), clamp(AimLockPos[1], height * 0.03, height * 0.95)]
+      return {
+        transform = {
+          translate = target
+        }
+      }
+    }
+  }
+}
 
-let isCCIPMode = Computed(@() CannonMode.get() || BombCCIPMode.get() || BombingMode.get() || RocketMode.get())
+
+let isCCIPMode = Computed(@() CannonMode.get() || BombCCIPMode.get() || RocketMode.get())
 function ccipImpactLine(height) {
   return @(){
     watch = [isCCIPMode, TargetPosValid]
@@ -785,6 +832,47 @@ let aamReticle = @(){
   ] : null
 }
 
+let ttg = Computed(@() TimeBeforeBombRelease.get() >= 0.0 ? TimeBeforeBombRelease.get().tointeger() : 0)
+let ccrp = @(){
+  watch = BombingMode
+  size = flex()
+  children = BombingMode.get() ? [{
+    rendObj = ROBJ_SOLID
+    size = [baseLineWidth * IlsLineScale.get() * 0.5, flex()]
+    color = IlsColor.get()
+    behavior = Behaviors.RtPropUpdate
+    update = @() {
+      transform = {
+        translate = [AimLockPos[0], 0]
+        rotate = -Roll.get()
+        pivot = [0.5, AimLockPos[1] / IlsPosSize[3]]
+      }
+    }
+    children = {
+      rendObj = ROBJ_SOLID
+      color = IlsColor.get()
+      size = [50, baseLineWidth * IlsLineScale.get() * 0.5]
+      behavior = Behaviors.RtPropUpdate
+      update = @() {
+        transform = {
+          translate = [-25, cvt(TimeBeforeBombRelease.get(), 0.0, 20.0, IlsPosSize[3] * 0.5, IlsPosSize[3] * 0.7)]
+        }
+      }
+    }
+  }
+  @(){
+    watch = ttg
+    rendObj = ROBJ_TEXT
+    size = SIZE_TO_CONTENT
+    pos = [pw(5), ph(80)]
+    color = IlsColor.get()
+    font = Fonts.hud
+    fontSize = 30
+    text = format("%d:%02d", ttg.get() / 60, ttg.get() % 60)
+  }
+  ] : null
+}
+
 function IlsTyphoon(width, height) {
   return {
     size = [width, height]
@@ -802,11 +890,12 @@ function IlsTyphoon(width, height) {
       canShoot(40, IlsColor.get())
       radarMarks
       flightTime(40)
-      aimPos
       gunImpactLine
       overload(height)
       ccipImpactLine(height)
       aamReticle
+      aimPos(width, height)
+      ccrp
     ]
   }
 }

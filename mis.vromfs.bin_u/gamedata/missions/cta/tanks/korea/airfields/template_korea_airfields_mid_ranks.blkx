@@ -125,7 +125,35 @@
   "imports": {},
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "airfield_aaa_spawn_settings": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "unitSpawnOnObjectGroup": [
+          {
+            "type": "air_def",
+            "object": "t1_airfield_aaa_squad",
+            "target": "t1_airfield"
+          },
+          {
+            "type": "air_def",
+            "object": "t2_airfield_aaa_squad",
+            "target": "t2_airfield"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
   },
   "mission_objectives": {
     "isCategory": true,
@@ -1451,7 +1479,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t1_airfield_aaa_small_01",
             "t1_airfield_aaa_small_02",
@@ -1463,7 +1490,8 @@
             "t1_airfield_aaa_big_02",
             "t1_airfield_aaa_big_03",
             "t1_airfield_aaa_big_04"
-          ]
+          ],
+          "object_marking": 0
         }
       },
       {
@@ -1491,7 +1519,6 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
           "squad_members": [
             "t2_airfield_aaa_small_01",
             "t2_airfield_aaa_small_02",
@@ -1503,7 +1530,8 @@
             "t2_airfield_aaa_big_02",
             "t2_airfield_aaa_big_03",
             "t2_airfield_aaa_big_04"
-          ]
+          ],
+          "object_marking": 0
         }
       }
     ]
