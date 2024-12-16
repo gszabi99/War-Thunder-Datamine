@@ -46,7 +46,6 @@
       "css-hier-invalidate": "yes",
       "frame_header": {
         "smallSize": "yes",
-        "top": "10@sf/@pf",
         "Breadcrumb": {
           "normalFont": "yes",
           "Button_text": {
@@ -73,11 +72,6 @@
           "position": "relative",
           "width": "pw",
           "css-hier-invalidate": "yes",
-          "frameSeparator": {
-            "position": "absolute",
-            "top": "ph-h",
-            "left": "(pw-w)/2"
-          },
           "HorizontalListBox": {
             "id": "profile_sheet_list",
             "height": "1@frameHeaderHeight",
@@ -168,6 +162,11 @@
             "id": "chatPopupNest",
             "position": "absolute",
             "pos": "pw-w, ph"
+          },
+          "frameSeparator": {
+            "position": "absolute",
+            "top": "ph-h",
+            "left": "(pw-w)/2"
           }
         },
         {
@@ -179,7 +178,7 @@
             "flow": "vertical",
             "position": "relative",
             "pos": "(pw-w)/2, 0",
-            "padding": "1@profileHeaderPadding",
+            "padding": "1@profileHeaderPadding, 1@profileHeaderTopPadding, 1@profileHeaderPadding, 1@profileHeaderBottomPadding",
             "css-hier-invalidate": "yes",
             "frameSeparator": {
               "position": "root",
@@ -394,15 +393,14 @@
           },
           "profilePage": {
             "id": "pages_container",
-            "size": "pw, fh + 3@sf/@pf",
+            "size": "pw, fh",
             "flow": "vertical",
             "input-transparent": "yes",
-            "padding-top": "6@sf/@pf",
             "css-hier-invalidate": "yes",
             "tdiv": [
               {
                 "position": "root",
-                "size": "sw, 410@sf/@pf",
+                "size": "sw, 392@sf/@pf",
                 "max-width": "1@maxProfileFrameWidth",
                 "pos": "(sw-w)/2, sh - h",
                 "background-image": "!ui/images/profile/smoke_bg",
@@ -417,7 +415,7 @@
                   {
                     "behavior": "button",
                     "position": "root",
-                    "pos": "(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf",
+                    "pos": "(sw-w)/2, 1@maxAccountHeaderHeight + 1@frameSeparatorHeight",
                     "size": "@accountHeaderWidth, (sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf",
                     "background-image": "!ui/images/profile/widget_bg",
                     "background-color": "#FFFFFF",
@@ -430,14 +428,14 @@
                     "padding-bottom": "21@sf/@pf",
                     "width": "@accountHeaderWidth",
                     "css-hier-invalidate": "yes",
-                    "min-height": "190@sf/@pf",
+                    "min-height": "172@sf/@pf",
                     "tdiv": [
                       {
                         "id": "showcase_edit",
                         "width": "pw",
                         "position": "absolute",
                         "flow": "vertical",
-                        "padding-top": "70@sf/@pf",
+                        "padding-top": "46@sf/@pf",
                         "css-hier-invalidate": "yes",
                         "display": "hide",
                         "showInEditMode": "yes"
@@ -447,7 +445,7 @@
                         "position": "relative",
                         "width": "pw",
                         "flow": "vertical",
-                        "padding-top": "60@sf/@pf",
+                        "padding-top": "46@sf/@pf",
                         "css-hier-invalidate": "yes",
                         "showInEditMode": "no"
                       }

@@ -2744,6 +2744,8 @@
       "transitions": {
         "scan": {
           "event": "update",
+          "stateFrom": "track",
+          "stateTo": "search",
           "actions": {
             "scan": {},
             "extrapolateTargetsOfInterest": {},
@@ -2793,9 +2795,10 @@
         },
         "addTarget": {
           "event": "targetDetected",
+          "stateFrom": "search",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 4,
+              "limit": 10,
               "radius": 1000.0,
               "dopplerSpeedGateMaxTime": 8.0
             },
@@ -2845,6 +2848,35 @@
               "type": 0,
               "sensorIndex": 1
             }
+          }
+        },
+        "scanTrack": {
+          "stateFrom": "search",
+          "event": "update",
+          "stateTo": "track",
+          "actions": {
+            "scan": {
+              "periodMult": 0.01
+            },
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 4.0
+            },
+            "setCueToActiveTargetOfInterest": {}
+          }
+        },
+        "addTargetTrack": {
+          "stateFrom": "track",
+          "event": "targetDetected",
+          "actions": {
+            "updateTargetOfInterest": {
+              "limit": 10,
+              "onlyExisting": true,
+              "radius": 1000.0,
+              "dopplerSpeedGateMaxTime": 8.0
+            },
+            "updateActiveDetectedTarget": {},
+            "setCueToActiveTargetOfInterest": {}
           }
         }
       }

@@ -247,16 +247,16 @@ function getOptionInfoView(id) {
 }
 
 function onSystemOptionControlHover(obj) {
-  if (!obj?.isValid() || !mHandler)
+  if (!obj?.isValid() || !mHandler || obj?.idx == null)
     return
   let controlObjId = obj.getParent()?.getParent().id
   if (controlObjId == null)
     return
   let optId = getOptionIdByObjId(controlObjId)
-  let desc = getOptionDesc(optId)
-  if (desc == null) //!!!FIX ME This check is unnecessary. It was added because the bug of calling the hover function for objects that do not have it.
-    return          //!!!We need to investigate more fully what causes this to happen and make a bug fix in the right place.
+  if (optId not in mSettings) //!!!FIX ME This check is unnecessary. It was added because the bug of calling the hover function for objects that do not have it.
+    return                //!!!We need to investigate more fully what causes this to happen and make a bug fix in the right place.
 
+  let desc = getOptionDesc(optId)
   let needHoverOnOptionRow = optId != mHandler.lastHoveredRowId?.split("_tr")[0]
   if (needHoverOnOptionRow)
     mHandler.onOptionContainerHover(mHandler.scene.findObject($"{optId}_tr"))

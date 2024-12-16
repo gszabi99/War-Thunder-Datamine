@@ -1,3 +1,5 @@
+@const frameProfileTopOffset: 6@sf/@pf;
+
 frame {
   re-type:9rect;
   padding:@framePadding;
@@ -58,7 +60,7 @@ frame.wnd[padByLine=yes] {
   padding:1@frameHeaderPad, 1@frameHeaderHeight +1@dp, 1@frameHeaderPad, 1@frameHeaderPad;
 }
 frame[profilePage=yes] {
-  padding:1@framePadding, 78@sf/@pf, 1@framePadding, 8@sf/@pf + 1@frameFooterHeight;
+  padding:1@framePadding, 1@frameProfileTopOffset, 1@framePadding, 8@sf/@pf + 1@frameFooterHeight;
 }
 
 

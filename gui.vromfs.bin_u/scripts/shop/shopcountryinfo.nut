@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
+let { registerRespondent } = require("scriptRespondent")
 
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 
@@ -43,6 +44,10 @@ function get_units_list(filterFunc) {
       res.append(unit)
   return res
 }
+
+registerRespondent("get_units_count_at_rank", get_units_count_at_rank)
+
+::get_units_count_at_rank <- get_units_count_at_rank
 
 return {
   isCountryHaveUnitType
