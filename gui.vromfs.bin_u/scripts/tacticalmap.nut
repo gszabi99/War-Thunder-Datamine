@@ -16,6 +16,9 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { locCurrentMissionName, setMissionEnviroment } = require("%scripts/missions/missionsUtils.nut")
 let { isInFlight } = require("gameplayBinding")
 let { registerRespondent } = require("scriptRespondent")
+let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType,
+  setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet  } = require("guiTacticalMap")
+let { hasSightStabilization } = require("vehicleModel")
 
 function gui_start_tactical_map(params = {}) {
   let { forceTacticalControl = false } = params
@@ -60,6 +63,11 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
       )
 
       this.initWnd()
+    }
+
+    function isCurUnitAircraft() {
+      let unit = getAircraftByName(get_player_unit_name())
+      return (unit?.isAir() || unit?.isHelicopter?())
     }
 
     function initWnd() {
@@ -108,6 +116,15 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
       showObjById("btn_select", this.isActiveTactical, this.scene)
       showObjById("btn_back", true, this.scene)
       showObjById("screen_button_back", useTouchscreen, this.scene)
+      let isAircraft = this.isCurUnitAircraft()
+      showObjById("btn_set_hud_type", !isAircraft, this.scene)
+      showObjById("btn_set_point_of_interest", isAircraft && hasSightStabilization(), this.scene)
+
+      let buttonImg = this.scene.findObject("hud_type_img");
+      buttonImg["background-image"] = isAircraft ? "#ui/gameuiskin#objective_tank.svg" : "#ui/gameuiskin#objective_fighter.svg"
+
+      setAllowMoveCenter(false)
+      this.resetPointOfInterestMode()
     }
 
     function reinitScreen(params = {}) {
@@ -139,6 +156,11 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
           eventbus_send("gui_start_respawn")
           ::update_gamercards()
         })
+      }
+
+      if (isPointOfInterestSet()) {
+        let tacticalMapObj = this.scene.findObject("tactical-map")
+        tacticalMapObj.cursor = isAllowedMoveCenter() ? "moveArrowCursor" : "normal"
       }
     }
 
@@ -186,6 +208,15 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
           this.unitsActive[i] = isActive;
         }
       }
+    }
+
+    function resetPointOfInterestMode() {
+      setPointSettingMode(false)
+      showObjById("POI_resetter", false, this.scene)
+      let tacticalMapObj = this.scene.findObject("tactical-map")
+      tacticalMapObj.cursor = "normal"
+      let buttonImg = this.scene.findObject("hud_poi_img");
+      buttonImg["background-image"] =  isPointOfInterestSet() ? "#ui/gameuiskin#map_interestpoint_delete.svg" : "#ui/gameuiskin#map_interestpoint.svg"
     }
 
     function initData() {
@@ -392,7 +423,46 @@ eventbus_subscribe("gui_start_tactical_map_tc", gui_start_tactical_map_tc)
 
       this.onStart(obj)
     }
+
+    function onMoveMapActivate() {
+      setAllowMoveCenter(!isAllowedMoveCenter())
+      let tacticalMapObj = this.scene.findObject("tactical-map")
+      tacticalMapObj.cursor =  isAllowedMoveCenter() ? "moveArrowCursor" : "normal"
+   }
+
+   function onForcedSetHudType(obj) {
+    local curHudType = getCurHudType()
+    if (curHudType == HUD_TYPE_UNKNOWN) {
+      curHudType = this.isCurUnitAircraft() ? HUD_TYPE_AIRPLANE : HUD_TYPE_TANK
+    }
+
+    let isSwitchToTankHud = curHudType == HUD_TYPE_AIRPLANE
+    setForcedHudType(isSwitchToTankHud ? HUD_TYPE_TANK : HUD_TYPE_AIRPLANE)
+    obj.findObject("hud_type_img")["background-image"] = isSwitchToTankHud  ? "#ui/gameuiskin#objective_fighter.svg" : "#ui/gameuiskin#objective_tank.svg"
   }
+
+  function onSetPointOfInterest(obj) {
+    setAllowMoveCenter(false)
+    let buttonImg = obj.findObject("hud_poi_img");
+    if (isPointOfInterestSet()) {
+      resetPointOfInterest()
+      buttonImg["background-image"] = "#ui/gameuiskin#map_interestpoint.svg"
+      setPointSettingMode(false)
+      showObjById("POI_resetter", false, this.scene)
+      return
+    }
+    let isPointSettingModeOn = !isPointSettingMode()
+    setPointSettingMode(isPointSettingModeOn)
+    buttonImg["background-image"] = isPointSettingModeOn ? "#ui/gameuiskin#map_interestpoint_delete.svg" : "#ui/gameuiskin#map_interestpoint.svg"
+    let tacticalMapObj = this.scene.findObject("tactical-map")
+    tacticalMapObj.cursor =  isPointSettingModeOn ? "pointOfInterest" : "normal"
+    showObjById("POI_resetter", isPointSettingModeOn, this.scene)
+  }
+
+  function onRespawnScreenClick() {
+    this.resetPointOfInterestMode()
+  }
+}
 
   registerRespondent("is_tactical_map_active", function is_tactical_map_active() {
     if (!("TacticalMap" in gui_handlers))
