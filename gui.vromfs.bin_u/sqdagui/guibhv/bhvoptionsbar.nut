@@ -27,18 +27,28 @@ let OptionsBar = class {
       obj.getScene().setProtectedMouseCapture(null)
   }
 
+  function getChildObj(obj, value) {
+    if (value >= 0 && value < obj.childrenCount())
+      return obj.getChild(value)
+    return null
+  }
+
   function setValue(obj, value, setCursor = false) {
     let curValue = obj.getValue()
     let options = this.getOptionsBarsContainer(obj)
+    let newValueObj = this.getChildObj(options, value)
+    if (newValueObj == null)
+      return
 
-    if (curValue != null && curValue != -1 && curValue < this.getOptionsCount(obj)) {
-      let prevSelectedBar = options.getChild(curValue).getChild()
+    let curValueObj = this.getChildObj(options, curValue ?? -1)
+    if (curValueObj != null) {
+      let prevSelectedBar = curValueObj.getChild()
       if (prevSelectedBar)
         prevSelectedBar.selected = "no"
     }
 
-    if (value != -1) {
-      let curSelectedBar = options.getChild(value).getChild()
+    if (newValueObj != null) {
+      let curSelectedBar = newValueObj.getChild()
       if (curSelectedBar) {
         curSelectedBar.selected = "yes"
         if (setCursor)

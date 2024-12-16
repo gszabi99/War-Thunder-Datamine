@@ -1280,7 +1280,7 @@ mSettings = {
         let guiVal = getGuiValue("ssaa")
         let hasGuiValue = guiVal != null
         hasSsaa = hasGuiValue
-          ? guiVal
+          ? guiVal != "none"
           : ssaaDesc.getValueFromConfig(blk, ssaaDesc) != 1.0
       }
       desc.values <- hasSsaa

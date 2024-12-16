@@ -159,7 +159,8 @@ let a10Speed = @() {
 }
 
 function climbSpeed(height){
-  return {
+  return @(){
+    watch = IlsColor
     size = [pw(4), ph(30)]
     pos = [pw(85), ph(40)]
     rendObj = ROBJ_VECTOR_CANVAS
@@ -219,7 +220,8 @@ let generateCompassMarkSU145 = function(num, _elemWidth, font) {
         color = IlsColor.value
         lineWidth = baseLineWidth * IlsLineScale.value
         hplace = ALIGN_CENTER
-      } : {
+      } : @(){
+        watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         size = [baseLineWidth * IlsLineScale.value, baseLineWidth * 4]
         color = IlsColor.value
@@ -254,9 +256,12 @@ let gunAimMark = @() {
         [VECTOR_LINE, 0, -120, 0, -100],
         [VECTOR_LINE, 0, 120, 0, 100]
       ]
+      transform = {
+        translate = [TargetPos.get()[0], TargetPos.get()[1]]
+      }
       children = [
         @() {
-          watch = ccipDistM
+          watch = [ccipDistM, IlsColor]
           rendObj = ROBJ_TEXT
           color = IlsColor.value
           pos = [pw(-50), ph(120)]
@@ -266,7 +271,7 @@ let gunAimMark = @() {
           text = ccipDistM.value < 0 ? "" : string.format("%.1f", ccipDistM.value * 0.1)
         }
         @(){
-          watch = ccipDistF
+          watch = [ccipDistF, IlsColor]
           size = flex()
           rendObj = ROBJ_VECTOR_CANVAS
           color = IlsColor.value
@@ -343,7 +348,8 @@ function KaiserVDO(width, height) {
       a10Speed
       climbSpeed(height)
       compassWrap(width, height, 0.18, generateCompassMarkSU145, 0.8, 5.0, false, 12)
-      {
+      @(){
+        watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         size = [pw(1), pw(1)]
         pos = [pw(50), ph(26)]
