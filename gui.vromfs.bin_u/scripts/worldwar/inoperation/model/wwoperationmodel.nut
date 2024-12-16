@@ -4,6 +4,7 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 let airfieldTypes = require("%scripts/worldWar/inOperation/model/airfieldTypes.nut")
 let { Point2 } = require("dagor.math")
 let { WwOperationArmies } = require("wwOperationArmies.nut")
+let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
 
 let WwOperationModel = class {
   armies = null
@@ -13,19 +14,19 @@ let WwOperationModel = class {
 
   constructor() {
     this.armies = WwOperationArmies()
-    this.maxUniqueUnitsOnFlyout = ::g_world_war.getWWConfigurableValue("maxUniqueUnitsOnFlyout", 0)
+    this.maxUniqueUnitsOnFlyout = getWWConfigurableValue("maxUniqueUnitsOnFlyout", 0)
   }
 
   function update() {
     this.armies.statusUpdate()
     this.unitClassFlyoutRange = null
-    this.maxUniqueUnitsOnFlyout = ::g_world_war.getWWConfigurableValue("maxUniqueUnitsOnFlyout", 0)
+    this.maxUniqueUnitsOnFlyout = getWWConfigurableValue("maxUniqueUnitsOnFlyout", 0)
   }
 
   function getGroupAirArmiesLimit(airfieldTypeName) {
     foreach (fName, fType in airfieldTypes)
       if (airfieldTypeName == fName)
-        return ::g_world_war.getWWConfigurableValue(fType.configurableValue, 0)
+        return getWWConfigurableValue(fType.configurableValue, 0)
     return 0
   }
 
@@ -34,18 +35,18 @@ let WwOperationModel = class {
       this.unitClassFlyoutRange = {
         [WW_UNIT_CLASS.COMBINED] = {
           [WW_UNIT_CLASS.FIGHTER] = Point2(
-            ::g_world_war.getWWConfigurableValue("airfieldCreateCombinedArmyFightersMin", 0),
-            ::g_world_war.getWWConfigurableValue("airfieldCreateCombinedArmyFightersMax", 0)
+            getWWConfigurableValue("airfieldCreateCombinedArmyFightersMin", 0),
+            getWWConfigurableValue("airfieldCreateCombinedArmyFightersMax", 0)
           ),
           [WW_UNIT_CLASS.BOMBER] = Point2(
-            ::g_world_war.getWWConfigurableValue("airfieldCreateCombinedArmyAttackersMin", 0),
-            ::g_world_war.getWWConfigurableValue("airfieldCreateCombinedArmyAttackersMax", 0)
+            getWWConfigurableValue("airfieldCreateCombinedArmyAttackersMin", 0),
+            getWWConfigurableValue("airfieldCreateCombinedArmyAttackersMax", 0)
           )
         },
         [WW_UNIT_CLASS.FIGHTER] = {
           [WW_UNIT_CLASS.FIGHTER] = Point2(
-            ::g_world_war.getWWConfigurableValue("airfieldCreateFightersArmyMin", 0),
-            ::g_world_war.getWWConfigurableValue("airfieldCreateFightersArmyMax", 0)
+            getWWConfigurableValue("airfieldCreateFightersArmyMin", 0),
+            getWWConfigurableValue("airfieldCreateFightersArmyMax", 0)
           )
         },
         [WW_UNIT_CLASS.BOMBER] = {
@@ -53,8 +54,8 @@ let WwOperationModel = class {
         },
         [WW_UNIT_CLASS.HELICOPTER] = {
           [WW_UNIT_CLASS.HELICOPTER] = Point2(
-            ::g_world_war.getWWConfigurableValue("helipadCreateArmyUnitCountMin", 0),
-            ::g_world_war.getWWConfigurableValue("helipadCreateArmyUnitCountMax", 0)
+            getWWConfigurableValue("helipadCreateArmyUnitCountMin", 0),
+            getWWConfigurableValue("helipadCreateArmyUnitCountMax", 0)
           )
         }
       }

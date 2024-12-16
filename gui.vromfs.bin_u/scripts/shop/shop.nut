@@ -18,7 +18,7 @@ let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
-let { buy, research, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitActions.nut")
+let { buy, research, canSpendGoldOnUnitWithPopup, buyUnit } = require("%scripts/unit/unitActions.nut")
 let { topMenuHandler, topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -50,6 +50,7 @@ let { getEsUnitType, getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
 let { canResearchUnit, isUnitGroup, isGroupPart, isUnitBroken, isUnitResearched
 } = require("%scripts/unit/unitStatus.nut")
 let { isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
+let { checkForResearch } = require("%scripts/unit/unitChecks.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
@@ -61,6 +62,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/c
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { buildTimeStr, getUtcMidnight } = require("%scripts/time.nut")
 let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
+let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { setNationBonusMarkState, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
@@ -1180,7 +1182,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function isUnlockedFakeUnit(unit) {
-    return ::get_units_count_at_rank(unit?.rank,
+    return get_units_count_at_rank(unit?.rank,
       unitTypes.getByName(unit?.isReqForFakeUnit ? split_by_chars(unit.name, "_")?[0] : unit.name,
         false).esUnitType,
       unit.country, true)
@@ -1943,7 +1945,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onResearch(_obj) {
     let unit = this.getCurAircraft()
-    if (!unit || isUnitGroup(unit) || unit?.isFakeUnit || !::checkForResearch(unit))
+    if (!unit || isUnitGroup(unit) || unit?.isFakeUnit || !checkForResearch(unit))
       return
 
     research(unit)
@@ -1976,7 +1978,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.selectCellByUnitName(unit)
 
     if (this.shopResearchMode && this.availableFlushExp <= 0) {
-      ::buyUnit(unit)
+      buyUnit(unit)
       this.onCloseShop()
     }
   }

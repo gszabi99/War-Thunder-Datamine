@@ -17,9 +17,11 @@ let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
 let { selectArmyByName, dargMapVisible } = require("%scripts/worldWar/wwMapDataBridge.nut")
 let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 let { RenderCategory } = require("worldwarConst")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { getRearZonesOwnedToSide } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 function ww_is_append_path_mode_active() {
-  if (!::g_world_war.haveManagementAccessForSelectedArmies())
+  if (!g_world_war.haveManagementAccessForSelectedArmies())
     return false
 
   return is_keyboard_btn_down(DKEY_LSHIFT) || is_keyboard_btn_down(DKEY_RSHIFT)
@@ -151,7 +153,7 @@ let worldWarMapControls = class {
           null, null, null, "send_air_army_error")
     }
     else if (currentSelectedObject == mapObjectSelect.ARMY)
-      ::g_world_war.moveSelectedArmes(clickPos.x, clickPos.y, armyTargetName, append)
+      g_world_war.moveSelectedArmes(clickPos.x, clickPos.y, armyTargetName, append)
   }
 
   function onExtMouse(obj, mx, my, btn_id, is_up, _bits) {
@@ -350,7 +352,7 @@ let worldWarMapControls = class {
     obj.setUserData(params)
     let selectedArmiesInfo = []
     foreach (armyName in selectedArmies) {
-      let army = ::g_world_war.getArmyByName(armyName)
+      let army = g_world_war.getArmyByName(armyName)
       if (army != null) {
         let info = { name = armyName, hasAccess = army.hasManageAccess() }
         selectedArmiesInfo.append(info)
@@ -406,8 +408,8 @@ let worldWarMapControls = class {
 
   function checkRearZone(_obj, mapPos) {
     let zoneName = wwGetZoneName(wwGetZoneIdx(mapPos.x, mapPos.y))
-    foreach (side in ::g_world_war.getCommonSidesOrder())
-      if (isInArray(zoneName, ::g_world_war.getRearZonesOwnedToSide(side))) {
+    foreach (side in g_world_war.getCommonSidesOrder())
+      if (isInArray(zoneName, getRearZonesOwnedToSide(side))) {
         this.sendMapEvent("RearZoneSelected", { side = ww_side_val_to_name(side) })
         return true
       }
@@ -467,7 +469,7 @@ let worldWarMapControls = class {
       let diff = battle.pos - mapPos
       return diff.lengthSq() <= battleIconRadSquare && !battle.isFinished()
     }
-    let battles = ::g_world_war.getBattles(filterFunc)
+    let battles = g_world_war.getBattles(filterFunc)
     let haveAnyBattles = battles.len() > 0
 
     if (!haveAnyBattles)

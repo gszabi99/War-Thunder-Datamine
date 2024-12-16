@@ -53,6 +53,7 @@ let { openModalWTAssistantlDeeplink, isExternalOperator, hasExternalAssistantDee
 let { isWorldWarEnabled, canPlayWorldwar, getCantPlayWorldwarReasonText
 } = require("%scripts/globalWorldWarScripts.nut")
 let { openLeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
+let { checkPlayWorldwarAccess, openOperationsOrQueues } = require("%scripts/globalWorldwarUtils.nut")
 
 let list = {
   SKIRMISH = {
@@ -88,11 +89,11 @@ let list = {
   WORLDWAR = {
     text = @() getTextWithCrossplayIcon(needShowCrossPlayInfo(), loc("mainmenu/btnWorldwar"))
     onClickFunc = function(_obj, handler) {
-      if (!::g_world_war.checkPlayWorldwarAccess())
+      if (!checkPlayWorldwarAccess())
         return
 
       ::queues.checkAndStart(
-        Callback(@() this.goForwardIfOnline(@() ::g_world_war.openOperationsOrQueues(), false), handler),
+        Callback(@() this.goForwardIfOnline(@() openOperationsOrQueues(), false), handler),
         null,
         "isCanNewflight"
       )

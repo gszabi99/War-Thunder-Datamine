@@ -23,8 +23,44 @@ root {
       <</needCloseBtn>>
     }
 
-    popupFilter {
-      margin-bottom:t="1@buttonMargin"
+    tdiv {
+      position:t='relative'
+      width:t='pw'
+      popupFilter {
+        margin-bottom:t="1@buttonMargin"
+      }
+      <<#hasSearchBox>>
+      tdiv {
+        position:t='absolute'
+        flow:t='horizontal'
+        left:t='p.p.w - w - 15@sf/@pf'
+
+        EditBox {
+          id:t = 'search_edit_box'
+          width:t='400@sf/@pf'
+          noMargin:t='yes'
+          edit-hint:t='#contacts/search_placeholder'
+          max-len:t='60'
+          text:t=''
+          on_change_value:t='onSearchEditBoxChangeValue'
+          on_cancel_edit:t='onSearchEditBoxCancelEdit'
+        }
+
+        Button_text {
+          id:t='search_btn_close'
+          position:t='relative'
+          class:t='image'
+          showConsoleImage:t='no'
+          noMargin:t='yes'
+          tooltip:t='#options/clearIt'
+          hotkeyLoc:t='key/Esc'
+          on_click:t='onSearchCancelClick'
+          img {
+            background-image:t='#ui/gameuiskin#btn_close.svg'
+          }
+        }
+      }
+      <</hasSearchBox>>
     }
 
     frameBlock {
@@ -40,10 +76,15 @@ root {
       alwaysShowBorder:t='yes'
       navigatorShortcuts:t='SpaceA'
       showButtonsForSelectedChild:t='yes'
-      on_select:t='onUnitSelect'
+      <<^isOnlyClick>>
+        on_select:t='onUnitSelect'
+        on_r_click:t='onUnitRightClick'
+        on_activate:t='onUnitAction'
+      <</isOnlyClick>>
       on_click:t='onUnitClick'
-      on_r_click:t='onUnitRightClick'
-      on_activate:t='onUnitAction'
+      <<#isOnlyClick>>
+      on_dbl_click:t='onUnitClick'
+      <</isOnlyClick>>
 
       on_pushed:t='::gcb.delayedTooltipListPush'
       on_hold_start:t='::gcb.delayedTooltipListHoldStart'
@@ -51,8 +92,6 @@ root {
 
       <<@unitsList>>
     }
-
-
 
     <<#navBar>>
     navBar {

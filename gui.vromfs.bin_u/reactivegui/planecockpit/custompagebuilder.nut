@@ -5,6 +5,7 @@ let ah64Flt = require("ah64FltPage.nut")
 let ah64Wpn = require("ah64WpnPage.nut")
 let {f15cWpn, f15jWpn} = require("f15cWpnPage.nut")
 let su27Pod = require("mfdSu27Pod.nut")
+let ef2000Wpn = require("ef2000WpnPage.nut")
 
 function yellow(pos, size) {
   return {
@@ -41,7 +42,8 @@ let pageByName = {
   ah64Wpn,
   f15cWpn,
   su27Pod,
-  f15jWpn
+  f15jWpn,
+  ef2000Wpn
 }
 
 function mfdCustomPages() {

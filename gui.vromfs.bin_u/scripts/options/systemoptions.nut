@@ -68,7 +68,6 @@ let compModeGraphicsOptions = {
   qualityPresetsOptions = {
     texQuality        = { compMode = true }
     anisotropy        = { compMode = true }
-    dirtSubDiv        = { compMode = true }
     tireTracksQuality = { compMode = true }
     lastClipSize      = { compMode = true }
     compatibilityMode = { compMode = true }
@@ -128,7 +127,6 @@ local mUiStruct = [
       "giQuality"
       "physicsQuality"
       "displacementQuality"
-      "dirtSubDiv"
     ]
   }
   {
@@ -255,11 +253,14 @@ function onSystemOptionControlHover(obj) {
   if (controlObjId == null)
     return
   let optId = getOptionIdByObjId(controlObjId)
+  let desc = getOptionDesc(optId)
+  if (desc == null) //!!!FIX ME This check is unnecessary. It was added because the bug of calling the hover function for objects that do not have it.
+    return          //!!!We need to investigate more fully what causes this to happen and make a bug fix in the right place.
+
   let needHoverOnOptionRow = optId != mHandler.lastHoveredRowId?.split("_tr")[0]
   if (needHoverOnOptionRow)
     mHandler.onOptionContainerHover(mHandler.scene.findObject($"{optId}_tr"))
 
-  let desc = getOptionDesc(optId)
   let hoveredValue = desc.values[obj.idx.tointeger()]
   let imgSrc = tryGetOptionImageSrc(optId, hoveredValue)
   let imgObj = mHandler.scene.findObject("option_info_image")
@@ -483,8 +484,7 @@ function localize(optionId, valueId) {
       optionId == "fxResolutionQuality" ||
       optionId == "tireTracksQuality" ||
       optionId == "waterQuality" ||
-      optionId == "giQuality" ||
-      optionId == "dirtSubDiv"
+      optionId == "giQuality"
     ) {
     if (valueId == "none")
       return loc("options/none")
@@ -1381,18 +1381,6 @@ mSettings = {
   giQuality = { widgetType = "options_bar" def = "low" blk = "graphics/giQuality" restart = false
     values = [ "low", "medium", "high" ], isVisible = @() true
     infoImgPattern = "#ui/images/settings/GI/%s"
-  }
-  dirtSubDiv = { widgetType = "options_bar" def = "high" blk = "graphics/dirtSubDiv" restart = false
-    values = [ "high", "ultrahigh" ]
-    getValueFromConfig = function(blk, desc) {
-      return getBlkValueByPath(blk, desc.blk, 1)
-    }
-    setGuiValueToConfig = function(blk, desc, val) {
-      let res = (val == "ultrahigh") ? 2 : 1
-      setBlkValueByPath(blk, desc.blk, res)
-    }
-    configValueToGuiValue = @(val)(val == 2) ? "ultrahigh" : "high"
-    infoImgPattern = "#ui/images/settings/terrainDeformation/%s"
   }
   ssaoQuality = { widgetType = "slider" def = 0 min = 0 max = 2 blk = "render/ssaoQuality" restart = false
     onChanged = "ssaoQualityClick"

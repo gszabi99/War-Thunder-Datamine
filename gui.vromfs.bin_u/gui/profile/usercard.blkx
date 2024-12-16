@@ -17,7 +17,7 @@
           "height": "@maxAccountHeaderHeight",
           "pos": "(pw-w)/2, 0",
           "background-color": "#FFFFFFFF",
-          "background-image": "!ui/images/profile/account_profile_header_bg",
+          "background-image": "!ui/images/profile_headers/profile_header_default",
           "background-repeat": "aspect-ratio"
         }
       },
@@ -163,7 +163,7 @@
                             "padding-right": "1@blockInterval",
                             "hideEmptyText": "yes",
                             "text": "",
-                            "color": "@showcaseGreyText"
+                            "color": "#FFFFFFFF"
                           },
                           {
                             "position": "relative",
@@ -173,18 +173,18 @@
                             "top": "ph-h",
                             "talign": "left",
                             "font": "@fontBigBold",
-                            "style": "color:@mainPlayerColor"
+                            "color": "#FFFFFFFF"
                           }
                         ]
                       },
                       {
                         "position": "relative",
                         "css-hier-invalidate": "yes",
+                        "padding-top": "4@sf/@pf",
                         "Button_text": {
                           "id": "profile_currentUser_btn_title",
                           "position": "relative",
                           "left": "-1@buttonTextPadding",
-                          "top": "4@sf/@pf",
                           "hideEmptyText": "yes",
                           "isProfileTitleBtn": "yes",
                           "css-hier-invalidate": "yes",
@@ -194,21 +194,26 @@
                           "textareaNoTab": {
                             "id": "profile-currentUser-title",
                             "pos": "0, 0.5ph-0.5h",
-                            "position": "relative",
-                            "unseenIcon": {
-                              "id": "unseen_titles",
-                              "pos": "pw + 1@blockInterval, 50%ph-50%h",
-                              "position": "absolute",
-                              "unseenText": {}
-                            }
+                            "position": "relative"
                           },
                           "focus_border": {},
                           "ButtonImg": {}
                         },
-                        "profileEditBtn": {
-                          "pos": "pw,(ph - h + 4@sf/@pf)/2",
-                          "btnName": "",
-                          "_on_click": "openChooseTitleWnd"
+                        "tdiv": {
+                          "position": "relative",
+                          "flow": "horizontal",
+                          "top": "(ph - h)/2 - 2@sf/@pf",
+                          "css-hier-invalidate": "yes",
+                          "profileEditBtn": {
+                            "pos": "pw, (ph - h)/2",
+                            "btnName": "",
+                            "_on_click": "openChooseTitleWnd"
+                          },
+                          "unseenIcon": {
+                            "id": "unseen_titles",
+                            "position": "relative",
+                            "unseenText": {}
+                          }
                         }
                       }
                     ],

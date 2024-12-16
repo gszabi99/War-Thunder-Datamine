@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
+let guiMission = require("guiMission")
 
 let objectiveStatus = {
   types = []
@@ -16,23 +17,23 @@ let objectiveStatus = {
 
 enums.addTypes(objectiveStatus, {
   DELAYED = {
-    code = MISSION_OBJECTIVE_STATUS_DELAYED
+    code = guiMission?.MISSION_OBJECTIVE_STATUS_DELAYED ?? 0
     name = "delayed"
   }
   RUNNING = {
-    code = MISSION_OBJECTIVE_STATUS_IN_PROGRESS
+    code = guiMission?.MISSION_OBJECTIVE_STATUS_IN_PROGRESS ?? 1
     name = "running"
     missionObjImg = "#ui/gameuiskin#icon_primary.svg"
     wwMissionObjImg = "#ui/gameuiskin#icon_primary.svg"
   }
   SUCCEED = {
-    code = MISSION_OBJECTIVE_STATUS_COMPLETED
+    code = guiMission?.MISSION_OBJECTIVE_STATUS_COMPLETED ?? 2
     name = "succeed"
     missionObjImg = "#ui/gameuiskin#icon_primary_success.svg"
     wwMissionObjImg = "#ui/gameuiskin#favorite"
   }
   FAILED = {
-    code = MISSION_OBJECTIVE_STATUS_FAILED
+    code = guiMission?.MISSION_OBJECTIVE_STATUS_FAILED ?? 3
     name = "failed"
     missionObjImg = "#ui/gameuiskin#icon_primary_fail.svg"
     wwMissionObjImg = "#ui/gameuiskin#icon_primary_fail.svg"

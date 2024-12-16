@@ -15,8 +15,6 @@ let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarVie
 let { showAirExpWpBonus } = require("%scripts/bonusModule.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
 
-let MAX_SLOT_COUNT_X = 4
-
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
                                                     // then menu vehilce opened and close
 
@@ -25,8 +23,6 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   unitsFilter          = null
   units                = null
   filteredUnits        = null
-  countries            = null
-  unitsTypes           = null
   lastSelectedUnit     = null
   needSkipFocus        = false
   sceneTplName         = "%gui/unit/vehiclesModal.tpl"
@@ -35,13 +31,16 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
 
   actionsListOpenTime  = 0
   maxSlotCountY = 6
+  maxSlotCountX = 4
+
+  filtersData = null
 
   function getSceneTplView() {
     this.collectUnitData()
     return {
-      slotCountX = MAX_SLOT_COUNT_X
-      slotCountY = min(ceil(this.units.len().tofloat() / MAX_SLOT_COUNT_X), this.maxSlotCountY)
-      hasScrollBar = MAX_SLOT_COUNT_X * this.maxSlotCountY < this.units.len()
+      slotCountX = this.maxSlotCountX
+      slotCountY = min(ceil(this.units.len().tofloat() / this.maxSlotCountX), this.maxSlotCountY)
+      hasScrollBar = this.maxSlotCountX * this.maxSlotCountY < this.units.len()
       unitsList = this.getUnitsListData()
 
       wndTitle = this.getWndTitle()
@@ -70,53 +69,86 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   updateButtons = @() null
 
   function collectUnitData() {
+    if (this.filtersData == null)
+      this.filtersData = {}
+
     this.units = []
-    this.countries = {}
-    this.unitsTypes = {}
+    let countries = {}
+    let unitsTypes = {}
+    let ranks = {}
 
     foreach (unit in getAllUnits())
       if (!this.unitsFilter || this.unitsFilter(unit)) {
-        let country = unit.shopCountry
-        let unitTypeStr = unit.unitType.esUnitType.tostring()
         this.units.append(unit)
-        if (!(country in this.countries))
-          this.countries[country] <- {
+        let country = unit.shopCountry
+        let rank = unit.rank
+        let unitTypeId = $"unittype_{unit.unitType.esUnitType}"
+
+        if (!countries?[country])
+          countries[country] <- {
             id = country
+            objId = country
             idx = shopCountriesList.findindex(@(id) id == country) ?? -1
-            value = false
+            image = getCountryIcon(country)
+            text = loc(country)
+            value = this.filtersData?["country"][country].value ?? false,
           }
-        if (!(unitTypeStr in this.unitsTypes))
-          this.unitsTypes[unitTypeStr] <- { unitType = unit.unitType, value = false }
+
+        if (!unitsTypes?[unitTypeId]) {
+          let image = unit.unitType.testFlightIcon
+          let text = unit.unitType.getArmyLocName()
+          unitsTypes[unitTypeId] <- {
+            unitType = unit.unitType,
+            image, text,
+            value = this.filtersData?["unittype"][unitTypeId].value ?? false,
+            id = unit.unitType.esUnitType
+            objId = unitTypeId
+            idx = unit.unitType.esUnitType
+          }
+        }
+
+        let rankId = $"rank_{rank}"
+        if (!ranks?[rankId])
+          ranks[rankId] <- {
+            id = rank
+            objId = rankId
+            idx   = rank
+            value   = this.filtersData?["rank"][rankId].value ?? false
+            text  = $"{loc("shop/age")} {get_roman_numeral(rank)}"
+          }
       }
+    this.filtersData["unittype"] <- unitsTypes
+    this.filtersData["country"] <- countries
+    this.filtersData["rank"] <- ranks
   }
 
   function onChangeFilterItem(objId, typeName, value) {
-    let isTypeUnit = typeName == "unit"
-    let referenceArr = isTypeUnit ? this.unitsTypes : this.countries
+    let referenceArr = this.filtersData[typeName]
     if (objId == RESET_ID)
       foreach (inst in referenceArr)
         inst.value = false
     else
-      referenceArr[isTypeUnit ? objId.split("_")[1] : objId].value = value
+      referenceArr[objId].value = value
     this.fillUnitsList()
   }
 
   function getFiltersView() {
     let res = []
-    foreach (tName in ["country", "unit"]) {
-      let isUnitType = tName == "unit"
-      let responceArr = isUnitType ? this.unitsTypes : this.countries
+    foreach (tName in ["country", "unittype", "rank"]) {
+      let isUnitType = tName == "unittype"
+      let responceArr = this.filtersData[tName]
+
       let view = { checkbox = [] }
       foreach (inst in responceArr) {
         if (isUnitType && !inst.unitType.isAvailable())
           continue
 
         view.checkbox.append({
-          id = isUnitType ? $"unit_{inst.unitType.esUnitType}" : inst.id
-          idx = isUnitType ? inst.unitType.esUnitType : inst.idx
-          image = isUnitType ? inst.unitType.testFlightIcon : getCountryIcon(inst.id)
-          text = isUnitType ? inst.unitType.getArmyLocName() : loc(inst.id)
-          value = false
+          id = inst.objId
+          idx = inst.idx
+          image = inst?.image
+          text = inst.text
+          value = inst.value
         })
       }
 
@@ -130,19 +162,33 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
     return res
   }
 
-  function getUnitsListData() {
+  function filterUnit(unit, params) {
+    if (((params["country"].len() > 0) && params["country"]?[unit.shopCountry] == null)
+      || ((params["unittype"].len() > 0) && params["unittype"]?[unit.unitType.esUnitType] == null)
+      || ((params["rank"].len() > 0) && params["rank"]?[unit.rank] == null))
+      return false
+    return true
+  }
+
+  function filterUnits(units) {
     this.filteredUnits = []
-    let isEmptyCountryFilter  = this.countries.findindex(@(t) t.value) == null
-    let isEmptyUnitFilter = this.unitsTypes.findindex(@(t) t.value) == null
-    foreach (unit in this.units) {
-      let country = unit.shopCountry
-      // Show all items if filters list is empty
-      if ((!isEmptyCountryFilter && !this.countries[country].value)
-        || (!isEmptyUnitFilter && !this.unitsTypes[unit.unitType.esUnitType.tostring()].value))
-        continue
-      this.filteredUnits.append(unit)
+    let params = {}
+    foreach (tName in ["country", "unittype", "rank"]) {
+      let oldFilter = this.filtersData[tName]
+      let arr = {}
+      foreach (v in oldFilter)
+        if (v.value)
+          arr[v.id] <- true
+      params[tName] <- arr
     }
 
+    foreach (unit in units)
+      if (this.filterUnit(unit, params))
+        this.filteredUnits.append(unit)
+  }
+
+  function getUnitsListData() {
+    this.filterUnits(this.units)
     let data = []
     foreach (unit in this.filteredUnits)
       data.append(format("unitItemContainer{id:t='cont_%s' %s}", unit.name,

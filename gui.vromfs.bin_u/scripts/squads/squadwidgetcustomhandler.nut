@@ -21,6 +21,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { wwGetOperationId } = require("worldwar")
 let { showSquadMemberMenu } = require("%scripts/user/playerContextMenu.nut")
 let { openSearchSquadPlayer } = require("%scripts/contacts/searchForSquadHandler.nut")
+let { joinOperationById } = require("%scripts/globalWorldwarUtils.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
@@ -268,7 +269,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (squadLeaderOperationId == null || squadLeaderOperationId == wwGetOperationId())
       return
 
-    this.guiScene.performDelayed(this, @()::g_world_war.joinOperationById(squadLeaderOperationId,
+    this.guiScene.performDelayed(this, @() joinOperationById(squadLeaderOperationId,
       g_squad_manager.getWwOperationCountry()))
   }
 }

@@ -40,7 +40,8 @@ let { encode_uri_component } = require("url")
 let { get_local_mplayer } = require("mission")
 let { show_profile_card } = require("%xboxLib/impl/user.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
@@ -1200,5 +1201,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function getPageProfileStats() {
     return this.player
   }
+
+  function onUnitImageClick(_obj) {}
 
 }

@@ -9,6 +9,7 @@ let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 const WW_OPERATION_BATTLE_INVITE_EXPIRE_SEC = 900
 
@@ -85,9 +86,9 @@ let WwOperationBattle = class (BaseInvite) {
   function accept() {
     ::queues.checkAndStart(
       Callback(function() {
-        ::g_world_war.joinOperationById(this.operationId, null, false,
+        g_world_war.joinOperationById(this.operationId, null, false,
           Callback(function() {
-            let wwBattle = ::g_world_war.getBattleById(this.battleId)
+            let wwBattle = g_world_war.getBattleById(this.battleId)
             gui_handlers.WwBattleDescription.open(wwBattle)
           }, this))
       }, this),

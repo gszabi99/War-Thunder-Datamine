@@ -5,6 +5,7 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { defaultDiffCode } = require("%scripts/globalWorldwarUtils.nut")
 
 ::queue_classes.WwBattle <- class (::queue_classes.Base) {
   function init() {
@@ -84,7 +85,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
         name       = unitName
         slot       = idx
         type       = unit.expClass.expClassName
-        mrank      = unit.getEconomicRank(::g_world_war.defaultDiffCode)
+        mrank      = unit.getEconomicRank(defaultDiffCode)
         rank       = unit?.rank ?? -1
       })
     }

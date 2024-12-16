@@ -1,7 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 
+let { wwGetOperationId } = require("worldwar")
 let u = require("%sqStdLibs/helpers/u.nut")
+let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 
 let getNearestMap = function(mapsList) {
   local nearestMap = null
@@ -51,6 +53,23 @@ let getOperationGroupByMapId = @(mapId)
 let isMyClanInQueue = @() is_in_clan()
   && u.search(::g_ww_global_status_type.QUEUE.getList(), @(q) q.isMyClanJoined()) != null
 
+let isWWSeasonActive = @() hasAvailableMapToBattle()
+
+function updateCurOperationStatusInGlobalStatus() {
+  let operationId = wwGetOperationId()
+  if (operationId == -1)
+    return
+
+  let operation = getOperationById(operationId)
+  operation?.setFinishedStatus(isOperationFinished())
+}
+
+function isWwOperationInviteEnable() {
+  let wwOperationId = wwGetOperationId()
+  return wwOperationId > -1 && ::g_clans.hasRightsToQueueWWar()
+    && getOperationById(wwOperationId)?.isMyClanParticipate()
+}
+
 ::g_ww_global_status_actions <- {   //!!!FIX ME: This global table used in main scripts. It is necessary to remove use of world war scripts from the main scripts and remove this table
   getOperationById
   getMapByName
@@ -66,4 +85,7 @@ return {
   isMyClanInQueue
   getOperationById
   isReceivedGlobalStatusMaps
+  isWWSeasonActive
+  updateCurOperationStatusInGlobalStatus
+  isWwOperationInviteEnable
 }

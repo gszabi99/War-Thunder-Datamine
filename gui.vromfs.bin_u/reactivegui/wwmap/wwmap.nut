@@ -1,6 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { getArmyForHover, getArmyForSelection, selectedArmy, hoveredArmy } = require("%rGui/wwMap/wwArmyStates.nut")
+let { getArmyForHover, getArmyForSelection, selectedArmy, hoveredArmy, newPartOfArmyPath,
+  allowDrawNewPartOfArmyPath } = require("%rGui/wwMap/wwArmyStates.nut")
 let { isOperationPausedWatch } = require("%rGui/wwMap/wwOperationStates.nut")
 let { updateHoveredZone, getZoneByPoint, updateSelectedRearZone } = require("%rGui/wwMap/wwMapZonesData.nut")
 let mkMapZonesBackground = require("%rGui/wwMap/wwMapZonesBackground.nut")
@@ -40,6 +41,11 @@ function processPointerMove(evt, areaBounds) {
   }
 
   let pos = convertPointerCoords(evt, areaBounds)
+
+  if (evt.btnId == 0 && evt.shiftKey && selectedArmy.get() != null)
+    newPartOfArmyPath.set({ armyName = selectedArmy.get(), newPos = pos })
+  else
+    newPartOfArmyPath.set(null)
 
   let zoneUnderCursor = getZoneByPoint(pos)
   updateHoveredZone(zoneUnderCursor)
@@ -86,6 +92,8 @@ function processPointerPress(evt, areaBounds) {
   if (!evt.hit)
     return
 
+  newPartOfArmyPath.set(null)
+  allowDrawNewPartOfArmyPath.set(false)
   let { x, y } = evt
 
   mapCellUnderCursor.set(getMapCellByCoords(x, y, areaBounds))
@@ -156,6 +164,12 @@ let mapBackground = @() {
   image = Picture(getOperationMapImage())
 }
 
+let dummyShiftButtonUp = @() {
+  behavior = Behaviors.Button
+  hotkeys = ["^L.Shift", "^R.Shift"]
+  onClick = @() newPartOfArmyPath.set(null)
+}
+
 let mkMapContainer = function() {
   if(holderBounds.get() == null)
     return { watch = [holderBounds, activeAreaBounds] }
@@ -168,6 +182,7 @@ let mkMapContainer = function() {
     size = [holderWidth, holderHeight]
     clipChildren = true
     children = [
+      dummyShiftButtonUp,
       mapBackground,
       mkMapZonesBackground,
       mkMapZonesEdges,

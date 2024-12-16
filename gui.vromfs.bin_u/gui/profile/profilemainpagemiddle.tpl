@@ -4,6 +4,13 @@
     flow:t='horizontal'
     left:t='(pw-w)/2'
     padding-top:t='13@sf/@pf'
+    css-hier-invalidate:t='yes'
+
+    <<#labels>>
+    textareaNoTab {
+      text:t='<<text>>'
+    }
+    <</labels>>
 
     <<#statsBig>>
     tdiv {
@@ -32,6 +39,7 @@
             color:t='@showcaseBlue'
             font-pixht:t='85@sf/@pf'
             text:t='<<statValue>>'
+            input-transparent:t='yes'
           }
         <</statValue>>
 
@@ -43,8 +51,10 @@
             left:t='(pw-w)/2'
             color:t='@showcaseGreyText'
             text:t='<<statName>>'
+            input-transparent:t='yes'
           }
         <</statName>>
+        tooltip:t='<<tooltip>>'
       }
     <</statsBig>>
 
@@ -80,6 +90,7 @@
             font:t='@fontBigBold'
             color:t='@showcaseBlue'
             text:t='<<statValue>>'
+            input-transparent:t='yes'
           }
         <</statValue>>
 
@@ -92,8 +103,10 @@
             left:t='(pw-w)/2'
             color:t='@showcaseGreyText'
             text:t='<<statName>>'
+            input-transparent:t='yes'
           }
         <</statName>>
+        tooltip:t='<<tooltip>>'
       }
       <<^isEndInRow>>
         tdiv {
@@ -146,8 +159,72 @@
         top:t='(ph-h)/2'
       }
       <</value>>
+      tooltip:t='<<tooltip>>'
     }
     <</textStats>>
   }
+
+  <<#hasUnitImage>>
+    tdiv {
+      position:t='relative'
+      flow:t='horizontal'
+      left:t='(pw-w)/2'
+      css-hier-invalidate:t='yes'
+      <<#unitsImages>>
+
+      button {
+        id:t='<<id>>'
+        imageIdx:t='<<imageIdx>>'
+        unit:t='<<unit>>'
+        position:t='relative'
+        size:t='<<imageSize>>'
+        margin:t='15@sf/@pf, 0'
+        <<#image>>
+          background-image:t='<<image>>'
+          background-repeat:t='aspect-ratio'
+          background-color:t='#FFFFFF'
+        <</image>>
+        <<^image>>
+          background-image:t=''
+        <</image>>
+
+        on_click:t='onUnitImageClick'
+
+        tdiv {
+          re-type:t='9rect'
+          position:t='absolute'
+          size:t='pw, ph'
+          css-hier-invalidate:t='yes'
+          background-color:t='#FFFFFF'
+          background-image:t='!ui/images/profile/empty_unit_rect.svg'
+          background-position:t='10, 10'
+          background-svg-size:t='<<imageSize>>'
+          background-repeat:t='expand-svg'
+          display:t='hide'
+          showInEditMode:t='yes'
+
+          <<^image>>
+          tdiv {
+            position:t='absolute'
+            size:t='10@sf/@pf, 50@sf/@pf'
+            pos:t='(pw-w)/2, (ph-h)/2'
+            background-color:t='#FFFFFF'
+            display:t='hide'
+            showInEditMode:t='yes'
+          }
+          tdiv {
+            position:t='absolute'
+            size:t='50@sf/@pf, 10@sf/@pf'
+            pos:t='(pw-w)/2, (ph-h)/2'
+            background-color:t='#FFFFFF'
+            display:t='hide'
+            showInEditMode:t='yes'
+          }
+          <</image>>
+        }
+      }
+      <</unitsImages>>
+    }
+  <</hasUnitImage>>
 
 <</statLines>>

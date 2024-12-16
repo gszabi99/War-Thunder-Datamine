@@ -42,6 +42,9 @@ let { isOperationPaused, isOperationFinished } = require("%appGlobals/worldWar/w
 let { getWWLogsData, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 let { RenderCategory } = require("worldwarConst")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { getRearZones, getRearZonesOwnedToSide, getRearZonesLostBySide
+} = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 const WW_LOG_REQUEST_DELAY = 1
 const WW_LOG_EVENT_LOAD_AMOUNT = 10
@@ -125,7 +128,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     ::g_operations.forcedFullUpdate()
     let wwLogsData = getWWLogsData()
-    wwLogsData.lastReadLogMark = loadLocalByAccount(::g_world_war.getSaveOperationLogId(), "")
+    wwLogsData.lastReadLogMark = loadLocalByAccount(g_world_war.getSaveOperationLogId(), "")
     requestNewWWLogs(WW_LOG_MAX_LOAD_AMOUNT, !wwLogsData.loaded.len())
 
     this.scene.findObject("update_timer").setUserData(this)
@@ -214,7 +217,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(tabsObj))
       return
 
-    let show = ::g_world_war.haveManagementAccessForAnyGroup()
+    let show = g_world_war.haveManagementAccessForAnyGroup()
     showObjById("reinforcements_block", show, this.scene)
     showObjById("armies_block", show, this.scene)
 
@@ -330,7 +333,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(nestObj))
       return
 
-    if (!::g_world_war.haveManagementAccessForAnyGroup()) {
+    if (!g_world_war.haveManagementAccessForAnyGroup()) {
       nestObj.show(false)
       return
     }
@@ -339,13 +342,13 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.currentSelectedObject == mapObjectSelect.REINFORCEMENT)
       hasAccess = true
     else if (this.currentSelectedObject == mapObjectSelect.AIRFIELD) {
-      let airfield = ::g_world_war.getAirfieldByIndex(wwGetSelectedAirfield())
+      let airfield = g_world_war.getAirfieldByIndex(wwGetSelectedAirfield())
       if (airfield.getAvailableFormations().len())
         hasAccess = true
     }
     else if (this.currentSelectedObject == mapObjectSelect.ARMY ||
              this.currentSelectedObject == mapObjectSelect.LOG_ARMY)
-      hasAccess = ::g_world_war.haveManagementAccessForSelectedArmies()
+      hasAccess = g_world_war.haveManagementAccessForSelectedArmies()
 
     let btnBlockObj = this.scene.findObject("ww_army_controls_place")
     if (!checkObj(btnBlockObj))
@@ -371,7 +374,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showSelectHint(show = true) {
-    if (!showConsoleButtons.value || !::g_world_war.haveManagementAccessForAnyGroup())
+    if (!showConsoleButtons.value || !g_world_war.haveManagementAccessForAnyGroup())
       return
 
     showObjById("ww_army_select", show)
@@ -428,8 +431,8 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function hasBattlesToPlay() {
-    return u.search(::g_world_war.getBattles(),
-      ::g_world_war.isBattleAvailableToPlay)
+    return u.search(g_world_war.getBattles(),
+      g_world_war.isBattleAvailableToPlay)
   }
 
   function onStart() {
@@ -445,14 +448,14 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (leaderState == LEADER_OPERATION_STATES.ANOTHER_OPERATION) {
         this.guiScene.performDelayed(this, @()
-          ::g_world_war.joinOperationById(g_squad_manager.getWwOperationId()))
+          g_world_war.joinOperationById(g_squad_manager.getWwOperationId()))
         return
       }
     }
 
     let isInOperationQueue = ::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
     if (isInOperationQueue)
-      return ::g_world_war.leaveWWBattleQueues()
+      return g_world_war.leaveWWBattleQueues()
 
     let playerSide = wwGetPlayerSide()
     if (playerSide == SIDE_NONE)
@@ -462,7 +465,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function goBackToHangar() {
-    ::g_world_war.stopWar()
+    g_world_war.stopWar()
     this.goBack()
   }
 
@@ -492,7 +495,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.currentSelectedObject == mapObjectSelect.ARMY ||
         this.currentSelectedObject == mapObjectSelect.LOG_ARMY)
-      ::g_world_war.moveSelectedArmes(cursorPos[0], cursorPos[1],
+      g_world_war.moveSelectedArmes(cursorPos[0], cursorPos[1],
         ww_find_army_name_by_coordinates(cursorPos[0], cursorPos[1]))
     else if (this.currentSelectedObject == mapObjectSelect.REINFORCEMENT)
       wwEvent("MapRequestReinforcement", {
@@ -510,11 +513,11 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onArmyStop(_obj) {
-    ::g_world_war.stopSelectedArmy()
+    g_world_war.stopSelectedArmy()
   }
 
   function onArmyEntrench(_obj) {
-    ::g_world_war.entrenchSelectedArmy()
+    g_world_war.entrenchSelectedArmy()
   }
 
   function onArtilleryArmyPrepareToFire(_obj) {
@@ -535,13 +538,13 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   function collectArmyStrengthData() {
     let result = {}
 
-    let currentStrenghtInfo = ::g_world_war.getSidesStrenghtInfo()
+    let currentStrenghtInfo = g_world_war.getSidesStrenghtInfo()
     for (local side = SIDE_NONE; side < SIDE_TOTAL; side++) {
       if (!(side in currentStrenghtInfo))
         continue
 
       let sideName = ww_side_val_to_name(side)
-      let armyGroups = ::g_world_war.getArmyGroupsBySide(side)
+      let armyGroups = g_world_war.getArmyGroupsBySide(side)
       if (!armyGroups.len())
         continue
 
@@ -568,11 +571,11 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (formation in formationsArray)
       unitsList.extend(formation.getUnits())
 
-    return ::g_world_war.collectUnitsData(unitsList, false)
+    return g_world_war.collectUnitsData(unitsList, false)
   }
 
   function markMainObjectiveZones() {
-    let objectivesBlk = ::g_world_war.getOperationObjectives()
+    let objectivesBlk = g_world_war.getOperationObjectives()
     if (!objectivesBlk)
       return
 
@@ -610,7 +613,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     let blockObj = this.scene.findObject("content_block_3")
     let armyStrengthData = this.collectArmyStrengthData()
 
-    let orderArray = ::g_world_war.getSidesOrder()
+    let orderArray = g_world_war.getSidesOrder()
 
     let side1Name = ww_side_val_to_name(orderArray.len() ? orderArray[0] : SIDE_NONE)
     let side1Data = getTblValue(side1Name, armyStrengthData, {})
@@ -680,7 +683,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!selectedArmyNames.len())
       return
 
-    let selectedArmy = ::g_world_war.getArmyByName(selectedArmyNames[0])
+    let selectedArmy = g_world_war.getArmyByName(selectedArmyNames[0])
     if (!selectedArmy.isValid()) {
       wwEvent("MapClearSelection")
       return
@@ -727,7 +730,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function showSelectedReinforcement(params) {
     let blockObj = this.scene.findObject("content_block_3")
-    let reinforcement = ::g_world_war.getReinforcementByName(getTblValue("name", params))
+    let reinforcement = g_world_war.getReinforcementByName(getTblValue("name", params))
     if (!reinforcement)
       return
 
@@ -744,7 +747,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
         getTblValue("formationId", params, -1) < 0)
       return
 
-    let airfield = ::g_world_war.getAirfieldByIndex(wwGetSelectedAirfield())
+    let airfield = g_world_war.getAirfieldByIndex(wwGetSelectedAirfield())
     local formation = null
 
     if (params.formationType == "formation") {
@@ -803,18 +806,18 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateReinforcements() {
     let hasUnseenIcon = this.updateRearZonesHighlight()
     this.updateSecondaryBlockTab(::g_ww_map_reinforcement_tab_type.REINFORCEMENT, null, hasUnseenIcon)
-    return ::g_world_war.hasSuspendedReinforcements()
+    return g_world_war.hasSuspendedReinforcements()
   }
 
   function updateRearZonesHighlight() {
     let emptySidesReinforcementList = {}
-    let rearZones = ::g_world_war.getRearZones()
+    let rearZones = getRearZones()
     foreach (sideName, _zones in rearZones)
       emptySidesReinforcementList[ww_side_name_to_val(sideName)] <- true
 
     local hasUnseenIcon = false
     let arrivingReinforcementSides = {}
-    let reinforcements = ::g_world_war.getMyReadyReinforcementsArray()
+    let reinforcements = g_world_war.getMyReadyReinforcementsArray()
     foreach (reinforcement in reinforcements) {
       let name = reinforcement?.name
       let side = reinforcement?.armyGroup.owner.side
@@ -835,13 +838,13 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       if (isEmpty)
         ww_turn_off_sector_sprites("Reinforcement", rearZones[ww_side_val_to_name(side)])
       else {
-        ww_turn_off_sector_sprites("Reinforcement", ::g_world_war.getRearZonesLostBySide(side))
+        ww_turn_off_sector_sprites("Reinforcement", getRearZonesLostBySide(side))
         if (!(side in arrivingReinforcementSides))
-          ww_turn_on_sector_sprites("Reinforcement", ::g_world_war.getRearZonesOwnedToSide(side), 0)
+          ww_turn_on_sector_sprites("Reinforcement", getRearZonesOwnedToSide(side), 0)
       }
 
     foreach (side, _value in arrivingReinforcementSides)
-      ww_turn_on_sector_sprites("Reinforcement", ::g_world_war.getRearZonesOwnedToSide(side), 5000)
+      ww_turn_on_sector_sprites("Reinforcement", getRearZonesOwnedToSide(side), 5000)
 
     return hasUnseenIcon
   }
@@ -867,7 +870,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     this.afkData.loseSide = loseSide
     this.afkData.afkLoseTimeMsec = newLoseTime
     this.afkData.isMeLost = wwGetPlayerSide() == loseSide
-    this.afkData.haveAccess = ::g_world_war.haveManagementAccessForAnyGroup()
+    this.afkData.haveAccess = g_world_war.haveManagementAccessForAnyGroup()
   }
 
   function destroyAllAFKTimers() {
@@ -905,7 +908,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     let afkLoseTimeShowSec = (getWwSetting("afkLoseTimeShowSec", 0)
       / wwGetSpeedupFactor()).tointeger()
     let delayTime = max(time.millisecondsToSecondsInt(this.afkData.afkLoseTimeMsec)
-      - ::g_world_war.getOperationTimeSec() - afkLoseTimeShowSec, 0)
+      - g_world_war.getOperationTimeSec() - afkLoseTimeShowSec, 0)
 
     this.afkLostTimer = Timer(this.scene, delayTime,
       function() {
@@ -924,7 +927,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
             let statObj = this.scene.findObject("wwmap_operation_status")
             let textObj = statObj.findObject("wwmap_operation_status_text")
             let afkLoseTime = time.millisecondsToSecondsInt(this.afkData.afkLoseTimeMsec)
-              - ::g_world_war.getOperationTimeSec()
+              - g_world_war.getOperationTimeSec()
             if (afkLoseTime <= 0)
               this.afkCountdownTimer?.destroy()
             let txt = afkLoseTime > 0
@@ -1208,7 +1211,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventWWShowRearZones(params) {
-    let reinforcement = ::g_world_war.getReinforcementByName(params?.name)
+    let reinforcement = g_world_war.getReinforcementByName(params?.name)
     if (!reinforcement)
       return
 
@@ -1217,11 +1220,11 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     local highlightedZones = []
     if (g_ww_unit_type.isAir(reinforcementType)) {
       let filterType = g_ww_unit_type.isHelicopter(reinforcementType) ? "AT_HELIPAD" : "AT_RUNWAY"
-      highlightedZones = ::g_world_war.getAirfieldsArrayBySide(reinforcementSide, filterType)
+      highlightedZones = g_world_war.getAirfieldsArrayBySide(reinforcementSide, filterType)
         .map(@(airfield) wwGetZoneName(ww_get_zone_idx_world(airfield.getPos())))
     }
     else
-      highlightedZones = ::g_world_war.getRearZonesOwnedToSide(reinforcementSide)
+      highlightedZones = getRearZonesOwnedToSide(reinforcementSide)
 
     ww_mark_zones_as_outlined_by_name(highlightedZones)
 
@@ -1292,7 +1295,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local objTarget = null
-    let objectivesBlk = ::g_world_war.getOperationObjectives()
+    let objectivesBlk = g_world_war.getOperationObjectives()
     foreach (dataBlk in objectivesBlk.data) {
       if (!dataBlk?.mainObjective)
         continue

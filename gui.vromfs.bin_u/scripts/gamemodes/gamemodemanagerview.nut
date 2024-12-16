@@ -17,6 +17,7 @@ let { isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { isWorldWarEnabled, getCantPlayWorldwarReasonText } = require("%scripts/globalWorldWarScripts.nut")
+let { openWWMainWnd } = require("%scripts/globalWorldwarUtils.nut")
 
 let fullRealModeOnBattleButtonClick = @(gameMode)
   guiStartModalEvents({ event = gameMode?.getEventId() ?? gameMode?.modeId })
@@ -77,7 +78,7 @@ function getRealisticGameModeUnlockText(modeId) {
 let customStateByGameModeId = {
   // "World War"
   world_war_featured_game_mode = {
-    startFunction = @(_gameMode) ::g_world_war.openMainWnd()
+    startFunction = @(_gameMode) openWWMainWnd()
     getUnlockText = @() isWorldWarEnabled() ? getCantPlayWorldwarReasonText() : @() ""
     crossplayTooltip = function() {
       if (!needShowCrossPlayInfo())

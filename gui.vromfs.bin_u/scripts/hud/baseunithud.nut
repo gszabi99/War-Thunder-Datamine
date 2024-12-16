@@ -23,7 +23,7 @@ gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(multiplayerScoreObj)) {
       multiplayerScoreObj.setValue(stashBhvValueConfig([{
         watch = getHasCompassObservable()
-        updateFunc = @(obj, value) obj.top = value ? "0.065@scrn_tgt" : "0.015@scrn_tgt"
+        updateFunc = @(obj, value) obj.top = value ? "1@multiplayerScoreTopPosUnderCompass" : "0.015@shHud"
       },
       {
         watch = isInKillerCamera

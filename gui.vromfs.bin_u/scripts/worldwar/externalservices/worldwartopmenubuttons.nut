@@ -12,6 +12,7 @@ let { wwGetOperationId, wwIsOperationLoaded } = require("worldwar")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
 let { RenderCategory } = require("worldwarConst")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let template = {
   category = -1
@@ -24,7 +25,7 @@ let template = {
 let list = {
   WW_MAIN_MENU = {
     text = "#worldWar/menu/mainMenu"
-    onClickFunc = @(_obj, _handler) ::g_world_war.openOperationsOrQueues()
+    onClickFunc = @(_obj, _handler) g_world_war.openOperationsOrQueues()
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
   }
   WW_OPERATIONS = {
@@ -32,9 +33,9 @@ let list = {
     onClickFunc = function(_obj, _handler) {
       let curOperation = getOperationById(wwGetOperationId())
       if (!curOperation)
-        return ::g_world_war.openOperationsOrQueues()
+        return g_world_war.openOperationsOrQueues()
 
-      ::g_world_war.openOperationsOrQueues(false, getMapByName(curOperation.data.map))
+      g_world_war.openOperationsOrQueues(false, getMapByName(curOperation.data.map))
     }
     isHidden = @(...) !hasFeature("WWOperationsList")
     elementType = TOP_MENU_ELEMENT_TYPE.BUTTON
@@ -42,7 +43,7 @@ let list = {
   WW_HANGAR = {
     text = "#worldWar/menu/quitToHangar"
     onClickFunc = function(_obj, handler) {
-      ::g_world_war.stopWar()
+      g_world_war.stopWar()
       if (!wwIsOperationLoaded())
         handler?.goBack()
     }
@@ -76,10 +77,10 @@ let list = {
     isHidden = @(...) true
   }
   WW_FILTER_RENDER_DEBUG = {
-    value = @() ::g_world_war.isDebugModeEnabled()
+    value = @() g_world_war.isDebugModeEnabled()
     text = "#mainmenu/btnDebugUnlock"
     image = @() "#ui/gameuiskin#battles_closed"
-    onChangeValueFunc = @(value) ::g_world_war.setDebugMode(value)
+    onChangeValueFunc = @(value) g_world_war.setDebugMode(value)
     isHidden = @(...) !hasFeature("worldWarMaster")
   }
   WW_LEADERBOARDS = {

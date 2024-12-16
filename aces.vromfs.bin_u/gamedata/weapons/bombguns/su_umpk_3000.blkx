@@ -11,23 +11,23 @@
   "tags": {},
   "bomb": {
     "bulletName": "su_umpk_3000",
-    "mass": 3067.0,
+    "mass": 3320.0,
     "caliber": 0.82,
-    "length": 3.05,
+    "length": 4.58,
     "distFromCmToStab": 0.55,
     "dragCx": 0.0257,
-    "CxK": 1.575,
+    "CxK": 1.67,
     "WdK": [
       2.5,
       2.5,
       2.5
     ],
-    "wingAreaMult": 1.6,
-    "finsAoaHor": 0.3,
-    "finsAoaVer": 0.3,
+    "wingAreaMult": 5.0,
+    "finsAoaHor": 0.05,
+    "finsAoaVer": 0.2,
     "brakeTime": [
-      1.0,
-      1.2
+      3.0,
+      3.2
     ],
     "brakeCxK": 0.05,
     "normalizationPreset": "heat",
@@ -50,7 +50,10 @@
     "explosiveType": "tgag_5",
     "explosiveMass": 1387.0,
     "guidanceType": "sns",
-    "timeLife": 40.0,
+    "timeLife": 400.0,
+    "rollStabilization": true,
+    "rollStabilizationDelay": 1.5,
+    "rollStabilizationAngle": 180.0,
     "explodeTreshold": 0.00001,
     "hitPowerMult": 1.0,
     "nearHitPower": [
@@ -132,38 +135,38 @@
       "constantDesignationSourceTypeMask": 1,
       "guidanceAutopilot": {
         "loftEnabled": true,
-        "loftElevation": 4.0,
-        "loftTargetElevation": -12.0,
-        "loftAngleToAccelMult": 0.5,
-        "loftTargetOmegaMax": 0.45,
+        "loftElevation": -2.0,
+        "loftTargetElevation": -45.0,
+        "loftAngleToAccelMult": 0.65,
+        "loftTargetOmegaMax": 0.65,
         "timeToGain0": [
-          1.5,
+          2.5,
           0.0
         ],
         "timeToGain1": [
-          1.51,
+          2.51,
           1.0
         ],
         "timeToGain2": [
-          40.0,
+          400.0,
           1.0
         ],
         "timeToGain3": [
-          40.1,
+          400.1,
           0.0
         ],
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 4.0,
-        "accelControlProp": 0.0211,
-        "accelControlIntg": 0.1495,
+        "reqAccelMax": 2.0,
+        "accelControlProp": 0.199599,
+        "accelControlIntg": 0.0435,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0007
+        "accelControlDiff": 0.0001
       }
     },
     "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18,
+      "finsAoaHor": 0.1,
+      "finsAoaVer": 0.25,
       "timeFire": 0.0
     },
     "collisions": {

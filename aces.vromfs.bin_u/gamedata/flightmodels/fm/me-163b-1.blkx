@@ -86,6 +86,7 @@
     14000.0,
     8000.0
   ],
+  "IgnoreErrors": true,
   "AvailableControls": {
     "hasAileronControl": true,
     "hasAileronTrimControl": false,
@@ -399,9 +400,9 @@
       "RPMMax": 1600.0,
       "RPMMaxAllowed": 2600.0,
       "FuelConsumptionOnIdle": 0.7,
-      "FuelConsumptionOnHalfThr": 2.6,
-      "FuelConsumptionOnFullThr": 5.3,
-      "FuelConsumptionOnWEP": 5.3,
+      "FuelConsumptionOnHalfThr": 2.0,
+      "FuelConsumptionOnFullThr": 4.5,
+      "FuelConsumptionOnWEP": 8.4,
       "IsAutonomous": true,
       "ExtinguisherNum": 0,
       "MaxCarburetorThrMult": 1.1,
@@ -464,6 +465,14 @@
         "ThrustMaxCoeff_3_5": 0.4,
         "ThrustMaxCoeff_3_6": 0.1
       }
+    },
+    "AutoThrottle": {
+      "HasContorller": false,
+      "ThrottleOmegaPidInputLim": 1000000000.0,
+      "ContorllerKp": 0.000001,
+      "ContorllerKi": 0.00001,
+      "ContorllerImax": 1.0,
+      "ContorllerKd": 0.000015
     },
     "Propellor": {
       "AllowAutoProp": false,
@@ -661,6 +670,8 @@
       "flap_l_dm": 14.2611,
       "flap_r_dm": 14.3693,
       "gear_l_dm": 15.9483,
+      "gear_1l_dm": 15.9483,
+      "gear_1r_dm": 15.9483,
       "spar2_r_dm": 7.53901,
       "spar2_l_dm": 7.53901,
       "elevator1_dm": 15.8803,

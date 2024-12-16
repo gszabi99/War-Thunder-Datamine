@@ -19,6 +19,7 @@ let { getLoadedTransport } = require("%scripts/worldWar/inOperation/wwTransportM
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { ArmyFlags } = require("worldwarConst")
 let { getIcon } = require("%scripts/worldWar/wwArmyIconOverride.nut")
+let { getArtilleryUnits, getArtilleryUnitParamsByBlk } = require("%scripts/worldWar/worldWarStates.nut")
 
 local WwArmy
 function getTransportedArmiesData(formation) {
@@ -732,7 +733,7 @@ WwArmy = class(WwFormation) {
     this.isSAM = this.overrideIconId == "sam_site"
     this.hasEntrenchAbility = this.armyFlags & ArmyFlags.EAF_CAN_ENTRENCH
     let armyArtilleryParams = this.hasArtilleryAbility ?
-      ::g_world_war.getArtilleryUnitParamsByBlk(blk.getBlockByName("units")) : null
+      getArtilleryUnitParamsByBlk(blk.getBlockByName("units")) : null
     this.artilleryAmmo.setArtilleryParams(armyArtilleryParams)
     this.artilleryAmmo.update(this.name, blk.getBlockByName("artilleryAmmo"))
   }
@@ -949,7 +950,7 @@ WwArmy = class(WwFormation) {
   }
 
   function getCasualtiesCount(blk) {
-    let artilleryUnits = ::g_world_war.getArtilleryUnits()
+    let artilleryUnits = getArtilleryUnits()
     local unitsCount = 0
     for (local i = 0; i < blk.casualties.paramCount(); i++)
       if (!g_ww_unit_type.isArtillery(this.unitType) ||

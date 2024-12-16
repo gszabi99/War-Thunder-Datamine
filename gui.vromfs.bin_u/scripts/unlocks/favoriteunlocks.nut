@@ -134,6 +134,8 @@ function fillUnlockFavCheckbox(obj) {
   obj.tooltip = isUnlockInFavorites
     ? loc("mainmenu/UnlockAchievementsRemoveFromFavorite/hint")
     : loc("mainmenu/UnlockAchievementsToFavorite/hint")
+
+  this.guiScene.updateTooltip(obj)
 }
 
 function fillUnlockFav(unlockId, unlockObj) {

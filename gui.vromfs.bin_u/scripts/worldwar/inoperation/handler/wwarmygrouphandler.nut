@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 class WwArmyGroupHandler {
   group = null
@@ -32,7 +33,7 @@ class WwArmyGroupHandler {
 
     local isSelectedGroupArmy = false
     foreach (armyName in ww_get_selected_armies_names())
-      if (this.group.isMyArmy(::g_world_war.getArmyByName(armyName))) {
+      if (this.group.isMyArmy(g_world_war.getArmyByName(armyName))) {
         isSelectedGroupArmy = true
         break
       }

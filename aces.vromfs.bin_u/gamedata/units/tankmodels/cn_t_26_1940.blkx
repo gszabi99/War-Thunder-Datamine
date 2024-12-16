@@ -2068,22 +2068,7 @@
         "armorThickness": 5.0,
         "hp": 50.0
       },
-      "gun_barrel_02_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
       "gun_barrel_03_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_04_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_05_dm": {
         "armorThrough": 10.0,
         "armorThickness": 5.0,
         "hp": 50.0
@@ -2598,7 +2583,9 @@
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
-      "cls_body": "convex_hull"
+      "cls_body": "convex_hull",
+      "cls_body_02": "convex_hull",
+      "cls_body_03": "convex_hull"
     }
   },
   "commonWeapons": {
@@ -2608,6 +2595,7 @@
         "blk": "gameData/Weapons/groundModels_weapons/45mm_20K_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
+        "maxAdditionalPitch": 0.0,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "gun_barrel_dm",
@@ -2703,26 +2691,25 @@
         "isBulletBelt": true,
         "speedYaw": 90.0,
         "speedPitch": 90.0,
-        "fireConeAngle": 1.0,
-        "bullets": 1400,
-        "salvoAmount": 100.0,
-        "ChainfireTime": 0.0,
-        "DelayAfterShoot": 5.0,
-        "AttackMaxDistance": 1000.0,
-        "AttackMaxRadius": 1000.0,
-        "AttackMaxHeight": 1000.0,
-        "accuracyAir": 0.0,
-        "accuracyGnd": 1.5,
+        "fireConeAngle": [
+          1.0,
+          5.0
+        ],
+        "bullets": 1134,
+        "ChainfireTime": 0.5,
+        "DelayAfterShoot": 2.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
         "errMeasureVel": 0.0,
         "errMeasureVelFast": 0.0,
-        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelFwdShift": 1.5,
         "errMeasureVelDir": 0.0,
         "errTargettingOn100kmph": 0.0,
         "errTargetting": 3.0,
         "errExplTime": 0.0,
-        "showBulletsInHud": false,
+        "forestallTime": 0.1,
         "turret": {
-          "head": "bone_mg_aa_h",
+          "head": "bone_turret_01",
           "gun": "bone_mg_aa_v",
           "gunnerDm": "loader_dm",
           "hasNightVision": false

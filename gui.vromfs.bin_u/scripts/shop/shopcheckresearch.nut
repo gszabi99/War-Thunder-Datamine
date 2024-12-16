@@ -1,6 +1,5 @@
 from "%scripts/dagui_natives.nut" import shop_get_country_excess_exp, shop_get_researchable_unit_name, is_era_available, shop_reset_researchable_unit, set_char_cb
 from "%scripts/dagui_library.nut" import *
-from "%scripts/airInfo.nut" import CheckFeatureLockAction
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/utils_sa.nut" import get_flush_exp_text
 
@@ -9,7 +8,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let { research, flushExcessExpToUnit } = require("%scripts/unit/unitActions.nut")
+let { research, flushExcessExpToUnit, CheckFeatureLockAction, checkFeatureLock } = require("%scripts/unit/unitActions.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
@@ -23,7 +22,6 @@ let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { canResearchUnit, isUnitGroup, isGroupPart, isUnitFeatureLocked, isUnitResearched,
   isPrevUnitBought
 } = require("%scripts/unit/unitStatus.nut")
-let { checkFeatureLock } = require("%scripts/unit/unitChecks.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 

@@ -6,7 +6,8 @@ from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/mainConsts.nut" import COLOR_TAG, SEEN, global_max_players_versus
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { getEsUnitType, getUnitName, getUnitTypeText, getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitTypeText, getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { getGlobalModule, lateBindGlobalModule } = require("%scripts/global_modules.nut")
 let { g_team } = require("%scripts/teams.nut")

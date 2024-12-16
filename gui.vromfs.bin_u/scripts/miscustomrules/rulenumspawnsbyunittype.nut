@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
 let { UnitLimitByUnitType, UnitLimitByUnitExpClass } = require("%scripts/misCustomRules/unitLimit.nut")

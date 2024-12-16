@@ -6,7 +6,7 @@ let wwOperationUnitsGroups = require("%scripts/worldWar/inOperation/wwOperationU
 let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
 let { wwGetSpeedupFactor, wwGetOperationId } = require("worldwar")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWwSetting, getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
 
 let getForceControlledByAIUnitTypes = memoize(function() {
   let mapName = getOperationById(wwGetOperationId())?.getMapId() ?? ""
@@ -112,7 +112,7 @@ function getMaxFlyTime(unit) {
     return 0
 
   let maxFlyTime = unit.getUnitWpCostBlk().maxFlightTimeMinutes ??
-    ::g_world_war.getWWConfigurableValue("defaultMaxFlightTimeMinutes", 0)
+    getWWConfigurableValue("defaultMaxFlightTimeMinutes", 0)
   return (maxFlyTime * 60 / wwGetSpeedupFactor()).tointeger()
 }
 

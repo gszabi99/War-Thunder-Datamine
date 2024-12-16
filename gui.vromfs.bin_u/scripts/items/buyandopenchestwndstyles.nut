@@ -28,6 +28,16 @@ let buyAndOpenChestWndStyles = {
     chestNameTextParams="font-ht:t='40@sf/@pf'"
     needTopGradient = "yes"
   }
+  silverWinter = {
+    headerBackgroundImage = "!ui/images/chests_wnd/silver_winter_image"
+    chestNameBackgroundImage = "!ui/images/chests_wnd/golden_new_year_header"
+    headerBackgroundImageHeight = "720.0/1920w"
+    headerBackgroundImageMaxHeight = "0.70ph"
+    bgCornersShadowSize = "(sw - 1@swOrRwInVr) $max (sw - 1920.0*0.70sh/720)"
+    timeExpiredTextParams="pos:t='0.75pw, 0.41ph-0.5h'; overlayTextColor:t='active'"
+    chestNameTextParams="font-ht:t='40@sf/@pf'"
+    needTopGradient = "yes"
+  }
 }
 
 let hasBuyAndOpenChestWndStyle = @(item) buyAndOpenChestWndStyles?[item?.itemDef.tags.openingWndStyle ?? ""] != null

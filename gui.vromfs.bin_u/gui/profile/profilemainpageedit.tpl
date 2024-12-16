@@ -18,23 +18,13 @@
       <</selected>>
 
       <<#isDisabled>>
-      isDisabled:t='yes'
-      not-input-transparent:t='yes'
+      tooltip:t="$tooltipObj"
 
-      tdiv {
-        position:t='absolute'
-        size:t='pw, ph'
-        interactive:t='no'
-        tooltip:t="$tooltipObj"
-        input-transparent:t='no'
-        not-input-transparent:t='yes'
-
-        tooltipObj {
-          tooltipId:t='<<hintForDisabled>>'
-          on_tooltip_open:t="onGenericTooltipOpen"
-          on_tooltip_close:t="onTooltipObjClose"
-          display:t='hide'
-        }
+      tooltipObj {
+        tooltipId:t='<<hintForDisabled>>'
+        on_tooltip_open:t="onGenericTooltipOpen"
+        on_tooltip_close:t="onTooltipObjClose"
+        display:t='hide'
       }
       <</isDisabled>>
     }
@@ -52,4 +42,41 @@ ComboBox {
   border-color:t='@showcaseBoxBorder'
   on_select:t='onShowcaseGameModeSelect'
   margin-bottom:t='25@sf/@pf'
+}
+
+tdiv {
+  id:t='edit_second_title'
+  left:t='(pw-w)/2'
+  position:t='relative'
+  flow:t='horizontal'
+  display:t='hide'
+
+  image {
+    position:t='relative'
+    top:t='(ph-h)/2'
+    size:t='32@sf/@pf, 32@sf/@pf'
+    background-color:t='@showcaseBlue'
+    background-image:t='#ui/gameuiskin#all_unit_types.svg'
+    background-svg-size:t='32@sf/@pf, 32@sf/@pf'
+    background-repeat:t='aspect-ratio'
+  }
+
+  blankTextArea {
+    id:t='edit_second_title_text'
+    position:t='relative'
+    padding:t='32@sf/@pf, 0'
+    font:t='@fontBigBold'
+    color:t='#FFFFFF'
+    text:t='<<secondTitle>>'
+  }
+
+  image {
+    position:t='relative'
+    top:t='(ph-h)/2'
+    size:t='32@sf/@pf, 32@sf/@pf'
+    background-color:t='@showcaseBlue'
+    background-image:t='#ui/gameuiskin#all_unit_types.svg'
+    background-svg-size:t='32@sf/@pf, 32@sf/@pf'
+    background-repeat:t='aspect-ratio'
+  }
 }

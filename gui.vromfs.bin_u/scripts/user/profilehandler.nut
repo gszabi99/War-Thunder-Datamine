@@ -4,6 +4,7 @@ from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
+let { openSelectUnitWnd } = require("%scripts/unit/selectUnitModal.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
@@ -77,7 +78,8 @@ let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEsUnitType, getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { userIdStr, userIdInt64, havePlayerTag, isGuestLogin } = require("%scripts/user/profileStates.nut")
@@ -93,10 +95,11 @@ let { steam_is_running, steam_is_overlay_active } = require("steam")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getEditViewData, getShowcaseTypeBoxData, saveShowcase,
-  getGameModeBoxIndex, getShowcaseByTerseInfo,
+  getGameModeBoxIndex, getShowcaseByTerseInfo, getShowcaseIndexByTerseName, saveUnitToTerseInfo, trySetBestShowcaseMode,
   writeGameModeToTerseInfo, getShowcaseGameModeByIndex, getShowcaseByIndex } = require("%scripts/user/profileShowcase.nut")
 let { fill_gamer_card, addGamercardScene } = require("%scripts/gamercard.nut")
-let { generateShowcaseInfo, setCurrentShowcase, updateShowcaseDataInCache } = require("%scripts/user/profileShowcasesData.nut")
+let { generateShowcaseInfo } = require("%scripts/user/profileShowcasesData.nut")
+let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 
 require("%scripts/user/userCard.nut") //for load UserCardHandler before Profile handler
 
@@ -199,6 +202,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   filterGroupName = null
   isEditModeEnabled = false
   editModeTempData = null
+  curUnitImageIdx = -1
 
   unlockFilters = {
     UnlockAchievement = null
@@ -497,26 +501,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         getStats()
       }
     )
-  }
-
-  function onProfileEditApplyBtn() {
-    this.setEditMode(!this.isEditModeEnabled)
-    let newIcon = this.editModeTempData?.icon
-    if (newIcon && newIcon != ::get_option(USEROPT_PILOT).value)
-      this.saveProfileIcon(newIcon)
-
-    if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
-      this.saveProfileTitle(this.editModeTempData.title)
-
-    if (this.editModeTempData?.terseInfo) {
-      let handler = this
-      let showcaseToSave = this.editModeTempData.terseInfo
-      let showcaseOnError = this.terseInfo
-      saveShowcase(showcaseToSave,
-        @() handler?.isValid() ? handler.onSaveShowcaseComplete(showcaseToSave) : null,
-        @() handler?.isValid() ? handler.onSaveShowcaseError(showcaseOnError) : null
-      )
-    }
   }
 
   function setEditMode(val) {
@@ -1943,11 +1927,38 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let selectedShowcase = getShowcaseByIndex(obj.getValue())
     if (selectedShowcase == null)
       return
+    if (selectedShowcase?.isDisabled()) {
+      let prevValue = getShowcaseIndexByTerseName(this.currentShowcaseName)
+      obj.setValue(prevValue)
+      showInfoMsgBox("".concat(loc("msgbox/showcase_unavailable"), "\n", selectedShowcase.textForDisabled()))
+      return
+    }
 
     this.currentShowcaseName = selectedShowcase.terseName
     this.editModeTempData.terseInfo <- generateShowcaseInfo(this.currentShowcaseName)
-    this.fillShowcase(this.editModeTempData.terseInfo, getStats(), false)
+    let userStats = getStats()
+    trySetBestShowcaseMode(userStats, this.editModeTempData.terseInfo)
+    this.fillShowcase(this.editModeTempData.terseInfo, userStats, false)
     this.fillShowcaseGameModes(selectedShowcase, this.editModeTempData.terseInfo)
+    this.updateEditModeSecondTitle(this.editModeTempData.terseInfo)
+  }
+
+  function setEditModeSecondTitle(text) {
+    let hasTitle = (text ?? "") != ""
+    let secondTitleObj = showObjById("edit_second_title", hasTitle, this.scene)
+    if (secondTitleObj && hasTitle) {
+      let textObj = secondTitleObj.findObject("edit_second_title_text")
+      textObj.setValue(text)
+    }
+  }
+
+  function updateEditModeSecondTitle(terseInfo) {
+    let showcase = getShowcaseByTerseInfo(terseInfo)
+    this.setEditModeSecondTitle(
+      showcase?.hasSecondTitleInEditMode
+        ? showcase.getSecondTitleLoc(terseInfo)
+        : ""
+    )
   }
 
   function fillShowcaseEdit(terseInfo) {
@@ -1957,6 +1968,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     let showcase = getShowcaseByTerseInfo(terseInfo)
     this.fillShowcaseGameModes(showcase, terseInfo)
+    this.updateEditModeSecondTitle(terseInfo)
   }
 
   function fillShowcaseGameModes(showcase, terseInfo) {
@@ -1972,10 +1984,31 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       showcaseTypesBox.setValue(index)
   }
 
+  function onProfileEditApplyBtn() {
+    let newIcon = this.editModeTempData?.icon
+    if (newIcon && newIcon != ::get_option(USEROPT_PILOT).value)
+      this.saveProfileIcon(newIcon)
+
+    if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
+      this.saveProfileTitle(this.editModeTempData.title)
+
+    if (this.editModeTempData?.terseInfo) {
+      let handler = this
+      let showcaseData = getShowcaseByTerseInfo(this.editModeTempData.terseInfo)
+      if (showcaseData?.canBeSaved && !showcaseData.canBeSaved(this.editModeTempData.terseInfo))
+        return
+      let showcaseToSave = this.editModeTempData.terseInfo
+      let showcaseOnError = this.terseInfo
+      saveShowcase(showcaseToSave,
+        @() handler?.isValid() ? handler.onSaveShowcaseComplete(showcaseToSave) : null,
+        @() handler?.isValid() ? handler.onSaveShowcaseError(showcaseOnError) : null
+      )
+    }
+    this.setEditMode(!this.isEditModeEnabled)
+  }
+
   function onSaveShowcaseComplete(savedShowcase) {
     this.terseInfo = savedShowcase
-    updateShowcaseDataInCache(this.terseInfo.schType, this.terseInfo.showcase)
-    setCurrentShowcase(savedShowcase.schType)
     this.fillShowcase(savedShowcase, getStats())
   }
 
@@ -2016,20 +2049,50 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       return
 
     this.terseInfo = this.terseInfo ?? generateShowcaseInfo(this.currentShowcaseName)
-    if (!this.terseInfo)
+    let terseInfo = this.editModeTempData?.terseInfo ?? this.terseInfo
+    if (terseInfo == null)
       return
-    this.fillShowcase(this.terseInfo, userStats)
+
+    trySetBestShowcaseMode(userStats, terseInfo)
+    this.fillShowcase(terseInfo, userStats)
   }
 
   function onEventAllShowcasesDataUpdated(_data) {
+    if (this.isEditModeEnabled)
+      return
     this.terseInfo = generateShowcaseInfo(this.currentShowcaseName)
     if (!this.terseInfo)
       return
     let userStats = this.getPageProfileStats()
     if (userStats == null)
       return
+    trySetBestShowcaseMode(userStats, this.terseInfo)
     this.fillShowcase(this.terseInfo, userStats)
   }
+
+  function onUnitSelect(unit) {
+    if (this.editModeTempData?.terseInfo == null) {
+      this.editModeTempData.terseInfo <- clone this.terseInfo
+      this.editModeTempData.terseInfo.showcase <- clone this.terseInfo.showcase
+    }
+    saveUnitToTerseInfo(this.editModeTempData.terseInfo, unit, this.curUnitImageIdx)
+    this.fillShowcaseMid(this.editModeTempData.terseInfo, this.getPageProfileStats())
+    this.updateEditModeSecondTitle(this.editModeTempData.terseInfo)
+  }
+
+  function onUnitImageClick(obj) {
+    if (this.isEditModeEnabled == false)
+      return
+    this.curUnitImageIdx = obj?.imageIdx ?? 0;
+    let handler = this
+
+    openSelectUnitWnd({
+      unitsFilter = @(unit) isUnitBought(unit)
+      onUnitSelectFunction = @(unit) handler.onUnitSelect(unit),
+      showRecordsTableUnits = true
+    })
+  }
+
 }
 
 let openProfileSheetParamsFromPromo = {

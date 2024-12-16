@@ -45,6 +45,8 @@ let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
+let buildConditionsConfig = @(config, stage = -1) ::build_conditions_config(config, stage)
+
 let customLocTypes = ["gameModeInfoString", "missionPostfix"]
 
 let conditionsOrder = [
@@ -1011,7 +1013,7 @@ function getFullUnlockDescByName(unlockName, forUnlockedStage = -1, params = {})
   if (!unlock)
     return ""
 
-  let config = ::build_conditions_config(unlock, forUnlockedStage)
+  let config = buildConditionsConfig(unlock, forUnlockedStage)
   return getFullUnlockDesc(config, params)
 }
 
@@ -1048,7 +1050,7 @@ function getUnitRequireUnlockText(unit) {
 
 function getUnitRequireUnlockShortText(unit) {
   let unlockBlk = getUnlockById(unit.reqUnlock)
-  let cfg = ::build_conditions_config(unlockBlk)
+  let cfg = buildConditionsConfig(unlockBlk)
   let mainCond = getMainProgressCondition(cfg.conditions)
   return getUnlockMainCondDesc(
     mainCond, cfg.curVal, cfg.maxVal, { isProgressTextOnly = true })
@@ -1304,6 +1306,18 @@ function fillUnlockPurchaseButton(unlockData, unlockObj) {
   }
 }
 
+function getConditionsToUnlockShowcaseById(unlockId) {
+  let unlock = getUnlockById(unlockId)
+  if (unlock == null)
+    return ""
+
+  let config = buildConditionsConfig(unlock)
+  let subunlockCfg = getSubunlockCfg(config.conditions)
+  let conds = getUnlockCondsDescByCfg(subunlockCfg ?? config)
+
+  return conds
+}
+
 addTooltipTypes({
   UNLOCK = { //tooltip by unlock name
     isCustomTooltipFill = true
@@ -1332,7 +1346,7 @@ addTooltipTypes({
         return false
 
       let stage = params?.stage.tointeger() ?? -1
-      let config = ::build_conditions_config(unlock, stage)
+      let config = buildConditionsConfig(unlock, stage)
       let subunlockCfg = getSubunlockCfg(config.conditions)
 
       obj.getScene().replaceContent(obj, "%gui/unlocks/shortTooltip.blk", handler)
@@ -1391,7 +1405,7 @@ addTooltipTypes({
       if (!unlockBlk)
         return false
 
-      let config = ::build_conditions_config(unlockBlk)
+      let config = buildConditionsConfig(unlockBlk)
       let name = config.id
       let unlockType = config.unlockType
       let decoratorType = getTypeByUnlockedItemType(unlockType)
@@ -1467,4 +1481,5 @@ return {
   fillReward
   fillUnlockTitle
   fillUnlockPurchaseButton
+  getConditionsToUnlockShowcaseById
 }

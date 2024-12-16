@@ -35,6 +35,7 @@ let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getUnitTypeTextByUnit, getUnitTypeText } = require("%scripts/unit/unitInfo.nut")
+let { check_unit_mods_update } = require("%scripts/unit/unitChecks.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { get_game_params_blk, get_wpcost_blk, get_unittags_blk, get_modifications_blk } = require("blkGetters")
 let { round_by_value } = require("%sqstd/math.nut")
@@ -377,7 +378,7 @@ dmViewer = {
 
     if (! this.unit)
       return
-    this.isSecondaryModsValid = ::check_unit_mods_update(this.unit)
+    this.isSecondaryModsValid = check_unit_mods_update(this.unit)
             && ::check_secondary_weapon_mods_recount(this.unit)
   }
 
@@ -2849,6 +2850,8 @@ dmViewer = {
   function onEventGameLocalizationChanged(_p) {
     this.resetXrayCache()
   }
+
+  onEventModificationChanged = @(_p) this.maxValuesParams = skillParametersRequestType.MAX_VALUES.getParameters(-1, this.unit)
 }
 
 registerPersistentData("dmViewer", dmViewer, [ "active", "view_mode", "_currentViewMode", "isDebugMode",

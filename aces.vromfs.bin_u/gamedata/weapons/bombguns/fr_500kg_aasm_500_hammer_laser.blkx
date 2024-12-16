@@ -20,15 +20,16 @@
     ],
     "CxK": 1.25,
     "wingAreaMult": 3.5,
-    "finsAoaHor": 0.15,
-    "finsAoaVer": 0.15,
-    "distFromCmToStab": 0.6,
+    "finsAoaHor": 0.2,
+    "finsAoaVer": 0.2,
+    "distFromCmToStab": 0.675,
     "mass": 541.0,
     "massEnd": 516.0,
-    "timeFire": 25.0,
-    "force": 2000.0,
+    "timeFire": 30.0,
+    "force": 1670.0,
     "fireDelay": 2.0,
     "timeLife": 250.0,
+    "thrustVectoringAngle": 0.05,
     "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 1.0,
@@ -36,7 +37,7 @@
     "endSpeed": 0.0,
     "maxDistance": 70000.0,
     "minDistance": 3000.0,
-    "rangeMax": 60000.0,
+    "rangeMax": 70000.0,
     "guidanceType": "laser",
     "launchZoneDistance": 200.0,
     "normalizationPreset": "heat",
@@ -124,17 +125,32 @@
       "guidanceAutopilot": {
         "loftEnabled": true,
         "loftElevation": 10.0,
-        "loftTargetElevation": -30.0,
-        "loftAngleToAccelMult": 0.85,
-        "loftTargetOmegaMax": 0.85,
-        "timeOut": 1.0,
+        "loftTargetElevation": -75.0,
+        "loftAngleToAccelMult": 0.75,
+        "loftTargetOmegaMax": 1.95,
+        "timeToGain0": [
+          1.0,
+          0.0
+        ],
+        "timeToGain1": [
+          1.5,
+          3.0
+        ],
+        "timeToGain2": [
+          10.0,
+          3.0
+        ],
+        "timeToGain3": [
+          12.5,
+          1.0
+        ],
         "baseIndSpeed": 1800.0,
         "propNavMult": 4.0,
-        "reqAccelMax": 4.0,
-        "accelControlProp": 0.051,
-        "accelControlIntg": 0.124,
+        "reqAccelMax": 15.0,
+        "accelControlProp": 0.0275,
+        "accelControlIntg": 0.096,
         "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0004
+        "accelControlDiff": 0.0007
       }
     },
     "stabilityRicochetModifier": {

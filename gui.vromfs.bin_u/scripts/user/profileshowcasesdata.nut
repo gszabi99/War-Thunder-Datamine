@@ -40,10 +40,12 @@ function requestShowcases() {
 }
 
 function generateShowcaseInfo(name) {
-  if ((get_time_msec() - lastRequestTime) > MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC || allShowcasesData == null) {
+  if ((get_time_msec() - lastRequestTime) > MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC || allShowcasesData == null)
     requestShowcases()
+
+  if (allShowcasesData == null)
     return null
-  }
+
   if ((name ?? "") == "")
     name = allShowcasesData?.current ?? ""
   return {
@@ -67,12 +69,12 @@ function setCurrentShowcase(name) {
   allShowcasesData.current <- name
 }
 
-function onSignOut() {
+function onSignOut(_) {
   allShowcasesData = null
   lastRequestTime = 0
 }
 
-eventbus_subscribe("SignOut", onSignOut)
+eventbus_subscribe("on_sign_out", onSignOut)
 
 return {
   allShowcasesEventName

@@ -34,14 +34,13 @@ let function mkBattleIcon(battleInfo, areaBounds) {
 }
 
 function battles() {
-  let isShowBattles = Computed(@() battlesInfo.get().len() > 0 && isShowBattlesFilter.get())
-  if (!isShowBattles.get())
+  if (battlesInfo.get().len() == 0 || !isShowBattlesFilter.get())
     return {
-      watch = [isShowBattles, activeAreaBounds]
+      watch = [battlesInfo, isShowBattlesFilter, activeAreaBounds]
     }
 
   return {
-    watch = [isShowBattles, activeAreaBounds]
+    watch = [battlesInfo, isShowBattlesFilter, activeAreaBounds]
     size = activeAreaBounds.get().size
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER

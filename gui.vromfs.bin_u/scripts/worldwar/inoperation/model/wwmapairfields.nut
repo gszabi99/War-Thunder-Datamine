@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { wwGetPlayerSide, wwGetZoneName } = require("worldwar")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let savedAirfields = {}
 
@@ -11,11 +12,11 @@ function reset() {
 }
 
 function updateMapIcons() {
-  if (!::g_world_war.haveManagementAccessForAnyGroup())
+  if (!g_world_war.haveManagementAccessForAnyGroup())
     return
 
   let curAirfields = {}
-  let airfields = ::g_world_war.getAirfieldsArrayBySide(wwGetPlayerSide())
+  let airfields = g_world_war.getAirfieldsArrayBySide(wwGetPlayerSide())
   foreach (airfield in airfields)
     if (airfield.isValid())
       curAirfields[airfield.getIndex()] <- {

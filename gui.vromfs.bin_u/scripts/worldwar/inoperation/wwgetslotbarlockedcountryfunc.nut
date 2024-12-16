@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
+let { curOperationCountry } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
 function getLockedCountryDataBySquad() {
   let operationcountry = g_squad_manager.getWwOperationCountry()
@@ -16,12 +17,11 @@ function getLockedCountryDataBySquad() {
 }
 
 function getLockedCountryData() {
-  let curOperationCountry = ::g_world_war.getCurOperationCountry()
-  if (curOperationCountry == null)
+  if (curOperationCountry.get() == null)
     return getLockedCountryDataBySquad()
 
   return {
-    availableCountries = [curOperationCountry]
+    availableCountries = [curOperationCountry.get()]
     reasonText = loc("worldWar/cantChangeCountryInOperation")
   }
 }

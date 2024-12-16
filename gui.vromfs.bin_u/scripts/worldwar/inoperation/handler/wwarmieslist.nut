@@ -9,6 +9,7 @@ let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
 let { wwUpdateHoverArmyName } = require("worldwar")
 let { hoverArmyByName } = require("%scripts/worldWar/wwMapDataBridge.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -215,7 +216,7 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.setArmyViewSelection(obj.armyName, true)
-    let wwArmy = ::g_world_war.getArmyByName(obj.armyName)
+    let wwArmy = g_world_war.getArmyByName(obj.armyName)
     if (!wwArmy)
       return
 

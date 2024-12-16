@@ -40,6 +40,7 @@ let { get_charserver_time_sec } = require("chard")
 let { getUtcMidnight, secondsToString } = require("%scripts/time.nut")
 let timeBase = require("%appGlobals/timeLoc.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 let {expNewNationBonusDailyBattleCount = 1} = get_ranks_blk()
@@ -498,7 +499,7 @@ function getFakeUnitStatusTbl(unit, params) {
 
   let nameForLoc = unit?.isReqForFakeUnit ? split_by_chars(unit.name, "_")?[0] : unit.name
   let { esUnitType } = unitTypes.getByName(unit.name, false)
-  let isFakeAirRankOpen = ::get_units_count_at_rank(unit?.rank, esUnitType, unit?.country, true)
+  let isFakeAirRankOpen = get_units_count_at_rank(unit?.rank, esUnitType, unit?.country, true)
   let bitStatus = unit?.isReqForFakeUnit ? bit_unit_status.disabled
     : isFakeAirRankOpen ? bit_unit_status.owned
     : bit_unit_status.locked

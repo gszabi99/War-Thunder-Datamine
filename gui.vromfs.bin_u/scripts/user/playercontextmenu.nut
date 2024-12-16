@@ -32,10 +32,12 @@ let { openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
 let { is_console } = require("%sqstd/platform.nut")
-let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
+let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalWorldWarScripts.nut")
 let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
 let { get_mp_session_id_str } = require("multiplayer")
 let { g_chat } = require("%scripts/chat/chat.nut")
+let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
+
 //-----------------------------
 // params keys:
 //  - uid
@@ -203,8 +205,8 @@ let retrieveActions = function(contact, params, comms_state, callback) {
     }
     {
       text = loc("worldwar/inviteToOperation")
-      show = isWorldWarEnabled() && ::g_world_war.isWwOperationInviteEnable()
-      action = @() ::g_world_war.inviteToWwOperation(contact.uid)
+      show = isWorldWarEnabled() && isWwOperationInviteEnable()
+      action = @() inviteToWwOperation(contact.uid)
     }
     {
       text = loc("mainmenu/go_to_wishlist")

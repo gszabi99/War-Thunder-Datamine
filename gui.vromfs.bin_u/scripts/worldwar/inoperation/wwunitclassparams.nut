@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { getWeaponByName } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
 
 let sortIdxByExpClass = {
   fighter = 0
@@ -92,7 +93,7 @@ function getUnitClassData(unit, weapPreset = null) {
 
   if (unit.expClass == "fighter" && weapPreset != null) {
     let weaponmask = getWeaponByName(unit.unit, weapPreset)?.weaponmask ?? 0
-    let requiredWeaponmask = ::g_world_war.getWWConfigurableValue("fighterToAssaultWeaponMask", 0)
+    let requiredWeaponmask = getWWConfigurableValue("fighterToAssaultWeaponMask", 0)
     let isFighter = !(weaponmask & requiredWeaponmask)
     res.unitClass = isFighter ? WW_UNIT_CLASS.FIGHTER : WW_UNIT_CLASS.ASSAULT
     res.flyOutUnitClass = isFighter ? WW_UNIT_CLASS.FIGHTER : WW_UNIT_CLASS.BOMBER
@@ -103,7 +104,7 @@ function getUnitClassData(unit, weapPreset = null) {
 }
 
 function getFighterToAssaultWeapon(unit) {
-  let customClassWeaponMask = ::g_world_war.getWWConfigurableValue("fighterToAssaultWeaponMask", 0)
+  let customClassWeaponMask = getWWConfigurableValue("fighterToAssaultWeaponMask", 0)
   return unit?.getWeapons().findvalue(@(w) (w?.weaponmask ?? 0) & customClassWeaponMask)
 }
 

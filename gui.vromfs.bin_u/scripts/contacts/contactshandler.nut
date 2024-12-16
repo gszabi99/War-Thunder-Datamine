@@ -40,7 +40,8 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { CommunicationState } = require("%scripts/xbox/permissions.nut")
 let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
 let { is_console } = require("%sqstd/platform.nut")
-let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
+let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalWorldWarScripts.nut")
+let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -426,7 +427,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateCurPlayer(obj)
     if (this.curPlayer)
-      ::g_world_war.inviteToWwOperation(this.curPlayer.uid)
+      inviteToWwOperation(this.curPlayer.uid)
   }
 
   function updateContactButtonsVisibility(contact, contact_buttons_holder) {
@@ -475,7 +476,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
                            && isChatEnabled()
                            && canChat, contact_buttons_holder)
     showObjById("btn_ww_invite", isWorldWarEnabled()
-      && ::g_world_war.isWwOperationInviteEnable(), contact_buttons_holder)
+      && isWwOperationInviteEnable(), contact_buttons_holder)
 
     let showSquadInvite = hasFeature("SquadInviteIngame")
       && !isMe

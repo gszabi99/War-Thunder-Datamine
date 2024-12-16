@@ -14,6 +14,8 @@ let { wwGetOperationWinner, wwGetSpeedupFactor } = require("worldwar")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getObjectiveStatusByCode } = require("%scripts/misObjectives/objectiveStatus.nut")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
+let guiMission = require("guiMission")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 ::g_ww_objective_type <- {
   types = []
@@ -109,7 +111,7 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
     specificClassParamConvertion = {}
     convertParamValue = {
       timeSecScaled = @(value, _blk)
-        time.hoursToString(time.secondsToHours(value - ::g_world_war.getOperationTimeSec()), false, true)
+        time.hoursToString(time.secondsToHours(value - g_world_war.getOperationTimeSec()), false, true)
       holdTimeSec = @(value, _blk)
         time.hoursToString(time.secondsToHours(value), false, true)
       zonePercent_ = @(value, _blk)
@@ -157,7 +159,7 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
     getObjectiveStatus = function(sideValue, side) {
       local statusCode = -1
       if (sideValue)
-        statusCode = sideValue == side ? MISSION_OBJECTIVE_STATUS_COMPLETED : MISSION_OBJECTIVE_STATUS_FAILED
+        statusCode = sideValue == side ? (guiMission?.MISSION_OBJECTIVE_STATUS_COMPLETED ?? 2) : (guiMission?.MISSION_OBJECTIVE_STATUS_FAILED ?? 3)
       return getObjectiveStatusByCode(statusCode)
     }
 
@@ -170,7 +172,7 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
         return []
 
       side = this.invertUpdateValue ?
-        ww_side_val_to_name(::g_world_war.getOppositeSide(ww_side_name_to_val(side))) :
+        ww_side_val_to_name(g_world_war.getOppositeSide(ww_side_name_to_val(side))) :
         side
 
       let res = []
@@ -212,7 +214,7 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
           return true
 
         let sideName = ww_side_val_to_name(side)
-        let operationTime = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec()
+        let operationTime = (statusBlk?.timeSecScaled ?? 0) - g_world_war.getOperationTimeSec()
         nestObj.setValue(t.getName(dataBlk, statusBlk, sideName))
         let needStopTimer = t.needStopTimer(statusBlk, operationTime)
         return needStopTimer
@@ -277,7 +279,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     getNameId = function(dataBlk, _side) { return this.getParamId(dataBlk, "timeSecScaled") }
     getTitleLocId = function(dataBlk, statusBlk) {
       let hasAmount = dataBlk?.num != null
-      let hasTime = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec() > 0
+      let hasTime = (statusBlk?.timeSecScaled ?? 0) - g_world_war.getOperationTimeSec() > 0
       return $"{(hasAmount ? "Amount" : "Specified")}{(hasTime ? "" : "Timeless")}"
     }
 
@@ -295,7 +297,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
     timerUpdateFunctionTables = {
       timeSecScaled = function(nestObj, dataBlk, statusBlk, t, _updateParam, side) {
         let sideName = ww_side_val_to_name(side)
-        let timeSec = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec()
+        let timeSec = (statusBlk?.timeSecScaled ?? 0) - g_world_war.getOperationTimeSec()
         nestObj.setValue(t.getName(dataBlk, statusBlk, sideName))
         return t.needStopTimer(statusBlk, timeSec)
       }
@@ -434,7 +436,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
 
     getNameId = function(dataBlk, _side) { return this.getParamId(dataBlk, "timeSecScaled") }
     getTitleLocId = function(_dataBlk, statusBlk) {
-      let hasTime = (statusBlk?.timeSecScaled ?? 0) - ::g_world_war.getOperationTimeSec() > 0
+      let hasTime = (statusBlk?.timeSecScaled ?? 0) - g_world_war.getOperationTimeSec() > 0
       return $"Percentage{hasTime ? "" : "Timeless"}"
     }
 
@@ -460,7 +462,7 @@ enums.addTypesByGlobalName("g_ww_objective_type", {
         if (!checkObj(nestObj))
           return false
 
-        let attackerSide = ::g_world_war.getOppositeSide(ww_side_name_to_val(dataBlk?.defenderSide ?? ""))
+        let attackerSide = g_world_war.getOppositeSide(ww_side_name_to_val(dataBlk?.defenderSide ?? ""))
         let zonesPercent = dataBlk?.zonesPercent ?? 0
         let capturedPercent = statusBlk?[$"zonePercent_{attackerSide}"] ?? 0
 

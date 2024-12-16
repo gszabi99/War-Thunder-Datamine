@@ -13,6 +13,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+let { buyUnit } = require("%scripts/unit/unitActions.nut")
 
 let Discount = class (BaseItem) {
   static iType = itemType.DISCOUNT
@@ -71,7 +72,7 @@ let Discount = class (BaseItem) {
     let canBuy = this.isInventoryItem && this.amount && this.isActive()
       && unit != null && canBuyUnit(unit)
     if (canBuy) {
-      ::buyUnit(unit)
+      buyUnit(unit)
       return
     }
     let baseResult = base.doMainAction(cb, handler, params)

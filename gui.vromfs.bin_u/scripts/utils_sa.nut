@@ -131,41 +131,6 @@ function locOrStrip(text) {
   return (text.len() && text.slice(0, 1) != "#") ? stripTags(text) : text
 }
 
-
-function createNewPairKeyValueToBlk(blk, index, value) {
-  /*Known feature - cannot create a pair, if index is used for other type
-   i.e. ["string", 1, 2, 3, "string"] in this case will be ("string", "string") result
-   on other case [1, 2, 3, "string"] will be (1, 2, 3) result. */
-
-  blk[index] <- value
-}
-
-function assignValueToBlk(blk, index, value) {
-  blk[index] = value
-}
-
-local build_blk_from_container
-build_blk_from_container = function (container, arrayKey = "array") {
-  let blk = DataBlock()
-  let isContainerArray = u.isArray(container)
-
-  local addValue = assignValueToBlk
-  if (isContainerArray)
-    addValue = createNewPairKeyValueToBlk
-
-  foreach (key, value in container) {
-    local newValue = value
-    let index = isContainerArray ? arrayKey : key.tostring()
-    if (u.isTable(value) || u.isArray(value))
-      newValue = build_blk_from_container(value, arrayKey)
-
-    addValue(blk, index, newValue)
-  }
-
-  return blk
-}
-
-
 function buildTableRow(rowName, rowData, even = null, trParams = "", _tablePad = "@tblPad") {
   //tablePad not using, but passed through many calls of this function
   let view = {
@@ -251,7 +216,6 @@ return {
   is_multiplayer
   get_team_color
   get_mplayer_color
-  build_blk_from_container
   locOrStrip
   findNearest
   is_team_friendly

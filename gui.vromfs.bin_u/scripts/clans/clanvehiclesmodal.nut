@@ -5,7 +5,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost, Balance } = require("%scripts/money.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
-let unitActions = require("%scripts/unit/unitActions.nut")
+let { setResearchClanVehicleWithAutoFlush, flushSquadronExp, buy, buyUnit } = require("%scripts/unit/unitActions.nut")
 let { isAllClanUnitsResearched } = require("%scripts/unit/squadronUnitAction.nut")
 let { setColoredDoubleTextToButton, placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getUnitName, getUnitReqExp, getUnitExp, getUnitCost
@@ -129,13 +129,13 @@ local handlerClass = class (vehiclesModal.handlerClass) {
 
     let afterDoneFunc = Callback(function() { this.hasSpendExpProcess = false }, this)
     if (!isUnitInResearch(unit)) {
-      unitActions.setResearchClanVehicleWithAutoFlush(unit, afterDoneFunc)
+      setResearchClanVehicleWithAutoFlush(unit, afterDoneFunc)
       return
     }
 
     let flushExp = min(clan_get_exp(), getUnitReqExp(unit) - getUnitExp(unit))
     if (flushExp > 0) {
-      unitActions.flushSquadronExp(unit, { afterDoneFunc })
+      flushSquadronExp(unit, { afterDoneFunc })
       return
     }
     this.hasSpendExpProcess = false
@@ -153,7 +153,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
   needChosenResearchOfSquadron = @() clan_get_researching_unit() == ""
 
   function onBuy() {
-    unitActions.buy(this.lastSelectedUnit, "clan_vehicles")
+    buy(this.lastSelectedUnit, "clan_vehicles")
   }
 
   function onEventFlushSquadronExp(params) {
@@ -163,7 +163,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
       return base.onEventFlushSquadronExp(params)
 
     if (unit && canBuyUnit(unit))
-      ::buyUnit(unit)
+      buyUnit(unit)
     this.goBack()
   }
 

@@ -20,9 +20,8 @@ let { getBulletsList, getLinkedGunIdx,
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { SINGLE_WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { hasUnitAtRank } = require("%scripts/airInfo.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
+let { isCountryHaveUnitType, hasUnitAtRank, get_units_list } = require("%scripts/shop/shopCountryInfo.nut")
 let { getUnitWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
@@ -285,7 +284,7 @@ options.addTypes({
       let rank = options.RANK.value
       let country = options.COUNTRY.value
       let ediff = getCurrentGameModeEdiff()
-      local list = ::get_units_list(@(unit) unit.esUnitType == unitType
+      local list = get_units_list(@(unit) unit.esUnitType == unitType
         && unit.shopCountry == country && unit.rank == rank && unit.isVisibleInShop())
       list = list.map(@(unit) { unit, id = unit.name, br = unit.getBattleRating(ediff) })
       list.sort(@(a, b) a.br <=> b.br)

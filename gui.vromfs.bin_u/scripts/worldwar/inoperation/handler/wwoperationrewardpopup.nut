@@ -14,6 +14,7 @@ let { deep_clone } = require("%sqstd/underscore.nut")
 let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
+let { getLastPlayedOperationId } = require("%scripts/worldWar/worldWarStates.nut")
 
 let STATS_FIELDS = [
   lbCategoryTypes.PLAYER_KILLS
@@ -132,7 +133,7 @@ register_command(
 
     //uses dummy data when no actual one in user log
     if (!uLogObj) {
-      let operationId = ::g_world_war.lastPlayedOperationId
+      let operationId = getLastPlayedOperationId()
       uLogObj = operationId ? {
           operationId = operationId
           mapName = ::g_ww_global_status_type.MAPS.getList()?.keys()[0] ?? ""

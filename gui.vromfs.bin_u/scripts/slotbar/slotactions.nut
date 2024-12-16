@@ -10,6 +10,7 @@ let { repairWithMsgBox, buy, flushSquadronExp, research, canSpendGoldOnUnitWithP
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
+let { checkForResearch } = require("%scripts/unit/unitChecks.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 
@@ -102,7 +103,7 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
     return buy(unit, "slot_action_squad")
   if (unit.isCrossPromo)
     return openCrossPromoWnd(unit.crossPromoBanner)
-  if (::checkForResearch(unit)) // Also shows msgbox about requirements for Research or Purchase
+  if (checkForResearch(unit)) // Also shows msgbox about requirements for Research or Purchase
     return research(unit)
 }
 

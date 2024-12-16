@@ -13,6 +13,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let WwOperationLogView = require("%scripts/worldWar/inOperation/view/wwOperationLogView.nut")
 let { getWWLogsData, applyWWLogsFilter, saveLastReadWWLogMark,
   getUnreadedWWLogsNumber, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 const WW_LOG_MAX_DISPLAY_AMOUNT = 40
@@ -216,7 +217,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(tooltipObj))
       tooltipObj.tooltipId = tooltipId
 
-    foreach (side in ::g_world_war.getCommonSidesOrder()) {
+    foreach (side in g_world_war.getCommonSidesOrder()) {
       let armyContainerObj = battleObj.findObject($"army_side_{side}_container")
       if (!checkObj(armyContainerObj))
         continue
@@ -480,7 +481,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function markZoneByArmyName(armyName) {
-    let wwArmy = ::g_world_war.getArmyByName(armyName)
+    let wwArmy = g_world_war.getArmyByName(armyName)
     if (!wwArmy)
       return
 
@@ -533,7 +534,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onClickBattle(obj) {
     let battleId = obj.battleId
-    let battle = ::g_world_war.getBattleById(battleId)
+    let battle = g_world_war.getBattleById(battleId)
     if (battle.isValid()) {
       wwEvent("MapSelectedBattle", { battle = battle })
       return

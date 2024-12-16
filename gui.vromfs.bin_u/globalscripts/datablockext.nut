@@ -1,5 +1,6 @@
 let { isEqual } = require("isEqual.nut")
 let datablockCommon = require("%sqstd/datablock.nut")
+let { fillBlock } = datablockCommon
 
 local blkTypes = [ "string", "bool", "float", "integer", "int64", "instance", "null"]
 
@@ -60,6 +61,8 @@ function setBlkValueByPath(blk, path, val) {
     foreach(k,v in val)
       setBlkValueByPath(blk, k, v)
   }
+  else if (type(val) == "array")
+    fillBlock(key, blk, val)
   else {
     assert(false, $"Data type not suitable for writing to blk: {type(val)}")
     return false

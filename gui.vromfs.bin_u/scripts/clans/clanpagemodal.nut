@@ -41,7 +41,7 @@ let { openUpgradeClanWnd } = require("%scripts/clans/modify/upgradeClanModalHand
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
-let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
+let { isWorldWarEnabled, isWWSeasonActive } = require("%scripts/globalWorldWarScripts.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -467,7 +467,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.isWorldWarMode = tabObj?.isWorldWarMode == "yes"
     showObjById("clan_members_list_nest", !this.isWorldWarMode, this.scene)
     showObjById("lb_table_nest", this.isWorldWarMode, this.scene)
-    showObjById("season_over_notice", this.isWorldWarMode && !::g_world_war.isWWSeasonActive(), this.scene)
+    showObjById("season_over_notice", this.isWorldWarMode && !isWWSeasonActive(), this.scene)
 
     this.curPlayer = null
 

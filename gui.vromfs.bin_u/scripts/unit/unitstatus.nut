@@ -2,16 +2,22 @@ from "%scripts/dagui_natives.nut" import clan_get_exp, get_unit_elite_status, is
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
 
-let { bit_unit_status, getUnitReqExp, getUnitExp, getUnitCountry, getEsUnitType, getPrevUnit
+let { bit_unit_status, getUnitReqExp, getUnitExp, getUnitCountry, getPrevUnit
 } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { isUnitDefault } = require("%scripts/unit/isUnitDefault.nut")
 
 let isUnitInSlotbar = @(unit) getCrewByAir(unit) != null
+
+function isUnitDefault(unit) {
+  if (!("name" in unit))
+    return false
+  return is_default_aircraft(unit.name)
+}
 
 function isUnitMaxExp(unit) { //temporary while not exist correct status between in_research and canBuy
   return isUnitSpecial(unit) || (getUnitReqExp(unit) <= getUnitExp(unit))

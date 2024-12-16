@@ -8,7 +8,8 @@ let {TrophyMultiAward, isPrizeMultiAward} = require("%scripts/items/trophyMultiA
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
-let { getUnitTypeText, getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getUnitTypeText } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { getPrizeText, getPrizeCurrencyCfg, getDescriptonView, getPrizeTooltipConfig } = require("%scripts/items/prizesView.nut")
 

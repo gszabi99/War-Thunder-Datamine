@@ -14,6 +14,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { register_command } = require("console")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
+let { buyUnit } = require("%scripts/unit/unitActions.nut")
 
 let researched_items_table = persist("researched_items_table", @() [])
 let abandoned_researched_items_for_session = persist("abandoned_researched_items_for_session", @() [])
@@ -215,7 +216,7 @@ gui_handlers.researchUnitNotification <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function purchaseUnit() {
-    ::buyUnit(this.unit)
+    buyUnit(this.unit)
   }
 
   function trainCrew() {

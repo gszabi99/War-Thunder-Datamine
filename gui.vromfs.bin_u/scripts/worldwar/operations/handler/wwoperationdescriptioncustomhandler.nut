@@ -7,6 +7,8 @@ let { countSizeInItems, toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { fillConfigurableValues } = require("%scripts/worldWar/worldWarStates.nut")
 
 gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDescription) {
   sceneTplTeamStrenght = "%gui/worldWar/wwOperationDescriptionSideStrenght.tpl"
@@ -83,7 +85,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
     let maxHeight = this.guiScene.calcString("ph-2@blockInterval", mapNestObj) - itemDescHeight - statusTextHeight
     local minSize = maxHeight
     let top = this.guiScene.calcString("2@blockInterval", mapNestObj) + itemDescHeight
-    foreach (side in ::g_world_war.getCommonSidesOrder()) {
+    foreach (side in g_world_war.getCommonSidesOrder()) {
       let sideStrenghtObj = this.scene.findObject($"strenght_{ww_side_val_to_name(side)}")
       if (checkObj(sideStrenghtObj)) {
         let curWidth = toPixels(
@@ -100,7 +102,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
     mapNestObj.pos = $"50%pw-50%w, 0.5*({maxHeight}-{minSize})+{top}"
 
     if (this.descItem)
-      ::g_world_war.updateOperationPreviewAndDo(this.descItem.id, Callback(function() {
+      g_world_war.updateOperationPreviewAndDo(this.descItem.id, Callback(function() {
           this.updateStatus()
           this.updateTeamsInfo()
         }, this), true)
@@ -120,7 +122,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
 
     let activeBattlesCountObj = this.scene.findObject("operation_short_info_text")
     if (checkObj(activeBattlesCountObj)) {
-      let battlesCount = ::g_world_war.getBattles(
+      let battlesCount = g_world_war.getBattles(
         function(wwBattle) {
           return wwBattle.isActive()
         },
@@ -138,7 +140,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
     if (checkObj(isClanParticipateObj)) {
       local isMyClanParticipateText = ""
       if (this.descItem.isMyClanParticipate())
-        foreach (idx, side in ::g_world_war.getCommonSidesOrder())
+        foreach (idx, side in g_world_war.getCommonSidesOrder())
           if (this.descItem.isMyClanSide(side)) {
             isMyClanParticipateText = loc("worldwar/operation/isClanParticipate")
             isClanParticipateObj["text-align"] = (idx == 0 ? "left" : "right")
@@ -147,11 +149,11 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
 
       isClanParticipateObj.setValue(isMyClanParticipateText)
     }
-    ::g_world_war.updateConfigurableValues()
+    fillConfigurableValues()
   }
 
   function updateTeamsInfo() {
-    foreach (side in ::g_world_war.getCommonSidesOrder()) {
+    foreach (side in g_world_war.getCommonSidesOrder()) {
       let sideName = ww_side_val_to_name(side)
       let isInvert = side == SIDE_2
 
@@ -198,7 +200,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
     if (!this.descItem)
       return viewData
 
-    let armyGroups = ::g_world_war.getArmyGroupsBySide(side)
+    let armyGroups = g_world_war.getArmyGroupsBySide(side)
     let clansPerColumn = countSizeInItems(parentObj, 1, "@leaderboardTrHeight",
       0, 0, 0, "2@wwWindowListBackgroundPadding").itemsCountY
 
@@ -231,7 +233,7 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
     unitContextMenuState({
       unitObj = unitObj
       actionsNames = this.getSlotbarActions()
-      curEdiff = ::g_world_war.defaultDiffCode
+      curEdiff = g_world_war.defaultDiffCode
       isSlotbarEnabled = false
     }.__update(this.getUnitParamsFromObj(unitObj)))
   }

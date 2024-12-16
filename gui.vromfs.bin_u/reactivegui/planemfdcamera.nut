@@ -10,6 +10,12 @@ let tads = require("planeCockpit/mfdTads.nut")
 let platan = require("planeCockpit/mfdPlatan.nut")
 let { IsMfdSightHudVisible, MfdSightPosSize } = require("airState.nut")
 let hudUnitType = require("hudUnitType.nut")
+let { createScriptComponent } = require("utils/builders.nut")
+
+let damocles = createScriptComponent("%rGui/planeCockpit/mfdDamocles.das", {
+  fontId = Fonts.hud
+  isMetricUnits = true
+})
 
 let mfdCameraSetting = Computed(function() {
   let res = {
@@ -18,6 +24,7 @@ let mfdCameraSetting = Computed(function() {
     isTads = false
     isTadsApache = false
     isPlatan = false
+    isDamocles = false
     lineWidthScale = 1.0
     fontScale = 1.0
   }
@@ -33,6 +40,7 @@ let mfdCameraSetting = Computed(function() {
     isTads = blk.getBool("mfdCamTads", false)
     isTadsApache = blk.getBool("mfdCamTadsApache", false)
     isPlatan = blk.getBool("mfdCamPlatan", false)
+    isDamocles = blk.getBool("mfdCamDamocles", false)
 
     lineWidthScale = blk.getReal("mfdCamLineScale", 1.0)
     fontScale = blk.getReal("mfdCamFontScale", 1.0)
@@ -40,16 +48,17 @@ let mfdCameraSetting = Computed(function() {
 })
 
 let planeMfdCamera = @(width, height) function() {
-  let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale, isPlatan} = mfdCameraSetting.value
+  let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale, isPlatan, isDamocles} = mfdCameraSetting.value
   return {
     watch = mfdCameraSetting
     children = [
-      (isShkval ? shkval(width, height, lineWidthScale, fontScale) :
-      (isShkvalKa52 ? shkvalKa52(width, height) :
-      (isTads ? tads(width, height, false) :
-      (isTadsApache ? tads(width, height, true) :
-      (isPlatan ? platan(width, height) :
-      (hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0)))))))
+      isShkval ? shkval(width, height, lineWidthScale, fontScale) :
+      isShkvalKa52 ? shkvalKa52(width, height) :
+      isTads ? tads(width, height, false) :
+      isTadsApache ? tads(width, height, true) :
+      isPlatan ? platan(width, height) :
+      isDamocles ? damocles(width, height) :
+      hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0)
     ]
   }
 }

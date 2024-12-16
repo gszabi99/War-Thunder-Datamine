@@ -4,6 +4,7 @@ from "%scripts/queue/queueType.nut" import g_queue_type
 let { get_time_msec } = require("dagor.time")
 let { secondsToMilliseconds } = require("%scripts/time.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
 
 local refreshMinTimeSec = 2 //sec
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2
@@ -81,7 +82,7 @@ let WwQueuesData = class {
   }
 
   function getRefreshMinTimeMsec() {
-    refreshMinTimeSec = ::g_world_war.getWWConfigurableValue("refreshQueueInfoTimeSec", refreshMinTimeSec)
+    refreshMinTimeSec = getWWConfigurableValue("refreshQueueInfoTimeSec", refreshMinTimeSec)
     return secondsToMilliseconds(refreshMinTimeSec)
   }
 }

@@ -1,5 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/utils_sa.nut" import build_blk_from_container
 
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
@@ -8,6 +7,8 @@ let { wwGetOperationTimeMillisec, wwGetLoadedArmyType } = require("worldwar")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let { WwArtilleryAmmo } = require("%scripts/worldWar/inOperation/model/wwArtilleryAmmo.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
+let DataBlock = require("DataBlock")
+let { getArtilleryUnitParamsByBlk } = require("%scripts/worldWar/worldWarStates.nut")
 
 let WwReinforcementArmy = class (WwFormation) {
   suppliesEndMillisec = 0
@@ -39,10 +40,12 @@ let WwReinforcementArmy = class (WwFormation) {
     this.loadedArmyType = wwGetLoadedArmyType(this.name, true)
     this.hasArtilleryAbility = armyBlock?.specs.canArtilleryFire ?? false
     this.units = wwActionsWithUnitsList.loadUnitsFromBlk(armyBlock.getBlockByName("units"))
-    this.loadedArmies = build_blk_from_container(reinforcementBlock?.loadedArmies)
+    this.loadedArmies = DataBlock()
+    if (reinforcementBlock?.loadedArmies)
+      this.loadedArmies.setFrom(reinforcementBlock.loadedArmies)
 
     let armyArtilleryParams = this.hasArtilleryAbility ?
-      ::g_world_war.getArtilleryUnitParamsByBlk(armyBlock.getBlockByName("units")) : null
+      getArtilleryUnitParamsByBlk(armyBlock.getBlockByName("units")) : null
     this.artilleryAmmo.setArtilleryParams(armyArtilleryParams)
     this.artilleryAmmo.update(this.name, armyBlock.getBlockByName("artilleryAmmo"))
   }

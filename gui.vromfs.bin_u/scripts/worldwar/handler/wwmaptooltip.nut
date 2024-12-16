@@ -8,7 +8,7 @@ let { WW_MAP_TOOLTIP_TYPE_BATTLE, WW_MAP_TOOLTIP_TYPE_ARMY, WW_MAP_TOOLTIP_TYPE_
 } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
-
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
@@ -108,7 +108,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updatePos()
 
     if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.ARMY) {
-      let hoveredArmy = ::g_world_war.getArmyByName(this.specs.currentId)
+      let hoveredArmy = g_world_war.getArmyByName(this.specs.currentId)
       this.destroyDescriptionTimer()
 
       this.descriptionTimer = Timer(
@@ -128,7 +128,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
 
         battleDescObj.width = $"{(2 * maxTeamContentWidth)}+4@framePadding"
 
-        let hoveredBattle = ::g_world_war.getBattleById(this.specs.currentId)
+        let hoveredBattle = g_world_war.getBattleById(this.specs.currentId)
         this.destroyDescriptionTimer()
 
         this.descriptionTimer = Timer(
@@ -140,7 +140,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.AIRFIELD) {
 
-      let hoveredAirfield = ::g_world_war.getAirfieldByIndex(this.specs.currentId)
+      let hoveredAirfield = g_world_war.getAirfieldByIndex(this.specs.currentId)
       this.destroyDescriptionTimer()
 
       this.descriptionTimer = Timer(

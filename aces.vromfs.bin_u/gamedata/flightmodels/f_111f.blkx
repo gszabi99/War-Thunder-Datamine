@@ -3124,6 +3124,10 @@
       {
         "name": "f_111f_gbu_15_ir",
         "blk": "gameData/FlightModels/weaponPresets/f_111f_gbu_15_ir.blk"
+      },
+      {
+        "name": "f_111f_agm_130",
+        "blk": "gameData/FlightModels/weaponPresets/f_111f_agm_130.blk"
       }
     ]
   },
@@ -3344,6 +3348,10 @@
             {
               "slot": 2,
               "preset": "agm_65d_x3"
+            },
+            {
+              "slot": 2,
+              "preset": "agm_130_slot2"
             }
           ]
         }
@@ -3563,6 +3571,26 @@
                 0.0,
                 0.1
               ]
+            }
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "agm_130_slot2",
+            "reqModification": "us_agm_130",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot1_lapa",
+                "pylon_pivot1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_agm_130a.blk",
+              "emitter": "bomb3_gbu",
+              "bullets": 1,
+              "external": false,
+              "separate": true,
+              "machLimit": 1.4
             }
           },
           {
@@ -4542,6 +4570,26 @@
             }
           },
           {
+            "iconType": "guided_bomb_grey",
+            "name": "agm_130_slot6",
+            "reqModification": "us_agm_130",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot4_lapa",
+                "pylon_pivot4"
+              ]
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_agm_130a.blk",
+              "emitter": "bomb6_gbu",
+              "bullets": 1,
+              "external": false,
+              "separate": true,
+              "machLimit": 1.4
+            }
+          },
+          {
             "iconType": "missile_air_to_uni",
             "name": "agm_65d",
             "reqModification": "us_agm_65d",
@@ -4655,6 +4703,10 @@
             {
               "slot": 6,
               "preset": "agm_65d_x3"
+            },
+            {
+              "slot": 6,
+              "preset": "agm_130_slot6"
             }
           ]
         }
@@ -4963,8 +5015,13 @@
     },
     "us_gbu_10_gbu_24": {
       "reqModification": "us_gbu_12",
-      "tier": 4,
+      "tier": 3,
       "modClass": "weapon"
+    },
+    "us_gbu_15v1": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "us_gbu_10_gbu_24"
     },
     "us_500lb_mk82": {
       "modClass": "weapon",
@@ -4980,11 +5037,11 @@
       "tier": 3,
       "reqModification": "us_750lb_m117a1"
     },
-    "us_gbu_15v1": {
-      "modClass": "weapon",
-      "tier": 4,
+    "us_agm_130": {
       "prevModification": "us_2000lb_mk84",
-      "reqModification": "us_gbu_10_gbu_24"
+      "reqModification": "us_gbu_15v1",
+      "tier": 4,
+      "modClass": "weapon"
     },
     "us_aim_9l": {
       "tier": 1,

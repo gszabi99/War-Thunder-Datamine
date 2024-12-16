@@ -1,6 +1,5 @@
 from "%scripts/dagui_natives.nut" import is_country_available
 from "%scripts/dagui_library.nut" import *
-from "%scripts/utils_sa.nut" import build_blk_from_container
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -12,6 +11,7 @@ let { getUrlOrFileMissionMetaInfo, isMissionExtrByName } = require("%scripts/mis
 let { needShowOverrideSlotbar } = require("%scripts/events/eventInfo.nut")
 let { isRequireUnlockForUnit } = require("%scripts/unit/unitStatus.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
+let { convertBlk } = require("%sqstd/datablock.nut")
 
 let overrrideSlotbarMissionName = mkWatched(persist, "overrrideSlotbarMissionName", "") //recalc slotbar only on mission change
 let overrideSlotbar = mkWatched(persist, "overrideSlotbar", null) //null or []
@@ -51,28 +51,27 @@ function getMissionEditSlotbarBlk(missionName) {
 
 function calcSlotbarOverrideByMissionName(missionName, event = null) {
   local res = null
-  let gmEditSlotbar = event?.mission_decl.editSlotbar
-  let editSlotbar = gmEditSlotbar ? build_blk_from_container(gmEditSlotbar) //!!!FIX ME Will be better to turn editSlotbar data block from missions config into table
-    : getMissionEditSlotbarBlk(missionName)
+  let editSlotBarData = event?.mission_decl.editSlotbar ?? getMissionEditSlotbarBlk(missionName)
+  let editSlotbar = isDataBlock(editSlotBarData) ? convertBlk(editSlotBarData) : editSlotBarData
+
   if (!editSlotbar)
     return res
 
   res = []
   local crewId = -1 //negative crews are invalid, so we prevent any actions with such crews.
   foreach (country in shopCountriesList) {
-    let countryBlk = editSlotbar?[country]
-    if (!isDataBlock(countryBlk) || !countryBlk.blockCount()
+    let countryInfo = editSlotbar?[country]
+    if (!countryInfo || !countryInfo.len()
       || !is_country_available(country))
       continue
 
     let countryData = makeCrewsCountryData(country)
     res.append(countryData)
-    for (local i = 0; i < countryBlk.blockCount(); i++) {
-      let crewBlk = countryBlk.getBlock(i)
-      if (crewBlk?.needToShowInEventWnd == false)
+    foreach (crewName, crewData in countryInfo) {
+      if (crewData?.needToShowInEventWnd == false)
         continue
 
-      addCrewToCountryData(countryData, crewId--, res.len() - 1, crewBlk.getBlockName())
+      addCrewToCountryData(countryData, crewId--, res.len() - 1, crewName)
     }
   }
   if (!res.len())

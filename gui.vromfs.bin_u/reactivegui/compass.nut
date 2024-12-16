@@ -112,25 +112,29 @@ let mkLwsMark = @(lwsDirection, size, color) function(){
   }
 }
 
-let mkAircraftMark = @(aircraftDirection, size, color) function(){
-  let compassAngle = (CompassValue.value > 0 ? 360 : 0) - CompassValue.value
-  let step = 5.0;
+let function mkAircraftMark(markData, size, color) {
+  let { direction = markData, iconId = "army_fighter.svg" } = markData
+  let image = Picture($"ui/gameuiskin#{iconId.split(":")[0]}:{imageSize[0]}:{imageSize[1]}:P")
+  return function() {
+    let compassAngle = (CompassValue.value > 0 ? 360 : 0) - CompassValue.value
+    let step = 5.0;
 
-  local delta = aircraftDirection - compassAngle
-  let sign = (delta > 0) ? 1 : -1
-  delta = fabs(delta) > 180 ? delta - sign * 360 : delta
+    local delta = direction - compassAngle
+    let sign = (delta > 0) ? 1 : -1
+    delta = fabs(delta) > 180 ? delta - sign * 360 : delta
 
-  let offset = 2 * delta * size[1] / step
-  let halfImageSize = imageSize[0] / 2
-  let posX = min(max(size[0] / 2 + offset, -halfImageSize), size[0]) - halfImageSize
+    let offset = 2 * delta * size[1] / step
+    let halfImageSize = imageSize[0] / 2
+    let posX = min(max(size[0] / 2 + offset, -halfImageSize), size[0]) - halfImageSize
 
-  return {
-    watch = CompassValue
-    rendObj = ROBJ_IMAGE
-    color = color
-    size = imageSize
-    pos = [posX, 0]
-    image = Picture($"ui/gameuiskin#army_fighter.svg:{imageSize[0]}:{imageSize[1]}:P")
+    return {
+      watch = CompassValue
+      rendObj = ROBJ_IMAGE
+      color = color
+      size = imageSize
+      pos = [posX, 0]
+      image
+    }
   }
 }
 

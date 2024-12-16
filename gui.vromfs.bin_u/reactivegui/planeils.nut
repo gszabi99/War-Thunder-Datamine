@@ -2,6 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { IlsVisible, IlsPosSize, BlkFileName } = require("planeState/planeToolsState.nut")
 let DataBlock = require("DataBlock")
+let { createScriptComponent } = require("utils/builders.nut")
 
 let { ilsAVQ7 } = require("planeIlses/ilsAVQ7.nut")
 let ASP17 = require("planeIlses/ilsASP17.nut")
@@ -34,6 +35,11 @@ let ilsF20 = require("planeIlses/ilsF20.nut")
 let ilsF117 = require("planeIlses/ilsF117.nut")
 let ilsSu34 = require("planeIlses/ilsSu34.nut")
 let {IlsTyphoon} = require("planeIlses/ilsTyphoon.nut")
+
+let ilsRafale = createScriptComponent("%rGui/planeIlses/ilsRafale.das", {
+  fontId = Fonts.hud
+  isMetricUnits = true
+})
 
 let ilsSetting = Computed(function() {
   let res = {
@@ -75,6 +81,7 @@ let ilsSetting = Computed(function() {
     isF117 = false
     isSu34 = false
     isTyphoon = false
+    isIlsRafale = false
   }
   if (BlkFileName.value == "")
     return res
@@ -122,21 +129,22 @@ let ilsSetting = Computed(function() {
     isF117 = blk.getBool("ilsF117", false)
     isSu34 = blk.getBool("ilsSu34", false)
     isTyphoon = blk.getBool("ilsTyphoon", false)
+    isIlsRafale = blk.getBool("ilsRafale", false)
   }
 })
 
 let planeIls = @(width, height) function() {
-
   let { isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
     is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
     isMarconi, isTornado, isElbit, isIls28K, isASG23, isF15a, isEP17, isAmx, isVDO,
-    isKai24p, isF20, isChinaLang, isMetric, isKaiserA10c, isF15e, isF117, isSu34, isTyphoon } = ilsSetting.value
+    isKai24p, isF20, isChinaLang, isMetric, isKaiserA10c, isF15e, isF117, isSu34, isTyphoon,
+    isIlsRafale } = ilsSetting.value
   let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isLCOSS ||
       isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
       isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
       isTornado || isElbit || isIls28K || isASG23 || isF15a || isEP17 || isAmx || isVDO || isKai24p ||
-      isF20 || isKaiserA10c || isF15e || isF117 || isSu34 || isTyphoon)
+      isF20 || isKaiserA10c || isF15e || isF117 || isSu34 || isTyphoon || isIlsRafale)
   return {
     watch = ilsSetting
     children = [
@@ -174,6 +182,7 @@ let planeIls = @(width, height) function() {
       (isSu34 ? ilsSu34(width, height) : null),
       (isTyphoon ? IlsTyphoon(width, height) : null),
       (isStockHeli ? StockHeliIls() : null),
+      (isIlsRafale ? ilsRafale(width, height) : null)
     ]
   }
 }

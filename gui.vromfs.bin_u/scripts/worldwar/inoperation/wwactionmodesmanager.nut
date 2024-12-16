@@ -8,6 +8,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { mapCellUnderCursor, armyUnderCursor, mapCoordsUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 function setActionMode(modeId = AUT_None) {
   wwSetCurrActionType(modeId)
@@ -23,7 +24,7 @@ function useTransportAction(requestActionCb) {
   let loadArmyName = armyUnderCursor.get() ?? ""
   let cellIdx = mapCellUnderCursor.get()
   foreach (armyName in ww_get_selected_armies_names())
-    if (::g_world_war.getArmyByName(armyName).isTransport())
+    if (g_world_war.getArmyByName(armyName).isTransport())
       requestActionCb(armyName, loadArmyName, cellIdx)
 }
 
@@ -39,7 +40,7 @@ let actionModesById = {
       let taskId = ww_send_operation_request("cln_ww_artillery_strike", blk)
       addTask(taskId, null, @() setActionMode(),
         Callback(function (_errorCode) {
-          ::g_world_war.popupCharErrorMsg("cant_fire", this.getTitle())
+          g_world_war.popupCharErrorMsg("cant_fire", this.getTitle())
         }, this))
     }
     makeArtilleryFire = function makeArtilleryFire(mapPos, army) {
@@ -55,7 +56,7 @@ let actionModesById = {
       let mapPos = mapCoordsUnderCursor.get()
       let selectedArmies = ww_get_selected_armies_names()
       for (local i = 0; i < selectedArmies.len(); i++) {
-        let army = ::g_world_war.getArmyByName(selectedArmies[i])
+        let army = g_world_war.getArmyByName(selectedArmies[i])
         if (army.hasArtilleryAbility)
           this.makeArtilleryFire(mapPos, army)
       }
@@ -72,7 +73,7 @@ let actionModesById = {
     requestAction = function requestAction(transportName, armyName, _cellIdx) {
       let errorId = wwGetLoadArmyToTransportError(transportName, armyName)
       if (errorId != "") {
-        ::g_world_war.popupCharErrorMsg(this.errorGroupName, "", errorId)
+        g_world_war.popupCharErrorMsg(this.errorGroupName, "", errorId)
         return
       }
 
@@ -81,7 +82,7 @@ let actionModesById = {
       params.setStr("armyName", armyName)
       let taskId = ww_send_operation_request("cln_ww_load_transport", params)
       addTask(taskId, null, @() onSuccessAction(),
-        Callback(@(_errorCode) ::g_world_war.popupCharErrorMsg(this.errorGroupName), this))
+        Callback(@(_errorCode) g_world_war.popupCharErrorMsg(this.errorGroupName), this))
     }
     useAction = @() useTransportAction(this.requestAction)
     setMode = @() setActionMode(AUT_TransportLoad)
@@ -92,7 +93,7 @@ let actionModesById = {
     requestAction = function requestAction(transportName, armyName, cellIdx) {
       let errorId = wwGetUnloadArmyFromTransportError(transportName, armyName, cellIdx)
       if (errorId != "") {
-        ::g_world_war.popupCharErrorMsg(this.errorGroupName, "", errorId)
+        g_world_war.popupCharErrorMsg(this.errorGroupName, "", errorId)
         return
       }
 
@@ -102,7 +103,7 @@ let actionModesById = {
       params.setInt("cellIdx", cellIdx)
       let taskId = ww_send_operation_request("cln_ww_unload_transport", params)
       addTask(taskId, null, @() onSuccessAction(),
-        Callback(@(_errorCode) ::g_world_war.popupCharErrorMsg(this.errorGroupName), this))
+        Callback(@(_errorCode) g_world_war.popupCharErrorMsg(this.errorGroupName), this))
     }
     requestActionForAllLoadedArmy = function requestActionForAllLoadedArmy(transportName, _armyName, cellIdx) {
       let loadedTransportArmy = transportManager.getLoadedTransport()?[transportName]

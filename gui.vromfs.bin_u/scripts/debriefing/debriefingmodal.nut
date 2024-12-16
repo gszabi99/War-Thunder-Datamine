@@ -134,8 +134,10 @@ let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
 let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
 } = require("%scripts/leaderboard/leaderboardHelpers.nut")
-let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
+let { isWorldWarEnabled, saveLastPlayed } = require("%scripts/globalWorldWarScripts.nut")
 let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { updateOperationPreviewAndDo, openOperationsOrQueues, isLastFlightWasWwBattle,
+  openWWMainWnd } = require("%scripts/globalWorldwarUtils.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -2625,7 +2627,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     let operationId = wwBattleResults.operationId
     if (operationId)
-      ::g_world_war.updateOperationPreviewAndDo(operationId, taskCallback)
+      updateOperationPreviewAndDo(operationId, taskCallback)
   }
 
   function showTabsList() {
@@ -2842,7 +2844,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       if (!g_squad_manager.isInSquad() || g_squad_manager.isSquadLeader())
         goDebriefingNextFunc = function() {
           handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mainmenu" }) //do not need to back to debriefing
-          ::g_world_war.openOperationsOrQueues(true)
+          openOperationsOrQueues(true)
         }
       return
     }
@@ -3041,7 +3043,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function needShowWorldWarOperationBtn() {
-    return isWorldWarEnabled() && ::g_world_war.isLastFlightWasWwBattle
+    return isWorldWarEnabled() && isLastFlightWasWwBattle.get()
   }
 
   function switchWwOperationToCurrent() {
@@ -3050,19 +3052,19 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     let wwBattleRes = this.getWwBattleResults()
     if (wwBattleRes)
-      ::g_world_war.saveLastPlayed(wwBattleRes.getOperationId(), wwBattleRes.getPlayerCountry())
+      saveLastPlayed(wwBattleRes.getOperationId(), wwBattleRes.getPlayerCountry())
     else {
       let missionRules = getCurMissionRules()
       let operationId = missionRules?.missionParams?.customRules?.operationId
       if (!operationId)
         return
 
-      ::g_world_war.saveLastPlayed(operationId.tointeger(), profileCountrySq.value)
+      saveLastPlayed(operationId.tointeger(), profileCountrySq.value)
     }
 
     goDebriefingNextFunc = function() {
       handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mainmenu" })
-      ::g_world_war.openMainWnd()
+      openWWMainWnd()
     }
   }
 

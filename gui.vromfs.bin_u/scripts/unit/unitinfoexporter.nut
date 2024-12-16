@@ -9,6 +9,7 @@ let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX } = require("%scripts/unit/unitInfoType.nut")
+let { check_unit_mods_update } = require("%scripts/unit/unitChecks.nut")
 let { export_calculations_parameters_for_wta } = require("unitCalculcation")
 let { saveJson } = require("%sqstd/json.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
@@ -328,7 +329,7 @@ let class UnitInfoExporter {
     this.debugLog($"Exporter: process unit {curUnit.name}; {this.unitsList.len()} left")
     if (!curUnit.modificators || !curUnit.minChars || !curUnit.maxChars) {
       this.debugLog($"Exporter: wait for calculating parameters for unit {curUnit.name}")
-      return ::check_unit_mods_update(curUnit, null, true, true)
+      return check_unit_mods_update(curUnit, null, true, true)
     }
 
     let groupId = curUnit.showOnlyWhenBought || curUnit.showOnlyWhenResearch ? EXTENDED_GROUP : BASE_GROUP

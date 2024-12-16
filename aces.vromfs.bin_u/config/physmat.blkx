@@ -1710,6 +1710,32 @@
       "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_concrete",
       "aircraftWingsFrictionFxId": "aircraft_collision_wing_concrete"
     },
+    "rocksSlipperyHigh": {
+      "bf_class": "rocksSlipperyHigh",
+      "explMat": "default",
+      "trackEffectsPreset": "ground",
+      "trackDirtSpawnRateMult": 1.0,
+      "explosionPatchShader": "explosion_patch",
+      "explosionPatchTexture": "explosion_patch_rocks_n",
+      "explosionPatchTexcoord": [
+        0.0,
+        0.0,
+        1.0,
+        1.0
+      ],
+      "dustTargetLevel": 0.2,
+      "mudTargetLevel": 0.0,
+      "dustFactor": 0.05,
+      "mudFactor": 0.1,
+      "trackDustFactor": 0.5,
+      "trackMudFactor": 1.0,
+      "tankTracksTexId": 3,
+      "aircraftWheelsDustFx": "aircraft_wheels_ground_concrete",
+      "aircraftWheelsFrictionFx": "aircraft_wheels_friction_concrete",
+      "aircraftPropellerGroundDustFx": "aircraft_propellers_concrete",
+      "aircraftFuselageFrictionFxId": "aircraft_collision_fuselage_concrete",
+      "aircraftWingsFrictionFxId": "aircraft_collision_wing_concrete"
+    },
     "transparentBeton": {
       "bf_class": "transparentBeton",
       "color": [
@@ -1848,6 +1874,10 @@
         "fk": 0.7,
         "rollingFrictionK": 0.07
       },
+      "rocksSlipperyHigh": {
+        "fk": 0.2,
+        "rollingFrictionK": 0.04
+      },
       "fabric": {
         "fk": 0.8,
         "rollingFrictionK": 0.09
@@ -1941,6 +1971,10 @@
       "rocksSlippery": {
         "fk": 0.65,
         "rollingFrictionK": 0.09
+      },
+      "rocksSlipperyHigh": {
+        "fk": 0.25,
+        "rollingFrictionK": 0.04
       },
       "fabric": {
         "fk": 0.8,

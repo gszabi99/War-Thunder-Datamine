@@ -9,6 +9,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 gui_handlers.WwObjectivesInfo <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -36,7 +37,7 @@ gui_handlers.WwObjectivesInfo <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     this.teamObjectiveHandlersArray = []
-    foreach (side in ::g_world_war.getSidesOrder())
+    foreach (side in g_world_war.getSidesOrder())
       this.initSideBlock(side, ww_side_val_to_name(side))
     this.markSeenCurObjective()
     this.guiScene.playSound("ww_globe_battle_select")
@@ -71,7 +72,7 @@ gui_handlers.WwObjectivesInfo <- class (gui_handlers.BaseGuiHandlerWT) {
   function getTeamsData() {
     let mySide = wwGetPlayerSide()
     let teams = []
-    foreach (side in ::g_world_war.getSidesOrder()) {
+    foreach (side in g_world_war.getSidesOrder()) {
       teams.append({
         teamName = ww_side_val_to_name(side)
         teamColor = side == mySide ? "blue" : "red"

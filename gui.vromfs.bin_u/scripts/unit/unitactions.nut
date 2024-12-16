@@ -1,20 +1,30 @@
-from "%scripts/dagui_natives.nut" import clan_get_exp, shop_set_researchable_unit, shop_get_researchable_unit_name, clan_get_researching_unit, char_send_blk, char_send_action_and_load_profile
+from "%scripts/dagui_natives.nut" import clan_get_exp, shop_set_researchable_unit, shop_get_researchable_unit_name, clan_get_researching_unit, char_send_blk, char_send_action_and_load_profile, shop_purchase_aircraft
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
-
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getEsUnitType, getUnitName, getUnitCountry, getUnitExp
+let { getEsUnitType, getUnitName, getUnitCountry, getUnitExp, getUnitCost
 } = require("%scripts/unit/unitInfo.nut")
-let { canResearchUnit, isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
-let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { canBuyNotResearched, canResearchUnit, isUnitInResearch, isUnitResearched, isUnitFeatureLocked
+} = require("%scripts/unit/unitStatus.nut")
+let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
+let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
+let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
+
+enum CheckFeatureLockAction {
+  BUY,
+  RESEARCH
+}
 
 function canSpendGoldOnUnitWithPopup(unit) {
   if (unit.unitType.canSpendGold())
@@ -23,6 +33,92 @@ function canSpendGoldOnUnitWithPopup(unit) {
   addPopup(getUnitName(unit), loc("msgbox/unitTypeRestrictFromSpendGold"),
     null, null, null, "cant_spend_gold_on_unit")
   return false
+}
+
+function impl_buyUnit(unit, needSelectCrew = true) {
+  if (!unit)
+    return false
+  if (unit.isBought())
+    return false
+
+  let canBuyNotResearchedUnit = canBuyNotResearched(unit)
+  let unitCost = canBuyNotResearchedUnit ? unit.getOpenCost() : getUnitCost(unit)
+  if (!checkBalanceMsgBox(unitCost))
+    return false
+
+  let unitName = unit.name
+  local taskId = null
+  if (canBuyNotResearchedUnit) {
+    let blk = DataBlock()
+    blk["unit"] = unit.name
+    blk["cost"] = unitCost.wp
+    blk["costGold"] = unitCost.gold
+
+    taskId = char_send_blk("cln_buy_not_researched_clans_unit", blk)
+  }
+  else
+    taskId = shop_purchase_aircraft(unitName)
+
+  let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase"), null, null)
+  addBgTaskCb(taskId, function() {
+    destroyMsgBox(progressBox)
+    broadcastEvent("UnitBought", { unitName = unit.name, needSelectCrew })
+  })
+  return true
+}
+
+function checkFeatureLock(unit, lockAction) {
+  if (!isUnitFeatureLocked(unit))
+    return true
+  let params = {
+    purchaseAvailable = hasFeature("OnlineShopPacks")
+    featureLockAction = lockAction
+    unit = unit
+  }
+
+  loadHandler(gui_handlers.VehicleRequireFeatureWindow, params)
+  return false
+}
+
+function showCantBuyOrResearchUnitMsgbox(unit) {
+  let reason = getCantBuyUnitReason(unit)
+  if (u.isEmpty(reason))
+    return true
+
+  scene_msg_box("need_buy_prev", null, reason, [["ok", function () {}]], "ok")
+  return false
+}
+
+function buyUnit(unit, silent = false) {
+  if (!checkFeatureLock(unit, CheckFeatureLockAction.BUY))
+    return false
+
+  let canBuyNotResearchedUnit = canBuyNotResearched(unit)
+  let unitCost = canBuyNotResearchedUnit ? unit.getOpenCost() : getUnitCost(unit)
+  if (unitCost.gold > 0 && !canSpendGoldOnUnitWithPopup(unit))
+    return false
+
+  if (!canBuyUnit(unit) && !canBuyNotResearchedUnit) {
+    if ((isUnitResearched(unit) || isUnitSpecial(unit)) && !silent)
+      showCantBuyOrResearchUnitMsgbox(unit)
+    return false
+  }
+
+  if (silent)
+    return impl_buyUnit(unit)
+
+  let unitName  = colorize("userlogColoredText", getUnitName(unit, true))
+  let unitPrice = unitCost.getTextAccordingToBalance()
+  let msgText = warningIfGold(loc("shop/needMoneyQuestion_purchaseAircraft",
+      { unitName = unitName, cost = unitPrice }),
+    unitCost)
+
+  scene_msg_box("need_money", null, msgText, [
+    ["no", @() null],
+    ["order_and_choose_crew/later", @() impl_buyUnit(unit, false)],
+    ["order_and_choose_crew", @() impl_buyUnit(unit)],
+  ], "order_and_choose_crew", { cancel_fn = @() null })
+  return true
 }
 
 function repairRequest(unit, price, onSuccessCb = null, onErrorCb = null) {
@@ -99,15 +195,6 @@ function flushSquadronExp(unit, params = {}) {
   showFlushSquadronExpMsgBox(unit, onDoneCb, afterDoneFunc)
 }
 
-function showCantBuyOrResearchUnitMsgbox(unit) {
-  let reason = getCantBuyUnitReason(unit)
-  if (u.isEmpty(reason))
-    return true
-
-  scene_msg_box("need_buy_prev", null, reason, [["ok", function () {}]], "ok")
-  return false
-}
-
 function buy(unit, metric) {
   if (!unit)
     return
@@ -115,7 +202,7 @@ function buy(unit, metric) {
   if (::canBuyUnitOnline(unit))
     showUnitGoods(unit.name, metric)
   else
-    ::buyUnit(unit)
+    buyUnit(unit)
 }
 
 function research(unit, checkCurrentUnit = true, afterDoneFunc = null) {
@@ -182,10 +269,13 @@ function flushExcessExpToModule(unit, module) {
 }
 
 return {
+  CheckFeatureLockAction
+  checkFeatureLock
   repairNoMsgBox
   repairWithMsgBox
   flushSquadronExp
   buy
+  buyUnit
   research
   setResearchClanVehicleWithAutoFlush
   flushExcessExpToUnit

@@ -13,7 +13,7 @@ let { getLastWeapon, setLastWeapon, isWeaponEnabled, isWeaponVisible,
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { checkShowShipWeaponsTutor } = require("%scripts/weaponry/shipWeaponsTutor.nut")
-let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { guiStartChooseUnitWeapon } = require("%scripts/weaponry/weaponrySelectModal.nut")

@@ -7,6 +7,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 gui_handlers.WwQueueDescriptionCustomHandler <- class (gui_handlers.WwMapDescription) {
   function mapCountriesToView(side, _amountByCountry, joinedCountries) {
@@ -62,7 +63,7 @@ gui_handlers.WwQueueDescriptionCustomHandler <- class (gui_handlers.WwMapDescrip
     let amountByCountry = this.descItem.getArmyGroupsAmountByCountries()
     let joinedCountries = this.descItem.getMyClanCountries()
     let sides = []
-    foreach (side in ::g_world_war.getCommonSidesOrder())
+    foreach (side in g_world_war.getCommonSidesOrder())
       sides.append(this.mapCountriesToView(side, amountByCountry, joinedCountries))
     let view = {
       sides = sides

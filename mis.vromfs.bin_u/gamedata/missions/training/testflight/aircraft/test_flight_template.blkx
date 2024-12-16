@@ -86,9 +86,7 @@
         "enableAfterComplete": false
       },
       "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
+        "initMission": {}
       },
       "conditions": {
         "unitCheckTag": [
@@ -112,6 +110,10 @@
         "varSetString": {
           "value": "high",
           "var": "target_rank"
+        },
+        "varSetInt": {
+          "value": 2,
+          "var": "target_rank_index"
         }
       },
       "else_actions": {}

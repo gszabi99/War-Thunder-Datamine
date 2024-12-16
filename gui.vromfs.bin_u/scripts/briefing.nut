@@ -3,8 +3,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/mainConsts.nut" import global_max_players_versus
-from "%scripts/utils_sa.nut" import build_blk_from_container
 
+let { fillBlock } = require("%sqstd/datablock.nut")
 let { is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -571,7 +571,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
 
     let mrankMin = this.getOptValue(USEROPT_BR_MIN, 0)
     let mrankMax = this.getOptValue(USEROPT_BR_MAX, 0)
-    misBlk.ranks = build_blk_from_container({ min = mrankMin, max = mrankMax })
+    fillBlock("ranks", misBlk, { min = mrankMin, max = mrankMax })
     if (mrankMin > 0 || mrankMax < getMaxEconomicRank()) {
       ::mission_settings.mrankMin <- mrankMin
       ::mission_settings.mrankMax <- mrankMax

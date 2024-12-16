@@ -6,7 +6,7 @@ let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_shop_blk } = require("blkGetters")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { isUnitDefault } = require("%scripts/unit/isUnitDefault.nut")
+let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
 
 let shopPromoteUnits = mkWatched(persist, "shopPromoteUnits", {})
 local countDefaultUnitsByCountry = null
@@ -99,23 +99,12 @@ function hasDefaultUnitsInCountry(country) {
   return (countDefaultUnitsByCountry?[country] ?? 0) > 0
 }
 
-function isCountryHaveUnitType(country, unitType) {
-  foreach (unit in getAllUnits())
-    if (unit.shopCountry == country && unit.esUnitType == unitType && unit.isVisibleInShop())
-      return true
-  return false
-}
-
-let getMaxUnitsRank = @() getAllUnits().reduce(@(res, unit) unit.isBought() ? max(res, unit.rank) : res, 0)
-
 addListenersWithoutEnv({
   InitConfigs = @(_p) invalidateCache()
 })
 
 return {
   hasDefaultUnitsInCountry
-  isCountryHaveUnitType
   generateUnitShopInfo
   shopPromoteUnits
-  getMaxUnitsRank
 }

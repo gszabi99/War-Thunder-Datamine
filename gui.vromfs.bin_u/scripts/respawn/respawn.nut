@@ -68,7 +68,8 @@ let { USEROPT_SKIP_WEAPON_WARNING, USEROPT_FUEL_AMOUNT_CUSTOM,
   USEROPT_LOAD_FUEL_AMOUNT} = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
 let { register_command } = require("console")
 let { calcBattleRatingFromRank, reset_cur_mission_mode, clear_spawn_score, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
@@ -96,7 +97,7 @@ let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { loadGameChatToObj, detachGameChatSceneData, hideGameChatSceneInput
 } = require("%scripts/chat/mpChat.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { setAllowMoveCenter, isAllowedMoveCenter, resetCenterOffset, setForcedHudType, getCurHudType, isForcedHudType,
+let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType, isForcedHudType,
   setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet  } = require("guiTacticalMap")
 let { hasSightStabilization } = require("vehicleModel")
 let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
@@ -436,7 +437,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.updateTacticalMapUnitType(show ? null : false)
     base.onSceneActivate(show)
     setAllowMoveCenter(false)
-    resetCenterOffset()
     this.resetPointOfInterestMode()
   }
 
@@ -974,12 +974,16 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     local hint = ""
     local hintIcon = showConsoleButtons.value ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_left"
     local highlightSpawnMapId = -1
-    if (!this.isRespawn)
-      hint = colorize("activeTextColor", loc("voice_message_attention_to_point_2"))
+    if (!this.isRespawn) {
+      hint = isAllowedMoveCenter() ? colorize("activeTextColor", loc("hints/move_map_hint"))
+                                   : colorize("activeTextColor", loc("voice_message_attention_to_point_2"))
+    }
     else {
       let coords = ::get_mouse_relative_coords_on_obj(this.tmapBtnObj)
       if (!coords)
         hintIcon = ""
+      else if (isAllowedMoveCenter())
+        hint = colorize("activeTextColor", loc("hints/move_map_hint"))
       else if (!this.canChooseRespawnBase) {
         hint = colorize("commonTextColor", loc("guiHints/respawn_base/choice_disabled"))
         hintIcon = ""

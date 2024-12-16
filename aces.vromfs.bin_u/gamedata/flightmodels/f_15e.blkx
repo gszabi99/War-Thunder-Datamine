@@ -2773,6 +2773,8 @@
               "PS-37",
               "PS-05",
               "Ferranti Blue Vixen",
+              "CAPTOR-M",
+              "Thales RBE2 AESA",
               "AN/APG-59",
               "AN/AWG-9",
               "Thomson-CSF RDI",
@@ -2881,6 +2883,16 @@
               "PS-05",
               "Ferranti Blue Vixen"
             ]
+          },
+          {
+            "name": "EF 2000",
+            "detectLaunch": true,
+            "type": "CAPTOR-M"
+          },
+          {
+            "name": "Rafal",
+            "detectLaunch": true,
+            "type": "Thales RBE2 AESA"
           },
           {
             "name": "JF-17",
@@ -3010,6 +3022,14 @@
           {
             "text": "J39",
             "group": "J-39"
+          },
+          {
+            "text": "EF2K",
+            "group": "EF 2000"
+          },
+          {
+            "text": "RFL",
+            "group": "Rafal"
           },
           {
             "text": "J17",
@@ -3804,6 +3824,10 @@
       {
         "name": "f_15e_gbu_15v2",
         "blk": "gameData/FlightModels/weaponPresets/f_15e_gbu_15v2.blk"
+      },
+      {
+        "name": "f_15e_agm_130",
+        "blk": "gameData/FlightModels/weaponPresets/f_15e_agm_130.blk"
       }
     ]
   },
@@ -4101,7 +4125,7 @@
           {
             "iconType": "guided_bomb_small_laser",
             "name": "us_gbu_10_slot2",
-            "reqModification": "us_gbu_10",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4149,7 +4173,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_laser",
             "name": "us_gbu_24_slot2",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4239,6 +4263,27 @@
                 "preset": "aim_120b_slot3_default"
               }
             ]
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "agm_130",
+            "reqModification": "us_agm_130",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_agm_130a.blk",
+              "emitter": "us_2000lb_gbu_8_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            }
           },
           {
             "iconType": "guided_bomb_middle_jdam",
@@ -5506,7 +5551,7 @@
           {
             "iconType": "bombs_ptb_fuse_guided_bomb_small_laser",
             "name": "us_gbu_10_slot5_fuel_tank",
-            "reqModification": "us_gbu_10",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -5587,7 +5632,7 @@
           {
             "iconType": "bombs_ptb_fuse_guided_bomb_heavy_middle_laser_group_x2",
             "name": "us_gbu_24_slot5_fuel_tank",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -6033,7 +6078,7 @@
           {
             "iconType": "guided_bomb_small_laser",
             "name": "us_gbu_10_slot5",
-            "reqModification": "us_gbu_10",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -6100,7 +6145,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_laser_group_x2",
             "name": "us_gbu_24_slot5",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -6537,7 +6582,7 @@
           {
             "iconType": "guided_bomb_small_laser",
             "name": "us_gbu_10_slot7",
-            "reqModification": "us_gbu_10",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -6562,7 +6607,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_laser",
             "name": "us_gbu_24_slot7",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -7630,7 +7675,7 @@
           {
             "iconType": "bombs_ptb_fuse_guided_bomb_small_laser",
             "name": "us_gbu_10_slot9_fuel_tank",
-            "reqModification": "us_gbu_10",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": [
                 "pylon_7",
@@ -7711,7 +7756,7 @@
           {
             "iconType": "bombs_ptb_fuse_guided_bomb_heavy_middle_laser_group_x2",
             "name": "us_gbu_24_slot9_fuel_tank",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": [
                 "pylon_7",
@@ -8157,7 +8202,7 @@
           {
             "iconType": "guided_bomb_small_laser",
             "name": "us_gbu_10_slot9",
-            "reqModification": "us_gbu_10",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": [
                 "pylon_7",
@@ -8224,7 +8269,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_laser_group_x2",
             "name": "us_gbu_24_slot9",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": [
                 "pylon_7",
@@ -8817,7 +8862,7 @@
           {
             "iconType": "guided_bomb_small_laser",
             "name": "us_gbu_10_slot12",
-            "reqModification": "us_gbu_10",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -8865,7 +8910,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_laser",
             "name": "us_gbu_24_slot12",
-            "reqModification": "us_gbu_24",
+            "reqModification": "us_gbu_10_gbu_24",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -8955,6 +9000,27 @@
                 "preset": "aim_120b_slot13"
               }
             ]
+          },
+          {
+            "iconType": "guided_bomb_grey",
+            "name": "agm_130",
+            "reqModification": "us_agm_130",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "atgm",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_agm_130a.blk",
+              "emitter": "us_2000lb_gbu_8_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            }
           },
           {
             "iconType": "guided_bomb_middle_jdam",
@@ -9463,13 +9529,13 @@
       "modClass": "weapon",
       "tier": 2
     },
-    "us_gbu_10": {
+    "us_gbu_10_gbu_24": {
       "reqModification": "us_gbu_12",
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_gbu_24": {
-      "reqModification": "us_gbu_10",
+    "us_agm_130": {
+      "reqModification": "us_gbu_10_gbu_24",
       "tier": 4,
       "modClass": "weapon"
     },

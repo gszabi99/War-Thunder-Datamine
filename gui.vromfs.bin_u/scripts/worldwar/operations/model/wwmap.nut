@@ -15,6 +15,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let WwMap = class {
   name = ""
@@ -187,7 +188,7 @@ let WwMap = class {
       return wwUnitsList
 
     unitsList = wwActionsWithUnitsList.loadUnitsFromNameCountTbl(unitsList).filter(@(unit) !unit.isControlledByAI())
-    unitsList.sort(::g_world_war.sortUnitsBySortCodeAndCount)
+    unitsList.sort(g_world_war.sortUnitsBySortCodeAndCount)
     if (unitsGroupsByCountry != null) {
       foreach (wwUnit in unitsList) {
         let country = wwUnit?.unit.shopCountry

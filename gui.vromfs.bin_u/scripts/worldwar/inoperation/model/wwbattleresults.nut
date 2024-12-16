@@ -7,6 +7,7 @@ let { WwBattleResultsView } = require("%scripts/worldWar/inOperation/view/wwBatt
 let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let WwBattleResults = class {
   id = ""
@@ -225,7 +226,7 @@ let WwBattleResults = class {
     // Restoring team sides
 
     let localTeam  = getTblValue("localTeam", wwSharedPool, "")
-    let sidesOrder = ::g_world_war.getSidesOrder() // [ player, enemy ]
+    let sidesOrder = g_world_war.getSidesOrder() // [ player, enemy ]
     let winnerSide = getTblValue("win", userlog) ? sidesOrder[0] : sidesOrder[1]
 
     local sideInBattle = SIDE_NONE
@@ -252,7 +253,7 @@ let WwBattleResults = class {
       let clanTag = getTblValue("armyGroupName", armyState, "")
       let unitTypeTextCode = getTblValue("unitType", initialArmy, "")
       let wwUnitType = g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode)
-      let wwArmy = ::g_world_war.getArmyByName(armyName)
+      let wwArmy = g_world_war.getArmyByName(armyName)
       let hasFoundArmy = wwArmy.getUnitType() != g_ww_unit_type.UNKNOWN.code
 
       let armyView = {

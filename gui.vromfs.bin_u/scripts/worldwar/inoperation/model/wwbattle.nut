@@ -40,7 +40,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWwSetting, getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
 let { getPlayWorldwarConditionText, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 
 const WW_BATTLES_SORT_TIME_STEP = 120
@@ -1020,7 +1020,7 @@ let WwBattle = class {
       return 0
 
     let maxBattleWaitTimeSec = time.minutesToSeconds(
-      ::g_world_war.getWWConfigurableValue("maxBattleWaitTimeMin", MAX_BATTLE_WAIT_TIME_MIN_DEFAULT))
+      getWWConfigurableValue("maxBattleWaitTimeMin", MAX_BATTLE_WAIT_TIME_MIN_DEFAULT))
     if (maxBattleWaitTimeSec <= 0)
       return 0
 

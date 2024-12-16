@@ -54,6 +54,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { get_game_mode } = require("mission")
 let { debug_dump_stack } = require("dagor.debug")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
 
 const DEFAULT_STATUS = "none"
 
@@ -377,7 +378,7 @@ function buildFakeSlot(id, unit, params) {
   let { isLocalState = true, showBR = hasFeature("GlobalShowBattleRating") } = params
   let curEdiff = params?.getEdiffFunc() ?? getCurrentGameModeEdiff()
   let { isReqForFakeUnit = false } = unit
-  let isFakeAirRankOpen = isLocalState && ::get_units_count_at_rank(unit?.rank,
+  let isFakeAirRankOpen = isLocalState && get_units_count_at_rank(unit?.rank,
     unitTypes.getByName(unit.name, false).esUnitType, unit?.country, true)
   let bitStatus = isReqForFakeUnit ? bit_unit_status.disabled
     : isFakeAirRankOpen || !isLocalState ? bit_unit_status.owned

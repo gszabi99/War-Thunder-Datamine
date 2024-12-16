@@ -28,7 +28,7 @@ let { get_last_skin, mirror_current_decal, get_mirror_current_decal,
   get_ship_flag_in_slot, apply_ship_flag, get_default_ship_flag
 } = require("unitCustomization")
 let decorLayoutPresets = require("%scripts/customization/decorLayoutPresetsWnd.nut")
-let unitActions = require("%scripts/unit/unitActions.nut")
+let { buy, buyUnit } = require("%scripts/unit/unitActions.nut")
 let { showResource, canStartPreviewScene,
   showDecoratorAccessRestriction } = require("%scripts/customization/contentPreview.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -1232,7 +1232,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local onOkFunc = function() {}
     if (canBuyUnit(this.unit))
-      onOkFunc = (@(unit) function() { ::buyUnit(unit) })(this.unit) //-ident-hides-ident
+      onOkFunc = (@(unit) function() { buyUnit(unit) })(this.unit) //-ident-hides-ident
 
     this.msgBox("unit_locked", loc("decals/needToBuyUnit"), [["ok", onOkFunc ]], "ok")
     return false
@@ -1937,7 +1937,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBuy() {
-    unitActions.buy(this.unit, "customization")
+    buy(this.unit, "customization")
   }
 
   function onBtnMarketplaceFindUnit(_obj) {

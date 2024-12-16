@@ -68,9 +68,6 @@
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -110,6 +107,16 @@
       "rudder_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
+      }
+    },
+    "c_dural5": {
+      "flaperon1_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 39.5
+      },
+      "flaperon1_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 39.5
       }
     },
     "c_dural7": {
@@ -250,6 +257,17 @@
       },
       "tank7_dm": {
         "hp": 120.5
+      }
+    },
+    "steel_tank_m": {
+      "tank10_dm": {
+        "hp": 75.5
+      },
+      "tank8_dm": {
+        "hp": 75.5
+      },
+      "tank9_dm": {
+        "hp": 75.5
       }
     }
   },
@@ -492,6 +510,88 @@
             "damage": 50.0,
             "cut": 1.0,
             "nothing": 0.0
+          }
+        ]
+      },
+      {
+        "name": "flaperon1_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flaperon1_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
           }
         ]
       },
@@ -923,6 +1023,43 @@
         "name": "tailcontrol_dm"
       },
       {
+        "name": "tank10_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.6,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
         "name": "tank1_dm",
         "onHit": [
           {
@@ -1196,6 +1333,80 @@
           {
             "fire": 0.01,
             "leak": 9.99
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank8_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.6,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 15.0
+          },
+          {
+            "damage": 80.0,
+            "fire": 50.0,
+            "leak": 10.0
+          }
+        ]
+      },
+      {
+        "name": "tank9_dm",
+        "onHit": [
+          {
+            "fire": 0.01,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.6,
+            "leak": 0.8
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 10.0,
+            "leak": 10.0,
+            "nothing": 80.0
           },
           {
             "damage": 50.0,
@@ -1807,7 +2018,7 @@
     ]
   },
   "ikPilot": {
-    "model": "usaf_pilot_1985_2011_jhmcs_char",
+    "model": "pilot_raf_hmd_cobra_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2085,52 +2296,8 @@
           "page": [
             {
               "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "lineColor": [
-                255,
-                255,
-                255
-              ],
-              "modeColor": [
-                255,
-                255,
-                255
-              ],
-              "verAngleColor": [
-                255,
-                255,
-                255
-              ],
-              "horAngleColor": [
-                255,
-                255,
-                255
-              ],
-              "scaleColor": [
-                255,
-                255,
-                255
-              ],
-              "targetColor": [
-                252,
-                165,
-                41
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                0,
-                255
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": false
+              "customRadar": "typhoonRadar",
+              "fontSize": 20
             },
             {
               "type": "ils_on_camera"
@@ -2155,6 +2322,10 @@
               "circleCnt": 2,
               "angleMarkStep": 45.0,
               "scale": 0.8
+            },
+            {
+              "type": "custom",
+              "pageName": "ef2000Wpn"
             },
             {
               "type": "thermal",
@@ -2194,6 +2365,10 @@
               "scale": 0.8
             },
             {
+              "type": "custom",
+              "pageName": "ef2000Wpn"
+            },
+            {
               "type": "thermal",
               "turretIdx": 0
             },
@@ -2206,52 +2381,8 @@
             },
             {
               "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "lineColor": [
-                255,
-                255,
-                255
-              ],
-              "modeColor": [
-                255,
-                255,
-                255
-              ],
-              "verAngleColor": [
-                255,
-                255,
-                255
-              ],
-              "horAngleColor": [
-                255,
-                255,
-                255
-              ],
-              "scaleColor": [
-                255,
-                255,
-                255
-              ],
-              "targetColor": [
-                252,
-                165,
-                41
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                0,
-                255
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": false
+              "customRadar": "typhoonRadar",
+              "fontSize": 20
             },
             {
               "type": "map"
@@ -2276,56 +2407,16 @@
               "turretIdx": 0
             },
             {
+              "type": "custom",
+              "pageName": "ef2000Wpn"
+            },
+            {
               "type": "map"
             },
             {
               "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "lineColor": [
-                255,
-                255,
-                255
-              ],
-              "modeColor": [
-                255,
-                255,
-                255
-              ],
-              "verAngleColor": [
-                255,
-                255,
-                255
-              ],
-              "horAngleColor": [
-                255,
-                255,
-                255
-              ],
-              "scaleColor": [
-                255,
-                255,
-                255
-              ],
-              "targetColor": [
-                252,
-                165,
-                41
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                0,
-                255
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": false
+              "customRadar": "typhoonRadar",
+              "fontSize": 20
             },
             {
               "type": "ils_on_camera"
@@ -2484,14 +2575,15 @@
           180,
           0
         ],
-        "fontSize": 65,
+        "fontSize": 50,
         "value": "total_fuel",
         "format": "%d",
         "padding": [
           10.0,
-          13.0
+          22.0
         ],
-        "multiplier": 0.5
+        "multiplier": 0.5,
+        "font": "matrix"
       },
       "FUEL_REAR": {
         "pos": [
@@ -2507,14 +2599,15 @@
           180,
           0
         ],
-        "fontSize": 65,
+        "fontSize": 50,
         "value": "total_fuel",
         "format": "%d",
         "padding": [
           10.0,
-          13.0
+          22.0
         ],
-        "multiplier": 0.5
+        "multiplier": 0.5,
+        "font": "matrix"
       },
       "FUEL_TOTAL": {
         "pos": [
@@ -2530,13 +2623,14 @@
           180,
           0
         ],
-        "fontSize": 65,
+        "fontSize": 50,
         "value": "total_fuel",
         "format": "%d",
         "padding": [
           10.0,
-          13.0
-        ]
+          22.0
+        ],
+        "font": "matrix"
       },
       "RPM": {
         "pos": [
@@ -2552,13 +2646,14 @@
           180,
           0
         ],
-        "fontSize": 65,
+        "fontSize": 50,
         "value": "relative_rpm",
         "format": "%.1f",
         "padding": [
           10.0,
           13.0
-        ]
+        ],
+        "font": "matrix"
       },
       "RPM1": {
         "pos": [
@@ -2574,13 +2669,14 @@
           180,
           0
         ],
-        "fontSize": 65,
+        "fontSize": 50,
         "value": "relative_rpm",
         "format": "%.1f",
         "padding": [
           10.0,
           13.0
-        ]
+        ],
+        "font": "matrix"
       }
     },
     "parts_holes_dmg": {
@@ -2606,14 +2702,16 @@
         1200,
         800
       ],
-      "noiseFactor": 0.04
+      "noiseFactor": 0.04,
+      "index": 1
     },
     "sightThermal": {
       "resolution": [
         500,
         300
       ],
-      "noiseFactor": 0.05
+      "noiseFactor": 0.05,
+      "index": 2
     },
     "gunnerIr": {
       "resolution": [
@@ -2650,7 +2748,8 @@
         30.0
       ],
       "opticType": "",
-      "turretNo": 0
+      "turretNo": 0,
+      "nvIndex": 2
     },
     "Target": {
       "pos": [
@@ -2667,7 +2766,8 @@
         29.0
       ],
       "opticType": "targeting",
-      "turretNo": 0
+      "turretNo": 0,
+      "nvIndex": 1
     }
   },
   "sensors": {
@@ -2788,14 +2888,22 @@
         "litening_2_pod",
         "optic2_turret",
         "optic2_gun",
-        "pylon9",
-        "pylon9_holder"
+        "pylon_9",
+        "drop_tank_001",
+        "drop_tank_002",
+        "drop_tank_003",
+        "drop_tank_pylon_wing_l",
+        "drop_tank_fuse_pylon",
+        "drop_tank_pylon_wing_r"
       ]
     },
     "HideDmParts": {
       "node": [
         "cover3_dm",
-        "radar1_dm"
+        "radar1_dm",
+        "tank8_dm",
+        "tank9_dm",
+        "tank10_dm"
       ]
     },
     "WeaponSlot": [
@@ -2984,7 +3092,7 @@
               {
                 "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw_bol_pod.blk",
-                "emitter": "nozzle1_1",
+                "emitter": "emtr_flare3",
                 "bullets": 160,
                 "external": true,
                 "separate": true,
@@ -2993,7 +3101,7 @@
               {
                 "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw_bol_pod.blk",
-                "emitter": "nozzle1_2",
+                "emitter": "emtr_flare4",
                 "bullets": 160,
                 "external": true,
                 "separate": true,
@@ -3146,7 +3254,8 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_120_default_slot2",
+            "name": "aim_120_slot2",
+            "reqModification": "us_aim_120b",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -3160,7 +3269,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
               "emitter": "aim_120a_005",
               "bullets": 1
             }
@@ -3456,6 +3565,31 @@
               "slot": 7,
               "preset": "litening"
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_1",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "drop_tank_pylon_wing_l",
+                "drop_tank_001"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank8_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/uk_1000l_ef_2000_1.blk",
+              "emitter": "drop_tank_001",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 11,
+              "preset": "ptb_3"
+            }
           }
         ]
       },
@@ -3628,13 +3762,12 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "iconType": "missile_type_f_air_to_air_midrange",
-          "name": "aim_120_slot6",
-          "reqModification": "us_aim_120b",
+          "name": "aim_120_default_slot6",
           "Weapon": {
             "trigger": "aam",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
             "emitter": "aim_120a_001",
             "bullets": 1
           }
@@ -3644,34 +3777,57 @@
         "index": 7,
         "tier": 6,
         "order": 13,
-        "WeaponPreset": {
-          "iconType": "flir_container",
-          "name": "litening",
-          "reqModification": "gr_litening_iii_pod",
-          "hasTargetingPod": true,
-          "removeGunnerOpticFps": 0,
-          "ShowNodes": {
-            "node": [
-              "pylon9",
-              "pylon9_holder",
-              "litening_2_pod",
-              "optic2_turret",
-              "optic2_gun"
-            ]
+        "WeaponPreset": [
+          {
+            "iconType": "flir_container",
+            "name": "litening",
+            "reqModification": "gr_litening_iii_pod",
+            "hasTargetingPod": true,
+            "removeGunnerOpticFps": 0,
+            "ShowNodes": {
+              "node": [
+                "pylon_9",
+                "litening_2_pod",
+                "optic2_turret",
+                "optic2_gun"
+              ]
+            },
+            "ShowDmParts": {
+              "node": [
+                "cover3_dm",
+                "radar1_dm"
+              ]
+            },
+            "Weapon": {
+              "trigger": "targetingPod",
+              "blk": "gameData/Weapons/equipment/gr_litening_iii_targeting_pod.blk",
+              "emitter": "litening_2_pod",
+              "bullets": 1
+            }
           },
-          "ShowDmParts": {
-            "node": [
-              "cover3_dm",
-              "radar1_dm"
-            ]
-          },
-          "Weapon": {
-            "trigger": "targetingPod",
-            "blk": "gameData/Weapons/equipment/gr_litening_iii_targeting_pod.blk",
-            "emitter": "litening_2_pod",
-            "bullets": 1
+          {
+            "iconType": "ptb",
+            "name": "ptb_2",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "pylon_bomb2",
+                "drop_tank_fuse_pylon"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank9_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/uk_1000l_ef_2000_2.blk",
+              "emitter": "drop_tank_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           }
-        }
+        ]
       },
       {
         "index": 8,
@@ -3680,13 +3836,12 @@
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "iconType": "missile_type_f_air_to_air_midrange",
-          "name": "aim_120_slot8",
-          "reqModification": "us_aim_120b",
+          "name": "aim_120_default_slot8",
           "Weapon": {
             "trigger": "aam",
             "external": true,
             "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
+            "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
             "emitter": "aim_120a_003",
             "bullets": 1
           }
@@ -4014,6 +4169,31 @@
               "slot": 7,
               "preset": "litening"
             }
+          },
+          {
+            "iconType": "ptb",
+            "name": "ptb_3",
+            "showInWeaponMenu": true,
+            "ShowNodes": {
+              "node": [
+                "drop_tank_pylon_wing_r",
+                "drop_tank_003"
+              ]
+            },
+            "ShowDmParts": {
+              "node": "tank10_dm"
+            },
+            "Weapon": {
+              "trigger": "fuel tanks",
+              "blk": "gameData/Weapons/drop_tank/uk_1000l_ef_2000_3.blk",
+              "emitter": "drop_tank_003",
+              "bullets": 1,
+              "external": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_1"
+            }
           }
         ]
       },
@@ -4122,7 +4302,8 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "aim_120_default_slot12",
+            "name": "aim_120_slot12",
+            "reqModification": "us_aim_120b",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4136,7 +4317,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
               "emitter": "aim_120a_006",
               "bullets": 1
             }
@@ -4679,7 +4860,7 @@
     }
   },
   "user_skin": {
-    "name": "f_2000a",
+    "name": "ef_2000a",
     "replace_tex": [
       {
         "from": "f_2000a_c*"

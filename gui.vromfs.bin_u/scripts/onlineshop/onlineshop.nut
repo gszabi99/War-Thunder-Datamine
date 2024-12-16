@@ -138,7 +138,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         this.goods[name].entitlementGift = this.goods[name].showEntAsGift
       //load done
 
-      if (this.goods[name]?.group && !this.groupCost?[this.goods[name].group])
+      if (!isGold && this.goods[name]?.group && !this.groupCost?[this.goods[name].group])
         this.groupCost[this.goods[name].group] <- getPricePerEntitlement(this.goods[name])
 
       if (this.useRowVisual) {
@@ -479,7 +479,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     else if (item?.group && item.group in this.groupCost) {
       let itemPrice = getEntitlementPriceFloat(item)
       let defItemPrice = this.groupCost[item.group]
-      if (itemPrice > 0 && defItemPrice && (!isGold || !steam_is_running())) {
+      if (itemPrice > 0 && defItemPrice > 0) {
         let calcAmount = amount + additionalAmount
         local saving = (1 - ((itemPrice * (1 - discount * 0.01)) / (calcAmount * defItemPrice))) * 100
         saving = saving.tointeger()

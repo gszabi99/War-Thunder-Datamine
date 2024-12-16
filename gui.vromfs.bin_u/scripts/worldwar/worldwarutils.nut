@@ -15,7 +15,6 @@ let { loadLocalByAccount, saveLocalByAccount
 let DataBlock  = require("DataBlock")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let seenWWMapsObjective = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_OBJECTIVE)
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
@@ -29,12 +28,11 @@ let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
-  wwGetOperationTimeMillisec, wwGetZoneSideByName, wwGetAirfieldsCount, wwGetSelectedAirfield,
-  wwFindAirfieldByCoordinates, wwGetArmyGroupsInfo, wwGetConfigurableValues,
+  wwGetOperationTimeMillisec, wwGetAirfieldsCount, wwGetSelectedAirfield,
+  wwFindAirfieldByCoordinates, wwGetArmyGroupsInfo,
   wwGetReinforcementsInfo, wwGetBattlesInfo, wwGetMapCellByCoords } = require("worldwar")
 
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
@@ -47,43 +45,197 @@ let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.n
 let operationPreloader = require("%scripts/worldWar/externalServices/wwOperationPreloader.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let wwArmyGroupManager = require("%scripts/worldWar/inOperation/wwArmyGroupManager.nut")
-let { getNearestMapToBattle, hasAvailableMapToBattle, getOperationById
+let { getNearestMapToBattle, getOperationById, updateCurOperationStatusInGlobalStatus
 } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { subscribeOperationNotifyOnce } = require("%scripts/worldWar/services/wwService.nut")
 let { openWwOperationRewardPopup } = require("%scripts/worldWar/inOperation/handler/wwOperationRewardPopup.nut")
 let { getGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { isWorldWarEnabled, getPlayWorldwarConditionText, canPlayWorldwar, canJoinWorldwarBattle
 } = require("%scripts/worldWar/worldWarGlobalStates.nut")
-let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 let { getWWLogsData, clearWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
 let { hoveredAirfieldIndex } = require("%appGlobals/worldWar/wwAirfieldStatus.nut")
+let { updateConfigurableValues, getLastPlayedOperationId, getLastPlayedOperationCountry, saveLastPlayed
+} = require("%scripts/worldWar/worldWarStates.nut")
+let { curOperationCountry, invalidateRearZones } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 
-const WW_CUR_OPERATION_SAVE_ID = "worldWar/curOperation"
-const WW_CUR_OPERATION_COUNTRY_SAVE_ID = "worldWar/curOperationCountry"
 const WW_LAST_OPERATION_LOG_SAVE_ID = "worldWar/lastReadLog/operation"
 const WW_UNIT_WEAPON_PRESET_PATH = "worldWar/weaponPreset/"
 const WW_OBJECTIVE_OUT_OF_DATE_DAYS = 1
 
 const LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH = "worldWar/lastVisibleAvailableMapInPromo"
 
-let wwstorage = persist("wwstorage", @() {configurableValues = DataBlock(), curOperationCountry = null})
+function stopWar() {
+  invalidateRearZones()
+  curOperationCountry.set(null)
 
-local g_world_war
-g_world_war = {
+  removeAllGenericTooltip()
+  clearWWLogs()
+  if (!wwIsOperationLoaded())
+    return
+
+  updateCurOperationStatusInGlobalStatus()
+  ww_stop_war()
+  wwEvent("StopWorldWar")
+}
+
+function checkPlayWorldwarAccess() {
+  if (!isWorldWarEnabled()) {
+    ::show_not_available_msg_box()
+    return false
+  }
+
+  if (!canPlayWorldwar()) {
+    if (!isMultiplayerPrivilegeAvailable.value)
+      checkAndShowMultiplayerPrivilegeWarning()
+    else if (!isShowGoldBalanceWarning())
+      checkAndShowCrossplayWarning(@()
+        showInfoMsgBox(getPlayWorldwarConditionText(true)))
+    return false
+  }
+  return true
+}
+
+function openOperationsOrQueues(needToOpenBattles = false, map = null) {
+  stopWar()
+
+  if (!checkPlayWorldwarAccess())
+    return
+
+  updateConfigurableValues()
+
+  if (!handlersManager.findHandlerClassInScene(gui_handlers.WwOperationsMapsHandler))
+    handlersManager.loadHandler(gui_handlers.WwOperationsMapsHandler,
+      { needToOpenBattles = needToOpenBattles
+        autoOpenMapOperation = map })
+}
+
+function joinOperationById(operationId,
+  country = null, isSilence = false, onSuccess = null, forced = false) {
+  let operation = getOperationById(operationId)
+  if (!operation) {
+    if (!isSilence)
+      showInfoMsgBox(loc("worldwar/operationNotFound"))
+    return
+  }
+
+  stopWar()
+
+  if (u.isEmpty(country))
+    country = operation.getMyAssignCountry() || profileCountrySq.value
+
+  operation.join(country, null, isSilence, onSuccess, forced)
+}
+
+function openMainWnd(forceOpenMainMenu = false) {
+  if (!checkPlayWorldwarAccess())
+    return
+
+  let lastPlayedOperationId = getLastPlayedOperationId()
+  if (!forceOpenMainMenu && lastPlayedOperationId) {
+    let operation = getOperationById(lastPlayedOperationId)
+    if (operation) {
+      joinOperationById(lastPlayedOperationId, getLastPlayedOperationCountry())
+      return
+    }
+  }
+
+  openOperationsOrQueues()
+}
+
+function getLastPlayedOperation() {
+  let lastPlayedOperationId = getLastPlayedOperationId()
+  if (lastPlayedOperationId)
+    return getOperationById(lastPlayedOperationId)
+  return null
+}
+
+function getPlayedOperationText(needMapName = true) {
+  let operation = getLastPlayedOperation()
+  if (operation != null)
+    return operation.getMapText()
+
+
+  let nearestAvailableMapToBattle = getNearestMapToBattle()
+  if (!nearestAvailableMapToBattle)
+    return ""
+
+  let name = needMapName ? nearestAvailableMapToBattle.getNameText() : loc("mainmenu/btnWorldwar")
+  if (nearestAvailableMapToBattle.isActive())
+    return loc("worldwar/operation/isNow", { name = name })
+
+  return loc("worldwar/operation/willBegin", { name = name
+    time = nearestAvailableMapToBattle.getChangeStateTimeText() })
+}
+
+function getNewNearestAvailableMapToBattle() {
+  if (getLastPlayedOperation() != null)
+    return null
+
+  let nearestAvailableMapToBattle = getNearestMapToBattle()
+  if (!nearestAvailableMapToBattle)
+    return null
+
+  let lastVisibleAvailableMap = loadLocalAccountSettings(LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH)
+  if (lastVisibleAvailableMap?.id == nearestAvailableMapToBattle.getId()
+    && lastVisibleAvailableMap?.changeStateTime == nearestAvailableMapToBattle.getChangeStateTime())
+    return null
+
+  return nearestAvailableMapToBattle
+}
+
+function hasNewNearestAvailableMapToBattle() {
+  let nearestAvailableMapToBattle = getNewNearestAvailableMapToBattle()
+  if (!nearestAvailableMapToBattle)
+    return false
+
+  saveLocalAccountSettings(LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH, {
+      id = nearestAvailableMapToBattle.getId()
+      changeStateTime = nearestAvailableMapToBattle.getChangeStateTime()
+    })
+
+  return true
+}
+
+function inviteToWwOperation(uid) {
+  let operationId = wwGetOperationId()
+  if (operationId < 0 || !canJoinWorldwarBattle())
+    return
+
+  addMail({
+    user_id = uid.tointeger()
+    mail = {
+      inviteClassName = "Operation"
+      params = {
+        operationId = operationId
+        country = getOperationById(operationId)?.getMyAssignCountry()
+      }
+    }
+    ttl = 3600
+  })
+}
+
+function openWarMap() {
+  let operationId = wwGetOperationId()
+  subscribeOperationNotifyOnce(
+    operationId,
+    null,
+    function(_responce) {
+      if (wwGetOperationId() != operationId)
+        return
+      stopWar()
+      showInfoMsgBox(loc("worldwar/cantUpdateOperation"))
+    }
+  )
+  handlersManager.loadHandler(gui_handlers.WwMap)
+}
+
+let g_world_war = {
   armyGroups = []
   isArmyGroupsValid = false
   battles = []
   isBattlesValid = false
-  isLastFlightWasWwBattle = false
+  isLastFlightWasWwBattle = Watched(false)
 
-  infantryUnits = null
-  artilleryUnits = null
-  transportUnits = null
-
-  rearZones = null
-  lastPlayedOperationId = null
-  lastPlayedOperationCountry = null
-  getCurOperationCountry = @() wwstorage.curOperationCountry
   isDebugMode = false
 
   myClanParticipateIcon = "#ui/gameuiskin#lb_victories_battles.svg"
@@ -91,212 +243,15 @@ g_world_war = {
 
   defaultDiffCode = DIFFICULTY_REALISTIC
 
-  function clearUnitsLists() {
-    this.infantryUnits = null
-    this.artilleryUnits = null
-    this.transportUnits = null
-  }
-
-  function getInfantryUnits() {
-    if (this.infantryUnits == null)
-      this.infantryUnits = this.getWWConfigurableValue("infantryUnits", this.infantryUnits)
-
-    return this.infantryUnits
-  }
-
-  function getArtilleryUnits() {
-    if (this.artilleryUnits == null)
-      this.artilleryUnits = this.getWWConfigurableValue("artilleryUnits", this.artilleryUnits)
-
-    return this.artilleryUnits
-  }
-
-  function getTransportUnits() {
-    if (this.transportUnits == null)
-      this.transportUnits = this.getWWConfigurableValue("transportUnits", this.transportUnits)
-
-    return this.transportUnits
-  }
-
-  function getLastPlayedOperation() {
-    if (this.lastPlayedOperationId)
-      return getOperationById(this.lastPlayedOperationId)
-    return null
-  }
-
-  function getPlayedOperationText(needMapName = true) {
-    let operation = this.getLastPlayedOperation()
-    if (operation != null)
-      return operation.getMapText()
-
-
-    let nearestAvailableMapToBattle = getNearestMapToBattle()
-    if (!nearestAvailableMapToBattle)
-      return ""
-
-    let name = needMapName ? nearestAvailableMapToBattle.getNameText() : loc("mainmenu/btnWorldwar")
-    if (nearestAvailableMapToBattle.isActive())
-      return loc("worldwar/operation/isNow", { name = name })
-
-    return loc("worldwar/operation/willBegin", { name = name
-      time = nearestAvailableMapToBattle.getChangeStateTimeText() })
-  }
-
-  function getNewNearestAvailableMapToBattle() {
-    if (this.getLastPlayedOperation() != null)
-      return null
-
-    let nearestAvailableMapToBattle = getNearestMapToBattle()
-    if (!nearestAvailableMapToBattle)
-      return null
-
-    let lastVisibleAvailableMap = loadLocalAccountSettings(LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH)
-    if (lastVisibleAvailableMap?.id == nearestAvailableMapToBattle.getId()
-      && lastVisibleAvailableMap?.changeStateTime == nearestAvailableMapToBattle.getChangeStateTime())
-      return null
-
-    return nearestAvailableMapToBattle
-  }
-
-  function hasNewNearestAvailableMapToBattle() {
-    let nearestAvailableMapToBattle = this.getNewNearestAvailableMapToBattle()
-    if (!nearestAvailableMapToBattle)
-      return false
-
-    saveLocalAccountSettings(LAST_VISIBLE_AVAILABLE_MAP_IN_PROMO_PATH, {
-        id = nearestAvailableMapToBattle.getId()
-        changeStateTime = nearestAvailableMapToBattle.getChangeStateTime()
-      })
-
-    return true
-  }
-
-  isWWSeasonActive = @() hasAvailableMapToBattle()
-
-  function updateCurOperationStatusInGlobalStatus() {
-    let operationId = wwGetOperationId()
-    if (operationId == -1)
-      return
-
-    let operation = getOperationById(operationId)
-    operation?.setFinishedStatus(isOperationFinished())
-  }
-
-  function isWwOperationInviteEnable() {
-    let wwOperationId = wwGetOperationId()
-    return wwOperationId > -1 && ::g_clans.hasRightsToQueueWWar()
-      && getOperationById(wwOperationId)?.isMyClanParticipate()
-  }
-
-  function inviteToWwOperation(uid) {
-    let operationId = wwGetOperationId()
-    if (operationId < 0 || !canJoinWorldwarBattle())
-      return
-
-    addMail({
-      user_id = uid.tointeger()
-      mail = {
-        inviteClassName = "Operation"
-        params = {
-          operationId = operationId
-          country = getOperationById(operationId)?.getMyAssignCountry()
-        }
-      }
-      ttl = 3600
-    })
-  }
-
-  function openMainWnd(forceOpenMainMenu = false) {
-    if (!this.checkPlayWorldwarAccess())
-      return
-
-    if (!forceOpenMainMenu && this.lastPlayedOperationId) {
-      let operation = getOperationById(this.lastPlayedOperationId)
-      if (operation) {
-        this.joinOperationById(this.lastPlayedOperationId, this.lastPlayedOperationCountry)
-        return
-      }
-    }
-
-    this.openOperationsOrQueues()
-  }
-
-  function stopWar() {
-    this.rearZones = null
-    wwstorage.curOperationCountry = null
-
-    removeAllGenericTooltip()
-    clearWWLogs()
-    if (!wwIsOperationLoaded())
-      return
-
-    this.updateCurOperationStatusInGlobalStatus()
-    ww_stop_war()
-    wwEvent("StopWorldWar")
-  }
-
-  function openWarMap() {
-    let operationId = wwGetOperationId()
-    subscribeOperationNotifyOnce(
-      operationId,
-      null,
-      function(_responce) {
-        if (wwGetOperationId() != operationId)
-          return
-        this.stopWar()
-        showInfoMsgBox(loc("worldwar/cantUpdateOperation"))
-      }
-    )
-    handlersManager.loadHandler(gui_handlers.WwMap)
-  }
-
-  function checkPlayWorldwarAccess() {
-    if (!isWorldWarEnabled()) {
-      ::show_not_available_msg_box()
-      return false
-    }
-
-    if (!canPlayWorldwar()) {
-      if (!isMultiplayerPrivilegeAvailable.value)
-        checkAndShowMultiplayerPrivilegeWarning()
-      else if (!isShowGoldBalanceWarning())
-        checkAndShowCrossplayWarning(@()
-          showInfoMsgBox(getPlayWorldwarConditionText(true)))
-      return false
-    }
-    return true
-  }
-
-  function openOperationsOrQueues(needToOpenBattles = false, map = null) {
-    this.stopWar()
-
-    if (!this.checkPlayWorldwarAccess())
-      return
-
-    wwGetConfigurableValues(wwstorage.configurableValues)
-
-    if (!handlersManager.findHandlerClassInScene(gui_handlers.WwOperationsMapsHandler))
-      handlersManager.loadHandler(gui_handlers.WwOperationsMapsHandler,
-        { needToOpenBattles = needToOpenBattles
-          autoOpenMapOperation = map })
-  }
-
-  function joinOperationById(operationId,
-    country = null, isSilence = false, onSuccess = null, forced = false) {
-    let operation = getOperationById(operationId)
-    if (!operation) {
-      if (!isSilence)
-        showInfoMsgBox(loc("worldwar/operationNotFound"))
-      return
-    }
-
-    this.stopWar()
-
-    if (u.isEmpty(country))
-      country = operation.getMyAssignCountry() || profileCountrySq.value
-
-    operation.join(country, null, isSilence, onSuccess, forced)
-  }
+  stopWar
+  checkPlayWorldwarAccess
+  openOperationsOrQueues
+  joinOperationById
+  openMainWnd
+  getLastPlayedOperation
+  getPlayedOperationText
+  hasNewNearestAvailableMapToBattle
+  inviteToWwOperation
 
   function onJoinOperationSuccess(operationId, country, isSilence, onSuccess) {
     let operation = getOperationById(operationId)
@@ -307,18 +262,18 @@ g_world_war = {
       else
         sideSelectSuccess = ww_select_player_side_for_regular_user(country)
     }
-    wwstorage.curOperationCountry = country
+    curOperationCountry.set(country)
 
     if (!sideSelectSuccess) {
-      this.openOperationsOrQueues()
+      openOperationsOrQueues()
       return
     }
 
-    this.saveLastPlayed(operationId, country)
+    saveLastPlayed(operationId, country)
     seenWWMapsObjective.setDaysToUnseen(WW_OBJECTIVE_OUT_OF_DATE_DAYS)
 
     if (!isSilence)
-      this.openWarMap()
+      openWarMap()
 
     // To force an extra ui update when operation is fully loaded, and lastPlayedOperationId changed.
     wwEvent("LoadOperation")
@@ -327,26 +282,13 @@ g_world_war = {
       onSuccess()
   }
 
-  function openJoinOperationByIdWnd() {
-    openEditBoxDialog({
-      title = loc("mainmenu/operationsMap")
-      charMask = "1234567890"
-      allowEmpty = false
-      okFunc = function(value) {
-        let operationId = to_integer_safe(value)
-        this.joinOperationById(operationId)
-      }
-      owner = this
-    })
-  }
-
   function onEventLoadingStateChange(_p) {
     if (!isInFlight())
       return
 
     g_squad_manager.cancelWwBattlePrepare()
     let missionRules = getCurMissionRules()
-    this.isLastFlightWasWwBattle = missionRules.isWorldWar
+    this.isLastFlightWasWwBattle.set(missionRules.isWorldWar)
     let operationId = missionRules.getCustomRulesBlk()?.operationId.tointeger()
     if (operationId == null)
       return
@@ -360,30 +302,12 @@ g_world_war = {
     saveLocalByAccount(WW_SKIP_BATTLE_WARNINGS_SAVE_ID, false)
   }
 
-  function saveLastPlayed(operationId, country) {
-    this.lastPlayedOperationId = operationId
-    this.lastPlayedOperationCountry = country
-    saveLocalByAccount(WW_CUR_OPERATION_SAVE_ID, operationId)
-    saveLocalByAccount(WW_CUR_OPERATION_COUNTRY_SAVE_ID, country)
-  }
-
-  function loadLastPlayed() {
-    this.lastPlayedOperationId = loadLocalByAccount(WW_CUR_OPERATION_SAVE_ID)
-    if (this.lastPlayedOperationId)
-      this.lastPlayedOperationCountry = loadLocalByAccount(WW_CUR_OPERATION_COUNTRY_SAVE_ID, profileCountrySq.value)
-  }
-
   function onEventBeforeProfileInvalidation(_p) {
-    this.stopWar()
+    stopWar()
   }
 
   function onEventLoginComplete(_p) {
-    this.loadLastPlayed()
     this.updateUserlogsAccess()
-  }
-
-  function onEventScriptsReloaded(_p) {
-    this.loadLastPlayed()
   }
 
   function leaveWWBattleQueues(battle = null) {
@@ -444,54 +368,6 @@ g_world_war = {
         this.armyGroups.append(group)
     }
     wwArmyGroupManager.updateManagers()
-  }
-
-  function getArtilleryUnitParamsByBlk(blk) {
-    let artillery = this.getArtilleryUnits()
-    for (local i = 0; i < blk.blockCount(); i++) {
-      let wwUnitName = blk.getBlock(i).getBlockName()
-      if (wwUnitName in artillery)
-        return artillery[wwUnitName]
-    }
-
-    return null
-  }
-
-  function updateRearZones() {
-    let blk = DataBlock()
-    ww_get_rear_zones(blk)
-
-    this.rearZones = {}
-    foreach (zoneName, zoneOwner in blk) {
-      let sideName = ww_side_val_to_name(zoneOwner)
-      if (!(sideName in this.rearZones))
-        this.rearZones[sideName] <- []
-
-      this.rearZones[sideName].append(zoneName)
-    }
-  }
-
-  function getRearZones() {
-    if (!this.rearZones)
-      this.updateRearZones()
-
-    return this.rearZones
-  }
-
-  function getRearZonesBySide(side) {
-    return this.getRearZones()?[ww_side_val_to_name(side)] ?? []
-  }
-
-  function getRearZonesOwnedToSide(side) {
-    return this.getRearZonesBySide(side).filter(@(zone) wwGetZoneSideByName(zone) == side)
-  }
-
-  function getRearZonesLostBySide(side) {
-    return this.getRearZonesBySide(side).filter(@(zone) wwGetZoneSideByName(zone) != side)
-  }
-
-  function getSelectedArmies() {
-    return ww_get_selected_armies_names().map(@(name) g_world_war.getArmyByName(name))
   }
 
   function getSidesStrenghtInfo() {
@@ -636,6 +512,12 @@ g_world_war = {
     return WwArmy(armyName)
   }
 
+  function getSelectedArmies() {
+    let getArmyByNameFunc = this.getArmyByName
+    return ww_get_selected_armies_names().map(@(name) getArmyByNameFunc(name))
+  }
+
+
   function getBattleById(battleId) {
     let battles = this.getBattles(
          function(checkedBattle) {
@@ -715,45 +597,9 @@ g_world_war = {
   }
 
 
-  function updateConfigurableValues() {
-    this.clearUnitsLists()
-    let blk = DataBlock()
-    wwGetConfigurableValues(blk)
-    wwstorage.configurableValues = blk
-    // ----- FIX ME: Weapon masks data should be received from char -----
-    if (!("fighterCountAsAssault" in wwstorage.configurableValues)) {
-      wwstorage.configurableValues.fighterCountAsAssault = DataBlock()
-      wwstorage.configurableValues.fighterCountAsAssault.mgun    = false
-      wwstorage.configurableValues.fighterCountAsAssault.cannon  = false
-      wwstorage.configurableValues.fighterCountAsAssault.gunner  = false
-      wwstorage.configurableValues.fighterCountAsAssault.bomb    = true
-      wwstorage.configurableValues.fighterCountAsAssault.torpedo = false
-      wwstorage.configurableValues.fighterCountAsAssault.rockets = true
-      wwstorage.configurableValues.fighterCountAsAssault.gunpod  = false
-    }
-    // ------------------------------------------------------------------
-
-    local fighterToAssaultWeaponMask = 0
-    let fighterCountAsAssault = wwstorage.configurableValues.fighterCountAsAssault
-    for (local i = 0; i < fighterCountAsAssault.paramCount(); i++)
-      if (fighterCountAsAssault.getParamValue(i))
-        fighterToAssaultWeaponMask = fighterToAssaultWeaponMask | (1 << i)
-
-    wwstorage.configurableValues.fighterToAssaultWeaponMask = fighterToAssaultWeaponMask
-  }
-
-
-  function onEventWWLoadOperationFirstTime(_params = {}) {
-    this.updateConfigurableValues()
-  }
-
   function onEventWWLoadOperation(_params = {}) {
     this.isArmyGroupsValid = false
     this.isBattlesValid = false
-  }
-
-  function getWWConfigurableValue(paramPath, defaultValue) {
-    return getBlkValueByPath(wwstorage.configurableValues, paramPath, defaultValue)
   }
 
   function getOperationObjectives() {
@@ -1141,7 +987,6 @@ g_world_war = {
   function onEventWWOperationPreviewLoaded(_params = {}) {
     this.isArmyGroupsValid = false
     this.isBattlesValid = false
-    this.updateConfigurableValues()
   }
 
   function popupCharErrorMsg(groupName = null, titleText = "", errorMsgId = null) {
@@ -1186,8 +1031,9 @@ g_world_war = {
     if (getGlobalStatusData())
       openWwOperationRewardPopup(logObj)
   }
-
 }
 ::g_world_war <- g_world_war
 
 subscribe_handler(g_world_war, g_listener_priority.DEFAULT_HANDLER)
+
+return g_world_war

@@ -3,8 +3,11 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
-let { getEsUnitType, getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { getInfantryUnits, getArtilleryUnits, getTransportUnits
+} = require("%scripts/worldWar/worldWarStates.nut")
 
 let fakeInfantryUnitName = "fake_infantry"
 const ALL_WW_UNITS_CODE = -2
@@ -78,11 +81,11 @@ let g_ww_unit_type = {
     let esUnitType = getEsUnitType(wwUnit.unit)
     if (esUnitType != ES_UNIT_TYPE_INVALID)
       return this.getUnitTypeByEsUnitCode(esUnitType)
-    else if (name == fakeInfantryUnitName || name in ::g_world_war.getInfantryUnits())
+    else if (name == fakeInfantryUnitName || name in getInfantryUnits())
       return this.INFANTRY
-    else if (name in ::g_world_war.getArtilleryUnits())
+    else if (name in getArtilleryUnits())
       return this.ARTILLERY
-    else if (name in ::g_world_war.getTransportUnits())
+    else if (name in getTransportUnits())
       return this.TRANSPORT
 
     return this.UNKNOWN

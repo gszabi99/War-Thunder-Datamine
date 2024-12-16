@@ -10,6 +10,7 @@ let { requestLeaderboardData, convertLeaderboardData
 let { isStringInteger } = require("%sqstd/string.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 let modes = [
   {
@@ -132,7 +133,7 @@ function isUsersLeaderboard(lbModeData) {
 }
 
 function updateClanByWWLBAndDo(clanInfo, afterUpdate) {
-  if (!::g_world_war.isWWSeasonActive())
+  if (!isWWSeasonActive())
     return afterUpdate(clanInfo)
 
   requestWwLeaderboardData("ww_clans",

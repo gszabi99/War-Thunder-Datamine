@@ -1,15 +1,13 @@
-from "%scripts/dagui_natives.nut" import wp_get_repair_cost_by_mode, shop_get_aircraft_hp, shop_get_free_repairs_used, wp_get_cost_gold, get_spare_aircrafts_count, calculate_tank_parameters_async, wp_get_repair_cost, calculate_min_and_max_parameters, has_entitlement, get_name_by_gamemode, calculate_ship_parameters_async, shop_purchase_aircraft, wp_get_cost, char_send_blk, clan_get_exp, get_global_stats_blk, shop_time_until_repair, remove_calculate_modification_effect_jobs, is_era_available, shop_get_full_repair_time_by_mode, calculate_mod_or_weapon_effect
+from "%scripts/dagui_natives.nut" import wp_get_repair_cost_by_mode, shop_get_aircraft_hp, shop_get_free_repairs_used, wp_get_cost_gold, get_spare_aircrafts_count, wp_get_repair_cost, has_entitlement, get_name_by_gamemode, shop_purchase_aircraft, wp_get_cost, char_send_blk, clan_get_exp, get_global_stats_blk, shop_time_until_repair, is_era_available, shop_get_full_repair_time_by_mode, calculate_mod_or_weapon_effect
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/clans/clanState.nut" import is_in_clan
 
 let { g_difficulty, get_battle_type_by_ediff, get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isInMenu, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_time_msec } = require("dagor.time")
+let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format, split_by_chars } = require("string")
 let { hangar_get_current_unit_name, hangar_get_loaded_unit_name, force_retrace_decorators,
   hangar_force_reload_model, hangar_is_high_quality } = require("hangar")
@@ -21,18 +19,18 @@ let { getUnitTooltipImage,
   getChanceToMeetText, getShipMaterialTexts, getUnitItemStatusText, getCantBuyUnitReason
   getUnitRarity } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
-let { canBuyNotResearched, getBitStatus, isUnitDefault, canResearchUnit,
-  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup,
-  isUnitUsable, isUnitResearched, isPrevUnitResearched,
+let { getBitStatus, isUnitDefault, canResearchUnit,
+  isUnitInResearch, isUnitGroup,
+  isUnitResearched, isPrevUnitResearched,
   isPrevUnitBought, isUnitAvailableForGM
 } = require("%scripts/unit/unitStatus.nut")
-let { checkFeatureLock } = require("%scripts/unit/unitChecks.nut")
+let { check_unit_mods_update } = require("%scripts/unit/unitChecks.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
 let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isModResearched, getModificationByName
 } = require("%scripts/weaponry/modificationInfo.nut")
 let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
@@ -40,7 +38,6 @@ let { boosterEffectType, getActiveBoostersArray,
   getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
 let { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("%scripts/debriefing/rewardSources.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let DataBlock = require("DataBlock")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { getUnitMassPerSecValue, getUnitWeaponPresetsCount } = require("%scripts/unit/unitWeaponryInfo.nut")
@@ -50,28 +47,24 @@ let { approversUnitToPreviewLiveResource } = require("%scripts/customization/ski
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getGiftSparesCount, getGiftSparesCost } = require("%scripts/shop/giftSpares.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
 let {
-  getEsUnitType, getUnitName, getUnitCountry,
+  getUnitName, getUnitCountry,
   getUnitCountryIcon, getUnitExp, getUnitRealCost, getUnitCost, getPrevUnit
 } = require("%scripts/unit/unitInfo.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
+let { getFullUnitBlk, getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
-let { showCantBuyOrResearchUnitMsgbox, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitActions.nut")
 let { get_warpoints_blk, get_ranks_blk, get_unittags_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { calcBattleRatingFromRank, isUnitSpecial, EDIFF_SHIFT } = require("%appGlobals/ranks_common_shared.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { getCrewById, getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { getBestItemSpecialOfferByUnit } = require("%scripts/items/itemsManager.nut")
-let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { hideBonus } = require("%scripts/bonusModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType } = require("%scripts/measureType.nut")
@@ -84,21 +77,6 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
-
-const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
-
-enum CheckFeatureLockAction {
-  BUY,
-  RESEARCH
-}
-
-function afterUpdateAirModificators(unit, callback) {
-  if (unit.secondaryWeaponMods)
-    unit.secondaryWeaponMods = null //invalidate secondary weapons cache
-  broadcastEvent("UnitModsRecount", { unit = unit })
-  if (callback != null)
-    callback()
-}
 
 function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   if (!checkObj(obj) || !maxExp)
@@ -135,119 +113,6 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   return !isUnitBought(unit) && isAvailableBuyUnitOnMarketPlace(unit)
 }
 
-::buyUnit <- function buyUnit(unit, silent = false) {
-  if (!checkFeatureLock(unit, CheckFeatureLockAction.BUY))
-    return false
-
-  let canBuyNotResearchedUnit = canBuyNotResearched(unit)
-  let unitCost = canBuyNotResearchedUnit ? unit.getOpenCost() : getUnitCost(unit)
-  if (unitCost.gold > 0 && !canSpendGoldOnUnitWithPopup(unit))
-    return false
-
-  if (!canBuyUnit(unit) && !canBuyNotResearchedUnit) {
-    if ((isUnitResearched(unit) || isUnitSpecial(unit)) && !silent)
-      showCantBuyOrResearchUnitMsgbox(unit)
-    return false
-  }
-
-  if (silent)
-    return ::impl_buyUnit(unit)
-
-  let unitName  = colorize("userlogColoredText", getUnitName(unit, true))
-  let unitPrice = unitCost.getTextAccordingToBalance()
-  let msgText = warningIfGold(loc("shop/needMoneyQuestion_purchaseAircraft",
-      { unitName = unitName, cost = unitPrice }),
-    unitCost)
-
-  scene_msg_box("need_money", null, msgText, [
-    ["no", @() null],
-    ["order_and_choose_crew/later", @() ::impl_buyUnit(unit, false)],
-    ["order_and_choose_crew", @() ::impl_buyUnit(unit)],
-  ], "order_and_choose_crew", { cancel_fn = @() null })
-  return true
-}
-
-::impl_buyUnit <- function impl_buyUnit(unit, needSelectCrew = true) {
-  if (!unit)
-    return false
-  if (unit.isBought())
-    return false
-
-  let canBuyNotResearchedUnit = canBuyNotResearched(unit)
-  let unitCost = canBuyNotResearchedUnit ? unit.getOpenCost() : getUnitCost(unit)
-  if (!checkBalanceMsgBox(unitCost))
-    return false
-
-  let unitName = unit.name
-  local taskId = null
-  if (canBuyNotResearchedUnit) {
-    let blk = DataBlock()
-    blk["unit"] = unit.name
-    blk["cost"] = unitCost.wp
-    blk["costGold"] = unitCost.gold
-
-    taskId = char_send_blk("cln_buy_not_researched_clans_unit", blk)
-  }
-  else
-    taskId = shop_purchase_aircraft(unitName)
-
-  let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase"), null, null)
-  addBgTaskCb(taskId, function() {
-    destroyMsgBox(progressBox)
-    broadcastEvent("UnitBought", { unitName = unit.name, needSelectCrew })
-  })
-  return true
-}
-
-::checkForResearch <- function checkForResearch(unit) {
-  // Feature lock has higher priority than canResearchUnit.
-  if (!checkFeatureLock(unit, CheckFeatureLockAction.RESEARCH))
-    return false
-
-  let isSquadronVehicle = unit.isSquadronVehicle()
-  if (canResearchUnit(unit) && !isSquadronVehicle)
-    return true
-
-  if (!isUnitSpecial(unit) && !isUnitGift(unit)
-    && !isSquadronVehicle && !isUnitsEraUnlocked(unit)) {
-    showInfoMsgBox(getCantBuyUnitReason(unit), "need_unlock_rank")
-    return false
-  }
-
-  if (isSquadronVehicle) {
-    if (min(clan_get_exp(), unit.reqExp - getUnitExp(unit)) <= 0
-      && (!hasFeature("ClanVehicles") || !is_in_clan())) {
-      if (!hasFeature("ClanVehicles")) {
-        ::show_not_available_msg_box()
-        return false
-      }
-
-      let button = [["#mainmenu/btnFindSquadron", @() loadHandler(gui_handlers.ClansModalHandler)]]
-      local defButton = "#mainmenu/btnFindSquadron"
-      let msg = [loc("mainmenu/needJoinSquadronForResearch")]
-
-      let canBuyNotResearchedUnit = canBuyNotResearched(unit)
-      let priceText = unit.getOpenCost().getTextAccordingToBalance()
-      if (canBuyNotResearchedUnit) {
-        button.append(["purchase", @() ::buyUnit(unit, true)])
-        defButton = "purchase"
-        msg.append("\n")
-        msg.append(loc("mainmenu/canOpenVehicle", { price = priceText }))
-      }
-      button.append(["cancel", function() {}])
-
-      scene_msg_box("cant_research_squadron_vehicle", null, "\n".join(msg, true),
-        button, defButton)
-
-      return false
-    }
-    else
-      return true
-  }
-
-  return showCantBuyOrResearchUnitMsgbox(unit)
-}
-
 ::isTestFlightAvailable <- function isTestFlightAvailable(unit, skipUnitCheck = false) {
   if (!isUnitAvailableForGM(unit, GM_TEST_FLIGHT))
     return false
@@ -262,92 +127,6 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
       || unit?.isSquadronVehicle?())
     return true
 
-  return false
-}
-
-//return true when modificators already valid.
-::check_unit_mods_update <- function check_unit_mods_update(air, callBack = null, forceUpdate = false, needMinMaxEffectsForAllUnitTypes = false) {
-  if (!air.isInited) {
-    script_net_assert_once("not inited unit request", "try to call check_unit_mods_update for not inited unit")
-    return false
-  }
-
-  if (air.modificatorsRequestTime > 0
-    && air.modificatorsRequestTime + MODIFICATORS_REQUEST_TIMEOUT_MSEC > get_time_msec()) {
-    if (forceUpdate)
-      remove_calculate_modification_effect_jobs()
-    else
-      return false
-  }
-  else if (!forceUpdate && air.modificators)
-    return true
-
-  if (air.isShipOrBoat()) {
-    air.modificatorsRequestTime = get_time_msec()
-    calculate_ship_parameters_async(air.name, this,  function(effect, ...) {
-      air.modificatorsRequestTime = -1
-      if (effect) {
-        air.modificators = {
-          arcade = effect.arcade
-          historical = effect.historical
-          fullreal = effect.fullreal
-        }
-
-        if (needMinMaxEffectsForAllUnitTypes) {
-          air.minChars = effect.min
-          air.maxChars = effect.max
-        }
-
-        if (!air.modificatorsBase)
-          air.modificatorsBase = air.modificators
-      }
-
-      afterUpdateAirModificators(air, callBack)
-    })
-    return false
-  }
-
-  if (air.isTank()) {
-    air.modificatorsRequestTime = get_time_msec()
-    calculate_tank_parameters_async(air.name, this,  function(effect, ...) {
-      air.modificatorsRequestTime = -1
-      if (effect) {
-        air.modificators = {
-          arcade = effect.arcade
-          historical = effect.historical
-          fullreal = effect.fullreal
-        }
-
-        if (needMinMaxEffectsForAllUnitTypes) {
-          air.minChars = effect.min
-          air.maxChars = effect.max
-        }
-
-        if (!air.modificatorsBase) // TODO: Needs tank params _without_ user progress here.
-          air.modificatorsBase = air.modificators
-      }
-      afterUpdateAirModificators(air, callBack)
-    })
-    return false
-  }
-
-  air.modificatorsRequestTime = get_time_msec()
-  calculate_min_and_max_parameters(air.name, this,  function(effect, ...) {
-    air.modificatorsRequestTime = -1
-    if (effect) {
-      air.modificators = {
-        arcade = effect.arcade
-        historical = effect.historical
-        fullreal = effect.fullreal
-      }
-      air.minChars = effect.min
-      air.maxChars = effect.max
-
-      if (isUnitSpecial(air) && !isUnitUsable(air))
-        air.modificators = effect.max
-    }
-    afterUpdateAirModificators(air, callBack)
-  })
   return false
 }
 
@@ -368,7 +147,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   }
 
   if (!isUnitGroup(air))
-    ::check_unit_mods_update(air, null, true)
+    check_unit_mods_update(air, null, true)
 }
 
 //return true when already counted
@@ -676,7 +455,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   let expCur = getUnitExp(air)
   let showShortestUnitInfo = params?.showShortestUnitInfo ?? air.showShortestUnitInfo
 
-  let isSecondaryModsValid = ::check_unit_mods_update(air)
+  let isSecondaryModsValid = check_unit_mods_update(air)
     && ::check_secondary_weapon_mods_recount(air)
 
   local obj = holderObj.findObject("aircraft-name")
@@ -1725,39 +1504,6 @@ local __types_for_coutries = null //for avoid recalculations
   return hangar_is_high_quality()
 }
 
-function get_units_list(filterFunc) {
-  let res = []
-  foreach (unit in getAllUnits())
-    if (filterFunc(unit))
-      res.append(unit)
-  return res
-}
-
-::get_units_list <- get_units_list
-
-function isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought) {
-  // Keep this in sync with getUnitsCountAtRank() in chard
-  return (esUnitType == getEsUnitType(unit) || esUnitType == ES_UNIT_TYPE_TOTAL)
-    && (country == unit.shopCountry || country == "")
-    && (unit.rank == rank || (!exact_rank && unit.rank > rank))
-    && ((!needBought || isUnitBought(unit)) && unit.isVisibleInShop())
-}
-
-function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = true) {
-  foreach (unit in getAllUnits())
-    if (isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought))
-      return true
-  return false
-}
-
-::get_units_count_at_rank <- function get_units_count_at_rank(rank, esUnitType, country, exact_rank, needBought = true) {
-  local count = 0
-  foreach (unit in getAllUnits())
-    if (isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought))
-      count++
-  return count
-}
-
 ::get_fm_file <- function get_fm_file(unitId, unitBlkData = null) {
   let unitPath = getUnitFileName(unitId)
   if (unitBlkData == null)
@@ -1771,10 +1517,7 @@ function hasUnitAtRank(rank, esUnitType, country, exact_rank, needBought = true)
 }
 
 return {
-  CheckFeatureLockAction
-  hasUnitAtRank
   showAirInfo
   getBattleTypeByUnit
   getFontIconByBattleType
-  get_units_list
 }

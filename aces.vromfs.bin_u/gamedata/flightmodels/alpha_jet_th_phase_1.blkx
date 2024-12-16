@@ -36,9 +36,6 @@
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_i_24_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -3503,20 +3500,10 @@
     }
   },
   "default_skin": {
-    "replace_tex": [
-      {
-        "from": "alpha_jet_a_gunpod_c*",
-        "to": "alpha_jet_th_phase_1_gunpod_c*"
-      },
-      {
-        "from": "alpha_jet_a_pylons_c*",
-        "to": "alpha_jet_th_phase_1_pylons_c*"
-      },
-      {
-        "from": "de_310l_alpha_jet_drop_tank_c*",
-        "to": "th_310l_alpha_jet_drop_tank_c*"
-      }
-    ]
+    "replace_tex": {
+      "from": "de_310l_alpha_jet_drop_tank_c*",
+      "to": "th_310l_alpha_jet_drop_tank_c*"
+    }
   },
   "user_skin": {
     "name": "alpha_jet_th_phase_1",
@@ -3554,16 +3541,16 @@
     "minSpeed": 0.0,
     "hasSafeExit": true,
     "hide": [
-      "pyro_glass1",
-      "pyro_glass2"
+      "blister7",
+      "blister8"
     ],
     "seat": [
       "seat_01",
       "seat_02"
     ],
     "fxEmitter": [
-      "pyro_glass1",
-      "pyro_glass2"
+      "blister7",
+      "blister8"
     ],
     "fxType": "catapult_expl_ejection"
   }

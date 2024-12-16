@@ -10,6 +10,7 @@ let { actionWithGlobalStatusRequest,
   setDeveloperMode } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -89,9 +90,9 @@ gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
       local isLastPlayed = false
       if (operation.isMyClanParticipate())
-        icon = ::g_world_war.myClanParticipateIcon
+        icon = g_world_war.myClanParticipateIcon
       else if (operation.isLastPlayed()) {
-        icon = ::g_world_war.lastPlayedIcon
+        icon = g_world_war.lastPlayedIcon
         isLastPlayed = true
       }
 
@@ -256,7 +257,7 @@ gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    foreach (side in ::g_world_war.getCommonSidesOrder()) {
+    foreach (side in g_world_war.getCommonSidesOrder()) {
       let cantJoinReasonData = this.selOperation.getCantJoinReasonDataBySide(side)
 
       let sideName = ww_side_val_to_name(side)

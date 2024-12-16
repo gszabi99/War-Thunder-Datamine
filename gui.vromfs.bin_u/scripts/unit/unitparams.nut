@@ -8,6 +8,10 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let cache = {}
 let cacheUnitsBlk = {}
 
+function getEsUnitType(unit) {
+  return unit?.esUnitType ?? ES_UNIT_TYPE_INVALID
+}
+
 function getFullUnitBlk(unitName) {
   if (unitName in cacheUnitsBlk)
     return cacheUnitsBlk[unitName]
@@ -58,4 +62,5 @@ return {
   isShipDamageControlEnabled
   findUnitNoCase
   getFullUnitBlk
+  getEsUnitType
 }

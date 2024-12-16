@@ -20,15 +20,16 @@
     ],
     "CxK": 1.25,
     "wingAreaMult": 2.0,
-    "finsAoaHor": 0.15,
-    "finsAoaVer": 0.15,
-    "distFromCmToStab": 0.35,
+    "finsAoaHor": 0.2,
+    "finsAoaVer": 0.2,
+    "distFromCmToStab": 0.45,
     "mass": 330.0,
     "massEnd": 305.0,
-    "timeFire": 25.0,
-    "force": 2000.0,
+    "timeFire": 30.0,
+    "force": 1670.0,
     "fireDelay": 2.0,
     "timeLife": 250.0,
+    "thrustVectoringAngle": 0.05,
     "useStartSpeed": true,
     "startSpeed": 0.0,
     "machMax": 1.0,
@@ -37,12 +38,6 @@
     "maxDistance": 70000.0,
     "minDistance": 3000.0,
     "rangeMax": 60000.0,
-    "launchZoneDistance": 200.0,
-    "opticSightFov": [
-      11.0,
-      3.0
-    ],
-    "isHasTVChannel": true,
     "guidanceType": "ir",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
@@ -94,11 +89,18 @@
     "price": 3000.0,
     "amountPerTier": 1.0,
     "iconType": "missile_air_to_uni_large",
+    "launchZoneDistance": 200.0,
+    "opticSightFov": [
+      11.0,
+      3.0
+    ],
+    "isHasTVChannel": true,
     "arcadeProp": {
-      "finsAoaHor": 0.18,
-      "finsAoaVer": 0.18
+      "finsAoaHor": 0.25,
+      "finsAoaVer": 0.25
     },
     "guidance": {
+      "breakLockMaxTime": 250.0,
       "warmUpTime": 1.0,
       "workTime": 3600.0,
       "uncageBeforeLaunch": true,
@@ -108,7 +110,36 @@
         1000.0,
         70000.0
       ],
-      "breakLockMaxTime": 250.0,
+      "guidanceAutopilot": {
+        "loftEnabled": true,
+        "loftElevation": 5.0,
+        "loftTargetElevation": -80.0,
+        "loftAngleToAccelMult": 0.75,
+        "loftTargetOmegaMax": 2.25,
+        "timeToGain0": [
+          1.0,
+          0.0
+        ],
+        "timeToGain1": [
+          1.5,
+          3.0
+        ],
+        "timeToGain2": [
+          10.0,
+          3.0
+        ],
+        "timeToGain3": [
+          12.5,
+          1.0
+        ],
+        "baseIndSpeed": 1800.0,
+        "propNavMult": 4.0,
+        "reqAccelMax": 15.0,
+        "accelControlProp": 0.041,
+        "accelControlIntg": 0.121,
+        "accelControlIntgLim": 1.0,
+        "accelControlDiff": 0.001
+      },
       "irSeeker": {
         "visibilityType": "infraRed",
         "rangeBand0": 20000.0,
@@ -126,21 +157,6 @@
         "groundVehiclesAsTarget": true,
         "surfaceAsTarget": true,
         "boundaryTrack": true
-      },
-      "guidanceAutopilot": {
-        "loftEnabled": true,
-        "loftElevation": 10.0,
-        "loftTargetElevation": -30.0,
-        "loftAngleToAccelMult": 0.85,
-        "loftTargetOmegaMax": 0.85,
-        "timeOut": 1.0,
-        "baseIndSpeed": 1800.0,
-        "propNavMult": 4.0,
-        "reqAccelMax": 4.0,
-        "accelControlProp": 0.0585,
-        "accelControlIntg": 0.176,
-        "accelControlIntgLim": 1.0,
-        "accelControlDiff": 0.0005
       }
     },
     "stabilityRicochetModifier": {

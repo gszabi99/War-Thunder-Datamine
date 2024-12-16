@@ -17,7 +17,7 @@ let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { getAllUnlocks, unlocksChapterName } = require("%scripts/worldWar/unlocks/wwUnlocks.nut")
 let { getNearestMapToBattle, getMyClanOperation, getMapByName, isMyClanInQueue, isReceivedGlobalStatusMaps,
-  getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+  getOperationById, isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { refreshGlobalStatusData,
   actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { addClanTagToNameInLeaderbord } = require("%scripts/leaderboard/leaderboardView.nut")
@@ -42,9 +42,11 @@ let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHan
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getWwSetting, getWWConfigurableValue, getLastPlayedOperationId, getLastPlayedOperationCountry
+} = require("%scripts/worldWar/worldWarStates.nut")
 let wwTopMenuOperationMap = require("%scripts/worldWar/externalServices/wwTopMenuOperationMapConfig.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 const MY_CLUSRTERS = "ww/clusters"
 
@@ -106,7 +108,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         timerObj.setUserData(this)
     }
 
-    this.autoselectOperationTimeout = ::g_world_war.getWWConfigurableValue(
+    this.autoselectOperationTimeout = getWWConfigurableValue(
       "autoselectOperationTimeoutSec", 10) * 1000
     this.loadAndCheckMyClusters()
     this.clusterOptionsSelector = this.createClustersList()
@@ -204,7 +206,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let view = {
         id = mapId
         itemTag = "ww_map_item"
-        itemIcon = map.getOpGroup().isMyClanParticipate() ? ::g_world_war.myClanParticipateIcon : null
+        itemIcon = map.getOpGroup().isMyClanParticipate() ? g_world_war.myClanParticipateIcon : null
         itemText = title
         hasWaitAnim = true
         isActive = map.isActive()
@@ -561,13 +563,13 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let isClanQueueAvaliable = this.selMap?.isClanQueueAvaliable()
     let myClanOperation = getMyClanOperation()
     let isMyClanOperation = myClanOperation != null && myClanOperation.data.map == this.selMap?.name
-    let myLastOperation = ::g_world_war.lastPlayedOperationId
-      ? getOperationById(::g_world_war.lastPlayedOperationId) : null
+    let lastPlayedOperationId = getLastPlayedOperationId()
+    let myLastOperation = lastPlayedOperationId ? getOperationById(lastPlayedOperationId) : null
     let isMyLastOperation = myLastOperation != null && myLastOperation.data.map == this.selMap?.name
     let isBackOperBtnVisible = !isInQueue && isMyLastOperation
       && myLastOperation.id != myClanOperation?.id
     let isJoinBtnVisible = !isInQueue && isMyClanOperation
-    foreach (side in ::g_world_war.getCommonSidesOrder()) {
+    foreach (side in g_world_war.getCommonSidesOrder()) {
       let sideObj = this.scene.findObject($"side_{side}")
       let sideCountry = sideObj.countryId
 
@@ -580,7 +582,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let backOperBtn = showObjById("btn_back_operation", isBackOperBtnVisible, sideObj)
       if (isBackOperBtnVisible) {
-        backOperBtn.inactiveColor = ::g_world_war.lastPlayedOperationCountry == sideCountry ? "no" : "yes"
+        backOperBtn.inactiveColor = getLastPlayedOperationCountry() == sideCountry ? "no" : "yes"
         backOperBtn.findObject("btn_back_operation_text")?.setValue(
           $"{loc("worldwar/backOperation")}{myLastOperation.getNameText(false)}")
       }
@@ -685,9 +687,10 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return showInfoMsgBox(loc(reasonData.reasonText), "cant_join_operation")
   }
 
-  onBackOperation = @(obj)
-    this.joinOperation(::g_world_war.lastPlayedOperationId
-      ? getOperationById(::g_world_war.lastPlayedOperationId) : null, obj.countryId)
+  function onBackOperation(obj) {
+    let lastPlayedOperationId = getLastPlayedOperationId()
+    this.joinOperation(lastPlayedOperationId ? getOperationById(lastPlayedOperationId) : null, obj.countryId)
+  }
 
   onJoinClanOperation = @(obj) this.joinOperation(getMyClanOperation(), obj.countryId)
 
@@ -800,11 +803,11 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let requestBlk = DataBlock()
       requestBlk.operationId = operationId
       actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk, null,
-        @() ::g_world_war.joinOperationById(operationId, null, false, null, true))
+        @() g_world_war.joinOperationById(operationId, null, false, null, true))
       return
     }
 
-    ::g_world_war.joinOperationById(operationId, null, false, null, true)
+    g_world_war.joinOperationById(operationId, null, false, null, true)
   }
 
   function requestRandomOperationByCountry(countryId, progressBox) {
@@ -841,8 +844,8 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let myClanOperation = getMyClanOperation()
     let isMyClanOperation = this.selMap != null && this.hasClanOperation
       && myClanOperation?.data.map == this.selMap?.name
-    let myLastOperation = ::g_world_war.lastPlayedOperationId
-      ? getOperationById(::g_world_war.lastPlayedOperationId) : null
+    let lastPlayedOperationId = getLastPlayedOperationId()
+    let myLastOperation = lastPlayedOperationId ? getOperationById(lastPlayedOperationId) : null
     let countryId = obj.countryId
     if (myLastOperation || isMyClanOperation)
       return scene_msg_box("disjoin_operation", null,
@@ -1233,7 +1236,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.needCheckSeasonIsOverNotice = false
-    if (!::g_world_war.isWWSeasonActive())
+    if (!isWWSeasonActive())
       this.showSeasonIsOverNotice()
   }
 

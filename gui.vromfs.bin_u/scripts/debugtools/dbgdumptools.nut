@@ -33,7 +33,8 @@ let { get_game_mode, get_game_type, get_mplayers_list } = require("mission")
 let { get_mission_difficulty, stat_get_benchmark,
   get_mp_tbl_teams, get_current_mission_desc } = require("guiMission")
 let { get_charserver_time_sec } = require("chard")
-let { getEsUnitType, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,

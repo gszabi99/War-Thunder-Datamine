@@ -13,6 +13,7 @@ let { WwCustomFormation } = require("wwCustomFormation.nut")
 let { WwAirfieldCooldownFormation } = require("wwAirfieldCooldownFormation.nut")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let WwAirfieldView = require("%scripts/worldWar/inOperation/view/wwAirfieldView.nut")
+let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
 
 let WwAirfield = class {
   index  = -1
@@ -53,7 +54,7 @@ let WwAirfield = class {
   }
 
   function update() {
-    this.createArmyMorale = ::g_world_war.getWWConfigurableValue("airfieldCreateArmyMorale", 0)
+    this.createArmyMorale = getWWConfigurableValue("airfieldCreateArmyMorale", 0)
 
     let blk = DataBlock()
     wwGetAirfieldInfo(this.index, blk)

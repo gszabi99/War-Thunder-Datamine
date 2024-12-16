@@ -22,6 +22,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getShowedUnit, getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { check_unit_mods_update } = require("%scripts/unit/unitChecks.nut")
 let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
 let { needShowUnseenModTutorialForUnit } = require("%scripts/missions/modificationTutorial.nut")
@@ -265,7 +266,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     if (!unit)
       return
 
-    let isAirInfoValid = ::check_unit_mods_update(unit)
+    let isAirInfoValid = check_unit_mods_update(unit)
                            && ::check_secondary_weapon_mods_recount(unit)
     if (!isAirInfoValid)
       this.doWhenActiveOnce("updateAirInfo")

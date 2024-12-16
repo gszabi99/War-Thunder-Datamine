@@ -447,7 +447,7 @@
       "replicating"
     ],
     "light__brightness": 5.0,
-    "light__max_radius": 100.0,
+    "light__max_radius": 10.0,
     "light__color": [
       20,
       200,
@@ -572,7 +572,12 @@
       100,
       255,
       255
-    ]
+    ],
+    "_group": {
+      "_tags": "render",
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadows": false
+    }
   },
   "spot_light_red_extralarge": {
     "_use": [
@@ -628,7 +633,12 @@
       245,
       10,
       255
-    ]
+    ],
+    "_group": {
+      "_tags": "render",
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadows": false
+    }
   },
   "omni_light_red_medium": {
     "_use": [
@@ -645,6 +655,126 @@
       255,
       255
     ]
+  },
+  "spot_light_orange_small_a": {
+    "_use": [
+      "spot_light",
+      "replicating"
+    ],
+    "light__max_radius": 8.0,
+    "light__brightness": 3.2,
+    "light__color": [
+      10,
+      100,
+      255,
+      255
+    ],
+    "_group": {
+      "_tags": "render",
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadows": false,
+      "spot_light__inner_attenuation": 0.1
+    }
+  },
+  "spot_light_blue_small_a": {
+    "_use": [
+      "spot_light",
+      "replicating"
+    ],
+    "light__max_radius": 8.0,
+    "light__brightness": 3.2,
+    "light__color": [
+      255,
+      245,
+      10,
+      255
+    ],
+    "_group": {
+      "_tags": "render",
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadows": false,
+      "spot_light__inner_attenuation": 0.1
+    }
+  },
+  "spot_light_red_small_a": {
+    "_use": [
+      "spot_light",
+      "replicating"
+    ],
+    "light__max_radius": 8.0,
+    "light__brightness": 3.2,
+    "light__color": [
+      3,
+      10,
+      255,
+      255
+    ],
+    "_group": {
+      "_tags": "render",
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadows": false,
+      "spot_light__inner_attenuation": 0.1
+    }
+  },
+  "spot_light_green_small_a": {
+    "_use": [
+      "spot_light",
+      "replicating"
+    ],
+    "light__max_radius": 8.0,
+    "light__brightness": 3.2,
+    "light__color": [
+      10,
+      255,
+      50,
+      255
+    ],
+    "_group": {
+      "_tags": "render",
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadows": false,
+      "spot_light__inner_attenuation": 0.1
+    }
+  },
+  "spot_light_orange_medium_b": {
+    "_use": [
+      "spot_light",
+      "replicating"
+    ],
+    "light__max_radius": 50.0,
+    "light__brightness": 100.0,
+    "light__color": [
+      10,
+      100,
+      255,
+      255
+    ],
+    "_group": {
+      "_tags": "render",
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadows": false,
+      "spot_light__inner_attenuation": 0.1
+    }
+  },
+  "spot_light_green_medium_b": {
+    "_use": [
+      "spot_light",
+      "replicating"
+    ],
+    "light__max_radius": 50.0,
+    "light__brightness": 100.0,
+    "light__color": [
+      10,
+      255,
+      50,
+      255
+    ],
+    "_group": {
+      "_tags": "render",
+      "spot_light__dynamic_obj_shadows": false,
+      "spot_light__shadows": false,
+      "spot_light__inner_attenuation": 0.1
+    }
   },
   "lamppost_a": {
     "_use": [

@@ -7,6 +7,8 @@ let time = require("%scripts/time.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { getLastPlayedOperationId, getLastPlayedOperationCountry } = require("%scripts/worldWar/worldWarStates.nut")
 
 enum WW_OPERATION_STATUSES {
   UNKNOWN = -1
@@ -152,8 +154,8 @@ enum WW_OPERATION_PRIORITY { //bit enum
       reasonText = ""
     }
 
-    let lastPlayedCountry = ::g_world_war.lastPlayedOperationCountry
-    let lastPlayedOperationId = ::g_world_war.lastPlayedOperationId
+    let lastPlayedCountry = getLastPlayedOperationCountry()
+    let lastPlayedOperationId = getLastPlayedOperationId()
     if (this.isMyClanParticipate() && country != this.getMyClanCountry()) // Join to opposite side
       res.reasonText = loc("worldWar/cantJoinByAnotherSideClan")
     else if (!this.isMyClanParticipate()
@@ -177,17 +179,17 @@ enum WW_OPERATION_PRIORITY { //bit enum
       return false
     }
 
-    ::g_world_war.stopWar()
+    g_world_war.stopWar()
     return this._join(country, onErrorCb, isSilence, onSuccess)
   }
 
   function _join(country, onErrorCb, isSilence, onSuccess) {
     let taskId = ww_start_war(this.id)
     let cb = Callback(function() {
-        ::g_world_war.onJoinOperationSuccess(this.id, country, isSilence, onSuccess)
+        g_world_war.onJoinOperationSuccess(this.id, country, isSilence, onSuccess)
       }, this)
     let errorCb = function(res) {
-        ::g_world_war.stopWar()
+        g_world_war.stopWar()
         if (onErrorCb)
           onErrorCb(res)
       }
@@ -293,7 +295,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
   }
 
   function isLastPlayed() {
-    return this.id == ::g_world_war.lastPlayedOperationId
+    return this.id == getLastPlayedOperationId()
   }
 
   function getPriority() {

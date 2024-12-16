@@ -21,6 +21,8 @@ let armiesList = Watched([])
 let armiesData = Watched([])
 
 let movingArmiesPositions = Watched({})
+let newPartOfArmyPath = Watched(null)
+let allowDrawNewPartOfArmyPath = Watched(true)
 
 function updateArmiesState() {
   let wwArmiesNames = wwGetArmiesNames()
@@ -44,6 +46,7 @@ function updateArmiesState() {
       }
    })
   }
+  allowDrawNewPartOfArmyPath.set(true)
 }
 
 function getArmyByPoint(point) {
@@ -132,4 +135,7 @@ return {
   getArmyIcon
 
   movingArmiesPositions
+
+  newPartOfArmyPath
+  allowDrawNewPartOfArmyPath
 }

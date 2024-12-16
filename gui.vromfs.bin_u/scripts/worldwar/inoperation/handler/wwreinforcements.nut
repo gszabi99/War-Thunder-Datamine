@@ -14,6 +14,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
 let { WwReinforcementArmy } = require("%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
@@ -70,7 +71,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
     let existedArmies = []
     let newArmies = []
 
-    let reinforcementsInfo = ::g_world_war.getReinforcementsInfo()
+    let reinforcementsInfo = g_world_war.getReinforcementsInfo()
     if (reinforcementsInfo?.reinforcements == null)
       return
 
@@ -114,7 +115,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
     if (!this.currentReinforcementName)
       return
 
-    let taskId = ::g_world_war.sendReinforcementRequest(
+    let taskId = g_world_war.sendReinforcementRequest(
       params.cellIdx, this.currentReinforcementName)
     addTask(taskId, null, Callback(this.afterSendReinforcement, this),
       Callback(this.onSendReinforcementError, this))
@@ -132,13 +133,13 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
     if (!selectedArmies.len())
       return
 
-    let wwArmy = ::g_world_war.getArmyByName(selectedArmies[0])
+    let wwArmy = g_world_war.getArmyByName(selectedArmies[0])
     if (wwArmy)
-      ::g_world_war.playArmyActionSound("deploySound", wwArmy)
+      g_world_war.playArmyActionSound("deploySound", wwArmy)
   }
 
   function onSendReinforcementError(_err) {
-    ::g_world_war.popupCharErrorMsg("reinforcement_deploy_error")
+    g_world_war.popupCharErrorMsg("reinforcement_deploy_error")
     wwEvent("ShowRearZones", { name = this.currentReinforcementName })
   }
 
@@ -225,7 +226,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
 
     if (!selectedArmy) {
       //search in existed, because army can already be an army, not a reinforcement
-      let army = ::g_world_war.getArmyByName(this.currentReinforcementName)
+      let army = g_world_war.getArmyByName(this.currentReinforcementName)
       if (!army.isValid())
         return
 

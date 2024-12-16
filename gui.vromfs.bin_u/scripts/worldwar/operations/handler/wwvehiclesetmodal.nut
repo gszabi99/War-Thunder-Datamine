@@ -18,6 +18,8 @@ let slotbarWidget = require("%scripts/slotbar/slotbarWidgetByVehiclesGroups.nut"
 let seenWWOperationAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_OPERATION_AVAILABLE)
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { fillConfigurableValues } = require("%scripts/worldWar/worldWarStates.nut")
 
 const WW_VEHICLE_SET_OUT_OF_DATE_DAYS = 90
 
@@ -77,12 +79,12 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
     let operationBgObj = this.scene.findObject("operation_background")
     if (checkObj(operationBgObj))
       operationBgObj["background-image"] = this.map.getBackground()
-    ::g_world_war.updateConfigurableValues()
+    fillConfigurableValues()
     this.updateTeamsInfo()
   }
 
   function updateTeamsInfo() {
-    foreach (side in ::g_world_war.getCommonSidesOrder()) {
+    foreach (side in g_world_war.getCommonSidesOrder()) {
       let data = handyman.renderCached(
         this.sceneTplTeamStrenght, this.getUnitsListViewBySide(side, side == SIDE_2))
       this.guiScene.replaceContentFromText(
@@ -129,7 +131,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
     unitContextMenuState({
       unitObj = unitObj
       actionsNames = this.getSlotbarActions()
-      curEdiff = ::g_world_war.defaultDiffCode
+      curEdiff = g_world_war.defaultDiffCode
       isSlotbarEnabled = false
     }.__update(this.getUnitParamsFromObj(unitObj)))
   }

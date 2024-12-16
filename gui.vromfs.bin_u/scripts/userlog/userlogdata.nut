@@ -46,6 +46,7 @@ let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { isPrizeMultiAward }= require("%scripts/items/trophyMultiAward.nut")
 let { hasKnowPrize } = require("%scripts/items/prizesView.nut")
 let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { openOperationRewardPopup } = require("%scripts/globalWorldwarUtils.nut")
 
 ::shown_userlog_notifications <- []
 
@@ -603,7 +604,7 @@ local logNameByType = {
         })
     }
     else if (blk?.type == EULT_WW_END_OPERATION && (blk.body?.wp ?? 0) > 0) {
-      ::g_world_war.openOperationRewardPopup(blk)
+      openOperationRewardPopup(blk)
     }
     else if (blk?.type == EULT_COMPLAINT_UPHELD) {
       complaintsCount++

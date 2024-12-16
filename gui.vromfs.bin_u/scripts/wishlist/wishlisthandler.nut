@@ -14,7 +14,8 @@ let { getWishList, getMaxWishListSize } = require("chard")
 let { requestRemoveFromWishlist } = require("%scripts/wishlist/wishlistManager.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCountryFlagForUnitTooltip } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName, getUnitCountry, getEsUnitType, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
@@ -41,6 +42,7 @@ let { switchProfileCountry } = require("%scripts/user/playerCountry.nut")
 let { steam_is_running } = require("steam")
 let { canEmailRegistration } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
+let { buyUnit } = require("%scripts/unit/unitActions.nut")
 
 let unitButtonDiscount = ["btn_buy_discount_", "btn_shop_discount_"]
 
@@ -468,7 +470,7 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
     let unit = this.getSelectedUnit(obj)
     if(unit == null)
       return
-    ::buyUnit(unit)
+    buyUnit(unit)
   }
 
   function onGiftBuy(obj) {

@@ -27,7 +27,7 @@ let { OPTIONS_MODE_GAMEPLAY, OPTIONS_MODE_CAMPAIGN, OPTIONS_MODE_TRAINING,
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { add_msg_box, remove_scene_box, update_msg_boxes, reset_msg_box_check_anim_time, need_new_msg_box_anim
 } = require("%sqDagui/framework/msgBox.nut")
-let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { measureType } = require("%scripts/measureType.nut")

@@ -1,5 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/utils_sa.nut" import build_blk_from_container
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -285,7 +284,7 @@ local ESportList = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.updateAllEventsByFilters()
-    saveLocalAccountSettings(MY_FILTERS, build_blk_from_container(this.filter))
+    saveLocalAccountSettings(MY_FILTERS, this.filter)
   }
 
   function onEvent(obj) {

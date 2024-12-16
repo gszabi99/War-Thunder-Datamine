@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")

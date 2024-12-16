@@ -1,6 +1,5 @@
 from "%scripts/dagui_natives.nut" import is_online_available, is_app_active, set_char_cb
 from "%scripts/dagui_library.nut" import *
-from "%scripts/airInfo.nut" import CheckFeatureLockAction
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -15,6 +14,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { cutPrefix, toUpper } = require("%sqstd/string.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isUnitFeatureLocked } = require("%scripts/unit/unitStatus.nut")
+let { CheckFeatureLockAction } = require("%scripts/unit/unitActions.nut")
 let { getAllFeaturePurchases, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { steam_is_overlay_active } = require("steam")

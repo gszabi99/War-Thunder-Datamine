@@ -17,6 +17,7 @@ let { wwGetOperationId, wwGetOperationWinner, wwClearOutlinedZones } = require("
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwObjectiveView } =  require("%scripts/worldWar/inOperation/view/wwObjectiveView.nut")
 let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 gui_handlers.wwObjective <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
@@ -89,7 +90,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
   }
 
   function updateObjectivesData() {
-    let objectivesBlk = ::g_world_war.getOperationObjectives()
+    let objectivesBlk = g_world_war.getOperationObjectives()
     if (!objectivesBlk)
       return
 
@@ -98,7 +99,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
   }
 
   function canShowObjective(objBlock, checkType = true, isForceVisible = false) {
-    if (::g_world_war.isDebugModeEnabled())
+    if (g_world_war.isDebugModeEnabled())
       return true
 
     if (this.needShowOperationDesc && !isForceVisible && !objBlock?.showInOperationDesc)
@@ -128,7 +129,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
 
     let objectivesCount = this.getObjectivesCount()
 
-    if (!this.restrictShownObjectives || ::g_world_war.isDebugModeEnabled())
+    if (!this.restrictShownObjectives || g_world_war.isDebugModeEnabled())
       return objectivesCount
 
     let guiScene = this.scene.getScene()
@@ -221,7 +222,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
     let objectivesList = this.getObjectivesList(availableObjectiveSlots)
 
     local countryIcon = ""
-    let groups = ::g_world_war.getArmyGroupsBySide(this.side)
+    let groups = g_world_war.getArmyGroupsBySide(this.side)
     if (groups.len() > 0)
       countryIcon = groups[0].getCountryIcon()
 
@@ -308,7 +309,7 @@ gui_handlers.wwObjective <- class (BaseGuiHandler) {
   }
 
   function onEventWWLoadOperation(_params) {
-    let objectivesBlk = ::g_world_war.getOperationObjectives()
+    let objectivesBlk = g_world_war.getOperationObjectives()
     if (!objectivesBlk)
       return
 

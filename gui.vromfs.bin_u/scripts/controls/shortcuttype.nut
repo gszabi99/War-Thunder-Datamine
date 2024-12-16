@@ -70,7 +70,7 @@ g_shortcut_type.getShortcutMarkup <- function getShortcutMarkup(shortcutId, pres
   foreach (expandedShortcut in expanded) {
     let expandedType = this.getShortcutTypeByShortcutId(expandedShortcut)
     let input = expandedType.getFirstInput(expandedShortcut, preset)
-    markup += input.getMarkup()
+    markup = "".concat(markup, input.getMarkup())
   }
 
   return markup

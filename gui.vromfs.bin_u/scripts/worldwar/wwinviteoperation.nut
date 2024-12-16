@@ -10,6 +10,7 @@ let { registerInviteClass, findInviteClass } = require("%scripts/invites/invites
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { updateNewInvitesAmount } = require("%scripts/invites/invites.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 function removeInvite(operationId) {
   let uid = findInviteClass("Operation")?.getUidByParams({ mail = { operationId = operationId } })
@@ -115,7 +116,7 @@ let Operation = class (BaseInvite) {
     let requestBlk = DataBlock()
     requestBlk.operationId = this.operationId
     actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk, null,
-      @() ::g_world_war.joinOperationById(this.operationId, this.country, null, onSuccess, true))
+      @() g_world_war.joinOperationById(this.operationId, this.country, null, onSuccess, true))
   }
 
   function accept() {

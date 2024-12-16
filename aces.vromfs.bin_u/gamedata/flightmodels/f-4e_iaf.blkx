@@ -2993,6 +2993,10 @@
       {
         "name": "f_4e_iaf_gbu_8",
         "blk": "gameData/flightModels/weaponPresets/f_4e_iaf_gbu_8.blk"
+      },
+      {
+        "name": "f_4e_iaf_gbu_15",
+        "blk": "gameData/flightModels/weaponPresets/f_4e_iaf_gbu_15.blk"
       }
     ]
   },
@@ -3306,7 +3310,7 @@
           {
             "iconType": "guided_bomb_green",
             "name": "us_2000lb_gbu_8",
-            "reqModification": "us_gbu_8",
+            "reqModification": "us_gbu_8_15",
             "ShowNodes": {
               "node": "pylon_l_out"
             },
@@ -3511,7 +3515,7 @@
           {
             "iconType": "guided_bomb_green",
             "name": "us_2000lb_gbu_8",
-            "reqModification": "us_gbu_8",
+            "reqModification": "us_gbu_8_15",
             "ShowNodes": {
               "node": [
                 "pylon_l_in",
@@ -3521,6 +3525,26 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
+              "emitter": "us_2000lb_gbu_8_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_yellow",
+            "name": "us_2000lb_gbu_15v1",
+            "reqModification": "us_gbu_8_15",
+            "ShowNodes": {
+              "node": [
+                "pylon_l_in",
+                "pylon_l_in_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_15v1.blk",
               "emitter": "us_2000lb_gbu_8_002",
               "bullets": 1,
               "external": true,
@@ -4316,7 +4340,7 @@
           {
             "iconType": "guided_bomb_green",
             "name": "us_2000lb_gbu_8",
-            "reqModification": "us_gbu_8",
+            "reqModification": "us_gbu_8_15",
             "ShowNodes": {
               "node": [
                 "pylon_r_in",
@@ -4326,6 +4350,26 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_8_hobos.blk",
+              "emitter": "us_2000lb_gbu_8_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_yellow",
+            "name": "us_2000lb_gbu_15v1",
+            "reqModification": "us_gbu_8_15",
+            "ShowNodes": {
+              "node": [
+                "pylon_r_in",
+                "pylon_r_in_upor"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_15v1.blk",
               "emitter": "us_2000lb_gbu_8_003",
               "bullets": 1,
               "external": true,
@@ -4521,7 +4565,7 @@
           {
             "iconType": "guided_bomb_green",
             "name": "us_2000lb_gbu_8",
-            "reqModification": "us_gbu_8",
+            "reqModification": "us_gbu_8_15",
             "ShowNodes": {
               "node": "pylon_r_out"
             },
@@ -4918,7 +4962,7 @@
       "group": "countermeasures",
       "tier": 1
     },
-    "us_gbu_8": {
+    "us_gbu_8_15": {
       "modClass": "weapon",
       "tier": 4,
       "reqModification": "us_agm_62",

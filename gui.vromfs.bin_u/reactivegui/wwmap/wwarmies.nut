@@ -8,8 +8,8 @@ let { getArmyGroupsInfo } = require("%rGui/wwMap/wwArmyGroups.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
 let { convertToRelativeMapCoords, activeAreaBounds, mapZoom } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { convertColor4, getMapColor } = require("%rGui/wwMap/wwMapUtils.nut")
-let { selectedArmy, hoveredArmy, getArmyIcon
-  armiesList, armiesData, isShowArmiesIndex, movingArmiesPositions } = require("%rGui/wwMap/wwArmyStates.nut")
+let { selectedArmy, hoveredArmy, getArmyIcon, armiesList, armiesData, isShowArmiesIndex,
+  movingArmiesPositions, newPartOfArmyPath, getArmyByName, allowDrawNewPartOfArmyPath } = require("%rGui/wwMap/wwArmyStates.nut")
 let { artilleryReadyState } = require("%appGlobals/worldWar/wwArtilleryStatus.nut")
 let { isTransport, getLoadedArmyType } = require("%rGui/wwMap/wwTransportUtils.nut")
 let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
@@ -22,6 +22,66 @@ let { isShowPathForSelectedArmyFilter } = require("%appGlobals/worldWar/wwMapFil
 let entrenchIconColors = {
   spriteColor = 0
   blinkColor = 0
+}
+
+let function mkArmyNewPartOfPath(areaBounds) {
+  return function() {
+    if (newPartOfArmyPath.get() == null || allowDrawNewPartOfArmyPath.get() == false)
+      return {
+        watch = [newPartOfArmyPath, allowDrawNewPartOfArmyPath, mapZoom]
+      }
+    let { areaWidth, areaHeight } = areaBounds
+    let { armyName, newPos } = newPartOfArmyPath.get()
+    local firstPoint = { x = 0, y = 0 }
+    let lastPoint = newPos
+
+    let armyData = getArmyByName(armyName)
+    if (armyData.pathTracker.status != "ES_MOVING_BY_PATH")
+      firstPoint = convertToRelativeMapCoords(armyData.pathTracker.pos)
+    else {
+      let points = armyData.pathTracker.path.points % "item"
+      let point = points[points.len() - 1]
+      firstPoint = convertToRelativeMapCoords(point.pos)
+    }
+
+    let armySide = zoneSideType[armyData.owner.side]
+    let arrowColor = getMapColor(isPlayerSide(armySide) ? "alliesArmyColorArrowNew" : "enemiesArmyColorArrowNew")
+    let endArrowColor = getMapColor(isPlayerSide(armySide) ? "alliesArrowLastCircleColor" : "enemiesArrowLastCircleColor")
+    let radius = even(armyData.specs.battleStartRadiusN * mapZoom.get())
+    let arrowSize = 25
+
+    let commands = [[VECTOR_LINE, 100 * firstPoint.x, 100 * firstPoint.y, 100 * lastPoint.x, 100 * lastPoint.y]]
+
+    return {
+      watch = [newPartOfArmyPath, allowDrawNewPartOfArmyPath, mapZoom]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = arrowColor
+      size = [areaWidth, areaHeight]
+      lineWidth = 2 * radius
+      commands
+      children = {
+        rendObj = ROBJ_BOX
+        borderColor = arrowColor
+        pos = [areaWidth * lastPoint.x - radius, areaHeight * lastPoint.y - radius]
+        size = [2 * radius, 2 * radius]
+        fillColor = endArrowColor
+        borderWidth = hdpx(2)
+        borderRadius = radius
+        transform = {
+          rotate = calcAngleBetweenVectors(lastPoint, firstPoint).deg
+        }
+        children = {
+          rendObj = ROBJ_VECTOR_CANVAS
+          size = flex()
+          color = arrowColor
+          fillColor = arrowColor
+          commands = [
+            [VECTOR_POLY, arrowSize + 50, 50, -arrowSize * 0.5 + 50, arrowSize * 0.866 + 50, -arrowSize * 0.5 + 50, -arrowSize * 0.866 + 50]
+          ]
+        }
+      }
+    }
+  }
 }
 
 let function mkArmyPaths(armyWatch, areaBounds) {
@@ -68,27 +128,29 @@ let function mkArmyPaths(armyWatch, areaBounds) {
       size = [areaWidth, areaHeight]
       lineWidth = 2 * radius
       commands = commands
-      children = {
-        rendObj = ROBJ_BOX
-        borderColor = arrowColor
-        pos = [areaWidth * lastPoint.x - radius, areaHeight * lastPoint.y - radius]
-        size = [2 * radius, 2 * radius]
-        fillColor = endArrowColor
-        borderWidth = hdpx(2)
-        borderRadius = radius
-        transform = {
-          rotate = calcAngleBetweenVectors(lastPoint, preLastPoint).deg
-        }
-        children = {
-          rendObj = ROBJ_VECTOR_CANVAS
-          size = flex()
-          color = arrowColor
-          fillColor = arrowColor
-          commands = [
-            [VECTOR_POLY, arrowSize + 50, 50, -arrowSize * 0.5 + 50, arrowSize * 0.866 + 50, -arrowSize * 0.5 + 50, -arrowSize * 0.866 + 50]
-          ]
-        }
-      }
+      children = @() newPartOfArmyPath.get() != null ? null
+        : {
+            rendObj = ROBJ_BOX
+            watch = newPartOfArmyPath
+            borderColor = arrowColor
+            pos = [areaWidth * lastPoint.x - radius, areaHeight * lastPoint.y - radius]
+            size = [2 * radius, 2 * radius]
+            fillColor = endArrowColor
+            borderWidth = hdpx(2)
+            borderRadius = radius
+            transform = {
+              rotate = calcAngleBetweenVectors(lastPoint, preLastPoint).deg
+            }
+            children = {
+              rendObj = ROBJ_VECTOR_CANVAS
+              size = flex()
+              color = arrowColor
+              fillColor = arrowColor
+              commands = [
+                [VECTOR_POLY, arrowSize + 50, 50, -arrowSize * 0.5 + 50, arrowSize * 0.866 + 50, -arrowSize * 0.5 + 50, -arrowSize * 0.866 + 50]
+              ]
+            }
+          }
     }
   }
 }
@@ -327,12 +389,16 @@ let mkArmies = function() {
   let armiesPaths = armiesData.get()
     .map(@(_army, idx) mkArmyPaths(Computed(@() armiesData.get()?[idx]), activeAreaBounds.get()))
 
+
+  let children = armiesPaths
+  children.append(mkArmyNewPartOfPath(activeAreaBounds.get()))
+  children.extend(armies)
   return {
     watch = [armiesList, activeAreaBounds]
     size = activeAreaBounds.get().size
     vplace = ALIGN_CENTER
     hplace = ALIGN_CENTER
-    children = armiesPaths.extend(armies)
+    children
   }
 }
 

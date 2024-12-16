@@ -5,6 +5,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { guiStartReplayBattle } = require("%scripts/replays/replayScreen.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 gui_handlers.WwBattleResults <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -30,10 +31,10 @@ gui_handlers.WwBattleResults <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurrentEdiff() {
-    return ::g_world_war.defaultDiffCode
+    return g_world_war.defaultDiffCode
   }
 
   function onViewServerReplay() {
-    guiStartReplayBattle(this.battleRes.getSessionId(), @() ::g_world_war.openMainWnd())
+    guiStartReplayBattle(this.battleRes.getSessionId(), @() g_world_war.openMainWnd())
   }
 }

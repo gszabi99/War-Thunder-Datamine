@@ -14,14 +14,13 @@ let { get_meta_mission_info_by_name, get_meta_missions_info_by_campaigns,
   add_custom_mission_list_full, get_meta_mission_info_by_gm_and_name,
   get_current_mission_desc, get_meta_missions_info } = require("guiMission")
 let { get_game_mode, get_game_type, get_current_mission_name } = require("mission")
-let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType, findUnitNoCase } = require("%scripts/unit/unitParams.nut")
 let { isStringInteger, isStringFloat, toUpper } = require("%sqstd/string.nut")
 let { getDynamicLayoutsBlk } = require("dynamicMission")
 let { g_mislist_type } = require("%scripts/missions/misListType.nut")
 let regexp2 = require("regexp2")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { findUnitNoCase } = require("%scripts/unit/unitParams.nut")
 
 const COOP_MAX_PLAYERS = 4
 

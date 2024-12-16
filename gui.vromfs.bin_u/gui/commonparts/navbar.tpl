@@ -18,6 +18,9 @@ navLeft {
 }
 
 navMiddle {
+  <<#middleId>>
+  id:t='<<middleId>>'
+  <</middleId>>
   <<#middle>>
   <<#button>>
   include "%gui/commonParts/button.tpl"

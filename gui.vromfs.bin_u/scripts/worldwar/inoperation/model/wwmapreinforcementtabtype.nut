@@ -4,6 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { wwGetPlayerSide } = require("worldwar")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 ::g_ww_map_reinforcement_tab_type <- {
   types = []
@@ -43,9 +44,9 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
     tabId = "reinforcements_block"
     tabIcon = "worldWar/iconReinforcement"
     tabText = "worldWar/Reinforcements"
-    needAutoSwitch = @() ::g_world_war.getMyReadyReinforcementsArray().len() > 0
+    needAutoSwitch = @() g_world_war.getMyReadyReinforcementsArray().len() > 0
     getTabTextPostfix = function() {
-      let availReinf = ::g_world_war.getMyReadyReinforcementsArray().len()
+      let availReinf = g_world_war.getMyReadyReinforcementsArray().len()
       if (availReinf > 0)
         return loc("ui/parentheses/space", { text = availReinf })
       return ""

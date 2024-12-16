@@ -29,7 +29,7 @@ function make(name, ctor) {
       return
     ndbWrite(key, value)
     try {
-      eventbus_send_foreign("sharedWatched.update", { name, value })
+      eventbus_send_foreign("sharedWatched.update", { name })
     } catch (err) {
       log($"eventbus_send_foreign() failed (sharedWatched = {name})")
       log(err)
@@ -41,11 +41,14 @@ function make(name, ctor) {
 
 eventbus_subscribe("sharedWatched.update",
   function(msg) {
-    let data = sharedData?[msg.name]
+    let { name } = msg
+    let data = sharedData?[name]
     if (data?.watch == null)
       return
     data.isExternalEvent = true
-    data.watch(msg.value)
+    let key = ["SHARED_WATCHED_STATE", name]
+    if (ndbExists(key))
+      data.watch.set(ndbRead(key))
     data.isExternalEvent = false
   })
 

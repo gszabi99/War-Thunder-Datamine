@@ -4,7 +4,7 @@ tdiv {
     id:t='filter_button'
     <<#buttonPos>>
     pos:t='<<buttonPos>>'
-    position:t='absolute'
+    position:t='root'
     <</buttonPos>>
     class:t='image'
     noMargin:t='yes'

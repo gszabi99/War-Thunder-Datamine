@@ -18,6 +18,7 @@
   "ilsNeedAllRadarScreenTarget": true,
   "hmdA10c": true,
   "rwrIndicator": "Spectra",
+  "mfdCamDamocles": true,
   "isBwOpticSight": true,
   "needTpsNightVision": true,
   "viewDistKInSight": 6.0,
@@ -55,7 +56,7 @@
   "disableExhaustFxIfContrailIsActive": true,
   "overheatBlk": "gameData/FlightModels/DM/overheat.blk",
   "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
-  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map.blk",
+  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_rafale.blk",
   "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
   "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
   "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
@@ -68,9 +69,6 @@
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -101,6 +99,14 @@
         "hp": 30.5
       },
       "elevon_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 30.5
+      },
+      "elevator0_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 30.5
+      },
+      "elevator1_dm": {
         "genericDamageMult": 0.3,
         "hp": 30.5
       },
@@ -271,6 +277,88 @@
       },
       {
         "name": "cover3_dm"
+      },
+      {
+        "name": "elevator0_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "elevator1_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
       },
       {
         "name": "elevon1_l_dm",
@@ -1970,14 +2058,14 @@
       1024
     ],
     "mfdTextureSize": [
-      1024,
-      1024
+      2024,
+      2024
     ],
     "hmdBlockIlsArea": [
-      0.15,
-      -0.5,
-      0.73,
-      0.85
+      0.5,
+      -0.4,
+      0.55,
+      0.6
     ],
     "hmdEnabledByDefault": true,
     "mirror": true,
@@ -2095,8 +2183,18 @@
             0.5,
             0.5
           ],
-          "cameraFromTargetingPod": true,
           "page": [
+            {
+              "type": "rwr",
+              "scale": 1.0
+            },
+            {
+              "type": "ils_duplicate"
+            },
+            {
+              "type": "radar",
+              "customRadar": "rafaelRadar"
+            },
             {
               "type": "thermal",
               "turretIdx": 0
@@ -2107,13 +2205,6 @@
             },
             {
               "type": "map"
-            },
-            {
-              "type": "ils_duplicate"
-            },
-            {
-              "type": "radar",
-              "customRadar": "rafaelRadar"
             }
           ]
         },
@@ -2132,14 +2223,6 @@
           "cameraFromShell": true,
           "page": [
             {
-              "type": "thermal",
-              "turretIdx": 0
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
-            },
-            {
               "type": "radar",
               "customRadar": "rafaelRadar"
             },
@@ -2149,6 +2232,17 @@
             {
               "type": "rwr",
               "scale": 1.0
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "map"
             }
           ]
         },
@@ -2159,11 +2253,8 @@
             0.5,
             1.0
           ],
+          "cameraFromTargetingPod": true,
           "page": [
-            {
-              "type": "rwr",
-              "scale": 1.0
-            },
             {
               "type": "thermal",
               "turretIdx": 0
@@ -2173,8 +2264,11 @@
               "turretIdx": 0
             },
             {
-              "type": "radar",
-              "customRadar": "rafaelRadar"
+              "type": "map"
+            },
+            {
+              "type": "rwr",
+              "scale": 1.0
             },
             {
               "type": "radar",
@@ -2198,7 +2292,7 @@
               "texture": "su_mfd_ahorizon",
               "arrowTex": "su_mfd_ahorizon_scale",
               "position": [
-                175.0,
+                128.0,
                 128.0
               ],
               "backgroundTexCoord": [
@@ -2214,7 +2308,7 @@
                 0.6
               ],
               "size": [
-                350.0,
+                270.0,
                 270.0
               ],
               "ranges": {
@@ -2229,7 +2323,7 @@
             "aviahorizon_roll": {
               "texture": "su_mfd_ahorizon",
               "position": [
-                175.0,
+                128.0,
                 128.0
               ],
               "arrowTexCoord": [
@@ -2239,7 +2333,7 @@
                 1.0
               ],
               "size": [
-                350.0,
+                270.0,
                 270.0
               ],
               "notDrawBackground": true,
@@ -2353,10 +2447,10 @@
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -35.0,
-        35.0,
-        -35.0,
-        35.0
+        -45.0,
+        45.0,
+        -14.0,
+        60.0
       ],
       "opticType": "",
       "turretNo": 0
@@ -2421,6 +2515,10 @@
         "blk": "gameData/FlightModels/weaponPresets/rafale_c_f3_mica_em.blk"
       },
       {
+        "name": "rafale_c_f3_r550",
+        "blk": "gameData/FlightModels/weaponPresets/rafale_c_f3_r550.blk"
+      },
+      {
         "name": "rafale_c_f3_samp_mk82",
         "blk": "gameData/FlightModels/weaponPresets/rafale_c_f3_samp_mk82.blk"
       },
@@ -2431,6 +2529,10 @@
       {
         "name": "rafale_c_f3_gbu_22",
         "blk": "gameData/FlightModels/weaponPresets/rafale_c_f3_gbu_22.blk"
+      },
+      {
+        "name": "rafale_c_f3_gbu_49",
+        "blk": "gameData/FlightModels/weaponPresets/rafale_c_f3_gbu_49.blk"
       },
       {
         "name": "rafale_c_f3_gbu_16",
@@ -2471,6 +2573,10 @@
         "pylon_rafale_fuse_mica_001",
         "pylon_rafale_fuse_mica_002",
         "pylon_rafale_mica_002",
+        "pylon_rafale_mica_aux_001",
+        "pylon_rafale_mica_aux_002",
+        "pylon_rafale_mica_aux_rail_001",
+        "pylon_rafale_mica_aux_rail_002",
         "pylon_rafale_central",
         "pylon_rafale_central_nose",
         "pylon_adp_192",
@@ -2650,18 +2756,33 @@
         "index": 1,
         "tier": 11,
         "order": 1,
-        "WeaponPreset": {
-          "iconType": "missile_type_f_air_to_air_midrange",
-          "name": "mica_em_default",
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/fr_mica_em_default.blk",
-            "emitter": "rocket_mica_001",
-            "bullets": 1
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "r550_magic_2_slot1_default",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic_2_default.blk",
+              "emitter": "rocket_r550_magic_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "mica_em_slot1",
+            "reqModification": "fr_mica_em",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
+              "emitter": "rocket_mica_001",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 2,
@@ -2670,8 +2791,7 @@
         "WeaponPreset": [
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "mica_em_slot2",
-            "reqModification": "fr_mica_em",
+            "name": "mica_em_slot2_default",
             "ShowNodes": {
               "node": "pylon_rafale_mica_001"
             },
@@ -2679,7 +2799,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em_default.blk",
               "emitter": "rocket_mica_003",
               "bullets": 1
             }
@@ -2719,7 +2839,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "auf2_gbu_12_x2_slot2",
-            "reqModification": "us_gbu_12_22",
+            "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -2739,13 +2859,33 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "auf2_gbu_22_x2_slot2",
-            "reqModification": "us_gbu_12_22",
+            "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/fr_auf2_gbu_22_x2.blk",
+              "emitter": "pylon_stbr_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "damocles"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser_group_x2",
+            "name": "auf2_gbu_49_x2_slot2",
+            "reqModification": "us_gbu_12_49",
+            "ShowNodes": {
+              "node": "pylon_pu_708_001"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/fr_auf2_gbu_49_x2.blk",
               "emitter": "pylon_stbr_001",
               "external": true,
               "separate": true,
@@ -2801,7 +2941,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x3",
             "name": "us_gbu_12_x3_slot2",
-            "reqModification": "us_gbu_12_22",
+            "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
@@ -2821,13 +2961,33 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x3",
             "name": "us_gbu_22_x3_slot2",
-            "reqModification": "us_gbu_12_22",
+            "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/at_730_gbu_22_x3.blk",
+              "emitter": "pylon_at_730_001",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "damocles"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_jdam_group_x3",
+            "name": "us_gbu_49_x3_slot2",
+            "reqModification": "us_gbu_12_49",
+            "ShowNodes": {
+              "node": "pylon_pu_708_001"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/at_730_gbu_49_x3.blk",
               "emitter": "pylon_at_730_001",
               "external": true,
               "separate": true,
@@ -2851,7 +3011,7 @@
               "emitter": "pylon_at_730_001",
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.4
             }
           },
           {
@@ -2867,7 +3027,7 @@
               "emitter": "pylon_at_730_001",
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.4
             }
           },
           {
@@ -2883,7 +3043,7 @@
               "emitter": "pylon_at_730_001",
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.4
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -3080,8 +3240,7 @@
         "WeaponPreset": [
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "mica_em_slot9",
-            "reqModification": "fr_mica_em",
+            "name": "mica_em_slot9_default",
             "ShowNodes": {
               "node": "pylon_rafale_mica_002"
             },
@@ -3089,7 +3248,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em_default.blk",
               "emitter": "rocket_mica_006",
               "bullets": 1
             }
@@ -3129,7 +3288,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "auf2_gbu_12_x2_slot9",
-            "reqModification": "us_gbu_12_22",
+            "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -3149,13 +3308,33 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
             "name": "auf2_gbu_22_x2_slot9",
-            "reqModification": "us_gbu_12_22",
+            "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/fr_auf2_gbu_22_x2.blk",
+              "emitter": "pylon_stbr_005",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "damocles"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_laser_group_x2",
+            "name": "auf2_gbu_49_x2_slot9",
+            "reqModification": "us_gbu_12_49",
+            "ShowNodes": {
+              "node": "pylon_pu_708_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/fr_auf2_gbu_49_x2.blk",
               "emitter": "pylon_stbr_005",
               "external": true,
               "separate": true,
@@ -3211,7 +3390,7 @@
           {
             "iconType": "guided_bomb_middle_laser_group_x3",
             "name": "us_gbu_12_x3_slot9",
-            "reqModification": "us_gbu_12_22",
+            "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
@@ -3231,13 +3410,33 @@
           {
             "iconType": "guided_bomb_middle_jdam_group_x3",
             "name": "us_gbu_22_x3_slot9",
-            "reqModification": "us_gbu_12_22",
+            "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
             },
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/at_730_gbu_22_x3.blk",
+              "emitter": "pylon_at_730_002",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "damocles"
+            }
+          },
+          {
+            "iconType": "guided_bomb_middle_jdam_group_x3",
+            "name": "us_gbu_49_x3_slot9",
+            "reqModification": "us_gbu_12_49",
+            "ShowNodes": {
+              "node": "pylon_pu_708_002"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/at_730_gbu_49_x3.blk",
               "emitter": "pylon_at_730_002",
               "external": true,
               "separate": true,
@@ -3261,7 +3460,7 @@
               "emitter": "pylon_at_730_002",
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.4
             }
           },
           {
@@ -3277,7 +3476,7 @@
               "emitter": "pylon_at_730_002",
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.4
             }
           },
           {
@@ -3293,7 +3492,7 @@
               "emitter": "pylon_at_730_002",
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.4
             },
             "DependentWeaponPreset": {
               "slot": 5,
@@ -3306,18 +3505,33 @@
         "index": 10,
         "tier": 1,
         "order": 2,
-        "WeaponPreset": {
-          "iconType": "missile_type_f_air_to_air_midrange",
-          "name": "mica_em_default",
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/fr_mica_em_default.blk",
-            "emitter": "rocket_mica_008",
-            "bullets": 1
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_c_air_to_air",
+            "name": "r550_magic_2_slot10_default",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_r_550_magic_2_default.blk",
+              "emitter": "rocket_r550_magic_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "mica_em_slot10",
+            "reqModification": "fr_mica_em",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
+              "emitter": "rocket_mica_008",
+              "bullets": 1
+            }
           }
-        }
+        ]
       }
     ]
   },
@@ -3642,13 +3856,13 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "us_gbu_12_22": {
+    "us_gbu_12_49": {
       "reqModification": "fr_damocles_pod",
       "modClass": "weapon",
       "tier": 2
     },
     "us_gbu_16": {
-      "reqModification": "us_gbu_12_22",
+      "reqModification": "us_gbu_12_49",
       "modClass": "weapon",
       "tier": 3
     },
@@ -3663,7 +3877,7 @@
     },
     "fr_aasm_250_sbu_38": {
       "prevModification": "fr_250kg_type_25c",
-      "reqModification": "us_gbu_12_22",
+      "reqModification": "us_gbu_12_49",
       "modClass": "weapon",
       "tier": 2
     },

@@ -3091,6 +3091,10 @@
       {
         "name": "kurnass_2000_gbu_10",
         "blk": "gameData/flightModels/weaponPresets/kurnass_2000_gbu_10.blk"
+      },
+      {
+        "name": "kurnass_2000_gbu_15",
+        "blk": "gameData/flightModels/weaponPresets/kurnass_2000_gbu_15.blk"
       }
     ]
   },
@@ -3658,6 +3662,33 @@
             "DependentWeaponPreset": {
               "slot": 5,
               "preset": "pave_spike"
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 10,
+                "preset": "agm_65d_x3"
+              },
+              {
+                "slot": 3,
+                "preset": "python3"
+              }
+            ]
+          },
+          {
+            "iconType": "guided_bomb_yellow",
+            "name": "us_2000lb_gbu_15v1",
+            "reqModification": "us_gbu_15v1",
+            "ShowNodes": {
+              "node": "pylon_l_in"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_15v1.blk",
+              "emitter": "us_2000lb_gbu_8_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
             },
             "BannedWeaponPreset": [
               {
@@ -4549,6 +4580,33 @@
             ]
           },
           {
+            "iconType": "guided_bomb_yellow",
+            "name": "us_2000lb_gbu_15v1",
+            "reqModification": "us_gbu_15v1",
+            "ShowNodes": {
+              "node": "pylon_r_in"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_15v1.blk",
+              "emitter": "us_2000lb_gbu_8_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 2,
+                "preset": "agm_65d_x3"
+              },
+              {
+                "slot": 9,
+                "preset": "python3"
+              }
+            ]
+          },
+          {
             "iconType": "missile_air_to_uni_x3",
             "name": "agm_65d_x3",
             "reqModification": "us_agm_65d",
@@ -5082,20 +5140,6 @@
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_750lb_m117a1": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "us_1000lb_mk83": {
-      "modClass": "weapon",
-      "tier": 2,
-      "reqModification": "us_750lb_m117a1"
-    },
-    "us_2000lb_mk84": {
-      "modClass": "weapon",
-      "tier": 3,
-      "reqModification": "us_1000lb_mk83"
-    },
     "countermeasures_launcher_chaff_large": {},
     "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
@@ -5114,6 +5158,26 @@
       "reqModification": "us_gbu_12",
       "tier": 4,
       "modClass": "weapon"
+    },
+    "us_750lb_m117a1": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "us_1000lb_mk83": {
+      "modClass": "weapon",
+      "tier": 2,
+      "reqModification": "us_750lb_m117a1"
+    },
+    "us_2000lb_mk84": {
+      "modClass": "weapon",
+      "tier": 3,
+      "reqModification": "us_1000lb_mk83"
+    },
+    "us_gbu_15v1": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "us_gbu_10",
+      "prevModification": "us_2000lb_mk84"
     },
     "us_2_75_in_ffar_lau_3a": {
       "tier": 2,

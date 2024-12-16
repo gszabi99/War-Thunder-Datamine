@@ -8,6 +8,13 @@ let { isDataBlock, isString, appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { getWeaponsByTypes } = require("%scripts/weaponry/weaponryPresets.nut")
 let { get_wpcost_blk, get_modifications_blk } = require("blkGetters")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
+let { isConsoleClientFullyDownloaded } = require("%scripts/clientState/contentState.nut")
+let { isPlatformPS5 } = require("%scripts/clientState/platform.nut")
+
+// HACK: We have to cut min.client for NY submission and these animations weigh 250+Mb
+// But we don't want to flood playgo with requests for each modification in game, so we
+// will only show animations upon next start with fully downloaded client
+let haveModificationAnimations = !isPlatformPS5 || isConsoleClientFullyDownloaded()
 
 let weaponProperties = [
   "reqRank", "reqExp", "mass_per_sec", "mass_per_sec_diff",
@@ -122,7 +129,7 @@ function initWeaponry(weaponry, blk, esUnitType) {
     weaponry.hasTracer <- blk.hasTracer
 
   if (weaponry.type == weaponsItem.modification) {
-    weaponry.modificationAnimation <- blk?.animation ?? weaponBlk?.animation
+    weaponry.modificationAnimation <- haveModificationAnimations ? (blk?.animation ?? weaponBlk?.animation) : null
     weaponry.tutorialMission <- blk?.tutorialMission
     weaponry.tutorialMissionWeapon <- blk?.tutorialMissionWeapon
   }
@@ -130,7 +137,7 @@ function initWeaponry(weaponry, blk, esUnitType) {
   if (weaponry.name == "tank_additional_armor")
     weaponry.requiresModelReload <- true
 
-  if (weaponry.name == "premExpMul" && weaponBlk != null)
+  if (haveModificationAnimations && weaponry.name == "premExpMul" && weaponBlk != null)
     weaponry.modificationAnimation <- (weaponBlk % "animationByUnit")
       .findvalue(@(anim) anim.unitType == esUnitType)?.src
 

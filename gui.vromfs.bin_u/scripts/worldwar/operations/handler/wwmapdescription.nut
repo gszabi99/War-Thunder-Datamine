@@ -6,6 +6,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 //show info about WwMap, WwOperation or WwOperationgroup
 gui_handlers.WwMapDescription <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -106,7 +107,7 @@ gui_handlers.WwMapDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let cuntriesByTeams = this.descItem.getCountriesByTeams()
     let sides = []
-    foreach (side in ::g_world_war.getCommonSidesOrder())
+    foreach (side in g_world_war.getCommonSidesOrder())
       sides.append(this.mapCountriesToView(cuntriesByTeams?[side] ?? []))
     let view = {
       sides = sides

@@ -3,7 +3,6 @@ from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 from "%scripts/mainConsts.nut" import LOST_DELAYED_ACTION_MSEC, SEEN
-from "%scripts/utils_sa.nut" import build_blk_from_container
 
 let { get_mission_time } = require("mission")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -20,6 +19,7 @@ let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let itemTransfer = require("%scripts/items/itemsTransfer.nut")
 let stdMath = require("%sqstd/math.nut")
+let { fillBlock } = require("%sqstd/datablock.nut")
 let { setShouldCheckAutoConsume, checkAutoConsume } = require("%scripts/items/autoConsumeItems.nut")
 let { buyableSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffect.nut")
@@ -149,7 +149,7 @@ function fillFakeItemsList() {
         wpRate = floor(100.0 * ::get_cyber_cafe_bonus_by_effect_type(boosterEffectType.WP, level) + 0.5)
       }
     }
-    fakeItemsList[$"FakeBoosterForNetCafeLevel{i || ""}"] <- build_blk_from_container(table)
+    fillBlock($"FakeBoosterForNetCafeLevel{i || ""}", fakeItemsList, table)
   }
 
   for (local i = 2; i <= g_squad_manager.getMaxSquadSize(); ++i) {
@@ -160,7 +160,7 @@ function fillFakeItemsList() {
         wpRate = floor(100.0 * ::get_squad_bonus_for_same_cyber_cafe(boosterEffectType.WP, i) + 0.5)
       }
     }
-    fakeItemsList[$"FakeBoosterForSquadFromSameCafe{i}"] <- build_blk_from_container(table)
+    fillBlock($"FakeBoosterForSquadFromSameCafe{i}", fakeItemsList, table)
   }
 
   let trophyFromInventory = {
@@ -168,7 +168,7 @@ function fillFakeItemsList() {
     locId = "inventory/consumeItem"
     iconStyle = "gold_iron_box"
   }
-  fakeItemsList["trophyFromInventory"] <- build_blk_from_container(trophyFromInventory)
+  fillBlock("trophyFromInventory", fakeItemsList, trophyFromInventory)
 }
 
 function checkItemDefsUpdate() {

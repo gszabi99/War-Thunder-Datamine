@@ -6,7 +6,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { Cost } = require("%scripts/money.nut")
-let { findUnitNoCase } = require("%scripts/unit/unitParams.nut")
+let { findUnitNoCase, getEsUnitType } = require("%scripts/unit/unitParams.nut")
 
 enum bit_unit_status {
   locked      = 1
@@ -20,10 +20,6 @@ enum bit_unit_status {
   broken      = 256
   inRent      = 512
   empty       = 1024
-}
-
-function getEsUnitType(unit) {
-  return unit?.esUnitType ?? ES_UNIT_TYPE_INVALID
 }
 
 let getUnitTypeText = @(esUnitType) unitTypes.getByEsUnitType(esUnitType).name

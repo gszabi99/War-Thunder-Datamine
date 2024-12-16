@@ -10,17 +10,19 @@ let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT
 let { ceil } = require("math")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { research, canSpendGoldOnUnitWithPopup } = require("%scripts/unit/unitActions.nut")
+let { research, canSpendGoldOnUnitWithPopup, buyUnit } = require("%scripts/unit/unitActions.nut")
+let { checkForResearch } = require("%scripts/unit/unitChecks.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { isCountryHaveUnitType } = require("%scripts/shop/shopUnitsInfo.nut")
+let { isCountryHaveUnitType } = require("%scripts/shop/shopCountryInfo.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getEsUnitType, getUnitReqExp, getUnitExp } = require("%scripts/unit/unitInfo.nut")
+let { getUnitReqExp, getUnitExp } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canResearchUnit, isUnitInResearch, isUnitResearched } = require("%scripts/unit/unitStatus.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { get_balance, get_gui_balance } = require("%scripts/user/balance.nut")
@@ -478,7 +480,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!hasChangedUnit && (isNewUnitInResearch || isNewUnitResearched))
       return
 
-    if (hasChangedUnit && !::checkForResearch(newUnit)) {
+    if (hasChangedUnit && !checkForResearch(newUnit)) {
       obj.setValue(this.unitList.indexof(this.unit))
       return
     }
@@ -587,7 +589,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBuyUnit() {
-    ::buyUnit(this.unit)
+    buyUnit(this.unit)
   }
 
   function onEventExpConvert(_params) {
