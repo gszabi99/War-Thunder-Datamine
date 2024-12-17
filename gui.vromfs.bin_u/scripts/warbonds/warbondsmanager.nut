@@ -40,6 +40,9 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   }
 
   getUnseenAwardIds = @() this.getList().reduce(@(acc, wb) acc.extend(wb.getUnseenAwardIds()), [])
+
+  function onEventPriceUpdated(_p) { this.isListValid = false }
+  function onEventInitConfigs(_p) { this.isFontIconsValid = false }
 }
 
 ::g_warbonds.getVisibleList <- function getVisibleList(filterFunc = null) {
@@ -175,14 +178,6 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
       { cancel_fn = @() null })
   }
   return false
-}
-
-::g_warbonds.onEventPriceUpdated <- function onEventPriceUpdated(_p) {
-  this.isListValid = false
-}
-
-::g_warbonds.onEventInitConfigs <- function onEventInitConfigs(_p) {
-  this.isFontIconsValid = false
 }
 
 subscribe_handler(::g_warbonds g_listener_priority.CONFIG_VALIDATION)
