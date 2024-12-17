@@ -130,7 +130,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   let directionGroup = settingsIn.directionGroups?[target.groupId]
   let targetRadiusRel = calcRwrTargetRadius(target)
 
-  let iconSizeMult = 0.3 * objectStyle.scale
+  let iconSizeMult = 0.2 * objectStyle.scale
   let iconColor = Color(230, 20, 20, 255)
 
   let targetTypeFontSizeMult = 2.0
@@ -146,7 +146,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
   local targetType = @() {
     rendObj = ROBJ_SOLID
     color = backGroundColor
-    pos = [pw(target.x * 100.0 * targetRadiusRel - 0.25 * targetTypeTextSize[0]), ph(target.y * 100.0 * targetRadiusRel - 0.25 * targetTypeTextSize[1])]
+    pos = [pw(target.x * 100.0 * targetRadiusRel - 0.125 * targetTypeTextSize[0]), ph(target.y * 100.0 * targetRadiusRel - 0.125 * targetTypeTextSize[1])]
     children = targetTypeText
   }
 
