@@ -143,8 +143,8 @@
         30.0
       ],
       "elevationLimits": [
-        -14.5,
-        0.5
+        -16.0,
+        2.0
       ],
       "rollStabLimit": 70.0,
       "period": 2.0,
@@ -162,7 +162,7 @@
         30.0
       ],
       "elevationLimits": [
-        -5.0,
+        -7.5,
         1.5
       ],
       "rollStabLimit": 70.0,
@@ -571,6 +571,10 @@
             {
               "fsm": "scanZoneAzimuth",
               "active": false
+            },
+            {
+              "fsm": "scanZoneElevation",
+              "active": false
             }
           ]
         },
@@ -586,6 +590,10 @@
             },
             {
               "fsm": "scanZoneAzimuth",
+              "active": false
+            },
+            {
+              "fsm": "scanZoneElevation",
               "active": false
             }
           ]
@@ -647,6 +655,10 @@
             {
               "fsm": "scanZoneAzimuth",
               "active": true
+            },
+            {
+              "fsm": "scanZoneElevation",
+              "active": true
             }
           ],
           "setCustomActionTemplate": {
@@ -666,6 +678,14 @@
           },
           "setSignal": {
             "signal": "irst"
+          },
+          "setCenterAzimuth": {
+            "source": "constant",
+            "value": 0.0
+          },
+          "setCenterElevation": {
+            "source": "constant",
+            "value": 0.0
           },
           "setModeName": {
             "name": "IRST search"
@@ -1965,16 +1985,7 @@
         "scan": {
           "event": "update",
           "actions": {
-            "scan": {},
-            "setCenterElevation": [
-              {
-                "source": "constant",
-                "value": 0.0
-              },
-              {
-                "source": "designationCue"
-              }
-            ]
+            "scan": {}
           }
         },
         "detect": {
@@ -2037,6 +2048,25 @@
           "event": "update",
           "actions": {
             "setCenterAzimuth": [
+              {
+                "source": "constant",
+                "value": 0.0
+              },
+              {
+                "source": "designationCue"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "scanZoneElevation": {
+      "stateInit": "init",
+      "transitions": {
+        "update": {
+          "event": "update",
+          "actions": {
+            "setCenterElevation": [
               {
                 "source": "constant",
                 "value": 0.0

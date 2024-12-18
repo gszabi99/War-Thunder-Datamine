@@ -1560,50 +1560,43 @@
       "dmPart": "gunner_dm",
       "role": "tank_gunner",
       "substitute": [
-        "machine_gunner",
         "commander",
-        "loader",
         "loader1",
-        "gunner1"
+        "gunner1",
+        "machine_gunner",
+        "loader"
       ]
     },
     "driver": {
       "dmPart": "driver_dm",
       "role": "driver",
       "substitute": [
-        "machine_gunner",
         "commander",
-        "loader",
         "loader1",
-        "gunner1"
-      ]
-    },
-    "gunner1": {
-      "dmPart": "gunner_01_dm",
-      "role": "tank_gunner",
-      "substitute": [
+        "gunner1",
         "machine_gunner",
-        "commander",
-        "loader",
-        "loader1"
+        "loader"
       ]
     },
     "loader": {
       "dmPart": "loader_dm",
       "role": "loader",
       "substitute": [
-        "machine_gunner",
         "commander",
-        "loader1"
+        "loader1",
+        "gunner1",
+        "machine_gunner"
       ]
     },
     "loader1": {
       "dmPart": "loader_01_dm",
       "role": "loader",
-      "substitute": [
-        "machine_gunner",
-        "commander"
-      ]
+      "substitute": "commander"
+    },
+    "gunner1": {
+      "dmPart": "gunner_01_dm",
+      "role": "loader",
+      "substitute": "commander"
     },
     "commander": {
       "dmPart": "commander_dm",
@@ -1611,7 +1604,8 @@
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
-      "role": "radio_gunner"
+      "role": "radio_gunner",
+      "substitute": "commander"
     }
   },
   "MetaParts": {
@@ -1942,7 +1936,7 @@
         "turret": {
           "head": "bone_mg_h_01",
           "gun": "bone_mg_v_01",
-          "gunnerDm": "commander_dm"
+          "gunnerDm": "machine_gunner_dm"
         },
         "limits": {
           "yaw": [
