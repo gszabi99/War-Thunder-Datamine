@@ -2993,6 +2993,28 @@
       "noiseFactor": 0.05
     }
   },
+  "sensors": [
+    {
+      "sensor": {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic2_gun"
+      }
+    },
+    {
+      "sensor": [
+        {
+          "blk": "gameData/sensors/us_an_apq_169.blk",
+          "dmPart": "radar_dm"
+        },
+        {
+          "blk": "gameData/sensors/us_an_alr_2002_rwr.blk"
+        },
+        {
+          "blk": "gameData/sensors/us_an_alr_2002_mlws.blk"
+        }
+      ]
+    }
+  ],
   "gunnerOpticFps": {
     "TV": {
       "pos": [
@@ -3029,6 +3051,24 @@
       "turretNo": 0,
       "name": "AGM65G"
     },
+    "TV2": {
+      "pos": [
+        1.5,
+        0.0,
+        0.0
+      ],
+      "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -38.0,
+        38.0,
+        -55.0,
+        38.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "name": "GBU15V2"
+    },
     "Target": {
       "pos": [
         0.7,
@@ -3046,20 +3086,6 @@
       "opticType": "targeting",
       "turretNo": 0
     }
-  },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/us_an_apq_169.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/us_an_alr_2002_rwr.blk"
-      },
-      {
-        "blk": "gameData/sensors/us_an_alr_2002_mlws.blk"
-      }
-    ]
   },
   "commonWeapons": {
     "Weapon": {
@@ -3588,7 +3614,7 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_agm_130a_12.blk",
               "emitter": "bomb3_gbu",
               "bullets": 1,
-              "external": false,
+              "external": true,
               "separate": true,
               "machLimit": 1.4
             }
@@ -4584,7 +4610,7 @@
               "blk": "gameData/Weapons/BombGuns/us_2000lb_agm_130a_12.blk",
               "emitter": "bomb6_gbu",
               "bullets": 1,
-              "external": false,
+              "external": true,
               "separate": true,
               "machLimit": 1.4
             }
