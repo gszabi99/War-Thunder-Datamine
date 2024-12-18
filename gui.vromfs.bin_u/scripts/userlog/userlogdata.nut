@@ -7,18 +7,17 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
-let { disableSeenUserlogs, saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
+let { disableSeenUserlogs, saveOnlineJob, shownUserlogNotifications, checkPopupUserLog,
+  getLogNameByType
+} = require("%scripts/userLog/userlogUtils.nut")
 let { showEntitlement } = require("%scripts/onlineShop/entitlementRewardWnd.nut")
 let { showUnlocks } = require("%scripts/unlocks/unlockRewardWnd.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlock.nut")
@@ -48,44 +47,6 @@ let { hasKnowPrize } = require("%scripts/items/prizesView.nut")
 let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 let { openOperationRewardPopup } = require("%scripts/globalWorldwarUtils.nut")
 
-::shown_userlog_notifications <- []
-
-registerPersistentData("UserlogDataGlobals", getroottable(), ["shown_userlog_notifications"])
-
-let popupUserlogs = [
-  EULT_SESSION_RESULT
-  {
-    type = EULT_CHARD_AWARD
-    rewardType = [
-      "WagerWin"
-      "WagerFail"
-      "WagerStageWin"
-      "WagerStageFail"
-    ]
-  }
-  EULT_EXCHANGE_WARBONDS
-]
-
-function checkPopupUserLog(user_log_blk) {
-  if (user_log_blk == null)
-    return false
-  foreach (popupItem in popupUserlogs) {
-    if (u.isTable(popupItem)) {
-      if (popupItem.type != user_log_blk?.type)
-        continue
-      let rewardType = user_log_blk?.body.rewardType
-      let rewardTypeFilter = popupItem.rewardType
-      if (type(rewardTypeFilter) == "string" && rewardTypeFilter == rewardType)
-        return true
-      if (type(rewardTypeFilter) == "array" && isInArray(rewardType, rewardTypeFilter))
-        return true
-    }
-    else if (popupItem == user_log_blk?.type)
-      return true
-  }
-  return false
-}
-
 function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsArray = []) {
   let body = newUserLog?.body
   if (!body)
@@ -111,85 +72,6 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
   }
 }
 
-local logNameByType = {
-  [EULT_SESSION_START]                 = "session_start",
-  [EULT_EARLY_SESSION_LEAVE]           = "early_session_leave",
-  [EULT_SESSION_RESULT]                = "session_result",
-  [EULT_AWARD_FOR_PVE_MODE]            = "award_for_pve_mode",
-  [EULT_BUYING_AIRCRAFT]               = "buy_aircraft",
-  [EULT_BUYING_WEAPON]                 = "buy_weapon",
-  [EULT_BUYING_WEAPONS_MULTI]          = "buy_weapons_auto",
-  [EULT_BUYING_WEAPON_FAIL]            = "buy_weapon_failed",
-  [EULT_REPAIR_AIRCRAFT]               = "repair_aircraft",
-  [EULT_REPAIR_AIRCRAFT_MULTI]         = "repair_aircraft_multi",
-  [EULT_NEW_RANK]                      = "new_rank",
-  [EULT_NEW_UNLOCK]                    = "new_unlock",
-  [EULT_BUYING_SLOT]                   = "buy_slot",
-  [EULT_TRAINING_AIRCRAFT]             = "train_aircraft",
-  [EULT_UPGRADING_CREW]                = "upgrade_crew",
-  [EULT_SPECIALIZING_CREW]             = "specialize_crew",
-  [EULT_PURCHASINGSKILLPOINTS]         = "purchase_skillpoints",
-  [EULT_BUYENTITLEMENT]                = "buy_entitlement",
-  [EULT_BUYING_MODIFICATION]           = "buy_modification",
-  [EULT_BUYING_SPARE_AIRCRAFT]         = "buy_spare",
-  [EULT_CLAN_ACTION]                   = "clan_action",
-  [EULT_BUYING_UNLOCK]                 = "buy_unlock",
-  [EULT_CHARD_AWARD]                   = "chard_award",
-  [EULT_ADMIN_ADD_GOLD]                = "admin_add_gold",
-  [EULT_ADMIN_REVERT_GOLD]             = "admin_revert_gold",
-  [EULT_BUYING_SCHEME]                 = "buying_scheme",
-  [EULT_BUYING_MODIFICATION_MULTI]     = "buy_modification_multi",
-  [EULT_BUYING_MODIFICATION_FAIL]      = "buy_modification_fail",
-  [EULT_OPEN_ALL_IN_TIER]              = "open_all_in_tier",
-  [EULT_OPEN_TROPHY]                   = "open_trophy",
-  [EULT_BUY_ITEM]                      = "buy_item",
-  [EULT_NEW_ITEM]                      = "new_item",
-  [EULT_ACTIVATE_ITEM]                 = "activate_item",
-  [EULT_REMOVE_ITEM]                   = "remove_item",
-  [EULT_INVENTORY_ADD_ITEM]            = "inventory_add_item",
-  [EULT_INVENTORY_FAIL_ITEM]           = "inventory_fail_item",
-  [EULT_TICKETS_REMINDER]              = "ticket_reminder",
-  [EULT_BUY_BATTLE]                    = "buy_battle",
-  [EULT_CONVERT_EXPERIENCE]            = "convert_exp",
-  [EULT_SELL_BLUEPRINT]                = "sell_blueprint",
-  [EULT_PUNLOCK_NEW_PROPOSAL]          = "battle_tasks_new_proposal",
-  [EULT_PUNLOCK_EXPIRED]               = "battle_tasks_expired",
-  [EULT_PUNLOCK_ACCEPT]                = "battle_tasks_accept",
-  [EULT_PUNLOCK_CANCELED]              = "battle_tasks_cancel",
-  [EULT_PUNLOCK_REROLL_PROPOSAL]       = "battle_tasks_reroll",
-  [EULT_PUNLOCK_ACCEPT_MULTI]          = "battle_tasks_multi_accept",
-  [EULT_CONVERT_BLUEPRINTS]            = "convert_blueprint",
-  [EULT_RENT_UNIT]                     = "rent_unit",
-  [EULT_RENT_UNIT_EXPIRED]             = "rent_unit_expired",
-  [EULT_BUYING_RESOURCE]               = "buy_resource",
-  [EULT_EXCHANGE_WARBONDS]             = "exchange_warbonds",
-  [EULT_INVITE_TO_TOURNAMENT]          = "invite_to_tournament",
-  [EULT_TOURNAMENT_AWARD]              = "tournament_award",
-  [EULT_WW_START_OPERATION]            = "ww_start_operation",
-  [EULT_WW_END_OPERATION]              = "ww_end_operation",
-  [EULT_WW_CREATE_OPERATION]           = "ww_create_operation",
-  [EULT_CLAN_UNITS]                    = "clan_units",
-  [EULT_WW_AWARD]                      = "ww_award",
-  [EULT_COMPLAINT_UPHELD]              = "complaints",
-}
-
-::getLogNameByType <- @(logType) logNameByType?[logType] ?? "unknown"
-
-::get_userlog_image_item <- function get_userlog_image_item(item, params = {}) {
-  let defaultParams = {
-    enableBackground = false,
-    showAction = false,
-    showPrice = false,
-    showSellAmount = getTblValue("type", params, -1) == EULT_BUY_ITEM,
-    bigPicture = false
-    contentIcon = false
-    interactive = true
-  }
-
-  params = defaultParams.__merge(params)
-  return item ? handyman.renderCached(("%gui/items/item.tpl"), { items = item.getViewData(params) }) : ""
-}
-
 ::check_new_user_logs <- function check_new_user_logs() {
   let total = get_user_logs_count()
   let newUserlogsArray = []
@@ -208,17 +90,6 @@ local logNameByType = {
     newUserlogsArray.append(blk)
   }
   return newUserlogsArray
-}
-
-::collectOldNotifications <- function collectOldNotifications() {
-  let total = get_user_logs_count()
-  for (local i = 0; i < total; i++) {
-    let blk = DataBlock()
-    get_user_log_blk_body(i, blk)
-    if (!blk?.disabled && checkPopupUserLog(blk)
-        && !isInArray(blk.id, ::shown_userlog_notifications))
-      ::shown_userlog_notifications.append(blk.id)
-  }
 }
 
 ::checkAwardsOnStartFrom <- function checkAwardsOnStartFrom() {
@@ -261,7 +132,7 @@ local logNameByType = {
     let blk = DataBlock()
     get_user_log_blk_body(i, blk)
 
-    if (blk?.disabled || isInArray(blk?.id, ::shown_userlog_notifications))
+    if (blk?.disabled || isInArray(blk?.id, shownUserlogNotifications.get()))
       continue
 
     //gamercard popups
@@ -271,7 +142,7 @@ local logNameByType = {
 
       let title = ""
       local msg = ""
-      let logTypeName = ::getLogNameByType(blk?.type)
+      let logTypeName = getLogNameByType(blk?.type)
       if (blk?.type == EULT_SESSION_RESULT) {
         local mission = ""
         if ((blk?.body.locName.len() ?? 0) > 0)
@@ -317,7 +188,7 @@ local logNameByType = {
       else
         msg = loc($"userlog/{logTypeName}")
       addPopup(title, msg, null, null, null, logTypeName)
-      ::shown_userlog_notifications.append(blk?.id)
+      shownUserlogNotifications.mutate(@(v) v.append(blk?.id))
       /*---^^^^---show notifications---^^^^---*/
     }
 
@@ -368,7 +239,7 @@ local logNameByType = {
         // we need to check if there is Popup Dialog
         // needed to be shown by this unlock
         // (check is at verifyPopupBlk)
-        ::shown_userlog_notifications.append(blk?.id)
+        shownUserlogNotifications.mutate(@(v) v.append(blk?.id))
         unlocksNeedsPopupWnd = true
         continue
       }
@@ -380,11 +251,11 @@ local logNameByType = {
       let config = ::build_log_unlock_data(unlock)
       config.disableLogId <- blk.id
       showUnlockWnd(config)
-      ::shown_userlog_notifications.append(blk.id)
+      shownUserlogNotifications.mutate(@(v) v.append(blk.id))
       continue
     }
     else if (blk?.type == EULT_RENT_UNIT || blk?.type == EULT_RENT_UNIT_EXPIRED) {
-      let logTypeName = ::getLogNameByType(blk.type)
+      let logTypeName = getLogNameByType(blk.type)
       let logName = getTblValue("rentContinue", blk.body, false) ? "rent_unit_extended" : logTypeName
       let unitName = getTblValue("unit", blk.body)
       let unit = getAircraftByName(unitName)
@@ -419,7 +290,7 @@ local logNameByType = {
     else if (blk?.type == EULT_OPEN_TROPHY
              && !getTblValue("everyDayLoginAward", blk.body, false)) {
       if ("rentedUnit" in blk.body)
-        ignoreRentItems.append("_".concat(blk.body.rentedUnit, ::getLogNameByType(EULT_RENT_UNIT)))
+        ignoreRentItems.append("_".concat(blk.body.rentedUnit, getLogNameByType(EULT_RENT_UNIT)))
 
       if (onStartAwards || !(popupMask & USERLOG_POPUP.OPEN_TROPHY))
         continue
@@ -479,7 +350,7 @@ local logNameByType = {
       let itemDefId = blk.body?.itemDefId
       let item = ::ItemsManager.getInventoryItemById(itemDefId)
       if (item && !item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false)) {
-        let logTypeName = ::getLogNameByType(blk.type)
+        let logTypeName = getLogNameByType(blk.type)
         let locId = $"userlog/{logTypeName}"
         let numItems = blk.body?.quantity ?? blk.body?.amount ?? 1
         let name = loc(locId, {
@@ -525,7 +396,7 @@ local logNameByType = {
       }
     }
     else if (blk?.type == EULT_TICKETS_REMINDER) {
-      let logTypeName = ::getLogNameByType(blk.type)
+      let logTypeName = getLogNameByType(blk.type)
       let logName = loc($"userlog/{logTypeName}")
       let { name = null, battleLimitReminder = null, defeatCountReminder = null, sequenceDefeatCountReminder = null } = blk?.body
       let desc = [colorize("userlogColoredText", events.getNameByEconomicName(name))]
@@ -575,7 +446,7 @@ local logNameByType = {
     else if (blk?.type == EULT_REMOVE_ITEM) {
       let reason = getTblValue("reason", blk.body, "unknown")
       if (reason == "unknown" || reason == "consumed") {
-        let logTypeName = ::getLogNameByType(blk.type)
+        let logTypeName = getLogNameByType(blk.type)
         let locId = $"userlog/{logTypeName}/{reason}"
         let itemId = getTblValue("id", blk.body, "")
         let item = ::ItemsManager.findItemById(itemId)
@@ -599,7 +470,7 @@ local logNameByType = {
         markDisabled = true
       else
         handler.doWhenActive(function() {
-          if (!::shown_userlog_notifications.contains(blk.id))
+          if (!shownUserlogNotifications.get().contains(blk.id))
             showClanFlushExpInfo({ userlog = blk, needChoseResearch })
         })
     }

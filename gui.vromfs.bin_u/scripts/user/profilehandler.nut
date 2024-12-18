@@ -147,7 +147,7 @@ function guiStartProfile(params = {}) {
 
 gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/profile/profile.blk"
+  sceneTplName = "%gui/profile/profile.tpl"
   initialSheet = ""
 
   curDifficulty = "any"
@@ -459,11 +459,16 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function updateEditProfileButtons() {
-    this.scene.isEditModeEnabled = this.isEditModeEnabled ? "yes" : "no"
+    let root = this.scene.findObject("root-box")
+    if (!root)
+      return
+    root.isEditModeEnabled = this.isEditModeEnabled ? "yes" : "no"
   }
 
   function onProfileEditBtn() {
-    this.setEditMode(!this.isEditModeEnabled)
+    if (this.isEditModeEnabled)
+      return
+    this.setEditMode(true)
   }
 
   function onProfileTitleSelect(titleName, handler) {
@@ -1904,6 +1909,23 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     return isUnlockOpened(name, UNLOCKABLE_MEDAL)
   }
 
+  function onCloseOrCancelEditMode() {
+    if (!this.scene.isValid())
+      return
+
+    if (this.hasEditProfileChanges()) {
+      this.askAboutSaveProfile(@() null)
+      return
+    }
+
+    if (this.isEditModeEnabled) {
+      this.setEditMode(false)
+      return
+    }
+
+    base.goBack()
+  }
+
   function goBack() {
     if (!this.scene.isValid())
       return
@@ -1912,8 +1934,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.askAboutSaveProfile(@() this.goBack())
       return
     }
-    if (this.isEditModeEnabled)
-      this.setEditMode(false)
 
     base.goBack()
   }
@@ -1962,7 +1982,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function fillShowcaseEdit(terseInfo) {
-    let data = getEditViewData(terseInfo)
+    let data = getEditViewData(terseInfo, this.getScaleParams())
     let nest = this.scene.findObject("showcase_edit");
     this.guiScene.replaceContentFromText(nest, data, data.len(), this)
 
@@ -1976,7 +1996,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (!showcase?.hasGameMode)
       return
 
-    let data = getShowcaseTypeBoxData(terseInfo)
+    let data = getShowcaseTypeBoxData(terseInfo, this.getScaleParams())
     this.guiScene.replaceContentFromText(showcaseTypesBox, data, data.len(), this)
 
     let index = getGameModeBoxIndex(terseInfo)
@@ -2081,8 +2101,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onUnitImageClick(obj) {
-    if (this.isEditModeEnabled == false)
-      return
+    if (this.isEditModeEnabled == false) {
+      this.onProfileEditBtn()
+      if (!this.isEditModeEnabled)
+        return
+    }
     this.curUnitImageIdx = obj?.imageIdx ?? 0;
     let handler = this
 

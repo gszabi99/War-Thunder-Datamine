@@ -4,9 +4,10 @@ from "%scripts/dagui_library.nut" import *
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { round, fabs } = require("math")
 let { utf8ToLower } = require("%sqstd/string.nut")
-let { getEsUnitType, bit_unit_status, getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitName,
+let { bit_unit_status, getUnitCountry, getUnitsNeedBuyToOpenNextInEra, getUnitName,
   getPrevUnit
 } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { get_wpcost_blk } = require("blkGetters")
 let { isUnitDefault, isUnitsEraUnlocked, isPrevUnitResearched, isUnitResearched, isPrevUnitBought,
   isRequireUnlockForUnit, canResearchUnit, isUnitInResearch

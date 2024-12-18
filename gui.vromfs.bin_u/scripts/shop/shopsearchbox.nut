@@ -9,7 +9,8 @@ let shopSearchWnd  = require("%scripts/shop/shopSearchWnd.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { trim } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getEsUnitType, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 
 gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM

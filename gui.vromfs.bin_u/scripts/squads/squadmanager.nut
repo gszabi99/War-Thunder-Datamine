@@ -1390,6 +1390,8 @@ g_squad_manager = {
   }
 
   function cancelWwBattlePrepare() {
+    if (!g_squad_manager.isInSquad())
+      return
     g_squad_manager.startWWBattlePrepare() // cancel battle prepare if no args
     request_matching("msquad.send_event", null, null, { eventName = "CancelBattlePrepare" })
   }

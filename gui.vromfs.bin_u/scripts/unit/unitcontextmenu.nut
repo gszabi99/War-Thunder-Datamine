@@ -32,8 +32,9 @@ let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getUnlockIdByUnitName, hasMarkerByUnitName } = require("%scripts/unlocks/unlockMarkers.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
-let { getEsUnitType, getUnitName, getUnitCountry, getUnitReqExp,
+let { getUnitName, getUnitCountry, getUnitReqExp,
   getUnitExp, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+  let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")

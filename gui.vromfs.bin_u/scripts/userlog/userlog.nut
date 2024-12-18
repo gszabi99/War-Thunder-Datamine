@@ -44,7 +44,7 @@ function isMissionExtrCheckFucn(userLog) {
   }) == null
 }
 
-::userlog_pages <- [
+let userlogPages = [
   {
     id = "all"
     hide = ::hidden_userlogs
@@ -191,12 +191,12 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(OPTIONS_MODE_SEARCH)
     let value = get_gui_option(USEROPT_USERLOG_FILTER)
-    let curIdx = (value in ::userlog_pages) ? value : 0
+    let curIdx = (value in userlogPages) ? value : 0
 
     let view = {
       tabs = []
     }
-    foreach (idx, page in ::userlog_pages) {
+    foreach (idx, page in userlogPages) {
       if (getTblValue("reqFeature", page) && !hasFeature(page.reqFeature))
         continue
       view.tabs.append({
@@ -205,7 +205,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         cornerImgId =$"img_new_{page.id}"
         cornerImgSmall = true
         tabName =$"#userlog/page/{page.id}"
-        navImagesText = ::get_navigation_images_text(idx, ::userlog_pages.len())
+        navImagesText = ::get_navigation_images_text(idx, userlogPages.len())
       })
     }
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
@@ -217,7 +217,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getNewMessagesByPages() {
-    let res = array(::userlog_pages.len(), 0)
+    let res = array(userlogPages.len(), 0)
     let total = get_user_logs_count()
     for (local i = 0; i < total; i++) {
       let blk = DataBlock()
@@ -226,7 +226,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (blk?.disabled) // was seen
         continue
 
-      foreach (idx, page in ::userlog_pages)
+      foreach (idx, page in userlogPages)
         if (::isUserlogVisible(blk, page, i))
           res[idx]++
     }
@@ -374,7 +374,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let newMsgs = this.getNewMessagesByPages()
     foreach (idx, count in newMsgs) {
-      let obj = this.scene.findObject($"img_new_{::userlog_pages[idx].id}")
+      let obj = this.scene.findObject($"img_new_{userlogPages[idx].id}")
       if (checkObj(obj))
         obj.show(count > 0)
     }
@@ -431,7 +431,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let idx = to_integer_safe(getObjIdByPrefix(obj.getChild(value), "page_"), -1)
-    let newPage = getTblValue(idx, ::userlog_pages)
+    let newPage = getTblValue(idx, userlogPages)
     if (!newPage || newPage == this.curPage)
       return
 

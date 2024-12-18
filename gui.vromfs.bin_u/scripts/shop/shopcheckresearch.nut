@@ -15,9 +15,10 @@ let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { getEsUnitType, getUnitName, getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
+let { getUnitName, getUnitCountry, getUnitsNeedBuyToOpenNextInEra,
   getUnitReqExp, getUnitExp, getUnitCost
 } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { canResearchUnit, isUnitGroup, isGroupPart, isUnitFeatureLocked, isUnitResearched,
   isPrevUnitBought

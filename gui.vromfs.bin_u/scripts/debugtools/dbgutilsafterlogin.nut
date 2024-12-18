@@ -38,6 +38,7 @@ let { reload_dagui } = require("%scripts/debugTools/dbgUtils.nut")
 let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
 let { guiStartImageWnd } = require("%scripts/showImage.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
+let { getLogNameByType } = require("%scripts/userLog/userlogUtils.nut")
 
 function _charAddAllItemsHelper(params) {
   if (params.currentIndex >= params.items.len())
@@ -297,7 +298,7 @@ function debug_get_last_userlogs(num = 1) {
   for (local i = total - 1; i > (total - num - 1); i--) {
     local blk = DataBlock()
     get_user_log_blk_body(i, blk)
-    dlog($"print userlog {::getLogNameByType(blk.type)} {blk.id}")
+    dlog($"print userlog {getLogNameByType(blk.type)} {blk.id}")
     debugTableData(blk)
     res.append(blk)
   }

@@ -7,8 +7,9 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { getEsUnitType, getUnitName, getUnitCountry, getUnitExp, getUnitCost
+let { getUnitName, getUnitCountry, getUnitExp, getUnitCost
 } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")

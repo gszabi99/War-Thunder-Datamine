@@ -19,6 +19,7 @@ let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
 } = require("%scripts/leaderboard/leaderboardHelpers.nut")
+let { getLogNameByType, updateRepairCost } = require("%scripts/userLog/userlogUtils.nut")
 
 let tab = "    "
 
@@ -146,7 +147,7 @@ function get_userlog_plain_text(logObj) {
     description = ""
   }
 
-  local logName = ::getLogNameByType(logObj.type)
+  local logName = getLogNameByType(logObj.type)
   let isMissionExtrLog = isMissionExtrByName(logObj?.mission ?? "")
 
   let eventId = logObj?.eventId
@@ -222,11 +223,11 @@ function get_userlog_plain_text(logObj) {
   let repairCost = { rCost = 0, notEnoughCost = 0 }
   let aircraftsRepaired = getTblValue("aircraftsRepaired", containerLog)
   if (aircraftsRepaired)
-    ::update_repair_cost(aircraftsRepaired, repairCost);
+    updateRepairCost(aircraftsRepaired, repairCost);
 
   let unitsRepairedManually = getTblValue("manuallySpentRepairCost", logObj)
   if (unitsRepairedManually)
-    ::update_repair_cost(unitsRepairedManually, repairCost);
+    updateRepairCost(unitsRepairedManually, repairCost);
 
   if (repairCost.rCost > 0) {
     desc = "".concat(desc, "\n", loc("shop/auto_repair_cost"), colon,

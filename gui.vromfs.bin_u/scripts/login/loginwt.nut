@@ -52,6 +52,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { checkShopBlk } = require("%scripts/shop/shopTree.nut")
 let { hasLoginState, isLoggedIn, isAuthorized, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { shownUserlogNotifications, collectOldNotifications } = require("%scripts/userLog/userlogUtils.nut")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
@@ -157,8 +158,8 @@ function useDmmLogin() {
       if (!hasLoginState(LOGIN_STATE.MATCHING_CONNECTED))
         return PT_STEP_STATUS.SUSPEND
 
-      ::shown_userlog_notifications.clear()
-      ::collectOldNotifications()
+      shownUserlogNotifications.mutate(@(v) v.clear())
+      collectOldNotifications()
       checkBadWeapons()
       return null
     }

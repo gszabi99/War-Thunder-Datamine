@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let basicUnitRoles = {

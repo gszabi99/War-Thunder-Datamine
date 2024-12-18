@@ -150,7 +150,6 @@ function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
     get_user_log_blk_body = @(idx, outBlk) outBlk.setFrom(get_fake_userlogs()?[idx] ?? DataBlock())
     get_user_log_time_sec = function(_idx) { return get_charserver_time_sec() }
     disable_user_log_entry = function(idx) { if (idx in get_fake_userlogs()) get_fake_userlogs()[idx].disabled = true }
-    shown_userlog_notifications = []
     is_era_available = function(...) { return true }
     get_current_mission_desc = @(outBlk) outBlk.setFrom(
       getroottable()?._fake_get_current_mission_desc ?? get_current_mission_info_cached())
@@ -388,7 +387,6 @@ function debug_dump_userlogs_load(filename) {
     get_user_log_blk_body = @(idx, outBlk) outBlk.setFrom(get_fake_userlogs()?[idx] ?? DataBlock())
     get_user_log_time_sec = function(idx) { return get_fake_userlogs()?[idx]?.timeStamp ?? 0 }
     disable_user_log_entry = function(idx) { if (idx in get_fake_userlogs()) get_fake_userlogs()[idx].disabled = true }
-    shown_userlog_notifications = []
   }, false)
   return $"Loaded {filename}"
 }

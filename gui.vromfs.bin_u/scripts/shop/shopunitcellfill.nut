@@ -25,9 +25,10 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getShopDevMode, getUnitDebugRankText } = require("%scripts/debugTools/dbgShop.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let { getEsUnitType, getUnitName,
+let { getUnitName,
   bit_unit_status, getUnitReqExp, getUnitExp, image_for_air
 } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitPriceTextLong, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
 let { getBonusImage } = require("%scripts/bonusModule.nut")

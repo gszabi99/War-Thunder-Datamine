@@ -13,7 +13,7 @@ let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getEsUnitType } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isUnitInSlotbar, isUnitAvailableForGM } = require("%scripts/unit/unitStatus.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")

@@ -11,7 +11,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock  = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
-let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
+let { disableSeenUserlogs, shownUserlogNotifications } = require("%scripts/userLog/userlogUtils.nut")
+let { getUserlogImageItem } = require("%scripts/userLog/userlogViewData.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { todayLoginExp, loginStreak, getExpRangeTextOfLoginStreak } = require("%scripts/battlePass/seasonState.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -555,7 +556,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
       havePeriodReward = recentRewardData != null
       periodicRewardImage = periodicRewImage
       skipNavigation = true
-      item = ::get_userlog_image_item(::ItemsManager.findItemById(getTblValue("itemId", viewItemConfig)), viewItemConfig)
+      item = getUserlogImageItem(::ItemsManager.findItemById(viewItemConfig?.itemId), viewItemConfig)
     }
   }
 
@@ -719,7 +720,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 gui_handlers.EveryDayLoginAward <- EveryDayLoginAward
 
 function showEveryDayLoginAwardWnd(blk) {
-  if (!blk || isInArray(blk.id, ::shown_userlog_notifications))
+  if (!blk || isInArray(blk.id, shownUserlogNotifications.get()))
     return
 
   if (!hasFeature("everyDayLoginAward"))
@@ -753,9 +754,11 @@ function debugEveryDayLoginAward(numAwardsToSkip = 0, launchWindow = true) {
       }
 
       if (launchWindow) {
-        let shownIdx = ::shown_userlog_notifications.indexof(blk?.id)
-        if (shownIdx != null)
-          ::shown_userlog_notifications.remove(shownIdx)
+        shownUserlogNotifications.mutate(function(v) {
+          let shownIdx = v.indexof(blk?.id)
+          if (shownIdx != null)
+            v.remove(shownIdx)
+        })
         showEveryDayLoginAwardWnd(blk)
       }
       else {

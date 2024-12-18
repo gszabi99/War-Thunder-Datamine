@@ -180,7 +180,8 @@ let visibleValues = {
   },
   favUnit = {
     type = "unitImage"
-    imageSize = "0.9@accountHeaderWidth, 320@sf/@pf"
+    width = "0.9@accountHeaderWidth"
+    height = "320@sf/@pf"
     getImage = function (params) {
       let unit = getUnitFromTerseInfo(params.terseInfo)
       return unit ? getUnitTooltipImage(unit) : null
@@ -279,8 +280,8 @@ let pageTypes = [
     lines = [
       ["favUnit"],
       ["diff_label"],
-      ["unit_battles", "unit_victories"],
-      ["unit_respawns", "unit_kills", "unit_deaths"]
+      ["unit_battles", "unit_victories", "unit_respawns"],
+      ["unit_kills", "unit_deaths"]
     ]
     scorePeriod = "value_total"
     terseName = "favorite_unit"
@@ -386,7 +387,8 @@ function getGameMode(terseInfo, showcase = null) {
   return gameModes.findvalue(@(mode) mode.mode == modeName)
 }
 
-function getShowcaseViewData(playerStats, terseInfo) {
+function getShowcaseViewData(playerStats, terseInfo, viewParams = null) {
+  let {scale = 1, isSmallSize = null} = viewParams
   let showcase = getShowcaseByTerseInfo(terseInfo)
   if (!showcase)
     return null
@@ -444,7 +446,7 @@ function getShowcaseViewData(playerStats, terseInfo) {
         let unit = getUnitFromTerseInfo(terseInfo)
         let statData = {
           id = $"unitImage_{unitIdx}", imageIdx = unitIdx, unit = unit?.name ?? "",
-          image = value.getImage(params), imageSize = value?.imageSize
+          image = value.getImage(params), width = value?.width, height = value.height
         }
         unitsImages.append(statData)
         unitIdx = unitIdx + 1
@@ -461,12 +463,14 @@ function getShowcaseViewData(playerStats, terseInfo) {
       stats[iconStatsCount-1].isEndInRow <- true
     }
 
-    statLines.append({stats, statsBig, textStats, unitsImages, labels, hasUnitImage = unitsImages.len() > 0})
+    statLines.append({scale, stats, statsBig, textStats, unitsImages, labels, hasUnitImage = unitsImages.len() > 0})
   }
-  return handyman.renderCached("%gui/profile/profileMainPageMiddle.tpl", {statLines})
+
+  return handyman.renderCached("%gui/profile/profileMainPageMiddle.tpl", {scale, isSmallSize, statLines})
 }
 
-function getSecondModesViewData(showcase, terseInfo) {
+function getSecondModesViewData(showcase, terseInfo, params = null) {
+  let {scale = 1, isSmallSize = null } = params
   let list = getShowcaseGameModes(showcase?.blockedGameTypes)
   let data = []
 
@@ -474,7 +478,8 @@ function getSecondModesViewData(showcase, terseInfo) {
   foreach (mode in list)
     data.append("".concat(
       "option {text:t='", mode.text, "'; mode:t='", mode.mode,
-      "'; selected:t='", gameMode == mode ? "yes" : "no", "'}"
+      "'; selected:t='", gameMode == mode ? "yes" : "no", "'",
+      isSmallSize ? $";font-pixht:t='{scale}*22@sf/@pf'" : "" ,"}"
     ))
 
   return "".join(data)
@@ -488,11 +493,11 @@ function getShowcaseGameModeByIndex(index, terseInfo) {
   return gameModes?[index]
 }
 
-function getShowcaseTypeBoxData(terseInfo) {
+function getShowcaseTypeBoxData(terseInfo, params = null) {
   let showcase = getShowcaseByTerseInfo(terseInfo)
   if (!showcase || !showcase.hasGameMode)
     return null
-  let secondModesViewData = getSecondModesViewData(showcase, terseInfo)
+  let secondModesViewData = getSecondModesViewData(showcase, terseInfo, params)
   return secondModesViewData
 }
 
@@ -509,9 +514,10 @@ function getGameModeBoxIndex(terseInfo) {
   return list.findindex(@(mode) mode.mode == gameMode?.mode) ?? -1
 }
 
-function getEditViewData(terseInfo) {
+function getEditViewData(terseInfo, params) {
+  let {scale = 1, isSmallSize = null } = params
   let showcase = getShowcaseByTerseInfo(terseInfo)
-  let view = {}
+  let view = {scale, isSmallSize}
   view.options <- []
   let boxFirstModes = {id = "box_first_modes", options = [], onSelect = "onShowcaseSelect"}
   foreach (idx, mode in pageTypes) {
@@ -529,9 +535,10 @@ function getEditViewData(terseInfo) {
   return handyman.renderCached("%gui/profile/profileMainPageEdit.tpl", view)
 }
 
-function getShowcaseTitleViewData(terseInfo) {
+function getShowcaseTitleViewData(terseInfo, params = null) {
+  let {scale = 1, isSmallSize = null } = params
   let terseName = (terseInfo?.schType ?? "") == "" ? defaultShowcase : terseInfo.schType
-  let view = {}
+  let view = {scale, isSmallSize}
   foreach (showcase in pageTypes)
     if (showcase?.terseName == terseName) {
       view.title <- showcase?.hasOnlySecondTitle ? " " : loc(showcase.locName)

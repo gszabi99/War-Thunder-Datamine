@@ -22,10 +22,11 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { removeTextareaTags, toPixels } = require("%sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getEsUnitType, getUnitName,
+let { getUnitName,
   bit_unit_status, getUnitReqExp,
   getUnitExp, image_for_air
 } = require("%scripts/unit/unitInfo.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitItemStatusText, getUnitRarity, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")

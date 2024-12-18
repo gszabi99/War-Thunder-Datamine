@@ -100,8 +100,7 @@ function setCurrentWndDifficulty(mode = 0) {
 
 gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
-  sceneBlkName = "%gui/profile/userCard.blk"
-
+  sceneTplName = "%gui/profile/userCard.tpl"
   isOwnStats = false
 
   info = null
@@ -154,6 +153,22 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   curFilter = null
   selMedalIdx = null
   terseInfo = null
+  showcaseScale = 1
+  isSmallSize = false
+
+  function getSceneTplView() {
+    let defShowcaseHeight = to_pixels("924@sf/@pf").tofloat()
+    let maxHeight = to_pixels("sh - 1@maxAccountHeaderHeight - 1@frameFooterHeight - 1@bh - 8@sf/@pf").tofloat()
+    if (maxHeight < defShowcaseHeight) {
+      this.isSmallSize = true
+      this.showcaseScale = maxHeight / defShowcaseHeight
+    }
+    return this.getScaleParams()
+  }
+
+  function getScaleParams() {
+    return {scale = this.showcaseScale, isSmallSize = this.isSmallSize}
+  }
 
   function initScreen() {
     if (isInBattleState.get())
@@ -1140,14 +1155,14 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillShowcaseMid(terseInfo, userStats) {
-    let data = getShowcaseViewData(userStats, terseInfo)
+    let data = getShowcaseViewData(userStats, terseInfo, this.getScaleParams())
     let midNest = this.scene.findObject("showcase_mid_nest")
     this.guiScene.replaceContentFromText(midNest, data, data.len(), this)
   }
 
   function fillShowcaseTitle(terseInfo) {
     let nest = this.scene.findObject("showcase_title_nest")
-    let data = getShowcaseTitleViewData(terseInfo)
+    let data = getShowcaseTitleViewData(terseInfo, this.getScaleParams())
     this.guiScene.replaceContentFromText(nest, data, data.len(), this)
   }
 
