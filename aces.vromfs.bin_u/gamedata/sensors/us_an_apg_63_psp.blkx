@@ -839,7 +839,10 @@
         "finishedBvrTrack": {
           "stateFrom": "bvrTrack",
           "event": "targetsOfInterestCleanup",
-          "command": "selectTarget",
+          "command": [
+            "selectTarget",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "doCustomActionTemplate": [
@@ -850,6 +853,23 @@
               {
                 "fsm": "main",
                 "name": "setSearchMode"
+              }
+            ]
+          }
+        },
+        "finishBvrTrackAndSwitchOff": {
+          "stateFrom": "bvrTrack",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetBvrTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
               }
             ]
           }
@@ -960,6 +980,7 @@
         "acmLockToStandby": {
           "stateFrom": "acmLock",
           "command": "selectTarget",
+          "event": "disable",
           "stateTo": "standby",
           "actions": {
             "doCustomActionTemplate": [
@@ -976,7 +997,10 @@
         },
         "acmLockToSearch": {
           "stateFrom": "acmLock",
-          "command": "acmSwitch",
+          "command": [
+            "acmSwitch",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "doCustomActionTemplate": [
@@ -1011,6 +1035,7 @@
         "acmTrackToStandby": {
           "stateFrom": "acmTrack",
           "command": "selectTarget",
+          "event": "disable",
           "stateTo": "standby",
           "actions": {
             "doCustomActionTemplate": [
@@ -1027,7 +1052,10 @@
         },
         "acmTrackToSearch": {
           "stateFrom": "acmTrack",
-          "command": "acmSwitch",
+          "command": [
+            "acmSwitch",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "doCustomActionTemplate": [

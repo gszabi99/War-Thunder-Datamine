@@ -206,12 +206,12 @@ function getOptionDesc(id) {
 }
 
 function tryGetOptionImageSrc(id, value = null) {
-  if (value == null)
-    value = mCfgCurrent[id]
+  value = value ?? mCfgCurrent?[id]
+  if (value == null || value == "custom")
+    return null
   let opt = getOptionDesc(id)
   let { infoImgPattern = null, availableInfoImgVals = null } = opt
-
-  if (infoImgPattern == null || value == null || value == "custom")
+  if (infoImgPattern == null)
     return null
 
   let imgVal = availableInfoImgVals

@@ -733,11 +733,23 @@
         "finishedBvrTrack": {
           "stateFrom": "bvrTrack",
           "event": "targetsOfInterestCleanup",
-          "command": "selectTarget",
+          "command": [
+            "selectTarget",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "resetTrackMode": {},
             "setSearchMode": {}
+          }
+        },
+        "finishBvrTrackAndSwitchOff": {
+          "stateFrom": "bvrTrack",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "resetTrackMode": {},
+            "setStandbyMode": {}
           }
         },
         "searchToAcmLock": {
@@ -773,6 +785,7 @@
         "acmLockToStandby": {
           "stateFrom": "acmLock",
           "command": "selectTarget",
+          "event": "disable",
           "stateTo": "standby",
           "actions": {
             "resetAcmLockMode": {},
@@ -791,6 +804,7 @@
         "acmTrackToStandby": {
           "stateFrom": "acmTrack",
           "command": "selectTarget",
+          "event": "disable",
           "stateTo": "standby",
           "actions": {
             "resetTrackMode": {},
@@ -799,7 +813,10 @@
         },
         "acmTrackToSearch": {
           "stateFrom": "acmTrack",
-          "command": "acmSwitch",
+          "command": [
+            "acmSwitch",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "resetTrackMode": {},

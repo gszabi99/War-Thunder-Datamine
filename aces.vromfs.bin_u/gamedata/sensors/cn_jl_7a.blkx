@@ -433,6 +433,7 @@
         "acmLockToStandby": {
           "stateFrom": "acmLock",
           "command": "selectTarget",
+          "event": "disable",
           "stateTo": "standby",
           "actions": {
             "resetAcmLockMode": {},
@@ -441,7 +442,10 @@
         },
         "acmLockToSearch": {
           "stateFrom": "acmLock",
-          "command": "acmSwitch",
+          "command": [
+            "acmSwitch",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "resetAcmLockMode": {},
@@ -460,6 +464,7 @@
         "acmTrackToStandby": {
           "stateFrom": "acmTrack",
           "command": "selectTarget",
+          "event": "disable",
           "stateTo": "standby",
           "actions": {
             "resetTrackMode": {},
@@ -468,7 +473,10 @@
         },
         "acmTrackToSearch": {
           "stateFrom": "acmTrack",
-          "command": "acmSwitch",
+          "command": [
+            "acmSwitch",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "resetTrackMode": {},

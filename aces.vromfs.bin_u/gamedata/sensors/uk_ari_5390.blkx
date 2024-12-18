@@ -455,11 +455,23 @@
         "finishedBvrTrack": {
           "stateFrom": "bvrTrack",
           "event": "targetsOfInterestCleanup",
-          "command": "selectTarget",
+          "command": [
+            "selectTarget",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "resetTrackMode": {},
             "setSearchMode": {}
+          }
+        },
+        "finishBvrTrackAndSwitchOff": {
+          "stateFrom": "bvrTrack",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "resetTrackMode": {},
+            "setStandbyMode": {}
           }
         }
       }

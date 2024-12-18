@@ -1149,7 +1149,10 @@
         "finishedBvrTrack": {
           "stateFrom": "bvrTrack",
           "event": "targetsOfInterestCleanup",
-          "command": "selectTarget",
+          "command": [
+            "selectTarget",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "doCustomActionTemplate": [
@@ -1160,6 +1163,23 @@
               {
                 "fsm": "main",
                 "name": "setSearchMode"
+              }
+            ]
+          }
+        },
+        "finishBvrTrackAndSwitchOff": {
+          "stateFrom": "bvrTrack",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetBvrTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
               }
             ]
           }
@@ -1250,6 +1270,7 @@
         "acmLockToStandby": {
           "stateFrom": "acmLock",
           "command": "selectTarget",
+          "event": "disable",
           "stateTo": "standby",
           "actions": {
             "doCustomActionTemplate": [
@@ -1284,6 +1305,7 @@
         "acmTrackToStandby": {
           "stateFrom": "acmTrack",
           "command": "selectTarget",
+          "event": "disable",
           "stateTo": "standby",
           "actions": {
             "doCustomActionTemplate": [
@@ -1300,7 +1322,10 @@
         },
         "acmTrackToSearch": {
           "stateFrom": "acmTrack",
-          "command": "acmSwitch",
+          "command": [
+            "acmSwitch",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "doCustomActionTemplate": [
@@ -1437,7 +1462,10 @@
         "hmdTrackToHmdStandby": {
           "stateFrom": "hmdTrack",
           "event": "targetsOfInterestCleanup",
-          "command": "selectTarget",
+          "command": [
+            "selectTarget",
+            "switch"
+          ],
           "stateTo": "hmdStandby",
           "actions": {
             "doCustomActionTemplate": [
@@ -1448,6 +1476,23 @@
               {
                 "fsm": "main",
                 "name": "setHmdStandbyMode"
+              }
+            ]
+          }
+        },
+        "hmdTrackToStandby": {
+          "stateFrom": "hmdTrack",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetHmdTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
               }
             ]
           }

@@ -467,9 +467,6 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
       return
 
     let opt = this.get_option_by_id(id)
-    if (opt == null)
-      return
-
     let view = this.getOptionInfoViewFn?(id)
       ?? {
             title = opt?.text ?? loc($"options/{id}")

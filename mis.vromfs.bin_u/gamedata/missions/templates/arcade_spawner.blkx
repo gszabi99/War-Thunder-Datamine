@@ -73,8 +73,9 @@
       "conditions": {
         "varCompareInt": {
           "var_value": "arcade_spawn_matcher",
-          "value": 4,
-          "comparasion_func": "less"
+          "value": 3,
+          "comparasion_func": "notMore",
+          "var_value_other": "near_limit"
         }
       },
       "actions": {
@@ -250,12 +251,14 @@
           {
             "var_value": "arcade_spawn_matcher",
             "value": 7,
-            "comparasion_func": "less"
+            "comparasion_func": "notMore",
+            "var_value_other": "mid_limit"
           },
           {
             "var_value": "arcade_spawn_matcher",
             "value": 3,
-            "comparasion_func": "more"
+            "comparasion_func": "more",
+            "var_value_other": "near_limit"
           }
         ]
       },
@@ -444,12 +447,14 @@
           {
             "var_value": "arcade_spawn_matcher",
             "value": 15,
-            "comparasion_func": "less"
+            "comparasion_func": "notMore",
+            "var_value_other": "far_limit"
           },
           {
             "var_value": "arcade_spawn_matcher",
             "value": 6,
-            "comparasion_func": "more"
+            "comparasion_func": "more",
+            "var_value_other": "mid_limit"
           }
         ]
       },
@@ -630,7 +635,8 @@
         "varCompareInt": {
           "var_value": "arcade_spawn_matcher",
           "value": 15,
-          "comparasion_func": "notLess"
+          "comparasion_func": "more",
+          "var_value_other": "far_limit"
         }
       },
       "actions": {
@@ -1863,7 +1869,10 @@
     "t1_bombers_spawn_name": "",
     "t2_bombers_spawn_name": "",
     "t1_assaults_spawn_name": "",
-    "t2_assaults_spawn_name": ""
+    "t2_assaults_spawn_name": "",
+    "near_limit": 3,
+    "mid_limit": 6,
+    "far_limit": 14
   },
   "dialogs": {},
   "airfields": {},

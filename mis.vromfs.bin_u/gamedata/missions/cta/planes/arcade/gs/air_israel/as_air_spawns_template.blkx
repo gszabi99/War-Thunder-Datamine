@@ -21,7 +21,7 @@
         "file": "gameData/missions/cta/planes/arcade/GS/air_israel/air_spawns/small_spawns_template.blk",
         "rankRange": [
           0,
-          3
+          7
         ],
         "importAreas": true,
         "importUnits": true,
@@ -40,8 +40,8 @@
       {
         "file": "gameData/missions/cta/planes/arcade/GS/air_israel/air_spawns/mid_spawns_template.blk",
         "rankRange": [
-          4,
-          6
+          8,
+          16
         ],
         "importAreas": true,
         "importUnits": true,
@@ -60,8 +60,8 @@
       {
         "file": "gameData/missions/cta/planes/arcade/GS/air_israel/air_spawns/high_spawns_template.blk",
         "rankRange": [
-          7,
-          14
+          17,
+          25
         ],
         "importAreas": true,
         "importUnits": true,
@@ -80,7 +80,7 @@
       {
         "file": "gameData/missions/cta/planes/arcade/GS/air_israel/air_spawns/top_spawns_template.blk",
         "rankRange": [
-          15,
+          26,
           50
         ],
         "importAreas": true,
@@ -117,7 +117,37 @@
   },
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "set_matching_limits": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "varSetInt": [
+          {
+            "value": 6,
+            "var": "near_limit"
+          },
+          {
+            "value": 16,
+            "var": "mid_limit"
+          },
+          {
+            "value": 25,
+            "var": "far_limit"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
   },
   "mission_objectives": {
     "isCategory": true,
