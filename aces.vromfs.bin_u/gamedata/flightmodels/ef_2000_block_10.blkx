@@ -2780,8 +2780,12 @@
         "blk": "gameData/FlightModels/weaponPresets/ef_2000_block_10_aim_9l.blk"
       },
       {
-        "name": "ef_2000_block_10_aim_9l_i",
-        "blk": "gameData/FlightModels/weaponPresets/ef_2000_block_10_aim_9l_i.blk"
+        "name": "ef_2000_block_10_aim_9m",
+        "blk": "gameData/FlightModels/weaponPresets/ef_2000_block_10_aim_9m.blk"
+      },
+      {
+        "name": "ef_2000_block_10_aim_9m_x2",
+        "blk": "gameData/FlightModels/weaponPresets/ef_2000_block_10_aim_9m_x2.blk"
       },
       {
         "name": "ef_2000_block_10_aim_120",
@@ -3090,6 +3094,7 @@
           {
             "iconType": "missile_type_f_air_to_air",
             "name": "aim_9l_i_default_slot1",
+            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": "pylon_2"
             },
@@ -3112,6 +3117,21 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "aim_9e_001",
+              "external": true,
+              "separate": true,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim_9m_default_slot1",
+            "ShowNodes": {
+              "node": "pylon_2"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9e_001",
               "external": true,
               "separate": true,
@@ -3177,7 +3197,7 @@
           {
             "iconType": "missile_type_f_air_to_air",
             "name": "aim_9l_i_slot2",
-            "reqModification": "us_aim_9l_i_1",
+            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -3199,7 +3219,7 @@
           {
             "iconType": "missile_type_f_air_to_air_group",
             "name": "aim_9l_i_slot2_x2",
-            "reqModification": "us_aim_9l_i_1",
+            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": [
                 "pylon_4",
@@ -3213,7 +3233,56 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/tmc_eurofighter_aim_9l_i_1.blk",
+              "blk": "gameData/Weapons/containers/tmc_eurofighter_aim_9m.blk",
+              "emitter": "tmc_launcher_001",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 3,
+              "preset": "paveway_iv_slot3_x2"
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim_9m_slot2",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "mfrl_001"
+              ]
+            },
+            "HideNodes": {
+              "node": "pylon_4_off"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "aim_9e_002",
+              "external": true,
+              "separate": true,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_group",
+            "name": "aim_9m_slot2_x2",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "tmc_launcher_001",
+                "tmc_launcher_001_mfrl_l",
+                "tmc_launcher_001_mfrl_r"
+              ]
+            },
+            "HideNodes": {
+              "node": "pylon_4_off"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/tmc_eurofighter_aim_9m.blk",
               "emitter": "tmc_launcher_001",
               "external": true,
               "separate": true
@@ -4225,7 +4294,7 @@
           {
             "iconType": "missile_type_f_air_to_air",
             "name": "aim_9l_i_slot12",
-            "reqModification": "us_aim_9l_i_1",
+            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4247,7 +4316,7 @@
           {
             "iconType": "missile_type_f_air_to_air_group",
             "name": "aim_9l_i_slot12_x2",
-            "reqModification": "us_aim_9l_i_1",
+            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": [
                 "pylon_3",
@@ -4261,7 +4330,56 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/containers/tmc_eurofighter_aim_9l_i_1.blk",
+              "blk": "gameData/Weapons/containers/tmc_eurofighter_aim_9m.blk",
+              "emitter": "tmc_launcher_002",
+              "external": true,
+              "separate": true
+            },
+            "BannedWeaponPreset": {
+              "slot": 11,
+              "preset": "paveway_iv_slot11_x2"
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim_9m_slot12",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "mfrl_002"
+              ]
+            },
+            "HideNodes": {
+              "node": "pylon_3_off"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder.blk",
+              "emitter": "aim_9e_003",
+              "external": true,
+              "separate": true,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air_group",
+            "name": "aim_9m_slot12_x2",
+            "reqModification": "us_aim_9m",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "tmc_launcher_002",
+                "tmc_launcher_002_mfrl_l",
+                "tmc_launcher_002_mfrl_r"
+              ]
+            },
+            "HideNodes": {
+              "node": "pylon_3_off"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/containers/tmc_eurofighter_aim_9m.blk",
               "emitter": "tmc_launcher_002",
               "external": true,
               "separate": true
@@ -4431,7 +4549,8 @@
         "WeaponPreset": [
           {
             "iconType": "missile_type_f_air_to_air",
-            "name": "aim_9l_i_default_slot13",
+            "name": "aim_9l_i_slot13",
+            "reqModification": "us_aim_9m",
             "ShowNodes": {
               "node": "pylon_1"
             },
@@ -4454,6 +4573,21 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "aim_9e_004",
+              "external": true,
+              "separate": true,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_f_air_to_air",
+            "name": "aim_9m_default_slot13",
+            "ShowNodes": {
+              "node": "pylon_1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9m_sidewinder_default.blk",
               "emitter": "aim_9e_004",
               "external": true,
               "separate": true,
@@ -4819,13 +4953,13 @@
       "tier": 1,
       "modClass": "weapon"
     },
-    "us_aim_9l_i_1": {
+    "us_aim_9m": {
       "reqModification": "us_aim_9l",
       "tier": 3,
       "modClass": "weapon"
     },
     "us_aim_120b": {
-      "reqModification": "us_aim_9l_i_1",
+      "reqModification": "us_aim_9m",
       "tier": 4,
       "modClass": "weapon"
     }

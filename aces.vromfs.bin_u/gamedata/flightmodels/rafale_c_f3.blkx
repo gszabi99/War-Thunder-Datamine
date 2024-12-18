@@ -2644,9 +2644,27 @@
               },
               {
                 "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 18,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 18,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
-                "bullets": 16,
+                "bullets": 8,
                 "external": true,
                 "separate": true,
                 "bulletsCartridge": 1
@@ -2655,7 +2673,7 @@
                 "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare4",
-                "bullets": 16,
+                "bullets": 8,
                 "external": true,
                 "separate": true,
                 "bulletsCartridge": 1
@@ -2706,9 +2724,27 @@
               },
               {
                 "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare2",
+                "bullets": 18,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+                "emitter": "emtr_flare5",
+                "bullets": 18,
+                "external": true,
+                "separate": true,
+                "bulletsCartridge": 1
+              },
+              {
+                "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare1",
-                "bullets": 16,
+                "bullets": 8,
                 "external": true,
                 "separate": true,
                 "bulletsCartridge": 1
@@ -2717,7 +2753,7 @@
                 "trigger": "countermeasures",
                 "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet_maw.blk",
                 "emitter": "emtr_flare4",
-                "bullets": 16,
+                "bullets": 8,
                 "external": true,
                 "separate": true,
                 "bulletsCartridge": 1
@@ -2754,7 +2790,7 @@
       },
       {
         "index": 1,
-        "tier": 11,
+        "tier": 12,
         "order": 1,
         "WeaponPreset": [
           {
@@ -2786,12 +2822,36 @@
       },
       {
         "index": 2,
-        "tier": 10,
+        "tier": 11,
         "order": 3,
+        "WeaponPreset": {
+          "iconType": "missile_type_f_air_to_air_midrange",
+          "name": "mica_em_slot2_default",
+          "ShowNodes": {
+            "node": [
+              "pylon_rafale_mica_aux_001",
+              "pylon_rafale_mica_aux_rail_001"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/fr_mica_em_default.blk",
+            "emitter": "rocket_mica_002",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 3,
+        "tier": 10,
+        "order": 5,
         "WeaponPreset": [
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "mica_em_slot2_default",
+            "name": "mica_em_slot3",
+            "reqModification": "fr_mica_em",
             "ShowNodes": {
               "node": "pylon_rafale_mica_001"
             },
@@ -2799,14 +2859,14 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_mica_em_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
               "emitter": "rocket_mica_003",
               "bullets": 1
             }
           },
           {
             "iconType": "bombs_middle_group_x2",
-            "name": "us_500lb_mk_82_ldgp_x2_slot2",
+            "name": "us_500lb_mk_82_ldgp_x2_slot3",
             "reqModification": "fr_250kg_type_25c",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -2822,7 +2882,7 @@
           },
           {
             "iconType": "bombs_middle_group",
-            "name": "250kg_type_25c_x3_slot2",
+            "name": "250kg_type_25c_x3_slot3",
             "reqModification": "fr_250kg_type_25c",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -2838,7 +2898,7 @@
           },
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
-            "name": "auf2_gbu_12_x2_slot2",
+            "name": "auf2_gbu_12_x2_slot3",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -2858,7 +2918,7 @@
           },
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
-            "name": "auf2_gbu_22_x2_slot2",
+            "name": "auf2_gbu_22_x2_slot3",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -2878,7 +2938,7 @@
           },
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
-            "name": "auf2_gbu_49_x2_slot2",
+            "name": "auf2_gbu_49_x2_slot3",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -2898,7 +2958,7 @@
           },
           {
             "iconType": "guided_bomb_large_laser",
-            "name": "us_gbu_16_slot2",
+            "name": "us_gbu_16_slot3",
             "reqModification": "us_gbu_16",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -2919,7 +2979,7 @@
           },
           {
             "iconType": "guided_bomb_special_laser",
-            "name": "us_gbu_24_slot2",
+            "name": "us_gbu_24_slot3",
             "reqModification": "us_gbu_24",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -2940,7 +3000,7 @@
           },
           {
             "iconType": "guided_bomb_middle_laser_group_x3",
-            "name": "us_gbu_12_x3_slot2",
+            "name": "us_gbu_12_x3_slot3",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -2960,7 +3020,7 @@
           },
           {
             "iconType": "guided_bomb_middle_jdam_group_x3",
-            "name": "us_gbu_22_x3_slot2",
+            "name": "us_gbu_22_x3_slot3",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -2980,7 +3040,7 @@
           },
           {
             "iconType": "guided_bomb_middle_jdam_group_x3",
-            "name": "us_gbu_49_x3_slot2",
+            "name": "us_gbu_49_x3_slot3",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -3000,7 +3060,7 @@
           },
           {
             "iconType": "missile_air_to_uni_x3",
-            "name": "aasm_250_sbu_38_x3_slot2",
+            "name": "aasm_250_sbu_38_x3_slot3",
             "reqModification": "fr_aasm_250_sbu_38",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -3016,7 +3076,7 @@
           },
           {
             "iconType": "missile_air_to_uni_middle_x3",
-            "name": "aasm_250_sbu_64_x3_slot2",
+            "name": "aasm_250_sbu_64_x3_slot3",
             "reqModification": "fr_aasm_250_sbu_64",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -3032,7 +3092,7 @@
           },
           {
             "iconType": "missile_air_to_uni_smal_x3",
-            "name": "aasm_250_sbu_54_x3_slot2",
+            "name": "aasm_250_sbu_54_x3_slot3",
             "reqModification": "fr_aasm_250_sbu_54",
             "ShowNodes": {
               "node": "pylon_pu_708_001"
@@ -3053,9 +3113,9 @@
         ]
       },
       {
-        "index": 3,
+        "index": 4,
         "tier": 9,
-        "order": 5,
+        "order": 7,
         "WeaponPreset": {
           "iconType": "ptb",
           "name": "ptb_1",
@@ -3084,13 +3144,13 @@
         }
       },
       {
-        "index": 4,
+        "index": 5,
         "tier": 8,
-        "order": 7,
+        "order": 9,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "iconType": "missile_type_f_air_to_air_midrange",
-          "name": "mica_em_slot4",
+          "name": "mica_em_slot5",
           "reqModification": "fr_mica_em",
           "ShowNodes": {
             "node": "pylon_rafale_fuse_mica_001"
@@ -3106,9 +3166,9 @@
         }
       },
       {
-        "index": 5,
+        "index": 6,
         "tier": 5,
-        "order": 9,
+        "order": 11,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "iconType": "flir_container",
@@ -3133,14 +3193,14 @@
         }
       },
       {
-        "index": 6,
+        "index": 7,
         "tier": 6,
-        "order": 10,
+        "order": 12,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
             "iconType": "guided_bomb_special_laser",
-            "name": "us_gbu_24_slot6",
+            "name": "us_gbu_24_slot7",
             "reqModification": "us_gbu_24",
             "ShowNodes": {
               "node": "pylon_rafale_central"
@@ -3181,13 +3241,13 @@
         ]
       },
       {
-        "index": 7,
+        "index": 8,
         "tier": 4,
-        "order": 8,
+        "order": 10,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": {
           "iconType": "missile_type_f_air_to_air_midrange",
-          "name": "mica_em_slot7",
+          "name": "mica_em_slot8",
           "reqModification": "fr_mica_em",
           "ShowNodes": {
             "node": "pylon_rafale_fuse_mica_002"
@@ -3203,9 +3263,9 @@
         }
       },
       {
-        "index": 8,
+        "index": 9,
         "tier": 3,
-        "order": 6,
+        "order": 8,
         "WeaponPreset": {
           "iconType": "ptb",
           "name": "ptb_3",
@@ -3234,13 +3294,14 @@
         }
       },
       {
-        "index": 9,
+        "index": 10,
         "tier": 2,
-        "order": 4,
+        "order": 6,
         "WeaponPreset": [
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "mica_em_slot9_default",
+            "name": "mica_em_slot10",
+            "reqModification": "fr_mica_em",
             "ShowNodes": {
               "node": "pylon_rafale_mica_002"
             },
@@ -3248,14 +3309,14 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/fr_mica_em_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/fr_mica_em.blk",
               "emitter": "rocket_mica_006",
               "bullets": 1
             }
           },
           {
             "iconType": "bombs_middle_group_x2",
-            "name": "us_500lb_mk_82_ldgp_x2_slot9",
+            "name": "us_500lb_mk_82_ldgp_x2_slot10",
             "reqModification": "fr_250kg_type_25c",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3271,7 +3332,7 @@
           },
           {
             "iconType": "bombs_middle_group",
-            "name": "250kg_type_25c_x3_slot9",
+            "name": "250kg_type_25c_x3_slot10",
             "reqModification": "fr_250kg_type_25c",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3287,7 +3348,7 @@
           },
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
-            "name": "auf2_gbu_12_x2_slot9",
+            "name": "auf2_gbu_12_x2_slot10",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3307,7 +3368,7 @@
           },
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
-            "name": "auf2_gbu_22_x2_slot9",
+            "name": "auf2_gbu_22_x2_slot10",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3327,7 +3388,7 @@
           },
           {
             "iconType": "guided_bomb_middle_laser_group_x2",
-            "name": "auf2_gbu_49_x2_slot9",
+            "name": "auf2_gbu_49_x2_slot10",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3347,7 +3408,7 @@
           },
           {
             "iconType": "guided_bomb_large_laser",
-            "name": "us_gbu_16_slot9",
+            "name": "us_gbu_16_slot10",
             "reqModification": "us_gbu_16",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3368,7 +3429,7 @@
           },
           {
             "iconType": "guided_bomb_special_laser",
-            "name": "us_gbu_24_slot9",
+            "name": "us_gbu_24_slot10",
             "reqModification": "us_gbu_24",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3389,7 +3450,7 @@
           },
           {
             "iconType": "guided_bomb_middle_laser_group_x3",
-            "name": "us_gbu_12_x3_slot9",
+            "name": "us_gbu_12_x3_slot10",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3409,7 +3470,7 @@
           },
           {
             "iconType": "guided_bomb_middle_jdam_group_x3",
-            "name": "us_gbu_22_x3_slot9",
+            "name": "us_gbu_22_x3_slot10",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3429,7 +3490,7 @@
           },
           {
             "iconType": "guided_bomb_middle_jdam_group_x3",
-            "name": "us_gbu_49_x3_slot9",
+            "name": "us_gbu_49_x3_slot10",
             "reqModification": "us_gbu_12_49",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3449,7 +3510,7 @@
           },
           {
             "iconType": "missile_air_to_uni_x3",
-            "name": "aasm_250_sbu_38_x3_slot9",
+            "name": "aasm_250_sbu_38_x3_slot10",
             "reqModification": "fr_aasm_250_sbu_38",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3465,7 +3526,7 @@
           },
           {
             "iconType": "missile_air_to_uni_middle_x3",
-            "name": "aasm_250_sbu_64_x3_slot9",
+            "name": "aasm_250_sbu_64_x3_slot10",
             "reqModification": "fr_aasm_250_sbu_64",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3481,7 +3542,7 @@
           },
           {
             "iconType": "missile_air_to_uni_smal_x3",
-            "name": "aasm_250_sbu_54_x3_slot9",
+            "name": "aasm_250_sbu_54_x3_slot10",
             "reqModification": "fr_aasm_250_sbu_54",
             "ShowNodes": {
               "node": "pylon_pu_708_002"
@@ -3502,13 +3563,36 @@
         ]
       },
       {
-        "index": 10,
+        "index": 11,
         "tier": 1,
+        "order": 4,
+        "WeaponPreset": {
+          "iconType": "missile_type_f_air_to_air_midrange",
+          "name": "mica_em_slot11_default",
+          "ShowNodes": {
+            "node": [
+              "pylon_rafale_mica_aux_002",
+              "pylon_rafale_mica_aux_rail_002"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "external": true,
+            "separate": true,
+            "blk": "gameData/Weapons/rocketGuns/fr_mica_em_default.blk",
+            "emitter": "rocket_mica_007",
+            "bullets": 1
+          }
+        }
+      },
+      {
+        "index": 12,
+        "tier": 0,
         "order": 2,
         "WeaponPreset": [
           {
             "iconType": "missile_type_c_air_to_air",
-            "name": "r550_magic_2_slot10_default",
+            "name": "r550_magic_2_slot12_default",
             "Weapon": {
               "trigger": "aam",
               "external": true,
@@ -3520,7 +3604,7 @@
           },
           {
             "iconType": "missile_type_f_air_to_air_midrange",
-            "name": "mica_em_slot10",
+            "name": "mica_em_slot12",
             "reqModification": "fr_mica_em",
             "Weapon": {
               "trigger": "aam",
@@ -3789,6 +3873,7 @@
       "tier": 3,
       "modClass": "lth"
     },
+    "maw_countermeasures_launcher_chaff": {},
     "maw_countermeasures_launcher_chaff_large": {},
     "MAW_system_heli_false_thermal_targets_large": {
       "modClass": "armor",
