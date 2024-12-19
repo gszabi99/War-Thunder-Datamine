@@ -3294,17 +3294,24 @@
       "replenishmentTime": 10.0,
       "shells": [
         {
-          "autoLoad": true,
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
           "autoloader": "autoloader_dm",
+          "firstStage": true,
           "ammo_turret_01_dm": {
             "count": 1
           },
           "ammo_turret_02_dm": {
             "count": 1
-          },
+          }
+        },
+        {
+          "reloadTimeMult": 1.58667,
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
+          "autoloader": "autoloader_dm",
           "ammo_turret_03_dm": {
             "count": 1
           },
@@ -3481,7 +3488,7 @@
           }
         },
         {
-          "reloadTimeMult": 2.0,
+          "reloadTimeMult": 3.17334,
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
@@ -3534,16 +3541,22 @@
       ],
       "charges": [
         {
-          "autoLoad": true,
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
+          "firstStage": true,
           "ammo_body_01_dm": {
             "count": 1
           },
           "ammo_body_02_dm": {
             "count": 1
-          },
+          }
+        },
+        {
+          "reloadTimeMult": 1.58667,
+          "fireEvent": "ammo_fire",
+          "explosionEvent": "ammo_explosion",
+          "wreckedPartId": 0,
           "ammo_body_03_dm": {
             "count": 1
           },
@@ -3720,7 +3733,7 @@
           }
         },
         {
-          "reloadTimeMult": 2.0,
+          "reloadTimeMult": 3.17334,
           "fireEvent": "ammo_fire",
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,

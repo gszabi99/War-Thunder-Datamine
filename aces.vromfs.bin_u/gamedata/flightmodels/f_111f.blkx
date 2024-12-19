@@ -2983,38 +2983,18 @@
         500,
         300
       ],
-      "noiseFactor": 0.05
+      "noiseFactor": 0.05,
+      "index": 1
     },
     "sightTPodThermal": {
       "resolution": [
         500,
         300
       ],
-      "noiseFactor": 0.05
+      "noiseFactor": 0.05,
+      "index": 2
     }
   },
-  "sensors": [
-    {
-      "sensor": {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
-        "node": "optic2_gun"
-      }
-    },
-    {
-      "sensor": [
-        {
-          "blk": "gameData/sensors/us_an_apq_169.blk",
-          "dmPart": "radar_dm"
-        },
-        {
-          "blk": "gameData/sensors/us_an_alr_2002_rwr.blk"
-        },
-        {
-          "blk": "gameData/sensors/us_an_alr_2002_mlws.blk"
-        }
-      ]
-    }
-  ],
   "gunnerOpticFps": {
     "TV": {
       "pos": [
@@ -3031,7 +3011,8 @@
         38.0
       ],
       "opticType": "tv",
-      "turretNo": 0
+      "turretNo": 0,
+      "nvIndex": 1
     },
     "TV1": {
       "pos": [
@@ -3049,6 +3030,7 @@
       ],
       "opticType": "tv",
       "turretNo": 0,
+      "nvIndex": 1,
       "name": "AGM65G"
     },
     "TV2": {
@@ -3067,6 +3049,7 @@
       ],
       "opticType": "tv",
       "turretNo": 0,
+      "nvIndex": 1,
       "name": "GBU15V2"
     },
     "Target": {
@@ -3084,8 +3067,27 @@
         14.0
       ],
       "opticType": "targeting",
-      "turretNo": 0
+      "turretNo": 0,
+      "nvIndex": 2
     }
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_apq_169.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/us_an_alr_2002_rwr.blk"
+      },
+      {
+        "blk": "gameData/sensors/us_an_alr_2002_mlws.blk"
+      },
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic2_gun"
+      }
+    ]
   },
   "commonWeapons": {
     "Weapon": {
