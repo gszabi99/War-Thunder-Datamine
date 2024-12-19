@@ -227,24 +227,18 @@
       "turret_06_side_dm": {
         "armorThickness": 10.0
       },
-      "composite_armor_hull_01_dm": {
-        "armorThickness": 5.0,
-        "hidableInXrayViewer": true
-      },
-      "composite_armor_hull_02_dm": {
-        "armorThickness": 5.0,
-        "hidableInXrayViewer": true
-      },
-      "composite_armor_hull_03_dm": {
-        "armorThickness": 5.0,
-        "hidableInXrayViewer": true
-      },
-      "composite_armor_hull_04_dm": {
-        "armorThickness": 5.0,
-        "hidableInXrayViewer": true
-      },
       "turret_10_top_dm": {},
       "turret_07_side_dm": {}
+    },
+    "inner_parts": {
+      "armorThickness": 5.0,
+      "armorClass": "RHA_tank",
+      "hidableInXrayViewer": true,
+      "composite_armor_hull_01_dm": {},
+      "composite_armor_hull_02_dm": {},
+      "composite_armor_hull_03_dm": {},
+      "composite_armor_hull_04_dm": {},
+      "composite_armor_hull_05_dm": {}
     },
     "hull_shields": {
       "armorClass": "hull_side_special_armor",
@@ -1671,6 +1665,15 @@
             "dmPart": "composite_armor_hull_04_dm"
           }
         }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_05_dm",
+        "titleLoc": "RHA_tank_modern",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_05_dm"
+          }
+        }
       }
     ]
   },
@@ -2087,7 +2090,7 @@
     },
     "engine": {
       "horsePowers": 550.0,
-      "maxRPM": 2400.0,
+      "maxRPM": 2100.0,
       "minRPM": 900.0,
       "rpmTau": 1.9,
       "manufacturer": "volvo",
@@ -2097,7 +2100,7 @@
       "maxBrakeForce": 130000.0,
       "driveGearRadius": 0.6,
       "mainGearRatio": 5.42,
-      "sideGearRatio": 1.0,
+      "sideGearRatio": 0.88,
       "tracked": false,
       "manufacturer": "zf",
       "model": "7hp_902",
