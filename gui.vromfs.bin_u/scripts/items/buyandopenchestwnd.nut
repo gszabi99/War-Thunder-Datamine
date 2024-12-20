@@ -25,7 +25,7 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { IPoint2 } = require("dagor.math")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { frnd } = require("dagor.random")
-let { PI, cos, sin, abs } = require("%sqstd/math.nut")
+let { PI, cos, sin } = require("%sqstd/math.nut")
 let { enableObjsByTable, activateObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
@@ -33,6 +33,8 @@ let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getPrizeText } = require("%scripts/items/prizesView.nut")
 let { getBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
 let regexp2 = require("regexp2")
+let { gerRecentItemsLogs } = require("%scripts/userLog/userLog.nut")
+let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 
 const NEXT_PRIZE_ANIM_TIMER_ID = "timer_start_prize_animation"
 const CHEST_OPEN_FINISHED_ANIM_TIMER_ID = "timer_finish_open_chest_animation"
@@ -79,6 +81,8 @@ let sortIdxPrizeByType = {
   }
 }
 
+local lastTrophiesFromLog = []
+
 function getSortIdxByPrize(prize) {
   foreach (param, _value in prize)
     if (sortIdxPrizeByType?[param])
@@ -101,9 +105,13 @@ let additionalSortParamByType = {
   gold = @(prize, _count = 1) prize?.gold ?? 0
 }
 
-function canGetTrophyPrize(prize) {
+function canGetTrophyPrize(prize, prizeItemId) {
   if (prize?.unit) {
     if (prize?.mod)
+      return true
+
+    let unitInLog = prizeItemId != null ? lastTrophiesFromLog?[prizeItemId.tostring()] : null
+    if (unitInLog?.unit)
       return true
 
     let unit = getAircraftByName(prize.unit)
@@ -121,7 +129,7 @@ function canGetTrophyPrize(prize) {
   return true
 }
 
-function parseTrophyContent(trophy) {
+function parseTrophyContent(trophy, prizeItemId) {
   let content = trophy.getContent()
   local allReceivedPrizes = []
   let availablePrizes = []
@@ -133,11 +141,13 @@ function parseTrophyContent(trophy) {
       continue
     }
     allPrizes.append(trophyPrize)
-    if (canGetTrophyPrize(trophyPrize))
+    if (canGetTrophyPrize(trophyPrize, prizeItemId))
       availablePrizes.append(trophyPrize)
   }
   return {allReceivedPrizes, allPrizes, availablePrizes}
 }
+
+let getDefaultPrizeTooltipId = @(prize) getTooltipType("PRIZE").getTooltipId(isDataBlock(prize) ? convertBlk(prize) : prize)
 
 function getUnitPrizeIcon(unit) {
   if (unit == null)
@@ -198,7 +208,7 @@ function getGoldText(prize) {
 let offerTypes = {
   trophy = {
     function getPrizeForSort(trophy, params) {
-      let parsedContent = params?.parsedContent ?? parseTrophyContent(trophy)
+      let parsedContent = params?.parsedContent ?? parseTrophyContent(trophy, params?.prizeItemId)
       let {availablePrizes} = parsedContent
       return availablePrizes.len() == 1
         ? availablePrizes[0]
@@ -206,7 +216,7 @@ let offerTypes = {
     }
 
     function getPrizeForIcon(trophy, params) {
-      let parsedContent = params?.parsedContent ?? parseTrophyContent(trophy)
+      let parsedContent = params?.parsedContent ?? parseTrophyContent(trophy, params?.prizeItemId)
       let {allPrizes, availablePrizes} = parsedContent
 
       return availablePrizes.len() == 1
@@ -219,7 +229,7 @@ let offerTypes = {
       if (trophy == null)
         return null
 
-      let prizeForIcon = this.getPrizeForIcon(prize, {parsedContent = params?.parsedContent ?? parseTrophyContent(trophy)})
+      let prizeForIcon = this.getPrizeForIcon(prize, {parsedContent = params?.parsedContent ?? parseTrophyContent(trophy, params?.prizeItemId)})
       if (prizeForIcon?.unit) {
         let unit = getAircraftByName(prizeForIcon.unit)
         return getUnitPrizeIcon(unit)
@@ -227,7 +237,7 @@ let offerTypes = {
       return "".concat( "width:t='h';", ::trophyReward.getImageByConfig(prizeForIcon, true, ""))
     }
 
-    getPrizeTooltipId = @(prize) getTooltipType("ITEM").getTooltipId(to_integer_safe(prize.item, prize.item))
+    getPrizeTooltipId = @(prize) getTooltipType("ITEM").getTooltipId(to_integer_safe(prize.item, prize.item, false))
   }
 
   unit = {
@@ -292,6 +302,7 @@ let offerTypes = {
         }
       ]
     }
+    getPrizeTooltipId = getDefaultPrizeTooltipId
   }
   item = {
     function getTextView(prize, params = null) {
@@ -344,17 +355,19 @@ let offerTypes = {
       return null
     }
 
-    getPrizeTooltipId = @(prize) getTooltipType("ITEM").getTooltipId(to_integer_safe(prize.item, prize.item))
+    getPrizeTooltipId = @(prize) getTooltipType("ITEM").getTooltipId(to_integer_safe(prize.item, prize.item, false))
   }
   warpoints = {
     function getTextView(prize, _params = null) {
       return getWarpointsText(prize)
     }
+    getPrizeTooltipId = getDefaultPrizeTooltipId
   },
   gold = {
     function getTextView(prize, _params = null) {
       return getGoldText(prize)
     }
+    getPrizeTooltipId = getDefaultPrizeTooltipId
   }
 }
 
@@ -364,7 +377,7 @@ function getTrophyText(prize, params = {}) {
   if (trophy == null)
     return null
 
-  let parsedContent = params?.parsedContent ?? parseTrophyContent(trophy)
+  let parsedContent = params?.parsedContent ?? parseTrophyContent(trophy, params?.prizeItemId)
   let {allReceivedPrizes, allPrizes, availablePrizes} = parsedContent
 
   if (availablePrizes.len() > 1
@@ -618,12 +631,17 @@ function addRaysInScreenCoords(props, raysArray) {
 }
 
 function getPrizesView(prizes, bgDelay = 0) {
-  let res = []
+  let itemsLogs = gerRecentItemsLogs(15)
+  lastTrophiesFromLog = {}
+  foreach (itemLog in itemsLogs)
+    if (itemLog?.trophyItemId)
+      lastTrophiesFromLog[itemLog.trophyItemId.tostring()] <- itemLog
 
   let count = prizes.len()
   let chestItemWidth = min(to_pixels("0.99@rw") / count, to_pixels("1@itemWidth"))
   let margin = (to_pixels("1@rw") - count * chestItemWidth) / (2 * count)
 
+  let res = []
   foreach (prize in prizes) {
     local offerType = ::trophyReward.getType(prize)
     let item = ::ItemsManager.findItemById(prize?.item)
@@ -637,7 +655,8 @@ function getPrizesView(prizes, bgDelay = 0) {
         if (contentItem.iType == itemType.TROPHY) {
           offerType = "trophy"
           params.trophy <- contentItem
-          params.parsedContent <- parseTrophyContent(contentItem)
+          params.prizeItemId <- prize.itemId ?? prize?.trophyItemId ?? -1
+          params.parsedContent <- parseTrophyContent(contentItem, params?.prizeItemId)
 
           let trophyPrizeForSort = offerTypes.trophy.getPrizeForSort(contentItem, params) ?? prize
           sortIdx = getSortIdxByPrize(trophyPrizeForSort)
@@ -858,7 +877,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
 
     let canOpenChest = this.getCanOpenChest()
     if (!canOpenChest && this.chestItem?.isInventoryItem) {
-      let chestFromShop = ::ItemsManager.findItemById(to_integer_safe(this.chestItem.id, this.chestItem.id))
+      let chestFromShop = ::ItemsManager.findItemById(to_integer_safe(this.chestItem.id, this.chestItem.id, false))
       if (chestFromShop != null)
         this.chestItem = chestFromShop
     }
@@ -991,7 +1010,8 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
 
     let prizeInfoObj = prizeObj.findObject("prize_info")
     prizeInfoObj["transp-time"] = 300
-    prizeInfoObj["tooltip"] = "$tooltipObj"
+    if (prizeInfoObj?.hasTooltip)
+      prizeInfoObj["tooltip"] = "$tooltipObj"
     showObjById("rays", true, prizeObj)
     showObjById("blue_bg", true, prizeObj)
     this.guiScene.playSound("choose")
@@ -1042,7 +1062,8 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
     while (curPrizeObj?.isValid()) {
       let prizeInfoObj = curPrizeObj.findObject("prize_info")
       prizeInfoObj["transp-time"] = 1
-      prizeInfoObj["tooltip"] = "$tooltipObj"
+      if (prizeInfoObj?.hasTooltip)
+        prizeInfoObj["tooltip"] = "$tooltipObj"
       showObjById("rays", true, curPrizeObj)
       showObjById("blue_bg", true, curPrizeObj)
       curPrizeIdx++
@@ -1104,13 +1125,18 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
 
       if (params.biggestObj) {
         shadowsCount = params.biggestObj.childrenCount()
-        if ((params.biggestObj?["background-image"] ?? "") != "" || shadowsCount > 1)
+        let hasParentBg = (params.biggestObj?["background-image"] ?? "") != ""
+        if (hasParentBg && shadowsCount) {
           for (local n = 0; n < shadowsCount; n++) {
             let child = params.biggestObj.getChild(n)
-            let childSize = child.getSize()
-            if (abs(childSize[0] * childSize[1] - params.square) > params.square * 0.05)
-              child.show(false)
+            child.show(false)
           }
+        }
+        else if (!hasParentBg && shadowsCount > 1) {
+          let innerParams = {biggestObj = null, square = 0}
+          for (local n = 0; n < shadowsCount; n++)
+            this.hideNotBiggestShadows(params.biggestObj.getChild(n), innerParams)
+        }
       }
       i = i + 1
       prizeObj = prizeNest.findObject($"prize_{i}")
@@ -1199,7 +1225,7 @@ function showBuyAndOpenChestWndById(chestId) {
   if (chestId == null)
     return null
 
-  return showBuyAndOpenChestWnd(::ItemsManager.findItemById(to_integer_safe(chestId, chestId)))
+  return showBuyAndOpenChestWnd(::ItemsManager.findItemById(to_integer_safe(chestId, chestId, false)))
 }
 
 function tryOpenChestWindow() {
@@ -1253,7 +1279,7 @@ addListenersWithoutEnv({
 function openChestOrTrophy(params) {
   let {chest = null, expectedPrizes = null, receivedPrizes = null,
     rewardWndConfig = null} = params
-  let chestId = chest?.id ?? params?.chestId
+  let chestId = chest?.id ?? params?.chestId ?? ""
   let rewardsHandler = chest != null
     ? showBuyAndOpenChestWnd(chest)
     : showBuyAndOpenChestWndById(chestId)
@@ -1271,7 +1297,7 @@ function openChestOrTrophy(params) {
     return
 
   eventbus_send("guiStartOpenTrophy",
-      rewardWndConfig.__update({ [chestId] = prizes }))
+      rewardWndConfig.__update({ [chestId.tostring()] = prizes }))
 }
 
 add_event_listener("openChestWndOrTrophy", openChestOrTrophy)

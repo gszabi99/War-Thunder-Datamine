@@ -70,6 +70,7 @@ tdiv {
     _blink:t='no'
 
     <<#prizeTooltipId>>
+    hasTooltip:t='yes'
     tooltipObj  {
       tooltipId:t='<<prizeTooltipId>>'
       display:t='hide'

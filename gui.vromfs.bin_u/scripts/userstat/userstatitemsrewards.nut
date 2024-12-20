@@ -32,7 +32,7 @@ function showRewardWnd(params) {
 
   if (firstItemId != null)
     eventbus_send("guiStartOpenTrophy", {
-      [firstItemId] = rewardsToShow,
+      [firstItemId.tostring()] = rewardsToShow,
       rewardTitle = loc(rewardTitleLocId),
       rewardListLocId = userstatItemsListLocId
     })

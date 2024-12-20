@@ -66,7 +66,7 @@ let CraftProcess = class (ItemExternal) {
         count = extItem?.quantity ?? 0
       })
       eventbus_send("guiStartOpenTrophy", {
-        [trophyId] = openTrophyWndConfigs,
+        [trophyId.tostring()] = openTrophyWndConfigs,
         rewardTitle = loc(this.getLocIdsList().cancelTitle),
         rewardListLocId = this.getItemsListLocId(),
         isHidePrizeActionBtn = params?.isHidePrizeActionBtn ?? false

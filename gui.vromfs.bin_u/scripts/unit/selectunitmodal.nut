@@ -183,8 +183,10 @@ local handlerClass = class (vehiclesModal.handlerClass) {
       this.searchUnits = null
     else {
       this.searchUnits = shopSearchCore.findUnitsByLocName(this.searchString)
-      if (this.unitsFilter)
-        this.searchUnits = this.searchUnits.filter(@(u) this?.unitsFilter(u))
+      if (this.unitsFilter) {
+        let filterFn = this.unitsFilter
+        this.searchUnits = this.searchUnits.filter(filterFn)
+      }
     }
     this.fillUnitsList()
   }

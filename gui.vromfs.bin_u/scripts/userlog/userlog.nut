@@ -24,6 +24,7 @@ let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nu
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getUserlogViewData } = require("%scripts/userLog/userlogViewData.nut")
+let { get_local_unixtime } = require("dagor.time")
 
 ::hidden_userlogs <- [
   EULT_NEW_STREAK,
@@ -156,6 +157,15 @@ let actionByLogType = {
     log($"join to tournament battle with id {battleId}")
     get_cur_gui_scene().performDelayed({}, @() ::SessionLobby.joinBattle(logObj.battleId))
   }
+}
+
+function gerRecentItemsLogs(timeDistInSeconds) {
+  let page = userlogPages.findvalue(@(p) p.id == "items")
+  if (page == null)
+    return
+  let fullLogs = ::getUserLogsList(page)
+  let localTime = get_local_unixtime()
+  return fullLogs.filter(@(p) (!p?.isDubTrophy && (localTime - p.time < timeDistInSeconds)))
 }
 
 gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -483,4 +493,8 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     copy_to_clipboard(get_userlog_plain_text(this.currentLog))
   }
+}
+
+return {
+  gerRecentItemsLogs
 }

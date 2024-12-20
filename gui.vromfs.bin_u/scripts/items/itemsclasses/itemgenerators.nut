@@ -158,8 +158,8 @@ let ItemGenerator = class {
     let trophyWeightsBlockCount = trophyWeightsBlk?.blockCount() ?? 0
     foreach (set in parsedBundles)
       foreach (cfg in set.components) {
-        let item = ::ItemsManager.findItemById(cfg.itemdefid)
-        let generator = !item ? collection?[cfg.itemdefid] : null
+        let generator = collection?[cfg.itemdefid]
+        let item = generator == null ? ::ItemsManager.findItemById(cfg.itemdefid) : null
         let rank = contentRank != null ? min(cfg.quantity, contentRank) : cfg.quantity
         if (item) {
           if (item.isHiddenItem())
