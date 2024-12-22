@@ -12,7 +12,7 @@ let { IlsColor, IlsLineScale, RadarTargetDist, BombCCIPMode, RocketMode, CannonM
 let { IsAamLaunchZoneVisible, AamLaunchZoneDistMaxVal, DistanceMax,
   AamLaunchZoneDistMax, AamLaunchZoneDist, AamTimeOfFlightMax, AamLaunchZoneDistMinVal } = require("%rGui/radarState.nut")
 let { format } = require("string")
-let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
+let { GuidanceLockState, IlsTrackerVisible, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { GunBullets0, WeaponSlotsCnt, WeaponSlotsName, WeaponSlots, SelectedWeapSlot, BulletImpactLineEnable,
  BulletImpactPoints, AdlPoint, WeaponSlotsTrigger } = require("%rGui/planeState/planeWeaponState.nut")
@@ -793,43 +793,71 @@ let retSize = Computed(@() hasRadarTarget.get() ? cvt(RadarTargetDist.get(), 0, 
 let distAngle = Computed(@() hasRadarTarget.get() ? cvt(RadarTargetDist.get(), 0, 3657.6, -90.0, 269.0).tointeger() : 269)
 let hasSector = Computed(@() hasRadarTarget.get() && RadarTargetDist.get() > 0.0 && RadarTargetDist.get() < 3657.6)
 let midDist = Computed(@() cvt(AamLaunchZoneDistMinVal.get(), 0, 3657.6, PI, -PI))
-let aamReticle = @(){
-  watch = [isSraamReticle, hasSector]
-  size = flex()
-  children = isSraamReticle.get() ? [
-    @(){
-      watch = [IlsColor]
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = [ph(30), ph(30)]
-      pos = [pw(50), ph(50)]
-      color = IlsColor.get()
-      fillColor = 0
-      lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-      commands = [
-        [VECTOR_ELLIPSE, 0, 0, 100, 100]
-      ]
-      behavior = Behaviors.RtPropUpdate
-      update = @() {
-        size = [retSize.get() * IlsPosSize[3], retSize.get() * IlsPosSize[3]]
-      }
-    },
-    (hasSector.get() ? @(){
-      watch = distAngle
-      rendObj = ROBJ_VECTOR_CANVAS
-      size = [ph(13), ph(13)]
-      pos = [pw(50), ph(50)]
-      color = IlsColor.get()
-      fillColor = 0
-      lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
-      commands = [
-        [VECTOR_SECTOR, 0, 0, 100, 100, -90, distAngle.get()],
-        [VECTOR_ELLIPSE, 100 * sin(midDist.get()), 100 * cos(midDist.get()), 5, 5],
-        [VECTOR_LINE, 0, -100, 0, -105],
-        [VECTOR_LINE, 100 * cos(degToRad(distAngle.get())), 100 * sin(degToRad(distAngle.get())),
-         105 * cos(degToRad(distAngle.get())), 105 * sin(degToRad(distAngle.get()))]
-      ]
-    } : null)
-  ] : null
+let aamReticle = function (width, height) {
+  return @() {
+    watch = [isSraamReticle, hasSector]
+    size = flex()
+    children = isSraamReticle.get() ? [
+      @(){
+        watch = [IlsColor]
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = [ph(30), ph(30)]
+        pos = [pw(50), ph(50)]
+        color = IlsColor.get()
+        fillColor = 0
+        lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+        commands = [
+          [VECTOR_ELLIPSE, 0, 0, 100, 100]
+        ]
+        behavior = Behaviors.RtPropUpdate
+        update = @() {
+          size = [retSize.get() * IlsPosSize[3], retSize.get() * IlsPosSize[3]]
+        }
+      },
+      (hasSector.get() ? @(){
+        watch = distAngle
+        rendObj = ROBJ_VECTOR_CANVAS
+        size = [ph(13), ph(13)]
+        pos = [pw(50), ph(50)]
+        color = IlsColor.get()
+        fillColor = 0
+        lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
+        commands = [
+          [VECTOR_SECTOR, 0, 0, 100, 100, -90, distAngle.get()],
+          [VECTOR_ELLIPSE, 100 * sin(midDist.get()), 100 * cos(midDist.get()), 5, 5],
+          [VECTOR_LINE, 0, -100, 0, -105],
+          [VECTOR_LINE, 100 * cos(degToRad(distAngle.get())), 100 * sin(degToRad(distAngle.get())),
+          105 * cos(degToRad(distAngle.get())), 105 * sin(degToRad(distAngle.get()))]
+        ]
+      } : null),
+      @() {
+        watch = [IlsColor]
+        size = [pw(1.5), ph(2)]
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = IlsColor.get()
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = baseLineWidth * IlsLineScale.get()
+        commands = [
+          [VECTOR_POLY, -100, 0, 0, -100, 100, 0, 0, 100]
+        ]
+        animations = [
+          { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "in_launch_zone" }
+        ]
+        behavior = Behaviors.RtPropUpdate
+        update = function() {
+          if (AamLaunchZoneDistMaxVal.get() > 0.0 && RadarTargetDist.get() <= AamLaunchZoneDistMaxVal.get() && RadarTargetDist.get() >= AamLaunchZoneDistMinVal.get())
+            anim_start("in_launch_zone")
+          else
+            anim_request_stop("in_launch_zone")
+          return {
+            transform = {
+              translate = IlsTrackerVisible.get() ? [IlsTrackerX.get(), IlsTrackerY.get()] : [width * 0.5, height * 0.5]
+            }
+          }
+        }
+      },
+    ] : null
+  }
 }
 
 let ttg = Computed(@() TimeBeforeBombRelease.get() >= 0.0 ? TimeBeforeBombRelease.get().tointeger() : 0)
@@ -893,7 +921,7 @@ function IlsTyphoon(width, height) {
       gunImpactLine
       overload(height)
       ccipImpactLine(height)
-      aamReticle
+      aamReticle(width, height)
       aimPos(width, height)
       ccrp
     ]

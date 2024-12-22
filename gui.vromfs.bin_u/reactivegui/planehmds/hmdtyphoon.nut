@@ -8,6 +8,8 @@ let { sin, cos, PI } = require("math")
 let { cvt } = require("dagor.math")
 let { TATargetVisible } = require("%rGui/airState.nut")
 let { TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
+let { TrackerVisible, TrackerX, TrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
+let { GuidanceLockResult } = require("guidanceConstants")
 
 let baseColor = isInVr ? Color(10, 255, 10, 30) : Color(10, 255, 10, 10)
 let baseLineWidth = floor(LINE_WIDTH + 0.5)
@@ -113,6 +115,50 @@ function ccrpReticle(width, height) {
   }
 }
 
+let isAAMMode = Computed(@() GuidanceLockState.get() > GuidanceLockResult.RESULT_STANDBY)
+function aamReticle(width, height) {
+  return @() {
+    watch = isAAMMode
+    size = [ph(2.0), ph(2.0)]
+    animations = [
+      { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "aam_seeker_limit" }
+    ]
+    children = isAAMMode.get() ? [
+      {
+        size = flex()
+        rendObj = ROBJ_VECTOR_CANVAS
+        color = baseColor
+        fillColor = Color(0, 0, 0, 0)
+        lineWidth = baseLineWidth
+        commands = [
+          [VECTOR_POLY, -100, 0, 0, -100, 100, 0, 0, 100]
+        ]
+      }
+    ] : null
+    behavior = Behaviors.RtPropUpdate
+    update = function() {
+      let atAamSeekerLimit =
+        TrackerX.get() < width * 0.25
+        || TrackerX.get() > width * 0.75
+        || TrackerY.get() < height * 0.2
+        || TrackerY.get() > height * 0.8
+      if (atAamSeekerLimit)
+        anim_start("aam_seeker_limit")
+      else
+        anim_request_stop("aam_seeker_limit")
+      return {
+        transform = {
+          translate = TrackerVisible.get() ? [
+            clamp(TrackerX.get() - width * 0.25, 0, width * 0.5),
+            clamp(TrackerY.get() - height * 0.2, 0, height * 0.6)
+          ]
+          : [width * 0.5, height * 0.5]
+        }
+      }
+    }
+  }
+}
+
 function hmd(width, height) {
   return {
     size = [width * 0.5, height * 0.6]
@@ -130,6 +176,7 @@ function hmd(width, height) {
       rollPitch
       airSymbol
       ccrpReticle(width, height)
+      aamReticle(width, height)
     ]
   }
 }

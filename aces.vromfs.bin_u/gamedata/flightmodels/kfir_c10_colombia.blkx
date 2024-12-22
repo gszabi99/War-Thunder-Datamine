@@ -1899,11 +1899,15 @@
     "collimatorSize": 0.2,
     "hmdBlockIlsArea": [
       0.47,
-      0.4,
+      -0.8,
       0.55,
       0.6
     ],
     "hmdEnabledByDefault": true,
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "mirror": true,
     "mirrorPos": [
       5.645,
@@ -2384,7 +2388,7 @@
           ],
           "page": {
             "type": "rwr",
-            "scale": 1.0
+            "scale": 0.85
           }
         },
         {
@@ -2475,7 +2479,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/il_el_m_2032.blk",
+        "blk": "gameData/sensors/il_el_m_2052.blk",
         "dmPart": "radar_dm"
       },
       {
@@ -3212,6 +3216,20 @@
             }
           },
           {
+            "iconType": "bombs_heavy",
+            "name": "us_m118",
+            "reqModification": "us_3000lb_mk118",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/containers/pylon_kfir_central_us_3000lb_m118.blk",
+              "emitter": "pylon_napgach",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_880",
             "showInWeaponMenu": true,
@@ -3930,6 +3948,12 @@
       "reqModification": "us_2_75_in_ffar_lau_3a",
       "tier": 3,
       "modClass": "weapon"
+    },
+    "us_3000lb_mk118": {
+      "modClass": "weapon",
+      "tier": 4,
+      "prevModification": "f4c_zuni",
+      "reqModification": "us_2000lb_mk84"
     },
     "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {

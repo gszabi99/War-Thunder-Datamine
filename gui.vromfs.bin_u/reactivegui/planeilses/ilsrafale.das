@@ -618,9 +618,28 @@ class Component : Canvas
     return if isBlink && clampedPos != pos
 
     // TODO: make different indications for different guidance types
-    if guidanceType == GuidanceType.TYPE_OPTICAL || guidanceType == GuidanceType.TYPE_SARH || guidanceType == GuidanceType.TYPE_ARH
+    if guidanceType == GuidanceType.TYPE_SARH || guidanceType == GuidanceType.TYPE_ARH
       drawCircle(clampedPos, size)
 
+  def drawIrAamSeeker()
+    let aamLockState = get_aam_guidance_lock_state()
+    if int(aamLockState) <= int(GuidanceLockState.RESULT_STANDBY)
+      return
+    if get_cur_weapon_guidance_type() != GuidanceType.TYPE_OPTICAL
+      return
+
+    let size = 0.032
+    let pos = get_ils_aam_tracker_visible() ? toRelPos(get_ils_aam_tracker_pos()) : tracking.ilsPos
+    let maxOffs = float2(0.5 - size)
+    let clampedPos = clamp(pos, -maxOffs, maxOffs)
+    let blinksPerSecond = 4.0
+    let isBlink = fract(blinksPerSecond * float(get_total_time())) < 0.5
+    if isBlink && clampedPos != pos
+      return
+    drawCircle(clampedPos, size)
+    if aamLockState != GuidanceLockState.RESULT_TRACKING
+      return
+    drawCircle(clampedPos, size * 1.25)
 
   def drawCcrpMark()
     return if !isBombingCcrpMode
@@ -674,6 +693,7 @@ class Component : Canvas
     drawAamTrackingMark()
     drawCcrpMark()
     restoreViewport()
+    drawIrAamSeeker()
 
 
 [export]

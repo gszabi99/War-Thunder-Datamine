@@ -17,6 +17,7 @@ let hmdA10c = require("planeHmds/hmdA10c.nut")
 let hmdTopOwl = require("planeHmds/hmdTopOwl.nut")
 let hmdTornado = require("planeHmds/hmdTornado.nut")
 let hmdTyphoon = require("planeHmds/hmdTyphoon.nut")
+let hmdRafale = require("planeHmds/hmdRafale.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
 let { IPoint2, Point2, Point3 } = require("dagor.math")
 
@@ -48,14 +49,15 @@ let hmdSetting = Computed(function() {
     isJas39 = blk.getBool("hmdJas39", false),
     isA10c = blk.getBool("hmdA10c", false),
     isTopOwl = blk.getBool("hmdTopOwl", false),
-    isTornado = blk.getBool("hmdTornado", false)
-    isTyphoon = blk.getBool("hmdTyphoon", false)
+    isTornado = blk.getBool("hmdTornado", false),
+    isTyphoon = blk.getBool("hmdTyphoon", false),
+    isRafale = blk.getBool("hmdRafale", false)
   }
 })
 
 let isVisible = Computed(@() (HmdVisibleAAM.value || HmdSensorVisible.value || HmdVisible.value) && !HmdBlockIls.value)
 let planeHmd = @(width, height) function() {
-  let { isShelZoom, isVtas, isF16c, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon } = hmdSetting.value
+  let { isShelZoom, isVtas, isF16c, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon, isRafale } = hmdSetting.value
   return {
     watch = [hmdSetting, isVisible]
     children = isVisible.value ? [
@@ -67,7 +69,8 @@ let planeHmd = @(width, height) function() {
       (isA10c ? hmdA10c(width, height) : null),
       (isTopOwl ? hmdTopOwl(width, height) : null),
       (isTornado ? hmdTornado(width, height) : null),
-      (isTyphoon ? hmdTyphoon(width, height) : null)
+      (isTyphoon ? hmdTyphoon(width, height) : null),
+      (isRafale ? hmdRafale(width, height) : null)
     ] : null
   }
 }
