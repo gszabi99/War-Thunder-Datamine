@@ -2,10 +2,11 @@ from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { request } = require("%scripts/inventory/inventoryClient.nut")
-let { roundToDigits, floor } = require("%sqstd/math.nut")
+let { roundToDigits } = require("%sqstd/math.nut")
 let { isArray } = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
 let { calcTrophiesDropChance } = require("chard")
+let { format } = require("string")
 
 let chestPrizeChanceCache = {}
 let trophyPrizeChanceCache = {}
@@ -112,15 +113,21 @@ function grabChanceObjects(objectsByCategory, nest, chancesData) {
       continue
     let categoryId = chanceTextObj.categoryId
     if (objectsByCategory?[categoryId] == null)
-      objectsByCategory[categoryId] <- {hasFraction = false, objects = []}
+      objectsByCategory[categoryId] <- { fractionsAmount = 0, objects = [] }
 
     let categoryData = objectsByCategory[categoryId]
-    let chance = roundToDigits((chanceData?.prob ?? 1)* 100, 2)
-    let isFractionChance = (chance - floor(chance)) > 0
-    if (!categoryData.hasFraction && isFractionChance)
-      categoryData.hasFraction = true
+    let chanceValue = roundToDigits((chanceData?.prob ?? 1) * 100, 4)
+    local fraction = roundToDigits(chanceValue % 1, 2)
+    if (fraction < 0.01)
+      fraction = 0
+    let fractionsAmount = fraction == 0 ? 0
+      : roundToDigits(fraction * 100, 2) % 10 == 0 ? 1
+      : 2
+    if (fractionsAmount && categoryData.fractionsAmount < fractionsAmount) {
+      categoryData.fractionsAmount = fractionsAmount
+    }
 
-    categoryData.objects.append({obj = chanceTextObj, chance = chance, isFractionChance})
+    categoryData.objects.append({obj = chanceTextObj, chanceValue, fractionsAmount})
   }
 }
 
@@ -129,11 +136,10 @@ function fillChestChances(nest, chancesData) {
   grabChanceObjects(data, nest, chancesData)
 
   foreach (_idx, categoryData in data) {
+    let fractionsAmountForGroup = categoryData.fractionsAmount
     foreach (object in categoryData.objects) {
-      let chanceText = (!object.isFractionChance && categoryData.hasFraction)
-        ? $"{object.chance}.0%"
-        : $"{object.chance}%"
-      object.obj.setValue(chanceText)
+      let chanceValueTxt = format($"%.{fractionsAmountForGroup }f", object.chanceValue)
+      object.obj.setValue($"{chanceValueTxt}%")
       object.obj.show(true)
     }
   }

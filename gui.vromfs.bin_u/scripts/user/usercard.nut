@@ -55,9 +55,8 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { requestUserInfoData, getUserInfo, userInfoEventName } = require("%scripts/user/usersInfoManager.nut")
+let { forceRequestUserInfoData, getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { getShowcaseTitleViewData, getShowcaseViewData, trySetBestShowcaseMode } = require("%scripts/user/profileShowcase.nut")
-let { add_event_listener, removeEventListenersByEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { fill_gamer_card, addGamercardScene } = require("%scripts/gamercard.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
@@ -155,6 +154,8 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   terseInfo = null
   showcaseScale = 1
   isSmallSize = false
+  currentHeaderBackgroundId = null
+  currentAvatarFrameId = null
 
   function getSceneTplView() {
     let defShowcaseHeight = to_pixels("924@sf/@pf").tofloat()
@@ -313,8 +314,10 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.player = getPlayerStatsFromBlk(blk)
-    if ("uid" in this.player)
+    if ("uid" in this.player) {
       externalIDsService.reqPlayerExternalIDsByUserId(this.player.uid)
+      forceRequestUserInfoData(this.player.uid)
+    }
 
     this.infoReady = true
     this.scene.findObject("usercard-container").show(true)
@@ -1171,24 +1174,26 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillShowcaseMid(terseInfo, userStats)
   }
 
-  function onUserInfoRequestComplete(responce, stats = null) {
-    if (this.terseInfo != null) {
-      removeEventListenersByEnv(userInfoEventName.UPDATED, this)
-      return
-    }
+  function updateUserCardTerseInfo(responce, stats = null) {
     stats = stats ?? this.getPageProfileStats()
-    let infos = responce?.usersInfo[stats.uid]
+    let infos = responce?.usersInfo[stats?.uid ?? ""]
     if (infos == null)
       return
 
     this.terseInfo = {}
     this.terseInfo.schType <- infos.shcType
+    this.terseInfo.background <- infos.background
+    this.terseInfo.frame <- infos.frame
     this.terseInfo.showcase <- infos?.showcase
       ? clone infos.showcase
       : {}
     trySetBestShowcaseMode(stats, this.terseInfo)
-    this.updateShowcase()
-    removeEventListenersByEnv(userInfoEventName.UPDATED, this)
+    this.fillShowcase(this.terseInfo, stats)
+
+    this.currentHeaderBackgroundId = this.terseInfo.background != "" ? this.terseInfo.background : "profile_header_default"
+    this.currentAvatarFrameId = this.terseInfo.frame != "" ? this.terseInfo.frame : ""
+    this.setCurrentHeaderBackground()
+    this.setCurrentAvatarFrame()
   }
 
   function updateShowcase() {
@@ -1196,25 +1201,60 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (userStats == null)
       return
 
-    if (this.terseInfo == null) {
-      let userInfo = getUserInfo(userStats.uid)
-      if (userInfo != null) {
-        let data = {}
-        data[userStats.uid] <- userInfo
-        this.onUserInfoRequestComplete({usersInfo = data}, userStats)
-      }
-    }
-
-    if (this.terseInfo) {
+    if (this.terseInfo != null) {
       this.fillShowcase(this.terseInfo, userStats)
       return
     }
-    add_event_listener(userInfoEventName.UPDATED, this.onUserInfoRequestComplete, this)
-    requestUserInfoData(userStats.uid)
+
+    let userInfo = getUserInfo(userStats.uid)
+    if (userInfo == null)
+      return
+
+    this.updateUserCardTerseInfo({usersInfo = { [userStats.uid] = userInfo }}, userStats)
   }
+
+  onEventUserInfoManagerDataUpdated = @(param) this.updateUserCardTerseInfo(param)
 
   function getPageProfileStats() {
     return this.player
+  }
+
+  function changeHeaderBackgroundImage(image) {
+    let newImage = $"!ui/images/profile_headers/{image}"
+    let profileHeaderBackground = this.scene.findObject("profileHeaderBackground")
+    if (profileHeaderBackground["background-image"] == newImage)
+      return
+
+    if (profileHeaderBackground["background-image"] == "") {
+      profileHeaderBackground["background-image"] = newImage
+      return
+    }
+
+    profileHeaderBackground["headerAnim"] = "hide"
+
+    let cb = Callback(function() {
+      profileHeaderBackground["background-image"] = newImage
+      profileHeaderBackground["headerAnim"] = "show"
+    }, this)
+
+    setTimeout(0.25, @() cb())
+  }
+
+  function changeFrameImage(image) {
+    let avatarFrame = showObjById("avatarFrame", image != "", this.scene)
+    if (avatarFrame == null || image == "")
+      return
+
+    avatarFrame["background-image"] = $"!ui/images/avatar_frames/{image}"
+    avatarFrame.show(true)
+  }
+
+  function setCurrentHeaderBackground() {
+    this.changeHeaderBackgroundImage(this.currentHeaderBackgroundId)
+  }
+
+  function setCurrentAvatarFrame() {
+    this.changeFrameImage(this.currentAvatarFrameId)
   }
 
   function onUnitImageClick(_obj) {}

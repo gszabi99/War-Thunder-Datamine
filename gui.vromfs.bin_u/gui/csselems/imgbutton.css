@@ -141,14 +141,25 @@ imgFrame > LockedImg{
   size:@cIco, @cIco;
 }
 
+LockedImg[statusLock=avatarImage],
+LockedImg[statusLock=headerImage],
 LockedImg[statusLock=achievement],
 LockedImg[statusLock=limit] {
   pos:pw-w-2@sf/@pf, ph-h-4@sf/@pf;
-  size=@cIco, @cIco;
+  size:@cIco, @cIco;
   background-color:@white;
   background-image:#ui/gameuiskin#locked.svg;
   background-svg-size:@cIco, @cIco;
 }
+
+LockedImg[statusLock=headerImage] {
+  pos:pw-w, 0.5ph-0.5h;
+}
+
+LockedImg[statusLock=avatarImage] {
+  pos:pw-w, ph-h-4@sf/@pf;
+}
+
 LockedImg[statusLock=noDLC] {
   background-image:#ui/gameuiskin#dlc_locked;
 }

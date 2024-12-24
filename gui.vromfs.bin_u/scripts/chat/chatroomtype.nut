@@ -16,6 +16,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getThreadInfo, canCreateThreads } = require("%scripts/chat/chatStorage.nut")
 let { chatColors, getSenderColor } = require("%scripts/chat/chatColors.nut")
+let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
 
 enum chatRoomCheckOrder {
   CUSTOM
@@ -115,7 +116,7 @@ enumsAddTypes(g_chat_room_type, {
     checkRoomId  = function(roomId) { return !startsWith(roomId, this.roomPrefix) }
     getRoomId    = function(playerName, ...) { return playerName }
     getRoomName  = function(roomId, isColored = false) { //roomId == playerName
-      local res = ::g_contacts.getPlayerFullName(getPlayerName(roomId), ::clanUserTable?[roomId] ?? "")
+      local res = ::g_contacts.getPlayerFullName(getPlayerName(roomId), clanUserTable.get()?[roomId] ?? "")
       if (isColored)
         res = colorize(getSenderColor(roomId), res)
       return res

@@ -257,7 +257,6 @@ avatarImg {
   reduceMinimalWidth:yes;
   width:1@avatarButtonSize;
   height:1@avatarButtonSize;
-  background-image:#ui/gameuiskin#header_button_;
   border:no;
   margin:0;
   css-hier-invalidate:yes;
@@ -269,29 +268,18 @@ avatarImg > img {
 }
 
 avatarImg:hover {
-  background-image:#ui/gameuiskin#header_button_hover;
   border:yes;
   border-color:@buttonBorderColorFocus;
 }
 
 avatarImg:pushed {
-  background-image:#ui/gameuiskin#header_button_active;
   border:yes;
-}
-
-avatarImg[enabled=no] > img {
-  background-color: @lockedDecal;
-}
-
-avatarImg[enabled=no]:hover > img {
-  background-color: @lockedDecalHover;
 }
 
 avatarImg:focus,
 avatarImg[active=yes],
 avatarImg[selected=yes] {
   border: yes;
-  background-color: @buttonColorFocus;
   border-color:@buttonBorderColorFocus;
   color: @buttonFontColorFocus;
 }

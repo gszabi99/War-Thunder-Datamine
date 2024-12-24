@@ -14,7 +14,7 @@ let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { deferOnce, defer } = require("dagor.workcycle")
+let { deferOnce, defer, setTimeout, clearTimer } = require("dagor.workcycle")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, isInMenu, handlersManager, loadHandler, is_in_loading_screen
@@ -25,7 +25,6 @@ let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let externalIDsService = require("%scripts/user/externalIdsService.nut")
-let avatars = require("%scripts/user/avatars.nut")
 let { isMeXBOXPlayer, isMePS4Player, isPlatformPC, isPlatformSony
 } = require("%scripts/clientState/platform.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -100,6 +99,8 @@ let { getEditViewData, getShowcaseTypeBoxData, saveShowcase,
 let { fill_gamer_card, addGamercardScene } = require("%scripts/gamercard.nut")
 let { generateShowcaseInfo } = require("%scripts/user/profileShowcasesData.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
+let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
+let { saveProfileAppearance, getProfileHeaderBackgrounds } = require("%scripts/user/profileAppearance.nut")
 
 require("%scripts/user/userCard.nut") //for load UserCardHandler before Profile handler
 
@@ -172,6 +173,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   sheetsList = null
   customMenuTabs = null
+  applyFilterTimer = null
+  profileHeaderBackground = null
 
   curPage = ""
   unlockTypesToShow = [
@@ -260,6 +263,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       bntGetLinkObj.tooltip = getViralAcquisitionDesc("mainmenu/getLinkDesc")
 
     this.initShortcuts()
+    this.updateProfileAppearance()
   }
 
   function initSheetsList() {
@@ -468,6 +472,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function onProfileEditBtn() {
     if (this.isEditModeEnabled)
       return
+
     this.setEditMode(true)
   }
 
@@ -490,6 +495,9 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     if (this.editModeTempData?.terseInfo)
       this.fillShowcase(this.terseInfo, getStats())
+
+    this.resetHeaderBackgroundImage()
+    this.resetAvatarFrameImage()
   }
 
   function saveProfileIcon(newIcon) {
@@ -513,18 +521,30 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.updateButtons()
     if (val)
       this.editModeTempData = {}
+    else {
+      this.onHeaderBackgroundListHide()
+      this.onChooseImageWndHide()
+    }
   }
 
-  function onIconChoosen(option) {
-    let value = ::get_option(USEROPT_PILOT).value
-    if (value == option.idx)
-      return
+  function onIconChoosen(imageType, data) {
+    if (imageType == "pilotIcon") {
+      let value = ::get_option(USEROPT_PILOT).value
+      if (value == data.idx)
+        return
 
-    this.fillProfileIcon(option.idx)
-    if (this.isEditModeEnabled)
-      this.editModeTempData.icon <- option.idx
-    else
-      this.saveProfileIcon(option.idx)
+      this.fillProfileIcon(data.idx)
+      if (this.isEditModeEnabled)
+        this.editModeTempData.icon <- data.idx
+      else
+        this.saveProfileIcon(data.idx)
+    }
+    else {
+      this.fillProfileAvatarFrame(data)
+      if (this.isEditModeEnabled) {
+        this.editModeTempData.avatarFrameId <- data.id
+      }
+    }
   }
 
   function fillProfileIcon(iconIdx) {
@@ -533,6 +553,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let obj = this.scene.findObject("profile-icon")
     if (obj)
       obj.setValue(iconIdx)
+  }
+
+  function fillProfileAvatarFrame(data) {
+    if (!checkObj(this.scene))
+      return
+    this.changeFrameImage(data.id)
   }
 
   function hasEditProfileChanges() {
@@ -546,6 +572,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       return true
 
     if (this.editModeTempData?.terseInfo)
+      return true
+
+    if (this.editModeTempData?.headerBackgroundId && this.editModeTempData.headerBackgroundId != this.currentHeaderBackgroundId)
+      return true
+
+    if (this.editModeTempData?.avatarFrameId && this.editModeTempData.avatarFrameId != this.currentAvatarFrameId)
       return true
 
     return false
@@ -1786,7 +1818,15 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onChangePilotIcon() {
-    avatars.openChangePilotIconWnd(this.onIconChoosen, this)
+    if (this.isEditModeEnabled == false) {
+      this.onProfileEditBtn()
+      if (!this.isEditModeEnabled)
+        return
+    }
+
+    let chooseImageScene = showObjById("chooseImage", true)
+    ::gui_choose_image(this.onIconChoosen, this, chooseImageScene)
+    this.onHeaderBackgroundListHide()
   }
 
   function openViralAcquisitionWnd() {
@@ -1920,6 +1960,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     if (this.isEditModeEnabled) {
       this.setEditMode(false)
+      this.resetHeaderBackgroundImage()
+      this.resetAvatarFrameImage()
       return
     }
 
@@ -2008,6 +2050,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let newIcon = this.editModeTempData?.icon
     if (newIcon && newIcon != ::get_option(USEROPT_PILOT).value)
       this.saveProfileIcon(newIcon)
+
+    this.saveProfileAppearance()
 
     if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
       this.saveProfileTitle(this.editModeTempData.title)
@@ -2102,9 +2146,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function onUnitImageClick(obj) {
     if (this.isEditModeEnabled == false) {
-      this.onProfileEditBtn()
-      if (!this.isEditModeEnabled)
-        return
+      this.setEditMode(true)
+      return
     }
     this.curUnitImageIdx = obj?.imageIdx ?? 0;
     let handler = this
@@ -2116,6 +2159,144 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     })
   }
 
+  function saveProfileAppearance() {
+    let params = {}
+
+    if (this.editModeTempData?.avatarFrameId != null && this.editModeTempData.avatarFrameId != this.currentAvatarFrameId)
+      params.frame <- this.editModeTempData?.avatarFrameId
+
+    if (this.editModeTempData?.headerBackgroundId != null && this.editModeTempData.headerBackgroundId != this.currentHeaderBackgroundId)
+      params.background <- this.editModeTempData?.headerBackgroundId
+
+    if (params.len() == 0)
+      return
+
+    let cbError = Callback(function() {
+      this.setCurrentHeaderBackground()
+      this.setCurrentAvatarFrame()
+    }, this)
+
+    saveProfileAppearance(params, null, cbError)
+  }
+
+  function updateHeaderBackgroundsListSelection() {
+    let listObj = this.scene.findObject("header_backgrounds_list")
+    for (local i = 0; i < listObj.childrenCount(); i++) {
+      if (listObj.getChild(i).id == (this.editModeTempData?.headerBackgroundId ?? this.currentHeaderBackgroundId)) {
+        listObj.setValue(i)
+        break
+      }
+    }
+  }
+
+  function updateProfileAppearance() {
+    let userInfo = getUserInfo(userIdStr.get())
+
+    if (userInfo == null)
+      return
+
+    let headerBackgroundId = userInfo.background != "" ? userInfo.background : "profile_header_default"
+    if (headerBackgroundId != this.currentHeaderBackgroundId) {
+      this.currentHeaderBackgroundId = headerBackgroundId
+      if (!this.isEditModeEnabled || this.editModeTempData?.headerBackgroundId == null)
+        this.setCurrentHeaderBackground()
+    }
+
+    let avatarFrameId = userInfo.frame != "" ? userInfo.frame : ""
+    if (avatarFrameId != this.currentAvatarFrameId) {
+      this.currentAvatarFrameId = avatarFrameId
+      if (!this.isEditModeEnabled || this.editModeTempData?.avatarFrameId == null)
+        this.setCurrentAvatarFrame()
+    }
+  }
+
+  function onEventUserInfoManagerDataUpdated(param) {
+    if (userIdStr.get() not in param.usersInfo)
+      return
+    this.updateProfileAppearance()
+  }
+
+  function fillHeaderBackgroundsList(filterText = "") {
+    if (this.profileHeaderBackground == null)
+      this.profileHeaderBackground = getProfileHeaderBackgrounds()
+
+    let items = this.profileHeaderBackground.filter(@(unlock)(filterText == "" || unlock.searchName.contains(filterText)))
+    let data = handyman.renderCached("%gui/profile/headerBackgroundItems.tpl", { items })
+    let listObj = this.scene.findObject("header_backgrounds_list")
+    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
+
+    this.updateHeaderBackgroundsListSelection()
+  }
+
+  function onHeaderBackgroundSelect(obj) {
+    if (!this.isEditModeEnabled)
+      return
+
+    let index = obj.getValue()
+    if (index < 0)
+      return
+    let item = obj.getChild(index)
+    this.editModeTempData.headerBackgroundId <- item["id"]
+    this.changeHeaderBackgroundImage(this.editModeTempData.headerBackgroundId)
+  }
+
+  function onHeaderBackgroundListSwitch() {
+    let backgroundListObj = this.scene.findObject("background_edit")
+    let isVisible = backgroundListObj.isVisible()
+    backgroundListObj.show(!isVisible)
+    if (isVisible)
+      return
+
+    this.onChooseImageWndHide()
+
+    let filterObj = this.getHeaderBackgroundsFilterObj()
+    if (filterObj.getValue() == "")
+      this.fillHeaderBackgroundsList()
+    else {
+      this.resetHeaderBackgroundsFilter()
+      this.updateHeaderBackgroundsListSelection()
+    }
+  }
+
+  function onHeaderBackgroundListHide() {
+    this.scene.findObject("background_edit").show(false)
+  }
+
+  function onChooseImageWndHide() {
+    this.scene.findObject("chooseImage").show(false)
+  }
+
+  function resetHeaderBackgroundImage() {
+    this.setCurrentHeaderBackground()
+    this.editModeTempData.headerBackgroundId <- null
+  }
+
+  function resetAvatarFrameImage() {
+    this.setCurrentAvatarFrame()
+    this.editModeTempData.avatarFrameId <- null
+  }
+
+  getHeaderBackgroundsFilterObj = @() this.scene.findObject("filter_header")
+  resetHeaderBackgroundsFilter = @() this.getHeaderBackgroundsFilterObj().setValue("")
+
+  function onFilterCancel(filterObj) {
+    if (filterObj.getValue() != "")
+      filterObj.setValue("")
+    else
+      this.onHeaderBackgroundListHide()
+  }
+
+  function applyFilter(obj) {
+    clearTimer(this.applyFilterTimer)
+    let filterText = obj.getValue()
+    if (filterText == "") {
+      this.fillHeaderBackgroundsList(filterText)
+      return
+    }
+
+    let applyCallback = Callback(@() this.fillHeaderBackgroundsList(), this)
+    this.applyFilterTimer = setTimeout(0.8, @() applyCallback())
+  }
 }
 
 let openProfileSheetParamsFromPromo = {

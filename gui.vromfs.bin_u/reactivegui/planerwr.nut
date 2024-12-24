@@ -135,7 +135,7 @@ let rwrs = {
 }
 
 let planeRwr = @(posWatched, sizeWatched, colorWatched, scaleDef, backHide, scale, fontSizeMult) function() {
-  let { indicator, style } = rwrSetting.get()
+  let { indicator, style = null } = rwrSetting.get()
   return {
     watch = rwrSetting
     children = rwrs?[indicator] != null ?

@@ -115,8 +115,8 @@
       <<^isEndInRow>>
         tdiv {
           position:t='absolute'
-          size:t='<<scale>>*2@sf/@pf, ph-<<scale>>*14@sf/@pf'
-          pos:t='<<scale>>*(<<idx>> + 1) * 1@accountHeaderWidth/3 - w/2, (ph-h)/2 + <<scale>>*14@sf/@pf'
+          size:t='<<scale>>*2@sf/@pf, ph-<<scale>>*26@sf/@pf'
+          pos:t='<<scale>>*(<<idx>> + 1) * 1@accountHeaderWidth/3 - w/2, (ph-h)/2 + <<scale>>*18@sf/@pf'
           background-color:t='@showcaseBoxBorder'
         }
       <</isEndInRow>>

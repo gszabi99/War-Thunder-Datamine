@@ -1161,9 +1161,13 @@ mSettings = {
   antialiasingUpscaling = { widgetType = "list" def = "native" blk = "video/antialiasing_upscaling" restart = false
     init = function(blk, desc) {
       desc.values <- antiAliasingUpscalingOptions(blk)
+      desc.def = "native"
+      if (desc.values.len() > 0 && !desc.values.contains(desc.def))
+        desc.def = desc.values[0]
     }
     enabled = @() hasAntialiasingUpscaling() && !getGuiValue("compatibilityMode")
     infoImgPattern = "#ui/images/settings/upscaling/%s"
+    needSkipCheckSystemConfigValue = true
   }
 
   antialiasingSharpening = { widgetType = "button" def = 0 blk = "video/antialiasing_sharpening" restart = false
@@ -1582,6 +1586,9 @@ function validateInternalConfigs() {
     if (!(k in mSettings))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Quality presets - k='{k}' is not found in 'settings' table."))
+    let desc = getOptionDesc(k)
+    if (desc?.needSkipCheckSystemConfigValue ?? false)
+      return
     if (("graphicsQuality" in mSettings) && ("values" in mSettings.graphicsQuality)) {
       let qualityValues = mSettings.graphicsQuality.values
       foreach (quality in qualityValues) {

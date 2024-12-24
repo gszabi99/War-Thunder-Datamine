@@ -8,6 +8,17 @@ tdiv {
       size:t='1@profileIconFullSize, 1@profileIconFullSize'
       background-svg-size:t='1@profileIconFullSize, 1@profileIconFullSize'
       background-image:t='<<icon>>'
+      <<#hasAvatarFrame>>
+      margin:t='0.1@profileIconFullSize'
+      avatarFrame {
+        size:t='1.2 * pw, 1.2 * ph'
+        pos:t='(pw-w)/2, (ph-h)/2'
+        position:t='absolute'
+        background-color:t='@white'
+        background-scale:t='aspect-ratio'
+        background-image:t='!ui/images/avatar_frames/<<frame>>'
+      }
+      <</hasAvatarFrame>>
     }
     tdiv {
       min-width:t='pw'

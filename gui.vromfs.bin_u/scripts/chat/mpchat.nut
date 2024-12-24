@@ -33,6 +33,7 @@ let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { defer } = require("dagor.workcycle")
 let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
+let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
 
 enum mpChatView {
   CHAT
@@ -600,17 +601,22 @@ eventbus_subscribe("enable_game_chat_input", @(p) enable_game_chat_input(p))
 
 ::add_tags_for_mp_players <- function add_tags_for_mp_players() {
   let tbl = get_mplayers_list(GET_MPLAYERS_LIST, true)
-  if (tbl) {
-    foreach (block in tbl)
-      if (!block.isBot)
-        ::clanUserTable[block.name] <- getTblValue("clanTag", block, "")
-  }
+  if (!tbl)
+    return
+
+  let res = {}
+  foreach (block in tbl)
+    if (!block.isBot)
+      res[block.name] <- block?.clanTag ?? ""
+
+  if (res.len() > 0)
+    clanUserTable.mutate(@(v) v.__update(res))
 }
 
 ::get_player_tag <- function get_player_tag(playerNick) {
-  if (!(playerNick in ::clanUserTable))
+  if (!(playerNick in clanUserTable.get()))
     ::add_tags_for_mp_players()
-  return getTblValue(playerNick, ::clanUserTable, "")
+  return clanUserTable.get()?[playerNick] ?? ""
 }
 
 addListenersWithoutEnv({

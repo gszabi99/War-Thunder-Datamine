@@ -8,7 +8,6 @@ let seenAvatars = require("%scripts/seen/seenList.nut").get(SEEN.AVATARS)
 let { AVATARS } = require("%scripts/utils/configs.nut")
 let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockById, getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { USEROPT_PILOT } = require("%scripts/options/optionsExtNames.nut")
 
 let DEFAULT_PILOT_ICON = "cardicon_default"
 
@@ -31,13 +30,7 @@ function getAllowedIcons() {
 let getIconById = @(id) getIcons()?[id] ?? DEFAULT_PILOT_ICON
 
 function openChangePilotIconWnd(cb, handler) {
-  let pilotsOpt = ::get_option(USEROPT_PILOT)
-  let config = {
-    options = pilotsOpt.items
-    value = pilotsOpt.value
-  }
-
-  ::gui_choose_image(config, cb, handler)
+  ::gui_choose_image(cb, handler)
 }
 
 function invalidateIcons() {

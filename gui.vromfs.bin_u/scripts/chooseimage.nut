@@ -18,8 +18,11 @@ let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
-let { getTooltipObjId } = require("%scripts/utils/genericTooltip.nut")
 let { generatePaginator, paginator_set_unseen } = require("%scripts/viewUtils/paginator.nut")
+let { getProfileAvatarFrames } = require("%scripts/user/profileAppearance.nut")
+let { USEROPT_PILOT } = require("%scripts/options/optionsExtNames.nut")
+let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
+let { userIdStr } = require("%scripts/user/profileStates.nut")
 
 /*
   config = {
@@ -29,70 +32,110 @@ let { generatePaginator, paginator_set_unseen } = require("%scripts/viewUtils/pa
     value = 0
   }
 */
-::gui_choose_image <- function gui_choose_image(config, applyFunc, owner) {
-  handlersManager.loadHandler(gui_handlers.ChooseImage, {
-                                  config = config
-                                  owner = owner
-                                  applyFunc = applyFunc
-                                })
+::gui_choose_image <- function gui_choose_image(applyFunc, owner, scene = null) {
+  let params = { owner, applyFunc }
+  if (scene != null)
+    params.scene <- scene
+
+  handlersManager.loadHandler(gui_handlers.ChooseImage, params)
 }
 
-gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
-  wndType = handlerType.MODAL
-  sceneBlkName = "%gui/chooseImage/chooseImage.blk"
+function getAvatarsData() {
+  let pilotsOpt = ::get_option(USEROPT_PILOT)
+  return pilotsOpt.items.filter(@(option) option?.show ?? true)
+}
 
-  config = null
-  options = null
+function getStoredAvatarIndex() {
+  let pilotsOpt = ::get_option(USEROPT_PILOT)
+  let unlockId = pilotsOpt.items[pilotsOpt.value].unlockId
+  let index = pilotsOpt.items
+    .filter(@(option) option?.show ?? true)
+    .findindex(@(v) v.unlockId == unlockId) ?? 0
+  return index
+}
+
+function getStoredFrameIndex() {
+  let userInfo = getUserInfo(userIdStr.get())
+  if (userInfo == null || userInfo.frame == "")
+    return 0
+
+  return getProfileAvatarFrames().findindex(@(v) v.id == userInfo?.frame) ?? 0
+}
+
+let menuItems = [
+  {
+    id = "pilotIcon"
+    loc = "profile/choose_profile_icon"
+    listId = "avatars_list"
+    listDataFn = getAvatarsData
+    initIndexFn = getStoredAvatarIndex
+  },
+  {
+    id = "frame"
+    loc = "profile/choose_frame"
+    listId = "frames_list"
+    listDataFn = getProfileAvatarFrames
+    initIndexFn = getStoredFrameIndex
+  }
+]
+
+gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
+  wndType = handlerType.CUSTOM
+  sceneBlkName = "%gui/chooseImage/chooseImage.blk"
   owner = null
   applyFunc = null
-  choosenValue = null
 
-  currentPage  = -1
   itemsPerPage = 1
-  valueInited = false
   isPageFill = false
   imageButtonSize = "1@avatarButtonSize"
   imageButtonInterval = 0
   minAmountButtons = 8
 
-  value = -1
-  contentObj = null
+  currentListId = ""
+  currentListValues = null
 
   function initScreen() {
-    if (!this.config || !("options" in this.config))
-      return this.goBack()
-
-    this.options = []
-    let configValue = ("value" in this.config) ? this.config.value : -1
-    foreach (idx, option in this.config.options) {
-      let isVisible = getTblValue("show", option, true)
-      if (!isVisible)
-        continue
-
-      if (this.value < 0 || idx == configValue)
-        this.value = this.options.len()
-      this.options.append(option)
-    }
-
-    this.initItemsPerPage()
-
-    this.currentPage = max(0, (this.value / this.itemsPerPage).tointeger())
-
-    this.contentObj = this.scene.findObject("images_list")
-    this.fillPage()
-    move_mouse_on_child(this.contentObj, 0)
-
+    this.init()
     showObjById("btn_select", showConsoleButtons.value, this.scene)
+  }
+
+  function init() {
+    this.initCurrentListValues()
+    this.initItemsPerPage()
+    this.fillPages()
+    this.fillMenu()
+    move_mouse_on_child(this.getContentObj(), 0)
+  }
+
+  function initCurrentListValues() {
+    this.currentListId = menuItems[0].id
+    let handler = this
+    this.currentListValues = menuItems.reduce(function(res, v) {
+      res[v.id] <- {
+        contentObj = handler.scene.findObject(v.listId)
+        currentPage = -1
+        listData = v.listDataFn()
+        currentIndex = v.initIndexFn()
+      }
+      return res
+    }, {})
+  }
+
+  function fillPages() {
+    let handler = this
+    menuItems.each(function(item) {
+      handler.fillPage(item.id)
+    })
   }
 
   function initItemsPerPage() {
     this.guiScene.applyPendingChanges(false)
-    let listObj = this.scene.findObject("images_list")
+    let listObj = this.getContentObj()
     let cfg = countSizeInItems(listObj, this.imageButtonSize, this.imageButtonSize, this.imageButtonInterval, this.imageButtonInterval)
 
     //update size for single page
-    if (cfg.itemsCountX * cfg.itemsCountY > this.options.len()) {
-      let total = max(this.options.len(), this.minAmountButtons)
+    if (cfg.itemsCountX * cfg.itemsCountY > this.getItemsCount()) {
+      let total = max(this.getItemsCount(), this.minAmountButtons)
       local columns = min(stdMath.calc_golden_ratio_columns(total), cfg.itemsCountX)
       local rows = ceil(total.tofloat() / columns).tointeger()
       if (rows > cfg.itemsCountY) {
@@ -102,54 +145,72 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
       cfg.itemsCountX = columns
       cfg.itemsCountY = rows
     }
-
     adjustWindowSizeByConfig(this.scene.findObject("wnd_frame"), listObj, cfg)
+
     this.itemsPerPage = cfg.itemsCountX * cfg.itemsCountY
   }
 
-  function fillPage() {
-    let view = {
-      avatars = []
-    }
+  function getContentBlk(imageType, start, end) {
+    let listData = this.getListItems(imageType)
 
-    let haveCustomTooltip = this.getTooltipObjFunc() != null
-    let start = this.currentPage * this.itemsPerPage
-    let end = min((this.currentPage + 1) * this.itemsPerPage, this.options.len()) - 1
-    let selIdx = (this.value >= start && this.value <= end) ? (this.value - start) : -1
-    for (local i = start; i <= end; i++) {
-      let item = this.options[i]
-      let avatar = {
-        id          = i
-        avatarImage = item?.image
-        enabled     = item?.enabled
-        haveCustomTooltip = haveCustomTooltip
-        tooltipId   = haveCustomTooltip ? null : getTblValue("tooltipId", item)
-        unseenIcon = item?.seenListId && bhvUnseen.makeConfigStr(item?.seenListId, item?.seenEntity)
-        hasGjnIcon = item?.marketplaceItemdefId != null && !item?.enabled
+    if (imageType == "pilotIcon") {
+      let avatars = []
+      for (local i = start; i <= end; i++) {
+        let item = listData[i]
+        let avatar = {
+          id          = i
+          avatarImage = item?.image
+          enabled     = item?.enabled
+          haveCustomTooltip = false
+          tooltipId   = item?.tooltipId
+          unseenIcon = item?.seenListId && bhvUnseen.makeConfigStr(item?.seenListId, item?.seenEntity)
+          hasGjnIcon = item?.marketplaceItemdefId != null && !item?.enabled
+        }
+        avatars.append(avatar)
       }
-      view.avatars.append(avatar)
+      return handyman.renderCached("%gui/profile/avatars.tpl", { avatars })
     }
+    else {
+      let avatarFrames = []
+      for (local i = start; i <= end; i++) {
+        let item = listData[i]
+        let frame = {
+          id = i
+          frameImage = item.image
+          tooltip = item.tooltip
+        }
+        avatarFrames.append(frame)
+      }
+      return handyman.renderCached("%gui/profile/avatarFrames.tpl", { avatarFrames })
+    }
+  }
+
+  function fillPage(listId = null) {
+    let selectedIndex = this.getSelectedIndex(listId)
+    if (this.getCurrentPage(listId) == -1)
+      this.setCurrentPage(max(0, (selectedIndex / this.itemsPerPage).tointeger()), listId)
+    let listData = this.getListItems(listId)
+
+    let start = this.getCurrentPage(listId) * this.itemsPerPage
+    let end = min((this.getCurrentPage(listId) + 1) * this.itemsPerPage, listData.len()) - 1
+    let selIdx = (selectedIndex >= start && selectedIndex <= end) ? (selectedIndex - start) : -1
 
     this.isPageFill = true
-    let blk = handyman.renderCached("%gui/avatars.tpl", view)
-    this.guiScene.replaceContentFromText(this.contentObj, blk, blk.len(), this)
-    this.updatePaginator()
-
-    this.contentObj.setValue(selIdx)
-    this.valueInited = true
+    let blk = this.getContentBlk(listId ?? this.currentListId, start, end)
+    let contentObj = this.getContentObj(listId)
+    this.guiScene.replaceContentFromText(contentObj, blk, blk.len(), this)
+    contentObj.setValue(selIdx)
     this.isPageFill = false
-
-    this.updateButtons()
   }
 
   function updatePaginator() {
     let paginatorObj = this.scene.findObject("paginator_place")
-    generatePaginator(paginatorObj, this, this.currentPage, (this.options.len() - 1) / this.itemsPerPage)
-
-    let prevUnseen = this.currentPage ? this.getSeenConfig(0, this.currentPage * this.itemsPerPage - 1) : null
-    let nextFirstIdx = (this.currentPage + 1) * this.itemsPerPage
-    let nextUnseen = nextFirstIdx >= this.options.len() ? null
-      : this.getSeenConfig(nextFirstIdx, this.options.len() - 1)
+    let itemsCount = this.getItemsCount()
+    generatePaginator(paginatorObj, this, this.getCurrentPage(), (itemsCount - 1) / this.itemsPerPage)
+    let prevUnseen = this.getCurrentPage() ? this.getSeenConfig(0, this.getCurrentPage() * this.itemsPerPage - 1) : null
+    let nextFirstIdx = (this.getCurrentPage() + 1) * this.itemsPerPage
+    let nextUnseen = nextFirstIdx >= itemsCount ? null
+      : this.getSeenConfig(nextFirstIdx, itemsCount - 1)
     paginator_set_unseen(paginatorObj,
       prevUnseen && bhvUnseen.makeConfigStr(prevUnseen.listId, prevUnseen.entities),
       nextUnseen && bhvUnseen.makeConfigStr(nextUnseen.listId, nextUnseen.entities))
@@ -157,19 +218,20 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function goToPage(obj) {
     this.markCurPageSeen()
-    this.currentPage = obj.to_page.tointeger()
+    this.setCurrentPage(obj.to_page.tointeger())
     this.fillPage()
+    this.updatePaginator()
+    this.updateButtons()
   }
 
   function chooseImage(idx) {
-    this.choosenValue = idx
-    this.goBack()
+    this.applyFunc.call(this.owner, this.currentListId, this.getListItems()[idx])
   }
 
   function onImageChoose(_obj) {
     let selIdx = this.getSelIconIdx()
-    this.value = selIdx
-    if (!(this.options?[selIdx].enabled ?? false))
+    this.setSelectedIndex(selIdx)
+    if (!(this.getListItems()?[selIdx].enabled ?? false))
       return
 
     this.chooseImage(selIdx)
@@ -181,7 +243,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateButtons()
 
-    let item = this.options?[this.getSelIconIdx()]
+    let item = this.getListItems()?[this.getSelIconIdx()]
 
     if (item?.seenListId)
       seenList.get(item.seenListId).markSeen(item?.seenEntity)
@@ -189,7 +251,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onDblClick() {
     let selIdx = this.getSelIconIdx()
-    let option = this.options?[selIdx]
+    let option = this.getListItems()?[selIdx]
 
     if (!option)
       return
@@ -232,14 +294,14 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     if (idx == -1)
       return
 
-    let option = this.options[idx]
+    let option = this.getListItems()[idx]
     toggleUnlockFav(option.unlockId)
     this.updateButtons()
   }
 
   function onBuy() {
     let idx = this.getSelIconIdx()
-    let unlockId = this.options?[idx].unlockId
+    let unlockId = this.getListItems()?[idx].unlockId
     if (!unlockId)
       return
 
@@ -266,7 +328,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     if (selIdx < 0)
       return
 
-    let option = this.options?[selIdx]
+    let option = this.getListItems()?[selIdx]
 
     if ((option?.enabled ?? false) || option?.marketplaceItemdefId == null) {
       this.chooseImage(selIdx)
@@ -289,14 +351,14 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getSelIconIdx() {
-    if (!checkObj(this.contentObj))
+    if (!checkObj(this.getContentObj()))
       return -1
-    let idx = this.contentObj.getValue()
-    return idx < 0 ? idx : idx + this.currentPage * this.itemsPerPage
+    let idx = this.getContentObj().getValue()
+    return idx < 0 ? idx : idx + this.getCurrentPage() * this.itemsPerPage
   }
 
   function updateButtons() {
-    let option = getTblValue(this.getSelIconIdx(), this.options)
+    let option = this.getListItems()?[this.getSelIconIdx()]
     if (option == null) {
       showObjById("btn_buy", false, this.scene)
       showObjById("btn_select", false, this.scene)
@@ -331,6 +393,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (option?.enabled) {
       btn.setValue(loc("mainmenu/btnSelect"))
+      btn.show(showConsoleButtons.value)
       return
     }
 
@@ -342,34 +405,9 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
       btn.setValue(loc("msgbox/btn_find_on_marketplace"))
   }
 
-  function afterModalDestroy() {
-    if (!this.applyFunc || this.choosenValue == null)
-      return
-
-    if (this.owner)
-      this.applyFunc.call(this.owner, this.options[this.choosenValue])
-    else
-      this.applyFunc(this.options[this.choosenValue])
-  }
-
-  function getTooltipObjFunc() {
-    return getTblValue("tooltipObjFunc", this.config)
-  }
-
-  function onImageTooltipOpen(obj) {
-    let id = getTooltipObjId(obj)
-    let func = this.getTooltipObjFunc()
-    if (!id || !func)
-      return
-
-    let res = func(obj, id.tointeger())
-    if (!res)
-      obj["class"] = "empty"
-  }
-
   function goBack() {
     this.markCurPageSeen()
-    base.goBack()
+    this.scene.findObject("wnd_frame").show(false)
   }
 
   function getSeenConfig(start, end) {
@@ -378,7 +416,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
       entities = []
     }
     for (local i = end; i >= start; i--) {
-      let item = this.options[i]
+      let item = this.getListItems()[i]
       if (!item?.seenListId || !item?.seenEntity)
         continue
 
@@ -389,9 +427,52 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function markCurPageSeen() {
-    let seenConfig = this.getSeenConfig(this.currentPage * this.itemsPerPage,
-      min((this.currentPage + 1) * this.itemsPerPage, this.options.len()) - 1)
+    let seenConfig = this.getSeenConfig(this.getCurrentPage() * this.itemsPerPage,
+      min((this.getCurrentPage() + 1) * this.itemsPerPage, this.getItemsCount()) - 1)
     if (seenConfig)
       seenList.get(seenConfig.listId).markSeen(seenConfig.entities)
   }
+
+  function fillMenu() {
+    let tabs = menuItems.map(@(v, idx) {
+      id = v.id
+      tabName = loc(v.loc)
+      navImagesText = ::get_navigation_images_text(idx, menuItems.len())
+    })
+
+    let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", { tabs })
+
+    let listObj = this.scene.findObject("image_types")
+    this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
+    listObj.setValue(0)
+  }
+
+  function switchImagesList(index) {
+    this.currentListId = menuItems[index].id
+    let listsNest = this.scene.findObject("listsNest")
+    menuItems.each(function(v, idx) {
+      let list = listsNest.findObject(v.listId)
+      list.show(idx == index)
+    })
+
+    this.updatePaginator()
+    this.updateButtons()
+  }
+
+  function onImageTypeSelect(obj) {
+    let index = obj.getValue()
+    if (index < 0 || index > menuItems.len() - 1)
+      return
+    this.switchImagesList(index)
+  }
+
+  getContentObj = @(imageType = null) this.currentListValues[imageType ?? this.currentListId].contentObj
+  getListItems = @(imageType = null) this.currentListValues[imageType ?? this.currentListId].listData
+  getItemsCount = @(imageType = null) this.getListItems(imageType).len()
+
+  getCurrentPage = @(imageType = null) this.currentListValues[imageType ?? this.currentListId].currentPage
+  setCurrentPage = @(value, imageType = null) this.currentListValues[imageType ?? this.currentListId].currentPage = value
+
+  getSelectedIndex = @(imageType = null) this.currentListValues[imageType ?? this.currentListId].currentIndex
+  setSelectedIndex = @(value, imageType = null) this.currentListValues[imageType ?? this.currentListId].currentIndex = value
 }

@@ -18,7 +18,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { isEqual } = u
 let { EPLX_PS4_FRIENDS, contactsPlayers, contactsByGroups, getContactByName
 } = require("%scripts/contacts/contactsManager.nut")
-let { requestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
+let { requestUserInfoData, getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { updateContactPresence } = require("%scripts/contacts/contactPresence.nut")
@@ -230,6 +230,12 @@ foreach (fn in [
     title
     wtName = contact.steamName == null || contact.name == "" ? ""
       : loc("war_thunder_nickname", { name = getPlayerName(contact.name) })
+  }
+
+  let userInfo = getUserInfo(contact.uid)
+  if (userInfo != null && userInfo.frame != "") {
+    view.hasAvatarFrame <- true
+    view.frame <- userInfo.frame
   }
 
   let squadStatus = g_squad_manager.getPlayerStatusInMySquad(contact.uid)

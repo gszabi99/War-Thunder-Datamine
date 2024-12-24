@@ -93,6 +93,8 @@ function _convertServerResponse(response) {
       clanTag =  userInfo?.clanTag ?? ""
       clanName =  userInfo?.clanName ?? ""
       shcType = userInfo?.shcType ?? ""
+      background = userInfo?.background ?? ""
+      frame = userInfo?.frame ?? ""
       showcase = isDataBlock(userInfo?.showcase)
         ? convertBlk(userInfo.showcase)
         : {}
@@ -172,7 +174,7 @@ function requestUserInfoData(userId) {
   clearTimer(updateUsersInfo)
 
   let cachedInfo = usersInfo?[userId]
-  if (userId not in usersForRequest && isUserNeedUpdateInfo(cachedInfo))
+  if ((userId not in usersForRequest) && isUserNeedUpdateInfo(cachedInfo))
     usersForRequest[userId] <- true
 
   if (usersForRequest.len() == 0)
@@ -181,16 +183,35 @@ function requestUserInfoData(userId) {
   setTimeout(0.3, updateUsersInfo)
 }
 
+function forceRequestUserInfoData(userId) {
+  let userInfo = usersInfo?[userId]
+  if (userInfo != null)
+    userInfo.updatingLastTime -= MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC
+
+  requestUserInfoData(userId)
+}
+
 function getUserInfo(uid) {
   let userInfo = usersInfo?[uid]
   if (isUserNeedUpdateInfo(userInfo))
-    return null
+    requestUserInfoData(uid)
+
   return userInfo
+}
+
+function setUserInfoParams(uid, params) {
+  let userInfo = usersInfo?[uid]
+  if (userInfo == null)
+    return
+
+  userInfo.__update(params)
+  broadcastEvent(userInfoEventName.UPDATED, { usersInfo = { [uid] = userInfo } })
 }
 
 return {
   requestUserInfoData
+  forceRequestUserInfoData
   requestUsersInfo
   getUserInfo
-  userInfoEventName
+  setUserInfoParams
 }

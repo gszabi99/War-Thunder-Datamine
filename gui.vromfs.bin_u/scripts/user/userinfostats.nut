@@ -22,6 +22,7 @@ let { userName } = require("%scripts/user/profileStates.nut")
 let { ranksPersist, expPerRank, getRankByExp, getPrestigeByRank
 } = require("%scripts/ranks.nut")
 let { isUnitEliteByStatus } = require("%scripts/unit/unitStatus.nut")
+let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
 
 let statsFm = ["fighter", "bomber", "assault"]
 let statsTanks = ["tank", "tank_destroyer", "heavy_tank", "SPAA"]
@@ -474,7 +475,7 @@ function getProfileInfo() {
   currentUserProfile.clanTag <- isInClan ? clan_get_my_clan_tag() : ""
   currentUserProfile.clanName <- isInClan  ? clan_get_my_clan_name() : ""
   currentUserProfile.clanType <- isInClan  ? clan_get_my_clan_type() : ""
-  ::clanUserTable[userName.value] <- currentUserProfile.clanTag
+  clanUserTable.mutate(@(v) v[userName.get()] <- currentUserProfile.clanTag)
 
   currentUserProfile.exp <- info.exp
   currentUserProfile.free_exp <- shop_get_free_exp()

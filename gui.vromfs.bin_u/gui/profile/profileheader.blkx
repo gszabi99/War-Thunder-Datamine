@@ -8,14 +8,12 @@
       "id": "btn_profile_icon",
       "class": "profileImg",
       "_on_click": "onChangePilotIcon",
-      "div": {
+      "avatar": {
         "id": "profile-icon",
+        "position": "absolute",
         "size": "pw,ph",
         "behavior": "bhvAvatar",
         "isFull": "yes",
-        "border": "yes",
-        "border-color": "#FFFFFF",
-        "border-radius": "2@sf/@pf",
         "css-hier-invalidate": "yes",
         "profileEditBtnShadow": {
           "type": "big",
@@ -26,6 +24,10 @@
           "pos": "pw - w - 5@sf/@pf, 5@sf/@pf",
           "btnName": "",
           "_on_click": "onChangePilotIcon"
+        },
+        "avatarFrame": {
+          "id": "avatarFrame",
+          "display": "hide"
         }
       },
       "ButtonImg": {},
@@ -105,7 +107,6 @@
                 "css-hier-invalidate": "yes",
                 "profileEditBtn": {
                   "pos": "pw, (ph - h)/2",
-                  "btnName": "",
                   "_on_click": "openChooseTitleWnd"
                 },
                 "unseenIcon": {

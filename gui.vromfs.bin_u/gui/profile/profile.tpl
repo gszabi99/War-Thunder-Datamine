@@ -156,19 +156,47 @@ root {
       css-hier-invalidate:t='yes'
 
       tdiv {
-        id:t = 'profile_header'
-        flow:t="vertical"
-        position:t='relative'
-        pos:t='(pw-w)/2, 0'
-        padding:t='1@profileHeaderPadding, 1@profileHeaderTopPadding, 1@profileHeaderPadding, 1@profileHeaderBottomPadding'
+        width:t='pw'
         css-hier-invalidate:t='yes'
+        tdiv {
+          id:t = 'profile_header'
+          flow:t="vertical"
+          position:t='relative'
+          pos:t='(pw-w)/2, 0'
+          padding:t='1@profileHeaderPadding, 1@profileHeaderTopPadding, 1@profileHeaderPadding, 1@profileHeaderBottomPadding'
+          css-hier-invalidate:t='yes'
+          frameSeparator {
+            position:t='root'
+            top:t='1@maxAccountHeaderHeight'
+          }
 
-        frameSeparator {
-          position:t='root'
-          top:t='1@maxAccountHeaderHeight'
+          include "%gui/profile/profileHeader.blk"
         }
 
-        include "%gui/profile/profileHeader.blk"
+        Button_text {
+          position:t='absolute'
+          pos:t='pw - w - 5@sf/@pf, 0.5ph-0.5h'
+          flow:t='horizontal'
+          visualStyle:t='noFrame'
+          isColoredImg:t='yes'
+          btnName:t='R3'
+          on_click:t='onHeaderBackgroundListSwitch'
+          display:t='hide'
+          showInEditMode:t='yes'
+          ButtonImg {}
+          text {
+            position:t='relative'
+            top:t='(ph-h)/2'
+            text:t='#showcase/changeBg'
+          }
+          img {
+            position:t='relative'
+            background-image:t='!#ui/images/profile/ic_change.svg'
+            size:t='1@cIco, 1@cIco'
+            margin-left:t='1@buttonTextPadding'
+            background-svg-size:t='@cIco, @cIco'
+          }
+        }
       }
 
       profilePage {
@@ -202,6 +230,7 @@ root {
             size:t='1@accountHeaderWidth, <<scale>>*((sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf)'
             background-image:t='!ui/images/profile/widget_bg'
             background-color:t='#FFFFFF'
+            skip-navigation:t='yes'
             on_click:t='onProfileEditBtn'
           }
 
@@ -258,6 +287,68 @@ root {
             css-hier-invalidate:t='yes'
             width:t='@accountHeaderWidth - 30@sf/@pf'
             padding-top:t='25@sf/@pf'
+          }
+
+          tdiv {
+            id:t='background_edit'
+            width:t='1@sliderWidth + 1@blockInterval + 1@dmInfoTextWidth + 2@tablePad + 2@framePadding'
+            pos:t='pw-w-4@blockInterval, 70@sf/@pf'
+            position:t='absolute'
+            flow:t='vertical'
+            css-hier-invalidate:t='yes'
+            display:t='hide'
+
+            frame {
+              id:t='wnd_frame'
+              position:t='absolute'
+              width:t='pw'
+              class:t='wnd'
+              type:t='big'
+              invisibleSelection:t='yes'
+
+              frame_header {
+                activeText {
+                  caption:t='yes'
+                  text:t='#showcase/choose_header_screen'
+                }
+                Button_close {
+                  on_click:t='onHeaderBackgroundListHide'
+                }
+              }
+
+              EditBox {
+                id:t='filter_header'
+                noMargin:t='yes'
+                width:t='pw'
+                on_change_value:t='applyFilter'
+                on_cancel_edit:t='onFilterCancel'
+                text:t=''
+                edit-hint:t='#contacts/search_placeholder'
+              }
+
+              VerticalListBox {
+                id:t='header_backgrounds_list'
+                navigator:t='posNavigator'
+                width:t='pw'
+                max-height:t='sh - 1@maxAccountHeaderHeight - 70@sf/@pf - 1@frameFooterHeight - 1@frameHeaderHeight - 1@buttonHeight - 8@blockInterval'
+                overflow-y:t='auto'
+                on_select:t='onHeaderBackgroundSelect'
+                clearOnFocusLost:t='no'
+                css-hier-invalidate:t='yes'
+                navigatorShortcuts:t='yes'
+                scrollbarShortcuts:t='yes'
+              }
+            }
+          }
+
+          tdiv {
+            id:t='chooseImage'
+            position:t='root'
+            pos:t='(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf'
+            width:t='0.75@rw'
+            max-width:t='0.75@maxProfileFrameWidth'
+            height:t='sh - 1@bh - 1@maxAccountHeaderHeight - 2*@buttonHeight - 4*@sf/@pf'
+            display:t='hide'
           }
         }
 
@@ -758,7 +849,7 @@ root {
         Button_text {
           id:t = 'btn_applyEditPage'
           text:t = '#msgbox/btn_apply'
-          btnName:t='RB'
+          btnName:t='LT'
           on_click:t = 'onProfileEditApplyBtn'
           ButtonImg {}
         }
@@ -766,7 +857,7 @@ root {
         Button_text {
           id:t = 'btn_cancelEditPage'
           text:t = '#msgbox/btn_cancel'
-          btnName:t='LB'
+          btnName:t='L3'
           on_click:t = 'onProfileEditCancelBtn'
           ButtonImg {}
         }

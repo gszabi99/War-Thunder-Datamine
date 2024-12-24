@@ -49,7 +49,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
+let { getContactByName, clanUserTable } = require("%scripts/contacts/contactsManager.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { getLastGamercardScene } = require("%scripts/gamercard.nut")
 let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
@@ -72,8 +72,6 @@ enum chatErrorName {
 ::last_chat_scene_show <- false
 
 ::last_send_messages <- []
-
-::clanUserTable <- {}
 
 let defaultChatRooms = ["general"]
 ::langs_list <- ["en", "ru"] //first is default
@@ -104,8 +102,6 @@ let availableCmdList = ["help", //local command to view help
   [voiceChatStats.talking] = "voip_talking",
   [voiceChatStats.muted] = "voip_banned" //picture existed, was not renamed
 }
-
-registerPersistentData("MenuChatGlobals", getroottable(), ["clanUserTable"]) //!!FIX ME: must be in contacts
 
 let sortChatUsers = @(a, b) a.name <=> b.name
 let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
@@ -625,7 +621,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
         foreach (idx, user in users) {
           let fullName = ::g_contacts.getPlayerFullName(
             getPlayerName(user.name),
-            ::clanUserTable?[user.name] ?? ""
+            clanUserTable.get()?[user.name] ?? ""
           )
           listObj.findObject($"user_name_{idx}").setValue(fullName)
         }
@@ -1481,7 +1477,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
       if (db?.userId && db.userId != "0")
         userContact = ::getContact(db.userId, db.sender.nick, clanTag, true)
       else if (db.sender.nick != userName.value)
-        ::clanUserTable[db.sender.nick] <- clanTag
+        clanUserTable.mutate(@(v) v[db.sender.nick] <- clanTag)
       roomId = db?.sender.name
       privateMsg = (db.type == "chat") || !this.roomRegexp.match(roomId)
       let isSystemMessage = g_chat.isSystemUserName(user)

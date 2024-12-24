@@ -757,6 +757,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   function getSceneTplView() {
     return {
       chestName = this.chestItem.getName(false)
+      hasUserstatRewards = this.chestItem?.itemDef.tags.additionalRewardUnlock
     }.__update(this.styleConfig)
   }
 

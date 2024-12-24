@@ -18,6 +18,7 @@ let { measureType } = require("%scripts/measureType.nut")
 let defaultShowcase = "favorite_mode"
 let defaultShowcaseType = "air_arcade"
 let diffNames = ["arcade", "historical", "simulation"]
+let gamemodesNoAiStats = ["tank_arcade", "tank_realistic", "tank_simulation", "test_ship_arcade", "test_ship_realistic"]
 
 function getStatsValue(params, value, scorePeriod) {
   let gameType = params?.showcaseType ?? defaultShowcaseType
@@ -123,6 +124,7 @@ let visibleValues = {
     icon = "lb_average_script_kills"
     locId = "multiplayer/lb_kills_ai"
     valueId = "kills_ai"
+    canShow = @(params) !gamemodesNoAiStats.contains(params.showcaseType)
   },
   totalScore = {
     type = "stat"
@@ -142,6 +144,7 @@ let visibleValues = {
     icon = "lb_average_script_kills_by_spawn"
     locId = "stats/average_script_kills_by_spawn"
     valueId = "average_script_kills_by_spawn"
+    canShow = @(params) !gamemodesNoAiStats.contains(params.showcaseType)
     getValue = @(params, val) round_by_value(getStatsValue(params, val, params.scorePeriod), 0.1)
   },
   average_score = {
@@ -303,8 +306,10 @@ let pageTypes = [
     getSaveData = function(terseInfo) {
       let data = DataBlock()
       data.showcaseType <- "favorite_unit"
-      if ((terseInfo.showcase?.unit ?? "") != "")
+      if ((terseInfo.showcase?.unit ?? "") != "") {
         data.favoriteUnit <- terseInfo.showcase.unit
+        data.favoriteUnitDifficulty <- terseInfo.showcase.difficulty ?? "arcade"
+      }
       return data
     }
     addAdditionalParams = function (params) {
@@ -313,6 +318,7 @@ let pageTypes = [
         params.unit <- unit
         params.diff = findUnitBestDiff(unit.name, visibleValues["unit_respawns"], params)
         params.unitStats <- findUnitStats(params?.stats.userstat, unit.name, params.diff)
+        params.terseInfo.showcase.difficulty <- params.diff
       }
     }
   },
@@ -412,6 +418,9 @@ function getShowcaseViewData(playerStats, terseInfo, viewParams = null) {
     foreach (valName in line) {
       let value = visibleValues[valName]
       if (value.type == "stat") {
+        if (value?.canShow && !value.canShow(params))
+          continue
+
         let statData = {
           icon = $"!#ui/gameuiskin#{value.icon}.svg",
           statName = value?.getText(params, value) ?? loc(value.locId),

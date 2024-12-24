@@ -23,8 +23,8 @@ let { isNamePassing, checkName } = require("%scripts/dirtyWordsFilter.nut")
 let { convertBlk, copyParamsToTable, eachBlock } = require("%sqstd/datablock.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { EPLX_CLAN, contactsPlayers, contactsByGroups, addContact, getContactByName
-} = require("%scripts/contacts/contactsManager.nut")
+let { EPLX_CLAN, contactsPlayers, contactsByGroups, addContact, getContactByName,
+  clanUserTable } = require("%scripts/contacts/contactsManager.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
@@ -735,21 +735,26 @@ function clearClanTagForRemovedMembers(prevUids, currUids) {
 function handleNewMyClanData() {
   ::g_clans.parseSeenCandidates()
   contactsByGroups[EPLX_CLAN] <- {}
-  if ("members" in ::my_clan_info) {
-    foreach (_mem, block in ::my_clan_info.members) {
-      if (!(block.uid in contactsPlayers))
-        ::getContact(block.uid, block.nick)
+  if ("members" not in ::my_clan_info)
+    return
 
-      let contact = contactsPlayers[block.uid]
-      if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
-        contact.presence = ::getMyClanMemberPresence(block.nick)
+  let res = {}
+  foreach (_mem, block in ::my_clan_info.members) {
+    if (!(block.uid in contactsPlayers))
+      ::getContact(block.uid, block.nick)
 
-      if (userIdStr.value != block.uid)
-        addContact(contact, EPLX_CLAN)
+    let contact = contactsPlayers[block.uid]
+    if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
+      contact.presence = ::getMyClanMemberPresence(block.nick)
 
-      ::clanUserTable[block.nick] <- ::my_clan_info.tag
-    }
+    if (userIdStr.value != block.uid)
+      addContact(contact, EPLX_CLAN)
+
+    res[block.nick] <- ::my_clan_info.tag
   }
+
+  if (res.len() > 0)
+    clanUserTable.mutate(@(v) v.__update(res))
 }
 
 ::requestMyClanData <- function requestMyClanData(forceUpdate = false) {

@@ -76,6 +76,7 @@ let ilsSetting = Computed(function() {
     isVDO = false
     isKai24p = false
     isF20 = false
+    isChinaLang = false
     isMetric = false
     isF15e = false
     isF117 = false

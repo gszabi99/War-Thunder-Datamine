@@ -152,13 +152,13 @@ root {
       tdiv {
         id:t='chest_preview'
         size:t='0.7ph, 0.7ph'
-        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h + 60@sf/@pf'
+        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h<<^hasUserstatRewards>> + 60@sf/@pf<</hasUserstatRewards>>'
         position:t='absolute'
       }
 
       tdiv {
         id:t='prizes_list'
-        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h + 60@sf/@pf'
+        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h<<^hasUserstatRewards>> + 60@sf/@pf<</hasUserstatRewards>>'
         position:t='absolute'
         display:t='hide'
       }
@@ -166,7 +166,7 @@ root {
       tdiv {
         id:t='chest_out_anim'
         size:t='0.7ph, 0.7ph'
-        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h + 60@sf/@pf'
+        pos:t='0.5pw - 0.5w, 0.5ph - 0.5h<<^hasUserstatRewards>> + 60@sf/@pf<</hasUserstatRewards>>'
         position:t='absolute'
       }
     }

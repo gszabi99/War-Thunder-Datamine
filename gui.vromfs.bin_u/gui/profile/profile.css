@@ -20,7 +20,7 @@
 @const profileSeparatorExtraWidth: 128@sf/@pf;
 @const maxProfileFrameWidth: 2560@sf/@pf - 2@framePadding;
 @const beyondScrollbarSize: 10@sf/@pf;
-@const showcaseBoxBorder: #886f767d;
+@const showcaseBoxBorder: #1B161719;
 @const showcaseGreyText: #7C8389;
 @const showcaseBlue: #FF17CBFC;
 @const countriesSmallListHeight:50@sf/@pf;
@@ -378,7 +378,7 @@ profileEditBtn {
   background-image:"!#ui/images/profile/ic_change.svg";
   background-color:#FFFFFF;
   display:hide;
-  interactive:yes;
+  interactive:no;
 }
 
 profileEditBtn[type=big] {
@@ -388,10 +388,6 @@ profileEditBtn[type=big] {
 
 [isEditModeEnabled=yes] profileEditBtn {
   display:show;
-}
-
-[show_console_buttons=yes] [btnName=''] profileEditBtn {
-  interactive:no;
 }
 
 profileEditBtnShadow {
@@ -430,4 +426,50 @@ Button_text[isProfileTitleBtn=yes] {
 
 ComboBox[isProfileSmallSize=yes] {
   min-height:25@sf/@pf;
+}
+
+avatarImageTypeItem:hover,
+headerBackgroundItem:hover {
+  background-color: @listboxHoverOptionColor;
+}
+
+avatarImageTypeItem[selected=yes],
+headerBackgroundItem[selected=yes] {
+  background-color: @listboxSelOptionColor;
+  color: @white;
+}
+
+avatarImageTypeItem[selected=yes] > textarea,
+headerBackgroundItem[selected=yes] > textarea {
+  color: @white;
+}
+
+headerBackgroundItem[disabled=yes] > textarea {
+  color: @disabledTextColor;
+}
+
+profileHeaderBackground {
+  behaviour: basicTransparency;
+  transp-base: 0;
+  transp-end: 255;
+  transp-func: squareInv;
+  _transp-timer: 1;
+}
+
+profileHeaderBackground[headerAnim=hide] {
+  transp-time: -250;
+  _transp-timer: 1;
+}
+
+profileHeaderBackground[headerAnim=show] {
+  transp-time: 250;
+  _transp-timer: 0;
+}
+
+avatar > avatarFrame {
+  size: 1.2 * pw, 1.2 * ph;
+  pos: (pw-w)/2, (ph-h)/2;
+  position: absolute;
+  background-color: @white;
+  background-scale: aspect-ratio;
 }

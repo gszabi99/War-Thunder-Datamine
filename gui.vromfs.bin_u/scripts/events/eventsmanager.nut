@@ -492,6 +492,10 @@ let _leaderboards = {
   }
 
   function getLbDataFromBlk(blk, requestData) {
+    let { success = true } = blk?.result
+    if (!success)
+      return []
+
     let lbRows = this.lbBlkToArray(blk)
     if (this.isClanLbRequest(requestData))
       foreach (lbRow in lbRows)
@@ -510,6 +514,10 @@ let _leaderboards = {
   }
 
   function getSelfRowDataFromBlk(blk, requestData) {
+    let { success = true } = blk?.result
+    if (!success)
+      return []
+
     let res = this.lbBlkToArray(blk)
     if (this.isClanLbRequest(requestData))
       foreach (lbRow in res)

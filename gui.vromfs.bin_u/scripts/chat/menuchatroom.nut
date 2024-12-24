@@ -13,6 +13,7 @@ let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
+let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"
@@ -117,10 +118,8 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
 
   //from can be as string - Player nick, and as table - player contact.
   //after getting type, and acting accordingly, name must be string and mean name of player
-  if (type(from) != "instance") {
-    if (from in ::clanUserTable)
-      clanTag = ::clanUserTable[from]
-  }
+  if (type(from) != "instance")
+    clanTag = clanUserTable.get()?[from] ?? clanTag
   else {
     uid = from.uid
     clanTag = from.clanTag

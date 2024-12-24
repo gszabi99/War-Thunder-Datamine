@@ -8,7 +8,7 @@ let { getXboxChatEnableStatus, isChatEnabled, isCrossNetworkMessageAllowed
 let { isEmpty, isInteger } = require("%sqStdLibs/helpers/u.nut")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let psnSocial = require("sony.social")
-let { EPLX_PS4_FRIENDS, contactsByGroups, blockedMeUids, cacheContactByName
+let { EPLX_PS4_FRIENDS, contactsByGroups, blockedMeUids, cacheContactByName, clanUserTable
 } = require("%scripts/contacts/contactsManager.nut")
 let { replace, utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -59,8 +59,8 @@ class Contact {
     let newName = contactData?["name"] ?? ""
     if (newName.len()
         && isEmpty(contactData?.clanTag)
-        && ::clanUserTable?[newName])
-      contactData.clanTag <- ::clanUserTable[newName]
+        && clanUserTable.get()?[newName])
+      contactData.clanTag <- clanUserTable.get()[newName]
 
     this.update(contactData)
 
@@ -108,8 +108,10 @@ class Contact {
   function refreshClanTagsTable() {
     //clanTagsTable used in lists where not know userId, so not exist contact.
     //but require to correct work with contacts too
-    if (this.name.len())
-      ::clanUserTable[this.name] <- this.clanTag
+    if (!this.name.len())
+      return
+    let { clanTag, name } = this
+    clanUserTable.mutate(@(v) v[name] <- clanTag)
   }
 
   function getPresenceText() {

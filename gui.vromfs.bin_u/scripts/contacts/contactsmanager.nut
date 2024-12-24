@@ -39,6 +39,7 @@ let psnBlockedUids = hardPersistWatched("psnBlockedUids", {})
 let xboxApprovedUids = hardPersistWatched("xboxApprovedUids", {})
 let xboxBlockedUids = hardPersistWatched("xboxBlockedUids", {})
 
+let clanUserTable = mkWatched(persist, "clanUserTable", {})
 let contactsGroups = persist("contactsGroups", @() [])
 let contactsByName = persist("contactsByName", @() {})
 let contactsPlayers = persist("contactsPlayers", @() {})
@@ -341,4 +342,5 @@ return {
   steamContactsGroup
   contactsGroupWithoutMaxCount
   getContactsGroupUidList
+  clanUserTable
 }
