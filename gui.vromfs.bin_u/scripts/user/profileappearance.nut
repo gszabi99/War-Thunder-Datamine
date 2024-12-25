@@ -79,7 +79,7 @@ function invalidateCache(_) {
 
 addListenersWithoutEnv({
   ProfileUpdated = invalidateCache,
-  GameLocalizationChanged = @() profileHeaderBackgrounds = null
+  GameLocalizationChanged = @(_) profileHeaderBackgrounds = null
 }, CONFIG_VALIDATION)
 
 return {
