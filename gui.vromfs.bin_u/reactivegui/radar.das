@@ -718,6 +718,9 @@ def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   let offsets = b_scope_square_labels(ctx, data, position, size, data.fontSize)
   let sz = size - float2(offsets.x, offsets.y + offsets.z)
   let pos = data.centerRadar ? (position + size * 0.5 - sz * 0.5) : (position + float2(offsets.x, offsets.y))
+
+  ctx |> set_viewport(pos.x, pos.y, pos.x + sz.x, pos.y + sz.y)
+
   if !data.hideBack || data.showScanAzimuth
     b_scope_square_bkg(ctx, data, pos, sz)
   if !data.hideBack
@@ -739,6 +742,9 @@ def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
     b_scope_square_launch_range(ctx, data, pos, sz)
   square_radar_targets(ctx, data, pos, sz)
   b_scope_square_cue(ctx, data, pos, sz)
+
+  ctx |> restore_viewport()
+
   if !data.hideHorAngle
     b_scope_square_inner_labels(ctx, data, pos, sz, data.fontSize)
   if data.hasAviaHorizont

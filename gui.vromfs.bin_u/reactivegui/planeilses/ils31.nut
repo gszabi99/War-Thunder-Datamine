@@ -658,7 +658,7 @@ function selectedTargetAspectAngle(index) {
   const arrowL = 0.66
 
   let target = targets[index]
-  if (!target.isSelected)
+  if (!target.isSelected || !target.isDetected)
     return null
 
   let arrowLength = 100.0 / max(sqrt(target.losHorSpeed * target.losHorSpeed + target.losSpeed * target.losSpeed), 1.0)

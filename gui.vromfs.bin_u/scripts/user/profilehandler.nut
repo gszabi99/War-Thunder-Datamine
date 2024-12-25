@@ -529,22 +529,20 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function onIconChoosen(imageType, data) {
     if (imageType == "pilotIcon") {
-      let value = ::get_option(USEROPT_PILOT).value
-      if (value == data.idx)
-        return
-
       this.fillProfileIcon(data.idx)
-      if (this.isEditModeEnabled)
-        this.editModeTempData.icon <- data.idx
-      else
-        this.saveProfileIcon(data.idx)
-    }
-    else {
-      this.fillProfileAvatarFrame(data)
       if (this.isEditModeEnabled) {
-        this.editModeTempData.avatarFrameId <- data.id
+        this.editModeTempData.icon <- data.idx
+        return
       }
+      let value = ::get_option(USEROPT_PILOT).value
+      if (value != data.idx)
+        this.saveProfileIcon(data.idx)
+      return
     }
+
+    this.fillProfileAvatarFrame(data)
+    if (this.isEditModeEnabled)
+      this.editModeTempData.avatarFrameId <- data.id
   }
 
   function fillProfileIcon(iconIdx) {
@@ -2220,11 +2218,17 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (this.profileHeaderBackground == null)
       this.profileHeaderBackground = getProfileHeaderBackgrounds()
 
-    let items = this.profileHeaderBackground.filter(@(unlock)(filterText == "" || unlock.searchName.contains(filterText)))
+    local items = null
+    if (filterText == "")
+      items = this.profileHeaderBackground
+    else {
+      let searchString = filterText.tolower()
+      items = this.profileHeaderBackground.filter(@(unlock)(unlock.searchName.contains(searchString)))
+    }
+
     let data = handyman.renderCached("%gui/profile/headerBackgroundItems.tpl", { items })
     let listObj = this.scene.findObject("header_backgrounds_list")
     this.guiScene.replaceContentFromText(listObj, data, data.len(), this)
-
     this.updateHeaderBackgroundsListSelection()
   }
 
@@ -2290,12 +2294,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     clearTimer(this.applyFilterTimer)
     let filterText = obj.getValue()
     if (filterText == "") {
-      this.fillHeaderBackgroundsList(filterText)
+      this.fillHeaderBackgroundsList()
       return
     }
 
-    let applyCallback = Callback(@() this.fillHeaderBackgroundsList(), this)
-    this.applyFilterTimer = setTimeout(0.8, @() applyCallback())
+    let applyCallback = Callback(@() this.fillHeaderBackgroundsList(filterText), this)
+    this.applyFilterTimer = setTimeout(0.5, @() applyCallback())
   }
 }
 

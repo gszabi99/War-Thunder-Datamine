@@ -2,6 +2,7 @@ from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
+let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { utf8ToLower} = require("%sqstd/string.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
@@ -70,6 +71,16 @@ function saveProfileAppearance(params, cbSuccess = null, cbError = null) {
   let taskId = char_send_blk("cln_save_pilot_appearance", requestBlk)
   addTask(taskId, {}, successCb, cbError)
 }
+
+function invalidateCache(_) {
+  profileHeaderBackgrounds = null
+  profileAvatarFrames = null
+}
+
+addListenersWithoutEnv({
+  ProfileUpdated = invalidateCache,
+  GameLocalizationChanged = @() profileHeaderBackgrounds = null
+}, CONFIG_VALIDATION)
 
 return {
   getProfileHeaderBackgrounds

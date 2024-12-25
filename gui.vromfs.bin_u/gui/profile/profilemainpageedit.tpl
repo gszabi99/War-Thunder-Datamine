@@ -75,6 +75,7 @@ tdiv {
     font-pixht:t='<<scale>>*27@sf/@pf \ 1'
     color:t='@showcaseGreyText'
     text:t=' '
+    input-transparent:t='yes'
   }
 
   tdiv {

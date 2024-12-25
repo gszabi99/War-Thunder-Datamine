@@ -17,6 +17,7 @@ tdiv {
         background-color:t='@white'
         background-scale:t='aspect-ratio'
         background-image:t='!ui/images/avatar_frames/<<frame>>'
+        background-svg-size:t='1.2 * pw, 1.2 * ph'
       }
       <</hasAvatarFrame>>
     }
