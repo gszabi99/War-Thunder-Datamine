@@ -43,6 +43,10 @@ div {  //header
           accessKey:t='<<accessKey>>'
         <</accessKey>>
       <</onClick>>
+      <<#onDragStart>>
+        on_drag_start:t='<<onDragStart>>'
+        behaviour:t='dragStartListener'
+      <</onDragStart>>
     }
   <</lightBlocks>>
 }

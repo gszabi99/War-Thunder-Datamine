@@ -119,7 +119,7 @@
       "rangeFinder": true,
       "groundClutter": false,
       "angularAccuracy": 0.05,
-      "distanceAccuracy": 10.0
+      "distanceAccuracy": 100.0
     },
     "hprfVelocitySearch": {
       "rangeFinder": false,
@@ -562,15 +562,13 @@
         -20.0,
         60.0
       ],
-      "period": 2.5,
+      "period": 3.0,
       "width": 20.0,
-      "barHeight": 4.0,
-      "barsCount": 16,
+      "barHeight": 1.5,
+      "barsCount": 42,
       "rowMajor": false,
       "isSmoothMajor": true,
-      "barsOneWay": false,
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0
+      "barsOneWay": true
     },
     "irstSearchNarrow": {
       "type": "pyramide",
@@ -584,13 +582,11 @@
       ],
       "period": 1.25,
       "width": 20.0,
-      "barHeight": 3.75,
-      "barsCount": 8,
+      "barHeight": 1.5,
+      "barsCount": 20,
       "rowMajor": false,
       "isSmoothMajor": true,
-      "barsOneWay": false,
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0
+      "barsOneWay": true
     },
     "irstBvrLock": {
       "type": "pyramide",
@@ -607,9 +603,7 @@
       "barHeight": 4.0,
       "barsCount": 1,
       "rowMajor": false,
-      "indicate": true,
-      "rollStabLimit": 90.0,
-      "pitchStabLimit": 60.0
+      "indicate": true
     },
     "irstVerticalLock": {
       "type": "pyramide",
@@ -623,8 +617,8 @@
       ],
       "period": 0.3,
       "width": 15.0,
-      "barHeight": 4.0,
-      "barsCount": 1,
+      "barHeight": 2.0,
+      "barsCount": 2,
       "rowMajor": false,
       "centerElevation": 1.0,
       "indicate": true

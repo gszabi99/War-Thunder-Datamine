@@ -1245,7 +1245,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (avatarFrame == null || image == "")
       return
 
-    avatarFrame["background-image"] = $"!ui/images/avatar_frames/{image}"
+    avatarFrame["background-image"] = $"!ui/images/avatar_frames/{image}.avif"
     avatarFrame.show(true)
   }
 

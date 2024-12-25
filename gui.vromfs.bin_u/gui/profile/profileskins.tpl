@@ -105,7 +105,6 @@ tdiv {
       Button_text {
         id:t = 'btn_SkinPreview'
         text:t='#mainmenu/btnPreview'
-        tooltip:t='#mainmenu/btnPreview'
         btnName:t='L3'
         on_click:t = 'onSkinPreview'
         showButtonImageOnConsole:t='no'

@@ -3321,8 +3321,6 @@ let optionsMap = {
     for (local nc = 0; nc < icons.len(); nc++) {
       let unlockId = icons[nc]
       let unlockItem = getUnlockById(unlockId)
-      let isShown = isUnlockOpened(unlockId, UNLOCKABLE_PILOT) || isUnlockVisible(unlockItem)
-        || (unlockItem?.hideFeature != null && !hasFeature(unlockItem.hideFeature))
       let marketplaceItemdefId = unlockItem?.marketplaceItemdefId
       if (marketplaceItemdefId != null)
         marketplaceItemdefIds.append(marketplaceItemdefId)
@@ -3330,9 +3328,9 @@ let optionsMap = {
         idx = nc
         unlockId
         image = $"#ui/images/avatars/{unlockId}.avif"
-        show = isShown
+        show = isUnlockOpened(unlockId, UNLOCKABLE_PILOT) || isUnlockVisible(unlockItem)
         enabled = isUnlockOpened(unlockId, UNLOCKABLE_PILOT)
-        tooltipId = getTooltipType("UNLOCK").getTooltipId(unlockId, { showProgress = true })
+        tooltipId = getTooltipType("UNLOCK").getTooltipId(unlockId, { showProgress = true, tooltipImageSize = "1@avatarButtonSize, 1@avatarButtonSize" })
         marketplaceItemdefId
       }
       if (item.show && item.enabled) {

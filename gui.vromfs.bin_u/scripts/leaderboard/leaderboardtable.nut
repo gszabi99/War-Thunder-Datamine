@@ -147,7 +147,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCustomSelfStatsTooltip(category, customSelfStats) {
-    if (category.id == "EVENT_SCORE_RATING") {
+    if (category.id == "EVENT_SCORE_RATING" || category.id == "EVENT_SCORE_RATING_X10000") {
       let bestStats = (customSelfStats?["$sessions"] ?? [])
         .filter(@(s) (s?.stats.score_rating ?? 0) > 0)
         .sort(@(a, b) b.stats.score_rating <=> a.stats.score_rating)

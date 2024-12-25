@@ -248,6 +248,7 @@ def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; dat
                          is_thermal : bool)
   var timeToShot = 1.2
   var isInoperable = false
+  let settings = get_tank_sight_settings()
   if !data.isPreviewMode
     if unit == null || unit.weap == null
       return
@@ -260,8 +261,9 @@ def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; dat
       isInoperable = gun.isInoperable
     else
       return
+  elif !settings.gunReadyReloadCountdownVisible
+    timeToShot = 0.
 
-  let settings = get_tank_sight_settings()
   if isInoperable || timeToShot <= 0.
     if !settings.gunReadyMarkVisible
       return

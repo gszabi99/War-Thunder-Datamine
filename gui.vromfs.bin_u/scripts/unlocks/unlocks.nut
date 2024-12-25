@@ -815,6 +815,9 @@ let getEmptyConditionsConfig = @() {
 
   if ("miscMsg" in config) //for misc params from userlog
     res.miscParam <- config.miscMsg
-  return res
 
+  if ("tooltipImageSize" in config)
+    res.tooltipImageSize <- config.tooltipImageSize
+
+  return res
 }

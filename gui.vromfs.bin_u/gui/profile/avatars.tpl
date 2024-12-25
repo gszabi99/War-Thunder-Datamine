@@ -11,7 +11,7 @@ avatarImg {
 
     <<^enabled>>
     tdiv {
-      pos:t='0, ph/2'
+      pos:t='0, ph-h'
       position:t='absolute'
       size:t='pw, ph/2'
       background-svg-size:t='pw, ph/2'

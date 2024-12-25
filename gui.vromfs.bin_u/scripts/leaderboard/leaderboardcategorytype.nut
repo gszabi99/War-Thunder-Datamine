@@ -602,6 +602,16 @@ lbCategoryTypes.__update({
     showEventFilterFunc = @(event) ((event?.leaderboardEventBestStat ?? "") == "score_rating")
   }
 
+  EVENT_SCORE_RATING_X10000 = {
+    lbDataType = lbDataType.FLOAT
+    field = "score_rating_x10000"
+    visualKey = "total_score"
+    headerImage = "total_score"
+    headerTooltip = "personal_elo"
+    isSortDefaultFilter = true
+    showEventFilterFunc = @(event) ((event?.leaderboardEventBestStat ?? "") == "score_rating_x10000")
+  }
+
   // for World War
   OPERATION_COUNT = {
     field = "operation_count"
@@ -686,6 +696,7 @@ let eventsTableConfig = [
   lbCategoryTypes.EVENT_FOOTBALL_TOTAL_ACTIONS
   lbCategoryTypes.EVENT_SCORE
   lbCategoryTypes.EVENT_SCORE_RATING
+  lbCategoryTypes.EVENT_SCORE_RATING_X10000
 ]
 
 return {

@@ -41,7 +41,7 @@ function getProfileAvatarFrames() {
       id = unlock.id
       unlockId = unlock.id
       enabled = true
-      image = $"!ui/images/avatar_frames/{unlock.id}"
+      image = $"!ui/images/avatar_frames/{unlock.id}.avif"
       tooltip = loc($"{unlock.id}/name")
     })
 

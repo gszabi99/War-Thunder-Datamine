@@ -18,7 +18,9 @@
       <<#selected>>
       selected:t='yes'
       <</selected>>
-      font-pixht:t='<<scale>>*22@sf/@pf \ 1'
+      <<#isSmallSize>>
+      font-pixht:t='<<scale>>*1@comboboxSmallFontPixHt'
+      <</isSmallSize>>
 
       <<#isDisabled>>
       tooltip:t="$tooltipObj"

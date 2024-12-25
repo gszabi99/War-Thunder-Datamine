@@ -1,65 +1,29 @@
 from "%scripts/dagui_natives.nut" import save_profile, set_control_helpers_mode
 from "%scripts/dagui_library.nut" import *
-from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { hasXInputDevice } = require("controls")
 let globalEnv = require("globalEnv")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let avatars = require("%scripts/user/avatars.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck, isPlatformShieldTv
 } = require("%scripts/clientState/platform.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET
 } = require("%scripts/options/optionsExtNames.nut")
-let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 
 gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controlTypeChoice.blk"
 
   controlsOptionsMode = 0
-  onlyDevicesChoice = true
   startControlsWizard = false
 
   function initScreen() {
     this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
-
-    let txt = this.scene.findObject("txt_icon")
-    txt.show(!this.onlyDevicesChoice)
-    showObjById("btn_pref_img", !this.onlyDevicesChoice)
-    showObjById("btn_back", this.onlyDevicesChoice)
-    showObjById("btn_cancel", this.onlyDevicesChoice)
-
-    if (!this.onlyDevicesChoice)
-      this.updateProfileIcon(true)
-
     showObjById("ct_xinput", hasXInputDevice(), this.scene)
-  }
-
-  function onChangePilotIcon() {
-    avatars.openChangePilotIconWnd(this.onIconChoosen, this)
-  }
-
-  function onIconChoosen(option) {
-    set_option(USEROPT_PILOT, option.idx)
-    save_profile(false)
-    this.updateProfileIcon()
-  }
-
-  function updateProfileIcon(isOnInit = false) {
-    if (!checkObj(this.scene))
-      return
-
-    let obj = this.scene.findObject("prefIcon")
-    if (checkObj(obj)) {
-      obj.setValue(getProfileInfo().icon)
-      if (isOnInit)
-        this.scene.findObject("unseen_avatar").setValue(SEEN.AVATARS)
-    }
   }
 
   function afterModalDestroy() {
@@ -79,7 +43,7 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
         ct_id = obj.getChild(value).id
     }
 
-    if (ct_id == "ct_own" || !this.onlyDevicesChoice) {
+    if (ct_id == "ct_own") {
       this.doControlTypeApply(ct_id)
       return
     }

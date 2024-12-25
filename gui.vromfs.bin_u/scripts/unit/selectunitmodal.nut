@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { floor } = require("%sqstd/math.nut")
@@ -23,6 +24,8 @@ local handlerClass = class (vehiclesModal.handlerClass) {
   showRecordsTableUnits = false
   searchString = ""
   searchUnits = null
+  userstat = null
+  recordTableUnits = null
 
   function getSceneTplView() {
     this.collectUnitData()
@@ -41,12 +44,21 @@ local handlerClass = class (vehiclesModal.handlerClass) {
   }
 
   function initScreen() {
+    if (this.userstat) {
+      this.recordTableUnits = {}
+      foreach (diff in g_difficulty.types) {
+        let stats = this.userstat?[diff.egdLowercaseName].total
+        if (stats && stats.len() > 0)
+          foreach(record in stats )
+            this.recordTableUnits[record.name] <- (this.recordTableUnits?[record.name] ?? 0) + record.flyouts
+      }
+    }
+
     let listObj = this.scene.findObject("units_list")
     this.initPopupFilter()
     this.guiScene.createMultiElementsByObject(listObj, "%gui/unit/unitCell.blk", "tdiv", this.pageItemsCount, this)
     this.fillUnitsList()
   }
-
 
   function calcPagesCount() {
     this.pagesCount = floor(this.filteredUnits.len() / this.pageItemsCount)
@@ -67,6 +79,18 @@ local handlerClass = class (vehiclesModal.handlerClass) {
     this.filterUnits(this.searchUnits ?? this.units)
     this.calcPagesCount()
     this.setPage(page)
+  }
+
+  function unitSortFunction(a, b, recordTable) {
+    let flyA = recordTable?[a.name] ?? 0
+    let flyB = recordTable?[b.name] ?? 0
+    return flyB <=> flyA
+  }
+
+  function filterUnits(units) {
+    base.filterUnits(units)
+    let {unitSortFunction, recordTableUnits} = this
+    this.filteredUnits.sort(@(a, b) unitSortFunction(a, b, recordTableUnits))
   }
 
   function updatePage() {
@@ -164,7 +188,6 @@ local handlerClass = class (vehiclesModal.handlerClass) {
   }
 
   function onEventFlushSquadronExp(_p) {}
-
   function onEventModificationPurchased(_p) {}
   function onEventUnitRepaired(_p) {}
 

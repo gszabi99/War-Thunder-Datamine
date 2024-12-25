@@ -144,7 +144,7 @@ root {
       }
       frameSeparator {
         position:t='absolute'
-        top:t='ph-h'
+        top:t='ph-h+1@sf/@pf'
         left:t='(pw-w)/2'
       }
     }
@@ -625,11 +625,11 @@ root {
                     ButtonImg {}
                   }
                   Button_text {
-                    id:t='btn_fav'
+                    id:t="checkbox_favorites"
                     position:t='relative'
-                    text:t='#mainmenu/UnlockAchievementsToFavorite'
+                    text:t=''
                     tooltip:t=''
-                    on_click:t='onToggleFav'
+                    on_click:t='unlockToFavorites'
                     unlockId:t=''
                     btnName:t='LT'
                     ButtonImg {}

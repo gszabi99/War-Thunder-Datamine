@@ -1,6 +1,8 @@
 from "%scripts/dagui_natives.nut" import clan_get_exp, shop_repair_all, shop_get_researchable_unit_name, shop_get_aircraft_hp, wp_get_repair_cost, clan_get_researching_unit, is_era_available, set_char_cb, is_mouse_last_time_used
 from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/dagui_library.nut" import *
+
+let { defer } = require("dagor.workcycle")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -1572,6 +1574,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           obj = cellData?.cellObj
           id = $"high_{slotIdx}"
           onClick = "onHighlightedCellClick"
+          onDragStart = "onHighlightedCellDragStart"
           isNoDelayOnClick = true
         }
         highlightList.append(::guiTutor.getBlockFromObjData(objData, tableObj))
@@ -1611,6 +1614,24 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let shadingObj = this.scene.findObject("shop_dark_screen")
     if (checkObj(shadingObj))
       shadingObj.show(false)
+  }
+
+  function onHighlightedCellDragStart(obj) {
+    let value = to_integer_safe(cutPrefix(obj?.id, "high_"), -1, false)
+    if (value < 0)
+      return
+
+    let cellData = this.getCellDataByThreeIdx(value)
+    if (cellData == null)
+      return
+
+    let unit = getAircraftByName(cellData?.cellObj.holderId)
+    if (!unit)
+      return
+
+    takeUnitInSlotbar(unit, this.getOnTakeUnitParams(unit, { dragAndDropMode = true }))
+
+    this.highlightUnitsClear()
   }
 
   function onHighlightedCellClick(obj) {
@@ -2072,7 +2093,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
               if (!obj?.isValid())
                 return false
 
-              obj.scrollToView()
+              defer(@() obj?.isValid() ? obj.scrollToView() : null)
               tableObj.setValue(cellData.tableIndex)
               obj.setMouseCursorOnObject()
               if (checkObj(this.groupChooseObj))
@@ -2086,7 +2107,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           if (!obj?.isValid())
             return false
 
-          obj.scrollToView()
+          defer(@() obj?.isValid() ? obj.scrollToView() : null)
           tableObj.setValue(cellData.tableIndex)
           obj.setMouseCursorOnObject()
           return true

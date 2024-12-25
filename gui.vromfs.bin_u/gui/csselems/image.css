@@ -255,16 +255,16 @@ banImg {
 avatarImg {
   input-transparent:yes;
   reduceMinimalWidth:yes;
-  width:1@avatarButtonSize;
-  height:1@avatarButtonSize;
+  width:1@avatarButtonSize + 2@blockInterval;
+  height:1@avatarButtonSize + 2@blockInterval;
   border:no;
   margin:0;
   css-hier-invalidate:yes;
 }
 
 avatarImg > img {
-  size: 1@profileUnlockIconSize, 1@profileUnlockIconSize;
-  background-svg-size: 1@profileUnlockIconSize, 1@profileUnlockIconSize;
+  size: 1@avatarButtonSize, 1@avatarButtonSize;
+  background-svg-size: 1@avatarButtonSize, 1@avatarButtonSize;
 }
 
 avatarImg:hover {

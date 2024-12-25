@@ -321,6 +321,18 @@ function buildProfileSummaryRowData(config, summary, diffCode, textId = "") {
   return buildTableRowNoPad("", row)
 }
 
+function checkAndToggleStatsBottomFade(sObj) {
+  let statsHeight = sObj.getSize()[1]
+
+  local statsContainerHeight = 0
+  let statsContainer = this.scene.findObject("stats-container")
+  if (!statsContainer?.isValid())
+    return
+
+  statsContainerHeight = statsContainer.getSize()[1]
+  showObjById("stats_bottom_fade", statsHeight >= statsContainerHeight * 0.9, statsContainer)
+}
+
 function fillProfileSummary(sObj, summary, diff) {
   if (!checkObj(sObj))
     return
@@ -356,6 +368,8 @@ function fillProfileSummary(sObj, summary, diff) {
   guiScene.replaceContentFromText(sObj, data, data.len(), this)
   foreach (id, text in textsToSet)
     sObj.findObject(id).setValue(text)
+
+  checkAndToggleStatsBottomFade(sObj)
 }
 
 function getCountryMedals(countryId, profileData = null) {

@@ -131,6 +131,7 @@ let leaderboardValueFactors = {
   battle_winrate = 0.0001
   avg_place = 0.0001
   avg_score = 0.0001
+  score_rating_x10000 = 0.0001
 }
 let leaderboardKeyCorrection = {
   idx = "pos"

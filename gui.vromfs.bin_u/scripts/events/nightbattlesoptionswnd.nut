@@ -209,8 +209,12 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
       Callback(@() this.updateUnlockBlock(unlockId), this)))
   }
 
-  unlockToFavorites = @(obj) unlockToFavorites(obj,
-    Callback(this.updateFavoritesCheckboxesInList, this))
+  function unlockToFavorites(obj) {
+    if (obj?.isChecked == null)
+      return
+    obj.isChecked = obj.isChecked == "yes" ? "no" : "yes"
+    unlockToFavorites(obj, Callback(this.updateFavoritesCheckboxesInList, this))
+  }
 
   function updateFavoritesCheckboxesInList() {
     if (this.isPageFilling)

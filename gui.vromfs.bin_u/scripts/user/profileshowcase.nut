@@ -35,12 +35,20 @@ let getUnitFromTerseInfo = @(terseInfo) terseInfo.schType == "favorite_unit"
   ? getAircraftByName(getUnitNameFromTerseInfo(terseInfo))
   : null
 
-function getPlayerKillsForMode(playerStats, mode) {
+function getKillsForMode(playerStats, mode, targetType) {
   let scorePeriod = "value_total"
   let stats = playerStats?.leaderboard[mode][scorePeriod]
-  return (stats?.air_kills_player[scorePeriod] ?? 0)
-    + (stats?.ground_kills_player[scorePeriod] ?? 0)
-    + (stats?.naval_kills_player[scorePeriod] ?? 0)
+  return (stats?[$"air_kills_{targetType}"][scorePeriod] ?? 0)
+    + (stats?[$"ground_kills_{targetType}"][scorePeriod] ?? 0)
+    + (stats?[$"naval_kills_{targetType}"][scorePeriod] ?? 0)
+}
+
+function getDeathsForMode(playerStats, mode) {
+  let scorePeriod = "value_total"
+  let stats = playerStats?.leaderboard[mode][scorePeriod]
+  return (stats?.air_death[scorePeriod] ?? 0)
+    + (stats?.ground_death[scorePeriod] ?? 0)
+    + (stats?.naval_death[scorePeriod] ?? 0)
 }
 
 function getAtomicAceValue(terseInfo) {
@@ -56,15 +64,16 @@ function getPosInLeaderboard(params, value, scorePeriod) {
   let stats = params.stats?.leaderboard[gameType][scorePeriod]
   let stat = stats?[value.valueId]
   if (stat == null)
-    return "-"
+    return 0
 
   foreach (lbCategory in ::leaderboards_list)
     if (lbCategory.field == value.valueId) {
       let lbVal = stat.idx < 0 ? -1 : stat.idx + 1
-      return lbCategory.getItemCell(lbVal, null, false, lbDataType.PLACE)?.text ?? "-"
+      let text = lbCategory.getItemCell(lbVal, null, false, lbDataType.PLACE)?.text ?? "0"
+      return to_integer_safe(text, 0, false)
     }
 
-  return "-"
+  return 0
 }
 
 function findUnitStats(stats, unitName, diff) {
@@ -93,6 +102,18 @@ function findUnitBestDiff(unitName, value, params) {
   return bestDiff
 }
 
+function getActiveKillsByDeathsRatio(params) {
+  let kills = getKillsForMode(params?.stats, params.showcaseType, "player").tofloat()
+  let deaths = getDeathsForMode(params?.stats, params.showcaseType).tofloat()
+  return round_by_value(kills / (deaths > 0 ? deaths : 1), 0.1)
+}
+
+function getAiKillsByDeathsRatio(params) {
+  let kills = getKillsForMode(params?.stats, params.showcaseType, "ai").tofloat()
+  let deaths = getDeathsForMode(params?.stats, params.showcaseType).tofloat()
+  return round_by_value(kills / (deaths > 0 ? deaths : 1), 0.1)
+}
+
 let visibleValues = {
   battles = {
     type = "stat"
@@ -117,7 +138,7 @@ let visibleValues = {
     icon = "lb_average_active_kills"
     locId = "multiplayer/lb_kills_player"
     valueId = "average_active_kills"
-    getValue = @(params, _val) decimalFormat(getPlayerKillsForMode(params?.stats, params.showcaseType))
+    getValue = @(params, _val) decimalFormat(getKillsForMode(params?.stats, params.showcaseType, "player"))
   },
   aiVehicleDestroys = {
     type = "stat"
@@ -135,17 +156,17 @@ let visibleValues = {
   kill_by_spawns = {
     type = "stat"
     icon = "lb_average_active_kills_by_spawn"
-    locId = "stats/average_active_kills_by_spawn"
+    locId = "stats/average_active_kills_by_deaths"
     valueId = "average_active_kills_by_spawn"
-    getValue = @(params, val) round_by_value(getStatsValue(params, val, params.scorePeriod), 0.1)
+    getValue = @(params, _val) getActiveKillsByDeathsRatio(params)
   },
   ai_kill_by_spawns = {
     type = "stat"
     icon = "lb_average_script_kills_by_spawn"
-    locId = "stats/average_script_kills_by_spawn"
+    locId = "stats/average_script_kills_by_deaths"
     valueId = "average_script_kills_by_spawn"
     canShow = @(params) !gamemodesNoAiStats.contains(params.showcaseType)
-    getValue = @(params, val) round_by_value(getStatsValue(params, val, params.scorePeriod), 0.1)
+    getValue = @(params, _val) getAiKillsByDeathsRatio(params)
   },
   average_score = {
     type = "stat"
@@ -157,14 +178,17 @@ let visibleValues = {
     type = "textStat"
     locId = "multiplayer/pvp_ratio_short"
     valueId = "pvp_ratio"
-    getValue = @(params, val) $"{getStatsValue(params, val, "value_inhistory")}"
+    getValue = @(params, val) $"{decimalFormat(getStatsValue(params, val, "value_inhistory"))}"
     tooltip = "multiplayer/pvp_ratio"
   },
   placeInLeaderboard = {
     type = "textStat"
     locId = "multiplayer/place_in_leaderboard"
     valueId = "pvp_ratio"
-    getValue = @(params, val) getPosInLeaderboard(params, val, "value_inhistory")
+    getValue = function(params, val) {
+      let pos = getPosInLeaderboard(params, val, "value_inhistory")
+      return pos == 0 ? "-" : decimalFormat(pos)
+    }
     tooltip = "multiplayer/place_in_leaderboard_desc"
   },
   atomic_ace = {
@@ -227,7 +251,6 @@ let visibleValues = {
     getText = @(params, _val) loc($"difficulty{diffNames.indexof(params?.diff) ?? 0}")
     valueId = "",
   }
-
   averageRelativePosition = {
     type = "stat"
     icon = "lb_average_relative_position"
@@ -488,7 +511,7 @@ function getSecondModesViewData(showcase, terseInfo, params = null) {
     data.append("".concat(
       "option {text:t='", mode.text, "'; mode:t='", mode.mode,
       "'; selected:t='", gameMode == mode ? "yes" : "no", "'",
-      isSmallSize ? $";font-pixht:t='{scale}*22@sf/@pf'" : "" ,"}"
+      isSmallSize ? $";font-pixht:t='{scale}*1@comboboxSmallFontPixHt'" : "" ,"}"
     ))
 
   return "".join(data)

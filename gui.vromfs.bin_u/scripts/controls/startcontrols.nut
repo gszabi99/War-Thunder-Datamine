@@ -37,11 +37,11 @@ function gui_start_controls() {
   gui_start_advanced_controls()
 }
 
-function gui_start_controls_type_choice(onlyDevicesChoice = true) {
+function gui_start_controls_type_choice() {
   if (!hasFeature("ControlsDeviceChoice"))
     return
 
-  loadHandler(gui_handlers.ControlType, { onlyDevicesChoice = onlyDevicesChoice })
+  loadHandler(gui_handlers.ControlType)
 }
 
 eventbus_subscribe("gui_start_advanced_controls", gui_start_advanced_controls)

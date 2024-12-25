@@ -87,7 +87,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
   itemsPerPage = 1
   isPageFill = false
-  imageButtonSize = "1@avatarButtonSize"
+  imageButtonSize = "1@avatarButtonSize + 2@blockInterval"
   imageButtonInterval = 0
   minAmountButtons = 8
 

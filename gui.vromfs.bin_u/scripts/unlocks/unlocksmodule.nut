@@ -209,6 +209,10 @@ function isUnlockVisibleOnCurPlatform(unlockBlk) {
 function isUnlockVisible(unlockBlk, needCheckVisibilityByPlatform = true) {
   if (!unlockBlk || unlockBlk?.hidden)
     return false
+
+  if (unlockBlk?.hideFeature != null && hasFeature(unlockBlk.hideFeature))
+    return false
+
   if (needCheckVisibilityByPlatform && !isUnlockVisibleOnCurPlatform(unlockBlk))
     return false
   if (!isUnlockVisibleByTime(unlockBlk?.id, true, !unlockBlk?.hideUntilUnlocked)

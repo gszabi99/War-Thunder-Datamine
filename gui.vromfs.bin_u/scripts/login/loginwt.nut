@@ -334,7 +334,7 @@ function needAutoStartBattle() {
     else if (isPlatformShieldTv())
       ::setControlTypeByID("ct_xinput")
     else if (!isPlatformSteamDeck)
-      handler.doWhenActive(function() { gui_start_controls_type_choice(false) })
+      handler.doWhenActive(function() { gui_start_controls_type_choice() })
   }
   else if (!fetch_devices_inited_once() && !isPlatformSteamDeck)
     handler.doWhenActive(function() { gui_start_controls_type_choice() })

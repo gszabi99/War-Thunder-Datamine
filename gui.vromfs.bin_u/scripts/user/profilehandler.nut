@@ -64,8 +64,7 @@ let { isUnlockVisible, getUnlockCost, canDoUnlock,
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
-let { isUnlockFav, canAddFavorite, unlockToFavorites, fillUnlockFav,
-  toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { isUnlockFav, canAddFavorite, unlockToFavorites, fillUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { getCachedDataByType, getDecorator, getDecoratorById,
   getCachedDecoratorsListByType} = require("%scripts/customization/decorCache.nut")
@@ -398,16 +397,16 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let canFindInStore = !canBuy && !canConsumeCoupon && !canFindOnMarketplace
       && canGetDecoratorFromTrophy(decor)
 
-    let buyBtnObj = showObjById("btn_buy_decorator", canBuy, this.scene)
+    let containerObj = this.scene.findObject("decals-container")
+    let buyBtnObj = showObjById("btn_buy_decorator", canBuy, containerObj)
     if (canBuy && buyBtnObj?.isValid())
-      placePriceTextToButton(this.scene, "btn_buy_decorator", loc("mainmenu/btnOrder"), decor.getCost())
+      placePriceTextToButton(containerObj, "btn_buy_decorator", loc("mainmenu/btnOrder"), decor.getCost())
 
     let canFav = !decor.isUnlocked() && canDoUnlock(decor.unlockBlk)
-    let favBtnObj = showObjById("btn_fav", canFav, this.scene)
+
+    showObjById("checkbox_favorites", canFav, containerObj)
     if (canFav)
-      favBtnObj.setValue(isUnlockFav(decor.unlockId)
-        ? loc("preloaderSettings/untrackProgress")
-        : loc("preloaderSettings/trackProgress"))
+      this.updateUnlockFav(decor.unlockId, containerObj)
 
     let canUse = decor.isUnlocked() && canStartPreviewScene(false)
     let canPreview = !canUse && decor.canPreview()
@@ -630,12 +629,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     openCollectionsWnd({ selectedDecoratorId = this.getCurDecal()?.id })
   }
 
-  function onToggleFav() {
-    let decal = this.getCurDecal()
-    toggleUnlockFav(decal?.unlockId)
-    this.updateDecalButtons(decal)
-  }
-
   function onSheetChange(_obj) {
     let sheet = this.getCurSheet()
     if (this.hasEditProfileChanges()) {
@@ -842,6 +835,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     infoObj.findObject("decalMultDecs").setValue(getUnlockMultDescByCfg(cfg))
     infoObj.findObject("decalConds").setValue(getUnlockCondsDescByCfg(cfg))
     infoObj.findObject("decalPrice").setValue(this.getDecalObtainInfo(decor))
+    infoObj.findObject("checkbox_favorites").unlockId = this.getCurDecal()?.unlockId ?? ""
   }
 
   function getDecalObtainInfo(decor) {
@@ -2152,6 +2146,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     openSelectUnitWnd({
       unitsFilter = @(unit) isUnitBought(unit)
+      userstat = this.getPageProfileStats()?.userstat
       onUnitSelectFunction = @(unit) handler.onUnitSelect(unit),
       showRecordsTableUnits = true
     })
