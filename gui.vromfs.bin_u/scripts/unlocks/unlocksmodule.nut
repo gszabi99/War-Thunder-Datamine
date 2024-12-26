@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import wp_get_unlock_cost, has_entitlement, re
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 let { Cost } = require("%scripts/money.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformPC
+let { isPlatformSony, isPlatformXboxOne
 } = require("%scripts/clientState/platform.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let psnUser = require("sony.user")
@@ -200,8 +200,6 @@ function isUnlockVisibleOnCurPlatform(unlockBlk) {
   if (unlockType == UNLOCKABLE_TROPHY_PSN && !isPlatformSony)
     return false
   if (unlockType == UNLOCKABLE_TROPHY_XBOXONE && !isPlatformXboxOne)
-    return false
-  if (unlockType == UNLOCKABLE_TROPHY_STEAM && !isPlatformPC)
     return false
   return true
 }

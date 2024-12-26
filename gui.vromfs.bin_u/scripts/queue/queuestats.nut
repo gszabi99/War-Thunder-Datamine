@@ -107,7 +107,8 @@ class QueueStats {
     this.recountQueueOnce()
     if (this.isMultiCluster)
       cluster = MULTICLUSTER_NAME
-    return getTblValue(cluster || this.maxClusterName, this.teamsQueueTable)
+    return this.teamsQueueTable?[cluster ?? this.maxClusterName]
+      ?? this.teamsQueueTable?[this.maxClusterName]
   }
 
   function getQueueTableByTeam(teamName, cluster = null) {
@@ -143,7 +144,8 @@ class QueueStats {
     this.recountQueueOnce()
     if (this.isMultiCluster)
       cluster = MULTICLUSTER_NAME
-    return getTblValue(cluster || this.maxClusterName, this.countriesQueueTable)
+    return this.countriesQueueTable?[cluster ?? this.maxClusterName]
+      ?? this.countriesQueueTable?[this.maxClusterName]
   }
 
   //for clans queues
