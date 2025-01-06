@@ -1,0 +1,1296 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
+  <style type="text/css">
+    .number-box
+    {
+       width : 60px;
+    }
+    
+    .chart-content-polar {
+      width: 600px;
+      height: 400px;
+      margin: 0 auto;
+      bottom: 50px;
+      padding: 0px;
+    }
+
+    .chart-container-polar {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;  
+      width: 600px;
+      height: 400px;
+      padding: 0px 0px 0px 0px;
+      margin: 15px auto 30px auto;
+      border: 1px solid #ddd;
+      background: #fff;
+      background: linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      -o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    
+    .chart-content-polar-2 {
+      width: 400px;
+      height: 190px;
+      margin: 0 auto;
+      bottom: 50px;
+      padding: 0px;
+    }
+
+    .chart-container-polar-2 {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;  
+      width: 400px;
+      height: 190px;
+      padding: 0px 0px 0px 0px;
+      margin: 15px auto 30px auto;
+      border: 1px solid #ddd;
+      background: #fff;
+      background: linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      -o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+            
+    .legend table, .legend > div {
+        height: 20px !important;
+        opacity: 1 !important;
+        right: 10px;
+        bottom: 50px;
+    }
+     
+    .legend table {
+        border: 1px solid #555;
+        padding: 5px;
+    }
+
+    .chart-placeholder {
+      width: 100%;
+      height: 100%;
+      font-size: 14px;
+      line-height: 1.2em;
+    }
+        
+  </style>
+  <script src="../cookies.js"></script>
+  <script src="../jquery-1.10.1.min.js"></script>
+  <script src="../jquery.flot.js"></script>
+  <script src="../jquery.flot.navigate.min.js"></script>
+  <script src="../jquery.flot.axislabels.js"></script>
+  <script src="../parameter.js"></script>
+  <title>"War Thunder" Flight Model: Drag Polar</title>
+</head>
+  
+<body>
+  <style>
+    body {
+      color: #333;
+      background-color: #fff;
+    }
+
+    table {
+      border-spacing: 0;
+      border: 1px solid #cbcbcb;
+    }
+
+    thead {
+      background: #e0e0e0;
+      color: #000;
+    }
+
+    td, th {
+      padding: 0px 5px;
+      border-left: 1px solid #cbcbcb;
+      border-bottom: 1px solid #cbcbcb;
+      text-align: center;
+    }
+
+    th {
+      font-family: sans-serif;
+    }
+
+    tr[isDelayed=yes] {
+      background-color: #eee;
+    }
+
+    tr[isHero=yes] {
+      background-color: lightgreen;
+    }
+
+    button {
+      -webkit-border-radius: 2px 2px;
+      border: solid 1px rgb(153, 153, 153);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(221, 221, 221)));
+      color: #333;
+      cursor: pointer;
+    }
+    button:disabled {
+      border: solid 1px rgb(203, 203, 203);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(231, 231, 231)));
+      color: #999;
+      cursor: default;
+    }
+  </style>
+  <script>
+ 
+  const ChartVariant = {
+    NULL:  0,
+    WING:  0,
+    WING_SWEEP:   1,
+    WING_SWEEP_1: 2,
+    WING_SWEEP_2: 3,
+    WING_SWEEP_3: 4,
+    WING_SWEEP_4: 5,
+    WING_SWEEP_5: 6,
+    WING_SWEEP_6: 7,
+    WING_SWEEP_7: 8,
+    WING_SWEEP_8: 9,
+    STAB:  10,
+    FIN:   11,
+    FUSEL: 12,
+    PROP1: 13,
+    PROP2: 14,
+    PROP3: 15,
+    PROP4: 16,
+    PROP5: 17,
+    PROP6: 18,
+    MAX:   19
+  } 
+  
+  // all parameters are unitless, no need to change unit system here
+  var settings = {
+    unitSystemName: 0
+  }
+
+  var state = {
+    connected: true,
+    fm: {
+      typeName: '',
+      fileName: '',
+      fileTime: undefined
+    }
+  }
+  
+  var chartsParameters = {
+    type: 'table',
+    items: {
+      polarType:     { type: 'enum',                  controlId: 'ComboPolarType',  value: ChartVariant.WING },
+      
+      machMin:       { type: 'number', precision: 2,  controlId: 'EditMachMin',     value: 0.0, min: 0.0, max: 3.0 },
+      machStep:      { type: 'number', precision: 2,  controlId: 'EditMachStep',    value: 0.2, min: 0.0, max: 3.0 },
+      machMax:       { type: 'number', precision: 2,  controlId: 'EditMachMax',     value: 1.2, min: 0.0, max: 3.0 },
+      
+      showFlaps:     { type: 'bool',                  controlId: 'CheckBoxShowFlaps', value: true },
+      flaps:         { type: 'number', unit: 'ratio', controlId: 'EditFlaps',       value: 1.0, min: 0.0, max: 1.0 },
+      flapsMach:     { type: 'number', precision: 2,  controlId: 'EditFlapsMach',   value: 0.0, min: 0.0, max: 3.0 },
+      
+      sweep:         { type: 'number', unit: 'ratio', controlId: 'EditSweep',       value: 1.0, min: 0.0, max: 1.0 }
+    }
+  }
+  
+  var polarPropertyItems =
+  {
+    oswaldCoeff:  { type: 'number',                 precision: 4, controlId: 'EditOswaldCoeff' },
+    dCydAoA:      { type: 'number', unit: 'angle',  precision: 4, controlId: 'EditdCydAoA' },
+    afterCrit: {
+      type: 'table',
+      items: {
+        parabAngle:       { type: 'number', unit: 'angle',  precision: 4, controlId: 'EditParabAngle' },
+        declineCoeff:     { type: 'number',                 precision: 4, controlId: 'EditDeclineCoeff' },
+        maxDistanceAngle: { type: 'number', unit: 'angle',  precision: 4, controlId: 'EditMaxDistAngle' },
+        Cy:               { type: 'number',                 precision: 4, controlId: 'EditCyAft' }
+      }
+    },
+    noFlaps: {
+      type: 'table',
+      items: {
+        Cx0:              { type: 'number',                 precision: 4, controlId: 'EditCx0' },
+        Cy0:              { type: 'number',                 precision: 4, controlId: 'EditCy0' },
+        AoACritHigh:      { type: 'number', unit: 'angle',  precision: 4, controlId: 'EditAoACritHigh' },
+        CyMax:            { type: 'number',                 precision: 4, controlId: 'EditCyMax' },
+        AoACritLow:       { type: 'number', unit: 'angle',  precision: 4, controlId: 'EditAoACritLow' },
+        CyMin:            { type: 'number',                 precision: 4, controlId: 'EditCyMin' }
+      }
+    },
+    flaps: {
+      type: 'table',
+      items: {
+        Cx0:              { type: 'number',                 precision: 4, controlId: 'EditCx0Flaps' },
+        Cy0:              { type: 'number',                 precision: 4, controlId: 'EditCy0Flaps' },
+        AoACritHigh:      { type: 'number', unit: 'angle',  precision: 4, controlId: 'EditAoACritHighFlaps' },
+        CyMax:            { type: 'number',                 precision: 4, controlId: 'EditCyMaxFlaps' },
+        AoACritLow:       { type: 'number', unit: 'angle',  precision: 4, controlId: 'EditAoACritLowFlaps' },
+        CyMin:            { type: 'number',                 precision: 4, controlId: 'EditCyMinFlaps' }
+      }
+    },
+    machFactor:           { type: 'enum',                                 controlId: 'ComboMachFactor' },
+    combinedCl:           { type: 'bool',                                 controlId: 'CheckBoxCombinedCl' },
+    machCrit1:            { type: 'number',                 precision: 4, controlId: 'EditMachCrit1' },
+    machMax1:             { type: 'number',                 precision: 4, controlId: 'EditMachMax1' },
+    multMachMax1:         { type: 'number',                 precision: 4, controlId: 'EditMultMachMax1' },
+    multLineCoeff1:       { type: 'number',                 precision: 4, controlId: 'EditMultLineCoeff1' },
+    multLimit1:           { type: 'number',                 precision: 4, controlId: 'EditMultLimit1' },
+    machCrit2:            { type: 'number',                 precision: 4, controlId: 'EditMachCrit2' },
+    machMax2:             { type: 'number',                 precision: 4, controlId: 'EditMachMax2' },
+    multMachMax2:         { type: 'number',                 precision: 4, controlId: 'EditMultMachMax2' },
+    multLineCoeff2:       { type: 'number',                 precision: 4, controlId: 'EditMultLineCoeff2' },
+    multLimit2:           { type: 'number',                 precision: 4, controlId: 'EditMultLimit2' },
+    machCrit3:            { type: 'number',                 precision: 4, controlId: 'EditMachCrit3' },
+    machMax3:             { type: 'number',                 precision: 4, controlId: 'EditMachMax3' },
+    multMachMax3:         { type: 'number',                 precision: 4, controlId: 'EditMultMachMax3' },
+    multLineCoeff3:       { type: 'number',                 precision: 4, controlId: 'EditMultLineCoeff3' },
+    multLimit3:           { type: 'number',                 precision: 4, controlId: 'EditMultLimit3' },
+    machCrit4:            { type: 'number',                 precision: 4, controlId: 'EditMachCrit4' },
+    machMax4:             { type: 'number',                 precision: 4, controlId: 'EditMachMax4' },
+    multMachMax4:         { type: 'number',                 precision: 4, controlId: 'EditMultMachMax4' },
+    multLineCoeff4:       { type: 'number',                 precision: 4, controlId: 'EditMultLineCoeff4' },
+    multLimit4:           { type: 'number',                 precision: 4, controlId: 'EditMultLimit4' },
+    machCrit5:            { type: 'number',                 precision: 4, controlId: 'EditMachCrit5' },
+    machMax5:             { type: 'number',                 precision: 4, controlId: 'EditMachMax5' },
+    multMachMax5:         { type: 'number',                 precision: 4, controlId: 'EditMultMachMax5' },
+    multLineCoeff5:       { type: 'number',                 precision: 4, controlId: 'EditMultLineCoeff5' },
+    multLimit5:           { type: 'number',                 precision: 4, controlId: 'EditMultLimit5' },
+    machCrit6:            { type: 'number',                 precision: 4, controlId: 'EditMachCrit6' },
+    machMax6:             { type: 'number',                 precision: 4, controlId: 'EditMachMax6' },
+    multMachMax6:         { type: 'number',                 precision: 4, controlId: 'EditMultMachMax6' },
+    multLineCoeff6:       { type: 'number',                 precision: 4, controlId: 'EditMultLineCoeff6' },
+    multLimit6:           { type: 'number',                 precision: 4, controlId: 'EditMultLimit6' },
+    machCrit7:            { type: 'number',                 precision: 4, controlId: 'EditMachCrit7' },
+    machMax7:             { type: 'number',                 precision: 4, controlId: 'EditMachMax7' },
+    multMachMax7:         { type: 'number',                 precision: 4, controlId: 'EditMultMachMax7' },
+    multLineCoeff7:       { type: 'number',                 precision: 4, controlId: 'EditMultLineCoeff7' },
+    multLimit7:           { type: 'number',                 precision: 4, controlId: 'EditMultLimit7' }
+  }
+  
+  var fmProperties = { }
+  
+  var fmTables = {}
+
+  //Polar Charts
+  function getChartCyAoA(param)
+  {
+    var data = []    
+    const polarPlot = fmTables && fmTables.polar ? fmTables.polar[param.polarType].polarByAoA : undefined
+    if (polarPlot != undefined)
+    {
+      const noFlaps = polarPlot['noFlaps']
+      for (var i = 0; i < noFlaps.length; ++i)
+      {
+        var noFlapsPoints = { label: 'M=' + noFlaps[i].mach.toString(), data: []}
+        for (var j = 0; j < noFlaps[i].points.length; ++j)
+          noFlapsPoints.data.push( [ noFlaps[i].points[j][0] * radToDeg, noFlaps[i].points[j][1] ] )
+        data.push(noFlapsPoints)
+      }
+      const flaps = polarPlot['flaps']
+      if (flaps != undefined)
+      {
+        var flapsValue = convertToUnit(flaps.flaps, chartsParameters.items.flaps.unit, settings.unitSystemName)
+        var fullFlapsPoints = { label: 'Flaps=' + flapsValue.toString() + ', M=' + flaps.mach.toString(), data: [], lines: { lineWidth: 5 } }
+        for (var i = 0; i < flaps.points.length; ++i)
+          fullFlapsPoints.data.push( [ flaps.points[i][0] * radToDeg, flaps.points[i][1] ] )
+        data.push(fullFlapsPoints)
+      }
+    }
+    return data
+  }
+  
+  function getChartCxAoA(param)
+  {
+    var data = []
+    const polarPlot = fmTables && fmTables.polar ? fmTables.polar[param.polarType].polarByAoA : undefined
+    if (polarPlot != undefined)
+    {
+      const noFlaps = polarPlot['noFlaps']
+      for (var i = 0; i < noFlaps.length; ++i)
+      {
+        var noFlapsPoints = { label: 'M=' + noFlaps[i].mach.toString(), data: [] }
+        for (var j = 0; j < noFlaps[i].points.length; ++j)
+          noFlapsPoints.data.push( [ noFlaps[i].points[j][0] * radToDeg, noFlaps[i].points[j][2] ] )
+        data.push(noFlapsPoints)
+      }
+      const flaps = polarPlot['flaps']
+      if (flaps != undefined)
+      {
+        var flapsValue = convertToUnit(flaps.flaps, chartsParameters.items.flaps.unit, settings.unitSystemName)
+        var flapsPoints = { label: 'Flaps=' + flapsValue.toString() + ', M=' + flaps.mach.toString(), data: [], lines: { lineWidth: 5 } }
+        for (var i = 0; i < flaps.points.length; ++i)
+          flapsPoints.data.push( [ flaps.points[i][0] * radToDeg, flaps.points[i][2] ] )
+        data.push(flapsPoints)
+      }
+    }
+    return data
+  }
+  
+  function getChartCyCxRatioAoA(param)
+  {
+    var data = []
+    const polarPlot = fmTables && fmTables.polar ? fmTables.polar[param.polarType].polarByAoA : undefined
+    if (polarPlot != undefined)
+    {
+      const noFlaps = polarPlot['noFlaps']
+      for (var i = 0; i < noFlaps.length; ++i)
+      {
+        var noFlapsPoints = { label: 'M=' + noFlaps[i].mach.toString(), data: [] }
+        for (var j = 0; j < noFlaps[i].points.length; ++j)
+          noFlapsPoints.data.push( [ noFlaps[i].points[j][0] * radToDeg, Math.abs(noFlaps[i].points[j][1] / noFlaps[i].points[j][2]) ] )
+        data.push(noFlapsPoints)
+      }      
+      const flaps = polarPlot['flaps']
+      if (flaps != undefined)
+      {
+        var flapsValue = convertToUnit(flaps.flaps, chartsParameters.items.flaps.unit, settings.unitSystemName)
+        var flapsPoints = { label: 'Flaps=' + flapsValue.toString() + ', M=' + flaps.mach.toString(), data: [], lines: { lineWidth: 5 } }
+        for (var i = 0; i < flaps.points.length; ++i)
+          flapsPoints.data.push( [ flaps.points[i][0] * radToDeg, Math.abs(flaps.points[i][1] / flaps.points[i][2]) ] )
+        data.push(flapsPoints)
+      }
+    }
+    return data
+  }
+  
+  function getChartCyByCx(param)
+  {
+    var data = []
+    const polarPlot = fmTables && fmTables.polar ? fmTables.polar[param.polarType].polarByAoA : undefined
+    if (polarPlot != undefined)
+    {    
+      var aoaCritHigh = fmProperties.polar[param.polarType].noFlaps.AoACritHigh    
+      const noFlaps = polarPlot['noFlaps']
+      for (var i = 0; i < noFlaps.length; ++i)
+      {
+        var noFlapsPoints = { label: 'M=' + noFlaps[i].mach.toString(), data: [] }
+        for (var j = 0; j < noFlaps[i].points.length; ++j)
+          if (noFlaps[i].points[j][0] < aoaCritHigh &&
+              noFlaps[i].points[j][1] > 0.0)
+            noFlapsPoints.data.push( [ noFlaps[i].points[j][2], noFlaps[i].points[j][1] ] )
+        data.push(noFlapsPoints)
+      }      
+      const flaps = polarPlot['flaps']
+      if (flaps != undefined)
+      {
+        var flapsPoints = { label: 'Flaps, M=0.0', data: [], lines: { lineWidth: 5 } }
+        for (var i = 0; i < flaps.length; ++i)
+          if (flaps.points[i][0] < aoaCritHigh &&
+              flaps.points[i][1] > 0.0)
+            flapsPoints.data.push( [ flaps.points[i][2], flaps.points[i][1] ] )
+        data.push(flapsPoints)
+      }
+    }
+    return data
+  }
+  
+  function getChartCoeffByMach(param, chartParam)
+  {
+    var data = [ { label: '', data: [] } ]
+    const polarPlot = fmTables && fmTables.polar ? fmTables.polar[param.polarType].polarByMach : undefined
+    if (polarPlot != undefined)
+    { 
+      for (var i = 0; i < polarPlot.length; ++i)
+        data[0].data.push( [ polarPlot[i][0], polarPlot[i][chartParam.coeffIndex + 1] ] )
+    }
+    return data
+  }
+  
+  const polarChartTypeData = {
+    cl_aoa: {
+      name: 'Cl(AoA)',
+      xAxis: {
+        name: 'AoA'
+      },
+      yAxis: {
+        name: 'Cl'
+      },
+      legendPosition: 'se',
+      func: getChartCyAoA,
+      chart: 'placeholder_polar_0'
+    },
+    cd_aoa: {
+      name: 'Cd(AoA)',
+      xAxis: {
+        name: 'AoA'
+      },
+      yAxis: {
+        name: 'Cd'
+      },
+      legendPosition: 'se',
+      func: getChartCxAoA,
+      chart: 'placeholder_polar_1'
+    },
+    cl_cd_ratio: {
+      name: 'Cl(AoA)/Cd(AoA)',
+      xAxis: {
+        name: 'AoA'
+      },
+      yAxis: {
+        name: 'Cl / Cd'
+      },
+      legendPosition: 'se',
+      func: getChartCyCxRatioAoA,
+      chart: 'placeholder_polar_2'
+    },
+    cl_cd: {
+      name: 'Cl(Cd)',
+      xAxis: {
+        name: 'Cd'
+      },
+      yAxis: {
+        name: 'Cl'
+      },
+      legendPosition: 'se',
+      func: getChartCyByCx,
+      chart: 'placeholder_polar_3'
+    },
+    cl0_m: {
+      name: 'Cl0(M)',
+      xAxis: {
+        name: 'M'
+      },
+      yAxis: {
+        name: 'Cl0'
+      },
+      legendPosition: 'se',
+      func: getChartCoeffByMach,
+      data: { coeffIndex: 0},
+      chart: 'placeholder_polar_4'
+    },          
+    dcl_daoa_m: {
+      name: 'δCl/δAoA(M)',
+      xAxis: {
+        name: 'M'
+      },
+      yAxis: {
+        name: 'δCl/δAoA'
+      },
+      legendPosition: 'se',
+      func: getChartCoeffByMach,
+      data: { coeffIndex: 1},
+      chart: 'placeholder_polar_5'
+    },          
+    cl_crit_m: {
+      name: 'Clcrit(M)',
+      xAxis: {
+        name: 'M'
+      },
+      yAxis: {
+        name: 'Clcrit'
+      },
+      legendPosition: 'se',
+      func: getChartCoeffByMach,
+      data: { coeffIndex: 2},
+      chart: 'placeholder_polar_6'
+    },
+    aoa_crit_m: {
+      name: 'AoAcrit(M)',
+      xAxis: {
+        name: 'M'
+      },
+      yAxis: {
+        name: 'AoAcrit'
+      },
+      legendPosition: 'se',
+      func: getChartCoeffByMach,
+      data: { coeffIndex: 3},
+      chart: 'placeholder_polar_7'
+    },
+    cd0_m: {
+      name: 'Cd0(M)',
+      xAxis: {
+        name: 'M'
+      },
+      yAxis: {
+        name: 'Cd0'
+      },
+      legendPosition: 'se',
+      func: getChartCoeffByMach,
+      data: { coeffIndex: 4},
+      chart: 'placeholder_polar_8'
+    },          
+    a_m: {
+      name: 'A(M)',
+      xAxis: {
+        name: 'M'
+      },
+      yAxis: {
+        name: 'A'
+      },
+      legendPosition: 'se',
+      func: getChartCoeffByMach,
+      data: { coeffIndex: 5},
+      chart: 'placeholder_polar_9'
+    },
+    mza_fl_m: {
+      name: 'δMza/δFl(M)',
+      xAxis: {
+        name: 'M'
+      },
+      yAxis: {
+        name: 'δMza/δFy'
+      },
+      legendPosition: 'se',
+      func: getChartCoeffByMach,
+      data: { coeffIndex: 6},
+      chart: 'placeholder_polar_10'
+    }
+  }
+  
+  const polarChartTypesData =
+  [
+    polarChartTypeData.cl_aoa,
+    polarChartTypeData.cd_aoa,
+    polarChartTypeData.cl_cd_ratio,
+    polarChartTypeData.cl_cd,
+    polarChartTypeData.cl0_m,
+    polarChartTypeData.dcl_daoa_m,
+    polarChartTypeData.cl_crit_m,
+    polarChartTypeData.aoa_crit_m,
+    polarChartTypeData.cd0_m,
+    polarChartTypeData.a_m,
+    polarChartTypeData.mza_fl_m
+  ]
+  
+  var chartsData = 
+  {
+    polar: {
+      wing: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'wing' }
+      },
+      wingSweep: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'wingSweep' }
+      },      
+      wingSweep1: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'wingSweep1' }
+      },
+      wingSweep2: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'wingSweep2' }
+      },
+      wingSweep3: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'wingSweep3' }
+      },
+      wingSweep4: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'wingSweep4' }
+      },
+      wingSweep5: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'wingSweep5' }
+      },
+      wingSweep6: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'wingSweep6' }
+      },
+      wingSweep7: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'wingSweep7' }
+      },
+      wingSweep8: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'wingSweep8' }
+      },      
+      stabilizer: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'stabilizer' }
+      },
+      fin: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'fin' }
+      },
+      fuselage: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'fuselage' }
+      },
+      propeller1Blade: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'propeller1Blade' }
+      },
+      propeller2Blade: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'propeller2Blade' }
+      },
+      propeller3Blade: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'propeller3Blade' }
+      },
+      propeller4Blade: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'propeller4Blade' }
+      },
+      propeller5Blade: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'propeller5Blade' }
+      },
+      propeller6Blade: {
+        enabled: false,
+        charts: polarChartTypesData,
+        data: { polarType: 'propeller6Blade' }
+      }      
+    }
+  }
+    
+  var chartVariants =
+  {
+    polar: [
+      chartsData.polar.wing,
+      chartsData.polar.wingSweep,
+      chartsData.polar.wingSweep1,
+      chartsData.polar.wingSweep2,
+      chartsData.polar.wingSweep3,
+      chartsData.polar.wingSweep4,
+      chartsData.polar.wingSweep5,
+      chartsData.polar.wingSweep6,
+      chartsData.polar.wingSweep7,
+      chartsData.polar.wingSweep8,
+      chartsData.polar.stabilizer,
+      chartsData.polar.fin,
+      chartsData.polar.fuselage,
+      chartsData.polar.propeller1Blade,
+      chartsData.polar.propeller2Blade,
+      chartsData.polar.propeller3Blade,
+      chartsData.polar.propeller4Blade,
+      chartsData.polar.propeller5Blade,
+      chartsData.polar.propeller6Blade
+    ]
+  }
+  
+  const chartVariantPolars =
+  [
+    "wing",
+    "wingSweep",
+    "wingSweep1",
+    "wingSweep2",
+    "wingSweep3",
+    "wingSweep4",
+    "wingSweep5",
+    "wingSweep6",
+    "wingSweep7",
+    "wingSweep8",
+    "stabilizer",
+    "fin",
+    "fuselage",
+    "propeller1Blade",
+    "propeller2Blade",
+    "propeller3Blade",
+    "propeller4Blade",
+    "propeller5Blade",
+    "propeller6Blade"
+  ]
+  
+  const chartVariantsNames =
+  [
+    "Wing",
+    "Wing Sweep",
+    "Wing Sweep 1",
+    "Wing Sweep 2",
+    "Wing Sweep 3",
+    "Wing Sweep 4",
+    "Wing Sweep 5",
+    "Wing Sweep 6",
+    "Wing Sweep 7",
+    "Wing Sweep 8",
+    "Stabilizer",
+    "Fin",
+    "Fuselage",
+    "Propeller Type 1 blade",
+    "Propeller Type 2 blade",
+    "Propeller Type 3 blade",
+    "Propeller Type 4 blade",
+    "Propeller Type 5 blade",
+    "Propeller Type 6 blade"
+  ]
+  
+  function selectChartVariant(group, variant)
+  {
+    var variantsGroup = chartVariants[group]
+    for (var currVariant in variantsGroup)
+      variantsGroup[currVariant].enabled = false    
+    variantsGroup[variant].enabled = true
+  }
+  
+  var charts = {}
+    
+  function updateChartGroup(chartsData, group)
+  {
+    var chartGroupData = chartsData[group]
+    if (chartGroupData != undefined &&
+        chartGroupData.enabled)
+    {
+      var chartGroup = charts[group]  
+      for(var i = 0; i < chartGroup.length; i++ )
+      {
+        var chartData = chartGroupData.charts[i]
+        chartGroup[i].setData(chartData.func(chartGroupData.data, chartData.data))
+        chartGroup[i].draw();
+      }
+    }
+  }
+    
+  function updateCharts(chartsData)
+  {
+    for (group in chartsData)
+      updateChartGroup(chartsData, group)
+  }
+  
+  function buildYAxes(chartData)
+  {
+    var yaxes = [] 
+    if (chartData.yAxes)
+    {
+      yaxes.length = chartData.yAxes.length
+      for (var i = 0; i < chartData.yAxes.length; ++i)
+        yaxes[i] = {
+          axisLabel: chartData.yAxes[i].name,
+          alignTicksWithAxis: chartData.yAxes[i].alignTicksWithAxis,
+          position: chartData.yAxes[i].position
+        }
+    }
+    else
+    {
+      yaxes.length = 1
+      yaxes[0] = {
+        axisLabel: chartData.yAxis.name
+      }
+    }
+    for (var i = 0; i < yaxes.length; ++i)
+    {
+      var yaxis = yaxes[i]
+      yaxis.axisLabelUseCanvas = true
+      yaxis.axisLabelFontSizePixels = 16
+      yaxis.axisLabelFontFamily = 'Arial'
+    }
+    return yaxes
+  }
+  
+  function setupCharts(chartsData)
+  {
+    $(function() {
+      for (group in chartsData)
+      {
+        var chartGroupData = chartsData[group]
+        if (chartGroupData.enabled)
+        {
+          charts[group] = []
+          for (var i = 0; i < chartGroupData.charts.length; ++i)
+          {
+            var chartData = chartGroupData.charts[i]          
+            var chartGroup = charts[group]
+            var chartObj = $('#' + chartData.chart)
+            chartGroup[i] = $.plot(chartObj, chartData.func(chartGroupData.data, chartData.data), {
+              series: {
+                lines: {
+                  show: true
+                },
+                shadowSize: 0
+              },
+              xaxes: [ {
+                axisLabel: chartData.xAxis.name,
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 16,
+                axisLabelFontFamily: 'Arial',
+              } ],
+              yaxes: buildYAxes(chartData),
+              zoom: {
+                interactive: chartData.interactive != undefined && chartData.interactive,
+                mode: 'y'
+              },
+              pan: {
+                interactive: chartData.interactive != undefined && chartData.interactive
+              },
+              legend: {
+                labelBoxBorderColor: "Black",
+                position: chartData.legendPosition
+              }
+            });
+          }
+        }
+      }
+      updateCharts(chartsData)
+    });
+  }
+    
+  function onConnectionStateChange(connected)
+  {
+    if (connected != state.connected)
+    {
+      state.connected = connected
+      document.title = 'War Thunder Flight Model Test Page - ' + (connected ? 'connected' : 'disconnected')      
+      var headerConnectionState = document.getElementById('HeaderConnectionState')
+      headerConnectionState.innerHTML = connected ? 'Connected' : 'Disconnected'
+      headerConnectionState.style.color = connected ? 'Black' : 'Red'
+    }
+  }
+   
+  function readPolarConstantsFromBlk(blk)
+  {
+    if (blk == undefined)
+      return undefined
+    else
+      return {  
+        Cx0:                  blk['CdMin:r'],
+        Cy0:                  blk['Cl0:r'],
+        AoACritHigh:          blk['alphaCritHigh:r'] * degToRad,
+        CyMax:                blk['ClCritHigh:r'],
+        AoACritLow:           blk['alphaCritLow:r'] * degToRad,
+        CyMin:                blk['ClCritLow:r']
+      }
+  }
+  
+  function readPolarFromBlk(blk)
+  {
+    var tbl = {
+      oswaldCoeff:          blk['OswaldsEfficiencyNumber:r'],
+      dCydAoA:              blk['lineClCoeff:r'] * degToRad,
+      afterCrit: {
+        parabAngle:         blk['AfterCritParabAngle:r'] * degToRad,
+        declineCoeff:       blk['AfterCritDeclineCoeff:r'],
+        maxDistanceAngle:   blk['AfterCritMaxDistanceAngle:r'] * degToRad,
+        Cy:                 blk['ClAfterCrit:r']
+      },      
+      noFlaps:              readPolarConstantsFromBlk(blk.NoFlaps) || readPolarConstantsFromBlk(blk),
+      fullFlaps:            readPolarConstantsFromBlk(blk.FullFlaps),    
+      machFactor:           blk['MachFactor:i'],
+      combinedCl:           blk['CombinedCl:b'],
+      machCrit1:            blk['MachCrit1:r'],
+      machMax1:             blk['MachMax1:r'],
+      multMachMax1:         blk['MultMachMax1:r'],
+      multLineCoeff1:       blk['MultLineCoeff1:r'],      
+      multLimit1:           blk['MultLimit1:r'],
+      machCrit2:            blk['MachCrit2:r'],
+      machMax2:             blk['MachMax2:r'],
+      multMachMax2:         blk['MultMachMax2:r'],
+      multLineCoeff2:       blk['MultLineCoeff2:r'],
+      multLimit2:           blk['MultLimit2:r'],
+      machCrit3:            blk['MachCrit3:r'],
+      machMax3:             blk['MachMax3:r'],
+      multMachMax3:         blk['MultMachMax3:r'],
+      multLineCoeff3:       blk['MultLineCoeff3:r'],
+      multLimit3:           blk['MultLimit3:r'],
+      machCrit4:            blk['MachCrit4:r'],
+      machMax4:             blk['MachMax4:r'],
+      multMachMax4:         blk['MultMachMax4:r'],
+      multLineCoeff4:       blk['MultLineCoeff4:r'],    
+      multLimit4:           blk['MultLimit4:r'],
+      machCrit5:            blk['MachCrit5:r'],
+      machMax5:             blk['MachMax5:r'],
+      multMachMax5:         blk['MultMachMax5:r'],
+      multLineCoeff5:       blk['MultLineCoeff5:r'],    
+      multLimit5:           blk['MultLimit5:r'],
+      machCrit6:            blk['MachCrit6:r'],
+      machMax6:             blk['MachMax6:r'],
+      multMachMax6:         blk['MultMachMax6:r'],
+      multLineCoeff6:       blk['MultLineCoeff6:r'],    
+      multLimit6:           blk['MultLimit6:r'],
+      machCrit7:            blk['MachCrit7:r'],
+      machMax7:             blk['MachMax7:r'],
+      multMachMax7:         blk['MultMachMax7:r'],
+      multLineCoeff7:       blk['MultLineCoeff7:r'],
+      multLimit7:           blk['MultLimit7:r']
+    }
+    return tbl
+  }
+  
+  function readFmBlk(tbl, fmBlk)
+  {
+    var aerodynamics = fmBlk.Aerodynamics
+    tbl.polar = {}
+    
+    var wingSweepTable = false
+    for (var i = 0; i < 8; ++i)
+    {
+      var polarName = "wingSweep" + (i + 1).toString();
+      var wingName = "WingPlaneSweep" + i.toString();
+      var wingSweep = aerodynamics[wingName]
+      if (wingSweep != undefined)
+      {
+        tbl.polar[polarName] = readPolarFromBlk(wingSweep.FlapsPolar0)
+        wingSweepTable = true
+      }
+    }
+    if (wingSweepTable)
+    {
+      tbl.polar['wingSweep'] = readPolarFromBlk(aerodynamics['WingPlaneSweep'].FlapsPolar0)
+    }
+    else
+    {
+      var wing = aerodynamics.WingPlane.FlapsPolar0
+      tbl.polar['wing'] = readPolarFromBlk(wing)
+    }
+
+    var stab = aerodynamics.HorStabPlane.Polar
+    var fin = aerodynamics.VerStabPlane.Polar
+    var fuselage = aerodynamics.FuselagePlane.Polar
+    
+    tbl.polar['stabilizer'] = readPolarFromBlk(stab)
+    tbl.polar['fin'] = readPolarFromBlk(fin)
+    tbl.polar['fuselage'] = readPolarFromBlk(fuselage)
+    
+    for (var i = 0; i < 6; ++i)
+    {
+      var polarName = "propeller" + (i + 1).toString() + "Blade";
+      var propellerName = "PropellerType" + i.toString();
+      var propeller = fmBlk[propellerName]
+      if (propeller != undefined)
+        tbl.polar[polarName] = readPolarFromBlk(propeller.Polar)
+    }
+  }
+   
+  function fillFmProperties(data)
+  {
+    if (!data.valid)
+      return
+    state.fm = data.id
+    
+    document.getElementById('HeaderAircraftType').innerHTML = 'Aircraft: ' + state.fm.typeName + ' from \"' + state.fm.fileName + '\"'
+    
+    readFmBlk(fmProperties, data.params)
+    for (var tableName in data.tables)
+      fmTables[tableName] = data.tables[tableName]
+
+    var comboPolarType = document.getElementById("ComboPolarType")
+    comboPolarType.options.length = 0   
+    
+    for (var charVariant = ChartVariant.NULL; charVariant < ChartVariant.MAX; ++charVariant)
+    {
+      var chartVariantPolar = chartVariantPolars[charVariant]
+      if (fmProperties.polar[chartVariantPolar])
+        comboPolarType.options[comboPolarType.options.length] = new Option(chartVariantsNames[charVariant], charVariant)
+    }
+        
+    if ((chartsParameters.items.polarType.value in chartVariantPolars) &&
+        chartVariantPolars[chartsParameters.items.polarType.value] in fmProperties.polar)
+    {
+    }
+    else
+    {
+      if ("propeller1Blade" in fmProperties.polar)
+        chartsParameters.items.polarType.value = ChartVariant.PROP1
+      else if ("wing" in fmProperties.polar)      
+        chartsParameters.items.polarType.value = ChartVariant.WING
+      else if ("wingSweep1" in fmProperties.polar)      
+        chartsParameters.items.polarType.value = ChartVariant.WING_SWEEP_1
+      else
+        chartsParameters.items.polarType.value = ChartVariant.STAB
+    }
+    saveParameter(chartsParameters.items.polarType, settings.unitSystemName)
+    
+    selectChartVariant('polar', chartsParameters.items.polarType.value)
+    setupCharts(chartsData.polar)
+  }
+  
+  //Callbacks
+  
+  function onChartsParamChange(path)
+  {
+    var param = getParameterByPath(chartsParameters, path)
+    if (param != undefined)
+    {
+      loadParameter(param, settings.unitSystemName)
+      serializeParameterToCookie(param, 'chartsParameters' + parameterPathToString(path))
+      updateFmPropertiesOnParamChange()
+    }
+    else
+      alert('Parameter path "chartsParameters' + parameterPathToString(path) + '" not found!')
+  }
+  
+  function enablePolarParameters()
+  {
+    setParameterEnabled(chartsParameters.items.sweep, chartsParameters.items.polarType.value == ChartVariant.WING_SWEEP, settings.unitSystemName)
+    var showFlapsParams = chartsParameters.items.polarType.value >= ChartVariant.WING && chartsParameters.items.polarType.value <= ChartVariant.WING_SWEEP_8
+    setParameterEnabled(chartsParameters.items.showFlaps, showFlapsParams, settings.unitSystemName)
+    setParameterEnabled(chartsParameters.items.flaps, showFlapsParams, settings.unitSystemName)
+    setParameterEnabled(chartsParameters.items.flapsMach, showFlapsParams, settings.unitSystemName)
+  }      
+  
+  function onPolarTypeChange()
+  {
+    onChartsParamChange(['polarType'])
+    setupCharts(chartsData.polar)
+    selectChartVariant('polar', chartsParameters.items.polarType.value)
+    enablePolarParameters()    
+  }
+    
+  function setCommand(data, successFunc, errorFunc) {
+    $.ajax({
+      url: '/editor/fm_polar',
+      data: data,
+      success: successFunc,
+      error: errorFunc
+    })
+  }
+  
+  function updateFmProperties()
+  {
+    setCommand( {
+                  cmd: 'getFmProperties',
+                  'fileName' : state.fm.fileName,
+                  'fileTime' : state.fm.fileTime,
+                  'machMin'  : chartsParameters.items.machMin.value,
+                  'machStep' : chartsParameters.items.machStep.value,
+                  'machMax'  : chartsParameters.items.machMax.value,
+                  'showFlaps': chartsParameters.items.showFlaps.value,
+                  'flaps'    : chartsParameters.items.flaps.value,
+                  'flapsMach': chartsParameters.items.flapsMach.value,
+                  'sweep'    : chartsParameters.items.sweep.value
+                },
+                function(data)
+                {
+                  onConnectionStateChange(true)
+                  fillFmProperties(data)
+                  setTimeout(updateFmProperties, 2500)
+                },
+                function(data)
+                {
+                  onConnectionStateChange(false)
+                  setTimeout(updateFmProperties, 2500)
+                }
+              )
+  }
+  
+  function updateFmPropertiesOnParamChange()
+  {
+    setCommand( {
+                  cmd: 'getFmProperties',
+                  'machMin'  : chartsParameters.items.machMin.value,
+                  'machStep' : chartsParameters.items.machStep.value,
+                  'machMax'  : chartsParameters.items.machMax.value,
+                  'showFlaps': chartsParameters.items.showFlaps.value,
+                  'flaps'    : chartsParameters.items.flaps.value,
+                  'flapsMach': chartsParameters.items.flapsMach.value,
+                  'sweep'    : chartsParameters.items.sweep.value
+                },
+                fillFmProperties
+              )
+  }  
+  
+  function updateFmPropertiesNow()
+  {
+    setCommand({cmd: 'getFmProperties'}, fillFmProperties)
+  }
+  
+  function init()
+  {
+    onConnectionStateChange(false)
+    
+    prepareParameter(chartsParameters)
+    deserializeParameterFromCookie(chartsParameters, 'chartsParameters')    
+    saveParameter(chartsParameters, settings.unitSystemName)
+        
+    updateFmProperties()
+    
+    enablePolarParameters()
+  }
+
+  window.onload = init;
+  
+  </script>
+  
+  <h1>"War Thunder" Flight Model</h1>  
+  <h1>Drag Polar</h1>  
+  <h2 id="HeaderConnectionState">Disconnected</h2>  
+  <h2 id="HeaderAircraftType">Unknown</h2>
+  <input type="button" value="Update" onClick="updateFmPropertiesNow()">
+  <table>
+    <tr>
+      <td colspan="10"><b>Parameters</b></td>
+    </tr>
+    <tr>
+      <td>Polar</td>
+      <td colspan="5"><select id="ComboPolarType" style="font-size:20px;font-weight:bold;" onchange="onPolarTypeChange()" style="width:100%"></select></td>
+      <td colspan="3"></td>
+    </tr>
+    <tr>  
+      <td>Mach</td>
+      <td>Min</td>
+      <td colspan="2"><input class="number-box" type="number" step="0.1" id="EditMachMin" size = "5" value="0" onchange="onChartsParamChange(['machMin'])"></td>  
+      <td>Step</td>
+      <td colspan="2"><input class="number-box" type="number" step="0.1" id="EditMachStep" size = "5" value="0" onchange="onChartsParamChange(['machStep'])"></td>  
+      <td>Max</td>
+      <td colspan="2"><input class="number-box" type="number" step="0.1" id="EditMachMax" size = "5" value="0" onchange="onChartsParamChange(['machMax'])"></td>  
+    </tr>
+    <tr>  
+      <td>Flaps</td>
+      <td>Show</td>
+      <td colspan="2"><input type="checkbox" id="CheckBoxShowFlaps" onchange="onChartsParamChange(['showFlaps'])"></td>  
+      <td>Value</td>
+      <td colspan="2"><input class="number-box" type="number" step="10.0" id="EditFlaps" size = "5" value="0" onchange="onChartsParamChange(['flaps'])"></td>  
+      <td>Mach</td>
+      <td colspan="2"><input class="number-box" type="number" step="0.1" id="EditFlapsMach" size = "5" value="0" onchange="onChartsParamChange(['flapsMach'])"></td>  
+    </tr>
+    <tr>
+      <td>Sweep</td>
+      <td>Value</td>
+      <td><input class="number-box" type="number" step="1.0" id="EditSweep" size = "5" value="0" onchange="onChartsParamChange(['sweep'])"></td>  
+      <td colspan="7"></td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <td>
+              <div class="chart-content-polar">
+                <div class="chart-container-polar">
+                  <div class="tableheader"><b>Cl(angle)</b></div>
+                  <div id="placeholder_polar_0" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+            <td>
+              <div class="chart-content-polar">
+                <div class="chart-container-polar">
+                  <div class="tableheader"><b>Cd(angle)</b></div>
+                  <div id="placeholder_polar_1" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+          </tr>
+          <tr>
+            <td>
+              <div class="chart-content-polar">
+                <div class="chart-container-polar">
+                  <div class="tableheader"><b>Cl(angle) / Cd(angle)</b></div>
+                  <div id="placeholder_polar_2" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+            <td>
+              <div class="chart-content-polar">
+                <div class="chart-container-polar">
+                  <div class="tableheader"><b>Cl(Cd)</b></div>
+                  <div id="placeholder_polar_3" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+          </tr>
+          <tr>
+          </tr>
+        </table>
+      </td>  
+      <td>
+        <table>
+          <tr>
+            <td>
+              <div class="chart-content-polar-2">
+                <div class="chart-container-polar-2">
+                  <div class="tableheader"><b>Cl0(M)</b></div>
+                  <div id="placeholder_polar_4" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+          </tr>
+          <tr>
+            <td>
+              <div class="chart-content-polar-2">
+                <div class="chart-container-polar-2">
+                  <div class="tableheader"><b>δCl/δAoA(M)</b></div>
+                  <div id="placeholder_polar_5" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+          </tr>
+          <tr>
+            <td>
+              <div class="chart-content-polar-2">
+                <div class="chart-container-polar-2">
+                  <div class="tableheader"><b>Clcrit(M)</b></div>
+                  <div id="placeholder_polar_6" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+          </tr>
+          <tr>
+            <td>
+              <div class="chart-content-polar-2">
+                <div class="chart-container-polar-2">
+                  <div class="tableheader"><b>AoAcrit(M)</b></div>
+                  <div id="placeholder_polar_7" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+          </tr>
+        </table>
+      </td>
+      <td>
+        <table>
+          <tr>
+            <td>
+              <div class="chart-content-polar-2">
+                <div class="chart-container-polar-2">
+                  <div class="tableheader"><b>Cd0(M)</b></div>
+                  <div id="placeholder_polar_8" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+          </tr>
+          <tr>
+            <td>
+              <div class="chart-content-polar-2">
+                <div class="chart-container-polar-2">
+                  <div class="tableheader"><b>A(M)</b></div>
+                  <div id="placeholder_polar_9" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+          </tr>          
+          <tr>
+            <td>
+              <div class="chart-content-polar-2">
+                <div class="chart-container-polar-2">
+                  <div class="tableheader"><b>δMza/δFl(M)</b></div>
+                  <div id="placeholder_polar_10" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+          </tr>
+          <tr>
+            <td>
+              <div class="chart-content-polar-2">
+                <div class="chart-container-polar-2">
+                  <div class="tableheader"><b></b></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</html>

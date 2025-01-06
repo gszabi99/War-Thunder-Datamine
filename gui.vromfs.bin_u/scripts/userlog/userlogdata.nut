@@ -679,7 +679,8 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
     if (skip)
       continue
 
-    let dubIdx = (logObj.type == EULT_OPEN_TROPHY  && logObj?.parentTrophyRandId)
+    let { disableVisible = false, needStackItems = true } = filter
+    let dubIdx = (needStackItems && logObj.type == EULT_OPEN_TROPHY  && logObj?.parentTrophyRandId)
       ? logs.findindex(@(inst) inst.type == EULT_OPEN_TROPHY
         && inst?.parentTrophyRandId == logObj.parentTrophyRandId
           && inst?.id == logObj?.id && inst.time == logObj.time)
@@ -698,7 +699,7 @@ let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHidd
     // so no need reduce logs array to avoid differences with blk
     logs.append(dubIdx != null ? logObj.__merge({ isDubTrophy = true }) : logObj)
 
-    if ("disableVisible" in filter && filter.disableVisible) {
+    if (disableVisible) {
       if (disable_user_log_entry(i))
         needSave = true
     }

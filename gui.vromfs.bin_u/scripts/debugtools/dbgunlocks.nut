@@ -164,6 +164,7 @@ function debug_show_debriefing_trophy(trophyItemId) {
   let filteredLogs = ::getUserLogsList({
     show = [EULT_OPEN_TROPHY]
     disableVisible = true
+    needStackItems = false
     checkFunc = @(userlog) trophyItemId == userlog.body.id
   })
 

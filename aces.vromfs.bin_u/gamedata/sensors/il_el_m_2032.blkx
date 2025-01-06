@@ -4,6 +4,24 @@
   "showMissileLaunchZone": true,
   "showMissileDgftLaunchZone": true,
   "transivers": {
+    "hprf": {
+      "sideLobesAttenuation": -20.0,
+      "power": 1200.0,
+      "band": 8,
+      "rcs": 5.0,
+      "range": 150000.0,
+      "rangeMax": 200000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "antenna": {
+        "angleHalfSens": 3.0,
+        "sideLobesSensitivity": -32.0
+      }
+    },
     "GTM": {
       "sideLobesAttenuation": -20.0,
       "power": 600.0,
@@ -19,7 +37,7 @@
         0.0
       ],
       "antenna": {
-        "angleHalfSens": 4.0,
+        "angleHalfSens": 3.0,
         "sideLobesSensitivity": -32.0
       }
     },
@@ -81,7 +99,7 @@
   "illuminationTransmitter": {
     "power": 1200.0,
     "antenna": {
-      "angleHalfSens": 4.0,
+      "angleHalfSens": 3.0,
       "sideLobesSensitivity": -32.0
     }
   },
@@ -100,7 +118,7 @@
       "pitchStabLimit": 70.0,
       "period": 0.6,
       "width": 10.0,
-      "barHeight": 2.85,
+      "barHeight": 2.1,
       "barsCount": 2,
       "rowMajor": true
     },
@@ -118,7 +136,7 @@
       "pitchStabLimit": 70.0,
       "period": 3.7,
       "width": 30.0,
-      "barHeight": 2.85,
+      "barHeight": 2.1,
       "barsCount": 4,
       "rowMajor": true
     },
@@ -136,7 +154,7 @@
       "pitchStabLimit": 70.0,
       "period": 4.3,
       "width": 70.0,
-      "barHeight": 2.85,
+      "barHeight": 2.1,
       "barsCount": 2,
       "rowMajor": true
     },
@@ -154,7 +172,7 @@
       "pitchStabLimit": 70.0,
       "period": 0.6,
       "width": 10.0,
-      "barHeight": 2.85,
+      "barHeight": 2.1,
       "barsCount": 2,
       "rowMajor": true,
       "preciseMinor": true,
@@ -174,7 +192,7 @@
       "pitchStabLimit": 70.0,
       "period": 3.7,
       "width": 30.0,
-      "barHeight": 2.85,
+      "barHeight": 2.1,
       "barsCount": 4,
       "rowMajor": true,
       "preciseMinor": true,
@@ -194,7 +212,7 @@
       "pitchStabLimit": 70.0,
       "period": 4.3,
       "width": 70.0,
-      "barHeight": 2.85,
+      "barHeight": 2.1,
       "barsCount": 2,
       "rowMajor": true,
       "preciseMinor": true,
@@ -212,7 +230,7 @@
       ],
       "period": 1.75,
       "width": 25.0,
-      "barHeight": 3.3,
+      "barHeight": 2.5,
       "barsCount": 3,
       "rowMajor": false,
       "centerElevation": 20.0,
@@ -230,7 +248,7 @@
       ],
       "period": 1.4,
       "width": 15.0,
-      "barHeight": 2.5,
+      "barHeight": 1.85,
       "barsCount": 4,
       "rowMajor": false,
       "indicate": true
@@ -263,7 +281,7 @@
       "pitchStabLimit": 70.0,
       "period": 0.35,
       "width": 5.7,
-      "barHeight": 3.0,
+      "barHeight": 2.25,
       "barsCount": 2,
       "rowMajor": false,
       "indicate": true
@@ -282,7 +300,7 @@
       "pitchStabLimit": 70.0,
       "period": 0.7,
       "width": 5.7,
-      "barHeight": 3.0,
+      "barHeight": 2.25,
       "barsCount": 4,
       "rowMajor": false,
       "indicate": true
@@ -338,7 +356,7 @@
       "distance": {
         "presents": true,
         "minValue": 500.0,
-        "maxValue": 74000.0,
+        "maxValue": 180000.0,
         "width": 500.0
       },
       "dopplerSpeed": {
@@ -410,7 +428,7 @@
       "distance": {
         "presents": true,
         "minValue": 200.0,
-        "maxValue": 74000.0,
+        "maxValue": 180000.0,
         "width": 150.0
       },
       "dopplerSpeed": {
@@ -434,8 +452,55 @@
       "distance": {
         "presents": true,
         "minValue": 200.0,
-        "maxValue": 74000.0,
+        "maxValue": 200000.0,
         "width": 150.0
+      }
+    },
+    "hprfSearch": {
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "mainBeamDopplerSpeed": true,
+      "distance": {
+        "presents": true,
+        "minValue": 5000.0,
+        "maxValue": 200000.0,
+        "width": 2000.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": 40.0,
+        "maxValue": 1500.0,
+        "signalWidthMin": 5.0,
+        "width": 120.0
+      }
+    },
+    "hprfTrack": {
+      "rangeFinder": true,
+      "dopplerSpeedFinder": true,
+      "dynamicRange": [
+        40.0,
+        15.0
+      ],
+      "groundClutter": true,
+      "aircraftAsTarget": true,
+      "angularAccuracy": 0.05,
+      "distanceAccuracy": 15.0,
+      "absDopplerSpeed": false,
+      "mainBeamDopplerSpeed": false,
+      "track": true,
+      "distance": {
+        "presents": true,
+        "minValue": 200.0,
+        "maxValue": 200000.0,
+        "width": 500.0
+      },
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -1500.0,
+        "maxValue": 1500.0,
+        "signalWidthMin": 2.0,
+        "width": 20.0
       }
     },
     "surfaceSearch": {
@@ -535,7 +600,7 @@
             ],
             "distanceRange": [
               0.0,
-              92500.0
+              138750.0
             ],
             "distanceWidth": 2000.0,
             "distanceRelWidthMin": 0.05,
@@ -1079,6 +1144,39 @@
         },
         "resetHmdTrackMode": {
           "resetTrackMode": {}
+        },
+        "setHprfStandbyMode": {
+          "setStandbyModeCommon": {},
+          "setScanPatternSet": {
+            "scanPatternSet": "search"
+          },
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setModeName": {
+            "name": "PD HDN standby"
+          }
+        },
+        "setHprfSearchMode": {
+          "setSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setModeName": {
+            "name": "PD HDN search"
+          }
+        },
+        "setHprfBvrLockMode": {
+          "setBvrLockMode": {},
+          "setModeName": {
+            "name": "PD HDN acquisition"
+          }
         },
         "setGtmStandbyMode": {
           "setSearchStandbyModeCommon": {},
@@ -1859,8 +1957,56 @@
             ]
           }
         },
-        "twsToHprfVelocity": {
+        "twsToHprf": {
           "stateFrom": "tws",
+          "command": "modeSwitch",
+          "stateTo": "hprf",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setHprfStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setHprfSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrLockMode",
+                "actionTemplateName": "setHprfBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetSearch"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetSearchMode"
+              }
+            ],
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
+            },
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "hprfToHprfVelocity": {
+          "stateFrom": "hprf",
           "command": "modeSwitch",
           "stateTo": "hprfVelocity",
           "actions": {
@@ -2168,6 +2314,47 @@
         }
       }
     },
+    "illumination": {
+      "stateInit": "init",
+      "transitions": {
+        "activate": {
+          "event": "fsmActivate",
+          "stateTo": "active",
+          "actions": {
+            "checkIlluminationTimeOut": {
+              "transiver": true,
+              "pauseMax": 20.0
+            }
+          }
+        },
+        "deactivate": {
+          "event": "fsmDeactivate",
+          "stateTo": "inactive",
+          "actions": {
+            "setIllumination": {
+              "transiver": false
+            }
+          }
+        },
+        "activateIllumination": {
+          "event": "sarhMissileLaunch",
+          "actions": {
+            "setIlluminationTimeOut": {
+              "timeOut": 60.0
+            }
+          }
+        },
+        "updateIllumination": {
+          "event": "update",
+          "actions": {
+            "checkIlluminationTimeOut": {
+              "transiver": true,
+              "pauseMax": 20.0
+            }
+          }
+        }
+      }
+    },
     "track": {
       "stateInit": "init",
       "actionsTemplates": {
@@ -2177,6 +2364,14 @@
           },
           "setSignal": {
             "signal": "mprfTrack"
+          }
+        },
+        "setHprfTrack": {
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfTrack"
           }
         },
         "setLprfTrack": {
@@ -2252,6 +2447,42 @@
             }
           }
         },
+        "hprfOkTryDetectMprf": {
+          "stateFrom": "hprfOkMprfTry",
+          "event": "update",
+          "actions": {
+            "setMprfTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            },
+            "setHprfTrack": {}
+          }
+        },
+        "tryDetectHprf": {
+          "stateFrom": "hprfTry",
+          "event": "update",
+          "actions": {
+            "setHprfTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            },
+            "setMprfTrack": {}
+          }
+        },
+        "lprfOkTryDetectHprf": {
+          "stateFrom": "lprfOkHprfTry",
+          "event": "update",
+          "actions": {
+            "setHprfTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            },
+            "setLprfTrack": {}
+          }
+        },
         "lprfOkTryDetectMprf": {
           "stateFrom": "lprfOkMprfTry",
           "event": "update",
@@ -2277,10 +2508,6 @@
           }
         },
         "detect": {
-          "stateFrom": [
-            "mprf",
-            "lprf"
-          ],
           "event": "update",
           "actions": {
             "detectTarget": {
@@ -2299,6 +2526,7 @@
         "startTrackMprf": {
           "stateFrom": [
             "mprfTry",
+            "hprfOkMprfTry",
             "lprfOkMprfTry"
           ],
           "event": "targetDetected",
@@ -2311,10 +2539,33 @@
             }
           }
         },
+        "trackHprf": {
+          "stateFrom": "hprf",
+          "event": "targetDetected",
+          "stateTo": "hprfOkMprfTry",
+          "actions": {
+            "track": {}
+          }
+        },
+        "startTrackHprf": {
+          "stateFrom": [
+            "hprfTry",
+            "lprfOkHprfTry"
+          ],
+          "event": "targetDetected",
+          "stateTo": "hprf",
+          "actions": {
+            "setHprfTrack": {},
+            "track": {},
+            "setModeName": {
+              "name": "PD HDN track"
+            }
+          }
+        },
         "trackLprf": {
           "stateFrom": "lprf",
           "event": "targetDetected",
-          "stateTo": "lprfOkMprfTry",
+          "stateTo": "lprfOkHprfTry",
           "actions": {
             "track": {}
           }
@@ -2331,13 +2582,40 @@
             }
           }
         },
-        "mprfToLprf": {
+        "mprfToHprf": {
           "stateFrom": [
             "mprf",
             "mprfTry"
           ],
           "event": "targetNotDetected",
+          "stateTo": "hprfTry",
+          "actions": {
+            "extrapolate": {}
+          }
+        },
+        "backToHprf": {
+          "stateFrom": "hprfOkMprfTry",
+          "event": "targetNotDetected",
+          "stateTo": "hprfTry",
+          "actions": {
+            "extrapolate": {}
+          }
+        },
+        "hprfToLprfTry": {
+          "stateFrom": [
+            "hprf",
+            "hprfTry"
+          ],
+          "event": "targetNotDetected",
           "stateTo": "lprfTry",
+          "actions": {
+            "extrapolate": {}
+          }
+        },
+        "lprfToMprfTry": {
+          "stateFrom": "lprfOkHprfTry",
+          "event": "targetNotDetected",
+          "stateTo": "lprfOkMprfTry",
           "actions": {
             "extrapolate": {}
           }
@@ -2366,47 +2644,6 @@
             "extrapolate": {},
             "setModeName": {
               "name": "track memory"
-            }
-          }
-        }
-      }
-    },
-    "illumination": {
-      "stateInit": "init",
-      "transitions": {
-        "activate": {
-          "event": "fsmActivate",
-          "stateTo": "active",
-          "actions": {
-            "checkIlluminationTimeOut": {
-              "transiver": true,
-              "pauseMax": 20.0
-            }
-          }
-        },
-        "deactivate": {
-          "event": "fsmDeactivate",
-          "stateTo": "inactive",
-          "actions": {
-            "setIllumination": {
-              "transiver": false
-            }
-          }
-        },
-        "activateIllumination": {
-          "event": "sarhMissileLaunch",
-          "actions": {
-            "setIlluminationTimeOut": {
-              "timeOut": 60.0
-            }
-          }
-        },
-        "updateIllumination": {
-          "event": "update",
-          "actions": {
-            "checkIlluminationTimeOut": {
-              "transiver": true,
-              "pauseMax": 20.0
             }
           }
         }

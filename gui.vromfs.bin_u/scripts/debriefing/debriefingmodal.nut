@@ -991,6 +991,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       show = [EULT_OPEN_TROPHY]
       currentRoomOnly = true
       disableVisible = true
+      needStackItems = false
       checkFunc = function(userlog) { return trophyItemId == userlog.body.id }
     })
 
@@ -1071,6 +1072,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     let filteredLogs = ::getUserLogsList({
       show = [EULT_OPEN_TROPHY]
       currentRoomOnly = true
+      needStackItems = false
       checkFunc = function(userlog) { return trophyItem.id == userlog.body.id }
     })
 

@@ -387,12 +387,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (needCount > count)
         this.guiScene.createMultiElementsByObject(cellsContainer, "%gui/shop/shopUnitCell.blk", "unitCell", needCount - count, this)
 
-      count = max(count, needCount)
-      if (count != cellsContainer.childrenCount()) {
-        tableIndex += 1
-        continue //prevent crash on error, but anyway we will get assert in such case on update
-      }
-
+      count = cellsContainer.childrenCount()
       let parentPosY = maxCellY > 0 ? maxCellY + 1 : 0
       for (local i = 0; i < count; i++) {
         let cellObj = cellsContainer.getChild(i)
@@ -452,10 +447,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (needCount > count)
       this.guiScene.createMultiElementsByObject(tableObj, "%gui/shop/shopUnitCell.blk", "unitCell", needCount - count, this)
 
-    count = max(count, needCount)
-    if (count != tableObj.childrenCount())
-      return //prevent crash on error, but anyway we will get assert in such case on update
-
+    count = tableObj.childrenCount()
     for (local i = 0; i < count; i++) {
       let cellObj = tableObj.getChild(i)
       if (i not in cellsList) {

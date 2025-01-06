@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
+
+  <style>
+    body {
+      background-color: #333;
+      color: #eee;
+      font-family: Tahoma, Verdana, Arial;
+    }
+
+    div.caption {
+      height:25px;
+      width:999px;
+      text-align: center;
+      background-color: #555;
+      margin: 0px;
+    }
+
+    #dm-log {
+      display: table;
+      background-color: rgba(20, 30, 25, 0.5);
+      position: absolute;
+      left: 8px; top: 60px; width:999px; height: 25px
+    }
+  </style>
+
+  <script src="../jquery-1.10.1.min.js"></script>
+  <!--script src="../jquery-ui-1.10.3.interact.min.js"></script-->
+
+  <script language="javascript" type="text/javascript">
+    cookieLifeTime = 60*60*24*1000
+
+    lastDMLogRecId = -1
+
+    function update_dm_log(data) {
+      if (!data)
+        return
+
+      var root = $('#dm-log')
+
+      if (data.clear) {
+        lastDMLogRecId = -1
+        root.empty()
+        return
+      }
+
+      var messages = data.messages
+      if (!messages.length)
+        return
+
+      for (var i=0; i<messages.length; ++i) {
+        var el = $(document.createElement('div'))
+        var rec = messages[i]
+        el.text(rec.time + ' ' + rec.msg)
+        root.append(el)
+      }
+      lastDMLogRecId = messages[messages.length-1].id
+    }
+
+    function updateSlow() {
+      $.ajax({type:'GET', url:'/dm_log?lastId='+lastDMLogRecId, success:update_dm_log })
+    }
+
+
+    function local_debug_init() {
+      var root = $('#dm-log')
+      for (var i=0; i<500; ++i) {
+        var el = $(document.createElement('div'))
+        el.text("Jingle bells jingle bells")
+        root.append(el)
+      }
+    }
+
+    function init() {
+      if (document.location.protocol != 'file:') {
+        setInterval(updateSlow, 500);
+      } else {
+        local_debug_init()
+      }
+    }
+
+    function on_clear_dm_log(data) {
+      $.ajax({
+        type: 'POST',
+        url: '/dm_log/clear',
+        success: function(data, textStatus, jqXHR) {
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('Clear error.\n\nError:\n\n' + textStatus + '\n\n' + errorThrown)
+        }
+      })
+    }
+
+    window.onload = init;
+
+  </script>
+</head>
+
+<body>
+  <div class="caption">Damage model log</div>
+  <button onclick="on_clear_dm_log()">Clear log</button>
+  <div id="dm-log"></div>
+</body>
+
+</html>

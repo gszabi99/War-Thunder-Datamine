@@ -916,7 +916,7 @@
         "setGtmBvrLockMode": {
           "setBvrLockModeCommon": {},
           "setFsmActive": {
-            "fsm": "lock",
+            "fsm": "bvrLock",
             "active": true
           },
           "setScanPattern": {
@@ -949,7 +949,7 @@
         },
         "resetGtmBvrLockMode": {
           "setFsmActive": {
-            "fsm": "lock",
+            "fsm": "bvrLock",
             "active": false
           }
         },
@@ -1918,63 +1918,6 @@
       }
     },
     "bvrLock": {
-      "stateInit": "lock",
-      "actionsTemplates": {
-        "setMprfLock": {
-          "setTransiver": {
-            "transiver": "mprf"
-          },
-          "setSignal": {
-            "signal": "mprfSearch"
-          }
-        },
-        "setHprfLock": {
-          "setTransiver": {
-            "transiver": "hprf"
-          },
-          "setSignal": {
-            "signal": "hprfSearch"
-          }
-        }
-      },
-      "transitions": {
-        "init": {
-          "event": "fsmActivate",
-          "actions": {
-            "setMprfLock": {}
-          }
-        },
-        "scan": {
-          "event": "update",
-          "actions": {
-            "setMprfLock": {},
-            "scan": [
-              {},
-              {}
-            ],
-            "setHprfLock": {}
-          }
-        },
-        "detect": {
-          "event": "targetInSight",
-          "actions": {
-            "setMprfLock": {},
-            "detectTarget": [
-              {
-                "ignoreOwnWeapon": true,
-                "rangeMult": 1.0
-              },
-              {
-                "ignoreOwnWeapon": true,
-                "rangeMult": 1.0
-              }
-            ],
-            "setHprfLock": {}
-          }
-        }
-      }
-    },
-    "lock": {
       "stateInit": "lock",
       "transitions": {
         "scan": {

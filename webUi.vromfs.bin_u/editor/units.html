@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
+
+  <script src="../jquery-1.10.1.min.js"></script>
+
+  <style>
+    body {
+      color: #333;
+      background-color: #fff;
+    }
+
+    table {
+      border-spacing: 0;
+      border: 1px solid #cbcbcb;
+    }
+
+    thead {
+      background: #e0e0e0;
+      color: #000;
+    }
+
+    td, th {
+      padding: 0px 5px;
+      border-left: 1px solid #cbcbcb;
+      border-bottom: 1px solid #cbcbcb;
+      text-align: center;
+    }
+
+    th {
+      font-family: sans-serif;
+    }
+
+    tr[isDelayed=yes] {
+      background-color: #eee;
+    }
+
+    tr[isHero=yes] {
+      background-color: lightgreen;
+    }
+
+    button {
+      -webkit-border-radius: 2px 2px;
+      border: solid 1px rgb(153, 153, 153);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(221, 221, 221)));
+      color: #333;
+      cursor: pointer;
+    }
+    button:disabled {
+      border: solid 1px rgb(203, 203, 203);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(231, 231, 231)));
+      color: #999;
+      cursor: default;
+    }
+  </style>
+
+
+  <script language="javascript" type="text/javascript">
+    function make_on_pos(pos) {
+      return function() {
+        $.ajax({
+          url: '/editor/view',
+          method: 'POST',
+          data: {pos: JSON.stringify(pos)},
+          success: function() {},
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert('Error setting camera pos to '+pos+':\n'+textStatus+'\n'+errorThrown)
+          }
+        })
+      }
+    }
+    
+    function make_on_unit_command(unit_id, cmd) {
+      return function() {
+        $.ajax({
+          url: '/editor/unit/cmd',
+          data: {id: unit_id, cmd: cmd},
+          success: function() {},
+          error: function(jqXHR, textStatus, errorThrown) {
+            alert('Error processing '+cmd+' for unit '+unit_id+':\n'+textStatus+'\n'+errorThrown)
+          }
+        })
+      }
+    }
+
+    function fill_table(table, json_data, air) {
+      table.empty()
+
+      var headStr = '<th>#</th> <th>Name</th> <th>Flags</th> <th>a</th> <th>Model</th>' +
+          '<th>Pos</th> <th>Kill</th> <th>Delay</th> <th>Spawn</th> <th>Camera</th> <th>Own</th> + <th>ver</th>'
+
+      if (air) {
+        headStr += '<th>Nick</th> <th>ur</th> <th>eff</th> <th>a/u</th> <th>info</th>'
+      }
+
+      var head = $('<tr>'+headStr+'</tr>')
+
+      table.append(head)
+
+      $.each(json_data, function(index, item) {
+        var row = $('<tr>', {id: item.id})
+        var cells = [
+          $('<td>', {text: item.id}),
+          $('<td>', {text: item.missionName}),
+          $('<td>', {html: item.unitFlags}),
+          $('<td>', {html: item.army}),
+          $('<td>', {text: item.modelName}),
+          $('<td>').append($('<button>', {text: 'Pos',   click:make_on_pos(item.pos)})),
+          $('<td>').append($('<button>', {text: 'Kill',  click:make_on_unit_command(item.id, 'kill')}).prop('disabled', !item.canKill)),
+          $('<td>').append($('<button>', {text: 'Delay', click:make_on_unit_command(item.id, 'delay')}).prop('disabled', !item.canKill)),
+          $('<td>').append($('<button>', {text: 'Spawn', click:make_on_unit_command(item.id, 'spawn')}).prop('disabled', !item.canSpawn)),
+          $('<td>').append($('<button>', {text: 'Camera',click:make_on_unit_command(item.id, 'camera')}).prop('disabled', !item.canToggleCam)),
+          $('<td>').append($('<button>', {text: 'Own',   click:make_on_unit_command(item.id, 'own')})),
+          $('<td>', {text: item.authorityVer}),
+        ]
+
+        if (air) {
+          cells = cells.concat([
+            $('<td>', {text: item.playerName}),
+            $('<td>', {text: item.remoteUpdateRate}),
+            $('<td>', {html: item.effectiveness}),
+            $('<td>', {text: ''}),
+            $('<td>', {text: item.status}),
+          ])
+        }
+
+        $.each(cells, function(idx, cell) {
+          row.append(cell)
+        })
+
+        if (item.isHero)
+          row.attr('isHero', 'yes')
+        if (item.isDelayed)
+          row.attr('isDelayed', 'yes')
+
+        table.append(row)
+      })      
+    }
+
+    function on_units_list(data) {
+      fill_table($('#Aircrafts'), data['Aircrafts'], true)
+      fill_table($('#GroundModels'), data['GroundModels'], false)
+      fill_table($('#Infantry'), data['Infantry'], false)
+    }
+
+
+    function init() {
+      $.ajax({
+        url: '/editor/unit/list',
+        success: on_units_list,
+      })
+    }
+
+    window.onload = init;
+
+  </script>
+
+</head>
+
+<body>
+  <h3>Aircrafts</h3>
+  <table id="Aircrafts">
+  </table>
+
+  <h3>Ground models</h3>
+  <table id="GroundModels">
+  </table>
+
+  <h3>Infantry</h3>
+  <table id="Infantry">
+  </table>
+
+</body>
+
+</html>

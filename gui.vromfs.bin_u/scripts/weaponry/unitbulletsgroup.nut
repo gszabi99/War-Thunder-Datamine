@@ -44,8 +44,8 @@ class BulletGroup {
     this.constrainedTotalCount = params?.constrainedTotalCount ?? this.constrainedTotalCount
 
     this.bullets = getOptionsBulletsList(this.unit, this.groupIndex, false, this.isForcedAvailable)
-    this.selectedName = getTblValue(this.bullets.value, this.bullets.values, "")
-    let saveValue = this.getBulletNameForCode(this.selectedName)
+    this.selectedName = this.bullets.values?[this.bullets.value] ?? ""
+    let saveValue = this.bullets.saveValues?[this.bullets.value] ?? ""
 
     if (getSavedBullets(this.unit.name, this.groupIndex) != saveValue)
       setUnitLastBullets(this.unit, this.groupIndex, this.selectedName)

@@ -58,6 +58,7 @@ function checkRecivedAllPrizes(config) {
   let notReceivedPrizes = []
   let userLogs = ::getUserLogsList({
     show = [ EULT_OPEN_TROPHY ]
+    needStackItems = false
     checkFunc = @(userLog) expectedPrizes.findvalue(
       @(p) p.itemId == (p.isInternalTrophy ? userLog?.body.trophyItemId : userLog?.body.itemId)
     ) != null

@@ -1,0 +1,661 @@
+{
+  "title_id": "NPWR00544",
+  "missionSettingsSchemePath": "mission_settings.scheme.nut",
+  "areaFxBlkPath": "../../../develop/gameBase/gameData/areaFx/areaFx.blk",
+  "defaultPathForMissions": "gameBase/gameData/missions",
+  "zonesSchemePath": "areas.scheme.nut",
+  "languagesPath": "gameBase/lang_src/lang_compiled",
+  "units": {
+    "armada": {
+      "scheme": "units/aircraft.scheme.nut",
+      "icon": "units/icons/armada.tga",
+      "default_height": 400.0,
+      "waypoints": {
+        "normal": {},
+        "takeoff": {},
+        "land": {},
+        "gattack": {}
+      },
+      "classes": {
+        "path": "gameBase\\gameData\\FlightModels",
+        "wildcard": "*.blk",
+        "exclude": "^_.*\\.blk$",
+        "scan_subfolders": false,
+        "param_name": "model",
+        "use_name_of_file_as_vis_asset_name": false
+      }
+    },
+    "objectGroups": {
+      "scheme": "units/objects_group.scheme.nut",
+      "icon": "units/icons/objectgroup.tga",
+      "classes": {
+        "path": "gameBase\\gameData\\objectGroups",
+        "object_group": true,
+        "wildcard": "*.blk",
+        "exclude": [
+          "^_.*\\.blk$",
+          "^test_.*\\.blk$",
+          "war.blk$"
+        ],
+        "scan_subfolders": false,
+        "param_name": "",
+        "use_name_of_file_as_vis_asset_name": false
+      }
+    },
+    "structures": {
+      "scheme": "units/common.scheme.nut",
+      "icon": "units/icons/warobject.tga",
+      "classes": {
+        "path": "gameBase\\gameData\\units\\structures",
+        "wildcard": "*.blk",
+        "exclude": [
+          "^_.*\\.blk$",
+          "^test_.*\\.blk$"
+        ],
+        "scan_subfolders": false,
+        "param_name": "model",
+        "use_name_of_file_as_vis_asset_name": false
+      }
+    },
+    "infantry": {
+      "scheme": "units/infantry.scheme.nut",
+      "icon": "units/icons/infantry.tga",
+      "waypoints": {
+        "normal": {}
+      },
+      "classes": {
+        "path": "gameBase\\gameData\\units\\infantry",
+        "wildcard": "*.blk",
+        "exclude": [
+          "^_.*\\.blk$",
+          "^test_.*\\.blk$"
+        ],
+        "scan_subfolders": false,
+        "param_name": "model",
+        "use_name_of_file_as_vis_asset_name": false
+      }
+    },
+    "tracked_vehicles": {
+      "scheme": "units/common.scheme.nut",
+      "icon": "units/icons/tank.tga",
+      "waypoints": {
+        "normal": {}
+      },
+      "classes": {
+        "path": "gameBase\\gameData\\units\\tracked_vehicles",
+        "wildcard": "*.blk",
+        "exclude": [
+          "^_.*\\.blk$",
+          "^test_.*\\.blk$"
+        ],
+        "scan_subfolders": false,
+        "param_name": "model",
+        "use_name_of_file_as_vis_asset_name": false
+      }
+    },
+    "ships": {
+      "scheme": "units/common.scheme.nut",
+      "icon": "units/icons/ship.tga",
+      "waypoints": {
+        "normal": {}
+      },
+      "classes": {
+        "path": "gameBase\\gameData\\units\\ships",
+        "wildcard": "*.blk",
+        "exclude": [
+          "^_.*\\.blk$",
+          "^test_.*\\.blk$"
+        ],
+        "scan_subfolders": false,
+        "param_name": "model",
+        "use_name_of_file_as_vis_asset_name": false
+      }
+    },
+    "radars": {
+      "scheme": "units/common.scheme.nut",
+      "icon": "units/icons/artillery.tga",
+      "classes": {
+        "path": "gameBase\\gameData\\units\\radars",
+        "wildcard": "*.blk",
+        "exclude": [
+          "^_.*\\.blk$",
+          "^test_.*\\.blk$"
+        ],
+        "scan_subfolders": false,
+        "param_name": "model",
+        "use_name_of_file_as_vis_asset_name": false
+      }
+    },
+    "air_defence": {
+      "scheme": "units/common.scheme.nut",
+      "icon": "units/icons/artillery.tga",
+      "waypoints": {
+        "normal": {}
+      },
+      "classes": {
+        "path": "gameBase\\gameData\\units\\air_defence",
+        "wildcard": "*.blk",
+        "exclude": [
+          "^_.*\\.blk$",
+          "^test_.*\\.blk$"
+        ],
+        "scan_subfolders": false,
+        "param_name": "model",
+        "use_name_of_file_as_vis_asset_name": false
+      }
+    },
+    "wheeled_vehicles": {
+      "scheme": "units/common.scheme.nut",
+      "icon": "units/icons/car.tga",
+      "waypoints": {
+        "normal": {}
+      },
+      "classes": {
+        "path": "gameBase\\gameData\\units\\wheeled_vehicles",
+        "wildcard": "*.blk",
+        "exclude": [
+          "^_.*\\.blk$",
+          "^test_.*\\.blk$"
+        ],
+        "scan_subfolders": false,
+        "param_name": "model",
+        "use_name_of_file_as_vis_asset_name": false
+      }
+    },
+    "squad": {
+      "scheme": "units/squad.scheme.nut",
+      "icon": "units/icons/squad.tga"
+    }
+  },
+  "waypoints": {
+    "has_actions": false,
+    "none": {
+      "scheme": "waypoints/none.scheme.nut"
+    },
+    "normal": {
+      "scheme": "waypoints/normal.scheme.nut"
+    },
+    "takeoff": {
+      "scheme": "waypoints/land.scheme.nut"
+    },
+    "land": {
+      "scheme": "waypoints/land.scheme.nut"
+    },
+    "gattack": {
+      "scheme": "waypoints/normal.scheme.nut"
+    }
+  },
+  "mission_objectives": {
+    "abstractMissionObjective": {
+      "scheme": "misObjs/abstract.scheme.nut"
+    },
+    "waypointsMissionObjective": {
+      "scheme": "misObjs/waypoint.scheme.nut"
+    },
+    "unitMissionObjective": {
+      "scheme": "misObjs/unit.scheme.nut"
+    },
+    "followMissionObjective": {
+      "scheme": "misObjs/follow.scheme.nut"
+    },
+    "landMissionObjective": {
+      "scheme": "misObjs/land.scheme.nut"
+    }
+  },
+  "actions": {
+    "addAirfield": {
+      "scheme": "actions/addAirfield.scheme.nut"
+    },
+    "airfieldSetIndication": {
+      "scheme": "actions/airfieldSetIndication.scheme.nut"
+    },
+    "awardAchievement": {
+      "scheme": "actions/awardAchievement.scheme.nut"
+    },
+    "missionAttempts": {
+      "scheme": "actions/missionAttempts.scheme.nut"
+    },
+    "missionBattleArea": {
+      "scheme": "actions/missionBattleArea.scheme.nut"
+    },
+    "missionCompleted": {
+      "scheme": "actions/missionCompleted.scheme.nut"
+    },
+    "missionDebriefing": {
+      "scheme": "actions/missionDebriefing.scheme.nut"
+    },
+    "missionDestroyArea": {
+      "scheme": "actions/missionDestroyArea.scheme.nut"
+    },
+    "missionHint": {
+      "scheme": "actions/missionHint.scheme.nut"
+    },
+    "missionEnableMapAutoScale": {
+      "scheme": "actions/missionEnableMapAutoScale.scheme.nut"
+    },
+    "missionFailed": {
+      "scheme": "actions/missionFailed.scheme.nut"
+    },
+    "missionKillEffects": {
+      "scheme": "actions/missionKillEffects.scheme.nut"
+    },
+    "missionForceMusic": {
+      "scheme": "actions/missionForceMusic.scheme.nut"
+    },
+    "missionDisableRadiochat": {
+      "scheme": "actions/missionDisableRadiochat.scheme.nut"
+    },
+    "missionMarkAsCaptureZone": {
+      "scheme": "actions/missionMarkAsCaptureZone.scheme.nut"
+    },
+    "missionMarkAsLandingZone": {
+      "scheme": "actions/missionMarkAsLandingZone.scheme.nut"
+    },
+    "missionMarkAsWaypoint": {
+      "scheme": "actions/missionMarkAsWaypoint.scheme.nut"
+    },
+    "missionMarkUnitsForStrike": {
+      "scheme": "actions/missionMarkUnitsForStrike.scheme.nut"
+    },
+    "missionMarkAsRespawnPoint": {
+      "scheme": "actions/missionMarkAsRespawnPoint.scheme.nut"
+    },
+    "missionPlayDialogue": {
+      "scheme": "actions/missionPlayDialogue.scheme.nut"
+    },
+    "missionSetFade": {
+      "scheme": "actions/missionSetFade.scheme.nut"
+    },
+    "missionSetFailText": {
+      "scheme": "actions/missionSetFailText.scheme.nut"
+    },
+    "missionSetProperties": {
+      "scheme": "actions/missionSetProperties.scheme.nut"
+    },
+    "missionSetScore": {
+      "scheme": "actions/missionSetScore.scheme.nut"
+    },
+    "missionSetTimeIndicator": {
+      "scheme": "actions/missionSetTimeIndicator.scheme.nut"
+    },
+    "missionSetTimeSpeed": {
+      "scheme": "actions/missionSetTimeSpeed.scheme.nut"
+    },
+    "missionSetTargetsIndicator": {
+      "scheme": "actions/missionSetTargetsIndicator.scheme.nut"
+    },
+    "missionStartCutscene": {
+      "scheme": "actions/missionStartCutscene.scheme.nut"
+    },
+    "missionStartGuiScene": {
+      "scheme": "actions/missionStartGuiScene.scheme.nut"
+    },
+    "missionStopCutscene": {
+      "scheme": "actions/missionStopCutscene.scheme.nut"
+    },
+    "missionStopSpeech": {
+      "scheme": "actions/missionStopSpeech.scheme.nut"
+    },
+    "moAddMissionObjective": {
+      "scheme": "actions/moAddMissionObjective.scheme.nut"
+    },
+    "moSetObjectiveStatus": {
+      "scheme": "actions/moSetObjectiveStatus.scheme.nut"
+    },
+    "objectGroupSetAirfield": {
+      "scheme": "actions/objectGroupSetAirfield.scheme.nut"
+    },
+    "playerControls": {
+      "scheme": "actions/playerControls.scheme.nut"
+    },
+    "playerEmulateShortcut": {
+      "scheme": "actions/playerEmulateShortcut.scheme.nut"
+    },
+    "playerOptions": {
+      "scheme": "actions/playerOptions.scheme.nut"
+    },
+    "playHint": {
+      "scheme": "actions/playHint.scheme.nut"
+    },
+    "playerToggleHero": {
+      "scheme": "actions/playerToggleHero.scheme.nut"
+    },
+    "playerSetPhys": {
+      "scheme": "actions/playerSetPhys.scheme.nut"
+    },
+    "playSound": {
+      "scheme": "actions/playSound.scheme.nut"
+    },
+    "roundCompleted": {
+      "scheme": "actions/roundCompleted.scheme.nut"
+    },
+    "spawnOnAirfield": {
+      "scheme": "actions/spawnOnAirfield.scheme.nut"
+    },
+    "systemLog": {
+      "scheme": "actions/systemLog.scheme.nut"
+    },
+    "systemCommand": {
+      "scheme": "actions/systemCommand.scheme.nut"
+    },
+    "systemShakeCamera": {
+      "scheme": "actions/systemShakeCamera.scheme.nut"
+    },
+    "systemPlayRumble": {
+      "scheme": "actions/systemPlayRumble.scheme.nut"
+    },
+    "triggerActivate": {
+      "scheme": "actions/triggerActivate.scheme.nut"
+    },
+    "triggerDisable": {
+      "scheme": "actions/triggerDisable.scheme.nut"
+    },
+    "triggerEnable": {
+      "scheme": "actions/triggerEnable.scheme.nut"
+    },
+    "unitDamage": {
+      "scheme": "actions/unitDamage.scheme.nut"
+    },
+    "unitDestroyMissile": {
+      "scheme": "actions/unitDestroyMissile.scheme.nut"
+    },
+    "unitDropAmmo": {
+      "scheme": "actions/unitDropAmmo.scheme.nut"
+    },
+    "unitFire": {
+      "scheme": "actions/unitFire.scheme.nut"
+    },
+    "unitForceRearmSpeed": {
+      "scheme": "actions/unitForceRearmSpeed.scheme.nut"
+    },
+    "unitLandOnAirfield": {
+      "scheme": "actions/unitLandOnAirfield.scheme.nut"
+    },
+    "unitLoadBehTree": {
+      "scheme": "actions/unitLoadBehTree.scheme.nut"
+    },
+    "unitRespawn": {
+      "scheme": "actions/unitRespawn.scheme.nut"
+    },
+    "unitRestore": {
+      "scheme": "actions/unitRestore.scheme.nut"
+    },
+    "unitPlayEffect": {
+      "scheme": "actions/unitPlayEffect.scheme.nut"
+    },
+    "unitPutToSleep": {
+      "scheme": "actions/unitPutToSleep.scheme.nut"
+    },
+    "unitSpawnOnObjectGroup": {
+      "scheme": "actions/unitSpawnOnObjectGroup.scheme.nut"
+    },
+    "unitWakeUp": {
+      "scheme": "actions/unitWakeUp.scheme.nut"
+    },
+    "unitSetControls": {
+      "scheme": "actions/unitSetControls.scheme.nut"
+    },
+    "unitSetIndication": {
+      "scheme": "actions/unitSetIndication.scheme.nut"
+    },
+    "unitSetStealth": {
+      "scheme": "actions/unitSetStealth.scheme.nut"
+    },
+    "unitFollowWaypoints": {
+      "scheme": "actions/unitFollowWaypoints.scheme.nut"
+    },
+    "unitAttackTarget": {
+      "scheme": "actions/unitAttackTarget.scheme.nut"
+    },
+    "unitMoveTo": {
+      "scheme": "actions/unitMoveTo.scheme.nut"
+    },
+    "unitMark": {
+      "scheme": "actions/unitMark.scheme.nut"
+    },
+    "unitSetAttachedMenCount": {
+      "scheme": "actions/unitSetAttachedMenCount.scheme.nut"
+    },
+    "unitSetDrownProperties": {
+      "scheme": "actions/unitSetDrownProperties.scheme.nut"
+    },
+    "unitSetProperties": {
+      "scheme": "actions/unitSetProperties.scheme.nut"
+    },
+    "unitSetFormation": {
+      "scheme": "actions/unitSetFormation.scheme.nut"
+    },
+    "varModify": {
+      "scheme": "actions/varModify.scheme.nut"
+    },
+    "varSetBool": {
+      "scheme": "actions/varSetBool.scheme.nut"
+    },
+    "varSetInt": {
+      "scheme": "actions/varSetInt.scheme.nut"
+    },
+    "varSetReal": {
+      "scheme": "actions/varSetReal.scheme.nut"
+    },
+    "varSetString": {
+      "scheme": "actions/varSetString.scheme.nut"
+    },
+    "varSetRandomInt": {
+      "scheme": "actions/varSetRandomInt.scheme.nut"
+    },
+    "wait": {
+      "scheme": "actions/wait.scheme.nut"
+    },
+    "loop": {
+      "scheme": "actions/loop.scheme.nut"
+    },
+    "playerSetAmmo": {
+      "scheme": "actions/playerSetAmmo.scheme.nut"
+    },
+    "playerSetMouseAim": {
+      "scheme": "actions/playerSetMouseAim.scheme.nut"
+    },
+    "playerCenterMouseAim": {
+      "scheme": "actions/playerCenterMouseAim.scheme.nut"
+    },
+    "gameMPChangeScore": {
+      "scheme": "actions/gameMPChangeScore.scheme.nut"
+    },
+    "hudElementBlink": {
+      "scheme": "actions/hudElementBlink.scheme.nut"
+    },
+    "hudElementEnlarge": {
+      "scheme": "actions/hudElementEnlarge.scheme.nut"
+    },
+    "hudElementSelectionShade": {
+      "scheme": "actions/hudElementSelectionShade.scheme.nut"
+    },
+    "hudWindowsHide": {
+      "scheme": "actions/hudWindowsHide.scheme.nut"
+    },
+    "tacticalMapControl": {
+      "scheme": "actions/tacticalMapControl.scheme.nut"
+    },
+    "showSmartCutscene": {
+      "scheme": "actions/showSmartCutscene.scheme.nut"
+    },
+    "showCutsceneInfo": {
+      "scheme": "actions/showCutsceneInfo.scheme.nut"
+    },
+    "preloadRendInsts": {
+      "scheme": "actions/preloadRendInsts.scheme.nut"
+    },
+    "waitRendInst": {
+      "scheme": "actions/waitRendInst.scheme.nut"
+    }
+  },
+  "conditions": {
+    "gameWhenDifficulty": {
+      "scheme": "conditions/gameWhenDifficulty.scheme.nut"
+    },
+    "gameWhenControlMode": {
+      "scheme": "conditions/gameWhenControlMode.scheme.nut"
+    },
+    "gameWhenControlWarning": {
+      "scheme": "conditions/gameWhenControlWarning.scheme.nut"
+    },
+    "gameWhenHintIsNotActive": {
+      "scheme": "conditions/gameWhenHintIsNotActive.scheme.nut"
+    },
+    "infantryTroopWhenKilledByPlayerMatches": {
+      "scheme": "conditions/infantryTroopWhenKilledByPlayerMatches.scheme.nut"
+    },
+    "misObjStatus": {
+      "scheme": "conditions/misObjStatus.scheme.nut"
+    },
+    "missionIsLZCaptured": {
+      "scheme": "conditions/missionIsLZCaptured.scheme.nut"
+    },
+    "missionIsSuccess": {
+      "scheme": "conditions/missionIsSuccess.scheme.nut"
+    },
+    "missionIsZoneCaptured": {
+      "scheme": "conditions/missionIsZoneCaptured.scheme.nut"
+    },
+    "missionWhenAdditionalTime": {
+      "scheme": "conditions/missionWhenAdditionalTime.scheme.nut"
+    },
+    "missionWhenTime": {
+      "scheme": "conditions/missionWhenTime.scheme.nut"
+    },
+    "playersDistanceBetween": {
+      "scheme": "conditions/playersDistanceBetween.scheme.nut"
+    },
+    "playersWhenEnemyNear": {
+      "scheme": "conditions/playersWhenEnemyNear.scheme.nut"
+    },
+    "playersWhenInArea": {
+      "scheme": "conditions/playersWhenInArea.scheme.nut"
+    },
+    "playersWhenOnLZ": {
+      "scheme": "conditions/playersWhenOnLZ.scheme.nut"
+    },
+    "playersWhenReachHeight": {
+      "scheme": "conditions/playersWhenReachHeight.scheme.nut"
+    },
+    "playersWhenStatus": {
+      "scheme": "conditions/playersWhenStatus.scheme.nut"
+    },
+    "playerWhenManeuver": {
+      "scheme": "conditions/playerWhenManeuver.scheme.nut"
+    },
+    "playerWhenOptions": {
+      "scheme": "conditions/playerWhenOptions.scheme.nut"
+    },
+    "playerWhenOrientation": {
+      "scheme": "conditions/playerWhenOrientation.scheme.nut"
+    },
+    "playerWhenCameraState": {
+      "scheme": "conditions/playerWhenCameraState.scheme.nut"
+    },
+    "playerWhenCursorIn": {
+      "scheme": "conditions/playerWhenCursorIn.scheme.nut"
+    },
+    "triggerStatus": {
+      "scheme": "conditions/triggerStatus.scheme.nut"
+    },
+    "unitDistanceBetween": {
+      "scheme": "conditions/unitDistanceBetween.scheme.nut"
+    },
+    "unitWhenAnyLess": {
+      "scheme": "conditions/unitWhenAnyLess.scheme.nut"
+    },
+    "unitWhenControls": {
+      "scheme": "conditions/unitWhenControls.scheme.nut"
+    },
+    "unitWhenCountMatches": {
+      "scheme": "conditions/unitWhenCountMatches.scheme.nut"
+    },
+    "unitWhenEnemyNear": {
+      "scheme": "conditions/unitWhenEnemyNear.scheme.nut"
+    },
+    "unitWhenInArea": {
+      "scheme": "conditions/unitWhenInArea.scheme.nut"
+    },
+    "unitWhenOnLZ": {
+      "scheme": "conditions/unitWhenOnLZ.scheme.nut"
+    },
+    "unitWhenPartHp": {
+      "scheme": "conditions/unitWhenPartHp.scheme.nut"
+    },
+    "unitWhenProperties": {
+      "scheme": "conditions/unitWhenProperties.scheme.nut"
+    },
+    "unitWhenReachHeight": {
+      "scheme": "conditions/unitWhenReachHeight.scheme.nut"
+    },
+    "unitWhenStatus": {
+      "scheme": "conditions/unitWhenStatus.scheme.nut"
+    },
+    "varCompareBool": {
+      "scheme": "conditions/varCompareBool.scheme.nut"
+    },
+    "varCompareInt": {
+      "scheme": "conditions/varCompareInt.scheme.nut"
+    },
+    "varCompareReal": {
+      "scheme": "conditions/varCompareReal.scheme.nut"
+    },
+    "varCompareString": {
+      "scheme": "conditions/varCompareString.scheme.nut"
+    },
+    "playerShortcutPressed": {
+      "scheme": "conditions/playerShortcutPressed.scheme.nut"
+    },
+    "playerSeesUnit": {
+      "scheme": "conditions/playerSeesUnit.scheme.nut"
+    },
+    "playerAxisValueReached": {
+      "scheme": "conditions/playerAxisValueReached.scheme.nut"
+    },
+    "destructibleInArea": {
+      "scheme": "conditions/destructibleInArea.scheme.nut"
+    },
+    "unitsInLineOfSight": {
+      "scheme": "conditions/unitsInLineOfSight.scheme.nut"
+    },
+    "missionWhenInBattleArea": {
+      "scheme": "conditions/missionWhenInBattleArea.scheme.nut"
+    }
+  },
+  "events": {
+    "periodicEvent": {
+      "scheme": "events/periodicEvent.scheme.nut"
+    },
+    "timeExpires": {
+      "scheme": "events/timeExpires.scheme.nut"
+    },
+    "initMission": {
+      "scheme": "events/initMission.scheme.nut"
+    }
+  },
+  "triggers": {
+    "scheme": "triggersSettings.scheme.nut",
+    "defaultEvents": {
+      "event": "periodicEvent"
+    }
+  },
+  "play_mission": {
+    "use_develop": true,
+    "registryKey": "SOFTWARE\\\\activision\\\\apache",
+    "param": "-mission:"
+  },
+  "speeches": {
+    "scheme": "speechesSettings.scheme.nut"
+  },
+  "languages": {
+    "lang": [
+      "English",
+      "Russian",
+      "French",
+      "Italian",
+      "German",
+      "Spanish"
+    ]
+  }
+}

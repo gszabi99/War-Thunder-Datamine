@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <script src="../cookies.js"></script>
+  <script src="../jquery-1.10.1.min.js"></script>  
+  <title>War Thunder Flight Model Test Page</title>
+</head>
+
+<body>
+
+  <style>
+    body {
+      color: #333;
+      background-color: #fff;
+    }
+
+    table {
+      border-spacing: 0;
+      border: 1px solid #cbcbcb;
+    }
+
+    thead {
+      background: #e0e0e0;
+      color: #000;
+    }
+
+    td, th {
+      padding: 0px 5px;
+      border-left: 1px solid #cbcbcb;
+      border-bottom: 1px solid #cbcbcb;
+      text-align: center;
+    }
+
+    th {
+      font-family: sans-serif;
+    }
+
+    tr[isDelayed=yes] {
+      background-color: #eee;
+    }
+
+    tr[isHero=yes] {
+      background-color: lightgreen;
+    }
+
+    button {
+      -webkit-border-radius: 2px 2px;
+      border: solid 1px rgb(153, 153, 153);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(221, 221, 221)));
+      color: #333;
+      cursor: pointer;
+    }
+    button:disabled {
+      border: solid 1px rgb(203, 203, 203);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(231, 231, 231)));
+      color: #999;
+      cursor: default;
+    }
+  </style>
+  
+  <script language="javascript" type="text/javascript">
+  
+  //Common    
+   
+  //Units
+  
+    const cookieLifeTime = 60*60*24*1000
+  
+    const unitSystems = {
+      Metric: {
+        dist: {
+          name: 'km',
+          coeff: 0.001
+        },
+        altitude: {
+          name: 'm',
+          coeff: 1.0
+        },
+        velocity: {
+          name: 'km/h',
+          coeff: 1.0 / 3.6
+        },
+        verticalVelocity: {
+          name: 'm/s',
+          coeff: 1.0
+        },
+        mass: {
+          name: 'kg',
+          coeff: 1.0
+        },
+        time: {
+          name: 's',
+          coeff: 1.0
+        },
+        angularVelocity: {
+          name: 'deg/s',
+          coeff: Math.PI / 180.0
+        },
+        rotationVelocity: {
+          name: 'rpm',
+          coeff: (2 * Math.PI) / 60.0
+        },
+        pressure: {
+          name: 'ATA',
+          coeff: 1.01325e5
+        },
+        ratio: {
+          name: '%',
+          coeff: 0.01
+        }
+      },
+      'Imperial-kts': {
+        dist: {
+          name: 'nm',
+          coeff: 1.0 / 1850.0
+        },
+        altitude: {
+          name: 'feet',
+          coeff: 1.0 / 3.28
+        },
+        velocity: {
+          name: 'kts',
+          coeff: 1.0 / 3.6 * 1.852
+        },
+        verticalVelocity: {
+          name: 'feet/s',
+          coeff: 1.0 / 3.28
+        },
+        mass: {
+          name: 'lb',
+          coeff: 0.45362
+        },
+        time: {
+          name: 's',
+          coeff: 1.0
+        },
+        angularVelocity: {
+          name: 'deg/s',
+          coeff: Math.PI / 180.0
+        },
+        rotationVelocity: {
+          name: 'rpm',
+          coeff: (2 * Math.PI) / 60.0
+        },
+        pressure: {
+          name: 'inHg',
+          coeff: 3386.5307
+        },
+        ratio: {
+          name: '%',
+          coeff: 0.01
+        }
+      },
+      'Imperial-mph': {
+        dist: {
+          name: 'ml',
+          coeff: 1.0 / 1600.0
+        },
+        altitude: {
+          name: 'feet',
+          coeff: 1.0 / 3.28
+        },
+        velocity: {
+          name: 'mph',
+          coeff: 1.0 / 2.237
+        },
+        verticalVelocity: {
+          name: 'feet/s',
+          coeff: 1.0 / 3.28
+        },
+        mass: {
+          name: 'lb',
+          coeff: 0.45362
+        },
+        time: {
+          name: 's',
+          coeff: 1.0
+        },
+        angularVelocity: {
+          name: 'deg/s',
+          coeff: Math.PI / 180.0
+        },
+        rotationVelocity: {
+          name: 'rpm',
+          coeff: (2 * Math.PI) / 60.0
+        },
+        pressure: {
+          name: 'inHg',
+          coeff: 3386.5307
+        },
+        ratio: {
+          name: '%',
+          coeff: 0.01
+        }
+      }
+    }
+
+    //State
+    const testMode = false
+    
+    var connected = false
+ 
+    var settings = {
+      unitSystem: 'Metric'
+    }
+    
+    var aircraftProperties = {
+      type: 'Unknown',
+      file: 'Unknown',
+      mass: {
+        noFuel: 0.0,
+        maxFuel: 0.0,
+        tota: 0.0
+      }
+    }
+       
+    var flightParams = {
+      alt: {
+        value: 2000.0,
+        type: 'altitude',
+        min: 0.0
+      },
+      vel: {
+        value: 300.0 / 3.6,
+        type: 'velocity',
+        min: 0.0
+      },
+      fuelMassRatio: {
+        value: 0.5,
+        type: 'ratio',
+        min: 0.0,
+        //max: 1.0
+      },
+      mass: {
+        value: 1000.0,
+        type: 'mass',
+        min: 0.0,
+        min: 1000.0
+      }
+    }    
+    
+    //Value
+    
+    function loadValue(value, type) {
+      if (type != undefined)
+        return parseFloat(value) * unitSystems[settings['unitSystem']][type]['coeff']
+      else
+        return value
+    }
+       
+    function saveValue2(value, param) {
+      const type = param['type']
+      var val = (type != undefined) ? value / unitSystems[settings['unitSystem']][type]['coeff'] : value
+      var precision = param['precision']
+      if (!precision)
+        precision = 0
+      return val.toFixed(precision)
+    }
+    
+    function saveValue(param) {
+      return saveValue2(param['value'], param)
+    }
+     
+    //GUI fill commands
+    
+    function onConnectionStateChange(state)
+    {
+      if (state != connected)
+      {
+        connected = state
+        document.title = 'War Thunder Flight Model Test Page - ' + (connected ? 'connected' : 'disconnected')      
+        var headerConnectionState = document.getElementById('HeaderConnectionState')
+        headerConnectionState.innerHTML = connected ? 'Connected' : 'Disconnected'
+        headerConnectionState.style.color = connected ? 'Black' : 'Red'
+      }
+    }
+    
+    function fillMasses(data)
+    {
+      flightParams['fuelMassRatio']['value'] = data['fuelMassRatio']
+      flightParams['mass']['value'] = data['mass']
+      
+      var editFuelMassRatio = document.getElementById('EditFuelMassRatio')
+      editFuelMassRatio.value = saveValue(flightParams['fuelMassRatio'])
+      editFuelMassRatio.style.color = flightParams['fuelMassRatio']['value'] > 1.0 ? 'red' : 'black'
+      
+      var editMass = document.getElementById('EditMass')
+      editMass.value = saveValue(flightParams['mass'])
+      editMass.style.color = flightParams['fuelMassRatio']['value'] > 1.0 ? 'red' : 'black'
+    }    
+    
+    function fillFmProperties(data) {
+          
+      if (!data['valid'])
+        return
+    
+      aircraftProperties = data
+                  
+      //Aircraft type
+      document.getElementById('HeaderAircraftType').innerHTML = 'Aircraft: ' + aircraftProperties['type'] + ' from \"' + aircraftProperties['file'] + '.blk\"'
+      
+      //Flight parameters
+      const mass = aircraftProperties['mass']      
+      const noFuelMass = mass['noFuel']
+      const maxFuelMass = mass['maxFuel']
+      const totalMass = mass['total']
+      flightParams['mass']['min'] = noFuelMass
+      //flightParams['mass']['max'] = noFuelMass + maxFuelMass
+      flightParams['fuelMassRatio']['value'] = (totalMass - noFuelMass) / maxFuelMass
+      flightParams['mass']['value'] = totalMass
+
+      const maxMass = noFuelMass + maxFuelMass
+      aircraftProperties['maxMass'] = maxMass
+      document.getElementById('LabelMaxMass').innerHTML = saveValue2(maxMass, flightParams['mass'])
+      document.getElementById('EditFuelMassRatio').value = saveValue(flightParams['fuelMassRatio'])
+      document.getElementById('EditMass').value = saveValue(flightParams['mass'])
+    }
+    
+    function fillParameters() {
+      var altUnitName = unitSystems[settings['unitSystem']]['altitude']['name']
+      var speedUnitName = unitSystems[settings['unitSystem']]['velocity']['name']
+      var massUnitName = unitSystems[settings['unitSystem']]['mass']['name']      
+      var alt = 'Altitude, ' + altUnitName
+      
+      //Flight Parameters
+      document.getElementById('LabelAltitude').innerHTML = alt
+      document.getElementById('LabelVelocity').innerHTML = 'TAS, ' + speedUnitName
+      document.getElementById('LabelFuelMassRatio').innerHTML = 'Fuel Mass Ratio, ' + unitSystems[settings['unitSystem']]['ratio']['name']
+      document.getElementById('LabelMass').innerHTML = 'Mass, ' + massUnitName
+      document.getElementById('LabelMaxMass').innerHTML = saveValue2(aircraftProperties['maxMass'], flightParams['mass'])
+      
+      document.getElementById('EditAltitude').value = saveValue(flightParams['alt'])
+      document.getElementById('EditVelocity').value = saveValue(flightParams['vel'])
+      document.getElementById('EditFuelMassRatio').value = saveValue(flightParams['fuelMassRatio'])
+      document.getElementById('EditMass').value = saveValue(flightParams['mass'])
+    }    
+    
+    function fillSettingsAndParameters() {
+      //Settings
+      document.getElementById("ComboBoxUnitSystem").value = settings['unitSystem']
+      fillParameters()
+    }
+    
+    //GUI Callbacks
+    
+    function onUnitSystemChange(combo) {
+      settings['unitSystem'] = combo.value
+      Cookies.set('unitSystem', settings['unitSystem'], {expires:cookieLifeTime})
+      fillParameters()   
+    }
+        
+    function onParamChange(param, edit) {
+      var value = loadValue(edit.value, param['type'])
+      if (param['min'] != undefined)
+        value = Math.max(param['min'], value)
+      if (param['max'] != undefined)
+        value = Math.min(param['max'], value)
+      param['value'] = value
+      if (param['min'] != undefined || param['max'] != undefined)
+        edit.value = saveValue(param)      
+      return value
+    }
+    
+    function onFlightParamChange(paramName, edit) {
+      var value = onParamChange(flightParams[paramName], edit) 
+      Cookies.set('flightParams_' + paramName, value.toString(), {expires:cookieLifeTime})
+    }
+        
+    //Commands to Web-server      
+    function setCommand(data, successFunc, errorFunc) {
+//      try
+//      {
+        $.ajax({
+          url: '/editor/fm_commands',
+          data: data,
+          success: successFunc,
+          error: errorFunc
+        })
+//      }
+//      catch(e)
+//      {
+      
+//      }
+    }
+    
+    const testFmProperties = {
+      valid: true,
+      type: 'P-47',
+      mass: {
+        maxFuel: 600.0,
+        noFuel: 4000.0
+      },
+      engine: {
+        compressorStageCount: 2,
+        minManifoldPressure: 0.3 * 1.01325e5,
+        maxManifoldPressure: 1.7 * 1.01325e5,
+        minOmega: 1600 * (2 * Math.PI) / 60.0,
+        maxOmega: 2700 * (2 * Math.PI) / 60.0,
+        collerControl: true
+      },
+      flapsControl: true,
+      gearControl: true,
+      polar: {
+        params: {
+          oswaldCoeff: 0.72,
+          dCydAoA: 2.4,
+          afterCrit: {
+            parabAngle: 3.0,
+            declineCoeff: 1.0,
+            maxDistanceAngle: 1.7,
+            Cy: 1.08
+          },
+          noFlaps: {
+            Cx0: 0.01,
+            Cy0: 1.2,
+            AoACritHigh: 16,
+            CyMax: 2.2,
+            AoACritLow: -12,
+            CyMin: -1.2
+          },
+          fullFlaps: {
+            Cx0: 0.01,
+            Cy0: 1.8,
+            AoACritHigh: 14,
+            CyMax: 2.8,
+            AoACritLow: -10,
+            CyMin: -0.8
+          }
+        },
+        plot: {
+          noFlaps: [
+            [0.0, 0.001, 0.8],
+            [2.0, 0.003, 1.2],
+            [4.0, 0.008, 1.4],
+            [6.0, 0.011, 1.6],
+            [8.0, 0.015, 2.4]
+          ],
+          fullFlaps: [
+            [0.0, 0.001, 0.8],
+            [2.0, 0.003, 1.2],
+            [4.0, 0.008, 1.4],
+            [6.0, 0.011, 1.6],
+            [8.0, 0.015, 2.4]
+          ]
+        }
+      }
+    }
+
+    function updateFmProperties() {
+      if (!testMode)
+        setCommand( {
+                      cmd: 'getFmProperties',
+                      'fileTime' : aircraftProperties['fileTime']
+                    },
+                    function(data) {
+                      onConnectionStateChange(true)
+                      fillFmProperties(data)
+                      if (!testMode)
+                        setTimeout(updateFmProperties, 2500)
+                    },
+                    function(data) {
+                      onConnectionStateChange(false)
+                      if (!testMode)
+                        setTimeout(updateFmProperties, 2500)
+                    }
+                  )
+      else
+        fillFmProperties(testFmProperties)
+    }
+    
+    function setAltitude() {
+      var alt = flightParams['alt']['value']
+      setCommand( {cmd: 'setAlt', value: alt.toString() } )
+    }
+      
+    function setSpeed() {
+      var speed = flightParams['vel']['value']
+      setCommand( {cmd: 'setVelocity', value: speed.toString() } )
+    }
+        
+    function setFuelMassRatio() {
+      var fuelMassRatio = flightParams['fuelMassRatio']['value']
+      setCommand( {cmd: 'setFuelMassRatio', value: fuelMassRatio.toString() }, fillMasses )
+    }
+    
+    function setMass() {
+      var mass = flightParams['mass']['value']
+      setCommand( {cmd: 'setMass', value: mass.toString() }, fillMasses )
+    }
+  
+    //Initialization
+    
+    function loadCookie(name, def) {
+      const value = Cookies.get(name)
+      return (value != undefined) ? value : def
+    }
+    
+    function loadParamFromCookie(param, name, def) {
+      const value = parseFloat(Cookies.get(name))
+      param['value'] = (value != undefined) ? value : def
+    }
+    
+    function loadRelativeParamFromCookie(param, name, def) {   
+      const value = Cookies.get(name)
+      const ratio = (value != undefined) ? value : def
+      param['value'] = param['min'] + ratio * (param['max'] - param['min'])
+    }
+    
+    function loadCookies() {
+      //Settings
+      settings['unitSystem']    = loadCookie(Cookies.get('unitSystem'),             settings['unitSystem'])
+      //Flight parameters
+      for (flightParamName in flightParams)
+      {
+        const flightParamStrValue = Cookies.get('flightParams_' + flightParamName)
+        if (flightParamStrValue != undefined)
+        {
+          const flightParamValue = parseFloat(flightParamStrValue)
+          flightParams[flightParamName]['value'] = flightParamValue
+        }
+      }     
+    }
+    
+    function init() {
+      onConnectionStateChange(false)
+      updateFmProperties()
+      loadCookies()
+      fillSettingsAndParameters()
+    }
+
+    window.onload = init;
+      
+  </script>
+    
+  <h2 id="HeaderConnectionState">Disconnected</h2>  
+  <h2>Settings</h2>
+  <table class="Settings">
+    <tr>
+      <td class="editLabel">Unit System</td>  
+      <td>      
+        <select id="ComboBoxUnitSystem" onchange="onUnitSystemChange(this)" style="width:100%">
+          <option selected value="Metric">Metric</option>
+          <option value="Imperial-mph">Imperial-mph</option>
+          <option value="Imperial-kts">Imperial-kts</option>
+        </select>
+      </td>  
+    </tr>
+  </table>  
+
+  <h2>Flight Control</h2>
+  <h2 id="HeaderAircraftType">Unknown</h2>
+  <table>
+    <tr>
+      <td valign="top">
+        <div class="tableheader"><b>Parameters</b></div>
+        <table class="FlightParameters">
+          <tr>
+            <td class="editLabel" id="LabelAltitude">Altitude:</td>  
+            <td><input type="number" step="1" id="EditAltitude" size = "5" value="2000" onchange="onFlightParamChange('alt', this)"></td>  
+            <td><input type="button" value="Set" onClick="setAltitude()"></td>  
+            <td class="editLabel">+INF</td>  
+          </tr>
+          <tr>
+            <td class="editLabel" id="LabelVelocity">Speed:</td>  
+            <td><input type="number" step="1" id="EditVelocity" size = "5" value="300" onchange="onFlightParamChange('vel', this)"></td>  
+            <td><input type="button" value="Set" onClick="setSpeed()"></td>  
+            <td class="editLabel">+INF</td>  
+          </tr>
+          <tr>
+            <td class="editLabel" id="LabelFuelMassRatio">Fuel Mass Ratio:</td>  
+            <td><input type="number" step="1" id="EditFuelMassRatio" size = "5" value="50" onchange="onFlightParamChange('fuelMassRatio', this)"></td>  
+            <td><input type="button" id="ButtonFuelMassRatio" value="Set" onClick="setFuelMassRatio()"></td>  
+            <td class="editLabel">100</td>  
+          </tr>
+          <tr>
+            <td class="editLabel" id="LabelMass">Mass:</td>  
+            <td><input type="number" step="1" id="EditMass" size = "5" value="1000" onchange="onFlightParamChange('mass', this)"></td>  
+            <td><input type="button" id="ButtonMass" value="Set" onClick="setMass()"></td>  
+            <td class="editLabel" id="LabelMaxMass">1000.0</td>  
+          </tr>          
+        </table>
+      </td>  
+    </tr>
+  </table>
+</body>
+</html>

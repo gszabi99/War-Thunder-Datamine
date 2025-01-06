@@ -1,0 +1,83 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Websocket client</title>
+    <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="page-header">Websocket client</h1>
+
+        <form action="" class="form-inline" id="connectForm">
+            <div class="input-append">
+                <input type="text" class="input-large" value="ws://localhost:8088/echo" id="wsServer">
+                <button class="btn" type="submit" id="connect">Connect</button>
+                <button class="btn" disabled="disabled" id="disconnect">Disconnect</button>
+            </div>
+        </form>
+        <form action="" id="sendForm">
+            <div class="input-append">
+                <input class="input-large" type="text" placeholder="message" id="message" disabled="disabled">
+                <button class="btn btn-primary" type="submit" id="send" disabled="disabled">send</button>
+            </div>
+        </form>
+        <hr>
+        <ul class="unstyled" id="log"></ul>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var ws;
+
+            $('#connectForm').on('submit', function() {
+                if ("WebSocket" in window) {
+                    ws = new WebSocket($('#wsServer').val());
+                    ws.onopen = function() {
+                        $('#log').append('<li><span class="badge badge-success">websocket opened</span></li>');
+                        $('#wsServer').attr('disabled', 'disabled');
+                        $('#connect').attr('disabled', 'disabled');
+                        $('#disconnect').removeAttr('disabled');
+                        $('#message').removeAttr('disabled').focus();
+                        $('#send').removeAttr('disabled');
+                    };
+
+                    ws.onerror = function(event) {
+                        $('#log').append('<li><span class="badge badge-important">websocket error: ' + event.data + '</span></li>');
+                    };
+
+                    ws.onmessage = function(event) {
+                        $('#log').append('<li>received: <span class="badge">' + event.data + '</span></li>');
+                    };
+
+                    ws.onclose = function() {
+                        $('#log').append('<li><span class="badge badge-important">websocket closed</span></li>');
+                        $('#wsServer').removeAttr('disabled');
+                        $('#connect').removeAttr('disabled');
+                        $('#disconnect').attr('disabled', 'disabled');
+                        $('#message').attr('disabled', 'disabled');
+                        $('#send').attr('disabled', 'disabled');
+                    };
+                } else {
+                    $('#log').append('<li><span class="badge badge-important">WebSocket NOT supported in this browser</span></li>');
+                }
+
+                return false;
+            });
+            $('#sendForm').on('submit', function() {
+                var message = $('#message').val();
+                ws.send(message);
+                $('#log').append('<li>sent: <span class="badge">' + message + '</span></li>');
+
+                return false;
+            });
+            $('#disconnect').on('click', function() {
+                ws.close();
+
+                return false;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1479 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
+  <style type="text/css">
+    .number-box
+    {
+      width : 50px;
+    }
+    .check-box
+    {
+      width : 20px;
+    }
+  
+    .chart-content {
+      width: 700px;
+      height: 640px;
+      margin: 0 auto;
+      bottom: 0px;
+      padding: 0px;
+    }
+
+    .chart-container {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;  
+      width: 700px;
+      height: 640px;
+      padding: 0px 0px 0px 0px;
+      margin: 15px auto 30px auto;
+      border: 1px solid #ddd;
+      background: #fff;
+      background: linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      -o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    
+    .legend table, .legend > div {
+      height: 20px !important;
+      opacity: 1 !important;
+      right: 10px;
+      bottom: 50px;
+      width: 150px !important;
+    }
+     
+    .legend table {
+      border: 1px solid #555;
+      padding: 5px;
+    }
+
+    .chart-placeholder {
+      width: 100%;
+      height: 100%;
+      font-size: 14px;
+      line-height: 1.2em;
+    }
+        
+  </style>
+  <script src="../cookies.js"></script>
+  <script src="../jquery-1.10.1.min.js"></script>
+  <script src="../jquery.flot.js"></script>
+  <script src="../jquery.flot.navigate.min.js"></script>
+  <script src="../jquery.flot.axislabels.js"></script>
+  <script src="../parameter.js"></script>
+  <script src="../plots.js"></script>
+  <title>"War Thunder" Flight Model: Engine Performance</title>
+</head>
+  
+<body>
+  <style>
+    body {
+      color: #333;
+      background-color: #fff;
+    }
+
+    table {
+      border-spacing: 0;
+      border: 1px solid #cbcbcb;
+    }
+
+    thead {
+      background: #e0e0e0;
+      color: #000;
+    }
+
+    td, th {
+      padding: 0px 5px;
+      border-left: 1px solid #cbcbcb;
+      border-bottom: 1px solid #cbcbcb;
+      text-align: center;
+    }
+
+    th {
+      font-family: sans-serif;
+    }
+
+    tr[isDelayed=yes] {
+      background-color: #eee;
+    }
+
+    tr[isHero=yes] {
+      background-color: lightgreen;
+    }
+
+    button {
+      -webkit-border-radius: 2px 2px;
+      border: solid 1px rgb(153, 153, 153);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(221, 221, 221)));
+      color: #333;
+      cursor: pointer;
+    }
+    button:disabled {
+      border: solid 1px rgb(203, 203, 203);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(231, 231, 231)));
+      color: #999;
+      cursor: default;
+    }
+  </style>
+  
+  <script>
+  
+  const ModeConfig = {
+    THROTTLE: 0,
+    MANUAL: 1
+  }
+  
+  const PlotFlag = {
+    POWER_THRUST: 0,
+    TORQUE: 1,
+    AIR_PRESSURE: 2,
+    AIR_TEMPERATURE: 3,
+    RPM: 4,
+    //FUEL_CONSUMPTION: 5
+  }
+  
+  var settings = {
+    type: 'table',
+    items: {
+      unitSystem: { type: 'enum', controlId: 'ComboUnitSystem', value: 0, variants: unitSystemVariants },
+    }
+  }
+  
+  var state = {
+    connected: true,
+    fm: {
+      typeName: '',
+      fileName: '',
+      fileTime: undefined
+    },
+    engineModeLockSyncing: false
+  }
+  
+  const EngineType = {
+    UNKNOWN: -1,
+    PISTON: 0,
+    TURBOJET: 1,
+    TURBOPROP: 2,
+    ROCKET: 3
+  }
+  
+  var fmProperties = {
+    engineType: EngineType.PISTON,
+    superchargerGearCount: 0
+  }
+  
+  var plotParams = {
+    type: 'table',
+    items: {
+      modes: {
+        type:'array',
+        items: [
+          {
+            type: 'table',
+            items: {
+              enabled:           { type: 'bool',                                            controlId: 'CheckBoxModeEnabled1',          value: true },
+              modeConfig:        { type: 'enum',                                            controlId: 'ComboModeConfig1',              value: ModeConfig.THROTTLE,
+                                                                                                                              variants: [
+                                                                                                                                { name: 'THR', value: ModeConfig.THROTTLE },
+                                                                                                                                { name: 'MNL', value: ModeConfig.MANUAL }
+                                                                                                                              ] },
+              throttle:          { type: 'number', unit: 'ratio',    precision: 0,          controlId: 'EditThrottle1',                 value: 1.0,            min: 0.0, max: 1.1 },
+              manifoldPressure:  { type: 'number', unit: 'pressure', precision: 3,          controlId: 'EditManifoldPressure1',         value: 101325.0,       min: 0.0 },
+              omega:             { type: 'number', unit: 'rotationVelocity', precision: 0,  controlId: 'EditOmega1',                    value: 2700.0 / 9.55,  min: 0.0 },
+              mixtureAutoMode:   { type: 'bool',                                            controlId: 'CheckBoxMixtureAutoMode1',      value: true },
+              mixture:           { type: 'number', unit: 'ratio',    precision: 0,          controlId: 'EditMixture1',                  value: 1.0,            min: 0.0, max: 1.2 },
+              superchargerAutoMode: { type: 'bool',                                         controlId: 'CheckBoxSuperchargerAutoMode1', value: true },
+              superchargerGear:  { type: 'number',                                          controlId: 'EditSuperchargerGear1',         value: 1,              min: 1,   max: 1 },
+              propeller:         { type: 'bool',                                            controlId: 'CheckBoxPropeller1',            value: false }
+            }
+          }, 
+          {
+            type: 'table',
+            items: {
+              enabled:           { type: 'bool',                                            controlId: 'CheckBoxModeEnabled2',          value: false },
+              modeConfig:        { type: 'enum',                                            controlId: 'ComboModeConfig2',              value: ModeConfig.THROTTLE,
+                                                                                                                              variants: [
+                                                                                                                                { name: 'THR', value: ModeConfig.THROTTLE },
+                                                                                                                                { name: 'MNL', value: ModeConfig.MANUAL }
+                                                                                                                              ] },
+              throttle:          { type: 'number', unit: 'ratio',    precision: 0,          controlId: 'EditThrottle2',                 value: 1.0,            min: 0.0, max: 1.1 },
+              manifoldPressure:  { type: 'number', unit: 'pressure', precision: 3,          controlId: 'EditManifoldPressure2',         value: 101325.0,       min: 0.0 },
+              omega:             { type: 'number', unit: 'rotationVelocity', precision: 0,  controlId: 'EditOmega2',                    value: 2700.0 / 9.55,  min: 0.0 },
+              mixtureAutoMode:   { type: 'bool',                                            controlId: 'CheckBoxMixtureAutoMode2',      value: true },
+              mixture:           { type: 'number', unit: 'ratio',    precision: 0,          controlId: 'EditMixture2',                  value: 1.0,            min: 0.0, max: 1.2 },
+              superchargerAutoMode: { type: 'bool',                                         controlId: 'CheckBoxSuperchargerAutoMode2', value: true },
+              superchargerGear:  { type: 'number',                                          controlId: 'EditSuperchargerGear2',         value: 1,              min: 1,   max: 1 },
+              propeller:         { type: 'bool',                                            controlId: 'CheckBoxPropeller2',            value: false }
+            }
+          },
+          {
+            type: 'table',
+            items: {
+              enabled:           { type: 'bool',                                            controlId: 'CheckBoxModeEnabled3',          value: false },
+              modeConfig:        { type: 'enum',                                            controlId: 'ComboModeConfig3',              value: ModeConfig.THROTTLE,
+                                                                                                                              variants: [
+                                                                                                                                { name: 'THR', value: ModeConfig.THROTTLE },
+                                                                                                                                { name: 'MNL', value: ModeConfig.MANUAL }
+                                                                                                                              ] },
+              throttle:          { type: 'number', unit: 'ratio',    precision: 0,          controlId: 'EditThrottle3',                 value: 1.0,            min: 0.0, max: 1.1 },
+              manifoldPressure:  { type: 'number', unit: 'pressure', precision: 3,          controlId: 'EditManifoldPressure3',         value: 101325.0,       min: 0.0 },
+              omega:             { type: 'number', unit: 'rotationVelocity', precision: 0,  controlId: 'EditOmega3',                    value: 2700.0 / 9.55,  min: 0.0 },
+              mixtureAutoMode:   { type: 'bool',                                            controlId: 'CheckBoxMixtureAutoMode3',      value: true },
+              mixture:           { type: 'number', unit: 'ratio',    precision: 0,          controlId: 'EditMixture3',                  value: 1.0,            min: 0.0, max: 1.2 },
+              superchargerAutoMode: { type: 'bool',                                         controlId: 'CheckBoxSuperchargerAutoMode3', value: true },
+              superchargerGear:  { type: 'number',                                          controlId: 'EditSuperchargerGear3',         value: 1,              min: 1,   max: 1 },
+              propeller:         { type: 'bool',                                            controlId: 'CheckBoxPropeller3',            value: false }
+            }
+          },
+          {
+            type: 'table',
+            items: {
+              enabled:           { type: 'bool',                                            controlId: 'CheckBoxModeEnabled4',          value: false },
+              modeConfig:        { type: 'enum',                                            controlId: 'ComboModeConfig4',              value: ModeConfig.THROTTLE,
+                                                                                                                              variants: [
+                                                                                                                                { name: 'THR', value: ModeConfig.THROTTLE },
+                                                                                                                                { name: 'MNL', value: ModeConfig.MANUAL }
+                                                                                                                              ] },
+              throttle:          { type: 'number', unit: 'ratio',    precision: 0,          controlId: 'EditThrottle4',                 value: 1.0,            min: 0.0, max: 1.1 },
+              manifoldPressure:  { type: 'number', unit: 'pressure', precision: 3,          controlId: 'EditManifoldPressure4',         value: 101325.0,       min: 0.0 },
+              omega:             { type: 'number', unit: 'rotationVelocity', precision: 0,  controlId: 'EditOmega4',                    value: 2700.0 / 9.55,  min: 0.0 },
+              mixtureAutoMode:   { type: 'bool',                                            controlId: 'CheckBoxMixtureAutoMode4',      value: true },
+              mixture:           { type: 'number', unit: 'ratio',    precision: 0,          controlId: 'EditMixture4',                   value: 1.0,            min: 0.0, max: 1.2 },
+              superchargerAutoMode: { type: 'bool',                                         controlId: 'CheckBoxSuperchargerAutoMode4', value: true },
+              superchargerGear:  { type: 'number',                                          controlId: 'EditSuperchargerGear4',         value: 1,              min: 1,   max: 1 },
+              propeller:         { type: 'bool',                                            controlId: 'CheckBoxPropeller4',            value: false }
+            }
+          }
+        ]
+      },
+      lock: {
+        type: 'table',
+        items: {
+          modeConfig:        { type: 'bool', controlId: 'CheckBoxModeConfigLock',               value: true },
+          throttle:          { type: 'bool', controlId: 'CheckBoxThrottleLock',                 value: false },
+          manifoldPressure:  { type: 'bool', controlId: 'CheckBoxManifoldPressureLock',         value: true },
+          omega:             { type: 'bool', controlId: 'CheckBoxOmegaLock',                    value: true },
+          mixtureAutoMode:   { type: 'bool', controlId: 'CheckBoxMixtureAutoModeLock',          value: true },
+          mixture:           { type: 'bool', controlId: 'CheckBoxMixtureLock',                  value: true },
+          superchargerAutoMode: { type: 'bool', controlId: 'CheckBoxSuperchargerAutoModeLock',  value: true },
+          superchargerGear:  { type: 'bool', controlId: 'CheckBoxSuperchargerGearLock',         value: true },
+          propeller:         { type: 'bool', controlId: 'CheckBoxPropellerLock',                value: true }
+        }
+      },
+      airspeed:          { type: 'number', unit: 'velocity', precision: 0,          controlId: 'EditAirspeed',                 value: 0.0 },
+      altitude: {                                                                                               
+        type: 'table',                                                                                          
+        items: {                                                                                                
+          min:     { type: 'number', unit: 'altitude', precision: 0,      controlId: 'EditAltitudeMinVal',      value: 0.0 },
+          max:     { type: 'number', unit: 'altitude', precision: 0,      controlId: 'EditAltitudeMaxVal',      value: 10000.0 },
+          step:    { type: 'number', unit: 'altitude', precision: 0,      controlId: 'EditAltitudeStepVal',     value: 100.0 }
+        }                                                                                                       
+      },                                                                                                        
+      altitude2:            { type: 'number', unit: 'altitude', precision: 0, controlId: 'EditAltitude',               value: 0.0 },
+      superchargerVarOmega: { type: 'bool',                                   controlId: 'CheckBoxSuperchargerVarRPM', value: true },
+      lossesInPower:        { type: 'bool',                                   controlId: 'CheckBoxLossesInPower',      value: true }
+    }
+  }
+  
+  var plotOptions = {
+    type: 'table',
+    items: {
+      plotFlags: {
+        type: 'array',
+        items: [
+          { type: 'bool', controlId: 'CheckBoxPlotPowerAndThrust',  value: true },   //PlotFlag.POWER_THRUST
+          { type: 'bool', controlId: 'CheckBoxPlotTorque',          value: false },  //PlotFlag.TORQUE
+          { type: 'bool', controlId: 'CheckBoxPlotAirPressure',     value: true },   //PlotFlag.AIR_PRESSURE
+          { type: 'bool', controlId: 'CheckBoxPlotAirTemperature',  value: false },  //PlotFlag.AIR_TEMPERATURE
+          { type: 'bool', controlId: 'CheckBoxPlotRpm',             value: false },  //PlotFlag.RPM
+          //{ type: 'bool', controlId: 'CheckBoxPlotFuelConsumption', value: false }   //PlotFlag.FUEL_CONSUMPTION
+        ]
+      }
+    }
+  }
+  
+  //Status
+  
+  function onConnectionStateChange(connected)
+  {
+    if (connected != state.connected)
+    {
+      state.connected = connected
+      document.title = 'War Thunder Flight Model Test Page - ' + (connected ? 'connected' : 'disconnected')      
+      var headerConnectionState = document.getElementById('HeaderConnectionState')
+      headerConnectionState.innerHTML = connected ? 'Connected' : 'Disconnected'
+      headerConnectionState.style.color = connected ? 'Black' : 'Red'
+    }
+  }
+  
+  //Plots
+  
+  var fmTables = {}
+  
+  var chartsData = 
+  {
+    powerVsAltitude: {
+      enabled: true,
+      charts: [
+        {
+          captionId: "PowerVsAltitudeChartCaption",
+          name: 'Piston engine Params vs Altitude',
+          xAxes: [
+            {
+              name: 'N',
+              unit: 'power',
+              precision: 0,
+            },
+            {
+              name: 'P',
+              unit: 'pressure',
+              precision: 3,
+              position: 'top',
+            },
+            {
+              name: 'T',
+              unit: 'temperature',
+              precision: 0,
+              position: 'top',
+            },
+            {
+              name: 'RPM',
+              unit: 'rotationVelocity',
+              precision: 0,
+              position: 'top',
+            },
+            {
+              name: 'Ce',
+              unit: 'fuelConsumption',
+              precision: 0,
+              position: 'top',
+            }
+          ],
+          yAxes: [
+            {
+              name: 'H',
+              unit: 'altitude',
+              precision: 0
+            }
+          ],
+          func: collectPoints,
+          format: {
+            args : [],
+            curves: [
+              {
+                invertAxes: true,
+                argIndex: 0,
+                argAxis: 0,
+                argName: 'H',
+                valuesIndex: 1,
+                values: [
+                  {
+                    index: 0,
+                    axis: 0,
+                    name: 'N',
+                    width: 5,
+                    color: ['#f00', '#f44', '#f88', '#faa'],
+                    enabled: false
+                  },
+                  {
+                    index: 1,
+                    axis: 1,
+                    name: 'Pm',
+                    width: 2,
+                    color: ['#0ac', '#2ce', '#4ef', '#6ff'],
+                    enabled: false
+                  },
+                  {
+                    index: 2,
+                    axis: 1,
+                    name: 'Pc',
+                    width: 5,
+                    color: ['#0af', '#2cf', '#4ef', '#6ff'],
+                    enabled: false
+                  },
+                  {
+                    index: 3,
+                    axis: 2,
+                    name: 'Tm',
+                    width: 5,
+                    color: ['#0c0', '#4c4', '#8c8', '#aca'],
+                    enabled: false
+                  },
+                  {
+                    index: 4,
+                    axis: 2,
+                    name: 'Tc',
+                    width: 2,
+                    color: ['#0f0', '#4f4','#8f8', '#afa'],
+                    enabled: false
+                  },
+                  {
+                    index: 5,
+                    axis: 3,
+                    name: 'RPM',
+                    width: 6,
+                    color: ['#840', '#a62', '#c84', '#ea6'],
+                    enabled: false
+                  },
+                  {
+                    index: 6,
+                    axis: 4,
+                    name: 'Ce',
+                    width: 2,
+                    color: ['#888', '#aaa', '#ccc', '#eee'],
+                    enabled: false
+                  }
+                ]
+              }
+            ]
+          },
+          tableName: 'paramVsAltitude',
+          chart: 'placeholder_power_vs_altitude',
+          legendPosition: 'ne'
+        },
+        {
+          captionId: "PowerVsOmegaChartCaption",
+          name: 'Piston Engine Params vs RPM',
+          xAxes: [
+            {
+              name: 'RPM',
+              unit: 'rotationVelocity',
+              precision: 0
+            }
+          ],
+          yAxes: [
+            {
+              name: 'N',
+              unit: 'power',
+              precision: 0,
+            },
+            {
+              name: 'M',
+              unit: 'moment',
+              precision: 0,
+            },
+            {
+              name: 'P',
+              unit: 'pressure',
+              precision: 3,
+              position: 'right',
+            },
+            {
+              name: 'T',
+              unit: 'temperature',
+              precision: 0,
+              position: 'right',
+            },
+            {
+              name: 'RPM',
+              unit: 'rotationVelocity',
+              precision: 0,
+              position: 'right',
+            },
+            {
+              name: 'Ce',
+              unit: 'fuelConsumption',
+              precision: 0,
+              position: 'right',
+            }
+          ],
+          func: collectPoints,
+          format: {
+            args : [],
+            curves: [
+              {
+                invertAxes: false,
+                argIndex: 0,
+                argAxis: 0,
+                argName: 'RPM',
+                valuesIndex: 1,
+                values: [
+                  {
+                    index: 0,
+                    axis: 0,
+                    name: 'N',
+                    width: 5,
+                    color: ['#f00', '#f44', '#f88', '#faa'],
+                    enabled: false
+                  },
+                  {
+                    index: 1,
+                    axis: 1,
+                    name: 'M',
+                    width: 5,
+                    color: ['#ff0', '#ff4', '#ff8', '#ffa'],
+                    enabled: false
+                  },
+                  {
+                    index: 2,
+                    axis: 2,
+                    name: 'Pm',
+                    width: 2,
+                    color: ['#0ac', '#2ce', '#4ef', '#6ff'],
+                    enabled: false
+                  },
+                  {
+                    index: 3,
+                    axis: 2,
+                    name: 'Pc',
+                    width: 5,
+                    color: ['#0af', '#2cf', '#4ef', '#6ff'],
+                    enabled: false
+                  },
+                  {
+                    index: 4,
+                    axis: 3,
+                    name: 'Tm',
+                    width: 5,
+                    color: ['#0c0', '#4c4', '#8c8', '#aca'],
+                    enabled: false
+                  },
+                  {
+                    index: 5,
+                    axis: 3,
+                    name: 'Tc',
+                    width: 2,
+                    color: ['#0f0', '#4f4','#8f8', '#afa'],
+                    enabled: false
+                  },
+                  {
+                    index: 6,
+                    axis: 4,
+                    name: 'RPM',
+                    width: 6,
+                    color: ['#840', '#a62', '#c84', '#ea6'],
+                    enabled: false
+                  },
+                  {
+                    index: 7,
+                    axis: 5,
+                    name: 'Ce',
+                    width: 2,
+                    color: ['#888', '#aaa', '#ccc', '#eee'],
+                    enabled: false
+                  }
+                ]
+              }
+            ]
+          },
+          tableName: 'paramVsOmega',
+          chart: 'placeholder_power_vs_omega',
+          legendPosition: 'se'
+        }
+      ]
+    },
+    thrustVsAltitude: {
+      enabled: true,
+      charts: [
+        {
+          captionId: "PowerVsAltitudeChartCaption",
+          name: 'Jet Engine Params vs Altitude',
+          xAxes: [
+            {
+              name: 'F',
+              unit: 'thrust',
+              precision: 0
+            },
+            {
+              name: 'RPM',
+              unit: 'rotationVelocity',
+              precision: 0,
+              position: 'top',
+            },
+            {
+              name: 'Ce',
+              unit: 'fuelConsumption',
+              precision: 0,
+              position: 'top',
+            }
+          ],
+          yAxes: [
+            {
+              name: 'H',
+              unit: 'altitude',
+              precision: 0
+            }
+          ],
+          func: collectPoints,
+          format: {
+            args : [],
+            curves: [
+              {
+                invertAxes: true,
+                argIndex: 0,
+                argAxis: 0,
+                argName: 'H',
+                valuesIndex: 1,
+                values: [
+                  {
+                    index: 0,
+                    axis: 0,
+                    name: 'F',
+                    width: 5,
+                    color: ['#c33', '#e55', '#f77', '#f99'],
+                    enabled: false
+                  },
+                  {
+                    index: 1,
+                    axis: 1,
+                    name: 'RPM',
+                    width: 6,
+                    color: ['#840', '#a62', '#c84', '#ea6'],
+                    enabled: false
+                  },
+                  {
+                    index: 2,
+                    axis: 2,
+                    name: 'Ce',
+                    width: 2,
+                    color: ['#888', '#aaa', '#ccc', '#eee'],
+                    enabled: false
+                  }
+                ]
+              } 
+            ]
+          },
+          tableName: 'paramVsAltitude',
+          chart: 'placeholder_power_vs_altitude',
+          legendPosition: 'ne'
+        },
+        {
+          captionId: "PowerVsOmegaChartCaption",
+          name: 'Jet Engine Params vs RPM',
+          xAxes: [
+            {
+              name: 'RPM',
+              unit: 'rotationVelocity',
+              precision: 0
+            }
+          ],
+          yAxes: [
+            {
+              name: 'F',
+              unit: 'thrust',
+              precision: 0
+            },
+            {
+              name: 'RPM',
+              unit: 'rotationVelocity',
+              precision: 0,
+              position: 'top',
+            },
+            {
+              name: 'Ce',
+              unit: 'fuelConsumption',
+              precision: 0,
+              position: 'top',
+            }
+          ],
+          func: collectPoints,
+          format: {
+            args : [],
+            curves: [
+              {
+                invertAxes: false,
+                argIndex: 0,
+                argAxis: 0,
+                argName: 'RPM',
+                valuesIndex: 1,
+                values: [
+                  {
+                    index: 0,
+                    axis: 0,
+                    name: 'F',
+                    width: 5,
+                    color: ['#c33', '#e55', '#f77', '#f99'],
+                    enabled: false
+                  },
+                  {
+                    index: 1,
+                    axis: 1,
+                    name: 'RPM',
+                    width: 6,
+                    color: ['#840', '#a62', '#c84', '#ea6'],
+                    enabled: false
+                  },
+                  {
+                    index: 2,
+                    axis: 2,
+                    name: 'Ce',
+                    width: 2,
+                    color: ['#888', '#aaa', '#ccc', '#eee'],
+                    enabled: false
+                  }
+                  
+                ]
+              } 
+            ]
+          },
+          tableName: 'paramVsOmega',
+          chart: 'placeholder_power_vs_omega',
+          legendPosition: 'se'
+        }
+      ]
+    },
+    powerAndThrustVsAltitude: {
+      enabled: true,
+      charts: [
+        {
+          captionId: "PowerVsAltitudeChartCaption",
+          name: 'Turboprop Engine Params vs RPM',
+          xAxes: [
+            {
+              name: 'F',
+              unit: 'thrust',
+              precision: 0
+            },
+            {
+              name: 'N',
+              unit: 'power',
+              precision: 0,
+            },
+            {
+              name: 'RPM',
+              unit: 'rotationVelocity',
+              precision: 0,
+              position: 'top',
+            },
+            {
+              name: 'Ce',
+              unit: 'fuelConsumption',
+              precision: 0,
+              position: 'top',
+            }
+          ],
+          yAxes: [
+            {
+              name: 'H',
+              unit: 'altitude',
+              precision: 0
+            }
+          ],
+          func: collectPoints,
+          format: {
+            args : [],
+            curves: [
+              {
+                invertAxes: true,
+                argIndex: 0,
+                argAxis: 0,
+                argName: 'H',
+                valuesIndex: 1,
+                values: [
+                  {
+                    index: 0,
+                    axis: 0,
+                    name: 'F',
+                    width: 5,
+                    color: ['#c33', '#e55', '#f77', '#f99'],
+                    enabled: false
+                  },
+                  {
+                    index: 1,
+                    axis: 1,
+                    name: 'N',
+                    width: 5,
+                    color: ['#f00', '#f44', '#f88', '#faa'],
+                    enabled: false
+                  },
+                  {
+                    index: 2,
+                    axis: 2,
+                    name: 'RPM',
+                    width: 6,
+                    color: ['#840', '#a62', '#c84', '#ea6'],
+                    enabled: false
+                  },
+                  {
+                    index: 3,
+                    axis: 3,
+                    name: 'Ce',
+                    width: 2,
+                    color: ['#888', '#aaa', '#ccc', '#eee'],
+                    enabled: false
+                  }
+                ]
+              } 
+            ]
+          },
+          tableName: 'paramVsAltitude',
+          chart: 'placeholder_power_vs_altitude',
+          legendPosition: 'ne'
+        },
+        {
+          captionId: "PowerVsOmegaChartCaption",
+          name: 'Turboprop Engine Params vs Altitude',
+          xAxes: [
+            {
+              name: 'RPM',
+              unit: 'rotationVelocity',
+              precision: 0
+            }
+          ],
+          yAxes: [
+            {
+              name: 'F',
+              unit: 'thrust',
+              precision: 0
+            },
+            {
+              name: 'N',
+              unit: 'power',
+              precision: 0,
+            },
+            {
+              name: 'M',
+              unit: 'moment',
+              precision: 0,
+            },
+            {
+              name: 'RPM',
+              unit: 'rotationVelocity',
+              precision: 0,
+              position: 'top',
+            },
+            {
+              name: 'Ce',
+              unit: 'fuelConsumption',
+              precision: 0,
+              position: 'top',
+            }
+          ],
+          func: collectPoints,
+          format: {
+            args : [],
+            curves: [
+              {
+                invertAxes: false,
+                argIndex: 0,
+                argAxis: 0,
+                argName: 'RPM',
+                valuesIndex: 1,
+                values: [
+                  {
+                    index: 0,
+                    axis: 0,
+                    name: 'F',
+                    width: 5,
+                    color: ['#c33', '#e55', '#f77', '#f99'],
+                    enabled: false
+                  },
+                  {
+                    index: 1,
+                    axis: 1,
+                    name: 'N',
+                    width: 5,
+                    color: ['#f00', '#f44', '#f88', '#faa'],
+                    enabled: false
+                  },
+                  {
+                    index: 2,
+                    axis: 2,
+                    name: 'M',
+                    width: 5,
+                    color: ['#ff0', '#ff4', '#ff8', '#ffa'],
+                    enabled: false
+                  },
+                  {
+                    index: 3,
+                    axis: 3,
+                    name: 'RPM',
+                    width: 6,
+                    color: ['#840', '#a62', '#c84', '#ea6'],
+                    enabled: false
+                  },
+                  {
+                    index: 4,
+                    axis: 4,
+                    name: 'Ce',
+                    width: 2,
+                    color: ['#888', '#aaa', '#ccc', '#eee'],
+                    enabled: false
+                  }
+                ]
+              } 
+            ]
+          },
+          tableName: 'paramVsOmega',
+          chart: 'placeholder_power_vs_omega',
+          legendPosition: 'se'
+        }
+      ]
+    }
+  }
+  
+  function updatePlotFlags()
+  {
+    serializeParameterToCookie(plotOptions)
+    for (var chartIndex in chartsData.powerVsAltitude.charts)
+    {
+      var curve = chartsData.powerVsAltitude.charts[chartIndex].format.curves[0]
+      curve.values[0].enabled = plotOptions.items.plotFlags.items[PlotFlag.POWER_THRUST].value
+      var airPressIndex = 1
+      if (chartIndex == 1)
+      {
+        curve.values[1].enabled = plotOptions.items.plotFlags.items[PlotFlag.TORQUE].value
+        airPressIndex = 2
+      }
+      curve.values[airPressIndex].enabled = curve.values[airPressIndex + 1].enabled = plotOptions.items.plotFlags.items[PlotFlag.AIR_PRESSURE].value
+      curve.values[airPressIndex + 2].enabled = curve.values[airPressIndex + 3].enabled = plotOptions.items.plotFlags.items[PlotFlag.AIR_TEMPERATURE].value
+      curve.values[airPressIndex + 4].enabled = plotOptions.items.plotFlags.items[PlotFlag.RPM].value
+      //curve.values[airPressIndex + 5].enabled = plotOptions.items.plotFlags.items[PlotFlag.FUEL_CONSUMPTION].value
+    }
+    
+    for (var chartIndex in chartsData.thrustVsAltitude.charts)
+    {
+      var curve = chartsData.thrustVsAltitude.charts[chartIndex].format.curves[0]
+      curve.values[0].enabled = plotOptions.items.plotFlags.items[PlotFlag.POWER_THRUST].value
+      curve.values[1].enabled = plotOptions.items.plotFlags.items[PlotFlag.RPM].value
+    }
+    
+    for (var chartIndex in chartsData.powerAndThrustVsAltitude.charts)
+    {
+      var curve = chartsData.powerAndThrustVsAltitude.charts[chartIndex].format.curves[0]
+      curve.values[0].enabled = plotOptions.items.plotFlags.items[PlotFlag.POWER_THRUST].value
+      curve.values[1].enabled = plotOptions.items.plotFlags.items[PlotFlag.POWER_THRUST].value
+      curve.values[2].enabled = plotOptions.items.plotFlags.items[PlotFlag.TORQUE].value
+      curve.values[3].enabled = plotOptions.items.plotFlags.items[PlotFlag.RPM].value
+    }
+
+    /*
+    for (var chartIndex in chartsData.powerVsAltitude.charts)
+    {
+      var curve = chartsData.powerVsAltitude.charts[chartIndex].format.curves[0]
+      var valIndex = 1
+      if (curve.values[0].enabled = plotParams.items.plotFlags.items[PlotFlag.POWER_THRUST].value)
+        curve.values[0].index = valIndex++
+      var airPressIndex = 1
+      if (chartIndex == 1)
+      {
+        if (curve.values[1].enabled = plotParams.items.plotFlags.items[PlotFlag.TORQUE].value)
+          curve.values[1].index = valIndex++
+        airPressIndex = 2
+      }
+      if (curve.values[airPressIndex].enabled = curve.values[airPressIndex + 1].enabled = plotParams.items.plotFlags.items[PlotFlag.AIR_PRESSURE].value)
+      {
+        curve.values[airPressIndex].index = valIndex++
+        curve.values[airPressIndex + 1].index = valIndex++
+      }
+      if (curve.values[airPressIndex + 2].enabled = curve.values[airPressIndex + 3].enabled = plotParams.items.plotFlags.items[PlotFlag.AIR_TEMPERATURE].value)
+      {
+        curve.values[airPressIndex + 2].index = valIndex++
+        curve.values[airPressIndex + 3].index = valIndex++
+      }
+      if (curve.values[airPressIndex + 4].enabled = plotParams.items.plotFlags.items[PlotFlag.RPM].value)
+        curve.values[airPressIndex + 4].index = valIndex++
+      //if (curve.values[airPressIndex + 5].enabled = plotParams.items.plotFlags.items[PlotFlag.FUEL_CONSUMPTION].value)
+      //  curve.values[airPressIndex + 5].index = valIndex++
+    }
+    
+    for (var chartIndex in chartsData.thrustVsAltitude.charts)
+    {
+      var curve = chartsData.thrustVsAltitude.charts[chartIndex].format.curves[0]
+      var valIndex = 1
+      if (curve.values[0].enabled = plotParams.items.plotFlags.items[PlotFlag.POWER_THRUST].value)
+        curve.values[0].index = valIndex++
+      if (curve.values[1].enabled = plotParams.items.plotFlags.items[PlotFlag.RPM].value)
+        curve.values[1].index = valIndex++
+      //if (curve.values[2].enabled = plotParams.items.plotFlags.items[PlotFlag.FUEL_CONSUMPTION].value)
+      //  curve.values[2].index = valIndex++
+    }
+    */
+  }
+  
+  var charts = {}
+
+  function updateChartData()
+  {
+    chartsData.powerVsAltitude.enabled = fmProperties.engineType == EngineType.PISTON
+    chartsData.thrustVsAltitude.enabled = fmProperties.engineType == EngineType.TURBOJET
+    chartsData.powerAndThrustVsAltitude.enabled = fmProperties.engineType == EngineType.TURBOPROP
+  }
+    
+  function resetPlotsRangesAndUpdate()
+  {
+    resetPlotsRanges(chartsData)
+    updatePlots()
+  }
+  
+  //Data Exchange
+  
+  function setCommand(data, successFunc, errorFunc) {
+    $.ajax({
+      url: '/editor/fm_engine',
+      data: data,
+      success: successFunc,
+      error: errorFunc
+    })
+  }
+  
+  function fillFmProperties(data)
+  {
+    if (!data.valid)
+      return
+      
+    state.fm = data.id
+    document.getElementById('HeaderAircraftType').innerHTML = 'Aircraft: ' + state.fm.typeName + ' from \"' + state.fm.fileName + '\"'
+    
+    fmProperties.engineType = data.engineType
+    fmProperties.manifoldPressureMax = data.manifoldPressureMax
+    fmProperties.omegaMin = data.omegaMin
+    fmProperties.omegaMax = data.omegaMax
+    fmProperties.supercharger = data.supercharger
+    fmProperties.mixtureManual = data.mixtureManual
+    fmProperties.advanced = data.advanced
+    fmProperties.superchargerGearCount = data.superchargerGearCount
+  
+    for (var engineModeIndex in plotParams.items.modes.items)  
+    {
+      var engineMode = plotParams.items.modes.items[engineModeIndex].items
+      setNumberRange(engineMode.manifoldPressure, undefined, fmProperties.manifoldPressureMax, settings.items.unitSystem.value)
+      setNumberRange(engineMode.omega, fmProperties.omegaMin, fmProperties.omegaMax, settings.items.unitSystem.value)
+      setNumberRange(engineMode.superchargerGear, undefined, fmProperties.superchargerGearCount, settings.items.unitSystem.value)
+    }
+    
+    enableParams()
+    
+    resetPlotsRanges(chartsData)
+    updateChartData()
+    fmTables.paramVsAltitude = null
+    fmTables.paramVsOmega = null
+    updatePlots()
+  }
+  
+  function updateFmProperties()
+  {
+    setCommand( {
+                  cmd: 'getFmProperties',
+                  'fileName' : state.fm.fileName,
+                  'fileTime' : state.fm.fileTime
+                },
+                function(data)
+                {
+                  onConnectionStateChange(true)
+                  fillFmProperties(data)
+                  setTimeout(updateFmProperties, 2500)
+                },
+                function(data)
+                {
+                  onConnectionStateChange(false)
+                  setTimeout(updateFmProperties, 2500)
+                }
+              )
+  }
+  
+  function updateFmPropertiesNow()
+  {
+    setCommand({cmd: 'getFmProperties'}, fillFmProperties)
+  }
+  
+  function fillEngineTable(data)
+  {
+    fmTables.paramVsAltitude = data.paramVsAltitude
+    fmTables.paramVsOmega = data.paramVsOmega
+    
+    updatePlotFlags()
+    setupCharts(chartsData, charts, fmTables, settings.items.unitSystem.value)
+  }
+  
+  function updatePlots()
+  {
+    serializeParameterToCookie(plotParams)
+    var data = {
+      cmd: 'rebuildPlots',
+    }
+    serializeParameterToURL(plotParams, data)
+    setCommand( data,
+                function(data)
+                {
+                  onConnectionStateChange(true)
+                  fillEngineTable(data)
+                },
+                function(data)
+                {
+                  onConnectionStateChange(false)
+                } )
+  }
+  
+  //Parameter change handlers
+  
+  //Settings
+  
+  function onSettingsChange(path)
+  {
+    var param = getParameterByPath(settings, path)
+    if (loadParameter(param, null))
+      serializeParameterToCookie(param, path[path.length - 1])
+    else
+      alert('Parameter path "' + parameterPathToString(path) + '" not found!')
+  }
+  
+  function onUnitSystemChange(path)
+  {
+    onSettingsChange(path)
+    
+    saveParameter(plotParams, settings.items.unitSystem.value)
+    setupCharts(chartsData, charts, fmTables, settings.items.unitSystem.value)
+  }
+  
+  //Plot Parameters
+  
+  function onPlotParamChange(path, p)
+  {
+    if (!loadParameter(getParameterByPath(plotParams, path), settings.items.unitSystem.value))
+      alert('Parameter path "' + parameterPathToString(path) + '" not found!')
+    updatePlots()
+  }
+  
+  function onPlotOptionChange(path)
+  {
+    if (!loadParameter(getParameterByPath(plotOptions, path), settings.items.unitSystem.value))
+      alert('Parameter path "' + parameterPathToString(path) + '" not found!')
+    updatePlotFlags()
+    setupCharts(chartsData, charts, fmTables, settings.items.unitSystem.value)
+  }
+  
+  function lockEngineModesParam(paramName, engineModeIndex)
+  {
+    if (!state.engineModeLockSyncing &&
+        plotParams.items.lock.items[paramName] != undefined &&
+        plotParams.items.lock.items[paramName].value)
+    {
+      var value = plotParams.items.modes.items[engineModeIndex].items[paramName].value
+      for (var curEngineModeIndex in plotParams.items.modes.items)
+        if (curEngineModeIndex != engineModeIndex)
+        {
+          var anotherEngineModeParam = plotParams.items.modes.items[curEngineModeIndex].items[paramName]
+          anotherEngineModeParam.value = value
+          state.engineModeLockSyncing = true
+          saveParameter(anotherEngineModeParam, settings.items.unitSystem.value, true)
+          state.engineModeLockSyncing = false
+        }
+    }
+  }
+    
+  function enableModeConfigParams(engineModeIndex)
+  {
+    var engineMode = plotParams.items.modes.items[engineModeIndex].items
+    setParameterEnabled(engineMode.throttle, engineMode.modeConfig.value == ModeConfig.THROTTLE, settings.items.unitSystem.value)
+    setParameterEnabled(engineMode.manifoldPressure, engineMode.modeConfig.value != ModeConfig.THROTTLE && fmProperties.engineType == EngineType.PISTON, settings.items.unitSystem.value)
+    setParameterEnabled(engineMode.omega, engineMode.modeConfig.value != ModeConfig.THROTTLE, settings.items.unitSystem.value)
+  }
+  
+  function enableMixture(engineModeIndex)
+  {
+    var engineMode = plotParams.items.modes.items[engineModeIndex].items
+    setParameterEnabled(engineMode.mixtureAutoMode, fmProperties.mixtureManual && fmProperties.engineType == EngineType.PISTON, settings.items.unitSystem.value)
+    setParameterEnabled(engineMode.mixture, !engineMode.mixtureAutoMode.value && fmProperties.mixtureManual && fmProperties.engineType == EngineType.PISTON, settings.items.unitSystem.value)
+  }
+  
+  function enableSupercharger(engineModeIndex)
+  {
+    var engineMode = plotParams.items.modes.items[engineModeIndex].items
+    setParameterEnabled(engineMode.superchargerAutoMode, fmProperties.engineType == EngineType.PISTON && fmProperties.supercharger, settings.items.unitSystem.value)
+    setParameterEnabled(engineMode.superchargerGear, !engineMode.superchargerAutoMode.value && fmProperties.engineType == EngineType.PISTON && fmProperties.supercharger, settings.items.unitSystem.value)
+  }
+  
+  function enablePlotFlags(engineModeIndex)
+  {
+    var engineMode = plotParams.items.modes.items[engineModeIndex].items
+    const propeller = fmProperties.engineType == EngineType.PISTON || fmProperties.engineType == EngineType.TURBOPROP
+    setParameterEnabled(engineMode.propeller, propeller, settings.items.unitSystem.value)
+    const plotFlags = plotOptions.items.plotFlags.items
+    setParameterEnabled(plotFlags[PlotFlag.TORQUE], propeller, settings.items.unitSystem.value)
+    setParameterEnabled(plotFlags[PlotFlag.AIR_PRESSURE], fmProperties.engineType == EngineType.PISTON, settings.items.unitSystem.value)
+    setParameterEnabled(plotFlags[PlotFlag.AIR_TEMPERATURE], fmProperties.engineType == EngineType.PISTON, settings.items.unitSystem.value)
+  }
+  
+  function enablePowerParams(engineModeIndex)
+  {
+    setParameterEnabled(plotParams.items.superchargerVarOmega, fmProperties.engineType == EngineType.PISTON, settings.items.unitSystem.value)
+    setParameterEnabled(plotParams.items.lossesInPower,        fmProperties.engineType == EngineType.PISTON && fmProperties.advanced, settings.items.unitSystem.value)
+  }
+  
+  function enableParams()
+  {
+    for (var engineModeIndex in plotParams.items.modes.items)
+    {
+      enableModeConfigParams(engineModeIndex)
+      enableMixture(engineModeIndex)
+      enableSupercharger(engineModeIndex)
+      enablePlotFlags(engineModeIndex)
+      enablePowerParams(engineModeIndex)
+    }
+  }
+  
+  function onPlotParamLockChange(paramName)
+  {
+    onPlotParamChange(['lock', paramName])
+    lockEngineModesParam(paramName, 0)
+  }
+  
+  function lockEngineModesParams()
+  {
+    var engineMode1 = plotParams.items.modes.items[0].items
+    for (var engineModeParamName in engineMode1)
+      lockEngineModesParam(engineMode1[engineModeParamName], 0)
+  }
+  
+  function onPlotParamEngineModeChange(paramName, engineModeIndex)
+  {
+    onPlotParamChange(['modes', engineModeIndex, paramName])
+    lockEngineModesParam(paramName, engineModeIndex)
+  }
+  
+  function onPlotParamModeConfigChange(engineModeIndex)
+  {
+    onPlotParamEngineModeChange('modeConfig', engineModeIndex)
+    enableModeConfigParams(engineModeIndex)
+  }
+  
+  function onPlotParamMixtureAutoModeChange(engineModeIndex)
+  {
+    onPlotParamEngineModeChange('mixtureAutoMode', engineModeIndex)
+    enableMixture(engineModeIndex)
+  }
+  
+  function onPlotParamSuperchargerAutoModeChange(engineModeIndex)
+  {
+    onPlotParamEngineModeChange('superchargerAutoMode', engineModeIndex)
+    enableSupercharger(engineModeIndex)
+  }
+  
+  //Initialization
+  
+  function init()
+  {
+    onConnectionStateChange(false)
+    updateFmProperties()
+ 
+    prepareParameter(settings) 
+    deserializeParameterFromCookie(settings, undefined)
+    saveParameter(settings, null)
+    
+    prepareParameter(plotParams) 
+    deserializeParameterFromCookie(plotParams, undefined)
+    saveParameter(plotParams, settings.items.unitSystem.value)
+    
+    prepareParameter(plotOptions) 
+    deserializeParameterFromCookie(plotOptions, undefined)
+    saveParameter(plotOptions, settings.items.unitSystem.value)
+    
+    enableParams()
+    lockEngineModesParams()
+  }
+
+  window.onload = init;
+  
+  </script>
+  
+  <h1>"War Thunder" Flight Model</h1>
+  <h1>Engine Performance</h1>
+  <h2 id="HeaderConnectionState">Disconnected</h2>  
+  <h2 id="HeaderAircraftType">Unknown</h2>
+  <input type="button" value="Update" onClick="updateFmPropertiesNow()">
+  
+  
+  <h2>Settings</h2>
+  <table>
+    <tr>
+      <td>Unit System</td>  
+      <td>      
+        <select id="ComboUnitSystem" onchange="onUnitSystemChange(['unitSystem'])" style="width:100%">
+        </select>
+      </td>  
+    </tr>
+  </table>  
+  
+  <h2>Engine Params: Power / Thrust, Torque, Manifold Pressure, Temperature, RPM vs Altitude and RPM</h2>
+  <table>
+    <tr>
+      <td valign="top" >
+        <table>
+          <tr>
+            <td>
+              <table width="100%">
+                <tr>
+                  <div class="tableheader"><b>Engine Modes</b></div>
+                </tr>
+                <tr>
+                  <td colspan="2">#</td>
+                  <td><b>1</b></td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                </tr>
+                <tr>
+                  <td colspan="2">Enabled</td>  
+                  <td><input class="check-box" type="checkbox" id="CheckBoxModeEnabled1" onchange="onPlotParamChange(['modes', 0, 'enabled'])"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxModeEnabled2" onchange="onPlotParamChange(['modes', 1, 'enabled'])"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxModeEnabled3" onchange="onPlotParamChange(['modes', 2, 'enabled'])"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxModeEnabled4" onchange="onPlotParamChange(['modes', 3, 'enabled'])"></td>
+                </tr>
+                <tr>
+                  <td>Config</td>  
+                  <td><input class="check-box" type="checkbox" id="CheckBoxModeConfigLock" onchange="onPlotParamLockChange('modeConfig')"></td>
+                  <td><select class="number-box" id="ComboModeConfig1" onchange="onPlotParamModeConfigChange(0)" style="width:100%"></select></td>  
+                  <td><select class="number-box" id="ComboModeConfig2" onchange="onPlotParamModeConfigChange(1)" style="width:100%"></select></td>  
+                  <td><select class="number-box" id="ComboModeConfig3" onchange="onPlotParamModeConfigChange(2)" style="width:100%"></select></td>  
+                  <td><select class="number-box" id="ComboModeConfig4" onchange="onPlotParamModeConfigChange(3)" style="width:100%"></select></td>  
+                </tr>
+                <tr>
+                  <td>Throttle</td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxThrottleLock" onchange="onPlotParamLockChange('throttle')"></td>
+                  <td><input class="number-box" type="number" id="EditThrottle1" size="5" value="0" onchange="onPlotParamEngineModeChange('throttle', 0)"></td>  
+                  <td><input class="number-box" type="number" id="EditThrottle2" size="5" value="0" onchange="onPlotParamEngineModeChange('throttle', 1)"></td>  
+                  <td><input class="number-box" type="number" id="EditThrottle3" size="5" value="0" onchange="onPlotParamEngineModeChange('throttle', 2)"></td>  
+                  <td><input class="number-box" type="number" id="EditThrottle4" size="5" value="0" onchange="onPlotParamEngineModeChange('throttle', 3)"></td>  
+                </tr>
+                <tr>
+                  <td>Manifold Pressure</td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxManifoldPressureLock" onchange="onPlotParamLockChange('manifoldPressure')"></td>
+                  <td><input class="number-box" type="number" id="EditManifoldPressure1" size="5" value="0" onchange="onPlotParamEngineModeChange('manifoldPressure', 0)"></td>
+                  <td><input class="number-box" type="number" id="EditManifoldPressure2" size="5" value="0" onchange="onPlotParamEngineModeChange('manifoldPressure', 1)"></td>
+                  <td><input class="number-box" type="number" id="EditManifoldPressure3" size="5" value="0" onchange="onPlotParamEngineModeChange('manifoldPressure', 2)"></td>
+                  <td><input class="number-box" type="number" id="EditManifoldPressure4" size="5" value="0" onchange="onPlotParamEngineModeChange('manifoldPressure', 3)"></td>  
+                </tr>
+                <tr>
+                  <td>RPM</td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxOmegaLock" onchange="onPlotParamLockChange('omega')"></td>
+                  <td><input class="number-box" type="number" id="EditOmega1" size="5" value="0" onchange="onPlotParamEngineModeChange('omega', 0)"></td>
+                  <td><input class="number-box" type="number" id="EditOmega2" size="5" value="0" onchange="onPlotParamEngineModeChange('omega', 1)"></td>
+                  <td><input class="number-box" type="number" id="EditOmega3" size="5" value="0" onchange="onPlotParamEngineModeChange('omega', 2)"></td>
+                  <td><input class="number-box" type="number" id="EditOmega4" size="5" value="0" onchange="onPlotParamEngineModeChange('omega', 3)"></td>
+                </tr>
+                <tr>
+                  <td>Mix Auto</td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxMixtureAutoModeLock" onchange="onPlotParamLockChange('mixtureAutoMode')"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxMixtureAutoMode1" onchange="onPlotParamMixtureAutoModeChange(0)"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxMixtureAutoMode2" onchange="onPlotParamMixtureAutoModeChange(1)"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxMixtureAutoMode3" onchange="onPlotParamMixtureAutoModeChange(2)"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxMixtureAutoMode4" onchange="onPlotParamMixtureAutoModeChange(3)"></td>
+                </tr>
+                <tr>
+                  <td>Mix</td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxMixtureLock" onchange="onPlotParamLockChange('mixture')"></td>
+                  <td><input class="number-box" type="number" id="EditMixture1" size="5" value="0" onchange="onPlotParamEngineModeChange('mixture', 0)"></td>
+                  <td><input class="number-box" type="number" id="EditMixture2" size="5" value="0" onchange="onPlotParamEngineModeChange('mixture', 1)"></td>
+                  <td><input class="number-box" type="number" id="EditMixture3" size="5" value="0" onchange="onPlotParamEngineModeChange('mixture', 2)"></td>
+                  <td><input class="number-box" type="number" id="EditMixture4" size="5" value="0" onchange="onPlotParamEngineModeChange('mixture', 3)"></td>
+                </tr>
+                <tr>
+                  <td>S-Charger Auto</td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxSuperchargerAutoModeLock" onchange="onPlotParamLockChange('superchargerAutoMode')"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxSuperchargerAutoMode1" onchange="onPlotParamSuperchargerAutoModeChange(0)"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxSuperchargerAutoMode2" onchange="onPlotParamSuperchargerAutoModeChange(1)"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxSuperchargerAutoMode3" onchange="onPlotParamSuperchargerAutoModeChange(2)"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxSuperchargerAutoMode4" onchange="onPlotParamSuperchargerAutoModeChange(3)"></td>
+                </tr>
+                <tr>
+                  <td>S-Charger Gear</td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxSuperchargerGearLock" onchange="onPlotParamLockChange('superchargerGear')"></td>
+                  <td><input class="number-box" type="number" id="EditSuperchargerGear1" size="5" value="0" min="1" max="1" onchange="onPlotParamEngineModeChange('superchargerGear', 0)"></td>
+                  <td><input class="number-box" type="number" id="EditSuperchargerGear2" size="5" value="0" min="1" max="1" onchange="onPlotParamEngineModeChange('superchargerGear', 1)"></td>
+                  <td><input class="number-box" type="number" id="EditSuperchargerGear3" size="5" value="0" min="1" max="1" onchange="onPlotParamEngineModeChange('superchargerGear', 2)"></td>
+                  <td><input class="number-box" type="number" id="EditSuperchargerGear4" size="5" value="0" min="1" max="1" onchange="onPlotParamEngineModeChange('superchargerGear', 3)"></td>
+                </tr>
+                <tr>
+                  <td>Propeller</td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxPropellerLock" onchange="onPlotParamLockChange('propeller')"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxPropeller1" onchange="onPlotParamEngineModeChange('propeller', 0)"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxPropeller2" onchange="onPlotParamEngineModeChange('propeller', 1)"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxPropeller3" onchange="onPlotParamEngineModeChange('propeller', 2)"></td>
+                  <td><input class="check-box" type="checkbox" id="CheckBoxPropeller4" onchange="onPlotParamEngineModeChange('propeller', 3)"></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <table width="100%">
+                <tr>
+                  <div class="tableheader"><b>Plot Parameters</b></div>
+                </tr>
+                <tr>
+                  <td>Airspeed</td>  
+                  <td><input class="number-box" type="number" id="EditAirspeed" size="5" value="0" onchange="onPlotParamChange(['airspeed'])"></td>  
+                  <td>Power/Thrust</td>  
+                  <td><input class="check-box" type="checkbox" id="CheckBoxPlotPowerAndThrust" onchange="onPlotOptionChange(['plotFlags', PlotFlag.POWER_THRUST])"></td>  
+                </tr>
+                <tr>
+                  <td>Air Pressure</td>  
+                  <td><input class="check-box" type="checkbox" id="CheckBoxPlotAirPressure" onchange="onPlotOptionChange(['plotFlags', PlotFlag.AIR_PRESSURE])"></td>  
+                  <td>Air Temperature</td>  
+                  <td><input class="check-box" type="checkbox" id="CheckBoxPlotAirTemperature" onchange="onPlotOptionChange(['plotFlags', PlotFlag.AIR_TEMPERATURE])"></td>  
+                </tr>
+                <tr>
+                  <td>RPM</td>  
+                  <td><input class="check-box" type="checkbox" id="CheckBoxPlotRpm" onchange="onPlotOptionChange(['plotFlags', PlotFlag.RPM])"></td>
+                  <td></td>
+                  <td></td>
+                </tr>
+      <!--           <tr>
+                  <td>Plot Fuel Consumption</td>  
+                  <td><input class="check-box" type="checkbox" id="CheckBoxPlotFuelConsumption" onchange="onPlotOptionChange(['plotFlags', PlotFlag.FUEL_CONSUMPTION])"></td>  
+                </tr> -->
+                <tr>
+                  <td colspan="2"><b>Plot #1 Parameters</b></td>
+                  <td colspan="2"><b>Plot #2 Parameters</b></td>
+                </tr>
+                <tr>
+                  <td>Altitude Min.</td>  
+                  <td><input class="number-box" type="number" id="EditAltitudeMinVal" size="5" value="0" onchange="onPlotParamChange(['altitude', 'min'])"></td>  
+                  <td>Altitude</td>
+                  <td><input class="number-box" type="number" id="EditAltitude" size="5" value="0" onchange="onPlotParamChange(['altitude2'])"></td>  
+                </tr>
+                <tr>
+                  <td>Altitude Max.</td>  
+                  <td><input class="number-box" type="number" id="EditAltitudeMaxVal" size="5" value="0" onchange="onPlotParamChange(['altitude', 'max'])"></td>  
+                  <td>Torque</td>  
+                  <td><input class="check-box" type="checkbox" id="CheckBoxPlotTorque" onchange="onPlotOptionChange(['plotFlags', PlotFlag.TORQUE])"></td>  
+                </tr>
+                <tr>
+                  <td>Altitude Step</td>  
+                  <td><input class="number-box" type="number" id="EditAltitudeStepVal" size="5" value="0" onchange="onPlotParamChange(['altitude', 'step'])"></td>  
+                  <td>S-Charger var. RPM</td>  
+                  <td><input class="check-box" type="checkbox" id="CheckBoxSuperchargerVarRPM" onchange="onPlotParamChange(['superchargerVarOmega'])"></td>                    
+                </tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td>Power Losses</td>  
+                  <td><input class="check-box" type="checkbox" id="CheckBoxLossesInPower" onchange="onPlotParamChange(['lossesInPower'])"></td>  
+                </tr>
+                <tr>
+                  <td colspan="4"><input type="button" value="Reset Ranges" style="width:100%" onClick="resetPlotsRangesAndUpdate()"></td>  
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>  
+      <td>
+        <div class="chart-content">
+          <div class="chart-container">
+            <div class="tableheader" id="PowerVsAltitudeChartCaption"><b></b></div>
+            <div id="placeholder_power_vs_altitude" class="chart-placeholder"></div>
+          </div>
+        </div>
+      </td>  
+      <td>
+        <div class="chart-content">
+          <div class="chart-container">
+            <div class="tableheader" id="PowerVsOmegaChartCaption"><b></b></div>
+            <div id="placeholder_power_vs_omega" class="chart-placeholder"></div>
+          </div>
+        </div>
+      </td>  
+    </tr>
+  </table>
+</html>

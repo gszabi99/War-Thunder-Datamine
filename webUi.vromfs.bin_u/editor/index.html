@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
+
+  <style>
+    body {
+      width:100%;
+      height:100%;
+      margin: 0px;
+      background-color: #333;
+      color: #eee;
+      font-family: Tahoma, Verdana, Arial;
+    }
+
+    .no-close .ui-dialog-titlebar-close {
+      display: none;
+    }
+
+    #map-canvas {
+      width:512px; 
+      height:512px; 
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      float:left;
+    }
+
+    #jsoneditor {
+      width: 400px; 
+      height: 512px; 
+      background-color: white;
+      float:left;
+    }
+
+  </style>
+
+  <link href="../css/vader/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+
+  <script src="../jquery-1.10.1.min.js"></script>
+  <script src="../jquery-ui-1.10.3.custom.min.js"></script>
+  <script src="../sylvester.src.js"></script>
+  <script src="../hammer.min.js"></script>
+  <script src="../utils.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="../jsoneditor/jsoneditor-min.css">
+  <script type="text/javascript" src="../jsoneditor/jsoneditor-min.js"></script>
+
+  <script language="javascript" type="text/javascript">
+    content = {}
+    content.mission_json = null
+    content.mission_name = null
+
+    editor_config = null
+
+    json_editor = null
+
+    map_info = null;
+    map_image = new Image();
+    //map_image.src = '/map.img'
+
+    map_scale = 1.0
+    map_pan = [0, 0]
+
+    view = null
+
+
+    hammer_opt = {
+      hold: false, tap:false, doubletap:false,
+      drag:true, dragstart:true, dragend:false, dragup:false, dragdown:false, dragleft:false, dragright:false,
+      swipe:false, swipeup:false, swipedown:false, swipeleft:false, swiperight:false,
+      transform:true, transformstart:true, transformend:false, rotate:false,
+      pinch:false, pinchin:false, pinchout:false, 
+      /*touch:false, release:false,*/
+
+      prevent_default: true,
+      no_mouseevents: true
+    }
+
+
+    function on_create_unit() {
+      $.ajax({
+        type: 'GET',
+        url: '/editor/view?fmt=tm',
+        success: function(data, textStatus, jqXHR) {
+          if (!data.valid) {
+            alert('Failed to get view tm')
+            return
+          }
+
+          var unit = {
+            type: 'aircraft', className: 'yak-3',
+            //type: 'heavyVehicle', className: 'wheeled_vehicles/ussr_zis5',
+            //type:'infantry', className: 'infantry/rifle_infantry',
+            tm: [
+              data.tm[0], data.tm[1], data.tm[2], 
+              [data.tm[3][0]+data.tm[2][0]*50, data.tm[3][1]+data.tm[2][1]*50+30, data.tm[3][2]+data.tm[2][2]*50]
+            ],
+          }
+
+          $.ajax({
+            type: 'POST',
+            url: '/editor/unit/create',
+            data: {unit: JSON.stringify(unit)}
+          })
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('View request error:\n\n' + textStatus + '\n\n' + errorThrown)
+        }
+      })
+    }
+
+
+    function on_new_mission() {
+      content.mission_json = null
+      content.mission_name = null
+      json_editor.set(content.mission_json)
+    }
+
+
+    function show_mission_select_dialog(data) {
+      var listDlg = $('#mission-select-dlg')
+      var optionsHtml = ''
+      for (var i=0; i<data.length; ++i)
+      {
+        var option = '<option value="' + data[i] + '">' + data[i] + '</options>';
+        optionsHtml += option;  
+      }
+      listDlg.find('#list').html(optionsHtml)
+      listDlg.dialog({ 
+        height: 'auto', 
+        minWidth: 800,
+        modal: true, 
+        buttons: [
+          {text: 'Open', click:function() {
+            var dlg = $(this)
+            var mission_name = dlg.find('#list').val()
+            if (mission_name) {
+              dlg.dialog('close')
+
+              var progressDlg = $('#progress-dlg')
+              progressDlg.find('#text').text('Loading missions data...')
+              progressDlg.dialog({ dialogClass: 'no-close', height: 'auto', modal: true, });
+
+              $.ajax({
+                type: 'GET', 
+                url: '/editor/mission/load', 
+                data: {name: mission_name},
+                success: function(data, textStatus, jqXHR) {
+                  progressDlg.dialog('close')
+                  content.mission_json = data  
+                  content.mission_name = mission_name
+                  json_editor.set(content.mission_json)
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                  progressDlg.dialog('close')
+                  alert('Error:\n\n' + textStatus + '\n\n' + errorThrown)
+                }
+              })
+
+            }
+          }}
+        ],
+        close: function( event, ui ) {
+        }
+      });
+    }
+
+
+    function on_load_mission() {
+      var progressDlg = $('#progress-dlg')
+      progressDlg.find('#text').text('Loading missions list...')
+      progressDlg.dialog({ dialogClass: 'no-close', height: 140, modal: true, });
+
+      $.ajax({
+        type: 'GET', 
+        url: '/editor/mission/list', 
+        success:function(data, textStatus, jqXHR) {
+          progressDlg.dialog('close')
+          show_mission_select_dialog(data)
+        },
+        error:function(jqXHR, textStatus, errorThrown) {
+          progressDlg.dialog('close')
+          alert('Error:\n\n' + textStatus + '\n\n' + errorThrown)
+        }
+      })
+    }
+
+
+    function on_save_mission() {
+      var saveDlg = $('#mission-save-dlg')
+      saveDlg.find('#name').val(content.mission_name || "unnamed.blk")
+      saveDlg.dialog({ 
+        height: 'auto', 
+        minWidth: 800,
+        modal: true, 
+        buttons: [
+          {text: 'Save', click:function() {
+            var dlg = $(this)
+            dlg.dialog('close')
+            name = dlg.find('#name').val()
+            if (!name || !name.length)
+              alert('Error: no name specified')
+            else {
+              var progressDlg = $('#progress-dlg')
+              progressDlg.find('#text').text('Saving missions data...')
+              progressDlg.dialog({ dialogClass: 'no-close', height: 'auto', modal: true, });
+
+              $.ajax({
+                type: 'POST', 
+                url: '/editor/mission/save',                   
+                data: {name: name, mission_json: JSON.stringify(content.mission_json)},
+                success: function(data, textStatus, jqXHR) {
+                  progressDlg.dialog('close')
+                  content.mission_name = name
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                  progressDlg.dialog('close')
+                  alert('Error:\n\n' + textStatus + '\n\n' + errorThrown)
+                }
+              })
+            }
+          }}
+        ]
+      })
+    }
+
+
+    function on_run_mission() {
+      if (!content.mission_name) {
+        alert('No opened mission to run')
+        return  
+      }
+
+      $.ajax({
+        type: 'POST', 
+        url: '/editor/mission/run',
+        data: {name: content.mission_name},
+        success: function(data, textStatus, jqXHR) {
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('Failed to start mission.\n\nError:\n\n' + textStatus + '\n\n' + errorThrown)
+        }
+      })      
+    }
+
+
+    function on_set_pause(value) {
+      $.ajax({
+        type: 'POST',
+        url: '/editor/pause',
+        data: {pause: value},
+        success: function(data, textStatus, jqXHR) {
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          alert('Pause error.\n\nError:\n\n' + textStatus + '\n\n' + errorThrown)
+        }
+      })
+    }
+
+
+    function addWheelHandler(elem, onWheel) {
+      if (elem.addEventListener) {
+        if ('onwheel' in document) {
+          // IE9+, FF17+
+          elem.addEventListener("wheel", onWheel, false);
+        } else if ('onmousewheel' in document) {
+          // obsolete version
+          elem.addEventListener("mousewheel", onWheel, false);
+        } else {
+          // 3.5 <= Firefox < 17
+          elem.addEventListener("MozMousePixelScroll", onWheel, false);
+        }
+      } else { // IE<9
+        elem.attachEvent("onmousewheel", onWheel);
+      }
+    }
+
+
+    function clampMapPan() {
+      var canvas = document.getElementById('map-canvas')
+      map_pan[0] = clamp(map_pan[0], -(map_scale-1.0)*canvas.width, 0)
+      map_pan[1] = clamp(map_pan[1], -(map_scale-1.0)*canvas.height, 0)
+    }
+   
+
+    function mapOnWheel(e) {
+      e = e || window.event;
+      var delta = e.wheelDelta ? e.wheelDelta : (e.deltaY || e.detail)*-40
+
+      var offsX = (e.offsetX!=undefined) ? e.offsetX : (e.pageX-$('#map-canvas').offset().left)
+      var offsY = (e.offsetY!=undefined) ? e.offsetY : (e.pageY-$('#map-canvas').offset().top)
+      map_scale_new = clamp(map_scale + delta * 0.001, 1.0, 3.0)
+      map_pan[0] = offsX - (offsX - map_pan[0])*map_scale_new / map_scale
+      map_pan[1] = offsY - (offsY - map_pan[1])*map_scale_new / map_scale
+      map_scale = map_scale_new
+      clampMapPan()
+
+      redraw_map()
+
+      e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+    }
+
+
+    function on_touch_event(e) {
+      //page_log(e.type)
+      if (!e.gesture) // ???
+        return
+
+      if (e.type == 'dragstart' || e.type == 'transformstart') {
+        // just save values further down the code
+      } else if (e.type == 'drag' || e.type == 'transform') {
+        if (e.type == 'transform') {
+          scale0 = map_scale
+          map_scale = clamp(map_scale * e.gesture.scale / prevScale, 1.0, 3.0)
+
+          // scale shift
+          var offsX = e.gesture.center.pageX - $('#map-canvas').offset().left
+          var offsY = e.gesture.center.pageY - $('#map-canvas').offset().top
+          map_pan[0] = offsX - (offsX - map_pan[0])*map_scale / scale0
+          map_pan[1] = offsY - (offsY - map_pan[1])*map_scale / scale0
+        }
+
+        // drag shift
+        map_pan[0] += e.gesture.center.pageX - prevMousePos[0]
+        map_pan[1] += e.gesture.center.pageY - prevMousePos[1]
+
+        clampMapPan()
+        redraw_map()
+      } else {
+        console.log('Unexpected event type')
+        console.log(e)
+        return
+      }
+      prevMousePos = [e.gesture.center.pageX, e.gesture.center.pageY]
+      prevScale = e.gesture.scale
+    }
+
+
+    function draw_camera_pos(canvas, ctx) {
+      if (!view || !view['valid'])
+        return
+
+      var x = view['x']
+      var y = view['y']
+      var dir = $V([view['dx'], view['dy']])
+
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#FB0';
+      ctx.beginPath()
+
+      var w = 5.0
+      var l = 15.0
+      var dx = dir.at(0)
+      var dy = dir.at(1)
+      var sx = x*canvas.width
+      var sy = y*canvas.height
+
+      ctx.moveTo(sx+l*dx-w*dy, sy+l*dy+w*dx)
+      ctx.lineTo(sx, sy)
+      ctx.lineTo(sx+l*dx+w*dy, sy+l*dy-w*dx)
+      ctx.stroke()
+
+      ctx.beginPath()
+      ctx.arc(sx, sy, 3, 0, 2 * Math.PI, false);
+      ctx.stroke()
+
+      //return {'x': x, 'y': y, 'dir': dir.elements}
+    }
+
+
+    function redraw_map() {
+      var canvas = document.getElementById('map-canvas')
+      var ctx = canvas.getContext('2d')
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      ctx.setTransform(map_scale, 0, 0, map_scale, map_pan[0], map_pan[1])
+      if (map_image.complete && map_image.naturalWidth) {
+        ctx.drawImage(map_image, 0, 0, canvas.width, canvas.height)
+      }
+
+      draw_camera_pos(canvas, ctx)
+    }
+
+
+    function update_map_info(info) {
+      var prevMapGen = (map_info && ('map_generation' in map_info)) ? map_info['map_generation'] : -1
+      var newMapGen = (info && ('map_generation' in info)) ? info['map_generation'] : -1
+      
+      map_info = info
+
+      if (prevMapGen != newMapGen) {
+        map_image.src = '/map.img?gen='+newMapGen
+        map_scale = 1.0
+        map_pan = [0.0, 0.0]
+        redraw_map()
+      }
+    }
+
+
+    function update_pause_label(data) {
+      if ('pause' in data) {
+        $('#pause-state').text(data.pause ? 'Paused' : 'Running')
+      }
+    }
+
+
+    function on_slow_timer() {
+      $.ajax({type:'GET', url:'/map_info.json', success:update_map_info })
+      $.ajax({type:'GET', url:'/editor/pause', success:update_pause_label })
+      redraw_map()
+    }
+
+
+    function on_fast_timer() {
+      $.ajax({type:'GET', url:'/editor/view', success:update_view })
+    }
+
+
+    function update_view(data) {
+      var redraw = (view && view['valid']) || (data && data['valid'])
+
+      view = data
+
+      if (redraw)
+        redraw_map()
+    }
+
+
+    function load_editor_config() {
+      var progressDlg = $('#progress-dlg')
+      progressDlg.find('#text').text('Loading editor data...')
+      progressDlg.dialog({ dialogClass: 'no-close', height: 'auto', modal: true, });
+
+      $.ajax({
+        type: 'GET', 
+        url: '/editor/config', 
+        success:function(data, textStatus, jqXHR) {
+          progressDlg.dialog('close')
+          editor_config = data  
+        },
+        error:function(jqXHR, textStatus, errorThrown) {
+          progressDlg.dialog('close')
+          alert('Error:\n\n' + textStatus + '\n\n' + errorThrown)
+        }
+      })
+    }
+
+    function init() {
+      var canvasEl = document.getElementById('map-canvas')
+      
+      addWheelHandler(canvasEl, mapOnWheel)
+      canvasEl.onselectstart = function() {return false} //== Chrome fix
+      var ht = Hammer(canvasEl, hammer_opt)
+      var events = ['drag', 'dragstart', 'transform', 'transformstart']
+      for (var ei in events) {
+        ht.on(events[ei], on_touch_event)
+      }
+
+      json_editor = new jsoneditor.JSONEditor(document.getElementById("jsoneditor"), {
+        mode: "view"
+      })
+
+      setInterval(on_slow_timer, 500);
+      setInterval(on_fast_timer, 25);
+
+      load_editor_config()
+    }
+
+    window.onload = init;
+  </script>
+
+</head>
+
+<body>
+<div id="main-toolbar">
+  <button onclick="on_create_unit()">Create unit</button>
+  &nbsp;
+  <button onclick="on_new_mission()">New mission</button>
+  <button onclick="on_load_mission()">Load mission</button>
+  <button onclick="on_save_mission()">Save mission</button>
+  <button onclick="on_run_mission()">Restart mission</button>
+  &nbsp;
+  <span id="pause-state"></span>
+  <button onclick="on_set_pause(true)">Pause</button>
+  <button onclick="on_set_pause(false)">Resume</button>
+</div>
+
+<div id="progress-dlg" title="Please wait" style="display:none;">
+  <p id="text"></p>
+</div>
+
+<div id="mission-select-dlg" title="Select a mission" style="display:none;">
+  <select id="list" size="10"></select>
+</div>
+
+<div id="mission-save-dlg" title="Save as..." style="display:none;">
+  <input id="name" style="width:90%;"></input>
+</div>
+
+<div style="width:100%; height:100%; background-color:#666;">
+
+  <canvas id="map-canvas" width="512" height="512">Please use a browser with canvas support</canvas>
+
+  <div id="jsoneditor"></div>
+
+</div>
+
+</body>
+
+</html>

@@ -259,8 +259,12 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     if (campaignName == null || this.missionName == null)
       return
 
+    let baseMissionBlk = get_meta_mission_info_by_gm_and_name(gm, this.missionName)
+    if (baseMissionBlk == null)
+      return
+
     this.missionBlk = DataBlock()
-    this.missionBlk.setFrom(get_meta_mission_info_by_gm_and_name(gm, this.missionName))
+    this.missionBlk.setFrom(baseMissionBlk)
 
     if (gm == GM_EVENT)
       ::mission_settings.coop = true;

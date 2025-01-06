@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
+  <style type="text/css">    
+    .number-box
+    {
+       width : 70px;
+    }
+    .chart-content {
+      width: 800px;
+      height: 670px;
+      margin: 0 auto;
+      bottom: 50px;
+      padding: 0px;
+    }
+
+    .chart-container {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;  
+      width: 800px;
+      height: 670px;
+      padding: 0px 0px 0px 0px;
+      margin: 15px auto 30px auto;
+      border: 1px solid #ddd;
+      background: #fff;
+      background: linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      -o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    
+    .legend table, .legend > div {
+      height: 20px !important;
+      opacity: 1 !important;
+      right: 10px;
+      bottom: 50px;
+      width: 150px !important;
+    }
+     
+    .legend table {
+      border: 1px solid #555;
+      padding: 5px;
+    }
+
+    .chart-placeholder {
+      width: 100%;
+      height: 100%;
+      font-size: 14px;
+      line-height: 1.2em;
+    }
+        
+  </style>
+  <script src="../cookies.js"></script>
+  <script src="../jquery-1.10.1.min.js"></script>
+  <script src="../jquery.flot.js"></script>
+  <script src="../jquery.flot.navigate.min.js"></script>
+  <script src="../jquery.flot.axislabels.js"></script>
+  <script src="../parameter.js"></script>
+  <title>"War Thunder" Flight Model: Engine Thermodynamics</title>
+</head>
+  
+<body>
+  <style>
+    body {
+      color: #333;
+      background-color: #fff;
+    }
+
+    table {
+      border-spacing: 0;
+      border: 1px solid #cbcbcb;
+    }
+
+    thead {
+      background: #e0e0e0;
+      color: #000;
+    }
+
+    td, th {
+      padding: 0px 5px;
+      border-left: 1px solid #cbcbcb;
+      border-bottom: 1px solid #cbcbcb;
+      text-align: center;
+    }
+
+    th {
+      font-family: sans-serif;
+    }
+
+    tr[isDelayed=yes] {
+      background-color: #eee;
+    }
+
+    tr[isHero=yes] {
+      background-color: lightgreen;
+    }
+
+    button {
+      -webkit-border-radius: 2px 2px;
+      border: solid 1px rgb(153, 153, 153);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(221, 221, 221)));
+      color: #333;
+      cursor: pointer;
+    }
+    button:disabled {
+      border: solid 1px rgb(203, 203, 203);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(231, 231, 231)));
+      color: #999;
+      cursor: default;
+    }
+  </style>
+  
+  <script>
+  
+  const ArgType = {
+    FIXED_ARG: -1,
+    ARG1: 0,
+    ARG2: 1
+  }
+  
+  const EngineMode = {
+    BY_THROTTLE: 0,
+    MANUAL: 1
+  }
+    
+  const TemperatureType = {
+    COOLANT_HEAD: 0,
+    OIL: 1
+  }
+  
+  var settings = {
+    type: 'table',
+    items: {
+      unitSystem: { type: 'enum', controlId: 'ComboUnitSystem', value: 0, variants: unitSystemVariants },
+    }
+  }
+  
+  var state = {
+    connected: true,
+    fm: {
+      typeName: '',
+      fileName: '',
+      fileTime: undefined
+    }
+  }
+  
+  const plotArgs = {
+    altitude: {
+      name: 'H',
+      unit: 'altitude',
+      precision: 0
+    },
+    airspeed: {
+      name: 'TAS',
+      unit: 'velocity',
+      precision: 0
+    },
+    radiator: {
+      name: 'r',
+      unit: 'ratio',
+      precision: 0
+    }
+  }
+  
+  var plotParams = {
+    type: 'table',
+    items: {
+      temperatureType:  { type: 'enum',                                   controlId: 'ComboTemperatureType', value: TemperatureType.COOLANT_HEAD },
+      engineMode:       { type: 'enum',                                   controlId: 'ComboEngineMode',      value: EngineMode.BY_THROTTLE },
+      throttle:         { type: 'number', unit: 'ratio', precision: 0,    controlId: 'EditThrottle',         value: 1.0, min: 0.0, max: 1.1 },
+      manifoldPressure: { type: 'number', unit: 'pressure', precision: 3, controlId: 'EditManifoldPressure', value: 101325.0 },
+      omega:            { type: 'number', unit: 'rotationVelocity',       controlId: 'EditOmega',            value: 2700.0 / 9.55 },
+      restrictedMode:   { type: 'bool',                                   controlId: 'CheckBoxRestrictedMode', value: true },
+      liquidLevel:      { type: 'number', unit: 'ratio', precision: 1,    controlId: 'EditLiquidLevel',      value: 1.0 },
+      engineHealth:     { type: 'number', unit: 'ratio', precision: 1,    controlId: 'EditEngineHealth',     value: 1.0 },
+      altitude: {     
+        type: 'table',      
+        items: {      
+          argType: { type: 'enum',                                        controlId: 'ComboAltitudeArgType', value: ArgType.ARG1 },
+          min:     { type: 'number', unit: 'altitude', precision: 3,      controlId: 'EditAltitudeMinVal',   value: 0.0 },
+          max:     { type: 'number', unit: 'altitude', precision: 3,      controlId: 'EditAltitudeMaxVal',   value: 5000.0 },
+          step:    { type: 'number', unit: 'altitude', precision: 3,      controlId: 'EditAltitudeStepVal',  value: 1000.0 },
+          val:     { type: 'number', unit: 'altitude', precision: 3,      controlId: 'EditAltitudeVal',      value: 1000.0 }
+        }     
+      },      
+      airspeed: {     
+        type: 'table',      
+        items: {      
+          argType: { type: 'enum',                                        controlId: 'ComboAirspeedArgType', value: ArgType.ARG2 },
+          min:     { type: 'number', unit: 'velocity', precision: 3,      controlId: 'EditAirspeedMinVal',   value: 0.0 },
+          max:     { type: 'number', unit: 'velocity', precision: 3,      controlId: 'EditAirspeedMaxVal',   value: 500.0 / 3.6 },
+          step:    { type: 'number', unit: 'velocity', precision: 3,      controlId: 'EditAirspeedStepVal',  value: 100.0 / 3.6 },
+          val:     { type: 'number', unit: 'velocity', precision: 3,      controlId: 'EditAirspeedVal',      value: 0.0 }
+        }     
+      },      
+      radiator: {     
+        type: 'table',      
+        items: {      
+          argType: { type: 'enum',                                        controlId: 'ComboRadiatorArgType', value: ArgType.FIXED_ARG },
+          min:     { type: 'number', unit: 'ratio',    precision: 3,      controlId: 'EditRadiatorMinVal',   value: 0.0 },
+          max:     { type: 'number', unit: 'ratio',    precision: 3,      controlId: 'EditRadiatorMaxVal',   value: 1.0 },
+          step:    { type: 'number', unit: 'ratio',    precision: 3,      controlId: 'EditRadiatorStepVal',  value: 0.25 },
+          val:     { type: 'number', unit: 'ratio',    precision: 3,      controlId: 'EditRadiatorVal',      value: 0.0 },
+        }
+      },
+      temperatureRange:     { type: 'bool',                                 controlId: 'CheckBoxTemperatureRange',     value: true },
+      temperatureLoads:     { type: 'bool',                                 controlId: 'CheckBoxTemperatureLoads',     value: true },
+      temperatureSetpoints: { type: 'bool',                                 controlId: 'CheckBoxTemperatureSetpoints', value: true },
+    }
+  }
+    
+  function getParamByArgType(argType)
+  {
+    for (plotArgName in plotArgs)
+    {
+      var param = plotParams.items[plotArgName]
+      if (param.items.argType.value == argType)
+        return plotArgName
+    }
+    return undefined
+  }
+  
+  function onConnectionStateChange(connected)
+  {
+    if (connected != state.connected)
+    {
+      state.connected = connected
+      document.title = 'War Thunder Flight Model Test Page - ' + (connected ? 'connected' : 'disconnected')      
+      var headerConnectionState = document.getElementById('HeaderConnectionState')
+      headerConnectionState.innerHTML = connected ? 'Connected' : 'Disconnected'
+      headerConnectionState.style.color = connected ? 'Black' : 'Red'
+    }
+  }
+  
+  var fmTables = {}
+  
+  function getXAxisName()
+  {
+    var plotArg1Name = getParamByArgType(ArgType.ARG1)
+    return plotArg1Name && plotArgs[plotArg1Name].name + ', ' + unitSystems[settings.items.unitSystem.value][plotArgs[plotArg1Name].unit].name
+  }
+  
+  function getYAxisName()
+  {
+    return 'T' + ', ' + unitSystems[settings.items.unitSystem.value]['temperature'].name
+  }
+  
+  function getTemperature()
+  {
+    var plotArg1Name = getParamByArgType(ArgType.ARG1)
+    var plotArg2Name = getParamByArgType(ArgType.ARG2)
+    var data = []
+    if (fmTables.temperature)
+    {
+      const temperaturePlot = fmTables.temperature.table
+      if (temperaturePlot)
+      {
+        const temperatures = (plotArg2Name != undefined) ? temperaturePlot[0][1] : temperaturePlot
+        //temperature marks
+        
+        //temperature range: boiling point
+        if (plotParams.items.temperatureRange.value)
+        {
+          if (fmTables.temperature.boilingPoint)
+          {
+            var temperature = convertToUnit(fmTables.temperature.boilingPoint, 'temperature', settings.items.unitSystem.value).toFixed(0)
+            var boilingPoint = {
+              label: 'Boiling point',
+              color: '#f00',
+              lines: { lineWidth: 6 },
+              data: [
+                [
+                  convertToUnit(temperatures[0][0], plotArgs[plotArg1Name].unit, settings.items.unitSystem.value),
+                  temperature
+                ],
+                [
+                  convertToUnit(temperatures[temperatures.length - 1][0], plotArgs[plotArg1Name].unit, settings.items.unitSystem.value),
+                  temperature
+                ]
+              ]
+            }
+            data.push(boilingPoint)
+          }
+        }
+        //temperature loads
+        if (plotParams.items.temperatureLoads.value)
+        {
+          if (fmTables.temperature.thermalLoads)
+          {
+            for (var i = fmTables.temperature.thermalLoads.length - 1; i >= 0 ; --i)
+            {
+              var thermalLoad = fmTables.temperature.thermalLoads[i]
+              var workTimeMin = (1.0 / thermalLoad.thermalLoad / 60.0).toFixed(0)
+              var recoverTimeMin = (1.0 / thermalLoad.thermalRecover / 60.0).toFixed(0)
+              var label = 'Load #' + i.toString() + ' ' + workTimeMin.toString() + '/' + recoverTimeMin.toString() + ' min'
+              var temperature = convertToUnit(thermalLoad.temperature, 'temperature', settings.items.unitSystem.value).toFixed(0)
+              var thermalLoadPoint = {
+                label: label,
+                color: '#0ff',
+                lines: { lineWidth: 4 },
+                data: [
+                  [
+                    convertToUnit(temperatures[0][0], plotArgs[plotArg1Name].unit, settings.items.unitSystem.value),
+                    temperature
+                  ],
+                  [
+                    convertToUnit(temperatures[temperatures.length - 1][0], plotArgs[plotArg1Name].unit, settings.items.unitSystem.value),
+                    temperature
+                  ]
+                ]
+              }
+              data.push(thermalLoadPoint)
+            }
+          }
+        }
+        //temperature setpoints for automatic radiator flaps controller
+        if (plotParams.items.temperatureSetpoints.value)
+        {
+          if (fmTables.temperature.autoRadiatorSetPoints)
+          {
+            for (var i = fmTables.temperature.autoRadiatorSetPoints.length - 1; i >= 0 ; --i)
+            {
+              var autoRadiatorSetPoint = fmTables.temperature.autoRadiatorSetPoints[i]
+              var throttle = (autoRadiatorSetPoint.throttle * 100.0).toFixed(0)
+              var label = 'Radiator setpoint #' + i.toString() + ' ' + throttle.toString() + '%'
+              var temperature = convertToUnit(autoRadiatorSetPoint.temperature, 'temperature', settings.items.unitSystem.value).toFixed(0)
+              var autoRadiatorSetPointPoint = {
+                label: label,
+                color: '#05f',
+                lines: { lineWidth: 4 },
+                data: [
+                  [
+                    convertToUnit(temperatures[0][0], plotArgs[plotArg1Name].unit, settings.items.unitSystem.value),
+                    temperature
+                  ],
+                  [
+                    convertToUnit(temperatures[temperatures.length - 1][0], plotArgs[plotArg1Name].unit, settings.items.unitSystem.value),
+                    temperature
+                  ]
+                ]
+              }
+              data.push(autoRadiatorSetPointPoint)
+            }
+          }
+        }
+        //temperature range: thermostat setpoint
+        if (plotParams.items.temperatureRange.value)
+        {
+          if (fmTables.temperature.thermostatSetPoint)
+          {
+            var temperature = convertToUnit(fmTables.temperature.thermostatSetPoint, 'temperature', settings.items.unitSystem.value).toFixed(0)
+            var thermostatSetPoint = {
+              label: 'Thermostat setpoint',
+              color: '#00f',
+              lines: { lineWidth: 6 },
+              data: [
+                [
+                  convertToUnit(temperatures[0][0], plotArgs[plotArg1Name].unit, settings.items.unitSystem.value),
+                  temperature
+                ],
+                [
+                  convertToUnit(temperatures[temperatures.length - 1][0], plotArgs[plotArg1Name].unit, settings.items.unitSystem.value),
+                  temperature
+                ]
+              ]
+            }
+            data.push(thermostatSetPoint)
+          }
+        }
+        //temperature plot
+        if (plotArg1Name && plotArg2Name)
+        {
+          for (var i = 0; i < temperaturePlot.length; ++i)
+          {
+            var arg2 = plotArgs[plotArg2Name]
+            var points = {
+              label: 'T (' + plotArgs[plotArg2Name].name + ' = ' + convertToUnit(temperaturePlot[i][0], arg2.unit, settings.items.unitSystem.value).toFixed(arg2.precision) + ' )',
+              data: [] 
+            }
+            for (var j = 0; j < temperaturePlot[i][1].length; ++j)
+              points.data.push( [
+                convertToUnit(temperaturePlot[i][1][j][0], plotArgs[plotArg1Name].unit, settings.items.unitSystem.value),
+                convertToUnit(temperaturePlot[i][1][j][1], 'temperature', settings.items.unitSystem.value)
+              ] )
+            data.push(points)
+          }
+        }
+        else if (plotArg1Name)
+        {
+          var points = { data: [] }
+          for (var i = 0; i < temperaturePlot.length; ++i)
+            points.data.push( [
+              convertToUnit(temperaturePlot[i][0], plotArgs[plotArg1Name].unit, settings.items.unitSystem.value),
+              convertToUnit(temperaturePlot[i][1], 'temperature', settings.items.unitSystem.value)
+            ] )
+          data.push(points)
+        }
+      }
+    }
+    return data
+  }
+  
+  var chartsData = 
+  {
+    temperature: {
+      enabled: true,
+        charts: [
+        {
+          name: 'T(H, TAS, r)',
+          xAxis: {
+            name: getXAxisName
+          },
+          yAxis: {
+            name: getYAxisName
+          },
+          func: getTemperature,
+          chart: 'placeholder_temperature'
+        }
+      ]
+    }
+  }
+  
+  function updateChartGroup(group)
+  {
+    var chartGroupData = chartsData[group]
+    if (chartGroupData != undefined &&
+        chartGroupData.enabled)
+    {
+      var chartGroup = charts[group]  
+      for(var i = 0; i < chartGroup.length; i++ )
+      {
+        var chartData = chartGroupData.charts[i]
+        chartGroup[i].setData(chartData.func(chartData.data))
+        chartGroup[i].draw();
+      }
+    }
+  }
+    
+  function updateCharts()
+  {
+    for (group in chartsData)
+      updateChartGroup(group)
+  }
+  
+  var charts = {}
+  function setupCharts()
+  {
+    $(function() {
+      for (group in chartsData)
+      {
+        var chartGroupData = chartsData[group]
+        if (chartGroupData.enabled)
+        {
+          charts[group] = []
+          for (var i = 0; i < chartGroupData.charts.length; ++i)
+          {
+            var chartData = chartGroupData.charts[i]          
+            var chartGroup = charts[group]
+            var chartObj = $('#' + chartData.chart)
+            chartGroup[i] = $.plot(chartObj, chartData.func(chartData.data), {
+              series: {
+                lines: {
+                  show: true
+                },
+                shadowSize: 0
+              },
+              xaxis: {
+                axisLabel: chartData.xAxis.name(),
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 16,
+                axisLabelFontFamily: 'Arial'
+              },
+              yaxis: {
+                axisLabel: chartData.yAxis.name(),
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 16,
+                axisLabelFontFamily: 'Arial'
+              },
+              zoom: {
+                realTime: false
+              },
+              pan: {
+                realTime: false
+              },
+              legend: {
+                labelBoxBorderColor: "Black",
+                position: "right"
+              }
+            });
+          }
+        }
+      }
+      updateCharts()
+    });
+  }
+  
+  function setCommand(data, successFunc, errorFunc) {
+    $.ajax({
+      url: '/editor/fm_thermo',
+      data: data,
+      success: successFunc,
+      error: errorFunc
+    })
+  }
+  
+  function fillFmProperties(data)
+  {
+    if (!data.valid)
+      return
+    state.fm = data.id
+    document.getElementById('HeaderAircraftType').innerHTML = 'Aircraft: ' + state.fm.typeName + ' from \"' + state.fm.fileName + '\"'
+    updateTemperaturePlot()
+  }
+  
+  function updateFmProperties()
+  {
+    setCommand( {
+                  cmd: 'getFmProperties',
+                  'fileName' : state.fm.fileName,
+                  'fileTime' : state.fm.fileTime
+                },
+                function(data)
+                {
+                  onConnectionStateChange(true)
+                  fillFmProperties(data)
+                  setTimeout(updateFmProperties, 2500)
+                },
+                function(data)
+                {
+                  onConnectionStateChange(false)
+                  setTimeout(updateFmProperties, 2500)
+                }
+              )
+  }
+  
+  function updateFmPropertiesNow()
+  {
+    setCommand({cmd: 'getFmProperties'}, fillFmProperties)
+  }
+  
+  function fillTemperatureTable(data)
+  { 
+    fmTables.temperature = data
+    setupCharts()
+  }
+  
+  function updateTemperaturePlot()
+  {
+    serializeParameterToCookie(plotParams)
+    var data = {
+      cmd: 'rebuildTemperaturePlot',
+    }
+    serializeParameterToURL(plotParams, data)
+    setCommand( data,
+                function(data)
+                {
+                  onConnectionStateChange(true)
+                  fillTemperatureTable(data)
+                },
+                function(data)
+                {
+                  onConnectionStateChange(false)
+                } )
+  }
+
+  function onSettingsChange(path)
+  {
+    var param = getParameterByPath(settings, path)
+    if (loadParameter(param, null))
+      serializeParameterToCookie(param, path[path.length - 1])
+    else
+      alert('Parameter path "' + parameterPathToString(path) + '" not found!')
+  }
+  
+  function onUnitSystemChange(path)
+  {
+    onSettingsChange(path)
+    
+    saveParameter(plotParams, settings.items.unitSystem.value)
+    setupCharts()
+  }
+  
+  function onPlotParamChange(path)
+  {
+    if (!loadParameter(getParameterByPath(plotParams, path), settings.items.unitSystem.value))
+      alert('Parameter path "' + parameterPathToString(path) + '" not found!')
+    updateTemperaturePlot()
+  }
+  
+  function enablePlotParamRange(plotParamRange)
+  {
+    document.getElementById(plotParamRange.min.controlId).disabled = plotParamRange.argType.value == ArgType.FIXED_ARG
+    document.getElementById(plotParamRange.max.controlId).disabled = plotParamRange.argType.value == ArgType.FIXED_ARG
+    document.getElementById(plotParamRange.step.controlId).disabled = plotParamRange.argType.value == ArgType.FIXED_ARG
+    document.getElementById(plotParamRange.val.controlId).disabled = plotParamRange.argType.value != ArgType.FIXED_ARG
+  }
+  
+  function enableEngineModeParams()
+  {
+    var engineMode = plotParams.items.engineMode.value
+    document.getElementById(plotParams.items.throttle.controlId).disabled = (engineMode != EngineMode.BY_THROTTLE)
+    document.getElementById(plotParams.items.manifoldPressure.controlId).disabled =
+      document.getElementById(plotParams.items.omega.controlId).disabled = (engineMode == EngineMode.BY_THROTTLE)  
+  }
+  
+  function onPlotParamEngineModeChange(path)
+  {
+    onPlotParamChange(path)
+    enableEngineModeParams()
+  }
+  
+  function onPlotParamArgTypeChange(path, plotParamRange)
+  {
+    onPlotParamChange(path)
+    enablePlotParamRange(plotParamRange)
+    if (plotParamRange.argType.value == ArgType.ARG1 || plotParamRange.argType.value == ArgType.ARG2)
+    {
+      for (var plotArgName in plotArgs)
+      {
+        var anotherPlotParamRange = plotParams.items[plotArgName].items
+        if (plotParamRange != anotherPlotParamRange &&
+            plotParamRange.argType.value == anotherPlotParamRange.argType.value)
+        {
+          anotherPlotParamRange.argType.value = ArgType.FIXED_ARG
+          saveParameter(anotherPlotParamRange.argType, settings.items.unitSystem.value)
+          enablePlotParamRange(anotherPlotParamRange)
+        }
+      }
+    }
+    updateTemperaturePlot()
+  }
+  
+  function init()
+  {
+    onConnectionStateChange(false)
+    updateFmProperties()
+    
+    prepareParameter(settings) 
+    deserializeParameterFromCookie(settings, undefined)
+    saveParameter(settings, null)
+    
+    prepareParameter(plotParams) 
+    deserializeParameterFromCookie(plotParams, undefined)
+    saveParameter(plotParams, settings.items.unitSystem.value)
+    
+    enableEngineModeParams()
+    enablePlotParamRange(plotParams.items.altitude.items)
+    enablePlotParamRange(plotParams.items.airspeed.items)
+    enablePlotParamRange(plotParams.items.radiator.items)
+    
+    updateTemperaturePlot()
+  }
+
+  window.onload = init;
+  
+  </script>
+  
+  <h1>"War Thunder" Flight Model Editor</h1>
+  <h1>Engine Thermodynamics</h1>
+  <h2 id="HeaderConnectionState">Disconnected</h2>  
+  <h2 id="HeaderAircraftType">Unknown</h2>
+  <input type="button" value="Update" onClick="updateFmPropertiesNow()">
+  
+  <h2>Settings</h2>
+  <table>
+    <tr>
+      <td>Unit System</td>  
+      <td>      
+        <select id="ComboUnitSystem" onchange="onUnitSystemChange(['unitSystem'])" style="width:100%">
+        </select>
+      </td>  
+    </tr>
+  </table>
+  
+  <h2>Sustained temperature</h2>
+  <table>
+    <tr>
+      <td>
+        <table>
+          <tr>
+            <td><b>Temperature</b></td>  
+            <td>
+              <select id="ComboTemperatureType" onchange="onPlotParamChange(['temperatureType'])" style="width:100%"">
+                <option selected value="0">Coolant/Head</option>
+                <option value="1">Oil</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td colspan="2"><b>Engine Mode</b></td>  
+          </tr>
+          <tr>
+            <td>Mode</td>  
+            <td>
+              <select id="ComboEngineMode" onchange="onPlotParamEngineModeChange(['engineMode'])" style="width:100%">
+                <option selected value="0">By Throttle</option>
+                <option value="1">Manual</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>Throttle</td>  
+            <td><input class="number-box" type="number" id="EditThrottle" size = "5" value="0" onchange="onPlotParamChange(['throttle'])"></td>  
+          </tr>
+          <tr>
+            <td>Manifold Pressure</td>  
+            <td><input class="number-box" type="number" id="EditManifoldPressure" size = "5" value="0" onchange="onPlotParamChange(['manifoldPressure'])"></td>  
+          </tr>
+          <tr>
+            <td>RPM</td>  
+            <td><input class="number-box" type="number" id="EditOmega" size = "5" value="0" onchange="onPlotParamChange(['omega'])"></td>  
+          </tr>
+          <tr>
+            <td>Restricted mode</td>  
+            <td><input class="number-box" type="checkbox" id="CheckBoxRestrictedMode" onchange="onPlotParamChange(['restrictedMode'])"></td>  
+          </tr>
+          <tr>
+            <td colspan="2"><b>Engine Health</b></td>  
+          </tr>
+          <tr>
+            <td>Liquid Level</td>  
+            <td><input class="number-box" type="number" id="EditLiquidLevel" size = "5" value="0" onchange="onPlotParamChange(['liquidLevel'])"></td>  
+          </tr>
+          <tr>
+            <td>Health</td>  
+            <td><input class="number-box" type="number" id="EditEngineHealth" size = "5" value="0" onchange="onPlotParamChange(['engineHealth'])"></td>  
+          </tr>
+          <tr>
+            <td colspan="2"><b>Plot Parameters</b></td>  
+          </tr>
+          <tr>
+            <td><b>Altitude</b></td>  
+            <td>
+              <select id="ComboAltitudeArgType" onchange="onPlotParamArgTypeChange(['altitude', 'argType'], plotParams.items.altitude.items)" style="width:100%">
+                <option selected value="-1">Fixed Argument</option>
+                <option value="0">Argument 1</option>
+                <option value="1">Argument 2</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>Minimal Value</td>  
+            <td><input class="number-box" type="number" id="EditAltitudeMinVal" size = "5" value="0" onchange="onPlotParamChange(['altitude', 'min'])"></td>  
+          </tr>
+          <tr>
+            <td>Maximal Value</td>  
+            <td><input class="number-box" type="number" id="EditAltitudeMaxVal" size = "5" value="0" onchange="onPlotParamChange(['altitude', 'max'])"></td>  
+          </tr>
+          <tr>
+            <td>Step Value</td>  
+            <td><input class="number-box" type="number" id="EditAltitudeStepVal" size = "5" value="0" onchange="onPlotParamChange(['altitude', 'step'])"></td>  
+          </tr>
+          <tr>
+            <td>Value</td>  
+            <td><input class="number-box" type="number" id="EditAltitudeVal" size = "5" value="0" onchange="onPlotParamChange(['altitude', 'val'])"></td>  
+          </tr>
+          <tr>
+            <td><b>Airspeed</b></td>  
+            <td>
+              <select id="ComboAirspeedArgType" onchange="onPlotParamArgTypeChange(['airspeed', 'argType'], plotParams.items.airspeed.items)" style="width:100%">
+                <option selected value="-1">Fixed Argument</option>
+                <option value="0">Argument 1</option>
+                <option value="1">Argument 2</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>Minimal Value</td>  
+            <td><input class="number-box" type="number" id="EditAirspeedMinVal" size = "5" value="0" onchange="onPlotParamChange(['airspeed', 'min'])"></td>  
+          </tr>
+          <tr>
+            <td>Maximal Value</td>  
+            <td><input class="number-box" type="number" id="EditAirspeedMaxVal" size = "5" value="0" onchange="onPlotParamChange(['airspeed', 'max'])"></td>  
+          </tr>
+          <tr>
+            <td>Step Value</td>  
+            <td><input class="number-box" type="number" id="EditAirspeedStepVal" size = "5" value="0" onchange="onPlotParamChange(['airspeed', 'step'])"></td>  
+          </tr>
+          <tr>
+            <td>Value</td>  
+            <td><input class="number-box" type="number" id="EditAirspeedVal" size = "5" value="0" onchange="onPlotParamChange(['airspeed', 'val'])"></td>  
+          </tr>
+          <tr>
+            <td><b>Radiator Position</b></td>  
+            <td>
+              <select id="ComboRadiatorArgType" onchange="onPlotParamArgTypeChange(['radiator', 'argType'], plotParams.items.radiator.items)" style="width:100%">
+                <option selected value="-1">Fixed Argument</option>
+                <option value="0">Argument 1</option>
+                <option value="1">Argument 2</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>Minimal Value</td>  
+            <td><input class="number-box" type="number" id="EditRadiatorMinVal" size = "5" value="0" onchange="onPlotParamChange(['radiator', 'min'])"></td>  
+          </tr>
+          <tr>
+            <td>Maximal Value</td>  
+            <td><input class="number-box" type="number" id="EditRadiatorMaxVal" size = "5" value="0" onchange="onPlotParamChange(['radiator', 'max'])"></td>  
+          </tr>
+          <tr>
+            <td>Step Value</td>  
+            <td><input class="number-box" type="number" id="EditRadiatorStepVal" size = "5" value="0" onchange="onPlotParamChange(['radiator', 'step'])"></td>  
+          </tr>
+          <tr>
+            <td>Value</td>  
+            <td><input class="number-box" type="number" id="EditRadiatorVal" size = "5" value="0" onchange="onPlotParamChange(['radiator', 'val'])"></td>  
+          </tr>
+          <tr>
+            <td><b>Temperature range</b></td>  
+            <td><input class="number-box" type="checkbox" id="CheckBoxTemperatureRange" onchange="onPlotParamChange(['temperatureRange'])"></td>  
+          </tr>
+          <tr>
+            <td><b>Temperature loads</b></td>  
+            <td><input class="number-box" type="checkbox" id="CheckBoxTemperatureLoads" onchange="onPlotParamChange(['temperatureLoads'])"></td>  
+          </tr>
+          <tr>
+            <td><b>Temperature setpoints</b></td>  
+            <td><input class="number-box" type="checkbox" id="CheckBoxTemperatureSetpoints" onchange="onPlotParamChange(['temperatureSetpoints'])"></td>  
+          </tr>
+        </table>
+      </td>  
+      <td>
+        <div class="chart-content">
+          <div class="chart-container">
+            <div class="tableheader"><b>T(H, TAS, r)</b></div>
+            <div id="placeholder_temperature" class="chart-placeholder"></div>
+          </div>
+        </div>
+      </td>  
+    </tr>
+  </table>
+</html>

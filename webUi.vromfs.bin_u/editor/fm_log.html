@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <script src="../cookies.js"></script>
+  <script src="../jquery-1.10.1.min.js"></script>  
+  <title>War Thunder Log Page</title>
+</head>
+
+<body>
+
+  <style>
+    body {
+      color: #fff;
+      background-color: #1e1e1e;
+    }
+
+    #ErrorOverflow {
+      background: #2a2d2e;
+      color: #bababa;
+      padding: 15px;
+      width: 90%;
+      max-height: 250px;
+      overflow: auto;
+      border: 1px solid #8080c0;
+    }
+    #WarningOverflow {
+      background: #2a2d2e;
+      color: #bababa;
+      padding: 15px;
+      width: 90%;
+      max-height: 250px;
+      overflow: auto;
+      border: 1px solid #8080c0;
+    }
+    #InfoOverflow {
+      background: #2a2d2e;
+      color: #bababa;
+      padding: 15px;
+      width:90%;
+      max-height: 250px;
+      overflow:auto;
+      border: 1px solid #8080c0;
+    }
+
+  </style>
+  
+  <script language="javascript" type="text/javascript">
+
+  const cookieLifeTime = 60*60*24*1000
+
+  var connected = false
+
+  var state = {
+    connected: true,
+    fm: {
+      typeName: '',
+      fileName: '',
+      fileTime: undefined,
+      lastUpdateTime: 0.0
+    }
+  }
+
+  var settings = {
+      error : true,
+      warning : true,
+      info : true
+    }
+
+    var Logs = {
+      error : '',
+      warning : '',
+      info : ''
+    }
+
+    function OnErrorCheckBoxChange(checkBox)
+    {
+      settings['error'] = !checkBox.checked 
+      var textLog = document.getElementById("ErrorOverflow")
+      textLog.hidden = settings['error']
+      document.getElementById("errorButton").hidden = settings['error']
+      Cookies.set('boxError', settings['error'], {expires:cookieLifeTime})
+    }
+
+    function OnWarningCheckBoxChange(checkBox)
+    {
+      settings['warning'] = !checkBox.checked 
+      var textLog = document.getElementById("WarningOverflow")
+      textLog.hidden = settings['warning']
+      document.getElementById("warningButton").hidden = settings['warning']
+      Cookies.set('boxWarning', settings['warning'], {expires:cookieLifeTime})
+    }
+
+    function OnInfoCheckBoxChange(checkBox)
+    {
+      settings['info'] = !checkBox.checked
+      var textLog = document.getElementById("InfoOverflow")
+      textLog.hidden = settings['info']
+      document.getElementById("infoButton").hidden = settings['info']
+      Cookies.set('boxInfo', settings['info'], {expires:cookieLifeTime})
+    }
+
+    function FillLog(data) {
+
+      var id = data['id']
+      document.getElementById('HeaderAircraftType').innerHTML = 'Aircraft: ' + id['typeName'] + ' from \"' + id['fileName'] + '\"'
+
+      Logs['error'] = data['errorLog']
+      Logs['warning'] = data['warningLog']
+      Logs['info'] = data['infoLog']
+      state.fm.lastUpdateTime = data['updateTime']
+      ChangeLogs()
+    }
+
+    function ChangeLogs()
+    {
+      document.getElementById('errorLog').innerHTML = Logs['error']
+      document.getElementById('warningLog').innerHTML = Logs['warning']
+      document.getElementById('infoLog').innerHTML = Logs['info']
+    }
+
+     //Commands to Web-server
+     function setCommand(data, successFunc, errorFunc) {
+//      try
+//      {
+        $.ajax({
+          url: '/editor/fm_log',
+          data: data,
+          success: successFunc,
+          error: errorFunc
+        })
+//      }
+//      catch(e)
+//      {
+//      }
+    }
+
+    function updateFmLog() {
+      setCommand( {
+                      cmd: 'getLogs',
+                    'fileName' : state.fm.fileName,
+                    'fileTime' : state.fm.fileTime
+                    },
+                    function(data) {
+                      onConnectionStateChange(true)
+                      FillLog(data)
+                    },
+                    function(data) {
+                      onConnectionStateChange(false)
+                      FillLog(data)
+                    }
+                  )
+    }
+
+    function checkShouldUpdate(data)
+    {
+      if (data['shouldUpdate'])
+        updateFmLog() 
+    }
+
+    function updateFmLogRequest()
+    {
+      setCommand( {
+                      cmd: 'getNeedUpdateLog',
+                    'lastUpdateTime' : state.fm.lastUpdateTime
+                    },
+                    function(data) {
+                      onConnectionStateChange(true)
+                      checkShouldUpdate(data)
+                      setTimeout(updateFmLogRequest, 1000)
+                    },
+                    function(data) {
+                      onConnectionStateChange(false)
+                      checkShouldUpdate(data)
+                      setTimeout(updateFmLogRequest, 1000)
+                    }
+                  )
+    }
+
+    function loadCookie(name, def) {
+      const value = Cookies.get(name)
+      return (value != undefined) ? value : def
+    }
+
+    function loadCookies() {
+      settings['error'] = loadCookie('boxError', "true") == "true" ? true : false;
+      settings['warning'] = loadCookie('boxWarning', "true") == "true" ? true : false;
+      settings['info'] = loadCookie('boxInfo', "true") == "true" ? true : false;
+    }
+
+  //GUI Callbacks
+   function onConnectionStateChange(state)
+    {
+        connected = state
+        document.title = 'War Thunder Flight Model Log Page - ' + (connected ? 'connected' : 'disconnected')
+        var headerConnectionState = document.getElementById('HeaderConnectionState')
+        headerConnectionState.innerHTML = connected  ? 'Connected' : 'Disconnected'
+        headerConnectionState.style.color = connected ? 'White' : 'Red'
+    }
+function init() {
+      onConnectionStateChange(false)
+      loadCookies()
+      updateFmLog()
+      loadBoxCookies()
+      updateFmLogRequest()
+    }
+  function loadBoxCookies()
+  {
+    var boxError = document.getElementById("ErrorCheckBox")
+    boxError.checked = !settings['error']
+    var boxWarning = document.getElementById("WarningCheckBox")
+    boxWarning.checked = !settings['warning']
+    var boxInfo = document.getElementById("InfoCheckBox")
+    boxInfo.checked = !settings['info']
+    OnErrorCheckBoxChange(boxError)
+    OnWarningCheckBoxChange(boxWarning)
+    OnInfoCheckBoxChange(boxInfo)
+  }
+
+  function singleCopy(logType)
+  {
+    var fakeArea = document.createElement("textarea");
+    var text = document.getElementById(logType).innerHTML
+    text = text.replace(/<br>/g,'\n')
+    fakeArea.value = text
+    fakeArea.setAttribute('readonly', '');
+    fakeArea.style = {position: 'absolute', left: '-9999px'};
+    document.body.appendChild(fakeArea);
+    fakeArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(fakeArea);
+  }
+
+  function copySelected()
+  {
+    var textError =""
+    var textWarning =""
+    var textInfo =""
+    if (!settings['error'])
+    {
+      textError = "Error :\n"
+      textError = textError.concat(document.getElementById("errorLog").innerHTML)
+      textError = textError.replace(/<br>/g,'\n')
+      textError = textError.concat("\n")
+    }
+    if (!settings['warning'])
+    {
+      textWarning = "Warning :\n"
+      textWarning = textWarning.concat(document.getElementById("warningLog").innerHTML)
+      textWarning = textWarning.replace(/<br>/g,'\n')
+      textWarning = textWarning.concat("\n")
+    }
+    if (!settings['info'])
+    {
+      textInfo = "Info :\n"
+      textInfo = textInfo.concat(document.getElementById("infoLog").innerHTML)
+      textInfo = textInfo.replace(/<br>/g,'\n')
+      textInfo = textInfo.concat("\n")
+    }
+    var fakeArea = document.createElement("textarea");
+    textError = textError.concat(textWarning, textInfo);
+    fakeArea.value = textError
+    fakeArea.setAttribute('readonly', '');
+    fakeArea.style = {position: 'absolute', left: '-9999px'};
+    document.body.appendChild(fakeArea);
+    fakeArea.select();
+    document.execCommand("copy");
+    document.body.removeChild(fakeArea);
+  }
+
+  window.onload = init;
+
+  </script>
+  <h2 id="HeaderConnectionState">Disconnected</h2>  
+  <h2 id="HeaderAircraftType">Unknown</h2>
+  <table class="LogLevel">
+    <tr>
+      <td><h4>Show messages :</h4></td>
+      <td><input type="checkbox" id="ErrorCheckBox" size="5" onchange="OnErrorCheckBoxChange(this)">Error</td>
+      <td><input type="checkbox" id="WarningCheckBox" size="5" onchange="OnWarningCheckBoxChange(this)">Warning</td>
+      <td><input type="checkbox" id="InfoCheckBox" size="5" onchange="OnInfoCheckBoxChange(this)">info</td>
+      <td><button onclick="copySelected()" id="selectedButton">Copy Selected</button></td>
+    </tr>
+  </table>
+    <button onclick="singleCopy('errorLog')" id="errorButton">Copy Error</button>
+    <div id ="ErrorOverflow">
+        <b id="errorLog" style="color:orangered;"></b>
+    </div>
+    <button onclick="singleCopy('warningLog')" id="warningButton">Copy Warning</button>
+    <div id ="WarningOverflow">
+        <b id="warningLog" style="color:orange;"></b>
+    </div>
+    <button onclick="singleCopy('infoLog')" id="infoButton">Copy Info</button>
+    <div id ="InfoOverflow">
+        <b id="infoLog" style="color:white;"></b>  
+    </div>
+  </body>
+  </html>

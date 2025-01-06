@@ -1,0 +1,1566 @@
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
+  <style type="text/css">
+    
+    .chart-content {
+      width: 600px;
+      height: 500px;
+      margin: 0 auto;
+      bottom: 50px;
+      padding: 0px;
+    }
+
+    .chart-container {
+      box-sizing: border-box;
+      -moz-box-sizing: border-box;  
+      width: 600px;
+      height: 500px;
+      padding: 0px 0px 0px 0px;
+      margin: 15px auto 30px auto;
+      border: 1px solid #ddd;
+      background: #fff;
+      background: linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -o-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -ms-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -moz-linear-gradient(#f6f6f6 0, #fff 50px);
+      background: -webkit-linear-gradient(#f6f6f6 0, #fff 50px);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      -o-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -ms-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -moz-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      -webkit-box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    
+    .legend table, .legend > div {
+        height: 20px !important;
+        opacity: 1 !important;
+        right: 10px;
+        top: 10px;
+        width: 180px !important;
+    }
+     
+    .legend table {
+        border: 1px solid #555;
+        padding: 5px;
+    }
+
+    .chart-placeholder {
+      width: 100%;
+      height: 100%;
+      font-size: 14px;
+      line-height: 1.2em;
+    }
+
+    #placeholder_polar_0 .button, #placeholder_polar_1 .button, #placeholder_polar_2 .button {
+      position: absolute;
+      cursor: pointer;
+    }
+
+    #placeholder_polar_0 div.button, #placeholder_polar_1 div.button, #placeholder_polar_2 div.button {
+      font-size: smaller;
+      color: #999;
+      background-color: #eee;
+      padding: 2px;
+    }
+    
+    #placeholder_engine_0 div.button {
+      font-size: smaller;
+      color: #999;
+      background-color: #eee;
+      padding: 2px;
+    }
+
+  </style>
+  <script src="../cookies.js"></script>
+  <script src="../jquery-1.10.1.min.js"></script>  
+  <script src="../jquery.flot.js"></script>
+  <script src="../jquery.flot.navigate.min.js"></script>
+  <script src="../jquery.flot.axislabels.js"></script>
+  <script src="../numeric-1.2.6.js"></script>
+  <script src="../parameter.js"></script>
+  
+  <title>"War Thunder" Engine Model Editor</title>
+</head>
+  
+<body>
+
+  <style>
+    body {
+      color: #333;
+      background-color: #fff;
+    }
+
+    table {
+      border-spacing: 0;
+      border: 1px solid #cbcbcb;
+    }
+
+    thead {
+      background: #e0e0e0;
+      color: #000;
+    }
+
+    td, th {
+      padding: 0px 5px;
+      border-left: 1px solid #cbcbcb;
+      border-bottom: 1px solid #cbcbcb;
+      text-align: center;
+    }
+
+    th {
+      font-family: sans-serif;
+    }
+
+    tr[isDelayed=yes] {
+      background-color: #eee;
+    }
+
+    tr[isHero=yes] {
+      background-color: lightgreen;
+    }
+
+    button {
+      -webkit-border-radius: 2px 2px;
+      border: solid 1px rgb(153, 153, 153);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(221, 221, 221)));
+      color: #333;
+      cursor: pointer;
+    }
+    button:disabled {
+      border: solid 1px rgb(203, 203, 203);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(231, 231, 231)));
+      color: #999;
+      cursor: default;
+    }
+  </style>
+
+  <script>  
+
+  function onComboFlightModelSelect(combo)
+  {
+    currFmDataIndex = combo.value
+    fillFmProperties(fmData[currFmDataIndex])
+    buildFMCharts()
+  }
+  
+  function createNewFlightModel()
+  {
+    const newFmIndex = fmData.length;
+    fmData[newFmIndex] = {}
+    jQuery.extend(true, fmData[newFmIndex], fmData[currFmDataIndex]);
+    fmData[newFmIndex].params.engine.name = 'New Engine'
+    var comboBoxFlightModel = document.getElementById('ComboFlightModel')    
+    comboBoxFlightModel.options[comboBoxFlightModel.options.length] = new Option(fmData[newFmIndex].params.engine.name, fmData.length - 1);
+    comboBoxFlightModel.selectedIndex = comboBoxFlightModel.options.length - 1
+    onComboFlightModelSelect(comboBoxFlightModel)
+  }
+  
+  function onEngineParamChange()
+  {
+    const engine = fmProperties.items.engine.items
+    const engineType = parseInt(engine.type.value)
+    const enginePresent = (engineType < 4 || engineType == 5)
+  
+    const compressor = engine.compressor.items
+    const compressorType = parseInt(compressor.type.value)
+    var stageCount = 0
+    if (engineType < 2)
+    {
+      if (compressorType == 0)
+        stageCount = 0
+      else if (compressorType == 3)
+        stageCount = 1
+      else
+        stageCount = parseInt(compressor.stageCount.value)
+    }
+    else
+      stageCount = 0
+      
+    //Main
+    var paramsState = [
+      {
+        param: compressor.type,
+        state: enginePresent && engineType < 2
+      },
+      {
+        param: compressor.stageCount,
+        state: enginePresent && engineType < 2 && (compressorType == 1 || compressorType == 2)
+      },
+      {
+        param: compressor.variator,
+        state: enginePresent && engineType < 2 && compressorType > 0
+      },
+      {
+        param: compressor.airFlowMultiplier,
+        state: enginePresent && engineType < 2
+      },
+      {
+        param: engine.feedingType,
+        state: enginePresent && engineType < 2
+      },
+      {
+        param: engine.mixerType,
+        state: enginePresent && engineType < 2
+      },
+      {
+        param: engine.boosterType,
+        state: enginePresent && engineType < 2
+      },      
+      {
+        param: engine.idleOmega,
+        state: enginePresent
+      },
+      {
+        param: engine.maxOmega,
+        state: enginePresent
+      },
+      {
+        param: engine.autonomousLaunch,
+        state: enginePresent
+      },
+      {
+        param: engine.mass,
+        state: enginePresent
+      },
+      {
+        param: engine.cylinderCount,
+        state: enginePresent && engineType < 2
+      },
+      {
+        param: engine.thrust,
+        state: enginePresent && engineType > 1
+      },
+      {
+        param: engine.omega1,
+        state: enginePresent && engineType < 2
+      },
+      {
+        param: engine.manifoldPressure1,
+        state: enginePresent && stageCount > 0
+      },
+      {
+        param: engine.power1,
+        state: enginePresent && engineType < 2
+      },
+      {
+        param: engine.omega2,
+        state: enginePresent && engineType < 2
+      },
+      {
+        param: engine.manifoldPressure2,
+        state: enginePresent && stageCount > 0
+      },
+      {
+        param: engine.power2,
+        state: enginePresent && engineType < 2
+      }
+    ]
+    engine.omega2.value = Math.min(engine.omega1.value, engine.omega2.value)
+    engine.omega2.max = engine.omega1.value
+    
+    engine.power2.value = Math.min(engine.power1.value, engine.power2.value)
+    engine.power2.max = engine.power1.value
+    
+    //Altitude thresholds
+    var maxTresholdAltitude = 0.0
+    var thresholds = engine.threshold.items
+    for (var i = 0; i < 3; ++i)
+    {
+      var threshold = thresholds[i].items
+      threshold.altitude.value = Math.max(threshold.altitude.value, maxTresholdAltitude)
+      threshold.altitude.min = maxTresholdAltitude
+      maxTresholdAltitude = threshold.altitude.value
+      
+      threshold.altitude2.value = Math.max(threshold.altitude.value, threshold.altitude2.value)
+      threshold.altitude2.min = threshold.altitude.value
+      
+      paramsState[paramsState.length] = {
+        param: threshold.altitude,
+        state: enginePresent && stageCount > i
+      }
+      paramsState[paramsState.length] = {
+        param: threshold.altitude2,
+        state: enginePresent && stageCount > i && compressor.variator.value
+      }
+      paramsState[paramsState.length] = {
+        param: threshold.manifoldPressure1,
+        state: enginePresent && stageCount > i
+      }
+      paramsState[paramsState.length] = {
+        param: threshold.power1,
+        state: enginePresent && stageCount > i
+      }
+      paramsState[paramsState.length] = {
+        param: threshold.manifoldPressure2,
+        state: enginePresent && stageCount > i
+      }
+      paramsState[paramsState.length] = {
+        param: threshold.power2,
+        state: enginePresent && stageCount > i
+      }
+    }
+    
+    //High altitude
+    var maxHighAltitude = 0.0
+    const highAltitude = engine.highAltitude.items
+    for (var i = 0; i < 2; ++i)
+    {
+      const currHighAltitude = highAltitude[i].items
+      currHighAltitude.altitude.value = Math.max(currHighAltitude.altitude.value, maxHighAltitude)
+      currHighAltitude.altitude.min = maxHighAltitude
+      maxHighAltitude = currHighAltitude.altitude.value
+      currHighAltitude.power2.value = Math.min(currHighAltitude.power1.value, currHighAltitude.power2.value)
+      currHighAltitude.power2.max = currHighAltitude.power1.value
+      
+      paramsState[paramsState.length] = {
+        param: currHighAltitude.altitude,
+        state: enginePresent && engineType < 2
+      }
+      paramsState[paramsState.length] = {
+        param: currHighAltitude.power1,
+        state: enginePresent && engineType < 2
+      }
+      paramsState[paramsState.length] = {
+        param: currHighAltitude.power2,
+        state: enginePresent && engineType < 2
+      }
+    }
+    
+    //Parameter state
+    for (var i = 0; i < paramsState.length; ++i)
+    {
+      const paramState = paramsState[i]
+      if (paramState.param == undefined)
+        alert('Missed param ' + i)
+      paramState.param.disabled = !paramState.state
+      saveParameter(paramState.param, unitSystemName)
+    }
+    
+    if (stageCount > 0)
+    {
+      thresholds[0].items.manifoldPressure1.value = engine.manifoldPressure1.value
+      saveParameter(thresholds[0].items.manifoldPressure1, unitSystemName)
+    }
+  }
+   
+  var fmProperties = {
+    type: 'table',
+    items: {
+      type:     { value: '', type: 'string', readOnly: true },
+      fileTime: { value: '', type: 'string' },
+      
+      engine: {
+        type: 'table',
+        items: {
+          name:     { value: '', type: 'string', controlId: 'EditEngineName' },
+          type:     { value: 0, type: 'enum', controlId: 'ComboEngineType', handler: onEngineParamChange },
+          compressor: {
+            type: 'table',
+            items: {
+              type:               { value: 0, type: 'enum',   controlId: 'ComboCompressorType',             handler: onEngineParamChange },
+              stageCount:         { value: 0, type: 'enum',   controlId: 'ComboCompressorStageCount',       handler: onEngineParamChange },
+              variator:           { value: 0, type: 'bool',   controlId: 'ComboEngineCompressorVariator' ,  handler: onEngineParamChange},
+              airFlowMultiplier:  { value: 0, type: 'number', controlId: 'EditAirFlowMultiplier' },              
+            }
+          },
+          feedingType:      { value: 0, type: 'enum',   controlId: 'ComboEngineFeedingType' },
+          mixerType:        { value: 0, type: 'enum',   controlId: 'ComboEngineMixerType' },
+          boosterType:      { value: 0, type: 'enum',   controlId: 'ComboEngineBoosterType' },
+          idleOmega:        { value: 0, type: 'number', controlId: 'EditEngineIdleOmega',                     unit: 'rotationVelocity' },
+          maxOmega:         { value: 0, type: 'number', controlId: 'EditEngineMaxOmega',                      unit: 'rotationVelocity' },
+          mass:             { value: 0, type: 'number', controlId: 'EditEngineMass',                          unit: 'mass' },
+          cylinderCount:    { value: 0, type: 'number', controlId: 'EditEngineCylinderCount' },
+          autonomousLaunch: { value: 0, type: 'bool',   nameOfTrue: 'Autonomous', nameOfFalse: 'Airdrome', controlId: 'ComboEngineLaunchType'},
+          thrust:           { value: 0, type: 'number', controlId: 'EditEngineThrust',                        unit: 'thrust' },
+          
+          omega1:           { value: 0, type: 'number', controlId: 'EditEngineOmega1',                        unit: 'rotationVelocity', handler: onEngineParamChange },
+          manifoldPressure1:{ value: 0, type: 'number', controlId: 'EditEngineManifoldPressure01',            unit: 'pressure',         handler: onEngineParamChange, precision: 2 },
+          power1:           { value: 0, type: 'number', controlId: 'EditEnginePower01',                       unit: 'power',            handler: onEngineParamChange },          
+          
+          omega2:           { value: 0, type: 'number', controlId: 'EditEngineOmega2',                        unit: 'rotationVelocity', handler: onEngineParamChange },
+          manifoldPressure2:{ value: 0, type: 'number', controlId: 'EditEngineManifoldPressure02',            unit: 'pressure', precision: 2 },
+          power2:           { value: 0, type: 'number', controlId: 'EditEnginePower02',                       unit: 'power',            handler: onEngineParamChange },
+           
+          threshold: {
+            type: 'array',
+            items: [
+              {
+                type: 'table',
+                items: {
+                  altitude:         { value: 0, type: 'number',   controlId: 'EditEngineAltitude1',           unit: 'altitude', handler: onEngineParamChange },
+                  altitude2:        { value: 0, type: 'number',   controlId: 'EditEngineAltitude12',          unit: 'altitude' },
+                  manifoldPressure1:{ value: 0, type: 'number',   controlId: 'LabelEngineManifoldPressure11', unit: 'pressure', precision: 2, readOnly: true },
+                  power1:           { value: 0, type: 'number',   controlId: 'EditEnginePower11',             unit: 'power',    handler: onEngineParamChange },
+                  manifoldPressure2:{ value: 0, type: 'number',   controlId: 'LabelEngineManifoldPressure12', unit: 'pressure', precision: 2, readOnly: true },
+                  power2:           { value: 0, type: 'number',   controlId: 'LabelEnginePower12',            unit: 'power',    handler: onEngineParamChange, readOnly: true }
+                }
+              },
+              {
+                type: 'table',
+                items: {
+                  altitude:         { value: 0, type: 'number',   controlId: 'EditEngineAltitude2',           unit: 'altitude', handler: onEngineParamChange },
+                  altitude2:        { value: 0, type: 'number',   controlId: 'EditEngineAltitude22',          unit: 'altitude' },
+                  manifoldPressure1:{ value: 0, type: 'number',   controlId: 'EditEngineManifoldPressure21',  unit: 'pressure', precision: 2 },
+                  power1:           { value: 0, type: 'number',   controlId: 'EditEnginePower21',             unit: 'power',    handler: onEngineParamChange },
+                  manifoldPressure2:{ value: 0, type: 'number',   controlId: 'LabelEngineManifoldPressure22', unit: 'pressure', precision: 2, readOnly: true },
+                  power2:           { value: 0, type: 'number',   controlId: 'LabelEnginePower22',            unit: 'power',    handler: onEngineParamChange, readOnly: true }
+                }
+              },
+              {
+                type: 'table',
+                items: {
+                  altitude:         { value: 0, type: 'number',   controlId: 'EditEngineAltitude3',           unit: 'altitude' },
+                  altitude2:        { value: 0, type: 'number',   controlId: 'EditEngineAltitude32',          unit: 'altitude' },
+                  manifoldPressure1:{ value: 0, type: 'number',   controlId: 'EditEngineManifoldPressure31',  unit: 'pressure', precision: 2 },
+                  power1:           { value: 0, type: 'number',   controlId: 'EditEnginePower31',             unit: 'power' },
+                  manifoldPressure2:{ value: 0, type: 'number',   controlId: 'LabelEngineManifoldPressure32', unit: 'pressure', precision: 2, readOnly: true },
+                  power2:           { value: 0, type: 'number',   controlId: 'LabelEnginePower32',            unit: 'power', readOnly: true }
+                }
+              }
+            ]
+          },
+          highAltitude: {
+            type: 'array',
+            items: [
+              {
+                type: 'table',
+                items: {
+                  altitude:         { value: 0, type: 'number',   controlId: 'EditEngineAltitudeHigh1',       unit: 'altitude', handler: onEngineParamChange },
+                  power1:           { value: 0, type: 'number',   controlId: 'EditEnginePowerAltHigh11',      unit: 'power',    handler: onEngineParamChange },
+                  power2:           { value: 0, type: 'number',   controlId: 'EditEnginePowerAltHigh12',      unit: 'power' }
+                }
+              },
+              {
+                type: 'table',
+                items: {
+                  altitude:         { value: 0, type: 'number',   controlId: 'EditEngineAltitudeHigh2',       unit: 'altitude' },
+                  power1:           { value: 0, type: 'number',   controlId: 'EditEnginePowerAltHigh21',      unit: 'power' },
+                  power2:           { value: 0, type: 'number',   controlId: 'EditEnginePowerAltHigh22',      unit: 'power' }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  }
+  
+  var fmCharts = {
+  }
+  
+  //Math Model
+  
+  function evalPolynom(coeffs, arg)
+  {
+    var summ = 0.0
+    var argInPower = 1.0
+    for (var i = 0; i < coeffs.length; ++i)
+    {
+      const coeff = coeffs[i]
+      summ = summ + coeff * argInPower
+      argInPower = argInPower * arg
+    }
+    return summ
+  }
+
+  function getDensity(alt)
+  {
+    const densityCoeffs     = [ 1.0, -9.59387e-05, 3.53118e-09, -5.83556e-14, 2.28719e-19 ]
+    const density = evalPolynom(densityCoeffs, alt) * 1.225
+    return density
+  }
+
+  function getPressure(alt)
+  {
+    const pressureCoeffs    = [ 1.0, -0.000118441, 5.6763e-09,  -1.3738e-13,  1.60373e-18 ]
+    const pressure = evalPolynom(pressureCoeffs, alt) * 101300.0
+    return pressure
+  }
+   
+  function calcFullTorque(engineModel, omega, manifoldPressure)
+  {
+    var value = 0.0
+    var col = 0
+    for (var p1 = engineModel.manifoldPressureMinPower; p1 < engineModel.manifoldPressureMaxPower; ++p1)
+      for (var p2 = engineModel.omegaMinPower; p2 < engineModel.omegaMaxPower; ++p2)
+      {
+        value = value + engineModel.torqueCoeffs[col] * Math.pow(manifoldPressure, p1) * Math.pow(omega, p2)
+        col = col + 1
+      }
+    return value
+  }
+
+  function calcCompressorStageOutput(engineModel, omega, airDensity, airPressure, stage)
+  {
+    var omegaCoeff = 1.0
+    if (stage.variator != undefined)
+    {
+      if (airPressure < stage.variator.minPressure)
+        omegaCoeff = stage.variator.omegaCoeff
+      else if (airPressure < stage.variator.maxPressure)
+        omegaCoeff = 1.0 + (stage.variator.maxPressure - airPressure) / (stage.variator.maxPressure - stage.variator.minPressure) * (stage.variator.omegaCoeff - 1.0)
+    }
+    outAirPressure = engineModel.airAdiabaticFactor * airPressure + stage.pressureCoeff * airDensity * Math.pow(omega * omegaCoeff, 2)
+    outAirDensity = airDensity * outAirPressure / airPressure
+    torque = stage.torqueCoeff * airDensity * Math.pow(omega * omegaCoeff, 2)
+    return {
+      airDensity:   outAirDensity,
+      airPressure:  outAirPressure,
+      torque:       torque
+    }
+  }
+    
+  function calcCompressorOutput(engineModel, omega, airDensity, airPressure, stage)
+  {
+    var outAirDensity = airDensity
+    var outAirPressure = airPressure
+    totalTorque = 0.0
+    for (var i = 0; i <= stage; ++i)
+    {
+      var output = calcCompressorStageOutput(engineModel, omega, outAirDensity, outAirPressure, engineModel.compressor[i])
+      outAirDensity = output.airDensity
+      outAirPressure = output.airPressure
+      totalTorque = totalTorque + output.torque
+    }
+    return {
+      manifoldPressure: outAirPressure,
+      torque: totalTorque
+    }
+  }
+
+  function calcTorque(engineModel, omega, manifoldPressureRatio, alt, velocity, stage)
+  {
+    const density = getDensity(alt)
+    const pressure = getPressure(alt)
+    const additionalDynamicPressure = density * Math.pow(velocity, 2) * 0.5 * engineModel.airFlowMultiplier
+    if (engineModel.compressor != undefined &&
+        engineModel.compressor.length > 0)
+    {
+      var compressorOutput = calcCompressorOutput(engineModel, omega, density, pressure + additionalDynamicPressure, stage)
+      var manifoldPressure = Math.min(manifoldPressureRatio * engineModel.manifoldPressureMaxAllowed, compressorOutput.manifoldPressure)
+      var fullTorque = calcFullTorque(engineModel, omega, manifoldPressure)
+      return fullTorque - compressorOutput.torque
+    }
+    else
+    {
+      var manifoldPressure = Math.min(manifoldPressureRatio * engineModel.manifoldPressureMaxAllowed, pressure + additionalDynamicPressure)
+      var fullTorque = calcFullTorque(engineModel, omega, manifoldPressure)
+      return fullTorque
+    }
+  }
+  
+  function calcPower(engineModel, omega, manifoldPressureRatio, alt, velocity, stage)
+  {
+    if (engineModel.type == 0 ||
+        engineModel.type == 1)
+      return calcTorque(engineModel, omega, manifoldPressureRatio, alt, velocity, stage) * omega
+    else
+    {
+      alert('Unable to calculate power for non-piston engine')
+      return 0.0
+    }
+  }
+  
+  function calcThrust(engineModel, throttleRatio, alt, velocity)
+  {
+    if (engineModel.type == 2)
+    {    
+      const density = getDensity(alt)
+      return engineModel.thrust * Math.pow(Math.sqrt(throttleRatio), 3) * density / 1.225
+    }
+    else if (engineModel.type == 3)
+    {
+      return engineModel.thrust * throttleRatio
+    }
+    else if (engineModel.type == 5)
+    {
+      var cq = velocity / 94.0
+      if (cq < 1.0)
+        throttleRatio = 0.0
+      else
+        cq = Math.sqrt(cq)
+      return engineModel.thrust * throttleRatio * cq
+    }
+    else
+    {
+      alert('Unable to calculate thrust for piston engine')
+      return 0.0
+    }
+  }
+   
+  //Charts
+  
+  function getChartPower(chartData)
+  {
+    if (fmCharts.engine.power != undefined)
+    {
+      var data = []
+      for (var i = 0; i < fmCharts.engine.power.length; ++i)
+      {
+        var curve = fmCharts.engine.power[i]      
+        var label = ''
+        for (var l = 0; l < curve.parameter.length; ++l)
+        {
+          if (label.length > 0)
+            label = label + ', '
+          label = label + chartData.set[l].name + ' = ' + (curve.parameter[l] / unitSystems[unitSystemName][chartData.set[l].unit].coeff).toFixed(chartData.set[l].precision || 0)
+        }
+        var curveData = {
+          label: label,
+          data: [],
+          color: curve.group[1],
+          lines: { lineWidth: 2 + 3 * curve.group[0] }
+        }
+        for (var j = 0; j < curve.points.length; ++j)
+        {
+          const curvePoint = curve.points[j]
+          const point = [
+            (curvePoint[0] / unitSystems[unitSystemName][chartData.xAxis.unit].coeff).toFixed(chartData.xAxis.precision || 0),
+            (curvePoint[1] / unitSystems[unitSystemName][chartData.yAxis.unit].coeff).toFixed(chartData.yAxis.precision || 0)
+          ]
+          curveData.data.push(point)
+        }      
+        data[data.length] = curveData      
+      }
+      return data
+    }
+    else
+      return undefined
+  }
+  
+  function getChartThrust(chartData)
+  {    
+    if (fmCharts.engine.thrust != undefined)
+    {
+      var curve = fmCharts.engine.thrust
+      var data = [
+        {
+          label: 'Max Thrust',
+          data: [],
+          color: curve.color,
+          lines: { lineWidth: curve.lineWidth }
+        }
+      ]
+      for (var j = 0; j < curve.points.length; ++j)
+      {
+        const curvePoint = curve.points[j]
+        const point = [
+          (curvePoint[0] / unitSystems[unitSystemName][chartData.xAxis.unit].coeff).toFixed(chartData.xAxis.precision || 0),
+          (curvePoint[1] / unitSystems[unitSystemName][chartData.yAxis.unit].coeff).toFixed(chartData.yAxis.precision || 0)
+        ]
+        data[0].data.push(point)
+      }
+      return data
+    }
+    else
+      return undefined
+  }
+  
+  const chartsData = 
+  {
+    enginePower: [
+      {
+        place: 'engine',
+        name: 'P(H)',
+        set: [
+          { name: 'RPM', unit: 'rotationVelocity' },
+          { name: 'MAP', unit: 'pressure', precision: 2 }
+        ],
+        xAxis: {
+          name: 'P',
+          unit: 'power',
+        },
+        yAxis: {
+          name: 'H',
+          unit: 'altitude'
+        },
+        func: getChartPower
+      }
+    ],
+    engineThrust: [
+      {
+        place: 'engine',
+        name: 'F(H)',
+        xAxis: {
+          name: 'F',
+          unit: 'thrust',
+        },
+        yAxis: {
+          name: 'H',
+          unit: 'altitude'
+        },
+        func: getChartThrust
+      }
+    ]
+  }
+  
+  var charts = {}
+    
+  function updateChartGroup(group)
+  {
+    var chartGroupData = chartsData[group]
+    var chartGroup = charts[group]  
+    for(var i = 0; i < chartGroup.length; i++ )
+    {
+      if (chartGroupData != undefined &&
+          chartGroupData[i] != undefined)
+        chartGroup[i].setData(chartGroupData[i].func(chartGroupData[i]))
+      chartGroup[i].draw();
+    }
+  }
+    
+  function updateCharts()
+  {
+    for (group in chartsData)
+      updateChartGroup(group)
+  }
+  
+  function setupCharts()
+  {
+    $(function() {
+      var placeholder = []
+      for (group in chartsData)
+      {
+        const chartGroupData = chartsData[group]
+        charts[group] = []
+        for (var i = 0; i < chartGroupData.length; ++i)
+        {
+          const chartData = chartGroupData[i]   
+          const data = chartData.func(chartData)
+          if (data != undefined)
+          {
+            var chartGroup = charts[group]
+            placeholder[i] = $("#placeholder_" + chartData.place + '_' + i)
+            chartGroup[i] = $.plot(placeholder[i], data, {
+              series: {
+                lines: {
+                  show: true
+                },
+                shadowSize: 0
+              },
+              xaxis: {
+                axisLabel: chartData.xAxis.name,
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 16,
+                axisLabelFontFamily: 'Arial',
+                zoomRange: [0.1, 10],
+                panRange: [-10, 10]
+              },
+              yaxis: {
+                axisLabel: chartData.yAxis.name,
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 16,
+                axisLabelFontFamily: 'Arial',
+                zoomRange: [0.1, 10],
+                panRange: [-10, 10]
+              },
+              zoom: {
+                realTime: false
+              },
+              pan: {
+                realTime: false
+              },
+              legend: {
+                labelBoxBorderColor: "Black",
+                position: "right"
+              }
+            });
+          }
+        }
+      }
+      updateCharts()
+    });
+  }
+   
+  //Fill values
+  
+  var labelsWithUnitNames = [
+    {
+      id: 'LabelEngineMass',
+      name: 'Mass',
+      unit: 'mass'
+    },
+    {
+      id: 'LabelEngineThrustSeaLevel',
+      name: 'Thrust, Sea Level',
+      unit: 'thrust'
+    },
+    {
+      id: 'LabelEnginePowerSeaLevel',
+      name: 'Power, Sea Level',
+      unit: 'power'
+    },
+    {
+      id: 'LabelEngineManifoldPressureSeaLevel',
+      name: 'Manifold Pressure, Sea Level',
+      unit: 'pressure'
+    },    
+    {
+      id: 'LabelEngineAltitude1',
+      name: 'Altitude 1',
+      unit: 'altitude'
+    },
+    {
+      id: 'LabelEngineAltitude12',
+      name: 'Altitude variator 1',
+      unit: 'altitude'
+    },
+    {
+      id: 'LabelEngineManifoldPressure1',
+      name: 'Manifold Pressure 1',
+      unit: 'pressure'
+    },    
+    {
+      id: 'LabelEnginePowerAtAltitude1',
+      name: 'Power 1',
+      unit: 'power'
+    },
+    {
+      id: 'LabelEngineAltitude2',
+      name: 'Altitude 2',
+      unit: 'altitude'
+    },
+    {
+      id: 'LabelEngineAltitude22',
+      name: 'Altitude variator 2',
+      unit: 'altitude'
+    },
+    {
+      id: 'LabelEngineManifoldPressure2',
+      name: 'Manifold Pressure 2',
+      unit: 'pressure'
+    },
+    {
+      id: 'LabelEnginePowerAtAltitude2',
+      name: 'Power 2',
+      unit: 'power'
+    },
+    {
+      id: 'LabelEngineAltitude3',
+      name: 'Altitude 3',
+      unit: 'altitude'
+    },
+    {
+      id: 'LabelEngineAltitude32',
+      name: 'Altitude variator 3',
+      unit: 'altitude'
+    },
+    {
+      id: 'LabelEngineManifoldPressure3',
+      name: 'Manifold Pressure 3',
+      unit: 'pressure'
+    },    
+    {
+      id: 'LabelEnginePowerAtAltitude3',
+      name: 'Power 3',
+      unit: 'power'
+    },
+    {
+      id: 'LabelEngineAltitudeHigh',
+      name: 'Altitude High',
+      unit: 'altitude'
+    },
+    {
+      id: 'LabelEnginePowerAtAltitudeHigh',
+      name: 'Power, Altitude High',
+      unit: 'power'
+    }
+  ]
+  
+  const unitSystemName = 'Metric'
+  
+  function fillLabelsWithUnitNames()
+  {
+    for (var i = 0; i < labelsWithUnitNames.length; ++i)
+    {
+      var label = labelsWithUnitNames[i]
+      var control = document.getElementById(label.id)
+      control.innerHTML = label.name + ', ' + getUnitName(label.unit, unitSystemName)
+    }
+  }
+    
+  function fillFmProperties(data)
+  {
+    if (!data.valid)
+      return
+
+    deserializeParameterFromJSON(fmProperties, data.params)
+    //fmCharts = data.charts
+    prepareParameter(fmProperties)
+    saveParameter(fmProperties, unitSystemName)
+  }
+  
+  //Callbacks
+  function onParamChange(path)
+  {
+    if (loadParameterToPath(fmProperties, path, unitSystemName))
+    {
+      buildFMCharts()
+      saveFlightModel()
+    }
+    else
+      alert('Parameter path ' + JSON.stringify(path) + ' not found!')
+  }
+
+  var fmData = [
+    {
+      valid: true,
+      params: {
+        type: 'Me-109',
+        engine: {
+          //Main
+          name:' DB-601E',
+          type: 0,
+          compressor: {
+            type: 1,
+            stageCount: 1,
+            variator: true,
+            airFlowMultiplier: 1.0,
+          },
+          feedingType: 2,
+          mixerType: 0,
+          idleOmega: 1200 / 9.55,
+          maxOmega: 3100 / 9.55,
+          boosterType: 9,
+          mass: 860,
+          cylinderCount: 12,
+          autonomousLaunch: false,
+          //Power
+          omega1: 2700 / 9.55,
+          thrust: 0.0 * 9.81,
+          manifoldPressure1: 1.42 * 1.01325e5,
+          power1: 1350 * 746,
+          omega2: 2500 / 9.55,
+          manifoldPressure2: 1.30 * 1.01325e5,
+          power2: 1200 * 746,
+          threshold: [
+            {
+              altitude: 2150.0,
+              altitude2: 4800.0,
+              manifoldPressure1: 1.42 * 1.01325e5,
+              power1: 1440 * 746,
+              manifoldPressure2: 1.30 * 1.01325e5,
+              power2: 1275 * 746
+            }
+          ],
+          highAltitude: [
+            {
+              altitude: 7000,
+              power1: 1050.0 * 746,
+              power2: 950.0 * 746
+            },
+            {
+              altitude: 10000,
+              power1: 600.0 * 746,
+              power2: 520.0 * 746
+            }
+          ]
+        }
+      }
+    },
+    {
+      valid: true,
+      params: {
+        type: 'Spitfire Mk IX',
+        engine: {
+          //Main
+          name: 'Rolls-Royce Merlin 63',
+          type: 0,
+          compressor: {
+            type: 1,
+            stageCount: 2,
+            variator: false,
+            airFlowMultiplier: 1.0,
+          },
+          feedingType: 2,
+          mixerType: 0,
+          idleOmega: 1200 / 9.55,
+          maxOmega: 3100 / 9.55,
+          boosterType: 9,
+          mass: 860,
+          cylinderCount: 12,
+          autonomousLaunch: false,
+          //Power
+          omega1: 3000 / 9.55,
+          thrust: 2500 * 9.81,
+          manifoldPressure1: 1.97 * 1.01325e5,        
+          power1: 2150 * 746,
+          omega2: 2850 / 9.55,
+          manifoldPressure2: 1.97 * 1.01325e5,
+          power2: 2020 * 746,
+          threshold: [
+            {
+              altitude: 2200.0 * 0.304,
+              altitude2: 2200.0 * 0.304,
+              manifoldPressure1: 1.97 * 1.01325e5,
+              power1: 2170 * 746,
+              manifoldPressure2: 1.97 * 1.01325e5,
+              power2: 1940 * 746
+            },        
+            {
+              altitude: 12000 * 0.304,
+              altitude2: 12000 * 0.304,
+              manifoldPressure1: 1.97 * 1.01325e5,
+              power1: 2000 * 746,
+              manifoldPressure2: 1.97 * 1.01325e5,
+              power2: 1820 * 746
+            }
+          ],
+          highAltitude: [
+            {
+              altitude: 19000 * 0.304,
+              power1: 1600.0 * 746,
+              power2: 1400.0 * 746
+            },
+            {
+              altitude: 30000 * 0.304,
+              power1: 900.0 * 746,
+              power2: 800.0 * 746
+            }
+          ]
+        }
+      }
+    }
+  ]
+  var currFmDataIndex = undefined
+  
+  
+  function buildEngineCharts()
+  {
+    //Calculate parameters of engine model
+    var engineModel = {
+      airAdiabaticFactor: 1.0,
+      manifoldPressureMinPower: 0,
+      manifoldPressureMaxPower: 2,
+      omegaMinPower: 0,
+      omegaMaxPower: 2,
+    }
+    
+    const engine = fmProperties.items.engine.items
+    const engineType = parseInt(engine.type.value)
+    const compressor = engine.compressor.items
+    const compressorType = parseInt(compressor.type.value)
+    var stageCount = 0
+    if (engineType < 2)
+    {
+      if (compressorType == 0)
+        stageCount = 0
+      else if (compressorType == 3)
+        stageCount = 1
+      else
+        stageCount = parseInt(compressor.stageCount.value)
+    }
+    else
+      stageCount = 0
+   
+    engineModel.type = engineType
+    if (engineModel.type < 2)
+    {
+      engineModel.airFlowMultiplier = compressor.airFlowMultiplier.value
+      engineModel.compressor = []
+      if (stageCount > 0)
+      {
+        //Max manifold pressure
+        engineModel.manifoldPressureMaxAllowed = Math.max(engine.manifoldPressure1.value, engine.manifoldPressure2.value)        
+        //1st stage
+        var threshold1 = engine.threshold.items[0].items
+        var pressure1 = getPressure(threshold1.altitude.value)
+        var torqueCoeff = (threshold1.power1.value - engine.power1.value) / (getDensity(0.0) - getDensity(threshold1.altitude.value)) / Math.pow(engine.omega1.value, 3)
+        var pressureCoeff = (threshold1.manifoldPressure1.value - engineModel.airAdiabaticFactor * pressure1) / getDensity(threshold1.altitude.value) / Math.pow(engine.omega1.value, 2)
+        
+        var variator = {}
+        if (compressor.variator.value &&
+            threshold1.altitude2.value > threshold1.altitude.value)
+        {
+          var pressure2 = getPressure(threshold1.altitude2.value)
+          var omegaCoeff = Math.sqrt((threshold1.manifoldPressure1.value - engineModel.airAdiabaticFactor * pressure2) / getDensity(threshold1.altitude2.value) / Math.pow(engine.omega1.value, 2) / pressureCoeff)            
+          variator = {
+            omegaCoeff:   omegaCoeff,
+            maxPressure:  pressure1,
+            minPressure:  pressure2
+          }
+        }
+        
+        engineModel.compressor[engineModel.compressor.length] = {
+          torqueCoeff:    torqueCoeff,
+          pressureCoeff:  pressureCoeff,
+          variator:       variator
+        }
+        
+        //Full engine power        
+        var modes = [
+          { omega: engine.omega1.value, alt: 0.0,                           manifoldPressure: engine.manifoldPressure1.value,             power: engine.power1.value },
+          { omega: engine.omega2.value, alt: 0.0,                           manifoldPressure: engine.manifoldPressure2.value,             power: engine.power2.value }
+        ]
+        var highAltitude = engine.highAltitude.items
+        for (var i = 0; i < highAltitude.length; ++i)
+        {
+          var currHighAltitude = highAltitude[i].items
+          var firstStageHighAltitudeOutput1 = calcCompressorStageOutput(engineModel, engine.omega1.value, getDensity(currHighAltitude.altitude.value), getPressure(currHighAltitude.altitude.value), engineModel.compressor[0])
+          var firstStageHighAltitudeOutput2 = calcCompressorStageOutput(engineModel, engine.omega2.value, getDensity(currHighAltitude.altitude.value), getPressure(currHighAltitude.altitude.value), engineModel.compressor[0])
+          modes[modes.length] = { omega: engine.omega1.value, alt: currHighAltitude.altitude.value,   manifoldPressure: firstStageHighAltitudeOutput1.airPressure,  power: currHighAltitude.power1.value }  
+          modes[modes.length] = { omega: engine.omega2.value, alt: currHighAltitude.altitude.value,   manifoldPressure: firstStageHighAltitudeOutput2.airPressure,  power: currHighAltitude.power2.value }
+        }
+        var A = []
+        var Y = []        
+        for (var i = 0; i < modes.length; ++i)
+        {
+          var mode = modes[i]
+          var row = []
+          for (var p1 = engineModel.manifoldPressureMinPower; p1 < engineModel.manifoldPressureMaxPower; ++p1)
+            for (var p2 = engineModel.omegaMinPower; p2 < engineModel.omegaMaxPower; ++p2)
+              row[row.length] = Math.pow(mode.manifoldPressure, p1) * Math.pow(mode.omega, p2)
+          A[A.length] = row
+
+          var compressorOutput = calcCompressorOutput(engineModel, engine.omega1.value, getDensity(mode.alt), getPressure(mode.alt), 0)
+          var fullTorque = mode.power / mode.omega + compressorOutput.torque
+          Y[Y.length] = [ fullTorque ]
+        }
+        
+        var AT = numeric.transpose(A)
+        var X = numeric.dot(numeric.dot(numeric.inv(numeric.dot(AT, A)), AT), Y)
+        engineModel.torqueCoeffs = []
+        for (var i = 0; i < X.length; ++i)
+          engineModel.torqueCoeffs[i] = X[i][0]
+
+        //2nd and other compressor stages
+        var prevStage = engineModel.compressor[0]
+        for (var i = 1; i < stageCount; ++i)
+        {
+          var threshold = engine.threshold.items[i].items
+          var prevStageOutput = calcCompressorStageOutput(engineModel, engine.omega1.value, getDensity(threshold.altitude.value), getPressure(threshold.altitude.value), prevStage)
+          var fullTorque = calcFullTorque(engineModel, engine.omega1.value, threshold.manifoldPressure1.value)
+          var compressorTorque = fullTorque - threshold.power1.value / engine.omega1.value
+          var stageTorque = compressorTorque - prevStageOutput.torque
+          var torqueCoeff = stageTorque / prevStageOutput.airDensity / Math.pow(engine.omega1.value, 2)
+          var pressureCoeff = (threshold.manifoldPressure1.value - engineModel.airAdiabaticFactor * prevStageOutput.airPressure) / prevStageOutput.airDensity / Math.pow(engine.omega1.value, 2)
+          var newStage = {
+            torqueCoeff: torqueCoeff,
+            pressureCoeff: pressureCoeff
+          }
+          engineModel.compressor[engineModel.compressor.length] = newStage
+          prevStage = newStage
+        }
+        for (var i = 0; i < stageCount; ++i)
+        {
+          var threshold = engine.threshold.items[i].items
+          threshold.manifoldPressure2.value = Math.min(engine.manifoldPressure2.value, calcCompressorOutput(engineModel, engine.omega2.value, getDensity(threshold.altitude.value), getPressure(threshold.altitude.value), i).manifoldPressure)
+          saveParameter(threshold.manifoldPressure2, unitSystemName)
+          threshold.power2.value = calcPower(engineModel, engine.omega2.value, threshold.manifoldPressure2.value / engineModel.manifoldPressureMaxAllowed, threshold.altitude.value, 0.0, i)
+          saveParameter(threshold.power2, unitSystemName)
+        }
+      }
+      else
+      {
+        //Full engine power                
+        const seaLevelManifoldPressure = getPressure(0.0)
+        engineModel.manifoldPressureMaxAllowed = seaLevelManifoldPressure
+        
+        var modes = [
+          { omega: engine.omega1.value, alt: 0.0,                           manifoldPressure: seaLevelManifoldPressure,             power: engine.power1.value },
+          { omega: engine.omega2.value, alt: 0.0,                           manifoldPressure: seaLevelManifoldPressure,             power: engine.power2.value }
+        ]          
+        var highAltitude = engine.highAltitude.items
+        for (var i = 0; i < highAltitude.length; ++i)
+        {
+          var currHighAltitude = highAltitude[i].items
+          var highAlititudeManifoldPressure = getPressure(currHighAltitude.altitude.value)
+          modes[modes.length] = { omega: engine.omega1.value, alt: currHighAltitude.altitude.value,   manifoldPressure: highAlititudeManifoldPressure,  power: currHighAltitude.power1.value }  
+          modes[modes.length] = { omega: engine.omega2.value, alt: currHighAltitude.altitude.value,   manifoldPressure: highAlititudeManifoldPressure,  power: currHighAltitude.power2.value }
+        }
+        
+        var A = []
+        var Y = []        
+        for (var i = 0; i < modes.length; ++i)
+        {
+          var mode = modes[i]
+          var row = []
+          for (var p1 = engineModel.manifoldPressureMinPower; p1 < engineModel.manifoldPressureMaxPower; ++p1)
+            for (var p2 = engineModel.omegaMinPower; p2 < engineModel.omegaMaxPower; ++p2)
+              row[row.length] = Math.pow(mode.manifoldPressure, p1) * Math.pow(mode.omega, p2)
+          A[A.length] = row
+
+          var fullTorque = mode.power / mode.omega
+          Y[Y.length] = [ fullTorque ]
+        }
+        
+        var AT = numeric.transpose(A)
+        var X = numeric.dot(numeric.dot(numeric.inv(numeric.dot(AT, A)), AT), Y)
+        engineModel.torqueCoeffs = []
+        for (var i = 0; i < X.length; ++i)
+          engineModel.torqueCoeffs[i] = X[i][0]
+      }
+    }
+    else
+      engineModel.thrust = engine.thrust.value
+    
+    //Build charts
+    fmCharts.engine = {}
+    
+    if (engineModel.type < 2)
+    {
+      fmCharts.engine.power = []
+      var omega = [ engine.omega2.value, engine.omega1.value ]
+      var manifoldPressureRatio = [ 0.5, 0.6, 0.7, 0.85, 1.0 ]
+      for (var i = 0; i < omega.length; ++i)
+      {
+        for (var j = 0; j < manifoldPressureRatio.length; ++j)
+        {
+          var curve = {
+            parameter: [ omega[i], manifoldPressureRatio[j] * engineModel.manifoldPressureMaxAllowed ],
+            group: [i, j],
+            points: []
+          }        
+          var alt = 0.0
+          var stage = 0
+          while (alt <= 15000)
+          {
+            var power = calcPower(engineModel, omega[i], manifoldPressureRatio[j], alt, 0.0, stage)
+            if (stage < engineModel.compressor.length - 1)
+            {
+              var powerNextStage = calcPower(engineModel, omega[i], manifoldPressureRatio[j], alt, 0.0, stage + 1)
+              if (powerNextStage > power)
+              {
+                stage = stage + 1
+                power = powerNextStage
+              }
+            }
+            alt = alt + 100.0
+            curve.points[curve.points.length] = [ power, alt ]
+          }
+          fmCharts.engine.power[fmCharts.engine.power.length] = curve
+        }
+      }
+    }
+    else
+    {
+      fmCharts.engine.thrust = []
+      var curve = {
+        group: [0, 0],
+        points: []
+      }
+      var alt = 0.0
+      while (alt <= 15000)
+      {
+        var thrust = calcThrust(engineModel, 1.0, alt, 0.0)
+        alt = alt + 100.0
+        curve.points[curve.points.length] = [ thrust, alt ]
+      }
+      fmCharts.engine.thrust = curve
+    }
+    setupCharts()
+  }
+  
+  
+  function buildFMCharts()
+  {
+    buildEngineCharts()
+  }
+  
+  function saveFlightModel()
+  {
+    //Update FM data
+    fmData[currFmDataIndex].params = serializeParameter(fmProperties)    
+    //Update engine name in the list
+    var comboBoxFlightModel = document.getElementById('ComboFlightModel')    
+    var fmSelectedIndex = comboBoxFlightModel.selectedIndex
+    comboBoxFlightModel.options[comboBoxFlightModel.selectedIndex] = new Option(fmData[currFmDataIndex].params.engine.name, fmData.length - 1);        
+    comboBoxFlightModel.selectedIndex = fmSelectedIndex
+    //Save engines to cookies
+    //alert('Write ' + JSON.stringify(fmData))
+    Cookies.set('fmData', JSON.stringify(fmData), {expires:1000000000})
+  }
+  
+  function loadFlightModels()
+  {
+    //Loading from cookies
+    //fmData = JSON.parse(Cookies.get('fmData'))
+    //alert('Read ' + JSON.stringify(fmData))
+    //Filling the list
+    var comboBoxFlightModel = document.getElementById('ComboFlightModel')
+    comboBoxFlightModel.options.length = 0
+    for (var i = 0; i < fmData.length; ++i)
+      comboBoxFlightModel.options[comboBoxFlightModel.options.length] = new Option(fmData[i].params.engine.name, i);
+    comboBoxFlightModel.selectedIndex = 0
+  }
+  
+  function init()
+  {
+    fillLabelsWithUnitNames()    
+    loadFlightModels()
+    onComboFlightModelSelect(document.getElementById('ComboFlightModel'))
+  }
+
+  window.onload = init;
+  
+  </script>
+  
+  <h1>"War Thunder" Flight Model Editor</h1>
+  
+  <h3>Engine</h3>
+  
+  <table>
+    <tr>
+      <td>List</td>  
+      <td>
+        <select id="ComboFlightModel" onchange="onComboFlightModelSelect(this)" style="width:100%">
+        </select>
+      </td>  
+    </tr>
+    <tr>
+      <td colspan="2">
+        <input type="button" value="New" onClick="createNewFlightModel()" style="width:100%">
+      </td>  
+    </tr>
+  </table>
+  
+  <h3>Parameters</h3>
+  
+  <table>
+    <tr>
+      <td valign="top">
+        <table>
+          <tr>
+            <td colspan="2"><b>Main</b></td>  
+          </tr>
+          <tr>
+            <td>Name</td>  
+            <td><input type="number" size = "5" id="EditEngineName" value="" onchange="onParamChange(['engine', 'name'])" style="width:100%"></td>  
+          </tr>
+          <tr>
+            <td>Type</td>  
+            <td>
+              <select id="ComboEngineType" onchange="onParamChange(['engine', 'type'])" style="width:100%">
+                <option selected value="0">Inline</option>
+                <option value="1">Radial</option>
+                <option value="2">Jet</option>
+                <option value="3">Rocket</option>
+                <option value="4">Tow</option>
+                <option value="5">Ramjet</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>Compressor</td>  
+            <td>
+              <select id="ComboCompressorType" onchange="onParamChange(['engine', 'compressor', 'type'])" style="width:100%">
+                <option selected value="0">None</option>
+                <option value="1">Manual</option>
+                <option value="2">Komandgerat</option>
+                <option value="3">Turbo</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>Stage Count</td>  
+            <td>
+              <select id="ComboCompressorStageCount" onchange="onParamChange(['engine', 'compressor', 'stageCount'])" style="width:100%">
+                <option selected value="1">Single stage</option>
+                <option value="2">Double stage</option>
+                <option value="3">Tripple stage</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>Compressor Variator</td>  
+            <td>
+              <select id="ComboEngineCompressorVariator" onchange="onParamChange(['engine', 'compressor', 'variator'])" style="width:100%">
+                <option selected value="true">Yes</option>
+                <option value="false">No</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>Airflow Multiplier</td>  
+            <td><input type="number" size = "5" step="1" id="EditAirFlowMultiplier" value="0.6" onchange="onParamChange(['engine', 'compressor', 'airFlowMultiplier'])"></td>  
+          </tr>
+          <tr>
+            <td>Feeding</td>  
+            <td>
+              <select id="ComboEngineFeedingType" onchange="onParamChange(['engine', 'feedingType'])" style="width:100%">
+                <option selected value="0">Suction</option>
+                <option value="1">Carbureitor</option>
+                <option value="2">Injector</option>
+                <option value="3">Float</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>Mixer</td>  
+            <td>
+              <select id="ComboEngineMixerType" onchange="onParamChange(['engine', 'mixerType'])" style="width:100%">
+                <option selected value="0">Generic</option>
+                <option value="1">Full Auto</option>
+                <option value="2">Limited Pressure</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>Booster</td>  
+            <td>
+              <select id="ComboEngineBoosterType" onchange="onParamChange(['engine', 'boosterType'])" style="width:100%">
+                <option selected value="0">Generic</option>
+                <option value="1">MW-50</option>
+                <option value="2">GM-1</option>
+                <option value="3">Afterburner</option>
+                <option value="4">Water</option>
+                <option value="5">NO2</option>
+                <option value="6">C3</option>
+                <option value="7">ILA5</option>
+                <option value="8">ILA5 Auto</option>
+                <option value="9">Water+Methanol</option>
+                <option value="10">P-51 WEP</option>
+                <option value="11">Spitfire WEP</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td>Idle RPM</td>  
+            <td><input type="number" size = "5" step="1" id="EditEngineIdleOmega" value="600" onchange="onParamChange(['engine', 'idleOmega'])"></td>  
+          </tr>
+          <tr>
+            <td>Max RPM</td>  
+            <td><input type="number" size = "5" step="1" id="EditEngineMaxOmega" value="3100" onchange="onParamChange(['engine', 'maxOmega'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineThrustSeaLevel">Thrust, Sea Level</td>  
+            <td><input type="number" size = "5" step="1" id="EditEngineThrust" value="2500" onchange="onParamChange(['engine', 'thrust'])"></td>  
+          </tr>
+          <tr>
+            <td>Launch Method</td>  
+            <td>
+              <select id="ComboEngineLaunchType" onchange="onParamChange(['engine', 'autonomousLaunch'])" style="width:100%">
+                <option selected value="true">Autonomous</option>
+                <option value="false">Airdrome</option>
+              </select>
+            </td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineMass">Mass</td>  
+            <td><input type="number" size = "5" step="1" id="EditEngineMass" value="800" onchange="onParamChange(['engine', 'mass'])"></td>  
+          </tr>
+          <tr>
+            <td>Cyliner Count</td>  
+            <td><input type="number" size = "5" step="1" id="EditEngineCylinderCount" value="12" onchange="onParamChange(['engine', 'cylinderCount'])"></td>  
+          </tr>
+        </table>
+      </td>  
+      <td>
+        <table>
+          <tr>
+            <td colspan="4"><b>Performance</b></td>  
+          </tr>
+          <tr>
+            <td>RPM</td>   
+            <td>RPM 1</td>  
+            <td>RPM 2</td>  
+          </tr>
+          <tr>
+            <td>RPM</td>  
+            <td><input type="number" size = "5" step="1" id="EditEngineOmega1" value="2500" onchange="onParamChange(['engine', 'omega1'])"></td>  
+            <td><input type="number" size = "5" step="1" id="EditEngineOmega2" value="2700" onchange="onParamChange(['engine', 'omega2'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineManifoldPressureSeaLevel">Manifold Pressure, Sea Level</td>  
+            <td><input type="number" size = "5" step="1" id="EditEngineManifoldPressure01" value="1.5" onchange="onParamChange(['engine', 'manifoldPressure1'])"></td>  
+            <td><input type="number" size = "5" step="1" id="EditEngineManifoldPressure02" value="1.7" onchange="onParamChange(['engine', 'manifoldPressure2'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEnginePowerSeaLevel"><b>Power, Sea Level</b></td>  
+            <td><input type="number" size = "5" step="1" id="EditEnginePower01" value="1300" onchange="onParamChange(['engine', 'power1'])"></td>  
+            <td><input type="number" size = "5" step="1" id="EditEnginePower02" value="1400" onchange="onParamChange(['engine', 'power2'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineAltitude1"><b>Altitude 1</b></td>  
+            <td colspan="2"><input type="number" size = "5" step="1" id="EditEngineAltitude1" value="4000" onchange="onParamChange(['engine', 'threshold', 0, 'altitude'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineAltitude12">Altitude 1-2</td>  
+            <td colspan="2"><input type="number" size = "5" step="1" id="EditEngineAltitude12" value="4000" onchange="onParamChange(['engine', 'threshold', 0, 'altitude2'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineManifoldPressure1">Manifold Pressure 1</td>  
+            <td id="LabelEngineManifoldPressure11">1.7</td>  
+            <td id="LabelEngineManifoldPressure12">1.0</td>  
+          </tr>
+          <tr>
+            <td id="LabelEnginePowerAtAltitude1">Power 1</td>  
+            <td><input type="number" size = "5" step="1" id="EditEnginePower11" value="1450" onchange="onParamChange(['engine', 'threshold', 0, 'power1'])"></td>  
+            <td id="LabelEnginePower12"</td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineAltitude2"><b>Altitude 2</b></td>  
+            <td colspan="2"><input type="number" size = "5" step="1" id="EditEngineAltitude2" value="7000" onchange="onParamChange(['engine', 'threshold', 1, 'altitude'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineAltitude22">Altitude 2-2</td>  
+            <td colspan="2"><input type="number" size = "5" step="1" id="EditEngineAltitude22" value="7000" onchange="onParamChange(['engine', 'threshold', 1, 'altitude2'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineManifoldPressure2">Manifold Pressure 2</td>  
+            <td><input type="number" size = "5" step="1" id="EditEngineManifoldPressure21" value="1.5" onchange="onParamChange(['engine', 'threshold', 1, 'manifoldPressure1'])"></td>  
+            <td id="LabelEngineManifoldPressure22"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEnginePowerAtAltitude2">Power 2</td>  
+            <td><input type="number" size = "5" step="1" id="EditEnginePower21" value="1250" onchange="onParamChange(['engine', 'threshold', 1, 'power1'])"></td>  
+            <td id="LabelEnginePower22"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineAltitude3"><b>Altitude 3</b></td>  
+            <td colspan="2" ><input type="number" size = "5" step="1" id="EditEngineAltitude3" value="9000" onchange="onParamChange(['engine', 'threshold', 2, 'altitude'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineAltitude32">Altitude 3-2</td>  
+            <td colspan="2" ><input type="number" size = "5" step="1" id="EditEngineAltitude32" value="9000" onchange="onParamChange(['engine', 'threshold', 2, 'altitude2'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineManifoldPressure3">Manifold Pressure 3</td>  
+            <td><input type="number" size = "5" step="1" id="EditEngineManifoldPressure31" value="1.5" onchange="onParamChange(['engine', 'threshold', 2, 'manifoldPressure1'])"></td>  
+            <td id="LabelEngineManifoldPressure32"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEnginePowerAtAltitude3">Power 3</td>  
+            <td><input type="number" size = "5" step="1" id="EditEnginePower31" value="950" onchange="onParamChange(['engine', 'threshold', 2, 'power1'])"></td>  
+            <td id="LabelEnginePower32"></td>  
+          </tr>          
+          <tr>
+            <td id="LabelEngineAltitudeHigh">Altitude High 1</td>  
+            <td colspan="2" ><input type="number" size = "5" step="1" id="EditEngineAltitudeHigh1" value="7000" onchange="onParamChange(['engine', 'highAltitude', 0, 'altitude'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEnginePowerAtAltitudeHigh">Power, Altitude High, 1</td>  
+            <td><input type="number" size = "5" step="1" id="EditEnginePowerAltHigh11" value="950" onchange="onParamChange(['engine', 'highAltitude', 0, 'power1'])"></td>  
+            <td><input type="number" size = "5" step="1" id="EditEnginePowerAltHigh12" value="950" onchange="onParamChange(['engine', 'highAltitude', 0, 'power2'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEngineAltitudeHigh">Altitude High 2</td>  
+            <td colspan="2" ><input type="number" size = "5" step="1" id="EditEngineAltitudeHigh2" value="10000" onchange="onParamChange(['engine', 'highAltitude', 1, 'altitude'])"></td>  
+          </tr>
+          <tr>
+            <td id="LabelEnginePowerAtAltitudeHigh">Power, Altitude High, 2</td>  
+            <td><input type="number" size = "5" step="1" id="EditEnginePowerAltHigh21" value="950" onchange="onParamChange(['engine', 'highAltitude', 1, 'power1'])"></td>  
+            <td><input type="number" size = "5" step="1" id="EditEnginePowerAltHigh22" value="950" onchange="onParamChange(['engine', 'highAltitude', 1, 'power2'])"></td>  
+          </tr>
+        </table>
+      </td>  
+      <td>
+        <table>
+          <tr>
+            <td>
+              <div class="chart-content">
+                <div class="chart-container">
+                  <div id="placeholder_engine_0" class="chart-placeholder"></div>
+                </div>
+              </div>
+            </td>  
+          </tr>
+        </table>
+      </td>  
+    </tr>
+  </table>
+
+</html>

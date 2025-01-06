@@ -1,0 +1,3796 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
+  
+  <style type="text/css">  
+  
+  .number-box {
+     width : 60px;
+  }
+  .small-button-box {
+     width : 40px;
+  }
+  .damage_part_name-box {
+     width : 100px;
+  }
+  .chart-content {
+    width: auto;
+    height: auto;
+    margin: 0 auto;
+    bottom: 50px;
+    padding: 0px;
+  }
+  .chart-container {
+    box-sizing: border-box;
+    width: 300px;
+    height: 300px;
+    padding: 0px 0px 0px 0px;
+    margin: 15px auto 30px auto;
+    border: 1px solid #ddd;
+    background: #fff;
+    background: linear-gradient(#f6f6f6 0, #fff 50px);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+  }
+  .chart-placeholder {
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    line-height: 1.2em;
+  }
+  
+  .legend table, .legend > div {
+    height: 20px !important;
+    opacity: 1 !important;
+    right: 10px;
+    bottom: 50px;
+    width: 80px !important;
+  }   
+  .legend table {
+    border: 1px solid #555;
+    padding: 5px;
+  }
+  
+  .popup-test-result {
+    height: 100%;
+    min-height: 100%;
+    width: 100%;
+    min-width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    position: fixed;
+  }
+  .popup-test-result .popup-content-test-result {
+    margin: 10% 30% auto auto;
+    width: 40%;
+    height: 60%;
+    padding: 0px 10px 0px 10px;
+    background-color: #c5c5c5;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px #000;
+  }
+  
+  .chart-content-test-result {    
+    width: 100%;
+    height: 90%;
+    padding: 0px;
+    background-color: rgba(255, 255, 255, 1.0);
+  }
+  .chart-container-test-result {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    border: 1px solid #ddd;    
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+    resize: both;
+  }
+  .chart-placeholder-test-result {
+    margin: 0px;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    line-height: 1.2em;
+  }
+  
+  </style>
+  
+  <script src="../cookies.js"></script>
+  <script src="../jquery-1.10.1.min.js"></script>  
+  <script src="../jquery.flot.js"></script>
+  <script src="../jquery.flot.navigate.min.js"></script>
+  <script src="../jquery.flot.axislabels.js"></script>
+  <script src="../html2canvas.js"></script>
+  <script src="../canvas-toblob.js"></script>
+  <script src="../filesaver.js"></script>
+  <script src="../parameter.js"></script>
+  
+  <title>War Thunder Flight Model Test Page</title>  
+</head>
+
+<body>
+
+  <style>
+    body {
+      color: #333;
+      background-color: #fff;
+    }
+
+    table {
+      border-spacing: 0;
+      border: 1px solid #cbcbcb;
+    }
+
+    thead {
+      background: #e0e0e0;
+      color: #000;
+    }
+
+    td, th {
+      padding: 0px 5px;
+      border-left: 1px solid #cbcbcb;
+      border-bottom: 1px solid #cbcbcb;
+      text-align: center;
+    }
+    
+    table.left td {
+      text-align: left;
+    }
+
+    th {
+      font-family: sans-serif;
+    }
+
+    tr[isDelayed=yes] {
+      background-color: #eee;
+    }
+
+    tr[isHero=yes] {
+      background-color: lightgreen;
+    }
+
+    button {
+      -webkit-border-radius: 2px 2px;
+      border: solid 1px rgb(153, 153, 153);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(221, 221, 221)));
+      color: #333;
+      cursor: pointer;
+    }
+    button:disabled {
+      border: solid 1px rgb(203, 203, 203);
+      background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgb(255, 255, 255)), to(rgb(231, 231, 231)));
+      color: #999;
+      cursor: default;
+    }
+  </style>
+  
+  <script language="javascript" type="text/javascript">
+  
+    //Common
+    
+    function interpolate(tbl, arg) {
+      if (tbl.length > 1)
+      {
+        for (var i = 1; i < tbl.length; ++i)
+          if (arg < tbl[i][0] * 1.01)
+          {
+            var res = tbl[i - 1][1] + (tbl[i][1] - tbl[i - 1][1]) / (tbl[i][0] - tbl[i - 1][0]) * (arg - tbl[i - 1][0])
+            return res
+          }
+      }
+      else if (tbl.length == 1)
+      {
+        if (Math.abs(arg - tbl[0][0]) < Math.abs(tbl[0][0]) * 0.01)
+          return tbl[0][1]
+      }
+      return undefined
+    }
+    
+    //Settings
+    var settings = {
+      unitSystem: 0,
+      useReference: false,
+      flightTest: true,
+      repair: true
+    }
+       
+    const ControlImpl = {
+      AUTO: 0,
+      BASIC: 1,
+      ADVANCED: 2
+    }
+
+    const IndicationFlag =
+    {
+      NULL: 0,
+      FORCES: 0,
+      AIRFRAME_GEOMETRY: 1,
+      COLLISION_GEOMETRY: 2,
+      SYSTEMS: 3,
+      AUTOPILOT: 4,
+      MESSAGES: 5,
+      DM_PART: 6,
+      SKELETON_NODE: 7,
+      MAX: 8
+    }
+    
+    //State
+    var state = {
+      connected: true,
+      fm: {
+        typeName: '',
+        fileName: '',
+        fileTime: undefined,
+      },
+      indicationFlags: [ false, false, false, false, true, false, false ],
+      damagePartOfInterestId: -1,
+      skeletonNodeOfInterestName: '',
+      hitDamage: 0,
+    }
+    
+    const FlapsControl = {
+      NO: 0,
+      COMBAT_LANDING: 1,
+      COMBAT_LANDING_TAKEOFF: 2
+    }
+        
+    var aircraftProperties = {
+      mass: {
+        noFuel: 0.0,
+        maxFuel: 0.0,
+        tota: 0.0
+      },
+      engine: {
+        compressorStageCount: 0,  
+        wep: false,
+        minManifoldPressure: 0.0,
+        maxManifoldPressure: 100.0,
+        minOmega: 200,
+        maxOmega: 100000,
+        coolerControl: false
+      },
+      flapsControl: FlapsControl.NO,
+      gearControl: false
+    }
+        
+    var flightParams = {
+      alt: {
+        value: 2000.0,
+        type: 'altitude',
+        min: 0.0
+      },
+      vel: {
+        value: 300.0 / 3.6,
+        type: 'velocity',
+        min: 0.0
+      },
+      fuelMassRatio: {
+        value: 0.5,
+        type: 'ratio',
+        min: 0.0,
+        //max: 1.0
+      },
+      mass: {
+        value: 1000.0,
+        type: 'mass',
+        min: 0.0,
+        min: 1000.0
+      },
+      coolantOrHeadTemperature: {
+        value: 373.16,
+        type: 'temperature',
+        min: 0.0
+      },
+      oilTemperature: {
+        value: 373.16,
+        type: 'temperature',
+        min: 0.0
+      },
+      temperature: {
+        value: 273.16,
+        type: 'temperature',
+        min: 0.0
+      },
+      pressure: {
+        value: 101300.0,
+        type: 'pressure',
+        min: 0.0
+      },
+      timeSpeed: {
+        value: 1.0,
+        type: 'ratio',
+        min: 0.0
+      },
+    }
+    
+    const RealTimeTestResult = {
+      STANDBY: 0,
+      RUNNING: 1,
+      SUCCESS: 2,
+      FAIL: 3
+    }
+    
+    const realTimeTestResultName = [
+      'STANDBY',
+      'RUNNING',
+      'SUCCESS',
+      'FAIL'
+    ]
+        
+    const FlapsPositions = {
+      RAISED:  0,
+      COMBAT:  1,
+      TAKEOFF: 2,
+      LANDING: 3
+    }
+        
+    const realTimeTestsData = {
+      stall: {
+        name: 'Stall, Engine off',
+        params: {
+          alt: true,
+          flaps: true,
+          gear: true,
+          cockpitDoor: true,
+        },
+        force: {
+          cooler: 0.0
+        },
+        result: {
+          name: 'Stall TAS',
+          type: 'velocity'
+        }
+      },
+      maxSpeed: {
+        name: 'Max Airspeed',
+        params: {
+          alt: true,
+          cockpitDoor: true,
+          engineMode: true,
+          cooler: true
+        },
+        force: {
+          cooler: 0.0
+        },
+        result: {
+          name: 'Max TAS',
+          type: 'velocity'
+        }
+      },
+      minClimbTime: {
+        name: 'Min Climb Time',
+        params: {
+          alt: true,
+          startAlt: true,
+          speed: true,
+          cockpitDoor: true,
+          engineMode: true,
+          cooler: true
+        },
+        force: {
+          cooler: 1.0
+        },
+        result: {
+          name: 'Min Climb Time',
+          type: 'time'
+        }
+      },
+      minTurnTime: {
+        name: 'Min Turn Time',
+        params: {
+          alt: true,
+          flaps: true,
+          direction: true,
+          cockpitDoor: true,
+          engineMode: true,
+          cooler: true
+        },
+        force: {
+          cooler: 0.0
+        },
+        result: {
+          name: 'Min Turn Time',
+          type: 'time',
+          precision: 1
+        }
+      },
+      maxRollRate: {
+        name: 'Max Roll Rate',
+        params: {
+          alt: true,
+          speed: true,
+          direction: true,
+          cockpitDoor: true,
+        },
+        force: {
+          cooler: 0.0
+        },
+        result: {
+          name: 'Max roll rate',
+          type: 'angularVelocity'
+        }
+      },
+    }
+    
+    const ThrottleMode = {
+      FULL: 0,
+      WEP: 1,
+      MANUAL: 2,
+      MANIFOLD_PRESSURE: 3
+    }
+    
+    const PitchMode = {
+      AUTO: 0,
+      RPM: 1,
+      PITCH: 2,
+      PITCH_CONTROL: 3
+    }
+   
+    var realTimeTest = {
+      params: {
+        test: 'stall',
+        alt: {
+          value: 1000.0,
+          type: 'altitude',
+          min: 100.0,
+          max: 18000
+        },
+        startAlt: {
+          value: 0.0,
+          type: 'altitude',
+          min: 0.0,
+          max: 18000        
+        },
+        speed: {
+          value: 250.0 / 3.6,
+          type: 'velocity',
+          min: 20.0 / 3.6,
+          max: 3000.0 / 3.6,
+        },
+        mach: {
+          value: 0.25,
+          min: 0.0,
+          max: 3.0,
+          precision: 2
+        },        
+        speedType:
+        {
+          value: AirspeedType.IAS,
+          min: AirspeedType.IAS,
+          max: AirspeedType.MACH
+        },
+        engineAutoMode: false,
+        throttleMode: {
+          value: ThrottleMode.FULL,
+          min: ThrottleMode.FULL,
+          max: ThrottleMode.MANIFOLD_PRESSURE
+        },
+        throttle: {
+          value: 1.0,
+          type: 'ratio',
+          min: 0.0,
+          max: 1.0
+        },
+        manifoldPressure: {
+          value: 1.0 * 101325.00,
+          type: 'pressure',
+          precision: 3,
+          min: 0.0,
+          max: 100.0
+        },
+        pitchMode: {
+          value: PitchMode.AUTO,
+          min: PitchMode.AUTO,
+          max: PitchMode.PITCH_CONTROL
+        },
+        omega: {
+          value: 1000 * 2 * Math.PI / 60.0,
+          type: 'rotationVelocity',
+          min: 0.0,
+          max: 100000
+        },
+        pitch: {
+          value: 40.0 * Math.PI / 180.0,
+          type: 'angle',
+          precision: 2,
+          min: 0.0,
+          max: Math.PI / 2.0,
+        },
+        pitchControl: {
+          value: 0.8,
+          type: 'ratio',
+          precision: 1,
+          min: 0.0,
+          max: 1.0
+        },
+        compressorStage: {
+          value: -1,
+          min: -1,
+          max: 100
+        },
+        right: true,
+        flaps: {
+          value: FlapsPositions.RAISED,
+          min: FlapsPositions.RAISED,
+          max: FlapsPositions.LANDING
+        },
+        gear: false,
+        cockpitDoor: false,
+        cooler: {
+          value: 0.0,
+          type: 'ratio',
+          min: 0.0,
+          max: 1.0
+        }
+      },
+      state: {
+        active: false,
+        result: RealTimeTestResult.STANDBY,
+        value: 0.0
+      }
+    }
+    
+    var windTubeTest = {
+      params: {
+        enabled: false,
+        airspeed: {
+          value: 500.0 / 3.6,
+          type: 'velocity',
+          min: 0.0 / 3.6,
+          max: 3000.0 / 3.6,
+          precision: 1
+        },      
+        yawLocked: false,
+        pitchLocked: false,
+        rollLocked: false,
+        elevatorLocked: false,
+        rudderLocked: false,
+        aoa: {
+          value: 0.0,
+          type: 'angle',
+          min: -90.0,
+          max: 90.0,
+          precision: 2
+        },
+        aos: {
+          value: 0.0,
+          type: 'angle',
+          min: -90.0,
+          max: 90.0,
+          precision: 2
+        },
+        roll: {
+          value: 0.0,
+          type: 'angle',
+          min: -90.0,
+          max: 90.0,
+          precision: 2
+        },
+        yawFakeRate: {
+          value: 0.0,
+          type: 'angularVelocity',
+          min: -90.0,
+          max: 90.0,
+          precision: 2
+        },
+        pitchFakeRate: {
+          value: 0.0,
+          type: 'angularVelocity',
+          min: -90.0,
+          max: 90.0,
+          precision: 2
+        },
+        rollFakeRate: {
+          value: 0.0,
+          type: 'angularVelocity',
+          min: -90.0,
+          max: 90.0,
+          precision: 2
+        },
+        elevatorFakeRate: {
+          value: 0.0,
+          type: 'control',
+          min: -100.0,
+          max: 100.0,
+          precision: 3
+        },
+        rudderFakeRate: {
+          value: 0.0,
+          type: 'control',
+          min: -100.0,
+          max: 100.0,
+          precision: 3
+        }
+      }
+    }
+    
+    var testData = {
+      stall: {
+        name: 'stall speed',
+        params: {
+          minAlt: 
+          {
+            value: 1000.0,
+            type: 'altitude',
+            min: 0.0
+          },
+          maxAlt:
+          {
+            value: 1000.0,
+            type: 'altitude',
+            min: 0.0
+          },
+          stepAlt:
+          {
+            value: 1000.0,
+            type: 'altitude',
+            min: 100.0
+          }
+        },
+        result: {
+          captionId: 'LabelResultStallTest',
+          tableId: 'ResultStallTest',
+          savedParams: {
+          },
+          format: [
+            { name: 'H', type: 'altitude' },
+            { name: 'V', type: 'velocity' }
+          ],
+          curveNames: [
+            'Flaps & gear up',
+            'Flaps & gear down'
+          ],
+          transposePlot: true,
+          accuracy: {
+            orange: 10.0 / 3.6,
+            red: 25.0 / 3.6
+          },
+          values: [
+          ]
+        }
+      },
+      maxSpeed: {
+        name: 'maximal speed',
+        params: {
+          minAlt:
+          {
+            value: 1000.0,
+            type: 'altitude',
+            min: 0.0
+          },
+          maxAlt:
+          {
+            value: 11000.0,
+            type: 'altitude',
+            min: 0.0
+          },
+          stepAlt:
+          {
+            value: 1000.0,
+            type: 'altitude',
+            min: 100.0
+          },
+          speedType:
+          {
+            value: AirspeedType.TAS,
+            min: AirspeedType.IAS,
+            max: AirspeedType.MACH
+          }
+        },
+        result: {
+          captionId: 'LabelResultMaxSpeedTest',
+          tableId: 'ResultMaxSpeedTest',
+          savedParams: {
+          },
+          refParams: {
+          },
+          format: [
+            { name: 'H', type: 'altitude' },
+            { name: 'V', type: 'velocity', precision: 0 }
+          ],
+          curveNames: [
+            'Nominal',
+            'WEP'
+          ],
+          transposePlot: true,
+          accuracy: {
+            orange: 10.0 / 3.6,
+            red: 25.0 / 3.6
+          },
+          values: [
+          ]
+        }
+      },
+      minClimbTime: {
+        name: 'minimal climb time',
+        params: {
+          minAlt:
+          {
+            value: 2000.0,
+            type: 'altitude',
+            min: 0.0
+          },
+          maxAlt:
+          {
+            value: 10000.0,
+            type: 'altitude',
+            min: 0.0
+          },
+          stepAlt:
+          {
+            value: 2000.0,
+            type: 'altitude',
+            min: 100.0,
+            min: 100.0
+          },
+          speed:
+          {
+            type: 'array',
+            value: [
+              {
+                alt: {
+                  value: 0.0,
+                  type: 'altitude',
+                  min: 0.0
+                },
+                speedType: {
+                  value: AirspeedType.IAS,
+                  min: AirspeedType.IAS,
+                  max: AirspeedType.MACH
+                },
+                speedMax: {
+                  value: 250.0 / 3.6,
+                  type: 'velocity',
+                  min: 50.0 / 3.6
+                },
+                speedWEP: {
+                  value: 250.0 / 3.6,
+                  type: 'velocity',
+                  min: 50.0 / 3.6
+                },
+                machMax: {
+                  value: 0.25,
+                  min: 0.0,
+                  precision: 2
+                },
+                machWEP: {
+                  value: 0.25,
+                  min: 0.0,
+                  precision: 2
+                }                
+              }
+            ]
+          }
+        },
+        result: {
+          captionId: 'LabelResultMinClimbTimeTest',
+          tableId: 'ResultMinClimbTimeTest',
+          savedParams: {
+          },
+          refParams: {
+          },
+          format: [
+            { name: 'H', type: 'altitude' },
+            { name: 'T', type: 'time' }
+          ],
+          curveNames: [
+            'Nomimal',
+            'WEP'
+          ],
+          transposePlot: true,
+          accuracy: {
+            orange: 20.0,
+            red: 40.0
+          },
+          values: [
+          ]
+        }
+      },
+      minTurnTime: {
+        name: 'minimal turn time',
+        params: {
+          minAlt:
+          {
+            value: 1000.0,
+            type: 'altitude',
+            min: 0.0
+          },
+          maxAlt:
+          {
+            value: 1000.0,
+            type: 'altitude',
+            min: 0.0
+          },
+          stepAlt:
+          {
+            value: 1000.0,
+            type: 'altitude',
+            min: 100.0
+          },
+          flaps:
+          {
+            value: FlapsPositions.RAISED,
+            min: FlapsPositions.RAISED,
+            max: FlapsPositions.LANDING
+          }
+        },
+        result: {
+          captionId: 'LabelResultMinTurnTimeTest',
+          tableId: 'ResultMinTurnTimeTest',
+          savedParams: {
+          },
+          refParams: {
+          },
+          format: [
+            { name: 'H', type: 'altitude' },
+            { name: 'T', type: 'time', precision: 1 }
+          ],
+          curveNames: [
+            'Nomimal',
+            'WEP'
+          ],
+          transposePlot: true,
+          accuracy: {
+            orange: 2.0,
+            red: 4.0
+          },
+          values: [
+          ]
+        }
+      },
+      maxRollRate: {
+        name: 'maximal roll rate',
+        params: {
+          minIAS:
+          {
+            value: 100.0 / 3.6,
+            type: 'velocity',
+            min: 50.0 / 3.6
+          },
+          maxIAS:
+          {
+            value: 600.0 / 3.6,
+            type: 'velocity',
+            min: 60.0 / 3.6
+          },
+          stepIAS:
+          {
+            value: 100.0 / 3.6,
+            type: 'velocity',
+            min: 10.0 / 3.6
+          }
+        },
+        result: {
+          captionId: 'LabelResultMaxRollRateTest',
+          tableId: 'ResultMaxRollRateTest',
+          savedParams: {
+          },
+          format: [
+            { name: 'V', type: 'velocity' },
+            { name: 'Wx', type: 'angularVelocity' }
+          ],
+          curveNames: [
+            'Left roll',
+            'Right roll'
+          ],
+          transposePlot: false,
+          accuracy: {
+            orange: 15.0 * Math.PI / 180.0,
+            red: 30.0 * Math.PI / 180.0
+          },
+          values: [
+          ]
+        }
+      }
+    }
+    
+    function saveTestParamsProc(params, paramValues)
+    {
+      for (var paramName in params)
+      {
+        var param = params[paramName]
+        if (param.type == 'array')
+        {
+          paramValues[paramName] = []
+          for (var i = 0; i < param.value.length; ++i)
+          {
+            paramValues[paramName][i] = {}
+            saveTestParamsProc(param.value[i], paramValues[paramName][i])
+          }
+        }
+        else
+          paramValues[paramName] = param.value
+      }
+    }
+    
+    function saveTestParams(test)
+    {
+      saveTestParamsProc(test.params, test.result.savedParams)
+      updateTestParamsState(test)
+    }
+        
+    function compareSavedAndActualTestParamsProc(params, paramsValues)
+    {
+      for (var paramName in params)
+      {
+        var paramValues = paramsValues[paramName]
+        if (paramValues != undefined)
+        {
+          var param = params[paramName]
+          if (param.type == 'array')
+          {
+            if (param.value.length != paramValues.length)
+              return false
+            else
+            {
+              for (var i = 0; i < param.value.length; ++i)
+              {
+                if (!compareSavedAndActualTestParamsProc(param.value[i], paramValues[i]))
+                  return false
+              }
+            }
+          }
+          else
+          {
+            if (Math.abs(params[paramName].value - paramValues) > params[paramName].value * 0.001)
+              return false
+          }
+        }
+      }      
+      return true
+    }
+        
+    function compareSavedAndActualTestParams(test)
+    {
+      return compareSavedAndActualTestParamsProc(test.params, test.result.savedParams)
+    }
+    
+    function compareSavedAndRefTestParams(test)
+    {
+      return test.result.refParams != undefined ? compareSavedAndActualTestParamsProc(test.params, test.result.refParams) : true
+    }
+    
+    function updateTestParamsActuality(test)
+    {
+      const paramsWarning = compareSavedAndActualTestParams(test) ? '' : ', NOT ACTUAL'
+      document.getElementById(test.result.captionId).innerHTML = 'Result' + paramsWarning
+    }
+    
+    function updateTestParamsState(test)
+    {
+      const paramsWarning = compareSavedAndActualTestParams(test) ? '' : ', NOT ACTUAL'
+      const refParamsWarning = compareSavedAndRefTestParams(test) ? '' : ', REF PARAMETERS DIFFER'
+      document.getElementById(test.result.captionId).innerHTML = 'Result' + paramsWarning + refParamsWarning
+    }
+    
+    var aircraftState = {
+      format: [
+        //Common
+        { name: 'Time', type: 'time' },
+        //Flight
+        { name: 'H', type: 'altitude' },
+        { name: 'TAS', type: 'velocity' },
+        { name: 'IAS', type: 'velocity' },
+        { name: 'M', precision: 2 },
+        { name: 'Vy', type: 'verticalVelocity', precision: 1 },
+        { name: 'Ny', precision: 1 },
+        { name: 'Wx', type: 'angularVelocity' },
+        { name: 'AoA', type: 'angle', precision: 1 },
+        { name: 'AoS', type: 'angle', precision: 1 },
+        //Controls
+        { name: 'Ail.',type: 'ratio', precision: 2 },
+        { name: 'Elev.',type: 'ratio', precision: 2 },
+        { name: 'Rud.',type: 'ratio', precision: 2 },
+        { name: 'Flaps',type: 'ratio', precision: 2 },
+        { name: 'Gear',type: 'ratio', precision: 2 },
+        { name: 'Airbrk', type: 'ratio', precision: 2 },
+        { name: 'Thr.', type: 'ratio', precision: 2 },
+        { name: 'Comp.' },
+        { name: 'Rad.', type: 'ratio', precision: 2 },
+        { name: 'O.Rad.', type: 'ratio', precision: 2 },
+        { name: 'Mix.', type: 'ratio', precision: 2 },
+        //Engine
+        { name: 'C.P.',type: 'pressure', precision: 3 },
+        { name: 'M.P.',type: 'pressure', precision: 3 },
+        { name: 'RPM', type: 'rotationVelocity' },
+        { name: 'C.RPM', type: 'rotationVelocity' },
+        { name: 'Thri', type: 'ratio' },
+        { name: 'Pwr.', type: 'power' },
+        { name: 'Thrust', type: 'thrust' },
+        { name: 'Pitch', type: 'angle', precision: 1 },
+        { name: 'Eff.', type: 'ratio', precision: 2 },
+        { name: 'Eng/Wtr T', type: 'temperature' },
+        { name: 'Oil T', type: 'temperature' },
+        //Atmosphere
+        { name: 'T', type: 'temperature', precision: 1 },
+        { name: 'P', type: 'pressure', precision: 2 }
+      ],
+      current: [
+      ],
+      snapshoots: [      
+      ],
+      snapshootRowMapping: [
+      ],
+      snapshootCurrIndex: 0
+    }
+   
+    //Value
+    
+    function loadValue(value, type) {
+      if (type != undefined)
+        return convertFromUnit(value, type, settings.unitSystem)
+      else
+        return parseFloat(value)
+    }
+       
+    function saveValue2(value, param) {
+      const unitData = unitSystems[settings.unitSystem][param.type]
+      var val = convertToUnit(value, param.type, settings.unitSystem)
+      var precision = param.precision || 0
+      return convertToString(val.toFixed(precision), unitData)
+    }
+    
+    function saveValue(param) {
+      return saveValue2(param.value, param)
+    }
+    
+    //Test result table
+    
+    function cleanTable(tbl, headLines) {
+      for (var i = tbl.rows.length - 1; i > headLines - 1; --i)
+        tbl.deleteRow(i)
+    }
+    
+    const TestResult = {
+      NO_DATA: 0,
+      OK:      1,
+      WARNING: 2,
+      ERROR:   3
+    }
+    
+    const testResultColor = [
+      'black',
+      'green',
+      'orange',
+      'red'
+    ]
+    
+    function fillResultTable(testName) {
+      var tbl = document.getElementById(testData[testName].result.tableId) 
+      cleanTable(tbl, 1)
+      
+      //Result
+      var result = testData[testName].result
+      var values = result.values
+      const format = result.format
+      //Arg
+      const argUnitData = unitSystems[settings.unitSystem][format[0].type]
+      var argUnitPrecision = format[0].precision
+      if (argUnitPrecision == undefined)
+        argUnitPrecision = 0
+      //Value
+      const valUnitData = unitSystems[settings.unitSystem][format[1].type]
+      var valUnitPrecision = format[1].precision
+      if (valUnitPrecision == undefined)
+        valUnitPrecision = 0
+      
+      //Reference
+      const accuracy = result.accuracy
+      var ref = aircraftProperties.ref
+      var testRef = ref && ref[testName]   
+      var testResult = TestResult.NO_DATA
+      for (var r = 0; r < values.length; ++r)
+      {
+        var row = tbl.insertRow(-1)
+        if (values[r].length > 1)
+        {
+          //Argument
+          var arg = values[r][0]
+          if (!isNaN(arg))
+          {        
+            var argCell = row.insertCell(0)
+            argCell.innerHTML =  convertToString(convertToUnit(arg, format[0].type, settings.unitSystem).toFixed(argUnitPrecision), argUnitData)
+            //Values
+            for (var c = 1; c < values[r].length; ++c)
+            {
+              var cell = row.insertCell(c)
+              var valueTestResult = TestResult.NO_DATA              
+              //Reference Value
+              var refVal = undefined
+              if (settings.useReference)
+              {
+                var refTable = testRef
+                if (refTable != undefined)
+                {
+                  if (values[r].length > 2)
+                    refTable = refTable[c - 1]
+                  if (refTable != undefined)
+                  {
+                    refVal = interpolate(refTable, arg)
+                    if (refVal != undefined)
+                     refVal = refVal
+                  }
+                }
+              }
+
+              //Value
+              var val = values[r][c]
+              if (!isNaN(val) && val != null)
+              {
+                if (refVal != undefined)
+                {
+                  //Comparison
+                  var diff = val - refVal
+                  if (Math.abs(diff) > accuracy.red)
+                    valueTestResult = TestResult.ERROR
+                  else if (Math.abs(diff) > accuracy.orange)                  
+                    valueTestResult = TestResult.WARNING
+                  else
+                    valueTestResult = TestResult.OK
+                  cell.innerHTML =  convertToString(convertToUnit(val, format[1].type, settings.unitSystem).toFixed(valUnitPrecision), valUnitData) + ' - ' +
+                                    convertToString(convertToUnit(refVal, format[1].type, settings.unitSystem).toFixed(valUnitPrecision), valUnitData) + ' = ' +
+                                    convertToString(convertToUnit(diff, format[1].type, settings.unitSystem).toFixed(valUnitPrecision), valUnitData)
+                }
+                else
+                  cell.innerHTML = convertToString(convertToUnit(val, format[1].type, settings.unitSystem).toFixed(valUnitPrecision), valUnitData)
+              }
+              else
+                cell.innerHTML = 'FAIL!'
+                
+              cell.style.color = testResultColor[valueTestResult]
+              testResult = Math.max(testResult, valueTestResult)
+            }
+          }
+        }
+      }
+      return testResult
+    }
+    
+    function readAndFillResultTable(testName, caption, data) {
+      testData[testName]['result']['values'] = data
+      const testResult = fillResultTable(testName)
+      caption.style.color = testResultColor[testResult]
+    }
+    
+    function setTestRefFlags()
+    {
+      var ref = aircraftProperties['ref']
+      for (var testName in testData)
+      {
+        var dataFound = false
+        if (ref != undefined)
+        {
+          var testRef = ref[testName]
+          if (testRef != undefined)
+          {
+            for (var i = 0; i < testRef.length; ++i)
+              if (testRef[i].length > 1)
+              {
+                dataFound = true
+                break
+              }
+          }
+        }
+        var labelRef = document.getElementById(testName + 'TestRefFlag')
+        if (dataFound)
+          labelRef.innerHTML = 'Reference'
+        else
+          labelRef.innerHTML = 'No Reference'
+        labelRef.style.color = testResultColor[TestResult.NO_DATA]
+
+        updateTestParamsActuality(testData[testName])
+      }
+    }
+    
+    //GUI fill commands
+    
+    function onConnectionStateChange(connected)
+    {
+      if (connected != state.connected)
+      {
+        state.connected = connected
+        document.title = 'War Thunder Flight Model Test Page - ' + (connected ? 'connected' : 'disconnected')      
+        var headerConnectionState = document.getElementById('HeaderConnectionState')
+        headerConnectionState.innerHTML = connected ? 'Connected' : 'Disconnected'
+        headerConnectionState.style.color = connected ? 'Black' : 'Red'
+        
+        //Parameters
+        document.getElementById('ButtonSetAltitude').disabled =
+        document.getElementById('ButtonSetSpeed').disabled =
+        document.getElementById('ButtonSetFuelMassRatio').disabled =
+        document.getElementById('ButtonSetMass').disabled =
+        document.getElementById('ButtonSetCoolantOrHeadTemp').disabled =
+        document.getElementById('ButtonSetOilTemp').disabled =
+        document.getElementById('ButtonSetTemperature').disabled =
+        document.getElementById('ButtonSetPressure').disabled =
+        document.getElementById('ButtonSetTimeSpeed').disabled =
+        //Commands
+        document.getElementById('ButtonStabilize').disabled =
+        document.getElementById('ButtonTakeoff').disabled =
+        document.getElementById('ButtonLand').disabled =
+        document.getElementById('ButtonSetupOnGround').disabled =
+        document.getElementById('ButtonSetSATM').disabled =
+        document.getElementById('ButtonResetTimeSpeed').disabled =
+        document.getElementById('ButtonRepair').disabled =
+        document.getElementById('ButtonSetZeroFuel').disabled =
+        document.getElementById('ButtonRearm').disabled =
+        document.getElementById('ButtonSetFullFuel').disabled =
+        document.getElementById('ButtonSetSustTemp').disabled =
+        document.getElementById('ButtonOverheatNow').disabled =
+        document.getElementById('ButtonBuildSpecs').disabled =
+        document.getElementById('ButtonMergeFM').disabled =
+        document.getElementById('ButtonUnloadFM').disabled =
+        document.getElementById('ButtonBuildPassport').disabled =
+        document.getElementById('ButtonCut').disabled =
+        document.getElementById('ButtonHit').disabled =
+        document.getElementById('EditHitDmg').disabled =
+        //Real-Time Flight Test
+        document.getElementById('LaunchRealTimeTest').disabled =
+        document.getElementById('LaunchAndSimulateRealTimeTest').disabled =
+        document.getElementById('StopRealTimeTest').disabled =
+        //Flight Tests
+        document.getElementById('LaunchStallTests').disabled =
+        document.getElementById('LaunchMaxSpeedTests').disabled =
+        document.getElementById('LaunchMinClimbTimeTests').disabled =
+        document.getElementById('LaunchMinTurnTimeTests').disabled =
+        document.getElementById('LaunchMaxRollRateTests').disabled =
+          //value
+          !state.connected
+
+        if (connected)
+        {
+          //Indication Parameters
+          for (var i = IndicationFlag.NULL; i < IndicationFlag.MAX; ++i)
+            setCommand( {cmd: "setIndicationVisible", flagNum: i, value: state.indicationFlags[i] ? 'true' : 'false'} )
+          setCommand( {cmd: "setDamagePartOfInterestId", id: state.damagePartOfInterestId} )
+          setCommand( {cmd: "setSkeletonNodeOfInterestName", name : state.skeletonNodeOfInterestName} )
+          //Wind Tube Parameters
+          setWindTubeTestParams()
+        }
+      }
+    }
+    
+    function fillMasses(data)
+    {
+      flightParams['fuelMassRatio']['value'] = data['fuelMassRatio']
+      flightParams['mass']['value'] = data['mass']
+      
+      var editFuelMassRatio = document.getElementById('EditFuelMassRatio')
+      editFuelMassRatio.value = saveValue(flightParams['fuelMassRatio'])
+      editFuelMassRatio.style.color = flightParams['fuelMassRatio']['value'] > 1.001 ? 'red' : 'black'
+      
+      var editMass = document.getElementById('EditMass')
+      editMass.value = saveValue(flightParams['mass'])
+      editMass.style.color = flightParams['fuelMassRatio']['value'] > 1.001 ? 'red' : 'black'
+    }
+        
+    function getChartTestResult(testName)
+    {
+      var result = testData[testName].result
+      var data = []
+    
+      //Results
+      const values = result.values
+      for (var i = 0; i < result.curveNames.length; ++i)
+        data.push({ label: result.curveNames[i], data: [], color: i, lines: { lineWidth: 5 } })
+      if (values != undefined)
+      {
+        for (var i = 0; i < values.length; ++i)
+          for (var j = 1; j < Math.min(result.curveNames.length + 1, values[i].length); ++j)
+          {
+            var value = values[i][j]
+            if (!isNaN(value) && value != null)
+            {
+              var arg = values[i][0]
+              var point = result.transposePlot ? [ convertToUnit(value, result.format[1].type, settings.unitSystem), convertToUnit(arg, result.format[0].type, settings.unitSystem) ] : 
+                [ convertToUnit(arg, result.format[0].type, settings.unitSystem), convertToUnit(value, result.format[1].type, settings.unitSystem) ]            
+              data[j - 1].data.push(point)
+            }
+          }
+      }
+      //Reference
+      if (settings.useReference)
+      {
+        var refTable = aircraftProperties.ref && aircraftProperties.ref[testName]
+        if (refTable != undefined)
+        {
+          for (var i = 0; i < result.curveNames.length; ++i)
+            data.push({ label: result.curveNames[i], data: [], color: i, lines: { lineWidth: 2 } })
+          for (var i = 0; i < Math.min(result.curveNames.length, refTable.length); ++i)
+            for (var j = 1; j < refTable[i].length; ++j)
+            {
+              var point = result.transposePlot ? [ convertToUnit(refTable[i][j][1], result.format[1].type, settings.unitSystem), convertToUnit(refTable[i][j][0], result.format[0].type, settings.unitSystem) ] : 
+                [ convertToUnit(refTable[i][j][0], result.format[0].type, settings.unitSystem), convertToUnit(refTable[i][j][1], result.format[1].type, settings.unitSystem) ]
+              data[result.curveNames.length + i].data.push(point)
+            }
+        }
+      }
+      
+      return data
+    }
+   
+    function Chart()
+    {
+      this.plot = undefined
+      this.dataSource = undefined
+      this.arg = undefined
+    }
+    
+    Chart.prototype.set = function(placeholder, options, dataSource, arg)
+    {
+      if (this.plot != undefined)
+        this.reset()
+      this.dataSource = dataSource
+      this.arg = arg
+      this.plot = $.plot(placeholder, dataSource(this.arg), {
+        series: {
+          lines: {
+            show: true
+          },
+          shadowSize: 0
+        },
+        xaxis: {
+          axisLabel: options.xAxisLabel,
+          axisLabelUseCanvas: true,
+          axisLabelFontSizePixels: 16,
+          axisLabelFontFamily: 'Arial',
+          zoomRange: [0.1, 10],
+          panRange: [-10, 10]
+        },
+        yaxis: {
+          axisLabel: options.yAxisLabel,
+          axisLabelUseCanvas: true,
+          axisLabelFontSizePixels: 16,
+          axisLabelFontFamily: 'Arial',
+          zoomRange: [0.1, 10],
+          panRange: [-10, 10]
+        },
+        zoom: {
+          realTime: false
+        },
+        pan: {
+          realTime: false
+        },
+        legend: {
+          labelBoxBorderColor: "Black",
+          position: "right"
+        }
+      });
+      this.update()
+    }
+    Chart.prototype.reset = function()
+    {
+      var placeholder = this.plot.getPlaceholder()
+      this.plot.shutdown();
+      placeholder.empty();
+      this.plot = undefined
+      this.dataSource = undefined
+    }
+    Chart.prototype.show = function()
+    {
+      var placeholder = this.plot.getPlaceholder()
+      placeholder.show()
+    }
+    Chart.prototype.hide = function()
+    {
+      var placeholder = this.plot.getPlaceholder()
+      placeholder.hide()
+    }
+    Chart.prototype.update = function()
+    {
+      this.plot.setData(this.dataSource(this.arg));
+      this.plot.draw();
+      this.plot.setupGrid();
+    }
+    Chart.prototype.getArg = function()
+    {
+      return this.arg;
+    }
+    Chart.prototype.isActive = function()
+    {
+      return this.plot != undefined;
+    }
+    
+    var testResultChart = new Chart();
+
+    function setTestResultChart(testName)
+    {
+      var testResult = (testName != undefined) ? testData[testName].result : undefined; 
+      if (testResult == undefined)
+        return
+      var xIndex = testResult.transposePlot ? 1 : 0;
+      var testResultXAxisLabel = testResult.format[xIndex].name + ', ' + unitSystems[settings.unitSystem][testResult.format[xIndex].type].name;
+      var yIndex = testResult.transposePlot ? 0 : 1;
+      var testResultYAxisLabel = testResult.format[yIndex].name + ', ' + unitSystems[settings.unitSystem][testResult.format[yIndex].type].name;
+      testResultChart.set($("#placeholder_test_result"), { xAxisLabel: testResultXAxisLabel, yAxisLabel: testResultYAxisLabel }, getChartTestResult, testName);
+    }
+    
+    function resetTestResultChart()
+    {
+      testResultChart.reset();
+    }
+        
+    function fillFmProperties(data)
+    {
+      if (!data['valid'])
+        return
+    
+      state.fm = data.id
+      aircraftProperties = data
+                  
+      //Aircraft type
+      document.getElementById('HeaderAircraftType').innerHTML = 'Aircraft: ' + state.fm.typeName + ' from \"' + state.fm.fileName + '\"'
+     
+      //Test Passport flags      
+      setTestRefFlags()
+      
+      //Flight parameters
+      const mass = aircraftProperties['mass']      
+      const noFuelMass = mass['noFuel']
+      const maxFuelMass = mass['maxFuel']
+      const totalMass = mass['total']
+      flightParams['mass']['min'] = noFuelMass
+      flightParams['fuelMassRatio']['value'] = (totalMass - noFuelMass) / maxFuelMass
+      flightParams['mass']['value'] = totalMass
+
+      const maxMass = noFuelMass + maxFuelMass
+      aircraftProperties['maxMass'] = maxMass
+      document.getElementById('EditFuelMassRatio').value = saveValue(flightParams['fuelMassRatio'])
+      document.getElementById('EditMass').value = saveValue(flightParams['mass'])
+      
+      var comboBoxDamagePartOfInterestId = document.getElementById('ComboBoxDamagePartOfInterestId')
+      const dmParts = aircraftProperties['dmParts']
+      comboBoxDamagePartOfInterestId.options.length = 0
+      if (dmParts.length > 0)
+        for (var i = 0; i < dmParts.length; ++i)
+          comboBoxDamagePartOfInterestId.options[comboBoxDamagePartOfInterestId.options.length] = new Option(dmParts[i].name, dmParts[i].id)
+      comboBoxDamagePartOfInterestId.disabled = dmParts.length < 2
+      comboBoxDamagePartOfInterestId.value = state.damagePartOfInterestId
+      
+      var comboBoxSkeletonNodeOfInterestName = document.getElementById('ComboBoxSkeletonNodeOfInterestName')
+      const skeletonNodes = aircraftProperties['skeletonNodes']
+      comboBoxSkeletonNodeOfInterestName.options.length = 0
+      if (skeletonNodes.length > 0)
+        for (var i = 0; i < skeletonNodes.length; ++i)
+          comboBoxSkeletonNodeOfInterestName.options[comboBoxSkeletonNodeOfInterestName.options.length] = new Option(skeletonNodes[i], skeletonNodes[i])
+      comboBoxSkeletonNodeOfInterestName.disabled = skeletonNodes.length < 2
+      comboBoxSkeletonNodeOfInterestName.value = state.skeletonNodeOfInterestName
+      
+      //Real-Time Flight Test parameters
+      document.getElementById('ComboBoxFlapsMinTurnTimeTest').options[2].disabled = document.getElementById('ComboBoxRealTimeFlightTestFlaps').options[2].disabled =
+        (aircraftProperties['flapsControl'] != FlapsControl.COMBAT_LANDING_TAKEOFF)
+      realTimeTest['params']['manifoldPressure']['min'] = aircraftProperties['engine']['minManifoldPressure']
+      realTimeTest['params']['manifoldPressure']['max'] = realTimeTest['params']['manifoldPressure']['value'] = aircraftProperties['engine']['maxManifoldPressure']
+      realTimeTest['params']['omega']['min'] = aircraftProperties['engine']['minOmega']
+      realTimeTest['params']['omega']['max'] = realTimeTest['params']['omega']['value'] = aircraftProperties['engine']['maxOmega']
+      realTimeTest['params']['pitch']['min'] = aircraftProperties['engine']['minPitch']
+      realTimeTest['params']['pitch']['max'] = aircraftProperties['engine']['maxPitch']
+      realTimeTest['params']['pitch']['value'] = realTimeTest['params']['pitch']['min'] * 0.2 + realTimeTest['params']['pitch']['max'] * 0.8
+      
+      const compressorStageCount = aircraftProperties['engine']['compressorStageCount']
+      realTimeTest['params']['compressorStage']['value'] = Math.min(realTimeTest['params']['compressorStage']['value'], compressorStageCount - 1)
+      
+      var comboBoxCompressorStage = document.getElementById('ComboBoxCompressorStage')
+      comboBoxCompressorStage.options.length = 0
+      if (compressorStageCount > 0)
+      {
+        for (var currCompressorStage = -1; currCompressorStage < compressorStageCount; ++currCompressorStage)
+        {
+          var name = (currCompressorStage == -1) ? 'Auto' : (currCompressorStage + 1).toString()
+          comboBoxCompressorStage.options[comboBoxCompressorStage.options.length] = new Option(name, currCompressorStage);
+        }
+      }
+      comboBoxCompressorStage.disabled = compressorStageCount < 2
+      comboBoxCompressorStage.selectedIndex = Math.min(realTimeTest['params']['compressorStage']['value'] + 1, compressorStageCount)
+      
+      loadRelativeParamFromCookie(realTimeTest['params']['manifoldPressure'], 'realTimeFlightTest_manifoldPressure_ratio')
+      loadRelativeParamFromCookie(realTimeTest['params']['omega'],            'realTimeFlightTest_omega_ratio')
+      loadRelativeParamFromCookie(realTimeTest['params']['pitch'],            'realTimeFlightTest_pitch_ratio')
+      
+      if (realTimeTest['params']['throttleMode']['value'] == ThrottleMode.MANIFOLD_PRESSURE)
+        document.getElementById('EditRealTimeFlightTestThrottle').value = saveValue(realTimeTest['params']['manifoldPressure'])
+      if (realTimeTest['params']['pitchMode']['value'] == PitchMode.RPM)
+        document.getElementById('EditRealTimeFlightTestPitch').value = saveValue(realTimeTest['params']['omega'])
+      else if (realTimeTest['params']['pitchMode']['value'] == PitchMode.PITCH)
+        document.getElementById('EditRealTimeFlightTestPitch').value = saveValue(realTimeTest['params']['pitch'])
+      
+      enableRealTimeTestParameters()
+      
+      //Flight Test Ref parameters
+      var ref = aircraftProperties.ref
+      if (ref != undefined)
+      {
+        testData['maxSpeed'].result.refParams.speedType = ref.maxSpeedSpeedType
+        var minClimbTimeParams = testData['minClimbTime'].params
+        var minClimbTimeRefParams = testData['minClimbTime'].result.refParams
+        minClimbTimeRefParams.speed = []
+        for (var i = 0; i < ref.climbSpeed.length; ++i)
+        {
+          var climbSpeed = ref.climbSpeed[i]
+          minClimbTimeRefParams.speed[i] = {
+            alt: climbSpeed.alt,
+            speedType: climbSpeed.speedType,
+          }
+          var speed = minClimbTimeRefParams.speed[i]
+          if (climbSpeed.speedType == AirspeedType.MACH)
+          {
+            speed.machMax = climbSpeed.speedMax
+            speed.machWEP = climbSpeed.speedWEP
+          }
+          else
+          {
+            speed.speedMax = climbSpeed.speedMax
+            speed.speedWEP = climbSpeed.speedWEP
+          }
+        }
+        testData['minTurnTime'].result.refParams.flaps = ref.turnTimeFlaps
+      }
+      
+      //Reference
+      var comboBoxReferenceMode = document.getElementById("ComboBoxReferenceMode")
+      onReferenceModeChange(comboBoxReferenceMode)
+    }
+    
+    function fillRealTimeTestThrottleParameters()
+    {
+      labelRealTimeFlightTestThrottleValue = ''
+      if (realTimeTest['params']['throttleMode']['value'] == ThrottleMode.MANUAL)
+        labelRealTimeFlightTestThrottleValue = 'Throttle, %'
+      else if (realTimeTest['params']['throttleMode']['value'] == ThrottleMode.MANIFOLD_PRESSURE)
+        labelRealTimeFlightTestThrottleValue = 'Manifold Pressure, ' + unitSystems[settings.unitSystem]['pressure']['name']
+      document.getElementById('LabelRealTimeFlightTestThrottle').innerHTML = labelRealTimeFlightTestThrottleValue
+
+      var editRealTimeFlightTestThrottle = document.getElementById('EditRealTimeFlightTestThrottle')
+      if (realTimeTest['params']['throttleMode']['value'] == ThrottleMode.MANUAL)
+        editRealTimeFlightTestThrottle.value = saveValue(realTimeTest['params']['throttle'])
+      else if (realTimeTest['params']['throttleMode']['value'] == ThrottleMode.MANIFOLD_PRESSURE)
+        editRealTimeFlightTestThrottle.value = saveValue(realTimeTest['params']['manifoldPressure'])
+    }
+    
+    function fillRealTimeTestPitchParameters()
+    {
+      editRealTimeFlightTestPitchValue = ''
+      if (realTimeTest['params']['pitchMode']['value'] == PitchMode.RPM)
+        editRealTimeFlightTestPitchValue = 'RPM, ' + unitSystems[settings.unitSystem]['rotationVelocity']['name']
+      else if (realTimeTest['params']['pitchMode']['value'] == PitchMode.PITCH)
+        editRealTimeFlightTestPitchValue = 'Pitch, ' + unitSystems[settings.unitSystem]['angle']['name']
+      else if (realTimeTest['params']['pitchMode']['value'] == PitchMode.PITCH_CONTROL)
+        editRealTimeFlightTestPitchValue = 'Pitch control, ' + unitSystems[settings.unitSystem]['ratio']['name']
+      document.getElementById('LabelRealTimeFlightTestPitch').innerHTML = editRealTimeFlightTestPitchValue
+      
+      var editRealTimeFlightTestPitch = document.getElementById('EditRealTimeFlightTestPitch')
+      if (realTimeTest['params']['pitchMode']['value'] == PitchMode.RPM)
+        editRealTimeFlightTestPitch.value = saveValue(realTimeTest['params']['omega'])
+      else if (realTimeTest['params']['pitchMode']['value'] == PitchMode.PITCH)
+        editRealTimeFlightTestPitch.value = saveValue(realTimeTest['params']['pitch'])
+      else if (realTimeTest['params']['pitchMode']['value'] == PitchMode.PITCH_CONTROL)
+        editRealTimeFlightTestPitch.value = saveValue(realTimeTest['params']['pitchControl'])
+    }
+    
+    function fillRealTimeTestParameters()
+    {
+      var altUnitName = unitSystems[settings.unitSystem]['altitude']['name']
+      var speedUnitName = unitSystems[settings.unitSystem]['velocity']['name']
+      
+      document.getElementById('LabelRealTimeFlightTestAltitude').innerHTML = 'Altitude, ' + altUnitName
+      document.getElementById('LabelRealTimeFlightTestStartAltitude').innerHTML = 'Start altitude, ' + altUnitName
+      document.getElementById('LabelRealTimeFlightTestSpeed').innerHTML = 'Airspeed, ' + speedUnitName
+
+      document.getElementById('ComboBoxRealTimeFlightTest').value = realTimeTest['params']['test']      
+      document.getElementById('EditRealTimeFlightTestAltitude').value = saveValue(realTimeTest['params']['alt'])
+      document.getElementById('EditRealTimeFlightTestStartAltitude').value = saveValue(realTimeTest['params']['startAlt'])
+      document.getElementById('EditRealTimeFlightTestSpeed').value = realTimeTest['params']['speedType'].value == AirspeedType.MACH ?
+        saveValue(realTimeTest['params']['mach']) : saveValue(realTimeTest['params']['speed'])
+      document.getElementById('ComboBoxSpeedType').value = saveValue(realTimeTest['params']['speedType'])
+      document.getElementById('ComboBoxRealTimeFlightTestDirection').value = realTimeTest['params']['right'] ? 'right' : 'left'
+      document.getElementById('ComboBoxRealTimeFlightTestFlaps').selectedIndex = realTimeTest['params']['flaps']['value']
+      document.getElementById('ComboBoxRealTimeFlightTestGear').value = realTimeTest['params']['gear'] ? 'down' : 'up'
+      document.getElementById('ComboBoxRealTimeFlightTestCockpitDoor').value = realTimeTest['params']['cockpitDoor'] ? 'opened' : 'closed'
+      document.getElementById('ComboBoxRealTimeFlightTestEngineAutoMode').selectedIndex = realTimeTest['params']['engineAutoMode'] ? 0 : 1
+      document.getElementById('ComboBoxRealTimeFlightTestThrottleMode').selectedIndex = realTimeTest['params']['throttleMode']['value']
+      document.getElementById('ComboBoxRealTimeFlightTestPitchMode').selectedIndex = realTimeTest['params']['pitchMode']['value']
+      
+      fillRealTimeTestThrottleParameters()
+      fillRealTimeTestPitchParameters()
+      document.getElementById('EditRealTimeFlightTestCooler').value = saveValue(realTimeTest['params']['cooler'])
+      const compressorStageCount = aircraftProperties['engine']['compressorStageCount']
+      document.getElementById('ComboBoxCompressorStage').selectedIndex = Math.min(realTimeTest['params']['compressorStage']['value'] + 1, compressorStageCount)
+      
+      enableRealTimeTestParameters()
+    }
+    
+    function fillWindTubeTestParameters()
+    {
+      var speedUnitName = unitSystems[settings.unitSystem].velocity.name
+    
+      document.getElementById('CheckBoxWindTubeTestEnabled').checked = windTubeTest.params.enabled
+      document.getElementById('CheckBoxWindTubeTestYawLocked').checked = windTubeTest.params.yawLocked
+      document.getElementById('CheckBoxWindTubeTestPitchLocked').checked = windTubeTest.params.pitchLocked
+      document.getElementById('CheckBoxWindTubeTestRollLocked').checked = windTubeTest.params.rollLocked
+      document.getElementById('CheckBoxWindTubeTestElevatorLocked').checked = windTubeTest.params.elevatorLocked
+      document.getElementById('CheckBoxWindTubeTestRudderLocked').checked = windTubeTest.params.rudderLocked
+      
+      document.getElementById('LabelWindTubeTestAirspeed').innerHTML = 'Airspeed, ' + speedUnitName
+      document.getElementById('CheckBoxWindTubeTestAirspeed').value = saveValue(windTubeTest.params.airspeed)
+        
+      document.getElementById('EditWindTubeTestAoS').value = saveValue(windTubeTest.params.aos)
+      document.getElementById('EditWindTubeTestAoA').value = saveValue(windTubeTest.params.aoa)
+      document.getElementById('EditWindTubeTestRoll').value = saveValue(windTubeTest.params.roll)
+    
+      document.getElementById('EditWindTubeTestYawFakeRate').value = saveValue(windTubeTest.params.yawFakeRate)
+      document.getElementById('EditWindTubeTestPitchFakeRate').value = saveValue(windTubeTest.params.pitchFakeRate)
+      document.getElementById('EditWindTubeTestRollFakeRate').value = saveValue(windTubeTest.params.rollFakeRate)
+      document.getElementById('EditWindTubeTestElevatorFakeRate').value = saveValue(windTubeTest.params.elevatorFakeRate)
+      document.getElementById('EditWindTubeTestRudderFakeRate').value = saveValue(windTubeTest.params.rudderFakeRate)
+
+      enableWindTubeTestParameters()
+    }
+
+    function fillParameters()
+    {
+      var altUnitName = unitSystems[settings.unitSystem]['altitude']['name']
+      var speedUnitName = unitSystems[settings.unitSystem]['velocity']['name']
+      var massUnitName = unitSystems[settings.unitSystem]['mass']['name']
+      var temperatureUnitName = unitSystems[settings.unitSystem]['temperature']['name']
+      var alt = 'Alt, ' + altUnitName
+      
+      //Flight Parameters
+      document.getElementById('ButtonSetAltitude').value = alt
+      document.getElementById('ButtonSetSpeed').value = 'TAS, ' + speedUnitName
+      document.getElementById('ButtonSetFuelMassRatio').value = 'Fuel, ' + unitSystems[settings.unitSystem]['ratio']['name']
+      document.getElementById('ButtonSetMass').value = 'Mass, ' + massUnitName
+      document.getElementById('ButtonSetCoolantOrHeadTemp').value = 'Eng.T, ' + temperatureUnitName
+      document.getElementById('ButtonSetOilTemp').value = 'Oil T, ' + temperatureUnitName
+      document.getElementById('EditAltitude').value = saveValue(flightParams['alt'])
+      document.getElementById('EditVelocity').value = saveValue(flightParams['vel'])
+      document.getElementById('EditFuelMassRatio').value = saveValue(flightParams['fuelMassRatio'])
+      document.getElementById('EditMass').value = saveValue(flightParams['mass'])
+      document.getElementById('EditCoolantOrHeadTemp').value = saveValue(flightParams['coolantOrHeadTemperature'])
+      document.getElementById('EditOilTemp').value = saveValue(flightParams['oilTemperature'])
+      document.getElementById('EditTemperature').value = saveValue(flightParams['temperature'])
+      document.getElementById('EditPressure').value = saveValue(flightParams['pressure'])
+      document.getElementById('EditTimeSpeed').value = saveValue(flightParams['timeSpeed'])
+      document.getElementById('ButtonSetTimeSpeed').value = 'Time Speed, ' + unitSystems[settings.unitSystem]['ratio']['name']
+      
+      //Indication Parameters
+      for (var i = IndicationFlag.NULL; i < IndicationFlag.MAX; ++i)
+        document.getElementById("CheckBoxIndication" + i.toString()).checked = state.indicationFlags[i]
+      document.getElementById("ComboBoxDamagePartOfInterestId").value = state.damagePartOfInterestId
+      document.getElementById("ComboBoxSkeletonNodeOfInterestName").value = state.skeletonNodeOfInterestName
+
+      //Real-Time Flight Test
+      fillRealTimeTestParameters()
+      
+      //Wind Tube Test
+      fillWindTubeTestParameters()
+      
+      //Flight State
+      var flightStateTable = document.getElementById('FlightState')
+      var captionCells = flightStateTable.getElementsByTagName('tr')[1].getElementsByTagName('td')
+      const valueCount = Math.min(aircraftState.format.length, captionCells.length)
+      for (var i = 0; i < valueCount; ++i)
+      {
+        var format = aircraftState.format[i]
+        var unitName = getUnitName(format.type, settings.unitSystem)
+        captionCells[i + 2].innerHTML = unitName != '' ? format.name + ', ' + unitName : format.name
+      }
+      
+      //Flight Tests      
+      const minAlt = 'Min Altitude, ' + altUnitName
+      const maxAlt = 'Max Altitude, ' + altUnitName
+      const stepAlt = 'Step Altitude, ' + altUnitName
+      
+      const minIAS = 'Min IAS, ' + speedUnitName
+      const maxIAS = 'Max IAS, ' + speedUnitName
+      const stepIAS = 'Step IAS, ' + speedUnitName
+      const ias = 'IAS, ' + unitSystems[settings.unitSystem]['velocity']['name']
+      const airSpeed = 'Airspeed, ' + unitSystems[settings.unitSystem]['velocity']['name']
+      
+      //stall
+      document.getElementById('LabelAltMinStallTest').innerHTML = minAlt
+      document.getElementById('LabelAltMaxStallTest').innerHTML = maxAlt
+      document.getElementById('LabelAltStepStallTest').innerHTML = stepAlt
+      
+      const stallParams = testData['stall']['params']
+      document.getElementById('EditAltMinStallTest').value = saveValue(stallParams['minAlt'])
+      document.getElementById('EditAltMaxStallTest').value = saveValue(stallParams['maxAlt'])
+      document.getElementById('EditAltStepStallTest').value = saveValue(stallParams['stepAlt'])
+      
+      document.getElementById('LabelAltStallTest').innerHTML = alt
+      document.getElementById('LabelIASStallTest1').innerHTML = 'IAS, ' + unitSystems[settings.unitSystem]['velocity']['name']
+      document.getElementById('LabelIASStallTest2').innerHTML = 'IAS, gear, flaps, ' + unitSystems[settings.unitSystem]['velocity']['name']
+      
+      fillResultTable('stall')
+
+      //maxSpeed
+      document.getElementById('LabelAltMinMaxSpeedTest').innerHTML = minAlt
+      document.getElementById('LabelAltMaxMaxSpeedTest').innerHTML = maxAlt
+      document.getElementById('LabelAltStepMaxSpeedTest').innerHTML = stepAlt
+      
+      var maxSpeedParams = testData['maxSpeed']['params']
+      document.getElementById('EditAltMinMaxSpeedTest').value = saveValue(maxSpeedParams['minAlt'])
+      document.getElementById('EditAltMaxMaxSpeedTest').value = saveValue(maxSpeedParams['maxAlt'])
+      document.getElementById('EditAltStepMaxSpeedTest').value = saveValue(maxSpeedParams['stepAlt'])
+      document.getElementById('ComboBoxFlapsMaxSpeedTest').value = saveValue(maxSpeedParams['speedType'])
+      
+      document.getElementById('LabelAltMaxSpeedTest').innerHTML = alt
+      if (maxSpeedParams.speedType.value == AirspeedType.MACH)
+      {
+        document.getElementById('LabelTASMaxSpeedTest1').innerHTML = 'Mach, Max'
+        document.getElementById('LabelTASMaxSpeedTest2').innerHTML = 'Mach, WEP'
+        var paramMach = testData['maxSpeed'].result.format[1]
+        paramMach.name = 'M'
+        paramMach.type = undefined
+        paramMach.precision = 2
+        var paramMachAccuracy = testData['maxSpeed'].result.accuracy
+        paramMachAccuracy.orange = 0.008
+        paramMachAccuracy.red = 0.02        
+      }
+      else
+      {
+        document.getElementById('LabelTASMaxSpeedTest1').innerHTML = 'TAS, Max, ' + unitSystems[settings.unitSystem]['velocity']['name']
+        document.getElementById('LabelTASMaxSpeedTest2').innerHTML = 'TAS, WEP, ' + unitSystems[settings.unitSystem]['velocity']['name']
+        var paramAirspeed = testData['maxSpeed'].result.format[1]
+        paramAirspeed.name = 'V'
+        paramAirspeed.type = 'velocity'
+        paramAirspeed.precision = 0
+        var paramMaxAccuracy = testData['maxSpeed'].result.accuracy
+        paramMaxAccuracy.orange = 10.0 / 3.6
+        paramMaxAccuracy.red = 25.0 / 3.6        
+      }
+      fillResultTable('maxSpeed')
+      
+      //minClimbTime
+      document.getElementById('LabelAltMinMinClimbTimeTest').innerHTML = minAlt
+      document.getElementById('LabelAltMaxMinClimbTimeTest').innerHTML = maxAlt
+      document.getElementById('LabelAltStepMinClimbTimeTest').innerHTML = stepAlt
+      
+      const minClimbTimeParams = testData['minClimbTime']['params']
+      document.getElementById('EditAltMinMinClimbTimeTest').value = saveValue(minClimbTimeParams['minAlt'])
+      document.getElementById('EditAltMaxMinClimbTimeTest').value = saveValue(minClimbTimeParams['maxAlt'])
+      document.getElementById('EditAltStepMinClimbTimeTest').value = saveValue(minClimbTimeParams['stepAlt'])
+      
+      document.getElementById('LabelAltMinClimbTimeTest').innerHTML = alt
+      document.getElementById('LabelSpeedMaxMinClimbTimeTest').innerHTML = 'Spd Max, ' + unitSystems[settings.unitSystem]['velocity']['name']
+      document.getElementById('LabelSpeedWEPMinClimbTimeTest').innerHTML = 'Spd WEP, ' + unitSystems[settings.unitSystem]['velocity']['name']
+
+      var tableSpeedMinClimbTimeTest = document.getElementById('speedMinClimbTimeTest')
+      cleanTable(tableSpeedMinClimbTimeTest, 2)
+      for (var i = 0; i < minClimbTimeParams.speed.value.length; ++i)
+      {
+        if (i > 0)
+          addSpeedRowForMinClimbTimeTest(i)
+        document.getElementById('EditAltMinClimbTime' +      i.toString()).value = saveValue(minClimbTimeParams.speed.value[i].alt)
+        document.getElementById('ComboBoxSpeedTypeMinClimbTime' + i.toString()).value = saveValue(minClimbTimeParams.speed.value[i].speedType)
+        if (minClimbTimeParams.speed.value[i].speedType.value == AirspeedType.MACH)
+        {
+          document.getElementById('EditSpeedMaxMinClimbTime' + i.toString()).value = saveValue(minClimbTimeParams.speed.value[i].machMax)
+          document.getElementById('EditSpeedWEPMinClimbTime' + i.toString()).value = saveValue(minClimbTimeParams.speed.value[i].machWEP) 
+        }
+        else
+        {
+          document.getElementById('EditSpeedMaxMinClimbTime' + i.toString()).value = saveValue(minClimbTimeParams.speed.value[i].speedMax)
+          document.getElementById('EditSpeedWEPMinClimbTime' + i.toString()).value = saveValue(minClimbTimeParams.speed.value[i].speedWEP)               
+        }
+      }      
+      fillResultTable('minClimbTime')
+      
+      document.getElementById('LabelAltMinClimbTineTest').innerHTML = alt      
+
+      //minTurnTime
+      document.getElementById('LabelAltMinMinTurnTimeTest').innerHTML = minAlt
+      document.getElementById('LabelAltMaxMinTurnTimeTest').innerHTML = maxAlt
+      document.getElementById('LabelAltStepMinTurnTimeTest').innerHTML = stepAlt
+      
+      const turnTimeParams = testData['minTurnTime']['params']
+      document.getElementById('EditAltMinMinTurnTimeTest').value = saveValue(turnTimeParams['minAlt'])
+      document.getElementById('EditAltMaxMinTurnTimeTest').value = saveValue(turnTimeParams['maxAlt'])
+      document.getElementById('EditAltStepMinTurnTimeTest').value = saveValue(turnTimeParams['stepAlt'])
+      document.getElementById('ComboBoxFlapsMinTurnTimeTest').value = saveValue(turnTimeParams['flaps'])
+      
+      fillResultTable('minTurnTime')
+      
+      document.getElementById('LabelAltMinTurnTimeTest').innerHTML = alt
+      
+      //maxRollRate
+      document.getElementById('LabelIASMinMaxRollRate').innerHTML = minIAS
+      document.getElementById('LabelIASMaxMaxRollRate').innerHTML = maxIAS
+      document.getElementById('LabelIASStepMaxRollRate').innerHTML = stepIAS
+      
+      const rollRateParams = testData['maxRollRate']['params']
+      document.getElementById('EditIASMinMaxRollRate').value = saveValue(rollRateParams['minIAS'])
+      document.getElementById('EditIASMaxMaxRollRate').value = saveValue(rollRateParams['maxIAS'])
+      document.getElementById('EditIASStepMaxRollRate').value = saveValue(rollRateParams['stepIAS'])
+      
+      fillResultTable('maxRollRate')
+      
+      document.getElementById('LabelIASMaxRollRateTest').innerHTML = ias
+      document.getElementById('LabelRollRateMaxRollRateTestLeft').innerHTML = 'Rate, Left, ' + unitSystems[settings.unitSystem]['angularVelocity']['name']
+      document.getElementById('LabelRollRateMaxRollRateTestRight').innerHTML = 'Rate, Right, ' + unitSystems[settings.unitSystem]['angularVelocity']['name']
+    }    
+    
+    function fillFmState(data)
+    {
+      if (!data.valid)
+        return;
+
+      //State
+      var flightStateTable = document.getElementById('FlightState')
+      var currentValuesCells = flightStateTable.getElementsByTagName('tr')[2].getElementsByTagName('td')
+      const valueCount = Math.min(aircraftState.format.length, data.values.length)
+      for (var i = 0; i < valueCount; ++i)
+      {
+        var value = data.values[i]
+        aircraftState.current[i] = value
+        if (!isNaN(value) && value != null)
+        {
+          var format = aircraftState.format[i]
+          var convertedValue = convertToUnit(value, format.type, settings.unitSystem)
+          currentValuesCells[i + 2].innerHTML = convertedValue.toFixed(format.precision || 0)
+        }
+        else
+          currentValuesCells[i + 2].innerHTML = 'N/A'
+      }
+    }
+
+    function fillSettingsAndParameters()
+    {
+      //Settings
+      document.getElementById("ComboBoxUnitSystem").value = settings.unitSystem
+      document.getElementById("ComboBoxReferenceMode").value = settings.useReference ? 'Yes' : 'No'
+      document.getElementById("ComboBoxTestType").value = settings.flightTest ? 'Flight Test' : 'Analytics'
+      document.getElementById("CheckBoxRepair").checked = settings.repair
+      fillParameters()
+    }
+    
+    function enableRealTimeTestParameters()
+    {
+      const realTimeTestData = realTimeTestsData[realTimeTest.params.test]
+      if (realTimeTestData == undefined)
+        return
+      const params = realTimeTestData.params
+      document.getElementById('EditRealTimeFlightTestAltitude').disabled = !params['alt']
+      document.getElementById('EditRealTimeFlightTestStartAltitude').disabled = !params['startAlt']
+      document.getElementById('EditRealTimeFlightTestSpeed').disabled = !params['speed']
+      document.getElementById('ComboBoxSpeedType').disabled = !params['speed']
+      document.getElementById('ComboBoxRealTimeFlightTestDirection').disabled = !params['direction']
+      document.getElementById('ComboBoxRealTimeFlightTestFlaps').disabled = !params['flaps'] || aircraftProperties['flapsControl'] == FlapsControl.NO
+      document.getElementById('ComboBoxRealTimeFlightTestGear').disabled = !params['gear'] || !aircraftProperties['gearControl']
+      document.getElementById('ComboBoxRealTimeFlightTestCockpitDoor').disabled = !params['cockpitDoor']
+      document.getElementById('EditRealTimeFlightTestCooler').disabled = !params['cooler'] || !aircraftProperties['engine']['coolerControl']
+      document.getElementById('ComboBoxRealTimeFlightTestThrottleMode').disabled = !params['engineMode'] || realTimeTest['params']['engineAutoMode']
+      document.getElementById('EditRealTimeFlightTestThrottle').disabled = !params['engineMode'] || realTimeTest['params']['throttleMode']['value'] < ThrottleMode.MANUAL || realTimeTest['params']['engineAutoMode']
+      document.getElementById('ComboBoxRealTimeFlightTestPitchMode').disabled = !params['engineMode'] || realTimeTest['params']['engineAutoMode']
+      document.getElementById('EditRealTimeFlightTestPitch').disabled = !params['engineMode'] || realTimeTest['params']['pitchMode']['value'] == PitchMode.AUTO || realTimeTest['params']['engineAutoMode']
+      const compressorStageCount = aircraftProperties['engine']['compressorStageCount']
+      document.getElementById('ComboBoxCompressorStage').disabled = compressorStageCount < 2 || !params['engineMode'] || realTimeTest['params']['engineAutoMode']
+      document.getElementById('EditRealTimeFlightTestCooler').disabled = !aircraftProperties['engine']['coolerControl'] || !params['cooler'] || realTimeTest['params']['engineAutoMode']
+    }
+    
+    function enableWindTubeTestParameters()
+    {
+      document.getElementById('EditWindTubeTestAoS').disabled = document.getElementById('EditWindTubeTestYawFakeRate').disabled = !windTubeTest.params['yawLocked']
+      document.getElementById('EditWindTubeTestAoA').disabled = document.getElementById('EditWindTubeTestPitchFakeRate').disabled = !windTubeTest.params['pitchLocked']
+      document.getElementById('EditWindTubeTestRoll').disabled = document.getElementById('EditWindTubeTestRollFakeRate').disabled = !windTubeTest.params['rollLocked']
+    }
+    
+    function fillRealTimeTestState(data)
+    {
+      realTimeTest['state'] = data      
+      const realTimeTestData = realTimeTestsData[data['test']]
+      const realTimeTestName = data['active'] ? ((realTimeTestData != undefined) ? realTimeTestData['name'] : 'Unknown') : '-'      
+      document.getElementById("LabelRealTimeFlightTestActiveTest").innerHTML = realTimeTestName
+      document.getElementById("LabelRealTimeFlightTestResult").innerHTML = data['active'] ? realTimeTestResultName[data['result']] : '-'      
+      if (data['active'])
+      {
+        const realTimeTestResult = realTimeTestsData[data['test']]['result']
+        const valueUnitName = unitSystems[settings.unitSystem][realTimeTestResult['type']]['name']
+        document.getElementById('LabelRealTimeFlightTestValueType').innerHTML = realTimeTestResult['name'] + ', ' + valueUnitName
+        document.getElementById("LabelRealTimeFlightTestValue").innerHTML = saveValue2(data['value'], realTimeTestResult)
+      }
+      else
+      {
+        document.getElementById('LabelRealTimeFlightTestValueType').innerHTML = '-'
+        document.getElementById("LabelRealTimeFlightTestValue").innerHTML = '-'
+      }
+    }
+ 
+    //GUI Callbacks
+    
+    function onUnitSystemChange(combo)
+    {
+      settings.unitSystem = parseInt(combo.value)
+      Cookies.set('unitSystem', settings.unitSystem, {expires:cookieLifeTime})
+      fillParameters()   
+    }
+    
+    function onReferenceModeChange(combo)
+    {
+      const useReference = (combo.value == 'Yes')
+      settings.useReference = useReference
+      const ref = aircraftProperties['ref']
+      Cookies.set('useReference', useReference ? 'true' : 'false', {expires:cookieLifeTime})
+      const forceMasses = useReference && ref && ref['mass']
+      if (forceMasses)
+      {
+        const mass = ref['mass']
+        setCommand( {cmd: 'setMass', value: mass.toString() }, fillMasses )
+      }
+      for (var testName in testData)
+        fillResultTable(testName)
+      document.getElementById("EditFuelMassRatio").disabled =
+      document.getElementById("ButtonSetFuelMassRatio").disabled =
+      document.getElementById("EditMass").disabled =
+      document.getElementById("ButtonSetMass").disabled =
+      document.getElementById("ButtonSetZeroFuel").disabled =
+      document.getElementById("ButtonSetFullFuel").disabled =
+        !state.connected || forceMasses       
+
+      //Force 'minClimbTime' parameters with reference data
+      var minClimbTimeParams = testData['minClimbTime']
+      const forceClimbSpeed = useReference && minClimbTimeParams.result.refParams.speed != undefined && minClimbTimeParams.result.refParams.speedType != undefined
+      var tableSpeedMinClimbTimeTest = document.getElementById('speedMinClimbTimeTest')
+      if (forceClimbSpeed)
+      {
+        minClimbTimeParams.params.speed.value.length = 1
+        cleanTable(tableSpeedMinClimbTimeTest, 2)
+        for (var i = 0; i < minClimbTimeParams.result.refParams.speed.length; ++i)
+        {
+          if (i > 0)
+            addSpeedForMinClimbTimeTest(i)
+          minClimbTimeParams.params.speed.value[i].alt.value =      minClimbTimeParams.result.refParams.speed[i].alt
+          minClimbTimeParams.params.speed.value[i].speedType.value = minClimbTimeParams.result.refParams.speed[i].speedType
+          minClimbTimeParams.params.speed.value[i].speedMax.value = minClimbTimeParams.result.refParams.speed[i].speedMax
+          minClimbTimeParams.params.speed.value[i].speedWEP.value = minClimbTimeParams.result.refParams.speed[i].speedWEP
+          minClimbTimeParams.params.speed.value[i].machMax.value = minClimbTimeParams.result.refParams.speed[i].machMax
+          minClimbTimeParams.params.speed.value[i].machWEP.value = minClimbTimeParams.result.refParams.speed[i].machWEP          
+        }
+        minClimbTimeParams.params.speedType.value = minClimbTimeParams.result.refParams.speedType
+      }
+      document.getElementById('ButtonAddSpeedForMinClimbTimeTest').disabled = forceClimbSpeed
+      for (var i = 0; i < minClimbTimeParams.params.speed.value.length; ++i)
+      {
+        if (i > 0)
+        {
+          var buttonRemoveMinClimbTime = document.getElementById('ButtonRemoveMinClimbTime' + i.toString())
+          buttonRemoveMinClimbTime.disabled = forceClimbSpeed
+        }
+    
+        var editAltMinClimbTime = document.getElementById('EditAltMinClimbTime' + i.toString())
+        editAltMinClimbTime.value = saveValue(minClimbTimeParams.params.speed.value[i].alt)
+        editAltMinClimbTime.disabled = forceClimbSpeed
+        onTestParamAscendingElementChange('minClimbTime', 'speed', i, 'alt', editAltMinClimbTime)
+        
+        if (minClimbTimeParams.params.speed.value[i].speedType.value != AirspeedType.MACH)
+        {
+          var editSpeedMaxMinClimbTime = document.getElementById('EditSpeedMaxMinClimbTime' + i.toString())
+          editSpeedMaxMinClimbTime.value = saveValue(minClimbTimeParams.params.speed.value[i].speedMax)
+          editSpeedMaxMinClimbTime.disabled = forceClimbSpeed
+          onTestParamElementChange('minClimbTime', 'speed', i, 'speedMax', editSpeedMaxMinClimbTime)
+          
+          var editSpeedWEPMinClimbTime = document.getElementById('EditSpeedWEPMinClimbTime' + i.toString())
+          editSpeedWEPMinClimbTime.value = saveValue(minClimbTimeParams.params.speed.value[i].speedWEP)
+          editSpeedWEPMinClimbTime.disabled = forceClimbSpeed
+          onTestParamElementChange('minClimbTime', 'speed', i, 'speedWEP', editSpeedWEPMinClimbTime)
+        }
+      }
+      
+      updateTestParamsState(minClimbTimeParams)
+      
+      //Force 'minTurnTime' parameters with reference data
+      var minTurnTime = testData['minTurnTime']
+      const forceFlaps = useReference && minTurnTime.result.refParams.flaps != undefined
+      var comboBoxFlapsMinTurnTimeTest = document.getElementById("ComboBoxFlapsMinTurnTimeTest")
+      if (forceFlaps)
+      {
+        minTurnTime.params.flaps.value = minTurnTime.result.refParams.flaps
+        comboBoxFlapsMinTurnTimeTest.value = minTurnTime.params.flaps.value
+      }
+      comboBoxFlapsMinTurnTimeTest.disabled = forceFlaps
+      onTestParamChange('minTurnTime', 'flaps', comboBoxFlapsMinTurnTimeTest)
+      updateTestParamsState(minTurnTime)
+      
+      //Result tables
+      for (var testName in testData)
+        fillResultTable(testName)
+    }
+    
+    function onTestTypeChange(combo)
+    {
+      const flightTest = (combo.value == 'Flight Test')
+      settings.flightTest = flightTest
+      Cookies.set('flightTest', flightTest ? 'true' : 'false', {expires:cookieLifeTime})
+    }
+    
+    function onRepairChange(checkBox)
+    {
+      settings.repair = checkBox.checked
+      Cookies.set('repair', settings.repair ? 'true' : 'false', {expires:cookieLifeTime})
+    }
+        
+    function onParamChange(param, edit)
+    {
+      var value = loadValue(edit.value, param['type'])
+      if (param['min'] != undefined)
+        value = Math.max(param['min'], value)
+      if (param['max'] != undefined)
+        value = Math.min(param['max'], value)
+      param['value'] = value
+      if (param['min'] != undefined || param['max'] != undefined)
+        edit.value = saveValue(param)
+      return value
+    }
+    
+    function onFlightParamChange(paramName, edit) {
+      var value = onParamChange(flightParams[paramName], edit) 
+      Cookies.set('flightParams_' + paramName, value.toString(), {expires:cookieLifeTime})
+    }
+
+    function onRealTimeFlightTestChange(combo) {
+      realTimeTest['params']['test'] = combo.value      
+      Cookies.set('realTimeFlightTest_test', realTimeTest['params']['test'], {expires:cookieLifeTime})
+      
+      var force = realTimeTestsData[realTimeTest['params']['test']]['force']
+      if (force != undefined)
+      {
+        for (paramName in force)
+          realTimeTest['params'][paramName].value = force[paramName]
+        fillRealTimeTestParameters()
+      }
+      else
+        enableRealTimeTestParameters()
+    }
+    
+    function onRealTimeFlightTestParamChange(paramName, edit) {
+      var value = onParamChange(realTimeTest['params'][paramName], edit)
+      Cookies.set('realTimeFlightTest_' + paramName, value.toString(), {expires:cookieLifeTime})
+    }
+    
+    function onRealTimeFlightTestRelativeParamChange(paramName, edit) {
+      var param = realTimeTest['params'][paramName]
+      var value = onParamChange(param, edit)
+      const ratio = (value - param['min']) / (param['max'] - param['min'])
+      Cookies.set('realTimeFlightTest_' + paramName + '_ratio', ratio.toString(), {expires:cookieLifeTime})
+    }
+    
+    function onRealTimeFlightTestBoolParamChange(paramName, trueVal, combo) {
+      realTimeTest['params'][paramName] = (combo.value == trueVal)
+      Cookies.set('realTimeFlightTest_' + paramName, realTimeTest['params'][paramName] ? 'true' : 'false', {expires:cookieLifeTime})
+    }
+    
+    function onRealTimeFlightTestSpeedChange(edit) {    
+      var paramName = realTimeTest['params']['speedType'].value == AirspeedType.MACH ? 'mach' : 'speed'    
+      onRealTimeFlightTestParamChange(paramName, edit)      
+    }
+    
+    function onRealTimeFlightTestSpeedTypeChange(edit) {    
+      onRealTimeFlightTestParamChange('speedType', edit)      
+      document.getElementById('EditRealTimeFlightTestSpeed').value = realTimeTest['params']['speedType'].value == AirspeedType.MACH ?
+        saveValue(realTimeTest['params']['mach']) : saveValue(realTimeTest['params']['speed'])
+    }        
+    
+    function onRealTimeFlightTestEngineAutoMode(combo) {
+      onRealTimeFlightTestBoolParamChange('engineAutoMode', 'Auto', combo)
+      fillRealTimeTestThrottleParameters()
+      fillRealTimeTestPitchParameters()
+      enableRealTimeTestParameters()
+    }
+    
+    function onRealTimeFlightTestThrottleModeChange(combo) {
+      onRealTimeFlightTestParamChange('throttleMode', combo)
+      const throttleMode = realTimeTest['params']['throttleMode']['value']
+      document.getElementById('EditRealTimeFlightTestThrottle').disabled = throttleMode < ThrottleMode.MANUAL
+      fillRealTimeTestThrottleParameters()
+    }
+    
+    function onRealTimeFlightThrottleChange(edit) {
+      if (realTimeTest['params']['throttleMode']['value'] == ThrottleMode.MANUAL)
+        onRealTimeFlightTestParamChange('throttle', edit)
+      else if (realTimeTest['params']['throttleMode']['value'] == ThrottleMode.MANIFOLD_PRESSURE)
+        onRealTimeFlightTestRelativeParamChange('manifoldPressure', edit)
+    }
+    
+    function onRealTimeFlightTestPitchModeChange(combo) {
+      onRealTimeFlightTestParamChange('pitchMode', combo)
+      const pitchMode = realTimeTest['params']['pitchMode']['value']
+      document.getElementById('EditRealTimeFlightTestPitch').disabled = pitchMode == PitchMode.AUTO
+      fillRealTimeTestPitchParameters()
+    }
+    
+    function onRealTimeFlightPitchChange(edit) {
+      if (realTimeTest['params']['pitchMode']['value'] == PitchMode.RPM)
+        onRealTimeFlightTestRelativeParamChange('omega', edit)
+      else if (realTimeTest['params']['pitchMode']['value'] == PitchMode.PITCH)
+        onRealTimeFlightTestRelativeParamChange('pitch', edit)
+      else if (realTimeTest['params']['pitchMode']['value'] == PitchMode.PITCH_CONTROL)
+        onRealTimeFlightTestParamChange('pitchControl', edit)
+    }
+    
+    function onWindTubeTestParamChange(edit, paramName) {
+      var value = onParamChange(windTubeTest.params[paramName], edit)
+      Cookies.set('windTubeTest_' + paramName, value.toString(), {expires:cookieLifeTime})
+      setWindTubeTestParams()
+    }
+    
+    function onWindTubeTestBoolParamChange(checkBox, paramName) {
+      windTubeTest.params[paramName] = checkBox.checked
+      Cookies.set('windTubeTest_' + paramName, windTubeTest.params[paramName] ? 'true' : 'false', {expires:cookieLifeTime})
+      setWindTubeTestParams()
+    }
+    
+    function onWindTubeTestAxisLockChange(edit, axisName) {
+      onWindTubeTestBoolParamChange(edit, axisName)
+      enableWindTubeTestParameters()
+    }
+        
+    function onTestParamChange(testName, paramName, edit) {
+      var test = testData[testName]
+      var value = onParamChange(test.params[paramName], edit)
+      updateTestParamsState(test)
+      Cookies.set(testName + '_' + paramName, value.toString(), {expires:cookieLifeTime})
+    }
+    
+    function onTestParamElementChange(testName, dirName, index, paramName, edit) {
+      var test = testData[testName]
+      var value = onParamChange(test.params[dirName].value[index][paramName], edit)
+      updateTestParamsState(test)
+      Cookies.set(testName + '_' + dirName + '_' + index.toString() + '_' + paramName, value.toString(), {expires:cookieLifeTime})
+    }
+    
+    function onTestParamAscendingElementChange(testName, dirName, index, paramName, edit) {
+      onTestParamElementChange(testName, dirName, index, paramName, edit)      
+      var array = testData[testName]['params'][dirName].value
+      if (index > 0)
+        array[index - 1][paramName].max = array[index][paramName].value
+      if (index < array.length - 1)
+        array[index + 1][paramName].min = array[index][paramName].value
+    }
+    
+    function onMaxSpeedTestSpeedTypeChange(edit)
+    {
+      onTestParamChange('maxSpeed', 'speedType', edit)
+      var maxSpeed = testData['maxSpeed']
+      if (maxSpeed.params.speedType.value == AirspeedType.MACH)
+      {
+        document.getElementById('LabelTASMaxSpeedTest1').innerHTML = 'Mach, Max'
+        document.getElementById('LabelTASMaxSpeedTest2').innerHTML = 'Mach, WEP'        
+        var paramMach = maxSpeed.result.format[1]
+        paramMach.name = 'M'
+        paramMach.type = undefined
+        paramMach.precision = 2
+        maxSpeed.result.accuracy.orange = 0.008
+        maxSpeed.result.accuracy.red = 0.02
+      }
+      else
+      {
+        document.getElementById('LabelTASMaxSpeedTest1').innerHTML = 'TAS, Max, ' + unitSystems[settings.unitSystem]['velocity']['name']
+        document.getElementById('LabelTASMaxSpeedTest2').innerHTML = 'TAS, WEP, ' + unitSystems[settings.unitSystem]['velocity']['name']        
+        var paramAirspeed = maxSpeed.result.format[1]
+        paramAirspeed.name = 'V'
+        paramAirspeed.type = 'velocity'
+        paramAirspeed.precision = 0
+        maxSpeed.result.accuracy.orange = 10.0 / 3.6
+        maxSpeed.result.accuracy.red = 25.0 / 3.6
+      }      
+    }
+    
+    function onMinClimbTimeTestSpeedTypeChange(index, edit)
+    {
+      onTestParamElementChange('minClimbTime', 'speed', index, 'speedType', edit)
+      var minClimbTime = testData['minClimbTime']
+      if (minClimbTime.params.speed.value[index].speedType.value == AirspeedType.MACH)
+      {
+        document.getElementById('EditSpeedMaxMinClimbTime' + index.toString()).value = saveValue(minClimbTime.params.speed.value[index].machMax)
+        document.getElementById('EditSpeedWEPMinClimbTime' + index.toString()).value = saveValue(minClimbTime.params.speed.value[index].machWEP)             
+      }
+      else
+      {
+        document.getElementById('EditSpeedMaxMinClimbTime' + index.toString()).value = saveValue(minClimbTime.params.speed.value[index].speedMax)
+        document.getElementById('EditSpeedWEPMinClimbTime' + index.toString()).value = saveValue(minClimbTime.params.speed.value[index].speedWEP)   
+      }
+    }
+    
+    function onMinClimbTimeSpeedMaxChange(index, edit)
+    {
+      var minClimbTime = testData['minClimbTime']
+      var paramName = minClimbTime.params.speed.value[index].speedType.value == AirspeedType.MACH ? 'machMax' : 'speedMax'
+      onTestParamElementChange('minClimbTime', 'speed', index, paramName, edit)
+    }
+    
+    function onMinClimbTimeSpeedWEPChange(index, edit)
+    {
+      var minClimbTime = testData['minClimbTime']
+      var paramName = minClimbTime.params.speed.value[index].speedType.value == AirspeedType.MACH ? 'machWEP' : 'speedWEP'
+      onTestParamElementChange('minClimbTime', 'speed', index, paramName, edit)
+    }    
+        
+    //Test Result Chart Window
+    
+    function showTestResultChartWindow(testName)
+    {
+      document.getElementById('TestResultChartCaption').innerHTML = aircraftProperties.type + ': ' + testData[testName].name
+      $("#TestResultChartWindow").show()
+      setTestResultChart(testName)
+    }
+    
+    function hideTestResultChartWindow()
+    {
+      $("#TestResultChartWindow").hide()
+      resetTestResultChart()
+    }
+    
+    function saveFlightTestResultChartImage(ext)
+    {
+      html2canvas($('#TestResultChart'), {
+        onrendered: function (canvas) {
+          canvas.toBlob(function(blob) {
+            var fileName = aircraftProperties['type'] + ' - ' + testData[testResultChart.getArg()].name
+            saveAs(blob, fileName + '.' + ext);
+          }, "image/" + ext);
+        }
+      })
+    }
+    
+    function openFlightTestResultChartImage(ext)
+    {
+      html2canvas($('#TestResultChart'), {
+        onrendered: function (canvas) {
+          var dataURL = canvas.toDataURL("image/png");
+          var imageName = aircraftProperties['type'] + ' - ' + testData[testResultChart.getArg()].name
+          window.open(dataURL, imageName);
+        }
+      })
+    }
+    
+    //Commands to Web-server
+      
+    function setCommand(data, successFunc, errorFunc)
+    {
+      $.ajax({
+        url: '/editor/fm_test',
+        data: data,
+        success: successFunc,
+        error: errorFunc
+      })
+    }
+    
+    function fillConstantParameters() {
+      var comboBoxRealTimeFlightTest = document.getElementById('ComboBoxRealTimeFlightTest')
+      comboBoxRealTimeFlightTest.options = []        
+      for (var testId in realTimeTestsData)
+        comboBoxRealTimeFlightTest.options[comboBoxRealTimeFlightTest.options.length] = new Option(realTimeTestsData[testId]['name'], testId)   
+    }
+        
+    function updateFmProperties() {
+      setCommand( {
+                    cmd: 'getFmProperties',
+                    'fileName' : state.fm.fileName,
+                    'fileTime' : state.fm.fileTime
+                  },
+                  function(data) {
+                    onConnectionStateChange(true)
+                    fillFmProperties(data)
+                    setTimeout(updateFmProperties, 2500)
+                  },
+                  function(data) {
+                    onConnectionStateChange(false)
+                    setTimeout(updateFmProperties, 2500)
+                  }
+                )
+    }
+        
+    function updateFmPropertiesNow() {
+      setCommand({cmd: 'getFmProperties'}, fillFmProperties)
+    }
+    
+    function updateFmState() {
+      setCommand( {
+                    cmd: 'getFmState'
+                  },
+                  function(data) {
+                    fillFmState(data)
+                    onConnectionStateChange(true)
+                    setTimeout(updateFmState, 250)
+                  },
+                  function(a, b) {
+                    onConnectionStateChange(false)
+                    setTimeout(updateFmState, 250)
+                  }
+                )
+    }
+    
+    //Commands
+    
+    function buildSpecs() {
+      setCommand({cmd: 'buildSpecs'})
+    }
+    
+    function mergeFM() {
+      setCommand({cmd: 'mergeFM'})
+    }
+    
+    function unloadFM() {
+      setCommand({cmd: 'unloadFM'})
+    }
+    
+    function buildPassport() {
+      var mass = convertToUnit(flightParams['mass']['value'], 'mass', settings.unitSystem)
+      var testResult = {}
+      for (var testName in testData)
+      {
+        var values = testData[testName]['result']['values']        
+        testResult[testName] = []
+        for (var i = 0; i < values.length; ++i)
+          testResult[testName][i] = [
+            (!isNaN(values[i][0]) && values[i][0] != null) ? convertToUnit(values[i][0], testData[testName].result.format[0].type, settings.unitSystem) : null,
+            (!isNaN(values[i][1]) && values[i][1] != null) ? convertToUnit(values[i][1], testData[testName].result.format[1].type, settings.unitSystem) : null,
+            (!isNaN(values[i][2]) && values[i][2] != null) ? convertToUnit(values[i][2], testData[testName].result.format[1].type, settings.unitSystem) : null
+          ]   
+      }
+      var minClimbTime = testData['minClimbTime']
+      var climbSpeedArray = minClimbTime.params.speed.value
+      var maxSpeedSpeedType = testData['maxSpeed'].params.speedType.value
+      var turnTimeFlaps = testData['minTurnTime'].params.flaps.value
+      var tbl = {
+        cmd: 'buildPassport',
+        unitSystem: unitSystemVariants[settings.unitSystem].name,
+        mass: mass,
+        maxSpeedSpeedType: maxSpeedSpeedType,
+        climbSpeedCount: climbSpeedArray.length,
+        turnTimeFlaps: turnTimeFlaps,
+        testResult: JSON.stringify(testResult)
+      }
+        for (var i = 0; i < climbSpeedArray.length; ++i)
+        {
+        tbl['alt' + i.toString()] = convertToUnit(climbSpeedArray[i].alt.value, climbSpeedArray[i].alt.type, settings.unitSystem)
+        tbl['speedType' + i.toString()] = convertToUnit(climbSpeedArray[i].speedType.value, climbSpeedArray[i].speedType.type, settings.unitSystem)
+        if (climbSpeedArray[i].speedType.value == AirspeedType.MACH)
+        {
+          tbl['speedMax' + i.toString()] = convertToUnit(climbSpeedArray[i].machMax.value, climbSpeedArray[i].machMax.type, settings.unitSystem)
+          tbl['speedWEP' + i.toString()] = convertToUnit(climbSpeedArray[i].machWEP.value, climbSpeedArray[i].machWEP.type, settings.unitSystem)        
+        }
+      else
+      {
+          tbl['speedMax' + i.toString()] = convertToUnit(climbSpeedArray[i].speedMax.value, climbSpeedArray[i].speedMax.type, settings.unitSystem)
+          tbl['speedWEP' + i.toString()] = convertToUnit(climbSpeedArray[i].speedWEP.value, climbSpeedArray[i].speedWEP.type, settings.unitSystem)        
+        }
+      }      
+      setCommand(tbl)
+    }
+            
+    function setAltitude() {    
+      var alt = flightParams['alt']['value']
+      setCommand( {cmd: 'setAlt', value: alt.toString() } )
+    }
+      
+    function setSpeed() {
+      var speed = flightParams['vel']['value']
+      setCommand( {cmd: 'setVelocity', value: speed.toString() } )
+    }
+        
+    function setFuelMassRatio() {
+      var fuelMassRatio = flightParams['fuelMassRatio']['value']
+      setCommand( {cmd: 'setFuelMassRatio', value: fuelMassRatio.toString() }, fillMasses )
+    }
+    
+    function setMass() {
+      var mass = flightParams['mass']['value']
+      setCommand( {cmd: 'setMass', value: mass.toString() }, fillMasses )
+    }
+                
+    function setCoolantOrHeadTemperature() {
+      var coolantOrHeadTemperature = flightParams['coolantOrHeadTemperature']['value']
+      setCommand( {cmd: 'setCoolantOrHeadTemperature', value: coolantOrHeadTemperature.toString() } )
+    }
+    
+    function setOilTemperature() {
+      var oilTemperature = flightParams['oilTemperature']['value']
+      setCommand( {cmd: 'setOilTemperature', value: oilTemperature.toString() } )
+    }
+
+    function setTemperature() {
+      var temperature = flightParams['temperature']['value']
+      setCommand( {cmd: 'setTemperature', value: temperature.toString() } )
+    }
+    
+    function setPressure() {
+      var pressure = flightParams['pressure']['value']
+      setCommand( {cmd: 'setPressure', value: pressure.toString() } )
+    }
+    
+    function setTimeSpeed() {
+      var timeSpeed = flightParams['timeSpeed']['value']
+      setCommand( {cmd: 'setTimeSpeed', value: timeSpeed.toString() } )
+    }
+    
+    function stabilize() {
+      setCommand( {cmd: 'stabilize'} )
+    }
+
+    function takeoff() {
+      setCommand( {cmd: 'takeoff'} )
+    }
+    
+    function land() {
+      setCommand( {cmd: 'land'} )
+    }
+    
+    function setupOnGround() {
+      setCommand( {cmd: 'setupOnGround'} )
+    }
+
+    function setSATM() {
+      setCommand( {cmd: 'setSATM'} )
+    }
+    
+    function resetTimeSpeed(){
+      setCommand( {cmd: 'setTimeSpeed', value: 1.0 } )
+    }
+    
+    function repair() {
+      setCommand( {cmd: 'repair'} )
+    }
+    
+    function rearm() {
+      setCommand( {cmd: 'rearm'} )
+    }
+    
+    function setZeroFuel() {
+      flightParams['fuelMassRatio']['value'] = 0.0
+      setFuelMassRatio()
+    }
+    
+    function setFullFuel() {
+      flightParams['fuelMassRatio']['value'] = 1.0
+      setFuelMassRatio()
+    }
+    
+    function setSustanedTemperature() {
+      setCommand( {cmd: 'setSustanedTemperature'} )
+    }
+    
+    function overheatNow() {
+      setCommand( {cmd: 'overheatNow'} )
+    }
+    
+    function setIndicationVisible(flagNum, checkBox) {
+      state.indicationFlags[flagNum] = checkBox.checked
+      Cookies.set('indicationFlags_' + flagNum.toString(), checkBox.checked ? 'true' : 'false', {expires:cookieLifeTime})
+      setCommand( {cmd: "setIndicationVisible", flagNum: flagNum, value: checkBox.checked ? 'true' : 'false'} )
+    }
+    
+    function setDamagePartOfInterestId(comboBox) {
+      state.damagePartOfInterestId = parseInt(comboBox.value)
+      Cookies.set('damagePartOfInterestId', state.damagePartOfInterestId.toString(), {expires:cookieLifeTime})
+      setCommand( {cmd: "setDamagePartOfInterestId", id: comboBox.value} )
+    }
+
+    function cutDamagePartOfInterest() {
+      setCommand( {cmd: "cutDamagePartOfInterest", id: state.damagePartOfInterestId} )
+    }
+    
+    function hitDamagePartOfInterest() {
+      setCommand( {cmd: "hitDamagePartOfInterest", id: state.damagePartOfInterestId, value: state.hitDamage} )
+    }
+    
+    function setHitDamagePartOfInterestValue(edit) {
+      state.hitDamage = edit.value
+    }
+    
+    function setSkeletonNodeOfInterestName(comboBox) {
+      state.skeletonNodeOfInterestName = comboBox.value
+      Cookies.set('skeletonNodeOfInterestName', state.skeletonNodeOfInterestName, {expires:cookieLifeTime})
+      setCommand( {cmd: "setSkeletonNodeOfInterestName", name : comboBox.value} )
+    }
+    
+    //Real-Time Flight Tests
+    
+    function launchRealTimeTest(fast) {
+      const realTimeFlightTestParams = realTimeTest['params']
+      const test = realTimeFlightTestParams['test']
+      const engineMode = realTimeTestsData[test].params.engineMode
+      const data = {
+        cmd:              'launchRealTimeTest',
+        repair:           settings.repair,
+        test:             test,
+        fast:             fast,
+        fuelRatio:        flightParams['fuelMassRatio']['value'],
+        alt:              realTimeFlightTestParams['alt']['value'],
+        startAlt:         realTimeTestsData[test].params.startAlt && realTimeFlightTestParams['startAlt']['value'],
+        speed:            realTimeFlightTestParams['speedType']['value'] == AirspeedType.MACH ?
+          realTimeFlightTestParams['mach']['value'] : realTimeFlightTestParams['speed']['value'],
+        speedType:        realTimeFlightTestParams['speedType']['value'],
+        right:            realTimeTestsData[test].params.direction && realTimeFlightTestParams['right'],
+        flaps:            realTimeTestsData[test].params.flaps && realTimeFlightTestParams['flaps']['value'],
+        gear:             realTimeTestsData[test].params.gear && realTimeFlightTestParams['gear'],
+        cockpitDoor:      realTimeTestsData[test].params.cockpitDoor && realTimeFlightTestParams['cockpitDoor'],
+        engineAutoMode:   engineMode && realTimeFlightTestParams['engineAutoMode'],
+        compressorStage:  engineMode && realTimeFlightTestParams['compressorStage']['value'],
+        throttleMode:     engineMode && realTimeFlightTestParams['throttleMode']['value'],
+        throttle:         engineMode && realTimeFlightTestParams['throttle']['value'],
+        manifoldPressure: engineMode && realTimeFlightTestParams['manifoldPressure']['value'],
+        pitchMode:        engineMode && realTimeFlightTestParams['pitchMode']['value'],
+        omega:            engineMode && realTimeFlightTestParams['omega']['value'],
+        pitch:            engineMode && realTimeFlightTestParams['pitch']['value'],
+        pitchControl:     engineMode && realTimeFlightTestParams['pitchControl']['value'],
+        compressorStage:  engineMode && realTimeFlightTestParams['compressorStage']['value'],
+        cooler:           engineMode && realTimeFlightTestParams['cooler']['value']
+      }
+      setCommand(data, fillRealTimeTestState)
+    }
+    
+    function stopRealTimeTest() {
+      const data = {
+        cmd: 'stopRealTimeTest'
+      }
+      setCommand(data, fillRealTimeTestState)
+    }
+    
+    function launchTest(data, testName, caption) {
+      cleanTable(document.getElementById(testData[testName].result.tableId), 1)
+      data['cmd'] = 'launchTest'
+      data['flightTest'] = settings.flightTest
+      data.repair = settings.repair
+      setCommand( data,
+                  function(data) {
+                    readAndFillResultTable(testName, caption, data)
+                  } )
+    }
+    
+    function updateRealTimeTestState() {
+      const data = {
+        cmd: 'getRealTimeTestState'
+      }
+      setCommand( data,
+                  function(data) {
+                    onConnectionStateChange(true)
+                    fillRealTimeTestState(data)
+                    setTimeout(updateRealTimeTestState, 1000)
+                    
+                  },
+                  function(data) {
+                    onConnectionStateChange(false)
+                    setTimeout(updateRealTimeTestState, 1000)                    
+                  } )
+    }
+    
+    //Wind Tube Test
+    
+    function setWindTubeTestParams() {
+      const data = {
+        cmd: 'setWindTubeTestParams',
+        enabled: windTubeTest.params.enabled,
+        airspeed: windTubeTest.params.airspeed.value,
+        yawLocked: windTubeTest.params.yawLocked,
+        pitchLocked: windTubeTest.params.pitchLocked,
+        rollLocked: windTubeTest.params.rollLocked,
+        elevatorLocked: windTubeTest.params.elevatorLocked,
+        rudderLocked: windTubeTest.params.rudderLocked,
+        aoa: windTubeTest.params.aoa.value,
+        pitchFakeRate: windTubeTest.params.pitchFakeRate.value,
+        aos: windTubeTest.params.aos.value,
+        yawFakeRate: windTubeTest.params.yawFakeRate.value,
+        roll: windTubeTest.params.roll.value,
+        rollFakeRate: windTubeTest.params.rollFakeRate.value,
+        elevatorFakeRate: windTubeTest.params.elevatorFakeRate.value,
+        rudderFakeRate: windTubeTest.params.rudderFakeRate.value
+      }
+      setCommand(data)
+    }
+    
+    //Flight State
+    
+    function addFlightParamsSnapshoot() {
+      var flightStateTable = document.getElementById('FlightState')
+      var snapshoot = []
+      snapshoot.length = aircraftState.current.length
+      var row = flightStateTable.insertRow(-1)      
+      var buttonCell = row.insertCell(0)
+      
+      var removeButton = document.createElement('input')
+      removeButton.setAttribute('type', 'button')
+      removeButton.setAttribute('value','-')
+      buttonCell.appendChild(removeButton)
+      const snapshootRowIndex = aircraftState.snapshoots.length
+      removeButton.onclick = function() { removeFlightParamsSnapshoot(snapshootRowIndex) }
+      aircraftState.snapshootRowMapping.push(snapshootRowIndex)
+      ++aircraftState.snapshootCurrIndex;
+      var numberCell = row.insertCell(1)
+      numberCell.innerHTML = 'Snap.' + (snapshootRowIndex + 1).toString()
+      const valueCount = Math.min(snapshoot.length, aircraftState.format.length)
+      for (var i = 0; i < valueCount; ++i)
+      {
+        snapshoot[i] = aircraftState.current[i]
+        var value = snapshoot[i]
+        var paramCell = row.insertCell(i + 2)
+        if (value != null)
+        {
+          var format = aircraftState.format[i]
+          var convertedValue = convertToUnit(value, format.type, settings.unitSystem)
+          paramCell.innerHTML = convertedValue.toFixed(format.precision || 0)
+        }
+        else
+          paramCell.innerHTML = 'N/A'
+      }
+      aircraftState.snapshoots.push(snapshoot)
+    }
+    
+    function removeFlightParamsSnapshoot(index) {      
+      const rowIndex = aircraftState.snapshootRowMapping.indexOf(index)
+      if (rowIndex == -1)
+      {
+        alert('Index of ' + index.toString() + ' not found')
+        return
+      }
+      aircraftState.snapshootRowMapping.splice(rowIndex, 1)
+      
+      var flightStateTable = document.getElementById('FlightState')
+      flightStateTable.deleteRow(3 + rowIndex)
+      aircraftState.snapshoots.splice(rowIndex, 1)
+      var rows = flightStateTable.getElementsByTagName('tr')
+      
+      for (var i = rowIndex; i < rows.length - 3; ++i)
+      {
+        var row = rows[3 + i]
+        var cells = row.getElementsByTagName('td')
+        var buttonCell = cells[0]
+        var numCell = cells[1]
+        var indexToRemove = i
+        numCell.innerHTML = 'Snap.' + (indexToRemove + 1).toString()
+      }
+    }
+    
+    //Fast flight tests
+    
+    function addSpeedRowForMinClimbTimeTest(index) {
+      var minClimbTime = testData['minClimbTime']
+      var speedArray = minClimbTime.params.speed.value
+    
+      var tableSpeedMinClimbTimeTest = document.getElementById('speedMinClimbTimeTest')
+      var row = tableSpeedMinClimbTimeTest.insertRow(-1)
+      
+      var buttonCell = row.insertCell(0)      
+      var removeButton = document.createElement('input')
+      removeButton.setAttribute('type', 'button')
+      removeButton.setAttribute('value', '-')
+      removeButton.setAttribute('id', 'ButtonRemoveMinClimbTime' + index.toString())
+      removeButton.setAttribute('id', 'ButtonRemoveMinClimbTime' + index.toString())
+      removeButton.setAttribute('speedIndex', index)
+      removeButton.onclick = function() {
+        var elementIndex = parseInt(this.getAttribute('speedIndex'))
+        removeSpeedForMinClimbTimeTest(elementIndex)
+      }
+      buttonCell.appendChild(removeButton)
+      
+      var speed = speedArray[index]
+      
+      var cellAlt = row.insertCell(1)
+      var editAlt = document.createElement('input')
+      editAlt.setAttribute('type', 'number')
+      editAlt.setAttribute('id', 'EditAltMinClimbTime' + index.toString())
+      editAlt.setAttribute('class', 'number-box')
+      editAlt.setAttribute('speedIndex', index)
+      editAlt.onchange = function() {
+        var elementIndex = parseInt(this.getAttribute('speedIndex'))
+        onTestParamAscendingElementChange('minClimbTime', 'speed', elementIndex, 'alt', this)
+      }
+      editAlt.value = saveValue(speed.alt)
+      cellAlt.appendChild(editAlt)
+
+      var cellSpeedType = row.insertCell(2)
+      var comboBoxSpeedType = document.createElement('select')
+      comboBoxSpeedType.setAttribute('style', 'width:100%')
+      comboBoxSpeedType.setAttribute('id', 'ComboBoxSpeedTypeMinClimbTime' + index.toString())   
+      comboBoxSpeedType.setAttribute('speedIndex', index)
+      var speedTypeValues = [ 'IAS', 'TAS', 'Mach' ]
+      for (var speedType = 0; speedType < speedTypeValues.length; ++speedType)
+      {
+        var option = document.createElement('option')
+        option.value = speedType;
+        option.text = speedTypeValues[speedType];
+        comboBoxSpeedType.appendChild(option);
+      }
+      comboBoxSpeedType.onchange = function() {
+        var elementIndex = parseInt(this.getAttribute('speedIndex'))
+        onMinClimbTimeTestSpeedTypeChange(elementIndex, this)
+      }
+      comboBoxSpeedType.value = saveValue(speed.speedType)
+      cellSpeedType.appendChild(comboBoxSpeedType)
+
+      var cellSpeedMax = row.insertCell(3)
+      var editSpeedMax = document.createElement('input')
+      editSpeedMax.setAttribute('type', 'number')
+      editSpeedMax.setAttribute('id', 'EditSpeedMaxMinClimbTime' + index.toString())
+      editSpeedMax.setAttribute('class', 'number-box')
+      editSpeedMax.setAttribute('step', '0.01')
+      editSpeedMax.setAttribute('speedIndex', index)
+      editSpeedMax.onchange = function() {
+        var elementIndex = parseInt(this.getAttribute('speedIndex'))
+        onMinClimbTimeSpeedMaxChange(elementIndex, this)
+      }
+      editSpeedMax.value = saveValue(speed.speedType.value == AirspeedType.MACH ? speed.machMax : speed.speedMax)
+      cellSpeedMax.appendChild(editSpeedMax)
+      
+      var cellSpeedWEP = row.insertCell(4)
+      var editSpeedWEP = document.createElement('input')
+      editSpeedWEP.setAttribute('type', 'number')
+      editSpeedWEP.setAttribute('id', 'EditSpeedWEPMinClimbTime' + index.toString())
+      editSpeedWEP.setAttribute('class', 'number-box')
+      editSpeedWEP.setAttribute('step', '0.01')
+      editSpeedWEP.setAttribute('speedIndex', index)
+      editSpeedWEP.onchange = function() {
+        var elementIndex = parseInt(this.getAttribute('speedIndex'))
+        onMinClimbTimeSpeedWEPChange(elementIndex, this)
+      }
+      editSpeedWEP.value = saveValue(speed.speedType.value == AirspeedType.MACH ? speed.machWEP : speed.speedWEP)
+      cellSpeedWEP.appendChild(editSpeedWEP)
+      
+      onTestParamElementChange('minClimbTime', 'speed', index, 'alt', editAlt)
+      onTestParamElementChange('minClimbTime', 'speed', index, 'speedType', comboBoxSpeedType)
+      onTestParamElementChange('minClimbTime', 'speed', index, speed.speedType.value == AirspeedType.MACH ? 'machMax' : 'speedMax', editSpeedMax)
+      onTestParamElementChange('minClimbTime', 'speed', index, speed.speedType.value == AirspeedType.MACH ? 'machWEP' : 'speedWEP', editSpeedWEP)
+    }
+    
+    function addSpeedForMinClimbTimeTest() {
+      var minClimbTime = testData['minClimbTime']
+      var speedArray = minClimbTime.params.speed.value
+      var prevSpeed = speedArray[minClimbTime.params.speed.value.length - 1]
+      var speed = {
+        alt: {
+          value: prevSpeed.alt.value,
+          type: 'altitude',
+          min: prevSpeed.alt.value
+        },
+        speedType: {
+          value: prevSpeed.speedType.value,
+          min: AirspeedType.IAS,
+          max: AirspeedType.MACH
+        },
+        speedMax: {
+          value: prevSpeed.speedMax.value,
+          type: 'velocity',
+          min: 50.0 / 3.6
+        },
+        speedWEP: {
+          value: prevSpeed.speedWEP.value,
+          type: 'velocity',
+          min: 50.0 / 3.6
+        },
+        machMax: {
+          value: prevSpeed.machMax.value,
+          min: 0.0,
+          precision: 2
+        },
+        machWEP: {
+          value: prevSpeed.machWEP.value,
+          min: 0.0,
+          precision: 2
+        }        
+      }
+      speedArray.push(speed)
+      addSpeedRowForMinClimbTimeTest(minClimbTime.params.speed.value.length - 1)
+      updateTestParamsState(minClimbTime)
+      Cookies.set('minClimbTime_speedCount', speedArray.length, {expires:cookieLifeTime})
+    }
+    
+    function removeSpeedForMinClimbTimeTest(index) {   
+      var minClimbTime = testData['minClimbTime']
+      var tableSpeedMinClimbTimeTest = document.getElementById('speedMinClimbTimeTest')
+      tableSpeedMinClimbTimeTest.deleteRow(index + 1)
+      minClimbTime.params.speed.value.splice(index, 1)
+      if (index < minClimbTime.params.speed.value.length)
+      {
+        var speed = minClimbTime.params.speed.value[index]
+        speed.alt.min = minClimbTime.params.speed.value[index].alt.value
+        speed.alt.max = index + 1 < minClimbTime.params.speed.value.length ? minClimbTime.params.speed.value[index + 1].alt.value : undefined
+      }
+      Cookies.set('minClimbTime_speedCount', minClimbTime.params.speed.value.length, {expires:cookieLifeTime})
+      for (var i = index; i < minClimbTime.params.speed.value.length; ++i)
+      {
+        document.getElementById('ButtonRemoveMinClimbTime' + (i + 1).toString()).setAttribute('speedIndex', i.toString())
+        document.getElementById('ButtonRemoveMinClimbTime' + (i + 1).toString()).setAttribute('id', 'ButtonRemoveMinClimbTime' + i.toString())
+        
+        document.getElementById('EditAltMinClimbTime' + (i + 1).toString()).setAttribute('speedIndex', i.toString())
+        document.getElementById('EditAltMinClimbTime' + (i + 1).toString()).setAttribute('id', 'EditAltMinClimbTime' + i.toString())
+        
+        document.getElementById('EditSpeedMaxMinClimbTime' + (i + 1).toString()).setAttribute('speedIndex', i.toString())
+        document.getElementById('EditSpeedMaxMinClimbTime' + (i + 1).toString()).setAttribute('id', 'EditSpeedMaxMinClimbTime' + i.toString())
+        
+        document.getElementById('EditSpeedWEPMinClimbTime' + (i + 1).toString()).setAttribute('speedIndex', i.toString())
+        document.getElementById('EditSpeedWEPMinClimbTime' + (i + 1).toString()).setAttribute('id', 'EditSpeedWEPMinClimbTime' + i.toString())
+      
+        var speed = minClimbTime.params.speed.value[i]     
+        Cookies.set('minClimbTime_speed_' + i.toString() + '_alt',      speed.alt.value.toString(),    {expires:cookieLifeTime})
+        Cookies.set('minClimbTime_speed_' + i.toString() + '_speedType', speed.speedType.value.toString(), {expires:cookieLifeTime})
+        Cookies.set('minClimbTime_speed_' + i.toString() + '_speedMax', speed.speedMax.value.toString(), {expires:cookieLifeTime})
+        Cookies.set('minClimbTime_speed_' + i.toString() + '_speedWEP', speed.speedWEP.value.toString(), {expires:cookieLifeTime})
+        Cookies.set('minClimbTime_speed_' + i.toString() + '_machMax', speed.machMax.value.toString(), {expires:cookieLifeTime})
+        Cookies.set('minClimbTime_speed_' + i.toString() + '_machWEP', speed.machWEP.value.toString(), {expires:cookieLifeTime})        
+      }
+      updateTestParamsState(minClimbTime)
+    }
+    
+    function launchStallTests() {
+      saveTestParams(testData['stall'])
+      var params = testData['stall']['params']
+      var minAlt = params['minAlt']['value']
+      var maxAlt = params['maxAlt']['value']
+      var stepAlt = params['stepAlt']['value']
+      var data = {test: 'stall', minAlt: minAlt.toString(), maxAlt: maxAlt.toString(), stepAlt: stepAlt.toString()}
+      launchTest(data, 'stall', document.getElementById('stallTestRefFlag'))
+    }
+
+    function launchMaxSpeedTests() {
+      saveTestParams(testData['maxSpeed'])
+      var params = testData['maxSpeed']['params']
+      var minAlt = params['minAlt']['value']
+      var maxAlt = params['maxAlt']['value']
+      var stepAlt = params['stepAlt']['value']
+      var speedType = params['speedType']['value']
+      var data = {test: 'maxSpeed', minAlt: minAlt.toString(), maxAlt: maxAlt.toString(), stepAlt: stepAlt.toString(), speedType: speedType.toString()}
+      launchTest(data, 'maxSpeed', document.getElementById('maxSpeedTestRefFlag'))
+    }
+    
+    function launchMinClimbTimeTests() {
+      saveTestParams(testData['minClimbTime'])
+      var params = testData['minClimbTime'].params
+      var minAlt = params.minAlt.value
+      var maxAlt = params.maxAlt.value
+      var stepAlt = params.stepAlt.value
+      var speed = params.speed.value
+      var data = {
+        test: 'minClimbTime',
+        minAlt: minAlt.toString(),
+        maxAlt: maxAlt.toString(),
+        stepAlt: stepAlt.toString(),
+        speedCount: speed.length
+      }
+        for (var i = 0; i < speed.length; ++i)
+        {
+          data['alt'      + i.toString()] = speed[i].alt.value
+        data['speedType' + i.toString()] = speed[i].speedType.value
+        if (speed[i].speedType.value == AirspeedType.MACH)
+        {
+          data['speedMax' + i.toString()] = speed[i].machMax.value
+          data['speedWEP' + i.toString()] = speed[i].machWEP.value
+        }
+      else
+      {
+          data['speedMax' + i.toString()] = speed[i].speedMax.value
+          data['speedWEP' + i.toString()] = speed[i].speedWEP.value
+        }
+      }
+      launchTest(data, 'minClimbTime', document.getElementById('minClimbTimeTestRefFlag'))
+    }
+    
+    function launchMinTurnTimeTests() {
+      saveTestParams(testData['minTurnTime'])
+      var params = testData['minTurnTime']['params']
+      var minAlt = params['minAlt']['value']
+      var maxAlt = params['maxAlt']['value']
+      var stepAlt = params['stepAlt']['value']
+      var flaps = params['flaps']['value']
+      var data = {test: 'minTurnTime', minAlt: minAlt.toString(), maxAlt: maxAlt.toString(), stepAlt: stepAlt.toString(), flaps: flaps.toString(), direction: 'right'}
+      launchTest(data, 'minTurnTime', document.getElementById('minTurnTimeTestRefFlag'))
+    }
+    
+    function launchMaxRollRateTests() {
+      saveTestParams(testData['maxRollRate'])
+      var params = testData['maxRollRate']['params']
+      var minIAS = params['minIAS']['value']
+      var maxIAS = params['maxIAS']['value']
+      var stepIAS = params['stepIAS']['value']
+      var data = {test: 'maxRollRate', minIAS: minIAS.toString(), maxIAS: maxIAS.toString(), stepIAS: stepIAS.toString()}
+      launchTest(data, 'maxRollRate', document.getElementById('maxRollRateTestRefFlag'))
+    }
+    
+    function launchAllTests() {
+      launchStallTests()
+      launchMaxSpeedTests()
+      launchMinClimbTimeTests()
+      launchMinTurnTimeTests()
+      launchMaxRollRateTests()
+    }
+    
+    //Initialization
+        
+    function loadParamFromCookie(param, name) {
+      const value = parseFloat(Cookies.get(name))
+      if (!isNaN(value))
+        param['value'] = value
+    }
+    
+    function loadRelativeParamFromCookie(param, name) {   
+      const value = parseFloat(Cookies.get(name))
+      if (!isNaN(value))
+        param['value'] = param['min'] + value * (param['max'] - param['min'])
+    }
+    
+    function loadCookies() {
+      //Settings
+      settings.unitSystem    = parseInt(Cookies.get('unitSystem')) || settings.unitSystem
+      settings.useReference  = Cookies.get('useReference') == 'true' || settings['useReference']
+      settings.flightTest    = Cookies.get('flightTest') != undefined ? Cookies.get('flightTest') == 'true' : settings['flightTest']
+      settings.repair = Cookies.get('repair') != undefined ? Cookies.get('repair') == 'true' : settings.repair
+      
+      //Flight parameters
+      for (var flightParamName in flightParams)
+      {
+        var flightParamStrValue = Cookies.get('flightParams_' + flightParamName)
+        if (flightParamStrValue != undefined)
+        {
+          var flightParamValue = parseFloat(flightParamStrValue)
+          flightParams[flightParamName]['value'] = flightParamValue
+        }
+      }
+      
+      //Indication parameters
+      for (var i = IndicationFlag.NULL; i < IndicationFlag.MAX; ++i)
+        state.indicationFlags[i] = Cookies.get('indicationFlags_' + i.toString()) == 'true'
+      state.damagePartOfInterestId = parseInt(Cookies.get('damagePartOfInterestId'))
+      state.skeletonNodeOfInterestName = Cookies.get('skeletonNodeOfInterestName')
+      
+      //Real-Time Flight Test parameters
+      realTimeTest['params']['test']                      = Cookies.get('realTimeFlightTest_test') || realTimeTest['params']['test']
+      loadParamFromCookie(realTimeTest['params']['alt'], 'realTimeFlightTest_alt')
+      loadParamFromCookie(realTimeTest['params']['startAlt'], 'realTimeFlightTest_startAlt')
+      realTimeTest['params']['right']                     = ((Cookies.get('realTimeFlightTest_right') || 'true') == 'true')
+      loadParamFromCookie(realTimeTest['params']['speed'],  'realTimeFlightTest_speed')
+      loadParamFromCookie(realTimeTest['params']['speedType'],  'realTimeFlightTest_speedType')
+      realTimeTest['params']['right']                     = (Cookies.get('realTimeFlightTest_right') == 'true')      
+      loadParamFromCookie(realTimeTest['params']['flaps'],  'realTimeFlightTest_flaps')
+      loadParamFromCookie(realTimeTest['params']['cooler'], 'realTimeFlightTest_cooler')
+      realTimeTest['params']['gear']                      = ((Cookies.get('realTimeFlightTest_gear') || 'true') == 'true')
+      realTimeTest['params']['cockpitDoor']               = ((Cookies.get('realTimeFlightTest_cockpitDoor') || 'true')  == 'true')
+      realTimeTest['params']['engineAutoMode']            = ((Cookies.get('realTimeFlightTest_engineAutoMode') || 'false') == 'true')
+      loadParamFromCookie(realTimeTest['params']['throttleMode'],    'realTimeFlightTest_throttleMode')
+      loadParamFromCookie(realTimeTest['params']['throttle'],        'realTimeFlightTest_throttle')
+      loadParamFromCookie(realTimeTest['params']['pitchMode'],       'realTimeFlightTest_pitchMode')
+      loadParamFromCookie(realTimeTest['params']['pitchControl'],    'realTimeFlightTest_pitchControl')
+      loadParamFromCookie(realTimeTest['params']['compressorStage'], 'realTimeFlightTest_compressorStage')
+      
+      //Wind-Tube Test parameters
+      windTubeTest.params['enabled']                 = ((Cookies.get('windTubeTest_enabled') || 'true')       == 'true')
+      windTubeTest.params['yawLocked']               = ((Cookies.get('windTubeTest_yawLocked') || 'true')     == 'true')
+      windTubeTest.params['pitchLocked']             = ((Cookies.get('windTubeTest_pitchLocked') || 'true')   == 'true')
+      windTubeTest.params['rollLocked']              = ((Cookies.get('windTubeTest_rollLocked') || 'true')    == 'true')
+      windTubeTest.params['elevatorLocked']          = ((Cookies.get('windTubeTest_elevatorLocked') || 'true')== 'true')
+      windTubeTest.params['rudderLocked']            = ((Cookies.get('windTubeTest_rudderLocked') || 'true')  == 'true')
+      loadParamFromCookie(windTubeTest.params['airspeed'], 'windTubeTest_airspeed')
+      loadParamFromCookie(windTubeTest.params['aoa'],      'windTubeTest_aoa')
+      loadParamFromCookie(windTubeTest.params['aos'],      'windTubeTest_aos')
+      loadParamFromCookie(windTubeTest.params['roll'],     'windTubeTest_roll')
+      loadParamFromCookie(windTubeTest.params['yawFakeRate'],  'windTubeTest_yawFakeRate')
+      loadParamFromCookie(windTubeTest.params['pitchFakeRate'],'windTubeTest_pitchFakeRate')
+      loadParamFromCookie(windTubeTest.params['rollFakeRate'], 'windTubeTest_rollFakeRate')
+      loadParamFromCookie(windTubeTest.params['elevatorFakeRate'], 'windTubeTest_elevatorFakeRate')
+      loadParamFromCookie(windTubeTest.params['rudderFakeRate'], 'windTubeTest_rudderFakeRate')
+     
+      //Tests parameters      
+      for (var testName in testData)
+      {
+        var testParams = testData[testName]['params']
+        for (var testParamName in testParams)
+        {
+          var testParamStrValue = Cookies.get(testName + '_' + testParamName)
+          if (testParamStrValue != undefined)
+          {
+            var testParamValue = parseFloat(testParamStrValue)
+            testParams[testParamName]['value'] = testParamValue
+          }
+        }
+      }
+      
+      var speedCount = parseInt(Cookies.get('minClimbTime_speedCount') || 1)
+      var speedArray = testData['minClimbTime'].params.speed.value
+      speedArray.length = 1
+      for (var i = 0; i < speedCount; ++i)
+      {
+        var speed = {
+          alt: {
+            value: 0.0,
+            type: 'altitude',
+            min: i > 0 ? speedArray[i - 1].alt.value : undefined
+          },
+          speedType: {
+            value: AirspeedType.IAS,
+            min: AirspeedType.IAS,
+            max: AirspeedType.MACH
+          },
+          speedMax: {
+            value: 250.0 / 3.6,
+            type: 'velocity',
+            min: 50.0 / 3.6
+          },
+          speedWEP: {
+            value: 250.0 / 3.6,
+            type: 'velocity',
+            min: 50.0 / 3.6
+          },
+          machMax: {
+            value: 0.25,
+            min: 0.0,
+            precision: 2
+          },
+          machWEP: {
+            value: 0.25,
+            min: 0.0,
+            precision: 2
+          }          
+        }
+        loadParamFromCookie(speed.alt,      'minClimbTime_speed_' + i.toString() + '_alt')
+        loadParamFromCookie(speed.speedType, 'minClimbTime_speed_' + i.toString() + '_speedType')
+        loadParamFromCookie(speed.speedMax, 'minClimbTime_speed_' + i.toString() + '_speedMax')
+        loadParamFromCookie(speed.speedWEP, 'minClimbTime_speed_' + i.toString() + '_speedWEP')
+        loadParamFromCookie(speed.machMax, 'minClimbTime_speed_' + i.toString() + '_machMax')
+        loadParamFromCookie(speed.machWEP, 'minClimbTime_speed_' + i.toString() + '_machWEP')
+        speedArray[i] = speed
+      }      
+    }
+    
+    function init()
+    {
+      $("#TestResultChartWindow").hide()
+      onConnectionStateChange(false)
+      fillConstantParameters()
+      updateFmProperties()
+      updateFmState()
+      loadCookies()
+      fillSettingsAndParameters()
+      updateRealTimeTestState()
+    }
+
+    window.onload = init;
+      
+  </script>
+  
+  <div id="TestResultChartWindow" class="popup-test-result">
+    <div class="popup-content-test-result">
+      <table width="100%">
+        <tr>
+          <td align="left" class="editLabel" id="TestResultChartCaption">Test Result</td>  
+          <td align="right">
+            <input type="button" value="Hide" style="float: right;" onClick="hideTestResultChartWindow()">
+          </td>  
+        </tr>
+      </table>
+      <div id="TestResultChart" class="chart-content-test-result">
+        <div class="chart-container-test-result">
+          <div id="placeholder_test_result" class="chart-placeholder-test-result"></div>
+        </div>
+      </div>
+      <input type="button" value="Save to PNG" onClick="saveFlightTestResultChartImage('png')">
+      <input type="button" value="Save to BMP" onClick="saveFlightTestResultChartImage('bmp')">
+      <input type="button" value="Save to JPEG" onClick="saveFlightTestResultChartImage('jpeg')">
+      <input type="button" value="Open as image" onClick="openFlightTestResultChartImage()">
+    </div>
+  </div>
+    
+  <h1>"War Thunder" Flight Model Test</h1>
+  <h2 id="HeaderConnectionState">Disconnected</h2>  
+  <h2 id="HeaderAircraftType">Unknown</h2>
+  <input type="button" value="Update" onClick="updateFmPropertiesNow()">
+  <h2>Settings</h2>
+  <table class="Settings">
+    <tr>
+      <td>Unit System</td>  
+      <td>      
+        <select id="ComboBoxUnitSystem" onchange="onUnitSystemChange(this)" style="width:100%">
+          <option selected value="0">Metric-Russian</option>
+          <option value="1">Metric-Japanise</option>
+          <option value="2">Metric-German</option>
+          <option value="3">Imperial-USA</option>
+          <option value="4">Imperial-USA-Naval</option>
+          <option value="5">Imperial-UK</option>
+          <option value="6">Imperial-UK-Naval</option>
+        </select>
+      </td>  
+    </tr>
+    <tr>
+      <td>Use Reference</td>  
+      <td>      
+        <select id="ComboBoxReferenceMode" onchange="onReferenceModeChange(this)" style="width:100%">
+          <option selected value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>      
+      </td>  
+    </tr>
+    <tr>
+      <td>Test Type</td>  
+      <td>      
+        <select id="ComboBoxTestType" onchange="onTestTypeChange(this)" style="width:100%">
+          <option selected value="Flight Test">Flight Test</option>
+          <option value="Analytics">Analytics</option>
+        </select>      
+      </td>  
+    </tr>
+    <tr>
+      <td>Repair before test</td>
+      <td><input type="checkbox" id="CheckBoxRepair", onclick="onRepairChange(this)" style="width:100%"></td>
+    </tr>
+  </table>  
+
+  <h2>Flight Control</h2>
+  <table>
+    <tr>
+      <td valign="top">
+        <div class="tableheader"><b>Parameters</b></div>
+        <table class="FlightParameters">
+          <tr>
+            <td valign="top" colspan="2">FM</td>
+            <td valign="top" colspan="2">World</td>
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonSetAltitude" value="Altitude" onClick="setAltitude()" style="width:100%"></td>
+            <td><input class="number-box" type="number" step="1" id="EditAltitude" value="2000" onchange="onFlightParamChange('alt', this)"></td>
+            <td><input type="button" id="ButtonSetTimeSpeed" value="Time Speed" onClick="setTimeSpeed()" style="width:100%"></td>
+            <td><input class="number-box" type="number" step="1" id="EditTimeSpeed" value="1.0" onchange="onFlightParamChange('timeSpeed', this)"></td>
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonSetSpeed" value="Speed" onClick="setSpeed()" style="width:100%"></td>
+            <td><input class="number-box" type="number" step="1" id="EditVelocity" value="300" onchange="onFlightParamChange('vel', this)"></td>              
+            <td><input type="button" id="ButtonSetTemperature" value="Atm.Temp.S.L." onClick="setTemperature()" style="width:100%"></td>
+            <td><input class="number-box" type="number" step="1" id="EditTemperature" value="15" onchange="onFlightParamChange('temperature', this)"></td>
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonSetFuelMassRatio" value="Fuel Mass %" onClick="setFuelMassRatio()" style="width:100%"></td>
+            <td><input class="number-box" type="number" step="1" id="EditFuelMassRatio" value="50" onchange="onFlightParamChange('fuelMassRatio', this)"></td>            
+            <td><input type="button" id="ButtonSetPressure" value="Atm.Press.S.L." onClick="setPressure()" style="width:100%"></td>              
+            <td><input class="number-box" type="number" step="1" id="EditPressure" value="760" onchange="onFlightParamChange('pressure', this)"></td>            
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonSetMass" value="Mass" onClick="setMass()" style="width:100%"></td>
+            <td><input class="number-box" type="number" step="1" id="EditMass" value="1000" onchange="onFlightParamChange('mass', this)"></td>            
+            <td colspan="2"></td>
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonSetCoolantOrHeadTemp" value="Eng.T" onClick="setCoolantOrHeadTemperature()" style="width:100%"></td>
+            <td><input class="number-box" type="number" step="1" id="EditCoolantOrHeadTemp" value="100" onchange="onFlightParamChange('coolantOrHeadTemperature', this)"></td>  
+            <td colspan="2"></td>
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonSetOilTemp" value="Oil T" onClick="setOilTemperature()" style="width:100%"></td>
+            <td><input class="number-box" type="number" step="1" id="EditOilTemp" value="100" onchange="onFlightParamChange('oilTemperature', this)"></td>             
+            <td colspan="2"></td>
+          </tr>
+        </table>
+      </td>  
+      <td valign="top" rowspan="2">
+        <div class="tableheader"><b>Commands</b></div>
+        <table class="Commands">
+          <tr>
+            <td>FM</td>  
+            <td>Position</td>  
+            <td>Blk</td>  
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonRepair"        value="Repair" onClick="repair()" style="width:100%"></td>  
+            <td><input type="button" id="ButtonStabilize"     value="Stabilize" onClick="stabilize()" style="width:100%"></td>  
+            <td><input type="button" id="ButtonBuildSpecs"    value="Build Specs" onClick="buildSpecs()" style="width:100%"></td>  
+          </tr> 
+          <tr>  
+            <td><input type="button" id="ButtonRearm"         value="Rearm" onClick="rearm()" style="width:100%"></td>  
+            <td><input type="button" id="ButtonTakeoff"       value="Takeoff" onClick="takeoff()" style="width:100%"></td>
+            <td><input type="button" id="ButtonUnloadFM"      value="Unload FM" onClick="unloadFM()" style="width:100%"></td>
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonSetZeroFuel"   value="Set Zero Fuel" onClick="setZeroFuel()" style="width:100%"></td>  
+            <td><input type="button" id="ButtonLand"          value="Land" onClick="land()" style="width:100%"></td>
+            <td><input type="button" id="ButtonMergeFM"       value="Merge FM" onClick="mergeFM()" style="width:100%"></td>  
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonSetFullFuel"   value="Set Full Fuel" onClick="setFullFuel()" style="width:100%"></td>  
+            <td><input type="button" id="ButtonSetupOnGround" value="On Ground" onClick="setupOnGround()" style="width:100%"></td>
+            <td><input type="button" id="ButtonBuildPassport" value="Build Passport" onClick="buildPassport()" style="width:100%"></td>  
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonSetSustTemp"   value="Sustain Temp." onClick="setSustanedTemperature()" style="width:100%"></td>
+            <td>World</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonOverheatNow"   value="Overheat Now" onClick="overheatNow()" style="width:100%"></td>
+            <td><input type="button" id="ButtonSetSATM"       value="Set SATM" onClick="setSATM()" style="width:100%"></td>
+            <td><input type="button" id="ButtonResetTimeSpeed"value="Time 1:1" onClick="resetTimeSpeed()" style="width:100%"></td>
+          </tr>
+          <tr>
+            <td valign="top" colspan="3">DM</td>
+          </tr>
+          <tr>
+            <td><input type="button" id="ButtonCut"        value="Cut" onClick="cutDamagePartOfInterest()" style="width:100%"></td>
+            <td><input type="button" id="ButtonHit"        value="Hit" onClick="hitDamagePartOfInterest()" style="width:100%"></td>
+            <td><input class="number-box" type="number" step="0.1" id="EditHitDmg" value="0" onchange="setHitDamagePartOfInterestValue(this)"></td>
+          </tr>
+        </table>
+      </td>  
+      <td valign="top">
+        <div class="tableheader"><b>Indication</b></div>
+        <table class="left" width="100%">
+          <tr>
+            <td class="left"><input type="checkbox" id="CheckBoxIndication0", onclick="setIndicationVisible(IndicationFlag.FORCES, this)">Forces</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="CheckBoxIndication1", onclick="setIndicationVisible(IndicationFlag.AIRFRAME_GEOMETRY, this)">Airframe</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="CheckBoxIndication2", onclick="setIndicationVisible(IndicationFlag.COLLISION_GEOMETRY, this)">Collision</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="CheckBoxIndication3", onclick="setIndicationVisible(IndicationFlag.SYSTEMS, this)">Systems</td>
+          <tr>
+          <tr>
+            <td><input type="checkbox" id="CheckBoxIndication3", onclick="setIndicationVisible(IndicationFlag.AUTOPILOT, this)">Autopilot</td>
+          <tr>          
+            <td class="left"><input type="checkbox" id="CheckBoxIndication4", onclick="setIndicationVisible(IndicationFlag.MESSAGES, this)">Messages</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="CheckBoxIndication6", onclick="setIndicationVisible(IndicationFlag.SKELETON_NODE, this)">Skeleton Node</td>
+          </tr>
+          <tr>
+            <td><select id="ComboBoxSkeletonNodeOfInterestName" onchange="setSkeletonNodeOfInterestName(this)" style="width:100%"></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="CheckBoxIndication5", onclick="setIndicationVisible(IndicationFlag.DM_PART, this)">DM Part</td>
+          </tr>
+          <tr>
+            <td><select id="ComboBoxDamagePartOfInterestId" onchange="setDamagePartOfInterestId(this)" style="width:100%"></td>
+          </tr>
+        </table>
+      </td>      
+      <td valign="top" rowspan="2">
+        <div class="tableheader"><b>Real-Time Flight Test</b></div>
+        <table>
+          <tr>
+            <td valign="top">
+              <table style="width:100%">
+                <tr>
+                  <td colspan="2">Test</td>  
+                  <td colspan="2">
+                    <select id="ComboBoxRealTimeFlightTest" onchange="onRealTimeFlightTestChange(this)" style="width:100%"></select>
+                  </td>  
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelRealTimeFlightTestAltitude">Altitude:</td>  
+                  <td><input class="number-box" type="number" step="1" id="EditRealTimeFlightTestAltitude" value="1000" onchange="onRealTimeFlightTestParamChange('alt', this)"></td>  
+                  <td>Engine Mode</td>  
+                  <td>
+                    <select id="ComboBoxRealTimeFlightTestEngineAutoMode" onchange="onRealTimeFlightTestEngineAutoMode(this)" style="width:100%">
+                      <option selected value="Auto">Auto</option>
+                      <option value="Manual">Manual</option>
+                    </select>
+                  </td>  
+                </tr>                
+                <tr>
+                  <td class="editLabel" id="LabelRealTimeFlightTestStartAltitude">Start altitude:</td>  
+                  <td><input class="number-box" type="number" step="1" id="EditRealTimeFlightTestStartAltitude" value="0" onchange="onRealTimeFlightTestParamChange('startAlt', this)"></td>  
+                  <td>Throttle Mode</td>  
+                  <td>
+                    <select id="ComboBoxRealTimeFlightTestThrottleMode" onchange="onRealTimeFlightTestThrottleModeChange(this)" style="width:100%">
+                      <option selected value="0">Full</option>
+                      <option value="1">WEP</option>
+                      <option value="2">Manual</option>
+                      <option value="3">MAP</option>
+                    </select>
+                  </td>  
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelRealTimeFlightTestSpeed">Airspeed:</td>  
+                  <td><input class="number-box" type="number" step="0.01" id="EditRealTimeFlightTestSpeed" size = "5" value="250" onchange="onRealTimeFlightTestSpeedChange(this)"></td>  
+                  <td class="editLabel" id="LabelRealTimeFlightTestThrottle">Throttle</td>  
+                  <td><input class="number-box" type="number" step="1" id="EditRealTimeFlightTestThrottle" value="0" onchange="onRealTimeFlightThrottleChange(this)"></td>  
+                </tr>
+                <tr>
+                  <td>Airspeed type</td>  
+                  <td>
+                    <select id="ComboBoxSpeedType" onchange="onRealTimeFlightTestSpeedTypeChange(this)" style="width:100%">
+                      <option selected value="0">IAS</option>
+                      <option value="1">TAS</option>
+                      <option value="2">Mach</option>
+                    </select>
+                  </td>  
+                  <td>Pitch Mode</td>  
+                  <td>
+                    <select id="ComboBoxRealTimeFlightTestPitchMode" onchange="onRealTimeFlightTestPitchModeChange(this)" style="width:100%">
+                      <option selected value="0">Auto</option>
+                      <option value="1">RPM</option>
+                      <option value="2">Pitch Angle</option>
+                      <option value="3">Pitch Control</option>
+                    </select>
+                  </td>  
+                </tr>
+                <tr>
+                  <td>Direction</td>  
+                  <td>
+                    <select id="ComboBoxRealTimeFlightTestDirection" onchange="onRealTimeFlightTestBoolParamChange('right', 'right', this)" style="width:100%">
+                      <option selected value="right">Right</option>
+                      <option value="left">Left</option>
+                    </select>
+                  </td>  
+                  <td class="editLabel" id="LabelRealTimeFlightTestPitch">Pitch:</td>  
+                  <td><input class="number-box" type="number" step="1" id="EditRealTimeFlightTestPitch" size = "5" value="2500" onchange="onRealTimeFlightPitchChange(this)"></td>  
+                </tr>
+                <tr>
+                  <td>Flaps</td>  
+                  <td>
+                    <select id="ComboBoxRealTimeFlightTestFlaps" onchange="onRealTimeFlightTestParamChange('flaps', this)" style="width:100%">
+                      <option selected value="0">Raised</option>
+                      <option value="1">Combat</option>
+                      <option value="2">Takeoff</option>
+                      <option value="3">Landing</option>
+                    </select>
+                  </td>  
+                  <td>S-Charger Gear</td>
+                  <td>
+                    <select id="ComboBoxCompressorStage" onchange="onRealTimeFlightTestParamChange('compressorStage', this)" style="width:100%">
+                    </select>
+                  </td>  
+                </tr>
+                <tr>
+                  <td>Gear</td>  
+                  <td>
+                    <select id="ComboBoxRealTimeFlightTestGear" onchange="onRealTimeFlightTestBoolParamChange('gear', 'down', this)" style="width:100%">
+                      <option selected value="up">Up</option>
+                      <option value="down">Down</option>
+                    </select>
+                  </td>  
+                  <td>Radiator, %</td>  
+                  <td><input class="number-box" type="number" step="1" id="EditRealTimeFlightTestCooler" value="0" onchange="onRealTimeFlightTestParamChange('cooler', this)"></td>  
+                </tr>
+                <tr>
+                  <td>Cockpit Door</td>  
+                  <td>
+                    <select id="ComboBoxRealTimeFlightTestCockpitDoor" onchange="onRealTimeFlightTestBoolParamChange('cockpitDoor', 'opened', this)" style="width:100%">
+                      <option selected value="closed">Closed</option>
+                      <option value="opened">Opened</option>
+                    </select>
+                  </td>  
+                  <td></td>  
+                  <td></td>  
+                </tr>
+              </table>
+            </td>  
+            <td valign="top">
+              <table style="width:100%">
+                <tr>
+                  <td>Active Test</td>  
+                  <td class="editLabel" id="LabelRealTimeFlightTestActiveTest"></td>  
+                </tr>
+                <tr>
+                  <td>Result</td>  
+                  <td class="editLabel" id="LabelRealTimeFlightTestResult"></td>  
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelRealTimeFlightTestValueType"></td>  
+                  <td class="editLabel" id="LabelRealTimeFlightTestValue"></td>  
+                </tr>
+                <tr>
+                  <td colspan="2"><input type="button" id="LaunchRealTimeTest" value="Start" onClick="launchRealTimeTest(false)" style="width:100%"></td>  
+                </tr>
+                <tr>
+                  <td colspan="2"><input type="button" id="LaunchAndSimulateRealTimeTest" value="Start & Simulate" onClick="launchRealTimeTest(true)" style="width:100%"></td>  
+                </tr>
+                <tr>
+                  <td colspan="2"><input type="button" id="StopRealTimeTest" value="Stop" onClick="stopRealTimeTest()" style="width:100%"></td>  
+                </tr>
+              </table>
+            </td>  
+          </tr>
+        </table>
+      </td>
+     <td valign="top" rowspan="2">
+        <div class="tableheader"><b>Wind Tube</b><div>
+        <table>
+          <tr>
+            <td><input type="checkbox" id="CheckBoxWindTubeTestEnabled" onclick="onWindTubeTestBoolParamChange(this, 'enabled')">Enable</td>
+            <td class="editLabel" id="LabelWindTubeTestAirspeed">Airspeed</td>
+            <td><input class="number-box" type="number" step="0.1" id="CheckBoxWindTubeTestAirspeed" value="0" onchange="onWindTubeTestParamChange(this, 'airspeed')"></td>
+          </tr>
+          <tr>
+            <td>Yaw</td>
+            <td>Pitch</td>
+            <td>Roll</td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="CheckBoxWindTubeTestYawLocked" onclick="onWindTubeTestAxisLockChange(this, 'yawLocked')">Locked</td>
+            <td><input type="checkbox" id="CheckBoxWindTubeTestPitchLocked" onclick="onWindTubeTestAxisLockChange(this, 'pitchLocked')">Locked</td>
+            <td><input type="checkbox" id="CheckBoxWindTubeTestRollLocked" onclick="onWindTubeTestAxisLockChange(this, 'rollLocked')">Locked</td>
+          </tr>
+          <tr>
+            <td>AoS, deg</td>
+            <td>AoA, deg</td>
+            <td>roll, deg</td>
+          </tr>
+          <tr>
+            <td><input class="number-box" type="number" step="0.1" id="EditWindTubeTestAoS" value="0" onchange="onWindTubeTestParamChange(this, 'aos')"></td>
+            <td><input class="number-box" type="number" step="0.1" id="EditWindTubeTestAoA" value="0" onchange="onWindTubeTestParamChange(this, 'aoa')"></td>
+            <td><input class="number-box" type="number" step="0.1" id="EditWindTubeTestRoll" value="0" onchange="onWindTubeTestParamChange(this, 'roll')"></td>
+          </tr>
+          <tr>
+            <td>Wy, deg/s</td>
+            <td>Wz, deg/s</td>
+            <td>Wx, deg/s</td>
+          </tr>
+          <tr>
+            <td><input class="number-box" type="number" step="0.1" id="EditWindTubeTestYawFakeRate" value="0" onchange="onWindTubeTestParamChange(this, 'yawFakeRate')"></td>
+            <td><input class="number-box" type="number" step="0.1" id="EditWindTubeTestPitchFakeRate" value="0" onchange="onWindTubeTestParamChange(this, 'pitchFakeRate')"></td>
+            <td><input class="number-box" type="number" step="0.1" id="EditWindTubeTestRollFakeRate" value="0" onchange="onWindTubeTestParamChange(this, 'rollFakeRate')"></td>            
+          </tr>
+          <tr>
+            <td>Elevator %</td>
+            <td>Rudder %</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" id="CheckBoxWindTubeTestElevatorLocked" onclick="onWindTubeTestAxisLockChange(this, 'elevatorLocked')">Locked</td>
+            <td><input type="checkbox" id="CheckBoxWindTubeTestRudderLocked" onclick="onWindTubeTestAxisLockChange(this, 'rudderLocked')">Locked</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td><input class="number-box" type="number" step="1.0" id="EditWindTubeTestElevatorFakeRate" value="0" onchange="onWindTubeTestParamChange(this, 'elevatorFakeRate')"></td>
+            <td><input class="number-box" type="number" step="1.0" id="EditWindTubeTestRudderFakeRate" value="0" onchange="onWindTubeTestParamChange(this, 'rudderFakeRate')"></td>           
+            <td></td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <h2>Flight State</h2>
+  <table id="FlightState">
+    <tr>
+      <td colspan="3"><b></b></td>  
+      <td colspan="8"><b>Flight</b></td>  
+      <td colspan="12"><b>Controls</b></td>  
+      <td colspan="10"><b>Engine (single or 1st)</b></td>
+      <td colspan="3"><b>Atm</b></td>
+    </tr>
+    <tr>
+      <td>*</td>  
+      <td>N</td>  
+      <td>Time</td>  
+      <td>H</td>  
+      <td>TAS</td>  
+      <td>IAS</td>  
+      <td>M</td>  
+      <td>Vy</td>  
+      <td>Ny</td>  
+      <td>Wx</td>  
+      <td>AoA</td>  
+      <td>AoS</td>        
+      <td>Ail.</td>  
+      <td>Elev.</td>  
+      <td>Rud.</td>  
+      <td>Flaps</td>  
+      <td>Gear</td>  
+      <td>Airbrk.</td>  
+      <td>Thr.</td>  
+      <td>Comp.</td>  
+      <td>Rad.</td>  
+      <td>O.Rad.</td>  
+      <td>Mix.</td>  
+      <td>Scr.P.</td>  
+      <td>Man.P.</td>
+      <td>RPM</td>
+      <td>C.RPM</td>
+      <td>Thri</td>  
+      <td>Pwr.</td>  
+      <td>Thrust</td>  
+      <td>Pitch</td>  
+      <td>Eff.</td>  
+      <td>Eng/Wtr T</td> 
+      <td>Oil T</td>
+      <td>T</td>
+      <td>P</td>
+    </tr>
+    <tr>
+      <td><input type="button" id="AddFlightParamsSnapshoot" value="+" onClick="addFlightParamsSnapshoot()"></td>  
+      <td>Current</td>  
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+      <td>N/A</td>
+    </tr>
+  </table>
+
+  <h2>Flight Model Tests</h2>
+  <table>
+    <tr>
+      <td colspan="5"><input type="button" id="LaunchAllTests" value="Launch All" onClick="launchAllTests()" style="width:100%"></td>  
+    </tr>  
+    <tr>
+      <td valign="top">
+        <div class="tableheader"><b>Stall, engine off</b></div>
+        <div class="tableheader">Throttle on idle, auto engine control, radiator closed</div>
+        <div class="tableheader" id="stallTestRefFlag">No Reference</div>
+        <table>
+          <tr>
+            <td>
+              <div class="tableheader">Parameters</div>
+              <table style="width:100%">
+                <tr>
+                  <td class="editLabel" id="LabelAltMinStallTest">Altitude Min</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltMinStallTest" value="1000" onchange="onTestParamChange('stall', 'minAlt', this)"></td>                    
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelAltMaxStallTest">Altitude Max</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltMaxStallTest" value="1000" onchange="onTestParamChange('stall', 'maxAlt', this)"></td>                    
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelAltStepStallTest">Altitude Step</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltStepStallTest" value="1000" onchange="onTestParamChange('stall', 'stepAlt', this)"></td>  
+                </tr>
+                <tr>
+                  <td><input class="number-box" type="button" id="LaunchStallTests" value="Launch" onClick="launchStallTests()" style="width:100%"></td>  
+                  <td><input class="number-box" type="button" id="PlotStallTests" value="Plot" onClick="showTestResultChartWindow('stall')" style="width:100%"></td>  
+                </tr>
+              </table>
+            </td>           
+          </tr>
+          <tr>
+            <td>
+              <div class="tableheader" id="LabelResultStallTest">Result</div>
+              <table id="ResultStallTest" style="width:100%">
+                <tr>
+                  <td class="editLabel" id="LabelAltStallTest">Altitude</td>  
+                  <td class="editLabel" id="LabelIASStallTest1">IAS</td>  
+                  <td class="editLabel" id="LabelIASStallTest2">IAS, gear, flaps</td>  
+                </tr>
+              </table>
+            </td>  
+          </tr>          
+        </table>
+      </td>  
+      <td valign="top">
+        <div class="tableheader"><b>Max Speed</b></div>
+        <div class="tableheader">Auto engine control, radiator closed</div>
+        <div class="tableheader" id="maxSpeedTestRefFlag">No Reference</div>
+        <table>
+          <tr>
+            <td>
+              <div class="tableheader">Parameters</div>
+              <table style="width:100%">
+                <tr>
+                  <td class="editLabel" id="LabelAltMinMaxSpeedTest">Altitude Min</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltMinMaxSpeedTest" value="1000" onchange="onTestParamChange('maxSpeed', 'minAlt', this)"></td>  
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelAltMaxMaxSpeedTest">Altitude Max</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltMaxMaxSpeedTest" value="11000" onchange="onTestParamChange('maxSpeed', 'maxAlt', this)"></td>  
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelAltStepMaxSpeedTest">Altitude Step</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltStepMaxSpeedTest" value="1000" onchange="onTestParamChange('maxSpeed', 'stepAlt', this)"></td>  
+                </tr>
+                <tr>
+                  <td>Airspeed type</td>  
+                  <td>
+                    <select id="ComboBoxFlapsMaxSpeedTest" onchange="onMaxSpeedTestSpeedTypeChange(this)" style="width:100%">
+                      <option selected value="0">IAS</option>
+                      <option value="1">TAS</option>
+                      <option value="2">Mach</option>
+                    </select>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input class="number-box" type="button" id="LaunchMaxSpeedTests" value="Launch" onClick="launchMaxSpeedTests()" style="width:100%"></td>  
+                  <td><input class="number-box" type="button" id="PlotMaxSpeedTests" value="Plot" onClick="showTestResultChartWindow('maxSpeed')" style="width:100%"></td>  
+                </tr>
+              </table>
+            </td>           
+          </tr>
+          <tr>
+            <td>
+              <div class="tableheader" id="LabelResultMaxSpeedTest">Result</div>
+              <table id="ResultMaxSpeedTest" style="width:100%">
+                <tr>
+                  <td class="editLabel" id="LabelAltMaxSpeedTest">Altitude</td>  
+                  <td class="editLabel" id="LabelTASMaxSpeedTest1">TAS, Max</td>  
+                  <td class="editLabel" id="LabelTASMaxSpeedTest2">TAS, WEP</td>  
+                </tr>
+              </table>
+            </td>  
+          </tr>
+        </table>
+      </td>  
+      <td valign="top">
+        <div class="tableheader"><b>Min Climb Time</b></div>
+        <div class="tableheader">Auto engine control, radiator opened</div>
+        <div class="tableheader" id="minClimbTimeTestRefFlag">No Reference</div>
+        <table>
+          <tr>
+            <td>
+              <div class="tableheader">Parameters</div>
+              <table style="width:100%">
+                <tr>
+                  <td class="editLabel" id="LabelAltMinMinClimbTimeTest">Altitude Min</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltMinMinClimbTimeTest"  value="2000" onchange="onTestParamChange('minClimbTime', 'minAlt', this)"></td>  
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelAltMaxMinClimbTimeTest">Altitude Max</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltMaxMinClimbTimeTest"  value="10000" onchange="onTestParamChange('minClimbTime', 'maxAlt', this)"></td>  
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelAltStepMinClimbTimeTest">Altitude Step</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltStepMinClimbTimeTest" value="2000" onchange="onTestParamChange('minClimbTime', 'stepAlt', this)"></td>  
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <table id="speedMinClimbTimeTest">
+                      <tr>
+                        <td><input id="ButtonAddSpeedForMinClimbTimeTest" type="button" value="+" onClick="addSpeedForMinClimbTimeTest()"></td>  
+                        <td id="LabelAltMinClimbTimeTest">Alt</td>  
+                        <td id="LabelAltMinClimbTimeTest">Spd Type</td>  
+                        <td id="LabelSpeedMaxMinClimbTimeTest">Spd, Max</td>  
+                        <td id="LabelSpeedWEPMinClimbTimeTest">Spd, WEP</td>  
+                      </tr>
+                      <tr>
+                        <td></td>
+                        <td><input class="number-box" type="number" value="0"   id="EditAltMinClimbTime0"      onchange="onTestParamAscendingElementChange('minClimbTime', 'speed', 0, 'alt', this)"></td>  
+                        <td>
+                          <select id="ComboBoxSpeedTypeMinClimbTime0" onchange="onMinClimbTimeTestSpeedTypeChange(0, this)" style="width:100%">
+                            <option selected value="0">IAS</option>
+                            <option value="1">TAS</option>
+                            <option value="2">Mach</option>
+                          </select>
+                        </td>
+                        <td><input class="number-box" type="number" value="250.0" step="0.01" id="EditSpeedMaxMinClimbTime0" onchange="onMinClimbTimeSpeedMaxChange(0, this)"></td>  
+                        <td><input class="number-box" type="number" value="250.0" step="0.01" id="EditSpeedWEPMinClimbTime0" onchange="onMinClimbTimeSpeedWEPChange(0, this)"></td>                          
+                      </tr>
+                    </table>
+                  </td>  
+                </tr>
+                <tr>
+                  <td><input type="button" id="LaunchMinClimbTimeTests" value="Launch" onClick="launchMinClimbTimeTests()" style="width:100%"></td>  
+                  <td><input type="button" id="PlotMinClimbTimeTests" value="Plot" onClick="showTestResultChartWindow('minClimbTime')" style="width:100%"></td>  
+                </tr>
+              </table>
+            </td>  
+          </tr>
+          <tr>
+            <td>
+              <div class="tableheader" id="LabelResultMinClimbTimeTest">Result</div>
+              <table id="ResultMinClimbTimeTest" style="width:100%">
+                <tr>
+                  <td class="editLabel" id="LabelAltMinClimbTineTest">Altitude</td>  
+                  <td>Time, Max, s</td>  
+                  <td>Time, WEP, s</td>  
+                </tr>
+              </table>
+            </td>  
+          </tr>          
+        </table>
+      </td>  
+      <td valign="top">
+        <div class="tableheader"><b>Min Turn Time</b></div>
+        <div class="tableheader">Auto engine control, radiator closed</div>
+        <div class="tableheader" id="minTurnTimeTestRefFlag">No Reference</div>
+        <table>
+          <tr>
+            <td>
+              <div class="tableheader">Parameters</div>
+              <table style="width:100%">
+                <tr>
+                  <td class="editLabel" id="LabelAltMinMinTurnTimeTest">Altitude Min</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltMinMinTurnTimeTest" value="1000" onchange="onTestParamChange('minTurnTime', 'minAlt', this)"></td>                    
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelAltMaxMinTurnTimeTest">Altitude Max</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltMaxMinTurnTimeTest" value="1000" onchange="onTestParamChange('minTurnTime', 'maxAlt', this)"></td>                    
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelAltStepMinTurnTimeTest">Altitude Step</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditAltStepMinTurnTimeTest" value="1000" onchange="onTestParamChange('minTurnTime', 'stepAlt', this)"></td>  
+                </tr>
+                <tr>
+                  <td>Flaps</td>  
+                  <td>
+                    <select id="ComboBoxFlapsMinTurnTimeTest" onchange="onTestParamChange('minTurnTime', 'flaps', this)" style="width:100%">
+                      <option selected value="0">Raised</option>
+                      <option value="1">Combat</option>
+                      <option value="2">Takeoff</option>
+                      <option value="3">Landing</option>
+                    </select>
+                  </td>  
+                </tr>
+                <tr>
+                  <td><input type="button" id="LaunchMinTurnTimeTests" value="Launch" onClick="launchMinTurnTimeTests()" style="width:100%"></td>  
+                  <td><input type="button" id="PlotMinTurnTimeTests" value="Plot" onClick="showTestResultChartWindow('minTurnTime')" style="width:100%"></td>  
+                </tr>
+              </table>
+            </td>           
+          </tr>
+          <tr>
+            <td>
+              <div class="tableheader" id="LabelResultMinTurnTimeTest">Result</div>
+              <table id="ResultMinTurnTimeTest" style="width:100%">
+                <tr>
+                  <td class="editLabel" id="LabelAltMinTurnTimeTest">Altitude</td>  
+                  <td>Time, Max, s</td>  
+                  <td>Time, WEP, s</td>  
+                </tr>
+              </table>
+            </td>  
+          </tr>          
+        </table>
+      </td>  
+      <td valign="top">
+        <div class="tableheader"><b>Max Roll Rate</b></div>
+        <div class="tableheader">Full throttle, auto engine control, radiator closed</div>
+        <div class="tableheader" id="maxRollRateTestRefFlag">No Reference</div>
+        <table>
+          <tr>
+            <td>
+              <div class="tableheader">Parameters</div>
+              <table style="width:100%">
+                <tr>
+                  <td class="editLabel" id="LabelIASMinMaxRollRate">IAS Min</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditIASMinMaxRollRate" value="100" onchange="onTestParamChange('maxRollRate', 'minIAS', this)"></td>  
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelIASMaxMaxRollRate">IAS Max</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditIASMaxMaxRollRate" value="600" onchange="onTestParamChange('maxRollRate', 'maxIAS', this)"></td>  
+                </tr>
+                <tr>
+                  <td class="editLabel" id="LabelIASStepMaxRollRate">IAS Step</td>  
+                  <td><input class="number-box" type="number" step="100" id="EditIASStepMaxRollRate" value="100" onchange="onTestParamChange('maxRollRate', 'stepIAS', this)"></td>  
+                </tr>
+                <tr>
+                  <td><input class="number-box" type="button" id="LaunchMaxRollRateTests" value="Launch" onClick="launchMaxRollRateTests()" style="width:100%"></td>  
+                  <td><input class="number-box" type="button" id="PlotMaxRollRateTests" value="Plot" onClick="showTestResultChartWindow('maxRollRate')" style="width:100%"></td>  
+                </tr>
+              </table>
+            </td>  
+          </tr>
+          <tr>
+            <td>
+              <div class="tableheader" id="LabelResultMaxRollRateTest">Result</div>
+              <table id="ResultMaxRollRateTest" style="width:100%">
+                <tr>
+                  <td class="editLabel" id="LabelIASMaxRollRateTest">IAS</td>  
+                  <td class="editLabel" id="LabelRollRateMaxRollRateTestLeft">Rate, Left</td>  
+                  <td class="editLabel" id="LabelRollRateMaxRollRateTestRight">Rate, Right</td>  
+                </tr>
+              </table>
+            </td>  
+          </tr>          
+        </table>
+      </td>  
+    </tr>
+    <tr>
+  </table>
+</body>
+</html>

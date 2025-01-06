@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
+  <!--meta name="viewport" content="width=device-width;initial-scale=1;maximum-scale=1;minimum-scale=1" /-->
+
+  <link href="css/vader/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #333;
+      color: #eee;
+      font-family: Tahoma, Verdana, Arial;
+    }
+
+    #mission-objectives {
+      background-color: rgba(20, 30, 25, 0.5);
+      display:table;
+      position: absolute;
+      left: 5px; top: 670px;
+      width: 640px;
+    }
+
+    div.objective {
+/*      border: 1px solid #666;
+      background-color: #444;
+      margin: 8px;
+      padding: 4px;        
+*/
+    }
+/*
+    div#holder.in_progress {
+      background-color: #663;
+    }
+*/
+    div#holder.completed {
+      text-decoration: overlie;
+      color:#462;
+    }
+    div#holder.failed {
+      color: #522;
+      text-decoration: line-through;
+    }
+
+    div.caption {
+      display: table-row;
+      height:20px;
+      background-color: #555;
+      margin: 0px;
+    }
+
+    #draghandle { cursor: move; width:100%; height:20px;}
+
+    #game-chat-root, #hud-evt-msg-root, #hud-dmg-msg-root {
+      display: table;
+      background-color: rgba(20, 30, 25, 0.5);
+      /*padding: 5px;*/
+      position: absolute;
+      left: 650px;
+      width:300px; height: 200px;     
+    }
+
+    #textlines {
+      /*display: table-row;*/
+      overflow: auto;
+      width: 100%;
+      height: 100%;
+    }
+
+    #game-chat-root   { top: 5px; }
+    #hud-evt-msg-root { top: 220px; }
+    #hud-dmg-msg-root { top: 435px; }
+
+    .chat-line {
+    }
+
+    .chat-time { color : #999; padding-right:0.4em; }
+
+    .msg-type-system { color: #ff8; }
+    .msg-type-enemy  { color: #fa8; }
+
+    #map-root {
+      display:table;
+      position: absolute;
+      left: 5px; top: 5px;
+      border: 1px solid #444;
+    }
+
+    #map-canvas {
+      -webkit-user-select: none;
+      -webkit-user-drag: none;
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+
+    #indicators-root {
+      background-color: rgba(20, 30, 25, 0.5);
+      display:table;
+      position: absolute;
+      left: 650px; top: 670px;
+      width: 300px;
+    }
+
+    #indicators {
+      overflow:auto;
+      height:100%;
+    }
+
+    #indicators0, #indicators1 {
+      list-style-type: none;
+      margin: 0;
+      padding: 0 0 1.2em;
+      float: left;
+      width: 50%;
+      overflow: hidden;
+    }
+    #indicators0 li, #indicators1 li {
+      margin: 0px;
+    }
+    
+    #state-root {
+      background-color: rgba(20, 30, 25, 0.5);
+      display:table;
+      position: absolute;
+      left: 650px; top: 670px;
+      width: 300px;
+    }
+
+    #state {
+      overflow:auto;
+      height:100%;
+    }
+
+    #state0, #state1 {
+      list-style-type: none;
+      margin: 0;
+      padding: 0 0 1.2em;
+      float: left;
+      width: 50%;
+      overflow: hidden;
+    }
+    #state0 li, #state1 li {
+      margin: 0px;
+    }    
+
+    @font-face {
+      font-family: 'Icons'; 
+      src: url('icons.ttf'); 
+    }
+  </style>
+
+  <script src="jquery-1.10.1.min.js"></script>
+  <script src="sylvester.src.js"></script>
+  <script src="hammer.min.js"></script>
+  <script src="jquery-ui-1.10.3.interact.min.js"></script>
+  <!--script src="hammer.fakemultitouch.js"></script-->
+  <!--script src="hammer.showtouches.js"></script-->
+  <script src="cookies.js"></script>
+  <script src="utils.js"></script>
+
+  <!-- localization preparation -->
+  <script language="javascript" type="text/javascript">
+    loc_tbl = {}
+  </script>
+  <script src="/loc/map/primary_objectives?fmt=js"></script>
+  <script src="/loc/map/secondary_objectives?fmt=js"></script>
+
+  <script language="javascript" type="text/javascript">
+    map_objects = null;
+    map_info = null;
+    map_image = new Image();
+    //map_image.src = '/map.img'
+
+    cookieLifeTime = 60*60*24*1000
+
+    map_scale = 1.0
+    map_pan = [0, 0]
+
+    prevMousePos = null
+    prevScale = null
+
+    lastT = null
+    blinkNormalT = 0.0
+    blinkHeavyT = 0.0
+    blinkNormalVal = 0.0
+    blinkHeavyVal = 0.0
+
+    lastPlayerPos = null
+    isDraggingMap = false
+    isTransformingMap = false
+
+    lastChatRecId = 0
+    lastEvtMsgId = 0
+    lastDmgMsgId = 0
+
+    hammer_opt = {
+      hold: false, tap:false, doubletap:false,
+      drag:true, dragstart:true, dragend:true, dragup:false, dragdown:false, dragleft:false, dragright:false,
+      swipe:false, swipeup:false, swipedown:false, swipeleft:false, swiperight:false,
+      transform:true, transformstart:true, transformend:true, rotate:false,
+      pinch:false, pinchin:false, pinchout:false, 
+      /*touch:false, release:false,*/
+
+      prevent_default: true,
+      no_mouseevents: true
+   }
+
+    indicator_columns = [
+      [
+        'type', 'speed', 'speed_01', 'speed_02',
+        'pedals', 'pedals0', 'pedals1', 'pedals2', 'pedals3', 'pedals4', 'pedals5', 'pedals6', 'pedals7', 'pedals8',
+        'stick_elevator', 'stick_ailerons',
+        'vario',
+        'altitude_hour', 'altitude_min', 'altitude_10k', 'aviahorizon_roll', 'aviahorizon_pitch', 'aviahorizon_roll1', 'aviahorizon_pitch1',
+        'bank', 'bank1', 'bank2', 'turn', 'turn1', 'turn2',
+        'compass', 'compass1', 'compass2', 'compass3', 'compass4',
+        'clock_hour', 'clock_min', 'clock_sec', 'g_meter',
+        'manifold_pressure', 'manifold_pressure1', 'manifold_pressure2', 'manifold_pressure3',
+        'head_temperature', 'head_temperature1', 'head_temperature2', 'head_temperature3',
+        'mixture', 'mixture1', 'mixture2', 'mixture3',
+        'oxygen',
+        'gears', 'gears1', 'gears2', 'gears_lamp',
+        'flaps', 'trimmer',
+        'weapon1', 'weapon2', 'weapon3',
+        'prop_pitch',
+        'prop_pitch_hour', 'prop_pitch_hour1', 'prop_pitch_hour2', 'prop_pitch_hour3',
+        'prop_pitch_min', 'prop_pitch_min1', 'prop_pitch_min2', 'prop_pitch_min3',
+        'ammo_counter', 'ammo_counter1', 'ammo_counter2', 'ammo_counter3', 'ammo_counter4', 'ammo_counter5', 'ammo_counter6', 'ammo_counter7',
+        'flaps_indicator', 'gears_indicator', 'radiator',
+      ],
+      [
+        'rpm', 'rpm1', 'rpm2', 'rpm3', 'rpm_min', 'rpm1_min', 'rpm2_min', 'rpm3_min', 'rpm_hour', 'rpm1_hour', 'rpm2_hour', 'rpm3_hour',
+        'oil_pressure', 'oil_pressure1', 'oil_pressure2', 'oil_pressure3',
+        'oil_temperature', 'oil_temperature1', 'oil_temperature2', 'oil_temperature3',
+        'water_temperature', 'water_temperature1', 'water_temperature2', 'water_temperature3',
+        'carb_temperature', 'carb_temperature1', 'carb_temperature2', 'carb_temperature3',
+        'fuel', 'fuel1', 'fuel2',
+        'fuel_pressure', 'fuel_pressure1', 'fuel_pressure2', 'fuel_pressure3', 'fuel_consume',
+        'throttle', 'throttle1', 'throttle2',
+        'supercharger', 'supercharger1', 'supercharger2',
+      ]
+    ]
+    
+    state_columns = [
+      [
+        'H, m', 'TAS, km/h', 'IAS, km/h', 'M', 'AoA, deg', 'AoS, deg', 'Ny', 'Vy, m/s', 'Wx, deg/s',
+        'Mfuel, kg', 'Mfuel0, kg', 'Mfuel 1, kg', 'Mfuel0 1, kg', , 'Mfuel 2, kg', 'Mfuel0 2, kg',
+        'aileron, %', 'elevator, %', 'rudder, %', 'flaps, %', 'gear, %', 'airbrake, %'
+      ],
+      [
+        'throttle 1, %', 'RPM throttle 1, %', 'mixture 1, %', 'radiator 1, %', 'compressor stage 1', 'magneto 1', 'feathered 1', 'power 1, hp', 'RPM 1', 'manifold pressure 1, atm',
+          'water temp 1, C', 'oil temp 1, C', 'pitch 1, deg', 'thrust 1, kgs', 'efficiency 1, %',
+        'throttle 2, %', 'RPM throttle 2, %', 'mixture 2, %', 'radiator 2, %', 'compressor stage 2', 'magneto 2', 'feathered 2', 'power 2, hp', 'RPM 2', 'manifold pressure 2, atm',
+          'water temp 2, C', 'oil temp 2, C', 'pitch 2, deg', 'thrust 2, kgs', 'efficiency 2, %',
+        'throttle 3, %', 'RPM throttle 3, %', 'mixture 3, %', 'radiator 3, %', 'compressor stage 3', 'magneto 3', 'feathered 3', 'power 3, hp', 'RPM 3', 'manifold pressure 3, atm',
+          'water temp 3, C', 'oil temp 3, C', 'pitch 3, deg', 'thrust 3, kgs', 'efficiency 3, %',
+        'throttle 4, %', 'RPM throttle 4, %', 'mixture 4, %', 'radiator 4, %', 'compressor stage 4', 'magneto 4', 'feathered 4', 'power 4, hp', 'RPM 4', 'manifold pressure 4, atm',
+          'water temp 4, C', 'oil temp 4, C', 'pitch 4, deg', 'thrust 4, kgs', 'efficiency 4, %'
+      ]
+    ]
+
+    function format_mission_data(mission) {
+      obj_prim = []
+      obj_sec = []
+
+      if ('objectives' in mission && mission['objectives'] != null) {
+        for (var i=0; i<mission['objectives'].length; ++i) {
+          var obj = mission['objectives'][i];
+          if (obj['status'] != "undefined") {
+            (obj['primary'] ? obj_prim : obj_sec).push(obj);
+          }
+        }
+      }
+
+      objectiveElem = function(base, i) {
+        if (i<base.children().length)
+          return base.children().eq(i);
+        var elem = $('<div class="objective"><div id="holder"><div id="text"/></div></div>');
+        base.append(elem);
+        return elem;
+      }
+
+      updateObjectives = function(root, objectives) {
+        for (var i=0; i<objectives.length; ++i) {
+          var elem = objectiveElem(root, i)
+          elem.find('#text').text(objectives[i]['text']);
+          elem.find('#holder').attr('class', objectives[i]['status'])
+          elem.css('display', 'block');
+        }
+        for (var i=objectives.length; i<root.children().length; ++i) {
+          root.children().eq(i).css('display', 'none');
+        }
+      }
+
+      updateObjectives($('#objectives-primary'), obj_prim);
+      updateObjectives($('#objectives-secondary'), obj_sec);
+    }
+
+
+
+    function addWheelHandler(elem, onWheel) {
+      if (elem.addEventListener) {
+        if ('onwheel' in document) {
+          // IE9+, FF17+
+          elem.addEventListener("wheel", onWheel, false);
+        } else if ('onmousewheel' in document) {
+          // obsolete version
+          elem.addEventListener("mousewheel", onWheel, false);
+        } else {
+          // 3.5 <= Firefox < 17
+          elem.addEventListener("MozMousePixelScroll", onWheel, false);
+        }
+      } else { // IE<9
+        elem.attachEvent("onmousewheel", onWheel);
+      }
+    }
+
+    function clampMapPan() {
+      var canvas = document.getElementById('map-canvas')
+      map_pan[0] = clamp(map_pan[0], -(map_scale-1.0)*canvas.width, 0)
+      map_pan[1] = clamp(map_pan[1], -(map_scale-1.0)*canvas.height, 0)
+    }
+   
+
+    function mapOnWheel(e) {
+      e = e || window.event;
+      var delta = e.wheelDelta ? e.wheelDelta : (e.deltaY || e.detail)*-40
+      delta *= map_scale * 0.8
+
+      var offsX = (e.offsetX!=undefined) ? e.offsetX : (e.pageX-$('#map-canvas').offset().left)
+      var offsY = (e.offsetY!=undefined) ? e.offsetY : (e.pageY-$('#map-canvas').offset().top)
+      map_scale_new = clamp(map_scale + delta * 0.001, 1.0, 15.0)
+      map_pan[0] = offsX - (offsX - map_pan[0])*map_scale_new / map_scale
+      map_pan[1] = offsY - (offsY - map_pan[1])*map_scale_new / map_scale
+      map_scale = map_scale_new
+      clampMapPan()
+
+      redraw_map(0.0)
+
+      e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+    }
+
+    function on_touch_event(e) {
+      if (!e.gesture) // ???
+        return
+
+      if (e.type == 'dragstart')
+        isDraggingMap = true
+      else if (e.type == 'transformstart')
+        isTransformingMap = true
+      else if (e.type == 'dragend')
+        isDraggingMap = false
+      else if (e.type == 'transformend')
+        isTransformingMap = false
+      else if (e.type == 'drag' || e.type == 'transform') {
+        if (e.type == 'transform') {
+          scale0 = map_scale
+          map_scale = clamp(map_scale * e.gesture.scale / prevScale, 1.0, 3.0)
+
+          // scale shift
+          var offsX = e.gesture.center.pageX - $('#map-canvas').offset().left
+          var offsY = e.gesture.center.pageY - $('#map-canvas').offset().top
+          map_pan[0] = offsX - (offsX - map_pan[0])*map_scale / scale0
+          map_pan[1] = offsY - (offsY - map_pan[1])*map_scale / scale0
+        }
+
+        // drag shift
+        map_pan[0] += e.gesture.center.pageX - prevMousePos[0]
+        map_pan[1] += e.gesture.center.pageY - prevMousePos[1]
+
+        clampMapPan()
+        redraw_map(0.0)
+      } else {
+        console.log('Unexpected event type')
+        console.log(e)
+        return
+      }
+      prevMousePos = [e.gesture.center.pageX, e.gesture.center.pageY]
+      prevScale = e.gesture.scale
+    }
+
+
+    function calcMapObjectColor(item) {
+      if (('blink' in item) && (item['blink'])) {
+        var bv = (item['blink']==2 ? blinkHeavyVal : blinkNormalVal)
+
+        var c0 = item['color[]']
+        var c1 = [255, 255, 0]
+        var c = rgb_to_hex(Math.floor(lerp(c0[0], c1[0], bv)), Math.floor(lerp(c0[1], c1[1], bv)), Math.floor(lerp(c0[2], c1[2], bv)))
+        return c
+      } else {
+        return item['color']
+      }
+    }
+
+    function drawMapGrid(canvas) {
+      if (!map_info || !('map_min' in map_info))
+        return
+
+      var ctx = canvas.getContext('2d')
+      var w = canvas.width
+      var h = canvas.height
+      var mapMin = map_info['map_min']
+      var mapMax = map_info['map_max']
+      var scX = w / (mapMax[0] - mapMin[0])
+      var scY = h / (mapMax[1] - mapMin[1])
+
+      ctx.lineWidth = 1
+      ctx.strokeStyle = '#555'
+
+      ctx.beginPath()
+      for (var y = mapMin[1]; y <= mapMax[1]; y += map_info['grid_steps'][1]) {
+        var yy = Math.floor((y-mapMin[1])*scY)+0.5
+        ctx.moveTo(0, yy)
+        ctx.lineTo(w, yy)
+      }
+      for (var x = mapMin[0]; x <= mapMax[0]; x += map_info['grid_steps'][0]) {
+        var xx = Math.floor((x-mapMin[0])*scX)+0.5
+        ctx.moveTo(xx, 0)
+        ctx.lineTo(xx, h)
+      }
+      ctx.stroke()
+
+      ctx.fillStyle = '#111'
+      ctx.font = 'normal 9pt sans-serif'
+
+      ctx.textBaseline = 'middle'
+      ctx.textAlign = 'left'
+      for (var y = mapMin[1]+map_info['grid_steps'][1]*0.5, n=0; y <= mapMax[1] && n < 26; y += map_info['grid_steps'][1], ++n) {
+        var yy = Math.floor((y-mapMin[1])*scY)+0.5
+        ctx.fillText(String.fromCharCode(65+n), 3, yy)
+      }
+
+      ctx.textBaseline = 'top'
+      ctx.textAlign = 'center'
+      for (var x = mapMin[0]+map_info['grid_steps'][0]*0.5, n=1; x <= mapMax[0]; x += map_info['grid_steps'][0], ++n) {
+        var xx = Math.floor((x-mapMin[0])*scX)+0.5
+        ctx.fillText(n, xx, 3)
+      }
+    }
+
+
+    function drawMapGridScaled(canvas) {
+      if (!map_info || !('map_min' in map_info))
+        return
+
+      var ctx = canvas.getContext('2d')
+      var w = canvas.width
+      var h = canvas.height
+      var mapMin = map_info['map_min']
+      var mapMax = map_info['map_max']
+      var gridSteps = map_info['grid_steps']
+      var scX = w * map_scale / (mapMax[0] - mapMin[0])
+      var scY = h * map_scale / (mapMax[1] - mapMin[1])
+
+      var firstVisCellX = Math.floor((-map_pan[0] / scX) / gridSteps[0])
+      var firstVisCellY = Math.floor((-map_pan[1] / scY) / gridSteps[1])
+      var xVis0 = mapMin[0] + firstVisCellX * gridSteps[0]
+      var yVis0 = mapMin[1] + firstVisCellY * gridSteps[1]
+      var xVis1 = mapMin[0] + Math.ceil((w-map_pan[0]) / scX / gridSteps[0]) * gridSteps[0]
+      var yVis1 = mapMin[1] + Math.ceil((h-map_pan[1]) / scY / gridSteps[1]) * gridSteps[1]
+
+      ctx.lineWidth = 1
+      ctx.strokeStyle = '#555'
+
+      ctx.beginPath()
+      for (var y = yVis0; y <= yVis1; y += gridSteps[1]) {
+        var yy = Math.floor((y-mapMin[1])*scY+map_pan[1])+0.5
+        ctx.moveTo(0, yy)
+        ctx.lineTo(w, yy)
+      }
+      for (var x = xVis0; x <= xVis1; x += gridSteps[0]) {
+        var xx = Math.floor((x-mapMin[0])*scX+map_pan[0])+0.5
+        ctx.moveTo(xx, 0)
+        ctx.lineTo(xx, h)
+      }
+      ctx.stroke()
+
+      ctx.fillStyle = '#111'
+      ctx.font = 'normal 9pt sans-serif'
+
+      ctx.textBaseline = 'middle'
+      ctx.textAlign = 'left'
+      for (var y = yVis0+map_info['grid_steps'][1]*0.5, n=firstVisCellY; y <= yVis1 && n < 26; y += gridSteps[1], ++n) {
+        var yy = Math.floor((y-mapMin[1])*scY+map_pan[1])+0.5
+        ctx.fillText(String.fromCharCode(65+n), 3, yy)
+      }
+
+      ctx.textBaseline = 'top'
+      ctx.textAlign = 'center'
+      for (var x = xVis0+map_info['grid_steps'][0]*0.5, n=firstVisCellX; x <= xVis1; x += gridSteps[0], ++n) {
+        var xx = Math.floor((x-mapMin[0])*scX+map_pan[0])+0.5
+        ctx.fillText(n+1, xx, 3)
+      }
+    }
+
+
+    function draw_airfield(canvas, ctx, item) {
+      var sx = canvas.width *item['sx']*map_scale + map_pan[0]
+      var sy = canvas.height*item['sy']*map_scale + map_pan[1]
+      var ex = canvas.width *item['ex']*map_scale + map_pan[0]
+      var ey = canvas.height*item['ey']*map_scale + map_pan[1]
+      
+      ctx.lineWidth = 3.0*Math.sqrt(map_scale)
+      ctx.strokeStyle = calcMapObjectColor(item)
+      ctx.beginPath()
+      ctx.moveTo(sx, sy)
+      ctx.lineTo(ex, ey)
+      ctx.stroke()
+    }
+
+
+    function draw_player(canvas, ctx, item, dt) {
+      var x = item['x']
+      var y = item['y']
+      var dir = $V([item['dx'], item['dy']])
+
+      if (lastPlayerPos) {
+        var x0 = lastPlayerPos['x']
+        var y0 = lastPlayerPos['y']
+        if (Math.abs(x0 - x) < 0.01)
+          x = approach(x0, x, dt, 0.4)
+        if (Math.abs(y0 - y) < 0.01)
+          y = approach(y0, y, dt, 0.4)
+
+        var dir0 = $V(lastPlayerPos['dir'])
+        var angle = dir.signedAngle2DFrom(dir0)
+
+        if (angle > -Math.PI*0.25 && angle < Math.PI*0.25) {
+          angle = approach(0.0, angle, dt, 0.4)
+          dir = dir0.rotate(angle, [0,0])
+        }
+      }
+
+      ctx.fillStyle = '#fff';
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = '#333';
+      ctx.beginPath()
+      var w = 7.0
+      var l = 25.0
+      var dx = dir.at(0)
+      var dy = dir.at(1)
+      var sx = x*canvas.width*map_scale + map_pan[0]
+      var sy = y*canvas.height*map_scale + map_pan[1]
+
+      // center arrow
+      sx -= l*0.5*dx
+      sy -= l*0.5*dy
+
+      ctx.moveTo(sx-w*dy, sy+w*dx)
+      ctx.lineTo(sx+w*dy, sy-w*dx)
+      ctx.lineTo(sx+l*dx, sy+l*dy)
+      //console.log('dx = ' + dx + ', dy = ' + dy)
+      ctx.closePath()
+      ctx.fill()
+      ctx.stroke()
+
+      return {'x': x, 'y': y, 'dir': dir.elements}
+    }
+
+
+    function draw_map_object(canvas, ctx, item, rotate) {
+      var x = canvas.width*item['x']
+      var y = canvas.height*item['y']
+
+      ctx.fillStyle = calcMapObjectColor(item)
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = '#000';
+
+      ctx.font = 'bold 18pt Icons'
+      ctx.textBaseline = 'middle'
+      ctx.textAlign = 'center'
+
+      var s = null
+      if (item['icon'] == 'Airdefence')
+        s = '4'
+      else if (item['icon'] == 'Structure')
+        s = '5'        
+      else if (item['icon'] == 'waypoint')
+        s = '6'
+      else if (item['icon'] == 'capture_zone')
+        s = '7'        
+      else if (item['icon'] == 'bombing_point')
+        s = '8'
+      else if (item['icon'] == 'defending_point')
+        s = '9'
+      else if (item['icon'] == 'respawn_base_tank')
+        s = '0'
+      else if (item['icon'] == 'respawn_base_fighter')
+        s = '.'
+      else if (item['icon'] == 'respawn_base_bomber')
+        s = ':'
+      else
+        s = item['icon'][0]
+
+      var sx = x*map_scale + map_pan[0]
+      var sy = y*map_scale + map_pan[1]
+      if (rotate)
+      {
+        ctx.save()
+        ctx.translate(sx, sy)
+        var heading = Math.atan2(item.dx, -item.dy)
+        ctx.rotate(heading)
+        ctx.translate(-sx, -sy)
+        ctx.fillText(s, sx, sy)
+        ctx.strokeText(s, sx, sy)
+        ctx.restore()
+      }
+      else
+      {
+        ctx.fillText(s, sx, sy)
+        ctx.strokeText(s, sx, sy)      
+      }
+    }
+
+    function redraw_map(dt) {
+      var canvas = document.getElementById('map-canvas')
+      var ctx = canvas.getContext('2d')
+      //ctx.fillRect(0, 0, canvas.width, canvas.height)
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      ctx.setTransform(map_scale, 0, 0, map_scale, map_pan[0], map_pan[1])
+      if (map_image.complete && map_image.naturalWidth) {
+        ctx.drawImage(map_image, 0, 0, canvas.width, canvas.height)
+      }
+
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
+      drawMapGridScaled(canvas)
+
+      var player = null
+      if ($.isArray(map_objects)) {
+        for (var i=0; i<map_objects.length; ++i) {
+          var item = map_objects[i];
+          if (item['type'] == 'airfield') {
+            draw_airfield(canvas, ctx, item)
+          } else {
+            if (item['icon'] == 'Player') {
+              player = item;
+            } else {
+              var rotate = (item['type'] == 'respawn_base_fighter') || (item['type'] == 'respawn_base_bomber')
+              draw_map_object(canvas, ctx, item, rotate)
+            }
+          }
+        }
+      }
+
+      if (player) {  
+        lastPlayerPos = draw_player(canvas, ctx, player, dt)
+      } else {
+        lastPlayerPos = null
+      }
+    }
+
+
+    function update_timers() {
+      var t = new Date().getTime()
+      var dt = 0.0
+      if (lastT) {
+        dt = (t-lastT)*0.001
+        blinkNormalT += dt
+        blinkHeavyT += dt
+        var periodNormal = 2.0
+        var periodHeavy = 1.2
+        if (blinkNormalT > periodNormal)
+          blinkNormalT -= periodNormal*Math.floor(blinkNormalT / periodNormal)
+        if (blinkHeavyT > periodHeavy)
+          blinkHeavyT -= periodHeavy*Math.floor(blinkHeavyT / periodHeavy)
+        blinkNormalVal = Math.exp(-Math.pow(5*blinkNormalT-2, 4))
+        blinkHeavyVal = Math.exp(-Math.pow(5*blinkHeavyT-2, 4))
+      }
+      lastT = t
+      return dt
+    }
+
+
+    function update_object_positions(objects) {
+      map_objects = objects
+      var dt = update_timers()
+      redraw_map(dt) 
+    }
+
+
+    function update_map_info(info) {
+      var prevMapGen = (map_info && ('map_generation' in map_info)) ? map_info['map_generation'] : -1
+      var newMapGen = (info && ('map_generation' in info)) ? info['map_generation'] : -1
+      
+      map_info = info
+
+      if (prevMapGen != newMapGen) {
+        map_image.src = '/map.img?gen='+newMapGen
+        map_scale = 1.0
+        map_pan = [0.0, 0.0]
+        redraw_map(0.0)
+      }
+    }
+
+    function format_time(time) {
+      var minutes = Math.floor(time / 60)
+      var seconds = time - minutes * 60
+      return minutes + ':' + seconds.toString().padStart(2, '0')
+    }
+
+    function add_to_chat(root, rec) {
+      var el = $(document.createElement('div'))
+      if ("time" in rec)
+      {
+        var elTime = $(document.createElement('span'))
+        elTime.text(format_time(rec.time))
+        elTime.addClass('chat-time')
+        el.append(elTime)
+      }
+      el.addClass('chat-line')
+      if (rec.sender) {
+        var s = ''
+        if (rec['mode'])
+          s += '['+rec['mode']+'] '
+        s += rec.sender + ': ' + rec.msg
+        el.append(s)
+        if (rec['enemy'])  
+          el.addClass('msg-type-enemy')
+      } else {
+        el.append(rec.msg)
+        el.addClass('msg-type-system')
+      }
+      root.append(el)
+    }
+
+
+    function update_game_chat(data) {
+      if (!data || !data.length)
+        return
+
+      var root = $('#game-chat-root #textlines')
+      for (var i=0; i<data.length; ++i) {
+        add_to_chat(root, data[i])
+      }
+      root.get(0).scrollTop = root.get(0).scrollHeight
+
+      lastChatRecId = data[data.length-1].id
+    }
+
+    function update_hud_msg(data) {
+      if (!data)
+        return
+
+      var msgEvt = data['events']
+      var msgDmg = data['damage']
+      var types = [[msgEvt, '#hud-evt-msg-root #textlines'], [msgDmg, '#hud-dmg-msg-root #textlines']]
+      for (var tp=0; tp<types.length; ++tp) {
+        var msg = types[tp][0]
+        var root = $(types[tp][1])
+        for (var i=0; i<msg.length; ++i) {
+          add_to_chat(root, msg[i])
+        }
+        root.get(0).scrollTop = root.get(0).scrollHeight
+      }
+
+      if (msgEvt.length)
+        lastEvtMsgId = msgEvt[msgEvt.length-1].id
+      if (msgDmg.length)
+        lastDmgMsgId = msgDmg[msgDmg.length-1].id
+    }
+
+
+    function update_indicators(data) {
+      var isValid = data && data['valid']
+      var roots = [$('#indicators0'), $('li')]
+      for (var i=0; i<2; ++i) {
+        if (isValid) { roots[i].show() } else { roots[i].hide() }
+      }
+      if (!isValid)
+        return
+        
+      var lists = [$('#indicators0 li'), $('#indicators1 li')]
+      for (var iList=0; iList<2; ++iList) {
+        var list = lists[iList]
+        for (var iItem=0, nItems=list.length; iItem < nItems; ++iItem) {
+          var elem = $(list.get(iItem))
+          var id = elem.get(0).id.slice(4)
+          if (id in data) {
+            elem.show()
+            elem.text(id+'='+data[id])
+          } else {
+            elem.hide()
+          }
+        }
+      }
+    }
+    
+    function update_state(data) {
+      var isValid = data && data['valid']
+      var roots = [$('#state0'), $('li')]
+      for (var i=0; i<2; ++i) {
+        if (isValid) { roots[i].show() } else { roots[i].hide() }
+      }
+      if (!isValid)
+        return
+        
+      //alert('isValid')
+        
+      var lists = [$('#state0 li'), $('#state1 li')]
+      for (var iList=0; iList<2; ++iList) {
+        var list = lists[iList]
+        for (var iItem=0, nItems=list.length; iItem < nItems; ++iItem) {
+          var elem = $(list.get(iItem))
+          var id = elem.get(0).id.slice(4)
+          //alert('parameter id "' + id + '"')
+          if (id in data) {
+            elem.show()
+            elem.text(id+'='+data[id])
+          } else {
+            //alert('parameter id "' + id + '" not found')
+            elem.hide()
+          }
+        }
+      }
+    }
+
+    function updateSlow() {
+      $.ajax({type:'GET', url:'/mission.json',  success:format_mission_data })
+      $.ajax({type:'GET', url:'/map_obj.json',  success:update_object_positions })
+      $.ajax({type:'GET', url:'/map_info.json', success:update_map_info })
+      $.ajax({type:'GET', url:'/gamechat?lastId='+lastChatRecId, success:update_game_chat })
+      $.ajax({type:'GET', url:'/hudmsg', data:{'lastEvt':lastEvtMsgId, 'lastDmg':lastDmgMsgId}, success:update_hud_msg })
+      $.ajax({type:'GET', url:'/indicators',    success:update_indicators })
+      $.ajax({type:'GET', url:'/state',         success:update_state,
+         error: function(jqXHR, textStatus, errorThrown) {
+          alert(textStatus + '\n' + errorThrown)
+        }
+      })
+    }
+
+
+    function updateFast() {
+      var dt = update_timers()
+      if (!isDraggingMap && !isTransformingMap)
+        redraw_map(dt)
+    }
+
+
+    function normalizeText(text) {
+      return text.replace('<', '&lt;').replace('>', '&gt;');
+    }
+
+
+    function localize_static() {
+      var elems = $('.loc')
+      var len = elems.length
+      for (var i=0; i<len; ++i) {
+        var e = $(elems[i])
+        var key = e.text()
+        if (key in loc_tbl)
+          e.text(loc_tbl[key])
+      }
+    }
+
+
+    function page_log(data) {
+      var el = $('<div></div>')
+      el.text(data)
+      $(document.body).append(el)
+    }
+
+    
+    function local_debug_init() {
+      var dbg_chat = [
+        'Never gonna give you up', 'Never gonna let you down', 'Never gonna run around and desert you',
+        'Never gonna make you cry', 'Never gonna say goodbye', 'Never gonna tell a lie and hurt you'
+      ]
+      var dbg_mode = ['Team', 'All', 'Squad', '', 'Private', '', '']
+      var root = $('#game-chat-root #textlines')
+      for (var n=0; n<5; ++n) {  
+        for (var i=0; i<dbg_chat.length; ++i) {
+          add_to_chat(root, {'id':i+1, 'msg': dbg_chat[i], 'sender': 'Rick', 'enemy': false, 'mode': dbg_mode[i], 'time': n * 100 + i})
+        }
+      }
+      root.get(0).scrollTop = root.get(0).scrollHeight
+    }
+
+    pos_save_elem_ids = {
+      '#map-root': ['left', 'top'],
+      '#map-canvas': ['width', 'height'],
+      '#mission-objectives': ['left', 'top', 'width'],
+      '#game-chat-root': ['width', 'height', 'left', 'top'],
+      '#hud-evt-msg-root': ['width', 'height', 'left', 'top'],
+      '#hud-dmg-msg-root': ['width', 'height', 'left', 'top'],
+      '#indicators-root': ['left', 'top', 'width', 'height'],
+      '#state-root': ['left', 'top', 'width', 'height']
+    }
+
+    function get_pos_prop(elem, field) {
+      if (field == 'width' || field == 'height')
+        return elem[field]()
+      else
+        return elem.offset()[field]
+    }
+
+    function set_pos_prop(elem, field, val) {
+      if (field == 'width' || field == 'height')
+        return elem[field](val)
+      else {
+        var offs = elem.offset()
+        offs[field] = val
+        elem.offset(offs)
+      }
+    }
+
+    function load_positions() {
+      for (var id in pos_save_elem_ids) {
+        var cookieVal = Cookies.get(id)
+        if (cookieVal) {
+          var elem = $(id)
+          var values = cookieVal.split('|')
+          for (var vi in values) {
+            var kv = values[vi].split(':')
+            if (kv.length==2) {
+              set_pos_prop(elem, kv[0], kv[1])
+            }
+          }
+        }
+      }
+
+      var canvas = $('#map-canvas')
+      canvas.get(0).width  = canvas.width()
+      canvas.get(0).height = canvas.height()
+    }
+
+
+    function save_positions() {
+      for (var id in pos_save_elem_ids) {
+        var elem = $(id)
+        var fields = pos_save_elem_ids[id]
+        var cookieVal = ''
+        for (var idx in fields) {
+          if (cookieVal) cookieVal+='|';
+          cookieVal += fields[idx]+':'+get_pos_prop(elem, fields[idx])
+        }
+        if (cookieVal)
+          Cookies.set(id, cookieVal, {expires:cookieLifeTime})
+      }
+    }
+
+
+    function save_indicators_order(event, ui) {
+      var lists = [$('#indicators0 li'), $('#indicators1 li')]
+      var order = [[],[]]
+      for (var iList=0; iList<2; ++iList) {
+        for (var iItem=0, nItems=lists[iList].length; iItem<nItems; ++iItem) {
+          order[iList].push(lists[iList][iItem].id.slice(4))
+        }
+      }
+      var val = order[0].join('|') + ':' + order[1].join('|')
+      Cookies.set('indicators', val, {expires:cookieLifeTime})
+    }
+    
+    function save_state_order(event, ui) {
+      var lists = [$('#state0 li'), $('#state1 li')]
+      var order = [[],[]]
+      for (var iList=0; iList<2; ++iList) {
+        for (var iItem=0, nItems=lists[iList].length; iItem<nItems; ++iItem) {
+          order[iList].push(lists[iList][iItem].id.slice(4))
+        }
+      }
+      var val = order[0].join('|') + ':' + order[1].join('|')
+      Cookies.set('state', val, {expires:cookieLifeTime})
+    }
+    
+    function fill_indicators_list() {
+      var addElem = function(root, id) {
+        var elem = $('<li id="ind-'+id+'" style="display:none;"></li>')
+        //var elem = $('<li id="ind-'+id+'">'+id+'</li>')
+        root.append(elem)
+      }
+
+      var fullIndIdList = indicator_columns[0].concat(indicator_columns[1])
+
+      var savedVal = Cookies.get('indicators')
+      var order = [[], []]
+      if (savedVal) {
+        var s = savedVal.split(':')
+        order = [s[0].split('|'), s[1].split('|')]
+        for (var iList=0; iList<2; ++iList) {
+          var root = $('#indicators'+iList)
+          for (var iItem=0, nItems=s[iList].length; iItem<nItems; ++iItem) {
+            var id = order[iList][iItem]
+            if (fullIndIdList.indexOf(id) >= 0) {
+              addElem(root, id)
+            }
+          }
+        }          
+      }
+
+      var savedIdsListFull = order[0].concat(order[1])
+
+      for (var iList=0; iList<2; ++iList) {
+        var list = indicator_columns[iList]
+        var root = $('#indicators'+iList)
+        for (var iItem=0; iItem<list.length; ++iItem) {
+          if (savedIdsListFull.indexOf(list[iItem]) < 0) {
+            addElem(root, list[iItem])
+          }
+        }
+      }
+    }
+    
+    function fill_state_list() {
+     var addElem = function(root, id) {
+        var elem = $('<li id="stt-'+id+'" style="display:none;"></li>')
+        //var elem = $('<li id="stt-'+id+'">'+id+'</li>')
+        root.append(elem)
+      }
+
+      var fullStateIdList = state_columns[0].concat(state_columns[1])
+
+      var savedVal = Cookies.get('state')
+      var order = [[], []]
+      if (savedVal) {
+        var s = savedVal.split(':')
+        order = [s[0].split('|'), s[1].split('|')]
+        for (var iList=0; iList<2; ++iList) {
+          var root = $('#state'+iList)
+          for (var iItem=0, nItems=s[iList].length; iItem<nItems; ++iItem) {
+            var id = order[iList][iItem]
+            if (fullStateIdList.indexOf(id) >= 0) {
+              addElem(root, id)
+            }
+          }
+        }          
+      }
+
+      var savedStateListFull = order[0].concat(order[1])
+
+      for (var iList=0; iList<2; ++iList) {
+        var list = state_columns[iList]
+        var root = $('#state'+iList)
+        for (var iItem=0; iItem<list.length; ++iItem) {
+          if (savedStateListFull.indexOf(list[iItem]) < 0) {
+            addElem(root, list[iItem])
+          }
+        }
+      }
+    }
+
+    function init() {
+      localize_static()
+
+      var canvasEl = document.getElementById('map-canvas')
+      
+      addWheelHandler(canvasEl, mapOnWheel)
+      canvasEl.onselectstart = function() {return false} //== Chrome fix
+      //$("#map-canvas").mousedown(mapOnMouseDown)
+
+      //Hammer.plugins.showTouches();
+      //Hammer.plugins.fakeMultitouch();
+
+      var ht = Hammer(canvasEl, hammer_opt)
+      var events = ['drag', 'dragstart', 'dragend', 'transform', 'transformstart', 'transformend']
+      for (var ei in events) {
+        ht.on(events[ei], on_touch_event)
+      }
+
+      load_positions()
+      fill_indicators_list()
+      fill_state_list()
+
+      var interactive = ['#game-chat-root', '#hud-evt-msg-root', '#hud-dmg-msg-root']
+      for (var i in interactive) {
+        var el = $(interactive[i])
+        el.draggable({handle:'#draghandle', stop:save_positions}).resizable({stop:save_positions})
+      }
+      $('#mission-objectives').draggable({handle:'#draghandle', stop:save_positions}).resizable({handles: 'e', stop:save_positions})
+      $('#indicators-root').draggable({handle:'#draghandle', stop:save_positions}).resizable({stop:save_positions})
+      $('#state-root').draggable({handle:'#draghandle', stop:save_positions}).resizable({stop:save_positions})
+
+      $('#map-root').draggable({handle:'#draghandle', stop: save_positions})
+      $('#map-canvas').resizable({
+        aspectRatio: 1,
+        minWidth: 256,
+        minHeight: 256,
+        stop: function(event, ui) {
+          var canvas = ui.element.find('canvas').get(0)
+          var factor = ui.size.width / canvas.width
+          canvas.width = ui.size.width
+          canvas.height = ui.size.height
+          map_pan[0] *= factor
+          map_pan[1] *= factor
+          redraw_map()
+          save_positions()
+        }
+      })
+
+      $("#indicators0, #indicators1").sortable(
+        {connectWith: ".connectedIndicators", stop:save_indicators_order}
+      ).disableSelection()
+      
+      $("#state0, #state1").sortable(
+        {connectWith: ".connectedState", stop:save_state_order}
+      ).disableSelection()      
+
+      if (document.location.protocol != 'file:') {
+        setInterval(updateSlow, 500);
+        setInterval(updateFast, 25);
+      } else {
+        local_debug_init()
+      }
+    }
+
+    window.onload = init;
+
+  </script>
+</head>
+
+<body>
+  <div id="log_output"></div>
+
+  <div id="map-root">
+    <div class="caption"><div id="draghandle"></div></div>
+    <canvas id="map-canvas" width="640" height="640">Please use a browser with canvas support</canvas>
+  </div>
+
+  <div id="mission-objectives">
+    <div class="caption"><div id="draghandle"></div></div>
+
+    <h3 class="loc">map/primary_objectives</h3>
+    <div id="objectives-primary"></div>
+
+    <h3 class="loc">map/secondary_objectives</h3>
+    <div id="objectives-secondary"></div>
+  </div>
+
+  <div id="game-chat-root">
+    <div class="caption"><div id="draghandle"></div></div>
+    <div id="textlines"></div>
+  </div>
+
+  <div id="hud-evt-msg-root">
+    <div class="caption"><div id="draghandle"></div></div>
+    <div id="textlines"></div>
+  </div>
+
+  <div id="hud-dmg-msg-root">
+    <div class="caption"><div id="draghandle"></div></div>
+    <div id="textlines"></div>
+  </div>
+
+  <div id="indicators-root">
+    <div class="caption"><div id="draghandle"></div></div>
+    <div id="indicators">
+      <ul id="indicators0" class="connectedIndicators"></ul>
+      <ul id="indicators1" class="connectedIndicators"></ul>
+    </div>
+  </div>
+  
+  <div id="state-root">
+    <div class="caption"><div id="draghandle"></div></div>
+    <div id="state">
+      <ul id="state0" class="connectedState"></ul>
+      <ul id="state1" class="connectedState"></ul>
+    </div>
+  </div>
+  
+</body>
+
+</html>
