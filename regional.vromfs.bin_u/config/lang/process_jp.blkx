@@ -1,0 +1,512 @@
+{
+  "rootFolder": ".",
+  "write_utf8_mark": false,
+  "trailing_semicolon": false,
+  "allow_dup_keys": true,
+  "task": [
+    {
+      "name": "process_j",
+      "langpack": "rel",
+      "group": "all",
+      "process": {
+        "subtype": "jap_line_break",
+        "lang": "Japanese",
+        "dest": "../lang_processed"
+      }
+    },
+    {
+      "name": "process_c",
+      "langpack": "rel",
+      "group": "all",
+      "process": {
+        "subtype": "chn_line_break",
+        "lang": "Chinese",
+        "dest": "../lang_processed"
+      }
+    },
+    {
+      "name": "process_t",
+      "langpack": "rel",
+      "group": "all",
+      "process": {
+        "subtype": "chn_line_break",
+        "lang": "TChinese",
+        "dest": "../lang_processed"
+      }
+    },
+    {
+      "name": "process_h",
+      "langpack": "rel",
+      "group": "all",
+      "process": {
+        "subtype": "chn_line_break",
+        "lang": "HChinese",
+        "dest": "../lang_processed"
+      }
+    }
+  ],
+  "group": {
+    "name": "all",
+    "find": {
+      "path": "",
+      "wildcard": "*.csv",
+      "exclude": "^_xlast\\.csv$"
+    }
+  },
+  "langpack": [
+    {
+      "name": "all",
+      "lang": [
+        "English",
+        "French",
+        "Italian",
+        "German",
+        "Spanish",
+        "Russian",
+        "Japanese",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "rel",
+      "lang": [
+        "English",
+        "French",
+        "Italian",
+        "German",
+        "Spanish",
+        "Russian",
+        "Polish",
+        "Czech",
+        "Turkish",
+        "Chinese",
+        "Japanese",
+        "Portuguese",
+        "Ukrainian",
+        "Serbian",
+        "Hungarian",
+        "Korean",
+        "Belarusian",
+        "TChinese",
+        "HChinese",
+        "Vietnamese",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "efgr_cmnts",
+      "lang": [
+        "English",
+        "French",
+        "German",
+        "Russian",
+        "Comments"
+      ]
+    },
+    {
+      "name": "efigs",
+      "lang": [
+        "English",
+        "French",
+        "Italian",
+        "German",
+        "Spanish"
+      ]
+    },
+    {
+      "name": "efgsrp",
+      "lang": [
+        "English",
+        "French",
+        "German",
+        "Spanish",
+        "Russian",
+        "Polish"
+      ]
+    },
+    {
+      "name": "fgsrp",
+      "lang": [
+        "French",
+        "German",
+        "Spanish",
+        "Russian",
+        "Polish"
+      ]
+    },
+    {
+      "name": "fgsp",
+      "lang": [
+        "French",
+        "German",
+        "Spanish",
+        "Polish"
+      ]
+    },
+    {
+      "name": "efgs",
+      "lang": [
+        "English",
+        "French",
+        "German",
+        "Spanish"
+      ]
+    },
+    {
+      "name": "fgs",
+      "lang": [
+        "French",
+        "German",
+        "Spanish"
+      ]
+    },
+    {
+      "name": "figs",
+      "lang": [
+        "French",
+        "Italian",
+        "German",
+        "Spanish"
+      ]
+    },
+    {
+      "name": "_ru_cmnts",
+      "lang": [
+        "Russian",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_ru_en_cmnts",
+      "lang": [
+        "Russian",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_en_ru_cmnts",
+      "lang": [
+        "Russian",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_en_cmnts",
+      "lang": [
+        "Russian",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_fr_cmnts",
+      "lang": [
+        "French",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_it_cmnts",
+      "lang": [
+        "Italian",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_de_cmnts",
+      "lang": [
+        "German",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_sp_cmnts",
+      "lang": [
+        "Spanish",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_jp_cmnts",
+      "lang": [
+        "Japanese",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_pl_cmnts",
+      "lang": [
+        "Polish",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_cz_cmnts",
+      "lang": [
+        "Czech",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_tr_cmnts",
+      "lang": [
+        "Turkish",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_zh_cmnts",
+      "lang": [
+        "Chinese",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_zhtw_cmnts",
+      "lang": [
+        "TChinese",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_zhhx_cmnts",
+      "lang": [
+        "HChinese",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_pt_cmnts",
+      "lang": [
+        "Portuguese",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_uk_cmnts",
+      "lang": [
+        "Ukrainian",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_sr_cmnts",
+      "lang": [
+        "Serbian",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_hu_cmnts",
+      "lang": [
+        "Hungarian",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_ko_cmnts",
+      "lang": [
+        "Korean",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_be_cmnts",
+      "lang": [
+        "Belarusian",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_vi_cmnts",
+      "lang": [
+        "Vietnamese",
+        "English",
+        "Comments",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_en_ru",
+      "lang": [
+        "English",
+        "Russian",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_ru",
+      "lang": [
+        "Russian",
+        "max_chars"
+      ]
+    },
+    {
+      "name": "_en",
+      "lang": "English"
+    },
+    {
+      "name": "_fr",
+      "lang": "French"
+    },
+    {
+      "name": "_it",
+      "lang": "Italian"
+    },
+    {
+      "name": "_de",
+      "lang": "German"
+    },
+    {
+      "name": "_sp",
+      "lang": "Spanish"
+    },
+    {
+      "name": "_jp",
+      "lang": "Japanese"
+    },
+    {
+      "name": "_pl",
+      "lang": "Polish"
+    },
+    {
+      "name": "_cz",
+      "lang": "Czech"
+    },
+    {
+      "name": "_tr",
+      "lang": "Turkish"
+    },
+    {
+      "name": "_zh",
+      "lang": "Chinese"
+    },
+    {
+      "name": "_zhtw",
+      "lang": "TChinese"
+    },
+    {
+      "name": "_zhhx",
+      "lang": "HChinese"
+    },
+    {
+      "name": "_pt",
+      "lang": "Portuguese"
+    },
+    {
+      "name": "_uk",
+      "lang": "Ukrainian"
+    },
+    {
+      "name": "_sr",
+      "lang": "Serbian"
+    },
+    {
+      "name": "_hu",
+      "lang": "Hungarian"
+    },
+    {
+      "name": "_ko",
+      "lang": "Korean"
+    },
+    {
+      "name": "_be",
+      "lang": "Belarusian"
+    },
+    {
+      "name": "_vi",
+      "lang": "Vietnamese"
+    },
+    {
+      "name": "russian",
+      "lang": "Russian"
+    },
+    {
+      "name": "english",
+      "lang": "English"
+    },
+    {
+      "name": "french",
+      "lang": "French"
+    },
+    {
+      "name": "italian",
+      "lang": "Italian"
+    },
+    {
+      "name": "german",
+      "lang": "German"
+    },
+    {
+      "name": "spanish",
+      "lang": "Spanish"
+    },
+    {
+      "name": "efigsrpj",
+      "lang": [
+        "English",
+        "French",
+        "Italian",
+        "German",
+        "Spanish",
+        "Russian",
+        "Polish",
+        "Japanese",
+        "Comments|noverify"
+      ]
+    },
+    {
+      "name": "figsrj",
+      "lang": [
+        "French",
+        "Italian",
+        "German",
+        "Spanish",
+        "Russian",
+        "Japanese"
+      ]
+    }
+  ]
+}
