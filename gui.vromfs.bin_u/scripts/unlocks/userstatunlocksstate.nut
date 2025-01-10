@@ -204,4 +204,5 @@ return {
   getStageByIndex
   getUnlockRewardMarkUp
   getUnlockReward
+  rewardsInProgress
 }

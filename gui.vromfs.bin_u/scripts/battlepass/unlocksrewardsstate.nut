@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let { activeUnlocks, unlockProgress, emptyProgress, receiveRewards, getStageByIndex
+let { activeUnlocks, unlockProgress, emptyProgress, receiveRewards, getStageByIndex, rewardsInProgress
 } = require("%scripts/unlocks/userstatUnlocksState.nut")
 
 let mkUnlockId = @(flag) Computed(@() activeUnlocks.value.findindex(@(unlock) unlock?.meta[flag] ?? false))
@@ -14,25 +14,40 @@ let curSeasonBattlePassUnlockId = Computed(@() premiumUnlock.value?.requirement)
 let hasBattlePass = Computed(@() curSeasonBattlePassUnlockId.value != null
   && (activeUnlocks.value?[curSeasonBattlePassUnlockId.value].isCompleted ?? false))
 
-let basicProgress = keepref(Computed(@() unlockProgress.value?[basicUnlockId.value] ?? emptyProgress))
-let premiumProgress = keepref(Computed(function() {
+function getNotReceiveEmptyRewardStageIdx(unlock, progress, rewardsInProgressValue) {
+  let { hasReward = false, name = "" } = unlock
+  if (!hasReward || name in rewardsInProgressValue)
+    return null
+
+
+  let { stage = 0 } = progress
+  let curStageData = getStageByIndex(unlock, stage - 1)
+  if (curStageData != null && (curStageData?.rewards.len() ?? 0) == 0)
+    return stage
+  return null
+}
+
+let basicProgress = Computed(@() unlockProgress.value?[basicUnlockId.value] ?? emptyProgress)
+let basicEmptyRewardStageIdxForReceive = keepref(Computed(
+  @() getNotReceiveEmptyRewardStageIdx(basicUnlock.get(), basicProgress.get(), rewardsInProgress.get())))
+
+let premiumProgress = Computed(function() {
   if (!hasBattlePass.value)
     return emptyProgress
   return unlockProgress.value?[premiumUnlockId.value] ?? emptyProgress
-}))
+})
+let premiumEmptyRewardStageForReceive = keepref(Computed(
+  @() getNotReceiveEmptyRewardStageIdx(premiumUnlock.get(), premiumProgress.get(), rewardsInProgress.get())))
 
-function receiveEmtyRewards(unlock, progressData) {
-  if (!(unlock?.hasReward ?? false))
+function receiveEmptyRewards(unlockId, stage) {
+  if (unlockId == null)
     return
-
-  let curStageData = getStageByIndex(unlock, (progressData?.stage ?? 0) - 1)
-  if (curStageData != null && (curStageData?.rewards.len() ?? 0) == 0)
-    receiveRewards(unlock?.name,
-      { taskOptions = { showProgressBox = false }, needShowRewardWnd = false })
+  log($"BattlePass: receive empty rewards for {unlockId} and {stage} stage")
+  receiveRewards(unlockId, { taskOptions = { showProgressBox = false }, needShowRewardWnd = false })
 }
 
-basicProgress.subscribe(@(progressData) receiveEmtyRewards(basicUnlock.value, progressData))
-premiumProgress.subscribe(@(progressData) receiveEmtyRewards(premiumUnlock.value, progressData))
+basicEmptyRewardStageIdxForReceive.subscribe(@(stage) stage != null ? receiveEmptyRewards(basicUnlockId.get(), stage) : null)
+premiumEmptyRewardStageForReceive.subscribe(@(stage) stage != null ? receiveEmptyRewards(premiumUnlockId.get(), stage) : null)
 
 return {
   basicUnlockId
