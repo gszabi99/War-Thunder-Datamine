@@ -67,6 +67,11 @@
       },
       "conditions": {},
       "actions": {
+        "bigQueryAddRecord": {
+          "name": "tutorial_destroyer_basic_arcade",
+          "params": "task 1/6: start mission",
+          "event": ""
+        },
         "unitSetProperties": [
           {
             "object": "all_targets_squad",
@@ -436,6 +441,11 @@
             "time": 5.0
           }
         ],
+        "bigQueryAddRecord": {
+          "name": "tutorial_destroyer_basic_arcade",
+          "params": "task 2/6: killed target in close combat",
+          "event": ""
+        },
         "triggerEnable": {
           "target": "rangedCombat_start"
         }
@@ -849,6 +859,11 @@
         },
         "triggerEnable": {
           "target": "rangedCombat_binocular_off"
+        },
+        "bigQueryAddRecord": {
+          "name": "tutorial_destroyer_basic_arcade",
+          "params": "task 3/6: killed target in range combat",
+          "event": ""
         }
       },
       "else_actions": {}
@@ -1287,6 +1302,11 @@
         }
       },
       "actions": {
+        "bigQueryAddRecord": {
+          "name": "tutorial_destroyer_basic_arcade",
+          "params": "task 4/6: killed target by art modes",
+          "event": ""
+        },
         "triggerDisable": {
           "target": "artModes_mercy_kill_plane"
         },
@@ -1632,6 +1652,11 @@
         }
       },
       "actions": {
+        "bigQueryAddRecord": {
+          "name": "tutorial_destroyer_basic_arcade",
+          "params": "task 5/6: using torpeding",
+          "event": ""
+        },
         "playHint": [
           {
             "hintType": "tutorialHint",
@@ -2092,6 +2117,11 @@
       },
       "conditions": {},
       "actions": {
+        "bigQueryAddRecord": {
+          "name": "tutorial_destroyer_basic_arcade",
+          "params": "task 6/6: capture zone was captured",
+          "event": ""
+        },
         "hudElementShow": {
           "element": "hud_tutorial_tank_tickets_all_texts",
           "show": false,
