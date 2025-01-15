@@ -596,6 +596,8 @@ let class WishListWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventDiscountsDataUpdated(_) {
+    if ((this.filteredUnits?.len() ?? 0) == 0)
+      return
     this.updateButtons()
     this.updateUnitsDiscounts()
   }

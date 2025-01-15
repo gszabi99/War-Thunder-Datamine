@@ -5,6 +5,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
 let { getUserstatItemRewardData } = require("%scripts/userstat/userstatItemsRewards.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 local shouldCheckAutoConsume = false
 
@@ -14,7 +15,33 @@ local isAutoConsumeInProgress = false
 let multiConsumeList = []
 let singleConsumeList = []
 
+function decreaseItemsAmountIfNeed(itemsList) {
+  foreach (item in itemsList) {
+    let newItem = ::ItemsManager.getInventoryItemById(item.id)
+    if (!newItem || item.amount != newItem.amount)
+      continue
+
+    local isSameItems = false
+    foreach (uid, amount in item.amountByUids) {
+      if (amount != newItem.amountByUids?[uid]) {
+        isSameItems = false
+        break
+      }
+      isSameItems = true
+    }
+    if (!isSameItems)
+      continue
+
+    newItem.uids.each(@(uid) inventoryClient.removeItem(uid))
+    newItem.amountByUids.clear()
+    item.uids.clear()
+  }
+}
+
 function onFinishMultiItemsConsume() {
+  //items list refreshed, but ext inventory only requested.
+  //so update item amount to avoid repeated request before real update
+  decreaseItemsAmountIfNeed(multiConsumeList)
   multiConsumeList.clear()
   isAutoConsumeInProgress = false
 }
@@ -23,6 +50,8 @@ function fillItemsListsForAutoConsume() {
   let itemList = ::ItemsManager.getInventoryList(itemType.ALL, @(i) i.shouldAutoConsume)
 
   foreach (item in itemList) {
+    if (!item.uids?[0])
+      continue
     if (!item.canMultipleConsume || !item?.canConsume() || getUserstatItemRewardData(item.id) != null) {
       singleConsumeList.append(item)
       continue

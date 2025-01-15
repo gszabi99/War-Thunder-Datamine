@@ -38,6 +38,8 @@ local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onDummyA() {
+    if (!this.isValid())
+      return
     let buttonsHolder = this.scene.findObject("buttons_holder")
     let activeButtonindex = this.getHoveredButtonIndex() ?? buttonsHolder.getValue()
     if(activeButtonindex == 0)

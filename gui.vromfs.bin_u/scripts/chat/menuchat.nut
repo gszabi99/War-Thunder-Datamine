@@ -504,6 +504,8 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
     roomTab.canClose = room.canBeClosed ? "yes" : "no"
     room.concealed(function(is_concealed) {
+      if (!roomTab?.isValid())
+        return
       roomTab.enable(!room.hidden && !is_concealed && roomVisible)
       roomTab.show(!room.hidden && !is_concealed && roomVisible)
     })

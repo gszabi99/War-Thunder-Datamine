@@ -551,6 +551,9 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSearchEditBoxActivate(obj) {
+    if (!this.checkScene())
+      return
+
     this.doSearch(obj)
   }
 

@@ -596,6 +596,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(true, true)
 
     let armyRankCollapsedData = this.getRanksCollapsedDataForArmy(this.curCountry, this.curPage)
+    this.guiScene.applyPendingChanges(true) //For recalculate visibility status of rankTables
     for (local i = 0; i < this.maxRank; i++) {
       let rankTable = this.getRankTable(tableObj, i)
       if (rankTable == null || !rankTable.isVisible())
@@ -973,7 +974,8 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!ranksBlk)
       ranksBlk = get_ranks_blk()
 
-    let isEraAvailable = !isTreeReserchable || is_era_available(this.curCountry, rank, this.getCurPageEsUnitType())
+    let isEraAvailable = (rank in this.totalVehiclesCount)
+      && (!isTreeReserchable || is_era_available(this.curCountry, rank, this.getCurPageEsUnitType()))
     local tooltipPlate = ""
     local tooltipRank = ""
     local tooltipReqCounter = ""

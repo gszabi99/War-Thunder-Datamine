@@ -33,6 +33,7 @@ let hmdSetting = Computed(function() {
     isTopOwl = false,
     isTornado = false,
     isTyphoon = false
+    isRafale = false,
   }
   if (BlkFileName.value == "")
     return res

@@ -2143,10 +2143,9 @@ gui_handlers.MultiplePurchase <- class (gui_handlers.BaseGuiHandlerWT) {
       this.buyFunc(this.curValue - this.minValue)
   }
 
-  function goBack() {
+  function onDestroy() {
     if (this.onExitFunc)
       this.onExitFunc()
-    base.goBack()
   }
 
   onEventModificationPurchased = @(_p) this.goBack()

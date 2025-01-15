@@ -148,7 +148,8 @@ let rwr = @() {
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
           fontSize = hudFontHgt * 1.2
-          text = settings.get().directionGroups?[rwrTargets[0].groupId].text ?? settings.get().unknownText
+          text = rwrTargets.len() == 0 ? settings.get().unknownText
+            : settings.get().directionGroups?[rwrTargets[0].groupId].text ?? settings.get().unknownText
         }
         {
           size = flex()
@@ -163,7 +164,8 @@ let rwr = @() {
           update = @() {
             transform = {
               pivot = [0.5, 0.5]
-              rotate = atan2(rwrTargets[0].y, rwrTargets[0].x) * (180.0 / PI) + 90
+              rotate = rwrTargets.len() == 0 ? 90
+                : (atan2(rwrTargets[0].y, rwrTargets[0].x) * (180.0 / PI) + 90)
             }
           }
         }
