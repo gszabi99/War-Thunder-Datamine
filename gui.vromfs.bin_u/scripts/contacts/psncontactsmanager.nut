@@ -36,11 +36,12 @@ let console2uid = {}
 function onPresencesReceived(response, _err) {
   let updPresences = []
   foreach (userInfo in (response?.basicPresences ?? [])) {
-    if (userInfo.accountId not in console2uid)
+    let { accountId = null } = userInfo
+    if (accountId == null || (accountId not in console2uid))
       continue
 
     updPresences.append({
-      userId = console2uid[userInfo.accountId]
+      userId = console2uid[accountId]
       presences = { online = userInfo.onlineStatus == "online" }
     })
   }
