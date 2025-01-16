@@ -490,36 +490,36 @@ function createTargetDist(index) {
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
     color = IlsColor.value
     commands = [
-      (!RadarTargetPosValid.value ? [VECTOR_LINE_DASHED,
+      [VECTOR_LINE_DASHED,
         100 * angleLeft,
         100 * (1 - distanceRel),
         100 * angleRight,
         100 * (1 - distanceRel),
         5, 7
-      ] : []),
-      ((target.isDetected || target.isSelected) && !RadarTargetPosValid.value ? [VECTOR_LINE,
+      ],
+      (target.isDetected ? [VECTOR_LINE,
         100 * angleLeft - 2,
-        100 * (1 - distanceRel) - 5,
+        100 * (1 - distanceRel) - 3,
         100 * angleLeft - 2,
-        100 * (1 - distanceRel) + 5
+        100 * (1 - distanceRel) + 3
       ] : []),
-      ((target.isDetected || target.isSelected) && !RadarTargetPosValid.value ? [VECTOR_LINE,
+      (target.isDetected ? [VECTOR_LINE,
         100 * angleRight + 2,
-        100 * (1 - distanceRel) - 5,
+        100 * (1 - distanceRel) - 3,
         100 * angleRight + 2,
-        100 * (1 - distanceRel) + 5
+        100 * (1 - distanceRel) + 3
       ] : []),
-      ((target.isDetected || target.isSelected) && !RadarTargetPosValid.value ? [VECTOR_LINE,
+      (target.isDetected ? [VECTOR_LINE,
         100 * angleLeft - 2,
-        100 * (1 - distanceRel) - 5,
+        100 * (1 - distanceRel) - 3,
         100 * angleRight + 2,
-        100 * (1 - distanceRel) - 5
+        100 * (1 - distanceRel) - 3
       ] : []),
-      ((target.isDetected || target.isSelected) && !RadarTargetPosValid.value ? [VECTOR_LINE,
+      (target.isDetected ? [VECTOR_LINE,
         100 * angleLeft - 2,
-        100 * (1 - distanceRel) + 5,
+        100 * (1 - distanceRel) + 3,
         100 * angleRight + 2,
-        100 * (1 - distanceRel) + 5
+        100 * (1 - distanceRel) + 3
       ] : []),
       (!target.isEnemy ?
         [VECTOR_LINE,
@@ -795,6 +795,19 @@ function getRadarSubMode(is_cn) {
   return is_cn ? "扫描中" : "ОБЗ"
 }
 
+function getTargetSideMode(is_cn) {
+  if (AirCannonMode.value)
+    return ""
+  if (Irst.value || CCIPMode.value || BombingMode.value)
+    return ""
+  if (RadarModeNameId.value >= 0) {
+    let mode = modeNames[RadarModeNameId.value]
+    if (mode.contains("HDN"))
+      return is_cn ? "" : "ППС"
+  }
+  return ""
+}
+
 function currentMode(is_cn) {
   return @(){
     watch = [CCIPMode, IsRadarVisible, RadarModeNameId, AirCannonMode, AtgmMode, IlsColor, BombingMode]
@@ -819,6 +832,20 @@ function currentSubMode(is_cn) {
     fontSize = 50
     font = Fonts.ils31
     text = getRadarSubMode(is_cn)
+    halign = ALIGN_RIGHT
+  }
+}
+
+function currentSideMode(is_cn) {
+  return @(){
+    watch = [CCIPMode, RadarModeNameId, IsRadarVisible, Irst, AirCannonMode, IlsColor]
+    size = [pw(15), SIZE_TO_CONTENT]
+    pos = [pw(9), ph(31.5)]
+    rendObj = ROBJ_TEXT
+    color = IlsColor.value
+    fontSize = 50
+    font = Fonts.ils31
+    text = getTargetSideMode(is_cn)
     halign = ALIGN_RIGHT
   }
 }
@@ -1108,6 +1135,7 @@ function Ils31(width, height, is_cn) {
       ASPLaunchPermitted(!is_cn, 48, 85, is_cn),
       currentMode(is_cn),
       currentSubMode(is_cn),
+      currentSideMode(is_cn),
       ccip,
       shellName(is_cn),
       aamReticle,

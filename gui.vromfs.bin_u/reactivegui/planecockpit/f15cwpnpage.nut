@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 from "%globalScripts/loc_helpers.nut" import loc_checked
-let { FlaresCount, ChaffsCount, CannonCount } = require("%rGui/airState.nut")
+let { FlaresCount, ChaffsCount, CannonCount, IsChaffsEmpty, IsFlrEmpty } = require("%rGui/airState.nut")
 let string = require("string")
 let { WeaponSlots, WeaponSlotsTrigger, WeaponSlotsCnt, SelectedWeapSlot,
  WeaponSlotsTotalCnt, WeaponSlotsName } = require("%rGui/planeState/planeWeaponState.nut")
@@ -29,25 +29,25 @@ let aircraft = {
 }
 
 let chaffs = @(){
-  watch = ChaffsCount
+  watch = [ChaffsCount, IsChaffsEmpty]
   size = SIZE_TO_CONTENT
   pos = [pw(67), ph(18)]
   rendObj = ROBJ_TEXT
-  color = ChaffsCount.get() <= 0 ? Color(255, 0, 0, 255) : (ChaffsCount.get() <= 10 ? Color(255, 100, 0, 255) : Color(0, 255, 0, 255))
+  color = ChaffsCount.get() <= 0 || IsChaffsEmpty.get() ? Color(255, 0, 0, 255) : (ChaffsCount.get() <= 10 ? Color(255, 100, 0, 255) : Color(0, 255, 0, 255))
   font = Fonts.hud
   fontSize = baseFontSize
-  text = string.format("CHF %d", ChaffsCount.get())
+  text = string.format("CHF %d", IsChaffsEmpty.get() ? 0 : ChaffsCount.get())
 }
 
 let flares = @(){
-  watch = FlaresCount
+  watch = [FlaresCount, IsFlrEmpty]
   size = SIZE_TO_CONTENT
   pos = [pw(67), ph(22)]
   rendObj = ROBJ_TEXT
-  color = FlaresCount.get() <= 0 ? Color(255, 0, 0, 255) : (FlaresCount.get() <= 10 ? Color(255, 100, 0, 255) : Color(0, 255, 0, 255))
+  color = FlaresCount.get() <= 0 || IsFlrEmpty.get() ? Color(255, 0, 0, 255) : (FlaresCount.get() <= 10 ? Color(255, 100, 0, 255) : Color(0, 255, 0, 255))
   font = Fonts.hud
   fontSize = baseFontSize
-  text = string.format("FLR %d", FlaresCount.get())
+  text = string.format("FLR %d", IsFlrEmpty.get() ? 0 : FlaresCount.get())
 }
 
 let CannonAmmoCount = CannonCount[0]
