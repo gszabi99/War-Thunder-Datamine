@@ -188,6 +188,7 @@ let allowed_mission_settings = { //only this settings are allowed in room
 let memberDefaults = freeze({
   team = Team.Any
   country = "country_0"
+  squad = INVALID_SQUAD_ID
   spectator = false
   ready = false
   is_in_session = false
@@ -1278,14 +1279,16 @@ SessionLobby = {
   function syncAllInfo() {
     let myInfo = getProfileInfo()
     let myStats = getStats()
+    let squadId = g_squad_manager.getSquadData().id
 
     this.syncMyInfo({
       team = SessionLobbyState.team
+      squad = this.getGameMode() == GM_SKIRMISH && squadId != "" ? squadId.tointeger() : INVALID_SQUAD_ID
       country = SessionLobbyState.countryData ? SessionLobbyState.countryData.country : null
       selAirs = SessionLobbyState.countryData ? SessionLobbyState.countryData.selAirs : null
       slots = SessionLobbyState.countryData ? SessionLobbyState.countryData.slots : null
       spectator = SessionLobbyState.spectator
-      clanTag = getProfileInfo().clanTag
+      clanTag = myInfo.clanTag
       title = myStats ? myStats.title : ""
       pilotId = myInfo.pilotId
       state = this.updateMyState(true)
