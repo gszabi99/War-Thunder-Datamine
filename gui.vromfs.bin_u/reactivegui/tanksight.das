@@ -248,6 +248,9 @@ def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; dat
                          is_thermal : bool)
   var timeToShot = 1.2
   var isInoperable = false
+  var isCartridge = false
+  var isEmpty = false
+
   let settings = get_tank_sight_settings()
   if !data.isPreviewMode
     if unit == null || unit.weap == null
@@ -256,21 +259,24 @@ def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; dat
     if weapon == null
       return
     let gun = as_gun(weapon)
-    if gun != null
-      timeToShot = gun.nextShotAtTime - float(get_app().usefulTotalTime)
-      isInoperable = gun.isInoperable
-    else
+    if gun == null
       return
-  elif !settings.gunReadyReloadCountdownVisible
-    timeToShot = 0.
+    timeToShot = gun.nextShotAtTime - float(get_app().usefulTotalTime)
+    isInoperable = gun.isInoperable
+    isCartridge = gun.currentBulletSet.bulletsCartridge > 1
+    isEmpty = gun.currentBulletSet.bulletsCount == 0
 
-  if isInoperable || timeToShot <= 0.
-    if !settings.gunReadyMarkVisible
-      return
+  var isReloading = (!isCartridge && timeToShot > 0.) || (isCartridge && timeToShot > 0.5)
+  var showRedMarker   = settings.gunReadyMarkVisible && (isInoperable || isEmpty)
+  var showGreenMarker = settings.gunReadyMarkVisible && (data.isPreviewMode || (!isInoperable && !isEmpty && !isReloading))
+  var showReloadTimer = settings.gunReadyReloadCountdownVisible && (data.isPreviewMode || (!isInoperable && !isEmpty && isReloading))
+
+  if (showRedMarker || showGreenMarker)
     let sphCenter = pos + size * 0.3
-    let color = isInoperable ? E3DCOLOR(0xFFFF0000) : E3DCOLOR(0xFF00FF00)
+    let color = showRedMarker ? E3DCOLOR(0xFFFF0000) : E3DCOLOR(0xFF00FF00)
     ctx |> render_ellipse_aa(sphCenter, float2(ctx |> hdpx(10.)), ctx |> hdpx(1.), black, color)
-  elif settings.gunReadyReloadCountdownVisible
+
+  if (showReloadTimer)
     var fctx : StdGuiFontContext
     let fontId = settings.gunReadyFontId != -1 ? settings.gunReadyFontId : get_font_id("digital")
     get_font_context(fctx, fontId, 0, 0, settings.gunReadyTextSize)
