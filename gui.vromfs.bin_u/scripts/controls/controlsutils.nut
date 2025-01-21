@@ -16,6 +16,7 @@ let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { gui_start_controls_type_choice } = require("%scripts/controls/startControls.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { is_xbox } = require("%sqstd/platform.nut")
+let { g_aircraft_helpers } = require("%scripts/controls/aircraftHelpers.nut")
 
 const CLASSIC_PRESET = "classic"
 const SHOOTER_PRESET = "shooter"
@@ -48,8 +49,8 @@ let presetsNamesByTypes =
   }
 
 function getMouseUsageMask() {
-  let usage = ::g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE)
-  let usageNoAim = ::g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE_NO_AIM)
+  let usage = g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE)
+  let usageNoAim = g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE_NO_AIM)
   return (usage ?? 0) | (usageNoAim ?? 0)
 }
 

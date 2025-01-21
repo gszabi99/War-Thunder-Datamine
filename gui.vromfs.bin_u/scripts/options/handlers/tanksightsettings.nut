@@ -86,6 +86,8 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
 
   getPresetsComboboxMarkup = @(idx = 0) create_option_combobox(SELECT_PRESET_COMBOBOX_ID, this.tankSightPresets, idx, "onChangePreset", false)
 
+  updateIsPreviewExtWatched = @() updateExtWatched({ tankSightIsPreviewMode = this.isSightPreviewMode })
+
   function initScreen() {
     unitOptions.init(this, this.scene)
     set_tank_sight_highlight_obj(tankSightOptionsSections[0].id)
@@ -93,6 +95,7 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
     this.updateCrosshairOptions()
     this.updatePresetsOptions()
     this.applySettingsForSelectedUnit()
+    this.updateIsPreviewExtWatched()
   }
 
   function onDestroy() {
@@ -260,6 +263,7 @@ local class TankSightSettings (gui_handlers.BaseGuiHandlerWT) {
 
     toggleBtnObj.setValue(toggleBtnText)
     this.updateObjectsVisibilities()
+    this.updateIsPreviewExtWatched()
   }
 
   function onToggleNightVisionMode() {

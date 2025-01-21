@@ -17,6 +17,7 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { getThreadInfo, canCreateThreads } = require("%scripts/chat/chatStorage.nut")
 let { chatColors, getSenderColor } = require("%scripts/chat/chatColors.nut")
 let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
+let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 enum chatRoomCheckOrder {
   CUSTOM
@@ -124,7 +125,7 @@ enumsAddTypes(g_chat_room_type, {
     getRoomColorTag = function(roomId) { //roomId == playerName
       if (g_squad_manager.isInMySquad(roomId, false))
         return "squad"
-      if (::isPlayerNickInContacts(roomId, EPL_FRIENDLIST))
+      if (isPlayerNickInContacts(roomId, EPL_FRIENDLIST))
         return "friend"
       return ""
     }

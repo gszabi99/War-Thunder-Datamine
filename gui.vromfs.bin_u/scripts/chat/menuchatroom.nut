@@ -14,6 +14,7 @@ let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
+let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"
@@ -158,7 +159,7 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
     if (overlaySystemColor) {
       msgColor = overlaySystemColor
     }
-    else if (!myPrivate && ::isPlayerNickInContacts(from, EPL_BLOCKLIST)) {
+    else if (!myPrivate && isPlayerNickInContacts(from, EPL_BLOCKLIST)) {
       if (privateMsg) {
         callback?(null)
         return

@@ -434,8 +434,12 @@ promoButton[type=battlePass] > baseToggleButton:pushed {
   background-color:@battleTaskToggleButtonColorPushed;
 }
 
-promoButton[type=battlePass] > expandable > headerBg {
+promoButton[type=battlePass] > expandable > headerBg,
+promoButton[type=battlePass] > expandable > reward {
   width:1@arrowButtonWidth + 1@arrowButtonHeight + 1@blockInterval;
   position:relative;
+}
+
+promoButton[type=battlePass] > expandable > headerBg {
   background-color:@battleTaskHeaderBgColor;
 }

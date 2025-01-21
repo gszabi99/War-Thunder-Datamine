@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+
+let { is_myself_anyof_moderators } = require("%scripts/utils_sa.nut")
 let { get_time_msec } = require("dagor.time")
 
 const timeToComplainExpiredMS = 900000 // 15 minutes
@@ -21,7 +23,7 @@ uid = {
 let isComplaintTimerExpired = @(uid) ( get_time_msec() - complaintsCache[uid].lastComplaintTime ) > timeToComplainExpiredMS
 
 function getCanComplainOnUser(uid, sessionId) {
-  if (!complaintsCache?[uid])
+  if (is_myself_anyof_moderators() || !complaintsCache?[uid])
     return canComplainCheckResults.CAN_COMPLAIN
   if (sessionId && sessionId != "")
     return complaintsCache[uid].sessionIds.contains(sessionId) ? canComplainCheckResults.ALREADY_COMPLAIN_IN_BATTLE
@@ -35,7 +37,8 @@ function cacheComplaintOnUser(uid, sessionId) {
     complaintsCache[uid] <- { sessionIds = [], lastComplaintTime = 0 }
   if (sessionId)
     complaintsCache[uid].sessionIds.append(sessionId)
-  complaintsCache[uid].lastComplaintTime = get_time_msec()}
+  complaintsCache[uid].lastComplaintTime = get_time_msec()
+}
 
 function showModalWndCantComplainReason(reasonId) {
   let reasonLocId = reasonId == canComplainCheckResults.TIME_NOT_EXPIRED ? "time_not_expired"

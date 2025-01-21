@@ -18,7 +18,7 @@ let { getUnlockNameText, doPreviewUnlockPrize, fillUnlockProgressBar, fillUnlock
   updateLockStatus, updateUnseenIcon, buildUnlockDesc
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
-let { isUnlockFav, canAddFavorite, unlockToFavorites, fillUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { isUnlockFav, canAddFavorite, toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getUnlockCost, findUnusableUnitForManualUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
@@ -133,7 +133,7 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
     fillReward(itemData, unlockObj)
     ::g_unlock_view.fillStages(itemData, unlockObj, this)
     fillUnlockTitle(itemData, unlockObj)
-    fillUnlockFav(itemData.id, unlockObj)
+    initUnlockFavInContainer(itemData.id, unlockObj)
     fillUnlockPurchaseButton(itemData, unlockObj)
     fillUnlockManualOpenButton(itemData, unlockObj)
     updateLockStatus(itemData, unlockObj)
@@ -210,10 +210,8 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function unlockToFavorites(obj) {
-    if (obj?.isChecked == null)
-      return
-    obj.isChecked = obj.isChecked == "yes" ? "no" : "yes"
-    unlockToFavorites(obj, Callback(this.updateFavoritesCheckboxesInList, this))
+    if (toggleUnlockFavButton(obj))
+      this.updateFavoritesCheckboxesInList()
   }
 
   function updateFavoritesCheckboxesInList() {
@@ -240,10 +238,10 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let checkBoxObj = obj.getChild(index).findObject("checkbox_favorites")
-    if (!checkObj(checkBoxObj))
+    if (!checkBoxObj?.isValid())
       return
 
-    checkBoxObj.setValue(!checkBoxObj.getValue())
+    this.unlockToFavorites(checkBoxObj)
   }
 }
 

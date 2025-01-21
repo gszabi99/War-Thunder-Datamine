@@ -12,6 +12,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let u = require("%sqstd/underscore.nut")
 let { fetchRoomsList } = require("%scripts/matching/serviceNotifications/mrooms.nut")
 let { getGameModeIdsByEconomicName } = require("%scripts/matching/matchingGameModes.nut")
+let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 const ROOM_LIST_REFRESH_MIN_TIME = 3000 //ms
 const ROOM_LIST_REQUEST_TIME_OUT = 45000 //ms
@@ -234,7 +235,7 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 
   function isRoomVisible(room, hideFullRooms) {
     let userUid = SessionLobby.getRoomCreatorUid(room)
-    if (userUid && ::isPlayerInContacts(userUid, EPL_BLOCKLIST))
+    if (userUid && isPlayerInContacts(userUid, EPL_BLOCKLIST))
       return false
 
     if (hideFullRooms) {

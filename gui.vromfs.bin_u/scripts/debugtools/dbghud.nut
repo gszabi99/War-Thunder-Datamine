@@ -169,6 +169,21 @@ function text_hint_mission_hint_zoom() {
   })
 }
 
+function text_tutorial_hint_with_shortcuts_engine_add() {
+  g_hud_event_manager.onHudEvent("hint:missionHint:set", {
+    hintType = "tutorialHint"
+    shortcuts = [
+      "ship_main_engine"
+    ]
+    priority = 0
+    locId = "missions/tutorial_destroyer_battle/engine"
+  })
+}
+
+function mission_hint_remove() {
+  g_hud_event_manager.onHudEvent("hint:missionHint:remove")
+}
+
 register_command(hud_message_objective_debug, "debug.hud.message_objective_debug")
 register_command(hud_message_player_damage_debug, "debug.hud.message_player_damage_debug")
 register_command(hud_message_kill_log_debug, "debug.hud.message_kill_log_debug")
@@ -188,6 +203,8 @@ register_command(test_hint_offer_bailout, "debug.hud.test_hint_offer_bailout")
 register_command(test_hint_stop, "debug.hud.test_hint_stop")
 register_command(test_hint_skip_xray_shot, "debug.hud.test_hint_skip_xray_shot")
 register_command(text_hint_mission_hint_zoom, "debug.hud.text_hint_mission_hint_zoom")
+register_command(text_tutorial_hint_with_shortcuts_engine_add, "debug.hud.text_tutorial_hint_with_shortcuts_engine_add")
+register_command(mission_hint_remove, "debug.hud.mission_hint_remove")
 
 return {
   hud_message_objective_debug

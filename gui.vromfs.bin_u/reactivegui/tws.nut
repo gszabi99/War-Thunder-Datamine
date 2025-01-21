@@ -21,6 +21,8 @@ let targetLineWidth = hdpx(1)
 let sectorLineWidth = hdpx(30)
 let targetStateBorder = hdpx(3)
 
+let txtStatePadding = [hdpx(9), hdpx(4), hdpx(6), hdpx(4)]
+
 let styleText = {
   color = greenColor
   font = Fonts.hud
@@ -684,6 +686,14 @@ function createRwrTargetPresence(index, colorWatched) {
   }
 }
 
+let mkTargetsStateBorder = @(colorWatched) @() {
+  watch = colorWatched
+  rendObj = ROBJ_BOX
+  size = flex()
+  borderWidth = targetStateBorder
+  borderColor = isColorOrWhite(colorWatched.value)
+}
+
 function mlwsTargetsState(colorWatched) {
   let mlwsTargetsStateOpacity = Computed(@() max(0.0, 1.0 - mlwsTargetsAgeMin.value * MlwsLwsSignalHoldTimeInv.value) *
     (((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0))
@@ -691,27 +701,15 @@ function mlwsTargetsState(colorWatched) {
     styleText.__merge({
       watch = colorWatched
       rendObj = ROBJ_TEXT
-      size = flex()
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
+      padding = txtStatePadding
       text = loc("hud/mlws_missile")
       color = isColorOrWhite(colorWatched.value)
     })
-  let targetsStateBorder = @() {
-    watch = colorWatched
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
-    lineWidth = targetStateBorder
-    color = isColorOrWhite(colorWatched.value)
-    fillColor = 0
-    commands = [
-      [VECTOR_RECTANGLE, 10, 30, 80, 40]
-    ]
-  }
+  let targetsStateBorder = mkTargetsStateBorder(colorWatched)
   return @() {
     watch = [IsMlwsLwsHudVisible, mlwsTargetsStateOpacity]
-    pos = [pw(100), IsMlwsLwsHudVisible.value ? ph(-200) : ph(-150)]
-    size = flex()
+    pos = [pw(100), IsMlwsLwsHudVisible.value ? ph(-165) : ph(-115)]
+    hplace = ALIGN_CENTER
     opacity = mlwsTargetsStateOpacity.value
     children = mlwsTargetsStateOpacity.value > 0.01
       ? [ targetsState, targetsStateBorder ]
@@ -735,27 +733,15 @@ function lwsTargetsState(colorWatched) {
     styleText.__merge({
       watch = colorWatched
       rendObj = ROBJ_TEXT
-      size = flex()
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
+      padding = txtStatePadding
       text = loc("hud/lws_laser")
       color = isColorOrWhite(colorWatched.value)
     })
-  let targetsStateBorder = @() {
-    watch = colorWatched
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
-    lineWidth = targetStateBorder
-    color = isColorOrWhite(colorWatched.value)
-    fillColor = 0
-    commands = [
-      [VECTOR_RECTANGLE, 10, 30, 80, 40]
-    ]
-  }
+  let targetsStateBorder = mkTargetsStateBorder(colorWatched)
   return @() {
     watch = [IsMlwsLwsHudVisible, lwsTargetsStateOpacity]
-    pos = [pw(-100), IsMlwsLwsHudVisible.value ? ph(-200) : ph(-150)]
-    size = flex()
+    pos = [pw(-100), IsMlwsLwsHudVisible.value ? ph(-165) : ph(-115)]
+    hplace = ALIGN_CENTER
     opacity = lwsTargetsStateOpacity.value
     children = lwsTargetsStateOpacity.value > 0.01
       ? [ targetsState, targetsStateBorder ]
@@ -773,7 +759,6 @@ function lwsTargetsComponent(colorWatched, isForTank = false) {
 }
 
 function rwrTargetsState(colorWatched) {
-  let lineWidth = hdpx(2)
   let rwrTargetsLaunch = Computed(@() rwrLaunchingTargetAgeMin.value * RwrSignalHoldTimeInv.value < 1.0 )
   let rwrTargetsStateOpacity = Computed(@() max(0.0, 1.0 - min(rwrTrackingTargetAgeMin.value, rwrLaunchingTargetAgeMin.value) * RwrSignalHoldTimeInv.value) *
     (rwrTargetsLaunch.value && ((CurrentTime.value * 4.0).tointeger() % 2) == 0 ? 0.0 : 1.0) )
@@ -781,27 +766,15 @@ function rwrTargetsState(colorWatched) {
     styleText.__merge({
       watch = [rwrTargetsLaunch, colorWatched]
       rendObj = ROBJ_TEXT
-      size = flex()
-      halign = ALIGN_CENTER
-      valign = ALIGN_CENTER
+      padding = txtStatePadding
       text = rwrTargetsLaunch.value ? loc("hud/rwr_launch") : loc("hud/rwr_track")
       color = isColorOrWhite(colorWatched.value)
     })
-  let targetsStateBorder = @() {
-    watch = colorWatched
-    rendObj = ROBJ_VECTOR_CANVAS
-    size = flex()
-    lineWidth
-    color = isColorOrWhite(colorWatched.value)
-    fillColor = 0
-    commands = [
-      [VECTOR_RECTANGLE, 10, 30, 80, 40]
-    ]
-  }
+  let targetsStateBorder = mkTargetsStateBorder(colorWatched)
   return @() {
     watch = [IsMlwsLwsHudVisible, rwrTargetsStateOpacity]
-    pos = [pw(0), IsMlwsLwsHudVisible.value ? ph(-200) : ph(-150)]
-    size = flex()
+    pos = [pw(0), IsMlwsLwsHudVisible.value ? ph(-165) : ph(-115)]
+    hplace = ALIGN_CENTER
     opacity = rwrTargetsStateOpacity.value
     children = rwrTargetsStateOpacity.value > 0.01
       ? [ targetsState, targetsStateBorder ]

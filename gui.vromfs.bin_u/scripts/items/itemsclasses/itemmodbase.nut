@@ -96,12 +96,10 @@ let ModificationBase = class (BaseItem) {
       : $"{minText}-{get_roman_numeral(this.rankRange.y)}"
   }
 
-  function getIcon(_addItemName = true) {
-    local res = LayersIcon.genDataFromLayer(this.getIconBgLayer())
-    res += LayersIcon.genDataFromLayer(this.getIconMainLayer())
-    res += LayersIcon.genDataFromLayer(this.getIconRankLayer())
-    return res
-  }
+  getIcon = @(_addItemName = true) "".concat(
+    LayersIcon.genDataFromLayer(this.getIconBgLayer()),
+    LayersIcon.genDataFromLayer(this.getIconMainLayer()),
+    LayersIcon.genDataFromLayer(this.getIconRankLayer()))
 
   getIconBgLayer = @() LayersIcon.findLayerCfg("mod_upgrade_bg")
   getIconMainLayer = @() null

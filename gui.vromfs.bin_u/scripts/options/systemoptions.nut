@@ -243,6 +243,8 @@ function getOptionInfoView(id) {
     title
     description =  "\n".join(description)
     imageSrc = tryGetOptionImageSrc(id)
+    preloadedImages = opt?.allInfoImgs
+    hasImages = (opt?.allInfoImgs.len() ?? 0) > 0
   }
 }
 
@@ -1674,6 +1676,19 @@ function configWrite() {
   log("[sysopt] Config saved.")
 }
 
+function getAllOptionInfoImages(opt) {
+  let { widgetType, values = null, infoImgPattern = null, availableInfoImgVals = null } = opt
+  local possibleImgValues = []
+
+  if (widgetType == "list" || widgetType == "options_bar")
+    possibleImgValues = values
+  else if (widgetType == "slider")
+    possibleImgValues = availableInfoImgVals
+      ?? array(opt.max - opt.min + 1).map(@(_v, idx) (idx + opt.min))
+
+  return possibleImgValues.map(@(val) { src = format(infoImgPattern, val.tostring()) })
+}
+
 function init() {
   let blk = blkOptFromPath(get_config_name())
   foreach (_id, desc in mSettings) {
@@ -1681,6 +1696,8 @@ function init() {
       desc.init(blk, desc)
     if (("onChanged" in desc) && type(desc.onChanged) == "string")
       desc.onChanged = (desc.onChanged in mShared) ? mShared[desc.onChanged] : null
+    if ("infoImgPattern" in desc)
+      desc.allInfoImgs <- getAllOptionInfoImages(desc)
     let uiType = ("def" in desc) ? type(desc.def) : null
     desc.uiType <- uiType
     desc.widgetId <- null

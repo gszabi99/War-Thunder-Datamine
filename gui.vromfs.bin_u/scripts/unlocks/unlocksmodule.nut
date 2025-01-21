@@ -86,14 +86,6 @@ function isUnlockExpired(unlockBlk) {
     && getTimestampFromStringUtc(timeCond.endDate) <= get_charserver_time_sec()
 }
 
-function canDoUnlock(unlockBlk) {
-  if (unlockBlk?.mode == null || isUnlockOpened(unlockBlk.id))
-    return false
-
-  let timeCond = getTimeRangeCondition(unlockBlk)
-  return !timeCond || isInTimerangeByUtcStrings(timeCond.beginDate, timeCond.endDate)
-}
-
 let canClaimUnlockReward = @(unlockId) isRegionalUnlock(unlockId)
   ? isRegionalUnlockReadyToOpen(unlockId)
   : isUnlockReadyToOpen(unlockId)
@@ -271,6 +263,17 @@ function debugLogVisibleByTimeInfo(id) {
     $"visibleDays = {unlock?.visibleDays ?? "?"}",
     $"visibleDaysAfter = {unlock?.visibleDaysAfter ?? "?"}"
   ))
+}
+
+function canDoUnlock(unlockBlk) {
+  if (unlockBlk?.mode == null || isUnlockOpened(unlockBlk.id))
+    return false
+
+  if (!isUnlockVisible(unlockBlk))
+    return false
+
+  let timeCond = getTimeRangeCondition(unlockBlk)
+  return !timeCond || isInTimerangeByUtcStrings(timeCond.beginDate, timeCond.endDate)
 }
 
 function getUnlockCost(id) {

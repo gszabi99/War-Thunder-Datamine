@@ -30,3 +30,18 @@ tdiv {
     text:t='<<description>>'
   }
 }
+
+<<#hasImages>>
+tdiv {
+  id:t='preloaded_images_container'
+  position:t='root'
+  display:t='hide'
+  <<#preloadedImages>>
+  img {
+    // Without an explicit size, the default is (0,0), making the image invisible.
+    // However, it's still loaded into the PictureManager.
+    background-image:t='<<src>>'
+  }
+  <</preloadedImages>>
+}
+<</hasImages>>

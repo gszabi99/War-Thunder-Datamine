@@ -1011,6 +1011,27 @@ let getTriggerType = @(w) (w?.triggerGroup == "torpedoes" || w?.triggerGroup == 
 
 let isGunnerTrigger = @(trigger) trigger.indexof(TRIGGER_TYPE.GUNNER, 0) == 0
 
+function get_weapon_icons_text(unitName, weaponName) {
+  if (!weaponName || u.isEmpty(weaponName))
+    return ""
+
+  let unit = getAircraftByName(unitName)
+  if (!unit)
+    return ""
+
+  let weaponIconsText = []
+  foreach (weapon in unit.getWeapons())
+    if (weapon.name == weaponName) {
+      foreach (paramName in [WEAPON_TAG.BOMB, WEAPON_TAG.ROCKET,
+        WEAPON_TAG.TORPEDO, WEAPON_TAG.ADD_GUN])
+          if (weapon[paramName])
+            weaponIconsText.append(loc($"weapon/{paramName}Icon"))
+      break
+    }
+
+  return colorize("weaponPresetColor", "".join(weaponIconsText))
+}
+
 return {
   KGF_TO_NEWTON
   TRIGGER_TYPE
@@ -1048,4 +1069,5 @@ return {
   getWeaponDisabledMods
   getTriggerType
   isGunnerTrigger
+  get_weapon_icons_text
 }

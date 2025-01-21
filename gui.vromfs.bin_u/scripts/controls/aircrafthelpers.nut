@@ -8,7 +8,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_MOUSE_USAGE,
 } = require("%scripts/options/optionsExtNames.nut")
 let { isLoggedIn } = require("%scripts/login/loginStates.nut")
 
-::g_aircraft_helpers <- {
+let g_aircraft_helpers = {
   /* PRIVATE */
   // Shorter options names
   controlHelpersOptions = {
@@ -216,4 +216,8 @@ let { isLoggedIn } = require("%scripts/login/loginStates.nut")
   }
 }
 
-subscribe_handler(::g_aircraft_helpers)
+subscribe_handler(g_aircraft_helpers)
+
+return {
+  g_aircraft_helpers
+}

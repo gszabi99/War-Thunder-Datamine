@@ -15,7 +15,6 @@ let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { isEqual } = u
 let { EPLX_PS4_FRIENDS, contactsPlayers, contactsByGroups, getContactByName
 } = require("%scripts/contacts/contactsManager.nut")
 let { requestUserInfoData, getUserInfo } = require("%scripts/user/usersInfoManager.nut")
@@ -65,22 +64,7 @@ foreach (fn in [
   return nbsp.join([hasFeature("Clans") ? clanTag : "", utf8(name), addInfo], true)
 }
 
-::missed_contacts_data <- {}
-
-::isPlayerInContacts <- function isPlayerInContacts(uid, groupName) {
-  if (!(groupName in contactsByGroups) || u.isEmpty(uid))
-    return false
-  return uid in contactsByGroups[groupName]
-}
-
-::isPlayerNickInContacts <- function isPlayerNickInContacts(nick, groupName) {
-  if (!(groupName in contactsByGroups))
-    return false
-  foreach (p in contactsByGroups[groupName])
-    if (p.name == nick)
-      return true
-  return false
-}
+let missed_contacts_data = {}
 
 ::can_add_player_to_contacts_list <- function can_add_player_to_contacts_list(groupName) {
   if (contactsByGroups[groupName].len() < EPL_MAX_PLAYERS_IN_LIST)
@@ -135,8 +119,8 @@ foreach (fn in [
     if (nick != null) {
       let contact = Contact({ name = nick, uid = uid })
       contactsPlayers[uid] <- contact
-      if (uid in ::missed_contacts_data)
-        contact.update(::missed_contacts_data.$rawdelete(uid))
+      if (uid in missed_contacts_data)
+        contact.update(missed_contacts_data.$rawdelete(uid))
       contact.updateMuteStatus()
     }
     else
@@ -147,7 +131,7 @@ foreach (fn in [
   if (nick != null && (forceUpdate || contact.name == ""))
     contact.name = nick
 
-  if (clanTag != null && (forceUpdate || !isEqual(contact.clanTag, clanTag)))
+  if (clanTag != null && (forceUpdate || !u.isEqual(contact.clanTag, clanTag)))
     contact.setClanTag(clanTag)
 
   return contact
@@ -298,22 +282,9 @@ foreach (fn in [
 }
 
 ::collectMissedContactData <- function collectMissedContactData (uid, key, val) {
-  if (!(uid in ::missed_contacts_data))
-    ::missed_contacts_data[uid] <- {}
-  ::missed_contacts_data[uid][key] <- val
-}
-
-::isPlayerInFriendsGroup <- function isPlayerInFriendsGroup(uid, searchByUid = true, playerNick = "") {
-  if (u.isEmpty(uid))
-    searchByUid = false
-
-  local isFriend = false
-  if (searchByUid)
-    isFriend = ::isPlayerInContacts(uid, EPL_FRIENDLIST) || ::isPlayerInContacts(uid, EPLX_PS4_FRIENDS)
-  else if (playerNick != "")
-    isFriend = ::isPlayerNickInContacts(playerNick, EPL_FRIENDLIST) || ::isPlayerNickInContacts(playerNick, EPLX_PS4_FRIENDS)
-
-  return isFriend
+  if (!(uid in missed_contacts_data))
+    missed_contacts_data[uid] <- {}
+  missed_contacts_data[uid][key] <- val
 }
 
 subscribe_handler(::g_contacts, g_listener_priority.DEFAULT_HANDLER)

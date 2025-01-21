@@ -15,7 +15,7 @@ let regexp2 = require("regexp2")
 let { abs, round, sin, PI } = require("math")
 let { hangar_get_current_unit_name, hangar_set_dm_viewer_mode,
   hangar_get_dm_viewer_parts_count, set_xray_parts_filter } = require("hangar")
-let { blkOptFromPath } = require("%sqstd/datablock.nut")
+let { blkOptFromPath, eachParam } = require("%sqstd/datablock.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { KGF_TO_NEWTON, isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon,
@@ -1830,13 +1830,25 @@ dmViewer = {
       }
     }
     else if (partId in weaponPartsIds) {
+      let turretWeaponsNames = {}// { 406mm_45_bl_mk1_r1_naval_user_cannon = 2, ... }
       if (partId == "main_caliber_turret" || partId == "auxiliary_caliber_turret" || partId == "aa_turret") {
         weaponPartName = partName.replace("turret", "gun")
         foreach (weapon in this.getUnitWeaponList())
-          if (weapon?.turret?.gunnerDm == partName && weapon?.breechDP) {
+          if (weapon?.turret.gunnerDm == partName && weapon?.breechDP) {
             weaponPartName = weapon.breechDP
-            break
+
+            let weaponName = getWeaponNameByBlkPath(weapon?.blk ?? "")
+            if (weaponName == "")
+              continue
+            if (!turretWeaponsNames?[weaponName])
+              turretWeaponsNames[weaponName] <- 0
+            turretWeaponsNames[weaponName] += 1
           }
+
+        if (turretWeaponsNames.len() > 0) {
+          foreach(weaponName, weaponsCount in turretWeaponsNames)
+            desc.append("".concat(loc($"weapons/{weaponName}"), format(loc("weapons/counter"), weaponsCount)))
+        }
       }
       local weaponInfoBlk = null
       let weaponTrigger = getTblValue("weapon_trigger", params)
@@ -1844,7 +1856,9 @@ dmViewer = {
       if (weaponTrigger) {
         let weaponList = this.getUnitWeaponList()
         foreach (weapon in weaponList) {
-          if (triggerParam in weapon && weapon[triggerParam] == weaponTrigger) {
+          if (triggerParam not in weapon || weapon[triggerParam] != weaponTrigger)
+            continue
+          if (weapon?.turret.gunnerDm == params.name) {
             weaponInfoBlk = weapon
             break
           }
@@ -1862,12 +1876,11 @@ dmViewer = {
 
         let weaponBlkLink = weaponInfoBlk?.blk ?? ""
         let weaponName = getWeaponNameByBlkPath(weaponBlkLink)
-
         let ammo = isSpecialBullet ? 1 : this.getWeaponTotalBulletCount(partId, weaponInfoBlk)
         let shouldShowAmmoInTitle = isSpecialBulletEmitter
         let ammoTxt = ammo > 1 && shouldShowAmmoInTitle ? format(loc("weapons/counter"), ammo) : ""
 
-        if (weaponName != "")
+        if (weaponName != "" && turretWeaponsNames.len() == 0)
           desc.append("".concat(loc($"weapons/{weaponName}"), ammoTxt))
         if (weaponInfoBlk && ammo > 1 && !shouldShowAmmoInTitle)
           desc.append("".concat(loc("shop/ammo"), loc("ui/colon"), ammo))
@@ -2032,13 +2045,14 @@ dmViewer = {
         if (turretBlk == null)
           continue
 
-        let { verDriveDm = null, horDriveDm = null, shootingDmPart = null } = turretBlk
-        if (verDriveDm == partName)
-          u.appendOnce(loc("armor_class/drive_turret_v"), partsList)
-        if (horDriveDm == partName)
-          u.appendOnce(loc("armor_class/drive_turret_h"), partsList)
-        if (shootingDmPart == partName)
-          u.appendOnce(loc("xray/firing"), partsList)
+        eachParam(turretBlk, function(val,key) {
+          if (key == "verDriveDm" && val == partName)
+            u.appendOnce(loc("armor_class/drive_turret_v"), partsList)
+          if (key == "horDriveDm" && val == partName)
+            u.appendOnce(loc("armor_class/drive_turret_h"), partsList)
+          if (key == "shootingDmPart" && val == partName)
+            u.appendOnce(loc("xray/firing"), partsList)
+        })
       }
 
       let rangefinderDmPart = this.findAnyModEffectValue("rangefinderDmPart")

@@ -231,7 +231,7 @@ let messageComponent = @(message) function() {
       getMessageColor(message),
       message.isAutomatic
         ? message.text
-        : cross_call.filter_chat_message(message.text, message.isMyself)
+        : cross_call.filter_chat_message(message.text, message.isMyself) ?? message.text
     )
   }
   return {

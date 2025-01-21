@@ -8,7 +8,7 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { toggleUnlockFav, initUnlockFavObj, toggleUnlockFavButton } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
@@ -289,14 +289,8 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  function onToggleFav() {
-    let idx = this.getSelIconIdx()
-    if (idx == -1)
-      return
-
-    let option = this.getListItems()[idx]
-    toggleUnlockFav(option.unlockId)
-    this.updateButtons()
+  function onToggleFav(obj) {
+    toggleUnlockFavButton(obj)
   }
 
   function onBuy() {
@@ -382,9 +376,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (isFavBtnVisible) {
-      favBtnObj.setValue(isUnlockFav(option.unlockId)
-        ? loc("preloaderSettings/untrackProgress")
-        : loc("preloaderSettings/trackProgress"))
+      initUnlockFavObj(option.unlockId, favBtnObj)
       return
     }
 

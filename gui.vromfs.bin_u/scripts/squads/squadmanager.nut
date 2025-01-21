@@ -1407,7 +1407,7 @@ g_squad_manager = {
     ? g_squad_manager.checkUpdateStatus(squadStatusUpdateState.MENU) : null
   onEventChatConnected = @(_params) g_squad_manager.joinSquadChatRoom()
   onEventAvatarChanged = @(_p) g_squad_manager.updateMyMemberData()
-  onEventCrewTakeUnit = @(_p) g_squad_manager.updateMyMemberData()
+  onEventCrewsListInvalidate = @(_p) g_squad_manager.updateMyMemberData()
   onEventUnitRepaired = @(_p) ::g_squad_utils.updateMyCountryData()
   onEventCrossPlayOptionChanged = @(_p) g_squad_manager.updateMyMemberData()
   onEventMatchingDisconnect = @(_p) g_squad_manager.reset()

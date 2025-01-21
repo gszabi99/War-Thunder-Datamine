@@ -21,7 +21,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
   curPage = 0
   pagesCount = 0
   onUnitSelectFunction = null
-  showRecordsTableUnits = false
+  diffsForSort = null
   searchString = ""
   searchUnits = null
   userstat = null
@@ -47,9 +47,12 @@ local handlerClass = class (vehiclesModal.handlerClass) {
     if (this.userstat) {
       this.recordTableUnits = {}
       foreach (diff in g_difficulty.types) {
+        if (this.diffsForSort && !this.diffsForSort.contains(diff.egdLowercaseName))
+          continue
+
         let stats = this.userstat?[diff.egdLowercaseName].total
         if (stats && stats.len() > 0)
-          foreach(record in stats )
+          foreach (record in stats)
             this.recordTableUnits[record.name] <- (this.recordTableUnits?[record.name] ?? 0) + record.flyouts
       }
     }

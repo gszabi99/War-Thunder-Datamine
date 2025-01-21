@@ -10,7 +10,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { getAvailableRespawnBases } = require("guiRespawn")
-let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let { getLastWeapon, get_weapon_icons_text } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoCost } = require("%scripts/weaponry/ammoInfo.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -104,7 +104,7 @@ let Base = class {
     if (!presetNumber)
       return ""
 
-    let presetIconsText = ::get_weapon_icons_text(unit.name, unitWeaponLimit.name)
+    let presetIconsText = get_weapon_icons_text(unit.name, unitWeaponLimit.name)
     if (u.isEmpty(presetIconsText))
       return ""
 

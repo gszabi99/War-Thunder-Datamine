@@ -16,6 +16,7 @@ let { addFriendInvite } = require("%scripts/invites/invites.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { contactEvent, statusGroupsToRequest, GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")
 
@@ -218,7 +219,7 @@ function verifiedContactAndDoIfNeed(player, groupName, cb) {
 }
 
 function addContactImpl(contact, groupName) {
-  if (::isPlayerInContacts(contact.uid, groupName))
+  if (isPlayerInContacts(contact.uid, groupName))
     return //no need to do something
 
   let action = wtGroupToRequestAddAction?[groupName]
@@ -240,7 +241,7 @@ function addContact(player, groupName) { //playerConfig: { uid, name }
 }
 
 function removeContactImpl(contact, groupName) {
-  if (!::isPlayerInContacts(contact.uid, groupName))
+  if (!isPlayerInContacts(contact.uid, groupName))
     return //no need to do something
 
   let contactGroup = contact.contactServiceGroup

@@ -69,6 +69,7 @@ let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { Combination } = require("%scripts/controls/input/combination.nut")
 let { Axis } = require("%scripts/controls/input/axis.nut")
+let { g_aircraft_helpers } = require("%scripts/controls/aircraftHelpers.nut")
 
 function getAxisActivationShortcutData(shortcuts, item, preset) {
   preset = preset ?? ::g_controls_manager.getCurPreset()
@@ -822,7 +823,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
         set_option(item.optionType, valueIdx)
     }
 
-    let options = u.values(::g_aircraft_helpers.controlHelpersOptions)
+    let options = u.values(g_aircraft_helpers.controlHelpersOptions)
     foreach (optionId in options) {
       if (optionId == USEROPT_HELPERS_MODE)
         continue
@@ -1553,9 +1554,9 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     else if (axisName && (axisName == "camx" || axisName == "camy")
       && item.axis_num == MouseAxis.MOUSE_SCROLL) {
       let isMouseView = AIR_MOUSE_USAGE.VIEW ==
-        ::g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE)
+        g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE)
       let isMouseViewWhenNoAim = AIR_MOUSE_USAGE.VIEW ==
-        ::g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE_NO_AIM)
+        g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE_NO_AIM)
 
       if (isMouseView || isMouseViewWhenNoAim) {
         let msg = isMouseView
@@ -1565,9 +1566,9 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
           this.msgBox("mouse_used_for_view", msg,
           [
             ["replace", function() {
-              ::g_aircraft_helpers.setOptionValue(
+              g_aircraft_helpers.setOptionValue(
                 USEROPT_MOUSE_USAGE, AIR_MOUSE_USAGE.AIM)
-              ::g_aircraft_helpers.setOptionValue(
+              g_aircraft_helpers.setOptionValue(
                 USEROPT_MOUSE_USAGE_NO_AIM, AIR_MOUSE_USAGE.JOYSTICK)
               this.onAircraftHelpersChanged(null)
             }],

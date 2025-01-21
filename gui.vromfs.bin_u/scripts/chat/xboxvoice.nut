@@ -6,6 +6,7 @@ let { subscribe_to_state_update, add_voice_chat_member, remove_voice_chat_member
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { isPlayerInContacts, isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 
 let requestedIds = persist("requestedIds", @() {})
 
@@ -20,7 +21,7 @@ function is_muted(uid) {
 function force_update_state_for_uid(uid) {
   if (uid) {
     let muted_by_platform = is_muted(uid)
-    let muted_by_game = ::isPlayerInContacts(uid, EPL_BLOCKLIST)
+    let muted_by_game = isPlayerInContacts(uid, EPL_BLOCKLIST)
     let muted_result = muted_by_platform || muted_by_game
     log($"Mute state change for <{uid}>: {muted_by_platform} + {muted_by_game} -> {muted_result}")
     gchat_voice_mute_peer_by_uid(muted_result, uid.tointeger())
@@ -59,7 +60,7 @@ function on_external_ids_update(params) {
 
   requestedIds.$rawdelete(reqUid)
   let xuid = params?.externalIds?.xboxId
-  let isFriend = ::isPlayerInFriendsGroup(reqUid)
+  let isFriend = isPlayerInFriendsGroup(reqUid)
   add_voice_chat_member(reqUid, xuid, isFriend)
 }
 
@@ -76,7 +77,7 @@ function on_contacts_update() {
     return
 
   foreach (uid, _ in voiceChatMembers) {
-    let isFriend = ::isPlayerInFriendsGroup(uid)
+    let isFriend = isPlayerInFriendsGroup(uid)
     update_voice_chat_member_friendship(uid, isFriend)
   }
 }

@@ -27,7 +27,7 @@ avatarImg {
   <<#hasGjnIcon>>
     tdiv {
       position:t='absolute'
-      pos:t='6@dp, 1@profileUnlockIconSize - h + 2@dp'
+      pos:t='1@blockInterval + 1@lockIconInnerRightOffset, 1@avatarButtonSize + 1@blockInterval - h - 4@sf/@pf'
       size:t='1@newWidgetIconHeight, 1@newWidgetIconHeight'
       img {
         size:t='1@newWidgetIconHeight, 1@newWidgetIconHeight'

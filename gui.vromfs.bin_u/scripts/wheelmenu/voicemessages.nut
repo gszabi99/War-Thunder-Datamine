@@ -11,6 +11,7 @@ let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { get_game_mode, get_game_type } = require("mission")
 let { chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
+let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 const HIDDEN_CATEGORY_NAME = "hidden"
 const LIMIT_SHOW_VOICE_MESSAGE_PETALS = 8
@@ -242,7 +243,7 @@ function resetFastVoiceMessages() {
 
 ::is_voice_messages_muted <- function is_voice_messages_muted(name) { //used from native code
   return localDevoice.isMuted(name, localDevoice.DEVOICE_RADIO)
-    || ::isPlayerNickInContacts(name, EPL_BLOCKLIST)
+    || isPlayerNickInContacts(name, EPL_BLOCKLIST)
 }
 
 //////////////////////////////////////////////////////

@@ -8,6 +8,7 @@ let { isGuestLogin } = require("%scripts/user/profileStates.nut")
 let { check_communications_privilege, check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/xbox/permissions.nut")
 let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
 let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 
 function getXboxChatEnableStatus() {
   if (!is_platform_xbox || !isLoggedIn.get())
@@ -31,7 +32,7 @@ function isChatEnabled(needOverlayMessage = false) {
 // These checks are introduced for good reasons, but this commit is not
 // intended to reduce global variables usage
 function is_player_in_friends_group(uid, searchByUid, playerNick) {
-  return ::isPlayerInFriendsGroup(uid, searchByUid, playerNick)
+  return isPlayerInFriendsGroup(uid, searchByUid, playerNick)
 }
 
 function isCrossNetworkMessageAllowed(playerName) {

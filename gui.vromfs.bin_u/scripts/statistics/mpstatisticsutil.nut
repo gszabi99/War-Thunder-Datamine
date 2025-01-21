@@ -15,7 +15,6 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
-let { WEAPON_TAG } = require("%scripts/weaponry/weaponryInfo.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { updateTopSquadScore, getSquadInfo, isShowSquad,
   getSquadInfoByMemberId, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
@@ -765,27 +764,6 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
 
   text.append(locCurrentMissionName())
   return loc("ui/comma").join(text, true)
-}
-
-::get_weapon_icons_text <- function get_weapon_icons_text(unitName, weaponName) {
-  if (!weaponName || u.isEmpty(weaponName))
-    return ""
-
-  let unit = getAircraftByName(unitName)
-  if (!unit)
-    return ""
-
-  let weaponIconsText = []
-  foreach (weapon in unit.getWeapons())
-    if (weapon.name == weaponName) {
-      foreach (paramName in [WEAPON_TAG.BOMB, WEAPON_TAG.ROCKET,
-        WEAPON_TAG.TORPEDO, WEAPON_TAG.ADD_GUN])
-          if (weapon[paramName])
-            weaponIconsText.append(loc($"weapon/{paramName}Icon"))
-      break
-    }
-
-  return colorize("weaponPresetColor", "".join(weaponIconsText))
 }
 
 ::count_width_for_mptable <- function count_width_for_mptable(objTbl, markup) {

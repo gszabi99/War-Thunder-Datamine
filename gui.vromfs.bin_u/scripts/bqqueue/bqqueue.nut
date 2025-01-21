@@ -81,10 +81,11 @@ function sendAll() {
     return
 
   nextCanSendMsec(max(nextCanSendMsec.value, get_time_msec() + MIN_TIME_BETWEEN_MSEC))
+  let token = getPlayerTokenGlobal()
   let headers = {
-    action = "cln_bq_put_batch_json"
-    appid  = APP_ID
-    token  = getPlayerTokenGlobal()
+    action = token == "" ? "noa_bigquery_client_noauth" : "cln_bq_put_batch_json"
+    appid = APP_ID
+    token
   }
 
   let remainingCount = remainingMsg.len()

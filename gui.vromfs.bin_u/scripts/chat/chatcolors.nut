@@ -4,6 +4,7 @@ let { userName } = require("%scripts/user/profileStates.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
+let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 let chatColors = freeze({ //better to allow player tune color sheme
   sender =         { [false] = "@mChatSenderColorDark",        [true] = "@mChatSenderColor" }
@@ -20,7 +21,7 @@ function getSenderColor(senderName, isHighlighted = true, isPrivateChat = false,
     return chatColors.senderMe[isHighlighted]
   if (g_squad_manager.isInMySquad(senderName, false))
     return chatColors.senderSquad[isHighlighted]
-  if (::isPlayerNickInContacts(senderName, EPL_FRIENDLIST))
+  if (isPlayerNickInContacts(senderName, EPL_FRIENDLIST))
     return chatColors.senderFriend[isHighlighted]
   return u.isTable(defaultColor) ? defaultColor[isHighlighted] : defaultColor
 }

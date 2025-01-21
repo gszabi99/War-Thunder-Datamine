@@ -67,6 +67,13 @@ excludesdata =
     ]
   },
   {
+    key = "p",
+    arr =
+    [
+      "^pakin"
+    ]
+  },
+  {
     key = "t",
     arr =
     [

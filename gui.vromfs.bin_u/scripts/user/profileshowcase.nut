@@ -20,6 +20,8 @@ let defaultShowcaseType = "air_arcade"
 let diffNames = ["arcade", "historical", "simulation"]
 let gamemodesNoAiStats = ["tank_arcade", "tank_realistic", "tank_simulation", "test_ship_arcade", "test_ship_realistic"]
 
+let getDiffByIndex = @(index) diffNames?[index] ?? diffNames[0]
+
 function getStatsValue(params, value, scorePeriod) {
   let gameType = params?.showcaseType ?? defaultShowcaseType
   let stats = params.stats?.leaderboard[gameType][scorePeriod]
@@ -82,24 +84,8 @@ function findUnitStats(stats, unitName, diff) {
 }
 
 function getUnitStat(unitName, value, params) {
-  let unitStats = params?.unitStats ?? findUnitStats(params?.stats.userstat, unitName, params?.diff ?? "arcade")
+  let unitStats = params?.unitStats ?? findUnitStats(params?.stats.userstat, unitName, params.terseInfo.showcase?.difficulty ?? diffNames[0])
   return unitStats?[value.valueId] ?? 0
-}
-
-function findUnitBestDiff(unitName, value, params) {
-  local maxFlyouts = 0
-  local bestDiff = "arcade"
-  let oldDiff = params?.diff
-  foreach (diff in diffNames) {
-    params.diff <- diff
-    let statVal = getUnitStat(unitName, value, params)
-    if (statVal > maxFlyouts) {
-      maxFlyouts = statVal
-      bestDiff = diff
-    }
-  }
-  params.diff <- oldDiff
-  return bestDiff
 }
 
 function getActiveKillsByDeathsRatio(params) {
@@ -248,8 +234,17 @@ let visibleValues = {
   }
   diff_label = {
     type = "label",
-    getText = @(params, _val) loc($"difficulty{diffNames.indexof(params?.diff) ?? 0}")
+    getText = @(params, _val) loc($"difficulty{diffNames.indexof(params.terseInfo.showcase?.difficulty) ?? 0}")
     valueId = "",
+    getComboBox = function(params, _val) {
+      let data = {width = "1@accountHeaderWidth - 50@sf/@pf", funcName = "onSelectFavUnitDiff"}
+      let values = []
+      let currDiffIdx = diffNames.indexof(params.terseInfo.showcase?.difficulty) ?? 0
+      foreach (idx, _diff in diffNames)
+        values.append({text = loc($"difficulty{idx}"), isSelected = idx == currDiffIdx})
+      data.values <- values
+      return data
+    }
   }
   averageRelativePosition = {
     type = "stat"
@@ -339,10 +334,11 @@ let pageTypes = [
       let unit = getUnitFromTerseInfo(params.terseInfo)
       if (unit != null) {
         params.unit <- unit
-        params.diff = findUnitBestDiff(unit.name, visibleValues["unit_respawns"], params)
-        params.unitStats <- findUnitStats(params?.stats.userstat, unit.name, params.diff)
-        params.terseInfo.showcase.difficulty <- params.diff
+        params.unitStats <- findUnitStats(params?.stats.userstat, unit.name, params.terseInfo.showcase?.difficulty ?? diffNames[0])
       }
+    }
+    getDiffsForUnitsSort = function(terseInfo) {
+      return terseInfo.showcase?.difficulty ?? diffNames[0]
     }
   },
   {
@@ -457,6 +453,7 @@ function getShowcaseViewData(playerStats, terseInfo, viewParams = null) {
       }
       if (value.type == "textStat") {
         let statData = {
+          isFirst = textStats.len() == 0,
           text = value?.getText(params, value) ?? loc(value.locId),
           value = value?.getValue(params, value),
           tooltip = loc(value?.tooltip ?? "")
@@ -484,9 +481,10 @@ function getShowcaseViewData(playerStats, terseInfo, viewParams = null) {
         unitIdx = unitIdx + 1
         continue
       }
-      if (value.type == "label")
-        labels.append({text = value.getText(params, value)})
-
+      if (value.type == "label") {
+        labels.append({text = value.getText(params, value), comboBoxData = value?.getComboBox(params, value)})
+        continue
+      }
     }
     let iconStatsCount = stats.len()
     if (iconStatsCount > 1) {
@@ -495,7 +493,8 @@ function getShowcaseViewData(playerStats, terseInfo, viewParams = null) {
       stats[iconStatsCount-1].isEndInRow <- true
     }
 
-    statLines.append({scale, stats, statsBig, textStats, unitsImages, labels, hasUnitImage = unitsImages.len() > 0})
+    statLines.append({isFirstLine = statLines.len() == 0,
+      scale, stats, statsBig, textStats, unitsImages, labels, hasUnitImage = unitsImages.len() > 0})
   }
 
   return handyman.renderCached("%gui/profile/profileMainPageMiddle.tpl", {scale, isSmallSize, statLines})
@@ -660,4 +659,5 @@ return {
   getShowcaseByTerseInfo
   saveUnitToTerseInfo
   getShowcaseIndexByTerseName
+  getDiffByIndex
 }

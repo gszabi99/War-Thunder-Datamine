@@ -54,6 +54,7 @@ let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { getLastGamercardScene } = require("%scripts/gamercard.nut")
 let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
 let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
+let { isPlayerNickInContacts, isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -1518,7 +1519,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
               break;
             }
           if (!haveRoom) {
-            if (::isPlayerNickInContacts(user, EPL_BLOCKLIST))
+            if (isPlayerNickInContacts(user, EPL_BLOCKLIST))
               return
             thisCapture.addRoom(roomId)
             thisCapture.updateRoomsList()
@@ -2185,7 +2186,7 @@ let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
 
     this.addRoomMsg(this.curRoom.id, userName.value, data.msg, true, true)
 
-    let blocked = ::isPlayerNickInContacts(data.user, EPL_BLOCKLIST)
+    let blocked = isPlayerNickInContacts(data.user, EPL_BLOCKLIST)
     if (blocked)
       this.addRoomMsg(
         this.curRoom.id,
@@ -2865,8 +2866,8 @@ eventbus_subscribe("on_sign_out", resetChat)
   let checkUid = uid != null
 
   let privateValue = ::get_gui_option_in_mode(USEROPT_ONLY_FRIENDLIST_CONTACT, OPTIONS_MODE_GAMEPLAY)
-  return (privateValue && !::isPlayerInFriendsGroup(uid, checkUid, name))
-    || ::isPlayerNickInContacts(name, EPL_BLOCKLIST)
+  return (privateValue && !isPlayerInFriendsGroup(uid, checkUid, name))
+    || isPlayerNickInContacts(name, EPL_BLOCKLIST)
 }
 
 hasMenuGeneralChats.subscribe(@(_) deferOnce(sendEventUpdateChatFeatures))

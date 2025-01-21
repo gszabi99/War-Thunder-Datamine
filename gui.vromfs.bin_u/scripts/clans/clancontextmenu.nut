@@ -6,6 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isChatEnableWithPlayer, hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 let getClanActions = function(clanId) {
   if (!hasFeature("Clans"))
@@ -40,7 +41,7 @@ let retrieveRequestActions = function(clanId, playerUid, playerName, handler, ca
   let myClanRights = ::g_clans.getMyClanRights()
   let isClanAdmin = clan_get_admin_editor_mode()
 
-  let isBlock = ::isPlayerInContacts(playerUid, EPL_BLOCKLIST)
+  let isBlock = isPlayerInContacts(playerUid, EPL_BLOCKLIST)
   let contact = ::getContact(playerUid, playerName)
   let name = contact?.name ?? playerName
   contact.checkInteractionStatus(function(comms_state) {

@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_option_gamma, is_internet_radio_station_removable, remove_internet_radio_station, get_internet_radio_options, set_option_gamma, gchat_voice_echo_test
+from "%scripts/dagui_natives.nut" import get_option_gamma, is_internet_radio_station_removable, remove_internet_radio_station, get_internet_radio_options, set_option_gamma, gchat_voice_echo_test, get_cur_gui_scene
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/utils_sa.nut" import is_multiplayer
@@ -35,7 +35,9 @@ let { create_options_container } = require("%scripts/options/optionsExt.nut")
 let { guiStartPostfxSettings } = require("%scripts/postFxSettings.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
+let { resetTimeout, clearTimer, defer } = require("dagor.workcycle")
 
+const DELAY_BEFORE_PRELOAD_HOVERED_OPT_IMAGES_SEC = 0.25
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
 
 function getOptionsWndOpenParams(group) {
@@ -114,6 +116,11 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     showObjById("web_ui_button", showWebUI, this.scene)
   }
 
+  function onDestroy() {
+    clearTimer(this.preloadOptionImages)
+    defer(@() get_cur_gui_scene().discardUnusedPicture())
+  }
+
   function onGroupSelect(obj) {
     if (!obj)
       return
@@ -124,6 +131,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
     this.scene.findObject("option_info_container").show(false)
     this.lastHoveredRowId = null
+    clearTimer(this.preloadOptionImages)
 
     this.resetNavigation()
 
@@ -484,6 +492,18 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     }
     obj.active = "yes"
     this.lastHoveredRowId = obj.id
+
+    if (view?.hasImages)
+      resetTimeout(DELAY_BEFORE_PRELOAD_HOVERED_OPT_IMAGES_SEC, this.preloadOptionImages.bindenv(this))
+  }
+
+  function preloadOptionImages() {
+    if (!this.scene?.isValid())
+      return
+    let container = this.scene.findObject("preloaded_images_container")
+    if (!container?.isValid())
+      return
+    container.show(true)
   }
 
   onSystemOptionControlHover = @(obj) this.guiScene.performDelayed({}, // Ensures it's called after onOptionContainerHover

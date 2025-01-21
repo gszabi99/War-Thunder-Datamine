@@ -1259,4 +1259,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onUnitImageClick(_obj) {}
 
+  function onSelectFavUnitDiff(_obj) {}
+
 }

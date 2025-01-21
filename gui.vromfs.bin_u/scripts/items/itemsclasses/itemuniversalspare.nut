@@ -78,13 +78,11 @@ let UniversalSpare = class (BaseItemModClass) {
       - ((this.uids?.len() ?? 0) > 0 ? getUsedItemCount(this.iType, this.uids[0]) : 0)
   }
 
-  function getIcon(_addItemName = true) {
-    local res = LayersIcon.genDataFromLayer(this._getBaseIconCfg())
-    res += LayersIcon.genDataFromLayer(this._getFlagLayer())
-    res += LayersIcon.genDataFromLayer(this._getuUnitTypesLayer())
-    res += LayersIcon.getTextDataFromLayer(this._getRankLayer())
-    return res
-  }
+  getIcon = @(_addItemName = true) "".concat(
+    LayersIcon.genDataFromLayer(this._getBaseIconCfg()),
+    LayersIcon.genDataFromLayer(this._getFlagLayer()),
+    LayersIcon.genDataFromLayer(this._getuUnitTypesLayer()),
+    LayersIcon.getTextDataFromLayer(this._getRankLayer()))
 
   function _getBaseIconCfg() {
     let layerId = "universal_spare_base"

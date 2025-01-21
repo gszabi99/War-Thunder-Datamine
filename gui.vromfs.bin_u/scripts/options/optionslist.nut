@@ -24,6 +24,7 @@ let { isInFlight } = require("gameplayBinding")
 let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair")
 let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
+let { is_hfr_supported } = require("graphicsOptions")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -52,7 +53,8 @@ function getPrivacyOptionsList() {
 }
 
 function hasConsolePresets() {
-  return (is_xboxone_X || isPlatformXboxScarlett) && hasFeature("optionConsolePreset")
+  return (is_xboxone_X || (isPlatformXboxScarlett && is_hfr_supported()))
+    && hasFeature("optionConsolePreset")
 }
 
 let otherOptionsList = @() [

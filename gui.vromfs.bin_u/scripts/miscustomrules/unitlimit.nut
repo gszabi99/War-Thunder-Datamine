@@ -6,6 +6,7 @@ let { getUnitRoleIcon, getRoleText } = require("%scripts/unit/unitInfoRoles.nut"
 let { getUnitClassTypeByExpClass } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { get_weapon_icons_text } = require("%scripts/weaponry/weaponryInfo.nut")
 
 let UnitLimitBase = class {
   name = ""
@@ -39,7 +40,7 @@ let UnitLimitByUnitName = class (UnitLimitBase) {
   function getText() {
     let unitName = this.nameLocId != null ? loc(this.nameLocId) : getUnitName(this.name)
     local res = "".concat(unitName, loc("ui/colon"), colorize("activeTextColor", this.getRespawnsLeftText()))
-    let weaponPresetIconsText = ::get_weapon_icons_text(
+    let weaponPresetIconsText = get_weapon_icons_text(
       this.name, getTblValue("weaponPresetId", this.presetInfo)
     )
 

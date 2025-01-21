@@ -14,6 +14,7 @@ from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/utils_sa.nut" import locOrStrip, findNearest
 from "%scripts/options/optionsStorage.nut" import get_crosshair_icons
+let { g_aircraft_helpers } = require("%scripts/controls/aircraftHelpers.nut")
 
 let {
   create_option_list
@@ -480,7 +481,7 @@ function useropt_mouse_usage(optionId, descr, _context) {
   }
 
   descr.defaultValue = descr.values.indexof(
-    ::g_aircraft_helpers.getOptionValue(optionId))
+    g_aircraft_helpers.getOptionValue(optionId))
 }
 
 function useropt_aerobatics_smoke_left_color(optionId, descr, _context) {
@@ -898,13 +899,13 @@ let optionsMap = {
     descr.id = "instructor_enabled"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.defaultValue = ::g_aircraft_helpers.getOptionValue(optionId)
+    descr.defaultValue = g_aircraft_helpers.getOptionValue(optionId)
   },
   [USEROPT_AUTOTRIM] = function(optionId, descr, _context) {
     descr.id = "autotrim"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.defaultValue = ::g_aircraft_helpers.getOptionValue(optionId)
+    descr.defaultValue = g_aircraft_helpers.getOptionValue(optionId)
   },
   [USEROPT_INSTRUCTOR_GROUND_AVOIDANCE] = function(_optionId, descr, _context) {
     fillBoolOption(descr, "instructorGroundAvoidance", OPTION_INSTRUCTOR_GROUND_AVOIDANCE)
@@ -2474,7 +2475,7 @@ let optionsMap = {
       globalEnv.EM_FULL_REAL
     ]
     descr.optionCb = "onHelpersModeChange"
-    descr.defaultValue = ::g_aircraft_helpers.getOptionValue(optionId)
+    descr.defaultValue = g_aircraft_helpers.getOptionValue(optionId)
   },
   [USEROPT_HELPERS_MODE_GM] = function(_optionId, descr, _context) {
     descr.id = "helpers_mode"
@@ -4387,7 +4388,7 @@ function set_useropt_cd(value, descr, optionId) {
     descr.onChangeCb(optionId, optionValue, value)
 }
 
-let set_useropt_helpers_mode = @(value, descr, optionId) ::g_aircraft_helpers.setOptionValue(optionId, descr.values != null ? getTblValue(value, descr.values, 0) : value)
+let set_useropt_helpers_mode = @(value, descr, optionId) g_aircraft_helpers.setOptionValue(optionId, descr.values != null ? getTblValue(value, descr.values, 0) : value)
 
 function set_useropt_instructor_ground_avoidance(value, descr, _optionId) {
   let optionIdx = getTblValue("boolOptionIdx", descr, -1)

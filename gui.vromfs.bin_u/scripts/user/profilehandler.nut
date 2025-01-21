@@ -64,7 +64,7 @@ let { isUnlockVisible, getUnlockCost, canDoUnlock,
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
-let { isUnlockFav, canAddFavorite, unlockToFavorites, fillUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { isUnlockFav, canAddFavorite, toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { getCachedDataByType, getDecorator, getDecoratorById,
   getCachedDecoratorsListByType} = require("%scripts/customization/decorCache.nut")
@@ -92,7 +92,7 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running, steam_is_overlay_active } = require("steam")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { getEditViewData, getShowcaseTypeBoxData, saveShowcase,
+let { getEditViewData, getShowcaseTypeBoxData, saveShowcase, getDiffByIndex,
   getGameModeBoxIndex, getShowcaseByTerseInfo, getShowcaseIndexByTerseName, saveUnitToTerseInfo, trySetBestShowcaseMode,
   writeGameModeToTerseInfo, getShowcaseGameModeByIndex, getShowcaseByIndex } = require("%scripts/user/profileShowcase.nut")
 let { fill_gamer_card, addGamercardScene } = require("%scripts/gamercard.nut")
@@ -1350,7 +1350,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function updateUnlockFav(name, objDesc) {
-    fillUnlockFav(name, objDesc)
+    initUnlockFavInContainer(name, objDesc)
   }
 
   function fillSkinDescr(name) {
@@ -1387,15 +1387,14 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.guiScene.replaceContentFromText(objDesc, markUpData, markUpData.len(), this)
 
     if (canAddFav)
-      fillUnlockFav(name, objDesc)
+      initUnlockFavInContainer(name, objDesc)
 
     this.guiScene.setUpdatesEnabled(true, true)
   }
 
   function unlockToFavorites(obj) {
-    if (obj?.isChecked != null)
-      obj.isChecked = obj.isChecked == "yes" ? "no" : "yes"
-    unlockToFavorites(obj, Callback(this.updateFavoritesCheckboxesInList, this))
+    if (toggleUnlockFavButton(obj))
+      this.updateFavoritesCheckboxesInList()
   }
 
   function updateFavoritesCheckboxesInList() {
@@ -1511,7 +1510,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     fillReward(itemData, unlockObj)
     ::g_unlock_view.fillStages(itemData, unlockObj, this)
     fillUnlockTitle(itemData, unlockObj)
-    fillUnlockFav(itemData.id, unlockObj)
+    initUnlockFavInContainer(itemData.id, unlockObj)
     fillUnlockPurchaseButton(itemData, unlockObj)
     fillUnlockManualOpenButton(itemData, unlockObj)
     updateLockStatus(itemData, unlockObj)
@@ -2144,12 +2143,26 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.curUnitImageIdx = obj?.imageIdx ?? 0;
     let handler = this
 
+    let terseInfo = this?.editModeTempData.terseInfo ?? this.terseInfo
+    let showcase = getShowcaseByTerseInfo(terseInfo)
+
     openSelectUnitWnd({
       unitsFilter = @(unit) isUnitBought(unit)
-      userstat = this.getPageProfileStats()?.userstat
+      userstat = this.getPageProfileStats()?.userstat,
       onUnitSelectFunction = @(unit) handler.onUnitSelect(unit),
+      diffsForSort = showcase?.getDiffsForUnitsSort(terseInfo)
       showRecordsTableUnits = true
     })
+  }
+
+  function onSelectFavUnitDiff(obj) {
+    let diff = getDiffByIndex(obj.getValue())
+    if (this.editModeTempData?.terseInfo == null) {
+      this.editModeTempData.terseInfo <- clone this.terseInfo
+      this.editModeTempData.terseInfo.showcase <- clone this.terseInfo.showcase
+    }
+    this.editModeTempData.terseInfo.showcase.difficulty <- diff
+    this.fillShowcase(this.editModeTempData.terseInfo, getStats(), false)
   }
 
   function saveProfileAppearance() {
@@ -2285,7 +2298,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.onHeaderBackgroundListHide()
   }
 
-  function applyFilter(obj) {
+  function applyFilterBackground(obj) {
     clearTimer(this.applyFilterTimer)
     let filterText = obj.getValue()
     if (filterText == "") {

@@ -43,14 +43,14 @@ class WwOperationLogView {
 
     if (this.logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||
         this.logBlk.type == WW_LOG_TYPES.OPERATION_FINISHED) {
-      this.logTypeKey += this.getEndToKey()
+      this.logTypeKey = "".concat(this.logTypeKey, this.getEndToKey())
     }
     else if (this.logBlk.type == WW_LOG_TYPES.OBJECTIVE_COMPLETED) {
       this.logEndKey = this.logBlk.type + this.getEndToKey()
       let statBlk = objectivesStaticBlk.getBlockByName(this.logBlk.id)
       if (statBlk) {
         this.detailedInfoText = this.getObjectiveName(statBlk)
-        this.logTypeKey += this.getObjectiveType(statBlk)
+        this.logTypeKey = "".concat(this.logTypeKey, this.getObjectiveType(statBlk))
       }
     }
     else if (this.logBlk.type == WW_LOG_TYPES.ARMY_DIED)

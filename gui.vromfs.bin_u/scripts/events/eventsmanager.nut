@@ -2722,6 +2722,7 @@ let Events = class {
     textsList.append(this.getBaseDescByEconomicName(getEventEconomicName(event)))
     textsList.append(this.descFormat(loc("reward"), this.getEventRewardText(event)))
     textsList.append(this.descFormat(loc("events/specialRequirements"), this.getSpecialRequirementsText(event, ", ")))
+    textsList.append(this.getTextBoostersDoNotWork(event))
     textsList.append(this.getUnlockProgress(event))
     textsList.append(this.getTimeAwardingEconomicsDesc(event))
 
@@ -2794,6 +2795,12 @@ let Events = class {
     if (event.mission_decl?.gt_use_unlocks ?? true)
       return ""
     return loc("events/no_unlock_progress")
+  }
+
+  function getTextBoostersDoNotWork(event) {
+    if (event.mission_decl?.gt_use_unlocks ?? true)
+      return ""
+    return loc("events/boosters_do_not_work")
   }
 
   function getTimeAwardingEconomicsDesc(event) {

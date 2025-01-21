@@ -13,6 +13,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
 
 const FAVORITE_UNLOCKS_LIST_SAVE_ID = "favorite_unlocks"
+const CHECKBOX_BTN_ID = "checkbox_favorites"
 const FAVORITE_UNLOCKS_LIMIT = 20
 
 local isFavUnlockCacheValid = false
@@ -100,27 +101,31 @@ function removeUnlockFromFavorites(unlockId) {
   broadcastEvent("FavoriteUnlocksChanged", { changedId = unlockId, value = false })
 }
 
+function tryAddAddToFav(unlockId) {
+  if (!canAddFavorite()) {
+    let num = FAVORITE_UNLOCKS_LIMIT
+    let msg = loc("mainmenu/unlockAchievements/limitReached", { num })
+    addPopup("", colorize("warningTextColor", msg))
+    return false
+  }
+  addUnlockToFavorites(unlockId)
+  return true
+}
+
 function toggleUnlockFav(unlockId) {
   if (!unlockId)
-    return
+    return false
 
   let isFav = isUnlockFav(unlockId)
   if (isFav) {
     removeUnlockFromFavorites(unlockId)
-    return
+    return false
   }
 
-  if (!canAddFavorite()) {
-    let num = FAVORITE_UNLOCKS_LIMIT
-    let msg = loc("mainmenu/unlockAchievements/limitReached", { num })
-    showInfoMsgBox(msg)
-    return
-  }
-
-  addUnlockToFavorites(unlockId)
+  return tryAddAddToFav(unlockId)
 }
 
-function fillUnlockFavCheckbox(obj) {
+function updateUnlockFavObj(obj) {
   let isUnlockInFavorites = isUnlockFav(obj.unlockId)
   if (obj?.isChecked != null) {
     obj.setValue(isUnlockInFavorites
@@ -128,8 +133,13 @@ function fillUnlockFavCheckbox(obj) {
       : loc("preloaderSettings/trackProgress")
     )
     obj.isChecked = isUnlockInFavorites ? "yes" : "no"
-  } else
-    obj.setValue(isUnlockInFavorites)
+  } else {
+    if (obj?.on_change_value != null) {
+      logerr("For add to favorite checkbox use on_click event instead on_change_value")
+      return
+    } else
+      obj.setValue(isUnlockInFavorites)
+  }
 
   obj.tooltip = isUnlockInFavorites
     ? loc("mainmenu/UnlockAchievementsRemoveFromFavorite/hint")
@@ -138,45 +148,28 @@ function fillUnlockFavCheckbox(obj) {
   this.guiScene.updateTooltip(obj)
 }
 
-function fillUnlockFav(unlockId, unlockObj) {
-  let checkboxFavorites = unlockObj.findObject("checkbox_favorites")
-  if (! checkObj(checkboxFavorites))
+function initUnlockFavObj(unlockId, unlockObj) {
+  if (!unlockObj.isValid())
     return
-  checkboxFavorites.unlockId = unlockId
-  fillUnlockFavCheckbox(checkboxFavorites)
+  unlockObj.unlockId = unlockId
+  updateUnlockFavObj(unlockObj)
 }
 
-// TODO replace with toggleUnlockFav, do not pass visual object and callback here
-function unlockToFavorites(obj, updateCb = null) {
+function initUnlockFavInContainer(unlockId, container, favBtnId = CHECKBOX_BTN_ID) {
+  let unlockObj = container.findObject(favBtnId)
+  initUnlockFavObj(unlockId, unlockObj)
+}
+
+function toggleUnlockFavButton(obj) {
   let unlockId = obj?.unlockId
   if (u.isEmpty(unlockId))
-    return
+    return false
 
-  let isButton = obj?.isChecked != null
-  let isChecked = isButton ? obj?.isChecked == "yes" : obj.getValue()
-
-  if (!canAddFavorite()
-      && isChecked // Don't notify if value set to false
-      && !(unlockId in getFavoriteUnlocks())) { // Don't notify if unlock wasn't in list already
-    let num = FAVORITE_UNLOCKS_LIMIT
-    let msg = loc("mainmenu/unlockAchievements/limitReached", { num })
-    addPopup("", colorize("warningTextColor", msg))
-    if (isButton) {
-      obj.isChecked = "no"
-      obj.setValue(loc("preloaderSettings/trackProgress"))
-    } else
-      obj.setValue(false)
-    return
-  }
-
-  obj.tooltip = isChecked
-    ? addUnlockToFavorites(unlockId)
-    : removeUnlockFromFavorites(unlockId)
-
-  fillUnlockFavCheckbox(obj)
-
-  if (updateCb)
-    updateCb()
+  let isFav = isUnlockFav(unlockId)
+  let isToggeled = toggleUnlockFav(unlockId) != isFav
+  if (isToggeled)
+    updateUnlockFavObj(obj)
+  return isToggeled
 }
 
 let invalidateCache = @() isFavUnlockCacheValid = false
@@ -193,6 +186,7 @@ return {
   isUnlockFav
   toggleUnlockFav
   FAVORITE_UNLOCKS_LIMIT
-  unlockToFavorites
-  fillUnlockFav
+  initUnlockFavObj
+  initUnlockFavInContainer
+  toggleUnlockFavButton
 }

@@ -38,6 +38,7 @@ let { addTask, addBgTaskCb } = require("%scripts/tasker.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { addPopup, removePopupByHandler } = require("%scripts/popups/popups.nut")
 let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isPlayerNickInContacts, isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 
 const CLAN_ID_NOT_INITED = ""
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
@@ -70,7 +71,7 @@ registerPersistentData("ClansGlobals", getroottable(),
         ::getContact(block.uid, block.nick)
 
       let contact = contactsPlayers[block.uid]
-      if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
+      if (!isPlayerInFriendsGroup(block.uid) || contact.unknown)
         contact.presence = ::getMyClanMemberPresence(block.nick)
 
       if (userIdStr.value != block.uid)
@@ -744,7 +745,7 @@ function handleNewMyClanData() {
       ::getContact(block.uid, block.nick)
 
     let contact = contactsPlayers[block.uid]
-    if (!::isPlayerInFriendsGroup(block.uid) || contact.unknown)
+    if (!isPlayerInFriendsGroup(block.uid) || contact.unknown)
       contact.presence = ::getMyClanMemberPresence(block.nick)
 
     if (userIdStr.value != block.uid)
@@ -1238,7 +1239,7 @@ class ClanSeasonTitle {
       }
     }
 
-    isPlayerBlocked = ::isPlayerNickInContacts(author, EPL_BLOCKLIST)
+    isPlayerBlocked = isPlayerNickInContacts(author, EPL_BLOCKLIST)
     if (isPlayerBlocked)
       textFields.append("tag")
   }

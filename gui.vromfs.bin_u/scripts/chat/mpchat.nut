@@ -34,6 +34,7 @@ let { registerRespondent } = require("scriptRespondent")
 let { defer } = require("dagor.workcycle")
 let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
 let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
+let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 enum mpChatView {
   CHAT
@@ -146,7 +147,7 @@ function getTextFromMessage(message) {
   if (message.isAutomatic)
     return formatMessageText(message, message.text)
 
-  if (!message.isMyself && ::isPlayerNickInContacts(message.sender, EPL_BLOCKLIST))
+  if (!message.isMyself && isPlayerNickInContacts(message.sender, EPL_BLOCKLIST))
     return formatMessageText(message, g_chat.makeBlockedMsg(message.text))
 
   return formatMessageText(message, g_chat.filterMessageText(message.text, message.isMyself))

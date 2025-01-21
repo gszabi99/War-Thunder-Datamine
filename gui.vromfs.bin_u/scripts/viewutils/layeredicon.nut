@@ -109,9 +109,9 @@ LayersIcon.getIconData <- function getIconData(iconStyle, image = null, ratio = 
       }
 
       if (getTblValue("type", layerCfg, "image") == "text")
-        data += LayersIcon.getTextDataFromLayer(layerCfg)
+        data = "".concat(data, LayersIcon.getTextDataFromLayer(layerCfg))
       else
-        data += LayersIcon.genDataFromLayer(layerCfg, "", containerSizePx)
+        data = "".concat(data, LayersIcon.genDataFromLayer(layerCfg, "", containerSizePx))
     }
   }
   else if (image && image != "") {
@@ -203,9 +203,9 @@ LayersIcon.genInsertedDataFromLayer <- function genInsertedDataFromLayer(mainLay
   foreach (layerCfg in insertLayersArrayCfg)
     if (layerCfg) {
       if (getTblValue("type", layerCfg, "image") == "text")
-        insertLayers += LayersIcon.getTextDataFromLayer(layerCfg)
+        insertLayers = "".concat(insertLayers, LayersIcon.getTextDataFromLayer(layerCfg))
       else
-        insertLayers += LayersIcon.genDataFromLayer(layerCfg)
+        insertLayers = "".concat(insertLayers, LayersIcon.genDataFromLayer(layerCfg))
     }
 
   return LayersIcon.genDataFromLayer(mainLayerCfg, insertLayers)

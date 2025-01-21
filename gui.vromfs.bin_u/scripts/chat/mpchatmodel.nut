@@ -13,6 +13,7 @@ let { getMpChatLog, addMessageToLog, onChatClear, getCurrentModeId, setCurrentMo
 } = require("%scripts/chat/mpChatState.nut")
 let { register_command } = require("console")
 let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
+let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 let chatLogFormatForBanhammer = {
   category = ""
@@ -59,7 +60,7 @@ function onIncomingMessageImpl(sender, msg, mode, automatic) {
     sender = sender
     text = msg
     isMyself = sender == userName.value || getRealName(sender) == userName.value
-    isBlocked = ::isPlayerNickInContacts(sender, EPL_BLOCKLIST)
+    isBlocked = isPlayerNickInContacts(sender, EPL_BLOCKLIST)
     isAutomatic = automatic
     mode = mode
     time = get_mission_time()

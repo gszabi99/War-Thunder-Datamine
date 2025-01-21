@@ -4,8 +4,7 @@ let { addContact, rejectContact } = require("%scripts/contacts/contactsState.nut
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-
-let isPlayerInContacts = @(uid, groupName) ::isPlayerInContacts(uid, groupName)
+let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
 let Friend = class (BaseInvite) {
   static function getUidByParams(params) {

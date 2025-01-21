@@ -295,7 +295,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     let reqMods = ::getNextTierModsCount(unit, curTier - 1)
     if (reqMods > 0)
       reqText = loc("weaponry/unlockModTierReq",
-                      { tier = roman_numerals[curTier], amount = reqMods.tostring() })
+                      { tier = roman_numerals[curTier], amount = reqMods })
     else
       reqText = loc("weaponry/unlockTier/reqPrevTiers")
     reqText = $"<color=@badTextColor>{reqText}</color>"

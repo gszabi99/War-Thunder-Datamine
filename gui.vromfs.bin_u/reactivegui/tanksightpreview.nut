@@ -13,6 +13,7 @@ let PREVIEW_IMAGE_SRC_TEMPLATE
 
 let bgImageIdx = Watched(0)
 let bgImagePostfix = extWatched("tankSightBgImageModePostfix", "day")
+let isPreviewMode = extWatched("tankSightIsPreviewMode", false)
 
 let getBgImageSrc = @(imageIdx, postfix)
   format(BG_IMAGE_SRC_TEMPLATE, imageIdx + 1, postfix)
@@ -52,12 +53,15 @@ function mkPreviewImg(imgIdx) {
   }
 }
 
-let previewBgImagesComp = {
+let previewBgImagesComp = @() {
+  watch = isPreviewMode
   pos = [0, hdpx(880)]
   rendObj = ROBJ_BOX
   flow = FLOW_HORIZONTAL
   gap = hdpx(12)
-  children = array(BG_IMAGES_COUNT).map(@(_, idx) mkPreviewImg(idx))
+  children = !isPreviewMode.get()
+    ? array(BG_IMAGES_COUNT).map(@(_, idx) mkPreviewImg(idx))
+    : null
 }
 
 let backgroundImgComp = @() {
@@ -78,8 +82,8 @@ let tankSightPreview = {
       rendObj = ROBJ_CROSSHAIR_PREVIEW
       size = flex()
     }
-    mkTankSight(true)
     previewBgImagesComp
+    mkTankSight(true)
   ]
 }
 

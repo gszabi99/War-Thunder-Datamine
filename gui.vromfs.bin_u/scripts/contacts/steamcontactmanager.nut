@@ -118,7 +118,7 @@ if (isLoggedIn.get())
   updateSteamFriendsList()
 
 eventbus_subscribe("steam.friend_state", function(p) {
-  let { steamId, flags } = p
+  let { steamId = null, flags = STEAM_FRIEND_STATE.OFFLINE } = p
   if (steamId not in steamFriendsList)
     return
 
