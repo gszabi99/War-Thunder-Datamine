@@ -445,6 +445,7 @@ function getShowcaseViewData(playerStats, terseInfo, viewParams = null) {
           statName = value?.getText(params, value) ?? loc(value.locId),
           idx,
           statValue = $"{value?.getValue ? value.getValue(params, value) : decimalFormat(getStatsValue(params, value, showcase.scorePeriod))}",
+          statValueId = $"ters_info_stat_{valName}"
           tooltip = loc(value?.tooltip ?? "")
         }
         stats.append(statData)
@@ -641,6 +642,29 @@ function saveUnitToTerseInfo(terseInfo, unit, idx) {
   showcase?.saveUnit(terseInfo, unit.name, idx)
 }
 
+function fillStatsValuesOfTerseInfo(scene, terseInfo, playerStats) {
+  let showcase = getShowcaseByTerseInfo(terseInfo)
+  if (showcase == null)
+    return
+
+  let showcaseType = showcase?.hasGameMode ? showcase?.getShowCaseType(terseInfo) : null
+  let params = {stats = playerStats, showcaseType, terseInfo, scorePeriod = showcase?.scorePeriod ?? "value_total"}
+  showcase?.addAdditionalParams(params)
+
+  foreach (line in showcase.lines)
+    foreach (valName in line) {
+      let value = visibleValues[valName]
+      if (value.type != "stat")
+        continue
+
+      let obj = scene.findObject($"ters_info_stat_{valName}")
+      if (!obj?.isValid())
+        continue
+
+      obj.setValue($"{value?.getValue ? value.getValue(params, value) : decimalFormat(getStatsValue(params, value, showcase.scorePeriod))}")
+    }
+}
+
 function getShowcaseIndexByTerseName(terseName) {
   return pageTypes.findindex(@(p) p.terseName == terseName) ?? 0
 }
@@ -658,6 +682,7 @@ return {
   getShowcaseByIndex
   getShowcaseByTerseInfo
   saveUnitToTerseInfo
+  fillStatsValuesOfTerseInfo
   getShowcaseIndexByTerseName
   getDiffByIndex
 }

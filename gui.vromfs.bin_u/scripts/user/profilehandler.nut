@@ -92,7 +92,7 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { steam_is_running, steam_is_overlay_active } = require("steam")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { getEditViewData, getShowcaseTypeBoxData, saveShowcase, getDiffByIndex,
+let { getEditViewData, getShowcaseTypeBoxData, saveShowcase, getDiffByIndex, fillStatsValuesOfTerseInfo,
   getGameModeBoxIndex, getShowcaseByTerseInfo, getShowcaseIndexByTerseName, saveUnitToTerseInfo, trySetBestShowcaseMode,
   writeGameModeToTerseInfo, getShowcaseGameModeByIndex, getShowcaseByIndex } = require("%scripts/user/profileShowcase.nut")
 let { fill_gamer_card, addGamercardScene } = require("%scripts/gamercard.nut")
@@ -2162,7 +2162,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.editModeTempData.terseInfo.showcase <- clone this.terseInfo.showcase
     }
     this.editModeTempData.terseInfo.showcase.difficulty <- diff
-    this.fillShowcase(this.editModeTempData.terseInfo, getStats(), false)
+    fillStatsValuesOfTerseInfo(this.scene, this.editModeTempData.terseInfo, getStats())
   }
 
   function saveProfileAppearance() {

@@ -97,6 +97,9 @@
 
         <<#statValue>>
           blankTextArea {
+            <<#statValueId>>
+            id:t='<<statValueId>>'
+            <</statValueId>>
             padding-top:t='<<scale>>*4@sf/@pf'
             position:t='relative'
             left:t='(pw-w)/2'

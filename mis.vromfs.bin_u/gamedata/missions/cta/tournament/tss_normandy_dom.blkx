@@ -1,0 +1,8319 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "BluePlayer01",
+        "BluePlayer02",
+        "BluePlayer03",
+        "BluePlayer04",
+        "BluePlayer05",
+        "BluePlayer06",
+        "BluePlayer07",
+        "BluePlayer08",
+        "BluePlayer09",
+        "BluePlayer10",
+        "BluePlayer11",
+        "BluePlayer12",
+        "BluePlayer13",
+        "BluePlayer14",
+        "BluePlayer15",
+        "BluePlayer16"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "RedPlayer01",
+        "RedPlayer02",
+        "RedPlayer03",
+        "RedPlayer04",
+        "RedPlayer05",
+        "RedPlayer06",
+        "RedPlayer07",
+        "RedPlayer08",
+        "RedPlayer09",
+        "RedPlayer10",
+        "RedPlayer11",
+        "RedPlayer12",
+        "RedPlayer13",
+        "RedPlayer14",
+        "RedPlayer15",
+        "RedPlayer16"
+      ]
+    },
+    "mission": {
+      "type": "domination",
+      "level": "levels/avg_normandy.bin",
+      "environment": "Day",
+      "weather": "clear",
+      "locName": "Normandy",
+      "gt_mp_tickets": true,
+      "gt_mp_capture": true,
+      "scoreLimit": 18000,
+      "isLimitedFuel": true,
+      "isLimitedAmmo": true,
+      "timeLimit": 10,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": true,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": true
+      }
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "Spawns": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "Red Spawn",
+            "spawnEffect": true,
+            "isStrictSpawn": true,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": true,
+            "onlyOnePlayerPerSpawnPoint": true,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": [
+              "RedSpawn",
+              "RedGroundspawn01",
+              "RedGroundspawn02",
+              "RedGroundspawn04",
+              "RedGroundspawn05",
+              "RedGroundspawn06",
+              "RedGroundspawn07",
+              "RedGroundspawn08"
+            ],
+            "team": "B",
+            "tags": {
+              "tank": true
+            }
+          },
+          {
+            "loc_name": "Blue Spawn",
+            "spawnEffect": true,
+            "isStrictSpawn": true,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": true,
+            "onlyOnePlayerPerSpawnPoint": true,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": [
+              "BlueSpawn",
+              "BlueGroundSpawn01",
+              "BlueGroundSpawn02",
+              "BlueGroundSpawn03",
+              "BlueGroundSpawn04",
+              "BlueGroundSpawn05",
+              "BlueGroundSpawn06",
+              "BlueGroundSpawn07",
+              "BlueGroundSpawn08"
+            ],
+            "team": "A",
+            "tags": {
+              "tank": true
+            }
+          },
+          {
+            "loc_name": "Red Spawn2",
+            "spawnEffect": true,
+            "isStrictSpawn": true,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": true,
+            "onlyOnePlayerPerSpawnPoint": true,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": [
+              "RedSpawn2",
+              "RedGroundspawn16",
+              "RedGroundspawn19",
+              "RedGroundspawn20",
+              "RedGroundspawn21",
+              "RedGroundspawn22",
+              "RedGroundspawn23",
+              "RedGroundspawn24"
+            ],
+            "team": "B",
+            "tags": {
+              "tank": true
+            }
+          },
+          {
+            "loc_name": "Blue Spawn 2",
+            "spawnEffect": true,
+            "isStrictSpawn": true,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": true,
+            "onlyOnePlayerPerSpawnPoint": true,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": [
+              "BlueSpawn2",
+              "BlueGroundSpawn16",
+              "BlueGroundSpawn18",
+              "BlueGroundSpawn19",
+              "BlueGroundSpawn20",
+              "BlueGroundSpawn21",
+              "BlueGroundSpawn22",
+              "BlueGroundSpawn23",
+              "BlueGroundSpawn24"
+            ],
+            "team": "A",
+            "tags": {
+              "tank": true
+            }
+          },
+          {
+            "loc_name": "Blue Air Spawn",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": [
+              "Blueairspawn",
+              "blueairspawn01",
+              "blueairspawn02",
+              "blueairspawn03",
+              "blueairspawn04"
+            ],
+            "team": "A",
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true,
+              "type_interceptor": true,
+              "type_aa_fighter": true,
+              "type_light_bomber": true,
+              "type_frontline_bomber": true,
+              "type_longrange_bomber": true,
+              "type_hydroplane": true,
+              "carrier_take_off": true,
+              "airfield_take_off": true,
+              "airfield_take_off_air_rb": true,
+              "vtol_jet": true
+            }
+          },
+          {
+            "loc_name": "Red Air Spawn",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": [
+              "Red Airspawn",
+              "Redairspawn01",
+              "Redairspawn02",
+              "Redairspawn03",
+              "Redairspawn04"
+            ],
+            "team": "B",
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true,
+              "type_interceptor": true,
+              "type_aa_fighter": true,
+              "type_light_bomber": true,
+              "type_frontline_bomber": true,
+              "type_longrange_bomber": true,
+              "type_hydroplane": true,
+              "carrier_take_off": true,
+              "airfield_take_off": true,
+              "airfield_take_off_air_rb": true,
+              "vtol_jet": true
+            }
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "Airfield": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "Red Airfield",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": "RedAirfield",
+            "team": "B",
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true,
+              "type_interceptor": true,
+              "type_aa_fighter": true,
+              "type_light_bomber": true,
+              "type_frontline_bomber": true,
+              "type_longrange_bomber": true,
+              "type_hydroplane": true,
+              "carrier_take_off": true,
+              "airfield_take_off": true,
+              "airfield_take_off_air_rb": true,
+              "vtol_jet": true
+            }
+          },
+          {
+            "loc_name": "Blue Airfield",
+            "spawnEffect": false,
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "radius": -1.0,
+            "target": "BlueAirfield",
+            "team": "A",
+            "tags": {
+              "type_bomber": true,
+              "type_fighter": true,
+              "type_assault": true,
+              "type_interceptor": true,
+              "type_aa_fighter": true,
+              "type_light_bomber": true,
+              "type_frontline_bomber": true,
+              "type_longrange_bomber": true,
+              "type_hydroplane": true,
+              "carrier_take_off": true,
+              "airfield_take_off": true,
+              "airfield_take_off_air_rb": true,
+              "vtol_jet": true
+            }
+          }
+        ]
+      },
+      "else_actions": {}
+    },
+    "Capzone A": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.0,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "Capzone A",
+          "canCaptureOnGround": true,
+          "playAirfieldSound": true,
+          "canCaptureByGM": true,
+          "onlyPlayersCanCapture": true,
+          "useHUDMarkers": true,
+          "markUnitPreset": "tank_decal",
+          "markUnits": "Capzone circle C01",
+          "showBorderOnMap": true,
+          "zoneDefenders": {},
+          "capture_tags": {
+            "tank": true
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "Capzone B": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.0,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "Capzone B",
+          "canCaptureOnGround": true,
+          "playAirfieldSound": true,
+          "canCaptureByGM": true,
+          "onlyPlayersCanCapture": true,
+          "useHUDMarkers": true,
+          "markUnitPreset": "tank_decal",
+          "markUnits": "Capzone circle C02",
+          "showBorderOnMap": true,
+          "zoneDefenders": {},
+          "capture_tags": {
+            "tank": true
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "Capzone C": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 1.0,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "Capzone C",
+          "canCaptureOnGround": true,
+          "playAirfieldSound": true,
+          "canCaptureByGM": true,
+          "onlyPlayersCanCapture": true,
+          "useHUDMarkers": true,
+          "markUnitPreset": "tank_decal",
+          "markUnits": "Capzone circle C",
+          "showBorderOnMap": true,
+          "zoneDefenders": {},
+          "capture_tags": {
+            "tank": true
+          }
+        }
+      },
+      "else_actions": {}
+    },
+    "Battlearea": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionBattleArea": [
+          {
+            "air": false,
+            "ground": true,
+            "mapArea": true,
+            "airMapArea": false,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
+            "area": "Battlearea"
+          },
+          {
+            "air": true,
+            "ground": false,
+            "mapArea": false,
+            "airMapArea": true,
+            "killArea": false,
+            "detectionArea": false,
+            "killOutOfBattleArea": true,
+            "area": "battlearea_planes"
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "armada": [
+      {
+        "name": "BluePlayer01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2769.57,
+            -1134.91,
+            -852.349
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2625.43,
+            -1126.6,
+            -799.086
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2768.53,
+            -1134.91,
+            -838.552
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2767.49,
+            -1134.91,
+            -824.755
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2766.45,
+            -1134.91,
+            -810.959
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2765.41,
+            -1134.91,
+            -797.162
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer06",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2764.37,
+            -1134.91,
+            -783.365
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer07",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2763.33,
+            -1134.91,
+            -769.569
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer08",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2762.28,
+            -1134.91,
+            -755.772
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2625.42,
+            -1126.6,
+            -790.053
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer03",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2625.41,
+            -1126.6,
+            -781.02
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer04",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2625.4,
+            -1126.6,
+            -771.987
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer05",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2625.39,
+            -1126.6,
+            -762.954
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer06",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2625.38,
+            -1126.6,
+            -753.921
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer07",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2625.37,
+            -1126.6,
+            -744.888
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer08",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2625.36,
+            -1126.6,
+            -735.855
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer09",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2626.55,
+            -1126.6,
+            -722.798
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer10",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2626.54,
+            -1126.6,
+            -713.765
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer11",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2626.53,
+            -1126.6,
+            -704.732
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer12",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2626.52,
+            -1126.6,
+            -695.699
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer13",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2626.51,
+            -1126.6,
+            -686.666
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer14",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2626.5,
+            -1126.6,
+            -677.633
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer15",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2626.49,
+            -1126.6,
+            -668.6
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "RedPlayer16",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2626.48,
+            -1126.6,
+            -659.567
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer09",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2758.22,
+            -1134.91,
+            -738.326
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer10",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2757.18,
+            -1134.91,
+            -724.529
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer11",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2756.14,
+            -1134.91,
+            -710.732
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer12",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2755.1,
+            -1134.91,
+            -696.936
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer13",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2754.06,
+            -1134.91,
+            -683.139
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer14",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2753.02,
+            -1134.91,
+            -669.342
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer15",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2751.98,
+            -1134.91,
+            -655.546
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "BluePlayer16",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2750.93,
+            -1134.91,
+            -641.749
+          ]
+        ],
+        "unit_class": "a-20g",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "player": true,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      }
+    ],
+    "objectGroups": [
+      {
+        "name": "structures_04",
+        "tm": [
+          [
+            0.412154,
+            0.0217415,
+            0.00233487
+          ],
+          [
+            -0.0301966,
+            0.565904,
+            0.0607737
+          ],
+          [
+            0.0,
+            -0.0402312,
+            0.374619
+          ],
+          [
+            2613.25,
+            35.1912,
+            3184.29
+          ]
+        ],
+        "unit_class": "debris_bricks_large_b",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_05",
+        "tm": [
+          [
+            0.412734,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.564745,
+            0.0769101
+          ],
+          [
+            0.0,
+            -0.0508417,
+            0.373327
+          ],
+          [
+            2631.65,
+            35.4225,
+            3189.89
+          ]
+        ],
+        "unit_class": "debris_bricks_large_b",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_07",
+        "tm": [
+          [
+            0.406736,
+            0.0688469,
+            0.0132386
+          ],
+          [
+            -0.0968151,
+            0.551571,
+            0.106062
+          ],
+          [
+            0.0,
+            -0.0711466,
+            0.369995
+          ],
+          [
+            2605.85,
+            35.5415,
+            3175.61
+          ]
+        ],
+        "unit_class": "debris_bricks_large_b",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_09",
+        "tm": [
+          [
+            0.412734,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.569958,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.376773
+          ],
+          [
+            2585.2,
+            38.807,
+            3118.69
+          ]
+        ],
+        "unit_class": "debris_bricks_large_b",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_13",
+        "tm": [
+          [
+            0.412154,
+            0.0218666,
+            0.0
+          ],
+          [
+            -0.0301966,
+            0.569158,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.376773
+          ],
+          [
+            1723.79,
+            28.4286,
+            3387.61
+          ]
+        ],
+        "unit_class": "debris_bricks_large_b",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_14",
+        "tm": [
+          [
+            0.412154,
+            0.0218666,
+            0.0
+          ],
+          [
+            -0.0301966,
+            0.569158,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.376773
+          ],
+          [
+            1723.93,
+            28.484,
+            3377.63
+          ]
+        ],
+        "unit_class": "debris_bricks_large_b",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_17",
+        "tm": [
+          [
+            0.412154,
+            0.0218666,
+            0.0
+          ],
+          [
+            -0.0301966,
+            0.569158,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.376773
+          ],
+          [
+            1730.48,
+            28.484,
+            3381.5
+          ]
+        ],
+        "unit_class": "debris_bricks_large_b",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2652.06,
+            47.9714,
+            3009.97
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_02",
+        "tm": [
+          [
+            0.848177,
+            0.0,
+            0.529713
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.529713,
+            0.0,
+            0.848177
+          ],
+          [
+            2668.76,
+            49.2125,
+            3013.59
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_03",
+        "tm": [
+          [
+            0.505978,
+            0.0,
+            0.862546
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.862546,
+            0.0,
+            0.505978
+          ],
+          [
+            2678.75,
+            47.9715,
+            3024.22
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_04",
+        "tm": [
+          [
+            0.495503,
+            0.0,
+            0.868606
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.868606,
+            0.0,
+            0.495503
+          ],
+          [
+            2686.53,
+            47.5888,
+            3037.64
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_05",
+        "tm": [
+          [
+            0.308241,
+            0.0,
+            0.951308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.951308,
+            0.0,
+            0.308241
+          ],
+          [
+            2693.2,
+            47.9715,
+            3052.14
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_06",
+        "tm": [
+          [
+            0.308241,
+            0.0,
+            0.951308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.951308,
+            0.0,
+            0.308241
+          ],
+          [
+            2696.51,
+            47.9715,
+            3065.78
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_07",
+        "tm": [
+          [
+            0.308241,
+            0.0,
+            0.951308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.951308,
+            0.0,
+            0.308241
+          ],
+          [
+            2699.82,
+            47.9715,
+            3079.41
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_08",
+        "tm": [
+          [
+            0.308241,
+            0.0,
+            0.951308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.951308,
+            0.0,
+            0.308241
+          ],
+          [
+            2703.13,
+            47.9715,
+            3093.05
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_09",
+        "tm": [
+          [
+            0.308241,
+            0.0,
+            0.951308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.951308,
+            0.0,
+            0.308241
+          ],
+          [
+            2706.44,
+            47.9715,
+            3106.69
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_10",
+        "tm": [
+          [
+            0.308241,
+            0.0,
+            0.951308
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.951308,
+            0.0,
+            0.308241
+          ],
+          [
+            2709.76,
+            47.9715,
+            3120.32
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_11",
+        "tm": [
+          [
+            0.695927,
+            0.0,
+            0.718112
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.718112,
+            0.0,
+            0.695927
+          ],
+          [
+            2719.36,
+            47.9715,
+            3133.02
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_12",
+        "tm": [
+          [
+            0.656126,
+            0.0,
+            0.754652
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.754652,
+            0.0,
+            0.656126
+          ],
+          [
+            2728.3,
+            47.9715,
+            3145.3
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_15",
+        "tm": [
+          [
+            0.999949,
+            0.00300455,
+            -0.00965844
+          ],
+          [
+            -0.00292773,
+            0.999964,
+            0.00795827
+          ],
+          [
+            0.00968178,
+            -0.00792959,
+            0.999922
+          ],
+          [
+            2808.66,
+            48.0132,
+            3129.73
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_18",
+        "tm": [
+          [
+            -0.96931,
+            0.0,
+            0.245843
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.245843,
+            0.0,
+            -0.96931
+          ],
+          [
+            2742.88,
+            47.9714,
+            3146.25
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_19",
+        "tm": [
+          [
+            -0.96931,
+            0.0,
+            0.245843
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.245843,
+            0.0,
+            -0.96931
+          ],
+          [
+            2759.62,
+            47.9714,
+            3141.25
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_20",
+        "tm": [
+          [
+            -0.96931,
+            0.0,
+            0.245843
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.245843,
+            0.0,
+            -0.96931
+          ],
+          [
+            2776.36,
+            47.9714,
+            3136.24
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_21",
+        "tm": [
+          [
+            -0.96931,
+            0.0,
+            0.245843
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.245843,
+            0.0,
+            -0.96931
+          ],
+          [
+            2793.1,
+            47.9714,
+            3131.24
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_22",
+        "tm": [
+          [
+            -0.898972,
+            0.0,
+            0.438007
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.438007,
+            0.0,
+            -0.898972
+          ],
+          [
+            2823.58,
+            47.9714,
+            3126.31
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_23",
+        "tm": [
+          [
+            0.278376,
+            0.0,
+            0.960472
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.960472,
+            0.0,
+            0.278376
+          ],
+          [
+            2826.38,
+            47.9714,
+            3063.55
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_24",
+        "tm": [
+          [
+            0.105477,
+            0.0,
+            0.994421
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.994421,
+            0.0,
+            0.105477
+          ],
+          [
+            2831.79,
+            47.9714,
+            3125.76
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_25",
+        "tm": [
+          [
+            0.105477,
+            0.0,
+            0.994421
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.994421,
+            0.0,
+            0.105477
+          ],
+          [
+            2830.8,
+            47.9714,
+            3110.54
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_26",
+        "tm": [
+          [
+            0.105477,
+            0.0,
+            0.994421
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.994421,
+            0.0,
+            0.105477
+          ],
+          [
+            2829.8,
+            47.9714,
+            3095.3
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_27",
+        "tm": [
+          [
+            0.105477,
+            0.0,
+            0.994421
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.994421,
+            0.0,
+            0.105477
+          ],
+          [
+            2828.81,
+            47.9714,
+            3080.08
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_33",
+        "tm": [
+          [
+            0.278376,
+            0.0,
+            0.960472
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.960472,
+            0.0,
+            0.278376
+          ],
+          [
+            2820.26,
+            47.9714,
+            3047.67
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_34",
+        "tm": [
+          [
+            -0.669328,
+            0.0,
+            -0.742967
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.742967,
+            0.0,
+            -0.669328
+          ],
+          [
+            2744.29,
+            52.7558,
+            2973.69
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_35",
+        "tm": [
+          [
+            -0.0166984,
+            0.0,
+            -0.999861
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.999861,
+            0.0,
+            -0.0166984
+          ],
+          [
+            2645.72,
+            42.9161,
+            2998.45
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_36",
+        "tm": [
+          [
+            0.16648,
+            0.0,
+            -0.986045
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.986045,
+            0.0,
+            0.16648
+          ],
+          [
+            2646.85,
+            45.5225,
+            2982.52
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_37",
+        "tm": [
+          [
+            -0.458007,
+            0.0,
+            -0.888948
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.888948,
+            0.0,
+            -0.458007
+          ],
+          [
+            2711.59,
+            49.6786,
+            2917.71
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_38",
+        "tm": [
+          [
+            -0.387324,
+            0.0,
+            -0.921944
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.921944,
+            0.0,
+            -0.387324
+          ],
+          [
+            2704.89,
+            49.6786,
+            2902.12
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_39",
+        "tm": [
+          [
+            -0.375572,
+            0.0,
+            -0.926793
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.926793,
+            0.0,
+            -0.375572
+          ],
+          [
+            2698.36,
+            49.6786,
+            2888.23
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_40",
+        "tm": [
+          [
+            0.638595,
+            0.0,
+            -0.769543
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.769543,
+            0.0,
+            0.638595
+          ],
+          [
+            2690.77,
+            49.6787,
+            2886.56
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_41",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2651.37,
+            45.5225,
+            2967.41
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_42",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2658.45,
+            45.5225,
+            2953.06
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_43",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2665.52,
+            45.5225,
+            2938.72
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_44",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2672.6,
+            45.5225,
+            2924.37
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_45",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2679.68,
+            45.5225,
+            2910.03
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_46",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2686.75,
+            45.5225,
+            2895.68
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_47",
+        "tm": [
+          [
+            -0.458007,
+            0.0,
+            -0.888948
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.888948,
+            0.0,
+            -0.458007
+          ],
+          [
+            2719.64,
+            49.6786,
+            2932.34
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_48",
+        "tm": [
+          [
+            -0.458007,
+            0.0,
+            -0.888948
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.888948,
+            0.0,
+            -0.458007
+          ],
+          [
+            2727.69,
+            49.6786,
+            2946.97
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_49",
+        "tm": [
+          [
+            -0.622368,
+            0.0,
+            -0.782725
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.782725,
+            0.0,
+            -0.622368
+          ],
+          [
+            2735.75,
+            49.6787,
+            2961.6
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_50",
+        "tm": [
+          [
+            -0.669328,
+            0.0,
+            -0.742967
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.742967,
+            0.0,
+            -0.669328
+          ],
+          [
+            2752.79,
+            52.7558,
+            2983.7
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_51",
+        "tm": [
+          [
+            -0.832222,
+            0.0,
+            -0.554443
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.554443,
+            0.0,
+            -0.832222
+          ],
+          [
+            2763.26,
+            52.7558,
+            2993.91
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_52",
+        "tm": [
+          [
+            -0.832427,
+            0.0,
+            -0.554134
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.554134,
+            0.0,
+            -0.832427
+          ],
+          [
+            2776.13,
+            52.7558,
+            3002.7
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_53",
+        "tm": [
+          [
+            -0.669328,
+            0.0,
+            -0.742967
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.742967,
+            0.0,
+            -0.669328
+          ],
+          [
+            2787.26,
+            52.7558,
+            3012.49
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_54",
+        "tm": [
+          [
+            -0.702275,
+            0.0,
+            -0.711906
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.711906,
+            0.0,
+            -0.702275
+          ],
+          [
+            2799.45,
+            52.7558,
+            3024.16
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_55",
+        "tm": [
+          [
+            -0.702275,
+            0.0,
+            -0.711906
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.711906,
+            0.0,
+            -0.702275
+          ],
+          [
+            2799.45,
+            52.7558,
+            3024.16
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_58",
+        "tm": [
+          [
+            -0.702275,
+            0.0,
+            -0.711906
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.711906,
+            0.0,
+            -0.702275
+          ],
+          [
+            2811.24,
+            52.7558,
+            3034.81
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_57",
+        "tm": [
+          [
+            -0.702275,
+            0.0,
+            -0.711906
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.711906,
+            0.0,
+            -0.702275
+          ],
+          [
+            2811.24,
+            52.7558,
+            3034.81
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "Capzone circle C",
+        "tm": [
+          [
+            0.406736,
+            0.0688469,
+            0.0132386
+          ],
+          [
+            -0.0968151,
+            0.551571,
+            0.106062
+          ],
+          [
+            0.0,
+            -0.0711466,
+            0.369995
+          ],
+          [
+            2644.39,
+            39.21,
+            3133.09
+          ]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_11",
+        "tm": [
+          [
+            0.401091,
+            -0.0225076,
+            -0.094702
+          ],
+          [
+            -0.130747,
+            0.00417309,
+            -0.554743
+          ],
+          [
+            0.0206311,
+            0.376202,
+            -0.00203255
+          ],
+          [
+            2603.14,
+            39.9992,
+            3142.11
+          ]
+        ],
+        "unit_class": "det_vietnam_rock_burned_a",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_12",
+        "tm": [
+          [
+            0.168583,
+            0.0,
+            -0.376735
+          ],
+          [
+            0.0702019,
+            0.564745,
+            0.0314142
+          ],
+          [
+            0.340765,
+            -0.0508417,
+            0.152487
+          ],
+          [
+            2644.14,
+            38.0419,
+            3132.6
+          ]
+        ],
+        "unit_class": "det_vietnam_rock_burned_a",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_15",
+        "tm": [
+          [
+            0.19274,
+            0.0,
+            -0.364966
+          ],
+          [
+            0.0680089,
+            0.564745,
+            0.0359158
+          ],
+          [
+            0.33012,
+            -0.0508417,
+            0.174338
+          ],
+          [
+            2602.3,
+            38.0419,
+            3101.54
+          ]
+        ],
+        "unit_class": "det_trench_system_c_onground",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_16",
+        "tm": [
+          [
+            0.4127,
+            -0.000945018,
+            -0.00524495
+          ],
+          [
+            0.000993092,
+            0.569432,
+            -0.0244566
+          ],
+          [
+            0.00482053,
+            0.0161574,
+            0.376396
+          ],
+          [
+            2652.12,
+            39.1799,
+            3088.38
+          ]
+        ],
+        "unit_class": "det_trench_system_d_onground",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "Capzone circle C01",
+        "tm": [
+          [
+            0.406736,
+            0.0688469,
+            0.0132386
+          ],
+          [
+            -0.0968151,
+            0.551571,
+            0.106062
+          ],
+          [
+            0.0,
+            -0.0711466,
+            0.369995
+          ],
+          [
+            1948.61,
+            12.5,
+            3636.6
+          ]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "Capzone circle C02",
+        "tm": [
+          [
+            0.406736,
+            0.0688469,
+            0.0132386
+          ],
+          [
+            -0.0968151,
+            0.551571,
+            0.106062
+          ],
+          [
+            0.0,
+            -0.0711466,
+            0.369995
+          ],
+          [
+            2292.21,
+            29.28,
+            3397.91
+          ]
+        ],
+        "unit_class": "capture_zone_circle",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_18",
+        "tm": [
+          [
+            0.287394,
+            -0.0225076,
+            -0.295377
+          ],
+          [
+            -0.408334,
+            0.00417309,
+            -0.397615
+          ],
+          [
+            0.016308,
+            0.376202,
+            -0.0127993
+          ],
+          [
+            2663.1,
+            39.0827,
+            3088.57
+          ]
+        ],
+        "unit_class": "det_vietnam_rock_burned_a",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_19",
+        "tm": [
+          [
+            0.287394,
+            -0.0225076,
+            -0.295377
+          ],
+          [
+            -0.408334,
+            0.00417309,
+            -0.397615
+          ],
+          [
+            0.016308,
+            0.376202,
+            -0.0127993
+          ],
+          [
+            2669.27,
+            39.0827,
+            3095.75
+          ]
+        ],
+        "unit_class": "det_vietnam_rock_burned_a",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_21",
+        "tm": [
+          [
+            -0.179269,
+            -0.0225076,
+            -0.371087
+          ],
+          [
+            -0.513295,
+            0.00417309,
+            0.247716
+          ],
+          [
+            -0.00644975,
+            0.376202,
+            -0.0197021
+          ],
+          [
+            2854.21,
+            35.2546,
+            3292.32
+          ]
+        ],
+        "unit_class": "det_vietnam_rock_burned_a",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_20",
+        "tm": [
+          [
+            0.254976,
+            -0.0225076,
+            0.323775
+          ],
+          [
+            0.447906,
+            0.00417309,
+            -0.352441
+          ],
+          [
+            0.0105413,
+            0.376202,
+            0.0178509
+          ],
+          [
+            2610.3,
+            38.602,
+            3093.1
+          ]
+        ],
+        "unit_class": "det_vietnam_rock_burned_a",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_23",
+        "tm": [
+          [
+            0.0311114,
+            0.41156,
+            0.0
+          ],
+          [
+            -0.563138,
+            0.0425699,
+            0.0769101
+          ],
+          [
+            0.0506971,
+            -0.00383239,
+            0.373327
+          ],
+          [
+            2644.94,
+            38.0419,
+            3129.78
+          ]
+        ],
+        "unit_class": "det_vietnam_rock_burned_a",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_24",
+        "tm": [
+          [
+            0.338354,
+            0.0,
+            -0.23636
+          ],
+          [
+            0.0440441,
+            0.564745,
+            0.0630498
+          ],
+          [
+            0.213793,
+            -0.0508417,
+            0.306048
+          ],
+          [
+            2640.45,
+            38.0419,
+            3133.49
+          ]
+        ],
+        "unit_class": "det_vietnam_rock_burned_a",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_25",
+        "tm": [
+          [
+            -0.317957,
+            0.0,
+            0.263159
+          ],
+          [
+            -0.0490378,
+            0.564745,
+            -0.0592491
+          ],
+          [
+            -0.238033,
+            -0.0508417,
+            -0.287599
+          ],
+          [
+            2643.8,
+            38.0419,
+            3135.43
+          ]
+        ],
+        "unit_class": "det_vietnam_rock_burned_a",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2164.35,
+            29.1977,
+            3349.97
+          ]
+        ],
+        "unit_class": "debris_bricks_large_b",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_02",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2251.61,
+            29.1977,
+            3320.45
+          ]
+        ],
+        "unit_class": "debris_bricks_large_b",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_13",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            2413.58,
+            28.8428,
+            3411.32
+          ]
+        ],
+        "unit_class": "debris_bricks_medium",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_14",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.83237,
+            -0.55422
+          ],
+          [
+            0.0,
+            0.55422,
+            0.83237
+          ],
+          [
+            2414.5,
+            29.4844,
+            3411.18
+          ]
+        ],
+        "unit_class": "debris_bricks_medium_b",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_65",
+        "tm": [
+          [
+            0.638595,
+            0.0,
+            -0.769543
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.769543,
+            0.0,
+            0.638595
+          ],
+          [
+            2746.14,
+            46.2397,
+            2795.16
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_66",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2701.69,
+            45.3969,
+            2880.7
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_67",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2708.77,
+            45.3969,
+            2866.35
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_68",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2715.84,
+            45.3969,
+            2852.01
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_69",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2722.92,
+            45.3969,
+            2837.66
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_70",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2730.0,
+            45.3969,
+            2823.32
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_64",
+        "tm": [
+          [
+            0.461515,
+            0.0,
+            -0.887132
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.887132,
+            0.0,
+            0.461515
+          ],
+          [
+            2737.07,
+            45.3969,
+            2808.97
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_77",
+        "tm": [
+          [
+            0.977463,
+            0.0,
+            0.211105
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.211105,
+            0.0,
+            0.977463
+          ],
+          [
+            2840.03,
+            46.2396,
+            2787.39
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_78",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            -0.000263125
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.000263125,
+            0.0,
+            1.0
+          ],
+          [
+            2759.63,
+            45.3969,
+            2787.12
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_79",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            -0.000263125
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.000263125,
+            0.0,
+            1.0
+          ],
+          [
+            2775.62,
+            45.3969,
+            2786.77
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_80",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            -0.000263125
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.000263125,
+            0.0,
+            1.0
+          ],
+          [
+            2791.61,
+            45.3969,
+            2786.42
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_81",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            -0.000263125
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.000263125,
+            0.0,
+            1.0
+          ],
+          [
+            2807.6,
+            45.3969,
+            2786.08
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_76",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            -0.000263125
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.000263125,
+            0.0,
+            1.0
+          ],
+          [
+            2823.59,
+            45.3969,
+            2785.73
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_88",
+        "tm": [
+          [
+            0.221767,
+            0.0,
+            0.975099
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.975099,
+            0.0,
+            0.221767
+          ],
+          [
+            2924.31,
+            46.2397,
+            2830.36
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_89",
+        "tm": [
+          [
+            0.906419,
+            0.0,
+            0.42238
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.42238,
+            0.0,
+            0.906419
+          ],
+          [
+            2855.35,
+            45.3969,
+            2793.6
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_90",
+        "tm": [
+          [
+            0.906419,
+            0.0,
+            0.42238
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.42238,
+            0.0,
+            0.906419
+          ],
+          [
+            2869.99,
+            45.3969,
+            2800.03
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_91",
+        "tm": [
+          [
+            0.906419,
+            0.0,
+            0.42238
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.42238,
+            0.0,
+            0.906419
+          ],
+          [
+            2884.63,
+            45.3969,
+            2806.48
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_92",
+        "tm": [
+          [
+            0.906419,
+            0.0,
+            0.42238
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.42238,
+            0.0,
+            0.906419
+          ],
+          [
+            2899.26,
+            45.3969,
+            2812.93
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_87",
+        "tm": [
+          [
+            0.906419,
+            0.0,
+            0.42238
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.42238,
+            0.0,
+            0.906419
+          ],
+          [
+            2913.91,
+            45.3969,
+            2819.37
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_98",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2923.65,
+            45.3969,
+            2844.78
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_99",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2923.31,
+            45.3969,
+            2860.77
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_100",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2922.95,
+            45.3969,
+            2876.77
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_101",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2922.6,
+            45.3969,
+            2892.75
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_97",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2922.25,
+            45.3969,
+            2908.75
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_107",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2921.35,
+            45.3969,
+            2925.68
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_108",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2921.01,
+            45.3969,
+            2941.66
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_109",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2920.66,
+            45.3969,
+            2957.66
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_110",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2920.3,
+            45.3969,
+            2973.64
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_106",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2919.96,
+            45.3969,
+            2989.64
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_116",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2917.7,
+            45.3969,
+            3004.78
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_117",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2917.35,
+            45.3969,
+            3020.76
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_118",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2917.0,
+            45.3969,
+            3036.76
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_119",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2916.64,
+            45.3969,
+            3052.75
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_115",
+        "tm": [
+          [
+            -0.0433565,
+            0.0,
+            0.999059
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.999059,
+            0.0,
+            -0.0433565
+          ],
+          [
+            2916.3,
+            45.3969,
+            3068.74
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_125",
+        "tm": [
+          [
+            -0.984762,
+            0.0,
+            0.173907
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.173907,
+            0.0,
+            -0.984762
+          ],
+          [
+            2912.44,
+            45.3969,
+            3079.1
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_126",
+        "tm": [
+          [
+            -0.984762,
+            0.0,
+            0.173907
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.173907,
+            0.0,
+            -0.984762
+          ],
+          [
+            2896.76,
+            45.3969,
+            3082.23
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_127",
+        "tm": [
+          [
+            -0.984762,
+            0.0,
+            0.173907
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.173907,
+            0.0,
+            -0.984762
+          ],
+          [
+            2881.07,
+            45.3969,
+            3085.35
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_128",
+        "tm": [
+          [
+            -0.984762,
+            0.0,
+            0.173907
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.173907,
+            0.0,
+            -0.984762
+          ],
+          [
+            2865.38,
+            45.3969,
+            3088.46
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_124",
+        "tm": [
+          [
+            -0.984762,
+            0.0,
+            0.173907
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.173907,
+            0.0,
+            -0.984762
+          ],
+          [
+            2849.69,
+            45.3969,
+            3091.58
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_129",
+        "tm": [
+          [
+            -0.984762,
+            0.0,
+            0.173907
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.173907,
+            0.0,
+            -0.984762
+          ],
+          [
+            2835.72,
+            45.3969,
+            3093.57
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "structures_22",
+        "tm": [
+          [
+            0.412154,
+            0.0218666,
+            0.0
+          ],
+          [
+            -0.0301966,
+            0.569158,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.376773
+          ],
+          [
+            1723.06,
+            28.484,
+            3370.16
+          ]
+        ],
+        "unit_class": "debris_bricks_large_b",
+        "objLayer": 1,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_121",
+        "tm": [
+          [
+            0.939782,
+            0.0,
+            0.341773
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.341773,
+            0.0,
+            0.939782
+          ],
+          [
+            2926.68,
+            45.3969,
+            2825.82
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_122",
+        "tm": [
+          [
+            0.939782,
+            0.0,
+            0.341773
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.341773,
+            0.0,
+            0.939782
+          ],
+          [
+            2941.82,
+            45.3969,
+            2830.96
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_123",
+        "tm": [
+          [
+            0.939782,
+            0.0,
+            0.341773
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.341773,
+            0.0,
+            0.939782
+          ],
+          [
+            2956.98,
+            45.3969,
+            2836.1
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_130",
+        "tm": [
+          [
+            0.939782,
+            0.0,
+            0.341773
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.341773,
+            0.0,
+            0.939782
+          ],
+          [
+            2972.12,
+            45.3969,
+            2841.25
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_131",
+        "tm": [
+          [
+            0.939782,
+            0.0,
+            0.341773
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.341773,
+            0.0,
+            0.939782
+          ],
+          [
+            2987.26,
+            45.3969,
+            2846.39
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_132",
+        "tm": [
+          [
+            0.939782,
+            0.0,
+            0.341773
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.341773,
+            0.0,
+            0.939782
+          ],
+          [
+            3003.14,
+            45.3969,
+            2852.34
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_133",
+        "tm": [
+          [
+            0.939782,
+            0.0,
+            0.341773
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.341773,
+            0.0,
+            0.939782
+          ],
+          [
+            3018.28,
+            45.3969,
+            2857.47
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_134",
+        "tm": [
+          [
+            0.939782,
+            0.0,
+            0.341773
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.341773,
+            0.0,
+            0.939782
+          ],
+          [
+            3033.43,
+            45.3969,
+            2862.62
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_120",
+        "tm": [
+          [
+            0.939782,
+            0.0,
+            0.341773
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.341773,
+            0.0,
+            0.939782
+          ],
+          [
+            3048.57,
+            45.3969,
+            2867.77
+          ]
+        ],
+        "unit_class": "czech_hedgehog_dynamic_5blocks",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_16",
+        "tm": [
+          [
+            0.766044,
+            -0.642788,
+            0.0
+          ],
+          [
+            0.535037,
+            0.637632,
+            -0.55422
+          ],
+          [
+            0.356246,
+            0.424558,
+            0.83237
+          ],
+          [
+            2417.74,
+            30.6891,
+            3414.02
+          ]
+        ],
+        "unit_class": "debris_bricks_medium_b",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_28",
+        "tm": [
+          [
+            0.976361,
+            0.201765,
+            -0.0775279
+          ],
+          [
+            -0.216072,
+            0.90163,
+            -0.374669
+          ],
+          [
+            -0.00569347,
+            0.382563,
+            0.923912
+          ],
+          [
+            2412.88,
+            30.6388,
+            3411.25
+          ]
+        ],
+        "unit_class": "debris_bricks_small",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "objectGroups_29",
+        "tm": [
+          [
+            0.976361,
+            0.0430218,
+            -0.211822
+          ],
+          [
+            -0.216072,
+            0.168453,
+            -0.961736
+          ],
+          [
+            -0.00569347,
+            0.98477,
+            0.173767
+          ],
+          [
+            2412.51,
+            30.6388,
+            3411.45
+          ]
+        ],
+        "unit_class": "debris_bricks_small",
+        "objLayer": 2,
+        "props": {
+          "army": 0,
+          "active": true
+        }
+      },
+      {
+        "name": "RedAirfield",
+        "tm": [
+          [
+            -0.976296,
+            0.0,
+            -0.21644
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.21644,
+            0.0,
+            -0.976296
+          ],
+          [
+            -8293.74,
+            98.2769,
+            490.847
+          ]
+        ],
+        "unit_class": "dynaf_universal_1line_d_modern",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "BlueAirfield",
+        "tm": [
+          [
+            0.996195,
+            0.0,
+            0.0871559
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0871559,
+            0.0,
+            0.996195
+          ],
+          [
+            13259.3,
+            131.718,
+            809.429
+          ]
+        ],
+        "unit_class": "dynaf_universal_1line_d_modern",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    ],
+    "tankModels": [
+      {
+        "name": "Blue_aa_oz",
+        "tm": [
+          [
+            -0.939692,
+            0.0,
+            -0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.34202,
+            0.0,
+            -0.939692
+          ],
+          [
+            12643.5,
+            41.4625,
+            -419.504
+          ]
+        ],
+        "unit_class": "germ_wiesel_2_adwc",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "germ_wiesel_2_adwc_default",
+        "bullets0": "70mm_stinger_block2_aam",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "70mm_stinger_block2_aam",
+          "new_tank_horizontal_aiming",
+          "new_tank_vertical_aiming",
+          "night_vision_system"
+        ],
+        "crewSkillK": 1.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will_air",
+          "use_search_radar": true,
+          "targetAir": true,
+          "accuracy": 1.0,
+          "effShootingRate": 1.0
+        },
+        "way": {}
+      },
+      {
+        "name": "Blue_aa_za35",
+        "tm": [
+          [
+            -0.999048,
+            0.0,
+            0.0436195
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0436195,
+            0.0,
+            -0.999048
+          ],
+          [
+            12484.0,
+            41.4625,
+            1652.33
+          ]
+        ],
+        "unit_class": "uk_rooikat_za_35",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "uk_rooikat_za_35_default",
+        "bullets0": "35mm_kda_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "35mm_kda_HE",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will_air",
+          "use_search_radar": true,
+          "targetAir": true,
+          "accuracy": 1.0,
+          "effShootingRate": 1.0
+        },
+        "way": {}
+      },
+      {
+        "name": "Red_aa_oz",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -7309.13,
+            41.4615,
+            -386.173
+          ]
+        ],
+        "unit_class": "germ_wiesel_2_adwc",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "germ_wiesel_2_adwc_default",
+        "bullets0": "70mm_stinger_block2_aam",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "70mm_stinger_block2_aam",
+          "new_tank_horizontal_aiming",
+          "new_tank_vertical_aiming",
+          "night_vision_system"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will_air",
+          "use_search_radar": true,
+          "targetAir": true,
+          "accuracy": 1.0,
+          "effShootingRate": 1.0
+        },
+        "way": {}
+      },
+      {
+        "name": "Red_aa_za35",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -7909.91,
+            41.4618,
+            1570.13
+          ]
+        ],
+        "unit_class": "uk_rooikat_za_35",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "uk_rooikat_za_35_default",
+        "bullets0": "35mm_kda_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": "35mm_kda_HE",
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will_air",
+          "use_search_radar": true,
+          "targetAir": true,
+          "accuracy": 1.0,
+          "effShootingRate": 1.0
+        },
+        "way": {}
+      },
+      {
+        "name": "Red_aa_oz01",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -9095.22,
+            64.0926,
+            -793.375
+          ]
+        ],
+        "unit_class": "germ_wiesel_2_adwc",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "germ_wiesel_2_adwc_default",
+        "bullets0": "70mm_stinger_block2_aam",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "70mm_stinger_block2_aam",
+          "new_tank_horizontal_aiming",
+          "new_tank_vertical_aiming",
+          "night_vision_system"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will_air",
+          "use_search_radar": true,
+          "targetAir": true,
+          "accuracy": 1.0,
+          "effShootingRate": 1.0
+        },
+        "way": {}
+      },
+      {
+        "name": "Blue_aa_oz01",
+        "tm": [
+          [
+            -0.939692,
+            0.0,
+            -0.34202
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.34202,
+            0.0,
+            -0.939692
+          ],
+          [
+            13776.9,
+            21.363,
+            -243.415
+          ]
+        ],
+        "unit_class": "germ_wiesel_2_adwc",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "germ_wiesel_2_adwc_default",
+        "bullets0": "70mm_stinger_block2_aam",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "modification": [
+          "70mm_stinger_block2_aam",
+          "new_tank_horizontal_aiming",
+          "new_tank_vertical_aiming",
+          "night_vision_system"
+        ],
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "attack_type": "fire_at_will_air",
+          "use_search_radar": true,
+          "targetAir": true,
+          "accuracy": 1.0,
+          "effShootingRate": 1.0
+        },
+        "way": {}
+      }
+    ]
+  },
+  "areas": {
+    "BlueSpawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -68.4696,
+          0.0,
+          14.5574
+        ],
+        [
+          0.0,
+          70.0,
+          0.0
+        ],
+        [
+          -14.5574,
+          0.0,
+          -68.4696
+        ],
+        [
+          2903.88,
+          33.4295,
+          3374.44
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedSpawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          70.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          70.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          70.0
+        ],
+        [
+          1677.84,
+          20.3775,
+          3525.24
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Capzone C": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          42.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          42.0
+        ],
+        [
+          2644.39,
+          37.1982,
+          3133.09
+        ]
+      ],
+      "props": {}
+    },
+    "Capzone B": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          41.9302,
+          0.0,
+          -2.42066
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          2.42066,
+          0.0,
+          41.9302
+        ],
+        [
+          2289.94,
+          -0.231,
+          3393.06
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Capzone A": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          42.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          50.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          42.0
+        ],
+        [
+          1948.61,
+          -0.763821,
+          3636.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1670.49,
+          25.7991,
+          3506.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1670.81,
+          21.0232,
+          3520.33
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1671.29,
+          21.0232,
+          3537.17
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1655.81,
+          21.0232,
+          3534.98
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1688.05,
+          24.7486,
+          3507.27
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1691.29,
+          21.0232,
+          3520.05
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1690.71,
+          21.0232,
+          3536.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1655.76,
+          23.9592,
+          3512.76
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2888.02,
+          33.6766,
+          3355.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2891.06,
+          33.6766,
+          3367.38
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2894.1,
+          33.6766,
+          3378.85
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2897.14,
+          33.6766,
+          3390.33
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2902.26,
+          33.6766,
+          3353.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2905.56,
+          33.6766,
+          3364.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2908.87,
+          33.6766,
+          3375.58
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2912.18,
+          33.6766,
+          3386.87
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueSpawn2": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -68.4696,
+          0.0,
+          14.5574
+        ],
+        [
+          0.0,
+          70.0,
+          0.0
+        ],
+        [
+          -14.5574,
+          0.0,
+          -68.4696
+        ],
+        [
+          2938.56,
+          1.94158,
+          3659.12
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn18": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2922.7,
+          2.18868,
+          3640.58
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn19": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2925.74,
+          2.18868,
+          3652.06
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn20": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2928.78,
+          2.18868,
+          3663.53
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn21": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2931.82,
+          2.18868,
+          3675.01
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn22": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2936.94,
+          2.18868,
+          3637.69
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn23": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2940.24,
+          2.18868,
+          3648.98
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn24": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2943.55,
+          2.18868,
+          3660.26
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "BlueGroundSpawn16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -15.6502,
+          0.0,
+          3.3274
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          -3.3274,
+          0.0,
+          -15.6502
+        ],
+        [
+          2946.86,
+          2.18868,
+          3671.55
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedSpawn2": {
+      "type": "Sphere",
+      "tm": [
+        [
+          70.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          70.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          70.0
+        ],
+        [
+          1677.27,
+          41.6159,
+          3048.8
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn18": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1671.16,
+          42.2616,
+          3032.74
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn19": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1670.78,
+          42.2616,
+          3043.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn20": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1670.39,
+          42.2616,
+          3054.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn21": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1670.0,
+          42.2616,
+          3065.31
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn22": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1688.68,
+          42.2617,
+          3032.13
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn23": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1688.79,
+          42.2616,
+          3043.12
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn24": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1688.9,
+          42.2616,
+          3054.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "RedGroundspawn16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          16.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          16.0
+        ],
+        [
+          1689.01,
+          42.2616,
+          3065.08
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Battlearea": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -1670.47,
+          0.0,
+          -315.46
+        ],
+        [
+          0.0,
+          1700.0,
+          0.0
+        ],
+        [
+          236.733,
+          0.0,
+          -1253.59
+        ],
+        [
+          2284.83,
+          100.0,
+          3292.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Red Airspawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          401.035,
+          0.0,
+          17.5096
+        ],
+        [
+          0.0,
+          401.417,
+          0.0
+        ],
+        [
+          -17.5096,
+          0.0,
+          401.035
+        ],
+        [
+          -7680.21,
+          999.998,
+          43.7314
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Redairspawn01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          -7643.82,
+          1093.97,
+          85.1865
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Redairspawn02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          -7637.67,
+          1093.97,
+          24.1064
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Redairspawn03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          -7721.22,
+          1093.97,
+          19.7664
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Redairspawn04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          30.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          30.0
+        ],
+        [
+          -7724.3,
+          1093.97,
+          99.4955
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "Blueairspawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -401.418,
+          0.0,
+          0.0000572205
+        ],
+        [
+          0.0,
+          401.417,
+          0.0
+        ],
+        [
+          -0.0000572205,
+          0.0,
+          -401.418
+        ],
+        [
+          12295.8,
+          1000.0,
+          818.633
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "blueairspawn03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.9714,
+          0.0,
+          1.30859
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -1.30859,
+          0.0,
+          -29.9714
+        ],
+        [
+          12257.6,
+          1093.97,
+          778.813
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "blueairspawn02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.9714,
+          0.0,
+          1.30859
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -1.30859,
+          0.0,
+          -29.9714
+        ],
+        [
+          12254.2,
+          1093.97,
+          840.103
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "blueairspawn04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.9714,
+          0.0,
+          1.30859
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -1.30859,
+          0.0,
+          -29.9714
+        ],
+        [
+          12337.8,
+          1093.97,
+          840.793
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "blueairspawn01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -29.9714,
+          0.0,
+          1.30859
+        ],
+        [
+          0.0,
+          30.0,
+          0.0
+        ],
+        [
+          -1.30859,
+          0.0,
+          -29.9714
+        ],
+        [
+          12337.4,
+          1093.97,
+          761.003
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battlearea_planes": {
+      "type": "Sphere",
+      "tm": [
+        [
+          40000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          40000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          40000.0
+        ],
+        [
+          2252.82,
+          228.083,
+          2818.15
+        ]
+      ],
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}
