@@ -11,6 +11,8 @@ require FlightControl
 require hud
 require WTCamera
 require app
+require Weapon
+require hud
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
 let mpsToKnots = 1.94384
@@ -58,6 +60,7 @@ def draw_hmd(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : Rend
   draw_compass(ctx, rdata, data, compass)
   draw_hmd_azimuth(ctx, rdata, data)
   draw_ground_speed(ctx, rdata, data, hero.vel)
+  draw_rocket_ccip(ctx, rdata, data, fmw)
 
 def draw_central_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
   ctx |> set_color(data.color)
@@ -275,3 +278,46 @@ def draw_ground_speed(var ctx : GuiContext&; rdata : ElemRenderData& const; data
   let strBox = get_str_bbox(spdStr, spdStr |> length(), fctx)
   ctx |> goto_xy(rdata.pos.x + rdata.size.x * 0.35 - strBox.width.x, rdata.pos.y + rdata.size.y * 0.65)
   ctx |> draw_str_scaled(1.0, spdStr, spdStr |> length())
+
+def draw_rocket_ccip(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; fmw : FlightModelWrap?)
+  static_if typeinfo(builtin_function_exists @@ < () : float2 > _::get_rocket_hmd_impact_point) // TODO remove after resource update on all platforms
+    ctx |> set_color(data.color)
+
+    var trigger : int
+    get_selected_secondary_weapon(fmw) <| $(var weapon : Weapon?#)
+      trigger = weapon?.trigger_no ?? -1
+
+    let isRocketCcipMode = ((fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_ROCKET)) &&
+      trigger == int(WeaponTriggerType.ROCKETS_TRIGGER))
+    if (!isRocketCcipMode)
+      return
+
+    let pos = get_rocket_hmd_impact_point()
+
+    ctx |> draw_line(
+      pos.x,
+      pos.y - rdata.size.y * 0.03,
+      pos.x,
+      pos.y - rdata.size.y * 0.005,
+      ctx |> hdpx(data.lineWidth))
+
+    ctx |> draw_line(
+      pos.x,
+      pos.y + rdata.size.y * 0.005,
+      pos.x,
+      pos.y + rdata.size.y * 0.03,
+      ctx |> hdpx(data.lineWidth))
+
+    ctx |> draw_line(
+      pos.x - rdata.size.x * 0.005,
+      pos.y + rdata.size.y * 0.03,
+      pos.x + rdata.size.x * 0.005,
+      pos.y + rdata.size.y * 0.03,
+      ctx |> hdpx(data.lineWidth))
+
+    ctx |> draw_line(
+      pos.x - rdata.size.x * 0.005,
+      pos.y - rdata.size.y * 0.03,
+      pos.x + rdata.size.x * 0.005,
+      pos.y - rdata.size.y * 0.03,
+      ctx |> hdpx(data.lineWidth))
