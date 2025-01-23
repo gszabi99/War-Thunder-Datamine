@@ -35,7 +35,7 @@ let { create_options_container } = require("%scripts/options/optionsExt.nut")
 let { guiStartPostfxSettings } = require("%scripts/postFxSettings.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
-let { resetTimeout, clearTimer, defer } = require("dagor.workcycle")
+let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 
 const DELAY_BEFORE_PRELOAD_HOVERED_OPT_IMAGES_SEC = 0.25
 const MAX_NUM_VISIBLE_FILTER_OPTIONS = 25
@@ -84,6 +84,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   getOptionInfoViewFn = null
   lastHoveredRowId = null
 
+  preloadOptionsImgTimer = null
+
   function initScreen() {
     if (!this.optGroups)
       base.goBack()
@@ -117,7 +119,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onDestroy() {
-    clearTimer(this.preloadOptionImages)
+    clearTimer(this.preloadOptionsImgTimer)
     defer(@() get_cur_gui_scene().discardUnusedPicture())
   }
 
@@ -131,7 +133,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
     this.scene.findObject("option_info_container").show(false)
     this.lastHoveredRowId = null
-    clearTimer(this.preloadOptionImages)
+    clearTimer(this.preloadOptionsImgTimer)
 
     this.resetNavigation()
 
@@ -493,8 +495,12 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     obj.active = "yes"
     this.lastHoveredRowId = obj.id
 
-    if (view?.hasImages)
-      resetTimeout(DELAY_BEFORE_PRELOAD_HOVERED_OPT_IMAGES_SEC, this.preloadOptionImages.bindenv(this))
+    clearTimer(this.preloadOptionsImgTimer)
+    if (view?.hasImages) {
+      let cb = Callback(this.preloadOptionImages, this)
+      this.preloadOptionsImgTimer =
+        setTimeout(DELAY_BEFORE_PRELOAD_HOVERED_OPT_IMAGES_SEC, @() cb())
+    }
   }
 
   function preloadOptionImages() {

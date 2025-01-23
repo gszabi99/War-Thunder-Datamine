@@ -9,6 +9,7 @@ let { Roll } = require("%rGui/planeState/planeFlyState.nut")
 let { DistanceMax, AamLaunchZoneDistMin, AamLaunchZoneDistMax, AamLaunchZoneDist, Azimuth, Elevation }= require("%rGui/radarState.nut")
 let { GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
+let { AVQ7CCRP } = require("ilsAVQ7.nut")
 
 let LCOSSRollMark = @() {
   watch = IlsColor
@@ -92,13 +93,14 @@ let LCOSSRadarRange = @() {
   children = LCOSSRadarRangeVis.value ? [LCOSSRadarRangeMark] : null
 }
 
-function LCOSS(width, height) {
+function LCOSS(width, height, hasCCRP) {
   return @() {
     size = [width, height]
     children = [
       LCOSSCrosshair,
       LCOSSRollMark,
-      LCOSSRadarRange
+      LCOSSRadarRange,
+      (hasCCRP ? AVQ7CCRP(width, height) : null)
     ]
     behavior = Behaviors.RtPropUpdate
     update = @() {

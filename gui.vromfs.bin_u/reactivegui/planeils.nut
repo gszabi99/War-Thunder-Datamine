@@ -153,7 +153,7 @@ let planeIls = @(width, height) function() {
       (isASP17 ? ASP17(width, height) : null),
       (isBuccaneerIls ? buccaneerHUD(width, height) : null),
       (is410SUM1Ils ? ilsSum410(width, height) : null),
-      (isLCOSS ? LCOSS(width, height) : null),
+      (isLCOSS ? LCOSS(width, height, haveAVQ7Bombing) : null),
       (isASG23 ? ASG23(width, height) : null),
       (isASP23 || isIPP2_53 ? ASP23ModeSelector(width, height, isIPP2_53) : null),
       (haveJ7ERadar ? J7EAdditionalHud(width, height) : null),
