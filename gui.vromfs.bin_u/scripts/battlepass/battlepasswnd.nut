@@ -26,7 +26,7 @@ let { number_of_set_bits } = require("%sqstd/math.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
-let { toggleUnlockFavButton } = require("%scripts/unlocks/favoriteUnlocks.nut")
+let { toggleUnlockFavCheckBox } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { buildDateTimeStr } = require("%scripts/time.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getCurrentBattleTasks, isBattleTasksAvailable, setBattleTasksUpdateTimer
@@ -420,7 +420,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     }]))
   }
 
-  unlockToFavorites = @(obj) toggleUnlockFavButton(obj)
+  unlockToFavorites = @(obj) toggleUnlockFavCheckBox(obj)
   onChallengeHover = @(obj) this.hoverChallengeId = obj.id
 
   function updateChallengesSheet(obj, challenges) {
