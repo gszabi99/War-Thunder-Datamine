@@ -135,10 +135,10 @@ function updateUnlockFavObj(obj) {
     obj.isChecked = isUnlockInFavorites ? "yes" : "no"
   } else {
     if (obj?.on_change_value != null) {
-      obj.setValue(isUnlockInFavorites)
+      logerr("For add to favorite checkbox use on_click event instead on_change_value")
       return
-    }
-    obj.setValue(isUnlockInFavorites)
+    } else
+      obj.setValue(isUnlockInFavorites)
   }
 
   obj.tooltip = isUnlockInFavorites
@@ -160,26 +160,7 @@ function initUnlockFavInContainer(unlockId, container, favBtnId = CHECKBOX_BTN_I
   initUnlockFavObj(unlockId, unlockObj)
 }
 
-function toggleUnlockFavCheckBox(obj) {
-  let unlockId = obj?.unlockId
-  if (u.isEmpty(unlockId))
-    return false
-
-  let isFav = isUnlockFav(unlockId)
-  if (obj.getValue() != isFav) {
-    let isToggeled = toggleUnlockFav(unlockId) != isFav
-    if (isToggeled)
-      updateUnlockFavObj(obj)
-    return isToggeled
-  }
-}
-
 function toggleUnlockFavButton(obj) {
-  if (obj?.on_change_value != null || obj?.isChecked == null) {
-    logerr("use toggleUnlockFavCheckBox() for checkboxes")
-    return false
-  }
-
   let unlockId = obj?.unlockId
   if (u.isEmpty(unlockId))
     return false
@@ -208,5 +189,4 @@ return {
   initUnlockFavObj
   initUnlockFavInContainer
   toggleUnlockFavButton
-  toggleUnlockFavCheckBox
 }

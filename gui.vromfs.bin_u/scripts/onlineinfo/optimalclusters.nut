@@ -254,23 +254,16 @@ function onUdpPacket(evt) {
   let { socketId, recvTime, data, host } = evt
   let hostInfo = hostsCfg?[host]
   let { lastRequestId = 0, lastRequestTimeMs = 0 } = hostInfo
-  if (socketId != CLIENT_SOCKET_ID || hostInfo == null || lastRequestTimeMs == 0)
+  if (socketId != CLIENT_SOCKET_ID || data.len() != PACKET_SIZE_BYTES || hostInfo == null || lastRequestTimeMs == 0)
     return logIgnoredMsg(evt)
-
-  local delayMs = 0
-  if (data.len() == PACKET_SIZE_BYTES) {
-    let id        = readInt64NetBytes(data)
-    let timestamp = readInt64NetBytes(data)
-    let sign      = readInt64NetBytes(data)
-    delayMs       = readInt64NetBytes(data)
-    if (id != lastRequestId || delayMs < 0 || !checkPacketSign(id, timestamp, sign, delayMs))
-      return logIgnoredMsg(evt)
-  }
-
+  let id        = readInt64NetBytes(data)
+  let timestamp = readInt64NetBytes(data)
+  let sign      = readInt64NetBytes(data)
+  let delayMs   = readInt64NetBytes(data)
   let rtt = recvTime - lastRequestTimeMs - delayMs
-  if (rtt < 0)
+  if (id != lastRequestId || delayMs < 0 || rtt < 0
+      || !checkPacketSign(id, timestamp, sign, delayMs))
     return logIgnoredMsg(evt)
-
   logOC($"Host {host} responded, RTT: {rtt} ms")
   updateHostAvgRTT(hostInfo, rtt, recvTime)
   resetTimeout(CLUSTERS_RECALC_DELAY_SEC, onClustersRecalc)
