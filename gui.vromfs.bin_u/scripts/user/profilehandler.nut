@@ -562,7 +562,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (!this.isEditModeEnabled)
       return false
     let newIcon = this.editModeTempData?.icon
-    if (newIcon && newIcon != ::get_option(USEROPT_PILOT).value)
+    if (newIcon != null && newIcon != ::get_option(USEROPT_PILOT).value)
       return true
 
     if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
@@ -2039,7 +2039,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function onProfileEditApplyBtn() {
     let newIcon = this.editModeTempData?.icon
-    if (newIcon && newIcon != ::get_option(USEROPT_PILOT).value)
+    if (newIcon != null && newIcon != ::get_option(USEROPT_PILOT).value)
       this.saveProfileIcon(newIcon)
 
     this.saveProfileAppearance()
