@@ -4070,6 +4070,173 @@
       }
     },
     {
+      "id": "2025_01_29_lunar_ny_2025_decal",
+      "locDescId": "2025_01_29_lunar_ny_2025_decal/desc",
+      "userLogId": "2025_01_29_lunar_ny_2025_decal",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "lunar_ny",
+      "costGold": 199,
+      "manualOpen": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_china"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-01-29 12:00:00",
+            "endDate": "2025-02-05 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_01_29_title_snake_charmer_check",
+      "type": "achievement",
+      "chapter": "holidays",
+      "group": "lunar_ny",
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": [
+          "cn_ztz_96a_prot",
+          "a_5c"
+        ],
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2025-01-26 08:00:00",
+          "endDate": "2025-02-03 11:30:00"
+        }
+      }
+    },
+    {
+      "id": "2025_01_29_title_snake_charmer",
+      "locDescId": "2025_01_29_title_snake_charmer/desc",
+      "userLogId": "2025_01_29_title_snake_charmer",
+      "hideUntilPrevUnlocked": "2025_01_29_title_snake_charmer_check",
+      "icon": "https://staticfiles.warthunder.com/upload/image/Promo/200_beauty_rat_snake_decal.png",
+      "lockStyle": "lock",
+      "type": "trophy",
+      "amount_trophies": 2,
+      "chapter": "holidays",
+      "group": "lunar_ny",
+      "shouldMarkUnits": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": [
+              "cn_ztz_96a_prot",
+              "a_5c"
+            ],
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "unlocked",
+            "unlock": "2025_01_29_title_snake_charmer_check"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-01-29 12:00:00",
+            "endDate": "2025-02-05 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_01_29_title_serpent_rising_check",
+      "type": "achievement",
+      "chapter": "holidays",
+      "group": "lunar_ny",
+      "hidden": true,
+      "mode": {
+        "type": "char_unit_exist",
+        "unit": [
+          "cn_al_khalid_1",
+          "j_7d"
+        ],
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2025-01-26 08:00:00",
+          "endDate": "2025-02-03 11:30:00"
+        }
+      }
+    },
+    {
+      "id": "2025_01_29_title_serpent_rising",
+      "locDescId": "2025_01_29_title_serpent_rising/desc",
+      "userLogId": "2025_01_29_title_serpent_rising",
+      "hideUntilPrevUnlocked": "2025_01_29_title_serpent_rising_check",
+      "icon": "https://staticfiles.warthunder.com/upload/image/Promo/200_horned_pit_viper_decal.png",
+      "lockStyle": "lock",
+      "type": "trophy",
+      "amount_trophies": 2,
+      "chapter": "holidays",
+      "group": "lunar_ny",
+      "shouldMarkUnits": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": [
+              "cn_al_khalid_1",
+              "j_7d"
+            ],
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "unlocked",
+            "unlock": "2025_01_29_title_serpent_rising_check"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-01-29 12:00:00",
+            "endDate": "2025-02-05 11:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "title_per_ardua_ad_astra_gift",
       "userLogId": "title_per_ardua_ad_astra_gift",
       "icon": "https://staticfiles.warthunder.com/upload/image/Promo/cardicon_australia_day_200.png",
@@ -12967,6 +13134,18 @@
     },
     {
       "id": "title_per_ardua_ad_astra",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_snake_charmer",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_serpent_rising",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
