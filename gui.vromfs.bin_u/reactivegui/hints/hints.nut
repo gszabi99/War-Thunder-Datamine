@@ -6,14 +6,14 @@ let hintTags = require("hintTags.nut")
 let hintsCache = {}
 
 let createHintContent = function(text, override) {
-  let config = cross_call.getHintConfig(text)
+  let { rows = [] } = cross_call.getHintConfig(text)
 
   return {
     size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
     flow = FLOW_VERTICAL
     valign = ALIGN_CENTER
 
-    children = config.rows.map(@(hint) hintTags(hint.slices, override))
+    children = rows.map(@(hint) hintTags(hint.slices, override))
   }
 }
 

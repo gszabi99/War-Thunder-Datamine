@@ -346,7 +346,9 @@ function loadSeenTasksData(forceLoad = false) {
   if (isDataBlock(blk))
     for (local i = 0; i < blk.paramCount(); ++i) {
       let id = blk.getParamName(i)
-      seenTasks[id] <- max(blk.getParamValue(i), getTblValue(id, seenTasks, 0))
+      let value = blk.getParamValue(i)
+      if (type(value) == "integer")
+        seenTasks[id] <- max(value, seenTasks?[id] ?? 0)
     }
 
   seenTasksInited = true
