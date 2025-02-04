@@ -52,7 +52,7 @@ elemViewType.addTypes({
       }
 
       let countryId = obj.countryId
-      let havePromoteUnitCountry = promoteUnits.get().findvalue(@(u) u.unit.shopCountry == countryId) != null
+      let havePromoteUnitCountry = promoteUnits.get().findvalue(@(u) u.isActive && u.unit.shopCountry == countryId) != null
       obj.show(havePromoteUnitCountry)
       if (!havePromoteUnitCountry)
         return
@@ -70,7 +70,7 @@ elemViewType.addTypes({
       }
 
       foreach (promUnit in promoteUnits.get()) {
-        if (promUnit.unit.shopCountry == obj.countryId && promUnit.unit.unitType.armyId == obj.armyId) {
+        if (promUnit.isActive && promUnit.unit.shopCountry == obj.countryId && promUnit.unit.unitType.armyId == obj.armyId) {
           obj.show(true)
           return
         }
@@ -96,7 +96,8 @@ elemViewType.addTypes({
       let needCollectPremiumUnits = (obj?.isForPremium ?? "no") == "yes"
       local unitsNames = ""
       foreach (promUnit in units) {
-        if (promUnit.unit.shopCountry != countryId
+        if (!promUnit.isActive
+            || promUnit.unit.shopCountry != countryId
             || promUnit.unit.unitType.armyId != armyId
             || promUnit.unit.rank != rank)
           continue
@@ -150,7 +151,7 @@ addTooltipTypes({
         return false
       local idCounter = 0
       let { countryId = "", armyId = "" } = params
-      let units = getSortedUnits(promoteUnits.get().values())
+      let units = getSortedUnits(promoteUnits.get().filter(@(u) u.isActive).values())
       local remainingUnits = countryId == "" ? units : units.filter(@(val) val.unit.shopCountry == countryId)
       remainingUnits = armyId == "" ? remainingUnits : remainingUnits.filter(@(val) val.unit.unitType.armyId == armyId)
       remainingUnits = remainingUnits

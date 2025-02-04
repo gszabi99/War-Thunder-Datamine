@@ -91,7 +91,7 @@ function getCountryMarkersData(countryId) {
   if (bonusMarkersData.len() > 0)
     countryMarkers.append({ markerId = "bonusMarker", units = bonusMarkersData, header = "#shop/unit_nation_bonus_tooltip/header" })
 
-  let promoteMarkersData = promoteUnits.get().filter(@(u) u.unit.shopCountry == countryId).values()
+  let promoteMarkersData = promoteUnits.get().filter(@(u) u.isActive && u.unit.shopCountry == countryId).values()
   if (promoteMarkersData.len() > 0)
     countryMarkers.append({ markerId = "promoteMarker", units = promoteMarkersData, header = "#mainmenu/promoteUnit" })
 

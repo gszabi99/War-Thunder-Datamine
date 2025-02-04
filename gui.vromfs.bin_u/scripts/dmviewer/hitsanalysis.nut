@@ -83,8 +83,13 @@ function getBulletInfo(unit, hit) {
     return bulletInfoCache[key]
   }
 
-  let bullets = (hit.ammo == "" || weaponBlk.getBlockByName(hit.ammo) == null) ? weaponBlk % "bullet"
-    : weaponBlk[hit.ammo] % "bullet"
+  local bullets = null
+  if (hit.ammo != "" && weaponBlk.getBlockByName(hit.ammo) != null)
+    bullets = weaponBlk[hit.ammo] % "bullet"
+  else if (weaponBlk.getBlockByName(bulletSetName) != null)
+    bullets = weaponBlk[bulletSetName] % "bullet"
+  else
+    bullets = weaponBlk % "bullet"
 
   if (hit.ammoNo not in bullets) {
     bulletInfoCache[key] <- {

@@ -106,12 +106,12 @@ let additionalSortParamByType = {
 }
 
 function canGetTrophyPrize(prize, prizeItemId) {
+  let prizeInLog = prizeItemId != null ? lastTrophiesFromLog?[prizeItemId.tostring()] : null
   if (prize?.unit) {
     if (prize?.mod)
       return true
 
-    let unitInLog = prizeItemId != null ? lastTrophiesFromLog?[prizeItemId.tostring()] : null
-    if (unitInLog?.unit)
+    if (prizeInLog?.unit == prize?.unit)
       return true
 
     let unit = getAircraftByName(prize.unit)
@@ -120,12 +120,14 @@ function canGetTrophyPrize(prize, prizeItemId) {
   }
 
   if (prize?.resourceType) {
+    if (prizeInLog?.resourceType == prize?.resourceType && prizeInLog?.resource == prize?.resource)
+      return true
     let decoratorType = getTypeByResourceType(prize.resourceType)
     return !decoratorType.isPlayerHaveDecorator(prize?.resource ?? "")
   }
 
   if (prize?.unlock)
-    return !isUnlockOpened(prize.unlock)
+    return prizeInLog?.unlock == prize?.unlock || !isUnlockOpened(prize.unlock)
   return true
 }
 
