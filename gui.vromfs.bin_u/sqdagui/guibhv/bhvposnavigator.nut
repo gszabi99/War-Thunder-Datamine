@@ -11,6 +11,7 @@ const DEF_HOLD_DELAY = 700 //same with bhvButton
 //blk params:
 //  value
 //  moveX, moveY  =  "linear", "closest"  (default = "closest")
+//  isSkipMoving  =  "yes",    "no"       (default = "no")
 
 let posNavigator = class {
   bhvId = "posNavigator"
@@ -380,6 +381,10 @@ let posNavigator = class {
   function moveSelect(obj, axis, dir) {
     let valueObj = this.getHoveredChild(obj).hoveredObj ?? this.getChildObj(obj, this.getSelectedValue(obj))
     let moveType = obj?[axis ? "moveY" : "moveX"]
+
+    if (obj?.isSkipMoving == "yes")
+      return RETCODE_NOTHING
+
     let { foundObj, foundIdx } = moveType == "linear"
       ? this.moveSelectLinear(obj, valueObj, axis, dir)
       : this.moveSelectClosest(obj, valueObj, axis, dir)

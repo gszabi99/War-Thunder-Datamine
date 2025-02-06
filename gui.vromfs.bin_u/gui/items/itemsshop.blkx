@@ -33,96 +33,101 @@
           "id": "btn_back"
         }
       },
-      "tdiv": {
-        "size": "pw, 1@frameHeaderHeight",
-        "flow": "horizontal",
-        "HorizontalListBox": {
-          "id": "tabs_list",
-          "height": "1@frameHeaderHeight",
-          "class": "header",
-          "normalFont": "yes",
-          "activeAccesskeys": "RS",
-          "on_select": "onTabChange"
-        },
-        "tdiv": {
-          "position": "absolute",
-          "pos": "pw-w, 0",
-          "Button_text": [
-            {
-              "id": "gc_warpoints",
-              "visualStyle": "noFrame",
-              "tooltip": "#mainmenu/warpoints",
-              "showBonusPersonal": "",
-              "showBonusCommon": "",
-              "_on_click": "onOnlineShopLions",
-              "img": {
-                "isFirstLeft": "yes",
-                "size": "@cIco, @cIco",
-                "background-image": "#ui/gameuiskin#shop_warpoints.svg",
-                "background-svg-size": "@cIco, @cIco"
-              },
-              "btnText": {
-                "id": "gc_balance",
-                "min-width": "0.05@sf",
-                "pos": "@blockInterval, 50%ph-50%h",
-                "position": "relative",
-                "text-align": "left"
-              },
-              "BonusCorner": [
-                {
-                  "bonusType": "personal"
-                },
-                {
-                  "bonusType": "common"
-                }
-              ],
-              "gcBtnLine": {}
-            },
-            {
-              "id": "gc_eagles",
-              "visualStyle": "noFrame",
-              "tooltip": "#mainmenu/gold",
-              "_on_click": "onOnlineShopEagles",
-              "img": {
-                "isFirstLeft": "yes",
-                "size": "@cIco, @cIco",
-                "background-image": "#ui/gameuiskin#shop_warpoints_premium.svg",
-                "background-svg-size": "@cIco, @cIco"
-              },
-              "btnText": {
-                "id": "gc_gold",
-                "min-width": "0.05@sf",
-                "pos": "@blockInterval, 50%ph-50%h",
-                "position": "relative",
-                "text-align": "left"
-              },
-              "gcBtnLine": {}
-            }
-          ],
-          "textareaNoTab": {
-            "id": "balance_text",
-            "pos": "0, 0.5ph-0.5h",
-            "position": "relative",
-            "hideEmptyText": "yes",
-            "text": "",
-            "tooltip": ""
+      "tdiv": [
+        {
+          "size": "pw, 1@frameHeaderHeight",
+          "flow": "horizontal",
+          "HorizontalListBox": {
+            "id": "tabs_list",
+            "height": "1@frameHeaderHeight",
+            "class": "header",
+            "normalFont": "yes",
+            "activeAccesskeys": "RS",
+            "on_select": "onTabChange"
           },
           "tdiv": {
-            "id": "sorting_block",
-            "width": "1@subsetComboBoxWidth",
-            "position": "relative",
-            "top": "0.5ph-0.5h",
-            "margin-left": "1@listboxPad",
-            "display": "hide",
+            "position": "absolute",
+            "pos": "pw-w, 0",
+            "Button_text": [
+              {
+                "id": "gc_warpoints",
+                "visualStyle": "noFrame",
+                "tooltip": "#mainmenu/warpoints",
+                "showBonusPersonal": "",
+                "showBonusCommon": "",
+                "_on_click": "onOnlineShopLions",
+                "img": {
+                  "isFirstLeft": "yes",
+                  "size": "@cIco, @cIco",
+                  "background-image": "#ui/gameuiskin#shop_warpoints.svg",
+                  "background-svg-size": "@cIco, @cIco"
+                },
+                "btnText": {
+                  "id": "gc_balance",
+                  "min-width": "0.05@sf",
+                  "pos": "@blockInterval, 50%ph-50%h",
+                  "position": "relative",
+                  "text-align": "left"
+                },
+                "BonusCorner": [
+                  {
+                    "bonusType": "personal"
+                  },
+                  {
+                    "bonusType": "common"
+                  }
+                ],
+                "gcBtnLine": {}
+              },
+              {
+                "id": "gc_eagles",
+                "visualStyle": "noFrame",
+                "tooltip": "#mainmenu/gold",
+                "_on_click": "onOnlineShopEagles",
+                "img": {
+                  "isFirstLeft": "yes",
+                  "size": "@cIco, @cIco",
+                  "background-image": "#ui/gameuiskin#shop_warpoints_premium.svg",
+                  "background-svg-size": "@cIco, @cIco"
+                },
+                "btnText": {
+                  "id": "gc_gold",
+                  "min-width": "0.05@sf",
+                  "pos": "@blockInterval, 50%ph-50%h",
+                  "position": "relative",
+                  "text-align": "left"
+                },
+                "gcBtnLine": {}
+              }
+            ],
+            "textareaNoTab": {
+              "id": "balance_text",
+              "pos": "0, 0.5ph-0.5h",
+              "position": "relative",
+              "hideEmptyText": "yes",
+              "text": "",
+              "tooltip": ""
+            },
             "tdiv": {
-              "id": "sorting_block_bg",
-              "width": "pw",
-              "background-color": "@rowHoverBackgroundColor",
-              "padding": "1@dp"
+              "id": "sorting_block",
+              "width": "1@subsetComboBoxWidth",
+              "position": "relative",
+              "top": "0.5ph-0.5h",
+              "margin-left": "1@listboxPad",
+              "display": "hide",
+              "tdiv": {
+                "id": "sorting_block_bg",
+                "width": "pw",
+                "background-color": "@rowHoverBackgroundColor",
+                "padding": "1@dp"
+              }
             }
           }
+        },
+        {
+          "id": "recycling_controls_place"
         }
-      },
+      ],
       "div": [
         {
           "width": "pw",
@@ -206,6 +211,7 @@
               "navigatorShortcuts": "noSelect",
               "moveX": "closest",
               "moveY": "linear",
+              "isSkipMoving": "no",
               "clearOnFocusLost": "no",
               "canSelectNone": "yes",
               "on_select": "updateItemInfo",

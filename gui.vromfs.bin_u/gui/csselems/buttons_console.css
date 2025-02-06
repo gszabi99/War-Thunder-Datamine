@@ -2863,3 +2863,30 @@ Button_text[isShowDragAndDropHint=yes]:hover > dragAndDropIcon > icon {
 tr[optContainer=yes] Button_text {
   min-width:@optContainerControlWidth;
 }
+
+tr[optContainer=yes] Button_text.systemOption {
+  min-width:1@systemOptContainerControlWidth;
+}
+
+[disabled=yes] Button_text {
+  enable:no;
+}
+
+selectAmount > Button_text {
+  position:absolute;
+  width:1@sliderButtonSquareHeight;
+  min-width:1@sliderButtonSquareHeight;
+  height:1@sliderButtonSquareHeight;
+  margin:0;
+  text-align:center;
+  showConsoleImg:no;
+}
+
+selectAmount > Button_text[btnDec=yes] {
+  text:'-';
+}
+
+selectAmount > Button_text[btnInc=yes] {
+  pos:pw-w,0;
+  text:'+';
+}

@@ -86,7 +86,7 @@ function getBulletInfo(unit, hit) {
   local bullets = null
   if (hit.ammo != "" && weaponBlk.getBlockByName(hit.ammo) != null)
     bullets = weaponBlk[hit.ammo] % "bullet"
-  else if (weaponBlk.getBlockByName(bulletSetName) != null)
+  else if ((bulletSetName ?? "") != "" && weaponBlk.getBlockByName(bulletSetName) != null)
     bullets = weaponBlk[bulletSetName] % "bullet"
   else
     bullets = weaponBlk % "bullet"

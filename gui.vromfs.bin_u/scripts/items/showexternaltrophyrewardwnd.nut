@@ -44,7 +44,7 @@ function hideWaitingProgressBox() {
 
 function showTrophyWnd(config) {
   hideWaitingProgressBox()
-  let { trophyItemDefId, rewardWndConfig, receivedPrizes = null, expectedPrizes } = config
+  let { trophyItemDefId, expectedPrizes, rewardWndConfig = {}, receivedPrizes = null } = config
 
   broadcastEvent("openChestWndOrTrophy", {
     rewardWndConfig, chestId = trophyItemDefId, receivedPrizes, expectedPrizes

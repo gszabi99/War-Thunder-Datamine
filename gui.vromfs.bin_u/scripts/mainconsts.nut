@@ -19,6 +19,7 @@ enum SEEN {
   INVENTORY = "inventory"
   ITEMS_SHOP = "items_shop"
   WORKSHOP = "workshop"
+  RECYCLING = "recycling"
   WARBONDS_SHOP = "warbondsShop"
   EXT_XBOX_SHOP = "ext_xbox_shop"
   EXT_PS4_SHOP  = "ext_ps4_shop"

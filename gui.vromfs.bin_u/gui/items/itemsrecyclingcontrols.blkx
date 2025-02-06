@@ -1,0 +1,80 @@
+{
+  "tdiv": {
+    "id": "recycling_controls",
+    "halign": "center",
+    "display": "hide",
+    "flow": "vertical",
+    "Button_text": {
+      "id": "recycle_btn",
+      "halign": "center",
+      "visualStyle": "secondary",
+      "text": "#items/recycling/recycle",
+      "inactiveColor": "yes",
+      "btnName": "Y",
+      "on_click": "onRecycle",
+      "buttonWink": {},
+      "ButtonImg": {}
+    },
+    "tdiv": {
+      "width": "pw",
+      "padding": "0, 3@blockInterval",
+      "halign": "center",
+      "background-position": "0, @blockInterval, 0, h-1@blockInterval-1@dp",
+      "background-color": "@frameSeparatorColor",
+      "flow": "vertical",
+      "textAreaCentered": [
+        {
+          "id": "create_items_desc_with_count_txt",
+          "width": "pw",
+          "halign": "center",
+          "text": ""
+        },
+        {
+          "id": "select_amount_value_txt_create_items",
+          "text": "0/0",
+          "halign": "center"
+        }
+      ],
+      "tdiv": {
+        "margin-top": "14@sf/@pf",
+        "halign": "center",
+        "selectAmount": {
+          "margin-top": "3@blockInterval",
+          "width": "@sliderWidth+2@sliderButtonSquareHeight+4@blockInterval",
+          "Button_text": [
+            {
+              "id": "select_amount_btn_dec_create_items",
+              "holderId": "create_items",
+              "btnDec": "yes",
+              "enable": "no",
+              "on_click": "onAmountSliderBtnDec"
+            },
+            {
+              "id": "select_amount_btn_inc_create_items",
+              "holderId": "create_items",
+              "btnInc": "yes",
+              "on_click": "onAmountSliderBtnInc"
+            }
+          ],
+          "slider": {
+            "id": "select_amount_slider_create_items",
+            "holderId": "create_items",
+            "on_change_value": "onCreateItemsAmountChange"
+          }
+        }
+      },
+      "Button_text": {
+        "id": "create_items_btn",
+        "margin-top": "14@sf/@pf",
+        "halign": "center",
+        "enable": "no",
+        "visualStyle": "secondary",
+        "text": "#items/recycling/createItems",
+        "btnName": "X",
+        "on_click": "onCreateItems",
+        "buttonWink": {},
+        "ButtonImg": {}
+      }
+    }
+  }
+}

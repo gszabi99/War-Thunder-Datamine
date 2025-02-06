@@ -7,7 +7,7 @@ from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { show_obj, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { show_obj, getObjValidIndex, enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, move_mouse_on_obj, isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -33,11 +33,13 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { defer } = require("dagor.workcycle")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
+let { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO } = require("%scripts/items/itemsRecycler.nut")
 
 let tabIdxToName = {
   [itemsTab.SHOP] = "items/shop",
   [itemsTab.INVENTORY] = "items/inventory",
   [itemsTab.WORKSHOP] = "items/workshop",
+  [itemsTab.RECYCLING] = "items/recycling",
 }
 
 let getNameByTabIdx = @(idx) tabIdxToName?[idx] ?? ""
@@ -46,6 +48,7 @@ let tabIdxToSeenId = {
   [itemsTab.SHOP] = SEEN.ITEMS_SHOP,
   [itemsTab.INVENTORY] = SEEN.INVENTORY,
   [itemsTab.WORKSHOP] = SEEN.WORKSHOP,
+  [itemsTab.RECYCLING] = SEEN.RECYCLING,
 }
 
 let getSeenIdByTabIdx = @(idx) tabIdxToSeenId?[idx]
@@ -77,6 +80,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   curItem = null //last selected item to restore selection after change list
   hoverHoldAction = null
 
+  tabHasChanged = false
   isSheetsInUpdate = false
   isItemTypeChangeUpdate = false
   itemsPerPage = -1
@@ -104,13 +108,17 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   isMouseMode = true
   isCraftTreeWndOpen = false
   craftTreeItem = null
+  recycler = null
 
   currentHoveredItemId = -1
   currentSelectedId = -1
   lastMousePos = [0, 0]
   lastMouseDelta = [0, 0]
 
+  isInRecyclingTab = @() this.curTab == itemsTab.RECYCLING
+
   function initScreen() {
+    this.initRecyclingControls()
     setBreadcrumbGoBackParams(this)
     this.updateMouseMode()
     this.updateShowItemButton()
@@ -221,7 +229,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
         u.search(this.navItems, @(item) item?.subsetId == subsetId)?.idx ?? obj.idx)
   }
 
-  isTabVisible = @(tabIdx) tabIdx != itemsTab.WORKSHOP || workshop.isAvailable()
+  isTabVisible = @(tabIdx) (tabIdx != itemsTab.WORKSHOP || workshop.isAvailable())
+    && (tabIdx != itemsTab.RECYCLING || hasFeature("RecycleItemShop"))
   getTabSeenList = @(tabIdx) seenList.get(getSeenIdByTabIdx(tabIdx))
 
   function fillTabs() {
@@ -255,6 +264,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onTabChange() {
+    this.tabHasChanged = true
     this.markCurrentPageSeen()
 
     let value = this.getTabsListObj().getValue()
@@ -357,6 +367,13 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     this.applyFilters()
   }
 
+  function initRecyclingControls() {
+    if (this.scene.findObject("recycling_controls"))
+      return
+    let place = this.scene.findObject("recycling_controls_place")
+    this.guiScene.replaceContent(place, "%gui/items/itemsRecyclingControls.blk", this)
+  }
+
   function initItemsListSizeOnce() {
     let listObj = this.getItemsListObj()
     let emptyListObj = this.scene.findObject("empty_items_list")
@@ -364,26 +381,49 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let collapseBtnWidth = $"1@cIco+2*({this.headerOffsetX})"
     let leftPos = this.isNavCollapsed ? collapseBtnWidth : "0"
     let nawWidth = this.isNavCollapsed ? "0" : "1@defaultNavPanelWidth"
-    let itemHeightWithSpace = "1@itemHeight+1@itemSpacing"
+    let itemHeightWithSpace = !this.isInRecyclingTab() ? "1@itemHeight+1@itemSpacing"
+      : "1@itemHeight+1@itemWithRecyclingSpacingY"
     let itemWidthWithSpace = "1@itemWidth+1@itemSpacing"
     let mainBlockHeight = "@rh-2@frameHeaderHeight-1@frameFooterHeight-1@bottomMenuPanelHeight-1@blockInterval"
     let itemsCountX = max(to_pixels($"@rw-1@shopInfoMinWidth-({leftPos})-({nawWidth})")
       / max(1, to_pixels(itemWidthWithSpace)), 1)
-    let itemsCountY = max(to_pixels(mainBlockHeight)
-      / max(1, to_pixels(itemHeightWithSpace)), 1)
     let contentWidth = $"{itemsCountX}*({itemWidthWithSpace})+1@itemSpacing"
+    let contentPlaceX = $"0.5({contentWidth})-0.5w+{leftPos}+{nawWidth}"
     this.scene.findObject("main_block").height = mainBlockHeight
-    this.scene.findObject("paginator_place").left = $"0.5({contentWidth})-0.5w+{leftPos}+{nawWidth}"
+    this.scene.findObject("paginator_place").left = contentPlaceX
     listObj.width = contentWidth
     listObj.left = leftPos
     emptyListObj.width = contentWidth
     emptyListObj.left = leftPos
     infoObj.left = leftPos
     infoObj.width = "fw"
+
+    local itemsListHeight = to_pixels(mainBlockHeight)
+
+    if (this.isInRecyclingTab()) {
+      let createItemsDescObj = this.scene.findObject("create_items_desc_with_count_txt")
+      if (createItemsDescObj.getValue() == "") // If the text is empty, we set it to some default so the recycling_controls block can get proper initial size.
+        createItemsDescObj.setValue(loc("items/recycling/descWithNumberOfRecycledItems",
+          { unusedItemsCount = 0, maxNewItemsCount = 0 }))
+
+      let recyclingControlsObj = this.scene.findObject("recycling_controls")
+      recyclingControlsObj.width = $"{contentWidth}-2@blockInterval"
+      recyclingControlsObj.pos = $"{contentPlaceX}, -h"
+
+      this.guiScene.applyPendingChanges(false)
+
+      let recyclingControlsHeight = recyclingControlsObj.getSize()[1]
+      itemsListHeight -= recyclingControlsHeight
+    }
+
+    let itemsCountY = max(itemsListHeight
+      / max(1, to_pixels(itemHeightWithSpace)), 1)
     this.itemsPerPage = (itemsCountX * itemsCountY).tointeger()
   }
 
   function applyFilters(resetPage = true) {
+    this.scene.findObject("recycling_controls").show(this.isInRecyclingTab())
+
     this.initItemsListSizeOnce()
 
     let lastPage = this.curPage
@@ -391,7 +431,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.itemsListValid) {
       this.itemsListValid = true
       this.itemsList = this.curSheet.getItemsList(this.curTab, this.curSubsetId)
-      if (this.curTab == itemsTab.INVENTORY)
+      if (this.curTab == itemsTab.INVENTORY || this.isInRecyclingTab())
         this.itemsList.sort(::ItemsManager.getItemsSortComparator(this.getTabSeenList(this.curTab)))
     }
 
@@ -406,32 +446,36 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
         this.curPage = max(0, ((this.itemsList.len() - 1) / this.itemsPerPage).tointeger())
     }
 
-    if (lastPage == this.curPage && isEqualItemsLists(lastItemsList, this.itemsList))
+    if (!this.tabHasChanged && lastPage == this.curPage && isEqualItemsLists(lastItemsList, this.itemsList))
       return
 
     this.fillPage()
   }
 
   function fillPage() {
+    this.tabHasChanged = false
     this.currentSelectedId = -1
     this.currentHoveredItemId = -1
-    let view = { items = [] }
+    let view = { items = [], canRecycle = this.isInRecyclingTab() }
     let pageStartIndex = this.curPage * this.itemsPerPage
     let pageEndIndex = min((this.curPage + 1) * this.itemsPerPage, this.itemsList.len())
     let seenListId = getSeenIdByTabIdx(this.curTab)
     let craftTree = this.curSheet?.getSet().getCraftTree()
+
     for (local i = pageStartIndex; i < pageEndIndex; i++) {
       let item = this.itemsList[i]
       if (item.hasLimits())
         ::g_item_limits.enqueueItem(item.id)
 
       view.items.append(item.getViewData({
+        showAction = !this.isInRecyclingTab(),
         itemIndex = i.tostring(),
         showSellAmount = this.curTab == itemsTab.SHOP,
         unseenIcon = bhvUnseen.makeConfigStr(seenListId, item.getSeenId())
         isUnseenAlarmIcon = item?.needUnseenAlarmIcon()
         isItemLocked = this.isItemLocked(item)
         showButtonInactiveIfNeed = true
+        skipFocusBorderOrder = true
         overrideMainActionData = craftTree != null && item.canCraftOnlyInCraftTree()
           ? {
             isInactive = false
@@ -458,7 +502,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(emptyListObj)) {
       let adviseMarketplace = this.curTab == itemsTab.INVENTORY && this.curSheet.isMarketplace && isMarketplaceEnabled()
       let itemsInShop = this.curTab == itemsTab.SHOP ? this.itemsList : this.curSheet.getItemsList(itemsTab.SHOP, this.curSubsetId)
-      let adviseShop = hasFeature("ItemsShop") && this.curTab != itemsTab.SHOP && !adviseMarketplace && itemsInShop.len() > 0
+      let adviseShop = hasFeature("ItemsShop") && this.curTab != itemsTab.SHOP
+        && !this.isInRecyclingTab() && !adviseMarketplace && itemsInShop.len() > 0
 
       emptyListObj.show(data.len() == 0)
       emptyListObj.enable(data.len() == 0)
@@ -476,6 +521,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
             :                     "items/shop/emptyTab/noItemsAdvice/shopDisabled"
           caption = " ".concat(caption, loc(noItemsAdviceLocId))
         }
+        if (this.isInRecyclingTab())
+          caption = loc("items/recycling/emptyTab")
         emptyListTextObj.setValue(caption)
       }
     }
@@ -491,6 +538,17 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (!this.itemsList.len())
       this.focusSheetsList()
+
+    if (this.isInRecyclingTab()) {
+      this.recycler = this.recycler ?? ItemsRecycler()
+      this.updateCreateNewItemsTxtAndControls()
+      this.updateRecycleButton()
+      this.updateItemsToRecycleSliders()
+      listObj.isSkipMoving = "yes" // Allows selecting the embedded item's slider with the dirpad
+    } else {
+      this.recycler = null
+      listObj.isSkipMoving = "no"
+    }
   }
 
   function isItemLocked(_item) {
@@ -543,6 +601,11 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventInventoryUpdate(_p) {
     this.doWhenActiveOnce("updateInventoryItemsList")
+    if (this.isInRecyclingTab()) {
+      this.recycler.updateCraftParts()
+      this.doWhenActiveOnce("updateCreateNewItemsTxtAndControls")
+      this.doWhenActiveOnce("disableRecyclingItemsControls")
+    }
   }
 
   function onEventItemsShopUpdate(_p) {
@@ -555,6 +618,10 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventUnitRented(_params) {
     this.updateItemInfo()
+  }
+
+  function onEventRecyclingItemsStart(_params) {
+    this.disableRecyclingItemsControls()
   }
 
   moveMouseToMainList = @() move_mouse_on_child_by_value(this.getItemsListObj())
@@ -632,7 +699,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let limitsCheckData = item?.getLimitsCheckData()
     let btnStyle = mainActionData?.btnStyle
     let limitsCheckResult = limitsCheckData?.result ?? true
-    let showMainAction = mainActionData && limitsCheckResult
+    let showMainAction = mainActionData && limitsCheckResult && !this.isInRecyclingTab()
     let curSet = this.curSheet?.getSet()
     let craftTree = curSet?.getCraftTree()
     let needShowCraftTree = craftTree != null
@@ -670,7 +737,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    let activateText = !showMainAction && item?.isInventoryItem && item.amount ? item.getActivateInfo() : ""
+    let activateText = (!showMainAction && item?.isInventoryItem
+      && item.amount && !this.isInRecyclingTab()) ? item.getActivateInfo() : ""
     this.scene.findObject("activate_info_text").setValue(activateText)
     showObjById("btn_preview", item ? (item.canPreview() && isInMenu()) : false, this.scene)
 
@@ -698,6 +766,106 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
         linkObj.findObject("img")["background-image"] = item.linkActionIcon
       }
     }
+  }
+
+  function onRecycle() {
+    this.recycler.recycleSelectedItems()
+    this.updateRecycleButton()
+  }
+
+  function onCreateItems() {
+    let sliderObj = this.scene.findObject("select_amount_slider_create_items")
+    let amount = sliderObj.getValue()
+
+    this.recycler.craftNewItems(amount)
+    sliderObj.setValue(0)
+  }
+
+  function disableRecyclingItemsControls() {
+    if (!this.recycler.recyclingItemsIds)
+      return
+    foreach (itemId, _amount in this.recycler.recyclingItemsIds) {
+      let idx = this.getItemIndexById(itemId)
+      let itemCont = this.scene.findObject($"shop_item_cont_{idx}")
+      if (itemCont)
+        itemCont.disabled = "yes"
+    }
+  }
+
+  function onItemRecycleAmountChange(sliderObj) {
+    let idx = sliderObj.holderId.tointeger()
+    let val = sliderObj.getValue()
+    let item = this.itemsList[idx]
+    let itemsListObj = this.getItemsListObj()
+
+    if (itemsListObj.getValue() != idx)
+      itemsListObj.setValue(idx)
+
+    this.recycler.selectItemToRecycle(item.id, val)
+    this.updateRecycleButton()
+    this.updateSelectAmountTextAndButtons(sliderObj)
+  }
+
+  function onCreateItemsAmountChange(obj) {
+    let val = obj.getValue()
+    let createItemsBtnValTxt = val > 0 ? $"({val})" : ""
+    let createItemsBtnTxt = " ".concat(loc("items/recycling/createItems"), createItemsBtnValTxt)
+    let createItemsBtnObj = this.scene.findObject("create_items_btn")
+
+    createItemsBtnObj.setValue(createItemsBtnTxt)
+    createItemsBtnObj.enable(val > 0)
+    this.updateSelectAmountTextAndButtons(obj)
+  }
+
+  function updateSelectAmountTextAndButtons(sliderObj) {
+    let val = sliderObj.getValue()
+    let { holderId, maxvalue } = sliderObj
+
+    this.scene.findObject($"select_amount_value_txt_{holderId}").setValue($"{val}/{maxvalue}")
+    enableObjsByTable(this.scene, {
+      [$"select_amount_btn_dec_{holderId}"] = val > 0,
+      [$"select_amount_btn_inc_{holderId}"] = val < maxvalue.tointeger()
+    })
+  }
+
+  function updateCreateNewItemsTxtAndControls() {
+    let unusedItemsCount = this.recycler.craftPartsCount
+    let maxNewItemsCount = unusedItemsCount / CRAFT_PART_TO_NEW_ITEM_RATIO
+    let txt = loc("items/recycling/descWithNumberOfRecycledItems",
+      { unusedItemsCount, maxNewItemsCount })
+    let createItemsSliderObj = this.scene.findObject("select_amount_slider_create_items")
+
+    this.scene.findObject("create_items_desc_with_count_txt").setValue(txt)
+
+    createItemsSliderObj.maxvalue = unusedItemsCount / CRAFT_PART_TO_NEW_ITEM_RATIO
+    this.updateSelectAmountTextAndButtons(createItemsSliderObj)
+  }
+
+  function updateRecycleButton() {
+    let count = this.recycler.selectedItemsToRecycleCount
+    let itemsCountTxt = count > 0 ? $"({count})" : ""
+    let recycleBtnObj = this.scene.findObject("recycle_btn")
+
+    recycleBtnObj.setValue(" ".concat(loc("items/recycling/recycle"), itemsCountTxt))
+    recycleBtnObj.inactiveColor = (count > 0) ? "no" : "yes"
+  }
+
+  function updateItemsToRecycleSliders() {
+    foreach (itemId, amount in this.recycler.selectedItemsToRecycle) {
+      let idx = this.getItemIndexById(itemId)
+      let sliderObj = this.scene.findObject($"select_amount_slider_{idx}")
+      if (sliderObj?.isValid())
+        sliderObj.setValue(amount)
+    }
+  }
+
+  onAmountSliderBtnDec = @(obj) this.increaseSliderValByDelta(obj, -1)
+  onAmountSliderBtnInc = @(obj) this.increaseSliderValByDelta(obj, 1)
+  function increaseSliderValByDelta(obj, delta) {
+    let holderId = obj?.holderId
+    let sliderObj = this.scene.findObject($"select_amount_slider_{holderId}")
+    let curVal = sliderObj.getValue()
+    sliderObj.setValue(curVal + delta)
   }
 
   function onLinkAction(_obj) {

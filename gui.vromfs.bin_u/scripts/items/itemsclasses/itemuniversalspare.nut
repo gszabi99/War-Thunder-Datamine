@@ -9,6 +9,8 @@ let DataBlock  = require("DataBlock")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
+let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
 
 let UniversalSpare = class (BaseItemModClass) {
   static iType = itemType.UNIVERSAL_SPARE
@@ -22,12 +24,14 @@ let UniversalSpare = class (BaseItemModClass) {
 
   numSpares = 1
   shouldAlwaysShowRank = true
+  isCoveringAllRanks = false
 
   getConditionsBlk = @(configBlk) configBlk?.universalSpareParams
 
   function initConditions(conditionsBlk) {
     base.initConditions(conditionsBlk)
     this.numSpares = conditionsBlk?.numSpares ?? 1
+    this.isCoveringAllRanks = this.rankRange.x == 1 && this.rankRange.y == MAX_COUNTRY_RANK
   }
 
   function getDescriptionIntroArray() {
@@ -40,7 +44,11 @@ let UniversalSpare = class (BaseItemModClass) {
   getDescriptionOutroArray = @() [ colorize("fadedTextColor", loc("items/universalSpare/description")) ]
 
   function getName(colored = true) {
-    return "".concat(base.getName(colored), " ", this.getRankText())
+    let name = base.getName(colored)
+    let conditions = this._getConditionsText()
+    return conditions != ""
+      ? " ".concat(name, loc("ui/parentheses", {text = conditions}))
+      : name
   }
 
   function canActivateOnUnit(unit) {
@@ -96,6 +104,8 @@ let UniversalSpare = class (BaseItemModClass) {
   }
 
   function _getRankLayer() {
+    if (this.isCoveringAllRanks)
+      return null
     let textLayerStyle = "universal_spare_rank_text"
     let layerCfg = LayersIcon.findLayerCfg(textLayerStyle)
     if (!layerCfg)
@@ -113,6 +123,19 @@ let UniversalSpare = class (BaseItemModClass) {
       return null
     layerCfg.img <- getCountryIcon(this.countries[0])
     return layerCfg
+  }
+
+  function _getConditionsText() {
+    let rankCond = !this.isCoveringAllRanks
+      ?  " ".concat(this.getRankText(), loc("measureUnits/rank")) : ""
+    let countryCond = this.countries?.len() == 1 ? loc(this.countries[0]) : ""
+    local unitTypeCond = ""
+    if (this.unitTypes?.len() == 1) {
+      let [uType] = processUnitTypeArray(this.unitTypes)
+      unitTypeCond = loc($"mainmenu/type_{uType}")
+    }
+
+    return ", ".join([unitTypeCond, countryCond, rankCond], true)
   }
 }
 return {UniversalSpare}

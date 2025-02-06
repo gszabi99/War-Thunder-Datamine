@@ -134,3 +134,12 @@ slider:disabled[hitsAnalysis=yes]
   background-color:@sliderBgColor;
   foreground-color:@sliderFgColor;
 }
+
+[disabled=yes] slider {
+  enable:no;
+}
+
+selectAmount > slider {
+  max-width:pw-2@sliderButtonSquareHeight-2@blockInterval;
+  halign:center;
+}

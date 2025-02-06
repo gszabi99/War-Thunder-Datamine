@@ -58,6 +58,8 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
 } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
+let { RECYCLED_ITEMS_IDS } = require("%scripts/items/itemsRecycler.nut")
+let { getTrophyRewardText } = require("%scripts/items/trophyReward.nut")
 
 let imgFormat = @"img {size:t='%s'; background-image:t='%s';
  background-repeat:t='aspect-ratio'; margin-right:t='0.01@scrn_tgt;'} "
@@ -1097,15 +1099,26 @@ function getUserlogViewData(logObj) {
   }
   else if (logObj.type == EULT_OPEN_TROPHY) {
     let itemId = logObj?.itemDefId ?? logObj?.id ?? ""
+    let { trophyItemDefId = null } = logObj
+    let extItem = trophyItemDefId != null ? findItemById(trophyItemDefId) : null
     local item = findItemById(itemId)
 
-    if (!item && logObj?.trophyItemDefId) {
-      let extItem = findItemById(logObj?.trophyItemDefId)
-      if (extItem)
-        item = extItem.getContentItem()
-    }
+    if (!item && extItem)
+      item = extItem.getContentItem()
 
-    if (item) {
+
+    let isItemDefAutoConsume = extItem?.itemDef.tags.autoConsume ?? false
+    let isExtTrophy = itemId == "@external_inventory_trophy"
+
+    if (isItemDefAutoConsume && isExtTrophy) {
+      let usedText = getTrophyRewardText(logObj, false, "userlogColoredText")
+      let receivedItem = findItemById(logObj?.item)
+
+      res.name = " ".concat(loc("ItemBlueprintAssembleUnitInfo"), usedText)
+      res.logImg = receivedItem?.getSmallIconName()
+      res.descriptionBlk <- getUserlogImageItem(receivedItem)
+    }
+    else if (item) {
       let tags = item?.itemDef.tags
       let isAutoConsume = tags?.autoConsume ?? false
       let cost = item.isEveryDayAward() ? Cost() : item.getCost()
@@ -1267,20 +1280,27 @@ function getUserlogViewData(logObj) {
     let item = findItemById(itemId)
     let reason = logObj?.reason ?? "unknown"
     let nameId = (item?.isSpecialOffer ?? false) ? "specialOffer" : logName
+    let itemName = colorize("userlogColoredText", item?.getName() ?? "")
     local locId = $"userlog/{nameId}/{reason}"
     if (reason == "replaced") {
-      let replaceItemId = getTblValue("replaceId", logObj, "")
-      let replaceItem = findItemById(replaceItemId)
-      res.name = loc(locId, {
-                     itemName = colorize("userlogColoredText", item ? item.getName() : "")
-                     replacedItemName = colorize("userlogColoredText", replaceItem ? replaceItem.getName() : "")
-                   })
-      res.descriptionBlk <- "".concat(getUserlogImageItem(item), getUserlogImageItem(replaceItem))
+      let { replaceId = "" } = logObj
+      if (RECYCLED_ITEMS_IDS.contains(replaceId)) {
+        locId = "userlog/remove_item/recycled"
+        let { count } = logObj
+        let countTxt = count > 1 ? $" x{count}" : ""
+        res.name = "".concat(loc(locId, { itemName }), countTxt)
+        res.descriptionBlk <- getUserlogImageItem(item)
+      } else {
+        let replaceItem = findItemById(replaceId)
+        res.name = loc(locId, {
+          itemName
+          replacedItemName = colorize("userlogColoredText", replaceItem ? replaceItem.getName() : "")
+        })
+        res.descriptionBlk <- "".concat(getUserlogImageItem(item), getUserlogImageItem(replaceItem))
+      }
     }
     else {
-      res.name = loc(locId, {
-                     itemName = colorize("userlogColoredText", item ? item.getName() : "")
-                   })
+      res.name = loc(locId, { itemName })
       res.descriptionBlk <- getUserlogImageItem(item)
     }
     let itemTypeValue = logObj?.itemType ?? ""

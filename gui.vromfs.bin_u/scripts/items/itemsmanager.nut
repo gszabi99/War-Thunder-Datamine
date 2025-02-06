@@ -477,6 +477,7 @@ function isItemVisible(item, shopTab) {
       && !item.isHiddenItem() && !item.isVisibleInWorkshopOnly() && !item.isHideInShop
     : shopTab == itemsTab.INVENTORY ? !item.isHiddenItem() && !item.isVisibleInWorkshopOnly()
       && (!item.shouldAutoConsume || item.canOpenForGold())
+    : shopTab == itemsTab.RECYCLING ? !item.isHiddenItem() && item.canRecycle()
     : false
 }
 

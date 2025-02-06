@@ -117,6 +117,7 @@ let BaseItem = class {
   isDevItem = false
   isDisguised = false //used to override name, icon and some description for item.
   isHideInShop = false
+  canPacked = false
 
   locId = null
   showBoosterInSeparateList = false
@@ -142,6 +143,8 @@ let BaseItem = class {
   restrictedInCountries = null
   hiddenInCountries = null
 
+  recycleItemResult = null
+
   constructor(blk, invBlk = null, slotData = null) {
     this.id = blk.getBlockName() || invBlk?.id || ""
     this.locId = blk?.locId
@@ -157,6 +160,8 @@ let BaseItem = class {
     this.forceExternalBrowser = blk?.forceExternalBrowser ?? false
     this.shouldAutoConsume = blk?.shouldAutoConsume ?? false
     this.restrictedInCountries = blk?.restrictedInCountries
+    this.recycleItemResult = blk?.recycleItemResult
+    this.canPacked = !!blk?.canPacked
     let hiddenInCountriesStr = blk?.hiddenInCountries ?? ""
     this.hiddenInCountries = hiddenInCountriesStr == "" ? [] : hiddenInCountriesStr.split(",")
 
@@ -189,6 +194,7 @@ let BaseItem = class {
   }
 
   getSeenId = @() this.id.tostring()
+  canRecycle = @() this.recycleItemResult != null && this.amount > 0 && !this.isActive()
 
   function makeEmptyInventoryItem() {
     let res = clone this
@@ -424,6 +430,7 @@ let BaseItem = class {
     let amountVal = params?.count || this.getAmount()
     let additionalTextInAmmount = params?.shouldHideAdditionalAmmount ? ""
       : this.getAdditionalTextInAmmount()
+    res.availableAmount <- amountVal
     if ((params?.showAmount ?? true)
         && (!this.shouldAutoConsume || this.canOpenForGold() || (params?.forcedShowCount ?? false))
         && (!u.isInteger(amountVal) || this.shouldShowAmount(amountVal))) {

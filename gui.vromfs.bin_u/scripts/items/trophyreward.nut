@@ -302,9 +302,11 @@ function rewardsSortComparator(a, b) {
   return ""
 }
 
-::trophyReward.getRewardText <- function getRewardText(config, isFull = false, color = "") {
+function getTrophyRewardText(config, isFull = false, color = "") {
   return getPrizeText(DataBlockAdapter(config), true, false, true, isFull, color)
 }
+
+::trophyReward.getRewardText <- getTrophyRewardText
 
 ::trophyReward.getCommonRewardText <- function getCommonRewardText(configsArray) {
   let result = {}
@@ -437,4 +439,5 @@ function rewardsSortComparator(a, b) {
 
 return {
   rewardsSortComparator
+  getTrophyRewardText
 }

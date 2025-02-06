@@ -313,6 +313,52 @@ function tryUseRecipeSeveralTime(recipe, componentItem, maxAmount, params = {}) 
   })
 }
 
+let getExpectedPrizesFromResultItems = @(resultItems, compItemId) resultItems
+  .filter(::trophyReward.isShowItemInTrophyReward)
+  .map(function(extItem) {
+    let itemdefId = extItem?.itemdef.itemdefid
+    let item = ::ItemsManager.findItemById(itemdefId)
+    return {
+      id = compItemId
+      itemId = to_integer_safe(extItem?.itemid ?? -1)
+      item = itemdefId
+      count = extItem?.quantity ?? 0
+      needCollectRewards = item?.shouldAutoConsume ?? false
+      isInternalTrophy = item?.metaBlk.trophy != null
+    }
+  })
+
+function exchangeSeveralRecipes(initialExchanges, processingExchanges = null, resultItems = null) {
+  let trophyItemDefId = initialExchanges[0].item.id
+
+  resultItems = resultItems ?? []
+  processingExchanges = processingExchanges ?? clone initialExchanges
+
+  if (processingExchanges.len() == 0) {
+    showExternalTrophyRewardWnd({
+      trophyItemDefId
+      showCollectRewardsWaitBox = true
+      expectedPrizes = getExpectedPrizesFromResultItems(resultItems, trophyItemDefId)
+    })
+    return
+  }
+
+  let { recipe, amount } = processingExchanges.pop()
+  let self = callee()
+
+  inventoryClient.exchange(
+    recipe.getMaterialsListForExchange(amount),
+    recipe.generatorId,
+    amount.tointeger(),
+    function(res) {
+      resultItems.extend(res)
+      self(initialExchanges, processingExchanges, resultItems)
+    }
+    @(_err) self(initialExchanges, processingExchanges, resultItems)
+    recipe.requirement
+  )
+}
+
 local lastRecipeIdx = 0
 local ExchangeRecipes = class {
   idx = 0
@@ -704,15 +750,15 @@ local ExchangeRecipes = class {
     if (cb != null)
       cb()
 
-    let resultItemsShowOpening = resultItems.filter(::trophyReward.isShowItemInTrophyReward)
     let parentGen = componentItem.getParentGen() ?? componentItem.getGenerator()
     let isHasFakeRecipes = parentGen && hasFakeRecipesInList(parentGen.getRecipes())
     let parentRecipe = parentGen?.getRecipeByUid?(componentItem.craftedFrom)
     if (isHasFakeRecipes && (parentRecipe?.markRecipe?() ?? false) && !parentRecipe?.isFake)
       parentGen.markAllRecipes()
     let effectOnOpenChest = componentItem.getEffectOnOpenChest()
+    let expectedPrizes = getExpectedPrizesFromResultItems(resultItems, componentItem.id)
 
-    if (resultItemsShowOpening.len() > 0) {
+    if (expectedPrizes.len() > 0) {
       let userstatItemRewardData = getUserstatItemRewardData(componentItem.id)
       let isUserstatRewards = userstatItemRewardData != null
       let rewardTitle = isUserstatRewards ? userstatItemRewardData.rewardTitleLocId
@@ -725,19 +771,6 @@ local ExchangeRecipes = class {
         : parentRecipe ? componentItem.getItemsListLocId()
         : ""
 
-      let expectedPrizes = resultItemsShowOpening.map(function(extItem) {
-        let itemdefId = extItem?.itemdef.itemdefid
-        let item = ::ItemsManager.findItemById(itemdefId)
-        return {
-          id = componentItem.id
-          itemId = to_integer_safe(extItem?.itemid ?? -1)
-          item = itemdefId
-          count = extItem?.quantity ?? 0
-          needCollectRewards = item?.shouldAutoConsume ?? false
-          isInternalTrophy = item?.metaBlk.trophy != null
-        }
-      })
-
       let rewardWndConfig = {
         rewardTitle = loc(rewardTitle),
         rewardListLocId = rewardListLocId
@@ -749,7 +782,8 @@ local ExchangeRecipes = class {
         reUseRecipeUid = params?.reUseRecipeUid
         usedRecipeAmount = params?.usedRecipeAmount ?? 1
       }
-      if (componentItem?.itemDef.tags.showTrophyWndWhenReciveAllRewardsData ?? false)
+      if (componentItem?.itemDef.tags.showTrophyWndWhenReciveAllRewardsData
+        ?? params?.showTrophyWndWhenReciveAllRewardsData)
         showExternalTrophyRewardWnd({
           trophyItemDefId = componentItem.id
           showCollectRewardsWaitBox
@@ -855,4 +889,5 @@ return {
   tryUseRecipes
   tryUseRecipeSeveralTime
   getRecipesComponents
+  exchangeSeveralRecipes
 }

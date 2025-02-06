@@ -14,6 +14,7 @@ enum itemsTab {
   INVENTORY
   SHOP
   WORKSHOP
+  RECYCLING
 
   TOTAL
 }

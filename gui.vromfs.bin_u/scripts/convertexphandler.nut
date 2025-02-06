@@ -126,7 +126,8 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (unitForList.shopCountry == this.country
           && canResearchUnit(unitForList)
           && !unitForList.isSquadronVehicle()
-          && getEsUnitType(unitForList) == unitType)
+          && getEsUnitType(unitForList) == unitType
+          && unitForList.isVisibleInShop())
         this.unitList.append(unitForList)
     let ediff = getCurrentGameModeEdiff()
     this.unitList.sort(@(a, b) a.getBattleRating(ediff) <=> b.getBattleRating(ediff))

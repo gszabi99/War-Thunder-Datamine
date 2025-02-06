@@ -6,10 +6,14 @@ itemDiv {
   smallFont:t='yes';
   class:t='smallFont'
   total-input-transparent:t='yes'
-  css-hier-invalidate:t='yes'
+  css-hier-invalidate:t='all'
   <<#active>>
     active:t='yes'
   <</active>>
+  <<#canRecycle>>
+  margin-bottom:t='1@itemWithRecyclingSpacingY'
+  <</canRecycle>>
+  disabled:t='no'
 
   enableBackground:t='<<#enableBackground>>yes<</enableBackground>><<^enableBackground>>no<</enableBackground>>'
   <<#isTooltipByHold>>tooltipId:t='<<tooltipId>>'<</isTooltipByHold>>
@@ -47,6 +51,10 @@ itemDiv {
   <<#margin>>
   margin:t='<<margin>>'
   <</margin>>
+
+  <<#skipFocusBorderOrder>>
+  skipFocusBorderOrder:t='yes'
+  <</skipFocusBorderOrder>>
 
   <<#border>>
   border {
@@ -393,7 +401,50 @@ itemDiv {
   <</modActionName>>
   <</hasButton>>
 
+  <<#canRecycle>>
+  tdiv {
+    width:t='pw'
+    margin-top:t='8@sf/@pf'
+    padding:t='1@sf/@pf, 0'
+    position:t='absolute'
+    bottom:t='-h'
+    flow:t='vertical'
 
+    selectAmount {
+      width:t='pw'
+
+      Button_text {
+        id:t='select_amount_btn_dec_<<itemIndex>>'
+        holderId:t='<<itemIndex>>'
+        btnDec:t='yes'
+        enable:t='no'
+        on_click:t='onAmountSliderBtnDec'
+      }
+
+      slider {
+        id:t='select_amount_slider_<<itemIndex>>'
+        holderId:t='<<itemIndex>>'
+        maxvalue:t='<<availableAmount>>'
+        on_change_value:t='onItemRecycleAmountChange'
+      }
+
+      Button_text {
+        id:t='select_amount_btn_inc_<<itemIndex>>'
+        holderId:t='<<itemIndex>>'
+        btnInc:t='yes'
+        on_click:t='onAmountSliderBtnInc'
+      }
+    }
+
+    textAreaCentered {
+      id:t='select_amount_value_txt_<<itemIndex>>'
+      position:t='relative'
+      top:t='-8@sf/@pf'
+      halign:t='center'
+      text:t='0/<<availableAmount>>'
+    }
+  }
+  <</canRecycle>>
 
   <<^isTooltipByHold>>
   <<#tooltipId>>

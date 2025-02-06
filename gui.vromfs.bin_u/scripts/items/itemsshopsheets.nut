@@ -33,16 +33,17 @@ shopSheets.template <- {
   isEnabled = @(shopTab) this.isAllowedForTab(shopTab)
     && checkItemsMaskFeatures(this.typeMask) != 0
     && (shopTab != itemsTab.SHOP || this.getItemsList(shopTab).len() > 0)
+    && (shopTab != itemsTab.RECYCLING || this.id == "ALL" || this.getItemsList(shopTab, this.id).len() > 0)
 
   getItemFilterFunc = @(shopTab)
     shopTab == itemsTab.SHOP
-    ? (@(item) isItemVisible(item, shopTab) && this.isDevItemsTab == item.isDevItem)
-    : (@(item) isItemVisible(item, shopTab))
+      ? (@(item) isItemVisible(item, shopTab) && this.isDevItemsTab == item.isDevItem)
+      : (@(item) isItemVisible(item, shopTab))
 
   getItemsList = function(shopTab, _subsetId = null) {
     let visibleTypeMask = checkItemsMaskFeatures(this.typeMask)
     let filterFunc = this.getItemFilterFunc(shopTab).bindenv(this)
-    if (shopTab == itemsTab.INVENTORY)
+    if (shopTab == itemsTab.INVENTORY || shopTab == itemsTab.RECYCLING)
       return ::ItemsManager.getInventoryListByShopMask(visibleTypeMask, filterFunc)
     if (shopTab == itemsTab.SHOP)
       return getShopList(visibleTypeMask, filterFunc)
@@ -60,6 +61,8 @@ function getTabSeenId(tabIdx) { //!!FIX ME: move tabs to separate enum
     return SEEN.INVENTORY
   if (tabIdx == itemsTab.WORKSHOP)
     return SEEN.WORKSHOP
+  if (tabIdx == itemsTab.RECYCLING)
+    return SEEN.RECYCLING
   return null
 }
 
@@ -148,6 +151,7 @@ shopSheets.addSheets({
     sortId = sortId++
     isAllowedForTab = @(shopTab) shopTab == itemsTab.INVENTORY
       || (shopTab == itemsTab.SHOP && hasFeature("CanBuyDiscountItems"))
+      || (shopTab == itemsTab.RECYCLING)
   }
   TICKETS = {
     typeMask = itemType.TICKET
@@ -217,7 +221,7 @@ shopSheets.addSheets({
   SMOKE = {
     locId = "itemTypes/aerobatic_smoke"
     typeMask = itemType.SMOKE
-    isAllowedForTab = @(shopTab) shopTab == itemsTab.SHOP
+    isAllowedForTab = @(shopTab) shopTab == itemsTab.SHOP || shopTab == itemsTab.RECYCLING
     sortId = sortId++
   }
   OTHER = {
