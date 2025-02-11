@@ -1697,7 +1697,9 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       prepareUnitsForPurchaseMods.checkUnboughtMods()
   }
 
-  needRestoreResearchMode = @() this.researchMode && (!this.setResearchManually || this.availableFlushExp)
+  needRestoreResearchMode = @() this.researchMode
+    && (!this.setResearchManually || this.availableFlushExp > 0)
+    && findAnyNotResearchedMod(this.air) != null
 
   function onDestroy() {
     if (this.needRestoreResearchMode() || this.shouldBeRestoredOnMainMenu)

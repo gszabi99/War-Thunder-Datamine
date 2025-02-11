@@ -1589,6 +1589,16 @@ shopAlarmIcon {
   background-repeat:'aspect-ratio';
 }
 
+shopItem > shopAlarmIcon {
+  display:hide;
+  position:relative;
+  pos:pw-w-1@blockInterval,-h/2;
+}
+
+shopItem[hasAlarmIcon=yes] > shopAlarmIcon {
+  display:show;
+}
+
 shopBlockTierNum{
   re-type:text;
   color:@commonTextColor;

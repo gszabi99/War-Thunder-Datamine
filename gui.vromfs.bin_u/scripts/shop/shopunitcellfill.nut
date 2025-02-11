@@ -38,7 +38,7 @@ let sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { get_charserver_time_sec } = require("chard")
-let { getUtcMidnight, secondsToString } = require("%scripts/time.nut")
+let { getUtcMidnight, secondsToString, buildDateStr, getTimestampFromStringUtc } = require("%scripts/time.nut")
 let timeBase = require("%appGlobals/timeLoc.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
@@ -226,7 +226,9 @@ function updateCardStatus(obj, _id, statusTbl) {
     unitTypeName              = "",
     hasNationBonus            = false,
     nationBonusBattlesRemain  = 0
-    markerHolderId = ""
+    markerHolderId            = ""
+    endResearchDate           = ""
+    hasAlarmIcon              = false
   } = statusTbl
   let isLongPriceText = isUnitPriceTextLong(priceText)
 
@@ -240,6 +242,7 @@ function updateCardStatus(obj, _id, statusTbl) {
   setBool(obj, "refuseOpenHoverMenu", !hasActionsMenu || isGroup)
   setBool(obj, "isElite", isElite)
   setBool(obj, "isRecentlyReleased", isRecentlyReleased)
+  setBool(obj, "hasAlarmIcon", hasAlarmIcon)
   obj["cursor"] = hasActionsMenu && !isGroup ? "context-menu" : "normal"
 
   obj.findObject("unitImage")["foreground-image"] = unitImage
@@ -256,6 +259,10 @@ function updateCardStatus(obj, _id, statusTbl) {
   remainingMarkerObj.setValue(stashBhvValueConfig(
     { viewId = "SHOP_SLOT_REMAINING_TIME_UNIT", unitName = unitName }
   ))
+
+  if (hasAlarmIcon)
+    obj.findObject("alarm_icon").tooltip = loc("mainmenu/vehicleResearchTillDate",
+      { time = buildDateStr(getTimestampFromStringUtc(endResearchDate)) })
 
   let markerContainer = obj.findObject("marker_container")
   let unlockMarker = markerContainer.findObject("unlockMarker")
@@ -420,6 +427,8 @@ let getUnitStatusTbl = function(unit, params) {
     wpMul               = wp_shop_get_aircraft_wp_rate(unit.name)
     hasObjective        = !shopResearchMode && (bit_unit_status.locked & bitStatus) == 0
       && hasMarkerByUnitName(unit.name, getEdiffFunc())
+    endResearchDate     = unit.endResearchDate
+    hasAlarmIcon        = unit.endResearchDate != null && !isOwn
   }
 
   if (canBuyNotResearched(unit)) {
@@ -539,6 +548,7 @@ function getGroupStatusTbl(group, params) {
   local rentedUnit         = null
   local hasObjective       = false
   local markerHolderId     = ""
+  local hasAlarmIcon       = false
 
   foreach (unit in unitsList) {
     let isInResearch = !forceNotInResearch && isUnitInResearch(unit)
@@ -635,6 +645,7 @@ function getGroupStatusTbl(group, params) {
     markerHolderId,
     expMul,
     wpMul,
+    hasAlarmIcon
   }.__update(researchStatusTbl)
 }
 

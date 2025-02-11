@@ -64,11 +64,16 @@ function fillPromUnitInfo(holderObj, unit, needShowExpiredMessage) {
 
   let color = (t > 0) ? "goodTextColor" : "redMenuButtonColor"
 
+  let tillDateLocKey = unit?.endResearchDate ? "mainmenu/vehicleResearchTillDate"
+    : "mainmenu/dataRemaningTime"
+  let expireTimeLocKey = unit?.endResearchDate ? "mainmenu/vehicleExpireTimeForResearch"
+    : "mainmenu/timeForBuyVehicle"
+
   let locStr = (t <= 0)
     ? loc("mainmenu/dataExpiredTime", { time = buildDateStr(timeEnd) })
     : t < TIME_DAY_IN_SECONDS
-      ? loc("mainmenu/timeForBuyVehicle", { time = hoursToString(t / 3600.0, true, true) })
-      : loc("mainmenu/dataRemaningTime", { time = buildDateStr(timeEnd) })
+      ? loc(expireTimeLocKey, { time = hoursToString(t / 3600.0, true, true) })
+      : loc(tillDateLocKey, { time = buildDateStr(timeEnd) })
 
   let remTimeBuyText = colorize(color, locStr)
   let remTimeBuyObj = showObjById("aircraft-remainingTimeBuyInfo", true, holderObj)

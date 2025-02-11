@@ -104,7 +104,9 @@ let ShopLines = class {
 
 
   function getAlarmIconTooltip(lineConfig) {
-    let { air = null, reqAir = null } = lineConfig
+    let { air = null, reqAir = null, hasEndResearchDateInGroup = false } = lineConfig
+    if (hasEndResearchDateInGroup)
+      return loc("mainmenu/vehicleInGroupAvailableLimitedTimeTooltip")
     let endReleaseDate = reqAir?.getEndRecentlyReleasedTime() ?? 0
     if (endReleaseDate > 0) {
       let hasReqAir = (air?.reqAir ?? "") != ""
@@ -161,7 +163,7 @@ let ShopLines = class {
 
 
   function createLine(lineType, r0, c0, r1, c1, status, lineConfig = {}) {
-    let { air = null, reqAir = null, arrowCount = 1, hasNextFutureReqLine = false } = lineConfig
+    let { air = null, reqAir = null, arrowCount = 1, hasNextFutureReqLine = false, hasEndResearchDateInGroup = false } = lineConfig
     let isFutureReqAir = air?.futureReqAir != null && air.futureReqAir == reqAir?.name
     let isMultipleArrow = arrowCount > 1
     let isLineParallelFutureReqLine = isMultipleArrow
@@ -182,7 +184,7 @@ let ShopLines = class {
     this.lastLineIndex++
     let idString = $"id:t='line_{this.lastLineIndex}';"
     local lines = ""
-    let arrowProps = $"shopStat:t='{status}'; isOutlineIcon:t={isFutureReqAir ? "yes" : "no"};"
+    let arrowProps = $"shopStat:t='{status}'; isOutlineIcon:t={isFutureReqAir || hasEndResearchDateInGroup ? "yes" : "no"};"
     let arrowFormat = "".concat("shopArrow { %s type:t='%s'; size:t='%s, %s';",
       "pos:t='%s, %s'; rotation:t='%s';", arrowProps, " } ")
     let lineFormat = "".concat("shopLine { size:t='%s, %s'; pos:t='%s, %s'; rotation:t='%s';",
@@ -273,7 +275,8 @@ let ShopLines = class {
 
 
   function modifyLine(lineObj, r0, c0, r1, c1, lineType, lineConfig, status, edge = "no") {
-    let { air = null, reqAir = null, arrowCount = 1, hasNextFutureReqLine = false } = lineConfig
+    let { air = null, reqAir = null, arrowCount = 1, hasNextFutureReqLine = false,
+      hasEndResearchDateInGroup = false } = lineConfig
     let isFutureReqAir = air?.futureReqAir != null && air.futureReqAir == reqAir?.name
     let isMultipleArrow = arrowCount > 1
     let isLineParallelFutureReqLine = isMultipleArrow
@@ -294,7 +297,7 @@ let ShopLines = class {
       height = $"{pad1} + {pad2} + {(r1 - r0 - 1)}@shop_height"
       posY = $"{(r0 + 1)}@shop_height - {pad1}"
       lineObj.pos = $"{posX}, {posY}"
-      lineObj["isOutlineIcon"] = isFutureReqAir ? "yes" : "no"
+      lineObj["isOutlineIcon"] = isFutureReqAir || hasEndResearchDateInGroup? "yes" : "no"
       lineObj.size = $"1@modArrowWidth, {height}"
 
     } else if (lineType == "horizontal") {
@@ -302,7 +305,7 @@ let ShopLines = class {
       width = $"{(c1 - c0 - 1)}@shop_width + {interval1} + {interval2}"
       posY = $"{(r0 + 0.5 + offset)}@shop_height - 0.5@modArrowWidth"
       lineObj.pos = $"{posX}, {posY}"
-      lineObj["isOutlineIcon"] = isFutureReqAir ? "yes" : "no"
+      lineObj["isOutlineIcon"] = isFutureReqAir || hasEndResearchDateInGroup? "yes" : "no"
       lineObj.width = width
 
     } else if (lineType == "alarmIcon_horizontal") {
@@ -364,13 +367,14 @@ let ShopLines = class {
     let { air = null, reqAir = null } = lc
 
     let lineType = getLineType(lc.line[0], lc.line[1], lc.line[2], lc.line[3], lc)
+    let hasEndResearchDateInGroup = air?.airsGroup.findvalue(@(u) u.endResearchDate != null && u.isVisibleInShop() && !u.isBought()) != null
     if (!this.tryModifyLine(containerIndex, lineType, lc, status, edge))
       this.addLine(handler, arrowsContainer, lineType, containerIndex, lc, status)
 
     let isFutureReqAir = air?.futureReqAir != null && air.futureReqAir == reqAir?.name
-    if (isFutureReqAir) {
+    if (isFutureReqAir || hasEndResearchDateInGroup) {
       let alarmIconType = $"alarmIcon_{lineType}"
-      if (!this.tryModifyLine(containerIndex, alarmIconType, lc, status, edge)) {
+      if (!this.tryModifyLine(containerIndex, alarmIconType, lc.__update({ hasEndResearchDateInGroup }), status, edge)) {
         this.addAlarmIcon(handler, alarmIconsContainer, alarmIconType, containerIndex, lc, edge)
       }
     }

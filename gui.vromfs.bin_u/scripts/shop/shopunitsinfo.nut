@@ -17,6 +17,16 @@ function fillPromoteUnitsList(blk, unit) {
       unit = unit
       timeStart = getTimestampFromStringUtc(blk.beginPurchaseDate)
       timeEnd = getTimestampFromStringUtc(blk.endPurchaseDate)
+      showMarker = true
+    })
+  }
+
+  if (blk?.endResearchDate != null) {
+    shopPromoteUnits.mutate(@(v) v[unit.name] <- {
+      unit = unit
+      timeStart = 0
+      timeEnd = getTimestampFromStringUtc(blk.endResearchDate)
+      showMarker = false
     })
   }
 }

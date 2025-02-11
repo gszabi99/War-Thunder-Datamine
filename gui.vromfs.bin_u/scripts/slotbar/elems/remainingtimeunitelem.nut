@@ -125,8 +125,11 @@ elemViewType.addTypes({
     model = elemModelType.REMAINING_TIME_UNIT
 
     function updateView(obj, params) {
-      obj.show(promoteUnits.get()?[params?.unitName].isActive)
-      obj.tooltip = loc("mainmenu/promoteUnit")
+      let { isActive = false, showMarker = false } = promoteUnits.get()?[params?.unitName]
+      let isVisible = isActive && showMarker
+      obj.show(isVisible)
+      if (isVisible)
+        obj.tooltip = loc("mainmenu/promoteUnit")
     }
   }
 })
