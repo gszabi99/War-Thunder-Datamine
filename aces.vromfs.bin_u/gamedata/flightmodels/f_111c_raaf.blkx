@@ -17,6 +17,9 @@
   "haveCCRPForBombs": true,
   "havePointOfInterestDesignator": true,
   "hasPointOfInterestMemory": true,
+  "isBwOpticSight": true,
+  "opticsInBombBay": true,
+  "laserDesignator": true,
   "ilsASG23": true,
   "rwrIndicator": "AN/APS-109",
   "tpsCameraTargetOffsetAtZoom": [
@@ -47,7 +50,6 @@
   "fireParamsPreset": "2200kph",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
-  "laserDesignator": true,
   "paratrooper": "usa_f_111_ejection_cabin_para",
   "DamageParts": {
     "armor10": {
@@ -2978,15 +2980,61 @@
     }
   },
   "nightVision": {
+    "sightThermal": {
+      "resolution": [
+        500,
+        300
+      ],
+      "noiseFactor": 0.05,
+      "index": 1
+    },
     "sightTPodThermal": {
       "resolution": [
         500,
         300
       ],
-      "noiseFactor": 0.05
+      "noiseFactor": 0.05,
+      "index": 2
     }
   },
   "gunnerOpticFps": {
+    "TV": {
+      "pos": [
+        12.0,
+        0.7,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -38.0,
+        38.0,
+        -55.0,
+        38.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 1
+    },
+    "TV1": {
+      "pos": [
+        12.0,
+        0.7,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -38.0,
+        38.0,
+        -55.0,
+        38.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 1,
+      "name": "GBU15V2"
+    },
     "Target": {
       "pos": [
         0.7,
@@ -3002,7 +3050,8 @@
         14.0
       ],
       "opticType": "targeting",
-      "turretNo": 0
+      "turretNo": 0,
+      "nvIndex": 2
     }
   },
   "sensors": {
@@ -3016,6 +3065,10 @@
       },
       {
         "blk": "gameData/sensors/us_an_alr_2002_mlws.blk"
+      },
+      {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic1_gun"
       }
     ]
   },
@@ -3062,6 +3115,10 @@
       {
         "name": "f_111c_gbu_24",
         "blk": "gameData/FlightModels/weaponPresets/f_111c_gbu_24.blk"
+      },
+      {
+        "name": "f_111c_gbu_15_ir",
+        "blk": "gameData/FlightModels/weaponPresets/f_111c_gbu_15_ir.blk"
       }
     ]
   },
@@ -3206,12 +3263,41 @@
       },
       {
         "index": 1,
-        "tier": 8,
+        "tier": 9,
         "order": 1,
+        "WeaponPreset": {
+          "iconType": "missile_type_b_air_to_air",
+          "name": "aim_9l_default",
+          "ShowNodes": {
+            "node": [
+              "aero_3b_1",
+              "pylon_pivot1"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+            "emitter": "aim_9_1",
+            "bullets": 1,
+            "external": true,
+            "separate": true,
+            "jettisonable": false
+          },
+          "BannedWeaponPreset": {
+            "slot": 2,
+            "preset": "gbu15v2_out"
+          }
+        }
+      },
+      {
+        "index": 2,
+        "tier": 8,
+        "order": 3,
         "WeaponPreset": [
           {
             "iconType": "missile_type_b_air_to_air",
-            "name": "aim_9l_default",
+            "name": "aim_9l",
+            "reqModification": "us_aim_9l",
             "ShowNodes": {
               "node": [
                 "aero_3b_2",
@@ -3220,7 +3306,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
               "emitter": "aim_9_2",
               "bullets": 1,
               "external": true,
@@ -3382,6 +3468,30 @@
             }
           },
           {
+            "iconType": "guided_bomb_green",
+            "name": "gbu15v2_out",
+            "reqModification": "us_gbu_15v1",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot1_lapa",
+                "pylon_pivot1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_15v2.blk",
+              "emitter": "bomb3_gbu",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_1",
             "showInWeaponMenu": true,
@@ -3410,9 +3520,9 @@
         ]
       },
       {
-        "index": 2,
+        "index": 3,
         "tier": 7,
-        "order": 3,
+        "order": 5,
         "WeaponPreset": [
           {
             "iconType": "missile_type_b_air_to_air",
@@ -3576,6 +3686,34 @@
             }
           },
           {
+            "iconType": "guided_bomb_green",
+            "name": "gbu15v2",
+            "reqModification": "us_gbu_15v1",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot2_lapa",
+                "pylon_pivot2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_15v2.blk",
+              "emitter": "bomb4_gbu",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ],
+              "sweepRange": [
+                0.0,
+                0.75
+              ]
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_2",
             "showInWeaponMenu": true,
@@ -3604,9 +3742,9 @@
         ]
       },
       {
-        "index": 3,
+        "index": 4,
         "tier": 6,
-        "order": 5,
+        "order": 7,
         "notUseforDisbalanceCalculation": true,
         "WeaponPreset": [
           {
@@ -3693,9 +3831,9 @@
         ]
       },
       {
-        "index": 4,
+        "index": 5,
         "tier": 5,
-        "order": 4,
+        "order": 6,
         "WeaponPreset": [
           {
             "iconType": "missile_type_b_air_to_air",
@@ -3859,6 +3997,34 @@
             }
           },
           {
+            "iconType": "guided_bomb_green",
+            "name": "gbu15v2",
+            "reqModification": "us_gbu_15v1",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot3_lapa",
+                "pylon_pivot3"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_15v2.blk",
+              "emitter": "bomb5_gbu",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ],
+              "sweepRange": [
+                0.0,
+                0.75
+              ]
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_3",
             "showInWeaponMenu": true,
@@ -3887,13 +4053,14 @@
         ]
       },
       {
-        "index": 5,
+        "index": 6,
         "tier": 4,
-        "order": 2,
+        "order": 4,
         "WeaponPreset": [
           {
             "iconType": "missile_type_b_air_to_air",
-            "name": "aim_9l_default",
+            "name": "aim_9l",
+            "reqModification": "us_aim_9l",
             "ShowNodes": {
               "node": [
                 "aero_3b_7",
@@ -3902,7 +4069,7 @@
             },
             "Weapon": {
               "trigger": "aam",
-              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
               "emitter": "aim_9_7",
               "bullets": 1,
               "external": true,
@@ -4064,6 +4231,30 @@
             }
           },
           {
+            "iconType": "guided_bomb_green",
+            "name": "gbu15v2_out",
+            "reqModification": "us_gbu_15v1",
+            "ShowNodes": {
+              "node": [
+                "pylon_pivot4_lapa",
+                "pylon_pivot4"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_2000lb_gbu_15v2.blk",
+              "emitter": "bomb6_gbu",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "flapsRange": [
+                0.0,
+                0.1
+              ]
+            }
+          },
+          {
             "iconType": "ptb",
             "name": "ptb_4",
             "showInWeaponMenu": true,
@@ -4090,6 +4281,34 @@
             }
           }
         ]
+      },
+      {
+        "index": 7,
+        "tier": 3,
+        "order": 2,
+        "WeaponPreset": {
+          "iconType": "missile_type_b_air_to_air",
+          "name": "aim_9l_default",
+          "ShowNodes": {
+            "node": [
+              "aero_3b_8",
+              "pylon_pivot4"
+            ]
+          },
+          "Weapon": {
+            "trigger": "aam",
+            "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
+            "emitter": "aim_9_8",
+            "bullets": 1,
+            "external": true,
+            "separate": true,
+            "jettisonable": false
+          },
+          "BannedWeaponPreset": {
+            "slot": 6,
+            "preset": "gbu15v2_out"
+          }
+        }
       }
     ]
   },
@@ -4403,8 +4622,13 @@
     },
     "us_gbu_10_gbu_24": {
       "reqModification": "us_gbu_12",
-      "tier": 4,
+      "tier": 3,
       "modClass": "weapon"
+    },
+    "us_gbu_15v1": {
+      "modClass": "weapon",
+      "tier": 4,
+      "reqModification": "us_gbu_10_gbu_24"
     },
     "us_aim_9l": {
       "tier": 1,
