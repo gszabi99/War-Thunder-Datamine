@@ -1315,7 +1315,7 @@
       }
     },
     {
-      "id": "italeri_us_m1a1_abrams_store",
+      "id": "italeri_us_m1a1_hc_usmc_abrams_store",
       "type": "award",
       "hidden": true
     },
@@ -1325,7 +1325,7 @@
       "hidden": true
     },
     {
-      "id": "italeri_germ_leopard_2a4_store",
+      "id": "italeri_germ_leopard_2a4_pzbtl_123_store",
       "type": "award",
       "hidden": true
     },
@@ -1335,14 +1335,14 @@
       "hidden": true
     },
     {
-      "id": "italeri_us_m1a1_hc_usmc_rented",
-      "locDescId": "italeri_us_m1a1_hc_usmc_rented/desc",
-      "userLogId": "italeri_us_m1a1_abrams_rented_trophy",
-      "hideUntilPrevUnlocked": "italeri_us_m1a1_abrams_store",
+      "id": "italeri_us_m1a1_hc_usmc_abrams_rented",
+      "locDescId": "italeri_us_m1a1_hc_usmc_abrams_rented/desc",
+      "userLogId": "italeri_us_m1a1_hc_usmc_abrams_rented_trophy",
+      "hideUntilPrevUnlocked": "italeri_us_m1a1_hc_usmc_abrams_store",
+      "hideWhenUnlocked": "italeri_us_m1a1_hc_usmc_abrams_close",
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "italeri",
-      "hidden": true,
       "mode": {
         "type": "missionsWonScore",
         "num": 30,
@@ -1356,9 +1356,71 @@
           },
           {
             "type": "unlocked",
-            "unlock": "italeri_us_m1a1_abrams_store"
+            "unlock": "italeri_us_m1a1_hc_usmc_abrams_store"
           }
         ]
+      }
+    },
+    {
+      "id": "italeri_us_m1a1_hc_usmc_abrams_close",
+      "type": "award",
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "unlocked",
+            "unlock": "italeri_us_m1a1_hc_usmc_abrams_rented"
+          }
+        ]
+      }
+    },
+    {
+      "id": "italeri_us_m1a1_hc_usmc_abrams_rent_p-40e",
+      "userLogId": "wt_rent_p-40e_store",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_us_m1a1_hc_usmc_abrams_store"
+      }
+    },
+    {
+      "id": "italeri_us_m1a1_hc_usmc_abrams_rent_us_m4_sherman",
+      "userLogId": "wt_rent_us_m4_sherman_store",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_us_m1a1_hc_usmc_abrams_store"
+      }
+    },
+    {
+      "id": "italeri_us_m1a1_hc_usmc_abrams_boosters",
+      "userLogId": "boosters_store_50_trophy",
+      "type": "trophy",
+      "amount_trophies": 2,
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_us_m1a1_hc_usmc_abrams_store"
       }
     },
     {
@@ -1366,10 +1428,10 @@
       "locDescId": "italeri_tornado_gr1_rented/desc",
       "userLogId": "italeri_tornado_gr1_rented_trophy",
       "hideUntilPrevUnlocked": "italeri_tornado_gr1_store",
+      "hideWhenUnlocked": "italeri_tornado_gr1_close",
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "italeri",
-      "hidden": true,
       "mode": {
         "type": "missionsWonScore",
         "num": 30,
@@ -1389,14 +1451,76 @@
       }
     },
     {
-      "id": "italeri_germ_leopard_2a4_rented",
-      "locDescId": "italeri_germ_leopard_2a4_rented/desc",
-      "userLogId": "italeri_germ_leopard_2a4_rented_trophy",
-      "hideUntilPrevUnlocked": "italeri_germ_leopard_2a4_store",
+      "id": "italeri_tornado_gr1_close",
+      "type": "award",
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "unlocked",
+            "unlock": "italeri_tornado_gr1_rented"
+          }
+        ]
+      }
+    },
+    {
+      "id": "italeri_tornado_gr1_store_rent_uk_sherman_II",
+      "userLogId": "wt_rent_uk_sherman_II_store",
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "italeri",
       "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_tornado_gr1_store"
+      }
+    },
+    {
+      "id": "italeri_tornado_gr1_store_rent_spitfire_mk5b",
+      "userLogId": "wt_rent_spitfire_mk5b_store",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_tornado_gr1_store"
+      }
+    },
+    {
+      "id": "italeri_tornado_gr1_boosters",
+      "userLogId": "boosters_store_50_trophy",
+      "type": "trophy",
+      "amount_trophies": 2,
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_tornado_gr1_store"
+      }
+    },
+    {
+      "id": "italeri_germ_leopard_2a4_pzbtl_123_rented",
+      "locDescId": "italeri_germ_leopard_2a4_pzbtl_123_rented/desc",
+      "userLogId": "italeri_germ_leopard_2a4_pzbtl_123_rented_trophy",
+      "hideUntilPrevUnlocked": "italeri_germ_leopard_2a4_pzbtl_123_store",
+      "hideWhenUnlocked": "italeri_germ_leopard_2a4_pzbtl_123_close",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "italeri",
       "mode": {
         "type": "missionsWonScore",
         "num": 30,
@@ -1410,9 +1534,71 @@
           },
           {
             "type": "unlocked",
-            "unlock": "italeri_germ_leopard_2a4_store"
+            "unlock": "italeri_germ_leopard_2a4_pzbtl_123_store"
           }
         ]
+      }
+    },
+    {
+      "id": "italeri_germ_leopard_2a4_pzbtl_123_close",
+      "type": "award",
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "unlocked",
+            "unlock": "italeri_germ_leopard_2a4_pzbtl_123_rented"
+          }
+        ]
+      }
+    },
+    {
+      "id": "italeri_germ_leopard_2a4_pzbtl_123_rent_germ_pzkpfw_IV_ausf_F2",
+      "userLogId": "wt_rent_germ_pzkpfw_IV_ausf_F2_store",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_germ_leopard_2a4_pzbtl_123_store"
+      }
+    },
+    {
+      "id": "italeri_germ_leopard_2a4_pzbtl_123_rent_bf-109f-4",
+      "userLogId": "wt_rent_bf-109f-4_store",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_germ_leopard_2a4_pzbtl_123_store"
+      }
+    },
+    {
+      "id": "italeri_germ_leopard_2a4_pzbtl_123_boosters",
+      "userLogId": "boosters_store_50_trophy",
+      "type": "trophy",
+      "amount_trophies": 2,
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_germ_leopard_2a4_pzbtl_123_store"
       }
     },
     {
@@ -1420,10 +1606,10 @@
       "locDescId": "italeri_f_16c_block_50_rented/desc",
       "userLogId": "italeri_f_16c_block_50_rented_trophy",
       "hideUntilPrevUnlocked": "italeri_f_16c_block_50_store",
+      "hideWhenUnlocked": "italeri_f_16c_block_50_close",
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "italeri",
-      "hidden": true,
       "mode": {
         "type": "missionsWonScore",
         "num": 30,
@@ -1440,6 +1626,68 @@
             "unlock": "italeri_f_16c_block_50_store"
           }
         ]
+      }
+    },
+    {
+      "id": "italeri_f_16c_block_50_close",
+      "type": "award",
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 10,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "unlocked",
+            "unlock": "italeri_f_16c_block_50_rented"
+          }
+        ]
+      }
+    },
+    {
+      "id": "italeri_f_16c_block_50_rent_p-40e",
+      "userLogId": "wt_rent_p-40e_store",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_f_16c_block_50_store"
+      }
+    },
+    {
+      "id": "italeri_f_16c_block_50_rent_us_m4_sherman",
+      "userLogId": "wt_rent_us_m4_sherman_store",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_f_16c_block_50_store"
+      }
+    },
+    {
+      "id": "italeri_f_16c_block_50_boosters",
+      "userLogId": "boosters_store_50_trophy",
+      "type": "trophy",
+      "amount_trophies": 2,
+      "chapter": "italeri",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": "italeri_f_16c_block_50_store"
       }
     },
     {
