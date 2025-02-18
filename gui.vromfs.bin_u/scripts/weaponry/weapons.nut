@@ -207,6 +207,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   needHideSlotbar = false
 
   shouldBeRestoredOnMainMenu = false
+  isHeaderHidden = false
 
   function initScreen() {
     this.setResearchManually = !this.researchMode
@@ -385,27 +386,49 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     titleObj.setValue(titleText)
   }
 
+  function hideFrameHeader(frameObj) {
+    frameObj.isHeaderHidden = "yes"
+
+    showObjById("close_alt_btn", !this.researchMode, this.scene)
+
+    let researchModeImgObj = this.scene.findObject("researchMode_image_block")
+    researchModeImgObj["pos"] = researchModeImgObj["posWithoutHeader"]
+
+    this.scene.findObject("overflow-div")["top"] = "-1@frameHeaderHeight"
+
+    let progressBlock = this.scene.findObject("progressMods")
+    if (progressBlock.isValid()) {
+      progressBlock["top"] = "-1@frameHeaderHeight"
+      progressBlock["margin-bottom"] = "1@frameHeaderHeight"
+    }
+  }
+
   function updateWindowHeightAndPos() {
     let frameObj = this.scene.findObject("mods_frame")
-    if (checkObj(frameObj)) {
-      let frameHeight = frameObj.getSize()[1]
-      let maxFrameHeight = toPixels(this.guiScene, "@maxWeaponsWindowHeight")
+    if (!frameObj.isValid())
+      return
 
-      if (frameHeight > maxFrameHeight) {
-        let frameHeaderHeight = toPixels(this.guiScene, "@frameHeaderHeight")
-        if (frameHeight - frameHeaderHeight < maxFrameHeight) {
-          frameObj.isHeaderHidden = "yes"
-          showObjById("close_alt_btn", !this.researchMode, this.scene)
-          let researchModeImgObj = this.scene.findObject("researchMode_image_block")
-          researchModeImgObj["pos"] = researchModeImgObj["posWithoutHeader"]
-          this.scene.findObject("overflow-div")["top"] = "-1@frameHeaderHeight"
-        }
-        else {
-          this.needHideSlotbar = true
-          frameObj["pos"] = frameObj["posWithoutSlotbar"]
-        }
-      } else
-        this.scene.findObject("overflow-div")["top"] = "0"
+    if (this.isHeaderHidden) {
+      this.hideFrameHeader(frameObj)
+      return
+    }
+
+    let frameHeight = frameObj.getSize()[1]
+    let maxFrameHeight = toPixels(this.guiScene, "@maxWeaponsWindowHeight")
+
+    if (frameHeight <= maxFrameHeight) {
+      this.scene.findObject("overflow-div")["top"] = "0"
+      return
+    }
+
+    let frameHeaderHeight = toPixels(this.guiScene, "@frameHeaderHeight")
+    if (frameHeight - frameHeaderHeight < maxFrameHeight) {
+      this.hideFrameHeader(frameObj)
+      this.isHeaderHidden = true
+    }
+    else {
+      this.needHideSlotbar = true
+      frameObj["pos"] = frameObj["posWithoutSlotbar"]
     }
   }
 
@@ -896,14 +919,12 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function fillModsTree() {
     let treeOffsetY = heightInModCell(to_pixels("1@frameHeaderHeight") + this.premiumModsHeight)
     let tree = generateModsTree(this.air)
-
     if (!tree)
       return
 
     let treeSize = getModsTreeSize(this.air)
     if (treeSize.guiPosX > this.wndWidth)
       logerr($"Modifications: {this.air.name} too much modifications in a row")
-
     this.mainModsObj.size = format("%.1f@modCellWidth, %.1f@modCellHeight",
       this.wndWidth, treeSize.tier + treeOffsetY)
     if (!(treeSize.tier > 0))

@@ -5,7 +5,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let DataBlock = require("DataBlock")
 let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { getInventoryItemById, getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { getInventoryList } = require("%scripts/items/itemsManager.nut")
 let { exchangeSeveralRecipes } = require("%scripts/items/exchangeRecipes.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -16,13 +16,16 @@ const CRAFT_PART_TO_NEW_ITEM_RATIO = 2
 
 let RECYCLED_ITEMS_IDS = [299000, 299001, 299002, 299003, 299004]
 
+// Inventory items may have non-unique ids. E.g. boosters might have different expiration times.
+// We generate an unique key based on the item inventory id and its unique parameters (currently the expiration time, but additional parameters may be added).
+let getRecyclingItemUniqKey = @(item) "::".concat(item.id, item.expiredTimeSec)
 let getSingleGeneratorForRecycledItem = @(itemId) ItemGenerators.get(itemId + SINGLE_GENERATOR_ID_OFFSET)
 
 let ItemsRecycler = class {
   craftParts = null
   craftPartsCount = 0
 
-  selectedItemsToRecycle = null // { [itemId] = amount }
+  selectedItemsToRecycle = null  // map composite unique key -> { item, amount }
   selectedItemsToRecycleCount = 0
 
   recyclingItemsIds = null
@@ -32,24 +35,25 @@ let ItemsRecycler = class {
     this.selectedItemsToRecycle = {}
   }
 
-  function selectItemToRecycle(itemId, amount) {
-    if (amount == 0 && itemId in this.selectedItemsToRecycle) {
-      this.selectedItemsToRecycle.$rawdelete(itemId)
+  function selectItemToRecycle(item, amount) {
+    let key = getRecyclingItemUniqKey(item)
+    if (amount == 0 && key in this.selectedItemsToRecycle) {
+      this.selectedItemsToRecycle.$rawdelete(key)
       this.updateItemsToRecycleCount()
       return
     }
 
-    if (itemId not in this.selectedItemsToRecycle)
-      this.selectedItemsToRecycle[itemId] <- amount
+    if (key not in this.selectedItemsToRecycle)
+      this.selectedItemsToRecycle[key] <- { item, amount }
     else
-      this.selectedItemsToRecycle[itemId] = amount
+      this.selectedItemsToRecycle[key].amount = amount
 
     this.updateItemsToRecycleCount()
   }
 
   function updateItemsToRecycleCount() {
     this.selectedItemsToRecycleCount = this.selectedItemsToRecycle.values()
-      .reduce(@(total, cur) total + cur, 0)
+      .reduce(@(total, sel) total + sel.amount, 0)
   }
 
   function updateCraftParts() {
@@ -100,8 +104,8 @@ let ItemsRecycler = class {
   }
 
   function getSelectedItemsListMarkup() {
-    let itemsList = this.selectedItemsToRecycle.reduce(function(allItemsMarkup, amount, itemId) {
-      let itemDesc = getInventoryItemById(itemId).getNameMarkup(amount)
+    let itemsList = this.selectedItemsToRecycle.reduce(function(allItemsMarkup, sel) {
+      let itemDesc = sel.item.getNameMarkup(sel.amount)
       return "".concat(allItemsMarkup, "tdiv {margin-top:t='10@sf/@pf';", itemDesc, "}")
     }, "")
 
@@ -111,11 +115,10 @@ let ItemsRecycler = class {
   function getRecycleItemsRequestsParams() {
     let itemsByType = {} // For now it's possible to recycle items only with the same iType per single request
 
-    foreach (itemId, amount in this.selectedItemsToRecycle) {
-      if (amount < 1)
+    foreach (sel in this.selectedItemsToRecycle) {
+      if (sel.amount < 1)
         continue
-      let item = getInventoryItemById(itemId)
-
+      let { item, amount } = sel
       local itemsBlk = itemsByType?[item.iType].items
 
       if (!itemsBlk) {
@@ -151,7 +154,7 @@ let ItemsRecycler = class {
     exchangeConfigs.extend(singleGenCfg.res)
     remaining = singleGenCfg.remaining
 
-    // If all craft patrs types are left with only one, we use a generic generator
+    // If all craft parts types are left with only one, we use a generic generator
     if (remaining > 0)
       exchangeConfigs.extend(this.calculateCraftViaGenericGenerator(partIdToQuantity, remaining))
 
@@ -223,4 +226,4 @@ let ItemsRecycler = class {
   }
 }
 
-return { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO, RECYCLED_ITEMS_IDS }
+return { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO, RECYCLED_ITEMS_IDS, getRecyclingItemUniqKey }

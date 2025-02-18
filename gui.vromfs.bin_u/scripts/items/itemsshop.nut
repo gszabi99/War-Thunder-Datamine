@@ -33,7 +33,7 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { defer } = require("dagor.workcycle")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
-let { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO } = require("%scripts/items/itemsRecycler.nut")
+let { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO, getRecyclingItemUniqKey } = require("%scripts/items/itemsRecycler.nut")
 
 let tabIdxToName = {
   [itemsTab.SHOP] = "items/shop",
@@ -785,7 +785,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.recycler.recyclingItemsIds)
       return
     foreach (itemId, _amount in this.recycler.recyclingItemsIds) {
-      let idx = this.getItemIndexById(itemId)
+      let idx = this.getItemIndexByRecyclingKey(itemId)
       let itemCont = this.scene.findObject($"shop_item_cont_{idx}")
       if (itemCont)
         itemCont.disabled = "yes"
@@ -794,14 +794,14 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onItemRecycleAmountChange(sliderObj) {
     let idx = sliderObj.holderId.tointeger()
-    let val = sliderObj.getValue()
+    let amount = sliderObj.getValue()
     let item = this.itemsList[idx]
     let itemsListObj = this.getItemsListObj()
 
     if (itemsListObj.getValue() != idx)
       itemsListObj.setValue(idx)
 
-    this.recycler.selectItemToRecycle(item.id, val)
+    this.recycler.selectItemToRecycle(item, amount)
     this.updateRecycleButton()
     this.updateSelectAmountTextAndButtons(sliderObj)
   }
@@ -851,11 +851,11 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateItemsToRecycleSliders() {
-    foreach (itemId, amount in this.recycler.selectedItemsToRecycle) {
-      let idx = this.getItemIndexById(itemId)
+    foreach (k, sel in this.recycler.selectedItemsToRecycle) {
+      let idx = this.getItemIndexByRecyclingKey(k)
       let sliderObj = this.scene.findObject($"select_amount_slider_{idx}")
       if (sliderObj?.isValid())
-        sliderObj.setValue(amount)
+        sliderObj.setValue(sel.amount)
     }
   }
 
@@ -1051,6 +1051,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     return -1
   }
+
+  getItemIndexByRecyclingKey = @(key) this.itemsList.findindex(@(item) getRecyclingItemUniqKey(item) == key) ?? -1
 
   function restoreHandler(stateData) {
     let itemIndex = this.getItemIndexById(stateData.currentItemId)

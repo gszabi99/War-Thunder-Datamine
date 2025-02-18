@@ -1786,8 +1786,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function setDmgSkinMode(enable) {
+    if (!this.scene.isValid())
+      return
     let cObj = this.scene.findObject("btn_toggle_damaged")
-    if (checkObj(cObj))
+    if (cObj?.isValid())
       cObj.setValue(enable)
   }
 

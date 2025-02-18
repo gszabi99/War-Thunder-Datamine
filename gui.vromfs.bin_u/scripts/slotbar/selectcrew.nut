@@ -138,7 +138,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
       let crewId = this.canSetCurUnit
         ? -1
         : (curCrew?.idInCountry ?? -1)
-      this.guiScene.performDelayed(this, @() this.slotbarWeak.selectCrew(crewId))
+      this.guiScene.performDelayed(this, @() this.slotbarWeak?.selectCrew(crewId))
     }
 
     this.onChangeUnit()

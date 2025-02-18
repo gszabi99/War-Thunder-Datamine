@@ -21,6 +21,7 @@ let { getCrewsListByCountry, selectCrew } = require("%scripts/slotbar/slotbarSta
 let { getCrewUnit, purchaseNewCrewSlot, getCrewTrainCost } = require("%scripts/crew/crew.nut")
 let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
 } = require("%scripts/slotbar/crewsList.nut")
+let { isCrewLockedByPrevBattle, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -80,9 +81,21 @@ let CrewTakeUnitProcess = class {
         this.prevUnit = getCrewUnit(this.crew)
         if (this.prevUnit == this.unit)
           return this.remove()
+
+        if (isCrewLockedByPrevBattle(this.crew)) {
+          showInfoMsgBox(loc("charServer/updateError/52"), "crew_forbidden_for_take_unit")
+          return this.remove()
+        }
       }
+
       if (this.unit && !this.unit.isUsable())
         return this.remove() //rent expired
+
+      let unitCrew = this.unit != null ? getCrewByAir(this.unit) : null
+      if (unitCrew != null && isCrewLockedByPrevBattle(unitCrew)) {
+        showInfoMsgBox(loc("charServer/updateError/52"), "unit_crew_forbidden_for_move_unit")
+        return this.remove()
+      }
 
       //we cant make slotbar invalid by add crew to new hired crew
       let isInvalidCrewsAllowed = this.crew == null || ::SessionLobby.isInvalidCrewsAllowed()
