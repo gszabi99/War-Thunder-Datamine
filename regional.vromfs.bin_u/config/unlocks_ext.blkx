@@ -1723,10 +1723,25 @@
       "hidden": true
     },
     {
+      "id": "2024_birthday_bonus_close",
+      "type": "award",
+      "hidden": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 3,
+        "unlock": [
+          "2024_birthday_bonus_5win",
+          "2024_birthday_bonus_10win",
+          "2024_birthday_bonus_15win"
+        ]
+      }
+    },
+    {
       "id": "2024_birthday_bonus_5win",
       "locDescId": "2024_birthday_bonus/desc",
       "userLogId": "2024_birthday_bonus_trophy",
       "hideUntilPrevUnlocked": "2024_birthday_bonus_hidden",
+      "hideWhenUnlocked": "2024_birthday_bonus_close",
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "2024_birthday_bonus",
@@ -1753,6 +1768,7 @@
       "locDescId": "2024_birthday_bonus/desc",
       "userLogId": "2024_birthday_bonus_trophy",
       "hideUntilPrevUnlocked": "2024_birthday_bonus_hidden",
+      "hideWhenUnlocked": "2024_birthday_bonus_close",
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "2024_birthday_bonus",
@@ -1779,6 +1795,7 @@
       "locDescId": "2024_birthday_bonus/desc",
       "userLogId": "2024_birthday_bonus_trophy",
       "hideUntilPrevUnlocked": "2024_birthday_bonus_hidden",
+      "hideWhenUnlocked": "2024_birthday_bonus_close",
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "2024_birthday_bonus",
@@ -4446,6 +4463,171 @@
       }
     },
     {
+      "id": "2025_02_21_saaf_emblem_decal",
+      "locDescId": "2025_02_21_saaf_emblem_decal/desc",
+      "userLogId": "2025_02_21_saaf_emblem_decal",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "rsa_armed_force_day",
+      "costGold": 199,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_britain"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-21 10:00:00",
+            "endDate": "2025-02-24 10:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_02_21_rkka_early_emblem_decal",
+      "locDescId": "2025_02_21_rkka_early_emblem_decal/desc",
+      "userLogId": "2025_02_21_rkka_early_emblem_decal",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "rkka_day",
+      "costGold": 199,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_ussr"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-21 11:00:00",
+            "endDate": "2025-02-24 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_02_21_decor_kubanka_hat",
+      "locDescId": "2025_02_21_decor_kubanka_hat/desc",
+      "userLogId": "2025_02_21_decor_kubanka_hat",
+      "icon": "https://staticfiles.warthunder.com/upload/image/Promo/decor_kubanka_hat_256_f17b042b7957dc5534ddf8976eb7e72c.png",
+      "lockStyle": "lock",
+      "costGold": 499,
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "rkka_day",
+      "hidden": true,
+      "mode": {
+        "type": "missionsWonScore",
+        "num": 5,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_ussr"
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-21 11:00:00",
+            "endDate": "2025-02-24 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_02_21_fall_of_monte_castello",
+      "locDescId": "2025_02_21_fall_of_monte_castello/desc",
+      "userLogId": "regional_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "fall_of_monte_castello",
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_usa"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-21 10:00:00",
+            "endDate": "2025-02-23 10:00:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2025_02_14_valentine_day_2025_decal",
       "locDescId": "2025_02_14_valentine_day_2025_decal/desc",
       "userLogId": "2025_02_14_valentine_day_2025_decal",
@@ -4455,6 +4637,7 @@
       "group": "valentines_day",
       "costGold": 199,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -4731,6 +4914,7 @@
       "group": "japan_day",
       "costGold": 199,
       "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -15130,7 +15314,13 @@
       "hideUntilUnlocked": true
     },
     {
-      "id": "title_thunder_cup_2024_champion",
+      "id": "title_thunder_cup_2025_champion",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_thunder_cup_champion",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
@@ -93400,7 +93590,7 @@
       "locId": "item/gift_2025_02_aircraft_silver_chest",
       "locDescId": "gift_2025_02_aircraft_silver_chest/desc",
       "type": "inventory",
-      "userLogId": "216022",
+      "userLogId": "216082",
       "icon": "!https://static-ggc.gaijin.net/events/silver_2025_02_box.avif",
       "chapter": "2025_02_air",
       "lockStyle": "lock",
@@ -93508,7 +93698,7 @@
       "locId": "item/gift_2025_02_aircraft_silver_chest",
       "locDescId": "gift_2025_02_aircraft_silver_chest/desc",
       "type": "inventory",
-      "userLogId": "216022",
+      "userLogId": "216082",
       "icon": "!https://static-ggc.gaijin.net/events/silver_2025_02_box.avif",
       "chapter": "2025_02_air",
       "lockStyle": "lock",
