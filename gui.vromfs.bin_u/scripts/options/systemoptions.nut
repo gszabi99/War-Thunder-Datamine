@@ -1089,9 +1089,12 @@ mSettings = {
         desc.values.append("vulkan")
 
       desc.items <- desc.values.map(function(value) {
+        let optionLocText = loc($"options/gfx_api_{value}")
         if (is_win64 && value == "auto")
-          return { text = "".concat(loc("options/gfx_api_auto"), loc("ui/parentheses/space", {text = loc($"options/gfx_api_{get_active_gfx_api()}") })) }
-        return { text = loc($"options/gfx_api_{value}") }
+          return { text = "".concat(optionLocText, loc("ui/parentheses/space", {text = loc($"options/gfx_api_{get_active_gfx_api()}") })) }
+        if (is_win64 && value == "vulkan")
+          return { text = "".concat(optionLocText, loc("ui/parentheses/space", { text = "beta" })) }
+        return { text = optionLocText }
       })
       desc.def <- desc.values[0]
     }
