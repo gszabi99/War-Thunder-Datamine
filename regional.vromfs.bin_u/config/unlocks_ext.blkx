@@ -69656,6 +69656,399 @@
       }
     },
     {
+      "id": "2025_football_event_goal_hidden",
+      "type": "streak",
+      "isAfterFlight": false,
+      "isMultiStage": true,
+      "wpA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "hidden": true,
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 0
+      },
+      "mode": {
+        "type": "footballGoal",
+        "num": 1005000,
+        "condition": [
+          {
+            "type": "customOnline"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-17 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_football_event_assist_hidden",
+      "type": "streak",
+      "isAfterFlight": false,
+      "isMultiStage": true,
+      "wpA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "hidden": true,
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 0
+      },
+      "mode": {
+        "type": "footballAssist",
+        "num": 1005000,
+        "condition": [
+          {
+            "type": "customOnline"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-17 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_football_event_save_hidden",
+      "type": "streak",
+      "isAfterFlight": false,
+      "isMultiStage": true,
+      "wpA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "wpB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expA": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "expB": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "hidden": true,
+      "stage": {
+        "param": 1,
+        "amount_exp": 0,
+        "amount_warpoints": 0
+      },
+      "mode": {
+        "type": "footballSave",
+        "num": 1005000,
+        "condition": [
+          {
+            "type": "customOnline"
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-17 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "tigers_team_emblem_trophy_gift",
+      "locId": "item/2023_football_event_decal_trophy_gift",
+      "userLogId": "tigers_team_emblem_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2022_football_event",
+      "isForceVisibleInTree": true,
+      "lockStyle": "lock",
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2025_football_event_goal_hidden",
+          "2025_football_event_assist_hidden",
+          "2025_football_event_save_hidden"
+        ],
+        "num": 20,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-17 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "profile_header_football_trophy_gift",
+      "locId": "profile_header_football/name",
+      "userLogId": "profile_header_football_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2022_football_event",
+      "isForceVisibleInTree": true,
+      "lockStyle": "lock",
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2025_football_event_goal_hidden",
+          "2025_football_event_assist_hidden",
+          "2025_football_event_save_hidden"
+        ],
+        "num": 50,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-17 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "loading_screen_football_event_2025_trophy_gift",
+      "locId": "loading_bg/login_layer_football_event_2025",
+      "locDescId": "common_loading_screen_trophy_gift/desc",
+      "userLogId": "loading_screen_football_event_2025_trophy",
+      "type": "trophy",
+      "icon": "!https://static-ggc.gaijin.net/loading_screen/football_event_2025.avif",
+      "amount_trophies": 1,
+      "chapter": "2022_football_event",
+      "isForceVisibleInTree": true,
+      "lockStyle": "lock",
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2025_football_event_goal_hidden",
+          "2025_football_event_assist_hidden",
+          "2025_football_event_save_hidden"
+        ],
+        "num": 100,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-17 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "frame_goalpost_trophy_gift",
+      "locId": "frame_goalpost/name",
+      "userLogId": "frame_goalpost_trophy",
+      "type": "trophy",
+      "icon": "!https://static-ggc.gaijin.net/avatar_frames/frame_goalpost.png",
+      "amount_trophies": 1,
+      "chapter": "2022_football_event",
+      "isForceVisibleInTree": true,
+      "lockStyle": "lock",
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2025_football_event_goal_hidden",
+          "2025_football_event_assist_hidden",
+          "2025_football_event_save_hidden"
+        ],
+        "num": 200,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-17 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_football_event_flag_decal_trophy_gift",
+      "locId": "item/2022_football_event_flag_decal_trophy_gift",
+      "locDescId": "2022_football_event_flag_decal_trophy_gift/desc",
+      "icon": "https://static-ggc.gaijin.net/decals/football_banners.png",
+      "type": "inventory",
+      "userLogId": "200253",
+      "chapter": "2022_football_event",
+      "isForceVisibleInTree": true,
+      "lockStyle": "lock",
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2025_football_event_goal_hidden",
+          "2025_football_event_assist_hidden",
+          "2025_football_event_save_hidden"
+        ],
+        "num": 300,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-17 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_football_event_skin_trophy_gift",
+      "locId": "item/2022_football_event_skin_trophy_gift",
+      "locDescId": "2022_football_event_skin_trophy_gift/desc",
+      "icon": "https://static-ggc.gaijin.net/skins/us_m551_football_skins.png",
+      "type": "inventory",
+      "userLogId": "200255",
+      "chapter": "2022_football_event",
+      "isForceVisibleInTree": true,
+      "lockStyle": "lock",
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2025_football_event_goal_hidden",
+          "2025_football_event_assist_hidden",
+          "2025_football_event_save_hidden"
+        ],
+        "num": 400,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-17 05:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_football_event_golden_decor_trophy_gift",
+      "locId": "item/2022_football_event_golden_decor_trophy_gift",
+      "locDescId": "2022_football_event_golden_decor_trophy_gift/desc",
+      "icon": "!https://static-ggc.gaijin.net/attachables/football_golden_trio.png",
+      "type": "inventory",
+      "userLogId": "200254",
+      "chapter": "2022_football_event",
+      "isForceVisibleInTree": true,
+      "lockStyle": "lock",
+      "mode": {
+        "type": "unlockStageCount",
+        "typeLocID": "conditions/footballGoalAndAssistAndSaves",
+        "unlock": [
+          "2025_football_event_goal_hidden",
+          "2025_football_event_assist_hidden",
+          "2025_football_event_save_hidden"
+        ],
+        "num": 500,
+        "condition": [
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": "tank_football"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-17 05:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2023_mobile_infantry_event_decal_trophy_gift_1",
       "locId": "item/2023_mobile_infantry_event_decal_trophy_gift",
       "locDescId": "2023_mobile_infantry_event_decal_trophy_gift/desc",
@@ -93459,8 +93852,8 @@
       "chapter": "2025_02_air",
       "icon": "!https://static-ggc.gaijin.net/units/f-5ag_norway.png",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 8,
@@ -93486,8 +93879,8 @@
       "group": "coupon_upgrade",
       "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
-      "manualOpen": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 2147483646,
@@ -93545,8 +93938,8 @@
       "amount_trophies": 1,
       "chapter": "2025_02_air",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 1,
@@ -93574,7 +93967,7 @@
       "icon": "!https://static-ggc.gaijin.net/decals/02_2024_aircraft_event.avif",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 2,
@@ -93600,9 +93993,9 @@
       "icon": "!https://static-ggc.gaijin.net/events/silver_2025_02_box.avif",
       "chapter": "2025_02_air",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 3,
@@ -93630,7 +94023,7 @@
       "icon": "!https://static-ggc.gaijin.net/decals/02_2024_aircraft_event.avif",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 4,
@@ -93656,8 +94049,8 @@
       "amount_trophies": 1,
       "chapter": "2025_02_air",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 5,
@@ -93682,7 +94075,7 @@
       "chapter": "2025_02_air",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 6,
@@ -93708,9 +94101,9 @@
       "icon": "!https://static-ggc.gaijin.net/events/silver_2025_02_box.avif",
       "chapter": "2025_02_air",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 7,
@@ -93736,7 +94129,7 @@
       "icon": "!https://static-ggc.gaijin.net/items/item_skin.png",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 9,
@@ -93762,7 +94155,7 @@
       "icon": "!https://static-ggc.gaijin.net/chests/box_aircraft.png",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 9,
@@ -93783,6 +94176,7 @@
       "id": "22_02_2025_aircraft_stage",
       "locId": "marathon_air_stage_9/name",
       "chapter": "2025_02_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -93845,6 +94239,7 @@
       "id": "20_02_2025_aircraft_stage",
       "locId": "marathon_air_stage_8/name",
       "chapter": "2025_02_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -93907,6 +94302,7 @@
       "id": "18_02_2025_aircraft_stage",
       "locId": "marathon_air_stage_7/name",
       "chapter": "2025_02_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -93969,6 +94365,7 @@
       "id": "16_02_2025_aircraft_stage",
       "locId": "marathon_air_stage_6/name",
       "chapter": "2025_02_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -94031,6 +94428,7 @@
       "id": "14_02_2025_aircraft_stage",
       "locId": "marathon_air_stage_5/name",
       "chapter": "2025_02_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -94093,6 +94491,7 @@
       "id": "12_02_2025_aircraft_stage",
       "locId": "marathon_air_stage_4/name",
       "chapter": "2025_02_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -94155,6 +94554,7 @@
       "id": "10_02_2025_aircraft_stage",
       "locId": "marathon_air_stage_3/name",
       "chapter": "2025_02_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -94217,6 +94617,7 @@
       "id": "08_02_2025_aircraft_stage",
       "locId": "marathon_air_stage_2/name",
       "chapter": "2025_02_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -94279,6 +94680,7 @@
       "id": "06_02_2025_aircraft_stage",
       "locId": "marathon_air_stage_1/name",
       "chapter": "2025_02_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -94333,6 +94735,839 @@
             "type": "timeRange",
             "beginDate": "2025-02-06 11:00:00",
             "endDate": "2025-02-08 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_fr_battleship_strasbourg_coupon",
+      "type": "inventory",
+      "userLogId": "50305",
+      "chapter": "2025_02_ship",
+      "icon": "!https://static-ggc.gaijin.net/units/fr_battleship_strasbourg.png",
+      "lockStyle": "lock",
+      "isForceVisibleInTree": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 8,
+        "unlock": [
+          "15_03_2025_ship_stage",
+          "13_03_2025_ship_stage",
+          "11_03_2025_ship_stage",
+          "09_03_2025_ship_stage",
+          "07_03_2025_ship_stage",
+          "05_03_2025_ship_stage",
+          "03_03_2025_ship_stage",
+          "01_03_2025_ship_stage",
+          "27_02_2025_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_fr_battleship_strasbourg_tradable_coupon",
+      "locDescId": "gift_coupon_upgrade/desc",
+      "type": "inventory",
+      "userLogId": "215120",
+      "chapter": "2025_02_ship",
+      "group": "coupon_upgrade",
+      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
+      "lockStyle": "lock",
+      "isForceVisibleInTree": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 750000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-17 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_2025_02_ship_trophy_1",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_02_ship",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "15_03_2025_ship_stage",
+          "13_03_2025_ship_stage",
+          "11_03_2025_ship_stage",
+          "09_03_2025_ship_stage",
+          "07_03_2025_ship_stage",
+          "05_03_2025_ship_stage",
+          "03_03_2025_ship_stage",
+          "01_03_2025_ship_stage",
+          "27_02_2025_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2025_02_ship_decal_trophy_1",
+      "locId": "item/gift_2025_02_ship_decal_trophy",
+      "locDescId": "gift_2025_02_ship_decal_trophy/desc",
+      "userLogId": "2025_02_ship_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_02_ship",
+      "icon": "!https://static-ggc.gaijin.net/decals/02_2024_ship_event.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 2,
+        "unlock": [
+          "15_03_2025_ship_stage",
+          "13_03_2025_ship_stage",
+          "11_03_2025_ship_stage",
+          "09_03_2025_ship_stage",
+          "07_03_2025_ship_stage",
+          "05_03_2025_ship_stage",
+          "03_03_2025_ship_stage",
+          "01_03_2025_ship_stage",
+          "27_02_2025_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2025_02_ship_trophy_2",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_02_ship",
+      "lockStyle": "lock",
+      "manualOpen": true,
+      "showInDesc": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 3,
+        "unlock": [
+          "15_03_2025_ship_stage",
+          "13_03_2025_ship_stage",
+          "11_03_2025_ship_stage",
+          "09_03_2025_ship_stage",
+          "07_03_2025_ship_stage",
+          "05_03_2025_ship_stage",
+          "03_03_2025_ship_stage",
+          "01_03_2025_ship_stage",
+          "27_02_2025_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2025_02_ship_decal_trophy_2",
+      "locId": "item/gift_2025_02_ship_decal_trophy",
+      "locDescId": "gift_2025_02_ship_decal_trophy/desc",
+      "userLogId": "2025_02_ship_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_02_ship",
+      "icon": "!https://static-ggc.gaijin.net/decals/02_2024_ship_event.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 4,
+        "unlock": [
+          "15_03_2025_ship_stage",
+          "13_03_2025_ship_stage",
+          "11_03_2025_ship_stage",
+          "09_03_2025_ship_stage",
+          "07_03_2025_ship_stage",
+          "05_03_2025_ship_stage",
+          "03_03_2025_ship_stage",
+          "01_03_2025_ship_stage",
+          "27_02_2025_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2025_02_ship_trophy_3",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_02_ship",
+      "lockStyle": "lock",
+      "manualOpen": true,
+      "showInDesc": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 5,
+        "unlock": [
+          "15_03_2025_ship_stage",
+          "13_03_2025_ship_stage",
+          "11_03_2025_ship_stage",
+          "09_03_2025_ship_stage",
+          "07_03_2025_ship_stage",
+          "05_03_2025_ship_stage",
+          "03_03_2025_ship_stage",
+          "01_03_2025_ship_stage",
+          "27_02_2025_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "2025_02_ship_event_loading_screen_trophy_gift",
+      "userLogId": "2025_02_ship_event_loading_screen_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_02_ship",
+      "icon": "!https://static-ggc.gaijin.net/loading_screen/ship_marathon_strasbourg.avif",
+      "lockStyle": "lock",
+      "manualOpen": true,
+      "showInDesc": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 6,
+        "unlock": [
+          "15_03_2025_ship_stage",
+          "13_03_2025_ship_stage",
+          "11_03_2025_ship_stage",
+          "09_03_2025_ship_stage",
+          "07_03_2025_ship_stage",
+          "05_03_2025_ship_stage",
+          "03_03_2025_ship_stage",
+          "01_03_2025_ship_stage",
+          "27_02_2025_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2025_02_ship_trophy_4",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_02_ship",
+      "lockStyle": "lock",
+      "manualOpen": true,
+      "showInDesc": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 7,
+        "unlock": [
+          "15_03_2025_ship_stage",
+          "13_03_2025_ship_stage",
+          "11_03_2025_ship_stage",
+          "09_03_2025_ship_stage",
+          "07_03_2025_ship_stage",
+          "05_03_2025_ship_stage",
+          "03_03_2025_ship_stage",
+          "01_03_2025_ship_stage",
+          "27_02_2025_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "2025_02_ship_event_skin_trophy_gift",
+      "userLogId": "2025_02_ship_event_skin_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_02_ship",
+      "icon": "!https://static-ggc.gaijin.net/items/item_skin.png",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 9,
+        "unlock": [
+          "15_03_2025_ship_stage",
+          "13_03_2025_ship_stage",
+          "11_03_2025_ship_stage",
+          "09_03_2025_ship_stage",
+          "07_03_2025_ship_stage",
+          "05_03_2025_ship_stage",
+          "03_03_2025_ship_stage",
+          "01_03_2025_ship_stage",
+          "27_02_2025_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "2025_02_ship_event_modifications_trophy_gift",
+      "userLogId": "2025_02_ship_event_modifications_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_02_ship",
+      "icon": "!https://static-ggc.gaijin.net/chests/box_navy.png",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 9,
+        "unlock": [
+          "15_03_2025_ship_stage",
+          "13_03_2025_ship_stage",
+          "11_03_2025_ship_stage",
+          "09_03_2025_ship_stage",
+          "07_03_2025_ship_stage",
+          "05_03_2025_ship_stage",
+          "03_03_2025_ship_stage",
+          "01_03_2025_ship_stage",
+          "27_02_2025_ship_stage"
+        ]
+      }
+    },
+    {
+      "id": "15_03_2025_ship_stage",
+      "locId": "marathon_ship_stage_9/name",
+      "chapter": "2025_02_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 38250000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 42750000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 45000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-03-15 11:00:00",
+            "endDate": "2025-04-17 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "13_03_2025_ship_stage",
+      "locId": "marathon_ship_stage_8/name",
+      "chapter": "2025_02_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 38250000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 42750000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 45000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-03-13 11:00:00",
+            "endDate": "2025-03-15 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "11_03_2025_ship_stage",
+      "locId": "marathon_ship_stage_7/name",
+      "chapter": "2025_02_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 38250000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 42750000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 45000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-03-11 11:00:00",
+            "endDate": "2025-03-13 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "09_03_2025_ship_stage",
+      "locId": "marathon_ship_stage_6/name",
+      "chapter": "2025_02_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 38250000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 42750000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 45000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-03-09 11:00:00",
+            "endDate": "2025-03-11 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "07_03_2025_ship_stage",
+      "locId": "marathon_ship_stage_5/name",
+      "chapter": "2025_02_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 38250000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 42750000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 45000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-03-07 11:00:00",
+            "endDate": "2025-03-09 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "05_03_2025_ship_stage",
+      "locId": "marathon_ship_stage_4/name",
+      "chapter": "2025_02_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 38250000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 42750000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 45000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-03-05 11:00:00",
+            "endDate": "2025-03-07 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "03_03_2025_ship_stage",
+      "locId": "marathon_ship_stage_3/name",
+      "chapter": "2025_02_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 38250000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 42750000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 45000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-03-03 11:00:00",
+            "endDate": "2025-03-05 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "01_03_2025_ship_stage",
+      "locId": "marathon_ship_stage_2/name",
+      "chapter": "2025_02_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 38250000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 42750000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 45000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-03-01 11:00:00",
+            "endDate": "2025-03-03 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "27_02_2025_ship_stage",
+      "locId": "marathon_ship_stage_1/name",
+      "chapter": "2025_02_ship",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 999,
+      "costGoldDiscountProgress0": 38250000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 42750000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 45000000,
+        "mulMode6": 1.9,
+        "mulMode7": 2.2,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 1.0,
+        "mulRank5": 1.2,
+        "mulRank6": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": true,
+            "value": [
+              "ship_event_in_random_battles_arcade",
+              "ship_event_in_random_battles_realistic"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-02-27 11:00:00",
+            "endDate": "2025-03-01 11:30:00"
           }
         ]
       }
