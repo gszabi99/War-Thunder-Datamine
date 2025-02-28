@@ -3,6 +3,7 @@ require DagorStdGuiRender
 require DagorMath
 require DagorSystem
 require math
+require Plane
 require FlightModelWrap
 require HeroManager
 require Unit
@@ -16,7 +17,7 @@ let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
 let mpsToKnots = 1.94384
 let metrToFeet = 3.28084
 let mpsToKmh = 3.6
-let metrToMile = 0.000621371
+let metrToNavMile = 0.000539957
 
 def deg_to_rad(rad : float)
   return rad * PI / 180.
@@ -43,7 +44,7 @@ def setup_hmd_data(props : Properties&; var storage : CanvasParams&)
   storage.lineWidth = props |> getFloat("lineWidth", 2.)
   storage.isMetricUnits = props |> getBool("isMetricUnits", true)
 
-[export]
+[export, unused_argument(rstate)]
 def draw_hmd(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   let hero = get_controlled_hero()
   if hero == null || hero.isDelayed
@@ -112,7 +113,7 @@ def draw_speed(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size :
   ctx |> goto_xy(pos.x + size.x * 0.38, pos.y + size.y * 0.5 - strBox.width.y)
   ctx |> draw_str_scaled(1.0, iasStr, iasStr |> length())
 
-  let mach = "M: {fmt(":.2f", fmw.fm.mach)}"
+  let mach = "M: {fmt(":.2f", fmw.fm.Mach)}"
   ctx |> goto_xy(pos.x + size.x * 0.38, pos.y + size.y * 0.5 + 2.)
   ctx |> draw_str_scaled(1.0, mach, mach |> length())
 
@@ -123,7 +124,7 @@ def draw_altitude(var ctx : GuiContext&; data : CanvasParams&; pos : float2; siz
   ctx |> draw_line(markPos.x, markPos.y, markPos.x - size.x * 0.01, markPos.y + size.y * 0.005, ctx |> hdpx(data.lineWidth))
 
   let step = size.y * 0.04 / 250.
-  let alt = fmw.fm.alt * (data.isMetricUnits ? 1. : metrToFeet)
+  let alt = fmw.fm.currentAlt * (data.isMetricUnits ? 1. : metrToFeet)
 
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
@@ -148,6 +149,7 @@ def draw_altitude(var ctx : GuiContext&; data : CanvasParams&; pos : float2; siz
   ctx |> goto_xy(markPos.x + 5., markPos.y + altBox.width.y + size.y * 0.12)
   ctx |> draw_str_scaled(1.0, rtext, rtext |> length())
 
+[unused_argument(fctx)]
 def draw_altitude_line(var ctx : GuiContext&; data : CanvasParams&; fctx : StdGuiFontContext; size : float2; step : float; mark_pos : float2; val : float; current_alt : float; with_text : bool)
   if val < 0.
     return
@@ -182,6 +184,7 @@ def draw_altitude_line(var ctx : GuiContext&; data : CanvasParams&; fctx : StdGu
     ctx |> draw_str_scaled(1.0, text, text |> length())
 
 
+[unused_argument(hero)]
 def draw_marker_with_dist(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; hero : Unit?; dist : float)
   let center = pos + size * 0.5
   let radius = size.y * 0.05
@@ -239,7 +242,7 @@ def draw_marker_with_dist(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(data.fontSize);
 
-  let distance = dist * (data.isMetricUnits ? 0.001 : metrToMile)
+  let distance = dist * (data.isMetricUnits ? 0.001 : metrToNavMile)
   let distText = fmt(":.1f", distance)
   let distTextBox = get_str_bbox(distText, distText |> length(), fctx)
 
@@ -266,6 +269,7 @@ def draw_current_weapon(var ctx : GuiContext&; data : CanvasParams&; pos : float
   ctx |> goto_xy(pos.x + size.x * 0.5 - textBox.width.x * 0.5, pos.y + size.y * 0.78)
   ctx |> draw_str_scaled(1.0, weaponName, weaponName |> length())
 
+[unused_argument(pos)]
 def draw_radar_target_mark(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; hero : Unit?)
   using() <| $(var target : TargetOfInterest#)
     if hero.sensors |> getSelectedTargetOfInterest(hero.detector, target)

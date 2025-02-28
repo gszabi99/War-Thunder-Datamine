@@ -7,6 +7,7 @@ let { format } = require("string")
 let { rnd } = require("dagor.random")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { userIdStr, isGuestLogin } = require("%scripts/user/profileStates.nut")
+let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 
 let awardRanks = [3, 4, 7]
 let awardVesselsRanks = [3, 4, 5]
@@ -62,7 +63,7 @@ function showViralAcquisitionWnd() {
     showSendEmail = true
     showPostLink = true
   }
-  ::showUnlockWnd(config)
+  showUnlockWnd(config)
 }
 
 return {

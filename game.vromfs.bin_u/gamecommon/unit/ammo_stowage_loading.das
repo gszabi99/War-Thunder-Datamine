@@ -317,7 +317,7 @@ def load_cluster(blk : DataBlock&; var unit : Unit?;
     v.ammo_slots__node |> push_empty()
 
     if part_id.valid
-      let remap_added = add_remap(v.ammo_stowage__partIdRemap, [[PartRemap partId=part_id, stowageId=stowage_id, clusterId=cluster_id, slotId=slot_id]])
+      let remap_added = add_remap(v.ammo_stowage__partIdRemap, [[PartRemap() partId=part_id, stowageId=stowage_id, clusterId=cluster_id, slotId=slot_id]])
       if !remap_added
         logerr("unit {unit.props.fileName}: part {slot_blk.blockName} is already used in another stowage!")
 
@@ -549,7 +549,7 @@ def ammo_stowage_load_es(evt : CmdInitComponent;
     v.ammo_stowage__detonateProb = ammo_blk |> datablock_getReal("detonateProb", v.ammo_stowage__detonateProb)
     v.ammo_stowage__fatalDetonatePortion = ammo_blk |> datablock_getPoint2("detonatePortion", v.ammo_stowage__fatalDetonatePortion)
     v.ammo_stowage__nonFatalDetonatePortion = ammo_blk |> datablock_getPoint2("ammoStowageDetonatePortion",  get_wt_dm_params().ammoStowageDetonatePortion)
-    v.ammo_stowage__explosiveProperties |> explosive_props_load(ammo_blk, 1.f)
+    explosive_props_load(v.ammo_stowage__explosiveProperties, ammo_blk, 1.f)
     splash_props_load(v.ammo_stowage__splashProperties, ammo_blk)
 
   if !unit.isHumanPlayer && !unit_change_data_has_any_bullets(unit)

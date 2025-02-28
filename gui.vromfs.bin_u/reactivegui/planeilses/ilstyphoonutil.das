@@ -115,10 +115,10 @@ def draw_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data :
         ctx |> render_line_aa(l2, false, data.lineWidth, float2(0.), data.color)
 
 
-[export]
+[export, unused_argument(rstate)]
 def draw_hmd_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   draw_radar_mark(ctx, rdata, data, false)
 
-[export]
+[export, unused_argument(rstate)]
 def draw_ils_radar_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   draw_radar_mark(ctx, rdata, data, true)

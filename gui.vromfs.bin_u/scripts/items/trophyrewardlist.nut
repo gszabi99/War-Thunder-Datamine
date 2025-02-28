@@ -5,7 +5,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let { convertBlk } = require("%sqstd/datablock.nut")
-let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
+let { rewardsSortComparator, getTrophyRewardType, isRewardItem
+} = require("%scripts/items/trophyReward.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { getPrizeImageByConfig, getPrizeFullDescriptonView } = require("%scripts/items/prizesView.nut")
 
 gui_handlers.trophyRewardsList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -45,7 +48,7 @@ gui_handlers.trophyRewardsList <- class (gui_handlers.BaseGuiHandlerWT) {
     local data = ""
     foreach (_idx, reward in this.rewardsArray)
       data = "".concat(data,
-        ::trophyReward.getImageByConfig(reward.__merge({ forcedShowCount = true }), false, "trophy_reward_place", true))
+        getPrizeImageByConfig(reward.__merge({ forcedShowCount = true }), false, "trophy_reward_place", true))
 
     return data
   }
@@ -53,19 +56,19 @@ gui_handlers.trophyRewardsList <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateItemInfo(obj) {
     let val = obj.getValue()
     let reward_config = this.rewardsArray[val]
-    let rewardType = ::trophyReward.getType(reward_config)
-    let isItem = ::trophyReward.isRewardItem(rewardType)
+    let rewardType = getTrophyRewardType(reward_config)
+    let isItem = isRewardItem(rewardType)
     this.infoHandler?.setHandlerVisible(isItem)
     let prizeInfo = showObjById("prize_info", !isItem, this.scene)
     if (isItem) {
       if (!this.infoHandler)
         return
 
-      let item = ::ItemsManager.findItemById(reward_config[rewardType])
+      let item = findItemById(reward_config[rewardType])
       this.infoHandler.updateHandlerData(item, true, true, reward_config)
       return
     }
-    let trophyDesc = ::trophyReward.getFullDescriptonView(reward_config)
+    let trophyDesc = getPrizeFullDescriptonView(reward_config)
     this.guiScene.replaceContentFromText(prizeInfo, trophyDesc, trophyDesc.len(), this)
   }
 
@@ -90,7 +93,7 @@ function openTrophyRewardsList(params = {}) {
 }
 
 function debug_trophy_rewards_list(id = "shop_test_multiple_types_reward") {
-  let trophy = ::ItemsManager.findItemById(id)
+  let trophy = findItemById(id)
   local content = trophy.getContent()
     .map(@(i) convertBlk(i))
     .sort(rewardsSortComparator)

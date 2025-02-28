@@ -2,235 +2,283 @@ from "%scripts/dagui_natives.nut" import fill_joysticks_desc, set_current_contro
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCUT
 
-let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
-loadOnce("%scripts/controls/controlsPreset.nut")
-loadOnce("%scripts/controls/controlsGlobals.nut")
-loadOnce("%scripts/controls/controlsCompatibility.nut")
-let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { eventbus_subscribe } = require("eventbus")
+let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
-let { getCurrentPreset, hasXInputDevice, isXInputDevice } = require("controls")
+let { hasXInputDevice, isXInputDevice } = require("controls")
 let { startsWith } = require("%sqstd/string.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, registerOption } = require("%scripts/options/optionsExt.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let optionsExtNames = require("%scripts/options/optionsExtNames.nut")
-let { OPTIONS_MODE_GAMEPLAY } = optionsExtNames
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { OPTIONS_MODE_GAMEPLAY, USEROPT_CONTROLS_PRESET } = optionsExtNames
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
+let { getCurControlsPreset, setCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { getNullControlsPresetInfo, getControlsPresetsList, getControlsPresetFilename, parseControlsPresetName
+} = require("%scripts/controls/controlsPresets.nut")
 
-function getLoadedPresetBlk() {
-  let presetBlk = DataBlock()
-  getCurrentPreset(presetBlk)
-  return presetBlk
-}
+local isControlsCommitPerformed = false
+let isLastLoadControlsSucceeded = Watched(false)
 
-::g_controls_manager <- {
-  // PRIVATE VARIABLES
-  curPreset = ::ControlsPreset(getLoadedPresetBlk())
-  previewPreset = null
-  isControlsCommitPerformed = false
-
-  fixesList = [
-    {
-      isAppend = true
-      source = "ID_FLIGHTMENU"
-      target = "ID_FLIGHTMENU_SETUP"
-      value = [{
-        deviceId = SHORTCUT.GAMEPAD_START.dev[0]
-        buttonId = SHORTCUT.GAMEPAD_START.btn[0]
-      }]
-      shouldAppendIfEmptyOnXInput = true
-    }
-    {
-      isAppend = true
-      source = "ID_CONTINUE",
-      target = "ID_CONTINUE_SETUP"
-      value = [{
+let fixesList = [
+  {
+    isAppend = true
+    source = "ID_FLIGHTMENU"
+    target = "ID_FLIGHTMENU_SETUP"
+    value = [{
+      deviceId = SHORTCUT.GAMEPAD_START.dev[0]
+      buttonId = SHORTCUT.GAMEPAD_START.btn[0]
+    }]
+    shouldAppendIfEmptyOnXInput = true
+  }
+  {
+    isAppend = true
+    source = "ID_CONTINUE",
+    target = "ID_CONTINUE_SETUP"
+    value = [{
+      deviceId = GAMEPAD_ENTER_SHORTCUT.dev[0]
+      buttonId = GAMEPAD_ENTER_SHORTCUT.btn[0]
+    }]
+    shouldAppendIfEmptyOnXInput = true
+  }
+  {
+    target = "ID_FLIGHTMENU"
+    value = [[{
+      deviceId = SHORTCUT.KEY_ESC.dev[0]
+      buttonId = SHORTCUT.KEY_ESC.btn[0]
+    }]]
+  }
+  {
+    target = "ID_CONTINUE"
+    valueFunction = function() {
+      return [[isXInputDevice() ? {
         deviceId = GAMEPAD_ENTER_SHORTCUT.dev[0]
-        buttonId = GAMEPAD_ENTER_SHORTCUT.btn[0]
-      }]
-      shouldAppendIfEmptyOnXInput = true
-    }
-    {
-      target = "ID_FLIGHTMENU"
-      value = [[{
-        deviceId = SHORTCUT.KEY_ESC.dev[0]
-        buttonId = SHORTCUT.KEY_ESC.btn[0]
+        buttonId = GAMEPAD_ENTER_SHORTCUT.btn[0] // used in mission hints
+      } :
+      {
+        deviceId = SHORTCUT.KEY_SPACE.dev[0]
+        buttonId = SHORTCUT.KEY_SPACE.btn[0]
       }]]
     }
-    {
-      target = "ID_CONTINUE"
-      valueFunction = function() {
-        return [[isXInputDevice() ? {
-          deviceId = GAMEPAD_ENTER_SHORTCUT.dev[0]
-          buttonId = GAMEPAD_ENTER_SHORTCUT.btn[0] // used in mission hints
-        } :
-        {
-          deviceId = SHORTCUT.KEY_SPACE.dev[0]
-          buttonId = SHORTCUT.KEY_SPACE.btn[0]
-        }]]
+  }
+]
+
+let hardcodedShortcuts = [
+  {
+    condition = function() { return is_platform_pc }
+    list = [
+      {
+        name = "ID_SCREENSHOT",
+        combo = [{
+          deviceId = SHORTCUT.KEY_PRNT_SCRN.dev[0]
+          buttonId = SHORTCUT.KEY_PRNT_SCRN.btn[0]
+        }]
       }
+    ]
+  }
+]
+
+function fixDeviceMapping() {
+  let realMapping = []
+
+  let blkDeviceMapping = DataBlock()
+  fill_joysticks_desc(blkDeviceMapping)
+
+  eachBlock(blkDeviceMapping, @(blkJoy)
+    realMapping.append({
+      name          = blkJoy["name"]
+      devId         = blkJoy["devId"]
+      buttonsOffset = blkJoy["btnOfs"]
+      buttonsCount  = blkJoy["btnCnt"]
+      axesOffset    = blkJoy["axesOfs"]
+      axesCount     = blkJoy["axesCnt"]
+      connected     = !getTblValue("disconnected", blkJoy, false)
+    }))
+
+  if (getCurControlsPreset().updateDeviceMapping(realMapping))
+    broadcastEvent("ControlsPresetChanged")
+}
+
+function setDefaultRelativeAxes() {
+  if (!("shortcutsList" in getroottable()))
+    return
+
+  let curPreset = getCurControlsPreset()
+  foreach (shortcut in ::shortcutsList)
+    if (shortcut.type == CONTROL_TYPE.AXIS && (shortcut?.isAbsOnlyWhenRealAxis ?? false)) {
+      let axis = curPreset.getAxis(shortcut.id)
+      if (axis.axisId == -1)
+        axis.relative = true
     }
-  ]
+}
 
-  hardcodedShortcuts = [
-    {
-      condition = function() { return is_platform_pc }
-      list = [
-        {
-          name = "ID_SCREENSHOT",
-          combo = [{
-            deviceId = SHORTCUT.KEY_PRNT_SCRN.dev[0]
-            buttonId = SHORTCUT.KEY_PRNT_SCRN.btn[0]
-          }]
-        }
-      ]
+function fixControls() {
+  let curPreset = getCurControlsPreset()
+  foreach (fixData in fixesList) {
+    let value = "valueFunction" in fixData ?
+      fixData.valueFunction() : fixData.value
+    if (getTblValue("isAppend", fixData)) {
+      let isGamepadExpected =  isXInputDevice() || hasXInputDevice()
+      if (curPreset.isHotkeyShortcutBinded(fixData.source, value)
+          || (fixData.shouldAppendIfEmptyOnXInput
+              && isGamepadExpected
+              && curPreset.getHotkey(fixData.target).len() == 0))
+        curPreset.addHotkeyShortcut(fixData.target, value)
     }
-  ]
-
-  /****************************************************************/
-  /*********************** PUBLIC FUNCTIONS ***********************/
-  /****************************************************************/
-
-  function getCurPreset() {
-    return this.curPreset
+    else
+      curPreset.setHotkey(fixData.target, value)
   }
+  foreach (shortcutsGroup in hardcodedShortcuts)
+    if (!("condition" in shortcutsGroup) || shortcutsGroup.condition())
+      foreach (shortcut in shortcutsGroup.list)
+        curPreset.removeHotkeyShortcut(shortcut.name, shortcut.combo)
+  setDefaultRelativeAxes()
+}
 
-  function setCurPreset(otherPreset) {
-    log("ControlsManager: curPreset updated")
-    this.curPreset = otherPreset
-    this.fixDeviceMapping()
-    broadcastEvent("ControlsReloaded")
-    this.commitControls()
-  }
+function restoreHardcodedKeys(maxShortcutCombinations) {
+  let curPreset = getCurControlsPreset()
+  foreach (shortcutsGroup in hardcodedShortcuts)
+    if (!("condition" in shortcutsGroup) || shortcutsGroup.condition())
+      foreach (shortcut in shortcutsGroup.list)
+        if (curPreset.getHotkey(shortcut.name).len() < maxShortcutCombinations)
+          curPreset.addHotkeyShortcut(shortcut.name, shortcut.combo)
+}
 
-  function getPreviewPreset() {
-    return this.previewPreset ?? this.curPreset
-  }
+function clearCurControlsPresetGuiOptions() {
+  let prefix = "USEROPT_"
+  let userOptTypes = []
+  let curPreset = getCurControlsPreset()
+  foreach (oType, _value in curPreset.params)
+    if (startsWith(oType, prefix))
+      userOptTypes.append(oType)
+  foreach (oType in userOptTypes)
+    curPreset.params.$rawdelete(oType)
+}
 
-  function setPreviewPreset(preset) {
-    this.previewPreset = preset
-  }
+function commitGuiOptions() {
+  if (!isProfileReceived.get())
+    return
 
-  function clearPreviewPreset() {
-    this.previewPreset = null
-  }
+  let mainOptionsMode = getGuiOptionsMode()
+  setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
+  let prefix = "USEROPT_"
+  let curPreset = getCurControlsPreset()
+  foreach (oType, value in curPreset.params)
+    if (startsWith(oType, prefix))
+      if (oType in optionsExtNames)
+        set_option(optionsExtNames[oType], value)
+  setGuiOptionsMode(mainOptionsMode)
+}
 
-  function fixDeviceMapping() {
-    let realMapping = []
+/* Commit controls to game client */
+function commitControls() {
+  if (isControlsCommitPerformed)
+    return
+  isControlsCommitPerformed = true
 
-    let blkDeviceMapping = DataBlock()
-    fill_joysticks_desc(blkDeviceMapping)
+  fixControls()
+  commitGuiOptions()
 
-    eachBlock(blkDeviceMapping, @(blkJoy)
-      realMapping.append({
-        name          = blkJoy["name"]
-        devId         = blkJoy["devId"]
-        buttonsOffset = blkJoy["btnOfs"]
-        buttonsCount  = blkJoy["btnCnt"]
-        axesOffset    = blkJoy["axesOfs"]
-        axesCount     = blkJoy["axesCnt"]
-        connected     = !getTblValue("disconnected", blkJoy, false)
-      }))
+  // Check helpers options and fix if nessesary
+  broadcastEvent("BeforeControlsCommit")
 
-    if (this.getCurPreset().updateDeviceMapping(realMapping))
-      broadcastEvent("ControlsPresetChanged")
-  }
+  // Send controls to C++ client
+  set_current_controls(getCurControlsPreset())
 
+  clearCurControlsPresetGuiOptions()
+  isControlsCommitPerformed = false
+}
 
-  /* Commit controls to game client */
-  function commitControls() {
-    if (this.isControlsCommitPerformed)
-      return
-    this.isControlsCommitPerformed = true
+function setAndCommitCurControlsPreset(otherPreset) {
+  log("ControlsManager: curPreset updated")
+  setCurControlsPreset(otherPreset)
+  fixDeviceMapping()
+  broadcastEvent("ControlsReloaded")
+  commitControls()
+}
 
-    this.fixControls()
-    this.commitGuiOptions()
+function controlsFixDeviceMapping() {
+  fixDeviceMapping()
+  commitControls()
+}
 
-    // Check helpers options and fix if nessesary
-    broadcastEvent("BeforeControlsCommit")
+function fillUseroptControlsPresetDescr(_optionId, descr, _context) {
+  descr.id = "controls_preset"
+  descr.items = []
+  descr.values = getControlsPresetsList()
+  descr.trParams <- "optionWidthInc:t='double';"
 
-    // Send controls to C++ client
-    set_current_controls(this.curPreset)
-
-    this.clearGuiOptions()
-
-    this.isControlsCommitPerformed = false
-  }
-
-  function setDefaultRelativeAxes() {
-    if (!("shortcutsList" in getroottable()))
-      return
-
-    foreach (shortcut in ::shortcutsList)
-      if (shortcut.type == CONTROL_TYPE.AXIS && (shortcut?.isAbsOnlyWhenRealAxis ?? false)) {
-        let axis = this.curPreset.getAxis(shortcut.id)
-        if (axis.axisId == -1)
-          axis.relative = true
-      }
-  }
-
-  function fixControls() {
-    foreach (fixData in this.fixesList) {
-      let value = "valueFunction" in fixData ?
-        fixData.valueFunction() : fixData.value
-      if (getTblValue("isAppend", fixData)) {
-        let isGamepadExpected =  isXInputDevice() || hasXInputDevice()
-        if (this.curPreset.isHotkeyShortcutBinded(fixData.source, value)
-            || (fixData.shouldAppendIfEmptyOnXInput
-                && isGamepadExpected
-                && this.curPreset.getHotkey(fixData.target).len() == 0))
-          this.curPreset.addHotkeyShortcut(fixData.target, value)
-      }
-      else
-        this.curPreset.setHotkey(fixData.target, value)
+  if (!isPlatformSony && !isPlatformXboxOne)
+    descr.values.insert(0, "") //custom preset
+  let p = getCurControlsPreset()?.getBasePresetInfo()
+    ?? getNullControlsPresetInfo()
+  for (local k = 0; k < descr.values.len(); k++) {
+    local name = descr.values[k]
+    local suffix = isPlatformSony ? "ps4/" : ""
+    let vPresetData = parseControlsPresetName(name)
+    if (p.name == vPresetData.name && p.version == vPresetData.version)
+      descr.value = k
+    local imageName = "preset_joystick.svg"
+    if (name.indexof("keyboard") != null)
+      imageName = "preset_mouse_keyboard.svg"
+    else if (name.indexof("xinput") != null || name.indexof("xboxone") != null)
+      imageName = "preset_gamepad.svg"
+    else if (name.indexof("default") != null || name.indexof("dualshock4") != null)
+      imageName = "preset_ps4.svg"
+    else if (name == "") {
+      name = "custom"
+      imageName = "preset_custom"
+      suffix = ""
     }
-    foreach (shortcutsGroup in this.hardcodedShortcuts)
-      if (!("condition" in shortcutsGroup) || shortcutsGroup.condition())
-        foreach (shortcut in shortcutsGroup.list)
-          this.curPreset.removeHotkeyShortcut(shortcut.name, shortcut.combo)
-    this.setDefaultRelativeAxes()
+
+    descr.items.append({
+      text = $"#presets/{suffix}{name}"
+      image = $"#ui/gameuiskin#{imageName}"
+    })
   }
+  descr.optionCb = "onSelectPreset"
+  descr.skipOptContainerStyles <- true
+}
 
-  function restoreHardcodedKeys(maxShortcutCombinations) {
-    foreach (shortcutsGroup in this.hardcodedShortcuts)
-      if (!("condition" in shortcutsGroup) || shortcutsGroup.condition())
-        foreach (shortcut in shortcutsGroup.list)
-          if (this.curPreset.getHotkey(shortcut.name).len() < maxShortcutCombinations)
-            this.curPreset.addHotkeyShortcut(shortcut.name, shortcut.combo)
-  }
+function setUseroptControlsPreset(value, descr, _optionId) {
+  if (descr.values[value] != "")
+    ::apply_joy_preset_xchange(getControlsPresetFilename(descr.values[value]))
+}
 
-  function clearGuiOptions() {
-    let prefix = "USEROPT_"
-    let userOptTypes = []
-    foreach (oType, _value in this.curPreset.params)
-      if (startsWith(oType, prefix))
-        userOptTypes.append(oType)
-    foreach (oType in userOptTypes)
-      this.curPreset.params.$rawdelete(oType)
-  }
+registerOption(USEROPT_CONTROLS_PRESET, fillUseroptControlsPresetDescr, setUseroptControlsPreset)
 
-  function commitGuiOptions() {
-    if (!isProfileReceived.get())
-      return
-
-    let mainOptionsMode = getGuiOptionsMode()
-    setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
-    let prefix = "USEROPT_"
-    foreach (oType, value in this.curPreset.params)
-      if (startsWith(oType, prefix))
-        if (oType in optionsExtNames)
-          set_option(optionsExtNames[oType], value)
-    setGuiOptionsMode(mainOptionsMode)
-  }
-
+addListenersWithoutEnv({
   // While controls reloaded on PS4 from uncrorrect blk when mission started
   // it is required to commit controls when mission start.
-  function onEventMissionStarted(_params) {
+  function MissionStarted(_) {
     if (isPlatformSony)
-      this.commitControls()
+      commitControls()
+  }
+})
+
+eventbus_subscribe("controls_fix_device_mapping", @(_) controlsFixDeviceMapping())
+
+// Function called from C++ code
+::load_controls <- function load_controls(blkOrPresetPath) {
+  let otherPreset = ControlsPreset(blkOrPresetPath)
+  if (otherPreset.isLoaded && otherPreset.hotkeys.len() > 0) {
+    setAndCommitCurControlsPreset(otherPreset)
+    isLastLoadControlsSucceeded.set(true)
+  }
+  else {
+    log($"ControlsGlobals: Prevent setting incorrect preset: {blkOrPresetPath}")
+    showInfoMsgBox($"{loc("msgbox/errorLoadingPreset")}: {blkOrPresetPath}")
+    isLastLoadControlsSucceeded.set(false)
   }
 }
 
-subscribe_handler(::g_controls_manager)
+return {
+  restoreHardcodedKeys
+  clearCurControlsPresetGuiOptions
+  commitControls
+  setAndCommitCurControlsPreset
+  isLastLoadControlsSucceeded
+}

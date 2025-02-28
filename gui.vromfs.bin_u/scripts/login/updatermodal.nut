@@ -1,5 +1,5 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/login/loginConsts.nut" import LOGIN_STATE
+from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -12,6 +12,7 @@ let statsd = require("statsd")
 let time = require("%scripts/time.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
+let { addLoginState } = require("%scripts/login/loginManager.nut")
 
 // contentUpdater module is optional and don't available on PC
 let contentUpdater = require_optional("contentUpdater")
@@ -216,6 +217,6 @@ gui_handlers.UpdaterModal <- class (BaseGuiHandler) {
   function afterModalDestroy() {
     if (this.onFinishCallback)
       this.onFinishCallback()
-    ::g_login.addState(LOGIN_STATE.AUTHORIZED)
+    addLoginState(LOGIN_STATE.AUTHORIZED)
   }
 }

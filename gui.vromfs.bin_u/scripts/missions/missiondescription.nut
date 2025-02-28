@@ -16,12 +16,16 @@ let { USEROPT_TIME_LIMIT } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_pve_awards_blk } = require("blkGetters")
-let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
+let { buildRewardText, getMissionLocName, getMissionTimeText, getWeatherLocName
+} = require("%scripts/missions/missionsText.nut")
 let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { checkJoystickThustmasterHotas } = require("%scripts/controls/hotas.nut")
-let { getMissionRewardsMarkup, getMissionLocName, is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getMissionRewardsMarkup } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getTutorialFirstCompletRewardData } = require("%scripts/tutorials/tutorialsData.nut")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
+let { isMissionForUnitType, canPlayGamemodeBySquad } = require("%scripts/missions/missionsUtils.nut")
 
 
 /* API:
@@ -186,7 +190,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       config.objective <- loc($"missions/{mission.id}/objective")
 
       if (checkJoystickThustmasterHotas(false) && this.gm == GM_TRAINING) {
-        if (::is_mission_for_unittype(blk, ES_UNIT_TYPE_TANK))
+        if (isMissionForUnitType(blk, ES_UNIT_TYPE_TANK))
           config.hotas4_tutorial_usage_restriction <- loc("tutorials/hotas_restriction/tank")
         else if (mission.chapter == "tutorial_adv")
           config.hotas4_tutorial_usage_restriction <- loc("tutorials/hotas_restriction")
@@ -194,7 +198,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     if (this.gm == GM_SINGLE_MISSION) {
       let missionAvailableForCoop = blk.getBool("gt_cooperative", false)
-        && ::can_play_gamemode_by_squad(this.gm)
+        && canPlayGamemodeBySquad(this.gm)
         && !is_user_mission(blk)
       config.coop <- missionAvailableForCoop ? loc("single_mission/available_for_coop") : ""
     }
@@ -247,7 +251,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       config.maintext = ""
     }
     else if (this.gm == GM_DOMINATION && blk?.timeLimit) {
-      let option = ::get_option(USEROPT_TIME_LIMIT)
+      let option = get_option(USEROPT_TIME_LIMIT)
       let timeLimitText = loc("ui/colon").concat(option.getTitle(), option.getValueLocText(blk.timeLimit))
       config.maintext = "".concat(config.maintext, config.maintext.len() ? "\n\n" : "", timeLimitText)
     }
@@ -316,7 +320,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
                   ? dataBlk[mission.presetName]
                   : 0.0
       if (mul)
-        config.baseReward <- ::buildRewardText(loc("baseReward"), rewMoney.multiply(mul), true, true)
+        config.baseReward <- buildRewardText(loc("baseReward"), rewMoney.multiply(mul), true, true)
 
       let reqAir = ("player_class" in mission.blk ? mission.blk.player_class : "")
       if (reqAir != "") {

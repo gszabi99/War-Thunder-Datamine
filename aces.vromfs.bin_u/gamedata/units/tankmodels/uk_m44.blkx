@@ -267,6 +267,9 @@
       "ex_decor_r_01_dm": {},
       "ex_decor_r_03_dm": {},
       "ex_decor_r_08_dm": {},
+      "turret_01_back_dm": {},
+      "turret_02_back_dm": {},
+      "turret_02_bottom_dm": {},
       "turret_02_top_dm": {
         "armorThickness": 12.7
       },
@@ -1560,10 +1563,8 @@
       "dmPart": "gunner_dm",
       "role": "tank_gunner",
       "substitute": [
-        "commander",
-        "loader1",
-        "gunner1",
         "machine_gunner",
+        "commander",
         "loader"
       ]
     },
@@ -1571,10 +1572,8 @@
       "dmPart": "driver_dm",
       "role": "driver",
       "substitute": [
-        "commander",
-        "loader1",
-        "gunner1",
         "machine_gunner",
+        "commander",
         "loader"
       ]
     },
@@ -1582,30 +1581,21 @@
       "dmPart": "loader_dm",
       "role": "loader",
       "substitute": [
-        "commander",
-        "loader1",
-        "gunner1",
-        "machine_gunner"
+        "machine_gunner",
+        "commander"
       ]
-    },
-    "loader1": {
-      "dmPart": "loader_01_dm",
-      "role": "loader",
-      "substitute": "commander"
-    },
-    "gunner1": {
-      "dmPart": "gunner_01_dm",
-      "role": "loader",
-      "substitute": "commander"
     },
     "commander": {
       "dmPart": "commander_dm",
-      "role": "commander"
+      "role": [
+        "tank_gunner",
+        "commander"
+      ],
+      "substitute": "machine_gunner"
     },
     "machine_gunner": {
       "dmPart": "machine_gunner_dm",
-      "role": "radio_gunner",
-      "substitute": "commander"
+      "role": "radio_gunner"
     }
   },
   "MetaParts": {
@@ -1861,7 +1851,7 @@
         "blk": "gameData/Weapons/groundModels_weapons/155mm_m45_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
-        "recoilOffset": 0.5,
+        "recoilOffset": 0.25,
         "recoilMultiplier": 0.5,
         "allowableDelta": 20.0,
         "maxAdditionalPitch": 0.0,
@@ -3422,7 +3412,7 @@
         0.0,
         0.0
       ],
-      "suffix": "3",
+      "suffix": "6",
       "dmName": "loader_dm",
       "deadHeadAttitudeMin": -55.0,
       "deadHeadAttitudeMax": -40.0,
@@ -3552,134 +3542,6 @@
       ],
       "suffix": "5",
       "dmName": "machine_gunner_dm",
-      "deadHeadAttitudeMin": -55.0,
-      "deadHeadAttitudeMax": -40.0,
-      "ikNode": [
-        {
-          "downNode": "Bip01 L Hand",
-          "midNode": "Bip01 L Forearm",
-          "upNode": "Bip01 L UpperArm",
-          "targetNode": "lefthand_",
-          "flexionDir": [
-            0.5,
-            -0.5,
-            0.3
-          ]
-        },
-        {
-          "downNode": "Bip01 R Hand",
-          "midNode": "Bip01 R Forearm",
-          "upNode": "Bip01 R UpperArm",
-          "targetNode": "righthand_",
-          "flexionDir": [
-            -0.5,
-            -0.5,
-            0.3
-          ]
-        },
-        {
-          "downNode": "Bip01 L Foot",
-          "midNode": "Bip01 L Calf",
-          "upNode": "Bip01 L Thigh",
-          "targetNode": "pedal_lfoot_",
-          "flexionDir": [
-            -0.2,
-            1.0,
-            -1.0
-          ]
-        },
-        {
-          "downNode": "Bip01 R Foot",
-          "midNode": "Bip01 R Calf",
-          "upNode": "Bip01 R Thigh",
-          "targetNode": "pedal_rfoot_",
-          "flexionDir": [
-            -0.6,
-            1.0,
-            -1.0
-          ]
-        }
-      ]
-    },
-    {
-      "model": "uk_gunner_char",
-      "maxHeadHorAngle": 60.0,
-      "maxHeadDownAngle": 60.0,
-      "maxHeadUpAngle": 10.0,
-      "headNode": "Bip01 Head",
-      "pelvisNode": "Bip01 Pelvis",
-      "pelvisTargetNode": "Bip01 Pelvis_",
-      "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "suffix": "6",
-      "dmName": "loader_01_dm",
-      "deadHeadAttitudeMin": -55.0,
-      "deadHeadAttitudeMax": -40.0,
-      "ikNode": [
-        {
-          "downNode": "Bip01 L Hand",
-          "midNode": "Bip01 L Forearm",
-          "upNode": "Bip01 L UpperArm",
-          "targetNode": "lefthand_",
-          "flexionDir": [
-            0.5,
-            -0.5,
-            0.3
-          ]
-        },
-        {
-          "downNode": "Bip01 R Hand",
-          "midNode": "Bip01 R Forearm",
-          "upNode": "Bip01 R UpperArm",
-          "targetNode": "righthand_",
-          "flexionDir": [
-            -0.5,
-            -0.5,
-            0.3
-          ]
-        },
-        {
-          "downNode": "Bip01 L Foot",
-          "midNode": "Bip01 L Calf",
-          "upNode": "Bip01 L Thigh",
-          "targetNode": "pedal_lfoot_",
-          "flexionDir": [
-            -0.2,
-            1.0,
-            -1.0
-          ]
-        },
-        {
-          "downNode": "Bip01 R Foot",
-          "midNode": "Bip01 R Calf",
-          "upNode": "Bip01 R Thigh",
-          "targetNode": "pedal_rfoot_",
-          "flexionDir": [
-            -0.6,
-            1.0,
-            -1.0
-          ]
-        }
-      ]
-    },
-    {
-      "model": "uk_gunner_char",
-      "maxHeadHorAngle": 60.0,
-      "maxHeadDownAngle": 60.0,
-      "maxHeadUpAngle": 10.0,
-      "headNode": "Bip01 Head",
-      "pelvisNode": "Bip01 Pelvis",
-      "pelvisTargetNode": "Bip01 Pelvis_",
-      "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "suffix": "7",
-      "dmName": "gunner_01_dm",
       "deadHeadAttitudeMin": -55.0,
       "deadHeadAttitudeMax": -40.0,
       "ikNode": [

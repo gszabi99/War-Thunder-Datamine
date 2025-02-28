@@ -3506,8 +3506,9 @@
     "120mm_NATO_APDS_FS_ammo_pack": {
       "tier": 4
     },
-    "modern_tank_laser_rangefinder": {
-      "tier": 3,
+    "laser_rangefinder_lws": {
+      "tier": 2,
+      "modClass": "firepower",
       "effects": {
         "rangefinderMounted": true,
         "isLaser": true,
@@ -3553,9 +3554,14 @@
         ],
         "rcostAddParam": 0.98,
         "sensors": {
-          "sensor": {
-            "blk": "gameData/sensors/LaserDesignatorSensor.blk"
-          }
+          "sensor": [
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+            },
+            {
+              "blk": "gameData/sensors/it_ralm-101.blk"
+            }
+          ]
         }
       }
     },
@@ -3594,7 +3600,8 @@
       }
     },
     "tank_smoke_screen_system_mod": {
-      "tier": 3,
+      "tier": 4,
+      "modClass": "protection",
       "effects": {
         "commonWeapons": {
           "Weapon": [

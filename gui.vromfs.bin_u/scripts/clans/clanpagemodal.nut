@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_my_clan_tag, gchat_is_connected, ps4_is_ugc_enabled, is_myself_clan_moderator, clan_request_info, clan_request_leave, clan_get_my_role, sync_handler_simulate_signal, clan_get_requested_clan_id, clan_get_role_rights, clan_get_my_clan_name, clan_set_admin_editor_mode, set_char_cb, clan_get_researching_unit, clan_get_my_clan_id, clan_get_admin_editor_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
-from "%scripts/clans/clanState.nut" import is_in_clan
+from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
@@ -21,7 +21,6 @@ let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
 let wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
 let clanMembershipAcceptance = require("%scripts/clans/clanMembershipAcceptance.nut")
 let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
-let clanInfoView = require("%scripts/clans/clanInfoView.nut")
 let { getSeparateLeaderboardPlatformValue } = require("%scripts/social/crossplay.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
@@ -35,18 +34,24 @@ let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { openClanBlacklistWnd } = require("%scripts/clans/clanBlacklistModal.nut")
 let { openClanLogWnd } = require("%scripts/clans/clanLogModal.nut")
-let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
+let { openClanRequestsWnd } = require("%scripts/clans/clanCandidates.nut")
 let { openEditClanWnd } = require("%scripts/clans/modify/editClanModalhandler.nut")
 let { openUpgradeClanWnd } = require("%scripts/clans/modify/upgradeClanModalHandler.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { isWorldWarEnabled, isWWSeasonActive } = require("%scripts/globalWorldWarScripts.nut")
+let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
+let { getLeadersCount, getClanRequirementsText, getClanMembersCountText } = require("%scripts/clans/clanTextInfo.nut")
+let { openComplainWnd, showClanRewardLog } = require("%scripts/clans/clanModalHelpers.nut")
+let { requestMembership } = require("%scripts/clans/clanRequests.nut")
+let { ranked_column_prefix, get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
+let { getShowInSquadronStatistics } = require("%scripts/clans/clanSeasons.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
   { id = "nick", lbDataType = lbDataType.NICK, align = "left" }
-  { id = ::ranked_column_prefix, lbDataType = lbDataType.NUM, loc = "rating", byDifficulty = true
+  { id = ranked_column_prefix, lbDataType = lbDataType.NUM, loc = "rating", byDifficulty = true
     tooltip = "#clan/personal/dr_era/desc" }
   {
     id = "activity"
@@ -86,15 +91,6 @@ foreach (idx, item in clan_member_list) {
 
   if (!("tooltip" in item))
     item.tooltip <- $"#clan/personal/{item.id}/desc"
-}
-
-::showClanPage <- function showClanPage(id, name, tag) {
-  loadHandler(gui_handlers.clanPageModal,
-    {
-      clanIdStrReq = id,
-      clanNameReq = name,
-      clanTagReq = tag
-    })
 }
 
 gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -140,7 +136,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.reinitClanWindow()
   }
 
-  setDefaultSort = @() this.statsSortBy = $"{::ranked_column_prefix}{g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
+  setDefaultSort = @() this.statsSortBy = $"{ranked_column_prefix}{g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
 
   function reinitClanWindow() {
     if (is_in_clan() &&
@@ -148,10 +144,11 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
        clan_get_my_clan_name() == this.clanNameReq ||
        clan_get_my_clan_tag() == this.clanTagReq)) {
       ::requestMyClanData()
-      if (!::my_clan_info)
+      let myClanInfoV = myClanInfo.get()
+      if (!myClanInfoV)
         return
 
-      this.clanData = ::my_clan_info
+      this.clanData = myClanInfoV
       this.fillClanPage()
       return
     }
@@ -162,7 +159,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.taskId >= 0) {
       set_char_cb(this, this.slotOpCb)
       this.afterSlotOp = function() {
-        this.clanData = ::get_clan_info_table()
+        this.clanData = get_clan_info_table()
         if (!this.clanData)
           return this.goBack()
         this.fillClanPage()
@@ -196,9 +193,10 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventClanInfoUpdate(_params = {}) {
     if (this.clanIdStrReq == clan_get_my_clan_id()
         || (this.clanData && this.clanData.id == clan_get_my_clan_id())) {
-      if (!::my_clan_info)
+      let myClanInfoV = myClanInfo.get()
+      if (!myClanInfoV)
         return this.goBack()
-      this.clanData = ::my_clan_info
+      this.clanData = myClanInfoV
       this.fillClanPage()
     }
   }
@@ -267,7 +265,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let clanDate = this.clanData.getCreationDateText()
     let dateText = $"{loc("clan/creationDate")} {colorize("activeTextColor", clanDate)}"
 
-    let membersCountText = ::g_clans.getClanMembersCountText(this.clanData)
+    let membersCountText = getClanMembersCountText(this.clanData)
     let countText = "".concat(loc("clan/memberListTitle"),
       loc("ui/parentheses/space", { text = colorize("activeTextColor", membersCountText) }))
     this.scene.findObject("clan-memberCount-date").setValue(" ".join([countText, dateText], true))
@@ -280,8 +278,8 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       { text = format(loc("clan/updateStatsTime"), updStatsText) })
     this.scene.findObject("update_stats_info_text").setValue(
       "<b>{0}</b> {1}".subst(colorize("commonTextColor", loc("clan/stats")), updStatsText))
-     this.onceFillModeList(this.scene.findObject("clan_container"), this.getCurDMode(),
-      ::get_show_in_squadron_statistics, this.getAdditionalTabsArray())
+    this.onceFillModeList(this.scene.findObject("clan_container"), this.getCurDMode(),
+      getShowInSquadronStatistics, this.getAdditionalTabsArray())
     this.fillClanManagment()
 
     showObjById("clan_main_stats", true, this.scene)
@@ -325,7 +323,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.scene.findObject("clan-membershipReq").setValue(
-      clanInfoView.getClanRequirementsText(this.clanData.membershipRequirements))
+      getClanRequirementsText(this.clanData.membershipRequirements))
   }
 
 
@@ -355,7 +353,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let buttonsList = {
       btn_showRequests = ((this.isMyClan && (isInArray("MEMBER_ADDING", this.myRights) || isInArray("MEMBER_REJECT", this.myRights))) || adminMode) && this.clanData.candidates.len() > 0
-      btn_leaveClan = this.isMyClan && (!hasLeaderRight || ::g_clans.getLeadersCount(this.clanData) > 1)
+      btn_leaveClan = this.isMyClan && (!hasLeaderRight || getLeadersCount(this.clanData) > 1)
       btn_edit_clan_info = ps4_is_ugc_enabled() && ((this.isMyClan && isInArray("CHANGE_INFO", this.myRights)) || adminMode)
       btn_upgrade_clan = this.clanData.clanType.getNextType() != g_clan_type.UNKNOWN && (adminMode || (this.isMyClan && hasLeaderRight))
       btn_showBlacklist = ((this.isMyClan && isInArray("MEMBER_BLACKLIST", this.myRights)) || adminMode) && this.clanData.blacklist.len()
@@ -424,7 +422,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let eloTextObj = this.scene.findObject("clan_elo_value")
     if (checkObj(eloTextObj)) {
-      let clanElo = this.clanData.astat?[$"{::ranked_column_prefix}{difficulty.clanDataEnding}"] ?? 0
+      let clanElo = this.clanData.astat?[$"{ranked_column_prefix}{difficulty.clanDataEnding}"] ?? 0
       eloTextObj.setValue(clanElo.tostring())
     }
   }
@@ -457,7 +455,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let diff = g_difficulty.getDifficultyByDiffCode(diffMode)
 
-    if (::get_show_in_squadron_statistics(diff))
+    if (getShowInSquadronStatistics(diff))
       return diffMode
     return g_difficulty.REALISTIC.diffCode
   }
@@ -478,7 +476,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let diffCode = tabObj.holderDiffCode.tointeger()
     let diff = g_difficulty.getDifficultyByDiffCode(diffCode)
-    if (!::get_show_in_squadron_statistics(diff))
+    if (!getShowInSquadronStatistics(diff))
       return
 
     this.curMode = diffCode
@@ -490,8 +488,8 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateSortingField() {
-    if (this.statsSortBy.len() >= ::ranked_column_prefix.len() &&
-        this.statsSortBy.indexof(::ranked_column_prefix) == 0)
+    if (this.statsSortBy.len() >= ranked_column_prefix.len() &&
+        this.statsSortBy.indexof(ranked_column_prefix) == 0)
       this.setDefaultSort()
   }
 
@@ -605,7 +603,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     /*body*/
     foreach (diff in g_difficulty.types) {
-      if (!diff.isAvailable() || !::get_show_in_squadron_statistics(diff))
+      if (!diff.isAvailable() || !getShowInSquadronStatistics(diff))
         continue
 
       let rowParams = []
@@ -744,8 +742,8 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getFieldNameByColumn(columnId) {
     local fieldName = columnId
-    if (columnId == ::ranked_column_prefix)
-      fieldName = $"{::ranked_column_prefix}{g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
+    if (columnId == ranked_column_prefix)
+      fieldName = $"{ranked_column_prefix}{g_difficulty.getDifficultyByDiffCode(this.curMode).clanDataEnding}"
     else {
       let category = u.search(clan_member_list,  function(category) { return category.id == columnId })
       let field = category?.field ?? columnId
@@ -839,11 +837,12 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    if (!("members" in ::my_clan_info))
+    let myClanInfoV = myClanInfo.get()
+    if (!("members" in myClanInfoV))
       return
 
     let member = u.search(
-      ::my_clan_info.members,
+      myClanInfoV.members,
       function (member) { return member.nick == nick }
     )
 
@@ -862,11 +861,14 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     if (!gchat_is_connected())
       return
-    if ("members" in ::my_clan_info)
-      foreach (it in ::my_clan_info.members) {
-        it.onlineStatus = ::getMyClanMemberPresence(it.nick)
-        this.drawIcon(it.nick, it.onlineStatus)
-      }
+    let myClanInfoV = myClanInfo.get()
+    if ("members" not in myClanInfoV)
+      return
+
+    foreach (it in myClanInfoV.members) {
+      it.onlineStatus = ::getMyClanMemberPresence(it.nick)
+      this.drawIcon(it.nick, it.onlineStatus)
+    }
   }
 
   function drawIcon(nick, presence) {
@@ -954,7 +956,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onUserCard() {
     if (this.curPlayer && hasFeature("UserCards"))
-      ::gui_modal_userCard({ name = this.curPlayer })
+      gui_modal_userCard({ name = this.curPlayer })
   }
 
   function onUserRClick() {
@@ -979,7 +981,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function onMembershipReq(_obj = null) {
     let curClan = this.getCurClan()
     if (curClan)
-      ::g_clans.requestMembership(curClan)
+      requestMembership(curClan)
   }
 
   function onClanAverageActivity(_obj = null) {
@@ -1006,7 +1008,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onClanSeasonRewardLog(_obj = null) {
     if (this.clanData)
-      ::g_clans.showClanRewardLog(this.clanData)
+      showClanRewardLog(this.clanData)
   }
 
   function onEventClanMembershipRequested(_p) {
@@ -1030,7 +1032,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onClanComplain() {
-    ::g_clans.openComplainWnd(this.clanData)
+    openComplainWnd(this.clanData)
   }
 
   function goBack() {

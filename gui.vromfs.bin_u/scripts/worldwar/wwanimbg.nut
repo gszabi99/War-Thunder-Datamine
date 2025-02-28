@@ -7,7 +7,7 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { isDataBlock } = require("%sqstd/underscore.nut")
 
-const WW_BG_PATH = "config/worldwar_bg/"
+const WW_BG_PATH = "worldwar_bg/"
 
 function wwAnimBgLoad(name) {
   let worldwar_bg = GUI.get()?.worldwar_bg

@@ -23,6 +23,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { RenderCategory } = require("worldwarConst")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 let unitsTypesList = {
   [airfieldTypes.AT_HELIPAD] = [
@@ -195,7 +196,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (idx, airfieldFormation in this.availableArmiesArray) {
       view.tabs.append({
         tabName = airfieldFormation.getClanTag()
-        navImagesText = ::get_navigation_images_text(idx, this.airfield.formations.len())
+        navImagesText = getNavigationImagesText(idx, this.airfield.formations.len())
         selected = false
       })
     }

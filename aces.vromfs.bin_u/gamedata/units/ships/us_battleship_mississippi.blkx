@@ -32,7 +32,12 @@
   "propSplashEffects": "propSplashEffects_underwater",
   "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
-  "shipsDisableDeadCoverParts": true,
+  "deadCoverCountToDelayedSinking": 2,
+  "delayedSinkingBreachesFreq": 4.0,
+  "delayedSinkingBreachesSize": [
+    0.85,
+    2.8
+  ],
   "depthTraceWarningDepth": 14.0,
   "depthTraceCriticalDepth": 11.0,
   "debrisPreset": "debris_preset_battleship",
@@ -4076,6 +4081,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
       "pressureDamageMult": 6.0,
+      "hydroShockDamageMult": 0.0,
       "main_caliber_turret_01_dm": {
         "hp": 1190.0
       },
@@ -4094,6 +4100,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
       "pressureDamageMult": 5.0,
+      "hydroShockDamageMult": 0.0,
       "napalmDamageMult": 1.0,
       "auxiliary_caliber_turret_01_dm": {
         "hp": 260.0
@@ -4149,6 +4156,7 @@
       "armorThickness": 2.2,
       "fireDamageMult": 2.0,
       "pressureDamageMult": 2.0,
+      "hydroShockDamageMult": 0.0,
       "napalmDamageMult": 1.0,
       "aa_turret_01_dm": {
         "hp": 70.0
@@ -4531,6 +4539,7 @@
       "armorThickness": 3.0,
       "dmgState": 0.0,
       "pressureDamageMult": 1.0,
+      "hydroShockDamageMult": 0.0,
       "napalmDamageMult": 1.0,
       "fire_director_01_dm": {
         "hp": 150.0
@@ -4574,32 +4583,35 @@
       "hidableInViewer": true,
       "genericDamageMult": 0.1,
       "shatterDamageMult": 0.1,
+      "hydroShockDamageMult": 15.0,
+      "hydroShockArmorQuality": 0.2,
+      "pressureDamageMult": 0.0,
       "cover_01_dm": {
-        "hp": 14082.0
+        "hp": 11265.0
       },
       "cover_02_dm": {
-        "hp": 13734.0
+        "hp": 10987.0
       },
       "cover_03_dm": {
-        "hp": 15300.0
+        "hp": 12200.0
       },
       "cover_04_dm": {
-        "hp": 15300.0
+        "hp": 12200.0
       },
       "cover_05_dm": {
-        "hp": 15300.0
+        "hp": 12200.0
       },
       "cover_06_dm": {
-        "hp": 15300.0
+        "hp": 12200.0
       },
       "cover_07_dm": {
-        "hp": 14795.0
+        "hp": 11836.0
       },
       "cover_08_dm": {
-        "hp": 11800.0
+        "hp": 9400.0
       },
       "cover_09_dm": {
-        "hp": 12640.0
+        "hp": 10112.0
       }
     },
     "superstructures": {
@@ -5305,6 +5317,7 @@
       "fireDamageMult": 0.001,
       "hidableInViewer": true,
       "pressureDamageMult": 150.0,
+      "hydroShockDamageMult": 0.0,
       "at_bulge_01_dm": {
         "hp": 2849.0
       },
@@ -6152,6 +6165,23 @@
         }
       }
     ],
+    "hull": {
+      "part": [
+        "cover_01_dm",
+        "cover_02_dm",
+        "cover_03_dm",
+        "cover_04_dm",
+        "cover_05_dm",
+        "cover_06_dm",
+        "cover_07_dm",
+        "cover_08_dm",
+        "cover_09_dm",
+        "cover_10_dm"
+      ],
+      "effect": {
+        "pressure": true
+      }
+    },
     "open_mounts": {
       "part": [
         "auxiliary_caliber_turret_01_dm",
@@ -18362,17 +18392,17 @@
   "breaches": {
     "repairSpeed": 30.0,
     "waterMassVel": -100000.0,
-    "waterMassMult": 250.0,
+    "waterMassMult": 450.0,
     "sizeToRepair": [
       0.01,
       5.0,
       25.0,
       600.0
     ],
-    "additionalWaterDeathThreshold": 50000000.0,
-    "additionalWaterShouldDiePercent": 0.35,
+    "additionalWaterDeathThreshold": 40000000.0,
+    "additionalWaterShouldDiePercent": 0.3,
     "fatalBreachDrownTime": 45.0,
-    "maxHeelingAngle": 17.0,
+    "maxHeelingAngle": 15.0,
     "maxHeelingTime": 40.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
@@ -18392,7 +18422,7 @@
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.2,
+        "weight": 0.25,
         "maxWaterAlive": 1.0
       },
       {
@@ -18439,7 +18469,7 @@
       },
       {
         "part": "cover_05_dm",
-        "weight": 0.3,
+        "weight": 0.8,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -18460,7 +18490,7 @@
       },
       {
         "part": "cover_06_dm",
-        "weight": 0.3,
+        "weight": 0.8,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -18485,7 +18515,7 @@
       },
       {
         "part": "cover_07_dm",
-        "weight": 0.3,
+        "weight": 0.8,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -18510,7 +18540,7 @@
       },
       {
         "part": "cover_08_dm",
-        "weight": 0.2,
+        "weight": 0.6,
         "maxWaterAlive": 1.0
       },
       {

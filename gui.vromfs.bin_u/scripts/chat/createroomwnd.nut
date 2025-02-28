@@ -13,6 +13,8 @@ let regexp2 = require("regexp2")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { is_chat_message_empty } = require("chat")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -82,7 +84,7 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (idx, tab in this.tabsList)
       view.tabs.append({
         tabName = loc(tab.locId)
-        navImagesText = ::get_navigation_images_text(idx, this.tabsList.len())
+        navImagesText = getNavigationImagesText(idx, this.tabsList.len())
       })
 
     let tabsObj = showObjById("tabs_list", true, this.scene)
@@ -171,11 +173,10 @@ gui_handlers.CreateRoomWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (pass != "")
       pass = clearBorderSymbols(pass, [" "])
     let invitationsOnly = this.guiScene["room_invitation"].getValue()
-    if (::menu_chat_handler) {
-      ::menu_chat_handler.joinRoom.call(::menu_chat_handler, name, pass, function () {
-        if (invitationsOnly)
-          ::gchat_raw_command(format("MODE %s +i", gchat_escape_target(name)))
-      })
-    }
+    broadcastEvent("ChatJoinRoom", { id = name, password = pass, onJoinFunc = function() {
+      if (invitationsOnly)
+        ::gchat_raw_command(format("MODE %s +i", gchat_escape_target(name)))
+      }
+    })
   }
 }

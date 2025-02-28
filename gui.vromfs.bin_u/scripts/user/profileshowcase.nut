@@ -9,273 +9,20 @@ let DataBlock = require("DataBlock")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getConditionsToUnlockShowcaseById } = require("%scripts/unlocks/unlocksViewModule.nut")
-let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
-let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { setCurrentShowcase, updateShowcaseDataInCache } = require("%scripts/user/profileShowcasesData.nut")
-let { round_by_value } = require("%sqstd/math.nut")
-let { measureType } = require("%scripts/measureType.nut")
+let { showcaseValues, getUnitFromTerseInfo, getStatsValue, defaultShowcaseType, diffNames, findUnitStats
+} = require("%scripts/user/showcase/showcaseValues.nut")
+let { favoriteShowcase } = require("%scripts/user/showcase/favoriteShowcase.nut")
+let { aceOfSpades } = require("%scripts/user/showcase/aceOfSpades.nut")
+let { unitsCollector } = require("%scripts/user/showcase/unitsCollector.nut")
+let { medalist } = require("%scripts/user/showcase/medalist.nut")
+let { achivHunter } = require("%scripts/user/showcase/achievementHunter.nut")
 
 let defaultShowcase = "favorite_mode"
-let defaultShowcaseType = "air_arcade"
-let diffNames = ["arcade", "historical", "simulation"]
-let gamemodesNoAiStats = ["tank_arcade", "tank_realistic", "tank_simulation", "test_ship_arcade", "test_ship_realistic"]
-
 let getDiffByIndex = @(index) diffNames?[index] ?? diffNames[0]
 
-function getStatsValue(params, value, scorePeriod) {
-  let gameType = params?.showcaseType ?? defaultShowcaseType
-  let stats = params.stats?.leaderboard[gameType][scorePeriod]
-  let val = stats?[value.valueId][scorePeriod] ?? 0
-  return val == -1 ? 0 : val
-}
-
-let getUnitNameFromTerseInfo = @(terseInfo) (terseInfo.schType == "favorite_unit")
-  ? terseInfo?.showcase.unit ?? ""
-  : ""
-
-let getUnitFromTerseInfo = @(terseInfo) terseInfo.schType == "favorite_unit"
-  ? getAircraftByName(getUnitNameFromTerseInfo(terseInfo))
-  : null
-
-function getKillsForMode(playerStats, mode, targetType) {
-  let scorePeriod = "value_total"
-  let stats = playerStats?.leaderboard[mode][scorePeriod]
-  return (stats?[$"air_kills_{targetType}"][scorePeriod] ?? 0)
-    + (stats?[$"ground_kills_{targetType}"][scorePeriod] ?? 0)
-    + (stats?[$"naval_kills_{targetType}"][scorePeriod] ?? 0)
-}
-
-function getDeathsForMode(playerStats, mode) {
-  let scorePeriod = "value_total"
-  let stats = playerStats?.leaderboard[mode][scorePeriod]
-  return (stats?.air_death[scorePeriod] ?? 0)
-    + (stats?.ground_death[scorePeriod] ?? 0)
-    + (stats?.naval_death[scorePeriod] ?? 0)
-}
-
-function getAtomicAceValue(terseInfo) {
-  return terseInfo?.showcase.atomic_ace__counter ?? 0
-}
-
-function getPeacefulAtomValue(terseInfo) {
-  return terseInfo?.showcase.peacemaker__counter ?? 0
-}
-
-function getPosInLeaderboard(params, value, scorePeriod) {
-  let gameType = params?.showcaseType ?? defaultShowcaseType
-  let stats = params.stats?.leaderboard[gameType][scorePeriod]
-  let stat = stats?[value.valueId]
-  if (stat == null)
-    return 0
-
-  foreach (lbCategory in ::leaderboards_list)
-    if (lbCategory.field == value.valueId) {
-      let lbVal = stat.idx < 0 ? -1 : stat.idx + 1
-      let text = lbCategory.getItemCell(lbVal, null, false, lbDataType.PLACE)?.text ?? "0"
-      return to_integer_safe(text, 0, false)
-    }
-
-  return 0
-}
-
-function findUnitStats(stats, unitName, diff) {
-  let statArr = stats?[diff].total
-  return statArr?.findvalue(@(v) v.name == unitName)
-}
-
-function getUnitStat(unitName, value, params) {
-  let unitStats = params?.unitStats ?? findUnitStats(params?.stats.userstat, unitName, params.terseInfo.showcase?.difficulty ?? diffNames[0])
-  return unitStats?[value.valueId] ?? 0
-}
-
-function getActiveKillsByDeathsRatio(params) {
-  let kills = getKillsForMode(params?.stats, params.showcaseType, "player").tofloat()
-  let deaths = getDeathsForMode(params?.stats, params.showcaseType).tofloat()
-  return round_by_value(kills / (deaths > 0 ? deaths : 1), 0.1)
-}
-
-function getAiKillsByDeathsRatio(params) {
-  let kills = getKillsForMode(params?.stats, params.showcaseType, "ai").tofloat()
-  let deaths = getDeathsForMode(params?.stats, params.showcaseType).tofloat()
-  return round_by_value(kills / (deaths > 0 ? deaths : 1), 0.1)
-}
-
-let visibleValues = {
-  battles = {
-    type = "stat"
-    icon = "lb_each_player_session"
-    locId = "multiplayer/each_player_session"
-    valueId = "each_player_session"
-  },
-  victories = {
-    type = "stat"
-    icon = "lb_each_player_victories"
-    locId = "multiplayer/each_player_victories"
-    valueId = "each_player_victories"
-  },
-  respawns = {
-    type = "stat"
-    icon = "lb_flyouts"
-    locId = "multiplayer/flyouts"
-    valueId = "flyouts"
-  },
-  playerVehicleDestroys = {
-    type = "stat"
-    icon = "lb_average_active_kills"
-    locId = "multiplayer/lb_kills_player"
-    valueId = "average_active_kills"
-    getValue = @(params, _val) decimalFormat(getKillsForMode(params?.stats, params.showcaseType, "player"))
-  },
-  aiVehicleDestroys = {
-    type = "stat"
-    icon = "lb_average_script_kills"
-    locId = "multiplayer/lb_kills_ai"
-    valueId = "kills_ai"
-    canShow = @(params) !gamemodesNoAiStats.contains(params.showcaseType)
-  },
-  totalScore = {
-    type = "stat"
-    icon = "lb_total_score"
-    locId = "debriefing/totalscore"
-    valueId = "score"
-  },
-  kill_by_spawns = {
-    type = "stat"
-    icon = "lb_average_active_kills_by_spawn"
-    locId = "stats/average_active_kills_by_deaths"
-    valueId = "average_active_kills_by_spawn"
-    getValue = @(params, _val) getActiveKillsByDeathsRatio(params)
-  },
-  ai_kill_by_spawns = {
-    type = "stat"
-    icon = "lb_average_script_kills_by_spawn"
-    locId = "stats/average_script_kills_by_deaths"
-    valueId = "average_script_kills_by_spawn"
-    canShow = @(params) !gamemodesNoAiStats.contains(params.showcaseType)
-    getValue = @(params, _val) getAiKillsByDeathsRatio(params)
-  },
-  average_score = {
-    type = "stat"
-    icon = "lb_average_score"
-    locId = "multiplayer/averageScore"
-    valueId = "averageScore"
-  },
-  pvpRating = {
-    type = "textStat"
-    locId = "multiplayer/pvp_ratio_short"
-    valueId = "pvp_ratio"
-    getValue = @(params, val) $"{decimalFormat(getStatsValue(params, val, "value_inhistory"))}"
-    tooltip = "multiplayer/pvp_ratio"
-  },
-  placeInLeaderboard = {
-    type = "textStat"
-    locId = "multiplayer/place_in_leaderboard"
-    valueId = "pvp_ratio"
-    getValue = function(params, val) {
-      let pos = getPosInLeaderboard(params, val, "value_inhistory")
-      return pos == 0 ? "-" : decimalFormat(pos)
-    }
-    tooltip = "multiplayer/place_in_leaderboard_desc"
-  },
-  atomic_ace = {
-    type = "stat_big"
-    icon = "!#ui/gameuiskin#atomic_ace_icon.svg"
-    valueId = null
-    getText = @(params, _val) loc("showcase/nuclear_bombs_dropped", {num = getAtomicAceValue(params?.terseInfo)})
-    getValue = @(params, _val) getAtomicAceValue(params?.terseInfo)
-  },
-  peaceful_atom = {
-    type = "stat_big"
-    icon = "!#ui/gameuiskin#peacemaker_icon.svg"
-    valueId = null
-    getText = @(params, _val) loc("showcase/nuclear_carriers_shotdown", {num = getPeacefulAtomValue(params?.terseInfo)})
-    getValue = @(params, _val) getPeacefulAtomValue(params?.terseInfo)
-  },
-  favUnit = {
-    type = "unitImage"
-    width = "0.9@accountHeaderWidth"
-    height = "320@sf/@pf"
-    getImage = function (params) {
-      let unit = getUnitFromTerseInfo(params.terseInfo)
-      return unit ? getUnitTooltipImage(unit) : null
-    }
-    valueId = null
-  },
-  unit_victories = {
-    type = "stat", icon = "lb_each_player_victories",
-    getText = @(params, val) loc("stats/victories", {num = getUnitStat(params?.unit.name, val, params)})
-    valueId = "victories", getValue = @(params, val) getUnitStat(params?.unit.name, val, params)
-  }
-  unit_battles = {
-    type = "stat", icon = "lb_each_player_session",
-    getText = @(params, val) loc("stats/battles", {num = getUnitStat(params?.unit.name, val, params)})
-    valueId = "sessions", getValue = @(params, val) getUnitStat(params?.unit.name, val, params)
-  }
-  unit_respawns = {
-    type = "stat", icon = "lb_flyouts",
-    getText = @(params, val) loc("stats/flyouts", {num = getUnitStat(params?.unit.name, val, params)})
-    valueId = "flyouts", getValue = @(params, val) getUnitStat(params?.unit.name, val, params)
-  }
-  unit_kills = {
-    type = "stat", icon = "lb_average_script_kills",
-    valueId = "kills",
-    getText = @(params, val) loc("stats/targetsDestroyed", {num = getUnitStat(params?.unit.name, val, params)})
-    getValue = function(params, _val) {
-      let unitStats = params?.unitStats ?? findUnitStats(params?.stats.userstat, params?.unit.name, params?.diff)
-      if (!unitStats)
-        return 0
-      return unitStats.naval_kills + unitStats.ground_kills + unitStats.air_kills
-    }
-  }
-  unit_deaths = {
-    type = "stat", icon = "lb_deaths",
-    getText = @(params, val) loc("stats/deaths", {num = getUnitStat(params?.unit.name, val, params)})
-    valueId = "deaths", getValue = @(params, val) getUnitStat(params?.unit.name, val, params)
-  }
-  diff_label = {
-    type = "label",
-    getText = @(params, _val) loc($"difficulty{diffNames.indexof(params.terseInfo.showcase?.difficulty) ?? 0}")
-    valueId = "",
-    getComboBox = function(params, _val) {
-      let data = {width = "1@accountHeaderWidth - 50@sf/@pf", funcName = "onSelectFavUnitDiff"}
-      let values = []
-      let currDiffIdx = diffNames.indexof(params.terseInfo.showcase?.difficulty) ?? 0
-      foreach (idx, _diff in diffNames)
-        values.append({text = loc($"difficulty{idx}"), isSelected = idx == currDiffIdx})
-      data.values <- values
-      return data
-    }
-  }
-  averageRelativePosition = {
-    type = "stat"
-    icon = "lb_average_relative_position"
-    locId = "showcase/averageRelativePosition"
-    valueId = "averageRelativePosition"
-    getValue = @(params, val) measureType.PERCENT_FLOAT.getMeasureUnitsText(getStatsValue(params, val, params.scorePeriod))
-  }
-}
-
 let pageTypes = [
-  {
-    lines = [
-      ["battles", "victories", "respawns"],
-      ["playerVehicleDestroys", "aiVehicleDestroys", "totalScore"]
-    ]
-    blockedGameTypes = ["arcade", "historical", "simulation"]
-    scorePeriod = "value_total"
-    hasGameMode = true
-    getShowCaseType = @(terseInfo, params = null)
-      terseInfo?.showcase.mode ?? (params?.skipDefault ? null : defaultShowcaseType)
-    terseName = "favorite_mode"
-    locName = "showcase/favorite_mode"
-    writeGameMode = @(terseInfo, mode) terseInfo.showcase.mode <- mode
-    getSaveData = function(terseInfo) {
-      let data = DataBlock()
-      data.showcaseType <- "favorite_mode"
-      data.favoriteMode <- terseInfo.showcase.mode
-      return data
-    }
-  },
+  favoriteShowcase,
   {
     lines = [
       ["battles", "victories", "averageRelativePosition"],
@@ -307,7 +54,7 @@ let pageTypes = [
     scorePeriod = "value_total"
     terseName = "favorite_unit"
     locName = "showcase/favorite_unit"
-    getSecondTitleLoc = function(terseInfo) {
+    getSecondTitle = function(terseInfo) {
       let unit = getUnitFromTerseInfo(terseInfo)
       return unit ? loc($"{unit.name}_shop") : loc("shop/aircraftNotSelected")
     }
@@ -350,7 +97,7 @@ let pageTypes = [
     terseName = "atomic_ace"
     locName = "atomic_ace/name"
     hasOnlySecondTitle = true
-    getSecondTitleLoc = @(_terseInfo) "atomic_ace/name"
+    getSecondTitle = @(_terseInfo) loc("atomic_ace/name")
     isDisabled = @() !isUnlockOpened("atomic_ace")
     hintForDisabled = @() "{\"id\":\"atomic_ace\",\"ttype\":\"UNLOCK_SHORT\"}"
     textForDisabled = @() getConditionsToUnlockShowcaseById("atomic_ace")
@@ -369,7 +116,7 @@ let pageTypes = [
     terseName = "peacemaker"
     locName = "peacemaker/name"
     hasOnlySecondTitle = true
-    getSecondTitleLoc = @(_terseInfo) "peacemaker/name"
+    getSecondTitle = @(_terseInfo) loc("peacemaker/name")
     isDisabled = @() !isUnlockOpened("peacemaker")
     hintForDisabled = @() "{\"id\":\"peacemaker\",\"ttype\":\"UNLOCK_SHORT\"}"
     textForDisabled = @() getConditionsToUnlockShowcaseById("peacemaker")
@@ -378,7 +125,11 @@ let pageTypes = [
       data.showcaseType <- "peacemaker"
       return data
     }
-  }
+  },
+  unitsCollector,
+  aceOfSpades,
+  medalist,
+  achivHunter
 ]
 
 function getShowcaseByTerseInfo(terseInfo) {
@@ -413,10 +164,14 @@ function getGameMode(terseInfo, showcase = null) {
 }
 
 function getShowcaseViewData(playerStats, terseInfo, viewParams = null) {
-  let {scale = 1, isSmallSize = null} = viewParams
   let showcase = getShowcaseByTerseInfo(terseInfo)
   if (!showcase)
     return null
+
+  if (showcase?.getViewData)
+    return showcase?.getViewData(showcase, playerStats, terseInfo, viewParams)
+
+  let {scale = 1, isSmallSize = null} = viewParams
   let statLines = []
   let modeLines = showcase.lines
 
@@ -433,9 +188,10 @@ function getShowcaseViewData(playerStats, terseInfo, viewParams = null) {
     let textStats = []
     let unitsImages = []
     let labels = []
+    local flags = null
 
     foreach (valName in line) {
-      let value = visibleValues[valName]
+      let value = showcaseValues[valName]
       if (value.type == "stat") {
         if (value?.canShow && !value.canShow(params))
           continue
@@ -457,7 +213,7 @@ function getShowcaseViewData(playerStats, terseInfo, viewParams = null) {
           isFirst = textStats.len() == 0,
           text = value?.getText(params, value) ?? loc(value.locId),
           value = value?.getValue(params, value),
-          tooltip = loc(value?.tooltip ?? "")
+          tooltip = loc(value?.getTooltip(params, value) ?? "")
         }
         textStats.append(statData)
         continue
@@ -473,13 +229,17 @@ function getShowcaseViewData(playerStats, terseInfo, viewParams = null) {
         continue
       }
       if (value.type == "unitImage") {
-        let unit = getUnitFromTerseInfo(terseInfo)
+        let unit = getUnitFromTerseInfo(terseInfo, unitIdx)
         let statData = {
-          id = $"unitImage_{unitIdx}", imageIdx = unitIdx, unit = unit?.name ?? "",
-          image = value.getImage(params), width = value?.width, height = value.height
+          id = $"unitImage_{unitIdx}", imageIdx = unitIdx, unit = unit?.name ?? "", margin = value?.getMargin(scale),
+          image = value.getImage(params, unitIdx), width = value?.width, height = value.height
         }
         unitsImages.append(statData)
         unitIdx = unitIdx + 1
+        continue
+      }
+      if (value.type == "flags") {
+        flags = value.getValue(params, value)
         continue
       }
       if (value.type == "label") {
@@ -494,8 +254,8 @@ function getShowcaseViewData(playerStats, terseInfo, viewParams = null) {
       stats[iconStatsCount-1].isEndInRow <- true
     }
 
-    statLines.append({isFirstLine = statLines.len() == 0,
-      scale, stats, statsBig, textStats, unitsImages, labels, hasUnitImage = unitsImages.len() > 0})
+    statLines.append({isFirstLine = statLines.len() == 0, flags, hasFlags = (flags?.len() ?? 0) > 0,
+      stats, statsBig, textStats, unitsImages, labels, hasUnitImage = unitsImages.len() > 0})
   }
 
   return handyman.renderCached("%gui/profile/profileMainPageMiddle.tpl", {scale, isSmallSize, statLines})
@@ -574,8 +334,8 @@ function getShowcaseTitleViewData(terseInfo, params = null) {
   foreach (showcase in pageTypes)
     if (showcase?.terseName == terseName) {
       view.title <- showcase?.hasOnlySecondTitle ? " " : loc(showcase.locName)
-      if (showcase?.getSecondTitleLoc)
-        view.secondTitle <- loc(showcase.getSecondTitleLoc(terseInfo))
+      if (showcase?.getSecondTitle)
+        view.secondTitle <- showcase.getSecondTitle(terseInfo)
       else if (showcase?.hasGameMode) {
         let gameMode = getGameMode(terseInfo, showcase)
         view.secondTitle <- loc(gameMode?.text ?? "")
@@ -618,12 +378,12 @@ function trySetBestShowcaseMode(stats, terseInfo) {
     return
 
   let gameModes = getShowcaseGameModes(showcase?.blockedGameTypes)
-  let checkValue = visibleValues.battles
+  let checkValue = showcaseValues.battles
   local maxValue = -1
   local bestMode = null
 
   foreach (mode in gameModes) {
-    let val = getStatsValue({stats, showcaseType = mode.mode}, checkValue, showcase.scorePeriod)
+    let val = getStatsValue({stats, terseInfo, showcaseType = mode.mode}, checkValue, showcase.scorePeriod)
     if (val > maxValue) {
       maxValue = val
       bestMode = mode
@@ -639,7 +399,7 @@ function getShowcaseByIndex(idx) {
 
 function saveUnitToTerseInfo(terseInfo, unit, idx) {
   let showcase = getShowcaseByTerseInfo(terseInfo)
-  showcase?.saveUnit(terseInfo, unit.name, idx)
+  showcase?.saveUnit(terseInfo, unit?.name, idx)
 }
 
 function fillStatsValuesOfTerseInfo(scene, terseInfo, playerStats) {
@@ -653,7 +413,7 @@ function fillStatsValuesOfTerseInfo(scene, terseInfo, playerStats) {
 
   foreach (line in showcase.lines)
     foreach (valName in line) {
-      let value = visibleValues[valName]
+      let value = showcaseValues[valName]
       if (value.type != "stat")
         continue
 
@@ -667,6 +427,11 @@ function fillStatsValuesOfTerseInfo(scene, terseInfo, playerStats) {
 
 function getShowcaseIndexByTerseName(terseName) {
   return pageTypes.findindex(@(p) p.terseName == terseName) ?? 0
+}
+
+function getShowcaseUnitsFilter(terseInfo, unitIdx = -1) {
+  let showcase = getShowcaseByTerseInfo(terseInfo)
+  return showcase?.getUnitsFilter(terseInfo, unitIdx) ?? @(_u) true
 }
 
 return {
@@ -684,5 +449,6 @@ return {
   saveUnitToTerseInfo
   fillStatsValuesOfTerseInfo
   getShowcaseIndexByTerseName
+  getShowcaseUnitsFilter
   getDiffByIndex
 }

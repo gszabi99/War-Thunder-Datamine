@@ -8,7 +8,7 @@ let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setHelpTextOnLoading, setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { eventbus_subscribe } = require("eventbus")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 eventbus_subscribe("gui_start_loading", function gui_start_loading(payload) {
   let isMissionLoading = payload?["showBriefing"] ?? false

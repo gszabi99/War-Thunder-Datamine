@@ -1718,15 +1718,15 @@
         "Cx": 0.53748,
         "maxDistance": 2000.0,
         "normalizationPreset": "default",
-        "ricochetPreset": "default",
+        "ricochetPreset": "defaultExt",
         "groundRicochetPreset": "default",
+        "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.3,
-        "bulletType": "ap_i_t_ball",
-        "slopeEffectPreset": "ap",
-        "shellAnimation": "video/shells_animations/ap_i_t_ball.ivf",
+        "stabilityReductionAfterPenetration": 0.15,
+        "bulletType": "ap_i",
+        "shellAnimation": "video/shells_animations/ap_i_shell.ivf",
         "onHitChanceMultFire": 10.0,
         "relativeVelArmorShift": [
           200.0,
@@ -1778,15 +1778,6 @@
             0.1,
             1500.0
           ]
-        },
-        "damage": {
-          "kinetic": {
-            "damageType": "generic",
-            "demarrePenetrationK": 1.0,
-            "demarreSpeedPow": 1.43,
-            "demarreMassPow": 0.71,
-            "demarreCaliberPow": 1.07
-          }
         },
         "armorpower": {
           "ArmorPower0m": [
@@ -1934,7 +1925,7 @@
             0.0
           ],
           "traceFreq": 1,
-          "tracer": "20mmWhiteGreen",
+          "tracer": "noColor",
           "trail": "noTrail"
         }
       },

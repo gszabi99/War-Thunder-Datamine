@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_user_log_time_sec, get_user_logs_count, warbonds_has_active_battle_task, get_user_log_blk_body, disable_user_log_entry
+from "%scripts/dagui_natives.nut" import get_user_log_time_sec, get_user_logs_count, warbonds_has_active_battle_task, get_user_log_blk_body, disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
 from "%scripts/userLog/userlogConsts.nut" import USERLOG_POPUP
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
@@ -15,37 +15,36 @@ let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nu
 let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
-let { disableSeenUserlogs, saveOnlineJob, shownUserlogNotifications, checkPopupUserLog,
+let { disableSeenUserlogs, shownUserlogNotifications, checkPopupUserLog,
   getLogNameByType
 } = require("%scripts/userLog/userlogUtils.nut")
 let { showEntitlement } = require("%scripts/onlineShop/entitlementRewardWnd.nut")
 let { showUnlocks } = require("%scripts/unlocks/unlockRewardWnd.nut")
-let { showUnlockWnd } = require("%scripts/unlocks/showUnlock.nut")
+let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { getUserstatItemRewardData, removeUserstatItemRewardToShow,
   userstatItemsListLocId } = require("%scripts/userstat/userstatItemsRewards.nut")
-let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
 let { SKIP_CLAN_FLUSH_EXP_INFO_SAVE_ID, showClanFlushExpInfo
 } = require("%scripts/clans/clanFlushExpInfoModal.nut")
 let { needChooseClanUnitResearch } = require("%scripts/unit/squadronUnitAction.nut")
-let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { showEveryDayLoginAwardWnd } = require("%scripts/items/everyDayLoginAward.nut")
 let { checkShowExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
 let { isUnlockNeedPopup, isUnlockNeedPopupInMenu } = require("unlocks")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isNewbieInited, isMeNewbie, markStatsReset } = require("%scripts/myStats.nut")
-let { findItemByUid } = require("%scripts/items/itemsManager.nut")
+let { findItemByUid, findItemById, getInventoryItemById, getItemOrRecipeBundleById
+} = require("%scripts/items/itemsManager.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { guiStartModTierResearched } = require("%scripts/modificationsTierResearched.nut")
 let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
-let { isPrizeMultiAward }= require("%scripts/items/trophyMultiAward.nut")
-let { hasKnowPrize } = require("%scripts/items/prizesView.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { openOperationRewardPopup } = require("%scripts/globalWorldwarUtils.nut")
+let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
+let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 
 function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsArray = []) {
   let body = newUserLog?.body
@@ -70,30 +69,6 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
     else if (!isInArray(value, currentData[combineKey][param]))
       currentData[combineKey][param].append(value)
   }
-}
-
-::check_new_user_logs <- function check_new_user_logs() {
-  let total = get_user_logs_count()
-  let newUserlogsArray = []
-  for (local i = 0; i < total; i++) {
-    let blk = DataBlock()
-    get_user_log_blk_body(i, blk)
-    if (blk?.disabled || isInArray(blk?.type, ::hidden_userlogs))
-      continue
-
-    let unlockId = blk?.body.unlockId
-    if (unlockId != null && !isUnlockVisible(getUnlockById(unlockId))) {
-      disable_user_log_entry(i)
-      continue
-    }
-
-    newUserlogsArray.append(blk)
-  }
-  return newUserlogsArray
-}
-
-::checkAwardsOnStartFrom <- function checkAwardsOnStartFrom() {
-  ::checkNewNotificationUserlogs(true)
 }
 
 ::checkNewNotificationUserlogs <- function checkNewNotificationUserlogs(onStartAwards = false) {
@@ -155,7 +130,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
         msg = format(loc(nameLoc), mission) //need more info in log, maybe title.
         markStatsReset()
         if (popupMask & USERLOG_POPUP.FINISHED_RESEARCHES)
-          ::checkNonApprovedResearches(true)
+          checkNonApprovedResearches(true)
         broadcastEvent("BattleEnded", { eventId = blk?.body.eventId })
       }
       else if (blk?.type == EULT_CHARD_AWARD) {
@@ -165,7 +140,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
             rewardType == "WagerStageWin" ||
             rewardType == "WagerStageFail") {
           let itemId = blk?.body.id
-          let item = ::ItemsManager.findItemById(itemId)
+          let item = findItemById(itemId)
           if (item != null) {
             msg = isInArray(rewardType, ["WagerStageWin", "WagerStageFail"])
               ? loc("ui/colon").concat(loc($"userlog/{rewardType}"), colorize("userlogColoredText", item.getName()))
@@ -178,7 +153,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
       else if (blk?.type == EULT_EXCHANGE_WARBONDS) {
         let awardBlk = blk?.body.award
         if (awardBlk) {
-          let priceText = ::g_warbonds.getWarbondPriceText(awardBlk?.cost ?? 0)
+          let priceText = getWarbondPriceText(awardBlk?.cost ?? 0)
           let awardType = ::g_wb_award_type.getTypeByBlk(awardBlk)
           msg = awardType.getUserlogBuyText(awardBlk, priceText)
           if (awardType.id == EWBAT_BATTLE_TASK && !warbonds_has_active_battle_task(awardBlk?.name))
@@ -299,7 +274,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
         continue
 
       let itemId = blk?.body?.itemDefId || blk?.body?.trophyItemDefId || blk?.body?.id || ""
-      let item = ::ItemsManager.findItemById(itemId)
+      let item = findItemById(itemId)
       let userstatItemRewardData = getUserstatItemRewardData(itemId)
       let isUserstatRewards = userstatItemRewardData != null
       if (item != null && (!item?.shouldAutoConsume || isUserstatRewards) &&
@@ -348,7 +323,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
         continue
 
       let itemDefId = blk.body?.itemDefId
-      let item = ::ItemsManager.getInventoryItemById(itemDefId)
+      let item = getInventoryItemById(itemDefId)
       if (item && !item?.shouldAutoConsume && !(item?.isHiddenItem() ?? false)) {
         let logTypeName = getLogNameByType(blk.type)
         let locId = $"userlog/{logTypeName}"
@@ -378,7 +353,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
         markDisabled = true
       }
       else if (itemDefId != null) {
-        let receipeItem = ::ItemsManager.getItemOrRecipeBundleById(itemDefId)
+        let receipeItem = getItemOrRecipeBundleById(itemDefId)
         if (receipeItem?.forceShowRewardReceiving) {
           if (itemDefId not in inventoryRewards.cache) {
             inventoryRewards.cache[itemDefId] <- { markSeenIds = [blk.id], rewardsCount = 0, rewardsData = [] }
@@ -449,7 +424,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
         let logTypeName = getLogNameByType(blk.type)
         let locId = $"userlog/{logTypeName}/{reason}"
         let itemId = getTblValue("id", blk.body, "")
-        let item = ::ItemsManager.findItemById(itemId)
+        let item = findItemById(itemId)
         if (item && item.iType == itemType.TICKET)
           addPopup("",
             loc(locId, { itemName = colorize("userlogColoredText", item.getName()) }),
@@ -498,7 +473,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
         [itemId] = rewardsData
         rewardTitle = "{0} {1}".subst(
           loc("mainmenu/you_received"),
-          ::ItemsManager.getItemOrRecipeBundleById(itemId)?.getName() ?? "")
+          getItemOrRecipeBundleById(itemId)?.getName() ?? "")
         rewardIcon = "small_gold_chest"
         isHidePrizeActionBtn = true
       }))
@@ -513,7 +488,8 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
     @(_, entId) handler.doWhenActive(@() showEntitlement(entId, { ignoreAvailability = true })))
   unlockUnits.each(@(logObj) handler.doWhenActive(
     @() showUnlockWnd(::build_log_unlock_data(logObj))))
-  handler.doWhenActive(@() showUnlocks(unlocksRewards))
+
+  showUnlocks(unlocksRewards)
 
   rentsTable.each(function(config, key) {
     if (!isInArray(key, ignoreRentItems)) {
@@ -563,151 +539,3 @@ addListenersWithoutEnv({
  *   filters (table) - any custom key -> value pairs to filter userlogs
  *   disableVisible (boolean) - marks all related userlogs as seen
  */
-let haveHiddenItem = @(itemDefId) ::ItemsManager.findItemById(itemDefId)?.isHiddenItem()
-
-::isUserlogVisible <- function isUserlogVisible(blk, filter, idx) {
-  if (blk?.type == null)
-    return false
-  if (("show" in filter) && !isInArray(blk.type, filter.show))
-    return false
-  if (("hide" in filter) && isInArray(blk.type, filter.hide))
-    return false
-  if (("checkFunc" in filter) && !filter.checkFunc(blk))
-    return false
-  if (getTblValue("currentRoomOnly", filter, false) && !is_user_log_for_current_room(idx))
-    return false
-  if (haveHiddenItem(blk?.body.itemDefId))
-    return false
-  if (blk.type == EULT_OPEN_TROPHY && !hasKnowPrize(blk.body))
-    return false
-  return true
-}
-
-::getUserLogsList <- function getUserLogsList(filter) {
-  let logs = [];
-  let total = get_user_logs_count()
-  local needSave = false
-
-  /**
-   * If statick tournament reward exist in log, writes it to logs root
-   */
-  let grabStatickReward = function (reward, logObj) {
-    if (reward.awardType == "base_win_award") {
-      logObj.baseTournamentWp <- getTblValue("wp", reward, 0)
-      logObj.baseTournamentGold <- getTblValue("gold", reward, 0)
-      return true
-    }
-    return false
-  }
-
-  for (local i = total - 1; i >= 0; i--) {
-    let blk = DataBlock()
-    get_user_log_blk_body(i, blk)
-
-    if (!::isUserlogVisible(blk, filter, i))
-      continue
-
-    let isUnlockTypeNotSuitable = ("unlockType" in blk.body)
-      && (blk.body.unlockType == UNLOCKABLE_TROPHY_PSN
-        || blk.body.unlockType == UNLOCKABLE_TROPHY_XBOXONE
-        || (("unlocks" in filter) && !isInArray(blk.body.unlockType, filter.unlocks)))
-
-    let unlock = getUnlockById(getTblValue("unlockId", blk.body))
-    let hideUnlockById = unlock != null && !isUnlockVisible(unlock)
-
-    if (isUnlockTypeNotSuitable || (hideUnlockById && blk?.type != EULT_BUYING_UNLOCK))
-      continue
-
-    let logObj = {
-      idx = i
-      type = blk?.type
-      time = get_user_log_time_sec(i)
-      enabled = !blk?.disabled
-      roomId = blk?.roomId
-      isAerobaticSmoke = unlock?.isAerobaticSmoke ?? false
-    }
-
-    for (local j = 0, c = blk.body.paramCount(); j < c; j++) {
-      local key = blk.body.getParamName(j)
-      if (key in logObj)
-        key = $"body_{key}"
-      logObj[key] <- blk.body.getParamValue(j)
-    }
-    local hasVisibleItem = false
-    for (local j = 0, c = blk.body.blockCount(); j < c; j++) {
-      let block = blk.body.getBlock(j)
-      let name = block.getBlockName()
-
-      //can be 2 aircrafts with the same name (cant foreach)
-      //trophyMultiAward logs have spare in body too. they no need strange format hacks.
-      if (name == "aircrafts"
-          || (name == "spare" && !isPrizeMultiAward(blk.body))) {
-        if (!(name in logObj))
-          logObj[name] <- []
-
-        for (local k = 0; k < block.paramCount(); k++)
-          logObj[name].append({ name = block.getParamName(k), value = block.getParamValue(k) })
-      }
-      else if (name == "rewardTS") {
-        let reward = convertBlk(block)
-        if (!grabStatickReward(reward, logObj)) {
-          if (!(name in logObj))
-            logObj[name] <- []
-          logObj[name].append(reward)
-        }
-      }
-      else if (block instanceof DataBlock) {
-        if (haveHiddenItem(block?.itemDefId))
-          continue
-        hasVisibleItem = hasVisibleItem || block?.itemDefId != null
-        logObj[name] <- convertBlk(block)
-      }
-    }
-
-    if (!hasVisibleItem
-        && (logObj.type == EULT_INVENTORY_ADD_ITEM || logObj.type == EULT_INVENTORY_FAIL_ITEM))
-      continue
-
-    local skip = false
-    if ("filters" in filter)
-      foreach (f, values in filter.filters)
-        if (!isInArray((f in logObj) ? logObj[f] : null, values)) {
-          skip = true
-          break
-        }
-
-    if (skip)
-      continue
-
-    let { disableVisible = false, needStackItems = true } = filter
-    let dubIdx = (needStackItems && logObj.type == EULT_OPEN_TROPHY  && logObj?.parentTrophyRandId)
-      ? logs.findindex(@(inst) inst.type == EULT_OPEN_TROPHY
-        && inst?.parentTrophyRandId == logObj.parentTrophyRandId
-          && inst?.id == logObj?.id && inst.time == logObj.time)
-      : null
-    if (dubIdx != null) {
-      let curLog = logs[dubIdx]
-      // Stack all trophy rewards
-      if (curLog?.item && logObj?.item)
-        curLog.item = type(curLog.item) == "array" ? curLog.item.append(logObj.item)
-          : [curLog.item].append(logObj.item)
-      // Stack all identical trophies
-      if (!curLog?.item && !logObj?.item)
-        curLog.count <- (curLog?.count ?? 1) + (logObj?.count ?? 1)
-    }
-    // Changes of current logObj above will be used for logObj view only
-    // so no need reduce logs array to avoid differences with blk
-    logs.append(dubIdx != null ? logObj.__merge({ isDubTrophy = true }) : logObj)
-
-    if (disableVisible) {
-      if (disable_user_log_entry(i))
-        needSave = true
-    }
-  }
-
-  if (needSave) {
-    log("getUserLogsList - needSave")
-    saveOnlineJob()
-  }
-  return logs
-}

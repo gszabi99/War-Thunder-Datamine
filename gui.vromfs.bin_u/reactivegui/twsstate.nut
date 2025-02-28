@@ -71,7 +71,7 @@ interop.clearLwsTargets <- function() {
   }
 }
 
-interop.updateMlwsTarget <- function(index, x, y, _age0, age, enemy, _track, _launch, sector, _group_id = null, _range_rel = null, _priority = null, _elev = null) {
+interop.updateMlwsTarget <- function(index, x, y, _age0, age, enemy, _track, _launch, sector, _group_id, range_rel, _priority = null, _elev = null) {
   if (index >= warningSystemState.mlwsTargets.len())
     warningSystemState.mlwsTargets.resize(index + 1)
   warningSystemState.mlwsTargets[index] = {
@@ -79,7 +79,8 @@ interop.updateMlwsTarget <- function(index, x, y, _age0, age, enemy, _track, _la
     y = y,
     age = age,
     enemy = enemy,
-    sector = sector
+    sector = sector,
+    rangeRel = range_rel
   }
   warningSystemState.mlwsTargetsAgeMin.update(min(warningSystemState.mlwsTargetsAgeMin.value, age))
   warningSystemState.mlwsTargetsTriggers.trigger()

@@ -1,7 +1,8 @@
-from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, save_profile, is_online_available, is_hud_visible, periodic_task_register, get_auto_refill, update_entitlements, is_mouse_last_time_used, gchat_is_enabled, periodic_task_unregister
+from "%scripts/dagui_natives.nut" import save_online_single_job, set_auto_refill, save_profile, is_online_available, periodic_task_register, get_auto_refill, update_entitlements, is_mouse_last_time_used, gchat_is_enabled, periodic_task_unregister
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import SAVE_WEAPON_JOB_DIGIT
 from "app" import is_dev_version
+from "hudState" import is_hud_visible
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { eventbus_send } = require("eventbus")
@@ -20,7 +21,7 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let updateContacts = require("%scripts/contacts/updateContacts.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
-let { isChatEnabled, hasMenuChat } = require("%scripts/chat/chatStates.nut")
+let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { get_time_msec } = require("dagor.time")
@@ -369,15 +370,13 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function onGC_chat(_obj) {
-    if (!::isMenuChatActive())
-      isChatEnabled(true)
-
+    broadcastEvent("ChatCheckIsActive")
     this.switchChatWindow()
   }
 
   function switchChatWindow() {
     if (gchat_is_enabled() && hasMenuChat.value)
-      ::switchMenuChatObj(::getChatDiv(this.scene))
+      broadcastEvent("ChatSwitchObject", { scene = this.scene })
   }
 
   function onSwitchContacts() {
@@ -496,10 +495,11 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
     if (unitContextMenuState.value?.unitObj.isValid()
       && unitContextMenuState.value.unitObj.isEqual(unitObj))
-      return unitContextMenuState(null)
+      return unitContextMenuState({unitObj, handler = this, needClose = true})
 
     unitContextMenuState({
       unitObj
+      needCloseTooltips = true
       actionsNames = this.getSlotbarActions()
       closeOnUnhover = !ignoreHover
       curEdiff = this.getCurrentEdiff?() ?? -1
@@ -808,7 +808,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   function onModalWndDestroy() {
     base.onModalWndDestroy()
-    ::checkMenuChatBack()
+    broadcastEvent("ChatCheckScene")
   }
 
   function onSceneActivate(show) {

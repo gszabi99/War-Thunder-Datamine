@@ -12,6 +12,7 @@ local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
   text = ""
   callbackYes = null
   callbackNo = null
+  onExitFunc = null
 
   function initScreen() {
     this.scene.findObject("msgText").setValue(this.text)
@@ -56,12 +57,16 @@ local purchaseConfirmationHandler = class (gui_handlers.BaseGuiHandlerWT) {
         return i
     return null
   }
+
+  function onDestroy() {
+    this.onExitFunc?()
+  }
 }
 
 gui_handlers.purchaseConfirmationHandler <- purchaseConfirmationHandler
 
-function purchaseConfirmation(id, text, callbackYes, callbackNo = null) {
-  handlersManager.loadHandler(purchaseConfirmationHandler, { id, text, callbackYes, callbackNo })
+function purchaseConfirmation(id, text, callbackYes, callbackNo = null, onExitFunc = null) {
+  handlersManager.loadHandler(purchaseConfirmationHandler, { id, text, callbackYes, callbackNo, onExitFunc })
 }
 
 return purchaseConfirmation

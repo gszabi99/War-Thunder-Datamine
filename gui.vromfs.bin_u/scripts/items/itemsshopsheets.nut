@@ -6,8 +6,9 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let seenList = require("%scripts/seen/seenList.nut")
-let { checkItemsMaskFeatures, getShopList, isItemVisible
-} = require("%scripts/items/itemsManager.nut")
+let { getShopList } = require("%scripts/items/itemsManagerGetters.nut")
+let { isItemVisible, checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
+let { getInventoryListByShopMask } = require("%scripts/items/itemsManager.nut")
 
 let shopSheets = {
   types = []
@@ -44,7 +45,7 @@ shopSheets.template <- {
     let visibleTypeMask = checkItemsMaskFeatures(this.typeMask)
     let filterFunc = this.getItemFilterFunc(shopTab).bindenv(this)
     if (shopTab == itemsTab.INVENTORY || shopTab == itemsTab.RECYCLING)
-      return ::ItemsManager.getInventoryListByShopMask(visibleTypeMask, filterFunc)
+      return getInventoryListByShopMask(visibleTypeMask, filterFunc)
     if (shopTab == itemsTab.SHOP)
       return getShopList(visibleTypeMask, filterFunc)
     return []

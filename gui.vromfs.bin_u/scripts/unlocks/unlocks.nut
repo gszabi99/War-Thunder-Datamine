@@ -1,326 +1,40 @@
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
-from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { zero_money, Cost } = require("%scripts/money.nut")
+let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getRegionalUnlockProgress, isRegionalUnlock } = require("%scripts/unlocks/regionalUnlocks.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockCondsDescByCfg,
   getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, getUnlockMultDesc, getIconByUnlockBlk,
   getUnlockNameText, getUnlockTypeText, getUnlockCostText, buildUnlockDesc, getUnlockableMedalImage,
-  getUnlockIconConfig, getDescriptionByUnlockType
+  getUnlockIconConfig, buildConditionsConfig
 } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { getMainProgressCondition, getProgressBarData, loadMainProgressCondition, isNestedUnlockMode,
-  loadConditionsFromBlk, getMultipliersTable, isBitModeType, isStreak, isTimeRangeCondition
-} = require("%scripts/unlocks/unlocksConditions.nut")
-let { getUnlockProgress } = require("unlocks")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUnlockCost, getUnlockRewardCost, hasSpecialMultiStageLocId, hasMultiStageLocId,
-  getMultiStageLocId, getUnlockType, isUnlockOpened,
-  cloneDefaultUnlockData, isUnlockExist, checkAwardsAmountPeerSession
+let { getUnlockCost, hasSpecialMultiStageLocId, hasMultiStageLocId, getMultiStageLocId,
+  cloneDefaultUnlockData, checkAwardsAmountPeerSession, isUnlockOpened
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { isBattleTask, isBattleTaskDone, isBattleTaskExpired, getBattleTaskById,
   getBattleTaskNameById, getDifficultyTypeByTask
 } = require("%scripts/unlocks/battleTasks.nut")
-let { get_charserver_time_sec } = require("chard")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/types.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
-let { shopSmokeItems, isItemdefId } = require("%scripts/items/itemsManager.nut")
-let { getPlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
+let { shopSmokeItems } = require("%scripts/items/itemsTypeClasses.nut")
 let { getCrewName } = require("%scripts/crew/crew.nut")
 let { isStringInteger } = require("%sqstd/string.nut")
-let { getRankByExp } = require("%scripts/ranks.nut")
+let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
+let { isItemdefId } = require("%scripts/items/itemsChecks.nut")
+let { findItemById, getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
 
-function setImageByUnlockType(config, unlockBlk) {
-  let unlockType = get_unlock_type(getTblValue("type", unlockBlk, ""))
-  if (unlockType == UNLOCKABLE_MEDAL) {
-    if (getTblValue("subType", unlockBlk) == "clan_season_reward") {
-      let unlock = ::ClanSeasonPlaceTitle.createFromUnlockBlk(unlockBlk)
-      config.iconStyle <- unlock.iconStyle()
-      config.iconParams <- unlock.iconParams()
-    }
-    else
-      config.image <- getUnlockableMedalImage(unlockBlk.id)
-
-    return
-  }
-  else if (unlockBlk?.battlePassSeason != null)
-    config.image = "#ui/gameuiskin#item_challenge"
-
-  let decoratorType = getTypeByUnlockedItemType(unlockType)
-  if (decoratorType != decoratorTypes.UNKNOWN && !is_in_loading_screen()) {
-    let decorator = getDecorator(unlockBlk.id, decoratorType)
-    config.image <- decoratorType.getImage(decorator)
-    config.imgRatio <- decoratorType.getRatio(decorator)
-  }
-}
-
-function setUnlockIconCfg(cfg, blk) {
-  let icon = getIconByUnlockBlk(blk)
-  if (icon)
-    cfg.image = icon
-  else
-    setImageByUnlockType(cfg, blk)
-}
-
-function setRewardIconCfg(cfg, blk, unlocked) {
-  if (!blk?.userLogId)
-    return
-
-  let item = ::ItemsManager.findItemById(blk.userLogId)
-  if (item?.iType != itemType.TROPHY)
-    return
-
-  let content = item.getContent()
-  if (content.len() > 1) {
-    cfg.iconData <- item.getIcon()
-    cfg.isTrophyLocked <- !unlocked
-    if (!unlocked)
-      cfg.trophyId <- item.id
-    return
-  }
-
-  let prize = item.getTopPrize()
-  if (prize?.unlock && getUnlockType(prize.unlock) ==  UNLOCKABLE_PILOT) {
-    cfg.image <- $"#ui/images/avatars/{prize.unlock}.avif"
-    cfg.isTrophyLocked <- !unlocked
-    return
-  }
-
-  if (prize?.resourceType && prize?.resource) {
-    let decType = getTypeByResourceType(prize.resourceType)
-    let decorator = getDecorator(prize.resource, decType)
-    let image = decType.getImage(decorator)
-    if (image == "")
-      return
-
-    cfg.image <- image
-    cfg.isTrophyLocked <- !unlocked
-  }
-}
-
-let getEmptyConditionsConfig = @() {
-  id = ""
-  unlockType = -1
-  locId = ""
-  locDescId = ""
-  locStagesDescId = ""
-  locMultDescId = ""
-  mulArcade = 0
-  mulRealistic = 0
-  mulHardcore = 0
-  useSubUnlockName = false
-  hideSubunlocks = false
-  curVal = 0
-  maxVal = 0
-  stages = []
-  curStage = -1
-  link = ""
-  forceExternalBrowser = false
-  iconStyle = ""
-  iconParams = null
-  userLogId = null
-  image = ""
-  lockStyle = ""
-  imgRatio = 1.0
-  type = ""
-  conditions = []
-  hasCustomUnlockableList = false
-  manualOpen = false
-  isExpired = false
-  needToFillStages = true
-  needToAddCurStageToName = true
-  useLastStageAsUnlockOpening = false
-  additionalStagesDescAsItemCountLocId = ""
-  additionalStagesDescAsItemCountId = 0
-  additionalStagesDescAsItemCountMax = 0
-  names = [] //bit progress names. better to rename it.
-
-  showProgress = true
-  getProgressBarData = function() {
-    let res = getProgressBarData(this.type, this.curVal, this.maxVal)
-    res.show = res.show && this.showProgress
-    return res
-  }
-}
-
-::build_conditions_config <- function build_conditions_config(blk, showStage = -1) {
-  let id = blk.getStr("id", "")
-  let config = getEmptyConditionsConfig()
-  config.id = id
-  config.imgRatio = blk.getReal("aspect_ratio", 1.0)
-  config.userLogId = blk?.userLogId
-  config.unlockType = get_unlock_type(blk?.type ?? "")
-  config.locId = blk.getStr("locId", "")
-  config.locDescId = blk.getStr("locDescId", "")
-  config.locStagesDescId = blk.getStr("locStagesDescId", "")
-  config.useSubUnlockName = blk?.useSubUnlockName ?? false
-  config.hideSubunlocks = blk?.hideSubunlocks ?? false
-  config.link = getLocTextFromConfig(blk, "link", "")
-  config.forceExternalBrowser = blk?.forceExternalBrowser ?? false
-  config.needToFillStages = blk?.needToFillStages ?? true
-  config.needToAddCurStageToName = blk?.needToAddCurStageToName ?? true
-  config.useLastStageAsUnlockOpening = blk?.useLastStageAsUnlockOpening ?? false
-  config.additionalStagesDescAsItemCountLocId = blk?.additionalStagesDescAsItemCountLocId ?? ""
-  config.additionalStagesDescAsItemCountId = blk?.additionalStagesDescAsItemCountId ?? 0
-  config.additionalStagesDescAsItemCountMax = blk?.additionalStagesDescAsItemCountMax ?? 0
-  config.manualOpen = blk?.manualOpen ?? false
-
-  config.iconStyle <- blk?.iconStyle ?? config?.iconStyle
-  config.image = blk?.icon ?? ""
-
-  let unlocked = isUnlockOpened(id, config.unlockType)
-  if (config.image == "")
-    setRewardIconCfg(config, blk, unlocked)
-  if (config.image == "" && !config?.iconData)
-    setUnlockIconCfg(config, blk)
-  if (config.image != "")
-    config.lockStyle = blk?.lockStyle ?? "" // lock, darkened, desaturated, none
-
-  config.desc <- getDescriptionByUnlockType(blk)
-
-  if (blk?.isRevenueShare)
-    config.isRevenueShare <- true
-
-  if (blk?._puType)
-    config._puType <- blk._puType
-
-  foreach (mode in blk % "mode") {
-    let modeType = mode?.type ?? ""
-    config.type = modeType
-
-    // Custom multiplier description and its associated parameters
-    config.locMultDescId = mode?.locMultDescId ?? ""
-    config.mulArcade = mode?.mulArcade ?? 0
-    config.mulRealistic = mode?.mulRealistic ?? 0
-    config.mulHardcore = mode?.mulHardcore ?? 0
-
-    if (config.unlockType == UNLOCKABLE_TROPHY_PSN) {
-      //do not show secondary conditions anywhere for psn trophies
-      config.conditions = []
-      let mainCond = loadMainProgressCondition(mode)
-      if (mainCond)
-        config.conditions.append(mainCond)
-    }
-    else
-      config.conditions = loadConditionsFromBlk(mode, blk) //-param-pos
-
-    let mainCond = getMainProgressCondition(config.conditions)
-
-    config.hasCustomUnlockableList = getTblValue("hasCustomUnlockableList", mainCond, false)
-
-    if (mainCond && mainCond.values
-        && (mainCond.values.len() > 1 || config.hasCustomUnlockableList
-        || (isNestedUnlockMode(mainCond.modeType) && isStreak(mainCond.values[0]))))
-      config.names = mainCond.values //for easy support old values list
-
-    config.maxVal = mainCond?.num ?? 1
-    config.curVal = 0
-
-    if (modeType == "rank")
-      config.curVal = getPlayerRankByCountry(config.country)
-    else if (isUnlockExist(id)) {
-      let progress = isRegionalUnlock(id) ? getRegionalUnlockProgress(id) : getUnlockProgress(id)
-      if (modeType == "char_player_exp") {
-        config.maxVal = getRankByExp(progress.maxVal)
-        config.curVal = getRankByExp(progress.curVal)
-      }
-      else {
-        if (!isBattleTask(id)) {
-          if (config.unlockType == UNLOCKABLE_STREAK) {
-            config.minVal <- mode?.minVal ?? 0
-            config.maxVal = mode?.maxVal ?? 0
-            config.multiplier <- getMultipliersTable(mode)
-          }
-          else {
-            config.maxVal = progress.maxVal
-          }
-        }
-
-        config.curVal = progress.curVal
-        config.curStage = (progress?.curStage ?? -1) + 1
-      }
-    }
-
-    if (isBitModeType(modeType) && mainCond)
-      config.curVal = ((1 << mainCond.values.len()) - 1) & config.curVal
-    else if (config.curVal > config.maxVal)
-      config.curVal = config.maxVal
-  }
-
-  if (!unlocked) {
-    let cond = config.conditions.findvalue(@(c) isTimeRangeCondition(c.type))
-    if (cond)
-      config.isExpired = get_charserver_time_sec() >= cond.endTime
-  }
-
-  let haveBasicRewards = !blk?.aircraftPresentExtMoneyback
-  foreach (stage in blk % "stage") {
-    let sData = { val = config.type == "char_player_exp"
-                          ? getRankByExp(stage.getInt("param", 1))
-                          : stage.getInt("param", 1)
-                  }
-    if (haveBasicRewards)
-      sData.reward <- getUnlockRewardCost(stage)
-    config.stages.append(sData)
-  }
-
-  if (showStage >= 0 && blk?.isMultiStage) { // isMultiStage means stages are auto-generated (used only for streaks).
-    config.curStage = showStage
-    config.maxVal = config.stages[0].val + showStage
-  }
-  else if (showStage >= 0 && showStage < config.stages.len()) {
-    config.curStage = showStage
-    config.maxVal = config.stages[showStage].val
-  }
-  else if (config.useLastStageAsUnlockOpening) {
-    config.maxVal = config.stages.top().val
-    config.curVal = min(config.curVal, config.maxVal)
-  }
-  else {
-    foreach (stage in config.stages)
-      if ((stage.val <= config.maxVal && stage.val > config.curVal)
-          || (config.curStage < 0 && stage.val == config.maxVal && stage.val == config.curVal)) {
-        config.maxVal = stage.val
-      }
-  }
-
-  if (!isBattleTask(id) && config.unlockType != UNLOCKABLE_STREAK
-    && blk?.mode.chardType != null && blk?.mode.num != null) {
-    config.maxVal = ((blk?.mode.type ?? "") == "totalMissionScore")
-      ? (blk.mode.num / 1000) /*PSEUDO_FLOAT_VALUE_MUL*/ : blk.mode.num
-  }
-
-  if (haveBasicRewards) {
-    let reward = getUnlockRewardCost(blk)
-    if (reward > zero_money)
-      config.reward <- reward
-  }
-
-  if (config.unlockType == UNLOCKABLE_WARBOND) {
-    let wbAmount = blk?.amount_warbonds
-    if (wbAmount) {
-      config.rewardWarbonds <- {
-        wbName = blk?.userLogId ?? id
-        wbAmount = wbAmount
-      }
-    }
-  }
-
-  return config
-}
-
-::fill_unlock_block <- function fill_unlock_block(obj, config, isForTooltip = false) {
+function fill_unlock_block(obj, config, isForTooltip = false) {
   let { iconStyle, image, ratio, iconParams, iconConfig } = getUnlockIconConfig(config, isForTooltip)
   let hasImage = iconConfig != null || iconStyle != "" || image != ""
   obj.findObject("award_image_sizer").show(hasImage)
@@ -400,6 +114,9 @@ let getEmptyConditionsConfig = @() {
     obj.findObject("state_icon")["background-image"] = isUnlocked ? "#ui/gameuiskin#favorite" : "#ui/gameuiskin#locked.svg"
   }
 
+  if (config?.hideAward)
+    return
+
   let rObj = obj.findObject("award_text")
   rObj.setValue((config?.rewardText ?? "") != ""
     ? $"{loc("challenge/reward")} {config.rewardText}"
@@ -420,7 +137,7 @@ let getEmptyConditionsConfig = @() {
 
   obj["min-width"] = "@unlockBlockWidth"
 
-  ::fill_unlock_block(obj, config, true)
+  fill_unlock_block(obj, config, true)
 }
 
 ::build_log_unlock_data <- function build_log_unlock_data(config) {
@@ -442,7 +159,7 @@ let getEmptyConditionsConfig = @() {
   res.desc = null
   local unlockCfg = null
   if (unlockBlk) {
-    unlockCfg = ::build_conditions_config(unlockBlk, stage)
+    unlockCfg = buildConditionsConfig(unlockBlk, stage)
     let isProgressing = showProgress
       && (stage == -1 || stage == unlockCfg.curStage)
       && unlockCfg.curVal < unlockCfg.maxVal
@@ -460,6 +177,7 @@ let getEmptyConditionsConfig = @() {
   res.type = uType
   res.rewardText = ""
   res.amount = getTblValue("amount", config, res.amount)
+  res.hideAward <- config?.hideAward ?? false
 
   let battleTask = getBattleTaskById(realId)
   let isTask = isBattleTask(battleTask)
@@ -651,7 +369,7 @@ let getEmptyConditionsConfig = @() {
   }
 
   else if ( uType == UNLOCKABLE_TROPHY) {
-    let item = ::ItemsManager.findItemById(id)
+    let item = findItemById(id)
     if (item) {
       res.title = getUnlockTypeText(uType, realId)
       res.name = getUnlockNameText(uType, realId)
@@ -666,7 +384,7 @@ let getEmptyConditionsConfig = @() {
 
   else if ( uType == UNLOCKABLE_INVENTORY) {
     let itemId = isStringInteger(id) ? id.tointeger() : id
-    let item = isItemdefId(itemId) ? ::ItemsManager.getItemOrRecipeBundleById(itemId) : null
+    let item = isItemdefId(itemId) ? getItemOrRecipeBundleById(itemId) : null
     if (item) {
       res.title = getUnlockTypeText(uType, realId)
       res.name = item.getName()
@@ -679,7 +397,7 @@ let getEmptyConditionsConfig = @() {
   else if ( uType == UNLOCKABLE_WARBOND) {
     let wbAmount = config?.warbonds
     let wbStageName = config?.warbondStageName
-    let wb = ::g_warbonds.findWarbond(id, wbStageName)
+    let wb = findWarbond(id, wbStageName)
     if (wb != null && wbAmount != null)
       res.rewardText = wb.getPriceText(wbAmount, true, false)
   }
@@ -732,7 +450,7 @@ let getEmptyConditionsConfig = @() {
 
   if ("userLogId" in config) {
     let itemId = config.userLogId
-    let item = ::ItemsManager.findItemById(itemId)
+    let item = findItemById(itemId)
     if (item)
       res.rewardText = "".concat(res.rewardText, item.getName(), "\n", item.getNameMarkup())
   }
@@ -820,4 +538,8 @@ let getEmptyConditionsConfig = @() {
     res.tooltipImageSize <- config.tooltipImageSize
 
   return res
+}
+
+return {
+  fill_unlock_block
 }

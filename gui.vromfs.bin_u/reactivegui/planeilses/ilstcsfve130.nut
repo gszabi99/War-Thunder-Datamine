@@ -254,6 +254,9 @@ let gunAimMark = @() {
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.value
+      transform = {
+        translate = [TargetPos.value[0], TargetPos.value[1]]
+      }
       commands = [
         [VECTOR_LINE, 0, 0, 0, 0],
         [VECTOR_LINE, -120, 0, -100, 0],

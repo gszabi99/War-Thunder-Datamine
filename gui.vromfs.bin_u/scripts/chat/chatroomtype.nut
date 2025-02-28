@@ -18,6 +18,8 @@ let { getThreadInfo, canCreateThreads } = require("%scripts/chat/chatStorage.nut
 let { chatColors, getSenderColor } = require("%scripts/chat/chatColors.nut")
 let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
+let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { langsList, globalChatRooms } = require("%scripts/chat/chatConsts.nut")
 
 enum chatRoomCheckOrder {
   CUSTOM
@@ -74,7 +76,10 @@ g_chat_room_type.template <- {
 
   inviteLocIdNoNick = "chat/receiveInvite/noNick"
   inviteLocIdFull = "chat/receiveInvite"
+  leaveLocId = "chat/leaveChannel"
   inviteIcon = "#ui/gameuiskin#chat.svg"
+  errorLocPostfix = {}
+  getErrorPostfix = @(code) this.errorLocPostfix?[code] ?? ""
   getInviteClickNameText = function(roomId) {
     let locId = showConsoleButtons.value ? "chat/receiveInvite/acceptToJoin" : "chat/receiveInvite/clickToJoin"
     return format(loc(locId), this.getRoomName(roomId))
@@ -117,7 +122,7 @@ enumsAddTypes(g_chat_room_type, {
     checkRoomId  = function(roomId) { return !startsWith(roomId, this.roomPrefix) }
     getRoomId    = function(playerName, ...) { return playerName }
     getRoomName  = function(roomId, isColored = false) { //roomId == playerName
-      local res = ::g_contacts.getPlayerFullName(getPlayerName(roomId), clanUserTable.get()?[roomId] ?? "")
+      local res = getPlayerFullName(getPlayerName(roomId), clanUserTable.get()?[roomId] ?? "")
       if (isColored)
         res = colorize(getSenderColor(roomId), res)
       return res
@@ -148,6 +153,7 @@ enumsAddTypes(g_chat_room_type, {
     roomNameLocId = "squad/name"
     inviteLocIdNoNick = "squad/receiveInvite/noNick"
     inviteLocIdFull = "squad/receiveInvite"
+    leaveLocId = "squad/leaveChannel"
     inviteIcon = "#ui/gameuiskin#squad_leader"
     canVoiceChat = true
     needCountAsImportant = true
@@ -210,24 +216,23 @@ enumsAddTypes(g_chat_room_type, {
     checkRoomId = function(roomId) {
       if (!startsWith(roomId, "#"))
         return false
-      foreach (r in ::global_chat_rooms)
+      foreach (r in globalChatRooms)
         if (roomId.indexof($"{r.name}_", 1) == 1) {
           let lang = slice(roomId, r.name.len() + 2)
-          local langsList = getTblValue("langs", r, ::langs_list)
-          return isInArray(lang, langsList)
+          return isInArray(lang, r?.langs ?? langsList)
         }
       return false
     }
     getRoomId = function(roomName, lang = null) { //room id is  #<<roomName>>_<<validated lang>>
       if (!lang)
-        lang = ::cur_chat_lang
-      foreach (r in ::global_chat_rooms) {
+        lang = loc("current_lang")
+      foreach (r in globalChatRooms) {
         if (r.name != roomName)
           continue
 
-        let langsList = getTblValue("langs", r, ::langs_list)
-        if (!isInArray(lang, langsList))
-          lang = langsList[0]
+        let langs = r?.langs ?? langsList
+        if (!isInArray(lang, langs))
+          lang = langs[0]
         return format("#%s_%s", roomName, lang)
       }
       return ""
@@ -307,17 +312,14 @@ enumsAddTypes(g_chat_room_type, {
   }
 }, null, "typeName")
 
-g_chat_room_type.types.sort(function(a, b) {
-  if (a.checkOrder != b.checkOrder)
-    return a.checkOrder < b.checkOrder ? -1 : 1
-  return 0
-})
+let resortRooms = @() g_chat_room_type.types.sort(@(a, b) a.checkOrder <=> b.checkOrder)
+
+resortRooms()
 
 g_chat_room_type.getRoomType <- function getRoomType(roomId) {
   foreach (roomType in this.types)
     if (roomType.checkRoomId(roomId))
       return roomType
-
   assert(false, $"Cant get room type by roomId = {roomId}")
   return this.DEFAULT_ROOM
 }
@@ -333,6 +335,12 @@ g_chat_room_type.getMySquadRoomId <- function getMySquadRoomId() {
   return g_chat_room_type.SQUAD.getRoomId(squadRoomName)
 }
 
+function addChatRoomType(roomType) {
+  enumsAddTypes(g_chat_room_type, roomType, null, "typeName")
+  resortRooms()
+}
+
 return {
   g_chat_room_type
+  addChatRoomType
 }

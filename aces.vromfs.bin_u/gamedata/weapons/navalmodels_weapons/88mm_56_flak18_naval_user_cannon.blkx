@@ -71,9 +71,10 @@
       1000.0
     ],
     "explodeTreshold": 0.1,
-    "fuseDelay": 0.0,
+    "fuseDelay": 0.001,
     "fuseOnWater": true,
     "fuseOnWaterProbability": 1.0,
+    "penetrationBySpeed": true,
     "selfDestructionFx": "explosion_air_selfexplosion_med",
     "explosionEffect": "hit_81_105mm_metal_he",
     "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -106,7 +107,11 @@
     },
     "damage": {
       "kinetic": {
-        "damageType": "generic"
+        "damageType": "generic",
+        "demarrePenetrationK": 0.15,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
       },
       "shatter": {
         "useRealShatters": true,
@@ -434,9 +439,10 @@
         1000.0
       ],
       "explodeTreshold": 0.1,
-      "fuseDelay": 0.0,
+      "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
+      "penetrationBySpeed": true,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -469,7 +475,11 @@
       },
       "damage": {
         "kinetic": {
-          "damageType": "generic"
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
         },
         "shatter": {
           "useRealShatters": true,
@@ -801,9 +811,10 @@
         1000.0
       ],
       "explodeTreshold": 0.1,
-      "fuseDelay": 0.0,
+      "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
+      "penetrationBySpeed": true,
       "selfDestructionFx": "explosion_air_selfexplosion_med",
       "explosionEffect": "hit_81_105mm_metal_he",
       "groundCollisionEffect": "hit_81_105mm_dirt_he",
@@ -1088,7 +1099,11 @@
       },
       "damage": {
         "kinetic": {
-          "damageType": "generic"
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
         },
         "shatter": {
           "useRealShatters": true,

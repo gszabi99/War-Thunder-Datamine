@@ -17,6 +17,7 @@ let defaults = {  //def value when feature not found in matching game settings
   hasMenuChatClan = true
   hasMenuChatSystem = true
   hasMenuChatMPlobby = true
+  hasMenuWWOperationChats = true
 }
 
 let toggleFeatures = Watched({

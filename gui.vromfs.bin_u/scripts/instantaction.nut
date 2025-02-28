@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import shop_repair_all, shop_purchase_modification, shop_repair_aircraft, wp_get_repair_cost, shop_purchase_weapon
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_WARNING
+from "%scripts/utils_sa.nut" import call_for_handler
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -27,7 +28,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
-::getBrokenAirsInfo <- function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null) {
+function getBrokenAirsInfo(countries, respawn, checkAvailFunc = null) {
   let res = {
           canFlyout = true
           canFlyoutIfRepair = true
@@ -129,8 +130,83 @@ let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
   return res
 }
 
-::checkBrokenAirsAndDo <- function checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCountry = true, cancelFunc = null) {
+function buyAllAmmoAndApply(handler, unreadyAmmoList, afterDoneFunc, totalCost = Cost()) {
+  if (!handler)
+    return
+
+  if (unreadyAmmoList.len() == 0) {
+    afterDoneFunc.call(handler)
+    return
+  }
+
+  if (!checkBalanceMsgBox(totalCost))
+    return
+
+  let ammo = unreadyAmmoList[0]
+  local taskId = -1
+
+  if (ammo.ammoType == AMMO.WEAPON)
+    taskId = shop_purchase_weapon(ammo.airName, ammo.ammoName, ammo.buyAmount)
+  else if (ammo.ammoType == AMMO.MODIFICATION)
+    taskId = shop_purchase_modification(ammo.airName, ammo.ammoName, ammo.buyAmount, false)
+  unreadyAmmoList.remove(0)
+
+  if (taskId >= 0) {
+    let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
+    addBgTaskCb(taskId,function() {
+      destroyMsgBox(progressBox)
+      let self = callee()
+      self(handler, unreadyAmmoList, afterDoneFunc)
+    })
+  }
+}
+
+function repairAllAirsAndApply(handler, broken_countries, afterDoneFunc, onCancelFunc, canRepairWholeCountry = true, totalRCost = null) {
+  if (!handler)
+    return
+
+  if (broken_countries.len() == 0) {
+    broadcastEvent("UnitRepaired")
+    afterDoneFunc.call(handler)
+    return
+  }
+
+  let self = callee()
+  if (totalRCost) {
+    let afterCheckFunc = function() {
+      if (checkBalanceMsgBox(totalRCost, null, true))
+        self(handler, broken_countries, afterDoneFunc, onCancelFunc, canRepairWholeCountry)
+      else if (onCancelFunc)
+        onCancelFunc.call(handler)
+    }
+    if (!checkBalanceMsgBox(totalRCost, afterCheckFunc))
+      return
+  }
+
+  local taskId = -1
+
+  if (broken_countries[0].airs.len() == 1 || !canRepairWholeCountry)
+    taskId = shop_repair_aircraft(broken_countries[0].airs[0])
+  else
+    taskId = shop_repair_all(broken_countries[0].country, true)
+
+  if (broken_countries[0].airs.len() > 1 && !canRepairWholeCountry)
+    broken_countries[0].airs.remove(0)
+  else
+    broken_countries.remove(0)
+
+  if (taskId >= 0) {
+    let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
+    addBgTaskCb(taskId, function() {
+      destroyMsgBox(progressBox)
+      self(handler, broken_countries, afterDoneFunc, onCancelFunc, canRepairWholeCountry)
+    })
+  }
+}
+
+function checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCountry = true, cancelFunc = null) {
   if (repairInfo.weaponWarning && repairInfo.unreadyAmmoList && !get_gui_option(USEROPT_SKIP_WEAPON_WARNING)) {
+    let self = callee()
     let price = Cost(repairInfo.unreadyAmmoCost, repairInfo.unreadyAmmoCostGold)
     local msg = loc(repairInfo.haveRespawns ? "msgbox/all_planes_zero_ammo_warning" : "controls/no_ammo_left_warning")
     msg = "\n\n".concat(msg, format(loc("buy_unsufficient_ammo"), price.getTextAccordingToBalance()))
@@ -142,13 +218,13 @@ let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
         startBtnText = loc("mainmenu/btnBuy")
         defaultBtnId = "btn_select"
         onStartPressed = function() {
-          ::buyAllAmmoAndApply(
+          buyAllAmmoAndApply(
             handler,
             repairInfo.unreadyAmmoList,
             function() {
               repairInfo.weaponWarning = false
               repairInfo.canFlyout = repairInfo.canFlyoutIfRefill
-              ::checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCountry, cancelFunc)
+              self(repairInfo, handler, startFunc, canRepairWholeCountry, cancelFunc)
             },
             price
           )
@@ -160,10 +236,10 @@ let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
   let repairAll = function() {
     let rCost = Cost(repairInfo.repairCost)
-    ::repairAllAirsAndApply(handler, repairInfo.broken_countries, startFunc, cancelFunc, canRepairWholeCountry, rCost)
+    repairAllAirsAndApply(handler, repairInfo.broken_countries, startFunc, cancelFunc, canRepairWholeCountry, rCost)
   }
 
-  let onCancel = function() { ::call_for_handler(handler, cancelFunc) }
+  let onCancel = function() { call_for_handler(handler, cancelFunc) }
 
   if (!repairInfo.canFlyout) {
     local msgText = ""
@@ -227,74 +303,9 @@ let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
     startFunc.call(handler)
 }
 
-::repairAllAirsAndApply <- function repairAllAirsAndApply(handler, broken_countries, afterDoneFunc, onCancelFunc, canRepairWholeCountry = true, totalRCost = null) {
-  if (!handler)
-    return
-
-  if (broken_countries.len() == 0) {
-    broadcastEvent("UnitRepaired")
-    afterDoneFunc.call(handler)
-    return
-  }
-
-  if (totalRCost) {
-    let afterCheckFunc = function() {
-      if (checkBalanceMsgBox(totalRCost, null, true))
-        ::repairAllAirsAndApply(handler, broken_countries, afterDoneFunc, onCancelFunc, canRepairWholeCountry)
-      else if (onCancelFunc)
-        onCancelFunc.call(handler)
-    }
-    if (!checkBalanceMsgBox(totalRCost, afterCheckFunc))
-      return
-  }
-
-  local taskId = -1
-
-  if (broken_countries[0].airs.len() == 1 || !canRepairWholeCountry)
-    taskId = shop_repair_aircraft(broken_countries[0].airs[0])
-  else
-    taskId = shop_repair_all(broken_countries[0].country, true)
-
-  if (broken_countries[0].airs.len() > 1 && !canRepairWholeCountry)
-    broken_countries[0].airs.remove(0)
-  else
-    broken_countries.remove(0)
-
-  if (taskId >= 0) {
-    let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
-    addBgTaskCb(taskId, function() {
-      destroyMsgBox(progressBox)
-      ::repairAllAirsAndApply(handler, broken_countries, afterDoneFunc, onCancelFunc, canRepairWholeCountry)
-    })
-  }
-}
-
-::buyAllAmmoAndApply <- function buyAllAmmoAndApply(handler, unreadyAmmoList, afterDoneFunc, totalCost = Cost()) {
-  if (!handler)
-    return
-
-  if (unreadyAmmoList.len() == 0) {
-    afterDoneFunc.call(handler)
-    return
-  }
-
-  if (!checkBalanceMsgBox(totalCost))
-    return
-
-  let ammo = unreadyAmmoList[0]
-  local taskId = -1
-
-  if (ammo.ammoType == AMMO.WEAPON)
-    taskId = shop_purchase_weapon(ammo.airName, ammo.ammoName, ammo.buyAmount)
-  else if (ammo.ammoType == AMMO.MODIFICATION)
-    taskId = shop_purchase_modification(ammo.airName, ammo.ammoName, ammo.buyAmount, false)
-  unreadyAmmoList.remove(0)
-
-  if (taskId >= 0) {
-    let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
-    addBgTaskCb(taskId,function() {
-      destroyMsgBox(progressBox)
-      ::buyAllAmmoAndApply(handler, unreadyAmmoList, afterDoneFunc)
-    })
-  }
+return {
+  getBrokenAirsInfo
+  checkBrokenAirsAndDo
+  repairAllAirsAndApply
+  buyAllAmmoAndApply
 }

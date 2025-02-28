@@ -15,6 +15,7 @@ let TimeBeforeBombRelease = Watched(0.0)
 let DistToSafety = Watched(0.0)
 let DistToTarget = Watched(0.0)
 let RocketMode = Watched(false)
+let AAMRocketMode = Watched(false)
 let CannonMode = Watched(false)
 let AirCannonMode = Watched(false)
 let BombCCIPMode = Watched(false)
@@ -33,6 +34,7 @@ let RadarTargetPosValid = Watched(false)
 let RadarTargetPos = [0, 0]
 let RadarTargetAngle = Watched(-1.0)
 let RadarTargetVel = Watched(-1.0)
+let RadarTargetBearing = Watched(0.0)
 let GunfireSolution = [-1, -1]
 let AamAccelLock = Watched(false)
 let MfdRadarWithNavVis = Watched(false)
@@ -80,6 +82,7 @@ let planeState = {
   DistToSafety,
   DistToTarget,
   RocketMode,
+  AAMRocketMode,
   CannonMode,
   BombCCIPMode,
   IsMfdEnabled,
@@ -95,6 +98,7 @@ let planeState = {
   RadarTargetDistRate,
   RadarTargetHeight,
   RadarTargetAngle,
+  RadarTargetBearing,
   RadarTargetVel,
   GunfireSolution,
   AamAccelLock,

@@ -18,7 +18,7 @@ let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { getCurrentGameMode, getGameModeById, getCurrentGameModeEdiff
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 
-::gui_choose_slotbar_preset <- function gui_choose_slotbar_preset(owner = null) {
+function gui_choose_slotbar_preset(owner = null) {
   return handlersManager.loadHandler(gui_handlers.ChooseSlotbarPreset, { ownerWeak = owner })
 }
 
@@ -317,4 +317,8 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.isSceneActiveNoModals())
       this.restoreFocusDelayed()
   }
+}
+
+return {
+  gui_choose_slotbar_preset
 }

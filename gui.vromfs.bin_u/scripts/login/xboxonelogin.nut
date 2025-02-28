@@ -10,26 +10,30 @@ let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut")
-let { get_gamertag } = require("%xboxLib/impl/user.nut")
-let { init_with_ui } = require("%scripts/xbox/user.nut")
-let { login } = require("%scripts/xbox/loginState.nut")
+let { get_gamertag } = require("%gdkLib/impl/user.nut")
+let { init_with_ui } = require("%scripts/gdk/user.nut")
+let { login } = require("%scripts/gdk/loginState.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
 let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 
 
 gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
   needAutoLogin = false
   isLoginInProcess = false
+  shouldHideCursor = is_platform_xbox
 
   function initScreen() {
-    this.guiScene.performDelayed(this, function () {
-      forceHideCursor(true)
-    })
+    if (this.shouldHideCursor) {
+      this.guiScene.performDelayed(this, function () {
+        forceHideCursor(true)
+      })
+    }
     animBgLoad()
     setVersionText(this.scene)
-    ::setProjectAwards(this)
+    setProjectAwards(this)
     showTitleLogo(this.scene, 128)
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
@@ -103,7 +107,8 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
       function(err_code) {
         ::close_wait_screen()
         if (err_code == 0) { // YU2_OK
-          forceHideCursor(false)
+          if (this.shouldHideCursor)
+            forceHideCursor(false)
           loadHandler(gui_handlers.UpdaterModal,
               {
                 configPath = "updater.blk"
@@ -145,7 +150,8 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
   }
 
   function onDestroy() {
-    forceHideCursor(false)
+    if (this.shouldHideCursor)
+      forceHideCursor(false)
   }
 
   function goBack(_obj) {}

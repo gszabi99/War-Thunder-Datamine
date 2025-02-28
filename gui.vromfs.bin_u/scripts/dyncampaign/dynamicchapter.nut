@@ -18,9 +18,11 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY,
 } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_game_settings_blk } = require("blkGetters")
-let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
+let { getDynamicLayouts, addMissionListFull } = require("%scripts/missions/missionsUtils.nut")
 let { DYNAMIC_REQ_COUNTRY_RANK, guiStartDynamicSummary, guiStartCdOptions
 } = require("%scripts/missions/startMissionsList.nut")
+let { set_current_campaign, get_mission_settings, set_mission_settings } = require("%scripts/missions/missionsStates.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
 
 gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   wndType = handlerType.MODAL
@@ -40,7 +42,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
     let headerTitle = this.scene.findObject("chapter_name")
     headerTitle.setValue(loc("mainmenu/btnDynamic"))
     showObjById("btn_back", false, this.scene.findObject("nav-help"))
-    this.yearsArray = ::get_option(USEROPT_YEAR).values
+    this.yearsArray = get_option(USEROPT_YEAR).values
 
     this.scene.findObject("optionlist-container").mislist = "yes"
 
@@ -260,8 +262,8 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
     }
 
     if (isAnyCountryUnlocked) {
-      ::current_campaign = missionBlock
-      ::mission_settings.layout = this.missions[index].map
+      set_current_campaign(missionBlock)
+      set_mission_settings("layout", this.missions[index].map)
       this.openMissionOptions()
     }
   }
@@ -280,13 +282,13 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
 
   function finalApplyCallback() {
     this.finalApply()
-    if (::mission_settings.dynlist.len() == 0)
+    if (get_mission_settings().dynlist.len() == 0)
       this.msgBox("no_missions_error", loc("msgbox/appearError"),
         [["ok", this.goBack ]], "ok", { cancel_fn = this.goBack });
   }
 
   function checkCustomDifficulty() {
-    let diffCode = ::mission_settings.diff
+    let diffCode = get_mission_settings().diff
     if (!::check_diff_pkg(diffCode))
       return
 
@@ -299,44 +301,44 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   }
 
   function finalApply() {
-    let map = ::mission_settings.layout
+    let map = get_mission_settings().layout
 
-    local desc = ::get_option(USEROPT_MP_TEAM_COUNTRY);
+    local desc = get_option(USEROPT_MP_TEAM_COUNTRY);
     let team = desc.values[desc.value];
     let settings = DataBlock();
     settings.setInt("playerSide", team)
 
-    //desc = ::get_option(USEROPT_DYN_ALLIES);
+    //desc = get_option(USEROPT_DYN_ALLIES);
     //local allies = desc.values[desc.value];
 
-    //desc = ::get_option(USEROPT_DYN_ENEMIES);
+    //desc = get_option(USEROPT_DYN_ENEMIES);
     //local enemies = desc.values[desc.value];
 
     //settings.setInt("enemyCount", enemies)
     //settings.setInt("allyCount", allies)
 
-    desc = ::get_option(USEROPT_DYN_FL_ADVANTAGE);
+    desc = get_option(USEROPT_DYN_FL_ADVANTAGE);
     settings.setInt("frontlineAdvantage", desc.values[desc.value])
 
-    desc = ::get_option(USEROPT_DYN_WINS_TO_COMPLETE);
+    desc = get_option(USEROPT_DYN_WINS_TO_COMPLETE);
     settings.setInt("needWinsToComplete", desc.values[desc.value]);
 
-    desc = ::get_option(USEROPT_YEAR);
+    desc = get_option(USEROPT_YEAR);
     settings.setStr("year", desc.values[desc.value]);
 
-    desc = ::get_option(USEROPT_DIFFICULTY)
-    ::mission_settings.diff = desc.value
+    desc = get_option(USEROPT_DIFFICULTY)
+    set_mission_settings("diff", desc.value)
     settings.setInt("difficulty", desc.value);
 
     dynamicInit(settings, map)
     let dynListBlk = DataBlock();
-    ::mission_settings.dynlist <- dynamicGetList(dynListBlk, false)
+    set_mission_settings("dynlist", dynamicGetList(dynListBlk, false))
 
     local playerCountry = ""
 
     let add = []
-    for (local i = 0; i < ::mission_settings.dynlist.len(); i++) {
-      let misblk = ::mission_settings.dynlist[i].mission_settings.mission
+    for (local i = 0; i < get_mission_settings().dynlist.len(); i++) {
+      let misblk = get_mission_settings().dynlist[i].mission_settings.mission
       misblk.setStr("mis_file", map)
       misblk.setStr("chapter", get_cur_game_mode_name())
       misblk.setStr("type", get_cur_game_mode_name())
@@ -345,7 +347,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
       if (playerCountry == "")
         playerCountry = misblk.getStr(team == 1 ? "country_allies" : "country_axis", "ussr")
     }
-    ::add_mission_list_full(GM_DYNAMIC, add, ::mission_settings.dynlist)
+    addMissionListFull(GM_DYNAMIC, add, get_mission_settings().dynlist)
     ::first_generation = true
 
     this.goForwardCheckEntitlement(guiStartDynamicSummary, {
@@ -400,3 +402,4 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   }
   return res
 }
+

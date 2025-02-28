@@ -11,12 +11,13 @@ let { is_replay_playing } = require("replays")
 let { get_game_type } = require("mission")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 let { HudWithWeaponSelector } = require("%scripts/hud/hudWithWeaponSelector.nut")
+let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
 
 gui_handlers.HudAir <- class (HudWithWeaponSelector) {
   sceneBlkName = "%gui/hud/hudAir.blk"
   function initScreen() {
     base.initScreen()
-    ::g_hud_display_timers.init(this.scene, ES_UNIT_TYPE_AIRCRAFT)
+    hudDisplayTimersInit(this.scene, ES_UNIT_TYPE_AIRCRAFT)
     this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
 
     this.updateTacticalMapVisibility()
@@ -32,7 +33,7 @@ gui_handlers.HudAir <- class (HudWithWeaponSelector) {
 
   function reinitScreen(_params = null) {
     base.reinitScreen()
-    ::g_hud_display_timers.reinit()
+    hudDisplayTimersReInit()
     this.updateTacticalMapVisibility()
     this.updateDmgIndicatorSize()
     this.updateShowHintsNest()

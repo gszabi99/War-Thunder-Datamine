@@ -37,7 +37,6 @@
   "smokeScreenFx": "smokescreen_ship_no_therm_big",
   "explosionFx": "explosion_ship_small",
   "decorCutProps": "boat",
-  "shipsDisableDeadCoverParts": false,
   "canReloadNonGuns": true,
   "debrisPreset": "debris_preset_boat",
   "hideNodesInDmg": {
@@ -1775,6 +1774,22 @@
       ],
       "effect": {
         "pressureOpen": true
+      }
+    },
+    "hull": {
+      "hp": 15000.0,
+      "part": [
+        "compartment_01_dm",
+        "compartment_02_dm",
+        "compartment_03_dm",
+        "compartment_04_dm",
+        "bridge_dm"
+      ],
+      "effect": {
+        "conditionDead": true,
+        "conditionDamageType": "explosion",
+        "kill": true,
+        "killEffect": "damaged"
       }
     }
   },

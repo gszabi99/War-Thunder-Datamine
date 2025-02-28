@@ -19,6 +19,8 @@ let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
 let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
+let { getByPresenceParams } = require("%scripts/user/presenceType.nut")
 
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
@@ -230,7 +232,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getLeaderName(squad) {
-    let contact = ::getContact(squad?.leader.tostring())
+    let contact = getContact(squad?.leader.tostring())
     return getCustomNick(contact) ?? contact?.getName() ?? ""
   }
 
@@ -241,7 +243,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getPresence(squad) {
     let presenceParams = squad?.data?.presence ?? {}
-    return ::g_presence_type.getByPresenceParams(presenceParams).getLocText(presenceParams)
+    return getByPresenceParams(presenceParams).getLocText(presenceParams)
   }
 
   function onUpdate(_obj, _dt) {
@@ -295,7 +297,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let position = obj.getPosRC()
     position[1] += obj.getSize()[1]
     let leaderUid = actionSquad?.leader.tostring()
-    let contact = leaderUid && ::getContact(leaderUid)
+    let contact = leaderUid && getContact(leaderUid)
     let leaderName = contact ? contact.getName() : ""
     showChatPlayerRClickMenu(leaderName, null, contact, position)
   }

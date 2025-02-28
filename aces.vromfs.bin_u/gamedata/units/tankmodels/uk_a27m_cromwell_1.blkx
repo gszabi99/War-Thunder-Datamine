@@ -94,20 +94,17 @@
         "armorClass": "CHA_tank"
       },
       "turret_01_side_dm": {
-        "armorThickness": 38.0,
-        "armorClass": "CHA_tank"
+        "armorThickness": 38.0
       },
       "turret_01_bottom_dm": {
         "armorThickness": 20.0,
         "armorClass": "CHA_tank"
       },
       "turret_01_front_dm": {
-        "armorThickness": 32.0,
-        "armorClass": "CHA_tank"
+        "armorThickness": 32.0
       },
       "turret_01_back_dm": {
-        "armorThickness": 12.7,
-        "armorClass": "CHA_tank"
+        "armorThickness": 12.7
       },
       "turret_02_back_dm": {
         "armorThickness": 14.0,
@@ -126,6 +123,16 @@
         "armorClass": "CHA_tank"
       },
       "composite_armor_hull_01_dm": {
+        "armorThickness": 4.9,
+        "armorClass": "tank_structural_steel",
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_02_dm": {
+        "armorThickness": 4.9,
+        "armorClass": "tank_structural_steel",
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_03_dm": {
         "armorThickness": 4.9,
         "armorClass": "tank_structural_steel",
         "hidableInXrayViewer": true
@@ -695,15 +702,35 @@
     }
   },
   "xray_viewer_data": {
-    "armorArrayHull": {
-      "xrayDmPart": "composite_armor_hull_01_dm",
-      "titleLoc": "tank_structural_steel",
-      "armorArrayText": {
-        "layer": {
-          "dmPart": "composite_armor_hull_01_dm"
+    "armorArrayHull": [
+      {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_03_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_03_dm"
+          }
         }
       }
-    }
+    ]
   },
   "DamageEffects": {
     "part": [

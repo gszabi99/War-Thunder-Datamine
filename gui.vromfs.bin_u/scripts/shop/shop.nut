@@ -68,7 +68,10 @@ let { getShopVisibleCountries } = require("%scripts/shop/shopCountriesList.nut")
 let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { setNationBonusMarkState, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
+let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 local lastUnitType = null
 
@@ -1428,7 +1431,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           }
           seenIconCfg = bhvUnseen.makeConfigStr(seenList.id,
             getUnlockIdsByArmyId(this.curCountry, name, ediff))
-          navImagesText = ::get_navigation_images_text(idx, countryData.pages.len())
+          navImagesText = getNavigationImagesText(idx, countryData.pages.len())
           countryId = countryData.name
           armyId = name
         })
@@ -1439,7 +1442,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let tabCount = view.tabs.len()
       foreach (idx, tab in view.tabs)
-        tab.navImagesText = ::get_navigation_images_text(idx, tabCount)
+        tab.navImagesText = getNavigationImagesText(idx, tabCount)
 
       data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
     }
@@ -1571,10 +1574,10 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           onDragStart = "onHighlightedCellDragStart"
           isNoDelayOnClick = true
         }
-        highlightList.append(::guiTutor.getBlockFromObjData(objData, tableObj))
+        highlightList.append(getBlockFromObjData(objData, tableObj))
       }
 
-    ::guiTutor.createHighlight(shadingObj, highlightList, this, {
+    createHighlight(shadingObj, highlightList, this, {
       onClick = "onShadedCellClick"
       lightBlock = "tdiv"
       sizeIncAdd = 0
@@ -2017,7 +2020,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isSceneActive())
       return
 
-    if (needSelectCrew && !::checkIsInQueue())
+    if (needSelectCrew && !checkIsInQueue())
       takeUnitInSlotbar(unit, {
         unitObj = this.getAirObj(unit.name)
         cellClass = "shopClone"
@@ -2038,7 +2041,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showUnitInShop(unitId) {
-    if (!this.isSceneActive() || ::checkIsInQueue() || this.shopResearchMode)
+    if (!this.isSceneActive() || checkIsInQueue() || this.shopResearchMode)
       return
 
     this.highlightUnitsClear()
@@ -2159,7 +2162,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let unitObj = unitContextMenuState.value?.unitObj
-    if (!unitObj?.isValid())
+    if (!unitObj?.isValid() || unitContextMenuState.value?.needClose)
       return
 
     let actionListObj = unitObj.findObject("actions_list")

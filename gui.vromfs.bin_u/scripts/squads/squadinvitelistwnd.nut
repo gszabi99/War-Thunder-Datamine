@@ -72,7 +72,7 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateApplicationsList() {
-     this.updateList(this.CONFIG_PLAYERS_LISTS.applications)
+    this.updateList(this.CONFIG_PLAYERS_LISTS.applications)
     g_squad_manager.markAllApplicationsSeen()
   }
 

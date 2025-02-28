@@ -16,7 +16,6 @@
   "rwrIndicator": "AN/APR-25",
   "isBwOpticSight": true,
   "type": "typeFighter",
-  "paratrooper": "usa_para",
   "advancedInstructor": true,
   "advancedMouseAim": true,
   "simplifiedJoyAileronMult": 0.0,
@@ -39,6 +38,7 @@
   "fireParamsPreset": "1200kph",
   "fightAiBehaviour": "assault",
   "autopilotImpl": "FBW",
+  "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2159,7 +2159,7 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/us_an_apr_25.blk"
+      "blk": "gameData/sensors/us_an_alr_45f_v.blk"
     }
   },
   "commonWeapons": {
@@ -3594,6 +3594,8 @@
   },
   "engineFx": [
     {
+      "haze": "haze_jet",
+      "trail": "trail_jet",
       "exhaust": {
         "standard": "jet_exhaust",
         "afterburner": "jet_afterburner_exhaust",
@@ -3601,6 +3603,8 @@
       }
     },
     {
+      "haze": "haze_jet",
+      "trail": "trail_jet",
       "exhaust": {
         "standard": "booster_fire",
         "afterburner": "booster_fire",
@@ -3879,6 +3883,29 @@
     "chuteFlapVarName": "fire_chute",
     "chuteTimeScaleParam": "chute_time_scale",
     "chuteFallSpeed": 1.6
+  },
+  "bailout": {
+    "buttonHoldTime": 1.0,
+    "wreckSpeed": 10.0,
+    "wreckDir": [
+      -1.0,
+      1.0,
+      0.0
+    ],
+    "seatEjectDelay": 0.5,
+    "seatVel": [
+      -10.0,
+      20.0,
+      0.0
+    ],
+    "minHeight": 0.0,
+    "minSpeed": 0.0,
+    "hasSafeExit": true,
+    "wreck": "blister1",
+    "hide": "seat_01",
+    "seat": "seat_01",
+    "fxEmitter": "blister1",
+    "fxType": "catapult_expl_ejection"
   },
   "cutting": {
     "emtr_break_wing1_l_from": [

@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
+from "%scripts/utils_sa.nut" import call_for_handler
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -10,156 +11,12 @@ let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { Button } = require("%scripts/controls/input/button.nut")
+let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
+let { findGoodPos } = require("%scripts/linesGenerator.nut")
 
-const TITOR_STEP_TIMEOUT_SEC  = 30
+const TUTOR_STEP_TIMEOUT_SEC  = 30
 
-//req handyman
-::guiTutor <- {
-  _id = "tutor_screen_root"
-  _isFullscreen = true
-  _lightBlock = "tutorLight"
-  _darkBlock = "tutorDark"
-  _sizeIncMul = 0
-  _sizeIncAdd = -2 //boxes size decreased for more accurate view of close objects
-  _isNoDelayOnClick = false //optional no delay on_click for lightboxes
-}
-
-::guiTutor.createHighlight <- function createHighlight(scene, objDataArray, handler = null, params = null) {
-  //obj Config = [{
-  //    obj          //    DaGuiObject,
-                     // or string obj name in scene,
-                     // or table with size and pos,
-                     // or array of objects to highlight as one
-  //    box          // GuiBox - can be used instead of obj
-  //    id, onClick
-  //  }...]
-  let guiScene = scene.getScene()
-  let sizeIncMul = getTblValue("sizeIncMul", params, this._sizeIncMul)
-  let sizeIncAdd = getTblValue("sizeIncAdd", params, this._sizeIncAdd)
-  let isFullscreen = params?.isFullscreen ?? this._isFullscreen
-  let rootBox = ::GuiBox().setFromDaguiObj(isFullscreen ? guiScene.getRoot() : scene)
-  let rootPosCompensation = [ -rootBox.c1[0], -rootBox.c1[1] ]
-  let defOnClick = getTblValue("onClick", params, null)
-  let view = {
-    id = getTblValue("id", params, this._id)
-    isFullscreen = isFullscreen
-    lightBlock = getTblValue("lightBlock", params, this._lightBlock)
-    darkBlock = getTblValue("darkBlock", params, this._darkBlock)
-    lightBlocks = []
-    darkBlocks = []
-  }
-
-  let rootXPad = isFullscreen ? -to_pixels("1@bwInVr") : 0
-  let rootYPad = isFullscreen ? -to_pixels("1@bhInVr") : 0
-  let darkBoxes = []
-  if (view.darkBlock && view.darkBlock != "")
-    darkBoxes.append(rootBox.cloneBox(rootXPad, rootYPad).incPos(rootPosCompensation))
-
-  foreach (config in objDataArray) {
-    let block = this.getBlockFromObjData(config, scene, defOnClick)
-    if (!block)
-      continue
-
-    block.box.incSize(sizeIncAdd, sizeIncMul)
-    block.box.incPos(rootPosCompensation)
-    block.onClick <- getTblValue("onClick", block) || defOnClick
-    block.onDragStart <- getTblValue("onDragStart", block)
-    view.lightBlocks.append(this.blockToView(block))
-
-    for (local i = darkBoxes.len() - 1; i >= 0; i--) {
-      let newBoxes = block.box.cutBox(darkBoxes[i])
-      if (!newBoxes)
-        continue
-
-      darkBoxes.remove(i)
-      darkBoxes.extend(newBoxes)
-    }
-  }
-
-  foreach (box in darkBoxes)
-    view.darkBlocks.append(this.blockToView({ box = box, onClick = defOnClick }))
-
-  let data = handyman.renderCached(("%gui/tutorials/tutorDarkScreen.tpl"), view)
-  guiScene.replaceContentFromText(scene, data, data.len(), handler)
-
-  return scene.findObject(view.id)
-}
-
-::guiTutor.getBlockFromObjData <- function getBlockFromObjData(objData, scene = null, defOnClick = null, defOnDrag = null) {
-  local res = null
-  local obj = objData?.obj ?? objData
-  if (type(obj) == "string")
-    obj = checkObj(scene) ? scene.findObject(obj) : null
-  else if (type(obj) == "function")
-    obj = obj()
-  if (type(obj) == "array") {
-    for (local i = 0; i < obj.len(); i++) {
-      let block = this.getBlockFromObjData(obj[i], scene)
-      if (!block)
-        continue
-      if (!res)
-        res = block
-      else
-        res.box.addBox(block.box)
-    }
-  }
-  else if (type(obj) == "table") {
-    if (("box" in obj) && obj.box)
-      res = clone obj
-  }
-  else if (type(obj) == "instance")
-    if (obj instanceof ::DaGuiObject) {
-      if (checkObj(obj) && obj.isVisible())
-        res = {
-          id = $"_{obj?.id ?? "null"}"
-          box = ::GuiBox().setFromDaguiObj(obj)
-        }
-    }
-    else if (obj instanceof ::GuiBox)
-      res = {
-        id = ""
-        box = obj
-      }
-  if (!res)
-    return null
-
-  let id = objData?.id
-  if (id)
-    res.id <- id
-  res.onClick <- objData?.onClick ?? defOnClick
-  res.onDragStart <-objData?.onDragStart ?? defOnDrag
-  res.isNoDelayOnClick <- objData?.isNoDelayOnClick ?? this._isNoDelayOnClick
-  res.hasArrow <- objData?.hasArrow ?? false
-  return res
-}
-
-::guiTutor.blockToView <- function blockToView(block) {
-  let box = block.box
-  for (local i = 0; i < 2; i++) {
-    block[$"pos{i}"] <- box.c1[i]
-    block[$"size{i}"] <- box.c2[i] - box.c1[i]
-  }
-  return block
-}
-
-::gui_modal_tutor <- function gui_modal_tutor(stepsConfig, wndHandler, isTutorialCancelable = false) {
-//stepsConfig = [
-//  {
-//    obj     - array of objects to show in this step.
-//              (some of object can be array of objects, - they will be combined in one)
-//    text    - text to view
-//    actionType = enum tutorAction    - type of action for the next step (default = tutorAction.ANY_CLICK)
-//    cb      - callback on finish tutor step
-//  }
-//]
-  return loadHandler(gui_handlers.Tutor, {
-    ownerWeak = wndHandler,
-    config = stepsConfig,
-    isTutorialCancelable = isTutorialCancelable
-  })
-}
-
-gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
+let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/tutorials/tutorWnd.blk"
 
@@ -172,7 +29,7 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
   canceled = true
 
   isTutorialCancelable = false
-  stepTimeoutSec = TITOR_STEP_TIMEOUT_SEC
+  stepTimeoutSec = TUTOR_STEP_TIMEOUT_SEC
 
   function initScreen() {
     if (!this.ownerWeak || !this.config || !this.config.len())
@@ -214,7 +71,7 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
       objList = [objList]
 
     foreach (obj in objList) {
-      let block = ::guiTutor.getBlockFromObjData(obj, this.ownerWeak.scene)
+      let block = getBlockFromObjData(obj, this.ownerWeak.scene)
       if (!block)
         continue
 
@@ -274,7 +131,7 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
       blocksList[0].onClick = "onNext"
       blocksList.reverse()
     }
-    ::guiTutor.createHighlight(this.scene.findObject("dark_screen"), blocksList, this, params)
+    createHighlight(this.scene.findObject("dark_screen"), blocksList, this, params)
 
     showObjById("dummy_console_next", actionType == tutorAction.ANY_CLICK, this.scene)
 
@@ -282,7 +139,7 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
     if (waitTime > 0)
       Timer(this.scene, waitTime, (@(stepIdx) function() { this.timerNext(stepIdx) })(this.stepIdx), this) //-ident-hides-ident
 
-    this.stepTimeoutSec = TITOR_STEP_TIMEOUT_SEC
+    this.stepTimeoutSec = TUTOR_STEP_TIMEOUT_SEC
   }
 
   function updateObjectsPos(blocks, needArrow = true) {
@@ -302,7 +159,7 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
     let mainMsgObj = this.scene.findObject("msg_block")
     let minPos = this.guiScene.calcString("1@bh", null)
     let maxPos = this.guiScene.calcString("sh -1@bh", null)
-    let newPos = ::LinesGenerator.findGoodPos(mainMsgObj, 1, boxList, minPos, maxPos)
+    let newPos = findGoodPos(mainMsgObj, 1, boxList, minPos, maxPos)
     if (newPos != null)
       mainMsgObj.top = newPos.tostring()
   }
@@ -341,7 +198,7 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
     if (u.isCallback(cb) || getTblValue("keepEnv", stepData, false))
       cb()
     else
-      ::call_for_handler(this.ownerWeak, cb)
+      call_for_handler(this.ownerWeak, cb)
   }
 
   function afterModalDestroy() {
@@ -362,4 +219,28 @@ gui_handlers.Tutor <- class (gui_handlers.BaseGuiHandlerWT) {
     this.isTutorialCancelable = true
     showObjById("close_btn", this.isTutorialCancelable, this.scene)
   }
+}
+
+function gui_modal_tutor(stepsConfig, wndHandler, isTutorialCancelable = false) {
+//stepsConfig = [
+//  {
+//    obj     - array of objects to show in this step.
+//              (some of object can be array of objects, - they will be combined in one)
+//    text    - text to view
+//    actionType = enum tutorAction    - type of action for the next step (default = tutorAction.ANY_CLICK)
+//    cb      - callback on finish tutor step
+//  }
+//]
+  return loadHandler(Tutor, {
+    ownerWeak = wndHandler,
+    config = stepsConfig,
+    isTutorialCancelable = isTutorialCancelable
+  })
+}
+
+gui_handlers.Tutor <- Tutor
+
+return {
+  gui_modal_tutor
+  Tutor
 }

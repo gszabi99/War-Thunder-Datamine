@@ -10,6 +10,9 @@ let { registerInviteClass, findInviteClass } = require("%scripts/invites/invites
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { updateNewInvitesAmount } = require("%scripts/invites/invites.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 function removeInvite(operationId) {
@@ -69,7 +72,7 @@ let Operation = class (BaseInvite) {
   }
 
   function updateInviterContact() {
-    this.senderContact = ::getContact(this.senderId)
+    this.senderContact = getContact(this.senderId)
     this.updateInviterName()
   }
 
@@ -124,7 +127,7 @@ let Operation = class (BaseInvite) {
       return
 
     let acceptCallback = Callback(this.implAccept, this)
-    let callback = function () { ::queues.checkAndStart(acceptCallback, null, "isCanNewflight") }
+    let callback = function () { queues.checkAndStart(acceptCallback, null, "isCanNewflight") }
     let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
       { isLeaderCanJoin = true, msgId = "squad/leave_squad_for_invite" },
       callback

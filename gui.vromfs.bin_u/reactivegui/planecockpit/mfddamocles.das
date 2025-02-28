@@ -2,7 +2,7 @@ require darg
 require DagorMath
 require DagorStdGuiRender
 require WTCamera
-require %rGui.utils.canvas
+require %rGui.utils.canvas_common
 
 struct PropStorage
   fontId : int

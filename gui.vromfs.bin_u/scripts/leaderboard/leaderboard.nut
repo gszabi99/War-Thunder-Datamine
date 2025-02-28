@@ -27,6 +27,13 @@ let { lbCategoryTypes, getLbCategoryTypeByField, getLbCategoryTypeById, eventsTa
 } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
+let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
+let { requestMembership } = require("%scripts/clans/clanRequests.nut")
+let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
+
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+
+let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
 
 ::leaderboards_list <- [
   lbCategoryTypes.PVP_RATIO
@@ -117,7 +124,7 @@ let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator
   }
 ]
 
-::gui_modal_event_leaderboards <- function gui_modal_event_leaderboards(params) {
+function gui_modal_event_leaderboards(params) {
   loadHandler(gui_handlers.EventsLeaderboardWindow, params)
 }
 
@@ -274,7 +281,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     let uid = this.getLbPlayerUid(rowData)
     if (uid)
       params.uid <- uid
-    ::gui_modal_userCard(params)
+    gui_modal_userCard(params)
   }
 
   function onUserDblClick() {
@@ -295,7 +302,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.forClans) {
       let clanUid = this.getLbClanUid(rowData)
       if (clanUid)
-        ::gui_right_click_menu(clanContextMenu.getClanActions(clanUid), this)
+        openRightClickMenu(clanContextMenu.getClanActions(clanUid), this)
       return
     }
 
@@ -312,13 +319,13 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   function onClanInfo() {
     let rowData = this.getSelectedRowData()
     if (rowData)
-      ::showClanPage(this.getLbClanUid(rowData), "", "")
+      showClanPageModal(this.getLbClanUid(rowData), "", "")
   }
 
   function onMembershipReq() {
     let rowData = this.getSelectedRowData()
     if (rowData)
-      ::g_clans.requestMembership(this.getLbClanUid(rowData))
+      requestMembership(this.getLbClanUid(rowData))
   }
 
   function onEventClanMembershipRequested(_p) {
@@ -578,7 +585,7 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
       view.tabs.append({
         id = tab.id
         tabName = tab.name
-        navImagesText = tabsArr.len() > 1 ? ::get_navigation_images_text(idx, tabsArr.len()) : ""
+        navImagesText = tabsArr.len() > 1 ? getNavigationImagesText(idx, tabsArr.len()) : ""
         selected = idx == 0
       })
 
@@ -637,4 +644,5 @@ gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {
 
 return {
   openLeaderboardWindow = @() loadHandler(gui_handlers.LeaderboardWindow)
+  gui_modal_event_leaderboards
 }

@@ -3,6 +3,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let { getLocalizedControlName, getShortLocalizedControlName} = require("%scripts/controls/controlsVisual.nut")
 let { InputBase } = require("%scripts/controls/input/inputBase.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 let Button = class (InputBase) {
   deviceId = -1
@@ -13,7 +14,7 @@ let Button = class (InputBase) {
   constructor(dev, btn, presetV = null) {
     this.deviceId = dev
     this.buttonId = btn
-    this.preset = presetV || ::g_controls_manager.getCurPreset()
+    this.preset = presetV || getCurControlsPreset()
   }
 
   function getMarkup() {

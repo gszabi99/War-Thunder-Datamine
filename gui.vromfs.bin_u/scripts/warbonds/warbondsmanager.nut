@@ -2,81 +2,52 @@ from "%scripts/dagui_natives.nut" import get_warbond_curr_stage_name
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 let { PRICE } = require("%scripts/utils/configs.nut")
 let { Warbond } = require("%scripts/warbonds/warbond.nut")
 let { split } = require("%sqstd/string.nut")
 let { get_price_blk } = require("blkGetters")
+let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
+let { FULL_ID_SEPARATOR, maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
-const MAX_ALLOWED_WARBONDS_BALANCE = 0x7fffffff
-let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
+const OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
+const WARBOND_ID = "WarBond"
 
-::g_warbonds <- {
-  FULL_ID_SEPARATOR = "."
+local isListValid = false
+let warbondsList = []
 
-  list = []
-  isListValid = false
-
-  fontIcons = {}
-  isFontIconsValid = false
-  defaultWbFontIcon = "currency/warbond/green"
-
-  maxAllowedWarbondsBalance = MAX_ALLOWED_WARBONDS_BALANCE //default value as on server side, MAX_ALLOWED_WARBONDS_BALANCE
-
-  WARBOND_ID = "WarBond"
-
-  function getList(filterFunc = null) {
-    this.validateList()
-    if (filterFunc)
-      return this.list.filter(filterFunc)
-    return this.list
-  }
-
-  getUnseenAwardIds = @() this.getList().reduce(@(acc, wb) acc.extend(wb.getUnseenAwardIds()), [])
-
-  function onEventPriceUpdated(_p) { this.isListValid = false }
-  function onEventInitConfigs(_p) { this.isFontIconsValid = false }
-}
-
-::g_warbonds.getVisibleList <- function getVisibleList(filterFunc = null) {
-  return this.getList( function(wb) {
-                   if (!wb.isVisible())
-                     return false
-                   return filterFunc ? filterFunc(wb) : true
-                 })
-}
-
-::g_warbonds.validateList <- function validateList() {
+function validateWarbondsList() {
   PRICE.checkUpdate()
-  if (this.isListValid)
+  if (isListValid)
     return
-  this.isListValid = true
+  isListValid = true
 
-  this.list.clear()
+  warbondsList.clear()
 
   let wBlk = get_price_blk()?.warbonds
   if (!wBlk)
     return
 
-  this.maxAllowedWarbondsBalance = wBlk?.maxAllowedWarbondsBalance ?? this.maxAllowedWarbondsBalance
+  maxAllowedWarbondsBalance.set(wBlk?.maxAllowedWarbondsBalance ?? maxAllowedWarbondsBalance.get())
   for (local i = 0; i < wBlk.blockCount(); i++) {
     let warbondBlk = wBlk.getBlock(i)
     for (local j = 0; j < warbondBlk.blockCount(); j++) {
       let wbListBlk = warbondBlk.getBlock(j)
       let wbClass = Warbond(warbondBlk.getBlockName(), wbListBlk.getBlockName())
-      this.list.append(wbClass)
+      warbondsList.append(wbClass)
       seenWarbondsShop.setSubListGetter(wbClass.getSeenId(), @() wbClass.getUnseenAwardIds())
     }
   }
 
-  this.list.sort(function(a, b) {
+  warbondsList.sort(function(a, b) {
     if (a.expiredTime != b.expiredTime)
       return a.expiredTime > b.expiredTime ? -1 : 1
     return 0
@@ -86,81 +57,69 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   seenWarbondsShop.onListChanged()
 }
 
-::g_warbonds.getBalanceText <- function getBalanceText() {
-  let wbList = this.getVisibleList()
-  return wbList.len() ? wbList[0].getBalanceText() : ""
+function getWarbondsList(filterFunc = null) {
+  validateWarbondsList()
+  if (filterFunc)
+    return warbondsList.filter(filterFunc)
+  return warbondsList
 }
 
-::g_warbonds.isWarbondsRecounted <- function isWarbondsRecounted() {
-  local hasCurrent = false
-  local timersValid = true
-  foreach (wb in this.getList()) {
-    hasCurrent = hasCurrent || wb.isCurrent()
-    timersValid = timersValid && wb.getChangeStateTimeLeft() >= 0
-  }
-  return hasCurrent && timersValid
+let getUnseenAwardIds = @() getWarbondsList().reduce(@(acc, wb) acc.extend(wb.getUnseenAwardIds()), [])
+
+
+function getVisibleWarbondsList(filterFunc = null) {
+  return getWarbondsList( function(wb) {
+                   if (!wb.isVisible())
+                     return false
+                   return filterFunc ? filterFunc(wb) : true
+                 })
 }
 
-::g_warbonds.getInfoText <- function getInfoText() {
-  if (!::g_warbonds.isWarbondsRecounted())
-    return loc("warbonds/recalculating")
-  return this.getBalanceText()
+function getWarbondsBalanceText() {
+  let wbList = getVisibleWarbondsList()
+  return  wbList?[0].getBalanceText() ?? ""
 }
 
-::g_warbonds.findWarbond <- function findWarbond(wbId, wbListId = null) {
+function findWarbond(wbId, wbListId = null) {
   if (!wbListId)
     wbListId = get_warbond_curr_stage_name(wbId)
 
-  return u.search(this.getList(), @(wb) wbId == wb.id && wbListId == wb.listId)
+  return u.search(getWarbondsList(), @(wb) wbId == wb.id && wbListId == wb.listId)
 }
 
-::g_warbonds.getCurrentWarbond <- function getCurrentWarbond() {
-  return this.findWarbond(this.WARBOND_ID)
+function getCurrentWarbond() {
+  return findWarbond(WARBOND_ID)
 }
 
-::g_warbonds.getWarbondByFullId <- function getWarbondByFullId(wbFullId) {
-  let data = split(wbFullId, this.FULL_ID_SEPARATOR)
-  if (data.len() >= 2)
-    return this.findWarbond(data[0], data[1])
-  return null
-}
-
-::g_warbonds.getWarbondAwardByFullId <- function getWarbondAwardByFullId(wbAwardFullId) {
-  let data = split(wbAwardFullId, this.FULL_ID_SEPARATOR)
+function getWarbondAwardByFullId(wbAwardFullId) {
+  let data = split(wbAwardFullId, FULL_ID_SEPARATOR)
   if (data.len() < 3)
     return null
 
-  let wb = this.findWarbond(data[0], data[1])
+  let wb = findWarbond(data[0], data[1])
   return wb && wb.getAwardByIdx(data[2])
 }
 
-::g_warbonds.getWarbondPriceText <- @(amount) !amount ? ""
-  : $"{amount}{loc(this.defaultWbFontIcon)}"
+function isWarbondsShopAvailable() {
+  return hasFeature("Warbonds") && hasFeature("WarbondsShop") && getWarbondsList().len() > 0
+}
 
-::g_warbonds.openShop <- function openShop(params = {}) {
-  if (!this.isShopAvailable())
+function openWarbondsShop(params = {}) {
+  if (!isWarbondsShopAvailable())
     return showInfoMsgBox(loc("msgbox/notAvailbleYet"))
 
   handlersManager.loadHandler(gui_handlers.WarbondsShop, params)
 }
 
-::g_warbonds.isShopAvailable <- function isShopAvailable() {
-  return hasFeature("Warbonds") && hasFeature("WarbondsShop") && this.getList().len() > 0
-}
-
-::g_warbonds.isShopButtonVisible <- function isShopButtonVisible() {
+function isWarbondsShopButtonVisible() {
   return hasFeature("Warbonds")
 }
 
-::g_warbonds.getLimit <- function getLimit() {
-  return this.maxAllowedWarbondsBalance
-}
-
-::g_warbonds.checkOverLimit <- function checkOverLimit(wbAmount, onAcceptFn, params, silent = false) {
-  let curWb = ::g_warbonds.getCurrentWarbond()
+function checkWarbondsOverLimit(wbAmount, onAcceptFn, params, silent = false) {
+  let curWb = getCurrentWarbond()
   if (!curWb)
     return true
-  let limit = this.getLimit()
+  let limit = maxAllowedWarbondsBalance.get()
   let newBalance = curWb.getBalance() + wbAmount
   if (newBalance <= limit)
     return true
@@ -171,7 +130,7 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
       loc("warbond/msg/awardMayBeLost", { maxWarbonds = limit, lostWarbonds = newBalance - limit }),
       [
         ["yes", @() onAcceptFn(params)],
-        ["#mainmenu/btnWarbondsShop", @() ::g_warbonds.openShop()],
+        ["#mainmenu/btnWarbondsShop", @() openWarbondsShop()],
         ["no", @() null ]
       ],
       "#mainmenu/btnWarbondsShop",
@@ -180,9 +139,30 @@ let OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
   return false
 }
 
-subscribe_handler(::g_warbonds g_listener_priority.CONFIG_VALIDATION)
+function updateLeftSpecialTasksBoughtCount() {
+  if (!isLoggedIn.get())
+    return
 
-seenWarbondsShop.setListGetter(@() ::g_warbonds.getUnseenAwardIds())
+  let specialTaskAward = getCurrentWarbond()?.getAwardByType(::g_wb_award_type[EWBAT_BATTLE_TASK])
+  if (specialTaskAward == null) {
+    leftSpecialTasksBoughtCount(-1)
+    return
+  }
+
+  leftSpecialTasksBoughtCount(specialTaskAward.getLeftBoughtCount())
+}
+
+addListenersWithoutEnv({
+  function PriceUpdated(_p) {
+    isListValid = false
+    updateLeftSpecialTasksBoughtCount()
+  }
+  LoginComplete = @(_p) updateLeftSpecialTasksBoughtCount()
+  ScriptsReloaded = @(_p) updateLeftSpecialTasksBoughtCount()
+  ProfileUpdated = @(_p) updateLeftSpecialTasksBoughtCount()
+}, g_listener_priority.CONFIG_VALIDATION)
+
+seenWarbondsShop.setListGetter(@() getUnseenAwardIds())
 seenWarbondsShop.setCompatibilityLoadData(function() {
    let res = {}
    let savePath = "seen/warbond_shop_award"
@@ -198,3 +178,20 @@ seenWarbondsShop.setCompatibilityLoadData(function() {
    saveLocalByAccount(savePath, null)
    return res
   })
+
+::g_warbonds <- {
+  checkWarbondsOverLimit
+  findWarbond
+  getCurrentWarbond
+}
+
+return {
+  getWarbondsList
+  getWarbondsBalanceText
+  findWarbond
+  getCurrentWarbond
+  getWarbondAwardByFullId
+  isWarbondsShopAvailable
+  openWarbondsShop
+  isWarbondsShopButtonVisible
+}

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { addMail } =  require("%scripts/matching/serviceNotifications/postbox.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getByPresenceParams } = require("%scripts/user/presenceType.nut")
 
 enum wwClanSquadInviteColors {
   BUSY = "fadedTextColor"
@@ -59,7 +60,7 @@ gui_handlers.WwMyClanSquadInviteModal <- class (gui_handlers.MyClanSquadsListMod
 
   function canWwBattleInvite(squad) {
     let presenceParams = squad?.data?.presence ?? {}
-    let presenceType = ::g_presence_type.getByPresenceParams(presenceParams)
+    let presenceType = getByPresenceParams(presenceParams)
     return presenceType.canInviteToWWBattle && !this.isGameParamsMatch(presenceParams) && this.isSquadOnline(squad)
   }
 
@@ -84,7 +85,7 @@ gui_handlers.WwMyClanSquadInviteModal <- class (gui_handlers.MyClanSquadsListMod
 
   function getPresence(squad) {
     let presenceParams = squad?.data?.presence ?? {}
-    let presenceType = ::g_presence_type.getByPresenceParams(presenceParams)
+    let presenceType = getByPresenceParams(presenceParams)
     let presenceText = presenceType.getLocText(presenceParams)
 
     return this.colorizePresence(presenceText, presenceParams, presenceType)

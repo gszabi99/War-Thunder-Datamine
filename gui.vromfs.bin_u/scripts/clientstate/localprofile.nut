@@ -8,15 +8,13 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let DataBlock = require("DataBlock")
 let { get_local_custom_settings_blk, get_common_local_settings_blk } = require("blkGetters")
-let { getStateDebugStr, isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const EATT_UNKNOWN = -1
 
 eventbus_subscribe("onUpdateProfile", function(msg) {
   let { taskId = -1, action = "", transactionType = EATT_UNKNOWN } = msg
-  if (!isProfileReceived.get())
-    ::g_login.onProfileReceived()
-
   broadcastEvent("ProfileUpdated", { taskId, action, transactionType })
 
   if (!isLoggedIn.get())

@@ -94,6 +94,16 @@
       },
       "turret_top_dm": {
         "armorThickness": 4.0
+      },
+      "composite_armor_hull_01_dm": {
+        "armorThickness": 4.9,
+        "armorClass": "tank_structural_steel",
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_02_dm": {
+        "armorThickness": 4.9,
+        "armorClass": "tank_structural_steel",
+        "hidableInXrayViewer": true
       }
     },
     "turret": {
@@ -622,6 +632,26 @@
         "armorThrough": 20.0,
         "armorThickness": 10.0,
         "hp": 20.0
+      }
+    }
+  },
+  "xray_viewer_data": {
+    "armorArrayHull": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "titleLoc": "tank_structural_steel",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_01_dm"
+        }
+      }
+    },
+    "armorArrayTurret": {
+      "xrayDmPart": "composite_armor_hull_02_dm",
+      "titleLoc": "tank_structural_steel",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_02_dm"
+        }
       }
     }
   },
@@ -1785,7 +1815,7 @@
     },
     "engine": {
       "horsePowers": 165.0,
-      "maxRPM": 2700.0,
+      "maxRPM": 2850.0,
       "minRPM": 500.0
     },
     "mechanics": {
@@ -1793,7 +1823,7 @@
       "maxBrakeForce": 25480.0,
       "driveGearRadius": 0.405,
       "mainGearRatio": 3.1,
-      "sideGearRatio": 2.74,
+      "sideGearRatio": 2.88,
       "gearRatios": {
         "ratio": [
           -7.952,

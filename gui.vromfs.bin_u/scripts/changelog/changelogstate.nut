@@ -19,7 +19,7 @@ let { parse_json } = require("json")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let { isNewbieInited, isMeNewbie } = require("%scripts/myStats.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const MSEC_BETWEEN_REQUESTS = 600000
 const maxVersionsAmount = 5

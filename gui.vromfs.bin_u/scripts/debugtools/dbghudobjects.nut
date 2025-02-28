@@ -40,8 +40,8 @@ function onUpdate(_obj, dt) {
 }
 
 function createTimerObjOnce() {
-   if (checkObj(curTimerObj))
-     return
+  if (checkObj(curTimerObj))
+    return
 
   let hudHandler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
   if (!hudHandler) {

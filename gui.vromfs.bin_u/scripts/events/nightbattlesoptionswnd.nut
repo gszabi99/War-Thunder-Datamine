@@ -15,7 +15,7 @@ let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut"
 let { getNightBattlesUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { getUnlockNameText, doPreviewUnlockPrize, fillUnlockProgressBar, fillUnlockDescription,
   fillUnlockImage, fillReward, fillUnlockTitle, fillUnlockPurchaseButton, fillUnlockManualOpenButton,
-  updateLockStatus, updateUnseenIcon, buildUnlockDesc
+  updateLockStatus, updateUnseenIcon, buildUnlockDesc, buildConditionsConfig
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
@@ -124,7 +124,7 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillUnlockInfo(unlockBlk, unlockObj) {
-    let itemData = ::build_conditions_config(unlockBlk)
+    let itemData = buildConditionsConfig(unlockBlk)
     buildUnlockDesc (itemData)
     ::g_unlock_view.fillUnlockConditions(itemData, unlockObj, this)
     fillUnlockProgressBar(itemData, unlockObj)
@@ -152,7 +152,7 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
 
   function onPrizePreview(obj) {
     this.previewUnlockId = obj.unlockId
-    let unlockCfg = ::build_conditions_config(getUnlockById(obj.unlockId))
+    let unlockCfg = buildConditionsConfig(getUnlockById(obj.unlockId))
     deferOnce(@() doPreviewUnlockPrize(unlockCfg))
   }
 

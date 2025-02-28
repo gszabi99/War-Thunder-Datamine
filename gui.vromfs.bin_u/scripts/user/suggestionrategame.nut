@@ -11,7 +11,7 @@ let { debriefingRows } = require("%scripts/debriefing/debriefingFull.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { register_command } = require("console")
 let { steam_is_running } = require("steam")
-let { request_review } = require("%xboxLib/impl/store.nut")
+let { request_review } = require("%gdkLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { get_charserver_time_sec } = require("chard")
 let { saveLocalAccountSettings, loadLocalAccountSettings

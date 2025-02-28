@@ -21,7 +21,10 @@ let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { get_game_mode } = require("mission")
 let { parse_json } = require("json")
 let { hasXInputDevice, isXInputDevice } = require("controls")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 const FOOTBALL_NY2021_BACKUP_SAVE_ID = "footballNy2021Backup"
 
@@ -46,12 +49,12 @@ function isHotkeyEmpty(hc) {
 function tryControlsOverride() {
   if (!shouldManageControls())
     return false
-  if (get_game_mode() != GM_DOMINATION || !::SessionLobby.getMissionName().contains("football"))
+  if (get_game_mode() != GM_DOMINATION || !getSessionLobbyMissionName().contains("football"))
     return false
   if (loadLocalAccountSettings(FOOTBALL_NY2021_BACKUP_SAVE_ID) != null)
     return false
 
-  let preset = ::g_controls_manager.getCurPreset()
+  let preset = getCurControlsPreset()
   let hcPrimaryGun = preset.getHotkey("ID_FIRE_GM")
   let hcMachineGun = preset.getHotkey("ID_FIRE_GM_MACHINE_GUN")
 
@@ -164,7 +167,7 @@ function tryControlsOverride() {
 
   foreach (hotkeyId, hc in modified)
     preset.setHotkey(hotkeyId, hc)
-  ::g_controls_manager.commitControls()
+  commitControls()
   forceSaveProfile()
 
   log($"FoolballNy2021Hack: Done")
@@ -181,7 +184,7 @@ function tryControlsRestore() {
   if (!u.isDataBlock(blk))
     return false // Nothing to restore.
 
-  let preset = ::g_controls_manager.getCurPreset()
+  let preset = getCurControlsPreset()
   let data = convertBlk(blk)
 
   log($"FoolballNy2021Hack: Restoring hotkeys from backup:")
@@ -201,7 +204,7 @@ function tryControlsRestore() {
       else
         log($"  SKIP {hotkeyId}, current state is different: {save_to_json(curHc)}")
     }
-    ::g_controls_manager.commitControls()
+    commitControls()
   }
 
   saveLocalAccountSettings(FOOTBALL_NY2021_BACKUP_SAVE_ID, null) // Deleting backup.

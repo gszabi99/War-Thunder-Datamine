@@ -1,9 +1,11 @@
 from "%scripts/dagui_natives.nut" import get_current_booster_uid, get_current_booster_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 
 let { Cost } = require("%scripts/money.nut")
 let { calc_personal_boost, calc_public_boost } = require("%appGlobals/ranks_common_shared.nut")
+let { registerBoosterUpdateTimer } = require("%scripts/items/boosterActions.nut")
 
 let boosterEffectType = {
   RP = {
@@ -38,10 +40,10 @@ let boosterEffectType = {
 
 function getActiveBoostersArray(effectType = null) {
   let res = []
-  let total = get_current_booster_count(::INVALID_USER_ID)
+  let total = get_current_booster_count(INVALID_USER_ID)
   let bonusType = effectType ? effectType.name : null
   for (local i = 0; i < total; i++) {
-    let uid = get_current_booster_uid(::INVALID_USER_ID, i)
+    let uid = get_current_booster_uid(INVALID_USER_ID, i)
     let item = ::ItemsManager.findItemByUid(uid, itemType.BOOSTER)
     if (!item || (bonusType && item[bonusType] == 0) || !item.isActive(true))
       continue
@@ -50,7 +52,7 @@ function getActiveBoostersArray(effectType = null) {
   }
 
   if (res.len())
-    ::ItemsManager.registerBoosterUpdateTimer(res)
+    registerBoosterUpdateTimer(res)
 
   return res
 }

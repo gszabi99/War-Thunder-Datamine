@@ -34,7 +34,8 @@ tdiv {
   <<#haveDiscount>>
     textareaNoTab {
       text:t='<<listPriceText>>'
-      overlayTextColor:t='faded'
+      overlayTextColor:t='active'
+      color-factor:t='153'
       tdiv {
         size:t='pw, 1@dp'
         position:t='absolute'

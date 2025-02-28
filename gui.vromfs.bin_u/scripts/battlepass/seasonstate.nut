@@ -5,6 +5,7 @@ let { userstatStats, refreshUserstatDescList } = require("%scripts/userstat/user
 let { basicUnlock, premiumUnlock, hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
 let { getRangeTextByPoint2 } = require("%scripts/unlocks/unlocksConditions.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let { isItemdefId } = require("%scripts/items/itemsChecks.nut")
 let { floor } = require("math")
 
 let expStatId = "battlepass_exp"
@@ -134,7 +135,7 @@ battlePassShopConfig.subscribe(function(itemsConfigForRequest) {
   foreach (config in (itemsConfigForRequest ?? [])) {
     foreach (_key, value in config) {
       let itemId = to_integer_safe(value, value, false) //-param-pos
-      if (::ItemsManager.isItemdefId(itemId))
+      if (isItemdefId(itemId))
         itemsToRequest.append(itemId)
     }
   }

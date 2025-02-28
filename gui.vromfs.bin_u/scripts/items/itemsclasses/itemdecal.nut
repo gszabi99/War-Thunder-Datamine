@@ -3,6 +3,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let Decal = class (ItemCouponBase) {
   static name = "Decal"
@@ -17,4 +18,4 @@ let Decal = class (ItemCouponBase) {
   doPreview  = @() this.getDecorator() && this.getDecorator().doPreview()
 }
 
-return { Decal }
+registerItemClass(Decal)

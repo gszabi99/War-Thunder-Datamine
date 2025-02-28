@@ -1,13 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
-let string = require("%sqstd/string.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 const SHARPEN_SMALL_ICONS = 1.25
 const MAX_SMALL_ICON_SIZE_MUL = 8
 
-local intIconToString = @(_id) ""
 local getIconPath = @(icon) icon
 local getConfig = @() null
 
@@ -28,8 +26,6 @@ let class BhvAvatar {
   function validateStrValue(strValue) {
     if (strValue in getConfig())
       return strValue
-    if (string.isStringInteger(strValue))
-      return intIconToString(strValue.tointeger())
     return strValue
   }
 
@@ -52,8 +48,6 @@ let class BhvAvatar {
     local shouldUpdate = false
     if (u.isBool(newValue))
       shouldUpdate = this.setIsFull(obj, newValue)
-    else if (u.isInteger(newValue))
-      shouldUpdate = this.setStringValue(obj, intIconToString(newValue))
     else if (u.isString(newValue))
       shouldUpdate = this.setStringValue(obj, newValue)
 
@@ -100,13 +94,11 @@ replace_script_gui_behaviour("bhvAvatar", BhvAvatar)
 
 return {
   init = function(params) {
-    intIconToString   = params?.intIconToString   ?? intIconToString
     getIconPath       = params?.getIconPath       ?? getIconPath
     getConfig         = params?.getConfig         ?? getConfig
   }
 
   getCurParams = @() {
-    intIconToString
     getIconPath
     getConfig
   }

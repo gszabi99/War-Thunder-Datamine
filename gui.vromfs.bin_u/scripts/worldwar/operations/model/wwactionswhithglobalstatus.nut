@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/clans/clanState.nut" import is_in_clan
+let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
 
 let { wwGetOperationId } = require("worldwar")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -66,7 +67,7 @@ function updateCurOperationStatusInGlobalStatus() {
 
 function isWwOperationInviteEnable() {
   let wwOperationId = wwGetOperationId()
-  return wwOperationId > -1 && ::g_clans.hasRightsToQueueWWar()
+  return wwOperationId > -1 && hasRightsToQueueWWar()
     && getOperationById(wwOperationId)?.isMyClanParticipate()
 }
 

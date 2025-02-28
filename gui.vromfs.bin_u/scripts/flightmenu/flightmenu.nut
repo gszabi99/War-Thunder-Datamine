@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import do_player_bailout, toggle_freecam, pause_game, is_game_paused, in_flight_menu, set_context_to_player
+from "%scripts/dagui_natives.nut" import do_player_bailout, toggle_freecam, pause_game, is_game_paused, in_flight_menu, set_context_to_player, is_flight_menu_disabled, get_is_in_flight_menu, close_ingame_gui
 from "app" import is_offline_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
@@ -19,7 +19,7 @@ let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { guiStartMPStatScreen, getCurMpTitle } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { is_replay_playing } = require("replays")
 let { get_game_mode, get_game_type } = require("mission")
 let { leave_mp_session, quit_to_debriefing, interrupt_multiplayer,
@@ -37,6 +37,7 @@ let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { disableOrders } = require("%scripts/items/orders.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
+let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
 
 function gui_start_briefing_restart(_ = {}) {
   log("gui_start_briefing_restart")
@@ -89,7 +90,7 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   usePause = true
 
   function initScreen() {
-    this.setSceneTitle(::getCurMpTitle())
+    this.setSceneTitle(getCurMpTitle())
 
     this.menuButtonsCfg = flightMenuButtonTypes.types.filter(@(btn) btn.isAvailableInMission())
     let markup = handyman.renderCached("%gui/flightMenu/menuButtons.tpl", { buttons = this.menuButtonsCfg })
@@ -327,7 +328,7 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onControlsHelp() {
-    ::gui_modal_help(false, HELP_CONTENT_SET.MISSION)
+    gui_modal_help(false, HELP_CONTENT_SET.MISSION)
   }
 
   onStats = @() guiStartMPStatScreen()
@@ -352,9 +353,25 @@ function gui_start_flight_menu(_ = null) {
   handlersManager.loadHandler(gui_handlers.FlightMenu)
 }
 
+function gui_start_flight_menu_help(_) {
+  if (!hasFeature("ControlsHelp")) {
+    get_gui_scene().performDelayed({}, function() {
+      close_ingame_gui()
+      if (is_game_paused())
+        pause_game(false)
+    })
+    return
+  }
+  let needFlightMenu = !get_is_in_flight_menu() && !is_flight_menu_disabled()
+  if (needFlightMenu)
+    gui_start_flight_menu()
+  gui_modal_help(needFlightMenu, HELP_CONTENT_SET.MISSION)
+}
+
 eventbus_subscribe("gui_start_flight_menu", gui_start_flight_menu)
 eventbus_subscribe("gui_start_flight_menu_failed", gui_start_flight_menu) //it checks MISSION_STATUS_FAIL status itself
 eventbus_subscribe("gui_start_flight_menu_psn", @(_) null) //unused atm, but still have a case in code
+eventbus_subscribe("gui_start_flight_menu_help", gui_start_flight_menu_help)
 
 return {
   gui_start_flight_menu

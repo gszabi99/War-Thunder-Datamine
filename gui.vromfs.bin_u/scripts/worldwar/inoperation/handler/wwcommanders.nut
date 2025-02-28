@@ -12,6 +12,7 @@ let { wwGetOperationId, wwGetPlayerSide } = require("worldwar")
 let { showArmiesIndex } = require("%scripts/worldWar/wwMapDataBridge.nut")
 let WwArmyGroupHandler = require("%scripts/worldWar/inOperation/handler/wwArmyGroupHandler.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
 
 gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -143,7 +144,7 @@ gui_handlers.WwCommanders <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onClickArmy(obj) {
-    ::showClanPage(obj.clanId, "", "")
+    showClanPageModal(obj.clanId, "", "")
   }
 
   function onHoverLostArmyItem(_obj) {

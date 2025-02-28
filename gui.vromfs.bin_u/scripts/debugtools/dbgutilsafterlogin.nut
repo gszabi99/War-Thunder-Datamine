@@ -3,18 +3,19 @@ from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, get_
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
+let { DM_VIEWER_NONE, DM_VIEWER_XRAY } = require("hangar")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let userstat = require("userstat")
-//let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format, split_by_chars } = require("string")
 let DataBlock  = require("DataBlock")
 let { blkFromPath } = require("%sqstd/datablock.nut")
 let dbgExportToFile = require("%globalScripts/debugTools/dbgExportToFile.nut")
+let { getPartType } = require("%globalScripts/modeXrayLib.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
-let { getWeaponInfoText, getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getWeaponInfoText, getWeaponNameText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isWeaponAux, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
 let { userstatStats, userstatDescList, userstatUnlocks, refreshUserstatStats
 } = require("%scripts/userstat/userstat.nut")
@@ -26,7 +27,7 @@ let { getUnitMassPerSecValue } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { register_command } = require("console")
 let { get_meta_mission_info_by_gm_and_name } = require("guiMission")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
-let { startsWith, stripTags } = require("%sqstd/string.nut")
+let { stripTags } = require("%sqstd/string.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
@@ -39,6 +40,8 @@ let { gui_start_decals } = require("%scripts/customization/contentPreview.nut")
 let { guiStartImageWnd } = require("%scripts/showImage.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { getLogNameByType } = require("%scripts/userLog/userlogUtils.nut")
+let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
+let { getItemsList } = require("%scripts/items/itemsManager.nut")
 
 function _charAddAllItemsHelper(params) {
   if (params.currentIndex >= params.items.len())
@@ -67,7 +70,7 @@ function _charAddAllItemsHelper(params) {
 
 function charAddAllItems(count = 1) {
   let params = {
-    items = ::ItemsManager.getItemsList()
+    items = getItemsList()
     currentIndex = 0
     count
   }
@@ -129,16 +132,22 @@ function debug_export_unit_weapons_descriptions() {
       foreach (weapon in unit.getWeapons())
         if (!isWeaponAux(weapon)) {
           blk[$"{weapon.name}_short"] <- getWeaponNameText(unit, false, weapon.name, ", ")
-          local rowsList = split_by_chars(getWeaponInfoText(unit,
-            { isPrimary = false, weaponPreset = weapon.name }), "\n")
+          let weaponInfoParams = { isPrimary = false, weaponPreset = weapon.name }
+          let weaponInfoData = makeWeaponInfoData(unit, weaponInfoParams)
+          local rowsList = split_by_chars(getWeaponInfoText(unit, weaponInfoData), "\n")
           foreach (row in rowsList)
             blk[weapon.name] <- row
-          rowsList = split_by_chars(getWeaponInfoText(unit,
-            { isPrimary = false, weaponPreset = weapon.name, detail = INFO_DETAIL.EXTENDED }), "\n")
+
+          let weaponInfoParamsExtended = { isPrimary = false, weaponPreset = weapon.name, detail = INFO_DETAIL.EXTENDED }
+          let weaponInfoDataExtended = makeWeaponInfoData(unit, weaponInfoParamsExtended)
+          rowsList = split_by_chars(getWeaponInfoText(unit, weaponInfoDataExtended), "\n")
           foreach (row in rowsList)
             blk[$"{weapon.name}_extended"] <- row
-          rowsList = split_by_chars(getWeaponInfoText(unit,
-            { weaponPreset = weapon.name, detail = INFO_DETAIL.FULL }), "\n")
+
+          let weaponInfoParamsFull = { weaponPreset = weapon.name, detail = INFO_DETAIL.FULL }
+          let weaponInfoDataFull = makeWeaponInfoData(unit, weaponInfoParamsFull)
+          rowsList = split_by_chars(getWeaponInfoText(unit, weaponInfoDataFull), "\n")
+
           foreach (row in rowsList)
             blk[$"{weapon.name}_full"] <- row
           blk[$"{weapon.name}_massPerSec"] <- getUnitMassPerSecValue(unit, true, weapon.name)
@@ -149,17 +158,22 @@ function debug_export_unit_weapons_descriptions() {
   })
 }
 
-function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null) {
+function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null, unitIdsWhitelist = null, unitIdsBlacklist = null) {
   ::dmViewer.isDebugBatchExportProcess = true
   ::dmViewer.toggle(DM_VIEWER_XRAY)
   dbgExportToFile.export({
     resultFilePath = "export/unitsXray.blk"
-    itemsPerFrame = 10
+    itemsPerFrame = 1
     list = function() {
       let res = []
       let wpCost = get_wpcost_blk()
       for (local i = 0; i < wpCost.blockCount(); i++) {
-        let unit = getAircraftByName(wpCost.getBlock(i).getBlockName())
+        let unitId = wpCost.getBlock(i).getBlockName()
+        if (unitIdsWhitelist != null && !unitIdsWhitelist.contains(unitId))
+          continue
+        if (unitIdsBlacklist?.contains(unitId) ?? false)
+          continue
+        let unit = getAircraftByName(unitId)
         if (unit?.isInShop)
           res.append(unit)
       }
@@ -180,12 +194,14 @@ function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null) {
       partNames.sort()
 
       foreach (partName in partNames) {
-        if (partIdWhitelist != null && partIdWhitelist.findindex(@(v) startsWith(partName, v)) == null)
+        if (partIdWhitelist != null && partIdWhitelist.findindex(@(v) partName.startswith(v)) == null)
           continue
         let params = { name = partName }
-        let info = ::dmViewer.getPartTooltipInfo(::dmViewer.getPartNameId(params), params)
-        if (info.desc != "")
-          blk[partName] <- stripTags($"{info.title}\n{info.desc}")
+        let info = ::dmViewer.getPartTooltipInfo(getPartType(partName, ::dmViewer.xrayRemap), params)
+        if (info.title != "" || info.desc.len()) {
+          let descText = "\n".join(info.desc.map(@(v) v?.value ?? v))
+          blk[partName] <- stripTags("\n".join([ info.title, descText ], true))
+        }
       }
       return blk.paramCount() != 0 ? { key = unit.name, value = blk } : null
     }
@@ -285,7 +301,7 @@ function debug_show_weapon(weaponName) {
     let weapons = getUnitWeapons(unitBlk)
     foreach (weap in weapons)
       if (weaponName == getWeaponNameByBlkPath(weap?.blk ?? "")) {
-        ::open_weapons_for_unit(unit)
+        open_weapons_for_unit(unit)
         return $"{unit.name} / {weap.blk}"
       }
   }

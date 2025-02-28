@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
+
 let contactsClient = require("contactsClient.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { APP_ID } = require("app")
@@ -16,7 +18,8 @@ let { addFriendInvite } = require("%scripts/invites/invites.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { contactEvent, statusGroupsToRequest, GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
+let { isPlayerInContacts, isMaxPlayersInContactList } = require("%scripts/contacts/contactsChecks.nut")
+let { find_contact_by_name_and_do, update_contacts_by_list } = require("%scripts/contacts/contactsActions.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")
 
@@ -100,7 +103,7 @@ function updatePresencesByList(presences) {
     player.needReset <- !(p?.update ?? true)
     contactsDataList.append(player)
   }
-  ::update_contacts_by_list(contactsDataList, false)
+  update_contacts_by_list(contactsDataList, false)
 }
 
 function onUpdateContactsCb(result) {
@@ -132,7 +135,7 @@ function requestContactsListAndDo(cb) {
 }
 
 function execContactsCharAction(userId, charAction, successCb = null) {
-  if (userId == ::INVALID_USER_ID) {
+  if (userId == INVALID_USER_ID) {
     logC($"trying to do {charAction} with invalid contact")
     return
   }
@@ -205,7 +208,7 @@ function verifiedContactAndDoIfNeed(player, groupName, cb) {
       return
 
     let self = callee()
-    ::find_contact_by_name_and_do(player.name, @(contact) self(contact, groupName, cb))
+    find_contact_by_name_and_do(player.name, @(contact) self(contact, groupName, cb))
     return
   }
 
@@ -233,8 +236,20 @@ function addContactImpl(contact, groupName) {
   execContactsCharAction(contact.uid, action, successCb)
 }
 
+function canAddPlayerToContactsList(groupName) {
+  if (!isMaxPlayersInContactList(groupName))
+    return true
+
+  showInfoMsgBox(
+    format(loc("msg/cant_add/too_many_contacts"), EPL_MAX_PLAYERS_IN_LIST),
+    "cant_add_contact"
+  )
+
+  return false
+}
+
 function addContact(player, groupName) { //playerConfig: { uid, name }
-  if (!::can_add_player_to_contacts_list(groupName))
+  if (!canAddPlayerToContactsList(groupName))
     return //Too many contacts
 
   verifiedContactAndDoIfNeed(player, groupName, addContactImpl)

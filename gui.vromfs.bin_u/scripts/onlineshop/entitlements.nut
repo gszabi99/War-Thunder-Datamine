@@ -128,11 +128,19 @@ function getEntitlementAmount(ent) {
   return 1
 }
 
-function getEntitlementTimeText(ent) { // -return-different-types
+function getEntitlementTimeText(ent) {
   if ("ttl" in ent)
     return "".concat(ent.ttl, loc("measureUnits/days"))
   if ("httl" in ent)
     return "".concat(ent.httl, loc("measureUnits/hours"))
+  return ""
+}
+
+function getEntitlementFullTimeText(ent) {
+  if ("ttl" in ent)
+    return loc("measureUnits/full/days", { n = ent.ttl })
+  if ("httl" in ent)
+    return loc("measureUnits/full/hours", { n = ent.httl })
   return ""
 }
 
@@ -322,6 +330,7 @@ return {
   getEntitlementName
   getEntitlementShortName
   getEntitlementTimeText
+  getEntitlementFullTimeText
   getEntitlementPrice
   getEntitlementPriceFloat
   getEntitlementDescription

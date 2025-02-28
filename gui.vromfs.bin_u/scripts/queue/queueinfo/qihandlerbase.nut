@@ -1,11 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 
-
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-
-
+let { updateShortQueueInfo } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
 
 gui_handlers.QiHandlerBase <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -86,8 +84,7 @@ gui_handlers.QiHandlerBase <- class (gui_handlers.BaseGuiHandlerWT) {
     let textObj = this.scene.findObject(this.timerTextObjId)
     let timerObj = this.scene.findObject("wait_time_block")
     let iconObj = this.scene.findObject("queue_wait_icon")
-    ::g_qi_view_utils.updateShortQueueInfo(timerObj, textObj,
-      iconObj, loc("yn1/waiting_for_game_query"))
+    updateShortQueueInfo(timerObj, textObj, iconObj, loc("yn1/waiting_for_game_query"))
   }
 
   function leaveQueue(_obj) { if (this.leaveQueueCb) this.leaveQueueCb() }

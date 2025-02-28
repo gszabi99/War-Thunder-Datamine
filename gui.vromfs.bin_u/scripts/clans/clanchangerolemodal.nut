@@ -12,11 +12,13 @@ let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { getClanMemberRank, getLeadersCount } = require("%scripts/clans/clanTextInfo.nut")
+let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
 
 function guiStartChangeRoleWnd(contact, clanData) {
   if (!clan_get_admin_editor_mode()) {
-    let myClanRights = ::g_clans.getMyClanRights()
-    let leadersCount = ::g_clans.getLeadersCount(clanData)
+    let myClanRights = getMyClanRights()
+    let leadersCount = getLeadersCount(clanData)
     if (contact.name == userName.value
         && isInArray("LEADER", myClanRights)
         && leadersCount <= 1)
@@ -26,7 +28,7 @@ function guiStartChangeRoleWnd(contact, clanData) {
   local changeRolePlayer = {
     uid = contact.uid,
     name = contact.name,
-    rank = ::g_clans.getClanMemberRank(clanData, contact.name)
+    rank = getClanMemberRank(clanData, contact.name)
   }
 
   loadHandler(gui_handlers.clanChangeRoleModal,

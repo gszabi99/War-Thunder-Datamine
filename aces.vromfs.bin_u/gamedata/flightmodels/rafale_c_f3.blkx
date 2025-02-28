@@ -2062,10 +2062,10 @@
       2024
     ],
     "hmdBlockIlsArea": [
-      0.5,
+      0.25,
       -0.4,
-      0.55,
-      0.6
+      0.65,
+      0.75
     ],
     "hmdEnabledByDefault": true,
     "mirror": true,
@@ -2221,7 +2221,6 @@
             0.25,
             0.1
           ],
-          "cameraFromShell": true,
           "page": [
             {
               "type": "radar",
@@ -2254,7 +2253,6 @@
             0.5,
             1.0
           ],
-          "cameraFromTargetingPod": true,
           "page": [
             {
               "type": "thermal",
@@ -2263,6 +2261,10 @@
             {
               "type": "target_tracking",
               "turretIdx": 0
+            },
+            {
+              "type": "custom",
+              "pageName": "rafaleWpn"
             },
             {
               "type": "map"
@@ -2559,9 +2561,9 @@
   },
   "WeaponSlots": {
     "maxloadMass": 9500.0,
-    "maxloadMassLeftConsoles": 4500.0,
-    "maxloadMassRightConsoles": 4500.0,
-    "maxDisbalance": 1500.0,
+    "maxloadMassLeftConsoles": 3500.0,
+    "maxloadMassRightConsoles": 3500.0,
+    "maxDisbalance": 950.0,
     "HideNodes": {
       "node": [
         "pylon_pu_708_001",
@@ -3139,7 +3141,7 @@
             "separate": true
           },
           "DependentWeaponPreset": {
-            "slot": 8,
+            "slot": 9,
             "preset": "ptb_3"
           }
         }
@@ -3289,7 +3291,7 @@
             "separate": true
           },
           "DependentWeaponPreset": {
-            "slot": 3,
+            "slot": 4,
             "preset": "ptb_1"
           }
         }

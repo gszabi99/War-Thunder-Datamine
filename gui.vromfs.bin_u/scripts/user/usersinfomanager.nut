@@ -2,7 +2,6 @@ from "%scripts/dagui_library.nut" import *
 let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
-let avatars = require("%scripts/user/avatars.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
@@ -16,7 +15,9 @@ let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
       "cln_get_users_terse_info" - char action returns DataBlock: {
                                                                       uid = {
                                                                         nick="string",
-                                                                        pilotId="integer"
+                                                                        pilotIcon="string"
+                                                                        ...
+                                                                        (look in the function _convertServerResponse)
                                                                       }
                                                                       uid {...}
                                                                     }
@@ -88,7 +89,7 @@ function _convertServerResponse(response) {
     let convertedData = {
       uid = uid
       name = userInfo?.nick ?? ""
-      pilotIcon = avatars.getIconById(userInfo?.pilotId ?? "")
+      pilotIcon = userInfo?.pilotIcon ?? ""
       title = userInfo?.title ?? ""
       clanTag =  userInfo?.clanTag ?? ""
       clanName =  userInfo?.clanName ?? ""

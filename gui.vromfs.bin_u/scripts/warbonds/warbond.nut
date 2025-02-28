@@ -12,7 +12,9 @@ let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 let { WarbondAward } = require("%scripts/warbonds/warbondAward.nut")
 let { get_charserver_time_sec } = require("chard")
 let { get_price_blk } = require("blkGetters")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { FULL_ID_SEPARATOR, DEFAULT_WB_FONT_ICON, maxAllowedWarbondsBalance
+} = require("%scripts/warbonds/warbondsState.nut")
 
 let Warbond = class {
   id = ""
@@ -49,7 +51,7 @@ let Warbond = class {
     if (!u.isDataBlock(listBlk))
       return
 
-    this.fontIcon = ::g_warbonds.defaultWbFontIcon
+    this.fontIcon = DEFAULT_WB_FONT_ICON
 
     let guiWarbondsBlock = GUI.get()?.warbonds
     this.medalIcon = getTblValue(this.listId, getTblValue("medalIcons", guiWarbondsBlock), this.medalIcon)
@@ -65,7 +67,7 @@ let Warbond = class {
   }
 
   function getFullId() {
-    return "".concat(this.id, ::g_warbonds.FULL_ID_SEPARATOR, this.listId)
+    return "".concat(this.id, FULL_ID_SEPARATOR, this.listId)
   }
 
   function isCurrent() { //warbond than can be received right now
@@ -126,7 +128,7 @@ let Warbond = class {
 
   function getBalanceText() {
     let limitText = loc("ui/slash").concat(this.getPriceText(this.getBalance(), true, false),
-      this.getPriceText(::g_warbonds.getLimit(), true, false))
+      this.getPriceText(maxAllowedWarbondsBalance.get(), true, false))
     return colorize("activeTextColor", limitText)
   }
 

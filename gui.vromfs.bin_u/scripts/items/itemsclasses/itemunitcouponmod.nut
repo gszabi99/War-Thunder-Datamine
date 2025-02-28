@@ -4,6 +4,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { image_for_air } = require("%scripts/unit/unitInfo.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let ItemUnitCouponMod = class (ItemExternal) {
   static iType = itemType.UNIT_COUPON_MOD
@@ -22,4 +23,5 @@ let ItemUnitCouponMod = class (ItemExternal) {
 
   getTypeNameForMarketableDesc = @() utf8ToLower(loc("item"))
 }
-return {ItemUnitCouponMod}
+
+registerItemClass(ItemUnitCouponMod)

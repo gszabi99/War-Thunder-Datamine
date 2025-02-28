@@ -4,6 +4,7 @@ from "%scripts/hud/hudConsts.nut" import HINT_INTERVAL
 from "%scripts/viewUtils/hints.nut" import g_hints, g_hint_tag
 from "%scripts/utils_sa.nut" import get_team_color, get_mplayer_color
 
+let DataBlock = require("DataBlock")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -21,12 +22,15 @@ let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { get_mplayer_by_id } = require("mission")
-let { get_mission_difficulty, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
+let { get_mission_difficulty, get_current_mission_desc,
+  OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 let { loadLocalAccountSettings, saveLocalAccountSettings} = require("%scripts/clientState/localProfile.nut")
 let { register_command } = require("console")
 let { isEqual } = require("%sqstd/underscore.nut")
 let { g_hud_hint_types } = require("%scripts/hud/hudHintTypes.nut")
 let { objectiveStatus } = require("%scripts/misObjectives/objectiveStatus.nut")
+let { getLocalTeamForMpStats } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
@@ -84,7 +88,7 @@ let getRawShortcutsArray = function(shortcuts) {
 }
 
 function getUniqueShortcuts(shortcuts) {
-  let preset = ::g_controls_manager.getCurPreset()
+  let preset = getCurControlsPreset()
   let uniqHotkeys = [preset.getHotkey(shortcuts[0])]
   let uniqShortcuts = [shortcuts[0]]
 
@@ -1166,7 +1170,7 @@ enums.addTypes(g_hud_hints, {
       if (eventData?.participant)
         participantList = u.isArray(eventData.participant) ? eventData.participant : [eventData.participant]
 
-      let playerTeam = ::get_local_team_for_mpstats()
+      let playerTeam = getLocalTeamForMpStats()
       foreach (participant in participantList) {
         let  participantPlayer = "player" in participant
             ? participant.player
@@ -2640,7 +2644,13 @@ enums.addTypes(g_hud_hints, {
   AMMO_USED_EXIT_ZONE = {
     hintType = g_hud_hint_types.MISSION_ACTION_HINTS
     showEvent = "hint:ammo_used_exit_zone:show"
-    locId = "hints/ammo_used_exit_zone"
+    getLocId = function(_hintData) {
+      let misBlk = DataBlock()
+      get_current_mission_desc(misBlk)
+      return misBlk?.shouldReturnSpawnCostInExitZone
+        ? "\n".concat(loc("hints/ammo_used_exit_zone"), loc("hints/return_spawn_cost_exit_zone"))
+        : "hints/ammo_used_exit_zone"
+    }
     lifeTime = 15.0
     isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
@@ -2759,6 +2769,20 @@ enums.addTypes(g_hud_hints, {
     buildText = @(data) data.isShrinkZone ? colorize("@red", data.text) : colorize("@white", data.text)
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
+  }
+
+  MANUAL_SENSOR_CUE_CONTROL = {
+    hintType  = g_hud_hint_types.REPAIR
+    locId     = "hints/manual_sensor_cue_control"
+    showEvent = "hint:manual_sensor_cue_control"
+    lifeTime  = 5.0
+  }
+
+  MANUAL_SENSOR_TILT_CONTROL = {
+    hintType  = g_hud_hint_types.REPAIR
+    locId     = "hints/manual_sensor_tilt_control"
+    showEvent = "hint:manual_sensor_tilt_control"
+    lifeTime  = 5.0
   }
 },
 function() {

@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag, clan_request_info, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
-from "%scripts/clans/clanState.nut" import is_in_clan
+from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -10,6 +10,7 @@ let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { WwBattleView } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { isWorldWarEnabled } = require("%scripts/worldWar/worldWarGlobalStates.nut")
+let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 
 let wwTooltipTypes = {
   WW_MAP_TOOLTIP_TYPE_ARMY = { //by crewId, unitName, specTypeCode
@@ -18,8 +19,10 @@ let wwTooltipTypes = {
         return ""
 
       let army = ::g_world_war.getArmyByName(params.currentId)
-      if (army)
-        return handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", army.getView())
+      if (army) {
+        let view = army.getView()
+        return handyman.renderCached("%gui/worldWar/worldWarMapArmyTooltip.tpl", { view, tooltipWidth = view.getTooltipWidth() })
+      }
       return ""
     }
   }
@@ -30,8 +33,10 @@ let wwTooltipTypes = {
         return ""
 
       let airfield = ::g_world_war.getAirfieldByIndex(params.currentId)
-      if (airfield)
-        return handyman.renderCached("%gui/worldWar/worldWarMapArmyInfo.tpl", airfield.getView())
+      if (airfield) {
+        let view = airfield.getView()
+        return handyman.renderCached("%gui/worldWar/worldWarMapArmyTooltip.tpl", { view, tooltipWidth = view.getTooltipWidth() })
+      }
       return ""
     }
   }
@@ -46,7 +51,7 @@ let wwTooltipTypes = {
         return ""
 
       let view = battle.getView()
-      view.defineTeamBlock(::g_world_war.getSidesOrder())
+      view.defineTeamBlock(::g_world_war.getSidesOrder(), { canAlignRight = false })
       view.showBattleStatus = true
       view.hideDesc = true
       return handyman.renderCached("%gui/worldWar/battleDescription.tpl", view)
@@ -85,10 +90,11 @@ let wwTooltipTypes = {
           || clan_get_my_clan_tag() == clanTag)
          ) {
         ::requestMyClanData()
-        if (!::my_clan_info)
+        let myClanInfoV = myClanInfo.get()
+        if (!myClanInfoV)
           return false
 
-        wwLeaderboardData.updateClanByWWLBAndDo(::my_clan_info, afterUpdate)
+        wwLeaderboardData.updateClanByWWLBAndDo(myClanInfoV, afterUpdate)
         return true
       }
 
@@ -97,7 +103,7 @@ let wwTooltipTypes = {
         if (!checkObj(obj))
           return
 
-        let clanInfo = ::get_clan_info_table()
+        let clanInfo = get_clan_info_table()
         if (!clanInfo)
           return
 

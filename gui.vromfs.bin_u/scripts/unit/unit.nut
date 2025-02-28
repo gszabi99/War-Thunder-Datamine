@@ -42,6 +42,7 @@ let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { isUnitSpecial, calcBattleRatingFromRank, get_unit_blk_economic_rank_by_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
+let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
 
 let MOD_TIERS_COUNT = 4
 
@@ -240,7 +241,7 @@ local Unit = class {
     for (local i = 1; i <= MOD_TIERS_COUNT; i++)
       this.needBuyToOpenNextInTier.append(uWpCost?[$"needBuyToOpenNextInTier{i}"] ?? 0)
 
-    this.customImage = uWpCost?.customImage ?? ::get_unit_preset_img(this.name)
+    this.customImage = uWpCost?.customImage ?? get_unit_preset_img(this.name)
     if (!this.customImage && is_harmonized_unit_image_required(this))
       this.customImage = get_tomoe_unit_icon(this.name)
     if (this.customImage && !isInArray(this.customImage.slice(0, 1), ["#", "!"]))

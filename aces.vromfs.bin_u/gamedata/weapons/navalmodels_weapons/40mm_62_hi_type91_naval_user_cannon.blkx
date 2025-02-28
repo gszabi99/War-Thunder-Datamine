@@ -85,9 +85,10 @@
       1000.0
     ],
     "explodeTreshold": 0.1,
-    "fuseDelay": 0.0,
+    "fuseDelay": 0.001,
     "fuseOnWater": true,
     "fuseOnWaterProbability": 1.0,
+    "penetrationBySpeed": true,
     "selfDestructionFx": "explosion_air_selfexplosion_small",
     "explosionEffect": "hit_39_58mm_metal_he",
     "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -126,7 +127,11 @@
     },
     "damage": {
       "kinetic": {
-        "damageType": "generic"
+        "damageType": "generic",
+        "demarrePenetrationK": 0.15,
+        "demarreSpeedPow": 1.43,
+        "demarreMassPow": 0.71,
+        "demarreCaliberPow": 1.07
       },
       "shatter": {
         "useRealShatters": true,
@@ -141,7 +146,8 @@
               0.0,
               30.0
             ],
-            "countPortion": 0.3
+            "countPortion": 0.2,
+            "realShattersSplicing": 0.75
           },
           {
             "radiusScale": 1.0,
@@ -151,7 +157,8 @@
               30.0,
               180.0
             ],
-            "countPortion": 0.7
+            "countPortion": 0.8,
+            "realShattersSplicing": 0.75
           }
         ]
       }
@@ -445,9 +452,10 @@
           1000.0
         ],
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
+        "penetrationBySpeed": true,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -486,7 +494,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -501,7 +513,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -511,7 +524,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }
@@ -1047,9 +1061,10 @@
           1000.0
         ],
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
+        "penetrationBySpeed": true,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -1088,7 +1103,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -1103,7 +1122,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -1113,7 +1133,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }
@@ -1653,9 +1674,10 @@
           1000.0
         ],
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
+        "penetrationBySpeed": true,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -1694,7 +1716,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -1709,7 +1735,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -1719,7 +1746,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }
@@ -2011,9 +2039,10 @@
           1000.0
         ],
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
+        "penetrationBySpeed": true,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -2052,7 +2081,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -2067,7 +2100,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -2077,7 +2111,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }
@@ -2369,9 +2404,10 @@
           1000.0
         ],
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
+        "penetrationBySpeed": true,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -2410,7 +2446,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -2425,7 +2465,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -2435,7 +2476,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }
@@ -3707,9 +3749,10 @@
           1000.0
         ],
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
+        "penetrationBySpeed": true,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -3748,7 +3791,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -3763,7 +3810,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -3773,7 +3821,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }
@@ -4079,7 +4128,8 @@
           1000.0
         ],
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
+        "penetrationBySpeed": true,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -4112,7 +4162,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -4127,7 +4181,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -4137,7 +4192,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }
@@ -4439,7 +4495,8 @@
           1000.0
         ],
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
+        "penetrationBySpeed": true,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -4472,7 +4529,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -4487,7 +4548,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -4497,7 +4559,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }
@@ -4799,7 +4862,8 @@
           1000.0
         ],
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
+        "penetrationBySpeed": true,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -4832,7 +4896,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -4847,7 +4915,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -4857,7 +4926,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }
@@ -5159,7 +5229,8 @@
           1000.0
         ],
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
+        "penetrationBySpeed": true,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_39_58mm_metal_he",
         "groundCollisionEffect": "hit_39_58mm_dirt_he",
@@ -5192,7 +5263,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -5207,7 +5282,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -5217,7 +5293,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }

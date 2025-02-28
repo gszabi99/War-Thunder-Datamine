@@ -4,8 +4,8 @@ let { getCountryCode } = require("auth_wt")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let sonyUser = require("sony.user")
 let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_region } = require("%xboxLib/impl/app.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { get_region } = require("%gdkLib/impl/app.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 let getProfileCountry = @() get_profile_country() ?? "country_0"
 

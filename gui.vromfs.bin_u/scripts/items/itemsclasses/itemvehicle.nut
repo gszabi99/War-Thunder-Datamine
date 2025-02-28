@@ -3,6 +3,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { image_for_air } = require("%scripts/unit/unitInfo.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let ItemVehicle = class (ItemCouponBase) {
   static iType = itemType.VEHICLE
@@ -22,4 +23,5 @@ let ItemVehicle = class (ItemCouponBase) {
   canPreview = @() this.unit ? this.unit.canPreview() : false
   doPreview  = @() this.unit && this.unit.doPreview()
 }
-return {ItemVehicle}
+
+registerItemClass(ItemVehicle)

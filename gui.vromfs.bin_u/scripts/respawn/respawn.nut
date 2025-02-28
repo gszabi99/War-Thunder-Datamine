@@ -1,9 +1,10 @@
-from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, wp_get_cost2, set_aircraft_accepted_cb, race_finished_by_local_player, show_hud, get_local_player_country, set_tactical_map_hud_type, get_slot_delay, get_cur_warpoints, shop_get_spawn_score, get_slot_delay_by_slot, close_ingame_gui, disable_flight_menu, get_cur_rank_info, force_spectator_camera_rotation, is_respawn_screen
+from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, wp_get_cost2, set_aircraft_accepted_cb, race_finished_by_local_player, get_local_player_country, set_tactical_map_hud_type, get_slot_delay, get_cur_warpoints, shop_get_spawn_score, get_slot_delay_by_slot, close_ingame_gui, disable_flight_menu, get_cur_rank_info, force_spectator_camera_rotation, is_respawn_screen
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
 from "radarOptions" import set_option_radar_name, set_option_radar_scan_pattern_name
+from "hudState" import show_hud
 from "%scripts/utils_sa.nut" import get_mplayer_color
 
 let { g_mis_loading_state } = require("%scripts/respawn/misLoadingState.nut")
@@ -49,7 +50,7 @@ let { getEventSlotbarHint } = require("%scripts/slotbar/slotbarOverride.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { showedUnit, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { guiStartMPStatScreenFromGame,
+let { guiStartMPStatScreenFromGame, getCurMpTitle
   guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { onSpectatorMode, switchSpectatorTarget,
   getSpectatorTargetId, getSpectatorTargetName, getSpectatorTargetTitle
@@ -102,6 +103,11 @@ let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType, 
 let { hasSightStabilization } = require("vehicleModel")
 let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
 let { isGroundAndAirMission } = require("%scripts/missions/missionType.nut")
+let { clearStreaks } =  require("%scripts/streaks.nut")
+let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjectivesView.nut")
+
+let { getRoomEvent, getRoomUnitTypesMask, getNotAvailableUnitByBRText
+} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
 function getCrewSlotReadyMask() {
   if (!g_mis_loading_state.isCrewsListReceived())
@@ -124,7 +130,7 @@ let usedPlanes = persist("usedPlanes", @() {})
 
 function onMissionStartedMp(_) {
   log("on_mission_started_mp - CLIENT")
-  ::g_streaks.clear()
+  clearStreaks()
   respawnWndState.beforeFirstFlightInSession = true
   clear_spawn_score()
   reset_cur_mission_mode()
@@ -328,7 +334,10 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     showObjById("screen_button_back", useTouchscreen && !this.isRespawn, this.scene)
     showObjById("gamercard_bottom", this.isRespawn, this.scene)
-    showObjById("btn_set_hud_type", isGroundAndAirMission(), this.scene)
+
+    let buttonsBlockObj =  showObjById("buttons_block", showConsoleButtons.get(), this.scene)
+    let pcHintsBlockObj = showObjById("pc_hints_block", !showConsoleButtons.get(), this.scene)
+    showObjById("btn_set_hud_type", isGroundAndAirMission(), showConsoleButtons.get() ? buttonsBlockObj : pcHintsBlockObj)
 
     if (this.gameType & GT_RACE) {
       let finished = race_finished_by_local_player()
@@ -378,8 +387,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.scene.findObject("stat_update").setUserData(this)
 
     this.subHandlers.append(
-      ::gui_load_mission_objectives(this.scene.findObject("primary_tasks_list"),   true, 1 << OBJECTIVE_TYPE_PRIMARY),
-      ::gui_load_mission_objectives(this.scene.findObject("secondary_tasks_list"), true, 1 << OBJECTIVE_TYPE_SECONDARY)
+      gui_load_mission_objectives(this.scene.findObject("primary_tasks_list"),   true, 1 << OBJECTIVE_TYPE_PRIMARY),
+      gui_load_mission_objectives(this.scene.findObject("secondary_tasks_list"), true, 1 << OBJECTIVE_TYPE_SECONDARY)
     )
 
     let navBarObj = this.scene.findObject("gamercard_bottom_navbar_place")
@@ -667,7 +676,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         this.slotbarInited = false
         this.beforeRefreshSlotbar()
         this.createSlotbar(this.getSlotbarParams().__update({
-          slotbarHintText = getEventSlotbarHint(::SessionLobby.getRoomEvent(), get_local_player_country())
+          slotbarHintText = getEventSlotbarHint(getRoomEvent(), get_local_player_country())
           draggableSlots = false
           showCrewUnseenIcon = false
         }), "flight_menu_bgd")
@@ -972,7 +981,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   function updateTacticalMapHint() {
     local hint = ""
-    local hintIcon = showConsoleButtons.value ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_left"
+    local hintIcon = showConsoleButtons.value ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_right"
     local highlightSpawnMapId = -1
     if (!this.isRespawn) {
       hint = isAllowedMoveCenter() ? colorize("activeTextColor", loc("hints/move_map_hint"))
@@ -1376,9 +1385,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     if (!isCrewAvailableInSession(crew, unit, !silent)) {
       local locId = "not_available_aircraft"
-      if ((::SessionLobby.getUnitTypesMask() & (1 << getEsUnitType(unit))) != 0)
+      if ((getRoomUnitTypesMask() & (1 << getEsUnitType(unit))) != 0)
         locId = "crew_not_available"
-      return { text = ::SessionLobby.getNotAvailableUnitByBRText(unit) || loc(locId),
+      return { text = getNotAvailableUnitByBRText(unit) || loc(locId),
         id = "crew_not_available" }
     }
 
@@ -1783,10 +1792,11 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return
     }
 
-    if (isPointOfInterestSet()) {
-      let tacticalMapObj = this.scene.findObject("tactical-map")
-      tacticalMapObj.cursor = isAllowedMoveCenter() ? "moveArrowCursor" : "normal"
-    }
+    let tacticalMapObj = this.scene.findObject("tactical-map")
+    tacticalMapObj.cursor =  isAllowedMoveCenter() ? "moveArrowCursor" : isPointSettingMode() ? "pointOfInterest" : "normal"
+
+    let buttonImg = this.scene.findObject("hud_poi_img");
+    buttonImg["background-image"] =  isPointOfInterestSet() ? "#ui/gameuiskin#map_interestpoint_delete.svg" : "#ui/gameuiskin#map_interestpoint.svg"
 
     if (this.isApplyPressed) {
       if (this.checkSpawnInterrupt())
@@ -1975,10 +1985,15 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       btn_back =            this.showButtons && useTouchscreen && !this.isRespawn
       btn_activateorder =   this.showButtons && this.isRespawn && showActivateOrderButton() && (!this.isSpectate || !showConsoleButtons.value)
       btn_personal_tasks =  this.showButtons && this.isRespawn && canUseUnlocks
-      btn_set_point_of_interest = !(this.showButtons && this.isRespawn && !this.isNoRespawns && !this.stayOnRespScreen && !this.doRespawnCalled && !this.isSpectate) && hasSightStabilization()
-    }
+      }
     foreach (id, value in buttons)
       showObjById(id, value, this.scene)
+
+    let buttonsBlockObj =  this.scene.findObject("buttons_block")
+    let pcHintsBlockObj = this.scene.findObject("pc_hints_block")
+    let showPOiButton = !(this.showButtons && this.isRespawn && !this.isNoRespawns && !this.stayOnRespScreen && !this.doRespawnCalled && !this.isSpectate) && hasSightStabilization()
+    showObjById("btn_set_point_of_interest", showPOiButton,showConsoleButtons.get() ? buttonsBlockObj : pcHintsBlockObj )
+    showObjById("hint_set_point_of_interest", showPOiButton, this.scene )
 
     let crew = this.getCurCrew()
     let slotObj = crew && getSlotObj(this.scene, crew.idCountry, crew.idInCountry)
@@ -2112,7 +2127,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (!checkObj(this.scene))
       return
 
-    this.setSceneTitle(status ? "" : ::getCurMpTitle(), this.scene, "respawn_title")
+    this.setSceneTitle(status ? "" : getCurMpTitle(), this.scene, "respawn_title")
     this.setSceneMissionEnviroment()
     this.scene.findObject("spectator_mode_title").show(status)
     this.scene.findObject("flight_menu_bgd").show(!status)

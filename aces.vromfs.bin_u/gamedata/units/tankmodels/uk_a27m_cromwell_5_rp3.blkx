@@ -120,6 +120,16 @@
         "armorThickness": 4.9,
         "armorClass": "tank_structural_steel",
         "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_02_dm": {
+        "armorThickness": 4.9,
+        "armorClass": "tank_structural_steel",
+        "hidableInXrayViewer": true
+      },
+      "composite_armor_hull_03_dm": {
+        "armorThickness": 4.9,
+        "armorClass": "tank_structural_steel",
+        "hidableInXrayViewer": true
       }
     },
     "turret": {
@@ -748,15 +758,35 @@
     }
   },
   "xray_viewer_data": {
-    "armorArrayHull": {
-      "xrayDmPart": "composite_armor_hull_01_dm",
-      "titleLoc": "tank_structural_steel",
-      "armorArrayText": {
-        "layer": {
-          "dmPart": "composite_armor_hull_01_dm"
+    "armorArrayHull": [
+      {
+        "xrayDmPart": "composite_armor_hull_01_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_01_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_03_dm",
+        "titleLoc": "tank_structural_steel",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_03_dm"
+          }
         }
       }
-    }
+    ]
   },
   "DamageEffects": {
     "part": [
@@ -2682,10 +2712,10 @@
     }
   },
   "cockpit": {
-    "zoomOutFov": 40.0,
-    "zoomInFov": 21.0,
-    "sightFov": 20.0,
-    "sightName": "default_tank_spg",
+    "zoomOutFov": 24.7,
+    "zoomInFov": 12.3,
+    "sightFov": 12.35,
+    "sightName": "no43x3_ml_mk3",
     "headPos": [
       0.0,
       4.2,

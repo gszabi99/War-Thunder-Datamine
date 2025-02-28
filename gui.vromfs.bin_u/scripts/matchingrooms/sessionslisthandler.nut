@@ -1,5 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 from "%scripts/utils_sa.nut" import is_multiplayer
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -22,11 +21,17 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { OPTIONS_MODE_SEARCH, USEROPT_SEARCH_GAMEMODE, USEROPT_SEARCH_DIFFICULTY
 } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { create_options_container } = require("%scripts/options/optionsExt.nut")
+let { sessionLobbyStatus, getRoomMembersCnt, getRoomSize, getSessionLobbyGameMode
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { checkAndCreateGamemodeWnd } = require("%scripts/missions/startMissionsList.nut")
 let { matchSearchGm } = require("%scripts/missions/missionsStates.nut")
 let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
+let { getRoomsInfoTbl } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { joinSessionLobbyFoundRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { buildMpTable, countWidthForMpTable } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { canPlayGamemodeBySquad } = require("%scripts/missions/missionsUtils.nut")
+let { updateVehicleInfoButton } = require("%scripts/vehiclesWindow.nut")
 
 gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
   sceneBlkName = "%gui/sessionsList.blk"
@@ -126,7 +131,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     if (!obj)
       return
     let value = obj.getValue()
-    let option = ::get_option(USEROPT_SEARCH_GAMEMODE)
+    let option = get_option(USEROPT_SEARCH_GAMEMODE)
     if (!(value in option.values))
       return
 
@@ -138,7 +143,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
       return
 
     let value = obj.getValue()
-    let option = ::get_option(USEROPT_SEARCH_DIFFICULTY)
+    let option = get_option(USEROPT_SEARCH_DIFFICULTY)
     if (!(value in option.values))
       return
 
@@ -187,8 +192,8 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     //need to add ability to sort rooms by categories chosen by user
     //but temporary better to sort work at least as it was before from matching
     foreach (room in this.roomsList) {
-      let size = SessionLobby.getRoomSize(room)
-      room._players <- SessionLobby.getRoomMembersCnt(room)
+      let size = getRoomSize(room)
+      room._players <- getRoomMembersCnt(room)
       room._full <- room._players >= size
     }
     this.roomsList.sort(function(a, b) {
@@ -240,7 +245,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
       this._roomsMarkUpData.columns.$rawdelete(id)
 
     if (checkObj(this.sessionsListObj))
-      ::count_width_for_mptable(this.sessionsListObj, this._roomsMarkUpData.columns)
+      countWidthForMpTable(this.sessionsListObj, this._roomsMarkUpData.columns)
 
     return this._roomsMarkUpData
   }
@@ -258,7 +263,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
       difficultyStr = "#multiplayer/difficultyShort"
       name = "#multiplayer/game_host"
     }]
-    let headerData = ::build_mp_table(header, this.getRoomsListMarkUpData(), this.getColumnsList())
+    let headerData = buildMpTable(header, this.getRoomsListMarkUpData(), this.getColumnsList())
     this.guiScene.replaceContentFromText(headerObj, headerData, headerData.len(), this)
   }
 
@@ -293,8 +298,8 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     if (selectedRow < 0 && this.curPageRoomsList.len())
       selectedRow = clamp(this.sessionsListObj.getValue(), 0, this.curPageRoomsList.len() - 1)
 
-    let roomsInfoTbl = SessionLobby.getRoomsInfoTbl(this.curPageRoomsList)
-    let data = ::build_mp_table(roomsInfoTbl, this.getRoomsListMarkUpData(), this.getColumnsList(), roomsInfoTbl.len())
+    let roomsInfoTbl = getRoomsInfoTbl(this.curPageRoomsList)
+    let data = buildMpTable(roomsInfoTbl, this.getRoomsListMarkUpData(), this.getColumnsList(), roomsInfoTbl.len())
     this.sessionsListObj.deleteChildren()
     this.guiScene.appendWithBlk(this.sessionsListObj, data, this)
 
@@ -329,7 +334,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
   function updateCurRoomInfo() {
     let room = this.getCurRoom()
     fillSessionInfo(this.scene, room?.public)
-    ::update_vehicle_info_button(this.scene, room)
+    updateVehicleInfoButton(this.scene, room)
 
     let btnObj = this.scene.findObject("btn_select")
     if (checkObj(btnObj))
@@ -364,14 +369,14 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
     if (g_squad_manager.getSquadRoomId() != room.roomId
       && !::g_squad_utils.canJoinFlightMsgBox(
           {
-            isLeaderCanJoin = ::can_play_gamemode_by_squad(SessionLobby.getGameMode(room)),
+            isLeaderCanJoin = canPlayGamemodeBySquad(getSessionLobbyGameMode(room)),
             showOfflineSquadMembersPopup = true
           }
         )
       )
       return
 
-    this.checkedNewFlight(@() SessionLobby.joinFoundRoom(room))
+    this.checkedNewFlight(@() joinSessionLobbyFoundRoom(room))
   }
 
   function onVehiclesInfo(_obj) {

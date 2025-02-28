@@ -1,6 +1,11 @@
-from "auth_wt" import getCountryCode
 from "%globalScripts/logs.nut" import *
-from "%sqstd/string.nut" import utf8ToLower
+import regexp2
+import utf8
+from "string" import format
+from "auth_wt" import getCountryCode
+from "language" import getLocalLanguage
+from "%sqstd/string.nut" import utf8ToLower, utf8CharToInt
+from "nameVisibility.nut" import isNameNormallyVisible, clearAllWhitespace, getUnicodeCharsArray
 
 //
 // Dirty Words checker.
@@ -16,9 +21,6 @@ from "%sqstd/string.nut" import utf8ToLower
 // Result: "何かがおかしい******フラップが壊れています"
 //
 
-let regexp2 = require("regexp2")
-let utf8 = require("utf8")
-
 local debugLogFunc = null
 
 let dict = {
@@ -27,6 +29,7 @@ let dict = {
   foulcore        = null
   fouldata        = null
   badphrases      = null
+  forbiddennames  = null
   badcombination  = null
 }
 
@@ -37,6 +40,8 @@ let dictAsian = {
 
 local pendingDict = null
 local pendingDictAsian = null
+
+let similarCharsMapsByAlphabet = []
 
 let toRegexpFunc = {
   default = @(str) regexp2(str)
@@ -54,7 +59,11 @@ function updateAsianDict(lookupTbl, upd) {
 // Collect language tables
 function init(langSources) {
   let myLocation = getCountryCode()
-  let isMyLocationKnown = myLocation != "" // is true only after login
+  let myLanguage = getLocalLanguage()
+  let isMyLocationKnown = myLocation != "" // is true only after first login
+  pendingDict = null
+  pendingDictAsian = null
+
   foreach (varName, _val in dict) {
     dict[varName] = []
     let mkRegexp = toRegexpFunc?[varName] ?? toRegexpFunc.default
@@ -66,8 +75,11 @@ function init(langSources) {
         if (tVSrc == "string")
           v = mkRegexp(vSrc)
         else if (tVSrc == "table") {
-          hasRegions = "regions" in vSrc
-          if (hasRegions && isMyLocationKnown && !vSrc.regions.contains(myLocation))
+          let { langs = null, regions = null } = vSrc
+          if (langs != null && !langs.contains(myLanguage))
+            continue
+          hasRegions = regions != null
+          if (hasRegions && isMyLocationKnown && !regions.contains(myLocation))
             continue
           v = clone vSrc
           if ("value" in v)
@@ -92,10 +104,13 @@ function init(langSources) {
   }
 
   foreach (varName, collection in dictAsian) {
+    collection.clear()
     foreach (source in langSources) {
       foreach (cfg in (source?[varName] ?? {})) {
-        let { regions = null, list = {} } = cfg
-        local hasRegions = regions != null
+        let { langs = null, regions = null, list = {} } = cfg
+        if (langs != null && !langs.contains(myLanguage))
+          continue
+        let hasRegions = regions != null
         if (hasRegions && isMyLocationKnown && !regions.contains(myLocation))
           continue
         let isPending = hasRegions && !isMyLocationKnown
@@ -111,8 +126,12 @@ function init(langSources) {
     }
   }
 
-  foreach (source in langSources)
-    source.clear()
+  similarCharsMapsByAlphabet.clear()
+  foreach (source in langSources) {
+    let { similarChars = null } = source
+    if (similarChars != null && !similarCharsMapsByAlphabet.contains(similarChars))
+      similarCharsMapsByAlphabet.append(similarChars)
+  }
 }
 
 function continueInitAfterLogin() {
@@ -266,7 +285,7 @@ function checkRegexps(word, regexps, accuse) {
 }
 
 // Checks that one word is correct.
-function checkWord(word) {
+function checkWordInternal(word, isName) {
   word = prepareWord(word)
 
   local status = true
@@ -283,6 +302,9 @@ function checkWord(word) {
   if (status)
     status = checkRegexps(word, dict.badphrases, true)
 
+  if (status && isName)
+    status = checkRegexps(word, dict.forbiddennames, true)
+
   if (!status)
     status = checkRegexps(word, dict.excludescore, false)
 
@@ -294,15 +316,29 @@ function checkWord(word) {
   return status
 }
 
-function getUnicodeCharsArray(str) {
-  let res = []
-  let utfStr = utf8(str)
-  for (local i = 0; i < utfStr.charCount(); i++) {
-    let char = utfStr.slice(i, i + 1)
-    res.append(char)
+function checkWord(word, isName) {
+  let isPassed = checkWordInternal(word, isName)
+  if (!isPassed || !isName)
+    return isPassed
+
+  let checkedNames = [ word ]
+  let nameU = utf8(word)
+  let nameChars = []
+  for (local idx = 0; idx < nameU.charCount(); idx++)
+    nameChars.append(nameU.slice(idx, idx + 1))
+  foreach (alphabet in similarCharsMapsByAlphabet) {
+    let tryName = "".join(nameChars.map(@(ch) alphabet?[ch] ?? ch))
+    if (checkedNames.contains(tryName))
+      continue
+    if (!checkWordInternal(tryName, isName))
+      return false
+    checkedNames.append(tryName)
   }
-  return res
+  return true
 }
+
+let toCharcodeStr = @(c) format("\\u%04X", utf8CharToInt(c))
+let stringToUtf8CharCodesStr = @(str) "".join(getUnicodeCharsArray(str).map(toCharcodeStr))
 
 function getMaskedWord(w, maskChar = "*") {
   return "".join(array(utf8(w).charCount(), maskChar))
@@ -312,6 +348,7 @@ function checkPhraseInternal(text, isName) {
   local phrase = text
 
   // In Asian languages, there is no spaces to separate words.
+  // This part is case sensitive, so it is also suitable for detecting abbreviations written in CAPS.
   local maskChars = null
   let charsArray = getUnicodeCharsArray(phrase)
   foreach (char in charsArray) {
@@ -356,7 +393,7 @@ function checkPhraseInternal(text, isName) {
   let words = preparePhrase(phrase)
 
   foreach (w in words)
-    if (!checkWord(w))
+    if (!checkWord(w, isName))
       phrase = regexp2(w).replace(getMaskedWord(w), phrase)
 
   return phrase
@@ -369,10 +406,23 @@ let checkPhrase = @(text) checkPhraseInternal(text, false)
 let isPhrasePassing = @(text) checkPhrase(text) == text
 
 // Returns censored version of username.
-let checkName = @(name) checkPhraseInternal(name, true)
+let checkName = function(name) {
+  if (!isNameNormallyVisible(name)) {
+    debugLogFunc?($"DirtyWordsFilter: Name visibility tricks detected: \"{stringToUtf8CharCodesStr(name)}\"")
+    return getMaskedWord(name)
+  }
+  let noWhitespaceName = clearAllWhitespace(name)
+  let stringsToCheck = [ noWhitespaceName ]
+  if (name != noWhitespaceName)
+    stringsToCheck.append(name)
+  foreach (str in stringsToCheck)
+    if (checkPhraseInternal(str, true) != str)
+      return getMaskedWord(name)
+  return name
+}
 
 // Checks that username is correct.
-let isNamePassing = @(name) checkName(name) == name
+let isNamePassing = @(name) name != "" && checkName(name) == name
 
 // Set debug logging func to enable debug mode, or null to disable it.
 function setDebugLogFunc(funcOrNull) {
@@ -402,6 +452,7 @@ return {
   isPhrasePassing
   checkName
   isNamePassing
+  clearAllWhitespace
   setDebugLogFunc
   debugDirtyWordsFilter
 }

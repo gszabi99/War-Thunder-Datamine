@@ -386,10 +386,6 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setRelSpeedGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
           "setFsmActive": {
             "fsm": "trackModes",
             "active": true
@@ -1398,14 +1394,6 @@
     "track": {
       "stateInit": "init",
       "actionsTemplates": {
-        "setPulseTrack": {
-          "setTransiver": {
-            "transiver": "pulse"
-          },
-          "setSignal": {
-            "signal": "pulseTrack"
-          }
-        },
         "setMtiTrack": {
           "setTransiver": {
             "transiver": "mti"
@@ -1414,11 +1402,32 @@
             "signal": "mtiTrack"
           }
         },
+        "setPulseTrack": {
+          "setTransiver": {
+            "transiver": "pulse"
+          },
+          "setSignal": {
+            "signal": "pulseTrack"
+          }
+        },
         "track": {
           "updateActiveTargetOfInterest": {
-            "dirFilter": {},
-            "distFilter": {},
-            "dopplerSpeedFilter": {}
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
           },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
@@ -1427,10 +1436,6 @@
             "source": "activeTargetOfInterest"
           },
           "setDistGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
-          "setRelSpeedGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
           }
@@ -1450,45 +1455,18 @@
           "setDistGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
-          },
-          "setRelSpeedGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
           }
         }
       },
       "transitions": {
         "start": {
           "event": "fsmActivate",
-          "stateTo": "pulse",
+          "stateTo": "mti",
           "actions": {
-            "setPulseTrack": {},
+            "setMtiTrack": {},
             "setModeName": {
-              "name": "track"
+              "name": "MTI track"
             }
-          }
-        },
-        "tryDetectPulse": {
-          "stateFrom": "pulseTry",
-          "event": "update",
-          "actions": {
-            "setPulseTrack": {},
-            "detectTarget": {
-              "ignoreOwnWeapon": true,
-              "rangeMult": 1.0
-            }
-          }
-        },
-        "mtiOkTryDetectPulse": {
-          "stateFrom": "mtiOkPulseTry",
-          "event": "update",
-          "actions": {
-            "setPulseTrack": {},
-            "detectTarget": {
-              "ignoreOwnWeapon": true,
-              "rangeMult": 1.0
-            },
-            "setMtiTrack": {}
           }
         },
         "tryDetectMti": {
@@ -1499,14 +1477,37 @@
             "detectTarget": {
               "ignoreOwnWeapon": true,
               "rangeMult": 1.0
+            }
+          }
+        },
+        "pulseOkTryDetectMti": {
+          "stateFrom": "pulseOkMtiTry",
+          "event": "update",
+          "actions": {
+            "setMtiTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
             },
             "setPulseTrack": {}
           }
         },
+        "tryDetectPulse": {
+          "stateFrom": "pulseTry",
+          "event": "update",
+          "actions": {
+            "setPulseTrack": {},
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            },
+            "setMtiTrack": {}
+          }
+        },
         "detect": {
           "stateFrom": [
-            "pulse",
-            "mti"
+            "mti",
+            "pulse"
           ],
           "event": "update",
           "actions": {
@@ -1516,38 +1517,18 @@
             }
           }
         },
-        "trackPulse": {
-          "stateFrom": "pulse",
-          "event": "targetDetected",
-          "actions": {
-            "track": {}
-          }
-        },
-        "startTrackPulse": {
-          "stateFrom": [
-            "pulseTry",
-            "mtiOkPulseTry"
-          ],
-          "event": "targetDetected",
-          "stateTo": "pulse",
-          "actions": {
-            "setPulseTrack": {},
-            "track": {},
-            "setModeName": {
-              "name": "track"
-            }
-          }
-        },
         "trackMti": {
           "stateFrom": "mti",
           "event": "targetDetected",
-          "stateTo": "mtiOkPulseTry",
           "actions": {
             "track": {}
           }
         },
         "startTrackMti": {
-          "stateFrom": "mtiTry",
+          "stateFrom": [
+            "mtiTry",
+            "pulseOkMtiTry"
+          ],
           "event": "targetDetected",
           "stateTo": "mti",
           "actions": {
@@ -1558,37 +1539,57 @@
             }
           }
         },
-        "pulseToMti": {
-          "stateFrom": [
-            "pulse",
-            "pulseTry"
-          ],
-          "event": "targetNotDetected",
-          "stateTo": "mtiTry",
+        "trackPulse": {
+          "stateFrom": "pulse",
+          "event": "targetDetected",
+          "stateTo": "pulseOkMtiTry",
           "actions": {
-            "extrapolate": {}
+            "track": {}
           }
         },
-        "backToMti": {
-          "stateFrom": "mtiOkPulseTry",
-          "event": "targetNotDetected",
-          "stateTo": "mtiTry",
+        "startTrackPulse": {
+          "stateFrom": "pulseTry",
+          "event": "targetDetected",
+          "stateTo": "pulse",
           "actions": {
-            "extrapolate": {}
+            "setPulseTrack": {},
+            "track": {},
+            "setModeName": {
+              "name": "track"
+            }
           }
         },
         "mtiToPulse": {
-          "stateFrom": "mti",
+          "stateFrom": [
+            "mti",
+            "mtiTry"
+          ],
           "event": "targetNotDetected",
           "stateTo": "pulseTry",
           "actions": {
             "extrapolate": {}
           }
         },
-        "mtiTryToPulse": {
-          "stateFrom": "mtiTry",
+        "backToPulse": {
+          "stateFrom": "pulseOkMtiTry",
           "event": "targetNotDetected",
           "stateTo": "pulseTry",
+          "actions": {
+            "extrapolate": {}
+          }
+        },
+        "pulseToMti": {
+          "stateFrom": "pulse",
+          "event": "targetNotDetected",
+          "stateTo": "mtiTry",
+          "actions": {
+            "extrapolate": {}
+          }
+        },
+        "pulseTryToMti": {
+          "stateFrom": "pulseTry",
+          "event": "targetNotDetected",
+          "stateTo": "mtiTry",
           "actions": {
             "extrapolate": {},
             "setModeName": {
@@ -1628,9 +1629,22 @@
           "event": "targetDetected",
           "actions": {
             "updateActiveTargetOfInterest": {
-              "dirFilter": {},
-              "distFilter": {},
-              "dopplerSpeedFilter": {}
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {
+                "accelLim": [
+                  150.0,
+                  150.0
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              }
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
@@ -1639,10 +1653,6 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             }
@@ -1663,10 +1673,6 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             }

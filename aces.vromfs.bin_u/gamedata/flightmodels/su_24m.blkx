@@ -2580,7 +2580,9 @@
               "N001",
               "N010",
               "V004",
+              "Type 1473",
               "ELTA EL/M-2001B",
+              "ELTA EL/M-2052",
               "PS-37",
               "PS-05",
               "Ferranti Blue Vixen",
@@ -2623,6 +2625,18 @@
               "US R21G M1",
               "Type 208A"
             ]
+          },
+          {
+            "name": "HAWK",
+            "search": true,
+            "track": true,
+            "launch": true,
+            "detectLaunch": true,
+            "priority": 0,
+            "type": [
+              "AN/MPQ-50",
+              "AN/MPQ-61"
+            ]
           }
         ]
       },
@@ -2643,7 +2657,8 @@
             "text": "hud/rwr_threat_nike_hercules"
           },
           {
-            "text": "hud/rwr_threat_hawk"
+            "text": "hud/rwr_threat_hawk",
+            "group": "HAWK"
           },
           {
             "text": "hud/rwr_threat_air_defence",
@@ -2962,6 +2977,10 @@
       {
         "name": "su_24m_bomb_kab500s",
         "blk": "gameData/FlightModels/weaponPresets/su_24m_bomb_kab500s.blk"
+      },
+      {
+        "name": "su_24m_bomb_umpk500",
+        "blk": "gameData/FlightModels/weaponPresets/su_24m_bomb_umpk500.blk"
       },
       {
         "name": "su_24m_bomb_kab500s_x3",
@@ -3968,6 +3987,28 @@
               "machLimit": 1.01,
               "order": 3
             }
+          },
+          {
+            "iconType": "glide_bombs_large",
+            "name": "wing_left_umpk_500",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "pylon_1_bd3u",
+                "pylon_1_bd3u_holder2",
+                "gps"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_umpk_500m62.blk",
+              "emitter": "pylon_1_fab_500m_62",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 3
+            }
           }
         ]
       },
@@ -4936,6 +4977,28 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
+              "emitter": "pylon_2_fab_500m_62",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 7
+            }
+          },
+          {
+            "iconType": "glide_bombs_large",
+            "name": "left_wing_umpk_500",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "pylon_2_bd3u",
+                "pylon_2_bd3u_holder2",
+                "gps"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_umpk_500m62.blk",
               "emitter": "pylon_2_fab_500m_62",
               "bullets": 1,
               "external": true,
@@ -7791,6 +7854,28 @@
             }
           },
           {
+            "iconType": "glide_bombs_large",
+            "name": "right_wing_umpk_500",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "pylon_5_bd3u",
+                "pylon_5_bd3u_holder2",
+                "gps"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_umpk_500m62.blk",
+              "emitter": "pylon_5_fab_500m_62",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 8
+            }
+          },
+          {
             "iconType": "guided_bomb_heavy_laser",
             "name": "right_wing_kab_1500l",
             "reqModification": "su_kab_1500l",
@@ -8426,6 +8511,28 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/bombguns/su_kab_500s.blk",
+              "emitter": "pylon_6_fab_500m_62",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 4
+            }
+          },
+          {
+            "iconType": "glide_bombs_large",
+            "name": "wing_right_umpk_500",
+            "reqModification": "su_24m2_fab_500_kab_500s",
+            "ShowNodes": {
+              "node": [
+                "pylon_6_bd3u",
+                "pylon_6_bd3u_holder2",
+                "gps"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/bombguns/su_umpk_500m62.blk",
               "emitter": "pylon_6_fab_500m_62",
               "bullets": 1,
               "external": true,

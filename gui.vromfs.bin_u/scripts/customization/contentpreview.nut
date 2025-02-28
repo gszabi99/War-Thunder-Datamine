@@ -14,23 +14,23 @@ let { isInMenu, handlersManager, loadHandler } = require("%scripts/baseGuiHandle
 let { hangar_is_model_loaded, hangar_get_loaded_unit_name } = require("hangar")
 let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { showedUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { APP_ID } = require("app")
 let { isCollectionPrize } = require("%scripts/collections/collections.nut")
-let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { hasAvailableCollections } = require("%scripts/collections/collectionsHandler.nut")
 let { getDecorator, getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { isInHangar } = require("gameplayBinding")
-let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
-let { getCrewsListByCountry, getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { getBestUnitForPreview } = require("%scripts/customization/contentPreviewState.nut")
+let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -67,9 +67,9 @@ function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = fals
     return "not_in_hangar"
   if (!hangar_is_model_loaded())
     return "hangar_not_ready"
-  if (!isInMenu() || ::checkIsInQueue()
+  if (!isInMenu() || checkIsInQueue()
       || (g_squad_manager.isSquadMember() && g_squad_manager.isMeReady())
-      || ::SessionLobby.hasSessionInLobby())
+      || hasSessionInLobby())
     return "temporarily_forbidden"
   let customizationScene = handlersManager.findHandlerClassInScene(gui_handlers.DecalMenuHandler)
   if (customizationScene && (!shouldAllowFromCustomizationScene || !customizationScene.canRestartSceneNow()))
@@ -118,61 +118,6 @@ function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   handlersManager.animatedSwitchScene(startFunc())
 
   return true
-}
-
-function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnitId = null) {
-  local unit = null
-  if (forcedUnitId) {
-    unit = getAircraftByName(forcedUnitId)
-    return isAvailableFn(unit, false) ? unit : null
-  }
-
-  let countryId = profileCountrySq.value
-  if (!isSlotbarOverrided()) {
-    unit = getPlayerCurUnit()
-    if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
-      return unit
-
-    let crews = getCrewsListByCountry(countryId)
-    foreach (crew in crews)
-      if ((crew?.aircraft ?? "") != "") {
-        unit = getAircraftByName(crew.aircraft)
-        if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
-          return unit
-      }
-
-    foreach (crew in crews)
-      for (local i = crew.trained.len() - 1; i >= 0; i--) {
-        unit = getAircraftByName(crew.trained[i])
-        if (isAvailableFn(unit, false) && isAllowedByUnitTypesFn(unit.unitType.tag))
-          return unit
-      }
-  }
-  local allowedUnitType = ES_UNIT_TYPE_TANK
-  foreach (unitType in unitTypes.types) {
-    if (isAllowedByUnitTypesFn(unitType.tag)) {
-      allowedUnitType = unitType.esUnitType
-      break
-    }
-  }
-
-  unit = getAircraftByName(getReserveAircraftName({
-    country = countryId
-    unitType = allowedUnitType
-    ignoreSlotbarCheck = true
-  }))
-  if (isAvailableFn(unit, false))
-    return unit
-
-  unit = getAircraftByName(getReserveAircraftName({
-    country = "country_usa"
-    unitType = allowedUnitType
-    ignoreSlotbarCheck = true
-  }))
-  if (isAvailableFn(unit, false))
-    return unit
-
-  return null
 }
 
 /**
@@ -286,7 +231,7 @@ function marketViewItem(params) {
   if (!assets.len())
     return
   let itemDefId = to_integer_safe(assets?[0]?.value)
-  let item = ::ItemsManager.findItemById(itemDefId)
+  let item = findItemById(itemDefId)
   if (!item) {
     waitingItemDefId = itemDefId
     return
@@ -312,7 +257,7 @@ function requestUnitPreview(params) {
 function onEventItemsShopUpdate(_params) {
   if (waitingItemDefId == null)
     return
-  let item = ::ItemsManager.findItemById(waitingItemDefId)
+  let item = findItemById(waitingItemDefId)
   if (!item)
     return
   waitingItemDefId = null
@@ -396,7 +341,7 @@ function showDecoratorAccessRestriction(decorator, unit, needShowMessageBox = fa
       add_msg_box("safe_unfinished", locText,
         [
           ["#collection/go_to_collection", function() {
-            openCollectionsWnd({ selectedDecoratorId = decorator.id })
+            broadcastEvent("ShowCollection", { selectedDecoratorId = decorator.id })
           }],
           ["cancel", function() {}]
         ], "cancel")
@@ -408,7 +353,7 @@ function showDecoratorAccessRestriction(decorator, unit, needShowMessageBox = fa
         [{
           id = "gotoCollection"
           text = loc("collection/go_to_collection")
-          func = @() openCollectionsWnd({ selectedDecoratorId = decorator.id })
+          func = @() broadcastEvent("ShowCollection", { selectedDecoratorId = decorator.id })
         }])
     return true
   }
@@ -438,14 +383,14 @@ let doDelayed = @(action) get_gui_scene().performDelayed({}, action)
 globalCallbacks.addTypes({
   ITEM_PREVIEW = {
     onCb = function(_obj, params) {
-      let item = ::ItemsManager.findItemById(params?.itemId)
+      let item = findItemById(params?.itemId)
       if (item && item.canPreview() && canStartPreviewScene(true, true))
         doDelayed(@() item.doPreview())
     }
   }
   ITEM_LINK = {
     onCb = function(_obj, params) {
-      let item = ::ItemsManager.findItemById(params?.itemId)
+      let item = findItemById(params?.itemId)
       if (item && item.hasLink())
         doDelayed(@() item.openLink())
     }

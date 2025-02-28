@@ -11,6 +11,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let DataBlock  = require("DataBlock")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { getMyClanType } = require("%scripts/clans/clanTextInfo.nut")
+let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
 
 ::WwQueue <- class {
   map = null
@@ -149,10 +151,10 @@ let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
       res.reasonText = loc("worldwar/squadronAlreadyInOperation")
     else if (isMyClanInQueue())
       res.reasonText = loc("worldwar/mapStatus/yourClanInQueue")
-    else if (!::g_clans.hasRightsToQueueWWar())
+    else if (!hasRightsToQueueWWar())
       res.reasonText = loc("worldWar/onlyLeaderCanQueue")
     else {
-      let myClanType = ::g_clans.getMyClanType()
+      let myClanType = getMyClanType()
       if (!clan_can_register_to_ww()) {
         res.reasonText = loc("clan/wwar/lacksMembers", {
           clanType = myClanType.getTypeNameLoc()
@@ -196,7 +198,7 @@ let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
       reasonText = ""
     }
 
-    if (!::g_clans.hasRightsToQueueWWar())
+    if (!hasRightsToQueueWWar())
       res.reasonText = loc("worldWar/onlyLeaderCanQueue")
     else if (!this.isMyClanJoined())
       res.reasonText = loc("matching/SERVER_ERROR_NOT_IN_QUEUE")

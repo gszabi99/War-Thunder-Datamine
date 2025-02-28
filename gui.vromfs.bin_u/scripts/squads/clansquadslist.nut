@@ -6,6 +6,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
+let { getMyClanMembers } = require("%scripts/clans/clanInfo.nut")
 
 const CLAN_SQUADS_LIST_REFRESH_MIN_TIME = 3000 //ms
 const CLAN_SQUADS_LIST_REQUEST_TIME_OUT = 45000 //ms
@@ -76,7 +77,7 @@ local ClanSquadsList = class {
 
   function getClanUidsList() {
     let clanPlayersUid = []
-    foreach (member in ::g_clans.getMyClanMembers()) {
+    foreach (member in getMyClanMembers()) {
       let memberUid = member?.uid
       if (memberUid)
        clanPlayersUid.append(memberUid.tointeger())

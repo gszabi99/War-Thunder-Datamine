@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { get_time_msec } = require("dagor.time")
 let { wwGetOperationId } = require("worldwar")
+let { getBrokenAirsInfo, checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
 
 let WwBattleJoinProcess = class {
   wwBattle = null
@@ -85,12 +86,12 @@ let WwBattleJoinProcess = class {
     let team = this.wwBattle.getTeamBySide(this.side)
     let battleUnits = this.wwBattle.getTeamRemainUnits(team)
     let requiredUnits = this.wwBattle.getUnitsRequiredForJoin(team, this.side)
-    let repairInfo = ::getBrokenAirsInfo([team.country], true,
+    let repairInfo = getBrokenAirsInfo([team.country], true,
       @(unit) unit.name in battleUnits || unit.name in requiredUnits)
 
     if (!requiredUnits)
       repairInfo.canFlyout = true
-    ::checkBrokenAirsAndDo(repairInfo, this, this.joinStep5_paramsForQueue, false, this.remove)
+    checkBrokenAirsAndDo(repairInfo, this, this.joinStep5_paramsForQueue, false, this.remove)
   }
 
   function joinStep5_paramsForQueue() {

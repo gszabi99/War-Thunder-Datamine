@@ -6,7 +6,6 @@ from "mission" import get_game_mode, get_game_type
 let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
-let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isInMenu, handlersManager, loadHandler, get_cur_base_gui_handler
@@ -14,14 +13,20 @@ let { isInMenu, handlersManager, loadHandler, get_cur_base_gui_handler
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { get_mission_difficulty, do_start_flight } = require("guiMission")
 let { get_gui_option, set_cd_preset } = require("guiOptions")
-let { isInSessionRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, getSessionLobbyMissionParam
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { isRanksAllowed } = require("%scripts/ranksAllowed.nut")
-let { isHostInRoom } = require("%scripts/matching/serviceNotifications/mrooms.nut")
-let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
+let { isHostInRoom } = require("%scripts/matching/serviceNotifications/mroomsState.nut")
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
-let { isRemoteMissionVar, matchSearchGm, currentCampaignId } = require("%scripts/missions/missionsStates.nut")
+let { get_mission_settings, set_mission_settings, isRemoteMissionVar, matchSearchGm, currentCampaignId } = require("%scripts/missions/missionsStates.nut")
+let { UrlMission } = require("%scripts/missions/urlMission.nut")
+let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
+
+let { updateRoomAttributes, guiStartMpLobby, continueCoopWithSquad, startCoopBySquad,
+  createSessionLobbyRoom
+} = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 
 const DYNAMIC_REQ_COUNTRY_RANK = 1
 
@@ -59,7 +64,7 @@ function startRemoteMission(params) {
   if (!isInMenu() || handlersManager.isAnyModalHandlerActive())
     return
 
-  let urlMission = ::UrlMission(name, url)
+  let urlMission = UrlMission(name, url)
   let mission = {
     id = urlMission.name
     isHeader = false
@@ -133,39 +138,18 @@ function guiStartFlight() {
   do_start_flight()
 }
 
-function guiStartMpLobby() {
-  if (sessionLobbyStatus.get() != lobbyStates.IN_LOBBY) {
-    gui_start_mainmenu()
-    return
-  }
-
-  local backFromLobby = { eventbusName = "gui_start_mainmenu" }
-  if (::SessionLobby.getGameMode() == GM_SKIRMISH && !isRemoteMissionVar.get())
-    backFromLobby = { eventbusName = "guiStartSkirmish" }
-  else {
-    let lastEvent = ::SessionLobby.getRoomEvent()
-    if (lastEvent && events.eventRequiresTicket(lastEvent) && events.getEventActiveTicket(lastEvent) == null) {
-      gui_start_mainmenu()
-      return
-    }
-  }
-
-  isRemoteMissionVar.set(false)
-  loadHandler(gui_handlers.MPLobby, { backSceneParams = backFromLobby })
-}
-
 function briefingOptionsApply() {
   let gt = get_game_type()
   let gm = get_game_mode()
   if (gm == GM_SINGLE_MISSION || gm == GM_DYNAMIC) {
     if (isInSessionRoom.get()) {
       if (!isHostInRoom())
-        ::SessionLobby.continueCoopWithSquad(::mission_settings);
+        continueCoopWithSquad(get_mission_settings());
       else
         scene_msg_box("wait_host_leave", null, loc("msgbox/please_wait"),
           [["cancel", function() {}]], "cancel",
             {
-              cancel_fn = function() { ::SessionLobby.continueCoopWithSquad(::mission_settings); },
+              cancel_fn = function() { continueCoopWithSquad(get_mission_settings()); },
               need_cancel_fn = function() { return !isHostInRoom(); }
               waitAnim = true,
               delayedButtons = 15
@@ -180,25 +164,25 @@ function briefingOptionsApply() {
 
     if (::g_squad_utils.canJoinFlightMsgBox(
           {
-            isLeaderCanJoin = ::mission_settings.coop
+            isLeaderCanJoin = get_mission_settings().coop
             allowWhenAlone = false
             msgId = "multiplayer/squad/cantJoinSessionWithSquad"
-            maxSquadSize = ::get_max_players_for_gamemode(gm)
+            maxSquadSize = getMaxPlayersForGamemode(gm)
           }
         )
       )
-      ::SessionLobby.startCoopBySquad(::mission_settings)
+      startCoopBySquad(get_mission_settings())
     return
   }
 
   if (isInSessionRoom.get()) {
-    ::SessionLobby.updateRoomAttributes(::mission_settings)
+    updateRoomAttributes(get_mission_settings())
     get_cur_base_gui_handler().goForward(guiStartMpLobby)
     return
   }
 
-  if ((gt & GT_VERSUS) || ::mission_settings.missionURL != "")
-    ::SessionLobby.createRoom(::mission_settings)
+  if ((gt & GT_VERSUS) || get_mission_settings().missionURL != "")
+    createSessionLobbyRoom(get_mission_settings())
   else
     get_cur_base_gui_handler().goForward(guiStartFlight)
 }
@@ -206,7 +190,7 @@ function briefingOptionsApply() {
 function guiStartCdOptions(afterApplyFunc, owner = null) {
   log("guiStartCdOptions called")
   if (isInSessionRoom.get()) {
-    let curDiff = ::SessionLobby.getMissionParam("custDifficulty", null)
+    let curDiff = getSessionLobbyMissionParam("custDifficulty", null)
     if (curDiff)
       set_cd_preset(curDiff)
   }
@@ -309,7 +293,7 @@ function startCreateWndByGamemode(_handler, _obj) {
   else if (gm == GM_DYNAMIC)
     guiStartDynamicLayouts()
   else if (gm == GM_BUILDER) {
-    ::mission_settings.coop = true
+    set_mission_settings("coop", true)
     guiStartBuilder()
   }
   else if (gm == GM_SINGLE_MISSION)
@@ -386,6 +370,5 @@ return {
   guiStartBuilder
   guiStartFlight
   briefingOptionsApply
-  guiStartMpLobby
   guiStartCdOptions
 }

@@ -44,8 +44,10 @@
         },
         "tdiv": [
           {
+            "id": "worldwar_map_darg",
             "behaviour": "darg",
-            "size": "pw, ph"
+            "size": "pw, ph",
+            "interactive": "yes"
           },
           {
             "id": "control_block_visibility_switch",
@@ -999,11 +1001,18 @@
       "enable": "no"
     }
   ],
-  "timer": {
-    "id": "update_timer",
-    "timer_interval_msec": "1000",
-    "timer_handler_func": "onSecondsUpdate"
-  },
+  "timer": [
+    {
+      "id": "update_timer",
+      "timer_interval_msec": "1000",
+      "timer_handler_func": "onSecondsUpdate"
+    },
+    {
+      "id": "update_map_hovered_status_timer",
+      "timer_interval_msec": "100",
+      "timer_handler_func": "onMapHoveredStatusUpdate"
+    }
+  ],
   "DummyButton": {
     "behaviour": "accesskey",
     "accessKey": "F1",

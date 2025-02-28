@@ -40,7 +40,12 @@
     2.0,
     0.0
   ],
-  "shipsDisableDeadCoverParts": true,
+  "deadCoverCountToDelayedSinking": 2,
+  "delayedSinkingBreachesFreq": 3.0,
+  "delayedSinkingBreachesSize": [
+    0.3,
+    1.2
+  ],
   "canReloadNonGuns": true,
   "isStackRearm": true,
   "rearmTimeOnField": 60.0,
@@ -802,6 +807,23 @@
         }
       }
     ],
+    "hull": {
+      "part": [
+        "cover_01_dm",
+        "cover_02_dm",
+        "cover_03_dm",
+        "cover_04_dm",
+        "cover_05_dm",
+        "cover_06_dm",
+        "cover_07_dm",
+        "cover_08_dm",
+        "cover_09_dm",
+        "cover_10_dm"
+      ],
+      "effect": {
+        "pressure": true
+      }
+    },
     "open_mounts": {
       "part": [
         "auxiliary_caliber_turret_01_dm",
@@ -904,22 +926,22 @@
       "genericDamageMult": 0.1,
       "shatterDamageMult": 0.1,
       "cover_01_dm": {
-        "hp": 4999.0
+        "hp": 3845.0
       },
       "cover_02_dm": {
-        "hp": 3900.0
+        "hp": 3100.0
       },
       "cover_03_dm": {
-        "hp": 3910.0
+        "hp": 3100.0
       },
       "cover_04_dm": {
-        "hp": 3900.0
+        "hp": 3100.0
       },
       "cover_05_dm": {
-        "hp": 3900.0
+        "hp": 3100.0
       },
       "cover_06_dm": {
-        "hp": 3900.0
+        "hp": 3100.0
       }
     },
     "superstructures": {

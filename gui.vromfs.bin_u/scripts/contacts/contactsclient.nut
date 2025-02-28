@@ -1,4 +1,6 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
+
 let lowLevelClient = require("contacts")
 let { getPlayerTokenGlobal } = require("auth_wt")
 let { APP_ID } = require("app")
@@ -7,7 +9,7 @@ let { rnd_int } = require("dagor.random")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
 let logC = log_with_prefix("[CONTACTS CLIENT] ")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 local lastRequestId = rnd_int(0, 32767)
 
@@ -128,7 +130,7 @@ function contacts_remove(id, params = {}) {
 }
 
 function perform_contacts_for_requestor(action, apprUid, group, params = {}, requestAddon = {}) {
-  if (apprUid == ::INVALID_USER_ID) {
+  if (apprUid == INVALID_USER_ID) {
     logC($"try perform action {action} for invalid contact, group {group}")
     return
   }
@@ -141,7 +143,7 @@ function perform_contacts_for_requestor(action, apprUid, group, params = {}, req
 }
 
 function perform_contacts_for_approver(action, requestorUid, group, params = {}, requestAddon = {}) {
-  if (requestorUid == ::INVALID_USER_ID) {
+  if (requestorUid == INVALID_USER_ID) {
     logC($"try perform action {action} for invalid contact, group {group}")
     return
   }

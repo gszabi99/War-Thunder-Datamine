@@ -120,7 +120,7 @@ tdiv {
 
         <<#armies>>
         tdiv {
-          height:t='<<maxSideArmiesNumber>>@mIco'
+          height:t='<<maxSideArmiesNumber>>@wwArmyIco'
           flow:t='vertical'
 
           <<@armyViews>>

@@ -31,8 +31,17 @@ let { loadCustomCraftTree } = require("%scripts/items/workshop/workshopCraftTree
 let { getSetById } = require("%scripts/items/workshop/workshop.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
+let { getRoomSessionStartTime } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getSessionLobbyMissionNameLoc, getSessionLobbyTimeLimit,
+  getRoomSpecialRules, getRoomRequiredCrafts, getMembersCountByTeams
+} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
+let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard.nut")
+let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
 
-::create_event_description <- function create_event_description(parent_scene, event = null, needEventHeader = true) {
+function create_event_description(parent_scene, event = null, needEventHeader = true) {
   let containerObj = parent_scene.findObject("item_desc")
   if (!checkObj(containerObj))
     return null
@@ -118,7 +127,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
       ::fillCountriesList(this.getObject("countries", teamObj), events.getCountries(teamData))
       let unitTypes = events.getUnitTypesByTeamDataAndName(teamData, teamName)
-      let roomSpecialRules = this.room && ::SessionLobby.getRoomSpecialRules(this.room)
+      let roomSpecialRules = this.room && getRoomSpecialRules(this.room)
       events.fillAirsList(this, teamObj, teamData, unitTypes, roomSpecialRules)
     }
 
@@ -213,10 +222,10 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let timeLimitObj = showObjById("event_time_limit", !!this.room, this.scene)
     if (timeLimitObj && this.room) {
-      let timeLimit = ::SessionLobby.getTimeLimit(this.room)
+      let timeLimit = getSessionLobbyTimeLimit(this.room)
       local timeText = ""
       if (timeLimit > 0) {
-        let option = ::get_option(USEROPT_TIME_LIMIT)
+        let option = get_option(USEROPT_TIME_LIMIT)
         timeText = "".concat(option.getTitle(), loc("ui/colon"), option.getValueLocText(timeLimit))
       }
       timeLimitObj.setValue(timeText)
@@ -257,13 +266,13 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let otherTeam = g_team.getTeamByCode(team).opponentTeamCode
-    let countTblReady = ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData, true)
+    let countTblReady = getMembersCountByTeams(this.currentFullRoomData, true)
     local countText = countTblReady[team]
     if (countTblReady[team] >= events.getTeamSize(teamData)
         || countTblReady[team] - getMaxLobbyDisbalance(roomMGM) >= countTblReady[otherTeam])
       countText = colorize("warningTextColor", countText)
 
-    let countTbl = this.currentFullRoomData && ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData)
+    let countTbl = this.currentFullRoomData && getMembersCountByTeams(this.currentFullRoomData)
     local locId = "multiplayer/teamPlayers"
     let locParams = {
       players = countText
@@ -295,14 +304,14 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
         events.getRespawnsText(this.selectedEvent))
 
     local res = ""
-    let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, this.room)
+    let reqUnits = getRoomRequiredCrafts(Team.A, this.room)
     let tierText = events.getBrTextByRules(reqUnits)
     if (tierText.len())
       res = $"{tierText} "
 
-    res = "".concat(res, ::SessionLobby.getMissionNameLoc(this.room))
+    res = "".concat(res, getSessionLobbyMissionNameLoc(this.room))
 
-    let teamsCnt = ::SessionLobby.getMembersCountByTeams(this.currentFullRoomData)
+    let teamsCnt = getMembersCountByTeams(this.currentFullRoomData)
     local teamsCntText = ""
     if (events.isEventSymmetricTeams(events.getMGameMode(this.selectedEvent, this.room)))
       teamsCntText = "".concat(loc("events/players_count"), loc("ui/colon"),
@@ -344,7 +353,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local misName = ""
     if (this.room)
-      misName = ::SessionLobby.getMissionName(true, this.room)
+      misName = getSessionLobbyMissionName(true, this.room)
     if (!misName.len())
       misName = events.getEventMission(this.selectedEvent.name)
 
@@ -372,11 +381,11 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.room)
       return events.getEventTimeText(events.getMGameMode(this.selectedEvent, this.room))
 
-    let startTime = ::SessionLobby.getRoomSessionStartTime(this.room)
+    let startTime = getRoomSessionStartTime(this.room)
     if (startTime <= 0)
       return ""
 
-    let secToStart = startTime - ::get_matching_server_time()
+    let secToStart = startTime - getMatchingServerTime()
     if (secToStart <= 0)
       return loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
     return loc("multiplayer/battleStartsIn", { time = time.secondsToString(secToStart, true) })
@@ -519,7 +528,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.selectedEvent == null)
       return
 
-    ::gui_modal_event_leaderboards({
+    gui_modal_event_leaderboards({
       eventId = this.selectedEvent.name
       lb_presets = this.selectedEvent?.leaderboardEventBestStat != null
         ? [ getLbCategoryTypeByField(this.selectedEvent.leaderboardEventBestStat) ]
@@ -554,7 +563,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (misType == g_mission_type.UNKNOWN)
       return
 
-    ::gui_modal_help(false, HELP_CONTENT_SET.MISSION_WINDOW, misType)
+    gui_modal_help(false, HELP_CONTENT_SET.MISSION_WINDOW, misType)
   }
 
   function hideEventLeaderboard(showWaitBox = true) {
@@ -580,4 +589,8 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.room && p.roomId == this.room.roomId && !u.isEqual(this.currentFullRoomData, this.getFullRoomData()))
       this.updateContent()
   }
+}
+
+return {
+  create_event_description
 }

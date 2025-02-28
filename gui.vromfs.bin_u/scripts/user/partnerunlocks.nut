@@ -1,11 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { CONFIG_VALIDATION } = require("%scripts/g_listener_priority.nut")
+let { isEmpty, isDataBlock, isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let time = require("%scripts/time.nut")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { get_charserver_time_sec } = require("chard")
@@ -18,22 +18,40 @@ let partnerUnlocksTimes = persist("partnerUnlocksTimes", @() {
   lastUpdateTime = -9999999999
 })
 
-::g_partner_unlocks <- {
+const REQUEST_TIMEOUT_MSEC = 45000
+const UPDATE_TIMEOUT_MSEC = 60000
 
-  REQUEST_TIMEOUT_MSEC = 45000
-  UPDATE_TIMEOUT_MSEC = 60000
 
-  partnerExectutedUnlocks
+function applyNewPartnerUnlockData(result) {
+  if (!isDataBlock(result))
+    return false
+
+  let newPartnerUnlocks = convertBlk(result)
+  if (isEqual(partnerExectutedUnlocks, newPartnerUnlocks))
+    return false
+
+  partnerExectutedUnlocks.clear()
+  partnerExectutedUnlocks.__update(newPartnerUnlocks)
+  return true
 }
 
-::g_partner_unlocks.requestPartnerUnlocks <- function requestPartnerUnlocks() {
-  if (!this.canRefreshData())
+function canRefreshData() {
+  if (partnerUnlocksTimes.lastRequestTime > partnerUnlocksTimes.lastUpdateTime && partnerUnlocksTimes.lastRequestTime + REQUEST_TIMEOUT_MSEC > get_time_msec())
+    return false
+  if (partnerUnlocksTimes.lastUpdateTime + UPDATE_TIMEOUT_MSEC > get_time_msec())
+    return false
+
+  return true
+}
+
+function requestPartnerUnlocks() {
+  if (!canRefreshData())
     return
 
   partnerUnlocksTimes.lastRequestTime = get_time_msec()
   let successCb = function(result) {
     partnerUnlocksTimes.lastUpdateTime = get_time_msec()
-    if (!::g_partner_unlocks.applyNewPartnerUnlockData(result))
+    if (!applyNewPartnerUnlockData(result))
       return
 
     broadcastEvent("PartnerUnlocksUpdated")
@@ -46,45 +64,23 @@ let partnerUnlocksTimes = persist("partnerUnlocksTimes", @() {
                             successCb)
 }
 
-::g_partner_unlocks.canRefreshData <- function canRefreshData() {
-  if (partnerUnlocksTimes.lastRequestTime > partnerUnlocksTimes.lastUpdateTime && partnerUnlocksTimes.lastRequestTime + this.REQUEST_TIMEOUT_MSEC > get_time_msec())
-    return false
-  if (partnerUnlocksTimes.lastUpdateTime + this.UPDATE_TIMEOUT_MSEC > get_time_msec())
-    return false
-
-  return true
-}
-
-::g_partner_unlocks.getPartnerUnlockTime <- function getPartnerUnlockTime(unlockId) {
-  if (u.isEmpty(unlockId))
+function getPartnerUnlockTime(unlockId) {
+  if (isEmpty(unlockId))
     return null
 
   if (!(unlockId in partnerExectutedUnlocks)) {
     if (isUnlockOpened(unlockId))
-      this.requestPartnerUnlocks()
+      requestPartnerUnlocks()
     return null
   }
 
   return partnerExectutedUnlocks[unlockId]
 }
 
-::g_partner_unlocks.applyNewPartnerUnlockData <- function applyNewPartnerUnlockData(result) {
-  if (!u.isDataBlock(result))
-    return false
-
-  let newPartnerUnlocks = convertBlk(result)
-  if (u.isEqual(partnerExectutedUnlocks, newPartnerUnlocks))
-    return false
-
-  partnerExectutedUnlocks.clear()
-  partnerExectutedUnlocks.__update(newPartnerUnlocks)
-  return true
-}
-
-::g_partner_unlocks.isPartnerUnlockAvailable <- function isPartnerUnlockAvailable(unlockId, durationMin = null) {
+function isPartnerUnlockAvailable(unlockId, durationMin = null) {
   if (!unlockId)
     return true
-  let startSec = this.getPartnerUnlockTime(unlockId)
+  let startSec = getPartnerUnlockTime(unlockId)
   if (!startSec)
     return false
   if (!durationMin)
@@ -97,10 +93,16 @@ let partnerUnlocksTimes = persist("partnerUnlocksTimes", @() {
   return endSec > get_charserver_time_sec()
 }
 
-::g_partner_unlocks.onEventSignOut <- function onEventSignOut(_p) {
+function resetCache() {
   partnerUnlocksTimes.lastRequestTime = -9999999999
   partnerUnlocksTimes.lastUpdateTime = -9999999999
   partnerExectutedUnlocks.clear()
 }
 
-subscribe_handler(::g_partner_unlocks, g_listener_priority.CONFIG_VALIDATION)
+addListenersWithoutEnv({
+  SignOut = @(_) resetCache()
+}, CONFIG_VALIDATION)
+
+return {
+  isPartnerUnlockAvailable
+}

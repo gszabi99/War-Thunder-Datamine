@@ -3,14 +3,14 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { Cost } = require("%scripts/money.nut")
-let { getBestUnitForPreview } = require("%scripts/customization/contentPreview.nut")
+let { getBestUnitForPreview } = require("%scripts/customization/contentPreviewState.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { select_training_mission, get_meta_mission_info_by_name } = require("guiMission")
 let { getUnlockCost, isUnlockOpened
 } = require("%scripts/unlocks/unlocksModule.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { OPTIONS_MODE_TRAINING, USEROPT_AEROBATICS_SMOKE_TYPE, USEROPT_WEAPONS,
   USEROPT_AIRCRAFT, USEROPT_CLIME, USEROPT_TIME, USEROPT_SKIN, USEROPT_DIFFICULTY,
@@ -24,6 +24,9 @@ let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
 let DataBlock = require("DataBlock")
 let { getUnlockTypeById } = require("unlocks")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
+let { set_gui_option_in_mode } = require("%scripts/options/options.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -54,7 +57,7 @@ let Smoke = class (BaseItem) {
   }
 
   function getOptionData() {
-    let option = ::get_option(USEROPT_AEROBATICS_SMOKE_TYPE)
+    let option = get_option(USEROPT_AEROBATICS_SMOKE_TYPE)
     if (!option)
       return {}
 
@@ -141,7 +144,7 @@ let Smoke = class (BaseItem) {
     }
 
     foreach (idx, val in defaultValues)
-      ::set_gui_option_in_mode(idx, val, OPTIONS_MODE_TRAINING)
+      set_gui_option_in_mode(idx, val, OPTIONS_MODE_TRAINING)
 
     let misName = "aerobatic_smoke_preview"
     let misBlkBase = get_meta_mission_info_by_name(misName)
@@ -163,7 +166,7 @@ let Smoke = class (BaseItem) {
     }, misInfo)
 
     select_training_mission(misInfo)
-    ::queues.checkAndStart(@() get_cur_base_gui_handler().goForward(guiStartFlight),
+    queues.checkAndStart(@() get_cur_base_gui_handler().goForward(guiStartFlight),
       null, "isCanNewflight")
   }
 
@@ -178,7 +181,7 @@ let Smoke = class (BaseItem) {
     foreach (pos in ["rightwing", "leftwing", "tail"])
       if (blk?[pos] != "")
         pref.append(pos)
-  pref = ["aerobatic_smoke", blk.rarity].extend(pref.len() < 3 ? pref : ["triple"])
+    pref = ["aerobatic_smoke", blk.rarity].extend(pref.len() < 3 ? pref : ["triple"])
     return "_".join(pref, true)
   }
 
@@ -215,4 +218,5 @@ let Smoke = class (BaseItem) {
     return $"{loc("ugm/tags")}{loc("ui/colon")}{loc("ui/comma").join(tagsLoc)}"
   }
 }
-return {Smoke}
+
+registerItemClass(Smoke)

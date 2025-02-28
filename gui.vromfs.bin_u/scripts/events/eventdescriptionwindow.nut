@@ -4,6 +4,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let { create_event_description } = require("%scripts/events/eventDescription.nut")
+
 let events = getGlobalModule("events")
 
 gui_handlers.EventDescriptionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -28,7 +30,7 @@ gui_handlers.EventDescriptionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     let data = handyman.renderCached("%gui/events/eventDescriptionWindow.tpl", view)
     this.guiScene.replaceContentFromText(this.scene, data, data.len(), this)
-    this.eventDescription = ::create_event_description(this.scene, this.event, false)
+    this.eventDescription = create_event_description(this.scene, this.event, false)
   }
 
   function checkEvent(ev) {

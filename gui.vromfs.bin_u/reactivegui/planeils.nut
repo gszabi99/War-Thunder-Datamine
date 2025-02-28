@@ -8,6 +8,7 @@ let { ilsAVQ7 } = require("planeIlses/ilsAVQ7.nut")
 let ASP17 = require("planeIlses/ilsASP17.nut")
 let buccaneerHUD = require("planeIlses/ilsBuccaneer.nut")
 let ilsSum410 = require("planeIlses/ils410Sum.nut")
+let ilsSeaHarrier = require("planeIlses/ilsSeaHarrier.nut")
 let { LCOSS, ASG23 } = require("planeIlses/ilsLcoss.nut")
 let { J7EAdditionalHud, ASP23ModeSelector } = require("planeIlses/ilsASP23.nut")
 let swedishEPIls = require("planeIlses/ilsEP.nut")
@@ -39,7 +40,14 @@ let {IlsTyphoon} = require("planeIlses/ilsTyphoon.nut")
 let ilsRafale = createScriptComponent("%rGui/planeIlses/ilsRafale.das", {
   fontId = Fonts.hud
   isMetricUnits = true
+  ilsFovDeg = 17.4
 })
+
+let ilsF18 = createScriptComponent("%rGui/planeIlses/ilsF18.das", {
+  fontId = Fonts.hud
+  ilsFovDeg = 17.6
+})
+let ilsCth3022Su30 = createScriptComponent("%rGui/planeIlses/ilsCth3022Su30.das", { fontId = Fonts.ils31 })
 
 let ilsSetting = Computed(function() {
   let res = {
@@ -64,6 +72,7 @@ let ilsSetting = Computed(function() {
     isMig17pf = false
     isTcsfVe130 = false
     isSu145 = false
+    isSeaHarrierIls = false
     isIls31 = false
     isIls28K = false
     isMarconi = false
@@ -83,6 +92,8 @@ let ilsSetting = Computed(function() {
     isSu34 = false
     isTyphoon = false
     isIlsRafale = false
+    isIlsF18 = false
+    isIlsCth3022Su30 = false
   }
   if (BlkFileName.value == "")
     return res
@@ -97,6 +108,7 @@ let ilsSetting = Computed(function() {
     haveAVQ7Bombing = blk.getBool("ilsHaveAVQ7CCRP", false)
     isBuccaneerIls = blk.getBool("isBuccaneerIls", false)
     is410SUM1Ils = blk.getBool("is410SUM1Ils", false)
+    isSeaHarrierIls = blk.getBool("ilsSeaHarrier", false)
     isLCOSS = blk.getBool("ilsLCOSS", false)
     isASP23 = blk.getBool("ilsASP23", false)
     haveJ7ERadar = blk.getBool("ilsHaveJ7ERadar", false)
@@ -131,21 +143,23 @@ let ilsSetting = Computed(function() {
     isSu34 = blk.getBool("ilsSu34", false)
     isTyphoon = blk.getBool("ilsTyphoon", false)
     isIlsRafale = blk.getBool("ilsRafale", false)
+    isIlsF18 = blk.getBool("ilsF18", false)
+    isIlsCth3022Su30 = blk.getBool("ilsCth3022Su30", false)
   }
 })
 
 let planeIls = @(width, height) function() {
   let { isAVQ7, haveAVQ7Bombing, haveAVQ7CCIP, isASP17, isBuccaneerIls,
-    is410SUM1Ils, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
+    is410SUM1Ils, isSeaHarrierIls, isLCOSS, isASP23, haveJ7ERadar, isEP12, isEP08, isShimadzu, isIPP2_53,
     isTCSF196, isJ8HK, isKaiserA10, isF14, isMig17pf, isTcsfVe130, isSu145, isIls31,
     isMarconi, isTornado, isElbit, isIls28K, isASG23, isF15a, isEP17, isAmx, isVDO,
     isKai24p, isF20, isChinaLang, isMetric, isKaiserA10c, isF15e, isF117, isSu34, isTyphoon,
-    isIlsRafale } = ilsSetting.value
-  let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isLCOSS ||
+    isIlsRafale, isIlsF18, isIlsCth3022Su30 } = ilsSetting.value
+  let isStockHeli = !(isASP17 || isAVQ7 || isBuccaneerIls || is410SUM1Ils || isSeaHarrierIls || isLCOSS ||
       isASP23 || isEP12 || isEP08 || isShimadzu || isIPP2_53 || isTCSF196 || isJ8HK ||
       isKaiserA10 || isF14 || isMig17pf || isTcsfVe130 || isSu145 || isIls31 || isMarconi ||
       isTornado || isElbit || isIls28K || isASG23 || isF15a || isEP17 || isAmx || isVDO || isKai24p ||
-      isF20 || isKaiserA10c || isF15e || isF117 || isSu34 || isTyphoon || isIlsRafale)
+      isF20 || isKaiserA10c || isF15e || isF117 || isSu34 || isTyphoon || isIlsRafale || isIlsF18 || isIlsCth3022Su30)
   return {
     watch = ilsSetting
     children = [
@@ -153,6 +167,7 @@ let planeIls = @(width, height) function() {
       (isASP17 ? ASP17(width, height) : null),
       (isBuccaneerIls ? buccaneerHUD(width, height) : null),
       (is410SUM1Ils ? ilsSum410(width, height) : null),
+      (isSeaHarrierIls ? ilsSeaHarrier(width, height) : null),
       (isLCOSS ? LCOSS(width, height, haveAVQ7Bombing) : null),
       (isASG23 ? ASG23(width, height) : null),
       (isASP23 || isIPP2_53 ? ASP23ModeSelector(width, height, isIPP2_53) : null),
@@ -183,7 +198,9 @@ let planeIls = @(width, height) function() {
       (isSu34 ? ilsSu34(width, height) : null),
       (isTyphoon ? IlsTyphoon(width, height) : null),
       (isStockHeli ? StockHeliIls() : null),
-      (isIlsRafale ? ilsRafale(width, height) : null)
+      (isIlsRafale ? ilsRafale(width, height) : null),
+      (isIlsF18 ? ilsF18(width, height) : null),
+      (isIlsCth3022Su30 ? ilsCth3022Su30(width, height) : null)
     ]
   }
 }

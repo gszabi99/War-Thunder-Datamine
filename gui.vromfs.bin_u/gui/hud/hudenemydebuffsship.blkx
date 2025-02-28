@@ -2,25 +2,25 @@
   "hitCamDebuff": {
     "id": "ship_crew",
     "state": "healthy",
-    "pos": "0, 0",
     "position": "relative",
+    "pos": "0, 0",
     "hitCamDebuffIcon": {
       "size": "1@cIco, 1@cIco",
-      "pos": "0.15@cIco, ph/2-h/2",
       "position": "relative",
+      "pos": "0.15@cIco, ph/2-h/2",
       "background-image": "#ui/gameuiskin#ship_crew.svg",
       "background-svg-size": "1@cIco, 1@cIco"
     },
     "hitCamDebuffLabel": {
       "id": "label",
-      "pos": "0.15@cIco, 0",
       "position": "relative",
+      "pos": "0.15@cIco, 0",
       "text": "100%"
     },
     "hitCameraCrew": {
       "id": "crew_relative_nest",
-      "pos": "0.25@cIco, 0",
       "position": "relative",
+      "pos": "0.25@cIco, 0",
       "hitCamLostCrewRelative": {
         "id": "crew_relative_lost",
         "flow": "horizontal"
@@ -28,39 +28,37 @@
     }
   },
   "tdiv": {
-    "pos": "pw-w-0.3@cIco, 0",
-    "position": "absolute",
-    "hitCamDebuff": [
-      {
-        "id": "ship_compartments",
-        "state": "healthy",
-        "hitCamDebuffIcon": {
-          "size": "1.7@cIco, 0.74@cIco",
-          "pos": "0, ph/2-h/2",
-          "position": "relative",
-          "background-image": "#ui/gameuiskin#ship_compartments.svg",
-          "background-svg-size": "1.7@cIco, 0.74@cIco"
-        },
-        "hitCamDebuffLabel": {
-          "id": "label",
-          "text": "100%"
-        }
+    "position": "relative",
+    "right": "0",
+    "hitCamDebuff": {
+      "id": "ship_buoyancy",
+      "state": "healthy",
+      "marging-right": "0.15@cIco",
+      "hitCamDebuffIcon": {
+        "size": "1.7@cIco, 0.37@cIco",
+        "position": "relative",
+        "top": "ph/2-h/2",
+        "background-image": "#ui/gameuiskin#buoyancy_icon.svg",
+        "background-svg-size": "1.7@cIco, 0.37@cIco"
       },
-      {
-        "id": "ship_buoyancy",
-        "state": "healthy",
-        "hitCamDebuffIcon": {
-          "size": "1.7@cIco, 0.37@cIco",
-          "pos": "1@cIco, ph/2-h/2",
-          "position": "relative",
-          "background-image": "#ui/gameuiskin#buoyancy_icon.svg",
-          "background-svg-size": "1.7@cIco, 0.37@cIco"
-        },
-        "hitCamDebuffLabel": {
-          "id": "label",
-          "text": "100%"
-        }
+      "hitCamDebuffLabel": {
+        "id": "label",
+        "text": "100%"
       }
-    ]
+    },
+    "tdiv": {
+      "id": "ship_compartments",
+      "display": "hide",
+      "hitCamDebuffIcon": {
+        "size": "1@cIco, 1@cIco",
+        "marging-right": "0.15@cIco",
+        "background-image": "#ui/gameuiskin#ship_hull.svg",
+        "background-svg-size": "1@cIco, 1@cIco"
+      },
+      "tdiv": {
+        "id": "ship_compartments_blocks",
+        "height": "1@cIco"
+      }
+    }
   }
 }

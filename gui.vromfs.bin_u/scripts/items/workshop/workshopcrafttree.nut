@@ -5,6 +5,7 @@ let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
+let { isItemdefId } = require("%scripts/items/itemsChecks.nut")
 
 let DEFAULT_BRANCH_CONFIG = {
   locId = ""
@@ -120,7 +121,7 @@ function generateRows(branchBlk, treeRows, treeBlk) {
     }
 
     id = to_integer_safe(id, id, false)
-    if (!::ItemsManager.isItemdefId(id))
+    if (!isItemdefId(id))
       continue
 
     let itemConfig = {

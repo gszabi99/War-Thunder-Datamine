@@ -23,7 +23,7 @@ let { clearMapsCache } = require("%scripts/missions/missionsUtils.nut")
 let { updateAircraftWarpoints, loadPlayerExpTable, initPrestigeByRank } = require("%scripts/ranks.nut")
 let { setUnlocksPunctuationWithoutSpace } = require("%scripts/langUtils/localization.nut")
 let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
-let { isAuthorized } = require("%scripts/login/loginStates.nut")
+let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 
 let allUnits = getAllUnits()
 //remap all units to new class on scripts reload

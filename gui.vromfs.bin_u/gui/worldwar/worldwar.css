@@ -379,25 +379,25 @@ armyGroup clanTag {
   color:@activeTextColor;
 }
 
-statusPanel > block {
+statusPanel > activeText {
+  width:fw;
   height:ph;
-  text-valign:center;
+  text-align:center;
   text-halign:center;
   css-hier-invalidate:yes;
+  position: relative;
 }
 
-statusPanel > block > activeText {
-  hideEmptyText:yes;
-  width:0.25@wwMapPanelInfoWidth;
-  height:ph;
+statusPanel > activeText[text=""] {
+  display:hide;
 }
 
-statusPanel[needSmallSize=yes] > block > activeText {
-  width:0.19@wwMapPanelInfoWidth;
+statusPanel[needSmallSize=yes] > activeText {
+  width:0.19pw;
 }
 
-statusPanel[needSmallSize=yes] > block[hasTimer=yes] > activeText {
-  width:0.225@wwMapPanelInfoWidth;
+statusPanel[needSmallSize=yes] > activeText[hasTimer=yes] {
+  width:0.225pw;
 }
 
 statusPanel blockSeparator {

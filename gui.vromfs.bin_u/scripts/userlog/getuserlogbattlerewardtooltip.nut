@@ -97,6 +97,17 @@ let tableColumns = [
     }
   }
   {
+    id = "interceptedShellName"
+    titleLocId = "hud/iconOrderTarget"
+    cellTransformFn = function(cellValue, _reward) {
+      let weaponShortName = $"weapons/{cellValue}/short"
+      if (doesLocTextExist(weaponShortName))
+        return {text = loc(weaponShortName)}
+
+      return {text = loc(cellValue)}
+    }
+  }
+  {
     id = "victimUnit"
     titleLocId = "hud/iconOrderTarget"
     cellTransformFn = function(cellValue, reward) {
@@ -190,6 +201,16 @@ let tableColumns = [
     id = "finishingType"
     titleLocId = "userlog/finishing_type"
     cellTransformFn = @(cellValue, _reward) { text = loc($"userlog/finishing_type/{cellValue}") }
+  }
+  {
+    id = "reason"
+    titleLocId = "multiplayer/reason"
+    cellTransformFn = @(cellValue, _reward) { text = loc($"exp_reasons/return_spawn_cost/{cellValue}") }
+  }
+  {
+    id = "hpPercent"
+    titleLocId = "userlog/vehicle_condition"
+    cellTransformFn = @(cellValue, _) { text = $"{validateEmptyCellValueInt(cellValue)}%"}
   }
   {
     id = "noBonusExpTotal"

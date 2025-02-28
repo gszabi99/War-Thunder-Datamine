@@ -10,7 +10,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const FAVORITE_UNLOCKS_LIST_SAVE_ID = "favorite_unlocks"
 const CHECKBOX_BTN_ID = "checkbox_favorites"

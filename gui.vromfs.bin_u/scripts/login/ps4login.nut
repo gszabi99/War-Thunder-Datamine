@@ -19,6 +19,7 @@ let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd } = require("%scripts/eulaWnd.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 
 gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -32,7 +33,7 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
     })
     animBgLoad()
     setVersionText(this.scene)
-    ::setProjectAwards(this)
+    setProjectAwards(this)
     showTitleLogo(this.scene, 128)
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 

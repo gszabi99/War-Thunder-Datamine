@@ -5,6 +5,7 @@ require dm
 require app
 require net
 require BitStream
+require BallisticsProps
 require Unit
 require UnitFx
 require Weapon
@@ -25,7 +26,7 @@ require %game.unit.ammo_stowage_events
 
 
 struct public PartRemap
-  partId : PartId
+  partId : PartId = PartId()
   stowageId : int
   clusterId : int
   slotId : int
@@ -35,8 +36,8 @@ def public get_remap(remap : IPoint4List&; partId : PartId) : PartRemap
   if idx < length(remap) && idx >= 0
     let r = remap[idx]
     if r.x >= 0
-      return [[PartRemap partId=partId, stowageId=r.y, clusterId=r.z, slotId=r.w]]
-  return [[PartRemap partId=PartId(), stowageId=-1, clusterId=-1, slotId=-1]]
+      return [[PartRemap() partId=partId, stowageId=r.y, clusterId=r.z, slotId=r.w]]
+  return [[PartRemap() partId=PartId(), stowageId=-1, clusterId=-1, slotId=-1]]
 
 def public add_remap(var remap : IPoint4List&; part : PartRemap) : bool
   assert(part.partId.valid)
@@ -543,10 +544,10 @@ def ammo_stowage_subtract_weapon_ammo(weap : WeaponController const?; ammo_type 
         break
 
       // find gun & bullet set with max ammo count
-      var gun : Gun? = null
+      var gun : WTGun? = null
       var bullet_set_idx = 0
       for weapon_i in weapon_range.x..weapon_range.y
-        let gun_i = as_gun(weap.Weapons |> get_weapon(v.ammo_stowage__weaponsIds[weapon_i]))
+        var gun_i = as_gun(weap.Weapons |> get_weapon(v.ammo_stowage__weaponsIds[weapon_i]))
         if gun_i == null
           return
         let bullet_set_range = iter_all_bullet_sets ? int2(0, length(gun_i.properties.bulletSets)) : int2(ammo_type_remap.w, ammo_type_remap.w + 1)

@@ -10,7 +10,7 @@ let { register_command } = require("console")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 let activeSeenLists = {}
 

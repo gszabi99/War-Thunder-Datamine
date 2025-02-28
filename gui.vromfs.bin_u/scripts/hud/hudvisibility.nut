@@ -1,5 +1,5 @@
-from "%scripts/dagui_natives.nut" import is_hud_visible
 from "%scripts/dagui_library.nut" import *
+from "hudState" import is_hud_visible
 
 let { eventbus_subscribe } = require("eventbus")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

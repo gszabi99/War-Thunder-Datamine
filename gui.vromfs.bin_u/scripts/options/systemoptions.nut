@@ -3,7 +3,7 @@ from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, 
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import findNearest
-from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_editbox, create_option_row_listbox, create_option_slider, create_option_switchbox, create_options_bar
+from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_editbox, create_option_slider, create_option_switchbox, create_options_bar
 
 let { has_enough_vram_for_rt = @() true } = require_optional("bvhSettings")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -12,8 +12,7 @@ let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = require("vr")
-let { get_available_monitors, get_monitor_info, has_broken_recreate_image, get_antialiasing_options,
-  get_antialiasing_upscaling_options, is_dx12_supported = @() true } = require("graphicsOptions")
+let { get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options, is_dx12_supported, get_active_gfx_api } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { get_primary_screen_info } = require("dagor.system")
@@ -46,6 +45,7 @@ local mValidationError = ""
 local mMaintainDone = false
 const mRowHeightScale = 1.0
 const mMaxSliderSteps = 50
+local prevRtMode = null
 //-------------------------------------------------------------------------------
 let mQualityPresets = DataBlock()
 mQualityPresets.load("%guiConfig/graphicsPresets.blk")
@@ -150,6 +150,7 @@ local mUiStruct = [
       "rayTracing"
       "bvhDistance"
       "rtao"
+      "rtsmQuality"
       "rtsm"
       "rtr"
       "rtrRes"
@@ -298,7 +299,7 @@ function validateGuiValue(id, value) {
       return (value < desc.min) ? desc.min : desc.max
     }
   }
-  else if ( widgetType == "list" || widgetType == "tabs") {
+  else if ( widgetType == "list") {
     if (desc.values.indexof(value) == null && (value not in desc?.hidden_values)) {
       logError("sysopt.validateGuiValue()", $"Can't set '{id}'='{value}', value is not in the allowed values list.")
       return desc.def
@@ -323,8 +324,8 @@ function getGuiWidget(id) {
   }
 
   let widgetId = getOptionDesc(id)?.widgetId
-  let obj = (widgetId && checkObj(mContainerObj)) ? mContainerObj.findObject(widgetId) : null
-  return checkObj(obj) ? obj : null
+  let obj = (widgetId && mContainerObj?.isValid()) ? mContainerObj.findObject(widgetId) : null
+  return obj?.isValid() ? obj : null
 }
 
 function setGuiValue(id, value, skipUI = false) {
@@ -339,7 +340,7 @@ function setGuiValue(id, value, skipUI = false) {
     if ( widgetType == "checkbox"  || "slider" == widgetType) {
       raw = value
     }
-    else if ( widgetType == "list" || widgetType == "tabs" || widgetType == "options_bar") {
+    else if ( widgetType == "list" || widgetType == "options_bar") {
       raw = desc.values.indexof(value) ?? -1
     }
     else if ( widgetType == "editbox" ) {
@@ -394,7 +395,7 @@ function checkChanges(config1, config2) {
 
       let needApply = id != "graphicsQuality"
       if (needApply) {
-        let requiresRestart = getTblValue("restart", desc)
+        let requiresRestart = desc?.restart
         if (requiresRestart)
           changes.needClientRestart = true
         else
@@ -419,7 +420,7 @@ local aaUseGui = false;
 
 function updateGuiNavbar(show = true) {
   let scene = mHandler?.scene
-  if (!checkObj(scene))
+  if (!scene?.isValid())
     return
 
   let showText = show && isRestartPending()
@@ -432,7 +433,7 @@ function updateGuiNavbar(show = true) {
   showObjById("btn_gpu_benchmark", show && canShowGpuBenchmark(), scene)
 
   let objNavbarApplyButton = scene.findObject("btn_apply")
-  if (checkObj(objNavbarApplyButton))
+  if (objNavbarApplyButton?.isValid())
     objNavbarApplyButton.setValue(applyText)
 }
 
@@ -547,8 +548,7 @@ function getAvailableLatencyModes() {
 
 let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_perf_metrics_available(id))
 
-let hasRT = @() hasFeature("optionRT") && !is_platform_macosx && has_ray_query()
-  && getGuiValue("graphicsQuality", "high") != "ultralow" && getGuiValue("gfx_api") == "dx12"
+let hasRT = @() hasFeature("optionRT") && !is_platform_macosx && has_ray_query() && getGuiValue("graphicsQuality", "high") != "ultralow"
 let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
 let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
 let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
@@ -592,7 +592,7 @@ function updateOption(id) {
   }
 
   let obj = getGuiWidget(id)
-  if (!checkObj(obj))
+  if (!obj?.isValid())
     return
 
   local markup = ""
@@ -866,6 +866,7 @@ mShared = {
       setGuiValue("rtr", "off")
       setGuiValue("rtrRes", "half")
       setGuiValue("rtsm", "off")
+      setGuiValue("rtsmQuality", "low")
       setGuiValue("rtrWater", false)
       setGuiValue("rtrWaterRes", "half")
       setGuiValue("rtrTranslucent", "off")
@@ -876,6 +877,7 @@ mShared = {
       setGuiValue("rtr", "low")
       setGuiValue("rtrRes", "half")
       setGuiValue("rtsm", "sun")
+      setGuiValue("rtsmQuality", "low")
       setGuiValue("rtrWater", false)
       setGuiValue("rtrWaterRes", "half")
       setGuiValue("rtrTranslucent", "medium")
@@ -885,6 +887,7 @@ mShared = {
       setGuiValue("rtr", "medium")
       setGuiValue("rtrRes", "half")
       setGuiValue("rtsm", "sun")
+      setGuiValue("rtsmQuality", "low")
       setGuiValue("rtrWater", true)
       setGuiValue("rtrWaterRes", "half")
       setGuiValue("rtrTranslucent", "medium")
@@ -894,6 +897,7 @@ mShared = {
       setGuiValue("rtr", "high")
       setGuiValue("rtrRes", "half")
       setGuiValue("rtsm", "sun")
+      setGuiValue("rtsmQuality", "medium")
       setGuiValue("rtrWater", true)
       setGuiValue("rtrWaterRes", "half")
       setGuiValue("rtrTranslucent", "high")
@@ -903,6 +907,7 @@ mShared = {
       setGuiValue("rtr", "high")
       setGuiValue("rtrRes", "full")
       setGuiValue("rtsm", "sun_and_dynamic")
+      setGuiValue("rtsmQuality", "high")
       setGuiValue("rtrWater", true)
       setGuiValue("rtrWaterRes", "full")
       setGuiValue("rtrTranslucent", "high")
@@ -912,17 +917,20 @@ mShared = {
     enableGuiOption("rtr", rtIsOn)
     enableGuiOption("rtao", rtIsOn)
     enableGuiOption("rtsm", rtIsOn)
+    enableGuiOption("rtsmQuality", rtIsOn)
 
     enableGuiOption("rtrWater", rtIsOn)
     enableGuiOption("rtrWaterRes", getGuiValue("rtrWater") && rtIsOn)
 
     enableGuiOption("rtrTranslucent", rtIsOn)
     enableGuiOption("rtrRes", getGuiValue("rtr") != "off" && rtIsOn)
+
+    prevRtMode = rt
   }
 
   rayTracingClick = function(silent = false) {
     let rt = getGuiValue("rayTracing", "off")
-    if (silent || rt == "off") {
+    if (silent || rt == "off" || prevRtMode != "off") {
       mShared.rayTracingPresetHandler(rt)
       enableGuiOption("ssaa", true)
       mShared.ssaaClick()
@@ -1045,7 +1053,7 @@ mShared = {
 }
 //------------------------------------------------------------------------------
 /*
-  widgetType - type of the widget in UI ("list", "slider", "checkbox", "editbox", "tabs", "options_bar").
+  widgetType - type of the widget in UI ("list", "slider", "checkbox", "editbox", "options_bar").
   def - default value in UI (it is not required, if there are getValueFromConfig/setGuiValueToConfig functions).
   blk - path to variable in config.blk file structure (it is not required, if there are getValueFromConfig/setGuiValueToConfig functions).
   restart - client restart is required to apply an option (e.g. no support in Renderer->onSettingsChanged() function).
@@ -1082,7 +1090,7 @@ mSettings = {
 
       desc.items <- desc.values.map(function(value) {
         if (is_win64 && value == "auto")
-          return { text = "".concat(loc("options/gfx_api_auto"), loc("ui/parentheses/space", {text = loc("options/gfx_api_dx11") })) }
+          return { text = "".concat(loc("options/gfx_api_auto"), loc("ui/parentheses/space", {text = loc($"options/gfx_api_{get_active_gfx_api()}") })) }
         return { text = loc($"options/gfx_api_{value}") }
       })
       desc.def <- desc.values[0]
@@ -1241,7 +1249,7 @@ mSettings = {
       setBlkValueByPath(blk, desc.blk, perfValues.findindex(@(name) name == val) ?? -1)
     }
   }
-  texQuality = { widgetType = "options_bar" def = "high" blk = "graphics/texquality" restart = has_broken_recreate_image()
+  texQuality = { widgetType = "options_bar" def = "high" blk = "graphics/texquality" restart = false
     init = function(_blk, desc) {
       let dgsTQ = get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
       let configTexQuality = desc.values.indexof(getSystemConfigOption("graphics/texquality", "high")) ?? -1
@@ -1303,7 +1311,7 @@ mSettings = {
     }
     enabled = @() canDoBackgroundScale()
     setGuiValueToConfig = function(blk, desc, val) {
-      local res = getTblValue(val, desc.blkValues, desc.def)
+      local res = desc.blkValues?[val] ?? desc.def
       if (getGuiValue("ssaa") == "4X" && !getGuiValue("compatibilityMode"))
         res = 2.0
       setBlkValueByPath(blk, desc.blk, res)
@@ -1479,6 +1487,12 @@ mSettings = {
     onChanged = "rtOptionChanged" isVisible = isRTSMVisible
     infoImgPattern = "#ui/images/settings/rtShadows/%s"
   }
+  rtsmQuality = { widgetType = "options_bar" def = "low" blk = "graphics/RTSMQuality" restart = false
+    values = [ "low", "medium", "high" ]
+    enabled = hasRTGUI
+    onChanged = "rtOptionChanged" isVisible = isRTSMVisible
+    infoImgPattern = "#ui/images/settings/rtShadowsQuality/%s"
+  }
   rtr = { widgetType = "options_bar" def = "off" blk = "graphics/RTRQuality" restart = false
     values = ["off", "low", "medium", "high"]
     enabled = hasRTGUI
@@ -1513,8 +1527,8 @@ mSettings = {
 function validateInternalConfigs() {
   let errorsList = []
   foreach (id, desc in mSettings) {
-    let widgetType = getTblValue("widgetType", desc)
-    if (!isInArray(widgetType, ["list", "slider", "checkbox", "editbox", "tabs", "options_bar", "button"]))
+    let widgetType = desc?.widgetType
+    if (!isInArray(widgetType, ["list", "slider", "checkbox", "editbox", "options_bar", "button"]))
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Option '{id}' - 'widgetType' invalid or undefined."))
     if ((!("blk" in desc) || type(desc.blk) != "string" || !desc.blk.len()) && (!("getValueFromConfig" in desc) || !("setGuiValueToConfig" in desc)))
@@ -1524,7 +1538,7 @@ function validateInternalConfigs() {
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Option '{id}' - 'onChanged' function not found in sysopt.shared."))
 
-    let def = getTblValue("def", desc)
+    let def = desc?.def
     if (def == null)
       errorsList.append(logError("sysopt.validateInternalConfigs()",
         $"Option '{id}' - 'def' undefined."))
@@ -1553,11 +1567,11 @@ function validateInternalConfigs() {
         errorsList.append(logError("sysopt.validateInternalConfigs()",
           $"Option '{id}' - 'values' is empty or undefined."))
     }
-    else if ( widgetType == "list" || widgetType ==  "tabs") {
+    else if ( widgetType == "list") {
       if (def != null && uiType != "string")
         errorsList.append(logError("sysopt.validateInternalConfigs()",
           $"Option '{id}' - 'widgetType'/'def' conflict."))
-      let values = getTblValue("values", desc, [])
+      let values = desc?.values ?? []
       if (!values.len())
         errorsList.append(logError("sysopt.validateInternalConfigs()",
           $"Option '{id}' - 'values' is empty or undefined."))
@@ -1569,7 +1583,7 @@ function validateInternalConfigs() {
       if (def != null && uiType != "integer" && uiType != "float" && uiType != "string")
         errorsList.append(logError("sysopt.validateInternalConfigs()",
                                    $"Option '{id}' - 'widgetType'/'def' conflict."))
-      let maxlength = getTblValue("maxlength", desc, -1)
+      let maxlength = desc?.maxlength ?? -1
       if (maxlength < 0 || (def != null && def.tostring().len() > maxlength))
         errorsList.append(logError("sysopt.validateInternalConfigs()",
           $"Option '{id}' - 'maxlength'/'def' conflict."))
@@ -1751,7 +1765,7 @@ function configMaintain() {
   }
 
   if (getSystemConfigOption("graphics/bvhMode", "off") != "off") {//check rayTracing
-    if (is_platform_macosx || graphicsQuality == "ultralow" || !has_ray_query() || getSystemConfigOption("video/driver", "auto") != "dx12")
+    if (is_platform_macosx || graphicsQuality == "ultralow" || !has_ray_query())
       setSystemConfigOption("graphics/bvhMode", "off")
   }
 
@@ -1822,7 +1836,7 @@ function onConfigApply() {
   if (!mScriptValid)
     return
 
-  if (!checkObj(mContainerObj))
+  if (!mContainerObj?.isValid())
     return
 
   mShared.presetCheck()
@@ -1838,11 +1852,11 @@ function onConfigApplyWithoutUiUpdate() {
   hotReloadOrRestart()
 }
 
-let isCompatibiliyMode = @() mCfgStartup?.compatibilityMode
+let isCompatibilityMode = @() mCfgStartup?.compatibilityMode
   ?? getSystemConfigOption("video/compatibilityMode", false)
 
 function onGuiOptionChanged(obj) {
-  let objId = checkObj(obj) ? obj?.id : null
+  let objId = obj?.isValid() ? obj.id : null
   if (!objId)
     return
   let id = getOptionIdByObjId(objId)
@@ -1856,7 +1870,7 @@ function onGuiOptionChanged(obj) {
     return
   }
 
-  let curValue = getTblValue(id, mCfgCurrent)
+  let curValue = mCfgCurrent?[id]
   if (curValue == null)  //not inited or already cleared?
     return
 
@@ -1872,7 +1886,7 @@ function onGuiOptionChanged(obj) {
   else if ( widgetType == "slider" ) {
     value = raw.tointeger()
   }
-  else if ( widgetType == "list" || widgetType == "tabs" ) {
+  else if ( widgetType == "list" ) {
     value = desc.values[raw]
   }
   else if ( widgetType == "options_bar") {
@@ -1914,7 +1928,7 @@ function updateOptionsBarText(obj, val) {
 }
 
 function fillGuiOptions(containerObj, handler) {
-  if (!checkObj(containerObj) || !handler)
+  if (!containerObj?.isValid() || !handler)
     return
   let guiScene = containerObj.getScene()
 
@@ -1986,20 +2000,6 @@ function fillGuiOptions(containerObj, handler) {
       else if ( widgetType == "list" ) {
         option = getListOption(id, desc, cb, onOptHoverFnName)
       }
-      else if ( widgetType == "tabs" ) {
-        let raw = desc.values.indexof(mCfgCurrent[id]) ?? -1
-        let items = []
-        foreach (valueId in desc.values) {
-          local warn = loc(format("options/%s_%s/comment", id, valueId), "")
-          warn = warn.len() ? $"\n{colorize("badTextColor", warn)}" : ""
-
-          items.append({
-            text = localize(id, valueId)
-            tooltip = "".concat(loc(format("guiHints/%s_%s", id, valueId)), warn)
-          })
-        }
-        option = create_option_row_listbox(desc.widgetId, items, raw, cb, isTable)
-      }
       else if ( widgetType == "editbox" ) {
         let raw = mCfgCurrent[id].tostring()
         option = create_option_editbox({
@@ -2020,7 +2020,7 @@ function fillGuiOptions(containerObj, handler) {
 
       if (isTable) {
         let disabled = (desc?.enabled() ?? true) ? "no" : "yes"
-        let requiresRestart = getTblValue("restart", desc, false)
+        let requiresRestart = desc?.restart ?? false
         let optionName = loc($"options/{id}")
         let disabledTooltip = disabled == "yes" ? getDisabledOptionTooltip(id) : null
         let tooltipProp = disabledTooltip != null ? $" tooltip:t='{disabledTooltip}';" : ""
@@ -2067,7 +2067,7 @@ return {
   onSystemGuiOptionChanged = onGuiOptionChanged
   onRestartClient = onRestartClient
   getVideoModes = mShared.getVideoModes
-  isCompatibiliyMode = isCompatibiliyMode
+  isCompatibilityMode = isCompatibilityMode
   onSystemOptionsApply = onConfigApply
   canUseGraphicsOptions = canUseGraphicsOptions
   systemOptionsMaintain = configMaintain

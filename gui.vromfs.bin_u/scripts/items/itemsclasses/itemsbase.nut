@@ -16,6 +16,11 @@ let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getLimitDataByItemName, requestLimitsForItem } = require("%scripts/items/itemLimits.nut")
+let { BASE_ITEM_TYPE_ICON, registerBaseItemClass } = require("%scripts/items/itemsTypeClasses.nut")
+let { markInventoryUpdateDelayed } = require("%scripts/items/itemsManager.nut")
+let { needIgnoreItemLimits } = require("%scripts/items/itemsManagerChecks.nut")
+let { getInventoryItemType } = require("%scripts/items/itemsManagerState.nut")
 
 /* Item API:
   getCost                    - return item cost
@@ -82,7 +87,7 @@ let BaseItem = class {
   static defaultLocId = "unknown"
   static defaultIcon = "#ui/gameuiskin#items_silver_bg"
   static defaultIconStyle = null
-  static typeIcon = "#ui/gameuiskin#item_type_placeholder.svg"
+  static typeIcon = BASE_ITEM_TYPE_ICON
   static linkActionLocId = "mainmenu/btnBrowser"
   static linkActionIcon = ""
   static isPreferMarkupDescInTooltip = false
@@ -168,7 +173,7 @@ let BaseItem = class {
     this.shopFilterMask = this.iType
     let types = blk % "additionalShopItemType"
     foreach (t in types)
-      this.shopFilterMask = this.shopFilterMask | ::ItemsManager.getInventoryItemType(t)
+      this.shopFilterMask = this.shopFilterMask | getInventoryItemType(t)
 
     this.expiredTimeAfterActivationH = blk?.expiredTimeHAfterActivation ?? 0
 
@@ -217,7 +222,7 @@ let BaseItem = class {
   }
 
   function getLimitData() {
-    return ::g_item_limits.getLimitDataByItemName(this.id)
+    return getLimitDataByItemName(this.id)
   }
 
   function checkPurchaseFeature() {
@@ -603,7 +608,7 @@ let BaseItem = class {
 
   getTimeLeftText  = @() "\n".join([this.getExpireTimeTextShort(), this.getNoTradeableTimeTextShort()], true)
 
-  onItemExpire     = @() ::ItemsManager.markInventoryUpdateDelayed()
+  onItemExpire     = @() markInventoryUpdateDelayed()
   onTradeAllowed   = @() null
 
   function getExpireAfterActivationText(withTitle = true) {
@@ -677,12 +682,12 @@ let BaseItem = class {
   }
 
   function hasLimits() {
-    return (this.limitGlobal > 0 || this.limitPersonalTotal > 0 || this.limitPersonalAtTime > 0) && !::ItemsManager.needIgnoreItemLimits()
+    return (this.limitGlobal > 0 || this.limitPersonalTotal > 0 || this.limitPersonalAtTime > 0) && !needIgnoreItemLimits()
   }
 
   function forceRefreshLimits() {
     if (this.hasLimits())
-      ::g_item_limits.requestLimitsForItem(this.id, true)
+      requestLimitsForItem(this.id)
   }
 
   function getLimitsDescription() {
@@ -816,5 +821,7 @@ let BaseItem = class {
   getCountriesWithBuyRestrict = @() (this.restrictedInCountries ?? "") != "" ? this.restrictedInCountries.split(",") : []
   getOpeningCaption = @() loc("mainmenu/trophyReward/title")
 }
+
+registerBaseItemClass(BaseItem)
 
 return { BaseItem }

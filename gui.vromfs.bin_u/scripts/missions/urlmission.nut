@@ -3,7 +3,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 let DataBlock = require("DataBlock")
 
-::UrlMission <- class {
+let UrlMission = class {
   name = ""
   url = ""
   hasErrorByLoading = false
@@ -55,3 +55,5 @@ let DataBlock = require("DataBlock")
     return this.name.len() > 0 && this.url.len() > 0
   }
 }
+
+return { UrlMission }

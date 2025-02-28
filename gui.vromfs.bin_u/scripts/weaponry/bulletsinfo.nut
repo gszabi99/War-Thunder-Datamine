@@ -269,6 +269,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
                   weaponBlkName = wBlkName
                   maxToRespawn = mod?.maxToRespawn ?? 0
                   bulletAnimations = clone bulletAnimations
+                  cumulativeDamage = paramsBlk?.cumulativeDamage.armorPower ?? 0
                 }
         }
         else
@@ -1127,7 +1128,7 @@ function getUnitLastBullets(unit) {
 }
 
 function getModifIconItem(unit, item) {
-  if (item.type == weaponsItem.modification) {
+  if (item?.type == weaponsItem.modification) {
     updateRelationModificationList(unit, item.name)
     if ("relationModification" in item && item.relationModification.len() == 1)
       return getModificationByName(unit, item.relationModification[0])
@@ -1184,6 +1185,15 @@ let isPairBulletsGroup = @(bullets) bullets.values.len() == 2
   && bullets.weaponType == WEAPON_TYPE.COUNTERMEASURES
   && !(bullets?.isBulletBelt ?? true)
 
+function isModificationIsShell(unit, mod) {
+  let modName = getModifIconItem(unit, mod)?.name ?? mod?.name
+  if (!modName)
+    return false
+
+  let bulletsSet = getBulletsSetData(unit, modName)
+  return bulletsSet != null
+}
+
 return {
   BULLET_TYPE
   //
@@ -1221,4 +1231,5 @@ return {
   getBulletsNamesBySet
   isPairBulletsGroup
   getLinkedGunIdx
+  isModificationIsShell
 }

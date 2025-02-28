@@ -29,7 +29,8 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, getSessionLobbyRoomId, canInviteIntoSession, isMpSquadChatAllowed
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId } = require("worldwar")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -40,7 +41,13 @@ let { getCurrentGameModeId, setCurrentGameModeById, getUserGameModeId
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { isWorldWarEnabled, canPlayWorldwar } = require("%scripts/globalWorldWarScripts.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { updateContact, update_contacts_by_list } = require("%scripts/contacts/contactsActions.nut")
+let { invitePlayerToSessionRoom } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { isMemberInMySquadByName, isMemberInMySquadById } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
+let { checkIsInQueue, queues } = require("%scripts/queue/queueManager.nut")
+let { presenceTypes, getByPresenceParams, getCurrentPresenceType } = require("%scripts/user/presenceType.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -84,7 +91,7 @@ let SQUAD_SIZE_FEATURES_CHECK = {
   battleGroup = ["WorldWar"]
 }
 
-let DEFAULT_SQUAD_PRESENCE = ::g_presence_type.IDLE.getParams()
+let DEFAULT_SQUAD_PRESENCE = presenceTypes.IDLE.getParams()
 let DEFAULT_SQUAD_CHAT_INFO = { name = "", password = "" }
 let DEFAULT_SQUAD_WW_OPERATION_INFO = { id = -1, country = "", battle = null }
 
@@ -159,7 +166,7 @@ g_squad_manager = {
     && g_squad_manager.getPlayerStatusInMySquad(uid) >= squadMemberState.SQUAD_MEMBER
 
   canSwitchReadyness = @() g_squad_manager.isSquadMember() && g_squad_manager.canManageSquad()
-    && !::checkIsInQueue()
+    && !checkIsInQueue()
 
   canChangeSquadSize = @(shouldCheckLeader = true) hasFeature("SquadSizeChange")
     && (!shouldCheckLeader || g_squad_manager.isSquadLeader())
@@ -187,7 +194,7 @@ g_squad_manager = {
   getSquadMemberNameByUid = @(uid) (g_squad_manager.isInSquad() && uid in squadData.members) ?
     squadData.members[uid].name : ""
   getSquadRoomId = @() g_squad_manager.getSquadLeaderData()?.sessionRoomId ?? ""
-  getPresence = @() ::g_presence_type.getByPresenceParams(squadData?.presence ?? {})
+  getPresence = @() getByPresenceParams(squadData?.presence ?? {})
 
   function getMembersNotAllowedInWorldWar() {
     let res = []
@@ -316,7 +323,7 @@ g_squad_manager = {
     if (!isSetNoReady && !isInSquad)
       return
 
-    if (::checkIsInQueue() && !isLeader && isInSquad && isSetNoReady) {
+    if (checkIsInQueue() && !isLeader && isInSquad && isSetNoReady) {
       addPopup(null, loc("squad/cant_switch_off_readyness_in_queue"))
       return
     }
@@ -393,11 +400,11 @@ g_squad_manager = {
     memberData.online = isOnline
     if (!isOnline) {
       memberData.isReady = false
-      if (g_squad_manager.isSquadLeader() && ::queues.isAnyQueuesActive())
-        ::queues.leaveAllQueues()
+      if (g_squad_manager.isSquadLeader() && queues.isAnyQueuesActive())
+        queues.leaveAllQueues()
     }
 
-    ::updateContact(memberData.getData())
+    updateContact(memberData.getData())
     broadcastEvent(squadEvent.DATA_UPDATED)
     broadcastEvent("SquadOnlineChanged")
   }
@@ -406,7 +413,7 @@ g_squad_manager = {
     : u.search(g_squad_manager.getApplicationsToSquad(), @(player) player.name == name) != null
 
   isSquadFull = @() g_squad_manager.getSquadSize() >= g_squad_manager.getMaxSquadSize()
-  isInSquad = @(forChat = false) (forChat && !::SessionLobby.isMpSquadChatAllowed()) ? false
+  isInSquad = @(forChat = false) (forChat && !isMpSquadChatAllowed()) ? false
     : smData.state == squadState.IN_SQUAD
   isMeReady = @() smData.meReady
   isSquadLeader = @() g_squad_manager.isInSquad() && g_squad_manager.getLeaderUid() == userIdStr.value
@@ -417,11 +424,11 @@ g_squad_manager = {
   isMemberReady = @(uid) g_squad_manager.getMemberData(uid)?.isReady ?? false
   isInMySquad = @(name, checkAutosquad = true)
     (g_squad_manager.isInSquad() && g_squad_manager.isMySquadMember(name)) ? true
-      : checkAutosquad && ::SessionLobby.isMemberInMySquadByName(name)
+      : checkAutosquad && isMemberInMySquadByName(name)
 
   isInMySquadById = @(userId, checkAutosquad = true)
     (g_squad_manager.isInSquad() && g_squad_manager.isMySquadMemberById(userId)) ? true
-      : checkAutosquad && ::SessionLobby.isMemberInMySquadById(userId)
+      : checkAutosquad && isMemberInMySquadById(userId)
 
   isMe = @(uid) uid == userIdStr.value
   isStateInTransition = @() (smData.state == squadState.JOINING || smData.state == squadState.LEAVING)
@@ -487,6 +494,28 @@ g_squad_manager = {
     actualizeQueueData(@(_) g_squad_manager.updateMyMemberData())
   }
 
+  function updateMyPresence() {
+    if (!g_squad_manager.isInSquad())
+      return
+
+    let data = {
+      presenceStatus = getCurrentPresenceType().getParams()
+    }
+
+    local memberData = g_squad_manager.getMemberData(userIdStr.value)
+    if (!memberData) {
+      memberData = SquadMember(userIdStr.value)
+      squadData.members[userIdStr.value] <- memberData
+    }
+
+    memberData.update(data)
+    memberData.online = true
+    updateContact(memberData.getData())
+
+    request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.value, data })
+    broadcastEvent(squadEvent.DATA_UPDATED)
+  }
+
   function updateMyMemberData(data = null) {
     if (!g_squad_manager.isInSquad())
       return
@@ -518,8 +547,9 @@ g_squad_manager = {
       }
     }
     data.wwOperations <- wwOperations
+    data.presenceStatus <- getCurrentPresenceType().getParams()
     data.wwStartingBattle <- null
-    data.sessionRoomId <- ::SessionLobby.canInviteIntoSession() ? ::SessionLobby.getRoomId() : ""
+    data.sessionRoomId <- canInviteIntoSession() ? getSessionLobbyRoomId() : ""
 
     local memberData = g_squad_manager.getMemberData(userIdStr.value)
     if (!memberData) {
@@ -529,7 +559,7 @@ g_squad_manager = {
 
     memberData.update(data)
     memberData.online = true
-    ::updateContact(memberData.getData())
+    updateContact(memberData.getData())
 
     request_matching("msquad.set_member_data", null, null, { userId = userIdInt64.value, data })
     broadcastEvent(squadEvent.DATA_UPDATED)
@@ -614,11 +644,11 @@ g_squad_manager = {
   }
 
   function updatePresenceSquad() {
+    g_squad_manager.updateMyPresence()
     if (!g_squad_manager.isSquadLeader())
       return
 
-    let presence = ::g_presence_type.getCurrent()
-    let presenceParams = presence.getParams()
+    let presenceParams = getCurrentPresenceType().getParams()
     if (!u.isEqual(squadData.presence, presenceParams))
       squadData.presence = presenceParams
   }
@@ -699,7 +729,7 @@ g_squad_manager = {
     if (!hasFeature("Squad"))
       return
 
-    if (!g_squad_manager.canJoinSquad() || !g_squad_manager.canManageSquad() || ::queues.isAnyQueuesActive())
+    if (!g_squad_manager.canJoinSquad() || !g_squad_manager.canManageSquad() || queues.isAnyQueuesActive())
       return
 
     g_squad_manager.setState(squadState.JOINING)
@@ -842,7 +872,7 @@ g_squad_manager = {
 
     local isInvitingPsnPlayer = false
     if (platformModule.isPS4PlayerName(name)) {
-      let contact = ::getContact(uid, name)
+      let contact = getContact(uid, name)
       isInvitingPsnPlayer = true
       if (u.isEmpty(g_squad_manager.getPsnSessionId()))
         contact.updatePSNIdAndDo(function() {
@@ -852,7 +882,7 @@ g_squad_manager = {
 
     let callback = function(_response) {
       if (isInvitingPsnPlayer && u.isEmpty(smData.delayedInvites)) {
-        let contact = ::getContact(uid, name)
+        let contact = getContact(uid, name)
         contact.updatePSNIdAndDo(function() {
           invite(g_squad_manager.getPsnSessionId(), contact.psnId)
         })
@@ -1067,20 +1097,20 @@ g_squad_manager = {
     let isMemberDataChanged = memberData.update(receivedMemberData)
     let isMemberVehicleDataChanged = isMemberDataChanged
       && g_squad_manager.isMemberDataVehicleChanged(currentMemberData, memberData)
-    let contact = ::getContact(memberData.uid, memberData.name)
+    let contact = getContact(memberData.uid, memberData.name)
     contact.online = response.online
     memberData.online = response.online
     if (!response.online)
       memberData.isReady = false
 
-    ::update_contacts_by_list([memberData.getData()])
+    update_contacts_by_list([memberData.getData()])
 
     if (g_squad_manager.isSquadLeader()) {
       if (!g_squad_manager.readyCheck())
-        ::queues.leaveAllQueues()
+        queues.leaveAllQueues()
 
-      if (::SessionLobby.canInviteIntoSession() && memberData.canJoinSessionRoom())
-        ::SessionLobby.invitePlayer(memberData.uid)
+      if (canInviteIntoSession() && memberData.canJoinSessionRoom())
+        invitePlayerToSessionRoom(memberData.uid)
     }
 
     g_squad_manager.joinSquadChatRoom()
@@ -1097,7 +1127,7 @@ g_squad_manager = {
     if (smData.state == squadState.IN_SQUAD)
       g_squad_manager.setState(squadState.LEAVING)
 
-    ::queues.leaveAllQueues()
+    queues.leaveAllQueues()
     g_chat.leaveSquadRoom()
 
     smData.cyberCafeSquadMembersNum = -1
@@ -1124,7 +1154,7 @@ g_squad_manager = {
     if (smData.meReady)
       g_squad_manager.setReadyFlag(false, false)
 
-    ::update_contacts_by_list(contactsUpdatedList)
+    update_contacts_by_list(contactsUpdatedList)
 
     g_squad_manager.setState(squadState.NOT_IN_SQUAD)
     broadcastEvent(squadEvent.DATA_UPDATED)
@@ -1225,7 +1255,7 @@ g_squad_manager = {
       return
 
     squadData.members.$rawdelete(memberData.uid)
-    ::update_contacts_by_list([memberData.getData()])
+    update_contacts_by_list([memberData.getData()])
 
     broadcastEvent(squadEvent.STATUS_CHANGED)
     broadcastEvent(squadEvent.DATA_UPDATED)
@@ -1298,7 +1328,7 @@ g_squad_manager = {
     g_squad_manager.joinSquadChatRoom()
 
     if (g_squad_manager.isSquadLeader() && !g_squad_manager.readyCheck())
-      ::queues.leaveAllQueues()
+      queues.leaveAllQueues()
 
     if (!alreadyInSquad)
       g_squad_manager.checkUpdateStatus(squadStatusUpdateState.MENU)
@@ -1416,7 +1446,7 @@ g_squad_manager = {
     local isChanged = false
     local contact = null
     foreach (uid, memberData in g_squad_manager.getInvitedPlayers()) {
-      contact = ::getContact(uid)
+      contact = getContact(uid)
       if (contact == null)
         continue
 
@@ -1429,7 +1459,7 @@ g_squad_manager = {
 
     isChanged = false
     foreach (uid, memberData in g_squad_manager.getApplicationsToSquad()) {
-      contact = ::getContact(uid.tostring())
+      contact = getContact(uid.tostring())
       if (contact == null)
         continue
 
@@ -1469,7 +1499,7 @@ g_squad_manager = {
   }
 
   function onEventQueueChangeState(_params) {
-    if (!::queues.hasActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE))
+    if (!queues.hasActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE))
       g_squad_manager.setCrewsReadyFlag(false)
 
     g_squad_manager.updatePresenceSquad()

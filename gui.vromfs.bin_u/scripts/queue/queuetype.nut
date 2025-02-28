@@ -9,6 +9,7 @@ let { isNewbieEventId } = require("%scripts/myStats.nut")
 let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
+let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
 
 enum qTypeCheckOrder {
   COMMON
@@ -24,7 +25,7 @@ g_queue_type.template <- {
   typeName = "" //filled automatically by typeName
   bit = QUEUE_TYPE_BIT.UNKNOWN
   checkOrder = qTypeCheckOrder.COMMON
-  getQueueClass = @(_params) ::queue_classes.Event
+  getQueueClass = @(_params) getQueueClass("Event")
   useSlots = true
 
   prepareQueueParams = function(params) {
@@ -69,7 +70,7 @@ enumsAddTypes(g_queue_type,
 
     WW_BATTLE = {
       bit = QUEUE_TYPE_BIT.WW_BATTLE
-      getQueueClass = @(_params) ::queue_classes.WwBattle
+      getQueueClass = @(_params) getQueueClass("WwBattle")
       useSlots = false
 
       isParamsCorresponds = @(params) "battleId" in params

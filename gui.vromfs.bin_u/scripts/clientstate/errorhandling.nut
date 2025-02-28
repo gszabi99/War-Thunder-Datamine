@@ -6,6 +6,7 @@ let callback = require("%sqStdLibs/helpers/callback.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 
 callback.setContextDbgNameFunction(function(context) {
   if (!u.isTable(context))
@@ -22,7 +23,7 @@ callback.setAssertFunction(function(cb, assertText) {
   let curEventName = subscriptions.getCurrentEventName()
   if (curEventName)
     eventText = "".concat(eventText, format("event = %s, ", curEventName))
-  let hudEventName = getroottable()?["g_hud_event_manager"].getCurHudEventName()
+  let hudEventName = g_hud_event_manager.getCurHudEventName()
   if (hudEventName)
     eventText = "".concat(eventText, format("hudEvent = %s, ", hudEventName))
 

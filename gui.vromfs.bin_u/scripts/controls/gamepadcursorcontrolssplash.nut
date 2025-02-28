@@ -6,6 +6,7 @@ let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/l
 let { isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
 
 const GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID = "gamepad_cursor_controls_splash_displayed"
 
@@ -118,7 +119,7 @@ gui_handlers.GampadCursorControlsSplash <- class (gui_handlers.BaseGuiHandlerWT)
       lineInterval = "@helpLineInterval"
       links = this.bubblesList.map(@(id) { start = $"bubble_{id}", end = $"dot_{id}" })
     }
-    let linesMarkup = ::LinesGenerator.getLinkLinesMarkup(linesGeneratorConfig)
+    let linesMarkup = getLinkLinesMarkup(linesGeneratorConfig)
     this.guiScene.replaceContentFromText(this.getObj("lines_block"), linesMarkup, linesMarkup.len(), this)
   }
 

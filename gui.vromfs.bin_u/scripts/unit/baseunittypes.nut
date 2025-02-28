@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
-let { toUpper, cutPrefix } = require("%sqstd/string.nut")
+let { capitalize, cutPrefix } = require("%sqstd/string.nut")
 
 enum VISUAL_SORT_ORDER {
   INVALID
@@ -44,7 +44,7 @@ return {
         return false
       if (!country)
         return true
-      let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = capitalize(cutPrefix(country, "country_") ?? "")
       return hasFeature($"{countryShort}AircraftsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
@@ -75,7 +75,7 @@ return {
         return false
       if (!country)
         return true
-      let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = capitalize(cutPrefix(country, "country_") ?? "")
       return hasFeature($"{countryShort}TanksInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
@@ -107,7 +107,7 @@ return {
         return false
       if (!country)
         return true
-      let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = capitalize(cutPrefix(country, "country_") ?? "")
       return hasFeature($"{countryShort}ShipsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true
@@ -168,7 +168,7 @@ return {
         return false
       if (!country)
         return true
-      let countryShort = toUpper(cutPrefix(country, "country_") ?? "", 1)
+      let countryShort = capitalize(cutPrefix(country, "country_") ?? "")
       return hasFeature($"{countryShort}BoatsInFirstCountryChoice")
     }
     canUseSeveralBulletsForGun = true

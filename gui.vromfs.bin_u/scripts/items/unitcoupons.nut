@@ -1,11 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getInventoryListByShopMask } = require("%scripts/items/itemsManager.nut")
 
 let unitCoupons = persist("unitCoupons", @() { valid = false })
 
 function updateUnitCoupons() {
-  unitCoupons.__update(::ItemsManager.getInventoryListByShopMask(itemType.VEHICLE)
+  unitCoupons.__update(getInventoryListByShopMask(itemType.VEHICLE)
     .filter(@(it) it.metaBlk?.unit != null && it.canConsume())
     .reduce(function(res, it) {
       res[it.metaBlk.unit] <- it

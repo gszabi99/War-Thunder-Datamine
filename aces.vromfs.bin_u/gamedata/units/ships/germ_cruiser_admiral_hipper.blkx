@@ -30,7 +30,12 @@
   "explosionFx": "explosion_ship_large",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
-  "shipsDisableDeadCoverParts": true,
+  "deadCoverCountToDelayedSinking": 2,
+  "delayedSinkingBreachesFreq": 4.0,
+  "delayedSinkingBreachesSize": [
+    0.7,
+    2.3
+  ],
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 30.0,
   "smokeScreenRad": 60.0,
@@ -3438,29 +3443,32 @@
       "hidableInViewer": true,
       "genericDamageMult": 0.1,
       "shatterDamageMult": 0.1,
+      "hydroShockDamageMult": 15.0,
+      "hydroShockArmorQuality": 0.15,
+      "pressureDamageMult": 0.0,
       "cover_01_dm": {
-        "hp": 14700.0
+        "hp": 11800.0
       },
       "cover_02_dm": {
-        "hp": 14700.0
+        "hp": 11800.0
       },
       "cover_03_dm": {
-        "hp": 13761.0
+        "hp": 11009.0
       },
       "cover_04_dm": {
-        "hp": 14700.0
+        "hp": 11784.0
       },
       "cover_05_dm": {
-        "hp": 13119.0
+        "hp": 10495.0
       },
       "cover_06_dm": {
-        "hp": 11300.0
+        "hp": 9100.0
       },
       "cover_07_dm": {
-        "hp": 14700.0
+        "hp": 11800.0
       },
       "cover_08_dm": {
-        "hp": 14700.0
+        "hp": 11800.0
       }
     },
     "superstructures": {
@@ -4361,6 +4369,7 @@
       "fireDamageMult": 0.001,
       "hidableInViewer": true,
       "pressureDamageMult": 150.0,
+      "hydroShockDamageMult": 0.0,
       "at_bulge_01_dm": {
         "hp": 3000.0
       },
@@ -4373,6 +4382,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
       "pressureDamageMult": 9.0,
+      "hydroShockDamageMult": 0.0,
       "main_caliber_turret_01_dm": {
         "hp": 1087.0
       },
@@ -4391,6 +4401,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
       "pressureDamageMult": 5.0,
+      "hydroShockDamageMult": 0.0,
       "napalmDamageMult": 1.0,
       "auxiliary_caliber_turret_01_dm": {
         "hp": 400.0
@@ -4434,6 +4445,7 @@
       "armorThickness": 2.2,
       "fireDamageMult": 2.0,
       "pressureDamageMult": 2.5,
+      "hydroShockDamageMult": 0.0,
       "napalmDamageMult": 1.0,
       "aa_turret_02_dm": {
         "hp": 90.0
@@ -4822,6 +4834,7 @@
       "armorThickness": 3.0,
       "dmgState": 0.0,
       "pressureDamageMult": 1.0,
+      "hydroShockDamageMult": 0.0,
       "napalmDamageMult": 1.0,
       "fire_director_01_dm": {
         "hp": 250.0
@@ -5588,6 +5601,23 @@
         }
       }
     ],
+    "hull": {
+      "part": [
+        "cover_01_dm",
+        "cover_02_dm",
+        "cover_03_dm",
+        "cover_04_dm",
+        "cover_05_dm",
+        "cover_06_dm",
+        "cover_07_dm",
+        "cover_08_dm",
+        "cover_09_dm",
+        "cover_10_dm"
+      ],
+      "effect": {
+        "pressure": true
+      }
+    },
     "open_mounts": {
       "part": [
         "auxiliary_caliber_turret_01_dm",

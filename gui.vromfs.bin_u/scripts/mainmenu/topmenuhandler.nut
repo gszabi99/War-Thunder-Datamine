@@ -30,7 +30,8 @@ let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { needShowGameModesNotLoadedMsg } = require("%scripts/matching/matchingGameModes.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { lastChatSceneShow } = require("%scripts/chat/chatConsts.nut")
 
 class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
@@ -79,7 +80,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       )
       this.registerSubHandler(this.leftSectionHandlerWeak)
 
-      if (::last_chat_scene_show)
+      if (lastChatSceneShow.get())
         this.switchChatWindow()
       if (::last_contacts_scene_show)
         this.onSwitchContacts()

@@ -122,7 +122,9 @@
           "N001",
           "N010",
           "V004",
+          "Type 1473",
           "ELTA EL/M-2001B",
+          "ELTA EL/M-2052",
           "PS-37",
           "PS-05",
           "Ferranti Blue Vixen",
@@ -179,7 +181,8 @@
       {
         "name": "E-H+TWS",
         "detectLaunch": true,
-        "priority": 7
+        "priority": 7,
+        "type": "S75 RSN-75"
       },
       {
         "name": "I+TWS",
@@ -208,7 +211,10 @@
     "targetsPresenceGroup": [
       {
         "text": "E-H",
-        "group": "E-H"
+        "group": [
+          "E-H",
+          "E-H+TWS"
+        ]
       },
       {
         "text": "I",
@@ -240,6 +246,7 @@
       {
         "text": "hud/rwr_threat_tws",
         "group": [
+          "E-H+TWS",
           "I+TWS",
           "J+TWS"
         ]

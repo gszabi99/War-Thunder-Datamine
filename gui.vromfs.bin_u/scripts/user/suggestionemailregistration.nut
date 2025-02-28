@@ -19,6 +19,8 @@ let { getCurLangShortName, getLanguageName } = require("%scripts/langUtils/langu
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { steam_is_running } = require("steam")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
+
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
 let needShowGuestEmailRegistration = @() isPlatformPC && havePlayerTag("guestlogin")
@@ -38,7 +40,7 @@ eventbus_subscribe("onGetStokenForGuestEmail", function(msg) {
 })
 
 function showGuestEmailRegistration() {
-  ::showUnlockWnd({
+  showUnlockWnd({
     name = loc("mainmenu/SteamEmailRegistration")
     desc = loc("mainmenu/guestEmailRegistration/desc")
     popupImage = "ui/images/invite_big?P1"
@@ -93,7 +95,7 @@ function checkShowSteamEmailRegistration() {
     saveLocalByAccount("SteamEmailRegistrationShowed", true)
   }
 
-  ::showUnlockWnd({
+  showUnlockWnd({
     name = loc("mainmenu/SteamEmailRegistration")
     desc = loc("mainmenu/SteamEmailRegistration/desc")
     popupImage = "ui/images/invite_big?P1"
@@ -114,7 +116,7 @@ function checkShowPS4EmailRegistration() {
 
   saveLocalByAccount("PS4EmailRegistrationShowed", true)
 
-  ::showUnlockWnd({
+  showUnlockWnd({
     name = loc("mainmenu/PS4EmailRegistration")
     desc = loc("mainmenu/PS4EmailRegistration/desc")
     popupImage = "ui/images/invite_big?P1"

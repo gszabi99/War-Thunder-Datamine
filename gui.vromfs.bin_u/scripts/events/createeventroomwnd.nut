@@ -6,6 +6,8 @@ let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.n
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
+let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
+let { EventRoomCreationContext } = require("%scripts/events/eventRoomCreationContext.nut")
 
 gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.MODAL
@@ -29,7 +31,7 @@ gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
     this.initSizes()
     this.scene.findObject("header_name").setValue(loc("mainmenu/btnCreateSession"))
 
-    this.roomCreationContext = ::EventRoomCreationContext(this.mGameMode, Callback(this.reinitSlotbar, this))
+    this.roomCreationContext = EventRoomCreationContext(this.mGameMode, Callback(this.reinitSlotbar, this))
     this.options = this.roomCreationContext.getOptionsList()
     this.optionsConfig = this.roomCreationContext.getOptionsConfig()
 
@@ -46,14 +48,14 @@ gui_handlers.CreateEventRoomWnd <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onEventEventsDataUpdated(_params) {
-    let customMgm = ::queue_classes.Event.getCustomMgm(this.mGameMode.name)
+    let customMgm = getQueueClass("Event").getCustomMgm(this.mGameMode.name)
     if (customMgm == null)
       return
 
     let newRanges = this.rangesToString(customMgm.matchmaking.mmRanges)
     if (this.prevRanges != newRanges) {
       this.mGameMode = customMgm
-      this.roomCreationContext = ::EventRoomCreationContext(this.mGameMode, Callback(this.reinitSlotbar, this))
+      this.roomCreationContext = EventRoomCreationContext(this.mGameMode, Callback(this.reinitSlotbar, this))
       this.options = this.roomCreationContext.getOptionsList()
       this.optionsConfig = this.roomCreationContext.getOptionsConfig()
       this.prevRanges = newRanges

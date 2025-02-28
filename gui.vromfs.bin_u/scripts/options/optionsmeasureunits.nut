@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import get_option_unit_type
 from "%scripts/dagui_library.nut" import *
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock = require("DataBlock")
@@ -8,6 +7,7 @@ let { format } = require("string")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { floatToStringRounded } = require("%sqstd/string.nut")
+let { getMeasureUnitOptionType } = require("guiOptions")
 let { USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS_DIST,
   USEROPT_MEASUREUNITS_CLIMBSPEED, USEROPT_MEASUREUNITS_TEMPERATURE,
   USEROPT_MEASUREUNITS_WING_LOADING, USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO,
@@ -67,7 +67,7 @@ function getOption(useroptId) {
   let unitNo = optionsByIndex.findindex(@(option) option.useroptId == useroptId) ?? 0
   let option = optionsByIndex[unitNo]
   let units = persistent.unitsCfg[unitNo]
-  let unitName = get_option_unit_type(unitNo)
+  let unitName = getMeasureUnitOptionType(unitNo)
 
   return {
     id     = $"measure_units_{option.optId}"
@@ -78,7 +78,7 @@ function getOption(useroptId) {
 }
 
 function getMeasureCfg(unitNo) {
-  let unitName = get_option_unit_type(unitNo)
+  let unitName = getMeasureUnitOptionType(unitNo)
   return persistent.unitsCfg[unitNo].findvalue(@(u) u.name == unitName)
 }
 
@@ -109,7 +109,7 @@ function countMeasure(unitNo, value, separator = " - ", addMeasureUnits = true, 
 }
 
 function isMetricSystem(unitNo) {
-  let unitName = get_option_unit_type(unitNo)
+  let unitName = getMeasureUnitOptionType(unitNo)
   return persistent.unitsCfg[unitNo].findindex(@(u) u.name == unitName) == 0
 }
 

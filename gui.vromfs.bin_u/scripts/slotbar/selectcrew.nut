@@ -26,6 +26,7 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let fillSlotbarLegend = require("%scripts/slotbar/fillSlotbarLegend.nut")
 let slotbarBaseCfg = require("%scripts/slotbar/selectCrewSlotbarBaseCfg.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 
 function getObjPosInSafeArea(obj) {
   let pos = obj.getPosRC()
@@ -303,7 +304,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     ]
 
-    ::gui_modal_tutor(steps, this)
+    gui_modal_tutor(steps, this)
   }
 
   function onApply() {

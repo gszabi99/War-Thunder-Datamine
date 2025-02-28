@@ -1,21 +1,30 @@
 //-file:similar-function
 
 from "%scripts/mainConsts.nut" import global_max_players_versus
-from "%scripts/dagui_natives.nut" import get_option_default_ai_target_type, set_activate_ground_radar_on_spawn, set_enable_laser_designatior_before_launch, set_option_use_radar_hud_in_cockpit, set_option_depthcharge_activation_time, get_cur_rank_info, set_option_countermeasures_series, get_option_autopilot_on_bombview, apply_current_view_type, set_option_countermeasures_series_periods, set_activate_ground_active_counter_measures_on_spawn, get_option_subs_radio, get_option_ground_radar_target_cycling, get_commander_camera_in_views, set_option_bomb_activation_time, set_option_camera_invertY, get_option_gunVerticalTargeting, get_option_gun_target_dist, set_option_radar_target_cycling, get_activate_ground_radar_on_spawn, get_option_save_zoom_camera, set_internet_radio_options, set_option_save_zoom_camera, get_option_rocket_fuse_dist, set_option_use_oculus_to_aim_helicopter, get_option_showPilot, save_online_single_job, get_dgs_tex_quality, set_option_use_perfect_rangefinder, set_option_activate_airborne_active_counter_measures_on_spawn, set_option_subs, get_option_hud_show_fuel, myself_can_devoice, set_option_autopilot_on_bombview, set_option_combine_pri_sec_triggers, get_option_grass_in_tank_vision, get_strobe_enemy, get_option_countermeasures_periods, get_option_hud_screenshot_logo, set_option_grass_in_tank_vision, set_option_indicatedSpeedType, set_option_indicatedAltitudeType, set_option_radarAltitudeAlert, get_option_camera_invertY, get_option_bombs_series, set_option_hud, get_bomb_activation_auto_time, get_option_ai_target_type, get_option_use_rectangular_radar_indicator, set_option_default_ai_target_type, set_option_gain, get_option_vibration, set_option_tank_gunner_camera_from_sight, get_option_xray_death, set_option_gamma, set_option_use_rectangular_radar_indicator, get_option_invertY, get_option_tank_gunner_camera_from_sight, get_option_indicatedSpeedType, get_option_indicatedAltitudeType, get_option_radarAltitudeAlert, ps4_headtrack_get_enable, get_hue, get_option_autorearm_on_airfield, get_option_gamma, get_options_torpedo_dive_depth, set_option_deflection, set_option_zoom_turret, get_option_radar_target_cycling, get_option_countermeasures_series, set_option_hud_indicators, get_option_view_type, set_option_xray_death, get_option_delayed_download_content, get_aircraft_fuel_consumption, set_option_activate_airborne_radar_on_spawn, get_option_gain, get_option_subs, set_option_speech_country_type, get_option_use_radar_hud_in_cockpit, get_option_deflection, set_option_invertX, get_option_hud_show_ammo, set_option_bombs_series, get_internet_radio_stations, set_option_subs_radio, get_option_bomb_activation_type, set_profile_pilot, set_commander_camera_in_views, get_option_ai_gunner_time, set_hue, get_option_auto_pilot_on_gunner_view_helicopter, get_show_destroyed_parts, myself_can_ban, get_option_countermeasures_series_periods, get_option_aerobatics_smoke_color, get_allow_to_be_added_to_lb, get_current_view_type, set_option_autorearm_on_airfield, set_option_hud_screenshot_logo, set_option_view_type, ps4_headtrack_set_xscale, set_option_auto_pilot_on_gunner_view_helicopter, get_option_zoom_turret, set_option_horizontal_speed, set_option_showPilot, get_option_invertX, set_option_hud_show_fuel, get_option_use_oculus_to_aim_helicopter, set_option_bomb_activation_type, set_strobe_ally, set_option_ground_radar_target_cycling, get_activate_ground_active_counter_measures_on_spawn, get_strobe_ally, set_option_aerobatics_smoke_color, get_option_use_perfect_rangefinder, get_option_hud_indicators, set_option_ai_target_type, set_option_rocket_fuse_dist, set_option_gunVerticalTargeting, get_option_horizontal_speed, set_option_controller_light, set_option_hud_color, get_option_controller_light, set_show_destroyed_parts, set_option_hud_show_temperature, get_option_depthcharge_activation_time, get_enable_laser_designatior_before_launch, set_option_xray_kill, set_option_unit_type, set_option_gun_target_dist, get_option_speech_country_type, get_option_xchg_sticks, get_option_bomb_activation_time, get_option_mouse_smooth, set_option_hud_show_ammo, get_option_hud_color, set_option_torpedo_dive_depth, set_option_mouse_smooth, set_allow_to_be_added_to_lb, get_option_xray_kill, get_internet_radio_path, get_option_hud_show_temperature, get_option_autosave_replays, ps4_headtrack_set_enable, set_strobe_enemy, set_option_autosave_replays, get_option_aerobatics_smoke_type, get_internet_radio_options, get_option_hud, get_option_activate_airborne_active_counter_measures_on_spawn, get_option_indicators_mode, set_option_aerobatics_smoke_type, ps4_headtrack_get_yscale, set_option_delayed_download_content, ps4_headtrack_set_yscale, is_unlocked, set_option_ai_gunner_time, set_option_countermeasures_periods, set_option_vibration, set_option_xchg_sticks, get_aircraft_max_fuel, ps4_headtrack_get_xscale, get_option_activate_airborne_radar_on_spawn, set_option_indicators_mode, set_option_invertY, get_option_torpedo_dive_depth, set_option_console_preset, get_option_console_preset
+from "%scripts/dagui_natives.nut" import get_option_default_ai_target_type, set_activate_ground_radar_on_spawn, set_enable_laser_designatior_before_launch, set_option_use_radar_hud_in_cockpit, set_option_depthcharge_activation_time, get_cur_rank_info, set_option_countermeasures_series, get_option_autopilot_on_bombview, apply_current_view_type, set_option_countermeasures_series_periods, set_activate_ground_active_counter_measures_on_spawn, get_option_subs_radio, get_option_ground_radar_target_cycling, get_commander_camera_in_views, set_option_bomb_activation_time, set_option_camera_invertY, get_option_gunVerticalTargeting, get_option_gun_target_dist, set_option_radar_target_cycling, get_activate_ground_radar_on_spawn, get_option_save_zoom_camera, set_internet_radio_options, set_option_save_zoom_camera, get_option_rocket_fuse_dist, set_option_use_oculus_to_aim_helicopter, get_option_showPilot, save_online_single_job, get_dgs_tex_quality, set_option_use_perfect_rangefinder, set_option_activate_airborne_active_counter_measures_on_spawn, set_option_subs, get_option_hud_show_fuel, myself_can_devoice, set_option_autopilot_on_bombview, set_option_combine_pri_sec_triggers, get_option_grass_in_tank_vision, get_strobe_enemy, get_option_countermeasures_periods, get_option_hud_screenshot_logo, set_option_grass_in_tank_vision, set_option_radarAltitudeAlert, get_option_camera_invertY, get_option_bombs_series, set_option_hud, get_bomb_activation_auto_time, get_option_ai_target_type, get_option_use_rectangular_radar_indicator, set_option_default_ai_target_type, set_option_gain, set_option_tank_gunner_camera_from_sight, get_option_xray_death, set_option_gamma, set_option_use_rectangular_radar_indicator, get_option_invertY, get_option_tank_gunner_camera_from_sight, get_option_radarAltitudeAlert, ps4_headtrack_get_enable, get_hue, get_option_autorearm_on_airfield, get_option_gamma, get_options_torpedo_dive_depth, set_option_deflection, set_option_zoom_turret, get_option_radar_target_cycling, get_option_countermeasures_series, set_option_hud_indicators, get_option_view_type, set_option_xray_death, get_option_delayed_download_content, get_aircraft_fuel_consumption, set_option_activate_airborne_radar_on_spawn, get_option_gain, get_option_subs, set_option_speech_country_type, get_option_use_radar_hud_in_cockpit, get_option_deflection, set_option_invertX, get_option_hud_show_ammo, set_option_bombs_series, get_internet_radio_stations, set_option_subs_radio, get_option_bomb_activation_type, set_commander_camera_in_views, get_option_ai_gunner_time, set_hue, get_option_auto_pilot_on_gunner_view_helicopter, get_show_destroyed_parts, myself_can_ban, get_option_countermeasures_series_periods, get_option_aerobatics_smoke_color, get_current_view_type, set_option_autorearm_on_airfield, set_option_hud_screenshot_logo, set_option_view_type, ps4_headtrack_set_xscale, set_option_auto_pilot_on_gunner_view_helicopter, get_option_zoom_turret, set_option_horizontal_speed, set_option_showPilot, get_option_invertX, set_option_hud_show_fuel, get_option_use_oculus_to_aim_helicopter, set_option_bomb_activation_type, set_strobe_ally, set_option_ground_radar_target_cycling, get_activate_ground_active_counter_measures_on_spawn, get_strobe_ally, set_option_aerobatics_smoke_color, get_option_use_perfect_rangefinder, get_option_hud_indicators, set_option_ai_target_type, set_option_rocket_fuse_dist, set_option_gunVerticalTargeting, get_option_horizontal_speed, set_option_controller_light, set_option_hud_color, get_option_controller_light, set_show_destroyed_parts, set_option_hud_show_temperature, get_option_depthcharge_activation_time, get_enable_laser_designatior_before_launch, set_option_xray_kill, set_option_gun_target_dist, get_option_speech_country_type, get_option_xchg_sticks, get_option_bomb_activation_time, get_option_mouse_smooth, set_option_hud_show_ammo, get_option_hud_color, set_option_torpedo_dive_depth, set_option_mouse_smooth, get_option_xray_kill, get_internet_radio_path, get_option_hud_show_temperature, get_option_autosave_replays, ps4_headtrack_set_enable, set_strobe_enemy, set_option_autosave_replays, get_option_aerobatics_smoke_type, get_internet_radio_options, get_option_hud, get_option_slave_counter_measures_to_mlws_on_spawn, set_option_slave_counter_measures_to_mlws_on_spawn, get_option_activate_airborne_active_counter_measures_on_spawn, get_option_indicators_mode, set_option_aerobatics_smoke_type, ps4_headtrack_get_yscale, set_option_delayed_download_content, ps4_headtrack_set_yscale, is_unlocked, set_option_ai_gunner_time, set_option_countermeasures_periods, set_option_xchg_sticks, get_aircraft_max_fuel, ps4_headtrack_get_xscale, get_option_activate_airborne_radar_on_spawn, set_option_indicators_mode, set_option_invertY, get_option_torpedo_dive_depth, set_option_console_preset, get_option_console_preset
 from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
 from "soundOptions" import *
 from "radarOptions" import get_radar_mode_names, get_option_radar_name, get_radar_scan_pattern_names, get_option_radar_scan_pattern_name, get_radar_range_values, get_option_radar_range_value, set_option_radar_name, set_option_radar_scan_pattern_name, set_option_radar_range_value
 from "%scripts/options/optionsExtNames.nut" import *
-from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, optionControlType
+from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/options/optionsConsts.nut" import misCountries, SAVE_ONLINE_JOB_DIGIT, TANK_ALT_CROSSHAIR_ADD_NEW, AIR_SPAWN_POINT
 from "%scripts/customization/customizationConsts.nut" import TANK_CAMO_SCALE_SLIDER_FACTOR, TANK_CAMO_ROTATION_SLIDER_FACTOR
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/utils_sa.nut" import locOrStrip, findNearest
 from "%scripts/options/optionsStorage.nut" import get_crosshair_icons
-let { g_aircraft_helpers } = require("%scripts/controls/aircraftHelpers.nut")
+from "crosshair" import has_forced_crosshair, set_hud_crosshair_color, get_hud_crosshair_color, set_option_tank_alt_crosshair, get_user_alt_crosshairs, set_hud_crosshair_type, get_hud_crosshair_type, get_option_tank_alt_crosshair
+from "guiOptions" import get_unit_option, set_unit_option, set_gui_option, get_gui_option,
+  setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption, getCdBaseDifficulty,
+  setMeasureUnitOptionType, getOptionIndicatedSpeedType, getOptionIndicatedAltitudeType,
+  setOptionIndicatedSpeedType, setOptionIndicatedAltitudeType, getOptionVibration, setOptionVibration
+from "chard" import setAllowToBeAddedToLb, getAllowToBeAddedToLb
+from "%scripts/missions/missionsUtils.nut" import isSkirmishWithKillStreaks, getMissionAllowedUnittypesMask, getGameModeMaps
 
+let { is_hfr_supported } = require("graphicsOptions")
+let { get_current_campaign, currentCampaignMission, set_mission_settings, get_mission_settings, get_mission_for_takeoff
+} = require("%scripts/missions/missionsStates.nut")
 let {
   create_option_list
   create_option_combobox
@@ -39,9 +48,6 @@ let { color4ToDaguiString } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { get_unit_option, set_unit_option, set_gui_option, get_gui_option,
-  setGuiOptionsMode, getGuiOptionsMode, setCdOption, getCdOption, getCdBaseDifficulty
-} = require("guiOptions")
 let { rnd } = require("dagor.random")
 let { format, split_by_chars } = require("string")
 let time = require("%scripts/time.nut")
@@ -54,8 +60,6 @@ let { TARGET_HUE_ALLY, TARGET_HUE_ENEMY, TARGET_HUE_SQUAD, TARGET_HUE_SPECTATOR_
 } = require("colorCorrector")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
-let globalEnv = require("globalEnv")
-let avatars = require("%scripts/user/avatars.nut")
 let contentPreset = require("%scripts/customization/contentPreset.nut")
 let { createDefaultOption, fillBoolOption,
   fillHueSaturationBrightnessOption, fillHueOption, fillMultipleHueOption,
@@ -71,11 +75,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { bombNbr } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { checkUnitSpeechLangPackWatch } = require("%scripts/options/optionsManager.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { is_xboxone_X } = require("%sqstd/platform.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
-let { has_forced_crosshair, set_hud_crosshair_color, get_hud_crosshair_color, set_option_tank_alt_crosshair, get_user_alt_crosshairs,
-  set_hud_crosshair_type, get_hud_crosshair_type, get_option_tank_alt_crosshair } = require("crosshair")
 //
 
 
@@ -89,6 +90,9 @@ let {
   set_option_radar_aim_elevation_control,
   get_option_rwr_sensitivity = @() 100,
   set_option_rwr_sensitivity = @(_value) null,
+  get_option_rwr_indicate_friendly_targets_values_number = @() 1,
+  get_option_rwr_indicate_friendly_targets = @() 0,
+  set_option_rwr_indicate_friendly_targets = @(_value) null,
   get_option_seeker_auto_stabilization,
   set_option_seeker_auto_stabilization,
   get_gyro_sight_deflection,
@@ -98,11 +102,10 @@ let {
   get_activate_bombs_auto_release_on_spawn = @() true,
   set_activate_bombs_auto_release_on_spawn = @(_value) null
 } = require("controlsOptions")
-let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
-let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getFullUnlockDesc, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { debug_dump_stack } = require("dagor.debug")
-let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { dynamicGetZones } = require("dynamicMission")
 let { get_option_auto_show_chat, get_option_ptt, set_option_ptt,
@@ -119,8 +122,7 @@ let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
 } = require("unitCustomization")
 let { setLastSkin, getSkinsOption, getCurUnitUserSkins, getUserSkinCondition, getUserSkinRotation, getUserSkinScale } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
-let { getUrlOrFileMissionMetaInfo, getMissionTimeText, getWeatherLocName, getGameModeMaps
-} = require("%scripts/missions/missionsUtils.nut")
+let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getCountryFlagsPresetName, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
@@ -130,7 +132,8 @@ let { getClustersList, getClusterShortName } = require("%scripts/onlineInfo/clus
 let { isEnabledCustomLocalization, setCustomLocalization,
   getLocalization, hasWarningIcon } = require("%scripts/langUtils/customLocalization.nut")
 let { isInFlight } = require("gameplayBinding")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, getSessionLobbyPassword, getSessionLobbyMissionParam, getSessionLobbyPublicParam
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isMeAllowedToBeAddedToContacts, setAbilityToBeAddedToContacts } = require("%scripts/contacts/contactsState.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
@@ -138,11 +141,8 @@ let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { getCurrentGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { complaintCategories } = require("%scripts/penitentiary/tribunal.nut")
-
 let { isWishlistEnabledForFriends, isWishlistCommentsEnabledForFriends,
   enableShowWishlistForFriends, enableShowWishlistCommentsForFriends } = require("chard")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
@@ -153,9 +153,15 @@ let { getTankXrayFilter, getShipXrayFilter } = require("%scripts/weaponry/dmgMod
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { g_mislist_type } = require("%scripts/missions/misListType.nut")
-let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getMissionName, getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
+let g_font = require("%scripts/options/fonts.nut")
+let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
+let { changeRoomPassword } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { getShouldEventQueueCustomMode, setShouldEventQueueCustomMode } = require("%scripts/queue/queueState.nut")
+let { getOrderAutoActivateHint } = require("%scripts/items/orders.nut")
+let { set_autologin_enabled, is_autologin_enabled } = require("%scripts/options/optionsBeforeLogin.nut")
 
 let airSpawnPointNames = {
   [AIR_SPAWN_POINT.AIRFIELD] = @(_unit) loc("multiplayer/airfieldName"),
@@ -172,6 +178,7 @@ let airSpawnPointNames = {
   [AIR_SPAWN_POINT.ENEMY_DEFENSE_ZONE] = @(_unit) loc("options/air_spawn_point/sam"),
   [AIR_SPAWN_POINT.GLIDE_PATH] = @(_unit) loc("options/air_spawn_point/glide_path"),
   [AIR_SPAWN_POINT.CARRIER] = @(_unit) loc("mainmenu/type_cv_ship"),
+  [AIR_SPAWN_POINT.ON_WATER] = @(_unit) loc("options/air_spawn_point/on_water"),
 }
 
 function mkUseroptHardWatched(id, defValue = null) {
@@ -187,7 +194,6 @@ let isVisibleTankGunsAmmoIndicator = mkUseroptHardWatched("isVisibleTankGunsAmmo
 let crosshair_colors = persist("crosshair_colors", @() [])
 
 local get_option
-
 
 function create_options_container(name, options, is_centered, columnsRatio = 0.5, absolutePos = true, context = null, hasTitle = true) {
   local selectedRow = 0
@@ -382,7 +388,7 @@ function getCrosshairColor() {
 let getHeliPilotHudDisabled = @() get_option(USEROPT_HELI_COCKPIT_HUD_DISABLED)
 
 function getIsVisibleTankGunsAmmoIndicatorValue() {
-  return ::get_gui_option_in_mode(USEROPT_HUD_SHOW_TANK_GUNS_AMMO, OPTIONS_MODE_GAMEPLAY, false)
+  return get_gui_option_in_mode(USEROPT_HUD_SHOW_TANK_GUNS_AMMO, OPTIONS_MODE_GAMEPLAY, false)
 }
 
 function initOptions() {
@@ -398,16 +404,20 @@ addListenersWithoutEnv({
 function getConsolePresets() {
   if (is_xboxone_X)
     return ["#options/quality", "#options/performance"]
-  else
+  else if (is_hfr_supported())
     return hasFeature("optionRT") ? ["#options/quality", "#options/balanced", "#options/performance", "#options/raytraced"] : ["#options/quality", "#options/balanced", "#options/performance"];
+  else if (hasFeature("optionRT"))
+    return ["#options/quality", "#options/raytraced"];
   return ["#options/quality"];
 }
 
 function getConsolePresetsValues() {
   if (is_xboxone_X)
     return [0, 1]
-  else
+  else if (is_hfr_supported())
     return hasFeature("optionRT") ? [0, 1, 2, 3] : [0, 1, 2]
+  else if (hasFeature("optionRT"))
+    return [0, 3]
   return [0];
 }
 
@@ -426,8 +436,6 @@ let clanRequirementsRankDescId = {
   [USEROPT_CLAN_REQUIREMENTS_MIN_COASTAL_SHIP_RANK] = "rankReqCoastalShip"
 }
 
-::mission_name_for_takeoff <- ""
-
 local isWaitMeasureEvent = false
 
 
@@ -443,7 +451,7 @@ let fillSoundDescr = @(descr, sndType, id, title = null) descr.__update(
 
 
 local unitsImgPreset = null
-::get_unit_preset_img <- function get_unit_preset_img(unitNameOrUnitGroupName ) {
+function get_unit_preset_img(unitNameOrUnitGroupName ) {
   if (unitsImgPreset == null) {
     unitsImgPreset = {}
     let guiBlk = GUI.get()
@@ -454,34 +462,6 @@ local unitsImgPreset = null
   }
 
   return unitsImgPreset?[unitNameOrUnitGroupName]
-}
-
-function useropt_mouse_usage(optionId, descr, _context) {
-  let ignoreAim = optionId == USEROPT_MOUSE_USAGE_NO_AIM
-  descr.id = ignoreAim ? "mouse_usage_no_aim" : "mouse_usage"
-  descr.items = [
-    "#options/nothing"
-    "#options/mouse_aim"
-    "#options/mouse_joystick"
-    "#options/mouse_relative"
-    "#options/mouse_view"
-  ]
-  descr.values = [
-    AIR_MOUSE_USAGE.NOT_USED
-    AIR_MOUSE_USAGE.AIM
-    AIR_MOUSE_USAGE.JOYSTICK
-    AIR_MOUSE_USAGE.RELATIVE
-    AIR_MOUSE_USAGE.VIEW
-  ]
-
-  if (ignoreAim) {
-    let aimIdx = descr.values.indexof(AIR_MOUSE_USAGE.AIM)
-    descr.values.remove(aimIdx)
-    descr.items.remove(aimIdx)
-  }
-
-  descr.defaultValue = descr.values.indexof(
-    g_aircraft_helpers.getOptionValue(optionId))
 }
 
 function useropt_aerobatics_smoke_left_color(optionId, descr, _context) {
@@ -509,10 +489,10 @@ function useropt_measureunits_speed(optionId, descr, _context) {
 
 function useropt_takeoff_mode(optionId, descr, _context) {
   descr.id = (optionId == USEROPT_TAKEOFF_MODE) ? "takeoff_mode" : "landing_mode"
-
+  let mft = get_mission_for_takeoff()
   if (optionId == USEROPT_TAKEOFF_MODE &&
-    (::mission_name_for_takeoff == "dynamic_free_flight01" ||
-     ::mission_name_for_takeoff == "dynamic_free_flight02")) {
+    (mft == "dynamic_free_flight01" ||
+     mft == "dynamic_free_flight02")) {
     descr.items = ["#options/takeoffmode/no", "#options/takeoffmode/real"]
     descr.values = [0, 2]
     descr.defaultValue = 0
@@ -611,7 +591,7 @@ function useropt_bit_countries_team_a(optionId, descr, context) {
   }
 
   if (isInSessionRoom.get()) {
-    let cList = ::SessionLobby.getPublicParam(descr.sideTag, null)
+    let cList = getSessionLobbyPublicParam(descr.sideTag, null)
     if (cList)
       descr.prevValue = get_bit_value_by_array(cList, shopCountriesList)
   }
@@ -656,8 +636,8 @@ function useropt_mp_team_country_rand(optionId, descr, _context) {
   if (sessionInfo)
     countries = [$"country_{sessionInfo.alliesCountry}",
                  $"country_{sessionInfo.axisCountry}"]
-  else if (::mission_settings && ::mission_settings.layout)
-    countries = ::get_mission_team_countries(::mission_settings.layout)
+  else if (get_mission_settings().layout)
+    countries = ::get_mission_team_countries(get_mission_settings().layout)
 
   if (countries) {
     descr.trParams <- "iconType:t='country';"
@@ -677,16 +657,16 @@ function useropt_mp_team_country_rand(optionId, descr, _context) {
       local enabled = false
       local tooltip = ""
 
-      if (get_game_mode() == GM_DYNAMIC && ::current_campaign) {
-        let countryId = $"{::current_campaign.id}_{::current_campaign.countries[i]}"
+      if (get_game_mode() == GM_DYNAMIC && get_current_campaign()) {
+        let countryId = $"{get_current_campaign().id}_{get_current_campaign().countries[i]}"
         let unlock = getUnlockById(countryId)
         if (unlock == null)
           assert(false, ($"Not found unlock {countryId}"))
         else {
-          text = $"#country_{::current_campaign.countries[i]}"
-          image = getCountryIcon($"country_{::current_campaign.countries[i]}", true)
+          text = $"#country_{get_current_campaign().countries[i]}"
+          image = getCountryIcon($"country_{get_current_campaign().countries[i]}", true)
           enabled = isUnlockOpened(countryId, UNLOCKABLE_DYNCAMPAIGN)
-          tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(unlock))
+          tooltip = enabled ? "" : getFullUnlockDesc(buildConditionsConfig(unlock))
         }
       }
 
@@ -772,10 +752,10 @@ function useropt_clusters(optionId, descr, _context) {
     return
   }
 
-  descr.prevValue = ::get_gui_option_in_mode(optionId, OPTIONS_MODE_MP_DOMINATION)
+  descr.prevValue = get_gui_option_in_mode(optionId, OPTIONS_MODE_MP_DOMINATION)
   if (optionId == USEROPT_CLUSTERS) {
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getPublicParam("cluster", null)
+      descr.prevValue = getSessionLobbyPublicParam("cluster", null)
   }
   else if (optionId == USEROPT_RANDB_CLUSTERS) {
     descr.value = 0
@@ -848,7 +828,7 @@ function getFuelParams(aircraftName) {
 
   let maxFuel = get_aircraft_max_fuel(aircraftName)
   let difOpt = get_option(USEROPT_DIFFICULTY)
-  local difficulty = isInSessionRoom.get() ? ::SessionLobby.getMissionParam("difficulty", difOpt.values[0]) : difOpt.values[difOpt.value]
+  local difficulty = isInSessionRoom.get() ? getSessionLobbyMissionParam("difficulty", difOpt.values[0]) : difOpt.values[difOpt.value]
   if (difficulty == "custom")
     difficulty = g_difficulty.getDifficultyByDiffCode(getCdBaseDifficulty()).name
   let modOpt = get_option(USEROPT_MODIFICATIONS)
@@ -892,20 +872,6 @@ let optionsMap = {
     descr.items = ["#options/speech_country_auto", "#options/speech_country_player", "#options/speech_country_unit"]
     descr.values = [0, 1, 2]
     descr.value = u.find_in_array(descr.values, get_option_speech_country_type())
-  },
-  [USEROPT_MOUSE_USAGE] = useropt_mouse_usage,
-  [USEROPT_MOUSE_USAGE_NO_AIM] = useropt_mouse_usage,
-  [USEROPT_INSTRUCTOR_ENABLED] = function(optionId, descr, _context) {
-    descr.id = "instructor_enabled"
-    descr.controlType = optionControlType.CHECKBOX
-    descr.controlName <- "switchbox"
-    descr.defaultValue = g_aircraft_helpers.getOptionValue(optionId)
-  },
-  [USEROPT_AUTOTRIM] = function(optionId, descr, _context) {
-    descr.id = "autotrim"
-    descr.controlType = optionControlType.CHECKBOX
-    descr.controlName <- "switchbox"
-    descr.defaultValue = g_aircraft_helpers.getOptionValue(optionId)
   },
   [USEROPT_INSTRUCTOR_GROUND_AVOIDANCE] = function(_optionId, descr, _context) {
     fillBoolOption(descr, "instructorGroundAvoidance", OPTION_INSTRUCTOR_GROUND_AVOIDANCE)
@@ -1063,9 +1029,9 @@ let optionsMap = {
      for (local i = 0; i < descr.values.len(); ++i) {
         let text = time.secondsToString(descr.values[i], true, true, 2)
         let tooltipLoc = "guiHints/countermeasures_periods/series_periods"
-       descr.items.append({
-        text = text
-        tooltip = loc(tooltipLoc, { sec = descr.values[i] })
+        descr.items.append({
+          text = text
+          tooltip = loc(tooltipLoc, { sec = descr.values[i] })
         })
      }
      descr.value = u.find_in_array(descr.values, get_option_countermeasures_series_periods())
@@ -1078,9 +1044,9 @@ let optionsMap = {
      for (local i = 0; i < descr.values.len(); ++i) {
         let text = descr.values[i].tostring()
         let tooltipLoc = "guiHints/countermeasures_periods/series"
-       descr.items.append({
-        text = text
-        tooltip = loc(tooltipLoc, { num = descr.values[i] })
+        descr.items.append({
+          text = text
+          tooltip = loc(tooltipLoc, { num = descr.values[i] })
         })
      }
 
@@ -1183,7 +1149,7 @@ let optionsMap = {
     descr.controlName <- "combobox"
 
     descr.items = []
-    descr.values = ::g_font.getAvailableFonts()
+    descr.values = g_font.getAvailableFonts()
     for (local i = 0; i < descr.values.len(); i++) {
       let font = descr.values[i]
       descr.items.append({
@@ -1191,7 +1157,7 @@ let optionsMap = {
         fontOverride = font.getFontExample()
       })
     }
-    descr.value = u.find_in_array(descr.values, ::g_font.getCurrent(), 0)
+    descr.value = u.find_in_array(descr.values, g_font.getCurrent(), 0)
     descr.enabled <- descr.values.len() > 1
   },
   [USEROPT_ENABLE_CONSOLE_MODE] = function(_optionId, descr, _context) {
@@ -1395,14 +1361,14 @@ let optionsMap = {
     descr.id = "indicatedSpeed"
     descr.items = ["#options/speed_tas", "#options/speed_ias", "#options/speed_tas_ias"]
     descr.values = [0, 1, 2]
-    descr.value = get_option_indicatedSpeedType()
+    descr.value = getOptionIndicatedSpeedType()
     descr.trParams <- "optionWidthInc:t='half';"
   },
   [USEROPT_INDICATED_ALTITUDE_TYPE] = function(_optionId, descr, _context) {
     descr.id = "indicatedAltitude"
     descr.items = ["#options/altitude_baro", "#options/altitude_radar", "#options/altitude_baro_radar"]
     descr.values = [0, 1, 2]
-    descr.value = get_option_indicatedAltitudeType()
+    descr.value = getOptionIndicatedAltitudeType()
     descr.trParams <- "optionWidthInc:t='half';"
   },
   [USEROPT_RADAR_ALTITUDE_ALERT] = function(_optionId, descr, _context) {
@@ -1558,7 +1524,7 @@ let optionsMap = {
     descr.id = "vibration"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.value = get_option_vibration()
+    descr.value = getOptionVibration()
   },
   [USEROPT_GRASS_IN_TANK_VISION] = function(_optionId, descr, _context) {
     descr.id = "grass_in_tank_vision"
@@ -1713,43 +1679,6 @@ let optionsMap = {
   [USEROPT_VOLUME_VOICE_OUT] = function(_optionId, descr, _context) {
     fillSoundDescr(descr, SND_TYPE_VOICE_OUT, "volume_voice_out")
   },
-  [USEROPT_CONTROLS_PRESET] = function(_optionId, descr, _context) {
-    descr.id = "controls_preset"
-    descr.items = []
-    descr.values = ::g_controls_presets.getControlsPresetsList()
-    descr.trParams <- "optionWidthInc:t='double';"
-
-    if (!isPlatformSony && !isPlatformXboxOne)
-      descr.values.insert(0, "") //custom preset
-    let p = ::g_controls_manager.getCurPreset()?.getBasePresetInfo()
-      ?? ::g_controls_presets.getNullPresetInfo()
-    for (local k = 0; k < descr.values.len(); k++) {
-      local name = descr.values[k]
-      local suffix = isPlatformSony ? "ps4/" : ""
-      let vPresetData = ::g_controls_presets.parsePresetName(name)
-      if (p.name == vPresetData.name && p.version == vPresetData.version)
-        descr.value = k
-      local imageName = "preset_joystick.svg"
-      if (name.indexof("keyboard") != null)
-        imageName = "preset_mouse_keyboard.svg"
-      else if (name.indexof("xinput") != null || name.indexof("xboxone") != null)
-        imageName = "preset_gamepad.svg"
-      else if (name.indexof("default") != null || name.indexof("dualshock4") != null)
-        imageName = "preset_ps4.svg"
-      else if (name == "") {
-        name = "custom"
-        imageName = "preset_custom"
-        suffix = ""
-      }
-
-      descr.items.append({
-                          text = $"#presets/{suffix}{name}"
-                          image = $"#ui/gameuiskin#{imageName}"
-                        })
-    }
-    descr.optionCb = "onSelectPreset"
-    descr.skipOptContainerStyles <- true
-  },
   [USEROPT_ROUNDS] = function(_optionId, descr, _context) {
     descr.id = "rounds"
     descr.items = ["#options/rounds0", "#options/rounds1", "#options/rounds3", "#options/rounds5", "#options/rounds7"]
@@ -1776,7 +1705,7 @@ let optionsMap = {
     descr.items = descr.values.map(getWeatherLocName)
     descr.defaultValue = "cloudy"
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("weather", null)
+      descr.prevValue = getSessionLobbyMissionParam("weather", null)
   },
   [USEROPT_TIME] = function(_optionId, descr, _context) {
     descr.id = "time"
@@ -1785,7 +1714,7 @@ let optionsMap = {
     descr.items = descr.values.map(getMissionTimeText)
     descr.defaultValue = "Day"
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("environment", null)
+      descr.prevValue = getSessionLobbyMissionParam("environment", null)
   },
   [USEROPT_ALTITUDE] = function(_optionId, descr, _context) {
     descr.id = "altitude"
@@ -1804,7 +1733,7 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = false
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("disableAirfields", false)
+      descr.prevValue = getSessionLobbyMissionParam("disableAirfields", false)
   },
   [USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS] = function(_optionId, descr, _context) {
     descr.id = "spawn_ai_tank_on_tank_maps"
@@ -1812,7 +1741,7 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = true
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("spawnAiTankOnTankMaps", true)
+      descr.prevValue = getSessionLobbyMissionParam("spawnAiTankOnTankMaps", true)
   },
   [USEROPT_COOP_MODE] = function(_optionId, descr, _context) {
     descr.id = "coop_mode"
@@ -1826,13 +1755,13 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = false
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("dedicatedReplay", false)
+      descr.prevValue = getSessionLobbyMissionParam("dedicatedReplay", false)
   },
   [USEROPT_SESSION_PASSWORD] = function(_optionId, descr, _context) {
     descr.id = "session_password"
     descr.controlType = optionControlType.EDITBOX
     descr.controlName <- "editbox"
-    descr.value = ::SessionLobby.getPassword()
+    descr.value = getSessionLobbyPassword()
     descr.getValueLocText = function(val) {
       if (val == true)
         return loc("options/yes")
@@ -1848,7 +1777,7 @@ let optionsMap = {
     descr.defaultValue = false
     descr.optionCb = "onOptionBotsAllowed"
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("isBotsAllowed", null)
+      descr.prevValue = getSessionLobbyMissionParam("isBotsAllowed", null)
   },
   [USEROPT_USE_TANK_BOTS] = function(_optionId, descr, _context) {
     descr.id = "useTankBots"
@@ -1856,7 +1785,7 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = true
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("useTankBots", null)
+      descr.prevValue = getSessionLobbyMissionParam("useTankBots", null)
   },
   [USEROPT_USE_SHIP_BOTS] = function(_optionId, descr, _context) {
     descr.id = "useShipBots"
@@ -1864,7 +1793,7 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = true
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("useShipBots", null)
+      descr.prevValue = getSessionLobbyMissionParam("useShipBots", null)
   },
   [USEROPT_KEEP_DEAD] = function(_optionId, descr, _context) {
     descr.id = "keepDead"
@@ -1872,7 +1801,7 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = true
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("keepDead", null)
+      descr.prevValue = getSessionLobbyMissionParam("keepDead", null)
   },
   [USEROPT_AUTOBALANCE] = function(_optionId, descr, _context) {
     descr.id = "autoBalance"
@@ -1952,7 +1881,7 @@ let optionsMap = {
     }
     descr.defaultValue = -1
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("maxRespawns", null)
+      descr.prevValue = getSessionLobbyMissionParam("maxRespawns", null)
   },
   [USEROPT_ALLOW_EMPTY_TEAMS] = function(_optionId, descr, _context) {
     descr.id = "allowEmptyTeams"
@@ -1960,14 +1889,20 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = false
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("allowEmptyTeams", null)
+      descr.prevValue = getSessionLobbyMissionParam("allowEmptyTeams", null)
+  },
+  [USEROPT_ALLOW_WEB_UI] = function(_optionId, descr, _context) {
+    descr.id = "allowWebUi"
+    descr.items = ["#options/use_difficulty", "#options/not_allow", "#options/allow"]
+    descr.values = [-1, 0,  1]
+    descr.defaultValue = -1
   },
   [USEROPT_ALLOW_JIP] = function(_optionId, descr, _context) {
     descr.id = "allow_jip"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getPublicParam("allowJIP", null)
+      descr.prevValue = getSessionLobbyPublicParam("allowJIP", null)
   },
   [USEROPT_QUEUE_JIP] = function(_optionId, descr, _context) {
     descr.id = "queue_jip"
@@ -1983,7 +1918,7 @@ let optionsMap = {
   },
   [USEROPT_ORDER_AUTO_ACTIVATE] = function(_optionId, descr, _context) {
     descr.id = "order_auto_activate"
-    descr.hint = ::g_orders.getAutoActivateHint()
+    descr.hint = getOrderAutoActivateHint()
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
     descr.defaultValue = true
@@ -1996,7 +1931,7 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.textChecked <- loc("options/enabled")
     descr.textUnchecked <- loc("#options/disabled")
-    descr.value = ::queue_classes.Event.getShouldQueueCustomMode(getTblValue("eventName", context, ""))
+    descr.value = getShouldEventQueueCustomMode(context?.eventName ?? "")
   },
   [USEROPT_AUTO_SHOW_CHAT] = function(_optionId, descr, _context) {
     descr.id = "auto_show_chat"
@@ -2023,7 +1958,7 @@ let optionsMap = {
     descr.min <- -2
     descr.max <- 2
     descr.step <- 1
-    descr.value = ::get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
+    descr.value = get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
     descr.defaultValue = 0
     descr.getValueLocText = @(val) $"{(100 + 33.3 * val / descr.max).tointeger()}%"
   },
@@ -2033,7 +1968,7 @@ let optionsMap = {
     descr.min <- -2
     descr.max <- 2
     descr.step <- 1
-    descr.value = ::get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
+    descr.value = get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
     descr.defaultValue = 0
     descr.getValueLocText = @(val) $"{(100 + 33.3 * val / descr.max).tointeger()}%"
   },
@@ -2043,7 +1978,7 @@ let optionsMap = {
     descr.min <- -2
     descr.max <- 2
     descr.step <- 1
-    descr.value = ::get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
+    descr.value = get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
     descr.defaultValue = 0
     descr.getValueLocText = @(val) $"{(100 + 33.3 * val / descr.max).tointeger()}%"
   },
@@ -2065,7 +2000,7 @@ let optionsMap = {
     descr.id = "auto_login"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.value = ::is_autologin_enabled()
+    descr.value = is_autologin_enabled()
   },
   [USEROPT_ONLY_FRIENDLIST_CONTACT] = function(_optionId, descr, _context) {
     descr.id = "only_friendlist_contact"
@@ -2344,6 +2279,20 @@ let optionsMap = {
     descr.defaultValue = 100
     descr.getValueLocText = @(val) $"{val}%"
   },
+  [USEROPT_RWR_FRIENDLY_TARGETS_INDICATION] = function(_optionId, descr, _context) {
+    descr.id = "rwr_friendly_targets_indication"
+    descr.items = []
+    descr.values = []
+    descr.trParams <- "iconType:t='crosshair';"
+    let n = get_option_rwr_indicate_friendly_targets_values_number()
+    let c = get_option_rwr_indicate_friendly_targets()
+    for (local nc = 0; nc < n; nc++) {
+      descr.items.append(loc($"options/rwr_friendly_targets_indication_{nc}"))
+      descr.values.append(nc)
+      if (c == nc)
+        descr.value = descr.values.len() - 1
+    }
+  },
   [USEROPT_ACTIVATE_AIRBORNE_WEAPON_SELECTION_ON_SPAWN] = function(optionId, descr, _context) {
     descr.id = "activate_airborne_weapon_selection_on_spawn"
     descr.controlType = optionControlType.CHECKBOX
@@ -2408,6 +2357,12 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.value = get_option_use_tws_hud_in_cockpit()
   },
+  [USEROPT_SLAVE_AIRBORNE_COUNTER_MEASURES_TO_MLWS_ON_SPAWN] = function(_optionId, descr, _context) {
+    descr.id = "slave_counter_measures_to_mlws_on_spawn"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.value = get_option_slave_counter_measures_to_mlws_on_spawn()
+  },
   [USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN] = function(_optionId, descr, _context) {
     descr.id = "activate_airborne_active_counter_measures_on_spawn"
     descr.controlType = optionControlType.CHECKBOX
@@ -2458,42 +2413,6 @@ let optionsMap = {
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
     descr.value = (get_option_indicators_mode() & HUD_INDICATORS_TEXT_DIST) != 0
-  },
-  [USEROPT_HELPERS_MODE] = function(optionId, descr, _context) {
-    descr.id = "helpers_mode"
-    descr.items = []
-    let types = ["mouse_aim", "virtual_instructor", "simplified_controls", "full_real"]
-    for (local t = 0; t < types.len(); t++)
-      descr.items.append({
-        text = $"#options/{types[t]}"
-        tooltip = $"#options/{types[t]}/tooltip"
-      })
-    descr.values = [
-      globalEnv.EM_MOUSE_AIM,
-      globalEnv.EM_INSTRUCTOR,
-      globalEnv.EM_REALISTIC,
-      globalEnv.EM_FULL_REAL
-    ]
-    descr.optionCb = "onHelpersModeChange"
-    descr.defaultValue = g_aircraft_helpers.getOptionValue(optionId)
-  },
-  [USEROPT_HELPERS_MODE_GM] = function(_optionId, descr, _context) {
-    descr.id = "helpers_mode"
-    descr.items = []
-    let types = ["mouse_aim", "virtual_instructor", "simplified_controls", "full_real"]
-    for (local t = 0; t < types.len(); t++)
-      descr.items.append({
-        text = $"#options/{types[t]}/tank"
-        tooltip = $"#options/{types[t]}/tank/tooltip"
-      })
-    descr.values = [
-      globalEnv.EM_MOUSE_AIM,
-      globalEnv.EM_INSTRUCTOR,
-      globalEnv.EM_REALISTIC,
-      globalEnv.EM_FULL_REAL
-    ]
-    descr.optionCb = "onHelpersModeChange"
-    descr.defaultValue = get_option(USEROPT_HELPERS_MODE).value
   },
   [USEROPT_HUD_COLOR] = function(_optionId, descr, _context) {
     descr.id = "hud_color"
@@ -2689,7 +2608,7 @@ let optionsMap = {
     descr.defaultValue = "arcade"
 
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("difficulty", null)
+      descr.prevValue = getSessionLobbyMissionParam("difficulty", null)
   },
   [USEROPT_SEARCH_DIFFICULTY] = function(_optionId, descr, _context) {
     descr.id = "difficulty"
@@ -2792,7 +2711,7 @@ let optionsMap = {
     descr.optionCb = "onMissionCountriesType"
 
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getPublicParam("countriesType", null)
+      descr.prevValue = getSessionLobbyPublicParam("countriesType", null)
   },
   [USEROPT_BIT_COUNTRIES_TEAM_A] = useropt_bit_countries_team_a,
   [USEROPT_BIT_COUNTRIES_TEAM_B] = useropt_bit_countries_team_a,
@@ -2840,10 +2759,10 @@ let optionsMap = {
     descr.prevValue = get_gui_option(optionId) ?? descr.defaultValue
 
     let missionBlk = getUrlOrFileMissionMetaInfo(context?.missionName ?? "")
-    let isKillStreaksOptionAvailable = missionBlk && ::is_skirmish_with_killstreaks(missionBlk)
+    let isKillStreaksOptionAvailable = missionBlk && isSkirmishWithKillStreaks(missionBlk)
     let useKillStreaks = isKillStreaksOptionAvailable
       && (get_gui_option(USEROPT_USE_KILLSTREAKS) ?? false)
-    let availableUnitTypesMask = ::get_mission_allowed_unittypes_mask(missionBlk, useKillStreaks)
+    let availableUnitTypesMask = getMissionAllowedUnittypesMask(missionBlk, useKillStreaks)
 
     descr.availableUnitTypesMask <- availableUnitTypesMask
 
@@ -2878,7 +2797,7 @@ let optionsMap = {
     for (local i = 0; i < descr.values.len(); i++)
       descr.items.append(descr.values[i].tostring())
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("raceLaps", null)
+      descr.prevValue = getSessionLobbyMissionParam("raceLaps", null)
   },
   [USEROPT_RACE_WINNERS] = function(_optionId, descr, _context) {
     descr.id = "race_winners"
@@ -2888,14 +2807,14 @@ let optionsMap = {
     for (local i = 0; i < descr.values.len(); i++)
       descr.items.append(descr.values[i].tostring())
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("raceWinners", null)
+      descr.prevValue = getSessionLobbyMissionParam("raceWinners", null)
   },
   [USEROPT_RACE_CAN_SHOOT] = function(_optionId, descr, _context) {
     descr.id = "race_can_shoot"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
     if (isInSessionRoom.get()) {
-      let cannotShoot = ::SessionLobby.getMissionParam("raceForceCannotShoot", null)
+      let cannotShoot = getSessionLobbyMissionParam("raceForceCannotShoot", null)
       if (cannotShoot != null)
         descr.prevValue = !cannotShoot
     }
@@ -2989,25 +2908,25 @@ let optionsMap = {
     descr.id = "year"
     //filled by onLayoutChange()
     descr.trParams <- "optionWidthInc:t='double';"
-    let isKoreanWarDC = get_game_mode() == GM_DYNAMIC && ::current_campaign?.id == "korea_dynamic"
+    let isKoreanWarDC = get_game_mode() == GM_DYNAMIC && get_current_campaign()?.id == "korea_dynamic"
     let yearsArray = !isKoreanWarDC
       ? [ 1940, 1941, 1942, 1943, 1944, 1945 ]
       : [ 1950, 1951, 1952, 1953 ]
     descr.valuesInt <- yearsArray
     descr.items <- yearsArray.map(@(yyyy) yyyy.tostring())
     descr.values = yearsArray.map(@(yyyy) $"year{yyyy}")
-    if (get_game_mode() == GM_DYNAMIC && ::current_campaign) {
+    if (get_game_mode() == GM_DYNAMIC && get_current_campaign()) {
       let teamOption = get_option(USEROPT_MP_TEAM_COUNTRY)
       let teamIdx = max(teamOption.values[teamOption.value] - 1, 0)
       descr.items = []
       for (local i = 0; i < descr.values.len(); i++) {
         local enabled = true
         local tooltip = ""
-        let yearId = $"country_{::current_campaign.countries[teamIdx]}_{descr.values[i]}"
+        let yearId = $"country_{get_current_campaign().countries[teamIdx]}_{descr.values[i]}"
         let blk = getUnlockById(yearId)
         if (blk) {
           enabled = isUnlockOpened(yearId, UNLOCKABLE_YEAR)
-          tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(blk))
+          tooltip = enabled ? "" : getFullUnlockDesc(buildConditionsConfig(blk))
         }
         descr.items.append({
           text = yearsArray[i].tostring()
@@ -3066,7 +2985,7 @@ let optionsMap = {
     descr.optionCb = "onSectorChange"
     let dynamic_zones = dynamicGetZones()
     for (local i = 0; i < dynamic_zones.len(); i++) {
-      descr.items.append($"{::mission_settings.layoutName}/{dynamic_zones[i]}")
+      descr.items.append($"{get_mission_settings().layoutName}/{dynamic_zones[i]}")
       descr.values.append(dynamic_zones[i])
     }
   },
@@ -3111,7 +3030,7 @@ let optionsMap = {
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("optionalTakeOff", null)
+      descr.prevValue = getSessionLobbyMissionParam("optionalTakeOff", null)
   },
   [USEROPT_LOAD_FUEL_AMOUNT] = function(_optionId, descr, _context) {
     descr.id = "fuel_amount"
@@ -3239,14 +3158,14 @@ let optionsMap = {
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("isLimitedFuel", false)
+      descr.prevValue = getSessionLobbyMissionParam("isLimitedFuel", false)
   },
   [USEROPT_LIMITED_AMMO] = function(_optionId, descr, _context) {
     descr.id = "limitedAmmo"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
     if (isInSessionRoom.get())
-      descr.prevValue = ::SessionLobby.getMissionParam("isLimitedAmmo", false)
+      descr.prevValue = getSessionLobbyMissionParam("isLimitedAmmo", false)
   },
   [USEROPT_MISSION_NAME_POSTFIX] = function(_optionId, descr, _context) {
     descr.id = "mission_name_postfix"
@@ -3282,7 +3201,7 @@ let optionsMap = {
     let event = isDominationMode && dMode && dMode.getEvent()
 
     for (local nc = start; nc < shopCountriesList.len(); nc++) {
-      if (::mission_settings.battleMode == BATTLE_TYPES.TANK && nc < 0)
+      if (get_mission_settings().battleMode == BATTLE_TYPES.TANK && nc < 0)
         continue
 
       let country = (nc < 0) ? "country_0" : shopCountriesList[nc]
@@ -3310,42 +3229,6 @@ let optionsMap = {
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
     descr.value = get_gui_option(optionId)
-  },
-  [USEROPT_PILOT] = function(_optionId, descr, _context) {
-    descr.id = "profilePilot"
-    descr.items = []
-    descr.values = []
-    descr.trParams <- "iconType:t='pilot';"
-    let curPilotImgId = get_cur_rank_info().pilotId
-    let icons = avatars.getIcons()
-    let marketplaceItemdefIds = []
-    for (local nc = 0; nc < icons.len(); nc++) {
-      let unlockId = icons[nc]
-      let unlockItem = getUnlockById(unlockId)
-      let marketplaceItemdefId = unlockItem?.marketplaceItemdefId
-      if (marketplaceItemdefId != null)
-        marketplaceItemdefIds.append(marketplaceItemdefId)
-      let item = {
-        idx = nc
-        unlockId
-        image = $"#ui/images/avatars/{unlockId}.avif"
-        show = isUnlockOpened(unlockId, UNLOCKABLE_PILOT) || isUnlockVisible(unlockItem)
-        enabled = isUnlockOpened(unlockId, UNLOCKABLE_PILOT)
-        tooltipId = getTooltipType("UNLOCK").getTooltipId(unlockId, { showProgress = true, tooltipImageSize = "1@avatarButtonSize, 1@avatarButtonSize" })
-        marketplaceItemdefId
-      }
-      if (item.show && item.enabled) {
-        item.seenListId <- SEEN.AVATARS
-        item.seenEntity <- unlockId
-      }
-      descr.items.append(item)
-      descr.values.append(nc)
-      if (curPilotImgId == nc)
-        descr.value = descr.values.len() - 1
-    }
-    if (marketplaceItemdefIds.len() > 0)
-      inventoryClient.requestItemdefsByIds(marketplaceItemdefIds)
-    descr.optionCb = "onProfileChange"
   },
   [USEROPT_CROSSHAIR_TYPE] = function(_optionId, descr, _context) {
     descr.id = "crosshairType"
@@ -3485,6 +3368,14 @@ let optionsMap = {
     descr.optionCb = "onCDChange"
     descr.value = getCdOption(USEROPT_CD_AIRCRAFT_MARKERS_MAX_DIST)
   },
+  [USEROPT_CD_ROCKET_SPOTTING] = function(_optionId, descr, _context) {
+    descr.id = "rocketSpotting"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.optionCb = "onCDChange"
+    descr.value = !!getCdOption(USEROPT_CD_ROCKET_SPOTTING)
+    descr.defaultValue = true
+  },
   [USEROPT_CD_INDICATORS] = function(_optionId, descr, _context) {
     descr.id = "hudIndicators"
     descr.controlType = optionControlType.CHECKBOX
@@ -3589,6 +3480,13 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.optionCb = "onCDChange"
     descr.value = !!getCdOption(USEROPT_CD_FORCE_INSTRUCTOR)
+  },
+  [USEROPT_CD_WEB_UI] = function(_optionId, descr, _context) {
+    descr.id = "allow_web_ui"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.optionCb = "onCDChange"
+    descr.value = getCdOption(USEROPT_CD_WEB_UI)
   },
   [USEROPT_INTERNET_RADIO_ACTIVE] = function(_optionId, descr, _context) {
     descr.id = "internet_radio_active"
@@ -3871,7 +3769,7 @@ let optionsMap = {
     descr.id = "display_my_real_nick"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.value = ::get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY, true)
+    descr.value = get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY, true)
     descr.defaultValue = true
     descr.defVal <- descr.defaultValue
     descr.optionCb <- "onChangeDisplayRealNick"
@@ -3926,7 +3824,7 @@ let optionsMap = {
     descr.id = "allow_added_to_leaderboards"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.value = get_allow_to_be_added_to_lb()
+    descr.value = getAllowToBeAddedToLb()
     descr.defaultValue = true
     descr.defVal <- descr.defaultValue
   },
@@ -4162,7 +4060,7 @@ let optionsMap = {
     descr.id = "hudDisableInPilotView"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.defaultValue = ::get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
+    descr.defaultValue = get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
   },
   [USEROPT_XRAY_FILTER_TANK] = function(optionId, descr, context) {
     descr.id = "xray_filter"
@@ -4199,6 +4097,8 @@ let optionsMap = {
       : [AIR_SPAWN_POINT.AIRFIELD, AIR_SPAWN_POINT.ENEMY_DEFENSE_ZONE, AIR_SPAWN_POINT.GLIDE_PATH,
         AIR_SPAWN_POINT.ABOVE_AIRFIELD_1, AIR_SPAWN_POINT.ABOVE_AIRFIELD_2, AIR_SPAWN_POINT.ABOVE_AIRFIELD_3,
         AIR_SPAWN_POINT.ABOVE_AIRFIELD_4, AIR_SPAWN_POINT.ABOVE_AIRFIELD_5]
+    if (unit.tags?.contains("type_hydroplane"))
+      descr.values.insert(1, AIR_SPAWN_POINT.ON_WATER)
     let testFlightShip = get_unittags_blk()?[unitName].testFlightShip ?? ""
     if (testFlightShip != "")
       descr.values.insert(0, AIR_SPAWN_POINT.CARRIER)
@@ -4217,6 +4117,12 @@ let optionsMap = {
     descr.values = ["low", "high"]
     descr.defaultValue = "high"
     descr.items = descr.values.map(@(v) loc($"chance_to_met/{v}"))
+  },
+  [USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP] = function(optionId, descr, _context) {
+    descr.id = "hold_button_for_tactical_map"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.defaultValue = get_gui_option(optionId) ?? true
   },
 }
 
@@ -4353,7 +4259,7 @@ function set_useropt_measureunits_speed(value, descr, optionId) {
     else if (optionId == USEROPT_MEASUREUNITS_RADIAL_SPEED)
       unitType = 7
 
-    set_option_unit_type(unitType, descr.values[value])
+    setMeasureUnitOptionType(unitType, descr.values[value])
 
     if (isWaitMeasureEvent)
       return true
@@ -4388,8 +4294,6 @@ function set_useropt_cd(value, descr, optionId) {
     descr.onChangeCb(optionId, optionValue, value)
 }
 
-let set_useropt_helpers_mode = @(value, descr, optionId) g_aircraft_helpers.setOptionValue(optionId, descr.values != null ? getTblValue(value, descr.values, 0) : value)
-
 function set_useropt_instructor_ground_avoidance(value, descr, _optionId) {
   let optionIdx = getTblValue("boolOptionIdx", descr, -1)
   if (optionIdx >= 0 && u.isBool(value))
@@ -4403,7 +4307,7 @@ function set_useropt_bit_countries_team_a(value, descr, optionId) {
     return
 
   set_gui_option(optionId, value)
-  ::mission_settings[$"{descr.sideTag}_bitmask"] <- value
+  set_mission_settings($"{descr.sideTag}_bitmask", value)
   if (descr.onChangeCb)
     descr.onChangeCb(optionId, value, value)
 }
@@ -4412,7 +4316,7 @@ function set_useropt_br_min(value, descr, optionId) {
   if (value in descr.values) {
     let optionValue = descr.values[value]
     set_gui_option(optionId, optionValue)
-    ::mission_settings[optionId == USEROPT_BR_MIN ? "mrankMin" : "mrankMax"] <- optionValue
+    set_mission_settings(optionId == USEROPT_BR_MIN ? "mrankMin" : "mrankMax", optionValue)
   }
 }
 
@@ -4454,7 +4358,7 @@ function set_useropt_landing_mode(value, descr, optionId) {
 function set_useropt_damage_indicator_size(value, descr, optionId) {
   if (value >= (descr?.min ?? 0) && value <= (descr?.max ?? 1)
       && (!("step" in descr) || value % descr.step == 0)) {
-    ::set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY)
+    set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY)
     broadcastEvent("HudIndicatorChangedSize", { option = optionId })
   }
 }
@@ -4530,8 +4434,8 @@ let optionsSetMap = {
   [USEROPT_INVERTY_SUBMARINE] = @(value, _descr, _optionId) set_option_invertY(AxisInvertOption.INVERT_SUBMARINE_Y, value ? 1 : 0),
   [USEROPT_INVERTY_SPECTATOR] = @(value, _descr, _optionId) set_option_invertY(AxisInvertOption.INVERT_SPECTATOR_Y, value ? 1 : 0),
   [USEROPT_FORCE_GAIN] = @(value, _descr, _optionId) set_option_gain(value / 50.0),
-  [USEROPT_INDICATED_SPEED_TYPE] = @(value, descr, _optionId) set_option_indicatedSpeedType(descr.values[value]),
-  [USEROPT_INDICATED_ALTITUDE_TYPE] = @(value, descr, _optionId) set_option_indicatedAltitudeType(descr.values[value]),
+  [USEROPT_INDICATED_SPEED_TYPE] = @(value, descr, _optionId) setOptionIndicatedSpeedType(descr.values[value]),
+  [USEROPT_INDICATED_ALTITUDE_TYPE] = @(value, descr, _optionId) setOptionIndicatedAltitudeType(descr.values[value]),
   [USEROPT_RADAR_ALTITUDE_ALERT] = @(value, _descr, _optionId) set_option_radarAltitudeAlert(value),
   [USEROPT_AUTO_SHOW_CHAT] = @(value, _descr, _optionId) set_option_auto_show_chat(value ? 1 : 0),
   [USEROPT_CHAT_MESSAGES_FILTER] = @(value, _descr, _optionId) set_option_chat_messages_filter(value),
@@ -4579,7 +4483,7 @@ let optionsSetMap = {
   [USEROPT_MEASUREUNITS_WING_LOADING] = set_useropt_measureunits_speed,
   [USEROPT_MEASUREUNITS_POWER_TO_WEIGHT_RATIO] = set_useropt_measureunits_speed,
   [USEROPT_MEASUREUNITS_RADIAL_SPEED] = set_useropt_measureunits_speed,
-  [USEROPT_VIBRATION] = @(value, _descr, _optionId) set_option_vibration(value ? 1 : 0),
+  [USEROPT_VIBRATION] = @(value, _descr, _optionId) setOptionVibration(value ? 1 : 0),
   [USEROPT_GRASS_IN_TANK_VISION] = @(value, _descr, _optionId) set_option_grass_in_tank_vision(value ? 1 : 0),
   [USEROPT_GAME_HUD] = @(value, descr, _optionId) set_option_hud(descr.values[value]),
   [USEROPT_CAMERA_SHAKE_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_CAMERA_SHAKE, value / 50.0),
@@ -4613,12 +4517,7 @@ let optionsSetMap = {
   [USEROPT_HANGAR_SOUND] = @(value, _descr, _optionId) set_option_hangar_sound(value),
   [USEROPT_VOLUME_VOICE_IN] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_VOICE_IN, value / 100.0, true),
   [USEROPT_VOLUME_VOICE_OUT] = @(value, _descr, _optionId) set_sound_volume(SND_TYPE_VOICE_OUT, value / 100.0, true),
-  [USEROPT_CONTROLS_PRESET] = function(value, descr, _optionId) {
-    if (descr.values[value] != "")
-      ::apply_joy_preset_xchange(::g_controls_presets.getControlsPresetFilename(descr.values[value]))
-  },
   [USEROPT_COUNTRY] = @(value, descr, _optionId) switchProfileCountry(descr.values[value]),
-  [USEROPT_PILOT] = @(value, descr, _optionId) set_profile_pilot(descr.values[value]),
   [USEROPT_CROSSHAIR_TYPE] = @(value, descr, _optionId) set_hud_crosshair_type(descr.values[value]),
   [USEROPT_CROSSHAIR_COLOR] = function(value, descr, _optionId) {
     let curVal = descr.values[value]
@@ -4659,6 +4558,7 @@ let optionsSetMap = {
   [USEROPT_RADAR_TARGET_CYCLING] = @(value, _descr, _optionId) set_option_radar_target_cycling(value),
   [USEROPT_RADAR_AIM_ELEVATION_CONTROL] = @(value, _descr, _optionId) set_option_radar_aim_elevation_control(value),
   [USEROPT_RWR_SENSITIVITY] = @(value, _descr, _optionId) set_option_rwr_sensitivity(value),
+  [USEROPT_RWR_FRIENDLY_TARGETS_INDICATION] = @(value, _descr, _optionId) set_option_rwr_indicate_friendly_targets(value),
   [USEROPT_RADAR_MODE_SELECT] = @(value, _descr, _optionId) set_option_radar_name("", "", value),
   [USEROPT_RADAR_SCAN_PATTERN_SELECT] = @(value, _descr, _optionId) set_option_radar_scan_pattern_name("", "", value),
   [USEROPT_RADAR_SCAN_RANGE_SELECT] = @(value, _descr, _optionId) set_option_radar_range_value("", "", value),
@@ -4667,6 +4567,7 @@ let optionsSetMap = {
   [USEROPT_RADAR_SCAN_RANGE_SELECTED_UNIT_SELECT] = @(value, _descr, _optionId) set_option_radar_range_value(unitNameForWeapons.get(), getLastWeapon(unitNameForWeapons.get()), value),
   [USEROPT_USE_RADAR_HUD_IN_COCKPIT] = @(value, _descr, _optionId) set_option_use_radar_hud_in_cockpit(value),
   [USEROPT_USE_TWS_HUD_IN_COCKPIT] = @(value, _descr, _optionId) set_option_use_tws_hud_in_cockpit(value),
+  [USEROPT_SLAVE_AIRBORNE_COUNTER_MEASURES_TO_MLWS_ON_SPAWN] = @(value, _descr, _optionId) set_option_slave_counter_measures_to_mlws_on_spawn(value),
   [USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN] = @(value, _descr, _optionId) set_option_activate_airborne_active_counter_measures_on_spawn(value),
   [USEROPT_SAVE_AI_TARGET_TYPE] = @(value, _descr, _optionId) set_option_ai_target_type(value ? 1 : 0),
   [USEROPT_DEFAULT_AI_TARGET_TYPE] = @(value, _descr, _optionId) set_option_default_ai_target_type(value),
@@ -4737,7 +4638,7 @@ let optionsSetMap = {
   },
   [USEROPT_FONTS_CSS] = function(value, descr, _optionId) {
     let selFont = getTblValue(value, descr.values)
-    if (selFont && ::g_font.setCurrent(selFont))
+    if (selFont && g_font.setCurrent(selFont))
       handlersManager.checkPostLoadCssOnBackToBaseHandler()
   },
   [USEROPT_HUE_SQUAD] = function(value, descr, _optionId) {
@@ -4844,6 +4745,7 @@ let optionsSetMap = {
   [USEROPT_CD_MARKERS] = set_useropt_cd,
   [USEROPT_CD_ARROWS] = set_useropt_cd,
   [USEROPT_CD_AIRCRAFT_MARKERS_MAX_DIST] = set_useropt_cd,
+  [USEROPT_CD_ROCKET_SPOTTING] = set_useropt_cd,
   [USEROPT_CD_INDICATORS] = set_useropt_cd,
   [USEROPT_CD_SPEED_VECTOR] = set_useropt_cd,
   [USEROPT_CD_TANK_DISTANCE] = set_useropt_cd,
@@ -4857,15 +4759,11 @@ let optionsSetMap = {
   [USEROPT_CD_AIR_HELPERS] = set_useropt_cd,
   [USEROPT_CD_ALLOW_CONTROL_HELPERS] = set_useropt_cd,
   [USEROPT_CD_FORCE_INSTRUCTOR] = set_useropt_cd,
+  [USEROPT_CD_WEB_UI] = set_useropt_cd,
   [USEROPT_CD_DISTANCE_DETECTION] = set_useropt_cd,
   [USEROPT_CD_COLLECTIVE_DETECTION] = set_useropt_cd,
   [USEROPT_RANK] = set_useropt_cd,
   [USEROPT_REPLAY_LOAD_COCKPIT] = set_useropt_cd,
-  [USEROPT_HELPERS_MODE] = set_useropt_helpers_mode,
-  [USEROPT_MOUSE_USAGE] = set_useropt_helpers_mode,
-  [USEROPT_MOUSE_USAGE_NO_AIM] = set_useropt_helpers_mode,
-  [USEROPT_INSTRUCTOR_ENABLED] = set_useropt_helpers_mode,
-  [USEROPT_AUTOTRIM] = set_useropt_helpers_mode,
   [USEROPT_INSTRUCTOR_GROUND_AVOIDANCE] = set_useropt_instructor_ground_avoidance,
   [USEROPT_INSTRUCTOR_GEAR_CONTROL] = set_useropt_instructor_ground_avoidance,
   [USEROPT_INSTRUCTOR_FLAPS_CONTROL] = set_useropt_instructor_ground_avoidance,
@@ -4891,7 +4789,7 @@ let optionsSetMap = {
   [USEROPT_MISSION_COUNTRIES_TYPE] = function(value, descr, optionId) {
     if (value in descr.values) {
       set_gui_option(optionId, descr.values[value])
-      ::mission_settings.countriesType <- descr.values[value]
+      set_mission_settings("countriesType", descr.values[value])
     }
   },
   [USEROPT_BIT_COUNTRIES_TEAM_A] = set_useropt_bit_countries_team_a,
@@ -4907,7 +4805,7 @@ let optionsSetMap = {
       return
 
     set_gui_option(optionId, value)
-    ::mission_settings.userAllowedUnitTypesMask <- descr.availableUnitTypesMask & value
+    set_mission_settings("userAllowedUnitTypesMask", descr.availableUnitTypesMask & value)
   },
   [USEROPT_BR_MIN] = set_useropt_br_min,
   [USEROPT_BR_MAX] = set_useropt_br_min,
@@ -4918,14 +4816,13 @@ let optionsSetMap = {
   [USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST] = def_set_gui_option,
   [USEROPT_MP_TEAM_COUNTRY_RAND] = set_useropt_mp_team_country_rand,
   [USEROPT_MP_TEAM_COUNTRY] = set_useropt_mp_team_country_rand,
-  [USEROPT_SESSION_PASSWORD] = @(value, _descr, _optionId) ::SessionLobby.changePassword(value ? value : ""),
+  [USEROPT_SESSION_PASSWORD] = @(value, _descr, _optionId) changeRoomPassword(value ? value : ""),
   [USEROPT_BULLETS0] = set_useropt_bullets0,
   [USEROPT_BULLETS1] = set_useropt_bullets0,
   [USEROPT_BULLETS2] = set_useropt_bullets0,
   [USEROPT_BULLETS3] = set_useropt_bullets0,
   [USEROPT_BULLETS4] = set_useropt_bullets0,
   [USEROPT_BULLETS5] = set_useropt_bullets0,
-  [USEROPT_HELPERS_MODE_GM] = @(value, descr, _optionId) set_gui_option(USEROPT_HELPERS_MODE, descr.values[value]),
   [USEROPT_LANDING_MODE] = set_useropt_landing_mode,
   [USEROPT_ALLOW_JIP] = set_useropt_landing_mode,
   [USEROPT_QUEUE_JIP] = set_useropt_landing_mode,
@@ -4977,6 +4874,7 @@ let optionsSetMap = {
   [USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS] = set_useropt_landing_mode,
   [USEROPT_DISABLE_AIRFIELDS] = set_useropt_landing_mode,
   [USEROPT_ALLOW_EMPTY_TEAMS] = set_useropt_landing_mode,
+  [USEROPT_ALLOW_WEB_UI] = set_useropt_landing_mode,
   [USEROPT_KEEP_DEAD] = set_useropt_landing_mode,
   [USEROPT_DEDICATED_REPLAY] = set_useropt_landing_mode,
   [USEROPT_AUTOBALANCE] = set_useropt_landing_mode,
@@ -5034,13 +4932,13 @@ let optionsSetMap = {
   [USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES] = set_useropt_landing_mode,
   [USEROPT_SHOW_OTHERS_DECALS] = set_useropt_landing_mode,
   [USEROPT_SHOW_ACTION_BAR] = def_set_gui_option,
-  [USEROPT_AUTOLOGIN] = @(value, _descr, _optionId) ::set_autologin_enabled(value),
+  [USEROPT_AUTOLOGIN] = @(value, _descr, _optionId) set_autologin_enabled(value),
   [USEROPT_DAMAGE_INDICATOR_SIZE] = set_useropt_damage_indicator_size,
   [USEROPT_TACTICAL_MAP_SIZE] = set_useropt_damage_indicator_size,
-  [USEROPT_AIR_RADAR_SIZE] = @(value, _descr, optionId) ::set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY),
+  [USEROPT_AIR_RADAR_SIZE] = @(value, _descr, optionId) set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY),
   [USEROPT_CLUSTERS] = function(value, descr, optionId) {
     if (value >= 0 && value < descr.values.len())
-      ::set_gui_option_in_mode(optionId, descr.values[value], OPTIONS_MODE_MP_DOMINATION)
+      set_gui_option_in_mode(optionId, descr.values[value], OPTIONS_MODE_MP_DOMINATION)
   },
   [USEROPT_RANDB_CLUSTERS] = function(value, descr, optionId) {
     if (value >= 0 && value <= (1 << descr.values.len()) - 1) {
@@ -5065,7 +4963,7 @@ let optionsSetMap = {
         clusters = descr.values.filter(@(_, i) descr.items[i].isVisible && !descr.items[i].isAuto)
 
       let newVal = ";".join(clusters)
-      ::set_gui_option_in_mode(optionId, newVal, OPTIONS_MODE_MP_DOMINATION)
+      set_gui_option_in_mode(optionId, newVal, OPTIONS_MODE_MP_DOMINATION)
       broadcastEvent("ClusterChange")
     }
   },
@@ -5100,9 +4998,9 @@ let optionsSetMap = {
       if (values.len() > 0) {
         let optValue = descr.values[value]
         if (optValue.len())
-          ::mission_settings.postfix = optValue
+          set_mission_settings("postfix", optValue)
         else
-          ::mission_settings.postfix = values[rnd() % values.len()]
+          set_mission_settings("postfix", values[rnd() % values.len()])
         set_gui_option(optionId, optValue)
       }
     }
@@ -5133,7 +5031,7 @@ let optionsSetMap = {
 
   [USEROPT_PS4_CROSSNETWORK_CHAT] = @(value, _descr, _optionId) crossplayModule.setCrossNetworkChatStatus(value),
   [USEROPT_DISPLAY_MY_REAL_NICK] = function(value, _descr, optionId) {
-    ::set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY)
+    set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY)
     ::update_gamercards()
   },
   [USEROPT_DISPLAY_REAL_NICKS_PARTICIPANTS] = def_set_gui_option,
@@ -5142,12 +5040,12 @@ let optionsSetMap = {
   [USEROPT_ALLOW_SHOW_WISHLIST] = @(value, _descr, _optionId) enableShowWishlistForFriends(value),
   [USEROPT_ALLOW_SHOW_WISHLIST_COMMENTS] = @(value, _descr, _optionId) enableShowWishlistCommentsForFriends(value),
   [USEROPT_ALLOW_ADDED_TO_LEADERBOARDS] = function(value, _descr, _optionId) {
-    if (get_allow_to_be_added_to_lb() != value) {
-      set_allow_to_be_added_to_lb(value)
+    if (getAllowToBeAddedToLb() != value) {
+      setAllowToBeAddedToLb(value)
       save_online_single_job(SAVE_ONLINE_JOB_DIGIT)
     }
   },
-  [USEROPT_QUEUE_EVENT_CUSTOM_MODE] = @(value, descr, _optionId) ::queue_classes.Event.setShouldQueueCustomMode(getTblValue("eventName", descr.context, ""), value),
+  [USEROPT_QUEUE_EVENT_CUSTOM_MODE] = @(value, descr, _optionId) setShouldEventQueueCustomMode(descr.context?.eventName ?? "", value),
   [USEROPT_PS4_ONLY_LEADERBOARD] = function(value, _descr, optionId) {
     broadcastEvent("PS4OnlyLeaderboardsValueChanged")
     set_gui_option(optionId, value)
@@ -5178,6 +5076,19 @@ let optionsSetMap = {
   [USEROPT_TEST_FLIGHT_NAME] = def_set_gui_option,
   [USEROPT_AIR_SPAWN_POINT] = def_set_gui_option,
   [USEROPT_TARGET_RANK] = def_set_gui_option,
+  [USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP] = def_set_gui_option,
+}
+
+function registerOption(optionId, fill, set) {
+  if (optionId in optionsMap)
+    logerr($"[Options] optionsMap already has {optionId}")
+  else
+    optionsMap[optionId] <- fill
+
+  if (optionId in optionsSetMap)
+    logerr($"[Options] optionsSetMap already has {optionId}")
+  else
+    optionsSetMap[optionId] <- set
 }
 
 function set_option(optionId, value, descr = null) {
@@ -5193,30 +5104,12 @@ function set_option(optionId, value, descr = null) {
   return true
 }
 
-::get_option_in_mode <- function get_option_in_mode(optionId, mode) {
+function get_option_in_mode(optionId, mode) {
   let mainOptionsMode = getGuiOptionsMode()
   setGuiOptionsMode(mode)
   let res = get_option(optionId)
   setGuiOptionsMode(mainOptionsMode)
   return res
-}
-
-::get_gui_option_in_mode <- function get_gui_option_in_mode(optionId, mode, defaultValue = null) {
-  let mainOptionsMode = getGuiOptionsMode()
-  setGuiOptionsMode(mode)
-  let res = get_gui_option(optionId)
-  if (mainOptionsMode >= 0)
-    setGuiOptionsMode(mainOptionsMode)
-  if (defaultValue != null && res == null)
-    return defaultValue
-  return res
-}
-
-::set_gui_option_in_mode <- function set_gui_option_in_mode(optionId, value, mode) {
-  let mainOptionsMode = getGuiOptionsMode()
-  setGuiOptionsMode(mode)
-  set_gui_option(optionId, value)
-  setGuiOptionsMode(mainOptionsMode)
 }
 
 ::get_option <- get_option
@@ -5226,4 +5119,7 @@ return {
   get_option
   create_options_container
   crosshair_colors
+  get_option_in_mode
+  get_unit_preset_img
+  registerOption
 }

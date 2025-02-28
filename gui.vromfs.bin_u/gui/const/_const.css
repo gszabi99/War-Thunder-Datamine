@@ -42,7 +42,7 @@
 @const slotBtnIco: 23*@sf/@pf_outdated;
 @const profileMedalSize: (128@sf/@pf) \ 1;
 @const profileMedalSizeBig: (256@sf/@pf $max 256) \ 1;
-@const profileMedalSizeList: (90@sf/@pf) \ 1;
+@const profileMedalSizeList: (124@sf/@pf) \ 1;
 @const profileUnlockIconSize: (150*@sf/@pf) \ 1;
 @const profileIconFullSize: (200@sf/@pf) \ 1;
 @const usercardMedalRibbonW: (90@sf/@pf) \ 1;
@@ -253,6 +253,10 @@
 @const actionBarBottomPos: sh - 1@bhHud;
 @const hudActionBarTextShHight: 0.022@shHud;
 
+@const bulletTooltipPadding: 8@sf/@pf;
+@const bulletTooltipCellHeight:22@sf/@pf + 1@bulletTooltipPadding;
+@const bulletTooltipCardWidth: 1@bulletAnimationWidth + 2@bulletTooltipPadding;
+@const bulletTooltipCardWidthNarrow: 0.7*@bulletAnimationWidth + 2@bulletTooltipPadding;
 @const framePadding: 1@blockInterval;
 @const unlockBlockWidth: 0.55@sf\1;
 
@@ -311,6 +315,7 @@
 
 @const wwMapTooltipOffset: 0.02@sf;
 @const wwMapPanelInfoWidth: 0.07@rw*(1-1@isWide) + 0.29@rw;
+@const wwMapTooltipInfoWidth: 550@sf/@pf;
 
 @const framedMessageMaxWidth: 0.5@sf;
 
@@ -380,7 +385,7 @@
 @const twoStepLoginLogoSIze: 70@sf/@pf;
 @const wwMainMenuBackgroundShadowDeltaHeight: 1@navBarBattleButtonHeight + 12@sf/@pf;
 @const collectionItemSizeWithIndent:1.5@profileMedalSizeList + 1@blockInterval;
-@const collectionPrizeWidth: 1.8@collectionItemSizeWithIndent;
+@const collectionPrizeWidth: 3@profileMedalSizeList + 1@blockInterval;
 @const decorationInfoMaxWidth: 6@decalIconHeight;
 @const collectionInfoWidth: 1@decorationInfoMaxWidth - 0.02@scrn_tgt -1@scrollBarSize;
 @const collectionWidth: @srw-1@collectionInfoWidth - 2@blockInterval;
@@ -393,3 +398,9 @@
 
 @const trashBinIconSize: 28@sf/@pf;
 @const trashBinBigIconSize: 60@sf/@pf;
+
+@const contactTooltipMinWidth: (640@sf/@pf) \1;
+@const contactTooltipAvatarMargin: (27@sf/@pf) \1;
+@const contactTooltipAvatarImgSize: (166@sf/@pf) \1;
+@const contactTooltipAvatarFullSize: (176@sf/@pf) \1;
+@const contactTooltipContentMinWidth: 1@contactTooltipMinWidth-@contactTooltipAvatarFullSize-2@contactTooltipAvatarMargin+2@blockInterval;

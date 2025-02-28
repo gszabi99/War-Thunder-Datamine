@@ -25,7 +25,7 @@ let { getNextNewbieEvent, getUnitTypeByNewbieEventId, isMeNewbie } = require("%s
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { isWorldWarEnabled, canPlayWorldwar } = require("%scripts/globalWorldWarScripts.nut")
 let { deferOnce } = require("dagor.workcycle")
-let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 /**
  * Game mode manager incapsulates working

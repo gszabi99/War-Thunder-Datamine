@@ -9,6 +9,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { read_text_from_file } = require("dagor.fs")
 let loadTemplateText = memoize(@(v) read_text_from_file(v))
 let { cutPrefix } = require("%sqstd/string.nut")
+let { requestClanLog } = require("%scripts/clans/clanRequests.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 const CLAN_LOG_ROWS_IN_PAGE = 10
 
@@ -33,7 +35,7 @@ gui_handlers.clanLogModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fetchLogPage() {
-    ::g_clans.requestClanLog(
+    requestClanLog(
       this.clanId,
       CLAN_LOG_ROWS_IN_PAGE,
       this.requestMarker,
@@ -87,7 +89,7 @@ gui_handlers.clanLogModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (uid == null)
       return
 
-    playerContextMenu.showMenu(::getContact(uid), this)
+    playerContextMenu.showMenu(getContact(uid), this)
   }
 
   function removeNextButton() {

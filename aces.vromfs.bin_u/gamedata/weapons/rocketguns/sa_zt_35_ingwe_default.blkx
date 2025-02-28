@@ -64,7 +64,10 @@
     "groundRicochetEffect": "hit_81_105mm_dirt_ap",
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "hasTracerTrail": true,
+    "hasTracerTrail": [
+      true,
+      true
+    ],
     "hazeEffect": "haze_missile",
     "effectOffset": [
       -0.4,
@@ -72,7 +75,6 @@
       0.0
     ],
     "rendinstDamageRadius": 1.0,
-    "spawnExplosionWreckage": false,
     "spawnExplosionFx": false,
     "hitPowerMult": 100.0,
     "distanceFuse": false,
@@ -89,6 +91,11 @@
     "explodeTreshold": 0.01,
     "aiGroundOnly": false,
     "aiAirOnly": false,
+    "tracerTrailEmitter": [
+      0.85,
+      -0.0125,
+      0.0
+    ],
     "amountPerTier": 2.0,
     "iconType": "atgm_type2_x2",
     "guidance": {
@@ -409,6 +416,14 @@
         "smokeEffect": "smoke_rocket_tail_doubleside",
         "smokeEffect2": "",
         "endSmokeViscosity": 0.05
+      },
+      {
+        "smokeEffect": "",
+        "visual": {
+          "traceFreq": 1,
+          "tracer": "tracers_rocket_med_red_sparks",
+          "trail": "noTrail"
+        }
       }
     ],
     "hitpower": {

@@ -32,6 +32,7 @@ let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { is_mode_with_teams, get_mplayer_color } = require("%scripts/utils_sa.nut")
+let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 
 ::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
 
@@ -307,31 +308,6 @@ local last_update_entitlements_time = get_time_msec()
   exit_game();
 }
 
-::call_for_handler <- function call_for_handler(handler, func) {
-  if (!func)
-    return
-  if (handler)
-    return func.call(handler)
-  return func()
-}
-
-::get_navigation_images_text <- function get_navigation_images_text(cur, total) {
-  local res = ""
-  if (total > 1) {
-    local style = null
-    if (cur > 0)
-      style = (cur < total - 1) ? "all" : "left"
-    else
-      style = (cur < total - 1) ? "right" : null
-    if (style)
-      res = $"navImgStyle:t='{style}'; "
-  }
-  if (cur > 0)
-    res = "".concat(res, "navigationImage{ type:t='left' } ")
-  if (cur < total - 1)
-    res = "".concat(res, "navigationImage{ type:t='right' } ")
-  return res
-}
 
 //
 // Server message
@@ -383,7 +359,7 @@ local server_message_end_time = 0
   }
 
   let clanTag = withClanTag && !player?.isBot ? player.clanTag : ""
-  let name = ::g_contacts.getPlayerFullName(player?.isBot ? player.name : getPlayerName(player.name),
+  let name = getPlayerFullName(player?.isBot ? player.name : getPlayerName(player.name),
                                               clanTag,
                                               unitName)
 

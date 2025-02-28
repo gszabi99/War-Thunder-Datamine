@@ -8,6 +8,8 @@ let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+
 let { move_mouse_on_child_by_value, move_mouse_on_child, loadHandler
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
@@ -86,7 +88,7 @@ gui_handlers.Encyclopedia <- class (gui_handlers.BaseGuiHandlerWT) {
       view.tabs.append({
         id = chapter.id
         tabName =$"#encyclopedia/{chapter.id}"
-        navImagesText = ::get_navigation_images_text(idx, persistent.encyclopediaData.len())
+        navImagesText = getNavigationImagesText(idx, persistent.encyclopediaData.len())
       })
 
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)

@@ -6,6 +6,7 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let applicationsList = persist("applicationsList", @() {})
 let popupTextColor = "@chatTextInviteColor"
@@ -113,7 +114,7 @@ let SquadApplicationsList = freeze({
   }
 
   function getLeaderName(leaderId) {
-    let leaderContact = ::getContact(leaderId.tostring())
+    let leaderContact = getContact(leaderId.tostring())
     if (!leaderContact)
       return ""
 

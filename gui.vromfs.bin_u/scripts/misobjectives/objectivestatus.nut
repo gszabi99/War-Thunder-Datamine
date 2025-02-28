@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let guiMission = require("guiMission")
+let { MISSION_OBJECTIVE_STATUS_DELAYED, MISSION_OBJECTIVE_STATUS_IN_PROGRESS,
+  MISSION_OBJECTIVE_STATUS_COMPLETED, MISSION_OBJECTIVE_STATUS_FAILED} = require("guiMission")
 
 let objectiveStatus = {
   types = []
@@ -17,23 +18,23 @@ let objectiveStatus = {
 
 enums.addTypes(objectiveStatus, {
   DELAYED = {
-    code = guiMission?.MISSION_OBJECTIVE_STATUS_DELAYED ?? 0
+    code = MISSION_OBJECTIVE_STATUS_DELAYED
     name = "delayed"
   }
   RUNNING = {
-    code = guiMission?.MISSION_OBJECTIVE_STATUS_IN_PROGRESS ?? 1
+    code = MISSION_OBJECTIVE_STATUS_IN_PROGRESS
     name = "running"
     missionObjImg = "#ui/gameuiskin#icon_primary.svg"
     wwMissionObjImg = "#ui/gameuiskin#icon_primary.svg"
   }
   SUCCEED = {
-    code = guiMission?.MISSION_OBJECTIVE_STATUS_COMPLETED ?? 2
+    code = MISSION_OBJECTIVE_STATUS_COMPLETED
     name = "succeed"
     missionObjImg = "#ui/gameuiskin#icon_primary_success.svg"
     wwMissionObjImg = "#ui/gameuiskin#favorite"
   }
   FAILED = {
-    code = guiMission?.MISSION_OBJECTIVE_STATUS_FAILED ?? 3
+    code = MISSION_OBJECTIVE_STATUS_FAILED
     name = "failed"
     missionObjImg = "#ui/gameuiskin#icon_primary_fail.svg"
     wwMissionObjImg = "#ui/gameuiskin#icon_primary_fail.svg"

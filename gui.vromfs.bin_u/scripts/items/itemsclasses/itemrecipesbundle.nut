@@ -2,9 +2,10 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
+let { getItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let { getRequirementsMarkup, getRequirementsText } = require("%scripts/items/exchangeRecipes.nut")
 let { Chest } = require("itemChest.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let RecipesBundle = class (Chest) {
   static iType = itemType.RECIPES_BUNDLE
@@ -27,7 +28,7 @@ let RecipesBundle = class (Chest) {
   getMaxRecipesToShow   = @() 1
   getMarketablePropDesc = @() ""
 
-  getGenerator          = @() ItemGenerators.get(this.id) //recipes bundle created by generator, so has same id
+  getGenerator          = @() getItemGenerator(this.id) //recipes bundle created by generator, so has same id
   getDescRecipesText    = @(params) getRequirementsText(this.getMyRecipes(), this, params)
   getDescRecipesMarkup  = @(params) getRequirementsMarkup(this.getMyRecipes(), this, params)
 
@@ -81,4 +82,5 @@ let RecipesBundle = class (Chest) {
     openingRewardTitle = "mainmenu/itemCreated/title"
   })
 }
-return {RecipesBundle}
+
+registerItemClass(RecipesBundle)

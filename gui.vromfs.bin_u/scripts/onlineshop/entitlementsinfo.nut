@@ -6,7 +6,7 @@ let { requestMultipleItems } = require("%scripts/onlineShop/shopItemInfo.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 let bundlesShopInfo = Watched(null)
 

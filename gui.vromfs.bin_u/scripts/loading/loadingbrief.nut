@@ -24,9 +24,8 @@ let { setDoubleTextToButton, setHelpTextOnLoading } = require("%scripts/viewUtil
 let { GUI } = require("%scripts/utils/configs.nut")
 let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { getTip } = require("%scripts/loading/loadingTips.nut")
-let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { locCurrentMissionName, getMissionLocaltionAndConditionText
-} = require("%scripts/missions/missionsUtils.nut")
+let { add_event_listener, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getMissionLocaltionAndConditionText } = require("%scripts/missions/missionsUtils.nut")
 let { get_current_mission_desc } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_WEAPONS } = require("%scripts/options/optionsExtNames.nut")
@@ -35,8 +34,12 @@ let { loadLocalByAccount, saveLocalByAccount
 let { getCountryFlagsPresetName, getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
+let { get_mission_settings, currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
+let { loc_current_mission_desc, locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
+let { getCurMpTitle } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
+let { getChatObject } = require("%scripts/chat/chatUtils.nut")
 
 const MIN_SLIDE_TIME = 2.0
 
@@ -78,7 +81,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
         currentCampaignMission.set(missionBlk.getStr("name", ""))
       }
       else if (get_game_type() & GT_DYNAMIC)
-        missionBlk.setFrom(::mission_settings.mission)
+        missionBlk.setFrom(get_mission_settings().mission)
       else
         get_current_mission_desc(missionBlk)
 
@@ -190,7 +193,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       this.finished = true
 
     if (gchat_is_enabled() && hasMenuChat.value)
-      ::switchMenuChatObjIfVisible(::getChatDiv(this.scene))
+      broadcastEvent("ChatSwitchObjectIfVisible", { obj = getChatObject(this.scene) })
 
     if (this.gt & GT_VERSUS) {
       let missionHelpPath = g_mission_type.getHelpPathForCurrentMission()
@@ -334,7 +337,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSlidesStart() {
-    this.setSceneTitle(::getCurMpTitle())
+    this.setSceneTitle(getCurMpTitle())
     if (this.partsList.len() > 0) {
       this.setSubtitles(this.partsList[0].subtitles)
       loading_play_music(this.music)
@@ -405,7 +408,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
         if (currentCampMission)
           misObj = loc($"mb/{currentCampMission}/objective", "")
         if ((this.gt & GT_VERSUS) && currentCampMission)
-          misObj = ::loc_current_mission_desc()
+          misObj = loc_current_mission_desc()
         if (misObj == "" && currentCampMission)
           misObj = loc($"missions/{currentCampMission}/objective", "")
         if (misObj == "")
@@ -453,7 +456,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onHelp(_obj = null) {
-    ::gui_modal_help(false, HELP_CONTENT_SET.LOADING)
+    gui_modal_help(false, HELP_CONTENT_SET.LOADING)
   }
 
   function onApply(_obj) {

@@ -4,6 +4,8 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let Unlock = class (ItemCouponBase) {
   static iType = itemType.UNLOCK
@@ -23,7 +25,7 @@ let Unlock = class (ItemCouponBase) {
     if (unlock == null)
       return this.typeIcon
 
-    let config = ::build_conditions_config(unlock)
+    let config = buildConditionsConfig(unlock)
     if ((config?.reward.gold ?? 0) > 0)
       return "#ui/gameuiskin#item_type_eagles.svg"
     if ((config?.reward.wp ?? 0) > 0)
@@ -46,4 +48,5 @@ let Unlock = class (ItemCouponBase) {
 
   getWarbondsAmount = @() this.getUnlock()?.amount_warbonds ?? 0
 }
-return { Unlock }
+
+registerItemClass(Unlock)

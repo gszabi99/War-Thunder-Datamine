@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getWeaponDisabledMods } = require("%scripts/weaponry/weaponryInfo.nut")
+let { enable_modifications } = require("%scripts/weaponry/weaponryActions.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { addTask } = require("%scripts/tasker.nut")
 
@@ -11,7 +12,7 @@ function installMods(unit, disabledMods) {
     disabledMods.each(@(modName) ::updateAirAfterSwitchMod(unit, modName))
     broadcastEvent("ModificationChanged")
   }
-  let taskId = ::enable_modifications(unit.name, disabledMods, true)
+  let taskId = enable_modifications(unit.name, disabledMods, true)
   addTask(taskId, { showProgressBox = true }, onSuccess)
 }
 

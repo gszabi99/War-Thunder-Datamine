@@ -1,8 +1,11 @@
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
+let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
 
 //wndInfoConfig = {
 //  textsBlk - blk with texts for this window
@@ -126,7 +129,7 @@ gui_handlers.HelpInfoHandlerModal <- class (gui_handlers.BaseGuiHandlerWT) {
     //update messages visibility to correct update other messages positions
     let highlightList = []
     foreach (idx, link in links) {
-      let objBlock = ::guiTutor.getBlockFromObjData(link.obj, this.objContainer)
+      let objBlock = getBlockFromObjData(link.obj, this.objContainer)
 
       if (!link?.msgId)
         link.msgId <- null
@@ -143,9 +146,9 @@ gui_handlers.HelpInfoHandlerModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.guiScene.setUpdatesEnabled(true, true) //need to recount sizes and positions
 
-    ::guiTutor.createHighlight(this.scene.findObject("dark_screen"), highlightList, this, { onClick = "goBack" })
+    createHighlight(this.scene.findObject("dark_screen"), highlightList, this, { onClick = "goBack" })
 
-    let linesData = ::LinesGenerator.getLinkLinesMarkup(this.getLinesGeneratorConfig())
+    let linesData = getLinkLinesMarkup(this.getLinesGeneratorConfig())
     this.guiScene.replaceContentFromText(this.scene.findObject("lines_block"), linesData, linesData.len(), this)
   }
 

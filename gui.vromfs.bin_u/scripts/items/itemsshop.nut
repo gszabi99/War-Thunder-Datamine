@@ -29,11 +29,16 @@ let { fillDescTextAboutDiv, updateExpireAlarmIcon,
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getItemsSortComparator } = require("%scripts/items/itemsManager.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let { defer } = require("dagor.workcycle")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
+let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
+let { getWarbondsBalanceText } = require("%scripts/warbonds/warbondsManager.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO, getRecyclingItemUniqKey } = require("%scripts/items/itemsRecycler.nut")
+let { enqueueItem, requestLimits } = require("%scripts/items/itemLimits.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 let tabIdxToName = {
   [itemsTab.SHOP] = "items/shop",
@@ -247,7 +252,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       view.tabs.append({
         tabName = loc(getNameByTabIdx(tabIdx))
         unseenIcon = getSeenIdByTabIdx(tabIdx)
-        navImagesText = ::get_navigation_images_text(idx, this.visibleTabs.len())
+        navImagesText = getNavigationImagesText(idx, this.visibleTabs.len())
       })
       if (tabIdx == this.curTab)
         selIdx = idx
@@ -432,7 +437,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       this.itemsListValid = true
       this.itemsList = this.curSheet.getItemsList(this.curTab, this.curSubsetId)
       if (this.curTab == itemsTab.INVENTORY || this.isInRecyclingTab())
-        this.itemsList.sort(::ItemsManager.getItemsSortComparator(this.getTabSeenList(this.curTab)))
+        this.itemsList.sort(getItemsSortComparator(this.getTabSeenList(this.curTab)))
     }
 
     if (resetPage && !this.shouldSetPageByItem)
@@ -465,7 +470,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = pageStartIndex; i < pageEndIndex; i++) {
       let item = this.itemsList[i]
       if (item.hasLimits())
-        ::g_item_limits.enqueueItem(item.id)
+        enqueueItem(item.id)
 
       view.items.append(item.getViewData({
         showAction = !this.isInRecyclingTab(),
@@ -487,7 +492,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
         onHover = "onItemHover"
       }))
     }
-    ::g_item_limits.requestLimits()
+    requestLimits()
 
     let listObj = this.getItemsListObj()
     let prevValue = listObj.getValue()
@@ -1109,8 +1114,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let warbondsObj = this.scene.findObject("balance_text")
-    warbondsObj.setValue(::g_warbonds.getBalanceText())
-    warbondsObj.tooltip = loc("warbonds/maxAmount", { warbonds = ::g_warbonds.getLimit() })
+    warbondsObj.setValue(getWarbondsBalanceText())
+    warbondsObj.tooltip = loc("warbonds/maxAmount", { warbonds = maxAllowedWarbondsBalance.get() })
   }
 
   function onEventProfileUpdated(_p) {
@@ -1171,7 +1176,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       actionType = tutorAction.OBJ_CLICK
       cb = @() this.openCraftTree(null, tutorialItem)
     }]
-    ::gui_modal_tutor(steps, this, true)
+    gui_modal_tutor(steps, this, true)
   }
 
   function onItemHover(obj) {

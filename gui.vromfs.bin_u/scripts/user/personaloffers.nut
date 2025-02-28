@@ -10,6 +10,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { format }  = require("string")
+let { utf8ToUpper } = require("%sqstd/string.nut")
 let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRoleIcon, getFullUnitRoleText, getUnitClassColor } = require("%scripts/unit/unitInfoRoles.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
@@ -29,12 +30,45 @@ let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getWarpointsGoldCost, getEntitlementShortName, getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
+let { getWarpointsGoldCost, getEntitlementShortName, getEntitlementConfig, getEntitlementFullTimeText,
+  getEntitlementLocParams
+} = require("%scripts/onlineShop/entitlements.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { hasInWishlist } = require("%scripts/wishlist/wishlistManager.nut")
-let { getPrizeActionButtonsView } = require("%scripts/items/prizesView.nut")
+let { getPrizeActionButtonsView, getPrizeImageByConfig, getTrophyRewardText
+} = require("%scripts/items/prizesView.nut")
+let { getDecorator } = require("%scripts/customization/decorCache.nut")
+let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
+
+function getEntitlementTimeForDesc(config) {
+  let ent = getEntitlementConfig(config.entitlement)
+  return ent == null ? "" : utf8ToUpper(getEntitlementFullTimeText(ent))
+}
+
+let premiumAccountDescriptionArr = [
+  "charServer/entitlement/PremiumAccount/desc/string_2"
+  "charServer/entitlement/PremiumAccount/desc/string_3"
+  "charServer/entitlement/PremiumAccount/desc/string_4"
+  "charServer/entitlement/PremiumAccount/desc/string_5"
+]
+
+let personalOfferWndStyles = {
+  premium_account = {
+    headerBackgroundImage = "!ui/images/offer/personal_offer_image"
+    function fillOfferBody(obj, offerBlk) {
+      let entitlementPrize = (offerBlk % "i").findvalue(@(v) "entitlement" in v)
+      let paramTbl =  getEntitlementLocParams().map(@(v) colorize("userlogColoredText", v))
+      let data = handyman.renderCached("%gui/profile/premiumOfferBody.tpl", {
+        title = utf8ToUpper(loc("charServer/entitlement/PremiumAccount"))
+        premiumTime = entitlementPrize != null ? getEntitlementTimeForDesc(entitlementPrize) : ""
+        premiumDescription = "\n".join(premiumAccountDescriptionArr.map(@(v) loc(v, paramTbl)))
+      })
+      this.guiScene.replaceContentFromText(obj, data, data.len(), this)
+    }
+  }
+}
 
 let offerTypes = {
   unit = @(_c) loc("shop/section/premium")
@@ -43,6 +77,10 @@ let offerTypes = {
   premium_in_hours = @(_c) loc("charServer/entitlement/PremiumAccount")
   item = @(_c) loc("item")
   entitlement = @(c) getEntitlementShortName(getEntitlementConfig(c.entitlement))
+}
+
+let descriptionByOfferType = {
+  entitlement = getEntitlementTimeForDesc
 }
 
 let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
@@ -61,25 +99,9 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
       this.scene.findObject("update_timer").setUserData(this)
     }
     this.costGold = Cost(0, this.offerBlk.costGold)
-    this.updateDiscount()
     this.updateImages()
     this.updateButtons()
-    this.prepareRewardsData()
-    this.updateRewards()
-    this.updateTotalAmount()
-  }
-
-  function updateDiscount() {
-    let { discountValue = 0 } = this.offerBlk
-    this.scene.findObject("exclusive_price_value_text").setValue(this.costGold.tostring())
-    if (discountValue > 0)
-      this.scene.findObject("discount_value_text").setValue($"{discountValue.tostring()}%")
-  }
-
-  function updateTotalAmount() {
-    let { fullCostGold = 0 } = this.offerBlk
-    if (fullCostGold > 0)
-      this.scene.findObject("total_amount_value").setValue(Cost().setGold(fullCostGold).tostring())
+    this.fillBody()
   }
 
   function updateImages() {
@@ -87,12 +109,9 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.applyPendingChanges(false)
     let personalTextSize = this.scene.findObject("personal_text").getSize()
     this.scene.findObject("header_image_center")["width"] = max(0, personalTextSize[0] - maxTextWidthNoResize)
-
-    let exclusivePriceSize = this.scene.findObject("exclusive_price").getSize()
-    let timeDiscountExpiredTextSize = this.scene.findObject("time_discount_expired_text").getSize()
-
-    let maxSize = max(timeDiscountExpiredTextSize[0] - to_pixels("13@sf/@pf"), exclusivePriceSize[0])
-    this.scene.findObject("discount_image_center")["width"] = max(0, maxSize - maxTextWidthNoResize)
+    let { headerBackgroundImage = "" } = personalOfferWndStyles?[this.offerBlk?.offerType ?? ""]
+    if (headerBackgroundImage != "")
+      this.scene.findObject("offer_image")["background-image"] = headerBackgroundImage
   }
 
   getGroupTitle = @(offerType, config) offerTypes?[offerType](config) ?? loc($"trophy/unlockables_names/{offerType}", "")
@@ -105,7 +124,7 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
 
       let localConfig = copyParamsToTable(config)
       let button = getPrizeActionButtonsView(localConfig, { shopDesc = true })
-      local offerType = ::trophyReward.getType(localConfig)
+      local offerType = getTrophyRewardType(localConfig)
       offerType = offerType != "resourceType" ? offerType : localConfig.resourceType
       local group = this.groups.findvalue(@(value) value?.type == offerType)
       if(group == null) {
@@ -124,13 +143,14 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
       localConfig.count <- count
       localConfig.hideCount <- true
       let itemData = {
-        description = ::trophyReward.getRewardText(localConfig, false, "#FFFFFF")
+        description = descriptionByOfferType?[offerType](localConfig)
+          ?? getTrophyRewardText(localConfig, false, "#FFFFFF")
         count = count > 1 ? $"x{count}" : ""
         firstInBlock
       }
 
       if(offerType != "unit") {
-        itemData.image <- ::trophyReward.getImageByConfig(localConfig, false, "", true)
+        itemData.image <- getPrizeImageByConfig(localConfig, !isRewardItem(offerType), "", true)
         itemData.canPreview <- false
         if(button.len() > 0) {
           itemData.btnTooltip <- button[0].tooltip
@@ -178,38 +198,48 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
     }
     if (offerType == "unlock")
       return getUnlockCost(localConfig.unlock).multiply(localConfig.count)
-    if ("resourceType" in localConfig)
-      return getTypeByResourceType(localConfig.resourceType)
-        .getCost(localConfig.resource)
-        .multiply(localConfig.count)
+    if ("resourceType" in localConfig) {
+      let decType = getTypeByResourceType(localConfig.resourceType)
+      let decorator = getDecorator(localConfig.resource, decType)
+      return decType.getCost(decorator).multiply(localConfig.count)
+    }
     if(offerType == "warpoints")
       return getWarpointsGoldCost(localConfig.warpoints).multiply(localConfig.count)
     return Cost()
   }
 
+  function fillBody() {
+    let { offerType = "" } = this.offerBlk
+    let { fillOfferBody = null } = personalOfferWndStyles?[offerType]
+    if (fillOfferBody != null) {
+      fillOfferBody(this.scene.findObject("offer_markup"), this.offerBlk)
+      return
+    }
+    this.updateRewards()
+  }
+
   function updateRewards() {
+    this.prepareRewardsData()
     let data = handyman.renderCached("%gui/profile/offerItem.tpl", { offers = this.groups })
     let nest = this.scene.findObject("offer_markup")
     this.guiScene.replaceContentFromText(nest, data, data.len(), this)
   }
 
   function updateButtons() {
-    placePriceTextToButton(this.scene, "btn_buy", loc("mainmenu/btnBuy"), this.costGold)
+    let { fullCostGold = 0 } = this.offerBlk
+    placePriceTextToButton(this.scene, "btn_buy", loc("mainmenu/btnBuy"),
+      this.costGold, 0, fullCostGold > 0 ? Cost(0, fullCostGold) : null,
+      { textColor = "buttonFontColorPurchase", priceTextColor = "buttonFontColorPurchase" })
   }
 
   function updateTimeLeftText() {
     let timeLeftSec = this.timeExpired - get_charserver_time_sec()
-    let timeDiscountExpiredObj = showObjById("time_discount_expired_text", timeLeftSec > 0, this.scene)
     let timeExpiredObj = showObjById("time_expired_value", timeLeftSec > 0, this.scene)
     showObjById("time_expired_text", timeLeftSec > 0, this.scene)
     if (timeLeftSec <= 0)
       return
 
     let timeString = buidPartialTimeStr(timeLeftSec)
-    timeDiscountExpiredObj.setValue(loc("specialOffer/TimeSec", {
-      time = colorize("userlogColoredText", timeString)
-    }))
-
     if(getStringWidthPx(timeString, "fontMedium", this.guiScene) > to_pixels("110@sf/@pf"))
       timeExpiredObj["mediumFont"] = "no"
     timeExpiredObj.setValue(timeString)

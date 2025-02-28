@@ -1289,7 +1289,51 @@
     "gun": "gun_default",
     "turretTurnSfxPath": "tanks/effects_tanks",
     "turretTurnSfxPathStudio": "aircraft/effects",
-    "turretTurnSfxName": "turret_turn_servo"
+    "turretTurnSfxName": "turret_turn_servo",
+    "voiceWarningSystemOverride": {
+      "vws_right": {},
+      "vws_left": {},
+      "vws_ahead": {},
+      "vws_behind": {},
+      "vws_high": {},
+      "vws_low": {},
+      "vws_missile": {},
+      "vws_counter": {},
+      "vws_lock": {},
+      "vws_chaff_flare": {},
+      "vws_chaff_flare_low": {},
+      "vws_out": {},
+      "vws_jammer": {},
+      "vws_critical_angle": {},
+      "vws_over_g": {},
+      "vws_critical_speed": {},
+      "vws_dangerous_close": {},
+      "vws_gear_down": {},
+      "vws_check_gear": {},
+      "vws_pull_up": {},
+      "vws_roll_left": {},
+      "vws_roll_right": {},
+      "vws_fire": {},
+      "vws_engine_fire": {},
+      "vws_decrease_engine_rpm": {},
+      "vws_critical_engine_vibration": {},
+      "vws_caution": {},
+      "vws_engine_overheat": {},
+      "vws_engine_failure": {},
+      "vws_left_engine_failure": {},
+      "vws_right_engine_failure": {},
+      "vws_warning": {},
+      "vws_generator_failure": {},
+      "vws_main_gearbox_failure": {},
+      "vws_tailrotor_gearbox_failure": {},
+      "vws_bingo": {},
+      "vws_check_fuel": {},
+      "vws_fuel_low": {},
+      "vws_lock_cockpit": {},
+      "vws_hydrosystem_failure": {},
+      "vws_increase_engine_rpm": {},
+      "vws_check_mech": {}
+    }
   },
   "cockpit": {
     "headPos": [
@@ -1636,14 +1680,14 @@
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/us_an_apr_39.blk"
+        "blk": "gameData/sensors/us_an_apr_39a_v2.blk"
       },
       {
         "blk": "gameData/sensors/us_flir.blk",
         "node": "optic1_gun"
       },
       {
-        "blk": "gameData/sensors/us_an_avr-2.blk"
+        "blk": "gameData/sensors/us_an_aar_47a_v2_lws.blk"
       }
     ]
   },
@@ -1724,9 +1768,13 @@
     "HideDmParts": {
       "node": [
         "cannon2_dm",
+        "cover3_dm",
         "cannon3_dm",
+        "cover4_dm",
         "cannon4_dm",
-        "cannon5_dm"
+        "cover5_dm",
+        "cannon5_dm",
+        "cover6_dm"
       ]
     },
     "WeaponSlot": [
@@ -2182,7 +2230,10 @@
               ]
             },
             "ShowDmParts": {
-              "node": "cannon2_dm"
+              "node": [
+                "cannon2_dm",
+                "cover3_dm"
+              ]
             },
             "Weapon": {
               "trigger": "additional gun",
@@ -2258,7 +2309,10 @@
               ]
             },
             "ShowDmParts": {
-              "node": "cannon3_dm"
+              "node": [
+                "cannon3_dm",
+                "cover4_dm"
+              ]
             },
             "Weapon": {
               "trigger": "additional gun",
@@ -2352,7 +2406,10 @@
               ]
             },
             "ShowDmParts": {
-              "node": "cannon4_dm"
+              "node": [
+                "cannon4_dm",
+                "cover5_dm"
+              ]
             },
             "Weapon": {
               "trigger": "additional gun",
@@ -2519,7 +2576,10 @@
               ]
             },
             "ShowDmParts": {
-              "node": "cannon5_dm"
+              "node": [
+                "cannon5_dm",
+                "cover6_dm"
+              ]
             },
             "Weapon": {
               "trigger": "additional gun",
@@ -3236,17 +3296,17 @@
               "node": "optic1_gun"
             },
             {
-              "blk": "gameData/sensors/us_an_apr_39.blk"
+              "blk": "gameData/sensors/us_an_apr_39a_v2.blk"
             },
             {
-              "blk": "gameData/sensors/us_an_aar_47.blk"
+              "blk": "gameData/sensors/us_an_aar_47a_v2.blk"
             },
             {
               "blk": "gameData/sensors/us_flir.blk",
               "node": "optic1_gun"
             },
             {
-              "blk": "gameData/sensors/us_an_avr-2.blk"
+              "blk": "gameData/sensors/us_an_aar_47a_v2_lws.blk"
             }
           ]
         }
@@ -3278,17 +3338,17 @@
               "node": "optic1_gun"
             },
             {
-              "blk": "gameData/sensors/us_an_apr_39.blk"
+              "blk": "gameData/sensors/us_an_apr_39a_v2.blk"
             },
             {
-              "blk": "gameData/sensors/us_an_aar_47.blk"
+              "blk": "gameData/sensors/us_an_aar_47a_v2.blk"
             },
             {
               "blk": "gameData/sensors/us_flir.blk",
               "node": "optic1_gun"
             },
             {
-              "blk": "gameData/sensors/us_an_avr-2.blk"
+              "blk": "gameData/sensors/us_an_aar_47a_v2_lws.blk"
             }
           ]
         }

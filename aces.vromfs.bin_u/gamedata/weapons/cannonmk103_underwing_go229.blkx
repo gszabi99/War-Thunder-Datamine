@@ -267,25 +267,40 @@
       "maxDistance": 7500.0,
       "explosiveType": "petn",
       "explosiveMass": 0.0052,
-      "normalizationPreset": "default",
-      "ricochetPreset": "defaultExt",
-      "groundRicochetPreset": "he_small_caliber_ground",
+      "normalizationPreset": "ap",
+      "ricochetPreset": "ap",
+      "groundRicochetPreset": "ap_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "i_t",
-      "shellAnimation": "video/shells_animations/i_t_shell.ivf",
+      "bulletType": "aphe_t",
+      "slopeEffectPreset": "ap",
+      "fresnel": [
+        0.23,
+        0.1,
+        2.0
+      ],
+      "shellAnimation": "video/shells_animations/aphe_t_shell.ivf",
+      "explodeTreshold": 3.0,
+      "fuseDelayDist": 1.5,
+      "checkIntegrityAfterExplosion": true,
+      "relativeVelHitShift": [
+        [
+          300.0,
+          1000.0
+        ],
+        [
+          300.0,
+          1000.0
+        ]
+      ],
       "hitPowerMult": 15.0,
       "recoilMultiplier": 0.4,
-      "onHitChanceMultFire": 10.0,
+      "onHitChanceMultFire": 5.0,
       "relativeVelArmorShift": [
         200.0,
-        1000.0
-      ],
-      "relativeVelHitShift": [
-        300.0,
         1000.0
       ],
       "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -316,22 +331,68 @@
           ]
         ]
       },
+      "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.9,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        }
+      },
+      "testProperties": {
+        "checkIntegrityAfterExplosion": true,
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.6,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 0.75,
+                "damageScale": 1.5,
+                "angles": [
+                  0.0,
+                  180.0
+                ],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.75,
+                "angles": [
+                  45.0,
+                  105.0
+                ],
+                "countPortion": 0.5
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.5,
+                "angles": [
+                  130.0,
+                  180.0
+                ],
+                "countPortion": 0.1
+              }
+            ]
+          }
+        }
+      },
       "hitpower": {
-        "HitPower10m": [
+        "HitPower0m": [
           1.0,
-          300.0
+          0.0
         ],
         "HitPower1000m": [
+          0.9,
+          0.0
+        ],
+        "HitPower10000m": [
           0.8,
-          600.0
-        ],
-        "HitPower1500m": [
-          0.5,
-          700.0
-        ],
-        "HitPower2000m": [
-          0.1,
-          1500.0
+          10000.0
         ]
       },
       "collisions": {
@@ -944,25 +1005,40 @@
         "maxDistance": 7500.0,
         "explosiveType": "petn",
         "explosiveMass": 0.0052,
-        "normalizationPreset": "default",
-        "ricochetPreset": "defaultExt",
-        "groundRicochetPreset": "he_small_caliber_ground",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "i_t",
-        "shellAnimation": "video/shells_animations/i_t_shell.ivf",
+        "bulletType": "aphe_t",
+        "slopeEffectPreset": "ap",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "shellAnimation": "video/shells_animations/aphe_t_shell.ivf",
+        "explodeTreshold": 3.0,
+        "fuseDelayDist": 1.5,
+        "checkIntegrityAfterExplosion": true,
+        "relativeVelHitShift": [
+          [
+            300.0,
+            1000.0
+          ],
+          [
+            300.0,
+            1000.0
+          ]
+        ],
         "hitPowerMult": 15.0,
         "recoilMultiplier": 0.4,
-        "onHitChanceMultFire": 10.0,
+        "onHitChanceMultFire": 5.0,
         "relativeVelArmorShift": [
           200.0,
-          1000.0
-        ],
-        "relativeVelHitShift": [
-          300.0,
           1000.0
         ],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -993,22 +1069,68 @@
             ]
           ]
         },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.6,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    45.0,
+                    105.0
+                  ],
+                  "countPortion": 0.5
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.5,
+                  "angles": [
+                    130.0,
+                    180.0
+                  ],
+                  "countPortion": 0.1
+                }
+              ]
+            }
+          }
+        },
         "hitpower": {
-          "HitPower10m": [
+          "HitPower0m": [
             1.0,
-            300.0
+            0.0
           ],
           "HitPower1000m": [
+            0.9,
+            0.0
+          ],
+          "HitPower10000m": [
             0.8,
-            600.0
-          ],
-          "HitPower1500m": [
-            0.5,
-            700.0
-          ],
-          "HitPower2000m": [
-            0.1,
-            1500.0
+            10000.0
           ]
         },
         "collisions": {
@@ -2330,25 +2452,40 @@
         "maxDistance": 7500.0,
         "explosiveType": "petn",
         "explosiveMass": 0.0052,
-        "normalizationPreset": "default",
-        "ricochetPreset": "defaultExt",
-        "groundRicochetPreset": "he_small_caliber_ground",
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "i_t",
-        "shellAnimation": "video/shells_animations/i_t_shell.ivf",
+        "bulletType": "aphe_t",
+        "slopeEffectPreset": "ap",
+        "fresnel": [
+          0.23,
+          0.1,
+          2.0
+        ],
+        "shellAnimation": "video/shells_animations/aphe_t_shell.ivf",
+        "explodeTreshold": 3.0,
+        "fuseDelayDist": 1.5,
+        "checkIntegrityAfterExplosion": true,
+        "relativeVelHitShift": [
+          [
+            300.0,
+            1000.0
+          ],
+          [
+            300.0,
+            1000.0
+          ]
+        ],
         "hitPowerMult": 15.0,
         "recoilMultiplier": 0.4,
-        "onHitChanceMultFire": 10.0,
+        "onHitChanceMultFire": 5.0,
         "relativeVelArmorShift": [
           200.0,
-          1000.0
-        ],
-        "relativeVelHitShift": [
-          300.0,
           1000.0
         ],
         "selfDestructionFx": "explosion_air_selfexplosion_small",
@@ -2379,22 +2516,68 @@
             ]
           ]
         },
+        "damage": {
+          "kinetic": {
+            "damageType": "generic",
+            "demarrePenetrationK": 0.9,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.6,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    45.0,
+                    105.0
+                  ],
+                  "countPortion": 0.5
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.5,
+                  "angles": [
+                    130.0,
+                    180.0
+                  ],
+                  "countPortion": 0.1
+                }
+              ]
+            }
+          }
+        },
         "hitpower": {
-          "HitPower10m": [
+          "HitPower0m": [
             1.0,
-            300.0
+            0.0
           ],
           "HitPower1000m": [
+            0.9,
+            0.0
+          ],
+          "HitPower10000m": [
             0.8,
-            600.0
-          ],
-          "HitPower1500m": [
-            0.5,
-            700.0
-          ],
-          "HitPower2000m": [
-            0.1,
-            1500.0
+            10000.0
           ]
         },
         "collisions": {

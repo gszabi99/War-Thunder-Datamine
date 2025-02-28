@@ -1,6 +1,6 @@
-let { Watched } = require("frp")
 let { eventbus_send_foreign, eventbus_subscribe } = require("eventbus")
 let { ndbWrite, ndbRead, ndbExists } = require("nestdb")
+let { WatchedImmediate } = require("%sqstd/frp.nut")
 let { log } = require("%sqstd/log.nut")()
 
 let sharedData = {}
@@ -20,7 +20,7 @@ function make(name, ctor) {
     ndbWrite(key, val)
   }
 
-  let res = Watched(val)
+  let res = WatchedImmediate(val)
   let data = { key, watch = res.weakref(), isExternalEvent = false }
   sharedData[name] <- data
 

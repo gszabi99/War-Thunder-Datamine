@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 from "%globalScripts/loc_helpers.nut" import loc_checked
 let { Aoa, ClimbSpeed, Altitude, Speed, Tangage, Roll, CompassValue } = require("%rGui/planeState/planeFlyState.nut")
-let { baseLineWidth, mpsToFpm, metrToFeet, mpsToKnots, metrToMile } = require("ilsConstants.nut")
+let { baseLineWidth, mpsToFpm, metrToFeet, mpsToKnots, metrToNavMile } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { IlsColor, IlsLineScale, TargetPos, RocketMode, CannonMode, BombCCIPMode, BombingMode,
   TargetPosValid, DistToTarget, RadarTargetDist, TimeBeforeBombRelease, TvvMark, RadarTargetDistRate,
@@ -411,7 +411,7 @@ let maxLaunchZonePos = Computed(@() (AamLaunchZoneDistMax.value / currentMax.val
 let IsDgftZoneVisible = Computed(@() AamLaunchZoneDistDgftMax.value > 0.0)
 let maxLaunchDgftZonePos = Computed(@() (AamLaunchZoneDistDgftMax.value / currentMax.value * 20.0).tointeger())
 let minLaunchDgftZonePos = Computed(@() (AamLaunchZoneDistDgftMin.value / currentMax.value * 20.0).tointeger())
-let curTargetDist = Computed(@() (RadarTargetDist.value * metrToMile * 10.0).tointeger())
+let curTargetDist = Computed(@() (RadarTargetDist.value * metrToNavMile * 10.0).tointeger())
 let aamLaunchZone = @(){
   watch = IsLaunchZoneVisible
   size = flex()
@@ -475,7 +475,7 @@ let aamLaunchZone = @(){
       size = SIZE_TO_CONTENT
       pos = [pw(72.5), ph(19 - currentLaunchDistLen.value * 0.2)]
       rendObj = ROBJ_TEXT
-      color = IlsColor.value
+      color = Color(255, 0, 0)
       font = Fonts.hud
       fontSize = 30
       text = string.format("%.1f", curTargetDist.value * 0.1)

@@ -27,8 +27,8 @@ def delayed_action_create_es(evt : Event;
 def delayed_unit_shot_action_es(evt : Event;
                                 delayed_unit_shot__unitName : string;
                                 delayed_unit_shot__triggerGroup : int)
-  find_query() <| $ [es] (missionUnitName : string; var unit__ref : UnitRef)
-    let found = missionUnitName == delayed_unit_shot__unitName
+  find_query() <| $ [es] (unit__missionName : string; var unit__ref : UnitRef)
+    let found = unit__missionName == delayed_unit_shot__unitName
     if (found)
       unit_single_shot(unit__ref.unit, delayed_unit_shot__triggerGroup)
     return found

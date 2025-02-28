@@ -11,6 +11,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { getUsedItemCount } = require("%scripts/items/usedItemsInBattle.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { processUnitTypeArray } = require("%scripts/unit/unitClassType.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let UniversalSpare = class (BaseItemModClass) {
   static iType = itemType.UNIVERSAL_SPARE
@@ -138,4 +139,5 @@ let UniversalSpare = class (BaseItemModClass) {
     return ", ".join([unitTypeCond, countryCond, rankCond], true)
   }
 }
-return {UniversalSpare}
+
+registerItemClass(UniversalSpare)

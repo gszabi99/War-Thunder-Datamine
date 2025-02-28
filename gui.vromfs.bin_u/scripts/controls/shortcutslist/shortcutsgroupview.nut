@@ -7,6 +7,7 @@ let { MAX_CAMERA_SPEED, MAX_CAMERA_SMOOTH, MIN_CAMERA_SPEED, CONTROL_TYPE } = re
 let { USEROPT_FIX_GUN_IN_MOUSE_LOOK, USEROPT_MOUSE_SMOOTH, USEROPT_MOUSE_SENSE,
   USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_INVERTY_SPECTATOR
 } = require("%scripts/options/optionsExtNames.nut")
+let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 return [
 //-------------------------------------------------------
@@ -38,7 +39,7 @@ return [
       let old = joyParams.useTouchpadAiming
       joyParams.useTouchpadAiming = objValue
       if (objValue != old)
-        ::g_controls_manager.commitControls()
+        commitControls()
     }
     showFunc = @() hasFeature("EnableMouse") && isPlatformSony
   }

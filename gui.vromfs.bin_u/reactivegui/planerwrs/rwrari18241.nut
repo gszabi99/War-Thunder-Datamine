@@ -259,6 +259,12 @@ let directionGroups = [
     originalName = "HRR"
   },
   {
+    text = "F",
+    desc = "EF2000"
+
+    originalName = "E2K",
+  },
+  {
     text = "W"
     desc = "BUCANER"
 
@@ -287,6 +293,12 @@ let directionGroups = [
     desc = "MIRAG 20"
 
     originalName = "M2K"
+  },
+  {
+    text = "RFL",
+    desc = "RAFALE",
+
+    originalName = "RFL"
   },
   {
     text = "F"

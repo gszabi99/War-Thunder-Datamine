@@ -357,6 +357,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@player",
           "move_type": "teleport",
           "lookat": "capture_zone"
@@ -870,8 +871,7 @@
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "@player",
-          "target": "waypoint03",
-          "object_var_value": 0
+          "target": "waypoint03"
         }
       },
       "actions": {
@@ -1552,19 +1552,35 @@
         }
       },
       "actions": {
-        "playHint": {
-          "hintType": "tutorialHint",
-          "name": "",
-          "action": "hideCur",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
-        },
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "hints/aircraft_modifications/activation_lock",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_LOCK_TARGET"
+          }
+        ],
         "hudElementSelectionShade": {
           "element": ""
         },
@@ -1599,56 +1615,10 @@
           "doNuclearExplosion": false
         },
         "triggerEnable": {
-          "target": "closeCombat_check_target"
+          "target": "closeCombat_shoot_at_first_msg"
         }
       },
       "else_actions": {}
-    },
-    "closeCombat_check_target": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playerWhenOptions": {
-          "guiOptionBool": "USEROPT_AUTO_TARGET_CHANGE_SHIP"
-        }
-      },
-      "actions": {
-        "triggerActivate": {
-          "target": "closeCombat_shoot_at_first_msg",
-          "activate_type": "ignoreConditions",
-          "check_trigger_status": false,
-          "after_activation": "disable"
-        }
-      },
-      "else_actions": {
-        "playHint": {
-          "hintType": "tutorialHint",
-          "name": "hints/aircraft_modifications/activation_lock",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "item": "ID_LOCK_TARGET"
-        },
-        "triggerEnable": {
-          "target": "closeCombat_shoot_at_first_msg"
-        }
-      }
     },
     "closeCombat_shoot_at_first_msg": {
       "is_enabled": false,
@@ -2455,6 +2425,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@player",
           "move_type": "teleport",
           "lookat": "target_ship03"
@@ -2721,19 +2692,35 @@
         }
       },
       "actions": {
-        "playHint": {
-          "hintType": "tutorialHint",
-          "name": "",
-          "action": "hideCur",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
-        },
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "hints/aircraft_modifications/activation_lock",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_LOCK_TARGET"
+          }
+        ],
         "wait": {
           "time": 0.5
         },
@@ -2769,56 +2756,10 @@
           "doNuclearExplosion": false
         },
         "triggerEnable": {
-          "target": "torpedoingt_check_target"
+          "target": "torpedoing_use_torpedo_msg"
         }
       },
       "else_actions": {}
-    },
-    "torpedoingt_check_target": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playerWhenOptions": {
-          "guiOptionBool": "USEROPT_AUTO_TARGET_CHANGE_SHIP"
-        }
-      },
-      "actions": {
-        "triggerActivate": {
-          "target": "torpedoing_use_torpedo_msg",
-          "activate_type": "ignoreConditions",
-          "check_trigger_status": false,
-          "after_activation": "disable"
-        }
-      },
-      "else_actions": {
-        "playHint": {
-          "hintType": "tutorialHint",
-          "name": "hints/aircraft_modifications/activation_lock",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "item": "ID_LOCK_TARGET"
-        },
-        "triggerEnable": {
-          "target": "torpedoing_use_torpedo_msg"
-        }
-      }
     },
     "torpedoing_use_torpedo_msg": {
       "is_enabled": false,
@@ -3842,8 +3783,7 @@
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "@player",
-          "target": "waypoint04",
-          "object_var_value": 0
+          "target": "waypoint04"
         }
       },
       "actions": {
@@ -3941,8 +3881,7 @@
           "object_var_comp_op": "equal",
           "check_objects": "any",
           "object": "@player",
-          "target": "waypoint05",
-          "object_var_value": 0
+          "target": "waypoint05"
         }
       },
       "actions": {
@@ -4187,6 +4126,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@player",
           "move_type": "teleport",
           "lookat": "waypoint06"
@@ -4370,19 +4310,35 @@
         }
       },
       "actions": {
-        "playHint": {
-          "hintType": "tutorialHint",
-          "name": "",
-          "action": "hideCur",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
-        },
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "hints/aircraft_modifications/activation_lock",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_LOCK_TARGET"
+          }
+        ],
         "unitSetProperties": {
           "object": "target_ship04",
           "object_marking": 0,
@@ -4394,11 +4350,6 @@
         "wait": {
           "time": 0.5
         },
-        "hudElementShow": {
-          "element": "hud_tutorial_boat_auto_gunners_modes",
-          "show": true,
-          "time": -1
-        },
         "hudElementSelectionShade": {
           "element": ""
         },
@@ -4407,56 +4358,10 @@
           "control": "ID_SHIP_WEAPON_ALL"
         },
         "triggerEnable": {
-          "target": "artModes_check_target"
+          "target": "artModes_target_spotted+shoot_msg"
         }
       },
       "else_actions": {}
-    },
-    "artModes_check_target": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playerWhenOptions": {
-          "guiOptionBool": "USEROPT_AUTO_TARGET_CHANGE_SHIP"
-        }
-      },
-      "actions": {
-        "triggerActivate": {
-          "target": "artModes_target_spotted+shoot_msg",
-          "activate_type": "ignoreConditions",
-          "check_trigger_status": false,
-          "after_activation": "disable"
-        }
-      },
-      "else_actions": {
-        "playHint": {
-          "hintType": "tutorialHint",
-          "name": "hints/aircraft_modifications/activation_lock",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "item": "ID_LOCK_TARGET"
-        },
-        "triggerEnable": {
-          "target": "artModes_target_spotted+shoot_msg"
-        }
-      }
     },
     "artModes_target_spotted+shoot_msg": {
       "is_enabled": false,
@@ -4494,6 +4399,11 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "item": "ID_SHIP_TOGGLE_GUNNERS"
+        },
+        "hudElementShow": {
+          "element": "hud_tutorial_boat_auto_gunners_modes",
+          "show": true,
+          "time": -1
         },
         "triggerEnable": {
           "target": "artModes_gunners_mode_switched"
@@ -5221,19 +5131,35 @@
       },
       "conditions": {},
       "actions": {
-        "playHint": {
-          "hintType": "tutorialHint",
-          "name": "",
-          "action": "hideCur",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0
-        },
+        "playHint": [
+          {
+            "hintType": "tutorialHint",
+            "name": "",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
+          },
+          {
+            "hintType": "tutorialHint",
+            "name": "hints/aircraft_modifications/activation_lock",
+            "action": "show",
+            "shouldFadeOut": false,
+            "isOverFade": false,
+            "time": -1.0,
+            "priority": 0,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "ID_LOCK_TARGET"
+          }
+        ],
         "hudElementSelectionShade": {
           "element": ""
         },
@@ -5254,56 +5180,10 @@
           "isImmortal": false
         },
         "triggerEnable": {
-          "target": "rangedCombat_check_target"
+          "target": "rangedCombat_ranged_hint05+start_shooting_msg"
         }
       },
       "else_actions": {}
-    },
-    "rangedCombat_check_target": {
-      "is_enabled": false,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 0.01
-        }
-      },
-      "conditions": {
-        "playerWhenOptions": {
-          "guiOptionBool": "USEROPT_AUTO_TARGET_CHANGE_SHIP"
-        }
-      },
-      "actions": {
-        "triggerActivate": {
-          "target": "rangedCombat_ranged_hint05+start_shooting_msg",
-          "activate_type": "ignoreConditions",
-          "check_trigger_status": false,
-          "after_activation": "disable"
-        }
-      },
-      "else_actions": {
-        "playHint": {
-          "hintType": "tutorialHint",
-          "name": "hints/aircraft_modifications/activation_lock",
-          "action": "show",
-          "shouldFadeOut": false,
-          "isOverFade": false,
-          "time": -1.0,
-          "priority": 0,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "item": "ID_LOCK_TARGET"
-        },
-        "triggerEnable": {
-          "target": "rangedCombat_ranged_hint05+start_shooting_msg"
-        }
-      }
     },
     "rangedCombat_ranged_hint05+start_shooting_msg": {
       "is_enabled": false,
@@ -6924,6 +6804,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@player",
           "move_type": "teleport",
           "lookat": "target_ship03"
@@ -7046,6 +6927,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@player",
           "move_type": "teleport",
           "lookat": "target_ship03"
@@ -7226,6 +7108,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "@player",
           "move_type": "teleport",
           "lookat": "@waypoint_name"
@@ -7272,6 +7155,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "target_ship01",
             "move_type": "teleport"
           },
@@ -7295,6 +7179,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "target_ship02",
             "move_type": "teleport"
           },
@@ -7318,6 +7203,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "target_ship03",
             "move_type": "teleport"
           },
@@ -7341,6 +7227,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "target_ship04",
             "move_type": "teleport"
           },
@@ -7364,6 +7251,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "target_ship05",
             "move_type": "teleport"
           }
@@ -7521,9 +7409,9 @@
             0.984359
           ],
           [
-            2494.38,
-            0.000732422,
-            1706.61
+            2553.71,
+            0.000793457,
+            1767.24
           ]
         ],
         "unit_class": "germ_ls4_class",
@@ -7579,9 +7467,9 @@
             0.791333
           ],
           [
-            2635.31,
-            0.000701904,
-            1655.0
+            2758.1,
+            0.000671386,
+            1800.84
           ]
         ],
         "unit_class": "germ_ls4_class",
@@ -7637,9 +7525,9 @@
             0.90533
           ],
           [
-            2595.35,
-            0.000732422,
-            1649.87
+            2712.63,
+            0.000717163,
+            1796.93
           ]
         ],
         "unit_class": "germ_destroyer_class1936_z20_tutorial",
@@ -9086,7 +8974,7 @@
         [
           2534.78,
           0.0,
-          1357.97
+          1288.68
         ]
       ],
       "objLayer": 0,
@@ -9300,9 +9188,9 @@
           2899.39
         ],
         [
-          2027.83,
+          2334.11,
           0.0,
-          1902.46
+          1731.38
         ]
       ],
       "objLayer": 0,
@@ -9624,9 +9512,9 @@
           9.84808
         ],
         [
-          2494.4,
-          0.0,
-          1706.6
+          2553.73,
+          0.0000610352,
+          1767.23
         ]
       ],
       "objLayer": 0,
@@ -9651,9 +9539,9 @@
           9.06308
         ],
         [
-          2595.4,
-          -0.0000305176,
-          1649.9
+          2714.25,
+          -0.00012207,
+          1801.86
         ]
       ],
       "objLayer": 0,
@@ -9678,9 +9566,9 @@
           7.93353
         ],
         [
-          2635.3,
-          -0.0000305176,
-          1655.42
+          2758.09,
+          -0.0000610352,
+          1801.26
         ]
       ],
       "objLayer": 0,

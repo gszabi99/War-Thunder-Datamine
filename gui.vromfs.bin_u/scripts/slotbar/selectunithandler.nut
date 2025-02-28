@@ -16,14 +16,14 @@ let { canAssignInSlot, setUnit } = require("%scripts/slotbar/slotbarPresetsByVeh
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_BIT_CHOOSE_UNITS_TYPE, USEROPT_BIT_CHOOSE_UNITS_RANK,
   USEROPT_BIT_CHOOSE_UNITS_OTHER, USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE,
   USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST
 } = require("%scripts/options/optionsExtNames.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, canChangeCrewUnits } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getSlotObj, isUnitEnabledForSlotbar
 } = require("%scripts/slotbar/slotbarView.nut")
 let { getCrewsListByCountry, getBestTrainedCrewIdxForUnit
@@ -35,6 +35,7 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
 function isUnitInCustomList(unit, params) {
   if (!unit)
@@ -65,7 +66,7 @@ let getOptionsMaskForUnit = {
 const MIN_NON_EMPTY_SLOTS_IN_COUNTRY = 1
 
 function getParamsFromSlotbarConfig(crew, slotbar) {
-  if (!::SessionLobby.canChangeCrewUnits())
+  if (!canChangeCrewUnits())
     return null
   if (!CrewTakeUnitProcess.safeInterrupt())
     return null
@@ -412,7 +413,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     this.isEmptyOptionsList = true
     let view = { rows = [] }
     foreach (idx, userOpt in this.filterOptionsList) {
-      let maskOption = ::get_option(userOpt)
+      let maskOption = get_option(userOpt)
       let singleOption = getTblValue("singleOption", maskOption, false)
       if (singleOption) {
         // All bits but first are set to 1.
@@ -484,7 +485,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       return params.gameModeName
 
     if (isInSessionRoom.get())
-      return ::SessionLobby.getMissionNameLoc()
+      return getSessionLobbyMissionNameLoc()
 
     return getTblValue("text", getCurrentGameMode(), "")
   }
@@ -514,7 +515,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     if (!maskOptions)
       return
 
-    let oldOption = ::get_option((obj.uid).tointeger())
+    let oldOption = get_option((obj.uid).tointeger())
     let value = (oldOption.value.tointeger() & (~maskOptions)) | (obj.getValue() & maskOptions)
     set_option((obj.uid).tointeger(), value)
     this.curVisibleSlots = this.firstPageSlots
@@ -522,8 +523,8 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateOptionShowUnsupportedForCustomList() {
-    let modeOption = ::get_option(USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE)
-    let customOption = ::get_option(USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST)
+    let modeOption = get_option(USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_GAME_MODE)
+    let customOption = get_option(USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST)
 
     let customOptionObj = this.scene.findObject(customOption.id)
     if (!checkObj(customOptionObj))
@@ -584,7 +585,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(false, false)
     let optionMasks = []
     foreach (userOpt in this.filterOptionsList)
-      optionMasks.append(::get_option(userOpt).value)
+      optionMasks.append(get_option(userOpt).value)
 
     let tblObj = this.scene.findObject("airs_table")
     let total = tblObj.childrenCount()

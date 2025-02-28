@@ -78,7 +78,6 @@ gui_handlers.DbgAvatars <- class (BaseGuiHandler) {
     this.mainAvatarConfig = bhvAvatar.getCurParams()
     bhvAvatar.init({
       getConfig = (@() this.configBlk).bindenv(this)
-      intIconToString = this.getIconByIdx.bindenv(this)
       getIconPath = this.getIconPath.bindenv(this)
     })
 
@@ -143,7 +142,6 @@ gui_handlers.DbgAvatars <- class (BaseGuiHandler) {
     this.setAvatar("cardicon_default")
   }
 
-  getIconByIdx = @(idx) this.fullIconsList?[idx]?.name ?? ""
   getIconPath = @(name) this.iconsMap?[name]?.path ?? ""
 
   function save() {

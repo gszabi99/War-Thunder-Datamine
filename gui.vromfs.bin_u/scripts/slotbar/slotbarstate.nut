@@ -18,7 +18,8 @@ let { isUnitInSlotbar, isUnitAvailableForGM } = require("%scripts/unit/unitStatu
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { canChangeCrewUnits, getSessionLobbyMaxRespawns } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 let selectedCrews = persist("selectedCrews", @() [])
 
@@ -160,21 +161,6 @@ function getSelSlotsData() {
   return data
 }
 
-function isUnitUnlockedInSlotbar(unit, crew, country, missionRules, needDbg = false) {
-  local unlocked = !isCrewLockedByPrevBattle(crew)
-  if (unit) {
-    unlocked = unlocked && (!country || isCrewAvailableInSession(crew, unit, needDbg))
-    unlocked = unlocked && (isUnitAvailableForGM(unit, get_game_mode()) || isInFlight())
-      && (!unit.disableFlyout || !isInFlight())
-      && (missionRules?.isUnitEnabledBySessionRank(unit) ?? true)
-    if (unlocked && !::SessionLobby.canChangeCrewUnits() && !isInFlight()
-        && ::SessionLobby.getMaxRespawns() == 1)
-      unlocked = ::SessionLobby.getMyCurUnit() == unit
-  }
-
-  return unlocked
-}
-
 function isCountryAllCrewsUnlockedInHangar(countryId) {
   foreach (tbl in ::g_crews_list.getCrewsList())
     if (tbl.country == countryId)
@@ -224,6 +210,21 @@ function getSelAircraftByCountry(country) {
 }
 
 let getCurSlotbarUnit = @() getSelAircraftByCountry(profileCountrySq.value)
+
+function isUnitUnlockedInSlotbar(unit, crew, country, missionRules, needDbg = false) {
+  local unlocked = !isCrewLockedByPrevBattle(crew)
+  if (unit) {
+    unlocked = unlocked && (!country || isCrewAvailableInSession(crew, unit, needDbg))
+    unlocked = unlocked && (isUnitAvailableForGM(unit, get_game_mode()) || isInFlight())
+      && (!unit.disableFlyout || !isInFlight())
+      && (missionRules?.isUnitEnabledBySessionRank(unit) ?? true)
+    if (unlocked && !canChangeCrewUnits() && !isInFlight()
+        && getSessionLobbyMaxRespawns() == 1)
+      unlocked = getCurSlotbarUnit() == unit
+  }
+
+  return unlocked
+}
 
 let getCrewUnlockTimeByUnit = @(unit) unit == null ? 0
  : getCrewUnlockTime(getCrewByAir(unit))

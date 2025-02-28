@@ -58,7 +58,8 @@ function showMultiplayerLimitByAasMsg(onAcceptCb, onCancelCb) {
     parentHandler = {}
     message = loc(messageLocId,
       { playTime = getExpireText(curMin), limitTime = buidPartialTimeStr(limitSec) })
-    startBtnText = loc("msgbox/btn_continue")
+    cancelBtnText = isDeniedProfileJwtDueToAasLimits.get() ? loc("mainmenu/btnOk") : loc("msgbox/btn_yes")
+    startBtnText = loc("msgbox/btn_no")
     ableToStartAndSkip = onAcceptCb != null && !isDeniedProfileJwtDueToAasLimits.get()
     onStartPressed = onAcceptCb
     cancelFunc = onCancelCb
@@ -91,7 +92,8 @@ function checkShowMultiplayerAasWarningMsg(onAcceptCb, onCancelCb = null) {
   loadHandler(gui_handlers.SkipableMsgBox, {
     parentHandler = {}
     message = loc("antiAddictSystem/warningMsgOnlyPlayTime", { playTime = getExpireText(curMin) })
-    startBtnText = loc("msgbox/btn_continue")
+    cancelBtnText = loc("msgbox/btn_yes")
+    startBtnText = loc("msgbox/btn_no")
     skipFunc = @(value) saveLocalAccountSettings(SKIPPED_AAS_WARNING_MSG, value)
     onStartPressed = onAcceptCb
     cancelFunc = onCancelCb

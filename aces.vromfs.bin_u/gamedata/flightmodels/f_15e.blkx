@@ -2629,13 +2629,68 @@
       "groups": {
         "group": [
           {
+            "name": "S-75",
+            "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": "S75 RSN-75"
+          },
+          {
+            "name": "S-75 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": "S75 RSN-75",
+            "threatFlag": "RWR SACLOS LAUNCH"
+          },
+          {
+            "name": "HAWK",
+            "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": [
+              "AN/MPQ-50",
+              "AN/MPQ-61"
+            ]
+          },
+          {
+            "name": "HAWK LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": [
+              "AN/MPQ-50",
+              "AN/MPQ-61"
+            ],
+            "threatFlag": "RWR SARH LAUNCH"
+          },
+          {
             "name": "S-125",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
             "type": "4R-90-Yatagan"
+          },
+          {
+            "name": "S-125 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": "4R-90-Yatagan",
+            "threatFlag": "RWR SACLOS LAUNCH"
           },
           {
             "name": "9K330",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
             "type": [
               "HQ-17 TA",
               "HQ-17 TT",
@@ -2644,25 +2699,93 @@
             ]
           },
           {
+            "name": "9K330 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": [
+              "HQ-17 TT",
+              "9K330 TT"
+            ],
+            "threatFlag": "RWR SACLOS LAUNCH"
+          },
+          {
             "name": "9K33",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
             "type": [
               "9K33 TA",
               "9K33 TT"
             ]
           },
           {
+            "name": "9K33 LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": "9K33 TT",
+            "threatFlag": "RWR SACLOS LAUNCH"
+          },
+          {
             "name": "Roland",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
             "type": "Roland TT"
+          },
+          {
+            "name": "Roland LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": "Roland TT",
+            "threatFlag": "RWR SACLOS LAUNCH"
+          },
+          {
+            "name": "Rapier",
+            "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
+            "type": [
+              "Rapier TA",
+              "Rapier TT"
+            ]
+          },
+          {
+            "name": "Rapier LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": "Rapier TT",
+            "threatFlag": "RWR SACLOS LAUNCH"
           },
           {
             "name": "Crotal",
             "detectLaunch": true,
+            "search": true,
+            "track": true,
+            "launch": false,
             "type": [
               "Crotale TA",
               "Crotale TT"
             ]
+          },
+          {
+            "name": "Crotal LAUNCH",
+            "detectLaunch": true,
+            "search": false,
+            "track": false,
+            "launch": true,
+            "type": "Crotale TT",
+            "threatFlag": "RWR SACLOS LAUNCH"
           },
           {
             "name": "AAA",
@@ -2769,7 +2892,9 @@
               "N001",
               "N010",
               "V004",
+              "Type 1473",
               "ELTA EL/M-2001B",
+              "ELTA EL/M-2052",
               "PS-37",
               "PS-05",
               "Ferranti Blue Vixen",
@@ -2895,6 +3020,16 @@
             "type": "Thales RBE2 AESA"
           },
           {
+            "name": "Kfir C10",
+            "detectLaunch": true,
+            "type": "ELTA EL/M-2052"
+          },
+          {
+            "name": "J-10",
+            "detectLaunch": true,
+            "type": "Type 1473"
+          },
+          {
             "name": "JF-17",
             "detectLaunch": true,
             "type": "KLJ-7"
@@ -2932,24 +3067,60 @@
       "targetsDirectionGroups": {
         "targetsDirectionGroup": [
           {
+            "text": "S75",
+            "group": [
+              "S-75",
+              "S-75 LAUNCH"
+            ]
+          },
+          {
+            "text": "hud/rwr_threat_hawk",
+            "group": [
+              "HAWK",
+              "HAWK LAUNCH"
+            ]
+          },
+          {
             "text": "S125",
-            "group": "S-125"
+            "group": [
+              "S-125",
+              "S-125 LAUNCH"
+            ]
           },
           {
             "text": "9K3",
-            "group": "9K330"
+            "group": [
+              "9K330",
+              "9K330 LAUNCH"
+            ]
           },
           {
             "text": "93",
-            "group": "9K33"
+            "group": [
+              "9K33",
+              "9K33 LAUNCH"
+            ]
           },
           {
             "text": "RLD",
-            "group": "Roland"
+            "group": [
+              "Roland",
+              "Roland LAUNCH"
+            ]
+          },
+          {
+            "text": "RPR",
+            "group": [
+              "Rapier",
+              "Rapier LAUNCH"
+            ]
           },
           {
             "text": "CRT",
-            "group": "Crotal"
+            "group": [
+              "Crotal",
+              "Crotal LAUNCH"
+            ]
           },
           {
             "text": "hud/rwr_threat_aaa",
@@ -3032,6 +3203,14 @@
             "group": "Rafal"
           },
           {
+            "text": "C10",
+            "group": "Kfir C10"
+          },
+          {
+            "text": "J10",
+            "group": "J-10"
+          },
+          {
             "text": "J17",
             "group": "JF-17"
           },
@@ -3089,6 +3268,8 @@
             "track": true,
             "launch": true,
             "group": [
+              "S-75",
+              "HAWK",
               "S-125",
               "9K330",
               "9K33",
@@ -4231,7 +4412,7 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01,
+              "machLimit": 1.4,
               "flapsRange": [
                 0.0,
                 0.1
@@ -4278,7 +4459,7 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01,
+              "machLimit": 1.4,
               "flapsRange": [
                 0.0,
                 0.1
@@ -4638,15 +4819,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -4655,14 +4828,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5199,14 +5364,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5272,14 +5429,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5357,14 +5506,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5430,14 +5571,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5537,14 +5670,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5618,14 +5743,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5707,14 +5824,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5801,14 +5910,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5886,14 +5987,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -5969,14 +6062,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6064,14 +6149,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6131,14 +6208,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6208,14 +6277,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6290,14 +6351,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6363,14 +6416,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6434,14 +6479,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           }
@@ -6763,15 +6800,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -6780,14 +6809,6 @@
               {
                 "slot": 10,
                 "preset": "aim_120b_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_7m_tank_slot10"
-              },
-              {
-                "slot": 10,
-                "preset": "aim_120b_tank_slot10"
               }
             ]
           },
@@ -6883,15 +6904,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7004,15 +7017,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7112,15 +7117,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7221,15 +7218,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7306,15 +7295,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7379,15 +7360,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7464,15 +7437,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7537,15 +7502,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7644,15 +7601,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7725,15 +7674,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7814,15 +7755,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7908,15 +7841,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -7993,15 +7918,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -8076,15 +7993,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -8171,15 +8080,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -8238,15 +8139,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -8315,15 +8208,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -8397,15 +8282,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -8470,15 +8347,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -8541,15 +8410,7 @@
               },
               {
                 "slot": 4,
-                "preset": "aim_7m_tank_slot4"
-              },
-              {
-                "slot": 4,
                 "preset": "aim_120b_slot4"
-              },
-              {
-                "slot": 4,
-                "preset": "aim_120b_tank_slot4"
               },
               {
                 "slot": 10,
@@ -8968,7 +8829,7 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01,
+              "machLimit": 1.4,
               "flapsRange": [
                 0.0,
                 0.1
@@ -9015,7 +8876,7 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01,
+              "machLimit": 1.4,
               "flapsRange": [
                 0.0,
                 0.1

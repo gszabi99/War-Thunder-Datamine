@@ -2,13 +2,12 @@ from "%scripts/dagui_natives.nut" import get_axis_name, joystick_get_default
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-loadOnce("%scripts/controls/controlsPresets.nut")
 let DataBlock  = require("DataBlock")
 let { copyParamsToTable, eachBlock, eachParam, blkFromPath } = require("%sqstd/datablock.nut")
 let { startsWith } = require("%sqstd/string.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { getControlsPresetFilename, parseControlsPresetFileName
+} = require("%scripts/controls/controlsPresets.nut")
 
 const PRESET_ACTUAL_VERSION  = 5
 const PRESET_DEFAULT_VERSION = 4
@@ -106,8 +105,8 @@ function isSameMapping(lhs, rhs) {
   return true
 }
 
-
-::ControlsPreset <- class {
+local ControlsPreset = null
+ControlsPreset = class {
   basePresetPaths = null
   hotkeys         = null
   axes            = null
@@ -134,7 +133,7 @@ function isSameMapping(lhs, rhs) {
       this.loadFromPreset(data, presetChain)
     else if (u.isDataBlock(data))
       this.loadFromBlk(data, presetChain)
-    else if ((type(data) == "instance") && (data instanceof ::ControlsPreset)) {
+    else if ((type(data) == "instance") && (data instanceof ControlsPreset)) {
       this.basePresetPaths = u.copy(data.basePresetPaths)
       this.hotkeys         = u.copy(data.hotkeys)
       this.axes            = u.copy(data.axes)
@@ -401,7 +400,7 @@ function isSameMapping(lhs, rhs) {
     controlsBlk["version"] = PRESET_ACTUAL_VERSION
 
     this.saveBasePresetPathsToBlk(controlsBlk)
-    let controlsDiff = ::ControlsPreset(this)
+    let controlsDiff = ControlsPreset(this)
     controlsDiff.diffBasePresets()
 
     log("ControlsPreset: SaveControls")
@@ -495,7 +494,7 @@ function isSameMapping(lhs, rhs) {
     if (presetGroup != "default")
       return
 
-    let preset = ::ControlsPreset(presetPath, presetChain)
+    let preset = ControlsPreset(presetPath, presetChain)
     this.applyControls(preset)
 
     this.basePresetPaths[presetGroup] <- presetPath
@@ -508,12 +507,12 @@ function isSameMapping(lhs, rhs) {
       if (presetGroup != "default")
         return
 
-      let subPreset = ::ControlsPreset(presetPath)
+      let subPreset = ControlsPreset(presetPath)
       this.diffControls(subPreset)
     }
 
     if (this.basePresetPaths.len() == 0)
-      this.diffControls(::ControlsPreset())
+      this.diffControls(ControlsPreset())
 
     this.basePresetPaths = {}
   }
@@ -528,7 +527,7 @@ function isSameMapping(lhs, rhs) {
       let blkBasePresetPaths = blk["basePresetPaths"]
 
       if (presetChain.len() == 0 && blkBasePresetPaths.paramCount() == 0) {
-        blkBasePresetPaths["default"] <- ::g_controls_presets.getControlsPresetFilename("empty_ver1")
+        blkBasePresetPaths["default"] <- getControlsPresetFilename("empty_ver1")
         log("ControlsPreset: Compatibility preset added to base presets")
       }
 
@@ -783,14 +782,11 @@ function isSameMapping(lhs, rhs) {
   /******** Other functions ********/
 
   function getBasePresetNames() {
-    if (!isLoggedIn.get())
-      return {} // Because g_controls_presets loads after login.
-
-    return this.basePresetPaths.map(@(path) ::g_controls_presets.parsePresetFileName(path).name)
+    return this.basePresetPaths.map(@(path) parseControlsPresetFileName(path).name)
   }
 
   getBasePresetInfo = @(groupName = "default")
-    ::g_controls_presets.parsePresetFileName(this.basePresetPaths?[groupName] ?? "")
+    parseControlsPresetFileName(this.basePresetPaths?[groupName] ?? "")
 
   function getNumButtons() {
     local count = 0
@@ -993,3 +989,5 @@ function isSameMapping(lhs, rhs) {
     ]
   }
 }
+
+return ControlsPreset

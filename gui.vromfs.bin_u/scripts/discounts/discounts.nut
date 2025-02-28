@@ -26,6 +26,7 @@ let { get_charserver_time_sec } = require("chard")
 let { get_price_blk } = require("blkGetters")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
+let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 
 let platformMapForDiscountFromGuiBlk = {
   pc = isPlatformPC
@@ -179,7 +180,7 @@ g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = fa
 
   let chPath = ["exp_to_gold_rate"]
   chPath.append(shopCountriesList)
-  discountsList.changeExp = ::getDiscountByPath(chPath, pBlk) > 0
+  discountsList.changeExp = getDiscountByPath(chPath, pBlk) > 0
 
   let giftUnits = {}
 
@@ -194,7 +195,7 @@ g_discount.updateDiscountData <- function updateDiscountData(isSilentUpdate = fa
       }
 
       let path = ["aircrafts", air.name]
-      let discount = ::getDiscountByPath(path, pBlk)
+      let discount = getDiscountByPath(path, pBlk)
       if (discount > 0)
         discountsList.airList[air.name] <- discount
     }

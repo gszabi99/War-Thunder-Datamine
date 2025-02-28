@@ -238,8 +238,13 @@
           "us_m163_vulcan": {
             "rank": 5
           },
-          "us_m247": {
+          "us_xm246": {
             "rank": 6
+          },
+          "us_m247": {
+            "rank": 6,
+            "reqAir": "us_m163_vulcan",
+            "futureReqAir": "us_xm246"
           },
           "us_mim_72_chaparral": {
             "rank": 6
@@ -1061,10 +1066,21 @@
           "f-4j": {
             "rank": 7
           },
-          "f_14a_early": {
+          "fa_18a": {
             "rank": 8
           },
-          "f_14b": {
+          "f_14_group": {
+            "reqAir": "f-4j",
+            "futureReqAir": "fa_18a",
+            "image": "#ui/unitskin#f_14a_early",
+            "f_14a_early": {
+              "rank": 8
+            },
+            "f_14b": {
+              "rank": 8
+            }
+          },
+          "fa_18c_late": {
             "rank": 8
           }
         },
@@ -1443,6 +1459,11 @@
             "showOnlyWhenBought": true
           },
           "f_20a": {
+            "rank": 8,
+            "reqAir": "",
+            "gift": "msi_notebook"
+          },
+          "fa_18c_early": {
             "rank": 8,
             "reqAir": "",
             "gift": "msi_notebook"
@@ -2024,9 +2045,13 @@
               "rank": 1
             }
           },
+          "germ_amd_35_kwk39": {
+            "rank": 2
+          },
           "germ_sdkfz_234_2": {
             "rank": 2,
-            "reqAir": ""
+            "reqAir": "germ_pzkpfw_38t_ausf_F",
+            "futureReqAir": "germ_amd_35_kwk39"
           },
           "germ_dicker_sturer_group": {
             "image": "#ui/unitskin#germ_dicker_sturer_group",
@@ -2526,6 +2551,11 @@
             "rank": 5,
             "reqAir": ""
           },
+          "germ_marder_clovis": {
+            "rank": 5,
+            "reqAir": "",
+            "gift": "msi_notebook"
+          },
           "germ_erprobungstrager_3_achs_turm": {
             "rank": 5,
             "reqAir": "",
@@ -2877,6 +2907,15 @@
               1
             ],
             "reqAir": ""
+          },
+          "tiger_had_spain": {
+            "rank": 7,
+            "rankPosXY": [
+              6,
+              1
+            ],
+            "reqAir": "",
+            "gift": "msi_notebook"
           }
         }
       ]
@@ -3857,10 +3896,12 @@
       "range": [
         {
           "germ_ls_class": {
-            "rank": 1
+            "rank": 1,
+            "showOnlyWhenBought": true
           },
           "germ_s38": {
-            "rank": 1
+            "rank": 1,
+            "reqAir": ""
           },
           "germ_s38b": {
             "rank": 2
@@ -4309,8 +4350,13 @@
           "ussr_object_268": {
             "rank": 5
           },
+          "ussr_2s19_m1": {
+            "rank": 5
+          },
           "ussr_it_1": {
-            "rank": 6
+            "rank": 6,
+            "reqAir": "ussr_object_268",
+            "futureReqAir": "ussr_2s19_m1"
           },
           "ussr_9p149": {
             "rank": 6
@@ -4493,6 +4539,12 @@
           "ussr_t_34_100": {
             "rank": 4,
             "reqAir": ""
+          },
+          "ussr_2s19_m2": {
+            "rank": 5,
+            "reqAir": "",
+            "isClanVehicle": true,
+            "reqFeature": "ClanVehicles"
           },
           "ussr_is_6": {
             "rank": 5,
@@ -5194,6 +5246,9 @@
             "rank": 8
           },
           "su_27sm": {
+            "rank": 8
+          },
+          "su_30sm": {
             "rank": 8
           }
         },
@@ -5966,13 +6021,20 @@
       "range": [
         {
           "ussr_g5_mtb": {
-            "rank": 1
+            "rank": 1,
+            "showOnlyWhenBought": true
           },
           "ussr_d3": {
+            "rank": 1,
+            "reqAir": ""
+          },
+          "ussr_pr_103_sm4": {
             "rank": 1
           },
           "ussr_mpk_163": {
-            "rank": 2
+            "rank": 2,
+            "reqAir": "ussr_d3",
+            "futureReqAir": "ussr_pr_103_sm4"
           },
           "ussr_pr_123bis": {
             "rank": 2
@@ -6412,8 +6474,13 @@
               "rank": 6
             }
           },
+          "uk_tracked_rapier": {
+            "rank": 7
+          },
           "uk_stormer_group": {
             "image": "#ui/unitskin#uk_stormer_group",
+            "reqAir": "uk_chieftain_marksman",
+            "futureReqAir": "uk_tracked_rapier",
             "uk_stormer_air_defence": {
               "rank": 7
             },
@@ -6439,11 +6506,15 @@
             "rank": 1
           },
           "uk_marmon_herrington_mk_6_2pdr": {
-            "rank": 2,
-            "reqAir": ""
+            "rank": 2
+          },
+          "uk_a25_mk_8": {
+            "rank": 2
           },
           "uk_marmon_herrington_mk_6_6pdr": {
-            "rank": 2
+            "rank": 2,
+            "reqAir": "uk_marmon_herrington_mk_6_2pdr",
+            "futureReqAir": "uk_a25_mk_8"
           },
           "uk_concept3_ngac": {
             "rank": 3
@@ -7505,6 +7576,9 @@
           },
           "uk_battleship_marlborough": {
             "rank": 6
+          },
+          "uk_battleship_q_elizabet_class_warspite": {
+            "rank": 6
           }
         },
         {
@@ -7680,7 +7754,12 @@
       "range": [
         {
           "uk_mtb_1series": {
-            "rank": 1
+            "rank": 1,
+            "showOnlyWhenBought": true
+          },
+          "uk_mtb35_vosper": {
+            "rank": 1,
+            "reqAir": ""
           },
           "uk_fairmile_a_ml100": {
             "rank": 1
@@ -8614,8 +8693,8 @@
           "j2m4_kai": {
             "rank": 4,
             "reqAir": "",
-            "beginPurchaseDate": "2025-02-11 11:00:00",
-            "endPurchaseDate": "2025-02-18 11:00:00"
+            "beginPurchaseDate": "2025-02-11 07:00:00",
+            "endPurchaseDate": "2025-02-18 07:00:00"
           },
           "j2m5_30mm": {
             "rank": 4,
@@ -8712,8 +8791,8 @@
           "a6m5ko": {
             "rank": 4,
             "reqAir": "",
-            "beginPurchaseDate": "2025-02-11 11:00:00",
-            "endPurchaseDate": "2025-02-18 11:00:00"
+            "beginPurchaseDate": "2025-02-11 07:00:00",
+            "endPurchaseDate": "2025-02-18 07:00:00"
           },
           "fw-190a-5_japan": {
             "rank": 4,
@@ -8751,8 +8830,13 @@
           "jp_destroyer_momi": {
             "rank": 1
           },
+          "jp_destroyer_matsu": {
+            "rank": 1
+          },
           "jp_destroyer_harukaze": {
-            "rank": 2
+            "rank": 2,
+            "reqAir": "jp_destroyer_momi",
+            "futureReqAir": "jp_destroyer_matsu"
           },
           "jp_destroyer_murasame": {
             "rank": 2
@@ -8854,8 +8938,8 @@
           "jp_destroyer_kiyoshimo": {
             "rank": 3,
             "reqAir": "",
-            "beginPurchaseDate": "2025-02-11 11:00:00",
-            "endPurchaseDate": "2025-02-18 11:00:00"
+            "beginPurchaseDate": "2025-02-11 07:00:00",
+            "endPurchaseDate": "2025-02-18 07:00:00"
           },
           "jp_cruiser_yubari": {
             "rank": 3,
@@ -8935,7 +9019,12 @@
       "range": [
         {
           "jp_t14_class": {
-            "rank": 1
+            "rank": 1,
+            "showOnlyWhenBought": true
+          },
+          "jp_t14_class_mod02": {
+            "rank": 1,
+            "reqAir": ""
           },
           "jp_type5_escortboat": {
             "rank": 1
@@ -9683,6 +9772,9 @@
           },
           "j_11a": {
             "rank": 8
+          },
+          "j_11b": {
+            "rank": 8
           }
         },
         {
@@ -10193,6 +10285,11 @@
             "rank": 7,
             "reqAir": "",
             "gift": "msi_notebook"
+          },
+          "it_c1_ariete_certezza": {
+            "rank": 7,
+            "reqAir": "",
+            "gift": "msi_notebook"
           }
         },
         {
@@ -10532,8 +10629,14 @@
           "tornado_ids_it": {
             "rank": 7
           },
-          "tornado_ids_it_mod95": {
-            "rank": 8
+          "tornado_ids_it_group": {
+            "image": "#ui/unitskin#tornado_ids_it_mod95",
+            "tornado_ids_it_mod95": {
+              "rank": 8
+            },
+            "tornado_ids_it_ret8": {
+              "rank": 8
+            }
           },
           "av_8b_plus_italy": {
             "rank": 8
@@ -10784,8 +10887,13 @@
           "it_destroyer_vifor_class_aquila": {
             "rank": 1
           },
+          "it_destroyer_maestrale_class_grecale": {
+            "rank": 1
+          },
           "it_destroyer_comandanti_medaglie_doro": {
-            "rank": 2
+            "rank": 2,
+            "reqAir": "it_destroyer_vifor_class_aquila",
+            "futureReqAir": "it_destroyer_maestrale_class_grecale"
           },
           "it_destroyer_impetuoso_class_impetuoso": {
             "rank": 2
@@ -10968,9 +11076,13 @@
           "fr_amc_35": {
             "rank": 1
           },
+          "fr_amd_35_kwk39": {
+            "rank": 2
+          },
           "fr_crusader_mk_2": {
             "rank": 2,
-            "reqAir": ""
+            "reqAir": "fr_amc_35",
+            "futureReqAir": "fr_amd_35_kwk39"
           },
           "fr_amx_13_fl_11": {
             "rank": 3
@@ -10981,14 +11093,22 @@
           "fr_amx_13_75": {
             "rank": 4
           },
-          "fr_aml_90": {
-            "rank": 5
+          "fr_aml_amx_group": {
+            "image": "#ui/unitskin#fr_mars_hot_group",
+            "fr_aml_90": {
+              "rank": 5
+            },
+            "fr_amx_13_90": {
+              "rank": 5
+            }
           },
-          "fr_amx_13_90": {
+          "fr_marder_df_105": {
             "rank": 5
           },
           "fr_mars_hot_group": {
             "image": "#ui/unitskin#fr_mars_hot_group",
+            "reqAir": "fr_aml_90",
+            "futureReqAir": "fr_marder_df_105",
             "fr_mars_15": {
               "rank": 6
             },
@@ -11260,17 +11380,13 @@
             "reqAir": "",
             "gift": "msi_notebook"
           },
-          "fr_amx_30": {
+          "fr_marder_clovis": {
             "rank": 5,
             "reqAir": ""
           },
-          "fr_amx_50_1950": {
+          "fr_amx_30": {
             "rank": 5,
-            "reqAir": "",
-            "gift": "msi_notebook",
-            "marketplaceItemdefId": 50210,
-            "hideFeature": "!Marketplace",
-            "event": "battlepass_season10"
+            "reqAir": ""
           },
           "fr_amx_30_super": {
             "rank": 6,
@@ -11333,6 +11449,14 @@
             "marketplaceItemdefId": 50068,
             "hideFeature": "!Marketplace",
             "event": "worldwar_recon_fire"
+          },
+          "fr_amx_50_1950": {
+            "rank": 5,
+            "reqAir": "",
+            "gift": "msi_notebook",
+            "marketplaceItemdefId": 50210,
+            "hideFeature": "!Marketplace",
+            "event": "battlepass_season10"
           },
           "fr_cv_9035_nl": {
             "rank": 7,
@@ -11397,12 +11521,22 @@
               2
             ]
           },
-          "tiger_had_france": {
-            "rank": 7,
-            "rankPosXY": [
-              4,
-              1
-            ]
+          "tiger_group": {
+            "image": "#ui/unitskin#tiger_had_france",
+            "tiger_had_france": {
+              "rank": 7,
+              "rankPosXY": [
+                4,
+                1
+              ]
+            },
+            "tiger_hac_france": {
+              "rank": 7,
+              "rankPosXY": [
+                4,
+                1
+              ]
+            }
           },
           "tiger_had_block2_france": {
             "rank": 7,
@@ -11430,8 +11564,8 @@
               1
             ],
             "reqAir": "",
-            "beginPurchaseDate": "2025-02-28 10:00:00",
-            "endPurchaseDate": "2025-03-03 11:00:00"
+            "gift": "msi_notebook",
+            "showOnlyWhenBought": true
           },
           "tiger_hap_france": {
             "rank": 6,
@@ -12017,14 +12151,33 @@
     "boats": {
       "range": [
         {
-          "fr_vtb8": {
-            "rank": 1
+          "fr_vtb_group": {
+            "fr_vtb8": {
+              "rank": 1,
+              "showOnlyWhenBought": true
+            },
+            "fr_vtb11": {
+              "rank": 1,
+              "showOnlyWhenBought": true
+            },
+            "fr_vtb14": {
+              "rank": 1,
+              "showOnlyWhenBought": true
+            }
           },
-          "fr_vtb14": {
-            "rank": 1
+          "fr_vtb12_mod": {
+            "rank": 1,
+            "reqAir": ""
+          },
+          "fr_vtb18": {
+            "rank": 1,
+            "reqAir": "",
+            "futureReqAir": "fr_vtb12_mod"
           },
           "fr_type40k_vedette": {
-            "rank": 2
+            "rank": 2,
+            "reqAir": "fr_vtb12_mod",
+            "futureReqAir": "fr_vtb18"
           },
           "fr_arras_class_arras": {
             "rank": 3
@@ -12037,20 +12190,27 @@
           }
         },
         {
-          "fr_vtb11": {
-            "rank": 1
-          },
           "fr_vtb13": {
             "rank": 1
           },
           "fr_mtb96_vosper": {
             "rank": 2
           },
+          "fr_flower_class_aconit": {
+            "rank": 2
+          },
           "fr_lcg_m_l9059": {
+            "rank": 3,
+            "reqAir": "fr_mtb96_vosper",
+            "futureReqAir": "fr_flower_class_aconit"
+          },
+          "fr_marne_class_marne": {
             "rank": 3
           },
           "fr_frigate_croix_de_lorraine_class_la_surprise": {
-            "rank": 4
+            "rank": 4,
+            "reqAir": "fr_lcg_m_l9059",
+            "futureReqAir": "fr_marne_class_marne"
           }
         },
         {
@@ -12680,6 +12840,9 @@
           },
           "mig_21_bis_finland": {
             "rank": 7
+          },
+          "fa_18c_finland": {
+            "rank": 8
           }
         },
         {
@@ -13221,6 +13384,11 @@
             "marketplaceItemdefId": 50294,
             "hideFeature": "!Marketplace",
             "event": "winter_2025"
+          },
+          "f_16a_block_10_netz_mod": {
+            "rank": 8,
+            "reqAir": "",
+            "gift": "msi_notebook"
           }
         }
       ]

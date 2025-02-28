@@ -12,7 +12,6 @@ let DataBlock = require("DataBlock")
 let { isDataBlock } = require("%sqstd/underscore.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
-let avatars = require("%scripts/user/avatars.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
 let { convertBlk, eachParam, eachBlock } = require("%sqstd/datablock.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -176,7 +175,6 @@ foreach (idx, val in airStatsListConfig) {
 let currentUserProfile = {
   name = ""
   icon = "cardicon_default"
-  pilotId = 0
   country = "country_ussr"
   balance = 0
   rank = 0
@@ -402,8 +400,6 @@ function getPlayerStatsFromBlk(blk) {
     unlocks = {}
     countryStats = {}
 
-    icon = avatars.getIconById(blk?.icon)
-
     //stats & leaderboards
     summary = isDataBlock(blk?.summary) ? convertBlk(blk.summary) : {}
     userstat = blk?.userstat ? getAirsStatsFromBlk(blk.userstat) : {}
@@ -448,6 +444,14 @@ function getPlayerStatsFromBlk(blk) {
   return player
 }
 
+function getExternalPlayerStatsFromBlk(blk) {
+  let player = getPlayerStatsFromBlk(blk)
+  if (blk?.aircrafts)
+    player.units <- convertBlk(blk.aircrafts)
+
+  return player
+}
+
 function getCurSessionCountry() {
   if (is_multiplayer()) {
     let sessionInfo = get_mp_session_info()
@@ -471,8 +475,7 @@ function getProfileInfo() {
   currentUserProfile.country = info.country || "country_0"
   currentUserProfile.aircrafts = info.aircrafts
   currentUserProfile.gold = info.gold
-  currentUserProfile.pilotId = info.pilotId
-  currentUserProfile.icon = avatars.getIconById(info.pilotId)
+  currentUserProfile.icon = info.pilotIcon
   currentUserProfile.medals = getNumUnlocked(UNLOCKABLE_MEDAL, true)
   //dagor.debug($"unlocked medals: {currentUserProfile.medals}")
 
@@ -504,6 +507,7 @@ return {
   fillProfileSummary
   getCountryMedals
   getPlayerStatsFromBlk
+  getExternalPlayerStatsFromBlk
   airStatsListConfig
   getProfileInfo
   getPlayerRankByCountry

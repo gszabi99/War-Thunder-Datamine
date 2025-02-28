@@ -8,12 +8,13 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { findItemById, getInventoryList, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
 
 let ITEMS_FOR_OFFER_BUY_SAVE_ID = "itemsListForOfferBuy"
 
 let addItemsInOfferBuyList = function() {
-  let itemsList = ::ItemsManager.getInventoryList(itemType.ALL,
+  let itemsList = getInventoryList(itemType.ALL,
     @(i) i.needOfferBuyAtExpiration() && i.getAmount() > 0)
 
   if (!itemsList.len())
@@ -47,8 +48,8 @@ let checkOfferToBuyAtExpiration = function() {
   local hasChanges = false
   foreach (itemId, _value in needOfferBuyItemsList) {
     let id = to_integer_safe(itemId, itemId, false)
-    let inventoryItem = ::ItemsManager.getInventoryItemById(id)
-    let shopItem = ::ItemsManager.findItemById(id)
+    let inventoryItem = getInventoryItemById(id)
+    let shopItem = findItemById(id)
     if (inventoryItem && !inventoryItem.isExpired())
       continue
 
@@ -76,9 +77,9 @@ let checkOfferToBuyAtExpiration = function() {
           ["no", @() null ]
         ], "yes", { cancel_fn = function() {} })
 
-     hasChanges = true
-     needOfferBuyItemsList[itemId] = null
-     break
+    hasChanges = true
+    needOfferBuyItemsList[itemId] = null
+    break
   }
 
   if (hasChanges) {

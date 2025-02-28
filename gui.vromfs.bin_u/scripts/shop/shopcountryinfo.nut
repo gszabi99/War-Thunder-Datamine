@@ -47,8 +47,6 @@ function get_units_list(filterFunc) {
 
 registerRespondent("get_units_count_at_rank", get_units_count_at_rank)
 
-::get_units_count_at_rank <- get_units_count_at_rank
-
 return {
   isCountryHaveUnitType
   getMaxUnitsRank

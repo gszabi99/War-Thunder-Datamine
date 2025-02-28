@@ -4,7 +4,7 @@ from "%scripts/options/optionsCtors.nut" import create_option_combobox
 let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { floor } = require("math")
-let { hangar_set_dm_viewer_mode } = require("hangar")
+let { hangar_set_dm_viewer_mode, DM_VIEWER_NONE } = require("hangar")
 let { on_parse_replay, get_parsed_replay, get_replay_info, repeat_shot_from_blk,
   on_parse_temp_replay, get_temp_replay_info, get_replay_hits_dir, set_replay_hits_mode,
   on_update_loaded_model, restore_loaded_model } = require("replays")
@@ -23,6 +23,7 @@ let { getBulletSetNameByBulletName, getBulletsSetData, getBulletsSearchName,
   getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 let bulletInfoCache = {}
 
@@ -109,6 +110,12 @@ function getBulletInfo(unit, hit) {
     bulletsSet
   }
   return bulletInfoCache[key]
+}
+
+function restoreState() {
+  hangar_set_dm_viewer_mode(DM_VIEWER_NONE)
+  set_replay_hits_mode(false)
+  restore_loaded_model()
 }
 
 gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -326,17 +333,20 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function goBack() {
-    hangar_set_dm_viewer_mode(DM_VIEWER_NONE)
-    set_replay_hits_mode(false)
-    restore_loaded_model()
+    restoreState()
     base.goBack()
+  }
+
+  function onDestroy() {
+    restoreState()
+    base.onDestroy()
   }
 }
 
 function canOpenHitsAnalysisWindow() {
   return hasFeature("HitsAnalysis")
     && isInMenu()
-    && !::SessionLobby.hasSessionInLobby()
+    && !hasSessionInLobby()
 }
 
 function openHitsAnalysisWindow(path = null) {

@@ -1,7 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { getArmyForHover, getArmyForSelection, selectedArmy, hoveredArmy, newPartOfArmyPath,
-  allowDrawNewPartOfArmyPath } = require("%rGui/wwMap/wwArmyStates.nut")
+let { getArmyForHover, getArmyForSelection, selectedArmy, hoveredArmy, newPartOfArmyPath } = require("%rGui/wwMap/wwArmyStates.nut")
 let { isOperationPausedWatch } = require("%rGui/wwMap/wwOperationStates.nut")
 let { updateHoveredZone, getZoneByPoint, updateSelectedRearZone } = require("%rGui/wwMap/wwMapZonesData.nut")
 let mkMapZonesBackground = require("%rGui/wwMap/wwMapZonesBackground.nut")
@@ -22,11 +21,11 @@ let { haveActiveAction, doAction, moveArmy, sendAircraft } = require("%rGui/wwMa
 let { configurationLoaded, initConfiguration, invalidateConfiguration } = require("%rGui/wwMap/wwConfigurationInit.nut")
 let { holderBounds, activeAreaBounds, getOperationMapImage, convertPointerCoords, convertPointerToMapCoords,
   getMapCellByCoords } = require("%rGui/wwMap/wwOperationConfiguration.nut")
-let { startUpdates, stopUpdates, cursorPosition } = require("%rGui/wwMap/wwMapStates.nut")
+let { startUpdates, stopUpdates, cursorPosition, isShiftPressed } = require("%rGui/wwMap/wwMapStates.nut")
 let { sendToDagui } = require("%rGui/wwMap/wwMapUtils.nut")
 let { mapCellUnderCursor, armyUnderCursor, mapCoordsUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 let { deferOnce } = require("dagor.workcycle")
-
+let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
 
 let backgroundColor = 0xFF1B2226
 let transparentColor = 0x00000000
@@ -42,7 +41,7 @@ function processPointerMove(evt, areaBounds) {
 
   let pos = convertPointerCoords(evt, areaBounds)
 
-  if (evt.btnId == 0 && evt.shiftKey && selectedArmy.get() != null)
+  if (evt.btnId == 0 && selectedArmy.get() != null)
     newPartOfArmyPath.set({ armyName = selectedArmy.get(), newPos = pos })
   else
     newPartOfArmyPath.set(null)
@@ -93,7 +92,6 @@ function processPointerPress(evt, areaBounds) {
     return
 
   newPartOfArmyPath.set(null)
-  allowDrawNewPartOfArmyPath.set(false)
   let { x, y } = evt
 
   mapCellUnderCursor.set(getMapCellByCoords(x, y, areaBounds))
@@ -164,10 +162,11 @@ let mapBackground = @() {
   image = Picture(getOperationMapImage())
 }
 
-let dummyShiftButtonUp = @() {
+let shiftPressedMonitor = {
   behavior = Behaviors.Button
-  hotkeys = ["^L.Shift", "^R.Shift"]
-  onClick = @() newPartOfArmyPath.set(null)
+  onElemState = @(sf) isShiftPressed((sf & S_ACTIVE) != 0)
+  hotkeys = [["^L.Shift | R.Shift"]]
+  onDetach = @() isShiftPressed(false)
 }
 
 let mkMapContainer = function() {
@@ -182,7 +181,7 @@ let mkMapContainer = function() {
     size = [holderWidth, holderHeight]
     clipChildren = true
     children = [
-      dummyShiftButtonUp,
+      shiftPressedMonitor,
       mapBackground,
       mkMapZonesBackground,
       mkMapZonesEdges,
@@ -203,11 +202,13 @@ let mkMapContainer = function() {
       startUpdates()
     }
     function onPointerMove(evt) {
-      processPointer(evt, activeAreaBounds.get())
+      if (isMapHovered.get())
+        processPointer(evt, activeAreaBounds.get())
     }
 
     function onPointerPress(evt) {
-      processPointerPress(evt, activeAreaBounds.get())
+      if (isMapHovered.get())
+        processPointerPress(evt, activeAreaBounds.get())
     }
   }
 }

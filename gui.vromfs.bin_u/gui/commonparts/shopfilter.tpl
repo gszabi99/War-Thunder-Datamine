@@ -58,6 +58,10 @@
         shopFilterText {
           text:t='<<text>>'
           hideEmptyText:t='yes'
+          behaviour:t='OverflowScroller'
+          move-pixel-per-sec:t='20*@scrn_tgt/100.0'
+          move-sleep-time:t='1000'
+          move-delay-time:t='1000'
         }
       }
     <</autoScrollText>>

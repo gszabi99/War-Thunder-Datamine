@@ -130,10 +130,6 @@
           "setFsmActive": {
             "fsm": "search",
             "active": true
-          },
-          "setScanDirectionPhase": {
-            "azimuth": 0.0,
-            "elevation": 0.0
           }
         },
         "resetSearchMode": {
@@ -163,6 +159,16 @@
             "setSearchMode": {}
           }
         },
+        "switchOff": {
+          "stateFrom": "search",
+          "command": "switch",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "resetSearchMode": {},
+            "setStandbyMode": {}
+          }
+        },
         "switchScanPattern": {
           "stateFrom": [
             "standby",
@@ -177,34 +183,6 @@
           "command": "rangeSwitch",
           "actions": {
             "setNextScopeRange": {}
-          }
-        },
-        "switchingOff": {
-          "stateFrom": "search",
-          "command": "switch",
-          "event": "disable",
-          "stateTo": "antennaParking",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "parkAntenna",
-              "active": true
-            }
-          }
-        },
-        "switchOff": {
-          "stateFrom": "antennaParking",
-          "event": "inScanDirectionPhase",
-          "stateTo": "standby",
-          "actions": {
-            "setFsmActive": {
-              "fsm": "parkAntenna",
-              "active": false
-            },
-            "setScanDirectionPhase": {
-              "azimuth": 0.0,
-              "elevation": 0.0
-            },
-            "setStandbyMode": {}
           }
         }
       }
@@ -236,20 +214,6 @@
           "event": "targetDetected",
           "actions": {
             "addTarget": {}
-          }
-        }
-      }
-    },
-    "parkAntenna": {
-      "stateInit": "init",
-      "transitions": {
-        "checkAntennaParked": {
-          "event": "update",
-          "actions": {
-            "checkInScanDirectionPhase": {
-              "azimuth": 0.0,
-              "elevation": 0.0
-            }
           }
         }
       }

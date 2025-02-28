@@ -19,6 +19,8 @@ let { get_gui_regional_blk } = require("blkGetters")
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { isPartnerUnlockAvailable } = require("%scripts/user/partnerUnlocks.nut")
+let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 
 enum POPUP_VIEW_TYPES {
   NEVER = "never"
@@ -89,7 +91,7 @@ g_popup_msg.verifyPopupBlk <- function verifyPopupBlk(blk, hasModalObject, needD
     if (!checkPromoBlockUnlock(blk))
       return null
 
-    if (!::g_partner_unlocks.isPartnerUnlockAvailable(blk?.partnerUnlock, blk?.partnerUnlockDurationMin))
+    if (!isPartnerUnlockAvailable(blk?.partnerUnlock, blk?.partnerUnlockDurationMin))
       return null
 
     if (!isAvailableForCurLang(blk))
@@ -171,7 +173,7 @@ g_popup_msg.showPopupWndIfNeed <- function showPopupWndIfNeed(hasModalObject) {
     if (popupConfig) {
       passedPopups[popupId] <- true
       popupConfig["type"] <- "regionalPromoPopup"
-      ::showUnlockWnd(popupConfig)
+      showUnlockWnd(popupConfig)
       saveLocalByAccount("".concat("popup/", (popupBlk?.saveId ?? popupId)), this.days)
       result = true
     }
@@ -194,7 +196,7 @@ g_popup_msg.showPopupDebug <- function showPopupDebug(dbgId) {
       continue
 
     let popupConfig = this.verifyPopupBlk(popupBlk, false, false)
-    ::showUnlockWnd(popupConfig)
+    showUnlockWnd(popupConfig)
     return true
   }
   debugLog($"POPUP ERROR: Not found {dbgId}") // warning disable: -forbidden-function

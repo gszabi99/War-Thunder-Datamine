@@ -29,7 +29,12 @@
   "explosionFx": "explosion_ship_big",
   "decorCutProps": "destroyer",
   "propSplashEffects": "propSplashEffects_underwater",
-  "shipsDisableDeadCoverParts": true,
+  "deadCoverCountToDelayedSinking": 2,
+  "delayedSinkingBreachesFreq": 3.0,
+  "delayedSinkingBreachesSize": [
+    0.3,
+    1.2
+  ],
   "smokeScreenActivateTime": 5.0,
   "smokeScreenEffectTime": 30.0,
   "smokeScreenRad": 55.0,
@@ -1360,19 +1365,19 @@
       "genericDamageMult": 0.1,
       "shatterDamageMult": 0.1,
       "cover_01_dm": {
-        "hp": 4180.0
+        "hp": 3216.0
       },
       "cover_02_dm": {
-        "hp": 3900.0
+        "hp": 3100.0
       },
       "cover_03_dm": {
-        "hp": 5025.0
+        "hp": 3865.0
       },
       "cover_04_dm": {
-        "hp": 3900.0
+        "hp": 3100.0
       },
       "cover_05_dm": {
-        "hp": 3900.0
+        "hp": 3100.0
       }
     },
     "superstructures": {
@@ -2445,6 +2450,23 @@
         }
       }
     ],
+    "hull": {
+      "part": [
+        "cover_01_dm",
+        "cover_02_dm",
+        "cover_03_dm",
+        "cover_04_dm",
+        "cover_05_dm",
+        "cover_06_dm",
+        "cover_07_dm",
+        "cover_08_dm",
+        "cover_09_dm",
+        "cover_10_dm"
+      ],
+      "effect": {
+        "pressure": true
+      }
+    },
     "open_mounts": {
       "part": [
         "main_caliber_turret_01_dm",

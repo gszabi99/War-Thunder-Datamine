@@ -4,10 +4,11 @@ from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { format } = require("string")
 let { getRoleText } = require("%scripts/unit/unitInfoRoles.nut")
-let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getWeaponTypeIcoByWeapon } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 
 let strength_unit_expclass_group = {
   bomber = "bomber"
@@ -100,9 +101,14 @@ let WwUnit = class {
   getShortStringView = kwarg(function getShortStringViewImpl(
     addIcon = true, addPreset = true, hideZeroCount = true, needShopInfo = false, hasIndent = false) {
     let presetData = getWeaponTypeIcoByWeapon(this.name, addPreset ? this.weaponPreset : "")
-    let presetText = !addPreset || this.weaponPreset == "" ? "" :
-      getWeaponInfoText(this.unit,
-        { isPrimary = false, weaponPreset = this.weaponPreset, detail = INFO_DETAIL.SHORT, needTextWhenNoWeapons = false })
+    let weaponInfoParams = {
+      isPrimary = false
+      weaponPreset = this.weaponPreset
+      detail = INFO_DETAIL.SHORT
+      needTextWhenNoWeapons = false
+    }
+    let presetText = !addPreset || this.weaponPreset == "" ? ""
+      : getWeaponInfoText(this.unit, makeWeaponInfoData(this.unit, weaponInfoParams))
 
     local nameText = this.getName()
     if (needShopInfo && this.unit && !this.isControlledByAI() && !this.unit.canUseByPlayer()) {
@@ -125,6 +131,7 @@ let WwUnit = class {
       wwUnitType = this.wwUnitType
       name = nameText
       activeCount = activeCountStr
+      columnCountWidth = getStringWidthPx(activeCountStr, "fontNormal", get_cur_gui_scene())
       count = totalCount ? totalCount.tostring() : null
       isControlledByAI = this.isControlledByAI()
       weapon = presetText.len() > 0 ? colorize("@activeTextColor", presetText) : ""

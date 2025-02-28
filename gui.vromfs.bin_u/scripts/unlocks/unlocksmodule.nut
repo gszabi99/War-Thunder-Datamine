@@ -19,9 +19,10 @@ let { getUnlockTypeById } = require("unlocks")
 let { isRegionalUnlock, isRegionalUnlockReadyToOpen, getRegionalUnlockTypeById,
   regionalUnlocks, isRegionalUnlockCompleted
 } = require("%scripts/unlocks/regionalUnlocks.nut")
-let { Status, get_status } = require("%xboxLib/impl/achievements.nut")
+let { Status, get_status } = require("%gdkLib/impl/achievements.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { isPsnTrophyUnlocked, getPsnTrophyIdByName } = require("sony.trophies")
+let { buildRewardText } = require("%scripts/missions/missionsText.nut")
 
 let multiStageLocIdConfig = {
   multi_kill_air =    { [2] = "double_kill_air",    [3] = "triple_kill_air",    def = "multi_kill_air" }
@@ -302,7 +303,7 @@ function getUnlockRewardCostByName(unlockName) {
 
 function getUnlockRewardText(unlockName) {
   let cost = getUnlockRewardCostByName(unlockName)
-  return cost.isZero() ? "" : ::buildRewardText("", cost, true, true)
+  return cost.isZero() ? "" : buildRewardText("", cost, true, true)
 }
 
 function checkUnlockString(string) {

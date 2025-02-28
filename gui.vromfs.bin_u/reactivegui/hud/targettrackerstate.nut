@@ -12,6 +12,7 @@ let TargetAge = Watched(0.0)
 
 let TargetX = Watched(0.0)
 let TargetY = Watched(0.0)
+let TargetInZone = Watched(true)
 
 
 let targetTrackerState = {
@@ -25,6 +26,8 @@ let targetTrackerState = {
 
   TargetX
   TargetY
+
+  TargetInZone
 }
 
 interopGen({

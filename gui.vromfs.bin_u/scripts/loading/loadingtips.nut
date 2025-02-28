@@ -11,10 +11,12 @@ let { doesLocTextExist } = require("dagor.localize")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { get_game_mode } = require("mission")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
 let { isMeNewbieOnUnitType } = require("%scripts/myStats.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { getRoomUnitTypesMask, getRoomRequiredUnitTypesMask } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getMissionAllowedUnittypesMask } = require("%scripts/missions/missionsUtils.nut")
 
 const GLOBAL_LOADING_TIP_BIT = 0x8000
 const MISSING_TIPS_IN_A_ROW_ALLOWED = 3
@@ -121,7 +123,7 @@ function getDefaultUnitTypeMask() {
   local res = 0
   let gm = get_game_mode()
   if (gm == GM_DOMINATION || gm == GM_SKIRMISH)
-    res = ::SessionLobby.getRequiredUnitTypesMask() || ::SessionLobby.getUnitTypesMask()
+    res = getRoomRequiredUnitTypesMask() || getRoomUnitTypesMask()
   else if (gm == GM_TEST_FLIGHT) {
     if (showedUnit.value)
       res = showedUnit.value.unitType.bit
@@ -129,7 +131,7 @@ function getDefaultUnitTypeMask() {
   else if (isInArray(gm, [GM_SINGLE_MISSION, GM_CAMPAIGN, GM_DYNAMIC, GM_BUILDER, GM_DOMINATION]))
     res = unitTypes.AIRCRAFT.bit
   else // keep this check last
-    res = ::get_mission_allowed_unittypes_mask(getUrlOrFileMissionMetaInfo(currentCampaignMission.get() ?? "", gm))
+    res = getMissionAllowedUnittypesMask(getUrlOrFileMissionMetaInfo(currentCampaignMission.get() ?? "", gm))
 
   return (res & existTipsMask) || existTipsMask
 }

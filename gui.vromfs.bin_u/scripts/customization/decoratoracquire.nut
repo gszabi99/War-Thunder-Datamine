@@ -8,6 +8,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { buyUnlockImpl } = require("%scripts/unlocks/unlocksAction.nut")
+let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
 
 // Functions for acquiring decorators by all possible ways (purchase, consume coupon, find on marketplace)
 
@@ -68,7 +69,7 @@ function askConsumeDecoratorCoupon(decorator, onSuccessCb) {
   if (!(decorator?.canGetFromCoupon(null) ?? false))
     return
 
-  let inventoryItem = ::ItemsManager.getInventoryItemById(decorator?.getCouponItemdefId())
+  let inventoryItem = getInventoryItemById(decorator?.getCouponItemdefId())
   inventoryItem.consume(Callback(function(result) {
     if (result?.success ?? false)
       onSuccessCb?()
@@ -76,7 +77,7 @@ function askConsumeDecoratorCoupon(decorator, onSuccessCb) {
 }
 
 function findDecoratorCouponOnMarketplace(decorator) {
-  let item = ::ItemsManager.findItemById(decorator?.getCouponItemdefId())
+  let item = findItemById(decorator?.getCouponItemdefId())
   if (!(item?.hasLink() ?? false))
     return
   item.openLink()
@@ -86,7 +87,7 @@ function askFindDecoratorCouponOnMarketplace(decorator) {
   if (!(decorator?.canBuyCouponOnMarketplace(null) ?? false))
     return
 
-  let item = ::ItemsManager.findItemById(decorator.getCouponItemdefId())
+  let item = findItemById(decorator.getCouponItemdefId())
   let itemName = colorize("activeTextColor", item.getName())
   this.msgBox("find_on_marketplace", loc("msgbox/find_on_marketplace", { itemName = itemName }), [
       [ "find_on_marketplace", @() findDecoratorCouponOnMarketplace(decorator) ],

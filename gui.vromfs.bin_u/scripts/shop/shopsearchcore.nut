@@ -7,7 +7,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 let reUnitLocNameSeparators = regexp2("".concat(@"[ \-_/.()", nbsp, "]"))
 let translit = { cyr = "авекмнорстх", lat = "abekmhopctx" }

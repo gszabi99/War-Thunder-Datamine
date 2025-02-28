@@ -7,7 +7,8 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { hasXInputDevice } = require("controls")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_ENABLE_CONSOLE_MODE } = require("%scripts/options/optionsExtNames.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
 
@@ -24,7 +25,7 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
     return true
 
   if (isProfileReceived.get())
-    return ::get_gui_option_in_mode(USEROPT_ENABLE_CONSOLE_MODE, OPTIONS_MODE_GAMEPLAY, false)
+    return get_gui_option_in_mode(USEROPT_ENABLE_CONSOLE_MODE, OPTIONS_MODE_GAMEPLAY, false)
 
   return getSystemConfigOption("use_gamepad_interface", false)
 }
@@ -42,7 +43,7 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
   if (!isProfileReceived.get())
     return true
 
-  ::set_gui_option_in_mode(USEROPT_ENABLE_CONSOLE_MODE, showCB, OPTIONS_MODE_GAMEPLAY)
+  set_gui_option_in_mode(USEROPT_ENABLE_CONSOLE_MODE, showCB, OPTIONS_MODE_GAMEPLAY)
   setSystemConfigOption("use_gamepad_interface", showCB)
   handlersManager.markfullReloadOnSwitchScene()
   return true

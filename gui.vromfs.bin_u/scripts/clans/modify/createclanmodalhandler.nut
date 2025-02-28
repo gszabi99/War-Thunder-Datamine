@@ -7,6 +7,13 @@ let { format } = require("string")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { move_mouse_on_child_by_value, select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { createClan } = require("%scripts/clans/clanActions.nut")
+let { prepareCreateRequest } = require("%scripts/clans/clanRequests.nut")
+
+/** Returns false if battalion clan type is disabled. */
+function clanTypesEnabled() {
+  return hasFeature("Battalions")
+}
 
 gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandler) {
   function createView() {
@@ -27,7 +34,7 @@ gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandle
 
     return {
       windowHeader = loc("clan/new_clan_wnd_title")
-      hasClanTypeSelect = ::g_clans.clanTypesEnabled()
+      hasClanTypeSelect = clanTypesEnabled()
       clanTypeItems = clanTypeItems
       hasClanNameSelect = true
       hasClanSloganSelect = true
@@ -86,11 +93,11 @@ gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandle
     this.setSubmitButtonText(loc("clan/create_clan_submit_button"), createCost)
   }
 
-  function createClan(createCost) {
+  function createClanFn(createCost) {
     if (this.isObsceneWord())
       return
 
-    let createParams = ::g_clans.prepareCreateRequest(
+    let createParams = prepareCreateRequest(
       this.newClanType,
       this.newClanName,
       this.newClanTag,
@@ -101,7 +108,7 @@ gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandle
     )
     createParams["cost"] = createCost.wp
     createParams["costGold"] = createCost.gold
-    ::g_clans.createClan(createParams, this)
+    createClan(createParams, this)
   }
 
   function onSubmit() {
@@ -109,12 +116,12 @@ gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandle
       return
     let createCost = this.newClanType.getCreateCost()
     if (createCost <= zero_money)
-      this.createClan(createCost)
+      this.createClanFn(createCost)
     else if (checkBalanceMsgBox(createCost)) {
       let msgText = warningIfGold(format(loc("clan/needMoneyQuestion_createClan"),
           createCost.getTextAccordingToBalance()),
         createCost)
-      this.msgBox("need_money", msgText, [["ok", function() { this.createClan(createCost) } ],
+      this.msgBox("need_money", msgText, [["ok", function() { this.createClanFn(createCost) } ],
         ["cancel"]], "ok")
     }
   }

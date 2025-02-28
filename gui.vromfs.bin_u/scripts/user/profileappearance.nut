@@ -1,14 +1,18 @@
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
+from "%scripts/mainConsts.nut" import SEEN
 
 let DataBlock = require("DataBlock")
-let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { utf8ToLower} = require("%sqstd/string.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { setUserInfoParams } = require("%scripts/user/usersInfoManager.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let avatars = require("%scripts/user/avatars.nut")
 
 local profileHeaderBackgrounds = null
 local profileAvatarFrames = null
@@ -56,10 +60,47 @@ function getProfileAvatarFrames() {
   return profileAvatarFrames
 }
 
+function getProfileAvatars() {
+  let items = []
+  let icons = avatars.getIcons(true)
+  let marketplaceItemdefIds = []
+  for (local i = 0; i < icons.len(); i++) {
+    let unlockItem = icons[i]
+    let unlockId = icons[i].id
+    let marketplaceItemdefId = unlockItem?.marketplaceItemdefId
+    if (marketplaceItemdefId != null)
+      marketplaceItemdefIds.append(marketplaceItemdefId)
+
+    let isItemEnabled = isUnlockOpened(unlockId, UNLOCKABLE_PILOT)
+    let isItemVisible = isItemEnabled || isUnlockVisible(unlockItem)
+    if (!isItemVisible)
+      continue
+    let item = {
+      idx = i
+      unlockId
+      image = $"#ui/images/avatars/{unlockId}.avif"
+      enabled = isItemEnabled
+      tooltipId = getTooltipType("UNLOCK").getTooltipId(unlockId, { showProgress = true, tooltipImageSize = "1@avatarButtonSize, 1@avatarButtonSize" })
+      marketplaceItemdefId
+    }
+    if (isItemEnabled) {
+      item.seenListId <- SEEN.AVATARS
+      item.seenEntity <- unlockId
+    }
+    items.append(item)
+
+  }
+  if (marketplaceItemdefIds.len() > 0)
+    inventoryClient.requestItemdefsByIds(marketplaceItemdefIds)
+
+  return items
+}
+
 function saveProfileAppearance(params, cbSuccess = null, cbError = null) {
   let userId = userIdStr.get()
   function successCb() {
     setUserInfoParams(userId, params)
+    broadcastEvent("AvatarChanged")
     cbSuccess?()
   }
 
@@ -85,5 +126,7 @@ addListenersWithoutEnv({
 return {
   getProfileHeaderBackgrounds
   getProfileAvatarFrames
+  getProfileAvatars
+
   saveProfileAppearance
 }

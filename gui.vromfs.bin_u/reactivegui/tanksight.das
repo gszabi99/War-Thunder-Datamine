@@ -28,7 +28,7 @@ def setup_data(props : Properties&; var storage : CanvasParams&)
   storage.lineWidth = props |> getFloat("lineWidth", 1.)
   storage.isPreviewMode = props |> getBool("isPreviewMode", false)
 
-[export]
+[export, unused_argument(rstate)]
 def draw_rangefinder_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !is_custom_tank_sight_enabled()
     return
@@ -151,7 +151,7 @@ def draw_rangefinder(var ctx : GuiContext&; pos : float2; size : float2; data : 
 def deg_to_rad(rad : float)
   return rad * PI / 180.
 
-[export]
+[export, unused_argument(rstate)]
 def draw_turret_orient_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !is_custom_tank_sight_enabled()
     return
@@ -219,7 +219,7 @@ def draw_turret_orientation(var ctx : GuiContext&; pos : float2; size : float2; 
     ctx |> render_frame(position.x - ctx |> hdpx(30.), position.y - ctx |> hdpx(40.),
      position.x + ctx |> hdpx(30.), position.y + ctx |> hdpx(85.), ctx |> hdpx(data.lineWidth))
 
-[export]
+[export, unused_argument(rstate)]
 def draw_reload_progress_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !is_custom_tank_sight_enabled()
     return
@@ -297,7 +297,7 @@ def draw_reload_progress(var ctx : GuiContext&; pos : float2; size : float2; dat
       ctx |> render_frame(pos.x, pos.y - ctx |> hdpx(5.),
       pos.x + strBox.width.x + ctx |> hdpx(20.), pos.y + strBox.width.y + ctx |> hdpx(10.), ctx |> hdpx(data.lineWidth))
 
-[export]
+[export, unused_argument(rstate)]
 def draw_inner_fov_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !is_custom_tank_sight_enabled()
     return
@@ -372,7 +372,7 @@ def draw_inner_fov(var ctx : GuiContext&; pos : float2; size : float2; data : Ca
     ctx |> render_frame(newPos.x - ctx |> hdpx(20.), newPos.y - ctx |> hdpx(15.),
       newPos.x + newSize.x + ctx |> hdpx(20.), newPos.y + newSize.y + ctx |> hdpx(15.), ctx |> hdpx(data.lineWidth))
 
-[export]
+[export, unused_argument(rstate)]
 def draw_bullet_type_elem(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !is_custom_tank_sight_enabled()
     return

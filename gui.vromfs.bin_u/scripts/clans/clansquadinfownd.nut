@@ -14,6 +14,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType             = handlerType.MODAL
@@ -83,7 +84,7 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let memeberUidStr = memberUid.tostring()
-    let contact = ::getContact(memeberUidStr)
+    let contact = getContact(memeberUidStr)
     if (!contact)
       requestUsersInfo([memeberUidStr])
     memberObj["id"] = $"member_{ memeberUidStr}"
@@ -126,7 +127,7 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let position = obj.getPosRC()
     position[1] += obj.getSize()[1]
-    let contact = ::getContact(memberUid.tostring())
+    let contact = getContact(memberUid.tostring())
     if (!contact)
       return
     let memberName = contact ? contact.getName() : ""

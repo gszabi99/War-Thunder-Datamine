@@ -24,7 +24,10 @@ let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")
 let { floor } = require("math")
 let { hasBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { findItemById, getInventoryList, markInventoryUpdate } = require("%scripts/items/itemsManager.nut")
+let { isShowItemInTrophyReward } = require("%scripts/items/trophyReward.nut")
+let { getPrizesListText, getPrizesListView } = require("%scripts/items/prizesView.nut")
 
 let markRecipeSaveId = "markRecipe/"
 
@@ -188,7 +191,7 @@ function showUseErrorMsg(recipes, componentItem) {
   if (isMarketplaceEnabled() && recipes.len() == 1)
     foreach (c in recipes[0].components)
       if (c.itemdefId != componentItem.id && c.curQuantity < c.reqQuantity) {
-        let item = ::ItemsManager.findItemById(c.itemdefId)
+        let item = findItemById(c.itemdefId)
         if (!item || !item.hasLink())
           continue
         requiredItem = item
@@ -238,7 +241,7 @@ function showConfirmExchangeMsg(recipe, componentItem, params, quantity = 1, rec
   if (recipe.isDisassemble && params?.bundleContent) {
     msgboxParams.__update({
       data_below_text = "".concat(msgboxParams?.data_below_text ?? "",
-        ::PrizesView.getPrizesListView(params.bundleContent,
+        getPrizesListView(params.bundleContent,
           { header = loc("mainmenu/you_will_receive")
             headerParams = recipeComponentHeaderParams
             widthByParentParent = true
@@ -314,10 +317,10 @@ function tryUseRecipeSeveralTime(recipe, componentItem, maxAmount, params = {}) 
 }
 
 let getExpectedPrizesFromResultItems = @(resultItems, compItemId) resultItems
-  .filter(::trophyReward.isShowItemInTrophyReward)
+  .filter(isShowItemInTrophyReward)
   .map(function(extItem) {
     let itemdefId = extItem?.itemdef.itemdefid
-    let item = ::ItemsManager.findItemById(itemdefId)
+    let item = findItemById(itemdefId)
     return {
       id = compItemId
       itemId = to_integer_safe(extItem?.itemid ?? -1)
@@ -428,7 +431,7 @@ local ExchangeRecipes = class {
     this.components = []
     this.visibleComponents = []
     let componentItemdefArray = componentsArray.map(@(c) c.itemdefid)
-    let items = ::ItemsManager.getInventoryList(itemType.ALL,
+    let items = getInventoryList(itemType.ALL,
       @(item) isInArray(item.id, componentItemdefArray))
     this.hasChestInComponents = u.search(items, @(i) i.iType == itemType.CHEST) != null
     local minQuantityAvailableExchanges = null
@@ -439,7 +442,7 @@ local ExchangeRecipes = class {
       minQuantityAvailableExchanges = min(minQuantityAvailableExchanges ?? quantityExchanges, quantityExchanges)
       let isHave = curQuantity >= reqQuantity
       this.isUsable = this.isUsable && isHave
-      let shopItem = ::ItemsManager.findItemById(component.itemdefid)
+      let shopItem = findItemById(component.itemdefid)
       local cost = null
       if (shopItem?.isCanBuy() ?? false) {
         cost = Cost() + shopItem.getCost()
@@ -492,13 +495,13 @@ local ExchangeRecipes = class {
         commentText = this.getComponentQuantityText(component, params)
       }))
     }
-    return ::PrizesView.getPrizesListView(list, params, false)
+    return getPrizesListView(list, params, false)
   }
 
   function getForcedVisibleComps(idsTbl) {
     if (!idsTbl || idsTbl.len() == 0)
       return []
-    let inventoryItems = ::ItemsManager.getInventoryList(itemType.ALL, @(item) item.id in idsTbl)
+    let inventoryItems = getInventoryList(itemType.ALL, @(item) item.id in idsTbl)
 
     return idsTbl.keys().map(function(id) {
       let curQuantity = this.getCompQuantityById(inventoryItems, id)
@@ -534,13 +537,13 @@ local ExchangeRecipes = class {
     params = params.__merge({ isLocked = this.isRecipeLocked() })
 
     let list = this.getItemsListForPrizesView(params)
-    return ::PrizesView.getPrizesListView(list, params, false)
+    return getPrizesListView(list, params, false)
   }
 
   function getText(params = null) {
     let list = this.getItemsListForPrizesView(params)
     let headerFunc = params?.header ? @(...) params.header : null
-    return ::PrizesView.getPrizesListText(list, headerFunc, false)
+    return getPrizesListText(list, headerFunc, false)
   }
 
   function hasCraftTime() {
@@ -568,7 +571,7 @@ local ExchangeRecipes = class {
   function getIconedMarkup() {
     let itemsViewData = []
     if (this.showRecipeAsProduct != null) {
-      let item = ::ItemsManager.findItemById(this.showRecipeAsProduct.tointeger())
+      let item = findItemById(this.showRecipeAsProduct.tointeger())
       if (item)
         itemsViewData.append(item.getViewData(this.getItemMarkupParams().__update({
           count = -1
@@ -577,7 +580,7 @@ local ExchangeRecipes = class {
     }
     else
       foreach (component in this.visibleComponents) {
-        let item = ::ItemsManager.findItemById(component.itemdefId)
+        let item = findItemById(component.itemdefId)
         if (item)
           itemsViewData.append(item.getViewData(this.getItemMarkupParams().__update({
             count = this.getComponentQuantityText(component, { needColoredText = false })
@@ -660,7 +663,7 @@ local ExchangeRecipes = class {
     this.components.each(function(component) {
       if (componentItem.id == component.itemdefId)
         return
-      let item = ::ItemsManager.findItemById(component.itemdefId)
+      let item = findItemById(component.itemdefId)
       for (local i = 0; i < (component.reqQuantity - component.curQuantity); i++)
         item?._buy()
     })
@@ -694,7 +697,7 @@ local ExchangeRecipes = class {
       if (this.reqItems.findvalue(@(c) c.itemdefid == component.itemdefId) != null)
         return
       local leftCount = component.reqQuantity * recipesQuantity
-      let itemsList = ::ItemsManager.getInventoryList(itemType.ALL, @(item) item.id == component.itemdefId)
+      let itemsList = getInventoryList(itemType.ALL, @(item) item.id == component.itemdefId)
       foreach (item in itemsList) {
         foreach (i in item.uids) {
           let leftByUid = usedUidsList?[i] ?? item.amountByUids[i]
@@ -745,7 +748,7 @@ local ExchangeRecipes = class {
   }
 
   function onExchangeComplete(componentItem, resultItems, params = null) {
-    ::ItemsManager.markInventoryUpdate()
+    markInventoryUpdate()
     let { cb = null, showCollectRewardsWaitBox = true } = params
     if (cb != null)
       cb()

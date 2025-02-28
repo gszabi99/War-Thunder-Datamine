@@ -4,14 +4,15 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let logX = require("%sqstd/log.nut")().with_prefix("[CROSSPLAY] ")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
-let { check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/xbox/permissions.nut")
-let { crossnetworkPrivilege } = require("%xboxLib/crossnetwork.nut")
+let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5, is_gdk } = require("%scripts/clientState/platform.nut")
+let { check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/gdk/permissions.nut")
+let { crossnetworkPrivilege } = require("%gdkLib/crossnetwork.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PS4_ONLY_LEADERBOARD
 } = require("%scripts/options/optionsExtNames.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 let PS4_CROSSPLAY_OPT_ID = "ps4CrossPlay"
 let PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
@@ -25,10 +26,10 @@ crossNetworkPlayStatus.subscribe(function(v) {
   }
 })
 
-if (isPlatformXboxOne) {
+if (is_gdk) {
   logX("Registering for state change update")
   crossnetworkPrivilege.subscribe(function(v) {
-    logX($"xboxLib.crossnetworkPrivilege updated -> {v}")
+    logX($"gdkLib.crossnetworkPrivilege updated -> {v}")
     if (crossNetworkPlayStatus.value != v)
       crossNetworkPlayStatus.update(v)
     else
@@ -43,7 +44,7 @@ let resetCrossPlayStatus = @() crossNetworkPlayStatus(null)
 let resetCrossNetworkChatStatus = @() crossNetworkChatStatus(null)
 
 let updateCrossNetworkPlayStatus = function(needOverrideValue = false) {
-  if (isPlatformXboxOne)
+  if (is_gdk)
     return
 
   if (!needOverrideValue && crossNetworkPlayStatus.value != null)
@@ -56,7 +57,7 @@ let updateCrossNetworkPlayStatus = function(needOverrideValue = false) {
 }
 
 let isCrossNetworkPlayEnabled = function() {
-  if (!isPlatformXboxOne)
+  if (!is_gdk)
     updateCrossNetworkPlayStatus()
   return crossNetworkPlayStatus.value
 }
@@ -71,10 +72,10 @@ let setCrossNetworkPlayStatus = function(val) {
 }
 
 let updateCrossNetworkChatStatus = function(needOverrideValue = false) {
-  if (!isPlatformXboxOne && !needOverrideValue && crossNetworkChatStatus.value != null)
+  if (!is_gdk && !needOverrideValue && crossNetworkChatStatus.value != null)
     return
 
-  if (isPlatformXboxOne)
+  if (is_gdk)
     crossNetworkChatStatus(check_crossnetwork_communications_permission())
   else if (isPlatformSony && hasFeature("PS4CrossNetwork") && isProfileReceived.get())
     crossNetworkChatStatus(loadLocalAccountSettings(PS4_CROSSNETWORK_CHAT_OPT_ID, CommunicationState.Allowed))
@@ -104,7 +105,7 @@ let getTextWithCrossplayIcon = @(addIcon, text) addIcon ? $"{loc("icon/cross_pla
 let getSeparateLeaderboardPlatformValue = function() {
   if (hasFeature("ConsoleSeparateLeaderboards")) {
     if (isPlatformSony)
-      return ::get_gui_option_in_mode(USEROPT_PS4_ONLY_LEADERBOARD, OPTIONS_MODE_GAMEPLAY) == true
+      return get_gui_option_in_mode(USEROPT_PS4_ONLY_LEADERBOARD, OPTIONS_MODE_GAMEPLAY) == true
 
     if (isPlatformXboxOne)
       return !isCrossNetworkPlayEnabled()

@@ -1,6 +1,7 @@
-from "dagor.debug" import screenlog, console_print
+from "dagor.debug" import console_print
 from "math" import max
 from "string" import format
+from "console" import command
 from "dagor.workcycle" import defer
 from "dagor.fs" import mkpath
 from "dagor.time" import get_local_unixtime
@@ -27,7 +28,9 @@ let EXPORT_PARAMS = { //const
   onFinish        = null              // Function to execute when finished, or null.
 }
 
+let indicatorId = "dbgExportToFile"
 let timeToStr = @(s) format("%02dm%02ds", s / 60, s % 60)
+let nbsp = "\u00A0"
 
 function exportImpl(params, resBlk, idx, startTime) {
   let exportImplFunc = callee()
@@ -38,7 +41,7 @@ function exportImpl(params, resBlk, idx, startTime) {
       let prc = (100.0 * i / total).tointeger()
       let passedSec = get_local_unixtime() - startTime
       let eta = timeToStr(max(0, (1.0 * passedSec / i * total).tointeger() - passedSec))
-      screenlog($"Exported {i}/{total} ({prc}%), ETA: {eta}")
+      command($"console.progress_indicator {indicatorId} {i}/{total}{nbsp}({prc}%),{nbsp}ETA:{nbsp}{eta}")
 
       defer(@() exportImplFunc(params, resBlk, i, startTime))
       return
@@ -54,6 +57,7 @@ function exportImpl(params, resBlk, idx, startTime) {
   resBlk.saveToTextFile(resultFilePath)
 
   onFinish?()
+  command($"console.progress_indicator {indicatorId}")
   console_print($"Export finished in {timeToStr(get_local_unixtime() - startTime)}")
 }
 

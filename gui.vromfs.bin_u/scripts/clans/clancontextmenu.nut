@@ -7,6 +7,13 @@ let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { isChatEnableWithPlayer, hasMenuChat } = require("%scripts/chat/chatStates.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
+let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
+let { approvePlayerRequest, rejectPlayerRequest, blacklistAction } = require("%scripts/clans/clanActions.nut")
+let { requestOpenComplainWnd } = require("%scripts/clans/clanModalHelpers.nut")
+let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
+let { requestMembership } = require("%scripts/clans/clanRequests.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
+let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
 
 let getClanActions = function(clanId) {
   if (!hasFeature("Clans"))
@@ -18,17 +25,17 @@ let getClanActions = function(clanId) {
     {
       text = loc("clan/btn_membership_req")
       show = myClanId == "-1" && clan_get_requested_clan_id() != clanId
-      action = @() ::g_clans.requestMembership(clanId)
+      action = @() requestMembership(clanId)
     }
     {
       text = loc("clan/clanInfo")
       show = clanId != "-1"
-      action = @() ::showClanPage(clanId, "", "")
+      action = @() showClanPageModal(clanId, "", "")
     }
     {
       text = loc("mainmenu/btnComplain")
       show = myClanId != clanId
-      action = @() ::g_clans.requestOpenComplainWnd(clanId)
+      action = @() requestOpenComplainWnd(clanId)
     }
   ]
 }
@@ -38,11 +45,11 @@ let retrieveRequestActions = function(clanId, playerUid, playerName, handler, ca
     callback?([])
   }
 
-  let myClanRights = ::g_clans.getMyClanRights()
+  let myClanRights = getMyClanRights()
   let isClanAdmin = clan_get_admin_editor_mode()
 
   let isBlock = isPlayerInContacts(playerUid, EPL_BLOCKLIST)
-  let contact = ::getContact(playerUid, playerName)
+  let contact = getContact(playerUid, playerName)
   let name = contact?.name ?? playerName
   contact.checkInteractionStatus(function(comms_state) {
     let canChat = contact?.canChat(comms_state) ?? isChatEnableWithPlayer(name, comms_state)
@@ -71,22 +78,22 @@ let retrieveRequestActions = function(clanId, playerUid, playerName, handler, ca
       }
       {
         text = loc("mainmenu/btnProfile")
-        action = @() ::gui_modal_userCard({ uid = playerUid })
+        action = @() gui_modal_userCard({ uid = playerUid })
       }
       {
         text = loc("clan/requestApprove")
         show = isInArray("MEMBER_ADDING", myClanRights) || isClanAdmin
-        action = @() ::g_clans.approvePlayerRequest(playerUid, clanId)
+        action = @() approvePlayerRequest(playerUid, clanId)
       }
       {
         text = loc("clan/requestReject")
         show = isInArray("MEMBER_REJECT", myClanRights) || isClanAdmin
-        action = @() ::g_clans.rejectPlayerRequest(playerUid, clanId)
+        action = @() rejectPlayerRequest(playerUid, clanId)
       }
       {
         text = loc("clan/blacklistAdd")
         show = isInArray("MEMBER_BLACKLIST", myClanRights) || isClanAdmin
-        action = @() ::g_clans.blacklistAction(playerUid, true, clanId)
+        action = @() blacklistAction(playerUid, true, clanId)
       }
     ])
   })

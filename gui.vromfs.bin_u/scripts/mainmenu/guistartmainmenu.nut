@@ -11,6 +11,7 @@ let { debug_dump_stack } = require("dagor.debug")
 let { dynamicClear } = require("dynamicMission")
 let { mission_desc_clear } = require("guiMission")
 let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
+let { set_mission_settings } = require("%scripts/missions/missionsStates.nut")
 
 local dbgStartCheck = 0
 
@@ -27,7 +28,7 @@ function gui_start_mainmenu(params = {}) {
 
   dynamicClear()
   mission_desc_clear()
-  ::mission_settings.dynlist <- []
+  set_mission_settings("dynlist", [])
 
   let handler = handlersManager.loadHandler(gui_handlers.MainMenu)
   handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mainmenu" })

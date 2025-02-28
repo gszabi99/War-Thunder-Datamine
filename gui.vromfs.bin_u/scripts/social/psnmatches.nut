@@ -6,8 +6,10 @@ let psn = require("%sonyLib/webApi.nut")
 let { isPS4PlayerName } = require("%scripts/clientState/platform.nut")
 let { getActivityByGameMode } = require("%scripts/gameModes/psnActivities.nut")
 let { reqPlayerExternalIDsByUserId } = require("%scripts/user/externalIdsService.nut")
-let { isMyUserId } = require("%scripts/matching/serviceNotifications/mrooms.nut")
+let { isMyUserId } = require("%scripts/user/profileStates.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getSessionLobbyMembers, getSessionLobbyMyState, getSessionLobbyPlayerInfoByUid
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 let match = {
   id = null
@@ -30,7 +32,7 @@ function processMemberList(members) {
   foreach (m in members) {
     let isMe = isMyUserId(m.userId)
     if (isPS4PlayerName(m.name)) {
-      let pinfo = ::SessionLobby.getMemberPlayerInfo(m.userId)
+      let pinfo = getSessionLobbyPlayerInfoByUid(m.userId)
       if (pinfo?.team != null) { // skip those, whose side is not yet known - can't send'em to PSN
         let player = { // reflects PSN structure
           playerId = m.memberId
@@ -69,7 +71,7 @@ function onReceivedExternalIds(data) {
 }
 
 function updateMatchData() {
-  let updated = processMemberList(::SessionLobby.getMembers())
+  let updated = processMemberList(getSessionLobbyMembers())
   if (!updated.isOwner || match.id == null)
     return
 
@@ -131,7 +133,7 @@ function updateMatchStatus(_eventData) {
   if (match.id == null)
     return
 
-  if (::SessionLobby.getMyState() == PLAYER_IN_FLIGHT) {
+  if (getSessionLobbyMyState() == PLAYER_IN_FLIGHT) {
     log($"starting match {match.id}")
     psn.send(psn.matches.updateStatus(match.id, "PLAYING"))
   }

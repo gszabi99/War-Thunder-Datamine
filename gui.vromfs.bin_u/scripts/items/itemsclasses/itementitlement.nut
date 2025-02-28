@@ -6,6 +6,7 @@ let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getEntitlementConfig, getEntitlementName,
   getEntitlementDescription } = require("%scripts/onlineShop/entitlements.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let Entitlement = class (ItemCouponBase) {
   static name = "Entitlement"
@@ -38,4 +39,4 @@ let Entitlement = class (ItemCouponBase) {
   }
 }
 
-return {Entitlement}
+registerItemClass(Entitlement)

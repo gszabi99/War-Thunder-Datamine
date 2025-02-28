@@ -3,13 +3,13 @@ from "%scripts/leaderboard/leaderboardConsts.nut" import WW_LB_MODE
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let ww_leaderboard = require("ww_leaderboard")
-let { getClansInfoByClanIds } = require("%scripts/clans/clansListShortInfo.nut")
+let { getClansInfoByClanIds } = require("%scripts/clans/clanInfo.nut")
 let { round } = require("math")
 let { requestLeaderboardData, convertLeaderboardData
 } = require("%scripts/leaderboard/requestLeaderboardData.nut")
 let { isStringInteger } = require("%sqstd/string.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 
 let modes = [

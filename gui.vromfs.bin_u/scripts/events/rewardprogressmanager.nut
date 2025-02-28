@@ -6,6 +6,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
+let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 
 /**
  * Caches data from leaderboard to provide always
@@ -62,7 +63,7 @@ let events = getGlobalModule("events")
   }
 
   function fetchRowFromUserlog(event) {
-    let userLogs = ::getUserLogsList({
+    let userLogs = getUserLogsList({
       show = [
         EULT_SESSION_RESULT
       ]

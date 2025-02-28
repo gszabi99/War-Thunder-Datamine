@@ -1,5 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -11,6 +10,12 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
+let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
+let { getRoomSessionStartTime, getSessionLobbyMaxMembersCount
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getRoomMGameMode, getMembersCountByTeams } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
+let { updateTeamCssLabel } = require("%scripts/statistics/mpStatisticsUtil.nut")
 
 gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -32,7 +37,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       maxRows = this.getMaxTeamSize()
     }
 
-    let mgm = SessionLobby.getMGameMode(this.room)
+    let mgm = getRoomMGameMode(this.room)
     if (mgm)
       view.headerData <- {
         difficultyImage = events.getDifficultyImg(mgm.name)
@@ -78,8 +83,8 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateTeamsHeader() {
     let headerNest = this.scene.findObject("teams_header")
 
-    let countTbl = SessionLobby.getMembersCountByTeams(this.room)
-    let countTblReady = SessionLobby.getMembersCountByTeams(this.room, true)
+    let countTbl = getMembersCountByTeams(this.room)
+    let countTblReady = getMembersCountByTeams(this.room, true)
     foreach (team in this.teams) {
       let teamObj = headerNest.findObject($"num_team{team.id}")
       if (!checkObj(teamObj))
@@ -97,21 +102,21 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       teamObj.setValue(text)
     }
 
-    ::update_team_css_label(headerNest)
+    updateTeamCssLabel(headerNest)
   }
 
   function getMaxTeamSize() {
-    let mgm = SessionLobby.getMGameMode(this.room)
-    return mgm ? events.getMaxTeamSize(mgm) : SessionLobby.getMaxMembersCount(this.room) / 2
+    let mgm = getRoomMGameMode(this.room)
+    return mgm ? events.getMaxTeamSize(mgm) : getSessionLobbyMaxMembersCount(this.room) / 2
   }
 
   function initRoomTimer() {
     let timerObj = this.scene.findObject("event_time")
     SecondsUpdater(timerObj, Callback(function(obj, _params) {
       local text = ""
-      let startTime = SessionLobby.getRoomSessionStartTime(this.room)
+      let startTime = getRoomSessionStartTime(this.room)
       if (startTime > 0) {
-        let secToStart = startTime - ::get_matching_server_time()
+        let secToStart = startTime - getMatchingServerTime()
         if (secToStart <= 0)
           text = loc("multiplayer/battleInProgressTime", { time = time.secondsToString(-secToStart, true) })
         else
@@ -140,7 +145,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function openUserCard(player) {
     if (player && !player.isBot)
-      ::gui_modal_userCard({ name = player.name, uid = player.userId.tostring() })
+      gui_modal_userCard({ name = player.name, uid = player.userId.tostring() })
   }
 
   function onUserRClick(player) {

@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import dgs_get_argv, check_login_pass, set_login_pass
 from "%scripts/dagui_library.nut" import *
-from "%scripts/login/loginConsts.nut" import LOGIN_STATE
+from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
 let { get_disable_autorelogin_once } = require("loginState.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -10,6 +10,8 @@ let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
+let { addLoginState } = require("%scripts/login/loginManager.nut")
+let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 
 gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -17,7 +19,7 @@ gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
   function initScreen() {
     animBgLoad()
     setVersionText()
-    ::setProjectAwards(this)
+    setProjectAwards(this)
 
     let isAutologin = !get_disable_autorelogin_once()
     if (isAutologin) {
@@ -43,7 +45,7 @@ gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
     log("DMM Login: dmm_user_id ", dgs_get_argv("dmm_user_id"))
     log("DMM Login: dmm_token ", dgs_get_argv("dmm_token"))
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "dmm" })
-    ::g_login.addState(LOGIN_STATE.LOGIN_STARTED)
+    addLoginState(LOGIN_STATE.LOGIN_STARTED)
     let ret = check_login_pass(dgs_get_argv("dmm_user_id"),
       dgs_get_argv("dmm_token"), "749130", "dmm", false, false)
     this.proceedAuthorizationResult(ret)
@@ -55,7 +57,7 @@ gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
 
     if (YU2_OK == result) {
       set_login_pass("", "", 0)
-      ::g_login.addState(LOGIN_STATE.AUTHORIZED)
+      addLoginState(LOGIN_STATE.AUTHORIZED)
     }
     else if ( result == YU2_NOT_FOUND) {
       this.msgBox("dmm_error_not_found_user", loc("yn1/error/DMM_NOT_FOUND", { link = loc("warthunder_dmm_link") }),

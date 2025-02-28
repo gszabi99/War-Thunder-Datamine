@@ -1,6 +1,7 @@
-from "%scripts/dagui_natives.nut" import get_player_army_for_hud, is_hud_visible, get_is_in_flight_menu, is_menu_state, is_cursor_visible_in_gui
+from "%scripts/dagui_natives.nut" import get_player_army_for_hud, get_is_in_flight_menu, is_menu_state, is_cursor_visible_in_gui
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_mode_with_teams
+from "hudState" import is_hud_visible
 
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
@@ -25,7 +26,7 @@ let { is_replay_playing } = require("replays")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { chat_on_text_update, toggle_ingame_chat, chat_on_send, CHAT_MODE_ALL
 } = require("chat")
-let { get_mplayers_list, get_mplayer_by_userid } = require("mission")
+let { get_mplayers_list, GET_MPLAYERS_LIST, get_mplayer_by_userid } = require("mission")
 let { USEROPT_AUTO_SHOW_CHAT } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { isInFlight } = require("gameplayBinding")
@@ -35,6 +36,9 @@ let { defer } = require("dagor.workcycle")
 let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
 let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
+let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
 
 enum mpChatView {
   CHAT
@@ -83,7 +87,7 @@ function isSenderInMySquad(message) {
     if (message?.uid == null)
       return false
     let player = get_mplayer_by_userid(message.uid)
-    return ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
+    return isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
   }
   return g_squad_manager.isInMySquadById(message.uid)
 }
@@ -119,7 +123,7 @@ function formatMessageText(message, text) {
   let userColor = getSenderColor(message)
   let msgColor = getMessageColor(message)
   let clanTag = ::get_player_tag(message.sender)
-  let fullName = ::g_contacts.getPlayerFullName(
+  let fullName = getPlayerFullName(
     getPlayerName(message.sender),
     clanTag
   )
@@ -404,7 +408,7 @@ function clearInputChat() {
 
 function afterLogFormat() {
   updateAllLogs()
-  let autoShowOpt = ::get_option(USEROPT_AUTO_SHOW_CHAT)
+  let autoShowOpt = get_option(USEROPT_AUTO_SHOW_CHAT)
   if (autoShowOpt.value) {
     doForAllScenes(function(sceneData) {
       if (!sceneData.scene.isVisible())

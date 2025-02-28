@@ -12,7 +12,7 @@ let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal, 
   IsRadarVisible, RadarModeNameId, modeNames, ScanElevationMax, ScanElevationMin, Elevation,
   HasAzimuthScale, IsCScopeVisible, HasDistanceScale, targets, Irst, DistanceMax, CueVisible,
   CueAzimuth, TargetRadarAzimuthWidth, AzimuthRange, CueAzimuthHalfWidthRel, CueDist, TargetRadarDist, CueDistWidthRel,
-  IsRadarEmitting } = require("%rGui/radarState.nut")
+  IsRadarEmitting, TimeToMissileHitRel } = require("%rGui/radarState.nut")
 let { CurWeaponName, ShellCnt, WeaponSlots, WeaponSlotActive, SelectedTrigger } = require("%rGui/planeState/planeWeaponState.nut")
 let string = require("string")
 let { floor, ceil, round, sqrt, abs } = require("%sqstd/math.nut")
@@ -709,6 +709,27 @@ let selectedTargetDetails = @() function() {
   }
 }
 
+let TimeToMissileHitIndicator =  @() {
+  watch = TimeToMissileHitRel
+  size = flex()
+  children = TimeToMissileHitRel.value >= 0 ?
+  [
+    @() {
+      watch = [TimeToMissileHitRel, IlsColor]
+      rendObj = ROBJ_VECTOR_CANVAS
+      color = IlsColor.value
+      size = [pw(30),  ph(1)]
+      pos = [pw(35), ph(35)]
+      lineWidth = baseLineWidth * IlsLineScale.value
+      commands = [
+        [VECTOR_LINE, 0, 0, TimeToMissileHitRel.value * 100, 0],
+        [VECTOR_LINE, 0, -50, 0, 50],
+        [VECTOR_LINE, 100, -50, 100, 50]
+      ]
+    }
+  ] : null
+}
+
 let radarEmittingIcon = @() {
   watch = IlsColor
   size = SIZE_TO_CONTENT
@@ -1145,7 +1166,8 @@ function Ils31(width, height, is_cn) {
       (HasTargetTracker.value ? tvMode(is_cn) : null),
       laserMode(is_cn),
       bombingStabMark,
-      radarReticlWrap(width, height)
+      radarReticlWrap(width, height),
+      TimeToMissileHitIndicator
     ]
   }
 }

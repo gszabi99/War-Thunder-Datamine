@@ -1,7 +1,5 @@
-from "%scripts/dagui_natives.nut" import gchat_chat_message, gchat_is_connected, gchat_raw_command, gchat_escape_target, clan_get_my_clan_id
+from "%scripts/dagui_natives.nut" import gchat_chat_message, gchat_raw_command, gchat_escape_target, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
-from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
-
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { register_command } = require("console")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -20,12 +18,10 @@ let dirtyWordsFilter = require("%scripts/dirtyWordsFilter.nut")
 let { clearBorderSymbolsMultiline, endsWith, cutPrefix } = require("%sqstd/string.nut")
 let regexp2 = require("regexp2")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
-let { USEROPT_CHAT_FILTER, USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY
-} = require("%scripts/options/optionsExtNames.nut")
+let { USEROPT_CHAT_FILTER } = require("%scripts/options/optionsExtNames.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { userName } = require("%scripts/user/profileStates.nut")
 let { getCurLangInfo } = require("%scripts/langUtils/language.nut")
-let { addPopup } = require("%scripts/popups/popups.nut")
 let { update_gamercards_chat_info } = require("%scripts/gamercard.nut")
 let {
   canCreateThreads, getThreadInfo, chatRooms, chatThreadsInfo,
@@ -33,6 +29,10 @@ let {
 } = require("%scripts/chat/chatStorage.nut")
 let { chatColors, getSenderColor } = require("%scripts/chat/chatColors.nut")
 let { g_chat_thread_tag } = require("%scripts/chat/chatThreadInfoTags.nut")
+let { systemMessage, checkChatConnected } = require("%scripts/chat/chatHelper.nut")
+let { onNewThreadInfoToList } = require("%scripts/chat/chatLatestThreads.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 let userCaps = persist("userCaps", @() {
   ALLOWPOST     = 0
@@ -49,7 +49,6 @@ const THREADS_INFO_TIMEOUT_MSEC = 300000
 const THREADS_INFO_CLEAN_PERIOD_MSEC = 150000  //check clean only on get new thread info
 const THREAD_INFO_REFRESH_DELAY_MSEC = 60000
 
-const CHAT_SYSTEM_MESSAGE_TIMEOUT_MSEC = 60000
 const MAX_MSG_LEN = 200
 const MAX_ROOMS_IN_SEARCH = 20
 const MAX_LAST_SEND_MESSAGES = 10
@@ -59,8 +58,6 @@ const MAX_ALLOWED_DIGITS_IN_ROOM_NAME = 6
 const MAX_ALLOWED_CHARACTERS_IN_ROOM_NAME = 15
 
 const SYSTEM_MESSAGES_USER_ENDING = ".warthunder.com"
-
-const SYSTEM_COLOR = "@chatInfoColor"
 
 const CHAT_ERROR_NO_CHANNEL = "chat/error/403"
 
@@ -113,7 +110,7 @@ register_command(function() {
 }, "chat.toggle_filter_myself")
 
 g_chat.filterMessageText <- function filterMessageText(text, isMyMessage) {
-  if (::get_option(USEROPT_CHAT_FILTER).value &&
+  if (get_option(USEROPT_CHAT_FILTER).value &&
     (!isMyMessage || chat_filter_for_myself))
     return dirtyWordsFilter.checkPhrase(text)
   return text
@@ -164,27 +161,6 @@ g_chat.revealBlockedMsg <- function revealBlockedMsg(text, link) {
   return text
 }
 
-g_chat.checkChatConnected <- function checkChatConnected() {
-  if (gchat_is_connected())
-    return true
-
-  this.systemMessage(loc("chat/not_connected"))
-  return false
-}
-
-g_chat.nextSystemMessageTime <- 0
-g_chat.systemMessage <- function systemMessage(msg, needPopup = true, forceMessage = false) {
-  if ((!forceMessage) && (this.nextSystemMessageTime > get_time_msec()))
-    return
-
-  this.nextSystemMessageTime = get_time_msec() + CHAT_SYSTEM_MESSAGE_TIMEOUT_MSEC
-
-  if (::menu_chat_handler)
-    ::menu_chat_handler.addRoomMsg("", "", msg)
-  if (needPopup && ::get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY))
-    addPopup(null, colorize(SYSTEM_COLOR, msg))
-}
-
 g_chat.getRoomById <- function getRoomById(id) {
   return u.search(chatRooms, function (room) { return room.id == id })
 }
@@ -221,7 +197,7 @@ g_chat.getSystemRoomId <- function getSystemRoomId() {
 
 g_chat.openPrivateRoom <- function openPrivateRoom(name, ownerHandler) {
   if (::openChatScene(ownerHandler))
-    ::menu_chat_handler.changePrivateTo.call(::menu_chat_handler, name)
+    broadcastEvent("ChatChangePrivateTo", { user = name })
 }
 
 g_chat.joinSquadRoom <- function joinSquadRoom(callback) {
@@ -233,13 +209,11 @@ g_chat.joinSquadRoom <- function joinSquadRoom(callback) {
   if (u.isEmpty(password))
     return
 
-  if (::menu_chat_handler)
-    ::menu_chat_handler.joinRoom.call(::menu_chat_handler, name, password, callback)
+  broadcastEvent("ChatJoinRoom", { id = name, password, onJoinFunc = callback })
 }
 
 g_chat.leaveSquadRoom <- function leaveSquadRoom() {
-  if (::menu_chat_handler)
-    ::menu_chat_handler.leaveSquadRoom.call(::menu_chat_handler)
+  broadcastEvent("ChatLeaveSquadRoom")
 }
 
 g_chat.isRoomSquad <- function isRoomSquad(roomId) {
@@ -314,7 +288,7 @@ g_chat.updateThreadInfo <- function updateThreadInfo(dataBlk) {
     chatThreadsInfo[roomId] <- ::ChatThreadInfo(roomId, dataBlk)
 
   if (dataBlk?.type == "thread_list")
-    ::g_chat_latest_threads.onNewThreadInfoToList(chatThreadsInfo[roomId])
+    onNewThreadInfoToList(chatThreadsInfo[roomId])
 
   update_gamercards_chat_info()
   broadcastEvent("ChatThreadInfoChanged", { roomId = roomId })
@@ -341,7 +315,7 @@ g_chat.updateProgressCaps <- function updateProgressCaps(dataBlk) {
 }
 
 g_chat.createThread <- function createThread(title, categoryName, langTags = null) {
-  if (!this.checkChatConnected() || !canCreateThreads())
+  if (!checkChatConnected() || !canCreateThreads())
     return
 
   if (!langTags)
@@ -353,15 +327,15 @@ g_chat.createThread <- function createThread(title, categoryName, langTags = nul
 }
 
 g_chat.joinThread <- function joinThread(roomId) {
-  if (!this.checkChatConnected())
+  if (!checkChatConnected())
     return
   if (!g_chat_room_type.THREAD.checkRoomId(roomId))
-    return this.systemMessage(loc(this.CHAT_ERROR_NO_CHANNEL))
+    return systemMessage(loc(this.CHAT_ERROR_NO_CHANNEL))
 
   if (!this.isRoomJoined(roomId))
     gchat_raw_command($"xtjoin {roomId}")
-  else if (::menu_chat_handler)
-    ::menu_chat_handler.switchCurRoom(roomId)
+  else
+    broadcastEvent("ChatSwitchCurRoom", { roomId })
 }
 
 g_chat.validateRoomName <- function validateRoomName(name) {
@@ -415,8 +389,7 @@ g_chat.openChatRoom <- function openChatRoom(roomId, ownerHandler = null) {
   if (!::openChatScene(ownerHandler))
     return
 
-  if (::menu_chat_handler)
-    ::menu_chat_handler.switchCurRoom.call(::menu_chat_handler, roomId)
+  broadcastEvent("ChatSwitchCurRoom", { roomId })
 }
 
 g_chat.openModifyThreadWnd <- function openModifyThreadWnd(threadInfo) {
@@ -471,11 +444,6 @@ g_chat.modifyThread <- function modifyThread(threadInfo, modifyTable) {
   }
 
   return true
-}
-
-g_chat.canChooseThreadsLang <- function canChooseThreadsLang() {
-  //only moderators can modify chat lang tags atm.
-  return hasFeature("ChatThreadLang") && is_myself_anyof_moderators()
 }
 
 g_chat.isImRoomOwner <- function isImRoomOwner(roomData) {
@@ -578,4 +546,5 @@ g_chat.sendLocalizedMessageToSquadRoom <- function sendLocalizedMessageToSquadRo
 }
 
 subscribe_handler(g_chat, g_listener_priority.DEFAULT_HANDLER)
+eventbus_subscribe("on_sign_out", @(_p) g_chat.rooms.clear())
 return {g_chat}

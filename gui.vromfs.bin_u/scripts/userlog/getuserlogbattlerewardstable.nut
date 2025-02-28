@@ -55,6 +55,10 @@ let visibleRewards = [
     locId = "expEventScore/missileEvade"
   }
   {
+    id = "eventShellInterception"
+    locId = "expEventScore/shellInterception"
+  }
+  {
     id = "eventCaptureZone"
     locId = "expEventScore/captureZone"
   }
@@ -77,6 +81,10 @@ let visibleRewards = [
   {
     id = "eventScoutKill"
     locId = "expEventScore/scoutKillAny"
+  }
+  {
+    id = "eventReturnSpawnCost"
+    locId = "exp_reasons/return_spawn_cost"
   }
   {
     id = "eventTimedAward"

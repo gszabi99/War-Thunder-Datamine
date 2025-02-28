@@ -12,6 +12,7 @@ let { getRewardConditionId, getRewardConditionById, getConditionValue, getCondit
   getRewardTooltipId, getConditionText, isRewardReceived
 } = require("%scripts/events/eventRewards.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 gui_handlers.EventRewardsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -51,7 +52,7 @@ gui_handlers.EventRewardsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       tabs.append({
         id = idx.tostring()
         tabName = tab.header
-        navImagesText = this.tabsList.len() > 1 ? ::get_navigation_images_text(idx, this.tabsList.len()) : ""
+        navImagesText = this.tabsList.len() > 1 ? getNavigationImagesText(idx, this.tabsList.len()) : ""
         selected = idx == 0
       })
     let data = handyman.renderCached(this.sceneTplName, { tabs })

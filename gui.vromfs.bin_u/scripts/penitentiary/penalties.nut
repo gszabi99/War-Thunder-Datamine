@@ -6,6 +6,7 @@ let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let penalty = require("penalty")
+let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 
 //  local penalist = penalty.getPenaltyList()
 //  [
@@ -103,7 +104,7 @@ function showBannedStatusMsgBox(showBanOnly = false) {
     banType  = "ban"
     fn = @() eventbus_send("request_logout", {})
     ::queues.leaveAllQueuesSilent()
-    ::SessionLobby.leaveRoom()
+    leaveSessionRoom()
   }
   else if (st.status == penalty.DEVOICE) {
     if (is_decals_disabled()) {
@@ -128,15 +129,9 @@ function showBannedStatusMsgBox(showBanOnly = false) {
 
 eventbus_subscribe("request_show_banned_status_msgbox", @(event) showBannedStatusMsgBox(event?.showBanOnly ?? false))
 
-function isMeBanned() {
-  return penalty.getPenaltyStatus().status == penalty.BAN
-}
-
-
 return {
   getDevoiceMessage
   getBannedMessage
   showBannedStatusMsgBox
-  isMeBanned
 }
 

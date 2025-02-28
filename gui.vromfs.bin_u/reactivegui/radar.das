@@ -10,110 +10,7 @@ require hud
 require FlightModelWrap
 require HeroManager
 require Unit
-
-let modeNames = [[string
-  "hud/standby";
-  "hud/search";
-  "hud/acquisition";
-  "hud/ACM";
-  "hud/HMD";
-  "hud/BST";
-  "hud/VSL";
-  "hud/track";
-
-  "hud/PD VS standby";
-  "hud/PD VS search";
-  "hud/PD VS acquisition";
-  "hud/PD VS ACM";
-  "hud/PD VS BST";
-  "hud/PD VS VSL";
-
-  "hud/PD HDN VS standby";
-  "hud/PD HDN VS search";
-  "hud/PD HDN VS acquisition";
-  "hud/PD HDN VS ACM";
-  "hud/PD HDN VS BST";
-  "hud/PD HDN VS VSL";
-
-  "hud/PD standby";
-  "hud/PD search";
-  "hud/PD acquisition";
-  "hud/PD ACM";
-  "hud/PD HMD";
-  "hud/PD BST";
-  "hud/PD VSL";
-  "hud/PD track";
-  "hud/PD RAM";
-
-  "hud/PD HDN standby";
-  "hud/PD HDN search";
-  "hud/PD HDN acquisition";
-  "hud/PD HDN ACM";
-  "hud/PD HDN HMD";
-  "hud/PD HDN BST";
-  "hud/PD HDN VSL";
-  "hud/PD HDN track";
-
-  "hud/GTM standby";
-  "hud/GTM search";
-  "hud/GTM acquisition";
-  "hud/GTM ACM";
-  "hud/GTM BST";
-  "hud/GTM VSL";
-  "hud/GTM track";
-
-
-  "hud/LD standby";
-  "hud/LD search";
-  "hud/LD acquisition";
-  "hud/LD ACM";
-  "hud/LD track";
-
-  "hud/MTI standby";
-  "hud/MTI search";
-  "hud/MTI acquisition";
-  "hud/MTI ACM";
-  "hud/MTI track";
-
-  "hud/TWS standby";
-  "hud/TWS search";
-  "hud/TWS acquisition";
-  "hud/TWS ACM";
-  "hud/TWS BST";
-  "hud/TWS VSL";
-  "hud/TWS track";
-
-  "hud/TWS HDN standby";
-  "hud/TWS HDN search";
-  "hud/TWS HDN acquisition";
-  "hud/TWS HDN ACM";
-  "hud/TWS HDN BST";
-  "hud/TWS HDN VSL";
-  "hud/TWS HDN track";
-
-  "hud/TWS GTM standby";
-  "hud/TWS GTM search";
-  "hud/TWS GTM acquisition";
-  "hud/TWS GTM ACM";
-  "hud/TWS GTM BST";
-  "hud/TWS GTM VSL";
-  "hud/TWS GTM track";
-
-  "hud/IRST standby";
-  "hud/IRST search";
-  "hud/IRST acquisition";
-  "hud/IRST ACM";
-  "hud/IRST HMD";
-  "hud/IRST track";
-
-  "hud/air_search";
-  "hud/ground_search";
-
-  "hud/auto acquisition";
-  "hud/auto ACM";
-  "hud/auto HMD";
-  "hud/track memory";
-]]
+require %rGui.utils.constants_common
 
 let areaBackgroundColor = E3DCOLOR(Color4(float4(0., 0., 0., 0.5)))
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
@@ -224,7 +121,7 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.cueLowHeiColor = props |> getColor("cueLowHeiColor", storage.color)
   storage.cueUndergroundColor = props |> getColor("cueUndergroundColor", storage.color)
 
-[export]
+[export, unused_argument(rstate)]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if data.enableByMfd ? !get_radar_hud_mfd_radar_enabled() : !get_radar_hud_visible()
     return
@@ -384,7 +281,7 @@ def b_scope_half_top_markers(var ctx : GuiContext&; data : CanvasParams&; pos : 
 
   let nameId = get_radar_hud_mode_name_id()
   let defaultStr = get_radar_hud_is_visible() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-  let modeName = loc(nameId >= 0 && nameId < modeNames |> length() ? modeNames[nameId] : defaultStr)
+  let modeName = loc(nameId >= 0 && nameId < radarModeNames |> length() ? radarModeNames[nameId] : defaultStr)
   let strBox = get_str_bbox(modeName, modeName |> length(), fctx)
   ctx |> goto_xy(center.x - strBox.width.x, center.y - 5.)
   ctx |> set_font(data.fontId, 0, 0)
@@ -395,7 +292,7 @@ def b_scope_half_top_markers(var ctx : GuiContext&; data : CanvasParams&; pos : 
 
   let name2Id = get_radar_hud_mode_name2_id()
   let default2Str = get_radar_hud_is_visible2() ? ("hud/radarEmitting") : ""
-  let modeName2 = loc(name2Id >= 0 && name2Id < modeNames |> length() ? modeNames[name2Id] : default2Str)
+  let modeName2 = loc(name2Id >= 0 && name2Id < radarModeNames |> length() ? radarModeNames[name2Id] : default2Str)
   ctx |> goto_xy(center.x + 5., center.y - 5.)
   ctx |> draw_str_scaled(1.0, modeName2, modeName2 |> length())
 
@@ -731,7 +628,7 @@ def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
     if get_radar_hud_is_emitting() && !data.hideBeam
       b_scope_square_azimuth(ctx, data, pos, sz, false, get_radar_hud_azimuth(), get_radar_hud_distance(), get_radar_hud_azimuth_half_width())
     b_scope_square_elevation(ctx, data, pos, sz, get_radar_hud_elevation(), get_radar_hud_elevation_min(), get_radar_hud_elevation_max(),
-     get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max())
+      get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max())
   if get_radar_hud_is_visible2()
     if get_radar_hud_is_emitting2() && !data.hideBeam
       b_scope_square_azimuth(ctx, data, pos, sz, false, get_radar_hud_azimuth2(), get_radar_hud_distance2(), get_radar_hud_azimuth_half_width2())
@@ -771,7 +668,7 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
 
   let nameId = get_radar_hud_mode_name_id()
   let defaultStr = get_radar_hud_is_visible() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-  let modeName = loc(nameId >= 0 && nameId < modeNames |> length() ? modeNames[nameId] : defaultStr)
+  let modeName = loc(nameId >= 0 && nameId < radarModeNames |> length() ? radarModeNames[nameId] : defaultStr)
   let strBoxMode = get_str_bbox(modeName, modeName |> length(), fctx)
   ctx |> goto_xy(pos.x + size.x * 0.5 - strBoxMode.width.x * 0.5, pos.y + strBoxMode.width.y)
   ctx |> draw_str_scaled(1.0, modeName, modeName |> length())
@@ -784,7 +681,7 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   if get_radar_hud_is_visible2()
     let nameId2 = get_radar_hud_mode_name2_id()
     let defaultStr2 = get_radar_hud_is_visible2() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-    let modeName2 = loc(nameId2 >= 0 && nameId2 < modeNames |> length() ? modeNames[nameId2] : defaultStr2)
+    let modeName2 = loc(nameId2 >= 0 && nameId2 < radarModeNames |> length() ? radarModeNames[nameId2] : defaultStr2)
     let strBoxMode2 = get_str_bbox(modeName2, modeName2 |> length(), fctx)
     ctx |> goto_xy(pos.x + size.x * 0.57 + strBoxMode.width.x * 0.5, pos.y + strBoxMode2.width.y)
     ctx |> draw_str_scaled(1.0, modeName2, modeName2 |> length())
@@ -1049,10 +946,10 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
     let angleRight = min(angleRel + 0.5 * angularWidthRel, 1.)
 
     var distanceRel = 0.9
-    var radialWidthRel = 0.05
+    var radialWidthRel = 0.02
     if hasDistanceScale && target.distanceRel >= 0.
       distanceRel = target.distanceRel
-      radialWidthRel = max(0.05, target.distanceWidthRel)
+      radialWidthRel = max(radialWidthRel, target.distanceWidthRel)
 
     let p = float2(pos.x + angleRel * size.x, pos.y + (1. - distanceRel) * size.y)
 
@@ -1108,9 +1005,10 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
       else
         let angleCenter = (angleRight + angleLeft) * 0.5
         if data.targetFormType == 0
-          let coord <- to_array_move([[float2[2] float2(pos.x + angleLeft * size.x, pos.y + (1. - distanceRel) * size.y);
-           float2(pos.x + angleRight * size.x, pos.y + (1. - distanceRel) * size.y)]])
-          ctx |> render_line_aa(coord, false, ctx |> hdpx(100. * radialWidthRel), float2(0, 0), e3dColor)
+          let tc = float2(0., 0.)
+          ctx |> render_rect(
+            pos.x + angleLeft  * size.x, pos.y + (1. - distanceRel - 0.5 * radialWidthRel) * size.y,
+            pos.x + angleRight * size.x, pos.y + (1. - distanceRel + 0.5 * radialWidthRel) * size.y, tc, tc, tc)
         elif data.targetFormType == 1
           let coord <- to_array_move([[float2[3]
            float2(pos.x + angleLeft * size.x, pos.y + (1. - distanceRel + 0.02) * size.y);
@@ -1169,11 +1067,16 @@ def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2
     let hero = get_controlled_hero()
     if hero == null || hero.isDelayed
       return
+    let fmw = hero |> as_fmw()
+    if fmw == null
+      return
+
     let scanElevationWidth = get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()
     let ownAltitude = hero.pos.y
     let distance = get_radar_hud_cue_distance() * get_radar_hud_distance_max() * 1000.
-    let hmin = (ownAltitude + distance * sin(get_radar_hud_scan_elevation_min() - 0.5f * scanElevationWidth)) * metrToThsFeet
-    let hmax = (ownAltitude + distance * sin(get_radar_hud_scan_elevation_max() + 0.5f * scanElevationWidth)) * metrToThsFeet
+    let tangage = deg_to_rad(fmw.tangage)
+    let hmin = (ownAltitude + distance * sin(get_radar_hud_scan_elevation_min() + tangage)) * metrToThsFeet
+    let hmax = (ownAltitude + distance * sin(get_radar_hud_scan_elevation_max() + tangage)) * metrToThsFeet
 
     let hmaxText = fmt(":d", roundi(hmax))
     let hminText = fmt(":d", roundi(hmin))
@@ -1250,13 +1153,13 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
 
   let nameId = get_radar_hud_mode_name_id()
   let defaultStr = get_radar_hud_is_visible() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-  let modeName = loc(nameId >= 0 && nameId < modeNames |> length() ? modeNames[nameId] : defaultStr)
+  let modeName = loc(nameId >= 0 && nameId < radarModeNames |> length() ? radarModeNames[nameId] : defaultStr)
   let strBoxMode = get_str_bbox(modeName, modeName |> length(), fctx)
   topOffset = strBoxMode.width.y + ctx |> hdpx(4.)
 
   let name2Id = get_radar_hud_mode_name2_id()
   let defaultStr2 = get_radar_hud_is_visible2() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-  let modeName2 = loc(name2Id >= 0 && name2Id < modeNames |> length() ? modeNames[name2Id] : defaultStr2)
+  let modeName2 = loc(name2Id >= 0 && name2Id < radarModeNames |> length() ? radarModeNames[name2Id] : defaultStr2)
   let strBoxMode2 = get_str_bbox(modeName2, modeName2 |> length(), fctx)
 
   let text0 = "0{deg}"
@@ -1389,13 +1292,13 @@ def c_scope_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
 
     let nameId = get_radar_hud_mode_name_id()
     let defaultStr = get_radar_hud_is_visible() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-    let modeName = loc(nameId >= 0 && nameId < modeNames |> length() ? modeNames[nameId] : defaultStr)
+    let modeName = loc(nameId >= 0 && nameId < radarModeNames |> length() ? radarModeNames[nameId] : defaultStr)
     let strBoxMode = get_str_bbox(modeName, modeName |> length(), fctx)
     topOffset = max(strBoxMode.width.y, topOffset)
 
     let name2Id = get_radar_hud_mode_name2_id()
     let defaultStr2 = get_radar_hud_is_visible2() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-    let modeName2 = loc(name2Id >= 0 && name2Id < modeNames |> length() ? modeNames[name2Id] : defaultStr2)
+    let modeName2 = loc(name2Id >= 0 && name2Id < radarModeNames |> length() ? radarModeNames[name2Id] : defaultStr2)
     let strBoxMode2 = get_str_bbox(modeName2, modeName2 |> length(), fctx)
     topOffset += strBoxMode2.width.y
 

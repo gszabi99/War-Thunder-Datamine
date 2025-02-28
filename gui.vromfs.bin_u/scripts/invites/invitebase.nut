@@ -14,6 +14,9 @@ let { INVITE_CHAT_LINK_PREFIX, openInviteWnd } = require("%scripts/invites/invit
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { addPopup, removePopupByHandler } = require("%scripts/popups/popups.nut")
 let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
+let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
+let { isUserBlockedByPrivateSetting } = require("%scripts/chat/chatUtils.nut")
 
 let BaseInvite = class {
   static lifeTimeMsec = 3600000
@@ -98,7 +101,7 @@ let BaseInvite = class {
            && !this.isDelayed
            && !this.isAutoAccepted
            && !this.isRejected
-           && !::isUserBlockedByPrivateSetting(this.inviterUid, this.inviterName)
+           && !isUserBlockedByPrivateSetting(this.inviterUid, this.inviterName)
   }
 
   function setDelayed(newIsDelayed) {
@@ -165,7 +168,7 @@ let BaseInvite = class {
   function showInvitePopup() {
     if (!this.isVisible()
         || isInReloading()
-        || ::get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY) == false
+        || get_gui_option_in_mode(USEROPT_SHOW_SOCIAL_NOTIFICATIONS, OPTIONS_MODE_GAMEPLAY) == false
         || !this.needShowPopup
       )
       return
@@ -206,7 +209,7 @@ let BaseInvite = class {
   }
 
   function showInviterMenu(position = null) {
-    let contact = this.inviterUid && ::getContact(this.inviterUid, this.inviterName)
+    let contact = this.inviterUid && getContact(this.inviterUid, this.inviterName)
     showChatPlayerRClickMenu(this.inviterName, null, contact, position)
   }
 

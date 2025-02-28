@@ -6,7 +6,8 @@ let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { get_local_custom_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { getStateDebugStr, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 // Deprecated, for storing new data use loadLocalAccountSettings() instead.
 function loadLocalByAccount(path, defValue = null) {

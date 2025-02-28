@@ -18,6 +18,7 @@ let sectorSprites = Watched([])
 let loadedTransport = Watched(null)
 
 let cursorPosition = Watched(null)
+let isShiftPressed = Watched(false)
 
 function updateZonesState() {
   let { zSides = [], zConnectedToRear = [], zHighlightFlag = [] } = wwGetZonesState()
@@ -68,4 +69,5 @@ return {
   startUpdates = @() setInterval(0.1, updateWatches)
   stopUpdates = @() clearTimer(updateWatches)
   cursorPosition
+  isShiftPressed
 }

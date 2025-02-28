@@ -12,7 +12,7 @@ let { getWeaponToFakeBulletMask, updateSecondaryBullets } = require("%scripts/we
 let customPresetsConfigByUnit = mkWatched(persist, "customPresetsConfigByUnit", {})
 let customPresetsByUnit = mkWatched(persist, "customPresetsByUnit", {})
 let { addTask } = require("%scripts/tasker.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 function loadCustomPresets(unitName) {
   if (!isProfileReceived.get())

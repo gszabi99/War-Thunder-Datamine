@@ -8,6 +8,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { get_modifications_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let ModUpgrade = class (BaseItemModClass) {
   static iType = itemType.MOD_UPGRADE
@@ -79,4 +80,5 @@ let ModUpgrade = class (BaseItemModClass) {
     )
   }
 }
-return {ModUpgrade}
+
+registerItemClass(ModUpgrade)

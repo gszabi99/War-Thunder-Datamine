@@ -24,22 +24,21 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isEventForClan } = require("%scripts/events/eventInfo.nut")
 let QueueStats = require("%scripts/queue/queueStats.nut")
+let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
+let { setWaitForQueueRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { myClanInfo } = require("%scripts/clans/clanState.nut")
 
 let hiddenMatchingError = {
   SERVER_ERROR_NOT_IN_QUEUE = true
 }
 
-::queue_classes <- {}
-
 foreach (fn in [
                  "queueType.nut"
-                 "queue/queueBase.nut"
                  "queue/queueEvent.nut"
                  "queue/queueWwBattle.nut" //FIX ME: must be in WW folder also with ww queue type
                  "queueInfo/qiHandlerBase.nut"
                  "queueInfo/qiHandlerByTeams.nut"
                  "queueInfo/qiHandlerByCountries.nut"
-                 "queueInfo/qiViewUtils.nut"
                  "queueTable.nut"
                ])
   loadOnce($"%scripts/queue/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
@@ -317,7 +316,7 @@ let QueueManager = class {
         // Error means that user is joining battle and can't leave the queue
         if (postCancelAction)
           postCancelAction()
-        ::SessionLobby.setWaitForQueueRoom(true)
+        setWaitForQueueRoom(true)
       }
       else {
         if ((response?.error_id ?? matchingErrorString(response.error)) not in hiddenMatchingError)
@@ -327,14 +326,14 @@ let QueueManager = class {
         // This check is a workaround that fixes
         // player being able to perform some action
          // split second before battle begins.
-         if (!isWaitForQueueRoom.get() && !isInSessionRoom.get()) {
-           if (postAction)
-             postAction()
-         }
-         else {
-           if (postCancelAction)
-             postCancelAction()
-         }
+        if (!isWaitForQueueRoom.get() && !isInSessionRoom.get()) {
+          if (postAction)
+            postAction()
+        }
+        else {
+          if (postCancelAction)
+            postCancelAction()
+        }
       }
     }, this)
   }
@@ -379,7 +378,7 @@ let QueueManager = class {
       this.showProgressBox(false)
       if (response.error == SERVER_ERROR_REQUEST_REJECTED) {
         // Error means that user is joining battle and can't leave the queue
-        ::SessionLobby.setWaitForQueueRoom(true)
+        setWaitForQueueRoom(true)
         return
       }
 
@@ -535,7 +534,7 @@ let QueueManager = class {
   }
 
   function onEventClanInfoUpdate(_params) {
-    if (!::my_clan_info)
+    if (!myClanInfo.get())
       foreach (queue in this.queuesList)
         if (this.isClanQueue(queue))
           this.leaveQueue(queue)
@@ -635,14 +634,16 @@ matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
     return
 
   queues.init()
-  ::g_delayed_actions.add(
+  addDelayedAction(
     Callback(@() queues.joinQueue(queues.lastQueueReqParams), queues),
     5000 + rnd() % 5000)
 })
 
-::checkIsInQueue <- function checkIsInQueue() {
+function checkIsInQueue() {
   return queues.isAnyQueuesActive()
 }
 
+::checkIsInQueue <- checkIsInQueue
 ::queues <- queues
-return {queues}
+
+return { queues , checkIsInQueue }

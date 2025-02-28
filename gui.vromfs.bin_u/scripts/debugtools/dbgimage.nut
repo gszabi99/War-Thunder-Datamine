@@ -12,6 +12,7 @@ let { register_command } = require("console")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 let { debug_get_skyquake_path } = require("%scripts/debugTools/dbgUtils.nut")
 let { slice } = require("%sqstd/string.nut")
+let g_font = require("%scripts/options/fonts.nut")
 
 function debug_svg(image, size = null, bgColor = "#808080") {
   let baseHeight = u.isInteger(size) ? 1080 : screen_height()
@@ -33,7 +34,7 @@ function debug_svg(image, size = null, bgColor = "#808080") {
   }
   else {
     let screenHeights = [720, 1080, 2160]
-    let smallestFont = ::g_font.getSmallestFont(1280, 720)
+    let smallestFont = g_font.getSmallestFont(1280, 720)
     if (smallestFont && smallestFont.sizeMultiplier < 1)
       screenHeights.insert(0, smallestFont.sizeMultiplier * 720)
     let sizes = ["@sIco", "@cIco", "@dIco", "@lIco"]

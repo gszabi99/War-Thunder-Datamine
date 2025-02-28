@@ -2,9 +2,9 @@ from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { write_number } = require("%xboxLib/impl/stats.nut")
-let { set_presence } = require("%xboxLib/impl/presence.nut")
-let { is_any_user_active } = require("%xboxLib/impl/user.nut")
+let { write_number } = require("%gdkLib/impl/stats.nut")
+let { set_presence } = require("%gdkLib/impl/presence.nut")
+let { is_any_user_active } = require("%gdkLib/impl/user.nut")
 let { getStats } = require("%scripts/myStats.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 

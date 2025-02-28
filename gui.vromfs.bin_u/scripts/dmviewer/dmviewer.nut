@@ -2,6 +2,9 @@ from "%scripts/dagui_natives.nut" import hangar_show_external_dm_parts_change
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 
+let { S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT,
+  getPartType, getPartNameLocText
+} = require("%globalScripts/modeXrayLib.nut")
 let { get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -11,9 +14,8 @@ let DataBlock = require("DataBlock")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
-let regexp2 = require("regexp2")
 let { abs, round, sin, PI } = require("math")
-let { hangar_get_current_unit_name, hangar_set_dm_viewer_mode,
+let { hangar_get_current_unit_name, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_ARMOR, DM_VIEWER_XRAY,
   hangar_get_dm_viewer_parts_count, set_xray_parts_filter } = require("hangar")
 let { blkOptFromPath, eachParam } = require("%sqstd/datablock.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
@@ -30,11 +32,10 @@ let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { TIME_DAY_IN_SECONDS } = require("%scripts/time.nut")
-let { utf8ToUpper, startsWith, utf8ToLower, cutPrefix } = require("%sqstd/string.nut")
+let { startsWith, utf8ToLower, cutPrefix } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let { getUnitTypeTextByUnit, getUnitTypeText } = require("%scripts/unit/unitInfo.nut")
 let { check_unit_mods_update } = require("%scripts/unit/unitChecks.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { get_game_params_blk, get_wpcost_blk, get_unittags_blk, get_modifications_blk } = require("blkGetters")
@@ -51,7 +52,9 @@ let { openPopupFilter, RESET_ID } = require("%scripts/popups/popupFilterWidget.n
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
-let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
+let { getSimpleUnitType } = require("modeXrayUtils.nut")
 
 /*
   dmViewer API:
@@ -133,12 +136,12 @@ let extHintLocKeyByType = {
   rangefinder_mount = "xray_ext_hint/rangefinder"
 }
 
-let tankPartsIds = {
-  commander = true
-  driver = true
-  gunner_tank = true
-  machine_gunner = true
-  loader = true
+let tankCrewMemberToRole = {
+  commander = "commander"
+  driver = "driver"
+  gunner = "tank_gunner"
+  loader = "loader"
+  machine_gunner = "radio_gunner"
 }
 
 let shipAmmunitionPartsIds = {
@@ -207,15 +210,6 @@ function isViewModeTutorAvailableForUser() {
     saveLocalAccountSettings("tutor/dmViewer/isAvailable", res)
   }
   return res
-}
-
-let descByPartId = {
-  tank = {
-    function getTitle(params, unit) {
-      let manufacturer = unit?.info[params.name].manufacturer ?? unit?.info.tanks_params.manufacturer
-      return manufacturer == null ? null : loc($"armor_class/{manufacturer}")
-    }
-  }
 }
 
 function distanceToStr(val) {
@@ -294,6 +288,7 @@ dmViewer = {
   // view mode after player returns from somewhere.
   view_mode = DM_VIEWER_NONE
   unit = null
+  simUnitType = S_UNDEFINED
   maxValuesParams = null
   crew = null
   unitBlk = null
@@ -321,21 +316,6 @@ dmViewer = {
 
   showStellEquivForArmorClassesList = []
   armorClassToSteel = null
-
-  prepareNameId = [
-    { pattern = regexp2(@"_l_|_r_"),   replace = "_" },
-    { pattern = regexp2(@"[0-9]|dm$"), replace = "" },
-    { pattern = regexp2(@"__+"),       replace = "_" },
-    { pattern = regexp2(@"_+$"),       replace = "" },
-  ]
-
-  crewMemberToRole = {
-    commander = "commander"
-    driver = "driver"
-    gunner_tank = "tank_gunner"
-    loader = "loader"
-    machine_gunner = "radio_gunner"
-  }
 
   xrayDescriptionCache = {}
   isDebugMode = false
@@ -409,13 +389,14 @@ dmViewer = {
     this.update()
   }
 
-  function updateUnitInfo(fircedUnitId = null) {
-    let unitId = fircedUnitId || hangar_get_current_unit_name()
+  function updateUnitInfo(forcedUnitId = null) {
+    let unitId = forcedUnitId ?? hangar_get_current_unit_name()
     if (this.unit && unitId == this.unit.name)
       return
     this.unit = getAircraftByName(unitId)
     if (! this.unit)
       return
+    this.simUnitType = getSimpleUnitType(this.unit)
     this.maxValuesParams = skillParametersRequestType.MAX_VALUES.getParameters(-1, this.unit)
     this.crew = getCrewByAir(this.unit)
     this.loadUnitBlk()
@@ -615,7 +596,7 @@ dmViewer = {
       shortcut = GAMEPAD_ENTER_SHORTCUT
       cb = @() listObj?.isValid() && listObj.setValue(modeId)
     }]
-    ::gui_modal_tutor(steps, handler, true)
+    gui_modal_tutor(steps, handler, true)
   }
 
   function repaint() {
@@ -780,7 +761,9 @@ dmViewer = {
     if (needUpdatePos && !needUpdateContent)
       return this.placeHint(obj)
 
-    let nameId = this.getPartNameId(params)
+    let name = params?.name ?? ""
+    let nameId = this.view_mode == DM_VIEWER_XRAY ? getPartType(name, this.xrayRemap) : name
+
     let isVisible = nameId != ""
     obj.show(isVisible)
     if (!isVisible)
@@ -839,46 +822,6 @@ dmViewer = {
     obj.pos = format("%d, %d", posX, posY)
   }
 
-  function getPartNameId(params) {
-    local nameId = getTblValue("name", params) || ""
-    if (this.view_mode != DM_VIEWER_XRAY || nameId == "")
-      return nameId
-
-    nameId = getTblValue(nameId, this.xrayRemap, nameId)
-    foreach (re in this.prepareNameId)
-      nameId = re.pattern.replace(re.replace, nameId)
-    if (nameId == "gunner")
-      nameId = "_".concat(nameId, getUnitTypeTextByUnit(this.unit).tolower())
-    return nameId
-  }
-
-  function getPartNameLocText(nameId) {
-    local localizedName = ""
-    let localizationSources = ["armor_class/", "dmg_msg_short/", "weapons_types/"]
-    let nameVariations = [nameId]
-    let idxSeparator = nameId.indexof("_")
-    if (idxSeparator)
-      nameVariations.append(nameId.slice(0, idxSeparator))
-    if (this.unit != null)
-      nameVariations.append("_".concat(getUnitTypeText(this.unit.esUnitType).tolower(), nameId))
-    if (this.unit?.esUnitType == ES_UNIT_TYPE_BOAT)
-      nameVariations.append($"ship_{nameId}")
-
-    foreach (localizationSource in localizationSources)
-      foreach (nameVariant in nameVariations) {
-        let locId = "".concat(localizationSource, nameVariant)
-        localizedName = doesLocTextExist(locId) ? loc(locId, "") : ""
-        if (localizedName != "")
-          return utf8ToUpper(localizedName, 1);
-      }
-    return nameId
-  }
-
-  function getPartTitle(params, unit) {
-    let partId = params?.nameId ?? ""
-    return descByPartId?[partId].getTitle(params, unit) ?? this.getPartNameLocText(params?.partLocId ?? partId)
-  }
-
   function getPartLocNameByBlkFile(locKeyPrefix, blkFilePath, blk) {
     let nameLocId = $"{locKeyPrefix}/{blk?.nameLocId ?? fileName(blkFilePath).slice(0, -4)}"
     return doesLocTextExist(nameLocId) ? loc(nameLocId) : (blk?.name ?? nameLocId)
@@ -894,11 +837,10 @@ dmViewer = {
       animation   = null
     }
 
-    let { overrideTitle = "", hideDescription = false } = this.unitBlk?.xrayOverride[params.name]
-
-    let isHuman = nameId == "steel_tankman"
-    if (isHuman || nameId == "")
+    if (nameId == "")
       return res
+
+    let { overrideTitle = "", hideDescription = false } = this.unitBlk?.xrayOverride[params.name]
 
     params.nameId <- nameId
     if (this.view_mode == DM_VIEWER_ARMOR)
@@ -910,7 +852,8 @@ dmViewer = {
       res.__update(this.getExtendedHintInfo(params))
     }
 
-    res.title = overrideTitle == "" ? this.getPartTitle(params, this.unit) : this.getPartNameLocText(overrideTitle)
+    let titleLocId = overrideTitle != "" ? overrideTitle : (params?.partLocId ?? nameId)
+    res.title = getPartNameLocText(titleLocId, this.simUnitType)
 
     return res
   }
@@ -1252,7 +1195,8 @@ dmViewer = {
         lookUp = true
     }
 
-    let hasTws = this.findBlockByName(sensorPropsBlk, "tws")
+    let hasTws = this.findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
+    let hasTwsPlus = this.findBlockByName(sensorPropsBlk, "matchTargetsOfInterest")
     let hasRam = this.findBlockByName(sensorPropsBlk, "ram")
     let isTrackRadar = this.findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
     let hasSARH = this.findBlockByName(sensorPropsBlk, "setIllumination")
@@ -1345,6 +1289,8 @@ dmViewer = {
       desc.append("".concat(indent, loc("radar_iff")))
     if (isSearchRadar && hasTws)
       desc.append("".concat(indent, loc("radar_tws")))
+    if (isSearchRadar && hasTwsPlus)
+      desc.append("".concat(indent, loc("radar_tws_plus")))
     if (isSearchRadar && hasRam)
       desc.append("".concat(indent, loc("radar_ram")))
     if (isTrackRadar) {
@@ -1376,24 +1322,24 @@ dmViewer = {
     let partId = params?.nameId ?? ""
     let partName = params.name
     local weaponPartName = null
+    let desc = []
 
-    let desc = descByPartId?[partId].getDescriptionInXrayMode(params, this.unit, this.unitBlk) ?? []
+    if (this.simUnitType == S_TANK && (partId in tankCrewMemberToRole)) {
+      if (partId == "gunner")
+        params.partLocId <- "gunner_tank"
 
-    if (partId in tankPartsIds) {
-      if (this.unit.esUnitType == ES_UNIT_TYPE_TANK) {
-        let memberBlk = this.getCrewMemberBlkByDMPart(this.unitBlk.tank_crew, partName)
-        if (memberBlk != null) {
-          let memberRole = this.crewMemberToRole[partId]
-          let duplicateRoles = (memberBlk % "role")
-            .filter(@(r) r != memberRole)
-            .map(@(r) loc($"duplicate_role/{r}", ""))
-            .filter(@(n) n != "")
-          desc.extend(duplicateRoles)
-        }
+      let memberBlk = this.getCrewMemberBlkByDMPart(this.unitBlk.tank_crew, partName)
+      if (memberBlk != null) {
+        let memberRole = tankCrewMemberToRole[partId]
+        let duplicateRoles = (memberBlk % "role")
+          .filter(@(r) r != memberRole)
+          .map(@(r) loc($"duplicate_role/{r}", ""))
+          .filter(@(n) n != "")
+        desc.extend(duplicateRoles)
       }
     }
     else if (partId == "engine") { // Engines
-      if (this.unit.esUnitType == ES_UNIT_TYPE_TANK) {
+      if (this.simUnitType == S_TANK) {
         let infoBlk = this.findAnyModEffectValue("engine") ?? this.unitBlk?.VehiclePhys.engine
         if (infoBlk) {
           let engineModelName = this.getEngineModelName(infoBlk)
@@ -1426,7 +1372,7 @@ dmViewer = {
         if (infoBlk)
           desc.append(this.getMassInfo(infoBlk))
       }
-      else if (this.unit.esUnitType == ES_UNIT_TYPE_AIRCRAFT || this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER) {
+      else if (this.simUnitType == S_AIRCRAFT || this.simUnitType == S_HELICOPTER) {
         local partIndex = to_integer_safe(this.trimBetween(partName, "engine", "_"), -1, false)
         if (partIndex > 0) {
           let fmBlk = ::get_fm_file(this.unit.name, this.unitBlk)
@@ -1451,7 +1397,7 @@ dmViewer = {
             if (engineMainBlk != null) {
               let engineInfo = []
               local engineType = this.getFirstFound([infoBlk, engineMainBlk], @(b) b?.Type ?? b?.type, "").tolower()
-              if (this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER && engineType == "turboprop")
+              if (this.simUnitType == S_HELICOPTER && engineType == "turboprop")
                 engineType = "turboshaft"
               if (engineType != "")
                 engineInfo.append(loc($"plane_engine_type/{engineType}"))
@@ -1557,7 +1503,7 @@ dmViewer = {
                     measureType.HORSEPOWERS.getMeasureUnitsText(powerTakeoff)))
                 }
                 if (thrustMax > 0) {
-                      thrustMax += thrustModDelta
+                  thrustMax += thrustModDelta
                   thrustMax *= thrustMaxCoef
                   desc.append("".concat(loc("engine_thrust_max"), loc("ui/colon"),
                     measureType.THRUST_KGF.getMeasureUnitsText(thrustMax)))
@@ -1653,7 +1599,10 @@ dmViewer = {
         desc.extend(this.getWeaponDriveTurretDesc(weaponPartName, weaponInfoBlk, isHorizontal, !isHorizontal))
       }
     }
-    else if (partId == "pilot" || partId == "gunner_helicopter") {
+    else if (partId == "gunner" && this.simUnitType == S_AIRCRAFT) {
+      params.partLocId <- "gunner_aircraft"
+    }
+    else if (partId == "pilot" || (partId == "gunner" && this.simUnitType == S_HELICOPTER)) {
       foreach (cfg in [
         { label = "avionics_sight_turret", ccipKey = "haveCCIPForTurret", autoKey = "haveCCRPForTurret"  }
         { label = "avionics_sight_cannon", ccipKey = "haveCCIPForGun",    autoKey = "haveCCRPForGun"     }
@@ -1679,7 +1628,7 @@ dmViewer = {
           desc.append(loc("modification/night_vision_system"))
       }
 
-      if ((this.unitBlk?.haveOpticTurret || this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER) && this.unitBlk?.gunnerOpticFps != null)
+      if ((this.unitBlk?.haveOpticTurret || this.simUnitType == S_HELICOPTER) && this.unitBlk?.gunnerOpticFps != null)
         if (this.unitBlk?.cockpit.sightOutFov != null || this.unitBlk?.cockpit.sightInFov != null) {
           let optics = this.getOpticsParams(this.unitBlk?.cockpit.sightOutFov ?? 0, this.unitBlk?.cockpit.sightInFov ?? 0)
           if (optics.zoom != "") {
@@ -1712,7 +1661,7 @@ dmViewer = {
 
       if (this.unitBlk.getBool("hasHelmetDesignator", false))
         desc.append(loc("avionics_hmd"))
-      if (this.unitBlk.getBool("havePointOfInterestDesignator", false) || this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER)
+      if (this.unitBlk.getBool("havePointOfInterestDesignator", false) || this.simUnitType == S_HELICOPTER)
         desc.append(loc("avionics_aim_spi"))
       if (this.unitBlk.getBool("laserDesignator", false))
         desc.append(loc("avionics_aim_laser_designator"))
@@ -1911,8 +1860,10 @@ dmViewer = {
       if (!tankInfoTable)
         tankInfoTable = this.unit?.info?.tanks_params
       if (tankInfoTable != null) {
-        let tankInfo = []
+        if (tankInfoTable?.manufacturer)
+          params.partLocId <- tankInfoTable.manufacturer
 
+        let tankInfo = []
         if ("protected" in tankInfoTable) {
           tankInfo.append(tankInfoTable.protected ?
           loc("fuelTank/selfsealing") :
@@ -1934,7 +1885,7 @@ dmViewer = {
       let strColon  = loc("ui/colon")
 
       if (info.titleLoc != "")
-        params.nameId <- info.titleLoc
+        params.partLocId <- info.titleLoc
 
       foreach (data in info.referenceProtectionArray) {
         if (u.isPoint2(data.angles))
@@ -1964,12 +1915,12 @@ dmViewer = {
               round(layer.armorThickness.y))
           if (thicknessText != "")
             thicknessText = loc("ui/parentheses/space", { text = $"{thicknessText}{strUnits}" })
-          texts.append("".concat(strBullet, this.getPartNameLocText(layer?.armorClass), thicknessText))
+          texts.append("".concat(strBullet, getPartNameLocText(layer?.armorClass, this.simUnitType), thicknessText))
         }
         desc.append("".concat(blockSep, loc("xray/armor_composition"), loc("ui/colon"), "\n", "\n".join(texts, true)))
       }
       else if (!info.isComposite && !u.isEmpty(info.armorClass)) // reactive armor
-        desc.append("".concat(blockSep, loc("plane_engine_type"), loc("ui/colon"), this.getPartNameLocText(info.armorClass)))
+        desc.append("".concat(blockSep, loc("plane_engine_type"), loc("ui/colon"), getPartNameLocText(info.armorClass, this.simUnitType)))
     }
     else if (partId == "coal_bunker") {
       let coalToSteelMul = this.armorClassToSteel?["ships_coal_bunker"] ?? 0
@@ -2349,7 +2300,7 @@ dmViewer = {
   }
 
   function getWeaponStatus(weaponPartName, weaponInfoBlk) {
-    if (this.unit.esUnitType == ES_UNIT_TYPE_TANK) {
+    if (this.simUnitType == S_TANK) {
       let blkPath = weaponInfoBlk?.blk ?? ""
       let blk = blkOptFromPath(blkPath)
       let isRocketGun = blk?.rocketGun
@@ -2366,7 +2317,7 @@ dmViewer = {
       let isSecondary = !isPrimary && !isMachinegun
       return { isPrimary = isPrimary, isSecondary = isSecondary, isMachinegun = isMachinegun }
     }
-    if (this.unit.esUnitType == ES_UNIT_TYPE_BOAT || this.unit.esUnitType == ES_UNIT_TYPE_SHIP) {
+    if (this.simUnitType == S_BOAT || this.simUnitType == S_SHIP) {
       let isPrimaryName       = startsWith(weaponPartName, "main")
       let isSecondaryName     = startsWith(weaponPartName, "auxiliary")
       let isPrimaryTrigger    = weaponInfoBlk?.triggerGroup == "primary"
@@ -2379,7 +2330,7 @@ dmViewer = {
       }
     }
 
-    if (this.unit.esUnitType == ES_UNIT_TYPE_AIRCRAFT || this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER)
+    if (this.simUnitType == S_AIRCRAFT || this.simUnitType == S_HELICOPTER)
       return { isPrimary = true, isSecondary = false, isMachinegun = false }
 
     return { isPrimary = true, isSecondary = false, isMachinegun = false }
@@ -2431,7 +2382,7 @@ dmViewer = {
 
         local speed = 0
         local speedMul = 1
-        if (this.unit.esUnitType == ES_UNIT_TYPE_TANK) {
+        if (this.simUnitType == S_TANK) {
           let mainTurretSpeed = unitModificators?[a.modifName] ?? 0
           let value = weaponInfoBlk?[a.blkName] ?? 0
           let weapons = this.getUnitWeaponList()
@@ -2440,7 +2391,7 @@ dmViewer = {
             speedMul = value / mainTurretValue
           speed = mainTurretSpeed * speedMul
         }
-        else if (this.unit.esUnitType == ES_UNIT_TYPE_BOAT || this.unit.esUnitType == ES_UNIT_TYPE_SHIP) {
+        else if (this.simUnitType == S_BOAT || this.simUnitType == S_SHIP) {
           let modId   = status.isPrimary    ? "new_main_caliber_turrets"
                         : status.isSecondary  ? "new_aux_caliber_turrets"
                         : status.isMachinegun ? "new_aa_caliber_turrets"
@@ -2530,10 +2481,10 @@ dmViewer = {
     let isCartridge = weaponBlk?.reloadTime != null
     local cyclicShotFreqS  = weaponBlk?.shotFreq ?? 0.0 // rounds/sec
 
-    if (this.unit.esUnitType == ES_UNIT_TYPE_AIRCRAFT || this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER) {
+    if (this.simUnitType == S_AIRCRAFT || this.simUnitType == S_HELICOPTER) {
       shotFreqRPM = cyclicShotFreqS * 60
     }
-    else if (this.unit.esUnitType == ES_UNIT_TYPE_TANK) {
+    else if (this.simUnitType == S_TANK) {
       if (status.isPrimary) {
         let mainWeaponInfoBlk = this.getUnitWeaponList()?[0]
         if (mainWeaponInfoBlk != null) {
@@ -2562,7 +2513,7 @@ dmViewer = {
         }
       }
     }
-    else if (this.unit.esUnitType == ES_UNIT_TYPE_BOAT || this.unit.esUnitType == ES_UNIT_TYPE_SHIP) {
+    else if (this.simUnitType == S_BOAT || this.simUnitType == S_SHIP) {
       if (isCartridge) {
         if (this.crew) {
           let { reloadTime, reloadTimeTop } = this.getShipArtilleryReloadTime(weaponName)
@@ -2780,7 +2731,7 @@ dmViewer = {
   }
 
   function checkPartLocId(partId, partName, weaponInfoBlk, params) {
-    if (this.unit.esUnitType == ES_UNIT_TYPE_TANK) {
+    if (this.simUnitType == S_TANK) {
       if (partId == "gun_barrel" &&  weaponInfoBlk?.blk) {
         let status = this.getWeaponStatus(partName, weaponInfoBlk)
         params.partLocId <- status.isPrimary ? "weapon/primary"
@@ -2788,13 +2739,13 @@ dmViewer = {
           : "weapon/secondary"
       }
     }
-    else if (this.unit.esUnitType == ES_UNIT_TYPE_BOAT || this.unit.esUnitType == ES_UNIT_TYPE_SHIP) {
+    else if (this.simUnitType == S_BOAT || this.simUnitType == S_SHIP) {
       if (startsWith(partId, "main") && weaponInfoBlk?.triggerGroup == "secondary")
         params.partLocId <- partId.replace("main", "auxiliary")
       if (startsWith(partId, "auxiliary") && weaponInfoBlk?.triggerGroup == "primary")
         params.partLocId <- partId.replace("auxiliary", "main")
     }
-    else if (this.unit.esUnitType == ES_UNIT_TYPE_HELICOPTER) {
+    else if (this.simUnitType == S_HELICOPTER) {
       if (isInArray(partId, [ "gun", "cannon" ]))
         params.partLocId <- startsWith(weaponInfoBlk?.trigger, "gunner") ? "turret" : "cannon"
     }

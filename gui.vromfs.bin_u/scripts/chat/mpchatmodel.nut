@@ -14,6 +14,7 @@ let { getMpChatLog, addMessageToLog, onChatClear, getCurrentModeId, setCurrentMo
 let { register_command } = require("console")
 let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
+let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 
 let chatLogFormatForBanhammer = {
   category = ""
@@ -72,7 +73,7 @@ function onIncomingMessageImpl(sender, msg, mode, automatic) {
   broadcastEvent("MpChatLogUpdated")
   eventbus_send("mpChatPushMessage", message.__merge({
     fullName = sender == "" ? ""
-      : ::g_contacts.getPlayerFullName(getPlayerName(sender), message.clanTag)
+      : getPlayerFullName(getPlayerName(sender), message.clanTag)
   }))
 }
 

@@ -26,4 +26,5 @@ return {
   set_dirpad_event_processed = r?["set_dirpad_event_processed"] ?? @(...) null
   del_script_gui_behaviour_events = r?["del_script_gui_behaviour_events"] ?? @(...) ""
   get_button_name = r?["get_button_name"] ?? @(...) null
+  DaGuiObject = r?["DaGuiObject"] ?? class {isValid = @() false}
 }

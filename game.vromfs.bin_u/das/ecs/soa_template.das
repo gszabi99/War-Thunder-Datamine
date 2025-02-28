@@ -23,7 +23,7 @@ def has_annotation(annotations : rtti::AnnotationList; tag : string)
 def fn_or_block_apply(var func; body; var errors : das_string)
   if show_completion && is_in_completion()
     return true
-  var usedTypes : table<string; bool>
+  var usedTypes : table<string>
   var toReplace : array<tuple<name : string; fields : array<string>>>
   var i = 0
   while i < length(func.arguments)
@@ -33,7 +33,7 @@ def fn_or_block_apply(var func; body; var errors : das_string)
       if usedTypes |> key_exists(desc)
         errors := "Multiple arguments with same soa type '{desc}'"
         return false
-      usedTypes[desc] = true
+      insert(usedTypes, desc)
       for field in arg._type.structType.fields
         if true
           var inscope fieldType <- clone_type(field._type)
@@ -57,7 +57,7 @@ def fn_or_block_apply(var func; body; var errors : das_string)
   return true
 
 [macro_function]
-def patch_soa_blocks(fn : smart_ptr<Function>; ast_changed : bool?)
+def patch_soa_blocks(fn : smart_ptr<Function>; var ast_changed : bool?)
   var astVisitor = new PatchSoaBlocks(ast_changed)
   var inscope astVisitorAdapter <- make_visitor(*astVisitor)
   visit(fn, astVisitorAdapter)
@@ -69,7 +69,7 @@ def patch_soa_blocks(fn : smart_ptr<Function>; ast_changed : bool?)
 class PatchSoaBlocks : AstVisitor
   astChanged : bool?
 
-  def PatchSoaBlocks(ast_changed : bool?)
+  def PatchSoaBlocks(var ast_changed : bool?)
     astChanged = ast_changed
 
   def override visitExprBlock(var blk : smart_ptr<ExprBlock>) : ExpressionPtr
@@ -175,6 +175,7 @@ def replate_index_and_field(prefix : string; var fields : array<string>; blk : E
 class ReplaceIndexAndFieldsVisitor : AstVisitor
   it_prefix : string
   fields : array<string>
+  @do_not_delete aliases : table<string; ExprAt?>
 
   def ReplaceIndexAndFieldsVisitor(prefix : string; var fields_ : array<string>)
     it_prefix = prefix
@@ -183,17 +184,33 @@ class ReplaceIndexAndFieldsVisitor : AstVisitor
   [unused_argument(expr)] def override canVisitWithAliasSubexpression(expr : smart_ptr<ExprAssume>) : bool
     return true
 
-  def override visitExprField(var expr : smart_ptr<ExprField>) : ExpressionPtr
-    if expr.value is ExprAt
-      assume at = expr.value as ExprAt
+  def override preVisitExprAssume(var expr : smart_ptr<ExprAssume>) : void
+    if expr.subexpr is ExprAt
+      var at = expr.subexpr as ExprAt
       if (at.subexpr is ExprVar)
         if (at.subexpr as ExprVar).name == it_prefix
-          let ename = string(expr.name)
+          aliases.insert(string(expr.alias), expr.subexpr as ExprAt)
+
+  def override visitExprField(var expr : smart_ptr<ExprField>) : ExpressionPtr
+    if expr.value is ExprAt
+      var at = expr.value as ExprAt
+      if (at.subexpr is ExprVar)
+        if (at.subexpr as ExprVar).name == it_prefix
+          return <- new [[ExprAt()
+              at=expr.at,
+              subexpr <- new [[ExprVar() at=expr.at, name := expr.name]],
+              index <- clone_expression(at.index)
+            ]]
+
+    if expr.value is ExprVar
+      var eVar = expr.value as ExprVar
+      for alName, at in keys(aliases), values(aliases)
+        if alName == eVar.name
           return <- new [[ExprAt()
             at=expr.at,
-            subexpr <- new [[ExprVar() at=expr.at, name := ename]],
+            subexpr <- new [[ExprVar() at=expr.at, name := expr.name]],
             index <- clone_expression(at.index)
-            ]]
+          ]]
     return <- expr
 
   def override visitExprCall(var expr : smart_ptr<ExprCall>) : ExpressionPtr
@@ -323,6 +340,7 @@ class SoaTemplateStructMacro : AstStructureAnnotation
       if true
         var inscope newType <- make_field_type(fld, errors)
         move(fld._type, newType)
+        fld.annotation.add_annotation_argument("safe_when_uninitialized", true)
 
     if length(errors) > 0
       return false
@@ -511,12 +529,12 @@ class SoaTemplateStructMacro : AstStructureAnnotation
     var inscope args <- [{ MakeFuncArg[] [[MakeFuncArg argT <- argT]] }]
     return <- make_any_named_call(st, stype, args, name, name, check_sizes)
 
-  def make_named_call(st, stype : StructurePtr; fnName, callName : string; isConst : bool; check_sizes : bool) : FunctionPtr
+  def make_named_call(var st, stype : StructurePtr; fnName, callName : string; isConst : bool; check_sizes : bool) : FunctionPtr
     var inscope argT <- new [[TypeDecl() baseType=Type tStructure, at=st.at, structType=get_ptr(st), flags= isConst ? TypeDeclFlags constant : bitfield(0)]]
     var inscope args <- [{ MakeFuncArg[] [[MakeFuncArg argT <- argT, argField=true]] }]
     return <- make_any_named_call(st, stype, args, fnName, callName, check_sizes)
 
-  def make_named_call2_int(st, stype : StructurePtr; fnName, callName : string; isConst : bool; check_sizes : bool) : FunctionPtr
+  def make_named_call2_int(var st, stype : StructurePtr; fnName, callName : string; isConst : bool; check_sizes : bool) : FunctionPtr
     var inscope argT <- new [[TypeDecl() baseType=Type tStructure, at=st.at, structType=get_ptr(st), flags= isConst ? TypeDeclFlags constant : bitfield(0)]]
     var inscope argT2 <- new [[TypeDecl() baseType=Type tInt, at=st.at]]
     var inscope args <- [{ MakeFuncArg[] [[MakeFuncArg argT <- argT, argField=true]]; [[MakeFuncArg argT <- argT2]] }]
@@ -526,14 +544,14 @@ class SoaTemplateStructMacro : AstStructureAnnotation
 [macro_interface]
 class CollectAndReplaceIteratorFields : AstVisitor
   prefix : string
-  names : table<string; bool>
+  names : table<string>
   def CollectAndReplaceIteratorFields(prefix_ : string)
     prefix = prefix_
   def override visitExprField(var expr : smart_ptr<ExprField>) : ExpressionPtr
     if expr.value is ExprVar
       if (expr.value as ExprVar).name == prefix
         let ename = string(expr.name)
-        names[ename] = true
+        insert(names, ename)
         return <- new [[ExprVar() at=expr.at, name := "{prefix}_{ename}"]]
     return <- expr
 

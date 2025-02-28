@@ -288,16 +288,15 @@ function scope(scale, style) {
           }
         ]
       },
-      @()
-        styleText.__merge({
-          rendObj = ROBJ_TEXT
-          pos = [pw(30), ph(-85)]
-          size = flex()
-          halign = ALIGN_RIGHT
-          valign = ALIGN_CENTER
-          fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
-          text = "CHF"
-        }),
+      styleText.__merge({
+        rendObj = ROBJ_TEXT
+        pos = [pw(30), ph(-85)]
+        size = flex()
+        halign = ALIGN_RIGHT
+        valign = ALIGN_CENTER
+        fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
+        text = "CHF"
+      }),
       @()
         styleText.__merge({
           watch = ChaffsCount
@@ -309,16 +308,15 @@ function scope(scale, style) {
           fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
           text = format("%d", ChaffsCount.get())
         }),
-      @()
-        styleText.__merge({
-          rendObj = ROBJ_TEXT
-          pos = [pw(30), ph(-78)]
-          size = flex()
-          halign = ALIGN_RIGHT
-          valign = ALIGN_CENTER
-          fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
-          text = "FLR"
-        }),
+      styleText.__merge({
+        rendObj = ROBJ_TEXT
+        pos = [pw(30), ph(-78)]
+        size = flex()
+        halign = ALIGN_RIGHT
+        valign = ALIGN_CENTER
+        fontSize = style.grid.fontScale * styleText.fontSize * gridFontSizeMult
+        text = "FLR"
+      }),
       @()
         styleText.__merge({
           watch = FlaresCount

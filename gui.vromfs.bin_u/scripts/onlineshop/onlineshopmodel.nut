@@ -7,7 +7,7 @@ let { isInMenu, handlersManager, loadHandler } = require("%scripts/baseGuiHandle
 let { format } = require("string")
 let { ceil } = require("math")
 let { get_url_for_purchase } = require("url")
-let { isPlatformSony, isPlatformXboxOne, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, is_gdk, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { getShopItem, canUseIngameShop } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { openIngameStore } = require("%scripts/onlineShop/entitlementsShop.nut")
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
@@ -23,6 +23,7 @@ let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { searchEntitlementsByUnit, getGoodsChapter, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { steam_is_running, steam_get_my_id, steam_get_app_id } = require("steam")
+let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 
 function startEntitlementsUpdater() {
   callbackWhenAppWillActive(function() {
@@ -41,7 +42,7 @@ function startEntitlementsUpdater() {
 //custom URLs are defined for particular languages and almost always are ""
 //Consoles are exception. They always uses It's store.
 function getCustomPurchaseUrl(chapter) {
-  if (isPlatformSony || isPlatformXboxOne)
+  if (isPlatformSony || is_gdk)
     return ""
 
   let circuit = get_cur_circuit_name()
@@ -93,7 +94,7 @@ function openUpdateBalanceMenu(customUrl) {
       }
     }
   ]
-  ::gui_right_click_menu(menu, null)
+  openRightClickMenu(menu, null)
 }
 
 //return true when custom Url found
@@ -151,7 +152,7 @@ function doBrowserPurchaseByGuid(guid, dbgGoodsName = "") {
 }
 
 function doBrowserPurchase(goodsName) {
-  if (isPlatformSony || isPlatformXboxOne)
+  if (isPlatformSony || is_gdk)
     return openIngameStore()
   //just to avoid bugs, when users, who should to purchase goods in regional
   //web shops, accidentally uses ingame online shop
@@ -210,7 +211,7 @@ function showUnitGoods(unitName, requestOrigin) {
     foreach (goodsName in searchResult) {
       let bundleId = getBundleId(goodsName)
       if (bundleId != "") {
-        if (isPlatformSony || isPlatformXboxOne) {
+        if (isPlatformSony || is_gdk) {
           if (getShopItem(bundleId) != null) {
             openIngameStore({ curItemId = bundleId, statsdMetric = requestOrigin, unitName })
             return
@@ -223,7 +224,7 @@ function showUnitGoods(unitName, requestOrigin) {
       }
     }
 
-    if (isPlatformSony || isPlatformXboxOne)
+    if (isPlatformSony || is_gdk)
       return openIngameStore({ statsdMetric = requestOrigin })
 
     return openModalOnlineShop()
@@ -235,7 +236,7 @@ function openBrowserByPurchaseData(purchaseData) {
   if (!purchaseData.canBePurchased)
     return false
 
-  if (isPlatformSony || isPlatformXboxOne)
+  if (isPlatformSony || is_gdk)
     return openIngameStore()
 
   if (purchaseData.customPurchaseLink) {
@@ -285,7 +286,7 @@ function openOnlineShopFromPromo(handler, params) {
     || (shopType == ONLINE_SHOP_TYPES.EAGLES && canUseIngameShop())) {
     let bundleId = getBundleId(params?[1])
     if (bundleId != "") {
-      if (isPlatformSony || isPlatformXboxOne)
+      if (isPlatformSony || is_gdk)
         openIngameStore({
           curItemId = bundleId,
           statsdMetric = "promo",

@@ -8,6 +8,11 @@ let time = require("%scripts/time.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
+let { prepareEditRequest } = require("%scripts/clans/clanRequests.nut")
+let { upgradeClanMembers, editClan, disbandClan } = require("%scripts/clans/clanActions.nut")
+let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
+let { myClanInfo } = require("%scripts/clans/clanState.nut")
 
 gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler) {
   owner = null
@@ -34,7 +39,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     this.resetTagDecorationObj(this.clanData.tag)
     this.updateDescription()
     this.updateAnnouncement()
-    this.scene.findObject("newclan_tag").setValue(::g_clans.stripClanTagDecorators(this.clanData.tag))
+    this.scene.findObject("newclan_tag").setValue(stripClanTagDecorators(this.clanData.tag))
     this.scene.findObject("newclan_slogan").setValue(this.clanData.slogan)
     this.scene.findObject("newclan_description").setValue(this.clanData.desc)
     this.scene.findObject("newclan_announcement").setValue(this.clanData.announcement)
@@ -63,7 +68,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     if (this.isObsceneWord())
       return
 
-    let editParams = ::g_clans.prepareEditRequest(
+    let editParams = prepareEditRequest(
       this.newClanType,
       this.newClanName != this.clanData.name ? this.newClanName : null,
       this.newClanTag != this.clanData.tag ? this.newClanTag : null,
@@ -72,8 +77,8 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
       this.newClanAnnouncement != this.clanData.announcement ? this.newClanAnnouncement : null,
       this.newClanRegion != this.clanData.region ? this.newClanRegion : null
     )
-    let clanId = (::my_clan_info != null && ::my_clan_info.id == this.clanData.id) ? "-1" : this.clanData.id
-    ::g_clans.editClan(clanId, editParams, this)
+    let clanId = (myClanInfo.get()?.id == this.clanData.id) ? "-1" : this.clanData.id
+    editClan(clanId, editParams, this)
   }
 
 
@@ -86,7 +91,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     let decorators = this.getDecoratorsList()
     let currentDecorator = decorators[this.newClanTagDecoration]
     if (this.newClanTag != this.clanData.lastPaidTag) {
-      if (::g_clans.stripClanTagDecorators(this.newClanTag) != ::g_clans.stripClanTagDecorators(this.clanData.tag) || !currentDecorator.free)
+      if (stripClanTagDecorators(this.newClanTag) != stripClanTagDecorators(this.clanData.tag) || !currentDecorator.free)
         return false
     }
     if (this.newClanName != this.clanData.name)
@@ -201,15 +206,16 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
   }
 
   function upgradeMembers() {
-    ::g_clans.upgradeClanMembers(this.clanData.id)
+    upgradeClanMembers(this.clanData.id, this)
   }
 
   // Override
   function onEventClanInfoUpdate(_p) {
     if (this.clanData && this.clanData.id == clan_get_my_clan_id()) {
-      if (!::my_clan_info)
+      let myClanInfoV = myClanInfo.get()
+      if (!myClanInfoV)
         return this.goBack()
-      this.clanData = ::my_clan_info
+      this.clanData = myClanInfoV
       this.clanData = ::getFilteredClanData(this.clanData)
     }
 
@@ -220,7 +226,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     if (p.clanId != this.clanData.id)
       return
 
-    this.clanData = ::get_clan_info_table()
+    this.clanData = get_clan_info_table()
     if (!this.clanData)
       return this.goBack()
 
@@ -234,7 +240,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     this.msgBox("disband_clan", loc("clan/disbandClanConfirmation"),
       [
         ["yes", function() {
-          ::g_clans.disbandClan(this.isMyClan ? "-1" : this.clanData.id, this)
+          disbandClan(this.isMyClan ? "-1" : this.clanData.id, this)
         }],
         ["no",  function() {} ],
       ], "no", { cancel_fn = function() {} });

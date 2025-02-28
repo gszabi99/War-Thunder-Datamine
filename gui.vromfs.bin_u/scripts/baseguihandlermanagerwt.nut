@@ -18,7 +18,6 @@ let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let focusFrame = require("%scripts/viewUtils/focusFrameWT.nut")
 let { setSceneActive, reloadDargUiScript } = require("reactiveGuiCommand")
-let { startLogout } = require("%scripts/login/logout.nut")
 let { isPlatformSony, isPlatformXboxOne, targetPlatform } = require("%scripts/clientState/platform.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -32,9 +31,8 @@ let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut
 let { isInFlight } = require("gameplayBinding")
 let { blurHangar } = require("%scripts/hangar/hangarModule.nut")
 let { getMpChatControlsAllowMask } = require("%scripts/chat/mpChatState.nut")
-let { isLoggedIn, isAuthorized } = require("%scripts/login/loginStates.nut")
-
-require("%scripts/options/fonts.nut") //!!!FIX ME: Need move g_font to module. This require is used to create the global table g_font
+let { isLoggedIn, isAuthorized } = require("%appGlobals/login/loginState.nut")
+let g_font = require("%scripts/options/fonts.nut")
 
 dagui_propid_add_name_id("has_ime")
 dagui_propid_add_name_id("platformId")
@@ -241,7 +239,7 @@ handlersManager.__update({
         || handler.getclass() == gui_handlers.MainMenu
         || handler.getclass() == gui_handlers.FlightMenu
        )
-      startLogout()
+      eventbus_send("request_logout")
     else if (isInFlight())
       eventbus_send("gui_start_flight_menu")
     else
@@ -263,7 +261,7 @@ handlersManager.__update({
   function updatePostLoadCss() {
     local haveChanges = false
 
-    let font = ::g_font.getCurrent()
+    let font = g_font.getCurrent()
     if (getCurrentFont() != font) {
       this.shouldResetFontsCache = true
       haveChanges = true

@@ -21,16 +21,22 @@ let { EASY_TASK, MEDIUM_TASK, HARD_TASK } = require("%scripts/unlocks/battleTask
 let { isHardTaskIncomplete, getCurrentBattleTasks, getActiveBattleTasks, getWidgetsTable,
   isBattleTaskActual, isBattleTask, isSpecialBattleTask, isBattleTasksAvailable, isBattleTaskDone,
   isBattleTaskSameDiff, isBattleTaskNew, getBattleTaskRerollCost, canGetBattleTaskReward,
-  getBattleTaskById, getBattleTaskWithAvailableAward, getShowAllTasks, mkUnlockConfigByBattleTask,
+  getBattleTaskById, getBattleTaskWithAvailableAward, getShowAllTasks,
   getBattleTasksByDiff, markBattleTaskSeen, markAllBattleTasksSeen, saveSeenBattleTasksData,
   requestBattleTaskReward, rerollBattleTask, rerollSpecialTask,
-  setBattleTasksUpdateTimer, getBattleTaskNameById, getBattleTaskView,
-  canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty
+  getBattleTaskNameById, canPlayerInteractWithDifficulty, withdrawTasksArrayByDifficulty
 } = require("%scripts/unlocks/battleTasks.nut")
+let { mkUnlockConfigByBattleTask, getBattleTaskView, setBattleTasksUpdateTimer } = require("%scripts/unlocks/battleTasksView.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
+let { getWarbondsBalanceText, getCurrentWarbond, openWarbondsShop, isWarbondsShopButtonVisible
+} = require("%scripts/warbonds/warbondsManager.nut")
+let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 function guiStartBattleTasksWnd(taskId = null, tabType = null) {
   if (!isBattleTasksAvailable())
@@ -198,7 +204,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.currentTabType == BattleTasksWndTab.BATTLE_TASKS_HARD) {
       let obj = this.scene.findObject("warbond_shop_progress_block")
-      let curWb = ::g_warbonds.getCurrentWarbond()
+      let curWb = getCurrentWarbond()
       g_warbonds_view.createSpecialMedalsProgress(curWb, obj, this, !isHardTaskIncomplete.value)
     }
   }
@@ -236,7 +242,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function fillTasksHistory() {
-    let finishedTasksUserlogsArray = ::getUserLogsList(this.userglogFinishedTasksFilter)
+    let finishedTasksUserlogsArray = getUserLogsList(this.userglogFinishedTasksFilter)
 
     let view = {
       doneTasksTable = {}
@@ -334,7 +340,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateButtons(config = null) {
     showObjById("btn_warbonds_shop",
-      ::g_warbonds.isShopButtonVisible() && !isHandlerInScene(gui_handlers.WarbondsShop), this.scene)
+      isWarbondsShopButtonVisible() && !isHandlerInScene(gui_handlers.WarbondsShop), this.scene)
 
     let task = getBattleTaskById(config)
     let isTask = isBattleTask(task)
@@ -408,7 +414,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (idx, tabData in this.tabsList) {
       view.tabs.append({
         tabName = tabData.text
-        navImagesText = ::get_navigation_images_text(idx, this.tabsList.len())
+        navImagesText = getNavigationImagesText(idx, this.tabsList.len())
         hidden = ("isVisible" in tabData) && !tabData.isVisible()
       })
     }
@@ -469,8 +475,8 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let warbondsObj = this.scene.findObject("warbonds_balance")
-    warbondsObj.setValue(::g_warbonds.getBalanceText())
-    warbondsObj.tooltip = loc("warbonds/maxAmount", { warbonds = ::g_warbonds.getLimit() })
+    warbondsObj.setValue(getWarbondsBalanceText())
+    warbondsObj.tooltip = loc("warbonds/maxAmount", { warbonds = maxAllowedWarbondsBalance.get() })
   }
 
   function onEventProfileUpdated(_p) {
@@ -478,7 +484,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onWarbondsShop() {
-    ::g_warbonds.openShop()
+    openWarbondsShop()
   }
 
   function getCurrentConfig() {
@@ -496,7 +502,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let awardsList = []
     foreach (id in config.names)
-      awardsList.append(::build_log_unlock_data(::build_conditions_config(getUnlockById(id))))
+      awardsList.append(::build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
 
     showUnlocksGroupWnd(awardsList, loc("unlocks/requirements"))
   }

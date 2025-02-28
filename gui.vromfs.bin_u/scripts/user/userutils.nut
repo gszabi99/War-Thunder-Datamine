@@ -15,6 +15,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK
 } = require("%scripts/options/optionsExtNames.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { get_option_in_mode } = require("%scripts/options/optionsExt.nut")
 
 function getMyStateData() {
   let profileInfo = getProfileInfo()
@@ -41,7 +42,7 @@ function getMyStateData() {
     dislikedMissions = prefParams.dislikedMissions
     craftsInfoByUnitsGroups = slotbarPresets.getCurCraftsInfo()
     platform = targetPlatform
-    fakeName = !::get_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY).value
+    fakeName = !get_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY).value
     queueProfileJwt = queueProfileJwt.value ?? ""
   }
 

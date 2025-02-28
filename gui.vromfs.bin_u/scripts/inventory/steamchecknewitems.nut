@@ -7,7 +7,9 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let logS = log_with_prefix("[Steam Items] ")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
+let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
+let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 
 let steamNewItems = mkWatched(persist, "steamNewItems", [])
 wlog(steamNewItems, "[Steam Items]: newitems ")
@@ -23,7 +25,7 @@ let steamItemdefidToInventoryItemdefid = {
 
 let showSteamItemNotification = function(itemInfo) {
   let { item, steamItemId } = itemInfo
-  ::showUnlockWnd({
+  showUnlockWnd({
     name = item.getName(false)
     desc = item.getLongDescription()
     popupImage = item.getIconName()
@@ -44,7 +46,7 @@ let showSteamItemNotification = function(itemInfo) {
 }
 
 function tryShowSteamItemsNotification(items = []) {
-  if (!isInMenu() || ::checkIsInQueue())
+  if (!isInMenu() || checkIsInQueue())
     return
 
   items.each(function(itemInfo) {
@@ -68,7 +70,7 @@ function steamCheckNewItems() {
     let steamItem = sItem
     let { itemDef, itemId } = steamItem
     let inventoryItemId = steamItemdefidToInventoryItemdefid?[itemDef] ?? itemDef
-    let item = ::ItemsManager.getInventoryItemById(inventoryItemId)
+    let item = getInventoryItemById(inventoryItemId)
     if (!item) {
       if (inventoryItemId not in unknownSteamNewItems.value)
         unknownSteamNewItems.mutate(@(v) v[inventoryItemId] <- steamItem)
@@ -121,7 +123,7 @@ function checkUnknownItems() {
 
 register_command(function(itemId = 20366) {
   let inventoryItemId = steamItemdefidToInventoryItemdefid?[itemId] ?? itemId
-  let item = ::ItemsManager.getInventoryItemById(inventoryItemId)
+  let item = getInventoryItemById(inventoryItemId)
   if (item == null)
     return
   showSteamItemNotification({

@@ -1,13 +1,15 @@
 from "%scripts/dagui_natives.nut" import get_online_client_cur_state
 from "%scripts/dagui_library.nut" import *
-from "%scripts/login/loginConsts.nut" import LOGIN_STATE
+from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
-let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { LOGIN_PROCESS, CONFIG_VALIDATION } = require("%scripts/g_listener_priority.nut")
+let { subscribe_handler, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut")
 let { eventbus_subscribe } = require("eventbus")
-let { isReadyToFullLoad, isLoggedIn, isAuthorized, isLoginStarted
-} = require("%scripts/login/loginStates.nut")
+let { isReadyToFullLoad, isLoggedIn, isAuthorized, isLoginStarted } = require("%appGlobals/login/loginState.nut")
+let { setCurLoginProcess, getCurLoginProcess } = require("%scripts/login/loginStates.nut")
+let { loadLoginHandler, addLoginState } = require("%scripts/login/loginManager.nut")
+let { initLoginPseudoThreadsConfig, restartLoginPseudoThreads } = require("%scripts/login/loginPseudoThreadsConfig.nut")
 
 enum LOGIN_PROGRESS {
   NOT_STARTED
@@ -25,7 +27,7 @@ let matchingStageToLoginState = {
 eventbus_subscribe("online_init_stage_finished",  function(evt){
   let {stage} = evt
   if (stage in matchingStageToLoginState)
-    ::g_login.addState(matchingStageToLoginState[stage])
+    addLoginState(matchingStageToLoginState[stage])
 })
 
 let class LoginProcess {
@@ -37,7 +39,7 @@ let class LoginProcess {
     if (isAuthorized.get() || isLoginStarted.get())
       this.curProgress = LOGIN_PROGRESS.IN_LOGIN_WND
 
-    subscribe_handler(this, g_listener_priority.LOGIN_PROCESS)
+    subscribe_handler(this, LOGIN_PROCESS)
     this.nextStep()
   }
 
@@ -45,7 +47,7 @@ let class LoginProcess {
     let curMState = get_online_client_cur_state()
     foreach (mState, lState in matchingStageToLoginState)
       if (mState & curMState)
-        ::g_login.addState(lState)
+        addLoginState(lState)
   }
 
   function isValid() {
@@ -57,11 +59,11 @@ let class LoginProcess {
     this.curProgress++
 
     if (this.curProgress == LOGIN_PROGRESS.IN_LOGIN_WND)
-      ::g_login.loadLoginHandler()
+      loadLoginHandler()
     else if (this.curProgress == LOGIN_PROGRESS.INIT_ONLINE_BINARIES) {
       //connect to matching
       let successCb = Callback(function() {
-                          ::g_login.addState(LOGIN_STATE.MATCHING_CONNECTED)
+                          addLoginState(LOGIN_STATE.MATCHING_CONNECTED)
                         }, this)
       let errorCb   = Callback(function() {
                           this.destroy()
@@ -70,9 +72,9 @@ let class LoginProcess {
       checkShowMatchingConnect(successCb, errorCb, false)
     }
     else if (this.curProgress == LOGIN_PROGRESS.INIT_CONFIGS) {
-      ::g_login.initConfigs(
+      initLoginPseudoThreadsConfig(
         Callback(function() {
-          ::g_login.addState(LOGIN_STATE.CONFIGS_INITED)
+          addLoginState(LOGIN_STATE.CONFIGS_INITED)
         },
         this))
     }
@@ -105,4 +107,20 @@ let class LoginProcess {
   }
 }
 
-return LoginProcess
+function startLoginProcess(shouldCheckScriptsReload = false) {
+  if (getCurLoginProcess()?.isValid() ?? false)
+    return
+  setCurLoginProcess(LoginProcess(shouldCheckScriptsReload))
+}
+
+addListenersWithoutEnv({
+  function ScriptsReloaded(_) {
+    if (!isLoggedIn.get() && isAuthorized.get())
+      startLoginProcess(true)
+    restartLoginPseudoThreads()
+  }
+}, CONFIG_VALIDATION)
+
+return {
+  startLoginProcess
+}

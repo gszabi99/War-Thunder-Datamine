@@ -8,7 +8,8 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { getPvpRespawnsOnUnitType, isStatsLoaded, isMeNewbieOnUnitType
 } = require("%scripts/myStats.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 
 const MAX_WEAPONS_TUTOR_SHOWS = 2
 const MIN_RESPAWNS_REQUIRED = 8
@@ -71,7 +72,7 @@ function checkShowShipWeaponsTutor(weaponsHandler, columnsConfig) {
   if (secondaryWeaponIds.len() > 0)
     steps.append(mkWeaponsTutorStep(secondaryWeaponIds, loc("tutor/weapons/step3")))
 
-  ::gui_modal_tutor(steps, weaponsHandler)
+  gui_modal_tutor(steps, weaponsHandler)
 }
 
 return {

@@ -46,8 +46,11 @@ let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByIn
 } = require("%scripts/crew/crewDiscount.nut")
 let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
 } = require("%scripts/slotbar/crewsList.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
+let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
-::gui_modal_crew <- function gui_modal_crew(params = {}) {
+function gui_modal_crew(params = {}) {
   if (hasFeature("CrewSkills"))
     loadHandler(gui_handlers.CrewModalHandler, params)
   else
@@ -291,7 +294,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let tabData = {
         id = page.id
         tabName = loc($"crew/{page.id}")
-        navImagesText = ::get_navigation_images_text(index, this.pages.len())
+        navImagesText = getNavigationImagesText(index, this.pages.len())
       }
 
       if (this.isSkillsPage(page))
@@ -743,7 +746,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onSlotDblClick(_slotCrew) {
     if (this.curUnit != null)
-      this.checkSkillPointsAndDo(@() ::open_weapons_for_unit(this.curUnit))
+      this.checkSkillPointsAndDo(@() open_weapons_for_unit(this.curUnit))
   }
 
   function beforeSlotbarChange(action, cancelAction) {
@@ -811,7 +814,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           this.onApply() }, this)
       }
     ]
-    ::gui_modal_tutor(steps, this)
+    gui_modal_tutor(steps, this)
   }
 
   function canUpgradeCrewSpec(upgCrew) {
@@ -861,7 +864,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         cb = Callback(this.onUpgrCrewSpec1ConfirmTutorial, this)
       }
     ]
-    ::gui_modal_tutor(steps, this)
+    gui_modal_tutor(steps, this)
   }
 
   function onUpgrCrewSpec1ConfirmTutorial() {
@@ -892,7 +895,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         shortcut = GAMEPAD_ENTER_SHORTCUT
       }
     ]
-    ::gui_modal_tutor(steps, this)
+    gui_modal_tutor(steps, this)
     saveLocalByAccount("upgradeCrewSpecTutorialPassed", true)
   }
 
@@ -905,7 +908,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         shortcut = GAMEPAD_ENTER_SHORTCUT
       }
     ]
-    ::gui_modal_tutor(steps, this)
+    gui_modal_tutor(steps, this)
   }
 
   function onEventCrewSkillsChanged(params) {
@@ -1130,4 +1133,8 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return "".concat(loc("crew/skillUpgradesAvalible"), ":\n", "\n".join(skills.map(@(skillName) loc($"crew/{skillName}"))))
   }
 
+}
+
+return {
+  gui_modal_crew
 }

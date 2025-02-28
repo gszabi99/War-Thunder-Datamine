@@ -6,13 +6,14 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_game_mode } = require("mission")
-let { set_option, create_options_container } = require("%scripts/options/optionsExt.nut")
+let { set_option, create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTCAMERAY,
   USEROPT_MOUSE_AIM_SENSE, USEROPT_ZOOM_SENSE, USEROPT_GUNNER_INVERTY,
   USEROPT_GUNNER_VIEW_SENSE, USEROPT_HEADTRACK_ENABLE, USEROPT_HEADTRACK_SCALE_X,
   USEROPT_HEADTRACK_SCALE_Y
 } = require("%scripts/options/optionsExtNames.nut")
 let { switchControlsMode } = require("%scripts/controls/startControls.nut")
+let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
 
 gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.BASE
@@ -56,7 +57,7 @@ gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
 
   function onControlsHelp() {
     this.applyFunc = function() {
-      ::gui_modal_help(false, HELP_CONTENT_SET.CONTROLS)
+      gui_modal_help(false, HELP_CONTENT_SET.CONTROLS)
       this.applyFunc = null
     }
     this.applyOptions()
@@ -74,7 +75,7 @@ gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
   function checkHeadtrackRows() {
     let show = ps4_headtrack_is_attached() && ps4_headtrack_get_enable()
     foreach (o in [USEROPT_HEADTRACK_SCALE_X, USEROPT_HEADTRACK_SCALE_Y])
-      this.showOptionRow(::get_option(o), show)
+      this.showOptionRow(get_option(o), show)
     showObjById("btn_calibrate", show, this.scene)
   }
 

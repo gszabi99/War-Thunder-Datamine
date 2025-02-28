@@ -15,7 +15,7 @@ let { getUnitTooltipImage, getShipMaterialTexts, getUnitClassIco } = require("%s
 let { getUnitRole, getUnitBasicRole, getRoleText, getFullUnitRoleText, getUnitClassColor
 } = require("%scripts/unit/unitInfoRoles.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
-let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { isBullets, getModificationInfo, getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -410,7 +410,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
       let valueText = DataBlock()
       foreach (diff in g_difficulty.types)
         if (diff.egdCode != EGD_NONE)
-          valueText[diff.getEgdName()] = getWeaponInfoText(unit.name)
+          valueText[diff.getEgdName()] = getWeaponInfoText(unit.name, makeWeaponInfoData(unit.name, {}))
       return valueText
     }
   }

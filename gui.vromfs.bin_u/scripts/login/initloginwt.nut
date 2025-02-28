@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 foreach (fn in [
-                 "login.nut"
                  "loginWnd.nut"
                  "steamLogin.nut"
                  "epicLogin.nut"

@@ -1,0 +1,272 @@
+{
+  "tdiv": {
+    "id": "page_content",
+    "size": "pw, ph",
+    "profileContentLeft": {
+      "page": "collections",
+      "listbox": {
+        "id": "collections",
+        "size": "pw, ph",
+        "position": "relative",
+        "flow-align": "left",
+        "isBigSizeList": "yes",
+        "beyondScrollbar": "yes",
+        "navigator": "posNavigator",
+        "moveX": "linear",
+        "moveY": "closest",
+        "navigatorShortcuts": "yes",
+        "move-only-hover": "yes",
+        "on_select": "onCollectionSelect"
+      }
+    },
+    "profileContentSeparator": {},
+    "profileContentRight": {
+      "flow": "vertical",
+      "tdiv": [
+        {
+          "id": "decorator_info",
+          "margin-top": "2@blockInterval + 1@buttonHeight",
+          "total-input-transparent": "yes",
+          "size": "pw, 400@sf/@pf",
+          "flow": "horizontal",
+          "tdiv": [
+            {
+              "position": "relative",
+              "size": "1@itemIconBlockHeight, 1@itemIconBlockHeight",
+              "img": {
+                "id": "image",
+                "position": "relative",
+                "size": "pw, ph",
+                "background-svg-size": "pw, ph",
+                "background-repeat": "aspect-ratio"
+              }
+            },
+            {
+              "position": "relative",
+              "id": "text_container",
+              "flow": "vertical",
+              "width": "fw",
+              "margin-left": "2@blockInterval",
+              "textAreaSmall": {
+                "id": "header",
+                "max-width": "6@decalIconHeight",
+                "margin-top": "2@blockInterval",
+                "hideEmptyText": "yes",
+                "overlayTextColor": "unlockHeader"
+              },
+              "textareaNoTab": [
+                {
+                  "id": "description",
+                  "margin-top": "@blockInterval",
+                  "hideEmptyText": "yes",
+                  "max-width": "6@decalIconHeight",
+                  "smallFont": "yes"
+                },
+                {
+                  "id": "price",
+                  "display": "hide",
+                  "max-width": "6@decalIconHeight",
+                  "hideEmptyText": "yes",
+                  "margin-top": "@blockInterval"
+                }
+              ],
+              "tdiv": [
+                {
+                  "id": "conditions",
+                  "flow": "horizontal",
+                  "margin-top": "2@blockInterval",
+                  "cardImg": {
+                    "id": "state",
+                    "size": "@unlockIconSize, @unlockIconSize",
+                    "background-image": "#ui/gameuiskin#favorite",
+                    "margin-right": "@blockInterval"
+                  },
+                  "tdiv": {
+                    "pos": "0, ph/2-h/2",
+                    "position": "relative",
+                    "flow": "vertical",
+                    "challengeDescriptionProgress": {
+                      "id": "progress",
+                      "value": "",
+                      "display": "hide"
+                    },
+                    "textareaNoTab": [
+                      {
+                        "id": "mainCond",
+                        "max-width": "6@decalIconHeight",
+                        "overflow": "hidden",
+                        "smallFont": "yes",
+                        "margin-top": "@blockInterval",
+                        "hideEmptyText": "yes"
+                      },
+                      {
+                        "id": "multDesc",
+                        "max-width": "6@decalIconHeight",
+                        "overflow": "hidden",
+                        "smallFont": "yes"
+                      },
+                      {
+                        "id": "conds",
+                        "max-width": "6@decalIconHeight",
+                        "overflow": "hidden",
+                        "smallFont": "yes",
+                        "margin-top": "@blockInterval",
+                        "hideEmptyText": "yes"
+                      },
+                      {
+                        "id": "obtain_info",
+                        "hideEmptyText": "yes",
+                        "margin-top": "@blockInterval",
+                        "max-width": "6@decalIconHeight",
+                        "smallFont": "yes"
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "additional_description",
+                  "behavior": "posNavigator",
+                  "margin-top": "8@dp",
+                  "flow": "v-flow",
+                  "width": "pw",
+                  "height": "160@sf/@pf",
+                  "display": "hide",
+                  "hideEmptyText": "yes",
+                  "canSelectNone": "yes"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "position": "relative",
+          "Button_text": [
+            {
+              "id": "btn_preview",
+              "text": "#mainmenu/btnPreview",
+              "btnName": "L3",
+              "_on_click": "onDecoratorPreview",
+              "display": "hide",
+              "enable": "no",
+              "showButtonImageOnConsole": "no",
+              "class": "image",
+              "img": {
+                "background-image": "#ui/gameuiskin#btn_preview.svg"
+              },
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_marketplace_find_coupon",
+              "text": "#msgbox/btn_find_on_marketplace",
+              "btnName": "X",
+              "on_click": "onBtnMarketplaceFindCoupon",
+              "display": "hide",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "secondary",
+              "class": "image",
+              "buttonWink": {},
+              "img": {
+                "background-image": "#ui/gameuiskin#gc.svg"
+              },
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_store",
+              "text": "#items/shop/emptyTab/toShopButton",
+              "btnName": "X",
+              "on_click": "onItemsShop",
+              "display": "hide",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "secondary",
+              "class": "image",
+              "buttonWink": {},
+              "img": {
+                "background-image": "#ui/gameuiskin#store_icon.svg"
+              },
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_marketplace_consume_coupon",
+              "text": "#item/consume/coupon",
+              "btnName": "X",
+              "on_click": "onBtnMarketplaceConsumeCoupon",
+              "display": "hide",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "secondary",
+              "class": "image",
+              "buttonWink": {},
+              "img": {
+                "background-image": "#ui/gameuiskin#gc.svg"
+              },
+              "ButtonImg": {}
+            },
+            {
+              "id": "btn_buy_decorator",
+              "text": "#mainmenu/btnOrder",
+              "btnName": "X",
+              "_on_click": "onBuyDecorator",
+              "hideText": "yes",
+              "display": "hide",
+              "showButtonImageOnConsole": "no",
+              "visualStyle": "purchase",
+              "buttonWink": {},
+              "buttonGlance": {},
+              "ButtonImg": {},
+              "textarea": {
+                "id": "btn_buy_decorator_text",
+                "class": "buttonText"
+              }
+            }
+          ]
+        },
+        {
+          "position": "relative",
+          "size": "pw, 2@sf/@pf",
+          "background-color": "#4B4F53",
+          "margin": "0, 6@sf/@pf, 0, 19@sf/@pf"
+        },
+        {
+          "size": "pw, fh",
+          "flow": "vertical",
+          "overflow-y": "auto",
+          "tdiv": {
+            "id": "collections_list",
+            "width": "pw",
+            "flow": "h-flow",
+            "total-input-transparent": "yes",
+            "behavior": "posNavigator",
+            "navigatorShortcuts": "yes",
+            "moveX": "closest",
+            "moveY": "linear",
+            "clearOnFocusLost": "yes",
+            "on_select": "onSelectDecorator",
+            "on_hover": "onCollectionsListFocusChange",
+            "on_unhover": "onCollectionsListFocusChange"
+          }
+        }
+      ]
+    }
+  },
+  "CheckBox": {
+    "id": "checkbox_only_uncompleted",
+    "position": "absolute",
+    "text": "#collection/only_uncompleted",
+    "tooltip": "#collection/only_uncompleted/hint",
+    "on_change_value": "onOnlyUncompletedCheck",
+    "padding-left": "1@blockInterval",
+    "margin-top": "1@blockInterval",
+    "margin-left": "0.25*pw",
+    "btnName": "Y",
+    "ButtonImg": {},
+    "CheckBoxImg": {}
+  },
+  "textareaNoTab": {
+    "id": "all_collections_completed",
+    "height": "1@buttonHeight",
+    "position": "absolute",
+    "pos": "50%pw-50%w, 50%ph-50%h",
+    "text-align": "center",
+    "text": "#collection/all_collections_completed",
+    "enable": "no"
+  }
+}

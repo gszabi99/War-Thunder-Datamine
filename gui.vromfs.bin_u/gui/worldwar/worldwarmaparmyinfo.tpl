@@ -1,5 +1,5 @@
 tdiv {
-  size:t='1@wwMapPanelInfoWidth, ph'
+  size:t='pw, ph'
   flow:t='vertical'
 
   ownerPanel {
@@ -78,75 +78,59 @@ tdiv {
     <<#needSmallSize>>needSmallSize:t='yes'<</needSmallSize>>
 
     <<#isFormation>>
-      block {
-        activeText {
-          id:t='army_count'
-          tooltip:t='<<getUnitsIconTooltip>>'
-          text:t='<<getUnitsCountTextIcon>>'
-        }
+      activeText {
+        id:t='army_count'
+        tooltip:t='<<getUnitsIconTooltip>>'
+        text:t='<<getUnitsCountTextIcon>>'
       }
-      block {
+      activeText {
+        id:t='army_morale'
+        tooltip:t='<<getMoraleIconTooltip>>'
+        text:t='<<getMoralText>>'
+        blockSeparator{}
+      }
+    <</isFormation>>
+    <<^isFormation>>
+      activeText {
+        hasTimer:t='yes'
+        id:t='army_status_time'
+        tooltip:t='<<getActionStatusIconTooltip>>'
+        text:t='<<getActionStatusTimeText>>'
+      }
+      activeText {
+        id:t='army_count'
+        tooltip:t='<<getUnitsIconTooltip>>'
+        text:t='<<getUnitsCountTextIcon>>'
+        blockSeparator{}
+      }
+      <<#hasArtilleryAbility>>
+        activeText {
+          id:t='army_ammo'
+          tooltip:t='<<getAmmoTooltip>>'
+          text:t='<<getAmmoText>>'
+          blockSeparator{}
+        }
+        activeText {
+          hasTimer:t='yes'
+          id:t='army_ammo_refill_time'
+          tooltip:t='<<getAmmoRefillTimeTooltip>>'
+          text:t='<<getAmmoRefillTime>>'
+          blockSeparator{}
+        }
+      <</hasArtilleryAbility>>
+      <<^isArtillery>>
         activeText {
           id:t='army_morale'
           tooltip:t='<<getMoraleIconTooltip>>'
           text:t='<<getMoralText>>'
           blockSeparator{}
         }
-      }
-    <</isFormation>>
-    <<^isFormation>>
-      block {
-        hasTimer:t='yes'
         activeText {
-          id:t='army_status_time'
-          tooltip:t='<<getActionStatusIconTooltip>>'
-          text:t='<<getActionStatusTimeText>>'
-        }
-      }
-      block {
-        activeText {
-          id:t='army_count'
-          tooltip:t='<<getUnitsIconTooltip>>'
-          text:t='<<getUnitsCountTextIcon>>'
+          hasTimer:t='yes'
+          id:t='army_return_time'
+          tooltip:t='<<getArmyReturnTimeTooltip>>'
+          text:t='<<getAirFuelLastTime>>'
           blockSeparator{}
-        }
-      }
-      <<#hasArtilleryAbility>>
-        block {
-          activeText {
-            id:t='army_ammo'
-            tooltip:t='<<getAmmoTooltip>>'
-            text:t='<<getAmmoText>>'
-            blockSeparator{}
-          }
-        }
-        block {
-          hasTimer:t='yes'
-          activeText {
-            id:t='army_ammo_refill_time'
-            tooltip:t='<<getAmmoRefillTimeTooltip>>'
-            text:t='<<getAmmoRefillTime>>'
-            blockSeparator{}
-          }
-        }
-      <</hasArtilleryAbility>>
-      <<^isArtillery>>
-        block {
-          activeText {
-            id:t='army_morale'
-            tooltip:t='<<getMoraleIconTooltip>>'
-            text:t='<<getMoralText>>'
-            blockSeparator{}
-          }
-        }
-        block {
-          hasTimer:t='yes'
-          activeText {
-            id:t='army_return_time'
-            tooltip:t='<<getArmyReturnTimeTooltip>>'
-            text:t='<<getAirFuelLastTime>>'
-            blockSeparator{}
-          }
         }
       <</isArtillery>>
     <</isFormation>>

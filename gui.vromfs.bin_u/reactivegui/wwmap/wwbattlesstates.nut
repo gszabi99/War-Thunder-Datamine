@@ -10,9 +10,12 @@ let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
 let { getPlayerSideStr } = require("%rGui/wwMap/wwOperationStates.nut")
 let { getArtilleryUnits, getInfantryUnits } = require("%rGui/wwMap/wwConfigurableValues.nut")
 let { battleStates } = require("%rGui/wwMap/wwMapTypes.nut")
+let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
 
 let battlesInfo = Watched([])
 let hoveredBattle = Watched("")
+
+let battleNameForTooltip = keepref(Computed(@() (hoveredBattle.get() && isMapHovered.get()) ? hoveredBattle.get() : null))
 
 function updateBattlesStates() {
   let bi = DataBlock()
@@ -152,9 +155,12 @@ function updateHoveredBattle(battle) {
   if(hoveredBattle.get() == battleName)
     return
   hoveredBattle.set(battleName)
+}
+
+battleNameForTooltip.subscribe(function(battleName) {
   if(battleName != null)
     sendToDagui("ww.hoverBattle", { battleName })
-}
+})
 
 return {
   battlesInfo

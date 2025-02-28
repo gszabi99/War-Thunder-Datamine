@@ -1,6 +1,5 @@
 {
   "pierceDispersion": 0.05,
-  "explodeChanceOnDeadPart": 0.5,
   "cumulativeThicknessThreshold": 5.0,
   "cumulativePierceThreshold": 1000.0,
   "armorFragmentsThicknessThreshold": 3.3,
@@ -506,6 +505,29 @@
         0.0
       ]
     }
+  },
+  "fire": {
+    "voxelBoxResolution": 80,
+    "minVoxelSize": 0.02,
+    "minObstacleSize": 0.02
+  },
+  "shatter": {
+    "maxDistForMaxPenetrationTest": 0.01
+  },
+  "kineticDamage": {
+    "damageType": "generic"
+  },
+  "cumulativeDamage": {
+    "damageType": "cumulative"
+  },
+  "splashDamage": {
+    "damageType": "explosion"
+  },
+  "shatterDamage": {
+    "damageType": "shatter"
+  },
+  "secondaryShatterDamage": {
+    "damageType": "secondaryShatter"
   },
   "ricochetPresets": {
     "default": {
@@ -4554,9 +4576,18 @@
       "hpForRepair": 0.7
     },
     "fire_control_system_dm": {
-      "speed": 1.0,
+      "speed": 1.5,
       "completely": true,
-      "modRequired": false
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
+    },
+    "fire_control_system_01_dm": {
+      "speed": 1.5,
+      "completely": true,
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "electronic_equipment_dm": {
       "speed": 1.0,
@@ -4575,17 +4606,23 @@
     "autoloader_dm": {
       "speed": 1.2,
       "completely": true,
-      "modRequired": false
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "power_system_dm": {
-      "speed": 0.8,
+      "speed": 1.2,
       "completely": true,
-      "modRequired": false
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     },
     "driver_controls_dm": {
-      "speed": 1.3,
+      "speed": 1.9,
       "completely": true,
-      "modRequired": false
+      "modRequired": false,
+      "partRepairHp": 1.0,
+      "hpForRepair": 0.7
     }
   },
   "leftTrackNodes": {
@@ -4746,10 +4783,10 @@
     "cn_ztz_99": 140,
     "cn_ztz_99_w": 140,
     "cn_ztz_99a": 140,
-    "destroyer_heavy_tank_h": 266,
     "fr_amc_34": 134,
     "fr_amc_35": 134,
     "fr_amd_35": 134,
+    "fr_amd_35_kwk39": 125,
     "fr_amd_35_sa35": 134,
     "fr_aml_90": 134,
     "fr_amr_35_zt3": 134,
@@ -4815,7 +4852,7 @@
     "fr_m26_pershing": 140,
     "fr_m36b2_cefeo": 140,
     "fr_m3a3_stuart": 134,
-    "fr_m44": 134,
+    "fr_m44": 166,
     "fr_m46_patton": 140,
     "fr_m4a1_sherman": 140,
     "fr_m4a1_sherman_fl_10": 140,
@@ -4823,6 +4860,8 @@
     "fr_m4a3e2_sherman_jumbo": 140,
     "fr_m4a4_cn_75_50": 140,
     "fr_m4a4_sherman": 140,
+    "fr_marder_clovis": 140,
+    "fr_marder_df_105": 140,
     "fr_mars_15": 134,
     "fr_panhard_ebr_1951": 134,
     "fr_panhard_ebr_1954": 134,
@@ -4843,6 +4882,7 @@
     "germ_9a33bm3": 134,
     "germ_9a35_m": 134,
     "germ_amd_35_kwk": 134,
+    "germ_amd_35_kwk39": 125,
     "germ_at_gun_flak36": 134,
     "germ_at_gun_pak36": 134,
     "germ_at_gun_pak38": 134,
@@ -4854,8 +4894,8 @@
     "germ_flakpanzer_38t_Gepard": 134,
     "germ_flakpanzer_IV_Kugelblitz": 140,
     "germ_flakpanzer_IV_Ostwind": 140,
-    "germ_flakpanzer_IV_Ostwind_2": 140,
-    "germ_flakpanzer_IV_Ostwind_2_net": 140,
+    "germ_flakpanzer_IV_Ostwind_2": 134,
+    "germ_flakpanzer_IV_Ostwind_2_net": 134,
     "germ_flakpanzer_IV_Wirbelwind": 140,
     "germ_flakpanzer_I_ausf_A": 134,
     "germ_flakpanzer_V_Coelian": 140,
@@ -4893,9 +4933,10 @@
     "germ_leopard_a1a1_120": 140,
     "germ_leopard_c2_mexas": 140,
     "germ_m109g": 166,
-    "germ_m44": 134,
+    "germ_m44": 166,
     "germ_marder_1a1": 140,
     "germ_marder_1a3": 140,
+    "germ_marder_clovis": 140,
     "germ_marder_df_105": 140,
     "germ_mkpz_m47": 140,
     "germ_mkpz_m48a2c": 140,
@@ -5080,6 +5121,7 @@
     "it_btr_80a_hungary": 134,
     "it_c13_t90": 134,
     "it_c1_ariete": 140,
+    "it_c1_ariete_certezza": 140,
     "it_c1_ariete_preserie": 140,
     "it_c1_ariete_pso": 140,
     "it_centauro_mgs_120": 134,
@@ -5114,7 +5156,7 @@
     "it_m26a1_pershing": 140,
     "it_m36b1": 140,
     "it_m3a3_stuart": 134,
-    "it_m44": 134,
+    "it_m44": 166,
     "it_m47_105": 140,
     "it_m4a4_sherman": 140,
     "it_m60a1_ariete": 140,
@@ -5164,7 +5206,7 @@
     "jp_m36b2_jgsdf": 140,
     "jp_m41_walker_bulldog": 134,
     "jp_m42_duster": 134,
-    "jp_m44": 134,
+    "jp_m44": 166,
     "jp_m47_patton_II": 140,
     "jp_m4a3e8_76w_sherman": 140,
     "jp_navy_120mm_spg": 134,
@@ -5228,9 +5270,6 @@
     "jp_type_98_ke_ni": 134,
     "jp_type_98_ta_se": 134,
     "jp_type_99": 166,
-    "sdi_harpy": 140,
-    "sdi_hydra": 140,
-    "sdi_minotaur": 140,
     "sw_a_34_comet": 140,
     "sw_asrad_r": 134,
     "sw_bkan_1c": 166,
@@ -5327,6 +5366,7 @@
     "uk_9a35_m": 134,
     "uk_a17_mk_1_tetrarch": 134,
     "uk_a1e1_independent": 140,
+    "uk_a25_mk_8": 125,
     "uk_a27m_cromwell_1": 140,
     "uk_a27m_cromwell_5": 140,
     "uk_a27m_cromwell_5_rp3": 140,
@@ -5352,8 +5392,8 @@
     "uk_alecto_mk_1": 134,
     "uk_armored_car_aec_mk_2": 134,
     "uk_armored_car_mk_2_aa": 134,
-    "uk_at_gun_qf17pounder": 538,
-    "uk_at_gun_qf6pounder": 538,
+    "uk_at_gun_qf17pounder": 134,
+    "uk_at_gun_qf6pounder": 134,
     "uk_bosvark": 134,
     "uk_centurion_action_x": 140,
     "uk_centurion_mk_1": 140,
@@ -5408,7 +5448,7 @@
     "uk_m109a1": 166,
     "uk_m3_stuart": 134,
     "uk_m3a1_stuart": 134,
-    "uk_m44": 134,
+    "uk_m44": 166,
     "uk_m4a5_ram_2": 140,
     "uk_marmon_herrington_mk_6_2pdr": 134,
     "uk_marmon_herrington_mk_6_6pdr": 134,
@@ -5436,6 +5476,7 @@
     "uk_t17e2": 134,
     "uk_t_90s_bheeshma": 140,
     "uk_tog_2": 140,
+    "uk_tracked_rapier": 134,
     "uk_truck_us6_studebaker_board": 134,
     "uk_truck_us6_studebaker_tent": 134,
     "uk_ttd": 140,
@@ -5454,7 +5495,7 @@
     "us_ags_teledyne": 134,
     "us_amx_13_75": 134,
     "us_amx_13_90": 134,
-    "us_at_gun_m1": 538,
+    "us_at_gun_m1": 134,
     "us_ccvl": 140,
     "us_halftrack_m13": 134,
     "us_halftrack_m15": 134,
@@ -5511,7 +5552,7 @@
     "us_m3a3_bradley": 134,
     "us_m41_walker_bulldog": 134,
     "us_m42_duster": 134,
-    "us_m44": 134,
+    "us_m44": 166,
     "us_m46_patton": 140,
     "us_m46_patton_73_armor_bat": 140,
     "us_m47_patton_II": 140,
@@ -5588,11 +5629,14 @@
     "us_truck_us6_studebaker_tent": 134,
     "us_xm1_chrysler": 140,
     "us_xm1_gm": 140,
+    "us_xm246": 140,
     "us_xm_8": 134,
     "us_xm_800t": 134,
     "us_xm_803": 166,
     "us_xm_975_roland": 134,
     "ussr_2s1": 140,
+    "ussr_2s19_m1": 166,
+    "ussr_2s19_m2": 166,
     "ussr_2s25": 134,
     "ussr_2s25m": 134,
     "ussr_2s38": 134,
@@ -5604,7 +5648,7 @@
     "ussr_a_12_mk_2_matilda_2A_F96": 140,
     "ussr_asu_57": 134,
     "ussr_asu_85": 134,
-    "ussr_at_gun_53k": 538,
+    "ussr_at_gun_53k": 134,
     "ussr_ba_11": 134,
     "ussr_bm_13n": 134,
     "ussr_bm_31_12": 134,
@@ -5771,6 +5815,7 @@
     "fr_battleship_courbet_class_courbet": 112,
     "fr_battleship_courbet_class_paris": 112,
     "fr_battleship_dunkerque": 112,
+    "fr_battleship_strasbourg": 112,
     "fr_cruiser_chateaurenault_class_guichen": 82,
     "fr_cruiser_dugauy_class_dugauy_trouin": 84,
     "fr_cruiser_dugauy_class_primaguet": 85,
@@ -5794,16 +5839,20 @@
     "fr_destroyer_marceau_class_marceau": 64,
     "fr_destroyer_mogador_class_mogador": 64,
     "fr_destroyer_vauquelin_class_vauquelin": 64,
+    "fr_flower_class_aconit": 72,
     "fr_frigate_croix_de_lorraine_class_la_surprise": 72,
     "fr_lcg_m_l9059": 33,
+    "fr_marne_class_marne": 55,
     "fr_mtb96_vosper": 28,
     "fr_p730_combattante": 43,
     "fr_type40k_vedette": 23,
     "fr_vlt1": 25,
     "fr_vlt2": 25,
     "fr_vtb11": 23,
+    "fr_vtb12_mod": 23,
     "fr_vtb13": 23,
     "fr_vtb14": 23,
+    "fr_vtb18": 23,
     "fr_vtb8": 23,
     "fr_vtb9": 23,
     "germ_artilleriefahrprahm_typ_d1": 43,
@@ -5906,6 +5955,7 @@
     "it_destroyer_impetuoso_class_impetuoso": 70,
     "it_destroyer_leone_class": 58,
     "it_destroyer_leone_class_tigre": 58,
+    "it_destroyer_maestrale_class_grecale": 64,
     "it_destroyer_navigatori_class_verazzano": 64,
     "it_destroyer_soldati_serie1": 76,
     "it_destroyer_soldati_serie1_camicianera": 76,
@@ -5970,6 +6020,7 @@
     "jp_destroyer_hayanami": 73,
     "jp_destroyer_isuzu": 72,
     "jp_destroyer_kiyoshimo": 73,
+    "jp_destroyer_matsu": 58,
     "jp_destroyer_momi": 64,
     "jp_destroyer_murasame": 63,
     "jp_destroyer_mutsuki": 76,
@@ -5993,6 +6044,7 @@
     "jp_sehatei_mod1": 35,
     "jp_t14_class": 23,
     "jp_t14_class_mod01": 23,
+    "jp_t14_class_mod02": 23,
     "jp_t51a": 30,
     "jp_t51b": 30,
     "jp_type1_pt2": 33,
@@ -6018,6 +6070,7 @@
     "uk_battleship_marlborough": 112,
     "uk_battleship_orion": 112,
     "uk_battleship_q_elizabet_class_barham": 96,
+    "uk_battleship_q_elizabet_class_warspite": 112,
     "uk_battleship_rodney": 125,
     "uk_brave_borderer": 30,
     "uk_corvette_orla": 72,
@@ -6080,6 +6133,7 @@
     "uk_higgins_78ft_mtb422": 27,
     "uk_isles_class_trawler": 72,
     "uk_minelayer_abdiel_class_abdiel": 67,
+    "uk_mtb35_vosper": 107,
     "uk_mtb_1series": 23,
     "uk_mtb_2series": 27,
     "uk_mtb_vosper_1series": 30,
@@ -6230,6 +6284,7 @@
     "ussr_mpk_pr1331m": 58,
     "ussr_od_200": 30,
     "ussr_pr253l": 28,
+    "ussr_pr_103_sm4": 29,
     "ussr_pr_1204": 48,
     "ussr_pr_1204_late": 46,
     "ussr_pr_123bis": 23,

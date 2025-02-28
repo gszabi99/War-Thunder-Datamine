@@ -35,17 +35,17 @@ let shortLangToEulaLang = {
 
 function getEulaVersion() {
   if ( eulaVesion == -1) {
-    eulaVesion = to_integer_safe(loc("eula_version", "-1"))
+    eulaVesion = to_integer_safe(loc("eula_version", "12"))
   }
   return eulaVesion
 }
 
 function getExistFileNameByPrefixAndPostfix(prefix, postfix) {
-  local fileName = $"lang/{prefix}eula{postfix}.txt"
+  local fileName = $"%langTxt/{prefix}eula{postfix}.txt"
   if (file_exists(fileName))
     return fileName
 
-  fileName = $"lang/{prefix}eula.txt" //check eula for EN
+  fileName = $"%langTxt/{prefix}eula.txt" //check eula for EN
   return file_exists(fileName) ? fileName : null
 }
 

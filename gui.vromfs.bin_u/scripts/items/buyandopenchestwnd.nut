@@ -19,7 +19,8 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { getFullUnitRoleText } = require("%scripts/unit/unitInfoRoles.nut")
-let { getEntitlementConfig, getEntitlementShortName, getEntitlementAmount } = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementConfig, getEntitlementShortName, getEntitlementAmount, getEntitlementFullTimeText
+} = require("%scripts/onlineShop/entitlements.nut")
 let { Cost } = require("%scripts/money.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { IPoint2 } = require("dagor.math")
@@ -30,11 +31,13 @@ let { enableObjsByTable, activateObjsByTable } = require("%sqDagui/daguiUtil.nut
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getPrizeText } = require("%scripts/items/prizesView.nut")
+let { getPrizeText, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
 let { getBuyAndOpenChestWndStyle } = require("%scripts/items/buyAndOpenChestWndStyles.nut")
 let regexp2 = require("regexp2")
 let { gerRecentItemsLogs } = require("%scripts/userLog/userLog.nut")
 let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
+let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
+let { getTrophyRewardType } = require("%scripts/items/trophyReward.nut")
 
 const NEXT_PRIZE_ANIM_TIMER_ID = "timer_start_prize_animation"
 const CHEST_OPEN_FINISHED_ANIM_TIMER_ID = "timer_finish_open_chest_animation"
@@ -227,7 +230,7 @@ let offerTypes = {
     }
 
     function getImage(prize, params = {}) {
-      let trophy = params?.trophy ?? ::ItemsManager.findItemById(prize.item)
+      let trophy = params?.trophy ?? findItemById(prize.item)
       if (trophy == null)
         return null
 
@@ -236,7 +239,7 @@ let offerTypes = {
         let unit = getAircraftByName(prizeForIcon.unit)
         return getUnitPrizeIcon(unit)
       }
-      return "".concat( "width:t='h';", ::trophyReward.getImageByConfig(prizeForIcon, true, ""))
+      return "".concat( "width:t='h';", getPrizeImageByConfig(prizeForIcon, true, ""))
     }
 
     getPrizeTooltipId = @(prize) getTooltipType("ITEM").getTooltipId(to_integer_safe(prize.item, prize.item, false))
@@ -291,9 +294,7 @@ let offerTypes = {
       let ent = getEntitlementConfig(prize.entitlement)
       if (ent == null)
         return null
-      let timeText = "ttl" in ent ? loc("measureUnits/full/days", { n = ent.ttl })
-        : "httl" in ent ? loc("measureUnits/full/hours", { n = ent.httl })
-        : ""
+      let timeText = getEntitlementFullTimeText(ent)
       return [
         {
           text = timeText != "" ? timeText : null
@@ -308,7 +309,7 @@ let offerTypes = {
   }
   item = {
     function getTextView(prize, params = null) {
-      local item = params?.item ?? ::ItemsManager.findItemById(prize.item)
+      local item = params?.item ?? findItemById(prize.item)
       if (item == null)
         return null
 
@@ -347,13 +348,13 @@ let offerTypes = {
     }
 
     function getImage(prize, params = null) {
-      local item = params?.item ?? ::ItemsManager.findItemById(prize.item)
+      local item = params?.item ?? findItemById(prize.item)
       if (item == null)
         return null
 
       item = item.getContentItem() ?? item
       if (item.iType == itemType.VEHICLE)
-        return "".concat( "width:t='1.5@itemWidth';", ::trophyReward.getImageByConfig(prize, true, ""))
+        return "".concat( "width:t='1.5@itemWidth';", getPrizeImageByConfig(prize, true, ""))
       return null
     }
 
@@ -375,7 +376,7 @@ let offerTypes = {
 
 
 function getTrophyText(prize, params = {}) {
-  let trophy = params?.trophy ?? ::ItemsManager.findItemById(prize.item)
+  let trophy = params?.trophy ?? findItemById(prize.item)
   if (trophy == null)
     return null
 
@@ -393,7 +394,7 @@ function getTrophyText(prize, params = {}) {
     ]
 
   if (availablePrizes.len() == 1) {
-    let prizeOfferType = ::trophyReward.getType(availablePrizes[0])
+    let prizeOfferType = getTrophyRewardType(availablePrizes[0])
     return offerTypes?[prizeOfferType]
       ? offerTypes[prizeOfferType].getTextView(availablePrizes[0]) ?? []
       : [
@@ -405,7 +406,7 @@ function getTrophyText(prize, params = {}) {
   let allReceivedPrize = allReceivedPrizes.len() == 1 ? allReceivedPrizes[0] : null
 
   let recivedPrizeType = allReceivedPrize != null
-    ? ::trophyReward.getType(allReceivedPrize)
+    ? getTrophyRewardType(allReceivedPrize)
     : null
   let recivedPrizeText = recivedPrizeType != null
     ? offerTypes?[recivedPrizeType].getTextView(allReceivedPrize) ?? []
@@ -417,7 +418,7 @@ function getTrophyText(prize, params = {}) {
   local prizeTexts = null
   if (allPrizes.len() == 1) {
     let trophyPrize = allPrizes[0]
-    let prizeOfferType = ::trophyReward.getType(trophyPrize)
+    let prizeOfferType = getTrophyRewardType(trophyPrize)
 
     if (offerTypes?[prizeOfferType]) {
       prizeTexts = offerTypes[prizeOfferType].getTextView(trophyPrize, {isShortText = true}) ?? []
@@ -645,8 +646,8 @@ function getPrizesView(prizes, bgDelay = 0) {
 
   let res = []
   foreach (prize in prizes) {
-    local offerType = ::trophyReward.getType(prize)
-    let item = ::ItemsManager.findItemById(prize?.item)
+    local offerType = getTrophyRewardType(prize)
+    let item = findItemById(prize?.item)
     local sortIdx = -1
     local additionalSortParam = 0
 
@@ -663,7 +664,7 @@ function getPrizesView(prizes, bgDelay = 0) {
           let trophyPrizeForSort = offerTypes.trophy.getPrizeForSort(contentItem, params) ?? prize
           sortIdx = getSortIdxByPrize(trophyPrizeForSort)
 
-          let rewardType = ::trophyReward.getType(trophyPrizeForSort )
+          let rewardType = getTrophyRewardType(trophyPrizeForSort )
           additionalSortParam = additionalSortParamByType?[rewardType](trophyPrizeForSort) ?? 0
         } else {
           let itemCount = (prize?.count ?? 1) * (item?.metaBlk.count ?? 1)
@@ -693,7 +694,7 @@ function getPrizesView(prizes, bgDelay = 0) {
       customImageData
       prizeTooltipId =  offerTypes?[offerType].getPrizeTooltipId(prize)
       layeredImage = customImageData != null ? null
-       : ::trophyReward.getImageByConfig(prize, true, "")
+       : getPrizeImageByConfig(prize, true, "")
       textBlock = text
       sortIdx
       additionalSortParam
@@ -718,7 +719,7 @@ function getPrizesView(prizes, bgDelay = 0) {
 function getStageViewData(stageData, currentProgress) {
   let { progress = 0, rewards = null } = stageData
   let itemId = rewards?.keys()[0]
-  let item = itemId != null ? ::ItemsManager.findItemById(itemId.tointeger()) : null
+  let item = itemId != null ? findItemById(itemId.tointeger()) : null
   return {
     isOpened = progress <= currentProgress
     stageRequired = progress
@@ -818,7 +819,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   getActionButtonAmountText = @() this.maxUseAmount > 1 ? $" x{this.useAmount}" : ""
-  getInventoryChest = @() ::ItemsManager.getInventoryItemById(this.chestItem.id)
+  getInventoryChest = @() getInventoryItemById(this.chestItem.id)
   getCanOpenChest = @()  (this.getInventoryChest()?.amount ?? 0) > 0
   getPrizeObjByIdx = @(idx) this.scene.findObject($"prize_{idx}")
 
@@ -880,7 +881,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
 
     let canOpenChest = this.getCanOpenChest()
     if (!canOpenChest && this.chestItem?.isInventoryItem) {
-      let chestFromShop = ::ItemsManager.findItemById(to_integer_safe(this.chestItem.id, this.chestItem.id, false))
+      let chestFromShop = findItemById(to_integer_safe(this.chestItem.id, this.chestItem.id, false))
       if (chestFromShop != null)
         this.chestItem = chestFromShop
     }
@@ -1228,7 +1229,7 @@ function showBuyAndOpenChestWndById(chestId) {
   if (chestId == null)
     return null
 
-  return showBuyAndOpenChestWnd(::ItemsManager.findItemById(to_integer_safe(chestId, chestId, false)))
+  return showBuyAndOpenChestWnd(findItemById(to_integer_safe(chestId, chestId, false)))
 }
 
 function tryOpenChestWindow() {
@@ -1245,7 +1246,7 @@ function tryOpenChestWindow() {
     return
   }
 
-  let inventoryChest = ::ItemsManager.getInventoryItemById(waitingForShowChest.id)
+  let inventoryChest = getInventoryItemById(waitingForShowChest.id)
   if ((inventoryChest?.getAmount() ?? 0) == 0)
     return
 
@@ -1261,7 +1262,7 @@ function showBuyAndOpenChestWndWhenReceive(chestItem) {
   if (styleConfig == null)
     return
 
-  let inventoryChest = ::ItemsManager.getInventoryItemById(chestItem.id)
+  let inventoryChest = getInventoryItemById(chestItem.id)
   if ((inventoryChest?.getAmount() ?? 0) == 0) {
     waitingForShowChest = chestItem
     return

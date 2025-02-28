@@ -4,6 +4,9 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { eventbus_send } = require("eventbus")
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
+let { refreshExtInventory, markInventoryUpdateDelayed } = require("%scripts/items/itemsManager.nut")
+let { isShowItemInTrophyReward } = require("%scripts/items/trophyReward.nut")
 
 let CraftProcess = class (ItemExternal) {
   static iType = itemType.CRAFT_PROCESS
@@ -51,13 +54,13 @@ let CraftProcess = class (ItemExternal) {
   showCantCancelCraftMsgBox = @() scene_msg_box("cant_cancel_craft",
     null,
     colorize("badTextColor", loc(this.getCantUseLocId())),
-    [["ok", @() ::ItemsManager.refreshExtInventory()]],
+    [["ok", @() refreshExtInventory()]],
     "ok")
 
   function onCancelComplete(resultItems, params) {
-    ::ItemsManager.markInventoryUpdateDelayed()
+    markInventoryUpdateDelayed()
 
-    let resultItemsShowOpening  = resultItems.filter(::trophyReward.isShowItemInTrophyReward)
+    let resultItemsShowOpening  = resultItems.filter(isShowItemInTrophyReward)
     let trophyId = this.id
     if (resultItemsShowOpening.len()) {
       let openTrophyWndConfigs = resultItemsShowOpening.map(@(extItem) {
@@ -84,4 +87,4 @@ let CraftProcess = class (ItemExternal) {
   })
 }
 
-return {CraftProcess}
+registerItemClass(CraftProcess)

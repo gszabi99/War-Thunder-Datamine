@@ -19,6 +19,7 @@ let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { isDiffUnlocked, getReqTutorial } = require("%scripts/tutorials/tutorialsState.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
 
 let checkTutorialsList = [ //idx in this array used for local profile option skipTutorialBitmaskId
   {
@@ -318,7 +319,7 @@ function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = null) {
     scene_msg_box("req_tutorial_msgbox", null, msgText,
       [
         ["startTutorial", function() {
-          mData.mission.setStr("difficulty", ::get_option(USEROPT_DIFFICULTY).values[diff])
+          mData.mission.setStr("difficulty", get_option(USEROPT_DIFFICULTY).values[diff])
           select_mission(mData.mission, true)
           currentCampaignMission.set(mData.mission.name)
           saveTutorialToCheckReward(mData.mission)

@@ -23,13 +23,14 @@ let { is_benchmark_game_mode } = require("mission")
 let { startsWith, endsWith } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
-let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getMissionName, getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
 let { move_mouse_on_child_by_value, select_editbox, loadHandler,
   handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
+let { resetSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { buildMpTable } = require("%scripts/statistics/mpStatisticsUtil.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGTH = 16
 
@@ -63,7 +64,7 @@ function getReplayUrlBySessionId(sessionId) {
 
 function guiStartReplayBattle(sessionId, backFunc) {
   ::back_from_replays = function() {
-    ::SessionLobby.resetPlayersInfo()
+    resetSessionLobbyPlayersInfo()
     backFunc()
   }
   reqUnlockByClient("view_replay")
@@ -493,7 +494,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
         data.rowHeader[name].reverse()
 
       data.playersRows[name] <- "".concat(buildTableRowNoPad("row_header", data.rowHeader[name], null, "class:t='smallIconsStyle'"),
-        ::build_mp_table(playersTables[name], data.markups[name], data.headerArray[name], playersTables[name].len()))
+        buildMpTable(playersTables[name], data.markups[name], data.headerArray[name], playersTables[name].len()))
     }
 
     return data
@@ -559,7 +560,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
 
       log("gui_nav ::back_from_replays = guiStartReplays");
       ::back_from_replays = function() {
-        ::SessionLobby.resetPlayersInfo()
+        resetSessionLobbyPlayersInfo()
         guiStartMenuReplays()
       }
       reqUnlockByClient("view_replay")

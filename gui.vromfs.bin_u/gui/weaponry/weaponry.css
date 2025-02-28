@@ -18,6 +18,8 @@
 @const chosenPresetColor          :#28333c;
 @const selectedPresetBorderColor  :#677282;
 
+@const penetrationTableFirstColWidth: 50@sf/@pf;
+
 weaponry_item {
   mouse-pointer-centering:50, 75;
   input-transparent:yes;
@@ -537,4 +539,32 @@ progressBonus > progressCurrent > progressThumb {
   pos: pw - w/2, ph/2 - h/2;
   background-image:#ui/gameuiskin#bonus_progress_thumb;
   background-color: @white;
+}
+
+tooltipObj[noPadding=yes] tooltipDesc {
+  width:pw;
+  max-width: pw;
+  color:@minorTextColor;
+}
+
+weaponTooltipBlock,
+shellTooltipBlock {
+  border-color:@frameDarkMenuBorderColor;
+  border:yes;
+  background-color:@weaponCardBackgroundColor;
+}
+
+shellTooltipPenetrationTableRows textareaNoTab {
+  padding:1@bulletTooltipPadding, 1/2@bulletTooltipPadding, 1@bulletTooltipPadding, 1/2@bulletTooltipPadding;
+  text-align:center;
+}
+
+horizontalLine {
+  background-color:@frameDarkMenuBorderColor;
+  height:1@sf/@pf;
+}
+
+verticalLine {
+  background-color:@frameDarkMenuBorderColor;
+  width:1@sf/@pf;
 }

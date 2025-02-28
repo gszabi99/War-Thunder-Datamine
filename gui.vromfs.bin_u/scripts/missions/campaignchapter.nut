@@ -2,7 +2,6 @@ from "%scripts/dagui_natives.nut" import add_video_seen, was_video_seen, get_gam
 from "%scripts/dagui_library.nut" import *
 
 let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
-let { is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -31,22 +30,24 @@ let { get_gui_option } = require("guiOptions")
 let { dynamicGetVisual } = require("dynamicMission")
 let { select_mission, select_mission_full } = require("guiMission")
 let { get_game_mode, get_game_type } = require("mission")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { split, utf8ToLower } = require("%sqstd/string.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
+let { isInSessionRoom, isSessionLobbyCoop } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getDynamicLayouts, getNotPurchasedCampaigns,
+  getMissionAllowedUnittypesMask, getMaxPlayersForGamemode, canPlayGamemodeBySquad
+} = require("%scripts/missions/missionsUtils.nut")
 let { openBrowserForFirstFoundEntitlement } = require("%scripts/onlineShop/onlineShopModel.nut")
-let { guiStartDynamicSummary, briefingOptionsApply, guiStartMpLobby, guiStartCdOptions
+let { guiStartDynamicSummary, briefingOptionsApply, guiStartCdOptions
 } = require("%scripts/missions/startMissionsList.nut")
-let { isRemoteMissionVar, currentCampaignId, currentCampaignMission
+let { isRemoteMissionVar, currentCampaignId, currentCampaignMission, get_current_campaign, get_mission_settings, set_mission_settings,
+  is_user_mission
 } = require("%scripts/missions/missionsStates.nut")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
-
-::current_campaign <- null
-registerPersistentData("current_campaign_globals", getroottable(), ["current_campaign"])
+let { guiStartMpLobby } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { getMisListType } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 let MODIFICATION_TUTORIAL_CHAPTERS = ["tutorial_aircraft_modification", "tutorial_tank_modification"]
@@ -155,7 +156,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     let customChapterId = (this.gm == GM_DYNAMIC) ? currentCampaignId.get() : missionsListCampaignId.value
     local customChapters = null
     if (!this.showAllCampaigns && (this.gm == GM_CAMPAIGN || this.gm == GM_SINGLE_MISSION))
-      customChapters = ::current_campaign
+      customChapters = get_current_campaign()
 
     if (this.gm == GM_DYNAMIC) {
       let info = DataBlock()
@@ -362,7 +363,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     if (this.missionDescWeak) {
       local previewBlk = null
       if (this.gm == GM_DYNAMIC)
-        previewBlk = getTblValue(this.curMissionIdx, ::mission_settings.dynlist)
+        previewBlk = getTblValue(this.curMissionIdx, get_mission_settings().dynlist)
       this.missionDescWeak.setMission(this.curMission, previewBlk)
     }
     this.updateButtons()
@@ -542,9 +543,9 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (!::g_squad_utils.canJoinFlightMsgBox({
-           isLeaderCanJoin = ::can_play_gamemode_by_squad(this.gm),
+           isLeaderCanJoin = canPlayGamemodeBySquad(this.gm),
            showOfflineSquadMembersPopup = true
-           maxSquadSize = ::get_max_players_for_gamemode(this.gm)
+           maxSquadSize = getMaxPlayersForGamemode(this.gm)
          }))
       return
 
@@ -568,11 +569,11 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function setMission() {
-    ::mission_settings.postfix = null
+    set_mission_settings("postfix", null)
     currentCampaignId.set(this.curMission.chapter)
     currentCampaignMission.set(this.curMission.id)
     if (this.gm == GM_DYNAMIC)
-      ::mission_settings.currentMissionIdx <- this.curMissionIdx
+      set_mission_settings("currentMissionIdx", this.curMissionIdx)
 
     this.openMissionOptions(this.curMission)
     if (this.gm == GM_TRAINING && ("blk" in this.curMission) && !MODIFICATION_TUTORIAL_CHAPTERS.contains(this.curMission.chapter))
@@ -622,7 +623,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     local isShowSquadBtn = isCurItemInFocus && isMission &&
-      isGameModeCoop(this.gm) && ::can_play_gamemode_by_squad(this.gm) && g_squad_manager.canInviteMember()
+      isGameModeCoop(this.gm) && canPlayGamemodeBySquad(this.gm) && g_squad_manager.canInviteMember()
     if (this.gm == GM_SINGLE_MISSION)
       isShowSquadBtn = isShowSquadBtn
                        && (!("blk" in this.curMission)
@@ -644,7 +645,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (this.gm == GM_CAMPAIGN)
-      showObjById("btn_purchase_campaigns", hasFeature("OnlineShopPacks") && ::get_not_purchased_campaigns().len() > 0, this.scene)
+      showObjById("btn_purchase_campaigns", hasFeature("OnlineShopPacks") && getNotPurchasedCampaigns().len() > 0, this.scene)
   }
 
   function getEmptyListMsg() {
@@ -750,13 +751,13 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     if (isUrlMission)
       this.missionBlk.url = mission.urlMission.url
 
-    let coopAvailable = isGameModeCoop(this.gm) && ::can_play_gamemode_by_squad(this.gm) && !is_user_mission(this.missionBlk)
-    ::mission_settings.coop = this.missionBlk.getBool("gt_cooperative", false) && coopAvailable
+    let coopAvailable = isGameModeCoop(this.gm) && canPlayGamemodeBySquad(this.gm) && !is_user_mission(this.missionBlk)
+    set_mission_settings("coop", this.missionBlk.getBool("gt_cooperative", false) && coopAvailable)
 
     this.missionBlk.setInt("_gameMode", this.gm)
 
-    if ((::SessionLobby.isCoop() && isInSessionRoom.get()) || isGameModeCoop(this.gm)) {
-      ::mission_settings.players = 4;
+    if ((isSessionLobbyCoop() && isInSessionRoom.get()) || isGameModeCoop(this.gm)) {
+      set_mission_settings("players", 4)
       this.missionBlk.setInt("_players", 4)
       this.missionBlk.setInt("maxPlayers", 4)
       this.missionBlk.setBool("gt_use_lb", false)
@@ -786,7 +787,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function afterMissionOptionsApply() {
-    let diffCode = ::mission_settings.diff
+    let diffCode = get_mission_settings().diff
     if (!::check_diff_pkg(diffCode))
       return
 
@@ -845,7 +846,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
     local curMisListType = g_mislist_type.BASE
     if (isInSessionRoom.get())
-      curMisListType = ::SessionLobby.getMisListType()
+      curMisListType = getMisListType()
     else {
       let typeName = loadLocalByAccount("wnd/chosenMisListType", "")
       curMisListType = g_mislist_type.getTypeByName(typeName)
@@ -883,7 +884,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
         id = mlType.id
         tabName = mlType.getTabName()
         selected = idx == selIdx
-        navImagesText = ::get_navigation_images_text(idx, typesList.len())
+        navImagesText = getNavigationImagesText(idx, typesList.len())
       })
 
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
@@ -987,7 +988,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onBuyCampaign() {
-    openBrowserForFirstFoundEntitlement(::get_not_purchased_campaigns())
+    openBrowserForFirstFoundEntitlement(getNotPurchasedCampaigns())
   }
 
   function onEventProfileUpdated(p) {
@@ -1074,7 +1075,7 @@ let SingleMissionsModal = class (SingleMissions) {
       if (v.isHeader)
         continue
 
-      v.allowedUnitTypesMask <- ::get_mission_allowed_unittypes_mask(v.mission.blk) || -1
+      v.allowedUnitTypesMask <- getMissionAllowedUnittypesMask(v.mission.blk) || -1
       v.group <- getMissionGroup(v.mission)
     }
 

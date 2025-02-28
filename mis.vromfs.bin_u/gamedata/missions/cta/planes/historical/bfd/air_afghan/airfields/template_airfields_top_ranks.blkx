@@ -1,0 +1,2667 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/air_afghan.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "clear"
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "airfileds_top_init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "unitSetProperties": {
+          "object": [
+            "t1_def_aaa_top_squad",
+            "t2_def_aaa_top_squad"
+          ],
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "accuracy": 0.9,
+          "checkVisibilityTarget": true,
+          "effShootingRate": 1.0,
+          "airEffShootingRate": 1.0,
+          "useSearchRadar": true,
+          "fireRandom": true,
+          "targetChangeInterval": 5.0,
+          "targetChangeProb": 0.25
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "objectGroups": [
+      {
+        "name": "t2_airfield_top",
+        "tm": [
+          [
+            -0.486075,
+            0.0,
+            0.873919
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.873919,
+            0.0,
+            -0.486075
+          ],
+          [
+            -38252.3,
+            2146.22,
+            14567.8
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 2,
+          "active": true
+        }
+      },
+      {
+        "name": "t1_airfield_top",
+        "tm": [
+          [
+            0.260324,
+            0.0,
+            -0.965521
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.965521,
+            0.0,
+            0.260324
+          ],
+          [
+            36485.0,
+            2455.41,
+            -36086.2
+          ]
+        ],
+        "unit_class": "dynaf_pg_1line_3000_universal",
+        "objLayer": 2,
+        "props": {
+          "army": 1,
+          "active": true
+        }
+      }
+    ],
+    "tankModels": [
+      {
+        "name": "t2_aaa_top_light_01",
+        "tm": [
+          [
+            -0.514323,
+            0.0,
+            0.857594
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.857594,
+            0.0,
+            -0.514323
+          ],
+          [
+            -38019.5,
+            2205.61,
+            16027.7
+          ]
+        ],
+        "unit_class": "sw_veak_40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "40mm_sw_kan_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_aaa_top_heavy_01",
+        "tm": [
+          [
+            -0.514323,
+            0.0,
+            0.857594
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.857594,
+            0.0,
+            -0.514323
+          ],
+          [
+            -38743.0,
+            2189.44,
+            14764.6
+          ]
+        ],
+        "unit_class": "fr_amx_30_roland",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_aaa_top_light_02",
+        "tm": [
+          [
+            0.551242,
+            0.0,
+            -0.834344
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.834344,
+            0.0,
+            0.551242
+          ],
+          [
+            -38776.8,
+            2203.43,
+            14537.1
+          ]
+        ],
+        "unit_class": "sw_veak_40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "40mm_sw_kan_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_aaa_top_light_03",
+        "tm": [
+          [
+            -0.514323,
+            0.0,
+            0.857594
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.857594,
+            0.0,
+            -0.514323
+          ],
+          [
+            -37088.0,
+            2207.27,
+            14233.3
+          ]
+        ],
+        "unit_class": "sw_veak_40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "40mm_sw_kan_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_aaa_top_light_04",
+        "tm": [
+          [
+            0.68775,
+            0.0,
+            -0.725945
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.725945,
+            0.0,
+            0.68775
+          ],
+          [
+            -38455.6,
+            2206.85,
+            13914.5
+          ]
+        ],
+        "unit_class": "sw_veak_40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "40mm_sw_kan_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_aaa_top_heavy_02",
+        "tm": [
+          [
+            0.551242,
+            0.0,
+            -0.834344
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.834344,
+            0.0,
+            0.551242
+          ],
+          [
+            -37714.3,
+            2207.62,
+            15154.1
+          ]
+        ],
+        "unit_class": "fr_amx_30_roland",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_aaa_top_light_01",
+        "tm": [
+          [
+            0.13665,
+            0.0,
+            0.990619
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.990619,
+            0.0,
+            0.13665
+          ],
+          [
+            36257.3,
+            2547.2,
+            -36831.8
+          ]
+        ],
+        "unit_class": "sw_veak_40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "40mm_sw_kan_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_aaa_top_heavy_01",
+        "tm": [
+          [
+            0.13665,
+            0.0,
+            0.990619
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.990619,
+            0.0,
+            0.13665
+          ],
+          [
+            37054.5,
+            2548.01,
+            -36876.5
+          ]
+        ],
+        "unit_class": "fr_amx_30_roland",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_aaa_top_light_02",
+        "tm": [
+          [
+            -0.179732,
+            0.0,
+            -0.983714
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.983714,
+            0.0,
+            -0.179732
+          ],
+          [
+            36848.4,
+            2548.14,
+            -35941.5
+          ]
+        ],
+        "unit_class": "sw_veak_40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "40mm_sw_kan_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_aaa_top_light_03",
+        "tm": [
+          [
+            0.13665,
+            0.0,
+            0.990619
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.990619,
+            0.0,
+            0.13665
+          ],
+          [
+            35833.0,
+            2547.34,
+            -35402.2
+          ]
+        ],
+        "unit_class": "sw_veak_40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "40mm_sw_kan_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_aaa_top_light_04",
+        "tm": [
+          [
+            -0.0933081,
+            0.0,
+            -0.995638
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.995638,
+            0.0,
+            -0.0933081
+          ],
+          [
+            36620.8,
+            2548.58,
+            -35222.6
+          ]
+        ],
+        "unit_class": "sw_veak_40",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "40mm_sw_kan_HE",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_aaa_top_heavy_02",
+        "tm": [
+          [
+            -0.179732,
+            0.0,
+            -0.983714
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.983714,
+            0.0,
+            -0.179732
+          ],
+          [
+            36020.4,
+            2546.59,
+            -36014.0
+          ]
+        ],
+        "unit_class": "fr_amx_30_roland",
+        "objLayer": 1,
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      }
+    ],
+    "squad": [
+      {
+        "name": "t2_def_aaa_top_squad",
+        "tm": [
+          [
+            0.991536,
+            0.0,
+            0.129837
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.129837,
+            0.0,
+            0.991536
+          ],
+          [
+            -8614.1,
+            2592.54,
+            -49512.2
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_aaa_top_light_01",
+            "t2_aaa_top_light_02",
+            "t2_aaa_top_light_03",
+            "t2_aaa_top_light_04",
+            "t2_aaa_top_heavy_01",
+            "t2_aaa_top_heavy_02"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "t1_def_aaa_top_squad",
+        "tm": [
+          [
+            -0.653641,
+            0.0,
+            0.756805
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.756805,
+            0.0,
+            -0.653641
+          ],
+          [
+            36017.1,
+            2915.45,
+            -29937.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_aaa_top_light_01",
+            "t1_aaa_top_light_02",
+            "t1_aaa_top_light_03",
+            "t1_aaa_top_light_04",
+            "t1_aaa_top_heavy_01",
+            "t1_aaa_top_heavy_02"
+          ],
+          "object_marking": 0
+        }
+      }
+    ],
+    "area_squad": [
+      {
+        "name": "t1_wide_spawns_top",
+        "tm": [
+          [
+            -0.199652,
+            0.0,
+            0.979867
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.979867,
+            0.0,
+            -0.199652
+          ],
+          [
+            -6414.99,
+            2421.05,
+            -38925.5
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_wide_spawn_top_01",
+            "t1_wide_spawn_top_02",
+            "t1_wide_spawn_top_03",
+            "t1_wide_spawn_top_04",
+            "t1_wide_spawn_top_05",
+            "t1_wide_spawn_top_06",
+            "t1_wide_spawn_top_07",
+            "t1_wide_spawn_top_08",
+            "t1_wide_spawn_top_09",
+            "t1_wide_spawn_top_10",
+            "t1_wide_spawn_top_11",
+            "t1_wide_spawn_top_12",
+            "t1_wide_spawn_top_13",
+            "t1_wide_spawn_top_14",
+            "t1_wide_spawn_top_15",
+            "t1_wide_spawn_top_16"
+          ]
+        }
+      },
+      {
+        "name": "t2_wide_spawns_top",
+        "tm": [
+          [
+            -0.199652,
+            0.0,
+            0.979867
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.979867,
+            0.0,
+            -0.199652
+          ],
+          [
+            -15608.0,
+            2739.35,
+            -6763.14
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_wide_spawn_top_01",
+            "t2_wide_spawn_top_02",
+            "t2_wide_spawn_top_03",
+            "t2_wide_spawn_top_04",
+            "t2_wide_spawn_top_05",
+            "t2_wide_spawn_top_06",
+            "t2_wide_spawn_top_07",
+            "t2_wide_spawn_top_08",
+            "t2_wide_spawn_top_09",
+            "t2_wide_spawn_top_10",
+            "t2_wide_spawn_top_11",
+            "t2_wide_spawn_top_12",
+            "t2_wide_spawn_top_13",
+            "t2_wide_spawn_top_14",
+            "t2_wide_spawn_top_15",
+            "t2_wide_spawn_top_16"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "t2_interceptor_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          3397.57,
+          0.0,
+          4945.36
+        ],
+        [
+          0.0,
+          6000.0,
+          0.0
+        ],
+        [
+          -4945.36,
+          0.0,
+          3397.57
+        ],
+        [
+          -38991.5,
+          5367.44,
+          16297.3
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_assault_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          248.959,
+          0.0,
+          -167.391
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          167.391,
+          0.0,
+          248.959
+        ],
+        [
+          -30748.8,
+          4367.44,
+          10635.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_aaa_fighter_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          2265.06,
+          0.0,
+          3296.92
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          -3296.92,
+          0.0,
+          2265.06
+        ],
+        [
+          -38991.5,
+          6367.44,
+          16297.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_assault_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          11325.3,
+          0.0,
+          16484.5
+        ],
+        [
+          0.0,
+          20000.0,
+          0.0
+        ],
+        [
+          -16484.5,
+          0.0,
+          11325.3
+        ],
+        [
+          -38991.5,
+          4367.44,
+          16297.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_interceptor_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          239.623,
+          0.0,
+          -180.502
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          180.502,
+          0.0,
+          239.623
+        ],
+        [
+          -41448.6,
+          4367.44,
+          17985.1
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_aaa_fighter_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          239.623,
+          0.0,
+          -180.502
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          180.502,
+          0.0,
+          239.623
+        ],
+        [
+          -40634.2,
+          5367.44,
+          17425.7
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_far_bomber_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          239.623,
+          0.0,
+          -180.502
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          180.502,
+          0.0,
+          239.623
+        ],
+        [
+          -37343.9,
+          7867.44,
+          15165.3
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_main_bomber_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          239.623,
+          0.0,
+          -180.502
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          180.502,
+          0.0,
+          239.623
+        ],
+        [
+          -36931.3,
+          6867.44,
+          14881.7
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_far_bomber_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          2265.06,
+          0.0,
+          3296.92
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          -3296.92,
+          0.0,
+          2265.06
+        ],
+        [
+          -38991.5,
+          7867.44,
+          16297.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_main_bomber_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          2831.3,
+          0.0,
+          4121.13
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          -4121.13,
+          0.0,
+          2831.3
+        ],
+        [
+          -38991.5,
+          6867.44,
+          16297.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_interceptor_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2863.79,
+          0.0,
+          -5272.46
+        ],
+        [
+          0.0,
+          6000.0,
+          0.0
+        ],
+        [
+          5272.46,
+          0.0,
+          -2863.79
+        ],
+        [
+          34515.1,
+          5361.06,
+          -36304.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_assault_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -263.788,
+          0.0,
+          142.881
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -142.881,
+          0.0,
+          -263.788
+        ],
+        [
+          25727.6,
+          4361.05,
+          -31532.3
+        ]
+      ],
+      "objLayer": 3,
+      "props": {
+        "anti_tank": 0.0
+      }
+    },
+    "t1_aaa_fighter_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -1909.18,
+          0.0,
+          -3515.0
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          3515.0,
+          0.0,
+          -1909.18
+        ],
+        [
+          34515.1,
+          6361.05,
+          -36304.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_assault_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -9545.92,
+          0.0,
+          -17574.9
+        ],
+        [
+          0.0,
+          20000.0,
+          0.0
+        ],
+        [
+          17574.9,
+          0.0,
+          -9545.92
+        ],
+        [
+          34515.0,
+          4361.05,
+          -36304.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_interceptor_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -257.125,
+          0.0,
+          154.55
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -154.55,
+          0.0,
+          -257.125
+        ],
+        [
+          37134.7,
+          4361.05,
+          -37726.5
+        ]
+      ],
+      "props": {}
+    },
+    "t1_aaa_fighter_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -257.125,
+          0.0,
+          154.55
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -154.55,
+          0.0,
+          -257.125
+        ],
+        [
+          36266.7,
+          5361.05,
+          -37255.1
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_far_bomber_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -257.125,
+          0.0,
+          154.55
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -154.55,
+          0.0,
+          -257.125
+        ],
+        [
+          32758.5,
+          7861.06,
+          -35349.7
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_main_bomber_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -257.125,
+          0.0,
+          154.55
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -154.55,
+          0.0,
+          -257.125
+        ],
+        [
+          32318.4,
+          6861.05,
+          -35110.7
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_far_bomber_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -1909.18,
+          0.0,
+          -3515.0
+        ],
+        [
+          0.0,
+          4000.0,
+          0.0
+        ],
+        [
+          3515.0,
+          0.0,
+          -1909.18
+        ],
+        [
+          34515.1,
+          7861.05,
+          -36304.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t1_main_bomber_area_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2386.46,
+          0.0,
+          -4393.7
+        ],
+        [
+          0.0,
+          5000.0,
+          0.0
+        ],
+        [
+          4393.7,
+          0.0,
+          -2386.46
+        ],
+        [
+          34515.1,
+          6861.05,
+          -36304.2
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "airfields_area_46km": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -27866.5,
+          0.0,
+          -87678.1
+        ],
+        [
+          0.0,
+          92000.0,
+          0.0
+        ],
+        [
+          87678.1,
+          0.0,
+          -27866.5
+        ],
+        [
+          -4903.08,
+          3208.56,
+          -17073.7
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_common_fighters_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -257.125,
+          0.0,
+          154.55
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -154.55,
+          0.0,
+          -257.125
+        ],
+        [
+          37134.7,
+          3861.06,
+          -37726.5
+        ]
+      ],
+      "props": {}
+    },
+    "t2_common_fighters_top_spawn": {
+      "type": "Sphere",
+      "tm": [
+        [
+          239.623,
+          0.0,
+          -180.502
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          180.502,
+          0.0,
+          239.623
+        ],
+        [
+          -41448.6,
+          3867.44,
+          17985.1
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "mission_top_border": {
+      "type": "Box",
+      "tm": [
+        [
+          -404.572,
+          0.0,
+          127999.0
+        ],
+        [
+          0.0,
+          1000.0,
+          0.0
+        ],
+        [
+          -127999.0,
+          0.0,
+          -404.572
+        ],
+        [
+          -2450.56,
+          2829.9,
+          -4201.0
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t1_wide_spawn_top_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          37134.7,
+          4361.05,
+          -37726.5
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          36619.6,
+          4361.04,
+          -38583.5
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          36096.9,
+          4361.04,
+          -39453.3
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          35576.7,
+          4361.04,
+          -40318.8
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          35061.2,
+          4361.04,
+          -41176.8
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          34538.2,
+          4361.04,
+          -42046.8
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          34011.4,
+          4361.04,
+          -42923.5
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          33489.1,
+          4361.04,
+          -43792.1
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          37654.5,
+          4361.04,
+          -36861.8
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          38172.4,
+          4361.04,
+          -36000.3
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          38705.8,
+          4361.04,
+          -35113.6
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          39236.2,
+          4361.04,
+          -34231.2
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          39756.0,
+          4361.04,
+          -33366.0
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          40273.6,
+          4361.04,
+          -32505.3
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          40798.9,
+          4361.04,
+          -31631.4
+        ]
+      ],
+      "props": {}
+    },
+    "t1_wide_spawn_top_16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -428.544,
+          0.0,
+          257.585
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          -257.585,
+          0.0,
+          -428.544
+        ],
+        [
+          41332.0,
+          4361.04,
+          -30744.8
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -41446.8,
+          4361.04,
+          17980.1
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -40841.7,
+          4361.05,
+          18783.3
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -40241.7,
+          4361.05,
+          19579.9
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -39632.3,
+          4361.05,
+          20389.0
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -39015.3,
+          4361.05,
+          21208.5
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -38411.7,
+          4361.05,
+          22010.1
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -37798.6,
+          4361.05,
+          22823.8
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -37172.1,
+          4361.05,
+          23655.6
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -42051.7,
+          4361.04,
+          17176.8
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -42661.6,
+          4361.04,
+          16366.7
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -43284.1,
+          4361.04,
+          15540.7
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -43902.4,
+          4361.04,
+          14719.9
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -44524.8,
+          4361.04,
+          13893.8
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -45144.4,
+          4361.04,
+          13071.7
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -45755.8,
+          4361.04,
+          12259.7
+        ]
+      ],
+      "props": {}
+    },
+    "t2_wide_spawn_top_16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          399.371,
+          0.0,
+          -300.837
+        ],
+        [
+          0.0,
+          500.0,
+          0.0
+        ],
+        [
+          300.837,
+          0.0,
+          399.371
+        ],
+        [
+          -46370.0,
+          4361.05,
+          11444.1
+        ]
+      ],
+      "props": {}
+    },
+    "t1_assault_additional_top_spawns_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -17585.9,
+          0.0,
+          9525.41
+        ],
+        [
+          0.0,
+          20000.0,
+          0.0
+        ],
+        [
+          -9525.41,
+          0.0,
+          -17585.9
+        ],
+        [
+          25727.6,
+          4361.05,
+          -31532.3
+        ]
+      ],
+      "objLayer": 3,
+      "props": {
+        "anti_tank": 0.0
+      }
+    },
+    "t1_assault_top_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -263.788,
+          0.0,
+          142.881
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -142.881,
+          0.0,
+          -263.788
+        ],
+        [
+          20964.8,
+          4361.05,
+          -40325.3
+        ]
+      ],
+      "objLayer": 3,
+      "props": {
+        "anti_tank": 0.0
+      }
+    },
+    "t1_assault_top_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -263.788,
+          0.0,
+          142.881
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -142.881,
+          0.0,
+          -263.788
+        ],
+        [
+          30491.1,
+          4361.05,
+          -22737.8
+        ]
+      ],
+      "objLayer": 3,
+      "props": {
+        "anti_tank": 0.0
+      }
+    },
+    "t2_assault_additional_top_spawns_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          16597.2,
+          0.0,
+          -11159.4
+        ],
+        [
+          0.0,
+          20000.0,
+          0.0
+        ],
+        [
+          11159.4,
+          0.0,
+          16597.2
+        ],
+        [
+          -30748.8,
+          4367.44,
+          10635.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_assault_top_spawn_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          248.959,
+          0.0,
+          -167.391
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          167.391,
+          0.0,
+          248.959
+        ],
+        [
+          -25168.7,
+          4367.44,
+          18934.3
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_assault_top_spawn_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          248.959,
+          0.0,
+          -167.391
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          167.391,
+          0.0,
+          248.959
+        ],
+        [
+          -36328.6,
+          4367.44,
+          2336.4
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

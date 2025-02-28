@@ -18,10 +18,6 @@ let transparentColor = E3DCOLOR(Color4(float4(0., 0., 0., 0.)))
 let kmToNm = 1.0 / 1.85
 let speedMaxInv = 1.0 / 700.0
 
-def norm_ang(a : float) : float// [0..TWOPI]
-  let na = a < 0. ? a + 2. * PI : a
-  return na - 2. * PI * floor(na / (2. * PI))
-
 struct CanvasParams
   color : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   fontId : int = -1
@@ -37,7 +33,7 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.useArea = float4(0.13, 0., 0.87, 1.0)
   storage.lineWidth = props |> getFloat("lineWidth", 1.) * 1.
 
-[export]
+[export, unused_argument(rstate)]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !get_radar_hud_mfd_radar_enabled()
     return
@@ -80,10 +76,8 @@ def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; s
         radialWidthRel = max(target.distanceWidthRel, 0.05)
 
       var angle = -PI * 0.5
-      var angularWidth = azimuthRange
       if get_radar_hud_has_azimuth_scale()
         angle = get_radar_hud_azimuth_min() + azimuthRange * target.azimuthRel - PI * 0.5
-        angularWidth = azimuthRange * target.azimuthWidthRel
 
       let targetColor = E3DCOLOR(Color4(!target.isEnemy ? allyColor : enemyColor))
       ctx |> set_color(targetColor)
@@ -174,9 +168,11 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   let scanAzimuthMin = get_radar_hud_scan_azimuth_min()
   let scanAzimuthMax = get_radar_hud_scan_azimuth_max()
   if (scanAzimuthMax - scanAzimuthMin > 0.01)
-    let scanSectorLeft <- to_array_move([[float2[2] origin - float2(cos(scanAzimuthMin + PI * 0.5), sin(scanAzimuthMin + PI * 0.5)) * 0.2 * radius; origin - float2(cos(scanAzimuthMin + PI * 0.5), sin(scanAzimuthMin + PI * 0.5)) * 1.1 * radius]])
+    let scanSectorLeftDir = float2(cos(scanAzimuthMin + PI * 0.5), sin(scanAzimuthMin + PI * 0.5))
+    let scanSectorLeft <- to_array_move([[float2[2] origin - scanSectorLeftDir * 0.2 * radius; origin - scanSectorLeftDir * 1.1 * radius]])
     ctx |> render_line_aa(scanSectorLeft, false, data.lineWidth, float2(0., 0.), radarScanZoneAzimuthColor)
-    let scanSectorRight <- to_array_move([[float2[2] origin - float2(cos(scanAzimuthMax + PI * 0.5), sin(scanAzimuthMax + PI * 0.5)) * 0.2 * radius; origin - float2(cos(scanAzimuthMax + PI * 0.5), sin(scanAzimuthMax + PI * 0.5)) * 1.1 * radius]])
+    let scanSectorRightDir = float2(cos(scanAzimuthMax + PI * 0.5), sin(scanAzimuthMax + PI * 0.5))
+    let scanSectorRight <- to_array_move([[float2[2] origin - scanSectorRightDir * 0.2 * radius; origin - scanSectorRightDir * 1.1 * radius]])
     ctx |> render_line_aa(scanSectorRight, false, data.lineWidth, float2(0., 0.), radarScanZoneAzimuthColor)
     ctx |> render_sector_aa(origin, radius2 * 1.1, float2(scanAzimuthMin - PI * 0.5, scanAzimuthMax - PI * 0.5), data.lineWidth, radarScanZoneAzimuthColor, transparentColor)
 
@@ -210,9 +206,11 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
     let cueRadiusNear = (cueDistRel - cueDistHalfWidthRel) * radius
     let cueRadiusFar  = (cueDistRel + cueDistHalfWidthRel) * radius
 
-    let cueLeft <- to_array_move([[float2[2] origin - float2(cos(cueAzimuthLeft + PI * 0.5), sin(cueAzimuthLeft + PI * 0.5)) * cueRadiusNear; origin - float2(cos(cueAzimuthLeft + PI * 0.5), sin(cueAzimuthLeft + PI * 0.5)) * cueRadiusFar]])
+    let cueLeftDir = float2(cos(cueAzimuthLeft + PI * 0.5), sin(cueAzimuthLeft + PI * 0.5))
+    let cueLeft <- to_array_move([[float2[2] origin - cueLeftDir * cueRadiusNear; origin - cueLeftDir * cueRadiusFar]])
     ctx |> render_line_aa(cueLeft, false, data.lineWidth, float2(0., 0.), radarScanZoneAzimuthColor)
-    let cueRight <- to_array_move([[float2[2] origin - float2(cos(cueAzimuthRight + PI * 0.5), sin(cueAzimuthRight + PI * 0.5)) * cueRadiusNear; origin - float2(cos(cueAzimuthRight + PI * 0.5), sin(cueAzimuthRight + PI * 0.5)) * cueRadiusFar]])
+    let cueRightDir = float2(cos(cueAzimuthRight + PI * 0.5), sin(cueAzimuthRight + PI * 0.5))
+    let cueRight <- to_array_move([[float2[2] origin - cueRightDir * cueRadiusNear; origin - cueRightDir * cueRadiusFar]])
     ctx |> render_line_aa(cueRight, false, data.lineWidth, float2(0., 0.), radarScanZoneAzimuthColor)
 
   ctx |> set_color(radarInfoColor)

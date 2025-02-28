@@ -17,6 +17,11 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { roundToDigits } = require("%sqstd/math.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { getPrizeTypeIcon, getPrizeTypeName, getTrophyOpenCountTillPrize, getPrizesListText,
+  getPrizesStacksView
+} = require("%scripts/items/prizesView.nut")
 
 function fillContentRaw(contentRaw, blksArray) {
   foreach (datablock in blksArray) {
@@ -44,8 +49,6 @@ function fillContentRaw(contentRaw, blksArray) {
 }
 
 let oneHundredPercentFloat = 100.0
-
-let findItemById = @(id) ::ItemsManager.findItemById(id)
 
 let Trophy = class (BaseItem) {
   static iType = itemType.TROPHY
@@ -402,7 +405,7 @@ let Trophy = class (BaseItem) {
     let content = this.getContent()
     if (this.showNameAsSingleAward && content.len() == 1) {
       let awardCount = content[0]?.count ?? 1
-      let awardType = ::PrizesView.getPrizeTypeName(content[0], false)
+      let awardType = getPrizeTypeName(content[0], false)
       return (awardCount > 1)
         ? loc("multiAward/name/count/singleType", { awardType, awardCount })
         : loc(awardType)
@@ -417,9 +420,9 @@ let Trophy = class (BaseItem) {
     if (showType) {
       local prizeTypeName = ""
       if (this.showRangePrize)
-        prizeTypeName = ::PrizesView.getPrizesListText(content)
+        prizeTypeName = getPrizesListText(content)
       else
-        prizeTypeName = ::PrizesView.getPrizeTypeName(this.getTopPrize(), colored)
+        prizeTypeName = getPrizeTypeName(this.getTopPrize(), colored)
 
       local comment = prizeTypeName.len() ? loc("ui/parentheses/space", { text = prizeTypeName }) : ""
       comment = colored ? colorize("commonTextColor", comment) : comment
@@ -429,7 +432,7 @@ let Trophy = class (BaseItem) {
   }
 
   function getDescription() {
-    return ::PrizesView.getPrizesListText(this.getContent(), this._getDescHeader)
+    return getPrizesListText(this.getContent(), this._getDescHeader)
   }
 
   function _getDescHeader(fixedAmount = 1) {
@@ -455,9 +458,9 @@ let Trophy = class (BaseItem) {
     local additionalPrizesMarkup = ""
     if (additionalPrizes.len() > 0) {
       let getHeader = @(...) colorize("grayOptionColor", loc("items/ifYouHaveAllItemsAbove"))
-      additionalPrizesMarkup = ::PrizesView.getPrizesStacksView(additionalPrizes, getHeader)
+      additionalPrizesMarkup = getPrizesStacksView(additionalPrizes, getHeader)
     }
-    let mainPrizesMarkup = ::PrizesView.getPrizesStacksView(mainPrizes, this._getDescHeader, params)
+    let mainPrizesMarkup = getPrizesStacksView(mainPrizes, this._getDescHeader, params)
 
     return  $"{mainPrizesMarkup}{additionalPrizesMarkup}"
   }
@@ -475,7 +478,7 @@ let Trophy = class (BaseItem) {
 
     local res = null
     let prize = this.getTopPrize()
-    let icon = ::PrizesView.getPrizeTypeIcon(prize, true)
+    let icon = getPrizeTypeIcon(prize, true)
     if (icon == "")
       return res
 
@@ -561,7 +564,7 @@ let Trophy = class (BaseItem) {
     if (!this.showTillValue)
       return ""
 
-    return ::PrizesView.getTrophyOpenCountTillPrize(this.getContent(), get_trophy_info(this.id))
+    return getTrophyOpenCountTillPrize(this.getContent(), get_trophy_info(this.id))
   }
 
   function getDescriptionUnderTable() {
@@ -574,4 +577,4 @@ let Trophy = class (BaseItem) {
   canBuyTrophyByLimit = @() this.numTotal == 0 || this.numTotal > (get_trophy_info(this.id)?.openCount ?? 0)
 }
 
-return { Trophy }
+registerItemClass(Trophy)

@@ -34,3 +34,18 @@ tooltipObj[type=dark] {
 smallHint {
   padding:2@dp;
 }
+
+tooltipObj[type=smallPadding] {
+  padding:1@dp;
+}
+
+tooltipObj[noPadding=yes] {
+  css-hier-invalidate:yes;
+  padding:0;
+}
+
+tooltipObj[transparent=yes] {
+  css-hier-invalidate:yes;
+  border:no;
+  background-color:@transparent;
+}

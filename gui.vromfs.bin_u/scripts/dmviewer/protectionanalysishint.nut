@@ -155,8 +155,6 @@ gui_handlers.ProtectionAnalysisHint <- class (gui_handlers.BaseGuiHandlerWT) {
 }
 
 return {
-  open = function (scene) {
-    if (checkObj(scene))
-      handlersManager.loadHandler(gui_handlers.ProtectionAnalysisHint, { scene = scene })
-  }
+  open = @(scene) !checkObj(scene) ? null
+    : handlersManager.loadHandler(gui_handlers.ProtectionAnalysisHint, { scene })
 }

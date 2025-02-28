@@ -52,6 +52,8 @@
 @const tankGunsAmmoBlockHeight: 0.03@shHud;
 @const notificationsWithCompassTopOffset: 60@sf/@pf;
 
+@const shipCoverPartHeight: 0.3@cIco;
+@const shipCoverPartInterval: 0.1@cIco;
 
 
 hudMessages {
@@ -737,6 +739,11 @@ hitCamDebuff[state=healthy]   > hitCamDebuffLabel { color:#A0A0A0;   }
 hitCamDebuff[state=good]      > hitCamDebuffLabel { color:#FFFFFF;   }
 hitCamDebuff[state=critical]  > hitCamDebuffLabel { color:#FFC000;   }
 hitCamDebuff[state=killed]    > hitCamDebuffLabel { color:#ff4040;   }
+
+hitCamStateBlock[state=healthy]  { background-color:#9EE000;   }
+hitCamStateBlock[state=good]     { background-color:#FFC000;   }
+hitCamStateBlock[state=critical] { background-color:#ff4040;   }
+hitCamStateBlock[state=killed]   { background-color:@black; }
 
 
 

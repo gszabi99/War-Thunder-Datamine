@@ -311,12 +311,20 @@ let directionGroups = [
     originalName = "HRR"
   },
   {
+    text = "E2K",
+    originalName = "E2K",
+  },
+  {
     text = "TRF",
     originalName = "TRF"
   },
   {
     text = "M20",
     originalName = "M2K"
+  },
+  {
+    text = "RFL",
+    originalName = "RFL"
   },
   {
     text = "J39",

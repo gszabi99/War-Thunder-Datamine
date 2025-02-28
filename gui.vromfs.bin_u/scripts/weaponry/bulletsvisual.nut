@@ -7,7 +7,9 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { file_exists } = require("dagor.fs")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let { floor, round_by_value, roundToDigits, round, pow } = require("%sqstd/math.nut")
+let { cos, PI } = require("math")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
+let { stripTags } = require("%sqstd/string.nut")
 let {
       //
 
@@ -42,6 +44,42 @@ let getBulletsFeaturesImg = @() bulletsFeaturesImg
 
 const MAX_BULLETS_ON_ICON = 4
 const DEFAULT_BULLET_IMG_ASPECT_RATIO = 0.2
+const MAX_BLOCK_IN_MAIN_SHELLS_PARAMS_TOOLTIP = 3
+
+let bulletArmorPiercingMainParamDesc = @"
+  tdiv {
+    pos:t='0.5pw-0.5w, 0'
+    position:t='relative'
+    textareaNoTab {
+      text:t='{baseText}'
+      valign:t='center'
+      tinyFont:t='yes'
+      overlayTextColor:t='minor'
+    }
+    img {
+      size:t='1@sIco, 1@sIco'
+      pos:t='0, 0.5ph-0.5h'
+      position:t='relative'
+      margin:t='1@blockInterval, 0'
+      background-image:t='!#ui/gameuiskin#{armorPiercingIconId}.svg'
+      background-svg-size:t='1@sIco, 1@sIco'
+    }
+    {distanceTextObj}
+  }
+"
+
+let bulletArmorPiercingMainParamDistanceText = @"
+  textareaNoTab {
+    text:t='{distanceText}'
+    valign:t='center'
+    tinyFont:t='yes'
+    overlayTextColor:t='minor'
+  }
+"
+
+let DEG_TO_RAD = PI / 180.0
+let cos30 = cos(30*DEG_TO_RAD)
+let cos60 = cos(60*DEG_TO_RAD)
 
 function resetBulletIcons() {
   bulletIcons.clear()
@@ -153,48 +191,46 @@ function getBulletsIconData(bulletsSet) {
   return handyman.renderCached(("%gui/weaponry/bullets.tpl"), getBulletsIconView(bulletsSet))
 }
 
-function getArmorPiercingViewData(armorPiercing, dist, isCumulative) {
+function getArmorPiercingViewData(armorPiercing, dist) {
   local res = null
-  if (armorPiercing.len() <= 0)
-    return res
+  if (armorPiercing.len() <= 0 || !armorPiercing?[0].len())
+    return { props = res, baseArmorPiercing = 0, baseDistance = 0 }
 
-  local angles = null
-  foreach (ind, armorTbl in armorPiercing) {
-    if (armorTbl == null)
-      continue
-    if (!angles) {
+  let angles = u.keys(armorPiercing?[0]) ?? []
+  local ranges = null
+  foreach (angle in angles) {
+    if (!ranges) {
       res = []
-      angles = u.keys(armorTbl)
-      angles.sort(@(a, b) a <=> b)
+      ranges = u.values(dist)
+      ranges.sort(@(a, b) a <=> b)
       let headRow = {
-        text = isCumulative ? loc("bullet_properties/hitAngle") : ""
-        values = angles.map(function(v) { return { value = $"{v}{loc("measureUnits/deg")}" } })
+        text = "-"
+        values = ranges.map(@(r) { value = format("%.0f %s", r, loc("measureUnits/meters_alt"))})
+        firstRow = true
       }
       res.append(headRow)
     }
 
     let row = {
-      text = isCumulative ? "" : $"{dist[ind]}{loc("measureUnits/meters_alt")}"
+      text = $"{angle}{loc("measureUnits/deg")}"
       values = []
     }
-    foreach (angle in angles)
-      row.values.append({ value = $"{armorTbl?[angle] ?? 0}{loc("measureUnits/mm")}" })
-    res.append(row)
 
-    if (isCumulative)
-      break
+    foreach(idx, _range in ranges) {
+      row.values.append({ value = $"{armorPiercing?[idx][angle] ?? 0} {loc("measureUnits/mm")}"})
+    }
+    res.append(row)
   }
-  return res
+
+  let baseArmorPiercingIndex = 1
+  let baseDistance = ranges[baseArmorPiercingIndex] ?? 0
+  let baseArmorPiercing = round(armorPiercing?[baseArmorPiercingIndex][0] ?? 0).tointeger()
+  return { props = res, baseArmorPiercing, baseDistance }
 }
 
 function addArmorPiercingToDesc(bulletsData, descTbl) {
-  let { armorPiercing, armorPiercingDist, needHideArmorPiercingTable } = bulletsData
-  if (needHideArmorPiercingTable)
-    return
-
-  let isCumulative = bulletsData?.cumulativeDmg ?? false
-
-  let props = getArmorPiercingViewData(armorPiercing, armorPiercingDist, isCumulative)
+  let { armorPiercing, armorPiercingDist } = bulletsData
+  let { props } = getArmorPiercingViewData(armorPiercing, armorPiercingDist)
   if (props == null)
     return
 
@@ -203,32 +239,82 @@ function addArmorPiercingToDesc(bulletsData, descTbl) {
     : ""
 
   let bulletName = currWeaponName != "" ? loc($"weapons/{currWeaponName}") : ""
-
-  local header = loc("bullet_properties/armorPiercing")
-  if (isCumulative)
-    header = " ".concat(header, loc("bullet_properties/armorPiercing/cumulative"))
-  else if (bulletsData?.explosiveType)
-    header = " ".concat(header, loc("bullet_properties/armorPiercing/kinetic"))
-  else
-    header = "".concat(header, bulletName != "" ? $" {loc("ui/colon")}{bulletName}" : "")
-
-  if (!isCumulative)
-    header = "\n".concat(header,
-    format("(%s / %s)", loc("distance"), loc("bullet_properties/hitAngle"))
+  let header = "\n".concat(
+    "".concat(loc("bullet_properties/armorPiercing"),
+      bulletName != "" ? $"{loc("ui/colon")}{bulletName}" : ""),
+    $"({loc("distance")} / {loc("bullet_properties/hitAngle")})"
   )
 
   descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({ props, header })
 }
 
-function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
+function addArmorPiercingToDescForBullets(bulletsData, descTbl) {
+  let { armorPiercingDist, armorPiercingKinetic, cumulativeDamage = 0, explosiveType = null,
+    explosiveMass = 0 } = bulletsData
+  let { props, baseArmorPiercing, baseDistance } = getArmorPiercingViewData(armorPiercingKinetic, armorPiercingDist)
+  let highEnergyPenetration = explosiveType == null || explosiveMass == 0 ? 0
+    : round_by_value(getMaxArmorPiercing(explosiveType, explosiveMass), 0.1)
+
+  let cumulativeDamageInt = round(cumulativeDamage).tointeger()
+  let maxPenetartion = max(highEnergyPenetration, cumulativeDamageInt, baseArmorPiercing)
+  if (maxPenetartion == 0)
+    return
+
+  let isKineticDmg = maxPenetartion == baseArmorPiercing
+  let armorPiercingIconId = isKineticDmg ? "penetration_kinetic_icon"
+    : maxPenetartion == cumulativeDamageInt ? "penetration_cumulative_jet_icon"
+    : "penetration_high_explosive_fragmentation_icon"
+
+  let bulletBaseArmorPiercing = {
+    value = " ".concat(maxPenetartion, loc("measureUnits/mm"))
+    customDesc = bulletArmorPiercingMainParamDesc.subst({
+      baseText = stripTags(loc("bullet_properties/armorPiercing_short"))
+      armorPiercingIconId
+      distanceTextObj = !isKineticDmg ? ""
+        : bulletArmorPiercingMainParamDistanceText.subst({
+            distanceText = stripTags($"| {baseDistance}{loc("measureUnits/meters_alt")}") })
+    })
+  }
+  if (descTbl?.bulletMainParams && descTbl.bulletMainParams.len() > 1)
+    descTbl.bulletMainParams.insert(1, bulletBaseArmorPiercing)
+  else
+    descTbl.bulletMainParams <- (descTbl?.bulletMainParams ?? []).append(bulletBaseArmorPiercing)
+
+  let degText = loc("measureUnits/deg")
+  descTbl.bulletPenetrationData <- (descTbl?.bulletPenetrationData ?? {}).__update({
+    highEnergyPenetration = highEnergyPenetration == 0 ? null
+      : $"{highEnergyPenetration} {loc("measureUnits/mm")}"
+    kineticPenetration = baseArmorPiercing != 0 ? { props } : null
+    cumulativePenetration = cumulativeDamageInt == 0 ? null
+      : { props = [
+          { value = $"{cumulativeDamageInt} {loc("measureUnits/mm")}", angle = $"0{degText}" }
+          { value = $"{round(cumulativeDamage * cos30).tointeger()} {loc("measureUnits/mm")}", angle = $"30{degText}" }
+          { value = $"{round(cumulativeDamage * cos60).tointeger()} {loc("measureUnits/mm")}", angle = $"60{degText}", isLastRow = true }
+      ]}
+  })
+}
+
+function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard = false) {
   let p = []
+  let isSmokeBullet = !!bulletsData?.smokeShellRad
+  //  Enable dividing lines for rockets shells
+  //  (not the best check, maybe need to come up with something new):
+  let needAddDividingLine = !!bulletsData?.rangeMax && !!bulletsData?.guidanceType
+  let listDividerLineIndexes = {
+    first = 0
+    second = 0
+  }
+  let bulletMainParams = []
+  let bulletRicochetData = {
+    text = loc("bullet_properties/angleWithRicochet")
+    data = []
+  }
   let addProp = function(arr, text, value) {
     arr.append({
       text = text
       value = value
     })
   }
-
   if ("sonicDamage" in bulletsData) {
     let { distance, speed, horAngles, verAngles } = bulletsData.sonicDamage
     let props = []
@@ -258,20 +344,44 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
   if (bulletsData.caliber > 0)
     addProp(p, loc("bullet_properties/caliber"), " ".concat(round_by_value(bulletsData.caliber,
       isCaliberCannon(bulletsData.caliber) ? 1 : 0.01), loc("measureUnits/mm")))
-  if (bulletsData.mass > 0)
+  if (bulletsData.mass > 0) {
     addProp(p, loc("bullet_properties/mass"),
       getMeasureTypeByName("kg", true).getMeasureUnitsText(bulletsData.mass))
-  if (bulletsData.speed > 0)
-    addProp(p, loc("bullet_properties/speed"),
-      format("%.0f %s", bulletsData.speed, loc("measureUnits/metersPerSecond_climbSpeed")))
+  }
+  if (needAddDividingLine)
+    listDividerLineIndexes.first = p.len()
+  if (bulletsData.speed > 0) {
+    if (!isBulletCard)
+      addProp(p, loc("bullet_properties/speed"),
+        format("%.0f %s", bulletsData.speed, loc("measureUnits/metersPerSecond_climbSpeed")))
+    else
+      bulletMainParams.append({
+        text = loc("bullet_properties/speed")
+        value = format("%.0f %s", bulletsData.speed, loc("measureUnits/metersPerSecond_climbSpeed"))
+      })
+  }
 
   let maxSpeed = (bulletsData?.maxSpeed ?? 0) || (bulletsData?.endSpeed ?? 0)
-  if (bulletsData?.machMax)
+  if (bulletsData?.machMax) {
+    if (!isBulletCard)
     addProp(p, loc("rocket/maxSpeed"),
       format("%.1f %s", bulletsData.machMax, loc("measureUnits/machNumber")))
-  else if (maxSpeed)
-    addProp(p, loc("rocket/maxSpeed"),
-      measureType.SPEED_PER_SEC.getMeasureUnitsText(maxSpeed))
+    else
+      bulletMainParams.append({
+        text = loc("rocket/maxSpeed")
+        value = format("%.1f %s", bulletsData.machMax, loc("measureUnits/machNumber"))
+      })
+  }
+  else if (maxSpeed) {
+    if (!isBulletCard)
+      addProp(p, loc("rocket/maxSpeed"),
+        measureType.SPEED_PER_SEC.getMeasureUnitsText(maxSpeed))
+    else
+      bulletMainParams.append({
+        text = loc("rocket/maxSpeed")
+        value = measureType.SPEED_PER_SEC.getMeasureUnitsText(maxSpeed)
+      })
+  }
 
   if (bulletsData?.bulletType == "aam" || bulletsData?.bulletType == "sam_tank") {
     if ("loadFactorMax" in bulletsData)
@@ -360,22 +470,35 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
       addProp(p, loc("missile/timeSelfdestruction"),
         format("%.1f %s", bulletsData.timeLife, loc("measureUnits/seconds")))
   }
+  if (needAddDividingLine)
+    listDividerLineIndexes.second = p.len()
 
   let explosiveType = bulletsData?.explosiveType
   if (explosiveType)
     addProp(p, loc("bullet_properties/explosiveType"), loc($"explosiveType/{explosiveType}"))
   let explosiveMass = bulletsData?.explosiveMass
-  if (explosiveMass)
-    addProp(p, loc("bullet_properties/explosiveMass"),
-      getMeasuredExplosionText(explosiveMass))
+  if (explosiveMass) {
+    if (explosiveType == "tnt" && isBulletCard) {
+      bulletMainParams.append({
+        text = loc("bullet_properties/explosiveMass_short")
+        value = getMeasuredExplosionText(explosiveMass)
+      })
+    }
+    else
+      addProp(p, loc("bullet_properties/explosiveMass"),
+        getMeasuredExplosionText(explosiveMass))
+  }
   if (explosiveType && explosiveMass) {
     let tntEqText = getTntEquivalentText(explosiveType, explosiveMass)
-    if (tntEqText.len())
-      addProp(p, loc("bullet_properties/explosiveMassInTNTEquivalent"), tntEqText)
-    let maxArmorPenetration = getMaxArmorPiercing(explosiveType, explosiveMass)
-    if (maxArmorPenetration)
-      addProp(p, loc("bullet_properties/maxArmorPenetration"),
-        $"{roundToDigits(maxArmorPenetration, 2)} {loc("measureUnits/mm")}")
+    if (tntEqText.len()) {
+      if (isSmokeBullet || !isBulletCard)
+        addProp(p, loc("bullet_properties/explosiveMassInTNTEquivalent"), tntEqText)
+      else
+        bulletMainParams.append({
+          text = loc("bullet_properties/explosiveMassInTNTEquivalent")
+          value = tntEqText
+        })
+    }
   }
 
   let fuseDelayDist = roundToDigits(bulletsData.fuseDelayDist, 2)
@@ -402,38 +525,79 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl) {
 
   let ricochetData = !bulletsData.isCountermeasure && getRicochetData(bulletsData?.ricochetPreset)
   if (ricochetData)
-    foreach (item in ricochetData.angleProbabilityMap)
-      addProp(p, loc("bullet_properties/angleByProbability",
-        { probability = roundToDigits(100.0 * item.probability, 2) }),
+    foreach (index, item in ricochetData.angleProbabilityMap) {
+      if (!isBulletCard)
+        addProp(p, loc("bullet_properties/angleByProbability",
+          { probability = roundToDigits(100.0 * item.probability, 2) }),
           "".concat(roundToDigits(item.angle, 2), loc("measureUnits/deg")))
+      else {
+        bulletRicochetData.data.append({
+          value = $"{roundToDigits(100.0 * item.probability, 2)}%"
+          angle = "".concat(roundToDigits(item.angle, 2), loc("measureUnits/deg"))
+        })
+        if (index < ricochetData.angleProbabilityMap.len() - 1)
+          bulletRicochetData.data[index].rightBorder <- true
+      }
+    }
 
   if ("reloadTimes" in bulletsData) {
     let currentDiffficulty = isInFlight() ? get_mission_difficulty_int()
       : getCurrentShopDifficulty().diffCode
     let reloadTime = bulletsData.reloadTimes[currentDiffficulty]
-    if (reloadTime > 0)
-      addProp(p, colorize("badTextColor", loc("bullet_properties/cooldown")),
-        colorize("badTextColor", " ".concat(roundToDigits(reloadTime, 2),
-          loc("measureUnits/seconds"))))
+    if (reloadTime > 0) {
+      let value = isBulletCard ? " ".concat(roundToDigits(reloadTime, 2), loc("measureUnits/seconds"))
+        : colorize("badTextColor", " ".concat(roundToDigits(reloadTime, 2), loc("measureUnits/seconds")))
+      let text = isBulletCard ? loc("bullet_properties/cooldown")
+        : colorize("badTextColor", loc("bullet_properties/cooldown"))
+      addProp(p, text, value)
+    }
   }
 
-  if ("smokeShellRad" in bulletsData)
-    addProp(p, loc("bullet_properties/smokeShellRad"),
-      " ".concat(roundToDigits(bulletsData.smokeShellRad, 2), loc("measureUnits/meters_alt")))
+  if ("smokeShellRad" in bulletsData) {
+    if (isBulletCard && isSmokeBullet)
+      bulletMainParams.append({
+        text = loc("bullet_properties/smokeShellRad_short")
+        value = " ".concat(roundToDigits(bulletsData.smokeShellRad, 2), loc("measureUnits/meters_alt"))
+      })
+    else
+      addProp(p, loc("bullet_properties/smokeShellRad"),
+        " ".concat(roundToDigits(bulletsData.smokeShellRad, 2), loc("measureUnits/meters_alt")))
+  }
 
   if ("smokeActivateTime" in bulletsData)
     addProp(p, loc("bullet_properties/smokeActivateTime"),
       " ".concat(roundToDigits(bulletsData.smokeActivateTime, 2), loc("measureUnits/seconds")))
 
-  if ("smokeTime" in bulletsData)
-    addProp(p, loc("bullet_properties/smokeTime"),
-      " ".concat(roundToDigits(bulletsData.smokeTime, 2), loc("measureUnits/seconds")))
+  if ("smokeTime" in bulletsData) {
+    if (isBulletCard && isSmokeBullet)
+      bulletMainParams.append({
+        text = loc("bullet_properties/smokeTime_short")
+        value = " ".concat(roundToDigits(bulletsData.smokeTime, 2), loc("measureUnits/seconds"))
+      })
+    else
+      addProp(p, loc("bullet_properties/smokeTime"),
+        " ".concat(roundToDigits(bulletsData.smokeTime, 2), loc("measureUnits/seconds")))
+  }
+
+  if (listDividerLineIndexes.first > 0 && p.len() > 1) {
+    p.insert(listDividerLineIndexes.first, { divider = true })
+    listDividerLineIndexes.second = listDividerLineIndexes.second + 1
+
+    if (listDividerLineIndexes.second > 1 && p.len() > 2)
+      p.insert(listDividerLineIndexes.second, { divider = true })
+  }
 
   let bTypeDesc = loc(bulletsData.bulletType, "")
   if (bTypeDesc != "")
     descTbl.bulletsDesc <- bTypeDesc
 
   descTbl.bulletParams <- (descTbl?.bulletParams ?? []).append({ props = p })
+
+  if (bulletMainParams.len()) {
+    descTbl.bulletMainParams <- bulletMainParams
+  }
+  if (bulletRicochetData.data.len())
+    descTbl.bulletRicochetData <- bulletRicochetData
 }
 
 function buildBulletsData(bullet_parameters, bulletsSet = null) {
@@ -446,8 +610,9 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
   let bulletsData = {
     armorPiercing = []
     armorPiercingDist = []
+    armorPiercingKinetic = []
     isCountermeasure
-    needHideArmorPiercingTable = bullet_parameters?.needHideArmorPiercingTable ?? false
+    cumulativeDamage = 0
   }
 
   if (bulletsSet?.bullets?[0] == "napalm_tank") {
@@ -458,6 +623,8 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
     bulletsData.sonicDamage <- bulletsSet.sonicDamage
     return bulletsData  //hide all bullet description for sonicDamage bullet
   }
+
+  bulletsData.cumulativeDamage = bulletsSet?.cumulativeDamage ?? 0
 
   if (isCountermeasure) {
     let whitelistParams = [ "bulletType" ]
@@ -473,6 +640,7 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
 
         params.armorPiercing     <- []
         params.armorPiercingDist <- []
+        params.armorPiercingKinetic <- []
       }
       filteredBulletParameters.append(params)
     }
@@ -485,33 +653,38 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
 
     if (bullet_params?.bulletType != "aam") {
       if (bulletsData.armorPiercingDist.len() < bullet_params.armorPiercingDist.len()) {
-        bulletsData.armorPiercing.resize(bullet_params.armorPiercingDist.len());
-        bulletsData.armorPiercingDist = bullet_params.armorPiercingDist;
+        bulletsData.armorPiercing.resize(bullet_params.armorPiercingDist.len())
+        bulletsData.armorPiercingDist = bullet_params.armorPiercingDist
       }
+      if (bulletsData.armorPiercingKinetic.len() < bullet_params.armorPiercingDist.len())
+        bulletsData.armorPiercingKinetic.resize(bullet_params.armorPiercingDist.len())
+
       foreach (ind, d in bulletsData.armorPiercingDist) {
         for (local i = 0; i < bullet_params.armorPiercingDist.len(); i++) {
-          local armor = null;
           let idist = bullet_params.armorPiercingDist[i].tointeger()
-          if (type(bullet_params.armorPiercing[i]) != "table")
-            continue
-
-          if (d == idist || (d < idist && !i))
-            armor = bullet_params.armorPiercing[i].map(@(f) round(f).tointeger())
-          else if (d < idist && i) {
-            let prevDist = bullet_params.armorPiercingDist[i - 1].tointeger()
-            if (d > prevDist) {
-              let newDist = d
-              let idx = i
-              armor = u.tablesCombine(bullet_params.armorPiercing[idx - 1], bullet_params.armorPiercing[idx],
-                @(prev, next) (prev + (next - prev) * (newDist - prevDist.tointeger()) / (idist - prevDist)).tointeger(),
-                0)
+          foreach (tableName in ["armorPiercing", "armorPiercingKinetic"]) {
+            if (type(bullet_params[tableName][i]) != "table")
+              continue
+            local armor = null
+            if (d == idist || (d < idist && !i))
+              armor = bullet_params[tableName][i].map(@(f) round(f).tointeger())
+            else if (d < idist && i) {
+              let prevDist = bullet_params.armorPiercingDist[i - 1].tointeger()
+              if (d > prevDist) {
+                let newDist = d
+                let idx = i
+                armor = u.tablesCombine(bullet_params[tableName][idx - 1], bullet_params[tableName][idx],
+                  @(prev, next) (prev + (next - prev) * (newDist - prevDist.tointeger()) / (idist - prevDist)).tointeger(),
+                  0)
+              }
             }
-          }
-          if (armor == null)
-            continue
 
-          bulletsData.armorPiercing[ind] = (!bulletsData.armorPiercing[ind])
-            ? armor : u.tablesCombine(bulletsData.armorPiercing[ind], armor, max)
+            if (armor == null)
+              continue
+
+            bulletsData[tableName][ind] = (!bulletsData[tableName][ind])
+              ? armor : u.tablesCombine(bulletsData[tableName][ind], armor, max)
+          }
         }
       }
     }
@@ -519,7 +692,7 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
     if (!needAddParams)
       continue
 
-    foreach (p in ["mass", "kineticDmg", "explosiveDmg", "cumulativeDmg", "speed", "fuseDelay", "fuseDelayDist", "explodeTreshold", "operatedDist",
+    foreach (p in ["mass", "speed", "fuseDelay", "fuseDelayDist", "explodeTreshold", "operatedDist",
       "machMax", "endSpeed", "maxSpeed", "rangeBand0", "rangeBand1", "fov", "gateWidth", "bandMaskToReject"])
       bulletsData[p] <- bullet_params?[p] ?? 0
 
@@ -610,7 +783,7 @@ function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
 
 
 
-function addBulletsParamToDesc(descTbl, unit, item) {
+function addBulletsParamToDesc(descTbl, unit, item, isBulletCard) {
   if (!unit.unitType.canUseSeveralBulletsForGun && !hasFeature("BulletParamsForAirs"))
     return
 
@@ -677,24 +850,61 @@ function addBulletsParamToDesc(descTbl, unit, item) {
 
 
 
-  addAdditionalBulletsInfoToDesc(bulletsData, descTbl)
-  addArmorPiercingToDesc(bulletsData, descTbl)
+  addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard)
+  if (isBulletCard)
+    addArmorPiercingToDescForBullets(bulletsData, descTbl)
+  else
+    addArmorPiercingToDesc(bulletsData, descTbl)
+}
+
+function checkBulletParamsBeforeRender(descTbl) {
+  if (!descTbl?.bulletMainParams)
+    return
+
+  descTbl.showBulletMainParams <- descTbl.bulletMainParams.len() > 0
+
+  if (descTbl.bulletMainParams.len() > MAX_BLOCK_IN_MAIN_SHELLS_PARAMS_TOOLTIP) {
+    let extraProps = []
+    while (descTbl.bulletMainParams.len() > MAX_BLOCK_IN_MAIN_SHELLS_PARAMS_TOOLTIP) {
+      let extraBlock = descTbl.bulletMainParams.pop()
+      extraProps.append(extraBlock)
+    }
+    if (extraProps.len()) {
+      descTbl.bulletParams <- (descTbl?.bulletParams ?? [])
+      if (descTbl.bulletParams?[0].props)
+        descTbl.bulletParams[0].props.extend(extraProps)
+      else {
+        descTbl.bulletParams.append({ props = extraProps})
+      }
+    }
+  }
+  foreach(idx, param in descTbl.bulletMainParams) {
+    param.idx <- idx
+  }
+  descTbl.bulletMainParamsCount <- descTbl.bulletMainParams.len()
+  descTbl.bulletMainParamsDividers <- descTbl.bulletMainParamsCount - 1
+
+  if (descTbl?.bulletPenetrationData)
+    descTbl.bulletPenetrationData.__update({
+      title = loc("bullet_properties/armorPiercing")
+  })
 }
 
 function getSingleBulletParamToDesc(unit, locName, bulletName, bulletsSet, bulletParams) {
   let descTbl = { name = colorize("activeTextColor", locName), desc = "", bulletActions = [] }
   addBulletAnimationsToDesc(descTbl, bulletsSet?.bulletAnimations)
   let part = bulletName.indexof("@")
-    descTbl.desc = part == null ? getBulletAnnotation(bulletName)
-      : getBulletAnnotation(bulletName.slice(0, part), bulletName.slice(part + 1))
+  descTbl.desc = part == null ? getBulletAnnotation(bulletName)
+    : getBulletAnnotation(bulletName.slice(0, part), bulletName.slice(part + 1))
 
   if (!unit.unitType.canUseSeveralBulletsForGun && !hasFeature("BulletParamsForAirs"))
     return descTbl
 
   descTbl.bulletActions = [{ visual = getBulletsIconData(bulletsSet) }]
   let bulletsData = buildBulletsData([bulletParams], bulletsSet)
-  addAdditionalBulletsInfoToDesc(bulletsData, descTbl)
-  addArmorPiercingToDesc(bulletsData, descTbl)
+  addAdditionalBulletsInfoToDesc(bulletsData, descTbl, true)
+  addArmorPiercingToDescForBullets(bulletsData, descTbl)
+  checkBulletParamsBeforeRender(descTbl)
   return descTbl
 }
 
@@ -705,4 +915,5 @@ return {
   addArmorPiercingToDesc
   getBulletsIconView
   getSingleBulletParamToDesc
+  checkBulletParamsBeforeRender
 }

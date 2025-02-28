@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_tank_damage_indicator_visible, is_hud_visible, is_freecam_enabled, is_hero_highquality, set_option_hud_screen_safe_area, is_cursor_visible_in_gui, set_hud_width_limit, hud_is_in_cutscene, get_mp_kick_countdown
+from "%scripts/dagui_natives.nut" import is_tank_damage_indicator_visible, is_freecam_enabled, is_hero_highquality, set_option_hud_screen_safe_area, is_cursor_visible_in_gui, set_hud_width_limit, get_mp_kick_countdown
 from "%scripts/dagui_library.nut" import *
 from "%scripts/hud/hudConsts.nut" import HUD_VIS_PART, HUD_TYPE
 from "%scripts/utils_sa.nut" import is_multiplayer
@@ -21,7 +21,7 @@ let { format } = require("string")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
-let { isProgressVisible, getHudUnitType } = require("hudState")
+let { isProgressVisible, getHudUnitType, hud_is_in_cutscene, is_hud_visible } = require("hudState")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { getActionBarItems, getActionBarUnitName } = require("hudActionBar")
@@ -44,6 +44,10 @@ let { enableOrders } = require("%scripts/items/orders.nut")
 let { initMpChatStates } = require("%scripts/chat/mpChatState.nut")
 let { loadGameChatToObj, detachGameChatSceneData } = require("%scripts/chat/mpChat.nut")
 let { isInKillerCamera } = require("%scripts/hud/hudState.nut")
+let { clearStreaks, onUpdateStreaks } =  require("%scripts/streaks.nut")
+let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
+let { getUnmappedControlsForCurrentMission } = require("%scripts/controls/controlsUtils.nut")
 
 dagui_propid_add_name_id("fontSize")
 
@@ -132,7 +136,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.initDargWidgetsList()
     ::init_options()
     g_hud_event_manager.init()
-    ::g_streaks.clear()
+    clearStreaks()
     this.initSubscribes()
 
     set_hud_width_limit(safeAreaHud.getSafearea()[0])
@@ -355,11 +359,11 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       xray_render_dmg_indicator = isDmgPanelVisible
       hud_tank_damage_indicator = isDmgPanelVisible
       tank_background = isDmgIndicatorVisible() && isDmgPanelVisible
-      hud_tank_tactical_map     = !isInKillerCamera.get() && visMode.isPartVisible(HUD_VIS_PART.MAP)
-      hud_kill_log              = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
-      chatPlace                 = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
+      hud_tank_tactical_map_nest = !isInKillerCamera.get() && visMode.isPartVisible(HUD_VIS_PART.MAP)
+      hud_kill_log              = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
+      chatPlace                 = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
       hud_enemy_damage_nest     = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
-      order_status              = ::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY, true)
+      order_status              = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY, true)
     }
 
     updateExtWatched({
@@ -376,7 +380,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   onEventChangedPartHudVisible = @(_) this.doWhenActiveOnce("updateHudVisModeForce")
 
   function onHudUpdate(_obj = null, dt = 0.0) {
-    ::g_streaks.onUpdate(dt)
+    onUpdateStreaks(dt)
     this.unmappedControlsUpdate(dt)
     this.updateAFKTimeKickText(dt)
   }
@@ -385,7 +389,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.spectatorMode || !is_hud_visible())
       return
 
-    let unmapped = ::getUnmappedControlsForCurrentMission()
+    let unmapped = getUnmappedControlsForCurrentMission()
 
     if (!unmapped.len()) {
       if (this.ucWarningActive) {
@@ -460,7 +464,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function changeObjectsSize(optionNum) {
-    let option = ::get_option(optionNum)
+    let option = get_option(optionNum)
     let value = (option && option.value != null) ? option.value : 0
     let vMax   = (option?.max ?? 0) != 0 ? option.max : 2
     let size = 1.0 + 0.333 * value / vMax

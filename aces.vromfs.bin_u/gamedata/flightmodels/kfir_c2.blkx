@@ -1850,12 +1850,12 @@
   },
   "cockpit": {
     "headPos": [
-      5.28,
+      5.31,
       0.33,
       0.0
     ],
     "headPosOnShooting": [
-      5.38,
+      5.41,
       0.33,
       0.0
     ],
@@ -1867,13 +1867,13 @@
       0.0
     ],
     "mirrorNorm": [
-      -0.99,
-      -0.1,
+      -0.993,
+      -0.12,
       0.0
     ],
     "mirrorNode": [
-      "blister5",
-      "blister6"
+      "blister7",
+      "blister8"
     ],
     "lightPos": [
       5.898697,
@@ -1983,12 +1983,12 @@
         514.444
       ],
       "mach": [
-        0.5,
-        2.4
+        0.0,
+        2.5
       ],
       "mach1": [
-        0.5,
-        2.4
+        0.0,
+        2.5
       ],
       "vario": [
         -30.48,
@@ -2035,6 +2035,10 @@
         -180.0,
         180.0
       ],
+      "aoa": [
+        0.0,
+        45.0
+      ],
       "compass": [
         0.0,
         360.0
@@ -2061,7 +2065,7 @@
       ],
       "fuel_consume": [
         0.0,
-        100.0
+        320.0
       ],
       "rpm_min": [
         0.0,
@@ -2069,7 +2073,7 @@
       ],
       "rpm_hour": [
         0.0,
-        10000.0
+        7700.0
       ],
       "oil_pressure": [
         0.0,
@@ -2110,21 +2114,34 @@
       "gears_lamp": [
         0.0,
         0.0
+      ],
+      "ammo_counter1": [
+        0.0,
+        1000.0
+      ],
+      "ammo_counter2": [
+        0.0,
+        100.0
+      ],
+      "ammo_counter3": [
+        0.0,
+        10.0
+      ],
+      "ammo_counter4": [
+        0.0,
+        1000.0
+      ],
+      "ammo_counter5": [
+        0.0,
+        100.0
+      ],
+      "ammo_counter6": [
+        0.0,
+        10.0
       ]
     },
     "multifunctionDisplays": {
       "display": [
-        {
-          "textureArea": [
-            0.0,
-            0.5,
-            0.5,
-            1.0
-          ],
-          "page": {
-            "type": "map"
-          }
-        },
         {
           "textureArea": [
             0.5,
@@ -2147,8 +2164,8 @@
           "page": {
             "type": "plane_ils",
             "ilsSize": [
-              0.27,
-              0.27
+              0.25,
+              0.25
             ],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
@@ -2326,7 +2343,11 @@
               "bullets": 140,
               "spread": 1.1,
               "traceOffset": 1,
-              "counterIndex": 1
+              "counterIndex": [
+                1,
+                2,
+                3
+              ]
             },
             {
               "trigger": "cannon",
@@ -2337,7 +2358,11 @@
               "bullets": 140,
               "spread": 1.1,
               "traceOffset": 2,
-              "counterIndex": 1
+              "counterIndex": [
+                4,
+                5,
+                6
+              ]
             },
             {
               "trigger": "countermeasures",

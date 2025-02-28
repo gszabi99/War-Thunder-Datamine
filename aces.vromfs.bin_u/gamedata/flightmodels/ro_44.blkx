@@ -1849,27 +1849,38 @@
   },
   "cockpit": {
     "headPos": [
-      -1.695,
-      0.575,
-      0.0
+      -1.15,
+      0.736,
+      0.053
     ],
     "headPosOnShooting": [
-      -1.685,
-      0.575,
+      -1.05,
+      0.736,
       0.0
     ],
     "openedCockpit": true,
     "lightPos": [
-      -1.25,
-      0.2,
-      0.0
+      -0.619,
+      0.334,
+      0.09
     ],
     "lightColor": [
-      0.62,
-      0.3,
-      0.1
+      0.31,
+      0.11,
+      0.01
     ],
     "lightRadius": 0.3,
+    "lightPos1": [
+      -0.619,
+      0.334,
+      -0.09
+    ],
+    "lightColor1": [
+      0.31,
+      0.11,
+      0.01
+    ],
+    "lightRadius1": 0.3,
     "telescope": true,
     "teleScreenCapture": 0.038,
     "teleSightFov": 8.0,
@@ -1882,32 +1893,44 @@
         1.0
       ],
       "stick_elevator": [
-        -2.0,
-        1.0
-      ],
-      "pedals1": [
         -1.0,
         1.0
       ],
-      "pedals2": [
+      "stick_elevator1": [
         -1.0,
         1.0
       ],
-      "pedals3": [
+      "stick_elevator2": [
         -1.0,
         1.0
       ],
-      "pedals4": [
+      "stick_elevator3": [
         -1.0,
         1.0
       ],
-      "pedals5": [
+      "stick_elevator4": [
+        -1.0,
+        1.0
+      ],
+      "pedals": [
         -1.0,
         1.0
       ],
       "throttle": [
-        -0.5,
-        1.5
+        0.0,
+        1.0
+      ],
+      "throttle_1": [
+        0.0,
+        1.0
+      ],
+      "radiator_lever": [
+        0.0,
+        1.0
+      ],
+      "radiator_lever_1": [
+        0.0,
+        1.0
       ],
       "mixture": [
         0.0,
@@ -1932,6 +1955,10 @@
       "vario": [
         -10.0,
         10.0
+      ],
+      "altitude_10k": [
+        0.0,
+        10000.0
       ],
       "altitude_hour": [
         0.0,
@@ -1963,12 +1990,12 @@
         60.0
       ],
       "manifold_pressure": [
-        0.6,
-        1.5
+        0.526,
+        1.316
       ],
       "rpm": [
         0.0,
-        4000.0
+        3000.0
       ],
       "oil_pressure": [
         0.0,
@@ -1980,15 +2007,27 @@
       ],
       "water_temperature": [
         0.0,
-        120.0
+        270.0
       ],
       "fuel_pressure": [
         0.0,
         15.0
       ],
+      "fuel_consume": [
+        1.0,
+        3.6
+      ],
       "fuel": [
         0.0,
-        263.0
+        266.0
+      ],
+      "ammo_counter1": [
+        0.0,
+        600.0
+      ],
+      "ammo_counter2": [
+        0.0,
+        600.0
       ]
     },
     "parts_holes_dmg": {
@@ -2018,7 +2057,8 @@
         "dm": "mgun1_dm",
         "bullets": 220,
         "spread": 1.05,
-        "breechInCockpit": true
+        "breechInCockpit": true,
+        "counterIndex": 1
       },
       {
         "trigger": "machine gun",
@@ -2028,7 +2068,8 @@
         "dm": "mgun2_dm",
         "bullets": 220,
         "spread": 1.05,
-        "breechInCockpit": true
+        "breechInCockpit": true,
+        "counterIndex": 2
       }
     ]
   },

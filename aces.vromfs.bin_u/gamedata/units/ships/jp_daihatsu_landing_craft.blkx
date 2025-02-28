@@ -2003,6 +2003,22 @@
       "effect": {
         "pressureOpen": true
       }
+    },
+    "hull": {
+      "hp": 15000.0,
+      "part": [
+        "compartment_01_dm",
+        "compartment_02_dm",
+        "compartment_03_dm",
+        "compartment_04_dm",
+        "bridge_dm"
+      ],
+      "effect": {
+        "conditionDead": true,
+        "conditionDamageType": "explosion",
+        "kill": true,
+        "killEffect": "damaged"
+      }
     }
   },
   "DamageParts": {
@@ -2010,7 +2026,6 @@
     "createSecondaryShatters": false,
     "compartments": {
       "fireParamsPreset": "ship_cover_boats",
-      "stopChanceOnDeadPart": 0.75,
       "armorClass": "ship_structural_steel",
       "armorThickness": 4.0,
       "fireProtectionHp": 3.0,
@@ -2040,7 +2055,6 @@
     },
     "superstructures": {
       "fireParamsPreset": "ship_superstructure_boat",
-      "stopChanceOnDeadPart": 0.2,
       "armorClass": "ship_wood",
       "armorThickness": 15.0,
       "fireProtectionHp": 3.0,
@@ -2238,6 +2252,7 @@
     "engines": {
       "maxSpeed": 4.2,
       "maxReverseSpeed": 2.0,
+      "waterResistanceAtStopK": 0.4,
       "speedToTime": {
         "row": [
           [

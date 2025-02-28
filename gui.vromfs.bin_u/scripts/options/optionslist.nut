@@ -24,7 +24,6 @@ let { isInFlight } = require("gameplayBinding")
 let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair")
 let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
-let { is_hfr_supported } = require("graphicsOptions")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -53,8 +52,7 @@ function getPrivacyOptionsList() {
 }
 
 function hasConsolePresets() {
-  return (is_xboxone_X || (isPlatformXboxScarlett && is_hfr_supported()))
-    && hasFeature("optionConsolePreset")
+  return (is_xboxone_X || isPlatformXboxScarlett) && hasFeature("optionConsolePreset")
 }
 
 let otherOptionsList = @() [
@@ -139,8 +137,10 @@ let getMainOptions = function() {
       [USEROPT_RADAR_TARGET_CYCLING, "spinner"],
       [USEROPT_RADAR_AIM_ELEVATION_CONTROL, "spinner"],
       [USEROPT_RWR_SENSITIVITY, "slider"],
+      [USEROPT_RWR_FRIENDLY_TARGETS_INDICATION, "combobox"],
       [USEROPT_USE_RADAR_HUD_IN_COCKPIT, "spinner"],
       [USEROPT_USE_TWS_HUD_IN_COCKPIT, "spinner"],
+      [USEROPT_SLAVE_AIRBORNE_COUNTER_MEASURES_TO_MLWS_ON_SPAWN, "spinner"],
       [USEROPT_ACTIVATE_AIRBORNE_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
       [USEROPT_AIR_RADAR_SIZE, "slider"],
       [USEROPT_CROSSHAIR_TYPE, "combobox"],

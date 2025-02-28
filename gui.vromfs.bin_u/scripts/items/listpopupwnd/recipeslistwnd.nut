@@ -11,6 +11,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let stdMath = require("%sqstd/math.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { findChildIndex, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 
 local MIN_ITEMS_IN_ROW = 7
 
@@ -116,7 +117,7 @@ gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       shortcut = GAMEPAD_ENTER_SHORTCUT
       cb = @() this.onRecipeApply()
     }]
-    ::gui_modal_tutor(steps, this, true)
+    gui_modal_tutor(steps, this, true)
   }
 
   function selectRecipe() {

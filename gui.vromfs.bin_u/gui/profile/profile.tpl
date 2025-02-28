@@ -167,7 +167,7 @@ root {
           css-hier-invalidate:t='yes'
           frameSeparator {
             position:t='root'
-            top:t='1@maxAccountHeaderHeight'
+            top:t='1@maxAccountHeaderHeight + 1@bhInVr'
           }
 
           include "%gui/profile/profileHeader.blk"
@@ -220,18 +220,25 @@ root {
           id:t='usercard-container'
           size:t='pw, fh'
           flow:t="vertical"
+          interactive:t='yes'
           css-hier-invalidate:t='yes'
 
           tdiv {
             behavior:t='button'
-            position:t='root'
             id:t='profile_widget_bg'
-            pos:t='(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf'
-            size:t='1@accountHeaderWidth, <<scale>>*((sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf)'
-            background-image:t='!ui/images/profile/widget_bg'
-            background-color:t='#FFFFFF'
+            position:t='root'
+            overflow:t='hidden'
+            pos:t='(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf + 1@bhInVr'
+            size:t='1@accountHeaderWidth, sh - 1@bh - 9@sf/@pf - 1@frameFooterHeight - 1@maxAccountHeaderHeight'
             skip-navigation:t='yes'
             on_click:t='onProfileEditBtn'
+
+            tdiv {
+              position:t='relative'
+              size:t='pw, <<scale>>*((sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf)'
+              background-image:t='!ui/images/profile/widget_bg'
+              background-color:t='#FFFFFF'
+            }
           }
 
           tdiv {
@@ -239,13 +246,13 @@ root {
             position:t='relative'
             left:t='(pw-w)/2'
             padding-bottom:t='21@sf/@pf'
-            width:t='@accountHeaderWidth'
+            width:t='1@accountHeaderWidth'
             css-hier-invalidate:t='yes'
             <<^isSmallSize>>
-            min-height:t='190@sf/@pf'
+            min-height:t='<<scale>>*1@profileHeaderH'
             <</isSmallSize>>
             <<#isSmallSize>>
-            min-height:t='<<scale>>*130@sf/@pf'
+            min-height:t='<<scale>>*1@smallProfileHeaderH'
             <</isSmallSize>>
 
             tdiv {
@@ -360,10 +367,16 @@ root {
 
           tdiv {
             position:t='root'
-            pos:t='(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf'
-            size:t='1@accountHeaderWidth, <<scale>>*((sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf)'
-            background-image:t='!ui/images/profile/widget_bg'
-            background-color:t='#FFFFFF'
+            overflow:t='hidden'
+            pos:t='(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf + 1@bhInVr'
+            size:t='1@accountHeaderWidth, sh - 1@bh - 9@sf/@pf - 1@frameFooterHeight - 1@maxAccountHeaderHeight'
+
+            tdiv {
+              position:t='relative'
+              size:t='pw, <<scale>>*((sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf)'
+              background-image:t='!ui/images/profile/widget_bg'
+              background-color:t='#FFFFFF'
+            }
           }
           include "%gui/profile/profileStats.blk"
         }
@@ -814,6 +827,12 @@ root {
               background-repeat:t='expand-svg'
             }
           }
+        }
+
+        profileContent {
+          id:t='collections-container'
+          size:t='pw, fh'
+          flow:t='horizontal'
         }
 
         frameSeparator {

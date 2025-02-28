@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let BattlePass = class (ItemCouponBase) {
   static name = "BattlePass"
@@ -11,4 +12,4 @@ let BattlePass = class (ItemCouponBase) {
   canConsume           = @() false
 }
 
-return { BattlePass }
+registerItemClass(BattlePass)

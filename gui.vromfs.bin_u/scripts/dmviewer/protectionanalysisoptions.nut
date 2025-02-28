@@ -1,8 +1,8 @@
-from "%scripts/dagui_natives.nut" import set_protection_checker_params
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import findNearest
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
 
+let { set_protection_checker_params } = require("hangarEventCommand")
 let { getUnitName, image_for_air } = require("%scripts/unit/unitInfo.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
@@ -23,7 +23,7 @@ let { SINGLE_WEAPON, MODIFICATION, SINGLE_BULLET } = require("%scripts/weaponry/
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { isCountryHaveUnitType, hasUnitAtRank, get_units_list } = require("%scripts/shop/shopCountryInfo.nut")
 let { getUnitWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
+let { utf8Capitalize } = require("%sqstd/string.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
@@ -53,12 +53,12 @@ local options = {
 
 function updateParamsByUnit(unit, handler, scene) {
   handler.guiScene.setUpdatesEnabled(false, false)
-    for (local i = 1; ; i++) {
-      let option = options.getBySortId(i)
-      if (option == options.UNKNOWN)
-        break
-      option.updateParamsByUnit(unit, handler, scene)
-    }
+  for (local i = 1; ; i++) {
+    let option = options.getBySortId(i)
+    if (option == options.UNKNOWN)
+      break
+    option.updateParamsByUnit(unit, handler, scene)
+  }
   handler.guiScene.setUpdatesEnabled(true, true)
 }
 
@@ -505,8 +505,7 @@ options.addTypes({
           }
 
         let isBullet = curType == "bullet"
-        let locName = utf8ToUpper(
-          loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))), 1)
+        let locName = utf8Capitalize(loc("weapons/{0}".subst(getWeaponNameByBlkPath(weaponBlkPath))))
         if (!curBlk || isInArray(locName, bulletNamesSet))
           continue
 

@@ -2,6 +2,7 @@ require darg
 require DagorStdGuiRender
 require DagorMath
 require math
+require Plane
 require FlightModelWrap
 require HeroManager
 require Unit
@@ -11,10 +12,12 @@ require FlightControl
 require hud
 require WTCamera
 require app
+require Weapon
+require hud
+require %rGui.utils.constants_common
+require app
 
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
-let mpsToKnots = 1.94384
-let metrToFeet = 3.28084
 
 
 def deg_to_rad(rad : float)
@@ -22,10 +25,6 @@ def deg_to_rad(rad : float)
 
 def rad_to_deg(rad : float)
   return rad * 180. / PI
-
-def norm_ang(a : float) : float// [0..TWOPI]
-  let na = a < 0. ? a + 2. * PI : a
-  return na - 2. * PI * floor(na / (2. * PI))
 
 struct CanvasParams
   color : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
@@ -40,7 +39,7 @@ def setup_hmd_data(props : Properties&; var storage : CanvasParams&)
   storage.fontSize = props |> getInt("fontSize", 20)
   storage.lineWidth = props |> getFloat("lineWidth", 2.)
 
-[export]
+[export, unused_argument(rstate)]
 def draw_hmd(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   let hero = get_controlled_hero()
   if hero == null || hero.isDelayed
@@ -48,9 +47,14 @@ def draw_hmd(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : Rend
   let fmw = hero |> as_fmw()
   if fmw == null
     return
+  let app = get_app()
+  if app == null
+    return
   draw_central_mark(ctx, rdata, data)
   draw_bar_altitude(ctx, rdata, data, roundi(hero.pos.y * metrToFeet))
-  draw_altitude(ctx, rdata, data, roundi(fmw.fm.alt * metrToFeet))
+  draw_climb(ctx, rdata, data, roundi(fmw.fm.vertSpeed * mpsToFpm))
+
+  draw_altitude(ctx, rdata, data, roundi(fmw.fm.currentAlt * metrToFeet))
   draw_speed(ctx, rdata, data, roundi(hero.speed * mpsToKnots))
   draw_roll_pitch(ctx, rdata, data, fmw.roll, fmw.tangage)
   draw_aim_lock(ctx, rdata, data)
@@ -58,6 +62,7 @@ def draw_hmd(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : Rend
   draw_compass(ctx, rdata, data, compass)
   draw_hmd_azimuth(ctx, rdata, data)
   draw_ground_speed(ctx, rdata, data, hero.vel)
+  draw_rocket_ccip(ctx, rdata, data, app.flightControlMode, fmw)
 
 def draw_central_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
   ctx |> set_color(data.color)
@@ -74,6 +79,23 @@ def draw_bar_altitude(var ctx : GuiContext&; rdata : ElemRenderData& const; data
   let altStr = "{alt} ft"
   ctx |> goto_xy(rdata.pos.x + rdata.size.x * 0.62, rdata.pos.y + rdata.size.y * 0.35)
   ctx |> draw_str_scaled(1.0, altStr, altStr |> length())
+
+def draw_climb(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; vspeed : int)
+  var fctx : StdGuiFontContext
+  get_font_context(fctx, data.fontId, 0, 0, 18)
+  ctx |> set_color(data.color)
+  ctx |> set_font(data.fontId, 0, 0)
+  ctx |> set_font_ht(18);
+
+  let offset = 0.345 + cvt(float(vspeed), 1000., -1000., -0.02, 0.02)
+  let line <- to_array_move([[float2[2] rdata.pos + float2(rdata.size.x * 0.66, rdata.size.y * 0.345);
+   rdata.pos + float2(rdata.size.x * 0.67, rdata.size.y * offset)]])
+  ctx |> render_line_aa(line, false, data.lineWidth, float2(0., 0.), data.color)
+
+  let climbStr = "{vspeed}"
+  let strBox = get_str_bbox(climbStr, climbStr |> length(), fctx)
+  ctx |> goto_xy(rdata.pos.x + rdata.size.x * 0.67 + ctx |> hdpx(5.), rdata.pos.y + rdata.size.y * offset + strBox.width.y * 0.5)
+  ctx |> draw_str_scaled(1.0, climbStr, climbStr |> length())
 
 def draw_altitude(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; alt : int)
   ctx |> set_color(data.color)
@@ -275,3 +297,43 @@ def draw_ground_speed(var ctx : GuiContext&; rdata : ElemRenderData& const; data
   let strBox = get_str_bbox(spdStr, spdStr |> length(), fctx)
   ctx |> goto_xy(rdata.pos.x + rdata.size.x * 0.35 - strBox.width.x, rdata.pos.y + rdata.size.y * 0.65)
   ctx |> draw_str_scaled(1.0, spdStr, spdStr |> length())
+
+def draw_rocket_ccip(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; fcm : FlightControlMode?; fmw : FlightModelWrap?)
+  ctx |> set_color(data.color)
+
+  if (!fcm.isRocketsConstantlyComputingSightActive || !fcm.isRocketImpactValid)
+    return
+
+  if (fmw.sightMode != int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_ROCKET))
+    return
+
+  let impactPos = fcm.rocketImpactPosition
+  var screenPos = float2(0.f)
+  if world_to_screen(impactPos, screenPos)
+    ctx |> draw_line(
+      screenPos.x,
+      screenPos.y - rdata.size.y * 0.03,
+      screenPos.x,
+      screenPos.y - rdata.size.y * 0.005,
+      ctx |> hdpx(data.lineWidth))
+
+    ctx |> draw_line(
+      screenPos.x,
+      screenPos.y + rdata.size.y * 0.005,
+      screenPos.x,
+      screenPos.y + rdata.size.y * 0.03,
+      ctx |> hdpx(data.lineWidth))
+
+    ctx |> draw_line(
+      screenPos.x - rdata.size.x * 0.005,
+      screenPos.y + rdata.size.y * 0.03,
+      screenPos.x + rdata.size.x * 0.005,
+      screenPos.y + rdata.size.y * 0.03,
+      ctx |> hdpx(data.lineWidth))
+
+    ctx |> draw_line(
+      screenPos.x - rdata.size.x * 0.005,
+      screenPos.y - rdata.size.y * 0.03,
+      screenPos.x + rdata.size.x * 0.005,
+      screenPos.y - rdata.size.y * 0.03,
+      ctx |> hdpx(data.lineWidth))

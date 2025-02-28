@@ -15,7 +15,7 @@ def setup_hmd_data(props : Properties&; var storage : CanvasParams&)
   storage.color = getColor(props, "color", E3DCOLOR(0xFFFFFFFF))
   storage.lineWidth = getFloat(props, "lineWidth", 2.)
 
-[export]
+[export, unused_argument(rstate)]
 def draw_hmd(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; params : CanvasParams&)
   set_color(ctx, params.color)
   let lineWidth = hdpx(ctx, params.lineWidth)

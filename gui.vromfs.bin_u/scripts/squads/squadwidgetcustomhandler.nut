@@ -22,6 +22,7 @@ let { wwGetOperationId } = require("worldwar")
 let { showSquadMemberMenu } = require("%scripts/user/playerContextMenu.nut")
 let { openSearchSquadPlayer } = require("%scripts/contacts/searchForSquadHandler.nut")
 let { joinOperationById } = require("%scripts/globalWorldwarUtils.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
 
@@ -105,7 +106,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     memberObj.findObject($"member_tooltip_{indexStr}")["uid"] = member.uid
 
     if (member.isActualData()) {
-      let contact = ::getContact(member.uid)
+      let contact = getContact(member.uid)
       local countryIcon = ""
       if (checkCountry(member.country, $"squad member data ( uid = {member.uid})", true))
         countryIcon = getCountryIcon(member.country)

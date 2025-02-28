@@ -700,22 +700,24 @@ function getWeaponSlotNumber(weaponSlotsV, weaponSlotActiveV) {
     let text = (i + 1).tostring()
     numbers.append(
       @() {
-        watch = IlsColor
-        rendObj = ROBJ_TEXT
-        size = SIZE_TO_CONTENT
-        pos = [pw(pos), 0]
-        color = IlsColor.get()
-        fontSize = 30
-        font = Fonts.ils31
-        text
-      }
-      @() {
         watch = [IlsColor, IlsLineScale]
         rendObj = ROBJ_FRAME
         color = IlsColor.get()
         pos = [pw(pos - 1), -5]
         size = [pw(16), 40]
         borderWidth = baseLineWidth * IlsLineScale.get()
+        children = @() {
+          watch = IlsColor
+          rendObj = ROBJ_TEXT
+          halign = ALIGN_CENTER
+          valign = ALIGN_BOTTOM
+          pos = [pw(0),  ph(-5)]
+          size = flex()
+          color = IlsColor.get()
+          fontSize = 30
+          font = Fonts.ils31
+          text
+        }
       }
     )
   }

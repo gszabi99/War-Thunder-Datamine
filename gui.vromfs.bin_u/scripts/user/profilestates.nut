@@ -12,6 +12,12 @@ let havePlayerTag = @(tag) get_player_tags().indexof(tag) != null
 let isGuestLogin = Watched(havePlayerTag("guestlogin"))
 let updateGuestLogin = @() isGuestLogin(havePlayerTag("guestlogin"))
 
+function isMyUserId(userId) {
+  if (type(userId) == "string")
+    return userId == userIdStr.value
+  return userId == userIdInt64.value
+}
+
 addListenersWithoutEnv({
   AuthorizeComplete = @(_) updateGuestLogin()
 })
@@ -22,4 +28,5 @@ return {
   userIdInt64
   isGuestLogin
   havePlayerTag
+  isMyUserId
 }

@@ -9,6 +9,7 @@ let {
   isSony,
   isPC,
   is_console,
+  is_gdk,
   consoleRevision } = require("%sqstd/platform.nut")
 let { is_running_on_steam_deck } = require("steam")
 let {
@@ -72,6 +73,7 @@ return {
   isPlatformPC = isPC
   isPlatformSteamDeck = is_running_on_steam_deck()
   is_console
+  is_gdk
 
   isXBoxPlayerName = isXBoxPlayerName
   isPS4PlayerName = isPS4PlayerName

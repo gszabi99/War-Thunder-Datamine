@@ -11,7 +11,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { findInviteClass, invitesClasses } = require("%scripts/invites/invitesClasses.nut")
 let { MAX_POPUPS_ON_SCREEN, addPopup } = require("%scripts/popups/popups.nut")
 let { doWithAllGamercards, updateGcInvites } = require("%scripts/gamercard.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 const INVITE_CHAT_LINK_PREFIX = "INV_"
 

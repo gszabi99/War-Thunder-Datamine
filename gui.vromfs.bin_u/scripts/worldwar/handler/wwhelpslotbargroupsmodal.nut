@@ -7,6 +7,7 @@ let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_charserver_time_sec } = require("chard")
+let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
 
 const LAST_SEEN_SAVE_ID = "seen/help/wwar_slotbar_groups"
 
@@ -42,7 +43,7 @@ gui_handlers.WwHelpSlotbarGroupsModal <- class (gui_handlers.BaseGuiHandlerWT) {
       ]
     }
 
-    let markup = ::LinesGenerator.getLinkLinesMarkup(linkLinesConfig)
+    let markup = getLinkLinesMarkup(linkLinesConfig)
     let obj = this.scene.findObject("link_lines_block")
     obj.show(true)
     this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)

@@ -5,12 +5,14 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { AXIS_MODIFIERS, GAMEPAD_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let { InputBase } = require("%scripts/controls/input/inputBase.nut")
+let { remapAxisName } = require("%scripts/controls/controlsVisual.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 let Axis = class (InputBase) {
   //from JoystickParams().getAxis()
   axisId = null
   //AXIS_MODIFIERS
-  axisModifyer = null
+  axisModifier = null
   preset = null
 
   deviceId = null
@@ -24,8 +26,8 @@ let Axis = class (InputBase) {
     this.deviceId = deviceAxisDescription.deviceId
     this.axisId = deviceAxisDescription.axisId
     this.mouseAxis = deviceAxisDescription.mouseAxis
-    this.axisModifyer = axisMod
-    this.preset = v_preset || ::g_controls_manager.getCurPreset()
+    this.axisModifier = axisMod
+    this.preset = v_preset || getCurControlsPreset()
   }
 
   function getMarkup() {
@@ -60,7 +62,7 @@ let Axis = class (InputBase) {
     if (!device)
       return ""
 
-    return ::remapAxisName(this.preset, this.axisId)
+    return remapAxisName(this.preset, this.axisId)
   }
 
   function getDeviceId() {
@@ -72,10 +74,10 @@ let Axis = class (InputBase) {
       local axis = GAMEPAD_AXIS.NOT_AXIS
       if (this.axisId >= 0)
         axis = 1 << this.axisId
-      return gamepadIcons.getGamepadAxisTexture(axis | this.axisModifyer)
+      return gamepadIcons.getGamepadAxisTexture(axis | this.axisModifier)
     }
     else if (this.deviceId == STD_MOUSE_DEVICE_ID)
-      return gamepadIcons.getMouseAxisTexture(this.mouseAxis | this.axisModifyer)
+      return gamepadIcons.getMouseAxisTexture(this.mouseAxis | this.axisModifier)
 
     return null
   }

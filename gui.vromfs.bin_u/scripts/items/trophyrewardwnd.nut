@@ -13,7 +13,7 @@ let sheets = require("%scripts/items/itemsShopSheets.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { canStartPreviewScene, getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
 let { tryUseRecipeSeveralTime } = require("%scripts/items/exchangeRecipes.nut")
-let { findGenByReceptUid } = require("%scripts/items/itemsClasses/itemGenerators.nut")
+let { findItemGeneratorByReceptUid } = require("%scripts/items/itemGeneratorsManager.nut")
 let { isLoadingBgUnlock, getLoadingBgIdByUnlockId } = require("%scripts/loading/loadingBgData.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
 let { register_command } = require("console")
@@ -22,13 +22,18 @@ let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut"
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_price_blk } = require("blkGetters")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
+let { rewardsSortComparator, MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, processTrophyRewardsUserlogData,
+  isRewardItem
+} = require("%scripts/items/trophyReward.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
-let { findItemById, getInternalItemsDebugInfo } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryItemById, getItemsList } = require("%scripts/items/itemsManager.nut")
+let { getInternalItemsDebugInfo } = require("%scripts/items/itemsManagerDbgState.nut")
+let { itemsListInternal } = require("%scripts/items/itemsManagerState.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { getPrizeImageByConfig, getRewardsListViewData } = require("%scripts/items/prizesView.nut")
 
 local afterCloseTrophyWnd = @(_configsTable) null
 
@@ -69,9 +74,10 @@ function guiStartOpenTrophy(configsTable = {}) {
   if (!trophyItem) {
     let configsArrayString = toString(configsArray, 2) // warning disable: -declared-never-used
     let isLoggedInValue = isLoggedIn.get()              // warning disable: -declared-never-used
-    let { dbgTrophiesListInternal, dbgLoadedTrophiesCount, itemsListInternal, // warning disable: -declared-never-used
-      dbgLoadedItemsInternalCount, dbgUpdateInternalItemsCount // warning disable: -declared-never-used
-    } = getInternalItemsDebugInfo()  // warning disable: -declared-never-used
+    let { dbgTrophiesListInternal, dbgLoadedTrophiesCount, // warning disable: -declared-never-used
+      dbgUpdateInternalItemsCount // warning disable: -declared-never-used
+    } = getInternalItemsDebugInfo()
+    let dbgLoadedItemsInternalCount = itemsListInternal.len() // warning disable: -declared-never-used
     let trophiesBlk = get_price_blk()?.trophy
     let currentItemsInternalCount = itemsListInternal.len() // warning disable: -declared-never-used
     let currentTrophiesInternalCount = dbgTrophiesListInternal.len() // warning disable: -declared-never-used
@@ -93,7 +99,7 @@ eventbus_subscribe("guiStartOpenTrophy", guiStartOpenTrophy)
 
 register_command(
   function () {
-    let item = ::ItemsManager.getItemsList()?[0]
+    let item = getItemsList()?[0]
     if (item == null)
       return console_print("Not found any shop item to show window")
 
@@ -106,8 +112,8 @@ register_command(
       singleAnimationGuiSound = "gui_music_win",
       [2905356] = [
         {
-          item = ::ItemsManager.getItemsList()[0]
-          id = ::ItemsManager.getItemsList()[0].id
+          item = getItemsList()[0]
+          id = getItemsList()[0].id
           count = 1
         }
       ]
@@ -206,9 +212,9 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
          || this.trophyItem.iType == itemType.CRAFT_PROCESS
          || this.trophyItem.iType == itemType.CRAFT_PART)
 
-    this.shrinkedConfigsArray = ::trophyReward.processUserlogData(this.configsArray)
+    this.shrinkedConfigsArray = processTrophyRewardsUserlogData(this.configsArray)
     if (this.reUseRecipeUid != null) {
-      this.reUseRecipe = findGenByReceptUid(this.reUseRecipeUid)?.getRecipeByUid?(this.reUseRecipeUid)
+      this.reUseRecipe = findItemGeneratorByReceptUid(this.reUseRecipeUid)?.getRecipeByUid?(this.reUseRecipeUid)
     }
   }
 
@@ -348,7 +354,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.opened || !this.useSingleAnimation)
       return
 
-    let countNotVisibleItems = this.shrinkedConfigsArray.len() - ::trophyReward.maxRewardsShow
+    let countNotVisibleItems = this.shrinkedConfigsArray.len() - MAX_REWARDS_SHOW_IN_TROPHY
 
     if (countNotVisibleItems < 1)
       return
@@ -368,7 +374,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return
 
-    let data = ::trophyReward.getRewardsListViewData(this.shrinkedConfigsArray,
+    let data = getRewardsListViewData(this.shrinkedConfigsArray,
                    { multiAwardHeader = true
                      widthByParentParent = true
                      isCrossPromo = this.isCrossPromo
@@ -407,8 +413,8 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function checkConfigsArray() {
     foreach (reward in this.configsArray) {
-      let rewardType = ::trophyReward.getType(reward)
-      this.haveItems = this.haveItems || ::trophyReward.isRewardItem(rewardType)
+      let rewardType = getTrophyRewardType(reward)
+      this.haveItems = this.haveItems || isRewardItem(rewardType)
 
       if (rewardType == "unit" || rewardType == "rentedUnit") {
         this.unit = getAircraftByName(reward[rewardType]) || this.unit
@@ -439,10 +445,10 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getRewardImage(trophyStyle = "") {
     local layersData = ""
-    for (local i = 0; i < ::trophyReward.maxRewardsShow; i++) {
+    for (local i = 0; i < MAX_REWARDS_SHOW_IN_TROPHY; i++) {
       let config = this.shrinkedConfigsArray?[i]
       if (config)
-        layersData = "".concat(layersData, ::trophyReward.getImageByConfig(config, false))
+        layersData = "".concat(layersData, getPrizeImageByConfig(config, false))
     }
 
     if (layersData == "")
@@ -552,7 +558,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (reward in this.configsArray)
       if (reward?.item) {
-        this.rewardItem = ::ItemsManager.getInventoryItemById(reward.item)
+        this.rewardItem = getInventoryItemById(reward.item)
         if (!this.rewardItem)
           continue
 

@@ -19,7 +19,10 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_CLAN_REQUIREMENTS_MIN_AIR_RANK,
   USEROPT_CLAN_REQUIREMENTS_MIN_SYM_BATTLES, USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP
 } = require("%scripts/options/optionsExtNames.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { create_options_container } = require("%scripts/options/optionsExt.nut")
+let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
+let { clan_request_set_membership_requirements } = require("%scripts/clans/clanRequests.nut")
+let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
+let { myClanInfo } = require("%scripts/clans/clanState.nut")
 
 gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL;
@@ -67,10 +70,10 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
     let container = create_options_container("optionslist", this.optionItems, true, 0.5, false)
     this.guiScene.replaceContentFromText(this.scene.findObject("contentBody"), container.tbl, container.tbl.len(), this)
 
-    local option = ::get_option(USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS)
+    local option = get_option(USEROPT_CLAN_REQUIREMENTS_ALL_MIN_RANKS)
     this.minRankCondTypeObject = this.scene.findObject(option.id)
 
-    option = ::get_option(USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP)
+    option = get_option(USEROPT_CLAN_REQUIREMENTS_AUTO_ACCEPT_MEMBERSHIP)
     this.autoAcceptMembershipObject = this.scene.findObject(option.id)
     this.autoAcceptMembershipObject.setValue(this.clanData.autoAcceptMembership)
 
@@ -86,7 +89,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
   function loadRequirementsBattles(rawClanMemberRequirementsBlk) {
     foreach (diff in g_difficulty.types)
       if (diff.egdCode != EGD_NONE) {
-        let option = ::get_option(diff.clanReqOption)
+        let option = get_option(diff.clanReqOption)
         let modeName = diff.getEgdName(false)
         local battlesRequired = 0;
         let req = rawClanMemberRequirementsBlk.getBlockByName(option.id)
@@ -141,7 +144,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
     local nonEmptyBattlesReqCount = 0
     foreach (diff in g_difficulty.types)
       if (diff.egdCode != EGD_NONE) {
-        let option = ::get_option(diff.clanReqOption)
+        let option = get_option(diff.clanReqOption)
         let optIdx = this.scene.findObject(option.id).getValue()
         if (optIdx > 0)
           nonEmptyBattlesReqCount++
@@ -230,7 +233,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
   function appendRequirementsBattles(newRequirements) {
     foreach (diff in g_difficulty.types)
       if (diff.egdCode != EGD_NONE) {
-        let option = ::get_option(diff.clanReqOption)
+        let option = get_option(diff.clanReqOption)
         let modeName = diff.getEgdName(false);
         let battleReqVal = option.values[this.scene.findObject(option.id).getValue()];
 
@@ -256,7 +259,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
       this.goBack()
     }, this)
 
-    let taskId = ::clan_request_set_membership_requirements(this.clanData.id, newRequirements, autoAccept)
+    let taskId = clan_request_set_membership_requirements(this.clanData.id, newRequirements, autoAccept)
 
     addTask(taskId, { showProgressBox = true }, resultCB)
   }
@@ -269,7 +272,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
     if (this.clanData.id != clan_get_my_clan_id())
       return
 
-    this.clanData = ::my_clan_info
+    this.clanData = myClanInfo.get()
     if (!this.clanData)
       return this.goBack()
 
@@ -280,7 +283,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
     if (this.clanData.id != p.clanId)
       return
 
-    this.clanData = ::get_clan_info_table()
+    this.clanData = get_clan_info_table()
     if (!this.clanData)
       return this.goBack()
 

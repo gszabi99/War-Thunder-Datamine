@@ -22,7 +22,7 @@ let { getCurPreset, getBestAvailableUnitByGroup,
   getWarningTextTbl } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getMissionLocName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getMissionLocName } = require("%scripts/missions/missionsText.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let DataBlock  = require("DataBlock")
@@ -676,8 +676,8 @@ let WwBattle = class {
       ? getCurPreset().countryPresets?[team?.country ?? ""].units
       : getCrewsListByCountry(team.country)
 
-     if (countryCrews == null)
-       return res
+    if (countryCrews == null)
+      return res
 
     let availableUnits = this.getTeamRemainUnits(team, isCrewByUnitsGroup)
     res.availableUnits = availableUnits
@@ -1095,8 +1095,8 @@ WwBattleView = class  {
     return loc("ui/comma").join([this.getBattleName(), this.battle.getLocName(this.playerSide)], true)
   }
 
-  function defineTeamBlock(sides) {
-    this.teamBlock = this.getTeamBlockByIconSize(sides, WW_ARMY_GROUP_ICON_SIZE.BASE)
+  function defineTeamBlock(sides, params) {
+    this.teamBlock = this.getTeamBlockByIconSize(sides, WW_ARMY_GROUP_ICON_SIZE.BASE, false, params)
   }
 
   getTeamsDataBySides = @(sides) this.getTeamBlockByIconSize(sides, WW_ARMY_GROUP_ICON_SIZE.BASE, true)

@@ -30,6 +30,7 @@ function getCustomDifficultyOptions() {
       [USEROPT_CD_AIR_HELPERS],
       [USEROPT_CD_ALLOW_CONTROL_HELPERS],
       [USEROPT_CD_FORCE_INSTRUCTOR],
+      [USEROPT_CD_WEB_UI],
       [USEROPT_CD_COLLECTIVE_DETECTION],
       [USEROPT_CD_DISTANCE_DETECTION],
       [USEROPT_CD_AIM_PRED],
@@ -37,6 +38,7 @@ function getCustomDifficultyOptions() {
       [USEROPT_CD_MARKERS],
       [USEROPT_CD_ARROWS],
       [USEROPT_CD_AIRCRAFT_MARKERS_MAX_DIST],
+      [USEROPT_CD_ROCKET_SPOTTING],
       [USEROPT_CD_INDICATORS],
       [USEROPT_CD_TANK_DISTANCE],
       [USEROPT_CD_MAP_AIRCRAFT_MARKERS],
@@ -45,8 +47,7 @@ function getCustomDifficultyOptions() {
       [USEROPT_CD_RADAR],
       [USEROPT_CD_DAMAGE_IND],
       [USEROPT_CD_LARGE_AWARD_MESSAGES],
-      [USEROPT_CD_WARNINGS],
-      //
+      [USEROPT_CD_WARNINGS],      //
 
 
     ]

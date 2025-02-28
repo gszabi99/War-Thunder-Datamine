@@ -1074,22 +1074,6 @@ extraInfoBlock {
   behavior: button;
 }
 
-slotCrewHintContainer {
-  min-width:pw;
-  pos:pw/2-w/2, -h;
-  position:absolute;
-  order-popup:yes;
-  css-hier-invalidate:yes;
-  not-input-transparent:yes;
-  display:hide;
-  interactive:no;
-  padding:3@sf/@pf;
-}
-
-slotCrewHintContainer[showed=yes] {
-  display:show;
-}
-
 slotMissionHintContainer {
   min-width:pw;
   min-height:ph;
@@ -1111,49 +1095,16 @@ slotMissionHint {
   order-popup:yes;
 }
 
-slotCrewHint {
-  min-width:1@slot_width - 2@slot_interval + 12@sf/@pf;
-  pos:pw/2-w/2, -h+ph;
-  min-height:6@sf/@pf;
-  padding:3@sf/@pf, 3@sf/@pf, 3@sf/@pf, ph;
-  position:absolute;
-  background-color:#1C2C36;
-  border:yes;
-  border-color:@extraInfoBlockBorderColor;
-  border-offset:1@sf/@pf;
-  flow:vertical;
-}
-
-slotCrewHint[placement=under_slot] {
-  pos:pw/2-w/2, ph + 4@blockInterval + 4@sf/@pf;
-  padding:3@sf/@pf, ph + 8@sf/@pf, 3@sf/@pf, 3@sf/@pf;
-}
-
-slotCrewHintButtons {
-  position:relative;
-  flow:vertical;
-  width:1px;
-  padding-bottom:3@sf/@pf;
-}
-
-slotCrewHint[placement=under_slot] > slotCrewHintButtons {
-  padding-bottom:0;
-}
-
 slotMissionHintContainer > slotHoverHighlight,
-slotMissionHintContainer > slotBottomGradientLine,
-slotCrewHintContainer > tdiv > slotHoverHighlight,
-slotCrewHintContainer > tdiv > slotBottomGradientLine {
+slotMissionHintContainer > slotBottomGradientLine {
   display:show;
 }
 
 extraInfoBlock > content > slotBottomGradientLine,
-slotMissionHintContainer > slotBottomGradientLine,
-slotCrewHintContainer > tdiv > slotBottomGradientLine {
+slotMissionHintContainer > slotBottomGradientLine {
   pos:0, ph-h;
 }
 
-slotCrewHintContainer:hover,
 slotMissionHintContainer:hover,
 extraInfoBlockTop[hasInfo=yes]:hover > slotMissionHintContainer,
 extraInfoBlock:hover > content > slotHoverHighlight,
@@ -1161,16 +1112,11 @@ extraInfoBlock:hover > content > slotBottomGradientLine {
   display:show;
 }
 
-extraInfoBlock[hasActions=no]:hover > content > slotCrewHintContainer {
-  display:show;
-}
-
 extraInfoBlock[hasActions=no] > content {
   cursor:normal;
 }
 
-extraInfoBlock[isEmptySlot=yes] > content > crewNumText,
-extraInfoBlock[isEmptySlot=yes] > content > slotCrewHintContainer > tdiv > crewNumText {
+extraInfoBlock[isEmptySlot=yes] > content > crewNumText {
   display:show;
 }
 
@@ -1954,31 +1900,19 @@ unitItemContainer.swapCrewsDnD[dropFinished=yes] {
 unitItemContainer.swapCrewsDnD > shopItem > slotHoverHighlight,
 unitItemContainer.swapCrewsDnD[selected=no] > shopItem > slotBottomGradientLine,
 unitItemContainer.swapCrewsDnD > shopItem:hover Button_text.bottomAirItem,
-unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock:hover > content > slotCrewHintContainer,
 unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock[isEmptySlot=yes]:hover > content > crewInfoNumBlock {
   display:hide;
 }
 
-unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock[isEmptySlot=yes]:hover > content > crewNumText,
-unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock[isEmptySlot=yes] > content > slotCrewHintContainer > tdiv > crewNumText {
+unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock[isEmptySlot=yes]:hover > content > crewNumText {
   display:show;
 }
 
-extraInfoBlock[isEmptySlot=yes] > content > slotCrewHintContainer > tdiv > crewInfoNumBlock {
-  display:hide;
-}
-
 shopItem[crewInfoTranslucent=yes] > extraInfoBlock > content > crewInfoNumBlock,
-shopItem[crewInfoTranslucent=yes] > extraInfoBlock > content > slotCrewHintContainer > tdiv > crewInfoNumBlock,
-shopItem[crewInfoTranslucent=yes] > extraInfoBlock > content > crewInfoExpBlock,
-shopItem[crewInfoTranslucent=yes] > extraInfoBlock > content > slotCrewHintContainer > tdiv > crewInfoExpBlock {
+shopItem[crewInfoTranslucent=yes] > extraInfoBlock > content > crewInfoExpBlock {
   behaviour: massTransparency;
   transp-base: 128;
   transp-end: 128;
-}
-
-extraInfoBlock[isEmptySlot=yes] > content > slotCrewHintContainer > extraInfoBlockHint > crewInfoNumBlock {
-  display:hide;
 }
 
 unitItemContainer.swapCrewsDnD > shopItem {
@@ -1993,10 +1927,6 @@ unitItemContainer.swapCrewsDnD[dragging=yes] > shopItem > extraInfoBlock {
   input-transparent:yes;
   interactive:no;
   not-input-transparent:no;
-}
-
-unitItemContainer.swapCrewsDnD > shopItem > extraInfoBlock > content > slotCrewHintContainer {
-  display:hide;
 }
 
 [show_console_buttons=no] middleline[isShowDragAndDropIcon=yes] {

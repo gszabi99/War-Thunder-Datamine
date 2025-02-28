@@ -72,6 +72,8 @@ let shipState = {
   gunStatesFirstRow
   gunStatesSecondRow
   shellHitDamageEvents
+
+  HeroCoverPartsRelHp = Watched([])
 }
 
 function isDiff(time1, time2) {

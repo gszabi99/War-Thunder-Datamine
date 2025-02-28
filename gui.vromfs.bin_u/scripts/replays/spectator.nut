@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_replay_markers_enabled, get_player_army_for_hud, is_game_paused, mpstat_get_sort_func, is_spectator_rotation_forced
+from "%scripts/dagui_natives.nut" import get_player_army_for_hud, is_game_paused, mpstat_get_sort_func, is_spectator_rotation_forced
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "hudMessages" import *
@@ -35,7 +35,7 @@ let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { getHudUnitType } = require("hudState")
+let { getHudUnitType, is_replay_markers_enabled } = require("hudState")
 let { guiStartMPStatScreen, getWeaponTypeIcoByWeapon
 } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { onSpectatorMode, switchSpectatorTargetById,
@@ -46,13 +46,14 @@ let { get_time_speeds_list, get_time_speed, is_replay_playing, get_replay_anchor
 let { getEnumValName } = require("%scripts/debugTools/dbgEnum.nut")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
-let { get_game_type, get_mission_time, get_mplayers_list, get_local_mplayer, get_mp_local_team } = require("mission")
+let { get_game_type, get_mission_time, get_mplayers_list, GET_MPLAYERS_LIST,
+  get_local_mplayer, get_mp_local_team } = require("mission")
 let { round_by_value } = require("%sqstd/math.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 let { isInFlight } = require("gameplayBinding")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, getMemberByName } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { updateActionBar } = require("%scripts/hud/actionBarState.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { gui_start_tactical_map } = require("%scripts/tacticalMap.nut")
@@ -62,6 +63,10 @@ let { loadGameChatToObj } = require("%scripts/chat/mpChat.nut")
 let { register_command } = require("console")
 let { replaySystemWindowOpen, replaySystemWindowClose } = require("%scripts/replays/replaySystemWindow.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { getRoomMemberPublicParam } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
+let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -388,7 +393,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       let obj = objReplayControls.getChild(i)
       if (obj?.is_shortcut && obj?.id) {
         local hotkeys = ::get_shortcut_text({
-          shortcuts = ::get_shortcuts([ obj.id ])
+          shortcuts = getShortcuts([ obj.id ])
           shortcutId = 0
           cantBeEmpty = false
           strip_tags = true
@@ -609,7 +614,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   function getPlayerNick(player, needColored = false, needClanTag = true) {
     if (player == null)
       return  ""
-    local name = ::g_contacts.getPlayerFullName(
+    local name = getPlayerFullName(
       getPlayerName(player.name), // can add platform icon
       needClanTag && !player.isBot ? player.clanTag : "")
     if (this.mode == SPECTATOR_MODE.REPLAY && player?.realName != "")
@@ -1005,7 +1010,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       player.aircraftName = unitId || ""
       player.canBeSwitchedTo = unitId ? player.canBeSwitchedTo : false
       player.isLocal = spectatorWatchedHero.id == player.id
-      player.isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
+      player.isInHeroSquad = isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
     }
     tbl.sort(this.funcSortPlayersSpectator)
     return tbl
@@ -1491,7 +1496,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
         if (checkObj(obj)) {
           local hotkeys = ""
           if ("shortcuts" in keys) {
-            let shortcuts = ::get_shortcuts(keys.shortcuts)
+            let shortcuts = getShortcuts(keys.shortcuts)
             let locNames = []
             foreach (idx, _data in shortcuts) {
               let shortcutsText = ::get_shortcut_text({
@@ -1577,8 +1582,8 @@ register_command(spectatorDebugMode, "debug.spectatorDebugMode")
 
 ::isPlayerDedicatedSpectator <- function isPlayerDedicatedSpectator(name = null) {
   if (name) {
-    let member = isInSessionRoom.get() ? ::SessionLobby.getMemberByName(name) : null
-    return member ? !!::SessionLobby.getMemberPublicParam(member, "spectator") : false
+    let member = isInSessionRoom.get() ? getMemberByName(name) : null
+    return member ? !!getRoomMemberPublicParam(member, "spectator") : false
   }
   return !!((get_local_mplayer() ?? {})?.spectator ?? 0)
 }

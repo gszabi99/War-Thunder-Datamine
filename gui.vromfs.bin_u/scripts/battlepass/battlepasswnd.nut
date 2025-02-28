@@ -29,13 +29,17 @@ let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
 let { toggleUnlockFavCheckBox } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { buildDateTimeStr } = require("%scripts/time.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getCurrentBattleTasks, isBattleTasksAvailable, setBattleTasksUpdateTimer
+let { getCurrentBattleTasks, isBattleTasksAvailable
 } = require("%scripts/unlocks/battleTasks.nut")
+let { setBattleTasksUpdateTimer } = require("%scripts/unlocks/battleTasksView.nut")
 require("%scripts/promo/battlePassPromoHandler.nut") // Independed Modules
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
+let { isWarbondsShopAvailable, openWarbondsShop } = require("%scripts/warbonds/warbondsManager.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 let battlePassRewardTitleLocId = "battlePass/rewardsTitle"
 
@@ -257,7 +261,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
       this.scene.findObject(objId).setValue(stashBhvValueConfig(config))
 
     showObjById("btn_warbondsShop",
-      ::g_warbonds.isShopAvailable() && !isHandlerInScene(gui_handlers.WarbondsShop),
+      isWarbondsShopAvailable() && !isHandlerInScene(gui_handlers.WarbondsShop),
       this.scene)
     showObjById("btn_battleTask", true, this.scene)
     showObjById("battle_tasks_info_nest", true, this.scene)
@@ -297,7 +301,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     updateChallenges()
   }
 
-  onWarbondsShop = @() ::g_warbonds.openShop()
+  onWarbondsShop = @() openWarbondsShop()
   onBattleTask = @() guiStartBattleTasksWnd()
 
   function updateMainPrizeData(mainPrizesValue) {
@@ -360,7 +364,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     foreach (idx, sheetData in this.sheetsList) {
       view.tabs.append({
         tabName = sheetData.text
-        navImagesText = ::get_navigation_images_text(idx, this.sheetsList.len())
+        navImagesText = getNavigationImagesText(idx, this.sheetsList.len())
         tabImage = sheetData?.tabImage
         tabImageParam = sheetData?.getTabImageParam()
       })
@@ -446,7 +450,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     if (!hasMainChallenge)
       return
 
-    let unlockConfig = ::build_conditions_config(mainChallengeOfSeason)
+    let unlockConfig = buildConditionsConfig(mainChallengeOfSeason)
 
     local curValue = unlockConfig.curVal
     local maxValue = unlockConfig.maxVal
@@ -520,14 +524,14 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(listBoxObj))
       return null
 
-    return ::build_conditions_config(
+    return buildConditionsConfig(
       curSeasonChallenges.value?[listBoxObj.getValue()])
   }
 
   function onViewBattleTaskRequirements() {
     let awardsList = []
     foreach (id in this.getCurrentConfig()?.names ?? [])
-      awardsList.append(::build_log_unlock_data(::build_conditions_config(getUnlockById(id))))
+      awardsList.append(::build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
 
     showUnlocksGroupWnd(awardsList, loc("unlocks/requirements"))
   }

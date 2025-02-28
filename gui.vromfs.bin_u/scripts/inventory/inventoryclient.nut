@@ -23,7 +23,8 @@ let { get_network_block } = require("blkGetters")
 let { getCurrentSteamLanguage } = require("%scripts/langUtils/language.nut")
 let { mnSubscribe, mrSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
 let { steam_is_running, steam_get_my_id, steam_get_app_id } = require("steam")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 
 enum validationCheckBitMask {
   VARTYPE            = 0x01
@@ -327,7 +328,7 @@ let class InventoryClient {
 
     this.needRefreshItems = true
     log("schedule requestItems")
-    ::g_delayed_actions.add(this.requestItemsInternal.bindenv(this), 100)
+    addDelayedAction(this.requestItemsInternal.bindenv(this), 100)
   }
 
   isWaitForInventory = @() this.canRefreshData() && this.lastUpdateTime < 0

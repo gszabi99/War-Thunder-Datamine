@@ -24,7 +24,6 @@ let { getTextWithCrossplayIcon, needShowCrossPlayInfo, isCrossPlayEnabled
 } = require("%scripts/social/crossplay.nut")
 let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
 let { addButtonConfig } = require("%scripts/mainmenu/topMenuButtons.nut")
-let { openCollectionsWnd, hasAvailableCollections } = require("%scripts/collections/collectionsWnd.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { showViralAcquisitionWnd } = require("%scripts/user/viralAcquisition.nut")
 let { isMarketplaceEnabled, goToMarketplace } = require("%scripts/items/itemsMarketplace.nut")
@@ -54,6 +53,10 @@ let { isWorldWarEnabled, canPlayWorldwar, getCantPlayWorldwarReasonText
 } = require("%scripts/globalWorldWarScripts.nut")
 let { openLeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
 let { checkPlayWorldwarAccess, openOperationsOrQueues } = require("%scripts/globalWorldwarUtils.nut")
+let { isWarbondsShopAvailable, openWarbondsShop } = require("%scripts/warbonds/warbondsManager.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
+let { isAnyCampaignAvailable } = require("%scripts/missions/missionsUtils.nut")
 
 let list = {
   SKIRMISH = {
@@ -70,7 +73,7 @@ let list = {
       if (isShowGoldBalanceWarning())
         return
 
-      ::queues.checkAndStart(
+      queues.checkAndStart(
         Callback(@() this.goForwardIfOnline(guiStartSkirmish, false), handler),
         null,
         "isCanNewflight"
@@ -92,7 +95,7 @@ let list = {
       if (!checkPlayWorldwarAccess())
         return
 
-      ::queues.checkAndStart(
+      queues.checkAndStart(
         Callback(@() this.goForwardIfOnline(@() openOperationsOrQueues(), false), handler),
         null,
         "isCanNewflight"
@@ -129,10 +132,10 @@ let list = {
       if (contentStateModule.isHistoricalCampaignDownloading())
         return showInfoMsgBox(loc("mainmenu/campaignDownloading"), "question_wait_download")
 
-      if (::is_any_campaign_available())
+      if (isAnyCampaignAvailable())
         return handler.checkedNewFlight(@() guiStartCampaign())
     }
-    isHidden = @(...) !hasFeature("HistoricalCampaign") || !::is_any_campaign_available()
+    isHidden = @(...) !hasFeature("HistoricalCampaign") || !isAnyCampaignAvailable()
     isVisualDisabled = @() contentStateModule.isHistoricalCampaignDownloading()
     isInactiveInQueue = true
   }
@@ -327,14 +330,14 @@ let list = {
     text = @() "#items/inventory"
     onClickFunc = @(...) gui_start_inventory()
     image = @() "#ui/gameuiskin#inventory_icon.svg"
-    isHidden = @(...) !::ItemsManager.isItemsManagerEnabled() || !isInMenu()
+    isHidden = @(...) !isItemsManagerEnabled() || !isInMenu()
     unseenIcon = @() SEEN.INVENTORY
   }
   ITEMS_SHOP = {
     text = @() "#items/shop"
     onClickFunc = @(...) gui_start_itemsShop()
     image = @() "#ui/gameuiskin#store_icon.svg"
-    isHidden = @(...) !::ItemsManager.isItemsManagerEnabled() || !isInMenu()
+    isHidden = @(...) !isItemsManagerEnabled() || !isInMenu()
       || !hasFeature("ItemsShopInTopMenu")
     unseenIcon = @() SEEN.ITEMS_SHOP
   }
@@ -342,16 +345,16 @@ let list = {
     text = @() "#items/workshop"
     onClickFunc = @(...) gui_start_items_list(itemsTab.WORKSHOP)
     image = @() "#ui/gameuiskin#btn_modifications.svg"
-    isHidden = @(...) !::ItemsManager.isItemsManagerEnabled() || !isInMenu()
+    isHidden = @(...) !isItemsManagerEnabled() || !isInMenu()
       || !workshop.isAvailable()
     unseenIcon = @() SEEN.WORKSHOP
   }
   WARBONDS_SHOP = {
     text = @() "#mainmenu/btnWarbondsShop"
-    onClickFunc = @(...) ::g_warbonds.openShop()
+    onClickFunc = @(...) openWarbondsShop()
     image = @() "#ui/gameuiskin#wb.svg"
     isHidden = @(...) !isBattleTasksAvailable()
-      || !::g_warbonds.isShopAvailable()
+      || !isWarbondsShopAvailable()
       || !isInMenu()
     unseenIcon = @() SEEN.WARBONDS_SHOP
   }
@@ -374,12 +377,6 @@ let list = {
     isFeatured = @() true
     image = @() "#ui/gameuiskin#gc.svg"
     isHidden = @(...) !isMarketplaceEnabled() || !isInMenu()
-  }
-  COLLECTIONS = {
-    text = @() "#mainmenu/btnCollections"
-    onClickFunc = @(...) openCollectionsWnd()
-    image = @() "#ui/gameuiskin#collection.svg"
-    isHidden = @(...) !hasAvailableCollections() || !isInMenu()
   }
   WINDOW_HELP = {
     text = @() "#flightmenu/btnControlsHelp"

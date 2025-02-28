@@ -3,6 +3,7 @@ let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nu
 let { show_obj } = require("%sqDagui/daguiUtil.nut")
 let { USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
 
 function isAutoSelected(clusterOpt) {
   let autoOptBit = clusterOpt.values.findindex(@(v) v == "auto")
@@ -10,7 +11,7 @@ function isAutoSelected(clusterOpt) {
 }
 
 function getCurrentClustersInfo() {
-  let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTERS)
+  let clusterOpt = get_option(USEROPT_RANDB_CLUSTERS)
   let isAuto = isAutoSelected(clusterOpt)
   let names = []
   local hasUnstable = false
@@ -44,7 +45,7 @@ function updateClusters(btnObj) {
 }
 
 function getCurrentClusters() {
-  let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTERS)
+  let clusterOpt = get_option(USEROPT_RANDB_CLUSTERS)
   let isAuto = isAutoSelected(clusterOpt)
   if (isAuto)
     return clusterOpt.items.filter(@(c) c.isDefault).map(@(c) c.name)

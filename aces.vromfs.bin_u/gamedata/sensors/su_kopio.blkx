@@ -618,10 +618,6 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setRelSpeedGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
           "setFsmActive": [
             {
               "fsm": "track",
@@ -1476,7 +1472,10 @@
         },
         "hmdStandbyToSearch": {
           "stateFrom": "hmdStandby",
-          "command": "acmSwitch",
+          "command": [
+            "acmSwitch",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "doCustomActionTemplate": [
@@ -1487,6 +1486,23 @@
               {
                 "fsm": "main",
                 "name": "setSearchMode"
+              }
+            ]
+          }
+        },
+        "hmdStandbyToStandby": {
+          "stateFrom": "hmdStandby",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetHmdStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
               }
             ]
           }
@@ -1545,10 +1561,7 @@
         "hmdTrackToHmdStandby": {
           "stateFrom": "hmdTrack",
           "event": "targetsOfInterestCleanup",
-          "command": [
-            "selectTarget",
-            "switch"
-          ],
+          "command": "selectTarget",
           "stateTo": "hmdStandby",
           "actions": {
             "doCustomActionTemplate": [
@@ -2101,6 +2114,7 @@
             "clearTargetsOfInterest": {
               "timeOut": 8.0
             },
+            "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": [
               {
@@ -2145,10 +2159,29 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": {
+            "addTargetOfInterestCandidate": {}
+          }
+        },
+        "matchTargets": {
+          "event": "scanFinished",
+          "actions": {
+            "matchTargetsOfInterest": {
               "limit": 10,
-              "radius": 1000.0,
-              "dopplerSpeedGateMaxTime": 8.0
+              "posGateTimeInitial": [
+                2.0,
+                4.0
+              ],
+              "posGateRangeInitial": 1500.0,
+              "posGateMaxTime": 2.0,
+              "posGateRange": [
+                0.0,
+                300.0
+              ],
+              "dopplerSpeedGateRange2": [
+                0.0,
+                200.0
+              ],
+              "dopplerSpeedGateMaxTime": 2.0
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {}
@@ -2261,9 +2294,30 @@
         },
         "track": {
           "updateActiveTargetOfInterest": {
-            "dirFilter": {},
-            "distFilter": {},
-            "dopplerSpeedFilter": {}
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "dopplerSpeedFilter": {
+              "rateLim": [
+                200.0,
+                200.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
           },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"

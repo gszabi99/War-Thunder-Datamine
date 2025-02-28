@@ -1,14 +1,14 @@
 from "%scripts/dagui_library.nut" import *
+import "%sqStdLibs/helpers/enums.nut" as enums
 
 let { format } = require("string")
 let { fabs } = require("math")
 let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCachedCrewUnit } = require("%scripts/crew/crewShortCache.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 
-::g_skill_parameters_type <- {
+let g_skill_parameters_type = {
   types = []
 }
 
@@ -19,7 +19,7 @@ let cache = {
 let defaultGetValue = @(requestType, parametersByRequestType, params = null)
   parametersByRequestType?[requestType][params?.parameterName ?? -1][params?.idx ?? -1].value ?? 0
 
-::g_skill_parameters_type.template <- {
+g_skill_parameters_type.template <- {
   paramNames = []
   getValue = defaultGetValue
 
@@ -107,7 +107,7 @@ let defaultGetValue = @(requestType, parametersByRequestType, params = null)
   }
 }
 
-enums.addTypesByGlobalName("g_skill_parameters_type", {
+enums.enumsAddTypes(g_skill_parameters_type, {
   DEFAULT = {}
 
   DISTANCE_ERROR = {
@@ -155,6 +155,9 @@ enums.addTypesByGlobalName("g_skill_parameters_type", {
   }
 })
 
-::g_skill_parameters_type.getTypeByParamName <- function getTypeByParamName(paramName) {
+g_skill_parameters_type.getTypeByParamName <- function getTypeByParamName(paramName) {
   return enums.getCachedType("paramNames", paramName, cache.byParamName, this, this.DEFAULT)
+}
+return {
+  g_skill_parameters_type
 }

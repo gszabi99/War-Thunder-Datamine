@@ -15,17 +15,20 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getHelpPreviewHandler } = require("%scripts/help/helpPreview.nut")
-let { recomendedControlPresets, getControlsPresetBySelectedType
+let { recommendedControlPresets, getControlsPresetBySelectedType
 } = require("%scripts/controls/controlsUtils.nut")
-let { joystickSetCurSettings, setShortcutsAndSaveControls
-} = require("%scripts/controls/controlsCompatibility.nut")
-let { set_option, create_options_container } = require("%scripts/options/optionsExt.nut")
+let { joystickSetCurSettings, setShortcutsAndSaveControls,
+  joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { set_option, create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM,
   USEROPT_CONTROLS_PRESET } = require("%scripts/options/optionsExtNames.nut")
-let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
+let { getLocalizedControlName, remapAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { steam_is_overlay_active } = require("steam")
+let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
+let { getCurControlsPreset, setPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 let aircraft_controls_wizard_config = [
   { id = "helpers_mode"
@@ -44,10 +47,10 @@ let aircraft_controls_wizard_config = [
     { id = "msg_wasd_type",
       text = loc("controls/askKeyboardWasdType"),
       type = CONTROL_TYPE.MSG_BOX
-      options = recomendedControlPresets.map(@(name) $"#msgbox/btn_{name}")
+      options = recommendedControlPresets.map(@(name) $"#msgbox/btn_{name}")
       defValue = 1,
       onButton = function(value) {
-        let cType = recomendedControlPresets[value]
+        let cType = recommendedControlPresets[value]
         let preset = getControlsPresetBySelectedType(cType)
         this.applyPreset(preset.fileName)
       }
@@ -86,7 +89,7 @@ let aircraft_controls_wizard_config = [
           }
           let axis = this.curJoyParams.getAxis(get_axis_index("throttle"))
           axis.relative = !isAxis
-          ::g_controls_manager.commitControls()
+          commitControls()
         }
       skip = ["msg/holdThrottleForWEP"] //dont work in axis, but need to correct prevItem work, when skipList used in onAxisDone
     }
@@ -113,6 +116,8 @@ let aircraft_controls_wizard_config = [
     "ID_SENSOR_MODE_SWITCH"
     "ID_SENSOR_ACM_SWITCH"
     "ID_SENSOR_SCAN_PATTERN_SWITCH"
+    "ID_SENSOR_STABILIZATION_SWITCH"
+    "ID_SENSOR_DIRECTION_AXES_RESET"
     "ID_SENSOR_RANGE_SWITCH"
     "ID_SENSOR_TARGET_SWITCH"
     "ID_SENSOR_TARGET_LOCK"
@@ -159,7 +164,7 @@ let aircraft_controls_wizard_config = [
           axis.relative = value != 0
           axis.innerDeadzone = (value != 0) ? 0.25 : 0.05
         }
-        ::g_controls_manager.commitControls()
+        commitControls()
       }
     }
       { id = "neutral_cam_pos", type = CONTROL_TYPE.SHORTCUT_GROUP
@@ -377,7 +382,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   repeatItemsList = null
   isRepeat = false
 
-  axisMaxChoosen = false
+  axisMaxChosen = false
   axisTypeButtons = false
 
   bindAxisNum = -1
@@ -415,8 +420,8 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     this.shortcutNames = []
     this.shortcutItems = []
 
-    this.curJoyParams = ::joystick_get_cur_settings()
-    this.deviceMapping = u.copy(::g_controls_manager.getCurPreset().deviceMapping)
+    this.curJoyParams = joystickGetCurSettings()
+    this.deviceMapping = u.copy(getCurControlsPreset().deviceMapping)
 
     this.initAxisPresetup()
 
@@ -469,7 +474,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     if (item.type == CONTROL_TYPE.AXIS)
       return $"controls/{item.id}"
     else if ("optionType" in item)
-      return $"options/{::get_option(item.optionType).id}"
+      return $"options/{get_option(item.optionType).id}"
 
     return $"hotkeys/{item.id}"
   }
@@ -518,7 +523,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
         return this.nextItem()
       if (("isFilterObj" in this.curItem) && this.curItem.isFilterObj && !::can_change_helpers_mode()) {
         if ("optionType" in this.curItem) {
-          let config = ::get_option(this.curItem.optionType)
+          let config = get_option(this.curItem.optionType)
           this.filter = config.values[config.value]
         }
         else
@@ -544,7 +549,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       this.askShortcut()
     }
     else if (this.curItem.type == CONTROL_TYPE.AXIS) {
-      this.axisMaxChoosen = false
+      this.axisMaxChosen = false
       this.askAxis()
     }
     else if (this.curItem.type == CONTROL_TYPE.MSG_BOX) {
@@ -593,8 +598,8 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       this.prevItems.remove(this.prevItems.len() - 1)
       this.nextItem()
     }
-    else if (this.curItem.type == CONTROL_TYPE.AXIS && this.axisMaxChoosen) {
-      this.axisMaxChoosen = false
+    else if (this.curItem.type == CONTROL_TYPE.AXIS && this.axisMaxChosen) {
+      this.axisMaxChosen = false
       this.axisFixed = false
       this.selectedAxisNum = -1
       this.askAxis()
@@ -651,7 +656,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     if (!checkObj(this.scene))
       return
 
-    this.axisMaxChoosen = false
+    this.axisMaxChosen = false
     this.scene.findObject("shortcut_text").setValue(loc(this.getItemText(this.curItem)))
     let textObj = this.scene.findObject("hold_axis")
     if (checkObj(textObj)) {
@@ -672,14 +677,14 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     this.axisApplyParams = null
     this.scene.findObject("shortcut_text").setValue(loc(this.getItemText(this.curItem)))
 
-    this.isButtonsListenInCurBox = !this.axisMaxChoosen || this.axisTypeButtons
+    this.isButtonsListenInCurBox = !this.axisMaxChosen || this.axisTypeButtons
     this.scene.findObject("shortcut_current_button").setValue(this.isButtonsListenInCurBox ? "?" : "")
     this.clearShortcutInfo()
     this.switchListenButton(this.isButtonsListenInCurBox)
 
-    this.isAxisListenInCurBox = !this.axisMaxChoosen || !this.axisTypeButtons
-    this.switchListenAxis(this.isAxisListenInCurBox, !this.axisMaxChoosen)
-    if (!this.axisMaxChoosen) {
+    this.isAxisListenInCurBox = !this.axisMaxChosen || !this.axisTypeButtons
+    this.switchListenAxis(this.isAxisListenInCurBox, !this.axisMaxChosen)
+    if (!this.axisMaxChosen) {
       this.bindAxisNum = -1
       this.selectedAxisNum = -1
     }
@@ -695,13 +700,13 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
     if (this.curItem.type == CONTROL_TYPE.AXIS) {
       let axis = this.curJoyParams.getAxis(this.curItem.axisIndex[0])
-      let curPreset = ::g_controls_manager.getCurPreset()
+      let curPreset = getCurControlsPreset()
       if (axis.axisId >= 0)
-        axisAssignText = ::addHotkeyTxt(::remapAxisName(curPreset, axis.axisId))
+        axisAssignText = ::addHotkeyTxt(remapAxisName(curPreset, axis.axisId))
       if (this.isButtonsListenInCurBox)
         buttonAssignText = ::get_shortcut_text({
           shortcuts = this.shortcuts,
-          shortcutId = this.curItem.modifiersId[this.axisMaxChoosen ? "rangeMin" : "rangeMax"][0],
+          shortcutId = this.curItem.modifiersId[this.axisMaxChosen ? "rangeMin" : "rangeMax"][0],
           cantBeEmpty = false
         })
     }
@@ -724,7 +729,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   function updateAxisPressKey() {
     local imgId = 0
     local msgLocId = "hotkeys/msg/choose_maxValue"
-    if (this.axisTypeButtons && this.axisMaxChoosen) {
+    if (this.axisTypeButtons && this.axisMaxChosen) {
       msgLocId = "hotkeys/msg/choose_minValue_button"
       imgId = 1
     }
@@ -757,7 +762,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       this.switchListenButton(false)
     }
 
-    showObjById("btn-reset-axis-input", this.selectedAxisNum >= 0 || this.axisMaxChoosen, this.scene)
+    showObjById("btn-reset-axis-input", this.selectedAxisNum >= 0 || this.axisMaxChosen, this.scene)
   }
 
   function switchListenButton(value) {
@@ -785,11 +790,11 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       if (reinitPresetup)
         this.initAxisPresetup()
     }
-    showObjById("btn-reset-axis-input", this.axisMaxChoosen, this.scene)
+    showObjById("btn-reset-axis-input", this.axisMaxChosen, this.scene)
   }
 
   function updateSwitchModesButton() {
-    let isShow = this.curDivName == "shortcut-wnd" && this.selectedAxisNum < 0 && !this.axisMaxChoosen
+    let isShow = this.curDivName == "shortcut-wnd" && this.selectedAxisNum < 0 && !this.axisMaxChosen
     showObjById("btn_switchAllModes", isShow, this.scene)
 
     if (!isShow)
@@ -843,14 +848,14 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
     this.updateSwitchModesButton()
     showObjById("keep_assign_btn", isInListenWnd, this.scene)
-    showObjById("btn-reset-axis-input", isInListenWnd && (this.axisMaxChoosen || this.selectedAxisNum >= 0), this.scene)
+    showObjById("btn-reset-axis-input", isInListenWnd && (this.axisMaxChosen || this.selectedAxisNum >= 0), this.scene)
     showObjById("btn_back", !isListening, this.scene)
   }
 
   function onButtonDone() {
     if (this.curItem.type == CONTROL_TYPE.AXIS)
-      if (!this.axisMaxChoosen) {
-        this.axisMaxChoosen = true
+      if (!this.axisMaxChosen) {
+        this.axisMaxChosen = true
         this.setAxisType(true)
         this.askAxis()
         return
@@ -860,7 +865,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
         axis.relative = ("buttonRelative" in this.curItem) ? this.curItem.buttonRelative : false
         axis.relSens = ("relSens" in this.curItem) ? this.curItem.relSens : 1.0
         axis.relStep = ("relStep" in this.curItem) ? this.curItem.relStep : 0
-        ::g_controls_manager.commitControls()
+        commitControls()
       }
 
     if (this.curItem.type == CONTROL_TYPE.AXIS && ("onAxisDone" in this.curItem))
@@ -915,7 +920,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   function bindShortcut(devs, btns) {
     local shortcutId = this.curItem.shortcutId
     if (this.curItem.type == CONTROL_TYPE.AXIS)
-      shortcutId = this.curItem.modifiersId[this.axisMaxChoosen ? "rangeMin" : "rangeMax"]
+      shortcutId = this.curItem.modifiersId[this.axisMaxChosen ? "rangeMin" : "rangeMax"]
 
     let curBinding = this.findButtons(devs, btns, shortcutId)
     if (!curBinding || curBinding.len() == 0) {
@@ -960,7 +965,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       if (firstSc == i || ((type(shortcutId) == "array") && isInArray(i, shortcutId)))
         continue
       let item = this.shortcutItems[i]
-      if (item == scItem && (item.type != CONTROL_TYPE.AXIS || i == scItem.modifiersId[this.axisMaxChoosen ? "rangeMin" : "rangeMax"]))
+      if (item == scItem && (item.type != CONTROL_TYPE.AXIS || i == scItem.modifiersId[this.axisMaxChosen ? "rangeMin" : "rangeMax"]))
         continue
       if (isInArray(item, this.repeatItemsList) || isInArray(item, foundedItems))
         continue
@@ -1007,7 +1012,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
   function getShortcutText(sc) {
     let text = []
-    let curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = getCurControlsPreset()
     for (local i = 0; i < sc.dev.len(); i++)
       text.append(getLocalizedControlName(curPreset, sc.dev[i], sc.btn[i]))
     return " + ".join(text)
@@ -1074,8 +1079,8 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       this.axisApplyParams.kAdd = -0.5 * (config.min + config.max) / 32000 * this.axisApplyParams.kMul
     }
 
-    let curPreset = ::g_controls_manager.getCurPreset()
-    this.curBtnText = ::remapAxisName(curPreset, this.selectedAxisNum)
+    let curPreset = getCurControlsPreset()
+    this.curBtnText = remapAxisName(curPreset, this.selectedAxisNum)
     this.showMsg("\n".concat(loc("hotkeys/msg/axis_choosen"), this.curBtnText), config)
   }
 
@@ -1097,7 +1102,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       axis.kMul = this.axisApplyParams.kMul
     }
 
-    ::g_controls_manager.commitControls()
+    commitControls()
 
     //clear hotkey min|max when use axis
     foreach (arr in this.curItem.modifiersId)
@@ -1158,8 +1163,8 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     obj.show(this.isAxisListenInCurBox)
 
     let device = joystick_get_default()
-    let curPreset = ::g_controls_manager.getCurPreset()
-    let axisName = device ? ::remapAxisName(curPreset, this.bindAxisNum) : ""
+    let curPreset = getCurControlsPreset()
+    let axisName = device ? remapAxisName(curPreset, this.bindAxisNum) : ""
     obj.setValue(axisName)
 
     let changeColor = (this.selectedAxisNum >= 0 && this.selectedAxisNum == this.bindAxisNum) ? "fixedAxis" : ""
@@ -1169,7 +1174,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   function getCurAxisNum(dt, checkLastTryAxis = true) {
     let device = joystick_get_default()
     local foundAxis = -1
-    let curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = getCurControlsPreset()
     let numAxes = curPreset.getNumAxes()
     if (numAxes > this.presetupAxisRawValues.len())
       this.initAxisPresetup(false) //add new founded axes
@@ -1238,7 +1243,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 //        if (selectedAxisNum>=0 && bindAxisNum<0)
 //          bindAxisNum = selectedAxisNum
 //        else
-          this.axisCurTime = 0.0
+        this.axisCurTime = 0.0
       }
     }
 
@@ -1287,7 +1292,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     if (this.curItem.type != CONTROL_TYPE.AXIS)
       return
     this.selectedAxisNum = -1
-    this.axisMaxChoosen = false
+    this.axisMaxChosen = false
     showObjById("btn-reset-axis-input", false, this.scene)
     this.initAxisPresetup()
     this.askAxis()
@@ -1314,7 +1319,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     if (device == null)
       return
 
-    let curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = getCurControlsPreset()
     let start = this.presetupAxisRawValues.len()
     for (local i = start; i < curPreset.getNumAxes(); i++) {
       let rawPos = device.getAxisPosRaw(i)
@@ -1335,7 +1340,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     this.msgButtons = []
 
     if ("optionType" in this.curItem) {
-      let config = ::get_option(this.curItem.optionType)
+      let config = get_option(this.curItem.optionType)
       this.msgButtons = config.items
       defValue = config.value
     }
@@ -1406,7 +1411,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       if ("optionType" in this.curItem) {
         this.optionsToSave.append({ type = this.curItem.optionType, value = value })
         if ("isFilterObj" in this.curItem && this.curItem.isFilterObj) {
-          let config = ::get_option(this.curItem.optionType)
+          let config = get_option(this.curItem.optionType)
           this.filter = config.values[value]
         }
       }
@@ -1464,7 +1469,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function getOptionPresetValue() {
-    return ::get_option(USEROPT_CONTROLS_PRESET).value
+    return get_option(USEROPT_CONTROLS_PRESET).value
   }
 
   function onSelectPreset(obj) {
@@ -1472,26 +1477,26 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function processPresetValue(presetValue) {
-    let opdata = ::get_option(USEROPT_CONTROLS_PRESET)
+    let opdata = get_option(USEROPT_CONTROLS_PRESET)
     if (presetValue in opdata.values) {
       this.presetSelected = opdata.values[presetValue]
       showObjById("btn_controlsWizard", this.presetSelected == "", this.scene)
       showObjById("btn_selectPreset", this.presetSelected != "", this.scene)
 
       if (this.presetSelected == "") {
-        ::g_controls_manager.clearPreviewPreset()
+        setPreviewControlsPreset(null)
         this.previewHandler.showPreview()
         return
       }
 
       let presetPath = ($"config/hotkeys/hotkey.{this.presetSelected}.blk")
-      let previewPreset = ::ControlsPreset(presetPath)
-      let currentPreset = ::g_controls_manager.getCurPreset()
+      let previewPreset = ControlsPreset(presetPath)
+      let currentPreset = getCurControlsPreset()
 
       if (previewPreset.basePresetPaths?["default"] == currentPreset.basePresetPaths?["default"])
-        ::g_controls_manager.setPreviewPreset(currentPreset)
+        setPreviewControlsPreset(currentPreset)
       else
-        ::g_controls_manager.setPreviewPreset(previewPreset)
+        setPreviewControlsPreset(previewPreset)
 
       this.previewHandler.showPreview()
     }
@@ -1526,7 +1531,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
     initControlsWizardConfig(this.controls_wizard_config)
     this.initShortcutsNames()
-    this.shortcuts = ::get_shortcuts(this.shortcutNames)
+    this.shortcuts = getShortcuts(this.shortcutNames)
 
     this.curIdx = -1
     this.nextItem()
@@ -1573,7 +1578,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     this.guiScene.sleepKeyRepeat(false)
     set_bind_mode(false)
     ::preset_changed = true
-    ::g_controls_manager.clearPreviewPreset()
+    setPreviewControlsPreset(null)
     broadcastEvent("ControlsPresetChanged")
   }
 

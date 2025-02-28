@@ -51,7 +51,7 @@ function matching_err_msg(text, error_text) {
   return errText
 }
 
-::get_yu2_error_text <- function get_yu2_error_text(response) { //used only in online shop yet, but beeter to upgrade it and use for all yu2 errors
+function get_yu2_error_text(response) { //used only in online shop yet, but beeter to upgrade it and use for all yu2 errors
   if (response == YU2_OK)
     return ""
   if (response == YU2_PSN_RESTRICTED)
@@ -118,3 +118,6 @@ function get_error_data(header, error_code) {
   return scene_msg_box("errorMessageBox", guiScene, errData.text, buttons, def_btn, options)
 }
 
+return {
+  get_yu2_error_text
+}

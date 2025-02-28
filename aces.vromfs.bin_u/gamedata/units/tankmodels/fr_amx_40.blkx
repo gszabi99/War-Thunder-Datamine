@@ -252,7 +252,7 @@
         "armorThickness": 20.0
       },
       "turret_bottom_dm": {
-        "armorThickness": 50.0
+        "armorThickness": 25.0
       },
       "turret_01_bottom_dm": {
         "armorThickness": 40.0
@@ -341,6 +341,9 @@
       },
       "ex_decor_08_dm": {
         "armorThickness": 5.0
+      },
+      "turret_06_back_dm": {
+        "armorThickness": 40.0
       }
     },
     "hull_side_special_armor": {
@@ -2257,7 +2260,18 @@
           "gun": "bone_gun",
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
-          "secondGunnerDm": "commander_dm"
+          "secondGunnerDm": "commander_dm",
+          "linkedAnimPart": {
+            "verNode": "ex_decor_03",
+            "verLimits": [
+              0.0,
+              -40.0
+            ],
+            "verOriginLimits": [
+              0.0,
+              20.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -3316,7 +3330,18 @@
                 "gun": "bone_gun",
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
-                "secondGunnerDm": "commander_dm"
+                "secondGunnerDm": "commander_dm",
+                "linkedAnimPart": {
+                  "verNode": "ex_decor_03",
+                  "verLimits": [
+                    0.0,
+                    -40.0
+                  ],
+                  "verOriginLimits": [
+                    0.0,
+                    20.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [

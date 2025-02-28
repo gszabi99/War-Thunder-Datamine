@@ -7,7 +7,7 @@ let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { isUnlockExpired, canOpenUnlockManually, isUnlockOpened, isUnlockVisible, canClaimUnlockRewardForUnit
 } = require("%scripts/unlocks/unlocksModule.nut")
 let manualUnlocksSeenList = require("%scripts/seen/seenList.nut").get(SEEN.MANUAL_UNLOCKS)
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 let markerUnlocks = persist("markerUnlocksCache", @() [])
 let manualUnlocks = persist("manualUnlocksCache", @() [])

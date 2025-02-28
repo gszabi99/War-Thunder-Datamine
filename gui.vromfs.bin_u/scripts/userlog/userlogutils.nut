@@ -1,10 +1,18 @@
-from "%scripts/dagui_natives.nut" import save_online_single_job, disable_user_log_entry, disable_user_log_entry_by_id, get_user_log_blk_body, get_user_logs_count
+from "%scripts/dagui_natives.nut" import is_user_log_for_current_room, get_user_log_time_sec, save_online_single_job, disable_user_log_entry, disable_user_log_entry_by_id, get_user_log_blk_body, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 let { isTable, isEmpty, isString, appendOnce } = require("%sqStdLibs/helpers/u.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { isArray } = require("%sqstd/underscore.nut")
+let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
+let { isPrizeMultiAward } = require("%scripts/items/trophyMultiAward.nut")
+let { convertBlk } = require("%sqstd/datablock.nut")
+let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
+let { hasKnowPrize } = require("%scripts/items/prizesUtils.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+
+let haveHiddenItem = @(itemDefId) findItemById(itemDefId)?.isHiddenItem()
 
 let shownUserlogNotifications = mkWatched(persist, "shownUserlogNotifications", [])
 
@@ -204,6 +212,173 @@ function updateRepairCost(units, repairCost) {
   }
 }
 
+function isUserlogVisible(blk, filter, idx) {
+  if (blk?.type == null)
+    return false
+  if (("show" in filter) && !isInArray(blk.type, filter.show))
+    return false
+  if (("hide" in filter) && isInArray(blk.type, filter.hide))
+    return false
+  if (("checkFunc" in filter) && !filter.checkFunc(blk))
+    return false
+  if (getTblValue("currentRoomOnly", filter, false) && !is_user_log_for_current_room(idx))
+    return false
+  if (haveHiddenItem(blk?.body.itemDefId))
+    return false
+  if (blk.type == EULT_OPEN_TROPHY && !hasKnowPrize(blk.body))
+    return false
+  return true
+}
+
+function getUserLogsList(filter) {
+  let logs = [];
+  let total = get_user_logs_count()
+  local needSave = false
+
+  /**
+   * If statick tournament reward exist in log, writes it to logs root
+   */
+  let grabStatickReward = function (reward, logObj) {
+    if (reward.awardType == "base_win_award") {
+      logObj.baseTournamentWp <- getTblValue("wp", reward, 0)
+      logObj.baseTournamentGold <- getTblValue("gold", reward, 0)
+      return true
+    }
+    return false
+  }
+
+  for (local i = total - 1; i >= 0; i--) {
+    let blk = DataBlock()
+    get_user_log_blk_body(i, blk)
+
+    if (!isUserlogVisible(blk, filter, i))
+      continue
+
+    let isUnlockTypeNotSuitable = ("unlockType" in blk.body)
+      && (blk.body.unlockType == UNLOCKABLE_TROPHY_PSN
+        || blk.body.unlockType == UNLOCKABLE_TROPHY_XBOXONE
+        || (("unlocks" in filter) && !isInArray(blk.body.unlockType, filter.unlocks)))
+
+    let unlock = getUnlockById(getTblValue("unlockId", blk.body))
+    let hideUnlockById = unlock != null && !isUnlockVisible(unlock)
+
+    if (isUnlockTypeNotSuitable || (hideUnlockById && blk?.type != EULT_BUYING_UNLOCK))
+      continue
+
+    let logObj = {
+      idx = i
+      type = blk?.type
+      time = get_user_log_time_sec(i)
+      enabled = !blk?.disabled
+      roomId = blk?.roomId
+      isAerobaticSmoke = unlock?.isAerobaticSmoke ?? false
+    }
+
+    for (local j = 0, c = blk.body.paramCount(); j < c; j++) {
+      local key = blk.body.getParamName(j)
+      if (key in logObj)
+        key = $"body_{key}"
+      logObj[key] <- blk.body.getParamValue(j)
+    }
+    local hasVisibleItem = false
+    for (local j = 0, c = blk.body.blockCount(); j < c; j++) {
+      let block = blk.body.getBlock(j)
+      let name = block.getBlockName()
+
+      //can be 2 aircrafts with the same name (cant foreach)
+      //trophyMultiAward logs have spare in body too. they no need strange format hacks.
+      if (name == "aircrafts"
+          || (name == "spare" && !isPrizeMultiAward(blk.body))) {
+        if (!(name in logObj))
+          logObj[name] <- []
+
+        for (local k = 0; k < block.paramCount(); k++)
+          logObj[name].append({ name = block.getParamName(k), value = block.getParamValue(k) })
+      }
+      else if (name == "rewardTS") {
+        let reward = convertBlk(block)
+        if (!grabStatickReward(reward, logObj)) {
+          if (!(name in logObj))
+            logObj[name] <- []
+          logObj[name].append(reward)
+        }
+      }
+      else if (block instanceof DataBlock) {
+        if (haveHiddenItem(block?.itemDefId))
+          continue
+        hasVisibleItem = hasVisibleItem || block?.itemDefId != null
+        logObj[name] <- convertBlk(block)
+      }
+    }
+
+    if (!hasVisibleItem
+        && (logObj.type == EULT_INVENTORY_ADD_ITEM || logObj.type == EULT_INVENTORY_FAIL_ITEM))
+      continue
+
+    local skip = false
+    if ("filters" in filter)
+      foreach (f, values in filter.filters)
+        if (!isInArray((f in logObj) ? logObj[f] : null, values)) {
+          skip = true
+          break
+        }
+
+    if (skip)
+      continue
+
+    let { disableVisible = false, needStackItems = true } = filter
+    let dubIdx = (needStackItems && logObj.type == EULT_OPEN_TROPHY && logObj?.parentTrophyRandId)
+      ? logs.findindex(@(inst) inst.type == EULT_OPEN_TROPHY
+        && inst?.parentTrophyRandId == logObj.parentTrophyRandId
+          && inst?.id == logObj?.id && inst.time == logObj.time)
+      : null
+    if (dubIdx != null) {
+      let curLog = logs[dubIdx]
+      // Stack all trophy rewards
+      if (curLog?.item && logObj?.item)
+        curLog.item = type(curLog.item) == "array" ? curLog.item.append(logObj.item)
+          : [curLog.item].append(logObj.item)
+      // Stack all identical trophies
+      if (!curLog?.item && !logObj?.item)
+        curLog.count <- (curLog?.count ?? 1) + (logObj?.count ?? 1)
+    }
+    // Changes of current logObj above will be used for logObj view only
+    // so no need reduce logs array to avoid differences with blk
+    logs.append(dubIdx != null ? logObj.__merge({ isDubTrophy = true }) : logObj)
+
+    if (disableVisible) {
+      if (disable_user_log_entry(i))
+        needSave = true
+    }
+  }
+
+  if (needSave) {
+    log("getUserLogsList - needSave")
+    saveOnlineJob()
+  }
+  return logs
+}
+
+function check_new_user_logs() {
+  let total = get_user_logs_count()
+  let newUserlogsArray = []
+  for (local i = 0; i < total; i++) {
+    let blk = DataBlock()
+    get_user_log_blk_body(i, blk)
+    if (blk?.disabled || isInArray(blk?.type, ::hidden_userlogs))
+      continue
+
+    let unlockId = blk?.body.unlockId
+    if (unlockId != null && !isUnlockVisible(getUnlockById(unlockId))) {
+      disable_user_log_entry(i)
+      continue
+    }
+
+    newUserlogsArray.append(blk)
+  }
+  return newUserlogsArray
+}
+
 return {
   disableSeenUserlogs
   saveOnlineJob
@@ -215,4 +390,7 @@ return {
   checkPopupUserLog
   getLogNameByType
   updateRepairCost
+  getUserLogsList
+  isUserlogVisible
+  check_new_user_logs
 }

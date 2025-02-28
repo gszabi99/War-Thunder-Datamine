@@ -11,7 +11,7 @@ let { format } = require("string")
 // warning disable: -file:forbidden-function
 let { getLocalLanguage } = require("language")
 let { getFullUnlockDesc, getUnlockCostText,
-  getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+  getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { register_command } = require("console")
 let { getUnlockById, getAllUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
@@ -20,8 +20,9 @@ let { saveJson } = require("%sqstd/json.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { guiStartUnlockWnd } = require("%scripts/unlocks/showUnlock.nut")
+let { guiStartUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
+let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 
 function debug_show_test_unlocks(chapter = "test", group = null) {
   if (!is_dev_version())
@@ -70,7 +71,7 @@ function gen_all_unlocks_desc(showCost = false) {
   dlog("GP: gen all unlocks description")
   local res = ""
   foreach (_id, unlock in getAllUnlocks()) {
-    let cfg = ::build_conditions_config(unlock)
+    let cfg = buildConditionsConfig(unlock)
     local desc = getFullUnlockDesc(cfg)
     if (showCost)
       desc = $"{desc}\n{getUnlockCostText(cfg)}"
@@ -91,7 +92,7 @@ function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = fa
   }
 
   foreach (id, unlock in getAllUnlocks()) {
-    let cfg = ::build_conditions_config(unlock)
+    let cfg = buildConditionsConfig(unlock)
     local desc = getFullUnlockDesc(cfg, params)
     if (showCost)
       desc = $"{desc}\n{getUnlockCostText(cfg)}"
@@ -153,7 +154,7 @@ function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, show
 function debug_show_unlock_popup(unlockId) {
   guiStartUnlockWnd(
     ::build_log_unlock_data(
-      ::build_conditions_config(
+      buildConditionsConfig(
         getUnlockById(unlockId)
       )
     )
@@ -161,7 +162,7 @@ function debug_show_unlock_popup(unlockId) {
 }
 
 function debug_show_debriefing_trophy(trophyItemId) {
-  let filteredLogs = ::getUserLogsList({
+  let filteredLogs = getUserLogsList({
     show = [EULT_OPEN_TROPHY]
     disableVisible = true
     needStackItems = false

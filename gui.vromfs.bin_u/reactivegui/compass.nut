@@ -113,7 +113,7 @@ let mkLwsMark = @(lwsDirection, size, color) function(){
 }
 
 let function mkAircraftMark(markData, size, color) {
-  let { direction = markData, iconId = "army_fighter.svg" } = markData
+  let { direction, iconId } = markData
   let image = Picture($"ui/gameuiskin#{iconId.split(":")[0]}:{imageSize[0]}:{imageSize[1]}:P")
   return function() {
     let compassAngle = (CompassValue.value > 0 ? 360 : 0) - CompassValue.value

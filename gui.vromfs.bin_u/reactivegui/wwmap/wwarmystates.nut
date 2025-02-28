@@ -2,13 +2,14 @@ from "%rGui/globals/ui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 let { pow } = require("math")
-let { wwGetArmiesNames, wwGetArmyInfo, wwClearOutlinedZones, wwUpdateSelectedArmyName } = require("worldwar")
+let { wwGetArmiesNames, wwGetArmyInfo, wwClearOutlinedZones, wwUpdateSelectedArmyName, wwUpdateSelectedArmiesName } = require("worldwar")
 let { subscribe } = require("eventbus")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { sendToDagui } = require("%rGui/wwMap/wwMapUtils.nut")
 let { getMapAspectRatio, convertToRelativeMapCoords, getMapSize } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { armyIconByType } = require("%rGui/wwMap/wwMapTypes.nut")
 let { getSettings, getSettingsArray } = require("%appGlobals/worldWar/wwSettings.nut")
+let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
 
 let selectedArmy = Watched(null)
 let hoveredArmy = Watched(null)
@@ -22,7 +23,8 @@ let armiesData = Watched([])
 
 let movingArmiesPositions = Watched({})
 let newPartOfArmyPath = Watched(null)
-let allowDrawNewPartOfArmyPath = Watched(true)
+
+let armyNameForTooltip = keepref(Computed(@() (hoveredArmy.get() && isMapHovered.get()) ? hoveredArmy.get() : null))
 
 function updateArmiesState() {
   let wwArmiesNames = wwGetArmiesNames()
@@ -33,7 +35,7 @@ function updateArmiesState() {
       return ai
     }))
 
-   armiesList.set(wwArmiesNames)
+    armiesList.set(wwArmiesNames)
   }
   else {
     wwArmiesNames.each(function(armyName) {
@@ -46,7 +48,6 @@ function updateArmiesState() {
       }
    })
   }
-  allowDrawNewPartOfArmyPath.set(true)
 }
 
 function getArmyByPoint(point) {
@@ -109,13 +110,16 @@ subscribe("selectArmy", function(armyName) {
   selectedArmy.set(armyName)
 })
 
-hoveredArmy.subscribe(function(armyName) {
+armyNameForTooltip.subscribe(function(armyName) {
   sendToDagui("ww.hoverArmy", armyName != null ? { armyName } : {})
 })
 
 selectedArmy.subscribe(function(armyName) {
   wwClearOutlinedZones()
-  wwUpdateSelectedArmyName(armyName ?? "", true)
+  if (armyName != null)
+    wwUpdateSelectedArmyName(armyName, true)
+  else
+    wwUpdateSelectedArmiesName([])
   sendToDagui("ww.selectArmy", { armyName = armyName ?? "" })
 })
 
@@ -137,5 +141,4 @@ return {
   movingArmiesPositions
 
   newPartOfArmyPath
-  allowDrawNewPartOfArmyPath
 }

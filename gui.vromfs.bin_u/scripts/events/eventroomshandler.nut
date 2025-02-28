@@ -36,6 +36,13 @@ let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
+let { isSessionStartedInRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
+let { create_event_description } = require("%scripts/events/eventDescription.nut")
+
+let { getSessionLobbyMissionNameLoc, getRoomRequiredCrafts, getRoomMGameMode, getMembersCountByTeams
+} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
 enum eRoomFlags { //bit enum. sorted by priority
   CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
@@ -126,7 +133,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateMouseMode()
     this.roomsListObj = this.scene.findObject("items_list")
     this.roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = getEventEconomicName(this.event) })
-    this.eventDescription = ::create_event_description(this.scene)
+    this.eventDescription = create_event_description(this.scene)
     this.showOnlyAvailableRooms = loadLocalAccountSettings("events/showOnlyAvailableRooms", true)
     let obj = showObjById("only_available_rooms", true, this.scene)
     obj.setValue(this.showOnlyAvailableRooms)
@@ -230,7 +237,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       missionsComplete = getMissionsComplete()
     }
 
-    ::EventJoinProcess(this.event, this.getCurRoom(),
+    EventJoinProcess(this.event, this.getCurRoom(),
       @(_event) sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic),
       function() {
         configForStatistic.canIntoToBattle <- false
@@ -252,7 +259,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onOpenClusterSelect(obj) {
-    ::queues.checkAndStart(
+    queues.checkAndStart(
       Callback(@() openClustersMenuWnd(obj, "bottom"), this),
       null,
       "isCanChangeCluster")
@@ -293,7 +300,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!hasRoom && !reasonData.reasonText.len())
       reasonData.reasonText = loc("multiplayer/no_room_selected")
 
-    let roomMGM = ::SessionLobby.getMGameMode(this.getCurRoom())
+    let roomMGM = getRoomMGameMode(this.getCurRoom())
     let isReady = g_squad_manager.isMeReady()
     let isSquadMember = g_squad_manager.isSquadMember()
 
@@ -395,7 +402,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       local flags = eRoomFlags.NONE
       let mGameMode = events.getMGameMode(this.event, room)
 
-      let countTbl = ::SessionLobby.getMembersCountByTeams(room)
+      let countTbl = getMembersCountByTeams(room)
       if (countTbl.total < 2 * teamSize) {
         flags = flags | eRoomFlags.HAS_PLACES
         let availTeams = events.getAvailableTeams(mGameMode)
@@ -403,7 +410,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           flags = flags | eRoomFlags.HAS_PLACES_IN_MY_TEAM
       }
 
-      let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
+      let reqUnits = getRoomRequiredCrafts(Team.A, room)
       if (reqUnits)
         foreach (rule in reqUnits) {
           let tier = events.getTierNumByRule(rule)
@@ -438,8 +445,8 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let roomFlags = room[EROOM_FLAGS_KEY_NAME]
     let isLocked = this.isLockedByMask(roomFlags)
 
-    local text = ::SessionLobby.getMissionNameLoc(room)
-    let reqUnits = ::SessionLobby.getRequiredCrafts(Team.A, room)
+    local text = getSessionLobbyMissionNameLoc(room)
+    let reqUnits = getRoomRequiredCrafts(Team.A, room)
     if (reqUnits) {
       local color = ""
       if (!isLocked && !(roomFlags & eRoomFlags.HAS_UNIT_MATCH_RULES))
@@ -490,7 +497,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateChaptersTree(roomsList) {
     this.chaptersTree.clear()
     foreach (_idx, room in roomsList) {
-      let chapterGameMode = ::SessionLobby.getMGameMode(room, true)
+      let chapterGameMode = getRoomMGameMode(room, true)
       let isCustomMode = events.isCustomGameMode(chapterGameMode)
       let isSeparateCustomRoomsList = isCustomMode && (chapterGameMode?.separateRoomsListForCustomMode ?? true)
       let itemView = {
@@ -567,7 +574,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
         view.items.append({
           id = this.ROOM_ID_SPLIT.concat(chapter.name, roomId)
-          isBattle = ::SessionLobby.isSessionStartedInRoom(room)
+          isBattle = isSessionStartedInRoom(room)
           itemText = nameView.text
           isLocked = nameView.isLocked
           isNeedOnHover = showConsoleButtons.value

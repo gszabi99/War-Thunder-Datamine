@@ -37,11 +37,13 @@ let { setContactsHandlerClass } = require("%scripts/contacts/contactsHandlerStat
 let { move_mouse_on_child, move_mouse_on_child_by_value, isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCustomNick, openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { CommunicationState } = require("%scripts/xbox/permissions.nut")
+let { CommunicationState } = require("%scripts/gdk/permissions.nut")
 let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
 let { is_console } = require("%sqstd/platform.nut")
 let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalWorldWarScripts.nut")
 let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
+let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 
 ::contacts_prev_scenes <- [] //{ scene, show }
 ::last_contacts_scene_show <- false
@@ -387,7 +389,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       }
       obj.contact_buttons_contact_uid = f.uid
       let contactName = getCustomNick(f) ?? f.getName()
-      let fullName = ::g_contacts.getPlayerFullName(contactName, f.clanTag)
+      let fullName = getPlayerFullName(contactName, f.clanTag)
       obj.findObject("contactName").setValue(fullName)
       let contactPresenceObj = obj.findObject("contactPresence")
       contactPresenceObj.setValue(f.getPresenceText())
@@ -1087,7 +1089,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function onUsercard(obj) {
     this.updateCurPlayer(obj)
     if (this.curPlayer)
-      ::gui_modal_userCard(this.curPlayer)
+      gui_modal_userCard(this.curPlayer)
   }
 
   function onCancelSearchEdit(obj) {

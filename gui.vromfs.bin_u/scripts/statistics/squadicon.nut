@@ -2,6 +2,9 @@ from "%scripts/dagui_library.nut" import *
 
 let { INVALID_SQUAD_ID } = require("matching.errors")
 let u = require("%sqStdLibs/helpers/u.nut")
+let { getSessionLobbyGameMode, getSessionLobbyPlayersInfo
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+
 let listLabelsSquad = {}
 let nextLabel = { team1 = 1, team2 = 1 }
 local topSquads = {}
@@ -9,7 +12,7 @@ let playersInfo = mkWatched(persist, "playersInfo", {})
 
 let getPlayersInfo = @() playersInfo.value
 function updateIconPlayersInfo() {
-  let sessionPlayersInfo = ::SessionLobby.getPlayersInfo()
+  let sessionPlayersInfo = getSessionLobbyPlayersInfo()
   if (sessionPlayersInfo.len() > 0 && !u.isEqual(playersInfo.value, sessionPlayersInfo))
     playersInfo(clone sessionPlayersInfo)
 }
@@ -32,7 +35,7 @@ function updateListLabelsSquad() {
     if (!(team in nextLabel))
       continue
 
-    let squadId = member.squad
+    let squadId = member?.squad ?? INVALID_SQUAD_ID
     if (squadId == INVALID_SQUAD_ID)
       continue
     if (squadId in listLabelsSquad) {
@@ -77,7 +80,7 @@ function getSquadInfoByMemberId(userId) {
   return null
 }
 
-let isShowSquad = @() ::SessionLobby.getGameMode() != GM_SKIRMISH
+let isShowSquad = @() getSessionLobbyGameMode() != GM_SKIRMISH
 function updateTopSquadScore(mplayers) {
   if (!isShowSquad())
     return

@@ -290,7 +290,7 @@ let cfg = {
       }
       { shortcut = [ "ID_AIR_BRAKE" ], enable = hasAirbrake }
       { shortcut = [ "ID_CHUTE" ], enable = hasChute }
-      null
+      { shortcut = [ "ID_MANEVERABILITY_MODE", "ID_MANEVERABILITY_MODE_HELICOPTER" ] }
       null
     ]
   },

@@ -4,7 +4,7 @@ from "%scripts/teamsConsts.nut" import Team
 from "%scripts/events/eventsConsts.nut" import EVENTS_SHORT_LB_VISIBLE_ROWS, UnitRelevance, EVENT_TYPE, GAME_EVENT_TYPE
 from "%scripts/items/itemsConsts.nut" import itemType
 from "%scripts/mainConsts.nut" import COLOR_TAG, SEEN, global_max_players_versus
-from "%scripts/clans/clanState.nut" import is_in_clan
+from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
 
 let { getUnitName, getUnitTypeText, getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
@@ -38,7 +38,7 @@ let { getFeaturePack } = require("%scripts/user/features.nut")
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let { getFeaturePurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isCompatibiliyMode } = require("%scripts/options/systemOptions.nut")
+let { isCompatibilityMode } = require("%scripts/options/systemOptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getWpcostUnitClass, getMaxEconomicRank, calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
@@ -49,7 +49,7 @@ let { getTournamentInfoBlk } = require("%scripts/events/eventRewards.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
-let { toUpper } = require("%sqstd/string.nut")
+let { capitalize } = require("%sqstd/string.nut")
 let { getGameModesByEconomicName, getModeById } = require("%scripts/matching/matchingGameModes.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
@@ -82,6 +82,13 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { checkLbRowVisibility } = require("%scripts/leaderboard/leaderboardHelpers.nut")
+let { enqueueItem, requestLimits } = require("%scripts/items/itemLimits.nut")
+let { getSessionLobbyClusterName } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getRoomSpecialRules, getRoomTeamData, getRoomMGameMode, getMembersCountByTeams
+} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
+let { getItemsList, getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { getBrokenAirsInfo } = require("%scripts/instantAction.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
 const EVENT_DEFAULT_TEAM_SIZE = 16
@@ -129,8 +136,8 @@ let EventTicketBuyOfferProcess = class {
     this._event = event
     this._tickets = events.getEventTickets(event, true)
     foreach (ticket in this._tickets)
-      ::g_item_limits.enqueueItem(ticket.id)
-    if (::g_item_limits.requestLimits(true))
+      enqueueItem(ticket.id)
+    if (requestLimits(true))
       add_event_listener("ItemLimitsUpdated", this.onEventItemLimitsUpdated, this)
     else
       this.handleTickets()
@@ -971,7 +978,7 @@ let Events = class {
   }
 
   function getMGameMode(event, room) {
-    return (room && ::SessionLobby.getMGameMode(room)) || event
+    return (room && getRoomMGameMode(room)) || event
   }
 
   function getEventByEconomicName(economicName) {
@@ -1020,7 +1027,7 @@ let Events = class {
 
   function getTeamDataWithRoom(event, team, room) {
     if (room)
-      return ::SessionLobby.getTeamData(team, room)
+      return getRoomTeamData(team, room)
     return this.getTeamData(event, team)
   }
 
@@ -1197,7 +1204,7 @@ let Events = class {
       && (!this.eventRequiresTicket(event) || this.getEventActiveTicket(event) != null)
   }
 
-  isEventAllowedByComaptibilityMode = @(event) event?.isAllowedForCompatibility != false || !isCompatibiliyMode()
+  isEventAllowedByComaptibilityMode = @(event) event?.isAllowedForCompatibility != false || !isCompatibilityMode()
 
   function getEventsVisibleInEventsWindowCount() {
     return this.__countEventsList(EVENT_TYPE.ANY, this.isEventVisibleInEventsWindow)
@@ -1427,7 +1434,7 @@ let Events = class {
   }
 
   function isUnitAllowedForEventRoom(event, room, unit) {
-    let roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
+    let roomSpecialRules = room && getRoomSpecialRules(room)
     if (roomSpecialRules && !this.isUnitMatchesRoomSpecialRules(unit, roomSpecialRules, this.getEDiffByEvent(event)))
       return false
 
@@ -1450,7 +1457,7 @@ let Events = class {
     if (!unit)
       return false
 
-    let roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
+    let roomSpecialRules = room && getRoomSpecialRules(room)
     return !roomSpecialRules || this.isUnitMatchesRoomSpecialRules(unit, roomSpecialRules, this.getEDiffByEvent(event))
   }
 
@@ -1540,7 +1547,7 @@ let Events = class {
 
   function checkPlayersCrafts(event, room = null) {
     let mGameMode = events.getMGameMode(event, room)
-    let roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
+    let roomSpecialRules = room && getRoomSpecialRules(room)
     let playersCurCountry = profileCountrySq.value
     let ediff = this.getEDiffByEvent(event)
     foreach (team in this.getSidesList(mGameMode)) {
@@ -1553,7 +1560,7 @@ let Events = class {
   }
 
   function checkPlayersCraftsRoomRules(event, room) {
-    let roomSpecialRules = ::SessionLobby.getRoomSpecialRules(room)
+    let roomSpecialRules = getRoomSpecialRules(room)
     if (!roomSpecialRules)
       return true
     let ediff = this.getEDiffByEvent(event)
@@ -1587,14 +1594,14 @@ let Events = class {
 
   function getCountryRepairInfo(event, room, country) {
     let mGameMode = events.getMGameMode(event, room)
-    let roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
+    let roomSpecialRules = room && getRoomSpecialRules(room)
     let teams = this.getAvailableTeams(mGameMode)
     let ediff = this.getEDiffByEvent(event)
     let teamsData = []
     foreach (t in teams)
       teamsData.append(this.getTeamData(mGameMode, t))
 
-    return ::getBrokenAirsInfo([country], this.isEventMultiSlotEnabled(event),
+    return getBrokenAirsInfo([country], this.isEventMultiSlotEnabled(event),
       function(unit) {
         if (roomSpecialRules
             && !this.isUnitMatchesRule(unit, roomSpecialRules, true, ediff))
@@ -1913,7 +1920,7 @@ let Events = class {
   }
 
   function countEventTime(eventTime) {
-    return (eventTime - ::get_matching_server_time())
+    return (eventTime - getMatchingServerTime())
   }
 
   function getEventStartTime(event) {
@@ -2111,7 +2118,7 @@ let Events = class {
           unitType = loc($"{allowUnitId}/{masksArray[0].name}"),
           unitType2 = loc($"{allowUnitId}/{masksArray[1].name}")
         })
-        allowText = toUpper(allowText, 1)
+        allowText = capitalize(allowText)
       }
     }
     allowText = allowText == "" ? loc($"events/{allowId}") : allowText
@@ -2239,7 +2246,7 @@ let Events = class {
 
     let ediff = this.getEDiffByEvent(event)
     if (room) {
-      let roomSpecialRules = room && ::SessionLobby.getRoomSpecialRules(room)
+      let roomSpecialRules = room && getRoomSpecialRules(room)
       if (roomSpecialRules && !this.isUnitMatchesRule(unit, roomSpecialRules, true, ediff))
         return false
     }
@@ -2267,7 +2274,7 @@ let Events = class {
     let membersCount = g_squad_manager.getOnlineMembersCount()
     let myTeam = availTeams[0]
     let otherTeam = u.search(teams, function(t) { return t != myTeam })
-    let countTbl = ::SessionLobby.getMembersCountByTeams(room)
+    let countTbl = getMembersCountByTeams(room)
     return (countTbl?[myTeam] ?? 0) + membersCount <= (countTbl?[otherTeam] ?? 0) + maxDisbalance
   }
 
@@ -2279,7 +2286,7 @@ let Events = class {
       return true
 
     let membersCount = g_squad_manager.getOnlineMembersCount()
-    let countTbl = ::SessionLobby.getMembersCountByTeams(room)
+    let countTbl = getMembersCountByTeams(room)
     return countTbl[availTeams[0]] + membersCount <= this.getMaxTeamSize(mGameMode)
   }
 
@@ -2345,7 +2352,7 @@ let Events = class {
       data.reasonText = loc("events/no_selected_country")
     else if (!this.checkPlayersCrafts(mGameMode, room))
       data.reasonText = loc("events/no_allowed_crafts")
-    else if (isEventForClan(event) && !::my_clan_info)
+    else if (isEventForClan(event) && !myClanInfo.get())
       data.reasonText = loc("events/clan_only")
     else if (!isCreationCheck && this.isEventEnded(event))
       data.reasonText = loc("events/event_disabled")
@@ -2378,7 +2385,7 @@ let Events = class {
         })
     }
     else if (!this.isAllowedByRoomBalance(mGameMode, room)) {
-      let teamsCnt = ::SessionLobby.getMembersCountByTeams(room)
+      let teamsCnt = getMembersCountByTeams(room)
       let myTeam = this.getAvailableTeams(mGameMode, room)[0]
       let otherTeam = u.search(this.getSidesList(mGameMode), @(t) t != myTeam)
       let membersCount = g_squad_manager.getOnlineMembersCount()
@@ -2503,7 +2510,7 @@ let Events = class {
   /** Returns tickets available for purchase. */
   function getEventTickets(event, canBuyOnly = false) {
     let eventId = getEventEconomicName(event)
-    let tickets = ::ItemsManager.getItemsList(itemType.TICKET,
+    let tickets = getItemsList(itemType.TICKET,
       @(item) item.isForEvent(eventId) && (!canBuyOnly || item.isCanBuy()))
     return tickets
   }
@@ -2513,7 +2520,7 @@ let Events = class {
     let eventId = event.economicName
     if (!have_you_valid_tournament_ticket(eventId))
       return null
-    let tickets = ::ItemsManager.getInventoryList(itemType.TICKET,
+    let tickets = getInventoryList(itemType.TICKET,
       @(item) item.isForEvent(eventId) && item.isActive())
     return tickets.len() > 0 ? tickets[0] : null
   }
@@ -2728,7 +2735,7 @@ let Events = class {
 
     if (mroom)
       textsList.append(this.descFormat(loc("options/cluster"),
-        getClusterShortName(::SessionLobby.getClusterName(mroom))))
+        getClusterShortName(getSessionLobbyClusterName(mroom))))
 
     let isTesting = ("event_access" in event) ? isInArray("AccessTest", event.event_access) : false
     if (isTesting)

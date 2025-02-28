@@ -5,9 +5,9 @@ let platformModule = require("%scripts/clientState/platform.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { hasChat } = require("%scripts/user/matchingFeature.nut")
 let { isGuestLogin } = require("%scripts/user/profileStates.nut")
-let { check_communications_privilege, check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/xbox/permissions.nut")
+let { check_communications_privilege, check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/gdk/permissions.nut")
 let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 
 function getXboxChatEnableStatus() {

@@ -27,6 +27,8 @@ let { USEROPT_USER_SKIN } = require("%scripts/options/optionsExtNames.nut")
 let { TANK_CAMO_ROTATION_SLIDER_FACTOR } = require("%scripts/customization/customizationConsts.nut")
 let { floor, round, abs } = require("%sqstd/math.nut")
 let { unitNameForWeapons  } = require("%scripts/weaponry/unitForWeapons.nut")
+let { getSessionLobbyRoomId } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 
 let previewedLiveSkinIds = []
 let approversUnitToPreviewLiveResource = Watched(null)
@@ -101,7 +103,7 @@ function getAutoSkin(unitName) {
     }
   }
 
-  return list[list.len() - 1 - (::SessionLobby.getRoomId() % list.len())]
+  return list[list.len() - 1 - (getSessionLobbyRoomId() % list.len())]
 }
 
 let getSkinSaveId = @(unitName) $"skins/{unitName}"
@@ -153,7 +155,7 @@ function addDownloadableLiveSkins(skins, unit) {
   skins = [].extend(skins)
 
   foreach (itemdefId in downloadableSkins) {
-    let resource = ::ItemsManager.findItemById(itemdefId)?.getMetaResource()
+    let resource = findItemById(itemdefId)?.getMetaResource()
     if (resource == null)
       continue
 

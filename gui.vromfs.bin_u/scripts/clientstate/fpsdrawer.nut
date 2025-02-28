@@ -1,6 +1,6 @@
-from "%scripts/dagui_natives.nut" import is_hud_visible
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
+from "hudState" import is_hud_visible
 
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")

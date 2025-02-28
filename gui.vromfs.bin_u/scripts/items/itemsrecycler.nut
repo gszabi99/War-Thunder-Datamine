@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let DataBlock = require("DataBlock")
-let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
+let { getItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getInventoryList } = require("%scripts/items/itemsManager.nut")
 let { exchangeSeveralRecipes } = require("%scripts/items/exchangeRecipes.nut")
@@ -19,7 +19,7 @@ let RECYCLED_ITEMS_IDS = [299000, 299001, 299002, 299003, 299004]
 // Inventory items may have non-unique ids. E.g. boosters might have different expiration times.
 // We generate an unique key based on the item inventory id and its unique parameters (currently the expiration time, but additional parameters may be added).
 let getRecyclingItemUniqKey = @(item) "::".concat(item.id, item.expiredTimeSec)
-let getSingleGeneratorForRecycledItem = @(itemId) ItemGenerators.get(itemId + SINGLE_GENERATOR_ID_OFFSET)
+let getSingleGeneratorForRecycledItem = @(itemId) getItemGenerator(itemId + SINGLE_GENERATOR_ID_OFFSET)
 
 let ItemsRecycler = class {
   craftParts = null
@@ -212,7 +212,7 @@ let ItemsRecycler = class {
   }
 
   function findGenericGeneratorRecipe(partId, partIdToQuantity) {
-    let gen = ItemGenerators.get(GENERIC_ITEM_GENERATOR_ID)
+    let gen = getItemGenerator(GENERIC_ITEM_GENERATOR_ID)
     let suitableIds = partIdToQuantity
       .filter(@(quantity) quantity >= 1)
       .keys()

@@ -12,9 +12,13 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
-let { isRoomInSession } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isRoomInSession, getSessionLobbyRoomId, getIsSpectatorSelectLocked,
+  getSessionLobbyPublicParam, getSessionLobbyMaxMembersCount
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { getSessionLobbyMissionNameLocIdsArray } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let PSN_SESSION_TYPE = {
   SKIRMISH = "skirmish"
@@ -53,7 +57,7 @@ let getLocalizedTextInfo = function(locIdsArray) {
 
 let getCustomDataByType = @(sType) sType == PSN_SESSION_TYPE.SKIRMISH
   ? [
-      { roomId = ::SessionLobby.getRoomId() }
+      { roomId = getSessionLobbyRoomId() }
       { inviterUid = userIdStr.value }
       { sType = PSN_SESSION_TYPE.SKIRMISH }
     ]
@@ -111,9 +115,9 @@ let getSessionData = @(sType, pushContextId) sType == PSN_SESSION_TYPE.SKIRMISH
   ? {
       playerSessions = [{
         supportedPlatforms = ["PS4", "PS5"]
-        maxPlayers = ::SessionLobby.getMaxMembersCount()
+        maxPlayers = getSessionLobbyMaxMembersCount()
         maxSpectators = 50 //default value by PSN
-        joinDisabled = !::SessionLobby.getPublicParam("allowJIP", true) && isRoomInSession.get() //todo update during battle - by allowJip && isInSession
+        joinDisabled = !getSessionLobbyPublicParam("allowJIP", true) && isRoomInSession.get() //todo update during battle - by allowJip && isInSession
         member = {
           players = [{
             accountId = "me"
@@ -123,7 +127,7 @@ let getSessionData = @(sType, pushContextId) sType == PSN_SESSION_TYPE.SKIRMISH
         }
         localizedSessionName = {
           defaultLanguage = "en-US"
-          localizedText = getLocalizedTextInfo(::SessionLobby.getMissionNameLocIdsArray())
+          localizedText = getLocalizedTextInfo(getSessionLobbyMissionNameLocIdsArray())
         }
         joinableUserType = "NO_ONE"
         invitableUserType = "LEADER"
@@ -132,13 +136,13 @@ let getSessionData = @(sType, pushContextId) sType == PSN_SESSION_TYPE.SKIRMISH
           "UPDATE_JOINABLE_USER_TYPE"
           "UPDATE_INVITABLE_USER_TYPE"
         ]
-        swapSupported = !::SessionLobby.getIsSpectatorSelectLocked()
+        swapSupported = !getIsSpectatorSelectLocked()
         customData1 = encodeDataToBase64Like(getCustomDataByType(PSN_SESSION_TYPE.SKIRMISH))
         /*customData1 = base64.encodeJson({
-          roomId = ::SessionLobby.getRoomId(),
+          roomId = getSessionLobbyRoomId(),
           inviterUid = userIdStr.value,
           inviterName = userName.value
-          password = ::SessionLobby.getPassword()
+          password = getSessionLobbyPassword()
           key = PSN_SESSION_TYPE.SKIRMISH
         })?.result ?? ""*/
       }]
@@ -256,7 +260,7 @@ let afterAcceptInviteCb = function(sessionId, pushContextId, _r, err) {
       let pdsType = parsedData.sType
       if ( pdsType == PSN_SESSION_TYPE.SKIRMISH) {
         dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
-        let contact = ::getContact(parsedData.inviterUid)
+        let contact = getContact(parsedData.inviterUid)
         ::g_invites.addSessionRoomInvite(parsedData.roomId, parsedData.inviterUid, contact.name, parsedData?.password ?? "").accept()
       }
       else if ( pdsType == PSN_SESSION_TYPE.SQUAD) {
@@ -366,7 +370,7 @@ addListenersWithoutEnv({
     }
 
     let sessionId = g_squad_manager.getPsnSessionId()
-    let contact = ::getContact(p.uid)
+    let contact = getContact(p.uid)
     contact.updatePSNIdAndDo(function() {
       psnsm.changeLeadership(
       sessionId,

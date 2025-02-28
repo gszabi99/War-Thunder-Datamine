@@ -6,9 +6,9 @@ let regexp2 = require("regexp2")
 let { get_current_mission_name, get_game_mode } = require("mission")
 let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { MISSION_GROUP, chapterToGroup, missionGroupToLocKey } = require("%scripts/missions/missionsFilterData.nut")
-let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { MISSION_OBJECTIVE, getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
+let { isMissionForUnitType } = require("%scripts/missions/missionsUtils.nut")
 
 let g_mission_type = {
   types = []
@@ -267,7 +267,7 @@ g_mission_type.getTypeByMissionName <- function getTypeByMissionName(misName, gm
       res = val
       break
     }
-  if (res == this.UNKNOWN && ::is_mission_for_unittype(getUrlOrFileMissionMetaInfo(misName, gm), ES_UNIT_TYPE_TANK))
+  if (res == this.UNKNOWN && isMissionForUnitType(getUrlOrFileMissionMetaInfo(misName, gm), ES_UNIT_TYPE_TANK))
     res = this.G_DOM
 
   this._cacheByMissionName[misName] <- res

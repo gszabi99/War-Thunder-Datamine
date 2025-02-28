@@ -36,7 +36,14 @@
 
     <<#hueColor>>
       colorBlock {
-        background-color:t='#<<hueColor>>'
+        <<#imageInHueBlock>>
+          img {
+            background-image:t='<<imageInHueBlock>>'
+          }
+        <</imageInHueBlock>>
+        <<^imageInHueBlock>>
+          background-color:t='#<<hueColor>>'
+        <</imageInHueBlock>>
       }
     <</hueColor>>
 

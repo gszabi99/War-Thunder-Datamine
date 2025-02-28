@@ -8,6 +8,7 @@ let { getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModu
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let {shouldDisguiseItem } = require("%scripts/items/workshop/workshop.nut")
+let { findItemById, findItemByUid } = require("%scripts/items/itemsManager.nut")
 
 function fillItemTable(item, holderObj) {
   let containerObj = holderObj.findObject("item_table_container")
@@ -275,7 +276,7 @@ addTooltipTypes({
       if (!checkObj(obj))
         return false
 
-      this.item = ::ItemsManager.findItemById(itemName)
+      this.item = findItemById(itemName)
       if (!this.item)
         return false
 
@@ -317,7 +318,7 @@ addTooltipTypes({
         return false
 
       this.tooltipObj = obj
-      this.item = ::ItemsManager.findItemByUid(itemUid)
+      this.item = findItemByUid(itemUid)
       if (!this.item)
         return false
 
@@ -350,7 +351,7 @@ addTooltipTypes({
       if (!checkObj(obj))
         return false
 
-      let item = ::ItemsManager.findItemById(itemName)
+      let item = findItemById(itemName)
       if (!item)
         return false
       let data = item.getLongDescriptionMarkup()

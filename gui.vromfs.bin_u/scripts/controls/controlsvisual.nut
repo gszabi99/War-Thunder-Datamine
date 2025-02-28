@@ -1,6 +1,9 @@
 from "%scripts/dagui_natives.nut" import get_axis_index
 from "%scripts/dagui_library.nut" import *
 
+let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+
 function getLocalizedShortcutName(shortcutId) {
   return loc($"hotkeys/{shortcutId}")
 }
@@ -8,19 +11,46 @@ function getLocalizedShortcutName(shortcutId) {
 let axisModifiers = ["_rangeMin", "_rangeMax"]
 
 let getFirstShortcutText = @(shortcutId) ::get_shortcut_text({
-  shortcuts = ::get_shortcuts([ shortcutId ])
+  shortcuts = getShortcuts([ shortcutId ])
   shortcutId = 0
   cantBeEmpty = false
   colored = false
 })
 
+let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
+
+function remapAxisName(preset, axisId) {
+  let text = preset.getAxisName(axisId)
+  if (text == null)
+    return "?"
+
+  if (text.indexof("Axis ") == 0) //"Axis 1" in "Axis" and "1"
+    return "".concat(loc("composite/axis"), text.slice("Axis ".len()))
+  else if (text.indexof("Axis") == 0) //"Axis1" in "Axis" and "1"
+    return "".concat(loc("composite/axis"), text.slice("Axis".len()))
+
+  local locText = getLocaliazedPS4ControlName(text)
+  if (locText != "")
+    return locText
+
+  locText = loc($"joystick/{text}", "")
+  if (locText != "")
+    return locText
+
+  locText = loc($"key/{text}", "")
+  if (locText != "")
+    return locText
+
+  return text
+}
+
 function getAxisTextOrAxisName(shortcutId) {
   let comma = loc("ui/comma")
   let shortcuts = []
-  let joyParams = ::joystick_get_cur_settings()
+  let joyParams = joystickGetCurSettings()
   let axis = joyParams.getAxis(get_axis_index(shortcutId))
   if (axis.axisId >= 0)
-    shortcuts.append(::remapAxisName(::g_controls_manager.getCurPreset(), axis.axisId))
+    shortcuts.append(remapAxisName(getCurControlsPreset(), axis.axisId))
 
   local activateText = getFirstShortcutText(shortcutId)
   if (activateText != "")
@@ -46,8 +76,6 @@ function getSeparatedControlLocId(text) {
 
   return txt
 }
-
-let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
 
 function getLocalizedXinpControlName(text, deviceId) {
   if (deviceId != STD_KEYBOARD_DEVICE_ID)
@@ -91,4 +119,5 @@ return {
   getLocaliazedPS4ControlName
   getLocalizedControlName
   getShortLocalizedControlName
+  remapAxisName
 }

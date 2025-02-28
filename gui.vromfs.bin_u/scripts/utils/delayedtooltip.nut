@@ -110,8 +110,9 @@ function showWaitIconForObj(obj) {
   waitPlace = wIcon
 }
 
-function fillTooltipObj(tooltipObj, tooltipId) {
+function fillTooltipObj(tooltipObj, tooltipId, isOpenByHoldBtn = false) {
   let params = parse_json(tooltipId)
+  params.isOpenByHoldBtn <- isOpenByHoldBtn
   if (type(params) != "table" || !("ttype" in params) || !("id" in params))
     return false
 
@@ -122,7 +123,7 @@ function fillTooltipObj(tooltipObj, tooltipId) {
   return isSuccess
 }
 
-function showTooltipForObj(obj) {
+function showTooltipForObj(obj, isOpenByHoldBtn = false) {
   let tooltipId = obj?.tooltipId
   let tooltip = getTooltipForObj(obj)
   if (!tooltip)
@@ -130,7 +131,7 @@ function showTooltipForObj(obj) {
   if (tooltipPlace?.isValid() && !tooltipPlace.isEqual(tooltip))
     hideTooltip()
 
-  let isSuccess = fillTooltipObj(tooltip, tooltipId ?? "")
+  let isSuccess = fillTooltipObj(tooltip, tooltipId ?? "", isOpenByHoldBtn)
   show_obj(tooltip, isSuccess)
   tooltipPlace = tooltip
 
@@ -182,7 +183,7 @@ function onHoldStart(obj, _listObj = null) {
   hideWaitIcon()
   hideHint()
   if (hasTooltip(obj))
-    showTooltipForObj(obj)
+    showTooltipForObj(obj, true)
 }
 
 function onHoldStop(_obj, _listObj = null) {
@@ -294,4 +295,5 @@ return {
   markupTooltipHoldChild
   hideWaitIcon
   hideTooltip
+  delayedTooltipOnHover = onHover
 }

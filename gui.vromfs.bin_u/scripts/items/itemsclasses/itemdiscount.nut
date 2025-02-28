@@ -14,6 +14,7 @@ let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { buyUnit } = require("%scripts/unit/unitActions.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let Discount = class (BaseItem) {
   static iType = itemType.DISCOUNT
@@ -371,4 +372,4 @@ let Discount = class (BaseItem) {
   }
 }
 
-return {Discount}
+registerItemClass(Discount)

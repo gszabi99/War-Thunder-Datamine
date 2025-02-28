@@ -5,6 +5,7 @@ let { isXInputDevice } = require("controls")
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
+let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 
 //--------------------------------------------------------------------------------------------------
 
@@ -53,7 +54,7 @@ function makeMenuView(cfg) {
     local shortcutText = ""
     if (is_platform_pc)
       shortcutText = ::get_shortcut_text({
-        shortcuts = ::get_shortcuts([ shortcutId ])
+        shortcuts = getShortcuts([ shortcutId ])
         shortcutId = 0
         cantBeEmpty = false
         strip_tags = true
@@ -72,7 +73,7 @@ function makeMenuView(cfg) {
 
 
 function openMenu(cfg) {
-  let joyParams = ::joystick_get_cur_settings()
+  let joyParams = joystickGetCurSettings()
   let params = {
     menu = makeMenuView(cfg)
     mouseEnabled = joyParams.useMouseForVoiceMessage || joyParams.useJoystickMouseForVoiceMessage

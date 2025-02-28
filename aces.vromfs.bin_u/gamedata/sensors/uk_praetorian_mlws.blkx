@@ -1,19 +1,20 @@
 {
   "type": "mlws",
   "name": "Praetorian DASS",
-  "range": 7500.0,
-  "band0": true,
-  "band1": true,
-  "band2": true,
+  "targetSignatureType": "radar",
+  "rcs": 1.0,
+  "range": 20000.0,
   "matchSector": 10.0,
   "signalHoldTime": 3.0,
   "closureRateMin": 100.0,
   "angularRateMax": 10.0,
+  "targetRangeFinder": true,
+  "targetRange": [
+    100.0,
+    10000.0
+  ],
   "signalSfxName": "alarm_launch_detected",
-  "automaticFlares": true,
-  "flaresSeriesInterval": 1.0,
-  "numFlares": 4,
-  "flaresInterval": 0.1,
+  "threatFlag": "MLWS MISSILE",
   "receivers": {
     "receiver": [
       {

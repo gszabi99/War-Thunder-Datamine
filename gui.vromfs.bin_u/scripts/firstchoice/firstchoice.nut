@@ -11,7 +11,7 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { isUnitDefault, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
-let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 let isFirstChoiceShown = mkWatched(persist, "isFirstChoiceShown", false)
 

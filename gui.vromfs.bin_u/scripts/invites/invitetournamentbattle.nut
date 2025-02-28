@@ -15,6 +15,7 @@ let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { INVITE_CHAT_LINK_PREFIX } = require("%scripts/invites/invites.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 
 let knownTournamentInvites = []
 
@@ -136,7 +137,7 @@ let TournamentBattle = class (BaseInvite) {
       return addPopup(null, loc("xbox/crossPlayRequired"))
 
     log($"Invites: Tournament: Going to join to battleId({this.battleId}) via accepted invite")
-    ::SessionLobby.joinBattle(this.battleId)
+    joinBattle(this.battleId)
 
     this.isAccepted = true
     this.remove()

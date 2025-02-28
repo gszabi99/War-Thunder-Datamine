@@ -5,6 +5,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let Friend = class (BaseInvite) {
   static function getUidByParams(params) {
@@ -58,7 +59,7 @@ let Friend = class (BaseInvite) {
 
   function accept() {
     if (this.isValid())
-      addContact(::getContact(this.inviterUid, this.inviterName), EPL_FRIENDLIST)
+      addContact(getContact(this.inviterUid, this.inviterName), EPL_FRIENDLIST)
     this.remove()
   }
 

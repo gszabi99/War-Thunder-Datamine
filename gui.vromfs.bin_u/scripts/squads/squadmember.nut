@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
 
 let class SquadMember {
   uid = ""
@@ -17,6 +18,7 @@ let class SquadMember {
   brokenAirs = null
   missedPkg = null
   wwOperations = null
+  presenceStatus = null
   isReady = false
   isCrewsReady = false
   canPlayWorldWar = false
@@ -42,7 +44,7 @@ let class SquadMember {
                        "selSlots", "crewAirs", "brokenAirs", "missedPkg", "wwOperations",
                        "isReady", "isCrewsReady", "canPlayWorldWar", "isWorldWarAvailable", "cyberCafeId",
                        "unallowedEventsENames", "sessionRoomId", "crossplay", "bannedMissions", "dislikedMissions",
-                       "craftsInfoByUnitsGroups", "isEacInited", "fakeName", "queueProfileJwt"]
+                       "craftsInfoByUnitsGroups", "isEacInited", "fakeName", "queueProfileJwt", "presenceStatus"]
 
   constructor(v_uid, v_isInvite = false, v_isApplication = false) {
     this.uid = v_uid.tostring()
@@ -52,7 +54,7 @@ let class SquadMember {
 
     this.initUniqueInstanceValues()
 
-    let contact = ::getContact(this.uid)
+    let contact = getContact(this.uid)
     if (contact)
       this.update(contact)
   }

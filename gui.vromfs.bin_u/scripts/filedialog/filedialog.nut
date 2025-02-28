@@ -598,8 +598,8 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!(item.id in this.cachedPathByNavItemId))
       return
 
-   let path = this.cachedPathByNavItemId[item.id]
-   if (path != this.dirPath)
+    let path = this.cachedPathByNavItemId[item.id]
+    if (path != this.dirPath)
       this.openDirectory(path)
   }
 

@@ -3,10 +3,6 @@ let { hudFontHgt } = require("style/airHudStyle.nut")
 let { MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode } = require("radarState.nut")
 let dasRadarHud = load_das("%rGui/radar.das")
 let dasRadarIndication = load_das("%rGui/radarIndication.das")
-let su27tactic = load_das("%rGui/planeCockpit/su27tactic.das")
-let jas39radar = load_das("%rGui/planeCockpit/mfdJas39radar.das")
-let rafaelRadar = load_das("%rGui/planeCockpit/mfdRafaelRadar.das")
-let typhoonRadar = load_das("%rGui/planeCockpit/mfdTyphoonRadar.das")
 let DataBlock = require("DataBlock")
 let { IPoint3 } = require("dagor.math")
 let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
@@ -38,10 +34,11 @@ let beamShapes = {
 }
 
 let customPages = {
-  su27tactic,
-  jas39radar,
-  rafaelRadar
-  typhoonRadar
+  su27tactic = @() load_das("%rGui/planeCockpit/su27tactic.das")
+  jas39radar = @() load_das("%rGui/planeCockpit/mfdJas39radar.das")
+  rafaelRadar = @() load_das("%rGui/planeCockpit/mfdRafaelRadar.das")
+  typhoonRadar = @() load_das("%rGui/planeCockpit/mfdTyphoonRadar.das")
+  su30Radar = @() load_das("%rGui/planeCockpit/mfdSu30Radar.das")
 }
 
 let radarSettings = Computed(function() {
@@ -123,7 +120,7 @@ let radarSettings = Computed(function() {
         hideWeaponIndication = pageBlk.getBool("hideWeaponIndication", false)
         showScanAzimuth = pageBlk.getBool("showScanAzimuth", false)
         cueHeights = pageBlk.getBool("showCueHeights", false)
-        script = customPages?[scriptType] ?? dasRadarHud
+        script = customPages?[scriptType]() ?? dasRadarHud
         centerRadar = pageBlk.getBool("centerRadar", false)
         cueTopHeiColor = pageBlk.getIPoint3("cueTopHeiColor", IPoint3(-1, -1, -1))
         cueLowHeiColor = pageBlk.getIPoint3("cueLowHeiColor", IPoint3(-1, -1, -1))

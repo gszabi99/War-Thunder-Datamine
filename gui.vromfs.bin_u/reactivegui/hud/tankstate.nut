@@ -21,7 +21,7 @@ let MachineGunNextShotAtTime = Watched(0)
 let IsCommanderViewAimModeActive = Watched(false)
 
 let activeProtectionSystemModules = []
-let ActiveProtectionSystemModulesCount = Watched(0)
+let activeProtectionSystemModulesCount = Watched(0)
 
 let getModuleDefaultParams = @() {
   shotCountRemain = Watched(0)
@@ -43,7 +43,7 @@ function resizeActiveProtectionSystemModules(count) {
     activeProtectionSystemModules.append(getModuleDefaultParams())
 }
 
-ActiveProtectionSystemModulesCount.subscribe(resizeActiveProtectionSystemModules)
+activeProtectionSystemModulesCount.subscribe(resizeActiveProtectionSystemModules)
 
 let tankState = {
   IndicatorsVisible,
@@ -51,7 +51,7 @@ let tankState = {
 
   IsCommanderViewAimModeActive
 
-  ActiveProtectionSystemModulesCount
+  activeProtectionSystemModulesCount
   activeProtectionSystemModules
   CoaxialBullets
   CoaxialCartridges
@@ -78,6 +78,8 @@ interopGen({
 })
 
 interop.updateActiveProtectionSystem <- function (shotCount, shotCountRemain, emitterPosX, emitterPosY, horAnglesX, horAnglesY, timeToReady, index) {
+  if (index >= activeProtectionSystemModules.len())
+    return
   let module = activeProtectionSystemModules[index]
   module.shotCount(shotCount)
   module.shotCountRemain(shotCountRemain)

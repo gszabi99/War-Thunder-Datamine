@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import is_flight_menu_disabled, get_is_in_flight_menu, pause_game, close_ingame_gui, is_game_paused
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 
@@ -6,7 +5,6 @@ let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { g_hud_action_bar_type } = require("%scripts/hud/hudActionBarType.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
-let { eventbus_subscribe, eventbus_send } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { isXInputDevice } = require("controls")
@@ -32,33 +30,20 @@ let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 let helpTypes = require("%scripts/controls/help/controlsHelpTypes.nut")
+let { getLinkLinesMarkup } = require("%scripts/linesGenerator.nut")
+let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 require("%scripts/viewUtils/bhvHelpFrame.nut")
 
-::gui_modal_help <- function gui_modal_help(isStartedFromMenu, contentSet, missionType = null) {
+function gui_modal_help(isStartedFromMenu, contentSet, missionType = null) {
   loadHandler(gui_handlers.helpWndModalHandler, {
     isStartedFromMenu
     contentSet
     missionType
   })
 }
-
-function gui_start_flight_menu_help(_) {
-  if (!hasFeature("ControlsHelp")) {
-    get_gui_scene().performDelayed({}, function() {
-      close_ingame_gui()
-      if (is_game_paused())
-        pause_game(false)
-    })
-    return
-  }
-  let needFlightMenu = !get_is_in_flight_menu() && !is_flight_menu_disabled();
-  if (needFlightMenu)
-    eventbus_send("gui_start_flight_menu")
-  ::gui_modal_help(needFlightMenu, HELP_CONTENT_SET.MISSION)
-}
-
-eventbus_subscribe("gui_start_flight_menu_help", gui_start_flight_menu_help)
 
 gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -86,7 +71,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initScreen() {
-    this.preset = this.preset || ::g_controls_manager.getCurPreset()
+    this.preset = this.preset || getCurControlsPreset()
     this.visibleTabs = helpTabs.getTabs(this.contentSet)
     this.fillTabs()
 
@@ -102,7 +87,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let tabsObj = this.scene.findObject("tabs_list")
     let countVisibleTabs = this.visibleTabs.len()
 
-    let preselectedTab = helpTabs.getPrefferableType(this.contentSet)
+    let preselectedTab = helpTabs.getPreferableType(this.contentSet)
 
     this.curTabIdx = 0
     let view = { tabs = [] }
@@ -117,7 +102,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       view.tabs.append({
         tabName = group.title
-        navImagesText = ::get_navigation_images_text(idx, countVisibleTabs)
+        navImagesText = getNavigationImagesText(idx, countVisibleTabs)
         selected = isSelected
       })
     }
@@ -253,7 +238,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       links = linkLines?.links ?? []
       obstacles = getTblValue("obstacles", linkLines, null)
     }
-    let linesData = ::LinesGenerator.getLinkLinesMarkup(linkLinesConfig)
+    let linesData = getLinkLinesMarkup(linkLinesConfig)
     this.guiScene.replaceContentFromText(this.scene.findObject("link_lines_block"), linesData, linesData.len(), this)
   }
 
@@ -314,7 +299,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let isAxis = type(item) == "table" && item.type == CONTROL_TYPE.AXIS
       let isHeader = type(item) == "table" && ("type" in item) && (item.type == CONTROL_TYPE.HEADER || item.type == CONTROL_TYPE.SECTION)
       let shortcutNames = []
-      let axisModifyerButtons = []
+      let axisModifierButtons = []
       local scText = ""
 
       if (isHeader) {
@@ -324,7 +309,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         if (isAxis) {
           foreach (axisSc in shortcutsAxisListModule.types) {
             if (axisSc.type == CONTROL_TYPE.AXIS_SHORTCUT) {
-              axisModifyerButtons.append(axisSc.id)
+              axisModifierButtons.append(axisSc.id)
               if (axisSc.id == "")
                 shortcutNames.append(name)
               else
@@ -335,15 +320,15 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         else
           shortcutNames.append(name)
 
-        let shortcuts = ::get_shortcuts(shortcutNames, this.preset)
+        let shortcuts = getShortcuts(shortcutNames, this.preset)
         let btnList = {} //btnName = isMain
 
         //--- F1 help window ---
         for (local sc = 0; sc < shortcuts.len(); sc++) {
           let text = this.getShortcutText(shortcuts[sc], btnList, true)
-          if (text != "" && (!isAxis || axisModifyerButtons[sc] != "")) //do not show axis text (axis buttons only)
+          if (text != "" && (!isAxis || axisModifierButtons[sc] != "")) //do not show axis text (axis buttons only)
             scText = "".concat(scText, scText != "" ? ";  " : "",
-              isAxis ? this.getModifierSymbol(axisModifyerButtons[sc]) : "", text)
+              isAxis ? this.getModifierSymbol(axisModifierButtons[sc]) : "", text)
         }
 
         scText = "".concat(loc($"{isAxis ? "controls/" : "hotkeys/"}{name}"), loc("ui/colon"), scText)
@@ -462,7 +447,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let ignoreAxis = ["camx", "camy"]
     let customLocalization = { ["camx"] = "controls/help/camx" }
 
-    let curJoyParams = ::joystick_get_cur_settings()
+    let curJoyParams = joystickGetCurSettings()
     let axisIds = [
       { id = "joy_axis_l", x = 0, y = 1 }
       { id = "joy_axis_r", x = 2, y = 3 }
@@ -493,7 +478,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return false
     }).map(@(sc) sc.id)
 
-    let shortcuts = ::get_shortcuts(shortcutNames, this.preset)
+    let shortcuts = getShortcuts(shortcutNames, this.preset)
     foreach (i, item in shortcuts) {
       if (item.len() == 0)
         continue
@@ -754,4 +739,8 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     return viewItem
   }
+}
+
+return {
+  gui_modal_help
 }

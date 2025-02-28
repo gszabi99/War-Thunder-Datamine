@@ -43,10 +43,19 @@
     <</unlocked>>
   }
 
+  <<#topLeftText>>
+  textareaNoTab {
+    position:t='absolute'
+    pos:t='1.5@blockInterval, 1.5@blockInterval'
+    hideEmptyText:t='yes'
+    text:t='<<topLeftText>>'
+  }
+  <</topLeftText>>
+
   <<#topRightText>>
   textareaNoTab {
     position:t='absolute'
-    pos:t='pw - w - 1@blockInterval, 0'
+    pos:t='pw - w - 1.5@blockInterval, 1.5@blockInterval'
     hideEmptyText:t='yes'
     text:t='<<topRightText>>'
   }

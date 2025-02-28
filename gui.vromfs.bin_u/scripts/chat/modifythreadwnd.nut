@@ -10,6 +10,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getLangInfoByChatId, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 let { move_mouse_on_child, select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getChatThreadsList, canChooseThreadsLang } = require("%scripts/chat/chatLatestThreads.nut")
+let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 
 gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -65,7 +67,7 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function initLangs() {
     this.curLangs = this.threadInfo.langs
 
-    let show = g_chat.canChooseThreadsLang()
+    let show = canChooseThreadsLang()
     showObjById("language_block", show, this.scene)
     if (show)
       this.updateLangButton()
@@ -178,11 +180,11 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
         this.setChatTime(timeInt)
       }
     })
-    ::gui_right_click_menu(menu, this)
+    openRightClickMenu(menu, this)
   }
 
   function onMoveChatMenu() {
-    let list = ::g_chat_latest_threads.getList()
+    let list = getChatThreadsList()
     if (!list.len())
       return
 
@@ -193,11 +195,11 @@ gui_handlers.modifyThreadWnd <- class (gui_handlers.BaseGuiHandlerWT) {
         text = loc("chat/moveThreadToPosition", { place = i + 1 })
         action = function() { this.moveChatToPlace(i) }
       })
-    ::gui_right_click_menu(menu, this)
+    openRightClickMenu(menu, this)
   }
 
   function moveChatToPlace(place) {
-    let list = ::g_chat_latest_threads.getList()
+    let list = getChatThreadsList()
     if (!list.len())
       return
 

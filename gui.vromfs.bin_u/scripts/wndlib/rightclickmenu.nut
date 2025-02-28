@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/wndLib/wndConsts.nut" import RCLICK_MENU_ORIENT
+from "%scripts/utils_sa.nut" import call_for_handler
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -23,18 +24,6 @@ let { get_time_msec } = require("dagor.time")
     ...
   ]
 */
-
-::gui_right_click_menu <- function gui_right_click_menu(config, owner, position = null, orientation = null, onClose = null) {
-  if (type(config) == "array")
-    config = { actions = config }
-  handlersManager.loadHandler(gui_handlers.RightClickMenu, {
-    config
-    owner
-    position
-    orientation
-    onClose
-  })
-}
 
 gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
   wndType      = handlerType.MODAL
@@ -171,9 +160,23 @@ gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
     local isActionActivate = false
     if (this.choosenValue in this.config.actions) {
       let applyFunc = getTblValue("action", this.config.actions[this.choosenValue])
-      ::call_for_handler(this.owner, applyFunc)
+      call_for_handler(this.owner, applyFunc)
       isActionActivate = true
     }
     this.onClose?(isActionActivate)
   }
 }
+
+function openRightClickMenu(config, owner, position = null, orientation = null, onClose = null) {
+  if (type(config) == "array")
+    config = { actions = config }
+  handlersManager.loadHandler(gui_handlers.RightClickMenu, {
+    config
+    owner
+    position
+    orientation
+    onClose
+  })
+}
+
+return { openRightClickMenu }

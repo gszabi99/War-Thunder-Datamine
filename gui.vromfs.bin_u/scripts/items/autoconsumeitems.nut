@@ -3,13 +3,14 @@ from "%scripts/dagui_natives.nut" import char_send_custom_action
 from "%scripts/items/itemsConsts.nut" import itemType
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
-let { addTask } = require("%scripts/tasker.nut")
+let { addTask, TASK_CB_TYPE } = require("%scripts/tasker.nut")
 let { getUserstatItemRewardData } = require("%scripts/userstat/userstatItemsRewards.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
 local shouldCheckAutoConsume = false
 
-let failedAutoConsumeItems = {}
+let failedAutoConsumeItemsByItemdefId = {}
+let failedAutoConsumeItemsById = {}
 local isAutoConsumeInProgress = false
 
 let multiConsumeList = []
@@ -38,11 +39,17 @@ function decreaseItemsAmountIfNeed(itemsList) {
   }
 }
 
-function onFinishMultiItemsConsume() {
+function onFinishMultiItemsConsumeSuccess(data) {
+  let { revertedItems = [] } = data
+  revertedItems.each(@(id) failedAutoConsumeItemsById[id.tostring()] <- true)
   //items list refreshed, but ext inventory only requested.
   //so update item amount to avoid repeated request before real update
   decreaseItemsAmountIfNeed(multiConsumeList)
   multiConsumeList.clear()
+  isAutoConsumeInProgress = false
+}
+
+function onFinishMultiItemsConsumeError() {
   isAutoConsumeInProgress = false
 }
 
@@ -73,6 +80,8 @@ function getItemsBlkForMultiAutoConsume(list) {
       continue
 
     foreach (uid, amount in item.amountByUids) {
+      if ((uid in failedAutoConsumeItemsById) || amount <= 0)
+        continue
       let itemBlk = itemsBlk.addNewBlock("item")
       itemBlk.setInt("itemId", uid.tointeger())
       itemBlk.setInt("quantity", amount)
@@ -85,20 +94,21 @@ function consumeMultipleItems() {
   if (isAutoConsumeInProgress || multiConsumeList.len() == 0)
     return
 
-  isAutoConsumeInProgress = true
-
   let itemsBlk = getItemsBlkForMultiAutoConsume(multiConsumeList)
+  if (itemsBlk.items.blockCount() == 0)
+    return
+
+  isAutoConsumeInProgress = true
   let blkParams = DataBlock()
   blkParams.addBool("textBlk", true)
-
   let taskId = char_send_custom_action(
-    "cln_multi_consume_inventory_item",
-    EATT_SIMPLE_OK,
+    "cln_multi_consume_inventory_item_json",
+    EATT_JSON_REQUEST,
     blkParams,
     itemsBlk.formatAsString(),
     -1
   )
-  addTask(taskId, {}, onFinishMultiItemsConsume)
+  addTask(taskId, {}, onFinishMultiItemsConsumeSuccess, onFinishMultiItemsConsumeError, TASK_CB_TYPE.REQUEST_DATA)
 }
 
 local consumeSingleItems = @() null
@@ -108,13 +118,13 @@ consumeSingleItems = function() {
 
   let onConsumeFinish = function(p = {}) {
     if (!(p?.success ?? true) && p?.itemId != null)
-      failedAutoConsumeItems[p.itemId] <- true
+      failedAutoConsumeItemsByItemdefId[p.itemId] <- true
     isAutoConsumeInProgress = false
     consumeSingleItems()
   }
 
   foreach (item in singleConsumeList)
-    if (!(item.id in failedAutoConsumeItems) && item.consume(onConsumeFinish, {})) {
+    if (!(item.id in failedAutoConsumeItemsByItemdefId) && item.consume(onConsumeFinish, {})) {
       isAutoConsumeInProgress = true
       break
     }
@@ -139,7 +149,10 @@ function checkAutoConsume() {
 }
 
 addListenersWithoutEnv({
-  SignOut = @(_p) failedAutoConsumeItems.clear()
+  function SignOut(_) {
+    failedAutoConsumeItemsByItemdefId.clear()
+    failedAutoConsumeItemsById.clear()
+  }
 })
 
 return {

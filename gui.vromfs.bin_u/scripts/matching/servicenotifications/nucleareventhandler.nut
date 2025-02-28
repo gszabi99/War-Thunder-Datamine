@@ -12,7 +12,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { isInFlight } = require("gameplayBinding")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 let newClientVersionEvent = persist("newClientVersionEvent ", @() {
   hasMessage = false

@@ -3783,7 +3783,7 @@
       },
       {
         "name": "sb_2m_103c",
-        "weap": "sb_2m_103c_2xfab250_2xfab250",
+        "weap": "sb_2m_103c_fab_500",
         "rankRange": [
           0,
           6
@@ -3943,7 +3943,7 @@
       },
       {
         "name": "do_217e_2",
-        "weap": "do_217e_2_4x1000",
+        "weap": "do_217_e2_e4_sc1000",
         "rankRange": [
           11,
           14
@@ -3951,7 +3951,7 @@
       },
       {
         "name": "do_217m_1",
-        "weap": "do_217e_2_4x1000",
+        "weap": "do_217_k1_m1_sc1000",
         "rankRange": [
           11,
           14
@@ -4289,7 +4289,7 @@
       },
       {
         "name": "v_156_b1",
-        "weap": "sb2u_default",
+        "weap": "v_156_b1_default",
         "rankRange": [
           0,
           6
@@ -4425,7 +4425,7 @@
       },
       {
         "name": "ju-87d-5",
-        "weap": "Ju-87_D-5_500",
+        "weap": "ju-87d-5_3x500",
         "rankRange": [
           7,
           10
@@ -7424,6 +7424,7 @@
     ],
     "radarDetectedTargetActivityTimeMult": 2.0,
     "radarDetectedTargetSelectionRelSpeedMin": 20.0,
+    "radarScanPatternsBarsOneWay": true,
     "radarTargetsMaxTime": 4.0,
     "showSecondaryTargetsOfInterest": false,
     "safeTwsTargetMatching": false,
@@ -7633,6 +7634,7 @@
   "radar": {
     "slavedFsmBlk": "gameData/sensors/slaved_radar_fsm.blk",
     "interpolationForSanityCheck": true,
+    "compensateErrorForTracking": true,
     "relativeDiscreteScanZoneCenterMove": true,
     "radarModeName": [
       "standby",
@@ -7734,7 +7736,7 @@
   },
   "tws": {
     "showReceierSector": true,
-    "detectFriendlies": false
+    "detectFriendlies": true
   },
   "lws": {
     "spotDetectionRadius": 10.0
@@ -7746,7 +7748,7 @@
     "useSnapshotEngineRpm": true
   },
   "fmConstants": {
-    "oilLeakSpeed": 0.002381,
+    "oilLeakSpeed": 110.00238,
     "oilLeakTime": [
       420.0,
       210.0,
@@ -7766,6 +7768,7 @@
       0.012,
       0.12
     ],
+    "bayDoorSpeedForAuto": 5.0,
     "alphaAileronMin": 0.1,
     "alphaRudderMin": 0.1,
     "alphaElevatorMin": 0.2,

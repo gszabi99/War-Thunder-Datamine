@@ -6,6 +6,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
 let { canResearchUnit } = require("%scripts/unit/unitStatus.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
 
 let isAllClanUnitsResearched = @() getAllUnits().findvalue(
   @(unit) unit.isSquadronVehicle() && unit.isVisibleInShop() && canResearchUnit(unit)
@@ -32,7 +33,7 @@ function needChooseClanUnitResearch() {
 }
 
 function isHaveNonApprovedClanUnitResearches() {
-  if (!isInMenu() || ::checkIsInQueue())
+  if (!isInMenu() || checkIsInQueue())
     return false
 
   return needChooseClanUnitResearch()

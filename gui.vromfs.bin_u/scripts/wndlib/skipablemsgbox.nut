@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import call_for_handler
 
 let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -20,6 +21,7 @@ gui_handlers.SkipableMsgBox <- class (gui_handlers.BaseGuiHandlerWT) {
   message = ""
   list = ""
   startBtnText = ""
+  cancelBtnText = null
   ableToStartAndSkip = true
   defaultBtnId = "btn_cancel"
 
@@ -33,8 +35,8 @@ gui_handlers.SkipableMsgBox <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.startBtnText != "")
       btnSelectObj.setValue(this.startBtnText)
 
-    this.scene.findObject("btn_cancel")
-      .setValue(loc(this.ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
+    this.scene.findObject("btn_cancel").setValue(
+      this.cancelBtnText ?? loc(this.ableToStartAndSkip ? "mainmenu/btnCancel" : "mainmenu/btnOk"))
 
     let btnListObj = this.scene.findObject("buttons")
     let defBtnId = this.defaultBtnId
@@ -87,8 +89,8 @@ gui_handlers.SkipableMsgBox <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function afterModalDestroy() {
     if (this.isCanceled)
-      ::call_for_handler(this.parentHandler, this.cancelFunc)
+      call_for_handler(this.parentHandler, this.cancelFunc)
     if (this.isStarted)
-      ::call_for_handler(this.parentHandler, this.onStartPressed)
+      call_for_handler(this.parentHandler, this.onStartPressed)
   }
 }

@@ -16,7 +16,7 @@ gui_handlers.CreditsMenu <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     let textArea = (this.guiScene / "credits-text" / "textarea")
-    load_text_content_to_gui_object(textArea, "%lang/credits.txt")
+    load_text_content_to_gui_object(textArea, "%langTxt/credits.txt")
   }
 
   function onScreenClick() {

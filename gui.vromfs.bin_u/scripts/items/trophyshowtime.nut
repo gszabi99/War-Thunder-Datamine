@@ -7,8 +7,9 @@ let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/sub
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.ITEMS_SHOP)
 let { TIME_DAY_IN_SECONDS, TIME_WEEK_IN_SECONDS } = require("%scripts/time.nut")
 let { get_charserver_time_sec } = require("chard")
-let { checkItemsMaskFeatures, invalidateShopVisibleSeenIds, getShopList
-} = require("%scripts/items/itemsManager.nut")
+let { shopVisibleSeenIds } = require("%scripts/items/itemsManagerState.nut")
+let { checkItemsMaskFeatures } = require("%scripts/items/itemsChecks.nut")
+let { getShopList } = require("%scripts/items/itemsManagerGetters.nut")
 
 local trophies = []
 
@@ -32,7 +33,7 @@ function resetShowTimer() {
 }
 
 function onAlarmTimer() {
-  invalidateShopVisibleSeenIds()
+  shopVisibleSeenIds.set(null)
   seenList.onListChanged()
   broadcastEvent("UpdateTrophyUnseenIcons")
 }
@@ -53,10 +54,10 @@ function resetAlarmTimer() {
     .filter(@(v) v > 0)
     .reduce(@(acc, v) v < acc ? v : acc)
 
-    if (deltaTime == null)
-      return
+  if (deltaTime == null)
+    return
 
-    setTimeout(deltaTime + 2, onAlarmTimer)
+  setTimeout(deltaTime + 2, onAlarmTimer)
 }
 
 function clearTimers() {

@@ -310,8 +310,8 @@ function pitch(width, height, generateFunc) {
 
   for (local i = 90.0 / step; i >= -90.0 / step; --i) {
     let num = (i * step).tointeger()
-      children.append(generateFunc(num))
-    }
+    children.append(generateFunc(num))
+  }
 
   return {
     size = [width * 0.4, height * 0.5]

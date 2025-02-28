@@ -12,7 +12,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 let cacheByEdiff = {}
 local curUnlockIds = null // array of strings

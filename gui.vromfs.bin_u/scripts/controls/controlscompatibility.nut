@@ -1,15 +1,19 @@
 from "%scripts/dagui_natives.nut" import get_axis_name
 from "%scripts/dagui_library.nut" import *
+
 let u = require("%sqStdLibs/helpers/u.nut")
+let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 // DEPRECATED
 // Interface of ControlsPreset and ControlsManager for controls.nut
 // TODO: Rewrite controls with new ControlsPreset and ControlsManager classes
 
 
-::get_shortcuts <- function get_shortcuts(list, preset = null) {
+function getShortcuts(list, preset = null) {
   if (preset == null)
-    preset = ::g_controls_manager.getCurPreset()
+    preset = getCurControlsPreset()
 
   let result = []
   foreach (name in list) {
@@ -31,7 +35,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 
 
 function setShortcutsAndSaveControls(shortcutList, nameList) {
-  let preset = ::g_controls_manager.getCurPreset()
+  let preset = getCurControlsPreset()
   foreach (i, name in nameList) {
     let hotkey = []
     foreach (shortcut in shortcutList[i]) {
@@ -48,13 +52,13 @@ function setShortcutsAndSaveControls(shortcutList, nameList) {
     }
     preset.setHotkey(name, hotkey)
   }
-  ::g_controls_manager.commitControls()
+  commitControls()
 }
 
 
 let joystick_params_template = {
   getAxis = function(idx) {
-    let curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = getCurControlsPreset()
     let name = get_axis_name(idx)
     return name != null ? curPreset.getAxis(name) : curPreset.getDefaultAxis()
   }
@@ -63,7 +67,7 @@ let joystick_params_template = {
     if (idx < 0)
       return ""
 
-    let curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = getCurControlsPreset()
     foreach (axisName, axis in curPreset.axes)
       if (getTblValue("mouseAxisId", axis, -1) == idx)
         return axisName
@@ -75,7 +79,7 @@ let joystick_params_template = {
     if (idx < 0)
       return
 
-    let curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = getCurControlsPreset()
     foreach (_axisName, axis in curPreset.axes)
       if (getTblValue("mouseAxisId", axis, -1) == idx)
         axis["mouseAxisId"] <- -1
@@ -88,39 +92,39 @@ let joystick_params_template = {
   }
 
   resetAxis = function(idx) {
-    let curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = getCurControlsPreset()
     let name = get_axis_name(idx)
     if (name != null)
       curPreset.resetAxis(name)
-    ::g_controls_manager.commitControls()
+    commitControls()
   }
 
   bindAxis = function(idx, realAxisIdx) {
     let name = get_axis_name(idx)
-    let axis = ::g_controls_manager.getCurPreset().getAxis(name)
+    let axis = getCurControlsPreset().getAxis(name)
     axis.axisId = realAxisIdx
-    ::g_controls_manager.commitControls()
+    commitControls()
   }
 
   setFrom = function(params) {
     u.extend(this, params)
   }
 }
-u.extend(joystick_params_template, ::ControlsPreset.getDefaultParams())
+u.extend(joystick_params_template, ControlsPreset.getDefaultParams())
 
 
 function JoystickParams() {
   return u.copy(joystick_params_template)
 }
 
-::joystick_get_cur_settings <- function joystick_get_cur_settings() {
+function joystickGetCurSettings() {
   let result = JoystickParams()
-  result.setFrom(::g_controls_manager.getCurPreset().params)
+  result.setFrom(getCurControlsPreset().params)
   return result
 }
 
 function joystickSetCurSettings(other) {
-  let params = ::g_controls_manager.getCurPreset().params
+  let params = getCurControlsPreset().params
   foreach (name, value in other)
     if (!u.isFunction(value) && params?[name] != value)
       params[name] <- value
@@ -129,4 +133,6 @@ function joystickSetCurSettings(other) {
 return {
   setShortcutsAndSaveControls
   joystickSetCurSettings
+  joystickGetCurSettings
+  getShortcuts
 }

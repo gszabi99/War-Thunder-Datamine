@@ -8,7 +8,8 @@ let { is_stereo_mode } = require("vr")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SCREEN_SAFE_AREA
 } = require("%scripts/options/optionsExtNames.nut")
-let { isAuthorized } = require("%scripts/login/loginStates.nut")
+let { isAuthorized } = require("%appGlobals/login/loginState.nut")
+let { set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 let defValue  = 1.0
 let values    = [1.0, 0.95, 0.9, 0.85]
@@ -48,7 +49,7 @@ local setValue = function(value) {
 
   value = isInArray(value, values) ? value : defValue
   set_option_hud_screen_safe_area(value)
-  ::set_gui_option_in_mode(USEROPT_HUD_SCREEN_SAFE_AREA, value, OPTIONS_MODE_GAMEPLAY)
+  set_gui_option_in_mode(USEROPT_HUD_SCREEN_SAFE_AREA, value, OPTIONS_MODE_GAMEPLAY)
 }
 
 let getSafearea = @() screenInfo.getFinalSafearea(getValue(), screenInfo.getHudWidthLimit())

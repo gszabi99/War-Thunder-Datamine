@@ -111,6 +111,7 @@ let WEAPON_TEXT_PARAMS = { //const
 }
 
 let torpedoSpeedMultByDiff = {}
+let torpedoAutoUpdateDepthByDiff = {}
 
 function getTorpedoSpeedMultByDiff(ediff) {
   if (torpedoSpeedMultByDiff.len() == 0) {
@@ -123,6 +124,19 @@ function getTorpedoSpeedMultByDiff(ediff) {
   }
   let diff = get_difficulty_by_ediff(ediff)
   return torpedoSpeedMultByDiff[diff.name]
+}
+
+function getTorpedoAutoUpdateDepthByDiff(ediff) {
+  if (torpedoAutoUpdateDepthByDiff.len() == 0) {
+    let blk = get_game_params_blk()
+    torpedoAutoUpdateDepthByDiff.__update(g_difficulty.types.reduce(function(res, val) {
+      if (val.settingsName != "")
+        res[val.settingsName] <- blk.difficulty_settings.baseDifficulty[val.settingsName]?.shipTorpedoAutoUpdateDepth ?? false
+      return res
+    }, {}))
+  }
+  let diff = get_difficulty_by_ediff(ediff)
+  return torpedoAutoUpdateDepthByDiff[diff.settingsName]
 }
 
 function isWeaponAux(weapon) {
@@ -1070,4 +1084,5 @@ return {
   getTriggerType
   isGunnerTrigger
   get_weapon_icons_text
+  getTorpedoAutoUpdateDepthByDiff
 }

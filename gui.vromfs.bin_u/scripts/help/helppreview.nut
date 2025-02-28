@@ -5,6 +5,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let helpTabs = require("%scripts/controls/help/controlsHelpTabs.nut")
+let { getPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 gui_handlers.helpPreviewHandler <- class (gui_handlers.helpWndModalHandler) {
   wndType = handlerType.CUSTOM
@@ -17,7 +18,7 @@ gui_handlers.helpPreviewHandler <- class (gui_handlers.helpWndModalHandler) {
   afterModalDestroy = @() null
 
   function showPreview() {
-    this.preset = ::g_controls_manager.getPreviewPreset()
+    this.preset = getPreviewControlsPreset()
     this.visibleTabs = helpTabs.getTabs(this.contentSet)
     if (!this.tabsCreated)
       this.fillTabs()

@@ -21,7 +21,11 @@ let { getCrewsListByCountry, selectCrew } = require("%scripts/slotbar/slotbarSta
 let { getCrewUnit, purchaseNewCrewSlot, getCrewTrainCost } = require("%scripts/crew/crew.nut")
 let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
 } = require("%scripts/slotbar/crewsList.nut")
+let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isUnitAllowedForRoom, hasUnitRequirementsInRoom, isUnitRequiredForRoom
+} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { isCrewLockedByPrevBattle, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -71,7 +75,7 @@ let CrewTakeUnitProcess = class {
   stepsList = {
     [CTU_PROGRESS.CHECK_QUEUE] = function() {
       if (this.crew || this.unit)
-        ::queues.checkAndStart(this.nextStepCb, this.removeCb, "isCanModifyCrew")
+        queues.checkAndStart(this.nextStepCb, this.removeCb, "isCanModifyCrew")
       else
         this.nextStep() //we no need to check queue when only hire crew.
     },
@@ -98,11 +102,11 @@ let CrewTakeUnitProcess = class {
       }
 
       //we cant make slotbar invalid by add crew to new hired crew
-      let isInvalidCrewsAllowed = this.crew == null || ::SessionLobby.isInvalidCrewsAllowed()
-      let isCurUnitAllowed = this.unit && ::SessionLobby.isUnitAllowed(this.unit) && !isUnitBroken(this.unit)
-      let needCheckAllowed = !isInvalidCrewsAllowed  && (!this.unit || !isCurUnitAllowed)
-      let needCheckRequired = !isInvalidCrewsAllowed && ::SessionLobby.hasUnitRequirements()
-        && (!isCurUnitAllowed || !::SessionLobby.isUnitRequired(this.unit))
+      let isInvalidCrewsAllowedV = this.crew == null || isInvalidCrewsAllowed()
+      let isCurUnitAllowed = this.unit && isUnitAllowedForRoom(this.unit) && !isUnitBroken(this.unit)
+      let needCheckAllowed = !isInvalidCrewsAllowedV  && (!this.unit || !isCurUnitAllowed)
+      let needCheckRequired = !isInvalidCrewsAllowedV && hasUnitRequirementsInRoom()
+        && (!isCurUnitAllowed || !isUnitRequiredForRoom(this.unit))
 
       if (needCheckAllowed || needCheckRequired || (this.prevUnit && !this.unit)) {
         local hasUnit = !!this.unit
@@ -117,9 +121,9 @@ let CrewTakeUnitProcess = class {
             if (!cUnit)
               continue
             hasUnit = true
-            let isAllowed = ::SessionLobby.isUnitAllowed(cUnit) && !isUnitBroken(cUnit)
+            let isAllowed = isUnitAllowedForRoom(cUnit) && !isUnitBroken(cUnit)
             hasAllowedUnit = hasAllowedUnit || isAllowed
-            hasRequiredUnit = hasRequiredUnit || (isAllowed && ::SessionLobby.isUnitRequired(cUnit))
+            hasRequiredUnit = hasRequiredUnit || (isAllowed && isUnitRequiredForRoom(cUnit))
             if (hasRequiredUnit && hasAllowedUnit)
               break
           }
@@ -329,7 +333,7 @@ let CrewTakeUnitProcess = class {
   function onEventQueueChangeState(_p) {
     if (this.curProgress > CTU_PROGRESS.CHECK_QUEUE
         && (this.crew || this.unit)
-        && !::queues.isCanModifyCrew())
+        && !queues.isCanModifyCrew())
       this.remove()
   }
 

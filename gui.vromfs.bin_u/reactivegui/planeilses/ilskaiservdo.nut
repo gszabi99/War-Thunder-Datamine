@@ -1,7 +1,7 @@
 from "%rGui/globals/ui_library.nut" import *
 let { IlsColor, IlsLineScale, TvvMark, RocketMode, BombCCIPMode,
  DistToTarget, TargetPos, TargetPosValid, BombingMode } = require("%rGui/planeState/planeToolsState.nut")
-let { baseLineWidth, metrToFeet, mpsToKnots, metrToMile } = require("ilsConstants.nut")
+let { baseLineWidth, metrToFeet, mpsToKnots, metrToNavMile } = require("ilsConstants.nut")
 let { Tangage, BarAltitude, Altitude, Speed, Roll, ClimbSpeed,
  Aoa, VertOverload } = require("%rGui/planeState/planeFlyState.nut");
 let string = require("string")
@@ -236,7 +236,7 @@ let generateCompassMarkSU145 = function(num, _elemWidth, font) {
 }
 
 let ccipDistF = Computed(@() cvt(clamp(DistToTarget.value * metrToFeet * 0.01, 0, 120), 0, 120, -90, 270).tointeger())
-let ccipDistM = Computed(@() (DistToTarget.value < 0 || DistToTarget.value >= 10000 ? -1 : DistToTarget.value * metrToMile * 10.0).tointeger())
+let ccipDistM = Computed(@() (DistToTarget.value < 0 || DistToTarget.value >= 10000 ? -1 : DistToTarget.value * metrToNavMile * 10.0).tointeger())
 let gunAimMark = @() {
   watch = TargetPosValid
   size = flex()

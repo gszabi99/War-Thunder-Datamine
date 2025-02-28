@@ -14,7 +14,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_gui_option } = require("guiOptions")
 let { move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLastWeapon, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
-let { getWeaponInfoText, getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getWeaponInfoText, getWeaponNameText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { cutPostfix } = require("%sqstd/string.nut")
 let { dynamicGetUnits, dynamicSetUnits } = require("dynamicMission")
@@ -24,8 +24,11 @@ let { getLastSkin, getSkinsOption } = require("%scripts/customization/skins.nut"
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { USEROPT_DIFFICULTY } = require("%scripts/options/optionsExtNames.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { guiStartFlight, guiStartMpLobby, guiStartCdOptions
+let { guiStartFlight, guiStartCdOptions
 } = require("%scripts/missions/startMissionsList.nut")
+let { get_mutable_mission_settings, get_mission_settings } = require("%scripts/missions/missionsStates.nut")
+let { guiStartMpLobby } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
 
 gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -55,17 +58,17 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
     this.setSceneTitle(loc("mainmenu/btnDynamicPreview"), this.scene, "menu-title")
 
     this.unitsBlk = DataBlock()
-    dynamicGetUnits(::mission_settings.missionFull, this.unitsBlk)
+    dynamicGetUnits(get_mission_settings().missionFull, this.unitsBlk)
 
     let list = this.createOptions()
     let listObj = this.scene.findObject("optionslist")
     this.guiScene.replaceContentFromText(listObj, list, list.len(), this)
 
     //mission preview
-    setMapPreview(this.scene.findObject("tactical-map"), ::mission_settings.missionFull)
+    setMapPreview(this.scene.findObject("tactical-map"), get_mission_settings().missionFull)
 
     local misObj = ""
-    misObj = loc(format("mb/%s/objective", ::mission_settings.mission.getStr("name", "")), "")
+    misObj = loc(format("mb/%s/objective", get_mission_settings().mission.getStr("name", "")), "")
     this.scene.findObject("mission-objectives").setValue(misObj)
 
     this.guiScene.setUpdatesEnabled(true, true)
@@ -171,7 +174,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let rowsView = []
 
-    let isFreeFlight = ::mission_settings.missionFull.mission_settings.mission.isFreeFlight;
+    let isFreeFlight = get_mission_settings().missionFull.mission_settings.mission.isFreeFlight;
 
     for (local i = 0; i < this.unitsBlk.blockCount(); i++) {
       let armada = this.unitsBlk.getBlock(i)
@@ -288,7 +291,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onApply(_obj) {
     if (!::g_squad_utils.canJoinFlightMsgBox({
-        maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
+        maxSquadSize = getMaxPlayersForGamemode(GM_BUILDER)
       }))
       return
 
@@ -301,11 +304,11 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
       armada.setInt("count",      this.listC[i][isPlayer ? 0 : this.scene.findObject($"{i}_c").getValue()])
     }
 
-    ::mission_settings.mission.setInt("_gameMode", GM_BUILDER)
-    ::mission_settings.mission.player_class = this.playerUnitId
-    dynamicSetUnits(::mission_settings.missionFull, this.unitsBlk)
-    select_mission_full(::mission_settings.mission,
-       ::mission_settings.missionFull)
+    get_mutable_mission_settings().mission.setInt("_gameMode", GM_BUILDER)
+    get_mutable_mission_settings().mission.player_class = this.playerUnitId
+    dynamicSetUnits(get_mission_settings().missionFull, this.unitsBlk)
+    select_mission_full(get_mission_settings().mission,
+       get_mission_settings().missionFull)
 
     set_context_to_player("difficulty", get_mission_difficulty())
 
@@ -313,7 +316,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
       broadcastEvent("BeforeStartMissionBuilder")
       if (isInSessionRoom.get())
         this.goForward(guiStartMpLobby)
-      else if (::mission_settings.coop) {
+      else if (get_mission_settings().coop) {
         // ???
       }
       else
@@ -353,9 +356,10 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
 
       descr.values.append(weaponName)
+      let weaponInfoParams = { isPrimary = false, weaponPreset = weapNo }
       descr.items.append({
         text = getWeaponNameText(unit, false, weapNo)
-        tooltip = getWeaponInfoText(unit, { isPrimary = false, weaponPreset = weapNo })
+        tooltip = getWeaponInfoText(unit, makeWeaponInfoData(unit, weaponInfoParams))
       })
     }
 

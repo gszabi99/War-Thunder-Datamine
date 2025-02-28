@@ -2,6 +2,8 @@ from "%scripts/dagui_natives.nut" import fetch_first_builder
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_combobox, create_option_list
 
+let { currentCampaignMission, set_mission_for_takeoff, get_mission_settings, get_mutable_mission_settings, set_mission_settings
+} = require("%scripts/missions/missionsStates.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock = require("DataBlock")
@@ -21,13 +23,13 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURRO
   USEROPT_LIMITED_AMMO, USEROPT_WEAPONS, USEROPT_SKIN, USEROPT_DYN_ALLIES,
   USEROPT_DYN_ENEMIES
 } = require("%scripts/options/optionsExtNames.nut")
-let { create_options_container } = require("%scripts/options/optionsExt.nut")
+let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { isUnitAvailableForGM } = require("%scripts/unit/unitStatus.nut")
+let { addMissionListFull, getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -75,7 +77,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     this.optionsContainers.append(container.descr)
     this.setSceneTitle(loc("mainmenu/btnDynamicTraining"), this.scene, "menu-title")
 
-    let desc = ::get_option(USEROPT_DYN_ZONE)
+    let desc = get_option(USEROPT_DYN_ZONE)
     let dynZoneObj = this.guiScene["dyn_zone"]
     local value = desc.value
     if (checkObj(dynZoneObj))
@@ -83,7 +85,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
     setSummaryPreview(this.scene.findObject("tactical-map"), DataBlock(), desc.values[value])
 
-    if (::mission_settings.dynlist.len() == 0)
+    if (get_mission_settings().dynlist.len() == 0)
       return this.msgBox("no_missions_error", loc("msgbox/appearError"),
                      [["ok", this.goBack ]], "ok", { cancel_fn = this.goBack })
 
@@ -136,7 +138,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
   function onApply() {
     if (!::g_squad_utils.canJoinFlightMsgBox({
-        maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
+        maxSquadSize = getMaxPlayersForGamemode(GM_BUILDER)
       }))
       return
 
@@ -152,7 +154,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function getSceneOptRes(optName) {
-    let option = ::get_option(optName)
+    let option = get_option(optName)
     let obj = this.scene.findObject(option.id)
     local value = obj ? obj.getValue() : -1
     if (!(value in option.items))
@@ -162,8 +164,8 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
   function init_builder_map() {
     let mapData = this.getSceneOptRes(USEROPT_DYN_MAP)
-    ::mission_settings.layout <- mapData.value
-    ::mission_settings.layoutName <- mapData.name
+    set_mission_settings("layout", mapData.value)
+    set_mission_settings("layoutName", mapData.name)
 
     let settings = DataBlock();
     local playerSide = 1
@@ -193,26 +195,26 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     settings.setStr("year", "year_any")
     settings.setBool("isQuickMissionBuilder", true)
 
-    ::mission_settings.dynlist <- dynamicGetList(settings, wait)
+    set_mission_settings("dynlist", dynamicGetList(settings, wait))
 
     let add = []
-    for (local i = 0; i < ::mission_settings.dynlist.len(); i++) {
-      let misblk = ::mission_settings.dynlist[i].mission_settings.mission
+    foreach (mis in get_mutable_mission_settings().dynlist) {
+      let misblk = mis.mission_settings.mission
 
       mergeToBlk(::missionBuilderVehicleConfigForBlk, misblk)
 
-      misblk.setStr("mis_file", ::mission_settings.layout)
+      misblk.setStr("mis_file", get_mission_settings().layout)
       misblk.setStr("type", "builder")
       misblk.setStr("chapter", "builder")
-      if (::mission_settings.coop)
+      if (get_mission_settings().coop)
         misblk.setBool("gt_cooperative", true);
       add.append(misblk)
     }
-    ::add_mission_list_full(GM_BUILDER, add, ::mission_settings.dynlist)
+    addMissionListFull(GM_BUILDER, add, get_mutable_mission_settings().dynlist)
   }
 
   function update_dynamic_map() {
-    let descr = ::get_option(USEROPT_DYN_MAP)
+    let descr = get_option(USEROPT_DYN_MAP)
     let txt = create_option_list(descr.id, descr.items, descr.value, descr.cb, false)
     let dObj = this.scene.findObject(descr.id)
     this.guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
@@ -226,7 +228,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   function update_dynamic_layout(guiScene, _obj, _descr) {
     this.init_builder_map()
 
-    let descrWeap = ::get_option(USEROPT_DYN_ZONE)
+    let descrWeap = get_option(USEROPT_DYN_ZONE)
     let txt = create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, "onSectorChange", false)
     let dObj = this.scene.findObject(descrWeap.id)
     guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
@@ -235,7 +237,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
   function update_dynamic_sector(guiScene, _obj, _descr) {
     this.generate_builder_list(true)
-    let descrWeap = ::get_option(USEROPT_DMP_MAP)
+    let descrWeap = get_option(USEROPT_DMP_MAP)
     let txt = create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, null, false)
     let dObj = this.scene.findObject(descrWeap.id)
     guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
@@ -251,17 +253,17 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     local haveTakeOff = false
     let mapObj = this.scene.findObject("dyn_mp_map")
     if (checkObj(mapObj))
-      ::mission_settings.currentMissionIdx = mapObj.getValue()
+      set_mission_settings("currentMissionIdx", mapObj.getValue())
 
-    let dynMission = getTblValue(::mission_settings.currentMissionIdx, ::mission_settings.dynlist)
+    let dynMission = getTblValue(get_mission_settings().currentMissionIdx, get_mutable_mission_settings().dynlist)
     if (!dynMission)
       return
 
     if (dynMission.mission_settings.mission.paramExists("takeoff_mode"))
       haveTakeOff = true
 
-    ::mission_name_for_takeoff = dynMission.mission_settings.mission.name
-    let descrWeap = ::get_option(USEROPT_TAKEOFF_MODE)
+    set_mission_for_takeoff(dynMission.mission_settings.mission.name)
+    let descrWeap = get_option(USEROPT_TAKEOFF_MODE)
     if (!haveTakeOff) {
       for (local i = 0; i < descrWeap.items.len(); i++)
         descrWeap.items[i] = { text = descrWeap.items[i], enabled = (i == 0) }
@@ -274,7 +276,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function setRandomOpt(optName) {
-    let desc = ::get_option(optName)
+    let desc = get_option(optName)
     let obj = this.scene.findObject(desc.id)
 
     if (desc.values.len() == 0) {
@@ -289,8 +291,8 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
         TIME = this.getSceneOptValue(USEROPT_TIME),
         WEATHER = this.getSceneOptValue(USEROPT_CLIME),
         TAKEOFF_MODE = this.getSceneOptValue(USEROPT_TAKEOFF_MODE),
-        LIMITED_FUEL = this.scene.findObject(::get_option(USEROPT_LIMITED_FUEL)?.id ?? "").getValue(),
-        LIMITED_AMMO = this.scene.findObject(::get_option(USEROPT_LIMITED_AMMO)?.id ?? "").getValue()
+        LIMITED_FUEL = this.scene.findObject(get_option(USEROPT_LIMITED_FUEL)?.id ?? "").getValue(),
+        LIMITED_AMMO = this.scene.findObject(get_option(USEROPT_LIMITED_AMMO)?.id ?? "").getValue()
       })
       let currentUnit = showedUnit.value?.name         // warning disable: -declared-never-used
       let slotbarUnit = getCurSlotbarUnit()?.name // warning disable: -declared-never-used
@@ -348,12 +350,12 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
   function applyFunc() {
     if (!::g_squad_utils.canJoinFlightMsgBox({
-        maxSquadSize = ::get_max_players_for_gamemode(GM_BUILDER)
+        maxSquadSize = getMaxPlayersForGamemode(GM_BUILDER)
       }))
       return
 
-    ::mission_settings.currentMissionIdx = this.scene.findObject("dyn_mp_map").getValue()
-    let fullMissionBlk = getTblValue(::mission_settings.currentMissionIdx, ::mission_settings.dynlist)
+    set_mission_settings("currentMissionIdx", this.scene.findObject("dyn_mp_map").getValue())
+    let fullMissionBlk = getTblValue(get_mission_settings().currentMissionIdx, get_mutable_mission_settings().dynlist)
     if (!fullMissionBlk)
       return
 
@@ -371,18 +373,18 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     settings.setStr("dayTime",    this.getSceneOptValue(USEROPT_TIME))
     settings.setStr("weather",    this.getSceneOptValue(USEROPT_CLIME))
 
-    ::mission_settings.coop = false
-    ::mission_settings.friendOnly = false
-    ::mission_settings.allowJIP = true
+    set_mission_settings("coop", false)
+    set_mission_settings("friendOnly", false)
+    set_mission_settings("allowJIP",  true)
 
     dynamicTune(settings, fullMissionBlk)
 
     let missionBlk = fullMissionBlk.mission_settings.mission
 
     missionBlk.setInt("_gameMode", GM_BUILDER)
-    missionBlk.setBool("gt_cooperative", ::mission_settings.coop)
-    if (::mission_settings.coop) {
-      ::mission_settings.players = 4;
+    missionBlk.setBool("gt_cooperative", get_mission_settings().coop)
+    if (get_mission_settings().coop) {
+      set_mission_settings("players", 4)
       missionBlk.setInt("_players", 4)
       missionBlk.setInt("maxPlayers", 4)
       missionBlk.setBool("gt_use_lb", false)
@@ -391,19 +393,19 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
       missionBlk.setBool("gt_sp_restart", false)
       missionBlk.setBool("isBotsAllowed", true)
       missionBlk.setBool("autoBalance", false)
-      missionBlk.setBool("isPrivate", ::mission_settings.friendOnly)
-      missionBlk.setBool("allowJIP", ! ::mission_settings.friendOnly)
+      missionBlk.setBool("isPrivate", get_mission_settings().friendOnly)
+      missionBlk.setBool("allowJIP", ! get_mission_settings().friendOnly)
     }
 
     missionBlk.setStr("difficulty", this.getSceneOptValue(USEROPT_DIFFICULTY))
     missionBlk.setStr("restoreType", "attempts")
 
-    missionBlk.setBool("isLimitedFuel", ::get_option(USEROPT_LIMITED_FUEL).value)
-    missionBlk.setBool("isLimitedAmmo", ::get_option(USEROPT_LIMITED_AMMO).value)
+    missionBlk.setBool("isLimitedFuel", get_option(USEROPT_LIMITED_FUEL).value)
+    missionBlk.setBool("isLimitedAmmo", get_option(USEROPT_LIMITED_AMMO).value)
 
     currentCampaignMission.set(missionBlk.getStr("name", ""))
-    ::mission_settings.mission = missionBlk
-    ::mission_settings.missionFull = fullMissionBlk
+    set_mission_settings("mission", missionBlk)
+    set_mission_settings("missionFull", fullMissionBlk)
     select_mission_full(missionBlk, fullMissionBlk);
 
     //dlog("missionBlk:"); debugTableData(missionBlk)

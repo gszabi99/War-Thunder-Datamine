@@ -158,6 +158,7 @@ let getTextFontOpts = @(idx = 0)
 let transparentColorOption = {
   hueColor = "00000000"
   value = Color4(0, 0, 0, 0)
+  imageInHueBlock = "#ui/gameuiskin#bg_alpha.svg"
 }
 
 let defaultColor = Color4(0, 0, 0, 1)

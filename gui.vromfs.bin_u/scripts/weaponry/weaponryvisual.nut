@@ -26,6 +26,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { getInventoryList } = require("%scripts/items/itemsManager.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
+let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
@@ -225,7 +226,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   let isSwitcher = (visualItem.type == weaponsItem.weapon) ||
     (visualItem.type == weaponsItem.primaryWeapon) ||
     isBullets(visualItem)
-  let discount = ::getDiscountByPath(
+  let discount = getDiscountByPath(
     getDiscountPath(unit, visualItem, statusTbl.discountType))
   let itemCostText = getFullItemCostText(unit, item)
   local priceText = statusTbl.showPrice && (params?.canShowPrice ?? true) ? itemCostText : ""

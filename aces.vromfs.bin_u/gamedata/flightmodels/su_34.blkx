@@ -38,7 +38,19 @@
   "fireParamsPreset": "2400kph",
   "fightAiBehaviour": "assault",
   "laserDesignator": true,
-  "autopilotImpl": "FBW",
+  "autopilotImpl": "Full",
+  "fullAutopilotManeuverabilityModeTransition": [
+    0.6,
+    0.4
+  ],
+  "fullAutopilotIndSpeedTransition": [
+    590.0,
+    600.0
+  ],
+  "fullAutopilotVtolTransition": [
+    0.1,
+    0.09
+  ],
   "paratrooper": "su_k_36_ejection_para",
   "DamageParts": {
     "armor10": {
@@ -2433,6 +2445,10 @@
           ],
           "page": [
             {
+              "type": "custom",
+              "pageName": "su30Devices"
+            },
+            {
               "type": "radar",
               "scale": [
                 0.9,
@@ -2655,6 +2671,10 @@
             },
             {
               "type": "ils_on_camera"
+            },
+            {
+              "type": "custom",
+              "pageName": "su30Devices"
             }
           ]
         },
@@ -2666,21 +2686,6 @@
             1.0
           ],
           "page": [
-            {
-              "type": "map",
-              "hideBackground": true
-            },
-            {
-              "type": "ils_on_camera"
-            },
-            {
-              "type": "rwr",
-              "scale": 0.9
-            },
-            {
-              "type": "target_tracking_bw",
-              "turretIdx": 0
-            },
             {
               "type": "radar",
               "scale": [
@@ -2732,10 +2737,26 @@
             },
             {
               "type": "custom",
-              "pageName": "su27Pod"
+              "pageName": "su30Devices"
+            },
+            {
+              "type": "map",
+              "hideBackground": true
             },
             {
               "type": "ils_on_camera"
+            },
+            {
+              "type": "rwr",
+              "scale": 0.9
+            },
+            {
+              "type": "target_tracking_bw",
+              "turretIdx": 0
+            },
+            {
+              "type": "custom",
+              "pageName": "su27Pod"
             }
           ]
         },
@@ -2748,16 +2769,16 @@
           ],
           "page": [
             {
+              "type": "map",
+              "hideBackground": true
+            },
+            {
               "type": "rwr",
               "scale": 0.9
             },
             {
               "type": "target_tracking_bw",
               "turretIdx": 0
-            },
-            {
-              "type": "map",
-              "hideBackground": true
             },
             {
               "type": "ils_on_camera"

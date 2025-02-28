@@ -8,7 +8,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 let { getTopMenuSectionsOrder } = require("%scripts/mainmenu/topMenuSections.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
 
 gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -152,7 +153,7 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateButtonsStatus() {
     let needHideVisDisabled = hasFeature("HideDisabledTopMenuActions")
-    let isInQueue = ::checkIsInQueue()
+    let isInQueue = checkIsInQueue()
     let skipNavigation = this.parentHandlerWeak?.scene
       .findObject("gamercard_div")["gamercardSkipNavigation"] == "yes"
 

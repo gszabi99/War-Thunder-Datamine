@@ -26,6 +26,7 @@ let { get_gui_regional_blk, get_game_settings_blk } = require("blkGetters")
 let { isAvailableForCurLang, getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { isPartnerUnlockAvailable } = require("%scripts/user/partnerUnlocks.nut")
 
 const BUTTON_OUT_OF_DATE_DAYS = 15
 const DEFAULT_TIME_SWITCH_SEC = 10
@@ -354,7 +355,7 @@ function checkBlockTime(block) {
   if (endTime > 0 && utcTime >= endTime)
     return false
 
-  if (!::g_partner_unlocks.isPartnerUnlockAvailable(block?.partnerUnlock, block?.partnerUnlockDurationMin))
+  if (!isPartnerUnlockAvailable(block?.partnerUnlock, block?.partnerUnlockDurationMin))
     return false
 
   // Block has no time restrictions.

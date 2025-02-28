@@ -3,6 +3,7 @@ require darg
 require DagorStdGuiRender
 require DagorMath
 require math
+require Plane
 require FlightModelWrap
 require HeroManager
 require Unit
@@ -36,7 +37,7 @@ def setup_hmd_data(props : Properties&; var storage : CanvasParams&)
   storage.fontSize = props |> getInt("fontSize", 20)
   storage.lineWidth = props |> getFloat("lineWidth", 2.)
 
-[export]
+[export, unused_argument(rstate)]
 def draw_hmd(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   let hero = get_controlled_hero()
   if hero == null || hero.isDelayed
@@ -91,7 +92,7 @@ def draw_ralt(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Canva
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(int(float(data.fontSize) * 0.9));
 
-  let altStr = "{fmt(":d", roundi(fmw.fm.alt * metrToFeet))}R"
+  let altStr = "{fmt(":d", roundi(fmw.fm.currentAlt * metrToFeet))}R"
   ctx |> goto_xy(rdata.pos.x + rdata.size.x * 0.62, rdata.pos.y + rdata.size.y * 0.65)
   ctx |> draw_str_scaled(1.0, altStr, altStr |> length())
 
@@ -171,10 +172,6 @@ def draw_horizont(var ctx : GuiContext&; rdata : ElemRenderData& const; data : C
     let textPos2 = hmdAngPos2 + normalize(hmdAngPos2 - hmdAngPos1) * (strBox.width.x + 5.) + normalize(downPos2 - hmdAngPos2) * strBox.width.y * 0.5 * float(sign(startStep + i))
     ctx |> goto_xy(textPos2.x, textPos2.y)
     ctx |> draw_str_scaled(1., angleStr, angleStr |> length())
-
-def norm_ang(a : float) : float// [0..TWOPI]
-  let na = a < 0. ? a + 2. * PI : a
-  return na - 2. * PI * floor(na / (2. * PI))
 
 def draw_hmd_azimuth(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
   let app = get_app()

@@ -47,9 +47,9 @@ function makeLoc(path, langsInfo, curLang, status = {}) {
     }
   } catch (e) {
     logerr($"Failed to get skins list blk for '{lang}' lang")
-      status[lang.id] <- {
-        success=false
-      }
+    status[lang.id] <- {
+      success=false
+    }
   }
 
   if (!langsInfo.len()) {

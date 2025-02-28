@@ -7,11 +7,12 @@ let { isArray } = require("%sqStdLibs/helpers/u.nut")
 let { pow } = require("math")
 let { frnd } = require("dagor.random")
 let { GUI } = require("%scripts/utils/configs.nut")
-let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
+let { getItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let rouletteAnim = require("%scripts/items/roulette/rouletteAnim.nut")
 let { updateTransparencyRecursive } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
-let { getContentFixedAmount } = require("%scripts/items/prizesView.nut")
+let { getContentFixedAmount, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
+let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
 
 /*
 ItemsRoulette API:
@@ -119,23 +120,23 @@ function getUniqueTableKey(rewardBlock) {
     return ""
   }
 
-  let tKey = ::trophyReward.getType(rewardBlock)
+  let tKey = getTrophyRewardType(rewardBlock)
   let tVal = rewardBlock?[tKey] ?? ""
   return $"{tKey}_{tVal}"
 }
 
 function getRewardLayout(block, shouldOnlyImage = false) {
   let config = block?.reward.reward ?? block
-  let rType = ::trophyReward.getType(config)
-  if (::trophyReward.isRewardItem(rType))
-    return ::trophyReward.getImageByConfig(config, shouldOnlyImage, "roulette_item_place")
+  let rType = getTrophyRewardType(config)
+  if (isRewardItem(rType))
+    return getPrizeImageByConfig(config, shouldOnlyImage, "roulette_item_place")
 
-  let image = ::trophyReward.getImageByConfig(config, shouldOnlyImage, "item_place_single")
+  let image = getPrizeImageByConfig(config, shouldOnlyImage, "item_place_single")
   return LayersIcon.genDataFromLayer(LayersIcon.findLayerCfg("roulette_item_place"), image)
 }
 
 function generateItemsArray(trophyName) {
-  let trophy = findItemById(trophyName) || ItemGenerators.get(trophyName)
+  let trophy = findItemById(trophyName) || getItemGenerator(trophyName)
   if (!trophy) {
     log($"ItemsRoulette: Cannot find trophy by name {trophyName}")
     return {}

@@ -8,6 +8,7 @@ let { format } = require("string")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
+let { menuChatHandler } = require("%scripts/chat/menuChatHandler.nut")
 
 let ChatRoom = class (BaseInvite) {
   //custom class params, not exist in base invite
@@ -80,10 +81,10 @@ let ChatRoom = class (BaseInvite) {
   }
 
   function accept() {
-    if (!::menu_chat_handler)
+    if (menuChatHandler.get() == null)
       return
 
-    ::menu_chat_handler.popupAcceptInvite(this.roomId)
+    menuChatHandler.get().popupAcceptInvite(this.roomId)
     this.remove()
   }
 }

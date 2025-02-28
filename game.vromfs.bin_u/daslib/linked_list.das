@@ -1,3 +1,4 @@
+options gen2
 options indenting = 4
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
@@ -16,7 +17,7 @@ class %ListClass
     def %ListClass
         head = null
         tail = null
-    def add ( data : %Foo? )
+    def add ( var data : %Foo? )
         var node = new [[LLNode_%ListClass data=data]]
         if head == null
             head = node

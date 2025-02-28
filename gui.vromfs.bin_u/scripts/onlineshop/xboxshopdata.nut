@@ -9,10 +9,10 @@ let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 let statsd = require("statsd")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { is_gdk } = require("%scripts/clientState/platform.nut")
 
 let XboxShopPurchasableItem = require("%scripts/onlineShop/XboxShopPurchasableItem.nut")
-let { gather_products_list } = require("%xboxLib/impl/store.nut")
+let { gather_products_list } = require("%gdkLib/impl/store.nut")
 
 const XBOX_RECEIVE_CATALOG_MSG_ID = "XBOX_RECEIVE_CATALOG"
 
@@ -75,7 +75,7 @@ function on_xbox_products_list_update(success, products) {
 }
 
 let requestData = function(isSilent = false, cb = null, invSeenList = false, metric = "unknown") {
-  if (!isPlatformXboxOne)
+  if (!is_gdk)
     return
 
   onReceiveCatalogCb = cb
@@ -90,7 +90,7 @@ let requestData = function(isSilent = false, cb = null, invSeenList = false, met
   gather_products_list(on_xbox_products_list_update)
 }
 
-let canUseIngameShop = @() isPlatformXboxOne && hasFeature("XboxIngameShop")
+let canUseIngameShop = @() is_gdk && hasFeature("XboxIngameShop")
 
 let getVisibleSeenIds = function() {
   if (!visibleSeenIds.len() && xboxProceedItems.value.len()) {

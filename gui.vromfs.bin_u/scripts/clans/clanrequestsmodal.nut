@@ -5,11 +5,22 @@ from "%scripts/utils_sa.nut" import buildTableRow
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
+let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 
 let clanContextMenu = require("%scripts/clans/clanContextMenu.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
+let { approvePlayerRequest, rejectPlayerRequest } = require("%scripts/clans/clanActions.nut")
+let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
+let { myClanInfo } = require("%scripts/clans/clanState.nut")
+let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
+
+let clan_candidate_list = [
+  { id = "nick", type = lbDataType.NICK }
+  { id = "date", type = lbDataType.DATE }
+];
 
 gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -26,9 +37,10 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
   clanId = "-1"
 
   function initScreen() {
-    this.myRights = ::g_clans.getMyClanRights()
+    this.myRights = getMyClanRights()
     this.memListModified = false
-    let isMyClan = !::my_clan_info ? false : (::my_clan_info.id == this.clanId ? true : false)
+    let myClanInfoV = myClanInfo.get()
+    let isMyClan = myClanInfoV != null && myClanInfoV.id == this.clanId
     this.clanId = isMyClan ? "-1" : this.clanId
     this.fillRequestList()
   }
@@ -39,7 +51,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (candidate in this.candidatesData) {
       let rowTemp = {};
-      foreach (item in ::clan_candidate_list) {
+      foreach (item in clan_candidate_list) {
         let value = item.id in candidate ? candidate[item.id] : 0
         rowTemp[item.id] <- { value = value, text = item.type.getShortTextByValue(value) }
       }
@@ -63,7 +75,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     local data = "";
 
     let headerRow = [];
-    foreach (item in ::clan_candidate_list) {
+    foreach (item in clan_candidate_list) {
       let name = $"#clan/{item.id == "date" ? "requestDate" : item.id}"
       headerRow.append({
         id = item.id,
@@ -80,7 +92,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
       let rowName = $"row_{i}";
       let rowData = [];
 
-      foreach (item in ::clan_candidate_list) {
+      foreach (item in clan_candidate_list) {
         rowData.append({
           id = item.id,
           text = "",
@@ -126,7 +138,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onUserCard() {
     if (this.curCandidate)
-      ::gui_modal_userCard({ uid = this.curCandidate.uid })
+      gui_modal_userCard({ uid = this.curCandidate.uid })
   }
 
   function onUserRClick() {
@@ -151,16 +163,16 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     clanContextMenu.retrieveRequestActions(this.clanId, this.curCandidate.uid, this.curCandidate?.nick, this, function(menu) {
-      ::gui_right_click_menu(menu, this, position)
+      openRightClickMenu(menu, this, position)
     })
   }
 
   function onRequestApprove() {
-    ::g_clans.approvePlayerRequest(this.curCandidate.uid, this.clanId)
+    approvePlayerRequest(this.curCandidate.uid, this.clanId)
   }
 
   function onRequestReject() {
-    ::g_clans.rejectPlayerRequest(this.curCandidate.uid, this.clanId)
+    rejectPlayerRequest(this.curCandidate.uid, this.clanId)
   }
 
   function hideCandidateByName(name) {
@@ -201,18 +213,4 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let candidate = u.search(this.candidatesList, @(candidate) candidate.uid == uid)
     this.hideCandidateByName(candidate?.nick)
   }
-}
-
-function openClanRequestsWnd(candidatesData, clanId, owner) {
-  loadHandler(gui_handlers.clanRequestsModal,
-    {
-      candidatesData = candidatesData,
-      owner = owner
-      clanId = clanId
-    })
-  ::g_clans.markClanCandidatesAsViewed()
-}
-
-return {
-  openClanRequestsWnd
 }

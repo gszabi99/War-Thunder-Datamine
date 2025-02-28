@@ -3197,40 +3197,59 @@
     "turnTime": 28.1492
   },
   "modifications": {
-    "cd_98": {},
-    "CdMin_Fuse": {},
-    "new_cover": {},
-    "structure_str": {},
+    "new_compressor_jet": {
+      "tier": 1
+    },
     "hydravlic_power": {
+      "prevModification": "new_compressor_jet",
+      "tier": 2,
       "effects": {
         "aileronBooster": 0.9,
         "elevatorBooster": 0.9
       }
     },
-    "hp_105_jet": {},
-    "g_suit": {},
-    "new_compressor_jet": {
-      "tier": 1
+    "cd_98": {
+      "prevModification": "hydravlic_power",
+      "tier": 3
+    },
+    "hp_105_jet": {
+      "prevModification": "cd_98",
+      "tier": 4
+    },
+    "CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "modClass": "lth",
+      "tier": 4
     },
     "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
-      "modClass": "weapon",
       "tier": 1,
+      "modClass": "armor",
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "mi-24_EVU"
+    },
+    "g_suit": {
+      "tier": 2,
+      "modClass": "armor"
     },
     "t_160_universal": {},
     "t_160_air_targets": {},
     "t_160_armor_targets": {},
     "t_160_stealth": {},
     "t_160_belt_pack": {
-      "prevModification": "countermeasures_belt_pack",
-      "tier": 2
+      "tier": 1
     },
     "t_160_new_gun": {
       "reqModification": "t_160_belt_pack",
-      "tier": 4
+      "tier": 3
     },
     "us_500lb_mk82": {
       "modClass": "weapon",

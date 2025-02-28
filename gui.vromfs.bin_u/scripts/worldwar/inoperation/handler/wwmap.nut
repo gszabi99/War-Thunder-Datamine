@@ -40,11 +40,15 @@ let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
 let wwTopMenuLeftSideSections = require("%scripts/worldWar/externalServices/worldWarTopMenuSectionsConfigs.nut")
 let { isOperationPaused, isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 let { getWWLogsData, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { RenderCategory } = require("worldwarConst")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getRearZones, getRearZonesOwnedToSide, getRearZonesLostBySide
 } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
+let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 const WW_LOG_REQUEST_DELAY = 1
 const WW_LOG_EVENT_LOAD_AMOUNT = 10
@@ -132,12 +136,13 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     requestNewWWLogs(WW_LOG_MAX_LOAD_AMOUNT, !wwLogsData.loaded.len())
 
     this.scene.findObject("update_timer").setUserData(this)
+    this.scene.findObject("update_map_hovered_status_timer").setUserData(this)
     if (g_world_war_render.isCategoryEnabled(RenderCategory.ERC_ARMY_RADIUSES))
       g_world_war_render.setCategory(RenderCategory.ERC_ARMY_RADIUSES, false)
 
     this.guiScene.performDelayed(this, function() {
       if (this.isValid())
-        ::checkNonApprovedResearches(true)
+        checkNonApprovedResearches(true)
     })
 
     this.scene.findObject("worldwar_map").show(false)
@@ -453,7 +458,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    let isInOperationQueue = ::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
+    let isInOperationQueue = queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
     if (isInOperationQueue)
       return g_world_war.leaveWWBattleQueues()
 
@@ -1384,7 +1389,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     this.currentSelectedObject == mapObjectSelect.LOG_ARMY
 
   isOperationActive = @() !isOperationFinished()
-  isInQueue = @() this.isOperationActive() && ::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
+  isInQueue = @() this.isOperationActive() && queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
 
   function onTransportArmyLoad() {
     this.setActionMode(AUT_TransportLoad)
@@ -1441,7 +1446,11 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       placeholderId = "worldwar_map"
     }
   ]
+
+  onMapHoveredStatusUpdate = @(_obj, _dt) isMapHovered.set(this.scene.findObject("worldwar_map_darg")?.isHovered() ?? false)
 }
+
+isMapHovered.subscribe(@(v) broadcastEvent("MapHovered", { hovered = v }))
 
 register_command(function() {
     dargMapVisible.set(!dargMapVisible.get())

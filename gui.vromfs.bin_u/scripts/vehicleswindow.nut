@@ -6,7 +6,8 @@ let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
-
+let { getSessionLobbyPublicData } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 
 gui_handlers.VehiclesWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -38,10 +39,14 @@ gui_handlers.VehiclesWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-::update_vehicle_info_button <- function update_vehicle_info_button(scene, room) {
+function updateVehicleInfoButton(scene, room) {
   showObjById("vehicles_info_button_block",
-    !isSlotbarOverrided(::SessionLobby.getMissionName(true, room))
-      && !events.isEventAllUnitAllowed(::SessionLobby.getPublicData(room)),
+    !isSlotbarOverrided(getSessionLobbyMissionName(true, room))
+      && !events.isEventAllUnitAllowed(getSessionLobbyPublicData(room)),
     scene
   )
+}
+
+return {
+  updateVehicleInfoButton
 }

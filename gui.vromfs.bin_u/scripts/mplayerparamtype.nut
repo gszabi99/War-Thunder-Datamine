@@ -28,7 +28,8 @@ let expEventLocIds = {
   [EXP_EVENT_MISSION_ACTION]     = "expEventScore/missionAction",
   [EXP_EVENT_HELP_TO_ALLIES]     = "expEventScore/helpToAllies",
   [EXP_EVENT_SEVERE_DAMAGE]      = "expEventScore/severeDamage",
-  [EXP_EVENT_MISSILE_EVADE]      = "expEventScore/missileEvade"
+  [EXP_EVENT_MISSILE_EVADE]      = "expEventScore/missileEvade",
+  [EXP_EVENT_SHELL_INTERCEPTION] = "expEventScore/shellInterception"
 }
 
 let g_mplayer_param_type = {
@@ -299,6 +300,18 @@ enumsAddTypes(g_mplayer_param_type, {
     tooltip = "multiplayer/missileEvade"
     getVal = function(player) {
       return player?["missileEvades"] ?? 0
+    }
+    printFunc = function(_val, player) {
+      return this.getVal(player).tostring()
+    }
+  }
+
+  SHELL_INTERCEPTIONS = {
+    id = "shellInterception"
+    fontIcon = "#icon/mpstats/shellInterception"
+    tooltip = "multiplayer/shellInterception"
+    getVal = function(player) {
+      return player?["shellInterceptions"] ?? 0
     }
     printFunc = function(_val, player) {
       return this.getVal(player).tostring()

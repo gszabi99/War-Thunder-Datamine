@@ -3,6 +3,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let ProfileIcon = class (ItemCouponBase) {
   static iType = itemType.PROFILE_ICON
@@ -18,4 +19,5 @@ let ProfileIcon = class (ItemCouponBase) {
     return unlockId != null && !isUnlockOpened(unlockId)
   }
 }
-return {ProfileIcon}
+
+registerItemClass(ProfileIcon)

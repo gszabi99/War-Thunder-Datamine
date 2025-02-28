@@ -4,10 +4,10 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { format } = require("string")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getUnlockNameText, getLocForBitValues, buildUnlockDesc, fillUnlockImage,
-  updateLockStatus, updateProgress, fillReward, fillUnlockTitle, getRewardText
+let { getUnlockNameText, getLocForBitValues, buildUnlockDesc, fillUnlockImage, getSubunlockCfg,
+  updateLockStatus, updateProgress, fillReward, fillUnlockTitle, getRewardText, buildConditionsConfig
 } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isBitModeType, getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
+let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
 let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
@@ -116,7 +116,7 @@ function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
     if (!isShowUnlock)
       return
 
-    let unlockConfig = ::build_conditions_config(unlockBlk)
+    let unlockConfig = buildConditionsConfig(unlockBlk)
     let subunlockCfg = getSubunlockCfg(unlockConfig.conditions)
     buildUnlockDesc(subunlockCfg ?? unlockConfig)
     unlockObj.id = unlockConfig.id

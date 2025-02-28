@@ -2207,6 +2207,10 @@
       {
         "name": "j_7_mk2_hf5",
         "blk": "gameData/FlightModels/weaponPresets/j_7_mk2_hf5.blk"
+      },
+      {
+        "name": "j_7_mk2_250_2_inc",
+        "blk": "gameData/FlightModels/weaponPresets/j_7_mk2_250_2_inc.blk"
       }
     ]
   },
@@ -2314,6 +2318,22 @@
               "external": true,
               "machLimit": 1.01
             }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "250_2",
+            "reqModification": "cn_q5_type_250",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_gp_250_2_incendiary.blk",
+              "emitter": "su_fab500_m54_l",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
           }
         ]
       },
@@ -2388,6 +2408,22 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/cn_gp_500_2.blk",
+              "emitter": "su_fab500_m54_r",
+              "bullets": 1,
+              "external": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "napalm_middle",
+            "name": "250_2",
+            "reqModification": "cn_q5_type_250",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_gp_250_2_incendiary.blk",
               "emitter": "su_fab500_m54_r",
               "bullets": 1,
               "external": true,
@@ -2654,7 +2690,12 @@
       "modClass": "weapon",
       "invertEnableLogic": false
     },
+    "cn_q5_type_250": {
+      "modClass": "weapon",
+      "tier": 1
+    },
     "cn_q5_type_500": {
+      "reqModification": "cn_q5_type_250",
       "modClass": "weapon",
       "tier": 2
     },

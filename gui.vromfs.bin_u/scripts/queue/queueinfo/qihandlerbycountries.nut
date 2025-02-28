@@ -9,6 +9,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getClusterShortName, isClusterUnstable
 } = require("%scripts/onlineInfo/clustersManagement.nut")
+let { createQueueViewByCountries, updateQueueViewByCountries } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
 
 gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
   sceneBlkName   = "%gui/events/eventQueueByCountries.blk"
@@ -29,11 +30,11 @@ gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
     this.createClustersList()
 
     this.statsObj = this.scene.findObject("stats_table")
-    ::g_qi_view_utils.createViewByCountries(this.statsObj, this.queue, this.event)
+    createQueueViewByCountries(this.statsObj, this.queue, this.event)
   }
 
   function updateStats() {
-    ::g_qi_view_utils.updateViewByCountries(this.statsObj, this.queue, this.curClusterName)
+    updateQueueViewByCountries(this.statsObj, this.queue, this.curClusterName)
     let countrySets = events.getAllCountriesSets(this.event)
     if (!u.isEqual(this.visibleCountrySets, countrySets))
       this.fillCountrySets(countrySets)

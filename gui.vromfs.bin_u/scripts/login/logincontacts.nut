@@ -10,7 +10,7 @@ let { APP_ID } = require("app")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let charClientEvent = require("%scripts/charClientEvent.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 const CONTACTS_GAME_ID = "wt"

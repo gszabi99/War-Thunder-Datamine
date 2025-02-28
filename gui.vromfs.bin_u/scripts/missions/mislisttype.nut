@@ -15,12 +15,15 @@ let { get_meta_mission_info_by_name, get_meta_missions_info_chapter,
   get_mission_local_online_progress } = require("guiMission")
 let { get_game_mode, get_cur_game_mode_name } = require("mission")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { toUpper } = require("%sqstd/string.nut")
-let { isMissionComplete, getCombineLocNameMission, is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { capitalize } = require("%sqstd/string.nut")
+let { isMissionComplete, getSessionLobbyMissionName
+} = require("%scripts/missions/missionsUtilsModule.nut")
+let { getCombineLocNameMission } = require("%scripts/missions/missionsText.nut")
+let { isInSessionRoom, getMissionUrl } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { findUnitNoCase } = require("%scripts/unit/unitParams.nut")
+let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
 
 enum mislistTabsOrder {
   BASE
@@ -76,7 +79,7 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
 
     if (is_user_mission(misBlk)) {
       // Temporary fix for 1.53.7.X (workaround for not detectable player_class).
-      // Can be removed after http://cvs1.gaijin.lan:8080/#/c/57465/ reach all PC platforms.
+      // Can be removed after reach all PC platforms.
       if (!misBlk?.player_class) {
         let missionBlk = blkOptFromPath(misBlk?.mis_file)
         let wing = getBlkValueByPath(missionBlk, "mission_settings/player/wing")
@@ -159,7 +162,7 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
       let isChapterSpecial = isInArray(chapterName, [ "hidden", "test" ])
       local canShowChapter = true
       if (!::is_debug_mode_enabled && isChapterSpecial) {
-        let featureName = $"MissionsChapter{toUpper(chapterName, 1)}"
+        let featureName = $"MissionsChapter{capitalize(chapterName)}"
         canShowChapter = is_dev_version() || hasFeature(featureName)
       }
       if (!canShowChapter)
@@ -212,7 +215,7 @@ g_mislist_type._getMissionsListByNames <- function _getMissionsListByNames(names
 
 g_mislist_type._getCurMission <- function _getCurMission() {
   if (isInSessionRoom.get()) {
-    let misName = ::SessionLobby.getMissionName(true)
+    let misName = getSessionLobbyMissionName(true)
     if (misName)
       return this.getMissionConfig(misName)
   }
@@ -397,7 +400,7 @@ enumsAddTypes(g_mislist_type, {
 
     getCurMission = function() {
       if (isInSessionRoom.get()) {
-        let url = ::SessionLobby.getMissionUrl()
+        let url = getMissionUrl()
         let urlMission = g_url_missions.findMissionByUrl(url)
         if (urlMission)
           return this.getMissionConfig(urlMission.name)

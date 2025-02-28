@@ -7,30 +7,21 @@ let bhvAvatar = require("%scripts/user/bhvAvatar.nut")
 let seenAvatars = require("%scripts/seen/seenList.nut").get(SEEN.AVATARS)
 let { AVATARS } = require("%scripts/utils/configs.nut")
 let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnlockById, getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-
-let DEFAULT_PILOT_ICON = "cardicon_default"
+let { getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 
 local icons = null
 local allowedIcons = null
 
-function getIcons() {
+function getIcons(full = false) {
   if (!icons)
-    icons = getUnlocksByTypeInBlkOrder("pilot").map(@(u) u.id)
-  return icons
+    icons = getUnlocksByTypeInBlkOrder("pilot")
+  return full ? icons : icons.map(@(u) u.id)
 }
 
 function getAllowedIcons() {
   if (!allowedIcons)
-    allowedIcons = getIcons().filter(@(unlockId) isUnlockOpened(unlockId, UNLOCKABLE_PILOT)
-      && isUnlockVisible(getUnlockById(unlockId)))
-  return allowedIcons
-}
-
-let getIconById = @(id) getIcons()?[id] ?? DEFAULT_PILOT_ICON
-
-function openChangePilotIconWnd(cb, handler) {
-  ::gui_choose_image(cb, handler)
+    allowedIcons = getIcons(true).filter(@(unlock) isUnlockOpened(unlock.id, UNLOCKABLE_PILOT) && isUnlockVisible(unlock))
+  return allowedIcons.map(@(v) v.id)
 }
 
 function invalidateIcons() {
@@ -47,7 +38,6 @@ subscriptions.addListenersWithoutEnv({
 }, g_listener_priority.CONFIG_VALIDATION)
 
 bhvAvatar.init({
-  intIconToString = getIconById
   getIconPath = @(icon) $"#ui/images/avatars/{icon}.avif"
   getConfig = AVATARS.get.bindenv(AVATARS)
 })
@@ -56,7 +46,4 @@ seenAvatars.setListGetter(getAllowedIcons)
 
 return {
   getIcons = getIcons
-  getAllowedIcons = getAllowedIcons
-  getIconById = getIconById
-  openChangePilotIconWnd = openChangePilotIconWnd
 }

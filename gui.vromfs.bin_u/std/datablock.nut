@@ -97,7 +97,7 @@ function blk2SquirrelObj(blk){
     let blockName = block.getBlockName()
     if (blockName not in res)
       res[blockName] <- []
-   res[blockName].append(blk2SquirrelObj(block))
+    res[blockName].append(blk2SquirrelObj(block))
   }
   for (local i=0; i<blk.paramCount(); i++){
     let paramName = blk.getParamName(i)
@@ -109,12 +109,19 @@ function blk2SquirrelObj(blk){
   return res
 }
 
-function normalizeConvertedBlk(obj){
+local normalizeConvertedBlk
+normalizeConvertedBlk = function(obj){
   let t = type(obj)
   if (t == "array" && obj.len()==1) {
     return normalizeConvertedBlk(obj[0])
   }
-  else if (t == "table" || t=="array") {
+  else if (t == "table") {
+    let r = {}
+    foreach(k, v in obj)
+      r[k] <- normalizeConvertedBlk(v)
+    return r
+  }
+  else if (t=="array") {
     return obj.map(normalizeConvertedBlk)
   }
   return obj
@@ -134,7 +141,13 @@ function normalizeAndFlattenConvertedBlk(obj){
     else
       return normalizeAndFlattenConvertedBlk(el)
   }
-  else if (t == "table" || t=="array") {
+  else if (t == "table") {
+    let r = {}
+    foreach(k, v in obj)
+      r[k] <- normalizeConvertedBlk(v)
+    return r
+  }
+  else if (t=="array") {
     return obj.map(normalizeAndFlattenConvertedBlk)
   }
   return obj

@@ -9,8 +9,7 @@ let time = require("%scripts/time.nut")
 let { get_time_msec } = require("dagor.time")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 
-
-::queue_classes.Base <- class {
+let BaseQueue = class {
   id = 0
   name = ""
   typeBit = QUEUE_TYPE_BIT.UNKNOWN //FIX ME: should to rename this also
@@ -100,3 +99,5 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
   hasActualQueueData = @() true
   actualizeData = @() null
 }
+
+return BaseQueue

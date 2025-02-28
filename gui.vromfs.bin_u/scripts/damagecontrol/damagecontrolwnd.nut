@@ -5,6 +5,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let { getUnitExtraData, saveUnitExtraData } = require("chard")
+let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+
 let DataBlock = require("DataBlock")
 
 register_command(
@@ -98,8 +100,8 @@ gui_handlers.DamageControlWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getShortcutById(shortcutId) {
-     local shortcut = ::get_shortcut_text({
-      shortcuts = ::get_shortcuts([ shortcutId ])
+    local shortcut = ::get_shortcut_text({
+      shortcuts = getShortcuts([ shortcutId ])
       shortcutId = 0
       cantBeEmpty = false
       colored = false

@@ -12,19 +12,22 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option } = require("guiOptions")
 let { get_game_mode, get_local_mplayer } = require("mission")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let time = require("%scripts/time.nut")
 let { USEROPT_COMPLAINT_CATEGORY, USEROPT_BAN_PENALTY, USEROPT_BAN_TIME
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { cacheComplaintOnUser } = require("%scripts/user/complaints.nut")
 let { get_mp_session_id_str } = require("multiplayer")
+let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
+let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { getChatThreadsList } = require("%scripts/chat/chatLatestThreads.nut")
 
-::gui_modal_ban <- function gui_modal_ban(playerInfo, cLog = null) {
+function gui_modal_ban(playerInfo, cLog = null) {
   handlersManager.loadHandler(gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
 }
 
-::gui_modal_complain <- function gui_modal_complain(playerInfo, cLog = null) {
+function gui_modal_complain(playerInfo, cLog = null) {
   if (!::tribunal.canComplaint())
     return
 
@@ -64,7 +67,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.playerName = getTblValue("name", this.player, "")
     if (!getTblValue("uid", this.player)) {
-      this.taskId = ::find_contact_by_name_and_do(this.playerName, Callback(this.onPlayerFound, this))
+      this.taskId = find_contact_by_name_and_do(this.playerName, Callback(this.onPlayerFound, this))
       if (this.taskId != null && this.taskId < 0) {
         this.notFoundPlayerMsg()
         return
@@ -91,7 +94,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     ]
     this.optionsList = []
     foreach (o in options)
-      this.optionsList.append(::get_option(o))
+      this.optionsList.append(get_option(o))
 
     let optionsBox = this.scene.findObject("options_rows_div")
     let objForClones = optionsBox.getChild(0)
@@ -239,7 +242,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let typeObj = this.scene.findObject("option_list")
 
     this.optionsList = []
-    let option = ::get_option(USEROPT_COMPLAINT_CATEGORY)
+    let option = get_option(USEROPT_COMPLAINT_CATEGORY)
     this.optionsList.append(option)
     let data = create_option_list(option.id, option.items, option.value, null, false)
     this.guiScene.replaceContentFromText(typeObj, data, data.len(), this)
@@ -257,7 +260,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let messages = this.chatLog.chatLog
       .filter(@(l) to_integer_safe(l.fromUid, 0, false) == pi.userId.tointeger())
       .map(function(l) {
-        let fullName = ::g_contacts.getPlayerFullName(l.from, ::get_player_tag(l.from))
+        let fullName = getPlayerFullName(l.from, ::get_player_tag(l.from))
         let messageTime = l?.time ?? 0
         return "\n".join(l.msgs.map(@(msg) $"{messageTime > 0 ? time.secondsToString(messageTime, false) : ""} {fullName}: {msg}"))
       })
@@ -267,7 +270,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onTypeChange() {
     select_editbox(this.scene.findObject("complaint_text"))
 
-    let option = ::get_option(USEROPT_COMPLAINT_CATEGORY)
+    let option = get_option(USEROPT_COMPLAINT_CATEGORY)
     let cValue = this.scene.findObject(option.id).getValue()
     this.compliantCategory = (cValue in option.values) ? option.values[cValue] : option.values[0]
     let complaint_messages = this.scene.findObject("complaint_messages")
@@ -277,7 +280,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function collectThreadListForTribunal() {
     let threads = []
-    foreach (t in ::g_chat_latest_threads.getList()) {
+    foreach (t in getChatThreadsList()) {
       threads.append({  tags      = t.getFullTagsString(),
                         title     = t.title,
                         numPosts  = t.numPosts,
@@ -344,4 +347,9 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.afterSlotOp = this.goBack
     }
   }
+}
+
+return {
+  gui_modal_ban
+  gui_modal_complain
 }

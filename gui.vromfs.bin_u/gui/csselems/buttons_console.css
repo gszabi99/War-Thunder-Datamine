@@ -2158,10 +2158,6 @@ Button_text.smallButton {
   min-width:@smallButtonHeight;
 }
 
-slotCrewHintContainer Button_text.smallButton {
-  min-width:1@slot_width - 2@slot_interval;
-}
-
 Button_text.bottomAirItem {
   height:@sIco;
   pos:50%pw-50%w, 0;
@@ -2862,6 +2858,10 @@ Button_text[isShowDragAndDropHint=yes]:hover > dragAndDropIcon > icon {
 
 tr[optContainer=yes] Button_text {
   min-width:@optContainerControlWidth;
+}
+
+tr[optContainer=yes] Button_text.systemOption {
+  min-width:1@systemOptContainerControlWidth;
 }
 
 [disabled=yes] Button_text {

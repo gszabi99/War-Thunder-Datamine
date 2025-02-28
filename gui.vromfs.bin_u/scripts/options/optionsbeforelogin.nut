@@ -7,16 +7,21 @@ let { USEROPT_AUTOLOGIN } = require("%scripts/options/optionsExtNames.nut")
 
 const AUTOLOGIN_SAVE_ID = "autologin"
 
-::is_autologin_enabled <- function is_autologin_enabled() {
+function set_autologin_enabled(isEnabled) {
+  saveLocalSharedSettings(AUTOLOGIN_SAVE_ID, isEnabled)
+}
+
+function is_autologin_enabled() {
   local res = loadLocalSharedSettings(AUTOLOGIN_SAVE_ID)
   if (res != null)
     return res
   //compatibility with saves 1.67.2.X and below
   res = get_gui_option(USEROPT_AUTOLOGIN) || false
-  ::set_autologin_enabled(res)
+  set_autologin_enabled(res)
   return res
 }
 
-::set_autologin_enabled <- function set_autologin_enabled(isEnabled) {
-  saveLocalSharedSettings(AUTOLOGIN_SAVE_ID, isEnabled)
+return {
+  set_autologin_enabled
+  is_autologin_enabled
 }

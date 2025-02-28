@@ -21,6 +21,9 @@ let { ArmyFlags } = require("worldwarConst")
 let { getIcon } = require("%scripts/worldWar/wwArmyIconOverride.nut")
 let { getArtilleryUnits, getArtilleryUnitParamsByBlk } = require("%scripts/worldWar/worldWarStates.nut")
 
+let fullWidthColunsCount = 4
+let partialWidthColunsCount = 3
+
 local WwArmy
 function getTransportedArmiesData(formation) {
   let armies = []
@@ -45,6 +48,8 @@ let WwArmyView = class {
   name = ""
   hasVersusText = false
   selectedSide = SIDE_NONE
+
+  isMultipleColumns = null
 
   static unitsInArmyRowsMax = 5
 
@@ -105,7 +110,10 @@ let WwArmyView = class {
     return view
   }
 
-  function unitsList() {
+  function getIsMultipleColumns() {
+    if (this.isMultipleColumns != null)
+      return this.isMultipleColumns
+
     let wwUnits = this.formation.getUnits().reduce(function (memo, unit) {
       if (unit.getMaxCount() > 0 || unit.getActiveCount() > 0)
         memo.append(unit)
@@ -114,9 +122,19 @@ let WwArmyView = class {
     let transportedArmiesData = getTransportedArmiesData(this.formation)
     let rowsCount = wwUnits.len() + transportedArmiesData.armies.len()
       + transportedArmiesData.totalUnitsNum
-    let isMultipleColumns = rowsCount > this.unitsInArmyRowsMax
-    let sections = [{ units = wwActionsWithUnitsList.getUnitsListViewParams({ wwUnits = wwUnits }) }]
-    foreach (army in transportedArmiesData.armies)
+    this.isMultipleColumns = rowsCount > this.unitsInArmyRowsMax
+    return this.isMultipleColumns
+  }
+
+  function unitsList() {
+    let wwUnits = this.formation.getUnits().reduce(function (memo, unit) {
+      if (unit.getMaxCount() > 0 || unit.getActiveCount() > 0)
+        memo.append(unit)
+      return memo
+    }, [])
+
+    let sections = [{ units = wwActionsWithUnitsList.getUnitsListViewParams({ wwUnits }) }]
+    foreach (army in getTransportedArmiesData(this.formation).armies)
       sections.append({
         units = wwActionsWithUnitsList.getUnitsListViewParams({ wwUnits = army.getUnits() }),
         title = "".concat(loc("worldwar/transportedArmy"),
@@ -124,7 +142,7 @@ let WwArmyView = class {
             text = army.getOverrideFontIcon() ?? g_ww_unit_type.getUnitTypeFontIcon(army.unitType) }),
           loc("ui/colon"))
       })
-    let view = this.getSectionsView(sections, isMultipleColumns)
+    let view = this.getSectionsView(sections, this.getIsMultipleColumns())
     return handyman.renderCached("%gui/worldWar/worldWarMapArmyInfoUnitsList.tpl", view)
   }
 
@@ -458,7 +476,13 @@ let WwArmyView = class {
     return lines
   }
 
+  function getInfoBlocksCount() {
+    return (this.getIsMultipleColumns() || this.getAirFuelLastTime() != "") ? fullWidthColunsCount : partialWidthColunsCount
+  }
+
   needSmallSize = @() this.hasArtilleryAbility() && !this.isArtillery()
+
+  getTooltipWidth = @() $"{this.getInfoBlocksCount() * 0.25}@wwMapTooltipInfoWidth"
 }
 
 

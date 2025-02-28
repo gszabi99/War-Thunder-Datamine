@@ -21,7 +21,8 @@ let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { utf8ToUpper } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard.nut")
 
 const MY_FILTERS = "tournaments/filters"
 
@@ -301,7 +302,7 @@ local ESportList = class (gui_handlers.BaseGuiHandlerWT) {
   function onLeaderboard(obj) {
     let tournament = getTourById(obj.eventId)
     if (tournament)
-      ::gui_modal_event_leaderboards({ // No matters for which day event gotten. All essential for leaderboard request params are identical for any day.
+      gui_modal_event_leaderboards({ // No matters for which day event gotten. All essential for leaderboard request params are identical for any day.
         eventId = getMatchingEventId(tournament.id, 0, false)
         sharedEconomicName = tournament.sharedEconomicName
       })

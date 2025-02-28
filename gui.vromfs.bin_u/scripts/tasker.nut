@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import char_request_blk_from_server, set_char_cb, char_request_json_from_server, char_send_simple_action
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import call_for_handler
 
 let { broadcastEvent, addListenersWithoutEnv, DEFAULT_HANDLER } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { charRequestJwtFromServer, get_char_extended_error } = require("chard")
@@ -92,7 +93,7 @@ function addTask(taskId, taskOptions = null, onSuccess = null, onError = null, t
 
 function addBgTaskCb(taskId, actionFunc, handler = null) {
   let taskCallback = Callback( function(_result = YU2_OK) {
-    ::call_for_handler(handler, actionFunc)
+    call_for_handler(handler, actionFunc)
   }, handler)
   addTask(taskId, null, taskCallback, taskCallback)
 }

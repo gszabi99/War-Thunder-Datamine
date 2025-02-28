@@ -238,20 +238,7 @@ function hideConditionsFromBlk(blk, unlockBlk) {
   }
 }
 
-function getSubunlockCfg(conditions) {
-  if (conditions.len() != 1)
-    return null
 
-  let cond = conditions[0]
-  if (cond?.modeType != "char_unlocks" || cond?.values.len() != 1)
-    return null
-
-  let blk = getUnlockById(cond.values[0])
-  if (blk?.hidden ?? false)
-    return null
-
-  return ::build_conditions_config(blk)
-}
 
 let createCondition = @(condType, values = null) {
   type = condType
@@ -798,7 +785,6 @@ function getProgressBarData(modeType, curVal, maxVal) {
 }
 
 return {
-  getSubunlockCfg
   getMultipliersTable
   getMainProgressCondition
   getTimeRangeCondition

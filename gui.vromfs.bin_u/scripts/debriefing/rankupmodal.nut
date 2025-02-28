@@ -1,10 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 
-let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { updatePlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { get_shop_blk } = require("blkGetters")
 let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
@@ -12,8 +10,8 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { getNextAwardText } = require("%scripts/unlocks/unlocksModule.nut")
 let { isUnitLocked, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-
-let delayedRankUpWnd = []
+let { checkDelayedUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
+let { delayedRankUpWnd } = require("%scripts/debriefing/checkRankUpWindow.nut")
 
 gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -133,28 +131,6 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
       delayedRankUpWnd.remove(0)
     }
     else
-      ::check_delayed_unlock_wnd(this.unlockData)
+      checkDelayedUnlockWnd(this.unlockData)
   }
-}
-
-function checkRankUpWindow(country, old_rank, new_rank, unlockData = null) {
-  if (country == "country_0" || country == "")
-    return false
-  if (new_rank <= old_rank)
-    return false
-
-  let gained_ranks = [];
-  for (local i = old_rank + 1; i <= new_rank; i++)
-    gained_ranks.append(i);
-  let config = { country = country, ranks = gained_ranks, unlockData = unlockData }
-  if (isHandlerInScene(gui_handlers.RankUpModal))
-    delayedRankUpWnd.append(config) //better to refactor this to wrok by showUnlockWnd completely
-  else
-    loadHandler(gui_handlers.RankUpModal, config)
-  updatePlayerRankByCountry(country, new_rank)
-  return true
-}
-
-return {
-  checkRankUpWindow
 }

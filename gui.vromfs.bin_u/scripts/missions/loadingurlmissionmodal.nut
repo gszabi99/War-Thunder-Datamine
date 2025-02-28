@@ -7,6 +7,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { hasUnitInFullMissionBlk } = require("%scripts/missions/missionsUtils.nut")
+
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 function upgradeUrlMission(fullMissionBlk) {
@@ -19,7 +21,7 @@ function upgradeUrlMission(fullMissionBlk) {
 
   foreach (unitType in unitTypes.types)
     if (unitType.isAvailable() && !(unitType.missionSettingsAvailabilityFlag in misBlk))
-      misBlk[unitType.missionSettingsAvailabilityFlag] = ::has_unittype_in_full_mission_blk(fullMissionBlk, unitType.esUnitType)
+      misBlk[unitType.missionSettingsAvailabilityFlag] = hasUnitInFullMissionBlk(fullMissionBlk, unitType.esUnitType)
 }
 
 gui_handlers.LoadingUrlMissionModal <- class (gui_handlers.BaseGuiHandlerWT) {

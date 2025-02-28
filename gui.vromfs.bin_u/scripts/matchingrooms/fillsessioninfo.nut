@@ -1,6 +1,5 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
-import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -13,9 +12,15 @@ let { USEROPT_TIME_LIMIT, USEROPT_LIMITED_FUEL, USEROPT_LIMITED_AMMO,
   USEROPT_CONTENT_ALLOWED_PRESET
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { isInSessionRoom, isInSessionLobbyEventRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsUtils.nut")
+let { isInSessionRoom, isInSessionLobbyEventRoom, getSessionLobbyGameType, isUserMission, isUrlMissionByRoom
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
 let { getCustomDifficultyTooltipText } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
+let { getSessionLobbyMissionNameLoc, getSessionLobbyTimeLimit,
+  getRoomRequiredCrafts, getRoomMGameMode, getRoomTeamsCountries
+} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
 
 function clearInfo(scene) {
   foreach (name in ["session_creator", "session_mapName", "session_hasPassword",
@@ -55,7 +60,7 @@ let setTextToObjByOption = function(objId, optionId, value) {
   if (!checkObj(obj))
     return
 
-  let option = ::get_option(optionId)
+  let option = get_option(optionId)
   let displayValue = option.getValueLocText(value)
   setTextToObj(obj, "".concat(option.getTitle(), loc("ui/colon")), displayValue)
 }
@@ -67,7 +72,7 @@ return function(scene, sessionInfo) {
   if (!sessionInfo)
     return clearInfo(scene)
 
-  let gt = SessionLobby.getGameType(sessionInfo)
+  let gt = getSessionLobbyGameType(sessionInfo)
   let missionInfo = ("mission" in sessionInfo) ? sessionInfo.mission : {}
   let isEventRoom = isInSessionRoom.get() && isInSessionLobbyEventRoom.get()
 
@@ -75,7 +80,7 @@ return function(scene, sessionInfo) {
   let creatorName = getPlayerName(sessionInfo?.creator ?? "")
   setTextToObj(nameObj, "".concat(loc("multiplayer/game_host"), loc("ui/colon")), creatorName)
 
-  let teams = SessionLobby.getTeamsCountries(sessionInfo)
+  let teams = getRoomTeamsCountries(sessionInfo)
   let isEqual = teams.len() == 1 || u.isEqual(teams[0], teams[1])
   let cObj1 = scene.findObject("countries1")
   let cObj2 = scene.findObject("countries2")
@@ -91,16 +96,16 @@ return function(scene, sessionInfo) {
     vsObj.show(!isEqual)
 
   let mapNameObj = scene.findObject("session_mapName")
-  if (SessionLobby.isUserMission(sessionInfo))
+  if (isUserMission(sessionInfo))
     setTextToObj(mapNameObj, "".concat(loc("options/mp_user_mission"), loc("ui/colon")), sessionInfo?.userMissionName)
-  else if (SessionLobby.isUrlMission(sessionInfo)) {
+  else if (isUrlMissionByRoom(sessionInfo)) {
     let url = getTblValue("missionURL", sessionInfo, "")
     let urlMission =  g_url_missions.findMissionByUrl(url)
     let missionName = urlMission ? urlMission.name : url
     setTextToObj(mapNameObj, "".concat(loc("urlMissions/sessionInfoHeader"), loc("ui/colon")), missionName)
   }
   else {
-    let missionName = SessionLobby.getMissionNameLoc(sessionInfo)
+    let missionName = getSessionLobbyMissionNameLoc(sessionInfo)
     setTextToObj(mapNameObj, "".concat(loc("options/mp_mission"), loc("ui/colon")), missionName)
   }
 
@@ -109,12 +114,12 @@ return function(scene, sessionInfo) {
     isEventRoom ? null : sessionInfo?.hasPassword ?? false)
 
   let tlObj = scene.findObject("session_teamLimit")
-  let rangeData = events.getPlayersRangeTextData(SessionLobby.getMGameMode(sessionInfo))
+  let rangeData = events.getPlayersRangeTextData(getRoomMGameMode(sessionInfo))
   setTextToObj(tlObj, rangeData.label,
                isEventRoom && rangeData.isValid ? rangeData.value : null)
 
   let craftsObj = scene.findObject("session_battleRating")
-  let reqUnits = SessionLobby.getRequiredCrafts(Team.A, sessionInfo)
+  let reqUnits = getRoomRequiredCrafts(Team.A, sessionInfo)
   setTextToObj(craftsObj, loc("events/required_crafts"), events.getRulesText(reqUnits))
 
   let envObj = scene.findObject("session_environment")
@@ -149,7 +154,7 @@ return function(scene, sessionInfo) {
   setTextToObj(bObj, "".concat(loc("options/race_can_shoot"), loc("ui/colon")),
     (gt & GT_RACE) ? !(missionInfo?.raceForceCannotShoot ?? false) : null)
 
-  setTextToObjByOption("session_timeLimit", USEROPT_TIME_LIMIT, SessionLobby.getTimeLimit(sessionInfo))
+  setTextToObjByOption("session_timeLimit", USEROPT_TIME_LIMIT, getSessionLobbyTimeLimit(sessionInfo))
 
   setTextToObjByOption("limited_fuel", USEROPT_LIMITED_FUEL, getTblValue("isLimitedFuel", missionInfo))
   setTextToObjByOption("limited_ammo", USEROPT_LIMITED_AMMO, getTblValue("isLimitedAmmo", missionInfo))
@@ -180,7 +185,7 @@ return function(scene, sessionInfo) {
   let slObj = scene.findObject("slotbar_override")
   if (checkObj(slObj)) {
     local slotOverrideText = ""
-    if (isSlotbarOverrided(SessionLobby.getMissionName(true, sessionInfo)))
+    if (isSlotbarOverrided(getSessionLobbyMissionName(true, sessionInfo)))
       slotOverrideText = colorize("userlogColoredText", loc("multiplayer/slotbarOverrided"))
 
     slObj.setValue(slotOverrideText)

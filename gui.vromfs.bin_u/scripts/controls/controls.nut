@@ -6,11 +6,8 @@ from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 from "%scripts/options/optionsCtors.nut" import create_option_dropright, create_option_list, create_option_slider, create_option_switchbox
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
-let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { isXInputDevice } = require("controls")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
@@ -22,57 +19,56 @@ let globalEnv = require("globalEnv")
 let controllerState = require("controllerState")
 let shortcutsListModule = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
-let { TRIGGER_TYPE, getLastWeapon, getCommonWeapons, getLastPrimaryWeapon
-} = require("%scripts/weaponry/weaponryInfo.nut")
-let { isBulletGroupActive } = require("%scripts/weaponry/bulletsInfo.nut")
 let { resetFastVoiceMessages } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { isPlatformSony, isPlatformPS4, isPlatformXboxOne, isPlatformPC, isPlatformShieldTv
 } = require("%scripts/clientState/platform.nut")
 let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
-let { blkOptFromPath, blkFromPath } = require("%sqstd/datablock.nut")
-let vehicleModel = require("vehicleModel")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let { setGuiOptionsMode, getGuiOptionsMode, get_unit_option } = require("guiOptions")
-let { getShortcutById, getTextMarkup, getShortcutData, getInputsMarkup,
-  isShortcutMapped, restoreShortcuts, hasMappedSecondaryWeaponSelector
-} = require("%scripts/controls/shortcutsUtils.nut")
-let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
-let { is_benchmark_game_mode, get_game_mode } = require("mission")
-let { get_meta_missions_info_by_chapters, get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
-let { utf8ToLower, stripTags, startsWith } = require("%sqstd/string.nut")
-let { recomendedControlPresets, getControlsPresetBySelectedType
+let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
+let { getShortcutById, getTextMarkup, getShortcutData, getInputsMarkup, isShortcutMapped,
+  restoreShortcuts } = require("%scripts/controls/shortcutsUtils.nut")
+let { get_game_mode } = require("mission")
+let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
+let { recommendedControlPresets, getControlsPresetBySelectedType, getCurrentHelpersMode
 } = require("%scripts/controls/controlsUtils.nut")
-let { joystickSetCurSettings, setShortcutsAndSaveControls
-} = require("%scripts/controls/controlsCompatibility.nut")
+let { joystickSetCurSettings, setShortcutsAndSaveControls,
+  joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USEROPT_MOUSE_USAGE,
-  USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_SEPERATED_ENGINE_CONTROL_SHIP,
-  USEROPT_BULLET_COUNT0, userOptionNameByIdx
+  USEROPT_MOUSE_USAGE_NO_AIM, userOptionNameByIdx
 } = require("%scripts/options/optionsExtNames.nut")
-let { shopIsModificationEnabled } = require("chardResearch")
-let { get_game_params_blk, get_current_mission_info } = require("blkGetters")
+let { get_current_mission_info } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
-let { getLocaliazedPS4ControlName, getLocalizedControlName
+let { getLocaliazedPS4ControlName, getLocalizedControlName, remapAxisName
 } = require("%scripts/controls/controlsVisual.nut")
 let { switchControlsMode, gui_start_controls_type_choice
 } = require("%scripts/controls/startControls.nut")
-let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { Combination } = require("%scripts/controls/input/combination.nut")
 let { Axis } = require("%scripts/controls/input/axis.nut")
-let { g_aircraft_helpers } = require("%scripts/controls/aircraftHelpers.nut")
+let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
+let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
+let { getAircraftHelpersOptionValue, setAircraftHelpersOptionValue, controlHelpersOptions
+} = require("%scripts/controls/aircraftHelpers.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+
+let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
+let { getControlsPresetFilename, parseControlsPresetName, getHighestVersionControlsPreset
+} = require("%scripts/controls/controlsPresets.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { restoreHardcodedKeys, clearCurControlsPresetGuiOptions, setAndCommitCurControlsPreset,
+  isLastLoadControlsSucceeded
+} = require("%scripts/controls/controlsManager.nut")
 
 function getAxisActivationShortcutData(shortcuts, item, preset) {
-  preset = preset ?? ::g_controls_manager.getCurPreset()
+  preset = preset ?? getCurControlsPreset()
   let inputs = []
   let axisDescr = g_shortcut_type._getDeviceAxisDescription(item.id)
   let axisInput = (axisDescr.axisId > -1 || axisDescr.mouseAxis != null)
@@ -155,16 +151,16 @@ function resetDefaultControlSettings() {
 }
 
 function switchHelpersModeAndOption(preset = "") {
-  let joyCurSettings = ::joystick_get_cur_settings()
+  let joyCurSettings = joystickGetCurSettings()
   if (joyCurSettings.useMouseAim)
     ::set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
-  else if (isPlatformPS4 && preset == ::g_controls_presets.getControlsPresetFilename("thrustmaster_hotas4")) {
-    if (::getCurrentHelpersMode() == globalEnv.EM_MOUSE_AIM)
+  else if (isPlatformPS4 && preset == getControlsPresetFilename("thrustmaster_hotas4")) {
+    if (getCurrentHelpersMode() == globalEnv.EM_MOUSE_AIM)
       ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
   }
   else if (isPlatformSony || isPlatformXboxOne || isPlatformShieldTv())
     ::set_helpers_mode_and_option(globalEnv.EM_REALISTIC)
-  else if (::getCurrentHelpersMode() == globalEnv.EM_MOUSE_AIM)
+  else if (getCurrentHelpersMode() == globalEnv.EM_MOUSE_AIM)
     ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
 }
 
@@ -180,8 +176,8 @@ local shortcutsNotChangeByPreset = [
   if (!preset || preset == "")
     return
 
-  let scToRestore = ::get_shortcuts(shortcutsNotChangeByPreset)
-  ::g_controls_manager.setCurPreset(::ControlsPreset(preset))
+  let scToRestore = getShortcuts(shortcutsNotChangeByPreset)
+  setAndCommitCurControlsPreset(ControlsPreset(preset))
   restoreShortcuts(scToRestore, shortcutsNotChangeByPreset)
 
   if (is_platform_pc)
@@ -232,10 +228,10 @@ local axisMappedOnMouse = {
 ::get_mouse_axis <- function get_mouse_axis(shortcutId, helpersMode = null, joyParams = null) {
   let axis = axisMappedOnMouse?[shortcutId]
   if (axis)
-    return axis((helpersMode ?? ::getCurrentHelpersMode()) == globalEnv.EM_MOUSE_AIM)
+    return axis((helpersMode ?? getCurrentHelpersMode()) == globalEnv.EM_MOUSE_AIM)
 
   if (!joyParams)
-    joyParams = ::joystick_get_cur_settings()
+    joyParams = joystickGetCurSettings()
   for (local i = 0; i < MouseAxis.NUM_MOUSE_AXIS_TOTAL; ++i) {
     if (shortcutId == joyParams.getMouseAxis(i))
       return 1 << min(i, MOUSE_AXIS.TOTAL - 1)
@@ -334,11 +330,11 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
   function initMainParams() {
     this.initShortcutsNames()
-    this.curJoyParams = ::joystick_get_cur_settings()
+    this.curJoyParams = joystickGetCurSettings()
     this.updateButtons()
 
-    ::g_controls_manager.restoreHardcodedKeys(MAX_SHORTCUTS)
-    this.shortcuts = ::get_shortcuts(this.shortcutNames)
+    restoreHardcodedKeys(MAX_SHORTCUTS)
+    this.shortcuts = getShortcuts(this.shortcutNames)
 
     this.fillControlsType()
   }
@@ -375,7 +371,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     if (modsBlock == null)
       return
 
-    let options = ::get_option(modsBlock.optionType)
+    let options = get_option(modsBlock.optionType)
 
     this.filterObjId = modsBlock.id
     this.filterValues = options.values
@@ -505,7 +501,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       view.tabs.append({
         id = group
         tabName = $"#hotkeys/{group}"
-        navImagesText = ::get_navigation_images_text(idx, this.controlsGroupsIdList.len())
+        navImagesText = getNavigationImagesText(idx, this.controlsGroupsIdList.len())
       })
 
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
@@ -547,7 +543,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
   function fillControlGroupTab(groupId) {
     local data = "";
-    let joyParams = ::joystick_get_cur_settings();
+    let joyParams = joystickGetCurSettings();
     local gRow = 0  //for even and odd color by groups
     local isSectionShowed = true
     local isHelpersVisible = false
@@ -712,7 +708,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       return
 
     local data = ""
-    let curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = getCurControlsPreset()
     if ("modifiersId" in item) {
       if ("" in item.modifiersId && item.modifiersId[""] in this.shortcuts) {
         let activationShortcut = getAxisActivationShortcutData(this.shortcuts, item, curPreset)
@@ -823,11 +819,11 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
         set_option(item.optionType, valueIdx)
     }
 
-    let options = u.values(g_aircraft_helpers.controlHelpersOptions)
+    let options = u.values(controlHelpersOptions)
     foreach (optionId in options) {
       if (optionId == USEROPT_HELPERS_MODE)
         continue
-      let option = ::get_option(optionId)
+      let option = get_option(optionId)
       for (local i = 0; i < ::shortcutsList.len(); i++)
         if (::shortcutsList[i]?.optionType == optionId) {
           let object = this.scene.findObject(::shortcutsList[i].id)
@@ -837,7 +833,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     }
 
     this.curJoyParams.mouseJoystick = getTblValue("mouseJoystick",
-      ::g_controls_manager.getCurPreset().params, false)
+      getCurControlsPreset().params, false)
 
     this.isAircraftHelpersChangePerformed = false
   }
@@ -910,7 +906,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     this.delayedControlsGroupStrated = true
     this.guiScene.performDelayed(this, function() {
       this.delayedControlsGroupStrated = false
-      let filterOption = ::get_option(USEROPT_HELPERS_MODE)
+      let filterOption = get_option(USEROPT_HELPERS_MODE)
       let filterObj = this.getFilterObj()
       if (checkObj(filterObj) && filterObj.getValue() != filterOption.value)
         filterObj.setValue(filterOption.value)
@@ -980,7 +976,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       [
         ["yes", function() {
           if (askKeyboardDefault) {
-            let presets = recomendedControlPresets.map(@(name) [
+            let presets = recommendedControlPresets.map(@(name) [
               name,
               function() {
                 this.applySelectedPreset(getControlsPresetBySelectedType(name).fileName)
@@ -991,14 +987,14 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
           }
 
           local preset = "empty_ver1"
-          let opdata = ::get_option(USEROPT_CONTROLS_PRESET)
+          let opdata = get_option(USEROPT_CONTROLS_PRESET)
           if (presetSelected in opdata.values)
             preset = opdata.values[presetSelected]
           else
             this.forceLoadWizard = is_platform_pc
 
-          preset = ::g_controls_presets.parsePresetName(preset)
-          preset = ::g_controls_presets.getHighestVersionPreset(preset)
+          preset = parseControlsPresetName(preset)
+          preset = getHighestVersionControlsPreset(preset)
           this.applySelectedPreset(preset.fileName)
           resetFastVoiceMessages()
         }],
@@ -1080,7 +1076,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   }
 
   function openShortcutInputBox() {
-    ::assignButtonWindow(this, this.onAssignButton)
+    assignButtonWindow(this, this.onAssignButton)
   }
 
   function onAssignButton(dev, btn) {
@@ -1538,9 +1534,9 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
         return
       }
 
-      let curPreset = ::g_controls_manager.getCurPreset()
+      let curPreset = getCurControlsPreset()
       let msg = format(loc("msg/zoomAssignmentsConflict"),
-        ::remapAxisName(curPreset, axis.axisId))
+        remapAxisName(curPreset, axis.axisId))
       this.guiScene.performDelayed(this, @()
         this.msgBox("zoom_axis_assigned", msg,
         [
@@ -1554,9 +1550,9 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     else if (axisName && (axisName == "camx" || axisName == "camy")
       && item.axis_num == MouseAxis.MOUSE_SCROLL) {
       let isMouseView = AIR_MOUSE_USAGE.VIEW ==
-        g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE)
+        getAircraftHelpersOptionValue(USEROPT_MOUSE_USAGE)
       let isMouseViewWhenNoAim = AIR_MOUSE_USAGE.VIEW ==
-        g_aircraft_helpers.getOptionValue(USEROPT_MOUSE_USAGE_NO_AIM)
+        getAircraftHelpersOptionValue(USEROPT_MOUSE_USAGE_NO_AIM)
 
       if (isMouseView || isMouseViewWhenNoAim) {
         let msg = isMouseView
@@ -1566,9 +1562,9 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
           this.msgBox("mouse_used_for_view", msg,
           [
             ["replace", function() {
-              g_aircraft_helpers.setOptionValue(
+              setAircraftHelpersOptionValue(
                 USEROPT_MOUSE_USAGE, AIR_MOUSE_USAGE.AIM)
-              g_aircraft_helpers.setOptionValue(
+              setAircraftHelpersOptionValue(
                 USEROPT_MOUSE_USAGE_NO_AIM, AIR_MOUSE_USAGE.JOYSTICK)
               this.onAircraftHelpersChanged(null)
             }],
@@ -1584,7 +1580,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   function onControlsHelp() {
     this.backAfterSave = false
     this.doApply()
-    ::gui_modal_help(false, HELP_CONTENT_SET.CONTROLS)
+    gui_modal_help(false, HELP_CONTENT_SET.CONTROLS)
   }
 
   function onControlsWizard() {
@@ -1604,14 +1600,14 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
   function updateCurPresetForExport() {
     this.saveShortcutsAndAxes()
-    ::g_controls_manager.clearGuiOptions()
-    let curPreset = ::g_controls_manager.getCurPreset()
+    clearCurControlsPresetGuiOptions()
+    let curPreset = getCurControlsPreset()
     let mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
     foreach (item in ::shortcutsList)
       if ("optionType" in item && item.optionType in userOptionNameByIdx) {
         let optionName = userOptionNameByIdx[item.optionType]
-        let value = ::get_option(item.optionType).value
+        let value = get_option(item.optionType).value
         if (value != null)
           curPreset.params[optionName] <- value
       }
@@ -1663,7 +1659,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
             broadcastEvent("ControlsPresetChanged")
           else
             showInfoMsgBox($"{loc("msgbox/errorLoadingPreset")}: {path}")
-          return isOpened && ::is_last_load_controls_succeeded
+          return isOpened && isLastLoadControlsSucceeded.get()
         }
         extension = "blk"
         currentFilter = "blk"
@@ -1681,7 +1677,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   function onOptionsListboxDblClick(_obj) {}
 
   function getShortcutsVisibilityMap() {
-    let helpersMode = ::getCurrentHelpersMode()
+    let helpersMode = getCurrentHelpersMode()
     local isHeaderShowed = true
     local isSectionShowed = true
 
@@ -1785,7 +1781,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
     let callBack = ("onChangeValue" in item) ? item.onChangeValue : null
 
     if ("optionType" in item) {
-      let config = ::get_option(item.optionType)
+      let config = get_option(item.optionType)
       elemIdTxt =$"options/{config.id}"
       elemTxt = createOptFunc(item.id, config.items, config.value, callBack, true)
     }
@@ -1798,7 +1794,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   }
   else if (item.type == CONTROL_TYPE.SLIDER) {
     if ("optionType" in item) {
-      let config = ::get_option(item.optionType)
+      let config = get_option(item.optionType)
       elemIdTxt =$"options/{config.id}"
       elemTxt = create_option_slider(item.id, config.value, "onSliderChange", true, "slider", config)
     }
@@ -1814,7 +1810,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   else if (item.type == CONTROL_TYPE.SWITCH_BOX) {
     local config = null
     if ("optionType" in item) {
-      config = ::get_option(item.optionType)
+      config = get_option(item.optionType)
       elemIdTxt =$"options/{config.id}"
       config.id = item.id
     }
@@ -1873,7 +1869,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   if (!(shortcutId in shortcuts))
     return ""
 
-  preset = preset || ::g_controls_manager.getCurPreset()
+  preset = preset || getCurControlsPreset()
   local data = ""
   for (local i = 0; i < shortcuts[shortcutId].len(); i++) {
     let textArr = []
@@ -1902,31 +1898,6 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
 
 //*************************Functions***************************//
 
-::remapAxisName <- function remapAxisName(preset, axisId) {
-  let text = preset.getAxisName(axisId)
-  if (text == null)
-    return "?"
-
-  if (text.indexof("Axis ") == 0) //"Axis 1" in "Axis" and "1"
-    return "".concat(loc("composite/axis"), text.slice("Axis ".len()))
-  else if (text.indexof("Axis") == 0) //"Axis1" in "Axis" and "1"
-    return "".concat(loc("composite/axis"), text.slice("Axis".len()))
-
-  local locText = getLocaliazedPS4ControlName(text)
-  if (locText != "")
-    return locText
-
-  locText = loc($"joystick/{text}", "")
-  if (locText != "")
-    return locText
-
-  locText = loc($"key/{text}", "")
-  if (locText != "")
-    return locText
-
-  return text
-}
-
 ::hackTextAssignmentForR2buttonOnPS4 <- function hackTextAssignmentForR2buttonOnPS4(mainText) {
   if (isPlatformSony) {
     let hack = "".concat(getLocaliazedPS4ControlName("R2"), " + ", getLocaliazedPS4ControlName("MouseLB"))
@@ -1939,581 +1910,4 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
     }
   }
   return mainText
-}
-
-let needRequireEngineControl = @() !CONTROLS_ALLOW_ENGINE_AUTOSTART
-  && (get_mission_difficulty_int() == g_difficulty.SIMULATOR.diffCode) // warning disable: -const-in-bool-expr
-
-let tutorialControlAliases = {
-  ["ANY"]                = null,
-  ["ID_CONTINUE"]        = null,
-  ["ID_SKIP_CUTSCENE"]   = null,
-  ["ID_FIRE"]            = "ID_FIRE_MGUNS",
-  ["ID_TRANS_GEAR_UP"]   = "gm_throttle",
-  ["ID_TRANS_GEAR_DOWN"] = "gm_throttle",
-}
-
-let tutorialSkipControl = {
-  ["ID_TOGGLE_ENGINE"] = @() !needRequireEngineControl()
-}
-
-function getUnmappedControls(controls, helpersMode, getLocNames = true, shouldCheckRequirements = false) {
-  let unmapped = []
-
-  let joyParams = ::joystick_get_cur_settings()
-  foreach (item in ::shortcutsList) {
-    if (isInArray(item.id, controls)) {
-      if ((("filterHide" in item) && isInArray(helpersMode, item.filterHide))
-        || (("filterShow" in item) && !isInArray(helpersMode, item.filterShow))
-        || (("showFunc" not in item) || !item.showFunc())
-        || (shouldCheckRequirements && helpersMode == globalEnv.EM_MOUSE_AIM && !item.reqInMouseAim))
-        continue
-
-      if (item.type == CONTROL_TYPE.SHORTCUT) {
-        let shortcuts = ::get_shortcuts([ item.id ])
-        if (!shortcuts.len() || isShortcutMapped(shortcuts[0]))
-          continue
-
-        let altIds = item?.alternativeIds ?? []
-        foreach (otherItem in ::shortcutsList)
-          if ((otherItem?.alternativeIds ?? []).indexof(item.id) != null)
-            u.appendOnce(otherItem.id, altIds)
-        local isMapped = false
-        foreach (s in ::get_shortcuts(altIds))
-          if (isShortcutMapped(s)) {
-            isMapped = true
-            break
-          }
-        if (isMapped)
-          continue
-
-        unmapped.append("".concat(getLocNames ? "hotkeys/" : "", item.id))
-      }
-      else if (item.type == CONTROL_TYPE.AXIS) {
-        if (::is_axis_mapped_on_mouse(item.id, helpersMode, joyParams))
-          continue
-
-        let axisIndex = get_axis_index(item.id)
-        let axisId = axisIndex >= 0
-          ? joyParams.getAxis(axisIndex).axisId : -1
-        if (axisId == -1) {
-          let modifiers = ["rangeMin", "rangeMax"]
-          local shortcutsCount = 0
-          foreach (modifier in modifiers) {
-            if (!("hideAxisOptions" in item) || !isInArray(modifier, item.hideAxisOptions)) {
-              let shortcuts = ::get_shortcuts([ $"{item.id}_{modifier}" ])
-              if (shortcuts.len() && isShortcutMapped(shortcuts[0]))
-                shortcutsCount++
-            }
-          }
-          if (shortcutsCount < modifiers.len())
-            unmapped.append("".concat(getLocNames ? "controls/" : "", item.axisName))
-        }
-      }
-    }
-  }
-
-  return unmapped
-}
-
-function getUnmappedControlsForTutorial(missionId, helpersMode) {
-  local res = []
-
-  local mis_file = null
-  let chapters = get_meta_missions_info_by_chapters(GM_TRAINING)
-  foreach (chapter in chapters)
-    foreach (m in chapter)
-      if (m.name == missionId) {
-        mis_file = m.mis_file
-        break
-      }
-  if (mis_file == null)
-    return res
-  let missionBlk = blkFromPath(mis_file)
-  if (!missionBlk?.triggers)
-    return res
-
-  let isXinput = isXInputDevice()
-  let isAllowedCondition = @(condition) condition?.gamepadControls == null || condition.gamepadControls == isXinput
-
-  let conditionsList = []
-  foreach (trigger in missionBlk.triggers) {
-    if (type(trigger) != "instance")
-      continue
-
-    let condition = (trigger?.props.conditionsType != "ANY") ? "ALL" : "ANY"
-
-    let shortcuts = []
-    if (trigger?.conditions) {
-      foreach (playerShortcutPressed in trigger.conditions % "playerShortcutPressed")
-        if (playerShortcutPressed?.control && isAllowedCondition(playerShortcutPressed)) {
-          let id = playerShortcutPressed.control
-          if (tutorialSkipControl?[id]() ?? false)
-            continue
-          let alias = (id in tutorialControlAliases) ? tutorialControlAliases[id] : id
-          if (alias && !isInArray(alias, shortcuts))
-            shortcuts.append(alias)
-        }
-
-      foreach (playerWhenOptions in trigger.conditions % "playerWhenOptions")
-        if (playerWhenOptions?.currentView)
-          conditionsList.append({ condition = "ONE", shortcuts = [ "ID_TOGGLE_VIEW" ] })
-
-      foreach (unitWhenInArea in trigger.conditions % "unitWhenInArea")
-        if (unitWhenInArea?.target == "gears_area")
-          conditionsList.append({ condition = "ONE", shortcuts = [ "ID_GEAR" ] })
-
-      foreach (unitWhenStatus in trigger.conditions % "unitWhenStatus")
-        if (unitWhenStatus?.object_type == "isTargetedByPlayer")
-          conditionsList.append({ condition = "ONE", shortcuts = [ "ID_LOCK_TARGET" ] })
-
-      foreach (playerWhenCameraState in trigger.conditions % "playerWhenCameraState")
-        if (playerWhenCameraState?.state == "fov")
-          conditionsList.append({ condition = "ONE", shortcuts = [ "ID_ZOOM_TOGGLE" ] })
-    }
-
-    if (shortcuts.len())
-      conditionsList.append({ condition = condition, shortcuts = shortcuts })
-  }
-
-  foreach (cond in conditionsList)
-    if (cond.shortcuts.len() == 1)
-      cond.condition = "ALL"
-
-  for (local i = conditionsList.len() - 1; i >= 0; i--) {
-    local duplicate = false
-    for (local j = i - 1; j >= 0; j--)
-      if (u.isEqual(conditionsList[i], conditionsList[j])) {
-        duplicate = true
-        break
-      }
-    if (duplicate)
-      conditionsList.remove(i)
-  }
-
-  let controlsList = []
-  foreach (cond in conditionsList)
-    foreach (id in cond.shortcuts)
-      if (!isInArray(id, controlsList))
-        controlsList.append(id)
-  let unmapped = getUnmappedControls(controlsList, helpersMode, false, false)
-
-  foreach (cond in conditionsList) {
-    if (cond.condition == "ALL")
-      foreach (id in cond.shortcuts)
-        if (isInArray(id, unmapped) && !isInArray(id, res))
-          res.append(id)
-  }
-
-  foreach (cond in conditionsList) {
-    if (cond.condition == "ANY" || cond.condition == "ONE") {
-      local allUnmapped = true
-      foreach (id in cond.shortcuts)
-        if (!isInArray(id, unmapped) || isInArray(id, res)) {
-          allUnmapped = false
-          break
-        }
-      if (allUnmapped)
-        foreach (id in cond.shortcuts)
-          if (!isInArray(id, res)) {
-            res.append(id)
-            if (cond.condition == "ONE")
-              break
-          }
-    }
-  }
-
-  res = getUnmappedControls(res, helpersMode, true, false)
-  return res
-}
-
-::getUnmappedControlsForCurrentMission <- function getUnmappedControlsForCurrentMission() {
-  let gm = get_game_mode()
-  if (is_benchmark_game_mode())
-    return []
-
-  let unit = getPlayerCurUnit()
-  let helpersMode = ::getCurrentHelpersMode()
-  let required = ::getRequiredControlsForUnit(unit, helpersMode)
-
-  let unmapped = getUnmappedControls(required, helpersMode, true, false)
-  if (isInFlight() && gm == GM_TRAINING) {
-    let tutorialUnmapped = getUnmappedControlsForTutorial(currentCampaignMission.get(), helpersMode)
-    foreach (id in tutorialUnmapped)
-      u.appendOnce(id, unmapped)
-  }
-  return unmapped
-}
-
-::getCurrentHelpersMode <- function getCurrentHelpersMode() {
-  let difficulty = isInFlight() ? get_mission_difficulty_int() : getCurrentShopDifficulty().diffCode
-  if (difficulty == 2)
-    return (is_platform_pc ? globalEnv.EM_FULL_REAL : globalEnv.EM_REALISTIC)
-  let option = ::get_option_in_mode(USEROPT_HELPERS_MODE, OPTIONS_MODE_GAMEPLAY)
-  return option.values[option.value]
-}
-
-function getWeaponFeatures(weaponsList) {
-  let res = {
-    gotMachineGuns = false
-    gotCannons = false
-    gotAdditionalGuns = false
-    gotBombs = false
-    gotTorpedoes = false
-    gotMines = false
-    gotRockets = false
-    gotAGM = false // air-to-ground missiles, anti-tank guided missiles
-    gotAAM = false // air-to-air missiles
-    gotGuidedBombs = false
-    gotGunnerTurrets = false
-    gotSchraegeMusik = false
-  }
-
-  foreach (weaponSet in weaponsList)
-    foreach (w in weaponSet) {
-      if (!w?.blk || w?.dummy)
-        continue
-
-      if (w?.trigger == TRIGGER_TYPE.MACHINE_GUN)
-        res.gotMachineGuns = true
-      if (w?.trigger == TRIGGER_TYPE.CANNON)
-        res.gotCannons = true
-      if (w?.trigger == TRIGGER_TYPE.ADD_GUN)
-        res.gotAdditionalGuns = true
-      if (w?.trigger == TRIGGER_TYPE.BOMBS)
-        res.gotBombs = true
-      if (w?.trigger == TRIGGER_TYPE.TORPEDOES)
-        res.gotTorpedoes = true
-      if (w?.trigger == TRIGGER_TYPE.MINES)
-        res.gotMines = true
-      if (w?.trigger == TRIGGER_TYPE.ROCKETS)
-        res.gotRockets = true
-      if (w?.trigger == TRIGGER_TYPE.AGM || w?.trigger == TRIGGER_TYPE.ATGM)
-        res.gotAGM = true
-      if (w?.trigger == TRIGGER_TYPE.AAM)
-        res.gotAAM = true
-      if (w?.trigger == TRIGGER_TYPE.GUIDED_BOMBS)
-        res.gotGuidedBombs = true
-      if (startsWith(w?.trigger ?? "", "gunner"))
-        res.gotGunnerTurrets = true
-      if (is_platform_pc && w?.schraegeMusikAngle != null)
-        res.gotSchraegeMusik = true
-    }
-
-  return res
-}
-
-::getRequiredControlsForUnit <- function getRequiredControlsForUnit(unit, helpersMode) {
-  local controls = []
-  if (!unit || useTouchscreen)
-    return controls
-
-  let unitId = unit.name
-  let unitType = unit.unitType
-
-  let preset = ::g_controls_manager.getCurPreset()
-  local actionBarShortcutFormat = null
-
-  let unitBlk = getFullUnitBlk(unitId)
-  let commonWeapons = getCommonWeapons(unitBlk, getLastPrimaryWeapon(unit))
-  local weaponPreset = []
-
-  let curWeaponPresetId = isInFlight() ? get_cur_unit_weapon_preset() : getLastWeapon(unitId)
-
-  let unitWeapons = unit.getWeapons()
-  let curWeapon = unitWeapons.findvalue(@(w) w.name == curWeaponPresetId) ?? unitWeapons?[0]
-  weaponPreset = getPresetWeapons(unitBlk, curWeapon)
-
-  local hasControllableRadar = false
-  if (unitBlk?.sensors)
-    foreach (sensor in (unitBlk.sensors % "sensor"))
-      hasControllableRadar = hasControllableRadar || blkOptFromPath(sensor?.blk)?.type == "radar"
-
-  let isMouseAimMode = helpersMode == globalEnv.EM_MOUSE_AIM
-
-  if (unitType == unitTypes.AIRCRAFT) {
-    let fmBlk = ::get_fm_file(unitId, unitBlk)
-    let unitControls = fmBlk?.AvailableControls || DataBlock()
-
-    let gotInstructor = isMouseAimMode || helpersMode == globalEnv.EM_INSTRUCTOR
-    let option = ::get_option_in_mode(USEROPT_INSTRUCTOR_GEAR_CONTROL, OPTIONS_MODE_GAMEPLAY)
-    let instructorGearControl = gotInstructor && option.value
-
-    controls = [ "throttle" ]
-
-    if (needRequireEngineControl())
-      controls.append("ID_TOGGLE_ENGINE")
-
-    if (isMouseAimMode)
-      controls.append("mouse_aim_x", "mouse_aim_y")
-    else {
-      if (unitControls?.hasAileronControl)
-        controls.append("ailerons")
-      if (unitControls?.hasElevatorControl)
-        controls.append("elevator")
-      if (unitControls?.hasRudderControl)
-        controls.append("rudder")
-    }
-
-    if (unitControls?.hasGearControl && !instructorGearControl)
-      controls.append("ID_GEAR")
-    if (unitControls?.hasAirbrake)
-      controls.append("ID_AIR_BRAKE")
-    if (unitControls?.hasFlapsControl) {
-      let shortcuts = ::get_shortcuts([ "ID_FLAPS", "ID_FLAPS_UP", "ID_FLAPS_DOWN" ])
-      let flaps   = isShortcutMapped(shortcuts[0])
-      let flapsUp = isShortcutMapped(shortcuts[1])
-      let flapsDn = isShortcutMapped(shortcuts[2])
-
-      if (!flaps && !flapsUp && !flapsDn)
-        controls.append("ID_FLAPS")
-      else if (!flaps && !flapsUp && flapsDn)
-        controls.append("ID_FLAPS_UP")
-      else if (!flaps && flapsUp && !flapsDn)
-        controls.append("ID_FLAPS_DOWN")
-    }
-
-    if (vehicleModel.hasEngineVtolControl())
-      controls.append("vtol")
-
-    if (unitBlk?.parachutes)
-      controls.append("ID_CHUTE")
-
-    let w = getWeaponFeatures([ commonWeapons, weaponPreset ])
-
-    if (preset.getAxis("fire").axisId == -1) {
-      if (w.gotMachineGuns || (!w.gotCannons && (w.gotGunnerTurrets || w.gotSchraegeMusik))) // Gunners require either Mguns or Cannons shortcut.
-        controls.append("ID_FIRE_MGUNS")
-      if (w.gotCannons)
-        controls.append("ID_FIRE_CANNONS")
-      if (w.gotAdditionalGuns)
-        controls.append("ID_FIRE_ADDITIONAL_GUNS")
-    }
-    if (w.gotSchraegeMusik)
-      controls.append("ID_SCHRAEGE_MUSIK")
-
-    if (!hasMappedSecondaryWeaponSelector(unitType)) {
-      if (w.gotBombs || w.gotTorpedoes)
-        controls.append("ID_BOMBS")
-      if (w.gotRockets)
-        controls.append("ID_ROCKETS")
-      if (w.gotAGM)
-        controls.append("ID_AGM")
-      if (w.gotAAM)
-        controls.append("ID_AAM")
-      if (w.gotGuidedBombs)
-        controls.append("ID_GUIDED_BOMBS")
-    }
-
-    if (hasControllableRadar && !isXInputDevice()) {
-      controls.append("ID_SENSOR_SWITCH")
-      controls.append("ID_SENSOR_TARGET_SWITCH")
-      controls.append("ID_SENSOR_TARGET_LOCK")
-    }
-  }
-  else if (unitType == unitTypes.HELICOPTER) {
-    controls = [ "helicopter_collective", "helicopter_climb", "helicopter_cyclic_roll" ]
-
-    if (isXInputDevice())
-      controls.append("helicopter_mouse_aim_x", "helicopter_mouse_aim_y")
-
-    let w = getWeaponFeatures([ commonWeapons, weaponPreset ])
-
-    if (preset.getAxis("fire").axisId == -1) {
-      if (w.gotMachineGuns || (!w.gotCannons && w.gotGunnerTurrets)) // Gunners require either Mguns or Cannons shortcut.
-        controls.append("ID_FIRE_MGUNS_HELICOPTER")
-      if (w.gotCannons)
-        controls.append("ID_FIRE_CANNONS_HELICOPTER")
-      if (w.gotAdditionalGuns)
-        controls.append("ID_FIRE_ADDITIONAL_GUNS_HELICOPTER")
-    }
-
-    if (!hasMappedSecondaryWeaponSelector(unitType)) {
-      if (w.gotBombs || w.gotTorpedoes)
-        controls.append("ID_BOMBS_HELICOPTER")
-      if (w.gotRockets)
-        controls.append("ID_ROCKETS_HELICOPTER")
-      if (w.gotAGM)
-        controls.append("ID_ATGM_HELICOPTER")
-      if (w.gotAAM)
-        controls.append("ID_AAM_HELICOPTER")
-      if (w.gotGuidedBombs)
-        controls.append("ID_GUIDED_BOMBS_HELICOPTER")
-    }
-  }
-  //
-
-
-
-
-
-  else if (unitType == unitTypes.TANK) {
-    controls = [ "gm_throttle", "gm_steering", "gm_mouse_aim_x", "gm_mouse_aim_y", "ID_TOGGLE_VIEW_GM", "ID_FIRE_GM", "ID_REPAIR_TANK" ]
-
-    if (is_platform_pc && !isXInputDevice()) {
-      if (shopIsModificationEnabled(unitId, "manual_extinguisher"))
-        controls.append("ID_ACTION_BAR_ITEM_6")
-      if (shopIsModificationEnabled(unitId, "art_support")) {
-        controls.append("ID_ACTION_BAR_ITEM_5")
-        controls.append("ID_SHOOT_ARTILLERY")
-      }
-    }
-
-    if (hasControllableRadar && !isXInputDevice()) {
-      controls.append("ID_SENSOR_TARGET_SWITCH_TANK")
-      controls.append("ID_SENSOR_TARGET_LOCK_TANK")
-    }
-
-    let gameParams = get_game_params_blk()
-    let missionDifficulty = get_mission_difficulty()
-    let difficultyName = g_difficulty.getDifficultyByName(missionDifficulty).settingsName
-    let difficultySettings = gameParams?.difficulty_settings?.baseDifficulty?[difficultyName]
-
-    let tags = unit?.tags || []
-    let scoutPresetId = difficultySettings?.scoutPreset ?? ""
-    if (hasFeature("ActiveScouting") && tags.indexof("scout") != null
-      && gameParams?.scoutPresets?[scoutPresetId]?.enabled)
-      controls.append("ID_SCOUT")
-
-    actionBarShortcutFormat = "ID_ACTION_BAR_ITEM_%d"
-  }
-  else if (unitType == unitTypes.SHIP || unitType == unitTypes.BOAT) {
-    controls = ["ship_steering", "ID_TOGGLE_VIEW_SHIP"]
-
-    let isSeperatedEngineControl =
-      ::get_gui_option_in_mode(USEROPT_SEPERATED_ENGINE_CONTROL_SHIP, OPTIONS_MODE_GAMEPLAY)
-    if (isSeperatedEngineControl)
-      controls.append("ship_port_engine", "ship_star_engine")
-    else
-      controls.append("ship_main_engine")
-
-    let weaponGroups = [
-      {
-        triggerGroup = "primary"
-        shortcuts = ["ID_SHIP_WEAPON_ALL", "ID_SHIP_WEAPON_PRIMARY"]
-      }
-      {
-        triggerGroup = "secondary"
-        shortcuts = ["ID_SHIP_WEAPON_ALL", "ID_SHIP_WEAPON_SECONDARY"]
-      }
-      {
-        triggerGroup = "machinegun"
-        shortcuts = ["ID_SHIP_WEAPON_ALL", "ID_SHIP_WEAPON_MACHINEGUN"]
-      }
-      {
-        triggerGroup = "torpedoes"
-        shortcuts = ["ID_SHIP_WEAPON_TORPEDOES"]
-      }
-      {
-        triggerGroup = "depth_charge"
-        shortcuts = ["ID_SHIP_WEAPON_DEPTH_CHARGE"]
-      }
-      {
-        triggerGroup = "mortar"
-        shortcuts = ["ID_SHIP_WEAPON_MORTAR"]
-      }
-      {
-        triggerGroup = "rockets"
-        shortcuts = ["ID_SHIP_WEAPON_ROCKETS"]
-      }
-    ]
-
-    foreach (weaponSet in [ commonWeapons, weaponPreset ]) {
-      foreach (weapon in weaponSet) {
-        if (!weapon?.blk || weapon?.dummy)
-          continue
-
-        foreach (group in weaponGroups) {
-          if (group?.isRequired || group.triggerGroup != weapon?.triggerGroup)
-            continue
-
-          group.isRequired <- true
-          break
-        }
-      }
-    }
-
-    foreach (group in weaponGroups)
-      if (group?.isRequired) {
-        local isMapped = false
-        foreach (shortcut in group.shortcuts)
-          if (preset.getHotkey(shortcut).len() > 0) {
-            isMapped = true
-            break
-          }
-        if (!isMapped)
-          foreach (shortcut in group.shortcuts)
-            if (controls.indexof(shortcut) == null)
-              controls.append(shortcut)
-      }
-
-    actionBarShortcutFormat = "ID_SHIP_ACTION_BAR_ITEM_%d"
-  }
-
-  if (actionBarShortcutFormat) {
-    if (is_platform_pc && !isXInputDevice()) {
-      local bulletsChoice = 0
-      for (local groupIndex = 0; groupIndex < unitType.bulletSetsQuantity; groupIndex++) {
-        if (isBulletGroupActive(unit, groupIndex)) {
-          let bullets = get_unit_option(unitId, USEROPT_BULLET_COUNT0 + groupIndex)
-          if (bullets != null && bullets > 0)
-            bulletsChoice++
-        }
-      }
-      if (bulletsChoice > 1)
-        for (local i = 0; i < bulletsChoice; i++)
-          controls.append(format(actionBarShortcutFormat, i + 1))
-    }
-  }
-
-  if (unitType.wheelmenuAxis.len()) {
-    controls.append("ID_SHOW_MULTIFUNC_WHEEL_MENU")
-    if (isXInputDevice())
-      controls.extend(unitType.wheelmenuAxis)
-  }
-
-  return controls
-}
-
-::is_shortcut_display_equal <- function is_shortcut_display_equal(sc1, sc2) {
-  foreach (_i, sb in sc1)
-    if (::is_bind_in_shortcut(sb, sc2))
-      return true
-  return false
-}
-
-::is_bind_in_shortcut <- function is_bind_in_shortcut(bind, shortcut) {
-  foreach (sc in shortcut)
-    if (sc.btn.len() == bind.btn.len()) {
-      local same = true
-      foreach (ib, btn in bind.btn) {
-        let i = u.find_in_array(sc.btn, btn)
-        if (i < 0 || sc.dev[i] != bind.dev[ib]) {
-          same = false
-          break
-        }
-      }
-      if (same)
-        return true
-    }
-  return false
-}
-
-::is_device_connected <- function is_device_connected(devId = null) {
-  if (!devId)
-    return false
-
-  let blk = DataBlock()
-  fill_joysticks_desc(blk)
-
-  for (local i = 0; i < blk.blockCount(); i++) {
-    let device = blk.getBlock(i)
-    if (device?.disconnected)
-      continue
-
-    if (device?.devId && device.devId.tolower() == devId.tolower())
-      return true
-  }
-
-  return false
 }

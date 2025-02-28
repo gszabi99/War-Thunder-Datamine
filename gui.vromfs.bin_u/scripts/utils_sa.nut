@@ -198,6 +198,14 @@ function check_aircraft_tags(airtags, filtertags) {
   return !isNotFound
 }
 
+function call_for_handler(handler, func) {
+  if (!func)
+    return
+  if (handler)
+    return func.call(handler)
+  return func()
+}
+
 return {
   getAmountAndMaxAmountText
   colorTextByValues
@@ -221,4 +229,5 @@ return {
   is_team_friendly
   get_tomoe_unit_icon
   check_aircraft_tags
+  call_for_handler
 }

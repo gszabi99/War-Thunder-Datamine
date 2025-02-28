@@ -8,6 +8,8 @@ let { getSelectedChild, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
+let { hideTooltip } = require("%scripts/utils/delayedTooltip.nut")
 
 const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
 
@@ -73,11 +75,26 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
     this.scene.closeOnUnhover = this.closeOnUnhover ? "yes" : "no"
     this.fillList()
     this.updatePosition()
+    if (this.params?.needCloseTooltips) {
+      removeAllGenericTooltip()
+      hideTooltip()
+    }
   }
 
   function fillList() {
-    if (!("actions" in this.params) || this.params.actions.len() <= 0)
-      return this.goBack()
+    if (!this.params?.infoBlock
+      && (!("actions" in this.params) || this.params.actions.len() <= 0))
+        return this.goBack()
+
+    if (this.params?.cssParams)
+      foreach (param, val in this.params.cssParams)
+        this.scene[param] = val
+
+    if (this.params?.infoBlock) {
+      let infoBlock = this.scene.findObject("info_block")
+      let infoData = this.params.infoBlock
+      this.guiScene.replaceContentFromText(infoBlock, infoData, infoData.len(), this)
+    }
 
     let nest = this.scene.findObject("list_nest")
 
@@ -88,7 +105,6 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
         action.show <- show
 
       action.text <- (action?.text ?? "").replace(" ", nbsp)
-
       isIconed = isIconed || (show && action?.icon != null)
     }
     this.scene.iconed = isIconed ? "yes" : "no"
@@ -97,7 +113,7 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
     this.guiScene.replaceContentFromText(nest, data, data.len(), this)
 
     // Temp Fix, DaGui cannot recalculate childrens width according to parent after replaceContent
-    local maxWidth = 0
+    local maxWidth = this.scene.getSize()[0]
     for (local i = 0; i < nest.childrenCount(); i++)
       maxWidth = max(maxWidth, nest.getChild(i).getSize()[0])
     nest.width = maxWidth

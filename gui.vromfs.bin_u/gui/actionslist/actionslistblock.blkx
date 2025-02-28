@@ -5,13 +5,24 @@
   "iconed": "no",
   "tooltip": "",
   "on_end_edit": "onActionsListDeactivate",
+  "flow": "vertical",
+  "flow-align": "center",
+  "listStyle": "center",
+  "min-width": "0",
+  "background-color": "@frameDarkBackgroundColor",
+  "action_list_info": {
+    "id": "info_block",
+    "position": "relative",
+    "left": "(pw-w)/2",
+    "width": "pw"
+  },
   "itemsList": {
     "id": "list_nest",
     "flow": "vertical",
+    "min-width": "pw",
     "behavior": "posNavigator",
     "navigatorShortcuts": "cancel",
     "on_set_focus": "onFocus",
     "on_cancel_edit": "onBtnClose"
-  },
-  "popup_menu_arrow": {}
+  }
 }

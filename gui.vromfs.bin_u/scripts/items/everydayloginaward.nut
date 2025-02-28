@@ -25,6 +25,11 @@ let openQrWindow = require("%scripts/wndLib/qrWindow.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { rnd_int } = require("dagor.random")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, processTrophyRewardsUserlogData, isRewardItem,
+  getRestRewardsNumLayer
+} = require("%scripts/items/trophyReward.nut")
+let { getPrizeImageByConfig, getTrophyReward } = require("%scripts/items/prizesView.nut")
 
 let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -76,7 +81,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     local text = loc($"{this.userlog.body.rewardType}/name")
 
     let itemId = this.getTrophyIdName(this.getAwardName())
-    let item = ::ItemsManager.findItemById(itemId)
+    let item = findItemById(itemId)
     if (item)
       text = loc("ui/colon").concat(text, item.getName(false))
 
@@ -198,7 +203,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     if (this.isOpened) {
       layersData = "".concat(layersData,
         this.useSingleAnimation ? this.getRewardImage() : "",
-        ::trophyReward.getRestRewardsNumLayer(this.rewardsArray, ::trophyReward.maxRewardsShow)
+        getRestRewardsNumLayer(this.rewardsArray, MAX_REWARDS_SHOW_IN_TROPHY)
       )
     }
 
@@ -207,7 +212,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
   function getChestLayersData() {
     let id = this.getTrophyIdName(this.getAwardName())
-    let item = ::ItemsManager.findItemById(id)
+    let item = findItemById(id)
     if (item) {
       if (this.isOpened)
         return item.getOpenedBigIcon()
@@ -255,11 +260,11 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
       return ""
 
     local layersData = ""
-    for (local i = 0; i < ::trophyReward.maxRewardsShow; i++) {
+    for (local i = 0; i < MAX_REWARDS_SHOW_IN_TROPHY; i++) {
       if (!(i in this.rewardsArray))
         break
 
-      layersData = "".concat(layersData, ::trophyReward.getImageByConfig(this.rewardsArray[i], false))
+      layersData = "".concat(layersData, getPrizeImageByConfig(this.rewardsArray[i], false))
     }
 
     if (layersData == "")
@@ -355,7 +360,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     arr.extend(this.periodicRewardsArray)
 
     if (arr.len() > 1 || this.haveItems)
-      openTrophyRewardsList({ rewardsArray = ::trophyReward.processUserlogData(arr) })
+      openTrophyRewardsList({ rewardsArray = processTrophyRewardsUserlogData(arr) })
   }
 
   function openChest() {
@@ -425,16 +430,16 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
   function checkRewardsArray() {
     foreach (reward in this.rewardsArray) {
-      let rewardType = ::trophyReward.getType(reward)
-      this.haveItems = this.haveItems || ::trophyReward.isRewardItem(rewardType)
+      let rewardType = getTrophyRewardType(reward)
+      this.haveItems = this.haveItems || isRewardItem(rewardType)
 
       if (rewardType == "unit" || rewardType == "rentedUnit")
         this.unit = getAircraftByName(reward[rewardType]) || this.unit
     }
 
     foreach (reward in this.periodicRewardsArray) {
-      let rewardType = ::trophyReward.getType(reward)
-      this.haveItems = this.haveItems || ::trophyReward.isRewardItem(rewardType)
+      let rewardType = getTrophyRewardType(reward)
+      this.haveItems = this.haveItems || isRewardItem(rewardType)
 
       if (rewardType == "unit" || rewardType == "rentedUnit")
         this.periodUnit = getAircraftByName(reward[rewardType]) || this.periodUnit
@@ -459,12 +464,12 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(gotTextObj))
       gotTextObj.setValue("".concat(loc("reward"), loc("ui/colon")))
 
-    let reward = this.unit ? this.getRentUnitText(this.unit) : ::trophyReward.getReward(this.rewardsArray)
+    let reward = this.unit ? this.getRentUnitText(this.unit) : getTrophyReward(this.rewardsArray)
     let rewardTextObj = placeObj.findObject("reward_text")
     if (checkObj(rewardTextObj))
       rewardTextObj.setValue(reward)
 
-    let periodReward = this.periodUnit ? this.getRentUnitText(this.periodUnit) : ::trophyReward.getReward(this.periodicRewardsArray)
+    let periodReward = this.periodUnit ? this.getRentUnitText(this.periodUnit) : getTrophyReward(this.periodicRewardsArray)
     let pRewardTextObj = placeObj.findObject("period_reward_text")
     if (checkObj(pRewardTextObj))
       pRewardTextObj.setValue(periodReward)
@@ -556,7 +561,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
       havePeriodReward = recentRewardData != null
       periodicRewardImage = periodicRewImage
       skipNavigation = true
-      item = getUserlogImageItem(::ItemsManager.findItemById(viewItemConfig?.itemId), viewItemConfig)
+      item = getUserlogImageItem(findItemById(viewItemConfig?.itemId), viewItemConfig)
     }
   }
 

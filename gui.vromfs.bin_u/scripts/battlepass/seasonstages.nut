@@ -9,6 +9,7 @@ let { getStageByIndex } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { getCurrentWarbond } = require("%scripts/warbonds/warbondsManager.nut")
 
 const COUNT_OF_VISIBLE_INCOMPLETED_LOOP_STAGES = 10
 
@@ -95,7 +96,7 @@ function getStageViewData(stageData, idxOnPage) {
   let overrideStageIcon = overrideStagesIcon.value?[stage.tostring()]
   let itemId = rewards?.keys()[0]
   let item = itemId != null ? findItemById(itemId.tointeger()) : null
-  let currentWarbond = ::g_warbonds.getCurrentWarbond()
+  let currentWarbond = getCurrentWarbond()
   let isChallengeStage = stageChallenge != null
   return {
     holderId = unlockId

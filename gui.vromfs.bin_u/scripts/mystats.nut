@@ -30,7 +30,7 @@ let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
-let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 /*
   getStats() - Returns stats or null if stats have not been received yet. Requests stats update when needed.
     Broadcasts the event "MyStatsUpdated" after receiving the result.

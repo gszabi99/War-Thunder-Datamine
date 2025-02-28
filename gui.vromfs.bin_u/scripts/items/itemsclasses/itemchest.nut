@@ -5,7 +5,7 @@ from "%scripts/items/itemsConsts.nut" import *
 let { Cost } = require("%scripts/money.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
-let ItemGenerators = require("%scripts/items/itemsClasses/itemGenerators.nut")
+let { getItemGenerator } = require("%scripts/items/itemGeneratorsManager.nut")
 let { getRequirementsMarkup, getRequirementsText, tryUseRecipes
 } = require("%scripts/items/exchangeRecipes.nut")
 let { getPrizeChanceLegendMarkup } = require("%scripts/items/prizeChance.nut")
@@ -13,6 +13,11 @@ let inventoryItemTypeByTag = require("%scripts/items/inventoryItemTypeByTag.nut"
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { getPrizesStacksViewByWeight, getPrizesStacksViewByCategory, getPrizesListText,
+  getPrizesListView, getPrizesStacksView
+} = require("%scripts/items/prizesView.nut")
 
 let Chest = class (ItemExternal) {
   static name = "Chest"
@@ -36,8 +41,8 @@ let Chest = class (ItemExternal) {
     if (!this._isInitialized) {
       this._isInitialized = true
       let genIds = inventoryClient.getChestGeneratorItemdefIds(this.id)
-      let genId = genIds.findvalue(@(genId) (ItemGenerators.get(genId)?.bundle ?? "") != "")
-      this.generator = ItemGenerators.get(genId)
+      let genId = genIds.findvalue(@(genId) (getItemGenerator(genId)?.bundle ?? "") != "")
+      this.generator = getItemGenerator(genId)
     }
     return this.generator
   }
@@ -117,7 +122,7 @@ let Chest = class (ItemExternal) {
       this.getMarketablePropDesc(),
       this.getCurExpireTimeText(),
       this.getDescRecipesText(params),
-      (hasContent ? ::PrizesView.getPrizesListText(content, this.getDescHeaderFunction()) : ""),
+      (hasContent ? getPrizesListText(content, this.getDescHeaderFunction()) : ""),
       this.getHiddenItemsDesc() || "",
       this.getLongDescription(),
     ], true)
@@ -162,23 +167,23 @@ let Chest = class (ItemExternal) {
     let categoryByItemsArray = this.getCategoryByItems()
     if (categoryWeightArray.len() > 0) {
       params.categoryWeight <- categoryWeightArray
-      res.append(::PrizesView.getPrizesStacksViewByWeight(content, this.getDescHeaderFunction(), clone params))
+      res.append(getPrizesStacksViewByWeight(content, this.getDescHeaderFunction(), clone params))
     }
     else if (categoryByItemsArray.len() > 0) {
       params.categoryByItems <- categoryByItemsArray
-      res.append(::PrizesView.getPrizesStacksViewByCategory(content, this.getDescHeaderFunction(), clone params))
+      res.append(getPrizesStacksViewByCategory(content, this.getDescHeaderFunction(), clone params))
     }
     else
-      res.append(::PrizesView.getPrizesStacksView(content, this.getDescHeaderFunction(), params))
-    res.append(::PrizesView.getPrizesListView([], { header = this.getHiddenItemsDesc() }))
+      res.append(getPrizesStacksView(content, this.getDescHeaderFunction(), params))
+    res.append(getPrizesListView([], { header = this.getHiddenItemsDesc() }))
     return res
   }
 
   function getLongDescriptionMarkup(params = null) {
     params = params ?? {}
-    let prizeMarkupArray = [::PrizesView.getPrizesListView([], { header = this.getTransferText() }),
-      ::PrizesView.getPrizesListView([], { header = this.getMarketablePropDesc() }),
-      (this.hasTimer() ? ::PrizesView.getPrizesListView([], { header = this.getCurExpireTimeText(), timerId = "expire_timer" }) : ""),
+    let prizeMarkupArray = [getPrizesListView([], { header = this.getTransferText() }),
+      getPrizesListView([], { header = this.getMarketablePropDesc() }),
+      (this.hasTimer() ? getPrizesListView([], { header = this.getCurExpireTimeText(), timerId = "expire_timer" }) : ""),
       this.getDescRecipesMarkup(clone params)
     ]
 
@@ -209,11 +214,11 @@ let Chest = class (ItemExternal) {
   function canPreview() {
     let content = this.getContent()
     return content.len() == 1 && content[0].item != null
-      && ::ItemsManager.findItemById(content[0].item)?.canPreview()
+      && findItemById(content[0].item)?.canPreview()
   }
 
   function doPreview() {
-    ::ItemsManager.findItemById(this.getContent()?[0]?.item)?.doPreview()
+    findItemById(this.getContent()?[0]?.item)?.doPreview()
   }
 
   function doMainAction(cb, handler, params = null) {
@@ -389,4 +394,7 @@ let Chest = class (ItemExternal) {
     return this.categoryByItems
   }
 }
+
+registerItemClass(Chest)
+
 return {Chest}

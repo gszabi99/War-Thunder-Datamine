@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { hangar_focus_model, hangar_set_dm_viewer_mode } = require("hangar")
+let { hangar_focus_model, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_PROTECTION } = require("hangar")
 let protectionAnalysisOptions = require("%scripts/dmViewer/protectionAnalysisOptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -24,6 +24,8 @@ let { get_replay_hits_dir, repeat_shot_from_file, set_replay_hits_mode,
 let DataBlock = require("DataBlock")
 let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
+let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
+let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 local switch_damage = false
 local allow_cutting = false
@@ -153,7 +155,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onWeaponsInfo(_obj) {
-    ::open_weapons_for_unit(this.unit, { needHideSlotbar = true })
+    open_weapons_for_unit(this.unit, { needHideSlotbar = true })
   }
 
   function goBack() {
@@ -325,15 +327,15 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   function prepareHelpPage(handler) {
     foreach (params in helpHintsParams) {
       let hintObj = handler.scene.findObject(params.hintName)
-       if (hintObj?.isValid()) {
-          let obj = this.scene.findObject(params.objName)
-          if (obj?.isValid()) {
-            let objPos = obj.getPos()
-            let objSize = (params?.sizeMults) ? obj.getSize() : [0,0]
-            let sizeMults = params?.sizeMults ?? [0,0]
-            hintObj.pos = $"{objPos[0] + sizeMults[0]*objSize[0]} {params.shiftX}, {objPos[1] + sizeMults[1]*objSize[1]} {params.shiftY}"
-          }
-       }
+      if (hintObj?.isValid()) {
+        let obj = this.scene.findObject(params.objName)
+        if (obj?.isValid()) {
+          let objPos = obj.getPos()
+          let objSize = (params?.sizeMults) ? obj.getSize() : [0,0]
+          let sizeMults = params?.sizeMults ?? [0,0]
+          hintObj.pos = $"{objPos[0] + sizeMults[0]*objSize[0]} {params.shiftX}, {objPos[1] + sizeMults[1]*objSize[1]} {params.shiftY}"
+        }
+      }
     }
   }
 
@@ -444,7 +446,7 @@ return {
   canOpen = function(unit) {
     return hasFeature("DmViewerProtectionAnalysis")
       && isInMenu()
-      && !::SessionLobby.hasSessionInLobby()
+      && !hasSessionInLobby()
       && unit?.unitType.canShowProtectionAnalysis() == true
   }
 

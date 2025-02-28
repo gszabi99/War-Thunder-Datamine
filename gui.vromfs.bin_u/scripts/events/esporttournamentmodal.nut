@@ -25,11 +25,15 @@ let { trim, utf8ToUpper } = require("%sqstd/string.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getCombineLocNameMission } = require("%scripts/missions/missionsUtils.nut")
+let { getCombineLocNameMission } = require("%scripts/missions/missionsText.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { updateShortQueueInfo } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
+let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard.nut")
 
 function getActiveTicketTxt(event) {
   if (!event)
@@ -93,7 +97,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateQueueInterface() {
-    if (!this.queueToShow || !::queues.isQueueActive(this.queueToShow))
+    if (!this.queueToShow || !queues.isQueueActive(this.queueToShow))
       this.queueToShow = this.getCurEventQueue()
     let slotbar = this.getSlotbar()
     if (slotbar)
@@ -101,12 +105,12 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurEventQueue() {
-    local q = ::queues.findQueue({}, QUEUE_TYPE_BIT.EVENT)
-    return (q && ::queues.isQueueActive(q)) ? q : null
+    local q = queues.findQueue({}, QUEUE_TYPE_BIT.EVENT)
+    return (q && queues.isQueueActive(q)) ? q : null
   }
 
   function onEventQueueChangeState(p) {
-    if (!::queues.isEventQueue(p?.queue))
+    if (!queues.isEventQueue(p?.queue))
       return
 
     this.updateQueueInterface()
@@ -339,7 +343,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
       missionsComplete = getMissionsComplete()
     }
 
-    ::EventJoinProcess(this.curEvent, null,
+    EventJoinProcess(this.curEvent, null,
       @(_curEvent) sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic),
       function() {
         configForStatistic.canIntoToBattle <- false
@@ -361,7 +365,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
     if (!q)
       return
 
-    ::queues.leaveQueue(q, { isCanceledByPlayer = true })
+    queues.leaveQueue(q, { isCanceledByPlayer = true })
   }
 
   onEventSquadStatusChanged = @(_p) this.updateApplyButton()
@@ -369,7 +373,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   onEventSquadDataUpdated = @(_p) this.updateApplyButton()
 
   onLeaderboard = @()
-    ::gui_modal_event_leaderboards({
+    gui_modal_event_leaderboards({
       eventId = getMatchingEventId(this.tournament.id, this.curTourParams.dayNum, false)
       sharedEconomicName = this.tournament.sharedEconomicName
     })
@@ -394,8 +398,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
 
     let textObj = this.scene.findObject("waitText")
     let iconObj = this.scene.findObject("queue_wait_icon")
-    ::g_qi_view_utils.updateShortQueueInfo(timerObj, textObj,
-      iconObj, loc("yn1/waiting_for_game_query"))
+    updateShortQueueInfo(timerObj, textObj, iconObj, loc("yn1/waiting_for_game_query"))
   }
 
   function updateWnd() {

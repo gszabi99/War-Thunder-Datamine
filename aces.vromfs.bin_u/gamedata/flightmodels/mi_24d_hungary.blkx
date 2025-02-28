@@ -3,10 +3,8 @@
   "fmFile": "fm/mi_24v.blk",
   "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/hellicopters_metaparts.blk",
   "viewDistKInSight": 6.0,
-  "haveCCIPForRocket": true,
   "haveCCIPForBombs": true,
   "gyroSight": true,
-  "haveCCIPForGun": true,
   "haveCCIPForTurret": true,
   "hasPointOfInterestMemory": false,
   "gearSinkRangeLR": 0.316,
@@ -1329,7 +1327,21 @@
     "gun": "gun_default",
     "turretTurnSfxPath": "tanks/effects_tanks",
     "turretTurnSfxPathStudio": "aircraft/effects",
-    "turretTurnSfxName": "turret_turn_servo"
+    "turretTurnSfxName": "turret_turn_servo",
+    "voiceWarningSystem": "rita",
+    "voiceWarningSystemOverride": {
+      "vws_check_fuel": {},
+      "vws_fuel_low": {},
+      "vws_fire": {},
+      "vws_engine_fire": {},
+      "vws_engine_fire_left": {},
+      "vws_engine_fire_right": {},
+      "vws_hydrosystem_failure": {},
+      "vws_critical_engine_vibration": {},
+      "vws_critical_left_engine_vibration": {},
+      "vws_critical_right_engine_vibration": {},
+      "vws_check_gear": {}
+    }
   },
   "cockpit": {
     "headPos": [

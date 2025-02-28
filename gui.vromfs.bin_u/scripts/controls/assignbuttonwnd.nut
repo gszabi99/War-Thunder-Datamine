@@ -4,8 +4,9 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
-::assignButtonWindow <- function assignButtonWindow(owner, onButtonEnteredFunc) {
+function assignButtonWindow(owner, onButtonEnteredFunc) {
   loadHandler(gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc })
 }
 
@@ -58,7 +59,7 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   function onButtonAdded(obj) {
     local curBtnText = ""
     local numButtons = 0
-    let curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = getCurControlsPreset()
     for (local i = 0; i < 4; i++) {
       local devId = obj[$"device{i}"]
       local btnId = obj[$"button{i}"]
@@ -97,4 +98,8 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     this.isListenButton = false;
     base.goBack();
   }
+}
+
+return {
+  assignButtonWindow
 }

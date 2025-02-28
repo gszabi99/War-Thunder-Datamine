@@ -4,7 +4,7 @@
     flow:t='horizontal'
     left:t='(pw-w)/2'
     <<^isFirstLine>>
-    padding-top:t='<<scale>>*13@sf/@pf'
+    padding-top:t='<<scale>>*1@showcaseLinePadding'
     <</isFirstLine>>
     css-hier-invalidate:t='yes'
 
@@ -12,15 +12,25 @@
     blankTextArea {
       text:t='<<text>>'
       font:t='@fontSmall'
+      font-pixht:t='<<scale>>*1@showcaseStatNameHeight'
       color:t='@showcaseGreyText'
       showInEditMode:t='no'
     }
     <<#comboBoxData>>
-    tdiv {
-      position:t='relative'
+    blankTextArea {
+      text:t=' '
+      font:t='@fontSmall'
+      color:t='@showcaseGreyText'
       display:t='hide'
       showInEditMode:t='yes'
-      include "%gui/commonParts/comboBox.tpl"
+    }
+    tdiv {
+      position:t='absolute'
+      pos:t='-w/2, 5@sf/@pf'
+      width:t='1@accountHeaderWidth'
+      display:t='hide'
+      showInEditMode:t='yes'
+      include "%gui/profile/showcase/scaledComboBox.tpl"
     }
     <</comboBoxData>>
     <</labels>>
@@ -75,7 +85,7 @@
       tdiv {
         position:t='relative'
         width:t='<<scale>>*1@accountHeaderWidth/3'
-        min-height:t='<<scale>>*130@sf/@pf'
+        min-height:t='<<scale>>*1@showcaseMinStatHeight'
         flow:t='vertical'
         padding:t='<<scale>>*20@sf/@pf, 0'
 
@@ -86,11 +96,11 @@
         <<#icon>>
         tdiv {
           position:t='relative'
-          size:t='<<scale>>*55@sf/@pf, <<scale>>*55@sf/@pf'
+          size:t='<<scale>>*1@showcaseStatIconSize, <<scale>>*1@showcaseStatIconSize'
           left:t='(pw-w)/2'
           background-image:t='<<icon>>'
           background-repeat:t='expand-svg'
-          background-svg-size:t='<<scale>>*55@sf/@pf, <<scale>>*55@sf/@pf'
+          background-svg-size:t='<<scale>>*1@showcaseStatIconSize, <<scale>>*1@showcaseStatIconSize'
           background-color:t='#FFFFFF'
         }
         <</icon>>
@@ -104,7 +114,7 @@
             position:t='relative'
             left:t='(pw-w)/2'
             font:t='@fontBigBold'
-            font-pixht:t='<<scale>>*42@sf/@pf \ 1'
+            font-pixht:t='<<scale>>*1@showcaseStatValHeight'
             color:t='@showcaseBlue'
             text:t='<<statValue>>'
             input-transparent:t='yes'
@@ -115,7 +125,7 @@
           blankTextArea {
             position:t='relative'
             font:t='@fontSmall'
-            font-pixht:t='<<scale>>*18@sf/@pf \ 1'
+            font-pixht:t='<<scale>>*1@showcaseStatNameHeight'
             width:t='pw'
             text-align:t='center'
             left:t='(pw-w)/2'
@@ -142,45 +152,7 @@
     width:t='pw'
     flow:t='vertical'
     <<#textStats>>
-    tdiv {
-      position:t='relative'
-      background-color:t='#05111111'
-      size:t='<<scale>>*pw - <<scale>>*30@sf/@pf, <<scale>>*44@sf/@pf'
-      left:t='(pw-w)/2'
-
-      <<^isFirst>>
-        margin-top:t='<<scale>>*11@sf/@pf'
-      <</isFirst>>
-      <<#isFirst>>
-        margin-top:t='<<scale>>*46@sf/@pf'
-      <</isFirst>>
-
-      tdiv {
-        re-type:t='textarea'
-        behaviour:t='textArea'
-        position:t='absolute'
-        font:t="tiny_text_hud"
-        text:t='<<text>>'
-        color:t='#7C8389'
-        left:t='<<scale>>*20@sf/@pf'
-        font-pixht:t='<<scale>>*24@sf/@pf \ 1'
-        top:t='(ph-h)/2'
-      }
-      <<#value>>
-      tdiv {
-        position:t='absolute'
-        re-type:t='textarea'
-        behaviour:t='textArea'
-        font:t="tiny_text_hud"
-        font-pixht:t='<<scale>>*24@sf/@pf \ 1'
-        text:t='<<value>>'
-        color:t='#FFFFFF'
-        left:t='pw - w - <<scale>>*18@sf/@pf'
-        top:t='(ph-h)/2'
-      }
-      <</value>>
-      tooltip:t='<<tooltip>>'
-    }
+      include "%gui/profile/showcase/textStat.tpl"
     <</textStats>>
   }
 
@@ -191,60 +163,8 @@
       left:t='(pw-w)/2'
       css-hier-invalidate:t='yes'
       <<#unitsImages>>
-
-      button {
-        id:t='<<id>>'
-        imageIdx:t='<<imageIdx>>'
-        unit:t='<<unit>>'
-        position:t='relative'
-        size:t='<<scale>>*<<width>>, <<scale>>*<<height>>'
-        margin:t='<<scale>>*15@sf/@pf, 0'
-        <<#image>>
-          background-image:t='<<image>>'
-          background-repeat:t='aspect-ratio'
-          background-color:t='#FFFFFF'
-        <</image>>
-        <<^image>>
-          background-image:t=''
-        <</image>>
-
-        on_click:t='onUnitImageClick'
-
-        tdiv {
-          re-type:t='9rect'
-          position:t='absolute'
-          size:t='pw, ph'
-          css-hier-invalidate:t='yes'
-          background-color:t='#FFFFFF'
-          background-image:t='!ui/images/profile/empty_unit_rect.svg'
-          background-position:t='10, 10'
-          background-svg-size:t='<<imageSize>>'
-          background-repeat:t='expand-svg'
-          display:t='hide'
-          showInEditMode:t='yes'
-
-          <<^image>>
-          tdiv {
-            position:t='absolute'
-            size:t='<<scale>>*10@sf/@pf, <<scale>>*50@sf/@pf'
-            pos:t='(pw-w)/2, (ph-h)/2'
-            background-color:t='#FFFFFF'
-            display:t='hide'
-            showInEditMode:t='yes'
-          }
-          tdiv {
-            position:t='absolute'
-            size:t='<<scale>>*50@sf/@pf, <<scale>>*10@sf/@pf'
-            pos:t='(pw-w)/2, (ph-h)/2'
-            background-color:t='#FFFFFF'
-            display:t='hide'
-            showInEditMode:t='yes'
-          }
-          <</image>>
-        }
-      }
+        include "%gui/profile/showcase/unitImage.tpl"
       <</unitsImages>>
     }
   <</hasUnitImage>>
-
 <</statLines>>

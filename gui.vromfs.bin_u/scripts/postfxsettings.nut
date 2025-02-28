@@ -26,7 +26,8 @@ let { setPostFxVignetteMultiplier, getPostFxVignetteMultiplier, getDefaultPostFx
       setLenseFlareHaloPower, getLenseFlareHaloPower, getDefaultLenseFlareHaloPower,
       setLenseFlareGhostsPower, getLenseFlareGhostsPower, getDefaultLenseFlareGhostsPower,
       setLenseFlareMode, getLenseFlareMode, getDefaultLenseFlareMode,
-      setIsUsingDynamicLut, getIsUsingDynamicLut } = require("postFxSettings")
+      setIsUsingDynamicLut, getIsUsingDynamicLut,
+      setEnableFilmGrain, getEnableFilmGrain } = require("postFxSettings")
 
 let tonemappingMode_list = freeze(["#options/hudDefault", "#options/reinard", "#options/polynom", "#options/logarithm"])
 let lenseFlareMode_list = freeze(["#options/disabled", "#options/enabled_in_replays", "#options/enabled_in_tps", "#options/enabled_everywhere"])
@@ -181,6 +182,8 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     this.createOneSlider("U_F", getUF() * scale, "onUFChanged", { min = 0.01 * scale, max = 5 * scale }, true)
     this.createOneSlider("UWhite", getUWhite() * scale, "onUWhiteChanged", { min = 0.01 * scale, max = 4 * scale }, true)
 
+    this.createOneCheckbox("enableFilmGrain", getEnableFilmGrain(), "onFilmGrainChanged")
+
     this.updateVisibility();
   }
 
@@ -226,6 +229,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
       this.setValue("postfx_settings_lenseFlareHaloPower", getDefaultLenseFlareHaloPower() * scale);
       this.setValue("postfx_settings_lenseFlareGhostsPower", getDefaultLenseFlareGhostsPower() * scale);
     }
+    this.setValue("postfx_settings_enableFilmGrain", false);
 
     setPostFxVignetteMultiplier(getDefaultPostFxVignetteMultiplier());
     setSharpenTps(getDefaultSharpenTps());
@@ -248,6 +252,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
       setLenseFlareHaloPower(getDefaultLenseFlareHaloPower());
       setLenseFlareGhostsPower(getDefaultLenseFlareGhostsPower());
     }
+    setEnableFilmGrain(false);
   }
 
   function goBack() {
@@ -370,6 +375,11 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
       return;
     setUWhite(obj.getValue() * recScale, true);
     this.updateSliderValue("UWhite", obj.getValue() * recScale)
+  }
+  function onFilmGrainChanged(obj) {
+    if (!obj)
+      return;
+    setEnableFilmGrain(obj.getValue());
   }
 }
 

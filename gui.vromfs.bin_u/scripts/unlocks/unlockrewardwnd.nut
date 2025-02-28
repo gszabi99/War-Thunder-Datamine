@@ -1,19 +1,22 @@
-
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getDecoratorDataToUse, useDecorator } = require("%scripts/customization/contentPreview.nut")
-let { getUnlockTypeText, getUnlockTypeFromConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockTypeText, getUnlockTypeFromConfig, buildConditionsConfig
+  } = require("%scripts/unlocks/unlocksViewModule.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { register_command } = require("console")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
-let { getPrizeTooltipConfig } = require("%scripts/items/prizesView.nut")
+let { MAX_REWARDS_SHOW_IN_TROPHY } = require("%scripts/items/trophyReward.nut")
+let { getPrizeTooltipConfig, getRewardsListViewData } = require("%scripts/items/prizesView.nut")
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+
+let delayedUnlocksQueue = {}
 
 register_command(
   function () {
@@ -30,6 +33,25 @@ register_command(
     return
   },
   "ui.debug_unlocks_reward")
+
+function showUnlocks(unlocksRewards) {
+  if (unlocksRewards.len() == 0)
+    return
+
+  if (isHandlerInScene(gui_handlers.UnlockRewardWnd)) {
+    delayedUnlocksQueue.__update(unlocksRewards)
+    return
+  }
+
+  handlersManager.loadHandler(gui_handlers.UnlockRewardWnd, { unlocksRewards = unlocksRewards.__merge(delayedUnlocksQueue) })
+  delayedUnlocksQueue.clear()
+}
+
+register_command(function() {
+  showUnlocks({ helmet_1938 = true })
+  showUnlocks({ helmet_wz35 = true, helmet_chinese_summer = true })
+  showUnlocks({ helmet_m35 = true })
+}, "debug.new_unlocks_received")
 
 gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -66,7 +88,7 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       let config = getUnlockById(unlockId)
       if (!config)
         continue
-      let unlockConditions = ::build_conditions_config(config)
+      let unlockConditions = buildConditionsConfig(config)
       let unlock = ::build_log_unlock_data(unlockConditions)
       this.unlocks.append(unlock)
 
@@ -168,7 +190,7 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.opened)
       return
 
-    let countNotVisibleItems = this.shrinkedUnlocks.len() - ::trophyReward.maxRewardsShow
+    let countNotVisibleItems = this.shrinkedUnlocks.len() - MAX_REWARDS_SHOW_IN_TROPHY
 
     if (countNotVisibleItems < 1)
       return
@@ -188,7 +210,7 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return
 
-    let data = ::trophyReward.getRewardsListViewData(this.shrinkedUnlocks,
+    let data = getRewardsListViewData(this.shrinkedUnlocks,
       { multiAwardHeader = true
         widthByParentParent = true
         header = loc("mainmenu/you_received")
@@ -198,7 +220,7 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getRewardImage() {
     local layersData = ""
-    let show_count = min(::trophyReward.maxRewardsShow, this.unlocks.len())
+    let show_count = min(MAX_REWARDS_SHOW_IN_TROPHY, this.unlocks.len())
     for (local i = 0; i < show_count; i++)
       layersData += this.getImageLayer(this.unlocks[i], this.shrinkedUnlocks[i])
 
@@ -251,12 +273,13 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       layered_image = imageLayer,
       hasFocusBorder = true })] })
   }
+
+  function afterModalDestroy() {
+    if (delayedUnlocksQueue.len() > 0)
+      showUnlocks(delayedUnlocksQueue)
+  }
 }
 
 return {
-  showUnlocks = function(unlocksRewards) {
-    if (unlocksRewards.len() == 0)
-      return
-    handlersManager.loadHandler(gui_handlers.UnlockRewardWnd, { unlocksRewards })
-  }
+  showUnlocks
 }

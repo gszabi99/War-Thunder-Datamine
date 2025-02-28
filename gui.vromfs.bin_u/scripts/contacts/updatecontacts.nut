@@ -1,9 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, is_gdk } = require("%scripts/clientState/platform.nut")
 let { updateContacts = @(...) null } = isPlatformSony ? require("%scripts/contacts/psnContactsManager.nut")
-    : isPlatformXboxOne ? require("%scripts/contacts/xboxContactsManager.nut")
+    : is_gdk ? require("%scripts/contacts/xboxContactsManager.nut")
     : null
 
 eventbus_subscribe("playerProfileDialogClosed", function(r) {

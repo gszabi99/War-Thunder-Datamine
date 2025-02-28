@@ -104,28 +104,76 @@
       "position": "absolute",
       "pos": "pw - w, ph - h",
       "flow": "vertical",
-      "tdiv": {
-        "id": "hud_kill_log",
-        "position": "relative",
-        "pos": "pw - w, 0",
-        "height": "0.2*@shHud",
-        "margin-bottom": "0.02*@shHud",
-        "overflow": "hidden",
-        "hudMessages": {
-          "id": "hud_message_kill_log_notification",
-          "message_style": "kill_log_notification",
+      "tdiv": [
+        {
+          "id": "hud_kill_log",
           "position": "relative",
-          "pos": "pw - w, ph - h",
-          "width": "0.5@shHud",
-          "flow": "vertical"
+          "pos": "pw - w, 0",
+          "height": "0.2*@shHud",
+          "margin-bottom": "0.01*@shHud",
+          "overflow": "hidden",
+          "hudMessages": {
+            "id": "hud_message_kill_log_notification",
+            "message_style": "kill_log_notification",
+            "position": "relative",
+            "pos": "pw - w, ph - h",
+            "width": "0.5@shHud",
+            "flow": "vertical"
+          }
+        },
+        {
+          "id": "hud_tank_tactical_map_nest",
+          "position": "relative",
+          "pos": "pw - w, 0",
+          "flow": "vertical",
+          "tdiv": {
+            "id": "tactical_map_switching",
+            "behaviour": "bhvUpdateByWatched",
+            "padding": "0.005@shHud, 0",
+            "margin-bottom": "0.005@shHud",
+            "re-type": "9rect",
+            "background-color": "#C0FFFFFF",
+            "background-repeat": "expand",
+            "background-image": "#ui/gameuiskin#block_bg_rounded_gray",
+            "background-position": "4, 4, 4, 4",
+            "action_item_content": {
+              "behaviour": "BhvHint",
+              "pos": "0, 0.5ph-0.5h",
+              "position": "relative",
+              "value": "{{ID_TOGGLE_UAV_CAMERA}}"
+            },
+            "img": {
+              "size": "0.02@shHud, 0.02@shHud",
+              "pos": "0.005@shHud, 0.5ph-0.5h",
+              "position": "relative",
+              "background-svg-size": "0.02@shHud, 0.02@shHud",
+              "background-image": "!#ui/gameuiskin#icon_repeatable.svg"
+            },
+            "button": [
+              {
+                "id": "map_btn",
+                "pos": "0.005@shHud, 0.5ph-0.5h",
+                "position": "relative",
+                "hudFont": "small",
+                "text": "#tactical_map_switching/map",
+                "on_click": "onSwitchToTacticalMap"
+              },
+              {
+                "id": "uav_btn",
+                "pos": "0.005@shHud, 0.5ph-0.5h",
+                "position": "relative",
+                "hudFont": "small",
+                "text": "#tactical_map_switching/uav",
+                "on_click": "onSwitchToUAVCamera"
+              }
+            ]
+          },
+          "tacticalMap": {
+            "id": "hud_tank_tactical_map",
+            "size": "pw, ph"
+          }
         }
-      },
-      "tacticalMap": {
-        "id": "hud_tank_tactical_map",
-        "size": "@sizeTacticalMap, @sizeTacticalMap",
-        "position": "relative",
-        "pos": "pw - w, 0"
-      }
+      ]
     },
     {
       "id": "hud_enemy_damage_nest",

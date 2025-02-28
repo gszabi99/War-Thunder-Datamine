@@ -44,7 +44,7 @@ def load_cover_parts(blk : DataBlock&; add_compartment : bool;
     if weight <= 0.0f || max_water_alive < 0.0f || max_water_alive > 1.0f
       loading_errors |> push("invalid cover part {cover_part_name} maxWaterAlive={max_water_alive} or weight={weight}")
       return
-    let cover_part_no = get_dm_part_id_by_dm_name(cover_part_name, true)
+    let cover_part_no = get_dm_part_id_by_dm_name(cover_part_name)
     let cover_part_id = unit_dm |> dm_get_remap(cover_part_no)
 
     if dm_part_id_valid(cover_part_id)
@@ -65,7 +65,7 @@ def load_cover_parts(blk : DataBlock&; add_compartment : bool;
       cover |> datablock_get_block("innerParts") <| $(inner_parts)
         inner_parts |> datablock_for_each_block() <| $(inner_part)
           let inner_part_name = inner_part |> datablock_getStr("partNo", "")
-          let inner_part_no = get_dm_part_id_by_dm_name(inner_part_name, true)
+          let inner_part_no = get_dm_part_id_by_dm_name(inner_part_name)
           let inner_part_id = unit_dm |> dm_get_remap(inner_part_no)
           if !dm_part_id_valid(inner_part_id)
             if inner_part_no < 0
@@ -222,7 +222,7 @@ def ship_init_repair_parts_info_handle_es(evt : CmdInitComponent;
 
   *evt.modelBlk |> datablock_get_block("partsToRepair") <| $(blk)
     blk |> datablock_for_each_block() <| $(part_info)
-      let partNo = get_dm_part_id_by_dm_name(part_info.getBlockName, true)
+      let partNo = get_dm_part_id_by_dm_name(part_info.getBlockName)
       let partId = dm |> dm_get_remap(partNo)
       if !partId |> dm_part_id_valid()
         return

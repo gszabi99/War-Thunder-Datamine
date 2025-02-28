@@ -12,11 +12,11 @@ let { EPLX_PS4_FRIENDS, contactsByGroups, blockedMeUids, cacheContactByName, cla
 } = require("%scripts/contacts/contactsManager.nut")
 let { replace, utf8ToLower } = require("%sqstd/string.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { show_profile_card } = require("%xboxLib/impl/user.nut")
+let { show_profile_card } = require("%gdkLib/impl/user.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userName, userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
-let { can_we_text_user, CommunicationState } = require("%scripts/xbox/permissions.nut")
+let { can_we_text_user, CommunicationState } = require("%scripts/gdk/permissions.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 
@@ -28,6 +28,8 @@ class Contact {
   title = ""
 
   presence = contactPresence.UNKNOWN
+  onlinePresence = null
+  squadPresence = null
   forceOffline = false
   isForceOfflineChecked = !is_platform_xbox
 
@@ -114,16 +116,21 @@ class Contact {
     clanUserTable.mutate(@(v) v[name] <- clanTag)
   }
 
-  function getPresenceText() {
-    local locParams = {}
-    if (this.presence == contactPresence.IN_QUEUE
-        || this.presence == contactPresence.IN_GAME) {
-      let event = events.getEvent(getTblValue("eventId", this.gameConfig))
-      locParams = {
-        gameMode = event ? events.getEventNameText(event) : ""
-        country = loc(getTblValue("country", this.gameConfig, ""))
-      }
+  function getBattlePresenceDesc() {
+    let hasDesc = this.onlinePresence?.typeName == contactPresence.IN_QUEUE.typeName
+      || this.onlinePresence?.typeName == contactPresence.IN_GAME.typeName // after reloading scripts comparison of enums does not work, so compare by the typeName
+    if (!hasDesc)
+      return {}
+
+    let event = events.getEvent(this.gameConfig?.eventId)
+    return {
+      gameMode = event ? events.getEventNameText(event) : ""
+      country = loc(this.gameConfig?.country ?? "")
     }
+  }
+
+  function getPresenceText() {
+    let locParams = this.getBattlePresenceDesc()
     return this.presence.getText(locParams)
   }
 

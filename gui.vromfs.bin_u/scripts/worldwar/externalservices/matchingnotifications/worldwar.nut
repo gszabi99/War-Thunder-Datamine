@@ -12,6 +12,9 @@ let { get_current_mission_desc } = require("guiMission")
 let { isInFlight } = require("gameplayBinding")
 let { wwGetOperationId } = require("worldwar")
 let { chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
+let { setWaitForQueueRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
 
 matchingRpcSubscribe("worldwar.on_join_to_battle", function(params) {
   let operationId = params?.operationId ?? ""
@@ -19,19 +22,19 @@ matchingRpcSubscribe("worldwar.on_join_to_battle", function(params) {
   let country = params?.country ?? ""
   let battleIds = getTblValue("battleIds", params, [])
   foreach (battleId in battleIds) {
-    let queue = ::queues.createQueue({
+    let queue = queues.createQueue({
         operationId = operationId
         battleId = battleId
         country = country
         team = team
       }, true)
-    ::queues.afterJoinQueue(queue)
+    queues.afterJoinQueue(queue)
   }
   g_squad_manager.cancelWwBattlePrepare()
 })
 
 matchingRpcSubscribe("worldwar.on_leave_from_battle", function(params) {
-  let queue = ::queues.findQueueByName(::queue_classes.WwBattle.getName(params))
+  let queue = queues.findQueueByName(getQueueClass("WwBattle").getName(params))
   if (!queue)
     return
 
@@ -41,9 +44,9 @@ matchingRpcSubscribe("worldwar.on_leave_from_battle", function(params) {
     ? loc($"worldWar/leaveBattle/{reason}", "")
     : ""
 
-  ::queues.afterLeaveQueue(queue, msgText.len() ? msgText : null)
+  queues.afterLeaveQueue(queue, msgText.len() ? msgText : null)
   if (isBattleStarted)
-    ::SessionLobby.setWaitForQueueRoom(true)
+    setWaitForQueueRoom(true)
 })
 
 matchingRpcSubscribe("worldwar.notify", function(params) {

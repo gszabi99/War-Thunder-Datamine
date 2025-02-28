@@ -6,8 +6,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getFavoriteUnlocks, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { storeUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getSubunlockCfg } = require("%scripts/unlocks/unlocksConditions.nut")
-let { updateProgress } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { updateProgress, getSubunlockCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 gui_handlers.FavoriteUnlocksListView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -65,7 +64,7 @@ gui_handlers.FavoriteUnlocksListView <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onStoreSnapshot(obj) {
-    let unlockCfg = ::build_conditions_config(getUnlockById(obj.unlockId))
+    let unlockCfg = buildConditionsConfig(getUnlockById(obj.unlockId))
     let subunlockCfg = getSubunlockCfg(unlockCfg.conditions)
     storeUnlockProgressSnapshot(subunlockCfg ?? unlockCfg)
 

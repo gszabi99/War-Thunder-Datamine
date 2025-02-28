@@ -43,7 +43,8 @@ let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/generi
 let { openHudAirWeaponSelector, isVisualHudAirWeaponSelectorOpened } = require("%scripts/hud/hudAirWeaponSelector.nut")
 let { getExtraActionItemsView } = require("%scripts/hud/hudActionBarExtraActions.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 local sectorAngle1PID = dagui_propid_add_name_id("sector-angle-1")
 
@@ -655,7 +656,7 @@ let class ActionBar {
     if (!this.isValid())
       return
 
-    let showActionBarOption = ::get_gui_option_in_mode(USEROPT_SHOW_ACTION_BAR, OPTIONS_MODE_GAMEPLAY, true)
+    let showActionBarOption = get_gui_option_in_mode(USEROPT_SHOW_ACTION_BAR, OPTIONS_MODE_GAMEPLAY, true)
     this.isVisible = showActionBarOption && !g_hud_live_stats.isVisible() && !isVisualHudAirWeaponSelectorOpened()
     this.scene.show(this.isVisible)
     eventbus_send("setIsActionBarVisible", this.isVisible)

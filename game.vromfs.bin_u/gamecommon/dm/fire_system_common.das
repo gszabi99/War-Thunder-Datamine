@@ -19,7 +19,7 @@ let INVALID_GEOM_NODE_ID = -1
 
 
 struct StartSingleBurnDesc
-  partId : PartId
+  partId : PartId = PartId()
   nodeId : int
   fireParamsId : int
   fireFxId : int

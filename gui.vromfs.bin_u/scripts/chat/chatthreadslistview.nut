@@ -11,6 +11,10 @@ let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { getChatLatestThreadsUpdateState, getChatLatestThreadsCurListUid, getSearchLangsList,
+  getChatThreadsTimeToRefresh, canRefreshChatThreads, refreshChatThreads, isChatThreadsListNewest,
+  getChatThreadsList, openChatThreadsChooseLangsMenu, canChooseThreadsLang
+} = require("%scripts/chat/chatLatestThreads.nut")
 
 gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -46,7 +50,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateList(forceUpdate = false) {
-    if (!forceUpdate && ::g_chat_latest_threads.isListNewest(this.curListUid))
+    if (!forceUpdate && isChatThreadsListNewest(this.curListUid))
       return
 
     if (!checkObj(this.listObj))
@@ -54,9 +58,9 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let selThread = this.getThreadByObj()
 
-    this.curListUid = ::g_chat_latest_threads.curListUid
-    let list = ::g_chat_latest_threads.getList()
-    let isWaiting = !list.len() && ::g_chat_latest_threads.getUpdateState() == chatUpdateState.IN_PROGRESS
+    this.curListUid = getChatLatestThreadsCurListUid()
+    let list = getChatThreadsList()
+    let isWaiting = !list.len() && getChatLatestThreadsUpdateState() == chatUpdateState.IN_PROGRESS
     if (isWaiting)
       return
 
@@ -78,15 +82,15 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateRefreshButton() {
     let btnObj = this.scene.findObject("btn_refresh")
-    let isWaiting = ::g_chat_latest_threads.getUpdateState() == chatUpdateState.IN_PROGRESS
+    let isWaiting = getChatLatestThreadsUpdateState() == chatUpdateState.IN_PROGRESS
 
     btnObj.findObject("btn_refresh_img").show(!isWaiting)
     btnObj.findObject("btn_refresh_wait_anim").show(isWaiting)
 
-    let canRefresh = !isWaiting && ::g_chat_latest_threads.canRefresh()
+    let canRefresh = !isWaiting && canRefreshChatThreads()
     btnObj.enable(canRefresh)
 
-    let timeLeft = ::g_chat_latest_threads.getTimeToRefresh()
+    let timeLeft = getChatThreadsTimeToRefresh()
 
     btnObj.tooltip = timeLeft > 0
       ? "".concat(loc("mainmenu/btnRefresh"), " (", time.secondsToString(0.001 * timeLeft, true, true), ")")
@@ -95,12 +99,12 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateLangsButton() {
-    let show = g_chat.canChooseThreadsLang()
+    let show = canChooseThreadsLang()
     let langsBtn = showObjById("threads_search_langs_btn", show, this.scene)
     if (!show)
       return
 
-    let langs = ::g_chat_latest_threads.getSearchLangsList()
+    let langs = getSearchLangsList()
     let view = {
       countries = langs.map(@(l) { countryIcon = l.icon })
     }
@@ -196,7 +200,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onRefresh() {
-    ::g_chat_latest_threads.refresh()
+    refreshChatThreads()
     this.updateRefreshButton()
   }
 
@@ -224,7 +228,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onLangsBtn(_obj) {
-    ::g_chat_latest_threads.openChooseLangsMenu("top", this.scene.findObject("threads_search_langs_btn"))
+    openChatThreadsChooseLangsMenu("top", this.scene.findObject("threads_search_langs_btn"))
   }
 
   function onCategoriesBtn(_obj) {

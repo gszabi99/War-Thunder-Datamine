@@ -18,13 +18,15 @@ let { getDefaultDifficultyGroup } = require("%scripts/unlocks/battleTaskDifficul
 let { isBattleTaskActive, isBattleTasksAvailable, isBattleTaskDone, isBattleTaskExpired,
   canActivateSpecialTask, canGetBattleTaskReward, getBattleTaskWithAvailableAward,
   getBattleTasksOrderedByDiff, filterBattleTasksByGameModeId, getBattleTaskDiffGroups,
-  requestBattleTaskReward, setBattleTasksUpdateTimer, getBattleTaskDifficultyImage,
-  getBattleTaskView, getDifficultyTypeByTask
+  requestBattleTaskReward, getDifficultyTypeByTask
 } = require("%scripts/unlocks/battleTasks.nut")
+let { setBattleTasksUpdateTimer, getBattleTaskView, getBattleTaskDifficultyImage
+} = require("%scripts/unlocks/battleTasksView.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { buildUnlockDesc, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { openWarbondsShop } = require("%scripts/warbonds/warbondsManager.nut")
 
 dagui_propid_add_name_id("task_id")
 dagui_propid_add_name_id("difficultyGroup")
@@ -77,7 +79,7 @@ gui_handlers.BattleTasksPromoHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local view = {}
 
     if (reqTask) {
-      let config = ::build_conditions_config(reqTask)
+      let config = buildConditionsConfig(reqTask)
       buildUnlockDesc(config)
 
       let itemView = getBattleTaskView(config, { isPromo = true })
@@ -139,7 +141,7 @@ gui_handlers.BattleTasksPromoHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onWarbondsShop(_obj) {
-    ::g_warbonds.openShop()
+    openWarbondsShop()
   }
 
   function onSelectDifficultyBattleTasks(obj) {

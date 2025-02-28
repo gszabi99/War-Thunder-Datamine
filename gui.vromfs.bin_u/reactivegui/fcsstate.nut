@@ -1,4 +1,5 @@
 from "%rGui/globals/ui_library.nut" import *
+let { WatchedImmediate } = require("%sqstd/frp.nut")
 
 let interopGen = require("interopGen.nut")
 
@@ -26,7 +27,7 @@ let fcsState = {
   HeroAzimuthAngle = Watched(0.0)
   aimAngle = Watched(0.0)
   TargetAzimuthAngle = Watched(0.0)
-  ShotState = Watched(FCSShotState.SHOT_NONE)
+  ShotState = WatchedImmediate(FCSShotState.SHOT_NONE)
   ShotDiscrepancy = Watched(0.0)
   ShotDirection = Watched(0.0)
   HasFcsIndication = Watched(false)
@@ -44,6 +45,8 @@ let fcsState = {
   ForestallPosY = Watched(0.0)
   TargetPosX = Watched(0.0)
   TargetPosY = Watched(0.0)
+
+  IsAutoAim = Watched(false)
 }
 
 interopGen({

@@ -1,5 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 from "%scripts/teams.nut" import g_team
 
 /*
@@ -22,6 +21,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
+let { getRoomMembersInfoList } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { setMpTable, buildMpTable, updateTeamCssLabel } = require("%scripts/statistics/mpStatisticsUtil.nut")
 
 gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -70,7 +71,7 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       {
         isFirst = idx == 0
         tableId = this.getTeamTableId(team)
-        content = ::build_mp_table([], markupData, this.columnsList)
+        content = buildMpTable([], markupData, this.columnsList)
       })
     }
     return view
@@ -116,7 +117,7 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updatePlayersTbl() {
     this.isTablesInUpdate = true
-    let playersList = SessionLobby.getMembersInfoList(this.room)
+    let playersList = getRoomMembersInfoList(this.room)
     foreach (team in this.teams)
       this.updateTeamPlayersTbl(team, playersList)
     this.isTablesInUpdate = false
@@ -130,8 +131,8 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let teamList = team == g_team.ANY ? playersList
       : playersList.filter(@(p) p.team.tointeger() == team.code)
-    ::set_mp_table(objTbl, teamList, {handler = this})
-    ::update_team_css_label(objTbl)
+    setMpTable(objTbl, teamList, {handler = this})
+    updateTeamCssLabel(objTbl)
 
     this.playersInTeamTables[team] <- teamList
 

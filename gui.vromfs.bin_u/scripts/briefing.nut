@@ -1,11 +1,12 @@
 from "%scripts/dagui_natives.nut" import add_last_played, show_gui, string_to_restore_type, map_to_location
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
-from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 from "%scripts/mainConsts.nut" import global_max_players_versus
 
+let { currentCampaignId, currentCampaignMission, set_mission_for_takeoff, set_mission_settings, get_mission_settings,
+  is_user_mission
+} = require("%scripts/missions/missionsStates.nut")
 let { fillBlock } = require("%sqstd/datablock.nut")
-let { is_user_mission } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -21,50 +22,15 @@ let { get_meta_mission_info_by_gm_and_name,
   select_mission, select_mission_full, quit_to_debriefing
 } = require("guiMission")
 let { dynamicSetTakeoffMode } = require("dynamicMission")
-let { locCurrentMissionName, getMissionTimeText, getWeatherLocName
-} = require("%scripts/missions/missionsUtils.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
+let { loc_current_mission_desc, getWeatherLocName, locCurrentMissionName, getMissionTimeText
+} = require("%scripts/missions/missionsText.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info } = require("blkGetters")
 let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { create_options_container } = require("%scripts/options/optionsExt.nut")
-let { currentCampaignId, currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
+let { isInSessionRoom, getSessionLobbyMaxMembersCount } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-
-::mission_settings <- {
-  name = null
-  postfix = null
-  missionURL = null
-  aircraft = null
-  weapon = null
-  diff = 1
-  players = null
-  time = null
-  weather = null
-  isLimitedFuel = false
-  isLimitedAmmo = false
-  takeoffMode = 0
-  currentMissionIdx = -1
-
-  mission = null
-  missionFull = null
-  friendOnly = false
-  allowJIP = true
-  dedicatedReplay = false
-  coop = false
-  layout = null
-  sessionPassword = ""
-  layoutName = ""
-  isBotsAllowed = true
-  rounds = 0
-  arcadeCountry = false
-  maxRespawns = -1
-  autoBalance = true
-  battleMode = BATTLE_TYPES.AIR // only for random battles, must be removed when new modes will be added
-}
-
-registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
+let { isMissionForUnitType, isSkirmishWithKillStreaks } = require("%scripts/missions/missionsUtils.nut")
 
 ::get_briefing_options <- function get_briefing_options(gm, gt, missionBlk) {
   let optionItems = []
@@ -104,7 +70,7 @@ registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
 
   if (gm == GM_DYNAMIC) {
     if (missionBlk.paramExists("takeoff_mode")) {
-        ::mission_name_for_takeoff = missionBlk?.name
+        set_mission_for_takeoff(missionBlk?.name)
         optionItems.append([USEROPT_TAKEOFF_MODE, "spinner"])
     }
 //    if (missionBlk.paramExists("landing_mode"))
@@ -143,7 +109,7 @@ registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
       optionItems.append([USEROPT_BIT_COUNTRIES_TEAM_A, "multiselect"])
       optionItems.append([USEROPT_BIT_COUNTRIES_TEAM_B, "multiselect"])
 
-      if (::is_skirmish_with_killstreaks(missionBlk))
+      if (isSkirmishWithKillStreaks(missionBlk))
         optionItems.append([USEROPT_USE_KILLSTREAKS, "spinner"])
 
       optionItems.append([USEROPT_BIT_UNIT_TYPES, "multiselect"])
@@ -157,12 +123,12 @@ registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
       optionItems.append([USEROPT_IS_BOTS_ALLOWED, "spinner"])
     }
     if (canUseBots && isBotsAllowed != false
-        && ::is_mission_for_unittype(missionBlk, ES_UNIT_TYPE_TANK)) {
+        && isMissionForUnitType(missionBlk, ES_UNIT_TYPE_TANK)) {
       optionItems.append([USEROPT_USE_TANK_BOTS, "spinner"])
       optionItems.append([USEROPT_SPAWN_AI_TANK_ON_TANK_MAPS, "spinner"])
     }
     if (canUseBots && isBotsAllowed != false && hasFeature("ShipBotsOption") &&
-      ::is_mission_for_unittype(missionBlk, ES_UNIT_TYPE_SHIP))
+      isMissionForUnitType(missionBlk, ES_UNIT_TYPE_SHIP))
       optionItems.append([USEROPT_USE_SHIP_BOTS, "spinner"])
 
     optionItems.append([USEROPT_KEEP_DEAD, "spinner"])
@@ -191,6 +157,9 @@ registerPersistentData("mission_settings", getroottable(), ["mission_settings"])
 
   if (gm == GM_SKIRMISH && hasFeature("LiveBroadcast"))
     optionItems.append([USEROPT_DEDICATED_REPLAY, "spinner"])
+
+  if (gm == GM_SKIRMISH)
+   optionItems.append([USEROPT_ALLOW_WEB_UI, "spinner"])
 
   if (gm == GM_SKIRMISH)
     optionItems.append([USEROPT_SESSION_PASSWORD, "editbox"])
@@ -267,24 +236,24 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     this.missionBlk.setFrom(baseMissionBlk)
 
     if (gm == GM_EVENT)
-      ::mission_settings.coop = true;
+      set_mission_settings("coop", true)
     else if ((gm != GM_SINGLE_MISSION) && (gm != GM_USER_MISSION) && (gm != GM_BUILDER))
-      ::mission_settings.coop = false;
+      set_mission_settings("coop", false)
     else if (gm == GM_SINGLE_MISSION) {
       if (!this.missionBlk.getBool("gt_cooperative", false) || is_user_mission(this.missionBlk))
-        ::mission_settings.coop = false;
+        set_mission_settings("coop", false)
     }
     //otherwise it's set from menu
 
-    this.missionBlk.setBool("gt_cooperative", ::mission_settings.coop)
+    this.missionBlk.setBool("gt_cooperative", get_mission_settings().coop)
     this.missionBlk.setInt("_gameMode", gm)
     if (gm == GM_DYNAMIC || gm == GM_BUILDER)
       if (this.missionBlk.getStr("restoreType", "attempts") == "tactical control")
         this.missionBlk.setStr("restoreType", "attempts");
 
     if (this.isRestart) { //temp hack because it doesn't work for some weird reason
-      this.missionBlk.setBool("isLimitedFuel", ::mission_settings.isLimitedFuel)
-      this.missionBlk.setBool("isLimitedAmmo", ::mission_settings.isLimitedAmmo)
+      this.missionBlk.setBool("isLimitedFuel", get_mission_settings().isLimitedFuel)
+      this.missionBlk.setBool("isLimitedAmmo", get_mission_settings().isLimitedAmmo)
     }
 
     select_mission(this.missionBlk, false);
@@ -294,7 +263,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     log(format("[BRIEFING] mode %d, type %d, mission %s", gm, gt, this.missionName))
 
     let title = locCurrentMissionName()
-    local desc = ::loc_current_mission_desc()
+    local desc = loc_current_mission_desc()
     this.picture = this.missionBlk.getStr("backgroundImage", "")
     this.restoreType = string_to_restore_type(this.missionBlk.getStr("restoreType", "attempts"))
     this.isTakeOff = this.missionBlk.getBool("optionalTakeOff", false)
@@ -303,11 +272,11 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     let aircraft = this.missionBlk.getStr("player_class", "")
     unitNameForWeapons.set(aircraft)
 
-    ::mission_settings.name = this.missionName
-    ::mission_settings.postfix = null
-    ::mission_settings.aircraft  = aircraft
-    ::mission_settings.weapon = this.missionBlk.getStr("player_weapons", "")
-    ::mission_settings.players = 4;
+    set_mission_settings("name", this.missionName)
+    set_mission_settings("postfix", null)
+    set_mission_settings("aircraft", aircraft)
+    set_mission_settings("weapon", this.missionBlk.getStr("player_weapons", ""))
+    set_mission_settings("players", 4)
 
     let descrAdd = get_mission_desc_text(this.missionBlk)
     if (descrAdd != "")
@@ -355,10 +324,12 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     }
 
     if (gm == GM_DYNAMIC) {
-      ::mission_settings.missionFull = ::mission_settings.dynlist[::mission_settings.currentMissionIdx]
-      misBlk.setFrom(::mission_settings.missionFull.mission_settings.mission);
-      misBlk.setInt("currentMissionIdx", ::mission_settings.currentMissionIdx);
-      misBlk.setInt("takeoffMode", ::mission_settings.takeoffMode);
+      let cms = get_mission_settings()
+      let mfull = cms.dynlist[cms.currentMissionIdx]
+      set_mission_settings("missionFull", mfull)
+      misBlk.setFrom(mfull.mission_settings.mission);
+      misBlk.setInt("currentMissionIdx", cms.currentMissionIdx);
+      misBlk.setInt("takeoffMode", cms.takeoffMode);
     }
 
     misBlk.setInt("_gameMode", gm)
@@ -369,25 +340,25 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     set_gui_option(USEROPT_NUM_ATTEMPTS, -1)
 
     if (gm == GM_DYNAMIC) {
-      misBlk.setStr("difficulty", ::get_option(USEROPT_DIFFICULTY).values[::mission_settings.diff])
+      misBlk.setStr("difficulty", get_option(USEROPT_DIFFICULTY).values[get_mission_settings().diff])
     }
     else if (this.getObj("difficulty") != null) {
-      ::mission_settings.diff = this.getObj("difficulty").getValue();
-      misBlk.setStr("difficulty", ::get_option(USEROPT_DIFFICULTY).values[::mission_settings.diff])
+      set_mission_settings("diff", this.getObj("difficulty").getValue())
+      misBlk.setStr("difficulty", get_option(USEROPT_DIFFICULTY).values[get_mission_settings().diff])
     }
     else
-      ::mission_settings.diff = 0;
+      set_mission_settings("diff", 0)
 
     value = this.getOptValue(USEROPT_LIMITED_FUEL, false)
     if (value != null) {
-      ::mission_settings.isLimitedFuel = value
-      misBlk.setBool("isLimitedFuel", ::mission_settings.isLimitedFuel)
+      set_mission_settings("isLimitedFuel", value)
+      misBlk.setBool("isLimitedFuel", get_mission_settings().isLimitedFuel)
     }
 
     value = this.getOptValue(USEROPT_LIMITED_AMMO, false)
     if (value != null) {
-      ::mission_settings.isLimitedAmmo = value
-      misBlk.setBool("isLimitedAmmo", ::mission_settings.isLimitedAmmo)
+      set_mission_settings("isLimitedAmmo", value)
+      misBlk.setBool("isLimitedAmmo", get_mission_settings().isLimitedAmmo)
     }
 
     value = this.getOptValue(USEROPT_OPTIONAL_TAKEOFF, false)
@@ -404,19 +375,19 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
 
     value = this.getOptValue(USEROPT_SKIN, false)
     if (value != null && (gt & GT_DYNAMIC)) {
-      let ar = ::mission_settings.missionFull.units % "armada";
+      let ar = get_mission_settings().missionFull.units % "armada";
       for (local i = 0; i < ar.len(); i++) {
         if (ar[i].name.indexof("#player.") != null)
           ar[i].props.skin = value;
       }
     }
 
-    ::mission_settings.coop = ::mission_settings.coop && g_squad_manager.isNotAloneOnline()
-    misBlk.setBool("gt_cooperative", ::mission_settings.coop)
+    set_mission_settings("coop", get_mission_settings().coop && g_squad_manager.isNotAloneOnline())
+    misBlk.setBool("gt_cooperative", get_mission_settings().coop)
     misBlk.setBool("gt_versus", (gt & GT_VERSUS))
 
-    if (::mission_settings.coop) {
-      ::mission_settings.players = 4;
+    if (get_mission_settings().coop) {
+      set_mission_settings("players", 4)
       misBlk.setInt("_players", 4)
       misBlk.setInt("maxPlayers", 4)
       misBlk.setBool("gt_use_lb", gm == GM_EVENT)
@@ -444,23 +415,23 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     value = this.getOptValue(USEROPT_ROUNDS, false)
     if (value != null) {
       misBlk.setInt("rounds", value)
-      ::mission_settings.rounds = value
+      set_mission_settings("rounds", value)
     }
 
     value = this.getOptValue(USEROPT_VERSUS_RESPAWN, false)
     if (value != null) {
       misBlk.setInt("maxRespawns", value)
-      ::mission_settings.maxRespawns = value
+      set_mission_settings("maxRespawns", value)
     }
 
     if (gm == GM_SKIRMISH) {
       value = this.getOptValue(USEROPT_ALLOW_JIP, false)
       if (value != null) {
         misBlk.setBool("allowJIP", value)
-        ::mission_settings.allowJIP = value
+        set_mission_settings("allowJIP", value)
       }
 
-      if (::is_skirmish_with_killstreaks(misBlk)) {
+      if (isSkirmishWithKillStreaks(misBlk)) {
         value = this.getOptValue(USEROPT_USE_KILLSTREAKS, false)
         misBlk.setBool("useKillStreaks", value)
       }
@@ -477,7 +448,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
                         && this.getOptValue(USEROPT_IS_BOTS_ALLOWED)
 
     misBlk.setBool("isBotsAllowed", isBotsAllowed)
-    ::mission_settings.isBotsAllowed = isBotsAllowed
+    set_mission_settings("isBotsAllowed", isBotsAllowed)
 
     if (isBotsAllowed)
       misBlk.useTankBots = this.getOptValue(USEROPT_USE_TANK_BOTS, false)
@@ -490,17 +461,22 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     if (gm == GM_SKIRMISH) {
       value = hasFeature("LiveBroadcast") ? this.getOptValue(USEROPT_DEDICATED_REPLAY) : false
       misBlk.setBool("dedicatedReplay", value)
-      ::mission_settings.dedicatedReplay = value
+      set_mission_settings("dedicatedReplay", value)
+    }
+
+    if (gm == GM_SKIRMISH) {
+      misBlk.setInt("allowWebUi", this.getOptValue(USEROPT_ALLOW_WEB_UI, -1))
+      set_mission_settings("allowWebUi", this.getOptValue(USEROPT_ALLOW_WEB_UI, -1))
     }
 
     if (!("url" in misBlk))
       misBlk.setStr("url", "") //Must-be param, to override on matching if used before
 
-    ::mission_settings.missionURL = misBlk.url
-    ::mission_settings.sessionPassword =  ::get_option(USEROPT_SESSION_PASSWORD).value
+    set_mission_settings("missionURL", misBlk.url)
+    set_mission_settings("sessionPassword", get_option(USEROPT_SESSION_PASSWORD).value)
 
     if (misBlk.paramExists("autoBalance")) {
-      ::mission_settings.autoBalance = misBlk.getBool("autoBalance", true)
+      set_mission_settings("autoBalance", misBlk.getBool("autoBalance", true))
     }
 
     value = this.getOptValue(USEROPT_MIN_PLAYERS, false)
@@ -510,44 +486,44 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     value = this.getOptValue(USEROPT_MAX_PLAYERS, false)
     if (value != null) {
       misBlk.setInt("maxPlayers", value)
-      ::mission_settings.players = value;
+      set_mission_settings("players", value)
       misBlk.setInt("_players", value)
     }
     else if (gt & GT_VERSUS) {
       if (isInSessionRoom.get()) {
-        misBlk.setInt("maxPlayers", ::SessionLobby.getMaxMembersCount())
-        ::mission_settings.players = ::SessionLobby.getMaxMembersCount()
+        misBlk.setInt("maxPlayers", getSessionLobbyMaxMembersCount())
+        set_mission_settings("players", getSessionLobbyMaxMembersCount())
       }
       else {
-        ::mission_settings.players = global_max_players_versus;
+        set_mission_settings("players", global_max_players_versus)
         misBlk.setInt("_players", global_max_players_versus)
       }
     }
 
     value = this.getOptValue(USEROPT_CLUSTERS, false)
     if (value != null)
-      ::mission_settings.cluster <- value == "auto"
+      set_mission_settings("cluster", value == "auto"
         ? getClustersList().filter(@(info) info.isDefault)[0].name
-        : value
+        : value)
     value = this.getOptValue(USEROPT_FRIENDS_ONLY, false)
     if (value != null) {
       misBlk.setBool("isPrivate", value)
-      ::mission_settings.friendOnly = value
+      set_mission_settings("friendOnly", value)
       misBlk.setBool("allowJIP", !value)
-      ::mission_settings.allowJIP = !value
+      set_mission_settings("allowJIP", !value)
     }
     else if (gm == GM_DYNAMIC) {
-      misBlk.setBool("isPrivate", ::mission_settings.friendOnly)
-      misBlk.setBool("allowJIP", ! ::mission_settings.friendOnly)
+      misBlk.setBool("isPrivate", get_mission_settings().friendOnly)
+      misBlk.setBool("allowJIP", ! get_mission_settings().friendOnly)
       misBlk.setBool("isBotsAllowed", true)
       misBlk.setBool("autoBalance", false)
     }
     else if ((gm == GM_SINGLE_MISSION) && (this.guiScene["coop_mode"] != null)) {
-      misBlk.setBool("isPrivate", ::mission_settings.friendOnly)
-      misBlk.setBool("allowJIP", ! ::mission_settings.friendOnly)
+      misBlk.setBool("isPrivate", get_mission_settings().friendOnly)
+      misBlk.setBool("allowJIP", ! get_mission_settings().friendOnly)
     }
     else if ((gm != GM_DYNAMIC) && !isInSessionRoom.get())
-      ::mission_settings.friendOnly = false
+      set_mission_settings("friendOnly", false)
 
     value = this.getOptValue(USEROPT_TIME, false)
     if (value != null)
@@ -559,26 +535,26 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
 
     value = this.getOptValue(USEROPT_MISSION_COUNTRIES_TYPE, false)
     if (value != null)
-      ::mission_settings.countriesType <- value
+      set_mission_settings("countriesType", value)
 
     foreach (opt in [USEROPT_BIT_COUNTRIES_TEAM_A, USEROPT_BIT_COUNTRIES_TEAM_B]) {
-      let option = ::get_option(opt)
+      let option = get_option(opt)
       let obj = this.scene.findObject(option.id)
       if (obj)
-        ::mission_settings[$"{option.sideTag}_bitmask"] <- obj.getValue()
+        set_mission_settings($"{option.sideTag}_bitmask", obj.getValue())
     }
 
     value = this.getOptValue(USEROPT_BIT_UNIT_TYPES, false)
-    let option = ::get_option(USEROPT_BIT_UNIT_TYPES)
+    let option = get_option(USEROPT_BIT_UNIT_TYPES)
     if (value != null && value != option.availableUnitTypesMask)
-      ::mission_settings.userAllowedUnitTypesMask <- value
+      set_mission_settings("userAllowedUnitTypesMask", value)
 
     let mrankMin = this.getOptValue(USEROPT_BR_MIN, 0)
     let mrankMax = this.getOptValue(USEROPT_BR_MAX, 0)
     fillBlock("ranks", misBlk, { min = mrankMin, max = mrankMax })
     if (mrankMin > 0 || mrankMax < getMaxEconomicRank()) {
-      ::mission_settings.mrankMin <- mrankMin
-      ::mission_settings.mrankMax <- mrankMax
+      set_mission_settings("mrankMin", mrankMin)
+      set_mission_settings("mrankMax", mrankMax)
     }
 
     value = this.getOptValue(USEROPT_CONTENT_ALLOWED_PRESET, false)
@@ -593,27 +569,27 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
 
     misBlk.setInt("_gameMode", gm)
     if (isInSessionRoom.get()) {
-      misBlk.setBool("isPrivate", ::mission_settings.friendOnly)
-      misBlk.setBool("allowJIP", ::mission_settings.allowJIP)
+      misBlk.setBool("isPrivate", get_mission_settings().friendOnly)
+      misBlk.setBool("allowJIP", get_mission_settings().allowJIP)
     }
 
     if (gm == GM_DYNAMIC || gm == GM_BUILDER)
       if (misBlk.getStr("restoreType", "attempts") == "tactical control")
         misBlk.setStr("restoreType", "attempts");
 
-    ::mission_settings.time = misBlk.getStr("environment", "")
-    ::mission_settings.weather = misBlk.getStr("weather", "")
-    ::mission_settings.isLimitedFuel = misBlk.getBool("isLimitedFuel", false)
-    ::mission_settings.isLimitedAmmo = misBlk.getBool("isLimitedAmmo", false)
-    ::mission_settings.takeoffMode = this.getOptValue(USEROPT_TAKEOFF_MODE, true)
+    set_mission_settings("time", misBlk.getStr("environment", ""))
+    set_mission_settings("weather", misBlk.getStr("weather", ""))
+    set_mission_settings("isLimitedFuel", misBlk.getBool("isLimitedFuel", false))
+    set_mission_settings("isLimitedAmmo", misBlk.getBool("isLimitedAmmo", false))
+    set_mission_settings("takeoffMode", this.getOptValue(USEROPT_TAKEOFF_MODE, true))
 
-    ::mission_settings.mission = misBlk
+    set_mission_settings("mission", misBlk)
 
     if (gm == GM_DYNAMIC) {
-      ::mission_settings.missionFull = ::mission_settings.dynlist[::mission_settings.currentMissionIdx]
+      set_mission_settings("missionFull", get_mission_settings().dynlist[get_mission_settings().currentMissionIdx])
 
-      let mode = ::mission_settings.takeoffMode;
-      dynamicSetTakeoffMode(::mission_settings.missionFull, mode, mode)
+      let mode = get_mission_settings().takeoffMode;
+      dynamicSetTakeoffMode(get_mission_settings().missionFull, mode, mode)
     }
 
     if (gm == GM_SKIRMISH || gm == GM_CAMPAIGN || gm == GM_SINGLE_MISSION)
@@ -623,7 +599,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
         add_last_played("url", misBlk.url, gm, false)
 
     if (gm == GM_DYNAMIC)
-      select_mission_full(misBlk, ::mission_settings.missionFull);
+      select_mission_full(misBlk, get_mission_settings().missionFull);
     else
       select_mission(misBlk, false)
   }

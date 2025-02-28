@@ -36,7 +36,7 @@ let HudStyle = require("style/airHudStyle.nut")
 
 let { AimLockPos, AimLockValid } = require("%rGui/planeState/planeToolsState.nut")
 
-let { IsTargetTracked, TargetAge, TargetX, TargetY } = require("%rGui/hud/targetTrackerState.nut")
+let { IsTargetTracked, TargetAge, TargetX, TargetY, TargetInZone } = require("%rGui/hud/targetTrackerState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
 
 let { isInitializedMeasureUnits, measureUnitsNames } = require("options/optionsMeasureUnits.nut")
@@ -44,6 +44,7 @@ let { isInitializedMeasureUnits, measureUnitsNames } = require("options/optionsM
 let { GuidanceLockResult } = require("guidanceConstants")
 
 let aamGuidanceLockState = require("rocketAamAimState.nut").GuidanceLockState
+let { HasTOFInHud } = require("%rGui/rocketAamAimState.nut")
 
 let agmAimState = require("agmAimState.nut")
 let agmGuidanceLockState = agmAimState.GuidanceLockStateBlinked
@@ -686,7 +687,7 @@ let textParamsMapMain = {
   [AirParamsMain.AAM] = {
     titleComputed = Computed(@() AamCount.value <= 0 ? loc("HUD/TXT_AAM_SHORT") : getAACaption(aamGuidanceLockState.value))
     valueComputed = Computed(@() generateGuidedWeaponBulletsTextFunction(AamCount.value, AamSeconds.value,
-      AamTimeToHit.value, 0, AamActualCount.value))
+      HasTOFInHud.value ? AamTimeToHit.value : -1.0, 0, AamActualCount.value))
     selectedComputed = Computed(@() AamSelected.value ? ">" : "")
     additionalComputed = Computed(@() loc(AamName.value))
     alertStateCaptionComputed = Computed(@() (IsAamEmpty.value || aamGuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING) ?
@@ -1489,16 +1490,21 @@ function rangeFinderComponent(colorWatch, posX, posY) {
   return resCompoment
 }
 
-let triggerTATarget = {}
-TargetAge.subscribe(@(v) v < 0.2 ? anim_request_stop(triggerTATarget) : anim_start(triggerTATarget))
+let triggerTATargetAge = {}
+TargetAge.subscribe(@(v) v > 0.2 ? anim_start(triggerTATargetAge) : anim_request_stop(triggerTATargetAge))
+let triggerTATargetInGimbal = {}
+TargetInZone.subscribe(@(v) !v ? anim_start(triggerTATargetInGimbal) : anim_request_stop(triggerTATargetInGimbal))
 let HelicopterTATarget = @(w, h, isForIls) function() {
 
   let VisibleWatch = isForIls ? AimLockValid : TATargetVisible
   let res = {
-    watch = [VisibleWatch, TargetX, TargetY, IsTargetTracked,
+    watch = [VisibleWatch, TargetX, TargetY, TargetInZone, IsTargetTracked,
       TargetAge, AlertColorHigh, IsLaserDesignatorEnabled]
-    animations = [{ prop = AnimProp.opacity, from = 0, to = 1, duration = 0.5, play = TargetAge.value > 0.2, loop = true, easing = InOutSine, trigger = triggerTATarget }]
-    key = TargetAge
+    animations = [
+      { prop = AnimProp.opacity, from = 0, to = 1, duration = 0.50, play = TargetAge.value > 0.2, loop = true, easing = InOutSine, trigger = triggerTATargetAge },
+      { prop = AnimProp.opacity, from = 0, to = 1, duration = 0.25, play = !TargetInZone.value, loop = true, easing = InOutSine, trigger = triggerTATargetInGimbal }
+    ]
+    key = [TargetAge, TargetInZone]
   }
 
   if (!VisibleWatch.value && TargetAge.value < 0.2)

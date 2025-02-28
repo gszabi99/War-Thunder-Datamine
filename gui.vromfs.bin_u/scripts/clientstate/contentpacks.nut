@@ -1,5 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_difficulty_name, has_entitlement, ps4_update_gui
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import call_for_handler
+
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { getLocalLanguage } = require("language")
@@ -19,7 +21,7 @@ let { get_game_settings_blk } = require("blkGetters")
 let { langsById } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { getContentPackStatus, requestContentPack, ContentPackStatus } = require("contentpacks")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 function getPkgLocName(pack, isShort = false) {
   return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
@@ -194,7 +196,7 @@ function set_asked_pack(pack, askTag = null) {
   if (have_package(pack)
       || (continueFunc && is_asked_pack(pack, askTag))) {
     if (continueFunc)
-      ::call_for_handler(owner, continueFunc)
+      call_for_handler(owner, continueFunc)
     return true
   }
 
@@ -215,7 +217,7 @@ function set_asked_pack(pack, askTag = null) {
   local defButton = "cancel"
   let buttons = [[defButton,  function() {
                      if (cancelFunc)
-                       ::call_for_handler(owner, cancelFunc)
+                       call_for_handler(owner, cancelFunc)
                    }]
                   ]
 
@@ -234,7 +236,7 @@ function set_asked_pack(pack, askTag = null) {
   if (continueFunc) {
     defButton = "continue"
     buttons.append(["continue",  function() {
-                     ::call_for_handler(owner, continueFunc)
+                     call_for_handler(owner, continueFunc)
                    }])
   }
   scene_msg_box("req_new_content", null, _msg, buttons, defButton)

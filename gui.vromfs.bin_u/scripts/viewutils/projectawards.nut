@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { GUI } = require("%scripts/utils/configs.nut")
 
-::setProjectAwards <- function setProjectAwards(handler) {
+function setProjectAwards(handler) {
   let guiScene = get_cur_gui_scene()
   let awardsObj = guiScene && guiScene["project-awards"]
   if (! checkObj(awardsObj))
@@ -28,4 +28,8 @@ let { GUI } = require("%scripts/utils/configs.nut")
     data = "".concat(data, format("img { background-image:t='%s'; margin-bottom:t='%s' %s }", img, margin_bottom, tooltipData))
   }
   guiScene.replaceContentFromText(awardsObj, data, data.len(), handler)
+}
+
+return {
+  setProjectAwards
 }

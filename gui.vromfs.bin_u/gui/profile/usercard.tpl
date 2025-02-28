@@ -110,10 +110,16 @@ root {
 
           tdiv {
             position:t='root'
-            pos:t='(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf'
-            size:t='1@accountHeaderWidth, <<scale>>*((sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf)'
-            background-image:t='!ui/images/profile/widget_bg'
-            background-color:t='#FFFFFF'
+            overflow:t='hidden'
+            pos:t='(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf + 1@bhInVr'
+            size:t='1@accountHeaderWidth, sh - 1@bh - 9@sf/@pf - 1@frameFooterHeight - 1@maxAccountHeaderHeight'
+
+            tdiv {
+              position:t='relative'
+              size:t='pw, <<scale>>*((sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf)'
+              background-image:t='!ui/images/profile/widget_bg'
+              background-color:t='#FFFFFF'
+            }
           }
 
           tdiv {
@@ -123,10 +129,10 @@ root {
             width:t='@accountHeaderWidth'
             css-hier-invalidate:t='yes'
             <<^isSmallSize>>
-            min-height:t='190@sf/@pf'
+            min-height:t='<<scale>>*1@profileHeaderH'
             <</isSmallSize>>
             <<#isSmallSize>>
-            min-height:t='<<scale>>*130@sf/@pf'
+            min-height:t='<<scale>>*1@smallProfileHeaderH'
             <</isSmallSize>>
 
             tdiv {
@@ -166,10 +172,16 @@ root {
 
           tdiv {
             position:t='root'
-            pos:t='(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf'
-            size:t='1@accountHeaderWidth, <<scale>>*((sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf)'
-            background-image:t='!ui/images/profile/widget_bg'
-            background-color:t='#FFFFFF'
+            overflow:t='hidden'
+            pos:t='(sw-w)/2, 1@maxAccountHeaderHeight + 3@sf/@pf + 1@bhInVr'
+            size:t='1@accountHeaderWidth, sh - 1@bh - 9@sf/@pf - 1@frameFooterHeight - 1@maxAccountHeaderHeight'
+
+            tdiv {
+              position:t='relative'
+              size:t='pw, <<scale>>*((sh - @frameFooterHeight - @maxAccountHeaderHeight) $min 924@sf/@pf)'
+              background-image:t='!ui/images/profile/widget_bg'
+              background-color:t='#FFFFFF'
+            }
           }
           include "%gui/profile/profileStats.blk"
         }

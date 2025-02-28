@@ -11,6 +11,7 @@ let { getControlsList } = require("%scripts/controls/controlsUtils.nut")
 let getMfmHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
 let getMfmSectionTitle = @(section) section?.getTitle() ?? loc(section?.title ?? "")
 let { register_command } = require("console")
+let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 
 local isDebugMode = false
 register_command(function() {
@@ -97,7 +98,7 @@ function makeMfmSection(cfg, id, unitId, hudUnitType) {
     local shortcutText = ""
     if (!isEmpty && is_platform_pc)
       shortcutText = ::get_shortcut_text({
-        shortcuts = ::get_shortcuts([ $"ID_VOICE_MESSAGE_{idx+1}" ])
+        shortcuts = getShortcuts([ $"ID_VOICE_MESSAGE_{idx+1}" ])
         shortcutId = 0
         cantBeEmpty = false
         strip_tags = true
@@ -132,7 +133,7 @@ function openMfm(cfg, curSectionId = null, isForward = true) {
   if (cfg?[curSectionId] == null)
     return false
 
-  let joyParams = ::joystick_get_cur_settings()
+  let joyParams = joystickGetCurSettings()
   let params = {
     menu = makeMfmSection(cfg, curSectionId, get_player_unit_name(), hudUnitType)
     callbackFunc = handleWheelMenuApply

@@ -25,6 +25,10 @@ let { canResearchUnit, isUnitGroup, isGroupPart, isUnitFeatureLocked, isUnitRese
 } = require("%scripts/unit/unitStatus.nut")
 let { get_ranks_blk } = require("blkGetters")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { GuiBox } = require("%scripts/guiBox.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
+let { RESEARCHED_UNIT_FOR_CHECK } = require ("%scripts/researches/researchConsts.nut")
+let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 
 gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
   wndType = handlerType.MODAL
@@ -55,13 +59,15 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
   }
 
   function initScreen() {
-    let unitName = getTblValue(::researchedUnitForCheck, this.researchBlock)
-    this.curAirName = unitName
-    this.researchedUnit = getAircraftByName(unitName)
+    let unitName = this.researchBlock?[RESEARCHED_UNIT_FOR_CHECK]
     this.unitCountry = this.researchBlock.country
-    this.unitType = getEsUnitType(this.researchedUnit)
-    this.sendUnitResearchedStatistic(this.researchedUnit)
-    this.updateResearchVariables()
+    if (unitName) {
+      this.curAirName = unitName
+      this.researchedUnit = getAircraftByName(unitName)
+      this.unitType = getEsUnitType(this.researchedUnit)
+      this.sendUnitResearchedStatistic(this.researchedUnit)
+      this.updateResearchVariables()
+    }
 
     base.initScreen()
 
@@ -234,7 +240,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
     if (!visibleObj)
       return
 
-    let visibleBox = ::GuiBox().setFromDaguiObj(visibleObj)
+    let visibleBox = GuiBox().setFromDaguiObj(visibleObj)
     let unitsObj = []
     foreach (newUnit in getAllUnits())
       if (this.unitCountry == getUnitCountry(newUnit) && !newUnit.isSquadronVehicle()
@@ -247,7 +253,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
 
         let unitObj = this.scene.findObject(newUnitName)
         if (unitObj) {
-          let unitBox = ::GuiBox().setFromDaguiObj(unitObj)
+          let unitBox = GuiBox().setFromDaguiObj(unitObj)
           if (unitBox.isInside(visibleBox))
             unitsObj.append(unitObj)
         }
@@ -263,7 +269,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
         haveArrow = false
         shortcut = GAMEPAD_ENTER_SHORTCUT
       }]
-    ::gui_modal_tutor(steps, this)
+    gui_modal_tutor(steps, this)
   }
 
   function onUnitSelect() {
@@ -475,7 +481,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
   }
 
   function afterModalDestroy() {
-    ::checkNonApprovedResearches(true)
+    checkNonApprovedResearches(true)
   }
 
   function sendUnitResearchedStatistic(unit) {

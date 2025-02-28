@@ -164,7 +164,7 @@ local class WeaponsPurchaseProcess {
         this.msgLocParams
       ), price)
 
-    purchaseConfirmation("mechanic_execute_msg", text, performAction, cancelAction)
+    purchaseConfirmation("mechanic_execute_msg", text, performAction, cancelAction, cancelAction)
   }
 
   function repair(afterSuccessFunc = null, afterBalanceRefillFunc = null) {

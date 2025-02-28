@@ -10,7 +10,7 @@ let { get_game_settings_blk } = require("blkGetters")
 let { set_in_battle_time_to_kick_show_timer, set_in_battle_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { GO_WIN, MISSION_CAPTURING_ZONE } = require("guiMission")
 let { register_command } = require("console")
-let { add_streak_message } = require("%scripts/streaks.nut")
+let { add_streak_message, getLocForStreak } = require("%scripts/streaks.nut")
 
 local dbg_msg_obj_counter = 0
 function hud_message_objective_debug(show = true, alwaysShow = false) {
@@ -105,7 +105,7 @@ function hud_debug_streak(streakId = null) {
     streakId = list[rnd() % list.len()].id
   }
 
-  let header = ::get_loc_for_streak(SNT_MY_STREAK_HEADER, streakId, rnd() % 3)
+  let header = getLocForStreak(SNT_MY_STREAK_HEADER, streakId, rnd() % 3)
   let wp = rnd() % 5000
   add_streak_message({ header, wp, exp = 0, id = streakId })
 }

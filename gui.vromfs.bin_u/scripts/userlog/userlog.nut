@@ -12,7 +12,7 @@ let { move_mouse_on_child_by_value, move_mouse_on_obj, loadHandler, isInMenu
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
 } = require("guiOptions")
-let { saveOnlineJob } = require("%scripts/userLog/userlogUtils.nut")
+let { saveOnlineJob, getUserLogsList, isUserlogVisible } = require("%scripts/userLog/userlogUtils.nut")
 let { get_userlog_plain_text } = require("%scripts/userLog/userlogPlainText.nut")
 let { isUserlogForBattleTasksGroup } = require("%scripts/unlocks/battleTasks.nut")
 let { OPTIONS_MODE_SEARCH, USEROPT_USERLOG_FILTER
@@ -25,6 +25,8 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getUserlogViewData } = require("%scripts/userLog/userlogViewData.nut")
 let { get_local_unixtime } = require("dagor.time")
+let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 ::hidden_userlogs <- [
   EULT_NEW_STREAK,
@@ -39,7 +41,7 @@ function isMissionExtrCheckFucn(userLog) {
   if (userLog?.type != EULT_INVENTORY_ADD_ITEM || userLog?.roomId == null)
     return true
 
-  return ::getUserLogsList({ show = [EULT_SESSION_RESULT] }).findvalue(function(battleLog) {
+  return getUserLogsList({ show = [EULT_SESSION_RESULT] }).findvalue(function(battleLog) {
     let isMissionExtrLog = isMissionExtrByName(battleLog?.mission ?? "")
     return isMissionExtrLog && (battleLog?.roomId == userLog.roomId)
   }) == null
@@ -155,7 +157,7 @@ let actionByLogType = {
       return addPopup(null, colorize("warningTextColor", loc("xbox/crossPlayRequired")))
 
     log($"join to tournament battle with id {battleId}")
-    get_cur_gui_scene().performDelayed({}, @() ::SessionLobby.joinBattle(logObj.battleId))
+    get_cur_gui_scene().performDelayed({}, @() joinBattle(logObj.battleId))
   }
 }
 
@@ -163,7 +165,7 @@ function gerRecentItemsLogs(timeDistInSeconds) {
   let page = userlogPages.findvalue(@(p) p.id == "items")
   if (page == null)
     return
-  let fullLogs = ::getUserLogsList(page)
+  let fullLogs = getUserLogsList(page)
   let localTime = get_local_unixtime()
   return fullLogs.filter(@(p) (!p?.isDubTrophy && (localTime - p.time < timeDistInSeconds)))
 }
@@ -215,7 +217,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         cornerImgId =$"img_new_{page.id}"
         cornerImgSmall = true
         tabName =$"#userlog/page/{page.id}"
-        navImagesText = ::get_navigation_images_text(idx, userlogPages.len())
+        navImagesText = getNavigationImagesText(idx, userlogPages.len())
       })
     }
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", view)
@@ -237,7 +239,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
 
       foreach (idx, page in userlogPages)
-        if (::isUserlogVisible(blk, page, i))
+        if (isUserlogVisible(blk, page, i))
           res[idx]++
     }
     return res
@@ -248,7 +250,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.curPage = page
 
-    this.fullLogs = ::getUserLogsList(this.curPage)
+    this.fullLogs = getUserLogsList(this.curPage)
     this.logs = this.fullLogs.filter(@(p) !p?.isDubTrophy)
     this.guiScene.replaceContentFromText(this.listObj, "", 0, this)
     this.nextLogId = 0

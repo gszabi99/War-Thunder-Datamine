@@ -8,7 +8,7 @@ let { suggest_psplus } = require("sony.store")
 let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
-
+let { getSessionLobbyMyState } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 eventbus_subscribe("psPlusSuggested", @(_r) requestPremiumStatusUpdate(@(_r) null))
 
@@ -37,7 +37,7 @@ function startPremiumFeatureReporting() {
 function enablePremiumFeatureReporting() {
   log("[PLUS] enable multiplayer reporting")
   add_event_listener("LobbyStatusChange", function(_p) {
-      if (::SessionLobby.getMyState() == PLAYER_IN_FLIGHT) {
+      if (getSessionLobbyMyState() == PLAYER_IN_FLIGHT) {
         log("[PLUS] start reporting")
         startPremiumFeatureReporting()
       }

@@ -2439,12 +2439,27 @@
         "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_3x250.blk"
       },
       {
-        "name": "Ju-87_D-5_500",
-        "blk": "gameData/FlightModels/weaponPresets/Ju-87d-5_500.blk"
+        "name": "ju-87d-5_3x500",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_3x500.blk"
+      },
+      {
+        "name": "ju-87d-5_sc1000",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_sc1000.blk"
+      },
+      {
+        "name": "ju-87d-5_sc1800",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_sc1800.blk"
       },
       {
         "name": "ju-87d-5_pc500",
         "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_pc500.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
+        "name": "ju-87d-5_pc1000",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-5_pc1000.blk",
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
@@ -2468,10 +2483,10 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1220.0,
-    "maxloadMassLeftConsoles": 610.0,
-    "maxloadMassRightConsoles": 610.0,
-    "maxDisbalance": 450.0,
+    "maxloadMass": 1840.0,
+    "maxloadMassLeftConsoles": 765.0,
+    "maxloadMassRightConsoles": 765.0,
+    "maxDisbalance": 560.0,
     "HideNodes": {
       "node": [
         "pylon_bomb1",
@@ -3657,6 +3672,321 @@
               "external": true,
               "separate": true,
               "order": 5
+            },
+            "Bombing": {
+              "maxDelay": 0.0,
+              "canBeDropped": {
+                "altitude": [
+                  -100.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -95.0,
+                  60.0
+                ],
+                "roll": 65.0
+              },
+              "maxDispersionAt": {
+                "altitude": [
+                  20.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  55.0
+                ],
+                "roll": 65.0
+              },
+              "noDispersionAt": {
+                "altitude": [
+                  20.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -90.0,
+                  15.0
+                ],
+                "roll": 40.0
+              },
+              "sightDisappears": {
+                "altitude": [
+                  40.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  45.0
+                ],
+                "roll": 55.0
+              },
+              "sightStartsFading": {
+                "altitude": [
+                  95.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -30.0,
+                  18.0
+                ],
+                "roll": 40.0
+              },
+              "sightEnabled": {
+                "altitude": [
+                  20.0,
+                  15000.0
+                ],
+                "tangage": [
+                  -120.0,
+                  60.0
+                ],
+                "roll": 180.0
+              },
+              "maxDelayAt": {
+                "altitude": [
+                  -20000.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -180.0,
+                  180.0
+                ],
+                "roll": 180.0
+              },
+              "noDelayAt": {
+                "altitude": [
+                  -19999.0,
+                  19999.0
+                ],
+                "tangage": [
+                  -179.0,
+                  179.0
+                ],
+                "roll": 179.0
+              }
+            }
+          },
+          {
+            "iconType": "bombs_heavy_middle",
+            "name": "1000kg",
+            "reqModification": "etc1000_1_mod",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
+              "emitter": "bomb8",
+              "dm": "bomb8_dm",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "Bombing": {
+              "maxDelay": 0.0,
+              "canBeDropped": {
+                "altitude": [
+                  -100.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -95.0,
+                  60.0
+                ],
+                "roll": 65.0
+              },
+              "maxDispersionAt": {
+                "altitude": [
+                  20.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  55.0
+                ],
+                "roll": 65.0
+              },
+              "noDispersionAt": {
+                "altitude": [
+                  20.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -90.0,
+                  15.0
+                ],
+                "roll": 40.0
+              },
+              "sightDisappears": {
+                "altitude": [
+                  40.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  45.0
+                ],
+                "roll": 55.0
+              },
+              "sightStartsFading": {
+                "altitude": [
+                  95.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -30.0,
+                  18.0
+                ],
+                "roll": 40.0
+              },
+              "sightEnabled": {
+                "altitude": [
+                  20.0,
+                  15000.0
+                ],
+                "tangage": [
+                  -120.0,
+                  60.0
+                ],
+                "roll": 180.0
+              },
+              "maxDelayAt": {
+                "altitude": [
+                  -20000.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -180.0,
+                  180.0
+                ],
+                "roll": 180.0
+              },
+              "noDelayAt": {
+                "altitude": [
+                  -19999.0,
+                  19999.0
+                ],
+                "tangage": [
+                  -179.0,
+                  179.0
+                ],
+                "roll": 179.0
+              }
+            }
+          },
+          {
+            "iconType": "bombs_heavy_middle_black",
+            "name": "1800kg",
+            "reqModification": "ju_88_SC1800",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc1800b.blk",
+              "emitter": "bomb8",
+              "dm": "bomb8_dm",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "Bombing": {
+              "maxDelay": 0.0,
+              "canBeDropped": {
+                "altitude": [
+                  -100.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -95.0,
+                  60.0
+                ],
+                "roll": 65.0
+              },
+              "maxDispersionAt": {
+                "altitude": [
+                  20.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  55.0
+                ],
+                "roll": 65.0
+              },
+              "noDispersionAt": {
+                "altitude": [
+                  20.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -90.0,
+                  15.0
+                ],
+                "roll": 40.0
+              },
+              "sightDisappears": {
+                "altitude": [
+                  40.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  45.0
+                ],
+                "roll": 55.0
+              },
+              "sightStartsFading": {
+                "altitude": [
+                  95.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -30.0,
+                  18.0
+                ],
+                "roll": 40.0
+              },
+              "sightEnabled": {
+                "altitude": [
+                  20.0,
+                  15000.0
+                ],
+                "tangage": [
+                  -120.0,
+                  60.0
+                ],
+                "roll": 180.0
+              },
+              "maxDelayAt": {
+                "altitude": [
+                  -20000.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -180.0,
+                  180.0
+                ],
+                "roll": 180.0
+              },
+              "noDelayAt": {
+                "altitude": [
+                  -19999.0,
+                  19999.0
+                ],
+                "tangage": [
+                  -179.0,
+                  179.0
+                ],
+                "roll": 179.0
+              }
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "pc1000kg",
+            "reqModification": "etc1000_1_mod",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_pc1000_ap.blk",
+              "emitter": "bomb8",
+              "dm": "bomb8_dm",
+              "bullets": 1,
+              "external": true,
+              "separate": true
             },
             "Bombing": {
               "maxDelay": 0.0,
@@ -5069,15 +5399,15 @@
       "modClass": "weapon",
       "reqModification": "etc50_4_mod"
     },
-    "mg81gunpod_mod": {
+    "etc1000_1_mod": {
       "tier": 3,
       "modClass": "weapon",
       "reqModification": "etc250_2_mod"
     },
-    "mg15120gunpod_mod": {
+    "ju_88_SC1800": {
       "tier": 4,
       "modClass": "weapon",
-      "reqModification": "mg81gunpod_mod"
+      "reqModification": "etc1000_1_mod"
     },
     "flamm_250": {
       "modClass": "weapon",
@@ -5087,6 +5417,16 @@
       "reqModification": "flamm_250",
       "modClass": "weapon",
       "tier": 2
+    },
+    "mg81gunpod_mod": {
+      "tier": 3,
+      "modClass": "weapon",
+      "prevModification": "flamm_500"
+    },
+    "mg15120gunpod_mod": {
+      "tier": 4,
+      "modClass": "weapon",
+      "reqModification": "mg81gunpod_mod"
     }
   },
   "default_skin_tomoe": {

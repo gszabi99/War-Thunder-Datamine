@@ -377,13 +377,13 @@
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -70.0,
-              70.0
+              -60.0,
+              60.0
             ],
             "azmithWidth": 1.5,
             "elevationRange": [
-              -70.0,
-              70.0
+              -60.0,
+              60.0
             ],
             "distanceRange": [
               0.0,
@@ -536,10 +536,6 @@
             "source": "activeTargetOfInterest"
           },
           "setDistGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
-          "setRelSpeedGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
@@ -1545,9 +1541,30 @@
         },
         "track": {
           "updateActiveTargetOfInterest": {
-            "dirFilter": {},
-            "distFilter": {},
-            "dopplerSpeedFilter": {}
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "dopplerSpeedFilter": {
+              "rateLim": [
+                200.0,
+                200.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
           },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"

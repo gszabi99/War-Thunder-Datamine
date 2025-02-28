@@ -8,7 +8,6 @@
   "gearSinkRangeC": 0.221,
   "jetEnginePowerFullScale": true,
   "gyroSight": true,
-  "haveCCIPForGun": true,
   "haveCCRPForGun": true,
   "ilsLCOSS": true,
   "rwrIndicator": "AN/ALR-46",
@@ -3311,16 +3310,29 @@
       "tier": 4
     },
     "f_4c_CdMin_Fuse": {
-      "tier": 1
+      "tier": 1,
+      "modClass": "lth"
     },
     "structure_str": {
-      "tier": 2
-    },
-    "f_4c_g_suit": {
-      "tier": 3
+      "tier": 2,
+      "modClass": "lth"
     },
     "new_cover": {
+      "modClass": "lth",
       "tier": 4
+    },
+    "countermeasures_launcher_chaff_large": {},
+    "countermeasures_launcher_chaff": {},
+    "countermeasures_belt_pack": {
+      "modClass": "armor",
+      "tier": 1,
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "group": "mi-24_EVU"
+    },
+    "f_4c_g_suit": {
+      "tier": 2,
+      "modClass": "armor"
     },
     "t_160_universal": {},
     "t_160_air_targets": {},
@@ -3387,16 +3399,6 @@
     "us_blu_1": {
       "tier": 1,
       "modClass": "weapon"
-    },
-    "countermeasures_launcher_chaff_large": {},
-    "countermeasures_launcher_chaff": {},
-    "countermeasures_belt_pack": {
-      "prevModification": "us_blu_1",
-      "modClass": "weapon",
-      "tier": 2,
-      "turn_it_off": false,
-      "invertEnableLogic": false,
-      "group": "mi-24_EVU"
     }
   },
   "user_skin": {

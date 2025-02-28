@@ -7,8 +7,9 @@ let FONT_CHOICE_SAVE_ID = "tutor/fontChange"
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { USEROPT_FONTS_CSS } = require("%scripts/options/optionsExtNames.nut")
+let g_font = require("%scripts/options/fonts.nut")
 
 local wasOpened = false
 
@@ -19,7 +20,7 @@ gui_handlers.FontChoiceWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   option = null
 
   static function openIfRequired() {
-    if (!gui_handlers.FontChoiceWnd.isSeen() && ::g_font.getAvailableFonts().len() > 1)
+    if (!gui_handlers.FontChoiceWnd.isSeen() && g_font.getAvailableFonts().len() > 1)
       handlersManager.loadHandler(gui_handlers.FontChoiceWnd)
   }
 
@@ -32,7 +33,7 @@ gui_handlers.FontChoiceWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getSceneTplView() {
-    this.option = ::get_option(USEROPT_FONTS_CSS)
+    this.option = get_option(USEROPT_FONTS_CSS)
     return {
       options = create_option_combobox(this.option.id, this.option.items, this.option.value, null, false)
     }

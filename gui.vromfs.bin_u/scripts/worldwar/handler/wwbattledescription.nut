@@ -34,6 +34,8 @@ let { isCountryAllCrewsUnlockedInHangar } = require("%scripts/slotbar/slotbarSta
 let { get_mp_team_by_team_name } = require("%appGlobals/ranks_common_shared.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 // Temporary image. Has to be changed after receiving correct art
@@ -150,7 +152,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateForceSelectedBattle() {
-    let queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
+    let queue = queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
     if (queue) {
       let battleWithQueue = this.getQueueBattle(queue)
       if (battleWithQueue && battleWithQueue.isValid() && this.curBattleInList.id != battleWithQueue.id)
@@ -204,7 +206,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function validateCurQueue() {
-    let queue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
+    let queue = queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
     if (!queue)
       return
 
@@ -558,7 +560,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getViewMode() {
-    if (::queues.hasActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE))
+    if (queues.hasActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE))
       return WW_BATTLE_VIEW_MODES.QUEUE_INFO
 
     if (g_squad_manager.isInSquad() &&
@@ -1026,7 +1028,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventCancelBattlePrepare(_p) {
-    if (::queues.hasActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
+    if (queues.hasActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
       || !g_squad_manager.isSquadMember())
       return
 
@@ -1123,7 +1125,7 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let cb = Callback(this.generateAutoPreset, this)
-    ::queues.checkAndStart(
+    queues.checkAndStart(
       Callback(function() {
         checkSquadUnreadyAndDo(cb, @() null, true)
       }, this),

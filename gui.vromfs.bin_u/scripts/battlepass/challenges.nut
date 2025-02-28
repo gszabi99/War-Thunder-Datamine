@@ -6,14 +6,15 @@ let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/season
 let { activeUnlocks, getUnlockRewardMarkUp } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { refreshUserstatUnlocks } = require("%scripts/userstat/userstat.nut")
 let { getUnlockConditions, getHeaderCondition, isTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getUnlockNameText, buildUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockNameText, buildUnlockDesc, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getAllUnlocksWithBlkOrder, getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { get_charserver_time_sec } = require("chard")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { getBattleTaskDesc } = require("%scripts/unlocks/battleTasksView.nut")
 
 let battlePassChallenges = Watched([])
 let curSeasonChallenges = Computed(@() battlePassChallenges.value
@@ -125,7 +126,7 @@ function getConditionInTitleConfig(unlockBlk) {
 function getChallengeView(config, paramsCfg = {}) {
   let id = config.id
   let userstatUnlock = activeUnlocks.value?[id]
-  let unlockConfig = ::build_conditions_config(config)
+  let unlockConfig = buildConditionsConfig(config)
   buildUnlockDesc(unlockConfig)
 
   let title = getUnlockNameText(unlockConfig.unlockType, id)
@@ -145,7 +146,7 @@ function getChallengeView(config, paramsCfg = {}) {
     taskStatus = challengeStatus
     taskDifficultyImage = titleIcon
     taskHeaderCondition = headerCond ? loc("ui/parentheses/space", { text = headerCond }) : null
-    description = ::g_battle_tasks.getBattleTaskDesc(unlockConfig, paramsCfg)
+    description = getBattleTaskDesc(unlockConfig, paramsCfg)
     reward = getUnlockRewardMarkUp(userstatUnlock)
     canGetReward = isInteractive && (userstatUnlock?.hasReward ?? false)
     needShowProgressValue = challengeStatus == null && config?.curVal != null

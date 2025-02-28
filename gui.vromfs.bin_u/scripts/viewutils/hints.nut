@@ -9,6 +9,7 @@ let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { startsWith, cutPrefix } = require("%sqstd/string.nut")
 let { get_num_attempts_left } = require("guiMission")
 let { Button } = require("%scripts/controls/input/button.nut")
+let { getPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 enum hintTagCheckOrder {
   EXACT_WORD //single word tags
@@ -75,9 +76,9 @@ enumsAddTypes(g_hint_tag, {
         let shortcutId = expandedShortcut
         slices.append({
           shortcut = needConfig
-            ? shortcutType.getFirstInput(shortcutId, ::g_controls_manager.getPreviewPreset()).getConfig()
+            ? shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset()).getConfig()
             : function() {
-              let input = shortcutType.getFirstInput(shortcutId, ::g_controls_manager.getPreviewPreset(), showShortcutsNameIfNotAssign)
+              let input = shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset(), showShortcutsNameIfNotAssign)
               return input.getMarkup()
             }
         })

@@ -27,6 +27,8 @@ let { doBrowserPurchase } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { steam_is_running, steam_is_overlay_active } = require("steam")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
+let { get_yu2_error_text } = require("%scripts/utils/errorMsgBox.nut")
 
 let payMethodsCfg = [
   //{ id = YU2_PAY_QIWI,        name = "qiwi" }
@@ -285,7 +287,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUpdate(_obj, _dt) {
-    if (!::is_app_active() || steam_is_overlay_active() || ::is_builtin_browser_active())
+    if (!::is_app_active() || steam_is_overlay_active() || is_builtin_browser_active())
       this.needFullUpdate = true
     else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false
@@ -394,7 +396,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let response = (guid == "") ? -1 : yuplay2_buy_entitlement(guid, payMethod)
     if (response != YU2_OK) {
-      let errorText = ::get_yu2_error_text(response)
+      let errorText = get_yu2_error_text(response)
       this.msgBox("errorMessageBox", errorText, [["ok", function() {}]], "ok")
       log($"yuplay2_buy_entitlement have returned {response} with task = {itemId}, guid = {guid}, payMethod = {payMethod}")
       return

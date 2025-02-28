@@ -18,6 +18,8 @@ let { get_gui_balance } = require("%scripts/user/balance.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
+let { findItemByUid } = require("%scripts/items/itemsManager.nut")
 
 let Wager = class (BaseItem) {
   static name = "Wager"
@@ -549,7 +551,7 @@ let Wager = class (BaseItem) {
   }
 
   function getWagerDescriptionForMessageBox(uid) {
-    let wager = ::ItemsManager.findItemByUid(uid, itemType.WAGER)
+    let wager = findItemByUid(uid, itemType.WAGER)
     return wager == null ? "" : wager.getShortDescription()
   }
 
@@ -687,4 +689,5 @@ let Wager = class (BaseItem) {
     return this.curWager <= get_cur_rank_info().wp
   }
 }
-return {Wager}
+
+registerItemClass(Wager)

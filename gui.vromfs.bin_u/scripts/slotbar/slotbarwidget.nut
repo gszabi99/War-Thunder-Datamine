@@ -1,8 +1,10 @@
+from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 from "%scripts/dagui_natives.nut" import is_player_unit_alive, is_crew_slot_was_ready_at_host, get_auto_refill, get_cur_circuit_name, shop_get_first_win_wp_rate, get_crew_slot_cost, get_player_unit_name, is_first_win_reward_earned, shop_get_first_win_xp_rate, is_respawn_screen, get_spare_aircrafts_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/mainConsts.nut" import SEEN
 
+let { deferOnce } = require("dagor.workcycle")
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
@@ -42,7 +44,7 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { selectCountryForCurrentOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getSlotObjId, getSlotObj, getUnitSlotRankText,
-  isUnitEnabledForSlotbar, getSpareCountText, calcUnitSlotMissionInfoTextsWidth
+  isUnitEnabledForSlotbar, getSpareCountText, calcUnitSlotMissionInfoTextsWidth, getSlotCrewHint
 } = require("%scripts/slotbar/slotbarView.nut")
 let { getUnlockedCountries, isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { showAirExpWpBonus, getBonus } = require("%scripts/bonusModule.nut")
@@ -56,13 +58,19 @@ let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { startSlotbarUnitDnD } = require("%scripts/slotbar/slotbarUnitDnDHandler.nut")
 let swapCrewHandler = require("%scripts/slotbar/swapCrewHandler.nut")
 let swapCrewsBegin = require("%scripts/slotbar/swapCrewsDnDHandler.nut")
-let { debug_dump_stack } = require("dagor.debug")
 let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { getCountryMarkersWidth } = require("%scripts/markers/markerUtils.nut")
 let { floor } = require("math")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { GuiBox } = require("%scripts/guiBox.nut")
+let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
+let { hasSessionInLobby, canChangeCrewUnits, canChangeCountry } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
+
+let hasCrewModalWndInScene = @() isHandlerInScene(gui_handlers.CrewModalHandler)
 
 function initSlotbarTopBar(slotbarObj, boxesShow) {
   if (!checkObj(slotbarObj))
@@ -258,13 +266,13 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.crewId != null)
       this.crewId = null
     if (this.ownerWeak) //!!FIX ME: Better to presets list self catch canChangeCrewUnits
-      this.ownerWeak.setSlotbarPresetsListAvailable(this.needPresetsPanel && ::SessionLobby.canChangeCrewUnits())
+      this.ownerWeak.setSlotbarPresetsListAvailable(this.needPresetsPanel && canChangeCrewUnits())
   }
 
   function getForcedCountry() { //return null if you have countries choice
     if (this.singleCountry)
       return this.singleCountry
-    if (!::SessionLobby.canChangeCountry())
+    if (!canChangeCountry())
       return profileCountrySq.value
     if (!this.isCountryChoiceAllowed)
       return this.customCountry || profileCountrySq.value
@@ -542,7 +550,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         selCountryIdx = idx
 
       local bonusData = null
-      if (!is_first_win_reward_earned(country, ::INVALID_USER_ID))
+      if (!is_first_win_reward_earned(country, INVALID_USER_ID))
         bonusData = this.getCountryBonusData(country)
 
       let cEnabled = countryData.isEnabled
@@ -1203,8 +1211,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return null
 
-    let box = ::GuiBox().setFromDaguiObj(obj)
-    let pBox = ::GuiBox().setFromDaguiObj(obj.getParent())
+    let box = GuiBox().setFromDaguiObj(obj)
+    let pBox = GuiBox().setFromDaguiObj(obj.getParent())
     if (box.c2[0] > pBox.c2[0])
       box.c2[0] = pBox.c2[0] + pBox.c1[0] - box.c1[0]
     return box
@@ -1215,7 +1223,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(this.headerObj))
       return null
 
-    return ::GuiBox().setFromDaguiObj(this.headerObj)
+    return GuiBox().setFromDaguiObj(this.headerObj)
   }
 
   function getSlotsData(unitId = null, slotCrewId = -1, searchCountryId = -1, withEmptySlots = false) {
@@ -1468,7 +1476,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    ::gui_modal_crew({
+    gui_modal_crew({
       countryId = crew.idCountry,
       idInCountry = crew.idInCountry
     })
@@ -1518,7 +1526,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         hasActions     = this.hasActions && !isCrewListOverrided.get()
         hasCrewHint    = this.hasCrewHint
         toBattle       = this.toBattle
-        mainActionFunc = ::SessionLobby.canChangeCrewUnits() ? "onSlotChangeAircraft" : ""
+        mainActionFunc = canChangeCrewUnits() ? "onSlotChangeAircraft" : ""
         mainActionText = "" // "#multiplayer/changeAircraft"
         mainActionIcon = "#ui/gameuiskin#slot_change_aircraft.svg"
         crewId         = crew?.id
@@ -1528,7 +1536,6 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         hasExtraInfoBlock = this.hasExtraInfoBlock
         hasExtraInfoBlockTop = this.hasExtraInfoBlockTop
         showAdditionExtraInfo = this.showAdditionExtraInfo
-        showCrewHintUnderSlot = this.showCrewHintUnderSlot
         haveRespawnCost = this.haveRespawnCost
         haveSpawnDelay = this.haveSpawnDelay
         totalSpawnScore = this.totalSpawnScore
@@ -1578,7 +1585,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         return
       let unit = this.getCurCrewUnit(crew)
       if (unit)
-        ::open_weapons_for_unit(unit, { curEdiff = this.getCurrentEdiff() })
+        open_weapons_for_unit(unit, { curEdiff = this.getCurrentEdiff() })
     }, this)
   }
 
@@ -1634,7 +1641,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventLobbyIsInRoomChanged(p) {
-    if (p.wasSessionInLobby != ::SessionLobby.hasSessionInLobby())
+    if (p.wasSessionInLobby != hasSessionInLobby())
       this.fullUpdate()
   }
 
@@ -1678,31 +1685,59 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     swapCrewHandler.open(crew, this.getCurrentAirsTable(), this)
   }
 
+  function onCrewSlotClick(obj) {
+    let handler = this
+    deferOnce(@() obj.isValid() ? handler.onOpenCrewPopup(obj) : null)
+  }
+
   function onOpenCrewPopup(obj) {
-    if (obj.isEmptySlot != "yes") {
-      let crewIdInCountry = obj.crewIdInCountry.tointeger()
-      this.selectCrew(crewIdInCountry)
-      if (!obj?.isValid()) {
-        let curSlotCountryId = this.curSlotCountryId // warning disable: -declared-never-used
-        let curSlotIdInCountry = this.curSlotIdInCountry // warning disable: -declared-never-used
-        debug_dump_stack()
-        logerr("[SlotbarWidget]: Extra info block removed after selectCrew")
-        return
-      }
+    if (handlersManager.findHandlerClassInScene(gui_handlers.SwapCrewsHandler) != null)
+      return
+
+    let actions = []
+    let thisHandler = this
+    let crew = getCrewById(obj.crewId.tointeger())
+    let hasUnit = (obj?.forcedUnit != null) || !(crew?.isEmpty ?? false)
+    let unitForCrewInfo = hasUnit ? getAircraftByName(obj?.forcedUnit ?? crew?.aircraft) : null
+
+    if (this.hasActions) {
+      actions.append({
+        actionName   = "swap"
+        action       = @() thisHandler.isValid() ? thisHandler.onSwapCrews(obj) : null
+        text         = loc("slotbar/swapCrewButton")
+        show         = true
+        icon         = "#ui/gameuiskin#dnd_icon.svg"
+      })
+
+      if (!hasCrewModalWndInScene())
+        actions.append({
+          actionName   = "openCrewWnd"
+          action       = @() thisHandler.isValid() ?  thisHandler.onOpenCrewWindow(obj) : null
+          text         = loc("slotInfoPanel/crewButton")
+          show         = true
+          icon         = "#ui/gameuiskin#slot_crew.svg"
+          haveWarning  = isCrewNeedUnseenIcon(crew, unitForCrewInfo)
+        })
     }
 
-    if(obj.hasActions == "no")
-      return
-
-    let popup = obj.getParent().findObject("extra_info_block_crew_hint")
-    if (!(popup?.isValid() ?? false))
-      return
-    let showPopup = popup?["showed"] != "yes"
-    popup["showed"] = showPopup ? "yes" : "no"
-    this.guiScene.applyPendingChanges(false)
-    let btn = popup.findObject("swap_crew_btn")
-    if(btn != null && showPopup)
-      btn.setMouseCursorOnObject()
+    let params = {
+      handler = null
+      closeOnUnhover = true
+      onDeactivateCb = null
+      actions = actions
+      cssParams = {
+        menu_align = this.showCrewHintUnderSlot ? "bottom" : null,
+        ["min-width"] = "1@mainMenuButtonWidth",
+      }
+      orientation = this.showCrewHintUnderSlot ? ALIGN.BOTTOM : ALIGN.TOP
+      infoBlock = getSlotCrewHint(crew, unitForCrewInfo,
+        {
+          hasSeparator = this.hasActions ? true : false
+          showAdditionExtraInfo = this.showAdditionExtraInfo
+        }
+      )
+    }
+    gui_handlers.ActionsList.open(obj, params)
   }
 
   function hideAllPopups(_obj = null) {

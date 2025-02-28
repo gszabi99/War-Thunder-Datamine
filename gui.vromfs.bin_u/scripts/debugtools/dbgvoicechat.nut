@@ -1,20 +1,21 @@
 from "%scripts/dagui_library.nut" import *
+
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let u = require("%sqStdLibs/helpers/u.nut")
-
-
 let { setTimeout } = require("dagor.workcycle")
 let { get_time_msec } = require("dagor.time")
 let { frnd } = require("dagor.random")
 let { register_command } = require("console")
+let { myClanInfo } = require("%scripts/clans/clanState.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 local isChatOn = false
 local avgEventPerSec = 10
 local lastStepTime = 0
 
 function imitateUserSpeaking(uid, isSpeaking) {
-  ::menuChatCb(GCHAT_EVENT_VOICE, null, { uid = uid, type = "update", is_speaking = isSpeaking })
+  broadcastEvent("ChatCallback", { event = GCHAT_EVENT_VOICE, taskId = null, db = { uid = uid, type = "update", is_speaking = isSpeaking } })
 }
 
 function immitateVoiceChat() {
@@ -26,8 +27,8 @@ function immitateVoiceChat() {
     return
 
   let members = g_squad_manager.isInSquad() ? g_squad_manager.getOnlineMembers()
-    : ::my_clan_info ? ::my_clan_info.members
-    : []
+    : myClanInfo.get()?.members ?? []
+
   if (members.len() <= 1)
     return
 
@@ -38,14 +39,14 @@ function stop() {
   foreach (uid, _member in g_squad_manager.getMembers())
     imitateUserSpeaking(uid, false)
 
-  foreach (member in ::my_clan_info?.members ?? [])
+  foreach (member in myClanInfo.get()?.members ?? [])
     imitateUserSpeaking(member.uid, false)
 
   isChatOn = false
 }
 
 function runVoiceChatStep() {
-  if (!g_squad_manager.isInSquad() && !::my_clan_info)
+  if (!g_squad_manager.isInSquad() && !myClanInfo.get())
     return stop()
 
   if (!isChatOn)

@@ -25,7 +25,10 @@ let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
 let { getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { invalidateCrewsList, reinitAllSlotbars } = require("%scripts/slotbar/crewsList.nut")
 let { checkPackageAndAskDownloadOnce } = require("%scripts/clientState/contentPacks.nut")
-let { isAuthorized } = require("%scripts/login/loginStates.nut")
+let { isAuthorized } = require("%appGlobals/login/loginState.nut")
+let { getMyClanCandidates, isHaveRightsToReviewCandidates } = require("%scripts/clans/clanCandidates.nut")
+let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { totalRooms, totalPlayers } = require("%scripts/onlineInfo/onlineInfo.nut")
 
 gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   rootHandlerClass = topMenuHandlerClass.getHandler()
@@ -54,7 +57,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
     if (isInSessionRoom.get()) {
       log(" ".concat("after main menu, uid", userIdStr.value, userName.value, "is in room"))
       debug_dump_stack()
-      ::SessionLobby.leaveRoom()
+      leaveSessionRoom()
     }
     stop_gui_sound("deb_count") //!!Dirty hack: after inconsistent leave debriefing from code.
   }
@@ -76,8 +79,8 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
       return
 
     let text = loc("mainmenu/online_info", {
-      playersOnline = ::online_stats.players_total,
-      battles = ::online_stats.rooms_total
+      playersOnline = totalPlayers.get()
+      battles = totalRooms.get()
     })
 
     this.setSceneTitle(text, topMenuHandler.value.scene, "online_info")
@@ -88,14 +91,15 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   }
 
   function updateClanRequests() {
-    let haveRights = ::g_clans.isHaveRightsToReviewCandidates()
-    let isReqButtonDisplay = haveRights && ::g_clans.getMyClanCandidates().len() > 0
+    let haveRights = isHaveRightsToReviewCandidates()
+    let myClanCandidatesLen = getMyClanCandidates().len()
+    let isReqButtonDisplay = haveRights && myClanCandidatesLen > 0
     let obj = showObjById("btn_main_menu_showRequests", isReqButtonDisplay, this.scene)
     if (checkObj(obj) && isReqButtonDisplay)
       obj.setValue("".concat(
         loc("clan/btnShowRequests"),
         loc("ui/parentheses/space",
-          { text = ::g_clans.getMyClanCandidates().len() })))
+          { text = myClanCandidatesLen })))
   }
 
   function onExit() {

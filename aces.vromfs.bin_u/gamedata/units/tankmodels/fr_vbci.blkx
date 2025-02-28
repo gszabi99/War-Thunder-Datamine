@@ -370,6 +370,12 @@
       "wheel_r_04_dm": {},
       "wheel_support_dm": {}
     },
+    "sensor": {
+      "armorClass": "tank_structural_steel",
+      "armorThickness": 10.0,
+      "hp": 200.0,
+      "countermeasure_01_dm": {}
+    },
     "gun": {
       "armorClass": "tank_barrel",
       "hp": 100.0,
@@ -3282,9 +3288,9 @@
       -8.8
     ],
     "headPosOnShooting": [
-      -0.7,
+      -0.6,
       3.65,
-      0.4
+      0.2
     ],
     "detectionHeight": 3.1
   },
@@ -3942,6 +3948,29 @@
       "deviation": 0.4,
       "rotation": 2.5,
       "collisionNode": "cls_turret"
+    }
+  },
+  "counterMeasures": {
+    "counterMeasure": {
+      "turretIndex": 0,
+      "blk": "gameData/counterMeasures/eirel.blk",
+      "dmPart": "countermeasure_01_dm",
+      "ircmProjector": {
+        "node": "ex_decor_r_05",
+        "beamRadius": [
+          500.0,
+          50.0
+        ],
+        "power": [
+          0.02,
+          0.04
+        ],
+        "glowOffset": [
+          0.15,
+          0.0,
+          0.0
+        ]
+      }
     }
   }
 }

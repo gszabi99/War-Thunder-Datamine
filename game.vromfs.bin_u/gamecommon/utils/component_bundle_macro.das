@@ -64,7 +64,7 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
   var funcArgsTbl : table<string; bool>
   if isValidationRequired
     for fnArg in arguments
-      funcArgsTbl["{fnArg.name}"] = true
+      funcArgsTbl.insert("{fnArg.name}", true)
 
   // find and expand bundle arg
   var i = 0
@@ -87,7 +87,7 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
           macro_error(compiling_program(), argType.at, "function argument '{fieldName}' shadows component with name '{bundleArgName}.{fieldName}'")
         if key_exists(bundleFieldNamesValidationSet, fieldName)
           macro_error(compiling_program(), argType.at, "duplicate component with name '{fieldName}'")
-        bundleFieldNamesValidationSet[fieldName] = true
+        bundleFieldNamesValidationSet.insert(fieldName, true)
       bundleFieldNames |> push(fieldName)
 
       if true
@@ -151,7 +151,7 @@ def apply_to_func(var func; blk : block<(var func : FunctionPtr; var args : dasv
     if firstBlk is ExprCall
       let call = firstBlk as ExprCall
       if call.name == "ecs::process_view" && length(call.arguments) > 1 && call.arguments[1] is ExprMakeBlock
-        var makeEsBlk := call.arguments[1] as ExprMakeBlock
+        var makeEsBlk = call.arguments[1] as ExprMakeBlock
         var inscope esBlk : ExpressionPtr := makeEsBlk._block
         blk |> invoke(func, (esBlk as ExprBlock).arguments, esBlk, true)
         return

@@ -10,6 +10,8 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_warpoints_blk, get_skills_blk, get_price_blk } = require("blkGetters")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
+
 let { getSkillCrewLevel, getCrewMaxSkillValue, getCrewLevel, unitCrewTrainReq,
   crewSkillPages, loadCrewSkillsOnce
 } = require("%scripts/crew/crew.nut")
@@ -103,7 +105,7 @@ crewSpecTypes = {
 
     function getDiscountValueByUnitNames(unitNames) {
       let priceBlk = get_price_blk()
-      return ::getDiscountByPath(["aircrafts", unitNames, "specialization", this.specName], priceBlk)
+      return getDiscountByPath(["aircrafts", unitNames, "specialization", this.specName], priceBlk)
     }
 
     // Returns spec type such that type.nextCode == this.code.

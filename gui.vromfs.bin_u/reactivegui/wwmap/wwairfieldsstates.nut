@@ -11,13 +11,14 @@ let { sendToDagui } = require("%rGui/wwMap/wwMapUtils.nut")
 let { convertToRelativeMapCoords } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { hoveredArmy } = require("%rGui/wwMap/wwArmyStates.nut")
 let { hoveredAirfieldIndex } = require("%appGlobals/worldWar/wwAirfieldStatus.nut")
+let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
 
 let airfieldsInfo = Watched([])
 
 let selectedAirfield = Watched(null)
 let hoveredAirfield = Watched(null)
 
-let tooltipAirfieldIndex = keepref(Computed(@() (hoveredAirfieldIndex.get() != null && hoveredArmy.get() == null) ? hoveredAirfieldIndex.get() : null))
+let tooltipAirfieldIndex = keepref(Computed(@() (hoveredAirfieldIndex.get() != null && hoveredArmy.get() == null && isMapHovered.get()) ? hoveredAirfieldIndex.get() : null))
 tooltipAirfieldIndex.subscribe(function(airfieldIndex) {
   if (airfieldIndex == null && hoveredArmy.get() != null)
     return

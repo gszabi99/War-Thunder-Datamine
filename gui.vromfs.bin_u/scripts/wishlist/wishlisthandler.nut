@@ -28,7 +28,7 @@ let { showAirInfo } = require("%scripts/airInfo.nut")
 let { isUnitResearched, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let { getUnitBuyTypes, isIntersects, isFullyIncluded, getUnitAvailabilityForBuyType } = require("%scripts/wishlist/filterUtils.nut")
 let { canStartPreviewScene } = require("%scripts/customization/contentPreview.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryListByShopMask } = require("%scripts/items/itemsManager.nut")
 let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
@@ -61,7 +61,7 @@ let unitCoupons = {}
 
 function cacheUnitCoupons() {
   unitCoupons.clear()
-  let items = ::ItemsManager.getInventoryListByShopMask(itemType.VEHICLE)
+  let items = getInventoryListByShopMask(itemType.VEHICLE)
   unitCoupons.__update(items.filter(@(it) it.metaBlk?.unit != null && it.canConsume())
     .reduce(function(res, it) {
       res[it.metaBlk.unit] <- it

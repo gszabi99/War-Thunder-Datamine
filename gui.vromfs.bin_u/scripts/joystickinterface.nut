@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { hasXInputDevice } = require("controls")
 let { is_stereo_mode } = require("vr")
 let { sin, cos, pow, atan2, abs, sqrt } = require("math")
+let { joystickGetCurSettings } = require("%scripts/controls/controlsCompatibility.nut")
 
 let defaultAxisWatch = ["decal_move_x", "decal_move_y"]
 const maxAbsoluteAxisValue = 1.0
@@ -79,7 +80,7 @@ function getWheelMenuAxisWatch(unitType) {
 
 function getAxisData(watchAxis = [], stuckAxis = {}) {
   let device = joystick_get_default()
-  let settings = ::joystick_get_cur_settings()
+  let settings = joystickGetCurSettings()
   if (!device || !settings)
     return null
 

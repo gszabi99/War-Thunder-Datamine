@@ -14,7 +14,7 @@ let { wwGetOperationWinner, wwGetSpeedupFactor } = require("worldwar")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getObjectiveStatusByCode } = require("%scripts/misObjectives/objectiveStatus.nut")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
-let guiMission = require("guiMission")
+let { MISSION_OBJECTIVE_STATUS_COMPLETED, MISSION_OBJECTIVE_STATUS_FAILED } = require("guiMission")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 ::g_ww_objective_type <- {
@@ -159,7 +159,7 @@ let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
     getObjectiveStatus = function(sideValue, side) {
       local statusCode = -1
       if (sideValue)
-        statusCode = sideValue == side ? (guiMission?.MISSION_OBJECTIVE_STATUS_COMPLETED ?? 2) : (guiMission?.MISSION_OBJECTIVE_STATUS_FAILED ?? 3)
+        statusCode = sideValue == side ? MISSION_OBJECTIVE_STATUS_COMPLETED : MISSION_OBJECTIVE_STATUS_FAILED
       return getObjectiveStatusByCode(statusCode)
     }
 

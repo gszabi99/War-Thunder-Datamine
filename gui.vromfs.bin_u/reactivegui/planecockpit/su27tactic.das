@@ -22,7 +22,7 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.fontSize = props |> getInt("fontSize", 20)
   storage.backgroundColor = fade_color(props |> getColor("backgroundColor", E3DCOLOR(0xFFFFFFFF)), 255)
 
-[export]
+[export, unused_argument(rstate)]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !get_radar_hud_mfd_radar_enabled()
     return

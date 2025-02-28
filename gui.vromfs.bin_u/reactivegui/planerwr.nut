@@ -27,6 +27,7 @@ let rwrSpectra = require("planeRwrs/rwrSpectra.nut")
 let rwrAr830 = require("planeRwrs/rwrAr830.nut")
 let rwrAr830Extra = require("planeRwrs/rwrAr830Extra.nut")
 let rwrL150 = require("planeRwrs/rwrL150.nut")
+let rwrL150Su30 = require("planeRwrs/rwrL150Su30.nut")
 let rwrDass = require("planeRwrs/rwrDass.nut")
 
 function loadStyleBlock(styleBlock, blk, defStyleBlock) {
@@ -131,6 +132,7 @@ let rwrs = {
   ["Ar830"] = rwrAr830,
   ["Ar830Extra"] = rwrAr830Extra,
   ["L-150"] = rwrL150,
+  ["L-150 Su-30"] = rwrL150Su30,
   ["DASS"] = rwrDass
 }
 

@@ -1,9 +1,9 @@
-from "%scripts/dagui_natives.nut" import get_option_unit_type
 from "%scripts/dagui_library.nut" import *
 
 let { ceil } = require("math")
 let { addTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let stdMath = require("%sqstd/math.nut")
+let { getMeasureUnitOptionType } = require("guiOptions")
 let optionsMeasureUnits = require("%scripts/options/optionsMeasureUnits.nut")
 let { USEROPT_MEASUREUNITS_SPEED, USEROPT_MEASUREUNITS_ALT, USEROPT_MEASUREUNITS_DIST,
   USEROPT_MEASUREUNITS_CLIMBSPEED, USEROPT_MEASUREUNITS_TEMPERATURE,
@@ -25,7 +25,7 @@ let measureType = {
 
     getMeasureUnitsName = @() loc(this.getMeasureUnitsLocKey())
     getMeasureUnitsLocKey = @() this.userOptCode != -1
-      ? $"measureUnits/{get_option_unit_type(this.orderCode)}"
+      ? $"measureUnits/{getMeasureUnitOptionType(this.orderCode)}"
       : $"measureUnits/{this.name}"
     isMetricSystem = @() this.userOptCode != -1
       ? optionsMeasureUnits.isMetricSystem(this.orderCode)

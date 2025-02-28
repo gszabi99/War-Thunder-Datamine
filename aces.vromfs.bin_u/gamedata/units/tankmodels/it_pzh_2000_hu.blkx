@@ -1920,31 +1920,7 @@
             "drive_turret_h_dm",
             "fire_control_system_dm"
           ],
-          "shootingDmPart": "fire_control_system_dm",
-          "linkedAnimPart": [
-            {
-              "verNode": "bone_roll_01",
-              "verLimits": [
-                0.0,
-                200.0
-              ],
-              "verOriginLimits": [
-                0.0,
-                100.0
-              ]
-            },
-            {
-              "verNode": "bone_roll_01_01",
-              "verLimits": [
-                0.0,
-                50.0
-              ],
-              "verOriginLimits": [
-                0.0,
-                100.0
-              ]
-            }
-          ]
+          "shootingDmPart": "fire_control_system_dm"
         },
         "limits": {
           "yaw": [
@@ -1988,7 +1964,7 @@
         "turret": {
           "head": "bone_turret_01",
           "gun": "bone_mg_aa_v",
-          "gunnerDm": "commander_dm",
+          "gunnerDm": "loader_01_dm",
           "hasNightVision": false
         },
         "limits": {
@@ -2030,7 +2006,7 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "parkInDeadzone": false,
-        "speedYaw": 120.0,
+        "speedYaw": 90.0,
         "speedPitch": 90.0,
         "turret": {
           "head": "bone_commander_sight_h",
@@ -2045,36 +2021,9 @@
             180.0
           ],
           "pitch": [
-            -10.0,
-            20.0
+            -5.0,
+            10.0
           ]
-        },
-        "gunStabilizer": {
-          "hasVerticalGunFreeMode": false,
-          "forceEnabled": true,
-          "hasHorizontal": true,
-          "horizontalOmegaMult": 1.0,
-          "horizontalSpeedLimitKPH": 75.0,
-          "hasVertical": true,
-          "verticalOmegaMult": 1.0,
-          "verticalSpeedLimitKPH": 75.0,
-          "speedFromVehicleVerticalMult": -1.0,
-          "errorKPHToDegrees": {
-            "row": [
-              [
-                5.0,
-                0.0
-              ],
-              [
-                45.0,
-                0.00015
-              ],
-              [
-                80.0,
-                0.0002
-              ]
-            ]
-          }
         }
       }
     ],
@@ -2094,9 +2043,9 @@
   },
   "VehiclePhys": {
     "Mass": {
-      "Empty": 56460.0,
+      "Empty": 54130.0,
       "Fuel": 1200.0,
-      "TakeOff": 57660.0,
+      "TakeOff": 55330.0,
       "momentOfInertia": [
         4.0,
         5.0,
@@ -2575,6 +2524,15 @@
         ]
       }
     ]
+  },
+  "constraintChainIK": {
+    "piston": {
+      "chainTemplate": "bone_roll_01_01",
+      "offsetLimits": [
+        0.2,
+        0.0
+      ]
+    }
   },
   "ammo": {
     "combustionTime": 10.0,
@@ -3304,31 +3262,7 @@
                   "drive_turret_h_dm",
                   "fire_control_system_dm"
                 ],
-                "shootingDmPart": "fire_control_system_dm",
-                "linkedAnimPart": [
-                  {
-                    "verNode": "bone_roll_01",
-                    "verLimits": [
-                      0.0,
-                      200.0
-                    ],
-                    "verOriginLimits": [
-                      0.0,
-                      100.0
-                    ]
-                  },
-                  {
-                    "verNode": "bone_roll_01_01",
-                    "verLimits": [
-                      0.0,
-                      50.0
-                    ],
-                    "verOriginLimits": [
-                      0.0,
-                      100.0
-                    ]
-                  }
-                ]
+                "shootingDmPart": "fire_control_system_dm"
               },
               "limits": {
                 "yaw": [
@@ -3372,7 +3306,7 @@
               "turret": {
                 "head": "bone_turret_01",
                 "gun": "bone_mg_aa_v",
-                "gunnerDm": "commander_dm",
+                "gunnerDm": "loader_01_dm",
                 "hasNightVision": false
               },
               "limits": {
@@ -3414,7 +3348,7 @@
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "parkInDeadzone": false,
-              "speedYaw": 120.0,
+              "speedYaw": 90.0,
               "speedPitch": 90.0,
               "turret": {
                 "head": "bone_commander_sight_h",
@@ -3429,36 +3363,9 @@
                   180.0
                 ],
                 "pitch": [
-                  -10.0,
-                  20.0
+                  -5.0,
+                  10.0
                 ]
-              },
-              "gunStabilizer": {
-                "hasVerticalGunFreeMode": false,
-                "forceEnabled": true,
-                "hasHorizontal": true,
-                "horizontalOmegaMult": 1.0,
-                "horizontalSpeedLimitKPH": 75.0,
-                "hasVertical": true,
-                "verticalOmegaMult": 1.0,
-                "verticalSpeedLimitKPH": 75.0,
-                "speedFromVehicleVerticalMult": -1.0,
-                "errorKPHToDegrees": {
-                  "row": [
-                    [
-                      5.0,
-                      0.0
-                    ],
-                    [
-                      45.0,
-                      0.00015
-                    ],
-                    [
-                      80.0,
-                      0.0002
-                    ]
-                  ]
-                }
               }
             },
             {
@@ -3609,6 +3516,7 @@
       "fatalExplosion": true,
       "replenishmentDelay": 5.0,
       "replenishmentTime": 5.0,
+      "autoloader": "autoloader_dm",
       "shells": [
         {
           "firstStage": true,

@@ -3,6 +3,8 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 
 let InternalItem = class (ItemCouponBase) {
   static iType = itemType.INTERNAL_ITEM
@@ -11,7 +13,7 @@ let InternalItem = class (ItemCouponBase) {
 
   getContentItem   = function() {
     let contentItem = this.metaBlk?.item ?? this.metaBlk?.trophy
-    return contentItem && ::ItemsManager.findItemById(contentItem)
+    return contentItem && findItemById(contentItem)
   }
 
   function canConsume() {
@@ -83,4 +85,5 @@ let InternalItem = class (ItemCouponBase) {
     return base.getSubstitutionItem()
   }
 }
-return {InternalItem}
+
+registerItemClass(InternalItem)

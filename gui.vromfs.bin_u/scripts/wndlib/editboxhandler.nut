@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+from "%scripts/utils_sa.nut" import call_for_handler
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -116,7 +117,7 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
     if (this.value || this.canCancel)
       base.goBack()
     else if (this.cancelFunc)
-        ::call_for_handler(this.owner, this.cancelFunc)
+        call_for_handler(this.owner, this.cancelFunc)
   }
 
   function afterModalDestroy() {
@@ -127,7 +128,7 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
         this.okFunc(this.value)
 
     if (!this.value && this.cancelFunc)
-      ::call_for_handler(this.owner, this.cancelFunc)
+      call_for_handler(this.owner, this.cancelFunc)
   }
 }
 

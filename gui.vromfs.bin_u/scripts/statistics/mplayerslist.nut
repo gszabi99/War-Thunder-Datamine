@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { updateNameMapping } = require("%scripts/user/nameMapping.nut")
-let { get_mplayers_list } = require("mission")
+let { get_mplayers_list, GET_MPLAYERS_LIST } = require("mission")
 
 function getMplayersList(team = GET_MPLAYERS_LIST) {
   local list = get_mplayers_list(team, true)

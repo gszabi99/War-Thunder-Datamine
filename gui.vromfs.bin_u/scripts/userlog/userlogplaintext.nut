@@ -16,7 +16,7 @@ let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryTyp
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
-let { getMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
+let { getMissionName } = require("%scripts/missions/missionsText.nut")
 let { getLbDiff, getLeaderboardItemView, getLeaderboardItemWidgets
 } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { getLogNameByType, updateRepairCost } = require("%scripts/userLog/userlogUtils.nut")

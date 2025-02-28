@@ -3,8 +3,9 @@ require net
 require Unit
 
 
-[es(track=playerNo, on_appear, after=unit_init_completed_es)]
-def track_players_es(evt : Event; eid : EntityId; unit__ref : UnitRef; playerNo : int; var replication : NetObject)
+[es(track=unit__playerNo, on_appear, after=unit_init_completed_es)]
+def track_players_es(evt : Event; eid : EntityId; unit__ref : UnitRef; unit__playerNo : int; var replication : NetObject)
+  let playerNo = unit__playerNo
   if playerNo >= 0
     if !has(eid, "playerUnit")
       addSubTemplate(eid, "player_unit")

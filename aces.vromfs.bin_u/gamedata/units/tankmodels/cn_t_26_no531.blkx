@@ -56,82 +56,6 @@
     "EngineNameAi": "engine_tank_ai_light",
     "TrackSoundNameAi": "tracks_ai_light"
   },
-  "ammoStowages": {
-    "ammo1": {
-      "removeLoadedAmmo": false,
-      "weaponTrigger": "gunner0",
-      "fatalFire": true,
-      "fatalExplosion": true,
-      "shells": {
-        "ammo_turret_01_dm": {
-          "count": 4
-        },
-        "ammo_turret_02_dm": {
-          "count": 5
-        },
-        "ammo_turret_03_dm": {
-          "count": 10
-        },
-        "ammo_turret_04_dm": {
-          "count": 10
-        },
-        "ammo_turret_05_dm": {
-          "count": 10
-        },
-        "ammo_turret_06_dm": {
-          "count": 10
-        },
-        "ammo_body_01_dm": {
-          "count": 10
-        },
-        "ammo_body_02_dm": {
-          "count": 8
-        },
-        "ammo_body_03_dm": {
-          "count": 10
-        },
-        "ammo_body_04_dm": {
-          "count": 8
-        },
-        "ammo_body_05_dm": {
-          "count": 10
-        },
-        "ammo_body_06_dm": {
-          "count": 8
-        },
-        "ammo_body_07_dm": {
-          "count": 12
-        },
-        "ammo_body_08_dm": {
-          "count": 12
-        },
-        "ammo_body_09_dm": {
-          "count": 10
-        },
-        "ammo_body_10_dm": {
-          "count": 8
-        },
-        "ammo_body_11_dm": {
-          "count": 10
-        },
-        "ammo_body_12_dm": {
-          "count": 10
-        },
-        "ammo_body_13_dm": {
-          "count": 12
-        },
-        "ammo_body_14_dm": {
-          "count": 10
-        },
-        "ammo_body_15_dm": {
-          "count": 10
-        },
-        "ammo_body_16_dm": {
-          "count": 8
-        }
-      }
-    }
-  },
   "DamageEffects": {
     "part": [
       {
@@ -2589,6 +2513,51 @@
       "cls_body_03": "convex_hull"
     }
   },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "shells": {
+        "ammo_turret_01_dm": {
+          "count": 6
+        },
+        "ammo_turret_02_dm": {
+          "count": 6
+        },
+        "ammo_body_01_dm": {
+          "count": 10
+        },
+        "ammo_body_02_dm": {
+          "count": 8
+        },
+        "ammo_body_03_dm": {
+          "count": 10
+        },
+        "ammo_body_04_dm": {
+          "count": 8
+        },
+        "ammo_body_05_dm": {
+          "count": 10
+        },
+        "ammo_body_06_dm": {
+          "count": 8
+        },
+        "ammo_body_07_dm": {
+          "count": 12
+        },
+        "ammo_body_08_dm": {
+          "count": 12
+        },
+        "ammo_body_09_dm": {
+          "count": 10
+        },
+        "ammo_body_10_dm": {
+          "count": 7
+        }
+      }
+    }
+  },
   "commonWeapons": {
     "Weapon": [
       {
@@ -2596,6 +2565,7 @@
         "blk": "gameData/Weapons/groundModels_weapons/45mm_20K_user_cannon.blk",
         "emitter": "bone_gun_barrel",
         "flash": "emtr_gun_flame",
+        "useEmitter": true,
         "maxAdditionalPitch": 0.0,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2632,7 +2602,7 @@
           ],
           "pitch": [
             -5.0,
-            21.0
+            16.0
           ]
         }
       },
@@ -2684,8 +2654,9 @@
         "trigger": "gunner2",
         "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/groundModels_weapons/7_62mm_DT_user_machinegun.blk",
-        "emitter": "bone_mg_aa_v",
+        "emitter": "emtr_mg_flame_01",
         "flash": "emtr_mg_flame_01",
+        "useEmitter": true,
         "maxAdditionalPitch": 0.0,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,

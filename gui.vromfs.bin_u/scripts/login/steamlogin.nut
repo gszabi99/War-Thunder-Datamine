@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import get_login_pass
 from "%scripts/dagui_library.nut" import *
-from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
+from "%appGlobals/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 
 let { set_disable_autorelogin_once } = require("loginState.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -15,7 +15,9 @@ let { saveLocalSharedSettings, loadLocalSharedSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
-let { isAuthorized } = require("%scripts/login/loginStates.nut")
+let { isAuthorized } = require("%appGlobals/login/loginState.nut")
+let { is_autologin_enabled } = require("%scripts/options/optionsBeforeLogin.nut")
+let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 
 gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -23,14 +25,14 @@ gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
   function initScreen() {
     animBgLoad()
     setVersionText()
-    ::setProjectAwards(this)
+    setProjectAwards(this)
     showTitleLogo(this.scene, 128)
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     let lp = get_login_pass()
     this.defaultSaveLoginFlagVal = lp.login != ""
     this.defaultSavePasswordFlagVal = lp.password != ""
-    this.defaultSaveAutologinFlagVal = ::is_autologin_enabled()
+    this.defaultSaveAutologinFlagVal = is_autologin_enabled()
 
     //Called init while in loading, so no need to call again authorization.
     //Just wait, when the loading will be over.

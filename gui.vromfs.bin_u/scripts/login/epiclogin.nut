@@ -1,12 +1,14 @@
 from "%scripts/dagui_natives.nut" import check_login_pass, set_login_pass
 from "%scripts/dagui_library.nut" import *
-from "%scripts/login/loginConsts.nut" import LOGIN_STATE
+from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let statsd = require("statsd")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
+let { addLoginState } = require("%scripts/login/loginManager.nut")
+let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
 
 gui_handlers.LoginWndHandlerEpic <- class (gui_handlers.LoginWndHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -14,7 +16,7 @@ gui_handlers.LoginWndHandlerEpic <- class (gui_handlers.LoginWndHandler) {
   function initScreen() {
     animBgLoad()
     setVersionText()
-    ::setProjectAwards(this)
+    setProjectAwards(this)
 
     this.guiScene.performDelayed(this, function() { this.doLogin() })
   }
@@ -22,7 +24,7 @@ gui_handlers.LoginWndHandlerEpic <- class (gui_handlers.LoginWndHandler) {
   function doLogin() {
     log("Epic login: check_login_pass")
     statsd.send_counter("sq.game_start.request_login", 1, { login_type = "epic" })
-    ::g_login.addState(LOGIN_STATE.LOGIN_STARTED)
+    addLoginState(LOGIN_STATE.LOGIN_STARTED)
     let ret = check_login_pass("", "", "epic", "epic", false, false)
     this.proceedAuthorizationResult(ret)
   }
@@ -33,7 +35,7 @@ gui_handlers.LoginWndHandlerEpic <- class (gui_handlers.LoginWndHandler) {
 
     if (result == YU2_OK) {
       set_login_pass("", "", 0)
-      ::g_login.addState(LOGIN_STATE.AUTHORIZED)
+      addLoginState(LOGIN_STATE.AUTHORIZED)
     }
     else {
       ::error_message_box("yn1/connect_error", result,

@@ -15,7 +15,6 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let DataBlock = require("DataBlock")
 let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods,
   isModificationInTree, modsWndWidthRestrictions } = require("%scripts/weaponry/modsTree.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
@@ -78,39 +77,15 @@ let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { flushExcessExpToModule } = require("%scripts/unit/unitActions.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
+let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
+let { enable_modifications } = require("%scripts/weaponry/weaponryActions.nut")
+let { RESEARCHED_MODE_FOR_CHECK } = require ("%scripts/researches/researchConsts.nut")
+let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 const HEADER_LEN_PER_CELL = 16
-
-::enable_modifications <- function enable_modifications(unitName, modNames, enable) {
-  modNames = modNames?.filter(@(n) n != "")
-  if ((modNames?.len() ?? 0) == 0)
-    return
-
-  let db = DataBlock()
-  db[unitName] <- DataBlock()
-  foreach (modName in modNames)
-    db[unitName][modName] <- enable
-  return shop_enable_modifications(db)
-}
-
-::enable_current_modifications <- function enable_current_modifications(unitName) {
-  let db = DataBlock()
-  db[unitName] <- DataBlock()
-
-  let air = getAircraftByName(unitName)
-  foreach (mod in air.modifications)
-    db[unitName][mod.name] <- shopIsModificationEnabled(unitName, mod.name)
-
-  return shop_enable_modifications(db)
-}
-
-::open_weapons_for_unit <- function open_weapons_for_unit(unit, params = {}) {
-  if (!("name" in unit))
-    return
-  unitNameForWeapons.set(unit.name)
-  handlersManager.loadHandler(gui_handlers.WeaponsModalHandler, params)
-}
 
 let getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.type == weaponsItem.modification
   ? MODIFICATION_DELAYED_TIER.getTooltipId(unitName, mod.name, params)
@@ -136,7 +111,7 @@ function getSkinMod(unit) {
     if (skinDecorator?.unlockBlk == null)
       continue
 
-    let unlockCfg = ::build_conditions_config(skinDecorator.unlockBlk)
+    let unlockCfg = buildConditionsConfig(skinDecorator.unlockBlk)
     let progress = unlockCfg.getProgressBarData()
     let canDoSkinUnlock = isUnlockVisible(skinDecorator.unlockBlk)
       && !skinDecorator.isUnlocked()
@@ -237,7 +212,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.initSlotbar()
 
     if (this.researchMode)
-      this.sendModResearchedStatistic(this.air, this.researchBlock?[::researchedModForCheck] ?? "")
+      this.sendModResearchedStatistic(this.air, this.researchBlock?[RESEARCHED_MODE_FOR_CHECK] ?? "")
 
     this.selectResearchModule()
     this.checkOnResearchCurMod()
@@ -358,7 +333,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function selectResearchModule(customPosIdx = -1) {
     local modIdx = customPosIdx
     if (modIdx < 0) {
-      let finishedResearch = this.researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
+      let finishedResearch = this.researchBlock?[RESEARCHED_MODE_FOR_CHECK] ?? "CdMin_Fuse"
       foreach (item in this.items)
         if (isModInResearch(this.air, item)) {
           modIdx = item.guiPosIdx
@@ -379,7 +354,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local titleText = " ".concat(loc("mainmenu/btnWeapons"), loc("ui/mdash"), getUnitName(this.air))
     if (this.researchMode) {
-      let modifName = this.researchBlock?[::researchedModForCheck] ?? "CdMin_Fuse"
+      let modifName = this.researchBlock?[RESEARCHED_MODE_FOR_CHECK] ?? "CdMin_Fuse"
       titleText = loc("modifications/finishResearch",
         { modName = getModificationName(this.air, modifName) })
     }
@@ -438,7 +413,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     tutorialModule.saveShowedTutorial("researchMod")
 
-    let finMod = getTblValue(::researchedModForCheck, this.researchBlock, "")
+    let finMod = this.researchBlock?[RESEARCHED_MODE_FOR_CHECK] ?? ""
     let newMod = shop_get_researchable_module_name(this.airName)
 
     let finIdx = this.getItemIdxByName(finMod)
@@ -482,7 +457,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         })
     }
 
-    ::gui_modal_tutor(steps, this)
+    gui_modal_tutor(steps, this)
   }
 
   function fillPage() {
@@ -1009,10 +984,10 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let idx = mod.tier - 1
         tiersArray[idx] = tiersArray[idx] || { researched = 0, notResearched = 0 }
 
-         if (isModResearched(this.air, mod))
-           tiersArray[idx].researched++
-         else
-           tiersArray[idx].notResearched++
+        if (isModResearched(this.air, mod))
+          tiersArray[idx].researched++
+        else
+          tiersArray[idx].notResearched++
       }
     }
     return tiersArray
@@ -1154,9 +1129,9 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
 
       let iconObj = this.scene.findObject($"bullets{groupIndex}_warning")
-        if (iconObj?.isValid())
-          iconObj.display = (checkUnitBullets(this.air, true, bulletsList.values) != UNIT_WEAPONS_READY)
-            ? "show" : "hide"
+      if (iconObj?.isValid())
+        iconObj.display = (checkUnitBullets(this.air, true, bulletsList.values) != UNIT_WEAPONS_READY)
+          ? "show" : "hide"
     }
   }
 
@@ -1531,6 +1506,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         if (!::g_squad_utils.canJoinFlightMsgBox())
           return
         this.shouldBeRestoredOnMainMenu = true
+        currentCampaignMission.set(misInfo?.name ?? "")
         startModTutorialMission(unit, name, tutorialMission, tutorialMissionWeapon)
       }.bindenv(this)
     }
@@ -1638,7 +1614,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       broadcastEvent("ModificationChanged")
     }
 
-    let taskId = ::enable_modifications(this.airName, [item.name], !equipped)
+    let taskId = enable_modifications(this.airName, [item.name], !equipped)
     addTask(taskId, { showProgressBox = true }, taskSuccessCallback)
   }
 
@@ -1714,7 +1690,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function afterModalDestroy() {
-    if (!::checkNonApprovedResearches(false) && prepareUnitsForPurchaseMods.haveUnits())
+    if (!checkNonApprovedResearches(false) && prepareUnitsForPurchaseMods.haveUnits())
       prepareUnitsForPurchaseMods.checkUnboughtMods()
   }
 

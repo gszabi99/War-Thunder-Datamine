@@ -571,10 +571,6 @@
           "setDistGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
-          },
-          "setRelSpeedGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
           }
         },
         "resetTrackMode": {
@@ -1716,7 +1712,10 @@
         },
         "hmdStandbyToSearch": {
           "stateFrom": "hmdStandby",
-          "command": "acmSwitch",
+          "command": [
+            "acmSwitch",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "doCustomActionTemplate": [
@@ -1727,6 +1726,23 @@
               {
                 "fsm": "main",
                 "name": "setSearchMode"
+              }
+            ]
+          }
+        },
+        "hmdStandbyToStandby": {
+          "stateFrom": "hmdStandby",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetHmdStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
               }
             ]
           }
@@ -1785,10 +1801,7 @@
         "hmdTrackToHmdStandby": {
           "stateFrom": "hmdTrack",
           "event": "targetsOfInterestCleanup",
-          "command": [
-            "selectTarget",
-            "switch"
-          ],
+          "command": "selectTarget",
           "stateTo": "hmdStandby",
           "actions": {
             "doCustomActionTemplate": [
@@ -2661,8 +2674,9 @@
           "actions": {
             "updateTargetOfInterest": {
               "limit": 10,
-              "radius": 1000.0,
-              "dopplerSpeedGateMaxTime": 8.0
+              "radius": 2000.0,
+              "dopplerSpeedGateMaxTime": 8.0,
+              "posGateMaxTime": 4.0
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {
@@ -2791,11 +2805,32 @@
             "scanPattern": "irstTrack"
           }
         },
-        "track": {
+        "trackRadar": {
           "updateActiveTargetOfInterest": {
-            "dirFilter": {},
-            "distFilter": {},
-            "dopplerSpeedFilter": {}
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "dopplerSpeedFilter": {
+              "rateLim": [
+                200.0,
+                200.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
           },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
@@ -2808,6 +2843,36 @@
             "width": 0.0
           },
           "setRelSpeedGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          }
+        },
+        "trackIrst": {
+          "updateActiveTargetOfInterest": {
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
+          },
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
           }
@@ -2929,7 +2994,7 @@
           "stateFrom": "mprf",
           "event": "targetDetected",
           "actions": {
-            "track": {}
+            "trackRadar": {}
           }
         },
         "startTrackMprf": {
@@ -2942,7 +3007,7 @@
           "stateTo": "mprf",
           "actions": {
             "setMprfTrack": {},
-            "track": {},
+            "trackRadar": {},
             "setModeName": {
               "name": "PD track"
             }
@@ -2953,7 +3018,7 @@
           "event": "targetDetected",
           "stateTo": "hprfOkMprfTry",
           "actions": {
-            "track": {}
+            "trackRadar": {}
           }
         },
         "startTrackHprf": {
@@ -2965,7 +3030,7 @@
           "stateTo": "hprf",
           "actions": {
             "setHprfTrack": {},
-            "track": {},
+            "trackRadar": {},
             "setModeName": {
               "name": "PD HDN track"
             }
@@ -2976,7 +3041,7 @@
           "event": "targetDetected",
           "stateTo": "irstOkHprfTry",
           "actions": {
-            "track": {}
+            "trackIrst": {}
           }
         },
         "startTrackIrst": {
@@ -2985,7 +3050,7 @@
           "stateTo": "irst",
           "actions": {
             "setIrstTrack": {},
-            "track": {},
+            "trackIrst": {},
             "setModeName": {
               "name": "track"
             }
@@ -3077,11 +3142,32 @@
             "signal": "irstTrack"
           }
         },
-        "track": {
+        "trackRadar": {
           "updateActiveTargetOfInterest": {
-            "dirFilter": {},
-            "distFilter": {},
-            "dopplerSpeedFilter": {}
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "dopplerSpeedFilter": {
+              "rateLim": [
+                200.0,
+                200.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
           },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
@@ -3094,6 +3180,36 @@
             "width": 0.0
           },
           "setRelSpeedGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          }
+        },
+        "trackIrst": {
+          "updateActiveTargetOfInterest": {
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
+          },
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
           }
@@ -3183,7 +3299,7 @@
           "stateFrom": "mprf",
           "event": "targetDetected",
           "actions": {
-            "track": {}
+            "trackRadar": {}
           }
         },
         "startTrackMprf": {
@@ -3195,7 +3311,7 @@
           "stateTo": "mprf",
           "actions": {
             "setMprfTrack": {},
-            "track": {},
+            "trackRadar": {},
             "setModeName": {
               "name": "PD track"
             }
@@ -3206,7 +3322,7 @@
           "event": "targetDetected",
           "stateTo": "irstOkMprfTry",
           "actions": {
-            "track": {}
+            "trackIrst": {}
           }
         },
         "startTrackIrst": {
@@ -3215,7 +3331,7 @@
           "stateTo": "irst",
           "actions": {
             "setIrstTrack": {},
-            "track": {},
+            "trackIrst": {},
             "setModeName": {
               "name": "IRST track"
             }
@@ -3277,9 +3393,22 @@
           "event": "targetDetected",
           "actions": {
             "updateActiveTargetOfInterest": {
-              "dirFilter": {},
-              "distFilter": {},
-              "dopplerSpeedFilter": {}
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {
+                "accelLim": [
+                  150.0,
+                  150.0
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              }
             },
             "setCenterAzimuth": {
               "source": "activeTargetOfInterest"
@@ -3288,10 +3417,6 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             }
@@ -3312,10 +3437,6 @@
               "source": "activeTargetOfInterest"
             },
             "setDistGatePos": {
-              "source": "activeTargetOfInterest",
-              "width": 0.0
-            },
-            "setRelSpeedGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
             }

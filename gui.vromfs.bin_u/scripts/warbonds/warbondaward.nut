@@ -5,11 +5,11 @@ import "%scripts/warbonds/warbondsView.nut" as g_warbonds_view
 
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 let DataBlock = require("DataBlock")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { FULL_ID_SEPARATOR } = require("%scripts/warbonds/warbondsState.nut")
 
 let WarbondAward = class {
   id = ""
@@ -48,7 +48,7 @@ let WarbondAward = class {
   function getFullId() {
     if (!this.warbondWeak)
       return ""
-    return "".concat(this.warbondWeak.getFullId(), ::g_warbonds.FULL_ID_SEPARATOR, this.idx)
+    return "".concat(this.warbondWeak.getFullId(), FULL_ID_SEPARATOR, this.idx)
   }
 
   function getLayeredImage() {
@@ -206,17 +206,6 @@ let WarbondAward = class {
       this.getRequiredMedalsLevelText(),
       this.getAvailableAmountText()
     ]
-  }
-
-  function fillItemDesc(descObj, handler) {
-    let item = this.awardType.getDescItem(this.blk)
-    if (!item)
-      return false
-
-    descObj.scrollToView(true)
-    fillItemDescr(item, descObj, handler, true, true,
-                                 { descModifyFunc = this.addAmountTextToDesc.bindenv(this) })
-    return true
   }
 
   function getDescText() {

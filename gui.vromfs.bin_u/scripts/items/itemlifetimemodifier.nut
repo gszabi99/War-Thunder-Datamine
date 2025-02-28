@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
-let u = require("%sqStdLibs/helpers/u.nut")
 
+let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
+let { getRawInventoryItemAmount } = require("%scripts/items/itemsManager.nut")
 
 let regexp2 = require("regexp2")
 
@@ -11,7 +12,7 @@ let class ItemLifetimeModifier {
   dependencies = null
 
   constructor(formulaStr) {
-    if (type(formulaStr) != "string" || u.isEmpty(formulaStr))
+    if (type(formulaStr) != "string" || isEmpty(formulaStr))
       return
 
     // for compatibility
@@ -33,7 +34,7 @@ let class ItemLifetimeModifier {
 
     let params = {}
     foreach (dependency in this.dependencies) {
-      params[$"count_{dependency.tostring()}"] <- ::ItemsManager.getRawInventoryItemAmount(dependency)
+      params[$"count_{dependency.tostring()}"] <- getRawInventoryItemAmount(dependency)
     }
     return this.modifierFunction(params)
   }

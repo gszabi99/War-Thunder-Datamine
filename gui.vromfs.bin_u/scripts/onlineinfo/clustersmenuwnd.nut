@@ -5,7 +5,7 @@ let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
 let { getClusterFullName } = require("%scripts/onlineInfo/clustersManagement.nut")
 
@@ -32,7 +32,7 @@ let class ClustersMenuWnd (gui_handlers.BaseGuiHandlerWT) {
   alignObj = null
 
   function getSceneTplView() {
-    let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTERS)
+    let clusterOpt = get_option(USEROPT_RANDB_CLUSTERS)
     return {
       value = clusterOpt.value
       list = clusterOpt.items.map(@(item, idx) {
@@ -56,7 +56,7 @@ let class ClustersMenuWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChangeValue(obj) {
-    let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTERS)
+    let clusterOpt = get_option(USEROPT_RANDB_CLUSTERS)
     let prevVal = clusterOpt.value
     let curVal = obj.getValue()
     if (curVal == prevVal)
@@ -67,7 +67,7 @@ let class ClustersMenuWnd (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventClusterChange(_) {
-    let clusterOpt = ::get_option(USEROPT_RANDB_CLUSTERS)
+    let clusterOpt = get_option(USEROPT_RANDB_CLUSTERS)
     let listObj = this.scene.findObject("multi_select")
     let prevVal = listObj.getValue()
     let curVal = clusterOpt.value

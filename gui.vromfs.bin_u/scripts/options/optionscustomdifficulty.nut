@@ -8,7 +8,7 @@ let { getCustomDifficultyOptions } = require("%scripts/matchingRooms/matchingGam
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_cd_preset, set_cd_preset, getCdOption, getCdBaseDifficulty } = require("guiOptions")
 let { reload_cd } = require("guiMission")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 
 gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.MODAL
@@ -37,7 +37,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsM
 
     this.ignoreUiCallbacks = true
     foreach (o in this.options) {
-      let option = ::get_option(o[0])
+      let option = get_option(o[0])
       let obj = optListObj.findObject(option.id)
       if (option.controlType == optionControlType.LIST && option.values[option.value] != getCdOption(option.type))
         assert(false, "".concat("[ERROR] Custom difficulty param ", option.type, " (", option.id, ") value '", getCdOption(option.type), "' is out of range."))
@@ -124,7 +124,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsM
       return
     }
 
-    let option = ::get_option(USEROPT_DIFFICULTY)
+    let option = get_option(USEROPT_DIFFICULTY)
     let menu = { handler = this, actions = [] }
     for (local i = 0; i < option.items.len(); i++) {
       if (option.diffCode[i] == DIFFICULTY_CUSTOM)

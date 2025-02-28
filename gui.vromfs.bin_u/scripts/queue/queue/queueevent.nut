@@ -5,12 +5,10 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
 let { needActualizeQueueData, queueProfileJwt, actualizeQueueData } = require("%scripts/queue/queueBattleData.nut")
 let { enqueueInSession } = require("%scripts/matching/serviceNotifications/match.nut")
-let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
+let { checkMatchingError } = require("%scripts/matching/api.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_QUEUE_EVENT_CUSTOM_MODE, USEROPT_QUEUE_JIP, USEROPT_DISPLAY_MY_REAL_NICK,
   USEROPT_AUTO_SQUAD, USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES
 } = require("%scripts/options/optionsExtNames.nut")
-let { saveLocalAccountSettings, loadLocalAccountSettings
-} = require("%scripts/clientState/localProfile.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { hasNightGameModes, hasSmallTeamsGameModes, getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getGameModeIdsByEconomicName, getGameModeIdsByEconomicNameWithoutTags,
@@ -23,8 +21,38 @@ let g_squad_manager = getGlobalModule("g_squad_manager")
 let events = getGlobalModule("events")
 let { getRecentSquadMrank } = require("%scripts/battleRating.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
+let BaseQueue = require("%scripts/queue/queue/queueBase.nut")
+let { registerQueueClass, getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
+let { get_option_in_mode } = require("%scripts/options/optionsExt.nut")
 
-::queue_classes.Event <- class (::queue_classes.Base) {
+let { getShouldEventQueueCustomMode, setShouldEventQueueCustomMode, requestLeaveQueue
+} = require("%scripts/queue/queueState.nut")
+
+function getCustomMgm(eventName) {
+  return events.getCustomGameMode(events.getEvent(eventName))
+}
+
+function hasCustomModeByEventName(eventName) {
+  return hasFeature("QueueCustomEventRoom") && !!getCustomMgm(eventName)
+}
+
+function hasOptions(eventName) {
+  return hasCustomModeByEventName(eventName)
+    && getQueueClass("Event").isAllowedToSwitchCustomMode()
+    && !::queues.findQueueByName(eventName, true)
+}
+
+function getOptions(eventName) {
+  if (!hasOptions(eventName))
+    return null
+  return {
+    options = [[USEROPT_QUEUE_EVENT_CUSTOM_MODE]]
+    context = { eventName = eventName }
+  }
+}
+
+let Event = class (BaseQueue) {
   shouldQueueCustomMode = false
 
   isQueueLeaved = false
@@ -33,7 +61,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
   function init() {
     this.name = getTblValue("mode", this.params, "")
-    this.shouldQueueCustomMode = this.getShouldQueueCustomMode(this.name)
+    this.shouldQueueCustomMode = getShouldEventQueueCustomMode(this.name)
 
     this.params.clusters <- clone (this.params?.clusters ?? [])
   }
@@ -68,35 +96,16 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     base.clearAllQueues()
   }
 
-  static function getCustomModeSaveId(eventName) { return $"queue/customEvent/{eventName}" }
-  static function getShouldQueueCustomMode(eventName) {
-    return loadLocalAccountSettings(::queue_classes.Event.getCustomModeSaveId(eventName), false)
-  }
-  static function setShouldQueueCustomMode(eventName, shouldSave) {
-    return saveLocalAccountSettings(::queue_classes.Event.getCustomModeSaveId(eventName), shouldSave)
-  }
-
   static function getCustomMgm(eventName) {
-    return events.getCustomGameMode(events.getEvent(eventName))
-  }
-
-  static function hasCustomModeByEventName(eventName) {
-    return hasFeature("QueueCustomEventRoom") && !!::queue_classes.Event.getCustomMgm(eventName)
+    return getCustomMgm(eventName)
   }
 
   static function hasOptions(eventName) {
-    return ::queue_classes.Event.hasCustomModeByEventName(eventName)
-      && ::queue_classes.Event.isAllowedToSwitchCustomMode()
-      && !::queues.findQueueByName(eventName, true)
+    return hasOptions(eventName)
   }
 
   static function getOptions(eventName) {
-    if (!::queue_classes.Event.hasOptions(eventName))
-      return null
-    return {
-      options = [[USEROPT_QUEUE_EVENT_CUSTOM_MODE]]
-      context = { eventName = eventName }
-    }
+    return getOptions(eventName)
   }
 
   function join(successCallback, errorCallback) {
@@ -129,24 +138,11 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
       }
       return
     }
-    this._leaveQueueImpl(this.getQueryParams(false), successCallback, errorCallback, needShowError)
+    requestLeaveQueue(this.getQueryParams(false), successCallback, errorCallback, needShowError)
   }
 
   static function leaveAll(successCallback, errorCallback, needShowError = false) {
-    ::queue_classes.Event._leaveQueueImpl({}, successCallback, errorCallback, needShowError)
-  }
-
-  static function _leaveQueueImpl(queryParams, successCallback, errorCallback, needShowError = false) {
-    matchingApiFunc(
-      "match.leave_queue"
-      function(response) {
-        if (checkMatchingError(response, needShowError))
-          successCallback(response)
-        else
-          errorCallback(response)
-      }
-      queryParams
-    )
+    requestLeaveQueue({}, successCallback, errorCallback, needShowError)
   }
 
   getCurRank = @(event) g_squad_manager.isInSquad()
@@ -155,10 +151,10 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 
   getExcludedGmsTags = @(event) {
     [NIGHT_GAME_MODE_TAG_PREFIX] = hasNightGameModes(event)
-      && !::get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, OPTIONS_MODE_GAMEPLAY, false),
+      && !get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_NIGHT_BATLLES, OPTIONS_MODE_GAMEPLAY, false),
 
     [SMALL_TEAMS_GAME_MODE_TAG_PREFIX] = hasSmallTeamsGameModes(event)
-      && (!::get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES, OPTIONS_MODE_GAMEPLAY, false)
+      && (!get_gui_option_in_mode(USEROPT_CAN_QUEUE_TO_SMALL_TEAMS_BATTLES, OPTIONS_MODE_GAMEPLAY, false)
       || this.getCurRank(event) < event.minMRankForSmallTeamsBattles)
   }.filter(@(v) v)
    .keys()
@@ -196,7 +192,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
         slots = ::queues.getQueueSlots(this)
         dislikedMissions = prefParams.dislikedMissions
         bannedMissions = prefParams.bannedMissions
-        fakeName = !::get_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY).value
+        fakeName = !get_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY).value
       }
     }
     if (needAddJwtProfile)
@@ -215,8 +211,8 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
         if (needAddJwtProfile)
           qp.players[uid].profileJwt <- m.queueProfileJwt
       }
-    qp.jip <- ::get_option_in_mode(USEROPT_QUEUE_JIP, OPTIONS_MODE_GAMEPLAY).value
-    qp.auto_squad <- ::get_option_in_mode(USEROPT_AUTO_SQUAD, OPTIONS_MODE_GAMEPLAY).value
+    qp.jip <- get_option_in_mode(USEROPT_QUEUE_JIP, OPTIONS_MODE_GAMEPLAY).value
+    qp.auto_squad <- get_option_in_mode(USEROPT_AUTO_SQUAD, OPTIONS_MODE_GAMEPLAY).value
 
     if (this.params)
       foreach (key in ["team", "roomId", "gameQueueId"])
@@ -241,11 +237,11 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
   }
 
   function hasCustomMode() {
-    return this.hasCustomModeByEventName(this.name)
+    return hasCustomModeByEventName(this.name)
   }
 
   function isCustomModeQUeued() {
-    let customMgm = this.getCustomMgm(this.name)
+    let customMgm = getCustomMgm(this.name)
     if (!customMgm)
       return false
     return !!u.search(this.queueUidsList, @(q) q.gameModeId == customMgm.gameModeId)
@@ -261,7 +257,7 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
       return
 
     this.shouldQueueCustomMode = shouldQueue
-    this.setShouldQueueCustomMode(this.name, this.shouldQueueCustomMode)
+    setShouldEventQueueCustomMode(this.name, this.shouldQueueCustomMode)
 
     if (this.isCustomModeInTransition)
       return
@@ -273,9 +269,9 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     }
     this.isCustomModeInTransition = true
     if (this.shouldQueueCustomMode)
-      this._joinQueueImpl(this.getQueryParams(true, this.getCustomMgm(this.name)), cb, cb, false)
+      this._joinQueueImpl(this.getQueryParams(true, getCustomMgm(this.name)), cb, cb, false)
     else
-      this._leaveQueueImpl(this.getQueryParams(false, this.getCustomMgm(this.name)), cb, cb, false)
+      requestLeaveQueue(this.getQueryParams(false, getCustomMgm(this.name)), cb, cb, false)
   }
 
   function afterCustomModeQueueChanged(wasShouldQueue) {
@@ -303,3 +299,5 @@ let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
     })
   }
 }
+
+registerQueueClass("Event", Event)

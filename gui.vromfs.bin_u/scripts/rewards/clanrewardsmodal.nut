@@ -12,6 +12,8 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
+let { myClanInfo } = require("%scripts/clans/clanState.nut")
 
 function isRewardBest(medal, clanData) {
   if ((clanData?.clanBestRewards.len() ?? 0) > 0 && medal?.bestRewardsConfig)
@@ -46,7 +48,7 @@ gui_handlers.clanRewardsModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function getSceneTplView() {
     this.maxClanBestRewards = get_warpoints_blk()?.maxClanBestRewards ?? this.maxClanBestRewards
     let blocksCount = this.rewards.len() > 3 ? 2 : 1
-    let myClanRights = ::g_clans.getMyClanRights()
+    let myClanRights = getMyClanRights()
     this.canEditBestRewards = this.clanId == clan_get_my_clan_id() && isInArray("CHANGE_INFO", myClanRights)
     return {
       width = "".concat(blocksCount, "@unlockBlockWidth + ", (blocksCount - 1), "@framePadding")
@@ -58,7 +60,7 @@ gui_handlers.clanRewardsModal <- class (gui_handlers.BaseGuiHandlerWT) {
         rewardId = $"reward_{idx}"
         award_title_text = reward.name
         desc_text = reward.desc
-        isChecked = isRewardBest(reward, ::my_clan_info) ? "yes" : "no"
+        isChecked = isRewardBest(reward, myClanInfo.get()) ? "yes" : "no"
       })
     }
   }
@@ -72,7 +74,7 @@ gui_handlers.clanRewardsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.bestIds = []
     if (this.canEditBestRewards)
      foreach (idx, reward in this.rewards)
-       if (isRewardBest(reward, ::my_clan_info))
+       if (isRewardBest(reward, myClanInfo.get()))
          this.bestIds.append(idx)
     this.checkupIds = clone this.bestIds
   }

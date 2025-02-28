@@ -64,7 +64,7 @@ function canGetRewards(onAcceptFn, params) {
       continue
 
     waitingWarbondsToReciveAmount += warbondsAmount * count
-    if (!::g_warbonds.checkOverLimit(waitingWarbondsToReciveAmount, onAcceptFn, params))
+    if (!::g_warbonds.checkWarbondsOverLimit(waitingWarbondsToReciveAmount, onAcceptFn, params))
       return false
   }
 

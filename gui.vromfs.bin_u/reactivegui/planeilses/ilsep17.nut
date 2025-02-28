@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { IlsColor, IlsLineScale, BombCCIPMode, RocketMode, CannonMode, BombingMode,
  TargetPosValid, TargetPos, TvvMark, RadarTargetDist, DistToTarget, IlsPosSize,
  RadarTargetPos, AimLockPos, AimLockValid, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
-let { baseLineWidth, mpsToKnots, metrToFeet, metrToMile, mpsToKmh } = require("ilsConstants.nut")
+let { baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile, mpsToKmh } = require("ilsConstants.nut")
 let { Speed, Mach, BarAltitude, Altitude, Overload, Aoa, Tangage, Roll } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
@@ -1042,7 +1042,7 @@ let maxDistOfLaunchZone = Computed(@() max(max(RadarTargetDist.value, AamLaunchZ
 let curDistMarkPos = Computed(@() (RadarTargetDist.value / maxDistOfLaunchZone.value * 100.0).tointeger())
 let maxDistMarkPos = Computed(@() (AamLaunchZoneDistMaxVal.value / maxDistOfLaunchZone.value * 100.0).tointeger())
 let minDistMarkPos = Computed(@() (AamLaunchZoneDistMinVal.value / maxDistOfLaunchZone.value * 100.0).tointeger())
-let distMiles = Computed(@() (RadarTargetDist.value * metrToMile * 10.0).tointeger())
+let distMiles = Computed(@() (RadarTargetDist.value * metrToNavMile * 10.0).tointeger())
 let distKm = Computed(@() (RadarTargetDist.value * 0.001 * 10.0).tointeger())
 function launchZone(is_metric) {
   return @(){

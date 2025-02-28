@@ -6,13 +6,14 @@ let fonts = require("fonts")
 let { register_command } = require("console")
 let debugWnd = require("%scripts/debugTools/debugWnd.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let g_font = require("%scripts/options/fonts.nut")
 
 function debug_change_font_size(shouldIncrease = true) {
-  let availableFonts = ::g_font.getAvailableFonts()
-  let curFont = ::g_font.getCurrent()
+  let availableFonts = g_font.getAvailableFonts()
+  let curFont = g_font.getCurrent()
   local idx = availableFonts.findindex(@(v) v == curFont) ?? 0
   idx = clamp(idx + (shouldIncrease ? 1 : -1), 0, availableFonts.len() - 1)
-  if (::g_font.setCurrent(availableFonts[idx]))
+  if (g_font.setCurrent(availableFonts[idx]))
     handlersManager.getActiveBaseHandler().fullReloadScene()
   dlog($"Loaded fonts: {availableFonts[idx].id}")
 }

@@ -62,8 +62,24 @@
   "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
   "fireParamsPreset": "2400kph",
   "fightAiBehaviour": "fighter",
-  "autopilotImpl": "FBW",
+  "autopilotImpl": "Full",
+  "fullAutopilotManeuverabilityModeTransition": [
+    0.6,
+    0.4
+  ],
+  "fullAutopilotIndSpeedTransition": [
+    720.0,
+    750.0
+  ],
+  "fullAutopilotVtolTransition": [
+    0.1,
+    0.09
+  ],
   "paratrooper": "su_k_36_ejection_para",
+  "offsetForMfdScreen": [
+    75.0,
+    100.0
+  ],
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -1839,10 +1855,10 @@
     "isDoubleBulletImpactLine": true,
     "slotCount": 10,
     "hmdBlockIlsArea": [
-      0.25,
-      -0.4,
-      0.65,
-      0.75
+      0.37,
+      0.05,
+      0.63,
+      0.63
     ],
     "hmdEnabledByDefault": true,
     "mirror": true,
@@ -2111,6 +2127,15 @@
               "font": "ils31",
               "customRadar": "su27tactic",
               "scale": 0.65
+            },
+            {
+              "type": "custom",
+              "pageName": "su30Devices",
+              "scale": 0.75,
+              "offset": [
+                80,
+                90
+              ]
             },
             {
               "type": "ils_on_camera"

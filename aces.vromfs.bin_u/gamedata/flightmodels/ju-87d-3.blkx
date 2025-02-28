@@ -2359,15 +2359,19 @@
         "blk": "gameData/FlightModels/weaponPresets/ju-87d-3_3x500.blk"
       },
       {
+        "name": "Ju87_D3_1000",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-3_1000.blk"
+      },
+      {
+        "name": "ju-87d-3_sc1800",
+        "blk": "gameData/FlightModels/weaponPresets/ju-87d-3_sc1800.blk"
+      },
+      {
         "name": "ju-87d-3_pc500",
         "blk": "gameData/FlightModels/weaponPresets/ju-87d-3_pc500.blk",
         "weaponConfig": {
           "presetType": "AIR_TO_SEA"
         }
-      },
-      {
-        "name": "Ju87_D3_1000",
-        "blk": "gameData/FlightModels/weaponPresets/ju-87d-3_1000.blk"
       },
       {
         "name": "ju-87d-3_pc1000",
@@ -2387,7 +2391,7 @@
     ]
   },
   "WeaponSlots": {
-    "maxloadMass": 1510.0,
+    "maxloadMass": 1840.0,
     "maxloadMassLeftConsoles": 765.0,
     "maxloadMassRightConsoles": 765.0,
     "maxDisbalance": 560.0,
@@ -3619,6 +3623,111 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/de_sc1000.blk",
+              "emitter": "bomb8",
+              "dm": "bomb8_dm",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            },
+            "Bombing": {
+              "maxDelay": 0.0,
+              "canBeDropped": {
+                "altitude": [
+                  -100.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -95.0,
+                  60.0
+                ],
+                "roll": 65.0
+              },
+              "maxDispersionAt": {
+                "altitude": [
+                  20.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  55.0
+                ],
+                "roll": 65.0
+              },
+              "noDispersionAt": {
+                "altitude": [
+                  20.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -90.0,
+                  15.0
+                ],
+                "roll": 40.0
+              },
+              "sightDisappears": {
+                "altitude": [
+                  40.0,
+                  10000.0
+                ],
+                "tangage": [
+                  -100.0,
+                  45.0
+                ],
+                "roll": 55.0
+              },
+              "sightStartsFading": {
+                "altitude": [
+                  95.0,
+                  6000.0
+                ],
+                "tangage": [
+                  -30.0,
+                  18.0
+                ],
+                "roll": 40.0
+              },
+              "sightEnabled": {
+                "altitude": [
+                  20.0,
+                  15000.0
+                ],
+                "tangage": [
+                  -120.0,
+                  60.0
+                ],
+                "roll": 180.0
+              },
+              "maxDelayAt": {
+                "altitude": [
+                  -20000.0,
+                  20000.0
+                ],
+                "tangage": [
+                  -180.0,
+                  180.0
+                ],
+                "roll": 180.0
+              },
+              "noDelayAt": {
+                "altitude": [
+                  -19999.0,
+                  19999.0
+                ],
+                "tangage": [
+                  -179.0,
+                  179.0
+                ],
+                "roll": 179.0
+              }
+            }
+          },
+          {
+            "iconType": "bombs_heavy_middle_black",
+            "name": "1800kg",
+            "reqModification": "ju_88_SC1800",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/de_sc1800b.blk",
               "emitter": "bomb8",
               "dm": "bomb8_dm",
               "bullets": 1,
@@ -5080,6 +5189,12 @@
       "tier": 4,
       "modClass": "weapon",
       "reqModification": "etc500_3_mod"
+    },
+    "ju_88_SC1800": {
+      "tier": 4,
+      "modClass": "weapon",
+      "prevModification": "flamm_500",
+      "reqModification": "etc1000_1_mod"
     },
     "flamm_250": {
       "modClass": "weapon",

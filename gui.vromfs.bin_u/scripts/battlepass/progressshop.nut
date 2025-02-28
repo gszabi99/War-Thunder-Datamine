@@ -19,7 +19,7 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let seenBattlePassShop = require("%scripts/seen/seenList.nut").get(SEEN.BATTLE_PASS_SHOP)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
@@ -27,9 +27,9 @@ let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { findItemById, itemsShopListVersion, inventoryListVersion
-} = require("%scripts/items/itemsManager.nut")
-let { getPrizeText } = require("%scripts/items/prizesView.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { itemsShopListVersion, inventoryListVersion } = require("%scripts/items/itemsManagerState.nut")
+let { getPrizeText, getPrizeTypeName } = require("%scripts/items/prizesView.nut")
 
 const SEEN_OUT_OF_DATE_DAYS = 30
 
@@ -284,7 +284,7 @@ local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
     let hasAdditionalTrophyItem = additionalTrophyItem != null
     if (hasAdditionalTrophyItem) {
       let topPrize = additionalTrophyItem.getTopPrize()
-      name = ::PrizesView.getPrizeTypeName(topPrize, false)
+      name = getPrizeTypeName(topPrize, false)
       valueText = loc("ui/parentheses", { text = getPrizeText(topPrize, false) })
       cost = cost + additionalTrophyItem.getCost()
     }

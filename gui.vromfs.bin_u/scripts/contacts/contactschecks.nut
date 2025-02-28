@@ -31,8 +31,11 @@ function isPlayerInFriendsGroup(uid, searchByUid = true, playerNick = "") {
   return isFriend
 }
 
+let isMaxPlayersInContactList = @(groupName) contactsByGroups[groupName].len() >= EPL_MAX_PLAYERS_IN_LIST
+
 return {
   isPlayerInContacts
   isPlayerNickInContacts
   isPlayerInFriendsGroup
+  isMaxPlayersInContactList
 }

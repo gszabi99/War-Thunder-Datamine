@@ -2,16 +2,17 @@ from "%scripts/dagui_library.nut" import *
 
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
-let { xboxApprovedUids, xboxBlockedUids, contactsPlayers } = require("%scripts/contacts/contactsManager.nut")
+let { xboxApprovedUids, xboxBlockedUids, contactsPlayers, findContactByXboxId } = require("%scripts/contacts/contactsManager.nut")
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
-let { subscribe_to_presence_update_events, retrieve_presences_for_users, DeviceType } = require("%xboxLib/impl/presence.nut")
-let { get_title_id } = require("%xboxLib/impl/app.nut")
+let { subscribe_to_presence_update_events, retrieve_presences_for_users, DeviceType } = require("%gdkLib/impl/presence.nut")
+let { get_title_id } = require("%gdkLib/impl/app.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let logX = log_with_prefix("[XBOX PRESENCE] ")
-let { retrieve_related_people_list, retrieve_avoid_people_list } = require("%xboxLib/impl/relationships.nut")
+let { retrieve_related_people_list, retrieve_avoid_people_list } = require("%gdkLib/impl/relationships.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { updateContact } = require("%scripts/contacts/contactsActions.nut")
 
 let persistent = { isInitedXboxContacts = false }
 let pendingXboxContactsToUpdate = {}
@@ -36,7 +37,7 @@ function updateContactPresence(contact, isAllowed) {
   if (contact.forceOffline == forceOffline && contact.isForceOfflineChecked)
     return
 
-  ::updateContact({
+  updateContact({
     uid = contact.uid
     forceOffline = forceOffline
     isForceOfflineChecked = true
@@ -44,7 +45,7 @@ function updateContactPresence(contact, isAllowed) {
 }
 
 function updateContactXBoxPresence(xboxId, isAllowed) {
-  let contact = ::findContactByXboxId(xboxId)
+  let contact = findContactByXboxId(xboxId)
   updateContactPresence(contact, isAllowed)
 }
 
@@ -80,7 +81,7 @@ function xboxUpdateContactsList(usersTable) {
   //Create or update exist contacts
   let contactsTable = {}
   foreach (uid, playerData in usersTable) {
-    contactsTable[playerData.id] <- ::updateContact({
+    contactsTable[playerData.id] <- updateContact({
       uid = uid
       name = playerData.nick
       xboxId = playerData.id
@@ -127,7 +128,7 @@ function proceedXboxPlayersList() {
 
   let knownUsers = {}
   for (local i = playersList.len() - 1; i >= 0; i--) {
-    let contact = ::findContactByXboxId(playersList[i])
+    let contact = findContactByXboxId(playersList[i])
     if (contact) {
       knownUsers[contact.uid] <- {
         nick = contact.name

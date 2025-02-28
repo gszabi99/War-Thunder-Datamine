@@ -21,10 +21,6 @@ let metrToFeet = 3.28084
 let metrToThFeet = metrToFeet * 0.001
 let kMetrToMile = 0.621371
 
-def norm_ang(a : float) : float// [0..TWOPI]
-  let na = a < 0. ? a + 2. * PI : a
-  return na - 2. * PI * floor(na / (2. * PI))
-
 struct CanvasParams
   color : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   fontId : int = -1
@@ -42,7 +38,7 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.lineWidth = props |> getFloat("lineWidth", 1.) * 2.
   storage.isMetricUnits = props |> getBool("isMetricUnits", false)
 
-[export]
+[export, unused_argument(rstate)]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !get_radar_hud_mfd_radar_enabled()
     return
@@ -296,6 +292,7 @@ def draw_info(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : 
   var targetAltKm = 0.0
   var taretSpeedSq = 0.0
   foreach_targets() <| $(var target)
+    let e3dColor = E3DCOLOR(Color4(!target.isEnemy ? allyColor : targetColor))
     if target.targetType == int(RadarTargetType TYPE_TARGET)
       if target.isDetected || target.isTracked
         hasSelectedTarget = true

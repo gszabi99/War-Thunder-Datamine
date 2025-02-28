@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
+let { USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP } = require("%scripts/options/optionsExtNames.nut")
 
 return [
 //-------------------------------------------------------
@@ -15,6 +16,11 @@ return [
   {
     id = "ID_TACTICAL_MAP"
     needShowInHelp = true
+  }
+  {
+    id = "hold_button_for_tactical_map"
+    type = CONTROL_TYPE.SWITCH_BOX
+    optionType = USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP
   }
   {
     id = "ID_MPSTATSCREEN"

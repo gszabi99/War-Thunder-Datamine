@@ -6,7 +6,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { ceil } = require("math")
 let { get_time_msec } = require("dagor.time")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 let SAVE_TIMEOUT = isPlatformSony ? 300000 : 60000
 let MIN_SAVE_TIMEOUT = 5000

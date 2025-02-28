@@ -8,7 +8,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getObjectiveStatusByCode } = require("%scripts/misObjectives/objectiveStatus.nut")
 let { get_objectives_list, OBJECTIVE_TYPE_PRIMARY, OBJECTIVE_TYPE_SECONDARY } = require("guiMission")
 
-::gui_load_mission_objectives <- function gui_load_mission_objectives(nestObj, leftAligned, typesMask = 0) {
+function gui_load_mission_objectives(nestObj, leftAligned, typesMask = 0) {
   return handlersManager.loadHandler(gui_handlers.misObjectivesView,
                                        { scene = nestObj,
                                          sceneBlkName = leftAligned ? "%gui/missions/misObjective.blk" : "%gui/missions/misObjectiveRight.blk"
@@ -106,4 +106,8 @@ gui_handlers.misObjectivesView <- class (gui_handlers.BaseGuiHandlerWT) {
     obj.id = id
     return obj
   }
+}
+
+return {
+  gui_load_mission_objectives
 }

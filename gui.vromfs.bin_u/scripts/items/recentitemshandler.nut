@@ -12,6 +12,7 @@ let { updateExpireAlarmIcon } = require("%scripts/items/itemVisual.nut")
 let { getPromoConfig, getPromoCollapsedText, getPromoCollapsedIcon, getPromoVisibilityById,
   togglePromoItem, PERFORM_PROMO_ACTION_NAME, performPromoAction, getPromoActionParamsKey
 } = require("%scripts/promo/promo.nut")
+let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
 
 gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -56,7 +57,7 @@ gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateHandler(checkDefShow = false) {
     this.recentItems = getRecentItems()
     let isVisible = (!checkDefShow || this.defShow) && this.recentItems.len() > 0
-      && ::ItemsManager.isItemsManagerEnabled() && isInMenu()
+      && isItemsManagerEnabled() && isInMenu()
     show_obj(this.scene, isVisible)
     this.wasShown = isVisible
     if (!isVisible)

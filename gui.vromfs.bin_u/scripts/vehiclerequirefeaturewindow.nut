@@ -11,13 +11,14 @@ let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { cutPrefix, toUpper } = require("%sqstd/string.nut")
+let { cutPrefix, capitalize } = require("%sqstd/string.nut")
 let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { isUnitFeatureLocked } = require("%scripts/unit/unitStatus.nut")
 let { CheckFeatureLockAction } = require("%scripts/unit/unitActions.nut")
 let { getAllFeaturePurchases, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { steam_is_overlay_active } = require("steam")
+let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
 
 gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -93,7 +94,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
 
     let country = getUnitCountry(this.unit)
     let locTag = "".concat(
-      toUpper(cutPrefix(country, "country_", ""), 1),
+      capitalize(cutPrefix(country, "country_", "")),
       this.unit.unitType.name
     )
     return format("#shop/featureLock/%s/header", locTag)
@@ -124,7 +125,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
   }
 
   function onTimerUpdate(_obj, _dt) {
-    if (!::is_app_active() || steam_is_overlay_active() || ::is_builtin_browser_active())
+    if (!::is_app_active() || steam_is_overlay_active() || is_builtin_browser_active())
       this.needFullUpdate = true
     else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false

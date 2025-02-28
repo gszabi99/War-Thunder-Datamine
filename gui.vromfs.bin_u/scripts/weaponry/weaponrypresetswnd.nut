@@ -43,6 +43,7 @@ let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let { round_by_value } = require("%sqstd/math.nut")
+let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 
@@ -448,7 +449,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onPresetMenuOpen() {
-    ::gui_right_click_menu(this.getPresetActions(), this)
+    openRightClickMenu(this.getPresetActions(), this)
   }
 
   function onPresetActionsMenuOpen() {
@@ -456,7 +457,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (actions.len() == 1)
       actions[0].action.call(this)
     else
-      ::gui_right_click_menu(actions, this)
+      openRightClickMenu(actions, this)
   }
 
   isCustomPresetsAvailable = @() this.unit.hasWeaponSlots  && this.availableWeapons.len() > 0

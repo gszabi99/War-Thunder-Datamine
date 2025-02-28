@@ -35,7 +35,10 @@ let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
 } = require("%scripts/slotbar/crewsList.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isUnitAllowedForRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
 
 // Independed Modules
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -432,7 +435,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     if (this.isLoading)
       return false
     country = country ?? profileCountrySq.value
-    if (!(country in slotbarPresets) || !isInMenu() || !::queues.isCanModifyCrew())
+    if (!(country in slotbarPresets) || !isInMenu() || !queues.isCanModifyCrew())
       return false
     if (!isCountryAllCrewsUnlockedInHangar(country)) {
       if (verbose)
@@ -445,12 +448,12 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   function canLoadPreset(preset, isSilent = false) {
     if (!preset)
       return false
-    if (::SessionLobby.isInvalidCrewsAllowed())
+    if (isInvalidCrewsAllowed())
       return true
 
     foreach (unitName in preset.units) {
       let unit = getAircraftByName(unitName)
-      if (unit && ::SessionLobby.isUnitAllowed(unit))
+      if (unit && isUnitAllowedForRoom(unit))
         return true
     }
 

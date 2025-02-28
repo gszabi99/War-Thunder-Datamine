@@ -17,6 +17,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
+let { getTrophyRewardType } = require("%scripts/items/trophyReward.nut")
 
 let curPersonalOffer = mkWatched(persist, "curPersonalOffer", null)
 let checkedOffers = mkWatched(persist, "checkedOffers", {})
@@ -50,7 +51,7 @@ let isSeenOffer = @(offerName)
 function getReceivedOfferContent(offerContent) {
   let res = []
   foreach(offer in offerContent) {
-    let contentType = ::trophyReward.getType(offer)
+    let contentType = getTrophyRewardType(offer)
     if (contentType == "unit" || contentType == "rentedUnit") {
       let unitName = offer?.unit ?? offer.rentedUnit
       if (shop_is_aircraft_purchased(unitName))
@@ -171,7 +172,7 @@ function getNotExistedAndExternalOfferItems(currentOfferData) {
   let notExistedItems = []
   let externalItems = []
   foreach(offer in offerContent) {
-    let contentType = ::trophyReward.getType(offer)
+    let contentType = getTrophyRewardType(offer)
 
     if(contentType == "unit") {
       let { unit } = offer

@@ -11,7 +11,8 @@ let Set = require("workshopSet.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let seenWorkshop = require("%scripts/seen/seenList.nut").get(SEEN.WORKSHOP)
 let { isArray } = require("%sqstd/underscore.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { findItemById, isInventoryFullUpdated } = require("%scripts/items/itemsManager.nut")
 
 let OUT_OF_DATE_DAYS_WORKSHOP = 28
 
@@ -127,7 +128,7 @@ function invalidateItemsCache() {
   seenIdCanBeNew.clear()
   foreach (set in getSetsList())
     set.invalidateItemsCache()
-  if (::ItemsManager.isInventoryFullUpdated())
+  if (isInventoryFullUpdated())
     seenWorkshop.setDaysToUnseen(OUT_OF_DATE_DAYS_WORKSHOP)
   seenWorkshop.onListChanged()
 }
@@ -135,7 +136,7 @@ function invalidateItemsCache() {
 function canSeenIdBeNew(seenId) {
   if (!(seenId in seenIdCanBeNew)) {
     let id = to_integer_safe(seenId, seenId, false) //ext inventory items id need to convert to integer.
-    let item = ::ItemsManager.findItemById(id)
+    let item = findItemById(id)
     seenIdCanBeNew[seenId] <- item && !shouldDisguiseItem(item)
   }
   return seenIdCanBeNew[seenId]

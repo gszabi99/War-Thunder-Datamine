@@ -10,28 +10,20 @@ let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { toggleUnlockFav, initUnlockFavObj, toggleUnlockFavButton } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockTitle, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockConditions } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 let { buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
 let { generatePaginator, paginator_set_unseen } = require("%scripts/viewUtils/paginator.nut")
-let { getProfileAvatarFrames } = require("%scripts/user/profileAppearance.nut")
-let { USEROPT_PILOT } = require("%scripts/options/optionsExtNames.nut")
+let { getProfileAvatarFrames, getProfileAvatars } = require("%scripts/user/profileAppearance.nut")
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
-/*
-  config = {
-    options = [{ image = img1 }, { image = img2, height = 50 }]
-    tooltipObjFunc = function(obj, value)  - function to generate custom tooltip for item.
-                                             must return bool if filled correct
-    value = 0
-  }
-*/
 ::gui_choose_image <- function gui_choose_image(applyFunc, owner, scene = null) {
   let params = { owner, applyFunc }
   if (scene != null)
@@ -40,25 +32,17 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
   handlersManager.loadHandler(gui_handlers.ChooseImage, params)
 }
 
-function getAvatarsData() {
-  let pilotsOpt = ::get_option(USEROPT_PILOT)
-  return pilotsOpt.items.filter(@(option) option?.show ?? true)
-}
-
 function getStoredAvatarIndex() {
-  let pilotsOpt = ::get_option(USEROPT_PILOT)
-  let unlockId = pilotsOpt.items[pilotsOpt.value].unlockId
-  let index = pilotsOpt.items
-    .filter(@(option) option?.show ?? true)
-    .findindex(@(v) v.unlockId == unlockId) ?? 0
-  return index
+  let userInfo = getUserInfo(userIdStr.get())
+  if (userInfo == null || userInfo.pilotIcon == "")
+    return 0
+  return getProfileAvatars().findindex(@(v) v.unlockId == userInfo.pilotIcon)
 }
 
 function getStoredFrameIndex() {
   let userInfo = getUserInfo(userIdStr.get())
   if (userInfo == null || userInfo.frame == "")
     return 0
-
   return getProfileAvatarFrames().findindex(@(v) v.id == userInfo?.frame) ?? 0
 }
 
@@ -67,7 +51,7 @@ let menuItems = [
     id = "pilotIcon"
     loc = "profile/choose_profile_icon"
     listId = "avatars_list"
-    listDataFn = getAvatarsData
+    listDataFn = getProfileAvatars
     initIndexFn = getStoredAvatarIndex
   },
   {
@@ -269,7 +253,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (option?.marketplaceItemdefId) {
-      let inventoryItem = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
+      let inventoryItem = getInventoryItemById(option.marketplaceItemdefId)
       if (inventoryItem != null)
         inventoryItem.consume(Callback(function(result) {
           if (result?.success ?? false)
@@ -301,7 +285,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let cost = getUnlockCost(unlockId)
     let unlockBlk = getUnlockById(unlockId)
-    let unlockCfg = ::build_conditions_config(unlockBlk)
+    let unlockCfg = buildConditionsConfig(unlockBlk)
     let title = warningIfGold(loc("onlineShop/needMoneyQuestion", {
       purchase = colorize("unlockHeaderColor", getUnlockTitle(unlockCfg)),
       cost = cost.getTextAccordingToBalance()
@@ -329,7 +313,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let inventoryItem = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
+    let inventoryItem = getInventoryItemById(option.marketplaceItemdefId)
 
     if (inventoryItem != null) {
       inventoryItem.consume(Callback(function(result) {
@@ -389,7 +373,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let item = ::ItemsManager.getInventoryItemById(option.marketplaceItemdefId)
+    let item = getInventoryItemById(option.marketplaceItemdefId)
 
     if (item != null)
       btn.setValue(loc("item/consume/coupon"))
@@ -429,7 +413,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     let tabs = menuItems.map(@(v, idx) {
       id = v.id
       tabName = loc(v.loc)
-      navImagesText = ::get_navigation_images_text(idx, menuItems.len())
+      navImagesText = getNavigationImagesText(idx, menuItems.len())
     })
 
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", { tabs })

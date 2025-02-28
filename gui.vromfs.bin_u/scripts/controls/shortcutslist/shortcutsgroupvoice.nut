@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { getFavoriteVoiceMessagesVariants } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
+let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 let MAX_VOICE_MESSAGE_BUTTONS = 8
 
@@ -42,7 +43,7 @@ groupList.append(
       let old  = joyParams.useJoystickMouseForVoiceMessage
       joyParams.useJoystickMouseForVoiceMessage = objValue
       if (joyParams.useJoystickMouseForVoiceMessage != old)
-        ::g_controls_manager.commitControls()
+        commitControls()
     }
   }
   {
@@ -54,7 +55,7 @@ groupList.append(
       let old  = joyParams.useMouseForVoiceMessage
       joyParams.useMouseForVoiceMessage = objValue
       if (joyParams.useMouseForVoiceMessage != old)
-        ::g_controls_manager.commitControls()
+        commitControls()
     }
   }
 )

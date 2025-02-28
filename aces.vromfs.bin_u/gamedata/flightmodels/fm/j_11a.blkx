@@ -98,6 +98,8 @@
     250000.0,
     210000.0
   ],
+  "ConvertAoa": true,
+  "ConvertAoaAI": true,
   "IgnoreErrors": true,
   "AvailableControls": {
     "hasAileronControl": true,
@@ -123,6 +125,7 @@
     "bHasBoosterSwitcher": false,
     "hasChutes": true,
     "hasParkingBrakeControl": false,
+    "hasManeuverabilityMode": true,
     "hasLightsControl": false,
     "HasSweepControlMode": {
       "Manual": false,
@@ -308,11 +311,11 @@
         ],
         "AoaShiftAdd4": [
           50.0,
-          -0.02
+          -0.04
         ],
         "AoaShiftAdd5": [
           80.0,
-          0.06
+          -0.04
         ]
       },
       "FlapsPolar0": {
@@ -960,7 +963,14 @@
         25.0,
         25.0
       ],
-      "AnglesMultiplierYaw": [
+      "AnglesMultiplierYaw0": [
+        -5.5,
+        -1.0,
+        0.0,
+        -1.0
+      ],
+      "AnglesMultiplierYaw1": [
+        5.5,
         1.0,
         0.0,
         1.0
@@ -2299,13 +2309,13 @@
     "Pitch": {
       "RateMax0": [
         300.0,
-        -40.0,
-        40.0
+        -60.0,
+        60.0
       ],
       "RateMax1": [
         600.0,
-        -50.0,
-        50.0
+        -60.0,
+        60.0
       ],
       "RateMax2": [
         900.0,
@@ -2356,9 +2366,24 @@
         1.0
       ],
       "AoaLimitsMult1": [
+        0.7,
+        1.0,
+        1.0
+      ],
+      "AoaLimitsMult2": [
         0.9,
         0.5,
         0.5
+      ],
+      "AoaLimitsManeuverabilityMult0": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "AoaLimitsManeuverabilityMult1": [
+        0.51,
+        11.4,
+        11.4
       ],
       "AoaLimitsMargin": 7.0,
       "AoaLimiterPushBackRateMult": [
@@ -2551,29 +2576,29 @@
       }
     },
     "Aim": {
-      "Horizontal": true,
+      "Horizontal": false,
       "HeadingToRoll": [
         3.0,
         0.0,
-        60.0,
-        46.0
+        30.0,
+        120.0
       ],
       "RollRateMax": 100.0,
       "HeadingToRollMultByIas": [
         10.0,
-        0.0,
+        1.0,
         120.0,
         1.0
       ],
-      "RollLim": 50.0,
+      "RollLim": 180.0,
       "DriftControlByRoll": [
         0.0,
         0.0
       ],
       "OverridenRollLim": 30.0,
-      "PitchMax": 40.0,
-      "PitchRateMax": 40.0,
-      "PitchLim": 30.0,
+      "PitchMax": 15.0,
+      "PitchRateMax": 90.0,
+      "PitchLim": 0.0,
       "YawHeadingToYawRateMultByIas": [
         0.0,
         1.0,
@@ -2584,13 +2609,13 @@
         0.0,
         1.0,
         55.0,
-        0.1
+        1.0
       ],
       "ThrottleToYawRateMult": [
         0.9,
         1.0,
         1.0,
-        0.85
+        1.0
       ],
       "YawHeadingToYawRate": [
         0.0,
@@ -2654,10 +2679,10 @@
         ]
       },
       "YawRatePID": {
-        "Kp": 3.0,
-        "Ki": 0.2,
+        "Kp": 5.0,
+        "Ki": 0.0,
         "Imax": 1.0,
-        "Kd": 0.05,
+        "Kd": 0.1,
         "dTau": 0.025,
         "Lim": [
           -1.0,

@@ -24,6 +24,7 @@ let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLE
   USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_INSTRUCTOR_ENGINE_CONTROL, USEROPT_INSTRUCTOR_SIMPLE_JOY,
 } = require("%scripts/options/optionsExtNames.nut")
 let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsUtils.nut")
+let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 return [
   {
@@ -102,6 +103,10 @@ return [
     needShowInHelp = true
   }
   {
+    id = "ID_MANEVERABILITY_MODE_HELICOPTER"
+    checkAssign = false
+  }
+  {
     id = "ID_FBW_MODE_HELICOPTER"
     filterShow = [globalEnv.EM_FULL_REAL]
     checkAssign = false
@@ -124,7 +129,7 @@ return [
       let old = joyParams.holdThrottleForWEP
       joyParams.holdThrottleForWEP = objValue
       if (objValue != old)
-        ::g_controls_manager.commitControls()
+        commitControls()
     }
   }
   {
@@ -293,6 +298,14 @@ return [
   }
   {
     id = "ID_SENSOR_SCAN_PATTERN_SWITCH_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_SENSOR_STABILIZATION_SWITCH_HELICOPTER"
+    checkAssign = false
+  }
+  {
+    id = "ID_SENSOR_DIRECTION_AXES_RESET_HELICOPTER"
     checkAssign = false
   }
   {

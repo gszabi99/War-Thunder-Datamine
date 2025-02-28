@@ -27,10 +27,11 @@ let { get_mission_difficulty_int, stat_get_benchmark,
   get_race_best_lap_time, get_race_lap_times,
   get_mission_restore_type, get_mp_tbl_teams, get_mission_status } = require("guiMission")
 let { dynamicApplyStatus } = require("dynamicMission")
-let { toUpper } = require("%sqstd/string.nut")
+let { capitalize } = require("%sqstd/string.nut")
 let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_current_mission_info_cached, get_warpoints_blk, get_ranks_blk } = require("blkGetters")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, getSessionLobbyIsSpectator, getSessionLobbyPublicParam, getSessionLobbyPlayersInfo
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
@@ -38,6 +39,8 @@ let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
+let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
+let { getRoomEvent, getRoomUnitTypesMask } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
 const TOOLTIP_MINIMIZE_SCREEN_WIDTH_PERCENT = 0.95
 
@@ -49,7 +52,7 @@ function countWholeRewardInTable(table, currency, specParam = null) {
     return 0
 
   local reward = 0
-  let upCur = toUpper(currency, 1)
+  let upCur = capitalize(currency)
   let searchArray = specParam || ["noBonus", "premMod", "premAcc", "booster"]
   foreach (cur in searchArray)
     reward += getTblValue(cur + upCur, table, 0)
@@ -59,14 +62,14 @@ function countWholeRewardInTable(table, currency, specParam = null) {
 function getMissionRewardSources(rewardSources, skillBonusLevel, paramsOvr = {}) {
   let { noBonusExpTotal = 0, premAccExpTotal = 0, boosterExpTotal = 0,
     premModExpTotal = 0, expSkillBonus = 0 } = rewardSources
-    return getRewardSources({
+  return getRewardSources({
       noBonus = noBonusExpTotal
       premAcc = premAccExpTotal
       booster = boosterExpTotal
       premMod = premModExpTotal
       skillBonus = expSkillBonus
       skillBonusLevel = skillBonusLevel ?? 0
-    }, { currencyImg = "#ui/gameuiskin#item_type_RP.svg" }.__merge(paramsOvr))
+  }, { currencyImg = "#ui/gameuiskin#item_type_RP.svg" }.__merge(paramsOvr))
 }
 
 function adjustTooltipSize(obj) {
@@ -212,6 +215,11 @@ debriefingRows = [
     text = "multiplayer/missileEvade"
     icon = "icon/mpstats/missileEvade"
   }
+  { id = "ShellInterception"
+    showByModes = isGameModeVersus
+    text = "multiplayer/shellInterception"
+    icon = "icon/mpstats/shellInterception"
+  }
   { id = "Sights"
     showByModes = isGameModeVersus
     showByTypes = function(gt) { return (!(gt & GT_RACE) && !(gt & GT_FOOTBALL)) }
@@ -225,6 +233,11 @@ debriefingRows = [
     rowType = ""
     showByModes = isGameModeVersus
     icon = "icon/mpstats/damageZone"
+  }
+  { id = "ReturnSpawnCost"
+    rowType = ""
+    showByModes = isGameModeVersus
+    text = "exp_reasons/return_spawn_cost"
   }
   { id = "MissionObjective"
     rowType = ""
@@ -673,7 +686,7 @@ debriefingRows = [
     rowProps = { totalColor = "yes", totalRowStyle = "last" }
     tooltipComment = function() { return loc("debriefing/ecSpawnScore") }
     getValueFunc = function() {
-                              let logs = ::getUserLogsList({
+                              let logs = getUserLogsList({
                                 show = [
                                   EULT_SESSION_RESULT
                                   EULT_EARLY_SESSION_LEAVE
@@ -698,7 +711,7 @@ debriefingRows = [
     rowProps = { totalColor = "yes", totalRowStyle = "last" }
     tooltipComment = function() { return loc("debriefing/wwSpawnScore") }
     getValueFunc = function() {
-                              let logs = ::getUserLogsList({
+                              let logs = getUserLogsList({
                                 show = [
                                   EULT_SESSION_RESULT
                                   EULT_EARLY_SESSION_LEAVE
@@ -793,7 +806,7 @@ function getStatReward(row, currency, keysArray = []) {
 
   local result = 0
   let tableId = getTableNameById(row)
-  let currencyName = toUpper(currency, 1)
+  let currencyName = capitalize(currency)
   foreach (key in keysArray)
     result += debriefingResult.exp?[tableId][$"{key}{currencyName}"] ?? 0
   return result
@@ -880,7 +893,7 @@ function recountDebriefingResult() {
  * Returns proper "haveTeamkills" value from related userlogs.
  */
 function debriefingResultHaveTeamkills() {
-  let logs = ::getUserLogsList({
+  let logs = getUserLogsList({
     show = [
       EULT_EARLY_SESSION_LEAVE
       EULT_SESSION_RESULT
@@ -897,7 +910,7 @@ function debriefingResultHaveTeamkills() {
 function getDebriefingBaseTournamentReward() {
   let result = Cost()
 
-  local logs = ::getUserLogsList({
+  local logs = getUserLogsList({
     show = [
       EULT_SESSION_RESULT
     ]
@@ -911,7 +924,7 @@ function getDebriefingBaseTournamentReward() {
   if (!result.isZero())
     return result
 
-  logs = ::getUserLogsList({
+  logs = getUserLogsList({
     show = [EULT_CHARD_AWARD]
     currentRoomOnly = true
     filters = { rewardType = ["TournamentReward"] }
@@ -925,7 +938,7 @@ function getDebriefingBaseTournamentReward() {
 }
 
 function getDebriefingActiveBoosters() {
-  let logs = ::getUserLogsList({
+  let logs = getUserLogsList({
     show = [
       EULT_EARLY_SESSION_LEAVE
       EULT_SESSION_RESULT
@@ -953,7 +966,7 @@ function getDebriefingActiveBoosters() {
  */
 function getDebriefingActiveWager() {
   // First, we see is there's any active wager at all.
-  local logs = ::getUserLogsList({
+  local logs = getUserLogsList({
     show = [
       EULT_EARLY_SESSION_LEAVE
       EULT_SESSION_RESULT
@@ -982,7 +995,7 @@ function getDebriefingActiveWager() {
   }
 
   // Then we look up for it's result.
-  logs = ::getUserLogsList({
+  logs = getUserLogsList({
     show = [
       EULT_CHARD_AWARD
     ]
@@ -1017,7 +1030,7 @@ function getDebriefingActiveWager() {
 }
 
 function getDebriefingEventId() {
-  let logs = ::getUserLogsList({
+  let logs = getUserLogsList({
     show = [EULT_SESSION_RESULT]
     currentRoomOnly = true
   })
@@ -1065,7 +1078,7 @@ function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
  * Adds FirstWinInDay as a separate bonus row.
  */
 function debriefingApplyFirstWinInDayMul(exp, debrResult) {
-  let logs = ::getUserLogsList({ show = [EULT_SESSION_RESULT], currentRoomOnly = true })
+  let logs = getUserLogsList({ show = [EULT_SESSION_RESULT], currentRoomOnly = true })
   if (!logs.len())
     return
 
@@ -1125,7 +1138,7 @@ function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
   local receivedTrophyName = null
 
   if (reachedTrophyName) {
-    let logs = ::getUserLogsList({
+    let logs = getUserLogsList({
       show = [
         EULT_SESSION_RESULT
       ]
@@ -1167,7 +1180,7 @@ function getDebriefingGiftItemsInfo(skipItemId = null) {
   let res = []
 
   // Collecting Marketplace items
-  local logs = ::getUserLogsList({
+  local logs = getUserLogsList({
     show = [ EULT_INVENTORY_ADD_ITEM ]
     currentRoomOnly = true
     disableVisible = true
@@ -1183,7 +1196,7 @@ function getDebriefingGiftItemsInfo(skipItemId = null) {
     }
 
   // Collecting trophies and items
-  logs = ::getUserLogsList({
+  logs = getUserLogsList({
     show = [ EULT_SESSION_RESULT ]
     currentRoomOnly = true
     disableVisible = true
@@ -1224,18 +1237,18 @@ function gatherDebriefingResult() {
   debriefingResult.isTeamplay <- is_mode_with_teams(debriefingResult.gameType)
 
   debriefingResult.isInRoom <- isInSessionRoom.get()
-  debriefingResult.roomEvent <- isInSessionRoom.get() ? ::SessionLobby.getRoomEvent() : null
-  debriefingResult.isSpectator <- isInSessionRoom.get() && ::SessionLobby.getIsSpectator()
+  debriefingResult.roomEvent <- isInSessionRoom.get() ? getRoomEvent() : null
+  debriefingResult.isSpectator <- isInSessionRoom.get() && getSessionLobbyIsSpectator()
 
   debriefingResult.isMp <- is_multiplayer()
   debriefingResult.isReplay <- is_replay_playing()
   debriefingResult.sessionId <- get_mp_session_id_str()
   debriefingResult.useFinalResults <- getTblValue("useFinalResults", get_current_mission_info_cached(), false)
   debriefingResult.mpTblTeams <- get_mp_tbl_teams()
-  debriefingResult.unitTypesMask <- ::SessionLobby.getUnitTypesMask()
-  debriefingResult.playersInfo <- clone ::SessionLobby.getPlayersInfo()
+  debriefingResult.unitTypesMask <- getRoomUnitTypesMask()
+  debriefingResult.playersInfo <- clone getSessionLobbyPlayersInfo()
   debriefingResult.missionDifficultyInt <- get_mission_difficulty_int()
-  debriefingResult.isSymmetric <- ::SessionLobby.getPublicParam("symmetricTeams", true)
+  debriefingResult.isSymmetric <- getSessionLobbyPublicParam("symmetricTeams", true)
   debriefingResult.missionObjectives <- g_mission_type.getCurrentObjectives()
 
 
@@ -1318,6 +1331,11 @@ function gatherDebriefingResult() {
     debriefingResult.exp.ptmLapTimesArray <- get_race_lap_times()
   }
 
+  let returnSpawnCostLogs = getUserLogsList({ show = [EULT_SESSION_RESULT], currentRoomOnly = true })?[0].container.eventReturnSpawnCost.event ?? []
+  debriefingResult.returnSpawnCost <- u.isArray(returnSpawnCostLogs) ? returnSpawnCostLogs : [returnSpawnCostLogs]
+  debriefingResult.exp.wpReturnSpawnCost <- debriefingResult.returnSpawnCost
+    .reduce(@(total, b) total + (b?.wpNoBonus ?? 0), 0)
+
   let sessionTime = getTblValue("sessionTime", debriefingResult.exp, 0)
   local timePlayed = 0.0
   foreach (_airName, airData in debriefingResult.exp.aircrafts) {
@@ -1340,13 +1358,13 @@ function gatherDebriefingResult() {
   debriefingResult.exp.goldTournamentBaseReward <- trournamentBaseReward.gold
   let wpTotal = getTblValue("wpTotal", debriefingResult.exp, 0)
   if (wpTotal >= 0)
-    debriefingResult.exp.wpTotal <- wpTotal + trournamentBaseReward.wp
+    debriefingResult.exp.wpTotal <- wpTotal + trournamentBaseReward.wp + debriefingResult.exp.wpReturnSpawnCost
 
   debriefingResult.exp.expMission <- getTblValue("expMission", exp, 0) + getTblValue("expRace", exp, 0)
   debriefingResult.exp.wpMission <- getTblValue("wpMission", exp, 0) + getTblValue("wpRace", exp, 0)
   debriefingResult.exp.expSkillBonus <- getTblValue("expSkillBonusTotal", exp, 0)
 
-  let resPointsLogs = ::getUserLogsList({ show = [EULT_SESSION_RESULT], currentRoomOnly = true })?[0].container.researchPoints.unit ?? []
+  let resPointsLogs = getUserLogsList({ show = [EULT_SESSION_RESULT], currentRoomOnly = true })?[0].container.researchPoints.unit ?? []
   debriefingResult.researchPointsUnits <- u.isArray(resPointsLogs) ? resPointsLogs : [resPointsLogs]
 
   debriefingResult.exp.expNewNationBonus <- debriefingResult.researchPointsUnits

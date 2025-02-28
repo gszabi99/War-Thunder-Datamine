@@ -13,7 +13,8 @@ let { openPersonalTasks } = require("%scripts/unlocks/personalTasks.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { showActivateOrderButton, orderCanBeActivated } = require("%scripts/items/orders.nut")
 let { registerRespondent } = require("scriptRespondent")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { getCurMpTitle } = require("%scripts/statistics/mpStatisticsUtil.nut")
 
 let MPStatisticsModal = class (gui_handlers.MPStatistics) {
   sceneBlkName = "%gui/mpStatistics.blk"
@@ -47,7 +48,7 @@ let MPStatisticsModal = class (gui_handlers.MPStatistics) {
     }
 
     this.includeMissionInfoBlocksToGamercard()
-    this.setSceneTitle(::getCurMpTitle())
+    this.setSceneTitle(getCurMpTitle())
     this.setSceneMissionEnviroment()
     this.refreshPlayerInfo()
 

@@ -123,7 +123,6 @@ enumsAddTypes(g_top_menu_right_side_sections, [
         buttonsList.ONLINE_SHOP
         buttonsList.DEBUG_PS4_SHOP_DATA
         buttonsList.MARKETPLACE
-        buttonsList.COLLECTIONS
       ]
     ]
   },

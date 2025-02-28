@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import save_profile, get_unlock_type, is_app_active, select_current_title
 from "%scripts/dagui_library.nut" import *
-from "%scripts/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
+from "%appGlobals/login/loginConsts.nut" import USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/mainConsts.nut" import SEEN
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 
@@ -48,14 +48,14 @@ let seenList = require("%scripts/seen/seenList.nut")
 let { placePriceTextToButton, warningIfGold, setDoubleTextToButton
 } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
-let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
+let { openCollectionsPage, hasAvailableCollections } = require("%scripts/collections/collectionsHandler.nut")
 let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip,
   needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnlockMainCondDescByCfg,
   getLocForBitValues, buildUnlockDesc, fillUnlockManualOpenButton, updateUnseenIcon, updateLockStatus,
   fillUnlockImage, fillUnlockProgressBar, fillUnlockDescription, doPreviewUnlockPrize, fillReward,
-  fillUnlockTitle, fillUnlockPurchaseButton
+  fillUnlockTitle, fillUnlockPurchaseButton, buildConditionsConfig
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
@@ -71,10 +71,9 @@ let { getCachedDataByType, getDecorator, getDecoratorById,
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { getPlayerSsoShortTokenAsync } = require("auth_wt")
-let { set_option } = require("%scripts/options/optionsExt.nut")
 let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { OPTIONS_MODE_GAMEPLAY, USEROPT_PILOT } = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
@@ -85,7 +84,8 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
 let { getStats, clearStats } = require("%scripts/myStats.nut")
-let { findItemById, canGetDecoratorFromTrophy } = require("%scripts/items/itemsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { canGetDecoratorFromTrophy } = require("%scripts/items/itemsManagerGetters.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
@@ -94,18 +94,17 @@ let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getEditViewData, getShowcaseTypeBoxData, saveShowcase, getDiffByIndex, fillStatsValuesOfTerseInfo,
   getGameModeBoxIndex, getShowcaseByTerseInfo, getShowcaseIndexByTerseName, saveUnitToTerseInfo, trySetBestShowcaseMode,
-  writeGameModeToTerseInfo, getShowcaseGameModeByIndex, getShowcaseByIndex } = require("%scripts/user/profileShowcase.nut")
+  writeGameModeToTerseInfo, getShowcaseUnitsFilter, getShowcaseGameModeByIndex, getShowcaseByIndex } = require("%scripts/user/profileShowcase.nut")
 let { fill_gamer_card, addGamercardScene } = require("%scripts/gamercard.nut")
 let { generateShowcaseInfo } = require("%scripts/user/profileShowcasesData.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
+let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
 let { saveProfileAppearance, getProfileHeaderBackgrounds } = require("%scripts/user/profileAppearance.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { selectUnitWndFilters } = require("%scripts/user/showcase/showcaseValues.nut")
 
-require("%scripts/user/userCard.nut") //for load UserCardHandler before Profile handler
-
-enum profileEvent {
-  AVATAR_CHANGED = "AvatarChanged"
-}
+require("%scripts/user/userCard/userCard.nut") //for load UserCardHandler before Profile handler
 
 enum OwnUnitsType {
   ALL = "all",
@@ -117,7 +116,6 @@ let profileSelectedFiltersCache = {
   rank = []
   country = []
 }
-
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
 let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
@@ -164,7 +162,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   pending_logout = false
   currentShowcaseName = ""
 
-  presetSheetList = ["UserCard", "Records", "Statistics", "Medal", "UnlockAchievement", "UnlockSkin", "UnlockDecal"]
+  presetSheetList = ["UserCard", "Records", "Statistics", "Medal", "UnlockAchievement", "UnlockSkin", "UnlockDecal", "Collections"]
 
   tabImageNameTemplate = "#ui/gameuiskin#sh_%s.svg"
   tabLocalePrefix = "#mainmenu/btn"
@@ -217,6 +215,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     UnlockSkin = "airCountry"
   }
 
+  selectedDecoratorId = null
+
   function initScreen() {
     this.editModeTempData = {}
     this.selMedalIdx = {}
@@ -256,7 +256,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.updateCurrentStatsMode(this.curMode)
     this.initSheetsList()
     this.initTabs()
-
     let bntGetLinkObj = this.scene.findObject("btn_getLink")
     if (checkObj(bntGetLinkObj))
       bntGetLinkObj.tooltip = getViralAcquisitionDesc("mainmenu/getLinkDesc")
@@ -335,7 +334,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       if (sheet in this.customMenuTabs)
         tabText = this.customMenuTabs[sheet].title
       else
-        tabText = this.tabLocalePrefix + sheet
+        tabText = $"{this.tabLocalePrefix}{sheet}"
 
       view.tabs.append({
         id = sheet
@@ -343,7 +342,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         unseenIcon = sheet == "UnlockAchievement"
           ? makeConfigStrByList([seenUnlockMarkers.id, seenManualUnlocks.id])
           : null
-        navImagesText = ::get_navigation_images_text(idx, this.sheetsList.len())
+        navImagesText = getNavigationImagesText(idx, this.sheetsList.len())
         hidden = !this.isSheetVisible(sheet)
       })
 
@@ -361,6 +360,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function isSheetVisible(sheetName) {
     if (sheetName == "Medal")
       return hasFeature("ProfileMedals")
+    else if (sheetName == "Collections")
+      return hasAvailableCollections()
     return true
   }
 
@@ -489,20 +490,13 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       let stats = getStats()
       this.fillTitleName(stats.titles.len() > 0 ? stats.title : "no_titles", false)
     }
-    if (this.editModeTempData?.icon)
-      this.fillProfileIcon(getProfileInfo().icon)
 
     if (this.editModeTempData?.terseInfo)
       this.fillShowcase(this.terseInfo, getStats())
 
     this.resetHeaderBackgroundImage()
     this.resetAvatarFrameImage()
-  }
-
-  function saveProfileIcon(newIcon) {
-    set_option(USEROPT_PILOT, newIcon)
-    save_profile(false)
-    broadcastEvent(profileEvent.AVATAR_CHANGED)
+    this.resetAvatarImage()
   }
 
   function saveProfileTitle(title) {
@@ -524,18 +518,16 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.onHeaderBackgroundListHide()
       this.onChooseImageWndHide()
     }
+    let showcase = getShowcaseByTerseInfo(this.terseInfo)
+    if (showcase?.onChangeEditMode)
+      showcase.onChangeEditMode(val, this.terseInfo, this.scene)
   }
 
   function onIconChoosen(imageType, data) {
     if (imageType == "pilotIcon") {
-      this.fillProfileIcon(data.idx)
-      if (this.isEditModeEnabled) {
-        this.editModeTempData.icon <- data.idx
-        return
-      }
-      let value = ::get_option(USEROPT_PILOT).value
-      if (value != data.idx)
-        this.saveProfileIcon(data.idx)
+      this.fillProfileIcon(data.unlockId)
+      if (this.isEditModeEnabled)
+        this.editModeTempData.pilotIcon <- data.unlockId
       return
     }
 
@@ -544,12 +536,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.editModeTempData.avatarFrameId <- data.id
   }
 
-  function fillProfileIcon(iconIdx) {
+  function fillProfileIcon(icon) {
     if (!checkObj(this.scene))
       return
-    let obj = this.scene.findObject("profile-icon")
-    if (obj)
-      obj.setValue(iconIdx)
+
+    this.changeAvatarImage(icon)
   }
 
   function fillProfileAvatarFrame(data) {
@@ -561,9 +552,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function hasEditProfileChanges() {
     if (!this.isEditModeEnabled)
       return false
-    let newIcon = this.editModeTempData?.icon
-    if (newIcon != null && newIcon != ::get_option(USEROPT_PILOT).value)
-      return true
 
     if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
       return true
@@ -575,6 +563,9 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       return true
 
     if (this.editModeTempData?.avatarFrameId && this.editModeTempData.avatarFrameId != this.currentAvatarFrameId)
+      return true
+
+    if (this.editModeTempData?.pilotIcon && this.editModeTempData.pilotIcon != this.currentAvatarId)
       return true
 
     return false
@@ -626,7 +617,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onGotoCollection() {
-    openCollectionsWnd({ selectedDecoratorId = this.getCurDecal()?.id })
+    this.showCollectionsSheet(this.getCurDecal()?.id)
   }
 
   function onSheetChange(_obj) {
@@ -702,6 +693,9 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
           this.onPageChange(null)
       }
     }
+    else if (sheet == "Collections") {
+      this.showCollectionsSheet()
+    }
     else
       this.showSheetDiv("")
 
@@ -716,18 +710,23 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function showSheetDiv(name, pages = false, subPages = false) {
-    foreach (div in ["usercard", "records", "unlocks", "skins", "stats", "medals", "decals"]) {
-      let show = div == name
+    local show = false
+    local showed_div = null
+    foreach (div in ["usercard", "records", "unlocks", "skins", "stats", "medals", "decals", "collections"]) {
+      show = div == name
       let divObj = this.scene.findObject($"{div}-container")
       if (checkObj(divObj)) {
         divObj.show(show)
         divObj.enable(show)
-        if (show)
+        if (show) {
           this.updateDifficultySwitch(divObj)
+          showed_div = divObj
+        }
       }
     }
     showObjById("pages_list", pages, this.scene)
     showObjById("unit_type_list", subPages, this.scene)
+    return showed_div
   }
 
   function onDecalCategorySelect(listObj) {
@@ -818,7 +817,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     infoObj.findObject("decalDesc").setValue(desc)
 
     let cfg = decor.unlockBlk != null
-      ? buildUnlockDesc(::build_conditions_config(decor.unlockBlk))
+      ? buildUnlockDesc(buildConditionsConfig(decor.unlockBlk))
       : null
 
     let progressObj = infoObj.findObject("decalProgress")
@@ -1357,7 +1356,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let unitName = getPlaneBySkinId(name)
     let unitNameLoc = (unitName != "") ? getUnitName(unitName) : ""
     let unlockBlk = getUnlockById(name)
-    let config = unlockBlk ? ::build_conditions_config(unlockBlk) : null
+    let config = unlockBlk ? buildConditionsConfig(unlockBlk) : null
     let progressData = config?.getProgressBarData()
     let canAddFav = !!unlockBlk
     let decorator = getDecoratorById(name)
@@ -1471,7 +1470,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function onPrizePreview(obj) {
     this.previewUnlockId = obj.unlockId
-    let unlockCfg = ::build_conditions_config(getUnlockById(obj.unlockId))
+    let unlockCfg = buildConditionsConfig(getUnlockById(obj.unlockId))
     deferOnce(@() doPreviewUnlockPrize(unlockCfg))
   }
 
@@ -1498,7 +1497,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function fillUnlockInfo(unlockBlk, unlockObj) {
-    let itemData = ::build_conditions_config(unlockBlk)
+    let itemData = buildConditionsConfig(unlockBlk)
     buildUnlockDesc(itemData)
     unlockObj.show(true)
     unlockObj.enable(true)
@@ -1743,6 +1742,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     categoriesListObj.getChild(selIdx).scrollToView()
   }
 
+  function showCollectionsSheet(decoratorId = null) {
+    let collectionsDiv = this.showSheetDiv("collections", true)
+    openCollectionsPage({ scene = collectionsDiv, selectedDecoratorId = decoratorId ?? this.selectedDecoratorId })
+  }
+
   function fillProfileStats(stats) {
     this.fillTitleName(stats.titles.len() > 0 ? stats.title : "no_titles")
     if ("uid" in stats && stats.uid != userIdStr.value)
@@ -1766,7 +1770,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onUpdate(_obj, _dt) {
-    if (this.pending_logout && ::is_app_active() && !steam_is_overlay_active() && !::is_builtin_browser_active()) {
+    if (this.pending_logout && ::is_app_active() && !steam_is_overlay_active() && !is_builtin_browser_active()) {
       this.pending_logout = false
       this.guiScene.performDelayed(this, function() {
         startLogout()
@@ -1816,6 +1820,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     }
 
     let chooseImageScene = showObjById("chooseImage", true)
+    if (chooseImageScene.findObject("wnd_frame")?.isVisible())
+      return
     ::gui_choose_image(this.onIconChoosen, this, chooseImageScene)
     this.onHeaderBackgroundListHide()
   }
@@ -1953,6 +1959,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.setEditMode(false)
       this.resetHeaderBackgroundImage()
       this.resetAvatarFrameImage()
+      this.resetAvatarImage()
       return
     }
 
@@ -2009,7 +2016,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let showcase = getShowcaseByTerseInfo(terseInfo)
     this.setEditModeSecondTitle(
       showcase?.hasSecondTitleInEditMode
-        ? showcase.getSecondTitleLoc(terseInfo)
+        ? showcase.getSecondTitle(terseInfo)
         : ""
     )
   }
@@ -2038,10 +2045,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onProfileEditApplyBtn() {
-    let newIcon = this.editModeTempData?.icon
-    if (newIcon != null && newIcon != ::get_option(USEROPT_PILOT).value)
-      this.saveProfileIcon(newIcon)
-
     this.saveProfileAppearance()
 
     if (this.editModeTempData?.title && this.editModeTempData?.title != getStats().title)
@@ -2073,16 +2076,20 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.fillShowcase(showcaseForRestore, getStats())
   }
 
+  function tryCreateTerseInfoForEdit() {
+    if (this.editModeTempData?.terseInfo != null)
+      return
+    this.editModeTempData.terseInfo <- clone this.terseInfo
+    this.editModeTempData.terseInfo.showcase <- clone this.terseInfo.showcase
+  }
+
   function onShowcaseGameModeSelect(obj) {
     if (!this.isEditModeEnabled)
       return
     let gameMode = getShowcaseGameModeByIndex(obj.getValue(), this.editModeTempData?.terseInfo ?? this.terseInfo)
     if (!gameMode)
       return
-    if (this.editModeTempData?.terseInfo == null) {
-      this.editModeTempData.terseInfo <- clone this.terseInfo
-      this.editModeTempData.terseInfo.showcase <- clone this.terseInfo.showcase
-    }
+    this.tryCreateTerseInfoForEdit()
     writeGameModeToTerseInfo(this.editModeTempData.terseInfo, gameMode.mode)
     this.fillShowcase(this.editModeTempData.terseInfo, getStats(), false)
   }
@@ -2126,13 +2133,16 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onUnitSelect(unit) {
-    if (this.editModeTempData?.terseInfo == null) {
-      this.editModeTempData.terseInfo <- clone this.terseInfo
-      this.editModeTempData.terseInfo.showcase <- clone this.terseInfo.showcase
-    }
+    this.tryCreateTerseInfoForEdit()
     saveUnitToTerseInfo(this.editModeTempData.terseInfo, unit, this.curUnitImageIdx)
     this.fillShowcaseMid(this.editModeTempData.terseInfo, this.getPageProfileStats())
     this.updateEditModeSecondTitle(this.editModeTempData.terseInfo)
+  }
+
+  function onShowcaseCustomFunc(obj) {
+    this.tryCreateTerseInfoForEdit()
+    let terseInfo = this?.editModeTempData.terseInfo
+    getShowcaseByTerseInfo(terseInfo)?.onClickFunction(obj, terseInfo, this.getPlayerStats(), this.scene)
   }
 
   function onUnitImageClick(obj) {
@@ -2140,27 +2150,30 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.setEditMode(true)
       return
     }
-    this.curUnitImageIdx = obj?.imageIdx ?? 0;
+    this.curUnitImageIdx = obj?.imageIdx ? to_integer_safe(obj.imageIdx) : 0
     let handler = this
-
     let terseInfo = this?.editModeTempData.terseInfo ?? this.terseInfo
+    let additionalUnitsFilter = getShowcaseUnitsFilter(terseInfo, this.curUnitImageIdx)
     let showcase = getShowcaseByTerseInfo(terseInfo)
 
     openSelectUnitWnd({
-      unitsFilter = @(unit) isUnitBought(unit)
+      unitsFilter = @(unit) isUnitBought(unit) && additionalUnitsFilter(unit),
       userstat = this.getPageProfileStats()?.userstat,
       onUnitSelectFunction = @(unit) handler.onUnitSelect(unit),
       diffsForSort = showcase?.getDiffsForUnitsSort(terseInfo)
       showRecordsTableUnits = true
+      filtersData = selectUnitWndFilters
     })
+  }
+
+  function onDeleteUnitClick(obj) {
+    this.curUnitImageIdx = obj?.imageIdx ? to_integer_safe(obj.imageIdx) : -1
+    this.onUnitSelect(null)
   }
 
   function onSelectFavUnitDiff(obj) {
     let diff = getDiffByIndex(obj.getValue())
-    if (this.editModeTempData?.terseInfo == null) {
-      this.editModeTempData.terseInfo <- clone this.terseInfo
-      this.editModeTempData.terseInfo.showcase <- clone this.terseInfo.showcase
-    }
+    this.tryCreateTerseInfoForEdit()
     this.editModeTempData.terseInfo.showcase.difficulty <- diff
     fillStatsValuesOfTerseInfo(this.scene, this.editModeTempData.terseInfo, getStats())
   }
@@ -2169,10 +2182,13 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let params = {}
 
     if (this.editModeTempData?.avatarFrameId != null && this.editModeTempData.avatarFrameId != this.currentAvatarFrameId)
-      params.frame <- this.editModeTempData?.avatarFrameId
+      params.frame <- this.editModeTempData.avatarFrameId
 
     if (this.editModeTempData?.headerBackgroundId != null && this.editModeTempData.headerBackgroundId != this.currentHeaderBackgroundId)
-      params.background <- this.editModeTempData?.headerBackgroundId
+      params.background <- this.editModeTempData.headerBackgroundId
+
+    if (this.editModeTempData?.pilotIcon != null && this.editModeTempData.pilotIcon != this.currentAvatarId)
+      params.pilotIcon <- this.editModeTempData.pilotIcon
 
     if (params.len() == 0)
       return
@@ -2180,6 +2196,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let cbError = Callback(function() {
       this.setCurrentHeaderBackground()
       this.setCurrentAvatarFrame()
+      this.setCurrentAvatar()
     }, this)
 
     saveProfileAppearance(params, null, cbError)
@@ -2197,7 +2214,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function updateProfileAppearance() {
     let userInfo = getUserInfo(userIdStr.get())
-
     if (userInfo == null)
       return
 
@@ -2213,6 +2229,13 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.currentAvatarFrameId = avatarFrameId
       if (!this.isEditModeEnabled || this.editModeTempData?.avatarFrameId == null)
         this.setCurrentAvatarFrame()
+    }
+
+    let avatarId = userInfo.pilotIcon != "" ? userInfo.pilotIcon : ""
+    if (avatarId != this.currentAvatarId) {
+      this.currentAvatarId = avatarId
+      if (!this.isEditModeEnabled || this.editModeTempData?.avatarId == null)
+        this.setCurrentAvatar()
     }
   }
 
@@ -2286,6 +2309,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function resetAvatarFrameImage() {
     this.setCurrentAvatarFrame()
     this.editModeTempData.avatarFrameId <- null
+  }
+
+  function resetAvatarImage() {
+    this.setCurrentAvatar()
+    this.editModeTempData.pilotIcon <- null
   }
 
   getHeaderBackgroundsFilterObj = @() this.scene.findObject("filter_header")

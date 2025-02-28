@@ -11,6 +11,7 @@ let { isNamePassing } = require("%scripts/dirtyWordsFilter.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { checkClanTagForDirtyWords, stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
 
 gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -90,7 +91,7 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       errorMsg = "charServer/updateError/16"
     }
     else if ((this.clanData == null || this.newClanTag != this.clanData.tag) &&
-      !isNamePassing(::g_clans.stripClanTagDecorators(this.newClanTag))) {
+      !isNamePassing(stripClanTagDecorators(this.newClanTag))) {
       errorMsg = "charServer/updateError/17"
     }
 
@@ -218,7 +219,7 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.newClanRegion        = this.newClanRegion.len() > 0 ? clearBorderSymbols(this.newClanRegion, [" "]) : ""
     this.newClanAnnouncement  = this.newClanAnnouncement.len() > 0 ? clearBorderSymbols(this.newClanAnnouncement, [" "]) : ""
 
-    if (!::checkClanTagForDirtyWords(this.newClanTag, false))
+    if (!checkClanTagForDirtyWords(this.newClanTag, false))
       err = "".concat(err, loc("clan/error/bad_words_in_clanTag"))
 
     if (this.newClanTag.len() <= 0)

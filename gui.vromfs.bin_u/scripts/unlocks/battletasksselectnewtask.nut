@@ -1,9 +1,8 @@
 from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { mkUnlockConfigByBattleTask, filterBattleTasksByGameModeId,
-  getBattleTaskView
-} = require("%scripts/unlocks/battleTasks.nut")
+let { filterBattleTasksByGameModeId } = require("%scripts/unlocks/battleTasks.nut")
+let {getBattleTaskView, mkUnlockConfigByBattleTask} = require("%scripts/unlocks/battleTasksView.nut")
 let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
@@ -12,6 +11,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 gui_handlers.BattleTasksSelectNewTaskWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -95,7 +95,7 @@ gui_handlers.BattleTasksSelectNewTaskWnd <- class (gui_handlers.BaseGuiHandlerWT
       return
 
     let awardsList = config.names.map(@(id) ::build_log_unlock_data(
-        ::build_conditions_config(getUnlockById(id))
+        buildConditionsConfig(getUnlockById(id))
       )
     )
 

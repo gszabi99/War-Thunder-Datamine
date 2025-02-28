@@ -1955,29 +1955,11 @@
           ],
           "lim2": [
             -160.0,
-            -15.0,
-            -8.0,
-            15.0
-          ],
-          "lim3": [
-            -15.0,
-            -2.0,
-            -4.0,
-            15.0
-          ],
-          "lim4": [
-            -2.0,
-            5.0,
-            -4.0,
-            15.0
-          ],
-          "lim5": [
-            5.0,
             160.0,
             -8.0,
             15.0
           ],
-          "lim6": [
+          "lim3": [
             160.0,
             180.0,
             -3.0,
@@ -2025,6 +2007,57 @@
           ],
           "pitch": [
             -0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "trigger": "gunner2",
+        "triggerGroup": "smoke",
+        "blk": "gameData/Weapons/groundModels_weapons/91mm_germ_smoke_mortar_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "emtr_mortar_flame_01",
+        "emitterGenRange": [
+          1,
+          1
+        ],
+        "emitterGenFmt": "emtr_mortar_flame_%02d",
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 360.0,
+        "salvo": 1,
+        "speedYaw": 24.0,
+        "speedPitch": 15.0,
+        "fireConeAngle": 1.0,
+        "bullets": 12,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxDistance": 1000.0,
+        "AttackMaxRadius": 1000.0,
+        "AttackMaxHeight": 1000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_grenade",
+          "gun": "bone_grenade"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
             0.0
           ]
         }
@@ -2990,9 +3023,10 @@
     "88mm_kwk_36_43_APCR_ammo_pack": {},
     "88mm_ger_kwk43_default_HE": {},
     "tank_rangefinder": {},
-    "tank_smoke_screen_system_mod": {
-      "tier": 3,
+    "night_vision_system_panther_2": {
+      "tier": 1,
       "effects": {
+        "rcostAddParam": 0.92,
         "commonWeapons": {
           "Weapon": [
             {
@@ -3185,28 +3219,36 @@
               }
             }
           ]
+        },
+        "nightVision": {
+          "commanderViewIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 8.0,
+            "ghosting": 0.75,
+            "noiseFactor": 0.2
+          },
+          "driverIr": {
+            "resolution": [
+              800,
+              600
+            ],
+            "lightMult": 5.0,
+            "ghosting": 0.7,
+            "noiseFactor": 0.2
+          }
+        },
+        "hideNodes": {
+          "node": [
+            "ex_decor_05",
+            "ex_lantern_01",
+            "ex_mount_lantern_01",
+            "ex_cabel_lantern_01"
+          ]
         }
       }
-    }
-  },
-  "nightVision": {
-    "commanderViewIr": {
-      "resolution": [
-        800,
-        600
-      ],
-      "lightMult": 8.0,
-      "ghosting": 0.75,
-      "noiseFactor": 0.2
-    },
-    "driverIr": {
-      "resolution": [
-        800,
-        600
-      ],
-      "lightMult": 5.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.2
     }
   },
   "default_skin": {

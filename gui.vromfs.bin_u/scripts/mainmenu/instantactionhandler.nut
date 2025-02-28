@@ -62,7 +62,6 @@ let { get_game_settings_blk } = require("blkGetters")
 let { getEventEconomicName, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
-let { openClanRequestsWnd } = require("%scripts/clans/clanRequestsModal.nut")
 let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { isStatsLoaded, getNextNewbieEvent, isMeNewbie, getPvpRespawns, getMissionsComplete,
   getTimePlayedOnUnitType
@@ -79,8 +78,18 @@ let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { unlockCrew } = require("%scripts/crew/crewActions.nut")
 let { matchSearchGm, currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { joinOperationById } = require("%scripts/globalWorldwarUtils.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
+let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
+let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
+let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
+
+let { getMyClanCandidates, isHaveRightsToReviewCandidates, openClanRequestsWnd
+  } = require("%scripts/clans/clanCandidates.nut")
+let { getChatObject } = require("%scripts/chat/chatUtils.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -484,7 +493,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
           return
         }
         let repairInfo = events.getCountryRepairInfo(leaderEvent, null, profileCountrySq.value)
-        ::checkBrokenAirsAndDo(repairInfo, this, @() g_squad_manager.setReadyFlag(), false)
+        checkBrokenAirsAndDo(repairInfo, this, @() g_squad_manager.setReadyFlag(), false)
         return
       }
       g_squad_manager.setReadyFlag()
@@ -601,7 +610,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (::queues.isAnyQueuesActive(this.queueMask) || !::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
       return
 
-    ::EventJoinProcess(event)
+    EventJoinProcess(event)
   }
 
   function showNoSuitableVehiclesMsgBox() {
@@ -822,11 +831,11 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local chatDiv = null
     if (topMenuHandler.value != null)
-      chatDiv = ::getChatDiv(topMenuHandler.value.scene)
+      chatDiv = getChatObject(topMenuHandler.value.scene)
     if (!chatDiv && this.scene && this.scene.isValid())
-      chatDiv = ::getChatDiv(this.scene)
+      chatDiv = getChatObject(this.scene)
     if (chatDiv)
-      ::switchMenuChatObjIfVisible(chatDiv)
+      broadcastEvent("ChatSwitchObjectIfVisible", { obj = chatDiv })
   }
 
   function leaveCurQueue(options = {}) {
@@ -865,7 +874,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function testCurrentUnitForMode(country) {
     if (country == "country_0") {
-      let option = ::get_option(USEROPT_COUNTRY)
+      let option = get_option(USEROPT_COUNTRY)
       foreach (idx, optionCountryName in option.values)
         if (optionCountryName != "country_0" && option.items[idx].enabled) {
           let unit = this.getQueueAircraft(optionCountryName)
@@ -883,7 +892,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   function testCrewsForMode(country) {
     let countryToCheckArr = []
     if (country == "country_0") { //fill countryToCheckArr with countries, allowed by game mode
-      let option = ::get_option(USEROPT_COUNTRY)
+      let option = get_option(USEROPT_COUNTRY)
       foreach (idx, optionCountryName in option.values)
         if (optionCountryName != "country_0" && option.items[idx].enabled)
           countryToCheckArr.append(optionCountryName)
@@ -1023,7 +1032,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
         shortcut = GAMEPAD_ENTER_SHORTCUT
         nextActionShortcut = "help/OBJ_CLICK"
         cb = function() {
-          ::gui_modal_crew({
+          gui_modal_crew({
             countryId = curCrew.idCountry,
             idInCountry = curCrew.idInCountry,
             curPageId = tutorialPageId,
@@ -1032,7 +1041,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
         }
       }
     ]
-    ::gui_modal_tutor(steps, this)
+    gui_modal_tutor(steps, this)
   }
 
   function toBattleTutor() {
@@ -1045,7 +1054,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       shortcut = SHORTCUT.GAMEPAD_X
       cb = this.onStart
     }]
-    ::gui_modal_tutor(steps, this)
+    gui_modal_tutor(steps, this)
   }
 
   function startSlotbarPresetsTutorial() {
@@ -1281,8 +1290,8 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function on_show_clan_requests() { //FIXME: FUNC in 'on_click' somehow calls
-    if (::g_clans.isHaveRightsToReviewCandidates())
-      openClanRequestsWnd(::g_clans.getMyClanCandidates(), clan_get_my_clan_id(), false);
+    if (isHaveRightsToReviewCandidates())
+      openClanRequestsWnd(getMyClanCandidates(), clan_get_my_clan_id(), false);
   }
 
   onEventToBattleLocShortChanged = @(_params) this.doWhenActiveOnce("updateStartButton")

@@ -558,7 +558,7 @@ function addBanedByWeaponsParams(preset, tierId, presetId, availableWeapons, wBl
     let weaponName = getAvailableWeaponName(availableWeapons, weapon.bannedByPresetId,
       weapon.bannedByTier, editSlotParams.weaponBlkCache)
     let weaponLocName = loc($"weapons/{weaponName}")
-      appendOnce(weaponLocName, editSlotParams.removedWeapon)
+    appendOnce(weaponLocName, editSlotParams.removedWeapon)
     weaponsToRemove.append({ weaponLocName, tierNum = weapon.bannedByTier + 1 })
     editSlotParams.removedWeaponCount++
   }

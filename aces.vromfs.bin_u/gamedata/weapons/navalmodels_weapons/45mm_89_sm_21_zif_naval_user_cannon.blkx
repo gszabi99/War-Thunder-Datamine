@@ -81,9 +81,10 @@
       "dynamicKv": true,
       "splashFallBySquare": true,
       "explodeTreshold": 0.1,
-      "fuseDelay": 0.0,
+      "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
+      "penetrationBySpeed": true,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -126,7 +127,11 @@
       },
       "damage": {
         "kinetic": {
-          "damageType": "generic"
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
         },
         "shatter": {
           "useRealShatters": true,
@@ -141,7 +146,8 @@
                 0.0,
                 30.0
               ],
-              "countPortion": 0.3
+              "countPortion": 0.2,
+              "realShattersSplicing": 0.75
             },
             {
               "radiusScale": 1.0,
@@ -151,7 +157,8 @@
                 30.0,
                 180.0
               ],
-              "countPortion": 0.7
+              "countPortion": 0.8,
+              "realShattersSplicing": 0.75
             }
           ]
         }
@@ -436,9 +443,10 @@
       "dynamicKv": true,
       "splashFallBySquare": true,
       "explodeTreshold": 0.1,
-      "fuseDelay": 0.0,
+      "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
+      "penetrationBySpeed": true,
       "relativeVelArmorShift": [
         200.0,
         1000.0
@@ -481,7 +489,11 @@
       },
       "damage": {
         "kinetic": {
-          "damageType": "generic"
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
         },
         "shatter": {
           "useRealShatters": true,
@@ -496,7 +508,8 @@
                 0.0,
                 30.0
               ],
-              "countPortion": 0.3
+              "countPortion": 0.2,
+              "realShattersSplicing": 0.75
             },
             {
               "radiusScale": 1.0,
@@ -506,7 +519,8 @@
                 30.0,
                 180.0
               ],
-              "countPortion": 0.7
+              "countPortion": 0.8,
+              "realShattersSplicing": 0.75
             }
           ]
         }
@@ -794,9 +808,10 @@
         "dynamicKv": true,
         "splashFallBySquare": true,
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
+        "penetrationBySpeed": true,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -839,7 +854,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -854,7 +873,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -864,7 +884,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }
@@ -1149,9 +1170,10 @@
         "dynamicKv": true,
         "splashFallBySquare": true,
         "explodeTreshold": 0.1,
-        "fuseDelay": 0.0,
+        "fuseDelay": 0.001,
         "fuseOnWater": true,
         "fuseOnWaterProbability": 1.0,
+        "penetrationBySpeed": true,
         "relativeVelArmorShift": [
           200.0,
           1000.0
@@ -1194,7 +1216,11 @@
         },
         "damage": {
           "kinetic": {
-            "damageType": "generic"
+            "damageType": "generic",
+            "demarrePenetrationK": 0.15,
+            "demarreSpeedPow": 1.43,
+            "demarreMassPow": 0.71,
+            "demarreCaliberPow": 1.07
           },
           "shatter": {
             "useRealShatters": true,
@@ -1209,7 +1235,8 @@
                   0.0,
                   30.0
                 ],
-                "countPortion": 0.3
+                "countPortion": 0.2,
+                "realShattersSplicing": 0.75
               },
               {
                 "radiusScale": 1.0,
@@ -1219,7 +1246,8 @@
                   30.0,
                   180.0
                 ],
-                "countPortion": 0.7
+                "countPortion": 0.8,
+                "realShattersSplicing": 0.75
               }
             ]
           }

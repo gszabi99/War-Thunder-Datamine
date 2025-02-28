@@ -24,6 +24,8 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_KILLLOG, USEROPT_HUD_VISIBLE_RE
 } = require("%scripts/options/optionsExtNames.nut")
 let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
+let { get_mission_settings } = require("%scripts/missions/missionsStates.nut")
+let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 let heightPID = dagui_propid_add_name_id("height")
 
@@ -471,9 +473,9 @@ enumsAddTypes(g_hud_messages, {
       if (!checkObj(this.nest))
         return
       if (messageData.type == HUD_MSG_MULTIPLAYER_DMG
-        && !(messageData?.isKill ?? true) && ::mission_settings.maxRespawns != 1)
+        && !(messageData?.isKill ?? true) && get_mission_settings().maxRespawns != 1)
         return
-      if (!::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true))
+      if (!get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true))
         return
       this.addMessage(messageData)
     }
@@ -625,10 +627,10 @@ enumsAddTypes(g_hud_messages, {
     onMessage = function (messageData) {
       if (!checkObj(g_hud_messages.REWARDS.nest))
         return
-      if (!::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_REWARDS_MSG, OPTIONS_MODE_GAMEPLAY, true))
+      if (!get_gui_option_in_mode(USEROPT_HUD_VISIBLE_REWARDS_MSG, OPTIONS_MODE_GAMEPLAY, true))
         return
       if (messageData?.messageCode == EXP_EVENT_MISSILE_EVADE
-        && !::get_gui_option_in_mode(USEROPT_SHOW_MESSAGE_MISSILE_EVADE, OPTIONS_MODE_GAMEPLAY, true))
+        && !get_gui_option_in_mode(USEROPT_SHOW_MESSAGE_MISSILE_EVADE, OPTIONS_MODE_GAMEPLAY, true))
         return
       let isSeries = this.curRewardPriority != REWARD_PRIORITY.noPriority
       this.rewardWp += messageData.warpoints

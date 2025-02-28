@@ -5,6 +5,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
+let { enqueueItem, requestLimits } = require("%scripts/items/itemLimits.nut")
 
 gui_handlers.TicketBuyWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -27,8 +28,8 @@ gui_handlers.TicketBuyWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateBuyButtonText()
 
     foreach (ticket in this.tickets)
-      ::g_item_limits.enqueueItem(ticket.id)
-    ::g_item_limits.requestLimits()
+      enqueueItem(ticket.id)
+    requestLimits()
   }
 
   function onEventItemLimitsUpdated(_params) {

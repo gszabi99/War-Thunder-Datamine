@@ -7,6 +7,8 @@ let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.nut")
 
 ::SlotbarPresetsList <- class {
   scene = null
@@ -167,7 +169,7 @@ let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
     let idx = this.getSelPresetIdx()
     if (idx < 0) {
       this.update()
-      return ::gui_choose_slotbar_preset(this.ownerWeak)
+      return gui_choose_slotbar_preset(this.ownerWeak)
     }
 
     if (("canPresetChange" in this.ownerWeak) && !this.ownerWeak.canPresetChange())
@@ -185,7 +187,7 @@ let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
   }
 
   function checkChangePresetAndDo(action) {
-    ::queues.checkAndStart(
+    queues.checkAndStart(
       Callback(function() {
         checkSquadUnreadyAndDo(
           Callback(function() {
@@ -207,7 +209,7 @@ let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
   function onSlotsChoosePreset(_obj) {
     this.checkChangePresetAndDo(function () {
-      ::gui_choose_slotbar_preset(this.ownerWeak)
+      gui_choose_slotbar_preset(this.ownerWeak)
     })
   }
 

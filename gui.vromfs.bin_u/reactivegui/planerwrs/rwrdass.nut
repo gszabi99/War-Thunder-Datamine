@@ -398,6 +398,12 @@ let directionGroups = [
     lethalRangeMax = 5000.0
   },
   {
+    text = "E2K",
+    type = ThreatType.AI,
+    originalName = "E2K",
+    lethalRangeMax = 40000.0
+  },
+  {
     text = "TRF",
     originalName = "TRF",
     type = ThreatType.AI,
@@ -406,6 +412,12 @@ let directionGroups = [
   {
     text = "M20",
     originalName = "M2K",
+    type = ThreatType.AI,
+    lethalRangeMax = 40000.0
+  },
+  {
+    text = "RFL",
+    originalName = "RFL",
     type = ThreatType.AI,
     lethalRangeMax = 40000.0
   },

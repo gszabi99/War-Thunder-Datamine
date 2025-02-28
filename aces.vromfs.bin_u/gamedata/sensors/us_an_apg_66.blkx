@@ -322,8 +322,8 @@
             ],
             "azmithWidth": 5.0,
             "elevationRange": [
-              -30.0,
-              30.0
+              -60.0,
+              60.0
             ],
             "distanceRange": [
               0.0,
@@ -467,10 +467,6 @@
             "source": "activeTargetOfInterest"
           },
           "setDistGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
-          "setRelSpeedGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
@@ -1253,11 +1249,62 @@
             "signal": "lprfTrack"
           }
         },
-        "track": {
+        "trackPulse": {
           "updateActiveTargetOfInterest": {
-            "dirFilter": {},
-            "distFilter": {},
-            "dopplerSpeedFilter": {}
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
+          },
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          }
+        },
+        "trackDoppler": {
+          "updateActiveTargetOfInterest": {
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "dopplerSpeedFilter": {
+              "rateLim": [
+                200.0,
+                200.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
           },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
@@ -1359,7 +1406,7 @@
           "stateFrom": "mprf",
           "event": "targetDetected",
           "actions": {
-            "track": {}
+            "trackDoppler": {}
           }
         },
         "startTrackMprf": {
@@ -1371,7 +1418,7 @@
           "stateTo": "mprf",
           "actions": {
             "setMprfTrack": {},
-            "track": {},
+            "trackDoppler": {},
             "setModeName": {
               "name": "PD track"
             }
@@ -1382,7 +1429,7 @@
           "event": "targetDetected",
           "stateTo": "lprfOkMprfTry",
           "actions": {
-            "track": {}
+            "trackPulse": {}
           }
         },
         "startTrackLprf": {
@@ -1391,7 +1438,7 @@
           "stateTo": "lprf",
           "actions": {
             "setLprfTrack": {},
-            "track": {},
+            "trackPulse": {},
             "setModeName": {
               "name": "track"
             }

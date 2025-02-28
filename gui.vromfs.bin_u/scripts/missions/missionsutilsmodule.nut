@@ -2,15 +2,19 @@ from "%scripts/dagui_natives.nut" import get_player_multipliers, get_mission_pro
 from "%scripts/dagui_library.nut" import *
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
+let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { get_game_mode } = require("mission")
 let { setGuiOptionsMode } = require("guiOptions")
-let { restart_mission } = require("guiMission")
+let { restart_mission, get_meta_mission_info_by_name, get_meta_mission_info_by_gm_and_name
+} = require("guiMission")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
+let { buildRewardText } = require("%scripts/missions/missionsText.nut")
+let { getSessionLobbyMissionData } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 
 let MISSION_OBJECTIVE = {
   KILLS_AIR           = 0x0001
@@ -97,7 +101,7 @@ function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
         getRewardValue(dataBlk, misDataBlk, diff, "xp") * muls.xpMultiplier)
     }
 
-    local rewardTextArray = [::buildRewardText(loc(locId), rewardMoney, highlighted, true, isAdditionalReward)]
+    local rewardTextArray = [buildRewardText(loc(locId), rewardMoney, highlighted, true, isAdditionalReward)]
     if (slotReward != "")
       rewardTextArray = addRewardText(rewardTextArray, $"{loc("options/crewName")}{slotReward}", locId)
 
@@ -127,9 +131,6 @@ function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
   return handyman.renderCached("%gui/missions/missionReward.tpl", { rewards = rewards })
 }
 
-let getMissionLocName = @(config, key = "locId") "".join(getLocIdsArray(config?[key])
-  .map(@(locId) locId.len() == 1 ? locId : loc(locId)))
-
 function restartCurrentMission() {
   setGuiOptionsMode(::get_options_mode(get_game_mode()))
   restart_mission()
@@ -140,50 +141,32 @@ function isMissionComplete(chapterName, missionName) { //different by mp_modes
   return progress >= 0 && progress < 3
 }
 
-function getCombineLocNameMission(missionInfo) {
-  let misInfoName = missionInfo?.name ?? ""
-  local locName = ""
-  if ((missionInfo?["locNameTeamA"].len() ?? 0) > 0)
-    locName = getMissionLocName(missionInfo, "locNameTeamA")
-  else if ((missionInfo?.locName.len() ?? 0) > 0)
-    locName = getMissionLocName(missionInfo, "locName")
-  else
-    locName = loc($"missions/{misInfoName}", "")
+function getUrlOrFileMissionMetaInfo(missionName, gm = null) {
+  let urlMission = g_url_missions.findMissionByName(missionName)
+  if (urlMission != null)
+    return urlMission.getMetaInfo()
 
-  if (locName == "") {
-    let misInfoPostfix = missionInfo?.postfix ?? ""
-    if (misInfoPostfix != "" && misInfoName.indexof(misInfoPostfix)) {
-      let name = misInfoName.slice(0, misInfoName.indexof(misInfoPostfix))
-      locName = "".concat("[", loc($"missions/{misInfoPostfix}"), "] ", loc($"missions/{name}"))
-    }
+  if (gm != null) {
+    let misBlk = get_meta_mission_info_by_gm_and_name(gm, missionName)
+    if (misBlk != null)
+      return misBlk
   }
 
-  //we dont have lang and postfix
-  if (locName == "")
-    locName = $"missions/{misInfoName}"
-  return locName
+  return get_meta_mission_info_by_name(missionName)
 }
 
-function is_user_mission(missionBlk) {
-  return missionBlk?.userMission == true //can be null
-}
-
-function getMissionName(missionId, config, locNameKey = "locName") {
-  let locNameValue = config?[locNameKey] ?? ""
-  if (locNameValue != "")
-    return getMissionLocName(config, locNameKey)
-
-  return loc($"missions/{missionId}")
+function getSessionLobbyMissionName(isOriginalName = false, room = null) {
+  let misData = getSessionLobbyMissionData(room)
+  let missionName = misData?.name ?? ""
+  return isOriginalName ? (misData?.originalMissionName ?? missionName) : missionName
 }
 
 return {
   getMissionLocIdsArray
   getMissionRewardsMarkup
-  getMissionLocName
   MISSION_OBJECTIVE
   restartCurrentMission
   isMissionComplete
-  getCombineLocNameMission
-  is_user_mission
-  getMissionName
+  getUrlOrFileMissionMetaInfo
+  getSessionLobbyMissionName
 }

@@ -12,6 +12,7 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { get_game_mode, get_game_type } = require("mission")
 let { chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
+let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 
 const HIDDEN_CATEGORY_NAME = "hidden"
 const LIMIT_SHOW_VOICE_MESSAGE_PETALS = 8
@@ -97,7 +98,7 @@ function getVoiceMessageListLine(index, is_category, name, squad, targetName, _m
     let key = $"ID_VOICE_MESSAGE_{index + 1}" //1based
     shortcutNames.append(key);
 
-    let shortcuts = ::get_shortcuts(shortcutNames)
+    let shortcuts = getShortcuts(shortcutNames)
 
     for (local sc = 0; sc < shortcuts.len(); sc++)
       if (shortcuts[sc].len())
@@ -129,7 +130,7 @@ function guiStartVoicemenu(config) {
   if (::isPlayerDedicatedSpectator())
     return null
 
-  let joyParams = ::joystick_get_cur_settings()
+  let joyParams = joystickGetCurSettings()
   let { menu = [], callbackFunc = null, squadMsg = false, category = ""} = config
   let params = {
     menu

@@ -2,6 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let DataBlock = require("DataBlock")
 let { setHeadMountedSystemPanelId } = require("hudState")
+let { createScriptComponent } = require("utils/builders.nut")
 
 let { HmdVisibleAAM, HmdFovMult } = require("%rGui/rocketAamAimState.nut")
 let { HmdSensorVisible } = require("%rGui/radarState.nut")
@@ -21,18 +22,23 @@ let hmdRafale = require("planeHmds/hmdRafale.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
 let { IPoint2, Point2, Point3 } = require("dagor.math")
 
+let hmdF15cBaz = createScriptComponent("%rGui/planeHmds/hmdF15cBazMsip.das", {
+  fontId = Fonts.hud
+})
+
 let hmdSetting = Computed(function() {
   let res = {
     isShelZoom = false,
     isVtas = false,
     isF16c = false,
+    isF15cBaz = false
     isAh64 = false,
     isJas39 = false,
     isMetric = false,
+    isTornado = false,
     isA10c = false,
     isTopOwl = false,
-    isTornado = false,
-    isTyphoon = false
+    isTyphoon = false,
     isRafale = false,
   }
   if (BlkFileName.value == "")
@@ -45,6 +51,7 @@ let hmdSetting = Computed(function() {
     isShelZoom = blk.getBool("hmdShelZoom", false),
     isVtas = blk.getBool("hmdVtas", false),
     isF16c = blk.getBool("hmdF16c", false),
+    isF15cBaz = blk.getBool("hmdF15cBaz", false),
     isAh64 = blk.getBool("hmdAH64", false),
     isMetric = blk.getBool("isMetricHmd", false),
     isJas39 = blk.getBool("hmdJas39", false),
@@ -58,13 +65,14 @@ let hmdSetting = Computed(function() {
 
 let isVisible = Computed(@() (HmdVisibleAAM.value || HmdSensorVisible.value || HmdVisible.value) && !HmdBlockIls.value)
 let planeHmd = @(width, height) function() {
-  let { isShelZoom, isVtas, isF16c, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon, isRafale } = hmdSetting.value
+  let { isShelZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon, isRafale } = hmdSetting.value
   return {
     watch = [hmdSetting, isVisible]
     children = isVisible.value ? [
       (isShelZoom ? hmdShelZoom(width, height) : null),
       (isVtas ? hmdVtas(width, height) : null),
       (isF16c ? hmdF16c(width, height, isMetric) : null),
+      (isF15cBaz ? hmdF15cBaz(width, height) : null),
       (isAh64 ? hmdAH64(width, height) : null),
       (isJas39 ? hmdJas39(width, height, isMetric) : null),
       (isA10c ? hmdA10c(width, height) : null),

@@ -27,6 +27,8 @@ let { get_mission_difficulty_int } = require("guiMission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
+let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 enum POINTING_DEVICE {
   MOUSE
@@ -266,7 +268,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (_idx, info in showShortcuts)
       if (info?.show ?? true) {
-        let shortcuts = ::get_shortcuts(info.shortcuts)
+        let shortcuts = getShortcuts(info.shortcuts)
         local pref = null
         local any = null
         foreach (i, actionShortcuts in shortcuts) {
@@ -314,7 +316,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!shortcut)
       return "text { text-align:t='center'; text:t='---' }"
 
-    let curPreset = ::g_controls_manager.getCurPreset()
+    let curPreset = getCurControlsPreset()
     for (local k = 0; k < shortcut.dev.len(); k++) {
       let name = getLocalizedControlName(curPreset, shortcut.dev[k], shortcut.btn[k]);
       local buttonFrame = format("controlsHelpBtn { text:t='%s'; font:t='%s' }", stripTags(name), (name.len() > 2) ? "@fontTiny" : "@fontMedium");

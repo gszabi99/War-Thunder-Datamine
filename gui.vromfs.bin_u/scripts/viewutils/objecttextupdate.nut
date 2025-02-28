@@ -48,7 +48,8 @@ function setColoredDoubleTextToButton(nestObj, btnId, coloredText) {
  * placePriceTextToButton(nestObj, btnId, localizedText, wpCost (int), goldCost (int))
  * placePriceTextToButton(nestObj, btnId, localizedText, cost (Cost) )
  */
-function placePriceTextToButton(nestObj, btnId, localizedText, arg1 = 0, arg2 = 0, fullCost = null) {
+function placePriceTextToButton(nestObj, btnId, localizedText, arg1 = 0, arg2 = 0, fullCost = null, viewParams = {}) {
+  let { textColor = "", priceTextColor = "" }  = viewParams
   let cost = u.isMoney(arg1) ? arg1 : Cost(arg1, arg2)
   let needShowPrice = !cost.isZero()
   let needShowDiscount = needShowPrice && fullCost != null && (fullCost.gold > cost.gold || fullCost.wp > cost.wp)
@@ -58,12 +59,12 @@ function placePriceTextToButton(nestObj, btnId, localizedText, arg1 = 0, arg2 = 
   let priceTextColored = "".concat(localizedText, priceFormat.subst(coloredCost))
   let textBlock = needShowPrice
     ? handyman.renderCached("%gui/commonParts/discount.tpl", {
-      headerText = $"{localizedText} ("
-      priceText = coloredCost
-      listPriceText = fullCost?.getUncoloredText() ?? ""
+      headerText = colorize(textColor, $"{localizedText} (")
+      priceText = colorize(priceTextColor, coloredCost)
+      listPriceText = fullCost?.tostring()
       haveDiscount = needShowDiscount
       needHeader = true
-      endText = ")"
+      endText = colorize(textColor, ")")
       needDiscountOnRight = true
     })
   : null

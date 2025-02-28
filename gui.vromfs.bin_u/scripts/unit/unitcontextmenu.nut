@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import clan_get_exp, shop_get_country_excess_exp, wp_get_repair_cost
+from "%scripts/dagui_natives.nut" import clan_get_exp, shop_get_country_excess_exp, wp_get_repair_cost, is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/clans/clanState.nut" import is_in_clan
@@ -34,7 +34,7 @@ let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let openCrossPromoWnd = require("%scripts/openCrossPromoWnd.nut")
 let { getUnitName, getUnitCountry, getUnitReqExp,
   getUnitExp, getUnitCost } = require("%scripts/unit/unitInfo.nut")
-  let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
+let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { needShowUnseenNightBattlesForUnit } = require("%scripts/events/nightBattlesStates.nut")
@@ -54,6 +54,11 @@ let { getUnitCoupon, hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
+let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
+let { canChangeCrewUnits } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
+let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -89,7 +94,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = "#ui/gameuiskin#slot_showroom.svg"
       showAction = inMenu
       actionFunc = function () {
-        ::queues.checkAndStart(function () {
+        queues.checkAndStart(function () {
           broadcastEvent("BeforeStartShowroom")
           showedUnit(unit)
           handlersManager.animatedSwitchScene(gui_start_decals)
@@ -109,9 +114,9 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = loc("multiplayer/changeAircraft")
       isShowDragAndDropIcon = !showConsoleButtons.get()
       icon       = "#ui/gameuiskin#slot_change_aircraft.svg"
-      showAction = inMenu && ::SessionLobby.canChangeCrewUnits()
+      showAction = inMenu && canChangeCrewUnits()
       actionFunc = function () {
-        ::queues.checkAndStart(
+        queues.checkAndStart(
           function() {
             checkSquadUnreadyAndDo(
               @() selectUnitHandler.open(crew, slotbar),
@@ -141,7 +146,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         if (hasSlotbarByUnitsGroups)
           crewModalByVehiclesGroups.open(params)
         else
-          ::gui_modal_crew(params)
+          gui_modal_crew(params)
       }
     }
     else if (action == "sec_weapons") {
@@ -176,7 +181,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
         || needShowUnseenNightBattlesForUnit(unit) || needShowUnseenModTutorialForUnit(unit)
       haveDiscount = getMaxWeaponryDiscountByUnitName(unit.name) > 0
       showAction = inMenu
-      actionFunc = @() ::open_weapons_for_unit(unit, {
+      actionFunc = @() open_weapons_for_unit(unit, {
         curEdiff = curEdiff
         needHideSlotbar = !isSlotbarEnabled
       })
@@ -197,7 +202,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       actionText = "".concat(loc("mainmenu/btnRepair"), ": ", Cost(repairCost).getTextAccordingToBalance())
       icon       = "#ui/gameuiskin#slot_repair.svg"
       haveWarning = true
-      showAction = inMenu && isUsable && repairCost > 0 && ::SessionLobby.canChangeCrewUnits()
+      showAction = inMenu && isUsable && repairCost > 0 && canChangeCrewUnits()
       actionFunc = @() repairWithMsgBox(unit)
     }
     else if (action == "buy") {
@@ -307,7 +312,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = unit.unitType.testFlightIcon
       showAction = inMenu && ::isTestFlightAvailable(unit, shouldSkipUnitCheck)
       actionFunc = function () {
-        ::queues.checkAndStart(@() guiStartTestflight({ unit, shouldSkipUnitCheck }),
+        queues.checkAndStart(@() guiStartTestflight({ unit, shouldSkipUnitCheck }),
           null, "isCanNewflight")
       }
     }
@@ -353,7 +358,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       iconRotation = 90
       showAction = inMenu && hasSlotbarByUnitsGroups && crew != null && slotbar != null
       actionFunc = function () {
-        ::queues.checkAndStart(
+        queues.checkAndStart(
           function() {
             checkSquadUnreadyAndDo(
               @() selectGroupHandler.open(crew, slotbar),
@@ -398,21 +403,28 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 })
 
 let showMenu = function showMenu(params) {
-  if (params == null) {
+  if (params == null || params?.needClose) {
     handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)?.close()
+    if ((!showConsoleButtons.value || is_mouse_last_time_used()) && params?.unitObj)
+      if (showConsoleButtons.value)
+        delayedTooltipOnHover(params?.unitObj)
+      else
+        params.handler.guiScene.updateTooltip(params?.unitObj)
     return
   }
 
   let actions = getActions(params, KWARG_NON_STRICT)  // warning disable: -param-count
   if (actions.len() == 0)
     return
-
-  gui_handlers.ActionsList.open(params.unitObj, {
+  let listData = {
     handler = null
+    needCloseTooltips = params?.needCloseTooltips ?? false
     closeOnUnhover = params?.closeOnUnhover ?? true
     onDeactivateCb = @() unitContextMenuState(null)
     actions = actions
-  })
+    cssParams = {["min-width"] = "1@mainMenuButtonWidth"}
+  }
+  gui_handlers.ActionsList.open(params.unitObj, listData)
 }
 
 unitContextMenuState.subscribe(function (v) {
@@ -422,5 +434,3 @@ unitContextMenuState.subscribe(function (v) {
 addListenersWithoutEnv({
   ClosedUnitItemMenu = @(_p) unitContextMenuState(null)
 })
-
-return showMenu

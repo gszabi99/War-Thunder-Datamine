@@ -16,6 +16,7 @@ let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { defer } = require("dagor.workcycle")
 
 let IMAGE_TYPE = "TAM_JACKET"
 let BQ_DEFAULT_ACTION_ERROR = -1
@@ -62,7 +63,7 @@ function sendBqRecord(metric, itemId, result = null) {
 function reportRecord(data, _record_name) {
   sendBqRecord([data.ctx.metricPlaceCall, "checkout.close"], data.ctx.itemId, data.result)
   if (data.result.action == psnStore.Action.PURCHASED)
-    handleNewPurchase(data.ctx.itemId)
+    defer(@() handleNewPurchase(data.ctx.itemId)) //!!!FIX ME: This delayed action was added because of immediate and looped call eventbus in waitBox(used in ps4_update_purchases_on_auth)
 }
 
 eventbus_subscribe("storeCheckoutClosed", @(data) reportRecord(data, "checkout.close"))

@@ -647,7 +647,7 @@ function getRadarModeText(radarModeNameWatch, isRadarVisibleWatch) {
     texts.append(loc(modeNames[radarModeNameWatch.value]))
   else if (isRadarVisibleWatch.value)
     texts.append(Irst.value ? loc("hud/irst") : loc("hud/radarEmitting"))
- return "".join(texts)
+  return "".join(texts)
 }
 
 

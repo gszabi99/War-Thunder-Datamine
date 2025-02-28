@@ -15,8 +15,8 @@ let { debug_dump_stack } = require("dagor.debug")
 let time = require("%scripts/time.nut")
 let { acos, PI } = require("math")
 let penalty = require("penalty")
-let { hangar_is_model_loaded, hangar_get_loaded_unit_name,
-  hangar_force_reload_model, hangar_focus_model, hangar_set_dm_viewer_mode, force_retrace_decorators
+let { hangar_is_model_loaded, hangar_get_loaded_unit_name, hangar_force_reload_model, hangar_focus_model,
+  hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_EXTERIOR, force_retrace_decorators
 } = require("hangar")
 let { get_last_skin, mirror_current_decal, get_mirror_current_decal,
   apply_skin, apply_skin_preview, notify_decal_menu_visibility,
@@ -43,7 +43,6 @@ let { isPlatformPC } = require("%scripts/clientState/platform.nut")
 let { canUseIngameShop, getShopItemsTable } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 let { isCollectionItem } = require("%scripts/collections/collections.nut")
-let { openCollectionsWnd } = require("%scripts/collections/collectionsWnd.nut")
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let { showedUnit, getShowedUnitName, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
@@ -55,7 +54,7 @@ let { clearLivePreviewParams, isAutoSkinOn, setAutoSkin, setLastSkin,
   previewedLiveSkinIds, approversUnitToPreviewLiveResource, getSkinsOption, getCurUserSkin
 } = require("%scripts/customization/skins.nut")
 let { reqUnlockByClient, canDoUnlock } = require("%scripts/unlocks/unlocksModule.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
@@ -68,7 +67,7 @@ let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/
 let { updateHintPosition } = require("%scripts/help/helpInfoHandlerModal.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { tryShowPeriodicPopupDecalsOnOtherPlayers }  = require("%scripts/customization/suggestionShowDecalsOnOtherPlayers.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
 let { saveBannedSkins, isSkinBanned, addSkinToBanned, removeSkinFromBanned } = require("%scripts/customization/bannedSkins.nut")
 let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { guiStartTestflight } = require("%scripts/missionBuilder/testFlightState.nut")
@@ -83,7 +82,9 @@ let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManag
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { hangar_play_presentation_anim, hangar_stop_presentation_anim, is_presentation_animation_playing } = require("hangarEventCommand")
+let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -394,7 +395,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.updateUserSkinList()
-    if (::get_option(USEROPT_USER_SKIN).value > 0)
+    if (get_option(USEROPT_USER_SKIN).value > 0)
       hangar_force_reload_model()
   }
 
@@ -554,7 +555,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateUserSkinList() {
     reload_user_skins()
-    let userSkinsOption = ::get_option(USEROPT_USER_SKIN)
+    let userSkinsOption = get_option(USEROPT_USER_SKIN)
     this.renewDropright("user_skins_list", "user_skins_dropright", userSkinsOption.items, userSkinsOption.value, "onUserSkinChanged")
   }
 
@@ -569,7 +570,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let view = { isTooltipByHold = showConsoleButtons.value, rows = [] }
     foreach (optType in options) {
-      let option = ::get_option(optType)
+      let option = get_option(optType)
       view.rows.append({
         id = option.id
         name =$"#options/{option.id}"
@@ -606,7 +607,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local option = null
 
-    option = ::get_option(USEROPT_TANK_SKIN_CONDITION)
+    option = get_option(USEROPT_TANK_SKIN_CONDITION)
     let tscId = option.id
     let tscTrObj = this.scene.findObject($"tr_{tscId}")
     if (checkObj(tscTrObj)) {
@@ -621,7 +622,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.updateSkinConditionValue(value, sliderObj)
     }
 
-    option = ::get_option(USEROPT_TANK_CAMO_SCALE)
+    option = get_option(USEROPT_TANK_CAMO_SCALE)
     let tcsId = option.id
     let tcsTrObj = this.scene.findObject($"tr_{tcsId}")
     if (checkObj(tcsTrObj)) {
@@ -633,7 +634,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.onChangeTankCamoScale(sliderObj)
     }
 
-    option = ::get_option(USEROPT_TANK_CAMO_ROTATION)
+    option = get_option(USEROPT_TANK_CAMO_ROTATION)
     let tcrId = option.id
     let tcrTrObj = this.scene.findObject($"tr_{tcrId}")
     if (checkObj(tcrTrObj)) {
@@ -650,7 +651,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return
 
-    let oldValue = ::get_option(USEROPT_TANK_SKIN_CONDITION).value
+    let oldValue = get_option(USEROPT_TANK_SKIN_CONDITION).value
     let newValue = obj.getValue()
     if (oldValue == newValue)
       return
@@ -863,7 +864,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let canBuySkin = skinDecorator?.canBuyUnlock(this.unit) ?? false
     let canConsumeSkinCoupon = !canBuySkin &&
-      (::ItemsManager.getInventoryItemById(skinCouponItemdefId)?.canConsume() ?? false)
+      (getInventoryItemById(skinCouponItemdefId)?.canConsume() ?? false)
     let canFindSkinOnMarketplace = !canBuySkin && !canConsumeSkinCoupon && skinCouponItemdefId != null
 
     showObjById("btn_buy_skin", canBuySkin, this.scene)
@@ -1362,7 +1363,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function openCollections(decoratorId) {
-    openCollectionsWnd({ selectedDecoratorId = decoratorId })
+    guiStartProfile({ initialSheet = "Collections", selectedDecoratorId = decoratorId })
     this.updateBackButton()
   }
 
@@ -1373,8 +1374,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let selectedDecorator = this.decorMenu?.getSelectedDecor()
     if (!isCollectionItem(selectedDecorator))
       return
-
-    openCollectionsWnd({ selectedDecoratorId = selectedDecorator.id })
+    guiStartProfile({ initialSheet = "Collections", selectedDecoratorId = selectedDecorator.id })
     this.updateBackButton()
   }
 
@@ -1602,7 +1602,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function askMarketplaceCouponAction(decorator) {
-    let inventoryItem = ::ItemsManager.getInventoryItemById(decorator.getCouponItemdefId())
+    let inventoryItem = getInventoryItemById(decorator.getCouponItemdefId())
     if (inventoryItem?.canConsume() ?? false) {
       inventoryItem.consume(Callback(function(result) {
         if ((result?.success ?? false) == true)
@@ -1739,7 +1739,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         return
 
     previewedLiveSkinIds.append(getSkinId(unitId, skinId))
-    ::g_delayed_actions.add(Callback(function() {
+    addDelayedAction(Callback(function() {
       this.resetUserSkin(false)
       this.applySkin(skinId, true)
     }, this), 100)
@@ -1747,7 +1747,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onUserSkinChanged(obj) {
     let value = obj.getValue()
-    let prevValue = ::get_option(USEROPT_USER_SKIN).value
+    let prevValue = get_option(USEROPT_USER_SKIN).value
     if (prevValue == value)
       return
 
@@ -1855,7 +1855,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onBtnMarketplaceFindSkin(_obj) {
     let skinId = getSkinId(this.unit.name, this.previewSkinId)
     let skinDecorator = getDecorator(skinId, decoratorTypes.SKINS)
-    let item = ::ItemsManager.findItemById(skinDecorator?.getCouponItemdefId())
+    let item = findItemById(skinDecorator?.getCouponItemdefId())
     if (!item?.hasLink())
       return
     item.openLink()
@@ -1865,7 +1865,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let skinId = getSkinId(this.unit.name, this.previewSkinId)
     let skinDecorator = getDecorator(skinId, decoratorTypes.SKINS)
     let itemdefId = skinDecorator?.getCouponItemdefId()
-    let inventoryItem = ::ItemsManager.getInventoryItemById(itemdefId)
+    let inventoryItem = getInventoryItemById(itemdefId)
     if (!inventoryItem?.canConsume())
       return
 
@@ -2085,6 +2085,13 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     addToWishlist(this.unit)
   }
 
+  function onPresentationAnim() {
+    if (is_presentation_animation_playing())
+      hangar_stop_presentation_anim()
+    else
+      hangar_play_presentation_anim()
+  }
+
   function clearCurrentDecalSlotAndShow() {
     if (!checkObj(this.scene))
       return
@@ -2245,7 +2252,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         get_user_skins_profile_blk()[this.unit.name] = ""
       let isForApprove = this.previewParams?.isForApprove ?? false
       approversUnitToPreviewLiveResource(isForApprove ? showedUnit.value : null)
-      ::g_delayed_actions.add(Callback(function() {
+      addDelayedAction(Callback(function() {
         this.applySkin(this.previewParams.skinName, true)
       }, this), 100)
     }

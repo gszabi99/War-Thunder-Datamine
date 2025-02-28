@@ -545,13 +545,13 @@
           },
           "setTargetDesignationRange": {
             "azimuthRange": [
-              -70.0,
-              70.0
+              -60.0,
+              60.0
             ],
             "azmithWidth": 1.5,
             "elevationRange": [
-              -70.0,
-              70.0
+              -60.0,
+              60.0
             ],
             "distanceRange": [
               0.0,
@@ -687,10 +687,6 @@
             "source": "activeTargetOfInterest"
           },
           "setDistGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
-          "setRelSpeedGatePos": {
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
@@ -949,7 +945,7 @@
             "name": "GTM standby"
           }
         },
-        "setTwsStandbyMode": {
+        "setMprfTwsStandbyMode": {
           "setTwsStandbyModeCommon": {},
           "setTransiver": {
             "transiver": "mprf"
@@ -959,6 +955,18 @@
           },
           "setModeName": {
             "name": "TWS standby"
+          }
+        },
+        "setHprfTwsStandbyMode": {
+          "setTwsStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS HDN standby"
           }
         },
         "setMprfSearchMode": {
@@ -1021,7 +1029,7 @@
             "name": "TWS GTM search"
           }
         },
-        "setTwsSearchMode": {
+        "setMprfTwsSearchMode": {
           "setTwsSearchModeCommon": {},
           "setTransiver": {
             "transiver": "mprf"
@@ -1031,6 +1039,18 @@
           },
           "setModeName": {
             "name": "TWS search"
+          }
+        },
+        "setHprfTwsSearchMode": {
+          "setTwsSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS HDN search"
           }
         },
         "setGtmBvrLockMode": {
@@ -1566,7 +1586,10 @@
         },
         "hmdStandbyToSearch": {
           "stateFrom": "hmdStandby",
-          "command": "acmSwitch",
+          "command": [
+            "acmSwitch",
+            "switch"
+          ],
           "stateTo": "search",
           "actions": {
             "doCustomActionTemplate": [
@@ -1577,6 +1600,23 @@
               {
                 "fsm": "main",
                 "name": "setSearchMode"
+              }
+            ]
+          }
+        },
+        "hmdStandbyToStandby": {
+          "stateFrom": "hmdStandby",
+          "event": "disable",
+          "stateTo": "standby",
+          "actions": {
+            "doCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "resetHmdStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setStandbyMode"
               }
             ]
           }
@@ -1635,10 +1675,7 @@
         "hmdTrackToHmdStandby": {
           "stateFrom": "hmdTrack",
           "event": "targetsOfInterestCleanup",
-          "command": [
-            "selectTarget",
-            "switch"
-          ],
+          "command": "selectTarget",
           "stateTo": "hmdStandby",
           "actions": {
             "doCustomActionTemplate": [
@@ -1779,21 +1816,21 @@
             ]
           }
         },
-        "mprfToTws": {
+        "mprfToMprfTws": {
           "stateFrom": "mprf",
           "command": "modeSwitch",
-          "stateTo": "tws",
+          "stateTo": "mprfTws",
           "actions": {
             "setCustomActionTemplate": [
               {
                 "fsm": "main",
                 "name": "setStandbyMode",
-                "actionTemplateName": "setTwsStandbyMode"
+                "actionTemplateName": "setMprfTwsStandbyMode"
               },
               {
                 "fsm": "main",
                 "name": "setSearchMode",
-                "actionTemplateName": "setTwsSearchMode"
+                "actionTemplateName": "setMprfTwsSearchMode"
               },
               {
                 "fsm": "main",
@@ -1827,8 +1864,8 @@
             ]
           }
         },
-        "twsToHprf": {
-          "stateFrom": "tws",
+        "mprfTwsToHprf": {
+          "stateFrom": "mprfTws",
           "command": "modeSwitch",
           "stateTo": "hprf",
           "actions": {
@@ -1875,8 +1912,56 @@
             ]
           }
         },
-        "hprfToHprfVelocity": {
+        "hprfToHprfTws": {
           "stateFrom": "hprf",
+          "command": "modeSwitch",
+          "stateTo": "hprfTws",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setHprfTwsStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setHprfTwsSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrLockMode",
+                "actionTemplateName": "setTwsBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetTws"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetTwsMode"
+              }
+            ],
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
+            },
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "hprfTwsToHprfVelocity": {
+          "stateFrom": "hprfTws",
           "command": "modeSwitch",
           "stateTo": "hprfVelocity",
           "actions": {
@@ -2188,6 +2273,7 @@
             "clearTargetsOfInterest": {
               "timeOut": 8.0
             },
+            "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": [
               {
@@ -2232,10 +2318,29 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": {
+            "addTargetOfInterestCandidate": {}
+          }
+        },
+        "matchTargets": {
+          "event": "scanFinished",
+          "actions": {
+            "matchTargetsOfInterest": {
               "limit": 10,
-              "radius": 1000.0,
-              "dopplerSpeedGateMaxTime": 8.0
+              "posGateTimeInitial": [
+                2.0,
+                4.0
+              ],
+              "posGateRangeInitial": 1500.0,
+              "posGateMaxTime": 2.0,
+              "posGateRange": [
+                0.0,
+                300.0
+              ],
+              "dopplerSpeedGateRange2": [
+                0.0,
+                200.0
+              ],
+              "dopplerSpeedGateMaxTime": 2.0
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {}
@@ -2379,9 +2484,30 @@
         },
         "track": {
           "updateActiveTargetOfInterest": {
-            "dirFilter": {},
-            "distFilter": {},
-            "dopplerSpeedFilter": {}
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "dopplerSpeedFilter": {
+              "rateLim": [
+                200.0,
+                200.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
           },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"

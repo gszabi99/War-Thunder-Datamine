@@ -116,7 +116,7 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
   onUnitCellDragStart = @(_obj) null
   onUnitCellDrop = @(_obj) null
   onUnitCellMove = @(_obj) null
-  onOpenCrewPopup = @(_obj) null
+  onCrewSlotClick = @(_obj) null
   onCrewDragStart = @ (_obj) null
   onCrewDropFinish = @ (_obj) null
   onCrewBlockHover = @(_obj) null

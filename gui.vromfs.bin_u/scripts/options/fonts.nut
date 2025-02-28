@@ -17,7 +17,7 @@ let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { setScrnTgt } = require("%scripts/utils/screenUtils.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { eventbus_subscribe } = require("eventbus")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const FONTS_SAVE_PATH = "fonts_css"
 const FONTS_SAVE_PATH_CONFIG = "video/fonts"
@@ -69,12 +69,12 @@ function update_font_heights(font) {
   return font;
 }
 
-::g_font <- {
+let g_font = {
   types = []
   cache = { bySaveId = {} }
 }
 
-::g_font.template <- {
+g_font.template <- {
   id = ""  //by type name
   fontGenId = ""
   saveId = ""
@@ -122,7 +122,7 @@ function update_font_heights(font) {
   getFontExample = @() "small_text; font-pixht: {0}".subst(round(getFontInitialHt("small_text") * this.sizeMultiplier).tointeger())
 }
 
-enums.addTypesByGlobalName("g_font",
+enums.addTypes(g_font,
 {
   TINY = {
     saveId = FONT_SAVE_ID.TINY
@@ -176,14 +176,14 @@ enums.addTypesByGlobalName("g_font",
 null,
 "id")
 
-::g_font.types.sort(@(a, b) a.sizeOrder <=> b.sizeOrder)
+g_font.types.sort(@(a, b) a.sizeOrder <=> b.sizeOrder)
 
 function getAvailableFontBySaveId(saveId) {
-  let res = enums.getCachedType("saveId", saveId, ::g_font.cache.bySaveId, ::g_font, null)
+  let res = enums.getCachedType("saveId", saveId, g_font.cache.bySaveId, g_font, null)
   if (res && res.isAvailable(screen_width(), screen_height()))
     return res
 
-  foreach (font in ::g_font.types)
+  foreach (font in g_font.types)
     if (font.saveIdCompatibility
       && isInArray(saveId, font.saveIdCompatibility)
       && font.isAvailable(screen_width(), screen_height()))
@@ -192,13 +192,13 @@ function getAvailableFontBySaveId(saveId) {
   return null
 }
 
-::g_font.getAvailableFonts <- function getAvailableFonts() {
+g_font.getAvailableFonts <- function getAvailableFonts() {
   let sWidth = screen_width()
   let sHeight = screen_height()
   return this.types.filter(@(f) f.isAvailable(sWidth, sHeight))
 }
 
-::g_font.getSmallestFont <- function getSmallestFont(sWidth, sHeight) {
+g_font.getSmallestFont <- function getSmallestFont(sWidth, sHeight) {
   local res = null
   foreach (font in this.types)
     if (font.isAvailable(sWidth, sHeight) && (!res || font.sizeMultiplier < res.sizeMultiplier))
@@ -206,17 +206,17 @@ function getAvailableFontBySaveId(saveId) {
   return res
 }
 
-::g_font.getFixedFont <- function getFixedFont() { //return null if can change fonts
+g_font.getFixedFont <- function getFixedFont() { //return null if can change fonts
   let availableFonts = this.getAvailableFonts()
   return availableFonts.len() == 1 ? availableFonts[0] : null
 }
 
 function canChange() {
-  return ::g_font.getFixedFont() == null
+  return g_font.getFixedFont() == null
 }
 
 function getDefault() {
-  let { getFixedFont, SMALL, LARGE, MEDIUM, HUGE, COMPACT } = ::g_font //-ident-hides-ident
+  let { getFixedFont, SMALL, LARGE, MEDIUM, HUGE, COMPACT } = g_font //-ident-hides-ident
   let fixedFont = getFixedFont()
   if (fixedFont)
     return fixedFont
@@ -240,7 +240,7 @@ function getDefault() {
   return LARGE
 }
 
-::g_font.getCurrent <- function getCurrent() {
+g_font.getCurrent <- function getCurrent() {
   if (!canChange())
     return update_font_heights(getDefault())
 
@@ -270,7 +270,7 @@ function saveFontToConfig(font) {
 }
 
 //return isChanged
-::g_font.setCurrent <- function setCurrent(font) {
+g_font.setCurrent <- function setCurrent(font) {
   if (!canChange())
     return false
 
@@ -285,7 +285,7 @@ function saveFontToConfig(font) {
 }
 
 
-::g_font.validateSavedConfigFonts <- function validateSavedConfigFonts() {
+g_font.validateSavedConfigFonts <- function validateSavedConfigFonts() {
   if (canChange())
     saveFontToConfig(this.getCurrent())
 }
@@ -293,7 +293,9 @@ function saveFontToConfig(font) {
 function resetAppliedFontsScale(_) {
   log("[fonts] Resetting appliedFontsSh, sizes of font will be set again")
   appliedFontsSh = 0;
-  update_font_heights(::g_font.getCurrent());
+  update_font_heights(g_font.getCurrent());
 }
 
 eventbus_subscribe("reset_applied_fonts_scale", resetAppliedFontsScale)
+
+return g_font

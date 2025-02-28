@@ -159,6 +159,9 @@
       "turret_front_dm": {
         "armorThickness": 12.7
       },
+      "turret_07_top_dm": {
+        "armorThickness": 12.7
+      },
       "turret_top_dm": {
         "armorThickness": 12.7
       },
@@ -225,6 +228,18 @@
         "armorThickness": 6.0,
         "hidableInViewer": true
       },
+      "ex_armor_02_dm": {
+        "armorThickness": 6.0,
+        "hidableInViewer": true
+      },
+      "ex_armor_03_dm": {
+        "armorThickness": 6.0,
+        "hidableInViewer": true
+      },
+      "ex_armor_04_dm": {
+        "armorThickness": 6.0,
+        "hidableInViewer": true
+      },
       "turret_08_back_dm": {
         "armorThickness": 6.35,
         "hidableInViewer": true
@@ -239,10 +254,10 @@
     },
     "armor_steel": {
       "turret_01_bottom_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "turret_01_top_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "turret_bottom_dm": {
         "armorThickness": 6.35
@@ -357,9 +372,7 @@
       "submodule": {
         "armorClass": "tank_traks",
         "armorThickness": 15.0,
-        "ex_armor_01_dm": {},
-        "ex_armor_02_dm": {},
-        "ex_armor_03_dm": {}
+        "ex_armor_01_dm": {}
       }
     },
     "gun": {
@@ -1642,20 +1655,17 @@
     "changeTimeMult": 1.0,
     "gunner": {
       "dmPart": "gunner_dm",
-      "role": [
-        "tank_gunner",
-        "commander"
-      ],
-      "substitute": "loader"
+      "role": "tank_gunner",
+      "substitute": "commander"
     },
     "driver": {
       "dmPart": "driver_dm",
       "role": "driver",
-      "substitute": "loader"
+      "substitute": "commander"
     },
-    "loader": {
-      "dmPart": "loader_dm",
-      "role": "loader"
+    "commander": {
+      "dmPart": "commander_dm",
+      "role": "commander"
     }
   },
   "MetaParts": {
@@ -1794,7 +1804,7 @@
         "recoilMultiplier": 0.1,
         "stopForFire": true,
         "maxSpeedForFire": 5.0,
-        "staticElevation": 0.875,
+        "staticElevation": 1.75,
         "barrelDP": "gun_barrel_01_dm",
         "createGunEffects": true,
         "defaultYaw": 0.0,
@@ -1921,7 +1931,8 @@
         "dmPart": [
           "antenna_target_location_dm",
           "electronic_equipment_dm"
-        ]
+        ],
+        "radarParkingAzimuth": 180.0
       },
       {
         "blk": "gameData/sensors/sam_tv_ir_track.blk",

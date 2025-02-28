@@ -155,7 +155,8 @@ function tryProbeHosts() {
   hostsCfg.each(function(hostInfo) {
     if (isHostNeedRetry(hostInfo, nowMs)) {
       hostInfo.errors++
-      logOC($"Host {hostInfo.ip} failed to respond {hostInfo.errors} time(s)")
+      let clustersStr = ",".join(hostInfo.clustersList)
+      logOC($"Host {hostInfo.ip} ({clustersStr}) failed to respond {hostInfo.errors} time(s)")
     }
     else if (isHostNeedRegularUpdate(hostInfo, nowMs))
       hostInfo.errors = 0
@@ -248,30 +249,39 @@ function onClustersRecalc() {
   optimalClusters.update(newOptimalClusters)
 }
 
-let logIgnoredMsg = @(evt) logOC($"Ignored packet from {evt.host}: \"{toHexStr(evt.data.as_string())}\"")
+function logBadAnswer(evt, hostInfo, reason) {
+  let clustersStr = ",".join(hostInfo?.clustersList ?? [])
+  logOC($"{reason} packet from {evt.host} ({clustersStr}): \"{toHexStr(evt.data.as_string())}\"")
+}
 
 function onUdpPacket(evt) {
-  let { socketId, recvTime, data, host } = evt
+  if (evt.socketId != CLIENT_SOCKET_ID)
+    return
+  let { recvTime, data, host } = evt
   let hostInfo = hostsCfg?[host]
-  let { lastRequestId = 0, lastRequestTimeMs = 0 } = hostInfo
-  if (socketId != CLIENT_SOCKET_ID || hostInfo == null || lastRequestTimeMs == 0)
-    return logIgnoredMsg(evt)
+  let { lastRequestId = 0, lastRequestTimeMs = 0, clustersList = [] } = hostInfo
+  if (hostInfo == null || lastRequestTimeMs == 0)
+    return logBadAnswer(evt, hostInfo, "Ignored unexpected")
 
   local delayMs = 0
+  local comment = ""
   if (data.len() == PACKET_SIZE_BYTES) {
     let id        = readInt64NetBytes(data)
     let timestamp = readInt64NetBytes(data)
     let sign      = readInt64NetBytes(data)
     delayMs       = readInt64NetBytes(data)
     if (id != lastRequestId || delayMs < 0 || !checkPacketSign(id, timestamp, sign, delayMs))
-      return logIgnoredMsg(evt)
+      return logBadAnswer(evt, hostInfo, "Ignored incorrect")
   }
+  else
+    comment = $" (packet unchecked)"
 
   let rtt = recvTime - lastRequestTimeMs - delayMs
   if (rtt < 0)
-    return logIgnoredMsg(evt)
+    return logBadAnswer(evt, hostInfo, $"Ignored (RTT {rtt})")
 
-  logOC($"Host {host} responded, RTT: {rtt} ms")
+  let clustersStr = ",".join(clustersList)
+  logOC($"Host {host} ({clustersStr}) responded, RTT: {rtt} ms{comment}")
   updateHostAvgRTT(hostInfo, rtt, recvTime)
   resetTimeout(CLUSTERS_RECALC_DELAY_SEC, onClustersRecalc)
 }

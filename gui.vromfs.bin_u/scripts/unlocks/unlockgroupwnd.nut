@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { fill_unlock_block } = require("%scripts/unlocks/unlocks.nut")
 
 let class UnlockGroupWnd (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -55,7 +56,7 @@ let class UnlockGroupWnd (gui_handlers.BaseGuiHandlerWT) {
     obj.width = "1@unlockBlockWidth"
     obj["margin-bottom"] = "1@framePadding"
     obj["margin-right"] = "1@framePadding"
-    ::fill_unlock_block(obj, unlock)
+    fill_unlock_block(obj, unlock)
   }
 }
 

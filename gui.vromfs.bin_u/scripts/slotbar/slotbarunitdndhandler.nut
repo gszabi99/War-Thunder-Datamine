@@ -114,7 +114,7 @@ let class SlotbarUnitDnD (gui_handlers.BaseGuiHandlerWT) {
   onSlotChangeAircraft = @ () null
   onOpenCrewWindow = @ (_obj) null
   onSwapCrews = @ (_obj) null
-  onOpenCrewPopup = @(_obj) null
+  onCrewSlotClick = @(_obj) null
   onCrewDragStart = @ (_obj) null
   onCrewDropFinish = @ (_obj) null
   onCrewDrop = @(_obj) null

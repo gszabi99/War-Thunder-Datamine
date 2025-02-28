@@ -13,6 +13,7 @@ let { get_gui_option } = require("guiOptions")
 let { get_game_mode } = require("mission")
 let { startsWith } = require("%sqstd/string.nut")
 let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
+let { get_mission_settings } = require("%scripts/missions/missionsStates.nut")
 
 let changedOptionReqRestart = mkWatched(persist, "changedOptionReqRestart", {})
 
@@ -189,7 +190,7 @@ function fillMultipleHueOption(descr, id, currentHueIndex) {
 }
 
 let fillDynMapOption = function(descr) {
-  let curMap = getTblValue("layout", ::mission_settings)
+  let curMap = getTblValue("layout", get_mission_settings())
   let dynLayouts = getDynamicLayouts()
   foreach (layout in dynLayouts) {
     if (get_game_mode() == GM_BUILDER) {

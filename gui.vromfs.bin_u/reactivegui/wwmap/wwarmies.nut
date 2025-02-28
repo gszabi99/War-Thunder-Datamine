@@ -2,14 +2,14 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { sin, cos, PI, floor } = require("math")
 let { wwGetOperationTimeMillisec } = require("worldwar")
-let { loadedTransport } = require("%rGui/wwMap/wwMapStates.nut")
+let { loadedTransport, isShiftPressed } = require("%rGui/wwMap/wwMapStates.nut")
 let { isPlayerSide, isOperationPausedWatch } = require("%rGui/wwMap/wwOperationStates.nut")
 let { getArmyGroupsInfo } = require("%rGui/wwMap/wwArmyGroups.nut")
 let { zoneSideType } = require("%rGui/wwMap/wwMapTypes.nut")
 let { convertToRelativeMapCoords, activeAreaBounds, mapZoom } = require("%rGui/wwMap/wwOperationConfiguration.nut")
 let { convertColor4, getMapColor } = require("%rGui/wwMap/wwMapUtils.nut")
 let { selectedArmy, hoveredArmy, getArmyIcon, armiesList, armiesData, isShowArmiesIndex,
-  movingArmiesPositions, newPartOfArmyPath, getArmyByName, allowDrawNewPartOfArmyPath } = require("%rGui/wwMap/wwArmyStates.nut")
+  movingArmiesPositions, newPartOfArmyPath, getArmyByName } = require("%rGui/wwMap/wwArmyStates.nut")
 let { artilleryReadyState } = require("%appGlobals/worldWar/wwArtilleryStatus.nut")
 let { isTransport, getLoadedArmyType } = require("%rGui/wwMap/wwTransportUtils.nut")
 let { getSettings } = require("%appGlobals/worldWar/wwSettings.nut")
@@ -26,9 +26,9 @@ let entrenchIconColors = {
 
 let function mkArmyNewPartOfPath(areaBounds) {
   return function() {
-    if (newPartOfArmyPath.get() == null || allowDrawNewPartOfArmyPath.get() == false)
+    if (newPartOfArmyPath.get() == null || !isShiftPressed.get())
       return {
-        watch = [newPartOfArmyPath, allowDrawNewPartOfArmyPath, mapZoom]
+        watch = [newPartOfArmyPath, mapZoom, isShiftPressed]
       }
     let { areaWidth, areaHeight } = areaBounds
     let { armyName, newPos } = newPartOfArmyPath.get()
@@ -53,7 +53,7 @@ let function mkArmyNewPartOfPath(areaBounds) {
     let commands = [[VECTOR_LINE, 100 * firstPoint.x, 100 * firstPoint.y, 100 * lastPoint.x, 100 * lastPoint.y]]
 
     return {
-      watch = [newPartOfArmyPath, allowDrawNewPartOfArmyPath, mapZoom]
+      watch = [newPartOfArmyPath, mapZoom, isShiftPressed]
       rendObj = ROBJ_VECTOR_CANVAS
       color = arrowColor
       size = [areaWidth, areaHeight]
@@ -88,10 +88,12 @@ let function mkArmyPaths(armyWatch, areaBounds) {
   let hasPathTracker = Computed(@() armyWatch.get()?.pathTracker.status == "ES_MOVING_BY_PATH"
     && ([selectedArmy.get(), hoveredArmy.get()].contains(armyWatch.get().name) || !isShowPathForSelectedArmyFilter.get()))
 
+  let isShowArrow = Computed(@() !(selectedArmy.get() == armyWatch.get()?.name) || (newPartOfArmyPath.get() == null || !isShiftPressed.get()))
+
   return function() {
     if (!hasPathTracker.get())
       return {
-        watch = [hasPathTracker, armyWatch, mapZoom]
+        watch = [hasPathTracker, armyWatch, mapZoom, isShowArrow]
       }
     let armyData = armyWatch.get()
     let { areaWidth, areaHeight } = areaBounds
@@ -122,35 +124,34 @@ let function mkArmyPaths(armyWatch, areaBounds) {
       preLastPoint.__update(firstPoint)
 
     return {
-      watch = [hasPathTracker, armyWatch, mapZoom]
+      watch = [hasPathTracker, armyWatch, mapZoom, isShowArrow]
       rendObj = ROBJ_VECTOR_CANVAS
       color = arrowColor
       size = [areaWidth, areaHeight]
       lineWidth = 2 * radius
       commands = commands
-      children = @() newPartOfArmyPath.get() != null ? null
-        : {
-            rendObj = ROBJ_BOX
-            watch = newPartOfArmyPath
-            borderColor = arrowColor
-            pos = [areaWidth * lastPoint.x - radius, areaHeight * lastPoint.y - radius]
-            size = [2 * radius, 2 * radius]
-            fillColor = endArrowColor
-            borderWidth = hdpx(2)
-            borderRadius = radius
-            transform = {
-              rotate = calcAngleBetweenVectors(lastPoint, preLastPoint).deg
-            }
-            children = {
-              rendObj = ROBJ_VECTOR_CANVAS
-              size = flex()
-              color = arrowColor
-              fillColor = arrowColor
-              commands = [
-                [VECTOR_POLY, arrowSize + 50, 50, -arrowSize * 0.5 + 50, arrowSize * 0.866 + 50, -arrowSize * 0.5 + 50, -arrowSize * 0.866 + 50]
-              ]
-            }
-          }
+      children = isShowArrow.get() ? {
+        rendObj = ROBJ_BOX
+        borderColor = arrowColor
+        pos = [areaWidth * lastPoint.x - radius, areaHeight * lastPoint.y - radius]
+        size = [2 * radius, 2 * radius]
+        fillColor = endArrowColor
+        borderWidth = hdpx(2)
+        borderRadius = radius
+        transform = {
+          rotate = calcAngleBetweenVectors(lastPoint, preLastPoint).deg
+        }
+        children = {
+          rendObj = ROBJ_VECTOR_CANVAS
+          size = flex()
+          color = arrowColor
+          fillColor = arrowColor
+          commands = [
+            [VECTOR_POLY, arrowSize + 50, 50, -arrowSize * 0.5 + 50, arrowSize * 0.866 + 50, -arrowSize * 0.5 + 50, -arrowSize * 0.866 + 50]
+          ]
+        }
+      }
+      : null
     }
   }
 }

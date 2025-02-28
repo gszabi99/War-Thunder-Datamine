@@ -178,7 +178,7 @@
                   }
                 },
                 "tdiv": {
-                  "size": "pw, 150@sf/@pf",
+                  "size": "pw, 1.2@avatarButtonSize",
                   "flow": "vertical",
                   "playerTeam": "",
                   "tdiv": [
@@ -249,13 +249,18 @@
                   ],
                   "Button_text": {
                     "position": "absolute",
+                    "pos": "0.1@avatarButtonSize, 0.1@avatarButtonSize",
                     "class": "profileImg",
                     "_on_click": "onUserCard",
                     "tdiv": {
                       "id": "player_icon",
                       "size": "pw,ph",
                       "behavior": "bhvAvatar",
-                      "isFull": "yes"
+                      "isFull": "yes",
+                      "avatarFrame": {
+                        "id": "player_frame",
+                        "display": "hide"
+                      }
                     }
                   }
                 }

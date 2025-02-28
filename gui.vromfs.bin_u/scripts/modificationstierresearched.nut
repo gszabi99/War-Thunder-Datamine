@@ -14,6 +14,7 @@ let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPos
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 
 function guiStartModTierResearched(config) {
   foreach (param, value in config) {
@@ -140,7 +141,7 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
 
   function afterModalDestroy() {
     broadcastEvent("UpdateResearchingUnit", { unitName = this.unitInResearch })
-    ::checkNonApprovedResearches(true)
+    checkNonApprovedResearches(true)
     activityFeedPostFunc(this.postConfig, this.postCustomConfig, bit_activity.PS4_ACTIVITY_FEED)
   }
 

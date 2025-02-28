@@ -23,12 +23,13 @@ let { get_mp_tbl_teams, get_objectives_list, OBJECTIVE_TYPE_ORDER } = require("g
 let { isInFlight } = require("gameplayBinding")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isInSessionRoom, getSessionInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryList } = require("%scripts/items/itemsManager.nut")
 let { orderTypes } = require("%scripts/items/orderType.nut")
 let { objectiveStatus, getObjectiveStatusByCode
 } = require("%scripts/misObjectives/objectiveStatus.nut")
+let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 
 const AUTO_ACTIVATE_TIME = 60
 const MAX_ROWS_IN_SCORE_TABLE = 3
@@ -143,12 +144,12 @@ let debugPlayers = []
 //   }
 // ]
 
-let getAutoActivateHint = @() loc("guiHints/order_auto_activate",
+let getOrderAutoActivateHint = @() loc("guiHints/order_auto_activate",
   { time = $"{AUTO_ACTIVATE_TIME} {loc("mainmenu/seconds")}" })
 
 // This takes in account fact that item was used during current battle.
 // @see items_classes.Order.getAmount()
-let collectOrdersToActivate = @() ordersToActivate = ::ItemsManager.getInventoryList(
+let collectOrdersToActivate = @() ordersToActivate = getInventoryList(
   itemType.ORDER, @(item) item.getAmount() > 0).sort(@(a, b) a.expiredTimeSec <=> b.expiredTimeSec)
 
 let hasOrdersToActivate = @() (ordersToActivate?.len() ?? 0) > 0
@@ -166,7 +167,7 @@ function checkCurrentMission(selectedOrderItem) {
   if (selectedOrderItem == null)
     return true
 
-  let missionName = ::SessionLobby.getSessionInfo()?.mission.name
+  let missionName = getSessionInfo()?.mission.name
   if (missionName == null)
     return true
 
@@ -223,7 +224,7 @@ function ordersCanBeUsed() {
   return checkGameType && isInFlight() && hasFeature("Orders")
 }
 
-function getActivateInfoText() {
+function getOrderActivateInfoText() {
   if (!isInFlight())
     return loc("order/usableOnlyInBattle")
   if ((get_game_type() & GT_USE_ORDERS) == 0)
@@ -408,7 +409,7 @@ function updateActiveLocalOrders() {
     // How? We don't know yet.
     // Added assertions for further investigation.
     if (id == null) {
-      debugTableData(::g_orders)
+      debugTableData(activeLocalOrderIds)
       assert(false,
         "Active order ids array contains null. Report this issue immediately.")
       activeLocalOrderIds.remove(i)
@@ -445,7 +446,6 @@ function onOrderAccepted(useResultCode, isSilent = false) {
 
   if (useResult == orderUseResult.OK) {
     if (activatingLocalOrderId == null) {
-      debugTableData(::g_orders)
       assert(false,
         "Activating local order is null. Report this issue immediately.")
     }
@@ -511,7 +511,7 @@ function activateSoonExpiredOrder() {
           if (p.useResult == orderUseResult.OK)
             ordersToActivate.remove(i)
         }, true)
-        break
+      break
     }
   }
 }
@@ -544,7 +544,7 @@ function getPlayerDataById(playerId) {
   let playerData = playerDataById?[playerId] ?? get_mplayer_by_id(playerId) ?? emptyPlayerData
   if (is_replay_playing()) {
     playerData.isLocal = spectatorWatchedHero.id == playerData.id
-    playerData.isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, playerData?.squadId)
+    playerData.isInHeroSquad = isEqualSquadId(spectatorWatchedHero.squadId, playerData?.squadId)
   }
   if (!(playerId in playerDataById))
     playerDataById[playerId] <- playerData
@@ -1007,16 +1007,6 @@ function on_order_result_received(data) {
 
 eventbus_subscribe("on_order_result_received", @(p) on_order_result_received(p))
 
-::g_orders <- {
-  getActivateInfoText
-  getTimesUsedOrderItem
-  getAutoActivateHint
-  isOrderItemActive
-  activateOrder
-  orderCanBeActivated
-  checkCurrentMission
-}
-
 return {
   collectOrdersToActivate
   getActivateButtonLabel
@@ -1030,4 +1020,9 @@ return {
   updateActiveOrder
   enableOrders
   disableOrders
+  getOrderAutoActivateHint
+  getOrderActivateInfoText
+  getTimesUsedOrderItem
+  isOrderItemActive
+  activateOrder
 }

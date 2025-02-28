@@ -7,6 +7,8 @@ let { getRewardCondition, getNextReward, getConditionIcon, getRewardIcon, getRew
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
+let { checkDelayedUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
+
 let events = getGlobalModule("events")
 
 gui_handlers.TournamentRewardReceivedWnd <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -60,7 +62,7 @@ gui_handlers.TournamentRewardReceivedWnd <- class (gui_handlers.BaseGuiHandlerWT
   }
 
   function afterModalDestroy() {
-    ::check_delayed_unlock_wnd()
+    checkDelayedUnlockWnd()
   }
 
   function onOk(_obj) {

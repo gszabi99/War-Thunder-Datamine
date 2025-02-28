@@ -7,6 +7,7 @@ let { calc_crew_parameters } = require("unitCalculcation")
 let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("%scripts/crew/crewSkills.nut")
 let { get_game_params_blk, get_wpcost_blk } = require("blkGetters")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
+let { g_skill_parameters_type } = require("skillParametersType.nut")
 
 let parametersByCrewId = {}
 let skillGroups = { //skills which have completely the same parameters for different members
@@ -205,7 +206,7 @@ function parseParameters(columnTypes,
 
   let paramsArray = getSortedArrayByParamsTable(currentParameters, crewUnitType)
   foreach (_idx, paramData in paramsArray) {
-    let parametersType = ::g_skill_parameters_type.getTypeByParamName(paramData.name)
+    let parametersType = g_skill_parameters_type.getTypeByParamName(paramData.name)
     parametersType.parseColumns(paramData, columnTypes,
       currentParametersByRequestType, selectedParametersByRequestType, res)
   }

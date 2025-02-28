@@ -7,7 +7,7 @@ let DataBlock = require("DataBlock")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { blkFromPath } = require("%sqstd/datablock.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 let aeroSmokesList    = mkWatched(persist, "aeroSmokesList", [])
 let buyableSmokesList = mkWatched(persist, "buyableSmokesList", [])

@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
 
-let { isPlatformSony, isPlatformXboxOne
+let { isPlatformSony, is_gdk
 } = require("%scripts/clientState/platform.nut")
 
 let {
@@ -11,7 +11,7 @@ let {
   haveDiscount = @() false,
   canUseIngameShop = @(...) false
 } = isPlatformSony ? require("%scripts/onlineShop/ps4ShopData.nut")
-  : isPlatformXboxOne ? require("%scripts/onlineShop/xboxShopData.nut")
+  : is_gdk ? require("%scripts/onlineShop/xboxShopData.nut")
   : epic_is_running() ? require("%scripts/onlineShop/epicShopData.nut")
   : null
 

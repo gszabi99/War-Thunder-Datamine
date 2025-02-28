@@ -11,7 +11,9 @@ let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { get_option_voicechat } = require("chat")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { getContact } = require("%scripts/contacts/contacts.nut")
+let { myClanInfo } = require("%scripts/clans/clanState.nut")
 
 const MAX_VOICE_ELEMS_IN_GC = 2
 
@@ -41,18 +43,19 @@ elemViewType.addTypes({
       if (!checkObj(nestObj))
         return
 
+      let myClanInfoV = myClanInfo.get()
       let isWidgetVisible = nestObj.getFinalProp("isClanOnly") != "yes" ||
         (get_option_voicechat()
          && chatStatesCanUseVoice()
          && !g_squad_manager.isInSquad()
-         && !!::my_clan_info)
+         && !!myClanInfoV)
       nestObj.show(isWidgetVisible)
 
       if (!isWidgetVisible)
         return
 
       let childRequired = g_squad_manager.isInSquad() ? g_squad_manager.getSMMaxSquadSize()
-        : ::my_clan_info ? ::my_clan_info.mlimit
+        : myClanInfoV != null ? myClanInfoV.mlimit
         : 0
 
       if (obj.childrenCount() < childRequired) {
@@ -72,27 +75,32 @@ elemViewType.addTypes({
     isAnybodyTalk = function() {
       if (g_squad_manager.isInSquad()) {
         foreach (uid, _member in g_squad_manager.getMembers())
-          if (::getContact(uid)?.voiceStatus == voiceChatStats.talking)
+          if (getContact(uid)?.voiceStatus == voiceChatStats.talking)
             return true
+        return false
       }
-      else if (::my_clan_info)
-        foreach (member in ::my_clan_info.members)
-          if (::getContact(member.uid)?.voiceStatus == voiceChatStats.talking)
-            return true
+      let myClanInfoV = myClanInfo.get()
+      if (myClanInfoV == null)
+        return false
+
+      foreach (member in myClanInfoV.members)
+        if (getContact(member.uid)?.voiceStatus == voiceChatStats.talking)
+          return true
 
       return false
     }
 
     updateMembersView = function(obj, nestObj) {
       local memberIndex = 0
+      let myClanInfoV = myClanInfo.get()
       if (g_squad_manager.isInSquad()) {
         memberIndex = 1
         let leader = g_squad_manager.getSquadLeaderData()
         foreach (uid, member in g_squad_manager.getMembers())
           this.updateMemberView(obj, member == leader ? 0 : memberIndex++, uid)
       }
-      else if (::my_clan_info)
-        foreach (member in ::my_clan_info.members)
+      else if (myClanInfoV != null)
+        foreach (member in myClanInfoV.members)
           this.updateMemberView(obj, memberIndex++, member.uid)
 
       while (memberIndex < obj.childrenCount())
@@ -108,7 +116,7 @@ elemViewType.addTypes({
       if (!checkObj(memberObj))
         return
 
-      let contact = ::getContact(uid)
+      let contact = getContact(uid)
       let isTalking = contact?.voiceStatus == voiceChatStats.talking
       memberObj.fade = isTalking ? "in" : "out"
       if (isTalking)

@@ -142,6 +142,7 @@ let MfdIlsEnabled = Watched(false)
 let MfdRadarColor = Watched(Color(10, 202, 10, 250))
 let MfdRadarHideBkg = Watched(false)
 let MfdRadarFontScale = Watched(-1)
+let TimeToMissileHitRel = Watched(-1.0)
 
 let Speed = Watched(0.0)
 
@@ -271,7 +272,7 @@ radarState.__update({
 
     AzimuthRange, AzimuthRangeInv, ElevationRange, ElevationRangeInv, AamTimeOfFlightMax, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal,
 
-    HmdSensorVisible, HmdSensorDesignation, MfdRadarFontScale, isCollapsedRadarInReplay
+    HmdSensorVisible, HmdSensorDesignation, MfdRadarFontScale, isCollapsedRadarInReplay, TimeToMissileHitRel
   }
 )
 
@@ -334,7 +335,7 @@ interop.updateTarget <- function (index,
 
 const targetLifeTime = 5.0
 
-interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_speed, los_speed, rad_speed, is_detected, is_tracked, alt_rel = null) {
+interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_speed, los_speed, rad_speed, is_detected, is_tracked, alt_rel = null, has_aim = false, aim_x = 0.0, aim_y = 0.0) {
   local needUpdate = false
   if (!screenTargets) {
     screenTargets = {}
@@ -356,6 +357,9 @@ interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_sp
       isTracked = is_tracked
       isUpdated = true
       altRel = alt_rel
+      hasAim = has_aim
+      aimX = aim_x
+      aimY = aim_y
     }
   }
   else {
@@ -369,6 +373,9 @@ interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_sp
       isTracked = is_tracked
       isUpdated = true
       altRel = alt_rel
+      hasAim = has_aim
+      aimX = aim_x
+      aimY = aim_y
     })
     needUpdate = needUpdate || !isEqual(screenTarget, new_tgt)
     screenTarget.__update(new_tgt)

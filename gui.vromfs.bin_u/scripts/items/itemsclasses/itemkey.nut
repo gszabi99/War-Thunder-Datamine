@@ -3,6 +3,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemExternal = require("%scripts/items/itemsClasses/itemExternal.nut")
 let { getRequirementsMarkup } = require("%scripts/items/exchangeRecipes.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let Key = class (ItemExternal) {
   static iType = itemType.KEY
@@ -20,4 +21,5 @@ let Key = class (ItemExternal) {
     return false
   }
 }
-return { Key }
+
+registerItemClass(Key)

@@ -6,8 +6,10 @@ let g_squad_manager = getGlobalModule("g_squad_manager")
 let slotbarPresets = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { defaultDiffCode } = require("%scripts/globalWorldwarUtils.nut")
+let BaseQueue = require("%scripts/queue/queue/queueBase.nut")
+let { registerQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
 
-::queue_classes.WwBattle <- class (::queue_classes.Base) {
+let WwBattle = class (BaseQueue) {
   function init() {
     this.name = this.getName(this.params)
   }
@@ -92,3 +94,5 @@ let { defaultDiffCode } = require("%scripts/globalWorldwarUtils.nut")
     return res
   }
 }
+
+registerQueueClass("WwBattle", WwBattle)

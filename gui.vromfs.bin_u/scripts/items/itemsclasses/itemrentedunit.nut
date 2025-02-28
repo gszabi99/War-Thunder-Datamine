@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 
 let ItemCouponBase = require("%scripts/items/itemsClasses/itemCouponBase.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let RentedUnit = class (ItemCouponBase) {
   static iType = itemType.RENTED_UNIT
@@ -19,4 +20,5 @@ let RentedUnit = class (ItemCouponBase) {
       && (unit.isVisibleInShop() || unit.showOnlyWhenBought)
   }
 }
-return {RentedUnit}
+
+registerItemClass(RentedUnit)

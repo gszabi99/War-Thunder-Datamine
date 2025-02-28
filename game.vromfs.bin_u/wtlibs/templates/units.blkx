@@ -133,10 +133,21 @@
   },
   "tank_engine": {
     "_use": "replicating",
+    "tank_engine__startSoundDelayTimer": -1.0,
+    "tank_engine__stopSoundDelayTimer": -1.0,
+    "tank_engine__startDelayTimer": -1.0,
+    "tank_engine__stopDelayTimer": -1.0,
+    "tank_engine__commandSent": false,
+    "tank_engine__startDelay": 0.0,
+    "tank_engine__stopDelay": 0.0,
+    "tank_engine__stopSoundDelay": -1.0,
+    "tank_engine__startSoundDelay": -1.0,
+    "tank_engine__soundStarted": false,
     "_group": [
       {
         "_replicate": true,
-        "tank_engine__overheat": false
+        "tank_engine__overheat": false,
+        "tank_engine__isWorking": true
       },
       {
         "_tags": "server",
@@ -150,7 +161,10 @@
         "tank_engine__radiator_parts": {},
         "tank_engine__overheatOffender": {}
       }
-    ]
+    ],
+    "tank_engine__stage:u8": {
+      "value": 3
+    }
   },
   "tank_phys_tracks": {
     "physical_tracks_enabled": true,
@@ -315,23 +329,82 @@
       "_replicate": true
     }
   },
+  "unit_init_params": {
+    "_use": "unit_init_params_ext",
+    "_tags": "server",
+    "unit_params__skinName": "",
+    "unit_params__initUnitVersion": 0,
+    "unit_params__fireType": -1,
+    "unit_params__cloneCount": 1,
+    "unit_params__armyId": -1,
+    "unit_params__behTreeName": ""
+  },
+  "unit_transferred_data": {
+    "_singleton": true,
+    "unit_transferred_data__componentsList:list<t>": {
+      "name": [
+        "killerEid",
+        "canChangeUnit",
+        "unit_target_list",
+        "unit_current_route__routeEid",
+        "unit_current_route__curWayPoint",
+        "loot_carrier__rage"
+      ]
+    },
+    "unit_transferred_data__subTemplatesList:list<t>": {
+      "name": [
+        "unit_current_route",
+        "unit_target_list"
+      ]
+    }
+  },
   "base_unit": {
     "_use": [
       "root",
       "replicating",
       "base_unit_ext",
+      "ecs_no_debug",
+      "unit_init_params",
       "replicate_early"
     ],
     "uid": -1,
-    "className": "",
-    "playerNo": -1,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "unit__className": "",
+    "unit__playerNo": -1,
     "is_local": false,
     "unitVersion": 0,
     "unitType": -1,
     "canChangeUnit": false,
-    "missionUnitName": "",
-    "_replicated": "uid",
-    "_tracked": "playerNo",
+    "unit__missionName": "",
+    "_replicated": [
+      "uid",
+      "unitVersion"
+    ],
+    "_tracked": [
+      "unit__playerNo",
+      "unitVersion"
+    ],
     "unit__ref": {},
     "killerEid:eid": {}
   },
@@ -367,7 +440,8 @@
   "aircraft": {
     "_use": [
       "base_unit",
-      "aircraft_ext"
+      "aircraft_ext",
+      "vehicle_grid_obj"
     ],
     "unit_storage__aircraft": {},
     "unit_tag__aircraft:tag": {},
@@ -411,11 +485,13 @@
     "_use": [
       "ground_unit",
       "tank_ext",
+      "vehicle_grid_obj",
       "gm_engine_sound",
       "tank_phys_tracks"
     ],
     "_replicated": "reloadedFromAmmoBoxCount",
     "unit_storage__tank": {},
+    "vehicle_net_phys": {},
     "unit_tag__tank:tag": {},
     "unit_tag__gm:tag": {},
     "mods:list<t>": {
@@ -465,7 +541,8 @@
   "walker": {
     "_use": [
       "ground_unit",
-      "walker_ext"
+      "walker_ext",
+      "vehicle_grid_obj"
     ],
     "unit_storage__walker": {},
     "unit_tag__walker:tag": {},
@@ -481,9 +558,11 @@
   "simple_tank": {
     "_use": [
       "simple_ground_unit",
-      "simple_tank_ext"
+      "simple_tank_ext",
+      "vehicle_grid_obj"
     ],
     "unit_storage__tank": {},
+    "vehicle_net_phys": {},
     "unit_tag__tank:tag": {},
     "unit_tag__gm:tag": {}
   },
@@ -499,12 +578,14 @@
   "trailer": {
     "_use": [
       "simple_ground_unit",
-      "trailer_ext"
+      "trailer_ext",
+      "vehicle_grid_obj"
     ],
     "track_sound": {
       "_tags": "sound"
     },
     "unit_storage__tank": {},
+    "vehicle_net_phys": {},
     "unit_tag__tank:tag": {},
     "unit_tag__tank_trailer:tag": {},
     "unit_tag__gm:tag": {}
@@ -515,9 +596,11 @@
   "human": {
     "_use": [
       "simple_ground_unit",
-      "human_ext"
+      "human_ext",
+      "human_grid_obj"
     ],
     "restricted_area_timer": -1.0,
+    "human_net_phys": {},
     "unit_storage__human": {},
     "unit_tag__human:tag": {},
     "unit_tag__gm:tag": {}
@@ -525,7 +608,8 @@
   "light_vehicle": {
     "_use": [
       "simple_ground_unit",
-      "light_vehicle_ext"
+      "light_vehicle_ext",
+      "vehicle_grid_obj"
     ],
     "unit_storage__light_vehicle": {},
     "unit_tag__light_vehicle:tag": {},
@@ -543,7 +627,8 @@
   "infantry_troop": {
     "_use": [
       "simple_ground_unit",
-      "infantry_troop_ext"
+      "infantry_troop_ext",
+      "vehicle_grid_obj"
     ],
     "unit_storage__infantry_troop": {},
     "unit_tag__infantry_troop:tag": {}
@@ -551,6 +636,7 @@
   "expendable_mod": {
     "_use": [
       "replicating",
+      "ecs_no_debug",
       "replicate_early"
     ],
     "mod__enabled_without_mod": false,

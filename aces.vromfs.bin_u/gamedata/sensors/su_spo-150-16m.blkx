@@ -70,13 +70,68 @@
   "groups": {
     "group": [
       {
+        "name": "S-75",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": "S75 RSN-75"
+      },
+      {
+        "name": "S-75 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "S75 RSN-75",
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
+        "name": "HAWK",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "AN/MPQ-50",
+          "AN/MPQ-61"
+        ]
+      },
+      {
+        "name": "HAWK LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "AN/MPQ-50",
+          "AN/MPQ-61"
+        ],
+        "threatFlag": "RWR SARH LAUNCH"
+      },
+      {
         "name": "S-125",
         "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
         "type": "4R-90-Yatagan"
+      },
+      {
+        "name": "S-125 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "4R-90-Yatagan",
+        "threatFlag": "RWR SACLOS LAUNCH"
       },
       {
         "name": "9K330",
         "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
         "type": [
           "HQ-17 TA",
           "HQ-17 TT",
@@ -85,25 +140,93 @@
         ]
       },
       {
+        "name": "9K330 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "HQ-17 TT",
+          "9K330 TT"
+        ],
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
         "name": "9K33",
         "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
         "type": [
           "9K33 TA",
           "9K33 TT"
         ]
       },
       {
+        "name": "9K33 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "9K33 TT",
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
         "name": "Roland",
         "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
         "type": "Roland TT"
+      },
+      {
+        "name": "Roland LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "Roland TT",
+        "threatFlag": "RWR SACLOS LAUNCH"
+      },
+      {
+        "name": "Rapier",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": [
+          "Rapier TA",
+          "Rapier TT"
+        ]
+      },
+      {
+        "name": "Rapier LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "Rapier TT",
+        "threatFlag": "RWR SACLOS LAUNCH"
       },
       {
         "name": "Crotal",
         "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
         "type": [
           "Crotale TA",
           "Crotale TT"
         ]
+      },
+      {
+        "name": "Crotal LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "Crotale TT",
+        "threatFlag": "RWR SACLOS LAUNCH"
       },
       {
         "name": "AAA",
@@ -210,7 +333,9 @@
           "N001",
           "N010",
           "V004",
+          "Type 1473",
           "ELTA EL/M-2001B",
+          "ELTA EL/M-2052",
           "PS-37",
           "PS-05",
           "Ferranti Blue Vixen",
@@ -254,7 +379,8 @@
         "search": false,
         "track": false,
         "launch": true,
-        "type": "Sapphire-23"
+        "type": "Sapphire-23",
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "MiG-29",
@@ -278,7 +404,8 @@
           "N019",
           "N001",
           "N010"
-        ]
+        ],
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "Su-34",
@@ -294,7 +421,8 @@
         "search": false,
         "track": false,
         "launch": true,
-        "type": "V004"
+        "type": "V004",
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "F-4",
@@ -318,7 +446,8 @@
           "AN/APQ-72",
           "AN/APQ-120",
           "AN/APG-59"
-        ]
+        ],
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "F-5",
@@ -338,7 +467,8 @@
         "search": false,
         "track": false,
         "launch": true,
-        "type": "AN/AWG-9"
+        "type": "AN/AWG-9",
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "F-16",
@@ -364,7 +494,8 @@
           "AN/APG-68",
           "PS-37",
           "Type 1492"
-        ]
+        ],
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "F-15",
@@ -380,7 +511,8 @@
         "search": false,
         "track": false,
         "launch": true,
-        "type": "AN/APG-63"
+        "type": "AN/APG-63",
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "F-18",
@@ -402,7 +534,8 @@
         "type": [
           "AN/APG-65",
           "AN/APG-67"
-        ]
+        ],
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "Tornado F",
@@ -418,7 +551,8 @@
         "search": false,
         "track": false,
         "launch": true,
-        "type": "AI.24 Foxhunter"
+        "type": "AI.24 Foxhunter",
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "Harrier",
@@ -444,7 +578,8 @@
         "type": [
           "Thomson-CSF RDI",
           "Thales RDY"
-        ]
+        ],
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "J-39",
@@ -466,7 +601,8 @@
         "type": [
           "PS-05",
           "Ferranti Blue Vixen"
-        ]
+        ],
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "EF 2000",
@@ -477,12 +613,61 @@
         "type": "CAPTOR-M"
       },
       {
+        "name": "EF 2000 LAUNCH",
+        "search": false,
+        "track": false,
+        "launch": true,
+        "detectLaunch": true,
+        "type": "CAPTOR-M",
+        "threatFlag": "RWR SARH/IR LAUNCH"
+      },
+      {
         "name": "Rafal",
         "search": true,
         "track": true,
         "launch": false,
         "detectLaunch": true,
         "type": "Thales RBE2 AESA"
+      },
+      {
+        "name": "Rafal LAUNCH",
+        "search": false,
+        "track": false,
+        "launch": true,
+        "detectLaunch": true,
+        "type": "Thales RBE2 AESA",
+        "threatFlag": "RWR SARH/IR LAUNCH"
+      },
+      {
+        "name": "Kfir C10",
+        "search": true,
+        "track": true,
+        "launch": false,
+        "detectLaunch": true,
+        "type": "ELTA EL/M-2052"
+      },
+      {
+        "name": "Kfir C10 LAUNCH",
+        "search": false,
+        "track": false,
+        "launch": true,
+        "detectLaunch": true,
+        "type": "ELTA EL/M-2052",
+        "threatFlag": "RWR SARH/IR LAUNCH"
+      },
+      {
+        "name": "J-10",
+        "detectLaunch": true,
+        "type": "Type 1473"
+      },
+      {
+        "name": "J-10 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "Type 1473",
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "JF-17",
@@ -498,11 +683,15 @@
         "search": false,
         "track": false,
         "launch": true,
-        "type": "KLJ-7"
+        "type": "KLJ-7",
+        "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
         "name": "Roland",
         "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
         "type": "Roland TA"
       },
       {
@@ -520,12 +709,29 @@
       {
         "name": "2S6",
         "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
         "type": [
           "1RL114 TA",
           "1RL114 TT",
           "PGZ-09 TA",
           "PGZ-09 TT"
         ]
+      },
+      {
+        "name": "2S6 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": [
+          "1RL114 TA",
+          "1RL114 TT",
+          "PGZ-09 TA",
+          "PGZ-09 TT"
+        ],
+        "threatFlag": "RWR SACLOS LAUNCH"
       },
       {
         "name": "S1",
@@ -535,7 +741,8 @@
         "name": "ARH",
         "detectTracking": true,
         "detectLaunch": true,
-        "type": "weapon"
+        "type": "weapon",
+        "threatFlag": "RWR ARH LAUNCH"
       },
       {
         "name": "AH-64",
@@ -552,34 +759,79 @@
       {
         "name": "S1",
         "detectLaunch": true,
-        "type": [
-          "1RS1",
-          "1RS2"
-        ]
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": "1RS2"
+      },
+      {
+        "name": "S1 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "1RS2",
+        "threatFlag": "RWR SACLOS LAUNCH"
       }
     ]
   },
   "targetsDirectionGroups": {
     "targetsDirectionGroup": [
       {
+        "text": "S75",
+        "group": [
+          "S-75",
+          "S-75 LAUNCH"
+        ]
+      },
+      {
+        "text": "hud/rwr_threat_hawk",
+        "group": [
+          "HAWK",
+          "HAWK LAUNCH"
+        ]
+      },
+      {
         "text": "S125",
-        "group": "S-125"
+        "group": [
+          "S-125",
+          "S-125 LAUNCH"
+        ]
       },
       {
         "text": "9K3",
-        "group": "9K330"
+        "group": [
+          "9K330",
+          "9K330 LAUNCH"
+        ]
       },
       {
         "text": "93",
-        "group": "9K33"
+        "group": [
+          "9K33",
+          "9K33 LAUNCH"
+        ]
       },
       {
         "text": "RLD",
-        "group": "Roland"
+        "group": [
+          "Roland",
+          "Roland LAUNCH"
+        ]
+      },
+      {
+        "text": "RPR",
+        "group": [
+          "Rapier",
+          "Rapier LAUNCH"
+        ]
       },
       {
         "text": "CRT",
-        "group": "Crotal"
+        "group": [
+          "Crotal",
+          "Crotal LAUNCH"
+        ]
       },
       {
         "text": "hud/rwr_threat_aaa",
@@ -688,11 +940,32 @@
       },
       {
         "text": "E2K",
-        "group": "EF 2000"
+        "group": [
+          "EF 2000",
+          "EF 2000 LAUNCH"
+        ]
       },
       {
         "text": "RFL",
-        "group": "Rafal"
+        "group": [
+          "Rafal",
+          "Rafal LAUNCH"
+        ]
+      },
+      {
+        "text": "C10",
+        "group": [
+          "Kfir C10",
+          "Kfir C10 LAUNCH"
+        ]
+      },
+      {
+        "text": "J10",
+        "group": [
+          "J-10",
+          "J-10 LAUNCH",
+          "S1 LAUNCH"
+        ]
       },
       {
         "text": "J17",
@@ -703,11 +976,18 @@
       },
       {
         "text": "2S6",
-        "group": "2S6"
+        "group": [
+          "2S6",
+          "2S6 LAUNCH"
+        ]
       },
       {
         "text": "S1",
-        "group": "S1"
+        "group": [
+          "S1",
+          "S1 LAUNCH"
+        ],
+        "checkOverride_S1": true
       },
       {
         "text": "ADS",
@@ -722,6 +1002,10 @@
         "group": "ARH"
       },
       {
+        "text": "hud/rwr_threat_hawk",
+        "group": "HAWK LAUNCH"
+      },
+      {
         "text": "A64",
         "group": "AH-64"
       },
@@ -732,10 +1016,6 @@
       {
         "text": "M28",
         "group": "Mi-28"
-      },
-      {
-        "text": "S1",
-        "group": "S1"
       }
     ]
   }

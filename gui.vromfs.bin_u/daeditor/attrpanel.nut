@@ -1012,7 +1012,7 @@ mkCompList = function(eid, rawComponentName, rawObject, caption=null, onChange=n
       let nkeys = (clone path).append(num)
       res.append(mkComp(eid, rawComponentName, rawObject, $"{caption}[{num}]", onChange, nkeys))
     }
-   return res
+    return res
   }
   let isConst = isCompReadOnly(eid, rawComponentName)
   let fCaption = len>0 ? $"{caption} [{len}]" : caption

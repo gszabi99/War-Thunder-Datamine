@@ -9,6 +9,7 @@ require %game.unit.repair_system_events
 require %game.unit.extinguish_system_events
 require %game.unit.ship_events
 require Weapon
+require DaWeapons
 
 
 [cpp_event(broadcast)]
@@ -185,6 +186,7 @@ struct EventOnPlayerUnlockStreak
   statIdName : string
   amountWp : int
   stage : int
+  isExcludeFromRating : bool
 
 [event(broadcast)]
 struct EventSoundAreaInit
@@ -218,6 +220,10 @@ struct CmdEngineStealSound
 [cpp_event(unicast)]
 struct CmdEngineUnstealSound
 {}
+
+[cpp_event(unicast)]
+struct CmdEngineSoundSetPosForced
+  pos : float3
 
 [event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
 struct EventPickUpLoot
@@ -255,4 +261,161 @@ struct EventRearmFromAmmoBox
 
 [cpp_event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
 struct EventCantReloadingFromBox
+
+
+[cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct EventGmEngineOnOff
+  value : bool
+
+[cpp_event(unicast, with_scheme)]
+struct EventTryToggleGMEngine
 {}
+
+[cpp_event(unicast, with_scheme)]
+struct EventTryEnableEngine
+{}
+
+[event(unicast)]
+struct EventTankEngineStageChanged
+  newStage : uint8
+
+
+[event(unicast)]
+struct CmdUnloadAmmo
+  unloadManually : bool
+
+
+[event(unicast)]
+struct CmdLoadAmmo
+  ammoNum : int
+
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct RequestMultipleGunsSlotEquipGun
+  gunEid : EntityId
+  slot : int
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct RequestMultipleGunsSlotSelectGun
+  gunEid : EntityId
+  slot : int
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct RequestMultipleGunsSlotEquipNextGun
+  slot : int
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct CmdSelectWeaponSlot
+  slot : uint8
+
+
+[event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
+struct HumanWeapThrowBackAbort {}
+
+[event(unicast)]
+struct EventOnSelectWeap
+  curr_gun_slot_id : int
+
+[event(broadcast)]
+struct EventOnGunBlocksShoot
+  reason : string
+
+[event(unicast)]
+struct CmdWeapModToggle
+  slotId : int
+
+[cpp_event(unicast)]
+struct CmdWeapPhysUpdate
+  owner : ecs::EntityId
+  atTime : float
+  dt : float
+  isForReal : bool
+  slotId : int
+  gctrl : GunControls
+  gloc : GunLocation
+
+
+[cpp_event(unicast)]
+struct CmdGunUpdate
+  atTime : float
+  isForReal : bool
+  seed : int
+  gctrl : GunControls
+  gloc : GunLocation
+
+[event(unicast)]
+struct CmdRequestReload
+  atTime : float
+  gunEid : ecs::EntityId
+  isQuick : bool
+
+[event(unicast)]
+struct CmdGunRequestInspect
+  atTime : float
+  gunEid : EntityId
+
+[cpp_event(unicast)]
+struct EventOnParentLoaded
+  eid : ecs::EntityId
+  slotId : int
+
+[cpp_event(unicast)]
+struct CmdWeapAttach
+  toEid : EntityId
+  isAttached : bool
+  slotId : int
+
+
+[event(unicast)]
+struct CmdWeapDetach {}
+
+[cpp_event(unicast)]
+struct EventItemAttached
+  attach_to : EntityId
+
+[cpp_event(unicast)]
+struct EventItemDetached
+  detach_from : EntityId
+
+[event(unicast)]
+struct CmdSlotDetach {}
+
+[cpp_event(unicast)]
+struct CmdInitSkeletonAttach {}
+
+[cpp_event(unicast)]
+struct EventShotDry {}
+
+[cpp_event(unicast)]
+struct CmdGuidanceLockSwitch
+  on : bool
+
+[cpp_event(unicast)]
+struct CmdLaunchShell
+  launchDesc : LaunchDesc
+  gunEid : EntityId
+
+[cpp_event(unicast)]
+struct CmdLaunchProjectile
+  launchDesc : LaunchDesc
+  gunEid : EntityId
+
+[cpp_event(unicast)]
+struct EventShot
+  launchDesc : LaunchDesc
+
+[event(unicast)]
+struct CmdInterruptReloadImmediately {}
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct CmdTurnOffSingleReloadInterruptByHold {}
+
+[event(unicast)]
+struct EventHumanStartedReload {}
+
+[event(broadcast)]
+struct CmdUIShowWeaponsBlock {}
+
+[cpp_event(unicast)]
+struct CmdApplyRagdollParameters
+  cur_time : float

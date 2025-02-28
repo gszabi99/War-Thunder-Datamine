@@ -7,11 +7,11 @@ let { rnd } = require("dagor.random")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
-let { getClansInfoByClanIds } = require("%scripts/clans/clansListShortInfo.nut")
+let { getClansInfoByClanIds } = require("%scripts/clans/clanInfo.nut")
 let { register_command } = require("console")
 let { round_by_value } = require("%sqstd/math.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
-let { disableSeenUserlogs } = require("%scripts/userLog/userlogUtils.nut")
+let { disableSeenUserlogs, getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 let { lbCategoryTypes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getLastPlayedOperationId } = require("%scripts/worldWar/worldWarStates.nut")
@@ -126,7 +126,7 @@ let openWwOperationRewardPopup = @(p)
 
 register_command(
   function() {
-    local uLogObj = ::getUserLogsList({
+    local uLogObj = getUserLogsList({
       show = [ EULT_WW_END_OPERATION ]
       checkFunc = @(userlog) userlog.body.wp != 0
     })?[0]

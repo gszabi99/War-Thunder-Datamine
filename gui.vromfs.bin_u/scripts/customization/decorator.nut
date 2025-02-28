@@ -18,7 +18,7 @@ let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 ::Decorator <- class {
@@ -243,7 +243,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
   function canGetFromCoupon(unit) {
     return this.isSuitableForUnit(unit) && !this.isUnlocked()
-      && (::ItemsManager.getInventoryItemById(this.getCouponItemdefId())?.canConsume() ?? false)
+      && (getInventoryItemById(this.getCouponItemdefId())?.canConsume() ?? false)
   }
 
   function canBuyCouponOnMarketplace(unit) {

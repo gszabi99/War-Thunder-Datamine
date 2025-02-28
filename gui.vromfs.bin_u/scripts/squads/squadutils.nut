@@ -20,9 +20,10 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { CommunicationState } = require("%scripts/xbox/permissions.nut")
+let { CommunicationState } = require("%scripts/gdk/permissions.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { setSessionLobbyCountryData } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 
 const MEMBER_STATUS_LOC_TAG_PREFIX = "#msl"
 
@@ -213,7 +214,7 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
 
   //Update Skirmish Lobby info
   if (needUpdateSessionLobbyData)
-    ::SessionLobby.setCountryData({
+    setSessionLobbyCountryData({
       country = memberData.country
       crewAirs = memberData.crewAirs
       selAirs = memberData.selAirs  //!!FIX ME need to remove this and use slots in client too.

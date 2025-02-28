@@ -104,6 +104,7 @@ class CreateTemplateAnnotation : AstStructureAnnotation
         else
           field._type |> move_new() <| new [[TypeDecl() baseType = Type tInt, alias := (arg ?as tString) ?? typeName]]
         field.init := null
+      field.annotation.add_annotation_argument("safe_when_uninitialized", true)
     return true
 
   def override finish(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool

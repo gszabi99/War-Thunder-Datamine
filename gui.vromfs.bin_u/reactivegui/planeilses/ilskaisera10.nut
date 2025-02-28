@@ -7,7 +7,7 @@ let { IlsColor, IlsLineScale, TvvMark, IlsAtgmTrackerVisible,
       TargetPos, RocketMode, CannonMode, BombCCIPMode, DistToTarget,
       BombingMode, AimLockPos, AimLockValid, IlsPosSize, AimLockDist,
       AirCannonMode, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
-let { baseLineWidth, metrToFeet, mpsToKnots, metrToMile } = require("ilsConstants.nut")
+let { baseLineWidth, metrToFeet, mpsToKnots, metrToNavMile } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { compassWrap, generateCompassMarkShim } = require("ilsCompasses.nut")
 let { Tangage, BarAltitude, Altitude, Speed, Roll, Overload } = require("%rGui/planeState/planeFlyState.nut");
@@ -154,7 +154,7 @@ function generatePitchLine(num) {
   }
 }
 
-let maverickDist = Computed(@() (AtgmTargetDist.value < 0 ? -1 : AtgmTargetDist.value * metrToMile * 10.0).tointeger())
+let maverickDist = Computed(@() (AtgmTargetDist.value < 0 ? -1 : AtgmTargetDist.value * metrToNavMile * 10.0).tointeger())
 let maverickAimMark = @() {
   watch = [IlsAtgmLocked, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
@@ -193,7 +193,7 @@ let maverickAimMark = @() {
 let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode.value)
 let ccipDistF = Computed(@() BombingMode.get() ? cvt(TimeBeforeBombRelease.get(), 0, 15, -90, 270).tointeger() :
  cvt(clamp(DistToTarget.value * metrToFeet * 0.01, 0, 120), 0, 120, -90, 270).tointeger())
-let ccipDistM = Computed(@() (DistToTarget.value * metrToMile * 10.0).tointeger())
+let ccipDistM = Computed(@() (DistToTarget.value * metrToNavMile * 10.0).tointeger())
 let isDistanceValid = Computed(@() BombingMode.get() || (DistToTarget.get() >= 0 && DistToTarget.get() < 10000))
 let gunAimMark = @() {
   watch = [TargetPosValid, CCIPMode, AirCannonMode]
@@ -403,7 +403,7 @@ let localTime = @() {
 }
 
 let toiDistVisible = Watched(false)
-let aimLockDistVal = Computed(@() (AimLockDist.get() * metrToMile * 10.).tointeger())
+let aimLockDistVal = Computed(@() (AimLockDist.get() * metrToNavMile * 10.).tointeger())
 let toi = @(){
   watch = [AimLockValid, IlsAtgmTrackerVisible]
   size = flex()

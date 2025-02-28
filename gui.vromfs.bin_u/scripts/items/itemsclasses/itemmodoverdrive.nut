@@ -7,6 +7,7 @@ let BaseItemModClass = require("%scripts/items/itemsClasses/itemModBase.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let ModOverdrive = class (BaseItemModClass) {
   static iType = itemType.MOD_OVERDRIVE
@@ -71,4 +72,5 @@ let ModOverdrive = class (BaseItemModClass) {
     )
   }
 }
-return {ModOverdrive}
+
+registerItemClass(ModOverdrive)

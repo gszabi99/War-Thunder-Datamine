@@ -3,8 +3,8 @@
   "name": "AN/APG-65",
   "showMissileLaunchZone": true,
   "showMissileDgftLaunchZone": true,
-  "weaponTargetsMax": 6,
-  "launchedMissilesPredictedPositionsMax": 6,
+  "weaponTargetsMax": 4,
+  "launchedMissilesPredictedPositionsMax": 4,
   "transivers": {
     "mprf": {
       "sideLobesAttenuation": -20.0,
@@ -651,10 +651,6 @@
             "source": "activeTargetOfInterest",
             "width": 0.0
           },
-          "setRelSpeedGatePos": {
-            "source": "activeTargetOfInterest",
-            "width": 0.0
-          },
           "setFsmActive": [
             {
               "fsm": "track",
@@ -892,7 +888,19 @@
             "name": "PD HDN standby"
           }
         },
-        "setTwsStandbyMode": {
+        "setMprfTwsStandbyMode": {
+          "setTwsStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "mprf"
+          },
+          "setSignal": {
+            "signal": "mprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS standby"
+          }
+        },
+        "setHprfTwsStandbyMode": {
           "setTwsStandbyModeCommon": {},
           "setTransiver": {
             "transiver": "hprf"
@@ -940,7 +948,7 @@
             "name": "PD HDN search"
           }
         },
-        "setTwsSearchMode": {
+        "setMprfTwsSearchMode": {
           "setTwsSearchModeCommon": {},
           "setTransiver": {
             "transiver": "mprf"
@@ -950,6 +958,18 @@
           },
           "setModeName": {
             "name": "TWS search"
+          }
+        },
+        "setHprfTwsSearchMode": {
+          "setTwsSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprf"
+          },
+          "setSignal": {
+            "signal": "hprfSearch"
+          },
+          "setModeName": {
+            "name": "TWS HDN search"
           }
         },
         "setMprfBvrLockMode": {
@@ -1399,21 +1419,21 @@
             ]
           }
         },
-        "mprfToTws": {
+        "mprfToMprfTws": {
           "stateFrom": "mprf",
           "command": "modeSwitch",
-          "stateTo": "tws",
+          "stateTo": "mprfTws",
           "actions": {
             "setCustomActionTemplate": [
               {
                 "fsm": "main",
                 "name": "setStandbyMode",
-                "actionTemplateName": "setTwsStandbyMode"
+                "actionTemplateName": "setMprfTwsStandbyMode"
               },
               {
                 "fsm": "main",
                 "name": "setSearchMode",
-                "actionTemplateName": "setTwsSearchMode"
+                "actionTemplateName": "setMprfTwsSearchMode"
               },
               {
                 "fsm": "main",
@@ -1447,8 +1467,8 @@
             ]
           }
         },
-        "twsToHprf": {
-          "stateFrom": "tws",
+        "mprfTwsToHprf": {
+          "stateFrom": "mprfTws",
           "command": "modeSwitch",
           "stateTo": "hprf",
           "actions": {
@@ -1495,8 +1515,56 @@
             ]
           }
         },
-        "hprfToHprfVelocity": {
+        "hprfToHprfTws": {
           "stateFrom": "hprf",
+          "command": "modeSwitch",
+          "stateTo": "hprfTws",
+          "actions": {
+            "setCustomActionTemplate": [
+              {
+                "fsm": "main",
+                "name": "setStandbyMode",
+                "actionTemplateName": "setHprfTwsStandbyMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setSearchMode",
+                "actionTemplateName": "setHprfTwsSearchMode"
+              },
+              {
+                "fsm": "main",
+                "name": "setBvrLockMode",
+                "actionTemplateName": "setTwsBvrLockMode"
+              },
+              {
+                "fsm": "main",
+                "name": "designateTarget",
+                "actionTemplateName": "designatedTargetTws"
+              },
+              {
+                "fsm": "main",
+                "name": "resetSearchMode",
+                "actionTemplateName": "resetTwsMode"
+              }
+            ],
+            "doCustomActionTemplate": {
+              "fsm": "main",
+              "name": "resetSearchMode"
+            },
+            "setFsmActive": [
+              {
+                "fsm": "main",
+                "active": false
+              },
+              {
+                "fsm": "main",
+                "active": true
+              }
+            ]
+          }
+        },
+        "hprfTwsToHprfVelocity": {
+          "stateFrom": "hprfTws",
           "command": "modeSwitch",
           "stateTo": "hprfVelocity",
           "actions": {
@@ -1674,6 +1742,7 @@
             "clearTargetsOfInterest": {
               "timeOut": 12.0
             },
+            "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {},
             "setCenterAzimuth": [
               {
@@ -1718,10 +1787,29 @@
         "addTarget": {
           "event": "targetDetected",
           "actions": {
-            "updateTargetOfInterest": {
+            "addTargetOfInterestCandidate": {}
+          }
+        },
+        "matchTargets": {
+          "event": "scanFinished",
+          "actions": {
+            "matchTargetsOfInterest": {
               "limit": 10,
-              "radius": 1000.0,
-              "dopplerSpeedGateMaxTime": 8.0
+              "posGateTimeInitial": [
+                2.4,
+                4.4
+              ],
+              "posGateRangeInitial": 1800.0,
+              "posGateMaxTime": 2.0,
+              "posGateRange": [
+                0.0,
+                300.0
+              ],
+              "dopplerSpeedGateRange2": [
+                0.0,
+                200.0
+              ],
+              "dopplerSpeedGateMaxTime": 2.0
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {}
@@ -1871,11 +1959,62 @@
             "signal": "lprfTrack"
           }
         },
-        "track": {
+        "trackPulse": {
           "updateActiveTargetOfInterest": {
-            "dirFilter": {},
-            "distFilter": {},
-            "dopplerSpeedFilter": {}
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
+          },
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          }
+        },
+        "trackDoppler": {
+          "updateActiveTargetOfInterest": {
+            "dirFilter": {
+              "rateLim": [
+                0.78,
+                0.78
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "distFilter": {
+              "accelLim": [
+                150.0,
+                150.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            },
+            "dopplerSpeedFilter": {
+              "rateLim": [
+                200.0,
+                200.0
+              ],
+              "limTimeOut": 1.0,
+              "inertialTimeMax": 1.0
+            }
           },
           "setCenterAzimuth": {
             "source": "activeTargetOfInterest"
@@ -2009,7 +2148,7 @@
           "stateFrom": "mprf",
           "event": "targetDetected",
           "actions": {
-            "track": {}
+            "trackDoppler": {}
           }
         },
         "startTrackMprf": {
@@ -2022,7 +2161,7 @@
           "stateTo": "mprf",
           "actions": {
             "setMprfTrack": {},
-            "track": {},
+            "trackDoppler": {},
             "setModeName": {
               "name": "PD track"
             }
@@ -2033,7 +2172,7 @@
           "event": "targetDetected",
           "stateTo": "hprfOkMprfTry",
           "actions": {
-            "track": {}
+            "trackDoppler": {}
           }
         },
         "startTrackHprf": {
@@ -2045,7 +2184,7 @@
           "stateTo": "hprf",
           "actions": {
             "setHprfTrack": {},
-            "track": {},
+            "trackDoppler": {},
             "setModeName": {
               "name": "PD HDN track"
             }
@@ -2056,7 +2195,7 @@
           "event": "targetDetected",
           "stateTo": "lprfOkHprfTry",
           "actions": {
-            "track": {}
+            "trackPulse": {}
           }
         },
         "startTrackLprf": {
@@ -2065,7 +2204,7 @@
           "stateTo": "lprf",
           "actions": {
             "setLprfTrack": {},
-            "track": {},
+            "trackPulse": {},
             "setModeName": {
               "name": "track"
             }

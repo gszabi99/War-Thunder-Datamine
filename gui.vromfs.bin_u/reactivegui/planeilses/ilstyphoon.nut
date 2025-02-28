@@ -654,11 +654,12 @@ function intScale(height, watchV) {
     children.append(
       {
         rendObj = ROBJ_TEXT
-        size = SIZE_TO_CONTENT
+        size = [SIZE_TO_CONTENT, height]
         color = IlsColor.get()
         font = Fonts.hud
         fontSize = 30
         text = (i % 10).tostring()
+        padding = [2, 0]
       }
     )
   }
@@ -681,11 +682,11 @@ let overloadInt = Computed(@() Overload.get() % 1.0 > 0.0 && Overload.get() % 1.
 function overload(height) {
   return {
     pos = [pw(20), ph(47.5)]
-    size = [pw(7), ph(2.5)]
+    size = [pw(7), ph(3)]
     clipChildren = true
     flow = FLOW_HORIZONTAL
     children = [
-      intScale(height * 0.025, overloadInt)
+      intScale(height * 0.03, overloadInt)
       {
         rendObj = ROBJ_TEXT
         size = SIZE_TO_CONTENT
@@ -694,7 +695,7 @@ function overload(height) {
         fontSize = 30
         text = "."
       }
-      intScale(height * 0.025, overloadDec)
+      intScale(height * 0.03, overloadDec)
     ]
   }
 }

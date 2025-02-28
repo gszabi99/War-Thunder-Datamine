@@ -9,9 +9,11 @@ let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck, isPlatformShieldTv
 } = require("%scripts/clientState/platform.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
+let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET
 } = require("%scripts/options/optionsExtNames.nut")
+let { parseControlsPresetName, getHighestVersionControlsPreset
+} = require("%scripts/controls/controlsPresets.nut")
 
 gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -97,23 +99,23 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
   local preset = null
 
   if (ct_preset != "")
-    preset = ::g_controls_presets.parsePresetName(ct_preset)
+    preset = parseControlsPresetName(ct_preset)
   else if (ct_id == "ct_mouse") {
     if (isPlatformSony)
-      preset = ::g_controls_presets.parsePresetName("dualshock4")
+      preset = parseControlsPresetName("dualshock4")
     else if (is_platform_xbox)
-      preset = ::g_controls_presets.parsePresetName("xboxone_ma")
+      preset = parseControlsPresetName("xboxone_ma")
     else if (isPlatformSteamDeck)
-      preset = ::g_controls_presets.parsePresetName("steamdeck_ma")
+      preset = parseControlsPresetName("steamdeck_ma")
     else
-      preset = ::g_controls_presets.parsePresetName("keyboard_shooter")
+      preset = parseControlsPresetName("keyboard_shooter")
   }
-  preset = ::g_controls_presets.getHighestVersionPreset(preset)
+  preset = getHighestVersionControlsPreset(preset)
   ::apply_joy_preset_xchange(preset.fileName)
 
   if (isPlatformSony || isPlatformXboxOne || isPlatformSteamDeck) {
-    let presetMode = ::get_option(USEROPT_CONTROLS_PRESET)
-    ct_preset = ::g_controls_presets.parsePresetName(presetMode.values[presetMode.value])
+    let presetMode = get_option(USEROPT_CONTROLS_PRESET)
+    ct_preset = parseControlsPresetName(presetMode.values[presetMode.value])
     //TODO: is it obsolete?
     local realisticPresetNames = ["default", "xboxone_simulator", "stimdeck_simulator"]
     local mouseAimPresetNames = ["dualshock4", "xboxone_ma", "stimdeck_ma"]

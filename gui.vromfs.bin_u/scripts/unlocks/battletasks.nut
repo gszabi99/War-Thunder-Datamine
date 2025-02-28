@@ -1,41 +1,28 @@
-from "%scripts/dagui_natives.nut" import char_send_blk, get_unlock_type
+from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
-let { isInMenu, is_low_width_screen, loadHandler
-} = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { isDataBlock, isString, isEmpty, isTable, search } = require("%sqStdLibs/helpers/u.nut")
-let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
 let DataBlock = require("DataBlock")
-let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { TIME_MINUTE_IN_SECONDS, getUtcDays } = require("%scripts/time.nut")
-let { is_bit_set } = require("%sqstd/math.nut")
+let { getUtcDays } = require("%scripts/time.nut")
 let statsd = require("statsd")
-let { activeUnlocks, getUnlockReward } = require("%scripts/unlocks/userstatUnlocksState.nut")
-let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
-let { getMainConditionListPrefix, isNestedUnlockMode, getHeaderCondition,
-  isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
-let { getFullUnlockDesc, getUnlockMainCondDescByCfg, getLocForBitValues, buildUnlockDesc,
-  getUnlockNameText, getUnlockRewardsText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { isUnlockVisible, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
-let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
+let { loadConditionsFromBlk } = require("%scripts/unlocks/unlocksConditions.nut")
+let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { cachePersonalUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
 let { updateTimeParamsFromBlk, getDifficultyTypeByName,
   EASY_TASK, MEDIUM_TASK, HARD_TASK, UNKNOWN_TASK
 } = require("%scripts/unlocks/battleTaskDifficulty.nut")
-let { Timer } = require("%sqDagui/timer/timer.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { get_personal_unlocks_blk, get_proposed_personal_unlocks_blk } = require("blkGetters")
 let { addTask } = require("%scripts/tasker.nut")
-let newIconWidget = require("%scripts/newIconWidget.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 const TASKS_OUT_OF_DATE_DAYS = 15
 const SEEN_SAVE_ID = "seen/battletasks"
@@ -51,6 +38,8 @@ let difficultyTypes = [
 let currentTasksArray = []
 let activeTasksArray = []
 let proposedTasksArray = []
+
+let getProposedTasks = @() proposedTasksArray
 
 let isMediumTaskComplete = Watched(false)
 let isEasyTaskComplete = Watched(false)
@@ -217,8 +206,10 @@ function isTaskForGM(task, gameModeId) {
   if (!isBattleTask(task))
     return false
 
-  let cfg = ::build_conditions_config(task)
-  foreach (condition in cfg.conditions) {
+  let modes = task % "mode"
+  let conditions = loadConditionsFromBlk(modes.top(), task)
+
+  foreach (condition in conditions) {
     let values = getTblValue("values", condition)
     if (isEmpty(values))
       continue
@@ -298,13 +289,6 @@ function getBattleTasksOrderedByDiff() {
       result.extend(arr)
   }
   return result
-}
-
-function mkUnlockConfigByBattleTask(task) {
-  local config = ::build_conditions_config(task)
-  buildUnlockDesc(config)
-  config.originTask <- task
-  return config
 }
 
 function isUserlogForBattleTasksGroup(body) {
@@ -528,6 +512,7 @@ function sendReceiveRewardRequest(battleTask) {
 
   let taskId = char_send_blk("cln_reward_specific_battle_task", blk)
   addTask(taskId, { showProgressBox = true }, function() {
+    cachePersonalUnlocks()
     ::update_gamercards()
     broadcastEvent("BattleTasksIncomeUpdate")
     broadcastEvent("BattleTasksRewardReceived")
@@ -539,7 +524,7 @@ function requestBattleTaskReward(battleTaskId) {
     return
 
   let battleTask = getBattleTaskById(battleTaskId)
-  if (!::g_warbonds.checkOverLimit(battleTask?.amounts_warbond ?? 0,
+  if (!::g_warbonds.checkWarbondsOverLimit(battleTask?.amounts_warbond ?? 0,
       sendReceiveRewardRequest, battleTask))
     return
 
@@ -578,203 +563,6 @@ function rerollSpecialTask(task) {
     })
 }
 
-// View funcs. TODO extract to separate module 'battleTasksView' after circ refs resolved
-
-function isUnlocksList(config) {
-  if (isNestedUnlockMode(config.type))
-    foreach (id in config.names) {
-      let unlockBlk = getUnlockById(id)
-      if (!(unlockBlk?.isMultiUnlock ?? false)
-          && get_unlock_type(unlockBlk.type) != UNLOCKABLE_STREAK)
-        return true
-    }
-  return false
-}
-
-function getUnlockAdditionalView(unlockId) {
-  let unlockBlk = getUnlockById(unlockId)
-  if (!unlockBlk || !isUnlockVisible(unlockBlk))
-    return {
-      isProgressBarVisible = false
-      isAddToFavVisible = false
-    }
-
-  let unlockConfig = ::build_conditions_config(unlockBlk)
-  let unlockDesc = getUnlockMainCondDescByCfg(unlockConfig)
-
-  return {
-    unlockId
-    unlockProgressDesc = $"({unlockDesc})"
-    isProgressBarVisible = true
-    progressBarValue = unlockConfig.getProgressBarData().value
-    toFavoritesCheckboxVal = isUnlockFav(unlockId) ? "yes" : "no"
-  }
-}
-
-function getTooltipMarkupByModeType(config) {
-  if (config.type == "char_unit_exist")
-    return getTooltipType("UNIT").getMarkup(config.id, { showProgress = true })
-
-  if (isBattleTask(config.id))
-    return getTooltipType("BATTLE_TASK").getMarkup(config.id, { showProgress = true })
-
-  if (activeUnlocks.value?[config.id] != null)
-    return getTooltipType("BATTLE_PASS_CHALLENGE").getMarkup(config.id, { showProgress = true })
-
-  return getTooltipType("UNLOCK").getMarkup(config.id, { showProgress = true })
-}
-
-function getUnlocksListView(config) {
-  let res = []
-
-  let namesLoc = getLocForBitValues(config.type, config.names, config.hasCustomUnlockableList)
-  let isBitMode = isBitModeType(config.type)
-  let isInteractive = config?.isInteractive ?? true
-  let isAddToFavVisible = isInteractive && !config.isOnlyInfo
-
-  foreach (idx, unlockId in config.names) {
-    let isEven = idx % 2 == 0
-    if (config.type == "char_resources") {
-      let decorator = getDecoratorById(unlockId)
-      if (decorator && decorator.isVisible())
-        res.append({
-          isEven
-          text = decorator.getName()
-          isUnlocked = decorator.isUnlocked()
-          tooltipMarkup = getTooltipType("DECORATION").getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
-          isAddToFavVisible // will be updated to false if no unlock in the decorator
-        }.__update(getUnlockAdditionalView(decorator.unlockId)))
-    }
-    else {
-      let unlockBlk = getUnlockById(unlockId)
-      if (!unlockBlk || !isUnlockVisible(unlockBlk))
-        continue
-
-      let unlockConfig = ::build_conditions_config(unlockBlk)
-      let isUnlocked = isBitMode ? is_bit_set(config.curVal, idx) : isUnlockOpened(unlockId)
-      let unlockName = namesLoc[idx]
-      res.append({
-        isEven
-        isUnlocked
-        text = unlockName
-        tooltipMarkup = getTooltipMarkupByModeType(unlockConfig)
-        isAddToFavVisible
-      }.__update(getUnlockAdditionalView(unlockId)))
-    }
-  }
-
-  return res
-}
-
-function getUnlockConditionBlock(text, config, isUnlocked, isFinal, compareOR, isBitMode) {
-  let unlockDesc = compareOR ? "\n".concat(loc("hints/shortcut_separator"), text)
-    : "".concat(text, loc(isFinal ? "ui/dot" : "ui/comma"))
-  return {
-    tooltipMarkup = getTooltipMarkupByModeType(config)
-    overlayTextColor = (isBitMode && isUnlocked) ? "userlog" : "active"
-    text = unlockDesc
-  }
-}
-
-function getStreaksListView(config) {
-  let isBitMode = isBitModeType(config.type)
-  let namesLoc = getLocForBitValues(config.type, config.names, config.hasCustomUnlockableList)
-  let compareOR = config?.compareOR ?? false
-
-  let res = []
-  for (local i = 0; i < namesLoc.len(); ++i) {
-    let unlockId = config.names[i]
-    let unlockBlk = getUnlockById(unlockId)
-    if (!unlockBlk || !isUnlockVisible(unlockBlk))
-      continue
-
-    let unlockConfig = ::build_conditions_config(unlockBlk)
-    let isUnlocked = !isBitMode || is_bit_set(config.curVal, i)
-    res.append(getUnlockConditionBlock(
-      namesLoc[i],
-      unlockConfig,
-      isUnlocked,
-      i == namesLoc.len() - 1,
-      i > 0 && compareOR,
-      isBitMode
-    ))
-  }
-
-  return res
-}
-
-function getRefreshTimeTextForTask(task) {
-  let diff = getDifficultyTypeByTask(task)
-  let genId = getGenerationIdInt(task)
-  let timeLeft = diff.getTimeLeft(genId)
-  if (timeLeft < 0)
-    return ""
-
-  local labelText = "".concat(loc("unlocks/_acceptTime"), loc("ui/colon"))
-  if (timeLeft < 30 * TIME_MINUTE_IN_SECONDS)
-    labelText = colorize("warningTextColor", labelText)
-  return "".concat(labelText,  colorize("unlockActiveColor", diff.getTimeLeftText(genId)))
-}
-
-function getBattleTaskDesc(config = null, paramsCfg = {}) {
-  if (!config)
-    return null
-
-  let task = getBattleTaskById(config)
-
-  let taskDescription = []
-  local taskUnlocksListPrefix = ""
-  local taskUnlocksList = []
-  local taskStreaksList = []
-  let isPromo = paramsCfg?.isPromo ?? false
-
-  if (getShowAllTasks())
-    taskDescription.append($"*Debug info: id - {config.id}")
-
-  if (isPromo) {
-    if (getTblValue("locDescId", config, "") != "")
-      taskDescription.append(loc(config.locDescId))
-    taskDescription.append(getUnlockMainCondDescByCfg(config))
-  }
-  else {
-    taskDescription.append(getFullUnlockDesc(config))
-
-    if (!canGetBattleTaskReward(task)) {
-      taskUnlocksListPrefix = getMainConditionListPrefix(config.conditions)
-
-      if (isUnlocksList(config))
-        taskUnlocksList = getUnlocksListView(config.__merge({
-          isOnlyInfo = !!paramsCfg?.isOnlyInfo
-          isInteractive = paramsCfg?.isInteractive
-        }))
-      else
-        taskStreaksList = getStreaksListView(config)
-    }
-  }
-
-  let progressData = config?.getProgressBarData ? config.getProgressBarData() : null
-  let progressBarValue = config?.curVal != null && config.curVal >= 0
-    ? (config.curVal.tofloat() / (config?.maxVal ?? 1) * 1000)
-    : 0
-
-  let view = {
-    id = config.id
-    taskDescription =  "\n".join(taskDescription, true)
-    taskSpecialDescription = getRefreshTimeTextForTask(task)
-    taskUnlocksListPrefix = taskUnlocksListPrefix
-    taskUnlocks = taskUnlocksList
-    taskStreaks = taskStreaksList
-    taskUnlocksList = taskUnlocksList.len() + taskStreaksList.len()
-    needShowProgressBar = isPromo && progressData?.show
-    progressBarValue = progressBarValue.tointeger()
-    isPromo = isPromo
-    isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
-  }
-
-  return handyman.renderCached("%gui/unlocks/battleTasksDescription.tpl", view)
-}
-
-// todo consider separating logic
 function getBattleTaskNameById(param) {
   local task = null
   local id = null
@@ -790,257 +578,6 @@ function getBattleTaskNameById(param) {
     return ""
 
   return loc(getTblValue("locId", task, $"battletask/{id}"))
-}
-
-function setBattleTasksUpdateTimer(task, taskBlockObj, addParams = {}) {
-  if (!checkObj(taskBlockObj))
-    return
-
-  let diff = getDifficultyTypeByTask(task)
-  if (!diff.hasTimer)
-    return
-
-  local holderObj = taskBlockObj.findObject("task_timer_text")
-  if (checkObj(holderObj) && task)
-    SecondsUpdater(holderObj, function(obj, params) {
-      local timeText = getRefreshTimeTextForTask(task)
-      let isTimeEnded = timeText == ""
-      let addText = params?.addText ?? ""
-      if (isTimeEnded)
-        timeText = colorize("badTextColor", loc("mainmenu/battleTasks/timeWasted"))
-      obj.setValue($"{addText} {timeText}")
-
-      return isTimeEnded
-    }, true, addParams)
-
-  let genId = getGenerationIdInt(task)
-  holderObj = taskBlockObj.findObject("tasks_refresh_timer")
-  if (checkObj(holderObj))
-    SecondsUpdater(holderObj, function(obj, _params) {
-      let timeText = EASY_TASK.getTimeLeftText(genId)
-      obj.setValue(loc("ui/parentheses/space", { text = $"{timeText}{loc("icon/timer")}" }))
-
-      return timeText == ""
-    })
-
-  let timeLeft = diff.getTimeLeft(genId)
-  if (timeLeft <= 0)
-    return
-
-  Timer(taskBlockObj, timeLeft + 1, @() diff.notifyTimeExpired(genId), this, false, true)
-}
-
-function getRewardMarkUpConfig(task, config) {
-  let rewardMarkUp = {}
-  let itemId = getTblValue("userLogId", task)
-  if (itemId) {
-    let item = ::ItemsManager.findItemById(to_integer_safe(itemId, itemId, false))
-    if (item)
-      rewardMarkUp.itemMarkUp <- item.getNameMarkup(getTblValue("amount_trophies", task))
-  }
-
-  local reward = getUnlockRewardsText(config)
-  let difficulty = getDifficultyTypeByTask(task)
-  let unlockReward = getUnlockReward(activeUnlocks.value?[difficulty.userstatUnlockId])
-  reward = reward != "" ? $"{reward}\n{unlockReward.rewardText}" : unlockReward.rewardText
-  rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
-
-  if (difficulty == MEDIUM_TASK) {
-    let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[EWBAT_BATTLE_TASK])
-    if (specialTaskAward?.awardType.hasIncreasingLimit) {
-      let rewardText = loc("warbonds/canBuySpecialTasks/awardTitle", { count = 1 })
-      reward = reward != "" ? $"{reward}\n{rewardText}" : rewardText
-    }
-  }
-
-  if (reward == "" && !rewardMarkUp.len())
-    return rewardMarkUp
-
-  let rewardLoc = isBattleTaskDone(task) ? loc("rewardReceived") : loc("reward")
-  rewardMarkUp.rewardText <-$"{rewardLoc}{loc("ui/colon")}{reward}"
-  return rewardMarkUp
-}
-
-function getBattleTaskDifficultyImage(task) {
-  let difficulty = getDifficultyTypeByTask(task)
-  if (difficulty.showSeasonIcon) {
-    let curWarbond = ::g_warbonds.getCurrentWarbond()
-    if (curWarbond)
-      return curWarbond.getMedalIcon()
-  }
-
-  return difficulty.image
-}
-
-function getBattleTaskView(config, paramsCfg = {}) {
-  let isPromo = paramsCfg?.isPromo ?? false
-  let isShortDescription = paramsCfg?.isShortDescription ?? false
-  let isInteractive = paramsCfg?.isInteractive ?? true
-  let task = getBattleTaskById(config) || getTblValue("originTask", config)
-  let isTaskBattleTask = isBattleTask(task)
-  let isCanGetReward = canGetBattleTaskReward(task)
-  let isUnlock = "unlockType" in config
-  let title = isTaskBattleTask ? getBattleTaskNameById(task.id)
-    : isUnlock ? getUnlockNameText(config.unlockType, config.id)
-    : getTblValue("text", config, "")
-  let headerCond = isUnlock ? getHeaderCondition(config.conditions) : null
-  let id = isTaskBattleTask ? task.id : config.id
-  let progressData = config?.getProgressBarData ? config.getProgressBarData() : null
-  let progressBarValue = config?.curVal != null && config.curVal >= 0
-    ? (config.curVal.tofloat() / (config?.maxVal ?? 1) * 1000)
-    : 0
-  let taskStatus = getTaskStatus(task)
-
-  return {
-    id
-    title
-    taskStatus
-    taskImage = (paramsCfg?.showUnlockImage ?? true)
-      && (getTblValue("image", task) || getTblValue("image", config))
-    taskDifficultyImage = getBattleTaskDifficultyImage(task)
-    taskHeaderCondition = headerCond ? loc("ui/parentheses/space", { text = headerCond }) : null
-    description = isTaskBattleTask || isUnlock ? getBattleTaskDesc(config, paramsCfg) : null
-    reward = isPromo ? null : getRewardMarkUpConfig(task, config)
-    newIconWidget = (isInteractive && isTaskBattleTask && !isBattleTaskActive(task))
-      ? newIconWidget.createLayout()
-      : null
-    canGetReward = isInteractive && isTaskBattleTask && isCanGetReward
-    canReroll = isInteractive && isTaskBattleTask && !isCanGetReward
-    otherTasksNum = (task && isPromo) ? getTotalActiveTasksNum() : null
-    isLowWidthScreen = isPromo ? is_low_width_screen() : null
-    isPromo
-    isOnlyInfo = paramsCfg?.isOnlyInfo ?? false
-    needShowProgressValue = (taskStatus == null)
-      && (config?.curVal != null) && (config.curVal >= 0)
-      && (config?.maxVal != null) && (config.maxVal >= 0)
-    progressValue = config?.curVal
-    progressMaxValue = config?.maxVal
-    needShowProgressBar = progressData?.show
-    progressBarValue = progressBarValue.tointeger()
-    getTooltipId = (isPromo || isShortDescription) && isTaskBattleTask
-      ? @() getTooltipType("BATTLE_TASK").getTooltipId(id)
-      : null
-    isShortDescription
-    shouldRefreshTimer = config?.shouldRefreshTimer ?? false
-  }
-}
-
-let getBattleTaskLocIdFromUserlog = @(logObj, taskId) ("locId" in logObj)
-  ? loc(logObj.locId) : getBattleTaskNameById(taskId)
-
-function getBattleTaskUserLogText(table, taskId) {
-  let res = [getBattleTaskLocIdFromUserlog(table, taskId)]
-  let cost = Cost(table?.cost ?? 0, table?.costGold ?? 0)
-  if (!isEmpty(cost))
-    res.append(loc("ui/parentheses/space", { text = cost.tostring() }))
-
-  return "".join(res)
-}
-
-function getBattleTaskUpdateDesc(logObj) {
-  let res = {}
-  let blackList = []
-  let whiteList = []
-
-  foreach (taskId, table in logObj) {
-    local header = ""
-    let diffTypeName = getTblValue("type", table)
-    if (diffTypeName) {
-      if (isInArray(diffTypeName, blackList))
-        continue
-
-      let diff = getDifficultyTypeByName(diffTypeName)
-      if (!isInArray(diffTypeName, whiteList) && !showAllTasks
-          && !canPlayerInteractWithDifficulty(diff, proposedTasksArray)) {
-        blackList.append(diffTypeName)
-        continue
-      }
-
-      whiteList.append(diffTypeName)
-      header = diff.userlogHeaderName
-    }
-
-    if (header not in res)
-      res[header] <- []
-
-    res[header].append(getBattleTaskUserLogText(table, taskId))
-  }
-
-  local data = ""
-  local lastUserLogHeader = ""
-  foreach (userlogHeader, arr in res) {
-    if (arr.len() == 0)
-      continue
-
-    data = $"{data}{data == "" ? "" : "\n"}"
-    if (lastUserLogHeader != userlogHeader) {
-      data = "".concat(data, loc($"userlog/battletask/type/{userlogHeader}"), loc("ui/colon"))
-      lastUserLogHeader = userlogHeader
-    }
-    data = "".concat(data, "\n".join(arr, true))
-  }
-
-  return data
-}
-
-addTooltipTypes({
-  SPECIAL_TASK = {
-    isCustomTooltipFill = true
-    fillTooltip = function(obj, handler, id, params) {
-      if (!checkObj(obj))
-        return false
-
-      let warbond = ::g_warbonds.findWarbond(
-        getTblValue("wbId", params),
-        getTblValue("wbListId", params)
-      )
-      let award = warbond ? warbond.getAwardById(id) : null
-      if (!award)
-        return false
-
-      let guiScene = obj.getScene()
-      guiScene.replaceContent(obj, "%gui/items/itemTooltip.blk", handler)
-      if (award.fillItemDesc(obj, handler))
-        return true
-
-      obj.findObject("item_name").setValue(award.getNameText())
-      obj.findObject("item_desc").setValue(award.getDescText())
-
-      let imageData = award.getDescriptionImage()
-      guiScene.replaceContentFromText(obj.findObject("item_icon"), imageData, imageData.len(), handler)
-      return true
-    }
-  }
-
-  BATTLE_TASK = {
-    isCustomTooltipFill = true
-    fillTooltip = function(obj, handler, id, _params) {
-      if (!checkObj(obj))
-        return false
-
-      let battleTask = getBattleTaskById(id)
-      if (!battleTask)
-        return false
-
-      let config = mkUnlockConfigByBattleTask(battleTask)
-      let view = getBattleTaskView(config, { isOnlyInfo = true })
-      let data = handyman.renderCached("%gui/unlocks/battleTasksItem.tpl", { items = [view], isSmallText = true })
-
-      let guiScene = obj.getScene()
-      obj.width = "1@unlockBlockWidth"
-      guiScene.replaceContentFromText(obj, data, data.len(), handler)
-      return true
-    }
-  }
-})
-
-// FIXME circular refs with challenges,
-// unlocksViewModule, genericTooltipTypes
-::g_battle_tasks <- {
-  isBattleTask
-  // view funcs
-  getBattleTaskDesc
-  getBattleTaskNameById
 }
 
 addListenersWithoutEnv({
@@ -1103,13 +640,10 @@ return {
   markBattleTaskSeen
   markAllBattleTasksSeen
   saveSeenBattleTasksData
-  mkUnlockConfigByBattleTask
-  getShowAllTasks // debug
-  // view
-  setBattleTasksUpdateTimer
   getBattleTaskNameById
-  getBattleTaskDifficultyImage
-  getBattleTaskView
-  getBattleTaskUserLogText
-  getBattleTaskUpdateDesc
+  getShowAllTasks // debug
+  getProposedTasks
+  getTaskStatus
+  getTotalActiveTasksNum
+  getGenerationIdInt
 }

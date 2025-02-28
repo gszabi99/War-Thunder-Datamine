@@ -319,11 +319,12 @@ const sectorOpacityMult = 0.25
 function createMlwsTarget(index, colorWatch) {
   let target = mlwsTargets[index]
   let targetOpacity = Computed(@() max(0.0, 1.0 - min(target.age * MlwsLwsSignalHoldTimeInv.value, 1.0)) * targetsOpacityMult.value)
+  let radius = target.rangeRel * 80.0 + 20.0
   let targetComponent = @() {
     watch = [targetOpacity, colorWatch]
     color = isColorOrWhite(colorWatch.value)
     rendObj = ROBJ_VECTOR_CANVAS
-    pos = [pw(100), ph(100)]
+    pos = [pw(radius), ph(radius)]
     size = [pw(50), ph(50)]
     lineWidth = targetLineWidth
     fillColor = 0

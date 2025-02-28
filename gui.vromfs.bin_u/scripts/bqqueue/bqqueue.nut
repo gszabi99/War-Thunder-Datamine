@@ -14,7 +14,7 @@ let DataBlock = require("DataBlock")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_charserver_time_sec } = require("chard")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 const MAX_TIME_STAMP_VALUE_SEC = 2145916800 //2038-01-01 This is the maximum number that can be stored in a timestamp value in table in BQ
 const MIN_TIME_BETWEEN_MSEC = 5000 //not send events more often than once per 5 sec

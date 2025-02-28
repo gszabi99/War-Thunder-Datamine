@@ -54,28 +54,6 @@ let getStateByBrokenDmMain = function(unitInfo, partName, partsArray, mainDmArra
   return PART_STATE.OFF
 }
 
-let countPartsAlive = function(partsArray, partsCfg) {
-  local count = 0
-  foreach (partId in partsArray) {
-    let dmParts = partsCfg?[partId].dmParts ?? {}
-    foreach (dmPart in dmParts)
-      if (dmPart._hp > 0)
-        count++
-  }
-  return count
-}
-
-let countPartsTotal = function(partsArray, partsCfg) {
-  local count = 0
-  foreach (partId in partsArray)
-    count += (partsCfg?[partId].dmParts ?? {}).len()
-  return count
-}
-
-let getPercentValueByCounts = function(alive, total, aliveMin) {
-  return clamp(lerp(aliveMin - 1, total, 0.0, 1.0, alive), 0.0, 1.0)
-}
-
 let getStateByValue = function(cur, vMax, crit, vMin) {
   return cur < vMin ? PART_STATE.KILLED
        : cur < crit ? PART_STATE.CRITICAL
@@ -182,24 +160,11 @@ enumsAddTypes(g_hud_enemy_debuffs, {
   }
 
   SHIP_COMPARTMENTS = {
-    unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
-    parts = [ "ship_compartment" ]
-    getInfo = function(camInfo, unitInfo, _partName = null, dmgParams = null) {
-      let total = getTblValue("compartmentsTotal", camInfo, 0)
-      if (!total)
-        return null
-      let canUpdateFromParts = dmgParams != null && countPartsTotal(this.parts, unitInfo.parts) == total
-      let alive = canUpdateFromParts ? countPartsAlive(this.parts, unitInfo.parts)
-        : getTblValue("compartmentsAlive", camInfo, 0)
-      let aliveMin = getTblValue("compartmentsAliveMin", camInfo, 0)
-      if (aliveMin > total)
-        return null
+    unitTypesMask = unitTypes.SHIP.bit
+    isUpdateByEnemyDamageState = true
 
-      let value = getPercentValueByCounts(alive, total, aliveMin)
-      return {
-        state = getStateByValue(alive, total, aliveMin + 1, aliveMin)
-        label = measureType.PERCENT_FLOAT.getMeasureUnitsText(value)
-      }
+    getInfo = function(data) {
+      return data.len() > 0
     }
   }
 
@@ -254,4 +219,5 @@ g_hud_enemy_debuffs.getTrackedPartNamesByUnitType <- function getTrackedPartName
 
 return {
   g_hud_enemy_debuffs
+  getStateByValue
 }

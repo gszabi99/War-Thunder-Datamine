@@ -32,7 +32,12 @@
   "propSplashEffects": "propSplashEffects_underwater",
   "isStackRearm": true,
   "supportsCombinedPriSecTriggers": true,
-  "shipsDisableDeadCoverParts": true,
+  "deadCoverCountToDelayedSinking": 2,
+  "delayedSinkingBreachesFreq": 4.0,
+  "delayedSinkingBreachesSize": [
+    0.85,
+    2.8
+  ],
   "depthTraceWarningDepth": 14.0,
   "depthTraceCriticalDepth": 11.0,
   "debrisPreset": "debris_preset_battleship",
@@ -4577,6 +4582,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
       "pressureDamageMult": 6.0,
+      "hydroShockDamageMult": 0.0,
       "main_caliber_turret_01_dm": {
         "hp": 1130.0
       },
@@ -4595,6 +4601,7 @@
       "armorClass": "ship_structural_steel",
       "armorThickness": 2.2,
       "pressureDamageMult": 5.0,
+      "hydroShockDamageMult": 0.0,
       "napalmDamageMult": 1.0,
       "auxiliary_caliber_turret_01_dm": {
         "hp": 700.0
@@ -4626,6 +4633,7 @@
       "armorThickness": 2.2,
       "fireDamageMult": 2.0,
       "pressureDamageMult": 6.0,
+      "hydroShockDamageMult": 0.0,
       "napalmDamageMult": 1.0,
       "aa_turret_01_dm": {
         "hp": 106.0
@@ -5125,6 +5133,7 @@
       "armorThickness": 3.0,
       "dmgState": 0.0,
       "pressureDamageMult": 1.0,
+      "hydroShockDamageMult": 0.0,
       "napalmDamageMult": 1.0,
       "fire_director_01_dm": {
         "hp": 250.0
@@ -5171,32 +5180,35 @@
       "hidableInViewer": true,
       "genericDamageMult": 0.1,
       "shatterDamageMult": 0.1,
+      "hydroShockDamageMult": 15.0,
+      "hydroShockArmorQuality": 0.2,
+      "pressureDamageMult": 0.0,
       "cover_01_dm": {
-        "hp": 16628.0
+        "hp": 13302.0
       },
       "cover_02_dm": {
-        "hp": 17361.0
+        "hp": 13889.0
       },
       "cover_03_dm": {
-        "hp": 17900.0
+        "hp": 14300.0
       },
       "cover_04_dm": {
-        "hp": 16544.0
+        "hp": 13235.0
       },
       "cover_05_dm": {
-        "hp": 17900.0
+        "hp": 14300.0
       },
       "cover_06_dm": {
-        "hp": 16093.0
+        "hp": 12874.0
       },
       "cover_07_dm": {
-        "hp": 13800.0
+        "hp": 11000.0
       },
       "cover_08_dm": {
-        "hp": 13800.0
+        "hp": 11000.0
       },
       "cover_09_dm": {
-        "hp": 13800.0
+        "hp": 11000.0
       }
     },
     "superstructures": {
@@ -6058,6 +6070,7 @@
       "fireDamageMult": 0.001,
       "hidableInViewer": true,
       "pressureDamageMult": 150.0,
+      "hydroShockDamageMult": 0.0,
       "at_bulge_01_dm": {
         "hp": 3459.0
       },
@@ -6944,6 +6957,23 @@
         }
       }
     ],
+    "hull": {
+      "part": [
+        "cover_01_dm",
+        "cover_02_dm",
+        "cover_03_dm",
+        "cover_04_dm",
+        "cover_05_dm",
+        "cover_06_dm",
+        "cover_07_dm",
+        "cover_08_dm",
+        "cover_09_dm",
+        "cover_10_dm"
+      ],
+      "effect": {
+        "pressure": true
+      }
+    },
     "open_mounts": {
       "part": [
         "auxiliary_caliber_turret_01_dm",

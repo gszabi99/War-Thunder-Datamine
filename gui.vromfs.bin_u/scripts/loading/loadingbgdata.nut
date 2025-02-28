@@ -3,7 +3,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { getCountryFlagsPresetName } = require("%scripts/options/countryFlagsPreset.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
-let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 /* Data in config (gui.blk/loading_bg)
 

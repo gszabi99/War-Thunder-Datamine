@@ -7,12 +7,13 @@ let { get_time_msec } = require("dagor.time")
 let psn = require("%sonyLib/webApi.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { requestUnknownPSNIds } = require("%scripts/contacts/externalContactsService.nut")
-let { psnApprovedUids, psnBlockedUids } = require("%scripts/contacts/contactsManager.nut")
+let { psnApprovedUids, psnBlockedUids, findContactByPSNId } = require("%scripts/contacts/contactsManager.nut")
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEqual } = u
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { updateContact } = require("%scripts/contacts/contactsActions.nut")
 
 let isContactsUpdated = mkWatched(persist, "isContactsUpdated", false)
 
@@ -61,7 +62,7 @@ function psnUpdateContactsList(usersTable) {
   //Create or update exist contacts
   let contactsTable = {}
   foreach (uid, playerData in usersTable) {
-    contactsTable[playerData.id] <- ::updateContact({
+    contactsTable[playerData.id] <- updateContact({
       uid = uid
       name = playerData.nick
       psnId = playerData.id
@@ -109,7 +110,7 @@ function proceedPlayersList() {
 
   let knownUsers = {}
   for (local i = playersList.len() - 1; i >= 0; i--) {
-    let contact = ::g_contacts.findContactByPSNId(playersList[i].accountId)
+    let contact = findContactByPSNId(playersList[i].accountId)
     if (contact) {
       knownUsers[contact.uid] <- {
         nick = contact.name

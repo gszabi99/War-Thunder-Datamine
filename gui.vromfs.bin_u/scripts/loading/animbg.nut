@@ -10,7 +10,7 @@ let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { getCurLoadingBgData, removeLoadingBgFromLists } = require("%scripts/loading/loadingBgData.nut")
 let { isLoadingScreenBanned } = require("%scripts/options/preloaderOptions.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
-let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
@@ -19,7 +19,7 @@ const MODIFY_NO_FILE = -2
 
 local lastBg = ""
 
-let getFullFileName = @(name) name.split(".").len() > 1 ? name : $"config/loadingbg/{name}.blk"
+let getFullFileName = @(name) name.split(".").len() > 1 ? name : $"loadingbg/{name}.blk"
 let getLastBgFileName = @() lastBg.len() ? getFullFileName(lastBg) : ""
 
 local isDebugMode = false

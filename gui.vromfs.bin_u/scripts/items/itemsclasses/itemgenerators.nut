@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let u = require("%sqStdLibs/helpers/u.nut")
+let { isEmpty, shuffle, search } = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
 let { round } = require("math")
 let { set_rnd_seed } = require("dagor.random")
@@ -13,8 +13,9 @@ let workshop = require("%scripts/items/workshop/workshop.nut")
 let ItemLifetimeModifier = require("%scripts/items/itemLifetimeModifier.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-
-let collection = {}
+let { getItemGenerator, registerItemGeneratorClass } = require("%scripts/items/itemGeneratorsManager.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { getExtInventoryUpdateTime } = require("%scripts/items/itemsManagerState.nut")
 
 let ItemGenerator = class {
   id = -1
@@ -41,7 +42,7 @@ let ItemGenerator = class {
     this.timestamp = itemDefDesc?.Timestamp ?? ""
     this.rawCraftTime = time.getSecondsFromTemplate(itemDefDesc?.lifetime ?? "")
     let lifetimeModifierText = itemDefDesc?.lifetime_modifier
-    if (!u.isEmpty(lifetimeModifierText))
+    if (!isEmpty(lifetimeModifierText))
       this.lifetimeModifier = ItemLifetimeModifier(lifetimeModifierText)
   }
 
@@ -59,7 +60,7 @@ let ItemGenerator = class {
 
   function getRecipes(needUpdateRecipesList = true) {
     if (!this._exchangeRecipes
-      || (needUpdateRecipesList && this._exchangeRecipesUpdateTime <= ::ItemsManager.getExtInventoryUpdateTime())) {
+      || (needUpdateRecipesList && this._exchangeRecipesUpdateTime <= getExtInventoryUpdateTime())) {
       let generatorId = this.id
       let generatorCraftTime = this.getCraftTime()
       let parsedRecipes = inventoryClient.parseRecipesString(this.exchange)
@@ -89,8 +90,8 @@ let ItemGenerator = class {
       if (itemBlk != null) {
         foreach (paramName in ["fakeRecipe", "trueRecipe"])
           foreach (itemdefId in itemBlk % paramName) {
-            ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
-            let gen = collection?[itemdefId]
+            findItemById(itemdefId) // calls pending generators list update
+            let gen = getItemGenerator(itemdefId)
             let additionalParsedRecipes = gen ? inventoryClient.parseRecipesString(gen.exchange) : []
             this._exchangeRecipes.extend(additionalParsedRecipes.map(@(pr) ExchangeRecipes({
               parsedRecipe = pr
@@ -111,7 +112,7 @@ let ItemGenerator = class {
       if (hasAdditionalRecipes) {
         local minIdx = this._exchangeRecipes[0].idx
         set_rnd_seed(userIdInt64.value + this.id)
-        this._exchangeRecipes = u.shuffle(this._exchangeRecipes)
+        this._exchangeRecipes = shuffle(this._exchangeRecipes)
         foreach (recipe in this._exchangeRecipes)
           recipe.idx = minIdx++
         set_rnd_seed(ref_time_ticks())
@@ -158,8 +159,8 @@ let ItemGenerator = class {
     let trophyWeightsBlockCount = trophyWeightsBlk?.blockCount() ?? 0
     foreach (set in parsedBundles)
       foreach (cfg in set.components) {
-        let generator = collection?[cfg.itemdefid]
-        let item = generator == null ? ::ItemsManager.findItemById(cfg.itemdefid) : null
+        let generator = getItemGenerator(cfg.itemdefid)
+        let item = generator == null ? findItemById(cfg.itemdefid) : null
         let rank = contentRank != null ? min(cfg.quantity, contentRank) : cfg.quantity
         if (item) {
           if (item.isHiddenItem())
@@ -208,7 +209,7 @@ let ItemGenerator = class {
   }
 
   function getRecipeByUid(uid) {
-    return u.search(this.getRecipes(), @(r) r.uid == uid)
+    return search(this.getRecipes(), @(r) r.uid == uid)
   }
 
   function markAllRecipes() {
@@ -240,23 +241,4 @@ let ItemGenerator = class {
   }
 }
 
-let get = function(itemdefId) {
-  ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
-  return collection?[itemdefId]
-}
-
-let add = function(itemDefDesc) {
-  if (itemDefDesc?.Timestamp != collection?[itemDefDesc.itemdefid]?.timestamp)
-    collection[itemDefDesc.itemdefid] <- ItemGenerator(itemDefDesc)
-}
-
-let findGenByReceptUid = @(recipeUid)
-  u.search(collection, @(gen) u.search(gen.getRecipes(false),
-    @(recipe) recipe.uid == recipeUid
-     && (recipe.isDisassemble || !gen.isDelayedxchange())) != null) //!!!FIX ME There should be no two recipes with the same uid.
-
-return {
-  get = get
-  add = add
-  findGenByReceptUid = findGenByReceptUid
-}
+registerItemGeneratorClass(ItemGenerator)

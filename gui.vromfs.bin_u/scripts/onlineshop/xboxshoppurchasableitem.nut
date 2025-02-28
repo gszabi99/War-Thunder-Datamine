@@ -9,7 +9,7 @@ let { GUI } = require("%scripts/utils/configs.nut")
 let { getEntitlementId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 let { getEntitlementView } = require("%scripts/onlineShop/entitlementView.nut")
-let { ProductKind, show_details, get_total_quantity, retrieve_product_info } = require("%xboxLib/impl/store.nut")
+let { ProductKind, show_details, get_total_quantity, retrieve_product_info } = require("%gdkLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 
 let XBOX_SHORT_NAME_PREFIX_CUT = "War Thunder - "

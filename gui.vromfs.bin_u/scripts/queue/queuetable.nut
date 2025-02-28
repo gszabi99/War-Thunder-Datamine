@@ -23,6 +23,7 @@ let { isEventForClan } = require("%scripts/events/eventInfo.nut")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { createQueueViewByCountries, updateQueueViewByCountries } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
 
 dagui_propid_add_name_id("_queueTableGenCode")
 
@@ -254,7 +255,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (isEventForClan(event))
       this.createQueueTableClan(nestObj)
     else
-      ::g_qi_view_utils.createViewByCountries(nestObj.findObject("ia_tooltip_table"), queue, event)
+      createQueueViewByCountries(nestObj.findObject("ia_tooltip_table"), queue, event)
 
     // Forces table to refill.
     this.updateTabContent()
@@ -311,7 +312,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (isClanQueue)
       this.updateClanQueueTable()
     else if (curCluster != null)
-        ::g_qi_view_utils.updateViewByCountries(tableObj, this.getCurQueue(), curCluster)
+      updateQueueViewByCountries(tableObj, this.getCurQueue(), curCluster)
   }
 
   function updateClanQueueTable() {

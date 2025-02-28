@@ -3,6 +3,7 @@ let { floor } = require("%sqstd/math.nut")
 
 const mpsToKnots = 1.94384
 const metrToFeet = 3.28084
+const meterToYard = 1.09361
 const mpsToFpm = 196.8504
 const mpsToKmh = 3.6
 const metrToMile = 0.000621371
@@ -40,6 +41,7 @@ enum weaponTriggerName {
 return {
   mpsToKnots
   metrToFeet
+  meterToYard
   mpsToFpm
   mpsToKmh
   baseLineWidth

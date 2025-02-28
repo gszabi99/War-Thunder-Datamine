@@ -9,6 +9,10 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
+let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
+let { blacklistAction } = require("%scripts/clans/clanActions.nut")
+let { myClanInfo } = require("%scripts/clans/clanState.nut")
+let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 
 local clanBlackList = [
   { id = "nick", type = lbDataType.NICK },
@@ -127,7 +131,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onUserCard() {
     if (this.curCandidate)
-      ::gui_modal_userCard({ uid = this.curCandidate.uid })
+      gui_modal_userCard({ uid = this.curCandidate.uid })
   }
 
   function onRequestApprove() {}
@@ -135,7 +139,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onDeleteFromBlacklist() {
     if (this.curCandidate)
-      ::g_clans.blacklistAction(this.curCandidate.uid, false, this.clanData == ::my_clan_info ? "-1" : this.clanData.id)
+      blacklistAction(this.curCandidate.uid, false, this.clanData == myClanInfo.get() ? "-1" : this.clanData.id)
   }
 
   function onUserRClick() {
@@ -167,10 +171,10 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
       }
       {
         text = loc("mainmenu/btnProfile")
-        action = @() ::gui_modal_userCard({ uid = this.curCandidate.uid })
+        action = @() gui_modal_userCard({ uid = this.curCandidate.uid })
       }
     ]
-    ::gui_right_click_menu(menu, this, position)
+    openRightClickMenu(menu, this, position)
   }
 
   function hideCandidateByName(name) {
@@ -197,7 +201,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
 }
 
 function openClanBlacklistWnd(clanData = null) {
-  clanData = clanData || ::my_clan_info
+  clanData = clanData ?? myClanInfo.get()
   if (!clanData)
     return
 

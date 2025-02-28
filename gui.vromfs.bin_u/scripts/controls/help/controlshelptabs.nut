@@ -98,7 +98,7 @@ function getTabs(contentSet) {
   return res
 }
 
-function getPrefferableType(contentSet) {
+function getPreferableType(contentSet) {
   if (contentSet == HELP_CONTENT_SET.LOADING)
     return helpTypes.MISSION_OBJECTIVES
 
@@ -129,5 +129,5 @@ function getPrefferableType(contentSet) {
 
 return {
   getTabs = getTabs
-  getPrefferableType = getPrefferableType
+  getPreferableType = getPreferableType
 }

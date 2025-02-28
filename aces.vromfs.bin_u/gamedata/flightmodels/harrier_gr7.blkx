@@ -48,6 +48,10 @@
     0.7,
     0.3
   ],
+  "fullAutopilotManeuverabilityModeTransition": [
+    1.0,
+    1.0
+  ],
   "canTakeoffWithoutGear": true,
   "paratrooper": "usa_irvin_5000_ejection_para",
   "DamageParts": {
@@ -2364,7 +2368,9 @@
               "N001",
               "N010",
               "V004",
+              "Type 1473",
               "ELTA EL/M-2001B",
+              "ELTA EL/M-2052",
               "PS-37",
               "PS-05",
               "Ferranti Blue Vixen",
@@ -2403,6 +2409,19 @@
           {
             "name": "ZSU-23-4",
             "type": "1RL33"
+          },
+          {
+            "name": "S-75",
+            "detectLaunch": true,
+            "type": "S75 RSN-75"
+          },
+          {
+            "name": "HAWK",
+            "detectLaunch": true,
+            "type": [
+              "AN/MPQ-50",
+              "AN/MPQ-61"
+            ]
           },
           {
             "name": "S-125",
@@ -2447,7 +2466,9 @@
             "type": [
               "Roland TT",
               "Crotale TA",
-              "Crotale TT"
+              "Crotale TT",
+              "Rapier TA",
+              "Rapier TT"
             ]
           },
           {
@@ -2478,6 +2499,14 @@
           {
             "text": "Z23",
             "group": "ZSU-23-4"
+          },
+          {
+            "text": "S75",
+            "group": "S-75"
+          },
+          {
+            "text": "hud/rwr_threat_hawk",
+            "group": "HAWK"
           },
           {
             "text": "S125",
@@ -2526,6 +2555,8 @@
             "track": false,
             "launch": true,
             "group": [
+              "S-75",
+              "HAWK",
               "S-125",
               "9K330",
               "2S6",

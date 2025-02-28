@@ -14,6 +14,8 @@ let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getRecipesComponents } = require("%scripts/items/exchangeRecipes.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 
 dagui_propid_add_name_id("itemId")
 
@@ -561,7 +563,7 @@ function getBodyItemsTitles(titlesConfig, itemSizes) {
   return titlesView
 }
 
-let getAvailableRecipe = @(genId) ::ItemsManager.findItemById(genId)
+let getAvailableRecipe = @(genId) findItemById(genId)
   ?.getVisibleRecipes()
   .findvalue(@(r) r.isUsable && !r.isRecipeLocked())
 
@@ -1044,7 +1046,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
       shortcut = GAMEPAD_ENTER_SHORTCUT
       cb = @() this.doMainAction(item, childObj, true)
     }]
-    ::gui_modal_tutor(steps, this, true)
+    gui_modal_tutor(steps, this, true)
   }
 
   function accentCraftTime() {
@@ -1062,7 +1064,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
       shortcut = GAMEPAD_ENTER_SHORTCUT
       waitTime = item.getCraftTimeLeft()
     }]
-    ::gui_modal_tutor(steps, this, true)
+    gui_modal_tutor(steps, this, true)
   }
 
   getActionParams = @(item, obj, showTutorial = false) {

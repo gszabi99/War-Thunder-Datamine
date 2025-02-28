@@ -1,57 +1,132 @@
 from "%scripts/dagui_natives.nut" import gchat_raw_command
 from "%scripts/dagui_library.nut" import *
 from "%scripts/chat/chatConsts.nut" import chatUpdateState
+from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
 
-let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_categories } = require("%scripts/chat/chatCategories.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { split_by_chars } = require("string")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { get_game_settings_blk } = require("blkGetters")
 let { getCurLangInfo, getGameLocalizationInfo } = require("%scripts/langUtils/language.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { g_chat_thread_tag } = require("%scripts/chat/chatThreadInfoTags.nut")
+let { checkChatConnected } = require("%scripts/chat/chatHelper.nut")
 
-::g_chat_latest_threads <- {
-  autoUpdatePeriodMsec = 60000
-  playerUpdateTimeoutMsec = 15000
+const REQUEST_TIMEOUT_MSEC = 15000
 
-  requestTimeoutMsec = 15000
+local autoUpdatePeriodMsec = 60000
+local playerUpdateTimeoutMsec = 15000
 
-  lastUpdatetTime = -1
-  lastRequestTime = -1
+local lastUpdatetTime = -1
+local lastRequestTime = -1
+local curListUid = 0 //for fast compare is threadsList new
+local threadsList = [] //first in array is a newest thread
+local requestedList = [] //uncomplete thread list received on refresh
 
-  curListUid = 0 //for fast compare is threadsList new
-  threadsList = [] //first in array is a newest thread
+local langsInited = false
+local isCustomLangsList = false
+local langsList = []
 
-  _requestedList = [] //uncomplete thread list received on refresh
+//only moderators can modify chat lang tags atm.
+let canChooseThreadsLang = @() hasFeature("ChatThreadLang") && is_myself_anyof_moderators()
 
-  langsInited = false
-  isCustomLangsList = false
-  langsList = []
+function getChatLatestThreadsUpdateState() {
+  if (lastRequestTime > lastUpdatetTime && lastRequestTime + REQUEST_TIMEOUT_MSEC > get_time_msec())
+    return chatUpdateState.IN_PROGRESS
+  if (lastUpdatetTime > 0 && lastUpdatetTime + autoUpdatePeriodMsec > get_time_msec())
+    return chatUpdateState.UPDATED
+  return chatUpdateState.OUTDATED
 }
 
-//refresh for usual players
-::g_chat_latest_threads.refresh <- function refresh() {
-  let langTags = this.getSearchLangsList().map(@(l) g_chat_thread_tag.LANG.prefix + l.chatId)
+function forceAutoRefreshInSecond() {
+  let state = getChatLatestThreadsUpdateState()
+  if (state == chatUpdateState.IN_PROGRESS)
+    return
 
-  local categoryTagsText = ""
-  if (!g_chat_categories.isSearchAnyCategory()) {
-    local categoryTags = g_chat_categories.getSearchCategoriesLList().map(@(cName) g_chat_thread_tag.CATEGORY.prefix + cName)
-    categoryTagsText = ",".join(categoryTags, true)
+  let diffSec = 1000
+  lastUpdatetTime = get_time_msec() - autoUpdatePeriodMsec + diffSec
+  //set status chatUpdateState.IN_PROGRESS
+  lastRequestTime = get_time_msec() - REQUEST_TIMEOUT_MSEC + diffSec
+}
+
+function onChatThreadsListEnd() {
+  threadsList.clear()
+  threadsList.extend(requestedList)
+  requestedList.clear()
+  curListUid++
+  lastUpdatetTime = get_time_msec()
+  broadcastEvent("ChatLatestThreadsUpdate")
+}
+
+function checkInitLangs() {
+  if (langsInited)
+    return
+  langsInited = true
+
+  let canChooseLang =  canChooseThreadsLang()
+  if (!canChooseLang) {
+    isCustomLangsList = false
+    return
   }
-  this.refreshAdvanced("hidden", ",".join(langTags, true), categoryTagsText)
+
+  let langsStr = loadLocalByAccount("chat/latestThreadsLangs", "")
+  let savedLangs = split_by_chars(langsStr, ",")
+
+  langsList.clear()
+  let langsConfig = getGameLocalizationInfo()
+  foreach (lang in langsConfig) {
+    if (!lang.isMainChatId)
+      continue
+    if (isInArray(lang.chatId, savedLangs))
+      langsList.append(lang)
+  }
+
+  isCustomLangsList = langsList.len() > 0
+}
+
+function saveCurLangs() {
+  if (!langsInited || !isCustomLangsList)
+    return
+  let chatIds = langsList.map(@(l) l.chatId)
+  saveLocalByAccount("chat/latestThreadsLangs", ",".join(chatIds, true))
+}
+
+function getSearchLangsList() {
+  checkInitLangs()
+  return isCustomLangsList ? langsList : [getCurLangInfo()]
+}
+
+function setSearchLangs(values) {
+  langsList = values
+  saveCurLangs()
+  isCustomLangsList = langsList.len() > 0
+  broadcastEvent("ChatThreadSearchLangChanged")
+}
+
+function onNewThreadInfoToList(threadInfo) {
+  u.appendOnce(threadInfo, requestedList)
+}
+
+function getChatThreadsTimeToRefresh() {
+  return max(0, lastUpdatetTime + playerUpdateTimeoutMsec - get_time_msec())
+}
+
+function canRefreshChatThreads() {
+  return checkChatConnected()
+         && getChatLatestThreadsUpdateState() != chatUpdateState.IN_PROGRESS
+         && getChatThreadsTimeToRefresh() <= 0
 }
 
 //refresh latest threads. options full work only for moderators.
 //!(any of @excludeTags) && (any from includeTags1) && (any from includeTags2)
 //for not moderators available only "lang_*" include and forced "hidden" exclude
-::g_chat_latest_threads.refreshAdvanced <- function refreshAdvanced(excludeTags = "hidden", includeTags1 = "", includeTags2 = "") {
-  if (!this.canRefresh())
+function refreshAdvanced(excludeTags = "hidden", includeTags1 = "", includeTags2 = "") {
+  if (!canRefreshChatThreads())
     return
 
   let cmdArr = ["xtlist"]
@@ -60,109 +135,44 @@ let { g_chat_thread_tag } = require("%scripts/chat/chatThreadInfoTags.nut")
 
   cmdArr.append(excludeTags, includeTags1, includeTags2)
 
-  this._requestedList.clear()
-  this.lastRequestTime = get_time_msec()
+  requestedList.clear()
+  lastRequestTime = get_time_msec()
   gchat_raw_command(" ".join(cmdArr, true))
 }
 
-::g_chat_latest_threads.onNewThreadInfoToList <- function onNewThreadInfoToList(threadInfo) {
-  u.appendOnce(threadInfo, this._requestedList)
-}
+//refresh for usual players
+function refreshChatThreads() {
+  let langTags = getSearchLangsList().map(@(l) g_chat_thread_tag.LANG.prefix + l.chatId)
 
-::g_chat_latest_threads.onThreadsListEnd <- function onThreadsListEnd() {
-  this.threadsList.clear()
-  this.threadsList.extend(this._requestedList)
-  this._requestedList.clear()
-  this.curListUid++
-  this.lastUpdatetTime = get_time_msec()
-  broadcastEvent("ChatLatestThreadsUpdate")
-}
-
-::g_chat_latest_threads.checkAutoRefresh <- function checkAutoRefresh() {
-  if (this.getUpdateState() == chatUpdateState.OUTDATED)
-    this.refresh()
-}
-
-::g_chat_latest_threads.getUpdateState <- function getUpdateState() {
-  if (this.lastRequestTime > this.lastUpdatetTime && this.lastRequestTime + this.requestTimeoutMsec > get_time_msec())
-    return chatUpdateState.IN_PROGRESS
-  if (this.lastUpdatetTime > 0 && this.lastUpdatetTime + this.autoUpdatePeriodMsec > get_time_msec())
-    return chatUpdateState.UPDATED
-  return chatUpdateState.OUTDATED
-}
-
-::g_chat_latest_threads.getTimeToRefresh <- function getTimeToRefresh() {
-  return max(0, this.lastUpdatetTime + this.playerUpdateTimeoutMsec - get_time_msec())
-}
-
-::g_chat_latest_threads.canRefresh <- function canRefresh() {
-  return g_chat.checkChatConnected()
-         && this.getUpdateState() != chatUpdateState.IN_PROGRESS
-         && this.getTimeToRefresh() <= 0
-}
-
-::g_chat_latest_threads.forceAutoRefreshInSecond <- function forceAutoRefreshInSecond() {
-  let state = this.getUpdateState()
-  if (state == chatUpdateState.IN_PROGRESS)
-    return
-
-  let diffSec = 1000
-  this.lastUpdatetTime = get_time_msec() - this.autoUpdatePeriodMsec + diffSec
-  //set status chatUpdateState.IN_PROGRESS
-  this.lastRequestTime = get_time_msec() - this.requestTimeoutMsec + diffSec
-}
-
-::g_chat_latest_threads.checkInitLangs <- function checkInitLangs() {
-  if (this.langsInited)
-    return
-  this.langsInited = true
-
-  let canChooseLang =  g_chat.canChooseThreadsLang()
-  if (!canChooseLang) {
-    this.isCustomLangsList = false
-    return
+  local categoryTagsText = ""
+  if (!g_chat_categories.isSearchAnyCategory()) {
+    local categoryTags = g_chat_categories.getSearchCategoriesLList().map(@(cName) g_chat_thread_tag.CATEGORY.prefix + cName)
+    categoryTagsText = ",".join(categoryTags, true)
   }
-
-  let langsStr = loadLocalByAccount("chat/latestThreadsLangs", "")
-  let savedLangs = split_by_chars(langsStr, ",")
-
-  this.langsList.clear()
-  let langsConfig = getGameLocalizationInfo()
-  foreach (lang in langsConfig) {
-    if (!lang.isMainChatId)
-      continue
-    if (isInArray(lang.chatId, savedLangs))
-      this.langsList.append(lang)
-  }
-
-  this.isCustomLangsList = this.langsList.len() > 0
+  refreshAdvanced("hidden", ",".join(langTags, true), categoryTagsText)
 }
 
-::g_chat_latest_threads.saveCurLangs <- function saveCurLangs() {
-  if (!this.langsInited || !this.isCustomLangsList)
-    return
-  let chatIds = this.langsList.map(@(l) l.chatId)
-  saveLocalByAccount("chat/latestThreadsLangs", ",".join(chatIds, true))
+function checkAutoRefresh() {
+  if (getChatLatestThreadsUpdateState() == chatUpdateState.OUTDATED)
+    refreshChatThreads()
 }
 
-::g_chat_latest_threads._setSearchLangs <- function _setSearchLangs(values) {
-  this.langsList = values
-  this.saveCurLangs()
-  this.isCustomLangsList = this.langsList.len() > 0
-  broadcastEvent("ChatThreadSearchLangChanged")
+function isChatThreadsListNewest(checkListUid) {
+  checkAutoRefresh()
+  return checkListUid == curListUid
 }
 
-::g_chat_latest_threads.getSearchLangsList <- function getSearchLangsList() {
-  this.checkInitLangs()
-  return this.isCustomLangsList ? this.langsList : [getCurLangInfo()]
+function getChatThreadsList() {
+  checkAutoRefresh()
+  return threadsList
 }
 
-::g_chat_latest_threads.openChooseLangsMenu <- function openChooseLangsMenu(align = "top", alignObj = null) {
-  if (!g_chat.canChooseThreadsLang())
+function openChatThreadsChooseLangsMenu(align = "top", alignObj = null) {
+  if (!canChooseThreadsLang())
     return
 
   let optionsList = []
-  let curLangs = this.getSearchLangsList()
+  let curLangs = getSearchLangsList()
   let langsConfig = getGameLocalizationInfo()
   foreach (lang in langsConfig)
     if (lang.isMainChatId)
@@ -175,56 +185,50 @@ let { g_chat_thread_tag } = require("%scripts/chat/chatThreadInfoTags.nut")
 
   loadHandler(gui_handlers.MultiSelectMenu, {
     list = optionsList
-    onFinalApplyCb = function(values) { ::g_chat_latest_threads._setSearchLangs(values) }
+    onFinalApplyCb = setSearchLangs
     align = align
     alignObj = alignObj
   })
 }
 
-::g_chat_latest_threads.isListNewest <- function isListNewest(checkListUid) {
-  this.checkAutoRefresh()
-  return checkListUid == this.curListUid
-}
+addListenersWithoutEnv({
+  function InitConfigs(_p) {
+    langsInited = false
 
-::g_chat_latest_threads.getList <- function getList() {
-  this.checkAutoRefresh()
-  return this.threadsList
-}
-
-::g_chat_latest_threads.onEventInitConfigs <- function onEventInitConfigs(_p) {
-  this.langsInited = false
-
-  let blk = get_game_settings_blk()
-  if (u.isDataBlock(blk?.chat)) {
-    this.autoUpdatePeriodMsec = blk.chat?.threadsListAutoUpdatePeriodMsec ?? this.autoUpdatePeriodMsec
-    this.playerUpdateTimeoutMsec = blk.chat?.threadsListPlayerUpdateTimeoutMsec ?? this.playerUpdateTimeoutMsec
+    let blk = get_game_settings_blk()
+    if (u.isDataBlock(blk?.chat)) {
+      autoUpdatePeriodMsec = blk.chat?.threadsListAutoUpdatePeriodMsec ?? autoUpdatePeriodMsec
+      playerUpdateTimeoutMsec = blk.chat?.threadsListPlayerUpdateTimeoutMsec ?? playerUpdateTimeoutMsec
+    }
   }
-}
 
-::g_chat_latest_threads.onEventChatThreadInfoModifiedByPlayer <- function onEventChatThreadInfoModifiedByPlayer(p) {
-  if (isInArray(getTblValue("threadInfo", p), this.getList()))
-    ::g_chat_latest_threads.forceAutoRefreshInSecond() //wait for all changes applied
-}
+  function ChatThreadInfoModifiedByPlayer(p) {
+    if (getChatThreadsList().contains(p?.threadInfo))
+      forceAutoRefreshInSecond() //wait for all changes applied
+  }
 
-::g_chat_latest_threads.onEventCrossNetworkChatOptionChanged <- function onEventCrossNetworkChatOptionChanged(_p) {
-  this.forceAutoRefreshInSecond()
-}
+  function GameLocalizationChanged(_p) {
+    if (!isCustomLangsList)
+      forceAutoRefreshInSecond()
+  }
 
-::g_chat_latest_threads.onEventContactsBlockStatusUpdated <- function onEventContactsBlockStatusUpdated(_p) {
-  this.forceAutoRefreshInSecond()
-}
+  CrossNetworkChatOptionChanged = @(_p) forceAutoRefreshInSecond()
+  ContactsBlockStatusUpdated = @(_p) forceAutoRefreshInSecond()
+  ChatThreadCreateRequested = @(_p) forceAutoRefreshInSecond()
+  ChatSearchCategoriesChanged = @(_p) refreshChatThreads()
+}, g_listener_priority.DEFAULT_HANDLER)
 
-::g_chat_latest_threads.onEventChatThreadCreateRequested <- function onEventChatThreadCreateRequested(_p) {
-  ::g_chat_latest_threads.forceAutoRefreshInSecond()
+return {
+  getChatLatestThreadsUpdateState
+  getChatLatestThreadsCurListUid = @() curListUid
+  onChatThreadsListEnd
+  getSearchLangsList
+  onNewThreadInfoToList
+  getChatThreadsTimeToRefresh
+  canRefreshChatThreads
+  refreshChatThreads
+  isChatThreadsListNewest
+  getChatThreadsList
+  openChatThreadsChooseLangsMenu
+  canChooseThreadsLang
 }
-
-::g_chat_latest_threads.onEventChatSearchCategoriesChanged <- function onEventChatSearchCategoriesChanged(_p) {
-  this.refresh()
-}
-
-::g_chat_latest_threads.onEventGameLocalizationChanged <- function onEventGameLocalizationChanged(_p) {
-  if (!this.isCustomLangsList)
-    ::g_chat_latest_threads.forceAutoRefreshInSecond()
-}
-
-subscribe_handler(::g_chat_latest_threads, g_listener_priority.DEFAULT_HANDLER)

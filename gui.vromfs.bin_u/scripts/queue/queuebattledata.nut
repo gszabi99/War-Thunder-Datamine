@@ -1,7 +1,7 @@
 
 from "%scripts/dagui_library.nut" import *
 let { resetTimeout } = require("dagor.workcycle")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { charRequestJwt } = require("%scripts/tasker.nut")
 let { register_command } = require("console")

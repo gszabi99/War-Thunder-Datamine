@@ -25,15 +25,20 @@ let { stripTags } = require("%sqstd/string.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_game_settings_blk, get_ranks_blk } = require("blkGetters")
-let { locCurrentMissionName } = require("%scripts/missions/missionsUtils.nut")
+let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
 let { isInFlight } = require("gameplayBinding")
-let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { sessionLobbyStatus, getSessionLobbyTeam, getSessionLobbyPlayersInfo
+} = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getRankByExp } = require("%scripts/ranks.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
+let { getRoomRankCalcMode, getBattleRatingParamByPlayerInfo, isMemberInMySquadById
+} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 
 let getKillsForAirBattle = @(player) player.kills
 let getKillsForTankBattle = @(player) player.kills + player.groundKills
@@ -194,12 +199,9 @@ function get_in_battle_time_to_kick_show_alert() {
 
 let set_in_battle_time_to_kick_show_alert = @(v) in_battle_time_to_kick_show_alert = v
 
-//!!!FIX Rebuild global functions below to local
-
-::get_local_team_for_mpstats <- function get_local_team_for_mpstats(team = null) {
+function getLocalTeamForMpStats(team = null) {
   return (team ?? get_mp_local_team()) != g_team.B.code ? g_team.A.code : g_team.B.code
 }
-
 
 function createExpSkillBonusIcon(tooltipFunction) {
   return "".concat("img{ id:t='exp_skill_bonus_icon' not-input-transparent:t='yes'; tooltip:t='$tooltipObj'; size:t='@tableIcoSize, @tableIcoSize';",
@@ -209,8 +211,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
   )
 }
 
-
-::build_mp_table <- function build_mp_table(table, markupData, hdr, numRows = 1, params = {}) {
+function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
   if (numRows <= 0)
     return ""
 
@@ -276,7 +277,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
       else if (hdr[j] == "name") {
         local nameText = item
         if (!isEmpty && !isHeader && !table[i].isBot)
-          nameText = ::g_contacts.getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
+          nameText = getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
 
         nameText = stripTags(nameText)
         let nameWidth = markup?[hdr[j]]?.width ?? "0.5pw-0.035sh"
@@ -289,7 +290,7 @@ function createExpSkillBonusIcon(tooltipFunction) {
           //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
           if (table[i]?.isLocal)
             trAdd.append("mainPlayer:t = 'yes';")
-          else if (table[i]?.isInHeroSquad || ::SessionLobby.isMemberInMySquadById(table[i]?.userId.tointeger()))
+          else if (table[i]?.isInHeroSquad || isMemberInMySquadById(table[i]?.userId.tointeger()))
             trAdd.append("inMySquad:t = 'yes';")
           if (("spectator" in table[i]) && table[i].spectator)
             trAdd.append("spectator:t = 'yes';")
@@ -387,12 +388,12 @@ function createExpSkillBonusIcon(tooltipFunction) {
       }
 
       trData.append("td { id:t='td_", hdr[j], "'; ")
-        if (j == 0)
-          trData.append("padding-left:t='@tablePad'; ")
-        if (j > 0)
-          trData.append("cellType:t = 'border'; ")
-        if (j == (hdr.len() - 1))
-          trData.append("padding-right:t='@tablePad'; ")
+      if (j == 0)
+        trData.append("padding-left:t='@tablePad'; ")
+      if (j > 0)
+        trData.append("cellType:t = 'border'; ")
+      if (j == (hdr.len() - 1))
+        trData.append("padding-right:t='@tablePad'; ")
       trData.append(tdData, " }")
     }
 
@@ -403,11 +404,11 @@ function createExpSkillBonusIcon(tooltipFunction) {
   return "\n".join(data)
 }
 
-::update_team_css_label <- function update_team_css_label(nestObj, customPlayerTeam = null) {
+function updateTeamCssLabel(nestObj, customPlayerTeam = null) {
   if (!checkObj(nestObj))
     return
-  let teamCode = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? ::SessionLobby.getTeam()
-    : (customPlayerTeam ?? ::get_local_team_for_mpstats())
+  let teamCode = (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) ? getSessionLobbyTeam()
+    : (customPlayerTeam ?? getLocalTeamForMpStats())
   nestObj.playerTeam = g_team.getTeamByCode(teamCode).cssLabel
 }
 
@@ -428,7 +429,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
 }
 
 
-::set_mp_table <- function set_mp_table(obj_tbl, table, params = {}) {
+function setMpTable(obj_tbl, table, params = {}) {
   let numTblRows = table.len()
   let realTblRows = obj_tbl.childrenCount()
   let numRows = max(numTblRows, realTblRows)
@@ -438,7 +439,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
   let showAirIcons = getTblValue("showAirIcons", params, true)
   let continueRowNum = getTblValue("continueRowNum", params, 0)
   let numberOfWinningPlaces = getTblValue("numberOfWinningPlaces", params, -1)
-  let playersInfo = params?.playersInfo ?? ::SessionLobby.getPlayersInfo()
+  let playersInfo = params?.playersInfo ?? getSessionLobbyPlayersInfo()
   let needColorizeNotInGame = isInFlight()
   let isReplay = is_replay_playing()
 
@@ -484,7 +485,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
 
       if (isReplay) {
         table[i].isLocal = spectatorWatchedHero.id == table[i].id
-        table[i].isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId,
+        table[i].isInHeroSquad = isEqualSquadId(spectatorWatchedHero.squadId,
           table[i]?.squadId)
       }
 
@@ -532,7 +533,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
       else if (hdr == "name") {
         local nameText = item
         if (!player.isBot)
-          nameText = ::g_contacts.getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
+          nameText = getPlayerFullName(getPlayerName(nameText), table[i].clanTag)
 
         if (table[i]?.invitedName && table[i].invitedName != item) {
           local color = ""
@@ -557,7 +558,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
         local tooltip = nameText
         let isLocal = table[i].isLocal
         //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
-        let isInHeroSquad = table[i]?.isInHeroSquad || ::SessionLobby.isMemberInMySquadById(table[i]?.userId.tointeger())
+        let isInHeroSquad = table[i]?.isInHeroSquad || isMemberInMySquadById(table[i]?.userId.tointeger())
         objTr.mainPlayer = isLocal ? "yes" : "no"
         objTr.inMySquad  = isInHeroSquad ? "yes" : "no"
         objTr.spectator = table[i]?.spectator ? "yes" : "no"
@@ -569,7 +570,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
         if (!table[i].isBot
           && get_mission_difficulty() == g_difficulty.ARCADE.gameTypeName
           && !getCurMissionRules().isWorldWar) {
-          let data = ::SessionLobby.getBattleRatingParamByPlayerInfo(playerInfo)
+          let data = getBattleRatingParamByPlayerInfo(playerInfo)
           if (data) {
             let squadInfo = getSquadInfo(data.squad)
             let isInSquad = squadInfo ? !squadInfo.autoSquad : false
@@ -595,7 +596,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
               loc("ui/colon"), format("%.1f", ratingTotal))
             if (showLowBRPrompt) {
               let maxBRDifference = 2.0 // Hardcoded till switch to new matching.
-              let rankCalcMode = ::SessionLobby.getRankCalcMode()
+              let rankCalcMode = getRoomRankCalcMode()
               if (rankCalcMode)
                 tooltip = "".concat(tooltip, "\n",
                   loc($"multiplayer/lowBattleRatingPrompt/{rankCalcMode}", { maxBRDifference = format("%.1f", maxBRDifference) }))
@@ -737,7 +738,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
   }
 }
 
-::getCurMpTitle <- function getCurMpTitle() {
+function getCurMpTitle() {
   let text = []
 
   if (getCurMissionRules().isWorldWar && isWorldWarEnabled()) {
@@ -766,7 +767,7 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
   return loc("ui/comma").join(text, true)
 }
 
-::count_width_for_mptable <- function count_width_for_mptable(objTbl, markup) {
+function countWidthForMpTable(objTbl, markup) {
   let guiScene = objTbl.getScene()
   local usedWidth = 0
   local relWidthTotal = 0.0
@@ -811,4 +812,10 @@ return {
   set_in_battle_time_to_kick_show_timer
   get_time_to_kick_show_timer
   set_time_to_kick_show_timer
+  getCurMpTitle
+  setMpTable
+  getLocalTeamForMpStats
+  buildMpTable
+  updateTeamCssLabel
+  countWidthForMpTable
 }

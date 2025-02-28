@@ -4,10 +4,11 @@ from "%scripts/dagui_library.nut" import *
 let { format } = require("string")
 let { rnd_int } = require("dagor.random")
 let { get_time_msec } = require("dagor.time")
+let { register_command } = require("console")
 
 /*
 
- g_delayed_actions.add(callback, delay)
+addDelayedAction(callback, delay)
 
  run callback no earlier than call time plus interval specified in 'delay' argument
 
@@ -81,23 +82,17 @@ function addDelayedAction(action, delay_ms) {
   }
 }
 
-function add(action, delay_ms = 0) {
-  addDelayedAction(action, delay_ms)
-}
-
-function test() {
+function testDelayedAction() {
   let curTime = get_time_msec()
   for (local i = 0; i < 100; ++i) {
     let rndDelay = rnd_int(0, 9)
     let idx = i
-    add(@() log(format("[%d] %d run action with delay %d seconds", curTime, idx, rndDelay)), rndDelay * 1000)
+    addDelayedAction(@() log(format("[%d] %d run action with delay %d seconds", curTime, idx, rndDelay)), rndDelay * 1000)
   }
 }
 
-::g_delayed_actions <- {
-  add
-  runDelayedActions
-  runInstantActions
+register_command(testDelayedAction, "debug.testDelayedAction")
+
+return {
   addDelayedAction
-  test
 }

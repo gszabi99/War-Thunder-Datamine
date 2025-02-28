@@ -4,7 +4,7 @@ from "%scripts/contacts/contactsConsts.nut" import contactEvent, GAME_GROUP_NAME
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, is_gdk } = require("%scripts/clientState/platform.nut")
 let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
@@ -12,7 +12,7 @@ let { isDataBlock } = require("%sqstd/underscore.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 let contactsWndSizes = Watched(null)
 
@@ -77,7 +77,7 @@ let additionalConsolesContacts = //TO DO: save wt groups to watched and use comp
       [EPLX_PS4_FRIENDS] = psnApprovedUids,
       [EPL_BLOCKLIST] = psnBlockedUids
     }
-  : isPlatformXboxOne ? {
+  : is_gdk ? {
       [EPL_FRIENDLIST] = xboxApprovedUids,
       [EPL_BLOCKLIST] = xboxBlockedUids
     }
@@ -85,6 +85,15 @@ let additionalConsolesContacts = //TO DO: save wt groups to watched and use comp
 
 let cacheContactByName = @(contact) contactsByName[contact.name] <- contact
 let getContactByName = @(name) contactsByName?[name]
+
+let findContactByPSNId = @(psnId) contactsPlayers.findvalue(@(player) player.psnId == psnId)
+
+function findContactByXboxId(xboxId) {
+  foreach (_uid, player in contactsPlayers)
+    if (player.xboxId == xboxId)
+      return player
+  return null
+}
 
 function verifyContact(params) {
   let name = params?.playerName
@@ -343,4 +352,6 @@ return {
   contactsGroupWithoutMaxCount
   getContactsGroupUidList
   clanUserTable
+  findContactByPSNId
+  findContactByXboxId
 }

@@ -28,6 +28,8 @@ let aamAimState = {
   HmdVisibleAAM = Watched(false)
   HmdDesignation = Watched(false)
   HmdFovMult = Watched(1.0)
+
+  HasTOFInHud = Watched(true)
 }
 
 interopGen({

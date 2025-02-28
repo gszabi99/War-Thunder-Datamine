@@ -128,7 +128,7 @@ def fire_damage_process_start_burn_event(eid : EntityId;
     offset = coll_node.boundingSphere.c
 
   let at_time = float(get_app().usefulTotalTime)
-  let fire_id = fire_system_start_single_burn(eid, [[StartSingleBurnDesc
+  let fire_id = fire_system_start_single_burn(eid, [[StartSingleBurnDesc()
     partId=part_id,
     nodeId=geom_node_id,
     fireParamsId=fire_params_id,
@@ -329,7 +329,7 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
 
   for part in burning_parts
     if !part.already_burning
-      fire_system_start_single_burn(eid, [[StartSingleBurnDesc
+      fire_system_start_single_burn(eid, [[StartSingleBurnDesc()
         partId = unpack_part_id(part.packed_part_id),
         nodeId = INVALID_GEOM_NODE_ID,
         fireParamsId = part.fire_params_id,

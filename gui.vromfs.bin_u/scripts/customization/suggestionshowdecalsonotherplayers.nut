@@ -13,7 +13,8 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getCachedDataByType } = require("%scripts/customization/decorCache.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 const SHOWED_SUGGESTED_SAVE_PATH = "seen/suggestionShowDecalsOnOtherPlayers"
 const SUGGESTED_DELAY_TIME_SEC = 15552000 //180 days
@@ -22,9 +23,9 @@ const MIN_VEHICLE_RANK_FOR_CHECK_OPTIONS = 5
 let SHOW_SAVE_ID = $"{SHOWED_SUGGESTED_SAVE_PATH}/show"
 let LAST_SHOW_TIME_SEC_SAVE_ID = $"{SHOWED_SUGGESTED_SAVE_PATH}/lastShowTimeSec"
 
-let enableDecalsOnOtherPlayersOpt = @() ::set_gui_option_in_mode(USEROPT_SHOW_OTHERS_DECALS, true, OPTIONS_MODE_GAMEPLAY)
+let enableDecalsOnOtherPlayersOpt = @() set_gui_option_in_mode(USEROPT_SHOW_OTHERS_DECALS, true, OPTIONS_MODE_GAMEPLAY)
 
-let isEnableDecalsOnOtherPlayersOpt = @() ::get_gui_option_in_mode(USEROPT_SHOW_OTHERS_DECALS, OPTIONS_MODE_GAMEPLAY, false)
+let isEnableDecalsOnOtherPlayersOpt = @() get_gui_option_in_mode(USEROPT_SHOW_OTHERS_DECALS, OPTIONS_MODE_GAMEPLAY, false)
 
 let class SuggestionShowDecalsOnOtherPlayers (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

@@ -100,10 +100,20 @@ function unitsCount(units = []) {
   return res
 }
 
+function setMaxCountColumnWidth(wwUnits) {
+  if (wwUnits.len() == 0)
+    return
+  let maxWidth = wwUnits.reduce(function(res, v) {
+    return max(res, v.columnCountWidth)
+  }, 0)
+  wwUnits.each(@(v) v.columnCountWidth = maxWidth)
+}
+
 function getUnitsListViewParams(wwUnits, params = {}, needSort = true) {
   if (needSort)
     wwUnits.sort(::g_world_war.sortUnitsBySortCodeAndCount)
   wwUnits = wwUnits.map(@(wwUnit) wwUnit.getShortStringView(params))
+  setMaxCountColumnWidth(wwUnits)
   return wwOperationUnitsGroups.overrideUnitsViewParamsByGroups(wwUnits)
 }
 

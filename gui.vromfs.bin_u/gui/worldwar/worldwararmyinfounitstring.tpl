@@ -16,7 +16,7 @@ tdiv {
 
     <<#isShow>>
       textareaNoTab {
-        width:t='0.085@sf'
+        width:t='<<columnCountWidth>>'
         pos:t='0, 50%ph-50%h'
         position:t='relative'
         <<#isShowTotalCount>>
@@ -33,6 +33,7 @@ tdiv {
         background-svg-size:t='@tableIcoSize, @tableIcoSize'
         pos:t='0, 50%ph-50%h'
         position:t='relative'
+        margin-left:t='2@blockInterval'
         background-image:t='<<icon>>'
         background-repeat:t='aspect-ratio'
         shopItemType:t='<<shopItemType>>'
@@ -40,12 +41,12 @@ tdiv {
       <</icon>>
 
       textareaNoTab {
-        width:t='pw-0.05@sf-@tableIcoSize'
         pos:t='0, 50%ph-50%h'
         position:t='relative'
+        margin-left:t='1@blockInterval'
         word-wrap:t='no'
         pare-text:t='yes'
-        text:t=' <<#showType>><<unitType>><</showType>><<^showType>><<name>><</showType>> '
+        text:t='<<#showType>><<unitType>><</showType>><<^showType>><<name>><</showType>> '
       }
     <</isShow>>
   <</reflect>>
@@ -109,15 +110,16 @@ tdiv {
     position:t='relative'
 
     <<#isShow>>
+    tdiv {
+      position:t="absolute"
+      pos:t="pw-w, 0"
       textareaNoTab {
-        width:t='pw-0.05@sf-@tableIcoSize'
         pos:t='0, 50%ph-50%h'
         position:t='relative'
-        padding-right:t='3@dp'
-        text-align:t='right'
         word-wrap:t='no'
         pare-text:t='yes'
-        text:t=' <<#showType>><<unitType>><</showType>><<^showType>><<name>><</showType>> '
+        text:t='<<#showType>><<unitType>><</showType>><<^showType>><<name>><</showType>> '
+        margin-right:t='1@blockInterval'
       }
 
       <<#icon>>
@@ -129,11 +131,12 @@ tdiv {
         background-image:t='<<icon>>'
         background-repeat:t='aspect-ratio'
         shopItemType:t='<<shopItemType>>'
+        margin-right:t='2@blockInterval'
       }
       <</icon>>
 
       textareaNoTab {
-        width:t='0.05@sf'
+        width:t='<<columnCountWidth>>'
         pos:t='0, 50%ph-50%h'
         position:t='relative'
         text-align:t='right'
@@ -144,6 +147,7 @@ tdiv {
           text:t='<<#activeCount>><<activeCount>><</activeCount>>'
         <</isShowTotalCount>>
       }
+  }
     <</isShow>>
   <</reflect>>
 

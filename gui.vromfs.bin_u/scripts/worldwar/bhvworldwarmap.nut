@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import ww_zoom_map, ww_update_hover_zone_id, is_keyboard_btn_down, ww_get_battle_icon_radius, ww_side_val_to_name, ww_update_hover_battle_id, ww_update_selected_armies_name, ww_find_army_name_by_coordinates, ww_find_army_names_in_point, ww_update_hover_airfield_id, ww_convert_map_to_world_position
+from "%scripts/dagui_natives.nut" import ww_zoom_map, ww_update_hover_zone_id, is_keyboard_btn_down, ww_get_battle_icon_radius, ww_side_val_to_name, ww_update_hover_battle_id, ww_find_army_name_by_coordinates, ww_find_army_names_in_point, ww_update_hover_airfield_id, ww_convert_map_to_world_position
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
@@ -10,7 +10,7 @@ let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { wwGetZoneName, wwGetZoneIdx, wwGetSelectedAirfield, wwSelectAirfield,
   wwFindAirfieldByCoordinates, wwClearOutlinedZones, wwGetBattlesNames,
   wwUpdateHoverArmyName, wwFindLastFlewOutArmyNameByAirfield,
-  wwIsCellGenerallyPassable, wwCanAppendPathPointForSelectedArmies } = require("worldwar")
+  wwIsCellGenerallyPassable, wwCanAppendPathPointForSelectedArmies, wwUpdateSelectedArmiesName } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let g_world_war_render = require("%scripts/worldWar/worldWarRender.nut")
@@ -358,7 +358,7 @@ let worldWarMapControls = class {
         selectedArmiesInfo.append(info)
       }
     }
-    ww_update_selected_armies_name(selectedArmiesInfo)
+    wwUpdateSelectedArmiesName(selectedArmiesInfo)
     if(selectedArmiesInfo.len() > 0)
       selectArmyByName(selectedArmiesInfo[0].name)
   }

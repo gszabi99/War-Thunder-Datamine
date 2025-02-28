@@ -2,13 +2,15 @@ from "%scripts/dagui_library.nut" import *
 
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+
 let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
 
 function takeUnitInSlotbar(unit, params = {}) {
   if (!unit)
     return
 
-  ::queues.checkAndStart(
+  queues.checkAndStart(
     function() {
       checkSquadUnreadyAndDo(
         function () {

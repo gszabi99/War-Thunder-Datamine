@@ -42,7 +42,7 @@ gui_handlers.InvitesWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let list = filterText == "" ? this.invitesList
       : this.invitesList.filter(@(invite) getPlayerName(invite.inviterNameToLower).indexof(filterText) != null)
     let listObj = this.scene.findObject("invites_list")
-      this.guiScene.setUpdatesEnabled(false, false)
+    this.guiScene.setUpdatesEnabled(false, false)
     let isFullListVisible = this.showedInvites >= list.len()
     let childrenCount = listObj.childrenCount()
     if (this.showedInvites > childrenCount)

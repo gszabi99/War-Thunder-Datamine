@@ -15,6 +15,9 @@ let { getEventEconomicName, checkEventFeaturePacks, isEventForNewbies
 } = require("%scripts/events/eventInfo.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { isMeNewbieOnUnitType, getUnitTypeByNewbieEventId } = require("%scripts/myStats.nut")
+let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -45,7 +48,7 @@ function canJoinEventForNewbies(event) {
   return false
 }
 
-::EventJoinProcess <- class {
+let EventJoinProcess = class {
   event = null // Event to join.
   room = null
   onComplete = null
@@ -110,7 +113,7 @@ function canJoinEventForNewbies(event) {
 
     let handler = this
     tryOpenCaptchaHandler(
-      @() ::queues.checkAndStart(
+      @() queues.checkAndStart(
         Callback(handler.joinStep2_multiplayer_restriction, handler),
         Callback(handler.remove, handler),
         "isCanNewflight",
@@ -162,7 +165,7 @@ function canJoinEventForNewbies(event) {
   function joinStep4_internal() {
     this.processStepName = "joinStep4_internal"
     let mGameMode = events.getMGameMode(this.event, this.room)
-    if (::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.EVENT) ||
+    if (queues.isAnyQueuesActive(QUEUE_TYPE_BIT.EVENT) ||
         !::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true, showOfflineSquadMembersPopup = true }))
       return this.remove()
     if (events.checkEventDisableSquads(this, this.event.name))
@@ -193,7 +196,7 @@ function canJoinEventForNewbies(event) {
   function joinStep6_repairInfo() {
     this.processStepName = "joinStep6_repairInfo"
     let repairInfo = events.getCountryRepairInfo(this.event, this.room, profileCountrySq.value)
-    ::checkBrokenAirsAndDo(repairInfo, this, this.joinStep7_membersForQueue, false, this.remove)
+    checkBrokenAirsAndDo(repairInfo, this, this.joinStep7_membersForQueue, false, this.remove)
   }
 
   function joinStep7_membersForQueue() {
@@ -208,7 +211,7 @@ function canJoinEventForNewbies(event) {
     this.processStepName = "joinStep8_joinQueue"
     //join room
     if (this.room)
-      ::SessionLobby.joinRoom(this.room.roomId)
+      joinSessionRoom(this.room.roomId)
     else {
       let joinEventParams = {
         mode    = this.event.name
@@ -217,7 +220,7 @@ function canJoinEventForNewbies(event) {
       }
       if (membersData)
         joinEventParams.members <- membersData
-      ::queues.joinQueue(joinEventParams)
+      queues.joinQueue(joinEventParams)
     }
 
     this.onDone()
@@ -254,4 +257,5 @@ function canJoinEventForNewbies(event) {
 
 return {
   hasAlredyActiveJoinProcess
+  EventJoinProcess
 }

@@ -20,8 +20,8 @@ require Sound
 def gm_engine_sound_init_es(evt : CmdInitComponent;
                             eid : EntityId;
                             var unit__ref : UnitRef;
-                            playerNo : int;
-                            className : string;
+                            unit__playerNo : int;
+                            unit__className : string;
                             unitType : int;
                             var gm_engine_sound__cached_params : FloatList&;
                             var gm_engine_sound__pos_offset : float3&;
@@ -31,7 +31,9 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
                             var gm_engine_sound__start_event_name : das_string&;
                             var gm_engine_sound__stop_event_name : das_string&;
                             var gm_engine_sound__start_inside_name : das_string&;
-                            var gm_engine_sound__stop_inside_name : das_string&)
+                            var gm_engine_sound__stop_inside_name : das_string&;
+                            var tank_engine__startSoundDelay : float&;
+                            var tank_engine__stopSoundDelay : float&)
   let unit = unit__ref.unit
   assert(unit != null)
 
@@ -42,7 +44,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
   if !gm.needLoadSounds
     addSubTemplate(eid, "disabled_update")
     return
-  let is_hero = playerNo == get_local_player_no()
+  let is_hero = unit__playerNo == get_local_player_no()
   let modelSoundBlk = *evt.modelBlk |> datablock_get_block_by_name("sound")
   if modelSoundBlk == null
     addSubTemplate(eid, "disabled_update")
@@ -58,21 +60,23 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
   let engineBlkName = modelSoundBlk |> datablock_getStr(engineName, "")
   using() <| $(var sndBlk : DataBlock)
     if datablock_load(sndBlk, "config/sound_studio.blk")
-      let useNewEngineSound = sndBlk |> datablock_getBool("useNewEngineSound", false)
-      if !useNewEngineSound
-        addSubTemplate(eid, "disabled_update") // delete with old engineSound system for gm
-        return
-
       var engineBlk = sndBlk |> datablock_get_block_by_name(engineBlkName)
       if !is_hero && !is_low_mem_mode()
         let mainEngineBlkName = modelSoundBlk |> datablock_getStr("EngineName", "")
         var mainEngineBlk = sndBlk |> datablock_get_block_by_name(mainEngineBlkName)
         if mainEngineBlk != null
-          let aiBlk = *mainEngineBlk |> datablock_get_block_by_name("ai")
+          var aiBlk = *mainEngineBlk |> datablock_get_block_by_name("ai")
           if aiBlk != null
             engineBlk = aiBlk
       if engineBlk == null
         addSubTemplate(eid, "disabled_update")
+        return
+
+      let useNewEngineSound = sndBlk |> datablock_getBool("useNewEngineSound", false)
+      if !useNewEngineSound
+        tank_engine__startSoundDelay = engineBlk |> datablock_getReal("startTimeout", tank_engine__startSoundDelay)
+        tank_engine__stopSoundDelay = engineBlk |> datablock_getReal("stopTimeout", tank_engine__stopSoundDelay)
+        addSubTemplate(eid, "disabled_update") // delete with old engineSound system for gm
         return
 
       let outsideBlk = *engineBlk |> datablock_get_block_by_name("outside")
@@ -107,17 +111,19 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
       if effectsBlk != null
         let path = effectsBlk |> datablock_getStr("path", "")
         let eventStart = effectsBlk |> datablock_getStr("eventStart", "")
-        gm_engine_sound__start_event_name := path + "/" + eventStart
+        if eventStart != ""
+          gm_engine_sound__start_event_name := path + "/" + eventStart
         let eventStop = effectsBlk |> datablock_getStr("eventStop", "")
-        gm_engine_sound__stop_event_name := path + "/" + eventStop
+        if eventStop != ""
+          gm_engine_sound__stop_event_name := path + "/" + eventStop
 
       let can_patch_engines_for_enemies = sndBlk |> datablock_getBool("canPatchEnginesForEnemies", false)
       let hero = get_controlled_hero()
       let is_enemy = !is_hero && unit.isTank && hero != null && hero.army != unit.army && can_patch_engines_for_enemies
       if is_enemy
         gm_engine_sound__event_name := string(gm_engine_sound__event_name) |> replace("/ai/", "/ai/_enemies/")
-        gm_engine_sound__start_event_name := string(gm_engine_sound__event_name) |> replace("/ai/", "/ai/_enemies/")
-        gm_engine_sound__stop_event_name := string(gm_engine_sound__event_name) |> replace("/ai/", "/ai/_enemies/")
+        gm_engine_sound__start_event_name := string(gm_engine_sound__start_event_name) |> replace("/ai/", "/ai/_enemies/")
+        gm_engine_sound__stop_event_name := string(gm_engine_sound__stop_event_name) |> replace("/ai/", "/ai/_enemies/")
 
       if !is_mod_enabled()
         return
@@ -125,7 +131,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
       using() <| $(var overloadsBlk : DataBlock)
         let overloadBlkName = (uint(unitType) == uint(UnitType UT_Ship) || uint(unitType) == uint(UnitType UT_Submarine)) ? "sound/mod/ship_sound_overloads.blk" : "sound/mod/tank_sound_overloads.blk"
         if datablock_load(overloadsBlk, overloadBlkName, DataBlockReadFlag ROBUST)
-          var modelName = className
+          var modelName = unit__className
           let idx = modelName |> find("/")
           if idx >= 0
             modelName = modelName |> chop(idx + 1, length(modelName) - idx)
@@ -214,6 +220,7 @@ def set_param_cached(sound_event : SoundEvent;
 
 [es(tag=sound, REQUIRE_NOT = disabled, after = gm_engine_sound_update_inside_es)]
 def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
+                              eid : EntityId;
                               unit__ref : UnitRef;
                               var gm_engine_sound__is_playing : bool&;
                               var gm_engine_sound__loadswitch : bool&;
@@ -227,7 +234,8 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
                               gm_engine_sound__event_inside : SoundEvent;
                               gm_engine_sound__pos_offset : float3;
                               gm_engine_sound__is_inside : bool;
-                              var gm_engine_sound__pos : float3&)
+                              var gm_engine_sound__pos : float3&;
+                              tank_engine__stage : uint8)
   let unit = unit__ref.unit
   let gm = unit |> as_gm()
   if gm == null || unit.isDelayed
@@ -242,7 +250,7 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
 
   gm_engine_sound__is_playing = is_playing(gm_engine_sound__event) || is_playing(gm_engine_sound__event_inside)
   let newPos = unit.unitTm * gm_engine_sound__pos_offset
-  if length_sq(newPos - gm_engine_sound__pos) > 0.09
+  if !unit.isFarAway && (length_sq(newPos - gm_engine_sound__pos) > 0.09)
     if gm_engine_sound__is_playing
       gm_engine_sound__event |> set_pos_and_ori(gm_engine_sound__pos, gm.velocity, unit.unitTm[0], unit.unitTm[1])
     gm_engine_sound__stop_event |> set_pos(gm_engine_sound__pos)
@@ -299,6 +307,11 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
   if !is_playing(gm_engine_sound__stop_event) && is_valid_event(gm_engine_sound__stop_event)
     abandon(gm_engine_sound__stop_event)
 
+  if !is_equal_float(broken, 1.f)
+    if tank_engine__stage == uint8(TankEngineStage STAGE_STARTING) || tank_engine__stage == uint8(TankEngineStage STAGE_READY)
+      sendEvent(eid, [[CmdEnginePlayStartSound]])
+    if tank_engine__stage == uint8(TankEngineStage STAGE_STOPPING) || tank_engine__stage == uint8(TankEngineStage STAGE_TURNING_OFF)
+      sendEvent(eid, [[CmdEnginePlayStopSound]])
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
 def gm_engine_on_start_es(evt : CmdEngineStartSound;
@@ -346,6 +359,7 @@ def gm_engine_on_unsteal_es(evt : CmdEngineUnstealSound;
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
 def gm_engine_on_play_start_es(evt : CmdEnginePlayStartSound;
+                               var tank_engine__soundStarted : bool&;
                                gm_engine_sound__pos : float3;
                                gm_engine_sound__is_inside : bool;
                                gm_engine_sound__start_event_name : das_string;
@@ -354,6 +368,10 @@ def gm_engine_on_play_start_es(evt : CmdEnginePlayStartSound;
                                var gm_engine_sound__start_event : SoundEvent&;
                                var gm_engine_sound__start_inside_event : SoundEvent&;
                                var gm_engine_sound__stop_inside_event : SoundEvent&)
+  if tank_engine__soundStarted
+    return
+  tank_engine__soundStarted = true
+
   if is_playing(gm_engine_sound__stop_event)
     release(gm_engine_sound__stop_event)
   if is_playing(gm_engine_sound__stop_inside_event)
@@ -362,12 +380,13 @@ def gm_engine_on_play_start_es(evt : CmdEnginePlayStartSound;
   assume curEvent = gm_engine_sound__is_inside ? gm_engine_sound__start_inside_event : gm_engine_sound__start_event
   assume curEventName = gm_engine_sound__is_inside ? gm_engine_sound__start_inside_name : gm_engine_sound__start_event_name
 
-  if !is_playing(curEvent)
+  if (curEventName != "") && !is_playing(curEvent)
     curEvent |> play(string(curEventName), gm_engine_sound__pos)
 
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
 def gm_engine_on_play_stop_es(evt : CmdEnginePlayStopSound;
+                              var tank_engine__soundStarted : bool&;
                               gm_engine_sound__pos : float3;
                               gm_engine_sound__is_inside : bool;
                               gm_engine_sound__stop_event_name : das_string;
@@ -376,6 +395,10 @@ def gm_engine_on_play_stop_es(evt : CmdEnginePlayStopSound;
                               var gm_engine_sound__start_inside_event : SoundEvent&;
                               var gm_engine_sound__stop_event : SoundEvent&;
                               var gm_engine_sound__stop_inside_event : SoundEvent&)
+  if tank_engine__soundStarted
+    return
+  tank_engine__soundStarted = true
+
   if is_playing(gm_engine_sound__start_event)
     release(gm_engine_sound__start_event)
   if is_playing(gm_engine_sound__start_inside_event)
@@ -384,10 +407,20 @@ def gm_engine_on_play_stop_es(evt : CmdEnginePlayStopSound;
   assume curEvent = gm_engine_sound__is_inside ? gm_engine_sound__stop_inside_event : gm_engine_sound__stop_event
   assume curEventName = gm_engine_sound__is_inside ? gm_engine_sound__stop_inside_name : gm_engine_sound__stop_event_name
 
-  if !is_playing(curEvent)
+  if (curEventName != "") && !is_playing(curEvent)
     curEvent |> play(string(curEventName), gm_engine_sound__pos)
 
-//---------------------------------------------------------------------------------------------------
+
+[es(tag=sound, REQUIRE_NOT = disabled)]
+def gm_engine_on_set_pos_es(evt : CmdEngineSoundSetPosForced;
+                            var gm_engine_sound__pos : float3&;
+                            gm_engine_sound__event : SoundEvent)
+  gm_engine_sound__pos = evt.pos
+  if is_playing(gm_engine_sound__event)
+    gm_engine_sound__event |> set_pos(gm_engine_sound__pos)
+
+
+//-- FOR ADDITIONAL SOUND--------------------------------------------------------------------------------------
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
 def gm_additional_engine_on_unsteal_es(evt : CmdEngineUnstealSound;
@@ -426,3 +459,44 @@ def gm_additional_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
     gm_additional_engine_sound__event |> set_var_optional("is_aero_on", rpm > 5. ? 1. : 0.)
     gm_additional_engine_sound__event |> set_var_optional("rpm", rpm)
     gm_additional_engine_sound__event |> set_var_optional("load", gm_engine_sound__load)
+
+
+[es(tag=sound, REQUIRE = controlledHero)]
+def tank_engine_speech_es(evt : EventTankEngineStageChanged;
+                          eid : EntityId)
+  if evt.newStage == uint8(TankEngineStage STAGE_STARTING)
+    play_speech(eid, "engineStart")
+
+  elif evt.newStage == uint8(TankEngineStage STAGE_STOPPING)
+    play_speech(eid, "engineStop")
+
+
+[es(tag=sound)]
+def tank_engine_sound_stage_changed_es(evt : EventTankEngineStageChanged;
+                                       var tank_engine__soundStarted : bool&)
+  if evt.newStage == uint8(TankEngineStage STAGE_READY)
+    tank_engine__soundStarted = false
+
+  elif evt.newStage == uint8(TankEngineStage STAGE_TURNING_OFF)
+    tank_engine__soundStarted = false
+
+
+[es(tag=sound, REQUIRE = disabled)]
+def gm_engine_legacy_sound_update__es(act : UpdateStageInfoAct;
+                                      var tank_engine__startSoundDelayTimer : float&;
+                                      var tank_engine__stopSoundDelayTimer : float&;
+                                      tank_engine__stopSoundDelay : float;
+                                      tank_engine__startSoundDelay : float;
+                                      tank_engine__stage : uint8)
+  if tank_engine__stopSoundDelayTimer > 0.0f
+    tank_engine__stopSoundDelayTimer -= act.dt
+  if tank_engine__startSoundDelayTimer > 0.0f
+    tank_engine__startSoundDelayTimer -= act.dt
+
+  if tank_engine__stage == uint8(TankEngineStage STAGE_STARTING)
+    if tank_engine__startSoundDelayTimer <= 0.0f
+      tank_engine__startSoundDelayTimer = tank_engine__startSoundDelay
+
+  elif tank_engine__stage == uint8(TankEngineStage STAGE_STOPPING)
+    if tank_engine__stopSoundDelayTimer < 0.0f
+      tank_engine__stopSoundDelayTimer = tank_engine__stopSoundDelay

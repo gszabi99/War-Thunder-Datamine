@@ -110,7 +110,7 @@ function setLastAttemptTime(time) {
 
 
 
- return {
+return {
   captchaFailsBlockCounter,
   resetAllCaptchaFailsCounters,
   increaseCaptchaFailsCount,

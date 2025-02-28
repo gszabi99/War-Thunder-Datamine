@@ -8,8 +8,10 @@ let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopStat
 let { isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { isBitModeType } = require("%scripts/unlocks/unlocksConditions.nut")
-let { isMediumTaskComplete, isEasyTaskComplete, getCurrentBattleTasks, getBattleTaskDifficultyImage
+let { isMediumTaskComplete, isEasyTaskComplete, getCurrentBattleTasks
 } = require("%scripts/unlocks/battleTasks.nut")
+let { getBattleTaskDifficultyImage } = require("%scripts/unlocks/battleTasksView.nut")
+let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 let seasonLvlWatchObj = [{
   watch = seasonLevel
@@ -94,7 +96,7 @@ let seasonTasksProgressWatchObj = {
   watch = mainChallengeOfSeason
   updateFunc = function(obj, challenge) {
     //fixme: there must be a more easy way to get a progress.
-    let unlockConfig = challenge ? ::build_conditions_config(challenge) : null
+    let unlockConfig = challenge ? buildConditionsConfig(challenge) : null
     if (unlockConfig==null)
       return
     local { curVal = 0, maxVal = 0 } = unlockConfig

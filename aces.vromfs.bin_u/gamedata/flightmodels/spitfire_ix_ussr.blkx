@@ -2655,10 +2655,17 @@
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "SpitfireIX_default",
-      "blk": "gameData/FlightModels/weaponPresets/spitfire_IX_default.blk"
-    }
+    "preset": [
+      {
+        "name": "SpitfireIX_default",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_IX_default.blk"
+      },
+      {
+        "name": "spitfire_ix_ussr_bombs",
+        "blk": "gameData/FlightModels/weaponPresets/spitfire_ix_ussr_bombs.blk",
+        "reqModification": "spitfire_mbc"
+      }
+    ]
   },
   "default_skin": {
     "name": "soviet45",
@@ -2709,6 +2716,10 @@
     "hispano_mk_2_1943_new_gun": {
       "reqModification": "hispano_mk_2_narrow_chamber_new_gun",
       "tier": 4
+    },
+    "spitfire_mbc": {
+      "tier": 4,
+      "modClass": "weapon"
     }
   }
 }

@@ -427,12 +427,12 @@ function weaponsStatus(){
 
 
 let root = @() {
-  watch = [fcsState.IsForestallVisible, fcsState.IsBinocular, IsRadarVisible, fcsState.IsTargetSelected]
+  watch = [fcsState.IsForestallVisible, fcsState.IsBinocular, IsRadarVisible, fcsState.IsTargetSelected, fcsState.IsAutoAim]
   children = [
     !IsRadarVisible.value ? compassComponent : null
     fcsState.IsForestallVisible.value ? forestallIndicator
         : (fcsState.IsBinocular.value ? crosshairZeroMark : null)
-    fcsState.IsBinocular.value && fcsState.IsTargetSelected.value ? progressBar : null
+    fcsState.IsBinocular.value && fcsState.IsTargetSelected.value && !fcsState.IsAutoAim.value ? progressBar : null
   ]
 }
 

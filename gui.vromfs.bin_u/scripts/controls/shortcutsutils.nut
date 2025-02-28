@@ -2,11 +2,14 @@ from "%scripts/dagui_library.nut" import *
 
 let shortcutsListModule = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { setShortcutsAndSaveControls } = require("%scripts/controls/controlsCompatibility.nut")
+let { setShortcutsAndSaveControls, joystickGetCurSettings,
+  getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { GAMEPAD_AXIS, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { Button } = require("%scripts/controls/input/button.nut")
 let { Combination } = require("%scripts/controls/input/combination.nut")
+let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 let getShortcutById = @(shortcutId) shortcutsListModule?[shortcutId]
 
@@ -27,7 +30,7 @@ function getBitArrayAxisIdByShortcutId(joyParams, shortcutId) {
 }
 
 function getComplexAxesId(shortcutComponents) {
-  let joyParams = ::joystick_get_cur_settings()
+  let joyParams = joystickGetCurSettings()
   local axesId = 0
   foreach (shortcutId in shortcutComponents)
     axesId = axesId | getBitArrayAxisIdByShortcutId(joyParams, shortcutId)
@@ -64,7 +67,7 @@ function getShortcutData(shortcuts, shortcutId, cantBeEmpty = true, preset = nul
   if (shortcuts?[shortcutId] == null)
     return cantBeEmpty ? getTextMarkup(loc("ui/not_applicable")) : ""
 
-  preset = preset ?? ::g_controls_manager.getCurPreset()
+  preset = preset ?? getCurControlsPreset()
   let inputs = []
   for (local i = 0; i < shortcuts[shortcutId].len(); i++) {
     let buttons = []
@@ -83,14 +86,38 @@ function getShortcutData(shortcuts, shortcutId, cantBeEmpty = true, preset = nul
   return cantBeEmpty && markup == "" ? getTextMarkup(loc("ui/not_applicable")) : markup
 }
 
+function isBindInShortcut(bind, shortcut) {
+  foreach (sc in shortcut)
+    if (sc.btn.len() == bind.btn.len()) {
+      local same = true
+      foreach (ib, btn in bind.btn) {
+        let i = find_in_array(sc.btn, btn)
+        if (i < 0 || sc.dev[i] != bind.dev[ib]) {
+          same = false
+          break
+        }
+      }
+      if (same)
+        return true
+    }
+  return false
+}
+
 function isShortcutEqual(sc1, sc2) {
   if (sc1.len() != sc2.len())
     return false
 
   foreach (_i, sb in sc2)
-    if (!::is_bind_in_shortcut(sb, sc1))
+    if (!isBindInShortcut(sb, sc1))
       return false
   return true
+}
+
+function isShortcutDisplayEqual(sc1, sc2) {
+  foreach (_i, sb in sc1)
+    if (isBindInShortcut(sb, sc2))
+      return true
+  return false
 }
 
 function isShortcutMapped(shortcut) {
@@ -105,7 +132,7 @@ function isShortcutMapped(shortcut) {
 function restoreShortcuts(scList, scNames) {
   let changeList = []
   let changeNames = []
-  let curScList = ::get_shortcuts(scNames)
+  let curScList = getShortcuts(scNames)
   foreach (idx, sc in curScList) {
     let prevSc = scList[idx]
     if (!isShortcutMapped(prevSc))
@@ -128,9 +155,9 @@ function hasMappedSecondaryWeaponSelector(unitType) {
   local shortcuts = []
 
   if (unitType == unitTypes.AIRCRAFT)
-    shortcuts = ::get_shortcuts([ "ID_FIRE_SECONDARY", "ID_SWITCH_SHOOTING_CYCLE_SECONDARY" ])
+    shortcuts = getShortcuts([ "ID_FIRE_SECONDARY", "ID_SWITCH_SHOOTING_CYCLE_SECONDARY" ])
   else if (unitType == unitTypes.HELICOPTER)
-    shortcuts = ::get_shortcuts([ "ID_FIRE_SECONDARY_HELICOPTER", "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER" ])
+    shortcuts = getShortcuts([ "ID_FIRE_SECONDARY_HELICOPTER", "ID_SWITCH_SHOOTING_CYCLE_SECONDARY_HELICOPTER" ])
 
   return (shortcuts.len() > 0)
     ? (isShortcutMapped(shortcuts[0]) && isShortcutMapped(shortcuts[1]))
@@ -148,4 +175,6 @@ return {
   isShortcutMapped
   restoreShortcuts
   hasMappedSecondaryWeaponSelector
+  isBindInShortcut
+  isShortcutDisplayEqual
 }

@@ -176,7 +176,7 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
   onSlotChangeAircraft = @ () null
   onOpenCrewWindow = @ (_obj) null
   onSwapCrews = @ (_obj) null
-  onOpenCrewPopup = @(_obj) null
+  onCrewSlotClick = @(_obj) null
   onSlotbarSelect = @(_obj) null
   onSlotbarActivate = @(_obj) null
   onSlotbarDblClick = @(_obj) null

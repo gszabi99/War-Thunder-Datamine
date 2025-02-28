@@ -685,15 +685,15 @@ function testhandyman(_temaple = null, _view = null, _partails = null) {
   }
 <</empty>>"
 
-let partials = {
-  first = @"text{
-    test:t='<<name>>';
-  }"
-  link = @"link {
+  let partials = {
+    first = @"text{
+  test:t='<<name>>';
+}"
+    link = @"link {
   href:t='<<url>>';
   text:t='<<name>>';
 }"
-}
+  }
 
 
   let testView = {

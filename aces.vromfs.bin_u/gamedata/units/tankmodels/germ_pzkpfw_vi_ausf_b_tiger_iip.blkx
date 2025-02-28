@@ -2313,14 +2313,26 @@
     }
   },
   "wreckedParts": {
-    "part": {
-      "node": "bone_turret",
-      "mass": 13000.0,
-      "cutDamage": 2000.0,
-      "deviation": 0.2,
-      "rotation": 0.7,
-      "collisionNode": "cls_turret_01"
-    }
+    "part": [
+      {
+        "node": "bone_turret",
+        "mass": 13000.0,
+        "cutDamage": 2000.0,
+        "deviation": 0.2,
+        "rotation": 0.7,
+        "collisionNode": "cls_turret_01"
+      },
+      {
+        "node": "engine_xray",
+        "isFromXray": true,
+        "mass": 1500.0,
+        "cutDamage": 500.0,
+        "deviation": 1.3,
+        "rotation": 2.5,
+        "collisionNode": "engine_dm",
+        "children": {}
+      }
+    ]
   },
   "unitFx": {
     "event": [

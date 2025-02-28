@@ -14,6 +14,11 @@ let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { orderTypes } = require("%scripts/items/orderType.nut")
+let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
+let { getOrderActivateInfoText, getTimesUsedOrderItem, isOrderItemActive, activateOrder,
+  orderCanBeActivated, checkCurrentMission
+} = require("%scripts/items/orders.nut")
 
 let Order = class (BaseItem) {
   static iType = itemType.ORDER
@@ -82,11 +87,11 @@ let Order = class (BaseItem) {
     if (!this.isInventoryItem || !this.amount)
       return null
 
-    let currentEvent = ::SessionLobby.getRoomEvent()
+    let currentEvent = getRoomEvent()
     let diffCode = events.getEventDiffCode(currentEvent)
     let diff = g_difficulty.getDifficultyByDiffCode(diffCode)
     let checkDifficulty = !isInArray(diff, this.disabledDifficulties)
-    if (!this.isActive() && ::g_orders.orderCanBeActivated() && checkDifficulty)
+    if (!this.isActive() && orderCanBeActivated() && checkDifficulty)
       return {
         btnName = loc("item/activate")
       }
@@ -94,23 +99,23 @@ let Order = class (BaseItem) {
     return null
   }
 
-  getActivateInfo    = @() ::g_orders.getActivateInfoText()
+  getActivateInfo    = @() getOrderActivateInfoText()
 
   function doMainAction(cb, handler, params = null) {
     let baseResult = base.doMainAction(cb, handler, params)
     if (baseResult || !this.isInventoryItem)
       return true
-    if (this.isActive() || !::g_orders.orderCanBeActivated())
+    if (this.isActive() || !orderCanBeActivated())
       return false
-    ::g_orders.activateOrder(this, cb)
+    activateOrder(this, cb)
   }
 
   function getAmount() {
-    return this.amount - ::g_orders.getTimesUsedOrderItem(this)
+    return this.amount - getTimesUsedOrderItem(this)
   }
 
   function isActive(...) {
-    return ::g_orders.isOrderItemActive(this)
+    return isOrderItemActive(this)
   }
 
   function getIcon(_addItemName = true) {
@@ -182,7 +187,7 @@ let Order = class (BaseItem) {
   /** Description for tooltip. */
   function getDescription() {
     let textParts = []
-    if (!::g_orders.checkCurrentMission(this)) {
+    if (!checkCurrentMission(this)) {
       let warningText = orderUseResult.RESTRICTED_MISSION.createResultMessage(false)
       textParts.append($"{colorize("redMenuButtonColor", warningText)}\n")
     }
@@ -266,4 +271,4 @@ let Order = class (BaseItem) {
   }
 }
 
-return {Order}
+registerItemClass(Order)

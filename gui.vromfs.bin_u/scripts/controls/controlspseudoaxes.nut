@@ -4,6 +4,9 @@ let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { isShortcutDisplayEqual } = require("%scripts/controls/shortcutsUtils.nut")
+let { getRequiredControlsForUnit, getCurrentHelpersMode } = require("%scripts/controls/controlsUtils.nut")
 
 let pseudoAxesList = {
   template = {
@@ -34,8 +37,8 @@ enums.addTypes(pseudoAxesList, {
   PSEUDO_FIRE = {
     id = "pseudo_fire"
     translate = function() {
-      let requiredControls = ::getRequiredControlsForUnit(
-        getPlayerCurUnit(), ::getCurrentHelpersMode())
+      let requiredControls = getRequiredControlsForUnit(
+        getPlayerCurUnit(), getCurrentHelpersMode())
 
       let isMGunsAvailable = isInArray("ID_FIRE_MGUNS", requiredControls)
       let isCannonsAvailable = isInArray("ID_FIRE_CANNONS", requiredControls)
@@ -45,8 +48,8 @@ enums.addTypes(pseudoAxesList, {
       else if (!isMGunsAvailable && isCannonsAvailable)
         return ["ID_FIRE_CANNONS"]
 
-      let shortcuts = ::get_shortcuts(["ID_FIRE_MGUNS", "ID_FIRE_CANNONS"])
-      if (::is_shortcut_display_equal(shortcuts[0], shortcuts[1]))
+      let shortcuts = getShortcuts(["ID_FIRE_MGUNS", "ID_FIRE_CANNONS"])
+      if (isShortcutDisplayEqual(shortcuts[0], shortcuts[1]))
         return ["ID_FIRE_MGUNS"]
       else
         return ["ID_FIRE_MGUNS", "ID_FIRE_CANNONS"]

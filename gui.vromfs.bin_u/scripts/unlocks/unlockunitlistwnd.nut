@@ -5,7 +5,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { getUnitListByUnlockId } = require("%scripts/unlocks/unlockMarkers.nut")
-let { getUnlockTitle } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockTitle, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
@@ -87,7 +87,7 @@ function getCountriesView(unlockId) {
 
 function getWndTitle(unlockId) {
   let unlockBlk = getUnlockById(unlockId)
-  let unlockCfg = ::build_conditions_config(unlockBlk)
+  let unlockCfg = buildConditionsConfig(unlockBlk)
   return loc("mainmenu/showVehiclesTitle", {
     taskName = getUnlockTitle(unlockCfg)
   })

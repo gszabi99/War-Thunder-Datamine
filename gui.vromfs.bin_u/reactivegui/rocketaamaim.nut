@@ -126,4 +126,4 @@ let AamAim = @(color_watched, alert_color_watched)
   ]
 }
 
-  return AamAim
+return AamAim

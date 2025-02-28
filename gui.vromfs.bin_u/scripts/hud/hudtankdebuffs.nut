@@ -1,5 +1,5 @@
-from "%scripts/dagui_natives.nut" import hud_request_hud_tank_debuffs_state
 from "%scripts/dagui_library.nut" import *
+from "hudState" import hud_request_hud_tank_debuffs_state
 import "%sqstd/ecs.nut" as ecs
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")

@@ -17,6 +17,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { getFullWPIcon } = require("%scripts/items/prizesView.nut")
 
 ::g_wb_award_type <- {
   types = []
@@ -277,7 +278,7 @@ enums.addTypesByGlobalName("g_wb_award_type", {
   [EWBAT_WP] = {
     getLayeredImage = function(blk, _warbond) {
       let wp = blk?.amount ?? 0
-      return ::trophyReward.getFullWPIcon(wp)
+      return getFullWPIcon(wp)
     }
     getNameText = function(blk) {
       return Balance(blk?.amount ?? 0).tostring()

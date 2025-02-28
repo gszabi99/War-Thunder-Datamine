@@ -14,6 +14,7 @@ let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customizat
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { getWPIcon } = require("%scripts/items/prizesView.nut")
 
 let template = "%gui/items/trophyDesc.tpl"
 let singleItemIconLayer = "item_place_single"
@@ -212,7 +213,7 @@ function getEntitlementLayerIcons(entitlement) {
   if (entitlement?.goldIncome != null)
     layerStyles.append("reward_gold")
   if (entitlement?.wpIncome != null)
-    layerStyles.append(::trophyReward.getWPIcon(entitlement.wpIncome))
+    layerStyles.append(getWPIcon(entitlement.wpIncome))
 
   layerStyles.extend((entitlement?.entitlementGift ?? [])
     .filter(@(entId) getEntitlementConfig(entId) != null)

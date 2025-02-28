@@ -6,6 +6,10 @@ let { format } = require("string")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
+let { stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
+let { prepareUpgradeRequest } = require("%scripts/clans/clanRequests.nut")
+let { upgradeClan } = require("%scripts/clans/clanActions.nut")
+let { myClanInfo } = require("%scripts/clans/clanState.nut")
 
 gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandler) {
   owner = null
@@ -30,7 +34,7 @@ gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandl
     this.updateAnnouncement()
     this.scene.findObject("newclan_description").setValue(this.clanData.desc)
     let newClanTagObj = this.scene.findObject("newclan_tag")
-    newClanTagObj.setValue(::g_clans.stripClanTagDecorators(this.clanData.tag))
+    newClanTagObj.setValue(stripClanTagDecorators(this.clanData.tag))
     select_editbox(newClanTagObj)
     this.onFocus(newClanTagObj)
 
@@ -54,28 +58,28 @@ gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandl
       return
     let upgradeCost = this.clanData.getClanUpgradeCost()
     if (upgradeCost <= zero_money)
-      this.upgradeClan()
+      this.upgradeClanFn()
     else if (checkBalanceMsgBox(upgradeCost)) {
       let msgText = warningIfGold(
         format(loc("clan/needMoneyQuestion_upgradeClanPrimaryInfo"),
           upgradeCost.getTextAccordingToBalance()),
         upgradeCost)
-      this.msgBox("need_money", msgText, [["ok", function() { this.upgradeClan() }],
+      this.msgBox("need_money", msgText, [["ok", function() { this.upgradeClanFn() }],
         ["cancel"]], "ok")
     }
   }
 
-  function upgradeClan() {
+  function upgradeClanFn() {
     if (this.isObsceneWord())
       return
-    let clanId = (::my_clan_info != null && ::my_clan_info.id == this.clanData.id) ? "-1" : this.clanData.id
-    let params = ::g_clans.prepareUpgradeRequest(
+    let clanId = (myClanInfo.get()?.id == this.clanData.id) ? "-1" : this.clanData.id
+    let params = prepareUpgradeRequest(
       this.newClanType,
       this.newClanTag,
       this.newClanDescription,
       this.newClanAnnouncement
     )
-    ::g_clans.upgradeClan(clanId, params, this)
+    upgradeClan(clanId, params, this)
   }
 
   function getDecoratorsList() {

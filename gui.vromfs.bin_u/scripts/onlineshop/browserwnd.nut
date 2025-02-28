@@ -4,9 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let statsd = require("statsd")
@@ -27,33 +25,6 @@ let { addTask } = require("%scripts/tasker.nut")
 
 ::notify_browser_window <- function notify_browser_window(params) {
   broadcastEvent("EmbeddedBrowser", params)
-}
-
-::is_builtin_browser_active <- function is_builtin_browser_active() {
-  return isHandlerInScene(gui_handlers.BrowserModalHandler)
-}
-
-::open_browser_modal <- function open_browser_modal(url = "", tags = [], baseUrl = "") {
-  loadHandler(gui_handlers.BrowserModalHandler, { url, urlTags = tags, baseUrl })
-}
-
-::close_browser_modal <- function close_browser_modal() {
-  let handler = handlersManager.findHandlerClassInScene(
-    gui_handlers.BrowserModalHandler)
-
-  if (handler == null) {
-    log("[BRWS] Couldn't find embedded browser modal handler")
-    return
-  }
-
-  handler.goBack()
-}
-
-::browser_set_external_url <- function browser_set_external_url(url) {
-  let handler = handlersManager.findHandlerClassInScene(
-    gui_handlers.BrowserModalHandler);
-  if (handler)
-    handler.externalUrl = url;
 }
 
 gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {

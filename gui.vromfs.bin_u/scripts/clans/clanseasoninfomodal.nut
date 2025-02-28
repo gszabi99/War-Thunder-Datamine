@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import clan_get_my_clan_tag
 from "%scripts/dagui_library.nut" import *
-from "%scripts/clans/clansConsts.nut" import CLAN_SEASON_MEDAL_TYPE
+from "%scripts/clans/clanConsts.nut" import CLAN_SEASON_MEDAL_TYPE
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
@@ -16,6 +16,10 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
+let { stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
+let { isClanSeasonsEnabled, getClanCurrentSeasonName, getClanSeasonRegaliaPrizes,
+  getClanSeasonUniquePrizesCounts, getClanSeasonRewardsList
+} = require("%scripts/clans/clanSeasons.nut")
 
 gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
@@ -27,7 +31,7 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
   selectedIndex  = 0
 
   function initScreen() {
-    if (!::g_clan_seasons.isEnabled())
+    if (!isClanSeasonsEnabled())
       return this.goBack()
     this.rewardsListObj = this.scene.findObject("rewards_list")
     if (!checkObj(this.rewardsListObj))
@@ -47,11 +51,11 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getRewardsView(diff) {
     let view = { rewardsList = [] }
-    let rewards = ::g_clan_seasons.getSeasonRewardsList(diff)
+    let rewards = getClanSeasonRewardsList(diff)
     if (u.isEmpty(rewards))
       return view
 
-    let seasonName = ::g_clan_seasons.getSeasonName()
+    let seasonName = getClanCurrentSeasonName()
     foreach (reward in rewards) {
       local title = ""
       local medal = ""
@@ -88,14 +92,14 @@ gui_handlers.clanSeasonInfoModal <- class (gui_handlers.BaseGuiHandlerWT) {
       }
 
       let prizesList = {}
-      let prizes = ::g_clan_seasons.getRegaliaPrizes(reward.regalia)
-      let limits = ::g_clan_seasons.getUniquePrizesCounts(reward.regalia)
+      let prizes = getClanSeasonRegaliaPrizes(reward.regalia)
+      let limits = getClanSeasonUniquePrizesCounts(reward.regalia)
       foreach (prize in prizes) {
         let prizeType = prize.type
         let collection = []
 
         if (prizeType == "clanTag") {
-          let myClanTagUndecorated = ::g_clans.stripClanTagDecorators(clan_get_my_clan_tag())
+          let myClanTagUndecorated = stripClanTagDecorators(clan_get_my_clan_tag())
           let tagTxt = u.isEmpty(myClanTagUndecorated) ? loc("clan/clan_tag/short") : myClanTagUndecorated
           let tooltipBase = $"{loc("clan/clan_tag_decoration")}{loc("ui/colon")}"
           let tagDecorators = ::g_clan_tag_decorator.getDecoratorsForClanDuelRewards(prize.list)

@@ -10,6 +10,7 @@ let { get_time_msec } = require("dagor.time")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
+let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 
 const TIME_TO_EXPLOSION = 11000
 const TIME_TO_SERENA_ACTIVATION = 1000
@@ -99,9 +100,9 @@ local class airRaidWndScene (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateMainNuclearExplosionEvent() {
-    ::g_delayed_actions.add(@() point_camera_to_event(), TIME_TO_POINT_CAMERA_TO_EVENT)
-    ::g_delayed_actions.add(@() play_background_nuclear_explosion(), TIME_TO_BACKGROUND_NUCLEAR_EVENT)
-    ::g_delayed_actions.add(Callback(@() this.goForward(gui_start_mainmenu), this), TIME_TO_BACKGROUND_NUCLEAR_EVENT_END)
+    addDelayedAction(@() point_camera_to_event(), TIME_TO_POINT_CAMERA_TO_EVENT)
+    addDelayedAction(@() play_background_nuclear_explosion(), TIME_TO_BACKGROUND_NUCLEAR_EVENT)
+    addDelayedAction(Callback(@() this.goForward(gui_start_mainmenu), this), TIME_TO_BACKGROUND_NUCLEAR_EVENT_END)
   }
 }
 gui_handlers.airRaidWndScene <- airRaidWndScene

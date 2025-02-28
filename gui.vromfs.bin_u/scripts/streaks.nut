@@ -13,6 +13,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_STREAKS
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 const STREAK_LIFE_TIME = 5.0
 const STREAK_DELAY_TIME = 0.5
@@ -24,70 +25,20 @@ enum hudStreakState {
   DELAY_BETWEEN_STREAKS
 }
 
-::g_streaks <- {
+local stateTimeLeft = 0
+let streakQueue = []
+local streakState = hudStreakState.EMPTY
+local scene = null
+
+function clearStreaks() {
   stateTimeLeft = 0
-  streakQueue = []
-  state = hudStreakState.EMPTY
-
-  scene = null
+  streakState = hudStreakState.EMPTY
+  streakQueue.clear()
 }
 
-function updateAnimTimer() {
-  let obj = ::g_streaks.getSceneObj()
-  if (!obj)
-    return
-
-  let animTime = 1000 * STREAK_LIFE_TIME / ::g_streaks.getTimeMultiplier()
-  obj.findObject("streak_content")["transp-time"] = animTime.tointeger().tostring()
-}
-
-::g_streaks.addStreak <- function addStreak(id, header, score) {
-  if (!this.isStreaksAvailable())
-    return
-  if (!::get_gui_option_in_mode(USEROPT_HUD_VISIBLE_STREAKS, OPTIONS_MODE_GAMEPLAY, true)) {
-    this.streakQueue.clear()
-    return
-  }
-
-  this.streakQueue.append({ id = id, header = header, score = score })
-  this.checkNextState()
-
-  if (this.streakQueue.len() == 1)
-    updateAnimTimer()
-}
-
-::g_streaks.isStreaksAvailable <- function isStreaksAvailable() {
-  return !is_replay_playing()
-}
-
-::g_streaks.checkNextState <- function checkNextState() {
-  if (this.stateTimeLeft > 0)
-    return
-
-  let wasState = this.state
-  if (this.state == hudStreakState.ACTIVE) {
-    this.state = hudStreakState.DELAY_BETWEEN_STREAKS
-    this.stateTimeLeft = STREAK_DELAY_TIME
-  }
-  else if (this.state == hudStreakState.EMPTY || this.state == hudStreakState.DELAY_BETWEEN_STREAKS) {
-    if (this.showNextStreak()) {
-      this.state = hudStreakState.ACTIVE
-      this.stateTimeLeft = STREAK_LIFE_TIME
-    }
-    else
-      this.state = hudStreakState.EMPTY
-  }
-
-  if (wasState == this.state)
-    return
-
-  this.updateSceneObj()
-  this.updatePlaceObj()
-}
-
-::g_streaks.getSceneObj <- function getSceneObj() {
-  if (checkObj(this.scene))
-    return this.scene
+function getSceneObj() {
+  if (scene?.isValid())
+    return scene
 
   let guiScene = get_gui_scene()
   if (!guiScene)
@@ -96,22 +47,64 @@ function updateAnimTimer() {
   if (!checkObj(obj))
     return null
 
-  this.scene = obj
+  scene = obj
   return obj
 }
 
-::g_streaks.showNextStreak <- function showNextStreak() {
-  if (!this.streakQueue.len())
+function getTimeMultiplier() {
+  return streakQueue.len() > 0 ? STREAK_QUEUE_TIME_FACTOR : 1.0
+}
+
+function updateAnimTimer() {
+  let obj = getSceneObj()
+  if (!obj)
+    return
+
+  let animTime = 1000 * STREAK_LIFE_TIME / getTimeMultiplier()
+  obj.findObject("streak_content")["transp-time"] = animTime.tointeger().tostring()
+}
+
+function isStreaksAvailable() {
+  return !is_replay_playing()
+}
+
+function streakPlaySound(streakId) {
+  if (!hasFeature("streakVoiceovers"))
+    return
+  let unlockBlk = getUnlockById(streakId)
+  if (!unlockBlk)
+    return
+
+  if (unlockBlk?.isAfterFlight)
+    get_cur_gui_scene()?.playSound("streak_mission_complete")
+  else if (unlockBlk?.sound)
+    loading_play_voice(unlockBlk.sound, true)
+}
+
+function updatePlaceObjHeight(newHeight) {
+  let obj = getSceneObj()
+  if (!obj || !newHeight)
+    return
+
+  let curHeight = to_integer_safe(obj?["height-end"], 1)
+  if (curHeight == newHeight)
+    return
+
+  obj["height-end"] = newHeight.tostring()
+}
+
+function showNextStreak() {
+  if (!streakQueue.len())
     return false
 
-  let obj = this.getSceneObj()
+  let obj = getSceneObj()
   if (!obj)
     return false
 
   let guiScene = obj.getScene()
   guiScene.setUpdatesEnabled(false, false)
 
-  let streak = this.streakQueue.remove(0)
+  let streak = streakQueue.remove(0)
 
   let contentObj = obj.findObject("streak_content")
   contentObj.show(true) //need to correct update textarea positions and sizes
@@ -126,98 +119,81 @@ function updateAnimTimer() {
   updateAnimTimer()
 
   guiScene.setUpdatesEnabled(true, true)
-  this.updatePlaceObjHeight(contentObj.getSize()[1])
+  updatePlaceObjHeight(contentObj.getSize()[1])
 
-  this.streakPlaySound(streak.id)
+  streakPlaySound(streak.id)
   return true
 }
 
-::g_streaks.updateSceneObj <- function updateSceneObj() {
-  let obj = this.getSceneObj()
+function updateSceneObj() {
+  let obj = getSceneObj()
   if (!obj)
     return
 
-  showObjById("streak_content", this.state == hudStreakState.ACTIVE, obj)
+  showObjById("streak_content", streakState == hudStreakState.ACTIVE, obj)
 }
 
-::g_streaks.updatePlaceObj <- function updatePlaceObj() {
-  let obj = this.getSceneObj()
+function updatePlaceObj() {
+  let obj = getSceneObj()
   if (!obj)
     return
 
-  let show = this.state == hudStreakState.ACTIVE
-               || (this.state == hudStreakState.DELAY_BETWEEN_STREAKS && this.streakQueue.len() > 0)
+  let show = streakState == hudStreakState.ACTIVE
+    || (streakState == hudStreakState.DELAY_BETWEEN_STREAKS && streakQueue.len() > 0)
   obj.animation = show ? "show" : "hide"
 }
 
-::g_streaks.updatePlaceObjHeight <- function updatePlaceObjHeight(newHeight) {
-  let obj = this.getSceneObj()
-  if (!obj || !newHeight)
+function checkNextState() {
+  if (stateTimeLeft > 0)
     return
 
-  let curHeight = to_integer_safe(obj?["height-end"], 1)
-  if (curHeight == newHeight)
+  let wasState = streakState
+  if (streakState == hudStreakState.ACTIVE) {
+    streakState = hudStreakState.DELAY_BETWEEN_STREAKS
+    stateTimeLeft = STREAK_DELAY_TIME
+  }
+  else if (streakState == hudStreakState.EMPTY || streakState == hudStreakState.DELAY_BETWEEN_STREAKS) {
+    if (showNextStreak()) {
+      streakState = hudStreakState.ACTIVE
+      stateTimeLeft = STREAK_LIFE_TIME
+    }
+    else
+      streakState = hudStreakState.EMPTY
+  }
+
+  if (wasState == streakState)
     return
 
-  obj["height-end"] = newHeight.tostring()
+  updateSceneObj()
+  updatePlaceObj()
 }
 
-::g_streaks.streakPlaySound <- function streakPlaySound(streakId) {
-  if (!hasFeature("streakVoiceovers"))
+function addStreak(id, header, score) {
+  if (!isStreaksAvailable())
     return
-  let unlockBlk = getUnlockById(streakId)
-  if (!unlockBlk)
+  if (!get_gui_option_in_mode(USEROPT_HUD_VISIBLE_STREAKS, OPTIONS_MODE_GAMEPLAY, true)) {
+    streakQueue.clear()
+    return
+  }
+
+  streakQueue.append({ id = id, header = header, score = score })
+  checkNextState()
+
+  if (streakQueue.len() == 1)
+    updateAnimTimer()
+}
+
+function onUpdateStreaks(dt) {
+  if (stateTimeLeft <= 0)
     return
 
-  if (unlockBlk?.isAfterFlight)
-    get_cur_gui_scene()?.playSound("streak_mission_complete")
-  else if (unlockBlk?.sound)
-    loading_play_voice(unlockBlk.sound, true)
+  stateTimeLeft -= dt * getTimeMultiplier()
+
+  if (stateTimeLeft <= 0)
+    checkNextState()
 }
 
-::g_streaks.getTimeMultiplier <- function getTimeMultiplier() {
-  return this.streakQueue.len() > 0 ? STREAK_QUEUE_TIME_FACTOR : 1.0
-}
-
-::g_streaks.onUpdate <- function onUpdate(dt) {
-  if (this.stateTimeLeft <= 0)
-    return
-
-  this.stateTimeLeft -= dt * this.getTimeMultiplier()
-
-  if (this.stateTimeLeft <= 0)
-    this.checkNextState()
-}
-
-::g_streaks.clear <- function clear() {
-  this.stateTimeLeft = 0;
-  this.state = hudStreakState.EMPTY
-  this.streakQueue.clear()
-}
-
-
-///////////////////////////////////////////////////////////////////////
-///////////////////Function called from code///////////////////////////
-///////////////////////////////////////////////////////////////////////
-
-function add_streak_message(data) { // called from client
-  let { header, wp, exp, id = "" } = data
-  let messageArr = []
-  if (wp)
-    messageArr.append(loc("warpoints/received/by_param", {
-      sign  = "+"
-      value = decimalFormat(wp)
-    }))
-  if (exp)
-    messageArr.append(loc("exp_received/by_param", { value = decimalFormat(exp) }))
-
-  broadcastEvent("StreakArrived", { id })
-  ::g_streaks.addStreak(id, header, loc("ui/comma").join(messageArr, true))
-}
-
-eventbus_subscribe("add_streak_message", @(p) add_streak_message(p))
-
-::get_loc_for_streak <- function get_loc_for_streak(StreakNameType, name, stageparam, playerNick = "", colorId = 0) {
+function getLocForStreak(StreakNameType, name, stageparam, playerNick = "", colorId = 0) {
   let stageId = getMultiStageLocId(name, stageparam)
   let isMyStreak = StreakNameType == SNT_MY_STREAK_HEADER
   local text = ""
@@ -236,6 +212,32 @@ eventbus_subscribe("add_streak_message", @(p) add_streak_message(p))
   return text
 }
 
+///////////////////////////////////////////////////////////////////////
+///////////////////Function called from code///////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+function add_streak_message(data) { // called from client
+  let { header, wp, exp, id = "" } = data
+  let messageArr = []
+  if (wp)
+    messageArr.append(loc("warpoints/received/by_param", {
+      sign  = "+"
+      value = decimalFormat(wp)
+    }))
+  if (exp)
+    messageArr.append(loc("exp_received/by_param", { value = decimalFormat(exp) }))
+
+  broadcastEvent("StreakArrived", { id })
+  addStreak(id, header, loc("ui/comma").join(messageArr, true))
+}
+
+eventbus_subscribe("add_streak_message", @(p) add_streak_message(p))
+
+::get_loc_for_streak <- getLocForStreak// called from client
+
 return {
   add_streak_message
+  getLocForStreak
+  clearStreaks
+  onUpdateStreaks
 }

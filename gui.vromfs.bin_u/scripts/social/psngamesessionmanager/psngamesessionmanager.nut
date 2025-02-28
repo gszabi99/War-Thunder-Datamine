@@ -4,15 +4,17 @@ let psnNotify = require("%sonyLib/notifications.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEmpty, copy } = require("%sqStdLibs/helpers/u.nut")
 let { get_game_mode } = require("mission")
-let { isInSessionRoom, isMeSessionLobbyRoomOwner, isRoomInSession
+let { isInSessionRoom, isMeSessionLobbyRoomOwner, isRoomInSession, getSessionLobbyIsSpectator,
+  getSessionLobbyPublicParam, getSessionLobbyMaxMembersCount, getExternalSessionId
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { setExternalSessionId } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 
 let getSessionData = @(pushContextId) {
   gameSessions = [{
     supportedPlatforms = ["PS4", "PS5"]
-    maxPlayers = ::SessionLobby.getMaxMembersCount()
+    maxPlayers = getSessionLobbyMaxMembersCount()
     maxSpectators = 50 //default value by PSN
-    joinDisabled = !::SessionLobby.getPublicParam("allowJIP", true) && isRoomInSession.get() //todo update during battle - by allowJip && isInSession
+    joinDisabled = !getSessionLobbyPublicParam("allowJIP", true) && isRoomInSession.get() //todo update during battle - by allowJip && isInSession
     member = {
       players = [{
         accountId = "me"
@@ -59,7 +61,7 @@ let create = function() {
       let sessionId = r?.gameSessions[0].sessionId
 
       if (!err && !isEmpty(sessionId)) {
-        ::SessionLobby.setExternalId(sessionId)
+        setExternalSessionId(sessionId)
         dumpSessionData(sessionId, pushContextId, pendingSessions.value[pushContextId])
       }
       pendingSessions.mutate(@(v) v?.$rawdelete(pushContextId))
@@ -108,7 +110,7 @@ addListenersWithoutEnv({
     if (get_game_mode() != GM_SKIRMISH)
       return
 
-    let sessionId = ::SessionLobby.getExternalId()
+    let sessionId = getExternalSessionId()
 
     if (isEmpty(sessionId) && isMeSessionLobbyRoomOwner.get())
       create()
@@ -118,7 +120,7 @@ addListenersWithoutEnv({
       pendingSessions.mutate(@(v) v[sessionId] <- {})
       join(
         sessionId,
-        ::SessionLobby.getIsSpectator(),
+        getSessionLobbyIsSpectator(),
         psnNotify.createPushContext(),
         Callback(function(sId, pushContextId, _r, err) {
           if (!err)
@@ -137,7 +139,7 @@ addListenersWithoutEnv({
     if (!isMeSessionLobbyRoomOwner.get())
       return
 
-    let sessionId = ::SessionLobby.getExternalId()
+    let sessionId = getExternalSessionId()
     if (!isEmpty(sessionId) &&
       (!(sessionId in createdSessionData.value) && !(sessionId in pendingSessions.value))
     ) {
@@ -145,7 +147,7 @@ addListenersWithoutEnv({
     }
   }
   LobbySettingsChange = function(_p) {
-    let sessionId = ::SessionLobby.getExternalId()
+    let sessionId = getExternalSessionId()
     if (isEmpty(sessionId) || !isInSessionRoom.get())
       return
 
@@ -155,7 +157,7 @@ addListenersWithoutEnv({
       pendingSessions.mutate(@(v) v[sessionId] <- {})
       join(
         sessionId,
-        ::SessionLobby.getIsSpectator(),
+        getSessionLobbyIsSpectator(),
         psnNotify.createPushContext(),
         Callback(function(sId, pushContextId, _r, err) {
           if (!err)

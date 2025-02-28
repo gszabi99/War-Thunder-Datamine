@@ -36,7 +36,10 @@ let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByIn
 } = require("%scripts/crew/crewDiscount.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 
 function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -162,7 +165,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     if (!unit)
       return
 
-    ::queues.checkAndStart(@() guiStartTestflight({ unit }), null, "isCanNewflight")
+    queues.checkAndStart(@() guiStartTestflight({ unit }), null, "isCanNewflight")
   }
 
   function onAirInfoWeapons() {
@@ -170,7 +173,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     if (!unit)
       return
 
-    ::open_weapons_for_unit(unit)
+    open_weapons_for_unit(unit)
   }
 
   function onProtectionAnalysis() {
@@ -496,7 +499,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     let crewCountryId = find_in_array(shopCountriesList, profileCountrySq.value, -1)
     let crewIdInCountry = getSelectedCrews(crewCountryId)
     if (crewCountryId != -1 && crewIdInCountry != -1)
-      ::gui_modal_crew({ countryId = crewCountryId, idInCountry = crewIdInCountry })
+      gui_modal_crew({ countryId = crewCountryId, idInCountry = crewIdInCountry })
   }
 
   function onEventUnitWeaponChanged(_params) {

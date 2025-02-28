@@ -12,6 +12,7 @@ let { getLbCategoryTypeByField } = require("%scripts/leaderboard/leaderboardCate
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
+let { findItemById } = require("%scripts/items/itemsManager.nut")
 
                                  //param name in tournament configs //param name in userlogs configs
 let getRewardConditionId = @(rewardBlk) rewardBlk?.condition_type ?? rewardBlk?.awardType ?? ""
@@ -175,7 +176,7 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
     locId = ""
     getValue = function(blk) {
       if ("trophyName" in blk) {
-        let trophy = ::ItemsManager.findItemById(blk.trophyName)
+        let trophy = findItemById(blk.trophyName)
         if (trophy)
           return {
             trophy = trophy
@@ -202,7 +203,7 @@ let rewardsConfig = [ //first in list have higher priority to show icon or to ge
     locId = ""
     getValue = function(blk) {
       if ("itemsName" in blk) {
-        let item = ::ItemsManager.findItemById(blk.itemsName)
+        let item = findItemById(blk.itemsName)
         if (item)
           return {
             item = item

@@ -13,7 +13,8 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let time = require("%scripts/time.nut")
 let { GO_NONE, GO_WAITING_FOR_RESULT } = require("guiMission")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
-let { get_game_mode, get_game_type, get_mission_time, get_mplayers_list, get_mplayer_by_id, get_local_mplayer
+let { get_game_mode, get_game_type, get_mission_time, get_mplayers_list, GET_MPLAYERS_LIST,
+  get_mplayer_by_id, get_local_mplayer
 } = require("mission")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")

@@ -6,6 +6,7 @@ require hud
 require DagorSystem
 require DagorMath
 require DagorStdGuiRender
+require Plane
 require FlightModelWrap
 require HeroManager
 require Unit
@@ -14,26 +15,28 @@ require RadarHud
 require Mission
 require FlightControl
 require Weapon
-require %rGui.utils.canvas
-require %rGui.utils.constants
+require %rGui.utils.canvas_common
+require %rGui.utils.constants_common
+require %rGui.utils.helpers_common
 
 let airGunDistance = 1000.0
 let groundGunDistance = 2000.0
 let bombingDistance = 10000.0
 
-// Adjust this value for each ILS to keep zero line on the horizon when pitching
-let ilsFovDeg : float = 18.0
-
 struct PropStorage
   fontId : int
   isMetricUnits : bool
+  ilsFovDeg : float
 
 struct Tracking
-  isActive : bool = false
-  pos : float3 = float3(0.0, 0.0, 0.0)
-  distance : float = 0.0
-  ilsPosValid : bool = false
-  ilsPos : float2 = float2(0.0, 0.0)
+  isActive : bool
+  pos : float3
+  distance : float
+  distanceRate : float
+  dirNorm : float3
+  angVel : float3
+  ilsPosValid : bool
+  ilsPos : float2
 
 struct Radar
   isEmitting : bool
@@ -58,44 +61,49 @@ enum TvvType
   Box
 
 class Component : Canvas
-  isValid : bool = false
-  isMetricUnits : bool = true
+  isValid : bool
+  isMetricUnits : bool
+  ilsFovDeg : float
 
-  hero : Unit? = null
-  fmw : FlightModelWrap? = null
-  wc : WeaponController? = null
-  secondaryWeapon : Weapon? = null
-  tvvPos : float2 = float2(0.0, 0.0)
-  heading : float = 0.0
-  gearProgress : float = 0.0
+  hero : Unit?
+  fmw : FlightModelWrap?
+  wc : WeaponController?
+  secondaryWeapon : Weapon?
+  totalTime : float
+  tvvPos : float2
+  heading : float
+  gearProgress : float
 
   radar : Radar
   tracking : Tracking
   spi : SensorPoi
 
-  isDogFight : bool = false
-  isAirGunMode : bool = false
-  isGroundGunMode : bool = false
-  isBombingCcrpMode : bool = false
-  isBombingCcipMode : bool = false
-  isBombingGuidedMode : bool = false
+  isDogFight : bool
+  isAirGunMode : bool
+  isGroundGunMode : bool
+  isAamMode : bool
+  isBombingCcrpMode : bool
+  isBombingCcipMode : bool
+  isBombingGuidedMode : bool
 
   def Component(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
     Canvas`Canvas(self, guiCtx, rdata, rstate)
 
     hero = get_watched_not_delayed_hero()
-    fmw = hero |> as_fmw()
+    fmw = hero.as_fmw()
     wc = hero.weap
     return if fmw == null || wc == null
 
     isValid = true
     isMetricUnits = props.isMetricUnits
+    ilsFovDeg = props.ilsFovDeg
     setColor(*fmw.cockpit |> getPageColor(MfdPageType.MFD_PLANE_ILS))
     setLineWidth(floor(6.0 * fmw.cockpit.ilsLineWidthScale))
     setFont(props.fontId)
     setOrigin(canvasPos + 0.5 * canvasSize)
     setScale(canvasSize)
 
+    totalTime = float(get_total_time())
     tvvPos = -(float3x3(inverse(hero.unitTm)) * normalize(hero.vel)).zy;
 
     let forward = hero.unitTm[0]
@@ -103,7 +111,7 @@ class Component : Canvas
 
     if get_point_of_interest(spi.pos)
       spi.isSet = true
-      spi.distance = (isMetricUnits ? 1.0 : metrToMile) * length(spi.pos - hero.unitTm[3])
+      spi.distance = (isMetricUnits ? 0.001 : metrToNavMile) * length(spi.pos - hero.unitTm[3])
       var ilsPos : float2
       if world_to_ils_screen(fmw, spi.pos, ilsPos)
         spi.ilsPosValid = true
@@ -119,6 +127,9 @@ class Component : Canvas
         tracking.isActive = true
         tracking.pos = target.from + target.dirNorm * target.distance
         tracking.distance = target.distance
+        tracking.distanceRate = target.distanceRate
+        tracking.dirNorm = target.dirNorm
+        tracking.angVel = target.angVel
         var ilsPos : float2
         if world_to_ils_screen(fmw, tracking.pos, ilsPos)
           tracking.ilsPosValid = true
@@ -133,11 +144,12 @@ class Component : Canvas
     radar.isTrkMode = find(get_radar_hud_mode_name(), "track") >= 0
     radar.isVerticalScan = radar.elevationMax - radar.elevationMin > 2.0 * (radar.azimuthMax - radar.azimuthMin)
 
-    isAirGunMode = (fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_AIR_CANNONS) ||
-      (fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_AIR_TARGET) &&
-      (secondaryWeapon == null || secondaryWeapon.trigger_no == int(WeaponTriggerType.AAM_TRIGGER))))
+    isAirGunMode = fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_AIR_CANNONS)
 
     isGroundGunMode = fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_CANNONS)
+
+    isAamMode = (fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_AIR_TARGET) &&
+      (secondaryWeapon == null || secondaryWeapon.trigger_no == int(WeaponTriggerType.AAM_TRIGGER)))
 
     isDogFight = (fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_AIR_CANNONS) ||
       (fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_AIR_TARGET) &&
@@ -193,9 +205,9 @@ class Component : Canvas
     return if abs(fmw.roll) > 60.0 || abs(fmw.tangage) > 30.0
 
     let pos = float2(0.25, -0.18)
-    let radarAltitude = min(99999.0, fmw.fm.alt * (isMetricUnits ? 1.0 : metrToFeet))
+    let radarAltitude = min(99999.0, fmw.fm.currentAlt * (isMetricUnits ? 1.0 : metrToFeet))
     let altStr = fmt(":>5d", roundi(radarAltitude))
-    setTextDirection(TextDirection.Right)
+    setTextAnchorHorz(AnchorHorz.Left)
     setFontSize(40)
     drawStr(pos, "H{altStr}", 6)
 
@@ -220,7 +232,7 @@ class Component : Canvas
     let arrowPos = pos + float2(0.0, -radius * 0.95)
     let arrowAngle = PI2 * fract(barometricAltitude / 1000.0)
 
-    let verts <- array<float2>(
+    let verts = array<float2>(
       arrowPos + radius * float2(0.0, 0.0),
       arrowPos + radius * float2(0.12, 0.28),
       arrowPos + radius * float2(-0.12, 0.28)
@@ -248,7 +260,7 @@ class Component : Canvas
     let heading10deg = (0.5 * float(count + 1) - heading * 36.0 / PI2) % 36.0;
     let linesOffset = fract(heading10deg) * stepRel
     let dotsOffset = fract(0.5 + heading10deg) * stepRel
-    let lineWidthRel = toRelY(lineWidth)
+    let lineWidthRel = toRelY(lineWidthHdpx)
     setFontSize(roundi(toAbsY(0.65 * size.y)))
     setViewport(lt, rb)
 
@@ -280,14 +292,20 @@ class Component : Canvas
     let marksVertOffset = fract(tangage5deg) * stepRel
     let markStartX = 0.5 * spaceWidth + markWidth
     let markEndX = 0.5 * spaceWidth
-    setRotation(tvvPos, -fmw.roll / 180.0 * PI)
+    let roll = fmw.roll * degToRad
+    var sina = 0.0
+    var cosa = 0.0
+    sincos(roll, sina, cosa)
+    let tvvRotated = rotate(tvvPos, sina, cosa)
+    let zeroPos = float2(tvvRotated.x, 0.0)
+    setRotation(float2(0.0), -roll)
 
     for i in range(-count, count + 1)
       let markTangage5deg = floori(tangage5deg) - i
       if abs(markTangage5deg) > 18
         continue
       let markOffset = marksVertOffset + float(i) * stepRel
-      let pos = tvvPos + float2(0.0, markOffset)
+      let pos = zeroPos + float2(0.0, markOffset)
       let markEndY = float(markTangage5deg) / 18.0 * markWidth
       if markTangage5deg > 0
         let p0 = float2(markStartX, 0.0);
@@ -295,8 +313,8 @@ class Component : Canvas
         let p2 = float2(markEndX, markEndY + dashWidth);
         drawLine(pos + p0, pos + p1)
         drawLine(pos + p1, pos + p2)
-        drawLine(pos + invX(p0), pos + invX(p1))
-        drawLine(pos + invX(p1), pos + invX(p2))
+        drawLine(pos + inv_x(p0), pos + inv_x(p1))
+        drawLine(pos + inv_x(p1), pos + inv_x(p2))
       elif markTangage5deg < 0
         let p0 = float2(markStartX, 0.0)
         let p1 = float2(markStartX - 2.5 * dashWidth, 0.0)
@@ -306,9 +324,9 @@ class Component : Canvas
         drawDashedLine(pos + p0, pos + p1, dashWidth, dashWidth)
         drawDashedLine(pos + p1, pos + p2, adjDashWidth, adjDashWidth)
         drawLine(pos + p2, pos + p3)
-        drawDashedLine(pos + invX(p0), pos + invX(p1), dashWidth, dashWidth)
-        drawDashedLine(pos + invX(p1), pos + invX(p2), adjDashWidth, adjDashWidth)
-        drawLine(pos + invX(p2), pos + invX(p3))
+        drawDashedLine(pos + inv_x(p0), pos + inv_x(p1), dashWidth, dashWidth)
+        drawDashedLine(pos + inv_x(p1), pos + inv_x(p2), adjDashWidth, adjDashWidth)
+        drawLine(pos + inv_x(p2), pos + inv_x(p3))
       else // horizon with heading markers
         let headingLineStart = pos - float2(1.0, 0.0)
         let headingLineEnd = pos + float2(1.0, 0.0)
@@ -345,8 +363,8 @@ class Component : Canvas
 
     let pos = float2(0.49, -0.1)
     let disti = roundi(spi.distance)
-    let str = isMetricUnits ? "{disti} KM" : "{disti} NM"
-    setTextDirection(TextDirection.Left)
+    let str = spi.distance >= 10. ? (isMetricUnits ? "{disti} KM" : "{disti} NM") : (isMetricUnits ? "{fmt(":.1f", spi.distance)} KM" : "{fmt(":.1f", spi.distance)} NM")
+    setTextAnchorHorz(AnchorHorz.Right)
     setFontSize(30)
     drawStr(pos, str)
 
@@ -354,7 +372,7 @@ class Component : Canvas
   def drawAoa()
     let pos = float2(-0.48, 0.1)
     let aoaStr = fmt(":>5.1f", fmw.fm.aoa)
-    setTextDirection(TextDirection.Right)
+    setTextAnchorHorz(AnchorHorz.Left)
     drawStr(pos, "AOA{aoaStr}")
 
 
@@ -371,13 +389,13 @@ class Component : Canvas
     var pos = float2(-0.2, -0.3)
     let indicatedAirSpeed = roundi((isMetricUnits ? mpsToKmh : mpsToKnots) * fmw.ias)
     setFontSize(40)
-    setTextDirection(TextDirection.Left)
+    setTextAnchorHorz(AnchorHorz.Right)
     drawStr(pos, string(indicatedAirSpeed))
 
-    if fmw.fm.mach >= 0.4
+    if fmw.fm.Mach >= 0.4
       pos.y += 0.032
       setFontSize(29, true)
-      drawStr(pos, fmt(":4.2f", fmw.fm.mach), 4)
+      drawStr(pos, fmt(":4.2f", fmw.fm.Mach), 4)
 
 
   def drawRadarStatus()
@@ -411,11 +429,11 @@ class Component : Canvas
       for p in points
         if p.x == -1.0 && p.y == -1.0
           continue
-        bulletImpactLines |> push(toRelPos(p * absMul))
+        bulletImpactLines.push(toRelPos(p * absMul))
 
 
-    bulletImpactLines |> resize(max(0, bulletImpactLines.length() - 1))
-    return if bulletImpactLines |> empty()
+    bulletImpactLines.resize(max(0, bulletImpactLines.length() - 1))
+    return if bulletImpactLines.empty()
     drawPolyLine(bulletImpactLines)
 
 
@@ -428,7 +446,7 @@ class Component : Canvas
     var distMax01 = 0.0
     var shouldDraw = false
 
-    if isAirGunMode && tracking.isActive && tracking.distance < airGunDistance
+    if (isAirGunMode || isAamMode) && tracking.isActive && tracking.distance < airGunDistance
       dist01 = clamp(tracking.distance / airGunDistance, 0.0, 1.0)
       distMin01 = 0.0
       distMax01 = 1.0
@@ -463,12 +481,12 @@ class Component : Canvas
       drawLine(pos + p0, pos + p1)
       drawLine(pos - p0, pos - p1)
 
-      let polyPoints <- array<float2>(
+      let polyPoints = array<float2>(
         pos + p1,
-        pos + invY(p2),
+        pos + inv_y(p2),
         pos - p2,
-        pos + invX(p1),
-        pos + invX(p2),
+        pos + inv_x(p1),
+        pos + inv_x(p2),
         pos + p2)
 
       drawClosedPolyLine(polyPoints)
@@ -484,7 +502,7 @@ class Component : Canvas
     if radar.isTrkMode && tracking.isActive && tracking.ilsPosValid
       var ilsPos = tracking.ilsPos
       let blinksPerSecond = 4.0
-      let isBlink = fract(blinksPerSecond * float(get_total_time())) < 0.5
+      let isBlink = fract(blinksPerSecond * totalTime) < 0.5
       let maxOffs = float2(0.5 - size)
       let clampedPos = clamp(ilsPos, -maxOffs, maxOffs)
       let gunTargetSize = 0.7 * size
@@ -496,7 +514,13 @@ class Component : Canvas
         drawDashedRect(clampedPos, float2(scale * gunTargetSize), float2(scale * gunTargetDash), float2(scale * gunTargetSpace))
       if clampedPos == ilsPos || isBlink
         drawDashedRect(clampedPos, float2(size), float2(dash), float2(space), angle)
-
+        let tm : float3x3 = float3x3(inverse(hero.unitTm))
+        let velRel = tracking.dirNorm * tracking.distanceRate + tracking.angVel * tracking.distance
+        let velAbs = hero.vel + velRel
+        let velAbsDirection = -fast_normalize((tm * velAbs).zx)
+        let velRelDirection = -fast_normalize((tm * velRel).zx)
+        drawLine(clampedPos + 0.75 * size * velAbsDirection, clampedPos + 1.75 * size * velAbsDirection)
+        drawLine(clampedPos + 0.75 * size * velRelDirection, clampedPos + 1.25 * size * velRelDirection)
     elif isDogFight
       drawDashedRect(float2(0.0), float2(size), float2(dash), float2(space), angle)
 
@@ -509,7 +533,7 @@ class Component : Canvas
     let space = size - 2.0 * dash
     var ilsPos = tracking.ilsPos
     let blinksPerSecond = 4.0
-    let isBlink = fract(blinksPerSecond * float(get_total_time())) < 0.5
+    let isBlink = fract(blinksPerSecond * totalTime) < 0.5
     let maxOffs = float2(0.5 - size)
     let clampedPos = clamp(ilsPos, -maxOffs, maxOffs)
     let gunTargetSize = 0.7 * size
@@ -551,7 +575,7 @@ class Component : Canvas
     let fuente = 0.03
     let halfRectSize = float2(0.2, 0.5) * float2(radar.azimuthMax - radar.azimuthMin, radar.elevationMax - radar.elevationMin)
 
-    let crossModel <- array<float2>(
+    let crossModel = array<float2>(
       float2(-0.5, voffs), float2(0.5, voffs),
       float2(-0.5, voffs - fuente), float2(-0.5, voffs + fuente),
       float2(0.5, voffs - fuente), float2(0.5, voffs + fuente),
@@ -571,15 +595,23 @@ class Component : Canvas
 
 
   def drawSelectedWeapon()
-    let rawName = get_hud_cur_weapon_name()
-    return if rawName.empty()
-
     let pos = float2(-0.3, 0.45)
-    let shellCount = get_hud_cur_weapon_shell_count()
-    let name = loc("{rawName}/rafale")
     setFontSize(40)
-    setTextDirection(TextDirection.Right)
-    drawStr(pos, "{shellCount} {name}")
+    setTextAnchorHorz(AnchorHorz.Left)
+
+    if isAirGunMode || isGroundGunMode
+      let bulletsCountPos = float2(-0.01, 0.4)
+      let bulletsCount = (wc.Weapons.countBullets(int(WeaponTriggerType.MACHINE_GUNS_TRIGGER)) +
+        wc.Weapons.countBullets(int(WeaponTriggerType.CANNONS_TRIGGER)) +
+        wc.Weapons.countBullets(int(WeaponTriggerType.ADDITIONAL_GUNS_TRIGGER)))
+      drawStr(pos, "GUN")
+      drawStr(bulletsCountPos, "{bulletsCount}")
+    else
+      let rawName = get_hud_cur_weapon_name()
+      return if rawName.empty()
+      let shellCount = get_hud_cur_weapon_shell_count()
+      let name = loc("{rawName}/rafale")
+      drawStr(pos, "{shellCount} {name}")
 
 
   def drawAttitudeIndicator()
@@ -604,72 +636,153 @@ class Component : Canvas
     drawCircle(pos, radius)
 
 
-  def drawAamTrackingMark()
+  def drawAamEmTrackingMark()
+    let aamLockState = get_aam_guidance_lock_state()
+    return if int(aamLockState) <= int(GuidanceLockState.RESULT_STANDBY)
+
+    let guidanceType = get_cur_weapon_guidance_type()
+    return if guidanceType != GuidanceType.TYPE_SARH && guidanceType != GuidanceType.TYPE_ARH
+
+    let radius = 0.032
+    let pos = get_ils_aam_tracker_visible() ? toRelPos(get_ils_aam_tracker_pos()) : tracking.ilsPos
+    let maxOffs = float2(0.5 - radius)
+    let clampedPos = clamp(pos, -maxOffs, maxOffs)
+    let blinksPerSecond = 4.0
+    let isBlink = fract(blinksPerSecond * totalTime) < 0.5
+    return if isBlink && clampedPos != pos
+
+    drawCircle(clampedPos, radius)
+
+
+  def drawAamIrTrackingMark()
+    let aamLockState = get_aam_guidance_lock_state()
+    return if int(aamLockState) <= int(GuidanceLockState.RESULT_STANDBY)
+    return if get_cur_weapon_guidance_type() != GuidanceType.TYPE_OPTICAL
+
+    let radius = 0.032
+    let pos = get_ils_aam_tracker_visible() ? toRelPos(get_ils_aam_tracker_pos()) : tracking.ilsPos
+    let maxOffs = float2(0.5 - radius)
+    let clampedPos = clamp(pos, -maxOffs, maxOffs)
+    let blinksPerSecond = 4.0
+    let isBlink = fract(blinksPerSecond * totalTime) < 0.5
+    return if isBlink && clampedPos != pos
+
+    drawCircle(clampedPos, radius)
+    if aamLockState == GuidanceLockState.RESULT_TRACKING
+      drawCircle(clampedPos, radius * 1.25)
+
+
+  def drawShootIndicator()
+    let guidanceType = get_cur_weapon_guidance_type()
+    return if guidanceType != GuidanceType.TYPE_OPTICAL && guidanceType != GuidanceType.TYPE_SARH && guidanceType != GuidanceType.TYPE_ARH
+
     let aamLockState = get_aam_guidance_lock_state()
     return if aamLockState != GuidanceLockState.RESULT_TRACKING && aamLockState != GuidanceLockState.RESULT_LOCK_AFTER_LAUNCH
 
-    let size = 0.032
-    let pos = get_ils_aam_tracker_visible() ? toRelPos(get_ils_aam_tracker_pos()) : tracking.ilsPos
-    let maxOffs = float2(0.5 - size)
-    let clampedPos = clamp(pos, -maxOffs, maxOffs)
-    let guidanceType = get_cur_weapon_guidance_type()
-    let blinksPerSecond = 4.0
-    let isBlink = fract(blinksPerSecond * float(get_total_time())) < 0.5
-    return if isBlink && clampedPos != pos
+    let pos = float2(0.0, 0.2)
+    setFontSize(35)
+    setTextAnchorHorz(AnchorHorz.Center)
+    drawStr(pos, "SHOOT")
 
-    // TODO: make different indications for different guidance types
-    if guidanceType == GuidanceType.TYPE_SARH || guidanceType == GuidanceType.TYPE_ARH
-      drawCircle(clampedPos, size)
-
-  def drawIrAamSeeker()
-    let aamLockState = get_aam_guidance_lock_state()
-    if int(aamLockState) <= int(GuidanceLockState.RESULT_STANDBY)
-      return
-    if get_cur_weapon_guidance_type() != GuidanceType.TYPE_OPTICAL
-      return
-
-    let size = 0.032
-    let pos = get_ils_aam_tracker_visible() ? toRelPos(get_ils_aam_tracker_pos()) : tracking.ilsPos
-    let maxOffs = float2(0.5 - size)
-    let clampedPos = clamp(pos, -maxOffs, maxOffs)
-    let blinksPerSecond = 4.0
-    let isBlink = fract(blinksPerSecond * float(get_total_time())) < 0.5
-    if isBlink && clampedPos != pos
-      return
-    drawCircle(clampedPos, size)
-    if aamLockState != GuidanceLockState.RESULT_TRACKING
-      return
-    drawCircle(clampedPos, size * 1.25)
 
   def drawCcrpMark()
-    return if !isBombingCcrpMode
+    return if !isBombingCcrpMode || !spi.ilsPosValid
+
+    let poiPosLocal = inverse(hero.unitTm) * spi.pos
+    let isBehind = poiPosLocal.x < 0.0
+    return if isBehind
 
     let timeMarkWidth = 0.05
     let zeroMarkRadius = 0.005
     let timeToRelease = get_time_before_bomb_release()
-    var sina, cosa : float
-    sincos(-fmw.roll / 180.0 * PI, sina, cosa)
-    let down = rotate(float2(0.0, 1.0), sina, cosa)
-    let right = rotate(float2(timeMarkWidth, 0.0), sina, cosa)
-    let targetPos = toRelPos(get_ils_target_pos())
-    drawLine(targetPos, targetPos + 10.0 * down)
-    drawLine(targetPos, targetPos - 10.0 * down)
-    let zeroOffset = dot(-down, tvvPos - targetPos)
+
+    var sina = 0.0
+    var cosa = 0.0
+    sincos(-fmw.roll * degToRad, sina, cosa)
+    let up = float2(sina, -cosa)
+    let targetPos = spi.ilsPos
+    let rayLength = length(targetPos) + 1.0
+    drawLine(targetPos, targetPos + rayLength * up)
+    drawLine(targetPos, targetPos - rayLength * up)
+
+    let zeroOffset = dot(up, tvvPos - targetPos)
     let timeOffset = 0.03 * timeToRelease + zeroOffset
-    let zeroPos = targetPos - down * zeroOffset
-    let timePos = targetPos - down * timeOffset
-    let upLeft = timePos - right
-    let upRight = timePos + right
+    let zeroPos = targetPos + up * zeroOffset
+    let timePos = targetPos + up * timeOffset
+    let right = float2(cosa, sina)
+    let upLeft = timePos - right * timeMarkWidth
+    let upRight = timePos + right * timeMarkWidth
     drawCircle(zeroPos, zeroMarkRadius)
 
     if timeToRelease > 0.0
       drawLine(upLeft, upRight)
 
 
+  def drawApproachSpeed()
+    return if !tracking.isActive
+    setFontSize(35)
+    setTextAnchorHorz(AnchorHorz.Left)
+    let approachSpeed = tracking.distanceRate * (isMetricUnits ? 1.0 : metrToFeet)
+    let str = fmt(":>5d", roundi(-approachSpeed))
+    let pos = float2(0.12, 0.1)
+    let size = getStringSize(str)
+    let padding = float2(0.005)
+    drawBox(pos - padding, pos + size + padding)
+    drawStr(pos + float2(0.0, size.y), str)
+
+  def drawLaunchDistanceIndicator()
+    return if (!isAamMode && !isAirGunMode) || !get_radar_hud_aam_launch_zone_visible()
+
+    var distMax = get_radar_hud_aam_launch_zone_dist_max()
+    var distMaxDgft = get_radar_hud_aam_launch_zone_dist_dgft_max() / distMax
+    var distMin = get_radar_hud_aam_launch_zone_dist_min() / distMax
+    var dist = clamp(get_radar_hud_aam_launch_zone_dist() / distMax, 0.0, 1.05)
+
+    let pos = float2(0.25, 0.115)
+    let size = float2(0.04, 0.25)
+    let mid = pos.x
+    let top = pos.y
+    let bottom = top + size.y
+    let serifRight = mid + 0.25 * size.x
+    drawLine(float2(mid, top), float2(serifRight, top))
+    drawLine(float2(mid, bottom), float2(serifRight, bottom))
+    drawLine(float2(mid, top), float2(mid, bottom))
+
+    let distX = mid + 0.5 * size.x
+    let distMinX = mid - 0.5 * size.x
+    let distMaxDgftX = mid - 0.75 * size.x
+    let distY = bottom - size.y * dist
+    let distY1 = distY - 0.25 * size.x
+    let distY2 = distY + 0.25 * size.x
+    let distMinY = bottom - size.y * distMin
+    let distMaxDgftY = bottom - size.y * distMaxDgft
+    drawLine(float2(mid, distMinY), float2(distMinX, distMinY))
+    drawLine(float2(mid, distMaxDgftY), float2(distMaxDgftX, distMaxDgftY))
+    drawLine(float2(mid, distY), float2(distX, distY1))
+    drawLine(float2(mid, distY), float2(distX, distY2))
+
+    let distance = tracking.distance * (isMetricUnits ? 0.001 : metrToNavMile)
+    let distanceStr = round(distance * 10.0) > 99.0 ? fmt(":>3d", roundi(distance)) : fmt(":>4.1f", distance)
+    setFontSize(35)
+    setTextAnchorHorz(AnchorHorz.Left)
+    drawStr(float2(distX, distY + 0.012), "{distanceStr}")
+
+  def drawCriticalSpeedWarning()
+    return if !fmw.isCriticallyLowSpeed
+
+    let blinksPerSecond = 1.5
+    let isBlink = fract(blinksPerSecond * totalTime) < 0.5
+    return if !isBlink
+
+    let pos = float2(0, -0.28)
+    setTextAnchorHorz(AnchorHorz.Center)
+    drawStr(pos, "TOO SLOW")
+
   def draw()
     return if !isValid
 
     setFullCanvasViewport()
+
     drawTvvMark(TvvType.Circle)
     drawRadarAltitude()
     drawBarometricAltitude()
@@ -690,10 +803,15 @@ class Component : Canvas
     drawUnifiedTargetMarkWithRange()
     drawSelectedWeapon()
     drawAttitudeIndicator()
-    drawAamTrackingMark()
+    drawAamEmTrackingMark()
+    drawAamIrTrackingMark()
     drawCcrpMark()
+    drawApproachSpeed()
+    drawLaunchDistanceIndicator()
+    drawShootIndicator()
+    drawCriticalSpeedWarning()
+
     restoreViewport()
-    drawIrAamSeeker()
 
 
 [export]
@@ -704,3 +822,4 @@ def render(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : Ren
 def setup(props : Properties&; var propStorage : PropStorage&)
   propStorage.fontId = getInt(props, "fontId", 0)
   propStorage.isMetricUnits = getBool(props, "isMetricUnits", true)
+  propStorage.ilsFovDeg = getFloat(props, "ilsFovDeg", 20.0)

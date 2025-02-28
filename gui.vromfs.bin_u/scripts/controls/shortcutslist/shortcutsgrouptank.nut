@@ -495,6 +495,10 @@ return [
     showFunc = @() hasFeature("TankSupportPlane")
   }
   {
+    id = "ID_TOGGLE_UAV_CAMERA"
+    checkAssign = false
+  }
+  {
     id = "ID_SUPPORT_PLANE_ORBITING"
     checkAssign = false
     showFunc = @() hasFeature("TankSupportPlane")

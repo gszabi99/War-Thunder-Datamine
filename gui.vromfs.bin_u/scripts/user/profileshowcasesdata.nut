@@ -6,6 +6,7 @@ let { charRequestBlk } = require("%scripts/tasker.nut")
 let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 let { get_time_msec } = require("dagor.time")
 let { eventbus_subscribe } = require("eventbus")
+let { isArray } = require("%sqstd/underscore.nut")
 
 enum allShowcasesEventName {
   UPDATED = "AllShowcasesDataUpdated"
@@ -21,6 +22,9 @@ function onProfileShowcaseResponce(responce) {
   if (!isDataBlock(responce))
     return
   allShowcasesData = convertBlk(responce)
+  if (allShowcasesData?.unit_collector.units && !isArray(allShowcasesData.unit_collector.units))
+    allShowcasesData.unit_collector.units = [allShowcasesData.unit_collector.units]
+
   broadcastEvent(allShowcasesEventName.UPDATED, allShowcasesData)
 }
 

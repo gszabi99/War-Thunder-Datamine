@@ -19,8 +19,14 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getProfileInfo, getCurExpTable } = require("%scripts/user/userInfoStats.nut")
 let { getCustomNick } = require("%scripts/contacts/customNicknames.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { getFriendsOnlineNum } = require("%scripts/contacts/contactsInfo.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { chatRooms } = require("%scripts/chat/chatStorage.nut")
+let { checkClanTagForDirtyWords } = require("%scripts/clans/clanTextInfo.nut")
+let { getUnseenCandidatesCount } = require("%scripts/clans/clanCandidates.nut")
+let { check_new_user_logs } = require("%scripts/userLog/userlogUtils.nut")
+let { updateShortQueueInfo } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
+let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
 
 let lastGamercardScenes = persist("lastGamercardScenes", @() [])
 
@@ -154,6 +160,11 @@ function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = 
   foreach (name, val in cfg) {
     let obj = getObj($"{prefix}{name}")
     if (checkObj(obj)) {
+      if (name == "frame") {
+        obj.show(val != "")
+        if (val != "")
+          obj["background-image"] = $"!ui/images/avatar_frames/{val}.avif"
+      }
       if (name == "country")
         obj["background-image"] = getCountryIcon(val)
       else if (name == "rankProgress") {
@@ -186,7 +197,7 @@ function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = 
       }
       else if (name == "clanTag") {
         showClanTag = hasFeature("Clans") && val != ""
-        let clanTagName = ::checkClanTagForDirtyWords(val.tostring())
+        let clanTagName = checkClanTagForDirtyWords(val.tostring())
         let btnText = obj.findObject($"{prefix}{name}_name")
         if (checkObj(btnText))
           btnText.setValue(clanTagName)
@@ -249,7 +260,7 @@ function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = 
   if (hasFeature("UserLog")) {
     let objBtn = getObj($"{prefix}userlog_btn")
     if (checkObj(objBtn)) {
-      let newLogsCount = ::check_new_user_logs().len()
+      let newLogsCount = check_new_user_logs().len()
       let haveNew = newLogsCount > 0
       let tooltip = haveNew ?
         format(loc("userlog/new_messages"), newLogsCount) : loc("userlog/no_new_messages")
@@ -260,7 +271,7 @@ function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = 
   update_gamercards_chat_info(prefix)
 
   if (hasFeature("Friends")) {
-    let friendsOnline = ::getFriendsOnlineNum()
+    let friendsOnline = getFriendsOnlineNum()
     let cObj = getObj($"{prefix}contacts")
     if (checkObj(cObj))
       cObj.tooltip = format(loc("contacts/friends_online"), friendsOnline)
@@ -302,7 +313,7 @@ function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = 
   }
 
   let queueTextObj = getObj("gc_queue_wait_text")
-  ::g_qi_view_utils.updateShortQueueInfo(queueTextObj, queueTextObj, getObj("gc_queue_wait_icon"))
+  updateShortQueueInfo(queueTextObj, queueTextObj, getObj("gc_queue_wait_icon"))
 
   let battlePassImgObj = getObj("gc_BattlePassProgressImg")
   if (battlePassImgObj?.isValid() ?? false)
@@ -333,10 +344,10 @@ function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = 
     gc_dropdown_premium_button = featureEnablePremiumPurchase
     gc_dropdown_shop_eagles_button = canSpendGold
     gc_free_exp = hasFeature("SpendGold")
-    gc_items_shop_button = ::ItemsManager.isItemsManagerEnabled() && isInMenu()
+    gc_items_shop_button = isItemsManagerEnabled() && isInMenu()
       && hasFeature("ItemsShop")
     gc_online_shop_button = hasFeature("OnlineShopPacks")
-    gc_clanAlert = hasFeature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0
+    gc_clanAlert = hasFeature("Clans") && getUnseenCandidatesCount() > 0
     gc_invites_btn = !is_platform_xbox || hasFeature("XboxCrossConsoleInteraction")
     gc_userlog_btn = hasFeature("UserLog")
     gc_manual_unlocks_unseen = is_in_menu
@@ -407,7 +418,7 @@ function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = 
 }
 
 ::update_clan_alert_icon <- function update_clan_alert_icon() {
-  let needAlert = hasFeature("Clans") && ::g_clans.getUnseenCandidatesCount() > 0
+  let needAlert = hasFeature("Clans") && getUnseenCandidatesCount() > 0
   doWithAllGamercards(function(scene) {
       showObjById("gc_clanAlert", needAlert, scene)
     })

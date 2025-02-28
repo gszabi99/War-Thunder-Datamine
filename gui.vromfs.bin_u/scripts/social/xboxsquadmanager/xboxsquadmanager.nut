@@ -5,8 +5,8 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let logX = require("%sqstd/log.nut")().with_prefix("[MPA_MANAGER] ")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { set_activity, clear_activity, send_invitations, JoinRestriction } = require("%xboxLib/mpa.nut")
-let { is_any_user_active } = require("%xboxLib/impl/user.nut")
+let { set_activity, clear_activity, send_invitations, JoinRestriction } = require("%gdkLib/mpa.nut")
+let { is_any_user_active } = require("%gdkLib/impl/user.nut")
 let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsService.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { isInFlight } = require("gameplayBinding")
@@ -14,7 +14,8 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
-let { isLoggedIn } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { findContactByXboxId } = require("%scripts/contacts/contactsManager.nut")
 
 local needCheckSquadInvites = false // It required 'in moment', no need to save in persist
 let postponedInvitation = mkWatched(persist, "postponedInvitation", "0")
@@ -130,7 +131,7 @@ function requestPlayerAndDo(uid, name, cb) {
 }
 
 function requestXboxPlayerAndDo(xuid, cb) {
-  let newContact = ::findContactByXboxId(xuid)
+  let newContact = findContactByXboxId(xuid)
   if (newContact) {
     cb(newContact.uid)
     return

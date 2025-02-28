@@ -142,7 +142,7 @@ function getTimeTblFromStringImpl(str) {
 
   if ("month" in res)
     res.month -= 1
- return res
+  return res
 }
 
 let strToTimeCache = {}

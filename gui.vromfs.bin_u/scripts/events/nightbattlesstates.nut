@@ -6,7 +6,7 @@ let { getCurGameModeMinMRankForNightBattles } = require("%scripts/events/eventIn
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
 
 const SEEN_NIGHT_BATTLE_WINDOW_ID  = "seen/night_battle_window"

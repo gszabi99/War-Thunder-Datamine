@@ -3,8 +3,8 @@
 @const profileHeaderBottomPadding:20@sf/@pf;
 @const medalItemMargin:21@sf/@pf;
 @const unlockListRightMargin:13@sf/@pf;
-@const maxAccountHeaderHeight:54@sf/@pf + 1@frameHeaderHeight + 1@avatarButtonSize + 1@profileHeaderTopPadding + 1@profileHeaderBottomPadding + 1@bh;
-@const minAccountHeaderHeight:1@frameProfileTopOffset + 1@frameHeaderHeight + 1@buttonHeight + 7@sf/@pf + 1@bh;
+@const maxAccountHeaderHeight:54@sf/@pf + 1@frameHeaderHeight + 1@avatarButtonSize + 1@profileHeaderTopPadding + 1@profileHeaderBottomPadding + 1@bh - 1@bhInVr;
+@const minAccountHeaderHeight:1@frameProfileTopOffset + 1@frameHeaderHeight + 1@buttonHeight + 7@sf/@pf + 1@bh - 1@bhInVr;
 @const accountHeaderWidth:720@sf/@pf;
 
 @const profileFrameWidth: 1.0 *(1@rw-2@framePadding);
@@ -23,8 +23,19 @@
 @const showcaseBoxBorder: #1B161719;
 @const showcaseGreyText: #7C8389;
 @const showcaseBlue: #FF17CBFC;
+@const showcaseWhiteTransparent: #05111111;
 @const countriesSmallListHeight:50@sf/@pf;
 @const comboboxSmallFontPixHt:22@sf/@pf \ 1;
+
+@const smallProfileHeaderH:130@sf/@pf;
+@const profileHeaderH:190@sf/@pf;
+@const favoriteUnitImageHeight:280@sf/@pf;
+@const showcaseLinePadding:13@sf/@pf;
+@const showcaseStatValHeight:42@sf/@pf \ 1;
+@const showcaseStatNameHeight:18@sf/@pf \ 1;
+@const showcaseStatIconSize:55@sf/@pf;
+@const showcaseMinStatHeight:159@sf/@pf;
+@const favoriteUnitShowcaseHeight:1@favoriteUnitImageHeight + 2@showcaseLinePadding + 2@showcaseMinStatHeight + 1@showcaseStatNameHeight + 1@showcaseLinePadding;
 
 @const frameSeparatorHeight: 1@sf/@pf;
 
@@ -37,6 +48,10 @@ profileContent {
 profileContentLeft {
   position:relative;
   size:0.18*pw, ph;
+}
+
+profileContentLeft[page=collections] {
+  size:0.225*pw, ph;
 }
 
 profileContentLeft[page=skins] {
@@ -339,7 +354,7 @@ frameSeparator {
 
 frame[needShortSeparators=yes] frameSeparator {
   re-type:9rect;
-  size:pw + 1@profileSeparatorExtraWidth, 1@frameSeparatorHeight;
+  size:pw + 1@profileSeparatorExtraWidth*(1-1@isInVr), 1@frameSeparatorHeight;
   background-image:!ui/images/profile/separator_gradient.svg;
   background-repeat:expand-svg;
   background-color:#FFFFFF;
@@ -352,7 +367,7 @@ frameSeparator[position=root] {
 }
 
 frame[needShortSeparators=yes] frameSeparator[position=root] {
-  size:sw + 1@profileSeparatorExtraWidth, 1@frameSeparatorHeight;
+  size:(sw + 1@profileSeparatorExtraWidth)*(1-1@isInVr) + 1@rw*1@isInVr, 1@frameSeparatorHeight;
   max-width:1@maxProfileFrameWidth + 1@profileSeparatorExtraWidth;
   left:(sw-w)/2;
 }
@@ -467,11 +482,15 @@ profileHeaderBackground[headerAnim=show] {
   _transp-timer: 0;
 }
 
-avatar > avatarFrame {
+avatarFrame {
   size: 1.2 * pw, 1.2 * ph;
   pos: (pw-w)/2, (ph-h)/2;
   position: absolute;
   background-color: @white;
   background-scale: aspect-ratio;
   background-svg-size: 1.2 * pw, 1.2 * ph;
+}
+
+[isEditModeEnabled=yes] button[background-image=""] > editableSlotPlus {
+  display:show;
 }

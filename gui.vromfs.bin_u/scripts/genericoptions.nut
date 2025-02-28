@@ -16,13 +16,13 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
-let { getFullUnlockDesc } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getFullUnlockDesc, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { set_option_ptt } = require("chat")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtils.nut")
+let { getUrlOrFileMissionMetaInfo } = require("%scripts/missions/missionsUtilsModule.nut")
 let { set_gui_option } = require("guiOptions")
 let { set_option_radar_name, set_option_radar_scan_pattern_name } = require("radarOptions")
-let { set_option, create_options_container } = require("%scripts/options/optionsExt.nut")
+let { set_option, create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTION_BAR,
@@ -31,16 +31,19 @@ let { USEROPT_PS4_CROSSPLAY, USEROPT_PTT, USEROPT_VOICE_CHAT, USEROPT_SHOW_ACTIO
   USEROPT_BIT_COUNTRIES_TEAM_B, USEROPT_MISSION_COUNTRIES_TYPE, USEROPT_BIT_UNIT_TYPES,
   USEROPT_USE_KILLSTREAKS, USEROPT_IS_BOTS_ALLOWED, USEROPT_USE_TANK_BOTS,
   USEROPT_USE_SHIP_BOTS, USEROPT_LOAD_FUEL_AMOUNT, USEROPT_RADAR_SCAN_PATTERN_SELECT,
-  USEROPT_RADAR_SCAN_RANGE_SELECT
+  USEROPT_RADAR_SCAN_RANGE_SELECT, USEROPT_CONSOLE_GFX_PRESET
 } = require("%scripts/options/optionsExtNames.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
 let { add_tank_alt_crosshair_template } = require("crosshair")
+let { get_current_campaign, get_mission_settings } = require("%scripts/missions/missionsStates.nut")
+let { checkIsInQueue, queues } = require("%scripts/queue/queueManager.nut")
+let { getMissionAllowedUnittypesMask, isSkirmishWithKillStreaks } = require("%scripts/missions/missionsUtils.nut")
 
 function get_country_by_team(team_index) {
   local countries = null
-  if (::mission_settings && ::mission_settings.layout)
-    countries = ::get_mission_team_countries(::mission_settings.layout)
+  if (get_mission_settings().layout)
+    countries = ::get_mission_team_countries(get_mission_settings().layout)
   return countries?[team_index] ?? ""
 }
 
@@ -51,7 +54,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
 
   currentContainerName = "generic_options"
   options = null
-  optionsConfig = null //config forwarded to ::get_option
+  optionsConfig = null //config forwarded to get_option
   optionsContainers = null
   applyFunc = null
   cancelFunc = null
@@ -206,7 +209,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (container in this.optionsContainers)
       foreach (idx, option in container.data)
         if (option.type == optionType) {
-          let newOption = ::get_option(optionType, this.optionsConfig)
+          let newOption = get_option(optionType, this.optionsConfig)
           container.data[idx] = newOption
           this.updateOptionImpl(newOption)
         }
@@ -232,7 +235,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     if (opt == null)
       return
 
-    this.enableOptionRow(opt, !::checkIsInQueue())
+    this.enableOptionRow(opt, !checkIsInQueue())
   }
 
   function getOptionObj(option) {
@@ -325,12 +328,12 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   function onFilterEditBoxCancel() {}
 
   function onPTTChange(obj) {
-    set_option_ptt(::get_option(USEROPT_PTT).value ? 0 : 1);
+    set_option_ptt(get_option(USEROPT_PTT).value ? 0 : 1);
     showObjById("ptt_buttons_block", obj.getValue(), this.scene)
   }
 
   function onVoicechatChange(_obj) {
-    set_option(USEROPT_VOICE_CHAT, !::get_option(USEROPT_VOICE_CHAT).value)
+    set_option(USEROPT_VOICE_CHAT, !get_option(USEROPT_VOICE_CHAT).value)
     broadcastEvent("VoiceChatOptionUpdated")
   }
 
@@ -419,10 +422,10 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   function onChangeDisplayRealNick(obj) {
     if (!havePremium.get())
       return obj.setValue(true)
-    let optValue = ::get_option(USEROPT_DISPLAY_MY_REAL_NICK).value
+    let optValue = get_option(USEROPT_DISPLAY_MY_REAL_NICK).value
     if (optValue == obj.getValue())
       return
-    ::queues.checkAndStart(@() broadcastEvent("UpdateGamercards"), @() obj.setValue(optValue), "isCanNewflight")
+    queues.checkAndStart(@() broadcastEvent("UpdateGamercards"), @() obj.setValue(optValue), "isCanNewflight")
   }
 
   function setCrossNetworkChatValue(obj, value, needSendNotification = false) {
@@ -433,7 +436,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
       broadcastEvent("CrossNetworkChatOptionChanged")
 
       if (value == false) { //Turn off voice if we turn off crossnetwork opt
-        let voiceOpt = ::get_option(USEROPT_VOICE_CHAT)
+        let voiceOpt = get_option(USEROPT_VOICE_CHAT)
         if (voiceOpt.value == true && voiceOpt?.cb != null) // onVoicechatChange toggles value
           this[voiceOpt.cb](null)
         else
@@ -481,7 +484,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getSceneOptValue(optName) {
-    let option = this.get_option_by_id(optName) || ::get_option(optName)
+    let option = this.get_option_by_id(optName) || get_option(optName)
     if (option.values.len() == 0)
       return null
     let obj = this.scene.findObject(option.id)
@@ -496,8 +499,8 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     set_option_gamma(gamma, false)
   }
 
-  function onConsolePresetChange(obj) {
-    set_option_console_preset(obj.getValue())
+  function onConsolePresetChange(_obj) {
+    set_option_console_preset(this.getSceneOptValue(USEROPT_CONSOLE_GFX_PRESET))
   }
 
   function onControls(_obj) {
@@ -542,14 +545,14 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onLayoutChange(_obj) {
-    let countryOption = ::get_option(USEROPT_MP_TEAM_COUNTRY);
+    let countryOption = get_option(USEROPT_MP_TEAM_COUNTRY);
     let cobj = this.getObj(countryOption.id);
     local country = ""
     if (checkObj(cobj)) {
       country = get_country_by_team(cobj.getValue())
       set_option(USEROPT_MP_TEAM_COUNTRY, cobj.getValue())
     }
-    let yearOption = ::get_option(USEROPT_YEAR)
+    let yearOption = get_option(USEROPT_YEAR)
     let unitsByYears = ::get_number_of_units_by_years(country, yearOption.valuesInt)
     let yearObj = this.getObj(yearOption.id)
     if (!yearObj)
@@ -566,12 +569,12 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
 
       local enabled = true
       local tooltip = ""
-      if (::current_campaign && country != "") {
+      if (get_current_campaign() && country != "") {
         let yearId = $"{country}_{yearOption.values[i]}"
         let unlockBlk = getUnlockById(yearId)
         if (unlockBlk) {
           enabled = isUnlockOpened(yearId, UNLOCKABLE_YEAR)
-          tooltip = enabled ? "" : getFullUnlockDesc(::build_conditions_config(unlockBlk))
+          tooltip = enabled ? "" : getFullUnlockDesc(buildConditionsConfig(unlockBlk))
         }
       }
 
@@ -587,7 +590,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getOptValue(optName, return_default_when_no_obj = true) {
-    let option = ::get_option(optName)
+    let option = get_option(optName)
     let obj = this.scene.findObject(option.id)
     if (!obj && !return_default_when_no_obj)
       return null
@@ -641,9 +644,9 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let missionBlk = getUrlOrFileMissionMetaInfo(this.optionsConfig?.missionName ?? "", this.optionsConfig?.gm)
-    let useKillStreaks = missionBlk && ::is_skirmish_with_killstreaks(missionBlk) &&
+    let useKillStreaks = missionBlk && isSkirmishWithKillStreaks(missionBlk) &&
       this.getOptValue(USEROPT_USE_KILLSTREAKS, false)
-    let allowedUnitTypesMask  = ::get_mission_allowed_unittypes_mask(missionBlk, useKillStreaks)
+    let allowedUnitTypesMask  = getMissionAllowedUnittypesMask(missionBlk, useKillStreaks)
 
     foreach (unitType in unitTypes.types) {
       if (unitType == unitTypes.INVALID || !unitType.isPresentOnMatching)
@@ -657,8 +660,8 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let itemObj = optionTrObj.findObject("text_after")
-      if (checkObj(itemObj))
-        itemObj.show(useKillStreaks)
+    if (checkObj(itemObj))
+      itemObj.show(useKillStreaks)
   }
 
   function onOptionBotsAllowed(_obj) {

@@ -49,6 +49,7 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
                              setting__routeName : string;
                              setting__unit_target_list : StringList;
                              setting__toGround : bool;
+                             setting__forcePos : bool;
                              setting__loadSound : bool;
                              setting__cannotMove : bool;
                              setting__ignoreCollisions : bool;
@@ -64,6 +65,7 @@ def components_to_blk(var blk : DataBlock; eid : EntityId)
     add(blk, "route", setting__routeName)
     add(blk, "canChangeUnit", setting__canChangeUnit)
     add(blk, "toGround", setting__toGround)
+    add(blk, "forcePos", setting__forcePos)
     add(blk, "cannotMove", setting__cannotMove)
     add(blk, "loadSound", setting__loadSound)
     add(blk, "ignoreCollisions", setting__ignoreCollisions)

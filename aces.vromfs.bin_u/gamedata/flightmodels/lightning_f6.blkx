@@ -6,6 +6,7 @@
   "gearSinkRangeC": 0.184,
   "jetEnginePowerFullScale": true,
   "gyroSight": true,
+  "needTpsNightVision": true,
   "type": "typeFighter",
   "paratrooper": "ally",
   "advancedInstructor": true,
@@ -2399,10 +2400,36 @@
       ]
     }
   },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    }
+  },
   "flexWing": {
     "wingStrainCoeff": 0.2,
     "wingOverloadCoeff": 1.0,
     "wingStrainLimitDown": 1.0
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/uk_ai.blk",
+      "dmPart": "radar_dm"
+    }
   },
   "commonWeapons": {
     "hideDmParts": {
@@ -2447,12 +2474,6 @@
         "reqModification": "aam_redtop"
       }
     ]
-  },
-  "sensors": {
-    "sensor": {
-      "blk": "gameData/sensors/uk_ai.blk",
-      "dmPart": "radar_dm"
-    }
   },
   "turbulence": {
     "segmentlength": 100.0,

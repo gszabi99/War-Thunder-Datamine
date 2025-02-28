@@ -9,6 +9,7 @@
   "haveCCRPForGun": true,
   "haveCCRPForBombs": true,
   "ilsLCOSS": true,
+  "needTpsNightVision": true,
   "havePointOfInterestDesignator": true,
   "gearSinkRangeLR": 0.42,
   "gearSinkRangeC": 1.07,
@@ -2825,16 +2826,47 @@
       ]
     }
   },
+  "flexWing": {
+    "wingStrainCoeff": 0.3,
+    "wingOverloadCoeff": 1.0,
+    "wingStrainLimitDown": 1.0
+  },
+  "nightVision": {
+    "gunnerIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    },
+    "pilotIr": {
+      "resolution": [
+        800,
+        600
+      ],
+      "lightMult": 8.0,
+      "ghosting": 0.75,
+      "noiseFactor": 0.2
+    }
+  },
+  "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/us_an_apg_59.blk",
+        "dmPart": "radar_dm"
+      },
+      {
+        "blk": "gameData/sensors/uk_ari_18228.blk"
+      }
+    ]
+  },
   "commonWeapons": {
     "Weapon": {
       "slot": 0,
       "preset": "ltc_common"
     }
-  },
-  "flexWing": {
-    "wingStrainCoeff": 0.3,
-    "wingOverloadCoeff": 1.0,
-    "wingStrainLimitDown": 1.0
   },
   "weapon_presets": {
     "preset": [
@@ -3665,17 +3697,6 @@
     "timeToLive": 45.0,
     "maxPower": 6.0,
     "maxSegments": 50
-  },
-  "sensors": {
-    "sensor": [
-      {
-        "blk": "gameData/sensors/us_an_apg_59.blk",
-        "dmPart": "radar_dm"
-      },
-      {
-        "blk": "gameData/sensors/uk_ari_18228.blk"
-      }
-    ]
   },
   "turbulence": {
     "segmentlength": 100.0,

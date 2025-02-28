@@ -13,6 +13,7 @@ let { AMMO,
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { USEROPT_BULLETS0, USEROPT_BULLET_COUNT0 } = require("%scripts/options/optionsExtNames.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
+let { get_option } = require("%scripts/options/optionsExt.nut")
 
 class BulletGroup {
   unit = null
@@ -149,7 +150,7 @@ class BulletGroup {
   function getOption() {
     if (!this.option) {
       unitNameForWeapons.set(this.unit.name)
-      this.option = ::get_option(USEROPT_BULLETS0 + this.groupIndex)
+      this.option = get_option(USEROPT_BULLETS0 + this.groupIndex)
     }
     return this.option
   }

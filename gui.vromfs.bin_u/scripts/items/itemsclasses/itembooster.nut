@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import set_char_cb, get_current_booster_count, char_send_blk, get_current_booster_uid
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
+from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
 
 let { get_mission_time } = require("mission")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
@@ -21,6 +22,8 @@ let { isInFlight } = require("gameplayBinding")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { floor } = require("math")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
+let { getInventoryList } = require("%scripts/items/itemsManager.nut")
 
 function getArrayFromInt(intNum) {
   let arr = []
@@ -151,9 +154,9 @@ let Booster = class (BaseItem) {
       return false
 
     local res = false
-    let total = get_current_booster_count(::INVALID_USER_ID)
+    let total = get_current_booster_count(INVALID_USER_ID)
     for (local i = 0; i < total; i++)
-      if (isInArray(get_current_booster_uid(::INVALID_USER_ID, i), this.uids)) {
+      if (isInArray(get_current_booster_uid(INVALID_USER_ID, i), this.uids)) {
         res = true
         break
       }
@@ -295,7 +298,7 @@ let Booster = class (BaseItem) {
 
   function getAllActiveSameBoosters() {
     let effects = this.getEffectTypes()
-    return ::ItemsManager.getInventoryList(itemType.BOOSTER,
+    return getInventoryList(itemType.BOOSTER,
              function (v_item) {
                if (!v_item.isActive(true) || v_item.personal != this.personal)
                  return false
@@ -619,4 +622,5 @@ let FakeBooster = class (Booster) {
   function isActive(...) { return true }
 }
 
-return { Booster, FakeBooster }
+registerItemClass(Booster)
+registerItemClass(FakeBooster)

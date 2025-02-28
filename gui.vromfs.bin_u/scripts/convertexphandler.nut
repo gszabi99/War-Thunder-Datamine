@@ -570,11 +570,11 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let msgText = warningIfGold(loc("exp/convert/needMoneyQuestion",
         { exp = Cost().setFrp(curExp).tostring(), cost = cost.getTextAccordingToBalance() }),
       cost)
-      let callbackYes = Callback(function() {
-        if (checkBalanceMsgBox(cost))
-          this.buyExp(curExp)
-      }, this)
-      purchaseConfirmation("need_money", msgText, callbackYes)
+    let callbackYes = Callback(function() {
+      if (checkBalanceMsgBox(cost))
+        this.buyExp(curExp)
+    }, this)
+    purchaseConfirmation("need_money", msgText, callbackYes)
   }
 
   function buyExp(amount) {

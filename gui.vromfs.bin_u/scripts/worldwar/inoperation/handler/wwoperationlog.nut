@@ -14,6 +14,7 @@ let WwOperationLogView = require("%scripts/worldWar/inOperation/view/wwOperation
 let { getWWLogsData, applyWWLogsFilter, saveLastReadWWLogMark,
   getUnreadedWWLogsNumber, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { GuiBox } = require("%scripts/guiBox.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 const WW_LOG_MAX_DISPLAY_AMOUNT = 40
@@ -309,8 +310,8 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     if (lastContainerObj?.id != lastFilteredLogId)
       return
 
-    let visibleBox = ::GuiBox().setFromDaguiObj(this.logFrameObj)
-    let lastFilteredLogBox = ::GuiBox().setFromDaguiObj(lastContainerObj)
+    let visibleBox = GuiBox().setFromDaguiObj(this.logFrameObj)
+    let lastFilteredLogBox = GuiBox().setFromDaguiObj(lastContainerObj)
     if (lastFilteredLogBox.isInside(visibleBox))
       this.isLogPageScrolledDown = true
   }
@@ -336,13 +337,13 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(this.logContainerObj))
       return scrollTargetId
 
-    let visibleBox = ::GuiBox().setFromDaguiObj(this.logFrameObj)
+    let visibleBox = GuiBox().setFromDaguiObj(this.logFrameObj)
     for (local i = 0; i < this.logContainerObj.childrenCount(); i++) {
       let logObj = this.logContainerObj.getChild(i)
       if (!logObj.isVisible())
         break
 
-      let logBox = ::GuiBox().setFromDaguiObj(logObj)
+      let logBox = GuiBox().setFromDaguiObj(logObj)
       if (logBox.isInside(visibleBox))
         scrollTargetId = logObj?.id
       else if (scrollTargetId)

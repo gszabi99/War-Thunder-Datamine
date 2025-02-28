@@ -1,5 +1,4 @@
 from "%scripts/dagui_library.nut" import *
-import "%scripts/matchingRooms/sessionLobby.nut" as SessionLobby
 
 let { checkMatchingError } = require("%scripts/matching/api.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -10,9 +9,11 @@ let { format } = require("string")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let u = require("%sqstd/underscore.nut")
-let { fetchRoomsList } = require("%scripts/matching/serviceNotifications/mrooms.nut")
+let { fetchRoomsList } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
 let { getGameModeIdsByEconomicName } = require("%scripts/matching/matchingGameModes.nut")
 let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
+let { getRoomMembersCnt, getRoomCreatorUid } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getMisListType } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
 const ROOM_LIST_REFRESH_MIN_TIME = 3000 //ms
 const ROOM_LIST_REQUEST_TIME_OUT = 45000 //ms
@@ -234,15 +235,15 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
   }
 
   function isRoomVisible(room, hideFullRooms) {
-    let userUid = SessionLobby.getRoomCreatorUid(room)
+    let userUid = getRoomCreatorUid(room)
     if (userUid && isPlayerInContacts(userUid, EPL_BLOCKLIST))
       return false
 
     if (hideFullRooms) {
       let mission = room?.public.mission ?? {}
-      if (SessionLobby.getRoomMembersCnt(room) >= (mission?.maxPlayers ?? 0))
+      if (getRoomMembersCnt(room) >= (mission?.maxPlayers ?? 0))
         return false
     }
-    return SessionLobby.getMisListType(room.public).canJoin(GM_SKIRMISH)
+    return getMisListType(room.public).canJoin(GM_SKIRMISH)
   }
 }

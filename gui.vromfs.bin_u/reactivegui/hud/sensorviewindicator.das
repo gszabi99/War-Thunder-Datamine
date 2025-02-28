@@ -41,7 +41,7 @@ def foreach_shells(blk : block<(shell : ShellSensorViewData const const#) : void
 
 let guidanceStateNames = [[string[] ""; "hud/search"; "hud/iog"; "hud/iog_dl"; "hud/track"]]
 
-[export]
+[export, unused_argument(rdata, rstate)]
 def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
   if !get_app().isSensorViewMode
     return

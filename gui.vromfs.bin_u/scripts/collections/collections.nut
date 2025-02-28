@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let CollectionSet = require("collectionSet.nut")
 let DataBlock = require("DataBlock")
-let { isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 let collectionsList = []
 local isInited = false

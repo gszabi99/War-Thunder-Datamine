@@ -8,6 +8,7 @@ let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
+let { UrlMission } = require("%scripts/missions/urlMission.nut")
 
 const MAX_URL_MISSIONS = 100
 const MAX_URL_MISSION_NAME_LENGTH = 24
@@ -31,7 +32,7 @@ g_url_missions.loadOnce <- function loadOnce() {
   if (u.isDataBlock(listBlk))
     foreach (misUrlBlk in listBlk % "mission")
       if (u.isDataBlock(misUrlBlk)) {
-        this.list.append(::UrlMission(misUrlBlk))
+        this.list.append(UrlMission(misUrlBlk))
         if (this.list.len() >= MAX_URL_MISSIONS)
           break
       }
@@ -175,7 +176,7 @@ g_url_missions.createMission <- function createMission(name, url) {
   if (!this.checkDuplicates(name, url))
     return false
 
-  let urlMission = ::UrlMission(name, url)
+  let urlMission = UrlMission(name, url)
   this.list.append(urlMission)
   this.save()
   broadcastEvent("UrlMissionAdded", { mission = urlMission })

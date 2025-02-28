@@ -5,6 +5,7 @@ let { get_warpoints_blk, get_price_blk } = require("blkGetters")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { format } = require("string")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 
 function getCrewDiscountInfo(countryId = -1, idInCountry = -1) {
   if (countryId < 0 || idInCountry < 0)
@@ -20,7 +21,7 @@ function getCrewDiscountInfo(countryId = -1, idInCountry = -1) {
   eachBlock(get_warpoints_blk()?.crewSkillPointsCost, @(_, n) packNames.append(n))
 
   let result = {}
-  result.buyPoints <- ::getDiscountByPath(["skills", country, packNames], get_price_blk())
+  result.buyPoints <- getDiscountByPath(["skills", country, packNames], get_price_blk())
   foreach (t in crewSpecTypes.types)
     if (t.hasPrevType())
       result[t.specName] <- t.getDiscountValueByUnitNames(unitNames)

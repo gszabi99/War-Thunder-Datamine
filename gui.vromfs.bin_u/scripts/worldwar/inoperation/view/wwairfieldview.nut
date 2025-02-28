@@ -10,7 +10,6 @@ let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWit
 let WwAirfieldView = class {
   redrawData = null
   airfield = null
-
   static unitsInArmyRowsMax = 5
 
   constructor(airfield) {
@@ -85,6 +84,8 @@ let WwAirfieldView = class {
   getRedrawArmyStatusData = @() this.redrawData
 
   needSmallSize = @() false
+
+  getTooltipWidth = @() "1@wwMapTooltipInfoWidth"
 }
 
 return WwAirfieldView

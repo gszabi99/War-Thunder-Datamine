@@ -16,6 +16,7 @@ let { addToText } = require("%scripts/unlocks/unlocksConditions.nut")
 let { get_charserver_time_sec } = require("chard")
 let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
 let { BaseItem } = require("%scripts/items/itemsClasses/itemsBase.nut")
+let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 let Ticket = class (BaseItem) {
   static iType = itemType.TICKET
@@ -383,4 +384,4 @@ let Ticket = class (BaseItem) {
   }
 }
 
-return {Ticket}
+registerItemClass(Ticket)

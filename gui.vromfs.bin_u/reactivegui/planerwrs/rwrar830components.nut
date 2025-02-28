@@ -188,6 +188,7 @@ function createRwrTarget(index, settingsIn, objectStyle, iconColor, backGroundCo
   let directionGroup = settingsIn.directionGroups?[target.groupId]
   let targetRadiusRel = calcRwrTargetRadius(target, settingsIn)
 
+  let targetTypeFontSizeMult = 1.5
   let iconSizeMult = 0.075 * objectStyle.scale
 
   let newTargetFontSizeMultRwr = Computed(@() (target.age0 * RwrNewTargetHoldTimeInv.get() < 1.0 && ((CurrentTime.get() * 2.0).tointeger() % 2) == 0 ? 1.5 : 1.0))
@@ -196,7 +197,7 @@ function createRwrTarget(index, settingsIn, objectStyle, iconColor, backGroundCo
     rendObj = ROBJ_TEXT
     size = SIZE_TO_CONTENT
     color = iconColor
-    fontSize = styleText.fontSize * objectStyle.fontScale * newTargetFontSizeMultRwr.get()
+    fontSize = styleText.fontSize * objectStyle.fontScale * targetTypeFontSizeMult * newTargetFontSizeMultRwr.get()
     text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
     padding = [2, 2]
   })
@@ -204,7 +205,7 @@ function createRwrTarget(index, settingsIn, objectStyle, iconColor, backGroundCo
   local targetType = @() {
     rendObj = ROBJ_SOLID
     color = backGroundColor
-    pos = [pw(target.x * 50.0 * targetRadiusRel - 0.2 * targetTypeTextSize[0]), ph(target.y * 50.0 * targetRadiusRel + iconSizeMult * 50.0 - 0.2 * targetTypeTextSize[1])]
+    pos = [pw(target.x * 50.0 * targetRadiusRel - 0.2 * targetTypeTextSize[0]), ph(target.y * 50.0 * targetRadiusRel + iconSizeMult * 1.5 * 50.0 - 0.2 * targetTypeTextSize[1])]
     children = @() targetTypeText
   }
 

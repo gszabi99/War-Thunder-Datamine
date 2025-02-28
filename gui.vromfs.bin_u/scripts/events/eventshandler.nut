@@ -46,6 +46,10 @@ let { loadLocalByAccount, saveLocalByAccount
 let { getMissionsComplete } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getPkgLocName } = require("%scripts/clientState/contentPacks.nut")
+let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
+let { queues } = require("%scripts/queue/queueManager.nut")
+let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
+let { create_event_description } = require("%scripts/events/eventDescription.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -132,7 +136,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return this.goBack()
 
     this.updateMouseMode()
-    this.eventDescription = ::create_event_description(this.scene)
+    this.eventDescription = create_event_description(this.scene)
     this.skipCheckQueue = true
     this.fillEventsList()
     this.skipCheckQueue = false
@@ -239,7 +243,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       missionsComplete = getMissionsComplete()
     }
 
-    ::EventJoinProcess(event, null,
+    EventJoinProcess(event, null,
       @(_event) sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic),
       function() {
         configForStatistic.canIntoToBattle <- false
@@ -300,8 +304,8 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurEventQueue() {
-    let q = ::queues.findQueue({}, QUEUE_TYPE_BIT.EVENT)
-    return (q && ::queues.isQueueActive(q)) ? q : null
+    let q = queues.findQueue({}, QUEUE_TYPE_BIT.EVENT)
+    return (q && queues.isQueueActive(q)) ? q : null
   }
 
   function isInEventQueue() {
@@ -313,11 +317,11 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!q)
       return
 
-    ::queues.leaveQueue(q, { isCanceledByPlayer = true })
+    queues.leaveQueue(q, { isCanceledByPlayer = true })
   }
 
   function onEventQueueChangeState(p) {
-    if (!::queues.isEventQueue(p?.queue))
+    if (!queues.isEventQueue(p?.queue))
       return
 
     this.updateQueueInterface()
@@ -335,7 +339,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onOpenClusterSelect(obj) {
-    ::queues.checkAndStart(
+    queues.checkAndStart(
       Callback(@() openClustersMenuWnd(obj, "bottom"), this),
       null,
       "isCanChangeCluster")
@@ -376,7 +380,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.skipCheckQueue = true
-    this.selectEvent(::queues.getQueueMode(this.queueToShow))
+    this.selectEvent(queues.getQueueMode(this.queueToShow))
     this.skipCheckQueue = false
   }
 
@@ -448,7 +452,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onQueueOptions(obj) {
-    let optionsData = ::queue_classes.Event.getOptions(this.curEventId)
+    let optionsData = getQueueClass("Event").getOptions(this.curEventId)
     if (!optionsData)
       return
 
@@ -489,7 +493,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let queueObj = showObjById("div_before_chapters_list", true, this.scene)
     queueObj.height = "ph"
-    let queueHandlerClass = this.queueToShow && ::queues.getQueuePreferredViewClass(this.queueToShow)
+    let queueHandlerClass = this.queueToShow && queues.getQueuePreferredViewClass(this.queueToShow)
     let queueHandler = loadHandler(queueHandlerClass, {
       scene = queueObj,
       leaveQueueCb = Callback(this.onLeaveEvent, this)
@@ -499,7 +503,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateQueueInterface() {
-    if (!this.queueToShow || !::queues.isQueueActive(this.queueToShow))
+    if (!this.queueToShow || !queues.isQueueActive(this.queueToShow))
       this.queueToShow = this.getCurEventQueue()
     this.checkQueueInfoBox()
     this.restoreQueueParams()
@@ -590,7 +594,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     showObjById("btn_queue_options", isCurItemInFocus && isEvent
-      && ::queue_classes.Event.hasOptions(event.name), this.scene)
+      && getQueueClass("Event").hasOptions(event.name), this.scene)
   }
 
   function fillEventsList() {

@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { eventbus_subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
-let { getCurrentLanguage } = require("dagor.localize")
+let { getLocalLanguage } = require("language")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { split_by_chars } = require("string")
@@ -175,7 +175,7 @@ function saveLanguage(langName) {
   onChangeLanguage()
 }
 
-saveLanguage(getCurrentLanguage())
+saveLanguage(getLocalLanguage())
 
 function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = false, isForced = false) {
   if (langId == currentLanguage && !isForced)

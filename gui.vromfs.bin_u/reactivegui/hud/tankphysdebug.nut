@@ -773,8 +773,10 @@ function getTorqGraphCommands() {
     let t2 = (1.0 - TorqArray.value[i + 1] / MaxTorq.value) * 100.0
     let r1 = i * 100.0 / TorqArray.value.len()
     let r2 = (i+1) * 100.0 / TorqArray.value.len()
+    let rRpm = (Rpm.value - MinRpm.value) / (MaxRpm.value - MinRpm.value) * 100.0
     commands.append([VECTOR_LINE, r1, t1, r2, t2])
     commands.append([VECTOR_LINE, r2, 100, r2, 102])
+    commands.append([VECTOR_LINE, rRpm, 100, rRpm, -10])
   }
   return commands
 }

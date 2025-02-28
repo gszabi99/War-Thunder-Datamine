@@ -15,6 +15,8 @@ let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
   getRequiredUnitTypes, getGameModeItemId, isUnitAllowedForGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
+let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.nut")
 
 ::SlotbarPresetsTutorial <- class {
   /** Total maximum times to show this tutorial. */
@@ -102,7 +104,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
         keepEnv = true
       }]
     }
-    this.currentTutorial = ::gui_modal_tutor(steps, this.currentHandler, true)
+    this.currentTutorial = gui_modal_tutor(steps, this.currentHandler, true)
 
     // Increment tutorial counter.
     saveLocalByAccount("tutor/slotbar_presets_tutorial_counter", this.getCounter() + 1)
@@ -122,7 +124,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
   function onChooseSlotbarPresetWnd_Open() {
     if (this.checkCurrentTutorialCanceled())
       return
-    this.chooseSlotbarPresetHandler = ::gui_choose_slotbar_preset(this.currentHandler)
+    this.chooseSlotbarPresetHandler = gui_choose_slotbar_preset(this.currentHandler)
     this.chooseSlotbarPresetIndex = u.find_in_array(::slotbarPresets.presets[this.currentCountry], this.preset)
     if (this.chooseSlotbarPresetIndex == -1)
       return
@@ -149,7 +151,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
       keepEnv = true
     }]
     this.currentStepsName = "applySlotbarPresetWnd"
-    this.currentTutorial = ::gui_modal_tutor(steps, this.currentHandler, true)
+    this.currentTutorial = gui_modal_tutor(steps, this.currentHandler, true)
   }
 
   function onChooseSlotbarPresetWnd_Select() {
@@ -245,7 +247,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
       keepEnv = true
     }]
     this.currentStepsName = "selectUnit"
-    this.currentTutorial = ::gui_modal_tutor(steps, this.currentHandler, true)
+    this.currentTutorial = gui_modal_tutor(steps, this.currentHandler, true)
     return true
   }
 
@@ -288,7 +290,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
       cb = Callback(this.onStartPress, this)
     }]
     this.currentStepsName = "pressToBattleButton"
-    this.currentTutorial = ::gui_modal_tutor(steps, this.currentHandler, true)
+    this.currentTutorial = gui_modal_tutor(steps, this.currentHandler, true)
   }
 
   function startOpenGameModeSelectStep() {
@@ -309,7 +311,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
       keepEnv = true
     }]
     this.currentStepsName = "openGameModeSelect"
-    this.currentTutorial = ::gui_modal_tutor(steps, this.currentHandler, true)
+    this.currentTutorial = gui_modal_tutor(steps, this.currentHandler, true)
     return true
   }
 
@@ -351,7 +353,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
       keepEnv = true
     }]
     this.currentStepsName = "selectGameMode"
-    this.currentTutorial = ::gui_modal_tutor(steps, this.currentHandler, true)
+    this.currentTutorial = gui_modal_tutor(steps, this.currentHandler, true)
   }
 
   function onSelectGameMode() {

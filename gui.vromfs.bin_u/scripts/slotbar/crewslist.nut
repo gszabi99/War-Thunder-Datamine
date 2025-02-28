@@ -12,7 +12,7 @@ let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
 let { getMyCrewUnitsState, getBrokenUnits } = require("%scripts/slotbar/crewsListInfo.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
-let { isLoggedIn, isProfileReceived } = require("%scripts/login/loginStates.nut")
+let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 function getCrewInfo(isInBattle) {
   let crewInfo = get_crew_info()

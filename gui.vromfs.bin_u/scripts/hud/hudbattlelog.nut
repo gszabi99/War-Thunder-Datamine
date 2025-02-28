@@ -21,6 +21,9 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG,
 let { userName, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isShipBattle } = require("%scripts/missions/missionType.nut")
 let { getOwnerUnitName } = require("hudActionBar")
+let { getLocForStreak } = require("%scripts/streaks.nut")
+let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
+let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 
 let getOwnerUnit = @() getAircraftByName(getOwnerUnitName())
 
@@ -351,19 +354,19 @@ let HudBattleLog = {
     return colorize(get_mplayer_color(player), unitNameLoc)
   }
 
-  function getUnitNameEx(playerId, unitNameLoc = "", teamId = 0, player = null) {
+  function getUnitNameEx(playerId, unitNameLoc = "", teamId = 0, player = null, withPlayerName = true) {
     player = player ?? get_mplayer_by_id(playerId)
     if(player == null)
       return colorize(get_team_color(teamId), unitNameLoc)
 
     if (is_replay_playing()) {
       player.isLocal = spectatorWatchedHero.id == player.id
-      player.isInHeroSquad = ::SessionLobby.isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
+      player.isInHeroSquad = isEqualSquadId(spectatorWatchedHero.squadId, player?.squadId)
     }
 
-    let showNamesInKilllog = ::get_gui_option_in_mode(USEROPT_HUD_SHOW_NAMES_IN_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
-    if(showNamesInKilllog) {
-      let showClan = ::get_gui_option_in_mode(USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
+    let showNamesInKilllog = get_gui_option_in_mode(USEROPT_HUD_SHOW_NAMES_IN_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
+    if(showNamesInKilllog && withPlayerName) {
+      let showClan = get_gui_option_in_mode(USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
       return ::build_mplayer_name(player, true, showClan, true, unitNameLoc)
     }
 
@@ -390,7 +393,7 @@ let HudBattleLog = {
   function getActionTextIconic(msg) {
     let actionColor = (msg?.isKill ?? true) ? "userlogColoredText" : "silver"
     if((isShipBattle() || (getOwnerUnit()?.isShipOrBoat() ?? false))
-        && ::get_gui_option_in_mode(USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)) {
+        && get_gui_option_in_mode(USEROPT_HUD_SHOW_DEATH_REASON_IN_SHIP_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)) {
       let deathReasonIcon = iconByDeathReason?[msg?.deathReason ?? DR_UNKNOWN] ?? iconByDeathReason[DR_UNKNOWN]
       return colorize(actionColor, deathReasonIcon)
     }
@@ -407,7 +410,7 @@ let HudBattleLog = {
     if (killerProjectileKey == "")
       return colorize(actionColor, icon)
 
-    if(!::get_gui_option_in_mode(USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, OPTIONS_MODE_GAMEPLAY, true))
+    if(!get_gui_option_in_mode(USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, OPTIONS_MODE_GAMEPLAY, true))
       return colorize(actionColor, icon)
 
     let killerProjectileName = doesLocTextExist(killerProjectileKey)
@@ -429,7 +432,7 @@ let HudBattleLog = {
     let what = iconic ? this.getActionTextIconic(msg) : this.getActionTextVerbal(msg)
     let who = this.getUnitNameEx(msg?.playerId ?? userIdInt64.value, msg?.unitNameLoc ?? userName.value, msg?.team ?? Team.A, player)
     let whom = this.getUnitNameEx(msg?.victimPlayerId ?? userIdInt64.value,
-      msg?.victimUnitNameLoc ?? userName.value, msg?.victimTeam ?? Team.B, victimPlayer)
+      msg?.victimUnitNameLoc ?? userName.value, msg?.victimTeam ?? Team.B, victimPlayer, msg?.withVictimPlayerName ?? true)
 
     let msgAction = msg?.action ?? "kill"
     let isCrash = msgAction == "crash" || msgAction == "exit" || msgAction == "air_defense"
@@ -442,7 +445,7 @@ let HudBattleLog = {
     let localPlayerId = is_replay_playing() ? spectatorWatchedHero.id : get_local_mplayer().id
     let isLocal = !forceThirdPerson && playerId == localPlayerId
     let streakNameType = isLocal ? SNT_MY_STREAK_HEADER : SNT_OTHER_STREAK_TEXT
-    let what = ::get_loc_for_streak(streakNameType, msg?.unlockId ?? "", msg?.stage ?? 0)
+    let what = getLocForStreak(streakNameType, msg?.unlockId ?? "", msg?.stage ?? 0)
     return isLocal ? what : format("%s %s", this.getUnitNameEx(playerId), what)
   }
 

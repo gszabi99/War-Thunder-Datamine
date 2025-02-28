@@ -2,6 +2,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import AXIS
 
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
+let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 let Flags = {
   NONE = 0,
@@ -15,7 +17,7 @@ let replaceAxes = function(ctrlGroup, replacements, flags = Flags.NONE) {
     if (item.type == CONTROL_TYPE.AXIS && (item.checkGroup & ctrlGroup))
       groupAxes.append(item.id)
 
-  let controls = ::g_controls_manager.getCurPreset()
+  let controls = getCurControlsPreset()
   foreach (axisName, axis in controls.axes) {
     if (groupAxes.indexof(axisName) == null || axis?.axisId == null)
       continue
@@ -30,7 +32,7 @@ let replaceAxes = function(ctrlGroup, replacements, flags = Flags.NONE) {
       isUpdated = true
     }
   }
-  ::g_controls_manager.commitControls()
+  commitControls()
   return isUpdated
 }
 

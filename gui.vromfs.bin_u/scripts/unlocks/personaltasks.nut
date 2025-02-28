@@ -13,17 +13,20 @@ let { getFavoriteUnlocks } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlockCondsDescByCfg,
-  getUnlockTitle, getUnlockSnapshotText, needShowLockIcon, getUnlockImageConfig
+  getUnlockTitle, getUnlockSnapshotText, needShowLockIcon, getUnlockImageConfig, buildConditionsConfig
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isBattleTask, isBattleTasksAvailable, isBattleTaskDone, getBattleTaskById,
-  mkUnlockConfigByBattleTask, getCurBattleTasksByGm, getBattleTaskView
+  getCurBattleTasksByGm
 } = require("%scripts/unlocks/battleTasks.nut")
+let { mkUnlockConfigByBattleTask, getBattleTaskView } = require("%scripts/unlocks/battleTasksView.nut")
+let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 const NUM_SUBUNLOCK_COLUMNS = 3
 
 function getBattleTasksView() {
   let view = { items = [] }
-  let gmName = ::SessionLobby.getRoomEvent()?.name
+  let gmName = getRoomEvent()?.name
   if (gmName == null)
     return view
 
@@ -67,7 +70,7 @@ function getFavUnlocksView() {
   let unlockListBlk = getFavoriteUnlocks()
   for (local i = 0; i < unlockListBlk.blockCount(); ++i) {
     let blk = unlockListBlk.getBlock(i)
-    let cfg = ::build_conditions_config(blk)
+    let cfg = buildConditionsConfig(blk)
     let progressData = cfg.getProgressBarData()
     let mainCondition = getUnlockMainCondDescByCfg(cfg)
     let hasProgressBar = progressData.show && mainCondition != ""
@@ -129,7 +132,7 @@ function getTabsView() {
   foreach (idx, tabData in tabsConfig)
     view.tabs.append({
       tabName = tabData.text
-      navImagesText = ::get_navigation_images_text(idx, tabsConfig.len())
+      navImagesText = getNavigationImagesText(idx, tabsConfig.len())
       hidden = !tabData.isVisible()
     })
   return view
@@ -144,7 +147,7 @@ let class PersonalTasksModal (gui_handlers.BaseGuiHandlerWT) {
     let data = handyman.renderCached("%gui/frameHeaderTabs.tpl", getTabsView())
     this.guiScene.replaceContentFromText(tabList, data, data.len(), this)
 
-    let gmName = ::SessionLobby.getRoomEvent()?.name
+    let gmName = getRoomEvent()?.name
     let hasBattleTasks = gmName != null
       && getCurBattleTasksByGm(gmName).len() > 0
     tabList.setValue(hasBattleTasks ? 0 : 1) // if no tasks select next tab
@@ -181,9 +184,9 @@ let class PersonalTasksModal (gui_handlers.BaseGuiHandlerWT) {
     let unlockBlk = isBattleTask(obj.task_id)
       ? getBattleTaskById(obj.task_id)
       : getUnlockById(obj.task_id)
-    let unlockCfg = ::build_conditions_config(unlockBlk)
+    let unlockCfg = buildConditionsConfig(unlockBlk)
     let reqUnlocks = unlockCfg.names.map(
-      @(id) ::build_log_unlock_data(::build_conditions_config(getUnlockById(id))))
+      @(id) ::build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
     showUnlocksGroupWnd(reqUnlocks, loc("unlocks/requirements"))
   }
 }

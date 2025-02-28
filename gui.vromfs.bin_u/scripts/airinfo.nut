@@ -27,7 +27,7 @@ let { getBitStatus, isUnitDefault, canResearchUnit,
 let { check_unit_mods_update } = require("%scripts/unit/unitChecks.nut")
 let countMeasure = require("%scripts/options/optionsMeasureUnits.nut").countMeasure
 let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
-let { getWeaponInfoText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -77,6 +77,8 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
+let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
+let { getNotAvailableUnitByBRText } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
 function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   if (!checkObj(obj) || !maxExp)
@@ -1221,7 +1223,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     }
     if (missionRules.hasCustomUnitRespawns()) {
       let disabledUnitByBRText = crew && !isCrewAvailableInSession(crew, air)
-        && ::SessionLobby.getNotAvailableUnitByBRText(air)
+        && getNotAvailableUnitByBRText(air)
 
       let respawnsleft = missionRules.getUnitLeftRespawns(air)
       if (respawnsleft == 0 || (respawnsleft > 0 && !disabledUnitByBRText)) {
@@ -1244,7 +1246,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   }
 
   if (warbondId) {
-    let warbond = ::g_warbonds.findWarbond(warbondId, params?.wbListId)
+    let warbond = findWarbond(warbondId, params?.wbListId)
     let award = warbond ? warbond.getAwardById(air.name) : null
     if (award)
       addInfoTextsList.extend(award.getAdditionalTextsArray())
@@ -1292,8 +1294,8 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     priceObj.findObject("aircraft_price_text_block").show(false)
 
   if (showPriceText && checkObj(priceObj) && ::g_discount.getUnitDiscountByName(air.name) > 0) {
-    placePriceTextToButton(holderObj, "aircraft_price",
-      colorize("userlogColoredText", loc("events/air_can_buy")), getUnitCost(air), 0, getUnitRealCost(air))
+    placePriceTextToButton(holderObj, "aircraft_price", loc("events/air_can_buy"),
+      getUnitCost(air), 0, getUnitRealCost(air), { textColor = "userlogColoredText" })
 
     if (!isSquadronVehicle && spare_count > 0)
       addInfoTextsList.append(colorize("userlogColoredText", loc(giftSparesLoc,
@@ -1409,8 +1411,13 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     }
   }
 
-  let weaponsInfoText = getWeaponInfoText(air,
-    { weaponPreset = showLocalState ? -1 : 0, ediff = ediff, isLocalState = showLocalState })
+  let weaponInfoParams = {
+    weaponPreset = showLocalState ? -1 : 0
+    ediff = ediff
+    isLocalState = showLocalState
+  }
+  let weaponInfoData = makeWeaponInfoData(air, weaponInfoParams)
+  let weaponsInfoText = getWeaponInfoText(air, weaponInfoData)
   obj = showObjById("weaponsInfo", !showShortestUnitInfo, holderObj)
   if (obj) {
     obj.setValue(weaponsInfoText)

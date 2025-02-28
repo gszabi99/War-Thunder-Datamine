@@ -42,6 +42,7 @@ let { getUtcMidnight, secondsToString, buildDateStr, getTimestampFromStringUtc }
 let timeBase = require("%appGlobals/timeLoc.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
+let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 let {expNewNationBonusDailyBattleCount = 1} = get_ranks_blk()
@@ -605,7 +606,7 @@ function getGroupStatusTbl(group, params) {
   let unitForBR = rentedUnit || researchingUnit || firstUnboughtUnit || group
 
   let researchStatusTbl = researchingUnit ? getUnitResearchStatusTbl(researchingUnit, params) : {}
-  let unitImage = ::get_unit_preset_img(group.name)
+  let unitImage = get_unit_preset_img(group.name)
     ?? (is_harmonized_unit_image_required(primaryUnit)
         ? get_tomoe_unit_icon(group.name, !group.name.endswith("_group"))
         : "!{0}".subst(group?.image ?? "#ui/unitskin#planes_group.ddsx"))
