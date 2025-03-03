@@ -10,6 +10,7 @@ let ef2000Wpn = require("ef2000WpnPage.nut")
 let rafaleWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdRafaleWpn.das", {
   fontId = Fonts.hud
 })
+let fa18cRadarATTK = createScriptComponentWithPos("%rGui/planeCockpit/mfdfa18cRadarATTK.das")
 
 
 function su30Devices(pos, size) {
@@ -65,6 +66,7 @@ let pageByName = {
   f15jWpn,
   ef2000Wpn,
   rafaleWpn,
+  fa18cRadarATTK,
   su30Devices
 }
 

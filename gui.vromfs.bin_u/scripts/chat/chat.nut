@@ -545,6 +545,27 @@ g_chat.sendLocalizedMessageToSquadRoom <- function sendLocalizedMessageToSquadRo
     this.sendLocalizedMessage(squadRoomId, langConfig)
 }
 
+function openWWOperationChatRoomById(operationId) {
+  foreach (room in g_chat.rooms) {
+    if (room.type.typeName != "WW_OPERATION")
+      continue
+    if (room.type.getOperationId(room.id) != operationId)
+      continue
+
+    g_chat.openChatRoom(room.id)
+    return
+  }
+}
+
+function isRoomWWOperation(roomId) {
+  return g_chat_room_type.WW_OPERATION.checkRoomId(roomId) // warning disable: -missing-field
+}
+
 subscribe_handler(g_chat, g_listener_priority.DEFAULT_HANDLER)
 eventbus_subscribe("on_sign_out", @(_p) g_chat.rooms.clear())
-return {g_chat}
+
+return {
+  g_chat
+  openWWOperationChatRoomById
+  isRoomWWOperation
+}

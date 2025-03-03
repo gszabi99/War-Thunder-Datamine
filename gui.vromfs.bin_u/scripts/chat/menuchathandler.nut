@@ -4,7 +4,7 @@ from "%scripts/chat/chatConsts.nut" import voiceChatStats
 from "%scripts/utils_sa.nut" import save_to_json, is_myself_anyof_moderators
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
-let { g_chat } = require("%scripts/chat/chat.nut")
+let { g_chat, isRoomWWOperation } = require("%scripts/chat/chat.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -63,6 +63,8 @@ let { lastChatSceneShow, globalChatRooms, langsList } = require("%scripts/chat/c
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { getChatObject, isUserBlockedByPrivateSetting } = require("%scripts/chat/chatUtils.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { wwIsOperationLoaded } = require("worldwar")
+let { acceptInviteByLink, addChatRoomInvite } = require("%scripts/invites/invites.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -1185,6 +1187,10 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       }
       if (g_chat.isRoomClan(db.channel))
         broadcastEvent("ClanRoomMembersChanged");
+
+      else if (isRoomWWOperation(db.channel) && wwIsOperationLoaded()) {
+        this.openChatRoom(db.channel)
+      }
     }
     else if (dbType == "user_leave") {
       if (!db?.channel || !db?.nick)
@@ -1239,7 +1245,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
       let fromNick = db.from
       let roomId = db.channel
-      ::g_invites.addChatRoomInvite(roomId, fromNick)
+      addChatRoomInvite(roomId, fromNick)
     }
     else if (dbType == "thread_list" || dbType == "thread_update")
       g_chat.updateThreadInfo(db)
@@ -2290,7 +2296,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       this.updateChatText()
     }
     else
-      ::g_invites.acceptInviteByLink(link)
+      acceptInviteByLink(link)
   }
 
   function onUserListClick(obj)  { this.onUserList(obj, !showConsoleButtons.value) }

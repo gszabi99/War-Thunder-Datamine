@@ -1,17 +1,12 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let { shellHitDamageEvents } = require("shipState.nut")
-let { get_game_params_blk } = require("blkGetters")
 let { eventbus_subscribe } = require("eventbus")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let DataBlock = require("DataBlock")
-
-enum iconIds {
-  HIT,
-  HIT_EFFECTIVE,
-  HIT_INEFFECTIVE,
-  HIT_PIERCE_THROUGH
-}
+let { shipHitIconsVisibilityStateFlags } = require("options/options.nut")
+let { ShipHitIconId, ShipHitIconVisibilityMask,
+  IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
 
 // behavior
 const SHOW_RESET_DEFAULT_DURATION = 10
@@ -24,8 +19,6 @@ const ICONHIT_SHOW_TIME = 0.2
 
 // hit indicators box animation props
 const HITBOX_FADE_OUT_TIME = 1
-
-let IS_VISIBLE_HIT_NOTIFICATION = get_game_params_blk()?.isVisibleShipHitCounters ?? false
 
 function mkAppearAnim(trigger) {
   return [
@@ -161,13 +154,13 @@ function getConfig() {
 
   res.alignHitCamera = iconsParams?.alignHitCamera ?? true
   res.iconsConfig = {
-    [iconIds.HIT] = readIconConfig(
-      res, iconsParams?.simpleHit, hitPic, shellHitDamageEvents.hitEventsCount, {id = iconIds.HIT, hintLoc = "shipHitHint/simpleHit"}),
-    [iconIds.HIT_EFFECTIVE] = readIconConfig(
+    [ShipHitIconId.HIT] = readIconConfig(
+      res, iconsParams?.simpleHit, hitPic, shellHitDamageEvents.hitEventsCount, {id = ShipHitIconId.HIT, hintLoc = "shipHitHint/simpleHit"}),
+    [ShipHitIconId.HIT_EFFECTIVE] = readIconConfig(
       res, iconsParams?.effectiveHit, effectiveHitPic, shellHitDamageEvents.critEventCount, {hintLoc = "shipHitHint/effectiveHit"}),
-    [iconIds.HIT_INEFFECTIVE] = readIconConfig(
+    [ShipHitIconId.HIT_INEFFECTIVE] = readIconConfig(
       res, iconsParams?.ineffectiveHit, ineffectiveHitPic, shellHitDamageEvents.armorBlockedEventCount, {hintLoc = "shipHitHint/ineffectiveHit"}),
-    [iconIds.HIT_PIERCE_THROUGH] = readIconConfig(
+    [ShipHitIconId.HIT_PIERCE_THROUGH] = readIconConfig(
       res, iconsParams?.pierceThroughHit, pierceThroughHitPic, shellHitDamageEvents.pierceThroughCount, {hintLoc = "shipHitHint/pierceThroughHit"}),
   }
 
@@ -219,8 +212,10 @@ function popIndicator(items, popId) {
 function appendHitIndicator(v, id) {
   let { enabled, iconObj } = getIconConfig(id)
   let mask = 1 << id
+  let isEnabledInUseropts = !!(ShipHitIconVisibilityMask[id]
+    & shipHitIconsVisibilityStateFlags.get())
 
-  if (!enabled)
+  if (!enabled || !isEnabledInUseropts)
     return
 
   if (v > 0) {
@@ -236,10 +231,10 @@ function appendHitIndicator(v, id) {
   }
 }
 
-shellHitDamageEvents.hitEventsCount.subscribe(@(v) appendHitIndicator(v, iconIds.HIT))
-shellHitDamageEvents.critEventCount.subscribe(@(v) appendHitIndicator(v, iconIds.HIT_EFFECTIVE))
-shellHitDamageEvents.armorBlockedEventCount.subscribe(@(v) appendHitIndicator(v, iconIds.HIT_INEFFECTIVE))
-shellHitDamageEvents.pierceThroughCount.subscribe(@(v) appendHitIndicator(v, iconIds.HIT_PIERCE_THROUGH))
+shellHitDamageEvents.hitEventsCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT))
+shellHitDamageEvents.critEventCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT_EFFECTIVE))
+shellHitDamageEvents.armorBlockedEventCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT_INEFFECTIVE))
+shellHitDamageEvents.pierceThroughCount.subscribe(@(v) appendHitIndicator(v, ShipHitIconId.HIT_PIERCE_THROUGH))
 
 eventbus_subscribe("setHudHitCameraState", function(params) {
   hudHitCameraState.set(params ? {
@@ -300,5 +295,5 @@ let hitNotifications = function() {
 }
 
 return {
-  hitNotifications = IS_VISIBLE_HIT_NOTIFICATION ? hitNotifications : null
+  hitNotifications = IS_SHIP_HIT_NOTIFICATIONS_VISIBLE ? hitNotifications : null
 }

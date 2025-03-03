@@ -1,6 +1,6 @@
 from "iostream" import blob
-let { regexp, format, startswith, endswith, strip }=require("string")
-let math=require("math")
+let { regexp, format } = require("string")
+let { clamp, log10, min } = require("math")
 let regexp2 = require_optional("regexp2")
 let utf8 = require_optional("utf8")
 
@@ -441,7 +441,7 @@ function substring(str, start = 0, length = null) {
     local total = str.len()
     if (start < 0)
       start += total
-    start = math.clamp(start, 0, total)
+    start = clamp(start, 0, total)
     end = start + length
   }
   return slice(str, start, end)
@@ -457,7 +457,7 @@ function substring(str, start = 0, length = null) {
 function startsWith(str, value) {
   str = str ?? ""
   value = value ?? ""
-  return startswith(str, value)
+  return str.startswith(value)
 }
 
 /**
@@ -470,7 +470,7 @@ function startsWith(str, value) {
 function endsWith(str, value) {
   str = str ?? ""
   value = value ?? ""
-  return endswith(str, value)
+  return str.endswith(value)
 }
 
 /**
@@ -577,7 +577,7 @@ function replace(str, from, to) {
  */
 function trim(str) {
   str = str ?? ""
-  return trimRegExp ? trimRegExp.replace("", str) : str
+  return trimRegExp ? trimRegExp.replace("", str) : str // TODO: Compare with str.strip()
 }
 
 /*
@@ -599,10 +599,11 @@ function trim(str) {
 function floatToStringRounded(value, presize) {
   if (presize >= 1) {
     local res = (value / presize + (value < 0 ? -0.5 : 0.5)).tointeger()
-    return res == 0 ? "0" : "".join([res].extend(array(math.log10(presize).tointeger(), "0")))
+    return res == 0 ? "0" : "".join([res].extend(array(log10(presize).tointeger(), "0")))
   }
-  return format("%.{0}f".subst(-math.log10(presize).tointeger()), value)
+  return format("%.{0}f".subst(-log10(presize).tointeger()), value)
 }
+
 function isStringInteger(str) {
   if (type(str) == "integer")
     return true
@@ -611,8 +612,8 @@ function isStringInteger(str) {
   if (intRegExp != null)
     return intRegExp.match(str)
 
-  if (startsWith(str,"-"))
-    str=str.slice(1)
+  if (str.startswith("-"))
+    str = str.slice(1)
   if (str == "")
     return false
   for (local i = 0; i < str.len(); i++)
@@ -629,7 +630,7 @@ function isStringFloat(str, separator=".") {
   if (floatRegExp != null && separator == ".")
     return floatRegExp.match(str)
 
-  if (startsWith(str,"-"))
+  if (str.startswith("-"))
     str = str.slice(1)
   local numList = split(str, separator)
   local numListLen = numList.len()
@@ -647,7 +648,7 @@ function isStringFloat(str, separator=".") {
       return false
     if (numListLen == 2 && eList.len() == 2 && eList[0] == "")
       eList[0] = "0"
-    if (startsWith(eList[1],"-") || startsWith(eList[1],"+"))
+    if (eList[1].startswith("-") || eList[1].startswith("+"))
       eList[1] = eList[1].slice(1)
     local expDigits = eList[1].len()
     if (expDigits < 1 || expDigits > 3)
@@ -667,7 +668,7 @@ function isStringFloat(str, separator=".") {
 
 function toIntegerSafe(str, defValue = 0, needAssert = true) {
   if (type(str) == "string")
-    str = strip(str)
+    str = str.strip()
   if (isStringInteger(str))
     return str.tointeger()
   if (needAssert)
@@ -911,7 +912,7 @@ function splitStringBySize(str, maxSize) {
   local start = 0
   let l = str.len()
   while (start < l) {
-    let pieceSize = math.min(l - start, maxSize)
+    let pieceSize = min(l - start, maxSize)
     result.append(str.slice(start, start + pieceSize))
     start += pieceSize
   }

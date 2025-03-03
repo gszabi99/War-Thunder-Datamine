@@ -67,25 +67,37 @@ function stackWeaponsData(weaponType, triggers) {
 
 function updateWeaponBlocks(resultWeaponBlocks, turretsData, trigger, weaponType) {
   foreach (weaponName, weapon in trigger.weaponBlocks) {
-    let isTurret = TRIGGER_TYPE.TURRETS in trigger
-
-    local hasWeapon = false
     weapon.weaponType <- weaponType
+    weapon.weaponName <- weaponName
+    //if weapon is turret
+    if (TRIGGER_TYPE.TURRETS in trigger) {
+      weapon[TRIGGER_TYPE.TURRETS] <- trigger[TRIGGER_TYPE.TURRETS]
+      weapon.trigger <- trigger.trigger
+      if (trigger.trigger in turretsData) {
+        turretsData[trigger.trigger].guns.append(weapon)
+        continue
+      }
+      turretsData[trigger.trigger] <- {
+        caliber = weapon.caliber
+        guns = [weapon]
+      }
+      continue
+    }
+    local hasWeapon = false
     foreach (newWeapon in resultWeaponBlocks) {
-      if (newWeapon?.bulletName && newWeapon.bulletName == weapon?.bulletName) {
-        newWeapon.ammo += weapon.ammo
+      if ((newWeapon?.guns[0].bulletName ?? "") == weapon?.bulletName) {
+        newWeapon.guns[0].ammo += weapon.ammo
         hasWeapon = true
         break
       }
     }
     if (!hasWeapon) {
-      if (isTurret)
-        turretsData[weaponName] <- weapon
-      else
-        resultWeaponBlocks[weaponName] <- (weapon)
+      resultWeaponBlocks[weaponName] <- {
+        caliber = weapon.caliber
+        guns = [weapon]
+      }
+      continue
     }
-    if (isTurret)
-      turretsData[weaponName][TRIGGER_TYPE.TURRETS] <- trigger[TRIGGER_TYPE.TURRETS]
   }
 }
 
@@ -111,8 +123,8 @@ function makeWeaponInfoData(unit, p = WEAPON_TEXT_PARAMS) {
   res.isShortDesc <- isShortDesc
   res.weapons <- weapons
 
-  let weaponsData = {}
-  let turretsData = {} // to add turrets at the end
+  let weaponsData = {} // { weaponName1 = { caliber, guns = [weapon1] }, ... }
+  let turretsData = {} // { gunner01 = { caliber, guns = [weapon1, weapon2] },... }
 
   // params for shortDesc only:
   let weapTypeCount = {}
@@ -140,16 +152,17 @@ function makeWeaponInfoData(unit, p = WEAPON_TEXT_PARAMS) {
   res.weapTypeCount <- weapTypeCount
   res.gunNames <- gunNames
 
-  let resultTurretBlocks = turretsData
+  let resultTurretBlocks = turretsData // => [ [weapon1, weapon2], [],... ]
     .topairs()
     .sort(@(a,b) b[1].caliber <=> a[1].caliber)
-    .map(@(block) { [block[0]] = block[1] })
+    .map(@(block) block[1].guns)
 
-  let resultWeaponBlocks = weaponsData
+  let resultWeaponBlocks = weaponsData // => [ [weapon1], [weapon2],... ]
     .topairs()
     .sort(@(a,b) b[1].caliber <=> a[1].caliber)
-    .map(@(block) { [block[0]] = block[1] })
+    .map(@(block) block[1].guns)
     .extend(resultTurretBlocks)
+
   res.resultWeaponBlocks <- resultWeaponBlocks
 
   return res
@@ -167,97 +180,98 @@ function getWeaponInfoText(unit, weaponInfoData) {
   if (u.isEmpty(weapons) && p.needTextWhenNoWeapons)
     text = $"{text}{getTextNoWeapons(unit, p.isPrimary)}"
 
-  foreach(weaponBlock in (resultWeaponBlocks ?? [])) {
-    let weaponName = weaponBlock.findindex(@(_) true)
-    if (!weaponName)
-      continue
-    let weapon = weaponBlock[weaponName]
-    local tText = ""
-    let weaponType = weapon.weaponType
+  foreach(weaponBlockSet in (resultWeaponBlocks ?? [])) {
+    foreach(weaponId, weapon in weaponBlockSet) {
+      let weaponName = weapon.weaponName
+      let weaponType = weapon.weaponType
+      local tText = ""
 
-    if (isInArray(weaponType, CONSUMABLE_TYPES) || weaponType == WEAPON_TYPE.CONTAINER_ITEM) {
-      if (isShortDesc) {
-        tText = "".concat(tText, loc($"weapons/{weaponName}/short"))
-        if (!p.isSingle && weapon.ammo > 1)
-          tText = "".concat(tText, " ", format(loc("weapons/counter/right/short"), weapon.ammo))
+      if (isInArray(weaponType, CONSUMABLE_TYPES) || weaponType == WEAPON_TYPE.CONTAINER_ITEM) {
+        if (isShortDesc) {
+          tText = "".concat(tText, loc($"weapons/{weaponName}/short"))
+          if (!p.isSingle && weapon.ammo > 1)
+            tText = "".concat(tText, " ", format(loc("weapons/counter/right/short"), weapon.ammo))
+        }
+        else {
+          tText = "".concat(tText, loc($"weapons/{weaponName}"),
+            p.isSingle ? "" : format(loc("weapons/counter"), weapon.ammo))
+          if (weaponType == "torpedoes" && p.isPrimary != null &&
+              isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])) { // torpedoes drop for unit only
+            if (weapon.dropSpeedRange) {
+              let speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
+              let speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
+              tText = "".concat(tText, "\n", format(loc("weapons/drop_speed_range"),
+                "{0} {1}".subst(speedKmph, loc("ui/parentheses", { text = speedMps }))))
+            }
+            if (weapon.dropHeightRange)
+              tText = "".concat(tText, "\n", format(loc("weapons/drop_height_range"),
+                countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y])))
+          }
+          if (p.detail >= INFO_DETAIL.EXTENDED && unitType != ES_UNIT_TYPE_TANK)
+            tText = "".concat(tText, getWeaponExtendedInfo(weapon, weaponType, unit, p.ediff, $"{p.newLine}{nbsp}{nbsp}{nbsp}{nbsp}"))
+        }
       }
       else {
-        tText = "".concat(tText, loc($"weapons/{weaponName}"),
-          p.isSingle ? "" : format(loc("weapons/counter"), weapon.ammo))
-        if (weaponType == "torpedoes" && p.isPrimary != null &&
-            isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])) { // torpedoes drop for unit only
-          if (weapon.dropSpeedRange) {
-            let speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
-            let speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
-            tText = "".concat(tText, "\n", format(loc("weapons/drop_speed_range"),
-              "{0} {1}".subst(speedKmph, loc("ui/parentheses", { text = speedMps }))))
-          }
-          if (weapon.dropHeightRange)
-            tText = "".concat(tText, "\n", format(loc("weapons/drop_height_range"),
-              countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y])))
-        }
-        if (p.detail >= INFO_DETAIL.EXTENDED && unitType != ES_UNIT_TYPE_TANK)
-          tText = "".concat(tText, getWeaponExtendedInfo(weapon, weaponType, unit, p.ediff, $"{p.newLine}{nbsp}{nbsp}{nbsp}{nbsp}"))
-      }
-    }
-    else {
-      if (!isShortDesc) {
-        tText = $"{tText}{loc($"weapons/{weaponName}")}"
-        if (weapon.num > 1)
-          tText = $"{tText}{format(loc("weapons/counter"), weapon.num)}"
+        if (!isShortDesc) {
+          tText = $"{tText}{loc($"weapons/{weaponName}")}"
+          if (weapon.num > 1)
+            tText = $"{tText}{format(loc("weapons/counter"), weapon.num)}"
 
-        if (!p.isSingle && weapon.ammo > 0)
-          tText = "".concat(tText, " (", loc("shop/ammo"), loc("ui/colon"), weapon.ammo, ")")
+          if (!p.isSingle && weapon.ammo > 0)
+            tText = "".concat(tText, " (", loc("shop/ammo"), loc("ui/colon"), weapon.ammo, ")")
 
-        if (!unit.unitType.canUseSeveralBulletsForGun) {
-          local rTime = getReloadTimeByCaliber(weapon.caliber, p.ediff)
-          if (rTime) {
-            if (p.isLocalState) {
-              let difficulty = get_difficulty_by_ediff(p.ediff ?? getCurrentGameModeEdiff())
-              let key = isCaliberCannon(weapon.caliber) ? "cannonReloadSpeedK" : "gunReloadSpeedK"
-              let speedK = unit.modificators?[difficulty.crewSkillName]?[key] ?? 1.0
-              if (speedK)
-                rTime = round_by_value(rTime / speedK, 1.0).tointeger()
+          if (!unit.unitType.canUseSeveralBulletsForGun) {
+            local rTime = getReloadTimeByCaliber(weapon.caliber, p.ediff)
+            if (rTime) {
+              if (p.isLocalState) {
+                let difficulty = get_difficulty_by_ediff(p.ediff ?? getCurrentGameModeEdiff())
+                let key = isCaliberCannon(weapon.caliber) ? "cannonReloadSpeedK" : "gunReloadSpeedK"
+                let speedK = unit.modificators?[difficulty.crewSkillName]?[key] ?? 1.0
+                if (speedK)
+                  rTime = round_by_value(rTime / speedK, 1.0).tointeger()
+              }
+              tText = " ".concat(tText, loc("bullet_properties/cooldown"), secondsToString(rTime, true, true))
             }
-            tText = " ".concat(tText, loc("bullet_properties/cooldown"), secondsToString(rTime, true, true))
           }
         }
       }
-    }
 
-    if (!isShortDesc) {
-      if (TRIGGER_TYPE.TURRETS in weapon) { // && !unit.unitType.canUseSeveralBulletsForGun)
-        if (weapon[TRIGGER_TYPE.TURRETS] > 1)
-          tText = "".concat(format(loc("weapons/turret_number"), weapon[TRIGGER_TYPE.TURRETS]), tText)
-        else
-          tText = "".concat(utf8Capitalize(loc("weapons_types/turrets")), loc("ui/colon"), tText)
+      if (!isShortDesc) {
+        // add text "Turret:" only for the first gun if some turret has various guns
+        // or if a turret has only one type of guns
+        if ((TRIGGER_TYPE.TURRETS in weapon) && weaponId == 0) {
+          if (weapon[TRIGGER_TYPE.TURRETS] > 1)
+            tText = "".concat(format(loc("weapons/turret_number"), weapon[TRIGGER_TYPE.TURRETS]), tText)
+          else
+            tText = "".concat(utf8Capitalize(loc("weapons_types/turrets")), loc("ui/colon"), tText)
+        }
       }
-    }
 
-    if (tText != "")
-      text = $"{text}{(text != "") ? p.newLine : ""}{tText}"
+      if (tText != "")
+        text = $"{text}{(text != "") ? p.newLine : ""}{tText}"
 
-    if ((weapTypeCount?[weaponType] ?? 0) == 0 && gunNames.len() == 0)
-      continue
+      if ((weapTypeCount?[weaponType] ?? 0) == 0 && gunNames.len() == 0)
+        continue
 
-    text = text != "" ? "".concat(text, p.newLine) : ""
-    if (isShortDesc) {
-      if ((weapTypeCount?[weaponType] ?? 0) > 0) { //Turrets
-        text = "".concat(text, loc($"weapons_types/{weaponType}"), nbsp,
-          format(loc("weapons/counter/right/short"), weapTypeCount[weaponType]))
-        weapTypeCount.rawdelete(weaponType)
+      text = text != "" ? "".concat(text, p.newLine) : ""
+      if (isShortDesc) {
+        if ((weapTypeCount?[weaponType] ?? 0) > 0) { //Turrets
+          text = "".concat(text, loc($"weapons_types/{weaponType}"), nbsp,
+            format(loc("weapons/counter/right/short"), weapTypeCount[weaponType]))
+          weapTypeCount.rawdelete(weaponType)
+        }
+        if (gunNames.len() > 0) { //Guns
+          let gunsTxt = []
+          foreach (name, count in gunNames)
+            gunsTxt.append("".concat(loc($"weapons/{name}"), count > 1
+              ? $"{nbsp}{format(loc("weapons/counter/right/short"), count)}" : ""))
+          text = $"{text}{(loc("ui/comma")).join(gunsTxt)}"
+        }
       }
-      if (gunNames.len() > 0) { //Guns
-        let gunsTxt = []
-        foreach (name, count in gunNames)
-          gunsTxt.append("".concat(loc($"weapons/{name}"), count > 1
-            ? $"{nbsp}{format(loc("weapons/counter/right/short"), count)}" : ""))
-        text = $"{text}{(loc("ui/comma")).join(gunsTxt)}"
-      }
+      else
+        text = "".concat(text, loc($"weapons_types/{weaponType}"),
+          format(loc("weapons/counter"), weapTypeCount[weaponType]))
     }
-    else
-      text = "".concat(text, loc($"weapons_types/{weaponType}"),
-        format(loc("weapons/counter"), weapTypeCount[weaponType]))
   }
 
   if (text == "" && p.needTextWhenNoWeapons)

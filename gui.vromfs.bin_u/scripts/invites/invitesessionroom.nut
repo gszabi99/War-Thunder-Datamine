@@ -23,6 +23,7 @@ let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { getRoomEvent, getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { broadcastInviteUpdated, showExpiredInvitePopup } = require("%scripts/invites/invites.nut")
 
 let SessionRoom = class (BaseInvite) {
   //custom class params, not exist in base invite
@@ -62,7 +63,7 @@ let SessionRoom = class (BaseInvite) {
           if (!this.isValid())
             this.remove()
           else
-            ::g_invites.broadcastInviteUpdated(this)
+            broadcastInviteUpdated(this)
         },
         this)
     }
@@ -188,7 +189,7 @@ let SessionRoom = class (BaseInvite) {
 
   function _implAccept() {
     if (this.isOutdated())
-      return ::g_invites.showExpiredInvitePopup()
+      return showExpiredInvitePopup()
 
     let room = getMroomInfo(this.roomId).getFullRoomData()
     let event = room ? getRoomEvent(room) : null

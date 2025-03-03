@@ -2289,11 +2289,22 @@
             0.5,
             0.5
           ],
-          "page": {
-            "type": "radar",
-            "customRadar": "su30Radar",
-            "fontSize": 20
-          }
+          "page": [
+            {
+              "type": "radar",
+              "customRadar": "su30Radar",
+              "fontSize": 20
+            },
+            {
+              "type": "rwr",
+              "scale": 1.0,
+              "hideBackground": true
+            },
+            {
+              "type": "custom",
+              "pageName": "su30Devices"
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2309,7 +2320,16 @@
               "hideBackground": true
             },
             {
+              "type": "radar",
+              "customRadar": "su30Radar",
+              "fontSize": 20
+            },
+            {
               "type": "map"
+            },
+            {
+              "type": "custom",
+              "pageName": "su30Devices"
             }
           ]
         },

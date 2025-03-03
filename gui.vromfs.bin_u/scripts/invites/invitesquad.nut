@@ -18,6 +18,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { queues } = require("%scripts/queue/queueManager.nut")
+let { showExpiredInvitePopup, removeInviteToSquad } = require("%scripts/invites/invites.nut")
 
 let Squad = class (BaseInvite) {
   //custom class params, not exist in base invite
@@ -217,13 +218,13 @@ let Squad = class (BaseInvite) {
     this.isRejected = true
     g_squad_manager.rejectSquadInvite(this.squadId)
     this.remove()
-    ::g_invites.removeInviteToSquad(this.squadId)
+    removeInviteToSquad(this.squadId)
     this.onSuccessfulReject()
   }
 
   function _implAccept() {
     if (this.isOutdated()) {
-      ::g_invites.showExpiredInvitePopup()
+      showExpiredInvitePopup()
       return false
     }
     if (!g_squad_manager.canJoinSquad())

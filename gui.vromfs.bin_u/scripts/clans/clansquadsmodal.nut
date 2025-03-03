@@ -21,6 +21,7 @@ let { getContactByName } = require("%scripts/contacts/contactsManager.nut")
 let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { getByPresenceParams } = require("%scripts/user/presenceType.nut")
+let { findInviteByUid } = require("%scripts/invites/invites.nut")
 
 const OFFLINE_SQUAD_TEXT_COLOR = "contactOfflineColor"
 
@@ -213,7 +214,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getInvitationInSquad(squad) {
     let uid = findInviteClass("Squad")?.getUidByParams({ squadId = squad.leader })
-    return ::g_invites.findInviteByUid(uid)
+    return findInviteByUid(uid)
   }
 
   function getSquadObj(idx) {

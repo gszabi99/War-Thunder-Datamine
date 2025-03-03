@@ -11,6 +11,7 @@ let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 let { clearBorderSymbols, utf8ToLower } = require("%sqstd/string.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { resetTimeout } = require("dagor.workcycle")
+let { getInvitesList, findInviteByUid, markAllInvitesSeen } = require("%scripts/invites/invites.nut")
 
 const INVITES_PER_PAGE = 30
 const MORE_BTN_ID = "showMoreBtn"
@@ -91,7 +92,7 @@ gui_handlers.InvitesWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateList() {
-    this.invitesList = ::g_invites.list.filter(@(invite) invite.isVisible())
+    this.invitesList = getInvitesList().filter(@(invite) invite.isVisible())
     let hasInvites = this.invitesList.len() > 0
     this.scene.findObject("invites_list_place").show(hasInvites)
     this.scene.findObject("now_new_invites").show(!hasInvites)
@@ -115,12 +116,12 @@ gui_handlers.InvitesWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function getInviteByObj(obj = null) {
     let uid = obj?.inviteUid
     if (uid)
-      return ::g_invites.findInviteByUid(uid)
+      return findInviteByUid(uid)
 
     let listObj = this.scene.findObject("invites_list")
     let value = listObj.getValue() || 0
     if (0 <= value && value < listObj.childrenCount())
-      return ::g_invites.findInviteByUid(listObj.getChild(value)?.inviteUid)
+      return findInviteByUid(listObj.getChild(value)?.inviteUid)
     return null
   }
 
@@ -226,7 +227,7 @@ gui_handlers.InvitesWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onDestroy() {
-    ::g_invites.markAllSeen()
+    markAllInvitesSeen()
   }
 
   function onInviteSelect(obj) {

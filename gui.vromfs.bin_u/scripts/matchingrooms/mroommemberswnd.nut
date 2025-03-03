@@ -16,6 +16,7 @@ let { getRoomSessionStartTime, getSessionLobbyMaxMembersCount
 let { getRoomMGameMode, getMembersCountByTeams } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 let { updateTeamCssLabel } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 
 gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -149,7 +150,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUserRClick(player) {
-    ::session_player_rmenu(this, player)
+    showSessionPlayerRClickMenu(this, player)
   }
 
   function onUserActions(_obj) {
@@ -158,7 +159,7 @@ gui_handlers.MRoomMembersWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let player = this.playersListWidgetWeak.getSelectedPlayer()
     let pos = this.playersListWidgetWeak.getSelectedRowPos()
-    ::session_player_rmenu(this, player, null, pos)
+    showSessionPlayerRClickMenu(this, player, null, pos)
   }
 
   function onUpdate(_obj, _dt) {

@@ -7,6 +7,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
+let { removeInviteToSquad, addInviteToSquad } = require("%scripts/invites/invites.nut")
 
 matchingRpcSubscribe("msquad.notify_invite", function(params) {
   let replaces = getTblValue("replaces", params, "").tostring()
@@ -16,8 +17,8 @@ matchingRpcSubscribe("msquad.notify_invite", function(params) {
 
   if (invite == null || invite.id.tostring() == userIdStr.value) {
     if (!u.isEmpty(replaces))
-      ::g_invites.removeInviteToSquad(replaces)
-    ::g_invites.addInviteToSquad(squad.id, leader.id.tostring())
+      removeInviteToSquad(replaces)
+    addInviteToSquad(squad.id, leader.id.tostring())
   }
   else
     g_squad_manager.addInvitedPlayers(invite.id.tostring())
@@ -27,7 +28,7 @@ matchingRpcSubscribe("msquad.notify_invite_revoked", function(params) {
   let invite = getTblValue("invite", params, null)
   let squad = getTblValue("squad", params, null)
   if (invite == null || invite.id.tostring() == userIdStr.value)
-    ::g_invites.removeInviteToSquad(squad.id.tostring())
+    removeInviteToSquad(squad.id.tostring())
   else
     g_squad_manager.removeInvitedPlayers(invite.id.tostring())
 })
@@ -43,7 +44,7 @@ matchingRpcSubscribe("msquad.notify_invite_expired", function(params) {
   let invite = getTblValue("invite", params, null)
   let squad = getTblValue("squad", params, null)
   if (invite == null || invite.id.tostring() == userIdStr.value)
-    ::g_invites.removeInviteToSquad(squad.id.tostring())
+    removeInviteToSquad(squad.id.tostring())
   else {
     g_squad_manager.removeInvitedPlayers(invite.id.tostring())
     if (g_squad_manager.getSquadSize(true) == 1)

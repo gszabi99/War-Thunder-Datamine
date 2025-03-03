@@ -57,6 +57,7 @@ let { hoveredAirfieldIndex } = require("%appGlobals/worldWar/wwAirfieldStatus.nu
 let { updateConfigurableValues, getLastPlayedOperationId, getLastPlayedOperationCountry, saveLastPlayed
 } = require("%scripts/worldWar/worldWarStates.nut")
 let { curOperationCountry, invalidateRearZones } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let { openWWOperationChatRoomById } = require("%scripts/chat/chat.nut")
 
 const WW_LAST_OPERATION_LOG_SAVE_ID = "worldWar/lastReadLog/operation"
 const WW_UNIT_WEAPON_PRESET_PATH = "worldWar/weaponPreset/"
@@ -600,6 +601,7 @@ let g_world_war = {
   function onEventWWLoadOperation(_params = {}) {
     this.isArmyGroupsValid = false
     this.isBattlesValid = false
+    openWWOperationChatRoomById(wwGetOperationId())
   }
 
   function getOperationObjectives() {
@@ -987,6 +989,7 @@ let g_world_war = {
   function onEventWWOperationPreviewLoaded(_params = {}) {
     this.isArmyGroupsValid = false
     this.isBattlesValid = false
+
   }
 
   function popupCharErrorMsg(groupName = null, titleText = "", errorMsgId = null) {

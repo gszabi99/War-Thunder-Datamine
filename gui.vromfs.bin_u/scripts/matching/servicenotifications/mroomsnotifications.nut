@@ -9,6 +9,7 @@ let { roomState, cleanupRoomState, isNotifyForCurrentRoom, connectToHost,
 } = require("%scripts/matching/serviceNotifications/mroomsState.nut")
 let { onSettingsChanged, onMemberInfoUpdate, onMemberJoin, joinSessionRoom, onMemberLeave
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { addSessionRoomInvite } = require("%scripts/invites/invites.nut")
 
 // rooms notifications
 function notify_room_invite(params) {
@@ -25,7 +26,7 @@ function notify_room_invite(params) {
   if (!senderId) //querry room
     joinSessionRoom(params.roomId, senderId, password)
   else
-    ::g_invites.addSessionRoomInvite(params.roomId, senderId.tostring(), params.senderName, password)
+    addSessionRoomInvite(params.roomId, senderId.tostring(), params.senderName, password)
   return true
 }
 

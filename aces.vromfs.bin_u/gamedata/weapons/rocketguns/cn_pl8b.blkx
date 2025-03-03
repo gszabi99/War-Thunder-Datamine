@@ -7,13 +7,20 @@
   "helicopterGroup": 2,
   "mesh": "pl_8",
   "effectOffset": [
-    -1.4,
-    0.0,
-    0.0
+    [
+      -1.4,
+      0.0,
+      0.0
+    ],
+    [
+      -1.4,
+      0.0,
+      0.0
+    ]
   ],
   "tags": {},
   "rocket": {
-    "bulletName": "su_pl8",
+    "bulletName": "cn_pl8b",
     "statType": "hydra",
     "caliber": 0.16,
     "length": 2.999,
@@ -113,22 +120,6 @@
       "workTime": 20.0,
       "uncageBeforeLaunch": true,
       "breakLockMaxTime": 3.0,
-      "irSeeker": {
-        "rangeBand0": 11000.0,
-        "rangeBand1": 3000.0,
-        "rangeBand2": 11000.0,
-        "rangeBand3": 11000.0,
-        "rangeBand7": 6000.0,
-        "rangeMax": 11000.0,
-        "fov": 3.6,
-        "minAngleToSun": 12.0,
-        "lockAngleMax": 30.0,
-        "angleMax": 40.0,
-        "rateMax": 20.0,
-        "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 38,
-        "constantDesignationSourceTypeMask": 6
-      },
       "guidanceAutopilot": {
         "timeOut": 0.5,
         "propNavMult": 4.0,
@@ -250,6 +241,23 @@
           500.0,
           1200.0
         ]
+      },
+      "irSeeker": {
+        "rangeBand1": 3400.0,
+        "rangeBand2": 10000.0,
+        "rangeBand3": 0.0,
+        "rangeBand6": 1000.0,
+        "rangeBand7": 6000.0,
+        "rangeMax": 100000.0,
+        "fov": 4.5,
+        "gateWidth": 0.75,
+        "minAngleToSun": 12.0,
+        "lockAngleMax": 30.0,
+        "angleMax": 40.0,
+        "rateMax": 20.0,
+        "prolongationTimeMax": 1.0,
+        "designationSourceTypeMask": 38,
+        "constantDesignationSourceTypeMask": 6
       }
     },
     "stabilityRicochetModifier": {

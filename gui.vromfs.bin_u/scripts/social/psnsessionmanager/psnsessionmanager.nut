@@ -19,6 +19,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getSessionLobbyMissionNameLocIdsArray } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
+let { findInviteByUid, addSessionRoomInvite } = require("%scripts/invites/invites.nut")
 
 let PSN_SESSION_TYPE = {
   SKIRMISH = "skirmish"
@@ -261,12 +262,12 @@ let afterAcceptInviteCb = function(sessionId, pushContextId, _r, err) {
       if ( pdsType == PSN_SESSION_TYPE.SKIRMISH) {
         dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
         let contact = getContact(parsedData.inviterUid)
-        ::g_invites.addSessionRoomInvite(parsedData.roomId, parsedData.inviterUid, contact.name, parsedData?.password ?? "").accept()
+        addSessionRoomInvite(parsedData.roomId, parsedData.inviterUid, contact.name, parsedData?.password ?? "").accept()
       }
       else if ( pdsType == PSN_SESSION_TYPE.SQUAD) {
         dumpSessionData(sessionId, parsedData.sType, pushContextId, copy(sessionData))
         let { squadId } = parsedData
-        let invite = ::g_invites.findInviteByUid(findInviteClass("Squad")?.getUidByParams({ squadId }))
+        let invite = findInviteByUid(findInviteClass("Squad")?.getUidByParams({ squadId }))
         if (invite != null)
           invite.accept()
         else

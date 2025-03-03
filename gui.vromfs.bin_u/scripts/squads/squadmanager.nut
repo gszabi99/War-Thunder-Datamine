@@ -48,6 +48,7 @@ let { isMemberInMySquadByName, isMemberInMySquadById } = require("%scripts/match
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { checkIsInQueue, queues } = require("%scripts/queue/queueManager.nut")
 let { presenceTypes, getByPresenceParams, getCurrentPresenceType } = require("%scripts/user/presenceType.nut")
+let { addInviteToSquad } = require("%scripts/invites/invites.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -804,7 +805,7 @@ g_squad_manager = {
       let invites = response?.invites
       if (invites != null)
         foreach (squadId in invites)
-          ::g_invites.addInviteToSquad(squadId, squadId.tostring())
+          addInviteToSquad(squadId, squadId.tostring())
 
       squadApplications.updateApplicationsList(response?.applications ?? [])
     }

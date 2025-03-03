@@ -27,6 +27,7 @@ let { getUserlogViewData } = require("%scripts/userLog/userlogViewData.nut")
 let { get_local_unixtime } = require("dagor.time")
 let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { showLeaveSessionFirstPopup } = require("%scripts/invites/invites.nut")
 
 ::hidden_userlogs <- [
   EULT_NEW_STREAK,
@@ -148,7 +149,7 @@ let actionByLogType = {
       return
 
     if (!isInMenu())
-      return ::g_invites.showLeaveSessionFirstPopup()
+      return showLeaveSessionFirstPopup()
 
     if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))
       return

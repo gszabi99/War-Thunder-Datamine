@@ -2241,33 +2241,29 @@
   "sensors": {
     "fireDirecting": {
       "dmPartMain": "bridge_dm",
-      "dmPart": [
-        "rangefinder_01_dm",
-        "rangefinder_02_dm",
-        "rangefinder_03_dm"
-      ],
+      "dmPart": "rangefinder_01_dm",
       "measureAccuracy": 0.85,
       "targetLockTime": 20.0,
       "calcTime": 12.0,
       "rotationSpeed": 20.0,
       "shipIndicationOn": true,
+      "dmPartLimits": [
+        {
+          "dmPart": "rangefinder_02_dm",
+          "minYaw": -180.0,
+          "maxYaw": 0.0
+        },
+        {
+          "dmPart": "rangefinder_03_dm",
+          "minYaw": 0.0,
+          "maxYaw": 180.0
+        }
+      ],
       "triggerGroupUse": {
         "primary": true,
         "secondary": false,
         "machinegun": false
-      },
-      "dmPartLimits": [
-        {
-          "dmPart": "rangefinder_02_dm",
-          "maxYaw": -85.0,
-          "minYaw": 85.0
-        },
-        {
-          "dmPart": "rangefinder_03_dm",
-          "maxYaw": -85.0,
-          "minYaw": 85.0
-        }
-      ]
+      }
     }
   },
   "commonWeapons": {

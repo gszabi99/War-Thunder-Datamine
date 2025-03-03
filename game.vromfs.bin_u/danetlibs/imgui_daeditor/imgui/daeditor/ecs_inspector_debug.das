@@ -1,5 +1,6 @@
 options no_aot
 options persistent_heap
+options stack = 65536
 
 require ecs
 require strings

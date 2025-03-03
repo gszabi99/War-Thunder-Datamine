@@ -8,6 +8,7 @@ let { notifyMailRead } =  require("%scripts/matching/serviceNotifications/postbo
 let { getOperationById } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { actionWithGlobalStatusRequest } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
+let { registerInviteUserlogHandler, findInviteByUid, addInvite } = require("%scripts/invites/invites.nut")
 
 function checkOperationParams(params) {
   if (params.operationId < 0)
@@ -26,21 +27,21 @@ function addWWInvite(p) {
   if (!inviteClass || !params)
     return
 
-  if (::g_invites.findInviteByUid(inviteClass.getUidByParams(params)) && p?.mail_id)
+  if (findInviteByUid(inviteClass.getUidByParams(params)) && p?.mail_id)
     notifyMailRead(p.mail_id)
 
   if (checkOperationParams(params))
-    return ::g_invites.addInvite(inviteClass, params)
+    return addInvite(inviteClass, params)
 
   let requestBlk = DataBlock()
   requestBlk.operationId = params.operationId
   actionWithGlobalStatusRequest("cln_ww_global_status_short", requestBlk, null, function() {
     if (checkOperationParams(params))
-      ::g_invites.addInvite(inviteClass, params)
+      addInvite(inviteClass, params)
   })
 }
 
-let addInviteFromUserlog = function(blk, idx) {
+function addInviteFromUserlog(blk, idx) {
   if (blk?.disabled)
     return false
 
@@ -61,7 +62,7 @@ let addInviteFromUserlog = function(blk, idx) {
   return true
 }
 
-::g_invites.registerInviteUserlogHandler(EULT_WW_START_OPERATION, addInviteFromUserlog)
+registerInviteUserlogHandler(EULT_WW_START_OPERATION, addInviteFromUserlog)
 
 addListenersWithoutEnv({
   PostboxNewMsg = @(p) p?.mail.inviteClassName ? addWWInvite({

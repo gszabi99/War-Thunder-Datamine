@@ -5122,4 +5122,6 @@ return {
   get_option_in_mode
   get_unit_preset_img
   registerOption
+  mkUseroptHardWatched
+  def_set_gui_option
 }

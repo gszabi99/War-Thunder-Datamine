@@ -51,6 +51,7 @@ class Canvas
   axesScale : float2
   axesStates : array<AxesState>
   textAnchorHorz : AnchorHorz
+  textAnchorVert : AnchorVert = AnchorVert.Bottom
 
   def Canvas(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const)
     self.ctx = unsafe(addr(ctx))
@@ -415,6 +416,8 @@ class Canvas
   def setTextAnchorHorz(anchor : AnchorHorz)
     textAnchorHorz = anchor
 
+  def setTextAnchorVert(anchor : AnchorVert)
+    textAnchorVert = anchor
 
 // TODO: find better names because print is std function in DAS
   def setCaretPosition(pos : float2)
@@ -428,11 +431,30 @@ class Canvas
 
   def printStrLn(str : string; var len : int = 0)
     len = len > 0 ? len : length(str)
-    let pos = get_text_pos(*ctx)
-    draw_str_scaled(*ctx, 1.0, str, length(str))
+    var textPos = get_text_pos(*ctx)
+    var curretPos = textPos
+
     var fctx : StdGuiFontContext
     get_font_context(fctx, font.id, 0, 0, font.size)
-    goto_xy(*ctx, float2(pos.x, pos.y + lineSpacing * get_font_line_spacing(fctx)))
+
+    if textAnchorHorz == AnchorHorz.Right
+      let size = get_str_bbox(str, len, fctx).width
+      textPos.x -= size.x
+    elif textAnchorHorz == AnchorHorz.Center
+      let size = get_str_bbox(str, len, fctx).width
+      textPos.x -= 0.5 * size.x
+
+    if textAnchorVert == AnchorVert.Top
+      let size = get_str_bbox(str, len, fctx).width
+      textPos.y += size.y
+    elif textAnchorVert == AnchorVert.Center
+      let size = get_str_bbox(str, len, fctx).width
+      textPos.y += 0.5 * size.y
+
+    goto_xy(*ctx, textPos)
+    draw_str_scaled(*ctx, 1.0, str, length(str))
+
+    goto_xy(*ctx, float2(curretPos.x, curretPos.y + lineSpacing * get_font_line_spacing(fctx)))
 
 
   def drawStr(var pos : float2; str : string; var len : int = 0)
@@ -471,6 +493,21 @@ class Canvas
 
     goto_xy(*ctx, pos)
     draw_str_scaled(*ctx, 1.0, str, len)
+
+  def drawStrVertical(var pos : float2; str : string; var padding : float = 0.0)
+    padding = toAbsY(padding)
+    pos = toAbsPos(pos)
+    let len = length(str)
+
+    for i in range(length(str))
+      let symbol = to_char(character_at(str, i))
+      goto_xy(*ctx, pos)
+      draw_str_scaled(*ctx, 1.0, symbol, len)
+
+      var fctx : StdGuiFontContext
+      get_font_context(fctx, font.id, 0, 0, font.size)
+      let size = get_str_bbox(symbol, len, fctx).width
+      pos.y += size.y + padding
 
   def drawIntWithBiggerThousands(pos : float2; value : int; fontSizeMul : float; drawFrame : bool; thousandDigits : int)
     var fctx : StdGuiFontContext

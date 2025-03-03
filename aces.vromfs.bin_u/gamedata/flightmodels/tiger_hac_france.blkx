@@ -1587,16 +1587,8 @@
         "blk": "gameData/flightModels/weaponPresets/tiger_hac_france_rocket.blk"
       },
       {
-        "name": "tiger_hac_france_apkws_m151",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hac_france_apkws_m151.blk"
-      },
-      {
-        "name": "tiger_hac_france_apkws_m282",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hac_france_apkws_m282.blk"
-      },
-      {
-        "name": "tiger_hac_france_4x_hot3",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hac_france_4x_hot3.blk"
+        "name": "tiger_had_france_tel22_tda",
+        "blk": "gameData/flightModels/weaponPresets/tiger_had_france_tel22_tda.blk"
       },
       {
         "name": "tiger_hac_france_hot3",
@@ -1607,16 +1599,12 @@
         "blk": "gameData/flightModels/weaponPresets/tiger_hac_france_atgw3.blk"
       },
       {
-        "name": "tiger_hac_france_gun_fn_m3p",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hac_france_gun_fn_m3p.blk"
-      },
-      {
-        "name": "tiger_hac_france_gun_fn_m3p_rocket",
-        "blk": "gameData/flightModels/weaponPresets/tiger_hac_france_gun_fn_m3p_rocket.blk"
-      },
-      {
         "name": "tiger_hac_france_stinger",
         "blk": "gameData/flightModels/weaponPresets/tiger_hac_france_stinger.blk"
+      },
+      {
+        "name": "tiger_hac_france_mistral",
+        "blk": "gameData/flightModels/weaponPresets/tiger_hac_france_mistral.blk"
       }
     ]
   },
@@ -1730,21 +1718,52 @@
         "index": 1,
         "tier": 8,
         "order": 1,
-        "WeaponPreset": {
-          "iconType": "missile_air_to_air_group_heli",
-          "name": "atas",
-          "reqModification": "stinger_aam",
-          "ShowNodes": {
-            "node": "pylon_l"
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_rocket_s",
+            "name": "telson_12",
+            "ShowNodes": {
+              "node": "pylon_l"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/telson_12_tda_x12.blk",
+              "emitter": "aim92_stinger_pod_001",
+              "external": true,
+              "machLimit": 1.01
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/containers/atas_2x_stinger_atas_tiger.blk",
-            "emitter": "aim92_stinger_pod_001"
+          {
+            "iconType": "missile_air_to_air_group_heli",
+            "name": "atas",
+            "reqModification": "stinger_aam",
+            "ShowNodes": {
+              "node": "pylon_l_m"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/atas_2x_stinger_atas_tiger.blk",
+              "emitter": "aim92_stinger_pod_001"
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_special_heli",
+            "name": "mistral",
+            "reqModification": "heli_atam_mistral",
+            "ShowNodes": {
+              "node": "pylon_l_m"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/atam_2x_mistral.blk",
+              "emitter": "atam_mistral_pod_001"
+            }
           }
-        }
+        ]
       },
       {
         "index": 2,
@@ -1752,48 +1771,16 @@
         "order": 3,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_large",
-            "name": "z225",
+            "iconType": "nar_ap_rocket_b",
+            "name": "telson_22",
             "ShowNodes": {
               "node": "pylon_l_gun"
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/fz225_ffar_x19.blk",
+              "blk": "gameData/Weapons/containers/telson_22_tda_x22.blk",
               "emitter": "fz225_001",
               "external": true,
-              "machLimit": 1.01
-            }
-          },
-          {
-            "iconType": "nar_he_small",
-            "name": "apkws_m151",
-            "reqModification": "us_apkws",
-            "ShowNodes": {
-              "node": "pylon_l_gun"
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
-              "emitter": "fz225_001",
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            }
-          },
-          {
-            "iconType": "nar_small",
-            "name": "apkws_m282",
-            "reqModification": "us_apkws",
-            "ShowNodes": {
-              "node": "pylon_l_gun"
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
-              "emitter": "fz225_001",
-              "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -1833,7 +1820,7 @@
           {
             "iconType": "atgm_type_pars3_x4",
             "name": "atgw3",
-            "reqModification": "tiger_atgw3",
+            "reqModification": "tiger_trigat_lr",
             "ShowNodes": {
               "node": "pylon_l_atgw3"
             },
@@ -1841,113 +1828,10 @@
               "trigger": "atgm",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/trigat_lr_atwg_3lr.blk",
+              "blk": "gameData/Weapons/containers/trigat_lr_x4.blk",
               "emitter": "atgw3_pod_001",
               "dragCx": 0.01
             }
-          },
-          {
-            "iconType": "machine_gun",
-            "name": "hmp_400",
-            "reqModification": "tiger_hmp400_lcc",
-            "ShowNodes": {
-              "node": [
-                "pylon_l_gun",
-                "fn_hmp400_pod_l",
-                "flare1"
-              ]
-            },
-            "ShowDmParts": {
-              "node": "mgun1_dm"
-            },
-            "Weapon": {
-              "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunFN_M3P.blk",
-              "emitter": "flare1",
-              "flash": "flare1",
-              "dm": "mgun1_dm",
-              "bullets": 400,
-              "mass": 0.4,
-              "spread": 1.5,
-              "traceOffset": 1,
-              "counterIndex": 1,
-              "external": true
-            }
-          },
-          {
-            "iconType": "machine_gun_rockets",
-            "name": "rmp_lc",
-            "reqModification": "tiger_rmp_lc",
-            "ShowNodes": {
-              "node": [
-                "pylon_l_gun",
-                "fn_rmp_pod_l",
-                "flare4"
-              ]
-            },
-            "ShowDmParts": {
-              "node": "mgun1_dm"
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunFN_M3P_cwp.blk",
-                "emitter": "flare4",
-                "flash": "flare4",
-                "dm": "mgun1_dm",
-                "bullets": 250,
-                "mass": 7.2,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "rockets",
-                "external": true,
-                "separate": true,
-                "jettisonable": false,
-                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse_fn_m3p_cwp.blk",
-                "emitter": "ffar_1",
-                "bullets": 1,
-                "minSize": [
-                  1.5,
-                  1.0,
-                  1.0
-                ],
-                "dragCx": 0.06
-              },
-              {
-                "trigger": "rockets",
-                "external": true,
-                "separate": true,
-                "jettisonable": false,
-                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse_fn_m3p_cwp.blk",
-                "emitter": "ffar_2",
-                "bullets": 1,
-                "minSize": [
-                  1.5,
-                  1.0,
-                  1.0
-                ],
-                "dragCx": 0.06
-              },
-              {
-                "trigger": "rockets",
-                "external": true,
-                "separate": true,
-                "jettisonable": false,
-                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse_fn_m3p_cwp.blk",
-                "emitter": "ffar_3",
-                "bullets": 1,
-                "minSize": [
-                  1.5,
-                  1.0,
-                  1.0
-                ],
-                "dragCx": 0.06
-              }
-            ]
           }
         ]
       },
@@ -1957,48 +1841,16 @@
         "order": 4,
         "WeaponPreset": [
           {
-            "iconType": "nar_ap_large",
-            "name": "z225",
+            "iconType": "nar_ap_rocket_b",
+            "name": "telson_22",
             "ShowNodes": {
               "node": "pylon_r_gun"
             },
             "Weapon": {
               "trigger": "rockets",
-              "blk": "gameData/Weapons/containers/fz225_ffar_x19.blk",
+              "blk": "gameData/Weapons/containers/telson_22_tda_x22.blk",
               "emitter": "fz225_002",
               "external": true,
-              "machLimit": 1.01
-            }
-          },
-          {
-            "iconType": "nar_he_small",
-            "name": "apkws_m151",
-            "reqModification": "us_apkws",
-            "ShowNodes": {
-              "node": "pylon_r_gun"
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m151.blk",
-              "emitter": "fz225_002",
-              "external": true,
-              "separate": true,
-              "machLimit": 1.01
-            }
-          },
-          {
-            "iconType": "nar_small",
-            "name": "apkws_m282",
-            "reqModification": "us_apkws",
-            "ShowNodes": {
-              "node": "pylon_r_gun"
-            },
-            "Weapon": {
-              "trigger": "atgm",
-              "blk": "gameData/Weapons/containers/lau_131aa_olive_us_apkws_m282.blk",
-              "emitter": "fz225_002",
-              "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -2038,7 +1890,7 @@
           {
             "iconType": "atgm_type_pars3_x4",
             "name": "atgw3",
-            "reqModification": "tiger_atgw3",
+            "reqModification": "tiger_trigat_lr",
             "ShowNodes": {
               "node": "pylon_r_atgw3"
             },
@@ -2046,113 +1898,10 @@
               "trigger": "atgm",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/containers/trigat_lr_atwg_3lr.blk",
+              "blk": "gameData/Weapons/containers/trigat_lr_x4.blk",
               "emitter": "atgw3_pod_002",
               "dragCx": 0.01
             }
-          },
-          {
-            "iconType": "machine_gun",
-            "name": "hmp_400",
-            "reqModification": "tiger_hmp400_lcc",
-            "ShowNodes": {
-              "node": [
-                "pylon_r_gun",
-                "fn_hmp400_pod_r",
-                "flare2"
-              ]
-            },
-            "ShowDmParts": {
-              "node": "mgun2_dm"
-            },
-            "Weapon": {
-              "trigger": "additional gun",
-              "blk": "gameData/Weapons/gunFN_M3P.blk",
-              "emitter": "flare2",
-              "flash": "flare2",
-              "dm": "mgun2_dm",
-              "bullets": 400,
-              "mass": 0.4,
-              "spread": 1.5,
-              "traceOffset": 1,
-              "counterIndex": 1,
-              "external": true
-            }
-          },
-          {
-            "iconType": "machine_gun_rockets",
-            "name": "rmp_lc",
-            "reqModification": "tiger_rmp_lc",
-            "ShowNodes": {
-              "node": [
-                "pylon_r_gun",
-                "fn_rmp_pod_r",
-                "flare3"
-              ]
-            },
-            "ShowDmParts": {
-              "node": "mgun2_dm"
-            },
-            "Weapon": [
-              {
-                "trigger": "additional gun",
-                "blk": "gameData/Weapons/gunFN_M3P_cwp.blk",
-                "emitter": "flare3",
-                "flash": "flare3",
-                "dm": "mgun2_dm",
-                "bullets": 250,
-                "mass": 7.2,
-                "spread": 1.5,
-                "traceOffset": 1,
-                "counterIndex": 1,
-                "external": true
-              },
-              {
-                "trigger": "rockets",
-                "external": true,
-                "separate": true,
-                "jettisonable": false,
-                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse_fn_m3p_cwp.blk",
-                "emitter": "ffar_6",
-                "bullets": 1,
-                "minSize": [
-                  1.5,
-                  1.0,
-                  1.0
-                ],
-                "dragCx": 0.06
-              },
-              {
-                "trigger": "rockets",
-                "external": true,
-                "separate": true,
-                "jettisonable": false,
-                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse_fn_m3p_cwp.blk",
-                "emitter": "ffar_5",
-                "bullets": 1,
-                "minSize": [
-                  1.5,
-                  1.0,
-                  1.0
-                ],
-                "dragCx": 0.06
-              },
-              {
-                "trigger": "rockets",
-                "external": true,
-                "separate": true,
-                "jettisonable": false,
-                "blk": "gameData/Weapons/rocketGuns/us_2_75_in_ffar_mighty_mouse_fn_m3p_cwp.blk",
-                "emitter": "ffar_4",
-                "bullets": 1,
-                "minSize": [
-                  1.5,
-                  1.0,
-                  1.0
-                ],
-                "dragCx": 0.06
-              }
-            ]
           }
         ]
       },
@@ -2160,21 +1909,52 @@
         "index": 4,
         "tier": 4,
         "order": 2,
-        "WeaponPreset": {
-          "iconType": "missile_air_to_air_group_heli",
-          "name": "atas",
-          "reqModification": "stinger_aam",
-          "ShowNodes": {
-            "node": "pylon_r"
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_rocket_s",
+            "name": "telson_12",
+            "ShowNodes": {
+              "node": "pylon_r"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/telson_12_tda_x12.blk",
+              "emitter": "aim92_stinger_pod_002",
+              "external": true,
+              "machLimit": 1.01
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/containers/atas_2x_stinger_atas_tiger.blk",
-            "emitter": "aim92_stinger_pod_002"
+          {
+            "iconType": "missile_air_to_air_group_heli",
+            "name": "atas",
+            "reqModification": "stinger_aam",
+            "ShowNodes": {
+              "node": "pylon_r_m"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/atas_2x_stinger_atas_tiger.blk",
+              "emitter": "aim92_stinger_pod_002"
+            }
+          },
+          {
+            "iconType": "missile_air_to_air_special_heli",
+            "name": "mistral",
+            "reqModification": "heli_atam_mistral",
+            "ShowNodes": {
+              "node": "pylon_r_m"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/containers/atam_2x_mistral.blk",
+              "emitter": "atam_mistral_pod_002"
+            }
           }
-        }
+        ]
       }
     ]
   },
@@ -3086,48 +2866,16 @@
       "tier": 3,
       "invertEnableLogic": false
     },
-    "50cal_universal": {},
-    "50cal_ground_targets": {},
-    "50cal_tracers": {},
-    "50cal_stealth": {},
-    "bmg50_belt_pack": {
-      "tier": 2
-    },
-    "bmg50_new_gun": {
-      "reqModification": "bmg50_belt_pack",
-      "tier": 4
-    },
-    "tiger_hmp400_lcc": {
-      "tier": 1,
-      "modClass": "weapon"
-    },
-    "tiger_rmp_lc": {
-      "deactivationIsAllowed": false,
-      "reqModification": "tiger_hmp400_lcc",
-      "tier": 3,
-      "modClass": "weapon"
-    },
     "tiger_hot3": {
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 2
     },
-    "tiger_atgw3": {
+    "tiger_trigat_lr": {
       "reqModification": "tiger_hot3",
       "deactivationIsAllowed": false,
       "modClass": "weapon",
       "tier": 3
-    },
-    "us_apkws": {
-      "deactivationIsAllowed": false,
-      "modClass": "weapon",
-      "tier": 2
-    },
-    "stinger_aam": {
-      "prevModification": "us_apkws",
-      "deactivationIsAllowed": false,
-      "modClass": "weapon",
-      "tier": 4
     },
     "maw_countermeasures_launcher_chaff": {},
     "maw_countermeasures_launcher_chaff_large": {},
@@ -3165,7 +2913,7 @@
     "heli_night_vision_system": {
       "prevModification": "MAW_system_heli_false_thermal_targets_large",
       "modClass": "weapon",
-      "tier": 3,
+      "tier": 2,
       "image": "#ui/gameuiskin#thermal_sight",
       "effects": {
         "nightVision": {
@@ -3196,6 +2944,18 @@
           }
         }
       }
+    },
+    "stinger_aam": {
+      "prevModification": "heli_night_vision_system",
+      "modClass": "weapon",
+      "tier": 3,
+      "enabled": false
+    },
+    "heli_atam_mistral": {
+      "reqModification": "stinger_aam",
+      "deactivationIsAllowed": false,
+      "modClass": "weapon",
+      "tier": 4
     }
   },
   "user_skin": {

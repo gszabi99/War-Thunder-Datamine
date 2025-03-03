@@ -351,31 +351,31 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     let weaponInfoData = makeWeaponInfoData(unit, weaponInfoParams)
     let weaponsList = []
     if (weaponInfoData?.resultWeaponBlocks != null) {
-      foreach(weaponBlock in (weaponInfoData.resultWeaponBlocks)) {
-        let weaponName = weaponBlock.findindex(@(_) true)
-        if (!weaponName)
-          continue
-        let weapon = weaponBlock[weaponName]
-        let weaponsListElement = {}
-        local weaponTitle = ""
-        if (isInArray(weapon.weaponType, CONSUMABLE_TYPES) || weapon.weaponType == WEAPON_TYPE.CONTAINER_ITEM)
-          weaponTitle = "".concat(loc($"weapons/{weaponName}"), format(loc("weapons/counter"), weapon.ammo))
-        else {
-          weaponTitle = loc($"weapons/{weaponName}")
-          if (TRIGGER_TYPE.TURRETS in weapon) {
-            let turretsCount = weapon[TRIGGER_TYPE.TURRETS]
-            if (turretsCount > 1)
-              weaponTitle = "".concat(format(loc("weapons/turret_number"), turretsCount), weaponTitle)
-            else
-              weaponTitle = "".concat(utf8Capitalize(loc("weapons_types/turrets")), loc("ui/colon"), weaponTitle)
-          }
-          if (weapon.num > 1)
-            weaponTitle = $"{weaponTitle}{format(loc("weapons/counter"), weapon.num)}"
-          if (weapon.ammo > 0) {
-            weaponsListElement.ammo <- "".concat("(", loc("shop/ammo"), loc("ui/colon"), weapon.ammo, ")")
-          }
+      foreach(weaponBlockSet in (weaponInfoData.resultWeaponBlocks)) {
+        let weaponsListElement = {
+          titlesAndAmmo = []
         }
-        weaponsListElement.weaponTitle <- weaponTitle
+        foreach(weaponId, weapon in weaponBlockSet) {
+          let weaponName = weapon.weaponName
+          local weaponTitle = ""
+          if (isInArray(weapon.weaponType, CONSUMABLE_TYPES) || weapon.weaponType == WEAPON_TYPE.CONTAINER_ITEM)
+            weaponTitle = "".concat(loc($"weapons/{weaponName}"), format(loc("weapons/counter"), weapon.ammo))
+          else {
+            weaponTitle = loc($"weapons/{weaponName}")
+            if ((TRIGGER_TYPE.TURRETS in weapon) && weaponId == 0) {
+              let turretsCount = weapon[TRIGGER_TYPE.TURRETS]
+              let turretName = turretsCount > 1 ? format(loc("weapons/turret_number"), turretsCount)
+                : "".concat(utf8Capitalize(loc("weapons_types/turrets")), loc("ui/colon"))
+              weaponsListElement.turretName <- turretName
+            }
+            if (weapon.num > 1)
+              weaponTitle = $"{weaponTitle}{format(loc("weapons/counter"), weapon.num)}"
+            }
+          weaponsListElement.titlesAndAmmo.append({
+            weaponTitle
+            ammo = weapon.ammo > 0 ? "".concat("(", loc("shop/ammo"), loc("ui/colon"), weapon.ammo, ")") : ""
+          })
+        }
         weaponsList.append(weaponsListElement)
       }
       if (weaponsList.len())

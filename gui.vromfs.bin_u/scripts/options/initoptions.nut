@@ -1,8 +1,8 @@
 from "%scripts/dagui_natives.nut" import get_global_stats_blk, disable_network, gather_and_build_aircrafts_list
 from "%scripts/dagui_library.nut" import *
 
-let { set_crosshair_icons, set_thermovision_colors, set_modifications_locId_by_caliber, set_bullets_locId_by_caliber
-} = require("%scripts/options/optionsStorage.nut")
+let { set_crosshair_icons, set_thermovision_colors, set_modifications_locId_by_caliber, set_bullets_locId_by_caliber,
+  set_available_ship_hit_notifications } = require("%scripts/options/optionsStorage.nut")
 let { init_postfx } = require("%scripts/postFxSettings.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -158,6 +158,16 @@ function countUsageAmountOnce() {
         new_thermovision_colors.append({ menu_rgb = colorBlk.menu_rgb })
       }
       set_thermovision_colors(new_thermovision_colors)
+    }
+    if (blk?.shipHitNotification) {
+      let { shipHitNotification } = blk
+      let availableHitNotifications = {}
+      for (local i = 0; i < shipHitNotification.blockCount(); i++) {
+        let hitNotificationBlk = shipHitNotification.getBlock(i)
+        if (hitNotificationBlk?.enabled)
+          availableHitNotifications[hitNotificationBlk.getBlockName()] <- true
+      }
+      set_available_ship_hit_notifications(availableHitNotifications)
     }
   }
 

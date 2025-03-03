@@ -39,6 +39,7 @@ let customPages = {
   rafaelRadar = @() load_das("%rGui/planeCockpit/mfdRafaelRadar.das")
   typhoonRadar = @() load_das("%rGui/planeCockpit/mfdTyphoonRadar.das")
   su30Radar = @() load_das("%rGui/planeCockpit/mfdSu30Radar.das")
+  fa18cRadarATTK = @() load_das("%rGui/planeCockpit/mfdfa18cRadarATTK.das")
 }
 
 let radarSettings = Computed(function() {

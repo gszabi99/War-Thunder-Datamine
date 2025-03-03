@@ -12,7 +12,9 @@ let { checkAndShowMultiplayerPrivilegeWarning,
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
-let { INVITE_CHAT_LINK_PREFIX } = require("%scripts/invites/invites.nut")
+let { INVITE_CHAT_LINK_PREFIX, registerInviteUserlogHandler, showExpiredInvitePopup,
+  showLeaveSessionFirstPopup, addTournamentBattleInvite
+} = require("%scripts/invites/invites.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
@@ -117,10 +119,10 @@ let TournamentBattle = class (BaseInvite) {
 
   function accept() {
     if (this.isOutdated())
-      return ::g_invites.showExpiredInvitePopup()
+      return showExpiredInvitePopup()
 
     if (!isInMenu())
-      return ::g_invites.showLeaveSessionFirstPopup()
+      return showLeaveSessionFirstPopup()
 
     if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))
       return
@@ -145,7 +147,7 @@ let TournamentBattle = class (BaseInvite) {
 
 }
 
-::g_invites.registerInviteUserlogHandler(EULT_INVITE_TO_TOURNAMENT, function(blk, idx) {
+registerInviteUserlogHandler(EULT_INVITE_TO_TOURNAMENT, function(blk, idx) {
   if (!hasFeature("Tournaments")) {
     disable_user_log_entry(idx)
     return false
@@ -165,7 +167,7 @@ let TournamentBattle = class (BaseInvite) {
   knownTournamentInvites.append(ulogId)
 
   log($"Got userlog EULT_INVITE_TO_TOURNAMENT: battleId '{battleId}'");
-  ::g_invites.addTournamentBattleInvite(battleId, inviteTime, startTime, endTime)
+  addTournamentBattleInvite(battleId, inviteTime, startTime, endTime)
   return true
 })
 

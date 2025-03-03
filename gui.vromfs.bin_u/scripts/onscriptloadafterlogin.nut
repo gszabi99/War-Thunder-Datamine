@@ -99,7 +99,6 @@ foreach (fn in [
   "%scripts/chat/mpChatMode.nut"
   "%scripts/chat/mpChat.nut"
 
-  "%scripts/invites/invites.nut"
   "%scripts/invites/inviteChatRoom.nut"
   "%scripts/invites/inviteSessionRoom.nut"
   "%scripts/invites/inviteTournamentBattle.nut"

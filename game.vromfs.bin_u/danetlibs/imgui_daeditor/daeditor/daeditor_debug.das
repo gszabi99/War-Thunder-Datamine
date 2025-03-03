@@ -50,10 +50,10 @@ def init_ecs_inspector_shortcut()
 [console_cmd(name="time.increase_speed")]
 def time_increase_scale()
   set_timespeed(get_timespeed() * 2.)
-  visual_log("time speed: {format("%.3f", get_timespeed())}")
+  visual_log("time speed: {get_timespeed():.3f}")
 
 
 [console_cmd(name="time.decrease_speed")]
 def time_decrease_scale()
   set_timespeed(max(0.0, get_timespeed() * 0.5))
-  visual_log("time speed: {format("%.3f", get_timespeed())}")
+  visual_log("time speed: {get_timespeed():.3f}")

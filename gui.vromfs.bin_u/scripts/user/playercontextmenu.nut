@@ -47,9 +47,9 @@ let { canInvitePlayerToSessionRoom } = require("%scripts/matchingRooms/sessionLo
 let { queues } = require("%scripts/queue/queueManager.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { gui_modal_ban, gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")
-
 let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 //-----------------------------
 // params keys:
@@ -594,6 +594,22 @@ function showChatPlayerRClickMenu(playerName, roomId = null, contact = null, pos
   })
 }
 
+function showSessionPlayerRClickMenu(handler, player, chatLog = null, position = null, orientation = null) {
+  if (!player || player.isBot || !("userId" in player) || !isLoggedIn.get())
+    return
+
+  showMenu(null, handler, {
+    playerName = player.name
+    uid = player.userId.tostring()
+    clanTag = player.clanTag
+    position = position
+    orientation = orientation
+    chatLog = chatLog
+    isMPLobby = true
+    canComplain = true
+  })
+}
+
 return {
   showMenu = showMenu
   showXboxPlayerMuted = showXboxPlayerMuted
@@ -601,4 +617,5 @@ return {
   showBlockedPlayerPopup = showBlockedPlayerPopup
   showSquadMemberMenu
   showChatPlayerRClickMenu
+  showSessionPlayerRClickMenu
 }

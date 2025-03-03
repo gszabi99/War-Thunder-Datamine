@@ -63,10 +63,9 @@ tdiv {
           }
           textareaNoTab {
             margin-left:t='2@blockInterval'
-            margin-top:t='2@dp'
             text:t='<<squadLeaderTxt>>'
-            font-pixht:t='25@sf/@pf'
-            normalFont:t='yes'
+            smallFont:t='yes'
+            valign:t='center'
           }
         }
 

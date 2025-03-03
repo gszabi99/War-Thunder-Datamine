@@ -10,7 +10,9 @@ let { get_charserver_time_sec } = require("chard")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_SHOW_SOCIAL_NOTIFICATIONS
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { INVITE_CHAT_LINK_PREFIX, openInviteWnd } = require("%scripts/invites/invites.nut")
+let { INVITE_CHAT_LINK_PREFIX, openInviteWnd, updateNewInvitesAmount, broadcastInviteReceived,
+  removeInvite
+} = require("%scripts/invites/invites.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { addPopup, removePopupByHandler } = require("%scripts/popups/popups.nut")
 let { showChatPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
@@ -112,7 +114,7 @@ let BaseInvite = class {
     if (this.isDelayed)
       return
 
-    ::g_invites.broadcastInviteReceived(this)
+    broadcastInviteReceived(this)
     this.showInvitePopup()
   }
 
@@ -205,7 +207,7 @@ let BaseInvite = class {
   }
 
   function remove() {
-    ::g_invites.remove(this)
+    removeInvite(this)
   }
 
   function showInviterMenu(position = null) {
@@ -219,7 +221,7 @@ let BaseInvite = class {
 
     this.isSeen = true
     if (!silent)
-      ::g_invites.updateNewInvitesAmount()
+      updateNewInvitesAmount()
     return true
   }
 

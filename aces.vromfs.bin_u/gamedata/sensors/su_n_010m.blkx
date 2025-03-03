@@ -1520,7 +1520,10 @@
         },
         "initRadar": {
           "initRadarStandby": {},
-          "initRadarLockTrack": {}
+          "initRadarLockTrack": {},
+          "setDesignationSourceType": {
+            "sourceType": "radar"
+          }
         },
         "setRadar": {
           "initRadarLockTrack": {},
@@ -1528,7 +1531,10 @@
             "fsm": "radarSearchModes",
             "name": "restore"
           },
-          "initRadarStandby": {}
+          "initRadarStandby": {},
+          "setDesignationSourceType": {
+            "sourceType": "radar"
+          }
         },
         "setIrst": {
           "setCustomActionTemplate": [
@@ -1611,6 +1617,9 @@
           "doCustomActionTemplate": {
             "fsm": "irstSearchModes",
             "name": "restore"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "sensor"
           }
         }
       },

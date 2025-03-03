@@ -37,6 +37,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
+let { openShipHitIconsMenu } = require("%scripts/options/handlers/shipHitIconsMenu.nut")
 
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -574,6 +575,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
   onPreloaderSettings = @() preloaderOptionsModal()
   onTankSightSettings = openTankSightSettings
   onDialogAddRadio = @() openAddRadioWnd()
+  onShipHitIconsVisibilityClick = openShipHitIconsMenu
 
   function onPostFxSettings(_obj) {
     this.applyFunc = guiStartPostfxSettings

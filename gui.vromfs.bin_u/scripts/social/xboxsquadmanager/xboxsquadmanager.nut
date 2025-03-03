@@ -16,6 +16,7 @@ let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { findContactByXboxId } = require("%scripts/contacts/contactsManager.nut")
+let { findInviteByUid } = require("%scripts/invites/invites.nut")
 
 local needCheckSquadInvites = false // It required 'in moment', no need to save in persist
 let postponedInvitation = mkWatched(persist, "postponedInvitation", "0")
@@ -107,7 +108,7 @@ function onSquadLeadershipTransfer() {
 
 function acceptExistingIngameInvite(uid) {
   let inviteUid = findInviteClass("Squad")?.getUidByParams({ squadId = uid })
-  let invite = ::g_invites.findInviteByUid(inviteUid)
+  let invite = findInviteByUid(inviteUid)
   logX($"Accept ingame invite: uid {uid}, invite {invite}")
   if (!invite) {
     logX($"invite not found. Try join squad.")

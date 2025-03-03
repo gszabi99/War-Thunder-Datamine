@@ -152,6 +152,7 @@ let { getCurMpTitle, getLocalTeamForMpStats } = require("%scripts/statistics/mpS
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { getWPIcon, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
 let { fill_unlock_block } = require("%scripts/unlocks/unlocks.nut")
+let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 
 let { guiStartMpLobby, goForwardSessionLobbyAfterDebriefing, checkLeaveRoomInDebriefing
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
@@ -2794,7 +2795,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       let name = link.slice(3)
       let player = this.getPlayerInfo(name)
       if (player)
-        ::session_player_rmenu(this, player, this.getChatLog())
+        showSessionPlayerRClickMenu(this, player, this.getChatLog())
     }
   }
 

@@ -24,6 +24,7 @@ let { isInFlight } = require("gameplayBinding")
 let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair")
 let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
+let { IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -232,6 +233,7 @@ let getMainOptions = function() {
       [USEROPT_RADAR_MODE_SELECT, "spinner", isShipOrBoat && isAllowRadarMode],
       [USEROPT_RADAR_SCAN_PATTERN_SELECT, "spinner", isShipOrBoat && isAllowRadarMode],
       [USEROPT_RADAR_SCAN_RANGE_SELECT, "spinner", isShipOrBoat && isAllowRadarMode],
+      [USEROPT_SHOW_HIT_ICONS_SHIP, "button", IS_SHIP_HIT_NOTIFICATIONS_VISIBLE],
 
       ["options/header/interface"],
       [USEROPT_HUD_SCREEN_SAFE_AREA, "spinner", safeAreaHud.canChangeValue()],

@@ -67,6 +67,7 @@ let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { getRoomMemberPublicParam } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     // Common multiplayer battle participant between respawns or after death.
@@ -855,7 +856,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   function onPlayerRClick(obj) {
     let player = this.statTblGetSelectedPlayer(obj)
     if (player)
-      ::session_player_rmenu(
+      showSessionPlayerRClickMenu(
         this,
         player,
         getLogForBanhammer()
@@ -904,7 +905,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     if (::get_is_console_mode_enabled() && u.isEqual(curPlayer, player)) {
       let selIndex = getObjValidIndex(obj)
       let selectedPlayerBlock = obj.getChild(selIndex >= 0 ? selIndex : 0)
-      ::session_player_rmenu(
+      showSessionPlayerRClickMenu(
         this,
         player,
         getLogForBanhammer(),

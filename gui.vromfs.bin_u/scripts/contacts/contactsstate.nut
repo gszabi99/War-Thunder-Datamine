@@ -14,7 +14,7 @@ let { get_time_msec } = require("dagor.time")
 let { chooseRandom } = require("%sqstd/rand.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
-let { addFriendInvite } = require("%scripts/invites/invites.nut")
+let { addFriendInvite, addFriendsInvites } = require("%scripts/invites/invites.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { contactEvent, statusGroupsToRequest, GAME_GROUP_NAME } = require("%scripts/contacts/contactsConsts.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
@@ -282,7 +282,7 @@ function addInvitesToFriend(inviters) {
   if (inviters == null)
     return
 
-  ::g_invites.addFriendsInvites(inviters)
+  addFriendsInvites(inviters)
   fetchContacts()
 }
 

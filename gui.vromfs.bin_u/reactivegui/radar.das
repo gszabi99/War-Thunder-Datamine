@@ -10,6 +10,7 @@ require hud
 require FlightModelWrap
 require HeroManager
 require Unit
+require %rGui.utils.radar_common
 require %rGui.utils.constants_common
 
 let areaBackgroundColor = E3DCOLOR(Color4(float4(0., 0., 0., 0.5)))
@@ -186,7 +187,7 @@ def b_scope_half(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
       let isSectorView = dist == 1. && halfVal > 0.
       b_scope_azimuth(ctx, data, origin, rdata.size, isSectorView, get_radar_hud_azimuth(), halfVal, dist, 1.2 * data.lineWidth)
       b_scope_elevation(ctx, data, gridPos, rdata.size, get_radar_hud_elevation_min(), get_radar_hud_elevation_max(), get_radar_hud_elevation(), get_radar_hud_azimuth_min(),
-       get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max())
+       get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max(), get_radar_hud_elevation_stabilize())
 
   if get_radar_hud_is_visible2() && !data.hideBeam
     if get_radar_hud_is_emitting2()
@@ -195,7 +196,7 @@ def b_scope_half(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
       let isSectorView = dist == 1. && halfVal > 0.
       b_scope_azimuth(ctx, data, origin, rdata.size, isSectorView, get_radar_hud_azimuth2(), halfVal, dist, 1.2 * data.lineWidth)
       b_scope_elevation(ctx, data, gridPos, rdata.size, get_radar_hud_elevation_min(), get_radar_hud_elevation_max(), get_radar_hud_elevation2(), get_radar_hud_azimuth_min(),
-       get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max())
+       get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max(), get_radar_hud_elevation_stabilize())
 
   if !data.hideLaunchZone
     b_scope_half_launch_range(ctx, data, gridPos, rdata.size)
@@ -279,9 +280,7 @@ def b_scope_half_top_markers(var ctx : GuiContext&; data : CanvasParams&; pos : 
   let rb = pos + size
   let center = (pos + rb) * 0.5
 
-  let nameId = get_radar_hud_mode_name_id()
-  let defaultStr = get_radar_hud_is_visible() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-  let modeName = loc(nameId >= 0 && nameId < radarModeNames |> length() ? radarModeNames[nameId] : defaultStr)
+  let modeName = Radar`getModeNameLoc()
   let strBox = get_str_bbox(modeName, modeName |> length(), fctx)
   ctx |> goto_xy(center.x - strBox.width.x, center.y - 5.)
   ctx |> set_font(data.fontId, 0, 0)
@@ -305,7 +304,7 @@ def b_scope_half_top_markers(var ctx : GuiContext&; data : CanvasParams&; pos : 
 
 def b_scope_elevation(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2;
                       elev_min : float; elev_max : float; elev_rel : float; azimuth_min : float;
-                      elev_scan_min : float; elev_scan_max : float)
+                      elev_scan_min : float; elev_scan_max : float; elev_stab : bool)
   let rb = pos + size
   let center = (pos + rb) * 0.5
   let origin = float2(center.x, rb.y)
@@ -316,6 +315,7 @@ def b_scope_elevation(var ctx : GuiContext&; data : CanvasParams&; pos : float2;
   let elevation = elevationMin * (1.0 - elev_rel) + elevationMax * elev_rel
   let markLen = 0.06
   let markLenShort = 0.04
+  let markLenLong = 0.10
   let cosa = cos(azimuth_min)
   let sina = sin(azimuth_min)
   var color = float4(Color4(is_color_or_white(data.lineColor)))
@@ -339,6 +339,16 @@ def b_scope_elevation(var ctx : GuiContext&; data : CanvasParams&; pos : float2;
      origin.x + (elevationScanMin * sina - markLen * cosa) * sz.x, origin.y - (elevationScanMin * cosa + markLen * sina) * sz.y, ctx |> hdpx(4. * data.lineWidth))
     ctx |> draw_line(origin.x + elevationScanMax * sina * sz.x, origin.y - elevationScanMax * cosa * sz.y,
      origin.x + (elevationScanMax * sina - markLen * cosa) * sz.x, origin.y - (elevationScanMax * cosa + markLen * sina) * sz.y, ctx |> hdpx(4. * data.lineWidth))
+
+  if elev_stab
+    let hero = get_controlled_hero()
+    if hero != null && !hero.isDelayed
+      let fmw = hero |> as_fmw()
+      if fmw != null
+        let tangage = deg_to_rad(fmw.tangage)
+        let elevationHorizon = -tangage * elevMaxInv * elevMaxScreenRelSize + 0.5
+        ctx |> draw_line(origin.x + elevationHorizon * sina * sz.x, origin.y - elevationHorizon * cosa * sz.y,
+         origin.x + (elevationHorizon * sina - markLenLong * cosa) * sz.x, origin.y - (elevationHorizon * cosa + markLenLong * sina) * sz.y, ctx |> hdpx(4. * data.lineWidth))
 
 def foreach_targets(blk : block<(target : RadarTarget const const#; i : int) : void>)
   get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
@@ -628,12 +638,12 @@ def b_scope_square(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
     if get_radar_hud_is_emitting() && !data.hideBeam
       b_scope_square_azimuth(ctx, data, pos, sz, false, get_radar_hud_azimuth(), get_radar_hud_distance(), get_radar_hud_azimuth_half_width())
     b_scope_square_elevation(ctx, data, pos, sz, get_radar_hud_elevation(), get_radar_hud_elevation_min(), get_radar_hud_elevation_max(),
-      get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max())
+      get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max(), get_radar_hud_elevation_stabilize())
   if get_radar_hud_is_visible2()
     if get_radar_hud_is_emitting2() && !data.hideBeam
       b_scope_square_azimuth(ctx, data, pos, sz, false, get_radar_hud_azimuth2(), get_radar_hud_distance2(), get_radar_hud_azimuth_half_width2())
     b_scope_square_elevation(ctx, data, pos, sz, get_radar_hud_elevation2(), get_radar_hud_elevation_min(), get_radar_hud_elevation_max(),
-     get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max())
+     get_radar_hud_scan_elevation_min(), get_radar_hud_scan_elevation_max(), get_radar_hud_elevation_stabilize())
 
   if get_radar_hud_aam_launch_zone_visible() && get_radar_hud_has_azimuth_scale() && !data.hideLaunchZone
     b_scope_square_launch_range(ctx, data, pos, sz)
@@ -666,9 +676,7 @@ def b_scope_square_labels(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   ctx |> set_color(data.modeColor)
   ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.modeColor), get_font_fx_factor(data.modeColor, ctx))
 
-  let nameId = get_radar_hud_mode_name_id()
-  let defaultStr = get_radar_hud_is_visible() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-  let modeName = loc(nameId >= 0 && nameId < radarModeNames |> length() ? radarModeNames[nameId] : defaultStr)
+  let modeName = Radar`getModeNameLoc()
   let strBoxMode = get_str_bbox(modeName, modeName |> length(), fctx)
   ctx |> goto_xy(pos.x + size.x * 0.5 - strBoxMode.width.x * 0.5, pos.y + strBoxMode.width.y)
   ctx |> draw_str_scaled(1.0, modeName, modeName |> length())
@@ -874,13 +882,14 @@ def b_scope_square_azimuth(var ctx : GuiContext&; data : CanvasParams&; pos : fl
       ctx |> render_line_dashed(p1, p2, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(1.6 * data.lineWidth), color)
 
 def b_scope_square_elevation(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; elev_rel : float;
-                             elev_min : float; elev_max : float; elev_scan_min : float; elev_scan_max : float)
+                             elev_min : float; elev_max : float; elev_scan_min : float; elev_scan_max : float; elev_stab : bool)
   let elevationMin = -elev_min * elevMaxInv * elevMaxScreenRelSize + 0.5
   let elevationMax = -elev_max * elevMaxInv * elevMaxScreenRelSize + 0.5
   let elevation = elevationMin * (1. - elev_rel) + elevationMax * elev_rel
 
   let markLen = 0.05
   let markLenShort = 0.03
+  let markLenLong = 0.10
   var color = float4(Color4(is_color_or_white(data.lineColor)))
   color *= 0.42
   let e3dColor = E3DCOLOR(Color4(color))
@@ -901,6 +910,16 @@ def b_scope_square_elevation(var ctx : GuiContext&; data : CanvasParams&; pos : 
     let scanCoord <- to_array_move([[float2[4] float2(pos.x, pos.y + elevationScanMin * size.y); float2(pos.x + markLen * size.x, pos.y + elevationScanMin * size.y);
      float2(pos.x + markLen * size.x, pos.y + elevationScanMax * size.y); float2(pos.x, pos.y + elevationScanMax * size.y)]])
     ctx |> render_line_aa(scanCoord, false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
+
+  if elev_stab
+    let hero = get_controlled_hero()
+    if hero != null && !hero.isDelayed
+      let fmw = hero |> as_fmw()
+      if fmw != null
+        let tangage = deg_to_rad(fmw.tangage)
+        let elevationHorizon = tangage * elevMaxInv * elevMaxScreenRelSize + 0.5
+        let horizonCoord <- to_array_move([[float2[2] float2(pos.x, pos.y + elevationHorizon * size.y); float2(pos.x + markLenLong * size.x, pos.y + elevationHorizon * size.y)]])
+        ctx |> render_line_aa(horizonCoord, false, ctx |> hdpx(4.), float2(0, 0), e3dColor)
 
 def b_scope_square_launch_range(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   var color = float4(Color4(is_color_or_white(data.lineColor)))
@@ -967,7 +986,6 @@ def square_radar_targets(var ctx : GuiContext&; data : CanvasParams&; pos : floa
       let distanceGateHalfWidthRel = 0.5 * max(get_radar_hud_distance_gate_width_rel(), distanceGateWidthRelMin) * distanceGateWidthMult
       let distanceInner = distanceRel - distanceGateHalfWidthRel
       let distanceOuter = distanceRel + distanceGateHalfWidthRel
-
       if target.isDetected
         let lcoord <- to_array_move([[float2[2] float2(pos.x + angleGateLeftRel * size.x, pos.y + (1. - distanceInner) * size.y);
          float2(pos.x + angleGateLeftRel * size.x, pos.y + (1. - distanceOuter) * size.y)]])
@@ -1063,21 +1081,11 @@ def b_scope_square_cue(var ctx : GuiContext&; data : CanvasParams&; pos : float2
    float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y + cueDistWidthRel * size.y * 0.5)]])
   ctx |> render_line_aa(rcoord, false, ctx |> hdpx(2. * data.lineWidth), float2(0, 0), color)
 
-  if data.cueHeights
-    let hero = get_controlled_hero()
-    if hero == null || hero.isDelayed
-      return
-    let fmw = hero |> as_fmw()
-    if fmw == null
-      return
-
-    let scanElevationWidth = get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()
-    let ownAltitude = hero.pos.y
-    let distance = get_radar_hud_cue_distance() * get_radar_hud_distance_max() * 1000.
-    let tangage = deg_to_rad(fmw.tangage)
-    let hmin = (ownAltitude + distance * sin(get_radar_hud_scan_elevation_min() + tangage)) * metrToThsFeet
-    let hmax = (ownAltitude + distance * sin(get_radar_hud_scan_elevation_max() + tangage)) * metrToThsFeet
-
+  var hmin = 0.0
+  var hmax = 0.0
+  if data.cueHeights && Radar`getCueHeights(hmin, hmax)
+    hmin *= metrToThsFeet
+    hmax *= metrToThsFeet
     let hmaxText = fmt(":d", roundi(hmax))
     let hminText = fmt(":d", roundi(hmin))
     var fctx : StdGuiFontContext
@@ -1151,9 +1159,7 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   let strBoxVel = get_str_bbox(textVel, textVel |> length(), fctx)
   rightOffset = max(strBoxVel.width.x, strBox90.width.x)
 
-  let nameId = get_radar_hud_mode_name_id()
-  let defaultStr = get_radar_hud_is_visible() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-  let modeName = loc(nameId >= 0 && nameId < radarModeNames |> length() ? radarModeNames[nameId] : defaultStr)
+  let modeName = Radar`getModeNameLoc()
   let strBoxMode = get_str_bbox(modeName, modeName |> length(), fctx)
   topOffset = strBoxMode.width.y + ctx |> hdpx(4.)
 
@@ -1290,9 +1296,7 @@ def c_scope_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; s
       let strBoxVel = get_str_bbox(textVel, textVel |> length(), fctx)
       topOffset = max(topOffset, strBoxVel.width.y)
 
-    let nameId = get_radar_hud_mode_name_id()
-    let defaultStr = get_radar_hud_is_visible() ? (get_radar_hud_is_irst() ? "hud/irst" : "hud/radarEmitting") : ""
-    let modeName = loc(nameId >= 0 && nameId < radarModeNames |> length() ? radarModeNames[nameId] : defaultStr)
+    let modeName = Radar`getModeNameLoc()
     let strBoxMode = get_str_bbox(modeName, modeName |> length(), fctx)
     topOffset = max(strBoxMode.width.y, topOffset)
 

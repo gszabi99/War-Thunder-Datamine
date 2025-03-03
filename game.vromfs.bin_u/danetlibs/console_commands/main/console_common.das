@@ -98,15 +98,8 @@ def find_console_hint_entities(str : string;
 
 
 def build_entity_hint_desc(entity : FindConsoleHintEntityResult)
-  var desc = build_string() <| $(var str)
-    let templateName = getEntityTemplateName(entity.eid)
-    str |> write(templateName)
-    if entity.pos != float3(VERY_BIG_NUMBER)
-      format(str, " [pos=%.2f,", entity.pos.x)
-      format(str, " %.2f,", entity.pos.y)
-      format(str, " %.2f]", entity.pos.z)
-      format(str, " [dist=%.2fm]", sqrt(entity.camDistanceSq))
-  return <- desc
+  let templateName = getEntityTemplateName(entity.eid)
+  return "{templateName} [pos={entity.pos.x:.2f}, {entity.pos.y:.2f}, {entity.pos.z:.2f}] [dist={sqrt(entity.camDistanceSq):.2f}m]"
 
 
 def build_command_up_to_argument(inputs : array<string>;

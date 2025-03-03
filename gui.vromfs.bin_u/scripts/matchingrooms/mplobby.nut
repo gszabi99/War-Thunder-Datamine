@@ -7,7 +7,7 @@ let events = getGlobalModule("events")
 let { g_team } = require("%scripts/teams.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
+let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
 let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
@@ -34,7 +34,6 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { fill_gamer_card } = require("%scripts/gamercard.nut")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { getRoomEvent, getRoomSpecialRules, getSessionLobbyLockedCountryData, getRoomMGameMode,
   getRoomMaxDisbalance, canChangeTeamInLobby, canBeSpectator, getLobbyRandomTeam, getRoomActiveTimers,
@@ -44,7 +43,6 @@ let { getRoomMembersReadyStatus } = require("%scripts/matchingRooms/sessionLobby
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { updateTeamCssLabel } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { updateVehicleInfoButton } = require("%scripts/vehiclesWindow.nut")
-
 let { setMyTeamInRoom, setSessionLobbyReady, switchMyTeamInRoom, switchSpectator, leaveSessionRoom,
   tryJoinSession, startSession
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
@@ -54,21 +52,6 @@ function getLobbyChatRoomId() {
   return g_chat_room_type.MP_LOBBY.getRoomId(getSessionLobbyRoomId())
 }
 
-::session_player_rmenu <- function session_player_rmenu(handler, player, chatLog = null, position = null, orientation = null) {
-  if (!player || player.isBot || !("userId" in player) || !isLoggedIn.get())
-    return
-
-  playerContextMenu.showMenu(null, handler, {
-    playerName = player.name
-    uid = player.userId.tostring()
-    clanTag = player.clanTag
-    position = position
-    orientation = orientation
-    chatLog = chatLog
-    isMPLobby = true
-    canComplain = true
-  })
-}
 
 gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/mpLobby/mpLobby.blk"
@@ -476,12 +459,12 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUserRClick(player) {
-    ::session_player_rmenu(this, player, this.getChatLog())
+    showSessionPlayerRClickMenu(this, player, this.getChatLog())
   }
 
   function onUserOption(_obj) {
     let pos = this.playersListWidgetWeak && this.playersListWidgetWeak.getSelectedRowPos()
-    ::session_player_rmenu(this, this.getSelectedPlayer(), this.getChatLog(), pos)
+    showSessionPlayerRClickMenu(this, this.getSelectedPlayer(), this.getChatLog(), pos)
   }
 
   function onSessionSettings() {

@@ -2235,13 +2235,13 @@
   },
   "cockpit": {
     "headPos": [
-      5.945,
-      1.615,
+      4.685,
+      1.145,
       0.0
     ],
     "headPosOnShooting": [
-      6.045,
-      1.615,
+      4.785,
+      1.145,
       0.0
     ],
     "hasAirCannonIlsMode": true,
@@ -2251,19 +2251,19 @@
     "sightFov": 2.0,
     "mirror": true,
     "mirrorPos": [
-      6.39,
-      1.591,
+      5.055,
+      1.145,
       0.0
     ],
     "mirrorNorm": [
       -1.0,
-      0.05,
+      0.0,
       0.0
     ],
     "mirrorNode": [
-      "blister5",
-      "blister6",
-      "blister7"
+      "blister8",
+      "blister9",
+      "blister10"
     ],
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
@@ -2336,6 +2336,10 @@
         -1.0,
         1.0
       ],
+      "pedals5": [
+        -1.0,
+        1.0
+      ],
       "throttle": [
         0.0,
         1.0
@@ -2370,19 +2374,11 @@
         0.0,
         514.444
       ],
-      "speed_01": [
-        0.0,
-        514.444
-      ],
       "mach": [
         0.6,
         3.0
       ],
       "compass": [
-        0.0,
-        360.0
-      ],
-      "compass1": [
         0.0,
         360.0
       ],
@@ -2410,29 +2406,9 @@
         0.0,
         100000.0
       ],
-      "altitude1_min": [
-        0.0,
-        1000.0
-      ],
-      "altitude2_10k": [
-        0.0,
-        100000.0
-      ],
-      "altitude2_hour": [
-        0.0,
-        10000.0
-      ],
-      "altitude2_min": [
-        0.0,
-        1000.0
-      ],
-      "altitude3_min": [
-        0.0,
-        1000.0
-      ],
       "radio_altitude": [
         0.0,
-        1000.0
+        10000.0
       ],
       "altitude_koef": 3.28,
       "bank": [
@@ -2444,24 +2420,28 @@
         0.23562
       ],
       "aviahorizon_pitch": [
-        -80.0,
-        80.0
+        -90.0,
+        90.0
       ],
       "aviahorizon_roll": [
-        -180.0,
-        180.0
-      ],
-      "aviahorizon_pitch1": [
-        -80.0,
-        80.0
-      ],
-      "aviahorizon_roll1": [
         -180.0,
         180.0
       ],
       "aoa": [
         -5.0,
         35.0
+      ],
+      "aoa_indexer1": [
+        14.0,
+        17.0
+      ],
+      "aoa_indexer2": [
+        11.0,
+        14.0
+      ],
+      "aoa_indexer3": [
+        9.0,
+        11.0
       ],
       "clock_hour": [
         0.0,
@@ -2477,27 +2457,11 @@
       ],
       "rpm": [
         0.0,
-        13200.0
-      ],
-      "rpm_hour": [
-        0.0,
-        13200.0
-      ],
-      "rpm_min": [
-        0.0,
-        1000.0
+        13350.0
       ],
       "rpm1": [
         0.0,
-        13200.0
-      ],
-      "rpm1_hour": [
-        0.0,
-        13200.0
-      ],
-      "rpm1_min": [
-        0.0,
-        1000.0
+        13350.0
       ],
       "oil_pressure": [
         0.0,
@@ -2508,12 +2472,12 @@
         120.0
       ],
       "water_temperature": [
-        200.0,
-        1400.0
+        0.0,
+        1000.0
       ],
       "water_temperature1": [
-        200.0,
-        1400.0
+        0.0,
+        1000.0
       ],
       "fuel_pressure": [
         0.0,
@@ -2532,19 +2496,7 @@
         5443.0
       ],
       "weapon_lock_lamp_flags1": 6,
-      "weapon_lock_lamp_flags2": 8,
-      "ammo_counter1": [
-        0.0,
-        1000.0
-      ],
-      "ammo_counter2": [
-        0.0,
-        100.0
-      ],
-      "ammo_counter3": [
-        0.0,
-        10.0
-      ]
+      "weapon_lock_lamp_flags2": 8
     },
     "rwr": {
       "type": "rwr",
@@ -3308,11 +3260,7 @@
             0.5,
             0.5
           ],
-          "monoDisplayColor": [
-            0.37,
-            0.5,
-            0.4
-          ],
+          "cameraFromShell": true,
           "page": [
             {
               "type": "thermal",
@@ -3380,6 +3328,149 @@
         {
           "textureArea": [
             0.5,
+            0.0,
+            1.0,
+            0.5
+          ],
+          "cameraFromTargetingPod": true,
+          "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
+              "type": "radar",
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
+            },
+            {
+              "type": "map"
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
+            1.0
+          ],
+          "page": [
+            {
+              "type": "map"
+            },
+            {
+              "type": "radar",
+              "font": "usa_ils",
+              "scale": 0.9,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "targetForm": "square",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "netRowCnt": 4,
+              "netColor": [
+                0,
+                255,
+                7
+              ],
+              "hideWeaponIndication": true,
+              "centerRadar": true,
+              "showCueHeights": true
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.5,
             0.5,
             1.0,
             1.0
@@ -3408,8 +3499,8 @@
           "page": {
             "type": "plane_ils",
             "ilsSize": [
-              0.22,
-              0.22
+              0.3,
+              0.3
             ],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
@@ -3646,7 +3737,7 @@
               "flash": "flare1",
               "dm": "cannon1_dm",
               "rotationAnimScale": "gun_rotate_01:CRS",
-              "bullets": 940,
+              "bullets": 578,
               "spread": 1.0,
               "counterIndex": [
                 1,
@@ -3680,7 +3771,7 @@
         "tier": 10,
         "order": 1,
         "WeaponPreset": {
-          "iconType": "missile_type_f_air_to_air",
+          "iconType": "missile_type_b_air_to_air",
           "name": "aim_9l_default",
           "ShowNodes": {
             "node": "lau_7_1"
@@ -4483,7 +4574,7 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/us_lau_115a_aim7f.blk",
-              "emitter": "lau_115a_3",
+              "emitter": "lau_115a_4",
               "external": true,
               "separate": true
             }
@@ -4498,7 +4589,7 @@
             "Weapon": {
               "trigger": "aam",
               "blk": "gameData/Weapons/containers/us_lau_115a_aim7m.blk",
-              "emitter": "lau_115a_3",
+              "emitter": "lau_115a_4",
               "external": true,
               "separate": true
             }
@@ -4992,7 +5083,7 @@
         "tier": 2,
         "order": 2,
         "WeaponPreset": {
-          "iconType": "missile_type_f_air_to_air",
+          "iconType": "missile_type_b_air_to_air",
           "name": "aim_9l_default",
           "ShowNodes": {
             "node": "lau_7_2"

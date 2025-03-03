@@ -127,7 +127,7 @@ function getMedalsStats(playerStats) {
 
   local gained = 0
   foreach (medal in allMedals)
-    if (isUnlockOpened(medal.id, UNLOCKABLE_MEDAL))
+    if (medal?.country != null && isUnlockOpened(medal.id, UNLOCKABLE_MEDAL))
       gained++
 
   return {totalCount = allMedals.len(), gained}
@@ -145,7 +145,7 @@ function getMedalsForSelect(playerStats, terseInfo) {
 
   let allMedals = getUnlocksByTypeInBlkOrder("medal")
   foreach (medal in allMedals)
-    if (!terseInfo.showcase?.medals.contains(medal.id) && isUnlockOpened(medal.id, UNLOCKABLE_MEDAL))
+    if (medal?.country != null && !terseInfo.showcase?.medals.contains(medal.id) && isUnlockOpened(medal.id, UNLOCKABLE_MEDAL))
       medalsData.append(createMedalViewItem(medal.id))
 
   return medalsData

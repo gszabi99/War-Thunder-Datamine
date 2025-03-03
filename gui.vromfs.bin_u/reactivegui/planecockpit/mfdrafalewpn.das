@@ -261,6 +261,7 @@ class Component : Canvas
       get_selected_secondary_weapon(fmw) <| $(var weapon : Weapon?#)
         let shellProps = weapon?.prop?.shellProps
         currWeaponName = (shellProps != null) ? get_weapon_name(*shellProps) : ""
+        currWeaponName = replace(currWeaponName, "_default", "")
 
       let currAmmo = slots.currAmmo[i]
       let maxAmmo = slots.maxAmmo[i]

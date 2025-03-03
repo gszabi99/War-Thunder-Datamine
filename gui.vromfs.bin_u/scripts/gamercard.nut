@@ -27,6 +27,7 @@ let { getUnseenCandidatesCount } = require("%scripts/clans/clanCandidates.nut")
 let { check_new_user_logs } = require("%scripts/userLog/userlogUtils.nut")
 let { updateShortQueueInfo } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
 let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
+let { invitesAmount } = require("%scripts/invites/invitesState.nut")
 
 let lastGamercardScenes = persist("lastGamercardScenes", @() [])
 
@@ -85,7 +86,7 @@ function updateGcButton(obj, isNew, tooltip = null) {
 }
 
 function updateGcInvites(scene) {
-  let haveNew = ::g_invites.getNewInvitesAmount() > 0
+  let haveNew = invitesAmount.get() > 0
   updateGcButton(scene.findObject("gc_invites_btn"), haveNew)
 }
 

@@ -223,8 +223,8 @@ def format_scale(flags : uint8; tm : float3x4)
   if (uint(flags) & uint(CollisionNodeFlag ORTHONORMALIZED)) != 0u
     return "orthonormalized"
   if (uint(flags) & uint(CollisionNodeFlag ORTHOUNIFORM)) != 0u
-    return "orthouniform" + format(" (scale %.1f)", length(tm[0]))
-  return format("scaled: %f | ", length(tm[0])) + format("%f | ", length(tm[1])) + format("%f", length(tm[2]))
+    return "orthouniform (scale {length(tm[0]):.1f})"
+  return "scaled: {length(tm[0]):.3f} | {length(tm[1]):.3f} | {length(tm[2]):.3f}"
 
 def format_scale(tm : float3x4)
   var flags = uint8(0)
@@ -260,7 +260,7 @@ def get_grid_info(collres : CollisionResource; flag : uint8)
   var width : int3
   var leafSize : float3
   if collres |> collres_getGridSize(flag, width, leafSize)
-    return "{width.x}x{width.y}x{width.z} leaf " + format("%.2f", max(leafSize.x, max(leafSize.y, leafSize.z)))
+    return "{width.x}x{width.y}x{width.z} leaf {max(leafSize.x, max(leafSize.y, leafSize.z)):.2f}"
   return "no"
 
 def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animchar : AnimcharBaseComponent const?;
@@ -349,8 +349,7 @@ def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animch
   if geomCnt != 0
     nodesText += "; geom_attached: {geomCnt}"
   add_debug_text_mark(markPos, name, -1, 0.0, E3DCOLOR(0xFF8FFF8F))
-  let bsphRadText = format("%.3f", collres.boundingSphereRad)
-  add_debug_text_mark(markPos, format("dist %.2fm;", dist) + " bsph_rad: {bsphRadText}; node_mat: {node.physMatId} ({get_material_name(get_material(int(node.physMatId)))}); tm " + format_scale(transform), -1, 1.2, E3DCOLOR(0xFF8FFF8F))
+  add_debug_text_mark(markPos, "dist {dist:.2f}m; bsph_rad: {collres.boundingSphereRad:.3f}; node_mat: {node.physMatId} ({get_material_name(get_material(int(node.physMatId)))}); tm " + format_scale(transform), -1, 1.2, E3DCOLOR(0xFF8FFF8F))
   add_debug_text_mark(markPos, "Selected " + get_node_info(node), -1, 2.4, E3DCOLOR(0xFF8FFF8F))
   add_debug_text_mark(markPos, nodesText, -1, 3.6, E3DCOLOR(0xFF8FFF8F))
   if noteType != 0

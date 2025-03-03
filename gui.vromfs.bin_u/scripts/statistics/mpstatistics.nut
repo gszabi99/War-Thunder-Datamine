@@ -44,6 +44,7 @@ let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { get_option_in_mode } = require("%scripts/options/optionsExt.nut")
+let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 
 const OVERRIDE_COUNTRY_ID = "override_country"
 
@@ -720,7 +721,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
 
   function onUserRClick(obj) {
     this.onStatsTblSelect(obj)
-    ::session_player_rmenu(this, this.getSelectedPlayer(), this.getChatLog())
+    showSessionPlayerRClickMenu(this, this.getSelectedPlayer(), this.getChatLog())
   }
 
   function onUserOptions(_obj) {
@@ -731,7 +732,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     this.onStatsTblSelect(selectedTableObj)
     let selectedPlayer = this.getSelectedPlayer()
     let orientation = selectedTableObj.id == "table_kills_team1" ? RCLICK_MENU_ORIENT.RIGHT : RCLICK_MENU_ORIENT.LEFT
-    ::session_player_rmenu(this, selectedPlayer, this.getChatLog(), this.getSelectedRowPos(selectedTableObj, orientation), orientation)
+    showSessionPlayerRClickMenu(this, selectedPlayer, this.getChatLog(), this.getSelectedRowPos(selectedTableObj, orientation), orientation)
   }
 
   function getSelectedRowPos(selectedTableObj, orientation) {

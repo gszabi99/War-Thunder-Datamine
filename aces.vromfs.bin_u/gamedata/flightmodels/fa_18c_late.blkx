@@ -17,6 +17,7 @@
   "ilsF18": true,
   "rwrIndicator": "TEWS",
   "mfdCamTads": true,
+  "hmdF16c": true,
   "isBwOpticSight": true,
   "needTpsNightVision": true,
   "hasHelmetDesignator": true,
@@ -2261,6 +2262,17 @@
     }
   },
   "cockpit": {
+    "mfdTextureSize": [
+      2048,
+      1024
+    ],
+    "targetingPodFov": [
+      18.0,
+      1.5
+    ],
+    "sightInFov": 1.5,
+    "sightOutFov": 18.0,
+    "sightFov": 1.0,
     "headPos": [
       4.685,
       1.145,
@@ -2273,9 +2285,6 @@
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
-    "sightInFov": 5.5,
-    "sightOutFov": 5.5,
-    "sightFov": 2.0,
     "mirror": true,
     "mirrorPos": [
       5.055,
@@ -2295,49 +2304,38 @@
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
     "lightPos": [
-      6.592,
-      1.135,
+      5.142481,
+      0.794,
       0.0
     ],
     "lightColor": [
       0.1,
-      1.31,
-      0.2
+      0.61,
+      0.05
     ],
-    "lightRadius": 0.45,
+    "lightRadius": 0.32,
     "lightPos1": [
-      6.452,
-      1.48,
-      0.0
+      5.102,
+      0.636,
+      0.346
     ],
     "lightColor1": [
       0.1,
-      1.31,
-      0.2
+      0.61,
+      0.05
     ],
     "lightRadius1": 0.2,
     "lightPos2": [
-      6.11,
-      0.895,
-      0.4
+      5.094,
+      0.649,
+      -0.359
     ],
     "lightColor2": [
       0.1,
-      1.31,
-      0.2
+      0.61,
+      0.05
     ],
-    "lightRadius2": 0.45,
-    "lightPos3": [
-      6.11,
-      0.895,
-      -0.4
-    ],
-    "lightColor3": [
-      0.1,
-      1.31,
-      0.2
-    ],
-    "lightRadius3": 0.45,
+    "lightRadius2": 0.2,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -3299,53 +3297,9 @@
             },
             {
               "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
+              "customRadar": "fa18cRadarATTK",
+              "scale": 0.95,
+              "fontSize": 20
             },
             {
               "type": "map"
@@ -3371,53 +3325,9 @@
             },
             {
               "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
+              "customRadar": "fa18cRadarATTK",
+              "scale": 0.95,
+              "fontSize": 20
             },
             {
               "type": "map"
@@ -3437,53 +3347,9 @@
             },
             {
               "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
+              "customRadar": "fa18cRadarATTK",
+              "scale": 0.95,
+              "fontSize": 20
             },
             {
               "type": "thermal",
@@ -3497,7 +3363,7 @@
         },
         {
           "textureArea": [
-            0.25,
+            0.0,
             0.5,
             0.5,
             1.0
@@ -4086,7 +3952,7 @@
               "flash": "flare1",
               "dm": "cannon1_dm",
               "rotationAnimScale": "gun_rotate_01:CRS",
-              "bullets": 940,
+              "bullets": 578,
               "spread": 1.0,
               "counterIndex": [
                 1,
@@ -5798,7 +5664,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_31_slot7",
-            "reqModification": "us_gbu_laser",
+            "reqModification": "us_gbu_32_31",
             "ShowNodes": {
               "node": "pylon3"
             },
@@ -6314,7 +6180,7 @@
           {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_31_slot8",
-            "reqModification": "us_gbu_laser",
+            "reqModification": "us_gbu_32_31",
             "ShowNodes": {
               "node": "pylon4"
             },

@@ -13,12 +13,25 @@ tdiv {
       <<#weaponsList>>
       tdiv {
         padding:t='0, 1/2@bulletTooltipPadding'
-        activeText { text:t='<<weaponTitle>>'; smallFont:t='yes' }
-        textareaNoTab {
-          text:t='<<ammo>>';
-          smallFont:t='yes'
-          overlayTextColor:t='minor';
+        <<#turretName>>
+        activeText { text:t='<<turretName>>'; smallFont:t='yes' }
+        <</turretName>>
+        tdiv {
+          flow:t='vertical'
+          <<#turretName>>
           margin-left:t='1/2@bulletTooltipPadding'
+          <</turretName>>
+          <<#titlesAndAmmo>>
+          tdiv {
+            activeText { text:t='<<weaponTitle>>'; smallFont:t='yes' }
+            textareaNoTab {
+              text:t='<<ammo>>';
+              smallFont:t='yes'
+              overlayTextColor:t='minor';
+              margin-left:t='1/2@bulletTooltipPadding'
+            }
+          }
+          <</titlesAndAmmo>>
         }
       }
       <</weaponsList>>
