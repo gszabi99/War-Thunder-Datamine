@@ -1,19 +1,21 @@
 {
   "type": "mlws",
   "name": "ARI 23348/1",
-  "range": 3500.0,
-  "band0": true,
-  "band1": true,
-  "band2": true,
+  "targetSignatureType": "radar",
+  "rcs": 1.0,
+  "range": 12000.0,
   "matchSector": 10.0,
   "signalHoldTime": 2.0,
-  "closureRateMin": 0.0,
+  "closureRateMin": 100.0,
+  "targetClosureRateMin": 200.0,
   "angularRateMax": 30.0,
+  "targetRangeFinder": true,
+  "targetRange": [
+    100.0,
+    10000.0
+  ],
   "signalSfxName": "alarm_launch_detected",
-  "automaticFlares": true,
-  "flaresSeriesInterval": 1.0,
-  "numFlares": 4,
-  "flaresInterval": 0.1,
+  "threatFlag": "MLWS MISSILE",
   "receivers": {
     "receiver": {
       "azimuth": -180.0,

@@ -3631,6 +3631,142 @@
       }
     ]
   },
+  "countermeasure": {
+    "sensorsFusion": true,
+    "matchAngleByTimeDiff": [
+      0.0,
+      2.0,
+      3.0,
+      10.0
+    ],
+    "threatsTimeDiffMax": 3.0,
+    "threatId": [
+      {
+        "name": "SACLOS MISSILE",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR SACLOS LAUNCH"
+        ]
+      },
+      {
+        "name": "SACLOS MISSILE + RADAR TRACK",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR SACLOS LAUNCH",
+          "RWR TRACK"
+        ]
+      },
+      {
+        "name": "SARH MISSILE",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR SARH LAUNCH"
+        ]
+      },
+      {
+        "name": "SARH MISSILE + RADAR TRACK",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR SARH LAUNCH",
+          "RWR TRACK"
+        ]
+      },
+      {
+        "name": "ARH MISSILE",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR ARH LAUNCH",
+          "RWR TRACK"
+        ]
+      },
+      {
+        "name": "IR MISSILE + RADAR TRACK",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR TRACK"
+        ]
+      },
+      {
+        "name": "IR MISSILE",
+        "threatFlag": "MLWS MISSILE"
+      },
+      {
+        "name": "SARH OR IR MISSILE",
+        "threatFlag": [
+          "MLWS MISSILE",
+          "RWR SARH/IR LAUNCH"
+        ]
+      }
+    ],
+    "program": [
+      {
+        "threatIdCnf": {
+          "threatId": "SACLOS MISSILE"
+        }
+      },
+      {
+        "flare": true,
+        "chaff": true,
+        "seriesSize": 2,
+        "seriesInterval": 1.0,
+        "interval": 0.1,
+        "threatIdCnf": [
+          {
+            "threatId": [
+              "SACLOS MISSILE + RADAR TRACK",
+              "SARH MISSILE",
+              "SARH MISSILE + RADAR TRACK",
+              "ARH MISSILE"
+            ]
+          },
+          {
+            "threatId": [
+              "IR MISSILE + RADAR TRACK",
+              "IR MISSILE"
+            ]
+          }
+        ]
+      },
+      {
+        "flare": false,
+        "chaff": true,
+        "seriesSize": 1,
+        "seriesInterval": 1.0,
+        "interval": 0.1,
+        "threatIdCnf": {
+          "threatId": [
+            "SACLOS MISSILE + RADAR TRACK",
+            "SARH MISSILE",
+            "SARH MISSILE + RADAR TRACK",
+            "ARH MISSILE"
+          ]
+        }
+      },
+      {
+        "flare": true,
+        "chaff": false,
+        "seriesSize": 4,
+        "seriesInterval": 1.0,
+        "interval": 0.1,
+        "threatIdCnf": {
+          "threatId": [
+            "IR MISSILE + RADAR TRACK",
+            "IR MISSILE"
+          ]
+        }
+      },
+      {
+        "flare": true,
+        "chaff": true,
+        "seriesSize": 4,
+        "seriesInterval": 1.0,
+        "interval": 0.1,
+        "threatIdCnf": {
+          "threatId": "SARH OR IR MISSILE"
+        }
+      }
+    ]
+  },
   "propellers": {
     "prop0": -1,
     "prop1": -1,

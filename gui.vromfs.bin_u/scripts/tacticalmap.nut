@@ -118,15 +118,21 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
       showObjById("btn_select", this.isActiveTactical, this.scene)
       showObjById("btn_back", true, this.scene)
       showObjById("screen_button_back", useTouchscreen, this.scene)
-      let isAircraft = this.isCurUnitAircraft()
-      let buttonsBlockObj =  showObjById("buttons_block", showConsoleButtons.get(), this.scene)
-      let pcHintsBlockObj = showObjById("pc_hints_block", !showConsoleButtons.get(), this.scene)
-      showObjById("btn_set_hud_type", !isAircraft, showConsoleButtons.get() ? buttonsBlockObj : pcHintsBlockObj )
-      showObjById("btn_set_point_of_interest", isAircraft && hasSightStabilization(),showConsoleButtons.get() ? buttonsBlockObj : pcHintsBlockObj )
-      showObjById("hint_set_point_of_interest", isAircraft && hasSightStabilization(), this.scene )
 
-      let buttonImg = this.scene.findObject("hud_type_img");
-      buttonImg["background-image"] = isAircraft ? "#ui/gameuiskin#objective_tank.svg" : "#ui/gameuiskin#objective_fighter.svg"
+      showObjById("hint_btn_move_map", !showConsoleButtons.get(), this.scene)
+      let isAircraft = this.isCurUnitAircraft()
+      let isShowPOiButton = isAircraft && hasSightStabilization()
+      let setPointOfInterestObj = showObjById("btn_set_point_of_interest", isShowPOiButton, this.scene)
+      if (isShowPOiButton)
+        showObjById("hint_btn_set_point_of_interest", !showConsoleButtons.get(), setPointOfInterestObj)
+
+      let isShowSetHudTypeBtn = !isAircraft
+      let setHudTypeObj = showObjById("btn_set_hud_type", isShowSetHudTypeBtn, this.scene)
+      if (isShowSetHudTypeBtn) {
+        let buttonImg = setHudTypeObj.findObject("hud_type_img")
+        buttonImg["background-image"] = isAircraft ? "#ui/gameuiskin#objective_tank.svg" : "#ui/gameuiskin#objective_fighter.svg"
+        showObjById("hint_btn_set_hud_type", !showConsoleButtons.get(), setHudTypeObj)
+      }
 
       setAllowMoveCenter(false)
       this.resetPointOfInterestMode()

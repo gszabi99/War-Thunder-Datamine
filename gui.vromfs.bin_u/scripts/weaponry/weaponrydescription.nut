@@ -169,10 +169,13 @@ function makeWeaponInfoData(unit, p = WEAPON_TEXT_PARAMS) {
 }
 
 function getWeaponInfoText(unit, weaponInfoData) {
-  let { resultWeaponBlocks = null, weapons = null, weapTypeCount, gunNames,
-    isShortDesc = false, p } = weaponInfoData
-
   local text = ""
+  unit = type(unit) == "string" ? getAircraftByName(unit) : unit
+  if (!unit)
+    return text
+
+  let { resultWeaponBlocks = null, weapons = null, weapTypeCount = {}, gunNames = {},
+    isShortDesc = false, p } = weaponInfoData
   if (resultWeaponBlocks == null || weapons == null)
     return text
 
@@ -253,25 +256,27 @@ function getWeaponInfoText(unit, weaponInfoData) {
       if ((weapTypeCount?[weaponType] ?? 0) == 0 && gunNames.len() == 0)
         continue
 
-      text = text != "" ? "".concat(text, p.newLine) : ""
       if (isShortDesc) {
         if ((weapTypeCount?[weaponType] ?? 0) > 0) { //Turrets
+          text = text != "" ? "".concat(text, p.newLine) : ""
           text = "".concat(text, loc($"weapons_types/{weaponType}"), nbsp,
             format(loc("weapons/counter/right/short"), weapTypeCount[weaponType]))
           weapTypeCount.rawdelete(weaponType)
-        }
-        if (gunNames.len() > 0) { //Guns
-          let gunsTxt = []
-          foreach (name, count in gunNames)
-            gunsTxt.append("".concat(loc($"weapons/{name}"), count > 1
-              ? $"{nbsp}{format(loc("weapons/counter/right/short"), count)}" : ""))
-          text = $"{text}{(loc("ui/comma")).join(gunsTxt)}"
         }
       }
       else
         text = "".concat(text, loc($"weapons_types/{weaponType}"),
           format(loc("weapons/counter"), weapTypeCount[weaponType]))
     }
+  }
+
+  if (isShortDesc && gunNames.len() > 0) { //Guns
+    text = text != "" ? "".concat(text, p.newLine) : ""
+    let gunsTxt = []
+    foreach (name, count in gunNames)
+      gunsTxt.append("".concat(loc($"weapons/{name}"), count > 1
+        ? $"{nbsp}{format(loc("weapons/counter/right/short"), count)}" : ""))
+    text = $"{text}{(loc("ui/comma")).join(gunsTxt)}"
   }
 
   if (text == "" && p.needTextWhenNoWeapons)

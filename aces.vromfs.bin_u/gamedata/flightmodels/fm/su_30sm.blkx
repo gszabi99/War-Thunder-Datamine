@@ -307,7 +307,7 @@
         ],
         "AoaShiftAdd3": [
           10.0,
-          -0.02
+          -0.012
         ],
         "AoaShiftAdd4": [
           50.0,
@@ -406,9 +406,9 @@
           0.12
         ],
         "Cl0": 0.03,
-        "alphaCritHigh": 30.0,
+        "alphaCritHigh": 32.0,
         "alphaCritLow": -20.0,
-        "ClCritHigh": 1.35,
+        "ClCritHigh": 1.41,
         "ClCritLow": -0.7,
         "CdMin": 0.0071
       },
@@ -500,9 +500,9 @@
           0.12
         ],
         "Cl0": 0.28,
-        "alphaCritHigh": 29.0,
+        "alphaCritHigh": 30.0,
         "alphaCritLow": -22.0,
-        "ClCritHigh": 1.5,
+        "ClCritHigh": 1.57,
         "ClCritLow": -0.45,
         "CdMin": 0.04
       },
@@ -751,13 +751,20 @@
         1.0
       ],
       "AnglesPitch": [
-        0.0,
-        0.0
+        -5.0,
+        -5.0
       ],
-      "AnglesMultiplierPitch": [
+      "AnglesMultiplierPitch0": [
+        500.0,
         1.0,
         0.0,
         1.0
+      ],
+      "AnglesMultiplierPitch1": [
+        700.0,
+        0.0,
+        0.0,
+        0.0
       ],
       "AnglesYaw": [
         0.0,
@@ -1625,31 +1632,31 @@
       "ThrustMax": 2147440000.0,
       "TipPosition": false,
       "AileronsToThrustDeflection0": [
-        600.0,
+        550.0,
         -8.0,
         0.0,
         8.0
       ],
       "AileronsToThrustDeflection1": [
         950.0,
-        -3.0,
+        -1.0,
         0.0,
-        3.0
+        1.0
       ],
       "ElevatorToThrustDeflection0": [
-        600.0,
+        550.0,
         12.0,
         0.0,
         -12.0
       ],
       "ElevatorToThrustDeflection1": [
         950.0,
-        3.0,
+        1.0,
         0.0,
-        -3.0
+        -1.0
       ],
       "RudderToThrustDeflection0": [
-        600.0,
+        550.0,
         -4.0,
         0.0,
         4.0
@@ -1669,24 +1676,24 @@
         0.0
       ],
       "AileronsToThrust": [
+        -0.02,
         0.0,
-        0.0,
-        0.0
+        -0.02
       ],
       "ElevatorToThrust": [
+        -0.03,
         0.0,
-        0.0,
-        0.0
+        -0.03
       ],
       "RudderToThrust0": [
         600.0,
         -0.06,
         0.0,
-        0.06
+        0.0
       ],
       "RudderToThrust1": [
         900.0,
-        -0.0,
+        0.0,
         0.0,
         0.0
       ],
@@ -1749,7 +1756,7 @@
       "ThrustMax": 2147440000.0,
       "TipPosition": false,
       "AileronsToThrustDeflection0": [
-        600.0,
+        550.0,
         8.0,
         0.0,
         -8.0
@@ -1761,7 +1768,7 @@
         -3.0
       ],
       "ElevatorToThrustDeflection0": [
-        600.0,
+        550.0,
         12.0,
         0.0,
         -12.0
@@ -1773,7 +1780,7 @@
         -3.0
       ],
       "RudderToThrustDeflection0": [
-        600.0,
+        550.0,
         4.0,
         0.0,
         -4.0
@@ -1793,18 +1800,18 @@
         0.0
       ],
       "AileronsToThrust": [
+        -0.02,
         0.0,
-        0.0,
-        0.0
+        -0.02
       ],
       "ElevatorToThrust": [
+        -0.03,
         0.0,
-        0.0,
-        0.0
+        -0.03
       ],
       "RudderToThrust0": [
         600.0,
-        0.06,
+        0.0,
         0.0,
         -0.06
       ],
@@ -1812,7 +1819,7 @@
         900.0,
         0.0,
         0.0,
-        -0.0
+        0.0
       ],
       "AirbrakeToThrust": [
         0.0,
@@ -1851,8 +1858,8 @@
     }
   },
   "Mass": {
-    "EmptyMass": 18400.0,
-    "MaxFuelMass0": 9600.0,
+    "EmptyMass": 18830.0,
+    "MaxFuelMass0": 9400.0,
     "FuelAccumulatorCapacity0": 120.0,
     "MinimalLoadFactor0": -0.3,
     "FuelAccumulatorFlowRate0": 32.0,
@@ -1862,7 +1869,7 @@
     "AdvancedMass": false,
     "doesPayloadAffectCOG": false,
     "SeparateFuelTanks": true,
-    "Takeoff": 95750.0,
+    "Takeoff": 195750.0,
     "CenterOfGravity": [
       -0.2,
       -0.2,
@@ -1903,11 +1910,11 @@
       "tank6_system": 0,
       "tank6_external": false,
       "tank6_priority": 4,
-      "tank7_capacity": 100.0,
+      "tank7_capacity": 0.0,
       "tank7_system": 0,
       "tank7_external": false,
       "tank7_priority": 1,
-      "tank8_capacity": 100.0,
+      "tank8_capacity": 0.0,
       "tank8_system": 0,
       "tank8_external": false,
       "tank8_priority": 1,
@@ -2271,8 +2278,8 @@
   },
   "Instructor": {
     "critMult": [
-      0.8,
-      0.8
+      0.85,
+      0.85
     ],
     "limitOverload": true,
     "overloadMult": [
@@ -2414,8 +2421,8 @@
     "Pitch": {
       "RateMax0": [
         300.0,
-        -80.0,
-        80.0
+        -70.0,
+        70.0
       ],
       "RateMax1": [
         600.0,
@@ -2702,7 +2709,7 @@
       ],
       "OverridenRollLim": 30.0,
       "PitchMax": 15.0,
-      "PitchRateMax": 90.0,
+      "PitchRateMax": 60.0,
       "PitchLim": 0.0,
       "YawHeadingToYawRateMultByIas": [
         0.0,

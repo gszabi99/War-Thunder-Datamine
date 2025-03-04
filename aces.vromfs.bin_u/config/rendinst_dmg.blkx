@@ -1346,6 +1346,22 @@
       "stopsBullets": false
     },
     {
+      "name": "rheinland_obelisk_a_fence_column_a",
+      "destroyedModelName": "rheinland_obelisk_a_fence_column_a_destr_phobj",
+      "destructionImpulse": 200.0,
+      "fx": "ad_dust_stucco",
+      "material": "transparentBeton",
+      "stopsBullets": false
+    },
+    {
+      "name": "rheinland_obelisk_a_fence_wall_a",
+      "destroyedModelName": "rheinland_obelisk_a_fence_wall_a_destr_phobj",
+      "destructionImpulse": 200.0,
+      "fx": "ad_dust_stucco",
+      "material": "transparentBeton",
+      "stopsBullets": false
+    },
+    {
       "name": "africa_village_house_a_dp_01",
       "destructionImpulse": 200000.0,
       "fx": "ad_dust_stucco",
@@ -9678,6 +9694,7 @@
       "destructionImpulse": 40000.0,
       "fx": "ad_dust_bollard",
       "fxScale": 1.0,
+      "isParent": true,
       "material": "transparentCamera"
     },
     {
@@ -31790,7 +31807,7 @@
       "destructionImpulse": 3000.0,
       "bushBehaviour": true,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_tiny",
       "fxScale": 1.0,
       "dmPreset": "bush_props"
     },
@@ -31799,7 +31816,7 @@
       "destructionImpulse": 3000.0,
       "bushBehaviour": true,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_tiny",
       "fxScale": 1.0,
       "dmPreset": "bush_props"
     },
@@ -31808,7 +31825,7 @@
       "destructionImpulse": 3000.0,
       "bushBehaviour": true,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_tiny",
       "fxScale": 1.0,
       "dmPreset": "bush_props"
     },
@@ -31817,7 +31834,7 @@
       "destructionImpulse": 3000.0,
       "bushBehaviour": true,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_tiny",
       "fxScale": 1.0,
       "dmPreset": "bush_props"
     },
@@ -41192,6 +41209,13 @@
       "fx": "ad_car_wreck_small",
       "material": "metal"
     },
+    "kubelwagen_damaged_burned_a": {
+      "physRes": "kubelwagen_damaged_burned_a_destr_phobj",
+      "hp": 10.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "material": "metal"
+    },
     "land_rover_fc_a": {
       "physRes": "land_rover_fc_a_destr_phobj",
       "hp": 20.0,
@@ -41404,6 +41428,13 @@
       "fxScale": 1.0,
       "material": "metal"
     },
+    "opel_blitz_kfz_305_damaged_burned_a": {
+      "physRes": "opel_blitz_kfz_305_damaged_burned_a_destr_phobj",
+      "hp": 20.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "material": "metal"
+    },
     "opel_blitz_omnibus": {
       "physRes": "opel_blitz_omnibus_destr_phobj",
       "hp": 40.0,
@@ -41604,6 +41635,13 @@
     },
     "renault_ahn_abandoned_c": {
       "physRes": "renault_ahn_abandoned_c_destr_phobj",
+      "hp": 20.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "material": "metal"
+    },
+    "renault_ahn_damaged_burned_a": {
+      "physRes": "renault_ahn_damaged_burned_a_destr_phobj",
       "hp": 20.0,
       "dmPreset": "metal_light_explosive_props",
       "fx": "ad_car_wreck_small",
@@ -52258,21 +52296,21 @@
       "destructionImpulse": 5000.0,
       "fxTemplate": "ad_metal_small",
       "fxScale": 1.0,
-      "stopsBullets": false
+      "stopsBullets": true
     },
     "iron_fence_a_column_a": {
       "physRes": "iron_fence_a_column_a_destr_phobj",
       "destructionImpulse": 5000.0,
       "fxTemplate": "ad_metal_small",
       "fxScale": 1.0,
-      "stopsBullets": false
+      "stopsBullets": true
     },
     "iron_fence_a_column_b": {
       "physRes": "iron_fence_a_column_b_destr_phobj",
       "destructionImpulse": 5000.0,
       "fxTemplate": "ad_metal_small",
       "fxScale": 1.0,
-      "stopsBullets": false
+      "stopsBullets": true
     },
     "brick_fence_a": {
       "physRes": "brick_fence_a_destr_phobj",
@@ -52630,45 +52668,59 @@
     },
     "brick_fence_f_stucco_a_120cm_a": {
       "nextRes": "brick_fence_f_stucco_a_120cm_a_dmg",
-      "physRes": "brick_fence_f_stucco_a_120cm_a_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.5,
-      "fx": "ad_dust_stucco"
+      "fx": "ad_dust_stucco",
+      "apexDestructible": true
     },
     "brick_fence_f_stucco_a_220cm_a": {
       "nextRes": "brick_fence_f_stucco_a_220cm_a_dmg",
-      "physRes": "brick_fence_f_stucco_a_220cm_a_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.5,
-      "fx": "ad_dust_stucco"
+      "fx": "ad_dust_stucco",
+      "apexDestructible": true
     },
     "brick_fence_f_stucco_a_420cm_a": {
       "nextRes": "brick_fence_f_stucco_a_420cm_a_dmg",
-      "physRes": "brick_fence_f_stucco_a_420cm_a_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.5,
-      "fx": "ad_dust_stucco"
+      "fx": "ad_dust_stucco",
+      "apexDestructible": true
     },
     "brick_fence_f_stucco_a_420cm_b": {
-      "nextRes": "brick_fence_f_stucco_b_420cm_b_dmg",
-      "physRes": "brick_fence_f_stucco_a_420cm_a_destr_phobj",
+      "nextRes": "brick_fence_f_stucco_a_420cm_b_dmg",
       "hp": 10.0,
       "impulseThreshold": 1.5,
-      "fx": "ad_dust_stucco"
+      "fx": "ad_dust_stucco",
+      "apexDestructible": true
     },
     "brick_fence_f_stucco_a_420cm_broken_a": {
       "nextRes": "brick_fence_f_stucco_a_420cm_a_dmg",
-      "physRes": "brick_fence_f_stucco_a_420cm_a_destr_phobj",
       "hp": 10.0,
       "impulseThreshold": 1.5,
-      "fx": "ad_dust_stucco"
+      "fx": "ad_dust_stucco",
+      "apexDestructible": true
     },
     "brick_fence_f_stucco_a_420cm_broken_b": {
-      "nextRes": "brick_fence_f_stucco_b_420cm_b_dmg",
-      "physRes": "brick_fence_f_stucco_a_420cm_b_destr_phobj",
+      "nextRes": "brick_fence_f_stucco_a_420cm_b_dmg",
       "hp": 10.0,
       "impulseThreshold": 1.5,
-      "fx": "ad_dust_stucco"
+      "fx": "ad_dust_stucco",
+      "apexDestructible": true
+    },
+    "brick_fence_f_stucco_a_column_a": {
+      "nextRes": "brick_fence_f_stucco_a_column_a_dmg",
+      "hp": 10.0,
+      "impulseThreshold": 1.5,
+      "fx": "ad_dust_stucco",
+      "apexDestructible": true
+    },
+    "brick_fence_f_stucco_a_column_b": {
+      "nextRes": "brick_fence_f_stucco_a_column_b_dmg",
+      "hp": 10.0,
+      "impulseThreshold": 1.5,
+      "fx": "ad_dust_stucco",
+      "apexDestructible": true
     },
     "fence_barbedwire_a_column": {
       "nextRes": "fence_barbedwire_a_column_dmg",

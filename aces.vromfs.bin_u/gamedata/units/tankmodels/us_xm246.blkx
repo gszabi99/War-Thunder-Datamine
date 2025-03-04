@@ -50,9 +50,6 @@
   "type": "typeSPAA",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "CHA_tank",
@@ -781,6 +778,37 @@
         "hp": 20.0
       }
     }
+  },
+  "xray_viewer_data": {
+    "armorArrayHullTop": {
+      "xrayDmPart": "composite_armor_hull_01_dm",
+      "titleLoc": "RHA_tank",
+      "armorArrayText": {
+        "layer": {
+          "dmPart": "composite_armor_hull_01_dm"
+        }
+      }
+    },
+    "armorArrayHullFront": [
+      {
+        "xrayDmPart": "composite_armor_hull_02_dm",
+        "titleLoc": "RHA_tank",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_02_dm"
+          }
+        }
+      },
+      {
+        "xrayDmPart": "composite_armor_hull_03_dm",
+        "titleLoc": "RHA_tank",
+        "armorArrayText": {
+          "layer": {
+            "dmPart": "composite_armor_hull_03_dm"
+          }
+        }
+      }
+    ]
   },
   "attachables": {
     "gun_mask_dm": false,
@@ -1853,7 +1881,7 @@
     "Weapon": [
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_KDA_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
         "emitter": "bone_gun_barrel_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2000,7 +2028,7 @@
       },
       {
         "trigger": "gunner0",
-        "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_KDA_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
         "emitter": "bone_gun_barrel_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -2224,7 +2252,7 @@
       "trackConnector": true,
       "trackEmitSparks": false,
       "trackMaxHeight": 1.55,
-      "trackStartOffset": 0.21,
+      "trackStartOffset": 0.088,
       "height": 0.095,
       "width": 0.55
     },
@@ -2240,9 +2268,9 @@
     "mechanics": {
       "steerType": "clutch_braking",
       "maxBrakeForce": 195000.0,
-      "driveGearRadius": 0.33,
+      "driveGearRadius": 0.24,
       "mainGearRatio": 5.42,
-      "sideGearRatio": 1.07,
+      "sideGearRatio": 0.77,
       "neutralGearRatio": 9.0,
       "gearRatios": {
         "ratio": [
@@ -2264,8 +2292,8 @@
         -0.12,
         0.1
       ],
-      "defaultGearRadius": 0.33,
-      "frontBackGearRadius": 0.28,
+      "defaultGearRadius": 0.32,
+      "frontBackGearRadius": 0.33,
       "topGearRadius": 0.18,
       "defaultDampeningForce": [
         200000.0,
@@ -2273,8 +2301,8 @@
       ],
       "dampeningRelaxationRatio": 0.4,
       "dampeningCompressionRatio": 0.15,
-      "wheel_r_drive": 0.29,
-      "wheel_l_drive": 0.29
+      "wheel_r_drive": 0.26,
+      "wheel_l_drive": 0.26
     }
   },
   "PhysSys": {
@@ -2360,7 +2388,7 @@
     "part": {
       "node": "bone_turret",
       "mass": 8000.0,
-      "cutDamage": 1000.0,
+      "cutDamage": 350.0,
       "deviation": 0.5,
       "rotation": 0.5,
       "collisionNode": "cls_turret"
@@ -2920,16 +2948,6 @@
       }
     }
   },
-  "commanderView": {
-    "aimModeAvailable": true,
-    "optics": "commander_optics_square",
-    "zoomOutFov": 24.7,
-    "zoomInFov": 24.7,
-    "sightSize": [
-      0.45,
-      0.32
-    ]
-  },
   "cockpit": {
     "zoomOutFov": 6.64,
     "zoomInFov": 6.14,
@@ -2941,9 +2959,9 @@
       -10.3
     ],
     "headPosOnShooting": [
-      -0.7,
-      4.5,
-      0.3
+      0.0,
+      4.1,
+      -0.4
     ],
     "detectionHeight": 3.42,
     "bone_turret": "bone_turret"
@@ -2989,12 +3007,8 @@
     "35mm_kda_APHEI": {
       "maxToRespawn": 1
     },
-    "35mm_kda_APDS": {
-      "maxToRespawn": 1
-    },
     "35mm_kda_HE_ammo_pack": {},
     "35mm_kda_APHEI_ammo_pack": {},
-    "35mm_kda_APDS_ammo_pack": {},
     "tank_smoke_screen_system_mod": {
       "tier": 4,
       "modClass": "protection",
@@ -3003,7 +3017,7 @@
           "Weapon": [
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_KDA_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
               "emitter": "bone_gun_barrel_01",
               "flash": "emtr_gun_flame_01",
               "useEmitter": true,
@@ -3150,7 +3164,7 @@
             },
             {
               "trigger": "gunner0",
-              "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_KDA_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/35mm_Oerlikon_us_xm246_user_cannon.blk",
               "emitter": "bone_gun_barrel_02",
               "flash": "emtr_gun_flame_02",
               "useEmitter": true,

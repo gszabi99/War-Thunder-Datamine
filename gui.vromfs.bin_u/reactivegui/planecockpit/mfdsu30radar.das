@@ -171,7 +171,7 @@ def foreach_targets(blk : block<(target : RadarTarget const const#) : void>)
     for t in targets
       invoke(blk, t)
 
-def draw_cue(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&)
+def draw_cue(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; irst_azimuth : float2)
   if !get_radar_hud_cue_visible()
     return
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
@@ -179,8 +179,12 @@ def draw_cue(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasPa
   let cueDistWidthRel =  get_radar_hud_cue_dist_width_rel()
   let cuePos = pos + float2((get_radar_hud_cue_azimuth() * (get_radar_hud_target_azimuth_width() / azimuthRange - cueAzimuthHwr) + 0.5) * size.x,
           (1. - (0.5 * cueDistWidthRel + get_radar_hud_cue_distance() * get_radar_hud_target_distance() * (1. - cueDistWidthRel))) * size.y)
-  ctx |> render_frame(cuePos.x - cueAzimuthHwr * size.x * 0.5, cuePos.y - cueDistWidthRel * size.y * 0.5,
-   cuePos.x + cueAzimuthHwr * size.x * 0.5, cuePos.y + cueDistWidthRel * size.y * 0.5, data.lineWidth)
+  if !get_radar_hud_is_irst()
+    ctx |> render_frame(cuePos.x - cueAzimuthHwr * size.x * 0.5, cuePos.y - cueDistWidthRel * size.y * 0.5,
+      cuePos.x + cueAzimuthHwr * size.x * 0.5, cuePos.y + cueDistWidthRel * size.y * 0.5, data.lineWidth)
+  else
+    ctx |> render_frame(pos.x + irst_azimuth.x * size.x, pos.y,
+      pos.x + irst_azimuth.y * size.x, pos.y + size.y, data.lineWidth)
 
 def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&)
   let offset = 5.
@@ -380,7 +384,12 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
               ctx |> goto_xy(pos.x + size.x - dataStrBox.width.x, pos.y)
               ctx |> draw_str_scaled(1., dataStr, dataStr |> length())
   ctx |> set_color(data.color)
-  draw_cue(ctx, pos, size, data)
+  let azimuthHalfWidth = get_radar_hud_cue_azimuth_half_width_rel()
+  var cueAz = float2(get_radar_hud_cue_azimuth() * max(get_radar_hud_target_azimuth_width() / azimuthRange - azimuthHalfWidth, 0.))
+  cueAz.x += (0.5 - azimuthHalfWidth)
+  cueAz.y += (0.5 + azimuthHalfWidth)
+  let irstCue = dontScale ? cueAz : float2((cueAz.x - minAzimuth) / scanAzimuthRangMul, (cueAz.y - minAzimuth) / scanAzimuthRangMul)
+  draw_cue(ctx, pos, size, data, irstCue)
 
 def draw_radar(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&)
   let hero = get_controlled_hero()

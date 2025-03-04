@@ -151,11 +151,11 @@ function buyAllAmmoAndApply(handler, unreadyAmmoList, afterDoneFunc, totalCost =
     taskId = shop_purchase_modification(ammo.airName, ammo.ammoName, ammo.buyAmount, false)
   unreadyAmmoList.remove(0)
 
+  let self = callee()
   if (taskId >= 0) {
     let progressBox = scene_msg_box("char_connecting", null, loc("charServer/purchase0"), null, null)
     addBgTaskCb(taskId,function() {
       destroyMsgBox(progressBox)
-      let self = callee()
       self(handler, unreadyAmmoList, afterDoneFunc)
     })
   }
@@ -306,6 +306,4 @@ function checkBrokenAirsAndDo(repairInfo, handler, startFunc, canRepairWholeCoun
 return {
   getBrokenAirsInfo
   checkBrokenAirsAndDo
-  repairAllAirsAndApply
-  buyAllAmmoAndApply
 }

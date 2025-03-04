@@ -335,10 +335,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     showObjById("screen_button_back", useTouchscreen && !this.isRespawn, this.scene)
     showObjById("gamercard_bottom", this.isRespawn, this.scene)
 
-    let buttonsBlockObj =  showObjById("buttons_block", showConsoleButtons.get(), this.scene)
-    let pcHintsBlockObj = showObjById("pc_hints_block", !showConsoleButtons.get(), this.scene)
-    showObjById("btn_set_hud_type", isGroundAndAirMission(), showConsoleButtons.get() ? buttonsBlockObj : pcHintsBlockObj)
-
     if (this.gameType & GT_RACE) {
       let finished = race_finished_by_local_player()
       if (finished && respawnWndState.needRaceFinishResults)
@@ -981,7 +977,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   function updateTacticalMapHint() {
     local hint = ""
-    local hintIcon = showConsoleButtons.value ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_right"
+    local hintIcon = showConsoleButtons.value ? gamepadIcons.getTexture("r_trigger") : "#ui/gameuiskin#mouse_left"
     local highlightSpawnMapId = -1
     if (!this.isRespawn) {
       hint = isAllowedMoveCenter() ? colorize("activeTextColor", loc("hints/move_map_hint"))
@@ -1985,15 +1981,23 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       btn_back =            this.showButtons && useTouchscreen && !this.isRespawn
       btn_activateorder =   this.showButtons && this.isRespawn && showActivateOrderButton() && (!this.isSpectate || !showConsoleButtons.value)
       btn_personal_tasks =  this.showButtons && this.isRespawn && canUseUnlocks
-      }
+
+      //Tactical map control
+      hint_attention_to_map = !showConsoleButtons.get()
+      hint_btn_move_map     = !showConsoleButtons.get()
+    }
     foreach (id, value in buttons)
       showObjById(id, value, this.scene)
 
-    let buttonsBlockObj =  this.scene.findObject("buttons_block")
-    let pcHintsBlockObj = this.scene.findObject("pc_hints_block")
-    let showPOiButton = !(this.showButtons && this.isRespawn && !this.isNoRespawns && !this.stayOnRespScreen && !this.doRespawnCalled && !this.isSpectate) && hasSightStabilization()
-    showObjById("btn_set_point_of_interest", showPOiButton,showConsoleButtons.get() ? buttonsBlockObj : pcHintsBlockObj )
-    showObjById("hint_set_point_of_interest", showPOiButton, this.scene )
+    let isShowPOiButton = !(this.showButtons && this.isRespawn && !this.isNoRespawns && !this.stayOnRespScreen && !this.doRespawnCalled && !this.isSpectate) && hasSightStabilization()
+    let setPointOfInterestObj = showObjById("btn_set_point_of_interest", isShowPOiButton, this.scene)
+    if (isShowPOiButton)
+      showObjById("hint_btn_set_point_of_interest", !showConsoleButtons.get(), setPointOfInterestObj)
+
+    let isShowSetHudTypeBtn = isGroundAndAirMission()
+    let setHudTypeObj = showObjById("btn_set_hud_type", isShowSetHudTypeBtn, this.scene)
+    if (isShowSetHudTypeBtn)
+      showObjById("hint_btn_set_hud_type", !showConsoleButtons.get(), setHudTypeObj)
 
     let crew = this.getCurCrew()
     let slotObj = crew && getSlotObj(this.scene, crew.idCountry, crew.idInCountry)

@@ -328,7 +328,7 @@ def calc_explosion_params(unit : Unit?; cluster_id : int; var seed : int;
     logerr("ammo stowage exploded with invalid splash/shatter damage type: {result}")
   elif result.splashDamageTypeId < 0
     // some shells dont have damage type id for splash, so fallback to stowage splash properties
-    result.splashDamageTypeId = v.ammo_stowage__splashProperties.damageTypeId
+    result.splashDamageTypeId = get_splash_damage_type_id(v.ammo_stowage__splashProperties)
   return result
 
 
@@ -349,7 +349,7 @@ def ammo_stowage_send_explosion_fatal(eid : EntityId; ammo_left : float; var see
   splash_params |> splash_params_scale(ammo_left *
     (_frnd(seed) * (v.ammo_stowage__fatalDetonatePortion.y - v.ammo_stowage__fatalDetonatePortion.x) + v.ammo_stowage__fatalDetonatePortion.x)
   )
-  let splash_damage_type_id = v.ammo_stowage__splashProperties.damageTypeId
+  let splash_damage_type_id = get_splash_damage_type_id(v.ammo_stowage__splashProperties)
   sendEvent(eid, [[EventDoAmmoExplode
     isFatal=true,
     fullExpl=full_expl,

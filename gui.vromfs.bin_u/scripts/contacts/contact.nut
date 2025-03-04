@@ -28,7 +28,7 @@ class Contact {
   title = ""
 
   presence = contactPresence.UNKNOWN
-  onlinePresence = null
+  onlinePresence = contactPresence.UNKNOWN
   squadPresence = null
   forceOffline = false
   isForceOfflineChecked = !is_platform_xbox

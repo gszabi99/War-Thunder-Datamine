@@ -289,6 +289,7 @@ def fire_system_net_sync_update_es(act : UpdateStageInfoAct;
 [es(tag=netClient), with_bundle(v)]
 def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
                                    eid : EntityId;
+                                   var unit__ref : UnitRef;
                                    var v : tuple<
                                      fire_data__packedPartId : UInt32List;
                                      fire_data__nodeId : IntList;
@@ -329,15 +330,12 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
 
   for part in burning_parts
     if !part.already_burning
-      fire_system_start_single_burn(eid, [[StartSingleBurnDesc()
-        partId = unpack_part_id(part.packed_part_id),
-        nodeId = INVALID_GEOM_NODE_ID,
-        fireParamsId = part.fire_params_id,
-        fireFxId = -1,
-        offset = float3(0.0f),
-        centerDmgPart = float3(0.0f),
-        radius = 0.0f,
-        finalRadius = 0.0f,
-        atTime = total_time,
-        initiatorId = -1u
-      ]]) <| v
+      fire_damage_process_start_burn_event(
+        eid,
+        unit__ref.unit,
+        unpack_part_id(part.packed_part_id),
+        part.fire_params_id,
+        -1,
+        make_offender_data(-1, -1),
+        float4(0.0f)
+      ) <| v

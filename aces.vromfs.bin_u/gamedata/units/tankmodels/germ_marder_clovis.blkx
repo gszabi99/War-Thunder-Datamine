@@ -47,9 +47,6 @@
   "type": "typeLightTank",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -1983,8 +1980,8 @@
             180.0
           ],
           "pitch": [
-            -6.0,
-            11.0
+            -8.0,
+            12.0
           ]
         },
         "limitsTable": {
@@ -1992,26 +1989,26 @@
             -180.0,
             -140.0,
             -5.0,
-            11.0
+            12.0
           ],
           "lim2": [
             -140.0,
             140.0,
-            -6.0,
-            11.0
+            -8.0,
+            12.0
           ],
           "lim3": [
             140.0,
             180.0,
             -5.0,
-            11.0
+            12.0
           ]
         }
       },
       {
         "trigger": "gunner1",
         "triggerGroup": "coaxial",
-        "blk": "gameData/Weapons/groundModels_weapons/20mm_M_693_user_cannon.blk",
+        "blk": "gameData/Weapons/groundModels_weapons/20mm_M_693_marder_clovis_user_cannon.blk",
         "emitter": "bone_mg_twin",
         "flash": "emtr_mg_flame_01",
         "defaultYaw": 0.0,
@@ -2023,7 +2020,7 @@
           1.0,
           15.0
         ],
-        "bullets": 500,
+        "bullets": 400,
         "isBulletBelt": true,
         "ChainfireTime": 3.0,
         "DelayAfterShoot": 3.0,
@@ -3240,6 +3237,7 @@
           "explosionEvent": "ammo_explosion",
           "wreckedPartId": 0,
           "autoLoad": true,
+          "autoloader": "autoloader_dm",
           "ammo_turret_06_dm": {
             "count": 1
           },
@@ -3379,8 +3377,11 @@
     "tank_medical_kit_expendable": {
       "image": "#ui/gameuiskin#tank_reinforcement_ger"
     },
+    "modern_tank_laser_rangefinder": {},
     "airstrike": {},
-    "improved_optics": {},
+    "improved_optics": {
+      "tier": 3
+    },
     "105mm_fr_CN105_HEAT": {},
     "105mm_fr_CN105_HE": {},
     "105mm_fr_CN105_Smoke": {},
@@ -3465,8 +3466,8 @@
                   180.0
                 ],
                 "pitch": [
-                  -6.0,
-                  11.0
+                  -8.0,
+                  12.0
                 ]
               },
               "limitsTable": {
@@ -3474,26 +3475,26 @@
                   -180.0,
                   -140.0,
                   -5.0,
-                  11.0
+                  12.0
                 ],
                 "lim2": [
                   -140.0,
                   140.0,
-                  -6.0,
-                  11.0
+                  -8.0,
+                  12.0
                 ],
                 "lim3": [
                   140.0,
                   180.0,
                   -5.0,
-                  11.0
+                  12.0
                 ]
               }
             },
             {
               "trigger": "gunner1",
               "triggerGroup": "coaxial",
-              "blk": "gameData/Weapons/groundModels_weapons/20mm_M_693_user_cannon.blk",
+              "blk": "gameData/Weapons/groundModels_weapons/20mm_M_693_marder_clovis_user_cannon.blk",
               "emitter": "bone_mg_twin",
               "flash": "emtr_mg_flame_01",
               "defaultYaw": 0.0,
@@ -3505,7 +3506,7 @@
                 1.0,
                 15.0
               ],
-              "bullets": 500,
+              "bullets": 400,
               "isBulletBelt": true,
               "ChainfireTime": 3.0,
               "DelayAfterShoot": 3.0,
