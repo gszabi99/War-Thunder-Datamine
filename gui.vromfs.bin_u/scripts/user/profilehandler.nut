@@ -1678,9 +1678,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let myStats = getStats()
     if (!myStats || !checkObj(this.scene))
       return
+    let needFrequentRequestShowcase = !this.isProfileInited
     this.isProfileInited = true
     this.fillProfileStats(myStats)
-    this.updateShowcase()
+    this.updateShowcase(needFrequentRequestShowcase)
   }
 
   function openChooseTitleWnd(_obj) {
@@ -1971,7 +1972,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       return
 
     if (this.hasEditProfileChanges()) {
-      this.askAboutSaveProfile(@() this.goBack())
+      this.askAboutSaveProfile(@() this.isEditModeEnabled ? null : this.goBack())
       return
     }
 
@@ -2105,12 +2106,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.fillShowcaseEdit(terseInfo)
   }
 
-  function updateShowcase() {
+  function updateShowcase(needFrequentRequest = false) {
     let userStats = this.getPageProfileStats()
     if (userStats == null)
       return
 
-    this.terseInfo = this.terseInfo ?? generateShowcaseInfo(this.currentShowcaseName)
+    this.terseInfo = this.terseInfo ?? generateShowcaseInfo(this.currentShowcaseName, needFrequentRequest)
     let terseInfo = this.editModeTempData?.terseInfo ?? this.terseInfo
     if (terseInfo == null)
       return

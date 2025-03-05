@@ -99,13 +99,14 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
     let nest = this.scene.findObject("list_nest")
 
     local isIconed = false
+    local isVisibleActionFinded = false
     foreach (_idx, action in this.params.actions) {
-      let show = action?.show ?? true
-      if (!("show" in action))
-        action.show <- show
-
+      if (action?.show == null)
+        action.show <- true
+      action.haveSeparator <- isVisibleActionFinded
+      isVisibleActionFinded = isVisibleActionFinded || action.show
       action.text <- (action?.text ?? "").replace(" ", nbsp)
-      isIconed = isIconed || (show && action?.icon != null)
+      isIconed = isIconed || (action.show && action?.icon != null)
     }
     this.scene.iconed = isIconed ? "yes" : "no"
 
@@ -114,8 +115,12 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
 
     // Temp Fix, DaGui cannot recalculate childrens width according to parent after replaceContent
     local maxWidth = this.scene.getSize()[0]
-    for (local i = 0; i < nest.childrenCount(); i++)
-      maxWidth = max(maxWidth, nest.getChild(i).getSize()[0])
+    for (local i = 0; i < nest.childrenCount(); i++) {
+      let child = nest.getChild(i)
+      if (child?.isActionsListButton == "no")
+        continue
+      maxWidth = max(maxWidth, child.getSize()[0])
+    }
     nest.width = maxWidth
 
     if (showConsoleButtons.value)

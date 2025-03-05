@@ -463,6 +463,7 @@ function buildEmptySlot(id, _unit, params) {
     crewNumWithTitle = hasCrew ? $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}" : "No crew"
     crewId = crewId.tostring()
     isShowDragAndDropIcon
+    dragAndDropIconHint = isShowDragAndDropIcon ? loc("slotbar/dragUnitHint") : null
   })
 
   return handyman.renderCached("%gui/slotbar/slotbarSlotEmpty.tpl", emptySlotView)
@@ -660,7 +661,7 @@ function buildCommonUnitSlot(id, unit, params) {
     missionRules = null, bottomLineText = null, isSlotbarItem = false, isInTable = true,
     showInService = false, hasExtraInfoBlock = false, hasExtraInfoBlockTop = false,
     toBattle = false, toBattleButtonAction = "onSlotBattle", hasCrewHint = false,
-    showAdditionExtraInfo = false, showCrewUnseenIcon = false
+    showAdditionExtraInfo = false, showCrewUnseenIcon = false, showCrewInfoTranslucent = false
   } = params
   local { inactive = false, status = DEFAULT_STATUS, tooltipParams = null } = params
   let curEdiff = params?.getEdiffFunc() ?? getCurrentGameModeEdiff()
@@ -754,9 +755,6 @@ function buildCommonUnitSlot(id, unit, params) {
       hasCrewUnseenIcon = showCrewUnseenIcon && isCrewNeedUnseenIcon(crew, unitForCrewInfo) ? "yes" : "no"
       crewNum = $"{crew.idInCountry + 1}"
       crewNumWithTitle = $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}"
-      crewSpecializationLabel = hasUnit ? $"{loc("crew/trained")}{loc("ui/colon")}" : ""
-      crewSpecializationIcon = hasUnit ? crewSpec.trainedIcon : ""
-      crewSpecialization = hasUnit ? crewSpec.getName() : ""
       crewPoints = (hasUnit && needCurPoints) ? getCrewSpText(crew?.skillPoints ?? 0) : ""
       crewId
       crewIdInCountry = crew?.idInCountry
@@ -952,7 +950,7 @@ function buildCommonUnitSlot(id, unit, params) {
     extraInfoBlockTop   = handyman.renderCached("%gui/slotbar/slotExtraInfoBlockTop.tpl", extraInfoTopView)
     refuseOpenHoverMenu = !hasActions ? "yes" : "no"
     crewNumWithTitle    = hasCrewInfo ? $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}" : ""
-    crewInfoTranslucent = toBattle ? "yes" : "no"
+    crewInfoTranslucent = showCrewInfoTranslucent ? "yes" : "no"
     hasContextCursor    = hasActions
   })
   let groupName = missionRules ? missionRules.getRandomUnitsGroupName(unit.name) : null
@@ -1250,7 +1248,9 @@ function getSlotCrewHint(crew, unit, params) {
     hasUnit
     crewNumWithTitle = $"{loc("mainmenu/crewTitle")}{crew.idInCountry + 1}"
     crewLevel = crewLevelText
+    crewSpecializationLabel = hasUnit ? $"{loc("crew/trained")}{loc("ui/colon")}" : ""
     crewSpecializationIcon = hasUnit ? crewSpec?.trainedIcon : ""
+    crewSpecialization = hasUnit ? crewSpec?.getName() : ""
     needCurPoints
     crewPoints = (hasUnit && needCurPoints) ? getCrewSpText(crew?.skillPoints ?? 0) : ""
   }

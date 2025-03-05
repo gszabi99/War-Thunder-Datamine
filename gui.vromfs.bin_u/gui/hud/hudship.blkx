@@ -4,28 +4,33 @@
       "position": "absolute",
       "pos": "pw - w, ph - h",
       "flow": "vertical",
-      "tdiv": {
-        "id": "hud_kill_log",
-        "position": "relative",
-        "pos": "pw - w, 0",
-        "height": "0.2*@shHud",
-        "margin-bottom": "0.02*@shHud",
-        "overflow": "hidden",
-        "hudMessages": {
-          "id": "hud_message_kill_log_notification",
-          "message_style": "kill_log_notification",
+      "tdiv": [
+        {
+          "id": "hud_kill_log",
           "position": "relative",
-          "pos": "pw - w, ph - h",
-          "width": "0.5@shHud",
-          "flow": "vertical"
+          "pos": "pw - w, 0",
+          "height": "0.2*@shHud",
+          "margin-bottom": "0.02*@shHud",
+          "overflow": "hidden",
+          "hudMessages": {
+            "id": "hud_message_kill_log_notification",
+            "message_style": "kill_log_notification",
+            "position": "relative",
+            "pos": "pw - w, ph - h",
+            "width": "0.5@shHud",
+            "flow": "vertical"
+          }
+        },
+        {
+          "id": "hud_tank_tactical_map_nest",
+          "position": "relative",
+          "pos": "pw - w, 0",
+          "tacticalMap": {
+            "id": "hud_tank_tactical_map",
+            "size": "@sizeTacticalMap, @sizeTacticalMap"
+          }
         }
-      },
-      "tacticalMap": {
-        "id": "hud_tank_tactical_map",
-        "size": "@sizeTacticalMap, @sizeTacticalMap",
-        "position": "relative",
-        "pos": "pw - w, 0"
-      }
+      ]
     },
     {
       "id": "hud_enemy_damage_nest",

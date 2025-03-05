@@ -3168,6 +3168,59 @@
         }
       },
       {
+        "trigger": "gunner4",
+        "triggerGroup": "smoke",
+        "blk": "gameData/Weapons/groundModels_weapons/60mm_modern_smoke_grenade_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "emtr_mortar_flame_01",
+        "emitterGenRange": [
+          1,
+          6
+        ],
+        "emitterGenFmt": "emtr_mortar_flame_%02d",
+        "ignoreLoaderPenalty": true,
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 360.0,
+        "salvoDelay": 0.5,
+        "salvo": 2,
+        "speedYaw": 24.0,
+        "speedPitch": 15.0,
+        "fireConeAngle": [
+          1.0,
+          5.0
+        ],
+        "bullets": 6,
+        "ChainfireTime": 0.5,
+        "DelayAfterShoot": 2.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 1.5,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "forestallTime": 0.1,
+        "turret": {
+          "head": "bone_grenade",
+          "gun": "bone_grenade"
+        },
+        "limits": {
+          "yaw": [
+            0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
         "trigger": "gunner3",
         "triggerGroup": "commander",
         "blk": "gameData/Weapons/dummy_weapon.blk",
@@ -3260,9 +3313,11 @@
     "105mm_usa_HEAT_FS_ammo_pack": {
       "tier": 3
     },
-    "tank_smoke_screen_system_mod": {
-      "tier": 3,
+    "type_74_tire": {
+      "invertEnableLogic": false,
+      "turn_it_off": false,
       "effects": {
+        "rcostAddParam": 0.98,
         "commonWeapons": {
           "Weapon": [
             {
@@ -3504,6 +3559,59 @@
               }
             },
             {
+              "trigger": "gunner4",
+              "triggerGroup": "smoke",
+              "blk": "gameData/Weapons/groundModels_weapons/60mm_modern_smoke_grenade_launcher.blk",
+              "weaponType": "rockets",
+              "useEmitter": true,
+              "emitter": "emtr_mortar_flame_01",
+              "emitterGenRange": [
+                1,
+                6
+              ],
+              "emitterGenFmt": "emtr_mortar_flame_%02d",
+              "ignoreLoaderPenalty": true,
+              "createGunEffects": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "allowableDelta": 360.0,
+              "salvoDelay": 0.5,
+              "salvo": 2,
+              "speedYaw": 24.0,
+              "speedPitch": 15.0,
+              "fireConeAngle": [
+                1.0,
+                5.0
+              ],
+              "bullets": 6,
+              "ChainfireTime": 0.5,
+              "DelayAfterShoot": 2.0,
+              "accuracyAir": 1.5,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 1.5,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "forestallTime": 0.1,
+              "turret": {
+                "head": "bone_grenade",
+                "gun": "bone_grenade"
+              },
+              "limits": {
+                "yaw": [
+                  0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
               "trigger": "gunner3",
               "triggerGroup": "commander",
               "blk": "gameData/Weapons/dummy_weapon.blk",
@@ -3557,59 +3665,6 @@
                   9.0
                 ]
               }
-            },
-            {
-              "trigger": "gunner4",
-              "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/60mm_modern_smoke_grenade_launcher.blk",
-              "weaponType": "rockets",
-              "useEmitter": true,
-              "emitter": "emtr_mortar_flame_01",
-              "emitterGenRange": [
-                1,
-                6
-              ],
-              "emitterGenFmt": "emtr_mortar_flame_%02d",
-              "ignoreLoaderPenalty": true,
-              "createGunEffects": true,
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "allowableDelta": 360.0,
-              "salvoDelay": 0.5,
-              "salvo": 2,
-              "speedYaw": 24.0,
-              "speedPitch": 15.0,
-              "fireConeAngle": [
-                1.0,
-                5.0
-              ],
-              "bullets": 6,
-              "ChainfireTime": 0.5,
-              "DelayAfterShoot": 2.0,
-              "accuracyAir": 1.5,
-              "accuracyGnd": 0.0,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 1.5,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "errExplTime": 0.0,
-              "forestallTime": 0.1,
-              "turret": {
-                "head": "bone_grenade",
-                "gun": "bone_grenade"
-              },
-              "limits": {
-                "yaw": [
-                  0.0,
-                  0.0
-                ],
-                "pitch": [
-                  0.0,
-                  0.0
-                ]
-              }
             }
           ],
           "hideNodes": {
@@ -3618,6 +3673,12 @@
               "ex_lantern_02"
             ]
           }
+        },
+        "hideNodes": {
+          "node": [
+            "ex_decor_l_20",
+            "ex_decor_r_20"
+          ]
         }
       }
     }

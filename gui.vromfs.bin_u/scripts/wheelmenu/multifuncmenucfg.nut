@@ -234,7 +234,7 @@ let cfg = {
       { section = "targeting_tank" }
       { section = "engine_tank" }
       null
-      null
+      { shortcut = [ "ID_TOGGLE_UAV_CAMERA" ] }
       voiceMessagesMenuFunc
     ]
   },

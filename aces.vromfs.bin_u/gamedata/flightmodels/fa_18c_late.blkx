@@ -80,9 +80,6 @@
     0.09
   ],
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2115,7 +2112,7 @@
     ]
   },
   "ikPilot": {
-    "model": "usaf_pilot_1977_1991_char",
+    "model": "usaf_pilot_1985_2011_jhmcs_char",
     "maxHeadHorAngle": 60.0,
     "maxHeadDownAngle": 60.0,
     "maxHeadUpAngle": 10.0,
@@ -2263,8 +2260,14 @@
   },
   "cockpit": {
     "mfdTextureSize": [
-      2048,
-      1024
+      [
+        2048,
+        1024
+      ],
+      [
+        2048,
+        1024
+      ]
     ],
     "targetingPodFov": [
       18.0,
@@ -2285,6 +2288,12 @@
     ],
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
+    "hmdBlockIlsArea": [
+      0.5,
+      -0.4,
+      0.55,
+      0.6
+    ],
     "mirror": true,
     "mirrorPos": [
       5.055,
@@ -3321,6 +3330,10 @@
           "cameraFromTargetingPod": true,
           "page": [
             {
+              "type": "custom",
+              "pageName": "f18Wpn"
+            },
+            {
               "type": "thermal",
               "turretIdx": 0
             },
@@ -3368,23 +3381,15 @@
         },
         {
           "textureArea": [
-            0.0,
+            0.25,
             0.5,
             0.5,
             1.0
           ],
           "page": {
             "type": "rwr",
-            "grid": {
-              "scale": 1.1,
-              "lineWidthScale": 0.8,
-              "fontScale": 0.8
-            },
-            "object": {
-              "scale": 1.2,
-              "lineWidthScale": 0.8,
-              "fontScale": 0.6
-            }
+            "hideBackground": true,
+            "hidePlaneSymbol": true
           }
         },
         {
@@ -3408,8 +3413,8 @@
           "page": {
             "type": "plane_ils",
             "ilsSize": [
-              0.3,
-              0.3
+              0.26,
+              0.26
             ],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
@@ -3763,7 +3768,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/us_an_apg_73.blk",
+        "blk": "gameData/sensors/us_an_apg_73_hms.blk",
         "dmPart": "radar_dm"
       },
       {
@@ -3911,6 +3916,8 @@
     },
     "HideDmParts": {
       "node": [
+        "oil1_dm",
+        "oil2_dm",
         "tank7_dm",
         "tank8_dm",
         "tank9_dm"

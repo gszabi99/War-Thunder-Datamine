@@ -1,5 +1,6 @@
 @const actionsListPadding: 3@dp;
 @const actionItemSidePadding: 14*@sf/@pf;
+@const menuSeparatorPadding: 15*@sf/@pf;
 
 popup_actions_list {
   re-type:rotation;
@@ -51,6 +52,7 @@ popup_actions_list > itemsList > button {
   padding: 1@actionItemSidePadding, 5*@sf/@pf_outdated;
   min-width: pw;
   css-hier-invalidate: yes;
+  flow:horizontal;
 }
 
 popup_actions_list[iconed=yes] > itemsList > actionListItem,
@@ -71,9 +73,9 @@ popup_actions_list > itemsList > button > text {
   css-hier-invalidate: yes;
 }
 
-popup_actions_list[listStyle=center] > itemsList > actionListItem > text,
-popup_actions_list[listStyle=center] > itemsList > button > text {
-  pos:(pw-w)/2, (ph-h)/2;
+popup_actions_list[listStyle=center] > itemsList > actionListItem,
+popup_actions_list[listStyle=center] > itemsList > button {
+  flow-align:center;
 }
 
 popup_actions_list > itemsList > actionListItem > dragAndDropIcon > text {
@@ -183,8 +185,8 @@ popup_actions_list > itemsList > actionListItem:disabled > text {
 }
 
 popup_actions_list > itemsList > actionListItem > dragAndDropIcon {
-  pos: pw-w - 5@sf/@pf, (ph-h)/2;
-  position: absolute;
+  pos:0, (ph-h)/2;
+  position: relative;
 }
 
 popup_actions_list > itemsList > actionListItem > icon,
@@ -201,6 +203,9 @@ popup_actions_list > itemsList > button > icon {
 
 popup_actions_list > itemsList > actionListItem > dragAndDropIcon > icon {
   pos:0, ph/2-h/2;
+  position: relative;
+  background-svg-size:0.75@cIco, 0.75@cIco;
+  size:0.75@cIco, 0.75@cIco;
 }
 
 popup_actions_list > itemsList > actionListItem:disabled > icon {
@@ -237,4 +242,13 @@ popup_actions_list > itemsList > button {
 [swap_ab=yes] popup_actions_list > itemsList > actionListItem,
 [swap_ab=yes] popup_actions_list > itemsList > button {
   shortcutActivate: "Space | J:B | J:RT";
+}
+
+menuItemSeparator {
+  position:relative;
+  size:pw - 2@menuSeparatorPadding, 1@sf/@pf;
+  pos:(pw-w)/2, 0;
+  background-color:#11111111;
+  inactive:yes;
+  isActionsListButton:no;
 }

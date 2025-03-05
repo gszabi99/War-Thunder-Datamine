@@ -13,6 +13,8 @@ enum allShowcasesEventName {
 }
 
 let MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC = 300000
+let MIN_TIME_BETWEEN_FREQUENT_REQUESTS_MSEC = 5000
+
 local allShowcasesData = null
 local hasRequest = false
 local lastRequestTime = 0
@@ -43,8 +45,9 @@ function requestShowcases() {
   )
 }
 
-function generateShowcaseInfo(name) {
-  if ((get_time_msec() - lastRequestTime) > MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC || allShowcasesData == null)
+function generateShowcaseInfo(name, frequentRequest = false) {
+  if ((get_time_msec() - lastRequestTime) > (frequentRequest ? MIN_TIME_BETWEEN_FREQUENT_REQUESTS_MSEC : MIN_TIME_BETWEEN_SAME_REQUESTS_MSEC)
+    || allShowcasesData == null)
     requestShowcases()
 
   if (allShowcasesData == null)

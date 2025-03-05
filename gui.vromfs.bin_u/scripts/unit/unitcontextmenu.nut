@@ -396,6 +396,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       iconRotation
       isWarning
       isShowDragAndDropIcon
+      dragAndDropIconHint = isShowDragAndDropIcon ? loc("slotbar/dragUnitHint") : null
     })
   }
 

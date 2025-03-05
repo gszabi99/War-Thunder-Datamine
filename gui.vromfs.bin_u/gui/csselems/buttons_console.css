@@ -224,7 +224,7 @@ top_right_holder > Button_text[btnName] {
   showConsoleImage:yes;
 }
 
-topMenuButtons > Button_text {
+topMenuButtonsColumn > Button_text {
   visualStyle:noFrame;
 }
 
@@ -1240,7 +1240,7 @@ Button_text[visualStyle=noFrame] > additionalIconsDiv {
   position:relative;
 }
 
-topMenuButtons > Button_text[visualStyle=noFrame] > additionalIconsDiv {
+topMenuButtonsColumn > Button_text[visualStyle=noFrame] > additionalIconsDiv {
   pos:pw-w-5*@sf/@pf_outdated, 50%ph-50%h;
   position:absolute;
 }
@@ -1578,34 +1578,16 @@ rightClickMenu > Button_text[inactiveColor=yes]:pushed > textarea {
   color:@buttonFontColorDisabled;
 }
 
-menuLine, topMenuLine {
+menuLine {
+  pos:50%pw-50%w, 0;
+  position:relative;
+  width:90%pw;
   height:4@dp;
   background-repeat:expand;
   background-image:#ui/gameuiskin#separator_bottom;
   background-color:@white;
   background-position:3, 0;
   input-transparent:yes;
-}
-
-topMenuLine {
-  width:0.8@bigButtonWidth;
-  pos:50%pw-50%w, -25%h;
-  position: absolute;
-  margin-bottom:1.0*@scrn_tgt/100.0;
-}
-
-topMenuLinePlace {
-  width:1@mainMenuButtonWidth;
-}
-
-topMenuButtons[isWide = yes] > topMenuLinePlace {
-  width:1@mainMenuButtonWideWidth;
-}
-
-menuLine {
-  pos:50%pw-50%w, 0;
-  position:relative;
-  width:90%pw;
 }
 
 Button_text.title {
@@ -2396,16 +2378,20 @@ Button_text[smallFont=yes] > btnText,
   font:@fontSmall;
 }
 
-topMenuButtons > Button_text {
+topMenuButtonsColumn {
+  width:1@mainMenuButtonWidth;
+}
+
+topMenuButtons[isWide = yes] > topMenuButtonsColumn {
+  width:1@mainMenuButtonWideWidth;
+}
+
+topMenuButtonsColumn > Button_text {
   min-width:@bigButtonWidth;
   width:1@mainMenuButtonWidth;
 }
 
-topMenuButtons[isWide = yes] {
-  width:1@mainMenuButtonWideWidth + 2@dp;
-}
-
-topMenuButtons[isWide = yes] > Button_text {
+topMenuButtons[isWide = yes] > topMenuButtonsColumn > Button_text {
   width:1@mainMenuButtonWideWidth;
 }
 
@@ -2825,14 +2811,6 @@ Button_text.smallButton:hover > tdiv > text {
   color:@buttonFontColorHover;
 }
 
-[show_console_buttons=no] Button_text[isSwapCrewButton=yes] {
-  tooltip:#slotbar/dragCrewHint;
-}
-
-[show_console_buttons=no] Button_text[isSwapCrewButton=yes] > tdiv > dragCrewHint{
-  display:show;
-}
-
 [show_console_buttons=no] Button_text[isShowDragAndDropHint=yes] {
   padding-left: 1@buttonImgPadding;
   padding-right: h+1@buttonImgPadding;
@@ -2846,12 +2824,10 @@ Button_text.smallButton:hover > tdiv > text {
   tooltip:"";
 }
 
-Button_text.smallButton:hover > tdiv > dragCrewHint > text,
 Button_text[isShowDragAndDropHint=yes]:hover > dragAndDropIcon > text {
   color: @buttonFontColorHover;
 }
 
-Button_text.smallButton:hover > tdiv > dragCrewHint > img,
 Button_text[isShowDragAndDropHint=yes]:hover > dragAndDropIcon > icon {
   background-color: @buttonFontColorHover;
 }

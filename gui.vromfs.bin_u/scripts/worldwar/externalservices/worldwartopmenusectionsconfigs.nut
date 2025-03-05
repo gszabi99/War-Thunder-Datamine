@@ -27,10 +27,8 @@ enums.addTypes(wwTopMenuLeftSideSections, [
       [
         buttonsList.WW_MAIN_MENU
         buttonsList.WW_OPERATIONS
-        buttonsList.LINE_SEPARATOR
         buttonsList.OPTIONS
         buttonsList.CONTROLS
-        buttonsList.LINE_SEPARATOR
         buttonsList.WW_HANGAR
       ]
     ]

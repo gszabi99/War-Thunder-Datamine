@@ -57,7 +57,6 @@ enumsAddTypes(g_top_menu_left_side_sections, [
       [
         buttonsList.SKIRMISH
         buttonsList.WORLDWAR
-        buttonsList.LINE_SEPARATOR
         buttonsList.TOURNAMENTS
         buttonsList.USER_MISSION
         buttonsList.TUTORIAL
@@ -108,11 +107,10 @@ enumsAddTypes(g_top_menu_right_side_sections, [
     getWinkImage = function () { return "#ui/gameuiskin#hovermenu_shop_button_glow" }
     haveTmDiscount = true
     isWide = true
-    forceHoverWidth = "1@mainMenuButtonWideWidth + 0.02@sf"
+    forceHoverWidth = "1@mainMenuButtonWideWidth + 2@topMenuHoverMenuIndent"
     buttons = [
       [
         buttonsList.EAGLES
-        buttonsList.LINE_SEPARATOR
         buttonsList.PREMIUM
         buttonsList.WARPOINTS
         buttonsList.WISHLIST
@@ -136,7 +134,6 @@ enumsAddTypes(g_top_menu_right_side_sections, [
         buttonsList.ENCYCLOPEDIA
         buttonsList.CHANGE_LOG
         buttonsList.CREDITS
-        buttonsList.LINE_SEPARATOR
         buttonsList.EULA
         buttonsList.WIKI
         buttonsList.FAQ

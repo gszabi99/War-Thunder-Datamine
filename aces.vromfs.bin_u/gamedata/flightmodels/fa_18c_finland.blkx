@@ -46,9 +46,6 @@
     0.09
   ],
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -3323,16 +3320,8 @@
           ],
           "page": {
             "type": "rwr",
-            "grid": {
-              "scale": 1.1,
-              "lineWidthScale": 0.8,
-              "fontScale": 0.8
-            },
-            "object": {
-              "scale": 1.2,
-              "lineWidthScale": 0.8,
-              "fontScale": 0.6
-            }
+            "hideBackground": true,
+            "hidePlaneSymbol": true
           }
         },
         {
@@ -3442,6 +3431,8 @@
     },
     "HideDmParts": {
       "node": [
+        "oil1_dm",
+        "oil2_dm",
         "tank7_dm",
         "tank8_dm",
         "tank9_dm"

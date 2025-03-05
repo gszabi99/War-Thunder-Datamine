@@ -226,7 +226,6 @@ class Canvas
 
     return min(tx, ty);
 
-
 // ****************************************************************************
 // ***   Graphics Methods   ***************************************************
 // ****************************************************************************
@@ -413,6 +412,28 @@ class Canvas
     self.lineSpacing = lineSpacing
 
 
+  def getVertStringSize(str : string; var len : int = 0) : float2
+    len = len > 0 ? len : length(str)
+    var fctx : StdGuiFontContext
+    get_font_context(fctx, font.id, 0, 0, font.size)
+
+    var size = float2(0.0)
+    for char in each(str)
+      let width = get_str_bbox(format("%c", char), 1, fctx).width.x
+      if width > size.x
+        size.x = width
+    size.y = (float(len) * lineSpacing * get_font_line_spacing(fctx))
+
+    return toRelXY(size)
+
+
+  def getLineSpacing()
+    var fctx : StdGuiFontContext
+    get_font_context(fctx, font.id, 0, 0, font.size)
+    let lastLineSpasing = get_font_line_spacing(fctx)
+    return toRelY(lastLineSpasing)
+
+
   def setTextAnchorHorz(anchor : AnchorHorz)
     textAnchorHorz = anchor
 
@@ -455,6 +476,36 @@ class Canvas
     draw_str_scaled(*ctx, 1.0, str, length(str))
 
     goto_xy(*ctx, float2(curretPos.x, curretPos.y + lineSpacing * get_font_line_spacing(fctx)))
+
+
+  def drawStrVert(var pos : float2; str : string; anchorHorz : AnchorHorz; anchorVert : AnchorVert; var len : int = 0)
+    pos = toAbsPos(pos)
+    len = len > 0 ? len : length(str)
+    var fctx : StdGuiFontContext
+    get_font_context(fctx, font.id, 0, 0, font.size)
+
+    var size = float2(0.0)
+    for char in each(str)
+      let width = get_str_bbox(format("%c", char), 1, fctx).width.x
+      if width > size.x
+        size.x = width
+
+    size.y = (float(len) * lineSpacing * get_font_line_spacing(fctx))
+    if anchorHorz == AnchorHorz.Right
+      pos.x -= size.x
+    elif anchorHorz == AnchorHorz.Center
+      pos.x -= 0.5 * size.x
+
+    if anchorVert == AnchorVert.Center
+      pos.y -= size.y * 0.5 - get_font_line_spacing(fctx) + float(get_font_descent(fctx))
+    elif anchorVert == AnchorVert.Top
+      pos.y += float(get_font_ascent(fctx))
+    elif anchorVert == AnchorVert.Bottom
+      pos.y -= size.y + float(get_font_descent(fctx))
+
+    goto_xy(*ctx, pos)
+    for char in each(str)
+      printStrLn(format("%c", char))
 
 
   def drawStr(var pos : float2; str : string; var len : int = 0)

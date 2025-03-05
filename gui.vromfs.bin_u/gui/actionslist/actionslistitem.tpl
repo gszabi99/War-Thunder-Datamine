@@ -1,6 +1,10 @@
 <<#actions>>
 <<#show>>
 
+<<#haveSeparator>>
+  menuItemSeparator {}
+<</haveSeparator>>
+
 <<#isLink>>
 button {
 <</isLink>>
@@ -10,8 +14,8 @@ actionListItem {
 <</isLink>>
 
   id:t='<<actionName>>'
-  behavior:t='button';
-  on_click:t='onAction';
+  behavior:t='button'
+  on_click:t='onAction'
 
   <<#disabled>>
   enable:t='no'
@@ -37,13 +41,31 @@ actionListItem {
       }
     <</isLink>>
     <<#isWarning>>
-      isWarning:t='yes';
+      isWarning:t='yes'
     <</isWarning>>
     <<#isObjective>>
       isObjective:t='yes'
     <</isObjective>>
     color-factor:t='0'
   }
+  <<#isShowDragAndDropIcon>>
+    tooltip:t='<<dragAndDropIconHint>>'
+    dragAndDropIcon {
+      css-hier-invalidate:t='yes'
+      margin-left:t='0.5@blockInterval'
+      flow:t='horizontal'
+      text {
+        text:t=' ('
+      }
+      icon {
+        background-image:t='#ui/gameuiskin#dnd_icon.svg'
+      }
+      text {
+        text:t=')'
+      }
+    }
+  <</isShowDragAndDropIcon>>
+
   <<#haveWarning>>
   warning_icon {
     id:t='warning_icon'
@@ -79,5 +101,6 @@ actionListItem {
   }
   <</haveDiscount>>
 }
+
 <</show>>
 <</actions>>

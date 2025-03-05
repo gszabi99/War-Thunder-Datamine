@@ -123,6 +123,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   showAdditionExtraInfo = false
   showCrewHintUnderSlot = false
   showCrewUnseenIcon = true
+  showCrewInfoTranslucent = false
   unitForSpecType = null //unit to show crew specializations
   shouldSelectAvailableUnit = null //bool
   needPresetsPanel = null //bool
@@ -191,6 +192,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   slotbarHintText = ""
 
   initialCountriesWidths = null
+  crewPopupSlotObj = null
 
   static function create(params) {
     let nest = params?.scene
@@ -1560,6 +1562,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         selectOnHover = this.selectOnHover
         needDnD = this.draggableSlots && !isCrewListOverrided.get()
         showCrewUnseenIcon = this.showCrewUnseenIcon
+        showCrewInfoTranslucent = this.showCrewInfoTranslucent
       }
       airParams.__update(this.getCrewDataParams(crewData))
       let unitItem = buildUnitSlot(id, crewData.unit, airParams)
@@ -1690,15 +1693,26 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     deferOnce(@() obj.isValid() ? handler.onOpenCrewPopup(obj) : null)
   }
 
-  function onOpenCrewPopup(obj) {
+  function onOpenCrewPopup(obj, closeOnUnhover = true) {
     if (handlersManager.findHandlerClassInScene(gui_handlers.SwapCrewsHandler) != null)
       return
+
+    if (this.crewPopupSlotObj?.isValid() && obj.isEqual(this.crewPopupSlotObj)) {
+      let actionsList = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
+      if (actionsList) {
+        actionsList.close()
+        this.crewPopupSlotObj = null
+        return
+      }
+    }
+    this.crewPopupSlotObj = obj
 
     let actions = []
     let thisHandler = this
     let crew = getCrewById(obj.crewId.tointeger())
     let hasUnit = (obj?.forcedUnit != null) || !(crew?.isEmpty ?? false)
     let unitForCrewInfo = hasUnit ? getAircraftByName(obj?.forcedUnit ?? crew?.aircraft) : null
+    let isShowDragAndDropIcon = !showConsoleButtons.value
 
     if (this.hasActions) {
       actions.append({
@@ -1706,7 +1720,10 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         action       = @() thisHandler.isValid() ? thisHandler.onSwapCrews(obj) : null
         text         = loc("slotbar/swapCrewButton")
         show         = true
-        icon         = "#ui/gameuiskin#dnd_icon.svg"
+        icon         = "#ui/gameuiskin#slot_change_aircraft.svg"
+        isShowDragAndDropIcon
+        dragAndDropIconHint = isShowDragAndDropIcon ? loc("slotbar/dragCrewHint") : null
+        iconRotation = 90
       })
 
       if (!hasCrewModalWndInScene())
@@ -1722,7 +1739,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let params = {
       handler = null
-      closeOnUnhover = true
+      closeOnUnhover
       onDeactivateCb = null
       actions = actions
       cssParams = {

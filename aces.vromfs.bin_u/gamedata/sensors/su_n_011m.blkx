@@ -472,10 +472,16 @@
           }
         },
         "resetRadarBvrLockMode": {
-          "setFsmActive": {
-            "fsm": "radarBvrLock",
-            "active": false
-          }
+          "setFsmActive": [
+            {
+              "fsm": "radarBvrLock",
+              "active": false
+            },
+            {
+              "fsm": "velocityLock",
+              "active": false
+            }
+          ]
         },
         "setRadarAcmLockMode": {
           "setScanPatternSet": {
@@ -899,6 +905,50 @@
           },
           "setScanPattern": {
             "scanPattern": "radarBvrLockTws"
+          }
+        },
+        "setVelocityBvrLockMode": {
+          "setBvrLockModeCommon": {},
+          "setFsmActive": {
+            "fsm": "velocityLock",
+            "active": true
+          },
+          "setRelSpeedGatePos": {
+            "source": "targetDesignation",
+            "width": 30.0
+          },
+          "setScanPattern": {
+            "scanPattern": "radarBvrLockSearch"
+          },
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
+          },
+          "setModeName": {
+            "name": "PD HDN VS acquisition"
+          }
+        },
+        "setHprfVelocityStandbyMode": {
+          "setRadarSearchStandbyModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprfVelocity"
+          },
+          "setSignal": {
+            "signal": "hprfVelocitySearch"
+          },
+          "setModeName": {
+            "name": "PD HDN VS standby"
+          }
+        },
+        "setHprfVelocitySearchMode": {
+          "setRadarSearchModeCommon": {},
+          "setTransiver": {
+            "transiver": "hprfVelocity"
+          },
+          "setSignal": {
+            "signal": "hprfVelocitySearch"
+          },
+          "setModeName": {
+            "name": "PD HDN VS search"
           }
         },
         "resetGtmTrackMode": {
@@ -2071,6 +2121,47 @@
             }
           ]
         },
+        "setHprfVelocity": {
+          "setHprfTargetDesignationRange": {},
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setStandbyMode",
+              "actionTemplateName": "setHprfVelocityStandbyMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setSearchMode",
+              "actionTemplateName": "setHprfVelocitySearchMode"
+            },
+            {
+              "fsm": "main",
+              "name": "designateTarget",
+              "actionTemplateName": "designatedTargetSearch"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrLockMode",
+              "actionTemplateName": "setHprfBvrLockMode"
+            },
+            {
+              "fsm": "main",
+              "name": "resetSearchMode",
+              "actionTemplateName": "resetRadarSearchMode"
+            }
+          ],
+          "clearTargets": {},
+          "setFsmActive": [
+            {
+              "fsm": "main",
+              "active": false
+            },
+            {
+              "fsm": "main",
+              "active": true
+            }
+          ]
+        },
         "setGtm": {
           "setMprfTargetDesignationRange": {},
           "setCustomActionTemplate": [
@@ -2233,8 +2324,21 @@
             }
           }
         },
-        "hprfTwsToGtm": {
+        "hprfTwsToHprfVelocity": {
           "stateFrom": "hprfTws",
+          "command": "modeSwitch",
+          "stateTo": "hprfVelocity",
+          "actions": {
+            "setHprfVelocity": {},
+            "setCustomActionTemplate": {
+              "fsm": "radarSearchModes",
+              "name": "restore",
+              "actionTemplateName": "setHprfVelocity"
+            }
+          }
+        },
+        "HprfVelocityToGtm": {
+          "stateFrom": "hprfVelocity",
           "command": "modeSwitch",
           "stateTo": "gtm",
           "actions": {
@@ -3296,7 +3400,7 @@
           "stateFrom": "search",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 10,
+              "limit": 15,
               "radius": 1000.0,
               "dopplerSpeedGateMaxTime": 8.0
             },
@@ -3368,7 +3472,7 @@
           "event": "targetDetected",
           "actions": {
             "updateTargetOfInterest": {
-              "limit": 10,
+              "limit": 15,
               "onlyExisting": true,
               "radius": 1000.0,
               "dopplerSpeedGateMaxTime": 8.0
@@ -3445,6 +3549,37 @@
           }
         }
       }
+    },
+    "velocityLock": {
+      "stateInit": "velocityLock",
+      "transitions": {
+        "init": {
+          "event": "fsmActivate",
+          "actions": {
+            "setTransiver": {
+              "transiver": "hprfVelocity"
+            },
+            "setSignal": {
+              "signal": "hprfVelocitySearch"
+            }
+          }
+        },
+        "scan": {
+          "event": "update",
+          "actions": {
+            "scan": {}
+          }
+        },
+        "detect": {
+          "event": "targetInSight",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        }
+      }
     }
   },
   "illuminationTransmitter": {
@@ -3474,6 +3609,24 @@
       }
     },
     "hprf": {
+      "sideLobesAttenuation": -20.0,
+      "power": 1200.0,
+      "band": 8,
+      "rcs": 3.0,
+      "range": 120000.0,
+      "rangeMax": 240000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "antenna": {
+        "angleHalfSens": 2.5,
+        "sideLobesSensitivity": -32.0
+      }
+    },
+    "hprfVelocity": {
       "sideLobesAttenuation": -20.0,
       "power": 1200.0,
       "band": 8,
@@ -3566,6 +3719,21 @@
         "maxValue": 1200.0,
         "signalWidthMin": 5.0,
         "width": 150.0
+      }
+    },
+    "hprfVelocitySearch": {
+      "rangeFinder": false,
+      "dopplerSpeedFinder": true,
+      "groundClutter": false,
+      "aircraftAsTarget": true,
+      "friendFoeId": true,
+      "mainBeamDopplerSpeed": true,
+      "dopplerSpeed": {
+        "presents": true,
+        "minValue": -138.9,
+        "maxValue": 1388.9,
+        "signalWidthMin": 2.0,
+        "width": 30.0
       }
     },
     "mprfTrack": {

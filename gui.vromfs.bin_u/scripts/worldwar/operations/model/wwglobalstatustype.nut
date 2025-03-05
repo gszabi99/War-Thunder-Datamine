@@ -4,6 +4,8 @@ from "%scripts/mainConsts.nut" import SEEN
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
+let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
+
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let seenWWMapsAvailable = require("%scripts/seen/seenList.nut").get(SEEN.WW_MAPS_AVAILABLE)
 let {
@@ -78,7 +80,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
         return
 
       foreach (opData in data) {
-        let operation = ::WwOperation(opData)
+        let operation = WwOperation(opData)
         if (operation.isValid())
           this.cachedList.append(operation)
       }

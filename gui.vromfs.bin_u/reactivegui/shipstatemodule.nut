@@ -4,7 +4,7 @@ let { eventbus_send } = require("eventbus")
 let { brokenEnginesCount, enginesInCooldown, enginesCount,
   transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
   artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
-  steering, sightAngle, fwdAngle, hasAiGunners, fov, blockMoveControl
+  steering, sightAngle, fwdAngle, hasAiGunners, fov, blockMoveControl, heroCoverPartsRelHp
 } = require("shipState.nut")
 let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
 let { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
@@ -12,13 +12,29 @@ let { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
 let { needShowDmgIndicator } = require("hudState.nut")
 let dmModule = require("dmModule.nut")
 let { damageModule, shipSteeringGauge, hudLogBgColor } = require("style/colors.nut").hud
-
 let { lerp, sin } = require("%sqstd/math.nut")
 
 const STATE_ICON_MARGIN = 1
 const STATE_ICON_SIZE = 54
+const TOP_PANEL_ICON_SIZE = 32
 
-let iconSize = hdpx(STATE_ICON_SIZE)
+let iconSize = hdpxi(STATE_ICON_SIZE)
+let topPanelIconSize = hdpxi(TOP_PANEL_ICON_SIZE)
+
+let coverPartsBarIndicatorWidth = hdpx(170)
+
+enum CoverPartHpThreshold {
+  MAX  = 0.995
+  CRIT = 0.505
+  MIN  = 0.005
+}
+
+enum CoverPartHpColor {
+  GOOD     = 0xffFFC000
+  HEALTHY  = 0xff9EE000
+  CRITICAL = 0xffff4040
+  KILLED   = 0xff000000
+}
 
 let images = {
   engine = Picture($"!ui/gameuiskin#engine_state_indicator.svg:{iconSize}:{iconSize}")
@@ -32,9 +48,11 @@ let images = {
   fire = "!ui/gameuiskin#fire_indicator.svg:"
   steeringMark = Picture($"!ui/gameuiskin#floatage_arrow_down.svg:{iconSize}:{iconSize}")
   sightCone = Picture("+ui/gameuiskin#map_camera")
-  shipCrew = Picture($"!ui/gameuiskin#ship_crew.svg:{iconSize}:{iconSize}")
   gunner = Picture($"!ui/gameuiskin#ship_crew_gunner.svg:{iconSize}:{iconSize}")
   driver = Picture($"!ui/gameuiskin#ship_crew_driver.svg:{iconSize}:{iconSize}")
+  // Top panel icons
+  hull = Picture($"!ui/gameuiskin#ship_hull.svg:{topPanelIconSize}:{topPanelIconSize}")
+  shipCrew = Picture($"!ui/gameuiskin#ship_crew.svg:{topPanelIconSize}:{topPanelIconSize}")
 
   bg = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss")
 
@@ -127,25 +145,25 @@ let damageModules = {
   ]
 }
 
-let buoyancyOpacity = Computed(@() buoyancy.value < 1.0 ? 1.0 : 0.0)
-let buoyancyPercent = Computed(@() (buoyancy.value * 100).tointeger())
+let buoyancyOpacity = Computed(@() buoyancy.get() < 1.0 ? 1.0 : 0.0)
+let buoyancyPercent = Computed(@() (buoyancy.get() * 100).tointeger())
 let buoyancyIndicator = @() {
   size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   watch = buoyancyOpacity
-  opacity = buoyancyOpacity.value
+  opacity = buoyancyOpacity.get()
   children = [
     @() {
-      rendObj = ROBJ_TEXT
-      text = $"{buoyancyPercent.value}%"
-      font = Fonts.small_text_hud
       watch = buoyancyPercent
+      rendObj = ROBJ_TEXT
+      text = $"{buoyancyPercent.get()}%"
+      font = Fonts.small_text_hud
     }
     {
+      size = [iconSize, hdpx(10)]
       rendObj = ROBJ_IMAGE
       image = images.buoyancy
-      size = [iconSize, hdpx(10)]
     }
   ]
 }
@@ -156,11 +174,11 @@ let stateBlock = {
   flow = FLOW_VERTICAL
   children = [
     @() {
-      rendObj = ROBJ_IMAGE
-      color =  fire.value ? damageModule.alert : damageModule.inactive
       watch = fire
-      image = picFire
       size = [iconSize, iconSize]
+      rendObj = ROBJ_IMAGE
+      color =  fire.get() ? damageModule.alert : damageModule.inactive
+      image = picFire
     }
     buoyancyIndicator
   ]
@@ -172,14 +190,14 @@ let playAiSwithAnimation = function (_ne_value) {
 }
 
 let aiGunners = @() {
+  watch = aiGunnersState
   vplace = ALIGN_BOTTOM
   size = [iconSize, iconSize]
   marigin = [hdpx(STATE_ICON_MARGIN), 0]
 
   rendObj = ROBJ_IMAGE
-  image = images.gunnerState?[aiGunnersState.value] ?? images.gunnerState[0]
+  image = images.gunnerState?[aiGunnersState.get()] ?? images.gunnerState[0]
   color = damageModule.active
-  watch = aiGunnersState
   onAttach = @(_elem) aiGunnersState.subscribe(playAiSwithAnimation)
   onDetach = @(_elem) aiGunnersState.unsubscribe(playAiSwithAnimation)
   transform = {}
@@ -203,8 +221,8 @@ let aiGunners = @() {
 
 
 let crewCountColor = Computed(function() {
-  let minimum = minCrewMembersCount.value
-  let current = aliveCrewMembersCount.value
+  let minimum = minCrewMembersCount.get()
+  let current = aliveCrewMembersCount.get()
   if (current < minimum) {
     return damageModule.dmModuleDestroyed
   }
@@ -214,53 +232,27 @@ let crewCountColor = Computed(function() {
   return damageModule.active
 })
 
-let maxCrewLeftPercent = Computed(@() totalCrewMembersCount.value > 0
-  ? (100.0 * (1.0 + (bestMinCrewMembersCount.value.tofloat() - minCrewMembersCount.value)
-      / totalCrewMembersCount.value)
+let maxCrewLeftPercent = Computed(@() totalCrewMembersCount.get() > 0
+  ? (100.0 * (1.0 + (bestMinCrewMembersCount.get().tofloat() - minCrewMembersCount.get())
+      / totalCrewMembersCount.get())
     + 0.5).tointeger()
   : 0
 )
 let countCrewLeftPercent = Computed(@()
-  clamp(lerp(minCrewMembersCount.value - 1, totalCrewMembersCount.value,
-      0, maxCrewLeftPercent.value, aliveCrewMembersCount.value),
+  clamp(lerp(minCrewMembersCount.get() - 1, totalCrewMembersCount.get(),
+      0, maxCrewLeftPercent.get(), aliveCrewMembersCount.get()),
     0, 100)
 )
 
-let crewBlock = {
-  vplace = ALIGN_BOTTOM
-  flow = FLOW_VERTICAL
-  size = [iconSize, SIZE_TO_CONTENT]
-
-  children = [
-    @() {
-      size = [iconSize, iconSize]
-      marigin = [hdpx(STATE_ICON_MARGIN), 0]
-      rendObj = ROBJ_IMAGE
-      image = images.driver
-      watch = [ driverAlive, blockMoveControl ]
-      color = driverAlive.value && !blockMoveControl.value
-        ? damageModule.inactive
-        : damageModule.alert
-    }
-    @() {
-      size = [iconSize, iconSize]
-      marigin = [hdpx(STATE_ICON_MARGIN), 0]
-      rendObj = ROBJ_IMAGE
-      image = images.shipCrew
-      color = crewCountColor.value
-      watch = crewCountColor
-    }
-    @() {
-      vplace = ALIGN_BOTTOM
-      hplace = ALIGN_CENTER
-      rendObj = ROBJ_TEXT
-      watch = countCrewLeftPercent
-      text = $"{countCrewLeftPercent.value}%"
-      font = Fonts.tiny_text_hud
-      fontFx = fontFx
-      fontFxColor = fontFxColor
-    }
-  ]
+let driverIndicator = @() {
+  watch = [ driverAlive, blockMoveControl ]
+  size = [iconSize, iconSize]
+  marigin = [hdpx(STATE_ICON_MARGIN), 0]
+  rendObj = ROBJ_IMAGE
+  image = images.driver
+  color = driverAlive.get() && !blockMoveControl.get()
+    ? damageModule.inactive
+    : damageModule.alert
 }
 
 let steeringLine = {
@@ -292,13 +284,13 @@ let steeringComp = {
       ]
     }
     @() {
-      rendObj = ROBJ_IMAGE
       watch = steering
+      size = [hdpx(12), hdpx(10)]
+      pos = [pw(-steering.get() * 50), -hdpx(5)]
+      hplace = ALIGN_CENTER
+      rendObj = ROBJ_IMAGE
       image = images.steeringMark
       color = shipSteeringGauge.mark
-      size = [hdpx(12), hdpx(10)]
-      hplace = ALIGN_CENTER
-      pos = [pw(-steering.value * 50), -hdpx(5)]
     }
   ]
 }
@@ -315,8 +307,8 @@ let dollFov = @() {
   size = fovSize
   transform = {
     pivot = [0.5, 0.5]
-    rotate = sightAngle.value - fwdAngle.value
-    scale = [sin(fov.value), 1.0]
+    rotate = sightAngle.get() - fwdAngle.get()
+    scale = [sin(fov.get()), 1.0]
   }
   children = [
     {
@@ -342,7 +334,6 @@ let doll = {
   children = dollFov
 }
 
-
 let leftBlock = damageModules
 
 let rightBlock = @() {
@@ -352,11 +343,10 @@ let rightBlock = @() {
   children = [
     stateBlock
     { size = [SIZE_TO_CONTENT, flex()] }
-    hasAiGunners.value ? aiGunners : null
-    crewBlock
+    hasAiGunners.get() ? aiGunners : null
+    driverIndicator
   ]
 }
-
 
 let shipStateDisplay = {
   size = SIZE_TO_CONTENT
@@ -377,20 +367,122 @@ let shipStateDisplay = {
   ]
 }
 
-
 let xraydoll = {
-  rendObj = ROBJ_XRAYDOLL     ///Need add ROBJ_XRAYDOLL in scene for correct update isVisibleDmgIndicator state
   size = [1, 1]
+  rendObj = ROBJ_XRAYDOLL     ///Need add ROBJ_XRAYDOLL in scene for correct update isVisibleDmgIndicator state
+}
+
+function mkCoverPartsBars(heroCoverPartsRelHpV) {
+  let partsCount = heroCoverPartsRelHpV.len()
+  if (partsCount == 0)
+    return null
+  let barsMarginX = hdpx(2)
+  let width = (coverPartsBarIndicatorWidth / partsCount) - (partsCount + 1) * barsMarginX / partsCount
+  return heroCoverPartsRelHpV.map(@(hp) {
+    size = [width, hdpx(6)]
+    margin = [0, barsMarginX]
+    rendObj = ROBJ_SOLID
+    color = hp < CoverPartHpThreshold.MIN ? CoverPartHpColor.KILLED
+      : hp < CoverPartHpThreshold.CRIT ? CoverPartHpColor.CRITICAL
+      : hp < CoverPartHpThreshold.MAX ? CoverPartHpColor.GOOD
+      : CoverPartHpColor.HEALTHY
+  })
+}
+
+let coverPartsBar = @() {
+  watch = heroCoverPartsRelHp
+  size = [coverPartsBarIndicatorWidth, SIZE_TO_CONTENT]
+  vplace = ALIGN_BOTTOM
+  padding = [hdpx(2), 0]
+  flow = FLOW_HORIZONTAL
+  rendObj = ROBJ_BOX
+  borderColor = 0xff565656
+  borderWidth = hdpx(1)
+  children = mkCoverPartsBars(heroCoverPartsRelHp.get())
+}
+
+let coverPartsIndicator = {
+  size = flex()
+  padding = hdpx(4)
+  rendObj = ROBJ_SOLID
+  color = hudLogBgColor
+  flow = FLOW_HORIZONTAL
+  gap = hdpx(2)
+  children = [
+    {
+      size = [topPanelIconSize, topPanelIconSize]
+      rendObj = ROBJ_IMAGE
+      image = images.hull
+    }
+    {
+      vplace = ALIGN_CENTER
+      flow = FLOW_VERTICAL
+      children = [
+        {
+          rendObj = ROBJ_TEXT
+          text = loc("HUD/SHIP_HULL_STRENGTH")
+          font = Fonts.tiny_text_hud
+        }
+        coverPartsBar
+      ]
+    }
+  ]
+}
+
+let crewIndicator = {
+  size = [hdpx(82), SIZE_TO_CONTENT]
+  padding = hdpx(4)
+  rendObj = ROBJ_SOLID
+  color = hudLogBgColor
+  children = [
+    @() {
+      watch = crewCountColor
+      size = [topPanelIconSize, topPanelIconSize]
+      rendObj = ROBJ_IMAGE
+      image = images.shipCrew
+      color = crewCountColor.get()
+    }
+    @() {
+      watch = countCrewLeftPercent
+      size = flex()
+      halign = ALIGN_RIGHT
+      valign = ALIGN_CENTER
+      rendObj = ROBJ_TEXT
+      text = $"{countCrewLeftPercent.get()}%"
+      font = Fonts.tiny_text_hud
+      fontFx = fontFx
+      fontFxColor = fontFxColor
+    }
+  ]
+}
+
+let topPanel = {
+  size = [flex(), SIZE_TO_CONTENT]
+  gap = hdpx(4)
+  flow = FLOW_HORIZONTAL
+  children = [
+    crewIndicator
+    coverPartsIndicator
+  ]
+}
+
+let mainPanel = {
+  padding = hdpx(10)
+  valign = ALIGN_CENTER
+  rendObj = ROBJ_SOLID
+  color = hudLogBgColor
+  flow = FLOW_VERTICAL
+  gap = { size = [flex(), hdpx(5)] }
+  children = [
+    speedComp
+    shipStateDisplay
+  ]
 }
 
 return @() {
   watch = needShowDmgIndicator
-  size = SIZE_TO_CONTENT
   flow = FLOW_VERTICAL
-  rendObj = ROBJ_SOLID
-  color = hudLogBgColor
-  padding = needShowDmgIndicator.get() ? hdpx(10) : 0
-  gap = needShowDmgIndicator.get() ? { size = [flex(), hdpx(5)] } : 0
+  gap = hdpx(4)
   behavior = Behaviors.RecalcHandler
   function onRecalcLayout(_initial, elem) {
     if (elem.getWidth() > 1 && elem.getHeight() > 1) {
@@ -406,8 +498,8 @@ return @() {
 
   children = needShowDmgIndicator.get()
     ? [
-        speedComp
-        shipStateDisplay
+        topPanel
+        mainPanel
       ]
     : xraydoll
 }

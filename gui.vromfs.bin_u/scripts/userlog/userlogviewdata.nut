@@ -63,6 +63,7 @@ let { ps4CheckAndReplaceContentDisabledText } = require("%scripts/clans/clanText
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { itemType } = require("%scripts/items/itemsConsts.nut")
 let { getTrophyRewardText, getRewardsListViewData } = require("%scripts/items/prizesView.nut")
+let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
 
 let imgFormat = @"img {size:t='%s'; background-image:t='%s';
  background-repeat:t='aspect-ratio'; margin-right:t='0.01@scrn_tgt;'} "
@@ -1492,7 +1493,7 @@ function getUserlogViewData(logObj) {
                                                          : "worldWar/userlog/startOperation"
     local operation = ""
     if (isWorldWarEnabled())
-      operation = ::WwOperation.getNameTextByIdAndMapName(
+      operation = WwOperation.getNameTextByIdAndMapName(
         getTblValue("operationId", logObj),
         WwMap.getNameTextByMapName(getTblValue("mapName", logObj))
       )

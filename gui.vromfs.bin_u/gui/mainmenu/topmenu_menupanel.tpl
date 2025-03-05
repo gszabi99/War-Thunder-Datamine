@@ -16,7 +16,7 @@ tdiv {
         width:t='<<forceHoverWidth>>'
       <</forceHoverWidth>>
       <<^forceHoverWidth>>
-        width:t='<<columnsCount>> * 0.28@sf'
+        width:t='<<columnsCount>> * (1@mainMenuButtonWidth + 1@dp) + 2@topMenuHoverMenuIndent'
       <</forceHoverWidth>>
       height:t='0'
       pos:t='<<tmHoverMenuPos>> - 1@topMenuHoverMenuIndent, ph'; position:t='absolute'
@@ -33,11 +33,7 @@ tdiv {
         pos:t='<<tmHoverMenuPos>> + 1@topMenuHoverMenuIndent, ph-h-@dropDownMenuBottomActivityGap';
         position:t='absolute';
         padding-top:t='0'
-        flow:t='vertical'
-        <<#isWide>>
-        isWide = 'yes'
-        <</isWide>>
-
+        flow:t='horizontal'
         behavior:t='posNavigator'
         navigatorShortcuts:t='full'
         moveX:t='closest';
@@ -47,29 +43,41 @@ tdiv {
         on_wrap_up:t='onBackDropdownMenu'
         on_wrap_left:t='stickLeftDropDown'
         on_wrap_right:t='stickRightDropDown'
-
         on_activate:t='topmenuMenuActivate'
         on_cancel_edit:t='onBackDropdownMenu'
+
+        <<#isWide>>
+        isWide = 'yes'
+        <</isWide>>
 
         line {
           enable:t='no'
         }
 
         <<#columns>>
-          <<#buttons>>
-            <<#isLineSeparator>>
-              topMenuLinePlace {
-                inactive:t='yes'
-                topMenuLine {}
-              }
-            <</isLineSeparator>>
-            <<#isButton>>
-              include "%gui/commonParts/button.tpl"
-            <</isButton>>
-            <<#checkbox>>
-              include "%gui/commonParts/checkbox.tpl"
-            <</checkbox>>
-          <</buttons>>
+          topMenuButtonsColumn {
+            flow:t='vertical'
+            <<#forceHoverWidth>>
+              width:t='<<forceHoverWidth>> - 2@topMenuHoverMenuIndent'
+            <</forceHoverWidth>>
+            <<^forceHoverWidth>>
+              width:t='1@mainMenuButtonWidth'
+            <</forceHoverWidth>>
+
+            <<#buttons>>
+              <<#isButton>>
+                include "%gui/commonParts/button.tpl"
+                <<^isLastBtn>>
+                menuItemSeparator {
+                  id:t='<<id>><<separatorPostfix>>'
+                }
+                <</isLastBtn>>
+              <</isButton>>
+              <<#checkbox>>
+                include "%gui/commonParts/checkbox.tpl"
+              <</checkbox>>
+            <</buttons>>
+          }
           <<#addNewLine>>
             chapterSeparator {
               pos:t='(pw/<<columnsCount>>)*<<columnIndex>>-50%w, 50%ph-50%h'

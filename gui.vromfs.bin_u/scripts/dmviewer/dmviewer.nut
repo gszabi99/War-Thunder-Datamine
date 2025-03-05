@@ -21,7 +21,8 @@ let { blkOptFromPath, eachParam } = require("%sqstd/datablock.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
 let { KGF_TO_NEWTON, isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon,
-  getPrimaryWeaponsList, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
+  getPrimaryWeaponsList, getWeaponNameByBlkPath, getTurretGuidanceSpeedMultByDiff
+} = require("%scripts/weaponry/weaponryInfo.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { hasLoadedModel } = require("%scripts/hangarModelLoadManager.nut")
@@ -2374,11 +2375,14 @@ dmViewer = {
       foreach (a in [
         { need = needAxisX, modifName = "turnTurretSpeed", blkName = "speedYaw",
           shipFxName = [ "mainSpeedYawK", "auxSpeedYawK", "aaSpeedYawK" ],
-          crewMemberTopSkill = { crewMember = "tank_gunner", skill = "tracking" }
+          crewMemberTopSkill = { crewMember = "tank_gunner", skill = "tracking" },
+          guidanceMultId = "arcadeTurretBoostHorz"
         },
         { need = needAxisY, modifName = "turnTurretSpeedPitch", blkName = "speedPitch",
           shipFxName = [ "mainSpeedPitchK", "auxSpeedPitchK", "aaSpeedPitchK" ],
-          crewMemberTopSkill = { crewMember = "tank_gunner", skill = "tracking" }},
+          crewMemberTopSkill = { crewMember = "tank_gunner", skill = "tracking" },
+          guidanceMultId = "arcadeTurretBoostVert"
+        },
       ]) {
         if (!a.need)
           continue
@@ -2405,7 +2409,8 @@ dmViewer = {
                          : ""
           let baseSpeed = weaponInfoBlk?[a.blkName] ?? 0
           let modMul =  this.getModEffect(modId, effectId)
-          speed = baseSpeed * modMul
+          let gameModeGuidanceSpeedMult = getTurretGuidanceSpeedMultByDiff(getCurrentGameModeEdiff())?[a.guidanceMultId] ?? 1
+          speed = baseSpeed * modMul * gameModeGuidanceSpeedMult
         }
 
         if (speed) {

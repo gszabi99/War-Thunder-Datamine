@@ -137,6 +137,7 @@
             "background-image": "#ui/gameuiskin#block_bg_rounded_gray",
             "background-position": "4, 4, 4, 4",
             "action_item_content": {
+              "id": "shortcut_hint",
               "behaviour": "BhvHint",
               "pos": "0, 0.5ph-0.5h",
               "position": "relative",
@@ -170,7 +171,9 @@
           },
           "tacticalMap": {
             "id": "hud_tank_tactical_map",
-            "size": "pw, ph"
+            "size": "@sizeTacticalMap, @sizeTacticalMap",
+            "pos": "pw - w, 0",
+            "position": "relative"
           }
         }
       ]

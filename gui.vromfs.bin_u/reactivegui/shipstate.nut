@@ -72,8 +72,7 @@ let shipState = {
   gunStatesFirstRow
   gunStatesSecondRow
   shellHitDamageEvents
-
-  HeroCoverPartsRelHp = Watched([])
+  heroCoverPartsRelHp = mkWatched(persist, "shipHeroCoverPartsRelHp", [])
 }
 
 function isDiff(time1, time2) {

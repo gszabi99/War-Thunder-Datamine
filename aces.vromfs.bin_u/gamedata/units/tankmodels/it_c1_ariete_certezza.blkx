@@ -2432,6 +2432,59 @@
         }
       },
       {
+        "trigger": "gunner4",
+        "triggerGroup": "smoke",
+        "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
+        "weaponType": "rockets",
+        "useEmitter": true,
+        "emitter": "emtr_mortar_flame_01",
+        "emitterGenRange": [
+          1,
+          8
+        ],
+        "emitterGenFmt": "emtr_mortar_flame_%02d",
+        "ignoreLoaderPenalty": true,
+        "createGunEffects": true,
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "allowableDelta": 360.0,
+        "salvo": 2,
+        "salvoDelay": 0.5,
+        "speedYaw": 24.0,
+        "speedPitch": 15.0,
+        "fireConeAngle": 1.0,
+        "bullets": 8,
+        "salvoAmount": 100.0,
+        "ChainfireTime": 0.0,
+        "DelayAfterShoot": 5.0,
+        "AttackMaxDistance": 1000.0,
+        "AttackMaxRadius": 1000.0,
+        "AttackMaxHeight": 1000.0,
+        "accuracyAir": 0.0,
+        "accuracyGnd": 1.5,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 0.0,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "bone_grenade",
+          "gun": "bone_grenade"
+        },
+        "limits": {
+          "yaw": [
+            -0.0,
+            0.0
+          ],
+          "pitch": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
         "trigger": "gunner3",
         "triggerGroup": "commander",
         "blk": "gameData/Weapons/dummy_weapon.blk",
@@ -3294,9 +3347,59 @@
     "120mm_DM_APDS_FS_ammo_pack": {},
     "120mm_NATO_APDS_FS_ammo_pack": {},
     "laser_rangefinder_lws": {},
-    "tank_smoke_screen_system_mod": {
+    "night_vision_system": {
+      "image": "#ui/gameuiskin#thermal_sight",
+      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
+      "tier": 3,
+      "effects": {
+        "nightVision": {
+          "nightVisionDmPart": "fire_control_system_dm",
+          "gunnerThermal": {
+            "resolution": [
+              800,
+              600
+            ],
+            "noiseFactor": 0.04
+          },
+          "commanderViewThermal": {
+            "resolution": [
+              800,
+              600
+            ],
+            "noiseFactor": 0.04
+          },
+          "driverIr": {
+            "resolution": [
+              1200,
+              800
+            ],
+            "lightMult": 7.0,
+            "ghosting": 0.6,
+            "noiseFactor": 0.2
+          }
+        }
+      }
+    },
+    "camouflage_net_certezza": {
+      "invertEnableLogic": false,
+      "turn_it_off": false,
+      "group": "certezza_armour",
+      "tier": 3,
+      "disableModEffects": {
+        "hideNodes": {
+          "node": [
+            "turret_net",
+            "body_net",
+            "gun_barrel_net"
+          ]
+        }
+      }
+    },
+    "certezza_protection_improvement": {
+      "invertEnableLogic": false,
+      "turn_it_off": false,
+      "group": "certezza_armour",
       "tier": 4,
-      "modClass": "protection",
       "effects": {
         "commonWeapons": {
           "Weapon": [
@@ -3537,6 +3640,59 @@
               }
             },
             {
+              "trigger": "gunner4",
+              "triggerGroup": "smoke",
+              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
+              "weaponType": "rockets",
+              "useEmitter": true,
+              "emitter": "emtr_mortar_flame_01",
+              "emitterGenRange": [
+                1,
+                8
+              ],
+              "emitterGenFmt": "emtr_mortar_flame_%02d",
+              "ignoreLoaderPenalty": true,
+              "createGunEffects": true,
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "allowableDelta": 360.0,
+              "salvo": 2,
+              "salvoDelay": 0.5,
+              "speedYaw": 24.0,
+              "speedPitch": 15.0,
+              "fireConeAngle": 1.0,
+              "bullets": 8,
+              "salvoAmount": 100.0,
+              "ChainfireTime": 0.0,
+              "DelayAfterShoot": 5.0,
+              "AttackMaxDistance": 1000.0,
+              "AttackMaxRadius": 1000.0,
+              "AttackMaxHeight": 1000.0,
+              "accuracyAir": 0.0,
+              "accuracyGnd": 1.5,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 0.0,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "turret": {
+                "head": "bone_grenade",
+                "gun": "bone_grenade"
+              },
+              "limits": {
+                "yaw": [
+                  -0.0,
+                  0.0
+                ],
+                "pitch": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            {
               "trigger": "gunner3",
               "triggerGroup": "commander",
               "blk": "gameData/Weapons/dummy_weapon.blk",
@@ -3590,149 +3746,24 @@
                   ]
                 }
               }
-            },
-            {
-              "trigger": "gunner4",
-              "triggerGroup": "smoke",
-              "blk": "gameData/Weapons/groundModels_weapons/76mm_modern_germ_smoke_grenade_launcher.blk",
-              "weaponType": "rockets",
-              "useEmitter": true,
-              "emitter": "emtr_mortar_flame_01",
-              "emitterGenRange": [
-                1,
-                8
-              ],
-              "emitterGenFmt": "emtr_mortar_flame_%02d",
-              "ignoreLoaderPenalty": true,
-              "createGunEffects": true,
-              "defaultYaw": 0.0,
-              "defaultPitch": 0.0,
-              "allowableDelta": 360.0,
-              "salvo": 2,
-              "salvoDelay": 0.5,
-              "speedYaw": 24.0,
-              "speedPitch": 15.0,
-              "fireConeAngle": 1.0,
-              "bullets": 8,
-              "salvoAmount": 100.0,
-              "ChainfireTime": 0.0,
-              "DelayAfterShoot": 5.0,
-              "AttackMaxDistance": 1000.0,
-              "AttackMaxRadius": 1000.0,
-              "AttackMaxHeight": 1000.0,
-              "accuracyAir": 0.0,
-              "accuracyGnd": 1.5,
-              "errMeasureVel": 0.0,
-              "errMeasureVelFast": 0.0,
-              "errMeasureVelFwdShift": 0.0,
-              "errMeasureVelDir": 0.0,
-              "errTargettingOn100kmph": 0.0,
-              "errTargetting": 3.0,
-              "errExplTime": 0.0,
-              "turret": {
-                "head": "bone_grenade",
-                "gun": "bone_grenade"
-              },
-              "limits": {
-                "yaw": [
-                  -0.0,
-                  0.0
-                ],
-                "pitch": [
-                  0.0,
-                  0.0
-                ]
-              }
             }
           ],
           "hideNodes": {
             "node": [
               "ex_decor_l_05",
-              "ex_decor_r_05"
+              "ex_decor_r_05",
+              "ex_armor_turret_06",
+              "ex_armor_turret_07",
+              "ex_armor_turret_08",
+              "ex_armor_turret_05",
+              "ex_armor_turret_04",
+              "ex_armor_body_l_07",
+              "ex_armor_body_r_07",
+              "turret_net",
+              "body_net",
+              "gun_barrel_net"
             ]
           }
-        }
-      }
-    },
-    "night_vision_system": {
-      "image": "#ui/gameuiskin#thermal_sight",
-      "animation": "video/unitModifications/night_vision_system_thermal.ivf",
-      "tier": 3,
-      "effects": {
-        "nightVision": {
-          "nightVisionDmPart": "fire_control_system_dm",
-          "gunnerThermal": {
-            "resolution": [
-              800,
-              600
-            ],
-            "noiseFactor": 0.04
-          },
-          "commanderViewThermal": {
-            "resolution": [
-              800,
-              600
-            ],
-            "noiseFactor": 0.04
-          },
-          "driverIr": {
-            "resolution": [
-              1200,
-              800
-            ],
-            "lightMult": 7.0,
-            "ghosting": 0.6,
-            "noiseFactor": 0.2
-          }
-        }
-      }
-    },
-    "camouflage_net_certezza": {
-      "invertEnableLogic": false,
-      "turn_it_off": false,
-      "group": "certezza_armour",
-      "tier": 3,
-      "disableModEffects": {
-        "hideNodes": {
-          "node": [
-            "turret_net",
-            "body_net",
-            "gun_barrel_net"
-          ]
-        }
-      }
-    },
-    "certezza_protection_improvement": {
-      "invertEnableLogic": false,
-      "turn_it_off": false,
-      "group": "certezza_armour",
-      "tier": 4,
-      "effects": {
-        "rcostAddParam": 1.04,
-        "changeMass": 5500.0,
-        "hideNodes": {
-          "node": [
-            "ex_decor_06",
-            "ex_decor_05",
-            "ex_decor_02",
-            "ex_decor_03"
-          ]
-        }
-      },
-      "disableModEffects": {
-        "hideNodes": {
-          "node": [
-            "ex_armor_turret_06",
-            "ex_armor_turret_07",
-            "ex_armor_turret_08",
-            "ex_armor_turret_05",
-            "ex_armor_turret_04",
-            "ex_armor_body_l_07",
-            "ex_armor_body_r_07",
-            "turret_net",
-            "body_net",
-            "gun_barrel_net"
-          ]
         }
       }
     }

@@ -2933,14 +2933,14 @@
         "gun": "bone_gun",
         "barrel": "bone_gun_barrel",
         "linkedAnimPart": {
-          "verNode": "bone_gun_mask_anim",
+          "verNode": "bone_roll_01",
           "verLimits": [
-            -0.0,
-            0.8
+            -90.0,
+            90.0
           ],
           "verOriginLimits": [
-            -5.0,
-            20.0
+            -90.0,
+            90.0
           ]
         }
       },
@@ -3002,6 +3002,27 @@
           "count": 4
         }
       }
+    }
+  },
+  "chainIK": {
+    "points": {
+      "point": [
+        {
+          "nameTemplate": "bone_roll_01_01"
+        },
+        {
+          "nameTemplate": "bone_roll_01_02"
+        }
+      ]
+    }
+  },
+  "constraintChainIK": {
+    "piston": {
+      "chainTemplate": "bone_roll_01_01",
+      "offsetLimits": [
+        0.0,
+        0.1
+      ]
     }
   },
   "modifications": {

@@ -139,6 +139,24 @@ function getTorpedoAutoUpdateDepthByDiff(ediff) {
   return torpedoAutoUpdateDepthByDiff[diff.settingsName]
 }
 
+let turretGuidanceSpeedMultByDiff = {}
+function getTurretGuidanceSpeedMultByDiff(ediff) {
+  if (turretGuidanceSpeedMultByDiff.len() == 0) {
+    let blk = get_game_params_blk()
+    turretGuidanceSpeedMultByDiff.__update(g_difficulty.types.reduce(function(res, val) {
+      let noArcadeBoostName = (blk.difficulty_presets?[val.name].noArcadeBoost ?? 1) == 1 ? "on" : "off"
+      let turretGuidanceMult = {
+        arcadeTurretBoostHorz = blk.difficulty_settings.noArcadeBoost[noArcadeBoostName]?.arcadeTurretBoostHorz ?? 1
+        arcadeTurretBoostVert = blk.difficulty_settings.noArcadeBoost[noArcadeBoostName]?.arcadeTurretBoostVert ?? 1
+      }
+      res[val.name] <- turretGuidanceMult
+      return res
+    }, {}))
+  }
+  let diff = get_difficulty_by_ediff(ediff)
+  return turretGuidanceSpeedMultByDiff?[diff.name] ?? {}
+}
+
 function isWeaponAux(weapon) {
   local aux = false
   foreach (tag in weapon.tags)
@@ -1085,4 +1103,5 @@ return {
   isGunnerTrigger
   get_weapon_icons_text
   getTorpedoAutoUpdateDepthByDiff
+  getTurretGuidanceSpeedMultByDiff
 }

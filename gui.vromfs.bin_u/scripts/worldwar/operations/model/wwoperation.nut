@@ -25,7 +25,7 @@ enum WW_OPERATION_PRIORITY { //bit enum
   MAX                        = 0xFFFF
 }
 
-::WwOperation <- class {
+let WwOperation = class {
   id = -1
   data = null
   status = WW_OPERATION_STATUSES.UNKNOWN
@@ -323,3 +323,5 @@ enum WW_OPERATION_PRIORITY { //bit enum
   getCluster = @() this.data?.cluster ?? ""
   setFinishedStatus = @(isFinish) this.isFinished = isFinish
 }
+
+return WwOperation

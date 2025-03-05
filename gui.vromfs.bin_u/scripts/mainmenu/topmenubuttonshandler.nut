@@ -11,6 +11,8 @@ let { getTopMenuSectionsOrder } = require("%scripts/mainmenu/topMenuSections.nut
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
 
+const SEPARATOR_POSTFIX = "_separator"
+
 gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = null
@@ -92,6 +94,8 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let columns = []
 
       foreach (idx, column in sectionData.buttons) {
+        if ((column?.len() ?? 0) > 0)
+          column.top().isLastButton <- true
         columns.append({
           buttons = column
           addNewLine = idx != (columnsCount - 1)
@@ -103,6 +107,7 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       u.appendOnce(tmId, this.GCDropdownsList)
 
       sectionsView.append({
+        separatorPostfix = SEPARATOR_POSTFIX
         tmId = tmId
         haveTmDiscount = sectionData.haveTmDiscount
         tmDiscountId = sectionData.getTopMenuDiscountId()
@@ -165,6 +170,7 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       local isVisibleAnyButton = false
       foreach (column in section.buttons) {
+        local lastVisibleBtn = null
         foreach (button in column) {
           let btnObj = sectionObj.findObject(button.id)
           if (!checkObj(btnObj))
@@ -178,7 +184,8 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           btnObj.show(show)
           btnObj.enable(show)
           isVisibleAnyButton = isVisibleAnyButton || show
-
+          sectionObj.findObject($"{button.id}{SEPARATOR_POSTFIX}")?.show(show)
+          lastVisibleBtn = show ? button : lastVisibleBtn
           if (!show)
             continue
 
@@ -186,6 +193,9 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           btnObj.inactiveColor = isVisualDisable ? "yes" : "no"
           btnObj.tooltip = button.tooltip()
         }
+        if (lastVisibleBtn)
+          sectionObj.findObject($"{lastVisibleBtn.id}{SEPARATOR_POSTFIX}")?.show(false)
+
       }
 
       if (skipNavigation) {

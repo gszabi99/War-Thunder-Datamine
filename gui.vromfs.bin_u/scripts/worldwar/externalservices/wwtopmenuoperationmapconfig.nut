@@ -31,10 +31,8 @@ enums.addTypes(wwTopMenuOperationMap, [
         buttonsList.WW_SCENARIO_DESCR
         buttonsList.WW_OPERATION_LIST
         buttonsList.WW_WIKI
-        buttonsList.LINE_SEPARATOR
         buttonsList.OPTIONS
         buttonsList.CONTROLS
-        buttonsList.LINE_SEPARATOR
         buttonsList.WW_HANGAR
       ]
     ]

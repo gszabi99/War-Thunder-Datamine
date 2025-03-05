@@ -93,7 +93,7 @@ shopItem {
     }
     <<#isShowDragAndDropIcon>>
     isShowDragAndDropIcon:t='yes'
-    tooltip:t='#slotbar/dragUnitHint'
+    tooltip:t='<<dragAndDropIconHint>>'
     dragAndDropIcon {
       position:t='relative'
       top:t='50%ph-50%h'

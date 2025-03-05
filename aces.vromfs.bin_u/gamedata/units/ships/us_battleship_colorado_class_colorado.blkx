@@ -47,6 +47,9 @@
     5.7,
     -1.2
   ],
+  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
+  "customImage": "!#ui/unitskin#image_in_progress",
+  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -6992,8 +6995,8 @@
       ]
     },
     "engines": {
-      "maxSpeed": 10.6,
-      "maxReverseSpeed": 5.2,
+      "maxSpeed": 10.55,
+      "maxReverseSpeed": 3.2,
       "speedToTime": {
         "row": [
           [
@@ -7005,7 +7008,7 @@
             21.0
           ],
           [
-            10.6,
+            10.55,
             32.0
           ]
         ]
@@ -7017,11 +7020,11 @@
             6.6
           ],
           [
-            3.4,
+            2.4,
             15.0
           ],
           [
-            5.2,
+            3.2,
             25.0
           ]
         ]
@@ -7149,6 +7152,11 @@
     "binoculars": "navy_binoculars"
   },
   "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/naval/us_sc_radar.blk",
+      "designationFromBody": true,
+      "dmPart": "antenna_target_location_01_dm"
+    },
     "fireDirecting": [
       {
         "dmPartMain": "fire_control_room_01_dm",
@@ -7210,30 +7218,25 @@
     "supportPlaneClass": "os2u_1_naval",
     "planeStartSpeed": 150.0,
     "count": 2,
-    "catapult": [
-      {
-        "visualNode": "aircraft_01",
-        "head": "catapult_01"
-      },
-      {
-        "visualNode": "aircraft_02",
-        "head": "catapult_mount_02"
-      }
-    ]
+    "catapult": {
+      "visualNode": "aircraft_02",
+      "head": "catapult_mount_02"
+    }
   },
   "commonWeapons": {
     "animatedBones": {
       "node": [
         "fire_director_01",
         "fire_director_02",
-        "fire_director_03"
+        "fire_director_03",
+        "antenna_target_location_01"
       ]
     },
     "Weapon": [
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/410mm_45_type_3_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/406mm_45_mk5_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_01",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -7241,9 +7244,9 @@
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 2.0,
-        "speedPitch": 4.0,
-        "bullets": 100,
+        "speedYaw": 4.0,
+        "speedPitch": 10.0,
+        "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
@@ -7313,7 +7316,7 @@
       {
         "trigger": "gunner0",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/410mm_45_type_3_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/406mm_45_mk5_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_02",
         "flash": "emtr_gun_flame_02",
         "useEmitter": true,
@@ -7321,9 +7324,9 @@
         "breechDP": "main_caliber_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 2.0,
-        "speedPitch": 4.0,
-        "bullets": 100,
+        "speedYaw": 4.0,
+        "speedPitch": 10.0,
+        "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
@@ -7393,7 +7396,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/410mm_45_type_3_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/406mm_45_mk5_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_03",
         "flash": "emtr_gun_flame_03",
         "useEmitter": true,
@@ -7401,9 +7404,9 @@
         "breechDP": "main_caliber_gun_03_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 2.0,
-        "speedPitch": 4.0,
-        "bullets": 100,
+        "speedYaw": 4.0,
+        "speedPitch": 10.0,
+        "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
@@ -7473,7 +7476,7 @@
       {
         "trigger": "gunner1",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/410mm_45_type_3_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/406mm_45_mk5_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_04",
         "flash": "emtr_gun_flame_04",
         "useEmitter": true,
@@ -7481,9 +7484,9 @@
         "breechDP": "main_caliber_gun_04_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 2.0,
-        "speedPitch": 4.0,
-        "bullets": 100,
+        "speedYaw": 4.0,
+        "speedPitch": 10.0,
+        "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
@@ -7553,7 +7556,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/410mm_45_type_3_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/406mm_45_mk5_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_05",
         "flash": "emtr_gun_flame_05",
         "useEmitter": true,
@@ -7561,9 +7564,9 @@
         "breechDP": "main_caliber_gun_05_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 2.0,
-        "speedPitch": 4.0,
-        "bullets": 100,
+        "speedYaw": 4.0,
+        "speedPitch": 10.0,
+        "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
@@ -7633,7 +7636,7 @@
       {
         "trigger": "gunner2",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/410mm_45_type_3_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/406mm_45_mk5_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_06",
         "flash": "emtr_gun_flame_06",
         "useEmitter": true,
@@ -7641,9 +7644,9 @@
         "breechDP": "main_caliber_gun_06_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 2.0,
-        "speedPitch": 4.0,
-        "bullets": 100,
+        "speedYaw": 4.0,
+        "speedPitch": 10.0,
+        "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
@@ -7713,7 +7716,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/410mm_45_type_3_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/406mm_45_mk5_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_07",
         "flash": "emtr_gun_flame_07",
         "useEmitter": true,
@@ -7721,9 +7724,9 @@
         "breechDP": "main_caliber_gun_07_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 2.0,
-        "speedPitch": 4.0,
-        "bullets": 100,
+        "speedYaw": 4.0,
+        "speedPitch": 10.0,
+        "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
@@ -7805,7 +7808,7 @@
       {
         "trigger": "gunner3",
         "triggerGroup": "primary",
-        "blk": "gameData/Weapons/navalModels_weapons/410mm_45_type_3_naval_user_cannon.blk",
+        "blk": "gameData/Weapons/navalModels_weapons/406mm_45_mk5_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_08",
         "flash": "emtr_gun_flame_08",
         "useEmitter": true,
@@ -7813,9 +7816,9 @@
         "breechDP": "main_caliber_gun_08_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 2.0,
-        "speedPitch": 4.0,
-        "bullets": 100,
+        "speedYaw": 4.0,
+        "speedPitch": 10.0,
+        "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
         "turretLongSalvo": true,
@@ -8620,8 +8623,8 @@
       },
       {
         "trigger": "gunner14",
-        "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_54_mk18_turret_mk42_single_naval_user_cannon.blk",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/127mm_25_5inch_mk11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_21",
         "flash": "emtr_gun_flame_21",
         "useEmitter": true,
@@ -8718,8 +8721,8 @@
       },
       {
         "trigger": "gunner15",
-        "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_54_mk18_turret_mk42_single_naval_user_cannon.blk",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/127mm_25_5inch_mk11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_22",
         "flash": "emtr_gun_flame_22",
         "useEmitter": true,
@@ -8816,8 +8819,8 @@
       },
       {
         "trigger": "gunner16",
-        "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_54_mk18_turret_mk42_single_naval_user_cannon.blk",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/127mm_25_5inch_mk11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_29",
         "flash": "emtr_gun_flame_29",
         "useEmitter": true,
@@ -8936,8 +8939,8 @@
       },
       {
         "trigger": "gunner17",
-        "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_54_mk18_turret_mk42_single_naval_user_cannon.blk",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/127mm_25_5inch_mk11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_30",
         "flash": "emtr_gun_flame_30",
         "useEmitter": true,
@@ -9056,8 +9059,8 @@
       },
       {
         "trigger": "gunner18",
-        "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_54_mk18_turret_mk42_single_naval_user_cannon.blk",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/127mm_25_5inch_mk11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_31",
         "flash": "emtr_gun_flame_31",
         "useEmitter": true,
@@ -9182,8 +9185,8 @@
       },
       {
         "trigger": "gunner19",
-        "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_54_mk18_turret_mk42_single_naval_user_cannon.blk",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/127mm_25_5inch_mk11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_32",
         "flash": "emtr_gun_flame_32",
         "useEmitter": true,
@@ -9308,8 +9311,8 @@
       },
       {
         "trigger": "gunner20",
-        "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_54_mk18_turret_mk42_single_naval_user_cannon.blk",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/127mm_25_5inch_mk11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_35",
         "flash": "emtr_gun_flame_35",
         "useEmitter": true,
@@ -9428,8 +9431,8 @@
       },
       {
         "trigger": "gunner21",
-        "triggerGroup": "secondary",
-        "blk": "gameData/Weapons/navalModels_weapons/127mm_54_mk18_turret_mk42_single_naval_user_cannon.blk",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/navalModels_weapons/127mm_25_5inch_mk11_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_36",
         "flash": "emtr_gun_flame_36",
         "useEmitter": true,
@@ -9557,7 +9560,7 @@
         "breechDP": "aa_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -9665,7 +9668,7 @@
         "breechDP": "aa_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -9773,7 +9776,7 @@
         "breechDP": "aa_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -9881,7 +9884,7 @@
         "breechDP": "aa_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -9989,7 +9992,7 @@
         "breechDP": "aa_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -10097,7 +10100,7 @@
         "breechDP": "aa_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -10205,7 +10208,7 @@
         "breechDP": "aa_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -10313,7 +10316,7 @@
         "breechDP": "aa_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -10421,7 +10424,7 @@
         "breechDP": "aa_gun_17_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -10547,7 +10550,7 @@
         "breechDP": "aa_gun_17_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -10673,7 +10676,7 @@
         "breechDP": "aa_gun_17_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -10799,7 +10802,7 @@
         "breechDP": "aa_gun_17_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -10925,7 +10928,7 @@
         "breechDP": "aa_gun_18_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -11051,7 +11054,7 @@
         "breechDP": "aa_gun_18_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -11177,7 +11180,7 @@
         "breechDP": "aa_gun_18_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -11303,7 +11306,7 @@
         "breechDP": "aa_gun_18_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "numWeaponsInSlot": 8,
+        "isBulletBelt": true,
         "speedYaw": 30.0,
         "speedPitch": 24.0,
         "bullets": 1950,
@@ -12662,35 +12665,6 @@
       },
       {
         "dummy": true,
-        "trigger": "gunner40",
-        "triggerGroup": "special",
-        "blk": "gameData/Weapons/dummy_weapon.blk",
-        "emitter": "aircraft_01",
-        "barrelDP": "aircraft_01_dm",
-        "allowableDelta": 180.0,
-        "parkInDeadzone": false,
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
-        "speedYaw": 15.0,
-        "speedPitch": 0.0,
-        "turret": {
-          "head": "catapult_01",
-          "gun": "aircraft_01",
-          "gunnerDm": "catapult_01_dm"
-        },
-        "limits": {
-          "yaw": [
-            -140.0,
-            140.0
-          ],
-          "pitch": [
-            0.0,
-            0.0
-          ]
-        }
-      },
-      {
-        "dummy": true,
         "trigger": "gunner41",
         "triggerGroup": "special",
         "blk": "gameData/Weapons/dummy_weapon.blk",
@@ -12735,6 +12709,91 @@
       "name": "us_battleship_colorado_class_colorado_default",
       "blk": "gameData/units/ships/weaponPresets/us_battleship_colorado_class_colorado_default.blk"
     }
+  },
+  "modifications": {
+    "new_ship_hull": {},
+    "new_ship_rudder": {
+      "prevModification": "new_ship_hull"
+    },
+    "new_ship_screw": {},
+    "new_ship_engine": {
+      "prevModification": "new_ship_screw"
+    },
+    "ship_tool_kit": {},
+    "manual_ship_extinguisher": {
+      "prevModification": "ship_tool_kit"
+    },
+    "ship_anti_fragmentation_protection": {
+      "effects": {
+        "damagePartsOverride": {
+          "crew_sections": {
+            "shatterDamageMult": 0.7,
+            "secondaryShatterDamageMult": 0.8,
+            "compartment_01_dm": {},
+            "compartment_02_dm": {},
+            "compartment_03_dm": {},
+            "compartment_04_dm": {},
+            "compartment_05_dm": {},
+            "compartment_06_dm": {}
+          }
+        }
+      }
+    },
+    "ship_venting": {
+      "effects": {
+        "damagePartsOverride": {
+          "crew_sections": {
+            "fireDamageMult": 0.75,
+            "compartment_01_dm": {},
+            "compartment_02_dm": {},
+            "compartment_03_dm": {},
+            "compartment_04_dm": {},
+            "compartment_05_dm": {},
+            "compartment_06_dm": {}
+          }
+        }
+      }
+    },
+    "new_ship_pumps": {},
+    "ship_ammo_wetting": {
+      "effects": {
+        "damagePartsOverride": {
+          "ammo": {
+            "fireDamageMult": 0.75,
+            "ammunition_storage_shells_01_dm": {},
+            "ammunition_storage_shells_02_dm": {},
+            "ammunition_storage_shells_03_dm": {},
+            "ammunition_storage_shells_04_dm": {},
+            "ammunition_storage_shells_05_dm": {},
+            "ammunition_storage_shells_06_dm": {},
+            "ammunition_storage_shells_07_dm": {},
+            "ammunition_storage_shells_08_dm": {},
+            "ammunition_storage_charges_01_dm": {},
+            "ammunition_storage_charges_02_dm": {},
+            "ammunition_storage_charges_03_dm": {},
+            "ammunition_storage_charges_04_dm": {},
+            "ammunition_storage_charges_05_dm": {}
+          }
+        }
+      }
+    },
+    "406mm_us_mk13_navy_he": {},
+    "406mm_us_mk3_navy_apcbc": {},
+    "406mm_us_mk3_navy_apcbc_ammo_pack": {},
+    "406mm_us_mk5_navy_apcbc": {},
+    "406mm_us_mk5_navy_apcbc_ammo_pack": {},
+    "127mm_usa_50_mk15_common": {},
+    "127mm_usa_51_ap": {},
+    "127mm_usa_51_ap_ammo_pack": {},
+    "ship_rangefinder": {},
+    "new_aa_caliber_turrets": {},
+    "new_aux_caliber_turrets": {
+      "prevModification": "new_aa_caliber_turrets"
+    },
+    "new_main_caliber_turrets": {
+      "prevModification": "new_aux_caliber_turrets"
+    },
+    "ship_supportPlane": {}
   },
   "shipFuelLeakFxParams": {
     "fuelLeakFxName": "fire_burning_fuel_oil_large",

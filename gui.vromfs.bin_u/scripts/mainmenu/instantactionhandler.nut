@@ -1019,14 +1019,14 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
         actionType = tutorAction.OBJ_CLICK
         shortcut = GAMEPAD_ENTER_SHORTCUT
         nextActionShortcut = "help/OBJ_CLICK"
-        cb = @() slotbar.onOpenCrewPopup(curSlotExtraInfoObj)
+        cb = @() slotbar.onOpenCrewPopup(curSlotExtraInfoObj, false)
       },
       {
         actionType = tutorAction.WAIT_ONLY
         waitTime = 0.5
       },
       {
-        obj = [@() curSlotExtraInfoObj.findObject("open_crew_wnd_btn")]
+        obj = [@() curSlotExtraInfoObj.findObject("openCrewWnd")]
         text = loc("tutorials/upg_crew/select_crew")
         actionType = tutorAction.OBJ_CLICK
         shortcut = GAMEPAD_ENTER_SHORTCUT

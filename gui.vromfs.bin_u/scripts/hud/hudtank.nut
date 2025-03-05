@@ -15,6 +15,7 @@ let { g_hud_tank_debuffs } = require("%scripts/hud/hudTankDebuffs.nut")
 let { g_hud_crew_state } = require("%scripts/hud/hudCrewState.nut")
 let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
+let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 
 function updateTacticalMapSwitchingObj(obj, value) {
   obj.findObject("map_btn").toggled = value ? "no" : "yes"
@@ -22,6 +23,14 @@ function updateTacticalMapSwitchingObj(obj, value) {
 }
 
 let switchTacticalMapView = @() toggleShortcut("ID_TOGGLE_UAV_CAMERA")
+
+function getShortcutIdForSwitchTacticalMap() {
+  let isBound = g_shortcut_type.getShortcutTypeByShortcutId("ID_TOGGLE_UAV_CAMERA").isAssigned("ID_TOGGLE_UAV_CAMERA")
+  if (isBound)
+    return "ID_TOGGLE_UAV_CAMERA"
+
+  return "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+}
 
 let HudTank = class (gui_handlers.BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudTank.blk"
@@ -81,6 +90,7 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     if (!objMap?.isValid())
       return
 
+    objMap.findObject("shortcut_hint").setValue("".concat("{{", getShortcutIdForSwitchTacticalMap(), "}}"))
     objMap.setValue(stashBhvValueConfig([
       {
         watch = getShowUAVCameraToggle()
