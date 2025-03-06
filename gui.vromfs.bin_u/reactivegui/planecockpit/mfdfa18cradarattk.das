@@ -1,6 +1,7 @@
 require %rGui.utils.canvas_common
 require %rGui.utils.constants_common
 require %rGui.utils.radar_common
+require %rGui.planeCockpit.mfdFA18C_common
 require darg
 require DagorStdGuiRender
 require math
@@ -18,13 +19,6 @@ require DagorMathUtils
 require GamePhys
 require hud
 
-
-struct CanvasParams
-  color : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
-  fontId : int = -1
-  fontSize : int = 20
-  lineWidth : float = 2.
-
 let yellow = E3DCOLOR(Color4(float4(1., 1., 0., 1.)))
 
 def foreach_targets(blk : block<(target : RadarTarget const const#; i : int) : void>)
@@ -33,15 +27,7 @@ def foreach_targets(blk : block<(target : RadarTarget const const#; i : int) : v
       invoke(blk, t, i)
 
 // azimuth over distance
-class RadarATTKFormatFrame : Canvas
-  // statics
-  frameHalfSizeRel : float2 = float2(0.375)
-  scaleMarkLength : float = 0.05
-
-  dugoutHeight : float = 0.05
-  targetBoxHalfSize : float2 = float2(0.025, 0.01)
-
-  // state
+class RadarATTKFormatFrame : MfdFA18CBase
   unit : Unit?
   fmw : FlightModelWrap?
 
@@ -63,10 +49,8 @@ class RadarATTKFormatFrame : Canvas
 
   isEmitting : bool = false
 
-  instantaneousAzimuth : float = 0.0
-
   def RadarATTKFormatFrame(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
-    Canvas`Canvas(self, guiCtx, rdata, rstate)
+    MfdFA18CBase`MfdFA18CBase(self, guiCtx, rdata, rstate)
 
     baseColor = data.color
 
@@ -96,8 +80,6 @@ class RadarATTKFormatFrame : Canvas
 
     isEmitting = get_radar_hud_is_emitting()
     return if !isEmitting
-
-    instantaneousAzimuth = azimuthRelToDeg(get_radar_hud_azimuth())
 
   // helpers
   def azimuthToX(deg : float)
@@ -156,7 +138,7 @@ class RadarATTKFormatFrame : Canvas
     drawStrAnchored(-frameHalfSizeRel + float2(-0.005, 0.0), getModeName(), AnchorHorz.Right, AnchorVert.Top)
 
     let azCoverageText = fmt(":.0f", azimuthTotalCoverage) + "°"
-    drawStrAnchored(float2(-0.25, 0.5), azCoverageText, AnchorHorz.Left, AnchorVert.Bottom)
+    drawStrAnchored(float2(buttonCollumnX[1], 0.5), azCoverageText, AnchorHorz.Center, AnchorVert.Bottom)
 
     let rangeScaleReferenceText = fmt(":.0f", verticalRange)
     drawStrAnchored(float2(frameHalfSizeRel.x + 0.005, -frameHalfSizeRel.y), rangeScaleReferenceText, AnchorHorz.Left, AnchorVert.Center)
@@ -177,29 +159,30 @@ class RadarATTKFormatFrame : Canvas
       drawDot(pos)
 
   def drawStatics()
-    drawStrAnchored(float2(-0.15, -0.5), "SIL", AnchorHorz.Center, AnchorVert.Top)
-    drawStrAnchored(float2(0.0, -0.5), "ERASE", AnchorHorz.Center, AnchorVert.Top)
+    drawStrAnchored(float2(buttonCollumnX[1], -0.5), "SIL", AnchorHorz.Center, AnchorVert.Top)
+    drawStrAnchored(float2(buttonCollumnX[2], -0.5), "ERASE", AnchorHorz.Center, AnchorVert.Top)
 
     drawStrAnchored(-frameHalfSizeRel - float2(0.0, dugoutHeight), "C11", AnchorHorz.Right, AnchorVert.Bottom)
 
-    drawStrVertical(float2(-0.48, 0.15), "RDR", 0.005)
-    drawStrVertical(float2(-0.44, 0.15), "PRI", 0.005)
+    drawStrVerticalAnchored(float2(-0.48, 0.15), "RDR", 0.001)
+    drawStrVerticalAnchored(float2(-0.44, 0.15), "PRI", 0.001)
 
     drawStrAnchored(float2(-0.44, 0.27), "HI", AnchorHorz.Center, AnchorVert.Bottom)
     drawStrAnchored(float2(-0.44, 0.27 + 0.01), "INTL", AnchorHorz.Center, AnchorVert.Top)
 
     drawStrAnchored(float2(-frameHalfSizeRel.x - 0.015, frameHalfSizeRel.y), "7", AnchorHorz.Right, AnchorVert.Bottom)
 
-    drawStrAnchored(float2(-0.35, 0.5), "MODE", AnchorHorz.Center, AnchorVert.Bottom)
-    drawStrAnchored(float2(0.2, 0.5), "CHAN", AnchorHorz.Center, AnchorVert.Bottom)
-    drawStrAnchored(float2(0.35, 0.5), "DATA", AnchorHorz.Center, AnchorVert.Bottom)
+    drawStrAnchored(float2(buttonCollumnX[0], 0.5), "MODE", AnchorHorz.Center, AnchorVert.Bottom)
+    drawStrAnchored(float2(buttonCollumnX[3], 0.5), "CHAN", AnchorHorz.Center, AnchorVert.Bottom)
+    drawStrAnchored(float2(buttonCollumnX[4], 0.5), "DATA", AnchorHorz.Center, AnchorVert.Bottom)
 
     drawArrowHead(float2(0.48, -0.35), float2(0.0, -1.0), float2(0.025, 0.05))
     drawArrowHead(float2(0.48, -0.15), float2(0.0, 1.0), float2(0.025, 0.05))
 
-    drawStrVertical(float2(0.48, 0.0), "SET", 0.005)
-    drawStrVertical(float2(0.48, 0.15), "RESET", 0.005)
-    drawStrVertical(float2(0.48, 0.35), "NCTR", 0.005)
+    drawStrVerticalAnchored(float2(0.48, buttonRowY[2]), "SET", 0.001)
+    drawStrVerticalAnchored(float2(0.48, buttonRowY[3]), "RESET", 0.001)
+    let NCTRbbox = drawStrVerticalAnchored(float2(0.48, buttonRowY[4]), "NCTR", 0.001)
+    drawBBox(NCTRbbox)
 
   def drawSelectedWeapon()
     let rawName = get_hud_cur_weapon_name()
@@ -259,9 +242,9 @@ class RadarATTKFormatFrame : Canvas
       drawLine(float2(-0.5, y), float2(x, y))
 
   def drawInstantaneousAzimuth() // B-sweep
+    let instantaneousAzimuth = azimuthRelToDeg(get_radar_hud_azimuth())
     let azimuthX = azimuthToX(instantaneousAzimuth)
     drawLine(float2(azimuthX, -0.5 - dugoutHeight - 0.005), float2(azimuthX, 0.5))
-
 
   def drawTargets()
     setViewport(float2(-0.5, -0.5 - dugoutHeight), float2(0.5, 0.5))
@@ -386,6 +369,7 @@ class RadarATTKFormatFrame : Canvas
     drawStrAnchored(float2(-0.5 + scaleMarkLength + 0.01, 0.5 - scaleMarkLength - 0.01), bearingDataText, AnchorHorz.Left, AnchorVert.Bottom)
 
   def draw()
+    pushAxes(toAbsPos(float2(0.0, 0.0)), canvasSize * baseScale)
     drawState()
     drawStatics()
     drawSelectedWeapon()
@@ -400,6 +384,7 @@ class RadarATTKFormatFrame : Canvas
     drawThrottleDesignatorController()
 
     popAxes()
+    popAxes()
 
 
 [export, unused_argument(rstate)]
@@ -410,5 +395,5 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
 def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.color = props |> getColor("color", E3DCOLOR(0xFFFFFFFF))
   storage.fontId = props |> getFontId()
-  storage.fontSize = props |> getInt("fontSize", 10)
+  storage.fontSize = props |> getInt("fontSize", 20)
   storage.lineWidth = props |> getFloat("lineWidth", 1.) * 1.

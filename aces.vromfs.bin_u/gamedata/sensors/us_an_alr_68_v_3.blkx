@@ -69,46 +69,6 @@
   "groups": {
     "group": [
       {
-        "name": "S-75",
-        "detectLaunch": true,
-        "search": true,
-        "track": true,
-        "launch": false,
-        "type": "S75 RSN-75"
-      },
-      {
-        "name": "S-75 LAUNCH",
-        "detectLaunch": true,
-        "search": false,
-        "track": false,
-        "launch": true,
-        "type": "S75 RSN-75",
-        "threatFlag": "RWR SACLOS LAUNCH"
-      },
-      {
-        "name": "HAWK",
-        "detectLaunch": true,
-        "search": true,
-        "track": true,
-        "launch": false,
-        "type": [
-          "AN/MPQ-50",
-          "AN/MPQ-61"
-        ]
-      },
-      {
-        "name": "HAWK LAUNCH",
-        "detectLaunch": true,
-        "search": false,
-        "track": false,
-        "launch": true,
-        "type": [
-          "AN/MPQ-50",
-          "AN/MPQ-61"
-        ],
-        "threatFlag": "RWR SARH LAUNCH"
-      },
-      {
         "name": "S-125",
         "detectLaunch": true,
         "search": true,
@@ -777,20 +737,6 @@
   "targetsDirectionGroups": {
     "targetsDirectionGroup": [
       {
-        "text": "S75",
-        "group": [
-          "S-75",
-          "S-75 LAUNCH"
-        ]
-      },
-      {
-        "text": "hud/rwr_threat_hawk",
-        "group": [
-          "HAWK",
-          "HAWK LAUNCH"
-        ]
-      },
-      {
         "text": "S125",
         "group": [
           "S-125",
@@ -962,8 +908,7 @@
         "text": "J10",
         "group": [
           "J-10",
-          "J-10 LAUNCH",
-          "S1 LAUNCH"
+          "J-10 LAUNCH"
         ]
       },
       {
@@ -977,7 +922,8 @@
         "text": "2S6",
         "group": [
           "2S6",
-          "2S6 LAUNCH"
+          "2S6 LAUNCH",
+          "S1 LAUNCH"
         ]
       },
       {
@@ -996,10 +942,6 @@
       {
         "text": "MSL",
         "group": "ARH"
-      },
-      {
-        "text": "hud/rwr_threat_hawk",
-        "group": "HAWK LAUNCH"
       },
       {
         "text": "A64",

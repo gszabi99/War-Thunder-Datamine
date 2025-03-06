@@ -776,3 +776,16 @@ hitItem[selected=yes] {
 hitItem[selected=yes] > textarea {
   color: @white;
 }
+
+premiumItem {
+  css-hier-invalidate:yes;
+  total-input-transparent:yes;
+}
+
+premiumItem > Button_text {
+  display:hide;
+}
+
+premiumItem:hover > Button_text {
+  display:show;
+}

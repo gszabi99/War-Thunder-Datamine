@@ -23,10 +23,6 @@ let WwCustomFormation = class (WwFormation) {
     return false
   }
 
-  function getArmyGroup() {
-    return null
-  }
-
   function addUnits(blk) {
     let additionalUnits = wwActionsWithUnitsList.loadUnitsFromBlk(blk.getBlockByName("units"))
     this.units.extend(additionalUnits)

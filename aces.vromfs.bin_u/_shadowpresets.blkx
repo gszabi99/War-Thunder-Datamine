@@ -24,7 +24,6 @@
       "staticCascadeStarting": 0,
       "staticCascadeFxaaStr": 1.0,
       "staticCascadeUseRiSecLayer": true,
-      "staticCascadeDualPass": false,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
       "staticCascadeDepthBias": 0.025,
@@ -35,7 +34,10 @@
       "hangarShipsShadowDist": 80.0,
       "hangarShipsPowWeight": 0.4,
       "enableDestructableBboxTest": true,
-      "destructablesMinBboxRadiusTexelMul": 8.0
+      "destructablesMinBboxRadiusTexelMul": 8.0,
+      "staticShadows_useRelativeBias": true,
+      "staticShadows_relativeBiasMin": 1.5,
+      "staticShadows_relativeBiasMax": 1.5
     },
     "low": {
       "cascadeWidth": 600,
@@ -61,7 +63,6 @@
       "staticCascadeStarting": 0,
       "staticCascadeFxaaStr": 1.0,
       "staticCascadeUseRiSecLayer": true,
-      "staticCascadeDualPass": false,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
       "staticCascadeDepthBias": 0.025,
@@ -72,7 +73,10 @@
       "hangarShipsShadowDist": 80.0,
       "hangarShipsPowWeight": 0.4,
       "enableDestructableBboxTest": true,
-      "destructablesMinBboxRadiusTexelMul": 8.0
+      "destructablesMinBboxRadiusTexelMul": 8.0,
+      "staticShadows_useRelativeBias": true,
+      "staticShadows_relativeBiasMin": 1.5,
+      "staticShadows_relativeBiasMax": 1.5
     },
     "medium": {
       "cascadeWidth": 768,
@@ -98,7 +102,6 @@
       "staticCascadeStarting": 0,
       "staticCascadeFxaaStr": 3.0,
       "staticCascadeUseRiSecLayer": true,
-      "staticCascadeDualPass": false,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
       "staticCascadeDepthBias": 0.025,
@@ -107,7 +110,10 @@
       "hangarShadowDist": 80.0,
       "hangarPowWeight": 0.4,
       "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4
+      "hangarShipsPowWeight": 0.4,
+      "staticShadows_useRelativeBias": true,
+      "staticShadows_relativeBiasMin": 1.5,
+      "staticShadows_relativeBiasMax": 1.5
     }
   },
   "shadows": {
@@ -158,7 +164,6 @@
       "staticCascadeStarting": 0,
       "staticCascadeFxaaStr": 1.0,
       "staticCascadeUseRiSecLayer": true,
-      "staticCascadeDualPass": false,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
       "staticCascadeDepthBias": 0.025,
@@ -169,7 +174,10 @@
       "hangarShipsShadowDist": 80.0,
       "hangarShipsPowWeight": 0.4,
       "enableDestructableBboxTest": true,
-      "destructablesMinBboxRadiusTexelMul": 8.0
+      "destructablesMinBboxRadiusTexelMul": 8.0,
+      "staticShadows_useRelativeBias": true,
+      "staticShadows_relativeBiasMin": 1.5,
+      "staticShadows_relativeBiasMax": 1.5
     },
     "low": {
       "cascadeWidth": 600,
@@ -195,7 +203,6 @@
       "staticCascadeStarting": 0,
       "staticCascadeFxaaStr": 1.0,
       "staticCascadeUseRiSecLayer": true,
-      "staticCascadeDualPass": false,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
       "staticCascadeDepthBias": 0.022,
@@ -206,7 +213,10 @@
       "hangarShipsShadowDist": 80.0,
       "hangarShipsPowWeight": 0.4,
       "enableDestructableBboxTest": true,
-      "destructablesMinBboxRadiusTexelMul": 8.0
+      "destructablesMinBboxRadiusTexelMul": 8.0,
+      "staticShadows_useRelativeBias": true,
+      "staticShadows_relativeBiasMin": 1.5,
+      "staticShadows_relativeBiasMax": 1.5
     },
     "medium": {
       "cascadeWidth": 768,
@@ -232,10 +242,13 @@
       "staticCascadeStarting": 0,
       "staticCascadeFxaaStr": 3.0,
       "staticCascadeUseRiSecLayer": false,
-      "staticCascadeDualPass": true,
       "staticCascadeDepthSlopeBias": 0.01,
       "staticCascadeDepthBiasFlip": 0.001,
-      "useOcclusion": true
+      "useOcclusion": true,
+      "staticShadows_useRelativeBias": true,
+      "staticShadows_relativeBiasMin": 0.1,
+      "staticShadows_relativeBiasMax": 1.5,
+      "staticCascadeRiExLod0InCascade0": true
     },
     "ps4shadows": {
       "cascadeWidth": 1024,
@@ -260,11 +273,14 @@
       "staticCascadeRegWidth": 150.0,
       "staticCascadeStarting": 0,
       "staticCascadeUseRiSecLayer": false,
-      "staticCascadeDualPass": true,
       "renderHeightmap": true,
       "useOcclusion": false,
       "staticCascadeDepthSlopeBias": 0.01,
-      "staticCascadeDepthBiasFlip": 0.001
+      "staticCascadeDepthBiasFlip": 0.001,
+      "staticShadows_useRelativeBias": true,
+      "staticShadows_relativeBiasMin": 0.1,
+      "staticShadows_relativeBiasMax": 1.5,
+      "staticCascadeRiExLod0InCascade0": true
     },
     "high": {
       "cascadeWidth": 1024,
@@ -290,12 +306,15 @@
       "staticCascadeStarting": 0,
       "staticCascadeFxaaStr": 5.0,
       "staticCascadeUseRiSecLayer": false,
-      "staticCascadeDualPass": true,
       "staticCascadeDepthSlopeBias": 0.01,
       "staticCascadeDepthBiasFlip": 0.001,
       "renderHeightmap": true,
       "useOcclusion": false,
-      "fom_enabled": true
+      "fom_enabled": true,
+      "staticShadows_useRelativeBias": true,
+      "staticShadows_relativeBiasMin": 0.1,
+      "staticShadows_relativeBiasMax": 1.5,
+      "staticCascadeRiExLod0InCascade0": true
     },
     "ultrahigh": {
       "cascadeWidth": 1200,
@@ -321,14 +340,17 @@
       "staticCascadeRegWidth": 150.0,
       "staticCascadeStarting": 4,
       "staticCascadeUseRiSecLayer": false,
-      "staticCascadeDualPass": true,
       "staticCascadeForceLod0": true,
       "renderHeightmap": true,
       "useOcclusion": false,
       "staticCascadeDepthSlopeBias": 0.01,
       "staticCascadeDepthBiasFlip": 0.001,
       "fom_enabled": true,
-      "depthAboveTextureSize": 1024
+      "depthAboveTextureSize": 1024,
+      "staticShadows_useRelativeBias": true,
+      "staticShadows_relativeBiasMin": 0.1,
+      "staticShadows_relativeBiasMax": 1.5,
+      "staticCascadeRiExLod0InCascade0": true
     }
   }
 }

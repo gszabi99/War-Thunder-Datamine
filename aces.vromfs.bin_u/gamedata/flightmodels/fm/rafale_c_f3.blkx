@@ -139,6 +139,7 @@
     "hasChutes": false,
     "hasParkingBrakeControl": false,
     "hasLightsControl": false,
+    "hasManeuverabilityMode": true,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -264,7 +265,7 @@
       "Angle": 0.7,
       "VAngle": 0.0,
       "UseSpinLoss": true,
-      "SpinCdloss": 0.07,
+      "SpinCdloss": 0.04,
       "SpinClloss": 0.03,
       "DownwashType": 2,
       "DownwashCoeff": 0.4,
@@ -308,7 +309,7 @@
         ],
         "AoaShiftAdd1": [
           -10.0,
-          0.01
+          0.005
         ],
         "AoaShiftAdd2": [
           0.0,
@@ -316,15 +317,19 @@
         ],
         "AoaShiftAdd3": [
           5.0,
-          0.02
+          0.005
         ],
         "AoaShiftAdd4": [
           10.0,
-          0.01
+          0.002
         ],
         "AoaShiftAdd5": [
-          25.0,
-          -0.01
+          20.0,
+          0.02
+        ],
+        "AoaShiftAdd6": [
+          40.0,
+          0.03
         ]
       },
       "FlapsPolar0": {
@@ -375,14 +380,14 @@
         "MultLimit7": 1.0,
         "CombinedCl": false,
         "ClToCmByMach0": [
-          0.3,
+          0.4,
           0.0,
-          0.0
+          0.005
         ],
         "ClToCmByMach1": [
           0.6,
           0.0,
-          0.02
+          0.012
         ],
         "ClToCmByMach2": [
           0.8,
@@ -446,12 +451,12 @@
         "ClToCmByMach0": [
           0.3,
           0.0,
-          0.0
+          0.005
         ],
         "ClToCmByMach1": [
           0.6,
           0.0,
-          0.02
+          0.012
         ],
         "ClToCmByMach2": [
           0.8,
@@ -471,7 +476,7 @@
           800000.0
         ],
         "VNE": 1458.0,
-        "MNE": 1.9
+        "MNE": 2.0
       }
     },
     "FuselagePlane": {
@@ -700,9 +705,9 @@
       "AnglesMultiplierRoll2D0": 10000.0,
       "AnglesMultiplierRoll2D00": [
         400.0,
-        0.5,
+        0.45,
         0.0,
-        0.5
+        0.45
       ],
       "AnglesMultiplierRoll2D01": [
         600.0,
@@ -725,9 +730,9 @@
       "AnglesMultiplierRoll2D1": 1000.0,
       "AnglesMultiplierRoll2D10": [
         400.0,
-        0.8,
+        0.7,
         0.0,
-        0.8
+        0.7
       ],
       "AnglesMultiplierRoll2D11": [
         600.0,
@@ -781,11 +786,11 @@
       "Sensitivity": 0.08,
       "SensitivityMultiplier0": [
         0.3,
-        1.2
+        1.5
       ],
       "SensitivityMultiplier1": [
         0.4,
-        1.0
+        1.2
       ],
       "SensitivityMultiplier2": [
         0.8,
@@ -867,8 +872,8 @@
         1.0
       ],
       "AnglesMultiplierPitch2D01": [
-        400.0,
-        0.75,
+        500.0,
+        0.8,
         0.0,
         0.8
       ],
@@ -904,8 +909,8 @@
         1.0
       ],
       "AnglesMultiplierPitch2D11": [
-        400.0,
-        0.75,
+        500.0,
+        0.8,
         0.0,
         0.8
       ],
@@ -941,8 +946,8 @@
         1.0
       ],
       "AnglesMultiplierPitch2D21": [
-        400.0,
-        0.7,
+        500.0,
+        0.8,
         0.0,
         0.8
       ],
@@ -982,7 +987,7 @@
       "Sensitivity": 0.99,
       "SensitivityMultiplier0": [
         0.2,
-        1.39
+        1.0
       ],
       "SensitivityMultiplier1": [
         0.3,
@@ -2467,6 +2472,16 @@
       "UseAoAGLimits": true,
       "LoadFactorFilterSmoothCoeff": 0.7,
       "LoadFactorLimiterStrengthMax": 0.99,
+      "AoaLimitsManeuverabilityMult0": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "AoaLimitsManeuverabilityMult1": [
+        0.51,
+        11.4,
+        11.4
+      ],
       "RatePID": {
         "Kp": 3.0,
         "Ki": 3.0,
@@ -2607,7 +2622,7 @@
     "Throttle": {
       "Limits": [
         0.0,
-        0.9
+        1.5
       ],
       "ClimbMax": [
         -12.0,
@@ -2637,7 +2652,7 @@
         "RateMult": 0.833333,
         "Lim": [
           0.05,
-          0.9
+          1.5
         ]
       },
       "AltPID": {
@@ -2653,28 +2668,28 @@
       }
     },
     "Aim": {
-      "Horizontal": true,
+      "Horizontal": false,
       "HeadingToRoll": [
         3.0,
         0.0,
-        60.0,
-        46.0
+        30.0,
+        120.0
       ],
       "RollRateMax": 100.0,
       "HeadingToRollMultByIas": [
         10.0,
-        0.0,
+        0.5,
         120.0,
         1.0
       ],
-      "RollLim": 50.0,
+      "RollLim": 180.0,
       "DriftControlByRoll": [
         0.0,
         0.0
       ],
       "OverridenRollLim": 30.0,
-      "PitchMax": 40.0,
-      "PitchRateMax": 40.0,
+      "PitchMax": 15.0,
+      "PitchRateMax": 70.0,
       "PitchLim": 30.0,
       "YawHeadingToYawRateMultByIas": [
         0.0,
@@ -2692,7 +2707,7 @@
         0.9,
         1.0,
         1.0,
-        0.85
+        1.0
       ],
       "YawHeadingToYawRate": [
         0.0,
@@ -2716,7 +2731,7 @@
         "Ki": 1.0,
         "Imax": 1.0,
         "Kd": 0.01,
-        "RateMult": 0.833333,
+        "RateMult": 1.0,
         "Lim": [
           -1.0,
           1.0
@@ -2738,7 +2753,7 @@
         "Ki": 0.05,
         "Imax": 0.5,
         "Kd": 0.0,
-        "RateMult": 0.833333,
+        "RateMult": 1.0,
         "Lim": [
           -0.7,
           0.7
@@ -2749,7 +2764,7 @@
         "Ki": 1.0,
         "Imax": 2.0,
         "Kd": 0.05,
-        "RateMult": 0.833333,
+        "RateMult": 1.0,
         "Lim": [
           -1.0,
           1.0
@@ -2760,7 +2775,7 @@
         "Ki": 0.2,
         "Imax": 1.0,
         "Kd": 0.05,
-        "RateMult": 0.833333,
+        "RateMult": 1.0,
         "Lim": [
           -1.0,
           1.0

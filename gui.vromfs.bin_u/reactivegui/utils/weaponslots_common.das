@@ -21,6 +21,7 @@ struct WeaponSlot
   trigger : int = -1
   selected : bool = false
   nextToShoot : bool = false
+  guidanceType : GuidanceType = GuidanceType.TYPE_INVALID
 
 
 class WeaponSlots
@@ -61,6 +62,7 @@ class WeaponSlots
     ws.maxAmmo = weapon.fullBullets
     ws.trigger = weapon.trigger_no
     ws.nextToShoot = ws.slot == selectedWeapSlot
+    ws.guidanceType = get_weapon_guidance_type(weapon)
     if (weapon.prop.shellProps != null)
       ws.name = get_weapon_name(*weapon.prop.shellProps)
       ws.locName = "{replace(ws.name, "_default", "")}"

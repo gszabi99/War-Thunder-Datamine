@@ -2543,46 +2543,6 @@
       "groups": {
         "group": [
           {
-            "name": "S-75",
-            "detectLaunch": true,
-            "search": true,
-            "track": true,
-            "launch": false,
-            "type": "S75 RSN-75"
-          },
-          {
-            "name": "S-75 LAUNCH",
-            "detectLaunch": true,
-            "search": false,
-            "track": false,
-            "launch": true,
-            "type": "S75 RSN-75",
-            "threatFlag": "RWR SACLOS LAUNCH"
-          },
-          {
-            "name": "HAWK",
-            "detectLaunch": true,
-            "search": true,
-            "track": true,
-            "launch": false,
-            "type": [
-              "AN/MPQ-50",
-              "AN/MPQ-61"
-            ]
-          },
-          {
-            "name": "HAWK LAUNCH",
-            "detectLaunch": true,
-            "search": false,
-            "track": false,
-            "launch": true,
-            "type": [
-              "AN/MPQ-50",
-              "AN/MPQ-61"
-            ],
-            "threatFlag": "RWR SARH LAUNCH"
-          },
-          {
             "name": "S-125",
             "detectLaunch": true,
             "search": true,
@@ -2981,20 +2941,6 @@
       "targetsDirectionGroups": {
         "targetsDirectionGroup": [
           {
-            "text": "S75",
-            "group": [
-              "S-75",
-              "S-75 LAUNCH"
-            ]
-          },
-          {
-            "text": "hud/rwr_threat_hawk",
-            "group": [
-              "HAWK",
-              "HAWK LAUNCH"
-            ]
-          },
-          {
             "text": "S125",
             "group": [
               "S-125",
@@ -3187,8 +3133,6 @@
             "track": true,
             "launch": true,
             "group": [
-              "S-75",
-              "HAWK",
               "S-125",
               "9K330",
               "9K33",
@@ -3263,56 +3207,19 @@
             },
             {
               "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
+              "customRadar": "fa18cRadarATTK",
+              "fontSize": 20
+            },
+            {
+              "type": "custom",
+              "pageName": "fa18cRadarAzEl"
             },
             {
               "type": "map"
+            },
+            {
+              "type": "custom",
+              "pageName": "f18Wpn"
             }
           ]
         },
@@ -3334,54 +3241,13 @@
               "turretIdx": 0
             },
             {
+              "type": "custom",
+              "pageName": "f18Wpn"
+            },
+            {
               "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
+              "customRadar": "fa18cRadarATTK",
+              "fontSize": 20
             },
             {
               "type": "map"
@@ -3401,53 +3267,12 @@
             },
             {
               "type": "radar",
-              "font": "usa_ils",
-              "scale": 0.9,
-              "hideBackground": true,
-              "hasAviaHorizont": true,
-              "hideBeam": false,
-              "beamShape": "caret",
-              "targetForm": "square",
-              "fontScale": 0.65,
-              "lineColor": [
-                0,
-                255,
-                7
-              ],
-              "modeColor": [
-                0,
-                255,
-                7
-              ],
-              "verAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "horAngleColor": [
-                0,
-                255,
-                7
-              ],
-              "scaleColor": [
-                0,
-                255,
-                7
-              ],
-              "targetColor": [
-                0,
-                255,
-                7
-              ],
-              "netRowCnt": 4,
-              "netColor": [
-                0,
-                255,
-                7
-              ],
-              "hideWeaponIndication": true,
-              "centerRadar": true,
-              "showCueHeights": true
+              "customRadar": "fa18cRadarATTK",
+              "fontSize": 20
+            },
+            {
+              "type": "custom",
+              "pageName": "f18Wpn"
             },
             {
               "type": "thermal",
@@ -4045,36 +3870,6 @@
         "order": 5,
         "WeaponPreset": [
           {
-            "iconType": "missile_air_to_air_special",
-            "name": "aim_7f_slot3",
-            "reqModification": "us_aim_7f",
-            "ShowNodes": {
-              "node": "pylon2"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/us_lau_115a_aim7f.blk",
-              "emitter": "lau_115a_2",
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "aim_7m_slot3",
-            "reqModification": "us_aim_7m",
-            "ShowNodes": {
-              "node": "pylon2"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/us_lau_115a_aim7m.blk",
-              "emitter": "lau_115a_2",
-              "external": true,
-              "separate": true
-            }
-          },
-          {
             "iconType": "nar_ap_large_group",
             "name": "us_hydra_70_lau_61_x2",
             "ShowNodes": {
@@ -4551,36 +4346,6 @@
         "tier": 4,
         "order": 6,
         "WeaponPreset": [
-          {
-            "iconType": "missile_air_to_air_special",
-            "name": "aim_7f_slot7",
-            "reqModification": "us_aim_7f",
-            "ShowNodes": {
-              "node": "pylon3"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/us_lau_115a_aim7f.blk",
-              "emitter": "lau_115a_4",
-              "external": true,
-              "separate": true
-            }
-          },
-          {
-            "iconType": "missile_air_to_air_midrange_special",
-            "name": "aim_7m_slot7",
-            "reqModification": "us_aim_7m",
-            "ShowNodes": {
-              "node": "pylon3"
-            },
-            "Weapon": {
-              "trigger": "aam",
-              "blk": "gameData/Weapons/containers/us_lau_115a_aim7m.blk",
-              "emitter": "lau_115a_4",
-              "external": true,
-              "separate": true
-            }
-          },
           {
             "iconType": "nar_ap_large_group",
             "name": "us_hydra_70_lau_61_x2",

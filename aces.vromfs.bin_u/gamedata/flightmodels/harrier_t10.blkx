@@ -164,10 +164,10 @@
         "hp": 41.2
       },
       "spar2_l_dm": {
-        "hp": 57.0
+        "hp": 53.1
       },
       "spar2_r_dm": {
-        "hp": 56.5
+        "hp": 53.1
       },
       "spar_l_dm": {
         "hp": 51.4
@@ -210,6 +210,10 @@
       }
     },
     "steel_pilot": {
+      "pilot1_dm": {
+        "fireProtectionHp": 20.0,
+        "hp": 20.0
+      },
       "pilot_dm": {
         "fireProtectionHp": 20.0,
         "hp": 20.0
@@ -920,6 +924,9 @@
         "onKill": {
           "leak_oil": 1.0
         }
+      },
+      {
+        "name": "pilot1_dm"
       },
       {
         "name": "pilot_dm"
@@ -2053,16 +2060,9 @@
       "blister7"
     ],
     "lightPos": [
-      [
-        5.073,
-        0.033,
-        0.002
-      ],
-      [
-        5.073,
-        0.033,
-        0.002
-      ]
+      5.21,
+      0.167,
+      0.0
     ],
     "lightColor": [
       0.5,
@@ -2070,16 +2070,21 @@
       0.2
     ],
     "lightRadius": 0.3,
+    "lightPos1": [
+      5.223,
+      0.267,
+      0.0
+    ],
     "lightColor1": [
       0.1,
       0.9,
       0.2
     ],
-    "lightRadius1": 0.3,
+    "lightRadius1": 0.35,
     "lightPos2": [
-      4.823,
-      -0.028,
-      -0.279
+      5.107,
+      0.035,
+      -0.344
     ],
     "lightColor2": [
       0.1,
@@ -2088,9 +2093,9 @@
     ],
     "lightRadius2": 0.2,
     "lightPos3": [
-      4.884,
-      0.103,
-      0.179
+      5.121,
+      0.092,
+      0.255
     ],
     "lightColor3": [
       0.1,
@@ -2578,46 +2583,6 @@
             "type": "1RL33"
           },
           {
-            "name": "S-75",
-            "detectLaunch": true,
-            "search": true,
-            "track": true,
-            "launch": false,
-            "type": "S75 RSN-75"
-          },
-          {
-            "name": "S-75 LAUNCH",
-            "detectLaunch": true,
-            "search": false,
-            "track": false,
-            "launch": true,
-            "type": "S75 RSN-75",
-            "threatFlag": "RWR SACLOS LAUNCH"
-          },
-          {
-            "name": "HAWK",
-            "detectLaunch": true,
-            "search": true,
-            "track": true,
-            "launch": false,
-            "type": [
-              "AN/MPQ-50",
-              "AN/MPQ-61"
-            ]
-          },
-          {
-            "name": "HAWK LAUNCH",
-            "detectLaunch": true,
-            "search": false,
-            "track": false,
-            "launch": true,
-            "type": [
-              "AN/MPQ-50",
-              "AN/MPQ-61"
-            ],
-            "threatFlag": "RWR SARH LAUNCH"
-          },
-          {
             "name": "S-125",
             "detectLaunch": true,
             "search": true,
@@ -2792,20 +2757,6 @@
             "group": "ZSU-23-4"
           },
           {
-            "text": "S75",
-            "group": [
-              "S-75",
-              "S-75 LAUNCH"
-            ]
-          },
-          {
-            "text": "hud/rwr_threat_hawk",
-            "group": [
-              "HAWK",
-              "HAWK LAUNCH"
-            ]
-          },
-          {
             "text": "S125",
             "group": [
               "S-125",
@@ -2869,8 +2820,6 @@
             "track": false,
             "launch": true,
             "group": [
-              "S-75 LAUNCH",
-              "HAWK LAUNCH",
               "S-125 LAUNCH",
               "9K330 LAUNCH",
               "2S6 LAUNCH",
@@ -3206,7 +3155,7 @@
     "TV": [
       {
         "pos": [
-          0.8,
+          1.3,
           -0.2,
           0.0
         ],
@@ -3224,7 +3173,7 @@
       },
       {
         "pos": [
-          0.8,
+          1.3,
           -0.2,
           0.0
         ],
@@ -3243,7 +3192,7 @@
     ],
     "TV1": {
       "pos": [
-        0.8,
+        1.3,
         -0.2,
         0.0
       ],
@@ -3367,6 +3316,10 @@
       {
         "name": "harrier_t10_agm_65e",
         "blk": "gameData/FlightModels/weaponPresets/harrier_t10_agm_65e.blk"
+      },
+      {
+        "name": "harrier_t10_phimat",
+        "blk": "gameData/FlightModels/weaponPresets/harrier_t10_phimat.blk"
       }
     ]
   },
@@ -3547,6 +3500,29 @@
             "DependentWeaponPreset": {
               "slot": 5,
               "preset": "tiald"
+            }
+          },
+          {
+            "iconType": "ltc",
+            "name": "phimat_container",
+            "reqModification": "countermeasures_belt_pack",
+            "ShowNodes": {
+              "node": [
+                "phimat_container",
+                "phimat_container_cap"
+              ]
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only_large.blk",
+              "external": true,
+              "separate": true,
+              "emitter": "emtr_flare3",
+              "bullets": 216,
+              "bulletsCartridge": 1,
+              "CustomBombHolder": {
+                "node": "phimat_container_cap"
+              }
             }
           }
         ]

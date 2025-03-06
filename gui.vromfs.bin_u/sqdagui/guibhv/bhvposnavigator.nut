@@ -128,7 +128,7 @@ let posNavigator = class {
   }
 
   function isSelectable(obj) {
-    return obj.isVisible() && obj.isEnabled() && obj?.inactive != "yes" && !obj.isUnderWindow()
+    return obj.isVisible() && obj.isEnabled() && obj.getFinalProp("inactive") != "yes" && !obj.isUnderWindow()
   }
 
   function eachSelectable(obj, handler) {

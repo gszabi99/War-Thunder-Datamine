@@ -4,7 +4,7 @@
 @const tooltipAnimationHeight: 3/4@tooltipAnimationWidth\1;
 @const tooltipAnimationWidth: (600@sf/@pf)\1;
 
-@const weaponsPresetDescriptionWidth: 1@narrowTooltipWidth+1@scrollBarSize+2@framePadding;
+@const weaponsPresetDescriptionWidth: 1@bulletTooltipCardWidthNarrow+1@scrollBarSize+2@framePadding;
 
 @const modBgColor                 :#ff171b20;
 @const modBorderColor             :#ff263138;
@@ -541,22 +541,16 @@ progressBonus > progressCurrent > progressThumb {
   background-color: @white;
 }
 
-tooltipObj[noPadding=yes] tooltipDesc {
+weaponTooltipBlock tooltipDesc {
   width:pw;
   max-width: pw;
   color:@minorTextColor;
 }
 
-weaponTooltipBlock,
-shellTooltipBlock {
+weaponTooltipBlock {
   border-color:@frameDarkMenuBorderColor;
   border:yes;
   background-color:@weaponCardBackgroundColor;
-}
-
-shellTooltipPenetrationTableRows textareaNoTab {
-  padding:1@bulletTooltipPadding, 1/2@bulletTooltipPadding, 1@bulletTooltipPadding, 1/2@bulletTooltipPadding;
-  text-align:center;
 }
 
 horizontalLine {

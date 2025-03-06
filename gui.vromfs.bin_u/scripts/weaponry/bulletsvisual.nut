@@ -916,4 +916,5 @@ return {
   getBulletsIconView
   getSingleBulletParamToDesc
   checkBulletParamsBeforeRender
+  addArmorPiercingToDescForBullets
 }

@@ -6,6 +6,12 @@ require DagorSystem
 require math
 require strings
 require %rGui.utils.helpers_common
+require %rGui.utils.utf8_common
+
+def make_bbox(pos : float2; size : float2)
+  let rt = pos + float2(size.x, -size.y)
+  let lb = pos
+  return BBox2(float2(lb.x, rt.y), float2(rt.x, lb.y))
 
 def draw_horizontal_label(var ctx : GuiContext&; pos : float2; text : string)
   ctx |> goto_xy(pos.x, pos.y)
@@ -288,6 +294,11 @@ class Canvas
   def drawBox(lt : float2; rb : float2)
     render_rectangle_aa(*ctx, toAbsPos(lt), toAbsPos(rb), lineWidthHdpx, color, fillColor)
 
+  def drawBBox(box : BBox2; padding : float = 0.0)
+    let offset = toAbsXY(float2(padding))
+    let lt = box.leftTop - offset
+    let rb = box.rightBottom + offset
+    render_rectangle_aa(*ctx, lt, rb, lineWidthHdpx, color, fillColor)
 
   def drawRoundedBox(lt : float2; rb : float2; rounding : float4)
     render_rounded_box(*ctx, toAbsPos(lt), toAbsPos(rb), fillColor, color, axesScale.y * rounding, lineWidthHdpx)
@@ -504,29 +515,16 @@ class Canvas
       pos.y -= size.y + float(get_font_descent(fctx))
 
     goto_xy(*ctx, pos)
-    for char in each(str)
-      printStrLn(format("%c", char))
+    for char in utf8_decode(str)
+      printStrLn(string(utf8_encode(char)))
 
 
   def drawStr(var pos : float2; str : string; var len : int = 0)
+    return drawStrAnchored(pos, str, textAnchorHorz, textAnchorVert, len)
+
+  def drawStrAnchored(var pos : float2; str : string; anchorHorz : AnchorHorz; anchorVert : AnchorVert; var len : int = 0)
     pos = toAbsPos(pos)
     len = len > 0 ? len : length(str)
-    var fctx : StdGuiFontContext
-    get_font_context(fctx, font.id, 0, 0, font.size)
-
-    if textAnchorHorz == AnchorHorz.Right
-      let size = get_str_bbox(str, len, fctx).width
-      pos.x -= size.x
-    elif textAnchorHorz == AnchorHorz.Center
-      let size = get_str_bbox(str, len, fctx).width
-      pos.x -= 0.5 * size.x
-
-    goto_xy(*ctx, pos)
-    draw_str_scaled(*ctx, 1.0, str, len)
-
-  def drawStrAnchored(var pos : float2; str : string; anchorHorz : AnchorHorz; anchorVert : AnchorVert)
-    pos = toAbsPos(pos)
-    let len = length(str)
 
     var fctx : StdGuiFontContext
     get_font_context(fctx, font.id, 0, 0, font.size)
@@ -544,21 +542,59 @@ class Canvas
 
     goto_xy(*ctx, pos)
     draw_str_scaled(*ctx, 1.0, str, len)
+    return make_bbox(pos, size)
 
-  def drawStrVertical(var pos : float2; str : string; var padding : float = 0.0)
+  def drawStrVerticalAnchored(var pos : float2; str : string; var padding : float = 0.0; anchorHorz : AnchorHorz = AnchorHorz.Left; anchorVert : AnchorVert = AnchorVert.Center)
     padding = toAbsY(padding)
     pos = toAbsPos(pos)
     let len = length(str)
 
+    var fctx : StdGuiFontContext
+    get_font_context(fctx, font.id, 0, 0, font.size)
+    var boxSize = float2(0.0)
+
+    let firstSymb = to_char(character_at(str, 0))
+    let firstSymbWidth = get_str_bbox(firstSymb, len, fctx).width
+
     for i in range(length(str))
       let symbol = to_char(character_at(str, i))
-      goto_xy(*ctx, pos)
-      draw_str_scaled(*ctx, 1.0, symbol, len)
+      let width = get_str_bbox(symbol, len, fctx).width
+      boxSize.x = max(boxSize.x, width.x)
+      boxSize.y += width.y
+    if length(str) > 0
+      boxSize.y += padding * float(length(str))
 
-      var fctx : StdGuiFontContext
-      get_font_context(fctx, font.id, 0, 0, font.size)
+    if anchorVert == AnchorVert.Top
+      pos.y += firstSymbWidth.y
+    elif anchorVert == AnchorVert.Center
+      pos.y -= 0.5 * boxSize.y - firstSymbWidth.y
+    else
+      pos.y -= boxSize.y - firstSymbWidth.y
+
+    var symbPos = pos
+    for i in range(length(str))
+      let symbol = to_char(character_at(str, i))
       let size = get_str_bbox(symbol, len, fctx).width
-      pos.y += size.y + padding
+
+      var horzOffset = 0.0
+      if anchorHorz == AnchorHorz.Center
+        horzOffset = -0.5 * size.x
+      elif anchorHorz == AnchorHorz.Right
+        horzOffset = -size.x
+
+      goto_xy(*ctx, symbPos + float2(horzOffset, 0.0))
+      draw_str_scaled(*ctx, 1.0, symbol, len)
+      symbPos.y += size.y + padding
+
+
+    if anchorHorz == AnchorHorz.Center
+      pos.x += -0.5 * boxSize.x
+    elif anchorHorz == AnchorHorz.Right
+      pos.x += -boxSize.x
+    let lt = pos + float2(0.0, -firstSymbWidth.y)
+    let rb = lt + float2(boxSize.x, boxSize.y - padding)
+
+    return BBox2(lt, rb)
 
   def drawIntWithBiggerThousands(pos : float2; value : int; fontSizeMul : float; drawFrame : bool; thousandDigits : int)
     var fctx : StdGuiFontContext

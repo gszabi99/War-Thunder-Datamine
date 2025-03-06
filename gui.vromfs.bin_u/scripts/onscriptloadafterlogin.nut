@@ -184,7 +184,6 @@ foreach (fn in [
   "%scripts/researches/finishedResearches.nut"
   "%scripts/modificationsTierResearched.nut"
 
-  "%scripts/matchingRooms/mRoomsList.nut"
   "%scripts/matchingRooms/sessionsListHandler.nut"
   "%scripts/mplayerParamType.nut"
   "%scripts/matchingRooms/mRoomPlayersListWidget.nut"
@@ -258,7 +257,6 @@ foreach (fn in [
 
   "%scripts/slotbar/slotbarPresets.nut"
   "%scripts/vehicleRequireFeatureWindow.nut"
-  "%scripts/slotbar/slotbarPresetsTutorial.nut"
   "%scripts/unit/unitInfoType.nut"
   "%scripts/unit/unitInfoExporter.nut"
 
@@ -344,6 +342,7 @@ require("%scripts/debugTools/dbgUtilsAfterLogin.nut")
 require("%scripts/debugTools/dbgMarketplace.nut")
 
 require("%scripts/exportInfo/skinsLocExporter.nut")
+require("%scripts/onlineShop/buyPremiumHandler.nut")
 
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 if (isAuthorized.get() || disable_network()) //load scripts from packs only after login

@@ -35,7 +35,7 @@ def DasHelpMarker(desc : string)
     EndTooltip()
 
 def get_max_mismatches_by_filter_length(filter_length : int)
-  let allowedMismatchesByFilterLength <- [[int[] 3; 3; 5; 8; 10; 13]]
+  let allowedMismatchesByFilterLength <- fixed_array(3, 3, 5, 8, 10, 13)
   var maxMismatches = 0
   for m in allowedMismatchesByFilterLength
     if filter_length > m
@@ -95,9 +95,9 @@ def ecs_scene_window()
   imgui::BeginChild("sub", float2(0., -25.))
 
   // common code must be sync with other daeditor_draw_entity_table
-  if BeginTable("split", 2, ImGuiTableFlags BordersOuter | ImGuiTableFlags RowBg)
-    TableSetupColumn("eid", ImGuiTableColumnFlags WidthFixed)
-    TableSetupColumn("template", ImGuiTableColumnFlags WidthStretch)
+  if BeginTable("split", 2, ImGuiTableFlags.BordersOuter | ImGuiTableFlags.RowBg)
+    TableSetupColumn("eid", ImGuiTableColumnFlags.WidthFixed)
+    TableSetupColumn("template", ImGuiTableColumnFlags.WidthStretch)
 
     let now = DagorTime::ref_time_ticks()
     let dt = DagorTime::get_time_usec(int64(lastUpdateDate))
@@ -185,7 +185,7 @@ def ecs_scene_window()
             let match = find_component(eid) <| $ [unused_argument(_)] (comp_name; _)
               for inc in includeComponent
                 if find(comp_name, inc) >= 0
-                  data |> emplace <| [[EntityData eid=eid, eidStr=eidStr, templateStr=templateStr, extraStr=extraStr]]
+                  data |> emplace <| EntityData(eid = eid, eidStr = eidStr, templateStr = templateStr, extraStr = extraStr)
                   return true
               return false
             if match || !(hasFilters || searchTypes)
@@ -205,7 +205,7 @@ def ecs_scene_window()
               let typeName = getComponentTypes() |> component_types_findTypeName(comp.userType)
               for inc in includeTypes
                 if find(typeName, inc) >= 0
-                  data |> emplace <| [[EntityData eid=eid, eidStr=eidStr, templateStr=templateStr, extraStr=extraStr]]
+                  data |> emplace <| EntityData(eid = eid, eidStr = eidStr, templateStr = templateStr, extraStr = extraStr)
                   return true
               return false
             if match || !hasFilters
@@ -231,11 +231,11 @@ def ecs_scene_window()
               continue
           let templStrLength = length(searchedStr) - (eid == selectedEid ? selectedTemplateLength : 0)
           let itemDistance = float(mismatchCount) + abs(float(templStrLength) - float(length(shingles) + 1)) * 0.015 + float(misNeighbourCount) * 0.5
-          var value = [[EntityData eid=eid, eidStr=eidStr, templateStr=templateStr, extraStr=extraStr, distance=itemDistance]]
+          var value = EntityData(eid = eid, eidStr = eidStr, templateStr = templateStr, extraStr = extraStr, distance = itemDistance)
           let insertIdx = lower_bound(data, value) <| $(x, y) => x.distance < y.distance
           data |> emplace(value, insertIdx)
         else
-          data |> emplace <| [[EntityData eid=eid, eidStr=eidStr, templateStr=templateStr, extraStr=extraStr]]
+          data |> emplace <| EntityData(eid = eid, eidStr = eidStr, templateStr = templateStr, extraStr = extraStr)
 
     var selected : bool
     var selectedAddr = safe_addr(selected)
@@ -255,9 +255,9 @@ def ecs_scene_window()
           imgui::TableNextColumn()
           selected = selectedItem == eid || eid |> has("daeditor__selected")
           imgui::PushID(eidStr)
-          if imgui::Selectable(displayStr, selectedAddr, ImGuiSelectableFlags AllowDoubleClick)
+          if imgui::Selectable(displayStr, selectedAddr, ImGuiSelectableFlags.AllowDoubleClick)
             selectedItem = eid
-            if imgui::IsMouseDoubleClicked(ImGuiMouseButton Left)
+            if imgui::IsMouseDoubleClicked(ImGuiMouseButton.Left)
               if GetIO().KeyCtrl
                 editedItem = eid
                 entity_object_editor_selectEntity(eid, !has(eid, "daeditor__selected"))
@@ -294,7 +294,7 @@ def ecs_scene_window()
 
 [console_cmd(name="imgui.editor_ecs_scene")]
 def show_ecs_scene()
-  let isVisible = imgui_get_state() != ImGuiState OFF && imgui_window_is_visible("Editor", "Scene")
+  let isVisible = imgui_get_state() != ImGuiState.OFF && imgui_window_is_visible("Editor", "Scene")
   let setVisible = !isVisible
   console_command(setVisible ? "imgui.activate" : "imgui.off")
   imgui_window_set_visible("Editor", "Scene", setVisible)

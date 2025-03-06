@@ -2591,46 +2591,6 @@
       "groups": {
         "group": [
           {
-            "name": "S-75",
-            "detectLaunch": true,
-            "search": true,
-            "track": true,
-            "launch": false,
-            "type": "S75 RSN-75"
-          },
-          {
-            "name": "S-75 LAUNCH",
-            "detectLaunch": true,
-            "search": false,
-            "track": false,
-            "launch": true,
-            "type": "S75 RSN-75",
-            "threatFlag": "RWR SACLOS LAUNCH"
-          },
-          {
-            "name": "HAWK",
-            "detectLaunch": true,
-            "search": true,
-            "track": true,
-            "launch": false,
-            "type": [
-              "AN/MPQ-50",
-              "AN/MPQ-61"
-            ]
-          },
-          {
-            "name": "HAWK LAUNCH",
-            "detectLaunch": true,
-            "search": false,
-            "track": false,
-            "launch": true,
-            "type": [
-              "AN/MPQ-50",
-              "AN/MPQ-61"
-            ],
-            "threatFlag": "RWR SARH LAUNCH"
-          },
-          {
             "name": "S-125",
             "detectLaunch": true,
             "search": true,
@@ -3029,20 +2989,6 @@
       "targetsDirectionGroups": {
         "targetsDirectionGroup": [
           {
-            "text": "S75",
-            "group": [
-              "S-75",
-              "S-75 LAUNCH"
-            ]
-          },
-          {
-            "text": "hud/rwr_threat_hawk",
-            "group": [
-              "HAWK",
-              "HAWK LAUNCH"
-            ]
-          },
-          {
             "text": "S125",
             "group": [
               "S-125",
@@ -3235,8 +3181,6 @@
             "track": true,
             "launch": true,
             "group": [
-              "S-75",
-              "HAWK",
               "S-125",
               "9K330",
               "9K33",
@@ -3312,11 +3256,18 @@
             {
               "type": "radar",
               "customRadar": "fa18cRadarATTK",
-              "scale": 0.95,
               "fontSize": 20
             },
             {
+              "type": "custom",
+              "pageName": "fa18cRadarAzEl"
+            },
+            {
               "type": "map"
+            },
+            {
+              "type": "custom",
+              "pageName": "f18Wpn"
             }
           ]
         },
@@ -3342,9 +3293,12 @@
               "turretIdx": 0
             },
             {
+              "type": "custom",
+              "pageName": "f18Wpn"
+            },
+            {
               "type": "radar",
               "customRadar": "fa18cRadarATTK",
-              "scale": 0.95,
               "fontSize": 20
             },
             {
@@ -3366,8 +3320,11 @@
             {
               "type": "radar",
               "customRadar": "fa18cRadarATTK",
-              "scale": 0.95,
               "fontSize": 20
+            },
+            {
+              "type": "custom",
+              "pageName": "f18Wpn"
             },
             {
               "type": "thermal",
@@ -3862,6 +3819,10 @@
       {
         "name": "fa_18c_late_gbu_38",
         "blk": "gameData/FlightModels/weaponPresets/fa_18c_late_gbu_38.blk"
+      },
+      {
+        "name": "fa_18c_late_gbu_54",
+        "blk": "gameData/FlightModels/weaponPresets/fa_18c_late_gbu_54.blk"
       },
       {
         "name": "fa_18c_late_gbu_32",
@@ -4431,6 +4392,39 @@
             }
           },
           {
+            "iconType": "guided_bomb_small_jdam",
+            "name": "us_gbu_54_slot2",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b_navy.blk",
+              "emitter": "bomb1_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_small_jdam_group_x2",
+            "name": "us_gbu_54_x2_slot2",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/us_bru_55a_gbu_54b.blk",
+              "emitter": "pylon_ver_1",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_32_slot2",
             "reqModification": "us_gbu_32_31",
@@ -4891,6 +4885,39 @@
             "Weapon": {
               "trigger": "guided bombs",
               "blk": "gameData/Weapons/containers/us_bru_55a_gbu_38_navy_x2.blk",
+              "emitter": "pylon_ver_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_small_jdam",
+            "name": "us_gbu_54_slot3",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b_navy.blk",
+              "emitter": "bomb2_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_small_jdam_group_x2",
+            "name": "us_gbu_54_x2_slot3",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/us_bru_55a_gbu_54b.blk",
               "emitter": "pylon_ver_2",
               "external": true,
               "separate": true,
@@ -5641,6 +5668,39 @@
             }
           },
           {
+            "iconType": "guided_bomb_small_jdam",
+            "name": "us_gbu_54_slot7",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b_navy.blk",
+              "emitter": "bomb4_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_small_jdam_group_x2",
+            "name": "us_gbu_54_x2_slot7",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/us_bru_55a_gbu_54b.blk",
+              "emitter": "pylon_ver_4",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_32_slot7",
             "reqModification": "us_gbu_32_31",
@@ -6157,6 +6217,39 @@
             }
           },
           {
+            "iconType": "guided_bomb_small_jdam",
+            "name": "us_gbu_54_slot8",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_gbu_54b_navy.blk",
+              "emitter": "bomb5_mk_84",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
+            "iconType": "guided_bomb_small_jdam_group_x2",
+            "name": "us_gbu_54_x2_slot8",
+            "reqModification": "us_gbu54b",
+            "ShowNodes": {
+              "node": "pylon4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/containers/us_bru_55a_gbu_54b.blk",
+              "emitter": "pylon_ver_5",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            }
+          },
+          {
             "iconType": "guided_bomb_heavy_middle_jdam",
             "name": "us_gbu_32_slot8",
             "reqModification": "us_gbu_32_31",
@@ -6579,8 +6672,13 @@
       "modClass": "weapon",
       "tier": 1
     },
+    "us_gbu54b": {
+      "prevModification": "us_gbu_38",
+      "modClass": "weapon",
+      "tier": 2
+    },
     "us_gbu_32_31": {
-      "reqModification": "us_gbu_38",
+      "reqModification": "us_gbu54b",
       "modClass": "weapon",
       "tier": 3
     },

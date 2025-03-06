@@ -136,6 +136,7 @@
     "hasChutes": true,
     "hasParkingBrakeControl": false,
     "hasLightsControl": false,
+    "hasManeuverabilityMode": true,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -252,8 +253,8 @@
       "Angle": 1.5,
       "VAngle": 0.0,
       "UseSpinLoss": true,
-      "SpinCdloss": 0.14,
-      "SpinClloss": 0.04,
+      "SpinCdloss": 0.12,
+      "SpinClloss": 0.3,
       "DownwashType": 2,
       "DownwashCoeff": 0.4,
       "Areas": {
@@ -271,7 +272,7 @@
           -0.3,
           2.15
         ],
-        "SineAosMultiplier": 0.2,
+        "SineAosMultiplier": 0.3,
         "VFocusMultiplier": 0.0,
         "FlapsShift": [
           0.06,
@@ -312,7 +313,7 @@
         ],
         "AoaShiftAdd5": [
           35.0,
-          -0.08
+          -0.14
         ]
       },
       "FlapsPolar0": {
@@ -365,12 +366,12 @@
         "ClToCmByMach0": [
           0.0,
           0.0,
-          -0.03
+          -0.04
         ],
         "ClToCmByMach1": [
           0.4,
           0.0,
-          -0.04
+          -0.05
         ],
         "ClToCmByMach2": [
           0.75,
@@ -454,12 +455,12 @@
         "ClToCmByMach0": [
           0.0,
           0.0,
-          0.02
+          0.01
         ],
         "ClToCmByMach1": [
           0.5,
           0.0,
-          0.02
+          0.01
         ],
         "ClToCmByMach2": [
           0.75,
@@ -2333,6 +2334,16 @@
       "UseAoAGLimits": true,
       "LoadFactorFilterSmoothCoeff": 0.7,
       "LoadFactorLimiterStrengthMax": 0.85,
+      "AoaLimitsManeuverabilityMult0": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "AoaLimitsManeuverabilityMult1": [
+        0.51,
+        11.4,
+        11.4
+      ],
       "RatePID": {
         "Kp": 3.0,
         "Ki": 3.0,
@@ -2515,12 +2526,12 @@
       }
     },
     "Aim": {
-      "Horizontal": true,
+      "Horizontal": false,
       "HeadingToRoll": [
         3.0,
         0.0,
-        60.0,
-        46.0
+        30.0,
+        120.0
       ],
       "RollRateMax": 100.0,
       "HeadingToRollMultByIas": [
@@ -2529,14 +2540,14 @@
         120.0,
         1.0
       ],
-      "RollLim": 50.0,
+      "RollLim": 180.0,
       "DriftControlByRoll": [
         0.0,
         0.0
       ],
       "OverridenRollLim": 30.0,
-      "PitchMax": 40.0,
-      "PitchRateMax": 40.0,
+      "PitchMax": 15.0,
+      "PitchRateMax": 50.0,
       "PitchLim": 30.0,
       "YawHeadingToYawRateMultByIas": [
         0.0,
@@ -2554,7 +2565,7 @@
         0.9,
         1.0,
         1.0,
-        0.85
+        1.0
       ],
       "YawHeadingToYawRate": [
         0.0,

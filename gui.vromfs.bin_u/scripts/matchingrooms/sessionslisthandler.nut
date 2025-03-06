@@ -32,6 +32,7 @@ let { joinSessionLobbyFoundRoom } = require("%scripts/matchingRooms/sessionLobby
 let { buildMpTable, countWidthForMpTable } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { canPlayGamemodeBySquad } = require("%scripts/missions/missionsUtils.nut")
 let { updateVehicleInfoButton } = require("%scripts/vehiclesWindow.nut")
+let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
 
 gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
   sceneBlkName = "%gui/sessionsList.blk"
@@ -55,7 +56,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
 
     this.roomsList = []
     this.curPageRoomsList = []
-    this.roomsListData = ::MRoomsList.getMRoomsListByRequestParams(null) //skirmish when no params
+    this.roomsListData = MRoomsList.getMRoomsListByRequestParams(null) //skirmish when no params
 
     this.isCoop = isGameModeCoop(matchSearchGm.get())
     this.scene.findObject("sessions_update").setUserData(this)

@@ -5,6 +5,7 @@ tdiv {
   left:t='(pw-w)/2'
   min-width:t='1@slot_width - 2@slot_interval + 12@sf/@pf'
   padding:t='3@sf/@pf'
+  css-hier-invalidate:t='yes'
 
   activeText {
     id:t='crew_name'
@@ -77,12 +78,3 @@ tdiv {
   <</needCurPoints>>
   <</showAdditionExtraInfo>>
 }
-
-<<#hasSeparator>>
-tdiv {
-  size:t='p.p.w, 1'
-  pos:t='(pw-w)/2, ph-h'
-  position:t='absolute'
-  background-color:t='#4B4F53'
-}
-<</hasSeparator>>

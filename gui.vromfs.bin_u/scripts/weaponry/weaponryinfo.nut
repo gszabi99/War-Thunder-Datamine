@@ -34,9 +34,9 @@ let { getEsUnitType, getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
+let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -669,9 +669,13 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
 }
 
 //weapon - is a weaponData gathered by addWeaponsFromBlk
-function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
+function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine = null) {
   let res = []
   let colon = loc("ui/colon")
+  let activeEdiff = ediff ?? getShopDiffCode()
+  function addParamsToRes(value, text) {
+    res.append({ value, text, separator = colon })
+  }
 
   local massText = null
   if (weapon.massLbs > 0) {
@@ -682,7 +686,7 @@ function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
   else if (weapon.massKg > 0)
     massText = getMeasureTypeByName("kg", true).getMeasureUnitsText(weapon.massKg)
   if (massText)
-    res.append("".concat(loc("shop/tank_mass"), " ", massText))
+    addParamsToRes(massText, loc("shop/tank_mass/tooltip"))
 
   if (isInArray(weaponType, [ "rockets", "agm", "aam", "guided bombs" ])) {
     if (weapon?.guidanceType != null || weapon?.autoAiming != null) {
@@ -693,69 +697,57 @@ function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
       let guidanceTxt = aimingType != ""
         ? loc($"missile/aiming/{aimingType}")
         : loc($"missile/guidance/{weapon.guidanceType}")
-      res.append("".concat(loc("missile/guidance"), colon, guidanceTxt))
+      addParamsToRes(guidanceTxt, loc("missile/guidance"))
       if (weapon?.guidanceIRCCM)
-        res.append("".concat(loc("missile/irccm"), colon, loc("options/yes")))
+        addParamsToRes(loc("options/yes"), loc("missile/irccm"))
     }
     if (weapon?.allAspect != null)
-      res.append("".concat(loc("missile/aspect"), colon,
-        loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect"))))
+      addParamsToRes(loc("missile/aspect/{0}".subst(weapon.allAspect ? "allAspect" : "rearAspect")),
+        loc("missile/aspect"))
     if (weapon?.radarBand)
-      res.append("".concat(loc("missile/radarBand"), colon, loc($"radar_freq_band_{weapon.radarBand}")))
+      addParamsToRes(loc($"radar_freq_band_{weapon.radarBand}"), loc("missile/radarBand"))
     if (weapon?.groundClutter != null && weapon?.dopplerSpeed != null)
       if (!weapon.groundClutter || weapon.dopplerSpeed) {
         let allAspects = !weapon?.groundClutter || (weapon?.sideLobesSensitivity != null && weapon.sideLobesSensitivity < -26.0)
-        res.append("".concat(loc("missile/shootDown"), colon, allAspects ? loc("missile/shootDown/allAspects") : loc("missile/shootDown/headOnAspect")))
+        addParamsToRes(allAspects ? loc("missile/shootDown/allAspects") : loc("missile/shootDown/headOnAspect"),
+          loc("missile/shootDown"))
       }
     if (weapon?.seekerRangeRearAspect)
-      res.append("".concat(loc("missile/seekerRange/rearAspect"), colon,
-        measureType.DISTANCE.getMeasureUnitsText(weapon.seekerRangeRearAspect)))
+      addParamsToRes(measureType.DISTANCE.getMeasureUnitsText(weapon.seekerRangeRearAspect), loc("missile/seekerRange/rearAspect"))
     if (weapon?.seekerRangeAllAspect)
-      res.append("".concat(loc("missile/seekerRange/allAspect"), colon,
-        measureType.DISTANCE.getMeasureUnitsText(weapon.seekerRangeAllAspect)))
+      addParamsToRes(measureType.DISTANCE.getMeasureUnitsText(weapon.seekerRangeAllAspect), loc("missile/seekerRange/allAspect"))
     if (weapon?.seekerRange)
-      res.append("".concat(loc("missile/seekerRange"), colon,
-        measureType.DISTANCE.getMeasureUnitsText(weapon.seekerRange)))
+      addParamsToRes(measureType.DISTANCE.getMeasureUnitsText(weapon.seekerRange), loc("missile/seekerRange"))
     if (weapon?.seekerIRCCM)
-      res.append("".concat(loc("missile/irccm"), colon, loc("options/yes")))
+      addParamsToRes(loc("options/yes"), loc("missile/irccm"))
     if (weapon?.launchRange)
-      res.append("".concat(loc("missile/launchRange"), colon,
-        measureType.DISTANCE.getMeasureUnitsText(weapon.launchRange)))
+      addParamsToRes(measureType.DISTANCE.getMeasureUnitsText(weapon.launchRange), loc("missile/launchRange"))
     if (weapon?.machMax)
-      res.append("".concat(loc("rocket/maxSpeed"), colon,
-        format("%.1f %s", weapon.machMax, loc("measureUnits/machNumber"))))
+      addParamsToRes(format("%.1f %s", weapon.machMax, loc("measureUnits/machNumber")), loc("rocket/maxSpeed"))
     else if (weapon?.maxSpeed)
-      res.append("".concat(loc("rocket/maxSpeed"), colon,
-        measureType.SPEED_PER_SEC.getMeasureUnitsText(weapon.maxSpeed)))
+      addParamsToRes(measureType.SPEED_PER_SEC.getMeasureUnitsText(weapon.maxSpeed), loc("rocket/maxSpeed"))
     if (weapon?.loadFactorMax)
-      res.append("".concat(loc("missile/loadFactorMax"), colon,
-        measureType.GFORCE.getMeasureUnitsText(weapon.loadFactorMax)))
+      addParamsToRes(measureType.GFORCE.getMeasureUnitsText(weapon.loadFactorMax), loc("missile/loadFactorMax"))
     if (weapon?.loadFactorLimit)
-      res.append("".concat(loc("missile/loadFactorLimit"), colon,
-        measureType.GFORCE.getMeasureUnitsText(weapon.loadFactorLimit)))
+      addParamsToRes(measureType.GFORCE.getMeasureUnitsText(weapon.loadFactorLimit), loc("missile/loadFactorLimit"))
     if (weapon?.operatedDist)
-      res.append("".concat(loc("firingRange"), colon,
-        measureType.DISTANCE.getMeasureUnitsText(weapon.operatedDist)))
+      addParamsToRes(measureType.DISTANCE.getMeasureUnitsText(weapon.operatedDist), loc("firingRange"))
     if (weapon?.guaranteedRange)
-      res.append("".concat(loc("guaranteedRange"), colon,
-        measureType.DISTANCE.getMeasureUnitsText(weapon.guaranteedRange)))
+      addParamsToRes(measureType.DISTANCE.getMeasureUnitsText(weapon.guaranteedRange), loc("guaranteedRange"))
     if (weapon?.timeLife) {
       if (weapon?.guidanceType != null || weapon?.autoAiming != null)
-        res.append("".concat(loc("missile/timeGuidance"), colon,
-          format("%.1f %s", weapon.timeLife, loc("measureUnits/seconds"))))
+        addParamsToRes(format("%.1f %s", weapon.timeLife, loc("measureUnits/seconds")), loc("missile/timeGuidance"))
       else
-        res.append("".concat(loc("missile/timeSelfdestruction"), colon,
-          format("%.1f %s", weapon.timeLife, loc("measureUnits/seconds"))))
+        addParamsToRes(format("%.1f %s", weapon.timeLife, loc("measureUnits/seconds")), loc("missile/timeSelfdestruction"))
     }
     if (weapon?.armDistance)
-      res.append("".concat(loc("missile/armingDistance"), colon,
-        measureType.DEPTH.getMeasureUnitsText(weapon?.armDistance)))
+      addParamsToRes(measureType.DEPTH.getMeasureUnitsText(weapon?.armDistance), loc("missile/armingDistance"))
   }
   else if (weaponType == "torpedoes") {
     let torpedoMod = "torpedoes_movement_mode"
     if (isModificationEnabled(unit.name, torpedoMod)) {
       let mod = getModificationByName(unit, torpedoMod)
-      let diffId = get_difficulty_by_ediff(ediff ?? getCurrentGameModeEdiff()).crewSkillName
+      let diffId = get_difficulty_by_ediff(activeEdiff).crewSkillName
       let effects = mod?.effects?[diffId]
       let weaponEffects = effects?.weapons
       if (weaponEffects) {
@@ -774,62 +766,57 @@ function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine) {
     }
 
     if (weapon?.maxSpeedInWater)
-      res.append("".concat(loc("torpedo/maxSpeedInWater"), colon,
-        measureType.SPEED.getMeasureUnitsText(getTorpedoSpeedMultByDiff(ediff ?? getCurrentGameModeEdiff()) * (weapon?.maxSpeedInWater ?? 0))))
+      addParamsToRes(measureType.SPEED.getMeasureUnitsText(getTorpedoSpeedMultByDiff(activeEdiff) * (weapon?.maxSpeedInWater ?? 0)),
+        loc("torpedo/maxSpeedInWater"))
 
     if (weapon?.distToLive)
-      res.append("".concat(loc("torpedo/distanceToLive"), colon,
-        measureType.DISTANCE.getMeasureUnitsText(weapon?.distToLive)))
-
+      addParamsToRes(measureType.DISTANCE.getMeasureUnitsText(weapon?.distToLive), loc("torpedo/distanceToLive"))
     if (weapon?.diveDepth) {
       let diveDepth = [unitTypes.SHIP, unitTypes.BOAT].contains(unit.unitType) && !get_option_torpedo_dive_depth_auto()
           ? get_option_torpedo_dive_depth()
           : weapon?.diveDepth
-      res.append("".concat(loc("bullet_properties/diveDepth"), colon,
-        measureType.DEPTH.getMeasureUnitsText(diveDepth)))
+      addParamsToRes(measureType.DEPTH.getMeasureUnitsText(diveDepth), loc("bullet_properties/diveDepth"))
     }
 
     if (weapon?.armDistance)
-      res.append("".concat(loc("torpedo/armingDistance"), colon,
-        measureType.DEPTH.getMeasureUnitsText(weapon?.armDistance)))
+      addParamsToRes(measureType.DEPTH.getMeasureUnitsText(weapon?.armDistance), loc("torpedo/armingDistance"))
   }
 
   if (weapon?.machLimit)
-    res.append("".concat(loc("bombProperties/machLimit"), colon,
-      format("%.1f %s", weapon.machLimit, loc("measureUnits/machNumber"))))
-
+    addParamsToRes(format("%.1f %s", weapon.machLimit, loc("measureUnits/machNumber")), loc("bombProperties/machLimit"))
   if (weapon?.machLimitRockets)
-    res.append("".concat(loc("rocketProperties/machLimit"), colon,
-      format("%.1f %s", weapon.machLimitRockets, loc("measureUnits/machNumber"))))
+    addParamsToRes(format("%.1f %s", weapon.machLimitRockets, loc("measureUnits/machNumber")), loc("rocketProperties/machLimit"))
 
   if (weapon.explosiveType != null) {
     let { explosiveType, explosiveMass, massKg, hasAdditionalExplosiveInfo } = weapon
-    res.append("".concat(loc("bullet_properties/explosiveType"), colon,
-      loc($"explosiveType/{explosiveType}")))
+    addParamsToRes(loc($"explosiveType/{explosiveType}"), loc("bullet_properties/explosiveType"))
     if (explosiveMass) {
       let kg = getMeasureTypeByName("kg", true)
-      res.append("".concat(loc("bullet_properties/explosiveMass"), colon,
-        kg.getMeasureUnitsText(explosiveMass)))
+      addParamsToRes(kg.getMeasureUnitsText(explosiveMass), loc("bullet_properties/explosiveMass"))
       if (hasAdditionalExplosiveInfo) {
         let tntEqText = getTntEquivalentText(explosiveType, explosiveMass)
         if (tntEqText.len())
-          res.append("".concat(loc("bullet_properties/explosiveMassInTNTEquivalent"), colon, tntEqText))
-
+          addParamsToRes(tntEqText, loc("bullet_properties/explosiveMassInTNTEquivalent"))
         if (weaponType == "bombs" && unit.unitType != unitTypes.SHIP) {
           let destrTexts = getDestructionInfoTexts(explosiveType, explosiveMass, massKg)
           foreach (key in ["maxArmorPenetration", "destroyRadiusArmored", "destroyRadiusNotArmored"]) {
             let valueText = destrTexts[$"{key}Text"]
             if (valueText.len())
-              res.append("".concat(loc($"bombProperties/{key}"), colon, valueText))
+              addParamsToRes(valueText, loc($"bombProperties/{key}"))
           }
         }
       }
     }
   }
   if (weapon?.warhead)
-    res.append("".concat(loc("rocket/warhead"), colon,
-      loc("rocket/warhead/{0}".subst(weapon.warhead))))
-  return "".concat(res.len() ? newLine : "", newLine.join(res))
+    addParamsToRes(loc("rocket/warhead/{0}".subst(weapon.warhead)), loc("rocket/warhead"))
+
+  if (!newLine)
+    return res
+
+  let joinedRes = res.map(@(r) "".concat(r.text, r.separator, r.value))
+
+  return "".concat(joinedRes.len() ? newLine : "", newLine.join(joinedRes))
 }
 
 function getPrimaryWeaponsList(unit) {

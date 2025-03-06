@@ -71,7 +71,7 @@ def in_pin(id : int; blk : block<() : void>)
   // imgui_node_editor::PushStyleVar(StyleVar StyleVar_PinArrowWidth, 10f)
   // imgui_node_editor::PushStyleColor(StyleColor StyleColor_PinRect, float4(1f, 0f, 0f, 1f))
   // imgui_node_editor::PushStyleVar(StyleVar StyleVar_PinCorners, 3f)
-  BeginPin(id, PinKind Input) <|
+  BeginPin(id, PinKind.Input) <|
     Dummy(float2(10))
 
     let offset = float2(3, 3)
@@ -112,7 +112,7 @@ def out_pin(id : int; text : string implicit; indent : float; blk : block<() : v
   // imgui_node_editor::PushStyleVar(StyleVar StyleVar_PinCorners, 3f)
   // let size = GetNodeSize()
   // SetNextItemWidth(-FLT_MIN)
-  BeginPin(id, PinKind Output) <|
+  BeginPin(id, PinKind.Output) <|
     // to center pin vertically against the pin text
     let pinSize = 10.0
     let pinOffset = float2(0.0, GetItemRectSize().y / 2.0 - pinSize)
@@ -141,13 +141,13 @@ def link_child(var graph : AnimationGraph; var nod : IAnimBlendNode?; outId : in
     return
   let childNodeId = *childNode |> anim_blend_node_getAnimNodeId()
   if childNodeId >= 0
-    context.links |> emplace <| [[auto outId, get_input_node_idx(childNodeId)]]
+    context.links |> emplace <|  (outId, get_input_node_idx(childNodeId))
     return
 
   if *childNode |> anim_blend_node_isSubOf(AnimBlendNodeNullCID) // remap to null node
     let nullNodeId = graph |> anim_graph_getBlendNodeId("null")
     if nullNodeId >= 0
-      context.links |> emplace <| [[auto outId, get_input_node_idx(nullNodeId)]]
+      context.links |> emplace <|  (outId, get_input_node_idx(nullNodeId))
       return
   let name = graph |> anim_graph_getBlendNodeName(childNode)
   print("'{name}' : {*nod |> anim_blend_node_class_name()} {graph |> anim_graph_getAnimNodeName(*nod |> anim_blend_node_getAnimNodeId)} child mismatch {*childNode |> anim_blend_node_getAnimNodeId} {*childNode |> anim_blend_node_class_name()}")
@@ -188,7 +188,7 @@ def add_input_param(paramId, idx : int; postfix : string; nodeId : int; var stat
     else
       text = "Param: id={paramId}"
     Text(text)
-    context.params |> push <| [[auto paramId, paramIdx]]
+    context.params |> push <|  (paramId, paramIdx)
 
 
 def get_node_name(var graph : AnimationGraph; var nod : IAnimBlendNode?)
@@ -495,7 +495,7 @@ def render_AnimBlendCtrl_ParametricSwitcher(var nod : IAnimBlendNode?; var graph
     let timeScaleParam = *node |> anim_blend_node_getTimeScaleParamId(state)
     add_input_param(timeScaleParam, ++inNodeIdx, "time scale", nodeId, state, graph, context)
     let paramId = *node |> anim_blend_node_getParamId()
-    imgui::PushStyleVar(ImGuiStyleVar ItemSpacing, float2(0.0, 10.0))
+    imgui::PushStyleVar(ImGuiStyleVar.ItemSpacing, float2(0.0, 10.0))
     add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
 
     *node |> AnimBlendCtrl_ParametricSwitcher_getChildren <| $(nodeValuePairs)
@@ -621,7 +621,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
   let paramsWidth = 250f
   let skeletonNodesWidth = 450f
-  imgui::BeginChild("__params__", float2(paramsWidth, -FLT_MIN), ImGuiChildFlags Border, ImGuiWindowFlags None)
+  imgui::BeginChild("__params__", float2(paramsWidth, -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.None)
 
   var autoAlign = imgui::Button("Align")
   imgui::SameLine()
@@ -664,14 +664,14 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
     let statesCount = graph.stateCount
 
     var isSelected = forcedState == -1
-    if imgui::Selectable("None", isSelected, ImGuiSelectableFlags SpanAllColumns)
+    if imgui::Selectable("None", isSelected, ImGuiSelectableFlags.SpanAllColumns)
       forcedState = -1
 
     for stateId in range(statesCount)
       let stateName = graph |> anim_graph_getStateName(stateId)
       let stateIdx = graph |> anim_graph_getStateIdx(stateName)
       isSelected = forcedState == stateIdx
-      if imgui::Selectable("{stateName} ({stateIdx})", isSelected, ImGuiSelectableFlags SpanAllColumns)
+      if imgui::Selectable("{stateName} ({stateIdx})", isSelected, ImGuiSelectableFlags.SpanAllColumns)
         forcedState = stateIdx
 
   if resetState && forcedState >= 0
@@ -705,7 +705,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
           let min = -1e8
           let max = 1e8
           SetNextItemWidth(-FLT_MIN)
-          if imgui::DragScalar("##{param.name}", ImGuiDataType Float, safe_addr(value), 0.01, safe_addr(min), safe_addr(max), "%.2f", ImGuiSliderFlags None)
+          if imgui::DragScalar("##{param.name}", ImGuiDataType.Float, safe_addr(value), 0.01, safe_addr(min), safe_addr(max), "%.2f", ImGuiSliderFlags.None)
             state |> anim_state_holder_setParam(param.id, value)
           Spacing()
 
@@ -715,7 +715,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
           let step = 1
           let fastStep = 5
           SetNextItemWidth(-FLT_MIN)
-          if imgui::InputScalar("##{param.name}", ImGuiDataType S32, safe_addr(value), safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags None)
+          if imgui::InputScalar("##{param.name}", ImGuiDataType.S32, safe_addr(value), safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags.None)
             state |> anim_state_holder_setParamInt(param.id, value)
           Spacing()
 
@@ -727,14 +727,14 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
             let max = 1e8
             let availableWidth = imgui::GetContentRegionAvail().x
             SetNextItemWidth(availableWidth * 0.5f)
-            if imgui::DragScalar("##{param.name}_time", ImGuiDataType Float, safe_addr(timeValue),  0.01, safe_addr(min), safe_addr(max), "%.2f", ImGuiSliderFlags None)
+            if imgui::DragScalar("##{param.name}_time", ImGuiDataType.Float, safe_addr(timeValue),  0.01, safe_addr(min), safe_addr(max), "%.2f", ImGuiSliderFlags.None)
               state |> anim_state_holder_setParam(param.id, timeValue)
             imgui::SameLine()
             let value = state |> anim_state_holder_getTimeScaleParamId(param.id)
             let step = 1
             let fastStep = 5
             SetNextItemWidth(availableWidth * 0.5f)
-            if imgui::InputScalar("##{param.name}_scale", ImGuiDataType S32, safe_addr(value), safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags None)
+            if imgui::InputScalar("##{param.name}_scale", ImGuiDataType.S32, safe_addr(value), safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags.None)
               state |> anim_state_holder_setTimeScaleParamId(param.id, value)
             Spacing()
 
@@ -786,7 +786,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
     imgui::GetContentRegionAvail().y - graphViewControlBarHeight
   )
 
-  imgui::BeginChild("__graph__", float2(graphSize.x, -FLT_MIN), ImGuiChildFlags Border, ImGuiWindowFlags None)
+  imgui::BeginChild("__graph__", float2(graphSize.x, -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.None)
 
   if context == null
     var config = Config()
@@ -800,7 +800,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
   style.GroupRounding = 0f
   style.PinRounding = 0f
   style.NodePadding = float4(12, 4, 12, 8)
-  imgui::PushStyleColor(ImGuiCol Text, float4(1))
+  imgui::PushStyleColor(ImGuiCol.Text, float4(1))
   // style.Colors[int(StyleColor StyleColor_Bg)].w = 1f
   // style.Colors[int(StyleColor StyleColor_NodeBg)] = float4(0.12, 0.12, 0.12, 1.0)
   // style.Colors[int(StyleColor StyleColor_NodeBg)].w = 1f
@@ -832,6 +832,11 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
           // pbcs and bnls save their weights to different pbc_wt and bnl_wt respectively, abn_wt of those will always be 0.0
           if weight > 0.0
             activeBlendNodesCount += 1
+
+          if nodePtr == null
+            weights |> push(weight)
+            continue
+
           if *nodePtr |> anim_blend_node_isSubOf(AnimBlendNodeLeafCID)
             unsafe
               let bnlNode = reinterpret<AnimBlendNodeLeaf?> nodePtr
@@ -900,7 +905,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
           let activeNodeBorder = drawMode != DrawNodesMode.ACTIVE && weight > 0.0
           if activeNodeBorder
-            imgui_node_editor::PushStyleColor(StyleColor NodeBorder, float4(0.58, 0.96, 0.23f, 1f))
+            imgui_node_editor::PushStyleColor(StyleColor.NodeBorder, float4(0.58, 0.96, 0.23f, 1f))
 
           var nodePtr = graph |> anim_graph_getBlendNodePtr(node.id)
 
@@ -908,10 +913,12 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
             Dummy(float2(nodeWidth, 0f))
 
             let inId = get_input_node_idx(node.id)
-            let className = *nodePtr |> anim_blend_node_class_name()
-
             in_pin(inId) <|
               pass
+
+            if nodePtr == null
+              imgui::Text("\nThis node has failed to load.\nProbably there was in error in this char's animTree.")
+              return
 
             SameLine()
             imgui::TextUnformatted(node.name)
@@ -920,6 +927,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
             imgui::Spacing()
 
+            let className = *nodePtr |> anim_blend_node_class_name()
             imgui::Text(className)
 
             var foundRender = false
@@ -937,7 +945,8 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
             imgui_node_editor::PopStyleColor()
 
           // Colored node header
-          let color = *nodePtr |> anim_blend_node_isSubOf(AnimBlendNodeLeafCID) ? 0x40b032FF : \
+          let color = nodePtr == null ? 0x600000F0 : \
+                      *nodePtr |> anim_blend_node_isSubOf(AnimBlendNodeLeafCID) ? 0x40b032FF : \
                       *nodePtr |> anim_blend_node_isSubOf(AnimPostBlendCtrlCID) ? 0x30b0FF32 : 0x30FFb032
           let min = GetItemRectMin() + float2(1)
           let max = GetItemRectMax()
@@ -1122,13 +1131,13 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
     imgui::Text("Max inactive nodes: ")
     imgui::SameLine()
     imgui::PushItemWidth(120.0f)
-    InputScalar("##Max inactive nodes", ImGuiDataType S32, safe_addr(nodesToShowMaxInactiveCount), safe_addr(step), safe_addr(step), "%d", ImGuiInputTextFlags None)
+    InputScalar("##Max inactive nodes", ImGuiDataType.S32, safe_addr(nodesToShowMaxInactiveCount), safe_addr(step), safe_addr(step), "%d", ImGuiInputTextFlags.None)
     imgui::PopItemWidth()
 
   imgui::EndChild()
   ImGuiEx_NextColumn()
 
-  imgui::BeginChild("__skeleton__", float2(skeletonNodesWidth - 10f /* should be some imgui defined gap value but whatever*/, -FLT_MIN), ImGuiChildFlags Border, ImGuiWindowFlags HorizontalScrollbar)
+  imgui::BeginChild("__skeleton__", float2(skeletonNodesWidth - 10f /* should be some imgui defined gap value but whatever*/, -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.HorizontalScrollbar)
 
   var expandAll = false
   expandAll = imgui::Button("Expand all")
@@ -1177,11 +1186,11 @@ def draw_skeleton_node_in_tree_recursive(var graph : AnimationGraph;
     imgui::SetNextItemOpen(true)
 
   let node_name = "{node_idx == 0 ? "::root" : tree |> geomtree_getNodeName(node_idx)}"
-  if (length(nodesFilter) == 0 || nodesFilter[node_idx]) && imgui::TreeNodeEx("{node_name}##skel_node_{node_idx}", ImGuiTreeNodeFlags None)
+  if (length(nodesFilter) == 0 || nodesFilter[node_idx]) && imgui::TreeNodeEx("{node_name}##skel_node_{node_idx}", ImGuiTreeNodeFlags.None)
     let posIdent = 6.0f // just to make pos node a bit more noticable, because it is not a skeleton child
     imgui::Indent(posIdent)
 
-    if imgui::TreeNodeEx("positions##skel_pose_{node_idx}", ImGuiTreeNodeFlags None)
+    if imgui::TreeNodeEx("positions##skel_pose_{node_idx}", ImGuiTreeNodeFlags.None)
       var tm : float3x4
       tree |> geomtree_getNodeTmScalar(node_idx, tm)
 

@@ -32,7 +32,7 @@ let WwAirfieldView = class {
 
   getZoneName = @() loc("ui/parentheses", { text = wwGetZoneName(ww_get_zone_idx_world(this.airfield.pos)) })
 
-  clanTag = @() this.airfield.clanFormation?.armyGroup.name ?? ""
+  clanTag = @() this.airfield.clanFormation?.getArmyGroup().name ?? this.airfield.allyFormation?.getArmyGroup().name ?? ""
 
   unitsCount = @() this.airfield.getUnitsNumber()
 

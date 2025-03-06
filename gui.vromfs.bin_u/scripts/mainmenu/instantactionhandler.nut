@@ -85,11 +85,11 @@ let { get_option } = require("%scripts/options/optionsExt.nut")
 let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
-
 let { getMyClanCandidates, isHaveRightsToReviewCandidates, openClanRequestsWnd
   } = require("%scripts/clans/clanCandidates.nut")
 let { getChatObject } = require("%scripts/chat/chatUtils.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let SlotbarPresetsTutorial = require("%scripts/slotbar/slotbarPresetsTutorial.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -1058,8 +1058,8 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function startSlotbarPresetsTutorial() {
-    let tutorialCounter = ::SlotbarPresetsTutorial.getCounter()
-    if (tutorialCounter >= ::SlotbarPresetsTutorial.MAX_TUTORIALS)
+    let tutorialCounter = SlotbarPresetsTutorial.getCounter()
+    if (tutorialCounter >= SlotbarPresetsTutorial.MAX_TUTORIALS)
       return false
 
     let currentGameMode = getCurrentGameMode()
@@ -1067,13 +1067,13 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       return false
 
     let missionCounter = stat_get_value_missions_completed(currentGameMode.diffCode, 1)
-    if (missionCounter >= ::SlotbarPresetsTutorial.MAX_PLAYS_FOR_GAME_MODE)
+    if (missionCounter >= SlotbarPresetsTutorial.MAX_PLAYS_FOR_GAME_MODE)
       return false
 
     if (!::slotbarPresets.canEditCountryPresets(this.getCurCountry()))
       return false
 
-    let tutorial = ::SlotbarPresetsTutorial()
+    let tutorial = SlotbarPresetsTutorial()
     tutorial.currentCountry = this.getCurCountry()
     tutorial.tutorialGameMode = currentGameMode
     tutorial.currentHandler = this
@@ -1154,7 +1154,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (!tutorialModule.needShowTutorial("newUnitTypetoBattle", 1)
       || getMissionsComplete(["pvp_played", "skirmish_played"])
-           < ::SlotbarPresetsTutorial.MIN_PLAYS_GAME_FOR_NEW_UNIT_TYPE
+           < SlotbarPresetsTutorial.MIN_PLAYS_GAME_FOR_NEW_UNIT_TYPE
       || g_squad_manager.isNotAloneOnline()
       || !isCountrySlotbarHasUnits(profileCountrySq.value)
       || !isCountryAllCrewsUnlockedInHangar(profileCountrySq.value))
@@ -1206,7 +1206,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       [
         ["yes", function() {
           sendBqEvent("CLIENT_GAMEPLAY_1", "new_unit_type_to_battle_tutorial_msgbox_btn", { result = "yes" })
-          let tutorial = ::SlotbarPresetsTutorial()
+          let tutorial = SlotbarPresetsTutorial()
           tutorial.currentCountry = currentCountry
           tutorial.tutorialGameMode = gameModeForTutorial
           tutorial.isNewUnitTypeToBattleTutorial = true

@@ -3881,6 +3881,150 @@
       "texture": "flag_christmas_03_c*"
     }
   },
+  "commonWeapons": {
+    "Weapon": {
+      "trigger": "gunner0",
+      "triggerGroup": "primary",
+      "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+      "emitter": "emtr_gun_flame_01",
+      "flash": "emtr_gun_flame_01",
+      "useEmitter": true,
+      "barrelDP": "main_caliber_gun_01_dm",
+      "breechDP": "main_caliber_gun_01_dm",
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "allowableDelta": 2.0,
+      "ChainfireTime": 60.0,
+      "DelayAfterShoot": 0.0,
+      "aimMinDist": 20.0,
+      "aimMaxDist": 4500.0,
+      "randomAngle": 0.0,
+      "accuracyBotMultAir": 0.55,
+      "accuracyAir": 1.0,
+      "accuracyGnd": 0.8,
+      "errMeasureVel": 0.0,
+      "errTargettingOn100kmph": 0.0,
+      "errMeasureVelFast": 100.0,
+      "errMeasureVelFwdShift": 0.5,
+      "errMeasureVelDir": 3.0,
+      "errTargetting": 3.0,
+      "errExplTime": 0.0,
+      "speedYaw": 75.0,
+      "speedPitch": 65.0,
+      "bullets": 1500,
+      "useGunnerTargetingQuality": false,
+      "turret": {
+        "head": "main_caliber_turret_01",
+        "gun": "main_caliber_gun_01",
+        "barrel": "gun_barrel_01",
+        "gunnerDm": "main_caliber_turret_01_dm",
+        "linkedAnimPart": {
+          "verNode": "bone_radius_foot",
+          "verLimits": [
+            0.0,
+            14.0
+          ],
+          "verOriginLimits": [
+            20.0,
+            66.0
+          ]
+        }
+      },
+      "limits": {
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -10.0,
+          66.0
+        ]
+      },
+      "gunStabilizer": {
+        "hasVerticalGunFreeMode": true,
+        "hasHorizontal": true,
+        "horizontalOmegaMult": 1.0,
+        "horizontalSpeedLimitKPH": 120.0,
+        "hasVertical": true,
+        "verticalOmegaMult": 1.0,
+        "verticalSpeedLimitKPH": 120.0
+      }
+    }
+  },
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "torpedoes",
+        "blk": "gameData/units/ships/weaponPresets/jp_t14_class_torpedoes.blk",
+        "reqModification": "ship_torpedoes"
+      },
+      {
+        "name": "type95_depth_charges",
+        "blk": "gameData/units/ships/weaponPresets/jp_t14_class_depth_charges.blk",
+        "reqModification": "ship_depth_charge"
+      },
+      {
+        "name": "type95_depth_charges_type2_torpedoes",
+        "blk": "gameData/units/ships/weaponPresets/jp_t14_class_depth_charges_torpedoes.blk",
+        "reqModification": "ship_depth_charge"
+      },
+      {
+        "name": "jp_t14_class_mod01_default",
+        "blk": "gameData/units/ships/weaponPresets/jp_t14_class_mod01_default.blk"
+      }
+    ]
+  },
+  "modifications": {
+    "ship_tool_kit": {},
+    "manual_ship_extinguisher": {},
+    "new_ship_pumps": {},
+    "new_main_caliber_turrets": {},
+    "new_ship_hull": {},
+    "new_ship_rudder": {},
+    "new_ship_screw": {},
+    "new_ship_engine": {},
+    "ship_smoke_screen_system_mod": {},
+    "25mm_type96_naval_universal": {},
+    "25mm_type96_naval_ap": {},
+    "25mm_type96_naval_ap_ammo_pack": {},
+    "25mm_type96_naval_incendiary": {},
+    "25mm_type96_naval_incendiary_ammo_pack": {
+      "prevModification": "25mm_type96_naval_ap_ammo_pack"
+    },
+    "ship_torpedoes": {},
+    "ship_main_caliber_support": {},
+    "ship_depth_charge": {}
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "shells": {
+        "fatalFire": true,
+        "fatalExplosion": true,
+        "explosionEvent": "ammo_explosion_1",
+        "fireEvent": "ammo_fire_1",
+        "ammunition_storage_01_dm": {
+          "count": 1500
+        }
+      }
+    }
+  },
+  "user_skin": {
+    "name": "t14_class_mod01",
+    "replace_tex": {
+      "from": "camo_warshipgray*"
+    },
+    "set_tex": [
+      {
+        "from": "turret_25mm_type96_c*",
+        "param": "camo_skin_tex"
+      },
+      {
+        "from": "t14_class_c*",
+        "param": "camo_skin_tex"
+      }
+    ]
+  },
   "DamageParts": {
     "formatVersion": 2,
     "createSecondaryShatters": false,
@@ -4186,150 +4330,6 @@
       "role": "sailor",
       "crew": 1
     }
-  },
-  "commonWeapons": {
-    "Weapon": {
-      "trigger": "gunner0",
-      "triggerGroup": "primary",
-      "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
-      "emitter": "emtr_gun_flame_01",
-      "flash": "emtr_gun_flame_01",
-      "useEmitter": true,
-      "barrelDP": "main_caliber_gun_01_dm",
-      "breechDP": "main_caliber_gun_01_dm",
-      "defaultYaw": 0.0,
-      "defaultPitch": 0.0,
-      "allowableDelta": 2.0,
-      "ChainfireTime": 60.0,
-      "DelayAfterShoot": 0.0,
-      "aimMinDist": 20.0,
-      "aimMaxDist": 4500.0,
-      "randomAngle": 0.0,
-      "accuracyBotMultAir": 0.55,
-      "accuracyAir": 1.0,
-      "accuracyGnd": 0.8,
-      "errMeasureVel": 0.0,
-      "errTargettingOn100kmph": 0.0,
-      "errMeasureVelFast": 100.0,
-      "errMeasureVelFwdShift": 0.5,
-      "errMeasureVelDir": 3.0,
-      "errTargetting": 3.0,
-      "errExplTime": 0.0,
-      "speedYaw": 75.0,
-      "speedPitch": 65.0,
-      "bullets": 1500,
-      "useGunnerTargetingQuality": false,
-      "turret": {
-        "head": "main_caliber_turret_01",
-        "gun": "main_caliber_gun_01",
-        "barrel": "gun_barrel_01",
-        "gunnerDm": "main_caliber_turret_01_dm",
-        "linkedAnimPart": {
-          "verNode": "bone_radius_foot",
-          "verLimits": [
-            0.0,
-            14.0
-          ],
-          "verOriginLimits": [
-            20.0,
-            66.0
-          ]
-        }
-      },
-      "limits": {
-        "yaw": [
-          -180.0,
-          180.0
-        ],
-        "pitch": [
-          -10.0,
-          66.0
-        ]
-      },
-      "gunStabilizer": {
-        "hasVerticalGunFreeMode": true,
-        "hasHorizontal": true,
-        "horizontalOmegaMult": 1.0,
-        "horizontalSpeedLimitKPH": 120.0,
-        "hasVertical": true,
-        "verticalOmegaMult": 1.0,
-        "verticalSpeedLimitKPH": 120.0
-      }
-    }
-  },
-  "weapon_presets": {
-    "preset": [
-      {
-        "name": "torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/jp_t14_class_torpedoes.blk",
-        "reqModification": "ship_torpedoes"
-      },
-      {
-        "name": "type95_depth_charges",
-        "blk": "gameData/units/ships/weaponPresets/jp_t14_class_depth_charges.blk",
-        "reqModification": "ship_depth_charge"
-      },
-      {
-        "name": "type95_depth_charges_type2_torpedoes",
-        "blk": "gameData/units/ships/weaponPresets/jp_t14_class_depth_charges_torpedoes.blk",
-        "reqModification": "ship_depth_charge"
-      },
-      {
-        "name": "jp_t14_class_mod01_default",
-        "blk": "gameData/units/ships/weaponPresets/jp_t14_class_mod01_default.blk"
-      }
-    ]
-  },
-  "modifications": {
-    "ship_tool_kit": {},
-    "manual_ship_extinguisher": {},
-    "new_ship_pumps": {},
-    "new_main_caliber_turrets": {},
-    "new_ship_hull": {},
-    "new_ship_rudder": {},
-    "new_ship_screw": {},
-    "new_ship_engine": {},
-    "ship_smoke_screen_system_mod": {},
-    "25mm_type96_naval_universal": {},
-    "25mm_type96_naval_ap": {},
-    "25mm_type96_naval_ap_ammo_pack": {},
-    "25mm_type96_naval_incendiary": {},
-    "25mm_type96_naval_incendiary_ammo_pack": {
-      "prevModification": "25mm_type96_naval_ap_ammo_pack"
-    },
-    "ship_torpedoes": {},
-    "ship_main_caliber_support": {},
-    "ship_depth_charge": {}
-  },
-  "ammoStowages": {
-    "ammo1": {
-      "weaponTrigger": "gunner0",
-      "shells": {
-        "fatalFire": true,
-        "fatalExplosion": true,
-        "explosionEvent": "ammo_explosion_1",
-        "fireEvent": "ammo_fire_1",
-        "ammunition_storage_01_dm": {
-          "count": 1500
-        }
-      }
-    }
-  },
-  "user_skin": {
-    "name": "t14_class_mod01",
-    "replace_tex": {
-      "from": "camo_warshipgray*"
-    },
-    "set_tex": [
-      {
-        "from": "turret_25mm_type96_c*",
-        "param": "camo_skin_tex"
-      },
-      {
-        "from": "t14_class_c*",
-        "param": "camo_skin_tex"
-      }
-    ]
   },
   "spawn_count": {
     "numSpawnsPerBattleArcade": 3,

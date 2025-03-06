@@ -106,7 +106,7 @@ def try_launch_route_prober(add_rtt : int) : void
       init |> set("route_id", route_id)
 
 def get_diff_bucket_str(rtt_diff : int) : string
-  let buckets = [[int -9000; -500; -200; -100; -75; -50; -40; -30; -20; -15; -10; -5; 0; 5; 10; 15; 20; 30; 40; 50; 75; 100; 200; 500; 9000]]
+  let buckets = fixed_array<int>(-9000, -500, -200, -100, -75, -50, -40, -30, -20, -15, -10, -5, 0, 5, 10, 15, 20, 30, 40, 50, 75, 100, 200, 500, 9000)
   var lb = lower_bound(buckets, rtt_diff) // lb in [0..length(buckets)]
   if lb == length(buckets)
     lb -= 1
@@ -239,7 +239,7 @@ def route_prober_timers(info : UpdateStageInfoAct;
   next_evaluation -= info.dt
   if next_evaluation <= 0.f
     next_evaluation = evaluation_period_seconds
-    broadcastEvent([[ChangeServerRoute currentIsUnresponsive=false]])
+    broadcastEvent(ChangeServerRoute(currentIsUnresponsive = false))
 
 [es(no_order, REQUIRE=routeStats)]
 def receive_echo_response(response : NetEchoReponse; route_id : uint; var echo_history : UInt32List&; var last_echoes_mask : int&)
@@ -248,7 +248,7 @@ def receive_echo_response(response : NetEchoReponse; route_id : uint; var echo_h
 
   echo_history |> push(response.rttOrTimeout)
 
-  let success = (response.result == int(EchoResponseResult SUCCESS))
+  let success = (response.result == int(EchoResponseResult.SUCCESS))
   last_echoes_mask = ((last_echoes_mask << 1) | (success ? 1 : 0)) & ~(1 << ECHO_HISTORY_MAX_LENGTH)
 
   if length(echo_history) > ECHO_HISTORY_MAX_LENGTH

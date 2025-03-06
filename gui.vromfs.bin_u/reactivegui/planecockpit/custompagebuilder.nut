@@ -8,8 +8,12 @@ let {f15cWpn, f15jWpn} = require("f15cWpnPage.nut")
 let su27Pod = require("mfdSu27Pod.nut")
 let ef2000Wpn = require("ef2000WpnPage.nut")
 let fa18cRadarATTK = createScriptComponentWithPos("%rGui/planeCockpit/mfdfa18cRadarATTK.das")
+let fa18cRadarAzEl = createScriptComponentWithPos("%rGui/planeCockpit/mfdfa18cRadarAzEl.das", {
+  fontId = Fonts.hud
+})
 let rafaleWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdRafaleWpn.das", { fontId = Fonts.hud })
 let f18Wpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdF18Wpn.das", { fontId = Fonts.ah64 })
+let su30smWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdSu30smWpn.das", { fontId = Fonts.hud })
 
 
 function su30Devices(pos, size) {
@@ -66,8 +70,10 @@ let pageByName = {
   ef2000Wpn,
   rafaleWpn,
   fa18cRadarATTK,
+  fa18cRadarAzEl,
   su30Devices,
-  f18Wpn
+  f18Wpn,
+  su30smWpn
 }
 
 function mfdCustomPages() {

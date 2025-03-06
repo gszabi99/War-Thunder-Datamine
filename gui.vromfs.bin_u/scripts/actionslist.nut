@@ -117,11 +117,17 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
     local maxWidth = this.scene.getSize()[0]
     for (local i = 0; i < nest.childrenCount(); i++) {
       let child = nest.getChild(i)
-      if (child?.isActionsListButton == "no")
+      if (child?.getFinalProp("isActionsListButton") == "no")
         continue
       maxWidth = max(maxWidth, child.getSize()[0])
     }
     nest.width = maxWidth
+
+    if (this.params?.infoBlock) {
+      let infoBlockSeparator = this.scene.findObject("info_block_separator")
+      infoBlockSeparator.show(true)
+      infoBlockSeparator.size = $"{maxWidth} - 2@sf/@pf, 1@sf/@pf"
+    }
 
     if (showConsoleButtons.value)
       this.guiScene.performDelayed(this, function () {

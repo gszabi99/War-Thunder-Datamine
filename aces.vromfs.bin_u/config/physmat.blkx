@@ -901,23 +901,59 @@
       ],
       "sizeInCalibers": 1.5
     },
-    "ship_structural_steel": {
+    "ship_metal": {
       "color": [
         255,
         0,
         0,
         200
       ],
+      "isWater": false,
+      "isUnit": true,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explMat": "shipMetal",
+      "breachMat": "shipMetal",
+      "proximityExplMat": "proximityShrapnelSheetMetal",
+      "aircraftProximityExplMat": "aircraftProximityShrapnel",
+      "aircraftExplMat": "aircraftSteel",
+      "aircraftShrapnelMat": "shrapnelAircraftSteel"
+    },
+    "ship_armor": {
+      "color": [
+        255,
+        0,
+        0,
+        200
+      ],
+      "isWater": false,
+      "isUnit": true,
+      "shakeMultiplier": 1.0,
+      "frictionMultiplier": 1.0,
+      "explMat": "shipArmor",
+      "breachMat": "shipArmor",
+      "proximityExplMat": "proximityShrapnelSteelArmor",
+      "aircraftProximityExplMat": "aircraftProximityShrapnel",
+      "aircraftExplMat": "aircraftSteel",
+      "aircraftShrapnelMat": "shrapnelAircraftSteel"
+    },
+    "ship_wood": {
+      "color": [
+        49,
+        71,
+        86,
+        0
+      ],
       "isUnit": true,
       "isWater": false,
       "shakeMultiplier": 1.0,
       "frictionMultiplier": 1.0,
-      "explMat": "shipSteel",
-      "breachMat": "shipSteel",
-      "proximityExplMat": "proximityShrapnelSheetMetal",
-      "aircraftProximityExplMat": "aircraftProximityShrapnel",
-      "aircraftExplMat": "shipSteel",
-      "aircraftShrapnelMat": "shrapnelAircraftSteel"
+      "explMat": "shipWood",
+      "breachMat": "shipWood",
+      "proximityExplMat": "proximityShrapnelWood",
+      "aircraftProximityExplMat": "aircraftProximityShrapnelWood",
+      "aircraftExplMat": "aircraftWood",
+      "aircraftShrapnelMat": "shrapnelAircraftWood"
     },
     "soil": {
       "bf_class": "soil",

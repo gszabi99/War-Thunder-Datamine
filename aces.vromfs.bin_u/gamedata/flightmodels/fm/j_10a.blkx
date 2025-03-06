@@ -139,6 +139,7 @@
     "hasChutes": true,
     "hasParkingBrakeControl": false,
     "hasLightsControl": false,
+    "hasManeuverabilityMode": true,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -238,8 +239,8 @@
       "Angle": 0.0,
       "VAngle": 0.0,
       "UseSpinLoss": true,
-      "SpinCdloss": 0.01,
-      "SpinClloss": 0.01,
+      "SpinCdloss": 0.04,
+      "SpinClloss": 0.03,
       "DownwashType": 2,
       "DownwashCoeff": 0.0,
       "Areas": {
@@ -290,15 +291,15 @@
         ],
         "AoaShiftAdd3": [
           5.0,
-          0.01
+          0.005
         ],
         "AoaShiftAdd4": [
-          10.0,
+          20.0,
           0.01
         ],
         "AoaShiftAdd5": [
-          25.0,
-          -0.0
+          45.0,
+          0.015
         ]
       },
       "FlapsPolar0": {
@@ -2377,6 +2378,16 @@
       "UseAoAGLimits": true,
       "LoadFactorFilterSmoothCoeff": 0.7,
       "LoadFactorLimiterStrengthMax": 0.99,
+      "AoaLimitsManeuverabilityMult0": [
+        0.5,
+        1.0,
+        1.0
+      ],
+      "AoaLimitsManeuverabilityMult1": [
+        0.51,
+        11.4,
+        11.4
+      ],
       "RatePID": {
         "Kp": 6.0,
         "Ki": 2.0,
@@ -2517,7 +2528,7 @@
     "Throttle": {
       "Limits": [
         0.0,
-        0.9
+        1.5
       ],
       "ClimbMax": [
         -12.0,
@@ -2547,7 +2558,7 @@
         "RateMult": 0.833333,
         "Lim": [
           0.05,
-          0.9
+          1.5
         ]
       },
       "AltPID": {
@@ -2563,12 +2574,12 @@
       }
     },
     "Aim": {
-      "Horizontal": true,
+      "Horizontal": false,
       "HeadingToRoll": [
         3.0,
         0.0,
-        60.0,
-        46.0
+        30.0,
+        120.0
       ],
       "RollRateMax": 100.0,
       "HeadingToRollMultByIas": [
@@ -2577,14 +2588,14 @@
         120.0,
         1.0
       ],
-      "RollLim": 50.0,
+      "RollLim": 180.0,
       "DriftControlByRoll": [
         0.0,
         0.0
       ],
       "OverridenRollLim": 30.0,
-      "PitchMax": 40.0,
-      "PitchRateMax": 40.0,
+      "PitchMax": 15.0,
+      "PitchRateMax": 50.0,
       "PitchLim": 30.0,
       "YawHeadingToYawRateMultByIas": [
         0.0,
@@ -2602,7 +2613,7 @@
         0.9,
         1.0,
         1.0,
-        0.85
+        1.0
       ],
       "YawHeadingToYawRate": [
         0.0,
@@ -2626,7 +2637,7 @@
         "Ki": 1.0,
         "Imax": 1.0,
         "Kd": 0.01,
-        "RateMult": 0.833333,
+        "RateMult": 1.0,
         "Lim": [
           -1.0,
           1.0
@@ -2648,7 +2659,7 @@
         "Ki": 0.05,
         "Imax": 0.5,
         "Kd": 0.0,
-        "RateMult": 0.833333,
+        "RateMult": 1.0,
         "Lim": [
           -0.7,
           0.7
@@ -2659,7 +2670,7 @@
         "Ki": 1.0,
         "Imax": 2.0,
         "Kd": 0.05,
-        "RateMult": 0.833333,
+        "RateMult": 1.0,
         "Lim": [
           -1.0,
           1.0
@@ -2670,7 +2681,7 @@
         "Ki": 0.2,
         "Imax": 1.0,
         "Kd": 0.05,
-        "RateMult": 0.833333,
+        "RateMult": 1.0,
         "Lim": [
           -1.0,
           1.0

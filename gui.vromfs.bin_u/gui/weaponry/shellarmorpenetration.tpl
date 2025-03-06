@@ -1,7 +1,6 @@
-<<#bulletPenetrationData>>
 shellTooltipPenetrationBlock {
   flow:t='vertical'
-  width:t='1@bulletTooltipCardWidth'
+  width:t='pw'
 
   tooltipDesc {
     tinyFont:t='yes'
@@ -11,6 +10,7 @@ shellTooltipPenetrationBlock {
   }
 
   tdiv {
+    width:t='pw'
     padding:t='1@bulletTooltipPadding, 0'
     flow:t='vertical'
 
@@ -43,7 +43,7 @@ shellTooltipPenetrationBlock {
       }
     }
 
-    horizontalLine { width:t='1@bulletAnimationWidth' }
+    horizontalLine { width:t='pw' }
     <</highEnergyPenetration>>
 
     <<#cumulativePenetration>>
@@ -101,13 +101,13 @@ shellTooltipPenetrationBlock {
     }
 
     <<#kineticPenetration>>
-    horizontalLine { width:t='1@bulletAnimationWidth' }
+    horizontalLine { width:t='pw' }
     <</kineticPenetration>>
     <</cumulativePenetration>>
 
     <<#kineticPenetration>>
     kineticPenetrationTable {
-      width:t='1@bulletAnimationWidth'
+      width:t='pw'
       margin-bottom:t='1@bulletTooltipPadding'
       flow:t='vertical'
 
@@ -139,23 +139,46 @@ shellTooltipPenetrationBlock {
         tdiv {
           width:t='pw'
           textareaNoTab {
-            text:t='<<text>>'
             width:t='@penetrationTableFirstColWidth'
+            text-align:t='center'
+            text:t='<<text>>'
+
+            <<^narrowPenetrationTable>>
             smallFont:t='yes'
+            padding:t='1@bulletTooltipPadding, 1/2@bulletTooltipPadding'
+            <</narrowPenetrationTable>>
+
+            <<#narrowPenetrationTable>>
+            tinyFont:t='yes'
+            padding:t='0, 1/2@bulletTooltipPadding'
+            <</narrowPenetrationTable>>
           }
+
           verticalLine {
             position:t='absolute'
             pos:t='@penetrationTableFirstColWidth,0'
-            height:t='1@bulletTooltipCellHeight'
+            height:t='ph'
           }
+
           <<#values>>
           textareaNoTab {
+            width:t='(pw-@penetrationTableFirstColWidth)/6'
+            text-align:t='center'
             text:t='<<value>>'
+
             <<^firstRow>>
             overlayTextColor:t='active'
             <</firstRow>>
-            width:t='(pw-@penetrationTableFirstColWidth)/6'
+
+            <<^narrowPenetrationTable>>
             smallFont:t='yes'
+            padding:t='1@bulletTooltipPadding, 1/2@bulletTooltipPadding'
+            <</narrowPenetrationTable>>
+
+            <<#narrowPenetrationTable>>
+            tinyFont:t='yes'
+            padding:t='0, 1/2@bulletTooltipPadding'
+            <</narrowPenetrationTable>>
           }
           <</values>>
 
@@ -170,4 +193,3 @@ shellTooltipPenetrationBlock {
   }
 
 }
-<</bulletPenetrationData>>

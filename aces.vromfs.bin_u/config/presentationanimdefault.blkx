@@ -33,23 +33,59 @@
       "key00": {
         "startTime": 0.0,
         "moveSensors": false,
-        "gunAngles": [
-          40.0,
-          40.0
-        ],
-        "enableEngine": true
+        "enableEngine": true,
+        "gunAngles": {
+          "primary": [
+            40.0,
+            40.0
+          ],
+          "machinegun": [
+            -160.0,
+            20.0
+          ]
+        }
       },
       "key01": {
         "startTime": 5.0,
-        "gunAngles": [
-          -40.0,
-          40.0
-        ],
-        "enableEngine": false
+        "enableEngine": false,
+        "gunAngles": {
+          "primary": [
+            -40.0,
+            40.0
+          ],
+          "machinegun": [
+            160.0,
+            20.0
+          ]
+        }
       },
       "key02": {
         "startTime": 9.5,
         "moveSensors": true
+      }
+    }
+  },
+  "shipPresentation": {
+    "duration": 5.0,
+    "looped": true,
+    "keys": {
+      "key00": {
+        "startTime": 0.0,
+        "gunAngles": {
+          "torpedoes": [
+            40.0,
+            40.0
+          ]
+        }
+      },
+      "key01": {
+        "startTime": 2.5,
+        "gunAngles": {
+          "torpedoes": [
+            -40.0,
+            40.0
+          ]
+        }
       }
     }
   }

@@ -21,7 +21,8 @@ const ROOM_LIST_TIME_OUT = 180000
 const MAX_SESSIONS_LIST_LEN = 1000
 const SKIRMISH_ROOMS_LIST_ID = "skirmish"
 
-::MRoomsList <- class {
+local MRoomsList = null
+MRoomsList = class {
   id = ""
   roomsList = null
   requestParams = null
@@ -43,9 +44,9 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
     if ("eventEconomicName" in requestParams)
       roomsListId = $"economicName:{requestParams.eventEconomicName}"
 
-    let listById = ::MRoomsList.mRoomsListById
+    let listById = MRoomsList.mRoomsListById
     if (!(roomsListId in listById))
-      listById[roomsListId] <- ::MRoomsList(roomsListId, requestParams)
+      listById[roomsListId] <- MRoomsList(roomsListId, requestParams)
     return listById[roomsListId]
   }
 
@@ -247,3 +248,5 @@ const SKIRMISH_ROOMS_LIST_ID = "skirmish"
     return getMisListType(room.public).canJoin(GM_SKIRMISH)
   }
 }
+
+return MRoomsList

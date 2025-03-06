@@ -169,6 +169,9 @@
       },
       "cover3_dm": {
         "hp": 19.5
+      },
+      "cover4_dm": {
+        "hp": 19.5
       }
     },
     "dural40": {
@@ -192,6 +195,9 @@
       }
     },
     "dural5": {
+      "radar1_dm": {
+        "hp": 35.0
+      },
       "radar_dm": {
         "hp": 35.0
       }
@@ -281,6 +287,9 @@
       },
       {
         "name": "cover3_dm"
+      },
+      {
+        "name": "cover4_dm"
       },
       {
         "name": "elevator0_dm",
@@ -789,6 +798,9 @@
       },
       {
         "name": "pilot_dm"
+      },
+      {
+        "name": "radar1_dm"
       },
       {
         "name": "radar_dm"
@@ -1837,7 +1849,7 @@
   },
   "ikPilot": [
     {
-      "model": "su_pilot_late_zsh_7ap_2_char",
+      "model": "su_pilot_late_zsh_7ap_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -1914,7 +1926,7 @@
       ]
     },
     {
-      "model": "su_pilot_late_zsh_7ap_2_char",
+      "model": "su_pilot_late_zsh_7ap_char",
       "maxHeadHorAngle": 60.0,
       "maxHeadDownAngle": 60.0,
       "maxHeadUpAngle": 10.0,
@@ -2341,6 +2353,10 @@
             {
               "type": "custom",
               "pageName": "su30Devices"
+            },
+            {
+              "type": "custom",
+              "pageName": "su30smWpn"
             },
             {
               "type": "target_tracking_bw",
@@ -3228,7 +3244,9 @@
       "node": [
         "tank9_dm",
         "tank10_dm",
-        "tank11_dm"
+        "tank11_dm",
+        "cover4_dm",
+        "radar1_dm"
       ]
     },
     "WeaponSlot": [
@@ -6495,6 +6513,9 @@
                 "su_t220_pod_su30",
                 "su_t220_pod_su30_pylon"
               ]
+            },
+            "ShowDmParts": {
+              "node": "cover4_dm"
             },
             "Weapon": {
               "trigger": "targetingPod",

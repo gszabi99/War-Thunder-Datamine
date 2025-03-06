@@ -209,12 +209,12 @@ return [
     id = "ID_TOGGLE_VIEW_SHIP"
     needShowInHelp = true
   }
-  //#ifdef PKG_DEV
-  {
-    id = "ID_SHIP_TOGGLE_HYDROPHONE_MODE"
-    needShowInHelp = true
-  }
-  //#endif
+  //
+
+
+
+
+
   {
     id = "ID_TARGETING_HOLD_SHIP"
     checkAssign = false

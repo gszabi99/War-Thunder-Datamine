@@ -1,6 +1,7 @@
 @const actionsListPadding: 3@dp;
 @const actionItemSidePadding: 14*@sf/@pf;
 @const menuSeparatorPadding: 15*@sf/@pf;
+@const menuSeparatorColor: #11111111;
 
 popup_actions_list {
   re-type:rotation;
@@ -49,7 +50,8 @@ popup_actions_list > itemsList > actionListItem,
 popup_actions_list > itemsList > button {
   border: yes;
   border-color:@transparent;
-  padding: 1@actionItemSidePadding, 5*@sf/@pf_outdated;
+  padding: 1@actionItemSidePadding, 0;
+  min-height: 1@buttonHeight;
   min-width: pw;
   css-hier-invalidate: yes;
   flow:horizontal;
@@ -57,7 +59,7 @@ popup_actions_list > itemsList > button {
 
 popup_actions_list[iconed=yes] > itemsList > actionListItem,
 popup_actions_list[iconed=yes] > itemsList > button {
-  padding: 1@actionItemSidePadding + @cIco, 5*@sf/@pf_outdated;
+  padding: 1@actionItemSidePadding + @cIco, 0;
 }
 
 popup_actions_list > itemsList > actionListItem > text,
@@ -248,7 +250,8 @@ menuItemSeparator {
   position:relative;
   size:pw - 2@menuSeparatorPadding, 1@sf/@pf;
   pos:(pw-w)/2, 0;
-  background-color:#11111111;
+  background-color:@menuSeparatorColor;
   inactive:yes;
+  interactive:no;
   isActionsListButton:no;
 }

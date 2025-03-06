@@ -34,7 +34,8 @@ tdiv {
         position:t='absolute';
         padding-top:t='0'
         flow:t='horizontal'
-        behavior:t='posNavigator'
+        behavior:t='inContainersNavigator'
+        deep:t="2"
         navigatorShortcuts:t='full'
         moveX:t='closest';
         moveY:t='linear';
@@ -56,6 +57,8 @@ tdiv {
 
         <<#columns>>
           topMenuButtonsColumn {
+            isContainer:t='yes'
+
             flow:t='vertical'
             <<#forceHoverWidth>>
               width:t='<<forceHoverWidth>> - 2@topMenuHoverMenuIndent'

@@ -18,7 +18,7 @@ let { getCurrentGameModeId, setCurrentGameModeById, getCurrentGameMode,
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.nut")
 
-::SlotbarPresetsTutorial <- class {
+let SlotbarPresetsTutorial = class {
   /** Total maximum times to show this tutorial. */
   static MAX_TUTORIALS = 3
 
@@ -407,3 +407,5 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
       sendBqEvent("CLIENT_GAMEPLAY_1", "new_unit_type_to_battle_tutorial_lastStepsName", { currentStepsName = this.currentStepsName })
   }
 }
+
+return SlotbarPresetsTutorial

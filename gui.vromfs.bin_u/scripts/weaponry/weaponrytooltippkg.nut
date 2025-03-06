@@ -20,10 +20,12 @@ let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItem
 let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod, getBulletsNamesBySet,
   getModificationInfo, getModificationName, isBulletsWithoutTracer, getBulletsSetData
 } = require("%scripts/weaponry/bulletsInfo.nut")
-let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, checkBulletParamsBeforeRender
+let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorPiercingToDescForBullets
+  checkBulletParamsBeforeRender
 } = require("%scripts/weaponry/bulletsVisual.nut")
-let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, WEAPON_TEXT_PARAMS, getPrimaryWeaponsList, isWeaponEnabled,
-  addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
+let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, getPrimaryWeaponsList, isWeaponEnabled,
+  addWeaponsFromBlk, getWeaponExtendedInfo
+} = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText, makeWeaponInfoData
 } = require("weaponryDescription.nut")
 let { isModResearched, isModificationEnabled, getModificationByName
@@ -38,6 +40,10 @@ let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
 const UI_BASE_REWARD_DECORATION = 10
+
+function setWidthForWeaponsPresetTooltip(obj, descTbl) {
+  obj["weaponTooltipWidth"] = descTbl?.bulletPenetrationData ? "full" : "narrow"
+}
 
 function updateModType(unit, mod) {
   if ("type" in mod)
@@ -58,6 +64,43 @@ function updateModType(unit, mod) {
 function updateSpareType(spare) {
   if (!("type" in spare))
     spare.type <- weaponsItem.spare
+}
+
+function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
+  //For right sidebar on the Aircraft presets window show only weapons' names and changeToSpecs
+  let showOnlyNamesAndSpecs = params?.showOnlyNamesAndSpecs ?? false
+  let presetsWeapons = []
+  let presetsNames = {
+    names = []
+  }
+  foreach(weaponBlockSet in (weaponInfoData?.resultWeaponBlocks ?? [])) {
+    foreach(weapon in weaponBlockSet) {
+      let weaponName = weapon.weaponName
+      local presetName = loc($"weapons/{weaponName}")
+      if (weapon.ammo > 1)
+        presetName = "".concat(presetName, " ", format(loc("weapons/counter/right/short"), weapon.ammo))
+
+      if (showOnlyNamesAndSpecs) {
+        presetsNames.names.append({ presetName })
+        continue
+      }
+      let presetParams = getWeaponExtendedInfo(weapon, weapon.weaponType, unit, params?.curEdiff)
+      presetsWeapons.append({ presetName, presetParams })
+    }
+  }
+  return { presetsWeapons, presetsNames }
+}
+
+//add "bulletParams" and "bulletPenetrationData" to result descTbl:
+function addArmorPiercingDataToDescTbl(descTbl, unit, blk, tType) {
+  if (TYPES_ARMOR_PIERCING.contains(tType)) {
+    let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, blk, true, false))
+    addArmorPiercingToDescForBullets(bulletsData, descTbl)
+  }
+  if (descTbl?.bulletPenetrationData)
+    descTbl.bulletPenetrationData.__update({
+      title = loc("bullet_properties/armorPiercing")
+  })
 }
 
 function getTierTooltipParams(weaponry, presetName, tierId) {
@@ -85,13 +128,13 @@ function getSingleWeaponDescTbl(unit, params) {
     isSingle = true
     detail = INFO_DETAIL.EXTENDED
   }
-  let res = {
-    desc = getWeaponInfoText(unit, makeWeaponInfoData(unit, weaponInfoParams))
-  }
-  if (TYPES_ARMOR_PIERCING.contains(tType)) {
-    let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, blkPath, true, false))
-    addArmorPiercingToDesc(bulletsData, res)
-  }
+  let res = {}
+
+  let { presetsWeapons } = getPresetWeaponsDescArray(unit, makeWeaponInfoData(unit, weaponInfoParams), params)
+  if (presetsWeapons.len())
+    res.presetsWeapons <- presetsWeapons
+
+  addArmorPiercingDataToDescTbl(res, unit, blkPath, tType)
   return res
 }
 
@@ -125,8 +168,8 @@ function buildWeaponDescHeader(params, count) {
 }
 
 function getWeaponDescTbl(unit, params) {
-  let { amountPerTier,
-    blk, tType, ammo, isGun, presetName, tierId } = params
+  let { amountPerTier, blk, tType, ammo, isGun, presetName, tierId,
+    narrowPenetrationTable = false } = params
 
   let isBlock = amountPerTier > 1
   let weapArr = getUnitWeaponsByTier(unit, blk, tierId)
@@ -137,7 +180,8 @@ function getWeaponDescTbl(unit, params) {
     isPrimary = false
     detail = INFO_DETAIL.EXTENDED
   }
-  let weaponInfoText = getWeaponInfoText(unit, makeWeaponInfoData(unit, weaponInfoParams))
+  let weaponInfoData = makeWeaponInfoData(unit, weaponInfoParams)
+  let { presetsWeapons, presetsNames } = getPresetWeaponsDescArray(unit, weaponInfoData, params)
 
   local count = 1
 
@@ -150,15 +194,16 @@ function getWeaponDescTbl(unit, params) {
       ? ammo
       : isGun ? getGunAmmoPerTier(weapons) : amountPerTier
 
-  // Remove header with incorrect weapons amount from description
-  let descArr = weaponInfoText.split(WEAPON_TEXT_PARAMS.newLine).slice(1)
-  let desc = WEAPON_TEXT_PARAMS.newLine.join(descArr)
-  let res = { weapons, count, desc }
-  if (TYPES_ARMOR_PIERCING.contains(tType)) {
-    let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, blk, true, false))
-    addArmorPiercingToDesc(bulletsData, res)
+  let res = { count, presetsWeapons }
+
+  if (presetsNames.names.len()) {
+    res.presetsNames <- presetsNames
+    return res
   }
 
+  addArmorPiercingDataToDescTbl(res, unit, blk, tType)
+  if (res?.bulletPenetrationData.kineticPenetration && narrowPenetrationTable)
+    res.bulletPenetrationData.narrowPenetrationTable <- true
   return res
 }
 
@@ -166,28 +211,44 @@ function getTierDescTbl(unit, params) {
   let { tooltipLang, name, addWeaponry, presetName, tierId } = params
 
   if (tooltipLang != null)
-    return { desc = loc(tooltipLang) }
+    return { reqText = loc(tooltipLang) }
 
   let weaponryDesc = getWeaponDescTbl(unit, params)
-  local additionalWeaponryDesc = addWeaponry
-    ? getWeaponDescTbl(unit, getTierTooltipParams(addWeaponry, presetName, tierId))
-    : null
 
-  local res = { desc = "", bulletParams = weaponryDesc?.bulletParams }
+  let res = {}
 
-  if (!additionalWeaponryDesc) {
-    let header = buildWeaponDescHeader(params, weaponryDesc.count)
-    res.desc = $"{header}\n{weaponryDesc.desc}"
+  if (!!weaponryDesc?.presetsNames) {
+    res.presetsNames <- weaponryDesc.presetsNames
     return res
   }
 
-  if (loc($"weapons/{name}") == loc($"weapons/{addWeaponry.name}")) {
-    let header = buildWeaponDescHeader(params, weaponryDesc.count + additionalWeaponryDesc.count)
-    res.desc = $"{header}\n{weaponryDesc.desc}"
-  } else {
-    let header = buildWeaponDescHeader(params, weaponryDesc.count)
-    let addHeader = buildWeaponDescHeader(params.addWeaponry, additionalWeaponryDesc.count)
-    res.desc = $"{header}\n{weaponryDesc.desc}\n{addHeader}\n{additionalWeaponryDesc.desc}"
+  res.__update({
+    presetsWeapons = weaponryDesc.presetsWeapons
+    bulletParams = weaponryDesc?.bulletParams
+    bulletPenetrationData = weaponryDesc?.bulletPenetrationData
+  })
+
+  let additionalWeaponryDesc = addWeaponry
+    ? getWeaponDescTbl(unit, getTierTooltipParams(addWeaponry, presetName, tierId))
+    : null
+
+  if (!additionalWeaponryDesc) {
+    if (!!res.presetsWeapons?[0]) {
+      let tierName = buildWeaponDescHeader(params, weaponryDesc.count)
+      res.presetsWeapons[0].presetName <- tierName
+    }
+    return res
+  }
+
+  let isSameWeapons = loc($"weapons/{name}") == loc($"weapons/{addWeaponry.name}")
+  if (!!res.presetsWeapons?[0]) {
+    let weaponsCount = isSameWeapons ? weaponryDesc.count + additionalWeaponryDesc.count
+      : weaponryDesc.count
+    res.presetsWeapons[0].presetName <- buildWeaponDescHeader(params, weaponsCount)
+  }
+  if (!isSameWeapons) {
+    additionalWeaponryDesc.presetName <- buildWeaponDescHeader(addWeaponry, additionalWeaponryDesc.count)
+    res.presetsWeapons.append(additionalWeaponryDesc)
   }
 
   if ("bulletParams" in additionalWeaponryDesc) {
@@ -218,8 +279,11 @@ function getReqTextWorldWarArmy(unit, item) {
   return text
 }
 
-function getBasesEstimatedDamageRewardText(unit, item) {
-  local res = ""
+function getBasesEstimatedDamageRewardArray(unit, item) {
+  let res = {
+    estimatedDamageTitle = loc("shop/estimated_damage_to_base_title")
+    params = []
+  }
 
   let reqUnitTypes = getRequiredUnitTypes(getCurrentGameMode())
   if (reqUnitTypes.len() == 0 || !reqUnitTypes.contains(ES_UNIT_TYPE_AIRCRAFT))
@@ -260,10 +324,17 @@ function getBasesEstimatedDamageRewardText(unit, item) {
   if (estimatedDamageToBase == 0)
     return res
 
+  res.params.append({
+    text = loc("shop/estimated_damage_to_base")
+    damageValue = format("%.1f", estimatedDamageToBase)
+  })
+
   let rewardMultiplierForBases = format("%.1f", getPresetRewardMul(unit.name, estimatedDamageToBase) * UI_BASE_REWARD_DECORATION)
 
-  res = "".concat(loc("shop/estimated_damage_to_base"), " ", estimatedDamageToBase, "\n",
-    loc("shop/reward_multiplier_for_base"), " ", rewardMultiplierForBases, "\n")
+  res.params.append({
+    text = loc("shop/reward_multiplier_for_base")
+    damageValue = rewardMultiplierForBases
+  })
 
   return res
 }
@@ -323,17 +394,37 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
       detail = params?.detail ?? INFO_DETAIL.EXTENDED
       weaponsFilterFunc = params?.weaponsFilterFunc
     }
-    desc = getWeaponInfoText(unit, makeWeaponInfoData(unit, weaponInfoParams))
-
+    let weaponInfoData = makeWeaponInfoData(unit, weaponInfoParams)
+    if (!params?.needDescInArrayForm)
+      desc = getWeaponInfoText(unit, makeWeaponInfoData(unit, weaponInfoParams))
+    else {
+      let { presetsWeapons, presetsNames } = getPresetWeaponsDescArray(unit, weaponInfoData, params)
+      if (presetsNames.names.len()) {
+        res.presetsNames <- presetsNames
+      }
+      else if (presetsWeapons.len())
+        res.presetsWeapons <- presetsWeapons
+    }
     if ((item.rocket || item.bomb) && (params?.detail ?? INFO_DETAIL.EXTENDED) == INFO_DETAIL.EXTENDED) {
       let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, item.name, true, true))
       addArmorPiercingToDesc(bulletsData, res)
     }
     if (effect) {
-      addDesc = weaponryEffects.getDesc(unit, effect, { curEdiff = params?.curEdiff })
-      let estimatedDamageAndMultiplier = getBasesEstimatedDamageRewardText(unit, item)
-      if (estimatedDamageAndMultiplier != "")
-        addDesc = "".concat(estimatedDamageAndMultiplier, addDesc)
+      addDesc = weaponryEffects.getDesc(unit, effect, {
+        curEdiff = params?.curEdiff
+        needDescInArrayForm = params?.needDescInArrayForm
+      })
+      if (addDesc.len() && !!params?.needDescInArrayForm) {
+        let changeToSpecs = {
+          changeSpecTitle = loc("modifications/specs_change")
+          changeSpecNotice = loc("weaponry/modsEffectsNotification")
+          changeToSpecsParams = addDesc
+        }
+        res.changeToSpecs <- changeToSpecs
+      }
+      let estimatedDamageAndMultiplier = getBasesEstimatedDamageRewardArray(unit, item)
+      if (estimatedDamageAndMultiplier.params.len())
+        res.estimatedDamageToBases <- estimatedDamageAndMultiplier
     }
     if (!effect && updateEffectFunc)
       res.delayed = calculate_mod_or_weapon_effect(unit.name, item.name, false, this,
@@ -512,7 +603,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
   res.name = name
 
   res.desc = desc
-  res.addDesc <- addDesc != "" ? addDesc : null
+  res.addDesc <- (addDesc != "" && res?.changeToSpecs == null) ? addDesc : null
 
   return res
 }
@@ -557,6 +648,9 @@ function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = nul
 
   checkBulletParamsBeforeRender(descTbl)
 
+  if (markupFileName == "%gui/weaponry/weaponsPresetTooltip.tpl")
+    setWidthForWeaponsPresetTooltip(obj, descTbl)
+
   descTbl.hasSweepRange <- item?.hasSweepRange
   let data = handyman.renderCached(markupFileName, descTbl)
   obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
@@ -591,4 +685,5 @@ return {
   updateSpareType
   updateWeaponTooltip
   validateWeaponryTooltipParams
+  setWidthForWeaponsPresetTooltip
 }

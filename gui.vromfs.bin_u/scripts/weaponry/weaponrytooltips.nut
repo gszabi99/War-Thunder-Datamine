@@ -9,7 +9,7 @@ let { getFakeBulletsModByName, getModificationName, isModificationIsShell,
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getSingleBulletParamToDesc } = require("%scripts/weaponry/bulletsVisual.nut")
 let { updateModType, getTierDescTbl, getSingleWeaponDescTbl, updateSpareType, updateWeaponTooltip,
-  validateWeaponryTooltipParams
+  validateWeaponryTooltipParams, setWidthForWeaponsPresetTooltip
 } = require("%scripts/weaponry/weaponryTooltipPkg.nut")
 
 const INFO_DELAY = 2.0
@@ -126,7 +126,13 @@ let tooltipTypes = {
       if (!unit)
         return false
 
-      let data = handyman.renderCached(("%gui/weaponry/weaponTooltip.tpl"), getSingleWeaponDescTbl(unit, params))
+      obj["noPadding"] = "yes"
+      obj["transparent"] = "yes"
+
+      let descTbl = getSingleWeaponDescTbl(unit, params)
+      setWidthForWeaponsPresetTooltip(obj, descTbl)
+
+      let data = handyman.renderCached(("%gui/weaponry/weaponsPresetTooltip.tpl"), descTbl)
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
       return true
     }
@@ -155,10 +161,15 @@ let tooltipTypes = {
       if (!weapon)
         return false
 
+      obj["noPadding"] = "yes"
+      obj["transparent"] = "yes"
+
       updateWeaponTooltip(obj, unit, weapon, handler, {
         hasPlayerInfo
         curEdiff
         weaponsFilterFunc = params?.weaponBlkPath ? (@(path, _blk) path == params.weaponBlkPath) : null
+        needDescInArrayForm = true //to get all weapon descriptions in arrays instead of string
+        markupFileName = "%gui/weaponry/weaponsPresetTooltip.tpl"
       }, effect)
 
       return true
@@ -194,8 +205,14 @@ let tooltipTypes = {
       let unit = getAircraftByName(unitName)
       if (!unit)
         return false
-      let data = handyman.renderCached(("%gui/weaponry/weaponTooltip.tpl"),
-        getTierDescTbl(unit, params))
+
+      obj["noPadding"] = "yes"
+      obj["transparent"] = "yes"
+
+      let descTbl = getTierDescTbl(unit, params)
+      setWidthForWeaponsPresetTooltip(obj, descTbl)
+
+      let data = handyman.renderCached(("%gui/weaponry/weaponsPresetTooltip.tpl"), descTbl)
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
 
       return true

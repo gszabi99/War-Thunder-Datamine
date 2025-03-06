@@ -40,6 +40,7 @@ let { isSessionStartedInRoom } = require("%scripts/matchingRooms/sessionLobbySta
 let { queues } = require("%scripts/queue/queueManager.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 let { create_event_description } = require("%scripts/events/eventDescription.nut")
+let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
 
 let { getSessionLobbyMissionNameLoc, getRoomRequiredCrafts, getRoomMGameMode, getMembersCountByTeams
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
@@ -132,7 +133,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateMouseMode()
     this.roomsListObj = this.scene.findObject("items_list")
-    this.roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = getEventEconomicName(this.event) })
+    this.roomsListData = MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = getEventEconomicName(this.event) })
     this.eventDescription = create_event_description(this.scene)
     this.showOnlyAvailableRooms = loadLocalAccountSettings("events/showOnlyAvailableRooms", true)
     let obj = showObjById("only_available_rooms", true, this.scene)

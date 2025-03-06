@@ -824,43 +824,11 @@
           },
           "enemyDamageStatusPanel": {
             "flow": "vertical",
-            "tdiv": [
-              {
-                "id": "hpIndicator",
-                "width": "pw",
-                "padding": "0.01@shHud, 0",
-                "pos": "0.5pw-0.5w, 0",
-                "position": "relative",
-                "flow": "horizontal",
-                "display": "hide",
-                "textareaNoTab": [
-                  {
-                    "id": "damage",
-                    "pos": "0.5pw-0.5w, -0.6h",
-                    "position": "absolute"
-                  },
-                  {
-                    "id": "hpCount",
-                    "pos": "0, 0.5ph-0.5h",
-                    "position": "relative",
-                    "padding-right": "0.01@shHud",
-                    "overlayTextColor": "active"
-                  }
-                ],
-                "hpProgressBar": {
-                  "id": "hpProgressBar",
-                  "size": "fw, 0.005@shHud",
-                  "pos": "0, 0.5ph-0.5h",
-                  "position": "relative",
-                  "value": "0"
-                }
-              },
-              {
-                "id": "damageStatus",
-                "pos": "0.5pw-0.5w, 0",
-                "position": "relative"
-              }
-            ]
+            "tdiv": {
+              "id": "damageStatus",
+              "pos": "0.5pw-0.5w, 0",
+              "position": "relative"
+            }
           },
           "hitCameraInfo": {
             "id": "info"

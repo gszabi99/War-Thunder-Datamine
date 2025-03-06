@@ -306,8 +306,12 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.curTierIdx >= 0 && this.curPresetIdx != null) {
       let item = this.presets[this.curPresetIdx]
       let weaponry = item.tiersView?[this.curTierIdx].weaponry
-      data = weaponry ? handyman.renderCached(("%gui/weaponry/weaponTooltip.tpl"),
-        getTierDescTbl(this.unit, getTierTooltipParams(weaponry, item.name, this.curTierIdx))) : ""
+      let tooltipParams = getTierTooltipParams(weaponry, item.name, this.curTierIdx).__update({
+        narrowPenetrationTable = true // to fit it on the right sidebar on the Aircraft presets window
+      })
+      let descTbl = getTierDescTbl(this.unit, tooltipParams)
+      data = weaponry ? handyman.renderCached(("%gui/weaponry/weaponsPresetTooltip.tpl"), descTbl)
+        : ""
     }
     this.guiScene.replaceContentFromText(descObj, data, data.len(), null)
   }
@@ -413,6 +417,9 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     updateWeaponTooltip(descObj, this.unit, this.presets[this.curPresetIdx].weaponPreset, this, {
       curEdiff = this.curEdiff
       detail = INFO_DETAIL.FULL
+      needDescInArrayForm = true
+      markupFileName = "%gui/weaponry/weaponsPresetTooltip.tpl"
+      showOnlyNamesAndSpecs = true
     })
   }
 

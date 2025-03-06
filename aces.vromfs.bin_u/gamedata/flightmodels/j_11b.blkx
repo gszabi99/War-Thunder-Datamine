@@ -1877,6 +1877,10 @@
       0.63,
       0.63
     ],
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
@@ -2422,18 +2426,6 @@
               "US R21G M1",
               "Type 208A"
             ]
-          },
-          {
-            "name": "HAWK",
-            "search": true,
-            "track": true,
-            "launch": true,
-            "detectLaunch": true,
-            "priority": 0,
-            "type": [
-              "AN/MPQ-50",
-              "AN/MPQ-61"
-            ]
           }
         ]
       },
@@ -2454,8 +2446,7 @@
             "text": "hud/rwr_threat_nike_hercules"
           },
           {
-            "text": "hud/rwr_threat_hawk",
-            "group": "HAWK"
+            "text": "hud/rwr_threat_hawk"
           },
           {
             "text": "hud/rwr_threat_air_defence",
@@ -2606,7 +2597,8 @@
           "page": [
             {
               "type": "custom",
-              "pageName": "su27Pod"
+              "pageName": "su27Pod",
+              "scale": 0.9
             },
             {
               "type": "custom",
@@ -2665,9 +2657,6 @@
             },
             {
               "type": "map"
-            },
-            {
-              "type": "ils_on_camera"
             },
             {
               "type": "rwr",
@@ -2752,10 +2741,16 @@
             },
             {
               "type": "custom",
-              "pageName": "su27Pod"
+              "pageName": "su27Pod",
+              "scale": 0.9
             },
             {
-              "type": "ils_on_camera"
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
             },
             {
               "type": "rwr",
@@ -2794,8 +2789,17 @@
               }
             },
             {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            },
+            {
               "type": "custom",
-              "pageName": "su27Pod"
+              "pageName": "su27Pod",
+              "scale": 0.9
             },
             {
               "type": "radar",
@@ -2848,9 +2852,6 @@
               "showCueHeights": true
             },
             {
-              "type": "ils_on_camera"
-            },
-            {
               "type": "map"
             },
             {
@@ -2874,7 +2875,7 @@
               "arrowTex": "su_mfd_ahorizon_scale",
               "position": [
                 270.0,
-                100.0
+                130.0
               ],
               "backgroundTexCoord": [
                 0.11,
@@ -2889,8 +2890,8 @@
                 0.6
               ],
               "size": [
-                510.0,
-                310.0
+                360.0,
+                260.0
               ],
               "ranges": {
                 "limits": [
@@ -2905,7 +2906,7 @@
               "texture": "su_mfd_ahorizon",
               "position": [
                 270.0,
-                100.0
+                130.0
               ],
               "arrowTexCoord": [
                 0.2,
@@ -2914,8 +2915,8 @@
                 1.0
               ],
               "size": [
-                510.0,
-                310.0
+                360.0,
+                260.0
               ],
               "notDrawBackground": true,
               "ranges": {
@@ -3019,6 +3020,10 @@
         "blk": "gameData/sensors/cn_kj8602a.blk"
       },
       {
+        "blk": "gameData/sensors/ir_tracker_tgp.blk",
+        "node": "optic2_gun"
+      },
+      {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk",
         "node": "optic2_gun"
       }
@@ -3075,6 +3080,10 @@
       {
         "name": "j_11b_tg250",
         "blk": "gameData/FlightModels/weaponPresets/j_11b_tg250.blk"
+      },
+      {
+        "name": "j_11b_tg500",
+        "blk": "gameData/FlightModels/weaponPresets/j_11b_tg500.blk"
       }
     ]
   },
@@ -3085,8 +3094,6 @@
     "maxDisbalance": 1500.0,
     "HideNodes": {
       "node": [
-        "pl_8_pylon_1",
-        "pl_8_pylon_2",
         "j_11b_pylon2_1",
         "j_11b_pylon2_2",
         "j_11b_pylon2_3",
@@ -3295,9 +3302,6 @@
         "WeaponPreset": {
           "iconType": "missile_type_b_air_to_air",
           "name": "pl8_slot1_default",
-          "ShowNodes": {
-            "node": "pl_8_pylon_1"
-          },
           "Weapon": {
             "trigger": "aam",
             "blk": "gameData/Weapons/rocketGuns/cn_pl8b_default.blk",
@@ -3319,8 +3323,8 @@
             "reqModification": "cn_pl8",
             "ShowNodes": {
               "node": [
-                "j_11b_pylon5_1",
-                "j_11b_pylon4_1"
+                "rocket_pylon_5",
+                "j_11b_pylon8_5"
               ]
             },
             "Weapon": {
@@ -3350,7 +3354,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 37
             }
           },
           {
@@ -3370,7 +3375,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 37
             }
           },
           {
@@ -3390,7 +3396,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 37
             }
           },
           {
@@ -3410,13 +3417,14 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 37
             }
           },
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "gb250_slot2",
-            "reqModification": "cn_kab_laser",
+            "reqModification": "cn_ts_250",
             "ShowNodes": {
               "node": "j_11b_pylon7_3"
             },
@@ -3427,7 +3435,30 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 37
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "k_adc03a"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gb500_slot2",
+            "reqModification": "cn_ls_500j",
+            "ShowNodes": {
+              "node": "j_11b_pylon7_3"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_500j.blk",
+              "emitter": "ch_lgb_tg250_002",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 37
             },
             "DependentWeaponPreset": {
               "slot": 7,
@@ -3780,7 +3811,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 33
             }
           },
           {
@@ -3800,7 +3832,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 33
             }
           },
           {
@@ -3820,7 +3853,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 33
             }
           },
           {
@@ -3840,13 +3874,14 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 33
             }
           },
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "gb250_slot3",
-            "reqModification": "cn_kab_laser",
+            "reqModification": "cn_ts_250",
             "ShowNodes": {
               "node": "j_11b_pylon7_1"
             },
@@ -3857,7 +3892,30 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 33
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "k_adc03a"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gb500_slot3",
+            "reqModification": "cn_ls_500j",
+            "ShowNodes": {
+              "node": "j_11b_pylon7_1"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_500j.blk",
+              "emitter": "ch_lgb_tg250_001",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 33
             },
             "DependentWeaponPreset": {
               "slot": 7,
@@ -3896,7 +3954,7 @@
             "name": "type_250_3_slot4",
             "ShowNodes": {
               "node": [
-                "fuse_pylon_001",
+                "rocket_pylon_3",
                 "bdz_usk_b_010",
                 "bdz_usk_b_011_holder"
               ]
@@ -3908,7 +3966,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 41
             }
           },
           {
@@ -3916,7 +3975,7 @@
             "name": "type_500_3_slot4",
             "ShowNodes": {
               "node": [
-                "fuse_pylon_001",
+                "rocket_pylon_3",
                 "bdz_usk_b_010",
                 "bdz_usk_b_011_holder"
               ]
@@ -3928,7 +3987,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 41
             }
           },
           {
@@ -3936,7 +3996,7 @@
             "name": "type_250_4_slot4",
             "ShowNodes": {
               "node": [
-                "fuse_pylon_001",
+                "rocket_pylon_3",
                 "bdz_usk_b_010",
                 "bdz_usk_b_011_holder"
               ]
@@ -3948,7 +4008,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 41
             }
           },
           {
@@ -3956,7 +4017,7 @@
             "name": "type_500_4_slot4",
             "ShowNodes": {
               "node": [
-                "fuse_pylon_001",
+                "rocket_pylon_3",
                 "bdz_usk_b_010",
                 "bdz_usk_b_011_holder"
               ]
@@ -3968,7 +4029,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 41
             }
           }
         ]
@@ -4000,8 +4062,9 @@
             "name": "type_250_3_slot5",
             "ShowNodes": {
               "node": [
-                "j_11b_pylon3_3",
-                "j_11b_pylon3_1_holder1"
+                "rocket_pylon_7",
+                "j_11b_pylon3_4",
+                "j_11b_pylon3_1_holder2"
               ]
             },
             "Weapon": {
@@ -4011,7 +4074,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 31
             }
           },
           {
@@ -4019,8 +4083,9 @@
             "name": "type_500_3_slot5",
             "ShowNodes": {
               "node": [
-                "j_11b_pylon3_3",
-                "j_11b_pylon3_1_holder1"
+                "rocket_pylon_7",
+                "j_11b_pylon3_4",
+                "j_11b_pylon3_1_holder2"
               ]
             },
             "Weapon": {
@@ -4030,7 +4095,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 31
             }
           },
           {
@@ -4038,8 +4104,9 @@
             "name": "type_250_4_slot5",
             "ShowNodes": {
               "node": [
-                "j_11b_pylon3_3",
-                "j_11b_pylon3_1_holder1"
+                "rocket_pylon_7",
+                "j_11b_pylon3_4",
+                "j_11b_pylon3_1_holder2"
               ]
             },
             "Weapon": {
@@ -4049,7 +4116,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 31
             }
           },
           {
@@ -4057,8 +4125,9 @@
             "name": "type_500_4_slot5",
             "ShowNodes": {
               "node": [
-                "j_11b_pylon3_3",
-                "j_11b_pylon3_1_holder1"
+                "rocket_pylon_7",
+                "j_11b_pylon3_4",
+                "j_11b_pylon3_1_holder2"
               ]
             },
             "Weapon": {
@@ -4068,13 +4137,14 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 31
             }
           },
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "gb250_slot5",
-            "reqModification": "cn_kab_laser",
+            "reqModification": "cn_ts_250",
             "ShowNodes": {
               "node": [
                 "rocket_pylon_7",
@@ -4089,7 +4159,34 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 31
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "k_adc03a"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gb500_slot5",
+            "reqModification": "cn_ls_500j",
+            "ShowNodes": {
+              "node": [
+                "rocket_pylon_7",
+                "j_11b_pylon3_4",
+                "j_11b_pylon3_1_holder2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_500j.blk",
+              "emitter": "ch_lgb_tg250_006",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 31
             },
             "DependentWeaponPreset": {
               "slot": 7,
@@ -4136,7 +4233,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 32
             }
           },
           {
@@ -4155,7 +4253,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 32
             }
           },
           {
@@ -4174,7 +4273,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 32
             }
           },
           {
@@ -4193,13 +4293,14 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 32
             }
           },
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "gb250_slot6",
-            "reqModification": "cn_kab_laser",
+            "reqModification": "cn_ts_250",
             "ShowNodes": {
               "node": [
                 "j_11b_pylon3_3",
@@ -4213,7 +4314,33 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 32
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "k_adc03a"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gb500_slot6",
+            "reqModification": "cn_ls_500j",
+            "ShowNodes": {
+              "node": [
+                "j_11b_pylon3_3",
+                "j_11b_pylon3_1_holder1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_500j.blk",
+              "emitter": "ch_lgb_tg250_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 31
             },
             "DependentWeaponPreset": {
               "slot": 7,
@@ -4252,7 +4379,7 @@
             "name": "type_250_3_slot7",
             "ShowNodes": {
               "node": [
-                "fuse_pylon_002",
+                "rocket_pylon_4",
                 "bdz_usk_b_011",
                 "bdz_usk_b_014_holder"
               ]
@@ -4264,7 +4391,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 42
             }
           },
           {
@@ -4272,7 +4400,7 @@
             "name": "type_500_3_slot7",
             "ShowNodes": {
               "node": [
-                "fuse_pylon_002",
+                "rocket_pylon_4",
                 "bdz_usk_b_011",
                 "bdz_usk_b_014_holder"
               ]
@@ -4284,7 +4412,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 42
             }
           },
           {
@@ -4292,7 +4421,7 @@
             "name": "type_250_4_slot7",
             "ShowNodes": {
               "node": [
-                "fuse_pylon_002",
+                "rocket_pylon_4",
                 "bdz_usk_b_011",
                 "bdz_usk_b_014_holder"
               ]
@@ -4304,7 +4433,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 42
             }
           },
           {
@@ -4312,7 +4442,7 @@
             "name": "type_500_4_slot7",
             "ShowNodes": {
               "node": [
-                "fuse_pylon_002",
+                "rocket_pylon_4",
                 "bdz_usk_b_011",
                 "bdz_usk_b_014_holder"
               ]
@@ -4324,7 +4454,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 42
             }
           },
           {
@@ -4693,7 +4824,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 34
             }
           },
           {
@@ -4713,7 +4845,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 34
             }
           },
           {
@@ -4733,7 +4866,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 34
             }
           },
           {
@@ -4753,13 +4887,14 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 34
             }
           },
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "gb250_slot8",
-            "reqModification": "cn_kab_laser",
+            "reqModification": "cn_ts_250",
             "ShowNodes": {
               "node": "j_11b_pylon7_2"
             },
@@ -4770,7 +4905,30 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 34
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "k_adc03a"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gb500_slot8",
+            "reqModification": "cn_ls_500j",
+            "ShowNodes": {
+              "node": "j_11b_pylon7_2"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_500j.blk",
+              "emitter": "ch_lgb_tg250_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 34
             },
             "DependentWeaponPreset": {
               "slot": 7,
@@ -4789,8 +4947,8 @@
             "reqModification": "cn_pl8",
             "ShowNodes": {
               "node": [
-                "j_11b_pylon5_2",
-                "j_11b_pylon4_4"
+                "rocket_pylon_6",
+                "j_11b_pylon8_6"
               ]
             },
             "Weapon": {
@@ -4820,7 +4978,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 38
             }
           },
           {
@@ -4840,7 +4999,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 38
             }
           },
           {
@@ -4860,7 +5020,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 38
             }
           },
           {
@@ -4880,13 +5041,14 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 38
             }
           },
           {
             "iconType": "guided_bomb_middle_laser",
             "name": "gb250_slot9",
-            "reqModification": "cn_kab_laser",
+            "reqModification": "cn_ts_250",
             "ShowNodes": {
               "node": "j_11b_pylon7_4"
             },
@@ -4897,7 +5059,30 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 38
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "k_adc03a"
+            }
+          },
+          {
+            "iconType": "guided_bomb_large_laser",
+            "name": "gb500_slot9",
+            "reqModification": "cn_ls_500j",
+            "ShowNodes": {
+              "node": "j_11b_pylon7_4"
+            },
+            "Weapon": {
+              "trigger": "guided bombs",
+              "blk": "gameData/Weapons/BombGuns/cn_ls_500j.blk",
+              "emitter": "ch_lgb_tg250_005",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "order": 38
             },
             "DependentWeaponPreset": {
               "slot": 7,
@@ -4912,9 +5097,6 @@
         "WeaponPreset": {
           "iconType": "missile_type_b_air_to_air",
           "name": "pl8_slot10_default",
-          "ShowNodes": {
-            "node": "pl_8_pylon_2"
-          },
           "Weapon": {
             "trigger": "aam",
             "blk": "gameData/Weapons/rocketGuns/cn_pl8b_default.blk",
@@ -5206,6 +5388,14 @@
             },
             {
               "blk": "gameData/sensors/cn_s740.blk"
+            },
+            {
+              "blk": "gameData/sensors/ir_tracker_tgp.blk",
+              "node": "optic2_gun"
+            },
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk",
+              "node": "optic2_gun"
             }
           ]
         }
@@ -5247,10 +5437,15 @@
       "modClass": "weapon",
       "tier": 1
     },
-    "cn_kab_laser": {
+    "cn_ts_250": {
       "reqModification": "cn_k_adc03a",
       "modClass": "weapon",
       "tier": 2
+    },
+    "cn_ls_500j": {
+      "reqModification": "cn_ts_250",
+      "modClass": "weapon",
+      "tier": 3
     }
   },
   "user_skin": {

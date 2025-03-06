@@ -168,6 +168,11 @@ function openModalOnlineShop(owner = null, chapter = null, afterCloseFunc = null
   if (checkAndOpenCustomPurchaseUrl(chapter))
     return
 
+  if (chapter == "premium") {
+    loadHandler(gui_handlers.BuyPremiumHandler, { owner = owner, afterCloseFunc = afterCloseFunc })
+    return
+  }
+
   if (isInArray(chapter, [null, ""])) {
     local webStoreUrl = getCurCircuitOverride("webstoreURL", loc("url/webstore", ""))
     if (steam_is_running() && (havePlayerTag("steam") || hasFeature("AllowSteamAccountLinking")))

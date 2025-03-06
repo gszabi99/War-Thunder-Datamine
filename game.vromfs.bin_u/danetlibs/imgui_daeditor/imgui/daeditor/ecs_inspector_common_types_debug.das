@@ -27,9 +27,9 @@ def getComponentRenderInfoFromComponentRef(compRef : EntityComponentRef)
 def draw_bbox3f(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<bbox3f?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat3("##{name}min", unsafe(addr((val.bmin).x)), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputFloat3("##{name}min", unsafe(addr((val.bmin).x)), "%.4f", ImGuiInputTextFlags.None) || *changed
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat3("##{name}max", unsafe(addr((val.bmax).x)), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputFloat3("##{name}max", unsafe(addr((val.bmax).x)), "%.4f", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "bbox3f", $() => to_string(*val),
                $(str) { let newValue = to_bbox3f(str); val.bmin = newValue.bmin; val.bmax = newValue.bmax; *changed = true; },
                $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
@@ -59,7 +59,7 @@ def draw_int(eid : array<EntityId> implicit; flags : uint; name : string; refs :
   let step = 1
   let fastStep = 5
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputScalar("##{name}", ImGuiDataType S32, val, safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags None) || *changed
+  *changed = InputScalar("##{name}", ImGuiDataType.S32, val, safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "int", $() => to_string(*val), $(str) { update_value(to_int(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -69,7 +69,7 @@ def draw_DPoint3(eid : array<EntityId> implicit; flags : uint; name : string; re
   let step = 0.1
   let fastStep = 0.5
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputScalarN("##{name}", ImGuiDataType Double, val, 3, safe_addr(step), safe_addr(fastStep), "%.2lf", ImGuiInputTextFlags None) || *changed
+  *changed = InputScalarN("##{name}", ImGuiDataType.Double, val, 3, safe_addr(step), safe_addr(fastStep), "%.2lf", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "DPoint3", $() => to_string(*val), $(str) { *val = to_DPoint3(str); *changed = true; }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -79,7 +79,7 @@ def draw_int8_t(eid : array<EntityId> implicit; flags : uint; name : string; ref
   let step = 1
   let fastStep = 5
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputScalar("##{name}", ImGuiDataType S8, val, safe_addr(step), safe_addr(fastStep), "%u", ImGuiInputTextFlags None) || *changed
+  *changed = InputScalar("##{name}", ImGuiDataType.S8, val, safe_addr(step), safe_addr(fastStep), "%u", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "i8", $() => to_string(*val), $(str) { update_value(to_int8(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -89,7 +89,7 @@ def draw_uint8_t(eid : array<EntityId> implicit; flags : uint; name : string; re
   let step = 1
   let fastStep = 5
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputScalar("##{name}", ImGuiDataType U8, val, safe_addr(step), safe_addr(fastStep), "%u", ImGuiInputTextFlags None) || *changed
+  *changed = InputScalar("##{name}", ImGuiDataType.U8, val, safe_addr(step), safe_addr(fastStep), "%u", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "u8", $() => to_string(*val), $(str) { update_value(uint8(to_uint(str)), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -99,7 +99,7 @@ def draw_int64(eid : array<EntityId> implicit; flags : uint; name : string; refs
   let step = 1
   let fastStep = 5
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputScalar("##{name}", ImGuiDataType S64, val, safe_addr(step), safe_addr(fastStep), "%lld", ImGuiInputTextFlags None) || *changed
+  *changed = InputScalar("##{name}", ImGuiDataType.S64, val, safe_addr(step), safe_addr(fastStep), "%lld", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "i64", $() => to_string(*val), $(str) { update_value(to_int64(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -109,7 +109,7 @@ def draw_uint32(eid : array<EntityId> implicit; flags : uint; name : string; ref
   let step = 1
   let fastStep = 5
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputScalar("##{name}", ImGuiDataType U32, val, safe_addr(step), safe_addr(fastStep), "%u", ImGuiInputTextFlags None) || *changed
+  *changed = InputScalar("##{name}", ImGuiDataType.U32, val, safe_addr(step), safe_addr(fastStep), "%u", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "u32", $() => to_string(*val), $(str) { update_value(uint(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -119,7 +119,7 @@ def draw_uint16(eid : array<EntityId> implicit; flags : uint; name : string; ref
   let step = 1
   let fastStep = 5
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputScalar("##{name}", ImGuiDataType U16, val, safe_addr(step), safe_addr(fastStep), "%u", ImGuiInputTextFlags None) || *changed
+  *changed = InputScalar("##{name}", ImGuiDataType.U16, val, safe_addr(step), safe_addr(fastStep), "%u", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "u16", $() => to_string(*val), $(str) { update_value(uint16(to_uint(str)), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -129,7 +129,7 @@ def draw_uint64(eid : array<EntityId> implicit; flags : uint; name : string; ref
   let step = 1
   let fastStep = 5
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputScalar("##{name}", ImGuiDataType U64, val, safe_addr(step), safe_addr(fastStep), "%llx", ImGuiInputTextFlags None) || *changed
+  *changed = InputScalar("##{name}", ImGuiDataType.U64, val, safe_addr(step), safe_addr(fastStep), "%llx", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "u64", $() => to_string(*val), $(str) { update_value(to_uint64(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -137,9 +137,9 @@ def draw_uint64(eid : array<EntityId> implicit; flags : uint; name : string; ref
 def draw_E3DCOLOR(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<E3DCOLOR?> refs[0].rawData)
   let uColor = uint(*val)
-  var color = [[float[4] float((uColor >> 16u) & 0xFF) / 255f; float((uColor >> 8u) & 0xFF) / 255f; float(uColor & 0xFF) / 255f; float(uColor >> 24u) / 255f]]
+  var color = fixed_array<float>(float((uColor >> 16u) & 0xFF) / 255f, float((uColor >> 8u) & 0xFF) / 255f, float(uColor & 0xFF) / 255f, float(uColor >> 24u) / 255f)
   SetNextItemWidth(-FLT_MIN)
-  if ColorEdit4("##{name}", safe_addr(color[0]), ImGuiColorEditFlags None)
+  if ColorEdit4("##{name}", safe_addr(color[0]), ImGuiColorEditFlags.None)
     *changed = true
     let res = uint(color[3] * 255f) << 24u | uint(color[0] * 255f) << 16u | uint(color[1] * 255f) << 8u | uint(color[2] * 255f)
     *val = E3DCOLOR(res)
@@ -156,7 +156,7 @@ def draw_float(eid : array<EntityId> implicit; flags : uint; name : string; refs
   let step = 1f
   let fastStep = 5f
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputScalar("##{name}", ImGuiDataType Float, val, safe_addr(step), safe_addr(fastStep), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputScalar("##{name}", ImGuiDataType.Float, val, safe_addr(step), safe_addr(fastStep), "%.4f", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "float", $() => to_string(*val), $(str) { update_value(to_float(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -166,7 +166,7 @@ def draw_double(eid : array<EntityId> implicit; flags : uint; name : string; ref
   let step = 1f
   let fastStep = 5f
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputScalar("##{name}", ImGuiDataType Double, val, safe_addr(step), safe_addr(fastStep), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputScalar("##{name}", ImGuiDataType.Double, val, safe_addr(step), safe_addr(fastStep), "%.4f", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "double", $() => to_string(*val), $(str) { update_value(to_double(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -181,7 +181,7 @@ def draw_bool(eid : array<EntityId> implicit; flags : uint; name : string; refs 
 def draw_Point2(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<float2?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat2("##{name}", unsafe(addr((*val).x)), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputFloat2("##{name}", unsafe(addr((*val).x)), "%.4f", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "Point2", $() => to_string(*val), $(str) { update_value(to_float2(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -189,7 +189,7 @@ def draw_Point2(eid : array<EntityId> implicit; flags : uint; name : string; ref
 def draw_Point3(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<float3?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat3("##{name}", unsafe(addr((*val).x)), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputFloat3("##{name}", unsafe(addr((*val).x)), "%.4f", ImGuiInputTextFlags.None) || *changed
 
   default_menu(eid, name, "Point3", $() => to_string(*val), $(str) { update_value(to_float3(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed) <| $ [unused_argument(sub_changed)] (sub_changed)
 
@@ -210,7 +210,7 @@ def draw_Point3(eid : array<EntityId> implicit; flags : uint; name : string; ref
 def draw_Point4(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<float4?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat4("##{name}", unsafe(addr((*val).x)), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputFloat4("##{name}", unsafe(addr((*val).x)), "%.4f", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "Point4", $() => to_string(*val), $(str) { update_value(to_float4(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -218,7 +218,7 @@ def draw_Point4(eid : array<EntityId> implicit; flags : uint; name : string; ref
 def draw_IPoint2(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<int2?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputInt2("##{name}", unsafe(addr((*val).x)), ImGuiInputTextFlags None) || *changed
+  *changed = InputInt2("##{name}", unsafe(addr((*val).x)), ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "IPoint2", $() => to_string(*val), $(str) { update_value(to_int2(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -226,7 +226,7 @@ def draw_IPoint2(eid : array<EntityId> implicit; flags : uint; name : string; re
 def draw_IPoint3(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<int3?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputInt3("##{name}", unsafe(addr((*val).x)), ImGuiInputTextFlags None) || *changed
+  *changed = InputInt3("##{name}", unsafe(addr((*val).x)), ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "IPoint3", $() => to_string(*val), $(str) { update_value(to_int3(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -234,7 +234,7 @@ def draw_IPoint3(eid : array<EntityId> implicit; flags : uint; name : string; re
 def draw_IPoint4(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<int4?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputInt4("##{name}", unsafe(addr((*val).x)), ImGuiInputTextFlags None) || *changed
+  *changed = InputInt4("##{name}", unsafe(addr((*val).x)), ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "IPoint4", $() => to_string(*val), $(str) { update_value(to_int4(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -242,7 +242,7 @@ def draw_IPoint4(eid : array<EntityId> implicit; flags : uint; name : string; re
 def draw_vec4f(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<float4?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat4("##{name}", unsafe(addr((*val).x)), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputFloat4("##{name}", unsafe(addr((*val).x)), "%.4f", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "vec4f", $() => to_string(*val), $(str) { update_value(vec4f(to_float4(str)), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
 
 
@@ -250,13 +250,13 @@ def draw_vec4f(eid : array<EntityId> implicit; flags : uint; name : string; refs
 def draw_TMatrix(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void
   var val = unsafe(reinterpret<float3x4?> refs[0].rawData)
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat3("##{name}_0", unsafe(addr((*val)[0].x)), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputFloat3("##{name}_0", unsafe(addr((*val)[0].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat3("##{name}_1", unsafe(addr((*val)[1].x)), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputFloat3("##{name}_1", unsafe(addr((*val)[1].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat3("##{name}_2", unsafe(addr((*val)[2].x)), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputFloat3("##{name}_2", unsafe(addr((*val)[2].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
   SetNextItemWidth(-FLT_MIN)
-  *changed = InputFloat3("##{name}_3", unsafe(addr((*val)[3].x)), "%.4f", ImGuiInputTextFlags None) || *changed
+  *changed = InputFloat3("##{name}_3", unsafe(addr((*val)[3].x)), "%.4f", ImGuiInputTextFlags.None) || *changed
   default_menu(eid, name, "TMatrix", $() => to_string(*val), $(str) { update_value(to_TMatrix(str), val, changed); }, $() => to_string_via_blk(name, eid[0]), changed) <| $(var sub_changed)
     let res = sub_menu |> invoke(sub_changed)
     if !res
@@ -301,7 +301,7 @@ def draw_das_string(eid : array<EntityId> implicit; flags : uint; name : string;
   var val = unsafe(reinterpret<das_string?> refs[0].rawData)
   var buf <- ImGuiInputTextBuffer("{*val}", length(*val) + 256)
   SetNextItemWidth(-FLT_MIN)
-  if InputText("##{name}", buf, ImGuiInputTextFlags AutoSelectAll)
+  if InputText("##{name}", buf, ImGuiInputTextFlags.AutoSelectAll)
     *changed = true
     *val := buf |> to_string()
   buf |> clear()
@@ -314,7 +314,7 @@ def draw_EntityId(eid : array<EntityId> implicit; flags : uint; name : string; r
   var uVal = uint(*val)
   let TEXT_BASE_WIDTH = CalcTextSize("A").x
   SetNextItemWidth(imgui::GetColumnWidth() - TEXT_BASE_WIDTH * 12f)
-  if InputScalar("##{name}", ImGuiDataType U32, safe_addr(uVal), [[int?]], [[int?]], "%d", ImGuiInputTextFlags None)
+  if InputScalar("##{name}", ImGuiDataType.U32, safe_addr(uVal), default<int?>, default<int?>, "%d", ImGuiInputTextFlags.None)
     *val = EntityId(uVal)
     *changed = true
   if !!*val
@@ -364,7 +364,7 @@ def draw_object(eid : array<EntityId> implicit; flags : uint; name, typeName : s
     imgui::Text(fullName)
     imgui_hint(name)
   else
-    let treeflags = isEmpty ? ImGuiTreeNodeFlags Leaf | ImGuiTreeNodeFlags NoTreePushOnOpen | ImGuiTreeNodeFlags Bullet : ImGuiTreeNodeFlags None
+    let treeflags = isEmpty ? ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.Bullet : ImGuiTreeNodeFlags.None
     open = TreeNodeEx(fullName, treeflags)
     imgui_hint(name)
   imgui::TableSetColumnIndex(1)
@@ -421,13 +421,13 @@ def draw_object(eid : array<EntityId> implicit; flags : uint; name, typeName : s
         imgui::TableNextRow()
         imgui::TableSetColumnIndex(0)
 
-        let itFlags = ImGuiTreeNodeFlags Leaf | ImGuiTreeNodeFlags NoTreePushOnOpen | ImGuiTreeNodeFlags Bullet
+        let itFlags = ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.Bullet
         TreeNodeEx(key, itFlags)
         imgui_hint(key)
 
         imgui::TableSetColumnIndex(1)
 
-      let itRefs <- [{auto[] getComponentRenderInfoFromComponentRef(getEntityComponentRef(it)) }]
+      let itRefs <- [ getComponentRenderInfoFromComponentRef(getEntityComponentRef(it)) ]
       render_item(eid, 0u, key, unsafe(reinterpret<array<ComponentRenderInfo#>#> itRefs), level + 1, changed) <| $(sub_changed)
         if imgui::Button("dup")
           imgui::CloseCurrentPopup()
@@ -476,7 +476,7 @@ def draw_array(eid : array<EntityId> implicit; flags : uint; name, typeName : st
     imgui::Text(fullName)
     imgui_hint(name)
   else
-    let treeflags = isEmpty ? ImGuiTreeNodeFlags Leaf | ImGuiTreeNodeFlags NoTreePushOnOpen | ImGuiTreeNodeFlags Bullet : ImGuiTreeNodeFlags None
+    let treeflags = isEmpty ? ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.Bullet : ImGuiTreeNodeFlags.None
     open = TreeNodeEx(fullName, treeflags)
     imgui_hint(name)
   imgui::TableSetColumnIndex(1)
@@ -524,12 +524,12 @@ def draw_array(eid : array<EntityId> implicit; flags : uint; name, typeName : st
         imgui::TableNextRow()
         imgui::TableSetColumnIndex(0)
 
-        let itFlags = ImGuiTreeNodeFlags Leaf | ImGuiTreeNodeFlags NoTreePushOnOpen | ImGuiTreeNodeFlags Bullet
+        let itFlags = ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.Bullet
         TreeNodeEx(key, itFlags)
 
         imgui::TableSetColumnIndex(1)
 
-      let itRefs <- [{auto[] getComponentRenderInfoFromComponentRef(getEntityComponentRef(it)) }]
+      let itRefs <- [ getComponentRenderInfoFromComponentRef(getEntityComponentRef(it)) ]
       render_item(eid, 0u, key, unsafe(reinterpret<array<ComponentRenderInfo#>#> itRefs), level + 1, changed) <| $(sub_changed)
         if imgui::Button("dup")
           using() <| $(var cop : ChildComponent)
@@ -565,28 +565,28 @@ def draw_any_list(eid : array<EntityId> implicit; flags : uint; name : string; r
     imgui::Text(fullName)
     imgui_hint(name)
   else
-    let treeflags = isEmpty ? ImGuiTreeNodeFlags Leaf | ImGuiTreeNodeFlags NoTreePushOnOpen | ImGuiTreeNodeFlags Bullet : ImGuiTreeNodeFlags None
+    let treeflags = isEmpty ? ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.Bullet : ImGuiTreeNodeFlags.None
     open = TreeNodeEx(fullName, treeflags)
     imgui_hint(name)
   imgui::TableSetColumnIndex(1)
 
   if imgui::Button("+")
-    let t : SubType = [[SubType()]]
+    let t : SubType = default<SubType>
     *val |> push(t)
 
 
   if isEmpty
     imgui::SameLine()
-    imgui::Text("<empty {typeinfo(typename type<ContType>)}>")
+    imgui::Text("<empty {typeinfo typename(type<ContType>)}>")
 
   if !isEmpty
     imgui::SameLine()
-    imgui::Text("{typeinfo(typename type<ContType>)} size: {len}")
+    imgui::Text("{typeinfo typename(type<ContType>)} size: {len}")
     imgui::SameLine()
     if imgui::Button("Clear##{name}")
       *val |> clear()
 
-  if !default_menu(eid, name, "{typeinfo(typename type<ContType>)}", $() => to_string(*val), $(str) { logerr("List to string not implemented! str={str}"); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
+  if !default_menu(eid, name, "{typeinfo typename(type<ContType>)}", $() => to_string(*val), $(str) { logerr("List to string not implemented! str={str}"); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
     if open && !isEmpty
       imgui::TreePop()
     return
@@ -606,12 +606,12 @@ def draw_any_list(eid : array<EntityId> implicit; flags : uint; name : string; r
         imgui::TableNextRow()
         imgui::TableSetColumnIndex(0)
 
-        let itFlags = ImGuiTreeNodeFlags Leaf | ImGuiTreeNodeFlags NoTreePushOnOpen | ImGuiTreeNodeFlags Bullet
+        let itFlags = ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.Bullet
         TreeNodeEx(key, itFlags)
 
         imgui::TableSetColumnIndex(1)
 
-      let itRefs <- [{auto[] getComponentRenderInfoFromComponentRef(getEntityComponentRef(*val, uint(idx))) }]
+      let itRefs <- [ getComponentRenderInfoFromComponentRef(getEntityComponentRef(*val, uint(idx))) ]
       render_item(eid, 0u, key, unsafe(reinterpret<array<ComponentRenderInfo#>#> itRefs), level + 1, changed) <| $(sub_changed)
         if imgui::Button("dup")
           *val |> push((*val)[idx])
@@ -646,27 +646,27 @@ def draw_any_shared_list(eid : array<EntityId> implicit; flags : uint; name : st
     imgui::Text(fullName)
     imgui_hint(name)
   else
-    let treeflags = isEmpty ? ImGuiTreeNodeFlags Leaf | ImGuiTreeNodeFlags NoTreePushOnOpen | ImGuiTreeNodeFlags Bullet : ImGuiTreeNodeFlags None
+    let treeflags = isEmpty ? ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.Bullet : ImGuiTreeNodeFlags.None
     open = TreeNodeEx(fullName, treeflags)
     imgui_hint(name)
   imgui::TableSetColumnIndex(1)
 
   if imgui::Button("+")
-    let t : SubType = [[SubType()]]
+    let t : SubType = default<SubType>
     *val |> push(t)
 
   if isEmpty
     imgui::SameLine()
-    imgui::Text("{typeinfo(typename type<ContType>)}: 0")
+    imgui::Text("{typeinfo typename(type<ContType>)}: 0")
 
   if !isEmpty
     imgui::SameLine()
-    imgui::Text("{typeinfo(typename type<ContType>)}: {len}")
+    imgui::Text("{typeinfo typename(type<ContType>)}: {len}")
     imgui::SameLine()
     if imgui::Button("Clear##{name}")
       *val |> clear()
 
-  if !default_menu(eid, name, "{typeinfo(typename type<ContType>)}", $() => to_string(*val), $(str) { logerr("SharedList to string not implemented! str={str}"); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
+  if !default_menu(eid, name, "{typeinfo typename(type<ContType>)}", $() => to_string(*val), $(str) { logerr("SharedList to string not implemented! str={str}"); }, $() => to_string_via_blk(name, eid[0]), changed, sub_menu)
     if open && !isEmpty
       imgui::TreePop()
     return
@@ -686,12 +686,12 @@ def draw_any_shared_list(eid : array<EntityId> implicit; flags : uint; name : st
         imgui::TableNextRow()
         imgui::TableSetColumnIndex(0)
 
-        let itFlags = ImGuiTreeNodeFlags Leaf | ImGuiTreeNodeFlags NoTreePushOnOpen | ImGuiTreeNodeFlags Bullet
+        let itFlags = ImGuiTreeNodeFlags.Leaf | ImGuiTreeNodeFlags.NoTreePushOnOpen | ImGuiTreeNodeFlags.Bullet
         TreeNodeEx(key, itFlags)
 
         imgui::TableSetColumnIndex(1)
 
-      let itRefs <- [{auto[] getComponentRenderInfoFromComponentRef(getEntityComponentRef(*val, uint(idx))) }]
+      let itRefs <- [ getComponentRenderInfoFromComponentRef(getEntityComponentRef(*val, uint(idx))) ]
       render_item(eid, 0u, key, unsafe(reinterpret<array<ComponentRenderInfo#>#> itRefs), level + 1, changed) <| $(sub_changed)
         if imgui::Button("dup")
           *val |> push((*val)[idx])

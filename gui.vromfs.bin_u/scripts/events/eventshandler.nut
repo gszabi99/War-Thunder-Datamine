@@ -50,6 +50,7 @@ let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
 let { queues } = require("%scripts/queue/queueManager.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 let { create_event_description } = require("%scripts/events/eventDescription.nut")
+let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -274,7 +275,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let economicName = getEventEconomicName(events.getEvent(this.curEventId))
-    let roomsListData = ::MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = economicName })
+    let roomsListData = MRoomsList.getMRoomsListByRequestParams({ eventEconomicName = economicName })
     if (!roomsListData.getList().len())
       return
 

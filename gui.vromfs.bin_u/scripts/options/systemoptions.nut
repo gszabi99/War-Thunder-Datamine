@@ -1080,7 +1080,7 @@ mSettings = {
   gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
     init = function(_blk, desc) {
       initIsDx12SupportedOnce()
-      desc.values <- [ "auto" ]
+      desc.values <- [ "auto", "dx11" ]
 
       if (isDx12Supported.get())
         desc.values.append("dx12")

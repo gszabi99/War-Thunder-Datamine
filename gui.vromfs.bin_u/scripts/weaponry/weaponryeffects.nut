@@ -317,11 +317,24 @@ effectTypeConstructor)
 /**************************************** FULL DESC GENERATION ******************************************************/
 
 let startTab = "".join(array(4, nbsp))
-local getEffectsStackFunc = function(unit, effectsConfig, modeId) {
+function getEffectsStackFunc(unit, effectsConfig, modeId) {
   return function(res, eType) {
     let text = eType.getText(unit, effectsConfig, modeId)
     if (text.len())
-      res = $"{res}\n{startTab}{text}"
+      res.append($"\n{startTab}{text}")
+    return res
+  }
+}
+
+function getEffectsToArrayFunc(unit, effectsConfig, modeId) {
+  return function(res, eType) {
+    let value = eType.getValue(unit, effectsConfig, modeId)
+    if (value) {
+      res.append({
+        effectValue = eType.valueToString(value)
+        text = loc(eType.getLocId(unit, effectsConfig)).replace("%s ", "")
+      })
+    }
     return res
   }
 }
@@ -361,29 +374,39 @@ let DESC_PARAMS = { needComment = true, curEdiff = null }
 function getDesc(unit, effects, p = DESC_PARAMS) {
   p = DESC_PARAMS.__merge(p)
 
-  let modeId = (p.curEdiff != null
-    ? get_difficulty_by_ediff(p.curEdiff)
+  let { curEdiff = null, needComment, needDescInArrayForm = false } = p
+
+  let modeId = (curEdiff != null
+    ? get_difficulty_by_ediff(curEdiff)
     : getCurrentShopDifficulty()).crewSkillName
   prepareCalculationParams(unit, effects, modeId)
 
-  local res = ""
-  local desc = effectsType.types.reduce(getEffectsStackFunc(unit, effects, modeId), "")
-  if (desc != "")
-    res = $"\n{loc("modifications/specs_change")}{loc("ui/colon")}{desc}"
+  let res = []
+  let reduceFunction = needDescInArrayForm ? getEffectsToArrayFunc : getEffectsStackFunc
+
+  local desc = effectsType.types.reduce(reduceFunction(unit, effects, modeId), [])
+  if (desc.len()) {
+    if (!needDescInArrayForm)
+      res.append($"\n{loc("modifications/specs_change")}{loc("ui/colon")}")
+    res.extend(desc)
+  }
 
   if ("weaponMods" in effects)
     foreach (idx, w in effects.weaponMods) {
       w.withLevel     <- effects?.withLevel?.weaponMods?[idx] ?? {}
       w.withOverdrive <- effects?.withOverdrive?.weaponMods?[idx] ?? {}
 
-      desc = weaponEffectsType.types.reduce(getEffectsStackFunc(unit, w, modeId), "")
-      if (desc.len())
-        res = $"{res}\n{loc(w.name)}{loc("ui/colon")}{desc}"
+      desc = weaponEffectsType.types.reduce(reduceFunction(unit, w, modeId), [])
+      if (desc.len()) {
+        if (!needDescInArrayForm)
+          res.append($"\n{loc(w.name)}{loc("ui/colon")}")
+        res.extend(desc)
+      }
     }
 
-  if (p.needComment && res != "")
-    res = $"{res}\n<color=@fadedTextColor>{loc("weaponry/modsEffectsNotification")}</color>"
-  return res
+  if (needComment && res.len() && !needDescInArrayForm)
+    res.append($"\n<color=@fadedTextColor>{loc("weaponry/modsEffectsNotification")}</color>")
+  return needDescInArrayForm ? res : "".join(res)
 }
 
 return {

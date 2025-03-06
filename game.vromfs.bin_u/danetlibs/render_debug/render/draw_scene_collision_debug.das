@@ -11,21 +11,21 @@ def draw_collision_debug_common(phys : bool;
                                 max_coll_dist_sq : float;
                                 max_label_dist_sq : float)
   //view mode
-  var flags = int(DrawCollisionsFlags Opacity) | int(DrawCollisionsFlags Wireframe)
+  var flags = int(DrawCollisionsFlags.Opacity) | int(DrawCollisionsFlags.Wireframe)
 
   //rendist or canopy
   if phys || trace
-    flags |= int(DrawCollisionsFlags All)
+    flags |= int(DrawCollisionsFlags.All)
 
   if canopy
-    flags |= int(DrawCollisionsFlags RendInstCanopy)
+    flags |= int(DrawCollisionsFlags.RendInstCanopy)
 
   //node filter for rendists
   if trace && !phys
-    flags |= int(DrawCollisionsFlags TraceOnly)
+    flags |= int(DrawCollisionsFlags.TraceOnly)
 
   if phys && !trace
-    flags |= int(DrawCollisionsFlags PhysOnly)
+    flags |= int(DrawCollisionsFlags.PhysOnly)
 
   rendinst_drawDebugCollisions(flags, view_pos, true, max_coll_dist_sq, max_label_dist_sq)
 

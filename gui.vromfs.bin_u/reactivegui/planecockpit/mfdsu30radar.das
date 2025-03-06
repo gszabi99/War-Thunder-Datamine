@@ -64,7 +64,7 @@ def draw_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Can
     let adPos = rdata.pos + float2(5., 110.)
     draw_horizontal_label(ctx, adPos, "А")
     draw_horizontal_label(ctx, adPos + float2(0., box.width.y + 1.), "/")
-    draw_horizontal_label(ctx, adPos + float2(0., 2. * box.width.y + 2.), "Д")
+    draw_horizontal_label(ctx, adPos + float2(0., 2. * box.width.y + 2.), get_radar_hud_velocity_search() ? "V" : "Д")
     ctx |> render_frame(adPos.x - 3., adPos.y - box.width.y - 3., adPos.x + box.width.x + 3., adPos.y + 2. * box.width.y + 6., data.lineWidth)
 
     let pdPos = rdata.pos + float2(5., 200.)
@@ -194,15 +194,25 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
   ctx |> set_font_ht(15)
 
   let isIrst = get_radar_hud_is_irst()
+  let isSpeed = get_radar_hud_velocity_search()
 
   ctx |> set_color(data.color)
-  if !isIrst
+  if !isIrst && !get_radar_hud_velocity_search()
     ctx |> draw_line(pos.x - offset, pos.y, pos.x - offset, pos.y + size.y, data.lineWidth)
     ctx |> draw_line(pos.x - offset - markW, pos.y, pos.x - offset, pos.y, data.lineWidth)
     ctx |> draw_line(pos.x - offset - markW, pos.y + size.y * 0.2, pos.x - offset, pos.y + size.y * 0.2, data.lineWidth)
     ctx |> draw_line(pos.x - offset - markW, pos.y + size.y * 0.4, pos.x - offset, pos.y + size.y * 0.4, data.lineWidth)
     ctx |> draw_line(pos.x - offset - markW, pos.y + size.y * 0.6, pos.x - offset, pos.y + size.y * 0.6, data.lineWidth)
     ctx |> draw_line(pos.x - offset - markW, pos.y + size.y * 0.8, pos.x - offset, pos.y + size.y * 0.8, data.lineWidth)
+    ctx |> draw_line(pos.x - offset - markW, pos.y + size.y, pos.x - offset, pos.y + size.y, data.lineWidth)
+  elif isSpeed
+    ctx |> draw_line(pos.x - offset, pos.y, pos.x - offset, pos.y + size.y, data.lineWidth)
+    ctx |> draw_line(pos.x - offset - markW, pos.y, pos.x - offset, pos.y, data.lineWidth)
+    ctx |> draw_line(pos.x - offset - markW, pos.y + size.y * 0.182, pos.x - offset, pos.y + size.y * 0.182, data.lineWidth)
+    ctx |> draw_line(pos.x - offset - markW, pos.y + size.y * 0.364, pos.x - offset, pos.y + size.y * 0.364, data.lineWidth)
+    ctx |> draw_line(pos.x - offset - markW, pos.y + size.y * 0.545, pos.x - offset, pos.y + size.y * 0.545, data.lineWidth)
+    ctx |> draw_line(pos.x - offset - markW, pos.y + size.y * 0.727, pos.x - offset, pos.y + size.y * 0.727, data.lineWidth)
+    ctx |> draw_line(pos.x - offset - markW, pos.y + size.y * 0.91, pos.x - offset, pos.y + size.y * 0.91, data.lineWidth)
     ctx |> draw_line(pos.x - offset - markW, pos.y + size.y, pos.x - offset, pos.y + size.y, data.lineWidth)
 
   ctx |> draw_line(pos.x + size.x + offset, pos.y, pos.x + size.x + offset, pos.y + size.y, data.lineWidth)
@@ -227,13 +237,26 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
   ctx |> draw_line(pos.x + size.x * 0.875, pos.y + size.y + offset, pos.x + size.x * 0.875, pos.y + size.y + offset + markW, data.lineWidth)
   ctx |> draw_line(pos.x + size.x, pos.y + size.y + offset, pos.x + size.x, pos.y + size.y + offset + markW, data.lineWidth)
 
-  if !isIrst
+  if !isIrst && !isSpeed
     let maxDist = get_radar_hud_distance_max()
     for i in range(0, 6)
       let dist = "{float(i) * maxDist * 0.2}"
       let distBox = get_str_bbox(dist, dist |> length(), fctx)
       ctx |> goto_xy(pos.x - offset - distBox.width.x - markW, pos.y + size.y * 0.2 * (5. - float(i)) + distBox.width.y * 0.5)
       ctx |> draw_str_scaled(1., dist, dist |> length())
+  elif isSpeed
+    let dist = "5"
+    let distBox = get_str_bbox(dist, dist |> length(), fctx)
+    ctx |> goto_xy(pos.x - offset - distBox.width.x - markW - 2., pos.y + distBox.width.y * 0.5)
+    ctx |> draw_str_scaled(1., dist, dist |> length())
+
+    ctx |> goto_xy(pos.x - offset - distBox.width.x - markW - 2., pos.y + size.y * 0.91 + distBox.width.y * 0.5)
+    ctx |> draw_str_scaled(1., "0", 1)
+
+    let distMin = "-0.5"
+    let distMinBox = get_str_bbox(distMin, distMin |> length(), fctx)
+    ctx |> goto_xy(pos.x - offset - distMinBox.width.x - markW - 2., pos.y + size.y + distMinBox.width.y * 0.5)
+    ctx |> draw_str_scaled(1., distMin, distMin |> length())
 
   let maxAz = "{roundi(rad_to_deg(get_radar_hud_azimuth_max()))}"
   let maxAzBox = get_str_bbox(maxAz, maxAz |> length(), fctx)
@@ -283,7 +306,7 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
     ctx |> draw_line(pos.x + size.x + offset + markW, pos.y + scanElevMaxRelW * size.y,
     pos.x + size.x + offset + markW, pos.y + scanElevMinRelW * size.y, data.lineWidth)
     let hero = get_controlled_hero()
-    if hero != null && !hero.isDelayed
+    if !isSpeed && hero != null && !hero.isDelayed
       let fmw = hero |> as_fmw()
       let tangage = deg_to_rad(fmw.tangage)
       let hmin = (hero.pos.y * 0.001 + get_radar_hud_distance_max() * sin(get_radar_hud_scan_elevation_min() + tangage))
@@ -411,7 +434,7 @@ def draw_radar(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
 
   let autoText = "АВТ"
   let autoStrBox = get_str_bbox(autoText, autoText |> length(), fctx)
-  if !get_radar_hud_is_irst()
+  if !get_radar_hud_is_irst() && !get_radar_hud_velocity_search()
     ctx |> goto_xy(pos.x + 20., pos.y + autoStrBox.width.y + digStrBox.width.y + 10.)
     ctx |> draw_str_scaled(1., autoText, autoText |> length())
 

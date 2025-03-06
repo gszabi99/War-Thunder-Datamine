@@ -58,17 +58,13 @@ tdiv {
               width:t='pw'
               max-height:t='ph'
               overflow-y:t='auto'
-              padding-left:t='1@blockInterval'
               descriptionNest {
                 id:t='desc'
                 width:t='pw'
-                padding:t='0, 1@blockInterval'
               }
-              rowSeparator{}
               descriptionNest {
                 id:t='tierDesc'
                 width:t='pw'
-                padding:t='0, 1@blockInterval'
               }
             }
           }
