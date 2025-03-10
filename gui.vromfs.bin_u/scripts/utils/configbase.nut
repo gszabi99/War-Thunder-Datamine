@@ -7,18 +7,18 @@ let { addTask } = require("%scripts/tasker.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let class ConfigBase {
-  //main params to set in constructor
+  
   id = ""
-  isActual = null // function() { return true }
-  requestUpdate = null  //function() { return -1 }
-  getImpl = null //function() { return DataBlock() }
+  isActual = null 
+  requestUpdate = null  
+  getImpl = null 
   cbName = "ConfigUpdate"
-  onConfigUpdate = null //function()
+  onConfigUpdate = null 
   needScriptedCache = false
 
   requestDelayMsec = 60000
 
-  //other params
+  
   requestTimeoutMsec = 15000
   lastRequestTime = -1000000
   lastUpdateTime = -1000000
@@ -113,7 +113,7 @@ let class ConfigBase {
 
     let taskId = this.requestUpdate()
     if (taskId == -1) {
-      ::update_entitlements_limited() //code sure that he better know about prices actuality, so need to update profile
+      ::update_entitlements_limited() 
       onErrorCb?( - 2)
       return
     }

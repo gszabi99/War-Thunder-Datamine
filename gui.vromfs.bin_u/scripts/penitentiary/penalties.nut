@@ -8,26 +8,26 @@ let time = require("%scripts/time.nut")
 let penalty = require("penalty")
 let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 
-//  local penalist = penalty.getPenaltyList()
-//  [
-//    {...},
-//    { "penalty" :  one of "DEVOICE", "BAN", "SILENT_DEVOICE", "DECALS_DISABLE", "WARN"
-//      "category" :  one of "FOUL", "ABUSE", "CHEAT", "BOT", "SPAM", "TEAMKILL", "OTHER", "FINGERPRINT", "INGAME"
-//      "start": unixtime, when was imputed
-//      "duration": seconds, how long it shoud lasts in total
-//      "seconds_left": seconds, how long it will lasts from now, updated on each request
-//      "comment": text, what to tell user, why he got his penalty
-//      },
-//    {...}
-//  ]
-//  Many penalties can be active (seconds_left > 0) at the same time, even of the same type.
-//  New interface should be able to show all of them
-//  (but only certain types, i.e. "SILENT_DEVOICE" shouldn't be shown to user')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function getDevoiceMessage(activeColor = "chatActiveInfoColor") {
   let st = penalty.getPenaltyStatus()
-  //st = { status = penalty.DEVOICE, duration = 360091, category="FOUL", comment="test ban", seconds_left=2012}
+  
   if (st.status != penalty.DEVOICE) {
     return null
   }

@@ -45,7 +45,7 @@ let getPromoConfig = @() cache
 
 let multiblockData = {}
 
-//-------------- <ACTION> --------------------------------
+
 
 let actionParamsByBlockId = {}
 let getActionParamsData = @(blockId) getTblValue(blockId, actionParamsByBlockId)
@@ -106,9 +106,9 @@ function performPromoAction(handler, obj) {
 
 let getPromoActionParamsKey = @(id) $"perform_action_{id}"
 let cutPromoActionParamsKey = @(idd) cutPrefix(idd, "perform_action_", idd)
-//---------------- </ACTIONS> -----------------------------
 
-//-------------- <SHOW ALL CHECK BOX> ---------------------
+
+
 
 local showAllPromoBlocks = false
 
@@ -123,9 +123,9 @@ function setShowAllPromoBlocks(value) {
 
 let getShowAllPromoBlocks = @()
   canSwitchShowAllPromoBlocksFlag() && showAllPromoBlocks
-//-------------- </SHOW ALL CHECK BOX> --------------------
 
-//----------------- <RADIOBUTTONS> -------------------------
+
+
 
 function switchPromoBlock(obj, promoHolderObj) {
   if (!checkObj(promoHolderObj))
@@ -186,9 +186,9 @@ function selectNextPromoBlock(obj, dt) {
     nextVal = 0
   listObj.setValue(nextVal)
 }
-//----------------- </RADIOBUTTONS> -------------------------
 
-//------------------ <PLAYBACK> -----------------------------
+
+
 
 local playlistSongTimerTask = -1
 
@@ -208,9 +208,9 @@ function enablePromoPlayMenuMusic(playlistArray, periodSec) {
   set_cached_music(CACHED_MUSIC_MENU, chooseRandom(playlistArray), "")
   playlistSongTimerTask = periodic_task_register({}, requestTurnOffPlayMenuMusic, periodSec)
 }
-//------------------ </PLAYBACK> -----------------------------
 
-//--------------------- <TOGGLE> ----------------------------
+
+
 
 function isPromoCollapsed(id) {
   let blk = loadLocalByAccount("seen/promo_collapsed")
@@ -250,9 +250,9 @@ function togglePromoItem(toggleButtonObj) {
   toggleButtonObj.getScene().applyPendingChanges(false)
   move_mouse_on_obj(toggleButtonObj)
 }
-//-------------------- </TOGGLE> ----------------------------
 
-//----------- <NEW ICON WIDGET> ----------------------------
+
+
 
 function isWidgetSeenById(id) {
   let blk = loadLocalByAccount("seen/promo")
@@ -304,10 +304,10 @@ function setSimpleWidgetData(widgetsTable, id, widgetsWithCounter = []) {
 
   updateSimpleWidgetsData(table)
 }
-//-------------- </NEW ICON WIDGET> ----------------------
 
-// TODO remove this redundant table
-// block name in 'customSettings > accounts > <account> > seen' = function (must return days)
+
+
+
 let oldRecordsCheckTable = {
   promo = @(tm) tm
 }
@@ -358,7 +358,7 @@ function checkBlockTime(block) {
   if (!isPartnerUnlockAvailable(block?.partnerUnlock, block?.partnerUnlockDurationMin))
     return false
 
-  // Block has no time restrictions.
+  
   return true
 }
 
@@ -437,7 +437,7 @@ function needUpdate(newData) {
 
 function receivePromoBlk() {
   local customPromoBlk = get_gui_regional_blk()?.promo_block
-  // Compatibility with non-existent or outdated gui_regional
+  
   if (!isDataBlock(customPromoBlk)) {
     let blk = get_game_settings_blk()
     customPromoBlk = blk?.promo_block
@@ -450,7 +450,7 @@ function receivePromoBlk() {
   let guiBlk = GUI.get()
   let staticPromoBlk = guiBlk?.static_promo_block
   if (isDataBlock(staticPromoBlk)) {
-    // Checking for non-unique block names
+    
     for (local i = 0; i < staticPromoBlk.blockCount(); ++i) {
       let block = staticPromoBlk.getBlock(i)
       let blockName = block.getBlockName()
@@ -526,21 +526,21 @@ let defaultCollapsedIcon = loc("icon/news")
 
 function getPromoCollapsedIcon(view, promoButtonId) {
   let icon = getPromoButtonConfig(promoButtonId)?.collapsedIcon
-  let res = (icon != null) ? getTblValue(icon, view, icon) // can be set as param
+  let res = (icon != null) ? getTblValue(icon, view, icon) 
     : getLocTextFromConfig(view, "collapsedIcon", defaultCollapsedIcon)
   return loc(res)
 }
 
 function getPromoCollapsedText(view, promoButtonId) {
   let text = getPromoButtonConfig(promoButtonId)?.collapsedText
-  let res = (text != null) ? getTblValue(text, view, "") // can be set as param
+  let res = (text != null) ? getTblValue(text, view, "") 
     : getLocTextFromConfig(view, "collapsedText", "")
   return loc(res)
 }
 
-// First, it searches text for the current language (e.g., "text_en", "text_ru").
-// If no such text is found, it tries to return the text in the "text" property.
-// If nothing is found, it returns the block id.
+
+
+
 let getViewText = @(view, defValue = null) getLocTextFromConfig(view, "text", defValue)
 
 let getImage = @(view) getLocTextFromConfig(view, "image", "")

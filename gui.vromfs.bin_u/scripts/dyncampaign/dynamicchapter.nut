@@ -308,14 +308,14 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
     let settings = DataBlock();
     settings.setInt("playerSide", team)
 
-    //desc = get_option(USEROPT_DYN_ALLIES);
-    //local allies = desc.values[desc.value];
+    
+    
 
-    //desc = get_option(USEROPT_DYN_ENEMIES);
-    //local enemies = desc.values[desc.value];
+    
+    
 
-    //settings.setInt("enemyCount", enemies)
-    //settings.setInt("allyCount", allies)
+    
+    
 
     desc = get_option(USEROPT_DYN_FL_ADVANTAGE);
     settings.setInt("frontlineAdvantage", desc.values[desc.value])
@@ -368,7 +368,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   function onFav() {}
 }
 
-//country without "country_" prefix
+
 ::is_dynamic_country_allowed <- function is_dynamic_country_allowed(country) {
   let sBlk = get_game_settings_blk()
   let list = sBlk?.dynamicCountries

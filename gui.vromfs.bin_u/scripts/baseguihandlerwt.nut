@@ -48,17 +48,6 @@ let defaultSlotbarActions = [
 let timerPID = dagui_propid_add_name_id("_size-timer")
 let forceTimePID = dagui_propid_add_name_id("force-time")
 
-function moveToFirstEnabled(obj) {
-  let total = obj.childrenCount()
-  for (local i = 0; i < total; i++) {
-    let child = obj.getChild(i)
-    if (!child.isValid() || !child.isEnabled())
-      continue
-    move_mouse_on_obj(child)
-    break
-  }
-}
-
 function setForceMove(obj, value) {
   obj.forceMove = value
   obj.setIntProp(forceTimePID, get_time_msec())
@@ -103,7 +92,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   wndOptionsMode = -1
   wndGameMode = -1
 
-  wndControlsAllowMask = null //enum CtrlsInGui, when null, it set by wndType
+  wndControlsAllowMask = null 
   widgetsList = null
   needVoiceChat = true
   canInitVoiceChatWithSquadWidget = false
@@ -174,10 +163,10 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     this.registerSubHandler(this.rightSectionHandlerWeak)
   }
 
-  /**
-   * @param filterFunc Optional filter function with mode id
-   *                   as parameter and boolean return type.
-   */
+  
+
+
+
   function getModesTabsView(selectedDiffCode, filterFunc) {
     let tabsView = []
     local isFoundSelected = false
@@ -306,7 +295,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
     this.scene.show(show)
     if (needApplyPending)
-      this.guiScene.applyPendingChanges(false) //to correct work isVisible() for scene objects after event
+      this.guiScene.applyPendingChanges(false) 
   }
 
   function startOnlineShop(chapter = null, afterCloseShop = null, metric = "unknown") {
@@ -346,7 +335,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   function onUserLog(_obj) {
     if (hasFeature("UserLog"))
-      ::gui_modal_userLog()
+      loadHandler(gui_handlers.UserLogHandler)
     else
       this.notAvailableYetMsgBox()
   }
@@ -439,7 +428,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     broadcastEvent("AutorefillChanged", { id = obj.id, value })
   }
 
-  //"nav-help" - navBar
+  
   function createSlotbar(params = {}, nest = "nav-help") {
     if (this.slotbarWeak) {
       this.slotbarWeak.setParams(params)
@@ -463,7 +452,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     return gui_handlers.SlotbarWidget.create(params)
   }
 
-  function reinitSlotbar() { //!!FIX ME: Better to not use it.
+  function reinitSlotbar() { 
     let slotbar = this.getSlotbar()
     if (slotbar)
       slotbar.fullUpdate()
@@ -666,7 +655,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function onHoverSizeMove(obj) {
-    //this only for pc mouse logic. For animated gamepad cursor look onDropdownAnimFinish
+    
     if (!is_mouse_last_time_used())
       return
     this.unstickLastDropDown(getDropDownRootObj(obj))
@@ -700,14 +689,25 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     this.guiScene.playSound("menu_appear")
   }
 
+  function moveToFirstEnabled(obj) {
+    let total = obj.childrenCount()
+    for (local i = 0; i < total; i++) {
+      let child = obj.getChild(i)
+      if (!child.isValid() || !child.isEnabled())
+        continue
+      move_mouse_on_obj(child)
+      break
+    }
+  }
+
   function onDropdownAnimFinish(obj) {
-    //this only for animated gamepad cursor. for pc mouse logic look onHoverSizeMove
+    
     let isOpened = obj.getFloatProp(timerPID, 0.0) == 1
     if (!isOpened) {
       let rootObj = getDropDownRootObj(obj)
       this.guiScene.performDelayed({}, function() {
         if (rootObj?.isValid())
-          setForceMove(rootObj, "no") //need to remove flag on the next frame, after hover will be removed
+          setForceMove(rootObj, "no") 
       })
       return
     }
@@ -720,7 +720,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     let menuObj = this.getCurGCDropdownMenu()
     if (!menuObj?.isValid())
       return
-    moveToFirstEnabled(menuObj)
+    this.moveToFirstEnabled(menuObj)
     local tempTask = -1
     tempTask = periodic_task_register(this,
       function(_) {
@@ -732,7 +732,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function onDropdownHover(obj) {
-    // see func onDropdownAnimFinish
+    
     if (!showConsoleButtons.value || !checkObj(stickedDropDown) || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     let btn = this.getCurGCDropdownBtn()
@@ -786,11 +786,11 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function checkedForward(func, cancelFunc = null) { this.checkAndStart(func, cancelFunc, "isCanGoForward") }
   function checkedCrewModify(func, cancelFunc = null) { this.checkAndStart(func, cancelFunc, "isCanModifyCrew") }
   function checkedAirChange(func, cancelFunc = null) {
-    //change selected air
+    
     this.checkAndStart(func, cancelFunc, "isCanAirChange")
   }
   function checkedCrewAirChange(func, cancelFunc = null) {
-    //change air in slot
+    
     this.checkAndStart(
       function() {
         checkSquadUnreadyAndDo(callback.make(func, this),
@@ -861,7 +861,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
 
   function sendInvitation() {}
 
-  //!!!FIX ME Need remove this functions from base handlre. It is need only for weapons
+  
   function onModActionBtn() {}
   function onModItemClick() {}
   function onModItemDblClick() {}

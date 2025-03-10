@@ -49,11 +49,13 @@
       "importTriggers": true,
       "importMissionObjectives": true,
       "importWayPoints": true,
+      "importDialogs": true,
       "showAreas": true,
       "showUnits": true,
       "showTriggers": true,
       "showMissionObjectives": true,
       "showWayPoints": true,
+      "showDialogs": true,
       "excludes": {}
     }
   },
@@ -76,19 +78,7 @@
         "missionMarkAsRespawnPoint": {
           "loc_name": "",
           "spawnEffect": false,
-          "isStrictSpawn": false,
-          "isAirfield": false,
-          "isUnit": false,
-          "useExisting": false,
-          "isIndividual": true,
-          "removeAreas": false,
-          "canSpawnOnNeutral": false,
-          "showOnMap": false,
           "radius": -1.0,
-          "onlyOnePlayerPerSpawnPoint": false,
-          "resetStrictSpawnIndex": false,
-          "replaceAreas": false,
-          "forceCreate": false,
           "target": [
             "spawnpoint01",
             "spawnpoint02",
@@ -100,13 +90,18 @@
             "spawnpoint08"
           ],
           "team": "A",
-          "separate_fuel_time": false,
-          "modular_airfield": false,
-          "offset": [
-            0.0,
-            0.0,
-            0.0
-          ],
+          "isStrictSpawn": false,
+          "resetStrictSpawnIndex": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "forceCreate": false,
+          "useExisting": false,
+          "isIndividual": true,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "removeAreas": false,
+          "replaceAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": false,
           "tags": {
             "tank": true,
             "type_heavy_tank": true,
@@ -122,11 +117,11 @@
         },
         "__unitSetIndication": {
           "set": true,
+          "target": "all_enemy_units",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "all_enemy_units"
+          "object_var_value": 0
         },
         "unitPutToSleep": {
           "target": [
@@ -300,6 +295,31 @@
       },
       "else_actions": {}
     },
+    "apply_noobject_areas": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {
+        "objectExists": {
+          "target": "@noobject_box_squad_name",
+          "type": "squad"
+        }
+      },
+      "actions": {
+        "missionDestroyArea": {
+          "target_type": "permanent_rendinst",
+          "area": "@noobject_box_squad_name"
+        }
+      },
+      "else_actions": {}
+    },
     "init_battlearea": {
       "is_enabled": true,
       "comments": "",
@@ -323,11 +343,11 @@
           "ground": true,
           "mapArea": true,
           "killOutOfBattleArea": true,
-          "newGridHorizontalCellCount": 0,
           "killArea": false,
           "detectionArea": false,
           "airMapArea": false,
-          "area": "battlearea"
+          "area": "battlearea",
+          "newGridHorizontalCellCount": 0
         }
       },
       "else_actions": {}
@@ -384,6 +404,9 @@
         "missionMarkAsRespawnPoint": {
           "loc_name": "missions/helipad_spawn",
           "spawnEffect": false,
+          "radius": -1.0,
+          "target": "helipad",
+          "team": "A",
           "isStrictSpawn": false,
           "resetStrictSpawnIndex": false,
           "isAirfield": true,
@@ -396,9 +419,6 @@
           "replaceAreas": false,
           "canSpawnOnNeutral": false,
           "showOnMap": true,
-          "radius": -1.0,
-          "target": "helipad",
-          "team": "A",
           "tags": {
             "helicopter": true,
             "type_attack_helicopter": true,
@@ -871,6 +891,7 @@
         "unitRestore": {
           "ressurectIfDead": false,
           "fullRestore": false,
+          "target_marking": 0,
           "target": "all_enemy_units",
           "partRestore": true,
           "tankPart": [
@@ -1024,19 +1045,19 @@
       "actions": {
         "unitSetIndication": {
           "set": false,
+          "target": "all_enemy_units",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "target": "all_enemy_units",
           "useForTriggerFiltered": true
         },
         "unitSetProperties": {
+          "object": "all_enemy_units",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "all_enemy_units",
           "useForTriggerFiltered": true,
           "accuracy": 1.0,
           "airAccuracy": 0.6,
@@ -1047,6 +1068,7 @@
         "unitRestore": {
           "ressurectIfDead": true,
           "fullRestore": true,
+          "target_marking": 0,
           "target": [
             "all_enemy_units",
             "enemy_spaa"
@@ -1449,19 +1471,19 @@
           },
           "unitSetIndication": {
             "set": true,
+            "target": "all_enemy_units",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "all_enemy_units",
             "useForTriggerFiltered": true
           },
           "unitSetProperties": {
+            "object": "all_enemy_units",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "all_enemy_units",
             "useForTriggerFiltered": true,
             "attack_type": "fire_at_will",
             "accuracy": 0.5,
@@ -2463,15 +2485,15 @@
           },
           "unitSetProperties": {
             "target_marking": 0,
-            "object_marking": 0,
             "target_marking_var": "random_int",
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@wave_name_var",
             "object_type": "isMarked",
             "unit_type_ex": "isActive",
+            "object_marking": 0,
             "object_marking_var": "random_int",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "forceVisibleOnMap": true,
             "airAccuracy": 0.6,
             "effShootingRate": 1.0,
@@ -2482,15 +2504,15 @@
           },
           "unitSetIndication": {
             "set": true,
-            "target_marking": 0,
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target": "@wave_name_var",
             "target_type": "isMarked",
             "unit_type_ex": "isActive",
-            "target_marking_var": "random_int"
+            "target_marking": 0,
+            "target_marking_var": "random_int",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           },
           "triggerEnable": {
             "target": "generate_new_direction"
@@ -2537,15 +2559,15 @@
           },
           "unitSetProperties": {
             "target_marking": 0,
-            "object_marking": 0,
             "target_marking_var": "random_int",
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "object": "@wave_name_var",
             "object_type": "isMarked",
             "unit_type_ex": "isActive",
+            "object_marking": 0,
             "object_marking_var": "random_int",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
             "forceVisibleOnMap": true,
             "airAccuracy": 0.6,
             "effShootingRate": 1.0,
@@ -2555,16 +2577,16 @@
             "advancedCollisionAvoidance": true
           },
           "unitSetIndication": {
-            "target_marking": 0,
             "set": true,
             "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
             "target": "@wave_name_var",
             "target_type": "isMarked",
             "unit_type_ex": "isActive",
-            "target_marking_var": "random_int"
+            "target_marking": 0,
+            "target_marking_var": "random_int",
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0
           },
           "varSetInt": {
             "value": 0,
@@ -2751,11 +2773,11 @@
             "useForTriggerFiltered": true
           },
           "unitSetProperties": {
+            "object": "all_enemy_units",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "all_enemy_units",
             "calmDetection": true,
             "forceVisibleOnMap": true,
             "attack_type": "fire_at_will",
@@ -2881,20 +2903,20 @@
         },
         "actions": {
           "unitSetIndication": {
-            "target_marking": 0,
             "set": false,
+            "target": "all_enemy_units",
+            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "all_enemy_units",
             "useForTriggerFiltered": true
           },
           "unitSetProperties": {
+            "object": "all_enemy_units",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "all_enemy_units",
             "useForTriggerFiltered": true,
             "airAccuracy": 0.6,
             "effShootingRate": 1.0,
@@ -3010,11 +3032,11 @@
             "resetFormation": true
           },
           "unitSetProperties": {
+            "object": "enemy_air_assaults",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "enemy_air_assaults",
             "calmDetection": true,
             "forceVisibleOnMap": true,
             "attack_type": "fire_at_will",
@@ -3024,12 +3046,12 @@
             "airEffShootingRate": 1.0
           },
           "unitSetIndication": {
-            "target_marking": 0,
             "set": true,
+            "target": "enemy_air_assaults",
+            "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "enemy_air_assaults"
+            "object_var_value": 0
           },
           "triggerEnable": {
             "target": "planes_attack"
@@ -3079,6 +3101,7 @@
           "unitRestore": {
             "ressurectIfDead": false,
             "fullRestore": false,
+            "target_marking": 0,
             "target": "enemy_air_assaults",
             "target_type": "isActive",
             "ammoRestore": true
@@ -3514,11 +3537,11 @@
         "conditions": {},
         "actions": {
           "unitSetProperties": {
+            "object": "player_tank02",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "player_tank02",
             "isImmortal": true
           }
         },
@@ -3649,11 +3672,11 @@
             "resetFormation": true
           },
           "unitSetProperties": {
+            "object": "enemy_spaa",
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "object": "enemy_spaa",
             "forceVisibleOnMap": true,
             "targetAir": true,
             "targetGnd": false,
@@ -3785,7 +3808,8 @@
     "spaa_count": 0,
     "spaa_need_to_spawn": 0,
     "players_on_ground_current": 0,
-    "players_effective_count": 0
+    "players_effective_count": 0,
+    "noobject_box_squad_name": "noobject_box_squad"
   },
   "dialogs": {},
   "airfields": {},
@@ -3829,6 +3853,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -3874,7 +3900,6 @@
         ]
       ],
       "props": {
-        "object_marking": 0,
         "squad_members": [
           "player_tank01",
           "player_tank02",
@@ -3908,7 +3933,8 @@
           "player_tank30",
           "player_tank31",
           "player_tank32"
-        ]
+        ],
+        "object_marking": 0
       }
     },
     "tankModels": [
@@ -3950,6 +3976,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4007,6 +4035,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4064,6 +4094,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4121,6 +4153,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4178,6 +4212,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4235,6 +4271,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4292,6 +4330,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4349,6 +4389,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4406,6 +4448,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4463,6 +4507,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4520,6 +4566,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4577,6 +4625,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4634,6 +4684,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4691,6 +4743,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4748,6 +4802,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4805,6 +4861,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4862,6 +4920,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4919,6 +4979,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -4976,6 +5038,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5033,6 +5097,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5090,6 +5156,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5147,6 +5215,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5204,6 +5274,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5261,6 +5333,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5318,6 +5392,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5375,6 +5451,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5432,6 +5510,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5489,6 +5569,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5546,6 +5628,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5603,6 +5687,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5660,6 +5746,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -5717,6 +5805,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,

@@ -1,8 +1,8 @@
 
-/**
- * u is a set of utility functions, trashbin
-  it also provide export for underscore.nut for legacy reasons
- */
+
+
+
+
 
 let DataBlock = require("DataBlock")
 let dagorMath = require("dagor.math")
@@ -17,10 +17,10 @@ let rnd = require_optional("dagor.random")?.rnd
        throw("no math library exist")
      }
 
-/**
- * Produces a new array of values by mapping each value in list through a
- * transformation function (iteratee(value, key, list)).
- */
+
+
+
+
 function mapAdvanced(list, iteratee) {
   let t = type(list)
   if (t == "array") {
@@ -38,9 +38,9 @@ function mapAdvanced(list, iteratee) {
   return []
 }
 
-/**
- * keys return an array of keys of specified table
- */
+
+
+
 function keys(data) {
   if (type(data) == "array"){
     let res = array(data.len())
@@ -51,18 +51,18 @@ function keys(data) {
   return data.keys()
 }
 
-/**
- * Return all of the values of the table's properties.
- */
+
+
+
 function values(data) {
   if (type(data) == "array")
     return clone data
   return data.values()
 }
 
-/*******************************************************************************
- **************************** Custom Classes register **************************
- ******************************************************************************/
+
+
+
 
 let customIsEqual = {}
 let customIsEmpty = {}
@@ -72,11 +72,11 @@ function registerIsEqual(classRef, isEqualFunc){
   customIsEqual[classRef] <- isEqualFunc
 }
 
-/**
- * Return true if specified obj (@table, @array, @string, @datablock) is empty
- * for integer: return true for 0, and false for other
- * return true for null
- */
+
+
+
+
+
 
 function isEmpty(val) {
   if (!val)
@@ -95,9 +95,9 @@ function isEmpty(val) {
   return false
 }
 
-/*
-  register instance class to work with u.is<className>, u.isEqual,  u.isEmpty
-*/
+
+
+
 function registerClass(className, classRef, isEqualFunc = null, isEmptyFunc = null) {
   let funcName = $"is{className.slice(0, 1).toupper()}{className.slice(1)}"
   this[funcName] <- @(value) type(value) == "instance" && (value instanceof classRef)
@@ -113,9 +113,9 @@ function isEqual(val1, val2){
   return uIsEqual(val1, val2, customIsEqual)
 }
 
-/*
-  try to register standard dagor classes
-*/
+
+
+
 let dagorClasses = {
   DataBlock = {
     classRef = DataBlock
@@ -182,12 +182,12 @@ let dagorClasses = {
 
 
 
-/**
- * Copy all of the properties in the source objects over to the destination
- * object, and return the destination object. It's in-order, so the last source
- * will override properties of the same name in previous arguments.
- */
-function extend(destination, ... /*sources*/) {
+
+
+
+
+
+function extend(destination, ... ) {
   for (local i = 0; i < vargv.len(); i++)
     foreach (key, val in vargv[i]) {
       local v = val
@@ -195,7 +195,7 @@ function extend(destination, ... /*sources*/) {
         v = extend(isArray(val) ? [] : {}, val)
 
       if (isArray(destination))
-        destination.append(v) // warning disable: -unwanted-modification
+        destination.append(v) 
       else
         destination[key] <- v
     }
@@ -203,10 +203,10 @@ function extend(destination, ... /*sources*/) {
   return destination
 }
 
-/**
- * Recursevly copy all fields of obj to the new instance of same type and
- * returns it.
- */
+
+
+
+
 function copy(obj) {
   if (obj == null)
     return null
@@ -214,7 +214,7 @@ function copy(obj) {
   if (isArray(obj) || isTable(obj))
     return extend(isArray(obj) ? [] : {}, obj)
 
-  //!!FIX ME: Better to make clone method work with datablocks, or move it to custom methods same as isEqual
+  
   if ("isDataBlock" in this && isDataBlock(obj)) {
     let res = DataBlock()
     res.setFrom(obj)
@@ -227,10 +227,10 @@ function copy(obj) {
   return clone obj
 }
 
-/*
-  * Find and remove {value} from {data} (table/array) once
-  * return true if found
-*/
+
+
+
+
 function removeFrom(data, value) {
   if (isArray(data)) {
     let idx = data.indexof(value)
@@ -249,10 +249,10 @@ function removeFrom(data, value) {
   return false
 }
 
-/**
- * Create new table which have keys, replaced from keysEqual table.
- * deepLevel param set deep of recursion for replace keys in tbl childs
-*/
+
+
+
+
 function keysReplace(tbl, keysEqual, deepLevel = -1) {
   let res = {}
   local newValue = null
@@ -272,9 +272,9 @@ function keysReplace(tbl, keysEqual, deepLevel = -1) {
 }
 
 
-/*******************************************************************************
- ****************************** Array handling *********************************
- ******************************************************************************/
+
+
+
 
 
 function getMax(arr, iteratee = null) {
@@ -359,22 +359,22 @@ function chooseRandomNoRepeat(arr, prevIdx) {
   return arr[nextIdx]
 }
 
-/**
-*  Wraps the @index (any integer number) in the @length of the array.
-*  Returns the adjusted index in array range, keeping its offset.
-*  In case of zero @length returns -1
-*/
+
+
+
+
+
 function wrapIdxInArrayLen(index, length) {
   return length > 0 ? (((index % length) + length) % length) : -1
 }
 
-/**
- * Looks through each value in the @data, returning the first one that passes
- * a truth test @predicate, or null if no value passes the test. The function
- * returns as soon as it finds an acceptable element, and doesn't traverse
- * the entire data.
- * @reverseOrder work only with arrays.
- */
+
+
+
+
+
+
+
 function search(data, predicate, reverseOrder = false) {
   if (!reverseOrder || type(data) != "array") {
     foreach(value in data)
@@ -416,16 +416,16 @@ local export = underscore.__merge({
   search
   isEmpty
   isEqual
-//obsolete
+
   keys
   values
   find_in_array
 
 }, functools)
 
-/**
- * Add type checking functions such as isFloat()
- */
+
+
+
 let internalTypes = ["integer", "int64", "float", "null",
                       "bool",
                       "class", "instance", "generator",

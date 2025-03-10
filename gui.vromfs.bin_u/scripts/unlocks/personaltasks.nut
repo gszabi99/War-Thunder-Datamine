@@ -150,7 +150,7 @@ let class PersonalTasksModal (gui_handlers.BaseGuiHandlerWT) {
     let gmName = getRoomEvent()?.name
     let hasBattleTasks = gmName != null
       && getCurBattleTasksByGm(gmName).len() > 0
-    tabList.setValue(hasBattleTasks ? 0 : 1) // if no tasks select next tab
+    tabList.setValue(hasBattleTasks ? 0 : 1) 
   }
 
   function onTabChange(obj) {

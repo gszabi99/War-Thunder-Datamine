@@ -120,7 +120,7 @@ let squadData = persist("squadData", @() {
 })
 let smData = persist("smData",@() {
   COMMON_SQUAD_SIZE = 4
-  MAX_SQUAD_SIZE = 4 //max available squad size to choose
+  MAX_SQUAD_SIZE = 4 
   squadSizesList = []
   meReady = false
   isMyCrewsReady = false
@@ -368,7 +368,7 @@ g_squad_manager = {
       g_squad_manager.updateMyMemberData()
   }
 
-  //It function will be use in future: Chat with password
+  
   function setSquadData() {
     if (!g_squad_manager.isSquadLeader())
       return
@@ -485,8 +485,8 @@ g_squad_manager = {
     if (!g_squad_manager.isInSquad())
       return
 
-    //no need force actualazie jwt profile data for leader or if not ready
-    //on set ready status jwt profile data force actualaze
+    
+    
     if (!needActualizeQueueData.value || g_squad_manager.isSquadLeader() || !g_squad_manager.isMeReady()) {
       g_squad_manager.updateMyMemberData(myMemberData)
       return
@@ -1266,11 +1266,11 @@ g_squad_manager = {
     let alreadyInSquad = g_squad_manager.isInSquad()
 
     let newSquadId = resSquadData?.id
-    if (is_numeric(newSquadId)) //bad squad data
-      squadData.id = newSquadId.tostring() //!!FIX ME: why this convertion to string?
+    if (is_numeric(newSquadId)) 
+      squadData.id = newSquadId.tostring() 
     else if (!alreadyInSquad) {
       script_net_assert_once("no squad id", "Error: received squad data without squad id")
-      leaveSquadImpl() //leave broken squad
+      leaveSquadImpl() 
       g_squad_manager.setState(squadState.NOT_IN_SQUAD)
       return
     }
@@ -1312,10 +1312,10 @@ g_squad_manager = {
     if (g_squad_manager.setState(squadState.IN_SQUAD)) {
       g_squad_manager.updateMyMemberData()
       if (g_squad_manager.isSquadLeader()) {
-      // !!!FIX Looks like some kind of hack to baypass checks on leadership in update functions below.
-      // Actually all updates below needs to do once on invite in squad.
-      // Otherwithe here we additional reload already received data just because of
-      // inviter was not formally the leader when invite been sent.
+      
+      
+      
+      
         g_squad_manager.updateCurrentWWOperation()
         g_squad_manager.updatePresenceSquad()
         g_squad_manager.updateLeaderData()
@@ -1373,7 +1373,7 @@ g_squad_manager = {
     squadData.psnSessionId = data?.psnSessionId ?? ""
   }
 
-  function checkMembersPkg(pack) { //return list of members dont have this pack
+  function checkMembersPkg(pack) { 
     let res = []
     if (!g_squad_manager.isInSquad())
       return res
@@ -1423,7 +1423,7 @@ g_squad_manager = {
   function cancelWwBattlePrepare() {
     if (!g_squad_manager.isInSquad())
       return
-    g_squad_manager.startWWBattlePrepare() // cancel battle prepare if no args
+    g_squad_manager.startWWBattlePrepare() 
     request_matching("msquad.send_event", null, null, { eventName = "CancelBattlePrepare" })
   }
 

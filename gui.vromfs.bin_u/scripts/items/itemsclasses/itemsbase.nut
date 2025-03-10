@@ -22,46 +22,46 @@ let { markInventoryUpdateDelayed } = require("%scripts/items/itemsManager.nut")
 let { needIgnoreItemLimits } = require("%scripts/items/itemsManagerChecks.nut")
 let { getInventoryItemType } = require("%scripts/items/itemsManagerState.nut")
 
-/* Item API:
-  getCost                    - return item cost
-  buy(cb, handler)            - buy item, call cb when buy success
-  getViewData()               - generate item view data for item.tpl
-  getContentIconData()        - return table to fill contentIconData in visual item
-                                { contentIcon, [contentType] }
-  getAmount()
 
-  getName()
-  getNameMarkup()             - type icon and title as markup, with full tooltip
-  getIcon()                   - main functions for item image
-  getSmallIconName()          - small icon for using insede the text
-  getBigIcon()
-  getOpenedIcon()             - made for trophies-like items
-  getOpenedBigIcon()
-  getDescription()
-  getShortDescription()        - assume that it will be name and short decription info
-                               better up to 30 letters approximatly
-  getPrizeDescription(count)   - special prize description. when return null, will be used getShortDescription
-  getLongDescription()         - unlimited length description as text.
-  getLongDescriptionMarkup(params)   - unlimited length description as markup.
-  getDescriptionTitle()
-  getItemTypeDescription(loc_params)     - show description of item type in tooltip of "?" image
-  getShortItemTypeDescription() - show short description of item type above item image
 
-  getDescriptionAboveTable()  - return description part right above table.
-  getDescriptionUnderTable()   - Returns description part which is placed under the table.
-                                 Both table and this description part are optional.
 
-  getStopConditions()          - added for boosters, but perhaps, it have in some other items
 
-  getMainActionData(isShort = false, params = {})
-                                    - get main action data (short will be on item button)
-  doMainAction(cb, handler)         - do main action. (buy, activate, etc)
 
-  canStack(item)                    - (bool) compare with item same type can it be stacked in one
-  updateStackParams(stackParams)     - update stack params to correct show stack name //completely depend on itemtype
-  getStackName(stackParams)         - get stack name by stack params
-  isForEvent(checkEconomicName)     - check is checking event id is for current item (used in tickets for now)
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 let { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("%scripts/time.nut")
@@ -105,22 +105,22 @@ let BaseItem = class {
   iconStyle = ""
   shopFilterMask = null
 
-  uids = null //only for inventory items
-  expiredTimeSec = 0 //to comapre with 0.001 * get_time_msec()
+  uids = null 
+  expiredTimeSec = 0 
   expiredTimeAfterActivationH = 0
-  isActivateBeforeExpired = false //Auto activate when time expired soon
+  isActivateBeforeExpired = false 
   spentInSessionTimeMin = 0
   lastChangeTimestamp = 0
   tradeableTimestamp = 0
 
   amount = 1
-  transferAmount = 0 //amount of items in transfer
+  transferAmount = 0 
   sellCountStep = 1
 
-  // Empty string means no purchase feature.
+  
   purchaseFeature = ""
   isDevItem = false
-  isDisguised = false //used to override name, icon and some description for item.
+  isDisguised = false 
   isHideInShop = false
   canPacked = false
 
@@ -131,18 +131,18 @@ let BaseItem = class {
   static linkBigQueryKey = "item_shop"
   forceExternalBrowser = false
 
-  // Zero means no limit.
+  
   limitGlobal = 0
   limitPersonalTotal = 0
   limitPersonalAtTime = 0
 
   isToStringForDebug = true
 
-  shouldAutoConsume = false //if true, should to have "consume" function
-  forceShowRewardReceiving = false //in case, like autoConsume, when we need to notify player
+  shouldAutoConsume = false 
+  forceShowRewardReceiving = false 
   craftedFrom = ""
 
-  maxAmount = -1 // -1 means no max item amount
+  maxAmount = -1 
   lottieAnimation = null
 
   restrictedInCountries = null
@@ -417,8 +417,8 @@ let BaseItem = class {
     return this.getSubstitutionViewData(res, params)
   }
 
-  // Parameters that can be overridden by item substitution
-  // have been took out in separate function getSubstitutionViewData
+  
+  
   function getSubstitutionViewData(res, params) {
     if (getTblValue("showAction", params, true)) {
       let mainActionData = params?.overrideMainActionData ?? this.getMainActionData(true, params)
@@ -773,11 +773,11 @@ let BaseItem = class {
   isRare                      = @() false
   getRarity                   = @() 0
   getRarityColor              = @() ""
-  getRelatedRecipes           = @() [] //recipes with this item in materials
-  getMyRecipes                = @() [] //recipes with this item in result
+  getRelatedRecipes           = @() [] 
+  getMyRecipes                = @() [] 
   needShowActionButtonAlways  = @(_params) false
 
-  getMaxRecipesToShow         = @() 0 //if 0, all recipes will be shown.
+  getMaxRecipesToShow         = @() 0 
   getDescRecipeListHeader     = @(_showAmount, _totalAmount, _isMultipleExtraItems) ""
   getCantUseLocId             = @() ""
   static getEmptyConfirmMessageData = @() { text = "", headerRecipeMarkup = "", needRecipeMarkup = false }

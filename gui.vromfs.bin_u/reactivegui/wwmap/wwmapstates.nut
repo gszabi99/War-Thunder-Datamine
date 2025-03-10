@@ -10,7 +10,7 @@ let { updateAirfieldsStates } = require("%rGui/wwMap/wwAirfieldsStates.nut")
 let { updateOperationState } = require("%rGui/wwMap/wwOperationStates.nut")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 
-//watches
+
 let zonesSides = Watched([])
 let zonesConnectedToRear = Watched([])
 let zonesHighlightedFlag = Watched([])

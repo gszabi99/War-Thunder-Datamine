@@ -3,10 +3,10 @@ from "%sqDagui/daguiNativeApi.nut" import *
 let { posNavigator } = require("bhvPosNavigator.nut")
 let { markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 
-/*
-work same as OptionsNavigator focus N child in current child
-but have 2 axis navigation as posNavigator by real size and positions of self childs
-*/
+
+
+
+
 
 let PosOptionsNavigator = class (posNavigator) {
   bhvId = "PosOptionsNavigator"

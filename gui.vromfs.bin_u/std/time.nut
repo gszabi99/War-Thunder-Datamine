@@ -71,7 +71,7 @@ let timeTbl = {
 }
 
 function getSecondsFromTemplate(str, errorValue = null) {
- // "1w 1d 1h 1m 1s"
+ 
   if (!str.len())
     return errorValue
 

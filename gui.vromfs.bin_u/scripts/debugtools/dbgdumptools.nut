@@ -1,4 +1,4 @@
-// warning disable: -file:forbidden-function
+
 from "%scripts/dagui_natives.nut" import shop_get_units_list_with_autoset_modules, get_player_army_for_hud, get_user_logs_count, get_local_player_country, get_user_log_blk_body, copy_to_clipboard, shop_get_countries_list_with_autoset_units
 from "%scripts/dagui_library.nut" import *
 
@@ -50,11 +50,11 @@ let { getSessionLobbyRoomId, getSessionLobbySettings, getSessionLobbyPlayersInfo
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
-//==================================================================================================
+
 let get_fake_userlogs = memoize(@() getroottable()?["_fake_userlogs"] ?? {})
 let get_fake_mplayers_list = memoize(@() getroottable()?["_fake_mplayers_list"] ?? {})
-//let get_fake_sessionlobby_settings = memoize(@() getroottable()?["_fake_sessionlobby_settings"] ?? {})
-//let get_fake_battlelog = memoize(@() getroottable()?["_fake_battlelog"] ?? {})
+
+
 
 function debug_dump_debriefing_save(filename) {
   let debriefingResult = getDebriefingResult()
@@ -178,9 +178,9 @@ function debug_dump_debriefing_load(filename, onUnloadFunc = null) {
     }
   }, false)
 
-  //getRoomUnitTypesMask = @(_room = null) getroottable()?._fake_sessionlobby_unit_type_mask ?? 0
-  //getRoomEvent = @(_room = null) events.getEvent(getroottable()?._fake_sessionlobby_last_event_name ?? "")
-  //HudBattleLog.battleLog = get_fake_battlelog()
+  
+  
+  
   initListLabelsSquad()
 
   curMissionRulesInvalidate()
@@ -218,7 +218,7 @@ function debug_dump_debriefing_batch_load() {
   loadNext()
 }
 
-//==================================================================================================
+
 
 function debug_dump_mpstatistics_save(filename) {
   dbg_dump.save(filename, [
@@ -263,7 +263,7 @@ function debug_dump_mpstatistics_load(filename) {
   return $"Loaded {filename}"
 }
 
-//==================================================================================================
+
 
 function debug_dump_respawn_save(filename) {
   let handler = handlersManager.findHandlerClassInScene(gui_handlers.RespawnHandler)
@@ -365,7 +365,7 @@ function debug_dump_respawn_load(filename) {
   return $"Loaded {filename}"
 }
 
-//==================================================================================================
+
 
 function debug_dump_userlogs_save(filename) {
   let userlogs = []
@@ -393,7 +393,7 @@ function debug_dump_userlogs_load(filename) {
   return $"Loaded {filename}"
 }
 
-//==================================================================================================
+
 
 function debug_dump_inventory_save(filename) {
   dbg_dump.save(filename, [
@@ -416,7 +416,7 @@ function debug_dump_inventory_load(filename) {
   return $"Loaded {filename}"
 }
 
-//==================================================================================================
+
 
 register_command(dbg_dump.unload, "debug.dump.unload")
 register_command(dbg_dump.isLoaded, "debug.dump.is_loaded")

@@ -14,7 +14,7 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 function getQueueInfo(queue, txt = null) {
   if (!queue)
     return ""
-  // Add new line of extended text about wait time if it is not default message text.
+  
   let addLine = txt ? $"\n{loc("yn1/waiting_time")}" : ""
   local msg = txt ? txt : loc("yn1/wait_for_session")
   let waitTime = queue ? queue.getActiveTime().tointeger() : 0
@@ -42,13 +42,13 @@ function createQueueViewByCountries(nestObj, queue, event) {
     ]
   }
 
-  //fillheader
+  
   foreach (_i, countryName in shopCountriesList)
     headerColumns.append({
       image = getCountryIcon(countryName, false, !events.isCountryAvailable(event, countryName))
     })
 
-  //fillrank rows
+  
   let myCountry = ::queues.getQueueCountry(queue)
   let myRank = ::queues.getMyRankInQueue(queue)
   let countriesSets = events.getAllCountriesSets(event)
@@ -114,12 +114,12 @@ function updateQueueViewByCountries(nestObj, queue, curCluster) {
   }
 }
 
-//update text and icon of queue each second until all queues finish.
+
 function updateShortQueueInfo(timerObj, textObj, iconObj, txt = null) {
   if (!checkObj(timerObj))
     return
   SecondsUpdater(timerObj,  function(_obj, _p) {
-    let queue = ::queues.findQueue({}) //first active queue
+    let queue = ::queues.findQueue({}) 
     if (checkObj(textObj))
       textObj.setValue(getQueueInfo(queue, txt))
     if (checkObj(iconObj))

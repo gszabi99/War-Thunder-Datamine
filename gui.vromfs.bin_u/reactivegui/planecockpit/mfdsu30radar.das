@@ -27,6 +27,7 @@ struct CanvasParams
   fontId : int = -1
   fontSize : int = 20
   lineWidth : float = 2.
+  isElevationMode : bool = false
 
 [export]
 def setup_radar_data(props : Properties&; var storage : CanvasParams&)
@@ -34,10 +35,11 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.fontId = props |> getFontId()
   storage.fontSize = props |> getInt("fontSize", 20)
   storage.lineWidth = props |> getFloat("lineWidth", 1.) * 2.
+  storage.isElevationMode = props |> getBool("isElevationMode", false)
 
 [export, unused_argument(rstate)]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
-  if !get_radar_hud_mfd_radar_enabled()
+  if !get_radar_hud_mfd_radar_enabled() && !data.isElevationMode
     return
   let offset = draw_labels(ctx, rdata, data)
   let radarPos = rdata.pos + float2(offset.x, offset.y)
@@ -64,7 +66,8 @@ def draw_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Can
     let adPos = rdata.pos + float2(5., 110.)
     draw_horizontal_label(ctx, adPos, "А")
     draw_horizontal_label(ctx, adPos + float2(0., box.width.y + 1.), "/")
-    draw_horizontal_label(ctx, adPos + float2(0., 2. * box.width.y + 2.), get_radar_hud_velocity_search() ? "V" : "Д")
+    let ch = data.isElevationMode ? "ε" : get_radar_hud_velocity_search() ? "V" : "Д"
+    draw_horizontal_label(ctx, adPos + float2(0., 2. * box.width.y + 2.), ch)
     ctx |> render_frame(adPos.x - 3., adPos.y - box.width.y - 3., adPos.x + box.width.x + 3., adPos.y + 2. * box.width.y + 6., data.lineWidth)
 
     let pdPos = rdata.pos + float2(5., 200.)
@@ -194,10 +197,11 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
   ctx |> set_font_ht(15)
 
   let isIrst = get_radar_hud_is_irst()
+  let isElevation = isIrst || data.isElevationMode
   let isSpeed = get_radar_hud_velocity_search()
 
   ctx |> set_color(data.color)
-  if !isIrst && !get_radar_hud_velocity_search()
+  if !isElevation && !get_radar_hud_velocity_search()
     ctx |> draw_line(pos.x - offset, pos.y, pos.x - offset, pos.y + size.y, data.lineWidth)
     ctx |> draw_line(pos.x - offset - markW, pos.y, pos.x - offset, pos.y, data.lineWidth)
     ctx |> draw_line(pos.x - offset - markW, pos.y + size.y * 0.2, pos.x - offset, pos.y + size.y * 0.2, data.lineWidth)
@@ -237,7 +241,7 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
   ctx |> draw_line(pos.x + size.x * 0.875, pos.y + size.y + offset, pos.x + size.x * 0.875, pos.y + size.y + offset + markW, data.lineWidth)
   ctx |> draw_line(pos.x + size.x, pos.y + size.y + offset, pos.x + size.x, pos.y + size.y + offset + markW, data.lineWidth)
 
-  if !isIrst && !isSpeed
+  if !isElevation && !isSpeed
     let maxDist = get_radar_hud_distance_max()
     for i in range(0, 6)
       let dist = "{float(i) * maxDist * 0.2}"
@@ -327,11 +331,12 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
 
   let markSize = 5.
   var selectedCnt = 0
-  let minAzimuth = isIrst && azimuthRange > 0. ? (get_radar_hud_scan_azimuth_min() - get_radar_hud_azimuth_min()) / azimuthRange : 0.
+  let minAzimuth = isElevation && azimuthRange > 0. ? (get_radar_hud_scan_azimuth_min() - get_radar_hud_azimuth_min()) / azimuthRange : 0.
+  let minElev = isElevation && elevRange > 0. ? (get_radar_hud_scan_elevation_min() - get_radar_hud_elevation_min()) / elevRange : 0.
   let scanAzimuthRange = max(0., get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min())
-  let scanAzimuthRangMul = isIrst && azimuthRange > 0. && scanAzimuthRange > 0. ? scanAzimuthRange / azimuthRange : 1.
+  let scanAzimuthRangMul = isElevation && azimuthRange > 0. && scanAzimuthRange > 0. ? scanAzimuthRange / azimuthRange : 1.
   let scanElevationRange = max(0., get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min())
-  let scanElevationRangMul = isIrst && elevRange > 0. && scanElevationRange > 0. ? scanElevationRange / elevRange : 1.
+  let scanElevationRangMul = isElevation && elevRange > 0. && scanElevationRange > 0. ? scanElevationRange / elevRange : 1.
   foreach_targets <| $(var target)
     if target.targetType == int(RadarTargetType TYPE_TARGET)
       let angleRel = dontScale ? target.azimuthRel : ((target.azimuthRel - minAzimuth) / scanAzimuthRangMul)
@@ -341,9 +346,9 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
       if target.distanceRel >= 0.
         distanceRel = target.distanceRel
 
-      let elevRel = dontScale ? target.elevationRel : ((target.elevationRel - minAzimuth) / scanElevationRangMul)
+      let elevRel = max(0., min(1., dontScale ? target.elevationRel : ((target.elevationRel - minElev) / scanElevationRangMul)))
 
-      let p = float2(pos.x + angleRel * size.x, pos.y + (1. - (isIrst ? elevRel : distanceRel)) * size.y)
+      let p = float2(pos.x + angleRel * size.x, pos.y + (1. - (isElevation ? elevRel : distanceRel)) * size.y)
       let color = target.isEnemy ? data.color : allyColor
       ctx |> set_color(color)
       if (target.isSelected || target.isAttacked) && !isIrst
@@ -378,11 +383,15 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
             ctx |> goto_xy(p.x - markSize - spdBox.width.x, p.y + markSize * 2. + spdBox.width.y)
             ctx |> draw_str_scaled(1., spd, spd |> length())
 
-            let name = "{unit.shortName} {int(target.id)}"
-            let nameBox = get_str_bbox(name, name |> length(), fctx)
-            ctx |> goto_xy(pos.x + size.x - nameBox.width.x, pos.y + size.y - float(selectedCnt) * (nameBox.width.y + 4.))
-            ctx |> draw_str_scaled(1., name, name |> length())
-            selectedCnt += 1
+        if target.isDetected || target.isTracked
+          if target.typeId != ""
+            let typeIds <- {{ "hud/single prop" => "ПРОП"; "hud/multi prop" => "ПРОПxN"; "hud/single jet" => "ТРД"; "hud/multi jet" => "ТРДxN"; "hud/helicopter" => "ВЕРТ"; "hud/rocket" => "РАКЕТА"}}
+            get(typeIds, target.typeId) <| $(idText)
+              let name = "{idText}"
+              let nameBox = get_str_bbox(name, name |> length(), fctx)
+              ctx |> goto_xy(pos.x + size.x - nameBox.width.x, pos.y + size.y - float(selectedCnt) * (nameBox.width.y + 4.))
+              ctx |> draw_str_scaled(1., name, name |> length())
+              selectedCnt += 1
       elif !target.isTracked
         let line <- to_array_move([[float2[2]
           p - float2(markSize, 0.);
@@ -434,7 +443,7 @@ def draw_radar(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
 
   let autoText = "АВТ"
   let autoStrBox = get_str_bbox(autoText, autoText |> length(), fctx)
-  if !get_radar_hud_is_irst() && !get_radar_hud_velocity_search()
+  if !get_radar_hud_is_irst() && !get_radar_hud_velocity_search() && !data.isElevationMode
     ctx |> goto_xy(pos.x + 20., pos.y + autoStrBox.width.y + digStrBox.width.y + 10.)
     ctx |> draw_str_scaled(1., autoText, autoText |> length())
 

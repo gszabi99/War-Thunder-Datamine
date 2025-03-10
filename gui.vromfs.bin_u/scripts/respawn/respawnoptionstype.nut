@@ -26,7 +26,10 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let options = {
   types = []
   cache = {
-    bySortId = {}
+    byUserOptionId = {}
+  }
+  function getByUserOptionId(userOptionId) {
+    return enums.getCachedType("userOption", userOptionId, this.cache.byUserOptionId, this, this.unknown)
   }
 }
 
@@ -100,7 +103,7 @@ function _update(p, trigger, isAlreadyFilled) {
 }
 
 options.template <- {
-  id = "" // Generated from type name
+  id = "" 
   sortId = 0
   getLabelText = @() loc($"options/{this.id}")
   userOption = -1
@@ -121,7 +124,7 @@ options.template <- {
   update = _update
   tooltipName = null
 
-  needCheckValueWhenOptionUpdate = false //some options save by unit, and when unit changed need update option value if it changed
+  needCheckValueWhenOptionUpdate = false 
 }
 
 options.addTypes <- function(typesTable) {

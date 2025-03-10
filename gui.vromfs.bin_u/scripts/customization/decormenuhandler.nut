@@ -198,7 +198,7 @@ let class DecorMenuHandler (gui_handlers.BaseGuiHandlerWT) {
       this.markSeenDecors()
   }
 
-  // private
+  
 
   getCategories = @() getCachedOrderByType(this.curDecorType, this.curUnit.unitType.tag)
   getDecorCache = @() getCachedDataByType(this.curDecorType, this.curUnit.unitType.tag)

@@ -4,7 +4,7 @@ enum HINT_INTERVAL {
 }
 
 enum REWARD_PRIORITY {
-  noPriority, //for null message. any real type priority is higher
+  noPriority, 
   common,
   scout,
   scout_hit,
@@ -19,14 +19,14 @@ enum REWARD_PRIORITY {
 }
 
 
-enum HUD_VIS_PART { //bit enum
+enum HUD_VIS_PART { 
   DMG_PANEL           = 0x0001
   MAP                 = 0x0002
   CAPTURE_ZONE_INFO   = 0x0004
   KILLCAMERA          = 0x0020
   RACE_INFO           = 0x0200
 
-  //masks
+  
   ALL                 = 0xFFFF
   NONE                = 0x0000
 }

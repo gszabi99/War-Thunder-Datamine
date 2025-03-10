@@ -1,4 +1,4 @@
-//for load and register all items classes
+
 require("itemAttachable.nut")
 require("itemBattlePass.nut")
 require("itemBooster.nut")

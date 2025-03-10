@@ -92,7 +92,7 @@ gui_handlers.clanActivityModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let tableObj = this.scene.findObject("clan_member_activity_history_table");
 
     rowBlock = ""
-    /*body*/
+    
     foreach (entry in historyArr) {
       let rowParams = [
         { text = time.buildDateStr(time.daysToSeconds(entry.day)) },

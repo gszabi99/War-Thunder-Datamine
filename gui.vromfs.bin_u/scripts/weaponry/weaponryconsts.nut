@@ -1,8 +1,8 @@
 enum weaponsItem {
   primaryWeapon
-  weapon  //secondary, weapon presets
+  weapon  
   modification
-  bullets          //bullets are modifications too, uses only in filling tab panel
+  bullets          
   expendables
   spare
   bundle
@@ -12,11 +12,11 @@ enum weaponsItem {
   unknown
 }
 
-enum INFO_DETAIL { //text detalization level. for weapons and modifications names and descriptions
-  LIMITED_11 //must to fit in 11 symbols
-  SHORT      //short info, like name. mostly in a single string.
-  FULL       //full description
-  EXTENDED   //full description + addtitional info for more detailed tooltip
+enum INFO_DETAIL { 
+  LIMITED_11 
+  SHORT      
+  FULL       
+  EXTENDED   
 }
 
 const fakeBullets_prefix = "fake"

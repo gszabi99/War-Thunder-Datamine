@@ -8,7 +8,7 @@ let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/sub
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 let { getSkinId } = require("%scripts/customization/skinUtils.nut")
 
-let cache = {} // todo: consider adding persist
+let cache = {} 
 let liveDecoratorsCache = {}
 local waitingItemdefs = {}
 
@@ -17,22 +17,22 @@ function cacheDecor(decType, unitTypeTag) {
     categories      = []
     decoratorsList  = {}
     fullBlk         = null
-    catToGroupNames = {} // { [catName]: string[] }
-    catToGroups     = {} // { [catName]: { [groupName]: Decorator[] } }
+    catToGroupNames = {} 
+    catToGroups     = {} 
   }
 
   let blk = decType.getBlk()
   if (isEmpty(blk))
     return curCache
 
-  curCache.fullBlk = blk // do we need to keep the reference here?
+  curCache.fullBlk = blk 
 
   let prevCategory = ""
   let numDecors = blk.blockCount()
   for (local i = 0; i < numDecors; ++i) {
     let dblk = blk.getBlock(i)
 
-    let decorator = ::Decorator(dblk, decType) // todo: consider using already created instances
+    let decorator = ::Decorator(dblk, decType) 
     if (unitTypeTag != null && !decorator.isAllowedByUnitTypes(unitTypeTag))
       continue
 
@@ -134,7 +134,7 @@ function addDecorToCache(decorator, decCache) {
   let group = decorator.group != "" ? decorator.group : "other"
   if (group not in decCache.catToGroups[category]) {
     decCache.catToGroups[category][group] <- []
-    decCache.catToGroupNames[category].append(group) // FIXME: ensure that 'other' goes in the end of the list
+    decCache.catToGroupNames[category].append(group) 
   }
 
   let groupArr = decCache.catToGroups[category][group]
@@ -144,7 +144,7 @@ function addDecorToCache(decorator, decCache) {
   }
 }
 
-// todo get rid of 'params'
+
 function buildLiveDecoratorFromResource(resource, resourceType, itemDef, params) {
   if (!resource || !resourceType)
     return
@@ -162,7 +162,7 @@ function buildLiveDecoratorFromResource(resource, resourceType, itemDef, params)
 
   liveDecoratorsCache[decoratorId] <- decorator
 
-  // replace a fake skin decorator created by item constructor
+  
   if (resource != decoratorId)
     liveDecoratorsCache[resource] <- decorator
 }
@@ -223,10 +223,10 @@ addListenersWithoutEnv({
   HangarModelLoaded = @(_) invalidateFlagCache()
 }, g_listener_priority.CONFIG_VALIDATION)
 
-// native code callback
+
 eventbus_subscribe("on_dl_content_skins_invalidate", @(_) invalidateCache())
 
-// native code callback
+
 eventbus_subscribe("update_unit_skins_list", function update_unit_skins_list(evt) {
   getAircraftByName(evt.unitName)?.resetSkins()
 })

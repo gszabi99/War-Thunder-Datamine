@@ -15,15 +15,15 @@ gui_handlers.TournamentRewardReceivedWnd <- class (gui_handlers.BaseGuiHandlerWT
   sceneBlkName = "%gui/modalSceneWithGamercard.blk"
   wndType = handlerType.MODAL
 
-  /**
-   * Reward data in same format as in eventRewards
-   */
+  
+
+
    rewardBlk = null
 
-  /**
-   * Event's economic name of tournaments
-   * event, for which was reward earned
-   */
+  
+
+
+
   eventEconomicName = null
 
   static function open(config) {

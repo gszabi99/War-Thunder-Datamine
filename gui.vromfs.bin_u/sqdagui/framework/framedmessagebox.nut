@@ -6,21 +6,21 @@ let { handlerType } = require("handlerType.nut")
 let { handlersManager } = require("baseGuiHandlerManager.nut")
 let { gui_handlers, register_gui_handler } = require("gui_handlers.nut")
 let { BaseGuiHandler } = require("baseGuiHandler.nut")
-/*
-  FramedMessageBox is a message box, with visible frame.
-  Config {
-    pos - required position to show or will be used current mouse position
-    align - ["left", "right", "top", "bottom"] - near the setted position
-    title - upper tiny text
-    message - main small text
-    onOpenSound - sound ID to play on box open
-    buttons - array of table params, for gui/commonParts/button.tpl
-    {
-      cb - callback for button, otherwise action will be 'goBack' only.
-      * if not exist any button - use closeButtonDefault.
-    }
-  }
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 let FramedMessageBox = class (BaseGuiHandler) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/framedMessageBox.tpl"

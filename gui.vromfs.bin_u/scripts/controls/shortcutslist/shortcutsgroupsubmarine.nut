@@ -20,7 +20,7 @@ return [
     showFunc = @() hasFeature("SpecialShips") || (getPlayerCurUnit()?.isSubmarine() ?? false)
     needShowInHelp = true
   }
-//-------------------------------------------------------
+
   {
     id = "ID_SUBMARINE_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -43,7 +43,7 @@ return [
     )
     showFunc = @() hasXInputDevice()
   }
-//-------------------------------------------------------
+
   {
     id = "ID_SUBMARINE_MOVE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -78,7 +78,7 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-//-------------------------------------------------------
+
   {
     id = "ID_SUBMARINE_FIRE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -104,7 +104,7 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-//-------------------------------------------------------
+
   {
     id = "ID_SUBMARINE_VIEW_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -174,7 +174,7 @@ return [
     setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_MOUSE_Z_SUBMARINE_MULT, objValue / 100.0)
     showFunc = is_mouse_available
   }
-//-------------------------------------------------------
+
   {
     id = "ID_SUBMARINE_OTHER_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -209,7 +209,7 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-  //
+  
 
 
 

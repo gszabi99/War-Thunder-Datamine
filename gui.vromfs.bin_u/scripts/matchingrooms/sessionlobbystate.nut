@@ -41,10 +41,10 @@ let SessionLobbyState =  persist("SessionLobbyState", @() {
   members = []
   memberHostId = -1
 
-  //my room attributes
+  
   spectator = false
   isReady = false
-  isInLobbySession = false //in some lobby session are used instead of ready
+  isInLobbySession = false 
   team = Team.Any
   countryData = null
   myState = PLAYER_IN_LOBBY_NOT_READY
@@ -57,7 +57,7 @@ let SessionLobbyState =  persist("SessionLobbyState", @() {
 
   playersInfo = {}
 
-  isReadyInSetStateRoom = null // if null then not response is expected from roomSetReadyState
+  isReadyInSetStateRoom = null 
 })
 
 local playersInfoByNames = {}
@@ -74,7 +74,7 @@ let getSessionLobbyMyState = @() SessionLobbyState.myState
 let getIsSpectatorSelectLocked = @() SessionLobbyState.isSpectatorSelectLocked
 
 function updateSessionLobbyPlayersInfo() {
-  // old format. players_info in lobby is array of objects for each player
+  
   if ("players_info" in SessionLobbyState.settings) {
     SessionLobbyState.playersInfo.clear()
     playersInfoByNames.clear()
@@ -85,7 +85,7 @@ function updateSessionLobbyPlayersInfo() {
     return
   }
 
-  // new format. player infos are separate values in rooms public table
+  
   foreach (k, pinfo in SessionLobbyState.settings) {
     if (k.indexof("pinfo_") != 0)
       continue
@@ -141,7 +141,7 @@ function isInvalidCrewsAllowed() {
   return !isInSessionRoom.get() || !isInSessionLobbyEventRoom.get()
 }
 
-//only with full room info
+
 function getRoomMembers(room = null) {
   if (!room)
     return SessionLobbyState.members
@@ -261,7 +261,7 @@ function getSessionLobbyGameType(room = null) {
   return isInteger(res) ? res : 0
 }
 
-function getSessionLobbyMGameModeId(room = null) { //gameModeId by matchingGameModes
+function getSessionLobbyMGameModeId(room = null) { 
   return getSessionLobbyPublicData(room)?.game_mode_id
 }
 

@@ -10,18 +10,18 @@ function mkBitmapPicture(w, h, fillcb, prefix="") {
   b.resize(HEADER_SIZE+BITMAP_SIZE)
 
   b.seek(0)
-  b.writen(0, 'b') // id
-  b.writen(0, 'b') // colormap
-  b.writen(2, 'b') // true color
-  b.writen(0, 's') // colormap start
-  b.writen(0, 's') // colormap len
-  b.writen(0, 'b') // colormap entry size
-  b.writen(0, 's') // x origin
-  b.writen(0, 's') // y origin
-  b.writen(w, 's') // width
-  b.writen(h, 's') // height
-  b.writen(32,'b') // pixel depth
-  b.writen(8, 'b') // alpha depth & dir
+  b.writen(0, 'b') 
+  b.writen(0, 'b') 
+  b.writen(2, 'b') 
+  b.writen(0, 's') 
+  b.writen(0, 's') 
+  b.writen(0, 'b') 
+  b.writen(0, 's') 
+  b.writen(0, 's') 
+  b.writen(w, 's') 
+  b.writen(h, 's') 
+  b.writen(32,'b') 
+  b.writen(8, 'b') 
 
   for (local i=0;i<BITMAP_SIZE; ++i)
     b.writen(0, 'b')
@@ -56,7 +56,7 @@ function mkBitmapPicture(w, h, fillcb, prefix="") {
 
 let cache = {}
 local maxCachedSize = sw(15) * sh(15)
-//create picture cached by fillCb on call.
+
 function mkBitmapPictureLazy(w, h, fillCb, prefix = "") {
   if (w * h > maxCachedSize)
     logerr($"Queued mkBitmapPictureLazy has size = {w}*{h} = {w*h} bigger than sw(15) * sh(15) = {maxCachedSize}")

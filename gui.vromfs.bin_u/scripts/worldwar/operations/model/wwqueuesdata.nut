@@ -6,9 +6,9 @@ let { secondsToMilliseconds } = require("%scripts/time.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
 
-local refreshMinTimeSec = 2 //sec
+local refreshMinTimeSec = 2 
 const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2
-const WW_QUEUES_DATA_TIME_OUT = 10000 //ms
+const WW_QUEUES_DATA_TIME_OUT = 10000 
 
 
 let WwQueuesData = class {
@@ -17,9 +17,9 @@ let WwQueuesData = class {
   lastRequestTimeMsec = -1
   isInUpdate = false
 
-  /* ********************************************************************************
-     ******************************* PUBLIC FUNCTIONS *******************************
-     ******************************************************************************** */
+  
+
+
 
   function isNewest() {
     return (!this.isInUpdate &&
@@ -65,9 +65,9 @@ let WwQueuesData = class {
     return true
   }
 
-  /* ********************************************************************************
-     ******************************* PRIVATE FUNCTIONS ******************************
-     ******************************************************************************** */
+  
+
+
 
   function requestDataCb(queuesData) {
     this.isInUpdate = false

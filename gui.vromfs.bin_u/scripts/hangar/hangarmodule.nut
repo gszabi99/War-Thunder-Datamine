@@ -11,12 +11,12 @@ function blurHangar(enable, params = null) {
 
   if (enable) {
     enable_dof(
-      params?.nearFrom ?? 0, // meters
-      params?.nearTo ?? 0, // meters
-      params?.nearEffect ?? 0, // 0..1
-      params?.farFrom ?? 0, // meters
-      params?.farTo ?? 0.1, // meters
-      params?.farEffect ?? 1) // 0..1
+      params?.nearFrom ?? 0, 
+      params?.nearTo ?? 0, 
+      params?.nearEffect ?? 0, 
+      params?.farFrom ?? 0, 
+      params?.farTo ?? 0.1, 
+      params?.farEffect ?? 1) 
   }
   else
     disable_dof()

@@ -56,18 +56,18 @@ let SHORTCUT = freeze({
   GAMEPAD_DOWN           = { dev = [JOYSTICK_DEVICE_0_ID], btn = [1], accessKey = "J:Dpad.Down" }
   GAMEPAD_LEFT           = { dev = [JOYSTICK_DEVICE_0_ID], btn = [2], accessKey = "J:Dpad.Left" }
   GAMEPAD_RIGHT          = { dev = [JOYSTICK_DEVICE_0_ID], btn = [3], accessKey = "J:Dpad.Right" }
-  GAMEPAD_START          = { dev = [JOYSTICK_DEVICE_0_ID], btn = [4], accessKey = "J:Start" } //PS4 Options
-  GAMEPAD_BACK           = { dev = [JOYSTICK_DEVICE_0_ID], btn = [5], accessKey = "J:Back" } // PS4 Touchscreen Press
+  GAMEPAD_START          = { dev = [JOYSTICK_DEVICE_0_ID], btn = [4], accessKey = "J:Start" } 
+  GAMEPAD_BACK           = { dev = [JOYSTICK_DEVICE_0_ID], btn = [5], accessKey = "J:Back" } 
   GAMEPAD_LSTICK_PRESS   = { dev = [JOYSTICK_DEVICE_0_ID], btn = [6], accessKey = "J:L.Thumb" }
   GAMEPAD_RSTICK_PRESS   = { dev = [JOYSTICK_DEVICE_0_ID], btn = [7], accessKey = "J:R.Thumb" }
-  GAMEPAD_L1             = { dev = [JOYSTICK_DEVICE_0_ID], btn = [8], accessKey = "J:LB" } //PS4 L1
-  GAMEPAD_R1             = { dev = [JOYSTICK_DEVICE_0_ID], btn = [9], accessKey = "J:RB" } //PS4 R1
-  GAMEPAD_A              = { dev = [JOYSTICK_DEVICE_0_ID], btn = [12], accessKey = "J:A" } //PS4 Cross
-  GAMEPAD_B              = { dev = [JOYSTICK_DEVICE_0_ID], btn = [13], accessKey = "J:B" } //PS4 Round
-  GAMEPAD_X              = { dev = [JOYSTICK_DEVICE_0_ID], btn = [14], accessKey = "J:X" } //PS4 Squar
-  GAMEPAD_Y              = { dev = [JOYSTICK_DEVICE_0_ID], btn = [15], accessKey = "J:Y" } //PS4 Triangle
-  GAMEPAD_L2             = { dev = [JOYSTICK_DEVICE_0_ID], btn = [16], accessKey = "J:LT" } //PS4 L2
-  GAMEPAD_R2             = { dev = [JOYSTICK_DEVICE_0_ID], btn = [17], accessKey = "J:RT" } //PS4 R2
+  GAMEPAD_L1             = { dev = [JOYSTICK_DEVICE_0_ID], btn = [8], accessKey = "J:LB" } 
+  GAMEPAD_R1             = { dev = [JOYSTICK_DEVICE_0_ID], btn = [9], accessKey = "J:RB" } 
+  GAMEPAD_A              = { dev = [JOYSTICK_DEVICE_0_ID], btn = [12], accessKey = "J:A" } 
+  GAMEPAD_B              = { dev = [JOYSTICK_DEVICE_0_ID], btn = [13], accessKey = "J:B" } 
+  GAMEPAD_X              = { dev = [JOYSTICK_DEVICE_0_ID], btn = [14], accessKey = "J:X" } 
+  GAMEPAD_Y              = { dev = [JOYSTICK_DEVICE_0_ID], btn = [15], accessKey = "J:Y" } 
+  GAMEPAD_L2             = { dev = [JOYSTICK_DEVICE_0_ID], btn = [16], accessKey = "J:LT" } 
+  GAMEPAD_R2             = { dev = [JOYSTICK_DEVICE_0_ID], btn = [17], accessKey = "J:RT" } 
   GAMEPAD_LSTICK_RIGHT   = { dev = [JOYSTICK_DEVICE_0_ID], btn = [18], accessKey = "J:L.Thumb.Right" }
   GAMEPAD_LSTICK_LEFT    = { dev = [JOYSTICK_DEVICE_0_ID], btn = [19], accessKey = "J:L.Thumb.Left" }
   GAMEPAD_LSTICK_UP      = { dev = [JOYSTICK_DEVICE_0_ID], btn = [20], accessKey = "J:L.Thumb.Up" }

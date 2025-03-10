@@ -5,7 +5,7 @@ let { isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 
 let useTouchscreen = !isPlatformShieldTv() && is_touchscreen_enabled()
 
-let isSmallScreen = useTouchscreen // FIXME: Touch screen is not always small.
+let isSmallScreen = useTouchscreen 
 
 return {
   useTouchscreen

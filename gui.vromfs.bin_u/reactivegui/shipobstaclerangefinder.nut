@@ -82,7 +82,7 @@ let obstacleDirectionMark = {
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   flow = FLOW_VERTICAL
-  gap = hdpx(-15) //!!!FIX ME negative gap because of margins in image
+  gap = hdpx(-15) 
   children = [ obstacleDirection, obstacleDistance]
   transitions = [{ prop = AnimProp.translate, duration = 0.1, easing = InOutQuad }]
   behavior = Behaviors.RtPropUpdate

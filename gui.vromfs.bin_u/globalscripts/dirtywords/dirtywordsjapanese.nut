@@ -1,7 +1,7 @@
 from "%globalScripts/logs.nut" import *
-//
-// Dirty Words tables for Japanese language.
-//
+
+
+
 
 return {
   badsegments = [

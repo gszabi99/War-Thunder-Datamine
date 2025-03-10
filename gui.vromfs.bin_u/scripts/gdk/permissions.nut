@@ -38,10 +38,10 @@ function check_crossnetwork_communications_permission() {
 function check_multiplayer_sessions_privilege(try_resolve, callback) {
   check_privilege_with_resolution(Privilege.Multiplayer, try_resolve, function(success, state) {
     local result = success && (state == State.Allowed)
-    // In development sandboxes this call could fail for silver accounts
-    // because it could want to show upsell window due to configuration issues
-    // It won't ever happen in retail environment, so we can just assume that
-    // upsell window requirement equals allowed multiplayer privilege.
+    
+    
+    
+    
     if (!try_resolve && !is_retail_environment() && state == State.ResolutionRequired) {
       result = true
     }

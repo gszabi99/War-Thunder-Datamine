@@ -34,7 +34,7 @@ return [
     isHelpersVisible = true
     needShowInHelp = true
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HELICOPTER_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -55,7 +55,7 @@ return [
     onClick = @() controlsOperations.swapGamepadSticks(ActionGroup.HELICOPTER)
     showFunc = @() hasXInputDevice()
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HELICOPTER_MODE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -111,7 +111,7 @@ return [
     filterShow = [globalEnv.EM_FULL_REAL]
     checkAssign = false
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HELICOPTER_AXES_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -179,7 +179,7 @@ return [
     setValue = @(_joyParams, objValue)
       set_option_multiplier(OPTION_HELICOPTER_PEDALS_MULTIPLIER, objValue / 100.0)
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HELICOPTER_FIRE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -419,7 +419,7 @@ return [
     id = "ID_SWITCH_COCKPIT_SIGHT_MODE_HELICOPTER"
     checkAssign = false
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HELICOPTER_VIEW_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -551,7 +551,7 @@ return [
     setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_MOUSE_Z_HELICOPTER_MULT, objValue / 100.0)
     showFunc = @() hasFeature("EnableMouse")
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HELICOPTER_INSTRUCTOR_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -581,7 +581,7 @@ return [
     filterShow = [ globalEnv.EM_INSTRUCTOR ]
     optionType = USEROPT_INSTRUCTOR_SIMPLE_JOY
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HELICOPTER_OTHER_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -692,7 +692,7 @@ return [
     showFunc = @() (isPlatformSony || isPlatformXboxOne || isXInputDevice())
     checkAssign = @() isXInputDevice()
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HELICOPTER_JOYSTICK_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -809,7 +809,7 @@ return [
     showFunc = @() is_mouse_available() && (getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
     checkAssign = false
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HELICOPTER_TRIM_CONTROL_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -848,7 +848,7 @@ return [
     filterShow = [globalEnv.EM_FULL_REAL]
     checkAssign = false
   }
-  //
+  
 
 
 

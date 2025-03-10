@@ -26,7 +26,7 @@ let uidsListByGroupName = {
   [EPL_BLOCKLIST] = xboxBlockedUids
 }
 
-local onReceivedXboxListCallback = function(_playersList, _group) {} // fwd decl
+local onReceivedXboxListCallback = function(_playersList, _group) {} 
 
 
 function updateContactPresence(contact, isAllowed) {
@@ -51,8 +51,8 @@ function updateContactXBoxPresence(xboxId, isAllowed) {
 
 function fetchContactsList() {
   pendingXboxContactsToUpdate.clear()
-  //No matter what will be done first,
-  //anyway, we will wait all groups data.
+  
+  
   retrieve_related_people_list(function(list) {
     let xuids = list.map(@(v) v.tostring())
     onReceivedXboxListCallback(xuids, EPL_FRIENDLIST)
@@ -78,7 +78,7 @@ function updateContacts(needIgnoreInitedFlag = false) {
 }
 
 function xboxUpdateContactsList(usersTable) {
-  //Create or update exist contacts
+  
   let contactsTable = {}
   foreach (uid, playerData in usersTable) {
     contactsTable[playerData.id] <- updateContact({

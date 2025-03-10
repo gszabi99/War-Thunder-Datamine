@@ -4,19 +4,19 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 
-/**
- * Works as standard memoize() func, but clears cache on given subscriptions.broadcast events.
- * Memoizes a given function by caching the computed result. Useful for speeding up
- * slow-running computations. If passed an optional hashFunction, it will be used to compute
- * the hash key for storing the result, based on the arguments to the original function.
- * The default hashFunction just uses the first argument to the memoized function as the key.
- *
- * @param {function} func             - the original function to be memoized.
- * @param {function} [hashFunc]       - optional function for hash generation.
- * @param {string[]} [clearOnEvents]  - optional event names on which cache should be cleared.
- *
- * @return {function}                 - memoized function, to be used instead of the original one.
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let alwaysClearOnEvents = [
   "SignOut",

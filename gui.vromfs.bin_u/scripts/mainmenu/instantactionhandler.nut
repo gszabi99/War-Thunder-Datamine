@@ -144,7 +144,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   slotbarPresetsTutorial = null
 
   function initScreen() {
-    // Causes drawer to initialize once.
+    
     this.getGamercardDrawerHandler()
 
     this.mainOptionsMode = getGuiOptionsMode()
@@ -250,7 +250,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this._lastGameModeId = modeId
 
-    this.onCountrySelectAction() //bad function naming. Actually this function validates your units and selected country for new mode
+    this.onCountrySelectAction() 
     this.setCurrentGameModeName()
     this.reinitSlotbar()
   }
@@ -485,10 +485,10 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function setSquadReadyFlag() {
     if (getLeaderOperationState() == LEADER_OPERATION_STATES.OUT) {
-      //No need to check broken units when set unready
+      
       if (!g_squad_manager.isMeReady()) {
         let leaderEvent = events.getEvent(g_squad_manager.getLeaderGameModeId())
-        if (leaderEvent == null) { //not found game mode of leader, skip check broken units
+        if (leaderEvent == null) { 
           g_squad_manager.setReadyFlag()
           return
         }
@@ -604,9 +604,9 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function startEventBattle(event) {
-    //!!FIX ME: this is a start random_battles or newbie battles events without check old domination modes
-    //can be used as base random battles start for new matching.
-    //valid only for newbie events yes
+    
+    
+    
     if (::queues.isAnyQueuesActive(this.queueMask) || !::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
       return
 
@@ -661,7 +661,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   function showBadUnitMsgBox(msgText) {
     let buttonsArray = []
 
-    // "Change mode" button
+    
     let curUnitType = getEsUnitType(getCurSlotbarUnit())
     let gameMode = getGameModeByUnitType(curUnitType, -1, true)
     if (gameMode != null) {
@@ -675,7 +675,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       ])
     }
 
-    // "Change vehicle" button
+    
     let currentGameMode = getCurrentGameMode()
     local properUnitType = null
     if (currentGameMode.type == RB_GM_TYPE.EVENT) {
@@ -697,10 +697,10 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       ])
     }
 
-    // "Ok" button
+    
     buttonsArray.append(["ok", function () {}])
 
-    this.msgBox("bad_current_unit", msgText, buttonsArray, "ok" /*"#mainmenu/changeMode"*/ , { cancel_fn = function () {} })
+    this.msgBox("bad_current_unit", msgText, buttonsArray, "ok"  , { cancel_fn = function () {} })
   }
 
   function isCurrentGameModeMultiSlotEnabled() {
@@ -742,8 +742,8 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (gameMode.type == RB_GM_TYPE.EVENT)
-      return this.startEventBattle(getGameModeEvent(gameMode)) //better to do completely the same here as we do n events.
-                                               // but better to refactor this place after remove old gamemodes
+      return this.startEventBattle(getGameModeEvent(gameMode)) 
+                                               
   }
 
   function checkGameModeTutorial(gameMode) {
@@ -891,7 +891,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function testCrewsForMode(country) {
     let countryToCheckArr = []
-    if (country == "country_0") { //fill countryToCheckArr with countries, allowed by game mode
+    if (country == "country_0") { 
       let option = get_option(USEROPT_COUNTRY)
       foreach (idx, optionCountryName in option.values)
         if (optionCountryName != "country_0" && option.items[idx].enabled)
@@ -1103,7 +1103,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
         let lastLoginDay = loadLocalAccountSettings("viralAcquisition/lastLoginDay", today)
         local lastShowTime = loadLocalAccountSettings("viralAcquisition/lastShowTime", never)
 
-        // Game designers can force reset lastShowTime of all users by increasing this value in cfg:
+        
         if (gmBlk?.resetViralAcquisitionDaysCounter) {
           let newResetVer = gmBlk.resetViralAcquisitionDaysCounter
           let knownResetVer = loadLocalAccountSettings("viralAcquisition/resetDays", 0)
@@ -1130,7 +1130,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function setUsingDynamicLut(value) {
-    setIsUsingDynamicLut(value); //need to be set first
+    setIsUsingDynamicLut(value); 
     setTonemappingMode(getTonemappingMode());
   }
 
@@ -1289,7 +1289,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     this.setCurrentGameModeName()
   }
 
-  function on_show_clan_requests() { //FIXME: FUNC in 'on_click' somehow calls
+  function on_show_clan_requests() { 
     if (isHaveRightsToReviewCandidates())
       openClanRequestsWnd(getMyClanCandidates(), clan_get_my_clan_id(), false);
   }

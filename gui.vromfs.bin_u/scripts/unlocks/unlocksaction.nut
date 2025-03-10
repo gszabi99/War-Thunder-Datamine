@@ -14,7 +14,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 
 function openUnlockManually(unlockId, onSuccess = null) {
   if (isRegionalUnlock(unlockId)) {
-    receiveRewards(unlockId) // todo onSuccess
+    receiveRewards(unlockId) 
     return
   }
 

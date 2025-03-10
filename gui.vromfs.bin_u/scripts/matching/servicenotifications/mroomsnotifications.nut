@@ -11,10 +11,10 @@ let { onSettingsChanged, onMemberInfoUpdate, onMemberJoin, joinSessionRoom, onMe
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { addSessionRoomInvite } = require("%scripts/invites/invites.nut")
 
-// rooms notifications
+
 function notify_room_invite(params) {
   log("notify_room_invite")
-  //debugTableData(params)
+  
 
   if (!isInMenu() && isLoggedIn.get()) {
     log("Invite rejected: player is already in flight or in loading level or in unloading level");
@@ -23,7 +23,7 @@ function notify_room_invite(params) {
 
   let senderId = ("senderId" in params) ? params.senderId : null
   let password = getTblValue("password", params, null)
-  if (!senderId) //querry room
+  if (!senderId) 
     joinSessionRoom(params.roomId, senderId, password)
   else
     addSessionRoomInvite(params.roomId, senderId.tostring(), params.senderName, password)
@@ -32,7 +32,7 @@ function notify_room_invite(params) {
 
 function notify_room_member_joined(params) {
   log("notify_room_member_joined")
-  //debugTableData(params)
+  
   onMemberJoin(params)
 }
 
@@ -53,12 +53,12 @@ function notify_room_member_attribs_changed(params) {
 
 function notify_room_attribs_changed(params) {
   log("notify_room_attribs_changed")
-  //debugTableData(params)
+  
 
   onSettingsChanged(params)
 }
 
-// notifications
+
 function onRoomInvite(notify, sendResp) {
   local inviteData = notify.invite_data
   if (type(inviteData) != "table")

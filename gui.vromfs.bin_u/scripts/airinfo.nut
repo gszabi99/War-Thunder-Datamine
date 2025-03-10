@@ -105,7 +105,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   }
 }
 
-// TODO: Move all global fns to unit/unitInfo.nut
+
 
 ::canBuyUnitOnline <- function canBuyUnitOnline(unit) {
   return !isUnitBought(unit) && isAvailableBuyUnitOnline(unit)
@@ -132,7 +132,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   return false
 }
 
-// modName == ""  mean 'all mods'.
+
 ::updateAirAfterSwitchMod <- function updateAirAfterSwitchMod(air, modName = null) {
   if (!air)
     return
@@ -152,7 +152,7 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
     check_unit_mods_update(air, null, true)
 }
 
-//return true when already counted
+
 ::check_secondary_weapon_mods_recount <- function check_secondary_weapon_mods_recount(unit, callback = null) {
   let uType = getEsUnitType(unit)
   if (uType == ES_UNIT_TYPE_AIRCRAFT || uType == ES_UNIT_TYPE_HELICOPTER) {
@@ -331,10 +331,10 @@ function fillAirInfoTimers(holderObj, air, needShopInfo, needShowExpiredMessage 
   SecondsUpdater(holderObj, function(obj, _params) {
     local isActive = false
 
-    // Unit repair cost
+    
     let hp = shop_get_aircraft_hp(air.name)
     let isBroken = hp >= 0 && hp < 1
-    isActive = isActive || isBroken // warning disable: -const-in-bool-expr
+    isActive = isActive || isBroken 
     let hpTrObj = obj.findObject("aircraft-condition-tr")
     if (hpTrObj)
       if (isBroken) {
@@ -351,7 +351,7 @@ function fillAirInfoTimers(holderObj, air, needShopInfo, needShowExpiredMessage 
       obj.findObject("aircraft-repair_cost").setValue(Cost(cost).getTextAccordingToBalance())
     }
 
-    // Unit rent time
+    
     let isRented = air.isRented()
     isActive = isActive || isRented
     let rentObj = obj.findObject("unit_rent_time")
@@ -370,7 +370,7 @@ function fillAirInfoTimers(holderObj, air, needShopInfo, needShowExpiredMessage 
     }
 
 
-    // unit special offer
+    
     let haveDiscount = ::g_discount.getUnitDiscountByName(air.name)
     let specialOfferItem = haveDiscount > 0 ? getBestItemSpecialOfferByUnit(air) : null
     isActive = isActive || specialOfferItem != null
@@ -555,7 +555,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       yearsObj.setValue(get_roman_numeral(air.rank))
   }
 
-  //count unit ratings
+  
   let showBr = !air.hideBrForVehicle
   let battleRating = air.getBattleRating(ediff)
   let brObj = showObjById("aircraft-battle_rating", showBr, holderObj)
@@ -566,7 +566,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   let battleRatingByBattleTypeTable = {}
   foreach (battleTypeIter in BATTLE_TYPES) {
     let battleRatingByBattleType = air.getBattleRating(ediff % EDIFF_SHIFT + EDIFF_SHIFT * battleTypeIter)
-    let isShipHardcore = (battleTypeIter == 2) && (difficulty == g_difficulty.SIMULATOR) // does not exist
+    let isShipHardcore = (battleTypeIter == 2) && (difficulty == g_difficulty.SIMULATOR) 
     if (battleRatingByBattleType != battleRating && !isShipHardcore) {
       battleRatingByBattleTypeTable[battleTypeIter] <- battleRatingByBattleType
     }
@@ -650,11 +650,11 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
         crewMemberTopSkill = { crewMember = "tank_gunner" , skill = "tracking", parameter = "turnTurretSpeed" } }
     ],
     [ES_UNIT_TYPE_BOAT] = [
-      //TODO ship modificators
+      
       { id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value) }
     ],
     [ES_UNIT_TYPE_SHIP] = [
-      //TODO ship modificators
+      
       { id = "maxSpeed", id2 = "maxSpeed", prepareTextFunc = @(value) countMeasure(0, value) }
     ],
     [ES_UNIT_TYPE_HELICOPTER] = [
@@ -702,12 +702,12 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
   holderObj.findObject("aircraft-speedAlt").setValue((air.shop?.maxSpeedAlt ?? 0) > 0 ?
     countMeasure(1, air.shop.maxSpeedAlt) : loc("shop/max_speed_alt_sea"))
-  // holderObj.findObject("aircraft-climbTime").setValue(format("%02d:%02d", air.shop.climbTime.tointeger() / 60, air.shop.climbTime.tointeger() % 60))
-  // holderObj.findObject("aircraft-climbAlt").setValue(countMeasure(1, air.shop.climbAlt))
+  
+  
   holderObj.findObject("aircraft-altitude").setValue(countMeasure(1, air.shop.maxAltitude))
   holderObj.findObject("aircraft-airfieldLen").setValue(countMeasure(1, air.shop.airfieldLen))
   holderObj.findObject("aircraft-wingLoading").setValue(countMeasure(5, air.shop.wingLoading))
-  // holderObj.findObject("aircraft-range").setValue(countMeasure(2, air.shop.range * 1000.0))
+  
 
   let totalCrewObj = holderObj.findObject("total-crew")
   if (checkObj(totalCrewObj))
@@ -894,7 +894,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   if (unitType == ES_UNIT_TYPE_SHIP || unitType == ES_UNIT_TYPE_BOAT) {
     let unitTags = get_unittags_blk()?[air.name] ?? {}
 
-    // ship-displacement
+    
     let displacementKilos = unitTags?.Shop?.displacement
     holderObj.findObject("ship-displacement-tr").show(displacementKilos != null)
     if (displacementKilos != null) {
@@ -903,13 +903,13 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       holderObj.findObject("ship-displacement-value").setValue(displacementString)
     }
 
-    // submarine-depth
+    
     let depthValue = unitTags?.Shop?.maxDepth ?? 0
     holderObj.findObject("aircraft-maxDepth-tr").show(depthValue > 0)
     if (depthValue > 0)
       holderObj.findObject("aircraft-maxDepth").setValue("".concat(depthValue, loc("measureUnits/meters_alt")))
 
-    // ship-citadelArmor
+    
     let armorThicknessCitadel = unitTags?.Shop.armorThicknessCitadel
     holderObj.findObject("ship-citadelArmor-tr").show(armorThicknessCitadel != null)
     if (armorThicknessCitadel != null) {
@@ -923,7 +923,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
         format("%d / %d / %d %s", val[0], val[1], val[2], loc("measureUnits/mm")))
     }
 
-    // ship-mainFireTower
+    
     let armorThicknessMainFireTower = unitTags?.Shop.armorThicknessTurretMainCaliber
     holderObj.findObject("ship-mainFireTower-tr").show(armorThicknessMainFireTower != null)
     if (armorThicknessMainFireTower != null) {
@@ -937,7 +937,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
         format("%d / %d / %d %s", val[0], val[1], val[2], loc("measureUnits/mm")))
     }
 
-    // ship-antiTorpedoProtection
+    
     let atProtection = unitTags?.Shop.atProtection
     holderObj.findObject("ship-antiTorpedoProtection-tr").show(atProtection != null)
     if (atProtection != null) {
@@ -949,7 +949,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
     let shipMaterials = getShipMaterialTexts(air.name)
 
-    // ship-hullMaterial
+    
     {
       let valueText = shipMaterials?.hullValue ?? ""
       let isShow = valueText != ""
@@ -961,7 +961,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       }
     }
 
-    // ship-superstructureMaterial
+    
     {
       let valueText = shipMaterials?.superstructureValue ?? ""
       let isShow = valueText != ""
@@ -1480,7 +1480,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
 ::showAirInfo <- showAirInfo
 
-local __types_for_coutries = null //for avoid recalculations
+local __types_for_coutries = null 
 ::get_unit_types_in_countries <- function get_unit_types_in_countries() {
   if (__types_for_coutries)
     return __types_for_coutries

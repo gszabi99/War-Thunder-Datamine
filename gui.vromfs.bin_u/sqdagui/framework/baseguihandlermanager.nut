@@ -13,25 +13,25 @@ let { reset_msg_box_check_anim_time, destroy_all_msg_boxes, saved_scene_msg_box 
 let { eventbus_has_listeners, eventbus_send } = require("eventbus")
 let { register_command } = require("console")
 
-local current_base_gui_handler = null //active base handler in main gui scene
-local always_reload_scenes = false //debug only
+local current_base_gui_handler = null 
+local always_reload_scenes = false 
 
-//functions list (by guiScenes) to start backScene or to reload current base handler
-                                //automatically set on loadbaseHandler
-                                //but can be overrided by setLastBaseHandlerStartParams
+
+                                
+                                
 let lastBaseHandlerStartData = persist("lastBaseHandlerStartData", @() [])
 
-let activeBaseHandlers = persist("activeBaseHandlers", @() []) //one  per guiScene
+let activeBaseHandlers = persist("activeBaseHandlers", @() []) 
 
 let handlersManager = {
-  handlers = { //handlers weakrefs
+  handlers = { 
     [handlerType.ROOT] = [],
     [handlerType.BASE] = [],
     [handlerType.MODAL] = [],
     [handlerType.CUSTOM] = []
   }
   activeBaseHandlers
-  activeRootHandlers = [] //not more than one per guiScene
+  activeRootHandlers = [] 
   sceneObjIdx = -1
   lastGuiScene = null
   needFullReload = false
@@ -49,12 +49,12 @@ let handlersManager = {
   onClearScene                       = function(_guiScene) {}
   isNeedFullReloadAfterClearScene    = function() { return false }
   isNeedReloadSceneSpecific          = function() { return false }
-  updatePostLoadCss                  = function() { return false } //return is css was updated
+  updatePostLoadCss                  = function() { return false } 
   onSwitchBaseHandler                = function() {}
-  onActiveHandlersChanged            = function() {} //called when loaded or switched handlers,
-                                                     //loaded or destroyed modal windows (inclode scene_msg_boxes
-                                                     //dosn't called twice when single handler load subhandlers on init.
-  animatedSwitchScene                = function(startFunc) { startFunc () } //no anim by default
+  onActiveHandlersChanged            = function() {} 
+                                                     
+                                                     
+  animatedSwitchScene                = function(startFunc) { startFunc () } 
   beforeLoadHandler                  = function(_hType) {}
   onBaseHandlerLoadFailed            = function(_handler) {}
   beforeInitHandler                  = function(_handler) {}
@@ -91,7 +91,7 @@ let handlersManager = {
     else if (hType == handlerType.CUSTOM)
       handler = this.loadCustomHandler(handlerClass, params)
     else {
-      if (this.isFullReloadInProgress) // Removing looped opening of handler on close
+      if (this.isFullReloadInProgress) 
         this.setLastBaseHandlerBackSceneParams()
       handler = this.loadBaseHandler(handlerClass, params)
     }
@@ -170,11 +170,11 @@ let handlersManager = {
       handler.reinitScreen(params)
   }
 
-  function destroyHandler(handler) { //destroy handler with it subhandlers.
-                                                   //destroy handler scene, so accurate use with custom handlers
+  function destroyHandler(handler) { 
+                                                   
     if (!this.isHandlerValid(handler))
       return
-    if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
+    if (handler.guiScene?.isInAct()) { 
       script_net_assert_once("destroyHandler", "Try to destroy baseGuiHandler while in dagui:ObjScene:act")
       return
     }
@@ -187,7 +187,7 @@ let handlersManager = {
 
   function loadBaseHandler(handlerClass, params = {}) {
     let guiScene = get_gui_scene()
-    if (guiScene?.isInAct()) { //isInAct appear at 18.11.2020
+    if (guiScene?.isInAct()) { 
       script_net_assert_once("loadBaseHandler", "Try to load baseHandler while in dagui:ObjScene:act")
       return null
     }
@@ -232,7 +232,7 @@ let handlersManager = {
       return null
     }
 
-    let id = $"root_scene_{++this.sceneObjIdx} {handler.sceneBlkName}" //mostly for debug
+    let id = $"root_scene_{++this.sceneObjIdx} {handler.sceneBlkName}" 
     if (!handler.rootHandlerClass || this.getHandlerType(handler) != handlerType.BASE) {
       let rootObj = handler.guiScene.getRoot()
       handler.scene = handler.guiScene.createElementByObject(rootObj, handler.sceneBlkName, "rootScene", handler)
@@ -276,7 +276,7 @@ let handlersManager = {
     this.handlers[handlerType.MODAL].append(handler.weakref())
 
     let scene = guiScene.loadModal("", handler.sceneBlkName || "%gui/emptyScene.blk", "rootScene", handler)
-    scene.id = $"modal_wnd_{++this.sceneObjIdx} {handler.sceneBlkName}" //mostly for debug
+    scene.id = $"modal_wnd_{++this.sceneObjIdx} {handler.sceneBlkName}" 
     handler.scene = scene
 
     handler.initHandlerSceneTpl()
@@ -382,7 +382,7 @@ let handlersManager = {
   }
 
   function onBaseHandlerSwitch() {
-    reset_msg_box_check_anim_time() //no need msg box anim right after scene switch
+    reset_msg_box_check_anim_time() 
   }
 
   function showBaseHandler(handler, show) {
@@ -401,11 +401,11 @@ let handlersManager = {
       handler.onSceneActivate(show)
   }
 
-  //if guiScene == null, will be used current scene
+  
   function clearScene(guiScene = null) {
     if (!guiScene)
       guiScene = get_cur_gui_scene()
-    if (guiScene?.isInAct()) { //isInAct appear at 18.11.2020
+    if (guiScene?.isInAct()) { 
       script_net_assert_once("clearSceneInAct", "Try to clear scene while in dagui:ObjScene:act")
       return
     }
@@ -439,7 +439,7 @@ let handlersManager = {
   function updateLoadingFlag() {
     let oldVal = this.isInLoading
     this.isInLoading = !this.isMainGuiSceneActive()
-                  || (!this.getActiveBaseHandler() && !this.getActiveRootHandler()) //empty screen count as loading too
+                  || (!this.getActiveBaseHandler() && !this.getActiveRootHandler()) 
 
     if (oldVal != this.isInLoading)
       broadcastEvent("LoadingStateChange")
@@ -551,7 +551,7 @@ let handlersManager = {
   }
 
   function closeAllModals(guiScene = null) {
-    if ((guiScene ?? get_cur_gui_scene())?.isInAct()) { //isInAct appear at 18.11.2020
+    if ((guiScene ?? get_cur_gui_scene())?.isInAct()) { 
       script_net_assert_once("closeAllModals", "Try to close all modals while in dagui:ObjScene:act")
       return
     }
@@ -572,7 +572,7 @@ let handlersManager = {
   function destroyModal(handler) {
     if (!this.isHandlerValid(handler, true))
       return
-    if (handler.guiScene?.isInAct()) { //isInAct appear at 18.11.2020
+    if (handler.guiScene?.isInAct()) { 
       script_net_assert_once("destroyModal", "Try to destroy modal window while in dagui:ObjScene:act")
       return
     }
@@ -631,21 +631,21 @@ let handlersManager = {
             handler[eventFuncName].call(handler)
   }
 
-  /**
-   * Finds handler with class 'restoreHandlerClass' and re-opens
-   * it after 'triggerHandlerClass' was inited.
-   *
-   * @param restoreHandler Handler to be restored.
-   * @param triggerHandlerClass Class of handler that triggers window restore.
-   * Current base handler if used if this parameter not specified.
-   * If triggerHandlerClass is equal restoreHandler class, then this handler will not
-   * be loaded by trigger, but its data will be restored when it will be loaded next time.
-   * @return False if windows restoration failed. Occures if window
-   * handler was not found or getHandlerRestoreData is not implemented.
-   */
+  
+
+
+
+
+
+
+
+
+
+
+
   function requestHandlerRestore(restoreHandler, triggerHandlerClass = null) {
     let restoreData = restoreHandler.getHandlerRestoreData()
-    if (restoreData == null) // Not implemented.
+    if (restoreData == null) 
       return false
     restoreData.handlerClass <- restoreHandler.getclass()
     if (triggerHandlerClass == null)
@@ -662,10 +662,10 @@ let handlersManager = {
     return true
   }
 
-  /**
-   * Restores handlers requested by specified trigger-handler.
-   * Does nothing if no restore data found.
-   */
+  
+
+
+
   function restoreHandlers(triggerHandlerClass) {
     let restoreData = this.restoreDataByTriggerHandler?[triggerHandlerClass]
     if (restoreData == null)
@@ -733,7 +733,7 @@ let handlersManager = {
     return isNewHandlerCreated
   }
 
-  //run delayed action same with guiScene.performDelayed, but it will survive guiScene reload and switch
+  
   function doDelayed(action) {
     this.delayedActions.append(action)
     if (this.delayedActions.len() == 1)

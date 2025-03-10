@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 
-//functions to specific update promoBlock parameters generated via promoBlock.tpl
+
 
 ::g_promo_view_utils <- {
 
@@ -20,15 +20,15 @@ from "%scripts/dagui_library.nut" import *
   ]
 }
 
-/*
-  work only with blocks which have needCollapsedTextAnimSwitch flag
-  return index (int) of new animated visible block.
 
-  scene - dagui obj where to search promoblocks
-  blockId - block id to switch texts
-  text - text to set
-  prevShowIdx - previous text index returned by this function. if never called before, than -1
-*/
+
+
+
+
+
+
+
+
 ::g_promo_view_utils.animSwitchCollapsedText <- function animSwitchCollapsedText(scene, blockId, text) {
   let animSizeObj = this.getCollapsedAnimSizeObj(scene, blockId)
   if (!checkObj(animSizeObj)) {

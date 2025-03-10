@@ -50,14 +50,14 @@ gui_handlers.BattleTasksPromoHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let id = this.scene.id
     local difficultyGroupArray = []
 
-    // 0) Prepare: Filter tasks array by available difficulties list
+    
     let tasksArray = getBattleTasksOrderedByDiff()
 
-    // 1) Search for task with available reward
+    
     local reqTask = getBattleTaskWithAvailableAward(tasksArray)
 
     let currentGameModeId = getCurrentGameModeId()
-    // 2) Search for task by selected gameMode
+    
     if (!reqTask && currentGameModeId) {
       local curDifficultyGroup = loadLocalAccountSettings(this.savePathBattleTasksDiff,
         getDefaultDifficultyGroup())
@@ -65,7 +65,7 @@ gui_handlers.BattleTasksPromoHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           @(task) !isBattleTaskDone(task) && isBattleTaskActive(task)
           && (canGetBattleTaskReward(task) || !isBattleTaskExpired(task)))
 
-              //get difficulty list
+              
       difficultyGroupArray = this.getDifficultyRadioButtonsListByTasks(activeTasks,
         getBattleTaskDiffGroups(),
         curDifficultyGroup)

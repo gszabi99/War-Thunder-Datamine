@@ -7,7 +7,7 @@ let { CHAT_MODE_ALL } = require("chat")
 
 let hudChatState = {
   inputEnable = false
-  //her for now, but it's more common state then chat
+  
   mouseEnabled = false
   hudLog = []
   input = ""

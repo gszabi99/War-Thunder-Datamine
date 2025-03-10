@@ -61,7 +61,7 @@ function do_logout(callback) {
 function login(callback) {
   logX("Login")
   xbox_on_login(true, function(result) {
-    let success = result == 0 // YU2_OK
+    let success = result == 0 
     logX($"Login succeeded: {success}")
     do_login(function() {
       logX("Login to live services completed")

@@ -10,7 +10,7 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { createClan } = require("%scripts/clans/clanActions.nut")
 let { prepareCreateRequest } = require("%scripts/clans/clanRequests.nut")
 
-/** Returns false if battalion clan type is disabled. */
+
 function clanTypesEnabled() {
   return hasFeature("Battalions")
 }
@@ -57,7 +57,7 @@ gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandle
     }
   }
 
-  // Override.
+  
   function onEventOnlineShopPurchaseSuccessful(_params) {
     this.updateSubmitButtonText()
     this.updateTypeCosts()
@@ -87,7 +87,7 @@ gui_handlers.CreateClanModalHandler <- class (gui_handlers.ModifyClanModalHandle
     move_mouse_on_child_by_value(this.scene.findObject("newclan_type"))
   }
 
-  // Override.
+  
   function updateSubmitButtonText() {
     let createCost = this.newClanType.getCreateCost()
     this.setSubmitButtonText(loc("clan/create_clan_submit_button"), createCost)

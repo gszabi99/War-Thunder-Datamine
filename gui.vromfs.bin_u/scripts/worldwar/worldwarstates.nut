@@ -59,7 +59,7 @@ function fillConfigurableValues() {
   let blk = DataBlock()
   wwGetConfigurableValues(blk)
   wwstorage.configurableValues = blk
-  // ----- FIX ME: Weapon masks data should be received from char -----
+  
   if (!("fighterCountAsAssault" in wwstorage.configurableValues)) {
     wwstorage.configurableValues.fighterCountAsAssault = DataBlock()
     wwstorage.configurableValues.fighterCountAsAssault.mgun    = false
@@ -70,7 +70,7 @@ function fillConfigurableValues() {
     wwstorage.configurableValues.fighterCountAsAssault.rockets = true
     wwstorage.configurableValues.fighterCountAsAssault.gunpod  = false
   }
-  // ------------------------------------------------------------------
+  
 
   local fighterToAssaultWeaponMask = 0
   let fighterCountAsAssault = wwstorage.configurableValues.fighterCountAsAssault

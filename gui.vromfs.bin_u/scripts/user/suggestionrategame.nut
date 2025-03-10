@@ -24,7 +24,7 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { rnd_int } = require("dagor.random")
 
 let logP = log_with_prefix("[ShowRate] ")
-let needShowRateWnd = mkWatched(persist, "needShowRateWnd", false) //need this, because debriefing data destroys after debriefing modal is closed
+let needShowRateWnd = mkWatched(persist, "needShowRateWnd", false) 
 
 let winsInARow = mkWatched(persist, "winsInARow", 0)
 let haveMadeKills = mkWatched(persist, "haveMadeKills", false)
@@ -75,7 +75,7 @@ let sortedAdditionalSteamRateReview = [
 ]
 
 local isConfigInited = false
-let cfg = { // Overridden by gui.blk values
+let cfg = { 
   totalPvpBattlesMin = 7
   totalPlayedHoursMax = 300
   minPlaceOnWin = 3
@@ -99,8 +99,8 @@ function initConfig() {
 }
 
 function setNeedShowRate(debriefingResult, myPlace) {
-  //can be on any platform in future,
-  //no need to specify platform in func name
+  
+  
   if ((!isPlatformXboxOne && !steam_is_running()) || debriefingResult == null)
     return
 
@@ -112,8 +112,8 @@ function setNeedShowRate(debriefingResult, myPlace) {
   }
 
   if (loadLocalAccountSettings(RATE_WND_SAVE_ID, false)) {
-    //Save for already seen window too
-    //It must not be rewritten, because of check by time before
+    
+    
     saveLocalAccountSettings(RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
     logP("Already seen")
     return
@@ -121,9 +121,9 @@ function setNeedShowRate(debriefingResult, myPlace) {
 
   initConfig()
 
-  //Record reqUnlock will be prior before other old checks
-  //Because checks such as wins or sessions could be written in unlock config
-  //So no need to continue check old terms
+  
+  
+  
   if (cfg.reqUnlock != "") {
     logP("Check only unlock")
     if (isUnlockOpened(cfg.reqUnlock)) {
@@ -133,13 +133,13 @@ function setNeedShowRate(debriefingResult, myPlace) {
     return
   }
 
-  // Newbies
+  
   if (getPvpPlayed() < cfg.totalPvpBattlesMin) {
     logP("Break checks by battle stats, player is newbie")
     return
   }
 
-  // Old players
+  
   if (!isStatsLoaded()
       || (getTotalTimePlayedSec() / TIME_HOUR_IN_SECONDS) > cfg.totalPlayedHoursMax) {
     logP("Break checks by old player, too long playing, or no stats loaded at all")
@@ -256,7 +256,7 @@ addListenersWithoutEnv({
       havePurchasedSpecUnit(true)
   }
   EntitlementStoreItemPurchased = function(p) {
-    if (getShopItem(p?.id)?.isMultiConsumable == false) //isMultiConsumable == true - eagles
+    if (getShopItem(p?.id)?.isMultiConsumable == false) 
       havePurchasedSpecUnit(true)
   }
   OnlineShopPurchaseSuccessful = function(p) {

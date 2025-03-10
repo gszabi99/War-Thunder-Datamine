@@ -212,12 +212,12 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
   let memberData = getMyStateData()
   g_squad_manager.updateMyMemberDataAfterActualizeJwt(memberData)
 
-  //Update Skirmish Lobby info
+  
   if (needUpdateSessionLobbyData)
     setSessionLobbyCountryData({
       country = memberData.country
       crewAirs = memberData.crewAirs
-      selAirs = memberData.selAirs  //!!FIX ME need to remove this and use slots in client too.
+      selAirs = memberData.selAirs  
       slots = memberData.selSlots
     })
 }
@@ -266,8 +266,8 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
     if (checkOnlyMemberCountry)
       mData.isSelfCountry = true
     else {
-      mData.queueProfileJwt = "" //!!! FIX ME: When change member country, leader do not know jwt profile data.
-      res.countriesChanged++     // Need either do not change countries or get jwt  for all countries.
+      mData.queueProfileJwt = "" 
+      res.countriesChanged++     
     }
 
     let brokenUnits = []
@@ -403,18 +403,18 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
                  )
 }
 
-/**
-    availableUnitsArrays = [
-                             [unitName...]
-                           ]
 
-    controlUnits = {
-                     unitName = count
-                     ...
-                   }
 
-    availableUnitsArrayIndex - recursion param
-**/
+
+
+
+
+
+
+
+
+
+
 ::g_squad_utils.checkAvailableUnits <- function checkAvailableUnits(availableUnitsArrays, controlUnits, availableUnitsArrayIndex = 0) {
   if (availableUnitsArrays.len() >= availableUnitsArrayIndex)
     return true

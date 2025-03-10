@@ -67,7 +67,7 @@ function updateSpareType(spare) {
 }
 
 function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
-  //For right sidebar on the Aircraft presets window show only weapons' names and changeToSpecs
+  
   let showOnlyNamesAndSpecs = params?.showOnlyNamesAndSpecs ?? false
   let presetsWeapons = []
   let presetsNames = {
@@ -91,7 +91,7 @@ function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
   return { presetsWeapons, presetsNames }
 }
 
-//add "bulletParams" and "bulletPenetrationData" to result descTbl:
+
 function addArmorPiercingDataToDescTbl(descTbl, unit, blk, tType) {
   if (TYPES_ARMOR_PIERCING.contains(tType)) {
     let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, blk, true, false))
@@ -104,7 +104,7 @@ function addArmorPiercingDataToDescTbl(descTbl, unit, blk, tType) {
 }
 
 function getTierTooltipParams(weaponry, presetName, tierId) {
-  let tier = weaponry.tiers?[tierId] || weaponry.tiers?[tierId.tostring()] // to handle cases when we get weaponry after json stringifying/parsing
+  let tier = weaponry.tiers?[tierId] || weaponry.tiers?[tierId.tostring()] 
   return {
     tooltipLang   = tier?.tooltipLang
     amountPerTier = tier?.amountPerTier ?? weaponry.amountPerTier ?? 0
@@ -139,8 +139,8 @@ function getSingleWeaponDescTbl(unit, params) {
 }
 
 function getGunAmmoPerTier(weapons) {
-  // It works for gun on tier only.
-  // The logic below works on assume the tier can have only one gun/cannon block by design.
+  
+  
   let trigger = (weapons?.weaponsByTypes[WEAPON_TYPE.GUNS]
     ?? weapons?.weaponsByTypes[WEAPON_TYPE.CANNON])?[0]
   if (!trigger)
@@ -289,10 +289,10 @@ function getBasesEstimatedDamageRewardArray(unit, item) {
   if (reqUnitTypes.len() == 0 || !reqUnitTypes.contains(ES_UNIT_TYPE_AIRCRAFT))
     return res
 
-  // {<presetName> = <weaponCount>, ...} - {"fab500" = 2, "fab100_internal" = 1}
+  
   local itemPresetList = {}
 
-  // {<weaponName> = <weaponCount>, ...} - {"bombguns_su_fab500x" = 2, "bombguns_su_fab250x" = 1}
+  
   local customPresetWeaponTable = {}
 
   if (isDataBlock(item?.weaponsBlk) && unit.hasWeaponSlots) {

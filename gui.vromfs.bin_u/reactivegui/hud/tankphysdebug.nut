@@ -134,7 +134,7 @@ let engine = {
     speed
   ]
 }
-//======================================================TRANSMISSION================================
+
 let transCurGearVal = @() {
   watch = CurrentGear
   size = [flex(), SIZE_TO_CONTENT]
@@ -231,7 +231,7 @@ let transmission = {
       size = [iconWidth, iconHeight]
       rendObj = ROBJ_IMAGE
       image = transmissionIcon
-      //color = baseColor
+      
     }
     transCurretGear
     {
@@ -273,7 +273,7 @@ let transmission = {
   ]
 }
 
-//===========================================================TRACKS===========================
+
 let trackSpeedVal = @(watched_val) function() {
   return {
     watch = watched_val

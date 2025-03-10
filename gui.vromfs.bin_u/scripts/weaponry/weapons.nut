@@ -93,17 +93,17 @@ let getCustomTooltipId = @(unitName, mod, params) (mod?.tier ?? 1) > 1 && mod.ty
 
 local heightInModCell = @(height) height * 1.0 / to_pixels("1@modCellHeight")
 
-// This function returns a modification for an unlockable unit skin in progress
-// with the lowest maximum progress value because it is the next to be unlocked.
-// If all unit skins have already been acquired, the function returns the skin
-// with the highest maximum progress value, as it was the last to be unlocked
+
+
+
+
 function getSkinMod(unit) {
-  local lastSkin = null // skin has opened unlock with the highest progress 'maxVal'
+  local lastSkin = null 
   local highestMaxVal = 0
-  local curSkin = null // skin has doable unlock with the lowest progress 'maxVal'
+  local curSkin = null 
   local curSkinProgress = null
   foreach (skinInfo in unit.getSkins()) {
-    if (skinInfo.name == "") // skip default skin
+    if (skinInfo.name == "") 
       continue
 
     let skinId = getSkinId(unit.name, skinInfo.name)
@@ -289,8 +289,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateWndWidth() {
-    let weaponsAndBulletsLen = 1               //Always one bunle for primary weapons
-      +(isUnitHaveSecondaryWeapons(this.air) ? 1 : 0) //Since we have secondary weapons own window
+    let weaponsAndBulletsLen = 1               
+      +(isUnitHaveSecondaryWeapons(this.air) ? 1 : 0) 
       +this.bulletsByGroupIndex.len()
       + this.expendablesArray.len()
     let premiumModsLen = this.premiumModsList.len() + (this.air.spare && !this.researchMode ? 1 : 0)
@@ -482,7 +482,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       freeRPObj.setValue(get_flush_exp_text(this.availableFlushExp))
   }
 
-  function automaticallySpendAllExcessiveExp() { //!!!TEMP function, true func must be from code
+  function automaticallySpendAllExcessiveExp() { 
     this.showTaskProgressBox()
     this.availableFlushExp = shop_get_unit_excess_exp(this.airName)
     let curResModuleName = shop_get_researchable_module_name(this.airName)
@@ -610,6 +610,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       curEdiff = currentEdiff
       tooltipId = getCustomTooltipId(this.air.name, item, { curEdiff = currentEdiff })
       researchFinished = this?.researchBlock.prevMod == item.name
+      isModeEnabledFn = @() shopIsModificationEnabled(this.air.name, item.name)
     })
   }
 
@@ -689,6 +690,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         curEdiff = currentEdiff
       })
       researchFinished = this?.researchBlock.prevMod == item.name && this.lastResearchMod == null
+      isModeEnabledFn = @() shopIsModificationEnabled(this.air.name, item.name)
     })
   }
 
@@ -811,9 +813,9 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function collectBranchItems(branch, resItems) {
     foreach (_idx, item in branch)
-      if (type(item) == "table") //modification
+      if (type(item) == "table") 
         resItems.append(item)
-      else if (type(item) == "array") //branch
+      else if (type(item) == "array") 
         this.collectBranchItems(item, resItems)
     return resItems
   }
@@ -840,7 +842,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           column.isSmallFont <- true
       }
 
-      //increase last column width to full window width
+      
       let widthDiff = fullWidth - headerWidth
       if (widthDiff > 0)
         columnsList[columnsList.len() - 1].width += widthDiff
@@ -872,14 +874,14 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (idx, a in arrowsList) {
       let id = $"arrow_{idx}"
 
-      if (a.from[0] != a.to[0]) //hor arrow
+      if (a.from[0] != a.to[0]) 
         data.append(format("".concat("modArrow { id:t='%s'; type:t='right'; ",
                          "pos:t='%.1f@modCellWidth-0.5@modArrowLen, %.1f@modCellHeight-0.5h'; ",
                          "width:t='@modArrowLen + %.1f@modCellWidth' ",
                        "}"),
                        id, a.from[0] + 1, a.from[1] - 0.5 + treeOffsetY, a.to[0] - a.from[0] - 1
                       ))
-      else if (a.from[1] != a.to[1]) //vert arrow
+      else if (a.from[1] != a.to[1]) 
         data.append(format("".concat("modArrow { id:t='%s'; type:t='down'; ",
                          "pos:t='%.1f@modCellWidth-0.5w, %.1f@modCellHeight-0.5@modArrowLen'; ",
                          "height:t='@modArrowLen + %.1f@modCellHeight' ",
@@ -1046,7 +1048,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local offsetX = 0
     let offsetY = heightInModCell(to_pixels("1@buttonHeight+1@modCellHeight+1@blockInterval"))
     let columnsList = []
-    //add primary weapons bundle
+    
     let primaryWeaponsList = []
     foreach (_i, modName in getPrimaryWeaponsList(this.air)) {
       let mod = (modName == "") ? null : getModificationByName(this.air, modName)
@@ -1067,10 +1069,10 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     columnsList.append(this.getWeaponsColumnData(loc("options/primary_weapons")))
     offsetX++
 
-    //add secondary weapons
+    
     if (isUnitHaveSecondaryWeapons(this.air)) {
       let secondaryWeapons = getSecondaryWeaponsList(this.air)
-      this.lastWeapon = validateLastWeapon(this.airName) //real weapon or ..._default
+      this.lastWeapon = validateLastWeapon(this.airName) 
       log($"initial set lastWeapon {this.lastWeapon}")
       if (needSecondaryWeaponsWnd(this.air)) {
         let selWeapon = secondaryWeapons.findvalue((@(w) w.name == this.lastWeapon).bindenv(this))
@@ -1089,7 +1091,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       offsetX++
     }
 
-    //add bullets bundle
+    
     foreach (groupIndex, bulletsList in this.bulletsByGroupIndex) {
       this.createBundle(getBulletsItemsList(this.air, bulletsList, groupIndex),
         weaponsItem.bullets, groupIndex, this.mainModsObj, offsetX, offsetY)
@@ -1103,7 +1105,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       offsetX++
     }
 
-    //add expendables
+    
     if (this.expendablesArray.len()) {
       columnsList.append(this.getWeaponsColumnData(loc("modification/category/expendables")))
       foreach (mod in this.expendablesArray) {
@@ -1271,19 +1273,19 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function unstickCurBundle() {
     if (!checkObj(this.curBundleTblObj))
       return
-    this.onDropDownToggle(this.curBundleTblObj.getParent().getParent()) //need a hoverSize here or bundleItem.
+    this.onDropDownToggle(this.curBundleTblObj.getParent().getParent()) 
     this.curBundleTblObj = null
   }
 
   function onBundleAnimFinish(obj) {
-    //this only for animated gamepad cursor. for pc mouse logic look onHoverSizeMove
+    
     if (!showConsoleButtons.value || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     move_mouse_on_child(this.curBundleTblObj, 0)
   }
 
   function onBundleHover(obj) {
-    // see func onBundleAnimFinish
+    
     if (!showConsoleButtons.value || !this.curBundleTblObj?.isValid() || obj.getFloatProp(timerPID, 0.0) < 1)
       return
     this.unstickCurBundle()
@@ -1320,7 +1322,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.checkResearchOperation(item))
       return
     if (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(this.air)) {
-      weaponryPresetsWnd.open({ unit = this.air, curEdiff = this.getCurrentEdiff() }) //open modal menu for air and helicopter only
+      weaponryPresetsWnd.open({ unit = this.air, curEdiff = this.getCurrentEdiff() }) 
       return
     }
     if (!this.canPerformAction(item, amount))
@@ -1380,8 +1382,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         this.switchMod(item)
         return
       }
-    } // else
-    //if (item.type==weaponsItem.spare)
+    } 
+    
 
     this.onBuy(item.guiPosIdx)
   }
@@ -1460,7 +1462,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       executeAfterDoneFunc()
   }
 
-  function onAltModAction(obj) { //only buy atm before no research.
+  function onAltModAction(obj) { 
     let idx = this.getItemIdxByObj(obj)
     if (idx < 0)
       return
@@ -1514,7 +1516,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     handlersManager.loadHandler(gui_handlers.GenericOptionsModal, params)
   }
 
-  function onAltModActionCommon(obj) { //only buy atm before no research.
+  function onAltModActionCommon(obj) { 
     let idx = this.getItemIdxByObj(obj)
     if (idx < 0)
       return
@@ -1524,7 +1526,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       nightBattlesOptionsWnd()
   }
 
-  function onBuy(idx, buyAmount = 0) { //buy for wp or gold
+  function onBuy(idx, buyAmount = 0) { 
     if (!this.isOwn)
       return
 
@@ -1869,7 +1871,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       padding = to_pixels("1@helpInterval")
     }
 
-    let rects = [] //added hint and items rects
+    let rects = [] 
 
     let itemStatusTypes = [
      {type = "progress", hintId = "hint_progressItem"}
@@ -1878,7 +1880,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
      {type = "buyed", hintId = "hint_buyedItem"}
     ]
 
-    local safeArea = null //rect for hints
+    local safeArea = null 
     let window = this.scene.findObject("main_modifications")
     if (window?.isValid()) {
       let tierLine1 = window.findObject("tierLine_1")

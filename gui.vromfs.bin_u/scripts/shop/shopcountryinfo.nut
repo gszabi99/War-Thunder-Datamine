@@ -15,7 +15,7 @@ function isCountryHaveUnitType(country, unitType) {
 let getMaxUnitsRank = @() getAllUnits().reduce(@(res, unit) unit.isBought() ? max(res, unit.rank) : res, 0)
 
 function isUnitAvailableForRank(unit, rank, esUnitType, country, exact_rank, needBought) {
-  // Keep this in sync with getUnitsCountAtRank() in chard
+  
   return (esUnitType == getEsUnitType(unit) || esUnitType == ES_UNIT_TYPE_TOTAL)
     && (country == unit.shopCountry || country == "")
     && (unit.rank == rank || (!exact_rank && unit.rank > rank))

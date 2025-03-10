@@ -12,15 +12,15 @@ let { get_local_unixtime, unixtime_to_local_timetbl, local_timetbl_to_unixtime,
 } = require("dagor.time")
 let { get_charserver_time_sec } = require("chard")
 
-/**
- * Native API:
- * int get_charserver_time_sec() - gets UTC_posix_timestamp from char server clock.
- * int utc_timetbl_to_unixtime(timeTbl) - converts UTC_timeTable to UTC_posix_timestamp.
- * timeTbl unixtime_to_utc_timetbl(int) - converts UTC_posix_timestamp to UTC_timeTable.
- * int (get_local_unixtime() - charToLocalUtcDiff()) - gets UTC_posix_timestamp from client machine clock.
- * int (local_timetbl_to_unixtime(timeTbl) - charToLocalUtcDiff()) - converts local_timeTable to UTC_posix_timestamp.
- * timeTbl unixtime_to_local_timetbl(int + charToLocalUtcDiff()) - converts UTC_posix_timestamp to local_timeTable.
- */
+
+
+
+
+
+
+
+
+
 
 let timeOrder = ["year", "month", "day", "hour", "min", "sec"]
 
@@ -40,7 +40,7 @@ local getFullTimeTable = function(time, fillMissedByTimeTable = null) {
       time[p] <- getTblValue(p, fillMissedByTimeTable)
     }
     else {
-      fillMissedByTimeTable = null  //only higher part from utc
+      fillMissedByTimeTable = null  
     }
   }
   return time
@@ -184,21 +184,21 @@ function isInTimerangeByUtcStrings(beginDateStr, endDateStr) {
   return true
 }
 
-// For convenience, time periods may be specified without a year.
-// In such cases, it is necessary to correctly determine the start and end times of the period,
-// as they may be in different years.
+
+
+
 function calculateCorrectTimePeriodYears(startTime, endTime) {
-  // time period is within the current year
+  
   if (startTime < endTime)
     return { startTime, endTime }
 
-  // time period starts in the prev year
+  
   if (get_charserver_time_sec() <= endTime) {
     let date = unixtime_to_utc_timetbl(startTime)
     --date.year
     startTime = utc_timetbl_to_unixtime(date)
   }
-  // time period ends in the next year
+  
   else {
     let date = unixtime_to_utc_timetbl(endTime)
     ++date.year

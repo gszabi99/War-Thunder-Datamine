@@ -24,10 +24,10 @@ let chancesText = [
   { text = "chance_to_met/never",   color = "@chanceNeverColor",   brDiff = 1.01 }
 ]
 
-/*
-  typeof @source == Unit     -> @source is unit
-  typeof @source == "string" -> @source is role id
-*/
+
+
+
+
 
 function getUnitTooltipImage(unit) {
   if (unit.customTooltipImage)

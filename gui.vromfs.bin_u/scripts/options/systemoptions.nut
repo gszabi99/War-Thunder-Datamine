@@ -1,4 +1,4 @@
-//-file:param-pos
+
 from "%scripts/dagui_natives.nut" import get_dgs_tex_quality, is_hdr_available, is_perf_metrics_available, is_low_latency_available, is_vrr_available, get_config_name, is_gpu_nvidia, get_video_modes, has_ray_query
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
@@ -29,7 +29,7 @@ let { is_win64 } = require("%sqstd/platform.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-//------------------------------------------------------------------------------
+
 local mSettings = {}
 local mShared = {}
 local mSkipUI = false
@@ -46,24 +46,24 @@ local mMaintainDone = false
 const mRowHeightScale = 1.0
 const mMaxSliderSteps = 50
 local prevRtMode = null
-//-------------------------------------------------------------------------------
+
 let mQualityPresets = DataBlock()
 mQualityPresets.load("%guiConfig/graphicsPresets.blk")
 
 let isDx12Supported = hardPersistWatched("isDx12Supported", null)
-function initIsDx12SupportedOnce() { //is_dx12_supported is a heavy function and should not be called often.
+function initIsDx12SupportedOnce() { 
   if (isDx12Supported.get() == null) {
     let is_dx12_sup = is_dx12_supported()
     isDx12Supported.set(is_win64 && is_dx12_sup)
   }
 }
 
-/*
-compMode - When TRUE, option is enabled in GUI when Compatibility Mode is ON.
-           Defaults to FALSE for qualityPresetsOptions, and TRUE for standaloneOptions.
-fullMode - When TRUE, Option is enabled in GUI when Compatibility Mode is OFF.
-           Defaults to TRUE for both qualityPresetsOptions and standaloneOptions.
-*/
+
+
+
+
+
+
 let compModeGraphicsOptions = {
   qualityPresetsOptions = {
     texQuality        = { compMode = true }
@@ -88,7 +88,7 @@ let platformDependentOpts = {
 
 let initialGfxApi = blkOptFromPath(get_config_name())?.video.driver ?? "auto"
 
-//------------------------------------------------------------------------------
+
 local mUiStruct = [
   {
     title = "options/display"
@@ -186,9 +186,9 @@ let perfValues = [
   "fps",
   "compact",
   "full"
-  // append new values to the end to keep original indexes consistent
+  
 ]
-//------------------------------------------------------------------------------
+
 let getGuiValue = @(id, defVal = null) (id in mCfgCurrent) ? mCfgCurrent[id] : defVal
 let getOptionIdByObjId = @(objId) objId.slice(("sysopt_").len())
 
@@ -256,8 +256,8 @@ function onSystemOptionControlHover(obj) {
   if (controlObjId == null)
     return
   let optId = getOptionIdByObjId(controlObjId)
-  if (optId not in mSettings) //!!!FIX ME This check is unnecessary. It was added because the bug of calling the hover function for objects that do not have it.
-    return                //!!!We need to investigate more fully what causes this to happen and make a bug fix in the right place.
+  if (optId not in mSettings) 
+    return                
 
   let desc = getOptionDesc(optId)
   let needHoverOnOptionRow = optId != mHandler.lastHoveredRowId?.split("_tr")[0]
@@ -498,7 +498,7 @@ function localize(optionId, valueId) {
 
 function parseResolution(resolution) {
   let sides = resolution == "auto"
-    ? [ 0, 0 ] // To be sorted first.
+    ? [ 0, 0 ] 
     : resolution.split("x").apply(@(v) to_integer_safe(strip(v), 0, false))
   return {
     resolution = resolution
@@ -556,6 +556,14 @@ let isRTVisible = @() hasFeature("optionBVH")
 let isRTAOVisible = @() hasFeature("optionBVH") && hasFeature("optionBVH_AO")
 let isRTSMVisible = @() hasFeature("optionBVH") && hasFeature("optionBVH_SM")
 
+log($"Options hasRT is {hasRT()}")
+if (!hasRT()) {
+  log($"optionRT is {hasFeature("optionRT")}")
+  log($"macosx is {is_platform_macosx}")
+  log($"has_ray_query is {has_ray_query()}")
+  log($"ultalow is {getGuiValue("graphicsQuality", "high") != "ultralow"}")
+}
+
 function canDoBackgroundScale() {
   let mode = getGuiValue("antialiasingMode", "off")
   return !(mode == "dlss" || mode == "xess" || hasRTGUI())
@@ -609,10 +617,10 @@ function updateOption(id) {
 
   mContainerObj.getScene().replaceContentFromText(obj, markup, markup.len(), mHandler)
   if (desc.widgetType == "options_bar")
-    obj.setValue(desc.values.indexof(mCfgCurrent[id]) ?? -1) // // FIXME: After updating the control via replaceContentFromText, the 'value' property is not updated. Need to investigate and fix.
+    obj.setValue(desc.values.indexof(mCfgCurrent[id]) ?? -1) 
 }
 
-//------------------------------------------------------------------------------
+
 mShared = {
   setQualityPreset = function(preset) {
     eachBlock(mQualityPresets, function(v, k) {
@@ -990,8 +998,8 @@ mShared = {
     let sortFunc = @(a, b) a.w <=> b.w  || a.h <=> b.h
     data.sort(sortFunc)
 
-    // Fixing the truncated list when working via Remote Desktop (RDP).
-    // get_primary_screen_info implemented only for windows and macosx platforms
+    
+    
     if (isListTruncated && (is_platform_windows || platformId == "macosx")) {
       let resolutions = [ "1024 x 768", "1280 x 720", "1280 x 1024",
         "1920 x 1080", "2520 x 1080", "2560 x 1440", "3840 x 1080", "3840 x 2160" ]
@@ -1019,63 +1027,63 @@ mShared = {
     let value = getBlkValueByPath(blk, desc.blk, "")
 
     let isListed = modes.indexof(value) != null
-    if (isListed) // Supported system.
+    if (isListed) 
       return value
 
     let looksReliable = regexp2(@"^\d+ x \d+$").match(value)
-    if (looksReliable) // Unsupported system. Or maybe altered by user, but somehow works.
+    if (looksReliable) 
       return value
 
     if (value == "auto")
       return value
 
     let screen = format("%d x %d", screen_width(), screen_height())
-    return screen // Value damaged by user. Screen size can be wrong, but anyway, i guess user understands why it's broken.
+    return screen 
 
-    /*
-    Can we respect get_video_modes() ?
-      - It will work on all desktop computers (Windows, Mac OS, Linux) later, but currently, it works in Windows only, and it still returns an empty list in all other systems.
+    
 
-    Can we respect screen_width() and screen_height() ?
-    Windows:
-      - Fullscreen - YES. If the game resolution aspect ratio doesn't match the screen aspect ratio, image is visually distorted, but technically resolution values are correct.
-      - Fullscreen window - NO. If the game resolution aspect ratio doesn't match the screen aspect ratio, the game resolution can be altered to match the screen aspect ratio (like 1680x1050 -> 1680x945).
-      - Windowed - YES. Always correct, even if the window doesn't fit the screen.
-    Mac OS:
-      - Fullscreen - probably YES. There is only one fullscreen game resolution possible, the screen native resolution.
-      - Windowed - probably NO. It's impossible to create a fixed size window in Mac OS X, all windows are freely resizable by user, always.
-    Linux:
-      - Unknown - in Linux, window resizability and ability to have a fullscreen option entirely depends on the selected window manager. It needs to be tested in Steam OS.
-    Android, iOS, PlayStation 4:
-      - Fullscreen - maybe YES. There can be aspect ratios non-standard for PC monitors.
-    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   }
 }
-//------------------------------------------------------------------------------
-/*
-  widgetType - type of the widget in UI ("list", "slider", "checkbox", "editbox", "options_bar").
-  def - default value in UI (it is not required, if there are getValueFromConfig/setGuiValueToConfig functions).
-  blk - path to variable in config.blk file structure (it is not required, if there are getValueFromConfig/setGuiValueToConfig functions).
-  restart - client restart is required to apply an option (e.g. no support in Renderer->onSettingsChanged() function).
-  values - for string variables only, list of possible variable values in UI (for dropdown widget).
-  items - optional, for string variables only, list of item titles in UI (for dropdown widget).
-  min, max - for integer variables only, minimum and maximum variable values in UI (for slider widget).
-  maxlength - for string/integer/float variables only, maximum variable value input length (for input field widget).
-  onChanged - function, reaction to user changes in UI. This function can change multiple variables in UI.
-  getValueFromConfig - function, imports value from config.blk, returns value in config format.
-  setGuiValueToConfig - function, accepts value in UI format and exports it to BLK. Can change multiple variables in BLK.
-  configValueToGuiValue - function, accepts value in config format and return value in UI format
-  init - function, initializes the variable config section, for example, defines 'def' value and/or 'values' list.
-  tooltipExtra - optional, text to be added to option tooltip.
-  isVisible - function, for hide options
-  infoImgPattern - optional, pattern for the option image in the format `#ui/path/img_name_%s`, where `%s` will be replaced with the current option value.
-    For correct functionality, images for all possible options listed in the 'values' must be present.
-  availableInfoImgVals - optional, (works with the 'slider' widgetType) allows specifying which values have corresponding images.
-    Sliders may have high granularity, so instead of loading an image for every option,
-    we can load a few images. The image with the closest matching value will be displayed.
 
 
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 mSettings = {
   gfx_api = { widgetType = "list" def = "auto" blk = "video/driver" restart = true
     init = function(_blk, desc) {
@@ -1248,13 +1256,13 @@ mSettings = {
       return perfValues?[mode] ?? desc.def
     }
     function setGuiValueToConfig(blk, desc, val) {
-      // -1 will use the default value when loaded
+      
       setBlkValueByPath(blk, desc.blk, perfValues.findindex(@(name) name == val) ?? -1)
     }
   }
   texQuality = { widgetType = "options_bar" def = "high" blk = "graphics/texquality" restart = false
     init = function(_blk, desc) {
-      let dgsTQ = get_dgs_tex_quality() // 2=low, 1-medium, 0=high.
+      let dgsTQ = get_dgs_tex_quality() 
       let configTexQuality = desc.values.indexof(getSystemConfigOption("graphics/texquality", "high")) ?? -1
       let sysTexQuality = [2, 1, 0].indexof(dgsTQ) ?? configTexQuality
       if (sysTexQuality == configTexQuality)
@@ -1526,7 +1534,7 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/rtTransQuality/%s"
   }
 }
-//------------------------------------------------------------------------------
+
 function validateInternalConfigs() {
   let errorsList = []
   foreach (id, desc in mSettings) {
@@ -1639,7 +1647,7 @@ function validateInternalConfigs() {
   if (is_dev_version())
     mValidationError = "\n".join(errorsList, true)
   if (!mScriptValid) {
-    let errorString = "\n".join(errorsList, true) // warning disable: -declared-never-used
+    let errorString = "\n".join(errorsList, true) 
     script_net_assert_once("system_options_not_valid", "not valid system option list")
   }
 }
@@ -1762,12 +1770,12 @@ function configMaintain() {
     return
 
   let graphicsQuality = getSystemConfigOption("graphicsQuality", "high")
-  if (graphicsQuality == "user") { // Need to reset
+  if (graphicsQuality == "user") { 
     let isCompatibilityMode = getSystemConfigOption("video/compatibilityMode", false)
     setSystemConfigOption("graphicsQuality", isCompatibilityMode ? "ultralow" : "high")
   }
 
-  if (getSystemConfigOption("graphics/bvhMode", "off") != "off") {//check rayTracing
+  if (getSystemConfigOption("graphics/bvhMode", "off") != "off") {
     if (is_platform_macosx || graphicsQuality == "ultralow" || !has_ray_query())
       setSystemConfigOption("graphics/bvhMode", "off")
   }
@@ -1874,7 +1882,7 @@ function onGuiOptionChanged(obj) {
   }
 
   let curValue = mCfgCurrent?[id]
-  if (curValue == null)  //not inited or already cleared?
+  if (curValue == null)  
     return
 
   local value = null
@@ -1967,7 +1975,7 @@ function fillGuiOptions(containerObj, handler) {
     )
     data = "".concat(data, sectionRow)
     foreach (id in ids) {
-      if (id in platformDependentOpts && get_video_modes().len() == 0 && !is_platform_windows)  // Hiding resolution, mode, vsync.
+      if (id in platformDependentOpts && get_video_modes().len() == 0 && !is_platform_windows)  
         continue
 
       let desc = getOptionDesc(id)
@@ -2060,10 +2068,10 @@ eventbus_subscribe("on_force_graphics_preset", function(event) {
   setQualityPreset(graphicsPreset, true)
 })
 
-//------------------------------------------------------------------------------
+
 init()
 
-//------------------------------------------------------------------------------
+
 return {
   fillSystemGuiOptions = fillGuiOptions
   resetSystemGuiOptions = resetGuiOptions

@@ -14,8 +14,8 @@ function gui_start_hud(_ = null) {
 }
 
 function gui_start_hud_no_chat(_) {
-  //HUD can determine is he need chat or not
-  //this function is left just for back compotibility with cpp code
+  
+  
   gui_start_hud()
 }
 

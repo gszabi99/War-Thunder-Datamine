@@ -10,9 +10,9 @@ let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 
 let AMMO = {
-  PRIMARY      = 0, //bullets, modifications
+  PRIMARY      = 0, 
   MODIFICATION = 0,
-  SECONDARY    = 1,  //weapon presets
+  SECONDARY    = 1,  
   WEAPON       = 1
 }
 
@@ -40,9 +40,9 @@ function getAmmoCost(unit, ammoName, ammoType) {
 function getAmmoMaxAmount(unit, ammoName, ammoType) {
   if (ammoType == AMMO.MODIFICATION) {
     local res = wp_get_modification_max_count(unit.name, ammoName)
-    //for unlimited ammo code return also 1, same as for other modifications
+    
     if (res == 1 && getAmmoCost(unit, ammoName, ammoType).isZero())
-      res = 0 //unlimited
+      res = 0 
     return res
   }
   return  wp_get_weapon_max_count(unit.name, ammoName)

@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import disable_network, copy_to_clipboard
 from "%scripts/dagui_library.nut" import *
 
-//checked for explicitness
+
 let { DM_VIEWER_ARMOR, DM_VIEWER_XRAY } = require("hangar")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { createSlotInfoPanel } = require("%scripts/slotInfoPanel.nut")
@@ -49,7 +49,7 @@ function showGblkErrorPopup(errCode, path) {
                               text = loc("gblk/saveError/copy"),
                               func = @() copy_to_clipboard(msg) }])
 }
-::show_gblk_error_popup <- showGblkErrorPopup //called from the native code
+::show_gblk_error_popup <- showGblkErrorPopup 
 
 function popGblkErrorPopups() {
   if (!isLoggedIn.get())
@@ -64,7 +64,7 @@ function popGblkErrorPopups() {
 }
 
 
-//called after all first mainmenu actions
+
 function onMainMenuReturn(handler, isAfterLogin) {
   if (!handler)
     return

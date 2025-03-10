@@ -12,12 +12,12 @@ let errCodeToStringMap = {
   [YU2_TIMEOUT] = "80130182",
   [YU2_HOST_RESOLVE] = "80130182",
   [YU2_SSL_ERROR] = "80130182",
-  [YU2_FAIL] = "80130182", // auth server is not available
+  [YU2_FAIL] = "80130182", 
   [YU2_WRONG_LOGIN] = "80130183",
   [YU2_WRONG_PARAMETER] = "80130183",
-  [YU2_FROZEN] = "8111000E", // account is frozen
-  [YU2_FROZEN_BRUTEFORCE] = "8111000F", // ERRCODE_AUTH_ACCOUNT_FROZEN_BRUTEFORCE
-  [YU2_SSL_CACERT] = "80130184" // special error for this
+  [YU2_FROZEN] = "8111000E", 
+  [YU2_FROZEN_BRUTEFORCE] = "8111000F", 
+  [YU2_SSL_CACERT] = "80130184" 
 }
 
 function error_code_tostring(error_code) {
@@ -51,7 +51,7 @@ function matching_err_msg(text, error_text) {
   return errText
 }
 
-function get_yu2_error_text(response) { //used only in online shop yet, but beeter to upgrade it and use for all yu2 errors
+function get_yu2_error_text(response) { 
   if (response == YU2_OK)
     return ""
   if (response == YU2_PSN_RESTRICTED)
@@ -69,7 +69,7 @@ function get_error_data(header, error_code) {
     text = null
   }
   if (type(error_code) != "string") {
-    error_code = error_code & 0xFFFFFFFF // Temporary fix for 1.67.2.X
+    error_code = error_code & 0xFFFFFFFF 
 
     res.errCode = error_code_tostring(error_code)
     if (isMatchingError(error_code))

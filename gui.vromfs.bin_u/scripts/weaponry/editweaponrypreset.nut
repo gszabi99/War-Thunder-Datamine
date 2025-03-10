@@ -140,7 +140,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
 
       res.append({
         id = weapon.tiers?[tierId].presetId ?? weapon.id
-        presetId = weapon.presetId // To find duplicates
+        presetId = weapon.presetId 
         name = this.getPopupItemName(weapon, tierId)
         img = getTierIcon(tierWeaponConfig, weapon.ammo)
       })
@@ -207,7 +207,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
     let tierObj = this.getCurrenTierObj()
     if (!this.isTierObj(tierObj))
       return
-    // Preset tier
+    
     let weaponsBlk = this.availableWeapons.filter(@(w) w?.tier == tierObj.tierId.tointeger())
     if (weaponsBlk.len() == 0)
       return

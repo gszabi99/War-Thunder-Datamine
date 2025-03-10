@@ -6,7 +6,7 @@ function getAirFmFile(unit) {
   return null
 }
 
-// Maximum indicated airspeed (IAS) for full flap extension due to structural limits
+
 function getFlapsDestructionIndSpeed(unit) {
   let fmFile = getAirFmFile(unit)
   if (!fmFile?.AvailableControls.hasFlapsControl)
@@ -31,7 +31,7 @@ function getFlapsDestructionIndSpeed(unit) {
   return speeds?[1] ?? -1
 }
 
-// Maximum indicated airspeed (IAS) for landing gear extension due to structural limits
+
 function getGearDestructionIndSpeed(unit) {
   let fmFile = getAirFmFile(unit)
   if (!fmFile?.AvailableControls.hasGearControl)
@@ -40,7 +40,7 @@ function getGearDestructionIndSpeed(unit) {
   return fmFile?.Mass.GearDestructionIndSpeed ?? -1
 }
 
-// Maximum indicated airspeed and Mach number: VNE and MNE
+
 function getWingPlaneStrength(unit) {
   let fmFile = getAirFmFile(unit)
   if (!fmFile)

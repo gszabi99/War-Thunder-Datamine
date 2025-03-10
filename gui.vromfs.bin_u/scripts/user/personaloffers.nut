@@ -56,7 +56,6 @@ let premiumAccountDescriptionArr = [
 
 let personalOfferWndStyles = {
   premium_account = {
-    headerBackgroundImage = "!ui/images/offer/personal_offer_image"
     function fillOfferBody(obj, offerBlk) {
       let entitlementPrize = (offerBlk % "i").findvalue(@(v) "entitlement" in v)
       let paramTbl =  getEntitlementLocParams().map(@(v) colorize("userlogColoredText", v))
@@ -66,6 +65,28 @@ let personalOfferWndStyles = {
         premiumDescription = "\n".join(premiumAccountDescriptionArr.map(@(v) loc(v, paramTbl)))
       })
       this.guiScene.replaceContentFromText(obj, data, data.len(), this)
+    }
+    function updateHeader(headerObj) {
+      headerObj["background-image"] = "!ui/images/premium/premium_account_image"
+      let imgForParts = "!ui/images/premium/premium_account_header"
+      let partLeftImgObj = headerObj.findObject("header_image_left")
+      partLeftImgObj.width = "304@sf/@pf"
+      partLeftImgObj["background-image"] = imgForParts
+      partLeftImgObj["background-position"] = "0, 0, 620, 0"
+
+      let partCenterImgObj = headerObj.findObject("header_image_center")
+      partCenterImgObj["min-width"] = "158@sf/@pf"
+      partCenterImgObj["background-image"] = imgForParts
+      partCenterImgObj["background-position"] = "380, 0, 500, 0"
+
+      let partRightImgObj = headerObj.findObject("header_image_right")
+      partRightImgObj.width = "400@sf/@pf"
+      partRightImgObj["background-image"] = imgForParts
+
+      headerObj.findObject("limited_text")["margin-left"] = "130@sf/@pf"
+      headerObj.findObject("personal_text")["margin-left"] = "130@sf/@pf"
+      headerObj.findObject("time_expired_text")["margin-top"] = "40@sf/@pf - h"
+      headerObj.findObject("time_expired_value")["margin-left"] = "pw - 165@sf/@pf - w/2"
     }
   }
 }
@@ -99,19 +120,19 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
       this.scene.findObject("update_timer").setUserData(this)
     }
     this.costGold = Cost(0, this.offerBlk.costGold)
-    this.updateImages()
+    this.updateHeader()
     this.updateButtons()
     this.fillBody()
   }
 
-  function updateImages() {
+  function updateHeader() {
+    let { offerType = "" } = this.offerBlk
+    personalOfferWndStyles?[offerType].updateHeader(this.scene.findObject("offer_image"))
+
     let maxTextWidthNoResize = to_pixels("290@sf/@pf")
     this.guiScene.applyPendingChanges(false)
     let personalTextSize = this.scene.findObject("personal_text").getSize()
     this.scene.findObject("header_image_center")["width"] = max(0, personalTextSize[0] - maxTextWidthNoResize)
-    let { headerBackgroundImage = "" } = personalOfferWndStyles?[this.offerBlk?.offerType ?? ""]
-    if (headerBackgroundImage != "")
-      this.scene.findObject("offer_image")["background-image"] = headerBackgroundImage
   }
 
   getGroupTitle = @(offerType, config) offerTypes?[offerType](config) ?? loc($"trophy/unlockables_names/{offerType}", "")
@@ -183,12 +204,12 @@ let class PersonalOfferHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCost(offerType, localConfig) {
-    if ("costGold" in localConfig) //custom costGold for reward in offer
+    if ("costGold" in localConfig) 
       return Cost(0, localConfig.costGold)
 
     if(offerType == "unit") {
       let unit = getAircraftByName(localConfig.unit)
-      return Cost().setGold(unit?.costGold ?? 0) //real cost without discount
+      return Cost().setGold(unit?.costGold ?? 0) 
     }
     if(offerType == "item") {
       let item = findItemById(localConfig.item)

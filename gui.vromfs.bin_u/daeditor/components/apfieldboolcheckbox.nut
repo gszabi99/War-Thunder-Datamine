@@ -33,7 +33,7 @@ function fieldBoolCheckbox(params = {}) {
 
     curVal.update(val)
     gui_scene.clearTimer(updateTextFromEcs)
-    gui_scene.setTimeout(0.1, updateTextFromEcs) //do this in case when some es changes components
+    gui_scene.setTimeout(0.1, updateTextFromEcs) 
     return
   }
 

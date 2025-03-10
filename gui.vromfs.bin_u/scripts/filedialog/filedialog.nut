@@ -31,30 +31,30 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
 
   static allFilesFilter         = "*"
 
-  // Required params
+  
   isSaveFile = false
   onSelectCallback  = null
 
-  // Other general params
+  
   dirPath               = ""
-  fileName              = ""    // Default fileName
-  pathTag               = null  // Used for restore dirPath and fileName from account settings
-  extension             = null  // Automatically added file extension on save
-  shouldAskOnRewrite    = true  // Ask if user want rewrite file when save
-  isNavigationVisible   = true  // Is navigation panel visible by default
-  isNavigationToggleAllowed = true  // Is navigation panel can expanded/collapsed
-  currentFilter             = null  // Default selected filter
+  fileName              = ""    
+  pathTag               = null  
+  extension             = null  
+  shouldAskOnRewrite    = true  
+  isNavigationVisible   = true  
+  isNavigationToggleAllowed = true  
+  currentFilter             = null  
   shouldAddAllFilesFilter   = true
 
-  // Other array/map params
-  // Can specified in contructor, or used defaults
+  
+  
   columns           = null
   filters           = null
   visibleColumns    = null
   columnSortOrder   = null
 
-  // Fyle-system functions.
-  // Can specified in contructor, or used defaults
+  
+  
   validatePath      = null
   readDirFiles      = null
   readFileInfo      = null
@@ -64,18 +64,18 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   isDirectory       = null
   getNavElements    = null
 
-  // User sort information
+  
   userSortColumn    = null
   isUserSortReverse = false
 
-  // History arrays for back and forward move
+  
   dirHistoryBefore  = null
   dirHistoryAfter   = null
 
-  // Map containing last selected file by paths
+  
   lastSelectedFileByPath        = null
 
-  // Cached maps
+  
   cachedFileNameByTableRowId      = null
   cachedTableRowIdxByFileName     = null
   cachedFileFullPathByFileName    = null
@@ -84,19 +84,19 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   cachedPathByNavItemId           = null
   cachedFilterByItemId            = null
 
-  // Number of maximum files loaded in large directories
-  // Required while sorting is slowest operation,
-  // And if where is many files game client freeze
+  
+  
+  
   maximumFilesToLoad            = 512
 
   finallySelectedPath           = null
 
-  // ================================================================
-  // =========================== DEFAULTS ===========================
-  // ================================================================
+  
+  
+  
 
   static columnSources = [
-    // Sort source placement
+    
     {
       sourceName = "columnSortOrder"
       requiredAttributes = ["getValue", "comparator"]
@@ -108,36 +108,36 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   ]
 
   static defaultColumns = {
-    /*
-    userSpecifiedColumnInColumns = {
-      header = "Column header, showed in first row"
+    
 
-      // Preprocess file
-      getValue = function(file, fileDialog) {
-        return FUNC1(file)
-      }
 
-      // Compare two preprocessed values
-      comparator = function(lhs, rhs) {
-        return FUNC2(lhs, rhs)
-      }
 
-      // Convert preprocessed values to table view
-      getView = function(lhs, rhs) {
-        return FUNC2(lhs, rhs)
-      }
-    }
 
-    // User modified column can use original functions
-    // through defaultColumn variable.
-    name = {
-      getView = function(value) {
-        local view = defaultColumn.getView(value)
-        view.tdalign <- "right"
-        return view
-      }
-    }
-    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     name = {
       header = "#filesystem/fileName"
@@ -266,7 +266,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     userSort = {
-      // Only for sort, can't be used in visible columns
+      
       getValue = function(file, fileDialog) {
         if (!("userSortColumn" in fileDialog) ||
           !("getValue" in fileDialog.userSortColumn))
@@ -335,7 +335,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     getNavElements = function() {
-      // Filtering non-existent elements is performed when filling navigation bar
+      
       let favorites = []
       favorites.append({
         name = "#filesystem/gamePaths"
@@ -365,7 +365,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
           ]
         })
       }
-      else { /* base template for other unix-based OS */
+      else { 
         favorites.append({
           name = "#filesystem/fsMountPoints"
           childs = [
@@ -382,15 +382,15 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
 
-  // ================================================================
-  // ========================= INIT SCREEN ==========================
-  // ================================================================
+  
+  
+  
 
   function initScreen() {
     if (!this.scene)
       return this.goBack()
 
-    // Init defaults
+    
     if (this.dirPath != "")
       this.dirPath = stdpath.normalize(this.dirPath)
     else if (is_platform_windows)
@@ -402,7 +402,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
     this.visibleColumns = this.visibleColumns ||
       ["directory", "name", "mTime", "extension", "size"]
     this.columnSortOrder = this.columnSortOrder || [
-      // Sort by "directory" always and before sorting by user selected column
+      
       { column = "directory", reverse = true }
       "userSort"
     ]
@@ -444,14 +444,14 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!this[funcName])
         this[funcName] = func
 
-    // Fill columns structure
+    
     this.prepareColums()
     if (!this.validateColums()) {
       this.goBack()
       return
     }
 
-    // Update screen
+    
     this.getObj("dialog_header").setValue(
       loc(this.isSaveFile ? "filesystem/savefile" : "filesystem/openfile"))
     this.updateAllDelayed()
@@ -462,9 +462,9 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
 
-  // ================================================================
-  // =========================== HANDLERS ===========================
-  // ================================================================
+  
+  
+  
 
   function onFileTableClick(_obj) {
     this.setFocusToFileTable()
@@ -649,12 +649,12 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
 
-  // ================================================================
-  // ======================= DATA OPERATIONS ========================
-  // ================================================================
+  
+  
+  
 
   function prepareColums() {
-    // Add columns used for show and sort
+    
     foreach (columnSourceInfo in this.columnSources) {
       let source = this[columnSourceInfo.sourceName]
       foreach (idx, columnInfoSrc in source) {
@@ -674,7 +674,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    // Copy attributes from defaults
+    
     foreach (columnName, column in this.columns) {
       column.name <- columnName
       if (!(columnName in this.defaultColumns))
@@ -693,7 +693,7 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
   function validateColums() {
-    // Check required attributes
+    
     foreach (columnSourceInfo in this.columnSources) {
       let source = this[columnSourceInfo.sourceName]
       let requiredAttributes = columnSourceInfo.requiredAttributes
@@ -899,9 +899,9 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
 
-  // ================================================================
-  // ======================== FILL FUNCTIONS ========================
-  // ================================================================
+  
+  
+  
 
   function updateAllDelayed() {
     this.restoreFileName()
@@ -1010,8 +1010,8 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
       filesTableData.append(fileData)
     }
 
-    // sort takes ~85% of fillFileTableObj execution time
-    // when read directories with large files number
+    
+    
     filesTableData.sort(this.fileDataComporator.bindenv(this))
 
     let view = { rows = [] }
@@ -1176,9 +1176,9 @@ gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
 
-  // ================================================================
-  // ====================== SORT COMPORATORS ========================
-  // ================================================================
+  
+  
+  
 
   function fileDataComporator(lhs, rhs) {
     foreach (columnSource in [this.columnSortOrder, this.visibleColumns])

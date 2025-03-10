@@ -97,7 +97,7 @@ function scope(scale, style) {
           createCompass(style.grid, 70)
         ]
       },
-      // nav
+      
       @()
         styleText.__merge({
           watch = CompassValue
@@ -118,7 +118,7 @@ function scope(scale, style) {
             borderRadius = hdpx(2)
           }
         }),
-      // countermeasures
+      
       styleText.__merge({
         rendObj = ROBJ_TEXT
         pos = [pw(120), ph(125)]
@@ -155,14 +155,14 @@ function scope(scale, style) {
           fontSize = style.grid.fontScale * styleText.fontSize * obdFontScale
           text = format("%d", FlaresCount.get())
         }),
-      // left OBDs
+      
       makeTargetButton(style, [pw(-50), ph(-45)], 0),
       makeTargetButton(style, [pw(-50), ph(-10)], 1),
       makeTargetButton(style, [pw(-50), ph( 25)], 2),
       makeTargetButton(style, [pw(-50), ph( 60)], 3),
       makeTargetButton(style, [pw(-50), ph( 95)], 4),
       makeTargetButton(style, [pw(-50), ph(130)], 5),
-      // top OBDs
+      
       styleText.__merge({
         pos = [pw(-30), ph(-50)],
         rendObj = ROBJ_TEXTAREA,
@@ -208,7 +208,7 @@ function scope(scale, style) {
         halign = ALIGN_CENTER,
         valign = ALIGN_TOP,
       }),
-      // right OBDs
+      
       styleText.__merge({
         pos = [pw(145), ph(-30)],
         rendObj = ROBJ_TEXTAREA,
@@ -254,7 +254,7 @@ function scope(scale, style) {
         halign = ALIGN_RIGHT,
         valign = ALIGN_CENTER,
       }),
-      // bottom OBDs
+      
       {
         pos = [pw(-20), ph(145)],
         size = flex(),

@@ -59,7 +59,7 @@ function gatherPresences(entries) {
 }
 
 function psnUpdateContactsList(usersTable) {
-  //Create or update exist contacts
+  
   let contactsTable = {}
   foreach (uid, playerData in usersTable) {
     contactsTable[playerData.id] <- updateContact({

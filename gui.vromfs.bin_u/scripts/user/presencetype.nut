@@ -35,7 +35,7 @@ let presenceTypes = {
 }
 
 presenceTypes.template <- {
-  typeName = "" //Generic from type.
+  typeName = "" 
   checkOrder = presenceCheckOrder.IDLE
   locId = ""
   locIdShort = ""

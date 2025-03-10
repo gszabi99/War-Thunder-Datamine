@@ -47,7 +47,7 @@ const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
 const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
 
-local WwBattleView //forward declaration
+local WwBattleView 
 
 let WwBattle = class {
   id = ""
@@ -493,7 +493,7 @@ let WwBattle = class {
 
   function isStillInOperation() {
     let battles = ::g_world_war.getBattles(
-        (@(id) function(checkedBattle) { //-ident-hides-ident
+        (@(id) function(checkedBattle) { 
           return checkedBattle.id == id
         })(this.id)
       )
@@ -767,7 +767,7 @@ let WwBattle = class {
     if ("BUT_AIR_GROUND"  == opType || "BUT_ARTILLERY_AIR" == opType)
       return [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_TANK]
 
-    //"BUT_INFANTRY" || "BUT_ARTILLERY_GROUND"
+    
     return []
   }
 
@@ -1061,7 +1061,7 @@ WwBattleView = class  {
   controlHelpText = @() !showConsoleButtons.value && this.hasControlTooltip()
     ? loc("key/LMB") : null
 
-  playerSide = null // need for show view for global battle
+  playerSide = null 
 
   constructor(v_battle = null, customPlayerSide = null) {
     this.battle = v_battle || WwBattle()

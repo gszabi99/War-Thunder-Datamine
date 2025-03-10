@@ -28,7 +28,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   titleLocId = ""
   storeLocId = ""
   openStoreLocId = ""
-  seenEnumId = "other" // replacable
+  seenEnumId = "other" 
 
   curSheet = null
   curSheetId = null
@@ -43,7 +43,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   headerOffsetX = null
   isNavCollapsed = false
 
-  // Used to avoid expensive get...List and further sort.
+  
   itemsListValid = false
 
   sortBoxId = "sort_params_list"
@@ -112,7 +112,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     let sheetIdx = this.sheetsArray.indexof(this.curSheet) ?? 0
     this.getSheetsListObj().setValue(sheetIdx)
 
-    //Update this objects only once. No need to do it on each updateButtons
+    
     showObjById("btn_preview", false, this.scene)
     let warningTextObj = this.scene.findObject("warning_text")
     if (checkObj(warningTextObj))
@@ -167,7 +167,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     let subsetId = this.curSubsetId
     this.navigationHandlerWeak.onCollapse(collapseBtnObj)
     if (collapseBtnObj.getParent().collapsed == "no")
-      this.getSheetsListObj().setValue( //set selection on chapter item if not found item with subsetId just in case to avoid crash
+      this.getSheetsListObj().setValue( 
         u.search(this.navItems, @(item) item?.subsetId == subsetId)?.idx ?? obj.idx)
   }
 
@@ -231,7 +231,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     else {
       this.recalcCurPage()
       generatePaginator(this.scene.findObject("paginator_place"), this,
-        this.curPage, this.getPageNum(this.itemsList.len() - 1), null, true /*show last page*/ )
+        this.curPage, this.getPageNum(this.itemsList.len() - 1), null, true  )
     }
 
     if (!this.itemsList?.len() && this.sheetsArray.len())
@@ -430,7 +430,7 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
   function getPriceBlock(item) {
     if (item?.isBought)
       return ""
-    //Generate price string as PSN requires and return blk format to replace it.
+    
     return handyman.renderCached("%gui/commonParts/discount.tpl", item)
   }
 

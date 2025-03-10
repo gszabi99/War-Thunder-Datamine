@@ -14,24 +14,24 @@ let { charRequestBlk } = require("%scripts/tasker.nut")
 let { isRaceEvent } = require("%scripts/events/eventInfo.nut")
 
 const APP_ID_CUSTOM_LEADERBOARD = 1231
-/*
-dataParams = {
-  gameMode = ""
-  table    = day && day > 0 ? "day" + day : "season"
-  start    = 1  // start position lb request
-  count    = 0  // count of records
-  category = lbCategoryTypes.WW_EVENTS_PERSONAL_ELO.field // sort field parametr
-  platformFilter = "" //"ps4" for ps4 only players
-}
-headersParams = {
-  userId = -1 //optional parameter. Equal to user id for user leaderboard and clan id for clan leaderboard
-  appId = -1
-} */
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function requestLeaderboardData(dataParams, headers, cb) {
   let requestData = {
     add_token = true
-    action = ("userId" in headers) ? "ano_get_leaderboard_json" : "cln_get_leaderboard_json" //Need use ano_get_leaderboard_json for request with userId
+    action = ("userId" in headers) ? "ano_get_leaderboard_json" : "cln_get_leaderboard_json" 
     headers
     data = {
       valueType   = LEADERBOARD_VALUE_TOTAL
@@ -55,22 +55,22 @@ function requestEventLeaderboardData(requestData, onSuccessCb, onErrorCb) {
   blk.targetPlatformFilter = getSeparateLeaderboardPlatformName()
 
   if (blk.start == null || blk.start < 0) {
-    let event = blk.event  // warning disable: -declared-never-used
-    let start = blk.start  // warning disable: -declared-never-used
-    let count = blk.count  // warning disable: -declared-never-used
+    let event = blk.event  
+    let start = blk.start  
+    let count = blk.count  
     script_net_assert_once("event_leaderboard__invalid_start", "Event leaderboard: Invalid start")
     log($"Error: Event '{event}': Invalid leaderboard start={start} (count={count})")
 
     blk.start = 0
   }
   if (blk.count == null || blk.count <= 0) {
-    let event = blk.event  // warning disable: -declared-never-used
-    let count = blk.count  // warning disable: -declared-never-used
-    let start = blk.start  // warning disable: -declared-never-used
+    let event = blk.event  
+    let count = blk.count  
+    let start = blk.start  
     script_net_assert_once("event_leaderboard__invalid_count", "Event leaderboard: Invalid count")
     log($"Error: Event '{event}': Invalid leaderboard count={count} (start={start})")
 
-    blk.count = 49  // unusual value indicate problem
+    blk.count = 49  
   }
 
   let event = events.getEvent(requestData.economicName)

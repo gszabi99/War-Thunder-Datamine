@@ -14,9 +14,9 @@ gui_handlers.GampadCursorControlsSplash <- class (gui_handlers.BaseGuiHandlerWT)
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/controls/gamepadCursorControlsSplash.blk"
 
-  // All contactPointX/contactPointY coords below are X/Y coords on the source image canvas (840 x 452 px).
-  // Just open the image in any image viewer, point mouse anywhere on it, and it will display X/Y coords of
-  // the mouse pointer on the image canvas. Those coords can be used here as contactPointX/contactPointY.
+  
+  
+  
 
   controllerDualshock4View = {
     image = "#ui/images/controller/controller_dualshock4.ddsx"
@@ -88,9 +88,9 @@ gui_handlers.GampadCursorControlsSplash <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   static function shouldDisplay() {
-    // Possible values: int 2 (version 2 seen), bool true (version 1 seen), null (new account)
+    
     let value = loadLocalByAccount(GAMEPAD_CURSOR_CONTROLS_SPLASH_DISPLAYED_SAVE_ID)
-    return value == true // Show it only to old accounts.
+    return value == true 
   }
 
   static function markDisplayed() {

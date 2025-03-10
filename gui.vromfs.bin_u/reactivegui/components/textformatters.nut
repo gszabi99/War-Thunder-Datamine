@@ -212,7 +212,7 @@ function image(obj, _formatTextFunc = noTextFormatFunc, style = defStyle) {
 }
 
 let formatters = {
-  defStyle //for modification, fixme, make instances
+  defStyle 
   def = textArea
   string = @(string, fmtFunc, style = defStyle) textParsed({ v = string }, fmtFunc, style),
   textParsed

@@ -62,7 +62,7 @@ local dbgLongestUnitTooltip = class (BaseGuiHandler) {
 
     this.guiScene.performDelayed(this, function() {
       let unit = unitsList.remove(0)
-      dlog($"DBG: Check: left {this.unitsByType?[unit.unitType.typeName].len() ?? 0}, {unit.unitType.typeName} -> {unit.name}") // warning disable: -forbidden-function
+      dlog($"DBG: Check: left {this.unitsByType?[unit.unitType.typeName].len() ?? 0}, {unit.unitType.typeName} -> {unit.name}") 
 
       this.checkLongestUnitTooltip(unit)
     })

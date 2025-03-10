@@ -156,8 +156,8 @@ function guiStartMPStatScreenFromGame(_ = {}) {
   handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mpstatscreen_", params })
 }
 
-eventbus_subscribe("gui_start_mpstatscreen_from_game", guiStartMPStatScreenFromGame) // used from native code
-eventbus_subscribe("gui_start_flight_menu_stat", guiStartMPStatScreenFromGame) // used from native code
+eventbus_subscribe("gui_start_mpstatscreen_from_game", guiStartMPStatScreenFromGame) 
+eventbus_subscribe("gui_start_flight_menu_stat", guiStartMPStatScreenFromGame) 
 
 local time_to_kick_show_timer = null
 local time_to_kick_show_alert = null
@@ -287,7 +287,7 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
           nameWidth, "textareaNoTab", nameAlign, nameText, textPadding
         )
         if (!isEmpty) {
-          //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
+          
           if (table[i]?.isLocal)
             trAdd.append("mainPlayer:t = 'yes';")
           else if (table[i]?.isInHeroSquad || isMemberInMySquadById(table[i]?.userId.tointeger()))
@@ -297,7 +297,7 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
         }
       }
       else if (hdr[j] == "unitIcon") {
-        //creating empty unit class/dead icon and weapons icons, and expSkillBonusIcon, to be filled in update func
+        
         let images = params?.canHasBonusIcon ? [createExpSkillBonusIcon("onSkillBonusTooltip")] : []
 
         foreach (id, _weap in getWeaponTypeIcoByWeapon("", ""))
@@ -557,7 +557,7 @@ function setMpTable(obj_tbl, table, params = {}) {
           objDlcImg.show(false)
         local tooltip = nameText
         let isLocal = table[i].isLocal
-        //isInMySquad check fixes lag of first 4 seconds, when code don't know about player in my squad.
+        
         let isInHeroSquad = table[i]?.isInHeroSquad || isMemberInMySquadById(table[i]?.userId.tointeger())
         objTr.mainPlayer = isLocal ? "yes" : "no"
         objTr.inMySquad  = isInHeroSquad ? "yes" : "no"
@@ -595,7 +595,7 @@ function setMpTable(obj_tbl, table, params = {}) {
               loc(isInSquad ? "debriefing/battleRating/squad" : "debriefing/battleRating/total"),
               loc("ui/colon"), format("%.1f", ratingTotal))
             if (showLowBRPrompt) {
-              let maxBRDifference = 2.0 // Hardcoded till switch to new matching.
+              let maxBRDifference = 2.0 
               let rankCalcMode = getRoomRankCalcMode()
               if (rankCalcMode)
                 tooltip = "".concat(tooltip, "\n",
@@ -760,7 +760,7 @@ function getCurMpTitle() {
       text.append(loc("mainmenu/btnDynamic"))
     else if (gm == GM_BUILDER)
       text.append(loc("mainmenu/btnBuilder"))
-    //else if (gm==GM_TOURNAMENT)       text = loc("multiplayer/tournamentMode")
+    
   }
 
   text.append(locCurrentMissionName())

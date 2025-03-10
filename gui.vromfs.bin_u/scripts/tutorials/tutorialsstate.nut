@@ -9,7 +9,7 @@ let skipTutorialBitmaskId = "skip_tutorial_bitmask"
 
 let reqTutorial = {
   [ES_UNIT_TYPE_AIRCRAFT] = "tutorialB_takeoff_and_landing",
-  //[ES_UNIT_TYPE_TANK] = "",
+  
 }
 
 function resetTutorialSkip() {
@@ -18,9 +18,9 @@ function resetTutorialSkip() {
 
 let getReqTutorial = @(unitType) reqTutorial?[unitType] ?? ""
 
-let reqTimeInMode = 60 //req time in mode when no need check tutorial
+let reqTimeInMode = 60 
 function isDiffUnlocked(diff, checkUnitType) {
-  //check played before
+  
   for (local d = diff; d < 3; d++)
     if (::my_stats.getTimePlayed(checkUnitType, d) >= reqTimeInMode)
       return true
@@ -30,7 +30,7 @@ function isDiffUnlocked(diff, checkUnitType) {
     return true
 
   let mainGameMode = get_game_mode()
-  set_game_mode(GM_TRAINING)  //req to check progress
+  set_game_mode(GM_TRAINING)  
 
   let chapters = get_meta_missions_info_by_chapters(GM_TRAINING)
   foreach (chapter in chapters)
@@ -40,7 +40,7 @@ function isDiffUnlocked(diff, checkUnitType) {
         let progress = get_mission_progress(fullMissionName)
         if (mainGameMode >= 0)
           set_game_mode(mainGameMode)
-        return (progress < 3 && progress >= diff) // 3 == unlocked, 0-2 - completed at difficulty
+        return (progress < 3 && progress >= diff) 
       }
   assert(false, $"Error: Not found mission req_tutorial_name = {reqName}")
   set_game_mode(mainGameMode)

@@ -24,7 +24,7 @@ let statusAnimTrigger = { lastN = null }
 local locateOnDoubleClick = false
 
 let entitySortState = Watched({})
-// for trigger filteredEntites computed only once
+
 local entitySortFuncCache = null
 
 let numSelectedEntities = Computed(function() {
@@ -69,13 +69,13 @@ function applySelection(cb) {
   })
 }
 
-// use of filteredEntites here would be more correct here, but reapplying name check should faster than
-// linear search in array (O(N) vs O(N^2))
+
+
 let selectAllFiltered = @() applySelection(@(eid, _cur) matchEntityByText(eid, filterString.value))
 
 let selectNone = @() applySelection(@(_eid, _cur) false)
 
-// invert filtered, deselect unfiltered
+
 let selectInvert = @() applySelection(@(eid, cur) matchEntityByText(eid, filterString.value) ? !cur : false)
 
 
@@ -94,7 +94,7 @@ function doSelect() {
     selectedEntities.trigger()
     selectionState.trigger()
   })
-//  filterString.update("")
+
 }
 
 function doLocate() {
@@ -102,13 +102,13 @@ function doLocate() {
   foreach (k, v in selectionState.value) if (v) eids.append(k)
   entity_editor.get_instance().selectEntities(eids)
   entity_editor.get_instance().zoomAndCenter()
-  //showEntitySelect(false)
+  
 }
 
 
 function doCancel() {
   showEntitySelect(false)
-//  filterString.update("")
+
 }
 
 

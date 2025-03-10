@@ -45,7 +45,7 @@ let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 
-::contacts_prev_scenes <- [] //{ scene, show }
+::contacts_prev_scenes <- [] 
 ::last_contacts_scene_show <- false
 
 let sortContacts = @(a, b)
@@ -249,7 +249,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         return
 
       let rootSize = this.guiScene.getRoot().getSize()
-      for (local i = 0; i <= 1; i++) //pos chat in screen
+      for (local i = 0; i <= 1; i++) 
         if (sizeData.pos[i] < topMenuBorders[i][0] * rootSize[i])
           contactsWndSizes.mutate(@(v) v.pos[i] = (topMenuBorders[i][0] * rootSize[i]).tointeger())
         else if (sizeData.pos[i] + sizeData.size[i] > topMenuBorders[i][1] * rootSize[i])
@@ -786,7 +786,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let groupsObj = this.scene.findObject("contacts_groups")
     let value = groupsObj.getValue()
     if (value >= 0 && value < groupsObj.childrenCount())
-      move_mouse_on_child(groupsObj.getChild(value), 0) //header
+      move_mouse_on_child(groupsObj.getChild(value), 0) 
   }
 
   function onGroupSelectImpl(obj) {
@@ -890,7 +890,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function activateObjInCurGroupList(obj, value) {
     let visibleCount = this.visibleContactsByGroup?[this.curGroup]
       ?? EPL_MAX_PLAYERS_IN_LIST
-    if (value >= visibleCount) { //it is show more button
+    if (value >= visibleCount) { 
       this.showMorePlayers()
       return
     }
@@ -1163,7 +1163,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (brokenData) {
-      let searchResStr = toString(searchRes) // warning disable: -declared-never-used
+      let searchResStr = toString(searchRes) 
       script_net_assert_once("broken_searchCb_data", "broken result on searchContacts cb")
     }
 

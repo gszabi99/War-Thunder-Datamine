@@ -16,7 +16,7 @@ function updateState() {
 }
 
 function getFromSettingsBlk(path, defVal = null) {
-  // Important: On production, settings blk does NOT contain all variables from config.blk, use getSystemConfigOption() instead.
+  
   let blk = get_settings_blk()
   let val = getBlkValueByPath(blk, path)
   return (val != null) ? val : defVal

@@ -129,7 +129,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.filterObj = this.scene.findObject("filter_nest")
     this.myFilters = loadLocalAccountSettings($"{MY_FILTERS}/{this.unit.name}", DataBlock())
     this.fillFilterTypesList()
-    // No need to update items if no stored filters for current unit
+    
     if (this.myFilters != null)
       this.updateAllByFilters()
 
@@ -300,19 +300,24 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       obj.setValue(-1)
   }
 
+  function getTierDeskMarkup() {
+    if (this.curTierIdx < 0 || this.curPresetIdx == null)
+      return ""
+    let item = this.presets[this.curPresetIdx]
+    let weaponry = item.tiersView?[this.curTierIdx].weaponry
+    if (!weaponry)
+      return ""
+
+    let tooltipParams = getTierTooltipParams(weaponry, item.name, this.curTierIdx).__update({
+      narrowPenetrationTable = true 
+    })
+    return handyman.renderCached(("%gui/weaponry/weaponsPresetTooltip.tpl"),
+      getTierDescTbl(this.unit, tooltipParams))
+  }
+
   function updateTierDesc() {
-    local data = ""
     let descObj = this.scene.findObject("tierDesc")
-    if (this.curTierIdx >= 0 && this.curPresetIdx != null) {
-      let item = this.presets[this.curPresetIdx]
-      let weaponry = item.tiersView?[this.curTierIdx].weaponry
-      let tooltipParams = getTierTooltipParams(weaponry, item.name, this.curTierIdx).__update({
-        narrowPenetrationTable = true // to fit it on the right sidebar on the Aircraft presets window
-      })
-      let descTbl = getTierDescTbl(this.unit, tooltipParams)
-      data = weaponry ? handyman.renderCached(("%gui/weaponry/weaponsPresetTooltip.tpl"), descTbl)
-        : ""
-    }
+    let data = this.getTierDeskMarkup()
     this.guiScene.replaceContentFromText(descObj, data, data.len(), null)
   }
 
@@ -365,7 +370,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function onBuy(item) {
     if (!shop_is_weapon_available(this.unit.name, item.name, false, true))
       return
-    this.checkSaveBulletsAndDo(Callback(function() { //-param-hides-param
+    this.checkSaveBulletsAndDo(Callback(function() { 
       weaponsPurchase(this.unit, { modItem = item, open = false })
     }, this))
   }
@@ -432,22 +437,22 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     let canEditCurPreset = isCustomPreset(this.presets[this.curPresetIdx])
 
     return [
-      { // rename
+      { 
         text = loc("msgbox/btn_rename")
         show = canEditCurPreset
         action = @() this.onPresetRename()
       }
-      { // edit
+      { 
         text = loc("msgbox/btn_edit")
         show = canEditCurPreset
         action = @() this.onPresetEdit()
       }
-      { // copy
+      { 
         text = loc("gblk/saveError/copy")
         show = canCopyCurPreset
         action = @() this.onPresetCopy()
       }
-      { // delete
+      { 
         text = loc("msgbox/btn_delete")
         show = canEditCurPreset
         action = @() this.onPresetDelete()
@@ -531,11 +536,11 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       presets = this.presetsMarkup
     })
     this.guiScene.replaceContentFromText(this.presetNest, data, data.len(), this)
-    // Select chosen or first preset
+    
     local firstIdx = this.presetIdxToChildIdx.findindex(@(_) true)
     this.selectPreset(this.chosenPresetIdx in this.presetIdxToChildIdx ? this.chosenPresetIdx : firstIdx, true)
 
-    // Enable/disable filter options depends on whether filtering result exist.
+    
     let popupObj = this.filterObj.findObject("filter_popup")
     if (!popupObj?.isValid())
       return
@@ -668,8 +673,8 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     local isFavorite = false
     local isAvailable = false
     local pList = []
-    // All presets have been filtered by rank an placed into presetsByRanks
-    // to avoid excess job by each checkbox choice.
+    
+    
     foreach (inst in this.filterStates) {
       if (inst != "f_Favorite" && inst != "f_Available") {
         let p = this.presetsByRanks?[inst.split("f_")[1].tointeger()]
@@ -684,11 +689,11 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (pList.len() == 0 || !isFavorite || !isAvailable) {
       this.presets = this.weaponryByPresetInfo.presets
-      // Get all presets if no rank choosen
+      
       pList = pList.len() == 0 ? (clone this.presets) : pList
     }
     if (isFavorite || isAvailable) {
-      // Ignore filtering if stored filter has no result for current unit presets.
+      
       let isExistFavorites = this.isFavoritesExist()
       let isExistAvailables = this.isAvailablesExist()
       let filterFunc = @(p)
@@ -771,7 +776,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       this.editWeaponryPreset(curPreset)
   }
 
-  // DEVELOPERS OPTION ONLY
+  
   function updateBuyAllBtn() {
     let isShow = this.multiPurchaseList.len() > 0
     if (isShow)

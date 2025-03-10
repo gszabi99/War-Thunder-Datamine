@@ -10,8 +10,8 @@ orderUseResult = {
     byCode = {}
   }
   template = {
-    // Creates text message to show in order
-    // activation window, order tooltip, etc.
+    
+    
     function createResultMessage(addErrorHeader) {
       if (this == orderUseResult.OK)
         return loc($"orderUseResult/result/{this.name}")

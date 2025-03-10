@@ -1,9 +1,9 @@
 from "%darg/ui_imports.nut" import *
 
 let WND_PARAMS = {
-  key = null //generate automatically when not set
+  key = null 
   children= null
-  onClick = null //remove current modal window when not set
+  onClick = null 
 
   size = flex()
   behavior = Behaviors.Button

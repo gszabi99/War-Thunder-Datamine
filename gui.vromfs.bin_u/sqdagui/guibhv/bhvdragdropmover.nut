@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { strip } = require("string")
-// To immediately move an object along with the mouse (withoud mouse pressing)
-// Fires the 'drag_drop' event on mouse up
+
+
 let class DragDropMover {
   eventMask = EV_MOUSE_L_BTN | EV_MOUSE_NOT_ON_OBJ | EV_MOUSE_MOVE
 

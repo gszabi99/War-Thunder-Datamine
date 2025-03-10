@@ -29,7 +29,7 @@ let canPlayGamemodeBySquad = @(gm) !g_squad_manager.isNotAloneOnline()
   || gm == GM_SINGLE_MISSION || gm == GM_SKIRMISH
 
 
-//return 0 when no limits
+
 function getMaxPlayersForGamemode(gm) {
   if (isInArray(gm, [GM_SINGLE_MISSION, GM_DYNAMIC, GM_BUILDER]))
     return COOP_MAX_PLAYERS
@@ -41,7 +41,7 @@ function isSkirmishWithKillStreaks(misBlk) {
 }
 
 function hasUnitInFullMissionBlk(fullMissionBlk, esUnitType) {
-  // Searching by units of Single missions
+  
   let unitsBlk = fullMissionBlk?.units
   let playerBlk = fullMissionBlk && getBlkValueByPath(fullMissionBlk, "mission_settings/player")
   let wings = playerBlk ? (playerBlk % "wing") : []
@@ -58,7 +58,7 @@ function hasUnitInFullMissionBlk(fullMissionBlk, esUnitType) {
         }
     }
 
-  // Searching by respawn points of Multiplayer missions
+  
   let tag = unitTypes.getByEsUnitType(esUnitType).tag
   let triggersBlk = fullMissionBlk?.triggers
   if (triggersBlk)
@@ -76,11 +76,11 @@ function hasUnitInFullMissionBlk(fullMissionBlk, esUnitType) {
 function isMissionForUnitType(misBlk, esUnitType, useKillStreaks = null) {
   let unitType = unitTypes.getByEsUnitType(esUnitType)
 
-  // Works for missions in Skirmish.
+  
   if (unitType.missionSettingsAvailabilityFlag in misBlk)
     return unitType.isAvailableByMissionSettings(misBlk, useKillStreaks)
 
-  // Works for all missions, including single missions, user missions, etc.
+  
   local fullMissionBlk = null
   let url = getTblValue("url", misBlk)
   if (url != null)
@@ -247,7 +247,7 @@ function getMissionLocaltionAndConditionText(blk) {
   return conditionText
 }
 
-// first april 2024
+
 let isMissionExtrByName = @(misName = "") regexp2(@"_extr$").match(misName)
 let isMissionExtr = @() isMissionExtrByName(get_current_mission_name())
 

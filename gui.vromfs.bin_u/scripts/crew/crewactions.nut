@@ -16,10 +16,10 @@ function createBatchTrainCrewRequestBlk(requestData) {
   return requestBlk
 }
 
-/**
- * @param onSuccess - Callback func, has no params.
- * @param onError   - Callback func, MUST take 1 param: integer taskResult.
- */
+
+
+
+
 function batchTrainCrew(requestData, taskOptions = null, onSuccess = null, onError = null, handler = null) {
   let onTaskSuccess = onSuccess ? Callback(onSuccess, handler) : null
   let onTaskError   = onError   ? Callback(onError,   handler) : null

@@ -43,8 +43,8 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
   useSingleAnimation = true
   rouletteAnimationFinished = false
 
-  rewardsArray = [] //every day reward
-  periodicRewardsArray = [] //longer period reward
+  rewardsArray = [] 
+  periodicRewardsArray = [] 
 
   curPeriodicAwardData = null
 
@@ -497,7 +497,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
 
     for (local i = 0; i < loopLen; i++) {
       let offset = getTblValue($"daysForStat{i}", this.userlog.body)
-      if (offset == null) //can be 0
+      if (offset == null) 
         break
 
       local day = dayInLoop + offset
@@ -612,7 +612,7 @@ let class EveryDayLoginAward (gui_handlers.BaseGuiHandlerWT) {
       if (!(param in this.userlog.body) || (value != progress && value == maxVal))
         continue
 
-      if (value >= i) //Don't show image on previous days or today
+      if (value >= i) 
         continue
 
       local isDefault = false

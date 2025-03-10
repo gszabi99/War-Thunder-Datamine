@@ -104,7 +104,7 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
     return buy(unit, "slot_action_squad")
   if (unit.isCrossPromo)
     return openCrossPromoWnd(unit.crossPromoBanner)
-  if (checkForResearch(unit)) // Also shows msgbox about requirements for Research or Purchase
+  if (checkForResearch(unit)) 
     return research(unit)
 }
 

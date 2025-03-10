@@ -12,18 +12,18 @@ let BaseGuiHandler = class {
   wndType = handlerType.BASE
   sceneBlkName = "%gui/emptyScene.blk"
   sceneNavBlkName = null
-  sceneTplName = null //load scene tpl when sceneBlkNmae == null. only work with custom handlers yet.
+  sceneTplName = null 
   keepLoaded = false
   needAnimatedSwitchScene = true
   multipleInstances = false
-  rootHandlerClass = null //handlerType.BASE will be created and visible together with listed root handler
-                          //but they also can be created without root handler
+  rootHandlerClass = null 
+                          
 
   guiScene = null
-  scene = null     //obj where scene loaded.
+  scene = null     
 
-  backSceneParams = null //params for make function to start previous scene on goBack
-  subHandlers = null //subhandlers list to automatically forward @onSceneActivate event and other
+  backSceneParams = null 
+  subHandlers = null 
   delayedActions = null
   rootHandlerWeak = null
 
@@ -32,14 +32,14 @@ let BaseGuiHandler = class {
     this.delayedActions = []
     this.subHandlers = []
 
-    //must be before setParams
+    
     if (this.wndType == handlerType.BASE)
       this.backSceneParams = handlersManager.getLastBaseHandlerStartParams()
 
     this.setParams(params)
   }
 
-  function init() { //init handler after scene full loaded
+  function init() { 
     this.loadNavBar()
     this.initScreen()
   }
@@ -120,7 +120,7 @@ let BaseGuiHandler = class {
     return this.isSceneActive() && this.scene.getModalCounter() == 0
   }
 
-  //************** only for wndType == handlerType.ROOT *****************//
+  
   function getBaseHandlersContainer() {
     return null
   }
@@ -139,7 +139,7 @@ let BaseGuiHandler = class {
     let handler = handlersManager.getActiveBaseHandler()
     return (handler && handler.rootHandlerClass == this.getclass()) ? handler : null
   }
-  //************** end of only for wndType == handlerType.ROOT *****************//
+  
 
   function getObj(name) {
     if (!check_obj(this.scene))
@@ -259,20 +259,20 @@ let BaseGuiHandler = class {
       this.popDelayedActions()
   }
 
-  /**
-   * Return value must be table with following data format:
-   * {
-   *   openData = ... // Data to be used during handler open process.
-   *   stateData = ... // Data to be used during handler state restore.
-   * }
-   */
+  
+
+
+
+
+
+
   function getHandlerRestoreData() {
     return null
   }
 
-  /**
-   * Restores handler to state described in specified state data.
-   */
+  
+
+
   function restoreHandler(_stateData) {
   }
 
@@ -280,7 +280,7 @@ let BaseGuiHandler = class {
     if (!handlersManager.isHandlerValid(handler))
       return
 
-    //clear outdated subHandlers
+    
     for (local i = this.subHandlers.len() - 1; i >= 0; i--)
       if (!handlersManager.isHandlerValid(this.subHandlers[i]))
         this.subHandlers.remove(i)

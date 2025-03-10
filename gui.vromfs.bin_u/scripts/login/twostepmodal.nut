@@ -19,11 +19,11 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { addLoginState } = require("%scripts/login/loginManager.nut")
 
 local authDataByTypes = {
-  mail = { text = "#mainmenu/2step/confirmMail", img = "{prefix}two_step_email" } // warning disable: -forgot-subst
-  ga = { text = "#mainmenu/2step/confirmGA", img = "{prefix}two_step_phone_ga" }  // warning disable: -forgot-subst
+  mail = { text = "#mainmenu/2step/confirmMail", img = "{prefix}two_step_email" } 
+  ga = { text = "#mainmenu/2step/confirmGA", img = "{prefix}two_step_phone_ga" }  
   gp = {
     getText = @() loc("mainmenu/2step/confirmPass", { passName = getCurCircuitOverride("passName", "Gaijin Pass") })
-    img = "{prefix}two_step_phone_gp" // warning disable: -forgot-subst
+    img = "{prefix}two_step_phone_gp" 
   }
   unknown = { text = "#mainmenu/2step/confirmUnknown", img = "" }
 }
@@ -96,7 +96,7 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
     Timer(txtObj, 1, errorTimerCb, this, true)
     errorTimerCb()
 
-    // Need this to make both timers tick synchronously
+    
     this.reinitCurTimeTimer()
   }
 

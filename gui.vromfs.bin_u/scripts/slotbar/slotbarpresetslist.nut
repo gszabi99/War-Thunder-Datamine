@@ -14,9 +14,9 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
   scene = null
   ownerWeak = null
   maxPresets = 0
-  curPresetsData = null //to avoid updates when no changes
+  curPresetsData = null 
 
-  NULL_PRESET_DATA = { isEnabled = false, title = "" } //const
+  NULL_PRESET_DATA = { isEnabled = false, title = "" } 
 
   constructor(handler) {
     this.ownerWeak = handler.weakref()
@@ -60,7 +60,7 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
     let res = u.mapAdvanced(::slotbarPresets.list(this.getCurCountry()),
       @(l, idx, ...) {
         title = l.title
-        isEnabled = l.enabled || idx == curPresetIdx //enable current preset for list
+        isEnabled = l.enabled || idx == curPresetIdx 
       })
 
     res.resize(this.maxPresets, this.NULL_PRESET_DATA)
@@ -120,7 +120,7 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
     this._lastListWidth = availWidth
     availWidth -= listObj.findObject("btn_slotbar_presets").getSize()[0]
 
-    //count all sizes
+    
     let widthList = []
     local totalWidth = 0
     for (local i = 0; i < this.maxPresets; i++) {
@@ -131,7 +131,7 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
       widthList.append(width)
     }
 
-    //update all items visibility
+    
     let curPresetIdx = this.getCurPresetIdx()
     for (local i = this.maxPresets - 1; i >= 0; i--)
       if (this.curPresetsData[i].isEnabled) {
@@ -142,17 +142,17 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
       }
   }
 
-  function getCurPresetIdx() { //current choosen preset
+  function getCurPresetIdx() { 
     return ::slotbarPresets.getCurrent(this.getCurCountry(), 0)
   }
 
-  function getSelPresetIdx() { //selected preset in view
+  function getSelPresetIdx() { 
     let listObj = this.getListObj()
     if (!listObj)
       return this.getCurPresetIdx()
 
     let value = listObj.getValue()
-    if (value < 0 || value >= (listObj.childrenCount() - 1)) //last index is button 'presets'
+    if (value < 0 || value >= (listObj.childrenCount() - 1)) 
       return -1
     return value
   }
@@ -254,10 +254,10 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
     return null
   }
 
-  /**
-   * Returns list child object if specified preset is in slotbar
-   * list or "Presets" button object if preset not found.
-   */
+  
+
+
+
   function getListChildByPresetIdx(presetIdx) {
     let listObj = this.getListObj()
     if (listObj == null)

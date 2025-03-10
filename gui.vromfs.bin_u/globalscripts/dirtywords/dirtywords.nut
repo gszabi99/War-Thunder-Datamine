@@ -7,19 +7,19 @@ from "language" import getLocalLanguage
 from "%sqstd/string.nut" import utf8ToLower, utf8CharToInt
 from "nameVisibility.nut" import isNameNormallyVisible, clearAllWhitespace, getUnicodeCharsArray
 
-//
-// Dirty Words checker.
-//
-// Usage:
-// checkPhrase("Полный пиздец, почему-то не работают блядские закрылки!")
-// Result: "Полный ******, почему-то не работают ******** закрылки!"
-// checkPhrase("Why did you fucking shot me, bastard?")
-// Result: "Why did you ******* shot me, *******?"
-// checkPhrase("我们要他妈敌方队伍")
-// Result: "我们要****敌方队伍"
-// checkPhrase("何かがおかしい慰安婦フラップが壊れています")
-// Result: "何かがおかしい******フラップが壊れています"
-//
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 local debugLogFunc = null
 
@@ -56,11 +56,11 @@ function updateAsianDict(lookupTbl, upd) {
   }
 }
 
-// Collect language tables
+
 function init(langSources) {
   let myLocation = getCountryCode()
   let myLanguage = getLocalLanguage()
-  let isMyLocationKnown = myLocation != "" // is true only after first login
+  let isMyLocationKnown = myLocation != "" 
   pendingDict = null
   pendingDictAsian = null
 
@@ -258,10 +258,10 @@ function preparePhrase(text) {
 }
 
 function prepareWord(word) {
-  // convert to lower
+  
   word = utf8ToLower(word.strip())
 
-  // replaces
+  
   foreach (p in prepareword)
     word = p.pattern.replace(p.replace, word)
 
@@ -284,7 +284,7 @@ function checkRegexps(word, regexps, accuse) {
   return accuse
 }
 
-// Checks that one word is correct.
+
 function checkWordInternal(word, isName) {
   word = prepareWord(word)
 
@@ -347,8 +347,8 @@ function getMaskedWord(w, maskChar = "*") {
 function checkPhraseInternal(text, isName) {
   local phrase = text
 
-  // In Asian languages, there is no spaces to separate words.
-  // This part is case sensitive, so it is also suitable for detecting abbreviations written in CAPS.
+  
+  
   local maskChars = null
   let charsArray = getUnicodeCharsArray(phrase)
   foreach (char in charsArray) {
@@ -370,7 +370,7 @@ function checkPhraseInternal(text, isName) {
           let idx = utfPhrase.indexof(segment, startIdx)
           if (idx == null)
             break
-          for (local i = idx; i < idx + length; i++) // -w200
+          for (local i = idx; i < idx + length; i++) 
             maskChars[i] = true
           startIdx = idx + length
         }
@@ -381,7 +381,7 @@ function checkPhraseInternal(text, isName) {
     phrase = "".join(charsArray.map(@(c, i) maskChars[i] ? "**" : c))
 
   local lowerPhrase = utf8ToLower(phrase)
-  //To match a whole combination of words
+  
   foreach (pattern in dict.badcombination)
     if (pattern.match(lowerPhrase)) {
       debugLogFunc?($"DirtyWordsFilter: Phrase matched pattern \"{pattern.pattern()}\"")
@@ -399,13 +399,13 @@ function checkPhraseInternal(text, isName) {
   return phrase
 }
 
-// Returns censored version of phrase.
+
 let checkPhrase = @(text) checkPhraseInternal(text, false)
 
-// Checks that phrase is correct.
+
 let isPhrasePassing = @(text) checkPhrase(text) == text
 
-// Returns censored version of username.
+
 let checkName = function(name) {
   if (!isNameNormallyVisible(name)) {
     debugLogFunc?($"DirtyWordsFilter: Name visibility tricks detected: \"{stringToUtf8CharCodesStr(name)}\"")
@@ -421,17 +421,17 @@ let checkName = function(name) {
   return name
 }
 
-// Checks that username is correct.
+
 let isNamePassing = @(name) name != "" && checkName(name) == name
 
-// Set debug logging func to enable debug mode, or null to disable it.
+
 function setDebugLogFunc(funcOrNull) {
   debugLogFunc = funcOrNull
 }
 
-// This func is for binding a text checking console command, like:
-// register_command(@(text) debugDirtyWordsFilter(text, false, console_print), "debug.dirty_words_filter.phrase")
-// register_command(@(text) debugDirtyWordsFilter(text, true,  console_print), "debug.dirty_words_filter.name")
+
+
+
 function debugDirtyWordsFilter(text, isName, temporaryDebugLogFunc) {
   let isPassing = (isName ? isNamePassing : isPhrasePassing)(text)
   local prevLogFunc = null

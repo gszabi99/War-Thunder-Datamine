@@ -158,138 +158,138 @@
         },
         "tacticalMap": {
           "size": "ph,ph",
-          "id": "tactical-map"
-        },
-        "tdiv": {
-          "pos": "ph+1@blockInterval, ph-h",
-          "position": "absolute",
-          "flow": "vertical",
-          "background-color": "@editboxColor",
-          "tdiv": [
-            {
-              "id": "hint_attention_to_map",
-              "margin": "1@blockInterval",
-              "tooltip": "#voice_message_attention_to_point_2",
-              "display": "hide",
-              "div": [
-                {
-                  "size": "1@buttonHeight, 1@buttonHeight",
-                  "input-transparent": "yes",
+          "id": "tactical-map",
+          "tdiv": {
+            "pos": "pw+1@blockInterval, ph-h",
+            "position": "absolute",
+            "flow": "vertical",
+            "background-color": "@editboxColor",
+            "tdiv": [
+              {
+                "id": "hint_attention_to_map",
+                "margin": "1@blockInterval",
+                "tooltip": "#voice_message_attention_to_point_2",
+                "display": "hide",
+                "div": [
+                  {
+                    "size": "1@buttonHeight, 1@buttonHeight",
+                    "input-transparent": "yes",
+                    "img": {
+                      "size": "1@cIco, 1@cIco",
+                      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                      "position": "relative",
+                      "background-svg-size": "@cIco, @cIco",
+                      "background-image": "#ui/gameuiskin#new_icon.svg"
+                    }
+                  },
+                  {
+                    "size": "1@buttonHeight, 1@buttonHeight",
+                    "margin-left": "1@blockInterval",
+                    "input-transparent": "yes",
+                    "img": {
+                      "size": "0.73h, 1@cIco",
+                      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                      "position": "relative",
+                      "background-svg-size": "0.73h, @cIco",
+                      "background-image": "#ui/gameuiskin#mouse_left.avif"
+                    }
+                  }
+                ]
+              },
+              {
+                "margin": "1@blockInterval",
+                "tooltip": "#options/rmbToMoveMap",
+                "Button_text": {
+                  "class": "image",
+                  "btnName": "RB",
+                  "noMargin": "yes",
+                  "tooltip": "#options/moveMap",
+                  "_on_click": "onMoveMapActivate",
+                  "ButtonImg": {},
                   "img": {
-                    "size": "1@cIco, 1@cIco",
-                    "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                    "position": "relative",
-                    "background-svg-size": "@cIco, @cIco",
-                    "background-image": "#ui/gameuiskin#new_icon.svg"
+                    "background-image": "#ui/gameuiskin#dnd_icon.svg"
                   }
                 },
-                {
+                "tdiv": {
+                  "id": "hint_btn_move_map",
                   "size": "1@buttonHeight, 1@buttonHeight",
                   "margin-left": "1@blockInterval",
-                  "input-transparent": "yes",
+                  "display": "hide",
                   "img": {
                     "size": "0.73h, 1@cIco",
+                    "position": "relative",
                     "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                    "position": "relative",
-                    "background-svg-size": "0.73h, @cIco",
-                    "background-image": "#ui/gameuiskin#mouse_left.avif"
+                    "background-svg-size": "0.73h, 1@cIco",
+                    "background-image": "#ui/gameuiskin#mouse_right.avif"
                   }
                 }
-              ]
-            },
-            {
-              "margin": "1@blockInterval",
-              "tooltip": "#options/rmbToMoveMap",
-              "Button_text": {
-                "class": "image",
-                "btnName": "RB",
-                "noMargin": "yes",
-                "tooltip": "#options/moveMap",
-                "_on_click": "onMoveMapActivate",
-                "ButtonImg": {},
-                "img": {
-                  "background-image": "#ui/gameuiskin#dnd_icon.svg"
-                }
               },
-              "tdiv": {
-                "id": "hint_btn_move_map",
-                "size": "1@buttonHeight, 1@buttonHeight",
-                "margin-left": "1@blockInterval",
+              {
+                "id": "btn_set_point_of_interest",
+                "margin": "1@blockInterval",
                 "display": "hide",
-                "img": {
-                  "size": "0.73h, 1@cIco",
-                  "position": "relative",
-                  "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                  "background-svg-size": "0.73h, 1@cIco",
-                  "background-image": "#ui/gameuiskin#mouse_right.avif"
-                }
-              }
-            },
-            {
-              "id": "btn_set_point_of_interest",
-              "margin": "1@blockInterval",
-              "display": "hide",
-              "Button_text": {
-                "class": "image",
-                "btnName": "LT",
-                "noMargin": "yes",
-                "on_click": "onSetPointOfInterest",
-                "tooltip": "#options/setPointOfInterest",
-                "ButtonImg": {},
-                "img": {
-                  "id": "hud_poi_img",
-                  "background-image": "#ui/gameuiskin#map_interestpoint.svg"
-                }
-              },
-              "tdiv": {
-                "id": "hint_btn_set_point_of_interest",
-                "size": "1@buttonHeight, 1@buttonHeight",
-                "margin-left": "1@blockInterval",
-                "display": "hide",
-                "img": {
-                  "size": "0.73h, 1@cIco",
-                  "position": "relative",
-                  "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                  "tooltip": "#options/mmbToSetPoi",
-                  "background-image": "#ui/gameuiskin#mouse_center.avif"
-                }
-              }
-            },
-            {
-              "id": "btn_set_hud_type",
-              "margin": "1@blockInterval",
-              "display": "hide",
-              "Button_text": {
-                "class": "image",
-                "accessKey": "N | J:LB",
-                "noMargin": "yes",
-                "tooltip": "#options/forceHudType",
-                "on_click": "onForcedSetHudType",
-                "ButtonImg": {
-                  "btnName": "LB"
+                "Button_text": {
+                  "class": "image",
+                  "btnName": "LT",
+                  "noMargin": "yes",
+                  "on_click": "onSetPointOfInterest",
+                  "tooltip": "#options/setPointOfInterest",
+                  "ButtonImg": {},
+                  "img": {
+                    "id": "hud_poi_img",
+                    "background-image": "#ui/gameuiskin#map_interestpoint.svg"
+                  }
                 },
-                "img": {
-                  "id": "hud_type_img",
-                  "background-image": "#ui/gameuiskin#objective_tank.svg"
+                "tdiv": {
+                  "id": "hint_btn_set_point_of_interest",
+                  "size": "1@buttonHeight, 1@buttonHeight",
+                  "margin-left": "1@blockInterval",
+                  "display": "hide",
+                  "img": {
+                    "size": "0.73h, 1@cIco",
+                    "position": "relative",
+                    "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                    "tooltip": "#options/mmbToSetPoi",
+                    "background-image": "#ui/gameuiskin#mouse_center.avif"
+                  }
                 }
               },
-              "loadingHint": {
-                "id": "hint_btn_set_hud_type",
-                "size": "1@buttonHeight, 1@buttonHeight",
-                "margin-left": "1@blockInterval",
+              {
+                "id": "btn_set_hud_type",
+                "margin": "1@blockInterval",
                 "display": "hide",
-                "keyboardButton": {
-                  "position": "relative",
-                  "pos": "0.5pw-0.5w, 0.5ph-0.5h",
-                  "keyboardButtonText": {
+                "Button_text": {
+                  "class": "image",
+                  "accessKey": "N | J:LB",
+                  "noMargin": "yes",
+                  "tooltip": "#options/forceHudType",
+                  "on_click": "onForcedSetHudType",
+                  "ButtonImg": {
+                    "btnName": "LB"
+                  },
+                  "img": {
+                    "id": "hud_type_img",
+                    "background-image": "#ui/gameuiskin#objective_tank.svg"
+                  }
+                },
+                "loadingHint": {
+                  "id": "hint_btn_set_hud_type",
+                  "size": "1@buttonHeight, 1@buttonHeight",
+                  "margin-left": "1@blockInterval",
+                  "display": "hide",
+                  "keyboardButton": {
                     "position": "relative",
-                    "pos": "0.5pw - 0.5w, 0.5ph - 0.5h",
-                    "text": "N"
+                    "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+                    "keyboardButtonText": {
+                      "position": "relative",
+                      "pos": "0.5pw - 0.5w, 0.5ph - 0.5h",
+                      "text": "N"
+                    }
                   }
                 }
               }
-            }
-          ]
+            ]
+          }
         }
       }
     ]

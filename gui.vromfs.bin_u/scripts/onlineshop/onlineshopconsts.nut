@@ -5,7 +5,7 @@ enum ONLINE_SHOP_TYPES {
   EAGLES = "eagles"
 }
 
-enum xboxMediaItemType { //values by microsoft IDE, others not used
+enum xboxMediaItemType { 
   GameContent = 4
   GameConsumable = 5
 }

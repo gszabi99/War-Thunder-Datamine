@@ -16,7 +16,7 @@ let BhvUpdater = class {
   function onAttach(obj) {
     if (obj?.value) {
       try {
-        //script crash will cause game crash, because we nee retcode here.
+        
         this.setNewConfig(obj, elemViewType.buildBhvConfig(obj.value))
       }
       catch (errorMessage) {
@@ -39,8 +39,8 @@ let BhvUpdater = class {
   function setNewConfig(obj, config) {
     if (u.isEqual(config, obj.getUserData()))
       return false
-    obj.setUserData(config) //this is single direct link to config.
-                            //So destroy object, or change user data invalidate old subscriptions.
+    obj.setUserData(config) 
+                            
     if (config) {
       let subscriptions = config.viewType.model.makeFullPath(config.subscriptions)
       elemEvents.subscribe(subscriptions, Callback(this.getOnChangedCb(obj), config))
@@ -72,5 +72,5 @@ let BhvUpdater = class {
 replace_script_gui_behaviour("bhvUpdater", BhvUpdater)
 
 return {
-  setAssertFunction = @(func) assertOnce = func  //void func(uniqId, assertText)
+  setAssertFunction = @(func) assertOnce = func  
 }

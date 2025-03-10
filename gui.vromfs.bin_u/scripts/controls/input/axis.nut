@@ -9,19 +9,19 @@ let { remapAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 
 let Axis = class (InputBase) {
-  //from JoystickParams().getAxis()
+  
   axisId = null
-  //AXIS_MODIFIERS
+  
   axisModifier = null
   preset = null
 
   deviceId = null
 
-  //its impossible to determine mouse axis without shortcut id
-  //so we cache it on construction to not to keep shortcut id all the time
+  
+  
   mouseAxis = null
 
-  // @deviceAxisDescription is a result of g_shortcut_type->_getDeviceAxisDescription
+  
   constructor (deviceAxisDescription, axisMod = AXIS_MODIFIERS.NONE, v_preset = null) {
     this.deviceId = deviceAxisDescription.deviceId
     this.axisId = deviceAxisDescription.axisId
@@ -45,7 +45,7 @@ let Axis = class (InputBase) {
       data.view.buttonImage <- this.getImage()
       data.template = "%gui/shortcutAxis.tpl"
     }
-    else if (this.deviceId == STD_MOUSE_DEVICE_ID && this.axisId < 0) {// Do not show mouse axis if joystick bound
+    else if (this.deviceId == STD_MOUSE_DEVICE_ID && this.axisId < 0) {
       data.view.buttonImage <- this.getImage()
       data.template = "%gui/shortcutAxis.tpl"
     }

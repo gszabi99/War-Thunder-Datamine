@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 let { is_stereo_mode } = require("vr")
 let extWatched = require("%rGui/globals/extWatched.nut")
 
-let debugRowHeight = 14 /* Height of on-screen debug text (fps, build, etc) */
+let debugRowHeight = 14 
 
 let safeAreaHud = extWatched("safeAreaHud", [ 1.0, 1.0 ])
 

@@ -15,8 +15,8 @@ let { is_running_on_steam_deck } = require("steam")
 let {
   isXBoxPlayerName,
   isPS4PlayerName,
-  cutPlayerNamePrefix, //TODO: Uses in single place,
-  cutPlayerNamePostfix //TODO: better to refactor
+  cutPlayerNamePrefix, 
+  cutPlayerNamePostfix 
 } = require("%scripts/user/nickTools.nut")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 
@@ -65,7 +65,7 @@ function isPlatformShieldTv() {
 return {
   targetPlatform = platformId
   consoleRevision
-  isPlatformXboxOne = isXbox //TODO: rename isPlatformXboxOne to isXbox, as it is all xboxes
+  isPlatformXboxOne = isXbox 
   isPlatformXboxScarlett = isXboxScarlett
   isPlatformPS4 = isPS4
   isPlatformPS5 = isPS5

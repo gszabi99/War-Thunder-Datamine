@@ -24,15 +24,15 @@ local playerUpdateTimeoutMsec = 15000
 
 local lastUpdatetTime = -1
 local lastRequestTime = -1
-local curListUid = 0 //for fast compare is threadsList new
-local threadsList = [] //first in array is a newest thread
-local requestedList = [] //uncomplete thread list received on refresh
+local curListUid = 0 
+local threadsList = [] 
+local requestedList = [] 
 
 local langsInited = false
 local isCustomLangsList = false
 local langsList = []
 
-//only moderators can modify chat lang tags atm.
+
 let canChooseThreadsLang = @() hasFeature("ChatThreadLang") && is_myself_anyof_moderators()
 
 function getChatLatestThreadsUpdateState() {
@@ -50,7 +50,7 @@ function forceAutoRefreshInSecond() {
 
   let diffSec = 1000
   lastUpdatetTime = get_time_msec() - autoUpdatePeriodMsec + diffSec
-  //set status chatUpdateState.IN_PROGRESS
+  
   lastRequestTime = get_time_msec() - REQUEST_TIMEOUT_MSEC + diffSec
 }
 
@@ -122,9 +122,9 @@ function canRefreshChatThreads() {
          && getChatThreadsTimeToRefresh() <= 0
 }
 
-//refresh latest threads. options full work only for moderators.
-//!(any of @excludeTags) && (any from includeTags1) && (any from includeTags2)
-//for not moderators available only "lang_*" include and forced "hidden" exclude
+
+
+
 function refreshAdvanced(excludeTags = "hidden", includeTags1 = "", includeTags2 = "") {
   if (!canRefreshChatThreads())
     return
@@ -140,7 +140,7 @@ function refreshAdvanced(excludeTags = "hidden", includeTags1 = "", includeTags2
   gchat_raw_command(" ".join(cmdArr, true))
 }
 
-//refresh for usual players
+
 function refreshChatThreads() {
   let langTags = getSearchLangsList().map(@(l) g_chat_thread_tag.LANG.prefix + l.chatId)
 
@@ -204,7 +204,7 @@ addListenersWithoutEnv({
 
   function ChatThreadInfoModifiedByPlayer(p) {
     if (getChatThreadsList().contains(p?.threadInfo))
-      forceAutoRefreshInSecond() //wait for all changes applied
+      forceAutoRefreshInSecond() 
   }
 
   function GameLocalizationChanged(_p) {

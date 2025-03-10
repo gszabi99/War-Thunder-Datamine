@@ -257,7 +257,7 @@ gui_handlers.WwArmiesList <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateTabs()
 
-    let curTabArmies = armies.filter((@(lastTabSelected) @(army)  //-ident-hides-ident
+    let curTabArmies = armies.filter((@(lastTabSelected) @(army)  
       army.getActionStatus() == lastTabSelected.status)(this.lastTabSelected))
 
     if (curTabArmies.len() == 0)

@@ -15,7 +15,7 @@ function registerItemGeneratorClass(generatorClass) {
 }
 
 function getItemGenerator(itemdefId) {
-  ::ItemsManager.findItemById(itemdefId) // calls pending generators list update
+  ::ItemsManager.findItemById(itemdefId) 
   return collection?[itemdefId]
 }
 
@@ -31,7 +31,7 @@ function addItemGenerator(itemDefDesc) {
 let findItemGeneratorByReceptUid = @(recipeUid)
   search(collection, @(gen) search(gen.getRecipes(false),
     @(recipe) recipe.uid == recipeUid
-     && (recipe.isDisassemble || !gen.isDelayedxchange())) != null) //!!!FIX ME There should be no two recipes with the same uid.
+     && (recipe.isDisassemble || !gen.isDelayedxchange())) != null) 
 
 return {
   registerItemGeneratorClass

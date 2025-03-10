@@ -12,7 +12,7 @@ let WwBattleJoinProcess = class {
 
   static PROCESS_TIME_OUT = 60000
 
-  static activeJoinProcesses = []   //cant modify staic self
+  static activeJoinProcesses = []   
   processStartTime = -1
 
   constructor (v_wwBattle, v_side) {

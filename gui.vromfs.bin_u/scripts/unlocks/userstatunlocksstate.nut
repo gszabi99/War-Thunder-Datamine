@@ -15,7 +15,7 @@ let emptyProgress = {
   required = 1
   isCompleted = false
   hasReward = false
-  isFinished = false //isCompleted && !hasReward
+  isFinished = false 
 }
 
 let unlockTables = Computed(function() {
@@ -76,7 +76,7 @@ let activeUnlocks = Computed(@() allUnlocks.value.filter(function(ud) {
 let unlockProgress = Computed(function() {
   let progressList = userstatUnlocks.value?.unlocks ?? {}
   let unlockDataList = allUnlocks.value
-  let allKeys = progressList.__merge(unlockDataList) //use only keys from it
+  let allKeys = progressList.__merge(unlockDataList) 
   return allKeys.map(@(_, name) calcUnlockProgress(progressList?[name], unlockDataList?[name]))
 })
 
@@ -158,7 +158,7 @@ let unlocksByReward = keepref(Computed(
 
 function requestRewardItems(unlocksByRewardValue) {
   let itemsToRequest = unlocksByRewardValue.keys()
-  if (itemsToRequest.len() > 0)   //request items for rewards
+  if (itemsToRequest.len() > 0)   
     inventoryClient.requestItemdefsByIds(itemsToRequest)
 }
 

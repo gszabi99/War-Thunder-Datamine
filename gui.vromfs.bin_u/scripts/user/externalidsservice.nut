@@ -15,18 +15,18 @@ let updateExternalIDsTable = function(request) {
     return
 
   let table = {}
-//STEAM
+
   if (eIDtable?[EPL_STEAM]?.id && steam_is_running()) {
     let steamIdInt = blk.externalIds[EPL_STEAM].id.tointeger()
     table.steamName <- steam_get_name_by_id(steamIdInt)
     table.steamId <- steamIdInt
   }
 
-//PLAYSTATION NETWORK
+
   if (eIDtable?[EPL_PSN]?.id)
     table.psnId <- eIDtable[EPL_PSN].id
 
-//XBOX ONE
+
   if (eIDtable?[EPL_XBOXONE]?.id)
     table.xboxId <- eIDtable[EPL_XBOXONE].id
 
@@ -52,17 +52,17 @@ function reqPlayerExternalIDsByUserId(uid, taskOptions = {}, afterSuccessUpdateF
 function getSelfExternalIds() {
   let table = {}
 
-//STEAM
+
   let steamId = get_my_external_id(EPL_STEAM)
   if (steamId != null)
     table.steamName <- steam_get_name_by_id(steamId.tointeger())
 
-//PLAYSTATION NETWORK
+
   let psnId = get_my_external_id(EPL_PSN)
   if (psnId != null)
     table.psnId <- psnId
 
-//XBOX ONE
+
   let xboxId = get_my_external_id(EPL_XBOXONE)
   if (xboxId != null)
     table.xboxId <- xboxId

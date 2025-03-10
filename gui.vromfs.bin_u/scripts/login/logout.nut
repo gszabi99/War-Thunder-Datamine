@@ -30,7 +30,7 @@ function doLogout() {
   if (!canLogout())
     return exit_game()
 
-  if (is_multiplayer()) { //we cant logout from session instantly, so need to return "to debriefing"
+  if (is_multiplayer()) { 
     if (isInFlight()) {
       needLogoutAfterSession(true)
       quitMission()
@@ -41,7 +41,7 @@ function doLogout() {
   }
 
   if (::should_disable_menu() || isProfileReceived.get())
-    broadcastEvent("BeforeProfileInvalidation") // Here save any data into profile.
+    broadcastEvent("BeforeProfileInvalidation") 
 
   log("Start Logout")
   set_disable_autorelogin_once(true)

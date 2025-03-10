@@ -217,6 +217,13 @@ armyBlock {
   total-input-transparent:yes;
 }
 
+armyBlock > img {
+  margin-left:0.33@blockInterval;
+  size:0.625@wwArmyIco, 0.625@wwArmyIco;
+  background-svg-size:0.625@wwArmyIco, 0.625@wwArmyIco;
+  valign:center;
+}
+
 wwBattleIcon {
   size:1@cIco, 1@cIco;
   css-hier-invalidate:yes;
@@ -388,15 +395,30 @@ statusPanel > activeText {
   position: relative;
 }
 
-statusPanel > activeText[text=""] {
+statusPanel > tdiv > activeText {
+  size:pw/2:ph;
+  text-align:right;
+}
+
+statusPanel > tdiv > img {
+  margin-left:0.33@blockInterval;
+  size:0.8ph, 0.8ph;
+  background-svg-size:0.8ph, 0.8ph;
+  valign:center;
+}
+
+statusPanel > activeText[text=""],
+statusPanel > tdiv > activeText[text=""] {
   display:hide;
 }
 
-statusPanel[needSmallSize=yes] > activeText {
+statusPanel[needSmallSize=yes] > activeText,
+statusPanel[needSmallSize=yes] > tdiv > activeText {
   width:0.19pw;
 }
 
-statusPanel[needSmallSize=yes] > activeText[hasTimer=yes] {
+statusPanel[needSmallSize=yes] > activeText[hasTimer=yes],
+statusPanel[needSmallSize=yes] > tdiv > activeText[hasTimer=yes] {
   width:0.225pw;
 }
 

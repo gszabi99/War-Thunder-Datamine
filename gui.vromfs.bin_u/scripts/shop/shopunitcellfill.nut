@@ -215,7 +215,7 @@ function updateCardStatus(obj, _id, statusTbl) {
     researchProgressOld       = -1,
     researchProgressNew       = -1,
     priceText                 = "",
-    primaryUnitId             = "", //used for group timers
+    primaryUnitId             = "", 
     mainButtonText            = "",
     mainButtonIcon            = "",
     maxRank                   = -1,
@@ -443,7 +443,7 @@ let getUnitStatusTbl = function(unit, params) {
     }
   }
 
-  if (forceNotInResearch || !isUnitInResearch(unit) || hasFeature("SpendGold")) //it not look like good idea to calc it here
+  if (forceNotInResearch || !isUnitInResearch(unit) || hasFeature("SpendGold")) 
     if (showConsoleButtons.value)
       res.mainButtonIcon <- "#ui/gameuiskin#slot_menu.svg"
     else
@@ -612,14 +612,14 @@ function getGroupStatusTbl(group, params) {
         : "!{0}".subst(group?.image ?? "#ui/unitskin#planes_group.ddsx"))
 
   return {
-    //fixed params
+    
     isGroup             = true
     hasActionsMenu      = true
     isPkgDev,
     isRecentlyReleased,
     mainButtonIcon      = showConsoleButtons.value ? "#ui/gameuiskin#slot_unfold.svg" : "",
 
-    //primary unit params
+    
     primaryUnitId       = primaryUnit.name,
     unitImage,
     nameText            = needUnitNameOnPlate ? getUnitName(primaryUnit) : loc($"shop/group/{group.name}")
@@ -628,7 +628,7 @@ function getGroupStatusTbl(group, params) {
     unitClass           = getUnitRole(primaryUnit)
     tooltipId           = getTooltipType("UNIT").getTooltipId(primaryUnit.name, tooltipParams)
 
-    //complex params
+    
     shopStatus          = getUnitItemStatusText(bitStatus, true),
     unitRankText        = getUnitRankText(unitForBR, showBR, getEdiffFunc())
     isInactive,
@@ -686,10 +686,10 @@ function updateCellTimedStatus(cell, getTimedStatus) {
   let holderId = cell.holderId
   let cardObj = cell.findObject(holderId)
   SecondsUpdater(cardObj, function(_obj, _) {
-    if (holderId != cell.holderId) //remove timer if cell show other vehicle
+    if (holderId != cell.holderId) 
       return true
     timedStatus = getTimedStatus()
-    updateCellTimedStatusImpl(cell, timedStatus) //cell is valid while cardObj is valid
+    updateCellTimedStatusImpl(cell, timedStatus) 
     return !timedStatus?.needUpdateByTime
   })
 }

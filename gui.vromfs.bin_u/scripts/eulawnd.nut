@@ -20,7 +20,7 @@ let wordHyphenation = require("%globalScripts/wordHyphenation.nut")
 let { getCurLangShortName } = require("%scripts/langUtils/language.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
-const LOCAL_AGREED_EULA_VERSION_SAVE_ID = "agreedEulaVersion" //For break auto login on PS for new user, if no EULA has been accepted on this console.
+const LOCAL_AGREED_EULA_VERSION_SAVE_ID = "agreedEulaVersion" 
 
 local eulaVesion = -1
 
@@ -45,7 +45,7 @@ function getExistFileNameByPrefixAndPostfix(prefix, postfix) {
   if (file_exists(fileName))
     return fileName
 
-  fileName = $"%langTxt/{prefix}eula.txt" //check eula for EN
+  fileName = $"%langTxt/{prefix}eula.txt" 
   return file_exists(fileName) ? fileName : null
 }
 
@@ -134,7 +134,7 @@ gui_handlers.EulaWndHandler <- class (BaseGuiHandler) {
 }
 
 addListenersWithoutEnv({
-  SignOut = @(_p) localAgreedEulaVersion(0) //for show EULA update when login for account without show new EULA version
+  SignOut = @(_p) localAgreedEulaVersion(0) 
 })
 
 return {

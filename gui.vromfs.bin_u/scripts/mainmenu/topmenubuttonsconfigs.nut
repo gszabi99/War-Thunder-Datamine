@@ -435,7 +435,7 @@ let list = {
     isHidden = @(...) !hasFeature("EulaInMenu") || !isInMenu()
   }
   DEBUG_PS4_SHOP_DATA = {
-    text = @() "Debug PS4 Data" //intentionally without localization
+    text = @() "Debug PS4 Data" 
     onClickFunc = function(_obj, _handler) {
       let itemInfo = []
       foreach (_id, item in getShopItemsTable()) {

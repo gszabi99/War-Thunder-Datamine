@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import item_get_personal_discount_for_mod, item_get_personal_discount_for_skill_points, item_get_personal_discount_for_specialization, item_get_personal_discount_for_unit, item_get_personal_discount_for_weapon, item_get_personal_discount_for_exp_convert, item_get_personal_discount_for_unlock
 from "%scripts/dagui_library.nut" import *
 
-/** Main get personal discount method. */
+
 
 let getMethodByCategory = {
   aircrafts = function (path) {

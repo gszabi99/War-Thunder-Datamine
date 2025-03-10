@@ -90,8 +90,8 @@ function getUnitButtonType(unit, friendUid) {
     let isHideGiftButton = contact == null || isXBoxPlayerName(contact.name) || isPS4PlayerName(contact.name)
 
     let isShopVehicle = isIntersects(buyTypes, ["shop"])
-    //let isPremiumVehicle = isIntersects(buyTypes, ["premium"]) && !isShopVehicle
-    //let isSquadVehicle = isIntersects(buyTypes, ["squad"])
+    
+    
 
     let hasGiftButton = isShopVehicle && !isHideGiftButton && !is_console
 
@@ -129,23 +129,23 @@ function filterUnitsListFunc(item, nameFilter, fuid) {
   let unit = getAircraftByName(item.unit)
   let isFriendWishlist = fuid != null
 
-  //name
+  
   if(nameFilter != "" && !isUnitLocNameMatchSearchStr(unit, nameFilter))
     return false
 
   let selectedFilters = getSelectedFilters()
 
-  //countries
+  
   let countries = selectedFilters.country
   if(countries.len() > 0 && !countries.contains(getUnitCountry(unit)))
     return false
 
-  //unitType
+  
   let unitTypes = selectedFilters.unitType
   if(unitTypes.len() > 0 && !unitTypes.contains(getEsUnitType(unit)))
     return false
 
-  //rank
+  
   let ranks = selectedFilters.rank
   if(ranks.len() > 0 && !ranks.contains(unit.rank))
     return false
@@ -153,12 +153,12 @@ function filterUnitsListFunc(item, nameFilter, fuid) {
   if(isFriendWishlist)
     return true
 
-  //buyType
+  
   let buyTypes = selectedFilters?.buyType ?? []
   if(buyTypes.len() > 0 && !isIntersects(buyTypes, getUnitBuyTypes(unit, isFriendWishlist)))
     return false
 
-  //availability
+  
   let availability = selectedFilters?.availability ?? []
   let unitAvailabilityType = getUnitAvailabilityForBuyType(unit, isFriendWishlist)
   if(availability.len() > 0 && !isFullyIncluded(unitAvailabilityType, availability))

@@ -26,7 +26,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
   readyArmiesNames = null
 
   timerHandler = null
-  updateDelay = 1 //sec
+  updateDelay = 1 
 
   currentReinforcementName = null
   reinforcementSpeedup = -1
@@ -220,12 +220,12 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
     if (u.isEmpty(this.currentReinforcementName))
       return
 
-    local selectedArmy = u.search(this.armiesBlocks, (@(currentReinforcementName) function(reinf) { //-ident-hides-ident
+    local selectedArmy = u.search(this.armiesBlocks, (@(currentReinforcementName) function(reinf) { 
         return reinf.name == currentReinforcementName
       })(this.currentReinforcementName))
 
     if (!selectedArmy) {
-      //search in existed, because army can already be an army, not a reinforcement
+      
       let army = g_world_war.getArmyByName(this.currentReinforcementName)
       if (!army.isValid())
         return

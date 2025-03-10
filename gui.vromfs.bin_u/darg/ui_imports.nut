@@ -19,15 +19,15 @@ let log = logLib([
 ])
 
 let logs = {
-  dlog = log.dlog //warning disable: -dlog-warn
+  dlog = log.dlog 
   log = log.log
-  log_for_user = log.dlog //warning disable: -dlog-warn
-  dlogsplit = log.dlogsplit //warning disable: -dlog-warn
+  log_for_user = log.dlog 
+  dlogsplit = log.dlogsplit 
   vlog = log.vlog
   console_print = log.console_print
   logerr = log.logerr
   wlog = log.wlog
-  wdlog = @(watched, prefix = null, transform=null) log.wlog(watched, prefix, transform, log.dlog) //disable: -dlog-warn
+  wdlog = @(watched, prefix = null, transform=null) log.wlog(watched, prefix, transform, log.dlog) 
 }
 
 let frpExtras = {

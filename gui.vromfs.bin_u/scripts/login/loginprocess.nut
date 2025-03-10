@@ -20,8 +20,8 @@ enum LOGIN_PROGRESS {
 }
 
 let matchingStageToLoginState = {
-  [ONLINE_BINARIES_INITED] = LOGIN_STATE.ONLINE_BINARIES_INITED, // warning disable: -const-never-declared
-  [HANGAR_ENTERED] = LOGIN_STATE.HANGAR_LOADED                   // warning disable: -const-never-declared
+  [ONLINE_BINARIES_INITED] = LOGIN_STATE.ONLINE_BINARIES_INITED, 
+  [HANGAR_ENTERED] = LOGIN_STATE.HANGAR_LOADED                   
 }
 
 eventbus_subscribe("online_init_stage_finished",  function(evt){
@@ -61,7 +61,7 @@ let class LoginProcess {
     if (this.curProgress == LOGIN_PROGRESS.IN_LOGIN_WND)
       loadLoginHandler()
     else if (this.curProgress == LOGIN_PROGRESS.INIT_ONLINE_BINARIES) {
-      //connect to matching
+      
       let successCb = Callback(function() {
                           addLoginState(LOGIN_STATE.MATCHING_CONNECTED)
                         }, this)

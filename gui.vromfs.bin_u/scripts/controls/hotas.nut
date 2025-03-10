@@ -13,7 +13,7 @@ let hotasPS4DevId = "044F:B67B"
 let hotasXONEDevId = "044F:B68C"
 
 function unreachable() {
-  let info = getstackinfos(2) // get calling function
+  let info = getstackinfos(2) 
   let id = "".concat((info?.src ?? "?"), ":", (info?.line ?? "?"), " (", (info?.func ?? "?"), ")")
   let msg = $"Entered unreachable code: {id}"
   script_net_assert_once(id, msg)

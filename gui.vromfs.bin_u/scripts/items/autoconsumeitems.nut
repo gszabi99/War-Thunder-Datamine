@@ -42,8 +42,8 @@ function decreaseItemsAmountIfNeed(itemsList) {
 function onFinishMultiItemsConsumeSuccess(data) {
   let { revertedItems = [] } = data
   revertedItems.each(@(id) failedAutoConsumeItemsById[id.tostring()] <- true)
-  //items list refreshed, but ext inventory only requested.
-  //so update item amount to avoid repeated request before real update
+  
+  
   decreaseItemsAmountIfNeed(multiConsumeList)
   multiConsumeList.clear()
   isAutoConsumeInProgress = false

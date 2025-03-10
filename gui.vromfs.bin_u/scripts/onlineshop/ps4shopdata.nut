@@ -16,14 +16,14 @@ let psnStoreItem = require("%scripts/onlineShop/psnStoreItem.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 
 let persistent = {
-  categoriesData = datablock() // Collect one time in a session, reset on relogin
-  itemsList = {} //Updatable during game
+  categoriesData = datablock() 
+  itemsList = {} 
 }
 registerPersistentData("PS4ShopData", persistent, ["categoriesData", "itemsList"])
 
 
 
-local isFinishedUpdateItems = false //Status of FULL update items till creating list of classes psnStoreItem
+local isFinishedUpdateItems = false 
 local invalidateSeenList = false
 let visibleSeenIds = []
 
@@ -33,7 +33,7 @@ let canUseIngameShop = @() isPlatformSony && hasFeature("PS4IngameShop")
 
 local haveItemDiscount = null
 
-// Calls on finish updating skus extended info
+
 let onFinishCollectData = function(v_categoriesData = null) {
   if (!canUseIngameShop())
     return
@@ -53,13 +53,13 @@ let onFinishCollectData = function(v_categoriesData = null) {
     foreach (label, itemInfo in (categoryInfo?.links ?? datablock()))
       persistent.itemsList[label] <- psnStoreItem(itemInfo, itemIndex++)
 
-  //Must call in the end
+  
   log("PSN: Shop Data: Finish update items info")
   broadcastEvent("Ps4ShopDataUpdated", { isLoadingInProgress = false })
 }
 
 let filterFunc = function(label) {
- //Check gui.blk for skippable items
+ 
   let skipItemsList = GUI.get()?.ps4_ingame_shop.itemsHide ?? datablock()
   return label in skipItemsList
 }
@@ -130,9 +130,9 @@ let haveDiscount = function() {
   return haveAnyItemWithDiscount()
 }
 
-// For updating single info and send event for updating it in shop, if opened
-// We can remake on array of item labels,
-// but for now require only for single item at once.
+
+
+
 function onSuccessCb(itemsArray) {
   foreach (itemData in itemsArray) {
     let itemId = itemData.label
@@ -141,7 +141,7 @@ function onSuccessCb(itemsArray) {
     shopItem.updateSkuInfo(itemData)
   }
 
-  // Send event for updating items in shop
+  
   broadcastEvent("PS4IngameShopUpdate")
 }
 

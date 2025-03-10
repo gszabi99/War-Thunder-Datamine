@@ -58,8 +58,8 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
       this.candidatesList.append({ nick = candidate.nick, uid = candidate.uid });
       this.rowTexts.append(rowTemp);
     }
-    //dlog("GP: candidates texts");
-    //debugTableData(rowTexts);
+    
+    
 
     this.updateRequestList()
   }
@@ -110,7 +110,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
         tblObj.findObject($"row_{i}").findObject($"txt_{item}").setValue(itemValue.text);
     }
 
-    tblObj.setValue(1) //after header
+    tblObj.setValue(1) 
     this.guiScene.setUpdatesEnabled(true, true);
     move_mouse_on_child_by_value(tblObj)
     this.onSelect()
@@ -127,7 +127,7 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.curCandidate = null;
     if (this.candidatesList && this.candidatesList.len() > 0) {
       let objTbl = this.scene.findObject("candidatesList");
-      let index = objTbl.getValue() + this.curPage * this.rowsPerPage - 1; //header
+      let index = objTbl.getValue() + this.curPage * this.rowsPerPage - 1; 
       if (index in this.candidatesList)
         this.curCandidate = this.candidatesList[index];
     }
@@ -201,8 +201,8 @@ gui_handlers.clanRequestsModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.memListModified) {
       if (clan_get_admin_editor_mode() && (this.owner && "reinitClanWindow" in this.owner))
         this.owner.reinitClanWindow()
-      //else
-      //  ::requestMyClanData(true)
+      
+      
     }
   }
 

@@ -86,7 +86,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = startIdx; i < lastIdx; i++)
       this.fillRow(tblObj, i)
 
-    tblObj.setValue(1) //after header
+    tblObj.setValue(1) 
     this.guiScene.setUpdatesEnabled(true, true)
     move_mouse_on_child_by_value(tblObj)
     this.onSelect()
@@ -120,7 +120,7 @@ gui_handlers.clanBlacklistModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.curCandidate = null
     if (this.blacklistData && this.blacklistData.len() > 0) {
       let objTbl = this.scene.findObject("candidatesList");
-      let index = objTbl.getValue() + this.curPage * this.rowsPerPage - 1 //header
+      let index = objTbl.getValue() + this.curPage * this.rowsPerPage - 1 
       if (index in this.blacklistData)
         this.curCandidate = this.blacklistData[index]
     }

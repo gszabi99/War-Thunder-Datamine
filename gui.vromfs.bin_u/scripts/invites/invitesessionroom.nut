@@ -26,7 +26,7 @@ let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nu
 let { broadcastInviteUpdated, showExpiredInvitePopup } = require("%scripts/invites/invites.nut")
 
 let SessionRoom = class (BaseInvite) {
-  //custom class params, not exist in base invite
+  
   roomId = ""
   password = ""
   isAccepted = false
@@ -41,8 +41,8 @@ let SessionRoom = class (BaseInvite) {
     this.password = getTblValue("password", params, this.password)
 
     if (g_squad_manager.isMySquadLeader(this.inviterUid)) {
-      this.implAccept(true) //auto accept squad leader room invite
-      this.isAccepted = true //if fail to join, it will try again on ready
+      this.implAccept(true) 
+      this.isAccepted = true 
       return
     }
 
@@ -68,7 +68,7 @@ let SessionRoom = class (BaseInvite) {
         this)
     }
 
-    //do not set delayed when scipt reload to not receive invite popup on each script reload
+    
     this.setDelayed(!isInReloading() && !getMroomInfo(this.roomId).getFullRoomData())
   }
 

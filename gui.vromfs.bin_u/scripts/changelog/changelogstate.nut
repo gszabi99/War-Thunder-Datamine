@@ -166,7 +166,7 @@ function clearCache() {
 }
 
 function findBestVersionToshow(versionsList, lastSeenVersionNum) {
-  //here we want to find first unseen Major version or last unseed hotfix version.
+  
   lastSeenVersionNum = lastSeenVersionNum ?? 0
   versionsList = versionsList ?? []
   foreach (version in versionsList) {

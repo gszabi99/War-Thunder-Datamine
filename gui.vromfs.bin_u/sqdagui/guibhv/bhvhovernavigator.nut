@@ -3,10 +3,10 @@ from "%sqDagui/daguiNativeApi.nut" import *
 let { markChildrenInteractive, markObjShortcutOnHover } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { posNavigator } = require("bhvPosNavigator.nut")
 
-/*
-getValue is always hovered child index or -1
-setValue only move mouse to child
-*/
+
+
+
+
 
 let HoverNavigator = class (posNavigator) {
   bhvId = "HoverNavigator"
@@ -34,14 +34,14 @@ let HoverNavigator = class (posNavigator) {
   }
 
   function onExtMouse(obj, mx, my, btn_id, is_up, _bits) {
-    if (btn_id != 2)  //right mouse button
+    if (btn_id != 2)  
       return RETCODE_NOTHING
     if (is_up && this.findClickedObj(obj, mx, my))
       obj.sendNotify("r_click")
     return RETCODE_PROCESSED
   }
 
-  setChildSelected = @(_obj, _childObj, _isSelected = true) null //do not set child selected, work only by hover
+  setChildSelected = @(_obj, _childObj, _isSelected = true) null 
   onGamepadMouseFinishMove = @(_obj) null
   isOnlyHover = @(_obj) true
 }

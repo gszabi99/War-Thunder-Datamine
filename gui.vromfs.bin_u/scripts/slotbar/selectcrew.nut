@@ -174,16 +174,16 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
     let interval = toPixels(this.guiScene, "@itemsIntervalBig")
     let bottomPanelHeight = toPixels(this.guiScene, "@bottomMenuPanelHeight")
 
-    //count position by visual card obj. real td is higher and wider than a card.
+    
     let visTdObj = tdClone.childrenCount() ? tdClone.getChild(0) : tdClone
     let tdPos = visTdObj.getPosRC()
     let tdSize = visTdObj.getSize()
 
-    //top and bottom of already positioned items
+    
     local top = tdPos[1]
     local bottom = tdPos[1] + tdSize[1]
 
-    //place slotbar
+    
     let sbObj = this.scene.findObject("slotbar_with_controls")
     let sbSize = sbObj.getSize()
     let isSlotbarOnTop = bottom + interval + sbSize[1] > sh - bh - bottomPanelHeight
@@ -197,7 +197,7 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
 
     sbObj.top = sbPosY
 
-    //place headerMessage
+    
     let headerPosY = top - interval - headerObj.getSize()[1]
     headerObj.top = headerPosY
   }

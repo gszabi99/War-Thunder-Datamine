@@ -29,7 +29,7 @@ local teamColors = Watched({
   hudColorDarkBlue      = null
   hudColorDeathAlly     = null
   hudColorDeathEnemy    = null
-  //const colors
+  
   hudColorHero          = colors.hud.mainPlayerColor
   chatTextPrivateColor  = colors.hud.chatTextPrivateColor
   userlogColoredText    = colors.menu.userlogColoredText
@@ -72,7 +72,7 @@ function recalculateTeamColors(forcedColors = {}) {
     { theme = squadTheme, baseColor = Color(198, 255, 189), name = "chatTextSquadColor" }
   ]) {
     newTeamColors[cfg.name] = isForcedColor
-      ? (cfg.theme == enemyTheme ? enemyTeamColor : allyTeamColor) //warnind disable: -func-in-expression
+      ? (cfg.theme == enemyTheme ? enemyTeamColor : allyTeamColor) 
       : cc.correctHueTarget(cfg.baseColor, cfg.theme())
   }
   newTeamColors.teamBlueLightColor  = cc.correctColorLightness(newTeamColors.teamBlueColor, 0.808)

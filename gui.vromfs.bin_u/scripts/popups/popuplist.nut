@@ -11,9 +11,9 @@ let popupList = class (gui_handlers.BaseGuiHandlerWT) {
   sceneTplName         = "%gui/popup/popupList.tpl"
   btnWidth             = null
   align                = ALIGN.BOTTOM
-  clickPropagation     = false // when enabled clicking outside the popup will trigger click on the underlying element
+  clickPropagation     = false 
 
-  //init params
+  
   parentObj            = null
   buttonsList          = null
   onClickCb            = null

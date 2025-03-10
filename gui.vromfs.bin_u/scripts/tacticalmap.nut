@@ -84,7 +84,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
       this.initData()
 
-  //    scene.findObject("dmg_hud").tag = "" + units[focus]
+  
 
       local isRespawn = false
 
@@ -141,12 +141,12 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
     function reinitScreen(params = {}) {
       this.setParams(params)
       this.initWnd()
-      /*
-      initData()
-      updatePlayer()
-      update(null, 0.03)
-      updateTitle()
-      */
+      
+
+
+
+
+
     }
 
     function updateTitle() {
@@ -259,7 +259,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
         let pilotId = get_pilot_name(this.units[i], i)
         if (pilotId != "") {
           if (get_game_type() & GT_COOPERATIVE) {
-            pilotFullName = pilotId; //player nick
+            pilotFullName = pilotId; 
           }
           else {
             pilotFullName = loc(pilotId)
@@ -311,13 +311,13 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
           if (is_aircraft_delayed(this.units[i]))
             continue
 
-  //        if ((focus < 0) && is_aircraft_player(units[i]))
-  //          focus = i
+  
+  
 
           this.scene.findObject($"pilot_name{i}").selected = (this.focus == i) ? "yes" : "no"
         }
 
-    //    scene.findObject("dmg_hud").tag = "" + units[focus]
+    
         let obj = this.scene.findObject($"pilot_name{this.focus}")
         if (obj)
           obj.scrollToView()

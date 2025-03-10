@@ -8,7 +8,7 @@ let { mgBeginMission, mgGetPlayerSide, mgAcceptMission, mgFullLogs, mgSetInt,
   mgThisIsFreeFlight, mgSetMinMaxAircrafts
 } = require("dynamicMission")
 
-function genFreeFlightMission(isFreeFlight) { // isFreeFlight = Mission Editor
+function genFreeFlightMission(isFreeFlight) { 
   if (!isFreeFlight)
     return
 
@@ -29,7 +29,7 @@ function genFreeFlightMission(isFreeFlight) { // isFreeFlight = Mission Editor
 
   mgSetMinMaxAircrafts("player", "", 1, 8)
 
-  //mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testFreeFlight_temp.blk")
+  
   if (playerAnyPlane == "")
     return
 

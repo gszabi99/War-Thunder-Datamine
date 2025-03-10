@@ -2,11 +2,11 @@ from "functools.nut" import *
 
 let {Task} = require("monads.nut")
 let { httpRequest, HTTP_FAILED, HTTP_ABORTED, HTTP_SUCCESS } = require("dagor.http")
-//local dlog = require("log.nut")().dlog
-/*
-  todo:
-    ? handle http code different from 200..300 as error
-*/
+
+
+
+
+
 
 let statusText = {
   [HTTP_SUCCESS] = "SUCCESS",

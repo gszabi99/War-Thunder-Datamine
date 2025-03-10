@@ -11,35 +11,35 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 const INFO_WND_SAVE_PATH = "infoWnd"
-/*
-  simple handler to show info, with checkbox "do not show me again"
-
-  gui_handlers.InfoWnd.openChecked(config)
-    open handler by config if player never check "do not show me again"
-    return true if window opened
-
-  config:
-    checkId (string) - uniq id to check is player switch on "do not show me again"
-                       if null, window will not have this switch.
-    header  (string) - window header
-    message (string) - message to player
-    buttons (array)  - buttons configs for "commonParts/button.tpl"
-                       but with a difference - for buttons callbacks you use (function)onClick instead of button name.
-                       example:
-                       {
-                         text = "#HUD_PRESS_A_CNT"
-                         shortcut = "A"
-                         onClick = function() { dlog("onClick") }
-                         delayed = true
-                       }
-    buttonsContext   - context to all buttons callbacks. (used as weakref)
-    onCancel (func)  - callback on close window
-    canCloseByEsc    - can close window b esc. (true by default)
 
 
-  gui_handlers.InfoWnd.clearAllSaves()
-    clear all info about saved switches
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 gui_handlers.InfoWnd <- class (BaseGuiHandler) {
   wndType = handlerType.MODAL
@@ -82,7 +82,7 @@ gui_handlers.InfoWnd <- class (BaseGuiHandler) {
     if (!this.checkId)
       showObjById("do_not_show_me_again", false, this.scene)
     this.createButtons()
-    this.buttonsContext = null //remove permanent link to context
+    this.buttonsContext = null 
 
     if (!this.canCloseByEsc)
       this.scene.findObject("close_btn").have_shortcut = "BNotEsc"
@@ -113,7 +113,7 @@ gui_handlers.InfoWnd <- class (BaseGuiHandler) {
       }
     this.guiScene.replaceContentFromText(this.scene.findObject("buttons_place"), markup, markup.len(), this.buttonsCbs)
 
-    //update navBar
+    
     if (!markup.len()) {
       this.scene.findObject("info_wnd_frame")["class"] = "wnd"
       showObjById("nav-help", false, this.scene)

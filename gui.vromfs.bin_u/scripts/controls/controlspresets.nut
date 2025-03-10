@@ -4,9 +4,9 @@ let { regexp } = require("string")
 let DataBlock  = require("DataBlock")
 let { isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 
-/**
- * Functions to work with controls presets
- */
+
+
+
 
 let stdPresetPathPrefix = "config/hotkeys/hotkey."
 let presetFileNameExtention = ".blk"
@@ -22,9 +22,9 @@ let nullPreset = {
 
 local presetsListCached = null
 
-/**
- * Slice version from name and fill version field.
- */
+
+
+
 function handleVersion(preset) {
   preset.name = preset.id
   preset.version = 0
@@ -39,12 +39,12 @@ function handleVersion(preset) {
 
 let getNullControlsPresetInfo = @() clone nullPreset
 
-/**
- * Returns list of presets names, fetched from hotkeys/list.blk
- * It also adds the current preset when it is not listed,
- * because deprecated presets are removed from list.blk
- * while being still in use by some players
- */
+
+
+
+
+
+
 function getControlsPresetsList() {
   if (presetsListCached == null) {
     let blk = DataBlock()
@@ -58,16 +58,16 @@ function getControlsPresetsList() {
   return result
 }
 
-/**
- * Return preset file name, converted from preset name.
- */
+
+
+
 function getControlsPresetFilename(presetName) {
   return "".concat(stdPresetPathPrefix, presetName, ".blk")
 }
 
-/**
- * Breaks preset file name string into table {version = @integer, name = @string }
- */
+
+
+
 function parseControlsPresetFileName(presetFileName) {
   let preset = getNullControlsPresetInfo()
 
@@ -82,10 +82,10 @@ function parseControlsPresetFileName(presetFileName) {
   return preset
 }
 
-/**
- * Build preset data table from presetName (typicaly received from getControlsPresetList)
- * Input argument presetName must be trusted source to generate file name for this preset
- */
+
+
+
+
 function parseControlsPresetName(presetName) {
   let preset = getNullControlsPresetInfo()
 

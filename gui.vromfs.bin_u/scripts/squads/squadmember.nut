@@ -80,8 +80,8 @@ let class SquadMember {
       if (newValue == null)
         continue
 
-      if (isInArray(property, ["brokenAirs", "missedPkg", "unallowedEventsENames",     //!!!FIX ME If this parametrs is empty then msquad returns table instead array
-             "bannedMissions", "dislikedMissions", "craftsInfoByUnitsGroups"])        // Need remove this block after msquad fixed
+      if (isInArray(property, ["brokenAirs", "missedPkg", "unallowedEventsENames",     
+             "bannedMissions", "dislikedMissions", "craftsInfoByUnitsGroups"])        
           && !u.isArray(newValue))
         newValue = []
 

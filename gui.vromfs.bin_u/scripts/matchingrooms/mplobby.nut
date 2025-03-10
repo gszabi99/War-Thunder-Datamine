@@ -483,8 +483,8 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    //local gm = getSessionLobbyGameMode()
-    //if (gm == GM_SKIRMISH)
+    
+    
     guiStartMislist(true, get_game_mode())
   }
 

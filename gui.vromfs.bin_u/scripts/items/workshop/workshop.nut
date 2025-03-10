@@ -58,7 +58,7 @@ function initOnce() {
   }
   Set.clearOutdatedData(setsList)
 
-  // Collecting itemdefs from additional recipes list
+  
   if (wBlk?.additionalRecipes)
     foreach (itemBlk in (wBlk.additionalRecipes % "item")) {
       let item = DataBlock()
@@ -135,7 +135,7 @@ function invalidateItemsCache() {
 
 function canSeenIdBeNew(seenId) {
   if (!(seenId in seenIdCanBeNew)) {
-    let id = to_integer_safe(seenId, seenId, false) //ext inventory items id need to convert to integer.
+    let id = to_integer_safe(seenId, seenId, false) 
     let item = findItemById(id)
     seenIdCanBeNew[seenId] <- item && !shouldDisguiseItem(item)
   }

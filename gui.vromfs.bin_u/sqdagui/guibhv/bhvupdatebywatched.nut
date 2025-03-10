@@ -3,11 +3,11 @@ from "%sqDagui/daguiNativeApi.nut" import *
 let { popBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { isTable, isArray } = require("%sqStdLibs/helpers/u.nut")
 
-/*
-  behaviour config params it is table or array of tables with value pairs:
-    watch  - watched for subscribe this
-    updateFunc - method for update object by watched value
-*/
+
+
+
+
+
 
 local assertOnce = function(_uniqId, errorText) {
   throw(errorText)
@@ -78,5 +78,5 @@ let bhvUpdateByWatched = class {
 replace_script_gui_behaviour("bhvUpdateByWatched", bhvUpdateByWatched)
 
 return {
-  setAssertFunction = @(func) assertOnce = func  //void func(uniqId, assertText) // warning disable: -trying-to-modify
+  setAssertFunction = @(func) assertOnce = func  
 }

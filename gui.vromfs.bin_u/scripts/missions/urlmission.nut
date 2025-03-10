@@ -17,8 +17,8 @@ let UrlMission = class {
     "hasErrorByLoading"
   ]
 
-  //constructor(name, url) - create new UrlMission with name and url listed in params
-  //constructor(DataBlock) - load all params from DataBlock
+  
+  
   constructor(param1, param2 = null) {
     if (u.isDataBlock(param1))
       return this.loadFromBlk(param1)

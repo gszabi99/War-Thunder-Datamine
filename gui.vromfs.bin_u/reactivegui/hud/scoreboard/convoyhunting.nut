@@ -26,8 +26,8 @@ let killsIcon = {
   image = Picture($"!ui/gameuiskin#objective_ship.svg:{blockHeight}:{blockHeight}")
 }
 
-//Check it for compatibility with 2.31.1.7 when missionProgressDefendShip not updated and is 0
-//Do not show score board if date for it is missing
+
+
 let isVisibleScoreBoard = Computed(@() missionProgressDefendShip.get() > 0)
 
 let killsText = @() textParams.__merge({

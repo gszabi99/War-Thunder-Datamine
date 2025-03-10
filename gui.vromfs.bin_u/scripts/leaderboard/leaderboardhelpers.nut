@@ -8,7 +8,7 @@ let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 local selfRowData       = null
 local leaderboardData   = null
 local lastRequestData   = null
-local lastRequestSRData = null //last self row request
+local lastRequestSRData = null 
 local canRequestLb      = true
 
 let defaultRequest = {
@@ -21,15 +21,15 @@ let defaultRequest = {
 }
 
 function checkLbRowVisibility(row, params = {}) {
-  // check ownProfileOnly
+  
   if (getTblValue("ownProfileOnly", row, false) && !getTblValue("isOwnStats", params, false))
     return false
 
-  // check reqFeature
+  
   if (!row.isVisibleByFeature())
     return false
 
-  // check modesMask
+  
   let lbMode = getTblValue("lbMode", params)
   if (!row.isVisibleByLbModeName(lbMode))
     return false
@@ -41,7 +41,7 @@ function compareRequests(req1, req2) {
   foreach (name, _field in defaultRequest) {
     if ((name in req1) != (name in req2))
       return false
-    if (!(name in req1)) //no name in both req
+    if (!(name in req1)) 
       continue
     if (req1[name] != req2[name])
       return false
@@ -92,7 +92,7 @@ function loadLeaderboard(requestData) {
     valueType
   }
   let headers = {
-    appId = 0 //Leaderboards for War Thunder use appid 0 since char does not fully support appid.
+    appId = 0 
   }
 
   let self = callee()
@@ -121,7 +121,7 @@ function loadSeflRow(requestData) {
     valueType
   }
   let headers = {
-    appId = 0 //Leaderboards for War Thunder use appid 0 since char does not fully support appid.
+    appId = 0 
     userId = userId ?? userIdInt64.get()
   }
 
@@ -136,14 +136,14 @@ function loadSeflRow(requestData) {
   })
 }
 
-/**
- * Function requests leaderboards asynchronously and puts result
- * as argument to callback function
- */
+
+
+
+
 function requestLeaderboard(requestData, callback, context = null) {
   requestData = validateRequestData(requestData)
 
-  //trigging callback if data is lready here
+  
   if (leaderboardData && compareRequests(lastRequestData, requestData)) {
     if (context)
       callback.call(context, leaderboardData)
@@ -156,16 +156,16 @@ function requestLeaderboard(requestData, callback, context = null) {
   loadLeaderboard(requestData)
 }
 
-/**
- * Function requests self leaderboard row asynchronously and puts result
- * as argument to callback function
- */
+
+
+
+
 function requestSelfRow(requestData, callback, context = null) {
   requestData = validateRequestData(requestData)
   if (lastRequestSRData)
     lastRequestSRData.pos <- requestData.pos
 
-  //trigging callback if data is lready here
+  
   if (selfRowData && compareRequests(lastRequestSRData, requestData)) {
     if (context)
       callback.call(context, selfRowData)
@@ -186,17 +186,17 @@ let leaderboardModel = {
 }
 
 
-/**
- * Comapares two lb row with the same fields and returns
- * a table of diff for each field.
- * Result table containes only fields with different values
- * The first argument is base of comarsion. In other words a is now and b is
- * was.
- * If a.f1 > b.f1 and a.f1 - b.f1 == 3
- * the result will looks like
- * res.f1 = 3
- * String fields are ignored
- */
+
+
+
+
+
+
+
+
+
+
+
 function getLbDiff(a, b) {
   let res = {}
   foreach (fieldId, fieldValue in a) {
@@ -211,17 +211,17 @@ function getLbDiff(a, b) {
   return res
 }
 
-/**
- * Generates view for leaderbord item
- *
- * @param field_config  - item of ::leaderboards_list
- *                        or eventsTableConfig
- * @param lb_value      - value of specified field as it comes from char
- * @param lb_value_diff - optional, diff data, generated
- *                        with getLbDiff(...)
- *
- * @return view for getLeaderboardItemWidgets(...)
- */
+
+
+
+
+
+
+
+
+
+
+
 function getLeaderboardItemView(lbCategory, lb_value, lb_value_diff = null, params = null) {
   let view = lbCategory.getItemCell(lb_value)
   view.name <- lbCategory.headerTooltip
@@ -241,11 +241,11 @@ function getLeaderboardItemView(lbCategory, lb_value, lb_value_diff = null, para
   return view
 }
 
-/**
- * Generates view for leaderbord items array
- * @param view  - { items = array of getLeaderboardItemView(...) }
- * @return markup ready for insertion into scene
- */
+
+
+
+
+
 let getLeaderboardItemWidgets = @(view) handyman.renderCached("%gui/leaderboard/leaderboardItemWidget.tpl", view)
 
 function getLbItemCell(id, value, dataType, allowNegative = false) {

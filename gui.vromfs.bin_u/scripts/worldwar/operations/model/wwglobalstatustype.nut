@@ -22,9 +22,9 @@ const MAPS_OUT_OF_DATE_DAYS = 1
 }
 
 ::g_ww_global_status_type.template <- {
-  typeMask = 0 //WW_GLOBAL_STATUS_TYPE
-  charDataId = null //data id on request "cln_ww_global_stats"
-  invalidateByOtherStatusType = 0 //mask of WW_GLOBAL_STATUS_TYPE
+  typeMask = 0 
+  charDataId = null 
+  invalidateByOtherStatusType = 0 
   emptyCharData = []
   cachedList = null
 
@@ -102,7 +102,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
         this.cachedList[name] <- WwMap(name, mapData)
 
       let guiScene = get_cur_gui_scene()
-      if (guiScene) //need all other configs invalidate too before push event
+      if (guiScene) 
         guiScene.performDelayed(this,
           function() {
             seenWWMapsAvailable.setDaysToUnseen(MAPS_OUT_OF_DATE_DAYS)

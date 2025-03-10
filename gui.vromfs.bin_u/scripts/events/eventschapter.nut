@@ -49,7 +49,7 @@ let EventChapter = class {
   }
 
   function update() {
-    this.eventIds = events.getEventsList(EVENT_TYPE.ANY, (@(name) function (event) { //-ident-hides-ident
+    this.eventIds = events.getEventsList(EVENT_TYPE.ANY, (@(name) function (event) { 
       return events.getEventsChapter(event) == name
              && events.isEventVisibleInEventsWindow(event)
     })(this.name))
@@ -57,7 +57,7 @@ let EventChapter = class {
     this.sortPriority = -1
   }
 
-  function sortChapterEvents(eventId1, eventId2) { // warning disable: -return-different-types
+  function sortChapterEvents(eventId1, eventId2) { 
     let event1 = events.getEvent(eventId1)
     let event2 = events.getEvent(eventId2)
     if (event1 == null && event2 == null)
@@ -81,11 +81,11 @@ let EventChapter = class {
     add_event_listener("GameLocalizationChanged", this.onEventGameLocalizationChanged, this)
   }
 
-  /**
-  * Method go through events list and gather chapters.
-  * Then calls all chapters to update
-  * And when some chapters are empty, removes them
-  */
+  
+
+
+
+
   function updateChapters() {
     let eventsList = events.getEventsList(EVENT_TYPE.ANY, events.isEventVisibleInEventsWindow)
 

@@ -46,7 +46,7 @@ let userCaps = persist("userCaps", @() {
 let validateRoomNameRegexp = regexp2(@"[  !""#$%&'()*+,./\\:;<=>?@\^`{|}~-]")
 
 const THREADS_INFO_TIMEOUT_MSEC = 300000
-const THREADS_INFO_CLEAN_PERIOD_MSEC = 150000  //check clean only on get new thread info
+const THREADS_INFO_CLEAN_PERIOD_MSEC = 150000  
 const THREAD_INFO_REFRESH_DELAY_MSEC = 60000
 
 const MAX_MSG_LEN = 200
@@ -64,7 +64,7 @@ const CHAT_ERROR_NO_CHANNEL = "chat/error/403"
 const LOCALIZED_MESSAGE_PREFIX = "LMSG "
 
 let storage = persist("storage", @() {
-  userCapsGen = 1 // effectively makes caps falsy
+  userCapsGen = 1 
   threadTitleLenMin = 8
   threadTitleLenMax = 160
 })
@@ -95,7 +95,7 @@ let g_chat = {
   THREADS_INFO_TIMEOUT_MSEC
   THREAD_INFO_REFRESH_DELAY_MSEC
 
-  rooms = chatRooms //for full room params list check addRoom( function in menuchat.nut //!!FIX ME must be here, or separate class
+  rooms = chatRooms 
   threadsInfo = chatThreadsInfo
   userCaps = userCaps
   color = chatColors
@@ -119,14 +119,14 @@ g_chat.filterMessageText <- function filterMessageText(text, isMyMessage) {
 
 
 g_chat.convertBlockedMsgToLink <- function convertBlockedMsgToLink(msg) {
-  //space work as close link. but non-breakable space - work as other symbols.
-  //rnd for duplicate blocked messages
+  
+  
   return format("BL_%02d_%s", rnd() % 99, msg.replace(" ", nbsp))
 }
 
 
 g_chat.convertLinkToBlockedMsg <- function convertLinkToBlockedMsg(link) {
-  let prefixLen = 6 // Prefix is "BL_NN_", where NN are digits.
+  let prefixLen = 6 
   return link.slice(prefixLen).replace(nbsp, " ")
 }
 
@@ -239,7 +239,7 @@ g_chat.getMyClanRoomId <- function getMyClanRoomId() {
   return ""
 }
 
-g_chat.getBaseRoomsList <- function getBaseRoomsList() { //base rooms list opened on chat load for all players
+g_chat.getBaseRoomsList <- function getBaseRoomsList() { 
   return [g_chat_room_type.THREADS_LIST.getRoomId("")]
 }
 
@@ -248,7 +248,7 @@ g_chat._checkCleanThreadsList <- function _checkCleanThreadsList() {
     return
   _lastCleanTime = get_time_msec()
 
-  //mark joined threads new
+  
   foreach (room in chatRooms)
     if (room.type == g_chat_room_type.THREAD) {
       let threadInfo = getThreadInfo(room.id)
@@ -256,7 +256,7 @@ g_chat._checkCleanThreadsList <- function _checkCleanThreadsList() {
         threadInfo.markUpdated()
     }
 
-  //clear outdated threads
+  
   let outdatedArr = []
   foreach (id, thread in chatThreadsInfo)
     if (thread.isOutdated())
@@ -343,7 +343,7 @@ g_chat.validateRoomName <- function validateRoomName(name) {
 }
 
 g_chat.validateChatMessage <- function validateChatMessage(text, multilineAllowed = false) {
-  //do not allow players to use tag.  <color=#000000>...
+  
   text = text.replace("<", "[")
   text = text.replace(">", "]")
   if (!multilineAllowed)
@@ -506,12 +506,12 @@ g_chat.onEventInitConfigs <- function onEventInitConfigs(_p) {
 
 g_chat.sendLocalizedMessage <- function sendLocalizedMessage(roomId, langConfig, isSeparationAllowed = true, needAssert = true) {
   let message = systemMsg.configToJsonString(langConfig, this.validateChatMessage)
-  let messageLen = message.len() //to be visible in assert callstack
+  let messageLen = message.len() 
   if (messageLen > MAX_MSG_LEN) {
     local res = false
     if (isSeparationAllowed && u.isArray(langConfig) && langConfig.len() > 1) {
       needAssert = false
-      //do not allow to separate more than on 2 messages because of chat server restrictions.
+      
       let sliceIdx = (langConfig.len() + 1) / 2
       res = this.sendLocalizedMessage(roomId, langConfig.slice(0, sliceIdx), false)
       res = res && this.sendLocalizedMessage(roomId, langConfig.slice(sliceIdx), false)
@@ -558,7 +558,7 @@ function openWWOperationChatRoomById(operationId) {
 }
 
 function isRoomWWOperation(roomId) {
-  return g_chat_room_type.WW_OPERATION.checkRoomId(roomId) // warning disable: -missing-field
+  return g_chat_room_type.WW_OPERATION.checkRoomId(roomId) 
 }
 
 subscribe_handler(g_chat, g_listener_priority.DEFAULT_HANDLER)

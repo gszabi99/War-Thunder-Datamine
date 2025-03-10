@@ -102,11 +102,11 @@ struct NamedSlot
   name : string
 
 def root() : NameSpace
-  return [[NameSpace nameSpaceId = getRegistry().knownNames |> root]]
+  return NameSpace(nameSpaceId = getRegistry().knownNames |> root)
 
 
 def operator /(var self : NameSpace; child_name : string) : NameSpace
-  return [[NameSpace nameSpaceId = getRegistry().knownNames |> addNameId`NameSpaceNameId(self.nameSpaceId, child_name)]]
+  return NameSpace(nameSpaceId = getRegistry().knownNames |> addNameId`NameSpaceNameId(self.nameSpaceId, child_name))
 
 
 def fillSlot(var self : NameSpace; slot : NamedSlot; res_name_space : NameSpace; res_name : string)
@@ -127,23 +127,23 @@ def registerNode(var self : NameSpace; name : string; var declaration_callback :
   return <- registry.nodes |> get(nodeId) <| $(var node_data : NodeData&)
     getTracker() |> unregisterNode(nodeId, node_data.generation)
     getTracker() |> registerNode(nodeId)
-    node_data |> registerNodeDeclaration(self.nameSpaceId) <| @ [[ <- declaration_callback, =registry]] ()
-      return <- declaration_callback |> invoke() <| [[Registry
+    node_data |> registerNodeDeclaration(self.nameSpaceId) <| @  capture(<- declaration_callback, = registry) ()
+      return <- declaration_callback |> invoke() <| Registry(
         nameSpaceId = self.nameSpaceId,
         nodeId = nodeId,
         registry = registry
-      ]]
+      )
     return <- register_external_node(nodeId, node_data.generation)
 
 
 def root(var self : Registry) : NameSpaceRequest
-  return [[NameSpaceRequest nameSpaceId = self.registry.knownNames |> root, nodeId = self.nodeId, registry = self.registry]]
+  return NameSpaceRequest(nameSpaceId = self.registry.knownNames |> root, nodeId = self.nodeId, registry = self.registry)
 
 
 def orderMeBefore(var self : Registry; name : string) : Registry
   let nodeNsId = self.registry.knownNames |> getParent(self.nodeId)
   let nameId = self.registry.knownNames |> getNameId`NodeNameId(nodeNsId, name)
-  if nameId != NodeNameId Invalid
+  if nameId != NodeNameId.Invalid
     self.registry.nodes[self.nodeId].followingNodeIds |> insert(nameId)
   else
     let selfName = self.registry.knownNames |> getName(self.nodeId)
@@ -162,7 +162,7 @@ def orderMeBefore(var self : Registry; names : array<string>) : Registry
 def orderMeAfter(var self : Registry; name : string) : Registry
   let nodeNsId = self.registry.knownNames |> getParent(self.nodeId)
   let nameId = self.registry.knownNames |> getNameId`NodeNameId(nodeNsId, name)
-  if nameId != NodeNameId Invalid
+  if nameId != NodeNameId.Invalid
     self.registry.nodes[self.nodeId].precedingNodeIds |> insert(nameId)
   else
     let selfName = self.registry.knownNames |> getName(self.nodeId)
@@ -198,43 +198,43 @@ def create(var self : Registry; name : string; history : History) : VirtualResou
   let nodeNsId = self.registry.knownNames |> getParent(self.nodeId)
   let nameId = self.registry.knownNames |> addNameId`ResNameId(nodeNsId, name)
   self.registry.resources |> get(nameId) <| $(var res : ResourceData&)
-    res.history = history;
+    res.history = history
 
   self.registry.nodes[self.nodeId].createdResources |> insert(nameId)
   using() <| $(var req : ResourceRequest#)
-    req.usage = [[ResourceUsage access=Access READ_WRITE]]
+    req.usage = ResourceUsage(access = Access.READ_WRITE)
     self.registry.nodes[self.nodeId].resourceRequests[nameId] := req
 
-  return <- [[VirtualResourceCreationSemiRequest registry=self.registry, nodeId=self.nodeId, resUid=[[ResUid nameId=nameId, history=false]]]]
+  return <- VirtualResourceCreationSemiRequest(registry = self.registry, nodeId = self.nodeId, resUid = ResUid(nameId = nameId, history = false))
 
 
 def operator /(var self : NameSpaceRequest; child_name : string) : NameSpaceRequest
-  return [[NameSpaceRequest
+  return NameSpaceRequest(
     nameSpaceId = self.registry.knownNames |> addNameId`NameSpaceNameId(self.nameSpaceId, child_name),
     nodeId = self.nodeId,
-    registry = self.registry]]
+    registry = self.registry)
 
 
 def getResolution`2(var self : NameSpaceRequest; type_name : string; multiplier : float = 1.f) : AutoResolutionRequest2
-  return [[AutoResolutionRequest2()
-    autoResTypeId=self.registry.knownNames |> addNameId`AutoResTypeNameId(self.nameSpaceId, type_name),
-    multiplier=multiplier,
-    provider=self.registry |> getProvider()]]
+  return AutoResolutionRequest2(
+    autoResTypeId = self.registry.knownNames |> addNameId`AutoResTypeNameId(self.nameSpaceId, type_name),
+    multiplier = multiplier,
+    provider = self.registry |> getProvider())
 
 def getResolution`3(var self : NameSpaceRequest; type_name : string; multiplier : float = 1.f) : AutoResolutionRequest3
-  return [[AutoResolutionRequest3()
-    autoResTypeId=self.registry.knownNames |> addNameId`AutoResTypeNameId(self.nameSpaceId, type_name),
-    multiplier=multiplier,
-    provider=self.registry |> getProvider()]]
+  return AutoResolutionRequest3(
+    autoResTypeId = self.registry.knownNames |> addNameId`AutoResTypeNameId(self.nameSpaceId, type_name),
+    multiplier = multiplier,
+    provider = self.registry |> getProvider())
 
 def read(var self : NameSpaceRequest; name : string) : VirtualResourceSemiRequest
   let nameId = self.registry.knownNames |> addNameId`ResNameId(self.nameSpaceId, name)
   self.registry.nodes[self.nodeId].readResources |> insert(nameId)
   using() <| $(var req : ResourceRequest#)
-    req.usage = [[ResourceUsage access=Access READ_ONLY]]
+    req.usage = ResourceUsage(access = Access.READ_ONLY)
     self.registry.nodes[self.nodeId].resourceRequests[nameId] := req
 
-  return <- [[VirtualResourceSemiRequest registry=self.registry, nodeId=self.nodeId, resUid=[[ResUid nameId=nameId, history=false]]]]
+  return <- VirtualResourceSemiRequest(registry = self.registry, nodeId = self.nodeId, resUid = ResUid(nameId = nameId, history = false))
 
 
 def read(var self : NameSpaceRequest; slot : NamedSlot) : VirtualResourceSemiRequest
@@ -242,29 +242,29 @@ def read(var self : NameSpaceRequest; slot : NamedSlot) : VirtualResourceSemiReq
   self.registry.nodes[self.nodeId].readResources |> insert(nameId)
   using() <| $(var req : ResourceRequest#)
     req.slotRequest = true
-    req.usage = [[ResourceUsage access=Access READ_ONLY]]
+    req.usage = ResourceUsage(access = Access.READ_ONLY)
     self.registry.nodes[self.nodeId].resourceRequests[nameId] := req
 
-  return <- [[VirtualResourceSemiRequest registry=self.registry, nodeId=self.nodeId, resUid=[[ResUid nameId=nameId, history=false]]]]
+  return <- VirtualResourceSemiRequest(registry = self.registry, nodeId = self.nodeId, resUid = ResUid(nameId = nameId, history = false))
 
 
 def historyFor(var self : NameSpaceRequest; var name : string) : VirtualResourceSemiRequest
   let nameId = self.registry.knownNames |> addNameId`ResNameId(self.nameSpaceId, name)
   using() <| $(var req : ResourceRequest#)
-    req.usage = [[ResourceUsage access=Access READ_ONLY]]
+    req.usage = ResourceUsage(access = Access.READ_ONLY)
     self.registry.nodes[self.nodeId].historyResourceReadRequests[nameId] := req
 
-  return <- [[VirtualResourceSemiRequest registry=self.registry, nodeId=self.nodeId, resUid=[[ResUid nameId=nameId, history=true]]]]
+  return <- VirtualResourceSemiRequest(registry = self.registry, nodeId = self.nodeId, resUid = ResUid(nameId = nameId, history = true))
 
 
 def modify(var self : NameSpaceRequest; name : string) : VirtualResourceSemiRequest
   let nameId = self.registry.knownNames |> addNameId`ResNameId(self.nameSpaceId, name)
   self.registry.nodes[self.nodeId].modifiedResources |> insert(nameId)
   using() <| $(var req : ResourceRequest#)
-    req.usage = [[ResourceUsage access=Access READ_WRITE]]
+    req.usage = ResourceUsage(access = Access.READ_WRITE)
     self.registry.nodes[self.nodeId].resourceRequests[nameId] := req
 
-  return <- [[VirtualResourceSemiRequest registry=self.registry, nodeId=self.nodeId, resUid=[[ResUid nameId=nameId, history=false]]]]
+  return <- VirtualResourceSemiRequest(registry = self.registry, nodeId = self.nodeId, resUid = ResUid(nameId = nameId, history = false))
 
 
 def modify(var self : NameSpaceRequest; slot : NamedSlot) : VirtualResourceSemiRequest
@@ -272,10 +272,10 @@ def modify(var self : NameSpaceRequest; slot : NamedSlot) : VirtualResourceSemiR
   self.registry.nodes[self.nodeId].modifiedResources |> insert(nameId)
   using() <| $(var req : ResourceRequest#)
     req.slotRequest = true
-    req.usage = [[ResourceUsage access=Access READ_WRITE]]
+    req.usage = ResourceUsage(access = Access.READ_WRITE)
     self.registry.nodes[self.nodeId].resourceRequests[nameId] := req
 
-  return <- [[VirtualResourceSemiRequest registry=self.registry, nodeId=self.nodeId, resUid=[[ResUid nameId=nameId, history=false]]]]
+  return <- VirtualResourceSemiRequest(registry = self.registry, nodeId = self.nodeId, resUid = ResUid(nameId = nameId, history = false))
 
 
 def rename(var self : NameSpaceRequest; from : string; to : string; history : History) : VirtualResourceSemiRequest
@@ -285,12 +285,12 @@ def rename(var self : NameSpaceRequest; from : string; to : string; history : Hi
 
   self.registry.nodes[self.nodeId].renamedResources[toResId] := fromResId
   using() <| $(var req : ResourceRequest#)
-    req.usage = [[ResourceUsage access=Access READ_WRITE]]
+    req.usage = ResourceUsage(access = Access.READ_WRITE)
     self.registry.nodes[self.nodeId].resourceRequests[fromResId] := req
   self.registry.resources |> get(toResId) <| $(var res : ResourceData&)
     res.history = history
 
-  return <- [[VirtualResourceSemiRequest registry=self.registry, nodeId=self.nodeId, resUid=[[ResUid nameId=fromResId, history=false]]]]
+  return <- VirtualResourceSemiRequest(registry = self.registry, nodeId = self.nodeId, resUid = ResUid(nameId = fromResId, history = false))
 
 
 def texture(var self : VirtualResourceCreationSemiRequest; info : Texture2dCreateInfo) : VirtualTextureRequest
@@ -299,21 +299,21 @@ def texture(var self : VirtualResourceCreationSemiRequest; info : Texture2dCreat
       desc.mipLevels = info.mipLevels
       desc.cFlags = info.creationFlags
       if info.resolution is autoRes
-        res |> setResolution([[AutoResolutionData
+        res |> setResolution(AutoResolutionData(
           id = info.resolution as autoRes.autoResTypeId,
-          multiplier = info.resolution as autoRes.multiplier]])
+          multiplier = info.resolution as autoRes.multiplier))
       else
         desc.width = info.resolution as res.x
         desc.height = info.resolution as res.y
       res |> setDescription(desc)
 
-    res.resType = ResourceType Texture
+    res.resType = ResourceType.Texture
 
-  return <- [[VirtualTextureRequest registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]]
+  return <- VirtualTextureRequest(registry = self.registry, nodeId = self.nodeId, resUid = self.resUid)
 
 
 def texture(var self : VirtualResourceSemiRequest) : VirtualTextureRequest
-  return <- [[VirtualTextureRequest registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]]
+  return <- VirtualTextureRequest(registry = self.registry, nodeId = self.nodeId, resUid = self.resUid)
 
 
 def buffer(var self : VirtualResourceCreationSemiRequest; info : BufferCreateInfo) : VirtualBufferRequest
@@ -323,16 +323,16 @@ def buffer(var self : VirtualResourceCreationSemiRequest; info : BufferCreateInf
       desc.elementSizeInBytes = info.elementSize
       desc.viewFormat = info.format
       desc.cFlags = info.flags
-      desc.activation = ResourceActivationAction DISCARD_AS_UAV
+      desc.activation = ResourceActivationAction.DISCARD_AS_UAV
       res |> setDescription(desc)
 
-    res.resType = ResourceType Buffer
+    res.resType = ResourceType.Buffer
 
-  return <- [[VirtualBufferRequest registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]]
+  return <- VirtualBufferRequest(registry = self.registry, nodeId = self.nodeId, resUid = self.resUid)
 
 
 def buffer(var self : VirtualResourceSemiRequest) : VirtualBufferRequest
-  return <- [[VirtualBufferRequest registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]]
+  return <- VirtualBufferRequest(registry = self.registry, nodeId = self.nodeId, resUid = self.resUid)
 
 
 [macro_function]
@@ -345,17 +345,17 @@ def isDasNative(var t : TypeDeclPtr) : bool
 
   // These are interop types by default, see blobBindings.cpp
   return (
-    t.baseType != Type tBool &&
-    t.baseType != Type tInt8 &&
-    t.baseType != Type tUInt8 &&
-    t.baseType != Type tInt16 &&
-    t.baseType != Type tUInt16 &&
-    t.baseType != Type tInt &&
-    t.baseType != Type tUInt &&
-    t.baseType != Type tInt64 &&
-    t.baseType != Type tUInt64 &&
-    t.baseType != Type tFloat &&
-    t.baseType != Type tDouble
+    t.baseType != Type.tBool &&
+    t.baseType != Type.tInt8 &&
+    t.baseType != Type.tUInt8 &&
+    t.baseType != Type.tInt16 &&
+    t.baseType != Type.tUInt16 &&
+    t.baseType != Type.tInt &&
+    t.baseType != Type.tUInt &&
+    t.baseType != Type.tInt64 &&
+    t.baseType != Type.tUInt64 &&
+    t.baseType != Type.tFloat &&
+    t.baseType != Type.tDouble
   )
 
 
@@ -370,23 +370,23 @@ def private tryAddBlobSpecializations(var blobType : TypeDeclPtr; hasDefValue : 
   let blobTypeHash = hash(mangledBlobTypeName)
 
   // We add 2 new types per blob type: blob request and blob handle
-  var inscope vrr_type <- typeinfo(ast_typedecl type<VirtualResourceRequest>)
+  var inscope vrr_type <- typeinfo ast_typedecl(type<VirtualResourceRequest>)
   var vrrBase = vrr_type.structType
   var inscope blobRequestStruct <- clone_structure(vrrBase)
   blobRequestStruct.name := "VirtualBlobRequest`{blobTypeHash}"
   blobRequestStruct.parent := vrrBase
-  blobRequestStruct.flags |= StructureFlags generated
+  blobRequestStruct.flags |= StructureFlags.generated
 
-  var inscope vrhb_type <- typeinfo(ast_typedecl type<VirtualResourceHandleBase>)
+  var inscope vrhb_type <- typeinfo ast_typedecl(type<VirtualResourceHandleBase>)
   var vrhBase = vrhb_type.structType
   var inscope blobHandleStruct <- clone_structure(vrhBase)
   blobHandleStruct.name := "VirtualBlobHandle`{blobTypeHash}"
   blobHandleStruct.parent := vrhBase
-  blobHandleStruct.flags |= StructureFlags generated
+  blobHandleStruct.flags |= StructureFlags.generated
 
   var inscope blobHandleFn <- qmacro_function("handle") <| \
     $(self : $t(blobRequestStruct)) : $t(blobHandleStruct) {
-      return <- [[$t(blobHandleStruct) provider=self.registry |> getProvider(), resUid=self.resUid]];
+      return <- struct<$t(blobHandleStruct)>(provider = self.registry |> getProvider(), resUid = self.resUid);
     }
   compiling_module() |> add_function(blobHandleFn)
 
@@ -410,10 +410,10 @@ def private tryAddBlobSpecializations(var blobType : TypeDeclPtr; hasDefValue : 
     // NOTE: some project use the "please error out if some optimizations
     // were not possible due to aliasing restrictions" mode, so we need to
     // explicitly say that no aliasing is happening here, hence the `assumeNoAlias`
-    var inscope exprDeref <- new [[ExprPtr2Ref() subexpr <- exprReinterpret, assumeNoAlias=true]]
+    var inscope exprDeref <- new ExprPtr2Ref(subexpr <- exprReinterpret, assumeNoAlias = true)
     var inscope blobCtorFn <- qmacro_function("ctor`{blobTypeHash}") <| \
       $(var self : void?) : void {
-        $e(exprDeref) <- [[$t(blobType)()]];
+        $e(exprDeref) <- struct<$t(blobType)>();
       }
     compiling_module() |> add_function(blobCtorFn)
 
@@ -424,7 +424,7 @@ def private tryAddBlobSpecializations(var blobType : TypeDeclPtr; hasDefValue : 
     compiling_module() |> add_function(blobDtorFn)
 
     var inscope exprCastFrom <- qmacro(unsafe(reinterpret<$t(blobType) const?> from))
-    var inscope exprFrom <- new [[ExprPtr2Ref() subexpr <- exprCastFrom, assumeNoAlias=true]]
+    var inscope exprFrom <- new ExprPtr2Ref(subexpr <- exprCastFrom, assumeNoAlias = true)
     var inscope blobCopyFn <- qmacro_function("copy`{blobTypeHash}") <| \
       $(var self : void?; from : void const?) : void {
         $e(clone_expression(exprDeref)) = $e(exprFrom);
@@ -436,7 +436,7 @@ def private tryAddBlobSpecializations(var blobType : TypeDeclPtr; hasDefValue : 
     // NOTE: some project use the "please error out if some optimizations
     // were not possible due to aliasing restrictions" mode, so we need to
     // explicitly say that no aliasing is happening here, hence the `assumeNoAlias`
-    var inscope exprDeref <- new [[ExprPtr2Ref() subexpr <- exprReinterpret, assumeNoAlias=true]]
+    var inscope exprDeref <- new ExprPtr2Ref(subexpr <- exprReinterpret, assumeNoAlias = true)
     var inscope blobDefCtorFn <- qmacro_function("ctor_def`{blobTypeHash}") <| \
       $(var self : void?; def_value : $t(blobType)) : void {
         $e(exprDeref) <- def_value;
@@ -457,10 +457,10 @@ class BlobMacro : AstCallMacro
        blob type, e.g. registry |> read(\"sea_level\") |> blob(type<float>)")
 
     assume request = expr.arguments[0]
-    var inscope creationReqTd <- typeinfo(ast_typedecl type<VirtualResourceCreationSemiRequest>)
-    let isCreationReq = is_same_type(request._type, creationReqTd, RefMatters no, ConstMatters no, TemporaryMatters no)
-    var inscope regularReqTd <- typeinfo(ast_typedecl type<VirtualResourceSemiRequest>)
-    let isRegularReq = is_same_type(request._type, regularReqTd, RefMatters no, ConstMatters no, TemporaryMatters no)
+    var inscope creationReqTd <- typeinfo ast_typedecl(type<VirtualResourceCreationSemiRequest>)
+    let isCreationReq = is_same_type(request._type, creationReqTd, RefMatters.no, ConstMatters.no, TemporaryMatters.no)
+    var inscope regularReqTd <- typeinfo ast_typedecl(type<VirtualResourceSemiRequest>)
+    let isRegularReq = is_same_type(request._type, regularReqTd, RefMatters.no, ConstMatters.no, TemporaryMatters.no)
 
     macro_verify(isCreationReq || isRegularReq, prog, expr.at,
                  "First argument of function-like macro `blob` must be a resource request, \
@@ -469,9 +469,9 @@ class BlobMacro : AstCallMacro
     let hasValue = !(expr.arguments[1] is ExprTypeDecl)
     var inscope blobType := expr.arguments[1]._type
     if hasValue
-      blobType.flags &= ~TypeDeclFlags constant
-      blobType.flags &= ~TypeDeclFlags ref
-      blobType.flags &= ~TypeDeclFlags explicitRef
+      blobType.flags &= ~TypeDeclFlags.constant
+      blobType.flags &= ~TypeDeclFlags.ref
+      blobType.flags &= ~TypeDeclFlags.explicitRef
     assume arg1 = expr.arguments[1]
 
     macro_verify(blobType != null, prog, expr.at,
@@ -502,8 +502,8 @@ class BlobMacro : AstCallMacro
                 res |> setDescription($v(mangledBlobTypeName), $v(blobType.sizeOf), $v(blobType.alignOf),
                   getTypeInfo(type<$t(blobType)>), @@$c("ctor`{blobTypeHash}"), @@$c("dtor`{blobTypeHash}"), @@$c("copy`{blobTypeHash}"));
               } else {
-                let nullFunc = [[function<(var arg0 : void?) : void>]];
-                let nullCopyFunc = [[function<(var arg0 : void?; arg1 : void const?) : void>]];
+                let nullFunc = default<function<(var arg0 : void?) : void>>;
+                let nullCopyFunc = default<function<(var arg0 : void?; arg1 : void const?) : void>>;
                 res |> setDescription($v(mangledBlobTypeName), $v(blobType.sizeOf), $v(blobType.alignOf),
                   getTypeInfo(type<$t(blobType)>), nullFunc, nullFunc, nullCopyFunc);
               }
@@ -513,12 +513,12 @@ class BlobMacro : AstCallMacro
                 res |> overrideCtor(getTypeInfo(type<$t(blobType)>), ctor);
               }
 
-              res.resType = ResourceType Blob;
+              res.resType = ResourceType.Blob;
             } |> invoke(self.registry.resources |> get(self.resUid.nameId));
             self |> modifyRequest() <| $(var request : ResourceRequest&) {
               request |> markWithTag($v(mangledBlobTypeName));
-            };
-            return <- [[$t(requestStruct) registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]];
+            }
+            return <- struct<$t(requestStruct)>(registry = self.registry, nodeId = self.nodeId, resUid = self.resUid);
           } |> invoke($e(request));
         }
     else
@@ -526,8 +526,8 @@ class BlobMacro : AstCallMacro
           $(var self : VirtualResourceSemiRequest) {
             self |> modifyRequest() <| $(var request : ResourceRequest&) {
               request |> markWithTag($v(mangledBlobTypeName));
-            };
-            return <- [[$t(requestStruct) registry=self.registry, nodeId=self.nodeId, resUid=self.resUid]];
+            }
+            return <- struct<$t(requestStruct)>(registry = self.registry, nodeId = self.nodeId, resUid = self.resUid);
           } |> invoke($e(request));
         }
 
@@ -568,7 +568,7 @@ def bindToShaderVar(var self : auto(TT); name : string = "") : TT
   assume bindings = self.registry.nodes[self.nodeId].bindings
   if !(bindings |> key_exists(svId))
     using() <| $(var info : Binding#)
-      info.bindType = BindingType ShaderVar
+      info.bindType = BindingType.ShaderVar
       info.resource = self.resUid.nameId
       info.history = self.resUid.history
       bindings[svId] := info
@@ -578,16 +578,16 @@ def bindToShaderVar(var self : auto(TT); name : string = "") : TT
     let selfName = self.registry.knownNames |> getName(self.nodeId)
     error("Encountered duplicate shader var {name} binding in {selfName} frame graph node! Ignoring one of the them!")
 
-  useAs(self, Usage SHADER_RESOURCE)
+  useAs(self, Usage.SHADER_RESOURCE)
   return self
 
 
 def handle(self : VirtualTextureRequest) : VirtualTextureHandle
-  return <- [[VirtualTextureHandle provider=self.registry |> getProvider(), resUid=self.resUid]]
+  return <- VirtualTextureHandle(provider = self.registry |> getProvider(), resUid = self.resUid)
 
 
 def handle(self : VirtualBufferRequest) : VirtualBufferHandle
-  return <- [[VirtualBufferHandle provider=self.registry |> getProvider(), resUid=self.resUid]]
+  return <- VirtualBufferHandle(provider = self.registry |> getProvider(), resUid = self.resUid)
 
 
 def view(self : VirtualTextureHandle) : ManagedTexView
@@ -613,7 +613,7 @@ def requestState(var self : Registry) : StateRequest
 
   self.registry.nodes[self.nodeId].stateRequirements |> emplace_some
 
-  return [[StateRequest registry=self.registry, nodeId=self.nodeId]]
+  return StateRequest(registry = self.registry, nodeId = self.nodeId)
 
 
 def private setBlock(var self : StateRequest; name : string; layer : string; var value : int&) : StateRequest
@@ -681,7 +681,7 @@ def requestRenderPass(var self : Registry) : VirtualPassRequest
 
   self.registry.nodes[self.nodeId].renderingRequirements |> emplace_some
 
-  return [[VirtualPassRequest registry=self.registry, nodeId=self.nodeId]]
+  return VirtualPassRequest(registry = self.registry, nodeId = self.nodeId)
 
 
 def private processAttachment(var self : VirtualPassRequest; attachment : VirtualAttachmentRequest; access_override : Access) : ResUid
@@ -691,7 +691,7 @@ def private processAttachment(var self : VirtualPassRequest; attachment : Virtua
   else
     let nodeNsId = self.registry.knownNames |> getParent(self.nodeId)
     let resId = self.registry.knownNames |> addNameId`ResNameId(nodeNsId, attachment.resource as name)
-    if (access_override == Access READ_ONLY)
+    if (access_override == Access.READ_ONLY)
       self.registry.nodes[self.nodeId].readResources |> insert(resId)
     else
       self.registry.nodes[self.nodeId].modifiedResources |> insert(resId)
@@ -703,12 +703,12 @@ def private processAttachment(var self : VirtualPassRequest; attachment : Virtua
 
 
 def color(var self : VirtualPassRequest; requests : VirtualTextureRequest[]) : VirtualPassRequest
-  let attachments <- [{for req in requests; [[VirtualAttachmentRequest resource=[[VirtualAttachmentResource resUid=req.resUid]]]]}]
+  let attachments <- [for req in requests; VirtualAttachmentRequest(resource=VirtualAttachmentResource(resUid=req.resUid))]
   return self |> color(attachments)
 
 
 def color(var self : VirtualPassRequest; names : string[]) : VirtualPassRequest
-  let attachments <- [{for name in names; [[VirtualAttachmentRequest resource=[[VirtualAttachmentResource name=name]]]]}]
+  let attachments <- [for name in names; VirtualAttachmentRequest(resource=VirtualAttachmentResource(name=name))]
   return self |> color(attachments)
 
 
@@ -721,64 +721,61 @@ def color(var self : VirtualPassRequest; attachments : array<VirtualAttachmentRe
     reqs.colorAttachments |> clear()
 
   for attachment in attachments
-    let uid = self |> processAttachment(attachment, Access READ_WRITE)
+    let uid = self |> processAttachment(attachment, Access.READ_WRITE)
     verify(!uid.history)
-    self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = [[
-      ResourceUsage access=Access READ_WRITE, stage=Stage POST_RASTER, usageType=Usage COLOR_ATTACHMENT]]
-    reqs.colorAttachments |> push([[VirtualSubresourceRef nameId=uid.nameId, mipLevel=attachment.mipLevel, layer=attachment.layer]])
+    self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = ResourceUsage(access = Access.READ_WRITE, stage = Stage.POST_RASTER, usageType = Usage.COLOR_ATTACHMENT)
+    reqs.colorAttachments |> push(VirtualSubresourceRef(nameId = uid.nameId, mipLevel = attachment.mipLevel, layer = attachment.layer))
 
   return self
 
 
 def private depth(var self : VirtualPassRequest; name : string; usage_access : Access; read_only : bool) : VirtualPassRequest
-  let attachment <- [[VirtualAttachmentRequest resource=[[VirtualAttachmentResource name=name]]]]
+  let attachment <- VirtualAttachmentRequest(resource = VirtualAttachmentResource(name = name))
   return self |> depth(attachment, usage_access, read_only)
 
 
 def private depth(var self : VirtualPassRequest; attachment : VirtualAttachmentRequest; usage_access : Access; read_only : bool) : VirtualPassRequest
   assume reqs = self.registry.nodes[self.nodeId].renderingRequirements as some
 
-  if reqs.depthAttachment.nameId != ResNameId Invalid
+  if reqs.depthAttachment.nameId != ResNameId.Invalid
     let selfName = self.registry.knownNames |> getName(self.nodeId)
     error("Encountered duplicate depth attachment calls on the same pass request in {selfName} frame graph node! Ignoring one of them!")
 
   let uid = self |> processAttachment(attachment, usage_access)
   verify(!uid.history)
-  self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = [[
-    ResourceUsage access=read_only ? Access READ_ONLY : Access READ_WRITE,
-    stage=Stage POST_RASTER,
-    usageType=read_only ? Usage DEPTH_ATTACHMENT_AND_SHADER_RESOURCE : Usage DEPTH_ATTACHMENT]]
-  reqs.depthAttachment = [[VirtualSubresourceRef nameId=uid.nameId, mipLevel=attachment.mipLevel, layer=attachment.layer]]
+  self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = ResourceUsage(access = read_only ? Access.READ_ONLY : Access.READ_WRITE,
+    stage = Stage.POST_RASTER,
+    usageType = read_only ? Usage.DEPTH_ATTACHMENT_AND_SHADER_RESOURCE : Usage.DEPTH_ATTACHMENT)
+  reqs.depthAttachment = VirtualSubresourceRef(nameId = uid.nameId, mipLevel = attachment.mipLevel, layer = attachment.layer)
   reqs.depthReadOnly = read_only
 
   return self
 
 
 def depthRw(var self : VirtualPassRequest; attachment : auto) : VirtualPassRequest
-  return self |> depth(attachment, Access READ_WRITE, false)
+  return self |> depth(attachment, Access.READ_WRITE, false)
 
 
 def depthRo(var self : VirtualPassRequest; attachment : auto) : VirtualPassRequest
-  return self |> depth(attachment, Access READ_ONLY, true);
+  return self |> depth(attachment, Access.READ_ONLY, true)
 
 def vrsRate(var self : VirtualPassRequest; name : string[]) : VirtualPassRequest
-  let attachment <- [[VirtualAttachmentRequest resource=[[VirtualAttachmentResource name=name]]]]
+  let attachment <- VirtualAttachmentRequest(resource = VirtualAttachmentResource(name = name))
   return self |> color(attachments)
 
 def vrsRate(var self : VirtualPassRequest; attachment : VirtualAttachmentRequest) : VirtualPassRequest
   assume reqs = self.registry.nodes[self.nodeId].renderingRequirements as some
 
-  if reqs.vrsRateAttachment.nameId != ResNameId Invalid
+  if reqs.vrsRateAttachment.nameId != ResNameId.Invalid
     let selfName = self.registry.knownNames |> getName(self.nodeId)
     error("Encountered duplicate VRS rate attachment calls on the same pass request in {selfName} frame graph node! Ignoring one of them!")
 
-  let uid = self |> processAttachment(attachment, Access READ_ONLY)
+  let uid = self |> processAttachment(attachment, Access.READ_ONLY)
   verify(!uid.history)
-  self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = [[
-    ResourceUsage access=Access READ_ONLY,
-    stage=Stage POST_RASTER,
-    usageType=Usage VRS_RATE_TEXTURE]]
-  reqs.vrsRateAttachment = [[VirtualSubresourceRef nameId=uid.nameId, mipLevel=attachment.mipLevel, layer=attachment.layer]]
+  self.registry.nodes[self.nodeId].resourceRequests[uid.nameId].usage = ResourceUsage(access = Access.READ_ONLY,
+    stage = Stage.POST_RASTER,
+    usageType = Usage.VRS_RATE_TEXTURE)
+  reqs.vrsRateAttachment = VirtualSubresourceRef(nameId = uid.nameId, mipLevel = attachment.mipLevel, layer = attachment.layer)
 
   if attachment.mipLevel != 0u || attachment.layer != 0u
     let selfName = self.registry.knownNames |> getName(self.nodeId)

@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-// warning disable: -file:forbidden-function
+
 let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let DataBlock  = require("DataBlock")
 let { wwGetOperationId, wwIsOperationLoaded } = require("worldwar")
@@ -14,7 +14,7 @@ function ww_destroy_cur_operation() {
 
   let blk = DataBlock()
   blk.operationId = wwGetOperationId().tointeger()
-  blk.status = 3 //ES_FAILED
+  blk.status = 3 
   charSimpleAction("adm_ww_set_operation_status", blk, { showProgressBox = true },
     function() {
       dlog("success")

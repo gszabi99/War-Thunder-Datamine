@@ -91,7 +91,7 @@ let getModComps = function() {
   if (selectedEntity.value == INVALID_ENTITY_ID)
     return {}
   let comps = entity_editor?.get_saved_components(selectedEntity.value)
-  if (comps == null) // non-scene entity
+  if (comps == null) 
     return null
   let compsObj = {}
   comps.map(@(v) compsObj[v] <- true)
@@ -363,7 +363,7 @@ function panelCaption(text, tpl_name) {
   return {
     size = [flex(), SIZE_TO_CONTENT]
     rendObj = ROBJ_BOX
-    fillColor = Color(0,10,20,210)//colors.ControlBg
+    fillColor = Color(0,10,20,210)
     borderColor = Color(30,30,30,20)
     borderWidth = hdpx(1)
     padding = [0,hdpx(5)]
@@ -416,7 +416,7 @@ function panelButtons() {
   return {
     size = [flex(), fsh(3.3)]
     rendObj = ROBJ_BOX
-    fillColor = Color(0,10,20,210)//colors.ControlBg
+    fillColor = Color(0,10,20,210)
     borderColor = Color(30,30,30,100)
     borderWidth = hdpx(1)
     padding = [0,hdpx(5)]
@@ -892,7 +892,7 @@ function mkCollapsible(isConst, caption, childrenCtor=@() null, len=0, tags = nu
   let captionUi = @() {
     watch = isOpened
     rendObj = ROBJ_BOX
-    fillColor = Color(0,10,20,210)//colors.ControlBg
+    fillColor = Color(0,10,20,210)
     borderColor = Color(30,30,30,20)
     padding
     key = caption
@@ -1104,7 +1104,7 @@ function mkEntityRow(eid, template_name, name, is_odd) {
     onClick = function(evt) {
       if (selectedEntities.value.len() > 1) {
         if (evt.ctrlKey)
-          entity_editor?.get_instance()?.selectEntity(eid, false/*selected*/)
+          entity_editor?.get_instance()?.selectEntity(eid, false)
         else {
           selectedEntity(eid)
           entity_editor?.get_instance()?.setFocusedEntity(eid)
@@ -1201,7 +1201,7 @@ function compPanel() {
   else {
     updateModComps()
 
-    toggleBg = makeBgToggle() // achtung!: implicit state reset - better pass it via arguments
+    toggleBg = makeBgToggle() 
 
     let showComps = !riSelectShown.value && selectedEntity.value != INVALID_ENTITY_ID
     let showList  = !riSelectShown.value && !showComps && selectedEntities.value.len() > 1
@@ -1285,7 +1285,7 @@ function compPanel() {
 
           children = [
             {
-              size = flex() // free some space for combo
+              size = flex() 
               rendObj = ROBJ_WORLD_BLUR_PANEL
               fillColor = Color(20,20,20,235)
               clipChildren = true

@@ -30,7 +30,7 @@ enum LB_MODE {
 
   HELICOPTER_ARCADE = 0x10000
 
-  // masks
+  
   COMMON            = 0x0000F
   AIR               = 0x000F0
   TANK              = 0x00F00
@@ -77,7 +77,7 @@ function getLbMode(name, isWwLeaderboard = false) {
   if (!isWwLeaderboard && isEmpty(name))
     return 0
 
-  if (isEmpty(name))  //if not mode name then it events leaderboard and WW_LB_MODE need all
+  if (isEmpty(name))  
     return WW_LB_MODE.ALL
 
   let lbModeNames = isWwLeaderboard ? wwLbModeName : lbModeName
@@ -101,23 +101,23 @@ function getLbCategoryTypeByField(field) {
 }
 
 let categoryTemplate = {
-  id = "" //filled automatically by typeName [DEPRECATED]
-  field = "" //field name from server response
+  id = "" 
+  field = "" 
   lbDataType = lbDataType.NUM
   sort_default = false
   inverse = false
   visualKey = ""
   headerImage = ""
   headerTooltip = ""
-  reqFeature = null //show row only when has_feature
+  reqFeature = null 
   modesMask = LB_MODE.ALL
   wwModesMask = WW_LB_MODE.ALL
-  ownProfileOnly = false  //show row only if in checkVisibility params will be set flag "isOwnStats"
+  ownProfileOnly = false  
   additionalTooltipCategoryes = null
   hideInAdditionalTooltipIfZero = false
-  isSortDefaultFilter = false // This field is sort default for events where it is visible.
-  showFieldFilter = null // This field will show up only for following events (by tournament_mode).
-  showEventFilterFunc = null // This field will show up only for following events (by eventData).
+  isSortDefaultFilter = false 
+  showFieldFilter = null 
+  showEventFilterFunc = null 
 
   function getAdditionalTooltipPart(row) {
     if (!this.additionalTooltipCategoryes || !row)
@@ -131,7 +131,7 @@ let categoryTemplate = {
       if (!(additionalCategory.field in row))
         continue
 
-      // check reqFeature
+      
       if (!additionalCategory.isVisibleByFeature())
         continue
 
@@ -162,10 +162,10 @@ let categoryTemplate = {
     return res
   }
 
-  isVisibleByFeature = @() hasAllFeatures(this.reqFeature) // check reqFeature
+  isVisibleByFeature = @() hasAllFeatures(this.reqFeature) 
 
   function isVisibleByLbModeName(modeName) {
-    // check modesMask
+    
     return ((this.modesMask == LB_MODE.ALL) || ((getLbMode(modeName) & this.modesMask) != 0)) &&
       ((this.wwModesMask == WW_LB_MODE.ALL) || ((getLbMode(modeName, true) & this.wwModesMask) != 0))
   }
@@ -197,7 +197,7 @@ function mkCategory(config, id) {
 lbCategoryTypes.__update({
   UNKNOWN = {}
 
-  /*COMMON*/
+  
   EACH_PLAYER_VICTORIES = {
     visualKey = "each_player_victories"
     field = "each_player_victories"
@@ -438,17 +438,17 @@ lbCategoryTypes.__update({
     modesMask = LB_MODE.AIR | LB_MODE.TANK | LB_MODE.SHIP | LB_MODE.HELICOPTER
   }
 
-  /*CLAN DUELS*/
+  
   CLANDUELS_CLAN_ELO = {
     field = "clanRating"
     lbDataType = lbDataType.NUM,
     headerImage = "elo_rating"
     headerTooltip = "clan_elo"
 
-    showFieldFilter = [] // not encountered in event leaderboards
+    showFieldFilter = [] 
   }
 
-  /*EVENTS*/
+  
   EVENTS_PERSONAL_ELO = {
     field = "rating"
     lbDataType = lbDataType.NUM,
@@ -612,7 +612,7 @@ lbCategoryTypes.__update({
     showEventFilterFunc = @(event) ((event?.leaderboardEventBestStat ?? "") == "score_rating_x10000")
   }
 
-  // for World War
+  
   OPERATION_COUNT = {
     field = "operation_count"
     visualKey = "operation_count"

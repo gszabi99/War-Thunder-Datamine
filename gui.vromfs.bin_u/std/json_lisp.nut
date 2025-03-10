@@ -1,6 +1,6 @@
 import "math"
 
-//let { log } = require("log.nut")()
+
 
 class Env {
     parent = null

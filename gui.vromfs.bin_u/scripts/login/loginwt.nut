@@ -44,7 +44,7 @@ function gui_start_startscreen(_) {
 }
 
 function gui_start_after_scripts_reload(_) {
-  setLoginState(LOGIN_STATE.AUTHORIZED) //already authorized to char
+  setLoginState(LOGIN_STATE.AUTHORIZED) 
   startLoginProcess(true)
 }
 
@@ -77,7 +77,7 @@ function firstMainMenuLoad() {
     : gui_start_mainmenu({ allowMainmenuActions = false })
 
   if (!handler)
-    return //was error on load mainmenu, and was called signout on such error
+    return 
 
   ::updateContentPacks()
 
@@ -148,7 +148,7 @@ function firstMainMenuLoad() {
     onMainMenuReturnActions.value?.onMainMenuReturn(handler, true)
 }
 
-//animatedSwitchScene sync function, so we need correct finish current call
+
 function loadMainMenuDefer() {
   handlersManager.markfullReloadOnSwitchScene()
   handlersManager.animatedSwitchScene(@() firstMainMenuLoad())

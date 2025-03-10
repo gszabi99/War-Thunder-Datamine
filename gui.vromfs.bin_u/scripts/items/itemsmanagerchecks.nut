@@ -46,7 +46,7 @@ function fillFakeItemsList() {
   fakeItemsList = DataBlock()
 
   for (local i = 0; i <= get_cyber_cafe_max_level(); ++i) {
-    let level = i || curLevel //we do not need level0 booster, but need booster of current level.
+    let level = i || curLevel 
     let table = {
       type = itemType.FAKE_BOOSTER
       iconStyle = "cybercafebonus"
@@ -84,7 +84,7 @@ function checkItemDefsUpdate() {
   reqUpdateItemDefsList.set(false)
 
   itemsListExternal.clear()
-  // Collecting itemdefs as shop items
+  
   foreach (itemDefDesc in inventoryClient.getItemdefs()) {
     local item = itemsByItemdefId?[itemDefDesc?.itemdefid]
     if (!item) {
@@ -199,7 +199,7 @@ function checkInventoryUpdate() {
 
     let invItemBlk = DataBlock()
     get_item_data_by_uid(invItemBlk, slot.uids[0])
-    // if (getTblValue("expiredTime", invItemBlk, 0) < 0)
+    
     if ((invItemBlk?.expiredTime ?? 0) < 0)
       continue
 
@@ -211,7 +211,7 @@ function checkInventoryUpdate() {
     if (!blk) {
       if (is_dev_version())
         log($"Error: found removed item: {slot.id}")
-      continue //skip removed items
+      continue 
     }
 
     let item = createItem(iType, blk, invItemBlk, slot)
@@ -232,12 +232,12 @@ function checkInventoryUpdate() {
     }
   }
 
-  // gather transfer items list
+  
   let transferAmounts = {}
   foreach (data in itemTransfer.getSendingList())
     transferAmounts[data.itemDefId] <- (transferAmounts?[data.itemDefId] ?? 0) + 1
 
-  // Collecting external inventory items
+  
   rawInventoryItemAmountsByItemdefId.clear()
   let extInventoryItems = []
   foreach (itemDesc in inventoryClient.getItems()) {
@@ -248,7 +248,7 @@ function checkInventoryUpdate() {
     else
       rawInventoryItemAmountsByItemdefId[itemDefId] <- itemDesc.quantity
 
-    if (!itemDefDesc.len()) //item not fully updated, or itemDesc no more exist.
+    if (!itemDefDesc.len()) 
       continue
 
     let iType = getInventoryItemType(itemDefDesc?.tags?.type ?? "")
@@ -274,7 +274,7 @@ function checkInventoryUpdate() {
     }
   }
 
-  //add items in transfer
+  
   let itemdefsToRequest = []
   foreach (itemdefid, amount in transferAmounts) {
     let itemdef = inventoryClient.getItemdefs()?[itemdefid]

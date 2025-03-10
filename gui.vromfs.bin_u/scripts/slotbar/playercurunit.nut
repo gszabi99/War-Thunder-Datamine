@@ -31,21 +31,21 @@ function getCountryHangarDefaultUnit(countryId, esUnitType) {
 }
 
 function getFallbackUnitForHangar(params) {
-  // Trying a currently loaded hangar unit
+  
   let countryId = params?.country ?? profileCountrySq.value
   let curHangarUnit = getAircraftByName(hangar_get_current_unit_name())
   if (curHangarUnit?.shopCountry == countryId
       && (params?.slotbarUnits ?? []).indexof(curHangarUnit) != null)
     return curHangarUnit
 
-  // Trying any other unit from country slotbar
+  
   let esUnitType = curHangarUnit?.esUnitType ?? ES_UNIT_TYPE_AIRCRAFT
   foreach (needCheckUnitType in [ true, false ])
     foreach (unit in (params?.slotbarUnits ?? []))
       if (!needCheckUnitType || unit.esUnitType == esUnitType)
         return unit
 
-  // Country default unit (for countries with empty slotbar)
+  
   return getCountryHangarDefaultUnit(countryId, esUnitType)
 }
 

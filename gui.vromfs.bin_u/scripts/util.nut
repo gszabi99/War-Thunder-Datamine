@@ -9,8 +9,8 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_current_base_gui_handler } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
-//ATTENTION! this file is coupling things to much! Split it!
-//shouldDecreaseSize, allowedSizeIncrease = 100
+
+
 let { is_mplayer_peer, destroy_session } = require("multiplayer")
 let penalty = require("penalty")
 let { startLogout } = require("%scripts/login/logout.nut")
@@ -92,7 +92,7 @@ eventbus_subscribe("on_cannot_create_session", function on_cannot_create_session
 })
 
 
-// left for future ps3/ps4 realisation
+
 function on_lost_psn() {
   log("on_lost_psn")
   let guiScene = get_gui_scene()
@@ -210,7 +210,7 @@ let optionsModeByGameMode = {
   return bonusText
 }
 
-::getCountryByAircraftName <- function getCountryByAircraftName(airName) { //used in code
+::getCountryByAircraftName <- function getCountryByAircraftName(airName) { 
   let country = ::getShopCountry(airName)
   let cPrefixLen = "country_".len()
   if (country.len() > cPrefixLen)
@@ -276,7 +276,7 @@ local last_update_entitlements_time = get_time_msec()
 }
 
 ::on_have_to_start_chard_op <- function on_have_to_start_chard_op(message) {
-//  dlog($"GP: on have to start char op message! = {message}")
+
   log($"on_have_to_start_chard_op {message}")
 
   if (message == "sync_clan_vs_profile") {
@@ -304,14 +304,14 @@ local last_update_entitlements_time = get_time_msec()
 }
 
 ::quit_and_run_cmd <- function quit_and_run_cmd(cmd) {
-  direct_launch(cmd); //FIXME: mac???
+  direct_launch(cmd); 
   exit_game();
 }
 
 
-//
-// Server message
-//
+
+
+
 
 local server_message_text = ""
 local server_message_end_time = 0
@@ -370,7 +370,7 @@ local server_message_end_time = 0
   let needEvent = is_mplayer_peer()
   destroy_session(sourceInfo)
   if (needEvent)
-    //need delay after destroy session before is_multiplayer become false
+    
     handlersManager.doDelayed(@() broadcastEvent("SessionDestroyed"))
 }
 

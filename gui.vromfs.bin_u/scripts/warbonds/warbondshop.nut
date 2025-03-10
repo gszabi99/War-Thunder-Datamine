@@ -116,7 +116,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
     this.initItemsProgress()
     this.fillPage()
     this.updateBalance()
-    this.updateTabsTexts() //to reccount tabs textarea colors
+    this.updateTabsTexts() 
   }
 
   function initItemsListSize() {
@@ -185,7 +185,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
   function updatePaginator() {
     let totalPages = this.curWb ? ceil(this.curWb.getAwardsList().len().tofloat() / this.itemsPerPage) : 1
     generatePaginator(this.scene.findObject("paginator_place"), this,
-      this.curPage, totalPages - 1, null, true /*show last page*/ )
+      this.curPage, totalPages - 1, null, true  )
   }
 
   function goToPage(obj) {
@@ -253,7 +253,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateButtons() {
     showObjById("btn_battlePass", !isHandlerInScene(gui_handlers.BattlePassWnd), this.scene)
 
-    if (!this.updateButtonsBar()) //buttons below are hidden if item action bar is hidden
+    if (!this.updateButtonsBar()) 
       return
 
     let award = this.getCurAward()
@@ -293,7 +293,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = 0; i < total; i++) {
       let childObj = listObj.getChild(i)
       let priceObj = childObj.findObject("price")
-      if (!checkObj(priceObj)) //price obj always exist in item. so it check that childObj valid
+      if (!checkObj(priceObj)) 
         continue
 
       priceObj.setValue(this.curPageAwards[i].getCostText())
@@ -506,7 +506,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
       award.doPreview()
   }
 
-  //dependence by blk
+  
   function onToShopButton(_obj) {}
   function onToMarketplaceButton(_obj) {}
   function onOpenCraftTree(_obj) {}

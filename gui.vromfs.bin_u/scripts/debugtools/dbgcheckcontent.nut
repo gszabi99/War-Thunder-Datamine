@@ -4,7 +4,7 @@ from "app" import is_dev_version
 let u = require("%sqStdLibs/helpers/u.nut")
 
 
-// warning disable: -file:forbidden-function
+
 
 let { getLocalLanguage } = require("language")
 let dagor_fs = require("dagor.fs")
@@ -35,7 +35,7 @@ function debug_check_unlocalized_resources() {
   dlog($"debug_check_unlocalized_resources() // {getLocalLanguage()} // listed in log")
   local count = 0
 
-  // Units
+  
   log("UNITS")
   count = 0
   foreach (unit in getAllUnits())
@@ -49,7 +49,7 @@ function debug_check_unlocalized_resources() {
       }
   dlog($"{count} units")
 
-  // Unit Descriptions
+  
   log("UNITDESC")
   count = 0
   local placeholder = loc("encyclopedia/no_unit_description")
@@ -64,13 +64,13 @@ function debug_check_unlocalized_resources() {
     }
   dlog($"{count} unitdescs")
 
-  // Skins
+  
   log("SKINS")
   count = 0
   foreach (unit in getAllUnits())
     if (unit.isInShop) {
       if (unit.skins.len() == 0)
-        unit.skins = get_skins_for_unit(unit.name) //always returns at least one entry
+        unit.skins = get_skins_for_unit(unit.name) 
 
       foreach (skin in unit.skins)
         if (skin.name.len()) {
@@ -83,7 +83,7 @@ function debug_check_unlocalized_resources() {
     }
   dlog($"{count} skins")
 
-  // Decals
+  
   log("DECALS")
   count = 0
   local blk = DataBlock()
@@ -173,7 +173,7 @@ function debug_check_unit_naming() {
   log(brief[brief.len() - 1])
   total += count
 
-  log("MIXED-UP _SHOP AND _0 NAMES:") // HERE
+  log("MIXED-UP _SHOP AND _0 NAMES:") 
   count = 0
   foreach (c, unitIds in ids)
     for (local i = 0; i < unitIds.len(); i++)
@@ -381,12 +381,12 @@ function debug_check_unit_images(verbose = false) {
         local located = unitImagesSearchEverywhere(expectedFn, files, unit, cfg)?[0]
 
         if (located != null) {
-          // Image exists, no need to use a placeholder.
+          
           errors++
           printFunc($"ERROR: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" is {valueTxt} (but image exists: \"{located.path}\")")
         }
         else {
-          // Image not exists, placeholder is used.
+          
           local isError = !unit.isPkgDev
           if (isError)
             errors++
@@ -400,7 +400,7 @@ function debug_check_unit_images(verbose = false) {
       }
 
       if (files[unitTag][pathKey].indexof(fn) == null) {
-        // Image not exists, or has wrong location.
+        
         local imgUnit = getAircraftByName(cfg.getUnitIdByImgFn(fn))
         if (imgUnit != null && imgUnit != unit && unit.isPkgDev && !imgUnit.isPkgDev) {
           local unitTag2 = imgUnit.unitType.getCrewTag()
@@ -425,7 +425,7 @@ function debug_check_unit_images(verbose = false) {
         printFunc($"{accidentType}: {cfg.imgType} for {unitSrc} unit \"{unit.name}\" {accidentText}: \"{expectedPath}\"{comment}")
       }
       else {
-        // Image exists, lets search for duplicates.
+        
         local locatedList = unitImagesSearchEverywhere(fn, files, unit, cfg)
         if (locatedList.len() > 1) {
           local expectedPath = "/".concat(cfg[pathKey], cfg.subDirs[unitTag], fn)

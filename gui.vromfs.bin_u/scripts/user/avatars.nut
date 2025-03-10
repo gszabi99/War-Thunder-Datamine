@@ -28,7 +28,7 @@ function invalidateIcons() {
   icons = null
   allowedIcons = null
   let guiScene = get_cur_gui_scene()
-  if (guiScene) //need all other configs invalidate too before push event
+  if (guiScene) 
     guiScene.performDelayed(this, @() seenAvatars.onListChanged())
 }
 

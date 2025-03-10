@@ -214,7 +214,7 @@ let getSenderColor = function (message) {
 
 let messageComponent = @(message) function() {
   local text = ""
-  if (message.sender == "") { //system
+  if (message.sender == "") { 
     text = string.format(
       "%s <color=%d>%s</color>",
       secondsToTimeSimpleString(message.time),

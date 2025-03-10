@@ -21,7 +21,7 @@ let { isDiffUnlocked, getReqTutorial } = require("%scripts/tutorials/tutorialsSt
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 
-let checkTutorialsList = [ //idx in this array used for local profile option skipTutorialBitmaskId
+let checkTutorialsList = [ 
   {
     id = "fighter"
     tutorial = "tutorialB_fighter"
@@ -173,7 +173,7 @@ function getTutorialFirstCompletRewardData(misDataBlk, params = {}) {
 
 function saveTutorialToCheckReward(mission) {
   let mainGameMode = get_game_mode()
-  set_game_mode(GM_TRAINING)  //req to check progress
+  set_game_mode(GM_TRAINING)  
   let campId = get_game_mode_name(GM_TRAINING)
   let missionName = mission.name
   let fullMissionName = $"{mission.getStr("chapter", campId)}/{missionName}"
@@ -219,7 +219,7 @@ function getTutorialsTblWithMissions (diff = -1, misName = null) {
     {})
 
   let mainGameMode = get_game_mode()
-  set_game_mode(GM_TRAINING)  //req to check progress
+  set_game_mode(GM_TRAINING)  
   let campId = get_game_mode_name(GM_TRAINING)
   let chapters = get_meta_missions_info_by_chapters(GM_TRAINING)
   foreach (chapter in chapters)
@@ -228,7 +228,7 @@ function getTutorialsTblWithMissions (diff = -1, misName = null) {
         let fullMissionName = $"{m?.chapter ?? campId}/{m.name}"
         let progress = get_mission_progress(fullMissionName)
         if (!isRequireFeature(m, "reqFeature")
-          && ((diff < 0 && progress == 3) || (diff >= 0 && (progress == 3 || progress < diff)))) // 3 == unlocked, 0-2 - completed at difficulty
+          && ((diff < 0 && progress == 3) || (diff >= 0 && (progress == 3 || progress < diff)))) 
             tutorialsTbl[m.name].__update({ mission = m, progress = progress })
 
         if (misName != null)
@@ -241,7 +241,7 @@ function getTutorialsTblWithMissions (diff = -1, misName = null) {
 }
 
 function getTutorialRewardMarkup(tutorialData) {
-  if (tutorialData.progress != 3) //tutorials have reward only once
+  if (tutorialData.progress != 3) 
     return ""
 
   let rBlk = get_pve_awards_blk()

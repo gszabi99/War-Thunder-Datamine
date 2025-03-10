@@ -7,18 +7,18 @@ let { stripTags } = require("%sqstd/string.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 let { isDataBlock } = require("%sqstd/underscore.nut")
 
-/* LayersIcon API:
-  getIconData(iconStyle, image = null, ratio = null, defStyle = null, iconParams = null)
-                        - get icon data for replace content
-  replaceIcon(iconObj, iconStyle, image=null, ratio=null, defStyle = null, iconParams = null)
-                        - find icon data and replace content it in iconObj
-  genDataFromLayer(layerCfg)  - generate data for replace content by layer config
-                        - params:
-                            w, h  - (float) width and height as part of parent size  (default: equal parent size)
-                            x, y  - position as part of parent (default: in the middle)
-                            img = image
-                            id = layer id
-*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 let layersCfgParams = {
   x = {
@@ -173,8 +173,8 @@ function calcLayerBaseParams(layerCfg, containerSizePx) {
   return res
 }
 
-LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers = "", containerSizePx = 0) {  //need to move it to handyman,
-                                     //but before need to correct cashe it or it will decrease performance
+LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers = "", containerSizePx = 0) {  
+                                     
   let baseParams = calcLayerBaseParams(layerCfg, containerSizePx)
 
   let offsetX = getTblValue("offsetX", layerCfg, "")
@@ -197,7 +197,7 @@ LayersIcon.genDataFromLayer <- function genDataFromLayer(layerCfg, insertLayers 
     pos = baseParams.position, image = img, props = $"{props} {insertLayers}" })
 }
 
-// For icon customization it is much easier to use replaceIcon() with iconParams, or getIconData() with iconParams.
+
 LayersIcon.genInsertedDataFromLayer <- function genInsertedDataFromLayer(mainLayerCfg, insertLayersArrayCfg) {
   local insertLayers = ""
   foreach (layerCfg in insertLayersArrayCfg)

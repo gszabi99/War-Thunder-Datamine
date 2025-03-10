@@ -33,7 +33,7 @@ let MISSION_OBJECTIVE = {
 
   WITHOUT_SCORE       = 0x1000
 
-  //masks
+  
   NONE                = 0x0000
   ANY                 = 0xFFFF
 
@@ -136,7 +136,7 @@ function restartCurrentMission() {
   restart_mission()
 }
 
-function isMissionComplete(chapterName, missionName) { //different by mp_modes
+function isMissionComplete(chapterName, missionName) { 
   let progress = get_mission_progress($"{chapterName}/{missionName}")
   return progress >= 0 && progress < 3
 }

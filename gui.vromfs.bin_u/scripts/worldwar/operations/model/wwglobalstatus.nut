@@ -15,7 +15,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { getWWConfigurableValue, getLastPlayedOperationId } = require("%scripts/worldWar/worldWarStates.nut")
 
 local refreshMinTimeSec = 180
-const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  //!!!FIX ME: it is better to increase request timeout gradually starting from min request time
+const MULTIPLY_REQUEST_TIMEOUT_BY_REFRESH = 2  
 
 let curData = mkWatched(persist, "curData", null)
 let validListsMask = mkWatched(persist, "validListsMask", 0)
@@ -77,9 +77,9 @@ function onGlobalStatusReceived(newData) {
   pushStatusChangedEvent(changedListsMask)
 }
 
-//special actions with global status in successCb
+
 function actionWithGlobalStatusRequest(actionName, requestBlk = null, taskOptions = null, onSuccessCb = null) {
-  if (isDeveloperMode.value) { // Force full global status request in developer mode
+  if (isDeveloperMode.value) { 
     actionName = "cln_ww_global_status"
     requestBlk = null
   }
@@ -117,7 +117,7 @@ function refreshGlobalStatusData(refreshDelay = null) {
   if (!canRefreshData(refreshDelay))
     return
 
-  if (isDeveloperMode.value) // Full global status includes all data from short and queue statuses
+  if (isDeveloperMode.value) 
     return actionWithGlobalStatusRequest("cln_ww_global_status")
 
   let requestBlk = DataBlock()

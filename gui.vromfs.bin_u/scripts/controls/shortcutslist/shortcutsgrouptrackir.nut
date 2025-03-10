@@ -15,7 +15,7 @@ function isHeadTrackerAvailable() {
 
 
 return [
-//-------------------------------------------------------
+
   {
     id = "ID_COMMON_TRACKER_HEADER"
     type = CONTROL_TYPE.SECTION

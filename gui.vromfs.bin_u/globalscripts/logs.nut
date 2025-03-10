@@ -19,8 +19,8 @@ return {
   log = log.log
   console_print
   wlog
-  dlog  //disable: -dlog-warn
-  wdlog = @(watched, prefix = null, transform = null) log.wlog(watched, prefix, transform, log.dlog) //disable: -dlog-warn
+  dlog  
+  wdlog = @(watched, prefix = null, transform = null) log.wlog(watched, prefix, transform, log.dlog) 
   log_with_prefix = with_prefix
   logerr
   debugTableData

@@ -6,7 +6,7 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 
-let chatColors = freeze({ //better to allow player tune color sheme
+let chatColors = freeze({ 
   sender =         { [false] = "@mChatSenderColorDark",        [true] = "@mChatSenderColor" }
   senderMe =       { [false] = "@mChatSenderMeColorDark",      [true] = "@mChatSenderMeColor" }
   senderPrivate =  { [false] = "@mChatSenderPrivateColorDark", [true] = "@mChatSenderPrivateColor" }

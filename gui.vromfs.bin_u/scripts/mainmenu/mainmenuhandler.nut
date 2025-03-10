@@ -38,7 +38,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
 
   visibleUnitInfoName = ""
 
-  //custom functions
+  
   function initScreen() {
     set_presence_to_player("menu")
 
@@ -59,7 +59,7 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
       debug_dump_stack()
       leaveSessionRoom()
     }
-    stop_gui_sound("deb_count") //!!Dirty hack: after inconsistent leave debriefing from code.
+    stop_gui_sound("deb_count") 
   }
 
   function onStart() {

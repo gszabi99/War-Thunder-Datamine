@@ -7,28 +7,28 @@ let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-/*
-  config = {
-    onChangeValueCb = function(selValuesArray)   //callback on each value change
-    onChangeValuesBitMaskCb = function(selBitMask)   //callback on each value change
-    onFinalApplyCb = function(selValuesArray)   //callback on close window if values was changed
-    onFinalApplyBitMaskCb = function(selBitMask)   //callback on close window if values was changed
 
-    align = "top"/"bottom"/"left"/"right"
-    alignObj = DaguiObj  //object to align menu
 
-    list = [ //max-len 32
-      {
-        text = string
-        icon = string
-        selected = boolean
-        show = boolean || function
-        value = ...    //only required when use not bitMask callbacks
-      }
-      ...
-    ]
-  }
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 gui_handlers.MultiSelectMenu <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL
   sceneTplName = "%gui/multiSelectMenu.tpl"

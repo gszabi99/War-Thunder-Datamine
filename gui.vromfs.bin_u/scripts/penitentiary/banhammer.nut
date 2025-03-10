@@ -173,7 +173,7 @@ gui_handlers.BanHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     log(format("%s user: %s, for %s, for %d sec.\n comment: %s",
                        penalty, this.playerName, category, duration, comment))
     this.taskId = char_ban_user(uid, duration, "", category, penalty,
-                           comment, "" /*hidden_note*/ , chatLogToString(this.chatLog ?? {}))
+                           comment, ""  , chatLogToString(this.chatLog ?? {}))
     if (this.taskId >= 0) {
       set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox(loc("charServer/send"))
@@ -296,7 +296,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       foreach (key in ["kills", "teamKills", "name", "clanTag", "groundKills", "awardDamage", "navalKills", "exp", "deaths"]) {
         res[key] <- ((key in src) && (src[key] != null)) ? src[key] : "<N/A>";
       }
-      res["uid"] <- (("userId" in src) && src.userId) || "<N/A>" //in mplayer uid not the same like in other places. userId is real uid.
+      res["uid"] <- (("userId" in src) && src.userId) || "<N/A>" 
     }
 
     return res;
@@ -313,7 +313,7 @@ gui_handlers.ComplainHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    if(this.compliantCategory == "BOT2") //2 different reasons for the complaint are sent under the same BOT category
+    if(this.compliantCategory == "BOT2") 
       this.compliantCategory = "BOT"
     let details = save_to_json({
       own      = this.collectUserDetailsForTribunal(get_local_mplayer()),

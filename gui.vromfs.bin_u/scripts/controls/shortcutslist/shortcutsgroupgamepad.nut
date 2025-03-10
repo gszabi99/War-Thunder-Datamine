@@ -9,7 +9,7 @@ return [
     id = "ID_COMMON_CONTROL_HEADER"
     type = CONTROL_TYPE.HEADER
   }
-//-------------------------------------------------------
+
   {
     id = "ID_COMMON_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION

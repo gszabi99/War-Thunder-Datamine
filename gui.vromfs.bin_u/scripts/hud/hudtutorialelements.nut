@@ -195,7 +195,7 @@ g_hud_tutorial_elements.onEventLoadingStateChange <- function onEventLoadingStat
   if (isInFlight())
     return
 
-  //all guiScenes destroy on loading so no need check objects one by one
+  
   this.visibleHTObjects.clear()
   this.timers.clear()
   debugHudTutorState.isDebugMode = false
@@ -228,7 +228,7 @@ g_hud_tutorial_elements.onDbgUpdate <- function onDbgUpdate() {
   this.init(this.nest)
 }
 
- //blkName = null to switchOff, blkName = "" to autodetect
+ 
 g_hud_tutorial_elements.debug <- function debug(blkName = "") {
   if (blkName == "")
     blkName = this.getBlkNameByCurMission()

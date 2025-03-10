@@ -1,6 +1,6 @@
 from "%darg/ui_imports.nut" import *
 
-//let {locate_element_source, sh, ph} = require("daRg")
+
 let {format} = require("string")
 let utf8 = require_optional("utf8")
 let {set_clipboard_text} = require("dagor.clipboard")
@@ -225,7 +225,7 @@ function updatePickedList(data) {
   animHighlight(null)
 }
 
-let prepareCallstackText = @(text) //add /t for line wraps
+let prepareCallstackText = @(text) 
   text.replace("/", "/\t")
 
 function clickableText(labelText, valueText, onClick = null, highlightBB = null) {
@@ -257,7 +257,7 @@ function rootsPanel(roots) {
   return @() {
     watch = showRootsInfo
     flow = FLOW_VERTICAL
-    gap = hdpx(2) // gap here to avoid two buttons being selected at ones (they overlap otherwise) and this breaks highlighting
+    gap = hdpx(2) 
     children = [
       clickableText("---show roots---", showRootsInfo.value, @() showRootsInfo(!showRootsInfo.value))
     ].extend(showRootsInfo.value ? rootsList : [])
@@ -274,7 +274,7 @@ function childrenPanel(children) {
   return @() {
     watch = showChildrenInfo
     flow = FLOW_VERTICAL
-    gap = hdpx(2) // gap here to avoid two buttons being selected at ones (they overlap otherwise) and this breaks highlighting
+    gap = hdpx(2) 
     children = [
       clickableText(
         $"---show children ({childrenList.len()}) ---",

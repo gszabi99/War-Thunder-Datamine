@@ -12,25 +12,25 @@ gui_handlers.navigationPanel <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneTplName = "%gui/wndWidgets/navigationPanel.tpl"
   sceneBlkName = null
 
-  // ==== Handler params ====
+  
 
   onSelectCb = null
   onClickCb  = null
   onCollapseCb = null
 
-  // ==== Handler template params ====
+  
 
-  panelWidth        = null  // Panel width
-  headerHeight      = null  // Panel header height
-  headerOffsetX     = "0.015@sf"  // Panel header left and right offset
-  headerOffsetY     = "0.015@sf"  // Panel header top and bottom offset
+  panelWidth        = null  
+  headerHeight      = null  
+  headerOffsetX     = "0.015@sf"  
+  headerOffsetY     = "0.015@sf"  
 
   collapseShortcut  = null
   needShowCollapseButton = null
-  expandShortcut    = null  // default: collapseShortcut
+  expandShortcut    = null  
   focusShortcut     = "LT"
 
-  // ==== Privates ====
+  
 
   itemList = null
 
@@ -44,7 +44,7 @@ gui_handlers.navigationPanel <- class (gui_handlers.BaseGuiHandlerWT) {
   static navListObjId = "nav_list"
 
 
-  // ==== Functions ====
+  
 
   function getSceneTplView() {
     return {

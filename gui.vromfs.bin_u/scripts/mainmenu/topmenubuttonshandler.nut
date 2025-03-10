@@ -5,7 +5,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 let { getTopMenuSectionsOrder } = require("%scripts/mainmenu/topMenuSections.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
@@ -291,6 +291,21 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let panelObj = this.scene.findObject("top_menu_panel_place")
     this.onGCDropdown(panelObj.getChild(mergeIdx))
     panelObj.setValue(mergeIdx)
+  }
+
+  function moveToFirstEnabled(topMenu) {
+    let columnsCount = topMenu.childrenCount()
+    for (local i = 0; i < columnsCount; i++) {
+      let menuColumn = topMenu.getChild(i)
+      let buttonsCount = menuColumn.childrenCount()
+      for (local n = 0; n < buttonsCount; n++) {
+        let btn = menuColumn.getChild(n)
+        if (!btn.isValid() || !btn.isEnabled() || btn.getFinalProp("inactive") == "yes")
+          continue
+        move_mouse_on_obj(btn)
+        return
+      }
+    }
   }
 
   function onEventQueueChangeState(_p) {

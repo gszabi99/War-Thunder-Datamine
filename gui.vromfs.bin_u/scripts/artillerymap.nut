@@ -376,8 +376,8 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onArtilleryMapClick() {
     this.mapCoords = this.getMouseCursorMapCoords()
-    // Touchscreens and Dualshock4 touchscreen should use map touch just to select point and see
-    // dispersion radius, and then [Apply] button to call artillery.
+    
+    
     if (this.shouldMapClickDoApply)
       this.onApply()
   }
@@ -388,7 +388,7 @@ gui_handlers.ArtilleryMap <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onApplyByShortcut() {
-    // On touchscreen, shortcut toggles by map touch, when ID_SHOOT_ARTILLERY is set to LMB.
+    
     if (!this.canUseShortcuts)
       return
     this.onApply()

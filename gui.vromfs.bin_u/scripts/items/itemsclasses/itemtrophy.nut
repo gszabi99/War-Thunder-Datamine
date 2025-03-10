@@ -62,7 +62,7 @@ let Trophy = class (BaseItem) {
 
   canBuy = true
 
-  showTypeInName = null // if undefined, false for items with custom localization, and true for items w/o custom localization.
+  showTypeInName = null 
   showRangePrize = false
   showCountryFlag = ""
   subtrophyShowAsPack = false
@@ -95,7 +95,7 @@ let Trophy = class (BaseItem) {
     this.instantOpening = blk?.instantOpening ?? false
     this.showCountryFlag = blk?.showCountryFlag ?? ""
     this.numTotal = blk?.numTotal ?? 0
-    this.isGroupTrophy = this.numTotal > 0 && !blk?.repeatable //for repeatable work as usual
+    this.isGroupTrophy = this.numTotal > 0 && !blk?.repeatable 
     this.groupTrophyStyle = blk?.groupTrophyStyle ?? this.iconStyle
     this.openingCaptionLocId = blk?.captionLocId
     this.showDropChance = blk?.showDropChance ?? false
@@ -114,7 +114,7 @@ let Trophy = class (BaseItem) {
 
     let blksArray = [blk]
     if (u.isDataBlock(blk?.prizes))
-      blksArray.insert(0, blk.prizes) //if prizes block exist, it's content must be shown in the first place
+      blksArray.insert(0, blk.prizes) 
 
     this.contentRaw = []
     fillContentRaw(this.contentRaw, blksArray)

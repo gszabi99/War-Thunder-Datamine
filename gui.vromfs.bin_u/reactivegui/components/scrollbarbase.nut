@@ -111,15 +111,15 @@ function scrollbar(scroll_handler, options = {}) {
       fValue = fValue
 
       knob = knob
-      min = minV //warning disable : -ident-hides-std-function
-      max = maxV //warning disable : -ident-hides-std-function
+      min = minV 
+      max = maxV 
       unit = 1
 
       flow = axis == 0 ? FLOW_HORIZONTAL : FLOW_VERTICAL
       halign = ALIGN_CENTER
       valign = ALIGN_CENTER
 
-      pageScroll = (axis == 0 ? -1 : 1) * (maxV - minV) / 100.0 // TODO probably needed sync with container wheelStep option
+      pageScroll = (axis == 0 ? -1 : 1) * (maxV - minV) / 100.0 
 
       orientation = orientation
       size = calcBarSize(cls, axis)
@@ -139,7 +139,7 @@ function scrollbar(scroll_handler, options = {}) {
   }
 }
 
-let DEF_SIDE_SCROLL_OPTIONS = { //const
+let DEF_SIDE_SCROLL_OPTIONS = { 
   styling = defStyling
   rootBase = null
   scrollAlign = ALIGN_RIGHT
@@ -147,7 +147,7 @@ let DEF_SIDE_SCROLL_OPTIONS = { //const
   size = flex()
   maxWidth = null
   maxHeight = null
-  needReservePlace = true //need reserve place for scrollbar when it not visible
+  needReservePlace = true 
   clipChildren  = true
   joystickScroll = true
 }

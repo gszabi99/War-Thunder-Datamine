@@ -10,7 +10,7 @@ let { skillParametersRequestType } = require("%scripts/crew/skillParametersReque
 let { g_skill_parameters_type } = require("skillParametersType.nut")
 
 let parametersByCrewId = {}
-let skillGroups = { //skills which have completely the same parameters for different members
+let skillGroups = { 
   eyesight = ["driver", "tank_gunner", "commander", "loader", "radio_gunner"]
   field_repair = ["driver", "tank_gunner", "commander", "loader", "radio_gunner"]
   machine_gunner = ["driver", "tank_gunner", "commander", "loader", "radio_gunner"]
@@ -19,27 +19,27 @@ let skillGroups = { //skills which have completely the same parameters for diffe
 function getParametersByCrewId(crewId, unitName) {
   local parameters = parametersByCrewId?[crewId][unitName]
   if (parameters == null) {
-    /*local values =
-    {
-      pilot = {
-        gForceTolerance = 10,
-        hearing = 10,
-        vitality = 10,
-        endurance = 10,
-        eyesight = 10,
-      },
-      gunner = {
-        accuracy = 10,
-        eyesight = 10,
-        hearing = 10,
-        vitality = 10,
-        gForceTolerance = 10,
-        endurance = 10,
-        density = 10,
-      },
-      specialization = 1,
-    };*/
-    parameters = calc_crew_parameters(crewId, /*values*/ null, unitName)
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    parameters = calc_crew_parameters(crewId,  null, unitName)
     if (!(crewId in parametersByCrewId))
       parametersByCrewId[crewId] <- {}
     parametersByCrewId[crewId][unitName] <- parameters
@@ -112,7 +112,7 @@ function getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, u
   return "\n".join(resArray, true)
 }
 
-//skillsList = [{ memberName = "", skillName = "" }]
+
 function getColumnsTypesList(skillsList, crewUnitType) {
   let columnTypes = []
   foreach (columnType in ::g_skill_parameters_column_type.types) {
@@ -152,7 +152,7 @@ function getSkillListHeaderRow(crew, columnTypes, unit) {
   return res
 }
 
-//skillsList = [{ memberName = "", skillName = "" }]
+
 function getParametersByRequestType(crewId, skillsList, difficulty, requestType, useSelectedParameters, unit) {
   let res = {}
   let fullParamsList = useSelectedParameters
@@ -160,7 +160,7 @@ function getParametersByRequestType(crewId, skillsList, difficulty, requestType,
                          : requestType.getParameters(crewId, unit)
 
   foreach (skill in skillsList) {
-    // Leaving data only related to selected difficulty, member and skill.
+    
     let skillParams = fullParamsList?[difficulty.crewSkillName][skill.memberName][skill.skillName]
     if (!skillParams)
       continue
@@ -229,20 +229,20 @@ function filterSkillsList(skillsList) {
   return res
 }
 
-//skillsList = [{ memberName = "", skillName = "" }]
+
 function getSkillListParameterRowsView(crew, difficulty, notFilteredSkillsList, crewUnitType, unit) {
   let skillsList = filterSkillsList(notFilteredSkillsList)
 
   let columnTypes = getColumnsTypesList(skillsList, crewUnitType)
 
-  //preparing full requestsList
-  let fullRequestsList = [skillParametersRequestType.CURRENT_VALUES] //required for getting params list
+  
+  let fullRequestsList = [skillParametersRequestType.CURRENT_VALUES] 
   foreach (columnType in columnTypes) {
     u.appendOnce(columnType.previousParametersRequestType, fullRequestsList, true)
     u.appendOnce(columnType.currentParametersRequestType, fullRequestsList, true)
   }
 
-  //collect parameters by request types
+  
   let currentParametersByRequestType = {}
   let selectedParametersByRequestType = {}
   foreach (requestType in fullRequestsList) {
@@ -252,11 +252,11 @@ function getSkillListParameterRowsView(crew, difficulty, notFilteredSkillsList, 
       getParametersByRequestType(crew.id, skillsList,  difficulty, requestType, true, unit)
   }
 
-  // Here goes generation of skill parameters cell values.
+  
   let res = parseParameters(columnTypes,
     currentParametersByRequestType, selectedParametersByRequestType, crewUnitType)
-  // If no parameters added then hide table's header.
-  if (res.len()) // Nothing but header row.
+  
+  if (res.len()) 
     res.insert(0, getSkillListHeaderRow(crew, columnTypes, unit))
 
   return res
@@ -272,7 +272,7 @@ function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUn
     skillName = loc($"crew/{skillName}")
     tooltipText = getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit)
 
-    // First item in this array is table's header.
+    
     parameterRows = getSkillListParameterRowsView(crew, difficulty, skillsList, crewUnitType, unit)
     footnoteText = "".concat(loc("shop/all_info_relevant_to_current_game_mode"),
       loc("ui/colon"), difficulty.getLocName())
@@ -281,10 +281,10 @@ function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUn
   if (!view.parameterRows.len())
     return view
 
-  //use header items for legend
+  
   view.headerItems <- view.parameterRows[0].valueItems
 
-  //getprogressbarFrom a first row (it the same for all rows, so we showing it in a top of tooltip
+  
   let firstRow = getTblValue(1, view.parameterRows)
   view.progressBarValue <- getTblValue("progressBarValue", firstRow)
   view.progressBarSelectedValue <- getTblValue("progressBarSelectedValue", firstRow)

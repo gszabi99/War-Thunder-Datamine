@@ -67,7 +67,7 @@ let retrieveRequestActions = function(clanId, playerUid, playerName, handler, ca
           if (isBlock)
             return playerContextMenu.showBlockedPlayerPopup(name)
 
-          if (isProfileMuted) //There was no xbox message, so don't try to call overlay msg
+          if (isProfileMuted) 
             return playerContextMenu.showXboxPlayerMuted(name)
 
           if (!canChat)

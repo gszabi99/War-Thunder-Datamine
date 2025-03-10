@@ -61,7 +61,7 @@ function getRealisticGameModeUnlockText(modeId) {
     return res
 
   let mode = getGameModeById(modeId)
-  // if mode is "Air realistic", "Ground realistic" or "Naval realistc" show only one condition:
+  
   if (mode?.diffCode == DIFFICULTY_REALISTIC) {
     let unitType = mode?.reqUnitTypes[0] ?? mode.unitTypes[0] ?? -1
     let killsOnUnit = killsOnUnitTypes?[unitType]
@@ -76,7 +76,7 @@ function getRealisticGameModeUnlockText(modeId) {
 }
 
 let customStateByGameModeId = {
-  // "World War"
+  
   world_war_featured_game_mode = {
     startFunction = @(_gameMode) openWWMainWnd()
     getUnlockText = @() isWorldWarEnabled() ? getCantPlayWorldwarReasonText() : @() ""
@@ -90,7 +90,7 @@ let customStateByGameModeId = {
       return null
     }
   }
-  // "War Thunder League"
+  
   tss_featured_game_mode = {
     function startFunction(_gameMode) {
       if (!needShowCrossPlayInfo() || isCrossPlayEnabled())
@@ -102,20 +102,20 @@ let customStateByGameModeId = {
     }
     getUnlockText = @() getCustomGameModeUnlockText()
     crossplayTooltip = function() {
-      if (!needShowCrossPlayInfo()) //No need tooltip on other platforms
+      if (!needShowCrossPlayInfo()) 
         return null
       if (!isMultiplayerPrivilegeAvailable.value)
         return loc("xbox/noMultiplayer")
-      //Always send to other platform if enabled
-      //Need to notify about it
+      
+      
       if (isCrossPlayEnabled())
         return loc("xbox/crossPlayEnabled")
-      //Notify that crossplay is strongly required
+      
       return loc("xbox/crossPlayRequired")
     }
 
   }
-  // "Events"
+  
   tournaments_and_event_featured_game_mode = {
     startFunction = @(_gameMode) guiStartModalEvents()
     getUnlockText = @() getCustomGameModeUnlockText()
@@ -125,7 +125,7 @@ let customStateByGameModeId = {
       return null
     }
   }
-  // "Custom Battles"
+  
   custom_battles_featured_game_mode = {
     function startFunction(_gameMode) {
       if (!isMultiplayerPrivilegeAvailable.value) {
@@ -145,11 +145,11 @@ let customStateByGameModeId = {
       return null
     }
   }
-  // "Simulator Battles"
+  
   custom_mode_fullreal = {
     onBattleButtonClick = fullRealModeOnBattleButtonClick
     function startFunction(gameMode) {
-      setCurrentGameModeById(gameMode.id, true) //need this for fast start SB battle in next time
+      setCurrentGameModeById(gameMode.id, true) 
       fullRealModeOnBattleButtonClick(gameMode)
     }
     getModeDescription = @() loc("simulator_battles/desc")
@@ -168,7 +168,7 @@ function getEventDescription(gameMode) {
   return events.getEventDescriptionText(gameMode.source, null, true) ?? ""
 }
 
-// Tooltip text, does not includes text from "crossplayTooltip"
+
 function getGameModeUnlockTooltipText(gameMode) {
   let id = gameMode?.modeId ?? gameMode?.id
   if (gameMode?.forClan)
@@ -176,7 +176,7 @@ function getGameModeUnlockTooltipText(gameMode) {
   return customStateByGameModeId?[id].getUnlockText() ?? getRealisticGameModeUnlockText(id)
 }
 
-// Tooltip text with "getModeDescription", does not includes text from "crossplayTooltip"
+
 function getGameModeDescrAndUnlockTooltipText(gameMode) {
   let id = gameMode?.modeId ?? gameMode?.id
   let eventDescription = getEventDescription(gameMode)
@@ -188,7 +188,7 @@ function getGameModeDescrAndUnlockTooltipText(gameMode) {
     : description ?? modeUnlockText
 }
 
-// Text for modal messages, includes text from "getUnlockText" and other restrictions to play in current gameMode
+
 function getGameModeUnlockFullText(gameMode) {
   let tooltipText = getGameModeUnlockTooltipText(gameMode)
 

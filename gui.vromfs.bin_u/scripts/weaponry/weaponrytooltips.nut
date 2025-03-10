@@ -63,7 +63,7 @@ let tooltipTypes = {
       return true
     }
   }
-  MODIFICATION = { //by unitName, modName
+  MODIFICATION = { 
     getTooltipId = function(unitName, modName = "", params = null, _p3 = null) {
       let p = validateWeaponryTooltipParams(params)
       p.modName <- modName
@@ -138,7 +138,7 @@ let tooltipTypes = {
     }
   }
 
-  WEAPON = { //by unitName
+  WEAPON = { 
     getTooltipId = function(unitName, weaponName = "", params = null, _p3 = null) {
       let p = validateWeaponryTooltipParams(params)
       p.weaponName <- weaponName
@@ -168,7 +168,7 @@ let tooltipTypes = {
         hasPlayerInfo
         curEdiff
         weaponsFilterFunc = params?.weaponBlkPath ? (@(path, _blk) path == params.weaponBlkPath) : null
-        needDescInArrayForm = true //to get all weapon descriptions in arrays instead of string
+        needDescInArrayForm = true 
         markupFileName = "%gui/weaponry/weaponsPresetTooltip.tpl"
       }, effect)
 
@@ -176,7 +176,7 @@ let tooltipTypes = {
     }
   }
 
-  SPARE = { //by unit name
+  SPARE = { 
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unitName, ...) {
       if (!checkObj(obj))
@@ -219,7 +219,7 @@ let tooltipTypes = {
     }
   }
 
-  MODIFICATION_DELAYED_TIER = { //by unitName, modName
+  MODIFICATION_DELAYED_TIER = { 
     getTooltipId = @(unitName, modName = "", params = null, _p3 = null)
       this._buildId(unitName, (params ?? {}).__merge({ modName }))
     isCustomTooltipFill = true

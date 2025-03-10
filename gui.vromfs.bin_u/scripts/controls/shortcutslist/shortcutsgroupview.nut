@@ -10,7 +10,7 @@ let { USEROPT_FIX_GUN_IN_MOUSE_LOOK, USEROPT_MOUSE_SMOOTH, USEROPT_MOUSE_SENSE,
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 return [
-//-------------------------------------------------------
+
   {
     id = "ID_VIEW_CONTROL_HEADER"
     type = CONTROL_TYPE.SECTION

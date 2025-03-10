@@ -1,6 +1,6 @@
 from "daRg" import *
 
-let {get_arg_value_by_name} = require("dagor.system") //for game_name stub below below
+let {get_arg_value_by_name} = require("dagor.system") 
 let {chunk} = require("std/underscore.nut")
 
 const MOVE_ABS = "MOVE_ABS"
@@ -36,12 +36,12 @@ let COMMANDS_KEYS = {
   "c" : {command = BEZIER_CORNER_REL, points_req=6, abs=false}
   "s" : {command = BEZIER_SMOOTH_REL, points_req=4, abs=false}
   "S" : {command = BEZIER_SMOOTH_ABS, points_req=4, abs=true}
-//  "q" : {command = BEZIER_QUADRATIC_REL, points_req=4, abs=false}
-//  "Q" : {command = BEZIER_QUADRATIC_ABS, points_req=4, abs=true}
-//  "t" : {command = BEZIER_T_REL, points_req=2, abs=false}
-//  "T" : {command = BEZIER_T_ABS, points_req=2, abs=true}
-//  "A" : {command = ARC_ABS, points_req=2, draw=false}
-//  "a" : {command = ARC_REL, points_req=6, draw=false}
+
+
+
+
+
+
   "z" : {command = CLOSE, points_req=0}
   "Z" : {command = CLOSE, points_req=0}
 }

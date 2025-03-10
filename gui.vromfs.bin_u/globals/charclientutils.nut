@@ -1,24 +1,24 @@
 from "iostream" import blob
 
-/*
-Usage:
 
-local t = {
-  success = false
-  data = {
-    start = 10
-    count = 1
-    mode  = "solo"
-    flags = [true, true, false]
-  }
-}
 
-shortValue(t)        == "{- {1 [+,+,-] solo 10}}"
-shortKeyValue(t)     == "{success- data{count:1 flags[+,+,-] mode=solo start:10}}"
-shortKeyValue(t, 32) == "{success- data{count:1 flags[+,+*"
-*/
 
-//#strict
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 function Comma(char = ',') {

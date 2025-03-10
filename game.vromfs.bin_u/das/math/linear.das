@@ -164,7 +164,7 @@ def private extend_hull(var hull : array<float2>; var outside : array<float2>; f
     swap(from, to)
   if maxDst >= 0.0
     var newOutside : array<float2>
-    let polygon = [[float2[3] hull[from]; outside[maxP]; hull[to]]]
+    let polygon = fixed_array<float2>(hull[from], outside[maxP], hull[to])
     for p, oidx in outside, iter_range(outside)
       if oidx != maxP && !test_point_in_2d_triangle(p, polygon, !swap_direction)
         push(newOutside, p)

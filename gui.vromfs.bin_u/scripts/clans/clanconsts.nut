@@ -1,4 +1,4 @@
-const CLAN_SEASON_NUM_IN_YEAR_SHIFT = 1 // Because numInYear is zero-based.
+const CLAN_SEASON_NUM_IN_YEAR_SHIFT = 1 
 
 enum CLAN_SEASON_MEDAL_TYPE {
   PLACE

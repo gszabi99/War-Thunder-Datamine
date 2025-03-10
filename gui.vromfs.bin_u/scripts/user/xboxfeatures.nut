@@ -41,7 +41,7 @@ function checkMultiplayerPrivilege(showWarning = false, cb = null) {
 
 
 function crossnetwork_play_privilege_callback(is_allowed) {
-  if (!is_allowed && !is_gdk) //Xbox code will show warning message if isAllowed = false
+  if (!is_allowed && !is_gdk) 
     crossplayPrivelegeCallback?()
 
   crossplayPrivelegeCallback = null
@@ -54,7 +54,7 @@ function checkAndShowCrossplayWarning(cb = null, showWarning = true) {
   if (is_gdk)
     check_crossnetwork_play_privilege(showWarning, crossnetwork_play_privilege_callback)
   else
-    crossnetwork_play_privilege_callback(false) //Default value in code
+    crossnetwork_play_privilege_callback(false) 
 }
 
 

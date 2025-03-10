@@ -58,7 +58,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   queueToShow          = null
   tourStatesList       = {}
   isStateChanged       = false
-  // Incoming params
+  
   tournament           = null
   curEvent             = null
   curTourParams        = null

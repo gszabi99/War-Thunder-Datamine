@@ -67,7 +67,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
     this.category = this.blk?.category ?? ""
     this.group = this.blk?.group ?? ""
 
-    // Only decorators from live.warthunder.com has GUID in id.
+    
     let slashPos = this.id.indexof("/")
     this.isLive = guidParser.isGuid(slashPos == null ? this.id : this.id.slice(slashPos + 1))
 

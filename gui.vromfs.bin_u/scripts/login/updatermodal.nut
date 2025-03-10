@@ -14,7 +14,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let { addLoginState } = require("%scripts/login/loginManager.nut")
 
-// contentUpdater module is optional and don't available on PC
+
 let contentUpdater = require_optional("contentUpdater")
 if (contentUpdater == null)
   return
@@ -163,13 +163,13 @@ gui_handlers.UpdaterModal <- class (BaseGuiHandler) {
   }
 
   function updateText() {
-    let { stage, dspeed, etaSec } = this //-ident-hides-ident
+    let { stage, dspeed, etaSec } = this 
     let text = []
     let textSub = []
     if (stage == UPDATER_DOWNLOADING)
       text.append(loc("updater/downloading"))
     else
-      text.append(loc("pl1/check_profile")) //because we have all localizations
+      text.append(loc("pl1/check_profile")) 
 
     if (stage == UPDATER_CHECKING_FAST || stage == UPDATER_CHECKING
       || stage == UPDATER_RESPATCH || stage == UPDATER_DOWNLOADING
@@ -182,15 +182,15 @@ gui_handlers.UpdaterModal <- class (BaseGuiHandler) {
       if (dspeed > 0) {
         local meas = 0.0;
         local desc = loc("updater/dspeed/b")
-        meas = dspeed / 1073741824.0; //GB
+        meas = dspeed / 1073741824.0; 
         if (meas > 0.5)
           desc = loc("updater/dspeed/gb")
         else {
-          meas = dspeed / 1048576.0; //MB
+          meas = dspeed / 1048576.0; 
           if (meas > 0.5)
             desc = loc("updater/dspeed/mb");
           else {
-            meas = dspeed / 1024.0; //KB
+            meas = dspeed / 1024.0; 
             desc = meas > 0.5 ? loc("updater/dspeed/kb") : loc("updater/dspeed/b");
           }
         }

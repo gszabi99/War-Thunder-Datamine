@@ -53,23 +53,23 @@ let unitRoleByTag = {
   type_naval_bomber     = "naval_bomber",
   type_jet_bomber       = "jet_bomber",
   type_dive_bomber      = "dive_bomber",
-  type_common_bomber    = "common_bomber", //to use as a second type: "Light fighter / Bomber"
+  type_common_bomber    = "common_bomber", 
   type_common_assault   = "common_assault",
   type_strike_fighter   = "strike_fighter",
   type_attack_helicopter  = "attack_helicopter",
   type_utility_helicopter = "utility_helicopter",
-  //tanks:
-  type_tank             = "tank" //used in profile stats
+  
+  type_tank             = "tank" 
   type_light_tank       = "light_tank",
   type_medium_tank      = "medium_tank",
   type_heavy_tank       = "heavy_tank",
   type_tank_destroyer   = "tank_destroyer",
   type_spaa             = "spaa",
-  //battle vehicles:
+  
   type_lbv              = "lbv",
   type_mbv              = "mbv",
   type_hbv              = "hbv",
-  //ships:
+  
   type_ship             = "ship",
   type_boat             = "boat",
   type_heavy_boat       = "heavy_boat",
@@ -82,7 +82,7 @@ let unitRoleByTag = {
   type_battlecruiser    = "battlecruiser",
   type_battleship       = "battleship",
   type_submarine        = "submarine",
-  //basic types
+  
   type_fighter          = "medium_fighter",
   type_assault          = "common_assault",
   type_bomber           = "medium_bomber"
@@ -125,13 +125,13 @@ function getFullUnitRoleText(unit) {
   return basicRole != "" ? getRoleTextByTag(basicRole) : ""
 }
 
-function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
+function getUnitRole(unitData) { 
   local unit = unitData
   if (type(unitData) == "string")
     unit = getAircraftByName(unitData);
 
   if (!unit)
-    return ""; //not found
+    return ""; 
 
   local role = unitRoleByName?[unit.name] ?? ""
   if (role == "") {
@@ -147,7 +147,7 @@ function getUnitRole(unitData) { //  "fighter", "bomber", "assault", "transport"
 }
 
 function getUnitClassColor(unit) {
-  let role = getUnitRole(unit) //  "fighter", "bomber", "assault", "transport", "diveBomber", "none"
+  let role = getUnitRole(unit) 
   if (role == null || role == "" || role == "none")
     return "white";
   return $"{role}Color"

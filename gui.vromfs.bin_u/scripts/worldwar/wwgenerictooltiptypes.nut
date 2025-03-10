@@ -13,7 +13,7 @@ let { isWorldWarEnabled } = require("%scripts/worldWar/worldWarGlobalStates.nut"
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 
 let wwTooltipTypes = {
-  WW_MAP_TOOLTIP_TYPE_ARMY = { //by crewId, unitName, specTypeCode
+  WW_MAP_TOOLTIP_TYPE_ARMY = { 
     getTooltipContent = function(_id, params) {
       if (!isWorldWarEnabled())
         return ""

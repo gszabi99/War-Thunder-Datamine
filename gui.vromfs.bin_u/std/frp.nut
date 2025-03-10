@@ -1,7 +1,7 @@
 from "frp" import Computed, Watched, FRP_INITIAL, FRP_DONT_CHECK_NESTED, set_nested_observable_debug,
   make_all_observables_immutable, recalc_all_computed_values, gather_graph_stats, update_deferred, set_default_deferred
 
-// set_default_deferred(false, false) // Computed, Watched
+
 
 function WatchedImmediate(...) {
   let w = Watched.acall([this].extend(vargv))
@@ -25,17 +25,17 @@ function watchedTable2TableOfWatched(state, fieldsList = null) {
   return list.map(@(_, key) Computed(@() state.value[key]))
 }
 
-/*
-  function receive tick 'Event Stream' observable
-  and returns function mkLatestStream(defValue, name=null)
-  which return observable and functions to change observable value on tick:
-    setValue, mutateValue, modifyValue, setKeyValue and deleteKey
-    setValue will just set provided value
-    modify(func) requires function as argument will call function with latest value and use returned value as newvalue
-    setKeyValue(key, value) implies that observable is a table and it can modify it's keys with provided value
-    deleteKey(key) implies that observable is a table and it's keys can be deleted
-  that will update it's value only on tick observable change
-*/
+
+
+
+
+
+
+
+
+
+
+
 
 function mkLatestByTriggerStream(triggerObservable) {
   return function mkLatestStream(defValue = null, name = null){
@@ -81,18 +81,18 @@ function mkLatestByTriggerStream(triggerObservable) {
   }
 }
 
-/*
-  function receives triggerObservable and create function that will
-  returns new observable of 'Set' {key:key} that will update only at tick change
-  and 3 functions:
-    - getWatched(key) function will get Watched value that will be update on eid components change
-    - updateKey(key, value) - will update Watched value and add new key to Set if it is needed
-    - destroyKey(eid) - will remove key from Set
-    if mkCombined provided - function will return 'state' observable {key: value}
-    this can be needed for some Computed streams
-    it is widely  used for osbervables with eid as key and properties as value
-    to make them work faster as they update much more often than needed for ui
-*/
+
+
+
+
+
+
+
+
+
+
+
+
 let TO_DELETE = persist("TO_DELETE", @() freeze({}))
 const MK_COMBINED_STATE = true
 

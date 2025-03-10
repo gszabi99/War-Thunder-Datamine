@@ -19,49 +19,49 @@ let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.nut")
 
 let SlotbarPresetsTutorial = class {
-  /** Total maximum times to show this tutorial. */
+  
   static MAX_TUTORIALS = 3
 
-  /**
-   * Not showing tutorial for game mode if user played
-   * it more than specified amount of times.
-   */
+  
+
+
+
   static MAX_PLAYS_FOR_GAME_MODE = 5
 
-  /**
-   * Not showing tutorial new unit type to battle
-   * if user played game less this
-  */
+  
+
+
+
   static MIN_PLAYS_GAME_FOR_NEW_UNIT_TYPE = 5
 
-  // These parameters must be set from outside.
+  
   currentCountry = null
   currentHandler = null
   onComplete = null
-  preset = null // Preset to select.
+  preset = null 
 
   currentGameModeId = null
   tutorialGameMode = null
 
   isNewUnitTypeToBattleTutorial = null
 
-  // Slotbar
+  
   presetsList = null
   validPresetIndex = -1
 
-  // Window
+  
   chooseSlotbarPresetHandler = null
   chooseSlotbarPresetIndex = -1
 
-  // Unit select
-  crewIdInCountry = -1 // Slotbar-index of unit to select.
+  
+  crewIdInCountry = -1 
 
   currentTutorial = null
 
   currentStepsName = null
-  /**
-   * Returns false if tutorial was skipped due to some error.
-   */
+  
+
+
   function startTutorial() {
     this.currentStepsName = "startTutorial"
     this.currentGameModeId = getCurrentGameModeId()
@@ -79,7 +79,7 @@ let SlotbarPresetsTutorial = class {
       return false
     let presetObj = this.presetsList.getListChildByPresetIdx(this.validPresetIndex)
     local steps
-    if (presetObj && presetObj.isVisible()) { // Preset is in slotbar presets list.
+    if (presetObj && presetObj.isVisible()) { 
       this.currentStepsName = "selectPreset"
       steps = [{
         obj = [presetObj]
@@ -106,7 +106,7 @@ let SlotbarPresetsTutorial = class {
     }
     this.currentTutorial = gui_modal_tutor(steps, this.currentHandler, true)
 
-    // Increment tutorial counter.
+    
     saveLocalByAccount("tutor/slotbar_presets_tutorial_counter", this.getCounter() + 1)
 
     return true
@@ -174,12 +174,12 @@ let SlotbarPresetsTutorial = class {
       return
     subscriptions.removeEventListenersByEnv("SlotbarPresetLoaded", this)
 
-    // Switching preset causes game mode to switch as well.
-    // So we need to restore it to it's previous value.
+    
+    
     setCurrentGameModeById(this.currentGameModeId)
 
-    // This update shows player that preset was
-    // actually changed behind tutorial dim.
+    
+    
     let slotbar = topMenuHandler.value.getSlotbar()
     if (slotbar)
       slotbar.forceUpdate()
@@ -215,10 +215,10 @@ let SlotbarPresetsTutorial = class {
     return u.find_in_array(presets, prst, -1)
   }
 
-  /**
-   * This subtutorial for selecting allowed unit within selected preset.
-   * Returns false if tutorial was skipped for some reason.
-   */
+  
+
+
+
   function startUnitSelectStep() {
     let slotbarHandler = this.currentHandler.getSlotbar()
     if (!slotbarHandler)
@@ -260,9 +260,9 @@ let SlotbarPresetsTutorial = class {
       this.startPressToBattleButtonStep()
   }
 
-  /**
-   * Returns -1 if no such unit found.
-   */
+  
+
+
   function getAllowedUnitIndexByPreset(prst) {
     let units = prst?.units
     if (units == null)
@@ -378,13 +378,13 @@ let SlotbarPresetsTutorial = class {
     this.startPressToBattleButtonStep()
   }
 
-  /**
-   * Returns true and calls onComplete callback if
-   * currentTutorial was canceled.
-   * @params removeCurrentTutorial Should be 'true'
-   * only for final tutorial step callbacks and 'false'
-   * for intermediate states.
-   */
+  
+
+
+
+
+
+
   function checkCurrentTutorialCanceled(removeCurrentTutorial = true) {
     let canceled = getTblValue("canceled", this.currentTutorial, false)
     if (removeCurrentTutorial)

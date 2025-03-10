@@ -45,7 +45,7 @@ g_hud_messages.template <- {
   nest = null
   messagesMax = 0
   showSec = 0
-  stack = null //[] in constructor
+  stack = null 
   messageEvent = ""
   hudEvents = null
 
@@ -839,13 +839,13 @@ enumsAddTypes(g_hud_messages, {
       let oldResultIdx = getTblValue("resultIdx", this.stack, GO_NONE)
 
       let resultIdx = getTblValue("resultNum", eventData, GO_NONE)
-      let checkResending = eventData?.checkResending ?? eventData?.waitingForResult ?? false //!!! waitingForResult need only for compatibiliti with 1.99.0.X
+      let checkResending = eventData?.checkResending ?? eventData?.waitingForResult ?? false 
 
-      /*Have to check this, because, on guiStateChange GUI_STATE_FINISH_SESSION
-        send checkResending=true after real mission result sended.
-        But call saved in code, if it'll be needed to use somewhere else.
-        For now it's working as if we already receive result WIN OR FAIL.
-      */
+      
+
+
+
+
       if (checkResending && (oldResultIdx == GO_WIN || oldResultIdx == GO_FAIL))
         return
 
@@ -872,7 +872,7 @@ enumsAddTypes(g_hud_messages, {
         return
       objTarget.show(true)
 
-      if (this.stack.useMoveOut && this.nest.isVisible()) { //no need animation when scene invisible
+      if (this.stack.useMoveOut && this.nest.isVisible()) { 
         let objStart = this.scene.findObject("mission_result_box_start")
         create_ObjMoveToOBj(this.scene, objStart, objTarget, { time = 0.5, bhvFunc = "elasticSmall" })
       }

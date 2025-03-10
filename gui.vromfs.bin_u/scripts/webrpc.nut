@@ -41,11 +41,11 @@ mrSubscribe("web-service", function(params, cb) {
     cb({ result = res })
 })
 
-/*
- this is just example
-function rpc_add(params) {
-  return (params.a + params.b).tostring()
-}
-web_rpc.register_handler("plus", rpc_add)
-*/
+
+
+
+
+
+
+
 return {web_rpc}

@@ -24,7 +24,7 @@ eventbus_subscribe("onUpdateProfile", function(msg) {
   eventbus_send("request_show_banned_status_msgbox", {showBanOnly = true})
 })
 
-//save/load settings by account. work only after local profile received from host.
+
 function saveLocalAccountSettings(path, value) {
   if (!::should_disable_menu() && !isProfileReceived.get()) {
     debug_dump_stack()
@@ -50,7 +50,7 @@ function loadLocalAccountSettings(path, defValue = null) {
   return getBlkValueByPath(cdb, path, defValue)
 }
 
-//save/load setting to local profile, not depend on account, so can be usable before login.
+
 function saveLocalSharedSettings(path, value) {
   let blk = get_common_local_settings_blk()
   if (setBlkValueByPath(blk, path, value))
@@ -64,7 +64,7 @@ function loadLocalSharedSettings(path, defValue = null) {
 
 let getRootSizeText = @() "{0}x{1}".subst(screen_width(), screen_height())
 
-//save/load settings by account and by screenSize
+
 function loadLocalByScreenSize(name, defValue = null) {
   if (!isProfileReceived.get())
     return defValue
@@ -90,15 +90,15 @@ function saveLocalByScreenSize(name, value) {
   if (cdb?[rootName][name] == null)
     cdb[rootName][name] = value
   else if (cdb[rootName][name] == value)
-    return  //no need save when no changes
+    return  
   else
     cdb[rootName][name] = value
 
   saveProfile()
 }
 
-//remove all data by screen size from all size blocks
-//also clear empty size blocks
+
+
 function clearLocalByScreenSize(name) {
   if (!isProfileReceived.get())
     return

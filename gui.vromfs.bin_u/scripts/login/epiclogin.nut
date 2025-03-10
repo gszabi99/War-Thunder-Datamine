@@ -30,7 +30,7 @@ gui_handlers.LoginWndHandlerEpic <- class (gui_handlers.LoginWndHandler) {
   }
 
   function proceedAuthorizationResult(result) {
-    if (!checkObj(this.scene)) //check_login_pass is not instant
+    if (!checkObj(this.scene)) 
       return
 
     if (result == YU2_OK) {

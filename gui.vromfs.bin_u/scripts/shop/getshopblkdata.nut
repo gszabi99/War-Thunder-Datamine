@@ -56,7 +56,7 @@ function getShopBlkTable(selAirName = "") {
 
   let totalCountries = blk.blockCount()
   let selAir = getAircraftByName(selAirName)
-  for (local c = 0; c < totalCountries; c++) {  //country
+  for (local c = 0; c < totalCountries; c++) {  
     let cblk = blk.getBlock(c)
     let countryData = {
       name = cblk.getBlockName()
@@ -101,7 +101,7 @@ function getShopBlkTable(selAirName = "") {
             airData.rank <- air.rank
             hasSquadronUnits = hasSquadronUnits || air.isSquadronVehicle()
           }
-          else {  //aircraft group
+          else {  
             airData.airsGroup <- []
             let groupTotal = airBlk.blockCount()
             for (local ga = 0; ga < groupTotal; ga++) {

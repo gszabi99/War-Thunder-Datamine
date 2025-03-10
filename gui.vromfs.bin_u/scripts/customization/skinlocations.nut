@@ -12,9 +12,9 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 const MAX_LOCATION_TYPES = 64
 
-let locationTypeNameToId = {} //forest = 1, bitId to easy use in mask
-let skinsMask = {} //<skinName> = <locationTypeMask>
-let levelsMask = {} //<levelName> = <locationTypeMask>
+let locationTypeNameToId = {} 
+let skinsMask = {} 
+let levelsMask = {} 
 local camoTypesVisibleList = []
 local camoTypesIconPriority = []
 

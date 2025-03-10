@@ -9,7 +9,7 @@ let { format } = require("string")
 let { getRgbStrFromHsv } = require("colorCorrector")
 
 ::hudEnemyDamage <- {
-  // HitCamera HUE color range is: 160 (100%hp) - 0 (0%hp).
+  
   tankThresholdShowHp = 0.25
   hueHpMax = 60
   hueHpMin = 0
@@ -44,7 +44,7 @@ let { getRgbStrFromHsv } = require("colorCorrector")
         "tank_radiator"
         "tank_driver_controls"
         "tank_power_system"
-        //"tank_suspension"
+        
         "tank_fuel_tank"
         "ship_engine_room"
         "ship_shaft"
@@ -171,27 +171,27 @@ let { getRgbStrFromHsv } = require("colorCorrector")
     if (!this.enabled || !checkObj(this.listObj))
       return
 
-    /*
-    data {
-      unitId - unique unit number
-      unitVersion - unit respawn counter
-      unitType - unit economic type
-      partNo - decimal index of part
-      partDmName - string with dm name
-      partName - string with localization name
-      partHp - float of 0..1 calculated as hp/maxHp
-      partDmg - float in range of 0..1 with applied damage
-      partDead - bool flag indicating that part was dead before the shot occured
-      partKilled - bool flag, true if part was kiled by current shot
-    }
+    
 
-    data {
-      unitId - unique unit number
-      unitVersion - unit respawn counter
-      unitType - unit economic type
-      unitKilled - bool, true if target has been killed by the current player
-    }
-    */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     let { unitId, unitVersion, partName = null } = data
     if (unitId != this.lastTargetId || unitVersion != this.lastTargetVersion) {

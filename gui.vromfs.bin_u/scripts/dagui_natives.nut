@@ -1,6 +1,6 @@
-//pseudo-module for native code
-//ATTENTION! This file cannot be increased. Need to remove functions from root of dagui VM, not add them.
-//shouldDecreaseSize, allowedSizeIncrease = 5
+
+
+
 
 let r = getroottable()
 
@@ -105,7 +105,7 @@ return freeze({
   toggle_freecam = r?["toggle_freecam"]
 
 
-//fixme: all stubs below should be generated
+
   ps4_headtrack_get_yscale = r["ps4_headtrack_get_yscale"]
   get_option_camera_invertY = r["get_option_camera_invertY"]
   get_option_xchg_sticks = r["get_option_xchg_sticks"]
@@ -377,7 +377,6 @@ return freeze({
   get_option_hud_color = r["get_option_hud_color"]
   get_option_hud_indicators = r["get_option_hud_indicators"]
   get_option_hud_screen_safe_area = r["get_option_hud_screen_safe_area"]
-  get_option_hud_screenshot_logo = r["get_option_hud_screenshot_logo"]
   get_option_hud_show_ammo = r["get_option_hud_show_ammo"]
   get_option_hud_show_fuel = r["get_option_hud_show_fuel"]
   get_option_hud_show_temperature = r["get_option_hud_show_temperature"]
@@ -627,7 +626,6 @@ return freeze({
   set_option_hud_color = r["set_option_hud_color"]
   set_option_hud_indicators = r["set_option_hud_indicators"]
   set_option_hud_screen_safe_area = r["set_option_hud_screen_safe_area"]
-  set_option_hud_screenshot_logo = r["set_option_hud_screenshot_logo"]
   set_option_hud_show_ammo = r["set_option_hud_show_ammo"]
   set_option_hud_show_fuel = r["set_option_hud_show_fuel"]
   set_option_hud_show_temperature = r["set_option_hud_show_temperature"]

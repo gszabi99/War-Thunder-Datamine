@@ -17,3 +17,18 @@ struct EventOnHitEntity
   norm : float3
   damage : float
   collNodeId : int
+
+[cpp_event(unicast, with_scheme)]
+struct EventSplashHitEntity
+  offender : EntityId
+  damage : float
+  pos : float3
+  dir : float3
+
+[cpp_event(unicast, with_scheme)]
+struct EventShatterHitEntity
+  offender : EntityId
+  damage : float
+  pos : float3
+  dir : float3
+  collNodeId : int

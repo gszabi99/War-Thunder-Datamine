@@ -12,7 +12,7 @@ let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsMod
 gui_handlers.VehiclesWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
 
-  // Session lobby info or event object.
+  
   teamDataByTeamName = null
   roomSpecialRules = null
 

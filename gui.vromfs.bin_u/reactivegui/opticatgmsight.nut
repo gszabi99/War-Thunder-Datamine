@@ -32,7 +32,7 @@ let opticalSight = @(width, height,
   let hSizeY = hSize
 
 
-// Main fullscreen Сrosshair
+
   let fullscreenCrosshair = @() {
     watch = [ TrackerVisible ]
     size = [width, height]
@@ -48,12 +48,12 @@ let opticalSight = @(width, height,
   }
 
 
-// Small FOV indication
-//  __   __
-// |       |
-//
-// |__   __|
-//
+
+
+
+
+
+
   let fovSquareBracketsCommands = function() {
     if (MinSightFovScrSize.get() <= 0)
       return null
@@ -91,7 +91,7 @@ let opticalSight = @(width, height,
   }
 
 
-  // left lower corner
+  
   let rollIndicator = @() {
     size = [ph(15), ph(15)]
     pos = [0, ph(85)]

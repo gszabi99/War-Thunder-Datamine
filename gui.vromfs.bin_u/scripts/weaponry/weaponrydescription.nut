@@ -37,7 +37,7 @@ let getTextNoWeapons = @(unit, isPrimary) isPrimary ? loc("weapon/noPrimaryWeapo
 let stackableWeapons = [WEAPON_TYPE.TURRETS]
 
 function stackWeaponsData(weaponType, triggers) {
-  if (isInArray(weaponType, stackableWeapons)) {  //merge stackable in one
+  if (isInArray(weaponType, stackableWeapons)) {  
     for (local i = 0; i < triggers.len(); i++) {
       triggers[i][weaponType] <- 1
       local sameIdx = -1
@@ -69,7 +69,7 @@ function updateWeaponBlocks(resultWeaponBlocks, turretsData, trigger, weaponType
   foreach (weaponName, weapon in trigger.weaponBlocks) {
     weapon.weaponType <- weaponType
     weapon.weaponName <- weaponName
-    //if weapon is turret
+    
     if (TRIGGER_TYPE.TURRETS in trigger) {
       weapon[TRIGGER_TYPE.TURRETS] <- trigger[TRIGGER_TYPE.TURRETS]
       weapon.trigger <- trigger.trigger
@@ -119,14 +119,14 @@ function makeWeaponInfoData(unit, p = WEAPON_TEXT_PARAMS) {
   if (weapons == null)
     return res
 
-  let isShortDesc = updatedParams.detail <= INFO_DETAIL.SHORT //for weapons SHORT == LIMITED_11
+  let isShortDesc = updatedParams.detail <= INFO_DETAIL.SHORT 
   res.isShortDesc <- isShortDesc
   res.weapons <- weapons
 
-  let weaponsData = {} // { weaponName1 = { caliber, guns = [weapon1] }, ... }
-  let turretsData = {} // { gunner01 = { caliber, guns = [weapon1, weapon2] },... }
+  let weaponsData = {} 
+  let turretsData = {} 
 
-  // params for shortDesc only:
+  
   let weapTypeCount = {}
   let gunNames = {}
 
@@ -152,12 +152,12 @@ function makeWeaponInfoData(unit, p = WEAPON_TEXT_PARAMS) {
   res.weapTypeCount <- weapTypeCount
   res.gunNames <- gunNames
 
-  let resultTurretBlocks = turretsData // => [ [weapon1, weapon2], [],... ]
+  let resultTurretBlocks = turretsData 
     .topairs()
     .sort(@(a,b) b[1].caliber <=> a[1].caliber)
     .map(@(block) block[1].guns)
 
-  let resultWeaponBlocks = weaponsData // => [ [weapon1], [weapon2],... ]
+  let resultWeaponBlocks = weaponsData 
     .topairs()
     .sort(@(a,b) b[1].caliber <=> a[1].caliber)
     .map(@(block) block[1].guns)
@@ -199,7 +199,7 @@ function getWeaponInfoText(unit, weaponInfoData) {
           tText = "".concat(tText, loc($"weapons/{weaponName}"),
             p.isSingle ? "" : format(loc("weapons/counter"), weapon.ammo))
           if (weaponType == "torpedoes" && p.isPrimary != null &&
-              isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])) { // torpedoes drop for unit only
+              isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])) { 
             if (weapon.dropSpeedRange) {
               let speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
               let speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
@@ -240,8 +240,8 @@ function getWeaponInfoText(unit, weaponInfoData) {
       }
 
       if (!isShortDesc) {
-        // add text "Turret:" only for the first gun if some turret has various guns
-        // or if a turret has only one type of guns
+        
+        
         if ((TRIGGER_TYPE.TURRETS in weapon) && weaponId == 0) {
           if (weapon[TRIGGER_TYPE.TURRETS] > 1)
             tText = "".concat(format(loc("weapons/turret_number"), weapon[TRIGGER_TYPE.TURRETS]), tText)
@@ -257,7 +257,7 @@ function getWeaponInfoText(unit, weaponInfoData) {
         continue
 
       if (isShortDesc) {
-        if ((weapTypeCount?[weaponType] ?? 0) > 0) { //Turrets
+        if ((weapTypeCount?[weaponType] ?? 0) > 0) { 
           text = text != "" ? "".concat(text, p.newLine) : ""
           text = "".concat(text, loc($"weapons_types/{weaponType}"), nbsp,
             format(loc("weapons/counter/right/short"), weapTypeCount[weaponType]))
@@ -270,7 +270,7 @@ function getWeaponInfoText(unit, weaponInfoData) {
     }
   }
 
-  if (isShortDesc && gunNames.len() > 0) { //Guns
+  if (isShortDesc && gunNames.len() > 0) { 
     text = text != "" ? "".concat(text, p.newLine) : ""
     let gunsTxt = []
     foreach (name, count in gunNames)
@@ -303,7 +303,7 @@ function getWeaponXrayDescText(weaponBlk, unit, ediff) {
   foreach (weaponType, weaponTypeList in (weaponTypes?.weaponsByTypes ?? {}))
     foreach (weapons in weaponTypeList)
       foreach (weapon in weapons.weaponBlocks)
-        return getWeaponExtendedInfo(weapon, weaponType, unit, ediff, "\n") // -unconditional-terminated-loop
+        return getWeaponExtendedInfo(weapon, weaponType, unit, ediff, "\n") 
   return ""
 }
 
@@ -320,7 +320,7 @@ function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff) {
 
   foreach (weapons in (weaponTypes?.weaponsByTypes[triggerGroup] ?? []))
     foreach (weaponName, weapon in weapons.weaponBlocks)
-      return "".concat( // -unconditional-terminated-loop
+      return "".concat( 
         loc($"weapons/{weaponName}"),
         format(loc("weapons/counter"), weapon.ammo),
         getWeaponExtendedInfo(weapon, triggerGroup, unit, ediff, "\n{0}{0}{0}{0}".subst(nbsp))
@@ -328,7 +328,7 @@ function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff) {
   return ""
 }
 
-// return short desc of unit.weapons[weaponPresetNo], like M\C\B\T
+
 function getWeaponShortType(_unit, weapon) {
   let textArr = []
   if (weapon.frontGun)
@@ -422,7 +422,7 @@ function getBulletsListHeader(unit, bulletsList) {
   return format(loc(locId), bulletsList.caliber.tostring())
 }
 
-//include spawn score cost
+
 function getFullItemCostText(unit, item, spawnScoreOnly = false) {
   let res = []
   let wType = ::g_weaponry_types.getUpgradeTypeByItem(item)

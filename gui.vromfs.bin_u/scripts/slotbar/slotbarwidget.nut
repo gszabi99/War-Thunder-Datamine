@@ -99,77 +99,77 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   ownerWeak = null
   slotbarOninit = false
 
-  //slotbar config
-  singleCountry = null //country name to show it alone in slotbar
+  
+  singleCountry = null 
   showSingleCountryFlag = true
-  crewId = null //crewId to force select. reset after init
-  shouldSelectCrewRecruit = false //should select crew recruit slot on create slotbar.
-  isCountryChoiceAllowed = true //When false, not allow to change country, but show all countries.
-                               //(look like it almost duplicate of singleCountry)
-  customCountry = null //country name when not isCountryChoiceAllowed mode.
-  showTopPanel = true  //need to show panel with repair checkboxes. ignored in singleCountry or when not isCountryChoiceAllowed modes
-  showRepairBox = true  //need to show repair checkboxes
-  hasResearchesBtn = false //offset from left border for Researches button
+  crewId = null 
+  shouldSelectCrewRecruit = false 
+  isCountryChoiceAllowed = true 
+                               
+  customCountry = null 
+  showTopPanel = true  
+  showRepairBox = true  
+  hasResearchesBtn = false 
   hasActions = true
   hasCrewHint = true
   missionRules = null
-  showNewSlot = null //bool
-  showEmptySlot = null //bool
-  emptyText = "#shop/chooseAircraft" //text to show on empty slot
-  alwaysShowBorder = false //should show focus border when no showConsoleButtons.value
-  checkRespawnBases = false //disable slot when no available respawn bases for unit
-  hasExtraInfoBlock = null //bool
-  hasExtraInfoBlockTop = null //bool
+  showNewSlot = null 
+  showEmptySlot = null 
+  emptyText = "#shop/chooseAircraft" 
+  alwaysShowBorder = false 
+  checkRespawnBases = false 
+  hasExtraInfoBlock = null 
+  hasExtraInfoBlockTop = null 
   showAdditionExtraInfo = false
   showCrewHintUnderSlot = false
   showCrewUnseenIcon = true
   showCrewInfoTranslucent = false
-  unitForSpecType = null //unit to show crew specializations
-  shouldSelectAvailableUnit = null //bool
-  needPresetsPanel = null //bool
+  unitForSpecType = null 
+  shouldSelectAvailableUnit = null 
+  needPresetsPanel = null 
   countriesToShow = null
-  selectOnHover = false  // selection of unit by hovering specific slot, needed for selection with drag n drop
+  selectOnHover = false  
   draggableSlots = true
-  highlightSelected = false // sets all slots transparent except the selected one
+  highlightSelected = false 
 
-  //!!FIX ME: Better to remove parameters group below, and replace them by isUnitEnabled function
-  mainMenuSlotbar = false //is slotbar in mainmenu
-  roomCreationContext = null //check enbled by roomCreation context
-  availableUnits = null //available units table
-  customUnitsList = null //custom units table to filter unsuitable units in unit selecting
-  customUnitsListName = null //string. Custom list name for unit select option filter
-  eventId = null //string. Used to check unit availability
-  gameModeName = null //string. Custom mission name for unit select option filter
+  
+  mainMenuSlotbar = false 
+  roomCreationContext = null 
+  availableUnits = null 
+  customUnitsList = null 
+  customUnitsListName = null 
+  eventId = null 
+  gameModeName = null 
 
-  toBattle = false //has toBattle button
-  haveRespawnCost = false //!!FIX ME: should to take this from mission rules
-  haveSpawnDelay = false  //!!FIX ME: should to take this from mission rules
-  totalSpawnScore = -1 //to disable slots by spawn score //!!FIX ME: should to take this from mission rules
-  sessionWpBalance = 0 //!!FIX ME: should to take this from mission rules
+  toBattle = false 
+  haveRespawnCost = false 
+  haveSpawnDelay = false  
+  totalSpawnScore = -1 
+  sessionWpBalance = 0 
 
-  shouldCheckQueue = null //bool.  should check queue before select unit. !isInFlight by default.
-  needActionsWithEmptyCrews = true //allow create crew and choose unit to crew while select empty crews.
-  applySlotSelectionOverride = null //full override slot selection instead of selectCrew
-  beforeSlotbarSelect = null //function(onContinueCb, onCancelCb) to do before apply slotbar select.
-                             //must call one of listed callbacks on finidh.
-                             //when onContinueCb will be called, slotbar will aplly unit selection
-                             //when onCancelCb will be called, slotbar will return selection to previous state
-  afterSlotbarSelect = null //function() will be called after unit selection applied.
-  onSlotDblClick = null //function(crew) when not set will open unit modifications window
-  onSlotActivate = null //function(crew) when activate chosen crew
-  onCountryChanged = null //function()
+  shouldCheckQueue = null 
+  needActionsWithEmptyCrews = true 
+  applySlotSelectionOverride = null 
+  beforeSlotbarSelect = null 
+                             
+                             
+                             
+  afterSlotbarSelect = null 
+  onSlotDblClick = null 
+  onSlotActivate = null 
+  onCountryChanged = null 
   onCountryDblClick = null
-  beforeFullUpdate = null //function()
-  afterFullUpdate = null //function()
-  onSlotBattleBtn = null //function()
-  getLockedCountryData = null //function()
+  beforeFullUpdate = null 
+  afterFullUpdate = null 
+  onSlotBattleBtn = null 
+  getLockedCountryData = null 
   needHugeFooter = "no"
 
 
-  //******************************* self slotbar params ***********************************//
+  
   isSceneLoaded = false
-  loadedCountries = null //loaded countries versions
-  lastUpdatedVersion = null // version IDX which has already updated
+  loadedCountries = null 
+  lastUpdatedVersion = null 
 
   curSlotCountryId = -1
   curSlotIdInCountry = -1
@@ -199,7 +199,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(nest))
       return null
 
-    if (params?.shouldAppendToObject ?? true) { //we append to nav-bar by default
+    if (params?.shouldAppendToObject ?? true) { 
       let data = "slotbarDiv { id:t='nav-slotbar' }"
       nest.getScene().appendWithBlk(nest, data)
       params.scene = nest.findObject("nav-slotbar")
@@ -236,7 +236,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       this.ownerWeak = this.ownerWeak.weakref()
     this.validateParams()
     if (this.isSceneLoaded) {
-      this.loadedCountries.clear() //params can change visual style and visibility of crews
+      this.loadedCountries.clear() 
       this.refreshAll()
     }
   }
@@ -252,7 +252,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     this.onSlotDblClick = this.onSlotDblClick ?? this.getDefaultDblClickFunc()
     this.onSlotActivate = this.onSlotActivate ?? this.defaultOnSlotActivateFunc
 
-    //update callbacks
+    
     foreach (funcName in ["beforeSlotbarSelect", "afterSlotbarSelect", "onSlotDblClick", "onCountryChanged",
         "beforeFullUpdate", "afterFullUpdate", "onSlotBattleBtn", "applySlotSelectionOverride"])
       if (this[funcName])
@@ -267,11 +267,11 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.crewId != null)
       this.crewId = null
-    if (this.ownerWeak) //!!FIX ME: Better to presets list self catch canChangeCrewUnits
+    if (this.ownerWeak) 
       this.ownerWeak.setSlotbarPresetsListAvailable(this.needPresetsPanel && canChangeCrewUnits())
   }
 
-  function getForcedCountry() { //return null if you have countries choice
+  function getForcedCountry() { 
     if (this.singleCountry)
       return this.singleCountry
     if (!canChangeCountry())
@@ -288,8 +288,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       unit = null,
       isUnlocked = true,
       status = bit_unit_status.owned
-      idInCountry = crew?.idInCountry ?? -1 //for recruit slots, but correct for all
-      idCountry = crew?.idCountry ?? -1         //for recruit slots, but correct for all
+      idInCountry = crew?.idInCountry ?? -1 
+      idCountry = crew?.idCountry ?? -1         
     }.__update(params)
 
     data.crewIdVisible <- data?.crewIdVisible ?? list.len()
@@ -425,7 +425,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     return res
   }
 
-  //calculate selected crew and country by slotbar params
+  
   function calcSelectedCrewData(crewsConfig) {
     let forcedCountry = this.getForcedCountry()
     local unitShopCountry = forcedCountry || profileCountrySq.value
@@ -454,7 +454,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!countryData.isEnabled)
         continue
 
-      //when current crew not available in this mission, first available crew will be selected.
+      
       local firstAvailableCrewData = null
       let selCrewidInCountry = getSelectedCrews(countryData.id)
       foreach (crewData in countryData.crews) {
@@ -483,13 +483,13 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         selCrewData = firstAvailableCrewData
 
       if (!selCrewData && countryData.crews.len())
-        selCrewData = countryData.crews[0] //select not selectable when nothing found
+        selCrewData = countryData.crews[0] 
     }
 
     return selCrewData
   }
 
-  //get crew data selected in country (getSelectedCrews(curSlotCountryId))
+  
   function getSelectedCrewDataInCountry(countryData) {
     local selCrewData = null
     let selCrewIdInCountry = getSelectedCrews(countryData.id)
@@ -530,7 +530,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     let isFullSlotbar = crewsConfig.len() > 1 || this.showAlwaysFullSlotbar
     let hasCountryTopBar = isFullSlotbar && this.showTopPanel && !this.singleCountry
     if (hasCountryTopBar)
-      initSlotbarTopBar(this.scene, this.showRepairBox) //show autorefill checkboxes
+      initSlotbarTopBar(this.scene, this.showRepairBox) 
 
     this.crewsObj.hasHeader = !hasCountryTopBar && this.showSingleCountryFlag  ? "yes" : "no"
     this.crewsObj.hasBackground = isFullSlotbar ? "no" : "yes"
@@ -676,7 +676,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     return getCrewUnit(getCrew(this.curSlotCountryId, this.curSlotIdInCountry))
   }
 
-  function getCurCrew() { //will return null when selected recruitCrew
+  function getCurCrew() { 
     return getCrew(this.curSlotCountryId, this.curSlotIdInCountry)
   }
 
@@ -868,10 +868,10 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     this.afterSlotbarSelect?()
   }
 
-  /**
-   * Selects crew in slotbar with specified id
-   * as if player clicked slot himself.
-   */
+  
+
+
+
   function selectCrew(crewIdInCountry) {
     let objId =$"airs_table_{this.curSlotCountryId}"
     let obj = this.scene.findObject(objId)
@@ -892,8 +892,8 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!tblObj.childrenCount())
       return -1
     if (tblObj?.id != $"airs_table_{this.curSlotCountryId}") {
-      let tblObjId = tblObj?.id         // warning disable: -declared-never-used
-      let countryId = this.curSlotCountryId  // warning disable: -declared-never-used
+      let tblObjId = tblObj?.id         
+      let countryId = this.curSlotCountryId  
       script_net_assert_once("bad slot country id", "Error: Try to select crew from wrong country")
       return -1
     }
@@ -901,7 +901,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = 0; i < tblObj.childrenCount(); i++) {
       let id = getObjIdByPrefix(tblObj.getChild(i), prefix)
       if (!id) {
-        let objId = tblObj.getChild(i).id // warning disable: -declared-never-used
+        let objId = tblObj.getChild(i).id 
         script_net_assert_once("bad slot id", "Error: Bad slotbar slot id")
         continue
       }
@@ -1207,7 +1207,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       this.ignoreCheckSlotbar = false
   }
 
-  //return GuiBox of visible slotbar units
+  
   function getBoxOfUnits() {
     let obj = this.scene.findObject($"airs_table_{this.curSlotCountryId}")
     if (!checkObj(obj))
@@ -1220,7 +1220,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     return box
   }
 
-  //return GuiBox of visible slotbar countries
+  
   function getBoxOfCountries() {
     if (!checkObj(this.headerObj))
       return null
@@ -1529,7 +1529,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         hasCrewHint    = this.hasCrewHint
         toBattle       = this.toBattle
         mainActionFunc = canChangeCrewUnits() ? "onSlotChangeAircraft" : ""
-        mainActionText = "" // "#multiplayer/changeAircraft"
+        mainActionText = "" 
         mainActionIcon = "#ui/gameuiskin#slot_change_aircraft.svg"
         crewId         = crew?.id
         isSlotbarItem  = true
@@ -1578,7 +1578,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function setCrewUnit(unit) {
     setShowUnit(unit, this.getHangarFallbackUnitParams())
-    //need to send event when crew in country not changed, because main unit changed.
+    
     selectCrew(this.curSlotCountryId, this.curSlotIdInCountry, true)
   }
 
@@ -1654,7 +1654,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventProfileUpdated(_) {
-    if (!this.needCheckUnitUnlock) //need check locked slots by unlock
+    if (!this.needCheckUnitUnlock) 
       return
 
     this.updateSlotsStatuses(this.getSlotsData(null, -1, this.curSlotCountryId))
@@ -1665,7 +1665,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!unit)
       return
     removeAllGenericTooltip()
-    if (gui_handlers.ActionsList.hasActionsListOnObject(obj)) //close unit context menu
+    if (gui_handlers.ActionsList.hasActionsListOnObject(obj)) 
       gui_handlers.ActionsList.removeActionsListFromObject(obj)
     startSlotbarUnitDnD({ draggedObj = obj, country = profileCountrySq.value, unit })
   }

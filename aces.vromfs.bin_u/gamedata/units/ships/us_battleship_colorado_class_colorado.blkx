@@ -47,9 +47,6 @@
     5.7,
     -1.2
   ],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -3516,6 +3513,9 @@
       },
       "ammunition_storage_aux_14_dm": {
         "hp": 3000.0
+      },
+      "ammunition_storage_aux_15_dm": {
+        "hp": 2663.0
       }
     },
     "ammo_first_stage": {
@@ -4050,6 +4050,12 @@
       "genericDamageMult": 0.5,
       "superstructure_front_dm": {
         "hp": 12585.0
+      },
+      "superstructure_top_dm": {
+        "hp": 10000.0
+      },
+      "superstructure_dm": {
+        "hp": 10000.0
       }
     },
     "hull_construction": {
@@ -4113,21 +4119,22 @@
       },
       "armor_cit_03_dm": {
         "armorClass": "ship_RHA",
-        "armorThickness": 88.9,
+        "armorThickness": 95.25,
         "hp": 10000.0
       },
       "armor_cit_12_dm": {
         "armorClass": "ship_RHA",
-        "armorThickness": 88.9,
+        "armorThickness": 120.65,
         "hp": 10000.0
       },
       "armor_cit_13_dm": {
         "armorClass": "ship_RHA",
-        "armorThickness": 38.1,
+        "armorThickness": 25.4,
         "hp": 10000.0
       },
       "armor_cit_04_dm": {
-        "armorThickness": 203.2,
+        "armorClass": "ship_RHA",
+        "armorThickness": 101.6,
         "hp": 10000.0
       },
       "armor_cit_05_dm": {
@@ -4150,15 +4157,23 @@
         "hp": 10000.0
       },
       "armor_cit_08_dm": {
-        "armorThickness": 330.2,
+        "armorThickness": 317.5,
         "hp": 10000.0
       },
       "armor_cit_09_dm": {
-        "armorThickness": 228.6,
+        "armorThickness": 292.1,
+        "hp": 10000.0
+      },
+      "armor_cit_20_dm": {
+        "armorThickness": 368.3,
+        "hp": 10000.0
+      },
+      "armor_cit_21_dm": {
+        "armorThickness": 101.6,
         "hp": 10000.0
       },
       "armor_cit_14_dm": {
-        "armorThickness": 330.2,
+        "armorThickness": 342.9,
         "hp": 10000.0
       },
       "armor_cit_17_dm": {
@@ -4193,51 +4208,71 @@
       "restrainDamage": 0.5,
       "kineticPenetrationToArmorThreshold": 0.8,
       "armor_cit_l_01_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
         "hp": 8500.0
       },
       "armor_cit_l_02_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
         "hp": 8500.0
       },
       "armor_cit_l_03_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
         "hp": 8500.0
       },
       "armor_cit_l_04_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
         "hp": 8500.0
       },
       "armor_cit_l_05_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
         "hp": 8500.0
       },
       "armor_cit_l_06_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
         "hp": 8500.0
       },
       "armor_cit_r_01_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
         "hp": 8500.0
       },
       "armor_cit_r_02_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
         "hp": 8500.0
       },
       "armor_cit_r_03_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
         "hp": 8500.0
       },
       "armor_cit_r_04_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
         "hp": 8500.0
       },
       "armor_cit_r_05_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
         "hp": 8500.0
       },
       "armor_cit_r_06_dm": {
+        "armorClass": "ship_structural_steel",
         "armorThickness": 15.87,
+        "hp": 8500.0
+      },
+      "armor_cit_l_19_dm": {
+        "armorThickness": 25.4,
+        "hp": 8500.0
+      },
+      "armor_cit_r_19_dm": {
+        "armorThickness": 25.4,
         "hp": 8500.0
       }
     },
@@ -4655,6 +4690,12 @@
       },
       "ex_armor_09_dm": {
         "hp": 500.0
+      },
+      "ex_armor_10_dm": {
+        "hp": 1000.0
+      },
+      "ex_armor_11_dm": {
+        "hp": 1000.0
       }
     },
     "bulges": {
@@ -5644,14 +5685,14 @@
   },
   "ShipPhys": {
     "mass": {
-      "Empty": 30500000.0,
+      "Empty": 34000000.0,
       "momentOfInertia": [
         98.0,
         2200.0,
         1400.0
       ],
       "CenterOfGravity": [
-        -3.0,
+        -3.7,
         1.0,
         0.0
       ]
@@ -5909,8 +5950,8 @@
         "breechDP": "main_caliber_gun_01_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 4.0,
-        "speedPitch": 10.0,
+        "speedYaw": 2.0,
+        "speedPitch": 8.0,
         "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -5989,8 +6030,8 @@
         "breechDP": "main_caliber_gun_02_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 4.0,
-        "speedPitch": 10.0,
+        "speedYaw": 2.0,
+        "speedPitch": 8.0,
         "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -6069,8 +6110,8 @@
         "breechDP": "main_caliber_gun_03_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 4.0,
-        "speedPitch": 10.0,
+        "speedYaw": 2.0,
+        "speedPitch": 8.0,
         "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -6149,8 +6190,8 @@
         "breechDP": "main_caliber_gun_04_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 4.0,
-        "speedPitch": 10.0,
+        "speedYaw": 2.0,
+        "speedPitch": 8.0,
         "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -6229,8 +6270,8 @@
         "breechDP": "main_caliber_gun_05_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 4.0,
-        "speedPitch": 10.0,
+        "speedYaw": 2.0,
+        "speedPitch": 8.0,
         "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -6309,8 +6350,8 @@
         "breechDP": "main_caliber_gun_06_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 4.0,
-        "speedPitch": 10.0,
+        "speedYaw": 2.0,
+        "speedPitch": 8.0,
         "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -6389,8 +6430,8 @@
         "breechDP": "main_caliber_gun_07_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 4.0,
-        "speedPitch": 10.0,
+        "speedYaw": 2.0,
+        "speedPitch": 8.0,
         "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -6481,8 +6522,8 @@
         "breechDP": "main_caliber_gun_08_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
-        "speedYaw": 4.0,
-        "speedPitch": 10.0,
+        "speedYaw": 2.0,
+        "speedPitch": 8.0,
         "bullets": 95,
         "useGunnerTargetingQuality": false,
         "fireConeAngle": 1.0,
@@ -14061,21 +14102,28 @@
           "entityMunition": "aux",
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_11_dm": {
-            "count": 18800
+            "count": 14100
           }
         },
         {
           "entityMunition": "aux",
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_13_dm": {
-            "count": 18800
+            "count": 14100
           }
         },
         {
           "entityMunition": "aux",
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_14_dm": {
-            "count": 18800
+            "count": 14100
+          }
+        },
+        {
+          "entityMunition": "aux",
+          "damageEffect": "ammunition_storage_aux",
+          "ammunition_storage_aux_15_dm": {
+            "count": 14100
           }
         }
       ]

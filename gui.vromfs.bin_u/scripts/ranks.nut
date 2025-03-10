@@ -13,7 +13,7 @@ const MAX_COUNTRY_RANK = 8
 let ranksPersist = persist("ranksPersist", @() { max_player_rank = 100 })
 let expPerRank = persist("expPerRank", @() [])
 let prestigeByRank = persist("prestigeByRank", @() [])
-let discounts = persist("discounts", @() {}) //count from const in warpointsBlk by (name + "Mul")
+let discounts = persist("discounts", @() {}) 
 let eventMuls = persist("eventMuls", @() {
   xpFirstWinInDayMul = 1.0
   wpFirstWinInDayMul = 1.0
@@ -63,7 +63,7 @@ function getPrestigeByRank(rank) {
 
 let minValuesToShowRewardPremium = mkWatched(persist, "minValuesToShowRewardPremium", { wp = 0, exp = 0 })
 
-//!!FIX ME: should to remove from this function all what not about unit.
+
 function updateAircraftWarpoints(maxCallTimeMsec = 0) {
   let startTime = get_time_msec()
   let errorsTextArray = []
@@ -82,14 +82,14 @@ function updateAircraftWarpoints(maxCallTimeMsec = 0) {
     }
   }
 
-  //update discounts info
+  
   let ws = get_warpoints_blk()
   foreach (name, _value in discounts) {
     let k = $"{name}DiscountMul"
     if (ws?[k] != null)
       discounts[name] = (100.0 * (1.0 - ws[k]) + 0.5).tointeger()
   }
-  //update bonuses info
+  
   foreach (name, _value in eventMuls)
     if (ws?[name] != null)
       eventMuls[name] = ws[name]

@@ -37,7 +37,7 @@ g_hud_reward_message.template <- {
   locId = ""
   locFn = @(_expClass, _messageModifier) this.locId
   viewClass = ""
-  priority = REWARD_PRIORITY.common //greater is better
+  priority = REWARD_PRIORITY.common 
 
   getViewClass = g_hud_reward_message._getViewClass
   getText = g_hud_reward_message._getText

@@ -7,7 +7,7 @@ let  adelta = [
   26, 26, 28, 28, 24, 24, 26, 26, 26, 28, 28, 24, 26, 26, 26, 28, 28
 ];
 
-// version block
+
 let  vpat = [
   0xc94, 0x5bc, 0xa99, 0x4d3, 0xbf6, 0x762, 0x847, 0x60d,
   0x928, 0xb78, 0x45d, 0xa17, 0x532, 0x9a6, 0x683, 0x8c9,
@@ -16,15 +16,15 @@ let  vpat = [
   0x541, 0xc69
 ];
 
-// final format bits with mask: level << 3 | mask
+
 let  fmtword = [
-  0x77c4, 0x72f3, 0x7daa, 0x789d, 0x662f, 0x6318, 0x6c41, 0x6976,    //L
-  0x5412, 0x5125, 0x5e7c, 0x5b4b, 0x45f9, 0x40ce, 0x4f97, 0x4aa0,    //M
-  0x355f, 0x3068, 0x3f31, 0x3a06, 0x24b4, 0x2183, 0x2eda, 0x2bed,    //Q
-  0x1689, 0x13be, 0x1ce7, 0x19d0, 0x0762, 0x0255, 0x0d0c, 0x083b     //H
+  0x77c4, 0x72f3, 0x7daa, 0x789d, 0x662f, 0x6318, 0x6c41, 0x6976,    
+  0x5412, 0x5125, 0x5e7c, 0x5b4b, 0x45f9, 0x40ce, 0x4f97, 0x4aa0,    
+  0x355f, 0x3068, 0x3f31, 0x3a06, 0x24b4, 0x2183, 0x2eda, 0x2bed,    
+  0x1689, 0x13be, 0x1ce7, 0x19d0, 0x0762, 0x0255, 0x0d0c, 0x083b     
 ];
 
-// 4 per version: number of blocks 1,2; data width; ecc width
+
 let  eccblocks = [
   1, 0, 19, 7, 1, 0, 16, 10, 1, 0, 13, 13, 1, 0, 9, 17,
   1, 0, 34, 10, 1, 0, 28, 16, 1, 0, 22, 22, 1, 0, 16, 28,
@@ -68,7 +68,7 @@ let  eccblocks = [
   19, 6, 118, 30, 18, 31, 47, 28, 34, 34, 24, 30, 20, 61, 15, 30
 ];
 
-// Galois field log table
+
 let  glog = [
   0xff, 0x00, 0x01, 0x19, 0x02, 0x32, 0x1a, 0xc6, 0x03, 0xdf, 0x33, 0xee, 0x1b, 0x68, 0xc7, 0x4b,
   0x04, 0x64, 0xe0, 0x0e, 0x34, 0x8d, 0xef, 0x81, 0x1c, 0xc1, 0x69, 0xf8, 0xc8, 0x08, 0x4c, 0x71,
@@ -88,7 +88,7 @@ let  glog = [
   0x4f, 0xae, 0xd5, 0xe9, 0xe6, 0xe7, 0xad, 0xe8, 0x74, 0xd6, 0xf4, 0xea, 0xa8, 0x50, 0x58, 0xaf
 ];
 
-// Galios field exponent table
+
 let  gexp = [
   0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1d, 0x3a, 0x74, 0xe8, 0xcd, 0x87, 0x13, 0x26,
   0x4c, 0x98, 0x2d, 0x5a, 0xb4, 0x75, 0xea, 0xc9, 0x8f, 0x03, 0x06, 0x0c, 0x18, 0x30, 0x60, 0xc0,
@@ -108,14 +108,14 @@ let  gexp = [
   0x2c, 0x58, 0xb0, 0x7d, 0xfa, 0xe9, 0xcf, 0x83, 0x1b, 0x36, 0x6c, 0xd8, 0xad, 0x47, 0x8e, 0x00
 ];
 
-// Working buffers:
-// data input and ecc append, image working buffer, fixed part of image, run lengths for badness
+
+
 local  strinbuf = [], eccbuf = [], qrframe = [], framask = [], rlens = [];
-// Control values - width is based on version, last 4 are from table.
+
 local  version, width, neccblk1, neccblk2, datablkw, eccblkwid;
 let  ecclevel = 2;
 
-// set bit to indicate cell in qrframe is immutable.  symmetric around diagonal
+
 function setmask(x, y) {
   local  bt;
   if (x > y) {
@@ -123,7 +123,7 @@ function setmask(x, y) {
     x = y;
     y = bt;
   }
-  // y*y = 1+3+5...
+  
   bt = y;
   bt *= y;
   bt += y;
@@ -132,7 +132,7 @@ function setmask(x, y) {
   framask[bt] = 1;
 }
 
-// enter alignment pattern - black to qrframe, white to mask (later black frame merged to mask)
+
 function putalign(x, y) {
   local j;
 
@@ -151,9 +151,9 @@ function putalign(x, y) {
   }
 }
 
-//========================================================================
-// Reed Solomon error correction
-// exponentiation mod N
+
+
+
 function modnn(x) {
   while (x >= 255) {
     x -= 255;
@@ -164,7 +164,7 @@ function modnn(x) {
 
 let genpoly = [];
 
-// Calculate and append ECC data to data block.  Block is in strinbuf, indexes to buffers given.
+
 function appendrs(data, dlen, ecbuf, eclen) {
   local i, j, fb;
 
@@ -173,7 +173,7 @@ function appendrs(data, dlen, ecbuf, eclen) {
 
   for (i = 0; i < dlen; i++) {
     fb = glog[strinbuf[data + i] ^ strinbuf[ecbuf]];
-    if (fb != 255)     /* fb term is non-zero */
+    if (fb != 255)     
       for (j = 1; j < eclen; j++)
         strinbuf[ecbuf + j - 1] = strinbuf[ecbuf + j] ^ gexp[modnn(fb + genpoly[eclen - j])];
     else
@@ -183,10 +183,10 @@ function appendrs(data, dlen, ecbuf, eclen) {
   }
 }
 
-//========================================================================
-// Frame data insert following the path rules
 
-// check mask - since symmetrical use half.
+
+
+
 function ismasked(x, y) {
   local  bt;
   if (x > y) {
@@ -201,8 +201,8 @@ function ismasked(x, y) {
   return framask[bt];
 }
 
-//========================================================================
-//  Apply the selected mask out of the 8.
+
+
 function applymask(m) {
   local x, y, r3x, r3y;
   if (m==0) {
@@ -315,52 +315,52 @@ function applymask(m) {
   return;
 }
 
-// Badness coefficients.
+
 let N1 = 3
 let N2 = 3
 let N3 = 40
 let N4 = 10
 
-// Using the table of the length of each run, calculate the amount of bad image
-// - long runs or those that look like finders; called twice, once each for X and Y
+
+
 function badruns(length) {
   local i;
   local runsbad = 0;
   for (i = 0; i <= length; i++)
     if (rlens[i] >= 5)
       runsbad += N1 + rlens[i] - 5;
-  // BwBBBwB as in finder
+  
   for (i = 3; i < length - 1; i += 2)
     if (rlens[i - 2] == rlens[i + 2]
       && rlens[i + 2] == rlens[i - 1]
       && rlens[i - 1] == rlens[i + 1]
       && rlens[i - 1] * 3 == rlens[i]
-      // white around the black pattern? Not part of spec
-      && (rlens[i - 3] == 0 // beginning
-        || i + 3 > length  // end
+      
+      && (rlens[i - 3] == 0 
+        || i + 3 > length  
         || rlens[i - 3] * 3 >= rlens[i] * 4 || rlens[i + 3] * 3 >= rlens[i] * 4)
     )
       runsbad += N3;
   return runsbad;
 }
 
-// Calculate how bad the masked image is - blocks, imbalance, runs, or finders.
+
 function badcheck() {
   rlens.resize(QR_RESERVE_ARRAY_SIZE)
   local x, y, h, b, b1;
   local thisbad = 0;
   local bw = 0;
 
-  // blocks of same color.
+  
   for (y = 0; y < width - 1; y++)
     for (x = 0; x < width - 1; x++)
       if ((qrframe[x + width * y] && qrframe[(x + 1) + width * y]
-        && qrframe[x + width * (y + 1)] && qrframe[(x + 1) + width * (y + 1)]) // all black
+        && qrframe[x + width * (y + 1)] && qrframe[(x + 1) + width * (y + 1)]) 
         || !(qrframe[x + width * y] || qrframe[(x + 1) + width * y]
-          || qrframe[x + width * (y + 1)] || qrframe[(x + 1) + width * (y + 1)])) // all white
+          || qrframe[x + width * (y + 1)] || qrframe[(x + 1) + width * (y + 1)])) 
         thisbad += N2;
 
-  // X runs
+  
   for (y = 0; y < width; y++) {
     rlens[0] = 0;
     h = 0;
@@ -377,7 +377,7 @@ function badcheck() {
     thisbad += badruns(h);
   }
 
-  // black/white imbalance
+  
   if (bw < 0)
     bw = -bw;
 
@@ -391,7 +391,7 @@ function badcheck() {
   }
   thisbad += count * N4;
 
-  // Y runs
+  
   for (x = 0; x < width; x++) {
     rlens[0] = 0;
     h = 0;
@@ -412,7 +412,7 @@ function badcheck() {
 function genframe(instring) {
   local x, y, k, t, v, i, j, m;
 
-  // find the smallest version that fits the string
+  
   t = instring.len();
   version = 0;
   do {
@@ -422,15 +422,15 @@ function genframe(instring) {
     neccblk2 = eccblocks[k++];
     datablkw = eccblocks[k++];
     eccblkwid = eccblocks[k];
-    k = datablkw * (neccblk1 + neccblk2) + neccblk2 - 3 + (version <= 9 ? 1 : 0); // -assigned-twice
+    k = datablkw * (neccblk1 + neccblk2) + neccblk2 - 3 + (version <= 9 ? 1 : 0); 
     if (t <= k)
       break;
   } while (version < 40);
 
-  // FIXME - insure that it fits insted of being truncated
+  
   width = 17 + 4 * version;
 
-  // allocate, clear and setup data structures
+  
   v = datablkw + (datablkw + eccblkwid) * (neccblk1 + neccblk2) + neccblk2;
   eccbuf.resize(QR_RESERVE_ARRAY_SIZE);
   for (t = 0; t < v; t++)
@@ -445,7 +445,7 @@ function genframe(instring) {
   for (t = 0; t < (width * (width + 1) + 1) / 2; t++)
     framask[t] = 0;
 
-  // insert finders - black to frame, white to mask
+  
   for (t = 0; t < 3; t++) {
     k = 0;
     y = 0;
@@ -474,7 +474,7 @@ function genframe(instring) {
     }
   }
 
-  // alignment blocks
+  
   if (version > 1) {
     t = adelta[version];
     y = width - 7;
@@ -490,14 +490,14 @@ function genframe(instring) {
         break;
       y -= t;
       putalign(6, y);
-      putalign(y, 6); //-param-pos
+      putalign(y, 6); 
     }
   }
 
-  // single black
+  
   qrframe[8 + width * (width - 8)] = 1;
 
-  // timing gap - mask only
+  
   for (y = 0; y < 7; y++) {
     setmask(7, y);
     setmask(width - 8, y);
@@ -509,17 +509,17 @@ function genframe(instring) {
     setmask(x, width - 8);
   }
 
-  // reserve mask-format area
+  
   for (x = 0; x < 9; x++)
     setmask(x, 8);
   for (x = 0; x < 8; x++) {
     setmask(x + width - 8, 8);
-    setmask(8, x); //-param-pos
+    setmask(8, x); 
   }
   for (y = 0; y < 7; y++)
     setmask(8, y + width - 7);
 
-  // timing row/col
+  
   for (x = 0; x < width - 14; x++)
     if (x & 1) {
       setmask(8 + x, 6);
@@ -530,7 +530,7 @@ function genframe(instring) {
       qrframe[6 + width * (8 + x)] = 1;
     }
 
-  // version block
+  
   if (version > 6) {
     t = vpat[version - 7];
     k = 17;
@@ -549,17 +549,17 @@ function genframe(instring) {
       }
   }
 
-  // sync mask bits - only set above for white spaces, so add in black bits
+  
   for (y = 0; y < width; y++)
     for (x = 0; x <= y; x++)
       if (qrframe[x + width * y])
         setmask(x, y);
 
-  // convert string to bitstream
-  // 8 bit data to QR-coded 8 bit data (numeric or alphanum, or kanji not supported)
+  
+  
   v = strinbuf.len();
 
-  // string to array
+  
   eccbuf.resize(QR_RESERVE_ARRAY_SIZE);
   for (i = 0; i < v; i++)
     eccbuf[i] = strinbuf[i];
@@ -567,7 +567,7 @@ function genframe(instring) {
   strinbuf = clone eccbuf;
   strinbuf.append(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-  // calculate max string length
+  
   x = datablkw * (neccblk1 + neccblk2) + neccblk2;
   if (v >= x - 2) {
     v = x - 2;
@@ -575,7 +575,7 @@ function genframe(instring) {
       v--;
   }
 
-  // shift and repack to insert length prefix
+  
   i = v;
   if (version > 9) {
     strinbuf[i + 2] = 0;
@@ -600,17 +600,17 @@ function genframe(instring) {
     strinbuf[1] = strinbuf[1] | (255 & (v << 4));
     strinbuf[0] = 0x40 | (v >> 4);
   }
-  // fill to end with pad pattern
+  
   i = v + 3 - (version < 10 ? 1 : 0);
   while (i < x) {
     strinbuf[i++] = 0xec;
-    // buffer has room    if (i == x)      break;
-    strinbuf[i++] = 0x11;  // -assigned-twice
+    
+    strinbuf[i++] = 0x11;  
   }
 
-  // calculate and append ECC
+  
 
-  // calculate generator polynomial
+  
   genpoly.resize(QR_RESERVE_ARRAY_SIZE);
   genpoly[0] = 1;
   for (i = 0; i < eccblkwid; i++) {
@@ -621,9 +621,9 @@ function genframe(instring) {
     genpoly[0] = gexp[modnn(glog[genpoly[0]] + i)];
   }
   for (i = 0; i <= eccblkwid; i++)
-    genpoly[i] = glog[genpoly[i]]; // use logs for genpoly[] to save calc step
+    genpoly[i] = glog[genpoly[i]]; 
 
-  // append ecc to data buffer
+  
   k = x;
   y = 0;
   for (i = 0; i < neccblk1; i++) {
@@ -636,7 +636,7 @@ function genframe(instring) {
     y += datablkw + 1;
     k += eccblkwid;
   }
-  // interleave blocks
+  
   y = 0;
   for (i = 0; i < datablkw; i++) {
     for (j = 0; j < neccblk1; j++)
@@ -651,19 +651,19 @@ function genframe(instring) {
       eccbuf[y++] = strinbuf[x + i + j * eccblkwid];
   strinbuf = eccbuf;
 
-  // pack bits into frame avoiding masked area.
+  
   y = width - 1;
   x = y;
   k = 1;
-  v = 1;         // up, minus
-  /* inteleaved data and ecc codes */
+  v = 1;         
+  
   m = (datablkw + eccblkwid) * (neccblk1 + neccblk2) + neccblk2;
   for (i = 0; i < m; i++) {
     t = strinbuf[i];
     for (j = 0; j < 8; j++) {
       if (0x80 & t)
         qrframe[x + width * y] = 1;
-      do {        // find next fill position
+      do {        
         if (v)
           x--;
         else {
@@ -700,30 +700,30 @@ function genframe(instring) {
     }
   }
 
-  // save pre-mask copy of frame
+  
   strinbuf = clone qrframe;
-  t = 0;           // best
-  y = 30000;         // demerit
-  // for instead of while since in original arduino code
-  // if an early mask was "good enough" it wouldn't try for a better one
-  // since they get more complex and take longer.
+  t = 0;           
+  y = 30000;         
+  
+  
+  
   for (k = 0; k < 8; k++) {
-    applymask(k);      // returns black-white imbalance
+    applymask(k);      
     x = badcheck();
-    if (x < y) { // current mask better than previous best?
+    if (x < y) { 
       y = x;
       t = k;
     }
     if (t == 7)
-      break;       // don't increment i to a void redoing mask
-    qrframe = clone strinbuf; // reset for next pass
+      break;       
+    qrframe = clone strinbuf; 
   }
-  if (t != k)         // redo best mask - none good enough, last wasn't t
+  if (t != k)         
     applymask(t);
 
-  // add in final mask/ecclevel bytes
+  
   y = fmtword[t + ((ecclevel - 1) << 3)];
-  // low byte
+  
   for (k = 0; k < 8; k++) {
     if (y & 1) {
       qrframe[(width - 1 - k) + width * 8] = 1;
@@ -736,7 +736,7 @@ function genframe(instring) {
     y = y >> 1
   }
 
-  // high byte
+  
   for (k = 0; k < 7; k++) {
     if (y & 1) {
       qrframe[8 + width * (width - 7 + k)] = 1;

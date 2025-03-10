@@ -54,13 +54,13 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
 
   currentContainerName = "generic_options"
   options = null
-  optionsConfig = null //config forwarded to get_option
+  optionsConfig = null 
   optionsContainers = null
   applyFunc = null
   cancelFunc = null
   forcedSave = false
 
-  columnsRatio = 0.5 //0..1
+  columnsRatio = 0.5 
   titleText = null
 
   owner = null
@@ -163,7 +163,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     this.applyOptions()
   }
 
-  function updateOptionDescr(obj, func) { //!!FIXME: use updateOption instead
+  function updateOptionDescr(obj, func) { 
     local newDescr = null
     foreach (container in this.optionsContainers) {
       for (local i = 0; i < container.data.len(); ++i) {
@@ -402,7 +402,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
   function onChangeCrossNetworkChat(obj) {
     let value = obj.getValue()
     if (value == true) {
-      //Just send notification that value changed
+      
       this.setCrossNetworkChatValue(null, true, true)
       return
     }
@@ -411,8 +411,8 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
       "crossnetwork_changes_warning",
       loc("guiHints/ps4_crossnetwork_chat"),
       [
-        ["ok", @() this.setCrossNetworkChatValue(null, false, true)], //Send notification of changed value
-        ["no", @() this.setCrossNetworkChatValue(obj, true, false)] //Silently return value
+        ["ok", @() this.setCrossNetworkChatValue(null, false, true)], 
+        ["no", @() this.setCrossNetworkChatValue(obj, true, false)] 
       ],
       "no",
       { cancel_fn = @() this.setCrossNetworkChatValue(obj, true, false) }
@@ -435,9 +435,9 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     if (needSendNotification) {
       broadcastEvent("CrossNetworkChatOptionChanged")
 
-      if (value == false) { //Turn off voice if we turn off crossnetwork opt
+      if (value == false) { 
         let voiceOpt = get_option(USEROPT_VOICE_CHAT)
-        if (voiceOpt.value == true && voiceOpt?.cb != null) // onVoicechatChange toggles value
+        if (voiceOpt.value == true && voiceOpt?.cb != null) 
           this[voiceOpt.cb](null)
         else
           set_option(USEROPT_VOICE_CHAT, false)
@@ -670,7 +670,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function checkBotsOption() {
     let isBotsAllowed = this.getOptValue(USEROPT_IS_BOTS_ALLOWED, false)
-    if (isBotsAllowed == null) //no such option in current options list
+    if (isBotsAllowed == null) 
       return
 
     let optList = this.find_options_in_containers([USEROPT_USE_TANK_BOTS,
@@ -679,7 +679,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
       this.showOptionRow(option, isBotsAllowed)
   }
 
-  function updateOptionValueCallback(obj) { //dagui scene callback
+  function updateOptionValueCallback(obj) { 
     let option = this.get_option_by_id(obj?.id)
     if (option == null)
       return
@@ -691,7 +691,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
       this[option.optionCb](obj)
   }
 
-  function updateOptionValueTextByObj(obj) { //dagui scene callback
+  function updateOptionValueTextByObj(obj) { 
     let option = this.get_option_by_id(obj?.id)
     if (option)
       this.updateOptionValueText(option, obj.getValue())
@@ -745,7 +745,7 @@ gui_handlers.GenericOptionsModal <- class (gui_handlers.GenericOptions) {
       { scene = this.scene.findObject("control_navigation")
         onSelectCb = Callback(this.doNavigateToSection, this)
         panelWidth        = "0.4@sf, ph"
-        // Align to helpers_mode and table first row
+        
         headerHeight      = "1@buttonHeight"
       })
     this.registerSubHandler(this.navigationHandlerWeak)

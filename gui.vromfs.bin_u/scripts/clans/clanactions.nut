@@ -31,11 +31,11 @@ function createClan(params, handler) {
   }
 }
 
-/**
-* Edit specified clan.
-* clanId @string - id of clan to edit, -1 if your clan
-* params @DataBlock - result of g_clan->prepareEditRequest function
-*/
+
+
+
+
+
 function editClan(clanId, params, handler) {
   let isMyClan = myClanInfo.get() != null && clanId == "-1"
   handler.taskId = clan_request_change_info_blk(clanId, params)

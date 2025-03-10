@@ -7,7 +7,7 @@ let results = {
 }
 
 results.template <- {
-  id = "" //used from type name
+  id = "" 
   checkOrder = -1
   criticalDamageTestName = ""
   checkParams = @(_params) false

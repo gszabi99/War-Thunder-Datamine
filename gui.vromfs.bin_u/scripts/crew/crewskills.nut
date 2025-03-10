@@ -12,7 +12,7 @@ let skillCategories = []
 let skillCategoryByName = {}
 local skillsLoaded = false
 let maxSkillValueByMemberAndSkill = {}
-let skillParameterInfo = {} //skillName = { measureType = <string>, sortOrder = <int> }
+let skillParameterInfo = {} 
 
 function createCategory(categoryName) {
   let category = {
@@ -41,17 +41,17 @@ function loadSkills() {
     maxSkillValueByMemberAndSkill[memberName] <- {}
     foreach (skillName, skillBlk in memberBlk) {
       if (!u.isDataBlock(skillBlk))
-        continue // Not actually a skill blk.
+        continue 
       let skillItem = getCrewSkillItem(memberName, skillName)
       if (!skillItem)
         continue
 
-      //!!FIX ME: need to full use the same skillItems as in g_crew instead of duplicate code
-      // Max skill value
+      
+      
       let maxSkillValue = skillBlk?.max_skill_level ?? DEFAULT_MAX_SKILL_LEVEL
       maxSkillValueByMemberAndSkill[memberName][skillName] <- maxSkillValue
 
-      // Skill category
+      
       let categoryName = skillBlk?.skill_category
       if (categoryName == null)
         continue

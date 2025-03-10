@@ -20,7 +20,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let stdMath = require("%sqstd/math.nut")
 
 const TIME_TITLE_SHOW_SEC = 3
-const TIME_TO_SUM_CREW_LOST_SEC = 1 //To sum up the number of crew losses from multiple bullets in a single salvo
+const TIME_TO_SUM_CREW_LOST_SEC = 1 
 const TIME_TO_SUM_RELATIVE_CREW_LOST = 0.15
 
 let animTimerPid = dagui_propid_add_name_id("_transp-timer")
@@ -382,7 +382,7 @@ let healthColorConfig = [
   { remainingHp = 0.75,  color = "#F6B236" }
 ]
 
-//
+
 
 
 
@@ -665,7 +665,7 @@ function onEnemyDamageState(event) {
       updateDebuffItem(item, unitInfo, null, event)
 
   updateCrewCount(unitInfo, event)
-  //
+  
 
 
 }
@@ -724,7 +724,7 @@ eventbus_subscribe("on_hitcamera_update_fires_event", function(event) {
   onHitCameraUpdateFiresEvent(fireArr)
 })
 
-::get_hit_camera_aabb <- getHitCameraAABB // called from client
+::get_hit_camera_aabb <- getHitCameraAABB 
 
 return {
   hitCameraInit

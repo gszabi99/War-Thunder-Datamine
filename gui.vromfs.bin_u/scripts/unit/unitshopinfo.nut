@@ -8,8 +8,8 @@ function isUnitGift(unit) {
 }
 
 function canBuyUnit(unit) {
-  if (isUnitGift(unit))  //!!! FIX ME shop_unit_research_status may return ES_ITEM_STATUS_CAN_BUY
-    return false           // if vehicle could be bought in game, but it became a gift vehicle.
+  if (isUnitGift(unit))  
+    return false           
 
   if (unit.reqUnlock && !isUnlockOpened(unit.reqUnlock))
     return false

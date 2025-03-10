@@ -82,8 +82,8 @@ function popupWrapper(popupContent, dropDirDown) {
     flow = FLOW_VERTICAL
     vplace = align
     valign = align
-    //rendObj = ROBJ_SOLID
-    //color = Color(0,100,0,50)
+    
+    
     children
   }
 }
@@ -184,8 +184,8 @@ function combobox(watches, options, combo_style=comboStyle) {
         children
         gap = combo_style?.itemGap
         size = [flex(), SIZE_TO_CONTENT]
-        maxHeight = itemHeight*10.5 + itemGapHt*9 //this is ugly workaround with overflow of combobox size
-        //we need something much more clever - we need understand how close we to the bottom\top of the screen and set limit to make all elements visible
+        maxHeight = itemHeight*10.5 + itemGapHt*9 
+        
       }
 
       transform = {
@@ -224,7 +224,7 @@ function combobox(watches, options, combo_style=comboStyle) {
 
     return (combo_style?.rootBaseStyle ?? {}).__merge({
       size = flex()
-      //behavior = wdisable.value ? null : Behaviors.Button
+      
       behavior = Behaviors.Button
       watch = [comboOpen, watches?.disable, wdata, options]
       group

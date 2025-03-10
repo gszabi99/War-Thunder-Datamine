@@ -12,7 +12,7 @@ let { getClanCreationDateText, getClanInfoChangeDateText,
   getClanMembersCountText, getRegionUpdateCooldownTime
 } = require("%scripts/clans/clanTextInfo.nut")
 
-const ranked_column_prefix = "dr_era5"  //really used only rank 5, but in lb exist 5
+const ranked_column_prefix = "dr_era5"  
 
 let emptyRating = {
   [($"{ranked_column_prefix}_arc")]   = 0,
@@ -27,19 +27,19 @@ let emptyActivity = {
 
 let clanInfoTemplate = {
   function isRegionChangeAvailable() {
-    if (this.regionLastUpdate == 0) // warning disable: -never-declared
+    if (this.regionLastUpdate == 0) 
       return true
 
-    return this.regionLastUpdate + getRegionUpdateCooldownTime() <= get_charserver_time_sec() // warning disable: -never-declared
+    return this.regionLastUpdate + getRegionUpdateCooldownTime() <= get_charserver_time_sec() 
   }
 
   function getRegionChangeAvailableTime() {
-    return this.regionLastUpdate + getRegionUpdateCooldownTime() // warning disable: -never-declared
+    return this.regionLastUpdate + getRegionUpdateCooldownTime() 
   }
 
   function getClanUpgradeCost() {
     let cost = this.clanType.getNextTypeUpgradeCost()
-    local resultingCostGold = cost.gold - this.spentForMemberUpgrades // warning disable: -never-declared
+    local resultingCostGold = cost.gold - this.spentForMemberUpgrades 
     if (resultingCostGold < 0)
       resultingCostGold = 0
     cost.gold = resultingCostGold
@@ -53,9 +53,9 @@ let clanInfoTemplate = {
       if (!u.isArray(regalias))
         regalias = [regalias]
 
-      //check for duplicate before add
-      //total amount of regalias is less than 10, so this square
-      //complexity actually is not a big deal
+      
+      
+      
       foreach (regalia in regalias)
         if (!isInArray(regalia, result))
           result.append(regalia)
@@ -89,13 +89,13 @@ let clanInfoTemplate = {
   }
 
   function getActivity() {
-    return this.astat?.activity ?? 0 // warning disable: -never-declared
+    return this.astat?.activity ?? 0 
   }
 }
 
-/**
- * Pass internal clanInfo for debug purposes
- */
+
+
+
 function get_clan_info_table(clanInfo = null) {
   if (!clanInfo)
     clanInfo = clan_get_clan_info()
@@ -146,16 +146,16 @@ function get_clan_info_table(clanInfo = null) {
   }
 
   foreach (member in clanMembersInfo) {
-    //get common members data
+    
     let memberItem = copyParamsToTable(member)
 
-    //get members ELO
+    
     let ratingTable = member_ratings?[memberItem.uid] ?? {}
     foreach (key, value in emptyRating)
       memberItem[key] <- round(getTblValue(key, ratingTable, value))
     memberItem.onlineStatus <- contactPresence.UNKNOWN
 
-    //get members activity
+    
     let memberActivityInfo = clanActivityInfo.getBlockByName(memberItem.uid) || DataBlock()
     foreach (key, value in emptyActivity)
       memberItem[$"{key}Activity"] <- memberActivityInfo.getInt(key, value)
@@ -226,8 +226,8 @@ function get_clan_info_table(clanInfo = null) {
   clan.historyDepth <- clanInfo?.historyDepth ?? 14
   clan.nextRewardDayId <- clanInfo?.nextRewardDayId
 
-  //dlog("GP: Show clan table");
-  //debugTableData(clan);
+  
+  
   return ::getFilteredClanData(clan)
 }
 

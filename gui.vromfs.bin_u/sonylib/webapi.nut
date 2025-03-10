@@ -66,7 +66,7 @@ function createRequest(api, method, path=null, params={}, data=null, forceBinary
 }
 
 function makeIterable(request, pos, size) {
-  // Some APIs accept either start (majority) or offset (friendlist), other param is ignored
+  
   request.params.start = pos
   request.params.offset = request.params.start
   request.params.size = size
@@ -74,17 +74,17 @@ function makeIterable(request, pos, size) {
   return request
 }
 
-function noOpCb(_response, _err) { /* NO OP */ }
+function noOpCb(_response, _err) {  }
 
 
-// ------------ Session actions
+
 let sessionManagerApi = { group = "sessionManager", path = "/v1/playerSessions" }
 let sessionManager = {
   function create(data) {
     return createRequest(sessionManagerApi, webApiMethodPost, null, {}, data)
   }
   function update(sessionId, param) {
-    //Allow to update only one parameter at a time
+    
     return createRequest(sessionManagerApi, webApiMethodPatch, $"{sessionId}", {}, param)
   }
   function leave(sessionId) {
@@ -111,14 +111,14 @@ let sessionManager = {
   }
 }
 
-// ------------ Game Sessions actions
+
 let gameSessionManagerApi = { group = "sessionManager", path = "/v1/gameSessions" }
 let gameSessionManager = {
   function create(data) {
     return createRequest(gameSessionManagerApi, webApiMethodPost, null, {}, data)
   }
   function update(sessionId, param) {
-    //Allow to update only one parameter at a time
+    
     return createRequest(gameSessionManagerApi, webApiMethodPatch, $"{sessionId}", {}, param)
   }
   function leave(sessionId) {
@@ -132,7 +132,7 @@ let gameSessionManager = {
   }
 }
 
-// ------------ Invitation actions
+
 let invitationApi = { group = "sdk:sessionInvitation", path = "/v1/users/me/invitations" }
 let invitation = {
   function use(invitationId) {
@@ -154,7 +154,7 @@ let playerSessionInvitations = {
   }
 }
 
-// ------------ Profile actions
+
 let profileApi = { group = "sdk:userProfile", path = "/v1/users/me" }
 let profile = {
   function listFriends() {
@@ -199,7 +199,7 @@ let communicationRestrictionStatus = {
 }
 
 
-// ------------ Activity Feed actions
+
 let feedApi = { group = "sdk:activityFeed", path = "/v1/users/me" }
 let feed = {
   function post(message) {
@@ -207,7 +207,7 @@ let feed = {
   }
 }
 
-// ----------- Commerce actions
+
 let commerceApi = { group = "sdk:commerce" path = "/v1/users/me/container" }
 let commerce = {
   function detail(products, params={}) {
@@ -215,7 +215,7 @@ let commerce = {
     return createRequest(commerceApi, webApiMethodGet, path, params)
   }
 
-  // listing multiple categories at once requires multiple iterators, one per category. We have one.
+  
   function listCategory(category, params={}) {
     assert(type(category) == "string", "[PSWA] only one category can be listed at a time")
     return createRequest(commerceApi, webApiMethodGet, category, params)
@@ -225,7 +225,7 @@ let commerce = {
 
 let inGameCatalogApi = { group = "inGameCatalog" path = "/v5/container" }
 let inGameCatalog = {
-  // Service label is now mandatory due to the way PS5 can be setup (with two stores)
+  
   function get(ids, serviceLabel, params={}) {
     params["serviceLabel"] <- serviceLabel
     params["containerIds"] <- ":".join(ids)
@@ -233,8 +233,8 @@ let inGameCatalog = {
   }
 }
 
-// ---------- Entitlement actions
-// XXX: Entitilements WebApi is no longer available on PS5, it's only for App Servers
+
+
 let entitlementsApi = { group = "sdk:entitlement", path = "/v1/users/me/entitlements"}
 let entitlements = {
   function granted() {
@@ -244,7 +244,7 @@ let entitlements = {
 }
 
 
-// ---------- Matches actions
+
 let matchesApi = { group = "matches", path = "/v1/matches" }
 
 function psnMatchCreate(data) {
@@ -290,7 +290,7 @@ let matches = {
 }
 
 
-// ---------- Utility functions and wrappers
+
 function isHttpSuccess(code) { return code >= 200 && code < 300 }
 
 function getNewRequestIdImpl() {
@@ -316,7 +316,7 @@ function send(action, onResponse=null) {
 
 function fetch(action, onChunkReceived, chunkSize = 20) {
   function onResponse(response, err) {
-    // PSN responses are somewhat inconsistent, but we need proper iterators
+    
     let entry = ((type(response) == "array") ? response?[0] : response) || {}
     let received = (getPreferredVersion() == 2)
                    ? (entry?.nextOffset || entry?.totalItemCount)

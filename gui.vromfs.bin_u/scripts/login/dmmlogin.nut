@@ -52,7 +52,7 @@ gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
   }
 
   function proceedAuthorizationResult(result) {
-    if (!checkObj(this.scene)) //check_login_pass is not instant
+    if (!checkObj(this.scene)) 
       return
 
     if (YU2_OK == result) {

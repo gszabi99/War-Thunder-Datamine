@@ -44,7 +44,7 @@ def GetSelectedNodes : array<NodeId>
         sna |> resize(snc)
         unsafe
             snc = GetSelectedNodes(reinterpret<NodeId?> addr(sna[0]),snc)
-        return <- [{for x in range(snc); NodeId(intptr(sna[x]))}]
+        return <- [for x in range(snc); NodeId(intptr(sna[x]))]
     else
         var empty : array<NodeId>
         return <- empty
@@ -56,7 +56,7 @@ def GetSelectedLinks : array<LinkId>
         sna |> resize(snc)
         unsafe
             snc = GetSelectedLinks(reinterpret<LinkId?> addr(sna[0]),snc)
-        return <- [{for x in range(snc); LinkId(intptr(sna[x]))}]
+        return <- [for x in range(snc); LinkId(intptr(sna[x]))]
     else
         var empty : array<LinkId>
         return <- empty

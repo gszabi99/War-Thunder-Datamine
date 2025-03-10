@@ -105,7 +105,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     this.infoPanelObj.show(true)
     ::dmViewer.init(this)
 
-    //Must be before replace fill tabs
+    
     let buttonsPlace = this.scene.findObject("buttons_place")
     if (checkObj(buttonsPlace)) {
       let data = "".join(slotInfoPanelButtons.value.map(@(view) handyman.renderCached("%gui/commonParts/button.tpl", view)))
@@ -146,7 +146,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       unitInfoObj["max-height"] = unitInfoObj[hasSlotbar ? "maxHeightWithSlotbar" : "maxHeightWithoutSlotbar"]
     }
 
-    // Fixes DM selector being locked after battle.
+    
     ::dmViewer.update()
 
     this.updateSceneVisibility()

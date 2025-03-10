@@ -5,8 +5,8 @@ from "%scripts/dagui_library.nut" import *
 let matchingGameSettings = require("%scripts/matching/matchingGameSettings.nut")
 let { register_command } = require("console")
 
-let defaults = {  //def value when feature not found in matching game settings
-             // not in this list are false
+let defaults = {  
+             
   hasChat = false
   hasBattleChatModeAll = false
   hasBattleChatModeTeam = false

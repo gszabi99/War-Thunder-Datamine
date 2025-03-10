@@ -40,7 +40,7 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
         let devId = obj[devicestr].tointeger();
         let btnId = obj[buttonstr].tointeger();
 
-        // Ignore zero scancode from XBox keyboard driver
+        
         if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 
@@ -67,7 +67,7 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
         devId = devId.tointeger()
         btnId = btnId.tointeger()
 
-        // Ignore zero scancode from XBox keyboard driver
+        
         if (devId == STD_KEYBOARD_DEVICE_ID && btnId == 0)
           continue
 

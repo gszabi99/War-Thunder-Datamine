@@ -1,4 +1,4 @@
-// warning disable: -file:forbidden-function
+
 from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, get_user_logs_count, get_user_log_blk_body, shop_is_unit_rented, rented_units_get_last_max_full_rent_time, char_send_blk
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
@@ -55,7 +55,7 @@ function _charAddAllItemsHelper(params) {
   if (taskId == -1)
     return
 
-  let __charAddAllItemsHelper = _charAddAllItemsHelper // for lambda capture
+  let __charAddAllItemsHelper = _charAddAllItemsHelper 
 
   addBgTaskCb(taskId, function () {
     ++params.currentIndex
@@ -77,8 +77,8 @@ function charAddAllItems(count = 1) {
   _charAddAllItemsHelper(params)
 }
 
-//must to be switched on before we get to debrifing.
-//but after it you can restart derifing with full recalc by usual reload()
+
+
 local _stat_get_exp = null
 local _stat_get_exp_cache = null
 
@@ -215,16 +215,16 @@ function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null, unitI
 function dbg_loading_brief(gm = GM_SINGLE_MISSION, missionName = "east_china_s01", slidesAmount = 0) {
   let missionBlk = get_meta_mission_info_by_gm_and_name(gm, missionName)
   if (!u.isDataBlock(missionBlk))
-    return dlog($"Not found mission {missionName}") //warning disable: -dlog-warn
+    return dlog($"Not found mission {missionName}") 
 
   let filePath = missionBlk?.mis_file
   if (filePath == null)
-    return dlog("No mission blk filepath") //warning disable: -dlog-warn
+    return dlog("No mission blk filepath") 
   let fullBlk = blkFromPath(filePath)
 
   let briefing = fullBlk?.mission_settings.briefing
   if (!u.isDataBlock(briefing) || !briefing.blockCount())
-    return dlog("Mission does not have briefing") //warning disable: -dlog-warn
+    return dlog("Mission does not have briefing") 
 
   let briefingClone = DataBlock()
   if (slidesAmount <= 0)
@@ -322,7 +322,7 @@ function debug_get_last_userlogs(num = 1) {
 }
 
 
-//
+
 
 
 
@@ -367,4 +367,4 @@ register_command(@() consoleAndDebugTableData("userstatDescList: ", userstatDesc
 register_command(@() consoleAndDebugTableData("userstatUnlocks: ", userstatUnlocks.value), "debug.userstat.unlocks")
 register_command(@() consoleAndDebugTableData("userstatStats: ", userstatStats.value), "debug.userstat.stats")
 
-//register_command(debug_unit_rent, "debug.unit_rent") //disabled as it changes global functions (and this wont work on import)
+

@@ -17,7 +17,7 @@ let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
 
 const SHOWED_SUGGESTED_SAVE_PATH = "seen/suggestionShowDecalsOnOtherPlayers"
-const SUGGESTED_DELAY_TIME_SEC = 15552000 //180 days
+const SUGGESTED_DELAY_TIME_SEC = 15552000 
 const MIN_VEHICLE_RANK_FOR_CHECK_OPTIONS = 5
 
 let SHOW_SAVE_ID = $"{SHOWED_SUGGESTED_SAVE_PATH}/show"
@@ -94,7 +94,7 @@ function checkDecalsOnOtherPlayersOptions() {
   if (!isProfileReceived.get())
     return
 
-  if (loadLocalAccountSettings(SHOW_SAVE_ID)) //options already checked visible
+  if (loadLocalAccountSettings(SHOW_SAVE_ID)) 
     return
 
   saveLocalAccountSettings(SHOW_SAVE_ID, true)

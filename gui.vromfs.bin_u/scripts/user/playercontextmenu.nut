@@ -51,21 +51,21 @@ let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
-//-----------------------------
-// params keys:
-//  - uid
-//  - playerName
-//  - clanTag
-//  - roomId
-//  - isMPChat
-//  - canInviteToChatRoom
-//  - isMPLobby
-//  - clanData
-//  - chatLog
-//  - squadMemberData
-//  - position
-//  - canComplain
-// ----------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let getPlayerCardInfoTable = function(uid, name) {
   let info = {}
@@ -137,7 +137,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
   local canComplain = !isMe && (params?.canComplain ?? false)
 
   let actions = []
-//---- <Session Join> ---------
+
   actions.append({
     text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, loc("multiplayer/invite_to_session"))
     show = canInviteToChatRoom && canInvitePlayerToSessionRoom(uid) && canInviteToSesson
@@ -179,9 +179,9 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       })
     }
   }
-//---- </Session Join> ---------
 
-//---- <Common> ----------------
+
+
   actions.append(
     {
       text = loc("contacts/message")
@@ -191,7 +191,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
         if (isBlock)
           return showBlockedPlayerPopup(name)
 
-        if (isProfileMuted) //There was no xbox message, so don't try to call overlay msg
+        if (isProfileMuted) 
           return showXboxPlayerMuted(name)
 
         if (!canChat)
@@ -231,9 +231,9 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       action = @() tryOpenFriendWishlist(contact.uid)
     }
   )
-//---- </Common> ------------------
 
-//---- <Squad> --------------------
+
+
   if (hasFeature("Squad")) {
     let meLeader = g_squad_manager.isSquadLeader()
     let inMySquad = g_squad_manager.isInMySquadById(uidInt64, false)
@@ -317,9 +317,9 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       }
     )
   }
-//---- </Squad> -------------------
 
-//---- <Clan> ---------------------
+
+
   let clanData = params?.clanData
   if (hasFeature("Clans") && clanData) {
     let clanId = clanData?.id ?? "-1"
@@ -358,9 +358,9 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       }
     )
   }
-//---- </Clan> ---------------------
 
-//---- <Contacts> ------------------
+
+
   if (hasFeature("Friends")) {
     let canBlock = !platformModule.isPlatformXboxOne || !isXBoxOnePlayer
 
@@ -408,18 +408,18 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       }
     )
   }
-//---- </Contacts> ------------------
 
-//---- <MP Lobby> -------------------
+
+
   if (isMPLobby)
     actions.append({
       text = loc("mainmenu/btnKick")
       show = !isMe && isMeSessionLobbyRoomOwner.get() && !isInSessionLobbyEventRoom.get()
       action = @() kickPlayerFromRoom(getMemberByName(name))
     })
-//---- </MP Lobby> ------------------
 
-//---- <In Battle> ------------------
+
+
   if (isInFlight())
     actions.append({
       text = loc(localDevoice.isMuted(name, localDevoice.DEVOICE_RADIO) ? "mpRadio/enable" : "mpRadio/disable")
@@ -430,9 +430,9 @@ let retrieveActions = function(contact, params, comms_state, callback) {
         addPopup(null, loc(popupLocId, { player = colorize("activeTextColor", getPlayerName(name)) }))
       }
     })
-//---- </In Battle> -----------------
 
-//---- <Chat> -----------------------
+
+
   if (hasMenuChat.value) {
     if (hasChatEnable && canInviteToChatRoom) {
       let inviteMenu = g_chat.generateInviteMenu(name)
@@ -487,9 +487,9 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       }
     }
   }
-//---- </Chat> ----------------------
 
-//---- <Complain> ------------------
+
+
   if (canComplain)
     actions.append({
       text = loc("mainmenu/btnComplain")
@@ -519,9 +519,9 @@ let retrieveActions = function(contact, params, comms_state, callback) {
         checkCanComplainAndProceed(uid, get_mp_session_id_str(), @() gui_modal_complain(config, chatLog))
       }
     })
-//---- </Complain> ------------------
 
-//---- <Moderator> ------------------
+
+
   if (is_myself_anyof_moderators() && (roomId || isMPChat || isMPLobby))
     actions.append(
       {
@@ -535,7 +535,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
         action = @() gui_modal_ban(contact, chatLog)
       }
     )
-//---- </Moderator> -----------------
+
 
   let buttons = params?.extendButtons ?? []
   buttons.extend(actions)

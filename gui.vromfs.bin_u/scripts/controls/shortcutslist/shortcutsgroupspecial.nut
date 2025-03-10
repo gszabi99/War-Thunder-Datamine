@@ -13,7 +13,7 @@ return [
     showFunc = @() hasFeature("Human") || (getPlayerCurUnit()?.isHuman() ?? false)
     needShowInHelp = true
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HUMAN_MOVE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -41,7 +41,7 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-//--------------------------------------------
+
   {
     id = "ID_HUMAN_FIRE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -94,7 +94,7 @@ return [
     id = "ID_HUMAN_TOGGLE_RANGEFINDER"
     checkAssign = false
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HUMAN_VIEW_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -135,7 +135,7 @@ return [
     id = "ID_TARGETING_HOLD_HUMAN"
     checkAssign = false
   }
-//-------------------------------------------------------
+
   {
     id = "ID_HUMAN_OTHER_HEADER"
     type = CONTROL_TYPE.SECTION

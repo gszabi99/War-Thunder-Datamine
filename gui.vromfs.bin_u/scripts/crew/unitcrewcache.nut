@@ -6,10 +6,10 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 
-//
-// Unit crew data cache.
-// Used to speed up 'get_aircraft_crew_by_id' calls.
-//
+
+
+
+
 
 ::g_unit_crew_cache <- {
   lastUnitCrewData = null

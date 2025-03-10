@@ -40,6 +40,7 @@ let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard.nut")
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
+let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 
 function create_event_description(parent_scene, event = null, needEventHeader = true) {
   let containerObj = parent_scene.findObject("item_desc")
@@ -65,7 +66,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   playersInTable = null
   currentFullRoomData = null
 
-  // Most recent request for short leaderboards.
+  
   newSelfRowRequest = null
 
   workshopSetHandler = null
@@ -98,7 +99,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateBottomDesc(roomMGM) {
-    // Fill vehicle lists
+    
     local teamObj = null
     let sides = events.getSidesList(roomMGM)
     foreach (team in events.getSidesList()) {
@@ -125,18 +126,18 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       if (playersCountObj)
         playersCountObj.setValue(sides.len() > 1 ? this.getTeamPlayersCountText(team, teamData, roomMGM) : "")
 
-      ::fillCountriesList(this.getObject("countries", teamObj), events.getCountries(teamData))
+      fillCountriesList(this.getObject("countries", teamObj), events.getCountries(teamData))
       let unitTypes = events.getUnitTypesByTeamDataAndName(teamData, teamName)
       let roomSpecialRules = this.room && getRoomSpecialRules(this.room)
       events.fillAirsList(this, teamObj, teamData, unitTypes, roomSpecialRules)
     }
 
-    // Team separator
+    
     let separatorObj = this.getObject("teams_separator")
     if (separatorObj != null)
       separatorObj.show(sides.len() > 1)
 
-    // Misc
+    
     this.loadMap()
     this.fetchLbData()
   }
@@ -166,7 +167,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     if (eventDescTextObj != null)
       eventDescTextObj.setValue(events.getEventDescriptionText(this.selectedEvent, this.room))
 
-    // Event difficulty
+    
     let eventDifficultyObj = this.getObject("event_difficulty")
     if (eventDifficultyObj != null) {
       let difficultyText = events.isDifficultyCustom(this.selectedEvent)
@@ -176,7 +177,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       eventDifficultyObj.text = format(" %s %s", difficultyText, respawnText)
     }
 
-    // Event players range
+    
     let eventPlayersRangeObj = this.getObject("event_players_range")
     if (eventPlayersRangeObj != null) {
       let rangeData = events.getPlayersRangeTextData(roomMGM)
@@ -191,12 +192,12 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    // Clan info
+    
     let clanOnlyInfoObj = this.getObject("clan_event")
     if (clanOnlyInfoObj != null)
       clanOnlyInfoObj.show(isEventForClan(this.selectedEvent))
 
-    // Allow switch clan
+    
     let allowSwitchClanObj = this.getObject("allow_switch_clan")
     if (allowSwitchClanObj != null) {
       let eventType = getTblValue("type", this.selectedEvent, 0)
@@ -210,7 +211,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    // Timer
+    
     let timerObj = this.getObject("event_time")
     if (timerObj != null) {
         SecondsUpdater(timerObj, Callback(function(obj, _params) {
@@ -285,14 +286,14 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateContentHeader() {
-    // Difficulty image
+    
     let difficultyImgObj = this.getObject("difficulty_img")
     if (difficultyImgObj) {
       difficultyImgObj["background-image"] = events.getDifficultyImg(this.selectedEvent.name)
       difficultyImgObj["tooltip"] = events.getDifficultyTooltip(this.selectedEvent.name)
     }
 
-    // Event name
+    
     let eventNameObj = this.getObject("event_name")
     if (eventNameObj)
       eventNameObj.setValue(this.getHeaderText())
@@ -403,7 +404,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     events.requestSelfRow(
       this.newSelfRowRequest,
       "mini_lb_self",
-      (@(selectedEvent) function (_self_row) { //-ident-hides-ident
+      (@(selectedEvent) function (_self_row) { 
         events.requestLeaderboard(events.getMainLbRequest(selectedEvent),
         "mini_lb_self",
         function (lb_data) {

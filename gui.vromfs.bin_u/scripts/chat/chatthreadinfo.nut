@@ -21,7 +21,7 @@ let { getContact } = require("%scripts/contacts/contacts.nut")
 const MAX_THREAD_LANG_VISIBLE = 3
 
 ::ChatThreadInfo <- class {
-  roomId = "" //threadRoomId
+  roomId = "" 
   lastUpdateTime = -1
 
   title = ""
@@ -39,7 +39,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
   isValid = true
 
-  constructor(threadRoomId, dataBlk = null) { //dataBlk from chat response
+  constructor(threadRoomId, dataBlk = null) { 
     this.roomId = threadRoomId
     this.isValid = this.roomId.len() > 0
     assert(g_chat_room_type.THREAD.checkRoomId(this.roomId), $"Chat thread created with not thread id = {this.roomId}")
@@ -122,7 +122,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
   }
 
   function sortLangList() {
-    //usually only one lang in thread, but moderators can set some threads to multilang
+    
     if (this.langs.len() < 2)
       return
 
@@ -133,7 +133,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
       if (idx != null)
         this.langs.append(unsortedLangs.remove(idx))
     }
-    this.langs.extend(unsortedLangs) //unknown langs at the end
+    this.langs.extend(unsortedLangs) 
   }
 
   function isMyThread() {
@@ -258,7 +258,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
     }
   }
 
-  //It's like hidden, but must reveal when unhidden
+  
   isConcealed = function() {
     if (!isCrossNetworkMessageAllowed(this.ownerNick))
       return true

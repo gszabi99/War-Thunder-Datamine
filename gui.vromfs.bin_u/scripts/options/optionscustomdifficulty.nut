@@ -81,7 +81,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsM
     }
   }
 
-  function updateButtons() {} //override from GenericOptionsModal
+  function updateButtons() {} 
 
   function updateCurBaseDifficulty() {
     this.curBaseDifficulty = getCdBaseDifficulty()
@@ -100,7 +100,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsM
   }
 
   function onApply(obj) {
-    // init custom difficulty by BaseDifficulty
+    
     set_cd_preset(get_cd_preset(this.curBaseDifficulty))
     base.onApply(obj)
   }

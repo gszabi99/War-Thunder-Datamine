@@ -15,7 +15,7 @@ let itemTypeByBlkType = {
   [EIT_MOD_UPGRADE]         = itemType.MOD_UPGRADE,
 }
 
-// Do we still need theese two variables?
+
 let itemsShopListVersion = Watched(0)
 let inventoryListVersion = Watched(0)
 

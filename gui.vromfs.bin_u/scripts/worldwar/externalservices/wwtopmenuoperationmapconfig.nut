@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-require("%scripts/worldWar/externalServices/worldWarTopMenuButtons.nut") //Independed Module. Need for init buttons configs
+require("%scripts/worldWar/externalServices/worldWarTopMenuButtons.nut") 
 
 let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")

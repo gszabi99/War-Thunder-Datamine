@@ -60,7 +60,7 @@ function onUserStateChanged(p) {
 
   getCurMissionRules().clearUnitsLimitData()
   broadcastEvent("MyCustomStateChanged")
-  //broadcastEvent("UserCustomStateChanged", { userId64 = userId64 }) //not used ATM but maybe needed in future
+  
 }
 
 eventbus_subscribe("on_custom_mission_state_changed", onMissionStateChanged)

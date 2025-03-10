@@ -122,7 +122,7 @@ gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = 0; i < containerObj.childrenCount(); i++) {
       let itemObj = containerObj.getChild(i)
       if (!itemObj?.collapse_header && itemObj.isEnabled()) {
-        this.selOperation = null //force refresh description
+        this.selOperation = null 
         containerObj.setValue(i)
         break
       }
@@ -201,7 +201,7 @@ gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateButtons()
   }
 
-  //operation select
+  
   _wasSelectedOnce = false
   function onItemSelect() {
     if (!this.refreshSelOperation() && this._wasSelectedOnce)
@@ -289,7 +289,7 @@ gui_handlers.WwOperationsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
       this.joinOperationBySide(SIDE_2)
   }
 
-  function joinOperationBySide(side) { // -all-paths-return-value probably join is not String.join, but something else..
+  function joinOperationBySide(side) { 
     if (this.isOperationJoining)
       return
 

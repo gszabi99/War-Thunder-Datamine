@@ -49,74 +49,74 @@ let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
 
 ::leaderboard_modes <- [
   {
-    // Arcade Battles
+    
     text = "#mainmenu/arcadeInstantAction"
     mode = "arcade"
     diffCode = DIFFICULTY_ARCADE
   }
   {
-    // Realistic Battles
+    
     text = "#mainmenu/instantAction"
     mode = "historical"
     diffCode = DIFFICULTY_REALISTIC
   }
   {
-    // Simulator Battles
+    
     text = "#mainmenu/fullRealInstantAction"
     mode = "simulation"
     diffCode = DIFFICULTY_HARDCORE
   }
 
   {
-    // Air Arcade Battles
+    
     text = "#missions/air_event_arcade"
     mode = "air_arcade"
     diffCode = DIFFICULTY_ARCADE
   }
   {
-    // Air Realistic Battles
+    
     text = "#missions/air_event_historical"
     mode = "air_realistic"
     diffCode = DIFFICULTY_REALISTIC
   }
   {
-    // Air Simulator Battles
+    
     text = "#missions/air_event_simulator"
     mode = "air_simulation"
     diffCode = DIFFICULTY_HARDCORE
   }
   {
-    // Tank Arcade Battles
+    
     text = "#missions/tank_event_arcade"
     mode = "tank_arcade"
     diffCode = DIFFICULTY_ARCADE
   }
   {
-    // Tank Realistic Battles
+    
     text = "#missions/tank_event_historical"
     mode = "tank_realistic"
     diffCode = DIFFICULTY_REALISTIC
   }
   {
-    // Tank Simulator Battles
+    
     text = "#missions/tank_event_simulator"
     mode = "tank_simulation"
     diffCode = DIFFICULTY_HARDCORE
   }
   {
-    // Ship Arcade Battles
+    
     text = "#missions/ship_event_arcade"
     mode = "test_ship_arcade"
     diffCode = DIFFICULTY_ARCADE
   }
   {
-    // Ship Realistic Battles
+    
     text = "#missions/ship_event_historical"
     mode = "test_ship_realistic"
     diffCode = DIFFICULTY_REALISTIC
   }
   {
-    // Helicopter Arcade Battles
+    
     text = "#missions/helicopter_event"
     mode = "helicopter_arcade"
     diffCode = DIFFICULTY_ARCADE
@@ -188,7 +188,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateButtons()
   }
 
-  //----CONTROLLER----//
+  
   function setRowsInPage() {
     this.rowsInPage = this.rowsInPage > 0
       ? this.rowsInPage
@@ -210,7 +210,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
     if (this.rowsInPage == 0)
-      return  // do not divide by zero
+      return  
 
     let selfPagePos = this.rowsInPage * floor(selfPos / this.rowsInPage)
     this.pos = selfPagePos / this.rowsInPage < this.maxRows ? selfPagePos : 0
@@ -276,7 +276,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!rowData)
       return
 
-    //not event leaderboards dont have player uids, so if no uid, we will search player by name
+    
     let params = { name = this.getLbPlayerName(rowData) }
     let uid = this.getLbPlayerUid(rowData)
     if (uid)
@@ -341,7 +341,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     if (val >= 0 && val < this.lbModesList.len() && this.lbMode != this.lbModesList[val]) {
       this.lbMode = this.lbModesList[val]
 
-      // check modesMask
+      
       if (!this.curLbCategory.isVisibleByLbModeName(this.lbMode))
         this.curLbCategory = this.lb_presets[0]
 
@@ -376,7 +376,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (this.curLbCategory.id == obj.id) {
-      if (this.rowsInPage != 0) {  // do not divide by zero
+      if (this.rowsInPage != 0) {  
         let selfPos = this.getSelfPos()
         let selfPagePos = this.rowsInPage * floor(selfPos / this.rowsInPage)
         if (this.pos != selfPagePos)
@@ -398,9 +398,9 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onDaySelect(_obj) {
   }
-  //----END_CONTROLLER----//
+  
 
-  //----VIEW----//
+  
   function initTable() {
     this.tableWeak = gui_handlers.LeaderboardTable.create({
       scene = this.scene.findObject("lb_table_nest")
@@ -517,7 +517,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function fillPagintator() {
     if (this.rowsInPage == 0)
-      return  // do not divide by zero
+      return  
 
     let nestObj = this.scene.findObject("paginator_place")
     let curPage = (this.pos / this.rowsInPage).tointeger()
@@ -530,7 +530,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
       generatePaginator(nestObj, this, curPage, lastPageNumber, myPage)
     }
   }
-  //----END_VIEW----//
+  
 }
 
 gui_handlers.EventsLeaderboardWindow <- class (gui_handlers.LeaderboardWindow) {

@@ -39,7 +39,7 @@ gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!isInJoiningGame.get())
       return this.goBack()
 
-    this.resetTimer() //statusChanged
+    this.resetTimer() 
     this.checkGameMode()
 
     let misData = getSessionLobbyMissionParams()
@@ -88,7 +88,7 @@ gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
 
     set_game_mode(gm)
     if (this.mainGameMode < 0)
-      this.mainGameMode = curGm  //to restore gameMode after close window
+      this.mainGameMode = curGm  
   }
 
   function showCancelButton(show) {

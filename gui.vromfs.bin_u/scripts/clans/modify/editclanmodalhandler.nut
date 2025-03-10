@@ -127,7 +127,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     this.updateSubmitButtonText()
   }
 
-  // Override.
+  
   function updateSubmitButtonText() {
     let changedPrimary = this.hasChangedPrimaryInfo()
     let changedSecondary = this.hasChangedSecondaryInfo()
@@ -157,7 +157,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     }
   }
 
-  // Important override.
+  
   function getSelectedClanType() {
     return this.clanData.clanType
   }
@@ -190,7 +190,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     showObjById("btn_disbandClan", (this.isMyClan && isInArray("DISBAND", this.myRights)) || this.adminMode, this.scene)
   }
 
-  // Override
+  
   function onUpgradeMembers() {
     let cost = clan_get_admin_editor_mode() ? Cost() : this.clanData.clanType.getMembersUpgradeCost(this.clanData.mlimit)
     if (checkBalanceMsgBox(cost)) {
@@ -209,7 +209,7 @@ gui_handlers.EditClanModalhandler <- class (gui_handlers.ModifyClanModalHandler)
     upgradeClanMembers(this.clanData.id, this)
   }
 
-  // Override
+  
   function onEventClanInfoUpdate(_p) {
     if (this.clanData && this.clanData.id == clan_get_my_clan_id()) {
       let myClanInfoV = myClanInfo.get()

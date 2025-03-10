@@ -135,7 +135,7 @@ let directionGroups = [
     originalName = "J17",
     lethalRangeMax = 40000.0
   },
-  //
+  
 
 
 

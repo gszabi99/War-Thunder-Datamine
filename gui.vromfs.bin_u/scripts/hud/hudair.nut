@@ -42,10 +42,10 @@ gui_handlers.HudAir <- class (HudWithWeaponSelector) {
 
   function updateTacticalMapVisibility() {
     let ownerUnit = getAircraftByName(getOwnerUnitName())
-    let shouldShowMapForAircraft = (get_game_type() & GT_RACE) != 0 // Race mission
-      || (getPlayerCurUnit()?.tags ?? []).contains("type_strike_ucav") // Strike UCAV in Tanks mission
+    let shouldShowMapForAircraft = (get_game_type() & GT_RACE) != 0 
+      || (getPlayerCurUnit()?.tags ?? []).contains("type_strike_ucav") 
       || (hasFeature("uavMiniMap") && ((ownerUnit?.isTank() ?? false)
-                                   || (ownerUnit?.isShip() ?? false))) // Scout UCAV in Tanks/Ships mission
+                                   || (ownerUnit?.isShip() ?? false))) 
     let isVisible = shouldShowMapForAircraft && !is_replay_playing()
       && g_hud_vis_mode.getCurMode().isPartVisible(HUD_VIS_PART.MAP)
     showObjById("hud_air_tactical_map", isVisible, this.scene)

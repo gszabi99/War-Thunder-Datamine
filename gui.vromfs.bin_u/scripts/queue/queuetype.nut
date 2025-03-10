@@ -22,7 +22,7 @@ let g_queue_type = {
 }
 
 g_queue_type.template <- {
-  typeName = "" //filled automatically by typeName
+  typeName = "" 
   bit = QUEUE_TYPE_BIT.UNKNOWN
   checkOrder = qTypeCheckOrder.COMMON
   getQueueClass = @(_params) getQueueClass("Event")
@@ -89,7 +89,7 @@ enumsAddTypes(g_queue_type,
         }
       }
 
-      //FIX ME: why it work not by queueStats and queueInfo classes?
+      
       updateInfo = function(successCallback, errorCallback, needAllQueues = false) {
         request_matching(
           "worldwar.get_queue_info",

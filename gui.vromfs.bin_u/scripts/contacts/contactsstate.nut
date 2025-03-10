@@ -63,8 +63,8 @@ function updatePresencesByList(presences) {
     if ((p?.nick ?? "") != "")
       player.name <- p.nick
     if (type(player.uid) != "string") {
-      let presence = toString(p) // warning disable: -declared-never-used
-      let playerData = toString(player) // warning disable: -declared-never-used
+      let presence = toString(p) 
+      let playerData = toString(player) 
       script_net_assert_once("on_presences_update_error", "on_presences_update cant update presence for player")
       continue
     }
@@ -82,8 +82,8 @@ function updatePresencesByList(presences) {
         if (s in p.presences.status) {
           let gameInfo = p.presences.status[s]
 
-          // This is a workaround for a bug when something
-          // is setting player presence with no event info.
+          
+          
           if (!("eventId" in gameInfo))
             continue
 
@@ -145,7 +145,7 @@ function execContactsCharAction(userId, charAction, successCb = null) {
       successCb?()
     }
     function failure(err) {
-      if (err == "REQUEST_NOT_FOUND") { //Need update contacts list
+      if (err == "REQUEST_NOT_FOUND") { 
         requestContactsListAndDo(@(_) fetchContacts())
         return
       }
@@ -184,7 +184,7 @@ function searchContactsOnline(request, callback = null) {
             print($"uid is not an integer, uid: {uidStr}")
             continue
           }
-          ::getContact(uidStr, name) //register contact name
+          ::getContact(uidStr, name) 
           resContacts[uidStr] <- name
         }
 
@@ -195,7 +195,7 @@ function searchContactsOnline(request, callback = null) {
   )
 }
 
-//!!!FIX ME: A dirty hack to use the same matching notification for accepted and rejected friend request
+
 let sendFriendChangedEvent = @(friendId)
   matchingApiNotify("mpresence.notify_friend_added", { friendId })
 
@@ -223,7 +223,7 @@ function verifiedContactAndDoIfNeed(player, groupName, cb) {
 
 function addContactImpl(contact, groupName) {
   if (isPlayerInContacts(contact.uid, groupName))
-    return //no need to do something
+    return 
 
   let action = wtGroupToRequestAddAction?[groupName]
   if (action == null)
@@ -248,16 +248,16 @@ function canAddPlayerToContactsList(groupName) {
   return false
 }
 
-function addContact(player, groupName) { //playerConfig: { uid, name }
+function addContact(player, groupName) { 
   if (!canAddPlayerToContactsList(groupName))
-    return //Too many contacts
+    return 
 
   verifiedContactAndDoIfNeed(player, groupName, addContactImpl)
 }
 
 function removeContactImpl(contact, groupName) {
   if (!isPlayerInContacts(contact.uid, groupName))
-    return //no need to do something
+    return 
 
   let contactGroup = contact.contactServiceGroup
   if (predefinedContactsGroupToWtGroup?[contactGroup] != groupName)
@@ -326,7 +326,7 @@ matchingRpcSubscribe("mpresence.on_added_to_contact_list", function(p) {
   fetchContacts()
 })
 
-//----------- Debug Block -----------------
+
 let fakeFriendsList = Watched([])
 fakeFriendsList.subscribe(function(f) {
   updatePresencesByList(f)

@@ -69,9 +69,9 @@ let Base = class {
     this.fullEnemyUnitsLimitData = null
   }
 
-  /*************************************************************************************************/
-  /*************************************PUBLIC FUNCTIONS *******************************************/
-  /*************************************************************************************************/
+  
+  
+  
 
   function getMaxRespawns() {
     return RESPAWNS_UNLIMITED
@@ -80,7 +80,7 @@ let Base = class {
   function getLeftRespawns() {
     local res = RESPAWNS_UNLIMITED
     if (!this.isScoreRespawnEnabled && getTblValue("maxRespawns", this.missionParams, 0) > 0)
-      res = get_respawns_left() //code return spawn score here when spawn score enabled instead of respawns left
+      res = get_respawns_left() 
     return res
   }
 
@@ -129,7 +129,7 @@ let Base = class {
     return null
   }
 
-  //return bitmask is crew can respawn by mission custom state for more easy check is it changed
+  
   function getCurCrewsRespawnMask() {
     local res = 0
     if (!this.hasCustomUnitRespawns() || !this.getLeftRespawns())
@@ -227,15 +227,15 @@ let Base = class {
     return res
   }
 
-  /*
-  return [
-    {
-      unit = unit
-      comment  = "" //what need to do to spawn on that unit
-    }
-    ...
-  ]
-  */
+  
+
+
+
+
+
+
+
+
   function getAvailableToSpawnUnitsData() {
     let res = []
     if (!(get_game_type() & (GT_VERSUS | GT_COOPERATIVE)))
@@ -286,7 +286,7 @@ let Base = class {
     return res
   }
 
-  function getUnitFuelPercent(unitName) { //return 0 when fuel amount not fixed
+  function getUnitFuelPercent(unitName) { 
     let unitsFuelPercentList = getTblValue("unitsFuelPercentList", this.getCustomRulesBlk())
     return getTblValue(unitName, unitsFuelPercentList, 0)
   }
@@ -308,9 +308,9 @@ let Base = class {
     return !this.isMissionByUnitsGroups() && (unit.isAir() || unit.isHelicopter())
   }
 
-  /*************************************************************************************************/
-  /************************************PRIVATE FUNCTIONS *******************************************/
-  /*************************************************************************************************/
+  
+  
+  
 
   function getMisStateBlk() {
     return get_mission_custom_state(false)
@@ -345,7 +345,7 @@ let Base = class {
     return this.getTeamDataBlk(opponentTeamCode, keyName)
   }
 
-  //return -1 when unlimited
+  
   function getUnitLeftRespawnsByTeamDataBlk(_unit, _teamDataBlk) {
     return RESPAWNS_UNLIMITED
   }
@@ -353,7 +353,7 @@ let Base = class {
   function calcFullUnitLimitsData(_isTeamMine = true) {
     return {
       defaultUnitRespawnsLeft = RESPAWNS_UNLIMITED
-      unitLimits = [] //unitLimitBaseClass
+      unitLimits = [] 
     }
   }
 
@@ -369,7 +369,7 @@ let Base = class {
     return getTblValue("weaponList", this.getMyStateBlk())
   }
 
-  //return -1 when unlimited
+  
   function getWeaponRespawnsLeftByLimitsBlk(unit, weapon, weaponLimitsBlk) {
     if (getAmmoCost(unit, weapon.name, AMMO.WEAPON).isZero())
       return -1
@@ -547,7 +547,7 @@ let Base = class {
 
 registerMissionRules("Base", Base)
 
-//just for case when empty rules will not the same as base
+
 registerMissionRules("Empty", class (Base) {})
 
 return Base

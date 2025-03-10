@@ -32,7 +32,7 @@ local popupOptList = class (gui_handlers.BaseGuiHandlerWT) {
   resetId              = null
   isForcedSelect       = false
 
-  //init params
+  
   actionText           = null
   optionsList          = null
   onActionFn           = null
@@ -58,7 +58,7 @@ local popupOptList = class (gui_handlers.BaseGuiHandlerWT) {
         name = inst.name
         val = option.values
           .filter(@(v) v != "auto")
-          .findindex(@(v) v == inst.name) // Actual option value. Need to return only.
+          .findindex(@(v) v == inst.name) 
       }
     }
     return {
@@ -101,7 +101,7 @@ local popupOptList = class (gui_handlers.BaseGuiHandlerWT) {
     let val = get_option(USEROPT_CLUSTERS).values
       .filter(@(v) v != "auto")
       .findindex(@(t) t == optObj?.optName)
-    // Need to reset duplicates for non-empty items only
+    
     if (val != null) {
       let stateId = this.tmpStates.findindex(@(c) c.val == val)
       if (stateId && stateId != obj.id)

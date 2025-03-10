@@ -9,7 +9,7 @@ let viewType = {
 }
 
 viewType.template <- {
-  id = "" //filled automatically by typeName. so unique
+  id = "" 
   model = elemModelType.EMPTY
 
   bhvParamsToString = function(params) {
@@ -29,7 +29,7 @@ viewType.addTypes({
   EMPTY = {}
 })
 
-//save get type by id. return EMPTY if not found
+
 viewType.get <- @(typeId) this?[typeId] ?? this.EMPTY
 
 viewType.buildBhvConfig <- function(params) {

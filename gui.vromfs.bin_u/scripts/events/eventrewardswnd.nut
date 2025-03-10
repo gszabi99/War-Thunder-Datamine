@@ -21,7 +21,7 @@ gui_handlers.EventRewardsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   rewardsTableTplName = "%gui/events/eventRewardsTbl.tpl"
 
   currTabIdx = 0
-  //Incoming params
+  
   tabsList = null
 
   static function open(params) {

@@ -22,7 +22,7 @@ let buttons = {
     isAvailableInMission = @() true
     canShowOnMissionFailed = false
     isVisible = @() this.canShowOnMissionFailed || get_mission_status() != MISSION_STATUS_FAIL
-    getUpdatedLabelText = @() "" // Unchangable buttons returns empty string.
+    getUpdatedLabelText = @() "" 
   }
 }
 

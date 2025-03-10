@@ -5,10 +5,10 @@ import "daRg.behaviors" as Behaviors
 let {tostring_r} = require("%sqstd/string.nut")
 let {min}  = require("math")
 
-/*
-//===== DARG specific methods=====
-  this function create element that has internal basic stateFlags (S_HOVER S_ACTIVE S_DRAG)
-*/
+
+
+
+
 function watchElemState(builder, params={}) {
   let stateFlags = params?.stateFlags ?? Watched(0)
   let onElemState = @(sf) stateFlags.update(sf)
@@ -23,11 +23,11 @@ function watchElemState(builder, params={}) {
   }
 }
 
-/*
-//===== DARG specific methods=====
-*/
+
+
+
 function isDargComponent(comp) {
-//better to have natived daRg function to check if it is valid component!
+
   local c = comp
   if (type(c) == "function") {
     let info = c.getfuncinfos()
@@ -48,8 +48,8 @@ function isDargComponent(comp) {
   return false
 }
 
-//this function returns sh() for pixels for fullhd resolution (1080p)
-//but result is not bigger than 0.75sw (for resolutions narrower than 4x3)
+
+
 let hdpx = sh(100) <= sw(75)
   ? @(pixels) sh(100.0 * pixels / 1080)
   : @(pixels) sw(75.0 * pixels / 1080)
@@ -60,7 +60,7 @@ let fsh = sh(100) <= sw(75) ? sh : @(v) sw(0.75 * v)
 
 let wrapParams= {width=0, flowElemProto={}, hGap=null, vGap=0, height=null, flow=FLOW_HORIZONTAL}
 function wrap(elems, params=wrapParams) {
-  //TODO: move this to native code
+  
   let paddingLeft=params?.paddingLeft
   let paddingRight=params?.paddingRight
   let paddingTop=params?.paddingTop
@@ -86,7 +86,7 @@ function wrap(elems, params=wrapParams) {
   if (paddingLeft && !isFlowHor)
     flowElems.append(paddingLeft)
   local tail = elems
-  function buildFlowElem(elems, gap, flowElemProto, dimensionLim) {  //warning disable: -ident-hides-ident -param-hides-param
+  function buildFlowElem(elems, gap, flowElemProto, dimensionLim) {  
     let children = []
     local curwidth=0.0
     local tailidx = 0

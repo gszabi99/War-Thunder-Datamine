@@ -203,7 +203,7 @@ function saveLoadedLogs(loadedLogsBlk, useLogMark, _handler) {
     saveLogArmies(logTable.blk, logTable.id)
     saveLogView(logTable)
 
-    // on some fresh logs - we need to play sound or update strength
+    
     if (!useLogMark) {
       isStrengthUpdateNeeded = logBlk.type == WW_LOG_TYPES.ARTILLERY_STRIKE_DAMAGE ||
                                logBlk.type == WW_LOG_TYPES.BATTLE_FINISHED ||

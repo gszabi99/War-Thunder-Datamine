@@ -8,7 +8,7 @@ let activeOrder = require("activeOrder.nut")
 let voiceChat = require("chat/voiceChat.nut")
 let hudLogs = require("hudLogs.nut")
 let { eventbus_send } = require("eventbus")
-// Need add ROBJ_XRAYDOLL in scene for correct update isVisibleDmgIndicator state
+
 let xraydoll = {
   rendObj = ROBJ_XRAYDOLL
   size = [1, 1]
@@ -41,7 +41,7 @@ let xrayIndicator = @() {
 
 let logsComp = {
   size = SIZE_TO_CONTENT
-  minHeight = hdpx(210) // reserve height to prevent shifting of order when log appears
+  minHeight = hdpx(210) 
   children = hudLogs
 }
 

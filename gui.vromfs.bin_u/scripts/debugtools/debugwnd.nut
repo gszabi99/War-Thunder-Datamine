@@ -58,7 +58,7 @@ gui_handlers.debugWndHandler <- class (BaseGuiHandler) {
       let txt = "".concat(ptxt
           ,"~nUsage examples:"
           ,"~ndebug_wnd(\"%gui/debriefing/debriefing.blk\")"
-          ,"~ndebug_wnd(\"%gui/menuButton.tpl\", {buttonText=\"Test\"})") // warning disable: -forgot-subst
+          ,"~ndebug_wnd(\"%gui/menuButton.tpl\", {buttonText=\"Test\"})") 
       let data = "".concat("textAreaCentered { pos:t='pw/2-w/2, ph/2-h/2' position:t='absolute' text='", txt, "' }")
       return this.guiScene.replaceContentFromText(obj, data, data.len(), this.callbacksContext)
     }

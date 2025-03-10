@@ -38,7 +38,7 @@ let Timer = class {
     if (!this.isDelayed)
       this.onTimeOut()
     else
-      this.guiScene.performDelayed(this, (@(onTimeOut) function() { onTimeOut() })(this.onTimeOut)) //-ident-hides-ident
+      this.guiScene.performDelayed(this, (@(onTimeOut) function() { onTimeOut() })(this.onTimeOut)) 
   }
 
   function setDelay(newDelay) {

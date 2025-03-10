@@ -32,9 +32,9 @@ enum bulletsAmountState {
 }
 
 ::UnitBulletsManager <- class {
-  unit = null  //setUnit to change
-  bulGroups = null //bulletsGroups
-  gunsInfo = null //bulletsInfo for primary guns (guns, total, cartridge, groupIndex) //getBulletsInfoForPrimaryGuns
+  unit = null  
+  bulGroups = null 
+  gunsInfo = null 
   groupsActiveMask = 0
 
   checkPurchased = true
@@ -92,7 +92,7 @@ enum bulletsAmountState {
     return getTblValue("unallocated", bulGroup.gunInfo, 0)
   }
 
-  //return isChanged
+  
   function changeBulletsCount(bulGroup, newCount) {
     let count = bulGroup.bulletsCount
     if (count == newCount)
@@ -128,7 +128,7 @@ enum bulletsAmountState {
     return true
   }
 
-  //will send broadcast event with full list of changed bullets groups
+  
   function changeBulletsValueByIdx(bulGroup, valueIdx) {
     return this.changeBulletsValue(bulGroup, bulGroup.getBulletNameByIdx(valueIdx))
   }
@@ -183,7 +183,7 @@ enum bulletsAmountState {
       let unallocated = gInfo.unallocated
       if (unallocated <= 0)
         continue
-      if (gInfo?.forcedMaxBulletsInRespawn ?? false) // Player can't change counts.
+      if (gInfo?.forcedMaxBulletsInRespawn ?? false) 
         continue
       if (gInfo?.isBulletBelt ?? true)
         continue
@@ -239,7 +239,7 @@ enum bulletsAmountState {
   }
 
   function getActiveBulGroupsAmount() {
-    //do not count fake bullets
+    
     return stdMath.number_of_set_bits(this.groupsActiveMask & ((1 << this.unit.unitType.bulletSetsQuantity) - 1))
   }
 
@@ -302,9 +302,9 @@ enum bulletsAmountState {
     }
   }
 
-//**************************************************************************************
-//******************************* PRIVATE ***********************************************
-//**************************************************************************************
+
+
+
 
   function checkInitBullets() {
     if (this.bulGroups)
@@ -340,13 +340,13 @@ enum bulletsAmountState {
     this.groupsActiveMask = this.unit ? getActiveBulletsGroupInt(this.unit, {
       checkPurchased = this.checkPurchased,
       isForcedAvailable = this.isForcedAvailable
-    }) : 0 //!!FIX ME: better to detect actives in manager too.
+    }) : 0 
     if (!this.unit)
       return
 
     let ammoCounstraintsByTrigger = getAmmoStowageConstraintsByTrigger(this.unit)
 
-    // Preparatory work of Bullet Groups creation
+    
     let bulletDataByGroup = {}
     let bullGroupsCountersByGun = {}
     let bulletsTotal = this.unit.unitType.canUseSeveralBulletsForGun
@@ -364,7 +364,7 @@ enum bulletsAmountState {
       if (maxToRespawn > 0 && constrainedTotalCount > 0)
         maxToRespawn = min(constrainedTotalCount, maxToRespawn)
 
-      //!!FIX ME: Needs to have a bit more reliable way to determine bullets type like by TRIGGER_TYPE for example
+      
       let currBulletType = bulletsSet?.isBulletBelt ? "belt" : bulletsSet?.bullets[0].split("_")[0]
       bulletDataByGroup[groupIndex] <- {
         linkedIdx = linkedIdx
@@ -378,7 +378,7 @@ enum bulletsAmountState {
           groupCount = 0
           beltsCount = 0
           isUniform = true
-          bulletType = currBulletType // Helper value to define isUniform
+          bulletType = currBulletType 
         }
 
       let currCounters = bullGroupsCountersByGun[linkedIdx]
@@ -388,12 +388,12 @@ enum bulletsAmountState {
       currCounters.isUniform = currBulletType == currCounters.bulletType
     }
 
-    // Check and create Bullet Group Data
-    // User can chose the bullet set where maxToRespawn defined for all gun bullets simultaneously.
-    // There is needs to current logic be changed when all gun bullets are the same type but not belt.
-    // It means that maxToRespawn currently limits count for each bullet in gun,
-    // so for mentioned case total count looks like summ of all maxToRespawn,
-    // that actually is true for belts only.
+    
+    
+    
+    
+    
+    
     foreach (groupIndex, data in bulletDataByGroup) {
       let currCounters = bullGroupsCountersByGun[data.linkedIdx]
       let isUniformNoBelts = (currCounters.isUniform && currCounters.beltsCount == 0
@@ -444,7 +444,7 @@ enum bulletsAmountState {
       if (!list)
         continue
 
-      //check for duplicate bullets
+      
       if (!bulGroup.setBulletNotFromList(list)) {
         bulGroup.active = false
         this.groupsActiveMask = stdMath.change_bit(this.groupsActiveMask, gIdx, 0)
@@ -465,7 +465,7 @@ enum bulletsAmountState {
       gInfo.notInitedCount = 0
     }
 
-    //update unallocated bullets, collect not inited
+    
     let unallocatedPairBulGroup = {}
     local haveNotInited = false
     foreach (_gIdx, bulGroup in this.bulGroups) {
@@ -489,7 +489,7 @@ enum bulletsAmountState {
       }
 
       let isSecondPairBulletsGroup = (gInfo.gunIdx in unallocatedPairBulGroup)
-      if (gInfo.unallocated < bulGroup.bulletsCount || isSecondPairBulletsGroup) { //need set all count for pairs bullets
+      if (gInfo.unallocated < bulGroup.bulletsCount || isSecondPairBulletsGroup) { 
         bulGroup.setBulletsCount(gInfo.unallocated)
         gInfo.unallocated = 0
       }
@@ -506,7 +506,7 @@ enum bulletsAmountState {
     if (!haveNotInited)
       return
 
-    //init all active not inited bullets
+    
     foreach (_gIdx, bulGroup in this.bulGroups) {
       if (!bulGroup.active || bulGroup.bulletsCount >= 0)
         continue
@@ -516,7 +516,7 @@ enum bulletsAmountState {
         continue
       }
 
-      //no point to check unallocated amount left after init. this will happen only once, and all bullets atthat moment will be filled up.
+      
       let newCount = min(gInfo.unallocated / gInfo.notInitedCount, bulGroup.maxBulletsCount)
       bulGroup.setBulletsCount(newCount)
       gInfo.unallocated -= newCount
@@ -542,7 +542,7 @@ enum bulletsAmountState {
     if (!this.unit || this.unit.name != p.unit?.name)
       return
 
-    this.loadBulletsData() // Need to reload data because of maxToRespawn in bullet group might be recalculated
+    this.loadBulletsData() 
     if (p.groupIdx in this.bulGroups)
       this.changeBulletsValue(this.bulGroups[p.groupIdx], p.bulletName)
   }

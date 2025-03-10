@@ -294,6 +294,7 @@
           "N001",
           "N010",
           "V004",
+          "N011M",
           "Type 1473",
           "ELTA EL/M-2001B",
           "ELTA EL/M-2052",
@@ -383,6 +384,23 @@
         "track": false,
         "launch": true,
         "type": "V004",
+        "threatFlag": "RWR SARH/IR LAUNCH"
+      },
+      {
+        "name": "Su-30",
+        "detectLaunch": true,
+        "search": true,
+        "track": true,
+        "launch": false,
+        "type": "N011M"
+      },
+      {
+        "name": "Su-30 LAUNCH",
+        "detectLaunch": true,
+        "search": false,
+        "track": false,
+        "launch": true,
+        "type": "N011M",
         "threatFlag": "RWR SARH/IR LAUNCH"
       },
       {
@@ -822,6 +840,13 @@
         ]
       },
       {
+        "text": "S30",
+        "group": [
+          "Su-30",
+          "Su-30 LAUNCH"
+        ]
+      },
+      {
         "text": "F4",
         "group": [
           "F-4",
@@ -924,14 +949,12 @@
         "text": "2S6",
         "group": [
           "2S6",
-          "2S6 LAUNCH",
-          "S1 LAUNCH"
+          "2S6 LAUNCH"
         ]
       },
       {
         "text": "S1",
-        "group": "S1",
-        "checkOverride_S1": false
+        "group": "S1"
       },
       {
         "text": "ADS",
@@ -956,6 +979,10 @@
       {
         "text": "M28",
         "group": "Mi-28"
+      },
+      {
+        "text": "S1",
+        "group": "S1 LAUNCH"
       }
     ]
   },

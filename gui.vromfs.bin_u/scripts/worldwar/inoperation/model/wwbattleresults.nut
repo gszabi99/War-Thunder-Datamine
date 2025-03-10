@@ -208,12 +208,12 @@ let WwBattleResults = class {
     return this.playerCountry
   }
 
-  /**
-  Fills WwBattleResults with data from mission result Userlog.
-  Such userlog contains most data in sub tables wwSharedPool and wwBattleResult,
-  and some data in userlog root table.
-  It operation was finished during the battle, there will be no wwBattleResult block.
-  */
+  
+
+
+
+
+
   function updateFromUserlog(userlog) {
     let wwSharedPool = getTblValue("wwSharedPool", userlog)
     let wwBattleResult = getTblValue("wwBattleResult", userlog, {})
@@ -223,10 +223,10 @@ let WwBattleResults = class {
     let initialArmies = getTblValue("initialArmies", wwSharedPool, [])
     let teamsCasualties = getTblValue("casualties", wwSharedPool, [])
 
-    // Restoring team sides
+    
 
     let localTeam  = getTblValue("localTeam", wwSharedPool, "")
-    let sidesOrder = g_world_war.getSidesOrder() // [ player, enemy ]
+    let sidesOrder = g_world_war.getSidesOrder() 
     let winnerSide = getTblValue("win", userlog) ? sidesOrder[0] : sidesOrder[1]
 
     local sideInBattle = SIDE_NONE
@@ -243,7 +243,7 @@ let WwBattleResults = class {
       }
     }
 
-    // Collecting armies
+    
 
     let wwArmies = initialArmies.map(function(initialArmy, armyName) {
       let armyState = wwBattleResult?.armyStates[armyName] ?? {}
@@ -274,7 +274,7 @@ let WwBattleResults = class {
       }
     })
 
-    // Updating
+    
 
     let wwOperationId = wwSharedPool?.operationId
     this.id = getTblValue("battleId", wwSharedPool, "")

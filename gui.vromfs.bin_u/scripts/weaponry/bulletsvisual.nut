@@ -11,7 +11,7 @@ let { cos, PI } = require("math")
 let { copyParamsToTable } = require("%sqstd/datablock.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let {
-      //
+      
 
 
         getBulletsSetData,
@@ -89,7 +89,7 @@ function resetBulletIcons() {
 }
 
 addListenersWithoutEnv({
-  GuiSceneCleared = @(_p) resetBulletIcons() // Resolution or UI Scale could change
+  GuiSceneCleared = @(_p) resetBulletIcons() 
 })
 
 function initBulletIcons(blk = null) {
@@ -224,7 +224,9 @@ function getArmorPiercingViewData(armorPiercing, dist) {
 
   let baseArmorPiercingIndex = 1
   let baseDistance = ranges[baseArmorPiercingIndex] ?? 0
-  let baseArmorPiercing = round(armorPiercing?[baseArmorPiercingIndex][0] ?? 0).tointeger()
+  let baseArmorPiercingFloat = armorPiercing?[baseArmorPiercingIndex][0]
+    ?? armorPiercing?[baseArmorPiercingIndex]["0"] ?? 0 
+  let baseArmorPiercing = round(baseArmorPiercingFloat).tointeger()
   return { props = res, baseArmorPiercing, baseDistance }
 }
 
@@ -297,8 +299,8 @@ function addArmorPiercingToDescForBullets(bulletsData, descTbl) {
 function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard = false) {
   let p = []
   let isSmokeBullet = !!bulletsData?.smokeShellRad
-  //  Enable dividing lines for rockets shells
-  //  (not the best check, maybe need to come up with something new):
+  
+  
   let needAddDividingLine = !!bulletsData?.rangeMax && !!bulletsData?.guidanceType
   let listDividerLineIndexes = {
     first = 0
@@ -616,12 +618,12 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
   }
 
   if (bulletsSet?.bullets?[0] == "napalm_tank") {
-    return bulletsData  //hide all bullet description for flamethrower bullet
+    return bulletsData  
   }
 
   if (bulletsSet?.sonicDamage != null) {
     bulletsData.sonicDamage <- bulletsSet.sonicDamage
-    return bulletsData  //hide all bullet description for sonicDamage bullet
+    return bulletsData  
   }
 
   bulletsData.cumulativeDamage = bulletsSet?.cumulativeDamage ?? 0
@@ -739,7 +741,7 @@ function addBulletAnimationsToDesc(descTbl, bulletAnimations) {
   descTbl.hasBulletAnimation <- descTbl.bulletAnimations.len() > 0
 }
 
-//
+
 
 
 
@@ -844,7 +846,7 @@ function addBulletsParamToDesc(descTbl, unit, item, isBulletCard) {
     })
   }
 
-  //
+  
 
 
 

@@ -132,7 +132,7 @@ function locOrStrip(text) {
 }
 
 function buildTableRow(rowName, rowData, even = null, trParams = "", _tablePad = "@tblPad") {
-  //tablePad not using, but passed through many calls of this function
+  
   let view = {
     row_id = rowName
     even = even

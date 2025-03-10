@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 log($"onScriptLoadAfterLogin: wt")
 
-// Please don't move paths from the main list here anymore. Instead, just edit paths in the main list below.
+
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 
 require("unit/initUnitTypes.nut")
@@ -345,5 +345,5 @@ require("%scripts/exportInfo/skinsLocExporter.nut")
 require("%scripts/onlineShop/buyPremiumHandler.nut")
 
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
-if (isAuthorized.get() || disable_network()) //load scripts from packs only after login
+if (isAuthorized.get() || disable_network()) 
   require("%scripts/worldWar/worldWar.nut")

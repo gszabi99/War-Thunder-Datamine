@@ -22,7 +22,7 @@ let g_hud_enemy_debuffs = {
   }
 }
 
-// ----------------------------------------------------------------------------------------------
+
 
 let getStateByBrokenDmAny = function(unitInfo, partName, partsArray) {
   if (unitInfo.isKilled)
@@ -70,10 +70,10 @@ let getTurretDriveParts = function() {
   return parts
 }
 
-// ----------------------------------------------------------------------------------------------
+
 
 g_hud_enemy_debuffs.template <- {
-  id = "" // filled by type name
+  id = "" 
   unitTypesMask = 0
   parts         = []
   isUpdateByEnemyDamageState = false

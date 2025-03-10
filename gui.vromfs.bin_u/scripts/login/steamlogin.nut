@@ -34,13 +34,13 @@ gui_handlers.LoginWndHandlerSteam <- class (gui_handlers.LoginWndHandler) {
     this.defaultSavePasswordFlagVal = lp.password != ""
     this.defaultSaveAutologinFlagVal = is_autologin_enabled()
 
-    //Called init while in loading, so no need to call again authorization.
-    //Just wait, when the loading will be over.
+    
+    
     if (isAuthorized.get())
       return
 
     let useSteamLoginAuto = loadLocalSharedSettings(USE_STEAM_LOGIN_AUTO_SETTING_ID, true)
-    if (!useSteamLoginAuto) //can be null or false
+    if (!useSteamLoginAuto) 
       this.goToLoginWnd(useSteamLoginAuto == null)
     else
       this.steamAuthorization("steam-known")

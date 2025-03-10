@@ -57,7 +57,7 @@ function initLoginPseudoThreadsConfig(cb) {
     }
     function() {
       updateConsoleClientDownloadStatus()
-      getProfileInfo() //update userName
+      getProfileInfo() 
       initSelectedCrews(true)
       set_show_attachables(hasFeature("AttachablesUse"))
 
@@ -100,7 +100,7 @@ function initLoginPseudoThreadsConfig(cb) {
       updatePlayerRankByCountries()
     }
     function() {
-      clearUnlockedCountries() //reinit countries
+      clearUnlockedCountries() 
       checkUnlockedCountries()
       checkUnlockedCountriesByAirs()
 
@@ -192,7 +192,7 @@ function restartLoginPseudoThreads() {
 
 addListenersWithoutEnv({
   function GuiSceneCleared(_) {
-    //work only after scripts reload
+    
     if (!loginWTState.shouldRestartPseudoThread)
       return
     loginWTState.shouldRestartPseudoThread = false

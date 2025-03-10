@@ -56,7 +56,7 @@ gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
     let obj = this.scene.findObject("search_edit_box")
     if (checkObj(obj)) {
       obj.setValue("")
-      // Toggling enable status to make it lose focus.
+      
       obj.enable(false)
       obj.enable(true)
     }
@@ -73,7 +73,7 @@ gui_handlers.ShopSearchBox <- class (gui_handlers.BaseGuiHandlerWT) {
       : !countGlobal ? loc("shop/search/global/notFound")
       : countLocal ? loc("shop/search/local/found", { count = countLocal })
       : loc("shop/search/local/notFound")
-    //With IME window with all variants wil be open automatically
+    
     if (countGlobal > countLocal)
       hintText = "\n".concat(hintText, loc("shop/search/global/found", { count = countGlobal }))
     let obj = this.scene.findObject("search_hint_text")

@@ -126,8 +126,8 @@ function getResourcesConfig(resources) {
     resourcesImagesMarkupArr = []
   }
 
-  //after convertation from DataBlk to table array with 1 element becomes table.
-  //So we normalize data format.
+  
+  
   if (u.isTable(resources))
     resources = [resources]
 
@@ -388,8 +388,8 @@ function getUserlogViewData(logObj) {
 
     if ("affectedBoosters" in logObj) {
       local affectedBoosters = logObj.affectedBoosters
-      // Workaround for a bug (duplicating 'affectedBoosters' blocks),
-      // which doesn't even exist on Production. Please remove it after ~ 2015-09-25:
+      
+      
       if (type(affectedBoosters) == "array")
         affectedBoosters = affectedBoosters.top()
 
@@ -899,7 +899,7 @@ function getUserlogViewData(logObj) {
 
       let clanRating = getTblValue("clanRating", rewardBlk, -1)
 
-      //show rating only for place reward due for rating-reward rating showed in header
+      
       if (clanPlace > 0)
         lineReward = "".concat(lineReward, loc("userLog/clanDuelRewardClanRating"), " <color=@white>",clanRating,
           "</color>\n")
@@ -915,8 +915,8 @@ function getUserlogViewData(logObj) {
       if (rewardCurency != "")
         res.description = "".concat(res.description, loc("reward"), loc("ui/colon"), " ", colorize("activeTextColor", rewardCurency))
 
-      //We don't want ~100 localization strings like "Your squadron took Nth place.".
-      //So we left unique localizations only for top 3.
+      
+      
       if (clanPlace > 3)
         res.name = loc("userlog/ClanSeasonRewardPlaceN", { place = clanPlace.tostring() })
       else if (clanPlace > 0)
@@ -1025,7 +1025,7 @@ function getUserlogViewData(logObj) {
       gold = Money(money_type.none, 0, abs(goldAdd)).toStringWithParams({ isGoldAlwaysShown = true }),
       balance = Balance(0, goldBalance).toStringWithParams({ isGoldAlwaysShown = true })
     })
-    res.description <- logObj?.comment ?? "" // not localized
+    res.description <- logObj?.comment ?? "" 
   }
   else if (logObj.type == EULT_BUYING_SCHEME) {
     res.description <- "".concat(getUnitName(logObj.unit), priceText)
@@ -1758,7 +1758,7 @@ function getUserlogViewData(logObj) {
         "textareaNoTab { position:t='absolute';pos:t='pw-w, ph-h'; text:t='#userlog/copyToClipboard' }")
   }
 
-  //------------- when userlog not found or not full filled -------------//
+  
   if (res.name == "")
     res.name = loc($"userlog/{logName}")
 

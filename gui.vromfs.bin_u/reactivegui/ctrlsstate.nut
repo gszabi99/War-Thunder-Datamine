@@ -3,7 +3,7 @@ from "%rGui/globals/ui_library.nut" import *
 let extWatched = require("globals/extWatched.nut")
 
 let gamepadCursorControl = extWatched("gamepadCursorControl", false)
-let haveXinputDevice = extWatched("haveXinputDevice", false) //FIX ME: remove "haveXinputDevice" when in darg scene will be determined correctly that joystick has controller
+let haveXinputDevice = extWatched("haveXinputDevice", false) 
 let showConsoleButtons = extWatched("showConsoleButtons", false)
 let cursorVisible = extWatched("cursorVisible", true)
 

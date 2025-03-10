@@ -65,7 +65,7 @@ function hideNewMessage() {
     startAnim(slowFadeOutId)
 }
 
-// force isNewMessage state to prevent log blinking right after sending a message
+
 lastInputTime.subscribe(function(_) {
   skipAnims()
   isNewMessage(true)
@@ -134,8 +134,8 @@ return @() {
   watch = isVisible
   children = isVisible.value ? [logsHeader, logsContainer] : []
   onAttach = function() {
-    // delayed init to prevent getting a wrong state just after transition from other screen
-    // as cursorVisible.value remains true for some frames
+    
+    
     gui_scene.resetTimeout(0.1, init)
   }
   onDetach = function() {

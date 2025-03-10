@@ -26,7 +26,7 @@ function invokeMultiArray(multiArray, currentArray, currentIndex, invokeCallback
   }
 }
 
-//you can use array in any path part - in result will be max discount from them.
+
 function getDiscountByPath(path, blk = null, _idx = 0) {
   if (blk == null)
     blk = get_price_blk()
@@ -72,7 +72,7 @@ function getMaxWeaponryDiscountByUnitName(unitName, discountTypes = null) {
   return discount
 }
 
-//You can use array of airNames - in result will be max discount from them.
+
 function showAirDiscount(obj, airName, group = null, groupValue = null, fullUpdate = false) {
   let path = ["aircrafts", airName]
   if (group)

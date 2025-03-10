@@ -32,7 +32,7 @@ let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { hasPremium } = require("sony.user")
 
 function memoizeByProfile(func, hashFunc = null) {
-  // When player buys any decarator, profile always updates.
+  
   return memoizeByEvents(func, hashFunc, [ "ProfileUpdated" ])
 }
 
@@ -244,7 +244,7 @@ enums.addTypes(decoratorTypes, {
                     max(0, get_decal_cost_gold(decorator.id)))
     }
     getDecoratorNameInSlot = function(slotIdx, unitName, skinId, checkPremium = false) {
-      return get_decal_in_slot(unitName, skinId, slotIdx, checkPremium) //slow function
+      return get_decal_in_slot(unitName, skinId, slotIdx, checkPremium) 
     }
 
     isAllowed = function(decoratorName) { return is_decal_allowed(decoratorName, "") }

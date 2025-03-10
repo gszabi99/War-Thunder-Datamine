@@ -98,7 +98,7 @@ function checkReserveUnit(unit, paramsTable) {
 function getReserveAircraftName(paramsTable) {
   let preferredCrew = getTblValue("preferredCrew", paramsTable, null)
 
-  // Trained level by unit name.
+  
   let trainedSpec = getTblValue("trainedSpec", preferredCrew, {})
 
   foreach (unitName, _unitSpec in trainedSpec) {

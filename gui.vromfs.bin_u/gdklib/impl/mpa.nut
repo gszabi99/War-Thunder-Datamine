@@ -21,7 +21,7 @@ function set_activity(connection_string, join_restrictions, max_players, players
   mpa.set_activity(eventName, connection_string, join_restrictions, max_players, players, group_id, crossplatform)
 }
 
-//xuids - array of uints
+
 function send_invitations(connection_string, xuids, crossplatform, callback) {
   let eventName = "xbox_mpa_send_invitations"
   eventbus_subscribe_onehit(eventName, function(result) {

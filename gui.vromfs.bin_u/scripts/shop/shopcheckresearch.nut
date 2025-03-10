@@ -363,29 +363,29 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
     }))
   }
 
-  /*
-  function automaticallySpendAllExcessiveExp() //!!!TEMP function, true func must be from code
-  {
-    updateResearchVariables()
+  
 
-    local afterDoneFunc = function() {
-      destroyProgressBox()
-      updateButtons()
-      onCloseShop()
-    }
 
-    if (availableFlushExp <= 0)
-      setUnitOnResearch(curResearchingUnit)
 
-    if (!curResearchingUnit || availableFlushExp <= 0)
-    {
-      afterDoneFunc()
-      return
-    }
 
-    flushItemExp(curResearchingUnit, automaticallySpendAllExcessiveExp)
-  }
-  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   function setUnitOnResearch(unit = null, afterDoneFunc = null) {
     let executeAfterDoneFunc =  function() {

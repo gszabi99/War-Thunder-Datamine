@@ -1,4 +1,4 @@
-//pseudo-module for native code
+
 #allow-root-table
 let perform_cross_call = getroottable()["perform_cross_call"]
 

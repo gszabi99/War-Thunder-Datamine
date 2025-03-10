@@ -20,7 +20,7 @@ let rouletteAnim = {
 }
 
 rouletteAnim.template <- {
-  id = "" //filled automatically by typeName. so unique
+  id = "" 
   skipAnimTime = 0.5
 
   startAnim = @(obj, targetIdx) obj.setValue(save_to_json(
@@ -55,7 +55,7 @@ rouletteAnim.template <- {
 
   calcSkipAnimConfig = function(curConfig) {
     if (curConfig.time >= curConfig.totalTime)
-      return null //do nothing
+      return null 
 
     let pos1 = curConfig.animFunc(curConfig.time)
     let pos2 = curConfig.animFunc(curConfig.totalTime)
@@ -74,15 +74,15 @@ rouletteAnim.template <- {
     })
   }
 
-  //Returns random displacement in segment [-1.0, 1.0]
-  //with a higher chance to be closer to the border
+  
+  
   getRandomEndDisplacement = function() {
     let sign = frnd() > 0.5 ? 1.0 : -1.0
     if (frnd() <= CHANCE_TO_STOP_ON_BORDER)
       return sign
 
     let mean = frnd()
-    // Chance of further displacement is higher.
+    
     return sign * (1.0 - mean * mean)
   }
 }
@@ -115,27 +115,27 @@ enums.addTypes(rouletteAnim, {
   LONG = {
     TIME_TO_MAX_SPEED = 1.0
     TIME_TO_SLOW_SPEED = 6.0
-    TIME_TO_FINALIZE = 0.5 //time to move from final point to item center
+    TIME_TO_FINALIZE = 0.5 
 
-    SLOW_SPEED = 1 //speed for N last items before choose. (items per sec)
+    SLOW_SPEED = 1 
     MIN_ITEMS_SLOW_SPEED = 3
     MAX_ITEMS_SLOW_SPEED = 7
 
     getTimeAtSlowSpeed = @(itemsAmount) 2.0 * this.SLOW_SPEED * itemsAmount
 
     function calcAnimConfigImpl(targetPos, targetWidth, itemWidth) {
-      //from 0 t o t1: s = a1 * t * t                 //fast speed up roulette
-      //from t1 to t2: s = a2 * t * t + b2 * t + c2   //speed slower until reach SLOW_SPEED
-      //from t2 to t3: s = a3 * t * t + b3 * t + c3   //move at slow speed
-      //from t3 to t4: s = a4 * t * t + b4 * t + c4   //fallback to current item center
+      
+      
+      
+      
 
-      //initialize known constants
+      
       let v2 = -this.SLOW_SPEED.tofloat() * itemWidth
       let t1 = this.TIME_TO_MAX_SPEED.tofloat()
       let t2 = this.TIME_TO_SLOW_SPEED.tofloat()
 
-      //calc distances (except first one which depend on many params
-      //all distances are negative
+      
+      
       let s4 = targetPos
       let displacement = this.getRandomEndDisplacement()
       let s3 = s4 + displacement * 0.5 * targetWidth
@@ -146,23 +146,23 @@ enums.addTypes(rouletteAnim, {
         return null
       }
 
-      //calc 2nd part params
+      
       let b2 = (2.0 * s2 - v2 * t2) / (t2 - t1)
       let a2 = (v2 - b2) / (2 * t2)
       let c2 = s2 - a2 * t2 * t2 - b2 * t2
 
-      //calc 1stpart params
+      
       let v1 = t1 * v2 / t2 + b2 * (1 - t1 / t2)
       let a1 = v1 / (2 * t1)
 
-      //calc 3rd part params
+      
       let slowTime = this.getTimeAtSlowSpeed(slowSpeedItems)
       let t3 = t2 + slowTime
       let a3 = (s2 - s3) / (slowTime * slowTime)
       let b3 = -2 * a3 * t3
       let c3 = s2 - a3 * t2 * t2 - b3 * t2
 
-      //calc 4th part params
+      
       let t4 = t3 + this.TIME_TO_FINALIZE
       let a4 = (s3 - s4) / (this.TIME_TO_FINALIZE * this.TIME_TO_FINALIZE)
       let b4 = -2 * a4 * t4
@@ -181,7 +181,7 @@ enums.addTypes(rouletteAnim, {
       })
     }
 
-    //return fractional amount of items required to move with the SLOW_SPEED.
+    
     getItemsAmountWithSlowSpeed = @()
       this.MIN_ITEMS_SLOW_SPEED.tofloat() + frnd() * (this.MAX_ITEMS_SLOW_SPEED - this.MIN_ITEMS_SLOW_SPEED)
   }
@@ -202,7 +202,7 @@ rouletteAnim.calcAnimConfig <- function(obj, value, curConfig) {
 }
 
 rouletteAnim.getTimeLeft <- function(obj) {
-  //return time to finalize animation
+  
   let config = obj.getUserData()
   return config ? config.totalTime - config.time : 0
 }

@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
-local contactsHandlerClass = null // class for load contacts window
-local contactsHandler = null  // loaded contacts window
+local contactsHandlerClass = null 
+local contactsHandler = null  
 
 function loadContactsToObj(obj, owner) {
   if (!checkObj(obj) || contactsHandlerClass == null)

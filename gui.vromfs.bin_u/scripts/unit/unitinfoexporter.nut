@@ -84,7 +84,7 @@ let class UnitInfoExporter {
   langBeforeExport = ""
   curLang = ""
 
-  debugLog = dlog // warning disable: -forbidden-function
+  debugLog = dlog 
   isToStringForDebug = true
 
   fullBlk = null
@@ -92,7 +92,7 @@ let class UnitInfoExporter {
 
   status = null
 
-  constructor(genLangsList = ["English", "Russian"], genPath = "export") { //null - export all langs
+  constructor(genLangsList = ["English", "Russian"], genPath = "export") { 
     if (!this.isReadyStartExporter())
       return
 
@@ -167,9 +167,9 @@ let class UnitInfoExporter {
     setGameLocalization(this.langBeforeExport, false, false)
   }
 
-  /******************************************************************************/
-  /********************************EXPORT PROCESS********************************/
-  /******************************************************************************/
+  
+  
+  
 
   function exportCalculationParameters() {
     this.debugLog("Exporter: start fetching calculation parameters")
@@ -213,7 +213,7 @@ let class UnitInfoExporter {
     setGameLocalization(this.curLang, false, false)
 
     this.debugLog($"Exporter: gen all units info to {this.getLangFullPath()}")
-    get_main_gui_scene().performDelayed(this, this.startExport) //delay to show exporter logs
+    get_main_gui_scene().performDelayed(this, this.startExport) 
   }
 
   function getCalculationParemetersFullPath() {
@@ -257,7 +257,7 @@ let class UnitInfoExporter {
 
   function finishExport(fBlk) {
     fBlk.saveToTextFile(this.getLangFullPath())
-    get_main_gui_scene().performDelayed(this, this.nextLangExport) //delay to show exporter logs
+    get_main_gui_scene().performDelayed(this, this.nextLangExport) 
   }
 
   function exportUnitType(fBlk) {

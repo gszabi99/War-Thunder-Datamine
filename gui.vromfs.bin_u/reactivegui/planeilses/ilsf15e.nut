@@ -2,8 +2,8 @@ from "%rGui/globals/ui_library.nut" import *
 from "%globalScripts/loc_helpers.nut" import loc_checked
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { Speed, /*Tas, */Aoa, Tangage, Roll, BarAltitude, ClimbSpeed, CompassValue, Mach, Overload,
- /*Altitude, */Gear } = require("%rGui/planeState/planeFlyState.nut")
+let { Speed, Aoa, Tangage, Roll, BarAltitude, ClimbSpeed, CompassValue, Mach, Overload,
+ Gear } = require("%rGui/planeState/planeFlyState.nut")
 let { IlsColor, IlsLineScale, TargetPos, RadarTargetPos, RadarTargetPosValid, RadarTargetDist,
  RadarTargetAngle, RadarTargetVel, TargetPosValid, IlsPosSize, RadarTargetDistRate, BombCCIPMode,
  TvvMark, CannonMode, DistToTarget, BombingMode, AimLockPos, AimLockValid, TimeBeforeBombRelease,
@@ -25,7 +25,7 @@ let { IlsTrackerVisible, GuidanceLockState, IlsTrackerX, IlsTrackerY } = require
 let isAamAvailable = Computed(@() GuidanceLockState.value >= GuidanceLockResult.RESULT_STANDBY)
 let isAamReady = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
 
-// air reference
+
 
 let SpeedValue = Computed(@() (Speed.get() * mpsToKnots).tointeger())
 let speed = @(){
@@ -78,38 +78,38 @@ let aoa = @(){
   ]
 }
 
-/*
-let TasValue = Computed(@() (Tas.get() * mpsToKnots).tointeger())
-let tas = @(){
-  watch = IlsColor
-  size = [pw(10), ph(5)]
-  pos = [pw(10), ph(39)]
-  color = IlsColor.get()
-  flow = FLOW_HORIZONTAL
-  halign = ALIGN_RIGHT
-  children = [
-    @(){
-      size = [SIZE_TO_CONTENT, flex()]
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      fontSize = 35
-      text = "T"
-      halign = ALIGN_LEFT
-      valign = ALIGN_CENTER
-    }
-    @(){
-      watch = TasValue
-      size = [SIZE_TO_CONTENT, flex()]
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      fontSize = 35
-      text = format("% 4.0f", TasValue.get())
-      halign = ALIGN_RIGHT
-      valign = ALIGN_CENTER
-    }
-  ]
-}
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let MachValue = Computed(@() (Mach.get() * 1000).tointeger())
 let OverloadValue = Computed(@() (Overload.get() * 10).tointeger())
@@ -204,50 +204,50 @@ let climbRate = @(){
   ] : null
 }
 
-/*
-let RadarAltValue = Computed(@() (Altitude.get() * metrToFeet).tointeger())
-let radarAlt = @(){
-  watch = IlsColor
-  pos = [pw(80), ph(38)]
-  size = [pw(12), ph(5)]
-  color = IlsColor.get()
-  flow = FLOW_HORIZONTAL
-  halign = ALIGN_RIGHT
-  children = [
-    {
-      size = [SIZE_TO_CONTENT, flex()]
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      fontSize = 35
-      text = "R "
-      valign = ALIGN_CENTER
-    }
-    @(){
-      watch = RadarAltValue
-      size = [SIZE_TO_CONTENT, flex()]
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      fontSize = 45
-      text = (RadarAltValue.get() / 1000).tostring()
-      halign = ALIGN_RIGHT
-      valign = ALIGN_CENTER
-    }
-    @(){
-      watch = RadarAltValue
-      size = [SIZE_TO_CONTENT, flex()]
-      rendObj = ROBJ_TEXT
-      color = IlsColor.get()
-      fontSize = 35
-      padding = [0, 2]
-      text = format("%03d", RadarAltValue.get() % 1000)
-      halign = ALIGN_RIGHT
-      valign = ALIGN_CENTER
-    }
-  ]
-}
-*/
 
-// attitude
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let fwdMarker = @() {
   watch = IlsColor
@@ -444,7 +444,7 @@ let rollIndicator = @(){
   ]
 }
 
-// navigation
+
 
 let generateCompassMark = function(num, width) {
   return {
@@ -499,11 +499,11 @@ function compass(width, generateFunc) {
 
 function compassWrap(width, height, generateFunc) {
   return {
-    //watch = isAamReady
+    
     size = [width * 0.5, height * 0.1]
     pos = [width * 0.25, height * 0.1]
     clipChildren = true
-    children = /*!isAamReady.value ?*/ [
+    children =  [
       compass(width * 0.2, generateFunc)
       {
         size = flex()
@@ -516,11 +516,11 @@ function compassWrap(width, height, generateFunc) {
           [VECTOR_LINE, 50, 40, 51, 60]
         ]
       }
-    ]/* : null*/
+    ]
   }
 }
 
-// radar
+
 
 let haveRadatTarget = Computed(@() RadarTargetDist.get() > 0)
 let radarTargetDistValue = Computed(@() (RadarTargetDist.get() * metrToNavMile * 10.0).tointeger())
@@ -643,9 +643,9 @@ function radarReticle(width, height) {
   }
 }
 
-// weapon
 
-//   cannon
+
+
 
 let adlMarker = @() {
   watch = IlsColor
@@ -794,7 +794,7 @@ let gunMode = @(){
     } : null
 }
 
-//   secodary weapon
+
 
 let selectedSecondaryWeapon = @(){
   watch = [CurWeaponName, CurWeaponGidanceType]
@@ -813,7 +813,7 @@ let selectedSecondaryWeapon = @(){
     } : null
 }
 
-//    air-to-air missiles
+
 
 let AseRadius = Computed(@() CurWeaponGidanceType.get() == GuidanceType.TYPE_ARH || CurWeaponGidanceType.get() == GuidanceType.TYPE_SARH ? 100 : 60)
 let RadarTargetVelLen = Computed(@() 5 + (RadarTargetVel.get() * 0.001 * 20.0).tointeger())
@@ -1019,7 +1019,7 @@ let launchZone = @(){
   ] : null
 }
 
-//    bombs
+
 
 let lowerSolutionCue = @(){
   watch = IlsColor
@@ -1164,11 +1164,11 @@ function ilsF15e(width, height) {
     children = [
       speed
       aoa
-      //tas
+      
       machAndOverload
       baroAlt
       climbRate
-      //radarAlt
+      
 
       fwdMarker
       tvvLinked(width, height)

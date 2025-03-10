@@ -35,7 +35,7 @@ function generateUnitShopInfo() {
   let blk = get_shop_blk()
   let totalCountries = blk.blockCount()
 
-  for (local c = 0; c < totalCountries; c++) {  //country
+  for (local c = 0; c < totalCountries; c++) {  
     let cblk = blk.getBlock(c)
     let totalPages = cblk.blockCount()
 
@@ -61,7 +61,7 @@ function generateUnitShopInfo() {
             prevAir = air.name
             fillPromoteUnitsList(airBlk, air)
           }
-          else { //aircraft group
+          else { 
             let groupTotal = airBlk.blockCount()
             local firstIGroup = null
             let groupName = airName

@@ -5,11 +5,11 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 
 let g_hud_event_manager = {
   subscribers = {}
-  eventsStack = [] //for debug top event
+  eventsStack = [] 
 
   function init() {
     subscribeHudEvents(this, this.onHudEvent)
-    // will this hint be enabled in the session?
+    
     register_hud_callbacks({
       function isHintWillBeShown(event_name) {
         return ::g_hud_hints_manager.isHintShowAllowed(event_name, null, {needCheckCountOnly = true})

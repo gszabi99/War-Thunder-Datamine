@@ -16,10 +16,10 @@ const SKIPPED_AAS_WARNING_MSG = "skipped_msg/aasWarningMessage"
 local showMultiplayerAvailableMsgTimer = null
 
 let antiAddictSystemVariable = mkWatched(persist, "antiAddictSystemVariable", {
-  curMin = 0         // current activity level in minutes
-  warnMin = 120      // level from which a warning is sent before the fight
-  limitMin = 300     // the level at which the game will be forbidden
-  nextCanPlayTs = 0  // unix timestamp when it is possible to play, comes only if the possibility to play is forbidden
+  curMin = 0         
+  warnMin = 120      
+  limitMin = 300     
+  nextCanPlayTs = 0  
 })
 
 let needCheckShowAasLimitMessage = mkWatched(persist, "needCheckShowAasLimitMessage", false)

@@ -7,25 +7,25 @@ from "dagor.fs" import mkpath
 from "dagor.time" import get_local_unixtime
 import "DataBlock" as DataBlock
 
-// warning disable: -file:forbidden-function
 
-/**
- *  export() is a tool for batch exporting a huge amounts of data into blk file without a freeze.
- *  It uses defer() from dagor.workcycle lib to prosess a little part of data on every frame.
- *
- *  @params {table} params - Table of parameters, see EXPORT_PARAMS below.
- *
-**/
 
-let EXPORT_PARAMS = { //const
-  resultFilePath  = "export/file.blk" // Resulting blk filename to write results to.
-  itemsPerFrame   = 1                 // Num of items to process per single frame.
-  list            = []                // Array of items to process.
-  itemProcessFunc = @(_value) null    // Function, takes value from list, returns processed result -
-                                      // table { key="id", value = DataBlock }, or null.
-                                      // If it returns table, its keys will be written to resulting
-                                      // blk this way: resBlk[table.key] <- table.value
-  onFinish        = null              // Function to execute when finished, or null.
+
+
+
+
+
+
+
+
+let EXPORT_PARAMS = { 
+  resultFilePath  = "export/file.blk" 
+  itemsPerFrame   = 1                 
+  list            = []                
+  itemProcessFunc = @(_value) null    
+                                      
+                                      
+                                      
+  onFinish        = null              
 }
 
 let indicatorId = "dbgExportToFile"
@@ -37,7 +37,7 @@ function exportImpl(params, resBlk, idx, startTime) {
   let { resultFilePath, itemsPerFrame, list, itemProcessFunc, onFinish } = params
   let total = list.len()
   for (local i = idx; i < total; i++) {
-    if (i != idx && !(i % itemsPerFrame)) { //avoid freeze
+    if (i != idx && !(i % itemsPerFrame)) { 
       let prc = (100.0 * i / total).tointeger()
       let passedSec = get_local_unixtime() - startTime
       let eta = timeToStr(max(0, (1.0 * passedSec / i * total).tointeger() - passedSec))

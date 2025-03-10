@@ -64,7 +64,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
     let listObj = this.scene.findObject("optionslist")
     this.guiScene.replaceContentFromText(listObj, list, list.len(), this)
 
-    //mission preview
+    
     setMapPreview(this.scene.findObject("tactical-map"), get_mission_settings().missionFull)
 
     local misObj = ""
@@ -179,7 +179,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = 0; i < this.unitsBlk.blockCount(); i++) {
       let armada = this.unitsBlk.getBlock(i)
 
-      // Player's squad units
+      
       if (armada?.isPlayer ?? false) {
         this.playerIdx = i
         this.listA.append([this.playerUnitId])
@@ -197,7 +197,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
       local weapon = armada.getStr("weapons", "");
       local skin = armada.getStr("skin", "");
       let count = armada.getInt("count", this.commonSquadSize);
-      let army = armada.getInt("army", 1); //1-ally, 2-enemy
+      let army = armada.getInt("army", 1); 
       let isBomber = armada.getBool("mustBeBomber", false);
       let isFighter = armada.getBool("mustBeFighter", false);
       let isAssault = armada.getBool("mustBeAssault", false);
@@ -208,7 +208,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
       if ((name == "") || (aircraft == ""))
         break;
 
-      // Overriding ally unit params by player's squad unit params, when class is the same.
+      
       if (aircraft == this.playerUnitId) {
         weapon = getLastWeapon(this.playerUnitId)
         skin = getLastSkin(this.playerUnitId)
@@ -219,12 +219,12 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
       let weapTags = adesc % "weaponOrTag"
 
       let aircrafts = this.getSuitableUnits(excludeTag, fmTags, weapTags)
-      // make sure that aircraft exists in aircrafts array
+      
       u.appendOnce(aircraft, aircrafts)
 
       aircrafts.sort()
 
-      //aircraft type
+      
       let trId = "".concat(
         (army == (this.unitsBlk?.playerSide ?? 1) ? "ally" : "enemy"),
         (isBomber ? "Bomber" : isFighter ? "Fighter" : isAssault ? "Assault" : ""))
@@ -237,22 +237,22 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let airSeparatorStyle = i == 0 ? "" : "margin-top:t='10@sf/@pf';"
 
-      // Aircraft
+      
       option = this.buildAircraftOption($"{i}_a", aircrafts, aircraft)
       rowsView.append(this.mkOptionRowView($"#options/{trId}", option.markup, $"iconType:t='aircraft'; {airSeparatorStyle}"))
       this.listA.append(option.values)
 
-      // Weapon
+      
       option = this.buildWeaponOption($"{i}_w", aircraft, weapon, weapTags)
       rowsView.append(this.mkOptionRowView("#options/secondary_weapons", option.markup))
       this.listW.append(option.values)
 
-      // Skin
+      
       option = this.buildSkinOption($"{i}_s", aircraft, skin)
       rowsView.append(this.mkOptionRowView("#options/skin", option.markup))
       this.listS.append(option.values)
 
-      // Count
+      
       option = this.buildCountOption($"{i}_c", minCount, maxCount, count)
       rowsView.append(this.mkOptionRowView("#options/count", option.markup))
       this.listC.append(option.values)
@@ -276,13 +276,13 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
     local option
     local optObj
 
-    // Weapon
+    
     option = this.buildWeaponOption(null, unitId, this.defaultW?[unitId], this.wtags[i], false)
     this.listW[i] = option.values
     optObj = this.scene.findObject($"{i}_w")
     this.guiScene.replaceContentFromText(optObj, option.markup, option.markup.len(), this)
 
-    // Skin
+    
     option = this.buildSkinOption(null, unitId, this.defaultS?[unitId], false)
     this.listS[i] = option.values
     optObj = this.scene.findObject($"{i}_s")
@@ -317,7 +317,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
       if (isInSessionRoom.get())
         this.goForward(guiStartMpLobby)
       else if (get_mission_settings().coop) {
-        // ???
+        
       }
       else
         this.goForward(guiStartFlight)

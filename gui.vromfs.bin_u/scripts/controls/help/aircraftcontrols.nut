@@ -91,7 +91,7 @@ let aircraftControls = {
         { end = "fire_guns_controls_target_point", start = "ID_FIRE_MGUNS_not_default_0" }
       ]
     }
-    defaultControlsIds = [ //for default constrols we can see frameId, but for not default custom shortcut
+    defaultControlsIds = [ 
       { frameId = "fire_guns_controls_frame", shortcut = "ID_FIRE_MGUNS" }
       { frameId = "lock_target_controls_frame", shortcut = "ID_LOCK_TARGET" }
       { frameId = "zoom_controls_frame", shortcut = "ID_ZOOM_TOGGLE" }

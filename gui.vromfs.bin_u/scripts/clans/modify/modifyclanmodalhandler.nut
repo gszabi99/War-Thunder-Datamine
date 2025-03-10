@@ -39,7 +39,7 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     "newclan_announcement",
   ]
 
-  // Abstract method.
+  
   function createView() {
     return {}
   }
@@ -102,36 +102,36 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return true
   }
 
-  // Abstract method.
+  
   function onFieldChange(_obj) {
   }
 
-  // Abstract method.
+  
   function onClanTypeSelect(_obj) {
   }
 
-  // Abstract method.
+  
   function onSubmit() {
   }
 
-  // Abstract method.
+  
   function updateSubmitButtonText() {
   }
 
-  // Abstract method.
+  
   function onUpgradeMembers() {
   }
 
-  // Abstract method.
+  
   function onDisbandClan() {
   }
 
-  // Abstract method.
+  
   function getDecoratorsList() {
     return []
   }
 
-  // Override.
+  
   function onEventOnlineShopPurchaseSuccessful(_params) {
     this.updateSubmitButtonText()
   }
@@ -157,7 +157,7 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateDecoration(this.scene.findObject("newclan_tag"))
   }
 
-  // Called from within scene as well.
+  
   function updateDecoration(obj) {
     let decorators = this.getDecoratorsList()
     let decorObj = this.scene.findObject("newclan_tag_decoration")

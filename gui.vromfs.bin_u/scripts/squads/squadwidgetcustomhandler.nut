@@ -173,9 +173,9 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onSquadPlus() {
     if (is_platform_xbox && !hasFeature("SquadInviteIngame")) {
-      // MPSD-based code used xbox_show_invite_window() here, but we switched to MPA.
-      // MPA doesn't have such window and we should use ingame invitations and system
-      // invitations together.
+      
+      
+      
       return
     }
 
@@ -217,7 +217,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         g_squad_manager.getHasNewApplication()) ? "yes" : "no"
   }
 
-  /**event handlers**/
+  
   function onEventSquadHasNewApplications(_params) {
     this.doWhenActiveOnce("updateVisibleNewApplications")
   }

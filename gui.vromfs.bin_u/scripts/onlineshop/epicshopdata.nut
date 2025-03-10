@@ -16,7 +16,7 @@ let logS = log_with_prefix(LOG_PREFIX)
 
 let canUseIngameShop = epic_is_running
 
-let shopItemsQueryResult = mkWatched(persist, "shopItemsQueryResult", null) //DataBlock
+let shopItemsQueryResult = mkWatched(persist, "shopItemsQueryResult", null) 
 let isLoadingInProgress = Watched(false)
 let isInitedOnce = Watched(false)
 

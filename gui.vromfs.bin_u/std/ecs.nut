@@ -1,22 +1,22 @@
-//set of functions to make easier work with ecs. Better to move it all to native code
 
-// register es with easier api - name, table of events like
-// {  onUpdate = onUpdateFunc
-//    [ecs.EventEntityCreated] = @(evt, eid, comp) {}
-//    [ecs.EventComponentChanged] = @(evt, eid, comp) {}
-// }
+
+
+
+
+
+
 let { logerr } = require("dagor.debug")
 let { kwarg } = require("%sqstd/functools.nut")
-//let { flatten } = require("%sqstd/underscore.nut")
+
 let { DBGLEVEL } = require("dagor.system")
 let ecs = require("ecs")
 
 
 let unicastSqEvents = {}
-//local broadcastNativeEvents = ["onUpdate", ecs.EventComponentChanged, ecs.EventComponentsAppear, ecs.EventComponentsDisappear, ecs.EventEntityCreated, ecs.EventEntityDestroyed]
+
 
 let sqEvents = {}
-const VERBOSE_PRINT = false //getroottable()?.__is_stub__
+const VERBOSE_PRINT = false 
 let verbose_print = VERBOSE_PRINT ? @(val) print(val) : @(_) null
 
 function mkEsFuncNamed(esname, func) {
@@ -67,9 +67,9 @@ function register_es(name, onEvents={}, compsDesc={}, params = {}) {
       onChange = [ecs.EventComponentChanged],
       onDestroy = [ecs.EventEntityDestroyed, ecs.EventComponentsDisappear]
     }
-//    let keys = flatten(onEvents.keys()).reduce(function(res, k) {res[k] <- k; return res;}, {})
-//    if (("onInit" in keys || "onChange" in keys) && "onDestroy" not in keys)
-//      println($"ES requires destroy: {name}")
+
+
+
     foreach (k, func in onEvents) {
       if (k in remap) {
         foreach (j in remap[k])
@@ -117,7 +117,7 @@ function register_es(name, onEvents={}, compsDesc={}, params = {}) {
     comps_len += comps?.comps_rw?.len != null ? comps.comps_rw.len() : 0
     comps_len += comps?.comps_rq?.len != null ? comps.comps_rq.len() : 0
     if (comps_len == 0) {
-      let unicastEvents = remappedEvents.filter(@(_v, k) k in unicastSqEvents ) //do not enumerate native events
+      let unicastEvents = remappedEvents.filter(@(_v, k) k in unicastSqEvents ) 
       assert(unicastEvents.len() == 0, $"es {name} registered for unicast events without any components!")
       verbose_print($"ecs: '{name}' is registered for performing queries, as it has zero required components; ")
     }
@@ -184,7 +184,7 @@ let recreateEntityWithTemplates = kwarg(function(eid=ecs.INVALID_ENTITY_ID, remo
       if (checkComps) {
         let templComps = type(templN)=="string" ? [templN] : templN?.comps
         if (templComps == null || templName == null) {
-          logerr($"addTemplates should have specified components that should be added. {templName}") //todo: check that components exists in removed templates
+          logerr($"addTemplates should have specified components that should be added. {templName}") 
         }
         else {
           let templ = templName != null ? ecs.g_entity_mgr.getTemplateDB().getTemplateByName(templName) : null
@@ -209,7 +209,7 @@ let recreateEntityWithTemplates = kwarg(function(eid=ecs.INVALID_ENTITY_ID, remo
       if (checkComps) {
         let templComps = type(templN)=="string" ? [templN] : templN?.comps
         if (templComps == null || templName == null) {
-          logerr($"addTemplates should have specified components that should be added. {templName}") //todo: check that components exists in removed templates
+          logerr($"addTemplates should have specified components that should be added. {templName}") 
         }
         else {
           let templ = templName != null ? ecs.g_entity_mgr.getTemplateDB().getTemplateByName(templName) : null
@@ -230,8 +230,8 @@ let recreateEntityWithTemplates = kwarg(function(eid=ecs.INVALID_ENTITY_ID, remo
   if (eid == ecs.INVALID_ENTITY_ID || !ecs.g_entity_mgr.doesEntityExist(eid))
     return
   let curTemplate = ecs.g_entity_mgr.getEntityFutureTemplateName(eid)
-  // curTemplate is null when destroyEntity() is called right before recreateEntityWithTemplates
-  // In such case doesEntityExist() still true
+  
+  
   if (curTemplate == null)
     return
   let newTemplatesName = makeTemplate({baseTemplate=curTemplate, addTemplates=resAddTemplates, removeTemplates=resRemoveTemplates})
@@ -275,7 +275,7 @@ function register_event(name, eventType, structure=null){
   sqEvents[name] <- name
   let eventRegisteredName = ecs.register_sq_event(name, eventType)
   function mkEvent(payload=null){
-//  todo - add type checking
+
     if (structure == null) {
       assert (payload == null)
       return ecs.SQEvent(eventRegisteredName)
@@ -301,21 +301,21 @@ function registerUnicastEvent(payload, eventName){
   return _registerUnicastEvent(payload, eventName)
 }
 let registerBroadcastEvent = mkRegisterEventByType(ecs.EVCAST_BROADCAST)
-//this is done here only to have all events in all VMs
-//broadcastSqEvents.__update(events.broadcastEvents)//for type check in register es
+
+
 
 return ecs.__merge({
-  //this APIs needed cause we have different VMs and need to have all events be accessible
+  
   registerUnicastEvent
   registerBroadcastEvent
   register_event
 
-  //this is needed for pure native APIs replacement
+  
   register_es
   recreateEntityWithTemplates
   makeTemplate
 
-  //just some godies. Query map is useful when you need to map entities components to array
+  
   query_map
 
   map_list2array = @(list,func) list2array(list).map(func)

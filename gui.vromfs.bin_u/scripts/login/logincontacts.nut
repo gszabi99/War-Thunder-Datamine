@@ -28,7 +28,7 @@ registerHandler("cln_cs_login", function(result) {
     return
   }
 
-  // On success, it is in "result", on error it is in "result.result"
+  
   if ("result" in result)
     result = result.result
 

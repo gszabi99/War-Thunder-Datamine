@@ -8,6 +8,7 @@ let { getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nu
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 
 gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
   timerUpdateObjId = "queue_box"
@@ -81,7 +82,7 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
 
     teamObj.bgTeamColor = teamColor
     teamObj.show(!!(teamData && teamData.len()))
-    ::fillCountriesList(teamObj.findObject("countries"), events.getCountries(teamData))
+    fillCountriesList(teamObj.findObject("countries"), events.getCountries(teamData))
     teamObj.findObject("team_name").setValue(teamName)
     teamObj.findObject("players_count").setValue(playersCountText)
 

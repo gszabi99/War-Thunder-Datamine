@@ -9,7 +9,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let regexp2 = require("regexp2")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 
-const BASE_URL =  "https://warthunder.com/loginQR/?stoken={stokenParam}&stat={deeplinkPlaceParam}&nick={nickParam}&login={userIdParam}" // warning disable: -forgot-subst
+const BASE_URL =  "https://warthunder.com/loginQR/?stoken={stokenParam}&stat={deeplinkPlaceParam}&nick={nickParam}&login={userIdParam}" 
 
 const EXTERNAL_DEEPLINK_URL_PARAM_NAME = "parameterizedDeeplinkURL"
 

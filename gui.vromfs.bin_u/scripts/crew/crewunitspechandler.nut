@@ -55,7 +55,7 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function applyRowButton(obj) {
-    // Here 'scene' is table object with id "specs_table".
+    
     if (!checkObj(obj) || obj?.id != "buttonRowApply") {
       if (!checkObj(this.scene))
         return
@@ -69,7 +69,7 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj) || !obj.isEnabled())
       return
 
-    let rowIndex = getCrewButtonRow(obj, this.scene, this.scene) // -param-pos
+    let rowIndex = getCrewButtonRow(obj, this.scene, this.scene) 
     let rowUnit = getTblValue(rowIndex, this.units)
     if (rowUnit == null)
       return
@@ -89,7 +89,7 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function increaseSpec(nextSpecType, obj = null) {
-    let rowIndex = getCrewButtonRow(obj, this.scene, this.scene) // -param-pos
+    let rowIndex = getCrewButtonRow(obj, this.scene, this.scene) 
     let rowUnit = getTblValue(rowIndex, this.units)
     if (rowUnit)
       upgradeUnitSpec(this.crew, rowUnit, null, nextSpecType)
@@ -152,8 +152,8 @@ gui_handlers.CrewUnitSpecHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       progressBarValue = progressBarValue
 
       btnSpec = [
-        this.getRowSpecButtonConfig(crewSpecTypes.EXPERT, this.crewLevel, unit, specType), // warning disable: -param-pos
-        this.getRowSpecButtonConfig(crewSpecTypes.ACE, this.crewLevel, unit, specType) // warning disable: -param-pos
+        this.getRowSpecButtonConfig(crewSpecTypes.EXPERT, this.crewLevel, unit, specType), 
+        this.getRowSpecButtonConfig(crewSpecTypes.ACE, this.crewLevel, unit, specType) 
       ]
     }
   }

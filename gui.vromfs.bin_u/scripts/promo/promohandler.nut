@@ -117,7 +117,7 @@ let Promo = class {
       let blockView = generatePromoBlockView(block)
       let blockId = blockView.id
       if (block?.pollId != null) {
-        if (getPromoVisibilityById(blockId)) //add pollId to request only for visible promo
+        if (getPromoVisibilityById(blockId)) 
           setPollBaseUrl(block.pollId, block?.link)
         this.pollIdToObjectId[block.pollId] <- blockId
       }
@@ -175,7 +175,7 @@ let Promo = class {
     }
   }
 
-  function getPlaylistArray(block) {  //warning disable: -return-different-types
+  function getPlaylistArray(block) {  
     let defaultName = "playlist"
     let langKey = $"{defaultName}_{getCurLangShortName()}"
     let list = block?[langKey] ?? block?[defaultName]
@@ -246,7 +246,7 @@ let Promo = class {
     this.updatePromoBlocks()
   }
 
-  //----------------- <NAVIGATION> --------------------------
+  
 
   function getWrapNestObj() {
     if (!this.isValid())
@@ -261,15 +261,15 @@ let Promo = class {
     return null
   }
 
-  //------------------ </NAVIGATION> --------------------------
+  
 
-  //--------------------- <TOGGLE> ----------------------------
+  
 
   function onToggleItem(obj) { togglePromoItem(obj) }
 
-  //-------------------- </TOGGLE> ----------------------------
+  
 
-  //------------------ <WEB POLL> -------------------------
+  
 
   function updateWebPollButton(param) {
     let pollId = param?.pollId
@@ -291,15 +291,15 @@ let Promo = class {
     showObjById(objectId, true, this.scene)
   }
 
-  //----------------- </WEB POLL> -------------------------
+  
 
-  //----------------- <RADIOBUTTONS> --------------------------
+  
 
   function switchBlock(obj) { switchPromoBlock(obj, this.scene) }
   function manualSwitchBlock(obj) { manualSwitchPromoBlock(obj, this.scene) }
   function selectNextBlock(obj, dt) { selectNextPromoBlock(obj, dt) }
 
-  //----------------- </RADIOBUTTONS> -------------------------
+  
 
   function onEventShowAllPromoBlocksValueChanged(_p) { this.updatePromoBlocks() }
   function onEventPartnerUnlocksUpdated(_p) { this.updatePromoBlocks(true) }

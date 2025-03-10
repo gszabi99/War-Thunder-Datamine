@@ -41,7 +41,7 @@ function getArrowConfigByItems(item, reqItem) {
 }
 
 function addDownOutArrow(reqItemsWithDownOutArrows, arrowConfig) {
-  if (arrowConfig.sizeY != 0) { //not horizontal arrow
+  if (arrowConfig.sizeY != 0) { 
     let reqItemId = arrowConfig.reqItemId
     reqItemsWithDownOutArrows[reqItemId] <-
       (reqItemsWithDownOutArrows?[reqItemId] ?? []).append(arrowConfig.itemId)
@@ -56,7 +56,7 @@ function getReqItemsArray(reqItems) {
   foreach (reqItemsString in reqItems) {
     let itemsTbl = {}
     foreach (reqId in reqItemsString.split(",")) {
-      let needHave = !startsWith(reqId, "!") // true = need to have, false = need to NOT have.
+      let needHave = !startsWith(reqId, "!") 
       let itemId = reqId.slice(needHave ? 0 : 1).tointeger()
       itemsTbl[itemId] <- needHave
     }
@@ -81,7 +81,7 @@ function generateRows(branchBlk, treeRows, treeBlk) {
   let notFoundReqForItems = {}
   local minPosX = null
   local maxPosX = null
-  let resourcesInColumn = {} //!!!FIX Looks like counter of resources by column, but actually contains flag for column which has resources.
+  let resourcesInColumn = {} 
   local reqItemsWithDownOutArrows = {}
   let bodyIdx = branchBlk?.bodyItemIdx ?? 0
   let hasItemBackground = ((treeBlk % "bodyTiledBackImage")?[bodyIdx] ?? "") == ""
@@ -196,13 +196,13 @@ function generateRows(branchBlk, treeRows, treeBlk) {
   }
 
   if (notFoundReqForItems.len() > 0) {
-    let craftTreeName = branchBlk?.locId ?? ""  // warning disable: -declared-never-used
-    let reqItems = "; ".join(notFoundReqForItems.keys(), true) // warning disable: -declared-never-used
+    let craftTreeName = branchBlk?.locId ?? ""  
+    let reqItems = "; ".join(notFoundReqForItems.keys(), true) 
     script_net_assert_once("Not found reqItems for craftTree", "Error: Not found reqItems")
   }
 
   foreach (reqItemId, downOutArrowIds in reqItemsWithDownOutArrows) {
-    if (downOutArrowIds.len() <= 1) //is not multiple out arrow
+    if (downOutArrowIds.len() <= 1) 
       continue
 
     foreach (itemId in downOutArrowIds) {
@@ -329,7 +329,7 @@ function generateTreeConfig(blk) {
   }
 
   let craftTreeItemsIdArray = craftTreeItemsList.keys()
-  if (craftTreeItemsIdArray.len() > 0)   //request items by itemDefId for craft tree
+  if (craftTreeItemsIdArray.len() > 0)   
     inventoryClient.requestItemdefsByIds(craftTreeItemsIdArray)
 
   return {

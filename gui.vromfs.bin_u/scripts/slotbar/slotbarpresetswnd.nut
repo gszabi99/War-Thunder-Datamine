@@ -254,7 +254,7 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.msgBox("question_delete_preset", msgText,
     [
-      ["delete", (@(chosenValue) function() { ::slotbarPresets.erase(chosenValue) })(this.chosenValue) ], //-ident-hides-ident
+      ["delete", (@(chosenValue) function() { ::slotbarPresets.erase(chosenValue) })(this.chosenValue) ], 
       ["cancel", function() {} ]
     ], "cancel", { data_below_text = comment })
   }

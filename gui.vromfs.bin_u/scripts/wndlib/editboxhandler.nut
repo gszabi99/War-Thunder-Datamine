@@ -28,7 +28,7 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
   okBtnText = ""
   canCancel = true
   allowEmpty = true
-  validateFunc = null //function(value)  return true if valid
+  validateFunc = null 
   checkButtonFunc = null
   checkWarningFunc = null
   performChecksOnChange = false
@@ -54,7 +54,7 @@ gui_handlers.EditBoxHandler <- class (BaseGuiHandler) {
     if (this.charMask)
       this.editBoxObj["char-mask"] = this.charMask
     if (this.needOpenIMEonInit)
-      this.editBoxObj.setValue(true) //opens IME, not change text.
+      this.editBoxObj.setValue(true) 
     if (this.isPassword) {
       this.editBoxObj["type"] = "password"
       this.editBoxObj["password-smb"] = loc("password_mask_char", "*")

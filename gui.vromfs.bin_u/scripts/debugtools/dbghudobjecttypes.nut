@@ -26,7 +26,7 @@ let results = {
   types = []
   template = {
     eventChance = 100
-    hudEventsList = null //array
+    hudEventsList = null 
     isVisible = function(_hudType) { return true }
     function genNewEvent() {
       if (!this.hudEventsList)
@@ -38,7 +38,7 @@ let results = {
 }
 
 enums.addTypes(results, {
-  REWARD_MESSAGE = { //visible by prioriy
+  REWARD_MESSAGE = { 
     eventChance = 50
     function genNewEvent() {
       let ignoreIdx = g_hud_reward_message.types.indexof(g_hud_reward_message.UNKNOWN)
@@ -51,7 +51,7 @@ enums.addTypes(results, {
     }
   }
 
-  MISSION_COMPLETE = { //dosnt work in testflight
+  MISSION_COMPLETE = { 
     eventChance = 20
     eventNames = ["MissionResult", "MissionContinue"]
     function genNewEvent() {

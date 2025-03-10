@@ -10,16 +10,16 @@ let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { invalidateCrewsList, reinitAllSlotbars } = require("%scripts/slotbar/crewsList.nut")
 
-enum MIS_LOAD { //bit enum
-  //loading parts
+enum MIS_LOAD { 
+  
   ECONOMIC_STATE      = 0x0001
   RESPAWN_BASES       = 0x0002
 
-  //parts masks
+  
   RESPAWN_DATA_LOADED = 0x0003
 }
 
-  //calls from c++ code.
+  
 function onUpdateEsFromHost(_) {
   log("on_update_es_from_host called")
   invalidateCrewsList()
@@ -29,7 +29,7 @@ function onUpdateEsFromHost(_) {
 
 eventbus_subscribe("on_update_es_from_host", onUpdateEsFromHost)
 
-  // for now it's only state of respawn bases
+  
 eventbus_subscribe("on_mission_changed", function on_mission_changed(...) {
   broadcastEvent("ChangedMissionRespawnBasesStatus")
 })

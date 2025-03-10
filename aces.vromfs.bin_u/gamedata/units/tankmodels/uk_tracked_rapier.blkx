@@ -63,6 +63,7 @@
   "smokeVisibilityType2": "optic",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "drowningCheckHeightMultiplier": 0.3,
   "ikGunner": [
     {
       "model": "uk_gunner_char",
@@ -1862,6 +1863,28 @@
                 -7.0,
                 70.0
               ]
+            },
+            {
+              "verNode": "bone_antenna_target_tagging",
+              "verLimits": [
+                -2.0,
+                80.0
+              ],
+              "verOriginLimits": [
+                -2.0,
+                80.0
+              ]
+            },
+            {
+              "verNode": "bone_roll_03",
+              "verLimits": [
+                -2.0,
+                80.0
+              ],
+              "verOriginLimits": [
+                -2.0,
+                80.0
+              ]
             }
           ]
         },
@@ -1896,7 +1919,13 @@
           ]
         }
       }
-    ]
+    ],
+    "animatedBones": {
+      "node": [
+        "bone_gun",
+        "bone_antenna_target_tagging"
+      ]
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -1977,17 +2006,20 @@
     },
     "mechanics": {
       "steerType": "clutch_braking",
-      "maxBrakeForce": 100000.0,
+      "maxBrakeForce": 50000.0,
       "driveGearRadius": 0.23,
       "mainGearRatio": 1.0,
-      "sideGearRatio": 3.95,
-      "neutralGearRatio": 10.0,
+      "sideGearRatio": 3.97573,
       "gearRatios": {
         "ratio": [
           -4.35,
+          -8.7,
           0.0,
+          7.62,
           3.81,
+          2.87,
           1.93,
+          1.465,
           1.0
         ]
       }
@@ -3016,9 +3048,9 @@
       -7.5
     ],
     "headPosOnShooting": [
-      -1.7,
-      3.7,
-      0.0
+      2.0,
+      3.2,
+      -0.5
     ],
     "detectionHeight": 3.8
   },
@@ -3171,6 +3203,28 @@
                       -7.0,
                       70.0
                     ]
+                  },
+                  {
+                    "verNode": "bone_antenna_target_tagging",
+                    "verLimits": [
+                      -2.0,
+                      80.0
+                    ],
+                    "verOriginLimits": [
+                      -2.0,
+                      80.0
+                    ]
+                  },
+                  {
+                    "verNode": "bone_roll_03",
+                    "verLimits": [
+                      -2.0,
+                      80.0
+                    ],
+                    "verOriginLimits": [
+                      -2.0,
+                      80.0
+                    ]
                   }
                 ]
               },
@@ -3258,7 +3312,13 @@
                 ]
               }
             }
-          ]
+          ],
+          "animatedBones": {
+            "node": [
+              "bone_gun",
+              "bone_antenna_target_tagging"
+            ]
+          }
         }
       }
     },

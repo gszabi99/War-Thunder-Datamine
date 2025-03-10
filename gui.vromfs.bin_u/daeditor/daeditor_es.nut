@@ -3,14 +3,14 @@ from "%darg/ui_imports.nut" import *
 
 let { selectedEntity, selectedEntities, selectedEntitiesSetKeyVal, selectedEntitiesDeleteKey, selectedCompName} = require("state.nut")
 
-// DO NOT add extra components here as this code is not game specific.
-// if you want extra entity info, use DAS game specific code instead
-// Example:
-//
-// require ecs.ecs_quirrel
-// [quirrel_bind(module_name="das.daeditor")]
-// def get_entity_extra_name(eid : EntityId)
-//   return "{eid}"
+
+
+
+
+
+
+
+
 let defaultGetEntityExtraNameQuery = SqQuery("defaultGetEntityExtraNameQuery", {
   comps_ro = [["ri_extra__name", TYPE_STRING, null]]
 })

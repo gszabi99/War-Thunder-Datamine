@@ -47,18 +47,18 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
   minRankCondTypeObject = null
   autoAcceptMembershipObject = null
 
-  // MembershipRequirementsBlk looks like this
-  // {
-  //   type:t="and";  // root must be type="and"
-  //   ranks{
-  //     type:t="and"//"or"
-  //     rank_Aircraft{ type:t="rank"; rank:i=4; count:i=1; unitType:t="Aircraft"; }
-  //     rank_Tank{ type:t="rank"; rank:i=4; count:i=1; unitType:t="Tank"; }
-  //   }
-  //   battles_arcade{ type:t="battles"; difficulty:t="arcade"; count:i=10; }
-  //   battles_historical{ type:t="battles"; difficulty:t="historical"; count:i=10; }
-  //   battles_simulation{ type:t="battles"; difficulty:t="simulation"; count:i=10; }
-  // }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   function initScreen() {
     if (!this.clanData)
@@ -162,7 +162,7 @@ gui_handlers.clanChangeMembershipReqWnd <- class (gui_handlers.BaseGuiHandlerWT)
       this.minRankCondTypeObject.enable(true)
     }
     else {
-      this.minRankCondTypeObject.setValue(1) // "and"
+      this.minRankCondTypeObject.setValue(1) 
       this.minRankCondTypeObject.enable(false)
     }
   }

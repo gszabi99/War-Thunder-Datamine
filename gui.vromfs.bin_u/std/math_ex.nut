@@ -1,6 +1,6 @@
-/*
-  This module have all math functions
-*/
+
+
+
 
 let math = require("math.nut").__merge(require("math"),require("dagor.math"))
 let {PI} = math

@@ -2,21 +2,21 @@ from "%rGui/globals/ui_library.nut" import *
 
 from "string" import regexp, split_by_chars
 
-/*
-  todo:
-    - somehow provide result of validation - maybe more complex type of inputState, like Watched({text=text isValid=true}))
-    - important to know about language and CapsLock. The easiest way - show last symbol in password for 0.25 seconds before hide it with *
 
-    - replace editor in enlisted with this component (it should be already suitable)
-*/
+
+
+
+
+
+
 let rexInt = regexp(@"[\+\-]?[0-9]+")
 function isStringInt(strv) {
-  return rexInt.match(strv) //better use one from string.nut
+  return rexInt.match(strv) 
 }
 
 let rexFloat = regexp(@"(\+|-)?([0-9]+\.?[0-9]*|\.[0-9]+)([eE](\+|-)?[0-9]+)?")
 function isStringFloat(strv) {
-  return rexFloat.match(strv) //better use one from string.nut
+  return rexFloat.match(strv) 
 }
 
 let rexEng = regexp(@"[a-z,A-Z]*")
@@ -24,9 +24,9 @@ function isStringEng(strv) {
   return rexEng.match(strv)
 }
 function isStringLikelyEmail(strv, _verbose = true) {
-// this check is not rfc fully compatible. We check that @ exist and correctly used, and that let and domain parts exist and they are correct length.
-// Domain part also have at least one period and main domain at least 2 symbols
-// also come correct emails on google are against RFC, for example a.a.a@gmail.com.
+
+
+
 
   if (type(strv) != "string")
     return false
@@ -39,15 +39,15 @@ function isStringLikelyEmail(strv, _verbose = true) {
   if (locpart.len() > 64)
     return false
   let dompart = splitted[splitted.len() - 1]
-  if (dompart.len() > 253 || dompart.len() < 4) //RFC + domain should be at least x.xx
+  if (dompart.len() > 253 || dompart.len() < 4) 
     return false
   let quotes = locpart.indexof("\"")
   if (quotes && quotes != 0)
-    return false //quotes only at the begining
+    return false 
   if (quotes == null && locpart.indexof("@") != null)
-    return false //no @ without quotes
-  if (dompart.indexof(".") == null || dompart.indexof(".") > dompart.len() - 3) // warning disable: -func-can-return-null -potentially-nulled-ops
-    return false  //too short first level domain or no periods
+    return false 
+  if (dompart.indexof(".") == null || dompart.indexof(".") > dompart.len() - 3) 
+    return false  
   return true
 }
 
@@ -115,7 +115,7 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
     margin = [sh(1), 0], padding = 0, borderRadius = hdpx(3), valign = ALIGN_CENTER,
     xmbNode = null, imeOpenJoyBtn = null, charMask = null,
 
-    //handlers
+    
     onBlur = null, onReturn = null,
     onEscape = @() set_kb_focus(null), onChange = null, onFocus = null, onAttach = null,
     onHover = null, onImeFinish = null

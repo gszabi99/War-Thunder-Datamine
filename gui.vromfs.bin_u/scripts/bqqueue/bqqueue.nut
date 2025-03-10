@@ -16,9 +16,9 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_charserver_time_sec } = require("chard")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
-const MAX_TIME_STAMP_VALUE_SEC = 2145916800 //2038-01-01 This is the maximum number that can be stored in a timestamp value in table in BQ
-const MIN_TIME_BETWEEN_MSEC = 5000 //not send events more often than once per 5 sec
-const RETRY_MSEC = 30000 //retry send on all servers down
+const MAX_TIME_STAMP_VALUE_SEC = 2145916800 
+const MIN_TIME_BETWEEN_MSEC = 5000 
+const RETRY_MSEC = 30000 
 const RETRY_ON_URL_ERROR_MSEC = 3000
 const MAX_COUNT_MSG_IN_ONE_SEND = 150
 const RESPONSE_EVENT = "bq.requestResponse"

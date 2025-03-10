@@ -28,10 +28,10 @@ let Warbond = class {
   awardsList = null
   levelsArray = null
 
-  expiredTime = -1 //time to which you can spend warbonds
-  canEarnTime = -1 //time to which you can earn warbonds. (time to which isCurrent will be true)
+  expiredTime = -1 
+  canEarnTime = -1 
 
-  updateRequested = false //warbond will be full reloaded after request complete
+  updateRequested = false 
 
   medalForSpecialTasks = 1
   needShowSpecialTasksProgress = true
@@ -58,7 +58,7 @@ let Warbond = class {
     this.levelIcon = getTblValue(this.listId, getTblValue("levelIcons", guiWarbondsBlock), this.levelIcon)
     this.medalForSpecialTasks = getTblValue("specialTasksByMedal", guiWarbondsBlock, 1)
 
-    //No need to show medal progress if a single medal is required.
+    
     this.needShowSpecialTasksProgress = this.medalForSpecialTasks > 1
 
     this.expiredTime = listBlk?.expiredTime ?? -1
@@ -70,7 +70,7 @@ let Warbond = class {
     return "".concat(this.id, FULL_ID_SEPARATOR, this.listId)
   }
 
-  function isCurrent() { //warbond than can be received right now
+  function isCurrent() { 
     return get_warbond_curr_stage_name(this.id) == this.listId
   }
 
@@ -142,8 +142,8 @@ let Warbond = class {
 
   function getChangeStateTimeLeft() {
     let res = this.isCurrent() ? this.getCanEarnTimeLeft() : this.getExpiredTimeLeft()
-    if (res < 0) { //invalid warbond - need price update
-      PRICE.update(null, null, false, !this.updateRequested) //forceUpdate request only once
+    if (res < 0) { 
+      PRICE.update(null, null, false, !this.updateRequested) 
       this.updateRequested = true
     }
     return res

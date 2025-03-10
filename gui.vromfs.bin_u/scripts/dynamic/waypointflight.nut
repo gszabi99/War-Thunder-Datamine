@@ -103,7 +103,7 @@ function genWayPointFlightMission(isFreeFlight) {
 
   slidesReplace(mgGetLevelName(), mgGetMissionSector(), "none")
 
-//  mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/test_wpFlight_temp.blk")
+
   if (mgFullLogs())
     debug_dump_stack()
 

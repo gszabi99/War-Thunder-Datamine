@@ -97,7 +97,7 @@ function updateClustersList() {
         return
       }
 
-      // Clusters not loaded or data is broken
+      
       if (fetchCounter < MAX_FETCH_RETRIES) {
         log($"fetch cluster error, retry - {fetchCounter}")
         self()
@@ -156,7 +156,7 @@ optimalClusters.subscribe(@(_) updateDefaultClusters())
 
 addListenersWithoutEnv({
   MatchingConnect = @(_) forceUpdateClustersList()
-  ScriptsReloaded = @(_) forceUpdateClustersList() // todo consider implement persist
+  ScriptsReloaded = @(_) forceUpdateClustersList() 
   SignOut = @(_) clustersList.clear()
   ClustersChanged = onClustersChanged
 }, DEFAULT_HANDLER)

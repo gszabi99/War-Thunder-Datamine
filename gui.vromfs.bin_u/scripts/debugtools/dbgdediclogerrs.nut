@@ -15,8 +15,8 @@ let setEnableDedicLogger = @() enableDedicLogerr(true)
 ecs.register_es("debug_dedic_logerrs_es",
   {
     [["onInit"]] = function(_eid, _comp) {
-      if (can_receive_dedic_logerr && is_multiplayer()) //this global function is only one reason to this module be in dagui VM
-        resetTimeout(1.0, setEnableDedicLogger) //without timeout this event can reach dedicated before it create m_player entity
+      if (can_receive_dedic_logerr && is_multiplayer()) 
+        resetTimeout(1.0, setEnableDedicLogger) 
     },
   },
   {

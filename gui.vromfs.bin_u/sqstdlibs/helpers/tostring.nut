@@ -5,7 +5,7 @@ let {format} = require("string")
 let math = require("math")
 
 let hexNumbers = "0123456789abcdef"
-local toString //forward declaration
+local toString 
 
 function tableKeyToString(k) {
   if (type(k) != "string")
@@ -122,7 +122,7 @@ function debugTableData(info, parameters = DEBUG_TABLE_DATA_PARAMS) {
         printFn("".concat(prefix, addStr, (type(info) == "array" ? "]" : "}")))
     }
     else if (type(info)=="instance")
-      printFn("".concat(prefix, addStr, toString(info, math.min(1, recursionLevel), addStr))) //not decrease recursion because it current instance
+      printFn("".concat(prefix, addStr, toString(info, math.min(1, recursionLevel), addStr))) 
     else {
       let iType = type(info)
       if (iType == "string")
@@ -175,9 +175,9 @@ toString = function (val, recursion = 1, addStr = "") {
 
       if (recursion > 0)
         foreach (idx, v in val) {
-          //!!FIX ME: better to not use \n in toString()
-          //and make different view ways for debugTabledata and toString
-          //or it make harder to read debugtableData result in log, also arrays in one string generate too long strings
+          
+          
+          
           if (type(v) != "function") {
             let index = [ "float", "null" ].contains(type(idx)) ? toString(idx) : idx
             ret = "".concat(ret, "\n", addStr, "  ", index, " = ", toString(v, recursion - 1, $"{addStr}  "))

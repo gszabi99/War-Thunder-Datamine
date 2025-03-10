@@ -85,7 +85,7 @@ def shuffle_seeded(var list; var seed : int&; up_to : int = -1)
 
 //for the case when the list itself cannot be shuffled
 def get_shuffled_indexes(list; up_to : int = -1)
-  var indexes <- [{for idx in iter_range(list); idx}]
+  var indexes <- [for idx in iter_range(list); idx]
   shuffle(indexes, up_to)
   return <- subarray(indexes, range(up_to))
 

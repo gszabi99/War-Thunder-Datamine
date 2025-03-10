@@ -4,7 +4,7 @@ let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platfo
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 return [
-//-------------------------------------------------------
+
   {
     id = "ID_COMMON_INTERFACE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -45,13 +45,13 @@ return [
   {
     id = "ID_SCREENSHOT"
     checkAssign = false
-    condition = @() is_platform_pc // See AcesApp->makeScreenshot()
+    condition = @() is_platform_pc 
     needShowInHelp = true
   }
   {
     id = "ID_SCREENSHOT_WO_HUD"
     checkAssign = false
-    condition = @() is_platform_pc // See AcesApp->makeScreenshot()
+    condition = @() is_platform_pc 
     needShowInHelp = true
   }
   {

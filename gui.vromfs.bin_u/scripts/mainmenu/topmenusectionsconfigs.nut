@@ -1,13 +1,13 @@
 from "%scripts/dagui_library.nut" import *
 
-require("%scripts/mainmenu/topMenuButtonsConfigs.nut") //Independed Module. Need for init buttons configs
+require("%scripts/mainmenu/topMenuButtonsConfigs.nut") 
 let { is_low_width_screen} = require("%scripts/options/safeAreaMenu.nut")
 let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { topMenuSectionsTemplate, getTopMenuSectionByName } = require("%scripts/mainmenu/topMenuSections.nut")
 
-// Priority for separation on buttons.
+
 enum topMenuLeftSideMergeIndex {
   MENU
   PVP
@@ -24,10 +24,10 @@ let g_top_menu_left_side_sections = {
   getSectionByName = getTopMenuSectionByName
 }
 
-/*
-Columns are each array in buttons array.
-Params - can be whole section ('help', 'pve') or single button.
-*/
+
+
+
+
 enumsAddTypes(g_top_menu_left_side_sections, [
   {
     name = "menu"

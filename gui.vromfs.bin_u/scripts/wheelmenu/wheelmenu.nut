@@ -52,28 +52,28 @@ function closeCurWheelmenu() {
     handler.showScene(false)
 }
 
-// TEST: guiStartWheelmenu({ menu=[0,1,2,3,4,5,6,7].map(@(v) {name=$"{v}"}), callbackFunc=@(i) dlog(i) ?? closeCurWheelmenu() })
-
-//-----------------------------------------------------------------------------
-
-/* *
- * WheelMenu usage
- *
- * just call guiStartWheelmenu function
- *
- * guiStartWheelmenu parameters:
- * @owner - instance of handler, which creates the wheel menu
- * @params - table with some configs for instantiate wheel menu.
- *  Has optional and required parameters:
- *  @menu
- *   required parameter. Array of menu items,
- *   each element of array is a view for your template.
- *  @contentTemplate
- *   optional parameter. path to view template of @menu item.
- * */
 
 
-dagui_propid_add_name_id("index") // for navigation with mouse in wheelmenu
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+dagui_propid_add_name_id("index") 
 
 gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -224,7 +224,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateContentForItem(contentObj, item) {
-    if (this.contentTemplate != null) { //!!!FIX ME need remove replace content for killStreakWheelMenu
+    if (this.contentTemplate != null) { 
       let blk = handyman.renderCached(this.contentTemplate, item)
       this.guiScene.replaceContentFromText(contentObj, blk, blk.len(), this)
       return
@@ -350,7 +350,7 @@ gui_handlers.wheelMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.highlightItemByBtnIdx(isDown ? btnIdx : -1)
     if (!isDown)
       this.sendAvailableAnswerDelayed(index)
-    return true // processed
+    return true 
   }
 
   function onActivateItemCallback() {

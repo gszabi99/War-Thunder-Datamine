@@ -78,8 +78,8 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
     misDescr.presetName <- misBlk.getStr("presetName", "")
 
     if (is_user_mission(misBlk)) {
-      // Temporary fix for 1.53.7.X (workaround for not detectable player_class).
-      // Can be removed after reach all PC platforms.
+      
+      
       if (!misBlk?.player_class) {
         let missionBlk = blkOptFromPath(misBlk?.mis_file)
         let wing = getBlkValueByPath(missionBlk, "mission_settings/player/wing")
@@ -114,8 +114,8 @@ g_mislist_type._getMissionsByBlkArray <- function _getMissionsByBlkArray(campaig
       misDescr.singleProgress <- misLOProgress?.singleDiff
       misDescr.onlineProgress <- misLOProgress?.onlineDiff
 
-      // progress: 0 - completed (arcade), 1 - completed (realistic), 2 - completed (hardcore)
-      // 3 - unlocked but not completed, 4 - locked
+      
+      
       if (is_user_mission(misBlk) && !misDescr?.isUnlocked)
         misDescr.progress = 4
     }
@@ -136,7 +136,7 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
 
   let res = []
 
-  //collect campaigns chapters list
+  
   local campaigns = []
   if (customChapters)
     campaigns = [{ chapters = customChapters }]
@@ -193,7 +193,7 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
     }
     res.extend(campMissions)
 
-    //add victory video for campaigns
+    
     if (lastMission && gm == GM_CAMPAIGN
         && (campName == "usa_pacific_41_43" || campName == "jpn_pacific_41_43")) {
       let isVideoUnlocked = ::is_debug_mode_enabled || isMissionComplete(lastMission?.chapter, lastMission?.id)
@@ -238,7 +238,7 @@ g_mislist_type._getMissionNameText <- function _getMissionNameText(mission) {
 }
 
 g_mislist_type.template <- {
-  id = "" //filled automatically by typeName
+  id = "" 
   tabsOrder = mislistTabsOrder.UNKNOWN
 
   canBeEmpty = true
@@ -355,7 +355,7 @@ enumsAddTypes(g_mislist_type, {
       return gm == GM_SKIRMISH && hasFeature("UserMissionsSkirmishByUrlCreate")
     }
 
-    requestMissionsList = function(_isShowCampaigns, callback, ...) { //standard parameters doesn't work for urlMissions
+    requestMissionsList = function(_isShowCampaigns, callback, ...) { 
       let list = g_url_missions.getList()
       let res = []
       foreach (urlMission in list) {

@@ -24,7 +24,7 @@ gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   headerText = ""
   buttonText = "#item/assemble"
-  onAcceptCb = null //if return true, recipes list will not close.
+  onAcceptCb = null 
   alignObj = null
   align = "bottom"
   needMarkRecipes = false
@@ -53,7 +53,7 @@ gui_handlers.RecipesListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       stdMath.calc_golden_ratio_columns(this.recipesList.len(), recipeWidthPx / (recipeHeightPx || 1)))
     let rows = ceil(this.recipesList.len().tofloat() / columns).tointeger()
 
-    local itemsInRow = 0 //some columns are thinner than max
+    local itemsInRow = 0 
     local columnWidth = 0
     let separatorsIdx = []
     foreach (i, recipe in this.recipesList) {

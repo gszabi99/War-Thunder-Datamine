@@ -25,7 +25,7 @@ let NumSpawnsByUnitType = class (RuleBase) {
     return this.getUnitLeftRespawnsByRestrictionRule(unit, this.getRestrictionRule())
   }
 
-  //stateData is a table or blk
+  
   function getUnitLeftRespawnsByRestrictionRule(unit, rule, stateData = null) {
     if (!unit)
       return 0
@@ -108,8 +108,8 @@ let NumSpawnsByUnitType = class (RuleBase) {
       loc("multiplayer/leftTeamUnit", { num = this.getUnitLeftRespawns(unit) })
   }
 
-  //unit is Unit, or null to get info about all listed units
-  //stateData is a table or blk
+  
+  
   function getRespawnInfoText(unit, stateData) {
     let rule = this.getRestrictionRule()
     if ( rule == "type" ) {
@@ -169,14 +169,14 @@ let NumSpawnsByUnitType = class (RuleBase) {
     return ""
   }
 
-  function getUnitTypeLeftRespawns(esUnitType, stateData, isDsUnitType = false) { //stateData is a table or blk
+  function getUnitTypeLeftRespawns(esUnitType, stateData, isDsUnitType = false) { 
     let respawns = stateData?[$"{isDsUnitType ? esUnitType : get_ds_ut_name_unit_type(esUnitType)}_numSpawn"] ?? 0
-    return max(0, respawns) //dont have unlimited respawns
+    return max(0, respawns) 
   }
 
-  function getUnitClassLeftRespawns(expClass, stateData) { //stateData is a table or blk
+  function getUnitClassLeftRespawns(expClass, stateData) { 
     let respawns = stateData?[expClass] ?? 0
-    return max(0, respawns) //dont have unlimited respawns
+    return max(0, respawns) 
   }
 
   function getUnitInitialRespawns(unit) {

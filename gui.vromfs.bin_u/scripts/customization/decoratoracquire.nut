@@ -10,7 +10,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { buyUnlockImpl } = require("%scripts/unlocks/unlocksAction.nut")
 let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
 
-// Functions for acquiring decorators by all possible ways (purchase, consume coupon, find on marketplace)
+
 
 function buyResourceImpl(resourceType, unitName, id, cost, afterSuccessFunc) {
   let blk = DataBlock()
@@ -95,7 +95,7 @@ function askFindDecoratorCouponOnMarketplace(decorator) {
     ], "find_on_marketplace", { cancel_fn = @() null })
 }
 
-// Pass unit=null to skip unit check
+
 function canAcquireDecorator(decorator, unit = null) {
   if (decorator == null || decorator.isUnlocked())
     return false

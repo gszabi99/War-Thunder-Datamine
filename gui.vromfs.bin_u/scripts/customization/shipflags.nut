@@ -7,7 +7,7 @@ function getShipFlags() {
   if(flagsCache.blockCount() > 0)
     return flagsCache
 
-  flagsCache.tryLoad("config/ship_flags.blk") //warning disable: -named-like-should-return
+  flagsCache.tryLoad("config/ship_flags.blk") 
   return flagsCache
 }
 

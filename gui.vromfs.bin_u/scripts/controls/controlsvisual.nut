@@ -24,9 +24,9 @@ function remapAxisName(preset, axisId) {
   if (text == null)
     return "?"
 
-  if (text.indexof("Axis ") == 0) //"Axis 1" in "Axis" and "1"
+  if (text.indexof("Axis ") == 0) 
     return "".concat(loc("composite/axis"), text.slice("Axis ".len()))
-  else if (text.indexof("Axis") == 0) //"Axis1" in "Axis" and "1"
+  else if (text.indexof("Axis") == 0) 
     return "".concat(loc("composite/axis"), text.slice("Axis".len()))
 
   local locText = getLocaliazedPS4ControlName(text)
@@ -66,9 +66,9 @@ function getSeparatedControlLocId(text) {
   local txt = text
   local index_txt = ""
 
-  if (txt.indexof("Button ") == 0) //"Button 1" in "Button" and "1"
+  if (txt.indexof("Button ") == 0) 
     index_txt = "".concat(" ", txt.slice("Button ".len()))
-  else if (txt.indexof("Button") == 0) //"Button1" in "Button" and "1"
+  else if (txt.indexof("Button") == 0) 
     index_txt = "".concat(" ", txt.slice("Button".len()))
 
   if (index_txt != "")

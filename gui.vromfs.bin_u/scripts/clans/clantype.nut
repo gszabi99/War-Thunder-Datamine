@@ -105,52 +105,52 @@ g_clan_type.template <- {
   maxCandidates = 0
   minMemberCountToWWarParamName = ""
 
-  /** Returns cost of clan creation. */
+  
   getCreateCost = g_clan_type._getCreateCost
 
-  /** Returns cost of changing clan name or tag. */
+  
   getPrimaryInfoChangeCost = g_clan_type._getPrimaryInfoChangeCost
 
-  /** Returns cost of changing clan motto. */
+  
   getSecondaryInfoChangeCost = g_clan_type._getSecondaryInfoChangeCost
 
-  /** Returns maximum clan tag length. */
+  
   getTagLengthLimit = g_clan_type._getTagLengthLimit
 
-  /** Returns true if description change is allowed. */
+  
   isDescriptionChangeAllowed = g_clan_type._isDescriptionChangeAllowed
 
-  /** Returns true id announcements is allowed. */
+  
   isAnnouncementAllowed = g_clan_type._isAnnouncementAllowed
 
-  /** Checks if specified role (by code) is allowed. */
+  
   isRoleAllowed = g_clan_type._isRoleAllowed
 
-  /** Returns name clan type (not some clan name). */
+  
   getTypeName = g_clan_type._getTypeName
 
-  /** Returns localized clan type name. */
+  
   getTypeNameLoc = @() loc("".concat("clan/clan_type/", clan_type_to_string(this.code)))
 
-  /** If clan type creation is allowed. */
+  
   isEnabled = g_clan_type._isEnabled
 
-  /**
-   * Next type upgrade-wise. Returns UNKNOWN
-   * clan type if upgrade is not available.
-   */
+  
+
+
+
   getNextType = g_clan_type._getNextType
 
-  /** Returns cost of upgrade to next clan type. */
+  
   getNextTypeUpgradeCost = g_clan_type._getNextTypeUpgradeCost
 
-  /** Returns true if members upgrade is possible */
+  
   canUpgradeMembers = g_clan_type._canUpgradeMembers
 
-  /** Returns cost of members upgrade */
+  
   getMembersUpgradeCost = g_clan_type._getMembersUpgradeCost
 
-  /** Returns members upgrade step */
+  
   getMembersUpgradeStep = g_clan_type._getMembersUpgradeStep
 
   getMinMemberCountToWWar = @() get_warpoints_blk()?[this.minMemberCountToWWarParamName] ?? 1
@@ -158,7 +158,7 @@ g_clan_type.template <- {
 
 enumsAddTypes(g_clan_type, {
   NORMAL = {
-    code = ECT_NORMAL // 0
+    code = ECT_NORMAL 
     color = "activeTextColor"
     nextTypeCode = ECT_UNKNOWN
     maxMembers = 128
@@ -166,7 +166,7 @@ enumsAddTypes(g_clan_type, {
     minMemberCountToWWarParamName = "minClanMembersToRegister"
   }
   BATTALION = {
-    code = ECT_BATTALION // 1
+    code = ECT_BATTALION 
     color = "battalionSquadronColor"
     nextTypeCode = ECT_NORMAL
     maxMembers = 10
@@ -174,7 +174,7 @@ enumsAddTypes(g_clan_type, {
     minMemberCountToWWarParamName = "minBattalionMembersToRegister"
   }
   UNKNOWN = {
-    code = ECT_UNKNOWN // -1
+    code = ECT_UNKNOWN 
     color = "activeTextColor"
     nextTypeCode = ECT_UNKNOWN
   }

@@ -15,7 +15,7 @@ let { bit_unit_status } = require("%scripts/unit/unitInfo.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 let cacheByEdiff = {}
-local curUnlockIds = null // array of strings
+local curUnlockIds = null 
 
 let isUnitUnlocked = @(u) (bit_unit_status.locked & getBitStatus(u)) == 0
 

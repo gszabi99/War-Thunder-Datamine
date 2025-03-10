@@ -15,7 +15,7 @@ let class ItemLifetimeModifier {
     if (type(formulaStr) != "string" || isEmpty(formulaStr))
       return
 
-    // for compatibility
+    
     if (this.dependenciesRe?.multiExtract == null)
       return
 

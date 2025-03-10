@@ -30,20 +30,20 @@ let BaseInvite = class {
   receivedTime = -1
 
   inviterName = ""
-  inviterNameToLower = "" //for fast search in invites window
+  inviterNameToLower = "" 
   inviterUid  = null
 
   isSeen = false
-  isDelayed = false //do not show it to player while delayed
+  isDelayed = false 
   isAutoAccepted = false
   isRejected = false
 
-  needCheckSystemRestriction = false //Required for displaying console system message
+  needCheckSystemRestriction = false 
 
-  timedShowStamp = -1   //  invite must be hidden till this timestamp
-  timedExpireStamp = -1 //  invite must autoexpire after this timestamp
+  timedShowStamp = -1   
+  timedExpireStamp = -1 
 
-  reloadParams = null //params to reload invite on script reload
+  reloadParams = null 
 
   needShowPopup = true
 
@@ -54,7 +54,7 @@ let BaseInvite = class {
     this.updateParams(params, true)
   }
 
-  static function getUidByParams(params) { //must be uniq between invites classes
+  static function getUidByParams(params) { 
     return "".concat("ERR_", getTblValue("inviterName", params, ""))
   }
 
@@ -70,7 +70,7 @@ let BaseInvite = class {
     checkChatEnableWithPlayer(this.inviterName, function(canChat) {
       thisCapture.canChatWithPlayer = canChat
       thisCapture.updateCustomParams(params, initial)
-      thisCapture.showInvitePopup() //we are show popup on repeat the same invite.
+      thisCapture.showInvitePopup() 
     })
   }
 

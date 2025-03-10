@@ -30,7 +30,7 @@ function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
 
   local allyAssaultPlane = ""
 
-//planes cost and warpoint ratio calculate
+
   let ws = get_warpoints_blk()
   let wpMax = ws.dynPlanesMaxCost
   let playerFighterPlane = getAnyPlayerFighter(0, wpMax)
@@ -45,7 +45,7 @@ function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
 
   let planeCost = planeCostCalculate(playerPlaneCost, enemyPlaneCost)
 
-//mission type and bombers count setup
+
   if (tanks_count > 0 && tanks_count > light_count && tanks_count > art_count) {
     bombersCount = rndRangeInt(tanks_count * 3, tanks_count * 6)
     ground_type = "tank"
@@ -101,7 +101,7 @@ function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
   if (bombersCount > 24)
     bombersCount = 24
 
-//ally and enemy fighters calculate
+
   let allyFighterCountMin = (bombersCount * 0.5) / 1.5 * planeCost - 4
   let allyFighterCountMax = (bombersCount) / 1.5 * planeCost - 4
   local allyFightersCount = rndRangeInt(allyFighterCountMin, allyFighterCountMax)
@@ -126,7 +126,7 @@ function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
     enemy1Count = enemyTotalCount - 4
   let enemy2Count = enemyTotalCount - enemy1Count
 
-//battle distance calculate
+
   let rndHeight = rndRange(2000, 4000)
   let allySpeed = getDistancePerMinute(allyAssaultPlane)
   let enemySpeed = getDistancePerMinute(enemyFighterPlane)
@@ -140,7 +140,7 @@ function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
   let startLookAt = mgCreateStartLookAt()
   let enemy1Angle = rndRange(-90, 90)
   let evacAngle = rndRange(-10, 10)
-//points setup
+
   mgSetupArea("player_start", bombtargets, startLookAt, 180, allySpeed * timeToTarget, rndHeight)
   mgSetupArea("ally_assault_start", bombtargets, startLookAt, 180, allySpeed * timeToTarget - 300, rndHeight - 100)
   mgSetupArea("ally_fighter_start", bombtargets, startLookAt, 180, allySpeed * timeToTarget + 200, rndHeight)
@@ -158,7 +158,7 @@ function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
 
   mgSetupArea("enemy2_start", bombtargets, "player_start", 180, 3000, rndHeight + 500)
 
-//armada setup
+
   mgSetupArmada("#player.fighter", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane)
   mgSetupArmada("#player_cut.any", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane)
   gmMarkCutsceneArmadaLooksLike("#player_cut.any", "#player.fighter")
@@ -181,7 +181,7 @@ function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
   mgSetMinMaxAircrafts("ally", "bomber", 8, 24)
   mgSetMinMaxAircrafts("enemy", "fighter", 0, 44)
 
-//mission warpoint cost calculate
+
   let mission_mult = sqrt(enemyTotalCount / 20.0 + 0.05)
   let missionWpCost = warpointCalculate(mission_preset_name, allyFightersCount + bombersCount * 0.5, enemyTotalCount, planeCost,
     playerFighterPlane, mission_mult)
@@ -195,7 +195,7 @@ function generateCoverGattackMission(isFreeFlight, createGroundUnitsProc) {
   slidesReplace(mgGetLevelName(), mgGetMissionSector(), "air")
 
   mgSetBool("variables/training_mode", isFreeFlight)
- // mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testAssaultCover_temp.blk")
+ 
   if (mgFullLogs())
     debug_dump_stack()
 

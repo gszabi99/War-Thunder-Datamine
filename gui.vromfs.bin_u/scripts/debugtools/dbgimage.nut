@@ -1,11 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
-//to correct scale prefer to set 1080p before using this function.
-//size:
-//   int - image size on 1080p big fonts
-//   null - various image sizes
-//   string - daguiConstant
+
+
+
+
+
 let g_path = require("%sqstd/path.nut")
 let dagor_fs = require("dagor.fs")
 let { register_command } = require("console")

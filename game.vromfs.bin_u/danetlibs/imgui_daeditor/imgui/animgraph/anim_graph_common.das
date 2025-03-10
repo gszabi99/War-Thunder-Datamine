@@ -18,7 +18,7 @@ require daslib/static_let
 require daslib/defer
 require daslib/safe_addr
 
-var private [[ignore_heap_usage]] context : EditorContext? // ignore heap usage because it is used c++ heap
+var private @ignore_heap_usage context : EditorContext? // ignore heap usage because it is used c++ heap
 
 [finalize]
 def shutdown()

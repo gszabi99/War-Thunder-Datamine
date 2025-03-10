@@ -7,7 +7,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isMyUserId } = require("%scripts/user/profileStates.nut")
 
 let roomState = persist("roomState", @() {
-  hostId = null // user host id
+  hostId = null 
   roomId = INVALID_ROOM_ID
   room = null
   roomMembers = []
@@ -74,11 +74,11 @@ function connectToHost() {
   let roomPub = roomState.room.public
 
   if ("room_key" not in roomPub) {
-    let mePub = toString(me?.public, 3)          // warning disable: -declared-never-used
-    let mePrivate = toString(me?.private, 3)     // warning disable: -declared-never-used
-    let meStr = toString(me, 3)                  // warning disable: -declared-never-used
-    let roomStr = toString(roomPub, 3)           // warning disable: -declared-never-used
-    let roomMission = toString(roomPub?.mission) // warning disable: -declared-never-used
+    let mePub = toString(me?.public, 3)          
+    let mePrivate = toString(me?.private, 3)     
+    let meStr = toString(me, 3)                  
+    let roomStr = toString(roomPub, 3)           
+    let roomMission = toString(roomPub?.mission) 
     script_net_assert("missing room_key in room")
 
     send_error_log("missing room_key in room", false, "log")
@@ -99,7 +99,7 @@ function connectToHost() {
 }
 
 function isNotifyForCurrentRoom(notify) {
-  // ignore all room notifcations after leave has been called
+  
   return !roomState.isLeaving
     && roomState.roomId != INVALID_ROOM_ID
     && roomState.roomId == notify.roomId
@@ -203,7 +203,7 @@ function addRoomMember(member) {
   updateMemberAttributes(member, curMember)
 }
 
-// funcs called from native code
+
 ::get_current_room <- function get_current_room() {
   return roomState.roomId
 }

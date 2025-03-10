@@ -203,7 +203,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return
 
-    let dataIdx = obj.getValue() - 1 // skiping header row
+    let dataIdx = obj.getValue() - 1 
     this.onRowSelectCb?(dataIdx)
   }
 

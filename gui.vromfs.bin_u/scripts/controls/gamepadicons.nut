@@ -7,7 +7,7 @@ let ICO_PRESET_DEFAULT = "#ui/gameuiskin#xone_"
 let ICO_PRESET_PS4 = "#ui/gameuiskin#ps_"
 let SVG_EXT = ".svg"
 
-let controlsList = { //table for faster check existance
+let controlsList = { 
   button_a = true
   button_a_pressed = true
   button_b = true
@@ -66,32 +66,32 @@ let controlsList = { //table for faster check existance
 }
 
 let btnNameByIndex = [
-  "dirpad_up"     //  0 JOY_XBOX_REAL_BTN_D_UP
-  "dirpad_down"   //  1 JOY_XBOX_REAL_BTN_D_DOWN
-  "dirpad_left"   //  2 JOY_XBOX_REAL_BTN_D_LEFT
-  "dirpad_right"  //  3 JOY_XBOX_REAL_BTN_D_RIGHT
-  "button_start"  //  4 JOY_XBOX_REAL_BTN_START // PS4 Options
-  "button_back"   //  5 JOY_XBOX_REAL_BTN_BACK  // PS4 Touchscreen Press
-  "l_stick_pressed" //  6 JOY_XBOX_REAL_BTN_L_THUMB
-  "r_stick_pressed" //  7 JOY_XBOX_REAL_BTN_R_THUMB
-  "l_shoulder"    //  8 JOY_XBOX_REAL_BTN_L_SHOULDER
-  "r_shoulder"    //  9 JOY_XBOX_REAL_BTN_R_SHOULDER
-  "table_plays_icon" // 10 JOY_XBOX_REAL_BTN_0X0400
-  "table_plays_icon" // 11 JOY_XBOX_REAL_BTN_0X0800
-  "button_a"      // 12 JOY_XBOX_REAL_BTN_A // PS4 (X)
-  "button_b"      // 13 JOY_XBOX_REAL_BTN_B // PS4 (O)
-  "button_x"      // 14 JOY_XBOX_REAL_BTN_X // PS4 (Sq)
-  "button_y"      // 15 JOY_XBOX_REAL_BTN_Y // PS4 (Tr)
-  "l_trigger"     // 16 JOY_XBOX_REAL_BTN_L_TRIGGER
-  "r_trigger"     // 17 JOY_XBOX_REAL_BTN_R_TRIGGER
-  "l_stick_right" // 18 JOY_XBOX_REAL_BTN_L_THUMB_RIGHT
-  "l_stick_left"  // 19 JOY_XBOX_REAL_BTN_L_THUMB_LEFT
-  "l_stick_up"    // 20 JOY_XBOX_REAL_BTN_L_THUMB_UP
-  "l_stick_down"  // 21 JOY_XBOX_REAL_BTN_L_THUMB_DOWN
-  "r_stick_right" // 22 JOY_XBOX_REAL_BTN_R_THUMB_RIGHT
-  "r_stick_left"  // 23 JOY_XBOX_REAL_BTN_R_THUMB_LEFT
-  "r_stick_up"    // 24 JOY_XBOX_REAL_BTN_R_THUMB_UP
-  "r_stick_down"  // 25 JOY_XBOX_REAL_BTN_R_THUMB_DOWN
+  "dirpad_up"     
+  "dirpad_down"   
+  "dirpad_left"   
+  "dirpad_right"  
+  "button_start"  
+  "button_back"   
+  "l_stick_pressed" 
+  "r_stick_pressed" 
+  "l_shoulder"    
+  "r_shoulder"    
+  "table_plays_icon" 
+  "table_plays_icon" 
+  "button_a"      
+  "button_b"      
+  "button_x"      
+  "button_y"      
+  "l_trigger"     
+  "r_trigger"     
+  "l_stick_right" 
+  "l_stick_left"  
+  "l_stick_up"    
+  "l_stick_down"  
+  "r_stick_right" 
+  "r_stick_left"  
+  "r_stick_up"    
+  "r_stick_down"  
 ]
 
 let mouseButtonTextures = [

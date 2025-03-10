@@ -7,7 +7,7 @@ let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { USEROPT_HOLD_BUTTON_FOR_TACTICAL_MAP } = require("%scripts/options/optionsExtNames.nut")
 
 return [
-//-------------------------------------------------------
+
   {
     id = "ID_COMMON_BASIC_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -54,13 +54,13 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-  // Use last chat mode, but can not be renamed to "ID_TOGGLE_CHAT" for compatibility reasons
+  
   {
     id = "ID_TOGGLE_CHAT_TEAM"
     checkAssign = is_platform_pc
     needShowInHelp = true
   }
-  // Use CO_ALL chat mode, but can not be renamed to "ID_TOGGLE_CHAT_ALL" for compatibility reasons
+  
   {
     id = "ID_TOGGLE_CHAT"
     checkAssign = is_platform_pc

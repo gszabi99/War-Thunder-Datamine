@@ -11,6 +11,7 @@ require HeroManager
 require hud
 require math
 require Plane
+require strings
 require Unit
 require Weapon
 require WTCamera
@@ -73,14 +74,15 @@ class Component : Canvas
   def Component(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
     Canvas`Canvas(self, guiCtx, rdata, rstate)
     hero = get_watched_not_delayed_hero()
+    return if hero == null
     fmw = hero.as_fmw()
-    wc = hero.weap
-    fm = fmw.fm
-    app = get_app()
-
     return if fmw == null
+    wc = hero.weap
     return if wc == null
+    fm = fmw.fm
     return if fm == null
+    app = get_app()
+    return if app == null
 
     ws = new WeaponSlots(hero, app, fmw, wc)
 
@@ -317,13 +319,25 @@ class Component : Canvas
   def drawWeaponLabel(slot : WeaponSlot&)
     let mid = slotCount / 2
     let idx = slot.slot % mid
-    var pos = float2(0.35, stations[slot.slot].y)
+    var pos = float2(0.31, stations[slot.slot].y)
     if slot.slot >= mid
       pos += float2(0.12, 0.0)
     drawStrAnchored(pos + outlTransl, loc_wpn(slot.locName), AnchorHorz.Left, AnchorVert.Center)
 
 
+  def drawWeaponAmmo(ammo : array<int>)
+    var slot = 0
+    while slot < slotCount
+      var pos = float2(0.54, stations[slot].y)
+      let ammo1 = ammo[slot]
+      let ammo2 = ammo[slotCount - 1 - slot]
+      if ammo1 + ammo2 != 0
+        drawStrAnchored(pos + outlTransl, "{fmt(":<2d", ammo1)}-{fmt(":>2d", ammo2)}", AnchorHorz.Left, AnchorVert.Center)
+      slot += 2
+
+
   def drawWeaponSlots()
+    var ammo <- [{for i in 0 .. slotCount; 0}]
     for i in 0 .. ws.length()
       continue if (hero.slotIdByWeaponId[i] <= 0)
       var slot = ws.getWeaponSlot(i)
@@ -332,6 +346,8 @@ class Component : Canvas
       continue if slot.curAmmo < 1
       continue if slot.slot > stations.length() - 1
       continue if slot.trigger == int(WeaponTriggerType.TARGETING_POD_TRIGGER)
+
+      ammo[slot.slot] += slot.curAmmo
 
       if slot.nextToShoot
         drawNtsBracket(slot.slot)
@@ -356,6 +372,7 @@ class Component : Canvas
         drawRocketSlot(slot)
 
     setColor(colors.white)
+    drawWeaponAmmo(ammo)
 
   def draw()
     return if !isValid

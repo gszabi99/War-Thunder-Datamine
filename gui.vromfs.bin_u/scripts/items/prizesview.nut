@@ -43,22 +43,22 @@ let { getTrophyRewardType, isRewardMultiAward, isRewardItem, getRewardList
 } = require("%scripts/items/trophyReward.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 
-//prize - blk or table in format of trophy prizes from trophies.blk
-//content - array of prizes (better to rename it)
-//
-//API:
-//  getPrizeTypeName(prize, colored = true)   - return short prize text (only with type if it long)
-//  getPrizeText(prize, colored = true, _typeName = false, showCount = true, full = false)
-//
-//  getPrizesListText(prizesList, fixedAmountHeaderFunc = null) - get text for prizesList.
-//  getPrizesStacksView(content, fixedAmountHeaderFunc = null, params = null) - get prizes list stacked by stackLevel in params
-//                                                 fixedAmount - function(amount) to generate header for prizes
-//                                                               if they all have same amount
-//                                               params - view data params. will be included to view data before render
-//                                                  include:
-//                                                  receivedPrizes (true) - show prizes as received.
-//  getPrizesListView(content, params = null) - get full prizes list not stacked.
-//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 enum prizesStack {
   NOT_STACKED
@@ -70,10 +70,10 @@ enum prizesStack {
 
 enum STACK_TYPE {
   UNKNOWN
-  ITEM      // Item params min-max range
-  CURRENCY  // Currency min-max range
-  VEHICLE   // Complete list of units
-  CHANCE    // Drop chance
+  ITEM      
+  CURRENCY  
+  VEHICLE   
+  CHANCE    
 }
 
 const UNITS_STACK_DETAILED_COUNT = 3
@@ -92,7 +92,7 @@ let wpIcons = [
   { value = 1000000, icon = "battle_trophy1kk" },
 ]
 
-local getPrizesViewData = @(_prize, _showCount = true, _params = null) "" //!!!FIX ME: Need remove forward declaration
+local getPrizesViewData = @(_prize, _showCount = true, _params = null) "" 
 
 function getWPIcon(wp) {
   local icon = ""
@@ -392,15 +392,15 @@ function getPrizeTypeName(prize, colored = true) {
   return getPrizeText(prize, colored, true)
 }
 
-//stack = {
-//  level = (int) prizesStack
-//  stackSize = int
-//  item = first item from stack to compare.  (null when prize not item)
-//  prize = (datablock) prize from content (if stacked, than first example from stack)
-//  countMin, countMax - collected range
-//  params = table of custom params filled by item type, see updateStackParams(),
-//    or filled by prize type for non-item prize types.
-//}
+
+
+
+
+
+
+
+
+
 function createStack(prize) {
   let count = prize?.count ?? 1
   return {
@@ -526,7 +526,7 @@ function findAndStackPrizeItem(prize, stackList, stackLevel) {
       if (!sItem || sItem.iType != itype)
         return false
 
-      local curStackLevel = prizesStack.BY_TYPE //real stack level, can be lower than requested
+      local curStackLevel = prizesStack.BY_TYPE 
       if (sItem.canStack(item))
         curStackLevel = prizesStack.DETAILED
 
@@ -882,7 +882,7 @@ function getViewDataMod(unitName, modName, params) {
 
   let { showTooltip = true } = params
   local icon = ""
-  if (modName == "premExpMul") //talisman
+  if (modName == "premExpMul") 
     icon = "#ui/gameuiskin#item_type_talisman.svg"
   else
     icon = unit?.isTank() ? "#ui/gameuiskin#item_type_modification_tank.svg" : "#ui/gameuiskin#item_type_modification_aircraft.svg"
@@ -1079,7 +1079,7 @@ addTooltipTypes({
       if (prizeDescription != "")
         obj.findObject("item_desc_under_div").setValue(prizeDescription)
 
-      // !!FIX ME: the shop window of selected trophy updates this object istead of trophy description
+      
       obj.findObject("item_desc_under_table").show(false)
 
       return true
@@ -1128,7 +1128,7 @@ function getPrizesStacksArrayForView(content, params = null) {
     local data = null
     if (st.level == prizesStack.NOT_STACKED)
       data = getPrizesViewData(st.prize, showCount, params)
-    else if (st.stackType == STACK_TYPE.ITEM) { //only stack by items atm, so this only to do last check.
+    else if (st.stackType == STACK_TYPE.ITEM) { 
       let detailed = st.level == prizesStack.DETAILED
       local name = ""
       if (detailed)
@@ -1429,7 +1429,7 @@ function getPrizesListText(content, fixedAmountHeaderFunc = null, hasHeaderWitho
     return ""
 
   let stacksList = stackContent(content, prizesStack.DETAILED)
-  let fixedAmount = fixedAmountHeaderFunc ? getContentFixedAmount(content) : 1 //1 - dont use fixed amount
+  let fixedAmount = fixedAmountHeaderFunc ? getContentFixedAmount(content) : 1 
   let showCount = fixedAmount == 1
   let list = []
 
@@ -1440,7 +1440,7 @@ function getPrizesListText(content, fixedAmountHeaderFunc = null, hasHeaderWitho
   foreach (st in stacksList) {
     if (st.level == prizesStack.NOT_STACKED)
       list.append("".concat(listMarker, getPrizeText(st.prize, true, false, showCount)))
-    else if (st.stackType == STACK_TYPE.ITEM) { //onl stack by items atm, so this only to do last check.
+    else if (st.stackType == STACK_TYPE.ITEM) { 
       let detailed = st.level == prizesStack.DETAILED
 
       local name = ""
@@ -1505,9 +1505,9 @@ function getViewDataItem(prize, showCount, params = null) {
 }
 
 function getViewDataDefault(prize, showCount, params = null) {
-  //!!FIX ME: better to refactor this. it used only here, but each function try do detect prize type by self
-  //much faster will be to get viewData array and gen desc by it than in each function detect prize type.
-  //Now we have function getPrizeType() for prize type detection.
+  
+  
+  
   let { showTooltip = true,  needHideChances = false } = params
   local needShowFullTitle = true
   local needShowIcon = true

@@ -69,7 +69,7 @@ function openShipHitIconsMenu(alignObj) {
   handlersManager.loadHandler(ShipHitIconsMenu, { alignObj, list = optionsList })
 }
 
-let iconsVisibilitySf = mkUseroptHardWatched("shipHitIconsVisibilityStateFlags", SHIP_HIT_ICONS_VIS_ALL_FLAGS)  // sync darg
+let iconsVisibilitySf = mkUseroptHardWatched("shipHitIconsVisibilityStateFlags", SHIP_HIT_ICONS_VIS_ALL_FLAGS)  
 function setUseroptShiptHitIconsVisibility(value, descr, optionId) {
   value = value ?? SHIP_HIT_ICONS_VIS_ALL_FLAGS
   iconsVisibilitySf.set(value)

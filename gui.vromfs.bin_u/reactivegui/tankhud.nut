@@ -19,7 +19,7 @@ let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let { mkCollapseButton } = require("airHudComponents.nut")
 let mkTankSight = require("%rGui/tankSight.nut")
-//
+
 
 
 
@@ -42,7 +42,7 @@ let tankXrayIndicator = @() {
 }
 
 let xraydoll = {
-  rendObj = ROBJ_XRAYDOLL     ///Need add ROBJ_XRAYDOLL in scene for correct update isVisibleDmgIndicator state
+  rendObj = ROBJ_XRAYDOLL     
   size = [1, 1]
 }
 
@@ -57,7 +57,7 @@ function tankDmgIndicator() {
   let children = [
     tankXrayIndicator,
     activeProtectionSystem,
-    //
+    
 
 
   ]
@@ -128,7 +128,7 @@ function Root() {
       actionBarTopPanel
       sensorViewIndicators
       mkTankSight()
-      //
+      
 
 
       @(){

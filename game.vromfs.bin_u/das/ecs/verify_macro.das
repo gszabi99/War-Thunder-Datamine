@@ -16,16 +16,16 @@ class EcsTypeMacro : AstCallMacro
   [unused_argument(mod)] def override visit(prog : ProgramPtr; mod : Module ?; var expr : smart_ptr<ExprCallMacro>) : ExpressionPtr
     if length(expr.arguments) != 1
       macro_error(prog, expr.at, "ecs_type_hash expecting 1 argument")
-      return <- [[ExpressionPtr]]
+      return <- default<ExpressionPtr>
     if expr.arguments[0]._type == null || expr.arguments[0]._type.isAutoOrAlias
       macro_error(prog, expr.at, "ecs_type_hash requires fully inferred type")
-      return <- [[ExpressionPtr]]
+      return <- default<ExpressionPtr>
     var res = 0u
     let foundCppType = get_underlying_ecs_type(expr.arguments[0]._type, true) <| $(typeName)
       res = ecs_hash(typeName)
     if !foundCppType || res == 0u
       macro_error(prog, expr.at, "ecs_type_hash unable to resolve ecs type for {describe(expr.arguments[0]._type)}")
-      return <- [[ExpressionPtr]]
+      return <- default<ExpressionPtr>
     return <- qmacro($v(res))
 
 def get_argument(arguments : rtti::AnnotationArgumentList; tag : string; default_value = "")
@@ -77,9 +77,9 @@ class ReqTemplateAnnotation : AstStructureAnnotation
 
     var inscope fn <- get_ecs_verify_fn(st, name, map)
 
-    fn |> append_annotation("ecs", "es", [{auto
-        [[auto "on_event", [[RttiValue tString="VerifyEcsTemplates"]] ]]
-    }])
+    fn |> append_annotation("ecs", "es", [
+        ("on_event", RttiValue(tString="VerifyEcsTemplates"))
+    ])
     compiling_module() |> add_function(fn)
     astChanged = true
     return true

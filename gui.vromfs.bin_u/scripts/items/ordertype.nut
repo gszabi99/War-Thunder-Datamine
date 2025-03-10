@@ -23,14 +23,14 @@ let getUnitClassNamesByEsUnitTypes = @(esUnitTypes) esUnitTypes
   .filter(@(t) !t.isDeprecated)
   .map(@(t) t.getName())
 
-/** Standard comparator for players' score data. */
+
 function sortPlayerScores(data1, data2) {
   let score1 = data1?.score ?? 0
   let score2 = data2?.score ?? 0
   return score2 <=> score1
 }
 
-/** Returns string with properly formatted score. */
+
 let formatScore = @(scoreValue) $"{round(scoreValue).tostring()}{loc("icon/orderScore")}"
 
 let orderTypes = {
@@ -48,7 +48,7 @@ let orderTypes = {
     getTypeDescription = @(colorScheme) colorize(colorScheme.typeDescriptionColor,
       loc(format("items/order/type/%s/description", this.name)))
 
-    /** Description of order type-specific parameters. */
+    
     function getParametersDescription(typeParams, colorScheme) {
       local description = ""
       foreach (paramName, paramValue in typeParams) {
@@ -73,23 +73,23 @@ let orderTypes = {
       return description
     }
 
-    /** In-battle order description. */
+    
     getObjectiveDescription = @(typeParams, colorScheme, _targetPlayer, emptyColorScheme)
       this.getObjectiveDescriptionByKey(typeParams, colorScheme,
         "items/order/type/%s/statusDescription", emptyColorScheme)
 
-    /** Returns localized text to show as score header in order status. */
+    
     function getScoreHeaderText() {
       let locPrefix = "items/order/scoreTable/scoreHeader/"
       return loc($"{locPrefix}{this.name}" , loc($"{locPrefix}default"))
     }
 
-    /** Returns localized text to form proper award mode description. */
+    
     getAwardUnitText = @() loc($"items/order/awardUnit/{this.awardUnit}")
 
     function getParameterDescription(paramName, paramValue, localizeStringValue, colorScheme) {
       let localizedParamName = loc(format("items/order/type/%s/param/%s", this.name, paramName))
-      // If parameter has no value then it's name will be colored with value-color.
+      
       if (isString(paramValue) && paramValue.len() == 0)
         return colorize(colorScheme.parameterValueColor, localizedParamName)
 

@@ -76,7 +76,7 @@ function addTask(taskId, taskOptions = null, onSuccess = null, onError = null, t
 
   let showProgressBox = getTblValue("showProgressBox", taskOptions, false)
 
-  // Same as progress box by default.
+  
   let showErrorMessageBox = getTblValue("showErrorMessageBox", taskOptions, showProgressBox)
 
   addTaskData(taskId, taskCbType, onSuccess, onError, showProgressBox, showErrorMessageBox)
@@ -136,7 +136,7 @@ function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, data
   if (taskData == null)
     return
 
-  if (taskData.taskCbType != taskCbType) //for taskCbType REQUEST_DATA there is 2 char cb
+  if (taskData.taskCbType != taskCbType) 
     return
 
   taskDataByTaskId.$rawdelete(taskId)
@@ -187,15 +187,15 @@ function restoreCharCallback() {
   set_char_cb(taskerCharCb, taskerCharCb.charCallback)
 }
 
-//called from native code
-::onCharRequestJsonFromServerComplete <- onCharRequestJsonFromServerComplete //-ident-hides-ident
 
-//called from native code
-::onCharRequestBlkFromServerComplete <- onCharRequestBlkFromServerComplete //-ident-hides-ident
+::onCharRequestJsonFromServerComplete <- onCharRequestJsonFromServerComplete 
+
+
+::onCharRequestBlkFromServerComplete <- onCharRequestBlkFromServerComplete 
 
 eventbus_subscribe("onCharRequestJwtFromServerComplete", onCharRequestJwtFromServerComplete)
 
-// Why this function is in this module???
+
 ::getErrorText <- function getErrorText(result) {
   local text = loc($"charServer/updateError/{result.tostring()}")
   if (result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {

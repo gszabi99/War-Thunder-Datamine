@@ -71,7 +71,7 @@ function requestClanLog(clanId, rowsCount, requestMarker, callbackFnSuccess, cal
   params._id = clanId.tointeger()
   params.count = rowsCount
 
-  //Allow to display only clan info changes
+  
   if ((clan_get_my_clan_id() != clanId) && !clan_get_admin_editor_mode())
     params.events = "create;info"
 
@@ -132,7 +132,7 @@ function requestClanLog(clanId, rowsCount, requestMarker, callbackFnSuccess, cal
 function membershipRequestSend(clanId) {
   let taskId = clan_request_membership_request(clanId, "", "", "")
   let onSuccess = function() {
-    if (clanId == "") { //Means that membership was canceled
+    if (clanId == "") { 
       broadcastEvent("ClanMembershipCanceled")
       return
     }

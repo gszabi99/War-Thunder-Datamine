@@ -26,7 +26,7 @@ function ww_is_append_path_mode_active() {
 
   return is_keyboard_btn_down(DKEY_LSHIFT) || is_keyboard_btn_down(DKEY_RSHIFT)
 }
-let ww_is_add_selected_army_mode_active = @() false //is_keyboard_btn_down(DKEY_LCONTROL) || is_keyboard_btn_down(DKEY_RCONTROL)
+let ww_is_add_selected_army_mode_active = @() false 
 
 let worldWarMapControls = class {
   eventMask = EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_WHEEL | EV_PROCESS_SHORTCUTS | EV_TIMER | EV_MOUSE_MOVE
@@ -162,7 +162,7 @@ let worldWarMapControls = class {
     if (is_up)
       return RETCODE_NOTHING
 
-    if (btn_id != 2)  //right mouse button
+    if (btn_id != 2)  
       return RETCODE_NOTHING
 
     let curActionMode = actionModesManager.getCurActionMode()
@@ -171,7 +171,7 @@ let worldWarMapControls = class {
       return RETCODE_NOTHING
     }
 
-    //-- rclick ---- (easy to search)
+    
     if (ww_is_append_path_mode_active())
       return RETCODE_NOTHING
 

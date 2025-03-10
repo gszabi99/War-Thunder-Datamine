@@ -57,7 +57,7 @@ gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let tblObj = this.scene.findObject("buy_table")
     foreach (idx, pack in this.buyPointsPacks)
       showDiscount(tblObj.findObject($"buy_discount_{idx}"),
-                     "skills", getCrewsList()[this.crew.idCountry].country, pack.name) // -param-pos
+                     "skills", getCrewsList()[this.crew.idCountry].country, pack.name) 
   }
 
   function getRowId(i) {

@@ -54,7 +54,7 @@ const IS_GAMEPAD_CURSOR_ENABLED_DEFAULT = true
   }
 
   function canChangeValue() {
-    return false // is_mouse_available()
+    return false 
   }
 
   function onEventProfileUpdated(_p) {

@@ -20,7 +20,7 @@ function genCombatPatrolMission(_isFreeFlight) {
   let playerSide = mgGetPlayerSide()
   let enemySide = mgGetEnemySide()
 
-//planes cost and warpoint ratio calculate
+
   let ws = get_warpoints_blk()
   local wpMax = ws.dynPlanesMaxCost
   let playerFighterPlane = getAnyPlayerFighter(0, wpMax)
@@ -311,7 +311,7 @@ function genCombatPatrolMission(_isFreeFlight) {
   mgSetMinMaxAircrafts("ally", "fighter", 0, 44)
   mgSetMinMaxAircrafts("enemy", "fighter", 0, 44)
 
-//mission warpoint cost calculate
+
   let missionWpCost = warpointCalculate(mission_preset_name, allyTotalCount, enemyTotalCount, planeCost,
     playerFighterPlane, mission_mult)
   mgSetInt("mission_settings/mission/wpAward", missionWpCost)
@@ -323,7 +323,7 @@ function genCombatPatrolMission(_isFreeFlight) {
 
   slidesReplace(mgGetLevelName(), mgGetMissionSector(), "air")
 
-  //mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testPatrol_temp.blk")
+  
   if (mgFullLogs())
     debug_dump_stack()
 

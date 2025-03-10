@@ -94,7 +94,7 @@ function clickToReqUnlock(params) {
     return
 
   isUnlocked = isUnlocked ?? isUnlockOpened(unlockName)
-  clickCountByUnlock[unlockName].isUnlocked = true //Always set to true to avoid sending a second request to open unlock
+  clickCountByUnlock[unlockName].isUnlocked = true 
   if (isUnlocked)
     return
 

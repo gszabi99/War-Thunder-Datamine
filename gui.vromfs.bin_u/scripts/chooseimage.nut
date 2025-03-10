@@ -117,7 +117,7 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
     let listObj = this.getContentObj()
     let cfg = countSizeInItems(listObj, this.imageButtonSize, this.imageButtonSize, this.imageButtonInterval, this.imageButtonInterval)
 
-    //update size for single page
+    
     if (cfg.itemsCountX * cfg.itemsCountY > this.getItemsCount()) {
       let total = max(this.getItemsCount(), this.minAmountButtons)
       local columns = min(stdMath.calc_golden_ratio_columns(total), cfg.itemsCountX)

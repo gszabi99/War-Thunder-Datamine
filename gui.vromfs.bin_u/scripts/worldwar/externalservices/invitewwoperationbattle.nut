@@ -30,7 +30,7 @@ let WwOperationBattle = class (BaseInvite) {
     this.operationId = params?.operationId ?? this.operationId
     this.battleId = params?.battleId ?? this.battleId
 
-    //do not set delayed when scipt reload to not receive invite popup on each script reload
+    
     this.setDelayed(!isInReloading() && !this.getOperation())
 
     if (!initial)

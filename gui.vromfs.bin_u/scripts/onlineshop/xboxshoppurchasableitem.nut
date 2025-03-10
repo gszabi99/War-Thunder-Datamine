@@ -28,12 +28,12 @@ local XboxShopPurchasableItem = class {
 
   id = ""
   entitlementId = ""
-  categoriesList = null //list of available filters
+  categoriesList = null 
   releaseDate = 0
-  price = 0.0         // Price with discount as number
-  listPrice = 0.0     // Original price without discount as number
-  priceText = ""      // Price with discount as string
-  listPriceText = ""  // Original price without discount as string
+  price = 0.0         
+  listPrice = 0.0     
+  priceText = ""      
+  listPriceText = ""  
   currencyCode = ""
   isPurchasable = false
   isBought = false
@@ -68,7 +68,7 @@ local XboxShopPurchasableItem = class {
     this.name = data.title
     this.shortName = cutPrefix(this.name, XBOX_SHORT_NAME_PREFIX_CUT, "")
     this.description = data.description
-    this.releaseDate = 0 // For now we can't retreive ReleaseDate from live. Reported to MS, acknowledged, no ETA :(
+    this.releaseDate = 0 
     this.currencyCode = data.price.currency_code
     this.price = data.price.price
     this.priceText = this.price == 0.0 ? loc("shop/free") : $"{this.price} {this.currencyCode}"

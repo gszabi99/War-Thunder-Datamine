@@ -169,7 +169,7 @@ gui_handlers.FlightMenu <- class (gui_handlers.BaseGuiHandlerWT) {
         return
       this._isWaitForResume = false
       this.lastSelectedBtnId = null
-      in_flight_menu(false) //in_flight_menu will call closeScene which call stat chat
+      in_flight_menu(false) 
       if (this.usePause)
         pause_game(false)
     })
@@ -369,8 +369,8 @@ function gui_start_flight_menu_help(_) {
 }
 
 eventbus_subscribe("gui_start_flight_menu", gui_start_flight_menu)
-eventbus_subscribe("gui_start_flight_menu_failed", gui_start_flight_menu) //it checks MISSION_STATUS_FAIL status itself
-eventbus_subscribe("gui_start_flight_menu_psn", @(_) null) //unused atm, but still have a case in code
+eventbus_subscribe("gui_start_flight_menu_failed", gui_start_flight_menu) 
+eventbus_subscribe("gui_start_flight_menu_psn", @(_) null) 
 eventbus_subscribe("gui_start_flight_menu_help", gui_start_flight_menu_help)
 
 return {

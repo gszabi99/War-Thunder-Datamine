@@ -114,7 +114,7 @@ function getModificationBulletsGroup(modifName) {
   let modification = blk?.modifications?[modifName]
   if (modification) {
     if (!modification?.group)
-      return "" //new_gun etc. - not a bullets list
+      return "" 
     if (modification?.effects)
       for (local i = 0; i < modification.effects.paramCount(); i++) {
         let effectType = modification.effects.getParamName(i)

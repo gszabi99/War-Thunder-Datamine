@@ -4,9 +4,9 @@ let { kwarg } = require("%sqstd/functools.nut")
 let { get_time_msec } = require("dagor.time")
 let math = require("math")
 
-//when event have parameter ttl it will be automatically removed on time finish
-//isEventsEqual = @(event1, event2) bool - used only to remove events not only by uid.
-//  Previous equal event will be removed on receive new event.
+
+
+
 function mkEventLogState(persistId, maxActiveEvents = 10, defTtl = 0, isEventsEqual = null
 ) {
   let savedEvents = persist(persistId, @() { v = [] })

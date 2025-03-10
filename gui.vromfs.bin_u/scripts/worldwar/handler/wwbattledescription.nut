@@ -38,7 +38,7 @@ let { queues } = require("%scripts/queue/queueManager.nut")
 
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
-// Temporary image. Has to be changed after receiving correct art
+
 const WW_OPERATION_DEFAULT_BG_IMAGE = "#ui/bkg/login_layer_h1_0?P1"
 
 enum WW_BATTLE_VIEW_MODES {
@@ -71,8 +71,8 @@ gui_handlers.WwBattleDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   hasBattleFilter = false
 
   curBattleIdInQueue = ""
-  curBattleInList = null      // selected battle in list
-  operationBattle = null      // battle to dasplay, check join enable, join, etc
+  curBattleInList = null      
+  operationBattle = null      
   needEventHeader = true
   currViewMode = null
   isSelectedBattleActive = false

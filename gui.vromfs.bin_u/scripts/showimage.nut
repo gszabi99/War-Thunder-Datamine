@@ -95,7 +95,7 @@ gui_handlers.ShowImage <- class (gui_handlers.BaseGuiHandlerWT) {
       if (this.moveBack && t <= 0.0) {
         t = 0.0
         this.timer = 0.0
-        this.goBack() //performDelayed inside
+        this.goBack() 
       }
 
       this.imgObj.width = this.countProp(this.baseSize[0], this.maxSize[0], t)
@@ -114,11 +114,11 @@ gui_handlers.ShowImage <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-/*
- * image   @string - full path to image
- * ratio   @float  - image width/height ratio (default = 1)
- * maxSize @array|@integer - max size in pixels. Array ([w, h]) or integer (used for both sides) (0 = unlimited).
- **/
+
+
+
+
+
 function guiStartImageWnd(image = null, ratio = 1, maxSize = 0) {
   if (u.isEmpty(image))
     return

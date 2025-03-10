@@ -18,10 +18,10 @@ colors.menu <- {
 
   tabBackgroundColor = Color(3, 7, 12, 204)
   listboxSelOptionColor = Color(40, 51, 60)
-  headerOptionHoverColor = Color(106, 34, 17, 153) //buttonCloseColorPushed
-  headerOptionSelectedColor = Color(178, 57, 29) //buttonCloseColorHover
-  headerOptionTextColor = Color(144, 143, 143) //buttonFontColorPushed, scrollbarSliderColor
-  headerOptionSelectedTextColor = Color(224, 224, 224) //buttonFontColor, buttonHeaderTextColor, menuButtonTextColorHover, listboxSelTextColor
+  headerOptionHoverColor = Color(106, 34, 17, 153) 
+  headerOptionSelectedColor = Color(178, 57, 29) 
+  headerOptionTextColor = Color(144, 143, 143) 
+  headerOptionSelectedTextColor = Color(224, 224, 224) 
 
   scrollbarBgColor = Color(44, 44, 44, 51)
   scrollbarSliderColor = Color(144, 143, 143)
@@ -38,7 +38,7 @@ colors.menu <- {
   frameBackgroundColor = Color(17, 24, 33, 204)
   frameBorderColor = Color(32, 38, 44, 178)
   frameHeaderColor = Color(45, 52, 60)
-  higlightFrameBgColor = Color(8, 8, 8, 17) //evenTrColor
+  higlightFrameBgColor = Color(8, 8, 8, 17) 
 
   buttonCloseColorHover = Color(178, 57, 29)
   buttonCloseColorPushed = Color(106, 34, 17, 153)
@@ -63,7 +63,7 @@ let alertDMColor = Color(221, 17, 17)
 colors.hud.damageModule <- {
   active = Color(255, 255, 255)
   alert = alertDMColor
-  alertHighlight = Color(255, 255, 255) //for flashing animations
+  alertHighlight = Color(255, 255, 255) 
   inactive = inactiveDMColor
   aiSwitchHighlight = colors.green
 

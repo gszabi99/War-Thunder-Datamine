@@ -1,7 +1,7 @@
 from "%globalScripts/logs.nut" import *
-//
-// Dirty Words tables for Russian language.
-//
+
+
+
 
 let REGIONS_RU = [ "RU", "BY" ]
 let REGIONS_UA = [ "UA" ]

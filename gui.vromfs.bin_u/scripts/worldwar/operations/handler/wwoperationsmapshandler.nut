@@ -88,7 +88,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   mapDescrObj = null
   selCountryId = ""
   trophiesAmount = 0
-  needCheckSeasonIsOverNotice = true //need check and show notice only once on init screen
+  needCheckSeasonIsOverNotice = true 
 
   clusterOptionsSelector        = null
   clustersList                  = null
@@ -103,9 +103,9 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.mapsListNestObj = showObjById("operation_list", this.isDeveloperMode, this.scene)
 
     foreach (timerObjId in [
-        "ww_status_check_timer",  // periodic ww status updates check
-        "queues_wait_timer",      // frequent queues wait time text update
-        "begin_map_wait_timer",    // frequent map begin wait time text update
+        "ww_status_check_timer",  
+        "queues_wait_timer",      
+        "begin_map_wait_timer",    
       ]) {
       let timerObj = this.scene.findObject(timerObjId)
       if (timerObj)
@@ -255,7 +255,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let markup = handyman.renderCached("%gui/worldWar/wwOperationsMapsItemsList.tpl", view)
     this.guiScene.replaceContentFromText(this.mapsListObj, markup, markup.len(), this)
 
-    this.selMap = null //force refresh description
+    this.selMap = null 
     if (selIdx >= 0)
       this.mapsListObj.setValue(selIdx)
     else
@@ -370,7 +370,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return isChanged
   }
 
-  //operation select
+  
   _wasSelectedOnce = false
   function onItemSelect() {
     let isSelChanged = this.refreshSelMap()
@@ -965,108 +965,108 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateWindow()
   }
 
-  /*!!! Will be used in further tasks !!!
-  local wwLeaderboardData = require("%scripts/worldWar/operations/model/wwLeaderboardData.nut")
-  local { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-  let { convertLeaderboardData } = require("%scripts/leaderboard/requestLeaderboardData.nut")
-  function onEventWWGlobeMarkerHover(params)
-  {
-    local obj = scene.findObject("globe_hint")
-    if (!checkObj(obj))
-      return
+  
 
-    local map = params.hover ? getMapByName(params.id) : null
-    local show = map != null
-    obj.show(show)
-    if (!show)
-      return
 
-    local item =  map.getQueue()
-    obj.findObject("title").setValue(item.getNameText())
-    obj.findObject("desc").setValue(item.getGeoCoordsText())
 
-    placeHint(obj)
 
-    local statisticsObj = obj.findObject("statistics")
-    if (!checkObj(statisticsObj))
-      return
 
-    local lbMode = wwLeaderboardData.getModeByName("ww_countries")
-    if (!lbMode)
-      return
 
-    statisticsObj.show(true)
-    local callback = Callback(
-      function(countriesData) {
-        local statistics = convertLeaderboardData(countriesData).rows
-        local view = getStatisticsView(statistics, map)
-        local markup = handyman.renderCached("%gui/worldWar/wwGlobeMapInfo.tpl", view)
-        guiScene.replaceContentFromText(statisticsObj, markup, markup.len(), this)
-      }, this)
-    wwLeaderboardData.requestWwLeaderboardData(
-      lbMode.mode,
-      {
-        gameMode = $"{lbMode.mode}__{params.id}"
-        table    = "season"
-        start = 0
-        count = 2
-        category = lbMode.field
-      },
-      @(countriesData) callback(countriesData))
-  }
 
-  function getStatisticsView(statistics, map)
-  {
-    local countries = map.getCountries()
-    if (countries.len() > 2)
-      return {}
 
-    local sideAHueOption = get_option(USEROPT_HUE_SPECTATOR_ALLY)
-    local sideBHueOption = get_option(USEROPT_HUE_SPECTATOR_ENEMY)
-    local mapName = map.getId()
-    local view = {
-      country_0_icon = getCustomViewCountryData(countries[0], mapName).icon
-      country_1_icon = getCustomViewCountryData(countries[1], mapName).icon
-      rate_0 = 50
-      rate_1 = 50
-      side_0_color = getRgbStrFromHsv(sideAHueOption.values[sideAHueOption.value], 1.0, 1.0)
-      side_1_color = getRgbStrFromHsv(sideBHueOption.values[sideBHueOption.value], 1.0, 1.0)
-      rows = []
-    }
 
-    local rowView = {
-      side_0 = 0
-      text = "win_operation_count"
-      side_1 = 0
-    }
-    foreach (idx, country in statistics)
-      rowView[$"side_{idx}"] <-
-        round((country?.operation_count ?? 0) * (country?.operation_winrate ?? 0))
-    view.rows.append(rowView)
-    if (rowView.side_0 + rowView.side_1 > 0)
-    {
-      view.rate_0 = round(rowView.side_0 / (rowView.side_0 + rowView.side_1) * 100)
-      view.rate_1 = 100 - view.rate_0
-    }
 
-    rowView = { text = "win_battles_count" }
-    foreach (idx, country in statistics)
-      rowView[$"side_{idx}"] <-
-        round((country?.battle_count ?? 0) * (country?.battle_winrate ?? 0))
-    if (((rowView?.side_0 ?? 0) > 0) || ((rowView?.side_1 ?? 0) > 0))
-      view.rows.append(rowView)
 
-    foreach (field in ["playerKills", "aiKills"])
-    {
-      rowView = { text = lbCategoryTypes.getTypeByField(field).visualKey }
-      foreach (idx, country in statistics)
-        rowView[$"side_{idx}"] <- country?[field] ?? 0
-      if (((rowView?.side_0 ?? 0) > 0) || ((rowView?.side_1 ?? 0) > 0))
-        view.rows.append(rowView)
-    }
 
-    return view
-  }*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   function onEventWWCreateOperation(_params) {
     this.onClansQueue()
@@ -1258,7 +1258,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventProfileUpdated(_) {
-    // Update view for new role rights
+    
     this.updateWindow()
   }
 }

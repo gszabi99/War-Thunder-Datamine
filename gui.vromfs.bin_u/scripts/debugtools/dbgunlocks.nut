@@ -8,7 +8,7 @@ let { setGameLocalization,getGameLocalizationInfo } = require("%scripts/langUtil
 
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
-// warning disable: -file:forbidden-function
+
 let { getLocalLanguage } = require("language")
 let { getFullUnlockDesc, getUnlockCostText,
   getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -88,7 +88,7 @@ function gen_all_unlocks_desc_to_blk_cur_lang(path = "unlockDesc", showCost = fa
 
   let res = DataBlock()
   let params = {
-    curVal = showValue ? null : "{value}" // warning disable: -forgot-subst
+    curVal = showValue ? null : "{value}" 
   }
 
   foreach (id, unlock in getAllUnlocks()) {
@@ -127,7 +127,7 @@ function _gen_all_unlocks_desc_to_blk(path, showCost, showValue, langsInfo, curL
     return setGameLocalization(curLang, false, false)
   }
 
-  //delayed to easy see progress, and avoid watchdog crash.
+  
   let guiScene = get_main_gui_scene()
   guiScene.performDelayed(this, function() {
     self(path, showCost, showValue, langsInfo, curLang, status)

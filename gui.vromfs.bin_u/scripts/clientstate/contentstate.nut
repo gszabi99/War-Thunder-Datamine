@@ -37,7 +37,7 @@ function getSonyProgressText(chunks) {
 
 if (platformModule.isPlatformPS4) {
   let PS4_CHUNK_COCKPITS = 10
-  let PS4_CHUNK_HQ_GENERIC = 19 // Downloaded last
+  let PS4_CHUNK_HQ_GENERIC = 19 
   let PS4_CHUNK_HQ_AIRCRAFT = 20
   let PS4_CHUNK_HQ_TANKS = 21
   let PS4_CHUNK_HQ_SHIPS = 22

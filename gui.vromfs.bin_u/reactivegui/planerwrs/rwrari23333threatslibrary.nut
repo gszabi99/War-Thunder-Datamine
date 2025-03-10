@@ -13,7 +13,7 @@ let directionGroups = [
     originalName = "hud/rwr_threat_pd",
     lethalRangeMax = 40000.0
   },
-  //
+  
 
 
 

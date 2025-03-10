@@ -38,8 +38,8 @@ let voiceMessageNames = [
 
   { category = "report", name = "voice_message_follow_me", blinkTime = 6, haveTarget = false, showPlace = true, icon = "icon_attention", iconBlinkTime = 6, iconTarget = "sender" },
   { category = "report", name = "voice_message_cover_me", blinkTime = 6, haveTarget = false, showPlace = true, icon = "icon_shield", iconBlinkTime = 6, iconTarget = "sender" },
-  { category = "report", name = "voice_message_landing", blinkTime = 6, haveTarget = false, showPlace = true /*, forAircraft = true*/ },
-  { category = "report", name = "voice_message_return_to_base", blinkTime = 0, haveTarget = false, showPlace = false /*, forAircraft = true*/ },
+  { category = "report", name = "voice_message_landing", blinkTime = 6, haveTarget = false, showPlace = true  },
+  { category = "report", name = "voice_message_return_to_base", blinkTime = 0, haveTarget = false, showPlace = false  },
   { category = "report", name = "voice_message_reloading", blinkTime = 0, haveTarget = false, showPlace = false, useReloadTime = true },
   { category = "report", name = "voice_message_well_done", blinkTime = 0, haveTarget = false, showPlace = false },
   { category = "report", name = "voice_message_attacking_target", blinkTime = 10, haveTarget = true, showPlace = true, icon = "icon_attacking", iconBlinkTime = 6, iconTarget = "target" },
@@ -95,7 +95,7 @@ function getVoiceMessageListLine(index, is_category, name, squad, targetName, _m
   let scText = []
   if (!isPlatformSony) {
     let shortcutNames = [];
-    let key = $"ID_VOICE_MESSAGE_{index + 1}" //1based
+    let key = $"ID_VOICE_MESSAGE_{index + 1}" 
     shortcutNames.append(key);
 
     let shortcuts = getShortcuts(shortcutNames)
@@ -124,7 +124,7 @@ function getCantUseVoiceMessagesReason(isForSquad) {
   return ""
 }
 
-let onVoiceMessageAnswer = @(index) on_voice_message_button(index) //-1 means "close"
+let onVoiceMessageAnswer = @(index) on_voice_message_button(index) 
 
 function guiStartVoicemenu(config) {
   if (::isPlayerDedicatedSpectator())
@@ -173,7 +173,7 @@ function showVoiceMessageList(show, category, squad, targetName) {
   local shortcutTable = {}
 
   foreach (idx, record in voiceMessageNames) {
-    if (category == "") { //list of categories
+    if (category == "") { 
       if (isInArray(record.category, categories)
           || record.category == HIDDEN_CATEGORY_NAME)
         continue;
@@ -200,8 +200,8 @@ function showVoiceMessageList(show, category, squad, targetName) {
     menu.append(shortcutTable)
   }
 
-  //favorites:
-  if (category == "") { //main level
+  
+  if (category == "") { 
     for (local i = 0; i < NUM_FAVORITE_VOICE_MESSAGES; i++) {
       if (menu.len() == (LIMIT_SHOW_VOICE_MESSAGE_PETALS))
         break
@@ -233,7 +233,7 @@ function showVoiceMessageList(show, category, squad, targetName) {
                                 squadMsg = squad,
                                 category = category }) != null
 }
-::show_voice_message_list <- showVoiceMessageList //used from native code
+::show_voice_message_list <- showVoiceMessageList 
 
 let removeFavoriteVoiceMessage = @(index) set_option_favorite_voice_message(index, -1)
 
@@ -242,12 +242,12 @@ function resetFastVoiceMessages() {
     removeFavoriteVoiceMessage(i)
 }
 
-::is_voice_messages_muted <- function is_voice_messages_muted(name) { //used from native code
+::is_voice_messages_muted <- function is_voice_messages_muted(name) { 
   return localDevoice.isMuted(name, localDevoice.DEVOICE_RADIO)
     || isPlayerNickInContacts(name, EPL_BLOCKLIST)
 }
 
-//////////////////////////////////////////////////////
+
 let getVoiceMessageNames = @() voiceMessageNames
 
 return {

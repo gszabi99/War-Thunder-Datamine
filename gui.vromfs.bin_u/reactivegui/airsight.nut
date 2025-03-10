@@ -144,7 +144,7 @@ const circleSize = 2.5
 let angleReloadArrow = 90.0
 
 function reloadTurret(currentTime) {
-  let angleAnim = ((currentTime * 180) % 360) * (PI / 180)  // 360 per 2 sec
+  let angleAnim = ((currentTime * 180) % 360) * (PI / 180)  
   let commands = []
   let angleDegree = angleReloadArrow / dashCount
   let angle = angleDegree * (PI / 180)

@@ -51,7 +51,7 @@ let styling = {
       return {
         key = desc
         behavior = Behaviors.Button
-        //focusOnClick = true
+        
         group = buttonGrp
 
         rendObj = ROBJ_BOX

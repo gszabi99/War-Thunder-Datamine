@@ -32,7 +32,7 @@ let MPStatisticsModal = class (gui_handlers.MPStatistics) {
     set_mute_sound_in_flight_menu(false)
     in_flight_menu(true)
 
-    //!!init debriefing
+    
     this.isModeStat = true
     this.isRespawn = true
     this.isSpectate = false
@@ -182,7 +182,7 @@ let MPStatisticsModal = class (gui_handlers.MPStatistics) {
 
 gui_handlers.MPStatisticsModal <- MPStatisticsModal
 
-registerRespondent("is_mpstatscreen_active", function is_mpstatscreen_active() { // used from native code
+registerRespondent("is_mpstatscreen_active", function is_mpstatscreen_active() { 
   if (!isLoggedIn.get())
     return false
   let curHandler = handlersManager.getActiveBaseHandler()

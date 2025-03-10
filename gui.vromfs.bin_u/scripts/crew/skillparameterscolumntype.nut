@@ -97,7 +97,7 @@ enum skillColumnOrder {
 }
 
 ::g_skill_parameters_column_type.template <- {
-  id = "" //filled by typeName
+  id = "" 
   headerLocId = ""
   previousParametersRequestType = null
   currentParametersRequestType = null
@@ -109,14 +109,14 @@ enum skillColumnOrder {
   addMeasureUnits = false
   sortOrder = skillColumnOrder.UNKNOWN
 
-  /**
-   * Checks if column type is applicable to specified skill.
-   */
+  
+
+
   checkSkill = ::g_skill_parameters_column_type._checkSkill
 
-  /**
-   * Checks if column type is applicable to specified unit.
-   */
+  
+
+
   checkCrewUnitType = ::g_skill_parameters_column_type._checkCrewUnitType
 
   getHeaderText = ::g_skill_parameters_column_type._getHeaderText
@@ -128,9 +128,9 @@ enum skillColumnOrder {
 
 enums.addTypesByGlobalName("g_skill_parameters_column_type", {
 
-  /**
-   * Represents column with base values.
-   */
+  
+
+
   BASE = {
     sortOrder = skillColumnOrder.BASE
     headerLocId = "crewSkillParameterTable/baseValueText"
@@ -141,11 +141,11 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     checkSkill = ::g_skill_parameters_column_type._isSkillNotOnlyForTotalAndTop
   }
 
-  /**
-   * Represents column with difference between
-   * base values and current values without spec,
-   * leadership and gunners counts bonuses.
-   */
+  
+
+
+
+
   SKILLS = {
     sortOrder = skillColumnOrder.SKILLS
     previousParametersRequestType = skillParametersRequestType.BASE_VALUES
@@ -157,9 +157,9 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     checkSkill = ::g_skill_parameters_column_type._isSkillNotOnlyForTotalAndTop
   }
 
-  /**
-   * Represents upgrades provided by specialization.
-   */
+  
+
+
   SPECIALIZATION = {
     sortOrder = skillColumnOrder.SPECIALIZATION
     previousParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_SPEC_AND_LEADERSHIP
@@ -176,10 +176,10 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     }
   }
 
-  /**
-   * Represents upgrades provided by leadership skill.
-   * This is related to tank and ship unit types only.
-   */
+  
+
+
+
   LEADERSHIP = {
     sortOrder = skillColumnOrder.LEADERSHIP
     previousParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_LEADERSHIP
@@ -194,10 +194,10 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     checkCrewUnitType = @(crewUnitType) crewUnitType == CUT_TANK || crewUnitType == CUT_SHIP
   }
 
-  /**
-   * Represents count of ai gunners on current vehicle.
-   * This is related to aircraft unit type only.
-   */
+  
+
+
+
   GUNNERS_COUNT = {
     sortOrder = skillColumnOrder.GUNNERS_COUNT
     checkSkill = @(memberName, skillName) memberName == "gunner" && skillName == "members"
@@ -228,10 +228,10 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     }
   }
 
-  /**
-   * Represents upgrades provided by experienced gunners count.
-   * This is related to aircraft unit type only.
-   */
+  
+
+
+
   GUNNERS = {
     sortOrder = skillColumnOrder.GUNNERS
     previousParametersRequestType = skillParametersRequestType.CURRENT_VALUES_NO_LEADERSHIP
@@ -249,9 +249,9 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     }
   }
 
-  /**
-   * Represents upgrades with everything maxed-out.
-   */
+  
+
+
   MAX = {
     sortOrder = skillColumnOrder.MAX
     headerLocId = "crewSkillParameterTable/maxValueText"
@@ -261,9 +261,9 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     addMeasureUnits = true
   }
 
-  /**
-   * Represents empty column without any data in it.
-   */
+  
+
+
   EMPTY = {
     sortOrder = skillColumnOrder.EMPTY
     addDummyBlock = true
@@ -275,9 +275,9 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     }
   }
 
-  /**
-   * Represents a column with '=' and empty header.
-   */
+  
+
+
   EQUALS_SIGN = {
     sortOrder = skillColumnOrder.EQUALS_SIGN
     createValueItem = function (_prevValue, _curValue, _prevSelectedValue, _curSelectedValue, _measureType, _sign) {
@@ -293,9 +293,9 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     checkSkill = ::g_skill_parameters_column_type._isSkillNotOnlyForTotalAndTop
   }
 
-  /**
-   * Represents column with current values and a "Total" header.
-   */
+  
+
+
   TOTAL = {
     sortOrder = skillColumnOrder.TOTAL
     addMeasureUnits = true

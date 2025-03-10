@@ -16,8 +16,8 @@ const CRAFT_PART_TO_NEW_ITEM_RATIO = 2
 
 let RECYCLED_ITEMS_IDS = [299000, 299001, 299002, 299003, 299004]
 
-// Inventory items may have non-unique ids. E.g. boosters might have different expiration times.
-// We generate an unique key based on the item inventory id and its unique parameters (currently the expiration time, but additional parameters may be added).
+
+
 let getRecyclingItemUniqKey = @(item) "::".concat(item.id, item.expiredTimeSec)
 let getSingleGeneratorForRecycledItem = @(itemId) getItemGenerator(itemId + SINGLE_GENERATOR_ID_OFFSET)
 
@@ -25,7 +25,7 @@ let ItemsRecycler = class {
   craftParts = null
   craftPartsCount = 0
 
-  selectedItemsToRecycle = null  // map composite unique key -> { item, amount }
+  selectedItemsToRecycle = null  
   selectedItemsToRecycleCount = 0
 
   recyclingItemsIds = null
@@ -90,7 +90,7 @@ let ItemsRecycler = class {
 
   function performItemsRecycling(params) {
     if (params.len() == 0) {
-      this.recyclingItemsIds.clear() // Inventory updates after the server's cln_recycle_items response, so clear the list only after all queue operations complete.
+      this.recyclingItemsIds.clear() 
       return
     }
 
@@ -113,7 +113,7 @@ let ItemsRecycler = class {
   }
 
   function getRecycleItemsRequestsParams() {
-    let itemsByType = {} // For now it's possible to recycle items only with the same iType per single request
+    let itemsByType = {} 
 
     foreach (sel in this.selectedItemsToRecycle) {
       if (sel.amount < 1)
@@ -129,7 +129,7 @@ let ItemsRecycler = class {
 
       if (item.canPacked) {
         let itemBlk = itemsBlk.addNewBlock("item")
-        itemBlk.setStr("itemId", item.uids[0]) // for packed items there is only one uid
+        itemBlk.setStr("itemId", item.uids[0]) 
         itemBlk.setInt("count", amount)
       } else {
         let uidsToRecycle = item.uids.slice(-amount)
@@ -149,12 +149,12 @@ let ItemsRecycler = class {
     let partIdToQuantity = this.craftParts
       .reduce(@(parts, part) parts.__update({[part.id] = part.amount}), {})
 
-    // At first, we must use single generators as many as possible
+    
     let singleGenCfg = this.calculateCraftViaSingleGenerator(partIdToQuantity, remaining)
     exchangeConfigs.extend(singleGenCfg.res)
     remaining = singleGenCfg.remaining
 
-    // If all craft parts types are left with only one, we use a generic generator
+    
     if (remaining > 0)
       exchangeConfigs.extend(this.calculateCraftViaGenericGenerator(partIdToQuantity, remaining))
 

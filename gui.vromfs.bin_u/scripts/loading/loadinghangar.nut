@@ -10,7 +10,7 @@ gui_handlers.LoadingHangarHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/loading/loadingHangar.blk"
   sceneNavBlkName = "%gui/loading/loadingNav.blk"
 
-  isEnteringMission = false // true on entering mission, false on quiting.
+  isEnteringMission = false 
 
   function initScreen() {
     animBgLoad()

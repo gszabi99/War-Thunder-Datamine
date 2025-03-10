@@ -37,16 +37,16 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
   function getOperationsList() {
     if (!this._operationsList)
       this._operationsList = ::g_ww_global_status_type.ACTIVE_OPERATIONS.getList(
-                          (@(mapId) function(op) { return op.getMapId() == mapId })(this.mapId) //-ident-hides-ident
+                          (@(mapId) function(op) { return op.getMapId() == mapId })(this.mapId) 
                         )
     return this._operationsList
   }
 
-  /*
-  return {
-    [side] = ["country_germany"]
-  }
-  */
+  
+
+
+
+
   _countriesByTeams = null
   function getCountriesByTeams() {
     if (this._countriesByTeams)
@@ -92,7 +92,7 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
       return res
     }
 
-    //find operation which can join by country
+    
     let operation = u.search(this.getOperationsList(),  function(op) { return op.canJoinByCountry(country) })
     if (!operation)
       return res

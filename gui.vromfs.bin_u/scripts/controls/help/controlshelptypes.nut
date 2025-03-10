@@ -41,7 +41,7 @@ let result = {
     imagePattern = ""
     helpPattern = CONTROL_HELP_PATTERN.NONE
 
-    pageUnitTypeBit = 0 // bit mask
+    pageUnitTypeBit = 0 
     pageUnitTag = null
 
     showInSets = []

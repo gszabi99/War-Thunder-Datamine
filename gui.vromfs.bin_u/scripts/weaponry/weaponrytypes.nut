@@ -5,7 +5,7 @@ from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut") //circular dependency
+let { getWeaponNameText } = require("%scripts/weaponry/weaponryDescription.nut") 
 let { getModificationName } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getByCurBundle, MAX_SPARE_AMOUNT } = require("%scripts/weaponry/itemInfo.nut")
 let { canBuyMod } = require("%scripts/weaponry/modificationInfo.nut")
@@ -65,7 +65,7 @@ let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 enums.addTypesByGlobalName("g_weaponry_types", {
   UNKNOWN = {}
 
-//************************* WEAPON *********************************************
+
   WEAPON = {
     type = weaponsItem.weapon
     getLocName = @ (unit, item, _limitedName = false) getWeaponNameText(unit, false, item.name, ",  ")
@@ -97,7 +97,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     }
   }
 
-//*********************** BULLETS **********************************************
+
   BULLETS = {
     type = weaponsItem.bullets
     getLocName = @(unit, item, limitedName = false) getModificationName(unit, item.name, limitedName)
@@ -107,7 +107,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     canBuy = function(unit, item) { return isUnitUsable(unit) && canBuyMod(unit, item) }
   }
 
-//********************* MODIFICATION *******************************************
+
   MODIFICATION = {
     type = weaponsItem.modification
     getLocName = @(unit, item, limitedName = false) getModificationName(unit, item.name, limitedName)
@@ -138,7 +138,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     }
   }
 
-//********************* EXPENDABLES *******************************************
+
   EXPENDABLES = {
     type = weaponsItem.expendables
     getLocName = @(unit, item, limitedName = false) getModificationName(unit, item.name, limitedName)
@@ -149,7 +149,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     canBuy = function(unit, item) { return isUnitUsable(unit) && canBuyMod(unit, item) }
   }
 
-//********************** SPARE *************************************************
+
   SPARE = {
     type = weaponsItem.spare
     getLocName = function(_unit, item, ...) { return loc($"spare/{item.name}") }
@@ -162,9 +162,9 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     canBuy = function(unit, item) { return isUnitUsable(unit) && this.getAmount(unit, item) < this.getMaxAmount(unit, item) }
   }
 
-//=============================== PSEUDO TYPES =================================
 
-//*************** PRIMARY WEAPON ***********************************************
+
+
   PRIMARYWEAPON = {
     type = weaponsItem.primaryWeapon
     getLocName = function(unit, item, _limitedName = false) { return getWeaponNameText(unit, true, item.name, " ") }
@@ -174,7 +174,7 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     canBuy = function(unit, item) { return isUnitUsable(unit) && canBuyMod(unit, item) }
   }
 
-//****************** BUNDLE ****************************************************
+
   BUNDLE = {
     type = weaponsItem.bundle
     getLocName = function(unit, item, limitedName = false) {
@@ -194,19 +194,19 @@ enums.addTypesByGlobalName("g_weaponry_types", {
     }
   }
 
-//********************** NEXT UNIT *********************************************
+
   NEXTUNIT = {
     type = weaponsItem.nextUnit
     getLocName = function(_unit, item, ...) { return loc($"elite/{item.name}") }
   }
 }, null, "typeName")
 
-/*::g_weaponry_types.types.sort(function(a,b)
-{
-  if (a.type != b.type)
-    return a.type > b.type? 1 : -1
-  return 0
-})*/
+
+
+
+
+
+
 
 ::g_weaponry_types.getUpgradeTypeByItem <- function getUpgradeTypeByItem(item) {
   if (!("type" in item))

@@ -25,7 +25,7 @@ let { getTip } = require("%scripts/loading/loadingTips.nut")
       return obj.getIntProp(this.unitTypeMaskPID, 0)
     }
 
-    function setValue(obj, unitTypeMask) { //to set unit type from scripts
+    function setValue(obj, unitTypeMask) { 
       if (!u.isInteger(unitTypeMask) || unitTypeMask == this.getUnitTypeMask(obj))
         return
       obj.setIntProp(this.unitTypeMaskPID, unitTypeMask)

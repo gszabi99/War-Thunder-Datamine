@@ -35,7 +35,7 @@ let class SelectGroupHandler (gui_handlers.SelectUnitHandler) {
   function initAvailableUnitsArray() {
     this.unitsList = this.getSortedGroupsArray()
     this.unitsList.append(SEL_UNIT_BUTTON.SHOW_MORE)
-    return false //for needEmptyCrewButton parameter
+    return false 
   }
 
   function trainSlotAircraft(unit) {

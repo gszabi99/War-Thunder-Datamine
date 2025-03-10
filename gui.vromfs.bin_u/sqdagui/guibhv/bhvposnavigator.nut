@@ -6,19 +6,19 @@ let { markChildrenInteractive, markInteractive, markObjShortcutOnHover, getObjCe
 } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { g_wrap_dir } = require("wrapDir.nut")
 
-const DEF_HOLD_DELAY = 700 //same with bhvButton
+const DEF_HOLD_DELAY = 700 
 
-//blk params:
-//  value
-//  moveX, moveY  =  "linear", "closest"  (default = "closest")
-//  isSkipMoving  =  "yes",    "no"       (default = "no")
+
+
+
+
 
 let posNavigator = class {
   bhvId = "posNavigator"
   eventMask = EV_JOYSTICK | EV_PROCESS_SHORTCUTS | EV_MOUSE_L_BTN | EV_MOUSE_EXT_BTN | EV_MOUSE_DBL_CLICK
     | EV_ON_FOCUS_SET | EV_ON_FOCUS_LOST | EV_ON_CMD | EV_ON_INSERT_REMOVE | EV_TIMER | EV_MOUSE_NOT_ON_OBJ
   valuePID                 = dagui_propid_add_name_id("value")
-  selectedPID              = dagui_propid_add_name_id("value") //value = selected
+  selectedPID              = dagui_propid_add_name_id("value") 
   moveTypeXPID             = dagui_propid_add_name_id("moveX")
   moveTypeYPID             = dagui_propid_add_name_id("moveY")
   fixedCoordPID            = dagui_propid_add_name_id("_fixedCoord")
@@ -27,7 +27,7 @@ let posNavigator = class {
   disableFixedCoordPID     = dagui_propid_add_name_id("disableFixedCoord")
   lastMoveTimeMsecPID      = dagui_propid_add_name_id("_lastMoveTimeMsec")
   canSelectNonePID         = dagui_propid_add_name_id("canSelectNone")
-  holdStartDelayPID        = dagui_propid_add_name_id("hold-start-delay"); //same id with bhvButton
+  holdStartDelayPID        = dagui_propid_add_name_id("hold-start-delay"); 
   holdTimePID              = dagui_propid_add_name_id("hold-time");
   activatePushedIdxPID     = dagui_propid_add_name_id("_activatePushedIdx");
   fixedCoordTimeoutMsec = 5000
@@ -312,7 +312,7 @@ let posNavigator = class {
   }
 
   function onExtMouse(obj, mx, my, btn_id, is_up, bits) {
-    if (btn_id != 2)  //right mouse button
+    if (btn_id != 2)  
       return RETCODE_NOTHING
 
     let isOnObj = !(bits & (is_up ? BITS_MOUSE_OUTSIDE : BITS_MOUSE_NOT_ON_OBJ))
@@ -454,7 +454,7 @@ let posNavigator = class {
 
       let primOffsetSq = (pos[axis] - pos2[axis]) * (pos[axis] - pos2[axis])
       let secOffsetSq = (pos[1 - axis] - pos2[1 - axis]) * (pos[1 - axis] - pos2[1 - axis])
-      if (4 * primOffsetSq < secOffsetSq)  // 60 degrees
+      if (4 * primOffsetSq < secOffsetSq)  
         return
 
       let cSqDist = primOffsetSq + secOffsetSq
@@ -487,7 +487,7 @@ let posNavigator = class {
 
     local foundObj = null
     local foundIdx = -1
-    local distRating = -1 //best distance is not shorter
+    local distRating = -1 
     this.eachSelectable(obj, function(cObj, i) {
       if (valueObj?.isEqual(cObj))
         return
@@ -497,7 +497,7 @@ let posNavigator = class {
           || distSubAxis > posDiv)
         return
 
-      //we trying to keep choosen line, so distance in other line has much lower priority
+      
       let distAxis = abs(pos[axis] - pos2[axis])
       let cDistRating = distAxis + 100 * distSubAxis
       if (distRating < 0 || cDistRating < distRating) {

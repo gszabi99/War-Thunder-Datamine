@@ -20,7 +20,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
   let enemySide = mgGetEnemySide()
   let bombtargets = createGroundUnitsProc(enemySide)
 
-//planes cost and warpoint ratio calculate
+
   let ws = get_warpoints_blk()
   let wpMax = ws.dynPlanesMaxCost
   let playerFighterPlane = getAnyPlayerFighter(0, wpMax)
@@ -35,7 +35,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
 
   let planeCost = planeCostCalculate(playerPlaneCost, enemyPlaneCost)
 
-//bombers count
+
   local bombersCount = 0
   local allyBomberPlane = ""
 
@@ -109,7 +109,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
   }
 
   bombersCount = clamp(bombersCount, 8, 24)
-//fighters count calculate
+
   let allyFighterCountMin = (bombersCount * 0.5) / 1.5 * planeCost - 4
   let allyFighterCountMax = (bombersCount) / 1.5 * planeCost - 4
   local allyFightersCount = min(rndRangeInt(allyFighterCountMin, allyFighterCountMax), 16)
@@ -119,7 +119,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
   let enemyTotalCountMin = (bombersCount * 0.5 + allyFightersCount + 4) * 0.5 / planeCost
   let enemyTotalCountMax = (bombersCount + allyFightersCount + 4) / planeCost
   let enemyTotalCount = clamp(rndRangeInt(enemyTotalCountMin, enemyTotalCountMax), 8, 44)
-//wave count
+
   let enemyWaveCount = enemyTotalCount < 16 ? 1
     : enemyTotalCount < 24 ? rndRangeInt(1, 2)
     : rndRangeInt(2, 3)
@@ -147,7 +147,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
   }
   while (enemyWaveCount_temp > 0)
 
-//enemy planes in each wave
+
   local enemyTotalCount_temp = enemyTotalCount
   enemyWaveCount_temp = enemyWaveCount
 
@@ -170,7 +170,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
   if (wave3 == 1 && enemyWaveCount_temp > 0)
     enemy3Count = max(enemyTotalCount_temp, 8)
 
-//battle distance calculate
+
   let rndHeight = rndRange(2000, 4000)
   let playerSpeed = 300 * 1000 / 60
   let enemy1Speed = getDistancePerMinute(enemyFighterPlane)
@@ -190,7 +190,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
   let enemy1Angle = rndRange(-90, 90)
   let enemy2Angle = rndRange(-90, 90)
   let evacAngle = rndRange(-10, 10)
-//points setup
+
   mgSetupArea("player_start", bombtargets, startLookAt, 180, playerSpeed * timeToTarget, rndHeight)
   mgSetupArea("target_waypoint_bombers", bombtargets, "", 0, 0, rndHeight - 200)
   mgSetupArea("target_waypoint_fighters", bombtargets, "", 0, 0, rndHeight)
@@ -212,7 +212,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
   mgSetupArea("enemy3_start", bombtargets, "player_start", 180,
     enemy3Speed * timeToEnemy3, rndHeight + rndRange(0, 2000))
 
-//armada setup
+
   mgSetupArmada("#player.fighter", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane)
   mgSetupArmada("#player_cut.any", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane)
   gmMarkCutsceneArmadaLooksLike("#player_cut.any", "#player.fighter")
@@ -254,7 +254,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
   mgSetMinMaxAircrafts("ally", "bomber", 8, 24)
   mgSetMinMaxAircrafts("enemy", "fighter", 0, 44)
 
-//mission warpoint cost calculate
+
   let mission_mult = sqrt(enemyTotalCount / 20.0 + 0.05)
   let missionWpCost = warpointCalculate(mission_preset_name, allyFightersCount + bombersCount * 0.5, enemyCount, planeCost,
     playerFighterPlane, mission_mult)
@@ -268,7 +268,7 @@ function generateCoverMission(isFreeFlight, createGroundUnitsProc) {
 
   mgSetBool("variables/training_mode", isFreeFlight)
 
-//  mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testBombing_cover_temp.blk")
+
   if (mgFullLogs())
     debug_dump_stack()
 

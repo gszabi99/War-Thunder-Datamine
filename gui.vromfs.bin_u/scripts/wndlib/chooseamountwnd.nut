@@ -18,7 +18,7 @@ gui_handlers.ChooseAmountWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   headerText = ""
   buttonText = ""
-  getValueText = null //@(value) value.tostring()
+  getValueText = null 
 
   onAcceptCb = null
   onCancelCb = null

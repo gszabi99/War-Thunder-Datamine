@@ -11,9 +11,9 @@ let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nu
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 
-/**
- * Action to perform after change country window closes.
- */
+
+
+
 enum ChangeCountryAction {
   NONE
   APPLY_COUNTRY
@@ -119,9 +119,9 @@ gui_handlers.ChangeCountry <- class (gui_handlers.BaseGuiHandlerWT) {
     return this.availableCountries[value]
   }
 
-  /**
-   * Array of country names supported by selected event.
-   */
+  
+
+
   function getAvailableCountries() {
     let res = []
     let currentMode = getCurrentGameMode()

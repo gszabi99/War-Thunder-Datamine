@@ -20,16 +20,16 @@ const ECHO_PORT = 3843
 const PACKET_SIZE_BYTES = 32
 const REQUEST_BITS_SET_MUL = 31
 
-const REGULAR_PROBE_INTERVAL_SEC = 7200 // How ofter hosts should be probed normally
-const FAILED_PROBE_INTERVAL_SEC = 600 // How ofter hosts should be probed when RTT unknown
-const CLUSTERS_RECALC_DELAY_SEC = 1 // Delay to prevent updating clusters watch for every packet in a burst
-const NEW_HOST_PROBE_MAX_DELAY_SEC = 600 // Max delay to probe a new hosts at a random time
-const SAMPLES_COUNT_MAX = 5 // A max number of samples used for the calculation of the moving average
-const RETRY_PROBE_DELAY_SEC = 30 // Delay to repoeat request when answer is not received
-const MAX_ERRORS = 3 // Stop retries when host not responding multiple times, until next probing of all hosts
-const OPTIMAL_RTT_LIMIT_MS = 100 // Hosts whose average RTT falls within the limit are considered to be optimal
-const INSIGNIFICANT_RTT_DIFF_MS = 25 // Extra diff to collect more hosts which are not optimal
-const MINOR_MS = 1000 // Minor time diff to avoid timer divirgence when collecting hosts to probe
+const REGULAR_PROBE_INTERVAL_SEC = 7200 
+const FAILED_PROBE_INTERVAL_SEC = 600 
+const CLUSTERS_RECALC_DELAY_SEC = 1 
+const NEW_HOST_PROBE_MAX_DELAY_SEC = 600 
+const SAMPLES_COUNT_MAX = 5 
+const RETRY_PROBE_DELAY_SEC = 30 
+const MAX_ERRORS = 3 
+const OPTIMAL_RTT_LIMIT_MS = 100 
+const INSIGNIFICANT_RTT_DIFF_MS = 25 
+const MINOR_MS = 1000 
 
 let optimalClusters = hardPersistWatched("optimalClusters", {})
 let requestsCounter = hardPersistWatched("requestsCounter", 0)
@@ -37,13 +37,13 @@ let hostsCfg = persist("hostsCfg", @() {})
 let clusterStats = persist("clusterStats", @() [])
 let isProbingActive = Computed(@() isInMenu.value && isMatchingOnline.value)
 
-// Writes to stream a 64-bit integer as Network Endian
+
 function writeInt64NetBytes(stream, i) {
   for (local n = 56; n >= 0; n -= 8)
     stream.writen((i >> n) & 0xFF, 'b')
 }
 
-// Reads from stream a 64-bit integer as Network Endian
+
 function readInt64NetBytes(stream) {
   local i = 0
   for (local n = 56; n >= 0; n -= 8)
@@ -137,11 +137,11 @@ function scheduleNextProbeTime(func) {
     }
   }
   let timeLeftSec = hasNewHosts
-    // Note about probing new hosts: All clients gets new hosts simultaneously by a pushed message.
-    // Probe time is ramdomized for new hosts to avoid rush of simultaneous requests from clients.
+    
+    
     ? (NEW_HOST_PROBE_MAX_DELAY_SEC * rnd_float(0.0, 1.0))
-    // If earliestTimeMs is in the past, then either it is initial probing, or player was in a battle
-    // or offline, when it was time for a regular probing. In this case lets probe hosts now.
+    
+    
     : max(0.1, (earliestTimeMs - nowMs) / 1000.0)
   if (hasNewHosts)
     logOC($"New hosts detected, probe scheduled in {timeLeftSec} sec")
@@ -196,8 +196,8 @@ function updateHostAvgRTT(hostInfo, rtt, receivedTimeMs) {
 }
 
 function getClusterStats() {
-  // Usually multiple hosts relates to every cluster (like 5 hosts has "EU" in clustersList),
-  // but also, a host can participate in multiple clusters, this is why clustersList is an array.
+  
+  
 
   let clustersToHostsMap = {}
   foreach (hostInfo in hostsCfg)

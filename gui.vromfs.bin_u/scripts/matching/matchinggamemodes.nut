@@ -14,9 +14,9 @@ let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { startswith }=require("string")
 let { clearTimer, resetTimeout } = require("dagor.workcycle")
 
-// -------------------------------------------------------
-// Matching game modes managment
-// -------------------------------------------------------
+
+
+
 
 const MAX_FETCH_RETRIES = 5
 
@@ -25,7 +25,7 @@ const MAX_GAME_MODES_FOR_REQUEST_INFO = 50
 const NIGHT_GAME_MODE_TAG_PREFIX = "regular_with_night_"
 const SMALL_TEAMS_GAME_MODE_TAG_PREFIX = "small_teams_"
 
-let gameModes = {} // game-mode unique id -> mode info
+let gameModes = {} 
 local queueGameModesForRequest = []
 local fetching = false
 local fetchingInfo = false
@@ -186,7 +186,7 @@ function onGameModesChangedNotify(added_list, removed_list, changed_list) {
         continue
       }
 
-      needToFetchGmList.append(gameModeId) //need refresh full mode-info because may updated mode params
+      needToFetchGmList.append(gameModeId) 
 
       if (disabled == null || visible == null || active == null
           || !(gameModeId in gameModes))
@@ -250,7 +250,7 @@ addListenersWithoutEnv({
     fetch_counter = 0
   }
   ScriptsReloaded = @(_) forceUpdateGameModes()
-  //no need to request gameModes before configs inited
+  
   LoginComplete   = @(_) forceUpdateGameModes()
   NotifyGameModesChanged = @(p) onGameModesChangedNotify(p?.added, p?.removed, p?.changed)
 })

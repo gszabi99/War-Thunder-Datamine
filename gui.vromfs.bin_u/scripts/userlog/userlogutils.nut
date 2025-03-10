@@ -112,7 +112,7 @@ function checkPopupUserLog(user_log_blk) {
   return false
 }
 
-let saveOnlineJob = @() save_online_single_job(223) //super secure digit for job tag :)
+let saveOnlineJob = @() save_online_single_job(223) 
 
 function disableSeenUserlogs(idsList) {
   if (isEmpty(idsList))
@@ -235,9 +235,9 @@ function getUserLogsList(filter) {
   let total = get_user_logs_count()
   local needSave = false
 
-  /**
-   * If statick tournament reward exist in log, writes it to logs root
-   */
+  
+
+
   let grabStatickReward = function (reward, logObj) {
     if (reward.awardType == "base_win_award") {
       logObj.baseTournamentWp <- getTblValue("wp", reward, 0)
@@ -285,8 +285,8 @@ function getUserLogsList(filter) {
       let block = blk.body.getBlock(j)
       let name = block.getBlockName()
 
-      //can be 2 aircrafts with the same name (cant foreach)
-      //trophyMultiAward logs have spare in body too. they no need strange format hacks.
+      
+      
       if (name == "aircrafts"
           || (name == "spare" && !isPrizeMultiAward(blk.body))) {
         if (!(name in logObj))
@@ -334,16 +334,16 @@ function getUserLogsList(filter) {
       : null
     if (dubIdx != null) {
       let curLog = logs[dubIdx]
-      // Stack all trophy rewards
+      
       if (curLog?.item && logObj?.item)
         curLog.item = type(curLog.item) == "array" ? curLog.item.append(logObj.item)
           : [curLog.item].append(logObj.item)
-      // Stack all identical trophies
+      
       if (!curLog?.item && !logObj?.item)
         curLog.count <- (curLog?.count ?? 1) + (logObj?.count ?? 1)
     }
-    // Changes of current logObj above will be used for logObj view only
-    // so no need reduce logs array to avoid differences with blk
+    
+    
     logs.append(dubIdx != null ? logObj.__merge({ isDubTrophy = true }) : logObj)
 
     if (disableVisible) {

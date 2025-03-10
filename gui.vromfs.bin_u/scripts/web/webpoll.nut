@@ -21,7 +21,7 @@ let tokenInvalidationTimeById = {}
 local votedPolls = null
 let pollBaseUrlById = {}
 let pollIdByFullUrl = {}
-let authorizedPollsRequestTimeOut = {}  //0 when already authorized
+let authorizedPollsRequestTimeOut = {}  
 
 function setPollBaseUrl(pollId, pollUrl) {
   if (!(pollId in pollBaseUrlById))
@@ -92,7 +92,7 @@ function onSurveyVoteResult(params) {
 
 function invalidateTokensCache(pollId = null) {
 
-  if (pollId == null) { //invalidate all tokens
+  if (pollId == null) { 
     cachedTokenById.clear()
     tokenInvalidationTimeById.clear()
   }

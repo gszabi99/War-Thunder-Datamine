@@ -13,7 +13,7 @@ let { contactEvent } = require("%scripts/contacts/contactsConsts.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 
-function find_contact_by_name_and_do(playerName, func) { //return taskId if delayed.
+function find_contact_by_name_and_do(playerName, func) { 
   let contact = getContactByName(playerName)
   if (contact && contact?.uid != "") {
     func(contact)
@@ -45,7 +45,7 @@ function find_contact_by_name_and_do(playerName, func) { //return taskId if dela
 
 function updateContact(config) {
   let configIsContact = isInstance(config) && config instanceof Contact
-  if (isInstance(config) && !configIsContact) { //Contact no need update by instances because foreach use function as so constructor
+  if (isInstance(config) && !configIsContact) { 
     script_net_assert_once("strange config for contact update", "strange config for contact update")
     return null
   }
@@ -55,7 +55,7 @@ function updateContact(config) {
   if (!contact)
     return null
 
-  //when config is instance of contact we no need update it to self
+  
   if (!configIsContact) {
     if (config?.needReset ?? false)
       contact.resetMatchingParams()

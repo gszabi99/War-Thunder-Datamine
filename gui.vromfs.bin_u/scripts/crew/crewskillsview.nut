@@ -58,7 +58,7 @@ function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, u
     })
   }
 
-  //use header items for legend
+  
   if (view.parameterRows.len())
     view.headerItems <- view.parameterRows[0].valueItems
 
@@ -66,7 +66,7 @@ function getSkillCategoryTooltipContent(skillCategory, crewUnitType, crewData, u
 }
 
 addTooltipTypes({
-  SKILL_CATEGORY = { //by categoryName, unitTypeName
+  SKILL_CATEGORY = { 
     getTooltipId = function(categoryName, unitName = "", _p2 = null, _p3 = null) {
       return this._buildId(categoryName, { unitName = unitName })
     }
@@ -84,7 +84,7 @@ addTooltipTypes({
     }
   }
 
-  CREW_SPECIALIZATION = { //by crewId, unitName, specTypeCode
+  CREW_SPECIALIZATION = { 
     getTooltipId = function(crewId, unitName = "", specTypeCode = -1, _p3 = null) {
       return this._buildId(crewId, { unitName = unitName, specTypeCode = specTypeCode })
     }
@@ -104,7 +104,7 @@ addTooltipTypes({
     }
   }
 
-  BUY_CREW_SPEC = { //by crewId, unitName, specTypeCode
+  BUY_CREW_SPEC = { 
     getTooltipId = function(crewId, unitName = "", specTypeCode = -1, _p3 = null) {
       return this._buildId(crewId, { unitName = unitName, specTypeCode = specTypeCode })
     }

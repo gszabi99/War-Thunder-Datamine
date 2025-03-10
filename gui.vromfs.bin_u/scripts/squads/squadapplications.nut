@@ -13,9 +13,9 @@ let popupTextColor = "@chatTextInviteColor"
 
 let SquadApplicationsList = freeze({
 
-/*************************************************************************************************/
-/*************************************PUBLIC FUNCTIONS *******************************************/
-/*************************************************************************************************/
+
+
+
 
   function addApplication(squadId, leaderId, isEventNeed = true) {
     if (squadId in applicationsList)
@@ -52,7 +52,7 @@ let SquadApplicationsList = freeze({
     foreach (squadId in applicationsArr) {
       if (!(squadId in applicationsList)) {
         leadersArr.append(squadId)
-        this.addApplication(squadId, squadId, false) // warning disable: -param-pos
+        this.addApplication(squadId, squadId, false) 
         isEventNeed = true
       }
     }
@@ -90,9 +90,9 @@ let SquadApplicationsList = freeze({
     return (leaderId in applicationsList)
   }
 
-/*************************************************************************************************/
-/************************************PRIVATE FUNCTIONS *******************************************/
-/*************************************************************************************************/
+
+
+
 
   function createApplication(squadId, leaderId) {
     return {

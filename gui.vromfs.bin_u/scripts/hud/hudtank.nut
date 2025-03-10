@@ -35,6 +35,8 @@ function getShortcutIdForSwitchTacticalMap() {
 let HudTank = class (gui_handlers.BaseUnitHud) {
   sceneBlkName = "%gui/hud/hudTank.blk"
 
+  needForceUpdateTacticalMapHint = false
+
   function initScreen() {
     base.initScreen()
     hudDisplayTimersInit(this.scene, ES_UNIT_TYPE_TANK)
@@ -90,7 +92,12 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     if (!objMap?.isValid())
       return
 
-    objMap.findObject("shortcut_hint").setValue("".concat("{{", getShortcutIdForSwitchTacticalMap(), "}}"))
+    let hintObj = objMap.findObject("shortcut_hint")
+    if (this.needForceUpdateTacticalMapHint) {
+      hintObj.setValue("")
+      this.needForceUpdateTacticalMapHint = false
+    }
+    hintObj.setValue("".concat("{{", getShortcutIdForSwitchTacticalMap(), "}}"))
     objMap.setValue(stashBhvValueConfig([
       {
         watch = getShowUAVCameraToggle()
@@ -101,6 +108,11 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
         updateFunc = updateTacticalMapSwitchingObj
       }
     ]))
+  }
+
+  function onControlsChanged() {
+    base.onControlsChanged()
+    this.needForceUpdateTacticalMapHint = true
   }
 
   function onSwitchToTacticalMap(_) {

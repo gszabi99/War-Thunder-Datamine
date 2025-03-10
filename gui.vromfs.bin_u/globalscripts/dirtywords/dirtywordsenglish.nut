@@ -1,7 +1,7 @@
 from "%globalScripts/logs.nut" import *
-//
-// Dirty Words tables for English language.
-//
+
+
+
 
 return {
 
@@ -27,7 +27,7 @@ excludesdata =
     arr =
     [
       "dagon",
-      "dicker" // Dicker Max
+      "dicker" 
     ]
   },
   {

@@ -97,11 +97,20 @@ tdiv {
         tooltip:t='<<getActionStatusIconTooltip>>'
         text:t='<<getActionStatusTimeText>>'
       }
-      activeText {
-        id:t='army_count'
-        tooltip:t='<<getUnitsIconTooltip>>'
-        text:t='<<getUnitsCountTextIcon>>'
+      tdiv {
+        width:t='fw'
+        height:t='ph'
         blockSeparator{}
+        activeText {
+          id:t='army_count'
+          text:t='<<getUnitsCount>>'
+          input-transparent:t='yes'
+        }
+        img {
+          id:t='army_icon'
+          background-image:t='<<getArmyIcon>>'
+        }
+        tooltip:t='<<getUnitsIconTooltip>>'
       }
       <<#hasArtilleryAbility>>
         activeText {

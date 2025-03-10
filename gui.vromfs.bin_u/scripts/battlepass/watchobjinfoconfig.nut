@@ -95,7 +95,7 @@ let mediumDailyTaskProgressWatchObj = {
 let seasonTasksProgressWatchObj = {
   watch = mainChallengeOfSeason
   updateFunc = function(obj, challenge) {
-    //fixme: there must be a more easy way to get a progress.
+    
     let unlockConfig = challenge ? buildConditionsConfig(challenge) : null
     if (unlockConfig==null)
       return

@@ -21,6 +21,7 @@ let { getSessionLobbyMissionNameLoc, getSessionLobbyTimeLimit,
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
+let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 
 function clearInfo(scene) {
   foreach (name in ["session_creator", "session_mapName", "session_hasPassword",
@@ -86,10 +87,10 @@ return function(scene, sessionInfo) {
   let cObj2 = scene.findObject("countries2")
   if (checkObj(cObj1)) {
     cObj1.show(true)
-    ::fillCountriesList(cObj1, teams[0])
+    fillCountriesList(cObj1, teams[0])
     cObj2.show(!isEqual)
     if (!isEqual)
-      ::fillCountriesList(cObj2, teams[1])
+      fillCountriesList(cObj2, teams[1])
   }
   let vsObj = scene.findObject("vsText")
   if (checkObj(vsObj))

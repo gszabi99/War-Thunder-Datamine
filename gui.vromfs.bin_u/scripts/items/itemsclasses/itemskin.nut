@@ -13,7 +13,7 @@ let Skin = class (ItemCouponBase) {
 
   unitId = null
 
-  // Creates a real skin decorator, with unitId in name
+  
   function addResourcesByUnitId(v_unitId) {
     if (this.unitId)
       return

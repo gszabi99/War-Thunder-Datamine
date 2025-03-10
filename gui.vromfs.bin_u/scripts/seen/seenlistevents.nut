@@ -5,7 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 const ANY_CHANGED_ID = "___ANY___"
 const SUBSCRIPTIONS_TO_CHECK_CLEAR = 10
 
-let subscriptions = {} //<listId> = { <entityId> = array of callbacks }
+let subscriptions = {} 
 
 function getListSubscriptions(listId) {
   if (!(listId in subscriptions))

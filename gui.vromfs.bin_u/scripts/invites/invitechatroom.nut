@@ -11,7 +11,7 @@ let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { menuChatHandler } = require("%scripts/chat/menuChatHandler.nut")
 
 let ChatRoom = class (BaseInvite) {
-  //custom class params, not exist in base invite
+  
   roomId = ""
   roomType = g_chat_room_type.DEFAULT_ROOM
 

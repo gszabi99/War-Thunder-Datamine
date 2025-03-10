@@ -28,7 +28,7 @@ let VerticalSpeed = Watched(0.0)
 let RocketAimX = Watched(0.0)
 let RocketAimY = Watched(0.0)
 let RocketAimVisible = Watched(false)
-let RocketSightMode = Watched(0) //Sight shape need to change in function of CCIP/CCRP
+let RocketSightMode = Watched(0) 
 let RocketSightSizeFactor = Watched(0.0)
 
 let TATargetVisible = Watched(false)
@@ -165,9 +165,9 @@ let isAllMachineGunsEmpty = Computed(@() !IsMachineGunsEmpty.value.contains(fals
 
 let BombsState = Watched({
   count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1 })
-let RocketsState = Watched({                                                      // -duplicate-assigned-expr
+let RocketsState = Watched({                                                      
   count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1 })
-let TorpedoesState = Watched({                                                    // -duplicate-assigned-expr
+let TorpedoesState = Watched({                                                    
   count = 0, seconds = -1, mode = 0, selected = false, salvo = 0, name = "", actualCount = -1 })
 let AdditionalCannonsState = Watched({ count = 0, seconds = -1, mode = 0, selected = false })
 let AgmState = Watched({
@@ -175,7 +175,7 @@ let AgmState = Watched({
 let AamState = Watched({ count = 0, seconds = -1, timeToHit = -1, selected = false, name = "", actualCount = -1 })
 let GuidedBombsState = Watched({ seconds = -1, timeToHit = -1, count = 0, mode = 0, selected = false, name = "", actualCount = -1, timeToWarning = -1})
 let FlaresState = Watched({ count = 0, mode = 0, seconds = -1 })
-let ChaffsState = Watched({ count = 0, mode = 0, seconds = -1 }) // -duplicate-assigned-expr
+let ChaffsState = Watched({ count = 0, mode = 0, seconds = -1 }) 
 
 let IsCanAdditionalEmpty = Watched(false)
 let IsTrpEmpty = Watched(false)
@@ -249,7 +249,7 @@ let GunOverheatState = Watched(0)
 
 let IsCompassVisible = Watched(false)
 
-//reactivHud Activation
+
 let isBombSightActivated = Watched(false)
 let isAAMSightActivated = Watched(false)
 let isRocketSightActivated = Watched(false)

@@ -12,8 +12,8 @@ let callbacks = {
 let cbTbl = {}
 
 callbacks.template <- {
-  id = "" //filled automatically by typeName
-  cbName = "" // filled automatically
+  id = "" 
+  cbName = "" 
   onCb = @(_obj, _params) null
   paramsKey = "actionData"
   getParamsMarkup = @(params) $"{this.paramsKey}:t='{object_to_json_string(params, false)}';"

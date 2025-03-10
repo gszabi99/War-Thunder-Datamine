@@ -81,7 +81,7 @@ function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualFunc 
     }
   }
 
-  // add preset all reqModifictions to all weapons in preset, to future determine weapon availability
+  
   if (reqModifications.len() > 0)
     foreach (wp in presetsWeapons)
       foreach (req in reqModifications)
@@ -90,15 +90,15 @@ function addSlotWeaponsFromPreset(res, slotBlk, preset, tiersCount, isEqualFunc 
 
 let getUnitWeaponSlots = @(blk)(blk?.WeaponSlots == null ? [] : blk.WeaponSlots % "WeaponSlot")
 
-// For now weapon data can be two different types
-// depends of whether or not unit config contains the weaponPilons block.
+
+
 function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
   let res = []
-  local slots = getUnitWeaponSlots(unitBlk)             // All unit weapons
+  local slots = getUnitWeaponSlots(unitBlk)             
   if (!isCommon)
-    slots = slots.filter(@(s) s?.tier != null) // Pesets weapon only
-  if (slots.len() > 0) { // CUSTOM data type
-    let unitName = unitBlk?.model // warning disable: -declared-never-used
+    slots = slots.filter(@(s) s?.tier != null) 
+  if (slots.len() > 0) { 
+    let unitName = unitBlk?.model 
     foreach (wp in (weaponsBlk % "Weapon")) {
       let slotIdx = wp.slot
       let slot = slots.findvalue(@(s) s.index == slotIdx)
@@ -116,8 +116,8 @@ function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
       addSlotWeaponsFromPreset(res, slot, curPreset, unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT)
     }
   }
-  // !!!FIX ME: Processing old format of weapons data should be removed over time when all units presets get ability to be customized.
-  else // PLAIN data type
+  
+  else 
     foreach (weapon in (weaponsBlk % "Weapon"))
       u.appendOnce((u.copy(weapon)), res)
 
@@ -147,7 +147,7 @@ function getSlotWeapons(slotBlk, tiersCount = MIN_TIERS_COUNT) {
   return res
 }
 
-function getUnitWeapons(unitBlk) { // Pesets weapon only
+function getUnitWeapons(unitBlk) { 
   let res = []
   let slots = getUnitWeaponSlots(unitBlk).filter(@(s) s?.tier != null)
   if (slots.len() > 0)

@@ -3,7 +3,7 @@ enum USERLOG_POPUP {
   FINISHED_RESEARCHES   = 0x0002
   OPEN_TROPHY           = 0x0004
 
-  //masks
+  
   ALL                   = 0xFFFF
   NONE                  = 0x0000
 }

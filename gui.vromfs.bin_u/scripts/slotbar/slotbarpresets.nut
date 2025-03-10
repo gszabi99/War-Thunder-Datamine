@@ -40,7 +40,7 @@ let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyStat
 let { isUnitAllowedForRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { queues } = require("%scripts/queue/queueManager.nut")
 
-// Independed Modules
+
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
 
 local isAlreadySendMissingPresetError = false
@@ -58,17 +58,17 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   activeTypeBonusByCountry = null
 
   baseCountryPresetsAmount = 8
-  eraBonusPresetsAmount = 2  // amount of five era bonus, given for each unit type
+  eraBonusPresetsAmount = 2  
   eraIdForBonus = 5
   minCountryPresets = 1
 
   isLoading = false
   validatePresetNameRegexp = regexp2(@"^#|[;|\\<>]")
 
-  /** Array of presets by country id. */
+  
   presets = slotbarPresets
 
-  /** Selected preset index by country id. */
+  
   selected = slotbarPresetsSeletected
 
   function init() {
@@ -78,19 +78,19 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       if (isCountryAvailable(country))
         this.initCountry(country)
     logP("init")
-    this.saveAllCountries() // maintenance
+    this.saveAllCountries() 
   }
 
   function newbieInit(newbiePresetsData) {
     slotbarPresets.clear()
     foreach (presetDataItem in newbiePresetsData.presetDataItems) {
-      // This adds empty array to presets table if not already.
+      
       let countryId = presetDataItem.country
       slotbarPresets[countryId] <- this.presets?[countryId] ?? []
       if (!presetDataItem.hasUnits && !this.canHaveEmptyPresets(countryId))
         continue
       let gameMode = getGameModeByUnitType(presetDataItem.unitType, -1, true)
-      // Creating preset from preset data item.
+      
       let preset = this._createPresetTemplate(0)
       preset.title = $"{loc("mainmenu/preset_default")} {unitTypes.getByEsUnitType(presetDataItem.unitType).fontIcon}"
       preset.gameModeId = getTblValue("id", gameMode, "")
@@ -116,7 +116,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     }
 
     slotbarPresetsSeletected.clear()
-    // Attempting to select preset with selected unit type for each country.
+    
     foreach (country in shopCountriesList) {
       if (!isCountryAvailable(country))
         continue
@@ -180,11 +180,11 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     return (country in slotbarPresetsSeletected) ? slotbarPresetsSeletected[country] : defValue
   }
 
-  /**
-   * Returns selected preset for specified country.
-   * @param  {string} country If not specified then current
-   *                          profile-selected country is used.
-   */
+  
+
+
+
+
   function getCurrentPreset(country = null) {
     country = country ?? profileCountrySq.value
     let index = this.getCurrent(country, -1)
@@ -467,7 +467,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     if (!this.canLoad())
       return false
     countryId = countryId ?? profileCountrySq.value
-    this.save(countryId) //save current preset slotbar changes
+    this.save(countryId) 
 
     let preset = getTblValue(idx, slotbarPresets[countryId])
     if (!this.canLoadPreset(preset))
@@ -509,8 +509,8 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       }
     }
 
-    // Sometimes preset can consist of only invalid units (like expired rented units), so here
-    // we automatically overwrite this permanently unloadable preset with valid one.
+    
+    
     if (!unitsList.len() && !this.canHaveEmptyPresets(countryId)) {
       let p = this.createEmptyPreset(countryId)
       foreach (i, unitId in p.units) {
@@ -537,7 +537,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       return
     }
 
-    this.isLoading = true // Blocking slotbar content and game mode id from overwritting during 'batchTrainCrew' call.
+    this.isLoading = true 
 
     suspendSlotbarUpdates()
     this.invalidateUnitsModificators(countryIdx)
@@ -560,8 +560,8 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     this.invalidateUnitsModificators(countryIdx)
     flushSlotbarUpdate()
 
-    // Game mode select is performed only
-    // after successful slotbar vehicles change.
+    
+    
     if (!skipGameModeSelect) {
       this.setCurrentGameModeByPreset(countryId, preset)
     }
@@ -579,18 +579,18 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       preset = this.getCurrentPreset(profileCountrySq.value)
 
     local gameModeId = preset?.gameModeId ?? ""
-    if (gameModeId == "") //try use current game mode if game mode for preset not defined
+    if (gameModeId == "") 
       gameModeId = getCurrentGameModeId()
     local gameMode = getGameModeById(gameModeId)
-    // This means that some game mode id is
-    // linked to preset but can not be found.
+    
+    
     if (gameMode == null) {
       gameModeId = findCurrentGameModeId(true)
       gameMode = getGameModeById(gameModeId)
     }
 
-    // If game mode is not valid for preset
-    // we will try to find better one.
+    
+    
     if (gameMode != null && !isPresetValidForGameMode(preset, gameMode)) {
       let betterGameModeId = findCurrentGameModeId(true, gameMode.diffCode)
       if (betterGameModeId != null)
@@ -649,7 +649,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
           }
           if (isBrokenCrewSort) {
             preset.crewInSlots.replace(countryCrews)
-            let presetTitle = preset.title // -declared-never-used
+            let presetTitle = preset.title 
             debug_dump_stack()
             logerr("List of crews does not match crews in the preset")
           } else if (lastExistingCrewIdx != (preset.crewInSlots.len() -1))
@@ -662,7 +662,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
         if ((!unitNames.len() && !canHaveEmptyPresets) || unitNames.len() != crewIds.len())
           continue
 
-        //validate crews and units
+        
         for (local i = 0; i < unitNames.len(); i++) {
           let unitName = unitNames[i]
           local crewId = crewIds[i]
@@ -691,8 +691,8 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       if (!isAlreadySendMissingPresetError && !isNeedFirstCountryChoice()
           && hasDefaultUnitsInCountry(countryId)) {
         isAlreadySendMissingPresetError = true
-        let blkString = toString(blk, 2)                      // warning disable: -declared-never-used
-        let isProfileReceivedValue = isProfileReceived.get() // warning disable: -declared-never-used
+        let blkString = toString(blk, 2)                      
+        let isProfileReceivedValue = isProfileReceived.get() 
         debug_dump_stack()
         logerr("[SLOTBAR PRESETS]: presets is missing")
       }
@@ -732,8 +732,8 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   }
 
   function updatePresetFromSlotbar(preset, countryId) {
-    if (this.isLoading)    //not need update preset from slotbar if loading process
-      return preset   //but can not return null, because this value used in create new preset
+    if (this.isLoading)    
+      return preset   
 
     initSelectedCrews()
     let units = []
@@ -759,7 +759,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       }
 
     if ((units.len() == 0 || crews.len() == 0) && !this.canHaveEmptyPresets(countryId))
-      return preset //not found crews and units for country so not need update preset from slotbar
+      return preset 
 
     preset.units = units
     preset.crews = crews

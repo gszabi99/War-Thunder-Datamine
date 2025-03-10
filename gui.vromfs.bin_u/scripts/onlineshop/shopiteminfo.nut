@@ -31,7 +31,7 @@ function requestMultipleItems(guids, onSuccess, onFailure = null) {
           let body = response.body.as_string()
           log($"shopItemInfo: requested successfully")
 
-          if (body.len() > 6 && body.slice(0, 6) == "<html>") { //error 404 and other html pages
+          if (body.len() > 6 && body.slice(0, 6) == "<html>") { 
             log(ONLINE_STORE_API_URL,
               $"ShopState: Request result is html page instead of data {ONLINE_STORE_API_URL}")
             onFailure?()

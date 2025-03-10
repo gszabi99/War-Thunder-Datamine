@@ -14,23 +14,23 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getContentFixedAmount, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
 let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
 
-/*
-ItemsRoulette API:
-  resetData() - rewrite params for future usage;
-  reinitParams() - gather outside params once, eg. gui.blk;
-  logDebugData() - print debug data into log;
 
-  initItemsRoulette - main launch function;
-  fillDropChances() - calculate drop chances for items;
-  generateItemsArray() - create array of tables of items which can be dropped in single copy,
-                                                 receives a trophyName as a main parameter;
 
-  gatherItemsArray() - create main strip of items by random chances
-  getItemsStack() - receive items array peer slot in roulette
-  getRandomItem() - receive item, by random drop chance;
-  insertCurrentReward() - insert into randomly generated strip
-                                                 rewards which player really received;
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const MIN_ITEMS_OFFSET = 0.1
 const MAX_ITEMS_OFFSET = 0.4
@@ -201,15 +201,15 @@ function getChanceMultiplier(isTrophy, dropChance) {
   return chanceMult
 }
 
-/*  Rules for drop chances
-1) Trophies have increased drop chance percent
-   on param items_roulette_multiplier_slots readed from gui.blk;
-2) Trophy slots fills proportionally to count of items in trophies
-3) Trophy drop chance calculates as
-    (Trophy Slots Num * Current trophy Items Length / All trophies items length)
-4) Check max value, cos minimal value of items from trophy
-   is set as Current trophy Items Length * items_roulette_min_trophy_drop_mult (set in gui.blk)
-*/
+
+
+
+
+
+
+
+
+
 
 function fillDropChances(trophyBlock) {
   local trophyBlockTrophiesItemsCount = 0
@@ -217,15 +217,15 @@ function fillDropChances(trophyBlock) {
   let isSingleReward = "reward" in trophyBlock
   let isTrophy = "trophy" in trophyBlock
 
-  local itemsArray = trophyBlock //will be array from first call, from generateItemsArray
-  if (isTrophy) // will be passed as a trophy block, but we need trophy params AND trophy items array
+  local itemsArray = trophyBlock 
+  if (isTrophy) 
     itemsArray = trophyBlock.trophy
-  else if (isSingleReward) //could be just a reward item, without trophy
+  else if (isSingleReward) 
     itemsArray = [trophyBlock]
 
   foreach (idx, block in itemsArray) {
     if ("reward" in block) {
-      // Simple item block, last iteration of looped call
+      
       let dropChance = itemsArray[idx].reward?.dropChance.tofloat() ?? 1.0
       debugData.beginChances.append({ [getUniqueTableKey(itemsArray[idx].reward)] = dropChance })
       itemsArray[idx].dropChance = dropChance
@@ -242,7 +242,7 @@ function fillDropChances(trophyBlock) {
       debugData.itemsLens[dbgTrophyId]++
     }
     else if ("trophy" in block) {
-      // Trophy block, need to go deeper first
+      
       if (isTrophy) {
         fillDropChances(trophyBlock.trophy[idx])
         trophyBlock.trophiesCount++
@@ -322,7 +322,7 @@ function gatherItemsArray(trophyData, mainLength) {
   }
 
   if (shouldSearchTopReward && !topRewardFound) {
-    local insertIdx = insertRewardIdx + 1 // Interting teaser item next to reward.
+    local insertIdx = insertRewardIdx + 1 
     if (insertIdx >= mainLength)
       insertIdx = 0
     log($"ItemsRoulette: Top reward by key {topRewardKey} not founded. Insert manually into {insertIdx}.")

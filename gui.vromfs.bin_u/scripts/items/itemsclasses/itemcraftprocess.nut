@@ -29,7 +29,7 @@ let CraftProcess = class (ItemExternal) {
   doAltAction         = @(...) false
 
   shouldShowAmount    = @(count) count >= 0
-  getDescRecipeListHeader = @(...) loc("items/craft_process/using") // there is always 1 recipe
+  getDescRecipeListHeader = @(...) loc("items/craft_process/using") 
   getMarketablePropDesc = @() ""
 
   function cancelCrafting(_cb = null, params = null) {

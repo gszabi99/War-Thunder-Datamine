@@ -15,11 +15,11 @@ let typesByTypechecks ={
   [0x00000400] = "generator",
   [0x00000800] = "userpointer",
   [0x00001000] = "thread",
-  [0x00002000] = "funcproto", //internal type
+  [0x00002000] = "funcproto", 
   [0x00004000] = "class",
   [0x00008000] = "instance",
   [0x00010000] = "weakref",
-  [0x00020000] = "outer", //internal type
+  [0x00020000] = "outer", 
 }
 function mkAssertStr(x, argname, verbose=false){
   if (verbose)
@@ -51,11 +51,11 @@ let valuesByTypechecks ={
   [0x00000400] = "generator",
   [0x00000800] = "userpointer",
   [0x00001000] = "thread",
-  [0x00002000] = "funcproto", //internal type
+  [0x00002000] = "funcproto", 
   [0x00004000] = "class{}",
   [0x00008000] = "class{}()",
   [0x00010000] = "weakref",
-  [0x00020000] = "outer", //internal type
+  [0x00020000] = "outer", 
 }
 function typeBitsToStringFirst(x) {
   if (x==null || x < 0)
@@ -146,7 +146,7 @@ function mkStubStr(val, name=null, indent=0, verbose = false, manualModInfo=null
     return "\n".join(res)
   }
   if (typ == "array") {
-    if (name=="argv")//hack for bad dagor.system api
+    if (name=="argv")
       return $"{indentStr}argv = []"
     return name == null
       ? $"{indentStr}[{", ".join(val.map(@(j) mkStubSt(j, null, 0, verbose, manualModInfo)))}]"

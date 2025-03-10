@@ -1,5 +1,5 @@
-//set of functions to make life possible with very poor network messages and events native API
-// better to implement it native code and even not at daNetGame but in some gameLib
+
+
 
 let ecs = require("%sqstd/ecs.nut")
 let {

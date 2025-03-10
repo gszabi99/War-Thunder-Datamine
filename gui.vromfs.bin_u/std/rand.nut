@@ -6,17 +6,17 @@ let _default_seed = random.get_rnd_seed() + cdate.sec + cdate.min*60 + cdate.yda
 let math = require("math")
 
 local position = 0
-function new_rnd_seed() {//setting new rnd
+function new_rnd_seed() {
   position++
   return random.uint_noise1D(position, _default_seed)
 }
 
 const DEFAULT_MAX_INT_RAND = 32767
-const maxrndfloat = 16777215.0 // float can only hold 23-bits integers without data loss
-const maxrndfloatmask = 16777215 // (1<24)-1
-const maxnoiseint = 0xffffffff // 32 bits
+const maxrndfloat = 16777215.0 
+const maxrndfloatmask = 16777215 
+const maxnoiseint = 0xffffffff 
 
-function randint_uniform(lo, hi, rand) { // returns random int in range [lo,hi], closed interval
+function randint_uniform(lo, hi, rand) { 
   let n = hi - lo + 1
   assert(n != 0)
   let maxx = maxnoiseint - (maxnoiseint % n)
@@ -41,15 +41,15 @@ let class Rand{
     this._count = 0
   }
 
-  function rfloat(start=0.0, end=1.0){ // return float in range [start,end)
+  function rfloat(start=0.0, end=1.0){ 
     this._count += 1
     let start_ = math.min(end,start)
     let end_ = math.max(end,start)
-    let runit = (random.uint_noise1D(this._seed, this._count) & maxrndfloatmask) / maxrndfloat // [0,1]
+    let runit = (random.uint_noise1D(this._seed, this._count) & maxrndfloatmask) / maxrndfloat 
     return runit * (end_-start_) + start_
   }
 
-  static function _rfloat(start=0.0, end=1.0, seed=null, count=null){ // return float in range [start,end)
+  static function _rfloat(start=0.0, end=1.0, seed=null, count=null){ 
     if (type(seed)=="table") {
       let params = seed
       start=params?.start ?? start
@@ -59,11 +59,11 @@ let class Rand{
     }
     let start_ = math.min(end,start)
     let end_ = math.max(end,start)
-    let runit = (random.uint_noise1D(seed, count ?? seed) & maxrndfloatmask) / maxrndfloat // [0,1]
+    let runit = (random.uint_noise1D(seed, count ?? seed) & maxrndfloatmask) / maxrndfloat 
     return runit * (end_-start_) + start_
   }
 
-  static function _rint(start=0, end=DEFAULT_MAX_INT_RAND, seed=null, count=null){ // return int in range [start, end], i.e. inclusive
+  static function _rint(start=0, end=DEFAULT_MAX_INT_RAND, seed=null, count=null){ 
     if (type(seed)=="table") {
       let params = seed
       start=params?.start ?? start
@@ -74,7 +74,7 @@ let class Rand{
     return randint_uniform(math.min(end,start), math.max(end,start), @() random.uint_noise1D(seed, count ?? seed))
   }
 
-  function rint(start=0, end = null) { // return int in range [start, end], i.e. inclusive
+  function rint(start=0, end = null) { 
     this._count += 1
     if (end==null && start==0)
       return random.uint_noise1D(this._seed, this._count)
@@ -89,7 +89,7 @@ let class Rand{
   static gauss_rnd = random.gauss_rnd
   static uint_noise1D = random.uint_noise1D
 
-  static function chooseRandom(arr, seed = null) { //free standing
+  static function chooseRandom(arr, seed = null) { 
     if (arr.len()==0)
       return null
     let randfunc = @() random.uint_noise1D((seed == null) ? new_rnd_seed() : seed, 0)
@@ -113,7 +113,7 @@ let class Rand{
 
 }
 
-//test is random is reandom enough by Pirson criteria
+
 let pp = @(...) print("".concat(" ".join(vargv), "\n"))
 let ppa = @(v) pp.acall([null].extend(v))
 let module = @(v) v<0 ? -v : v
@@ -123,7 +123,7 @@ function testRandomEnoughByPirsonCriteria(){
     let rand = Rand()
     let res = {}
     for (local i=0;i<runs;i++){
-      local v = rand[func](0,(buckets-0.000001))//epsilon
+      local v = rand[func](0,(buckets-0.000001))
       v = ((v*buckets).tointeger()/buckets).tointeger()
       if (res?[v] != null)
         res[v]=res[v]+1
@@ -133,7 +133,7 @@ function testRandomEnoughByPirsonCriteria(){
     return(res)
   }
   let hitable = [
-    //index - degree of freedom, first - 0.05 of sufficiency, second - 0.01
+    
     [3.841, 6.635],[5.991,9.21],[7.815,11.345],[9.488,13.277],[11.07,15.086],[12.592,16.812],[14.067,18.475],[15.507,20.09],[16.919,21.666],[18.307,23.209],[19.675,24.725],[21.026,26.217],[22.362,27.688],
     [23.685,29.141],[24.996,30.578],[26.296,32],[27.587,33.409],[28.869,34.805],[30.144,36.191],[31.41,37.566],
   ]

@@ -63,11 +63,11 @@
       }
     },
     "c_dural3": {
-      "aileron_l_dm": {
+      "flaperon_l_dm": {
         "genericDamageMult": 0.3,
         "hp": 29.0
       },
-      "aileron_r_dm": {
+      "flaperon_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 29.0
       },
@@ -2780,6 +2780,7 @@
               "N001",
               "N010",
               "V004",
+              "N011M",
               "Type 1473",
               "ELTA EL/M-2001B",
               "ELTA EL/M-2052",
@@ -2830,6 +2831,11 @@
             "name": "Su-34",
             "detectLaunch": true,
             "type": "V004"
+          },
+          {
+            "name": "Su-30",
+            "detectLaunch": true,
+            "type": "N011M"
           },
           {
             "name": "F-4",
@@ -3029,6 +3035,10 @@
             "group": "Su-34"
           },
           {
+            "text": "S30",
+            "group": "Su-30"
+          },
+          {
             "text": "F4",
             "group": "F-4"
           },
@@ -3226,6 +3236,10 @@
               "fontSize": 20
             },
             {
+              "type": "custom",
+              "pageName": "fa18cRadarAzEl"
+            },
+            {
               "type": "map"
             },
             {
@@ -3244,10 +3258,6 @@
           "cameraFromTargetingPod": true,
           "page": [
             {
-              "type": "custom",
-              "pageName": "f18Wpn"
-            },
-            {
               "type": "thermal",
               "turretIdx": 0
             },
@@ -3257,13 +3267,17 @@
             },
             {
               "type": "custom",
-              "pageName": "f18Wpn"
+              "pageName": "fa18cRadarAzEl"
             },
             {
               "type": "radar",
               "customRadar": "fa18cRadarATTK",
               "scale": 0.95,
               "fontSize": 20
+            },
+            {
+              "type": "custom",
+              "pageName": "f18Wpn"
             },
             {
               "type": "map"
@@ -3279,6 +3293,10 @@
           ],
           "page": [
             {
+              "type": "custom",
+              "pageName": "f18Wpn"
+            },
+            {
               "type": "map"
             },
             {
@@ -3289,10 +3307,6 @@
             {
               "type": "custom",
               "pageName": "fa18cRadarAzEl"
-            },
-            {
-              "type": "custom",
-              "pageName": "f18Wpn"
             },
             {
               "type": "thermal",
@@ -3627,7 +3641,7 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/us_an_alr_56c.blk"
+        "blk": "gameData/sensors/us_an_alr_67.blk"
       }
     ]
   },

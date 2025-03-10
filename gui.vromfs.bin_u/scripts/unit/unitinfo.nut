@@ -103,7 +103,7 @@ function getPrevUnit(unit) {
 
 return {
   bit_unit_status,
-  getUnitTypeTextByUnit, getUnitName,//next
+  getUnitTypeTextByUnit, getUnitName,
   getUnitCountry, getUnitCountryIcon, getUnitsNeedBuyToOpenNextInEra,
   getRomanNumeralRankByUnitName
   getUnitReqExp

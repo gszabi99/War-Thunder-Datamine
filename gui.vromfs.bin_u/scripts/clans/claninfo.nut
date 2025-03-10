@@ -8,8 +8,8 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { is_in_clan, myClanInfo } = require("%scripts/clans/clanState.nut")
 
-const REQUEST_TIME_OUT_MSEC  = 20000    //20sec
-const VALID_INFO_TIME_OUT_MSEC = 1800000 //30min
+const REQUEST_TIME_OUT_MSEC  = 20000    
+const VALID_INFO_TIME_OUT_MSEC = 1800000 
 
 let cachedList = {}
 

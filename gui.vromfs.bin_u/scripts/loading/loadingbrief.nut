@@ -132,7 +132,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
               part.event = $"{part.event.slice(0, idx)}_{part.event.slice(idx + 1)}"
               idx = part.event.indexof("/")
             }
-          part.voiceLen <- loading_get_voice_len(part.event) //-1 if there's no sound
+          part.voiceLen <- loading_get_voice_len(part.event) 
           log($"voice {part.event} len {part.voiceLen}")
 
           local totalSlidesTime = 0.0
@@ -263,7 +263,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    if (this.finished && (!this.waitForMap)) {  //tipsUpdate
+    if (this.finished && (!this.waitForMap)) {  
       this._tipTime -= dt
       if (this.tipShow && (this._tipTime < 0)) {
         this.setSceneInfo("")
@@ -320,7 +320,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    //next Slide show
+    
     let curSlide = this.partsList[this.partIdx].slides[this.slideIdx]
 
     this.slideTime = curSlide.time
@@ -486,7 +486,7 @@ gui_handlers.LoadingBrief <- class (gui_handlers.BaseGuiHandlerWT) {
 
   slidesStarted = false
   finished = false
-  slideTime = 1.0  //time before next slide
+  slideTime = 1.0  
   partIdx = 0
   slideIdx = -1
   music = ""

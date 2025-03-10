@@ -1,4 +1,4 @@
-//from "%globalScripts/logs.nut" import *
+
 
 let DataBlock = require("DataBlock")
 let { file_exists } = require("dagor.fs")
@@ -169,7 +169,7 @@ function calc_public_boost(bostersArray) {
     else
       res = res + 1.0
   }
-  res = round_by_value(res, 1.0) // decimal percentages
+  res = round_by_value(res, 1.0) 
   return res
 }
 
@@ -359,7 +359,7 @@ function get_unit_spawn_score_weapon_mul(unitname, weapon, bulletArray, presetTb
 }
 
 
-// return non-empty string for errors
+
 local validate_custom_mission_last_error = ""
 
 function validate_custom_mission(misblk) {
@@ -378,8 +378,8 @@ function validate_custom_mission(misblk) {
   if (!file_exists(levelBlk))
     err($"{levelBlk} not found");
 
-  //TODO: weather
-  //TODO: timeofday
+  
+  
 
   let units_include = misblk?.mission_settings?.units_include
   if (units_include != null)
@@ -439,7 +439,7 @@ function validate_custom_mission(misblk) {
           }
         }
       }
-      //TODO: weapon presets
+      
     }
   }
   log(validate_custom_mission_last_error)

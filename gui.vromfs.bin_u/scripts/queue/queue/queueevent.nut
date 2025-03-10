@@ -79,7 +79,7 @@ let Event = class (BaseQueue) {
 
   function removeQueueByParams(leaveData) {
     let queueUid = getTblValue("queueId", leaveData)
-    if (queueUid == null || (queueUid in this.queueUidsList && this.queueUidsList.len() == 1)) { //leave all queues
+    if (queueUid == null || (queueUid in this.queueUidsList && this.queueUidsList.len() == 1)) { 
       this.clearAllQueues()
       return true
     }
@@ -188,7 +188,7 @@ let Event = class (BaseQueue) {
       && (members == null || members.findvalue(@(m) (m?.queueProfileJwt ?? "") == "") == null)
     qp.players <- {
       [userIdStr.value] = {
-        country = ::queues.getQueueCountry(this)  //FIX ME: move it out of manager
+        country = ::queues.getQueueCountry(this)  
         slots = ::queues.getQueueSlots(this)
         dislikedMissions = prefParams.dislikedMissions
         bannedMissions = prefParams.bannedMissions

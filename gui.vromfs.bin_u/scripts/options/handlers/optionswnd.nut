@@ -516,7 +516,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     container.show(true)
   }
 
-  onSystemOptionControlHover = @(obj) this.guiScene.performDelayed({}, // Ensures it's called after onOptionContainerHover
+  onSystemOptionControlHover = @(obj) this.guiScene.performDelayed({}, 
     @() onSystemOptionControlHover(obj))
 
   function fillOptionsList(group) {
@@ -675,8 +675,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     resetTutorialSkip()
     broadcastEvent("ResetSkipedNotifications")
 
-    //To notify player about success, it is only for player,
-    // to be sure, that operation is done.
+    
+    
     addPopup("", loc("mainmenu/btnRevealNotifications/onSuccess"))
   }
 

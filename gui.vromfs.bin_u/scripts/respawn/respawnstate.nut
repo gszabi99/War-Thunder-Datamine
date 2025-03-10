@@ -32,7 +32,7 @@ function canRespawnWithUniversalSpares(crew, unit) {
   if (!missionRules.isAllowSpareInMission())
     return false
 
-  if (isSpareAircraftInSlot(idInCountry)) //spare already used
+  if (isSpareAircraftInSlot(idInCountry)) 
     return false
 
   return getUniversalSparesForUnit(unit).len() > 0

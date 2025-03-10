@@ -7,7 +7,7 @@ let { get_settings_blk } = require("blkGetters")
 let { platformAlias } = require("%sqstd/platform.nut")
 let { console_save_user_config } = require("consoleUserConfig")
 
-// Because tables' order is not predictable
+
 let vDefaultSyncModeNames = [ "thirty", "sixty", "unlimited" ]
 let vHfrSyncModeNames = [ "fourty", "sixty", "hundred_twenty", "unlimited" ]
 

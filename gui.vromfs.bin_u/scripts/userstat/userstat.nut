@@ -18,7 +18,7 @@ let { mnSubscribe } = require("%scripts/matching/serviceNotifications/mrpc.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 
 const STATS_REQUEST_TIMEOUT = 45000
-const STATS_UPDATE_INTERVAL = 60000 //unlocks progress update interval
+const STATS_UPDATE_INTERVAL = 60000 
 const FREQUENCY_MISSING_STATS_UPDATE_SEC = 300
 
 function updateGetUnlocksValue(watchValue, response) {
@@ -51,7 +51,7 @@ function makeUpdatable(persistName, request, defValue, forceRefreshEvents = {}) 
       return
     }
 
-    if (persistName == "GetUnlocks") { //Unlocks are not updated in full, only modified ones
+    if (persistName == "GetUnlocks") { 
       let { response = {} } = result
       if (response.len() > 0)
         data.mutate(@(v) updateGetUnlocksValue(v, response))

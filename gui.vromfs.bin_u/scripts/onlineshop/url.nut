@@ -54,7 +54,7 @@ eventbus_subscribe("onAuthenticatedUrlResult", function(msg) {
   local urlToOpen = url
   if (status == YU2_OK) {
     if (shouldEncode)
-      urlToOpen = $"{url}&ret_enc=1" //This parameter is needed for coded complex links.
+      urlToOpen = $"{url}&ret_enc=1" 
   }
   else {
     urlToOpen = notAuthUrl
@@ -113,15 +113,15 @@ eventbus_subscribe("openUrlImpl", function(urlConfig) {
   let hasFeat = urlType.isOnlineShop ? hasFeature("EmbeddedBrowserOnlineShop")
     : hasFeature("EmbeddedBrowser")
   if (!useExternalBrowser && use_embedded_browser() && !steam_is_running() && hasFeat) {
-    // Embedded browser
+    
     open_browser_modal(urlToOpen, urlTags, baseUrl)
     broadcastEvent("BrowserOpened", { url = urlToOpen, external = false })
     return
   }
 
-  //shell_launch can be long sync function so call it delayed to avoid broke current call.
+  
   defer(function() {
-    // External browser
+    
     let response = shell_launch(urlToOpen)
     if (response > 0) {
       let errorText = get_yu2_error_text(response)

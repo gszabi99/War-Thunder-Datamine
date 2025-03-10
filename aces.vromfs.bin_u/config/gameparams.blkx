@@ -11154,13 +11154,15 @@
         "radarAutoControl": true,
         "radarIndication": true,
         "radarHud": false,
-        "radarIndicateMissileFullPath": false
+        "radarIndicateMissileFullPath": false,
+        "radarTrueTargetId": true
       },
       "on": {
         "radarAutoControl": true,
         "radarIndication": true,
         "radarHud": true,
-        "radarIndicateMissileFullPath": true
+        "radarIndicateMissileFullPath": true,
+        "radarTrueTargetId": true
       }
     },
     "rwr": {
@@ -13333,8 +13335,7 @@
     "navalMineDetectDistance": 160.0,
     "sightLineDistMax": 22000.0,
     "applyViewDistKInSight": false,
-    "maxDistTraceableFromHero": 10000.0,
-    "soundForNotDetectedUnits": true
+    "maxDistTraceableFromHero": 10000.0
   },
   "antialiasing": {
     "fxaaQuality": 29,
@@ -25356,20 +25357,20 @@
     "branchDestr": {
       "enable": true,
       "multiplyMode": false,
-      "impulseMul": 2.0,
+      "impulseMul": 1.2,
       "impulseMin": 0.5,
       "impulseMax": 5.0,
-      "branchSizeMin": 6.0,
+      "branchSizeMin": 5.0,
       "branchSizeMax": 10.0,
       "rotateSpeedMulX": 1.3,
       "rotateSpeedMulY": 1.3,
       "rotateSpeedMulZ": 1.3,
       "rotateAngleSpread": 1.5,
-      "horizontalSpeedMul": 1.3,
+      "horizontalSpeedMul": 1.5,
       "branchSizeSlowDown": 0.3,
-      "fallingSpeedMul": 0.25,
+      "fallingSpeedMul": 0.35,
       "fallingSpeedRnd": 0.15,
-      "maxVisibleDistance": 300.0
+      "maxVisibleDistance": 400.0
     },
     "branchDestrOther": {
       "impulseMul": 0.5

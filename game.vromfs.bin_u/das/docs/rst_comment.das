@@ -72,7 +72,7 @@ def get_module_name(prog, mod)
 [comment_reader]
 class RstComment : AstCommentReader
     chars : array<uint8>
-    state : ParserState = ParserState none
+    state : ParserState = ParserState.none
     comment : string
     structure_comment : string
     function_comment : string
@@ -103,155 +103,155 @@ class RstComment : AstCommentReader
         chars |> push(uint8('\n'))
         comment = string(chars)
         delete chars
-        if state==ParserState structure
+        if state==ParserState.structure
             structure_comment += comment
-        elif state==ParserState func || state==ParserState method
+        elif state==ParserState.func || state==ParserState.method
             function_comment += comment
-        elif state==ParserState field
+        elif state==ParserState.field
             field_comment += comment
-        elif state==ParserState global
+        elif state==ParserState.global
             global_comment += comment
-        elif state==ParserState variant_alias
+        elif state==ParserState.variant_alias
             variant_comment += comment
-        elif state==ParserState variant_entry
+        elif state==ParserState.variant_entry
             variant_entry_comment += comment
-        elif state==ParserState bitfield_alias
+        elif state==ParserState.bitfield_alias
             bitfield_comment += comment
-        elif state==ParserState bitfield_entry
+        elif state==ParserState.bitfield_entry
             bitfield_entry_comment += comment
-        elif state==ParserState enum_decl
+        elif state==ParserState.enum_decl
             enum_comment += comment
-        elif state==ParserState enum_entry
+        elif state==ParserState.enum_entry
             enum_entry_comment += comment
-        elif state==ParserState type_alias
+        elif state==ParserState.type_alias
             alias_comment += comment
         else
             debug_rst("uncategorized comment // {comment}")
         comment = ""
     def override beforeAlias ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("beforeAlias")
-        if state != ParserState none
+        if state != ParserState.none
             panic_rst("expecting none, got {state}")
-        state = ParserState type_alias
+        state = ParserState.type_alias
     def override afterAlias ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterAlias {name} // {alias_comment}")
-        if state != ParserState type_alias
+        if state != ParserState.type_alias
             panic_rst("expecting type_alias, got {state}")
         if alias_comment != ""
             write_to_detail("typedef-{get_module_name(prog, mod)}-{name}", alias_comment)
-        state = ParserState none
+        state = ParserState.none
         alias_comment = ""
     def override beforeEnumeration ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("beforeEnumeration")
-        if state != ParserState none
+        if state != ParserState.none
             panic_rst("expecting none, got {state}")
-        state = ParserState enum_decl
+        state = ParserState.enum_decl
     def override beforeEnumerationEntries ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("beforeEnumerationEntries")
-        if state != ParserState enum_decl
+        if state != ParserState.enum_decl
             panic_rst("expecting enum_decl, got {state}")
-        state = ParserState enum_entry
+        state = ParserState.enum_entry
         // enum_entry_comment = ""
     def override afterEnumerationEntry ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterEnumerationEntry {name} // {enum_entry_comment}")
         // enum_entry_comment =""
     def override afterEnumerationEntries ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterEnumerationEntries")
-        if state != ParserState enum_entry
+        if state != ParserState.enum_entry
             panic_rst("expecting enum_entry, got {state}")
-        state = ParserState enum_decl
+        state = ParserState.enum_decl
     def override afterEnumeration ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterEnumeration {name} // {enum_comment}")
-        if state != ParserState enum_decl
+        if state != ParserState.enum_decl
             panic_rst("expecting enum_decl, got {state}. name {name}")
         if enum_comment != "" || enum_entry_comment != ""
             write_to_detail("enumeration-{get_module_name(prog, mod)}-{name}", enum_comment + enum_entry_comment)
-        state = ParserState none
+        state = ParserState.none
         enum_comment = ""
         enum_entry_comment =""
     def override beforeBitfield ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("beforeBitfield")
-        if state != ParserState none
+        if state != ParserState.none
             panic_rst("expecting none, got {state}")
-        state = ParserState bitfield_alias
+        state = ParserState.bitfield_alias
     def override beforeBitfieldEntries ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("beforeBitfieldEntries")
-        if state != ParserState bitfield_alias
+        if state != ParserState.bitfield_alias
             panic_rst("expecting bitfield_alias, got {state}")
-        state = ParserState bitfield_entry
+        state = ParserState.bitfield_entry
         // bitfield_entry_comment = ""
     def override afterBitfieldEntry ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterBitfieldEntry {name} // {bitfield_entry_comment}")
-        if state != ParserState bitfield_entry
+        if state != ParserState.bitfield_entry
             panic_rst("expecting bitfield_entry, got {state}")
         // bitfield_entry_comment = ""
     def override afterBitfieldEntries ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterBitfieldEntries")
-        state = ParserState bitfield_alias
+        state = ParserState.bitfield_alias
     def override afterBitfield ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterBitfield {name} // {bitfield_comment}")
-        if state != ParserState bitfield_alias
+        if state != ParserState.bitfield_alias
             panic_rst("expecting bitfield_alias, got {state}")
         if bitfield_comment != "" || bitfield_entry_comment != ""
             write_to_detail("typedef-{get_module_name(prog, mod)}-{name}", bitfield_comment + bitfield_entry_comment)
-        state = ParserState none
+        state = ParserState.none
         bitfield_comment = ""
         bitfield_entry_comment = ""
     def override beforeVariant ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("beforeVariant")
-        if state != ParserState none
+        if state != ParserState.none
             panic_rst("expecting none, got {state}")
-        state = ParserState variant_alias
+        state = ParserState.variant_alias
     def override beforeVariantEntries ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("beforeVariantEntries")
-        if state != ParserState variant_alias
+        if state != ParserState.variant_alias
             panic_rst("expecting variant_alias, got {state}")
-        state = ParserState variant_entry
+        state = ParserState.variant_entry
         // variant_entry_comment = ""
     def override afterVariantEntry ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterVariantEntry {name} // {variant_entry_comment}")
-        if state != ParserState variant_entry
+        if state != ParserState.variant_entry
             panic_rst("expecting variant_entry, got {state}")
         // variant_entry_comment = ""
     def override afterVariantEntries ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterVariantEntries")
-        if state != ParserState variant_entry
+        if state != ParserState.variant_entry
             panic_rst("expecting none, got {state}")
-        state = ParserState variant_alias
+        state = ParserState.variant_alias
     def override afterVariant ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterVariant {name} // {variant_comment}")
-        if state != ParserState variant_alias
+        if state != ParserState.variant_alias
             panic_rst("expecting variant_alias, got {state}")
         if variant_comment != "" || variant_entry_comment != ""
             write_to_detail("typedef-{get_module_name(prog, mod)}-{name}", variant_comment + variant_entry_comment)
-        state = ParserState none
+        state = ParserState.none
         variant_comment = ""
         variant_entry_comment = ""
     def override beforeGlobalVariables ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("beforeGlobalVariables")
-        if state != ParserState none
+        if state != ParserState.none
             panic_rst("expecting none, got {state}")
-        state = ParserState global
+        state = ParserState.global
     def override afterGlobalVariable ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterGlobalVariable {name} // {global_comment}")
         if global_comment != ""
             write_to_detail("variable-{get_module_name(prog, mod)}-{name}", global_comment)
     def override afterGlobalVariables ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterGlobalVariables")
-        if state != ParserState global
+        if state != ParserState.global
             panic_rst("expecting globl, got {state}")
-        state = ParserState none
+        state = ParserState.none
         global_comment = ""
     def override beforeStructure ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("beforeStucture")
-        if state != ParserState none
+        if state != ParserState.none
             panic_rst("expecting none, got {state}")
-        state = ParserState structure
+        state = ParserState.structure
     def override afterStructure ( st:StructurePtr; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterStucture {st._module.name}::{st.name} // {structure_comment}")
-        if state!=ParserState structure && state!=ParserState field
+        if state!=ParserState.structure && state!=ParserState.field
             panic_rst("expecting structure or field, got {state}")
-        state = ParserState none
+        state = ParserState.none
         var is_annotation = false
         if structure_comment != ""
             for ann in st.annotations
@@ -302,40 +302,40 @@ class RstComment : AstCommentReader
         delete field_comments
     def override beforeFunction ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("beforeFunction")
-        if state!=ParserState none && state!=ParserState structure && state!=ParserState field
+        if state!=ParserState.none && state!=ParserState.structure && state!=ParserState.field
             panic_rst("expecting none, structure, or field got {state}")
-        state = state==ParserState none ? ParserState func : ParserState method
+        state = state==ParserState.none ? ParserState.func : ParserState.method
     def override afterFunction ( fn:FunctionPtr; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterFunction {state} {get_module_name(prog, mod)}::{fn.name} // {function_comment}")
-        if state!=ParserState func && state!=ParserState method
+        if state!=ParserState.func && state!=ParserState.method
             panic_rst("expecting func or method, got {state}")
-        if state==ParserState func
-            state = ParserState none
+        if state==ParserState.func
+            state = ParserState.none
             if function_comment != ""
                 write_to_detail("function-{get_module_name(prog, mod)}-{function_label_file(fn)}", function_comment)
         else
             if function_comment != ""
-                field_comments |> push([[auto "function",function_label_file(fn),function_comment]])
-            state = ParserState structure
+                field_comments |> push( ("function",function_label_file(fn),function_comment))
+            state = ParserState.structure
         function_comment = ""
     def override beforeStructureFields ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("beforeStuctureFields")
-        if state!=ParserState structure
+        if state!=ParserState.structure
             panic_rst("expecting structure, got {state}")
-        state = ParserState field
+        state = ParserState.field
     def override afterStructureField ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterStuctureField {name} // {field_comment}")
-        if state!=ParserState structure && state!=ParserState field
+        if state!=ParserState.structure && state!=ParserState.field
             panic_rst("expecting structure or field, got {state}")
-        state = ParserState field
+        state = ParserState.field
         if field_comment != ""
             debug_rst("\t-> push {name} // {field_comment}")
-            field_comments |> push([[auto "field",clone_string(name),field_comment]])
+            field_comments |> push( ("field",clone_string(name),field_comment))
     def override afterStructureFields ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterStuctureFields")
-        if state!=ParserState structure && state!=ParserState field
+        if state!=ParserState.structure && state!=ParserState.field
             panic_rst("expecting structure or field, got {state}")
-        state = ParserState structure
+        state = ParserState.structure
         field_comment = ""
     def write_to_detail ( name, text : string ) : void
         if is_in_completion()

@@ -1,19 +1,19 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teams.nut" import g_team
 
-/*
- API:
- static create(config)
-   config:
-     scene (required) - object where need to create players lists
-     teams (required) - list of teams (g_team) to show in separate columns
-     room - room to gather members data (null == current SessionLobby room)
-     columnsList - list of table columns to show
 
-     onPlayerSelectCb(player) - callback on player select
-     onPlayerDblClickCb(player) - callback on player double click
-     onPlayerRClickCb(player) = callback on player RClick
-*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -84,9 +84,9 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updatePlayersTbl()
   }
 
-  /*************************************************************************************************/
-  /*************************************PUBLIC FUNCTIONS *******************************************/
-  /*************************************************************************************************/
+  
+  
+  
 
   function getSelectedPlayer() {
     let objTbl = this.getFocusedTeamTableObj()
@@ -107,9 +107,9 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
 
-  /*************************************************************************************************/
-  /************************************PRIVATE FUNCTIONS *******************************************/
-  /*************************************************************************************************/
+  
+  
+  
 
   function getTeamTableId(team) {
     return this.TEAM_TBL_PREFIX + team.id
@@ -136,7 +136,7 @@ gui_handlers.MRoomPlayersListWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.playersInTeamTables[team] <- teamList
 
-    //update cur value
+    
     if (teamList.len() > 0) {
       let curValue = objTbl.getValue() ?? -1
       let validValue = clamp(curValue, 0, teamList.len() - 1)

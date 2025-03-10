@@ -1,23 +1,23 @@
-/*
-     underscore.js inspired functional paradigm extensions for squirrel
-     library is self contained - no extra dependecies, no any game or app specific dependencies
-     ALL functions in this library do not mutate data
-*/
 
-/*******************************************************************************
- ******************** functions checks*******************
- ******************************************************************************/
 
-/**
-  make common iteratee function
-*/
+
+
+
+
+
+
+
+
+
+
+
 
 let isTable = @(v) type(v)=="table"
 let isArray = @(v) type(v)=="array"
 let isString = @(v) type(v)=="string"
 let isFunction = @(v) type(v)=="function"
 function isDataBlock(obj) {
-  //prefer this as it can handle any DataBlock binding and implementation
+  
   if (obj?.paramCount!=null && obj?.blockCount != null)
     return true
   return false
@@ -42,9 +42,9 @@ function mkIteratee(func){
     return function(value, _index, _list) {return func.pcall(null, value)}
 }
 
-/**
-  Check for proper iteratee and so on - under construction
-*/
+
+
+
 function funcCheckArgsNum(func, numRequired){
   let infos = func.getfuncinfos()
   local plen = infos.parameters.len() - 1
@@ -63,15 +63,15 @@ function funcCheckArgsNum(func, numRequired){
 }
 
 
-/*******************************************************************************
- ******************** Collections handling (array of tables) *******************
- ******************************************************************************/
 
-/*
-Split list into two arrays:
-one whose elements all satisfy predicate and one whose elements all do not satisfy predicate.
-predicate is transformed through iteratee to facilitate shorthand syntaxes.
-*/
+
+
+
+
+
+
+
+
 function partition(list, predicate){
   let ok = []
   let not_ok = []
@@ -85,38 +85,38 @@ function partition(list, predicate){
   return [ok, not_ok]
 }
 
-/*******************************************************************************
- ****************************** Table handling *********************************
- ******************************************************************************/
 
 
-/**
- * A convenient version of what is perhaps the most common use-case for map: extracting a list of property values.
- local stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}]
-  _.pluck(stooges, "name")
-  => ["moe", "larry", "curly"]
-  if entry doesnt have property it skipped in return value
- */
+
+
+
+
+
+
+
+
+
+
 function pluck(list, propertyName){
   return list.map(function(v){
     if (propertyName not in v)
       throw null
     return v[propertyName]
   })
-/*  local res = []
-  foreach (v in list) {
-    if (propertyName in v)
-      res.append(v.propertyName)
-  }
-  return res
-*/
+
+
+
+
+
+
+
 }
 
-/**
- * Returns a copy of the table where the keys have become the values and the
- * values the keys. For this to work, all of your table's values should be
- * unique and string serializable.
- */
+
+
+
+
+
 function invert(table) {
   let res = {}
   foreach (key, val in table)
@@ -124,11 +124,11 @@ function invert(table) {
   return res
 }
 
-/**
- * Create new table which have all keys from both tables (or just first table,
-   if addParams=true), and for each key maps value func(tbl1Value, tbl2Value)
- * If value not exist in one of table it will be pushed to func as defValue
- */
+
+
+
+
+
 function tablesCombine(tbl1, tbl2, func=null, defValue = null, addParams = true) {
   let res = {}
   if (func == null)
@@ -174,11 +174,11 @@ function isEqual(val1, val2, customIsEqual={}){
 
   return false
 }
-/*
-* make list of the same order but with unique values
-* equals to python list(set(<list>)), and with optional hash function
-* (for example to extract key form list of tables to make unique by that)
-*/
+
+
+
+
+
 function unique(list, hashfunc=null){
   let values = {}
   let res = []
@@ -192,20 +192,20 @@ function unique(list, hashfunc=null){
   }
   return res
 }
-/*
-foreach (k, v in range(-1, -5, -1))
-  print($"{v}  ")
-print("\n")
-// -1  -2  -3  -4
-*/
+
+
+
+
+
+
 function range(m, n=null, step=1) {
   let start = n==null ? 0 : m
   let end = n==null ? m : n
-  for (local i=start; (end>start) ? i<end : i>end; i+=step) // -potentially-nulled-ops
+  for (local i=start; (end>start) ? i<end : i>end; i+=step) 
     yield i
 }
 
-//not recursive isEqual, for simple lists or tables
+
 function isEqualSimple(list1, list2, compareFunc=null) {
   compareFunc = compareFunc ?? @(a,b) a!=b
   if (list1 == list2)
@@ -219,7 +219,7 @@ function isEqualSimple(list1, list2, compareFunc=null) {
   return true
 }
 
-//create from one-dimentional array two-dimentional array by slice it to rows with fixed amount of columns
+
 function arrayByRows(arr, columns) {
   let res = []
   for(local i = 0; i < arr.len(); i += columns)
@@ -227,9 +227,9 @@ function arrayByRows(arr, columns) {
   return res
 }
 
-/*
-**Chunk a single array into multiple arrays, each containing count or fewer items.
-*/
+
+
+
 
 function chunk(list, count) {
   if (count == null || count < 1) return []
@@ -244,11 +244,11 @@ function chunk(list, count) {
   return result
 }
 
-/**
- * Given a array, and an iteratee function that returns a key for each
- * element in the array (or a property name), returns an object with an index
- * of each item.
- */
+
+
+
+
+
 function indexBy(list, iteratee) {
   let res = {}
   if (isString(iteratee)){
@@ -270,14 +270,14 @@ function deep_clone(val) {
 }
 
 
-//Updates (mutates) target arrays and tables recursively with source
-/*
- * - if types of target and source doesn't match, target will be overwritten by source
- * - primitive types and arrays at target will be fully overwritten by source
- * - values of target table with same keys from source table will be overritten
- * - new key value pairs from source table will be added to target table
- * - it's impossible to delete key from target table, only overwrite with null value
- */
+
+
+
+
+
+
+
+
 function deep_update(target, source) {
   if ((recursivetypes.indexof(type(source)) == null)) {
     target = source
@@ -301,12 +301,12 @@ function deep_update(target, source) {
   return target
 }
 
-//Creates new value from target and source, by merges (mutates) target arrays and tables recursively with source
+
 function deep_merge(target, source) {
   let ret = deep_clone(target)
   return deep_update(ret, source)
 }
-//
+
 function flatten(list, depth = -1, level=0){
   if (!isArray(list))
     return list
@@ -322,37 +322,37 @@ function flatten(list, depth = -1, level=0){
 }
 
 
-/**
- do_in_scope(object, function(on_enter_object_value))
- * like python 'with' statement
 
-examples:
-```
-  let {set_huge_alloc_threshold} = require("dagor.memtrace")
-  class ChangeAllocThres{
-    _prev_limit = null
-    _limit = null
-    constructor(new_limit){
-      this._limit = new_limit
-    }
-    __enter__ = @() this._prev_limit = set_huge_alloc_threshold(this._limit)
-    __exit__ = @(...) set_huge_alloc_threshold(this._prev_limit)
-  }
 
-  let a = do_in_scope(ChangeAllocThres(8<<10), @(...) array(10000000, {foo=10}))
 
-or
 
-  import "io" as io
-  let do_in_file = function(filePath, flags, action){
-    do_in_scope({
-      __enter__ = @() io.file(filePath, flags)
-      __exit__ = @(file_handle) file_handle.close()
-    }, action)
-  }
 
-```
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function do_in_scope(obj, doFn){
   assert(

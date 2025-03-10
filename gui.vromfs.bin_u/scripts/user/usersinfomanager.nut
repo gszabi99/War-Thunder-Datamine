@@ -6,22 +6,22 @@ let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
 
-/**
-  client api:
-      requestInfo(users, successCb = null, errorCb = null)
-                  - users - array of userId's string
 
-  server api:
-      "cln_get_users_terse_info" - char action returns DataBlock: {
-                                                                      uid = {
-                                                                        nick="string",
-                                                                        pilotIcon="string"
-                                                                        ...
-                                                                        (look in the function _convertServerResponse)
-                                                                      }
-                                                                      uid {...}
-                                                                    }
-**/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 enum userInfoEventName {
   UPDATED = "UserInfoManagerDataUpdated"

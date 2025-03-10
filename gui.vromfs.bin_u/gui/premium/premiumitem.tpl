@@ -1,11 +1,12 @@
 <<#items>>
   premiumItem {
-    size:t='170@sf/@pf, 250@sf/@pf'
-    margin:t='3@blockInterval, 0, 0, 3@blockInterval'
+    size:t='1@premiumItemWidth, 1@premiumItemHeight'
+    margin:t='0, 0, 3@blockInterval, 3@blockInterval'
     bgcolor:t='#66080A0D'
     flow:t='vertical'
+    mouse-pointer-centering:t='50, 90'
     tdiv {
-      size:t='170@sf/@pf, 95@sf/@pf'
+      size:t='pw, 95@sf/@pf'
       img {
         size:t='pw, ph'
         background-image:t='ui/images/premium/premium_item_bg'
@@ -29,9 +30,18 @@
     }
 
     textareaNoTab {
+      margin-top:t='1@blockInterval'
       width:t='pw'
       text-align:t='center'
-      margin-top:t='5@blockInterval'
+      text:t='<<days>>'
+      smallFont:t='yes'
+      overlayTextColor:t='active'
+    }
+
+    textareaNoTab {
+      width:t='pw'
+      text-align:t='center'
+      margin-top:t='1@blockInterval'
       text:t='<<premiumCost>>'
       font-pixht:t='0.9@fontHeightBigBold'
       overlayTextColor:t='active'
@@ -43,7 +53,7 @@
       text-align:t='center'
       text:t='<<savings>>'
       smallFont:t='yes'
-      overlayTextColor:t='faded'
+      overlayTextColor:t='active'
     }
 
     Button_text {
@@ -58,6 +68,7 @@
       buttonWink{}
       buttonGlance{}
       ButtonImg {}
+      skip-navigation:t='yes'
     }
   }
 <</items>>

@@ -14,7 +14,7 @@ let { cutPrefix } = require("%sqstd/string.nut")
 
 let class TrophyMultiAward {
   blk = null
-  trophyWeak = null //req to generate tooltip id, and search trophy by award
+  trophyWeak = null 
   idxInTrophy = 0
 
   static listDiv = "\n * "
@@ -22,7 +22,7 @@ let class TrophyMultiAward {
   static headerActiveColor = "userlogColoredText"
   static goodsColor  = "userlogColoredText"
   static condColor   = "activeTextColor"
-  static typesBlocks = { //not array only to fast check key
+  static typesBlocks = { 
     unlocks = 0
     spare = 1
     modification = 2
@@ -321,11 +321,11 @@ let class TrophyMultiAward {
       resList.append(DataBlockAdapter(data))
   }
 
-  //version 1.49.7.X  15.05.2015  - new userlogs still not on production, but soon they will come.
-  //we need to support old userlogs at least month after new will come.
+  
+  
   function getSpareListFromOldUserlogFormat(spareBlk) {
     let list = []
-    let namesMap = {} //for faster search
+    let namesMap = {} 
     let count = spareBlk.paramCount()
     for (local i = 0; i < count; i++) {
       let name = spareBlk.getParamName(i)
@@ -396,7 +396,7 @@ let class TrophyMultiAward {
   }
 
   function _addResUCurrency(_resBlk, resList) {
-    let gold = this.blk?.gold //not mistake, it in the root now.
+    let gold = this.blk?.gold 
     if (!gold)
       return
     resList.append(DataBlockAdapter({ gold = gold }))
@@ -435,7 +435,7 @@ let class TrophyMultiAward {
   }
 
   _awardType = null
-  function getAwardsType() { //return "" when multitype
+  function getAwardsType() { 
     if (!this._awardType)
       this.initParams()
     return this._awardType
@@ -446,7 +446,7 @@ let class TrophyMultiAward {
     local multiType = false
     let needCount = this.haveCount()
     local awardsCount = 0
-    for (local i = 0; i < count; i++) {  //country
+    for (local i = 0; i < count; i++) {  
       let awardBlk = this.blk.getBlock(i)
       local awardType = awardBlk.getBlockName()
       if (!(awardType in this.typesBlocks))
@@ -487,12 +487,12 @@ let class TrophyMultiAward {
   }
 
   function getFullTypesList() {
-    if (this._awardType && this._awardType != "") //to not force recount awardType if it not counted yet.
+    if (this._awardType && this._awardType != "") 
       return [this._awardType]
 
     let res = []
     let count = this.blk.blockCount()
-    for (local i = 0; i < count; i++) {  //country
+    for (local i = 0; i < count; i++) {  
       let awardBlk = this.blk.getBlock(i)
       let awardType = awardBlk.getBlockName()
       if (!(awardType in this.typesBlocks))

@@ -61,18 +61,18 @@ function getModeByName(mName) {
     && (!m?.needFeature || hasFeature(m.needFeature)))
 }
 
-/*
-dataParams = {
-  gameMode = "ww_users" + "__nordwind_wwmap"
-  table    = day && day > 0 ? "day" + day : "season"
-  start    = 1  // start position lb request
-  count    = 0  // count of records
-  category = lbCategoryTypes.WW_EVENTS_PERSONAL_ELO.field // sort field parametr
-  platformFilter = "" //"ps4" for ps4 only players
-}
-headersParams = {
-  userId = -1 //optional parameter. Equal to user id for user leaderboard and clan id for clan leaderboard
-} */
+
+
+
+
+
+
+
+
+
+
+
+
 function requestWwLeaderboardData(modeName, dataParams, cb, headersParams = {}) {
   let mode = getModeByName(modeName)
   if (!mode)

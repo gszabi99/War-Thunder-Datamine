@@ -1,4 +1,4 @@
-//-file:forbidden-function
+
 
 let {DBGLEVEL} = require("dagor.system")
 let { setInterval, clearTimer } = require("dagor.workcycle")

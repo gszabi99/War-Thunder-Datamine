@@ -85,37 +85,37 @@ let cellNoValSymbol = loc("ui/mdash")
 let debriefingRowDefault = {
   id = ""
   rewardId = null
-  showEvenEmpty = false //show row even there only 0
-  showByValue = null  //bool function(value)
-  rowProps = null //for custom row visual
-  showByModes = null //function(gameMode), boolean
-  showByTypes = null //function(gameType), boolean
-  isShowOnlyInTooltips = false // row is invisible in table, but still can show in other rows tooltips, as extra row.
-  canShowRewardAsValue = false  //when no reward in other rows, reward in thoose rows will show in value row.
+  showEvenEmpty = false 
+  showByValue = null  
+  rowProps = null 
+  showByModes = null 
+  showByTypes = null 
+  isShowOnlyInTooltips = false 
+  canShowRewardAsValue = false  
   showOnlyWhenFullResult = false
-  joinRows = null // null or array of existing row ids, which must be joined into this new row.
+  joinRows = null 
   customValueName = null
   getValueFunc = null
-  icon = "icon/summation" // Icon used as Value column header in tooltip
+  icon = "icon/summation" 
   getIcon = @() loc(this.icon, "")
-  fillTooltipFunc = null // function(debriefing, obj, handler)
-  tooltipExtraRows = null //function(), array
-  tooltipComment = null  //string function()
+  fillTooltipFunc = null 
+  tooltipExtraRows = null 
+  tooltipComment = null  
   tooltipRowBonuses = @(_unitId, _unitData) null
   hideTooltip = false
   hideUnitSessionTimeInTooltip = false
   isCountedInUnits = true
-  isFreeRP = false  //special row where exp currency is not RP but FreeRP
+  isFreeRP = false  
 
-  //!!FIX ME: all data must come full from server
-  //Here temporary params for debriefing data recount while it not fixed.
-  isOverall = false  //first win mul sum will add to overall, and premium will count here as sum of all other.
+  
+  
+  isOverall = false  
   isUsedInRecount = true
-  //!!finish temp params
+  
 
-  //auto refill params by debriefing
+  
   value = 0
-  rowType = "num"  //"num", "sec", "mul", "pct", "tim", "ptm", ""
+  rowType = "num"  
   wp = 0
   gold = 0
   exp = 0
@@ -137,7 +137,7 @@ let debriefingRowDefault = {
   getNameIcon = null
 }
 
-local debriefingRows = [] //!!!FIX ME debriefingRows used for some rows tooltip
+local debriefingRows = [] 
 debriefingRows = [
   { id = "AirKills"
     showByModes = isGameModeVersus
@@ -350,7 +350,7 @@ debriefingRows = [
   }
   { id = "MissionCoop"
     rewardId = "Mission"
-    isUsedInRecount = false //duplicate mission row
+    isUsedInRecount = false 
     rowType = "exp"
     showByModes = function(gm) { return gm != GM_DOMINATION }
     text = "debriefing/Mission"
@@ -617,16 +617,16 @@ debriefingRows = [
         return {
           isEven = idx % 2 == 0
           cells = [
-            // Unit
+            
             { cell = { text = loc($"{unit}_shop") }, isFirstCol = true}
-            // Mission Reward
+            
             { cell =
               {
                 sources = getMissionRewardSources(unitBonus, debriefingResult?.exp.expSkillBonusLevel, {regularFont = true})
                 hasFormula = true
               }
             }
-            // New Nation Bonus
+            
             hasNewNationBonus ? { cell = {
                 text = newNationBonusExp
                   ? newNationBonusExp
@@ -635,32 +635,32 @@ debriefingRows = [
                 cellType = "tdRight"
               }
             } : null
-            // Researched Unit
+            
             { cell = {
                 text = invUnitName ? loc($"{unitBonus?.invUnitName}_shop") : cellNoValSymbol
               }
             }
-            // Link in Tree
+            
             hasLinkInResTreeFormula ? { cell = {
                 text = linkInTheResearchTreeFormula
                 image = childBonusExp ? { src = "#ui/gameuiskin#item_type_RP.svg" } : null }
                 cellType = "tdRight"
             } : null
-            // Ranks Diff
+            
             hasRankDiffFormuls ? { cell = {
                 text = ranksDiffFormula
                 image = rankDiffPenaltyExp ? { src = "#ui/gameuiskin#item_type_RP.svg" } : null
                 cellType = "tdRight"
               }
             } : null
-            // Units Research
+            
             { cell = {
                 text = invUnitExp || cellNoValSymbol
                 image = invUnitExp ? { src = "#ui/gameuiskin#item_type_RP.svg" } : null
                 cellType = "tdRight"
               }
             }
-            // Overflow
+            
             hasOverflow ? {
               cell = {
                 text = overflow || cellNoValSymbol
@@ -752,9 +752,9 @@ debriefingRows = [
     hideTooltip = true
   }
 ]
-//  notReduceByPrem = ["total", "Premium", "Unlocks"]
 
-//fill all rows by default params
+
+
 foreach (idx, row in debriefingRows) {
   if (type(row) != "table")
     debriefingRows[idx] = { id = row }
@@ -788,7 +788,7 @@ function updateDebriefingExpInvestmentData() {
     gatheredTotalUnitExp += expUnitTotal
 
     airData.expModuleCapped <- expModuleTotal != getTblValue("expInvestModule", airData, 0)
-        //we cant correct recount bonus multiply on not total exp when they equal
+        
   }
 
   let expTotal = getTblValue("expTotal", debriefingResult.exp, 0)
@@ -799,7 +799,7 @@ function updateDebriefingExpInvestmentData() {
 }
 
 function getStatReward(row, currency, keysArray = []) {
-  if (!keysArray.len()) { // empty means pre-calculated final value
+  if (!keysArray.len()) { 
     let finalId = "".concat(currency, row.getRewardId())
     return getTblValue(finalId, debriefingResult.exp, 0)
   }
@@ -889,9 +889,9 @@ function recountDebriefingResult() {
   }
 }
 
-/**
- * Returns proper "haveTeamkills" value from related userlogs.
- */
+
+
+
 function debriefingResultHaveTeamkills() {
   let logs = getUserLogsList({
     show = [
@@ -956,16 +956,16 @@ function getDebriefingActiveBoosters() {
   return []
 }
 
-/**
- * Returns table with active wager related data with following data format:
- * {
- *   wagerShopId = ... (null - if no wager found for recent battle)
- *   wagerInventoryId = ... (null - if wager is no longer active)
- *   wagerResult = ... (null - if result is unknown)
- * }
- */
+
+
+
+
+
+
+
+
 function getDebriefingActiveWager() {
-  // First, we see is there's any active wager at all.
+  
   local logs = getUserLogsList({
     show = [
       EULT_EARLY_SESSION_LEAVE
@@ -980,12 +980,12 @@ function getDebriefingActiveWager() {
     if (wagerIds != null)
       break
   }
-  if (wagerIds == null || (type(wagerIds) == "array" && wagerIds.len() == 0)) // Nothing found.
+  if (wagerIds == null || (type(wagerIds) == "array" && wagerIds.len() == 0)) 
     return null
 
   let data = {
     wagerInventoryId = null
-    wagerShopId = type(wagerIds) == "array" ? wagerIds[0] : wagerIds // See buildTableFromBlk.
+    wagerShopId = type(wagerIds) == "array" ? wagerIds[0] : wagerIds 
     wagerResult = null
     wagerWpEarned = 0
     wagerGoldEarned = 0
@@ -994,7 +994,7 @@ function getDebriefingActiveWager() {
     wagerText = loc("item/wager/endedWager/main")
   }
 
-  // Then we look up for it's result.
+  
   logs = getUserLogsList({
     show = [
       EULT_CHARD_AWARD
@@ -1038,9 +1038,9 @@ function getDebriefingEventId() {
   return logs.len() ? getTblValue("eventId", logs[0]) : null
 }
 
-/**
- * Joins multiple rows rewards into new single row.
- */
+
+
+
 function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
   let tables = [ exp ]
   if (exp?.aircrafts)
@@ -1072,11 +1072,11 @@ function debriefingJoinRowsIntoRow(exp, destRowId, srcRowIdsArray) {
     }
 }
 
-/**
- * Applies xpFirstWinInDayMul and wpFirstWinInDayMul to debriefing result totals,
- * free exp, units and mods research (but not to expTotal in aircrafts).
- * Adds FirstWinInDay as a separate bonus row.
- */
+
+
+
+
+
 function debriefingApplyFirstWinInDayMul(exp, debrResult) {
   let logs = getUserLogsList({ show = [EULT_SESSION_RESULT], currentRoomOnly = true })
   if (!logs.len())
@@ -1179,7 +1179,7 @@ function getPveRewardTrophyInfo(sessionTime, sessionActivity, isSuccess) {
 function getDebriefingGiftItemsInfo(skipItemId = null) {
   let res = []
 
-  // Collecting Marketplace items
+  
   local logs = getUserLogsList({
     show = [ EULT_INVENTORY_ADD_ITEM ]
     currentRoomOnly = true
@@ -1192,10 +1192,10 @@ function getDebriefingGiftItemsInfo(skipItemId = null) {
 
       res.append({
         item = data.itemDefId, count = data?.quantity ?? 1, needOpen = false, enableBackground = true })
-      findItemById(data.itemDefId) // Requests itemdefs for unknown items
+      findItemById(data.itemDefId) 
     }
 
-  // Collecting trophies and items
+  
   logs = getUserLogsList({
     show = [ EULT_SESSION_RESULT ]
     currentRoomOnly = true
@@ -1258,14 +1258,14 @@ function gatherDebriefingResult() {
   debriefingResult.numberOfWinningPlaces <- get_race_winners_count()
   debriefingResult.mplayers_list <- getMplayersList()
 
-  //Fill Exp and WP table in correct format
+  
   let exp = ::stat_get_exp() ?? {}
 
-  debriefingResult.expDump <- u.copy(exp) // Untouched copy for debug
+  debriefingResult.expDump <- u.copy(exp) 
 
-  // Put exp data compatibility changes here.
+  
 
-  // Temporary compatibility fix for 1.85.0.X
+  
   if (exp?.numAwardDamage && exp?.expAwardDamage) {
     let tables = [ exp ]
     foreach (a in exp?.aircrafts ?? {})
@@ -1312,9 +1312,9 @@ function gatherDebriefingResult() {
   if (!("aircrafts" in debriefingResult.exp))
     debriefingResult.exp.aircrafts <- []
 
-  // Deleting killstreak flyout units (has zero sessionTime), because it has some stats,
-  // (kills, etc) which are calculated TWICE (in both player's unit, and in killstreak unit).
-  // So deleting info about killstreak units is very important.
+  
+  
+  
   let aircraftsForDelete = []
   foreach (airName, airData in debriefingResult.exp.aircrafts)
     if (airData.sessionTime == 0 || !getAircraftByName(airName))
@@ -1428,9 +1428,9 @@ function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {
   }
 }
 
-/**
- * Emulates last mission rewards gain (by adding virtPremAccWp/virtPremAccExp) on byuing Premium Account from Debriefing window.
- */
+
+
+
 function debriefingAddVirtualPremAcc() {
   if (!havePremium.value)
     return

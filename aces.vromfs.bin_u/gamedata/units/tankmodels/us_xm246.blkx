@@ -291,6 +291,7 @@
       "ex_decor_l_07_dm": {},
       "ex_decor_r_07_dm": {},
       "ex_decor_r_09_dm": {},
+      "ex_decor_l_09_dm": {},
       "ex_armor_13_dm": {},
       "ex_armor_turret_l_01_dm": {},
       "ex_armor_turret_l_02_dm": {},
@@ -305,7 +306,8 @@
       "ex_decor_r_05_dm": {},
       "ex_decor_l_06_dm": {},
       "ex_decor_l_05_dm": {},
-      "ex_decor_01_dm": {}
+      "ex_decor_01_dm": {},
+      "turret_06_top_dm": {}
     },
     "chassis": {
       "armorClass": "tank_steel_wheels",
@@ -1898,7 +1900,7 @@
           "fire_control_system_dm",
           "power_system_dm"
         ],
-        "recoilOffset": 0.1,
+        "recoilOffset": 0.05,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 90.0,
@@ -1941,30 +1943,17 @@
             ],
             "turnSpeed": 80.0
           },
-          "linkedAnimPart": [
-            {
-              "verNode": "antenna_target_tagging",
-              "verLimits": [
-                0.0,
-                90.0
-              ],
-              "verOriginLimits": [
-                -0.0,
-                85.0
-              ]
-            },
-            {
-              "verNode": "bone_camera_gunner_sight_v",
-              "verLimits": [
-                -10.0,
-                85.0
-              ],
-              "verOriginLimits": [
-                -10.0,
-                85.0
-              ]
-            }
-          ]
+          "linkedAnimPart": {
+            "verNode": "bone_camera_gunner_sight_v",
+            "verLimits": [
+              -10.0,
+              85.0
+            ],
+            "verOriginLimits": [
+              -10.0,
+              85.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -3355,6 +3344,80 @@
     "new_tank_engine": {},
     "manual_extinguisher": {},
     "tank_tool_kit": {},
+    "modern_tank_laser_rangefinder": {
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "rangefinderDmPart": "fire_control_system_dm",
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/us_an_apg_66_m_247.blk",
+              "turretIndex": 0,
+              "designationFromBody": true,
+              "designationTurretIndex": 0,
+              "dmPart": [
+                "antenna_target_location_dm",
+                "electronic_equipment_dm"
+              ]
+            },
+            {
+              "blk": "gameData/sensors/us_m_247_track.blk",
+              "turretIndex": 0,
+              "dmPart": [
+                "antenna_target_tagging_dm",
+                "electronic_equipment_dm"
+              ],
+              "powerButtonIdx": -1
+            },
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+            }
+          ]
+        }
+      }
+    },
     "new_tank_horizontal_aiming": {},
     "new_tank_vertical_aiming": {},
     "tank_new_gun": {},
@@ -3398,7 +3461,7 @@
                 "fire_control_system_dm",
                 "power_system_dm"
               ],
-              "recoilOffset": 0.1,
+              "recoilOffset": 0.05,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 90.0,
@@ -3441,30 +3504,17 @@
                   ],
                   "turnSpeed": 80.0
                 },
-                "linkedAnimPart": [
-                  {
-                    "verNode": "antenna_target_tagging",
-                    "verLimits": [
-                      0.0,
-                      90.0
-                    ],
-                    "verOriginLimits": [
-                      -0.0,
-                      85.0
-                    ]
-                  },
-                  {
-                    "verNode": "bone_camera_gunner_sight_v",
-                    "verLimits": [
-                      -10.0,
-                      85.0
-                    ],
-                    "verOriginLimits": [
-                      -10.0,
-                      85.0
-                    ]
-                  }
-                ]
+                "linkedAnimPart": {
+                  "verNode": "bone_camera_gunner_sight_v",
+                  "verLimits": [
+                    -10.0,
+                    85.0
+                  ],
+                  "verOriginLimits": [
+                    -10.0,
+                    85.0
+                  ]
+                }
               },
               "limits": {
                 "yaw": [

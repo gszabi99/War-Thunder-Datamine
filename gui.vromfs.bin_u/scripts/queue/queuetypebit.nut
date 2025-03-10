@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-return { //bit values for easy multi-type search
+return { 
   EVENT = 1
   DOMINATION = 2
   NEWBIE = 4

@@ -634,7 +634,7 @@ let radarTargetClosingSpeedScale = @() function() {
       [VECTOR_LINE, 0, closingPos, 1, closingPos]
     ]
     children = [
-      // own speed arrow
+      
       @() {
         pos = [0, ph(speedPos)]
         size = [pw(3), ph(1)]

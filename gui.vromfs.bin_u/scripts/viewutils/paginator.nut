@@ -19,10 +19,10 @@ function generatePaginator(nest_obj, handler, cur_page, last_page, my_page = nul
     guiScene.replaceContentFromText(paginatorObj, paginatorMarkUpData, paginatorMarkUpData.len(), handler)
   }
 
-  //if by some mistake cur_page will be a float, - here can be a freeze on mac,
-  //because of (cur_page - 1 <= i) can become wrong result
+  
+  
   cur_page = cur_page.tointeger()
-  //number of last wisible page
+  
   local lastShowPage = show_last_page ? last_page : min(max(cur_page + 1, 2), last_page)
 
   let isSinglePage = last_page < 1
@@ -37,10 +37,10 @@ function generatePaginator(nest_obj, handler, cur_page, last_page, my_page = nul
   for (local i = 0; i <= lastShowPage; i++) {
     if (i == cur_page)
       buttonsMid = "".concat(buttonsMid, format(numPageText, (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : "")))
-    else if ((cur_page - 1 <= i && i <= cur_page + 1)       //around current page
-             || (i == my_page)                              //equal my page
-             || (i < 3)                                     //always show first 2 entrys
-             || (show_last_page && i == lastShowPage))      //show last entry if show_last_page
+    else if ((cur_page - 1 <= i && i <= cur_page + 1)       
+             || (i == my_page)                              
+             || (i < 3)                                     
+             || (show_last_page && i == lastShowPage))      
       buttonsMid = "".concat(buttonsMid, format(numButtonText, i.tostring(), (i + 1).tostring(), (i == my_page ? "mainPlayer:t='yes';" : "")))
     else {
       buttonsMid = "".concat(buttonsMid, format(numPageText, "...", ""))

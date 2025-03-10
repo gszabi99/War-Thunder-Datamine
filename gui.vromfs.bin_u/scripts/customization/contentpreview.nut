@@ -84,12 +84,12 @@ function canStartPreviewScene(shouldShowFordiddenPopup, shouldAllowFromCustomiza
   return reason == ""
 }
 
-/**
- * Starts Customization scene with given unit and optional skin.
- * @param {string} unitId - Unit to show.
- * @param {string|null} [skinId] - Skin to apply. Use null for default skin.
- * @param {boolean} [isForApprove] - Enables UI for skin approvement.
- */
+
+
+
+
+
+
 function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   if (!canStartPreviewScene(true, true))
     return
@@ -120,12 +120,12 @@ function showUnitSkin(unitId, skinId = null, isForApprove = false) {
   return true
 }
 
-/**
- * Starts Customization scene with some conpatible unit and given decorator.
- * @param {string|null} unitId - Unit to show. Use null to auto select some compatible unit.
- * @param {string} resource - Resource.
- * @param {string} resourceType - Resource type.
- */
+
+
+
+
+
+
 function showUnitDecorator(unitId, resource, resourceType) {
   if (!canStartPreviewScene(true, true))
     return
@@ -162,14 +162,14 @@ function showUnitDecorator(unitId, resource, resourceType) {
   return true
 }
 
-/**
- * If resource id GUID, then downloads it first.
- * Then starts Customization scene with given resource preview.
- * @param {string} resource - Resource. Can be GUID.
- * @param {string} resourceType - Resource type.
- * @param {function} onSkinReadyToShowCb - Optional custom function to be called when
- *                   skin prepared to show. Function must take params: (unitId, skinId, result).
- */
+
+
+
+
+
+
+
+
 function showResource(resource, resourceType, onSkinReadyToShowCb = null) {
   if (!canStartPreviewScene(true, true))
     return
@@ -412,9 +412,9 @@ globalCallbacks.addTypes({
 })
 
 
-/**
- * Creates global funcs, which are called from client.
- */
+
+
+
 let rootTable = getroottable()
 rootTable["on_live_skin_data_loaded"] <- @(unitId, skinGuid, result) onSkinDownloaded(unitId, skinGuid, result)
 rootTable["live_start_unit_preview"]  <- @(unitId, skinId, isForApprove) showUnitSkin(unitId, skinId, isForApprove)

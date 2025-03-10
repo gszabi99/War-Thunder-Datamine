@@ -50,23 +50,23 @@ local getBoughtCountByAmount = @(warbond, blk)
 
 
 ::g_wb_award_type.template <- {
-  id = EWBAT_INVALID //filled by type id.used from code enum EWBAT
+  id = EWBAT_INVALID 
   getLayeredImage = function(_blk, _warbond) { return "" }
-  getContentIconData = function(_blk) { return null } //{ contentIcon, [contentType] }
+  getContentIconData = function(_blk) { return null } 
   getIconHeaderText = function(_blk) { return null }
-  getTooltipId = @(_blk, _warbond) null //string
+  getTooltipId = @(_blk, _warbond) null 
 
   hasCommonDesc = true
   getNameText = function(_blk) { return "" }
   getDescText = function(_blk) { return "" }
   getDescriptionImage = function(blk, warbond) { return this.getLayeredImage(blk, warbond) }
-  getDescItem = function(_blk) { return null } //show description as item description
+  getDescItem = function(_blk) { return null } 
 
   canPreview = @(_blk) false
   doPreview = @(_blk) null
 
-  requestBuy = requestBuyByName //warbond, blk
-  getBoughtCount = getBoughtCountByName //warbond, blk
+  requestBuy = requestBuyByName 
+  getBoughtCount = getBoughtCountByName 
   canBuy = @(_warbond, _blk) true
   getMaxBoughtCount = @(_warbond, blk) blk?.maxBoughtCount ?? 0
   showAvailableAmount = true

@@ -115,12 +115,12 @@ let getSeparateLeaderboardPlatformValue = function() {
 }
 
 let getSeparateLeaderboardPlatformName = function() {
-  // These names are set in config on leaderboard server.
+  
   if (getSeparateLeaderboardPlatformValue()) {
     if (isPlatformPS4 || isPlatformPS5)
-      return "ps4"      // TODO: Change later to 'psn' or 'sony'
+      return "ps4"      
     if (isPlatformXboxOne || isPlatformXboxScarlett)
-      return "xboxone"  // TODO: Change later to 'xbox' or 'ms'
+      return "xboxone"  
   }
   return ""
 }

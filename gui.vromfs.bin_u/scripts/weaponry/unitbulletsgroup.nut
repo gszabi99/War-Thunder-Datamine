@@ -18,8 +18,8 @@ let { get_option } = require("%scripts/options/optionsExt.nut")
 class BulletGroup {
   unit = null
   groupIndex = -1
-  selectedName = ""   //selected bullet name
-  bullets = null  //bullets list for this group
+  selectedName = ""   
+  bullets = null  
   bulletsCount = -1
   maxBulletsCount = -1
   gunInfo = null
@@ -30,8 +30,8 @@ class BulletGroup {
   maxToRespawn = 0
   constrainedTotalCount = 0
 
-  option = null //bullet option. initialize only on request because generate descriptions
-  selectedBullet = null //selected bullet from modifications list
+  option = null 
+  selectedBullet = null 
 
   constructor(v_unit, v_groupIndex, v_gunInfo, params) {
     this.unit = v_unit
@@ -53,7 +53,7 @@ class BulletGroup {
 
     let bulletOptionId = USEROPT_BULLET_COUNT0 + this.groupIndex
     let count = get_unit_option(this.unit.name, bulletOptionId)
-    if (type(count) == "string") //validate bullets option type
+    if (type(count) == "string") 
       clearUnitOption(this.unit.name, bulletOptionId)
     else if (count != null)
       this.bulletsCount = (count / this.guns).tointeger()
@@ -90,7 +90,7 @@ class BulletGroup {
     return true
   }
 
-  //return is new bullet not from list
+  
   function setBulletNotFromList(bList) {
     if (!isInArray(this.selectedName, bList))
       return true
@@ -118,7 +118,7 @@ class BulletGroup {
     set_unit_option(this.unit.name, USEROPT_BULLET_COUNT0 + this.groupIndex, (count * this.guns).tointeger())
   }
 
-  //return bullets changed
+  
   function updateCounts() {
     if (!this.gunInfo)
       return false
@@ -173,7 +173,7 @@ class BulletGroup {
 
   function getModByBulletName(bulName) {
     local mod = getModificationByName(this.unit, bulName)
-    if (!mod) //default
+    if (!mod) 
       mod = { name = bulName, isDefaultForGroup = this.groupIndex, type = weaponsItem.modification }
     return mod
   }

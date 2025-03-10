@@ -11,9 +11,9 @@ local buttonsDelayDefault = 30
 local textLocIdDefault = ""
 
 let class Msg {
-  text = null //string. loc(textLocIdDefault) when not set
+  text = null 
   onCancelCb = null
-  buttonsDelay = null //int. buttonsDelayDefault when not set
+  buttonsDelay = null 
 
   uid = ""
   showCount = 0
@@ -49,7 +49,7 @@ let class Msg {
     if (!hasSceneChanges)
       return
 
-    let prevSceneObj = this.sceneObj //destroy previous message only after create new to not activate handlers behind on switch.
+    let prevSceneObj = this.sceneObj 
 
     let cancelCb = Callback(function() {
       if (this.onCancelCb)

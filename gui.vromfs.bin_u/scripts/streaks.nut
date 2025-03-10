@@ -107,7 +107,7 @@ function showNextStreak() {
   let streak = streakQueue.remove(0)
 
   let contentObj = obj.findObject("streak_content")
-  contentObj.show(true) //need to correct update textarea positions and sizes
+  contentObj.show(true) 
   obj.findObject("streak_header").setValue(streak.header)
   obj.findObject("streak_score").setValue(streak.score)
   let config = { iconStyle = $"streak_{streak.id}" }
@@ -199,7 +199,7 @@ function getLocForStreak(StreakNameType, name, stageparam, playerNick = "", colo
   local text = ""
   if (isMyStreak)
     text = loc($"streaks/{stageId}")
-  else { //SNT_OTHER_STREAK_TEXT
+  else { 
     text = loc($"streaks/{stageId}/other")
     if (text == "")
       text = format(loc("streaks/default/other"), loc($"streaks/{stageId}"))
@@ -212,11 +212,11 @@ function getLocForStreak(StreakNameType, name, stageparam, playerNick = "", colo
   return text
 }
 
-///////////////////////////////////////////////////////////////////////
-///////////////////Function called from code///////////////////////////
-///////////////////////////////////////////////////////////////////////
 
-function add_streak_message(data) { // called from client
+
+
+
+function add_streak_message(data) { 
   let { header, wp, exp, id = "" } = data
   let messageArr = []
   if (wp)
@@ -233,7 +233,7 @@ function add_streak_message(data) { // called from client
 
 eventbus_subscribe("add_streak_message", @(p) add_streak_message(p))
 
-::get_loc_for_streak <- getLocForStreak// called from client
+::get_loc_for_streak <- getLocForStreak
 
 return {
   add_streak_message

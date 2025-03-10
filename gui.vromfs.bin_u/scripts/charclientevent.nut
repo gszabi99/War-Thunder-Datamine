@@ -3,33 +3,33 @@ let { APP_ID } = require("app")
 let { debug } = require("dagor.debug")
 let { eventbus_subscribe } = require("eventbus")
 let { shortValue, shortKeyValue } = require("%appGlobals/charClientUtils.nut")
-//#strict
 
-/*
-Usage:
-  local client = CharClientEvent(name, nativeClient)
-  client.request("action1")                // send action
-  client.request("action1", {foo = bar})   // send action with parameters
-  registerHandler("action1", function(result))  // accept result
 
-Multiple handlers for one action:
-  client.request("action2:foo")
-  registerHandler("action2:foo", function(result))
-  registerHandler("action2:bar", function(result))
 
-Handler parameters in context:
-  client.request("action3", {...}, {foo = bar})
-  registerHandler("action3", function(result, context) { local foo = context?.foo })
 
-External custom executors:
-  client.request("action4", {...}, { executeBefore = "foo", executeAfter = "bar" })
-  registerHandler("action4", function(result))
-  registerExecutor("foo", function(result))
-  registerExecutor("bar", function(result))
 
-Handler and executor behavior should depend only on result from server and context.
-Script reload can occur between request and handler.
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let mkRegister = @(list, listName) function(id, action) {
   if (id in list) {
@@ -43,8 +43,8 @@ let mkRegister = @(list, listName) function(id, action) {
 
 function charClientEvent(name, client) {
   let event = $"charclient.{name}"
-  let handlers = {} //main action callback
-  let executors = {} //external callback
+  let handlers = {} 
+  let executors = {} 
   let doRequest = @(params, context) client.requestEventBus(params, event, context)
 
   function request(handler, params, context, isExternal) {
@@ -96,13 +96,13 @@ function charClientEvent(name, client) {
     let handler = ("$handlerId" in context) ? context.$rawdelete("$handlerId") : action
     let label   = $"{name}.{handler}"
 
-    // check any error answer from server
+    
     let response = result?.response
     let success  = response?.success ?? true
 
     if (!success || "error" in result) {
       if (!success && "error" in response) {
-        result = response  // {success = false, error = ..., ...}
+        result = response  
       }
       else {
         local err = "unknown error"

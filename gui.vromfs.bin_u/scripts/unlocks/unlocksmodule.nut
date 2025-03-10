@@ -32,7 +32,7 @@ let multiStageLocIdConfig = {
 
 let hasMultiStageLocId = @(unlockId) unlockId in multiStageLocIdConfig
 
-// Has not default multistage id. Used to combine similar unlocks
+
 function hasSpecialMultiStageLocId(unlockId, repeatInARow) {
   return hasMultiStageLocId(unlockId) && (repeatInARow in multiStageLocIdConfig[unlockId])
 }
@@ -346,7 +346,7 @@ let defaultUnlockData = {
   rp = 0
   frp = 0
   exp = 0
-  amount = 1 //for multiple awards such as streaks x3, x4...
+  amount = 1 
   aircraft = []
   stage = -1
   desc = ""
@@ -366,7 +366,7 @@ function getFakeUnlockData(config) {
   return res
 }
 
-let showNextAwardModeTypes = { // modeTypeName = localizationId
+let showNextAwardModeTypes = { 
   char_versus_battles_end_count_and_rank_test = "battle_participate_award"
   char_login_count                            = "day_login_award"
 }
@@ -412,7 +412,7 @@ function getNextAwardText(unlockId) {
       num = mode.getInt("num", 0)
       break
     }
-    if (mType == "char_unlocks") { //for unlocks unlocked by other unlock
+    if (mType == "char_unlocks") { 
       foreach (uId in mode % "unlock") {
         res = getNextAwardText(uId)
         if (res != "")

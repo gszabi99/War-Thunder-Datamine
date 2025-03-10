@@ -175,7 +175,7 @@ function shutdown_crossnetwork() {
 }
 
 
-// dump initial state
+
 dump_whole_state()
 
 

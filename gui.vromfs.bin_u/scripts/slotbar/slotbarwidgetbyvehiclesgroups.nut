@@ -179,7 +179,7 @@ function create(params) {
   if (!checkObj(nest))
     return null
 
-  if (params?.shouldAppendToObject ?? true) { //we append to nav-bar by default
+  if (params?.shouldAppendToObject ?? true) { 
     let data = "slotbarDiv { id:t='nav-slotbar' }"
     nest.getScene().appendWithBlk(nest, data)
     params.scene = nest.findObject("nav-slotbar")

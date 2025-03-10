@@ -228,7 +228,6 @@ let optList = [
   "USEROPT_TACTICAL_MAP_SIZE"
   "USEROPT_CROSSHAIR_DEFLECTION"
   "USEROPT_SHOW_INDICATORS"
-  "USEROPT_HUD_SCREENSHOT_LOGO"
   "USEROPT_SAVE_ZOOM_CAMERA"
   "USEROPT_HUD_VISIBLE_STREAKS"
   "USEROPT_HUD_SHOW_FUEL"
@@ -420,7 +419,7 @@ let optList = [
   "USEROPT_PS4_CROSSPLAY"
   "USEROPT_PS4_CROSSNETWORK_CHAT"
   "USEROPT_PS4_ONLY_LEADERBOARD"
-    //
+    
 
 
   "USEROPT_DISPLAY_MY_REAL_NICK"
@@ -441,7 +440,7 @@ let optList = [
   "USEROPT_RECORD_SNAPSHOT_PERIOD"
   "USEROPT_BULLET_FALL_SPOT_SHIP"
   "USEROPT_HOLIDAYS"
-    //
+    
 
 
   "USEROPT_ALTERNATIVE_TPS_CAMERA"
@@ -498,6 +497,6 @@ foreach(idx, useropt in optList) {
   export.userOptionNameByIdx[relIdx] <- useropt
 }
 
-export.testsOptList <- optList //remove me this is for case conversion!
+export.testsOptList <- optList 
 
 return export

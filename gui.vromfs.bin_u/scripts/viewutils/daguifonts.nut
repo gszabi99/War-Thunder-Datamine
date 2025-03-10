@@ -30,24 +30,24 @@ let realFontNamePrefixesMap = {
 
 local daguiFonts = {
 
-  /**
-   * Returns line height in pixels for given font.
-   * @param {string} fontName - font CSS const name.
-   * @return {int} - line height in pixels, or 0 in case of error.
-   */
+  
+
+
+
+
   getFontLineHeightPx = function(fontName, realFontName = null) {
     realFontName = realFontName ?? get_main_gui_scene().getConstantValue(fontName)
     local bbox = fonts.getStringBBox(".", realFontName)
     return bbox ? max(0, bbox[3] - bbox[1]).tointeger() : 0
   }
 
-  /**
-   * Returns width in pixels for given text string rendered in given font (or max width for texts list).
-   * @param {string} text - text string to be measured, without line breaks, or array of texts
-   * @param {string} fontName - font CSS const name.
-   * @param {instance} [guiScene] - optional valid instance of ScriptedGuiScene.
-   * @return {int} - text width in pixels, or 0 in case of error or empty string.
-   */
+  
+
+
+
+
+
+
   getStringWidthPx = function(text, fontName, guiScene = null) {
     if (!text.len())
       return 0
@@ -64,10 +64,10 @@ local daguiFonts = {
     return res
   }
 
-  /**
-   * Returns the maximum font from the font table by key
-     for a given text string that can be contained in the specified number of pixels
-  */
+  
+
+
+
   getMaxFontTextByWidth = function(text, WidthPx, fontKeyName) {
     let list = fontsList?[fontKeyName] ?? fontsList.defaults
     foreach (font in list)

@@ -32,14 +32,14 @@ let Discount = class (BaseItem) {
 
   canMultipleConsume = false
 
-  showAmountInsteadPercent = false //work only for units atm.
+  showAmountInsteadPercent = false 
   isSpecialOffer = false
   specialOfferImage = null
   specialOfferImageRatio = null
   needHideTextOnIcon = false
-  //params which must be equal to stack items
+  
   static stackBases =    ["category", "type", "aircraftName"]
-  //params which can can be different in stack but still need for stack description
+  
   static stackVariables = [ "countryName", "rank", "entitlementName"]
 
   constructor(blk, invBlk = null, slotData = null) {
@@ -68,7 +68,7 @@ let Discount = class (BaseItem) {
     this.discountDescBlk = null
   }
 
-  /* override */ function doMainAction(cb, handler, params = null) {
+   function doMainAction(cb, handler, params = null) {
     let unit = this.getUnit()
     let canBuy = this.isInventoryItem && this.amount && this.isActive()
       && unit != null && canBuyUnit(unit)
@@ -289,7 +289,7 @@ let Discount = class (BaseItem) {
       return
 
     let data = this.getDiscountDescriptionDataItems()[0]
-    if (!stackParams.len()) //stack not inited
+    if (!stackParams.len()) 
       foreach (p in this.stackBases)
         stackParams[p] <- getTblValue(p, data)
 
@@ -324,7 +324,7 @@ let Discount = class (BaseItem) {
   }
 
   function getStackName(stackParams) {
-    if (!stackParams.len())  //!fixedType
+    if (!stackParams.len())  
       return base.getName()
     return this.getDataItemDescription(stackParams)
   }

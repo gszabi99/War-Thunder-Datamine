@@ -33,7 +33,7 @@ struct collres_draw_all_debug
 [console_cmd(name="collres.draw_all", hint="draws collision geometry near camera, 0 - NONE, 1 - COLLIDERS, 2 - COLLIDERS and NORMALS, 3 - BBOX")]
 def console_draw_coll_res(mode : int = 1;
                           dist : float = 16.0)
-  if mode < 0 || mode >= int(CollresDrawAllMode MODES_COUNT)
+  if mode < 0 || mode >= int(CollresDrawAllMode.MODES_COUNT)
     console_print("Unknown draw mode for collres.draw_all {mode}")
     return
 
@@ -41,13 +41,13 @@ def console_draw_coll_res(mode : int = 1;
                                       var drawCollisionResourceMode : int&;
                                       var drawCollisionResourceDist : float&)
     let isEqual = (mode == int(drawCollisionResourceMode) && dist == drawCollisionResourceDist)
-    if isEqual || mode == int(CollresDrawAllMode NONE) || dist <= 0.0
+    if isEqual || mode == int(CollresDrawAllMode.NONE) || dist <= 0.0
       destroyEntity(eid)
     else
       drawCollisionResourceMode = mode
       drawCollisionResourceDist = dist
     return true
-  if !found && mode != int(CollresDrawAllMode NONE) && dist > 0.0
+  if !found && mode != int(CollresDrawAllMode.NONE) && dist > 0.0
     createEntity("collres_draw_all_debug") <| $(var init : ComponentsInitializer)
       init |> set("drawCollisionResourceMode", mode)
       init |> set("drawCollisionResourceDist", dist)
@@ -77,7 +77,7 @@ def draw_node_collision_geometry(collres : CollisionResource;
     var nodeTm : float3x4
     collres_get_collision_node_tm(collres, i, transform, animchar != null ? animchar.nodeTree : null, nodeTm)
     set_cached_debug_lines_wtm(transform)
-    if node.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_MESH))
+    if node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH))
       let camDirNodeSpace = draw_normals ? rotate(inverse(nodeTm), cam_dir) : float3()
       set_cached_debug_lines_wtm(nodeTm)
       get_collnode_geom(node) <| $(indices; vertices)
@@ -115,11 +115,11 @@ def draw_node_collision_geometry(collres : CollisionResource;
               draw_cached_debug_line(normalPoint, arrowPoint2, normalColor)
               draw_cached_debug_line(normalPoint, arrowPoint3, normalColor)
 
-    elif node.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_BOX))
+    elif node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_BOX))
       draw_cached_debug_box(node.modelBBox, color)
-    elif node.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_SPHERE))
+    elif node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_SPHERE))
       draw_cached_debug_sphere(node.boundingSphere.c, node.boundingSphere.r, color, 12)
-    elif node.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_CAPSULE))
+    elif node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CAPSULE))
       draw_cached_debug_capsule_w(node.capsule, color)
 
 
@@ -136,7 +136,7 @@ def for_each_collres_near_camera(func_cb; cam_dist : float = 16.0)
       let color = E3DCOLOR(0xFF00FF00)
       func_cb |> invoke(collres, transform, animchar, color)
 
-    rendinst_foreachInBox(BBox3(BSphere3(camPos, camDist)), int(GatherRiTypeFlags RiGenAndExtra)) <| $(desc : RendInstDesc; tm : float3x4; is_tm : bool)
+    rendinst_foreachInBox(BBox3(BSphere3(camPos, camDist)), int(GatherRiTypeFlags.RiGenAndExtra)) <| $(desc : RendInstDesc; tm : float3x4; is_tm : bool)
       if length_sq(tm[3] - camPos) >= square(camDist)
         return
       let collres = getRiGenCollisionResource(desc)
@@ -159,12 +159,12 @@ def debug_dynamic_collision(info : UpdateStageInfoRenderDebug;
     if !camera__active
       return false
     let drawNodeCollisionGeometry <- $ <| (collres : CollisionResource; tm : float3x4; animchar : AnimcharBaseComponent const ?; color : E3DCOLOR)
-      if drawCollisionResourceMode == int(CollresDrawAllMode BBOX)
+      if drawCollisionResourceMode == int(CollresDrawAllMode.BBOX)
         set_cached_debug_lines_wtm(tm)
         draw_cached_debug_box(collres.boundingBox, E3DCOLOR(0xFFFFFFFF))
         set_cached_debug_lines_wtm(IDENT_TM)
       else
-        let drawNormals = (drawCollisionResourceMode == int(CollresDrawAllMode NORMALS))
+        let drawNormals = (drawCollisionResourceMode == int(CollresDrawAllMode.NORMALS))
         draw_node_collision_geometry(collres, tm, animchar, color, camera_transform[2], drawNormals)
     for_each_collres_near_camera(drawNodeCollisionGeometry, drawCollisionResourceDist)
     return true
@@ -193,17 +193,17 @@ struct collision_ruler_debug
   collisionRulerDebug : bool
 
 def get_node_type_name(node_type : uint8)
-  if node_type == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_MESH))
+  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH))
     return "mesh"
-  if node_type == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_POINTS))
+  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_POINTS))
     return "points"
-  if node_type == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_BOX))
+  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_BOX))
     return "box"
-  if node_type == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_SPHERE))
+  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_SPHERE))
     return "sphere"
-  if node_type == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_CAPSULE))
+  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CAPSULE))
     return "capsule"
-  if node_type == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_CONVEX))
+  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CONVEX))
     return "convex"
   return "unknown"
 
@@ -216,13 +216,13 @@ def draw_collres_ruler()
     createEntity("collision_ruler_debug")
 
 def format_scale(flags : uint8; tm : float3x4)
-  if (uint(flags) & uint(CollisionNodeFlag IDENT)) != 0u
+  if (uint(flags) & uint(CollisionNodeFlag.IDENT)) != 0u
     return "identity"
-  if (uint(flags) & uint(CollisionNodeFlag TRANSLATE)) != 0u
+  if (uint(flags) & uint(CollisionNodeFlag.TRANSLATE)) != 0u
     return "translate"
-  if (uint(flags) & uint(CollisionNodeFlag ORTHONORMALIZED)) != 0u
+  if (uint(flags) & uint(CollisionNodeFlag.ORTHONORMALIZED)) != 0u
     return "orthonormalized"
-  if (uint(flags) & uint(CollisionNodeFlag ORTHOUNIFORM)) != 0u
+  if (uint(flags) & uint(CollisionNodeFlag.ORTHOUNIFORM)) != 0u
     return "orthouniform (scale {length(tm[0]):.1f})"
   return "scaled: {length(tm[0]):.3f} | {length(tm[1]):.3f} | {length(tm[2]):.3f}"
 
@@ -233,12 +233,12 @@ def format_scale(tm : float3x4)
   let len2sq = length_sq(tm[2])
   if abs(dot(tm[0], tm[1])) < 1e-3f && abs(dot(tm[0], tm[2])) < 1e-3f && abs(dot(tm[1], tm[2])) < 1e-3f
     if abs(len1sq - len0sq) < len0sq * 1e-3f && abs(len2sq - len0sq) < len0sq * 1e-3f
-      flags = abs(len0sq - 1.f) < 1e-3f ? uint8(CollisionNodeFlag ORTHONORMALIZED) : uint8(CollisionNodeFlag ORTHOUNIFORM)
+      flags = abs(len0sq - 1.f) < 1e-3f ? uint8(CollisionNodeFlag.ORTHONORMALIZED) : uint8(CollisionNodeFlag.ORTHOUNIFORM)
   return format_scale(flags, tm)
 
 def get_node_info(node) : string
   var geomInfo = "; type: {get_node_type_name(node.nodeType)}"
-  if node.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_MESH)) || node.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_CONVEX))
+  if node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH)) || node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CONVEX))
     get_collnode_geom(node) <| $ [unused_argument(vertices)] (indices; vertices)
       geomInfo += " ({length(indices) / 3} trs)"
   if node.geomNodeId != -1
@@ -247,9 +247,9 @@ def get_node_info(node) : string
     geomInfo += "; " + format_scale(node.flags, node.tm)
 
   var behFlags = ""
-  if (uint(node.behaviorFlags) & uint(BehaviorFlag TRACEABLE)) != 0u
+  if (uint(node.behaviorFlags) & uint(BehaviorFlag.TRACEABLE)) != 0u
     behFlags += (behFlags != "" ? "+" : "") + "trace"
-  if (uint(node.behaviorFlags) & uint(BehaviorFlag PHYS_COLLIDABLE)) != 0u
+  if (uint(node.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
     behFlags += (behFlags != "" ? "+" : "") + "phys"
   if behFlags != ""
     geomInfo += "; beh: {behFlags}"
@@ -286,16 +286,16 @@ def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animch
   var noteType = 0
   for i in range(nodesCnt)
     let inode = collres |> collres_get_node(i)
-    let isTraceable = (uint(inode.behaviorFlags) & uint(BehaviorFlag TRACEABLE)) != 0u
-    let isCollidable = (uint(inode.behaviorFlags) & uint(BehaviorFlag PHYS_COLLIDABLE)) != 0u
-    if inode.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_MESH))
+    let isTraceable = (uint(inode.behaviorFlags) & uint(BehaviorFlag.TRACEABLE)) != 0u
+    let isCollidable = (uint(inode.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
+    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH))
       meshCnt++
-      if (uint(inode.flags) & uint(CollisionNodeFlag ORTHONORMALIZED)) == 0u
+      if (uint(inode.flags) & uint(CollisionNodeFlag.ORTHONORMALIZED)) == 0u
         scaledCnt++
         if noteType <= 1 && int(inode.nodeIndex) != best_node_idx
           noteType = 1
           noteId = int(inode.nodeIndex)
-      if (uint(inode.flags) & (uint(CollisionNodeFlag ORTHONORMALIZED) | uint(CollisionNodeFlag ORTHOUNIFORM))) == 0u
+      if (uint(inode.flags) & (uint(CollisionNodeFlag.ORTHONORMALIZED) | uint(CollisionNodeFlag.ORTHOUNIFORM))) == 0u
         notUniformCnt++
         if noteType <= 2 && int(inode.nodeIndex) != best_node_idx
           noteType = 2
@@ -306,15 +306,15 @@ def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animch
           traceableTriCnt += tri
         if isCollidable
           collidableTriCnt += tri
-    if inode.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_POINTS))
+    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_POINTS))
       ptCnt++
-    if inode.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_BOX))
+    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_BOX))
       boxCnt++
-    if inode.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_SPHERE))
+    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_SPHERE))
       sphCnt++
-    if inode.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_CAPSULE))
+    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CAPSULE))
       capCnt++
-    if inode.nodeType == uint8(int(CollisionResourceNodeType COLLISION_NODE_TYPE_CONVEX))
+    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CONVEX))
       cvxCnt++
     if isTraceable
       traceableCnt++
@@ -354,7 +354,7 @@ def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animch
   add_debug_text_mark(markPos, nodesText, -1, 3.6, E3DCOLOR(0xFF8FFF8F))
   if noteType != 0
     add_debug_text_mark(markPos, "Last scaled " + get_node_info(collres |> collres_get_node(noteId)), -1, 4.8, E3DCOLOR(0xFF8FFF8F))
-  add_debug_text_mark(markPos, "Grids: trace={get_grid_info(collres, uint8(BehaviorFlag TRACEABLE))} coll={get_grid_info(collres, uint8(BehaviorFlag PHYS_COLLIDABLE))}", -1, noteType != 0 ? 6.0 : 4.8, E3DCOLOR(0xFF8FFF8F))
+  add_debug_text_mark(markPos, "Grids: trace={get_grid_info(collres, uint8(BehaviorFlag.TRACEABLE))} coll={get_grid_info(collres, uint8(BehaviorFlag.PHYS_COLLIDABLE))}", -1, noteType != 0 ? 6.0 : 4.8, E3DCOLOR(0xFF8FFF8F))
 
 [es(tag=(render, dev), no_order, REQUIRE=collisionRulerDebug)]
 def draw_collision_ruler_es(evt : UpdateStageInfoRenderDebug)
@@ -370,7 +370,7 @@ def draw_collision_ruler_es(evt : UpdateStageInfoRenderDebug)
   var hitNormal : float3
   ecs::query() <| $ [es] (eid : EntityId; transform : float3x4; collres : CollisionResource; animchar : AnimcharBaseComponent const?)
     let nodeTree = animchar != null ? animchar.nodeTree : null
-    collres |> collres_traceray(transform, nodeTree, cameraPos, cameraDir, bestT, true, uint8(BehaviorFlag TRACEABLE)) <| $(is_hit : bool; isects : CollResIntersectionsType#)
+    collres |> collres_traceray(transform, nodeTree, cameraPos, cameraDir, bestT, true, uint8(BehaviorFlag.TRACEABLE)) <| $(is_hit : bool; isects : CollResIntersectionsType#)
       if is_hit
         bestT = isects[0].intersectionT
         bestEid = eid
@@ -387,7 +387,7 @@ def draw_collision_ruler_es(evt : UpdateStageInfoRenderDebug)
     if collres != null
       let riTm = getRIGenMatrix(riDesc)
       bestT += 0.01
-      let behFlags = [[uint8[2] uint8(BehaviorFlag TRACEABLE); uint8(BehaviorFlag PHYS_COLLIDABLE)]]
+      let behFlags = fixed_array<uint8>(uint8(BehaviorFlag.TRACEABLE), uint8(BehaviorFlag.PHYS_COLLIDABLE))
       for behFlag in behFlags
         var traced = false
         *collres |> collres_traceray(riTm, null, cameraPos, cameraDir, bestT, true, behFlag) <| $(is_hit : bool; isects : CollResIntersectionsType#)
@@ -447,7 +447,7 @@ def collres_dump_vertices(ri_name : string = "")
       df_write(file, "### Vertices ###\n")
       for nodeIdx in range(nodeCount)
         let node = *riCollres |> collres_get_node(nodeIdx)
-        let isCollidable = (uint(node.behaviorFlags) & uint(BehaviorFlag PHYS_COLLIDABLE)) != 0u
+        let isCollidable = (uint(node.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
         if !isCollidable
           continue
         df_write(file, "# Node '{node |> collnode_get_name()}'\n")
@@ -459,7 +459,7 @@ def collres_dump_vertices(ri_name : string = "")
       var indexOffset = 1
       for nodeIdx in range(nodeCount)
         let node = *riCollres |> collres_get_node(nodeIdx)
-        let isCollidable = (uint(node.behaviorFlags) & uint(BehaviorFlag PHYS_COLLIDABLE)) != 0u
+        let isCollidable = (uint(node.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
         if !isCollidable
           continue
         df_write(file, "# Node '{node |> collnode_get_name()}' Offset +{indexOffset}\n")

@@ -20,7 +20,7 @@ function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
   let bombtargets = createGroundUnitsProc(playerSide)
   local enemyAssaultPlane = ""
 
-//planes cost calculate
+
   let wpMax = 1000000
   let playerFighterPlane = getAnyPlayerFighter(0, wpMax)
   local playerPlaneCost = getAircraftCost(playerFighterPlane)
@@ -46,7 +46,7 @@ function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
   let art_count = mgGetUnitsCount("#bomb_targets_art")
   let ships_count = mgGetUnitsCount("#bomb_targets_ships")
 
-//mission type and bombers count setup
+
   if (tanks_count > 0 && tanks_count > light_count && tanks_count > art_count) {
     bombersCount = rndRangeInt(tanks_count * 3, tanks_count * 6)
     ground_type = "tank"
@@ -108,7 +108,7 @@ function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
     mgReplace("mission_settings/briefing/part", "lookAt", "target_waypoint_bombers", squad_type)
   }
   bombersCount = clamp(bombersCount, 8, 24)
-//enemy waves and fighter count calculate
+
   let enemyWaveCount = bombersCount < 13 ? 1
     : bombersCount < 20 ? rndRangeInt(1, 2)
     : 2
@@ -132,7 +132,7 @@ function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
   local allyFighterCount = min(rndRangeInt(allyFighterCountMin, allyFighterCountMax), 40)
   if (allyFighterCount < 4)
     allyFighterCount = 0
-//battle distance calculate
+
   let rndHeight = rndRange(1500, 3000)
   let enemySpeed = getDistancePerMinute(enemyAssaultPlane)
 
@@ -151,7 +151,7 @@ function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
   let enemy1Angle = rndRange(-45, 45)
   let enemy2Angle = rndRange(-45, 45)
   let evacAngle = rndRange(-10, 10)
-//points placing
+
   mgSetupArea("player_start", bombtargets, startLookAt, 180, rndRange(4500, 6000), rndHeight + 500)
   mgSetupArea("target_waypoint_bombers", bombtargets, "", 0, 0, rndHeight)
   mgSetupArea("target_waypoint_fighters", bombtargets, "", 0, 0, rndHeight + 500)
@@ -165,7 +165,7 @@ function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
   mgSetupArea("enemy2_start", bombtargets, startLookAt, enemy2Angle,
     enemySpeed * timeToEnemy2, rndHeight)
 
-//armada setup
+
   mgSetupArmada("#player.fighter", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane)
   mgSetupArmada("#player_cut.any", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane)
   gmMarkCutsceneArmadaLooksLike("#player_cut.any", "#player.fighter")
@@ -190,7 +190,7 @@ function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
   mgSetMinMaxAircrafts("enemy", "fighter", 0, 24)
   mgSetMinMaxAircrafts("enemy", "assault", 8, 24)
 
-//mission warpoint cost calculate
+
   let mission_mult = sqrt(bombersCount / 11.0 + 0.05)
   let missionWpCost = warpointCalculate(mission_preset_name, allyFighterCount,
     enemyFightersCount + bombersCount * 0.5, planeCost, playerFighterPlane, mission_mult)
@@ -205,7 +205,7 @@ function generateAssaultDefMission(isFreeFlight, createGroundUnitsProc) {
 
   mgSetBool("variables/training_mode", isFreeFlight)
 
-  //mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testAssaultdef_temp.blk")
+  
   if (mgFullLogs())
     debug_dump_stack()
 

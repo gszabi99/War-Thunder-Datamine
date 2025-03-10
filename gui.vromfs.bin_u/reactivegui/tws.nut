@@ -142,24 +142,24 @@ let aircraftVectorImageCommands = (function() {
 
   return [
     [VECTOR_POLY,
-      // tail left
+      
       50, 100 - tailOffset1,
       50 - tailW, 100 - tailOffset2,
       50 - tailW, 100 - tailOffset2 - tailH,
       50 - fuselageWHalf, 100 - tailOffset3,
-      // wing left
+      
       50 - fuselageWHalf, 100 - wingOffset1,
       50 - fuselageWHalf - wingW, 100 - wingOffset2,
       50 - fuselageWHalf - wingW, 100 - wingOffset2 - wingH,
       50 - fuselageWHalf, wingOffset3,
-      // nose
+      
       50, noseOffset,
-      // wing rigth
+      
       50 + fuselageWHalf, wingOffset3,
       50 + fuselageWHalf + wingW, 100 - wingOffset2 - wingH,
       50 + fuselageWHalf + wingW, 100 - wingOffset2,
       50 + fuselageWHalf, 100 - wingOffset1,
-      // tail right
+      
       50 + fuselageWHalf, 100 - tailOffset3,
       50 + tailW, 100 - tailOffset2 - tailH,
       50 + tailW, 100 - tailOffset2
@@ -286,30 +286,30 @@ let rwrBackground = @(colorWatched, scale, forMfd) function() {
 
 let rocketVector =
   [
-    //right stab
+    
     [VECTOR_LINE, -15, -40, -15, -30],
     [VECTOR_LINE, -15, -40, -5, -35],
     [VECTOR_LINE, -15, -30, -5, -25],
-    //left stab
+    
     [VECTOR_LINE, 15, -40, 15, -30],
     [VECTOR_LINE, 15, -40, 5, -35],
     [VECTOR_LINE, 15, -30, 5, -25],
-    //right stab 2
+    
     [VECTOR_LINE, -15, 0, -15, 10],
     [VECTOR_LINE, -15, 0, -5, 5],
     [VECTOR_LINE, -15, 10, -5, 15],
-    //left stab 2
+    
     [VECTOR_LINE, 15, 0, 15, 10],
     [VECTOR_LINE, 15, 0, 5, 5],
     [VECTOR_LINE, 15, 10, 5, 15],
-    //rocket tank
+    
     [VECTOR_LINE, -5, -25, -5, 0],
     [VECTOR_LINE, 5, -25, 5, 0],
     [VECTOR_LINE, -5, -35, 5, -35],
-    //rocket tank 2
+    
     [VECTOR_LINE, -5, 15, -5, 30],
     [VECTOR_LINE, 5, 15, 5, 30],
-    //warhead
+    
     [VECTOR_LINE, -5, 30, 0, 40],
     [VECTOR_LINE, 5, 30, 0, 40]
   ]
@@ -331,7 +331,7 @@ function createMlwsTarget(index, colorWatch) {
     opacity = targetOpacity.value
     transform = {
       pivot = [0.0, 0.0]
-      rotate = 135 //toward center
+      rotate = 135 
     }
     commands = rocketVector
     children = target.enemy ? null
@@ -393,7 +393,7 @@ let cmdsLwsTargetNonTank = freeze([
 
 let lswTargetTransform = {
   pivot = [0.0, 0.0]
-  rotate = 135.0 //toward center
+  rotate = 135.0 
 }
 
 function createLwsTarget(index, colorWatched, isForTank = false) {
@@ -467,7 +467,7 @@ let rwrTargetTransform = {
 }
 
 function createRwrTarget(target, colorWatched, fontSizeMult, centralCircleSizeMult, forMfd) {
-//  let target = rwrTargets[index]
+
 
   if (!target.valid)
     return @() { }

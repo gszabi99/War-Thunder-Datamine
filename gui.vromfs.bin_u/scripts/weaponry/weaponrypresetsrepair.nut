@@ -11,8 +11,8 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 local invalidPresetsByCountries = {}
 local curCountryInvalidPresets
 
-// Custom presets might been created earlier then some restriction appeared in config,
-// so they need to validate before they use.
+
+
 function getInvalidWeapon(curPreset, availableWeapons) {
   let presetsByTiers = curPreset.tiersView
   foreach (p in presetsByTiers)
@@ -44,7 +44,7 @@ function getInvalidWeapon(curPreset, availableWeapons) {
 
 function repairInvalidPresets() {
   foreach (unitName, presets in curCountryInvalidPresets) {
-    // No invalid presets in unit
+    
     if (presets.len() == 0)
       continue
 
@@ -72,7 +72,7 @@ function searchAndRepairInvalidPresets(uNames = null) {
   let countryId = get_profile_country()
   let isForced = uNames != null
   let unitsList = isForced ? uNames : ::slotbarPresets.getCurrentPreset(countryId)?.units
-  // No need to search if country already checked and its units list didn't changed
+  
   if ((!isForced && invalidPresetsByCountries?[countryId] != null) || unitsList == null)
     return
 
@@ -81,11 +81,11 @@ function searchAndRepairInvalidPresets(uNames = null) {
   curCountryInvalidPresets = invalidPresetsByCountries[countryId]
   foreach (unitName in unitsList) {
     let unit = getAircraftByName(unitName)
-    // Unit have no ability to create custom presets at all
+    
     if (!unit.hasWeaponSlots)
       continue
 
-    // No need to search if unit already checked
+    
     if (curCountryInvalidPresets?[unitName] != null
       && curCountryInvalidPresets[unitName].len() == 0)
       continue

@@ -9,7 +9,7 @@ let { findItemById, getItemsSortComparator } = require("%scripts/items/itemsMana
 
 let MAX_REWARDS_SHOW_IN_TROPHY = 5
 
-//!!FIX ME: need to convert reward type by enum_utils
+
 let rewardTypes = [ "multiAwardsOnWorthGold", "modsForBoughtUnit",
                   "unit", "rentedUnit", "premium_in_hours",
                   "trophy", "item", "unlock", "unlockType", "resource", "resourceType",

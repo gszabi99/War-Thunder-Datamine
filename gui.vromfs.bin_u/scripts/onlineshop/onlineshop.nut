@@ -20,7 +20,7 @@ let { showGuestEmailRegistration, needShowGuestEmailRegistration
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
-bundlesShopInfo.subscribe(@(_val) broadcastEvent("BundlesUpdated")) //cannot subscribe directly to reinitScreen inside init
+bundlesShopInfo.subscribe(@(_val) broadcastEvent("BundlesUpdated")) 
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { openPaymentWnd } = require("%scripts/paymentHandler.nut")
 let { doBrowserPurchase } = require("%scripts/onlineShop/onlineShopModel.nut")
@@ -31,8 +31,8 @@ let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpe
 let { get_yu2_error_text } = require("%scripts/utils/errorMsgBox.nut")
 
 let payMethodsCfg = [
-  //{ id = YU2_PAY_QIWI,        name = "qiwi" }
-  //{ id = YU2_PAY_YANDEX,      name = "yandex" }
+  
+  
   { id = YU2_PAY_PAYPAL,      name = "paypal" }
   { id = YU2_PAY_WEBMONEY,    name = "webmoney" }
   { id = YU2_PAY_AMAZON,      name = "amazon" }
@@ -115,7 +115,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         name = name
       }
 
-      //load data from eBlk
+      
       for (local j = 0; j < ib.paramCount(); j++) {
         let paramName = ib.getParamName(j)
         if (!(paramName in this.goods[name]))
@@ -138,7 +138,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         this.goods[name].entitlementGift.extend(this.goods[name].showEntAsGift)
       else
         this.goods[name].entitlementGift = this.goods[name].showEntAsGift
-      //load done
+      
 
       if (!isGold && this.goods[name]?.group && !this.groupCost?[this.goods[name].group])
         this.groupCost[this.goods[name].group] <- getPricePerEntitlement(this.goods[name])
@@ -176,7 +176,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       idx++
     }
 
-    // Buy Eagles, Lions, Premium Account.
+    
     if (this.useRowVisual) {
       this.guiScene.setUpdatesEnabled(false, false)
 
@@ -200,7 +200,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.guiScene.setUpdatesEnabled(true, true)
       this.guiScene.performDelayed(this, @() move_mouse_on_child(tblObj, 0))
     }
-    else { // Buy Campaigns & Bonuses.
+    else { 
       this.scene.findObject("chapter_update").setUserData(this)
       this.scene.findObject("chapter_name").setValue(loc("mainmenu/btnOnlineShop"))
 
@@ -320,7 +320,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     addTask(taskId, taskOptions, taskSuccessCallback)
   }
 
-  function onStart() {  //onBuy
+  function onStart() {  
     let product = this.goods?[this.task]
     if (product == null || isBoughtEntitlement(product))
       return
@@ -448,7 +448,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  function goForward(_startFunc) {  //no forward from this wnd, only purchase finished.
+  function goForward(_startFunc) {  
     if (checkObj(this.scene)) {
       this.onItemSelect()
       this.updateItemIcon(this.task)
@@ -551,8 +551,8 @@ gui_handlers.OnlineShopRowHandler <- class (gui_handlers.OnlineShopHandler) {
   function reinitScreen(params = {}) {
     base.reinitScreen(params)
     foreach (productId, product in this.goods) {
-      this.updateProductInfo(product, productId) //for rows visual the same description for all items
-      break //warning disable: -unconditional-terminated-loop
+      this.updateProductInfo(product, productId) 
+      break 
     }
   }
 }

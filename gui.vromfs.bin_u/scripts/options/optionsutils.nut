@@ -21,8 +21,8 @@ let createDefaultOption = function() {
   return {
     type = -1
     id = ""
-    title = null //$"options/{descr.id}"
-    hint = null  //$"guiHints/{descr.id}"
+    title = null 
+    hint = null  
     value = null
     controlType = optionControlType.LIST
     hasWarningIcon = false
@@ -103,7 +103,7 @@ function addHueParamsToOptionDescr(descr, hue, text = null, sat = null, val = nu
   descr.values.append(hue)
 }
 
-//Allow White and Black color
+
 function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat = null, defBri = null,
   curHue = null) {
   let hueStep = 22.5
@@ -118,7 +118,7 @@ function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat = nu
   if (defHue != null)
     addHueParamsToOptionDescr(descr, defHue, loc("options/hudDefault"), defSat, defBri)
 
-  //default palette
+  
   local even = false
   for (local hue = 0.0001; hue < 360.0 - 0.5 * hueStep; hue += hueStep) {
     addHueParamsToOptionDescr(descr, hue + (even ? 360.0 : 0))
@@ -126,15 +126,15 @@ function fillHueSaturationBrightnessOption(descr, id, defHue = null, defSat = nu
     even = !even
   }
 
-  if ((defSat ?? 0) >= 0.000001) //create white (in case it's not default)
+  if ((defSat ?? 0) >= 0.000001) 
     addHueParamsToOptionDescr(descr, 10.0, null, 0.0, 0.9)
 
-  //now black
+  
   addHueParamsToOptionDescr(descr, 0.0, null, 0.0, 0.0)
 
   local valueIdx = findNearest(curHue, descr.values)
   if (curHue == -1)
-    valueIdx = 0 // defValue
+    valueIdx = 0 
   if (valueIdx >= 0)
     descr.value = valueIdx
 }
@@ -152,7 +152,7 @@ function fillHueOption(descr, id, curHue = null, defHue = null, defSat = null, d
   if (defHue != null)
     addHueParamsToOptionDescr(descr, defHue, loc("options/hudDefault"), defSat, defBri)
 
-  //default palette
+  
   local even = false
   for (local hue = 0.0001; hue < 360.0 - 0.5 * hueStep; hue += hueStep) {
     addHueParamsToOptionDescr(descr, hue + (even ? 360.0 : 0))
@@ -162,7 +162,7 @@ function fillHueOption(descr, id, curHue = null, defHue = null, defSat = null, d
 
   local valueIdx = findNearest(curHue, descr.values)
   if (curHue == -1)
-    valueIdx = 0 // defValue
+    valueIdx = 0 
   if (valueIdx >= 0)
     descr.value = valueIdx
 }
@@ -224,7 +224,7 @@ let fillDynMapOption = function(descr) {
   if (descr.items.len() == 0 && dynLayouts.len() > 0) {
     log($"[WARNING] All dynamic layouts are skipped due to tags of current aircraft. Adding '{dynLayouts[0].name}' to avoid empty list.")
 
-    // must be at least one dynamic layout in USEROPT_DYN_MAP
+    
     descr.items.append($"#dynamic/{dynLayouts[0].name}")
     descr.values.append(dynLayouts[0].mis_file)
   }

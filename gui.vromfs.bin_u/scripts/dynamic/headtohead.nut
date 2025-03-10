@@ -24,7 +24,7 @@ function genHeadToHeadMission(_isFreeFlight) {
   let rndHeight = rndRange(0, 2000)
   let timeToFight = rndRange(30, 60) / 60.0
 
-//planes cost calculate
+
   let wpMax = ws.dynPlanesMaxCost
   let playerFighterPlane = getAnyPlayerFighter(0, wpMax)
   local playerPlaneCost = getAircraftCost(playerFighterPlane)
@@ -87,7 +87,7 @@ function genHeadToHeadMission(_isFreeFlight) {
 
   let missionWpCost = warpointCalculate(mission_preset_name, allyCount, enemyCount, planeCost, playerFighterPlane, mission_mult)
   mgSetInt("mission_settings/mission/wpAward", missionWpCost)
-//  mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/test_temp.blk")
+
   mgSetEffShootingRate(0.1)
 
   if (playerFighterPlane == "" || enemyFighterPlane == "")

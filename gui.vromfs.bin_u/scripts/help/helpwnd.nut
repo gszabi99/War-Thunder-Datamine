@@ -144,7 +144,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (tab?.name == "MISSION_OBJECTIVES" && ctrlHelpCfgName != null) {
       let helpCfg = helpTypes[ctrlHelpCfgName]
-      let addCfg = { pageFillfuncName = null } // to prevent fillMissionObjectivesTexts execution, which renders the window from misHelpBlkPath
+      let addCfg = { pageFillfuncName = null } 
       let fieldsToAddToMissionHelp = [
         "pageBlkName", "actionBars", "linkLines", "defaultValues",
         "imagePattern", "hasImageByCountries", "countryRelatedObjs", "customUpdateSheetFunc"
@@ -227,7 +227,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (linkLines == null)
       return
 
-    //Need for update elements visible
+    
     this.guiScene.applyPendingChanges(false)
 
     let linkContainer = this.scene.findObject("help_sheet")
@@ -266,7 +266,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updatePlatformControls()
   }
 
-  //---------------------------- HELPER FUNCTIONS ----------------------------//
+  
 
   function getModifierSymbol(id) {
     if (id in this.modifierSymbols)
@@ -287,7 +287,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.remapKeyboardKeysByLang()
 
     let scTextFull = []
-    let tipTexts = {} //btnName = { text, isMain }
+    let tipTexts = {} 
     this.modifierSymbols = {}
 
     let shortcutsList = getControlsList(this.pageUnitType, this.pageUnitTag ? [this.pageUnitTag] : [])
@@ -321,12 +321,12 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           shortcutNames.append(name)
 
         let shortcuts = getShortcuts(shortcutNames, this.preset)
-        let btnList = {} //btnName = isMain
+        let btnList = {} 
 
-        //--- F1 help window ---
+        
         for (local sc = 0; sc < shortcuts.len(); sc++) {
           let text = this.getShortcutText(shortcuts[sc], btnList, true)
-          if (text != "" && (!isAxis || axisModifierButtons[sc] != "")) //do not show axis text (axis buttons only)
+          if (text != "" && (!isAxis || axisModifierButtons[sc] != "")) 
             scText = "".concat(scText, scText != "" ? ";  " : "",
               isAxis ? this.getModifierSymbol(axisModifierButtons[sc]) : "", text)
         }
@@ -348,7 +348,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    //set texts and tooltips
+    
     let view = { texts = [] }
     foreach (_idx, textsArr in scTextFull)
       view.texts.append({
@@ -464,7 +464,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (sc.type == CONTROL_TYPE.AXIS) {
         if (forceButtons.findvalue(@(b) b == sc.id) != null)
-          return true // Puts "camx" axis as a shortcut.
+          return true 
         if (ignoreAxis.findvalue(@(b) b == sc.id) != null)
           return false
 
@@ -484,7 +484,7 @@ gui_handlers.helpWndModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         continue
 
       foreach (_itemIdx, itemButton in item) {
-        if (itemButton.dev.len() > 1) ///!!!TEMP: need to understand, how to show doubled/tripled/etc. shortcuts
+        if (itemButton.dev.len() > 1) 
           continue
 
         foreach (idx, devId in itemButton.dev)

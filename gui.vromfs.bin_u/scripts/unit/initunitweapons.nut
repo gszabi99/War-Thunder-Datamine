@@ -11,9 +11,9 @@ let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isConsoleClientFullyDownloaded } = require("%scripts/clientState/contentState.nut")
 let { isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 
-// HACK: We have to cut min.client for NY submission and these animations weigh 250+Mb
-// But we don't want to flood playgo with requests for each modification in game, so we
-// will only show animations upon next start with fully downloaded client
+
+
+
 let haveModificationAnimations = !isPlatformPS5 || isConsoleClientFullyDownloaded()
 
 let weaponProperties = [
@@ -104,7 +104,7 @@ function getWeaponImage(unitType, weaponBlk, costBlk) {
       ?? ""
   }
 
-  // unitType == ES_UNIT_TYPE_INVALID
+  
   return costBlk?.image
     ?? weaponBlk?.image
     ?? ""
@@ -238,7 +238,7 @@ function initUnitModifications(modifications, modificationsBlk, esUnitType) {
     if (modBlk?.maxToRespawn)
       mod.maxToRespawn <- modBlk.maxToRespawn
 
-    //validate prevModification. it used in gui only.
+    
     if (("prevModification" in mod) && !(modificationsBlk?[mod.prevModification]))
       errorsTextArray.append(
         $"Not exist prevModification '{mod.$rawdelete("prevModification")}' for '{modName}'")

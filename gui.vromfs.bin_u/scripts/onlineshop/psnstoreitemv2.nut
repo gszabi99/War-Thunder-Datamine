@@ -22,9 +22,9 @@ let IMAGE_TYPE = "TAM_JACKET"
 let BQ_DEFAULT_ACTION_ERROR = -1
 
 enum PURCHASE_STATUS {
-  PURCHASED = "RED_BAG" // - Already purchased and cannot be purchased again
-  PURCHASED_MULTI = "BLUE_BAG" // - Already purchased and can be purchased again
-  NOT_PURCHASED = "NONE" // - Not yet purchased
+  PURCHASED = "RED_BAG" 
+  PURCHASED_MULTI = "BLUE_BAG" 
+  NOT_PURCHASED = "NONE" 
 }
 
 function handleNewPurchase(itemId) {
@@ -63,7 +63,7 @@ function sendBqRecord(metric, itemId, result = null) {
 function reportRecord(data, _record_name) {
   sendBqRecord([data.ctx.metricPlaceCall, "checkout.close"], data.ctx.itemId, data.result)
   if (data.result.action == psnStore.Action.PURCHASED)
-    defer(@() handleNewPurchase(data.ctx.itemId)) //!!!FIX ME: This delayed action was added because of immediate and looped call eventbus in waitBox(used in ps4_update_purchases_on_auth)
+    defer(@() handleNewPurchase(data.ctx.itemId)) 
 }
 
 eventbus_subscribe("storeCheckoutClosed", @(data) reportRecord(data, "checkout.close"))
@@ -79,10 +79,10 @@ local psnV2ShopPurchasableItem = class {
   category = ""
   srvLabel = serviceLabel
   releaseDate = 0
-  price = 0           // Price with discount as number
-  listPrice = 0       // Original price without discount as number
-  priceText = ""      // Price with discount as string
-  listPriceText = ""  // Original price without discount as string
+  price = 0           
+  listPrice = 0       
+  priceText = ""      
+  listPriceText = ""  
   currencyCode = ""
   isPurchasable = false
   isBought = false
@@ -107,7 +107,7 @@ local psnV2ShopPurchasableItem = class {
     this.name = blk.displayName
     this.category = blk?.category ?? ""
     this.description = blk?.description ?? ""
-    this.releaseDate = v_releaseDate //PSN not give releaseDate param. but it return data in sorted order by release date
+    this.releaseDate = v_releaseDate 
 
     let imagesArray = blk?.media.images != null ? (blk.media.images % "array") : []
     let imageIndex = imagesArray.findindex(@(t) t.type == IMAGE_TYPE)
@@ -154,7 +154,7 @@ local psnV2ShopPurchasableItem = class {
   }
 
   haveDiscount = @() !this.isBought && this.price != null && this.listPrice != null && this.price != this.listPrice
-  havePsPlusDiscount = @() psnUser.hasPremium() && ("displayPlusUpsellPrice" in this.skuInfo || this.skuInfo?.isPlusPrice) //use in markup
+  havePsPlusDiscount = @() psnUser.hasPremium() && ("displayPlusUpsellPrice" in this.skuInfo || this.skuInfo?.isPlusPrice) 
   getDiscountPercent = @() (this.price == null && this.listPrice == null) ? 0 : calcPercent(1 - (this.price.tofloat() / this.listPrice))
 
   getPriceText = function() {
@@ -169,8 +169,8 @@ local psnV2ShopPurchasableItem = class {
   }
 
   getDescription = function() {
-    //TEMP HACK!!! for PS4 TRC R4052A, to show all symbols of a single 2000-letter word
-    let maxSymbolsInLine = 50 // Empirically fits with the biggest font we have
+    
+    let maxSymbolsInLine = 50 
     if (this.description.len() > maxSymbolsInLine && this.description.indexof(" ") == null) {
       let splitDesc = [this.description.slice(0, maxSymbolsInLine)]
       let len = this.description.len()

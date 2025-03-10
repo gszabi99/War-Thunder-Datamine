@@ -532,7 +532,7 @@ let WeaponHudCode = @() {
   text = CurWeaponName.get() != "" ? loc($"{CurWeaponName.get()}/sea_harrier_fa2") : "G6Z"
 }
 
-// Radar Target
+
 
 let TargetCross = @() {
   watch = IlsColor
@@ -631,7 +631,7 @@ let RadarTargetMarkerCirle = @() {
   children = [RadarTargetVelDirection()]
 }
 
-// Rockets
+
 
 let RocketLockTargetDiamond = @() {
   watch = IlsTrackerVisible
@@ -729,7 +729,7 @@ let RocketLaunchPrompt = @() {
   children = [RocketLaunchPromptText]
 }
 
-// Modes
+
 
 let HarrierRadarData = @() {
   watch = [CCIPMode, RadarTargetPosValid]

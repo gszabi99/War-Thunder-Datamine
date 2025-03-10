@@ -24,7 +24,7 @@ gui_handlers.GamercardDrawer <- class (gui_handlers.BaseGuiHandlerWT) {
     this.getObj("gamercard_drawer").setUserData(this)
   }
 
-  function isActive() { //opening, opened, or closing to open again
+  function isActive() { 
     if (this.currentState == GamercardDrawerState.STATE_OPENED
         || this.currentState == GamercardDrawerState.STATE_OPENING)
       return true
@@ -56,8 +56,8 @@ gui_handlers.GamercardDrawer <- class (gui_handlers.BaseGuiHandlerWT) {
 
     gamercardDrawerObject.moveOut = open ? "yes" : "no"
 
-    //if we already at finish state, there will be no anim event.
-    //so we need to call it self to go to the next state
+    
+    
     let timerValue = gamercardDrawerObject["_size-timer"]
     if ((open && timerValue == "1") || (!open && timerValue == "0"))
       this.onDrawerDeactivate(gamercardDrawerObject)
@@ -82,7 +82,7 @@ gui_handlers.GamercardDrawer <- class (gui_handlers.BaseGuiHandlerWT) {
     this.currentTarget = target
     this.currentVisible = visible
 
-    // Disable all objects.
+    
     this.setEnableContent()
 
     if ((isTargetChanged && this.currentState != GamercardDrawerState.STATE_CLOSED)

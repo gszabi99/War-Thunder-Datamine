@@ -373,7 +373,7 @@ function trySetBestShowcaseMode(stats, terseInfo) {
     return
 
   let gameMode = showcase.getShowCaseType(terseInfo, {skipDefault = true})
-  //skip if gamemode already has in terseInfo
+  
   if ((gameMode ?? "") != "")
     return
 

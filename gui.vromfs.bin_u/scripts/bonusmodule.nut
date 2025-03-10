@@ -20,7 +20,7 @@ function findMaxLowerValue(val, list) {
       found = true
       continue
     }
-    //v > val
+    
     if (!found && (res == null || v < res))
       res = v
   }

@@ -1,16 +1,16 @@
 from "%globalScripts/logs.nut" import *
 let utf8 = require("utf8")
 
-let whitespaceCharsAllowed = [ "\u0020" "\u00A0" ] // Space and No-Break Space
+let whitespaceCharsAllowed = [ "\u0020" "\u00A0" ] 
 
-// The complete list of tricky chars in range 0000-FFFF (non standard whitespace, blank, ignorable).
-// Every "invisible username" guide in the web uses at least one of those chars in almost all its examples.
-// Normal usernames should NOT use those chars.
+
+
+
 let whitespaceCharsForbidden = "\u0009\u000A\u000B\u000C\u000D\u001C\u0085\u00AD\u034F\u061C\u070F\u115F\u1160\u1680\u17B4\u17B5\u180B\u180C\u180D\u180E\u180F\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u200B\u200C\u200D\u200E\u200F\u2028\u2029\u202A\u202B\u202C\u202D\u202E\u202F\u205F\u2060\u2061\u2062\u2063\u2064\u2065\u2066\u2067\u2068\u2069\u206A\u206B\u206C\u206D\u206E\u206F\u2800\u3000\u3164\uFE00\uFE01\uFE02\uFE03\uFE04\uFE05\uFE06\uFE07\uFE08\uFE09\uFE0A\uFE0B\uFE0C\uFE0D\uFE0E\uFE0F\uFEFF\uFFA0\uFFF0\uFFF1\uFFF2\uFFF3\uFFF4\uFFF5\uFFF6\uFFF7\uFFF8"
 
-// Barely visible non-whitespace chars collected from "invisible username" guides in the web.
-// Those chars CAN be used in normal usernames too.
-// But if username consists of only those chars, then this username is tricky.
+
+
+
 let barelyVisibleCharRanges = [
   [ "\u02B0", "\u036F" ],
   [ "\u064B", "\u0660" ],
@@ -42,9 +42,9 @@ function isClearlyVisibleChar(c) {
   return true
 }
 
-// It should filter out all possible completely invisible names,
-// most examples of barely visible names from the web,
-// and almost all variations of barely visible names that can be typed on a keyboard.
+
+
+
 function isNameNormallyVisible(name) {
   let charsArray = getUnicodeCharsArray(name)
   if (charsArray.findindex(@(c) whitespaceCharsForbidden.contains(c)) != null)

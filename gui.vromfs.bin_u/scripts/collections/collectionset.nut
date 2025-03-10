@@ -6,7 +6,7 @@ let { ceil } = require("math")
 let { getPrizesListView } = require("%scripts/items/prizesView.nut")
 
 local CollectionsSet = class {
-  id = "" //name of config blk. not unique
+  id = "" 
   uid = -1
   reqFeature = null
   locId = ""

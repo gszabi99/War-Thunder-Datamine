@@ -1,6 +1,6 @@
-///!!!!!
-// !! THIS IS AUWFUL TRASHBIN. MOVE from here to proper places (and remove globals)
-//!!!!!!
+
+
+
 
 enum HELP_CONTENT_SET {
   MISSION
@@ -31,7 +31,7 @@ enum SEEN {
   DECORATORS = "decorators"
   DECALS = "decals"
 
-  //sublists
+  
   S_EVENTS_WINDOW = "##events_window##"
 }
 

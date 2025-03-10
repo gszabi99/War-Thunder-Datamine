@@ -24,7 +24,7 @@ function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc) {
   let ws = get_warpoints_blk()
   let wpMax = ws.dynPlanesMaxCost
 
-//planes cost and warpoint ratio calculate
+
   let playerFighterPlane = getAnyPlayerFighter(0, wpMax)
   local playerPlaneCost = getAircraftCost(playerFighterPlane)
   if (playerPlaneCost == 0)
@@ -37,7 +37,7 @@ function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc) {
 
   let planeCost = planeCostCalculate(playerPlaneCost, enemyPlaneCost)
 
-//bombers count
+
   local ground_type = ""
   local squad_type = ""
   let tanks_count = mgGetUnitsCount("#bomb_targets_tanks")
@@ -89,7 +89,7 @@ function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc) {
   mgReplace("triggers", "target", "#bomb_targets", squad_type)
 
   let bombersCount = min(rndRangeInt(16, 56), 48)
-//enemy waves and fighter count calculate
+
   let enemyFightersCountMin = bombersCount * 0.25 / planeCost
   let enemyFightersCountMax = bombersCount * 0.5 / planeCost
   let enemyFightersCount = clamp(rndRangeInt(enemyFightersCountMin, enemyFightersCountMax), 4, 20)
@@ -99,7 +99,7 @@ function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc) {
   if (allyCount < 4)
     allyCount = 0
 
-//battle distance calculate
+
   let timeToTarget = max(bombersCount / 6.0, 4)
   let playerSpeed = getDistancePerMinute(playerFighterPlane)
   let enemyBomberSpeed = 250 * 1000 / 60.0
@@ -121,7 +121,7 @@ function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc) {
   mgSetupArea("evac", bombtargets, startLookAt, 0, 90000, rndHeight)
   mgSetupArea("evac_forCut", bombtargets, startLookAt, 0, 2000, rndHeight)
 
-//armada setup
+
   mgSetupArmada("#player.fighter", "player_start", Point3(0, 0, 0), "enemy_start", "", 4, 4, playerFighterPlane)
   mgSetupArmada("#player_cut.any", "player_start", Point3(0, 0, 0), "enemy_start", "", 4, 4, playerFighterPlane)
   gmMarkCutsceneArmadaLooksLike("#player_cut.any", "#player.fighter")
@@ -144,7 +144,7 @@ function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc) {
   mgSetMinMaxAircrafts("enemy", "fighter", 0, 24)
   mgSetMinMaxAircrafts("enemy", "bomber", 8, 48)
 
-//mission warpoint cost calculate
+
   let mission_mult = (bombersCount - 12) / 15.0 + 0.05
   let missionWpCost = warpointCalculate(mission_preset_name, 1, 5, 1,
     playerFighterPlane, mission_mult)
@@ -159,7 +159,7 @@ function generateInterceptBombingMission(isFreeFlight, createGroundUnitsProc) {
 
   mgSetBool("variables/training_mode", isFreeFlight)
 
- //  mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testBombingDefense_temp.blk")
+ 
   if (mgFullLogs())
     debug_dump_stack()
 

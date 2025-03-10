@@ -16,7 +16,7 @@ let { get_option, registerOption } = require("%scripts/options/optionsExt.nut")
 local isAircraftHelpersOptionsInitialized = false
 local isHelpersChangePerformed = false
 
-// Shorter options names
+
 let controlHelpersOptions = {
   helpersMode       = USEROPT_HELPERS_MODE
   mouseUsage        = USEROPT_MOUSE_USAGE
@@ -25,9 +25,9 @@ let controlHelpersOptions = {
   autotrim          = USEROPT_AUTOTRIM
 }
 
-// Get mouse usage from axes params
+
 function getPresetMouseUsage() {
-  // Load current mouse usage from used preset
+  
   let curPreset = getCurControlsPreset()
   if (curPreset.params?.mouseJoystick)
     return AIR_MOUSE_USAGE.JOYSTICK
@@ -39,27 +39,27 @@ function getPresetMouseUsage() {
   return AIR_MOUSE_USAGE.NOT_USED
 }
 
-// Update mouse usage in axes params according to helpers options
+
 function updatePresetMouseUsage() {
   let curPreset = getCurControlsPreset()
   let mouseUsageNoAim = get_gui_option_in_mode(
     USEROPT_MOUSE_USAGE_NO_AIM, OPTIONS_MODE_GAMEPLAY)
 
-  // Do not update mouse usage if it not chagned
+  
   if (getPresetMouseUsage() == mouseUsageNoAim)
     return
 
-  // Update mouseJoystick param
+  
   curPreset.params.mouseJoystick <-
     mouseUsageNoAim == AIR_MOUSE_USAGE.JOYSTICK
 
-  // Clear mouse axes
+  
   foreach (_axisName, axis in curPreset.axes)
     if ("mouseAxisId" in axis &&
       (axis.mouseAxisId == 0 || axis.mouseAxisId == 1))
       axis.mouseAxisId <- -1
 
-  // Set new mouse axes
+  
   if (mouseUsageNoAim == AIR_MOUSE_USAGE.JOYSTICK ||
     mouseUsageNoAim == AIR_MOUSE_USAGE.RELATIVE) {
     curPreset.getAxis("ailerons").mouseAxisId <- 0
@@ -70,18 +70,18 @@ function updatePresetMouseUsage() {
     curPreset.getAxis("camy").mouseAxisId <- 1
   }
 
-  // Commit changes if committing not performed now
+  
   commitControls()
 }
 
-// Helper options change handler
+
 function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) {
-  // Do not continue if not logged in or if recursion call happend
+  
   if (!isLoggedIn.get() || isHelpersChangePerformed)
     return
   isHelpersChangePerformed = true
 
-  // Get current options values
+  
   let options = {}
   if (!forceUpdateFromPreset)
     foreach (name, optionId in controlHelpersOptions)
@@ -92,7 +92,7 @@ function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) 
       options[name] <- null
   let prevOptions = clone options
 
-  // Synchronize mouseUsage and mouseUsageNoAim
+  
   if (options.mouseUsage != AIR_MOUSE_USAGE.AIM) {
     if (forcedByOption == USEROPT_MOUSE_USAGE_NO_AIM)
       options.mouseUsage = options.mouseUsageNoAim
@@ -100,7 +100,7 @@ function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) 
       options.mouseUsageNoAim = options.mouseUsage
   }
 
-  // Determine target helpers mode
+  
   if (forcedByOption == USEROPT_MOUSE_USAGE) {
     if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
       options.helpersMode = globalEnv.EM_MOUSE_AIM
@@ -120,7 +120,7 @@ function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) 
       options.helpersMode = globalEnv.EM_FULL_REAL
   }
   else if (options.helpersMode == null) {
-    // For new profiles or profiles without helpersMode
+    
     if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
       options.helpersMode = globalEnv.EM_MOUSE_AIM
     else if (options.autotrim == false)
@@ -133,11 +133,11 @@ function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) 
   }
 
 
-  // Enable helpers before set according to helpers mode
+  
   options.instructorEnabled = true
   options.autotrim = true
 
-  // Set helpers options according to helpers mode
+  
   let helpersMode = options.helpersMode
   if ( helpersMode == globalEnv.EM_FULL_REAL) {
     options.instructorEnabled = false
@@ -158,14 +158,14 @@ function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) 
     options.mouseUsage = AIR_MOUSE_USAGE.AIM
   }
 
-  // Load current mouse usage from preset if it undefined
+  
   if (options.mouseUsageNoAim == null) {
     options.mouseUsageNoAim = getPresetMouseUsage()
     if (options.mouseUsage == null)
       options.mouseUsage = options.mouseUsageNoAim
   }
 
-  // Set changed gui options
+  
   foreach (name, optionId in controlHelpersOptions)
     if (options[name] != prevOptions[name])
       set_gui_option_in_mode(optionId,
@@ -176,7 +176,7 @@ function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) 
   isAircraftHelpersOptionsInitialized = true
 }
 
-// Set option and call change handler if changed
+
 function setAircraftHelpersOptionValue(optionId, newValue) {
   let oldValue = get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
   if (oldValue == newValue)
@@ -185,7 +185,7 @@ function setAircraftHelpersOptionValue(optionId, newValue) {
   onHelpersChanged(optionId)
 }
 
-// Init options if not and get option
+
 function getAircraftHelpersOptionValue(optionId) {
   if (!isAircraftHelpersOptionsInitialized)
     onHelpersChanged()

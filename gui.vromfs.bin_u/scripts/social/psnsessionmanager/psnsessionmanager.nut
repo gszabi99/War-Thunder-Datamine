@@ -26,12 +26,12 @@ let PSN_SESSION_TYPE = {
   SQUAD = "squad"
 }
 
-/*
-[sessionId] = {
-  sType = [PSN_SESSION_TYPE]
-  data = [getSessionData()]
-}
-*/
+
+
+
+
+
+
 let createdSessionData = mkWatched(persist, "createdSessionData", {})
 let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
    createdSessionData.mutate(@(v) v[sessionId] <- {
@@ -41,10 +41,10 @@ let dumpSessionData = function(sessionId, sType, pushContextId, sessionData) {
     })
 }
 
-// { [PSN_SESSION_TYPE] = data }
+
 let pendingSessions = mkWatched(persist, "pendingSessions", {})
 
-//[sessionId] = {activityId, isSpectator}
+
 let postponedInvitations = mkWatched(persist, "postponedInvitations", [])
 
 let getLocalizedTextInfo = function(locIdsArray) {
@@ -70,8 +70,8 @@ let getCustomDataByType = @(sType) sType == PSN_SESSION_TYPE.SKIRMISH
       ]
     : []
 
-// TODO: replace with normal base64 encode/decode
-// Just in time of psn tests.
+
+
 let BASE64_SEPARATOR = "/"
 let BASE64_GARBAGE = "+"
 let encodeDataToBase64Like = function(data) {
@@ -90,9 +90,9 @@ let encodeDataToBase64Like = function(data) {
       base64Str = "".concat(base64Str, BASE64_GARBAGE)
   }
 
-  //It is basically string with
-  //  '/' is delimiter
-  //  '+' is just a garbage for ending %4 length string
+  
+  
+  
   return base64Str
 }
 
@@ -117,8 +117,8 @@ let getSessionData = @(sType, pushContextId) sType == PSN_SESSION_TYPE.SKIRMISH
       playerSessions = [{
         supportedPlatforms = ["PS4", "PS5"]
         maxPlayers = getSessionLobbyMaxMembersCount()
-        maxSpectators = 50 //default value by PSN
-        joinDisabled = !getSessionLobbyPublicParam("allowJIP", true) && isRoomInSession.get() //todo update during battle - by allowJip && isInSession
+        maxSpectators = 50 
+        joinDisabled = !getSessionLobbyPublicParam("allowJIP", true) && isRoomInSession.get() 
         member = {
           players = [{
             accountId = "me"
@@ -139,13 +139,13 @@ let getSessionData = @(sType, pushContextId) sType == PSN_SESSION_TYPE.SKIRMISH
         ]
         swapSupported = !getIsSpectatorSelectLocked()
         customData1 = encodeDataToBase64Like(getCustomDataByType(PSN_SESSION_TYPE.SKIRMISH))
-        /*customData1 = base64.encodeJson({
-          roomId = getSessionLobbyRoomId(),
-          inviterUid = userIdStr.value,
-          inviterName = userName.value
-          password = getSessionLobbyPassword()
-          key = PSN_SESSION_TYPE.SKIRMISH
-        })?.result ?? ""*/
+        
+
+
+
+
+
+
       }]
     }
   : sType == PSN_SESSION_TYPE.SQUAD
@@ -207,7 +207,7 @@ let create = function(sType, saveSessionIdCb) {
 }
 
 let destroy = function(sType) {
-  //Delete all sessions for [sType], anyway, there must be only one
+  
   foreach (sessionId, info in createdSessionData.value)
     if (!isEmpty(sessionId) && info.sType == sType) {
       let sId = sessionId
@@ -283,7 +283,7 @@ let proceedInvite = function(p) {
   let isInPsnSession = sessionId in createdSessionData.value
 
   if (isEmpty(sessionId) || isInPsnSession)
-    return // Most-likely we are joining from PSN Overlay
+    return 
 
   if (!isLoggedIn.get() || is_in_loading_screen()) {
     log("[PSGI:PI] delaying PSN invite until logged in and loaded")
@@ -292,7 +292,7 @@ let proceedInvite = function(p) {
   }
 
   if (isInPsnSession) {
-    //There is no deactivation, so just do nothing
+    
     log("[PSGI:PI] stale PSN invite: already joined")
     return
   }
@@ -327,7 +327,7 @@ addListenersWithoutEnv({
         log($"[PSSM] onEventSquadStatusChanged leader: {isLeader}, psnSessions: {createdSessionData.value.len()}")
         log($"[PSSM] onEventSquadStatusChanged session bound to PSN: {isInPsnSession}")
 
-        if (!isLeader && !isInPsnSession) // Invite accepted on normal relogin
+        if (!isLeader && !isInPsnSession) 
           join(
             sessionId,
             false,
@@ -336,7 +336,7 @@ addListenersWithoutEnv({
                 dumpSessionData(sId, PSN_SESSION_TYPE.SQUAD, pushContextId, {})
             }
           )
-        else if (isLeader && (isEmpty(sessionId) || isEmpty(createdSessionData.value))) { // Squad implicitly created || Autotransfer on login
+        else if (isLeader && (isEmpty(sessionId) || isEmpty(createdSessionData.value))) { 
           create(
             PSN_SESSION_TYPE.SQUAD,
             function(sId, err) {

@@ -27,7 +27,7 @@ let hasAlredyActiveJoinProcess = @() activeEventJoinProcess.len() > 0
   && (get_time_msec() - activeEventJoinProcess[0].processStartTime) < PROCESS_TIME_OUT
 
 function setSquadReadyFlag(event) {
-  //Don't allow to change ready status, leader don't know about members balance
+  
   if (!events.haveEventAccessByCost(event))
     showInfoMsgBox(loc("events/notEnoughMoney"))
   else if (events.eventRequiresTicket(event) && events.getEventActiveTicket(event) == null)
@@ -49,7 +49,7 @@ function canJoinEventForNewbies(event) {
 }
 
 let EventJoinProcess = class {
-  event = null // Event to join.
+  event = null 
   room = null
   onComplete = null
   cancelFunc = null
@@ -69,8 +69,8 @@ let EventJoinProcess = class {
     if (activeEventJoinProcess.len()) {
       let prevProcessStartTime = activeEventJoinProcess[0].processStartTime
       if (get_time_msec() - prevProcessStartTime < PROCESS_TIME_OUT) {
-        let eventName = v_event.name // warning disable: -declared-never-used
-        let prevProcessStepName = activeEventJoinProcess[0].processStepName // warning disable: -declared-never-used
+        let eventName = v_event.name 
+        let prevProcessStepName = activeEventJoinProcess[0].processStepName 
         return assert(false, "Error: trying to use 2 join event processes at once")
       }
       else
@@ -209,13 +209,13 @@ let EventJoinProcess = class {
 
   function joinStep8_joinQueue(membersData = null) {
     this.processStepName = "joinStep8_joinQueue"
-    //join room
+    
     if (this.room)
       joinSessionRoom(this.room.roomId)
     else {
       let joinEventParams = {
         mode    = this.event.name
-        //team    = team //!!can choose team correct only with multiEvents support
+        
         country = profileCountrySq.value
       }
       if (membersData)
@@ -226,9 +226,9 @@ let EventJoinProcess = class {
     this.onDone()
   }
 
-  //
-  // Helpers
-  //
+  
+  
+  
 
   function checkEventTeamSize(ev) {
     let squadSize = g_squad_manager.getSquadSize()
@@ -245,9 +245,9 @@ let EventJoinProcess = class {
     return true
   }
 
-  //
-  // Delegates from current base gui handler.
-  //
+  
+  
+  
 
   function msgBox(id, text, buttons, def_btn, options = {}) {
     scene_msg_box(id, null, text, buttons, def_btn, options)

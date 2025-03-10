@@ -299,7 +299,7 @@ function getBombModeCaption(mode) {
     texts.append(loc("HUD/WEAPON_MODE_CCIP"))
   }
 
-  //check both ccip/rp and bombBay
+  
   let ballisticModeBits = mode & (1 << (WeaponMode.CCRP_MODE + 1))
   if (ballisticModeBits > 0 && (mode ^ ballisticModeBits) > 0)
     texts.append("  ")
@@ -571,8 +571,8 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
   }
 }
 
-//thoses local values are used for direct subscription
-//Rpm
+
+
 let TrtModeForRpm = TrtMode[0]
 
 let agmBlinkComputed = Computed(@() (IsAgmLaunchZoneVisible.value &&
@@ -796,7 +796,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   textParamsMapSecondary[AirParamsSecondary.OIL_1 + (i * numParamPerEngine)] <- {
     titleComputed = WatchedRo(loc($"HUD/OIL_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? ""
-      : generateTemperatureTextFunction(oilTemperatureComputed.value, oilStateComputed.value, measureUnitsNames.value.temperature)) //warning disable -param-pos
+      : generateTemperatureTextFunction(oilTemperatureComputed.value, oilStateComputed.value, measureUnitsNames.value.temperature)) 
     selectedComputed = WatchedRo("")
     additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() oilAlertComputed.value)
@@ -809,7 +809,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   textParamsMapSecondary[AirParamsSecondary.WATER_1 + (i * numParamPerEngine)] <- {
     titleComputed = WatchedRo(loc($"HUD/WATER_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? ""
-      : generateTemperatureTextFunction(waterTemperatureComputed.value, waterStateComputed.value, measureUnitsNames.value.temperature)) //warning disable -param-pos
+      : generateTemperatureTextFunction(waterTemperatureComputed.value, waterStateComputed.value, measureUnitsNames.value.temperature)) 
     selectedComputed = WatchedRo("")
     additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() waterAlertComputed.value)
@@ -822,7 +822,7 @@ for (local i = 0; i < NUM_VISIBLE_ENGINES_MAX; ++i) {
   textParamsMapSecondary[AirParamsSecondary.ENGINE_1 + (i * numParamPerEngine)] <- {
     titleComputed = WatchedRo(loc($"HUD/ENGINE_TEMPERATURE_SHORT{indexStr}"))
     valueComputed = Computed(@() !isInitializedMeasureUnits.value ? ""
-      : generateTemperatureTextFunction(engineTemperatureComputed.value, engineStateComputed.value, measureUnitsNames.value.temperature)) //warning disable -param-pos
+      : generateTemperatureTextFunction(engineTemperatureComputed.value, engineStateComputed.value, measureUnitsNames.value.temperature)) 
     selectedComputed = WatchedRo("")
     additionalComputed = WatchedRo("")
     alertStateCaptionComputed = Computed(@() engineAlertComputed.value)
@@ -1231,7 +1231,7 @@ let turretAnglesComponent = function(colorWatch, width, height, posX, posY, blin
 }
 
 
-// agm launch zone rectange in optic sight
+
 function agmLaunchZone(colorWatch, _w, _h) {
   let isLaunchZoneBlinking = Computed(@() !IsInsideLaunchZoneYawPitch.value)
   let isLaunchZoneTrigger = {}
@@ -1269,7 +1269,7 @@ function agmLaunchZone(colorWatch, _w, _h) {
           [VECTOR_LINE, left,  lower, left,  upper]
         ]
       } else {
-        // out of zone arrow
+        
         let ax = ((left + right) * 0.5 - 50) * 0.100
         let ay = ((lower + upper) * 0.5 - 50) * 0.100
         local x1, y1;
@@ -1510,7 +1510,7 @@ let HelicopterTATarget = @(w, h, isForIls) function() {
   if (!VisibleWatch.value && TargetAge.value < 0.2)
     return res
 
-  // border
+  
   let taTargetcommands = [
     [VECTOR_LINE, -10, -10, 10, -10],
     [VECTOR_LINE, 10, -10, 10, 10],

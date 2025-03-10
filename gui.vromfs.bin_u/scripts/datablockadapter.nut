@@ -3,19 +3,19 @@ from "%scripts/dagui_library.nut" import *
 
 let { isDataBlock } = require("%sqstd/underscore.nut")
 
-//to use table by DataBlock api
-//Only get Data from table, not set.
-//
-//supported operators:
-// _get             ( blk.key,  blk[key] )
-// _modulo          ( blk % "key" )
-// getBlockByName(key)
-// getBlockName
-// blockCount
-// getBlock(i)
-// paramCount
-// getParamValue(i)
-// getParamName(i)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 local DataBlockAdapter
 DataBlockAdapter = class {

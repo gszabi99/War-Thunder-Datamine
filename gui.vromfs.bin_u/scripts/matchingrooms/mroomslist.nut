@@ -15,8 +15,8 @@ let { isPlayerInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getRoomMembersCnt, getRoomCreatorUid } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getMisListType } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
-const ROOM_LIST_REFRESH_MIN_TIME = 3000 //ms
-const ROOM_LIST_REQUEST_TIME_OUT = 45000 //ms
+const ROOM_LIST_REFRESH_MIN_TIME = 3000 
+const ROOM_LIST_REQUEST_TIME_OUT = 45000 
 const ROOM_LIST_TIME_OUT = 180000
 const MAX_SESSIONS_LIST_LEN = 1000
 const SKIRMISH_ROOMS_LIST_ID = "skirmish"
@@ -35,12 +35,12 @@ MRoomsList = class {
 
   static mRoomsListById = {}
 
-/*************************************************************************************************/
-/*************************************PUBLIC FUNCTIONS *******************************************/
-/*************************************************************************************************/
+
+
+
 
   static function getMRoomsListByRequestParams(requestParams) {
-    local roomsListId = SKIRMISH_ROOMS_LIST_ID //empty request params is a skirmish
+    local roomsListId = SKIRMISH_ROOMS_LIST_ID 
     if ("eventEconomicName" in requestParams)
       roomsListId = $"economicName:{requestParams.eventEconomicName}"
 
@@ -112,9 +112,9 @@ MRoomsList = class {
     return true
   }
 
-/*************************************************************************************************/
-/************************************PRIVATE FUNCTIONS *******************************************/
-/*************************************************************************************************/
+
+
+
 
   function requestListCb(p, hideFullRooms) {
     this.isInUpdate = false
@@ -165,7 +165,7 @@ MRoomsList = class {
     else {
       filter["public/platformRestriction"] <- {
         test = "eq"
-        value = null // only non-restricted rooms will be passed
+        value = null 
       }
     }
   }
@@ -173,10 +173,10 @@ MRoomsList = class {
   function getFetchRoomsParams(ui_filter) {
     let filter = {}
     let res = {
-      group = "custom-lobby" // "xbox-lobby" for xbox
+      group = "custom-lobby" 
       filter = filter
 
-      // TODO: implement paging in client
+      
       cursor = 0
       count = 100
     }
@@ -221,7 +221,7 @@ MRoomsList = class {
     return res
   }
 
-  function updateRoomsList(rooms, hideFullRooms) { //can be called each update
+  function updateRoomsList(rooms, hideFullRooms) { 
     if (rooms.len() > MAX_SESSIONS_LIST_LEN) {
       let message = format("Error in SessionLobby.updateRoomsList:\nToo long rooms list - %d", rooms.len())
       script_net_assert_once("too long rooms list", message)

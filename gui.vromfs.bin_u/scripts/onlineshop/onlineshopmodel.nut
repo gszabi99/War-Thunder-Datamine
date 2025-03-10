@@ -37,10 +37,10 @@ function startEntitlementsUpdater() {
   )
 }
 
-//Get custom URL for purchase goods from regional stores
-//if returns "" uses default store.
-//custom URLs are defined for particular languages and almost always are ""
-//Consoles are exception. They always uses It's store.
+
+
+
+
 function getCustomPurchaseUrl(chapter) {
   if (isPlatformSony || is_gdk)
     return ""
@@ -97,7 +97,7 @@ function openUpdateBalanceMenu(customUrl) {
   openRightClickMenu(menu, null)
 }
 
-//return true when custom Url found
+
 function checkAndOpenCustomPurchaseUrl(chapter) {
   let customUrl = getCustomPurchaseUrl(chapter)
   if (customUrl == "")
@@ -120,8 +120,8 @@ function checkAndOpenCustomPurchaseUrl(chapter) {
   return true
 }
 
-//Check is price.blk is fresh and perform an action.
-//If prise.blk is rotten, upfate price.blk and then perform action.
+
+
 function assyncActionWrap(action) {
   let isActual = ENTITLEMENTS_PRICE.checkUpdate(
     action,
@@ -136,7 +136,7 @@ function assyncActionWrap(action) {
 
 function doBrowserPurchaseByGuid(guid, dbgGoodsName = "") {
   let isSteam = steam_is_running()
-    && (havePlayerTag("steam") || hasFeature("AllowSteamAccountLinking")) //temporary use old code pass for steam
+    && (havePlayerTag("steam") || hasFeature("AllowSteamAccountLinking")) 
 
   let url = isSteam
     ? format(loc("url/webstore/steam/item"), guid, steam_get_app_id(), steam_get_my_id().tostring())
@@ -154,8 +154,8 @@ function doBrowserPurchaseByGuid(guid, dbgGoodsName = "") {
 function doBrowserPurchase(goodsName) {
   if (isPlatformSony || is_gdk)
     return openIngameStore()
-  //just to avoid bugs, when users, who should to purchase goods in regional
-  //web shops, accidentally uses ingame online shop
+  
+  
   let customUrl = getCustomPurchaseUrl(getGoodsChapter(goodsName))
   if (customUrl != "") {
     openShopUrl(customUrl)
@@ -197,12 +197,12 @@ function openModalOnlineShop(owner = null, chapter = null, afterCloseFunc = null
   loadHandler(hClass, { owner = owner, afterCloseFunc = afterCloseFunc, chapter = chapter })
 }
 
-/*
- * API:
- *
- *  showUnitGoods(unitName)
- *    Find goods and open it in store
-*/
+
+
+
+
+
+
 function showUnitGoods(unitName, requestOrigin) {
   if (!hasFeature("OnlineShopPacks"))
     return showInfoMsgBox(loc("msgbox/notAvailbleYet"))
@@ -235,7 +235,7 @@ function showUnitGoods(unitName, requestOrigin) {
     return openModalOnlineShop()
   })
 }
-/*end API methods*/
+
 
 function openBrowserByPurchaseData(purchaseData) {
   if (!purchaseData.canBePurchased)
@@ -280,10 +280,10 @@ function launchOnlineShop(owner = null, chapter = null, afterCloseFunc = null, l
   openModalOnlineShop(owner, chapter, afterCloseFunc)
 }
 
-::launchOnlineShop <- launchOnlineShop //!!!FIX ME: Need remove use this function in baseGuiHandlerWT.nut
-//                                                                            //
-////////////////////////////////////////////////////////////////////////////////
-//                                                                            //
+::launchOnlineShop <- launchOnlineShop 
+
+
+
 
 function openOnlineShopFromPromo(handler, params) {
   let shopType = params?[0]

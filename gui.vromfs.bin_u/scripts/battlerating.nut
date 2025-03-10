@@ -46,7 +46,7 @@ let getRecentSquadMrank = @() calcSquadMrank(recentBRData.value)
 
 function calcSquadBattleRating(brData) {
   let mrank = calcSquadMrank(brData)
-  // mrank < 0  means empty received data and no BR string needed in game mode header
+  
   return mrank < 0 ? 0 : calcBattleRatingFromRank(mrank)
 }
 
@@ -176,8 +176,8 @@ function requestBattleRating(cb, recentUserData) {
 }
 
 local updateBattleRating
-updateBattleRating = function(gameMode = null, brData = null) { //!!FIX ME: why outside update request and internal callback the same function?
-  //it make harder to read it, and can have a lot of errors.
+updateBattleRating = function(gameMode = null, brData = null) { 
+  
   gameMode = gameMode ?? getCurrentGameMode()
   recentBrGameModeId(gameMode?.id ?? "")
   recentBrSourceGameModeId(gameMode?.source.gameModeId)
@@ -198,11 +198,11 @@ updateBattleRating = function(gameMode = null, brData = null) { //!!FIX ME: why 
     return
   }
 
-  if (isBRKnown(recentUserData)) //!!FIX ME: this cache does not work, it always request again when switch between 2 units by single mouse click
+  if (isBRKnown(recentUserData)) 
     return
 
   let callback = function(resp) {
-    isUpdating = false //FIX ME: it a bad idea to change this flag in very different places. Also it not switch off on error
+    isUpdating = false 
     updateBattleRating(gameMode, resp)
   }
 
@@ -212,7 +212,7 @@ updateBattleRating = function(gameMode = null, brData = null) { //!!FIX ME: why 
 
 local isRequestDelayed = false
 function updateBattleRatingDelayed() {
-  if (isRequestDelayed || isInFlight() || isNeedFirstCountryChoice()) //do not recalc while in the battle
+  if (isRequestDelayed || isInFlight() || isNeedFirstCountryChoice()) 
     return
   isRequestDelayed = true
   handlersManager.doDelayed(function() {

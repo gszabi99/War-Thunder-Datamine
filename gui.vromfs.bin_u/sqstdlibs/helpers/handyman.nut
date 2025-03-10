@@ -1,32 +1,32 @@
 
-/**
- * Documenation: http://mustache.github.io/mustache.5.html
- *
- * to insert generated layout in template use tag @
- * <<@layout>>
- * such param will be not stripTagged
- *
- * to insert localized text you can use tag ?
- * <<?mainmenu/btnControls>>
- *
- *  API
- *
- *  handyman.render(template, view)
- *    @template - template raw string
- *    @view - table of data for template
- *    @return - template string with filled data
- *
- *  handyman.renderCached(template_name, view)
- *    @template_name - template name in format <path-to-template>/<template-file-name>
- *      File name should be without extantion
- *    @view - table of data for template
- *    @return - template string with filled data
- *
- *  Main difference betwin this two calls is in caching.
- *  handyman.render(/.../) use whole template raw string as
- *  cache id for rendered tokens.
- *  handyman.renderCached(template_name, view) use just template file name.
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let g_string =  require("%sqstd/string.nut")
 let { loc } = require("dagor.localize")
@@ -35,10 +35,10 @@ let {memoize} = require("%sqstd/functools.nut")
 let { read_text_from_file } = require("dagor.fs")
 let loadTemplateText = memoize(@(v) read_text_from_file(v))
 
-/**
- * A simple string scanner that is used by the template parser to find
- * tokens in template strings.
- */
+
+
+
+
 local handyman
 local Scanner = class {
   string = ""
@@ -51,17 +51,17 @@ local Scanner = class {
     this.pos = 0
   }
 
-  /**
-   * Returns `true` if the tail is empty (end of string).
-   */
+  
+
+
   function eos () {
     return this.tail == ""
   }
 
-  /**
-   * Tries to match the given regular expression at the current position.
-   * Returns the matched text if it can match, the empty string otherwise.
-   */
+  
+
+
+
   function scan (re) {
     local match = re.search(this.tail)
 
@@ -75,10 +75,10 @@ local Scanner = class {
     return ""
   }
 
-  /**
-   * Skips all text until the given regular expression can be matched. Returns
-   * the skipped string, which is the entire tail if no match can be made.
-   */
+  
+
+
+
   function scanUntil(re) {
     local res = re.search(this.tail)
     local match
@@ -112,18 +112,18 @@ Context = class {
     this.parentContext = parentContext_
   }
 
-  /**
-   * Creates a new context using the given view with this context
-   * as the parent.
-   */
-  function push(view) {//warning disable: -ident-hides-ident
+  
+
+
+
+  function push(view) {
     return Context(view, this)
   }
 
-  /**
-   * Returns the value of the given name in this context, traversing
-   * up the context hierarchy if the value is absent in this context's view.
-   */
+  
+
+
+
   function lookup (name) {
     local value = null
     local context = this
@@ -161,11 +161,11 @@ Context = class {
   }
 }
 
-/**
- * A Writer knows how to take a stream of tokens and render them to a
- * string, given a context. It also maintains a cache of templates to
- * avoid the need to parse the same template twice.
- */
+
+
+
+
+
 
 local Writer = class {
   cache = {}
@@ -183,18 +183,18 @@ local Writer = class {
     this.cache = {}
   }
 
-  /**
-   * Clears all cached templates in this writer.
-   */
+  
+
+
   function clearCache() {
     this.cache = {}
   }
 
-  /**
-   * Parses and caches the given `template` and returns the array of tokens
-   * that is generated from the parse.
-   */
-  function parse(template, tags = null) { //warning disable: -ident-hides-ident
+  
+
+
+
+  function parse(template, tags = null) { 
     local tokens = this.cache?[template]
     if (tokens == null) {
       tokens = this.parseTemplate(template, tags)
@@ -204,35 +204,35 @@ local Writer = class {
     return tokens
   }
 
-  /**
-   * High-level method that is used to render the given `template` with
-   * the given `view`.
-   *
-   * The optional `partials` argument may be an object that contains the
-   * names and templates of partials that are used in the template. It may
-   * also be a function that is used to load partial templates on the fly
-   * that takes a single argument: the name of the partial.
-   */
+  
+
+
+
+
+
+
+
+
   function render(template, view, partials = null) {
     local tokens = this.parse(template)
     local context = (type(view) == "instance" && view instanceof Context) ? view : Context(view)
     return this.renderTokens(tokens, context, partials, template)
   }
 
-  /**
-   * Low-level method that renders the given array of `tokens` using
-   * the given `context` and `partials`.
-   *
-   * Note: The `originalTemplate` is only ever used to extract the portion
-   * of the original template that was contained in a higher-order section.
-   * If the template doesn't use higher-order sections, this argument may
-   * be omitted.
-   */
+  
+
+
+
+
+
+
+
+
   function renderTokens(tokens, context, partials, originalTemplate) {
     local buffer = []
 
-    // This function is used to render an arbitrary template
-    // in the current context by higher-order sections.
+    
+    
     local self = this
     local subRender = function (template) {
       return self.render(template, context, partials)
@@ -253,7 +253,7 @@ local Writer = class {
             buffer.append(this.renderTokens(token[4], context.push(value[j]), partials, originalTemplate))
           }
         }
-        else if (type(value) == "table" || type(value) == "instance" || type(value) == "string") { // !!!!
+        else if (type(value) == "table" || type(value) == "instance" || type(value) == "string") { 
 
           buffer.append(this.renderTokens(token[4], context.push(value), partials, originalTemplate))
         }
@@ -263,7 +263,7 @@ local Writer = class {
             return "".join(buffer)
           }
 
-          // Extract the portion of the original template that the section contains.
+          
           value = value.call(context.view, originalTemplate.slice(token[3], token[5]), subRender)
 
           if (type(value) == "string")
@@ -292,7 +292,7 @@ local Writer = class {
         if (value != null) {
           local valueTemplate
           local valueTokens
-          // Assume value is a path to some cached template.
+          
           if (value in handyman.templateByTemplatePath) {
             valueTemplate = handyman.templateByTemplatePath[value]
             valueTokens = handyman.tokensByTemplatePath[value]
@@ -353,7 +353,7 @@ local Writer = class {
     return string
   }
 
-  function escapeTags(tags) { //warning disable: -ident-hides-ident
+  function escapeTags(tags) { 
     if (!(type(tags) == "array") || tags.len() != 2) {
       assert(false, $"Invalid tags: {tags}")
     }
@@ -365,7 +365,7 @@ local Writer = class {
   }
 
   function parseTemplate(template, tags_ = null) {
-    local tags = tags_ || this.tags //warning disable: -ident-hides-ident
+    local tags = tags_ || this.tags 
     template = template || ""
 
     if (type(tags) == "string")
@@ -374,18 +374,18 @@ local Writer = class {
     local tagRes  = this.escapeTags(tags)
     local scanner = Scanner(template)
 
-    local sections = []     // Stack to hold section tokens
-    local tokens   = []     // Buffer to hold the tokens
-    local spaces   = []     // Indices of whitespace tokens on the current line
-    local hasTag   = false  // Is there a {{tag}} on the current line?
-    local nonSpace = false  // Is there a non-space char on the current line?
+    local sections = []     
+    local tokens   = []     
+    local spaces   = []     
+    local hasTag   = false  
+    local nonSpace = false  
     local scanError = false
 
     local start, tType, value, chr, token, openSection
     while (!scanner.eos()) {
       start = scanner.pos
 
-      // Match any text between tags.
+      
       value = scanner.scanUntil(tagRes[0])
       if (value != "") {
         for (local i = 0; i < value.len(); ++i) {
@@ -400,10 +400,10 @@ local Writer = class {
           tokens.append(["text", chr, start, start + 1])
           start += 1
 
-          // Check for whitespace on the current line.
+          
           if (chr == "\n") {
-            // Strips all whitespace tokens array for the current line
-            // if there was a {{#tag}} on it and otherwise only space.
+            
+            
             if (hasTag && !nonSpace) {
               while (spaces.len()) {
                 tokens.remove(spaces.pop())
@@ -419,17 +419,17 @@ local Writer = class {
         }
       }
 
-      // Match the opening tag.
+      
       if (!scanner.scan(tagRes[0]))
         break
       hasTag = true
 
-      // Get the tag type.
+      
       local scaned = scanner.scan(this.tagRe)
       tType = scaned == "" ? "name" : scaned
       scanner.scan(this.whiteRe)
 
-      // Get the tag value.
+      
       if (tType == "=") {
         value = scanner.scanUntil(this.equalsRe)
         scanner.scan(this.equalsRe)
@@ -445,7 +445,7 @@ local Writer = class {
         value = scanner.scanUntil(tagRes[1])
       }
 
-      // Match the closing tag.
+      
       if (!scanner.scan(tagRes[1])) {
         assert(false, $"Unclosed tag at {scanner.pos}")
         scanError = true
@@ -458,7 +458,7 @@ local Writer = class {
         sections.append(token)
       }
       else if (tType == "/") {
-        // Check section nesting
+        
         openSection = sections.len()? sections.pop() : null
 
         if (!openSection) {
@@ -477,13 +477,13 @@ local Writer = class {
         nonSpace = true
       }
       else if (tType == "=") {
-        // Set the tags for the next time around.
+        
         tags = value.split(this.spaceRe)
         tagRes = this.escapeTags(tags)
       }
     }
 
-    // Make sure there are no open sections when we're done.
+    
     if (sections.len() > 0)
       assert(false, $"Unclosed section \"{sections[sections.len() - 1][1]}\" at {scanner.pos}")
 
@@ -493,10 +493,10 @@ local Writer = class {
     return this.nestTokens(this.squashTokens(tokens))
   }
 
-  /**
-   * Combines the values of consecutive text tokens in the given `tokens` array
-   * to a single token.
-   */
+  
+
+
+
   function squashTokens(tokens) {
     local squashedTokens = []
 
@@ -519,12 +519,12 @@ local Writer = class {
     return squashedTokens
   }
 
-  /**
-   * Forms the given array of `tokens` into a nested tree structure where
-   * tokens that represent a section have two additional items: 1) an array of
-   * all tokens that appear in that section and 2) the index in the original
-   * template that represents the end of that section.
-   */
+  
+
+
+
+
+
   function nestTokens(tokens) {
     local nestedTokens = []
     local collector = nestedTokens
@@ -557,44 +557,44 @@ local Writer = class {
 
 handyman = {
 
-  // All high-level functions use this writer.
+  
   defaultWriter = Writer()
 
-  // Caching
+  
   tokensByTemplatePath = {}
   templateByTemplatePath = {}
 
   lastCacheReset = 0
 
-  /*
-   * Clears all cached templates in the default writer.
-   * */
+  
+
+
   function clearCache() {
     return this.defaultWriter.clearCache()
   }
 
-  /*
-   * Parses and caches the given template in the default writer and returns the
-   * array of tokens it contains. Doing this ahead of time avoids the need to
-   * parse templates on the fly as they are rendered.
-   * */
+  
+
+
+
+
   function parse(template, tags) {
     return this.defaultWriter.parse(template, tags)
   }
 
-  /*
-   * Renders the `template` with the given `view` and `partials` using the
-   * default writer.
-   * */
+  
+
+
+
   function render(template, view, partials = null) {
     return this.defaultWriter.render(template, view, partials)
   }
 
-  /**
-   * @param cachePartials Setting this flag to 'true' means that values
-   * in 'partials' table are actually paths to corresponding templates
-   * which can be cached to increase render performance.
-   */
+  
+
+
+
+
   function renderCached(templatePath, view, partials = null, cachePartials = false) {
     this.updateCache(templatePath)
     if (partials != null && cachePartials)
@@ -639,11 +639,11 @@ handyman = {
     return template
   }
 
-  /*
-   * Helpers  function for rendering nested template
-   * @template - as regular, nested template string
-   * @translation - function, which returns wiew for nested template
-   * */
+  
+
+
+
+
   function renderNested(template, translate) {
     return function() {
       return function(text, render) {
@@ -654,11 +654,11 @@ handyman = {
 }
 
 
-/*******************************************************************************
- *******************************************************************************
- ************************************ TESTS ************************************
- *******************************************************************************
- ******************************************************************************/
+
+
+
+
+
 
 
 function testhandyman(_temaple = null, _view = null, _partails = null) {

@@ -153,7 +153,7 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
   if (uType < 0)
     uType = unlockBlk?.type != null ? get_unlock_type(unlockBlk.type) : -1
   local stage = ("stage" in config) ? config.stage : -1
-  let isMultiStage = unlockBlk?.isMultiStage ? true : false // means stages are auto-generated (used only for streaks).
+  let isMultiStage = unlockBlk?.isMultiStage ? true : false 
   let id = config?.displayId ?? realId
 
   res.desc = null
@@ -438,8 +438,8 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
 
   let rewards = { wp = "amount_warpoints", exp = "amount_exp", gold = "amount_gold" }
   local rewardsWasLoadedFromLog = false;
-  foreach (nameInConfig, _nameInBlk in rewards) //try load rewards data from log first because
-    if (nameInConfig in config) {                //award message can haven't appropriate unlock
+  foreach (nameInConfig, _nameInBlk in rewards) 
+    if (nameInConfig in config) {                
       res[nameInConfig] = config[nameInConfig]
       rewardsWasLoadedFromLog = true;
     }
@@ -455,15 +455,15 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
       res.rewardText = "".concat(res.rewardText, item.getName(), "\n", item.getNameMarkup())
   }
 
-  //check rewards and stages
+  
   if (unlockBlk) {
     local rBlock = DataBlock()
     rewardsWasLoadedFromLog = rewardsWasLoadedFromLog || unlockBlk?.aircraftPresentExtMoneyback == true
 
-    // stage >= 0 means there are stages.
-    // isMultiStage=false means stages are hard-coded (usually used for challenges and achievements).
-    // isMultiStage=true means stages are auto-generated (usually used only for streaks).
-    // there are streaks with stages and isMultiStage=false and they should have own name, icon, etc
+    
+    
+    
+    
     if (stage >= 0 && !isMultiStage && uType != UNLOCKABLE_STREAK) {
       local curStage = -1
       for (local j = 0; j < unlockBlk.blockCount(); j++) {
@@ -491,7 +491,7 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
       if (curStage != stage)
         stage = -1
     }
-    if (stage < 0)  //no stages
+    if (stage < 0)  
       rBlock = unlockBlk
 
     if (rBlock?.iconStyle)
@@ -531,7 +531,7 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
     res.showShareBtn <- true
   }
 
-  if ("miscMsg" in config) //for misc params from userlog
+  if ("miscMsg" in config) 
     res.miscParam <- config.miscMsg
 
   if ("tooltipImageSize" in config)

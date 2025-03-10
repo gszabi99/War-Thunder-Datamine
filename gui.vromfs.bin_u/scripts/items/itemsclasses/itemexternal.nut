@@ -102,7 +102,7 @@ let ItemExternal = class (BaseItem) {
   itemDef = null
   metaBlk = null
 
-  amountByUids = null //{ <uid> = <amount> }, need for recipe materials
+  amountByUids = null 
   requirement = null
 
   aditionalConfirmationMsg = null
@@ -210,7 +210,7 @@ let ItemExternal = class (BaseItem) {
 
     local res = to_integer_safe(str, -1, false)
     if (res < 0)
-      res = time.getTimestampFromIso8601(str) //compatibility with old inventory version
+      res = time.getTimestampFromIso8601(str) 
     return res
   }
 
@@ -534,14 +534,14 @@ let ItemExternal = class (BaseItem) {
       loc("msgBox/coupon_exchange"))
     let msgboxParams = {
       cancel_fn = @() null
-      baseHandler = get_cur_base_gui_handler() //FIX ME: handler used only for prizes tooltips
+      baseHandler = get_cur_base_gui_handler() 
       data_below_text = getPrizesListView([ this.metaBlk ],
         { showAsTrophyContent = true, receivedPrizes = false, widthByParentParent = true })
       data_below_buttons = hasFeature("Marketplace") && this.itemDef?.marketable
         ? format("textarea{overlayTextColor:t='warning'; text:t='%s'}", stripTags(loc("msgBox/coupon_will_be_spent")))
         : null
     }
-    let item = this //we need direct link, to not lose action on items list refresh.
+    let item = this 
     scene_msg_box("coupon_exchange", null, text, [
       [ "yes", @() item.consumeImpl(cb, params) ],
       [ "no" ]
@@ -554,7 +554,7 @@ let ItemExternal = class (BaseItem) {
     if (!uid)
       return
 
-    let itemAmountByUid = this.amountByUids[uid] //to not remove item while in progress
+    let itemAmountByUid = this.amountByUids[uid] 
     let consumeAmount = this.shouldAutoConsume && this.canMultipleConsume
       ? itemAmountByUid
       : 1
@@ -563,8 +563,8 @@ let ItemExternal = class (BaseItem) {
     blk.setInt("quantity", consumeAmount)
     let taskCallback = function() {
       let item = findItemByUid(uid)
-      //items list refreshed, but ext inventory only requested.
-      //so update item amount to avoid repeated request before real update
+      
+      
       if (item && item.amountByUids[uid] == itemAmountByUid) {
         item.amountByUids[uid] -= consumeAmount
         item.amount -= consumeAmount
@@ -760,7 +760,7 @@ let ItemExternal = class (BaseItem) {
     ], "yes", { cancel_fn = @() null })
   }
 
-  /*override */ function hasLink() {
+   function hasLink() {
     return !this.isDisguised && base.hasLink()
       && this.itemDef?.marketable && this.getNoTradeableTimeLeft() == 0
       && hasFeature("Marketplace")
@@ -1052,7 +1052,7 @@ let ItemExternal = class (BaseItem) {
     if (!craftingItem || craftingItem?.itemDef?.type != "delayedexchange")
       return false
 
-    // prevent infinite recursion on incorrectly configured delayedexchange
+    
     if (craftingItem == this) {
       logerr("".concat($"Inventory: delayedexchange {this.id} instance has type ",
         getEnumValName("itemType", itemType, this.iType), " which does not implement cancelCrafting()"))

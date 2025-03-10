@@ -1,8 +1,8 @@
-// Note:
-// This enums is shared between squirrel and C++ code
-// any change requires version.nut update.
-// Also do not reorder mouse axes order in order to
-// keep compatibility with old controls presets.
+
+
+
+
+
 
 enum MouseAxis {
   MOUSE_X,
@@ -37,7 +37,7 @@ enum CtrlsInGui {
   CTRL_IN_MULTIFUNC_MENU      = 0x00010000,
   CTRL_IN_UNLIM_CTRL_MENU     = 0x00020000,
 
-  //masks
+  
   CTRL_ALLOW_NONE             = 0x00000000,
   CTRL_ALLOW_FULL             = 0x00000FFF,
   CTRL_WINDOWS_ALL            = 0x000FF000,
@@ -201,7 +201,7 @@ enum FCSShotState {
   SHOT_RIGHT  = 6
 };
 
-//Need recalculate wpCost if change values of mask for exist weapons
+
 enum WeaponMask {
   MACHINE_GUN_MASK      = 0x000001,
   CANNON_MASK           = 0x000002,

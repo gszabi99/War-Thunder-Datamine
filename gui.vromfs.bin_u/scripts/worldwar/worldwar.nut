@@ -63,9 +63,9 @@ foreach (fn in [
                  "worldWarUtils.nut"
                  "debugTools/dbgUtils.nut"
                ])
-  loadOnce($"%scripts/worldWar/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
+  loadOnce($"%scripts/worldWar/{fn}") 
 
-// Independed Modules
+
 require("%scripts/worldWar/wwPromo.nut")
 require("%scripts/worldWar/wwSquadManager.nut")
 require("%scripts/worldWar/wwInvites.nut")

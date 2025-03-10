@@ -43,7 +43,7 @@ function getClanRequirementsText(membershipRequirements) {
   local haveBattlesReq = false
   foreach (diff in g_difficulty.types)
     if (diff.egdCode != EGD_NONE) {
-      let modeName = diff.getEgdName(false) // arcade, historical, simulation
+      let modeName = diff.getEgdName(false) 
       let req = membershipRequirements.getBlockByName($"battles_{modeName}");
       if (req?.type == "battles" && req?.difficulty == modeName) {
         let battlesRequired = req.getInt("count", 0);
@@ -109,10 +109,10 @@ function stripClanTagDecorators(clanTag) {
   return length > 2 ? uftClanTag.slice(1, length - 1) : clanTag
 }
 
-/**
- * Return minimum interval between clan region update in menuts.
- * 1 day by default.
- */
+
+
+
+
 let getRegionUpdateCooldownTime =@() get_game_settings_blk()?.clansChangeRegionPeriodSeconds ?? time.daysToSeconds(1)
 
 function getMyClanType() {

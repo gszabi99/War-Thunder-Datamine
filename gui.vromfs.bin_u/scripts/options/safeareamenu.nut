@@ -14,7 +14,7 @@ let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/optio
 
 local currentFont = g_font.LARGE
 
-function is_low_width_screen() { //change this function simultaneously with isWide constant in css
+function is_low_width_screen() { 
   return currentFont.isLowWidthScreen()
 }
 let getCurrentFont = @() currentFont
@@ -24,7 +24,7 @@ let defValue  = 1.0
 let values    = [ 1.0, 0.95, 0.9 ]
 let items     = ["100%", "95%", "90%"]
 
-let getFixedValue = @() //return -1 when not fixed
+let getFixedValue = @() 
   is_stereo_mode() ? 0.8
   : isPlatformSony ? sony.getDisplaySafeArea()
   : useTouchscreen ? 0.9

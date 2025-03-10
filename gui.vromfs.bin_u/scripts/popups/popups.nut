@@ -6,29 +6,29 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
 
-/*
-API:
 
-add(title, msg, onClickPopupAction = null, buttons = null, handler = null, groupName = null)
-  title - header text
-  msg - mainText
-  onClickPopupAction - callback which call on popup clicked
-  buttons - array of buttons config
-    first buttons function bindes on click on popup
-    !!all buttons params are required!!
-  [
-    {id = button_id, text = buttonText, func = function (){}}
-    {id = button_id, text = buttonText, func = function (){}}
-    {id = button_id, text = buttonText, func = function (){}}
-    {id = button_id, text = buttonText, func = function (){}}
-  ]
-  handler - pointer to handler, in the context of which will be called buttons functions.
-    if not specified, functions will be called in global scope
-  lifetime - popup showing time
-  groupName - group of popups. Only one popup by group can be showed at the same time
 
-removePopupByHandler(handler) - Remove all popups associated with the handler, which is set in the add method
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const MAX_POPUPS_ON_SCREEN = 3
 

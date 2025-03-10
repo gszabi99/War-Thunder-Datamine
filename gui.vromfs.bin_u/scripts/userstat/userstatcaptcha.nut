@@ -76,14 +76,14 @@ function resetAllCaptchaFailsCounters() {
 function resetCaptchaFailsBlockCounter() {
   updateCaptchaUserstats({
     blockCounter = 0
-    time = 0 // resets time after block period passed to properly compute hasSuccessfullyTry
+    time = 0 
   })
 }
 
 function resetCaptchaFailsBanCounter() {
   updateCaptchaUserstats({
     banCounter = 0
-    time = 0 // resets time on ban to properly compute hasSuccessfullyTry
+    time = 0 
   })
 }
 
@@ -91,7 +91,7 @@ function setLastAttemptTime(time) {
   updateCaptchaUserstats({ time })
 }
 
-//
+
 
 
 

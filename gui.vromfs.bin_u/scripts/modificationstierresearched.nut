@@ -51,8 +51,8 @@ gui_handlers.ModificationsTierResearched <- class (gui_handlers.BaseGuiHandlerWT
     if (!this.expReward)
       this.expReward = Cost()
 
-    if (u.isArray(this.unitInResearch))  //fix crash, but need to fix combine function to correct show multiple researched units
-      this.unitInResearch = this.unitInResearch[0] //but this is a really reare case, maybe no need to care about
+    if (u.isArray(this.unitInResearch))  
+      this.unitInResearch = this.unitInResearch[0] 
 
     let isLastResearchedModule = shop_get_researchable_module_name(this.unit.name) == ""
     local locTextId = "modifications/full_tier_researched"

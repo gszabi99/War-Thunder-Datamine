@@ -6,7 +6,7 @@ let cfg = require("%scripts/wheelmenu/multifuncmenuCfg.nut")
 let { emulateShortcut, isXInputDevice } = require("controls")
 let { eventbus_subscribe } = require("eventbus")
 
-//--------------------------------------------------------------------------------------------------
+
 
 gui_handlers.multifuncMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_IN_MULTIFUNC_MENU
@@ -74,7 +74,7 @@ gui_handlers.multifuncMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   }
 }
 
-//--------------------------------------------------------------------------------------------------
+
 
 eventbus_subscribe("on_multifunc_menu_request", function on_multifunc_menu_request(evt) {
   let isShow = evt.show
@@ -83,7 +83,7 @@ eventbus_subscribe("on_multifunc_menu_request", function on_multifunc_menu_reque
   getMfmHandler()?.quit()
 })
 
-// Called from client
+
 ::on_multifunc_menu_item_selected <- function on_multifunc_menu_item_selected(btnIdx, isDown) {
   getMfmHandler()?.onShortcutSelectCallback(btnIdx, isDown)
   return true

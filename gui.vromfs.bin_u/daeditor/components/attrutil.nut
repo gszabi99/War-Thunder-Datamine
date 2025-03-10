@@ -252,7 +252,7 @@ let exports = {
   updateComp
 
   ecsTypeToSquirrelType = {
-    //[TYPE_NULL] = null
+    
     [TYPE_STRING] = "string",
     [TYPE_INT] = "integer",
     [TYPE_FLOAT] = "float",

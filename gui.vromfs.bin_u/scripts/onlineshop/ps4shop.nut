@@ -186,16 +186,16 @@ gui_handlers.Ps4Shop <- class (gui_handlers.IngameConsoleStore) {
 }
 
 function updatePurchasesReturnMainmenu(afterCloseFunc = null, openStoreResult = -1) {
-  //TODO: separate afterCloseFunc on Success and Error.
+  
   if (openStoreResult < 0) {
-    //openStoreResult = -1 doesn't mean that we must not perform afterCloseFunc
+    
     if (afterCloseFunc)
       afterCloseFunc()
     return
   }
 
   let taskId = ::update_entitlements_limited(true)
-  //taskId = -1 doesn't mean that we must not perform afterCloseFunc
+  
   if (taskId >= 0) {
     let progressBox = scene_msg_box("char_connecting", null, loc("charServer/checking"), null, null)
     addBgTaskCb(taskId, function() {
@@ -214,7 +214,7 @@ let getEntStoreLocId = @() canUseIngameShop() ? "#topmenu/ps4IngameShop" : "#msg
 
 let openIngameStoreImpl = kwarg(
   function(chapter = null, curItemId = "", afterCloseFunc = null, statsdMetric = "unknown",
-    forceExternalShop = false, unitName = "") {//-declared-never-used -unused-func-param
+    forceExternalShop = false, unitName = "") {
     if (!isChapterSuitable(chapter))
       return false
 

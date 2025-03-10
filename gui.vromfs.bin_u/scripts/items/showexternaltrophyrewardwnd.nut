@@ -7,7 +7,7 @@ let { resetTimeout } = require("dagor.workcycle")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 
-//this module collect all prizes from userlogs if chest has prizes with auto consume prizes and show trophy window
+
 
 const MAX_DELAYED_TIME_SEC = 10
 const PROGRESS_BOX_BUTTONS_DELAY_SEC = 15

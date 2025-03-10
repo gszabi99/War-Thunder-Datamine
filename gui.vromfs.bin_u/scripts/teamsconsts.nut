@@ -1,4 +1,4 @@
-enum Team { //better to replace it everywhere by g_teams
+enum Team { 
   Any   = 0,
   A     = 1,
   B     = 2,

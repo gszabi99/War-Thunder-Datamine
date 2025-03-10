@@ -57,7 +57,7 @@ let separator = {
   margin = [0, fsh(0.5)]
 }
 
-let svg = @(name) {image = $"!%daeditor/images/{name}.svg"} //Atlas is not working %daeditor/editor#
+let svg = @(name) {image = $"!%daeditor/images/{name}.svg"} 
 function mainToolbar() {
   function toggleEntitySelect() {
     if (getEditMode() == DE4_MODE_CREATE_ENTITY || getEditMode() == DE4_MODE_POINT_ACTION)
@@ -93,12 +93,12 @@ function mainToolbar() {
     padding =hdpx(4)
 
     children = [
-      // comp(Watch(scenePath), txt(scenePath.value, {color = Color(170,170,170), padding=[0, hdpx(10)], maxWidth = sw(15)}), ClipChildren)
+      
       toolbarButton(svg("select_by_name"), toggleEntitySelect, "Find entity (Tab)", showEntitySelect.value)
       separator
       modeButton(svg("select"), DE4_MODE_SELECT, "Select (Q)")
       modeButton(svg("move"),   DE4_MODE_MOVE,   "Move (W)")
-      modeButton(svg("rotate"), DE4_MODE_ROTATE, "Rotate (E)") //rotate or mirror, make blue
+      modeButton(svg("rotate"), DE4_MODE_ROTATE, "Rotate (E)") 
       modeButton(svg("scale"),  DE4_MODE_SCALE,  "Scale (R)")
       modeButton(svg("create"), DE4_MODE_CREATE_ENTITY, "Create entity (T)", DE4_MODE_SELECT)
       separator
@@ -136,7 +136,7 @@ function mainToolbar() {
       ["F1", toggleHelp],
       ["P", togglePropPanel],
       ["L.Ctrl !L.Alt T", toggleTime],
-      ["L.Ctrl !L.Alt S", { action = save, ignoreConsumerCallback = true }], // ignoreConsumerCallback so that freecamera moevement with s works
+      ["L.Ctrl !L.Alt S", { action = save, ignoreConsumerCallback = true }], 
       ["L.Ctrl !L.Alt L", toggleLogsWindows],
       ["Esc", @() daEditor.setEditMode(DE4_MODE_SELECT)]
     ]

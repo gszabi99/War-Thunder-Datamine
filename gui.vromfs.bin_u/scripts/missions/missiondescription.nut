@@ -28,24 +28,24 @@ let { get_option } = require("%scripts/options/optionsExt.nut")
 let { isMissionForUnitType, canPlayGamemodeBySquad } = require("%scripts/missions/missionsUtils.nut")
 
 
-/* API:
-  static create(nest, mission = null)
-    creates description handler into <nest>, and init with selected <mission>
-
-  setMission(mission, previewBlk = null)
-    set <mission> and mapPreview (<previewBlk>)
-    if previewBlk == null - previw will be loaded automatically
 
 
-  //!!FIX ME:
-  applyDescConfig(config) - direct used atm, but better to exchange them on events
-*/
+
+
+
+
+
+
+
+
+
+
 gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/missionDescr.blk"
 
   curMission = null
-  mapPreviewBlk = null //when not set, detected by mission
+  mapPreviewBlk = null 
   gm = GM_SINGLE_MISSION
 
   chapterImgList = null
@@ -73,7 +73,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
     this.update()
   }
 
-  function initChaptersImages() { //!!FIX ME: better to init this once per login
+  function initChaptersImages() { 
     this.chapterImgList = {}
     let chaptersBlk = DataBlock()
     chaptersBlk.load("config/chapters.blk")
@@ -111,7 +111,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   function applyDescConfig(config) {
     let previewBlk = getTblValue("previewBlk", config)
     setMapPreview(this.scene.findObject("tactical-map"), previewBlk)
-    this.guiScene.applyPendingChanges(false) //need to refresh object sizes after map appear or disappear
+    this.guiScene.applyPendingChanges(false) 
 
     this.guiScene.setUpdatesEnabled(false, false)
 

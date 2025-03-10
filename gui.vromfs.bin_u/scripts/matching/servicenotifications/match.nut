@@ -20,7 +20,7 @@ function notifyGameModesChanged(params) {
     return
   }
 
-  if (isInFlight()) { // do not handle while session is active
+  if (isInFlight()) { 
     log("is_in_flight need notify_game_modes_changed after battle")
     changedGameModes.append(params)
     return

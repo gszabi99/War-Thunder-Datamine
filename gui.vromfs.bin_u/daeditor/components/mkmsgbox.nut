@@ -12,7 +12,7 @@ function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
     return widgets.top()
   }
 
-  //let log = getroottable()?.log ?? @(...) print(" ".join(vargv))
+  
 
   function addWidget(w) {
     widgets.append(w)
@@ -55,20 +55,20 @@ function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
     return widgets.findindex(@(w) w.uid == uid) != null
   }
 
-  /// Adds messagebox to widgets list
-  /// params = {
-  ///   text = 'message text'
-  ///   onClose = function() {} // optional close event callback
-  ///   buttons = [   // array
-  ///      {
-  ///         text = 'button_caption'
-  ///         action = function() {} // click handler
-  ///         isCurrent = false // flag for focused button
-  ///         isCancel = false // flag for button activated by Esc
-  ///      }
-  ///      ...
-  ///   ]
-  ///
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 
   let skip = {skip=true}
   let skpdescr = {description = skip}
@@ -91,9 +91,9 @@ function mkMsgbox(id, defStyling = require("msgbox.style.nut")){
     function handleButton(button_action) {
       if (button_action) {
         if (button_action?.getfuncinfos?().parameters.len()==2) {
-          // handler performs closing itself
+          
           button_action({doClose})
-          return // stop processing, handler will do everything what is needed
+          return 
         }
 
         button_action()

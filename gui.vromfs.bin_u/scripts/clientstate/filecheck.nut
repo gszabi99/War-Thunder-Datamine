@@ -16,8 +16,8 @@ function isImagePrefetched(img) {
   foreach (rg in removeImgPostfixRegexpList)
     img = rg.replace("", img)
 
-  if (regexp2("^#[^\\s]+#[^\\s]").match(img)) //skin
-    return true //small skin icons not require to prefetch. But if so, need to correct check dynamic skins
+  if (regexp2("^#[^\\s]+#[^\\s]").match(img)) 
+    return true 
 
   img = removeImgPrefixRegexp.replace("", img)
 

@@ -1,8 +1,8 @@
 from "%rGui/globals/ui_library.nut" import *
 let cross_call = require("%rGui/globals/cross_call.nut")
 
-//local frp = require("frp")
-//local {isEqual} = require("%sqstd/underscore.nut")
+
+
 let { PI, floor, cos, sin, fabs, sqrt } = require("%sqstd/math.nut")
 let compass = require("compass.nut")
 let { HasCompass, CompassValue } = require("compassState.nut")
@@ -72,7 +72,7 @@ let compassOneElementWidth = compassSize[1]
 
 let getCompassStrikeWidth = @(oneElementWidth, step) 360.0 * oneElementWidth / step
 
-//animation trigger
+
 let frameTrigger = {}
 SelectedTargetBlinking.subscribe(@(v) v ? anim_start(frameTrigger) : anim_request_stop(frameTrigger))
 let speedTargetTrigger = {}
@@ -1103,7 +1103,7 @@ function B_ScopeBackground(size, color) {
 function B_ScopeAzimuthComponent(size, valueWatched, distWatched, halfWidthWatched, color, lineWidth = hdpx(LINE_WIDTH)) {
   let showPart1 = (!distWatched || !halfWidthWatched)
                   ? Watched(false)
-                  : Computed(@() distWatched.value == 1.0 && (halfWidthWatched.value ?? 0) > 0) //wtf this condition mean?
+                  : Computed(@() distWatched.value == 1.0 && (halfWidthWatched.value ?? 0) > 0) 
 
   function part1() {
     let angleCenter = AzimuthMin.value + AzimuthRange.value * valueWatched.value - PI * 0.5
@@ -2810,7 +2810,7 @@ let mkRadarBase = @(posWatch, size, _isAir, color, mode, font_size = hudFontHgt,
   }
 }
 
-//todo remove (invisible comp)
+
 function radarMfdBackground() {
 
   let backSize = [radarPosSize.value.w / RadarScale.value,

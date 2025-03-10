@@ -39,7 +39,7 @@ def create_gameobj(transform : float3x4; template_name : string)
   if getTemplateByName(template_name) == null
     return INVALID_ENTITY_ID
 
-  let finalTemplateName = add_sub_template_name(template_name, "game_object");
+  let finalTemplateName = add_sub_template_name(template_name, "game_object")
   let eid = createEntity(finalTemplateName) <| $(init)
     set(init, "transform", transform)
 

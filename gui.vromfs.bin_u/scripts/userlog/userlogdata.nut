@@ -78,7 +78,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
     return
   let handler = handlersManager.getActiveBaseHandler()
   if (!handler)
-    return //no need to try do something when no one base handler loaded
+    return 
 
   if (!onStartAwards)
     checkShowExternalTrophyRewardWnd()
@@ -94,8 +94,8 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
   let specialOffers = {}
   let ignoreRentItems = []
 
-  //Inventory reward logs will not be received in the same time,
-  //so need to wait last reward and only then mark logs as seen
+  
+  
   let inventoryRewards = { cache = {} }
 
   let total = get_user_logs_count()
@@ -110,7 +110,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
     if (blk?.disabled || isInArray(blk?.id, shownUserlogNotifications.get()))
       continue
 
-    //gamercard popups
+    
     if (checkPopupUserLog(blk)) {
       if (onStartAwards)
         continue
@@ -127,7 +127,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
         let isMissionExtrLog = isMissionExtrByName(blk?.body.mission ?? "")
         let nameLoc = isMissionExtrLog ? "userLog/session_result_extr"
           : $"userlog/{logTypeName}{(blk?.body.win ? "/win" : "/lose")}"
-        msg = format(loc(nameLoc), mission) //need more info in log, maybe title.
+        msg = format(loc(nameLoc), mission) 
         markStatsReset()
         if (popupMask & USERLOG_POPUP.FINISHED_RESEARCHES)
           checkNonApprovedResearches(true)
@@ -164,10 +164,10 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
         msg = loc($"userlog/{logTypeName}")
       addPopup(title, msg, null, null, null, logTypeName)
       shownUserlogNotifications.mutate(@(v) v.append(blk?.id))
-      /*---^^^^---show notifications---^^^^---*/
+      
     }
 
-    if (!isInMenu()) //other notifications only in the menu
+    if (!isInMenu()) 
       continue
 
     local markDisabled = false
@@ -193,9 +193,9 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
               seenIdsArray.append(blk?.id)
             }
 
-          // Don't stack unlocked units together with other ones.
-          // It should look uniform with unit unlock in debriefing
-          // to provide correct crew select logic further.
+          
+          
+          
           if (unlockType == UNLOCKABLE_AIRCRAFT) {
             let logObj = {}
             for (local n = 0, c = blk.body.paramCount(); n < c; n++)
@@ -210,10 +210,10 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
       }
 
       if (isUnlockNeedPopupInMenu(blk.body.unlockId)) {
-        // if new unlock passes 'isUnlockNeedPopupInMenu'
-        // we need to check if there is Popup Dialog
-        // needed to be shown by this unlock
-        // (check is at verifyPopupBlk)
+        
+        
+        
+        
         shownUserlogNotifications.mutate(@(v) v.append(blk?.id))
         unlocksNeedsPopupWnd = true
         continue
@@ -295,8 +295,8 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
         markDisabled = true
       }
 
-      //Check previously received bundle trophy
-      //and check only items from trophies
+      
+      
       if (itemId in inventoryRewards && (
         (blk.body?.fromInventory && blk.body?.trophy == null)
         || blk?.body?.id == "@external_inventory_trophy")
@@ -357,13 +357,13 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
         if (receipeItem?.forceShowRewardReceiving) {
           if (itemDefId not in inventoryRewards.cache) {
             inventoryRewards.cache[itemDefId] <- { markSeenIds = [blk.id], rewardsCount = 0, rewardsData = [] }
-            //markSeenIds - for disabling them if we will decide to show reward
-            //rewardsCount - for check is all rewards we've got
+            
+            
           }
           for (local j = 0; j < blk.body.blockCount(); j++) {
             let rewardItemDefId = blk.body.getBlock(j)?.itemDefId
             if (rewardItemDefId) {
-              inventoryRewards[rewardItemDefId] <- itemDefId //for fast search of original receipe
+              inventoryRewards[rewardItemDefId] <- itemDefId 
               inventoryRewards.cache[itemDefId].rewardsCount++
             }
           }
@@ -524,18 +524,17 @@ addListenersWithoutEnv({
   TrophyWndClose = @(_p) ::checkNewNotificationUserlogs()
 })
 
-/**
- * Function runs over all userlogs and collects all userLog items,
- * which satisfies filters conditions.
- *
- * @param filter (table) - filters. May contain conditions:
- *   show (array) - array of userlog type IDs (starts from EULT) which should
- *                  be included to result.
- *   hide (array) - array of userlog type IDs (starts from EULT) which should
- *                  be excluded from result.
- *   currentRoomOnly (boolean) - include only userlogs related to current
- *                               game session. Mainly for debriefing.
- *   unlocks (array) - array of unlock type IDs.
- *   filters (table) - any custom key -> value pairs to filter userlogs
- *   disableVisible (boolean) - marks all related userlogs as seen
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+

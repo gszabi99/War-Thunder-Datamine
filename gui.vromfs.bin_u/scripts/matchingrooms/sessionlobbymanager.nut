@@ -81,30 +81,30 @@ let { getEventEconomicName, isEventWithLobby } = require("%scripts/events/eventI
 let { clearMpChatLog } = require("%scripts/chat/mpChatModel.nut")
 let { setUserPresence } = require("%scripts/userPresence.nut")
 
-/*
-SessionLobby API
 
-  all:
-    createSessionLobbyRoom(missionSettings)
-    isInSessionRoom
-    joinSessionRoom
-    leaveSessionRoom
-    setReady(bool)
-    syncAllInfo
 
-  room owner:
-    destroyRoom
-    updateRoomAttributes(missionSettings)
-    invitePlayerToSessionRoom(uid)
-    kickPlayerFromRoom(uid)
-    startSession
 
-  squad leader:
-    startCoopBySquad(missionSettings)
 
-*/
 
-const NET_SERVER_LOST = 0x82220002  //for sessionLobbyHostCb
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const NET_SERVER_LOST = 0x82220002  
 const NET_SERVER_QUIT_FROM_GAME = 0x82220003
 
 local last_round = true
@@ -113,12 +113,12 @@ local delayedJoinRoomFunc = null
 let needCheckReconnect = Watched(false)
 let isReconnectChecking = mkWatched(persist, "isReconnectChecking", false)
 
-let allowed_mission_settings = { //only this settings are allowed in room
-                              //default params used only to check type atm
+let allowed_mission_settings = { 
+                              
   name = null
   missionURL = null
   players = 12
-  hidden = false  //can be found by search rooms
+  hidden = false  
 
   creator = ""
   hasPassword = false
@@ -230,8 +230,8 @@ function syncMyInfo(newInfo, cb = @(_) null) {
     }
   }
 
-  // DIRTY HACK: Server ignores spectator=true flag if it is sent before pressing Ready button,
-  // when Referee joins into already started Skirmish mission.
+  
+  
   if (newInfo?.state == lobbyStates.IN_ROOM)
     syncData.spectator <- SessionLobbyState._syncedMyInfo?.spectator ?? false
 
@@ -240,7 +240,7 @@ function syncMyInfo(newInfo, cb = @(_) null) {
     public = syncData
   }
 
-  // Sends info to server
+  
   setMemberAttributes(info, cb)
   broadcastEvent("LobbyMyInfoChanged", syncData)
 }
@@ -251,7 +251,7 @@ function updateReadyAndSyncMyInfo(ready) {
   broadcastEvent("LobbyReadyChanged")
 }
 
-function updateMemberHostParams(member = null) { //null = host leave
+function updateMemberHostParams(member = null) { 
   SessionLobbyState.memberHostId = member ? member.memberId : -1
 }
 
@@ -272,7 +272,7 @@ function syncAllInfo() {
   })
 }
 
-function setMyTeamInRoom(newTeam, silent = false) { //return is team changed
+function setMyTeamInRoom(newTeam, silent = false) { 
   local _team = newTeam
   let canPlayTeam = getAvailableTeamOfRoom()
 
@@ -290,7 +290,7 @@ function setMyTeamInRoom(newTeam, silent = false) { //return is team changed
   return true
 }
 
-function setSessionLobbyReady(ready, silent = false, forceRequest = false) { //return is my info changed
+function setSessionLobbyReady(ready, silent = false, forceRequest = false) { 
   if (!forceRequest && SessionLobbyState.isReady == ready)
     return false
   if (ready && !canSetReadyInLobby(silent)) {
@@ -319,7 +319,7 @@ function setSessionLobbyReady(ready, silent = false, forceRequest = false) { //r
       local needUpdateState = !silent
       SessionLobbyState.isReady = ready
 
-      //if we receive error on set ready, result is ready == false always.
+      
       if (!checkMatchingError(p, !silent)) {
         SessionLobbyState.isReady = false
         needUpdateState = true
@@ -335,7 +335,7 @@ function setSessionLobbyReady(ready, silent = false, forceRequest = false) { //r
   return true
 }
 
-function checkMyTeamInRoom() { //returns changed data
+function checkMyTeamInRoom() { 
   let data = {}
 
   if (!haveLobby())
@@ -368,7 +368,7 @@ function switchMyTeamInRoom(skipTeamAny = false) {
   return setMyTeamInRoom(newTeam)
 }
 
-function setSessionLobbyCountryData(data) { //return is data changed
+function setSessionLobbyCountryData(data) { 
   local changed = !SessionLobbyState.countryData || !isEqual(SessionLobbyState.countryData, data)
   SessionLobbyState.countryData = data
   let teamDataChanges = checkMyTeamInRoom()
@@ -382,7 +382,7 @@ function setSessionLobbyCountryData(data) { //return is data changed
   return true
 }
 
-function setSpectator(newSpectator) { //return is spectator changed
+function setSpectator(newSpectator) { 
   if (!canBeSpectator())
     newSpectator = false
   if (SessionLobbyState.spectator == newSpectator)
@@ -463,7 +463,7 @@ function addTeamsInfoToSettings(v_settings, teamDataA, teamDataB) {
 }
 
 function fillTeamsInfo(v_settings, _misBlk) {
-  //!!fill simmetric teams data
+  
   let teamData = {}
   teamData.allowedCrafts <- []
 
@@ -475,11 +475,11 @@ function fillTeamsInfo(v_settings, _misBlk) {
       teamData.allowedCrafts.append(rule)
     }
 
-  //!!fill assymetric teamdata
+  
   let teamDataA = teamData
   local teamDataB = clone teamData
 
-  //in future better to comletely remove old countries selection, and use only countries in teamData
+  
   teamDataA.countries <- v_settings.country_allies
   teamDataB.countries <- v_settings.country_axis
 
@@ -491,8 +491,8 @@ function leaveEventSessionWithRetry() {
   let self = callee()
   matchingApiFunc("mrooms.leave_session",
     function(params) {
-      // there is a some lag between actual disconnect from host and disconnect detection
-      // just try to leave until host says that player is not in session anymore
+      
+      
       if (params?.error_id == "MATCH.PLAYER_IN_SESSION")
         addDelayedAction(self, 1000)
       else {
@@ -558,9 +558,9 @@ function setSettings(v_settings, notify = false, checkEqual = true) {
   if (checkEqual && isEqual(SessionLobbyState.settings, v_settings))
     return
 
-  //v_settings can be publick date of room, and it does not need to be updated settings somewhere else
+  
   SessionLobbyState.settings = clone v_settings
-  //not mission room settings
+  
   SessionLobbyState.settings.connect_on_join <- !haveLobby()
 
   updateCrsSettings()
@@ -589,17 +589,17 @@ function checkDynamicSettings(silent = false, v_settings = null) {
 
   if (!v_settings) {
     if (!SessionLobbyState.settings || !SessionLobbyState.settings.len())
-      return //owner have joined back to the room, and not receive settings yet
+      return 
     v_settings = SessionLobbyState.settings
   }
   else
-    silent = true //no need to update when custom settings checked
+    silent = true 
 
   local changed = false
   let wasHidden = getTblValue("hidden", v_settings, false)
   v_settings.hidden <- getTblValue("coop", v_settings, false)
     || (isRoomInSession.get() && !getTblValue("allowJIP", v_settings, true))
-  changed = changed || (wasHidden != v_settings.hidden) // warning disable: -const-in-bool-expr
+  changed = changed || (wasHidden != v_settings.hidden) 
 
   let wasPassword = getTblValue("hasPassword", v_settings, false)
   v_settings.hasPassword <- SessionLobbyState.password != ""
@@ -628,7 +628,7 @@ function changeRoomPassword(v_password) {
 
 function resetParams() {
   SessionLobbyState.settings.clear()
-  changeRoomPassword("") //reset password after leave room
+  changeRoomPassword("") 
   updateMemberHostParams(null)
   SessionLobbyState.team = Team.Any
   SessionLobbyState.isRoomByQueue = false
@@ -674,11 +674,11 @@ function switchStatus(v_status) {
   let wasInRoom = isInSessionRoom.get()
   let wasStatus = sessionLobbyStatus.get()
   let wasSessionInLobby = isInSessionLobbyEventRoom.get()
-  sessionLobbyStatus.set(v_status)  //for easy notify other handlers about change status
+  sessionLobbyStatus.set(v_status)  
   if (isInJoiningGame.get())
     joiningGameWaitBox()
   if (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY) {
-    //delay to allow current view handlers to catch room state change event before destroy
+    
     deferOnce(guiStartMpLobby)
   }
 
@@ -750,7 +750,7 @@ function prepareSettings(missionSettings) {
     local value = findParam(key, missionSettings, mission)
     if (type(v) == "array" && type(value) != "array")
       value = [value]
-    _settings[key] <- value //value == null will clear param on server
+    _settings[key] <- value 
   }
 
   _settings.mission <- {}
@@ -786,7 +786,7 @@ function prepareSettings(missionSettings) {
   if (("difficulty" in _settings.mission) && _settings.mission.difficulty == "custom")
     _settings.mission.custDifficulty <- get_cd_preset(DIFFICULTY_CUSTOM)
 
-  //validate Countries
+  
   let countriesType = getTblValue("countriesType", missionSettings, misCountries.ALL)
   local fullCountriesList = getSlotbarOverrideCountriesByMissionName(_settings.mission.originalMissionName)
   if (!fullCountriesList.len())
@@ -855,12 +855,12 @@ function continueCoopWithSquad(missionSettings) {
   prepareSettings(missionSettings)
 }
 
-//return true if success
+
 function goForwardSessionLobbyAfterDebriefing() {
   if (!haveLobby() || !isInSessionRoom.get())
     return false
 
-  SessionLobbyState.isRoomByQueue = false //from now it not room by queue because we are back to lobby from session
+  SessionLobbyState.isRoomByQueue = false 
   if (sessionLobbyStatus.get() == lobbyStates.IN_LOBBY)
     guiStartMpLobby()
   else
@@ -889,7 +889,7 @@ function joinEventSession(needLeaveRoomOnError = false, params = null) {
   )
 }
 
-//matching update slots from char when ready flag set to true
+
 function checkUpdateMatchingSlots() {
   if (hasSessionInLobby()) {
     if (SessionLobbyState.isInLobbySession)
@@ -1030,12 +1030,12 @@ function uploadUserMission(afterDoneFunc = null) {
   let missionBlk = DataBlock()
   if (missionInfo)
     missionBlk.load(missionInfo.mis_file)
-  //dlog("GP: upload mission!")
-  //debugTableData(missionBlk)
+  
+  
 
   let blkData = base64.encodeBlk(missionBlk)
-  //dlog($"GP: data = {blkData}")
-  //debugTableData(blkData)
+  
+  
   if (!blkData || !("result" in blkData) || !blkData.result.len()) {
     showInfoMsgBox(loc("msg/cant_load_user_mission"))
     return
@@ -1148,7 +1148,7 @@ function sessionLobbyHostCb(res) {
 
 function sendJoinRoomRequest(join_params, _cb = function(...) {}) {
   if (isInSessionRoom.get())
-    leaveSessionRoom() //leave old room before join the new one
+    leaveSessionRoom() 
 
   leave_mp_session()
 
@@ -1176,7 +1176,7 @@ function joinBattle(battleId) {
 }
 
 function joinSessionRoom(v_roomId, senderId = "", v_password = null,
-                                cb = function(...) {}) { //by default not a queue, but no id too
+                                cb = function(...) {}) { 
   if (SessionLobbyState.roomId == v_roomId && isInSessionRoom.get())
     return
 
@@ -1255,7 +1255,7 @@ function afterLeaveRoom() {
 
   if (needCheckReconnect.get()) {
     needCheckReconnect.set(false)
-    deferOnce(checkReconnect) //notify room leave will be received soon
+    deferOnce(checkReconnect) 
   }
 }
 
@@ -1275,7 +1275,7 @@ function joinSessionRoomWithPassword(joinRoomId, prevPass = "", wasEntered = fal
   })
 }
 
-function joinSessionLobbyFoundRoom(room) { //by default not a queue, but no id too
+function joinSessionLobbyFoundRoom(room) { 
   if (("hasPassword" in room) && room.hasPassword && getRoomCreatorUid(room) != userName.value)
     joinSessionRoomWithPassword(room.roomId)
   else
@@ -1284,7 +1284,7 @@ function joinSessionLobbyFoundRoom(room) { //by default not a queue, but no id t
 
 function afterRoomJoining(params) {
   if (params.error == SERVER_ERROR_ROOM_PASSWORD_MISMATCH) {
-    let joinRoomId = params.roomId //not_in_room status will clear room Id
+    let joinRoomId = params.roomId 
     let oldPass = params.password
     switchStatus(lobbyStates.NOT_IN_ROOM)
     joinSessionRoomWithPassword(joinRoomId, oldPass, oldPass != "")

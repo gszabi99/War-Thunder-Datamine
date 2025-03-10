@@ -4,11 +4,11 @@ from "%globalScripts/logs.nut" import logerr
 let { GuidanceLockResult } = require("guidanceConstants")
 
 
-//  __   __
-// |       |
-//
-// |__   __|
-//
+
+
+
+
+
 let cornersLines = @(width, height, colorTracker) function() {
   let w = 1.5 * width
   let h = 1.5 * height
@@ -22,23 +22,23 @@ let cornersLines = @(width, height, colorTracker) function() {
     fillColor = Color(0, 0, 0, 0)
     color = colorTracker
     commands = [
-      [VECTOR_LINE, -w, h, -w + lX, h],   // left bottom
+      [VECTOR_LINE, -w, h, -w + lX, h],   
       [VECTOR_LINE, 0- w, h, -w, h - lY],
 
-      [VECTOR_LINE, w, h, w - lX, h],   // right bottom
+      [VECTOR_LINE, w, h, w - lX, h],   
       [VECTOR_LINE, w, h, w, h - lY],
 
-      [VECTOR_LINE, -w, -h, -w + lX, -h],   // left top
+      [VECTOR_LINE, -w, -h, -w + lX, -h],   
       [VECTOR_LINE, -w, -h, -w, -h + lY],
 
-      [VECTOR_LINE, w, -h, w - lX, -h],   // right top
+      [VECTOR_LINE, w, -h, w - lX, -h],   
       [VECTOR_LINE, w, -h, w, -h + lY],
     ]
   }
 }
 
 
-// main agm/guidedBombs sight
+
 let opticWeaponAim = @(
   TrackerSize, TrackerX, TrackerY, GuidanceLockState, GuidanceLockStateBlinked, TrackerVisible,
   color_watched, alert_color_watched, show_tps_sight

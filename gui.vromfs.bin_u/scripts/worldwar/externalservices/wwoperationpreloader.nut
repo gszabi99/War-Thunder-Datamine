@@ -4,7 +4,7 @@ let { get_time_msec } = require("dagor.time")
 let { addTask } = require("%scripts/tasker.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 
-const PREVIEW_WW_OPERATION_REQUEST_TIME_OUT = 10000 //ms
+const PREVIEW_WW_OPERATION_REQUEST_TIME_OUT = 10000 
 
 local WwOperationPreloader = class {
   lastRequestTimeMsec = -PREVIEW_WW_OPERATION_REQUEST_TIME_OUT

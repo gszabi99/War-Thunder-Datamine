@@ -104,7 +104,7 @@ let { saveProfileAppearance, getProfileHeaderBackgrounds } = require("%scripts/u
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { selectUnitWndFilters } = require("%scripts/user/showcase/showcaseValues.nut")
 
-require("%scripts/user/userCard/userCard.nut") //for load UserCardHandler before Profile handler
+require("%scripts/user/userCard/userCard.nut") 
 
 enum OwnUnitsType {
   ALL = "all",
@@ -224,7 +224,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     if (!this.scene)
       return this.goBack()
 
-    addGamercardScene(this.scene) //for show popups
+    addGamercardScene(this.scene) 
     this.countryStats = profileSelectedFiltersCache.country
     this.unitStats = profileSelectedFiltersCache.unit
     this.rankStats = profileSelectedFiltersCache.rank
@@ -236,13 +236,13 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     let frame = this.scene.findObject("wnd_frame")
     frame.needShortSeparators = needShortSeparators ? "yes" : "no"
 
-    //prepare options
+    
     this.mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
 
     this.unlocksTree = {}
 
-    //fill skins filters
+    
     let skinCountries = getUnlockFiltersList("skin", function(unlock) {
       let country = getSkinCountry(unlock.getStr("id", ""))
       return (country != "") ? country : null
@@ -268,7 +268,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     this.customMenuTabs = {}
     this.sheetsList = clone this.presetSheetList
     local hasAnyUnlocks = false
-    local hasAnyMedals = false //skins and decals tab also have resources without unlocks
+    local hasAnyMedals = false 
 
     let customCategoryConfig = getTblValue("customProfileMenuTab", get_gui_regional_blk(), null)
     local tabImage = null
@@ -664,7 +664,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     }
     else if (sheet in this.unlockFilters) {
       if (!this.unlockFilters[sheet] || (this.unlockFilters[sheet].len() < 1)) {
-        //challange and achievents
+        
         this.showSheetDiv("unlocks")
         this.curPage = this.getPageIdByName(sheet)
         this.fillUnlocksList()
@@ -687,7 +687,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         }
 
         let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
-        this.guiScene.replaceContentFromText(pageList, data, data.len(), this)  // fill countries listbox
+        this.guiScene.replaceContentFromText(pageList, data, data.len(), this)  
         pageList.setValue(selIdx)
         if (selIdx <= 0)
           this.onPageChange(null)
@@ -1252,7 +1252,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       if (iName == (isUncollapsedChapter ? this.curAchievementGroupName : chapterName))
         newValue = i
 
-      if (iName in this.unlocksTree) { //chapter
+      if (iName in this.unlocksTree) { 
         obj.collapsed = isUncollapsedChapter ? "no" : "yes"
         continue
       }
@@ -1643,10 +1643,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function calcStat(func, diff, mode, fm_idx = null) {
     local value = 0
 
-    for (local idx = 0; idx < 3; idx++) //difficulty
+    for (local idx = 0; idx < 3; idx++) 
       if (idx == diff || diff < 0)
 
-        for (local pm = 0; pm < 2; pm++)  //players
+        for (local pm = 0; pm < 2; pm++)  
           if (mode == pm || mode < 0)
 
             if (fm_idx != null)

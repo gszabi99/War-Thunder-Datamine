@@ -1,13 +1,13 @@
 from "%scripts/dagui_library.nut" import *
 
-/**
- * This is Actionbar's Wheelmenu configs for gamepad controls (also known as "KillStreaks" menu).
- * Each action used here must have isForWheelMenu() func defined in hudActionBarType.nut, which should return true.
- * Wheelmenu can display up to 8 actions at a time, so actions list is devided to pages, with up to 8 actions per page.
- * New actions should be added either by replacing null values in existing pages, or by adding new pages.
- * To add a new page, add 8 nulls to the end of array, and then replace some nulls with your new actions.
- * Each page buttons order is (cardinal directions): NW, W, SW, NE, E, SE, S, N.
- */
+
+
+
+
+
+
+
+
 
 let { EII_SMOKE_GRENADE, EII_SMOKE_SCREEN, EII_ARTILLERY_TARGET, EII_SPECIAL_UNIT,
   EII_MEDICALKIT, EII_TERRAFORM, EII_WINCH, EII_WINCH_ATTACH, EII_WINCH_DETACH,
@@ -25,10 +25,10 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 
 const ITEMS_PER_PAGE = 8
 
-/******************************* CONFIGS START ********************************/
+
 
 let cfgMenuTank = [
-  // Page #1
+  
     EII_SMOKE_GRENADE,
     EII_SMOKE_SCREEN,
     EII_ARTILLERY_TARGET,
@@ -37,7 +37,7 @@ let cfgMenuTank = [
     { type = EII_SPECIAL_UNIT, killStreakTag = "bomber" },
     EII_MEDICALKIT,
     [ EII_WINCH, EII_WINCH_ATTACH, EII_WINCH_DETACH ],
-  // Page #2
+  
     EII_TERRAFORM,
     EII_UGV,
     EII_SELECT_SPECIAL_WEAPON,
@@ -46,31 +46,31 @@ let cfgMenuTank = [
     EII_SUPPORT_PLANE_2,
     EII_SUPPORT_PLANE_3,
     EII_SUPPORT_PLANE_4,
-    // Page #3
+    
     EII_GUIDANCE_MODE,
     EII_MISSION_SUPPORT_PLANE,
     EII_BUILDING,
-    EII_LOCK,           // Event
-    EII_STEALTH,        // Event
-    EII_AUTO_TURRET,    // Event
-    EII_UNLIMITED_CONTROL, // Event
+    EII_LOCK,           
+    EII_STEALTH,        
+    EII_AUTO_TURRET,    
+    EII_UNLIMITED_CONTROL, 
 ]
 
-// April Fools Day 2022 Event
+
 let cfgMenuTankArachisCombatTrack = [
-  // Page #1
+  
     EII_SMOKE_GRENADE,
     EII_SMOKE_SCREEN,
     EII_ARTILLERY_TARGET,
     null,
-    EII_LOCK,           // Event
+    EII_LOCK,           
     null,
     EII_MEDICALKIT,
     [ EII_WINCH, EII_WINCH_ATTACH, EII_WINCH_DETACH ],
 ]
 
 let cfgMenuHuman = [
-  // Page #1
+  
     EII_SMOKE_GRENADE,
     EII_LOCK,
     EII_ARTILLERY_TARGET,
@@ -82,7 +82,7 @@ let cfgMenuHuman = [
 ]
 
 let cfgMenuShip = [
-  // Page #1
+  
     EII_SMOKE_GRENADE,
     EII_SMOKE_SCREEN,
     EII_ARTILLERY_TARGET,
@@ -90,8 +90,8 @@ let cfgMenuShip = [
     EII_TOOLKIT,
     EII_REPAIR_BREACHES,
     [ EII_WINCH, EII_WINCH_ATTACH, EII_WINCH_DETACH ],
-    EII_SPEED_BOOSTER,  // Event
-  // Page #2
+    EII_SPEED_BOOSTER,  
+  
     EII_SUPPORT_PLANE,
     EII_SUPPORT_PLANE_2,
     EII_SUPPORT_PLANE_3,
@@ -106,7 +106,7 @@ let cfgMenuShip = [
 ]
 
 let cfgMenuSubmarine = [
-  // Page #1
+  
     EII_TORPEDO_SENSOR,
     EII_SMOKE_SCREEN,
     EII_SUBMARINE_SONAR,
@@ -118,7 +118,7 @@ let cfgMenuSubmarine = [
 ]
 
 let cfgMenuAircraft = [
-  // Page #1
+  
     EII_SUPPORT_PLANE,
     EII_SUPPORT_PLANE_CHANGE,
     EII_SUPPORT_PLANE_GROUP_ATTACK,
@@ -127,7 +127,7 @@ let cfgMenuAircraft = [
     EII_NIGHT_VISION,
     EII_DESIGNATE_TARGET,
     [EII_SIGHT_STABILIZATION, EII_SIGHT_STABILIZATION_OFF],
-  // Page #2
+  
     EII_SUPPORT_PLANE_ORBITING,
     EII_SUPPORT_PLANE_2,
     EII_SUPPORT_PLANE_3,
@@ -136,13 +136,13 @@ let cfgMenuAircraft = [
     EII_AGM_AIR,
     EII_AAM_AIR,
     EII_BOMB_AIR,
-  // Page #3
+  
     EII_GUIDED_BOMB_AIR,
     null,
     null,
 ]
 
-/******************************** CONFIGS END *********************************/
+
 
 function getCfgByUnit(unitId, hudUnitType) {
   return [ "combat_track_a", "combat_track_h" ].contains(unitId) ? cfgMenuTankArachisCombatTrack

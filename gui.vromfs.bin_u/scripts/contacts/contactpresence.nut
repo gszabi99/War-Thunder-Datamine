@@ -23,7 +23,7 @@ enum PRESENCE_SORT {
 let contactPresence = {
   types = []
   template = {
-    presenceName = "" // filled automatically with addTypes
+    presenceName = "" 
     sortOrder = PRESENCE_SORT.UNKNOWN
     iconName = ""
     iconColor = "white"

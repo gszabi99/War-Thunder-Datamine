@@ -7,7 +7,7 @@ return {
   JOINING_ROOM = "JOINING_ROOM"
   IN_ROOM = "IN_ROOM"
   IN_LOBBY = "IN_LOBBY"
-  IN_LOBBY_HIDDEN = "IN_LOBBY_HIDDEN" //in loby, but hidden by joining wnd. Used when lobby after queue before session
+  IN_LOBBY_HIDDEN = "IN_LOBBY_HIDDEN" 
   UPLOAD_CONTENT = "UPLOAD_CONTENT"
   START_SESSION = "START_SESSION"
   JOINING_SESSION = "JOINING_SESSION"

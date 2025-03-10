@@ -6,15 +6,15 @@ let { rnd_int } = require("dagor.random")
 let { get_time_msec } = require("dagor.time")
 let { register_command } = require("console")
 
-/*
 
-addDelayedAction(callback, delay)
 
- run callback no earlier than call time plus interval specified in 'delay' argument
 
- if 'delay' is set to zero, action will be called in current or next frame
 
-*/
+
+
+
+
+
 
 local delayedActionsList = []
 local instantActionsList = []
@@ -26,7 +26,7 @@ function runDelayedActions(...) {
   let curTime = get_time_msec()
   let callActions = []
 
-  // actions is sorted by call time from last to first
+  
   for (local i = delayedActionsList.len() - 1; i >= 0; --i) {
     let elem = delayedActionsList[i]
     if (elem.time <= curTime) {

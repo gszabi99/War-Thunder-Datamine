@@ -6,8 +6,8 @@ function isArray(v) { return type(v) == "array" }
 const SUBSCRPTIONS_LIST_ID = -123
 const SUBSCRIPTIONS_TO_CHECK_CLEAR = 10
 
-let subscriptions = {} //<listId> = { [SUBSCRPTIONS_LIST_ID] = array of subsctiptions
-                         //             <subListId> = table of same subscriptions }
+let subscriptions = {} 
+                         
 
 local eventId = 0
 
@@ -66,7 +66,7 @@ let fireCb = function(subs) {
 }
 
 local fireAllCb
-fireAllCb = function(subs) { //this function will never remove from memory, but can recursive call.
+fireAllCb = function(subs) { 
   fireCb(subs)
   foreach (key, list in subs)
     if (key != SUBSCRPTIONS_LIST_ID)
@@ -94,12 +94,12 @@ function notifyChanged(pathArray) {
 }
 
 local clearInvalidSubscriptions
-clearInvalidSubscriptions = function(subs) { //this function will never remove from memory, but can recursive call.
+clearInvalidSubscriptions = function(subs) { 
   foreach (key, list in subs) {
     if (key != SUBSCRPTIONS_LIST_ID) {
       clearInvalidSubscriptions(list)
       if (list.len() == 0)
-        subs.rawdelete(key) //warning disable: -modified-container
+        subs.rawdelete(key) 
       continue
     }
 
@@ -107,11 +107,11 @@ clearInvalidSubscriptions = function(subs) { //this function will never remove f
       validateSubscriptionsArray(list)
 
     if (list.len() == 0)
-      subs.rawdelete(key) //warning disable: -modified-container
+      subs.rawdelete(key) 
   }
 }
 
-//all subscriptions for dagui objects, so we can clear all on full scene reload.
+
 stdSubscriptions.add_event_listener("GuiSceneCleared",
   @(_p) clearInvalidSubscriptions(subscriptions),
   null,

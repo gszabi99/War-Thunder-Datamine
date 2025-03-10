@@ -316,7 +316,7 @@ function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null) {
     handlersManager.loadHandler(CaptchaHandler, { callbackSuccess, callbackClose })
     lastShowReason = "Captcha: mandatory random showing"
     cache.hasRndTry = true
-    setLastAttemptTime(get_charserver_time_sec() - maxTimeBetweenShowCaptcha) // to be sure captcha will shown after client restart
+    setLastAttemptTime(get_charserver_time_sec() - maxTimeBetweenShowCaptcha) 
 
     return
   }
@@ -324,7 +324,7 @@ function tryOpenCaptchaHandler(callbackSuccess = null, callbackClose = null) {
   callbackSuccess?()
 }
 
-//
+
 
 
 

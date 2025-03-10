@@ -1,23 +1,23 @@
 let {split_by_chars, regexp} = require("string")
 
-/**
- * Normalize file path slashes to be unix-like forward slashes.
- * Condenses repeat slashes to a single slash and removes and trailing slashes.
- * Remove trailing slashes if not a root linux path "/".
- * Removing dot-segments . and .. and remove last segment before ..
- * Add slash between disk drive letter and the ramaining path if not specified.
- * Examples:
- *   normalize("/")                   > "/"
- *   normalize("/home/")              > "/home"
- *   normalize("C:a")                 > "C:/a"
- *   normalize("a/b/c/../d")          > "a/b/d"
- *   normalize("a/b/c/../../d")       > "a/d"
- *   normalize("a/b/c/../../../d")    > "d"
- *   normalize("a/b/c/../../../../d") > "d"
- *   normalize("/a/../../d")          > "/d"
- *   normalize("a/.b/./c")            > "a/.b/c"
- *   normalize("/a/b///c\\d")         > "/a/b/c/d"
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function normalize(path) {
   let pathSegments = split_by_chars(path, "\\/")
   local isAbsolutePath = false
@@ -56,17 +56,17 @@ function normalize(path) {
 }
 
 
-/**
- * Check is path already normalized
- */
+
+
+
 function isNormalized(path) {
   return path == normalize(path)
 }
 
 
-/**
- * Get last slash separator index in past string
- */
+
+
+
 function getLastSeparatorIndex(path) {
   for (local j = path.len() - 1; j >= 0; j--)
     if (path[j] == '/')
@@ -75,17 +75,17 @@ function getLastSeparatorIndex(path) {
 }
 
 
-/**
- * Return the parent directory path of path.
- * If parent not exists function returns null.
- * Function return correct normalized path if source path normalized.
- * Examples:
- *   parentPath("/")              > null
- *   parentPath("/a")             > "/"
- *   parentPath("/a/b")           > "/a"
- *   parentPath("a")              > null
- *   parentPath("a/b")            > "a"
- */
+
+
+
+
+
+
+
+
+
+
+
 function parentPath(path) {
   if (path == "/")
     return null
@@ -100,17 +100,17 @@ function parentPath(path) {
 }
 
 
-/**
- * Return the parent directory path of path.
- * If parent not exists returns null.
- * Function return correct normalized path if source path normalized.
- * Examples:
- *   parentPath("/")              > "/"
- *   parentPath("/a")             > "a"
- *   parentPath("/a/b")           > "b"
- *   parentPath("a")              > "a"
- *   parentPath("a/b")            > "b"
- */
+
+
+
+
+
+
+
+
+
+
+
 function fileName(path) {
   if (path == "/")
     return "/"
@@ -123,16 +123,16 @@ function fileName(path) {
 }
 
 
-/**
- * Join base path and other paths.
- * Function return correct normalized path if source paths normalized.
- * Examples:
- *   join("a", "b")              > "a/b"
- *   join("/a", "b")             > "/a/b"
- *   join("/", "b")              > "/b"
- *   join("a/b", "c/d")          > "a/b/c/d"
- *   join("/", "/")              > "/"
- */
+
+
+
+
+
+
+
+
+
+
 function _join(basePath, other) {
   assert(type(basePath) == "string")
   assert(type(other) == "string")
@@ -149,15 +149,15 @@ function _join(basePath, other) {
 }
 
 
-/**
- * Join path segments.
- * Function return correct normalized paths if source path array normalized.
- * Examples:
- *   joinArray(["a", "b", "c"])      > "a/b/c"
- *   joinArray(["/", "a", "b", "c"]) > "/a/b/c"
- *   joinArray([])                   > ""
- *   joinArray(["/"])                > "/"
- */
+
+
+
+
+
+
+
+
+
 function joinArray(pathArray) {
   return "/".join(pathArray)
 }
@@ -176,15 +176,15 @@ function join(...) {
 }
 
 
-/**
- * Split path to segments.
- * Function return correct normalized path segments if source path normalized.
- * Examples:
- *   splitToArray("a/b/c")      > ["a", "b", "c"]
- *   splitToArray("/a/b/c")     > ["/", "a", "b", "c"]
- *   splitToArray("")           > []
- *   splitToArray("/")          > ["/"]
- */
+
+
+
+
+
+
+
+
+
 function splitToArray(path) {
   if (path == "")
     return []
@@ -196,7 +196,7 @@ function splitToArray(path) {
   return segments
 }
 
-//EXPORT content for require
+
 return {
   normalize
   isNormalized

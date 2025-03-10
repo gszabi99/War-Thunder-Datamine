@@ -82,7 +82,7 @@ function pitch(width, height, generateFunc) {
     flow = FLOW_VERTICAL
     children = children
     behavior = Behaviors.RtPropUpdate
-    transform = { // fixes blinking when switch sight mode
+    transform = { 
       rotate = -Roll.value
     }
     update = @() {
@@ -198,7 +198,7 @@ let isDistanceValid = Computed(@() BombingMode.get() || (DistToTarget.get() >= 0
 let gunAimMark = @() {
   watch = [TargetPosValid, CCIPMode, AirCannonMode]
   size = flex()
-  transform = {} // fixes blinking when switch sight mode
+  transform = {} 
   children = !TargetPosValid.value || AirCannonMode.get() ? null :
     @() {
       watch = [IlsColor, isDistanceValid]
@@ -279,7 +279,7 @@ function impactLine(_width, height, c_version) {
 function KaiserTvvLinked(width, height) {
   return {
     size = flex()
-    transform = {} // fixes blinking when switch sight mode
+    transform = {} 
     children = [
       @() {
         watch = IlsColor

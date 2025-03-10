@@ -4,13 +4,13 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { register_command } = require("console")
 let { handlersManager, get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
-/**
- *  Shows a preview wnd for workshop set, which is shown to users only once.
- *  Those previews are defined in 'eventPreview' blocks in workshop.blk.
- *
- *  @params {string} id - Block name from workshop.blk file root.
- *
-**/
+
+
+
+
+
+
+
 
 function debug_show_workshop_event_preview(id) {
   let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")

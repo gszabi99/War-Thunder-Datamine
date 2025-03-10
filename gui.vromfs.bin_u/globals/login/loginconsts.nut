@@ -1,7 +1,7 @@
 const USE_STEAM_LOGIN_AUTO_SETTING_ID = "useSteamLoginAuto"
 
-enum LOGIN_STATE { //bit mask
-  AUTHORIZED               = 0x0001 //succesfully connected to auth
+enum LOGIN_STATE { 
+  AUTHORIZED               = 0x0001 
   PROFILE_RECEIVED         = 0x0002
   CONFIGS_RECEIVED         = 0x0004
   MATCHING_CONNECTED       = 0x0008
@@ -9,12 +9,12 @@ enum LOGIN_STATE { //bit mask
   ONLINE_BINARIES_INITED   = 0x0020
   HANGAR_LOADED            = 0x0040
 
-  //not required for login
+  
   LOGIN_STARTED            = 0x0100
 
-  //masks
+  
   NOT_LOGGED_IN            = 0x0000
-  LOGGED_IN                = 0x003F //logged in to all hosts and all configs are loaded
+  LOGGED_IN                = 0x003F 
 }
 
 return {

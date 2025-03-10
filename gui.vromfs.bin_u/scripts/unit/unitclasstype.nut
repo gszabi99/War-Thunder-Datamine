@@ -10,16 +10,16 @@ local unitClassType = {
 unitClassType.template <- {
   code = -1
   name = ""
-  expClassName = "" //filled automatically
+  expClassName = "" 
   unitTypeCode = ES_UNIT_TYPE_INVALID
   checkOrder = -1
   isDeprecated = false
 
-  /** Returns localized name of unit class type. */
+  
   getShortName = @() loc($"mainmenu/type_{this.name}")
   getName = @() this.getShortName()
 
-  /** Check code against specified code mask. */
+  
   checkCode = function(codeMask) {
     if (this.code < 0)
       return false
@@ -27,13 +27,13 @@ unitClassType.template <- {
     return (codeMask & (1 << this.code)) != 0
   }
 
-  /** Check if it is valid type. */
+  
   isValid = @() this.code >= 0
 
-  /** Returns unit exp class written in wpcost.blk. */
+  
   getExpClass = @() $"exp_{this.name}"
 
-  /** Returns a related basic role font icon. */
+  
   getFontIcon = @() getUnitRoleIcon(this.name)
 }
 
@@ -95,7 +95,7 @@ enums.addTypes(unitClassType, {
     checkOrder = checkOrder++
 
     getExpClass = function () {
-      // Name in uppercase.
+      
       return "exp_SPAA"
     }
   }
@@ -187,7 +187,7 @@ function getTypeByExpClass(expClass) {
     unitClassType, unitClassType.UNKNOWN)
 }
 
-function getTypesByEsUnitType(esUnitType = null) { //null if all unit types
+function getTypesByEsUnitType(esUnitType = null) { 
   return unitClassType.types.filter(@(t) (esUnitType == null && t.unitTypeCode != ES_UNIT_TYPE_INVALID)
     || t.unitTypeCode == esUnitType)
 }

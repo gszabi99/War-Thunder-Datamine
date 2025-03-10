@@ -136,7 +136,7 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
   if (hideUnlockInfo)
     return
 
-  //fill unlock info
+  
   let canShowUnlockDesc = !isTrophyContent && !isReceivedPrizes
   let mainCond = canShowUnlockDesc ? getUnlockMainCondDescByCfg(config) : ""
   let multDesc = canShowUnlockDesc ? getUnlockMultDescByCfg(config) : ""
@@ -190,10 +190,10 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
 }
 
 addTooltipTypes({
-  DECORATION = { //tooltip by decoration id and decoration type
-                 //@decorType = UNLOCKABLE_DECAL or UNLOCKABLE_SKIN
-                 //can be without exist unlock
-                 //for skins decorId is like skin unlock id   -  <unitName>"/"<skinName>
+  DECORATION = { 
+                 
+                 
+                 
     getTooltipId = function(decorId, decorType, params = null, _p3 = null) {
       let p = params || {}
       p.decorType <- decorType

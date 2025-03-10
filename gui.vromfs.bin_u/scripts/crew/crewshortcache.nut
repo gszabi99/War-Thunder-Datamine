@@ -5,13 +5,13 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
-// Short-term cache for the currently viewed crew with a selected unit,
-// saved for only one crew.
-// Reset on:
-//   * saving data for another crew,
-//   * changes in crew skills,
-//   * additions of new skills to the crew,
-//   * changes in the crew's unit.
+
+
+
+
+
+
+
 
 let cache = {}
 

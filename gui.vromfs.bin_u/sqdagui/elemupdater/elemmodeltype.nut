@@ -8,7 +8,7 @@ let modelType = {
 }
 
 modelType.template <- {
-  id = "" //filled automatically by typeName. so unique
+  id = "" 
 
   init = function() {}
 
@@ -27,7 +27,7 @@ modelType.addTypes({
   EMPTY = {}
 })
 
-//save get type by id. return EMPTY if not found
+
 modelType.get <- @(typeId) this?[typeId] ?? this.EMPTY
 
 return modelType

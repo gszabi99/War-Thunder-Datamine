@@ -16,7 +16,7 @@ function checkRankUpWindow(country, old_rank, new_rank, unlockData = null) {
     gained_ranks.append(i);
   let config = { country = country, ranks = gained_ranks, unlockData = unlockData }
   if (isHandlerInScene(gui_handlers.RankUpModal))
-    delayedRankUpWnd.append(config) //better to refactor this to wrok by showUnlockWnd completely
+    delayedRankUpWnd.append(config) 
   else
     loadHandler(gui_handlers.RankUpModal, config)
   updatePlayerRankByCountry(country, new_rank)

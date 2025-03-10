@@ -15,7 +15,7 @@ let isMatchingOnline = Watched(is_online_available())
 
 local progressBox = null
 
-// callbacks for single connect request
+
 local onConnectCb = null
 local onDisconnectCb = null
 
@@ -27,13 +27,13 @@ function onMatchingConnect() {
   onConnectCb = null
   onDisconnectCb = null
 
-  // matching not save player info on diconnect (lobby, squad, queue)
+  
   broadcastEvent("MatchingConnect")
   isMatchingOnline(true)
 }
 
 function onMatchingDisconnect() {
-  // we're still trying to reconnect after this event
+  
   broadcastEvent("MatchingDisconnect")
   isMatchingOnline(false)
 }
@@ -89,7 +89,7 @@ function logoutWithMsgBox(reason, message, _reasonDomain, forceExit = false) {
   onFailToReconnect()
 
   local needExit = forceExit
-  if (!needExit) { // logout
+  if (!needExit) { 
     let handler = handlersManager.getActiveBaseHandler()
     if (("isDelayedLogoutOnDisconnect" not in handler)
         || !handler.isDelayedLogoutOnDisconnect())

@@ -35,13 +35,13 @@ let hiddenMatchingError = {
 foreach (fn in [
                  "queueType.nut"
                  "queue/queueEvent.nut"
-                 "queue/queueWwBattle.nut" //FIX ME: must be in WW folder also with ww queue type
+                 "queue/queueWwBattle.nut" 
                  "queueInfo/qiHandlerBase.nut"
                  "queueInfo/qiHandlerByTeams.nut"
                  "queueInfo/qiHandlerByCountries.nut"
                  "queueTable.nut"
                ])
-  loadOnce($"%scripts/queue/{fn}") // no need to includeOnce to correct reload this scripts pack runtime
+  loadOnce($"%scripts/queue/{fn}") 
 
 let QueueManager = class {
   state              = queueStates.NOT_IN_QUEUE
@@ -287,7 +287,7 @@ let QueueManager = class {
     set_presence_to_player("queue")
   }
 
-  function leaveAllQueues(params = null, postAction = null, postCancelAction = null, silent = false) { //null = all
+  function leaveAllQueues(params = null, postAction = null, postCancelAction = null, silent = false) { 
     if (params) {
       let list = this.findAllQueues(params)
       foreach (q in list)
@@ -313,7 +313,7 @@ let QueueManager = class {
     return Callback(function(response) {
       this.showProgressBox(false)
       if (response.error == SERVER_ERROR_REQUEST_REJECTED) {
-        // Error means that user is joining battle and can't leave the queue
+        
         if (postCancelAction)
           postCancelAction()
         setWaitForQueueRoom(true)
@@ -323,9 +323,9 @@ let QueueManager = class {
           checkMatchingError(response, !silent)
         this.afterLeaveQueues({})
 
-        // This check is a workaround that fixes
-        // player being able to perform some action
-         // split second before battle begins.
+        
+        
+         
         if (!isWaitForQueueRoom.get() && !isInSessionRoom.get()) {
           if (postAction)
             postAction()
@@ -377,7 +377,7 @@ let QueueManager = class {
     return Callback(function(response) {
       this.showProgressBox(false)
       if (response.error == SERVER_ERROR_REQUEST_REJECTED) {
-        // Error means that user is joining battle and can't leave the queue
+        
         setWaitForQueueRoom(true)
         return
       }
@@ -398,7 +398,7 @@ let QueueManager = class {
       showInfoMsgBox(msg, "leave_queue_msgbox")
   }
 
-  //handles all queus, matches with @params
+  
   function afterLeaveQueues(params) {
     let list = this.findAllQueues(params)
     foreach (q in list)

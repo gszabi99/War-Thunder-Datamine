@@ -262,7 +262,7 @@ let offerTypes = {
   multiAwardsOnWorthGold = {
     function getTextView(prize, _params = null) {
       let premExpMul = prize?.result.premExpMul
-      if (premExpMul == null) //Only talisman is supported so far
+      if (premExpMul == null) 
         return null
       let res = [ { text = loc("modification/premExpMul") } ]
       let unit = getAircraftByName(premExpMul?.unit0 ?? "")
@@ -277,7 +277,7 @@ let offerTypes = {
 
     function getImage(prize, _params = null) {
       let premExpMul = prize?.result.premExpMul
-      if (premExpMul == null) //Only talisman is supported so far
+      if (premExpMul == null) 
         return null
       let unit = getAircraftByName(premExpMul?.unit0 ?? "")
       if (unit == null)
@@ -1048,7 +1048,7 @@ let class BuyAndOpenChestHandler (gui_handlers.BaseGuiHandlerWT) {
   function onOpenAnimFinish() {
     if (!this.isValid())
       return
-    if (this.curShowPrizeIdx != null) //already started
+    if (this.curShowPrizeIdx != null) 
       return
 
     this.startNextPrizeAnimation()
@@ -1236,12 +1236,12 @@ function tryOpenChestWindow() {
   if (waitingForShowChest == null)
     return
 
-  if (!isInMenu()) {//no longer need to show the window with the chest after the battle
+  if (!isInMenu()) {
     waitingForShowChest = null
     return
   }
   let handler = handlersManager.findHandlerClassInScene(BuyAndOpenChestHandler)
-  if (handler != null) {//already showed
+  if (handler != null) {
     waitingForShowChest = null
     return
   }

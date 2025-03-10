@@ -22,7 +22,7 @@ let tooltipObjMarkup = "tooltipObj { id:t='{0}'; position:t='root'; order-popup:
 let needActionAfterHoldPID = dagui_propid_add_name_id("need-action-after-hold")
 
 local waitPlace = null
-local tooltipData = null // warning disable: -declared-never-used //used to store the subscription context
+local tooltipData = null 
 local tooltipPlace = null
 local hintPlace = null
 local hintTgt = null
@@ -52,7 +52,7 @@ function removeValidateTimer() {
 }
 
 function validateObjs(_) {
-  if (hintTgt?.isValid() && hintTgt.isHovered()) //hold_stop or unhover event do not always received on destroy object
+  if (hintTgt?.isValid() && hintTgt.isHovered()) 
     return
   hintTgt = null
   hideWaitIcon()
@@ -139,7 +139,7 @@ function showTooltipForObj(obj, isOpenByHoldBtn = false) {
     return
 
   if (!obj?.isValid()) {
-    let objId = obj?.id // warning disable: -declared-never-used
+    let objId = obj?.id 
     script_net_assert_once("DelayedTooltip", "Invalid object for tooltip")
     return
   }

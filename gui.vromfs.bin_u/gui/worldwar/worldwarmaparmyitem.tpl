@@ -131,7 +131,15 @@
       top:t='50%ph-50%h'
       position:t='relative'
       padding-left:t='1@framePadding'
-      text:t='<<getShortInfoText>>'
+      text:t='<<getShortInfoUnitsCountText>>'
+    }
+    img {
+      background-image:t='<<getArmyIcon>>'
+    }
+    activeText {
+      top:t='50%ph-50%h'
+      position:t='relative'
+      text:t='<<getShortInfoUnitsMoraleText>>'
     }
     <</reqUnitTypeIcon>>
     <</needShortInfoText>>

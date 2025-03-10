@@ -15,7 +15,7 @@ function is_autologin_enabled() {
   local res = loadLocalSharedSettings(AUTOLOGIN_SAVE_ID)
   if (res != null)
     return res
-  //compatibility with saves 1.67.2.X and below
+  
   res = get_gui_option(USEROPT_AUTOLOGIN) || false
   set_autologin_enabled(res)
   return res

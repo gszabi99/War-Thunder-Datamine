@@ -10,14 +10,14 @@ let Contact = require("%scripts/contacts/contact.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { updateContact } = require("%scripts/contacts/contactsActions.nut")
 
-enum STEAM_FRIEND_STATE { //excerpted from steam api EPersonaState description
+enum STEAM_FRIEND_STATE { 
   OFFLINE
   ONLINE
   BUSY
   AWAY
   SNOOZE
-  TO_TRADE //Online, trading.
-  TO_PLAY //Online, wanting to play.
+  TO_TRADE 
+  TO_PLAY 
 }
 
 let onlineStates = {
@@ -33,7 +33,7 @@ let steam2uid = {}
 let isInWtOnline = @(friend, steamAppId = null) friend.gamePlayed == (steamAppId ?? steam_get_app_id())
 
 function steamUpdateContactsList(usersTable) {
-  //Create or update exist contacts
+  
   let steamAppId = steam_get_app_id()
   let res = {}
   foreach (uid, playerData in usersTable) {

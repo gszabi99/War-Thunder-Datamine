@@ -19,7 +19,7 @@ function wwAnimBgLoad(name) {
     return animBgLoad(fullPath)
 
   let curBgData = createBgData()
-  foreach (n in wwBg) // Need to set random weight in config for random image getting when no active map
+  foreach (n in wwBg) 
     curBgData.list[$"{WW_BG_PATH}{n}.blk"] <- rnd() % 10
   return animBgLoad("", null, curBgData)
 }

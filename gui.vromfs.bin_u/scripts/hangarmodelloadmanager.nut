@@ -14,8 +14,8 @@ let isLoading = mkWatched(persist, "isLoading", false)
 let hangarUnitName = Watched(hangar_get_current_unit_name())
 
 function getLoadState() {
-  // First check covers case when model was loaded from within C++.
-  // Flag "isLoading" covers model loading from Squirrel.
+  
+  
   return hangar_get_loaded_unit_name() == "" || isLoading.value || !hangar_is_model_loaded()
     ? HangarModelLoadState.LOADING
     : HangarModelLoadState.LOADED

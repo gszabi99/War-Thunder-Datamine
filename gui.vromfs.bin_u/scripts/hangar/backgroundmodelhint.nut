@@ -80,7 +80,7 @@ function showBackgroundModelHint(params) {
     return
   }
 
-  if (!showConsoleButtons.value || is_mouse_last_time_used()) //show hint only for gamepad
+  if (!showConsoleButtons.value || is_mouse_last_time_used()) 
     return
 
   isVisibleHint = true

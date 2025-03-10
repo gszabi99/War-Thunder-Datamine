@@ -73,8 +73,8 @@ let { isMissionForUnitType, isSkirmishWithKillStreaks } = require("%scripts/miss
         set_mission_for_takeoff(missionBlk?.name)
         optionItems.append([USEROPT_TAKEOFF_MODE, "spinner"])
     }
-//    if (missionBlk.paramExists("landing_mode"))
-//        optionItems.append([USEROPT_LANDING_MODE, "spinner"])
+
+
   }
 
   if (gt & GT_RACE) {
@@ -86,9 +86,9 @@ let { isMissionForUnitType, isSkirmishWithKillStreaks } = require("%scripts/miss
   if (gt & GT_VERSUS) {
     if (!missionBlk.paramExists("timeLimit") || gm == GM_SKIRMISH)
       optionItems.append([USEROPT_TIME_LIMIT, "spinner"])
-//    if (!missionBlk.paramExists("rounds"))
-//      optionItems.append([USEROPT_ROUNDS, "spinner"])
-    if (missionBlk?.forceNoRespawnsByMission != true) //false or null
+
+
+    if (missionBlk?.forceNoRespawnsByMission != true) 
       optionItems.append([USEROPT_VERSUS_RESPAWN, "spinner"])
 
     if (missionBlk.paramExists("killLimit") && !(gt & GT_RACE))
@@ -243,7 +243,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
       if (!this.missionBlk.getBool("gt_cooperative", false) || is_user_mission(this.missionBlk))
         set_mission_settings("coop", false)
     }
-    //otherwise it's set from menu
+    
 
     this.missionBlk.setBool("gt_cooperative", get_mission_settings().coop)
     this.missionBlk.setInt("_gameMode", gm)
@@ -251,14 +251,14 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
       if (this.missionBlk.getStr("restoreType", "attempts") == "tactical control")
         this.missionBlk.setStr("restoreType", "attempts");
 
-    if (this.isRestart) { //temp hack because it doesn't work for some weird reason
+    if (this.isRestart) { 
       this.missionBlk.setBool("isLimitedFuel", get_mission_settings().isLimitedFuel)
       this.missionBlk.setBool("isLimitedAmmo", get_mission_settings().isLimitedAmmo)
     }
 
     select_mission(this.missionBlk, false);
 
-    let gt = get_game_type(); //we know it after select_mission()
+    let gt = get_game_type(); 
 
     log(format("[BRIEFING] mode %d, type %d, mission %s", gm, gt, this.missionName))
 
@@ -292,7 +292,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     this.guiScene.replaceContentFromText(this.scene.findObject("optionslist"), container.tbl, container.tbl.len(), this)
     if (optionItems.len() > 0) {
       let listObj = showObjById("optionslist", true, this.scene)
-      listObj.height = $"{optionItems.len()}*@baseTrHeight" //bad solution, but freeheight doesn't work correct
+      listObj.height = $"{optionItems.len()}*@baseTrHeight" 
     }
     this.optionsContainers.append(container.descr)
 
@@ -470,7 +470,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
     }
 
     if (!("url" in misBlk))
-      misBlk.setStr("url", "") //Must-be param, to override on matching if used before
+      misBlk.setStr("url", "") 
 
     set_mission_settings("missionURL", misBlk.url)
     set_mission_settings("sessionPassword", get_option(USEROPT_SESSION_PASSWORD).value)

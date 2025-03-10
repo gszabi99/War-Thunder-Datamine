@@ -12,7 +12,7 @@
       "img": {
         "width": "pw",
         "height": "0.211w",
-        "max-height": "0.45ph",
+        "max-height": "0.40ph",
         "background-image": "!ui/images/premium/premium_account_image",
         "background-repeat": "aspect-ratio",
         "tdiv": {
@@ -29,7 +29,7 @@
               "margin-left": "444@sf/@pf - w",
               "margin-top": "105@sf/@pf - h",
               "position": "absolute",
-              "text": "",
+              "text": "#charServer/entitlement/PremiumAccount",
               "bigBoldFont": "yes",
               "overlayTextColor": "active"
             },
@@ -56,15 +56,16 @@
       },
       "tdiv": [
         {
+          "max-width": "8@premiumItemWidth",
+          "width": "0.833pw",
           "pos": "pw/2 - w/2, 0",
-          "margin-top": "13@blockInterval",
+          "margin-top": "7@blockInterval",
           "position": "relative",
           "flow": "horizontal",
-          "width": "0.833pw",
           "css-hier-invalidate": "yes",
           "textarea": {
             "id": "premiumInfoText",
-            "width": "0.6pw",
+            "width": "fw",
             "wrapRight": "yes",
             "font-bold": "@fontNormal"
           },
@@ -78,7 +79,7 @@
             {
               "id": "premiumList",
               "behavior": "posNavigator",
-              "width": "fw",
+              "width": "3@premiumItemWidth + 10@blockInterval",
               "flow": "h-flow",
               "navigatorShortcuts": "yes"
             }

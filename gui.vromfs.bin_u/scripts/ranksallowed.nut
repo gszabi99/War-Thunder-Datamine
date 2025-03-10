@@ -68,7 +68,7 @@ function isRanksAllowed(tbl) {
       return false
     }
 
-  //check entitlement - this is always last
+  
   if ("entitlement" in tbl) {
     if (has_entitlement(tbl.entitlement))
       return true

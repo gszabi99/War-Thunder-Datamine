@@ -108,9 +108,9 @@ function getControlsList(unitType, unitTags = []) {
       return isHeaderPassed && isSectionPassed
     }
 
-    if (sc.type == CONTROL_TYPE.HEADER) { //unitType and other params below exist only in header
+    if (sc.type == CONTROL_TYPE.HEADER) { 
       isHeaderPassed = sc?.unitTypes.contains(unitType) ?? true
-      isSectionPassed = true // reset previous sectino setting
+      isSectionPassed = true 
 
       if (isHeaderPassed)
         isHeaderPassed = unitTags.len() == 0 || sc?.unitTag == null || isInArray(sc.unitTag, unitTags)
@@ -230,7 +230,7 @@ function isDeviceConnected(devId = null) {
 }
 
 let needRequireEngineControl = @() !CONTROLS_ALLOW_ENGINE_AUTOSTART
-  && (get_mission_difficulty_int() == g_difficulty.SIMULATOR.diffCode) // warning disable: -const-in-bool-expr
+  && (get_mission_difficulty_int() == g_difficulty.SIMULATOR.diffCode) 
 
 function getWeaponFeatures(weaponsList) {
   let res = {
@@ -241,8 +241,8 @@ function getWeaponFeatures(weaponsList) {
     gotTorpedoes = false
     gotMines = false
     gotRockets = false
-    gotAGM = false // air-to-ground missiles, anti-tank guided missiles
-    gotAAM = false // air-to-air missiles
+    gotAGM = false 
+    gotAAM = false 
     gotGuidedBombs = false
     gotGunnerTurrets = false
     gotSchraegeMusik = false
@@ -361,7 +361,7 @@ function getRequiredControlsForUnit(unit, helpersMode) {
     let w = getWeaponFeatures([ commonWeapons, weaponPreset ])
 
     if (preset.getAxis("fire").axisId == -1) {
-      if (w.gotMachineGuns || (!w.gotCannons && (w.gotGunnerTurrets || w.gotSchraegeMusik))) // Gunners require either Mguns or Cannons shortcut.
+      if (w.gotMachineGuns || (!w.gotCannons && (w.gotGunnerTurrets || w.gotSchraegeMusik))) 
         controls.append("ID_FIRE_MGUNS")
       if (w.gotCannons)
         controls.append("ID_FIRE_CANNONS")
@@ -399,7 +399,7 @@ function getRequiredControlsForUnit(unit, helpersMode) {
     let w = getWeaponFeatures([ commonWeapons, weaponPreset ])
 
     if (preset.getAxis("fire").axisId == -1) {
-      if (w.gotMachineGuns || (!w.gotCannons && w.gotGunnerTurrets)) // Gunners require either Mguns or Cannons shortcut.
+      if (w.gotMachineGuns || (!w.gotCannons && w.gotGunnerTurrets)) 
         controls.append("ID_FIRE_MGUNS_HELICOPTER")
       if (w.gotCannons)
         controls.append("ID_FIRE_CANNONS_HELICOPTER")
@@ -420,7 +420,7 @@ function getRequiredControlsForUnit(unit, helpersMode) {
         controls.append("ID_GUIDED_BOMBS_HELICOPTER")
     }
   }
-  //
+  
 
 
 

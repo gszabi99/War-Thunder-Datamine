@@ -80,7 +80,7 @@ let Smoke = class (BaseItem) {
     return data?.currIdx && data.option.value == data.currIdx
   }
 
-  getName = @(colored = true) // Used with type name in buy dialog message only
+  getName = @(colored = true) 
     $"{loc("itemTypes/aerobatic_smoke")} {base.getName(colored)}"
 
   getDescriptionTitle = @() base.getName()

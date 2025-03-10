@@ -14,7 +14,7 @@ let
   IDENT_TM = identity3x4()
   VERY_SMALL_NUMBER = 4e-19
 
-let [[ignore_heap_usage]] IDENT_BBOX = BBox3(float3(), 1f) // ignore heap usage because it is used c++ heap
+let @ignore_heap_usage IDENT_BBOX = BBox3(float3(), 1f) // ignore heap usage because it is used c++ heap
 
 [generic]
 def deg_to_rad(val)

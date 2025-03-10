@@ -146,7 +146,7 @@ let TimeToMissileHitRel = Watched(-1.0)
 
 let Speed = Watched(0.0)
 
-  //radar 1
+  
 let IsRadarVisible = Watched(false)
 let IsRadarEmitting = Watched(false)
 let IsRadarDamaged = Watched(false)
@@ -159,7 +159,7 @@ let ElevationHalfWidth = Watched(0.0)
 let DistanceGateWidthRel = Watched(0.0)
 let NoiseSignal = Watched(0)
 
-  //radar 2
+  
 let IsRadar2Visible = Watched(false)
 let IsRadar2Emitting = Watched(false)
 let Radar2ModeNameId = Watched(-1)
@@ -248,10 +248,10 @@ radarState.__update({
 
     Speed,
 
-    //radar 1
+    
     IsRadarVisible, IsRadarEmitting, IsRadarDamaged, RadarModeNameId, Azimuth, Elevation, Distance, AzimuthHalfWidth, ElevationHalfWidth, DistanceGateWidthRel, NoiseSignal,
 
-    //radar 2
+    
     IsRadar2Visible, IsRadar2Emitting, Radar2ModeNameId, Azimuth2, Elevation2, Distance2, AzimuthHalfWidth2, ElevationHalfWidth2, NoiseSignal2,
 
     AimAzimuth, TurretAzimuth, TargetRadarAzimuthWidth, TargetRadarDist, CueAzimuthHalfWidthRel, CueDistWidthRel, AzimuthMin, AzimuthMax, ElevationMin, ElevationMax,

@@ -7,7 +7,7 @@ let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 const HIDE_STAT_TIME_SEC = 1
 const HIDE_STAT_WITH_FAILED_TIME_SEC = 10
 
-::on_show_dldata_stat <- function(stat) {    //called from native code
+::on_show_dldata_stat <- function(stat) {    
   elemModelType.DL_DATA_STATE.updateStat(stat)
 }
 

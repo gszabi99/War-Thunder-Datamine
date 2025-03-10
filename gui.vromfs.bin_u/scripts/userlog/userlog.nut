@@ -7,7 +7,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let { move_mouse_on_child_by_value, move_mouse_on_obj, loadHandler, isInMenu
+let { move_mouse_on_child_by_value, move_mouse_on_obj, isInMenu
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
@@ -133,10 +133,6 @@ let userlogPages = [
   }
 ]
 
-::gui_modal_userLog <- function gui_modal_userLog() {
-  loadHandler(gui_handlers.UserLogHandler)
-}
-
 let actionByLogType = {
   [EULT_PUNLOCK_ACCEPT]       = @(_log) guiStartBattleTasksWnd(),
   [EULT_PUNLOCK_EXPIRED]      = @(_log) guiStartBattleTasksWnd(),
@@ -175,8 +171,8 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/userlog.blk"
 
-  fullLogs = null // Pure logObj with dub instances to match with user logObj count in blk
-  logs = null // Without dub instances (everyDayLoginAward)
+  fullLogs = null 
+  logs = null 
   listObj = null
   curPage = null
 
@@ -236,7 +232,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       let blk = DataBlock()
       get_user_log_blk_body(i, blk)
 
-      if (blk?.disabled) // was seen
+      if (blk?.disabled) 
         continue
 
       foreach (idx, page in userlogPages)
@@ -313,7 +309,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.guiScene.replaceContentFromText(rowObj, viewBlk, viewBlk.len(), this)
 
-    if (logObj.type != EULT_SESSION_RESULT) // for this case tooltip setted inside userLogRow.tpl
+    if (logObj.type != EULT_SESSION_RESULT) 
       rowObj.tooltip = rowData.tooltip
 
     if (logObj.enabled)

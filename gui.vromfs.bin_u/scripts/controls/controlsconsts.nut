@@ -18,7 +18,7 @@ enum CONTROL_TYPE {
   SLIDER
   SWITCH_BOX
   MOUSE_AXIS
-  //for controls wizard
+  
   MSG_BOX
   SHORTCUT_GROUP
   LISTBOX
@@ -31,7 +31,7 @@ enum AXIS_MODIFIERS {
   MAX = 0x4000,
 }
 
-//gamepad axes bitmask
+
 enum GAMEPAD_AXIS {
   NOT_AXIS = 0
 
@@ -42,14 +42,14 @@ enum GAMEPAD_AXIS {
 
   LEFT_TRIGGER = 0x10
   RIGHT_TRIGGER = 0x20
-  BOTH_TRIGGER_XBOX = 0x40 // axisId=6 (R+L.Trigger) on XBOX
-  BOTH_TRIGGER_PS4 = 0x200 // axisId=9 (R+L.Trigger) on PS4
+  BOTH_TRIGGER_XBOX = 0x40 
+  BOTH_TRIGGER_PS4 = 0x200 
 
   LEFT_STICK = 0x3
   RIGHT_STICK = 0xC
 }
 
-//mouse axes bitmask
+
 enum MOUSE_AXIS {
   NOT_AXIS = 0x0
 

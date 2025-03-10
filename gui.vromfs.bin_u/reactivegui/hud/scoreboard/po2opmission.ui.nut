@@ -33,7 +33,7 @@ let killsText = @() textParams.__merge({
 
 let timeIcon = textParams.__merge({
   size = [iconWidth, SIZE_TO_CONTENT]
-  pos = [0, hdpx(2)]  //use this because the font icon is not centered in the font
+  pos = [0, hdpx(2)]  
   text = "╎"
 })
 

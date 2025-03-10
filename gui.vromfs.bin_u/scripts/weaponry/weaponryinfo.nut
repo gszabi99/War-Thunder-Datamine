@@ -71,15 +71,15 @@ let WEAPON_TYPE = {
   CANNON          = "cannon"
   TURRETS         = "turrets"
   SMOKE           = "smoke"
-  FLARES          = "flares"    // Flares (countermeasure)
+  FLARES          = "flares"    
   CHAFFS          = "chaffs"
   COUNTERMEASURES = "countermeasures"
   BOMBS           = "bombs"
   MINES           = "mines"
   TORPEDOES       = "torpedoes"
-  ROCKETS         = "rockets"   // Rockets
-  AAM             = "aam"       // Air-to-Air Missiles
-  AGM             = "agm"       // Air-to-Ground Missile, Anti-Tank Guided Missiles
+  ROCKETS         = "rockets"   
+  AAM             = "aam"       
+  AGM             = "agm"       
   GUIDED_BOMBS    = "guided bombs"
   CONTAINER_ITEM  = "container_item"
 }
@@ -98,16 +98,16 @@ let WEAPON_TAG = {
   CANNON           = "cannon"
 }
 
-let WEAPON_TEXT_PARAMS = { //const
-  isPrimary             = null //bool or null. When null return descripton for all weaponry.
-  weaponPreset          = -1 //int weaponIndex or string weapon name
-  newLine               = "\n" //weapons delimeter
+let WEAPON_TEXT_PARAMS = { 
+  isPrimary             = null 
+  weaponPreset          = -1 
+  newLine               = "\n" 
   detail                = INFO_DETAIL.FULL
   needTextWhenNoWeapons = true
-  ediff                 = null //int. when not set, uses getCurrentGameModeEdiff() function
-  isLocalState          = true //should apply my local parameters to unit (modifications, crew skills, etc)
-  weaponsFilterFunc     = null //function. When set, only filtered weapons are collected from weaponPreset.
-  isSingle              = false //should ignore ammo count
+  ediff                 = null 
+  isLocalState          = true 
+  weaponsFilterFunc     = null 
+  isSingle              = false 
 }
 
 let torpedoSpeedMultByDiff = {}
@@ -168,9 +168,9 @@ function isWeaponAux(weapon) {
 }
 
 function isWeaponEnabled(unit, weapon) {
-  return shop_is_weapon_available(unit.name, weapon.name, true, false) //no point to check purchased unit even in respawn screen
-         //temporary hack: check ammo amount for forced units by mission,
-         //because shop_is_weapon_available function work incorrect with them
+  return shop_is_weapon_available(unit.name, weapon.name, true, false) 
+         
+         
          && (!isGameModeVersus(get_game_mode())
              || getAmmoAmount(unit, weapon.name, AMMO.WEAPON)
              || !getAmmoMaxAmount(unit, weapon.name, AMMO.WEAPON)
@@ -214,7 +214,7 @@ function getLastWeapon(unitName) {
   if (res != "")
     return res
 
-  //validate last_weapon value
+  
   let unit = getAircraftByName(unitName)
   if (!unit)
     return res
@@ -345,7 +345,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       isInArray(weapon.trigger, [ TRIGGER_TYPE.MACHINE_GUN, TRIGGER_TYPE.CANNON,
         TRIGGER_TYPE.ADD_GUN, TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.AGM, TRIGGER_TYPE.AAM,
         TRIGGER_TYPE.GUIDED_BOMBS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.SMOKE,
-        TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES])) { //not a turret
+        TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES])) { 
       currentTypeName = weapon.trigger == TRIGGER_TYPE.COUNTERMEASURES ? WEAPON_TYPE.COUNTERMEASURES : WEAPON_TYPE.GUNS
       if (weaponBlk?.bullet && type(weaponBlk?.bullet) == "instance"
           && isCaliberCannon(1000 * getTblValue("caliber", weaponBlk?.bullet, 0)))
@@ -362,10 +362,10 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       ammo = 0
       num = 0
       caliber = 0
-      // masses of ammo
+      
       massKg = 0
       massLbs = 0
-      // mass of a weapon itself (container, gun, etc)
+      
       additionalMassKg = 0
       explosiveType = null
       explosiveMass = 0
@@ -435,7 +435,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
     let needBulletParams = !isInArray(currentTypeName,
       [WEAPON_TYPE.SMOKE, WEAPON_TYPE.FLARES, WEAPON_TYPE.CHAFFS, WEAPON_TYPE.COUNTERMEASURES])
 
-    // targeting pods
+    
     if (weaponBlk?.payload) {
       item.massKg = weaponBlk.payload?.mass ?? item.massKg
       item.massLbs = weaponBlk.payload?.mass_lbs ?? item.massLbs
@@ -613,8 +613,8 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
         break
       }
 
-    // Merging duplicating weapons with different weaponName
-    // (except guns, because there exists different guns with equal params)
+    
+    
     if (trIdx >= 0 && (weaponName not in weapons.weaponsByTypes[currentTypeName][trIdx]?.weaponBlocks) && weaponTag != WEAPON_TAG.BULLET)
       foreach (name, existingItem in weapons.weaponsByTypes[currentTypeName][trIdx].weaponBlocks)
         if (isWeaponParamsEqual(item, existingItem)) {
@@ -668,7 +668,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
   return weapons
 }
 
-//weapon - is a weaponData gathered by addWeaponsFromBlk
+
 function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine = null) {
   let res = []
   let colon = loc("ui/colon")
@@ -919,7 +919,7 @@ function getSecondaryWeaponsList(unit) {
 
     weaponsList.append(weapon)
     if (lastWeapon == "" && shop_is_weapon_purchased(unitName, weapon.name))
-      setLastWeapon(unitName, weapon.name)  //!!FIX ME: remove side effect from getter
+      setLastWeapon(unitName, weapon.name)  
   }
 
   return weaponsList
@@ -981,8 +981,8 @@ function checkUnitBullets(unit, isCheckAll = false, bulletSet = null) {
     if (modifName == "")
       continue
 
-    if ((!isCheckAll && isModificationEnabled(unit.name, modifName)) //Current mod
-      || (isCheckAll && isWeaponUnlocked(unit, getModificationByName(unit, modifName)))) { //All unlocked mods
+    if ((!isCheckAll && isModificationEnabled(unit.name, modifName)) 
+      || (isCheckAll && isWeaponUnlocked(unit, getModificationByName(unit, modifName)))) { 
       let res = checkAmmoAmount(unit, modifName, AMMO.MODIFICATION)
       if (res != UNIT_WEAPONS_READY)
         return res

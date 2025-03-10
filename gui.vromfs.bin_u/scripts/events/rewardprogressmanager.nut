@@ -8,32 +8,32 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 
-/**
- * Caches data from leaderboard to provide always
- * actual values of reward progress.
- *
- * Usage:
- * Just call requestProgress function and it will provide actual value
- * requestProgress(event, field, callback, context = null)
- *   @event    - tournament event
- *   @eventEconomicName =event economic name for request season leaderboard
- *   @field    - name of leaderboard field you want to get
- *   @callback - callback function, which receives
- *               a value as an argument (null if there is no value)
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
 ::g_reward_progress_manager <- {
   __cache = {}
 
   function requestProgress(event, eventEconomicName, field, callback) {
-    //Try to get from cache
+    
     if (eventEconomicName in this.__cache && this.__cache[eventEconomicName])
       return callback(this.__cache[eventEconomicName]?[field])
 
-    //Try to get from userlog
+    
     if (this.fetchRowFromUserlog(event))
       return callback(this.__cache[eventEconomicName]?[field])
 
-    //Try to get from leaderbords
+    
     let request = events.getMainLbRequest(event)
     request.economicName = eventEconomicName
     if (request.forClans)
@@ -57,7 +57,7 @@ let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 
   function onEventEventBattleEnded(params) {
     let eventId = params?.eventId ?? ""
-    let event = events.getEvent(eventId) || events.getEventByEconomicName(eventId) // if event name difference of its shared economic name
+    let event = events.getEvent(eventId) || events.getEventByEconomicName(eventId) 
     if (event)
       this.fetchRowFromUserlog(event)
   }

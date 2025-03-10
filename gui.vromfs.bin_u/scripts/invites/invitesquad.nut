@@ -21,7 +21,7 @@ let { queues } = require("%scripts/queue/queueManager.nut")
 let { showExpiredInvitePopup, removeInviteToSquad } = require("%scripts/invites/invites.nut")
 
 let Squad = class (BaseInvite) {
-  //custom class params, not exist in base invite
+  
   squadId = 0
   leaderId = 0
   isAccepted = false
@@ -42,7 +42,7 @@ let Squad = class (BaseInvite) {
     this.updateInviterContact()
 
     if (this.inviterName.len() != 0) {
-      //Don't show invites from xbox players, as notification comes from system overlay
+      
       log($"InviteSquad: invitername != 0 {platformModule.isPlayerFromXboxOne(this.inviterName)}")
       if (platformModule.isPlayerFromXboxOne(this.inviterName))
         this.setDelayed(true)

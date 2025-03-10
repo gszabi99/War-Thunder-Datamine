@@ -4,24 +4,24 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let { decimalFormat } = require("%scripts/langUtils/textFormat.nut")
 
-/*
-  universal money format
-  monye =
-  {
-    wp   = 0;
-    gold = 0;
-    frp  = 0; - free research points
-    rp   = 0; - reserach points
-    sap  = 0; - sqadron activity points
-    mType = money_type.none; - cost or balance (defined in enum)
-  }
 
-  API
 
-  EXPANDING
-    When you add new noteble values, add their names ton __data_fields array.
-    This need for optimize comparison.
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let money_type = {
   none = 0
@@ -112,7 +112,7 @@ let Money = class {
     return !this.wp && !this.gold && !this.frp && !this.rp && !this.sap
   }
 
-  //Math methods
+  
   function _add(that) {
     let newClass = this.getclass()
     return newClass(this.wp + that.wp,
@@ -154,7 +154,7 @@ let Money = class {
     return 0
   }
 
-  //String methods
+  
   function _tostring() {
     return this.__impl_get_text()
   }

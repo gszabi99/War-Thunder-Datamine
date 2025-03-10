@@ -120,7 +120,7 @@ function isBattleTaskDone(config) {
 
   if (isBattleTask(config)) {
     if (!getBattleTaskById(config.id))
-      return true // FIXME Task with old difficulty type, not using anymore
+      return true 
     return isUnlockOpened(config.id)
   }
   return isUnlockOpened(config.id)
@@ -249,8 +249,8 @@ function getBattleTasksByDiff(searchArray, difficulty = null) {
 let withdrawTasksArrayByDifficulty = @(diff, tasks)
   tasks.filter(@(task) diff == getDifficultyTypeByTask(task))
 
-// Returns only tasks that can be completed in the game mode specified,
-// including tasks with unclaimed rewards or those that have been completed.
+
+
 function getCurBattleTasksByGm(gameModeId) {
   let hasTaskForGm = activeTasksArray.findindex(
     @(t) isTaskForGM(t, gameModeId)) != null
@@ -589,9 +589,9 @@ addListenersWithoutEnv({
   ProfileUpdated = @(_) checkCurSpecialTask()
   BattleTasksIncomeUpdate = @(_) updateTasksData()
   BattleEnded = @(_) updateTasksData()
-  ScriptsReloaded = @(_) updateTasksData() // todo consider implement persist
+  ScriptsReloaded = @(_) updateTasksData() 
 
-  // debug
+  
   function BattleTasksShowAll(params) {
     showAllTasks = getTblValue("showAllTasksValue", params, false)
     updateTasksData()
@@ -641,7 +641,7 @@ return {
   markAllBattleTasksSeen
   saveSeenBattleTasksData
   getBattleTaskNameById
-  getShowAllTasks // debug
+  getShowAllTasks 
   getProposedTasks
   getTaskStatus
   getTotalActiveTasksNum

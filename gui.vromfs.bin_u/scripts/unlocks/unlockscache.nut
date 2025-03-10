@@ -14,7 +14,7 @@ let regionalUnlocksCacheById = persist("regionalUnlocksCacheById", @() {})
 let unlocksCacheArray = persist("unlocksCacheArray", @() [])
 let personalUnlocksCacheArray = persist("personalUnlocksCacheArray", @() [])
 let regionalUnlocksCacheArray = persist("regionalUnlocksCacheArray", @() [])
-// <unlockTypeName> = [<unlockBlk>]
+
 let unlocksCacheByType = persist("unlocksCacheByType", @() {})
 let personalUnlocksCacheByType = persist("personalUnlocksCacheByType", @() {})
 let regionalUnlocksCacheByType = persist("regionalUnlocksCacheByType", @() {})
@@ -51,7 +51,7 @@ let unlocksCaches = {
 
 function addUnlockToCache(unlock, unlocksId) {
   if (unlock?.id == null) {
-    let unlockConfigString = toString(unlock, 2) // warning disable: -declared-never-used
+    let unlockConfigString = toString(unlock, 2) 
     script_net_assert_once("missing id in unlock", "Unlocks: Missing id in unlock. Cannot cache unlock.")
     return
   }
@@ -175,12 +175,12 @@ function getUnlocksByTypeInBlkOrder(typeName) {
 
 regionalUnlocks.subscribe(function(_) {
   let { cacheById, cacheArray, cacheByType, cacheIdxs } = unlocksCaches.regionalUnlocks
-  // Clean up non-existent regional unlocks
+  
   local isChanged = false
   for (local i = cacheArray.len() - 1; i >= 0; --i) {
     let unlock = cacheArray[i]
     if (unlock.id in regionalUnlocks.get())
-      continue // Skip, as changes in blk are not expected for regional unlocks
+      continue 
 
     isChanged = true
     cacheArray.remove(i)

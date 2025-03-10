@@ -254,7 +254,7 @@ class Component : Canvas
     drawLine(pos - up0, pos - up1)
 
   def drawFlightParams()
-    let pos = float2(-0.42, -0.03)
+    let pos = float2(-0.48, -0.03)
     setTextAnchorHorz(AnchorHorz.Right)
     setCaretPosition(pos)
     setLineSpacing(1.4)
@@ -278,6 +278,8 @@ class Component : Canvas
     let alphaVerts = verts.to_array().scale(scale).translate(pos + offset);
     drawPolyLine(alphaVerts)
     let aoaStr = fmt(":>5.1f", fmw.fm.aoa)
+
+    setTextAnchorHorz(AnchorHorz.Left)
     printStrLn(" {aoaStr}")
 
     if fmw.fm.appliedCT.gear == 0.0
@@ -370,7 +372,7 @@ class Component : Canvas
       let lineTop = float2(x + linesOffset, rb.y - 0.35 * size.y)
       let lineBottom = float2(x + linesOffset, rb.y - defaultLineWidthHdpxRel)
       let dotPos = float2(x + dotsOffset, rb.y - defaultLineWidthHdpxRel)
-      let str = fmt(":03", (36 - floori(heading10deg) + i) % 36)
+      let str = fmt(":03", ((36 - floori(heading10deg) + i) % 36) * 10)
       let strSize = getStringSize(str, 2)
       drawLine(lineTop, lineBottom)
       drawDot(dotPos)

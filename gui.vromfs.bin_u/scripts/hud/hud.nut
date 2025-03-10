@@ -186,7 +186,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.switchControlsAllowMask(mask)
   }
 
-  /*override*/ function onSceneActivate(show) {
+   function onSceneActivate(show) {
     enableOrders(this.scene.findObject("order_status"))
     base.onSceneActivate(show)
   }
@@ -202,7 +202,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function reinitScreen(params = {}) {
-    this.isReinitDelayed = !this.scene.isVisible() //hud not visible. we just wait for show_hud event
+    this.isReinitDelayed = !this.scene.isVisible() 
     if (this.isReinitDelayed)
       return
 
@@ -277,7 +277,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       this.currentHud = handlersManager.loadHandler(HudShip, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HELICOPTER)
       this.currentHud = handlersManager.loadHandler(HudHeli, { scene = hudObj })
-    else //newHudType == HUD_TYPE.NONE
+    else 
       this.currentHud = null
 
     showObjById("ship_obstacle_rf", newHudType == HUD_TYPE.SHIP, this.scene)
@@ -295,7 +295,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateHudVisModeForce()
     hitCameraInit(this.scene.findObject("hud_hitcamera"))
 
-    // All required checks are performed internally.
+    
     enableOrders(this.scene.findObject("order_status"))
 
     this.updateObjectsSize()
@@ -329,7 +329,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.changeObjectsSize(USEROPT_TACTICAL_MAP_SIZE)
   }
 
-  //get means determine in this case, but "determine" is too long for function name
+  
   function getHudType() {
     if (hud_is_in_cutscene())
       return HUD_TYPE.CUTSCENE
@@ -339,7 +339,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       return HUD_TYPE.BENCHMARK
     if (is_freecam_enabled())
       return HUD_TYPE.FREECAM
-    //!!!FIX ME Need remove this check, but client is crashed in hud for dummy plane in ship autotest
+    
     if (getActionBarUnitName() == "dummy_plane")
       return HUD_TYPE.NONE
     return hudTypeByHudUnitType?[getHudUnitType()] ?? HUD_TYPE.NONE
@@ -552,9 +552,9 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       timeToKickAlertObj.setValue(loc("inBattle/timeToKickAlert"))
   }
 
-  //
-  // Server message
-  //
+  
+  
+  
 
   function onEventServerMessage(_params) {
     let serverMessageTimerObject = this.scene.findObject("server_message_timer")

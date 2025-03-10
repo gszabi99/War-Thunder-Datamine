@@ -14,7 +14,7 @@ let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
 let { stripTags } = require("%sqstd/string.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 
-let MAX_STAGES_NUM = 10 // limited by images gui/hud/gui_skin/unlock_icons/stage_(un)locked_N
+let MAX_STAGES_NUM = 10 
 
 function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
   if (unlockCfg.type == "char_resources") {
@@ -30,9 +30,9 @@ function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
     : ""
 }
 
-//  g_unlock_view functions 'unlockConfig' param is unlocks data table, created through
-//  build_conditions_config(unlockBlk)
-//  buildUnlockDesc(unlockConfig)
+
+
+
 
 ::g_unlock_view <- {
   function getSubunlocksView(cfg, numColumns = 2, includeTooltip = false) {
@@ -178,7 +178,7 @@ function getSubunlockTooltipMarkup(unlockCfg, subunlockId) {
     else if (unlockType == UNLOCKABLE_TROPHY) {
       let item = findItemById(id, itemType.TROPHY)
       if (item) {
-        res.rewardText = item.getName() // colored
+        res.rewardText = item.getName() 
         res.tooltipId = getTooltipType("ITEM").getTooltipId(id)
       }
     }

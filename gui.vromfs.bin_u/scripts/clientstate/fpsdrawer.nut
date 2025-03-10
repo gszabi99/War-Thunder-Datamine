@@ -5,7 +5,7 @@ from "hudState" import is_hud_visible
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { subscribe, unsubscribe } = require("eventbus")
-let { isShowDebugInterface = @() false, is_app_loaded = @() false } = require("app") //compatibility with 25.04.2023
+let { isShowDebugInterface = @() false, is_app_loaded = @() false } = require("app") 
 let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 
 
@@ -80,7 +80,7 @@ function getCurSceneObjects() {
 }
 
 
-//validate objects before calling this
+
 function updateTexts(objects, params) {
   let { fps, ping, pl, sessionId, latency, latencyA, latencyR } = params
   let fpsInt = (fps + 0.5).tointeger();

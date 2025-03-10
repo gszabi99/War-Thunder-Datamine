@@ -6,55 +6,55 @@ let { abs } = require("math")
 let { GuiBox, getBlockFromObjData } = require("%scripts/guiBox.nut")
 let { format } = require("string")
 
-/*
-  LinesGenerator API
-  createLinkLines(links, obstacles, interval = 0, lineWidth = 1, priority = 0)
-                     - return { lines = array(GuiBox), dots0 = array(Point2), dots1  = array(Point2)}
-                     - links = array([box from, box to])
-                     - obstacles = array(GuiBox)
-                     - interval - minimum interval between lines
-                     - priority - start priority
 
-  findGoodPos(obj, axis, obstacles, min, max, bestPos = null)   - integer
-                     - search good position for dagui object by axis to not intersect with any obstacles
-                     - between min and max value
-                     - preffered bestPos, but if it null, than middle pos between min and max.
-                     - return null when not found any position without intersect something
 
-  getLinkLinesMarkup(config)
-                     - config = {
-                         startObjContainer - container using for find start's views
-                         endObjContainer - container using for find end's views
-                         lineInterval - minimal interval between lines
-                         lineWidth - width of lines
-                         obstacles - list of object (or object id) to view (required) which will be taken into
-                         account in the lines generation. in addition to linked objects
-                         links = [
-                           {
-                             start - object (or object id) to view (required)
-                             or
-                             {
-                               obj - object (or object id) to view (required)
-                               priority - priority of obstacles from lines_priorities (lines_priorities.TARGET by default)
-                             }
-                             end - object (or object id) to view (required)
-                             or
-                              {
-                               obj - object (or object id) to view (required)
-                               priority - priority of obstacles from lines_priorities (lines_priorities.TEXT by default)
-                             }
-                           }
-                         ]
-                       }
 
-  generateLinkLinesMarkup(links, obstacleBoxList, interval = "@helpLineInterval", width = "@helpLineWidth")
-                     - links - pairs of boxes which need link
-                     - obstacleBoxList - lines will try to come round boxes in this list
-                     - interval - minimal interval between lines
-                     - width - line width
-*/
 
-enum lines_priorities { //lines intersect priority
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+enum lines_priorities { 
   OBSTACLE = 0
   TARGET   = 1,
   LINE     = 2,
@@ -63,12 +63,12 @@ enum lines_priorities { //lines intersect priority
   MAXIMUM  = 3
 }
 
-function getHelpDotMarkup(point /*Point2*/ , tag = "helpLineDot") {
+function getHelpDotMarkup(point  , tag = "helpLineDot") {
   return format("%s { pos:t='%d-0.5w, %d-0.5h'; position:t='absolute' } ", tag, point.x.tointeger(), point.y.tointeger())
 }
 
 function monoLineCountDiapason(link, checkBox, axis, obstacles) {
-  //check obstacles to get available diapaosn of line variants
+  
   local diapason = [[checkBox.c1[axis], checkBox.c2[axis]]]
   for (local j = obstacles.len() - 1; j >= 0; j--) {
     let box = obstacles[j]
@@ -106,7 +106,7 @@ function monoLineCountDiapason(link, checkBox, axis, obstacles) {
   return diapason
 }
 
-function monoLineGetBestPos(diapason, checkBox, axis, lineWidth, bestPos = null) { //return null -> not found
+function monoLineGetBestPos(diapason, checkBox, axis, lineWidth, bestPos = null) { 
   if (bestPos == null)
     bestPos = ((checkBox.c1[axis] + checkBox.c2[axis] - lineWidth) / 2).tointeger()
 
@@ -189,9 +189,9 @@ function checkLinkIntersect(res, links) {
 function genMonoLines(res, links, obstacles, interval, lineWidth, priority) {
   for (local i = links.len() - 1; i >= 0; i--) {
     let link = links[i]
-    //find box of available lines
+    
     local checkBox = null
-    local axis = 0 //intersection axis
+    local axis = 0 
     for (local a = 0; a < 2; a++)
       if (link[0].c2[a] > link[1].c1[a]
         && link[1].c2[a] > link[0].c1[a]) {
@@ -206,17 +206,17 @@ function genMonoLines(res, links, obstacles, interval, lineWidth, priority) {
     if (!checkBox)
       continue
 
-    //count available diapasons array by obstacles
+    
     let diapason = monoLineCountDiapason(link, checkBox, axis, obstacles)
     if (!diapason || !diapason.len())
       continue
 
-    //search best position from available diapasons array
+    
     let pos = monoLineGetBestPos(diapason, checkBox, axis, lineWidth)
     if (pos == null)
       continue
 
-    //add lines and dots
+    
     checkBox.c1[axis] = pos
     checkBox.c2[axis] = pos + lineWidth
     res.lines.append(checkBox)
@@ -273,7 +273,7 @@ function doubleLineCutZoneList(zoneData, box) {
 
     if ((!wayAxis && zone.start > zEnd)
         || (wayAxis && zone.end < zStart))
-      continue //inside corners not blocked by box
+      continue 
 
     local found = false
     let diapason = zone.diapason
@@ -319,7 +319,7 @@ function doubleLineZoneCheckObstacles(zones, link, obstacles) {
         continue
 
       if (link[0].isInside(box) || link[1].isInside(box))
-        continue //ignore boxes intersect and full override this side
+        continue 
 
       let count = doubleLineCutZoneList(zoneData, box)
       if (!count)
@@ -385,11 +385,11 @@ function doubleLineChooseBestInZone(zoneData, link, lineWidth) {
 }
 
 function doubleLineGetZones(link) {
-  let zones = []  //list of available zones for double line
-                    //{ box, zone, axis, wayAxis, wayAltAxis }
-  for (local j = 0; j < 2; j++) { //check all variants, but here can be only 2
-    if (link[0].c1[j] > link[1].c1[j]) {  //main way left/top
-      if (link[0].c1[1 - j] < link[1].c1[1 - j]) //alt way bottom / right
+  let zones = []  
+                    
+  for (local j = 0; j < 2; j++) { 
+    if (link[0].c1[j] > link[1].c1[j]) {  
+      if (link[0].c1[1 - j] < link[1].c1[1 - j]) 
         zones.append({
           box = getBoxByAxis(j, link[1].c1[j], link[0].c1[j], link[0].c1[1 - j], link[1].c1[1 - j])
           zone = [{ start = link[1].c1[j]
@@ -400,7 +400,7 @@ function doubleLineGetZones(link) {
           wayAxis = false
           wayAltAxis = true
         })
-      if (link[0].c2[1 - j] > link[1].c2[1 - j])  //alt way top / left
+      if (link[0].c2[1 - j] > link[1].c2[1 - j])  
         zones.append({
           box = getBoxByAxis(j, link[1].c1[j], link[0].c1[j], link[1].c2[1 - j], link[0].c2[1 - j])
           zone = [{ start = link[1].c1[j]
@@ -412,8 +412,8 @@ function doubleLineGetZones(link) {
           wayAltAxis = false
         })
     }
-    if (link[0].c2[j] < link[1].c2[j]) {  //main way right / bottom
-      if (link[0].c1[1 - j] < link[1].c1[1 - j])  //alt way bottom / right
+    if (link[0].c2[j] < link[1].c2[j]) {  
+      if (link[0].c1[1 - j] < link[1].c1[1 - j])  
         zones.append({
           box = getBoxByAxis(j, link[0].c2[j], link[1].c2[j], link[0].c1[1 - j], link[1].c1[1 - j])
           zone = [{ start = max(link[0].c2[j], link[1].c1[j])
@@ -424,7 +424,7 @@ function doubleLineGetZones(link) {
           wayAxis = true
           wayAltAxis = true
         })
-      if (link[0].c2[1 - j] > link[1].c2[1 - j]) //alt way top / left
+      if (link[0].c2[1 - j] > link[1].c2[1 - j]) 
         zones.append({
           box = getBoxByAxis(j, link[0].c2[j], link[1].c2[j], link[1].c2[1 - j], link[0].c2[1 - j])
           zone = [{ start = max(link[0].c2[j], link[1].c1[j])
@@ -445,12 +445,12 @@ function genDoubleLines(res, links, obstacles, interval, lineWidth, priority) {
     let link = links[i]
     local zones = doubleLineGetZones(link)
 
-    //apply obstacles to zones diapason
+    
     zones = doubleLineZoneCheckObstacles(zones, link, obstacles)
     if (!zones.len())
       continue
 
-    //sort by corners priority.  left/top corner is the best
+    
     zones.sort(function(a, b) {
         if (a.axis != b.axis)
           return a.axis ? 1 : -1
@@ -461,7 +461,7 @@ function genDoubleLines(res, links, obstacles, interval, lineWidth, priority) {
         return 0;
       })
 
-    //choose best double Line
+    
     for (local z = 0; z < zones.len(); z++) {
       let zoneData = zones[z]
       let lineData = doubleLineChooseBestInZone(zoneData, link, lineWidth)
@@ -503,7 +503,7 @@ function createLinkLines(links, obstacles, interval = 0, lineWidth = 1, priority
   if (initial) {
     let _links = links
     links = []
-    for (local i = _links.len() - 1; i >= 0; i--) //reverse to save order of links generation
+    for (local i = _links.len() - 1; i >= 0; i--) 
       links.append(_links[i])
     let _obstacles = obstacles
     obstacles = []
@@ -520,8 +520,8 @@ function createLinkLines(links, obstacles, interval = 0, lineWidth = 1, priority
   genMonoLines(res, links, obstacles, interval, lineWidth, priority)
   genDoubleLines(res, links, obstacles, interval, lineWidth, priority)
 
-  //local _timer = get_time_msec()
-  //dlog($"GP: after priority {priority}, links " + links.len() + ", obstacles = " + obstacles.len() + ", time = " + (get_time_msec() - _timer))
+  
+  
   if (links.len() && priority < lines_priorities.MAXIMUM) {
     let addRes = createLinkLines(links, obstacles, interval, lineWidth, priority + 1, false)
     foreach (key in ["lines", "dots0", "dots1"])

@@ -11,12 +11,12 @@ let { blkOptFromPath, eachParam } = require("%sqstd/datablock.nut")
 let { fileName } = require("%sqstd/path.nut")
 let { isEqual, isFloat, isPoint2, unique, appendOnce, tablesCombine } = require("%sqStdLibs/helpers/u.nut")
 
-/**
- *  This script is shared between WT and WTM.
- *  And it should work in both daGUI and daRG.
-**/
 
-// Simple Unit Types (must be strings in lower case!)
+
+
+
+
+
 
 let S_UNDEFINED = ""
 let S_AIRCRAFT = "aircraft"
@@ -26,7 +26,7 @@ let S_SHIP = "ship"
 let S_BOAT = "boat"
 let S_SUBMARINE = "submarine"
 
-// PartType
+
 
 let preparePartType = [
   { pattern = regexp2(@"_l_|_r_"),   replace = "_" },
@@ -44,7 +44,7 @@ function getPartType(name, xrayRemap) {
   return partType
 }
 
-// PartName
+
 
 function getPartNameLocText(partType, simUnitType) {
   local res = ""
@@ -86,7 +86,7 @@ function trimBetween(source, from, to, strict = true) {
   return source.slice(beginIndex, endIndex)
 }
 
-// Shared
+
 
 let nbsp = "\u00A0"
 let colon = loc("ui/colon")
@@ -206,7 +206,7 @@ function getMassInfo(sourceBlk) {
   return ""
 }
 
-// Human
+
 
 function getTankCrewMemberBlk(crewBlk, dmPart) {
   let l = crewBlk.blockCount()
@@ -244,7 +244,7 @@ function mkTankCrewMemberDesc(partType, params, commonData) {
   return { desc }
 }
 
-// Common dmparts
+
 
 let AFTERBURNER_CHAMBER = 3
 
@@ -299,7 +299,7 @@ function mkEngineDesc(_partType, params, commonData) {
     if (partIndex > 0) {
       let fmBlk = getUnitFmBlk(commonData)
       if (fmBlk != null) {
-        partIndex-- //engine1_dm -> Engine0
+        partIndex-- 
 
         let infoBlk = getInfoBlk(partName, getUnitTagsBlk(commonData), unitBlk)
         desc.append(getEngineModelName(infoBlk))
@@ -307,11 +307,11 @@ function mkEngineDesc(_partType, params, commonData) {
         let enginePartId = infoBlk?.part_id ?? $"Engine{partIndex}"
         let engineTypeId = "".concat("EngineType", fmBlk?[enginePartId].Type ?? -1)
         local engineBlk = fmBlk?[engineTypeId] ?? fmBlk?[enginePartId]
-        if (!engineBlk) { // try to find booster
+        if (!engineBlk) { 
           local numEngines = 0
           while ($"Engine{numEngines}" in fmBlk)
             numEngines++
-          let boosterPartIndex = partIndex - numEngines //engine3_dm -> Booster0
+          let boosterPartIndex = partIndex - numEngines 
           engineBlk = fmBlk?[$"Booster{boosterPartIndex}"]
         }
         let engineMainBlk = engineBlk?.Main
@@ -332,16 +332,16 @@ function mkEngineDesc(_partType, params, commonData) {
           if (typeText != "")
             desc.append("".concat(loc("plane_engine_type"), colon, typeText))
 
-          // display cooling type only for Inline and Radial engines
+          
           if ((engineType == "inline" || engineType == "radial")
-              && "IsWaterCooled" in engineMainBlk) { // Plane : Engine : Cooling
+              && "IsWaterCooled" in engineMainBlk) { 
             let coolingKey = engineMainBlk?.IsWaterCooled ? "water" : "air"
             desc.append("".concat(loc("plane_engine_cooling_type"), colon,
               loc($"plane_engine_cooling_type_{coolingKey}")))
           }
 
           if (isSecondaryModsValid) {
-            // calculating power values
+            
             local powerMax = 0
             local powerTakeoff = 0
             local thrustMax = 0
@@ -373,7 +373,7 @@ function mkEngineDesc(_partType, params, commonData) {
 
             let throttleBoost = getFirstFound([infoBlk, engineMainBlk], @(b) b?.ThrottleBoost, 0)
             let afterburnerBoost = getFirstFound([infoBlk, engineMainBlk], @(b) b?.AfterburnerBoost, 0)
-            // for planes modifications have delta values
+            
             let thrustModDelta = getProp_thrust(commonData) / KGF_TO_NEWTON
             let horsepowerModDelta = getProp_horsePowers(commonData)
             if (engineType == "inline" || engineType == "radial") {
@@ -404,13 +404,13 @@ function mkEngineDesc(_partType, params, commonData) {
                 thrustTakeoff = thrustValue * thrustTakeoffMult
             }
 
-            // final values can be overriden in info block
+            
             powerMax = infoBlk?.power_max ?? powerMax
             powerTakeoff = infoBlk?.power_takeoff ?? powerTakeoff
             thrustMax = infoBlk?.thrust_max ?? thrustMax
             thrustTakeoff = infoBlk?.thrust_takeoff ?? thrustTakeoff
 
-            // display power values
+            
             if (powerMax > 0) {
               powerMax += horsepowerModDelta
               desc.append("".concat(loc("engine_power_max"), colon, toStr_horsePowers(powerMax)))
@@ -436,7 +436,7 @@ function mkEngineDesc(_partType, params, commonData) {
               desc.append("".concat(loc(thrustTakeoffLocId), colon, toStr_thrustKgf(thrustTakeoff)))
             }
 
-            // mass
+            
             desc.append(getMassInfo(infoBlk))
           }
         }
@@ -717,7 +717,7 @@ function mkAircraftFuelTankDesc(partType, params, commonData) {
   return { desc, partLocId }
 }
 
-// Weapons
+
 
 function mkWeaponPartLocId(partType, partName, weaponInfoBlk, commonData) {
   let { simUnitType } = commonData
@@ -829,8 +829,8 @@ function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, c
     getProp_shipReloadTimeMainDef, getProp_shipReloadTimeAuxDef, getProp_shipReloadTimeAaDef
   } = commonData
 
-  local shotFreqRPM = 0.0 // rounds/min
-  local reloadTimeS = 0 // sec
+  local shotFreqRPM = 0.0 
+  local reloadTimeS = 0 
   local firstStageShotFreq = 0.0
   local topValue = 0.0
   local firstStageShotFreqTop = 0.0
@@ -838,7 +838,7 @@ function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, c
 
   let weaponBlk = blkOptFromPath(weaponInfoBlk?.blk)
   let isCartridge = weaponBlk?.reloadTime != null
-  local cyclicShotFreqS = weaponBlk?.shotFreq ?? 0.0 // rounds/sec
+  local cyclicShotFreqS = weaponBlk?.shotFreq ?? 0.0 
 
   if (simUnitType == S_AIRCRAFT || simUnitType == S_HELICOPTER) {
     shotFreqRPM = cyclicShotFreqS * 60
@@ -963,11 +963,11 @@ function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, c
   return desc
 }
 
-// Gets info either by weaponTrigger (for guns and turrets)
-// or by ammoStowageId (for tank stowage or ship ammo storage)
+
+
 function getAmmoStowageInfo(unitBlk, weaponTrigger, ammoStowageId = null, collectOnlyThisStowage = false) {
   let res = { firstStageCount = 0, isAutoLoad = false, isCharges = false }
-  for (local ammoNum = 1; ammoNum <= 20; ammoNum++) { // tanks use 1, ships use up to approximately 10.
+  for (local ammoNum = 1; ammoNum <= 20; ammoNum++) { 
     let ammoId = $"ammo{ammoNum}"
     let stowage = unitBlk?.ammoStowages[ammoId]
     if (!stowage)
@@ -1005,7 +1005,7 @@ function mkWeaponDesc(partType, params, commonData) {
   local partLocId = partType
 
   local weaponPartName = null
-  let turretWeaponsNames = {} // { 406mm_45_bl_mk1_r1_naval_user_cannon = 2, ... }
+  let turretWeaponsNames = {} 
   if (partType == "main_caliber_turret" || partType == "auxiliary_caliber_turret" || partType == "aa_turret") {
     weaponPartName = partName.replace("turret", "gun")
     let unitWeaponsList = getUnitWeaponsList(commonData)
@@ -1084,7 +1084,7 @@ function mkWeaponDesc(partType, params, commonData) {
   return { desc, partLocId }
 }
 
-// Ammo
+
 
 function getAmmoStowageSlotInfo(unitBlk, partName) {
   let res = {
@@ -1133,7 +1133,7 @@ function mkAmmoDesc(partType, params, commonData) {
   return { desc, partLocId }
 }
 
-// Armor
+
 
 function getModernArmorParamsByDmPartName(partName, commonData) {
   let { unitBlk } = commonData
@@ -1212,7 +1212,7 @@ function mkTankArmorPartDesc(partType, params, commonData) {
 
   let blockSep = desc.len() ? "\n" : ""
 
-  if (info.isComposite && info.layersArray.len() != 0) { // composite armor
+  if (info.isComposite && info.layersArray.len() != 0) { 
     let texts = []
     foreach (layer in info.layersArray) {
       local thicknessText = ""
@@ -1227,7 +1227,7 @@ function mkTankArmorPartDesc(partType, params, commonData) {
     }
     desc.append("".concat(blockSep, loc("xray/armor_composition"), colon, "\n", "\n".join(texts, true)))
   }
-  else if (!info.isComposite && info.armorClass != "") // reactive armor
+  else if (!info.isComposite && info.armorClass != "") 
     desc.append("".concat(blockSep, loc("plane_engine_type"), colon, getPartNameLocText(info.armorClass, simUnitType)))
 
   return { desc, partLocId }
@@ -1243,7 +1243,7 @@ function mkCoalBunkerDesc(_partType, _params, commonData) {
   return { desc }
 }
 
-// Sensors
+
 
 function getUnitSensorsList(commonData) {
   let { unitDataCache } = commonData
@@ -1375,9 +1375,9 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
       lookUp = true
   }
 
-  let hasTws = findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
   let hasTwsPlus = findBlockByName(sensorPropsBlk, "matchTargetsOfInterest")
   let hasTwsEsa = findBlockByName(sensorPropsBlk, "addTargetTrack")
+  let hasTws = !hasTwsEsa && findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
   let hasRam = findBlockByName(sensorPropsBlk, "ram")
   let isTrackRadar = findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
   let hasSARH = findBlockByName(sensorPropsBlk, "setIllumination")
@@ -1657,6 +1657,19 @@ function mkRwrTexts(commonData, sensorPropsBlk, indent) {
   return desc
 }
 
+function mkMlwsTexts(commonData, sensorPropsBlk, indent) {
+  let { toStr_distance } = commonData
+  let desc = []
+
+  let targetSignatureType = sensorPropsBlk.getStr("targetSignatureType", "infraRed")
+  desc.append("".concat(indent, loc($"mlws_type"), colon, targetSignatureType == "radar" ? loc($"mlws_type_radar") : loc($"mlws_type_ir")))
+  desc.append("".concat(indent, loc("mlws_range_max"), colon, toStr_distance(sensorPropsBlk.getReal("range", 0.0))))
+  if (sensorPropsBlk.getBool("targetRangeFinder", false))
+    desc.append("".concat(indent, loc($"mlws_range_finder")))
+
+  return desc
+}
+
 function getOpticsParams(zoomOutFov, zoomInFov) {
   let fovToZoom = @(fov) sin(80 / 2 * PI / 180) / sin(fov / 2 * PI / 180)
   let fovOutIn = [zoomOutFov, zoomInFov].filter(@(fov) fov > 0)
@@ -1704,7 +1717,7 @@ function mkSensorDesc(partType, params, commonData) {
     if (sensorType == "radar") {
       desc.append("".concat(loc("xray/model"), colon,
         getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
-      // naval params are temporary disabled as they do not match to historical ones
+      
       if ([S_SHIP, S_BOAT].contains(simUnitType))
         continue
       desc.extend(mkRadarTexts(commonData, sensorPropsBlk, ""))
@@ -1798,6 +1811,8 @@ function mkPilotOrHelicopterGunnerDesc(partType, _params, commonData) {
       getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
     if (sensorType == "rwr")
       desc.extend(mkRwrTexts(commonData, sensorPropsBlk, "  "))
+    else if (sensorType == "mlws")
+      desc.extend(mkMlwsTexts(commonData, sensorPropsBlk, "  "))
   }
 
   if (unitBlk.getBool("hasHelmetDesignator", false))
@@ -1843,7 +1858,7 @@ function mkGunnerDesc(partType, params, commonData) {
 
 let mkPilotDesc = mkPilotOrHelicopterGunnerDesc
 
-// Misc
+
 
 function mkAvionicsDesc(partType, params, commonData) {
   let { unitBlk } = commonData
@@ -1954,10 +1969,10 @@ function mkFireDirecirOrRangefinderDesc(_partType, params, commonData) {
   let partName = params.name
   let desc = []
   let unitSensorsList = getUnitSensorsList(commonData)
-  // "partName" node may belong to only one system
+  
   let fcBlk = getFireControlSystems(unitSensorsList, "dmPart", partName)?[0]
   if (fcBlk != null) {
-    // 1. Gives fire solution for
+    
     let unitWeaponsList = getUnitWeaponsList(commonData)
     let weaponNames = getFireControlWeaponNames(unitWeaponsList, fcBlk, getWeaponNameByBlkPath)
     if (weaponNames.len() != 0) {
@@ -1966,18 +1981,18 @@ function mkFireDirecirOrRangefinderDesc(_partType, params, commonData) {
         .map(@(n) loc($"weapons/{n}"))
         .map(@(n) "".concat(bullet, n)))
 
-      // 2. Measure accuracy
+      
       let shipDistancePrecisionErrorMul = getMul_shipDistancePrecisionError(commonData)
       let accuracy = getFireControlAccuracyPercent(fcBlk, shipDistancePrecisionErrorMul)
       if (accuracy != -1)
         desc.append("".concat(loc("xray/fire_control/accuracy"), " ", accuracy, unitsPercent))
 
-      // 3. Fire solution calculation time
+      
       let lockTime = fcBlk?.targetLockTime
       if (lockTime)
         desc.append("".concat(loc("xray/fire_control/lock_time"), " ", lockTime, unitsSec))
 
-      // 4. Fire solution update time
+      
       let calcTime = fcBlk?.calcTime
       if (calcTime)
         desc.append("".concat(loc("xray/fire_control/calc_time"), " ", calcTime, unitsSec))
@@ -2078,10 +2093,10 @@ function mkPowerSystemDesc(partType, _params, _commonData) {
 let mkSimpleDescByPartType = @(partType, _params, _commonData)
   { desc = [ loc($"armor_class/desc/{partType}") ] }
 
-// Return
+
 
 return {
-  // Simple Unit Types
+  
   S_UNDEFINED
   S_AIRCRAFT
   S_HELICOPTER
@@ -2093,28 +2108,28 @@ return {
   getPartType
   getPartNameLocText
 
-  // Human
+  
   mkTankCrewMemberDesc
   mkGunnerDesc
   mkPilotDesc
-  // Common dmparts
+  
   mkEngineDesc
   mkTransmissionDesc
   mkDriveTurretDesc
   mkAircraftFuelTankDesc
-  // Weapons
+  
   compareWeaponFunc
   mkWeaponDesc
-  // Ammo
+  
   mkAmmoDesc
-  // Armor
+  
   mkTankArmorPartDesc
   mkCoalBunkerDesc
-  // Sensors
+  
   mkSensorDesc
   mkApsSensorDesc
   mkApsLauncherDesc
-  // Misc
+  
   mkAvionicsDesc
   mkCountermeasureDesc
   mkCommanderPanoramicSightDesc

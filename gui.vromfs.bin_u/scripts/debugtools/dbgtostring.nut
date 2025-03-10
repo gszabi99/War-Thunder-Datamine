@@ -12,6 +12,6 @@ function initEventBroadcastLogging() {
 }
 
 sqdebugger?.setObjPrintFunc(debugTableData)
-console.setObjPrintFunc(debugTableData) // For dagui.exec console command
+console.setObjPrintFunc(debugTableData) 
 
 initEventBroadcastLogging()

@@ -64,7 +64,7 @@ let tankState = {
   MachineGunStartLoadAtTime
   MachineGunNextShotAtTime
 
-  //
+  
 
 
 

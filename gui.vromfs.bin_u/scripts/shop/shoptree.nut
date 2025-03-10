@@ -30,10 +30,10 @@ function checkBranchPos(tree, branch, row, col) {
 }
 
 function getGoodBranchPos(tree, branch, offset, headerPos) {
-  //branch.
+  
   if (headerPos) {
     if (checkBranchPos(tree, branch, headerPos[0], headerPos[1]))
-      return headerPos[1]  //best place for header
+      return headerPos[1]  
 
     local colOffset = 0
     local pos = 0
@@ -64,11 +64,10 @@ function makeTblByBranch(branch, ranksHeight, headRow = null) {
   local prevAir = null
   foreach (_idx, item in branch) {
     local curAir = null
-    if (!isUnitGroup(item))
-      curAir = item.air
-    else if (item?.isFakeUnit) {
+    if (item?.isFakeUnit)
       curAir = item
-    }
+    else if (!isUnitGroup(item))
+      curAir = item.air
     else {
       curAir = item
       if (item?.reqAir)
@@ -77,7 +76,7 @@ function makeTblByBranch(branch, ranksHeight, headRow = null) {
         curAir.reqAir <- prevAir.name
     }
 
-    //Line branch generation
+    
     if (ranksHeight[curAir.rank - 1] > res.tbl.len())
       res.tbl.resize(ranksHeight[curAir.rank - 1], [])
     res.tbl.append([curAir])
@@ -85,7 +84,7 @@ function makeTblByBranch(branch, ranksHeight, headRow = null) {
     prevAir = curAir
     if (isUnitGroup(item)) {
       prevAir = null
-      let unit = item.airsGroup?[0] //!!FIX ME: duplicate logic of generateUnitShopInfo
+      let unit = item.airsGroup?[0] 
       if (unit && !isUnitSpecial(unit) && !isUnitGift(unit) && !unit.isSquadronVehicle()) {
         prevAir = unit
         item.searchReqName <- unit.name
@@ -135,12 +134,12 @@ function appendBranches(rangeData, headIdx, branches, brIdxTbl, prevItem = null)
 
   let lastItemCurBranch = curBranch.top()
   if (branches.len() > 0 && curBranch[0].rank == lastItemCurBranch.rank
-      && (!lastItemCurBranch?.reqAir || lastItemCurBranch.reqAir == "")) {  //for line branch generation. If NoReq aircrafts or all aircrafts curBranch have one rank then last (previous branc)h.
+      && (!lastItemCurBranch?.reqAir || lastItemCurBranch.reqAir == "")) {  
     local placeFound = false
     foreach (bIdx, bItem in branches[branches.len() - 1])
       if (bItem?.reqAir && bItem.reqAir == "" && bItem.rank >= curBranch[0].rank) {
         foreach (k, _curItem in curBranch)
-          branches[branches.len() - 1].insert(bIdx + k, curBranch[k]) //warning disable: -modified-container
+          branches[branches.len() - 1].insert(bIdx + k, curBranch[k]) 
         placeFound = true
         break
       }
@@ -161,7 +160,7 @@ function getBranchesTbl(rangeData) {
 
   let addCount = {}
   let brIdxTbl = {}
-  let rankK = 0.0 //the longer the tree is more important than a branched
+  let rankK = 0.0 
 
   local maxCountId = rangeData.len() - 1
   for (local i = rangeData.len() - 1; i >= 0; i--) {
@@ -194,19 +193,19 @@ function getBranchesTbl(rangeData) {
   for (local i = rangeData.len() - 1; i >= 0; i--)
     if (rangeData[i].header)
       appendBranches(rangeData, i, branches, brIdxTbl)
-/*
-  //test debug!
-  local test = "GP: branches:"
-  foreach(b in branches)
-    foreach(idx, item in b)
-      test = "".concat(idx==0 ? "\n" : ", ", item.air.name, " (", item.air.rank, ",", item.childs, ")",
-        item?.reqAir ? $"({item.reqAir})" : "")
-  log(test)
-*/
+
+
+
+
+
+
+
+
+
   return branches
 }
 
-//returns an array of positions of each rank in page and each vertical section in page
+
 function calculateRanksAndSectionsPos(page) {
   let hasRankPosXY = page?.hasRankPosXY ?? false
   let res = array(MAX_COUNTRY_RANK + 1, 0)
@@ -231,7 +230,7 @@ function calculateRanksAndSectionsPos(page) {
         maxColumns = max(maxColumns, (airItem?.rankPosXY?.x ?? 1).tointeger())
       }
       foreach (rankNum, rank in rangeRanks)
-        if (isFakeBranch) { // It is need for separate rows of fake units
+        if (isFakeBranch) { 
           if (fakeRes[rankNum] < rank)
             fakeRes[rankNum] = rank
         }
@@ -255,11 +254,11 @@ function calculateRanksAndSectionsPos(page) {
   }
   if (hasRankPosXY)
     sectionsPos[sectionsPos.len() - 1] = maxColumns
-  // removing reserchable units section when only premium units found
+  
   if (foundPremium && sectionsPos[1] == 0)
     sectionsPos.remove(0)
 
-  //summ absolute height fr each rank
+  
   for (local i = res.len() - 1; i >= 0; i--) {
     local rankStartPos = 0
     local j = 0
@@ -367,10 +366,10 @@ function generatePageTreeByRank(page) {
       if (bIdx != 0 && branch[0]?.reqAir)
         headPos = getReqAirPosInArray(branch[0].reqAir, rangeTree)
       let config = makeTblByBranch(branch, page.ranksHeight, headPos ? headPos[0] : null)
-        //config.offset, config.tbl
+        
       let firstCol = getGoodBranchPos(rangeTree, config.tbl, config.offset, headPos)
 
-      //merge branch to tree
+      
       local treeWidth = 0
       foreach (item in config.tbl)
         if (treeWidth < firstCol + item.len())
@@ -393,10 +392,10 @@ function generatePageTreeByRank(page) {
             }
         }
       }
-      //branch merged
+      
     }
 
-    //merge rangesTbl into tree and fill range lines
+    
     foreach (r, _row in page.tree)
       page.tree[r].extend(rangeTree[r])
   }
@@ -409,6 +408,7 @@ function generatePageTreeByRankPosXY(page) {
     let branches = getBranchesTbl(rangeData)
 
     foreach (_bIdx, branch in branches) {
+      makeTblByBranch(branch, page.ranksHeight)
       foreach (unit in branch) {
         let rankPosXY = unit?.rankPosXY
         if (!rankPosXY) {
@@ -442,7 +442,7 @@ function generatePageTreeByRankPosXY(page) {
 }
 
 function generateTreeData(page) {
-  if (page.tree != null) //already generated
+  if (page.tree != null) 
     return page
 
   page.lines = []
@@ -466,7 +466,7 @@ function generateTreeData(page) {
   else
     generatePageTreeByRank(page)
 
-  //clear empty last lines
+  
   local emptyLine = true
   for (local idx = page.tree.len() - 1; idx > 0; idx--) {
     foreach (_i, air in page.tree[idx])
@@ -479,23 +479,23 @@ function generateTreeData(page) {
     else
       break
   }
-/*
-  //debug
-  local testText = "GP: full table:"
-  foreach(row in page.tree)
-    foreach(idx, item in row)
-    {
-      testText = "".concat(testText, idx==0 ? "\n" : "")
-      if (item==null)
-        testText = $"{testText} "
-      else if (type(item)=="integer")
-        testText = $"{testText}."
-      else
-        testText = $"{testText}A"
-    }
-  log($"{testText}\n done.")
-*/
-  //fill Lines and clear table
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
   fillLinesInPage(page)
 
   page.$rawdelete("airList")

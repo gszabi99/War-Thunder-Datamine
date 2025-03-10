@@ -1,6 +1,6 @@
 from "%darg/ui_imports.nut" import *
 
-let curAnimations = [] //id, comp
+let curAnimations = [] 
 let generation = Watched(0)
 let incGen = @() generation(generation.value + 1)
 
@@ -23,8 +23,8 @@ let isAABB = @(o) type(o) == "table" && "l" in o && "r" in o && "b" in o && "t" 
 let getAABB = @(aabbOrKey) isAABB(aabbOrKey) ? aabbOrKey : gui_scene.getCompAABBbyKey(aabbOrKey)
 let mkSize = @(aabb) [aabb.r - aabb.l, aabb.b - aabb.t]
 
-//from, to - aabb or key of component to animate from position 'from' to position 'to'
-//component - component to animate. will be child of animated object
+
+
 function addCompToCompAnim(from, to, component, easing = InOutQuad, duration = 1.0, fadeOutDuration = 0.1) {
   let fromBox = getAABB(from)
   let toBox = getAABB(to)

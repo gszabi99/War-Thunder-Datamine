@@ -38,11 +38,11 @@ function getComplexAxesId(shortcutComponents) {
   return axesId
 }
 
-/**
- * Checks wether all components assigned to one stick or mouse move.
- * @shortcutComponents - array of components, contains shortcutIds
- * @return - bool
-*/
+
+
+
+
+
 let isComponentsAssignedToSingleInputItem = @(axesId)
   axesId == GAMEPAD_AXIS.RIGHT_STICK
   || axesId == GAMEPAD_AXIS.LEFT_STICK

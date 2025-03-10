@@ -17,7 +17,7 @@ enum WW_OPERATION_STATUSES {
   ES_PAUSED = 7
 }
 
-enum WW_OPERATION_PRIORITY { //bit enum
+enum WW_OPERATION_PRIORITY { 
   NONE                       = 0
   CAN_JOIN_BY_ARMY_RELATIONS = 0x0001
   CAN_JOIN_BY_MY_CLAN        = 0x0002
@@ -34,7 +34,7 @@ let WwOperation = class {
   _myClanGroup = null
   _assignCountry = null
 
-  isFinished = false //this parametr updated from local operation when return main menu of WWar
+  isFinished = false 
 
   constructor(v_data) {
     this.data = v_data
@@ -157,13 +157,13 @@ let WwOperation = class {
 
     let lastPlayedCountry = getLastPlayedOperationCountry()
     let lastPlayedOperationId = getLastPlayedOperationId()
-    if (this.isMyClanParticipate() && country != this.getMyClanCountry()) // Join to opposite side
+    if (this.isMyClanParticipate() && country != this.getMyClanCountry()) 
       res.reasonText = loc("worldWar/cantJoinByAnotherSideClan")
     else if (!this.isMyClanParticipate()
       && lastPlayedOperationId && lastPlayedOperationId == this.id
-      && lastPlayedCountry && lastPlayedCountry != country) // Last played out of clan by another country
+      && lastPlayedCountry && lastPlayedCountry != country) 
       res.reasonText = loc("worldWar/cantPlayByThisSide")
-    else if (!this.canJoinByCountry(country)) // No such country in this operation
+    else if (!this.canJoinByCountry(country)) 
       res.reasonText = loc("worldWar/chooseAvailableCountry")
 
     if (!res.reasonText.len())
@@ -174,7 +174,7 @@ let WwOperation = class {
 
   function join(country, onErrorCb = null, isSilence = false, onSuccess = null, forced = false) {
     let cantJoinReason = this.getCantJoinReasonData(country)
-    if (!cantJoinReason.canJoin && !forced) { // Forced when invite in operation
+    if (!cantJoinReason.canJoin && !forced) { 
       if (!isSilence)
         showInfoMsgBox(cantJoinReason.reasonText)
       return false
@@ -265,7 +265,7 @@ let WwOperation = class {
   }
 
   function canJoinByMyClan() {
-    //can join after change clan only if played by the same country in this operation
+    
     let assignCountry = this.getMyAssignCountry()
     return this.isMyClanParticipate() && (assignCountry == null || assignCountry == this.getMyClanCountry())
   }

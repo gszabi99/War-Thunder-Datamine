@@ -79,20 +79,20 @@ enum chatErrorName {
 }
 
 let availableCmdList = [
-  "help", //local command to view help
-  "edit", //local command to open thread edit window for opened thread
+  "help", 
+  "edit", 
   "msg", "join", "part", "invite", "mode",
-  "kick", /*"list",*/
-  /* "ping", "users", */
+  "kick", 
+  
   "shelp", "squad_invite", "sinvite", "squad_remove", "sremove", "squad_ready", "sready",
   "reauth", "xpost", "mpost", "p_check"
 ]
 
 let voiceChatIcons = {
   [voiceChatStats.online] = "voip_enabled",
-  //[voiceChatStats.offline] = "voip_disabled",
+  
   [voiceChatStats.talking] = "voip_talking",
-  [voiceChatStats.muted] = "voip_banned" //picture existed, was not renamed
+  [voiceChatStats.muted] = "voip_banned" 
 }
 
 let menu_chat_sizes = {}
@@ -146,8 +146,8 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   roomHandlerWeak = null
   emptyChatRoom = newRoom("#___empty___")
   delayedChatRoom = newRoom("#___empty___")
-  prevScenes = [] //{ scene, show }
-  roomJoinParamsTable = {} //roomName : paramString
+  prevScenes = [] 
+  roomJoinParamsTable = {} 
   lastShowedInRoomMessageIndex = -1
 
   wndControlsAllowMask = CtrlsInGui.CTRL_ALLOW_FULL
@@ -157,7 +157,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   static editboxObjIdList = [ "menuchat_input", "search_edit" ]
 
   constructor(gui_scene, params = {}) {
-    registerPersistentData("MenuChatHandler", this, ["roomsInited"]) //!!FIX ME: must be in g_chat
+    registerPersistentData("MenuChatHandler", this, ["roomsInited"]) 
 
     base.constructor(gui_scene, params)
     subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
@@ -482,7 +482,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (!hasChatHeader)
-      return //header block is hidden, so no point to remvoe it.
+      return 
 
     roomData.type.fillChatHeader(obj, roomData)
     obj.roomId = roomData.id
@@ -580,7 +580,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     local total = roomsObj.childrenCount()
     if (total > g_chat.rooms.len())
-      total = g_chat.rooms.len() //Maybe assert here?
+      total = g_chat.rooms.len() 
     for (local i = 0; i < total; i++) {
       let childObj = roomsObj.getChild(i)
       let obj = childObj.findObject("new_msgs")
@@ -608,7 +608,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let leftObj = this.scene.findObject("middleLine")
     if (!this.curRoom || !this.curRoom.havePlayersList || (!this.showPlayersList && !this.alwaysShowPlayersList())) {
       leftObj.show(false)
-      //guiScene.replaceContentFromText(listObj, "", 0, this)
+      
     }
     else {
       leftObj.show(true)
@@ -838,17 +838,17 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function loadRoomParams(roomName, joinParams) {
-    foreach (r in defaultChatRooms) //validate incorrect created default chat rooms by cur lang
+    foreach (r in defaultChatRooms) 
       if (roomName == $"#{r}_{loc("current_lang")}") {
         let rList = getGlobalRoomsListByLang(loc("current_lang"), [r])
-        // default rooms should have empty joinParams
+        
         return { roomName = (rList.len() ? $"#{rList[0]}" : roomName)
                   joinParams = "" }
       }
 
     let idx = roomName.indexof(" ")
     if (idx)  {
-      //  loading legacy record like '#some_chat password'
+      
       return { roomName = $"#{g_chat.validateRoomName(roomName.slice(0, idx))}"
                joinParams = roomName.slice(idx + 1) }
     }
@@ -879,7 +879,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
         foreach (it in storedRooms) {
           let roomType = g_chat_room_type.getRoomType(it.roomName)
-          if (!roomType.needSave()) //"needSave" has changed
+          if (!roomType.needSave()) 
             continue
 
           gchat_raw_command(format("join %s%s", it.roomName, (it.joinParams == "" ? "" : $" {it.joinParams}")))
@@ -961,7 +961,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let rootSize = this.guiScene.getRoot().getSize()
-    for (local i = 0; i <= 1; i++) //pos chat in screen
+    for (local i = 0; i <= 1; i++) 
       if (pos[i] < topMenuBorders[i][0] * rootSize[i])
         pos[i] = (topMenuBorders[i][0] * rootSize[i]).tointeger()
       else if (pos[i] + size[i] > topMenuBorders[i][1] * rootSize[i])
@@ -972,7 +972,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     if ("usersSize" in menu_chat_sizes) {
       obj = this.scene.findObject("middleLine")
-      obj.size = $"{menu_chat_sizes.usersSize[0]}, ph" // + menu_chat_sizes.usersSize[1]
+      obj.size = $"{menu_chat_sizes.usersSize[0]}, ph" 
     }
 
     if ("searchSize" in menu_chat_sizes) {
@@ -1006,7 +1006,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  //once per 1 sec
+  
   function onUpdate(_obj, _dt) {
     if (!lastChatSceneShow.get())
       return
@@ -1021,7 +1021,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventCb(event, taskId, db) {
-  //  if (event == GCHAT_EVENT_TASK_RESPONSE || event == GCHAT_EVENT_TASK_ERROR)
+  
     let ctasks = this.chatTasks
     let l = ctasks.len()
     for (local idx=l-1; idx>=0; --idx) {
@@ -1107,32 +1107,32 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
         })
       }
     }
-    /* //!! For debug only!!
-    //dlog($"GP: New event: {event}, {taskId}")
-    local msg = $"New event: {event}, {taskId}"
-    if (db)
-    {
-      foreach(name, param in db)
-        if (type(param) != "instance")
-          msg += "\n" + name + " = " + param
-        else
-        if (name=="list")
-        {
-          msg+="list = ["
-          foreach(idx, val in param % "item")
-            msg += ((idx!=0)? ", " : "") + val
-          msg+="]\n"
-        }
-        else
-        {
-          msg += "\n" + name + " {"
-          foreach(n, p in param)
-            msg += "\n  " + n + " = " + p
-          msg+="\n}"
-        }
-    }
-    addRoomMsg(curRoom.id, "", msg)
-    */ //debug end
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
   }
 
   function createRoomUserInfo(name, uid = null) {
@@ -1171,7 +1171,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
         let uList = db.list % "item"
         roomData.users = []
         foreach (idx, unit in uList)
-          if (u.find_in_array(uList, unit) == idx) { //check duplicates
+          if (u.find_in_array(uList, unit) == idx) { 
             let utbl = this.createRoomUserInfo(unit)
             let first = utbl.name.slice(0, 1)
 
@@ -1281,7 +1281,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       broadcastEvent("ChatRoomJoin", { room = room })
     }
     else if (startsWith(taskId, "leave_#")) {
-      let roomId = taskId.slice(6) //auto reconnect to this channel by server
+      let roomId = taskId.slice(6) 
       if (g_chat.isSystemChatRoom(roomId))
         return
       let room = g_chat.getRoomById(roomId)
@@ -1427,7 +1427,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (db?.type == "xpost") {
       if ((db?.message.len() ?? 0) == 0)
         return
-      local chat_rooms = g_chat.rooms // workaround for global variables check
+      local chat_rooms = g_chat.rooms 
       for (local idx = 0; idx < chat_rooms.len(); ++idx) {
         local room = chat_rooms[idx]
         if (room.id != db?.sender.name)
@@ -1489,14 +1489,14 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       if (!isSystemMessage && !isCrossNetworkMessageAllowed(user))
         return
 
-      // System message
+      
       if (isSystemMessage) {
         let nameLen = userName.value.len()
         if (message.len() >= nameLen && message.slice(0, nameLen) == userName.value)
           sync_handler_simulate_signal("profile_reload")
       }
 
-      if (privateMsg) {  //private message
+      if (privateMsg) {  
         local thisCapture = this
         let dbType = db.type
         let { userId = null, sender } = db
@@ -1548,7 +1548,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
         roomId = senderFrom
 
       if (errorName == chatErrorName.NO_SUCH_NICK_CHANNEL) {
-        if (!this.roomRegexp.match(roomId)) { //private room
+        if (!this.roomRegexp.match(roomId)) { 
           this.addRoomMsg(this.lastActionRoom, "",
                      format(loc("chat/error/401/userNotConnected"),
                             gchat_unescape_target(this.filterPlayerName(roomId))))
@@ -1588,9 +1588,9 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
         }
       }
 
-      //remap roomnames in params
+      
       let locParams = {}
-      let errParamCount = db.error?.errorParamCount || db.error.getInt("paramCount", 0) //"paramCount" is a support old client
+      let errParamCount = db.error?.errorParamCount || db.error.getInt("paramCount", 0) 
       for (local i = 0; i < errParamCount; i++) {
         let key = $"param{i}"
         local value = db.error?[key]
@@ -1633,14 +1633,14 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (roomData && roomData.joinParams != "")
       return ::gchat_raw_command($"join {gchat_escape_target(id)} {roomData.joinParams}")
 
-    if (roomData && reconnect && roomData.joined) //reconnect only to joined rooms
+    if (roomData && reconnect && roomData.joined) 
       return
 
     this.addChatJoinParams(gchat_escape_target(id), password)
     if (customScene && !roomData)
-      this.addRoom(id, customScene, ownerHandler) //for correct reconnect
+      this.addRoom(id, customScene, ownerHandler) 
 
-    let task = gchat_join_room(gchat_escape_target(id), password) //FIX ME: better to remove this and work via gchat_raw_command always
+    let task = gchat_join_room(gchat_escape_target(id), password) 
     if (task != "")
       this.chatTasks.append({ task = task, handler = this.onJoinRoom, roomId = id,
                          onJoinFunc = onJoinFunc, customScene = customScene,
@@ -1969,13 +1969,13 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function leaveSquadRoom() {
-    //squad room can be only one joined at once, but at moment we want to leave it cur squad room id can be missed.
+    
     foreach (room in g_chat.rooms) {
       if (room.type != g_chat_room_type.SQUAD || !room.joined)
         continue
 
       ::gchat_raw_command($"part {gchat_escape_target(room.id)}")
-      room.joined = false //becoase can be disconnected from chat, but this info is still important.
+      room.joined = false 
       room.canBeClosed = true
       this.silenceUsersByList(room.users)
       room.users.clear()
@@ -2587,7 +2587,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventNewSceneLoaded(_p) {
-    this.guiScene.performDelayed(this, function() { //need delay becoase of in the next scene can be obj for this chat room too (mpLobby)
+    this.guiScene.performDelayed(this, function() { 
       this.updateCustomChatTexts()
     })
   }
@@ -2614,7 +2614,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (id != "")
       return g_chat.getRoomById(id)
 
-    //try to find by scene
+    
     foreach (item in g_chat.rooms)
       if (checkObj(item.customScene) && item.customScene.isEqual(obj))
         return item

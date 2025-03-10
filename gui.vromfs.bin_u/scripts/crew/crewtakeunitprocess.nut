@@ -38,26 +38,26 @@ enum CTU_PROGRESS {
   COMPLETE
 }
 
-/* API:
-CrewTakeUnitProcess(crewOrCountry, unitToTake = null, callback = null)
-    crewOrCountry - can be:
-       * crew table. If crew table not set, new crew will be trained by chosen country or unit
-       * country name string
-       * null   //country will be taken from unit
-    unitToTake - unit to train. if null - remove cur unit from crew
-    calback - function(isSuccess) on finish process
 
-  static function getProcessCost(crew, unit, country = null)
-    return cost of full CrewTakeUnitProcess
 
-  static function safeInterrupt()
-    interrupt process when it in the safe state for interruption
-    return false if process still exist.
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let CrewTakeUnitProcess = class {
   crew = null
-  country = null //used only when crew not unlocked
+  country = null 
   unit = null
   prevUnit = null
   onFinish = null
@@ -77,7 +77,7 @@ let CrewTakeUnitProcess = class {
       if (this.crew || this.unit)
         queues.checkAndStart(this.nextStepCb, this.removeCb, "isCanModifyCrew")
       else
-        this.nextStep() //we no need to check queue when only hire crew.
+        this.nextStep() 
     },
 
     [CTU_PROGRESS.CHECK_AVAILABILITY] = function() {
@@ -93,7 +93,7 @@ let CrewTakeUnitProcess = class {
       }
 
       if (this.unit && !this.unit.isUsable())
-        return this.remove() //rent expired
+        return this.remove() 
 
       let unitCrew = this.unit != null ? getCrewByAir(this.unit) : null
       if (unitCrew != null && isCrewLockedByPrevBattle(unitCrew)) {
@@ -101,7 +101,7 @@ let CrewTakeUnitProcess = class {
         return this.remove()
       }
 
-      //we cant make slotbar invalid by add crew to new hired crew
+      
       let isInvalidCrewsAllowedV = this.crew == null || isInvalidCrewsAllowed()
       let isCurUnitAllowed = this.unit && isUnitAllowedForRoom(this.unit) && !isUnitBroken(this.unit)
       let needCheckAllowed = !isInvalidCrewsAllowedV  && (!this.unit || !isCurUnitAllowed)

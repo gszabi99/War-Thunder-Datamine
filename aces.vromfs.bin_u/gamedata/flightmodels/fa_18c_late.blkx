@@ -97,11 +97,11 @@
       }
     },
     "c_dural3": {
-      "aileron_l_dm": {
+      "flaperon_l_dm": {
         "genericDamageMult": 0.3,
         "hp": 29.0
       },
-      "aileron_r_dm": {
+      "flaperon_r_dm": {
         "genericDamageMult": 0.3,
         "hp": 29.0
       },
@@ -2260,14 +2260,8 @@
   },
   "cockpit": {
     "mfdTextureSize": [
-      [
-        2048,
-        1024
-      ],
-      [
-        2048,
-        1024
-      ]
+      2048,
+      1024
     ],
     "targetingPodFov": [
       18.0,
@@ -2310,6 +2304,7 @@
       "blister9",
       "blister10"
     ],
+    "mirrorClipDist": 0.2,
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
     "lightPos": [
@@ -2814,6 +2809,7 @@
               "N001",
               "N010",
               "V004",
+              "N011M",
               "Type 1473",
               "ELTA EL/M-2001B",
               "ELTA EL/M-2052",
@@ -2864,6 +2860,11 @@
             "name": "Su-34",
             "detectLaunch": true,
             "type": "V004"
+          },
+          {
+            "name": "Su-30",
+            "detectLaunch": true,
+            "type": "N011M"
           },
           {
             "name": "F-4",
@@ -3061,6 +3062,10 @@
           {
             "text": "S34",
             "group": "Su-34"
+          },
+          {
+            "text": "S30",
+            "group": "Su-30"
           },
           {
             "text": "F4",
@@ -3281,10 +3286,6 @@
           "cameraFromTargetingPod": true,
           "page": [
             {
-              "type": "custom",
-              "pageName": "f18Wpn"
-            },
-            {
               "type": "thermal",
               "turretIdx": 0
             },
@@ -3294,12 +3295,20 @@
             },
             {
               "type": "custom",
-              "pageName": "f18Wpn"
+              "pageName": "fa18cRadarAzEl"
             },
             {
               "type": "radar",
               "customRadar": "fa18cRadarATTK",
               "fontSize": 20
+            },
+            {
+              "type": "custom",
+              "pageName": "f18Wpn"
+            },
+            {
+              "type": "custom",
+              "pageName": "f18Wpn"
             },
             {
               "type": "map"
@@ -3315,6 +3324,10 @@
           ],
           "page": [
             {
+              "type": "custom",
+              "pageName": "f18Wpn"
+            },
+            {
               "type": "map"
             },
             {
@@ -3324,7 +3337,7 @@
             },
             {
               "type": "custom",
-              "pageName": "f18Wpn"
+              "pageName": "fa18cRadarAzEl"
             },
             {
               "type": "thermal",
@@ -3704,13 +3717,32 @@
       "opticType": "tv",
       "turretNo": 0
     },
-    "Target": {
+    "TV1": {
       "pos": [
         1.0,
         -0.2,
         0.0
       ],
       "head": "optic2_turret",
+      "crosshairPreset": "test_crosshair",
+      "angularLimits": [
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
+      ],
+      "opticType": "tv",
+      "turretNo": 0,
+      "nvIndex": 2,
+      "name": "AGM65G"
+    },
+    "Target": {
+      "pos": [
+        1.0,
+        -0.2,
+        0.0
+      ],
+      "head": "optic3_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
         -89.0,
@@ -3729,7 +3761,7 @@
         "dmPart": "radar_dm"
       },
       {
-        "blk": "gameData/sensors/us_an_alr_56c.blk"
+        "blk": "gameData/sensors/us_an_alr_67_v_3.blk"
       },
       {
         "blk": "gameData/sensors/ir_tracker_tgp.blk",
@@ -3905,6 +3937,62 @@
               "turret": {
                 "head": "optic1_turret",
                 "gun": "optic1_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic2_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 500.0,
+              "speedPitch": 500.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic2_turret",
+                "gun": "optic2_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
+              }
+            },
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic3_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 500.0,
+              "speedPitch": 500.0,
+              "parkInDeadzone": true,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic3_turret",
+                "gun": "optic3_gun",
                 "mainTurret": true
               },
               "limits": {
@@ -4493,6 +4581,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
             }
           },
           {
@@ -4513,10 +4605,6 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
-            },
-            "DependentWeaponPreset": {
-              "slot": 5,
-              "preset": "litening_pod"
             }
           }
         ]
@@ -4993,6 +5081,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
             }
           },
           {
@@ -5013,10 +5105,6 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
-            },
-            "DependentWeaponPreset": {
-              "slot": 5,
-              "preset": "litening_pod"
             }
           },
           {
@@ -5769,6 +5857,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
             }
           },
           {
@@ -5789,10 +5881,6 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
-            },
-            "DependentWeaponPreset": {
-              "slot": 5,
-              "preset": "litening_pod"
             }
           },
           {
@@ -6318,6 +6406,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "litening_pod"
             }
           },
           {
@@ -6338,10 +6430,6 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
-            },
-            "DependentWeaponPreset": {
-              "slot": 5,
-              "preset": "litening_pod"
             }
           }
         ]

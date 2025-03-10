@@ -6,7 +6,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 
 let template = {
-  //id - add in generation
+  
   type = CONTROL_TYPE.SHORTCUT
 
   checkAssign = true
@@ -19,7 +19,7 @@ let template = {
 
 function definitionFunc(shArray, shEnum) {
   foreach (_idx, shSrc in shArray) {
-    //Fill required params before it will be used below
+    
     let sh = (type(shSrc) == "string") ? { id = shSrc } : clone shSrc
 
     if (!("type" in sh))

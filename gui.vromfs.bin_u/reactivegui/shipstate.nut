@@ -37,7 +37,7 @@ let shipState = {
   obstacleAngle = Watched(0)
   timeToDeath = Watched(-1)
 
-  //DM:
+  
   enginesCount = Watched(0)
   brokenEnginesCount = Watched(0)
   enginesInCooldown = Watched(false)
@@ -73,6 +73,7 @@ let shipState = {
   gunStatesSecondRow
   shellHitDamageEvents
   heroCoverPartsRelHp = mkWatched(persist, "shipHeroCoverPartsRelHp", [])
+  isCoverDestroyed = Watched(false)
 }
 
 function isDiff(time1, time2) {

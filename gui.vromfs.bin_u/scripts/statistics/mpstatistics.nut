@@ -87,7 +87,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
   wasTimeLeft = -1000
   updateCooldown = 3
 
-  numMaxPlayers = 16  //its only visual max players. no need to scroll when table near empty.
+  numMaxPlayers = 16  
   isApplyPressed = false
 
   checkRaceDataOnStart = true
@@ -115,7 +115,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(timeToKickObj))
       return
     let timeToKickValue = get_mp_kick_countdown()
-    // Already in battle or it's too early to show the message.
+    
     if (timeToKickValue <= 0 || get_time_to_kick_show_timer() < timeToKickValue)
       timeToKickObj.setValue("")
     else {
@@ -182,10 +182,10 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
       textObj.setValue(text)
   }
 
-  /**
-   * Sets country flags visibility based
-   * on specified country names list.
-   */
+  
+
+
+
   function setTeamInfoCountries(teamObj, enabledCountryNames) {
     if (!checkObj(teamObj))
       return
@@ -205,10 +205,10 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
       countryFlagObj["background-image"] = getCountryIcon(countryIcon)
   }
 
-  /**
-   * Places all available country
-   * flags into container.
-   */
+  
+
+
+
   function initTeamInfoCountries(teamObj) {
     if (!checkObj(teamObj))
       return
@@ -311,7 +311,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     let showAirIcons  = tblConfig?.showAirIcons  ?? showUnits
     let invert = getTblValue("invert", tblConfig, false)
 
-    local tblData = [] // columns order
+    local tblData = [] 
 
     let markupData = {
       tr_size = this.statTrSize
@@ -616,7 +616,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
 
         let showEnemyAirs = this.isShowEnemyAirs()
         let isLeftPlayerTeam = playerTeam == friendlyTeam
-        this.setKillsTbl(tblObj1, playerTeam, playerTeam, friendlyTeam, // warning disable: -param-pos
+        this.setKillsTbl(tblObj1, playerTeam, playerTeam, friendlyTeam, 
           isLeftPlayerTeam ? this.showAircrafts : showEnemyAirs, customTbl)
         if (!this.showLocalTeamOnly && playerTeam > 0)
           this.setKillsTbl(tblObj2, 3 - playerTeam, playerTeam, friendlyTeam,
@@ -884,10 +884,10 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  /**
-   * Sets country flag visibility for both
-   * teams based on players' countries and units.
-   */
+  
+
+
+
   function updateCountryFlags() {
     let playerTeam = this.getLocalTeam()
     if (!this.needPlayersTbl || playerTeam <= 0)
@@ -928,18 +928,18 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  /**
-   * Returns country names list based of players' settings.
-   */
+  
+
+
   function getCountriesByTeam(team) {
     let countries = []
     let players = this.getMplayersList(team)
     foreach (player in players) {
       local country = getTblValue("country", player, null)
 
-      // If player/bot has random country we'll
-      // try to retrieve country from selected unit.
-      // Before spawn bots has wrong unit names.
+      
+      
+      
       if (country == "country_0" && (!player.isDead || player.deaths > 0)) {
         let unitName = getTblValue("aircraftName", player, null)
         let unit = getAircraftByName(unitName)

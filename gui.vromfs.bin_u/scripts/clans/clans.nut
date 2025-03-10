@@ -36,7 +36,7 @@ registerPersistentData("ClansGlobals", getroottable(),
   ])
 
 ::g_clans <- {
-  lastClanId = CLAN_ID_NOT_INITED //only for compare about clan id changed
+  lastClanId = CLAN_ID_NOT_INITED 
   squadronExp = 0
 }
 
@@ -161,7 +161,7 @@ function handleNewMyClanData() {
       parseSeenCandidates()
       clearClanTagForRemovedMembers(myClanPrevMembersUid, [])
       broadcastEvent("ClanInfoUpdate")
-      broadcastEvent("ClanChanged") //i.e. dismissed
+      broadcastEvent("ClanChanged") 
       ::update_gamercards()
     }
     return
@@ -187,7 +187,7 @@ function handleNewMyClanData() {
     broadcastEvent("ClanInfoUpdate")
     ::update_gamercards()
     if (wasCreated)
-      broadcastEvent("ClanChanged") //i.e created
+      broadcastEvent("ClanChanged") 
   })
 }
 
@@ -364,7 +364,7 @@ class ClanSeasonTitle {
   }
 }
 
-// Warning! getFilteredClanData() actualy mutates its parameter and returns it back
+
 ::getFilteredClanData <- function getFilteredClanData(clanData, author = "") {
   if ("tag" in clanData)
     clanData.tag = checkClanTagForDirtyWords(clanData.tag)
@@ -379,7 +379,7 @@ class ClanSeasonTitle {
 
   local isPlayerBlocked = false
   if (isPlatformSony) {
-    //Try get author of changes from incomming clanData
+    
     if (author == "") {
       author = clanData?.changedByNick ?? ""
       if (author == "") {

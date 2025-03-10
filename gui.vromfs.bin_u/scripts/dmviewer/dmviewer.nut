@@ -38,14 +38,14 @@ let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nu
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { getSimpleUnitType, xrayCommonGetters, getDescriptionInXrayMode } = require("modeXrayUtils.nut")
 
-/*
-  dmViewer API:
 
-  toggle(state = null)  - switch view_mode to state. if state == null view_mode will be increased by 1
-  update()              - update dm viewer active status
-                          depend on canShowDmViewer function in cur_base_gui_handler and topMenuHandler
-                          and modal windows.
-*/
+
+
+
+
+
+
+
 
 const XRAY_FILTER_OBJ_PREFIX = "xray_filter_"
 
@@ -162,8 +162,8 @@ function applyXrayFilter(objId, _tName, value) {
 local dmViewer
 dmViewer = {
   active = false
-  // This is saved view mode. It is used to restore
-  // view mode after player returns from somewhere.
+  
+  
   view_mode = DM_VIEWER_NONE
   unit = null
   simUnitType = S_UNDEFINED
@@ -221,8 +221,8 @@ dmViewer = {
     this.updateUnitInfo()
     let timerObj = handler.getObj("dmviewer_hint")
     if (timerObj)
-      timerObj.setUserData(handler) //!!FIX ME: it a bad idea link timer to handler.
-                                    //better to link all timers here, and switch them off when not active.
+      timerObj.setUserData(handler) 
+                                    
 
     this.update()
   }
@@ -299,7 +299,7 @@ dmViewer = {
   }
 
   function loadUnitBlk() {
-    // unitDataCache contains unitBlk nodes, should be unloaded togeter with unitBlk
+    
     this.resetXrayCache()
     this.unitBlk = getFullUnitBlk(this.unit.name)
   }
@@ -327,7 +327,7 @@ dmViewer = {
       (state in this.modes) ? state :
       DM_VIEWER_NONE
 
-    //need to update active status before repaint
+    
     if (!this.update() && this.active)
       this.show()
     if (!this.active || this.view_mode == DM_VIEWER_NONE)
@@ -347,7 +347,7 @@ dmViewer = {
     this.updateNoPartsNotification()
 
     local newActive = this.canUse() && !handlersManager.isAnyModalHandlerActive()
-    if (!newActive && !this.active) //no need to check other conditions when not canUse and not active.
+    if (!newActive && !this.active) 
       return false
 
     let handler = handlersManager.getActiveBaseHandler()
@@ -436,7 +436,7 @@ dmViewer = {
 
     obj.setValue(this.view_mode)
 
-    // Protection analysis button
+    
     if (hasFeature("DmViewerProtectionAnalysis")) {
       obj = handler.scene.findObject("dmviewer_protection_analysis_btn")
       if (checkObj(obj))
@@ -444,7 +444,7 @@ dmViewer = {
     }
 
     let isTankOrShip = this.unit != null && (this.unit.isTank() || this.unit.isShipOrBoat())
-    // Outer parts visibility toggle in Armor and Xray modes
+    
     if (hasFeature("DmViewerExternalArmorHiding")) {
       obj = handler.scene.findObject("dmviewer_show_external_dm")
       if (checkObj(obj)) {
@@ -474,7 +474,7 @@ dmViewer = {
           })
         }
         else
-          broadcastEvent("UpdateFiltersCount") //update filter count after validate option value
+          broadcastEvent("UpdateFiltersCount") 
         set_xray_parts_filter(xrayFilterOption.value)
       } else if (this.view_mode == DM_VIEWER_XRAY && hasLoadedModel())
         set_xray_parts_filter(0)
@@ -488,7 +488,7 @@ dmViewer = {
         obj.setValue(this.needShowExtHints())
     }
 
-    // Customization navbar button
+    
     obj = handler.scene.findObject("btn_dm_viewer")
     if (!checkObj(obj))
       return
@@ -561,7 +561,7 @@ dmViewer = {
     local needUpdateContent = false
 
     if (this.view_mode == DM_VIEWER_XRAY)
-      // change tooltip info only for new unit part
+      
       needUpdateContent = (getTblValue("name", params, true) != getTblValue("name", this.prevHintParams, false))
     else
       foreach (key, val in params)
@@ -687,7 +687,7 @@ dmViewer = {
       if (!hideDescription && hasFeature("XRayDescription"))
         res.desc = descData.desc
       res.animation = this.getDmPartAnimationSrc(params.name)
-      res.__update(this.getExtendedHintInfo(params))
+      res.__update(this.getExtendedHintInfo(partType, params))
     }
 
     let titleLocId = overrideTitle != "" ? overrideTitle : partLocId
@@ -696,7 +696,7 @@ dmViewer = {
     return res
   }
 
-  function getExtendedHintInfo(params) {
+  function getExtendedHintInfo(partType, params) {
     if (!this.unit?.isShipOrBoat() || !this.unitBlk)
       return {}
 
@@ -706,7 +706,6 @@ dmViewer = {
     if (!hasFeature("XRayDescription") || !params?.name)
       return {}
 
-    let partType = params?.partType ?? ""
     let partName = params.name
 
     let extDescLocKey = this.getExtHintLocKey(partType, partName)
@@ -722,7 +721,7 @@ dmViewer = {
     let ammoCount = this.unitBlk?.ammoStowages.blockCount() ?? 0
     for (local i = 0; i < ammoCount; ++i) {
       let ammo = this.unitBlk.ammoStowages.getBlock(i)
-      if (ammo?.entityMunition != "torpedo") // skipping blocks without torpedos
+      if (ammo?.entityMunition != "torpedo") 
         continue
 
       foreach (shells in (ammo % "shells"))

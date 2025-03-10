@@ -11,8 +11,8 @@ let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const SUGGESTED_SKIN_SAVE_ID = "seen/suggestedUnitsSkins/"
 const UNIT_DATE_SAVE_ID = "lastSuggestedDate"
-const UNIT_DELAY_TIME_SEC = 604800      //1 week
-const SKIN_DELAY_TIME_SEC = 7776000     //90 days
+const UNIT_DELAY_TIME_SEC = 604800      
+const SKIN_DELAY_TIME_SEC = 7776000     
 
 let getSaveId = @(unitName) $"{SUGGESTED_SKIN_SAVE_ID}{unitName}"
 
@@ -20,7 +20,7 @@ let getSkin = @(skinId) getDecorator(skinId, decoratorTypes.SKINS)
 
 function getSeenSuggestedSkins(unitName) {
   let seenSkinsList = loadLocalAccountSettings(getSaveId(unitName))
-  //this code need for compatibility with old format. Format changed in 2.16.1.X, 31.05.2022
+  
   let oldSaveId = $"seen/suggestedSkins/{unitName}"
   let oldSeenSkinsList = loadLocalAccountSettings(oldSaveId)
   if (oldSeenSkinsList == null)

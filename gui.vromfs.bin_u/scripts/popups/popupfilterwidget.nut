@@ -15,7 +15,7 @@ local PopupFilterWidget = class (gui_handlers.BaseGuiHandlerWT) {
   needVoiceChat        = false
   sceneTplName         = "%gui/popup/popupFilterWidget.tpl"
 
-  //init params
+  
   filterTypesFn        = null
   onChangeFn           = null
   popupAlign           = null

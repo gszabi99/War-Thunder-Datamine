@@ -131,7 +131,7 @@ register_command(
       checkFunc = @(userlog) userlog.body.wp != 0
     })?[0]
 
-    //uses dummy data when no actual one in user log
+    
     if (!uLogObj) {
       let operationId = getLastPlayedOperationId()
       uLogObj = operationId ? {

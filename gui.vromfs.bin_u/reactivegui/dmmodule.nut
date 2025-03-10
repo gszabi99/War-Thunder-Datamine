@@ -94,10 +94,10 @@ let text = @(total_count, broken_count) {
 }
 
 
-///
-/// Return component represents state of group
-/// of similar dm modules (engines, torpedos, etc.)
-///
+
+
+
+
 let dmModule = function (params) {
   let totalCountState = params.totalCountState
   let brokenCountState = params.brokenCountState

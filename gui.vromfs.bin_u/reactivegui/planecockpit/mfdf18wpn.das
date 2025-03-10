@@ -82,14 +82,16 @@ class Component : Canvas
   def Component(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
     Canvas`Canvas(self, guiCtx, rdata, rstate)
     hero = get_watched_not_delayed_hero()
+    return if hero == null
     fmw = hero.as_fmw()
-    wc = hero.weap
-    fm = fmw.fm
-    app = get_app()
-
     return if fmw == null
+    wc = hero.weap
     return if wc == null
+    fm = fmw.fm
     return if fm == null
+    app = get_app()
+    return if app == null
+
 
     using() <| $(var target : TargetOfInterest#)
       if hero.sensors.getSelectedTargetOfInterest(hero.detector, target)

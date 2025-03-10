@@ -4,7 +4,7 @@ let { is_pc, is_android, is_ios } = require("%sqstd/platform.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 
 function getConfigBlkPaths() {
-  // On PS4 path is "/app0/config.blk", but it is read-only.
+  
   return {
     read  = (is_pc || is_android || is_ios) ? get_config_name() : null
     write = (is_pc) ? get_config_name() : null

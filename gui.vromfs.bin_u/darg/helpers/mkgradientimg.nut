@@ -1,5 +1,5 @@
-//https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Gradients
-//see example at https://briangrinstead.com/gradient/
+
+
 from "%darg/ui_imports.nut" import *
 from "base64" import encodeString
 
@@ -17,7 +17,7 @@ let blendModesPrefix = {
 
 function mkGradPointStyle(point, idx, points){
   let offset = point?.offset ?? (100 * idx/(points.len()-1))
-//  assert(offset<=100 && offset >=0 && (["integer", "float"].contains(type(offset))))
+
   local color = point?.color
   if (color==null && type(point)=="array")
     color = point
@@ -86,16 +86,16 @@ function mkRadialGradSvgTxtImpl(points, width, height, cx=null, cy=null, r=null,
   return $"{header}\n    {body}\n{footer}"
 }
 
-/*Example:
-let red = [255,0,0]
-let green = [0, 255, 0]
-let blue = [0, 0, 255]
-{
-  rendObj = ROBJ_IMAGE
-  image = mkRadialGradientImg({points=[red, {color = green, offset=66}, blue], width=256, height=256, transform = {rotate = 90}}))
-  size = flex()
-}
-*/
+
+
+
+
+
+
+
+
+
+
 let mkRadialGradientImg = kwarg(function(points, width, height, cx=null, cy=null, r=null, fx=null, fy=null, spreadMethod=GRADSPREAD.PAD, transform=null, blendMode=BLEND_MODE_PREMULTIPLIED){
   let svg = mkRadialGradSvgTxtImpl(points, width, height, cx,cy,r,fx,fy, spreadMethod, transform)
   let text = encodeString(svg)

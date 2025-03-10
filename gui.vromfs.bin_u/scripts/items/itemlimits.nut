@@ -6,19 +6,19 @@ let DataBlock  = require("DataBlock")
 let { get_time_msec } = require("dagor.time")
 let { addTask } = require("%scripts/tasker.nut")
 
-/** Seconds to keep limit data without updating. */
+
 const ITEM_REFRESH_TIME = 60
 
-/** Seconds to timout the request. */
+
 const REQUEST_UNLOCK_TIMEOUT = 45
 
-/** Maximum number of items to go in a single request. */
-const MAX_REQUEST_SIZE = 0 // Disabled for now.
+
+const MAX_REQUEST_SIZE = 0 
 
 let limitDataByItemName = {}
 let itemNamesQueue = []
 local isRequestLocked = false
-local requestLockTime = -1 // Milliseconds
+local requestLockTime = -1 
 
 function checkRequestSize(requestSize) {
   return MAX_REQUEST_SIZE == 0 || requestSize < MAX_REQUEST_SIZE
@@ -31,7 +31,7 @@ function createLimitData(itemName) {
     countGlobal = -1
     countPersonalTotal = -1
     countPersonalAtTime = -1
-    lastUpdateTime = -1 // Milliseconds
+    lastUpdateTime = -1 
   }
   limitDataByItemName[itemName] <- limitData
   return limitData

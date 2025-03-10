@@ -195,7 +195,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         let value = getCrewSkillValue(this.crew.id, this.curUnit, page.id, item.name)
         let newValue = item?.newValue ?? value
         if (newValue > value)
-          this.curPoints -= getCrewSkillCost(item, newValue, value) // -param-pos
+          this.curPoints -= getCrewSkillCost(item, newValue, value) 
       }
     this.updateSkillsHandlerPoints()
     this.scene.findObject("crew_cur_skills").setValue(stdMath.round_by_value(this.crewCurLevel, 0.01).tostring())
@@ -208,7 +208,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let wasValue = getCrewSkillNewValue(item, this.crew, this.curUnit)
     let changeCost = getCrewSkillCost(item, newValue, wasValue)
     let crewLevelChange = getSkillCrewLevel(item, newValue, wasValue)
-    item.newValue <- newValue //!!FIX ME: this code must be in g_crew too
+    item.newValue <- newValue 
     this.curPoints -= changeCost
     this.updateSkillsHandlerPoints()
     this.crewLevelInc += crewLevelChange
@@ -257,7 +257,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       )
     }
     this.guiScene.replaceContentFromText(rbObj, data, data.len(), this)
-    if (!isVisibleCurCrewTypeButton) //need switch unit type if cur type not visible
+    if (!isVisibleCurCrewTypeButton) 
       rbObj.setValue(0)
     this.updateUnitType()
   }
@@ -327,7 +327,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     width += viewTabs.len() * to_pixels("2@listboxHPadding + 1@listboxItemsInterval")
     if (showConsoleButtons.value)
-      width += 2 * targetSize[1] //gamepad navigation icons width = ph
+      width += 2 * targetSize[1] 
 
     return width > targetSize[0]
   }
@@ -467,7 +467,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!isShowExpUpgrade)
       return
 
-    //Exp ProgressBar
+    
     let unitExpLeft = crewSpecType.getExpLeftByCrewAndUnit(this.crew, this.curUnit)
     let totalUnitExp = crewSpecType.getTotalExpByUnit(this.curUnit)
 
@@ -476,7 +476,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       progressBarValue = (1000 * unitExpLeft / totalUnitExp).tointeger()
     }
 
-    //Exp ProgressBar discount markers.
+    
     expTextObj.setValue(
       format( "%s: %s / %s",
         loc("crew/qualification/expUpgradeLabel"),
@@ -585,7 +585,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!("trainedSpec" in this.crew))
       return
 
-    let sortData = [] // { unit, locname }
+    let sortData = [] 
     foreach (unit in getAllUnits())
       if (unit.name in this.crew.trainedSpec && unit.getCrewUnitType() == this.curCrewUnitType) {
         let isCurrent = (this.crew?.aircraft ?? "") == unit.name
@@ -683,7 +683,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         blk[page.id] = typeBlk
       }
 
-    let curHandler = this //to prevent handler destroy even when invalid.
+    let curHandler = this 
     let isTaskCreated = addTask(
       shop_upgrade_crew(this.crew.id, blk),
       { showProgressBox = true },
@@ -916,7 +916,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.initMainParams(!params?.isOnlyPointsChanged)
   }
 
-  /** Triggered from CrewUnitSpecHandler. */
+  
   function onEventQualificationIncreased(_params) {
     this.crew = this.getSlotCrew()
     this.initMainParams()

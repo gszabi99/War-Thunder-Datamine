@@ -60,14 +60,14 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
     local locPrefix = "shop/featureLock/"
     if (this.unit)
       if (this.unit.unitType == unitTypes.TANK)
-        locPrefix = $"{locPrefix}USATanks/" //here is usual tanks texts
+        locPrefix = $"{locPrefix}USATanks/" 
       else
         locPrefix = $"{locPrefix}{this.unit.unitType.name}/"
 
     local text = ""
     if (this.featureLockAction == CheckFeatureLockAction.BUY)
       text = "".concat(text, loc($"{locPrefix}warning/buy"))
-    else // CheckFeatureLockAction.RESEARCH
+    else 
       text = "".concat(text, loc($"{locPrefix}warning/research"))
     let mainLocParams = {
       specialPackPart = this.getPurchaseAvailable()
@@ -143,7 +143,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
 
   function getEntitlementPrice(entitlementItem) {
     let priceText = loc($"price/{entitlementItem.name}", "")
-    // Empty string is valid and means we won't show price at all.
+    
     if (priceText == "")
       return ""
     local basePrice

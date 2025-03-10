@@ -23,7 +23,7 @@ let requestsTable = {
   sourceCount = "$SOURCE_COUNT"
 }
 
-// specialization getters below expect valid data, validated by the caller
+
 function getActivityFeedImageByParam(feed, imagesConfig) {
   let config = imagesConfig.other?[feed.blkParamName]
 

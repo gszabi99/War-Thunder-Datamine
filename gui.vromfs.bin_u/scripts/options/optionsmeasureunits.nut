@@ -19,7 +19,7 @@ let persistent = {
 }
 registerPersistentData("OptionsMeasureUnits", persistent, persistent.keys())
 
-// Preserve the same order as in measureUnits.blk
+
 let optionsByIndex = [
   { useroptId = USEROPT_MEASUREUNITS_SPEED,                 optId = "speed" },
   { useroptId = USEROPT_MEASUREUNITS_ALT,                   optId = "alt" },

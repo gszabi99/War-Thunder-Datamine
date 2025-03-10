@@ -38,7 +38,7 @@ let widgetsMap = {
       return shipExHud
     else if (hudUnitType.isHuman())
       return tankHud
-    //
+    
 
 
 
@@ -92,7 +92,7 @@ let widgetsMap = {
   [DargWidgets.WORLDWAR_MAP] = wwMap
 }
 
-// A stub to enable hover functionality
+
 let stubInteractiveCursorForDaGUI = Cursor({})
 
 let cursor = @() {

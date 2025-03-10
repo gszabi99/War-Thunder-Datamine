@@ -19,14 +19,14 @@ const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
 function afterUpdateAirModificators(unit, callback) {
   if (unit.secondaryWeaponMods)
-    unit.secondaryWeaponMods = null //invalidate secondary weapons cache
+    unit.secondaryWeaponMods = null 
   broadcastEvent("UnitModsRecount", { unit = unit })
   if (callback != null)
     callback()
 }
 
 function checkForResearch(unit) {
-  // Feature lock has higher priority than canResearchUnit.
+  
   if (!checkFeatureLock(unit, CheckFeatureLockAction.RESEARCH))
     return false
 
@@ -74,7 +74,7 @@ function checkForResearch(unit) {
   return showCantBuyOrResearchUnitMsgbox(unit)
 }
 
-//return true when modificators already valid.
+
 function check_unit_mods_update(air, callBack = null, forceUpdate = false, needMinMaxEffectsForAllUnitTypes = false) {
   if (!air.isInited) {
     script_net_assert_once("not inited unit request", "try to call check_unit_mods_update for not inited unit")
@@ -132,7 +132,7 @@ function check_unit_mods_update(air, callBack = null, forceUpdate = false, needM
           air.maxChars = effect.max
         }
 
-        if (!air.modificatorsBase) // TODO: Needs tank params _without_ user progress here.
+        if (!air.modificatorsBase) 
           air.modificatorsBase = air.modificators
       }
       afterUpdateAirModificators(air, callBack)

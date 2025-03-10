@@ -28,7 +28,7 @@ let RecipesBundle = class (Chest) {
   getMaxRecipesToShow   = @() 1
   getMarketablePropDesc = @() ""
 
-  getGenerator          = @() getItemGenerator(this.id) //recipes bundle created by generator, so has same id
+  getGenerator          = @() getItemGenerator(this.id) 
   getDescRecipesText    = @(params) getRequirementsText(this.getMyRecipes(), this, params)
   getDescRecipesMarkup  = @(params) getRequirementsMarkup(this.getMyRecipes(), this, params)
 

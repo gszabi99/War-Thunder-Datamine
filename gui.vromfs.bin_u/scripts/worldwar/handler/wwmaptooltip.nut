@@ -28,7 +28,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
   descriptionTimer = null
 
   function initScreen() {
-    this.scene.setUserData(this) //to not unload handler even when scene not loaded
+    this.scene.setUserData(this) 
     this.updateScreen(this.getUpdatedSpecs())
   }
 
@@ -174,7 +174,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(this.scene) || !hoveredAirfield)
       return
 
-    //hoveredAirfield.update(hoveredAirfield.name)
+    
     let airfieldView = hoveredAirfield.getView()
     foreach (fieldId, func in airfieldView.getRedrawArmyStatusData()) {
       let redrawFieldObj = this.scene.findObject(fieldId)

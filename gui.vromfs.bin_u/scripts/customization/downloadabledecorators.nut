@@ -5,7 +5,7 @@ let DataBlock = require("DataBlock")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getSkinId } = require("%scripts/customization/skinUtils.nut")
 
-let downloadableSkins = {} // { unitName = { skinIds = [], suggestedSkinIds = {} } }
+let downloadableSkins = {} 
 
 function updateDownloadableSkins(unitName, skinType) {
   if (downloadableSkins?[unitName] != null)

@@ -257,7 +257,7 @@ function fill_gamer_card(cfg = null, prefix = "gc_", scene = null, save_scene = 
   if (!isGamercard)
     return
 
-  //checklogs
+  
   if (hasFeature("UserLog")) {
     let objBtn = getObj($"{prefix}userlog_btn")
     if (checkObj(objBtn)) {

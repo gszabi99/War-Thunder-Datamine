@@ -9,7 +9,7 @@ let time = require("%scripts/time.nut")
 let { startsWith, slice } = require("%sqstd/string.nut")
 let { get_clan_rewards_blk } = require("blkGetters")
 
-local rewardsBlk = null //cache of get_clan_rewards_blk()
+local rewardsBlk = null 
 
 function getRewardsBlk() {
   if (!rewardsBlk)
@@ -40,9 +40,9 @@ function hasPrizePlacesRewards(difficulty) {
 
 let getShowInSquadronStatistics = @(diff) hasPrizePlacesRewards(diff)
 
-/**
- * Retrun string with current season name.
- */
+
+
+
 function getClanCurrentSeasonName() {
   let info = clan_get_current_season_info()
   let year = unixtime_to_utc_timetbl(info.startDay).year.tostring()
@@ -58,10 +58,10 @@ function isLeprRewards(rewardsDataBlk) {
   return rewardsDataBlk?.tillPlace
 }
 
-/**
- * Parse block name ("till<N> or "top<N>") for N.
- * Retrun 0 if blockName doesn't match pattern.
- */
+
+
+
+
 function getMaxPlaceForBlock(blockName) {
   foreach (prefix in ["top", "till"])
     if (startsWith(blockName, prefix))
@@ -130,12 +130,12 @@ function mergeTbl(destTbl, srcTbl, canCreateKeys = false) {
       destTbl[i] <- v
 }
 
-/**
- * Return array of rewards for places from 1 to @till.
- * Retrun empty array if can't get any rewards.
- * @till - should pe greater than 1 and less than result of
- * @difficulty - item from g_difficulty
- */
+
+
+
+
+
+
 function getClanSeasonFirstPrizePlacesRewards(till, difficulty) {
   let rewards = []
   let blk = getRewardsBlk()
@@ -188,11 +188,11 @@ function getClanSeasonFirstPrizePlacesRewards(till, difficulty) {
   return rewards
 }
 
-/**
- * Return array of all current season rewards.
- * Retrun empty array if can't get any rewards.
- * @difficulty - item from g_difficulty
- */
+
+
+
+
+
 function getClanSeasonRewardsList(difficulty) {
   let rewards = []
   let blk = getRewardsBlk()

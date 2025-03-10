@@ -37,7 +37,7 @@ let class SwapCrewsHandler (gui_handlers.BaseGuiHandlerWT) {
     let objPos = this.draggedObj.getPosRC()
     let objSize = this.draggedObj.getSize()
 
-    gui_handlers.ActionsList.removeActionsListFromObject(this.draggedObj) //close unit context menu
+    gui_handlers.ActionsList.removeActionsListFromObject(this.draggedObj) 
     this.draggedClone = this.draggedObj.getClone(this.scene.findObject("itemsNest"), this)
     this.draggedClone.pos = ", ".join(objPos)
     this.draggedClone["class"] = "swapCrewsDnD"

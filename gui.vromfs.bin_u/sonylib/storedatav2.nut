@@ -12,7 +12,7 @@ let STORE_REQUEST_ADDITIONAL_FLAGS = {
   useFree = "true"
   sort = "release_date"
   keepHtmlTag = "true"
-  limit = 100 //TODO: rework on lazy load through, e.g. watched
+  limit = 100 
 }
 
 let categoriesData = datablock()
@@ -48,7 +48,7 @@ let gatherAllItemsForCategory = function(onFoundCb, onFinishCb = @() null, lastC
     onFinishCb()
 }
 
-// Send requests on skus extended info, per category separatly.
+
 local requestLinksFullInfo = @(_category) null
 let fillLinkFullInfo = @(category = "") gatherAllItemsForCategory(
   requestLinksFullInfo,
@@ -72,7 +72,7 @@ requestLinksFullInfo = function(category) {
     linksList.append(linkId)
   }
 
-  // Remove category block if no items left
+  
   if (!linksList.len()) {
     log($"requestLinksFullInfo: No link left to display. Remove category {category}")
     categoriesData.removeBlock(category)
@@ -104,7 +104,7 @@ requestCategoryFullLinksList = @(category) psn.send(psn.inGameCatalog.get([categ
     statsd.send_counter("sq.ingame_store.v2.request", 1,
       {status = "success", request = "category_full_links_list", category = category})
 
-    if (type(response) != "array") //Inconsistent response, can be table
+    if (type(response) != "array") 
       response = [response]
 
     fillBlock("links", categoriesData[category], response[0].children)
@@ -131,7 +131,7 @@ collectCategories = function(response, err = null) {
     {status = "success", request = "dig_category"})
 
   let categories = []
-  if (response != null)//!!!FIX ME after the case with null response will be caught
+  if (response != null)
     foreach (data in response) {
       let products = []
 
@@ -150,8 +150,8 @@ collectCategories = function(response, err = null) {
   if (categories.len())
     psn.send(psn.inGameCatalog.get(categories, psn.serviceLabel), collectCategories)
   else {
-    // No categories left for digging. Left only products
-    // Start request full links
+    
+    
     gatherAllItemsForCategory(requestCategoryFullLinksList, fillLinkFullInfo)
   }
 }
@@ -172,14 +172,14 @@ let collectCategoriesAndItems = @(catalog = []) psn.send(
     statsd.send_counter("sq.ingame_store.v2.request", 1,
       {status = "success", request = "collect_categories_and_items"})
 
-    //Proceed data in response, what have come
+    
     collectCategories(response)
   }
 )
 
-// For updating single info and send event for updating it in shop, if opened
-// We can remake on array of item labels,
-// but for now require only for single item at once.
+
+
+
 let updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(_r, _err) null) {
   psn.send(psn.inGameCatalog.get(idsArray, psn.serviceLabel, STORE_REQUEST_ADDITIONAL_FLAGS),
     function(response, err) {
@@ -215,7 +215,7 @@ let updateSpecificItemInfo = function(idsArray, onSuccessCb, onErrorCb = @(_r, _
           continue
         }
 
-        // No need old info, remove block, and fill with new one
+        
         linksBlock.removeBlock(itemId)
 
         fillBlock(itemId, linksBlock, itemData)

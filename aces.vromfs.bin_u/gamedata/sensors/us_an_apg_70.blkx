@@ -417,6 +417,7 @@
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
+      "targetId": true,
       "mainBeamNotchWidth": 40.0,
       "mainBeamNotchMaxElevation": 3.0,
       "track": true,
@@ -445,6 +446,7 @@
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
+      "targetId": true,
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
       "track": true,
@@ -2765,5 +2767,67 @@
         }
       }
     }
-  }
+  },
+  "targetTypeId": [
+    {
+      "name": "hud/single prop",
+      "targetPropulsion": {
+        "type": "propellers",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi prop",
+      "targetPropulsion": [
+        {
+          "type": "propellers",
+          "num": 2
+        },
+        {
+          "type": "propellers",
+          "num": 3
+        },
+        {
+          "type": "propellers",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/single jet",
+      "targetPropulsion": {
+        "type": "jet",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi jet",
+      "targetPropulsion": [
+        {
+          "type": "jet",
+          "num": 2
+        },
+        {
+          "type": "jet",
+          "num": 3
+        },
+        {
+          "type": "jet",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/helicopter",
+      "targetPropulsion": {
+        "type": "rotors"
+      }
+    },
+    {
+      "name": "hud/rocket",
+      "targetPropulsion": {
+        "type": "rocket"
+      }
+    }
+  ]
 }

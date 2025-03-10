@@ -102,10 +102,10 @@ typedef
 
 let AGENT_NAME = "ecs_inspectors"
 // TODO: rewrite using invoke_debug_agent_function
-var private [[ignore_heap_usage]] inspectors : table<string; array<InspectorDesc>>
-var private [[ignore_heap_usage]] editors : array<EditorDesc>
-var private [[ignore_heap_usage]] unselectedInspectors : array<ContextUnselectedInspectorFn?>
-var private [[ignore_heap_usage]] nameDescriptor : ContextEntityNameDescFn?
+var private @ignore_heap_usage inspectors : table<string; array<InspectorDesc>>
+var private @ignore_heap_usage editors : array<EditorDesc>
+var private @ignore_heap_usage unselectedInspectors : array<ContextUnselectedInspectorFn?>
+var private @ignore_heap_usage nameDescriptor : ContextEntityNameDescFn?
 
 
 def not_in_ecs_inspectors_context()

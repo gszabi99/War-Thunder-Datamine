@@ -2,18 +2,18 @@ from "modules" import on_module_unload
 from "nestdb" import ndbRead, ndbWrite, ndbDelete, ndbExists
 from "eventbus" import eventbus_send_foreign, eventbus_subscribe
 from "dagor.debug" import logerr
-// Disabled due to bug in zstd streaming decompression
-//from "json" import parse_json_from_zstd_stream, object_to_zstd_json
+
+
 from "json" import parse_json, object_to_json_string
 from "dagor.memtrace" import is_quirrel_object_larger_than, set_huge_alloc_threshold
 from "dagor.time" import get_time_msec
 
-//let {logerr} = require("%sqstd/log.nut")()
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!So that there is no record in nestdb on shutdown!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!eventbus event app.shutdown is required!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
 
 let { Watched } = require("frp.nut")
 const EVT_NEW_DATA = "GLOBAL_PERMANENT_STATE.newDataAvailable"
@@ -25,9 +25,9 @@ function readNewData(name){
     let {key, watched} = registered[name]
     watched.set(ndbRead(key))
   }
-//  else
-//    println($"requested data for unknown subscriber '{name}'")
-// it spamming too much, but without info about VM logs are useless
+
+
+
 }
 
 function globalWatched(name, ctor=null) {
@@ -104,13 +104,13 @@ on_module_unload(function(is_closing) {
 
         local data
         if (is_big_data) {
-          // Disabled due to bug in zstd streaming compression
-          /*
-          let t0 = get_time_msec()
-          data = object_to_zstd_json(val)
-          let t1 = get_time_msec()
-          println($"json for {key} zstd-compressed in {t1-t0} ms")
-          */
+          
+          
+
+
+
+
+
           data = object_to_json_string(val, false)
         }
         else
@@ -149,28 +149,28 @@ function hardPersistWatched(key, def=null, big_immutable_data = null) {
     if (isInNdb)
       ndbDelete(ndbKey)
   }
-  else if (isInNdb) { //on hard reload
+  else if (isInNdb) { 
     let prevAllocThreshold = set_huge_alloc_threshold(66560 << 10)
     let stored = ndbRead(ndbKey)
     try {
       let {is_big_data=null, data=null} = stored
       if (is_big_data) {
-        // Disabled due to bug in zstd streaming decompression
-        /*
-        let t0 = get_time_msec()
-        val = parse_json_from_zstd_stream(data)
-        let t1 = get_time_msec()
-        println($"json for {key} zstd-decompressed in {t1-t0} ms")
-        */
+        
+        
+
+
+
+
+
         val = parse_json(data)
 
-        //let size0 = get_quirrel_object_size(val).size
+        
         if (big_immutable_data) {
           let t3 = get_time_msec()
           deduplicate_object(val)
           let t4 = get_time_msec()
-          //let size1 = get_quirrel_object_size(val).size
-          //print($">>> Shrinking {key} from {size0} to {size1} bytes, time = {t4-t3} ms")
+          
+          
           print($">>> Shrinking {key}, time = {t4-t3} ms")
         }
       }
@@ -193,10 +193,10 @@ function hardPersistWatched(key, def=null, big_immutable_data = null) {
   return res
 }
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!So that there is no record in nestdb on shutdown!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!eventbus event app.shutdown is required!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
 return {
   globalWatched
   hardPersistWatched

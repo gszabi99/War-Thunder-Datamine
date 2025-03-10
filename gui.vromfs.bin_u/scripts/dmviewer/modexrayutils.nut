@@ -31,20 +31,20 @@ let unitTypeToSimpleUnitTypeMap = {
 let getSimpleUnitType = @(unit) unitTypeToSimpleUnitTypeMap?[unit?.esUnitType] ?? S_UNDEFINED
 
 let xrayDescCtorsMap = {
-  // Human
+  
   commander = mkTankCrewMemberDesc
   driver = mkTankCrewMemberDesc
   loader = mkTankCrewMemberDesc
   machine_gunner = mkTankCrewMemberDesc
   gunner = mkGunnerDesc
   pilot = mkPilotDesc
-  // Common
+  
   engine = mkEngineDesc
   transmission = mkTransmissionDesc
   drive_turret_h = mkDriveTurretDesc
   drive_turret_v = mkDriveTurretDesc
   tank = mkAircraftFuelTankDesc
-  // Weapons
+  
   main_caliber_turret = mkWeaponDesc
   auxiliary_caliber_turret = mkWeaponDesc
   aa_turret = mkWeaponDesc
@@ -63,7 +63,7 @@ let xrayDescCtorsMap = {
   depth_charge = mkWeaponDesc
   mine = mkWeaponDesc
   aa_gun = mkWeaponDesc
-  // Ammo
+  
   elevator = mkAmmoDesc
   ammo_turret = mkAmmoDesc
   ammo_body = mkAmmoDesc
@@ -71,14 +71,14 @@ let xrayDescCtorsMap = {
   ammunition_storage_shells = mkAmmoDesc
   ammunition_storage_charges = mkAmmoDesc
   ammunition_storage_aux = mkAmmoDesc
-  // Armor
+  
   firewall_armor = mkTankArmorPartDesc
   composite_armor_hull = mkTankArmorPartDesc
   composite_armor_turret = mkTankArmorPartDesc
   ex_era_hull = mkTankArmorPartDesc
   ex_era_turret = mkTankArmorPartDesc
   coal_bunker = mkCoalBunkerDesc
-  // Sensors
+  
   radar = mkSensorDesc
   antenna_target_location = mkSensorDesc
   antenna_target_tagging = mkSensorDesc
@@ -88,12 +88,12 @@ let xrayDescCtorsMap = {
   aps_sensor = mkApsSensorDesc
   aps_launcher = mkApsLauncherDesc
   ex_aps_launcher = mkApsLauncherDesc
-  // Avionics
+  
   electronic_block = mkAvionicsDesc
   optic_block = mkAvionicsDesc
   cockpit_countrol = mkAvionicsDesc
   ircm = mkAvionicsDesc
-  // Misc
+  
   commander_panoramic_sight = mkCommanderPanoramicSightDesc
   fire_director = mkFireDirecirOrRangefinderDesc
   rangefinder = mkFireDirecirOrRangefinderDesc
@@ -102,7 +102,7 @@ let xrayDescCtorsMap = {
   power_system = mkPowerSystemDesc
   fire_control_system = mkFireControlSystemDesc
   electronic_equipment = mkElectronicEquipmentDesc
-  // Simple
+  
   autoloader = mkSimpleDescByPartType
   driver_controls = mkSimpleDescByPartType
 }
@@ -277,7 +277,7 @@ let xrayCommonGetters = {
   getUnitWeaponsList
   getAircraftFuelTankPartInfo
 
-  // Unit/Mods/Crew Props
+  
   getProp_maxSpeed
   getProp_horsePowers
   getProp_maxHorsePowersRPM
@@ -301,7 +301,7 @@ let xrayCommonGetters = {
   getProp_shipReloadTimeAaTop
   getProp_shipReloadTimeAaBase
 
-  // Unit/Mods/Crew Muls
+  
   getMul_shipDistancePrecisionError
   getMul_shipTurretMainSpeedYaw
   getMul_shipTurretAuxSpeedYaw
@@ -310,7 +310,7 @@ let xrayCommonGetters = {
   getMul_shipTurretAuxSpeedPitch
   getMul_shipTurretAaSpeedPitch
 
-  // Measurement Units
+  
   toStr_speed
   toStr_horsePowers
   toStr_thrustKgf

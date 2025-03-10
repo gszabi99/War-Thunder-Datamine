@@ -60,26 +60,25 @@ def call_macro_label_name(mod,value)
     return "call-macro-{module_name(mod)}-{value}"
 
 def public safe_function_name(name : string) : string
-    return name |> replace_multiple([{auto
-        " " => "_";
-        "$" => "_builtin_";
-        "#" => "_hh_";
-        ":" => "_c_";
-        "@" => "_at_";
-        "<" => "_ls_";
-        ">" => "_gr_";
-        "`" => "_rq_";
-        "!" => "_ex_";
-        "=" => "_eq_";
-        "*" => "_st_";
-        "." => "_dot_";
-        "&" => "";
-        "(" => "";
-        ")" => "";
-        "[" => "";
-        "]" => "";
-        "|" => "";
-    }])
+    return name |> replace_multiple([
+        (" " , "_"),
+        ("$" , "_builtin_"),
+        ("#" , "_hh_"),
+        (":" , "_c_"),
+        ("@" , "_at_"),
+        ("<" , "_ls_"),
+        (">" , "_gr_"),
+        ("`" , "_rq_"),
+        ("!" , "_ex_"),
+        ("=" , "_eq_"),
+        ("*" , "_st_"),
+        ("." , "_dot_"),
+        ("&" , ""),
+        ("(" , ""),
+        (")" , ""),
+        ("[" , ""),
+        ("]" , ""),
+        ("|" , "")])
 
 def public function_label_file(value:FunctionPtr|Function?; drop_args : int = 0)
     var mn = "{value.name}"
@@ -118,7 +117,7 @@ def function_short_mangled_name(value:FunctionPtr|Function?)
     if value._module != null
         res = "{module_name(value._module)}_" + res
     for arg in value.arguments
-        if arg._type.baseType == Type fakeContext || arg._type.baseType == Type fakeLineInfo
+        if arg._type.baseType == Type.fakeContext || arg._type.baseType == Type.fakeLineInfo
             continue
         res += "_"
         if arg._type.flags.removeConstant && arg._type.flags.explicitConst
@@ -171,7 +170,7 @@ def describe_type_short(td:TypeDeclPtr)
         res = "array<{describe_type_short(td.firstType)}>"
     elif td.baseType==Type.tTable
         res = "table<{describe_type_short(td.firstType)}, {describe_type_short(td.secondType)}>"
-    elif td.baseType==Type.tFunction || td.baseType==Type.tBlock || td.baseType == Type tLambda
+    elif td.baseType==Type.tFunction || td.baseType==Type.tBlock || td.baseType == Type.tLambda
         res = td.baseType==Type.tBlock ? "block<" : td.baseType == Type.tFunction ? "function<" : "lambda<"
         if td.argTypes |> length!=0
             res += "("
@@ -222,8 +221,8 @@ def describe_type_short(td:TypeDeclPtr)
 def rst_describe_function_short(func:FunctionPtr|Function?)
     var inscope args : array<string>
     for x in func.arguments
-        continue if x._type.baseType == Type fakeContext
-        continue if x._type.baseType == Type fakeLineInfo
+        continue if x._type.baseType == Type.fakeContext
+        continue if x._type.baseType == Type.fakeLineInfo
         let prefix = x._type.flags.removeConstant ? "var " : ""
         if x.init != null
             args |> push("{prefix}{x.name}: {describe_type_short(x._type)} = {describe(x.init)}")
@@ -231,7 +230,7 @@ def rst_describe_function_short(func:FunctionPtr|Function?)
             args |> push("{prefix}{x.name}: {describe_type_short(x._type)}")
 
     var res = "{function_name(func)} ({join(args,"; ")})"
-    if func.result != null && func.result.baseType != Type tVoid
+    if func.result != null && func.result.baseType != Type.tVoid
         res = "{res} : {describe_type_short(func.result)}"
     return res
 
@@ -245,16 +244,16 @@ def describe_type(td:TypeDeclPtr)
             write(writer,make_ref(alias_label_name(td),string(td.alias)))
             return
         let baseType = td.baseType
-        if baseType==Type alias
+        if baseType==Type.alias
             if !empty(td.alias)
                 write(writer,td.alias)
             else
                 write(writer,"alias")
-        elif baseType==Type autoinfer
+        elif baseType==Type.autoinfer
             write(writer,"auto")
             if !empty(td.alias)
                 write(writer,"({td.alias})")
-        elif baseType==Type tHandle
+        elif baseType==Type.tHandle
             let hname = string(td.annotation.name)
             if hname |> starts_with("dasvector`smart_ptr`") // 20 characters
                 write(writer,"vector<smart_ptr<")
@@ -273,16 +272,16 @@ def describe_type(td:TypeDeclPtr)
                 write(writer,">")
             else
                 write(writer,make_ref(handle_label_name(td.annotation),"{td.annotation.name}"))
-        elif baseType==Type tStructure
+        elif baseType==Type.tStructure
             write(writer,make_ref(struct_label_name(td.structType),"{td.structType.name}"))
-        elif baseType==Type tEnumeration || baseType==Type tEnumeration8 || baseType==Type tEnumeration16 || baseType==Type tEnumeration64
+        elif baseType==Type.tEnumeration || baseType==Type.tEnumeration8 || baseType==Type.tEnumeration16 || baseType==Type.tEnumeration64
             write(writer,make_ref(enum_label_name(td.enumType),"{td.enumType.name}"))
         //         write(writer,make_ref(handle_label_name(td.annotation),"{module_name(td.annotation._module)}::{td.annotation.name}"))
         // elif baseType==Type tStructure
         //     write(writer,make_ref(struct_label_name(td.structType),"{module_name(td.structType._module)}::{td.structType.name}"))
         // elif baseType==Type tEnumeration || baseType==Type tEnumeration8 || baseType==Type tEnumeration16 || baseType==Type tEnumeration64
         //     write(writer,make_ref(enum_label_name(td.enumType),"{module_name(td.enumType._module)}::{td.enumType.name}"))
-        elif baseType==Type tPointer
+        elif baseType==Type.tPointer
             if td.flags.smartPtr
                 write(writer,"smart_ptr<")
             if td.firstType!=null
@@ -290,13 +289,13 @@ def describe_type(td:TypeDeclPtr)
             else
                 write(writer,"void")
             write(writer,td.flags.smartPtr ? ">" : "?")
-        elif baseType==Type tArray
+        elif baseType==Type.tArray
             write(writer,"array")
             if td.firstType!=null
                 write(writer,"<")
                 write(writer,describe_type(td.firstType))
                 write(writer,">")
-        elif baseType==Type tTable
+        elif baseType==Type.tTable
             write(writer,"table")
             if td.firstType!=null
                 write(writer,"<")
@@ -304,13 +303,13 @@ def describe_type(td:TypeDeclPtr)
                 write(writer,";")
                 write(writer,describe_type(td.secondType))
                 write(writer,">")
-        elif baseType==Type tIterator
+        elif baseType==Type.tIterator
             write(writer,"iterator")
             if td.firstType!=null
                 write(writer,"<")
                 write(writer,describe_type(td.firstType))
                 write(writer,">")
-        elif baseType==Type tBlock || baseType==Type tFunction || baseType==Type tLambda
+        elif baseType==Type.tBlock || baseType==Type.tFunction || baseType==Type.tLambda
             write(writer,das_to_string(baseType))
             write(writer,"<")
             if td.argTypes |> length!=0
@@ -340,8 +339,8 @@ def describe_type(td:TypeDeclPtr)
             else
                 write(writer,"void")
             write(writer,">")
-        elif baseType==Type tTuple || baseType==Type tVariant || baseType==Type option
-            let delim = baseType==Type option ? "|" : ";"
+        elif baseType==Type.tTuple || baseType==Type.tVariant || baseType==Type.option
+            let delim = baseType==Type.option ? "|" : ";"
             write(writer,das_to_string(baseType))
             write(writer,"<")
             if td.argTypes |> length!=0
@@ -364,7 +363,7 @@ def describe_type(td:TypeDeclPtr)
                             write(writer,delim)
                         write(writer,describe_type(at))
             write(writer,">")
-        elif baseType==Type tBitfield
+        elif baseType==Type.tBitfield
             write(writer,das_to_string(baseType))
             write(writer,"<")
             var first = true
@@ -399,11 +398,11 @@ def make_label(name:string)
     return ".. _{name}:\n\n"
 
 def make_ref(name,text:string)
-    let t = text |> replace_multiple([{auto
-        "<" => "\\<";
-        ">" => "\\>";
-        "!" => "\\!"
-    }])
+    let t = text |> replace_multiple([
+        ("<" , "\\<"),
+        (">" , "\\>"),
+        ("!" , "\\!"
+    )])
     return " :ref:`{t} <{name}>` "
 
 def public make_group(name:string; plus:string="+")
@@ -537,7 +536,7 @@ def document_function_topic(doc_file:file;resType:smart_ptr<TypeDecl>&;topic,con
                         arg |> push(parts[1])
                         break
                 if !found
-                    var inscope names <- [{for arg in args; arg[0]}]
+                    var inscope names <- [for arg in args; arg[0]]
                     error("function {topic} has no argument '{name}' names {names}")
                     panic("invalid documentation")
             elif l |> starts_with(":returns:")
@@ -649,7 +648,7 @@ def document_topic(doc_file:file;topic,content:string implicit; cb : block<(text
 
 def document_bitfield(mod:Module?;doc_file:file; name:string; value:TypeDeclPtr)
     var tab : array<array<string>>
-    emplace(tab,[{string "field"; "bit"}])
+    emplace(tab,array<string>( "field", "bit"))
     for an,bit in value.argNames,range(32)
         var line : array<string>
         push(line,string(an))
@@ -660,7 +659,7 @@ def document_bitfield(mod:Module?;doc_file:file; name:string; value:TypeDeclPtr)
 
 def document_variant(mod:Module?;doc_file:file; name:string; value:TypeDeclPtr)
     var tab : array<array<string>>
-    emplace(tab,[{string "field"; "type"}])
+    emplace(tab,array<string>( "field", "type"))
     for an,at in value.argNames,value.argTypes
         var line : array<string>
         push(line,string(an))
@@ -672,10 +671,10 @@ def document_typedef(doc_file:file;mod:Module?;name:string implicit;value)
     fwrite(doc_file,make_label(alias_label_name(value)))
     fwrite(doc_file,make_domain("das:attribute"))
     fwrite(doc_file,name)
-    if value.baseType==Type tBitfield
+    if value.baseType==Type.tBitfield
         fwrite(doc_file," is a bitfield\n\n")
         document_bitfield(mod,doc_file,name,value)
-    elif value.baseType==Type tVariant
+    elif value.baseType==Type.tVariant
         fwrite(doc_file," is a variant type\n\n")
         document_variant(mod,doc_file,name,value)
     else
@@ -742,7 +741,7 @@ def public document_enumeration(doc_file:file;mod:Module?;value)
     fwrite(doc_file,make_domain("das:attribute"))
     fwrite(doc_file,"{value.name}\n\n")
     var tab : array<array<string>>
-    emplace(tab,[{string "name"; "value"}])
+    emplace(tab,array<string>( "name", "value"))
     for en in value.list
         var line : array<string>
         push(line,string(en.name))
@@ -771,9 +770,9 @@ def public document_enumerations(doc_file:file;mods:array<Module?>) : bool
     return true
 
 def argument_needs_documenting ( tt )
-    if tt.baseType == Type fakeContext
+    if tt.baseType == Type.fakeContext
         return false
-    if tt.baseType == Type fakeLineInfo
+    if tt.baseType == Type.fakeLineInfo
         return false
     return true
 
@@ -799,7 +798,7 @@ def document_function_declaration(doc_file:file;domain,func_name:string;
 
 def document_function_arguments(doc_file:file;argNames:array<string>;argTypes:array<TypeDecl?>;skip_args:int) : array<array<string>>
     var tab : array<array<string>>
-    emplace(tab,[{string "argument";"type"}])
+    emplace(tab,array<string>( "argument","type"))
     var skip = skip_args
     for an,at in argNames,argTypes
         continue if skip-- > 0
@@ -826,9 +825,9 @@ def document_class_method(doc_file:file;mod:Module?;value;var fld)
 
     fwrite(doc_file,make_label(function_label_name(func)))
 
-    let argNames <- [{for arg in func.arguments; string(arg.name)}]
-    let argTypes <- [{for arg in func.arguments; get_ptr(arg._type)}]
-    let argInits <- [{for arg in func.arguments; get_ptr(arg.init)}]
+    let argNames <- [for arg in func.arguments; string(arg.name)]
+    let argTypes <- [for arg in func.arguments; get_ptr(arg._type)]
+    let argInits <- [for arg in func.arguments; get_ptr(arg.init)]
     document_function_declaration(doc_file,"das:function","{value.name}.{fld.name}",
         argNames,argTypes,argInits,fld._type.firstType, /*drop args*/1)
     // if fld._type.firstType != null && !fld._type.firstType.isVoid
@@ -891,7 +890,7 @@ def document_classes(doc_file:file;mods:array<Module?>)
                     excludeFields |> insert("{fld.name}")
                 parent = parent.parent
             var fields : array<array<string>>
-            fields |> emplace([{string "field"; "type"}])
+            fields |> emplace(array<string>( "field", "type"))
             var hasValues = false
             for fld in value.fields
                 if !is_class_method(value,fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.name!="__rtti") && !(excludeFields |> key_exists("{fld.name}"))
@@ -916,8 +915,8 @@ def document_classes(doc_file:file;mods:array<Module?>)
                 if is_class_method(value,fld) && !(fld.flags.generated) && !fld.flags.privateField && !(fld.flags.parentType) && (fld.flags.implemented)
                     document_class_method(doc_file,mod,value,fld)
             var first = true
-            var inscope annT <- new [[TypeDecl() baseType=Type tStructure,
-                structType=get_ptr(value)]]
+            var inscope annT <- new TypeDecl( baseType=Type.tStructure,
+                structType=get_ptr(value))
             for_each_function(mod, "") <| $(func)
                 if func.flags.isClassMethod && func.classParent == value && func.name == value.name && !is_trivial_ctor(func) // ctor
                     document_function(doc_file,mod,func, /*drop first arg*/0, "{value.name}-", "das:function")
@@ -927,7 +926,7 @@ def document_classes(doc_file:file;mods:array<Module?>)
                 let fna = string(func.name)
                 if !fna|>starts_with(".`") || length(fna)<=2
                     return
-                if !is_same_type(func.arguments[0]._type,annT,RefMatters no,ConstMatters no,TemporaryMatters no)
+                if !is_same_type(func.arguments[0]._type,annT,RefMatters.no,ConstMatters.no,TemporaryMatters.no)
                     return
                 if first
                     fwrite(doc_file, ":Properties:\n\n")
@@ -948,7 +947,7 @@ def document_structure(doc_file:file;mod:Module?;var value:StructurePtr)
             excludeFields |> insert("{fld.name}")
         parent = parent.parent
     var tab : array<array<string>>
-    emplace(tab,[{string "field"; "type"}])
+    emplace(tab,array<string>( "field", "type"))
     var hasValues = false
     for fld in value.fields
         if excludeFields |> key_exists("{fld.name}")
@@ -974,8 +973,8 @@ def document_structure(doc_file:file;mod:Module?;var value:StructurePtr)
     // fwrite(doc_file,make_table(tab))
     document_topic("Fields",doc_file,topic("structure",mod,string(value.name)), "struct {value.name}", tab)
 
-    var inscope annT <- new [[TypeDecl() baseType=Type tStructure,
-        structType=get_ptr(value)]]
+    var inscope annT <- new TypeDecl( baseType=Type.tStructure,
+        structType=get_ptr(value))
     var first = true
     for_each_function(mod, "") <| $(func)
         if func.flags.isClassMethod && func.classParent == get_ptr(value) && func.name == value.name && !is_trivial_ctor(func) // ctor
@@ -986,7 +985,7 @@ def document_structure(doc_file:file;mod:Module?;var value:StructurePtr)
         let fna = string(func.name)
         if !fna|>starts_with(".`") || length(fna)<=2
             return
-        if !is_same_type(func.arguments[0]._type,annT,RefMatters no,ConstMatters no,TemporaryMatters no)
+        if !is_same_type(func.arguments[0]._type,annT,RefMatters.no,ConstMatters.no,TemporaryMatters.no)
             return
         if first
             fwrite(doc_file, ":Properties:\n\n")
@@ -1017,9 +1016,9 @@ def document_structure_annotation(doc_file:file;mod:Module?;value)
     fwrite(doc_file,"{value.name}\n\n")
 
     var props : array<array<string>>
-    props |> emplace([{string "field"; "type"}])
-    var inscope annT <- new [[TypeDecl() baseType=Type tHandle,
-        annotation=unsafe(reinterpret<TypeAnnotation?> value)]]
+    props |> emplace(array<string>( "field", "type"))
+    var inscope annT <- new TypeDecl( baseType=Type.tHandle,
+        annotation=unsafe(reinterpret<TypeAnnotation?> value))
     for_each_function(mod, "") <| $(func)
         if !func.moreFlags.propertyFunction
             return
@@ -1028,7 +1027,7 @@ def document_structure_annotation(doc_file:file;mod:Module?;value)
         let fna = string(func.name)
         if !fna|>starts_with(".`") || length(fna)<=2
             return
-        if !is_same_type(func.arguments[0]._type,annT,RefMatters no,ConstMatters no,TemporaryMatters no)
+        if !is_same_type(func.arguments[0]._type,annT,RefMatters.no,ConstMatters.no,TemporaryMatters.no)
             return
         var line : array<string>
         push(line,slice(fna,2))
@@ -1042,10 +1041,10 @@ def document_structure_annotation(doc_file:file;mod:Module?;value)
     var ann = unsafe(reinterpret<BasicStructureAnnotation?> value)
 
     var tab : array<array<string>>
-    tab |> emplace([{string "field"; "type"}])
+    tab |> emplace(array<string>( "field", "type"))
     var fields : array<tuple<name : string; typ : string; offset : uint>>
     for_each_field(*ann) <| $ ( name,cppName,xtype,offset)
-        fields |> emplace([[auto name, describe_type(xtype), offset]])
+        fields |> emplace( (name, describe_type(xtype), offset))
 
     fields |> sort($(a,b) => a.offset < b.offset)
 
@@ -1057,7 +1056,7 @@ def document_structure_annotation(doc_file:file;mod:Module?;value)
 
     document_topic("Fields",doc_file,topic("structure_annotation",mod,string(value.name)), "Annotation {value.name}", tab)
 
-def document_structure_annotations(doc_file:file;mods:array<Module?>; var hook = [[DocsHook]])
+def document_structure_annotations(doc_file:file;mods:array<Module?>; var hook = DocsHook())
     var any = false
     for mod in mods
         if any
@@ -1081,7 +1080,7 @@ def document_function_annotation(doc_file:file;mod:Module?;value)
     fwrite(doc_file,"{value.name}\n\n")
     document_topic(doc_file,topic("function_annotation",mod,string(value.name)), "Function annotation {value.name}")
 
-def document_function_annotations(doc_file:file;mods:array<Module?>; var hook = [[DocsHook]])
+def document_function_annotations(doc_file:file;mods:array<Module?>; var hook = DocsHook())
     var any = false
     for mod in mods
         if any
@@ -1105,7 +1104,7 @@ def document_annotation(doc_file:file;mod:Module?;value)
     fwrite(doc_file,"{value.name}\n\n")
     document_topic(doc_file,topic("annotation",mod,string(value.name)), "Annotation {value.name}")
 
-def document_annotations(doc_file:file;mods:array<Module?>; var hook = [[DocsHook]])
+def document_annotations(doc_file:file;mods:array<Module?>; var hook = DocsHook())
     var any = false
     for mod in mods
         if any
@@ -1293,9 +1292,9 @@ def function_name ( func:FunctionPtr|Function? )
     return name
 
 def document_function(doc_file:file;mod:Module?;var func:FunctionPtr|Function?;drop_args:int=0;prefix:string="";objType:string="das:function")
-    let argNames <- [{for arg in func.arguments; string(arg.name)}]
-    let argTypes <- [{for arg in func.arguments; get_ptr(arg._type)}]
-    let argInits <- [{for arg in func.arguments; get_ptr(arg.init)}]
+    let argNames <- [for arg in func.arguments; string(arg.name)]
+    let argTypes <- [for arg in func.arguments; get_ptr(arg._type)]
+    let argInits <- [for arg in func.arguments; get_ptr(arg.init)]
     fwrite(doc_file,make_label(function_label_name(func)))
     let funcSafeName = function_name(func)
     document_function_declaration(doc_file,objType,funcSafeName,
@@ -1363,7 +1362,7 @@ struct public DocGroup
     name : string
     func : array<tuple<fn : Function?; mod : Module?>>
     hidden : bool
-    [[do_not_delete]] _module : Module?
+    @do_not_delete _module : Module?
 
 def debug_group(var group:DocGroup)
     to_log(LOG_DEBUG, "Group {group.name}\n")
@@ -1375,25 +1374,25 @@ def public append_to_group_by_regex(var group:DocGroup; var mod:Module?; var reg
     for_each_function(mod, "") <| $(func)
         if function_needs_documenting(func)
             if regex_match(reg,string(func.name)) != -1
-                push(group.func,[[auto get_ptr(func), mod]])
+                push(group.func, (get_ptr(func), mod))
     for_each_generic(mod) <| $(func)
         if function_needs_documenting(func)
             if regex_match(reg,string(func.name)) != -1
-                push(group.func,[[auto get_ptr(func), mod]])
+                push(group.func, (get_ptr(func), mod))
     unsafe
         return group
 
 def public group_by_regex(name:string; var mod:Module?; var reg:Regex)
     //! Creates a group of functions with shared category.
     //! Functions will be added to the group if they match the regular expression.
-    var group <- [[DocGroup name=name, hidden=false]]
+    var group <- DocGroup( name=name, hidden=false)
     append_to_group_by_regex(group,mod,reg)
     return <- group
 
 def public group_by_regex(name:string; var mods:array<Module?>; var reg:Regex)
     //! Creates a group of functions with shared category.
     //! Functions will be added to the group if they match the regular expression.
-    var group <- [[DocGroup name=name, hidden=false]]
+    var group <- DocGroup( name=name, hidden=false)
     for mod in mods
         append_to_group_by_regex(group,mod,reg)
     return <- group
@@ -1453,7 +1452,7 @@ def private generate_substitute_stub(mod:Module?;substname:string)
             panic("can't generate stub at {substname}\n")
 
 
-def public document(name:string; var mod:Module?; fname:string; var groups:array<DocGroup>; var hook : DocsHook = [[DocsHook]])
+def public document(name:string; var mod:Module?; fname:string; var groups:array<DocGroup>; var hook : DocsHook = DocsHook())
     //! Document single module given list of `DocGropus`.
     //! This will generate RST file with documentation for the module.
     //! Functions which do not match any `DocGroup` will be placed in the `Uncategorized` group.
@@ -1473,7 +1472,7 @@ def public mkdir_rec(path : string) : bool
 
     return mkdir(path)
 
-def public documents(name:string; mods:array<Module?>; fname:string; var groups:array<DocGroup>; var hook : DocsHook = [[DocsHook]])
+def public documents(name:string; mods:array<Module?>; fname:string; var groups:array<DocGroup>; var hook : DocsHook = DocsHook())
     static_if log_documentation
         to_log(LOG_INFO, "Documenting {name} into {fname}\n")
     if length(mods)==0

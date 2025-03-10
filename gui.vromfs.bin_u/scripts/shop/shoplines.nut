@@ -208,26 +208,26 @@ let ShopLines = class {
         posX, posY, "0"))
 
     }
-    else if (lineType == "fakeUnitReq") { //special line for fake unit. Line is go to unit plate on side
+    else if (lineType == "fakeUnitReq") { 
       lines = "".concat(lines, "tdiv { ", idString,
         format(lineFormat,
-          $"{pad1} + {(r1 - r0 - 0.5)}@shop_height", //height
-          "1@modLineWidth", //width
-          "".concat(c0 + 0.5, "@shop_width", c0 > c1 ? "- 0.5@modLineWidth" : "+ 0.5@modLineWidth"), //posX
-          "".concat(r0 + 1, "@shop_height - ", pad1, c0 > c1 ? "+w" : ""), // posY
+          $"{pad1} + {(r1 - r0 - 0.5)}@shop_height", 
+          "1@modLineWidth", 
+          "".concat(c0 + 0.5, "@shop_width", c0 > c1 ? "- 0.5@modLineWidth" : "+ 0.5@modLineWidth"), 
+          "".concat(r0 + 1, "@shop_height - ", pad1, c0 > c1 ? "+w" : ""), 
           (c0 > c1) ? "-90" : "90"),
         format(arrowFormat, "",
-          "horizontal",  //type
-          "".concat(abs(c1 - c0) - 0.5, "@shop_width + ", interval1), //width
-          "1@modArrowWidth", //height
-          "".concat(c1 > c0 ? c0 + 0.5 : c0, "@shop_width", c1 > c0 ? "" : $" - {interval1}"), //posX
-          $"{r1 + 0.5}@shop_height - 0.5@modArrowWidth", // posY
+          "horizontal",  
+          "".concat(abs(c1 - c0) - 0.5, "@shop_width + ", interval1), 
+          "1@modArrowWidth", 
+          "".concat(c1 > c0 ? c0 + 0.5 : c0, "@shop_width", c1 > c0 ? "" : $" - {interval1}"), 
+          $"{r1 + 0.5}@shop_height - 0.5@modArrowWidth", 
           (c0 > c1) ? "180" : "0"),
         format(angleFormat,
-          "1@modAngleWidth", //width
-          "1@modAngleWidth", //height
-          $"{c0 + 0.5}@shop_width - 0.5@modAngleWidth", //posX
-          $"{r1 + 0.5}@shop_height - 0.5@modAngleWidth", // posY
+          "1@modAngleWidth", 
+          "1@modAngleWidth", 
+          $"{c0 + 0.5}@shop_width - 0.5@modAngleWidth", 
+          $"{r1 + 0.5}@shop_height - 0.5@modAngleWidth", 
           c0 > c1 ? "-90" : "0"),
         "}")
     }
@@ -237,22 +237,22 @@ let ShopLines = class {
       let arrowOffset = c0 > c1 ? -offset : offset
       lines = "".concat(lines, "tdiv { ", idString,
         format(lineFormat,
-          $"{pad1} + {lh}@shop_height", //height
-          "1@modLineWidth", //width
-          "".concat(c0 + 0.5 + arrowOffset, "@shop_width", c0 > c1 ? "-" : "+", " 0.5@modLineWidth"), //posX
-          "".concat(r0 + 1, "@shop_height - ", pad1, c0 > c1 ? "+ w " : ""), // posY
+          $"{pad1} + {lh}@shop_height", 
+          "1@modLineWidth", 
+          "".concat(c0 + 0.5 + arrowOffset, "@shop_width", c0 > c1 ? "-" : "+", " 0.5@modLineWidth"), 
+          "".concat(r0 + 1, "@shop_height - ", pad1, c0 > c1 ? "+ w " : ""), 
           (c0 > c1) ? "-90" : "90"),
         format(lineFormat,
           "".concat(abs(c1 - c0) - offset, "@shop_width"),
-          "1@modLineWidth", //height
+          "1@modLineWidth", 
           "".concat(min(c0, c1) + 0.5 + (c0 > c1 ? 0 : offset), "@shop_width"),
           $"{lh + r0 + 1}@shop_height - 0.75@modLineWidth",
           "0"),
         format(angleFormat,
-          "1@modAngleWidth", //width
-          "1@modAngleWidth", //height
-          $"{c0 + 0.5 + arrowOffset}@shop_width - 0.5@modAngleWidth", //posX
-          $"{lh + r0 + 1}@shop_height - 0.75@modLineWidth", // posY
+          "1@modAngleWidth", 
+          "1@modAngleWidth", 
+          $"{c0 + 0.5 + arrowOffset}@shop_width - 0.5@modAngleWidth", 
+          $"{lh + r0 + 1}@shop_height - 0.75@modLineWidth", 
           (c0 > c1 ? "-90" : "0")),
         format(arrowFormat, "",
           "vertical",
@@ -262,8 +262,8 @@ let ShopLines = class {
           $"{lh + r0 + 1}@shop_height - 0.25@modLineWidth",
           "0"),
         format(angleFormat,
-          "1@modAngleWidth", //width
-          "1@modAngleWidth", //height
+          "1@modAngleWidth", 
+          "1@modAngleWidth", 
           $"{c1 + 0.5}@shop_width - 0.5@modAngleWidth",
           $"{lh + r0 + 1}@shop_height - 0.75@modLineWidth",
           (c0 > c1 ? "90" : "180"))

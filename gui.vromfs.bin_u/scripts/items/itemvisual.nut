@@ -268,7 +268,7 @@ function updateExpireAlarmIcon(item, itemObj) {
 }
 
 addTooltipTypes({
-  ITEM = { //by item name
+  ITEM = { 
     item = null
     tooltipObj = null
     isCustomTooltipFill = true
@@ -309,7 +309,7 @@ addTooltipTypes({
     }
   }
 
-  INVENTORY = { //by inventory item uid
+  INVENTORY = { 
     isCustomTooltipFill = true
     item = null
     tooltipObj = null
@@ -345,7 +345,7 @@ addTooltipTypes({
     }
   }
 
-  SUBTROPHY = { //by item Name
+  SUBTROPHY = { 
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, itemName, ...) {
       if (!checkObj(obj))
@@ -358,7 +358,7 @@ addTooltipTypes({
       if (data == "")
         return false
 
-      // Showing only trophy content, without title and icon.
+      
       obj.width = "@itemInfoWidth"
       obj.getScene().replaceContentFromText(obj, data, data.len(), handler)
       return true

@@ -13,7 +13,7 @@ let countryCodeToLocId = {
   KR = "country_south_korea",
 }
 
-// restrictedInCountries - array of countries codes
+
 function hasLegalRestictions(restrictedInCountries) {
   if (restrictedInCountries.len() == 0)
     return false

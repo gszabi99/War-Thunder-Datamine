@@ -44,7 +44,7 @@ let { isClanSeasonsEnabled, getShowInSquadronStatistics, getClanCurrentSeasonNam
   getClanCurrentSeasonEndDate, getClanSeasonFirstPrizePlacesRewards
 } = require("%scripts/clans/clanSeasons.nut")
 
-// how many top places rewards are displayed in clans list window
+
 let CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW = 3
 let CLAN_LEADERBOARD_FILTER_ID = "clan/leaderboard_filter"
 
@@ -202,7 +202,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     }
   }
 
-  function afterClanLeave() {} //page will update after clan info update
+  function afterClanLeave() {} 
 
   function showLb() {
     this.curPageObj = this.scene.findObject("clans_list_content")
@@ -439,7 +439,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
         break
       }
 
-      // Warning! getFilteredClanData() actualy mutates its parameter and returns it back
+      
       let rowBlkFiltered = ::getFilteredClanData(rowBlk)
       data.append(this.generateRowTableData(rowBlkFiltered, this.clanInfoByRow.len()))
       this.clanInfoByRow.append({
@@ -630,7 +630,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     if (!checkObj(obj))
       return
 
-    let dataIdx = obj.getValue() - 1 // skiping header row
+    let dataIdx = obj.getValue() - 1 
     this.onSelectedClanIdx(dataIdx)
   }
 
@@ -738,12 +738,12 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     if (!checkObj(objFrameBlock))
       return
 
-    //Don't show any rewards if seasons disabled
+    
     let seasonsEnabled = isClanSeasonsEnabled()
     objFrameBlock.show(seasonsEnabled)
     this.scene.findObject("clan_battle_season_coming_soon").show(!seasonsEnabled)
     if (!seasonsEnabled) {
-      //fallback to older seasons version
+      
       this.fillClanReward_old()
       return
     }
@@ -753,12 +753,12 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     let seasonName = getClanCurrentSeasonName()
     let diff = g_difficulty.getDifficultyByDiffCode(this.getCurDMode())
 
-    //Fill current season name
+    
     let objSeasonName = this.scene.findObject("clan_battle_season_name")
     if (checkObj(objSeasonName) && showAttributes)
       objSeasonName.setValue(loc("ui/colon").concat(loc("clan/battle_season/title"), colorize("userlogColoredText", seasonName)))
 
-    //Fill season logo medal
+    
     let objTopMedal = this.scene.findObject("clan_battle_season_logo_medal")
     if (checkObj(objTopMedal) && showAttributes) {
       objTopMedal.show(true)
@@ -767,7 +767,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       LayersIcon.replaceIcon(objTopMedal, iconStyle, null, null, null, iconParams)
     }
 
-    //Fill current seasons end date
+    
     let objEndsDuel = this.scene.findObject("clan_battle_season_ends")
     if (checkObj(objEndsDuel)) {
       let endDateText = "".concat(loc("clan/battle_season/ends"), loc("ui/colon"), " ",
@@ -775,7 +775,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
       objEndsDuel.setValue(endDateText)
     }
 
-    //Fill top rewards
+    
     let clanTableObj = this.scene.findObject("clan_battle_season_reward_table")
     if (checkObj(clanTableObj)) {
       let rewards = getClanSeasonFirstPrizePlacesRewards(CLAN_SEASONS_TOP_PLACES_REWARD_PREVIEW, diff)

@@ -9,8 +9,8 @@ let { get_game_settings_blk } = require("blkGetters")
 
 let is_platform_windows = ["win32", "win64"].contains(platformId)
 
-let defaults = Watched({  //def value when feature not found in game_settings.blk
-             // not in this list are false
+let defaults = Watched({  
+             
   SpendGold = true
   CrewSkills = true
   CrewBuyAllSkills = false
@@ -144,7 +144,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   EnablePremiumPurchase = true
   showPremiumAccount = true
   OnlineShopPacks = true
-  ManuallyUpdateBalance = true //!!debug only
+  ManuallyUpdateBalance = true 
   PaymentMethods = true
 
   Items = false
@@ -205,7 +205,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   MissionsChapterHidden = disable_network()
   MissionsChapterTest = disable_network()
 
-  ChinaForbidden = true //feature not allowed for china only
+  ChinaForbidden = true 
   ClanBattleSeasonAvailable = true
 
   CheckTwoStepAuth = false
@@ -247,7 +247,7 @@ let defaults = Watched({  //def value when feature not found in game_settings.bl
   PS4CrossNetwork = false
 
   everyDayLoginAward = true
-  DebugLogPS4ShopData = false //For debug purpose, to see ps4 shop data on retail console
+  DebugLogPS4ShopData = false 
   Changelog = false
   ShowUrlQrCode = false
 

@@ -221,10 +221,6 @@ struct CmdEngineStealSound
 struct CmdEngineUnstealSound
 {}
 
-[cpp_event(unicast)]
-struct CmdEngineSoundSetPosForced
-  pos : float3
-
 [event(unicast, with_scheme, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
 struct EventPickUpLoot
   loot_type : int

@@ -16,7 +16,7 @@ gui_handlers.QiHandlerBase <- class (gui_handlers.BaseGuiHandlerWT) {
 
   queue = null
   event = null
-  needAutoDestroy = true //auto destroy when no queue
+  needAutoDestroy = true 
 
   isStatsCreated = false
 

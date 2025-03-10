@@ -57,13 +57,13 @@ const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
 const SHOW_RLIST_ASK_DELAY_DEFAULT = 10
 const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
 
-/**
- * Available obtions options:
- *  - event: open specified event in events window
- *  - chapter: open first event in specified chapter
- * Chapter has greater priority but it's bad prctice to use both options
- * simultaneously.
- */
+
+
+
+
+
+
+
 function guiStartModalEvents(options = {}) {
   if (!suggestAndAllowPsnPremiumFeatures())
     return
@@ -151,7 +151,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     move_mouse_on_child_by_value(this.eventsListObj)
   }
 
-  //----CONTROLLER----//
+  
   function onItemSelect() {
     this.onItemSelectAction()
   }
@@ -310,7 +310,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function isInEventQueue() {
-    return this.queueToShow != null  //to all interface work consistent with view
+    return this.queueToShow != null  
   }
 
   function onLeaveEventActions() {
@@ -472,9 +472,9 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onCreateRoom() {}
   onShowOnlyAvailableRooms = @() null
 
-  //----END_CONTROLLER----//
+  
 
-  //----VIEW----//
+  
   function showEventDescription(eventId) {
     let event = events.getEvent(eventId)
     this.eventDescription.selectEvent(event)
@@ -555,7 +555,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       startText = isReady ? "multiplayer/btnNotReady" : "mainmenu/btnReady"
     startText = loc(startText)
 
-    // Used for proper button width calculation.
+    
     local uncoloredStartText = startText
 
     let battlePriceText = events.getEventBattleCostText(event, "activeTextColor", true, true)
@@ -641,8 +641,8 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.selectedIdx = this.listMap.findindex(@(rowId) rowId == cId) ?? 0
 
     if (this.selectedIdx <= 0) {
-      this.selectedIdx = 1 //0 index is header
-      this.curEventId = "" //curEvent not found
+      this.selectedIdx = 1 
+      this.curEventId = "" 
       this.curChapterId = ""
     }
     else if(this.autoJoin)
@@ -682,7 +682,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onCollapse(obj) {
     if (!obj?.id)
       return
-    this.collapseChapter(cutPrefix(obj.id, "btn_", obj.id)) // -param-pos
+    this.collapseChapter(cutPrefix(obj.id, "btn_", obj.id)) 
     this.updateButtons()
   }
 
@@ -732,7 +732,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.collapsedChapters = loadLocalByAccount(COLLAPSED_CHAPTERS_SAVE_ID, DataBlock())
     return this.collapsedChapters
   }
-  //----END_VIEW----//
+  
 }
 
 function openEventsWndFromPromo(owner, params = []) {

@@ -84,13 +84,13 @@ let ItemGenerator = class {
          needSaveMarkRecipe
       }))
 
-      // Adding additional recipes
+      
       local hasAdditionalRecipes = false
       let itemBlk = workshop.getItemAdditionalRecipesById(this.id)?[0]
       if (itemBlk != null) {
         foreach (paramName in ["fakeRecipe", "trueRecipe"])
           foreach (itemdefId in itemBlk % paramName) {
-            findItemById(itemdefId) // calls pending generators list update
+            findItemById(itemdefId) 
             let gen = getItemGenerator(itemdefId)
             let additionalParsedRecipes = gen ? inventoryClient.parseRecipesString(gen.exchange) : []
             this._exchangeRecipes.extend(additionalParsedRecipes.map(@(pr) ExchangeRecipes({

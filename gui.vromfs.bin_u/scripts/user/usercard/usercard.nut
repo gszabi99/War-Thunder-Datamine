@@ -183,7 +183,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.scene || !this.info || !(("uid" in this.info) || ("id" in this.info) || ("name" in this.info)))
       return this.goBack()
 
-    addGamercardScene(this.scene) //for show popups
+    addGamercardScene(this.scene) 
     let needShortSeparators = to_pixels("sw") > to_pixels("1@maxProfileFrameWidth + 2@framePadding")
     let frame = this.scene.findObject("wnd_frame")
     frame.needShortSeparators = needShortSeparators ? "yes" : "no"
@@ -238,7 +238,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     set_char_cb(this, this.slotOpCb)
     this.afterSlotOp = this.tryFillUserStats
-    this.afterSlotOpError = function(_result) { /* notFoundPlayerMsg() */ this.goBack() }
+    this.afterSlotOpError = function(_result) {  this.goBack() }
 
     this.fillGamercard()
     this.updateButtons()
@@ -307,7 +307,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let blk = DataBlock()
     get_player_public_stats(blk)
 
-    if (!blk?.nick || blk.nick == "") { //!!FIX ME: Check incorrect user by no uid in answer.
+    if (!blk?.nick || blk.nick == "") { 
       this.msgBox("user_not_played", loc("msg/player_not_played_our_game"),
         [
           ["ok", function() { this.goBack() } ]
@@ -668,7 +668,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.airStatsList = []
-    // Show all items if filters list is empty
+    
     let filterUnits = this.unitStats.len() > 0 ? this.unitStats
       : unitTypes.types.map(@(t) t.isAvailable() ? t.armyId : null).filter(@(t) t)
     let filterCountry = this.countryStats.len() > 0 ? this.countryStats : shopCountriesList
@@ -1004,7 +1004,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let isEqualIdx = selIdx == pageList.getValue()
     pageList.setValue(selIdx)
-    if (isEqualIdx) // func on_select don't call if same value is se already
+    if (isEqualIdx) 
       this.onMedalsCountrySelect(pageList)
   }
 

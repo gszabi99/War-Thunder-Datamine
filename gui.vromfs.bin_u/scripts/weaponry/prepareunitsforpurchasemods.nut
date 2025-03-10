@@ -5,7 +5,7 @@ let { weaponsPurchase } = require("%scripts/weaponry/weaponsPurchase.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 
-local unitsTable = {} //unitName - unitBlock
+local unitsTable = {} 
 
 function clear() { unitsTable = {} }
 function haveUnits() { return unitsTable.len() > 0 }

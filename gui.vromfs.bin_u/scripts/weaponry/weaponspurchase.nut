@@ -207,7 +207,7 @@ local class WeaponsPurchaseProcess {
     return Cost(modsCost.wp, this.open ? modsCost.gold : 0)
   }
 
-  //-------------- <BUY ALL MODS> --------------------------------------
+  
 
   function fillAllModsParams() {
     this.mainFunc = Callback(function(amount) { this.sendPurchaseAllModsRequest(amount) }, this)
@@ -228,7 +228,7 @@ local class WeaponsPurchaseProcess {
 
     let taskId = char_send_blk("cln_buy_all_modification", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
-    let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
+    let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { 
       ::update_gamercards()
       broadcastEvent("ModificationPurchased", { unit = unit })
       broadcastEvent("AllModificationsPurchased", { unit = unit })
@@ -241,7 +241,7 @@ local class WeaponsPurchaseProcess {
     this.complete()
   }
 
-  //-------------- <BUY SPARE> --------------------------------------
+  
 
   function fillSpareParams(amount = 1) {
     this.mainFunc = Callback(function(amnt) { this.sendPurchaseSpareRequest(amnt) }, this)
@@ -262,7 +262,7 @@ local class WeaponsPurchaseProcess {
 
     let taskId = char_send_blk("cln_buy_spare_aircrafts", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
-    let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
+    let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { 
       ::update_gamercards()
       broadcastEvent("SparePurchased", { unit = unit })
       afterSuccessfullPurchaseCb?()
@@ -272,7 +272,7 @@ local class WeaponsPurchaseProcess {
     this.complete()
   }
 
-  //-------------- <BUY WEAPON> --------------------------------------
+  
 
   function fillWeaponParams(amount = 1) {
     this.mainFunc = Callback(function(amnt) { this.sendPurchaseWeaponRequest(amnt) }, this)
@@ -296,7 +296,7 @@ local class WeaponsPurchaseProcess {
 
     let taskId = char_send_blk("cln_buy_weapon", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
-    let afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() { //-ident-hides-ident
+    let afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() { 
       ::update_gamercards()
       ::updateAirAfterSwitchMod(unit)
       broadcastEvent("WeaponPurchased", { unit = unit, weaponName = modName })
@@ -307,7 +307,7 @@ local class WeaponsPurchaseProcess {
     this.complete()
   }
 
-  //-------------- <BUY SINGLE MOD> --------------------------------------
+  
 
   function fillModificationParams(amount = 1) {
     this.mainFunc = Callback(function(amnt) { this.sendPurchaseModificationRequest(amnt) }, this)

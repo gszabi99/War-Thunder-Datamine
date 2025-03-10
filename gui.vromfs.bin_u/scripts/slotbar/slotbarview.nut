@@ -548,17 +548,17 @@ function buildGroupSlot(id, unit, params) {
       inactive = true
   }
 
-  // Unit selection priority: 1) rented, 2) researching, 3) mounted, 4) first unbougt,
-  // 5) first in group.
+  
+  
   nextAir = rentedUnit || mountedUnit || (isGroupInResearch && researchingUnit)
     || firstUnboughtUnit || nextAir
   forceUnitNameOnPlate = rentedUnit != null || mountedUnit  != null
     || (isGroupInResearch && researchingUnit != null) || firstUnboughtUnit != null
   let unitForBR = rentedUnit || researchingUnit || firstUnboughtUnit || unit
 
-  //
-  // Bottom button view
-  //
+  
+  
+  
 
   let bottomButtonView = {
     holderId            = id
@@ -569,9 +569,9 @@ function buildGroupSlot(id, unit, params) {
     hasMainButtonIcon   = true
   }
 
-  //
-  // Item buttons view
-  //
+  
+  
+  
 
   let rentInfo = getUnitSlotRentInfo(rentedUnit, params)
 
@@ -583,9 +583,9 @@ function buildGroupSlot(id, unit, params) {
     }
   }
 
-  //
-  // Air research progress view
-  //
+  
+  
+  
 
   local showProgress = false
   local unitExpProgressValue = 0
@@ -608,9 +608,9 @@ function buildGroupSlot(id, unit, params) {
     }]
   }
 
-  //
-  // Res view
-  //
+  
+  
+  
 
   let shopAirImage = get_unit_preset_img(unit.name)
     ?? (is_harmonized_unit_image_required(nextAir)
@@ -696,9 +696,9 @@ function buildCommonUnitSlot(id, unit, params) {
     status = getUnitItemStatusText(bitStatus, false)
   }
 
-  //
-  // Item buttons view
-  //
+  
+  
+  
 
   let rentInfo = getUnitSlotRentInfo(unit, params)
 
@@ -856,8 +856,8 @@ function buildCommonUnitSlot(id, unit, params) {
 
   if (hasPriceText && hasSpareInfo && hasAdditionalRespawns && hasAdditionalHistoricalRespawns) {
     let roomEvent = getRoomEvent()
-    let economicName = roomEvent != null ? getEventEconomicName(roomEvent) : null  // warning disable: -declared-never-used
-    let unitName = unit.name // warning disable: -declared-never-used
+    let economicName = roomEvent != null ? getEventEconomicName(roomEvent) : null  
+    let unitName = unit.name 
     debug_dump_stack()
     logerr("[SLOTBAR] unit slot missiton block has 4 blocks")
   }
@@ -873,9 +873,9 @@ function buildCommonUnitSlot(id, unit, params) {
     itemButtonsView.itemButtons.specTypeTooltip <- specType.getName()
   }
 
-  //
-  // Air research progress view
-  //
+  
+  
+  
 
   let showProgress = isLocalState && !isOwn && canResearch && !isInFlight()
     && (!isLockedSquadronVehicle || unitExpGranted > 0)
@@ -903,9 +903,9 @@ function buildCommonUnitSlot(id, unit, params) {
     }
   }
 
-  //
-  // Res view
-  //
+  
+  
+  
 
   let progressText = showProgress ? getUnitSlotResearchProgressText(unit, priceText) : ""
   let checkNotification = ::g_discount.getEntitlementUnitDiscount(unit.name)
@@ -1002,7 +1002,7 @@ function fillUnitSlotTimers(holderObj, unit) {
   SecondsUpdater(holderObj, function(obj, params) {
     local isActive = false
 
-    // Unit rent time
+    
     let isRented = rentedUnit.isRented()
     if (isRented) {
       let objRentProgress = obj.findObject("rent_progress")
@@ -1015,7 +1015,7 @@ function fillUnitSlotTimers(holderObj, unit) {
         isActive = true
       }
     }
-    else { // at rent time over
+    else { 
       let rentInfo = getUnitSlotRentInfo(rentedUnit, params)
 
       let objRentIcon = obj.findObject("rent_icon")
@@ -1083,7 +1083,7 @@ function isUnitEnabledForSlotbar(unit, params) {
 }
 
 addTooltipTypes({
-  UNIT = { //by unit name
+  UNIT = { 
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, id, params) {
       let actionsList = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
@@ -1187,7 +1187,7 @@ addTooltipTypes({
     }
   }
 
-  RANDOM_UNIT = { //by unit name
+  RANDOM_UNIT = { 
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, _id, params) {
       if (!checkObj(obj))

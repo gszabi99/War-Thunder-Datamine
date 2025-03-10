@@ -292,7 +292,7 @@ let WwMap = class {
   }
 
   function getBackground() {
-    // it is assumed that each map will have its background specified in data
+    
     return this.data?.backgroundImage ?? "#ui/images/worldwar_window_bg_image?P1"
   }
 

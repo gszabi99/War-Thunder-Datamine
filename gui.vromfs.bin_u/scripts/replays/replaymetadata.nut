@@ -78,11 +78,11 @@ let saveReplayScriptCommentsBlk = function(blk) {
 }
 
 let restoreReplayScriptCommentsBlk = function(replayPath) {
-  // Works for Local replays
+  
   let commentsBlk = get_replay_info(replayPath)?.comments
   let playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData?.playersInfo) || {}
 
-  // Works for Server replays
+  
   if (!playersInfo.len()) {
     let mplayersList = get_mplayers_list(GET_MPLAYERS_LIST, true)
     foreach (mplayer in mplayersList) {
@@ -102,7 +102,7 @@ let restoreReplayScriptCommentsBlk = function(replayPath) {
   setCustomPlayersInfo(playersInfo)
 }
 
-// Creates global func, which is called from client.
+
 getroottable()["save_replay_script_comments_blk"] <- @(blk) saveReplayScriptCommentsBlk(blk)
 
 return {

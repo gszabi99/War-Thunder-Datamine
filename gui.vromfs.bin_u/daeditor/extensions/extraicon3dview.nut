@@ -5,7 +5,7 @@ let iconWidget = require_optional("%ui/components/icon3d.nut")
 let math = require("math")
 
 function mkIconView(eid){
-  if (ecs.obsolete_dbg_get_comp_val(eid, "animchar__res") != null && ecs.obsolete_dbg_get_comp_val(eid, "item__iconYaw") != null) { // it has icon in it most likely!
+  if (ecs.obsolete_dbg_get_comp_val(eid, "animchar__res") != null && ecs.obsolete_dbg_get_comp_val(eid, "item__iconYaw") != null) { 
     let itemParams = Watched(null)
     let iconParams = {width=math.min(hdpx(256), fsh(40)), height=math.min(hdpx(256), fsh(40))}
     function updateItemParams(){

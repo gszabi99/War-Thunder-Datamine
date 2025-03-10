@@ -20,7 +20,7 @@ function onBoosterExpiredInFlight(_dt = 0) {
     ::update_gamercards()
 }
 
-//just update gamercards atm.
+
 function registerBoosterUpdateTimer(boostersList) {
   if (!isInFlight())
     return
@@ -50,7 +50,7 @@ function registerBoosterUpdateTimer(boostersList) {
     boostersTaskUpdateFlightTime - curFlightTime,
     EPTF_IN_FLIGHT,
     EPTT_BEST_EFFORT,
-    false //flight time
+    false 
   )
 }
 

@@ -45,9 +45,9 @@ function loadFavorites() {
     let unlock = getUnlockById(unlockId)
     if (isUnlockVisible(unlock, false)) {
       if (!isUnlockVisibleOnCurPlatform(unlock))
-        favoriteInvisibleUnlocks[unlockId] = true // unlock isn't avaliable on current platform
+        favoriteInvisibleUnlocks[unlockId] = true 
       else {
-        favoriteUnlocks.addBlock(unlockId) // valid unlock
+        favoriteUnlocks.addBlock(unlockId) 
         favoriteUnlocks[unlockId] = unlock
       }
     }

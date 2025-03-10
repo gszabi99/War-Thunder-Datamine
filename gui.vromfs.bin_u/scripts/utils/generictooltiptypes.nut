@@ -9,7 +9,7 @@ let tooltipTypes = {
 }
 
 tooltipTypes.template <- {
-  typeName = "" //added automatically by type name
+  typeName = "" 
 
   _buildId = function(id, params = null) {
     let t = params ? clone params : {}
@@ -17,7 +17,7 @@ tooltipTypes.template <- {
     t.id    <- id
     return save_to_json(t)
   }
-  //full params list depend on specific type
+  
   getTooltipId = function(id, params = null, _p2 = null, _p3 = null) {
     return this._buildId(id, params)
   }
@@ -32,8 +32,8 @@ tooltipTypes.template <- {
       this.getTooltipId(id, params, p2, p3))
 
   getTooltipContent = function(_id, _params) { return "" }
-  isCustomTooltipFill = false //if true, need to use fillTooltip instead of getTooltipContent
-  fillTooltip = function(_obj, _handler, _id, _params) { //return isSucceed
+  isCustomTooltipFill = false 
+  fillTooltip = function(_obj, _handler, _id, _params) { 
     return false
   }
   onClose = @(_obj) null

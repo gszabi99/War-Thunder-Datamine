@@ -145,7 +145,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return getAircraftByName(unitName)
   }
 
-  //----VIEW----//
+  
   function initCountriesList() {
     local curValue = 0
     this.country = profileCountrySq.value
@@ -430,9 +430,9 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillCostGold()
     this.updateButtons()
   }
-  //----END_VIEW----//
+  
 
-  //----CONTROLLER----//
+  
   function onCountrySelect() {
     let c = this.scene.findObject("countries_list").getValue()
     if (!(c in shopCountriesList))
@@ -445,7 +445,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.listType = getEsUnitType(this.unit)
     this.updateWindow()
 
-    //TODO: do this in updateWindow
+    
     this.loadUnitList(getEsUnitType(this.unit))
     this.fillUnitList()
 
@@ -502,7 +502,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getAvailableUnitForConversion() {
     local newUnit = null
-    //try to get unit of same type as previous unit is
+    
     if (isCountryHaveUnitType(this.country, getEsUnitType(this.unit)))
       newUnit = this.getCountryResearchUnit(this.country, getEsUnitType(this.unit))
     if (!newUnit) {
@@ -556,7 +556,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onApply() {
     if (get_gui_balance().gold <= 0)
-      return checkBalanceMsgBox(Cost(0, this.curGoldValue), Callback(this.updateWindow, this)) //In fact, for displaying propper message box, with 'buy' func
+      return checkBalanceMsgBox(Cost(0, this.curGoldValue), Callback(this.updateWindow, this)) 
 
     let curGold = this.curGoldValue - this.minGoldValue
     if (curGold == 0)
@@ -631,7 +631,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       unitObj = this.scene.findObject("unit_nest").findObject(unitName)
       cellClass = "slotbarClone"
       isNewUnit = true
-      afterCloseFunc = (@(unit) function() { //-ident-hides-ident
+      afterCloseFunc = (@(unit) function() { 
           if (handlersManager.isHandlerValid(handler))
             handler.updateUnitList(getEsUnitType(handler.getAvailableUnitForConversion() || unit))
         })(this.unit)
@@ -643,5 +643,5 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventOnlineShopPurchaseSuccessful(_params) {
     this.doWhenActiveOnce("fillContent")
   }
-  //----END_CONTROLLER----//
+  
 }

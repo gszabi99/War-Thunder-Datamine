@@ -62,7 +62,7 @@ function create_option_list(id, items, value, cb, isFull, spinnerType = null, op
 
     opt.enabled <- opt?.enabled ?? true
     if (!opt.enabled)
-      spinnerType = "ComboBox" //disabled options can be only in dropright or combobox
+      spinnerType = "ComboBox" 
 
     view.options.append(opt)
   }
@@ -219,7 +219,7 @@ function create_option_slider(id, value, cb, isFull, sliderType, params = {}) {
     cb == null ? "" : $"on_change_value:t = '{cb}'; "
   )
   if (isFull)
-    data = "{0} { {1} focus_border{} tdiv{} }".subst(sliderType, data) //tdiv need to focus border not count as slider button
+    data = "{0} { {1} focus_border{} tdiv{} }".subst(sliderType, data) 
 
   return data
 }

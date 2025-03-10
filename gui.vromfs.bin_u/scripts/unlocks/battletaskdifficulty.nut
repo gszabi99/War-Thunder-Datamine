@@ -91,7 +91,7 @@ function getDifficultyTypeByName(typeName) {
     battleTaskDifficulty, battleTaskDifficulty.UNKNOWN)
 }
 
-// Only for deleted tasks in which we cannot identify difficulty
+
 function getDifficultyTypeById(taskId) {
   if (taskId in battleTaskDifficulty.cache.byId)
     return getDifficultyTypeByName(battleTaskDifficulty.cache.byId[taskId])

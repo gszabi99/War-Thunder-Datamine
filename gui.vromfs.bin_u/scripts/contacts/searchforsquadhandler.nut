@@ -133,7 +133,7 @@ gui_handlers.SearchForSquadHandler <- class (ContactsHandler) {
   }
 
   function onEventContactsGroupUpdate(p) {
-    if (p?.groupName == null) //update all groups
+    if (p?.groupName == null) 
       this.updateSearchContactsGroups()
     base.onEventContactsGroupUpdate(p)
   }

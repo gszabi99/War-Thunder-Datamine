@@ -227,9 +227,9 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 
       if (isGift && canUseIngameShop()) {
         if (getShopItemsTable().len() == 0) {
-          //Override for ingameShop.
-          //There is rare posibility, that shop data is empty.
-          //Because of external error.
+          
+          
+          
           canBuyOnline = false
         }
         else if (!unit.isBought() && unit.getEntitlements().map(
@@ -414,7 +414,7 @@ let showMenu = function showMenu(params) {
     return
   }
 
-  let actions = getActions(params, KWARG_NON_STRICT)  // warning disable: -param-count
+  let actions = getActions(params, KWARG_NON_STRICT)  
   if (actions.len() == 0)
     return
   let listData = {

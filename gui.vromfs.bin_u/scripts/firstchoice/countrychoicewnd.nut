@@ -129,7 +129,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function createUnitTypeChoice() {
     local columns = this.guiScene.calcString("1@rw-1@countryChoiceInterval", null)
       / this.guiScene.calcString("@unitChoiceImageWidth+@countryChoiceInterval", null)
-    columns = min(columns < 4 ? 2 : columns, this.unitTypesList.len()) //Just cause 3 columns look weird here
+    columns = min(columns < 4 ? 2 : columns, this.unitTypesList.len()) 
     this.setFrameWidth($"{columns}@unitChoiceImageWidth + {columns+1}@countryChoiceInterval")
 
     let view = {
@@ -310,11 +310,11 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.selectedUnitType = this.unitTypesList[obj.getValue()]
   }
 
-  /**
-   * Creates tasks data with reserve units.
-   * @param checkCurrentCrewAircrafts Skips tasks if crew
-   *                                  already has proper unit.
-   */
+  
+
+
+
+
   function createReserveTasksData(country, unitType, checkCurrentCrewAircrafts = true, ignoreSlotbarCheck = false) {
     let tasksData = []
     let usedUnits = []
@@ -346,11 +346,11 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     return tasksData
   }
 
-  /**
-   * Returns collection of items with all data
-   * required to create newbie presets.
-   * @see ::slotbarPresets.newbieInit(...)
-   */
+  
+
+
+
+
   function createNewbiePresetsData() {
     let presetDataItems = []
     local selEsUnitType = ES_UNIT_TYPE_INVALID
@@ -362,7 +362,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           continue
 
         let tasksData = this.createReserveTasksData(country, unitType, false, true)
-        // Used for not creating empty presets.
+        
         local hasUnits = false
         foreach (taskData in tasksData)
           if (taskData.airName != "") {
@@ -408,7 +408,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     blk.setInt("unitType", presetsData.selectedUnitType)
 
     foreach (country in shopCountriesList) {
-      unlockCountry(country, true, false) //now unlock all countries
+      unlockCountry(country, true, false) 
       blk.unlock <- country
     }
 
@@ -431,9 +431,9 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let presetsData = this.createNewbiePresetsData()
     let handler = this
     this.clnSetStartingInfo(presetsData, function () {
-        // This call won't procude any additional char-requests
-        // as all units are already set previously as a single
-        // batch char request.
+        
+        
+        
         ::slotbarPresets.newbieInit(presetsData)
 
         checkUnlockedCountriesByAirs()

@@ -139,12 +139,12 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
   }
 
   function onEventWebPollAuthResult(_param) {
-    // WebPollAuthResult event may come before browser opens the page
+    
     let currentUrl = u.isEmpty(browser_get_current_url()) ? this.url : browser_get_current_url()
     if (u.isEmpty(currentUrl))
       return
-    // we have to update externalUrl for any pollId
-    // so we don't care about pollId from param
+    
+    
     let pollId = getPollIdByFullUrl(currentUrl)
     if (! pollId)
       return
@@ -181,7 +181,7 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
     if (urlStr == "")
       return ""
 
-    // Splitting too long URL because daGUI textarea don't break words on word-wrap.
+    
     let fontSizePropName = "smallFont"
     let fontSizeCssId = "fontSmall"
     let maxWidthPx = to_pixels("0.8@rw")

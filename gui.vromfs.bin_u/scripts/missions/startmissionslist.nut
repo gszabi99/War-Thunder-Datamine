@@ -202,7 +202,7 @@ function guiStartCdOptions(afterApplyFunc, owner = null) {
 }
 
 function guiStartBriefing() {
-  //FIX ME: Check below really can be in more easier way.
+  
   let startParams = handlersManager.getLastBaseHandlerStartParams()
   if (startParams != null && !isInArray(startParams?.handlerName ?? "",
       ["MPLobby", "SessionsList", "DebriefingModal"]))
@@ -304,10 +304,10 @@ function startCreateWndByGamemode(_handler, _obj) {
     guiCreateSkirmish()
   else if (gm == GM_DOMINATION || gm == GM_TOURNAMENT)
     guiStartMislist()
-  else //any coop - create dyncampaign
+  else 
     guiStartDynamicLayouts()
-  //may be not actual with current hndler managment system
-  //handler.guiScene.initCursor("%gui/cursor.blk", "normal")
+  
+  
   ::update_gamercards()
 }
 

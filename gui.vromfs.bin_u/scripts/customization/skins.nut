@@ -73,13 +73,13 @@ function getBestSkinsList(unitName, isLockedAllowed) {
   return skinLocations.getBestSkinsList(skinsList, unitName, level, decoratorTypes.SKINS)
 }
 
-// return default skin if no skin matches location
+
 function getAutoSkin(unitName) {
   local list = getBestSkinsList(unitName, false)
     .filter(@(s) !isSkinBanned($"{unitName}/{s}"))
   if (list.len() == 0)
     return DEFAULT_SKIN_NAME
-  // use last skin if no in session
+  
 
   let couponSkins = list.filter(
     function(skin) {
@@ -159,21 +159,21 @@ function addDownloadableLiveSkins(skins, unit) {
     if (resource == null)
       continue
 
-    if (isGuid(resource)) { // Live skin
+    if (isGuid(resource)) { 
       let foundIdx = skins.findindex(@(s) s?.name == resource)
       let skin = (foundIdx != null)
-        ? skins.remove(foundIdx) // Removing to preserve order, because cached skins are already listed.
+        ? skins.remove(foundIdx) 
         : {
             name = resource
             nameLocId = ""
             descLocId = ""
 
-            isDownloadable = true // Needs to be downloaded and cached.
+            isDownloadable = true 
           }
       skin.forceVisible <- true
       skins.append(skin)
     }
-    else { // Internal skin
+    else { 
       let skinName = getSkinNameBySkinId(resource)
       let skin = skins.findvalue(@(s) s?.name == skinName)
       if (skin == null)
@@ -231,7 +231,7 @@ function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, showD
   for (local skinNo = 0; skinNo < skins.len(); ++skinNo) {
     let skin = skins[skinNo]
     let isDefault = skin.name.len() == 0
-    // skin ID (default skin stored in profile with name 'default')
+    
     let skinName = isDefault ? DEFAULT_SKIN_NAME : skin.name
     let skinBlockName = getSkinId(unitName, skinName)
     let isPreviewedLiveSkin = hasFeature("EnableLiveSkins")
@@ -287,7 +287,7 @@ function getSkinsOption(unitName, showLocked = false, needAutoSkin = true, showD
     return descr
 
   descr.value = 0
-  if (curSkin && curSkin != "") // cur skin is not valid, need set valid skin
+  if (curSkin && curSkin != "") 
     setLastSkin(unit.name, descr.values[0], hasAutoSkin)
 
   return descr
@@ -339,7 +339,7 @@ function getSkinScaleByRawPercent(val) {
 
   if (val < minTankCamoScale || val > maxTankCamoScale)
     return 0
-  // сonvert percentage to a scale value ranging from -10 to +10
+  
   if (val > 1)
     return ((val - 1.0) / (maxTankCamoScale - 1.0)) * scaleRange
   if (val < 1)

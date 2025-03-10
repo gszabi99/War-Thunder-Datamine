@@ -34,7 +34,7 @@ function getCustomDifficultyOptions() {
       [USEROPT_CD_COLLECTIVE_DETECTION],
       [USEROPT_CD_DISTANCE_DETECTION],
       [USEROPT_CD_AIM_PRED],
-      //[USEROPT_CD_SPEED_VECTOR],
+      
       [USEROPT_CD_MARKERS],
       [USEROPT_CD_ARROWS],
       [USEROPT_CD_AIRCRAFT_MARKERS_MAX_DIST],
@@ -47,7 +47,7 @@ function getCustomDifficultyOptions() {
       [USEROPT_CD_RADAR],
       [USEROPT_CD_DAMAGE_IND],
       [USEROPT_CD_LARGE_AWARD_MESSAGES],
-      [USEROPT_CD_WARNINGS],      //
+      [USEROPT_CD_WARNINGS],      
 
 
     ]

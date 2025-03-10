@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-// warning disable: -file:forbidden-function
+
 
 let fonts = require("fonts")
 let { register_command } = require("console")

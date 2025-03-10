@@ -106,7 +106,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
     login(
       function(err_code) {
         ::close_wait_screen()
-        if (err_code == 0) { // YU2_OK
+        if (err_code == 0) { 
           if (this.shouldHideCursor)
             forceHideCursor(false)
           loadHandler(gui_handlers.UpdaterModal,

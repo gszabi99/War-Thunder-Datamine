@@ -7,15 +7,15 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { steam_find_friends, steam_find_friends_result } = require("steam_wt")
 
-local requestUnknownXboxIds = function(_playersList, _knownUsers, _cb) {} //forward declaration
+local requestUnknownXboxIds = function(_playersList, _knownUsers, _cb) {} 
 requestUnknownXboxIds = function(playersList, knownUsers, cb) {
   if (!playersList.len()) {
-    //Need to update contacts list, because empty list - means no users,
-    //and returns -1, for not to send empty array to char.
-    //So, contacts list must be cleared in this case from xbox users.
-    //Send knownUsers if we already have all required data,
-    //playersList is not empty and no need to
-    //request char-server for known data.
+    
+    
+    
+    
+    
+    
     cb(knownUsers)
     return
   }

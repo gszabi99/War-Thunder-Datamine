@@ -24,7 +24,7 @@ return [
     ]
     needShowInHelp = true
   }
-//-------------------------------------------------------
+
   {
     id = "ID_SHIP_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -45,7 +45,7 @@ return [
     onClick = @() controlsOperations.swapGamepadSticks(ActionGroup.SHIP)
     showFunc = @() hasXInputDevice()
   }
-//-------------------------------------------------------
+
   {
     id = "ID_SHIP_MOVE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -85,7 +85,7 @@ return [
     id = "ID_SHIP_FULL_STOP"
     checkAssign = false
   }
-//-------------------------------------------------------
+
   {
     id = "ID_SHIP_FIRE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -200,7 +200,7 @@ return [
     id = "ID_SHIP_NEXT_BULLET_TYPE"
      checkAssign = false
   }
-//-------------------------------------------------------
+
   {
     id = "ID_SHIP_VIEW_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -209,7 +209,8 @@ return [
     id = "ID_TOGGLE_VIEW_SHIP"
     needShowInHelp = true
   }
-  //
+  
+
 
 
 
@@ -238,24 +239,24 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-/*
-  {
-    id = "ID_SENSOR_TYPE_SWITCH_SHIP"
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_MODE_SWITCH_SHIP"
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_ACM_SWITCH_SHIP"
-    checkAssign = false
-  }
-  {
-    id = "ID_SENSOR_SCAN_PATTERN_SWITCH_SHIP"
-    checkAssign = false
-  }
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   {
     id = "ID_SENSOR_RANGE_SWITCH_SHIP"
     checkAssign = false
@@ -350,7 +351,7 @@ return [
     setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_MOUSE_Z_SHIP_MULT, objValue / 100.0)
     showFunc = @() hasFeature("EnableMouse")
   }
-//-------------------------------------------------------
+
   {
     id = "ID_SHIP_OTHER_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -405,7 +406,7 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-  //
+  
 
 
 
@@ -466,7 +467,7 @@ return [
     id = "ID_SUPPORT_PLANE_ORBITING_SHIP"
     checkAssign = false
   }
-  //
+  
 
 
 
@@ -520,7 +521,7 @@ return [
     id = "ID_CANCEL_SUPPORT_PLANE_FUSE"
     checkAssign = false
   }
-  //
+  
 
 
 

@@ -7,14 +7,14 @@ let { parse_json } = require("json")
 let seenList = require("%scripts/seen/seenList.nut")
 let seenListEvents = require("%scripts/seen/seenListEvents.nut")
 
-/*
-  behaviour config params:
-  listId = uniq seen List Id
-  entity = null, uniq entity id, or array of uniq entity ids
-             when entityId is null, full list will be used
 
-  when need only listId without entities, you can setValue(listId) without preprocessing
-*/
+
+
+
+
+
+
+
 
 let BhvUnseen = class {
   eventMask    = EV_ON_CMD
@@ -73,8 +73,8 @@ let BhvUnseen = class {
   }
 
   function setNewConfig(obj, config) {
-    obj.setUserData(config) //this is single direct link to config.
-                            //So destroy object, or change user data invalidate old subscriptions.
+    obj.setUserData(config) 
+                            
     if (!config)
       return
 
@@ -86,7 +86,7 @@ let BhvUnseen = class {
       if (entities)
         foreach (entity in entities)
           if (seenData.seen.isSubList(entity)) {
-            entities = null //when has sublist, need to subscribe for any changes for current seen list
+            entities = null 
             seenData.hasCounter = true
             break
           }

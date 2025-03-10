@@ -27,7 +27,7 @@ let AT_HELIPAD_TYPE = {
   flyoutSound = "ww_unit_move_helicopters"
 }
 
-//The type names that this module returns are used for to compare values with type from blk of airfields
+
 return {
   AT_RUNWAY = AT_RUNWAY_TYPE
   AT_HELIPAD = AT_HELIPAD_TYPE

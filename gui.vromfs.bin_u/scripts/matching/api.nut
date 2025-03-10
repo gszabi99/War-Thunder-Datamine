@@ -8,13 +8,13 @@ let { replace } = require("%sqstd/string.nut")
 let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 
 
- /*
- module with low-level matching server interface
+ 
 
- matchingRpcSubscribe - set handler for server-side rpc or notification
- matchingApiFunc - call remote function by name and set callback for answer
- matchingApiNotify - call remote function without callback
-*/
+
+
+
+
+
 
 function matching_subscribe(evtName, handler) {
   assert(type(evtName)=="string")
@@ -22,10 +22,10 @@ function matching_subscribe(evtName, handler) {
   assert(handler == null || handlertype == "function")
   let is_rpc_call = handlertype == "function" && handler.getfuncinfos().parameters.len() > 2
   if (is_rpc_call) {
-    //log("RPC:", evtName)
+    
     matching_listen_rpc(evtName)
     eventbus_subscribe(evtName, function(evt) {
-      //log("LISTEN RPC:", evtName, evt, handler.getfuncinfos().parameters)
+      
       let sendResp = function(resp_obj) {
         matching_send_response(evt, resp_obj)
       }
@@ -35,7 +35,7 @@ function matching_subscribe(evtName, handler) {
   else {
     matching_listen_notify(evtName)
     eventbus_subscribe(evtName, function(evt) {
-      //log("LISTEN NOTIFY: ", evtName, evt)
+      
       handler(evt)
     })
   }
@@ -46,7 +46,7 @@ function matching_rpc_call(cmd, params = null, cb = null) {
   assert(params == null || type(params)=="table")
   assert(cb == null || type(cb) == "function")
   let res = matching_call(cmd, params)
-  //log("RPC CALL:", cmd, params)
+  
   if (cb == null)
     return
   if (res?.reqId != null)
@@ -68,10 +68,10 @@ function translateMatchingParams(params) {
   return params
 }
 
-/*
-  translate old API functions into new ones
-  TODO: remove them by search&replace
-*/
+
+
+
+
 function matchingApiFunc(name, cb, params = null) {
   log($"send matching request: {name}")
   matching_rpc_call(name, translateMatchingParams(params), @(resp) cb?(resp))
@@ -104,10 +104,10 @@ function checkMatchingError(params, showError = true) {
   return false
 }
 
-/**
-requestOptions:
-  - showError (defaultValue = true) - show error by checkMatchingError function if it is
-**/
+
+
+
+
 
 function request_matching(functionName, onSuccess = null, onError = null, params = null, requestOptions = null) {
   let showError = getTblValue("showError", requestOptions, true)

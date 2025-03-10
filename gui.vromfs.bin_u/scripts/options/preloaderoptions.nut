@@ -25,7 +25,7 @@ function initOnce() {
 
   bannedScreens = convertBlk(blk)
 
-  // validation
+  
   foreach (screenId, _w in getCurLoadingBgData().list)
     if (screenId not in bannedScreens)
       return

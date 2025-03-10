@@ -103,10 +103,10 @@ function getSessionLobbyTimeLimit(room = null) {
   return misData?.timeLimit ?? 0
 }
 
-//need only for  event roomsList, because other rooms has full rules list in public
-//return null when no such rules
+
+
 function getRoomSpecialRules(_room = null) {
-  return null //now all data come in room teamData even in list. But maybe this mehanism will be used in future.
+  return null 
 }
 
 function getRoomTeamData(teamCode, room = null) {
@@ -121,10 +121,10 @@ function getTeamDataToCheckUnits() {
   return getRoomTeamData(getTeamToCheckUnits())
 }
 
-/**
- * Returns table with two keys: checkAllowed, checkForbidden.
- * Takes in account current selected team.
-*/
+
+
+
+
 function isUnitAllowedForRoom(unit) {
   let roomSpecialRules = getRoomSpecialRules()
   if (roomSpecialRules && !events.isUnitMatchesRule(unit, roomSpecialRules, true, getSessionLobbyCurRoomEdiff()))
@@ -225,7 +225,7 @@ function getRoomTeamsCountries(room = null) {
 
   if (hasCountries)
     return res
-  //!!FIX ME: is we need a code below? But better to do something with it only with a s.zvyagin
+  
   let mGameMode = getRoomMGameMode(room)
   if (mGameMode)
     return events.getCountriesByTeams(mGameMode)
@@ -242,7 +242,7 @@ function getAvailableTeamOfRoom() {
     return (SessionLobbyState.crsSetTeamTo == Team.none) ? Team.Any : SessionLobbyState.crsSetTeamTo
 
   let myCountry = profileCountrySq.value
-  let aTeams = [ SessionLobbyState.crsSetTeamTo != Team.B, //Team.A or Team.none
+  let aTeams = [ SessionLobbyState.crsSetTeamTo != Team.B, 
                  SessionLobbyState.crsSetTeamTo != Team.A
                ]
 
@@ -350,17 +350,17 @@ function isMemberInMySquadById(userId) {
 function canBeSpectator() {
   if (!hasFeature("Spectator"))
     return false
-  if (getSessionLobbyGameMode() != GM_SKIRMISH) //spectator only for skirmish mode
+  if (getSessionLobbyGameMode() != GM_SKIRMISH) 
     return false
   return true
 }
 
-/**
-* Returns table with two keys: checkAllowed, checkForbidden.
-* Takes in account current selected team.
-* @param countryName Applied to units in all countries if not specified.
-* @param team Optional parameter to override current selected team.
-*/
+
+
+
+
+
+
 function checkUnitsInSlotbar(countryName, teamToCheck = null) {
   let res = {
     isAvailable = true
@@ -405,7 +405,7 @@ function checkUnitsInSlotbar(countryName, teamToCheck = null) {
     }
   }
 
-  if (hasTeamData) { //allow all when no team data
+  if (hasTeamData) { 
     if (!hasUnitsInSlotbar)
       res.reasonText = loc("events/empty_slotbar")
     else if (!hasRespawns && !isCurUnitAvailable)
@@ -418,9 +418,9 @@ function checkUnitsInSlotbar(countryName, teamToCheck = null) {
   return res
 }
 
-/**
-* Returns random team but prefers one with valid units.
-*/
+
+
+
 function getLobbyRandomTeam() {
   let curCountry = SessionLobbyState.countryData?.country
   let teams = []
@@ -479,7 +479,7 @@ function getRoomActiveTimers() {
   return res
 }
 
-//we doesn't know full members info outside room atm, but still return the same data format.
+
 function getMembersCountByTeams(room = null, needReadyOnly = false) {
   let res = {
     total = 0,

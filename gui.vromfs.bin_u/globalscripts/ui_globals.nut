@@ -1,4 +1,4 @@
-//this file included to both ui VM
+
 let logs = require("logs.nut")
 
 let { loc } = require("dagor.localize")

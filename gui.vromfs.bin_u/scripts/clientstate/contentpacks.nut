@@ -114,7 +114,7 @@ function request_packages_and_restart(packList) {
 
 ::updateContentPacks <- function updateContentPacks() {
   if (isPlatformSony || isPlatformXboxOne)
-    return //no launcher there!
+    return 
 
   if (!isLoggedIn.get())
     return
@@ -131,7 +131,7 @@ function request_packages_and_restart(packList) {
   eachBlock(get_game_settings_blk()?.features,
     @(b, n) u.appendOnce(checkReqContent(n, b), reqPacksList, true))
 
-  //workaround - reqPack is missing again in ents
+  
   u.appendOnce(checkReqContentByName("usa_pacific_41_43", "hc_pacific"), reqPacksList, true)
   u.appendOnce(checkReqContentByName("jpn_pacific_41_43", "hc_pacific"), reqPacksList, true)
 

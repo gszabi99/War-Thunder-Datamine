@@ -5,52 +5,52 @@ let { getCountryFlagsPresetName } = require("%scripts/options/countryFlagsPreset
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
-/* Data in config (gui.blk/loading_bg)
 
-loading_bg
-{
-  reserveBg:t='login_layer_c1' //layer loaded behind current to be visible while current images not full loaded
 
-  //full layers list
-  login_layer_a1:r = 2.0
-  login_layer_b1:r = 2.0
-  login_layer_c1:r = 2.0
 
-  beforeLogin {  //ovverride chances before login
-    default_chance:r=0  //default chance for all layers
-    login_layer_r1:r = 2.0
-  }
 
-  language {  //override chances by languages
-    langsInclude  {
-      lang:t="English"
-      lang:t="Russian"
-    }
-    langsExclude {
-      lang:t="English"
-      lang:t="Russian"
-    }
-    //all languages if no langsInclude or langsExclude set
 
-    platformInclude {
-      platform:t="win32"
-      platform:t="win64"
-    }
-    platformExclude {
-      platform:t="win32"
-      platform:t="win64"
-    }
-    //all platforms if no platformInclude or platformExclude set
 
-    login_layer_g1:r = 0
 
-    beforeLogin {
-      default_chance:r=0
-      login_layer_q1:r = 2.0
-    }
-  }
-}
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
@@ -90,7 +90,7 @@ function applyBlkToBgData(bgData, blk) {
       list[blk.getParamName(i)] <- value
   }
 
-  // to not check name for each added param
+  
   if (DEFAULT_VALUE_KEY in list)
     list.$rawdelete(DEFAULT_VALUE_KEY)
 }

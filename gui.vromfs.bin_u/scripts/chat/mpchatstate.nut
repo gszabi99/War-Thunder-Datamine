@@ -11,10 +11,10 @@ let mpChatState = persist("mpChatState", @() {
   log = [],
   currentModeId = CHAT_MODE_TEAM,
   maxLogSize = 20,
-  isActive = false // While it is true, in-game unit control shortcuts are disabled in client.
+  isActive = false 
 })
 
-let scenes = [] //{ idx, scene, handler, transparency, selfHideInput, selfHideLog }
+let scenes = [] 
 local hasEnableChatMode = false
 local modeInited = false
 
@@ -26,7 +26,7 @@ function validateCurModeImpl() {
   if (!modeInited) {
     modeInited = true
     hasEnableChatMode = false
-    // On mp session start mode is reset to TEAM
+    
     if (g_mp_chat_mode.SQUAD.isEnabled()) {
       hasEnableChatMode = true
       setModeId(g_mp_chat_mode.SQUAD.id)

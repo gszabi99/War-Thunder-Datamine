@@ -52,7 +52,7 @@ g_mplayer_param_type.template <- {
   fontIcon = null
   tooltip = ""
   defVal = 0
-  isForceUpdate = false // Force updates even when value not changed.
+  isForceUpdate = false 
   missionObjective = MISSION_OBJECTIVE.ANY
   getVal = function(player) {
     return getTblValue(this.id, player, this.defVal)
@@ -401,7 +401,7 @@ enumsAddTypes(g_mplayer_param_type, {
     tooltip = "HUD_RACE_FINISH"
     relWidth = 30
     defVal = -1
-    isForceUpdate = true // Because it shows race completion percentage.
+    isForceUpdate = true 
     printFunc = function(val, player) {
       if (val < 0) {
         let total = get_race_checkpoints_count()

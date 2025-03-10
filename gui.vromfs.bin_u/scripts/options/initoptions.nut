@@ -26,7 +26,7 @@ let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 
 let allUnits = getAllUnits()
-//remap all units to new class on scripts reload
+
 foreach (name, unit in allUnits)
   allUnits[name] = Unit({}).setFromUnit(unit)
 if (showedUnit.value != null)
@@ -43,7 +43,7 @@ if (showedUnit.value != null)
     } while (stepStatus == PT_STEP_STATUS.SUSPEND)
 }
 
-function init_all_units() { //Not moved to allUnits.nut due to "require loops"
+function init_all_units() { 
   allUnits.clear()
   let all_units_array = gather_and_build_aircrafts_list()
   foreach (unitTbl in all_units_array) {
@@ -113,7 +113,7 @@ function countUsageAmountOnce() {
 
   function() {
     ::tribunal.init()
-    clearMapsCache() //to refreash maps on demand
+    clearMapsCache() 
     set_crosshair_icons([])
     crosshair_colors.clear()
     set_thermovision_colors([])

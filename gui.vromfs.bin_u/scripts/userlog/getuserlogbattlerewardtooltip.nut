@@ -298,7 +298,7 @@ function getUserLogBattleRewardTooltip(rewardDetails, eventName, isPlainText = f
   let tableRows = rewardDetails
     .map(function(reward) {
       let row = reward.__merge({
-        earnedWp = null // values will be setted in cellTransformFn
+        earnedWp = null 
         earnedExp = null
         isPlainText
       })
@@ -311,7 +311,7 @@ function getUserLogBattleRewardTooltip(rewardDetails, eventName, isPlainText = f
         if (!reward?.newNationBonusExp)
           return null
         row.__update({
-          exp = null  // for hiding exp column in the tooltip
+          exp = null  
           invUnitRank = getRomanNumeralRankByUnitName(reward?.invUnitName) ?? cellNoValSymbol
         })
       }

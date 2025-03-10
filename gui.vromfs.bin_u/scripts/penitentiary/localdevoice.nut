@@ -7,10 +7,10 @@ let { isInFlight } = require("gameplayBinding")
 let devoiceList = {}
 
 let localDevoice = {
-  //Devoice type bit mask
+  
   DEVOICE_RADIO      = 0x0001
   DEVOICE_MESSAGES   = 0x0002
-  //end of devoice type bit mask
+  
 
   isMuted = @(name, devoiceMask) ((devoiceList?[name] ?? 0) & devoiceMask) != 0
 

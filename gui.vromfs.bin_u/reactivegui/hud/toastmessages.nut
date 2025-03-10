@@ -9,15 +9,15 @@ let NEW_MESSAGE_ANIM_EASING = OutQuad
 
 let showingMessages = Watched([])
 
-/**
- * Is used to display toast messages where certain characters may have different styles.
- * @param {array|table} msg - A table or an array of tables, each containing the following interface:
- * {
- *   @property {string} text - The message text.
- *   @property {table} [ovr] - Text styling overrides.
- * }
- * If an array is provided, all text entries will be concatenated into a single message line.
- */
+
+
+
+
+
+
+
+
+
 function showMessage(msg) {
   let msgStringsArr = isArray(msg) ? msg : [msg]
 

@@ -120,24 +120,24 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
   idInCountry = -1
   crew = null
 
-  config = null //same as slotbarParams in BaseGuiHandlerWT
+  config = null 
   slotObj = null
   curClonObj = null
 
-  unitsArray = null // array of units
-  unitsList = null  // array of menu items
+  unitsArray = null 
+  unitsList = null  
   busyUnitsCount = 0
 
   wasReinited = false
 
   filterOptionsList = null
 
-  curOptionsMasks = null //[]
-  optionsMaskByUnits = null //{}
+  curOptionsMasks = null 
+  optionsMaskByUnits = null 
   isEmptyOptionsList = true
-  legendData = null //[]
+  legendData = null 
 
-  slotsPerPage = 9 //check css
+  slotsPerPage = 9 
   firstPageSlots = 20
   curVisibleSlots = 0
 
@@ -153,9 +153,9 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     this.optionsMaskByUnits = {}
     this.legendData = []
     if (this.slotbarWeak)
-      this.slotbarWeak = this.slotbarWeak.weakref() //we are miss weakref on assigning from params table
+      this.slotbarWeak = this.slotbarWeak.weakref() 
 
-    this.guiScene.applyPendingChanges(false) //to apply slotbar scroll before calculating positions
+    this.guiScene.applyPendingChanges(false) 
 
     let tdObj = this.slotObj.getParent()
     let tdPos = tdObj.getPosRC()
@@ -167,7 +167,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     tdClone["class"] = "slotbarClone"
     this.curClonObj = tdClone
 
-    // When menu opens on switching to country, slots are invisible due to animation
+    
     if ((tdClone?["color-factor"] ?? "255") != "255")
       setTranspRecursive(tdClone, 255)
 
@@ -328,9 +328,9 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     if (unit == SEL_UNIT_BUTTON.SHOP)
       return this.goToShop()
     if (unit == SEL_UNIT_BUTTON.EMPTY_CREW)
-      return this.trainSlotAircraft(null) //empty slot
+      return this.trainSlotAircraft(null) 
     if (unit == SEL_UNIT_BUTTON.SHOW_MORE) {
-      this.curVisibleSlots += this.slotsPerPage - 1 //need to all new slots be visible and current button also
+      this.curVisibleSlots += this.slotsPerPage - 1 
       this.updateUnitsList()
       return
     }
@@ -416,7 +416,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       let maskOption = get_option(userOpt)
       let singleOption = getTblValue("singleOption", maskOption, false)
       if (singleOption) {
-        // All bits but first are set to 1.
+        
         maskOption.value = maskOption.value | ~1
         set_option(userOpt, maskOption.value)
       }
@@ -474,7 +474,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getGameModeNameFromParams(params) {
-    //same order as in isUnitEnabledForSlotbar
+    
     local event = events.getEvent(params?.eventId)
     if (!event && params?.roomCreationContext)
       event = params.roomCreationContext.mGameMode
@@ -629,7 +629,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
       this.showUnitSlot(objSlot, slot, isVisible)
 
       if (isVisible
-        && (!isFirstPage || unit.name == crewUnitId)) //on not first page always select last visible unit
+        && (!isFirstPage || unit.name == crewUnitId)) 
         selected = i
     }
 

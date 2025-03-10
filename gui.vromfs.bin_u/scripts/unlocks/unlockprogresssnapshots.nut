@@ -53,7 +53,7 @@ function onFavoriteUnlocksChanged(params) {
     return
 
   idToSnapshot.$rawdelete(changedId)
-  idToSnapshot = idToSnapshot.filter(@(_, k) isUnlockFav(k)) // validation
+  idToSnapshot = idToSnapshot.filter(@(_, k) isUnlockFav(k)) 
   saveLocalAccountSettings(SAVE_ID, idToSnapshot)
 }
 

@@ -130,7 +130,7 @@ local isBulletAvailable = @() options?.BULLET.value != null
 let create_empty_combobox = @() "option{pare-text:t='yes' selected:t = 'yes' optiontext{text:t = '#shop/search/global/notFound'}}"
 
 options.template <- {
-  id = "" //used from type name
+  id = "" 
   sortId = 0
   labelLocId = null
   controlStyle = ""
@@ -300,7 +300,7 @@ options.addTypes({
         this.values.findvalue(@(v) v.name == targetUnitId) ??
         this.values?[0]
 
-      if (this.value == null) // This combination of unitType/country/rank shouldn't be selectable
+      if (this.value == null) 
         script_net_assert_once("protection analysis units list empty", "Protection analysis: Units list empty")
     }
 
@@ -381,7 +381,7 @@ options.addTypes({
       local selectedIndex = 0
       let groupsCount = getBulletsGroupCount(unit)
 
-      // Offensive Armament
+      
       for (local groupIndex = 0; groupIndex < getLastFakeBulletsIndex(unit); groupIndex++) {
         let gunIdx = getLinkedGunIdx(groupIndex, groupsCount, unit.unitType.bulletSetsQuantity, unit, false)
         if (gunIdx == curGunIdx)
@@ -423,13 +423,13 @@ options.addTypes({
                 loc($"{bulletName}/name/short"))
               let bulletType = bulletName
               bulletParams = bulletParameters.findvalue(@(p) p.bulletType == bulletType)
-              // Find bullet dub by params
+              
               isDub = bulletSetData.findvalue(@(p) p.bulletType == bulletType
                 && p.mass == bulletParams.mass && p.speed == bulletParams.speed
                 && p.armorPiercing[0][0] == bulletParams.armorPiercing[0][0])
               if (!isDub)
                 bulletSetData.append(bulletParams)
-              // Need change name for the same bullet type but different params
+              
               if (isInArray(locName, bulletNamesSet))
                 locName = "".concat(loc($"{bulletName}/name/short"), bulletsList.items[i].text)
             }
@@ -476,7 +476,7 @@ options.addTypes({
         }
       }
 
-      // Secondary weapons
+      
       let specialBulletTypes = [ "rocket", "bullet" ]
       if(hasFeature("ProtectionAnalysisShowTorpedoes"))
         specialBulletTypes.append("torpedo")
@@ -636,7 +636,7 @@ options.addTypes({
       parentObj.display = isBulletAvailable() ? "show" : "hide"
     }
   }
-  //
+  
 
 
 
@@ -773,13 +773,13 @@ options.init <- function(handler, scene) {
 options.setAnalysisParams <- function() {
   let bullet   = options.BULLET.value
   let distance = options.DISTANCE.value
-  //
+  
 
 
 
 
   set_protection_checker_params(bullet?.weaponBlkName ?? "", bullet?.bulletName ?? "", distance, 0, 0)
-  //
+  
 }
 
 options.get <- @(id) this?[id] ?? this.UNKNOWN

@@ -52,11 +52,11 @@ let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nu
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 let MODIFICATION_TUTORIAL_CHAPTERS = ["tutorial_aircraft_modification", "tutorial_tank_modification"]
 
-enum MIS_PROGRESS { //value received from get_mission_progress
+enum MIS_PROGRESS { 
   COMPLETED_ARCADE    = 0
   COMPLETED_REALISTIC = 1
   COMPLETED_SIMULATOR = 2
-  UNLOCKED            = 3 //unlocked but not completed
+  UNLOCKED            = 3 
   LOCKED              = 4
 }
 
@@ -318,7 +318,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       let locText = this.misListType.getMissionNameText(mission)
       let locString = utf8ToLower(locText)
       this.filterDataArray.append({
-        locString = locString.replace("\t", "") //for japan and china localizations
+        locString = locString.replace("\t", "") 
         misObject = listObj.getChild(idx)
         mission = mission
         isHeader = mission.isHeader
@@ -781,7 +781,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     let cb = Callback(this.afterMissionOptionsApply, this)
     let misBlk = this.missionBlk
     this.createModalOptions(optionItems, function() {
-      gui_handlers.Briefing.finalApply.call(this, misBlk) //!!FIX ME: DIRTY HACK - called brifing function in modalOptions enviroment
+      gui_handlers.Briefing.finalApply.call(this, misBlk) 
       cb()
     })
   }
@@ -795,7 +795,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       if (this.needCheckDiffAfterOptions && get_gui_option(USEROPT_DIFFICULTY) == "custom")
         guiStartCdOptions(briefingOptionsApply, this)
       else
-        briefingOptionsApply.call(this) //!!FIX ME: DIRTY HACK
+        briefingOptionsApply.call(this) 
     })
   }
 
@@ -951,7 +951,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     local showCampaign = false
     for (local idx = this.filterDataArray.len() - 1; idx >= 0; --idx) {
       let filterData = this.filterDataArray[idx]
-      //need update headers by missions content
+      
       local filterCheck = filterData.isHeader || this.checkFilterData(filterData)
       if (!filterData.isHeader) {
         if (filterCheck) {
@@ -1089,7 +1089,7 @@ let SingleMissionsModal = class (SingleMissions) {
   }
 
   getAvailableMissionGroups = @() this.filterDataArray
-    .reduce(@(acc, v) !v?.group || acc.contains(v.group) ? acc : acc.append(v.group), []) // -unwanted-modification
+    .reduce(@(acc, v) !v?.group || acc.contains(v.group) ? acc : acc.append(v.group), []) 
     .sort(@(a, b) a <=> b)
 
   getAvailableUnitTypes = @() unitTypes.types

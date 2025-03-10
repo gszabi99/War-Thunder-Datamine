@@ -95,13 +95,13 @@ function closeGenericTooltip(obj, handler) {
     if (!checkObj(obj) || !obj.childrenCount())
       return
 
-    //for debug and catch rare bug
+    
     let dbg_event = obj?.on_tooltip_open
     if (!dbg_event)
       return
 
     if (!(dbg_event in handler)) {
-      guiScene.replaceContentFromText(obj, "", 0, null) //after it tooltip dosnt open again
+      guiScene.replaceContentFromText(obj, "", 0, null) 
       return
     }
 
@@ -120,7 +120,7 @@ function removeAllGenericTooltip() {
 }
 
 function onEventChangedCursorVisibility(params) {
-  // Proceed if cursor is hidden now.
+  
   if (params.isVisible)
     return
 

@@ -295,7 +295,7 @@ function guiStartDebriefingFull(params = {}) {
 function gui_start_debriefing(_) {
   if (needLogoutAfterSession.value) {
     ::destroy_session_scripted("on needLogoutAfterSession from gui_start_debriefing")
-    //need delay after destroy session before is_multiplayer become false
+    
     get_gui_scene().performDelayed(getroottable(), startLogout)
     return
   }
@@ -403,7 +403,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   gameType = null
   gm = null
   roomEvent = null
-  playersInfo = null //it is getSessionLobbyPlayersInfo() for debriefing statistics info
+  playersInfo = null 
 
   pveRewardInfo = null
   battleTasksConfigs = {}
@@ -415,7 +415,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   isFirstWinInMajorUpdate = false
 
-  debugUnlocks = 0  //show at least this amount of unlocks received from userlogs even disabled.
+  debugUnlocks = 0  
   debriefingResult = null
 
   callbackOnDebriefingClose = null
@@ -437,18 +437,18 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.isReplay = this.debriefingResult.isReplay
     this.isCurMissionExtr = isMissionExtrByName(this.debriefingResult?.roomEvent.name ?? "")
 
-    if (disable_network()) //for correct work in disable_menu mode
+    if (disable_network()) 
       ::update_gamercards()
 
-    this.showTab("") //hide all tabs
+    this.showTab("") 
 
     set_presence_to_player("menu")
     this.initStatsMissionParams()
     checkLeaveRoomInDebriefing()
     closeCurVoicemenu()
 
-    // Debriefing shows on on_hangar_loaded event, but looks like DoF resets in this frame too.
-    // DoF changing works unstable on this frame, but works 100% good on next guiscene act.
+    
+    
     this.guiScene.performDelayed(this, function() { handlersManager.updateSceneBgBlur(true) })
 
     if (this.isInited)
@@ -467,7 +467,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.handleActiveWager()
     this.handlePveReward()
 
-    //update title
+    
     local resTitle = ""
     let resReward = {
       title = ""
@@ -559,7 +559,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     this.gatherAwardsLists()
 
-    //update mp table
+    
     this.needPlayersTbl = this.isMp && !(this.gameType & GT_COOPERATIVE) && isDebriefingResultFull()
     this.setSceneTitle(getCurMpTitle(), null, "dbf_title")
 
@@ -581,11 +581,11 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
           g_squad_manager.setReadyFlag(true)
       }
     }
-    ::first_generation = false //for dynamic campaign
+    ::first_generation = false 
     this.isInited = false
     ::check_logout_scheduled()
 
-    ::g_squad_utils.updateMyCountryData() //to update broken airs for squad.
+    ::g_squad_utils.updateMyCountryData() 
 
     this.handleNoAwardsCaption()
 
@@ -680,7 +680,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     for (local i = logsList.len() - 1; i >= 0; i--)
       res.append(::build_log_unlock_data(logsList[i]))
 
-    //add debugUnlocks
+    
     if (!is_dev_version() || this.debugUnlocks <= res.len())
       return res
 
@@ -688,7 +688,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     dbgFilter.currentRoomOnly = false
     logsList = getUserLogsList(dbgFilter)
     if (!logsList.len()) {
-      dlog("Not found any unlocks in userlogs for debug") // warning disable: -forbidden-function
+      dlog("Not found any unlocks in userlogs for debug") 
       return res
     }
 
@@ -755,7 +755,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (this.state != debrState.showMyStats && this.state != debrState.showBonuses)
       return
 
-    //find and update Total
+    
     this.totalRow = this.getDebriefingRowById("Total")
     if (!this.totalRow)
       return
@@ -813,7 +813,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     let wager = findItemByUid(activeWagerData.wagerInventoryId, itemType.WAGER) ||
       findItemById(activeWagerData.wagerShopId)
-    if (wager == null) // This can happen if item ended and was removed from shop.
+    if (wager == null) 
       return
 
     let containerObj = this.scene.findObject("active_wager_container")
@@ -1273,7 +1273,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       if (!checkObj(objPlace))
         return this.switchState()
 
-      //Gather rewards info:
+      
       let textArray = []
 
       if (this.debriefingResult.mulsList.len())
@@ -1301,7 +1301,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       if (!u.isEmpty(boostersText))
         textArray.append(boostersText)
 
-      if (u.isEmpty(textArray)) //no bonus
+      if (u.isEmpty(textArray)) 
         return this.switchState()
 
       if (!isDebriefingResultFull() &&
@@ -1383,7 +1383,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   function updateMyStats(dt) {
     if (this.curStatsIdx < 0)
-      return false //nextState
+      return false 
 
     this.statsTimer -= dt
 
@@ -1489,7 +1489,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       local paramType = p == "value" ? row.rowType : row.rewardType
 
       if (row.isFreeRP && paramType == "exp")
-        paramType = "frp" //show exp as FreeRP currency
+        paramType = "frp" 
 
       let { text, image } = getViewByType(nextValue, paramType, showEmpty)
       obj.setValue(text)
@@ -1513,7 +1513,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       let country = this.getDebriefingCountry()
       if (country in playerRankByCountries && playerRankByCountries[country] >= MAX_COUNTRY_RANK) {
         this.totalTarValues.exp = this.getStatValue(this.totalRow, "exp", "prem")
-        dt = 1000 //force fast blend
+        dt = 1000 
       }
     }
 
@@ -1536,7 +1536,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function getModExp(airData) {
     if (getTblValue("expModuleCapped", airData, false))
       return airData.expInvestModule
-    return airData.expModsTotal //expModsTotal recounted by bonus mul.
+    return airData.expModsTotal 
   }
 
   function fillResearchingMods() {
@@ -2136,7 +2136,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         this.currentAwardsListIdx++
       }
       else if (this.curAwardIdx == this.awardsList.len()) {
-        //finish awards update
+        
         this.statsTimer += this.nextWndDelay
         this.curAwardIdx++
       }
@@ -2154,7 +2154,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if(axis == 0)
       this.awardShift = max(0, (maxSize[0] - awardSize) / 2)
 
-    //WARNING! Change the allotted height for unlock icons to the height of the workshop button if there are gifts
+    
     let giftsCount = this.giftItems?.len() ?? 0
     if(axis == 1)
       maxSize[1] = maxSize[1] - to_pixels("0.2@debriefingUnlockIconSize") - (giftsCount > 0 ? to_pixels("1@navBarBattleButtonHeight") : 0)
@@ -2188,7 +2188,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     let align = this.currentAwardsListConfig.align
     let axis = (align == ALIGN.TOP || align == ALIGN.BOTTOM) ? 1 : 0
-    if (this.currentAwardsListIdx == 0) //firstElem
+    if (this.currentAwardsListIdx == 0) 
       this.countAwardsOffset(obj, listObj, axis)
     else if (align == ALIGN.LEFT && this.awardOffset != 0)
       obj.pos = $"{this.awardOffset}, 0"
@@ -2271,7 +2271,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     foreach (tbl in this.playersTbl)
       foreach (player in tbl) {
-        player.state = PLAYER_IN_FLIGHT //dont need to show laast player state in debriefing.
+        player.state = PLAYER_IN_FLIGHT 
         player.isDead = false
       }
   }
@@ -2397,13 +2397,13 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         obj["pos"] = pos
     }
 
-    if (isSingleRow) {                  //Single row
+    if (isSingleRow) {                  
       topBarNestObj.flow = "horisontal"
       local totalWidth = 0.5 * (myPlaceObj.getSize()[0] + containerObj.getSize()[0])
       myPlaceObj.pos = $"0.5pw-{totalWidth}, 0.5ph-0.5h"
       containerObj.pos = "0, 0"
     }
-    else {                            //Two rows
+    else {                            
       topBarNestObj.flow = "vertical"
       myPlaceObj.pos = "0.5pw-0.5w, 0"
       containerObj.pos = "0.5pw-0.5w-0.5@debrPad, 0.5@debrPad"
@@ -2514,7 +2514,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function onSelectTask(obj) {
-    this.updateBattleTasksRequirementsList() //need to check even if there is unlock
+    this.updateBattleTasksRequirementsList() 
 
     let val = obj.getValue()
     let taskObj = obj.getChild(val)
@@ -2676,7 +2676,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.updateBattleTasksStatusImg()
   }
 
-    //------------- <CURRENT BATTLE TASK ---------------------
+    
   function updateShortBattleTask() {
     if (!this.is_show_battle_tasks_list(false))
       return
@@ -2700,7 +2700,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.guiScene.replaceContentFromText(buttonObj, data, data.len(), this)
     setBattleTasksUpdateTimer(null, buttonObj)
   }
-  //------------- </CURRENT BATTLE TASK --------------------
+  
 
 
   function is_show_my_stats() {
@@ -2859,11 +2859,11 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function setGoNext() {
-    goDebriefingNextFunc = gui_start_mainmenu //default func
+    goDebriefingNextFunc = gui_start_mainmenu 
     if (this.needShowWorldWarOperationBtn()) {
       if (!g_squad_manager.isInSquad() || g_squad_manager.isSquadLeader())
         goDebriefingNextFunc = function() {
-          handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mainmenu" }) //do not need to back to debriefing
+          handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mainmenu" }) 
           openOperationsOrQueues(true)
         }
       return
@@ -2954,7 +2954,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   function recalcDynamicLayout() {
     set_mission_settings("layout", dynamicGetLayout())
-    // FIXME : workaroud for host migration assert (instead of back to lobby - disconnect)
+    
     if (get_mission_settings().layout) {
       let settings = DataBlock();
       set_mission_settings("dynlist", dynamicGetList(settings, false))
@@ -3027,7 +3027,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     if (this.isReplay)
       this.applyReturn()
-    else {  //do_finalize_debriefing
+    else {  
       this.save()
       checkRemnantPremiumAccount()
     }
@@ -3143,7 +3143,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function checkPopupWindows() {
     let country = this.getDebriefingCountry()
 
-    //check unlocks windows
+    
     let wnd_unlock_gained = getUserLogsList({
       show = [EULT_NEW_UNLOCK]
       unlocks = [UNLOCKABLE_AIRCRAFT, UNLOCKABLE_AWARD]
@@ -3154,14 +3154,14 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     foreach (logObj in wnd_unlock_gained)
       showUnlockWnd(::build_log_unlock_data(logObj))
 
-    //check new rank and unlock country by exp gained
+    
     let new_rank = getPlayerRankByCountry(country)
     local old_rank = playerRankByCountries?[country] ?? new_rank
 
     if (country != "" && country != "country_0" &&
         !isCountryAvailable(country) && getPlayerExpByCountry(country) > 0) {
       unlockCountry(country)
-      old_rank = -1 //new country unlocked!
+      old_rank = -1 
     }
 
     if (new_rank > old_rank) {
@@ -3172,7 +3172,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       checkRankUpWindow(country, old_rank, new_rank);
     }
 
-    //check country unlocks by N battle
+    
     let country_unlock_gained = getUserLogsList({
       show = [EULT_NEW_UNLOCK]
       unlocks = [UNLOCKABLE_COUNTRY]
@@ -3185,7 +3185,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         unlockCountry(logObj.unlockId)
     }
 
-    //check userlog entry for tournament special rewards
+    
     let tornament_special_rewards = getUserLogsList({
       show = [EULT_CHARD_AWARD]
       currentRoomOnly = true
@@ -3407,7 +3407,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   isMp = false
   isReplay = false
   isCurMissionExtr = false
-  //haveCountryExp = true
+  
 
   tabsList = [ "my_stats", "players_stats", "ww_casualties", "awards_list", "battle_tasks_list", "battle_log", "chat_history" ]
   tabsTitles = { awards_list = "#profile/awards", battle_tasks_list = "#userlog/page/battletasks" }
@@ -3463,7 +3463,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   awardOffset = 0
   awardShift = 0
-  awardsAppearTime = 2.0 //can be lower than this, not higher
+  awardsAppearTime = 2.0 
   awardDelay = 0.25
   awardFlyTime = 0.5
 

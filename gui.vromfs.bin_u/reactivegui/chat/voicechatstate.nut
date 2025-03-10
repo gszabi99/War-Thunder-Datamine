@@ -10,9 +10,9 @@ let VOICE_CHAT_MEMBER_PARAMS = {
 }
 
 let voiceChatMembers = Watched([])
-local counter = 0 //for voice chat key
+local counter = 0 
 
-function removeVoiceChatMember(id) { //name (string) or id (int)
+function removeVoiceChatMember(id) { 
   foreach (idx, member in voiceChatMembers.value)
     if ((member.name == id || member.id == id)
         && !member.needShow.value) {

@@ -47,7 +47,7 @@ let { enable_current_modifications } = require("%scripts/weaponry/weaponryAction
 let { queues } = require("%scripts/queue/queueManager.nut")
 let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
 
-::missionBuilderVehicleConfigForBlk <- {} //!!FIX ME: Should to remove this
+::missionBuilderVehicleConfigForBlk <- {} 
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -102,8 +102,8 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     this.guiScene.setUpdatesEnabled(true, true)
 
     if (this.needSlotbar) {
-      switchProfileCountry(this.unit.shopCountry) //select country for slotbar
-      showedUnit(this.unit) //select unit for slotbar
+      switchProfileCountry(this.unit.shopCountry) 
+      showedUnit(this.unit) 
       this.createSlotbar()
     }
     else {
@@ -330,7 +330,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (!this.isBuilderAvailable()) {
       this.saveAircraftOptions()
 
-      if (this.needSlotbar) // There is a slotbar in this scene
+      if (this.needSlotbar) 
         this.msgBox("not_available",
           loc(getCurSlotbarUnit() == null ? "events/empty_crew" : "msg/builderOnlyForAircrafts"),
           [["ok"]], "ok")
@@ -375,7 +375,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       Callback(function() {
         this.applyFunc = function() {
           if (get_gui_option(USEROPT_DIFFICULTY) == "custom") {
-            guiStartCdOptions(this.startTestFlight, this) // See "MissionDescriptor->loadFromBlk"
+            guiStartCdOptions(this.startTestFlight, this) 
             this.doWhenActiveOnce("updateSceneDifficulty")
           }
           else
@@ -692,7 +692,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (!optList.len())
       return
     let diffName = this.getOptValue(USEROPT_DIFFICULTY, false)
-    if (diffName == null) //no such option in current options list
+    if (diffName == null) 
       return
 
     foreach (option in optList)

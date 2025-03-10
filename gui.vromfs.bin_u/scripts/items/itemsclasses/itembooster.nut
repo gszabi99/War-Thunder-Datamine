@@ -46,7 +46,7 @@ let Booster = class (BaseItem) {
   canBuy = true
   allowBigPicture = false
 
-  xpRate = 0 //percent
+  xpRate = 0 
   wpRate = 0
   sortOrder = 0
   personal = true
@@ -116,7 +116,7 @@ let Booster = class (BaseItem) {
 
     let effectsArray = []
     let items = this.getAllActiveSameBoosters()
-    let effect = effects[0] //!!we do not cmpare boosters with multieffects atm.
+    let effect = effects[0] 
 
     foreach (item in items) {
       let value = effect.getValue(item)
@@ -198,12 +198,12 @@ let Booster = class (BaseItem) {
 
   function activate(cb, handler = null) {
     let checkParams = {
-      checkActive = true // Check if player already has active booster.
-      checkIsInFlight = true // Check if player is in flight and booster will take effect in next battle.
+      checkActive = true 
+      checkIsInFlight = true 
     }
     return this._activate(function (result) {
       if (!result.success) {
-        // Trying to activate with one less check.
+        
         result.checkParams[result.failedCheck] <- false
         if (result.failedCheck == "checkActive")
           this.showPenaltyBoosterMessageBox(handler, result.checkParams)
@@ -246,8 +246,8 @@ let Booster = class (BaseItem) {
     return result
   }
 
-  function _activate(cb, handler = null, checkParams = null) { //handler need only because of char operations are based on gui_handlers.BaseGuiHandlerWT.
-                                   //remove it after slotOpCb will be refactored
+  function _activate(cb, handler = null, checkParams = null) { 
+                                   
     if (this.isActive() || !this.isInventoryItem)
       return false
 
@@ -482,7 +482,7 @@ let Booster = class (BaseItem) {
       return ""
 
     let textsList = []
-    // Shows progress as count down 6, 5, 4, ... instead of 0/6, 1/6, ...
+    
     let curValue = this.getLeftStopSessions()
     let params = { locEnding = this.isActive() ? "/inverted" : "/activeFor" }
     textsList.append(getFullUnlockCondsDesc(this.stopConditions, null, curValue, params))

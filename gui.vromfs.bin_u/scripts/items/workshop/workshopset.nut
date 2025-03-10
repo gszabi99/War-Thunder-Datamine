@@ -24,20 +24,20 @@ const CURRENT_SUBSET_SAVE_PATH = "workshop/curSubSetBySet/"
 const ACCENT_CRAFT_TREE_SAVE_PATH = "seen/workshopCraftTree/"
 
 local WorkshopSet = class {
-  id = "" //name of config blk. not unique
+  id = "" 
   uid = -1
-  reqFeature = null //""
+  reqFeature = null 
   isForcedDisplayByDate = null
   locId = ""
 
-  itemdefsSorted = null //[]
-  itemdefs = null //{ <itemdef> = sortId }
-  itemsReqRulesTbl = null  // { <itemId> = bool } (true = need to have, false = need to NOT have)
-  hiddenItemsBlocks = null // { <blockId> = true }
-  alwaysVisibleItemdefs = null // { <itemdef> = sortId }
-  knownItemdefs = null // { <itemdef> = true }
-  knownReqItemdefs = null // { <reqitemdef> = true }
-  itemsVisibleOnlyInCraftTree = null // { <itemId> = true }
+  itemdefsSorted = null 
+  itemdefs = null 
+  itemsReqRulesTbl = null  
+  hiddenItemsBlocks = null 
+  alwaysVisibleItemdefs = null 
+  knownItemdefs = null 
+  knownReqItemdefs = null 
+  itemsVisibleOnlyInCraftTree = null 
 
   isToStringForDebug = true
 
@@ -141,7 +141,7 @@ local WorkshopSet = class {
     foreach (reqItems in itemsBlk % "reqItems") {
       let itemsTbl = {}
       foreach (reqId in reqItems.split(",")) {
-        let needHave = !startsWith(reqId, "!") // true = need to have, false = need to NOT have.
+        let needHave = !startsWith(reqId, "!") 
         let itemId = reqId.slice(needHave ? 0 : 1).tointeger()
 
         itemsTbl[itemId] <- needHave
@@ -239,7 +239,7 @@ local WorkshopSet = class {
     let visibleKnownItemdefs = this.knownItemdefs.filter((@(_value, itemId) !this.isVisibleOnlyInCraftTree(itemId)).bindenv(this))
     let requiredList = this.alwaysVisibleItemdefs.__merge(visibleKnownItemdefs)
 
-    //add all craft parts recipes result to visible items.
+    
     if (requiredList.len() != this.itemdefs.len())
       foreach (item in this.itemsListCache)
         if (item.iType == itemType.CRAFT_PART) {

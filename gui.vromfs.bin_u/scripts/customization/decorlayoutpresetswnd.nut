@@ -147,7 +147,7 @@ gui_handlers.DecorLayoutPresets <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = 0; i < this.skinList.values.len(); i++) {
       let id = this.skinList.values[i]
       let val = (this.linkedSkinsCurrent & (1 << i)) != 0
-      if ((this.isPreset && this.masterPresetId == this.presetBySkinIdx[i]) != val) // warning disable: -compared-with-bool
+      if ((this.isPreset && this.masterPresetId == this.presetBySkinIdx[i]) != val) 
         if (val)
           listAttach.append(id)
         else

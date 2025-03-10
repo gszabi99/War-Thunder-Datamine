@@ -16,8 +16,8 @@ function getThreadInfo(roomId) {
 }
 
 function canCreateThreads() {
-  // it can be useful in China to disallow creating threads for ordinary users
-  // only moderators allowed to do so
+  
+  
   return is_myself_anyof_moderators() || hasFeature("ChatThreadCreate")
 }
 

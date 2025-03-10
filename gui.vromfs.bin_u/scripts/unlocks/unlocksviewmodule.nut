@@ -92,7 +92,7 @@ let getEmptyConditionsConfig = @() {
   additionalStagesDescAsItemCountLocId = ""
   additionalStagesDescAsItemCountId = 0
   additionalStagesDescAsItemCountMax = 0
-  names = [] //bit progress names. better to rename it.
+  names = [] 
 
   showProgress = true
   getProgressBarData = function() {
@@ -238,7 +238,7 @@ function buildConditionsConfig(blk, showStage = -1) {
   if (config.image == "" && !config?.iconData)
     setUnlockIconCfg(config, blk)
   if (config.image != "")
-    config.lockStyle = blk?.lockStyle ?? "" // lock, darkened, desaturated, none
+    config.lockStyle = blk?.lockStyle ?? "" 
 
   config.desc <- getDescriptionByUnlockType(blk)
 
@@ -252,21 +252,21 @@ function buildConditionsConfig(blk, showStage = -1) {
     let modeType = mode?.type ?? ""
     config.type = modeType
 
-    // Custom multiplier description and its associated parameters
+    
     config.locMultDescId = mode?.locMultDescId ?? ""
     config.mulArcade = mode?.mulArcade ?? 0
     config.mulRealistic = mode?.mulRealistic ?? 0
     config.mulHardcore = mode?.mulHardcore ?? 0
 
     if (config.unlockType == UNLOCKABLE_TROPHY_PSN) {
-      //do not show secondary conditions anywhere for psn trophies
+      
       config.conditions = []
       let mainCond = loadMainProgressCondition(mode)
       if (mainCond)
         config.conditions.append(mainCond)
     }
     else
-      config.conditions = loadConditionsFromBlk(mode, blk) //-param-pos
+      config.conditions = loadConditionsFromBlk(mode, blk) 
 
     let mainCond = getMainProgressCondition(config.conditions)
 
@@ -275,7 +275,7 @@ function buildConditionsConfig(blk, showStage = -1) {
     if (mainCond && mainCond.values
         && (mainCond.values.len() > 1 || config.hasCustomUnlockableList
         || (isNestedUnlockMode(mainCond.modeType) && isStreak(mainCond.values[0]))))
-      config.names = mainCond.values //for easy support old values list
+      config.names = mainCond.values 
 
     config.maxVal = mainCond?.num ?? 1
     config.curVal = 0
@@ -328,7 +328,7 @@ function buildConditionsConfig(blk, showStage = -1) {
     config.stages.append(sData)
   }
 
-  if (showStage >= 0 && blk?.isMultiStage) { // isMultiStage means stages are auto-generated (used only for streaks).
+  if (showStage >= 0 && blk?.isMultiStage) { 
     config.curStage = showStage
     config.maxVal = config.stages[0].val + showStage
   }
@@ -351,7 +351,7 @@ function buildConditionsConfig(blk, showStage = -1) {
   if (!isBattleTask(id) && config.unlockType != UNLOCKABLE_STREAK
     && blk?.mode.chardType != null && blk?.mode.num != null) {
     config.maxVal = ((blk?.mode.type ?? "") == "totalMissionScore")
-      ? (blk.mode.num / 1000) /*PSEUDO_FLOAT_VALUE_MUL*/ : blk.mode.num
+      ? (blk.mode.num / 1000)  : blk.mode.num
   }
 
   if (haveBasicRewards) {
@@ -662,7 +662,7 @@ let unlockTypeToGetNameFunc = {
   }
 }
 
-// unlockType = -1 finds type by id, so better to use correct unlock type if it's already known
+
 function getUnlockNameText(unlockType, id, params = null) {
   if (isBattleTask(id))
     return getBattleTaskNameById(id)
@@ -1120,10 +1120,10 @@ function getSingleAttachmentConditionText(condition, curValue, maxValue) {
   return loc($"conditions/{modeType}/single", { value = valueText, progress })
 }
 
-// curValue - current value to show in the text (if null, do not show)
-// maxValue - overrides progress value from mode if maxValue != null
-// param locEnding - ending for main condition loc key
-//   if such a loc is not found, usual locId is used
+
+
+
+
 function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, params = null) {
   let modeType = condition?.modeType
   if (!modeType)
@@ -1142,7 +1142,7 @@ function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, para
   if (is_numeric(curValue)) {
     if (bitMode)
       curValue = number_of_set_bits(curValue)
-    else if (is_numeric(maxValue) && curValue > maxValue) // validate values if numeric
+    else if (is_numeric(maxValue) && curValue > maxValue) 
       curValue = maxValue
   }
 
@@ -1181,7 +1181,7 @@ function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, para
       progressText = $"{a}/{b}"
     }
   }
-  else // usual progress text
+  else 
     progressText = "/".join([curValue, maxValue], true)
 
   if (params?.isProgressTextOnly)
@@ -1200,7 +1200,7 @@ function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, para
     textParams.level <- loc($"crew/qualification/{getTblValue("level", condition, 0)}")
   else if (modeType == "landings" && getTblValue("carrierOnly", condition))
     textId = "conditions/carrierOnly"
-  else if (getTblValue("isShip", condition)) // really strange exclude, because this flag is used with various modeTypes
+  else if (getTblValue("isShip", condition)) 
     textId = "conditions/isShip"
   else if (modeType == "killedAirScore")
     textId = "conditions/statKillsAir"
@@ -1226,7 +1226,7 @@ function getUnlockMainCondDesc(condition, curValue = null, maxValue = null, para
     res = $"{res} {reason}"
   }
 
-  // if condition lang is empty and max value == 1 no need to show progress text
+  
   if (progressText != "" && (res != "" || maxValue != 1))
     res = $"{res}{loc("ui/colon")}{colorize("unlockActiveColor", progressText)}"
 
@@ -1284,7 +1284,7 @@ function getUnlocksListView(config) {
           text = decorator.getName()
           isUnlocked = decorator.isUnlocked()
           tooltipMarkup = getTooltipType("DECORATION").getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
-          isAddToFavVisible // will be updated to false if no unlock in the decorator
+          isAddToFavVisible 
         }.__update(getUnlockAdditionalView(decorator.unlockId)))
     }
     else {
@@ -1563,7 +1563,7 @@ function fillUnlockImage(unlockConfig, unlockObj) {
     imgConfig.style,
     imgConfig.image,
     imgConfig.ratio,
-    null /*defStyle*/ ,
+    null  ,
     imgConfig.params
   )
 }
@@ -1703,7 +1703,7 @@ function getConditionsToUnlockShowcaseById(unlockId) {
 }
 
 addTooltipTypes({
-  UNLOCK = { //tooltip by unlock name
+  UNLOCK = { 
     isCustomTooltipFill = true
     fillTooltip = function(obj, handler, unlockId, params) {
       if (!checkObj(obj))

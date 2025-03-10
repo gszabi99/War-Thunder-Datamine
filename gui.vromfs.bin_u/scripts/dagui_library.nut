@@ -77,8 +77,8 @@ let get_roman_numeral_lookup = [
 const MAX_ROMAN_DIGIT = 3
 
 
-//Function from http://blog.stevenlevithan.com/archives/javascript-roman-numeral-converter
-function get_roman_numeral(num) { // -return-different-types
+
+function get_roman_numeral(num) { 
   if (!is_numeric(num) || num < 0) {
     script_net_assert_once("get_roman_numeral", $"get_roman_numeral({num})")
     return ""
@@ -112,7 +112,7 @@ return log.__merge(nativeApi, sharedEnums, {
   to_float_safe
   get_roman_numeral
 
-  nbsp = " " // Non-breaking space character
+  nbsp = " " 
   destroyMsgBox
   showInfoMsgBox
   scene_msg_box
@@ -137,17 +137,17 @@ return log.__merge(nativeApi, sharedEnums, {
   toString
   utf8
   loc
-  //frp
+  
   Watched
   Computed
   mkWatched
   WatchedRo
 
-  //function tools
+  
   kwarg
   memoize
 
-  //some ugly stuff
+  
   getAircraftByName
 
   ALIGN

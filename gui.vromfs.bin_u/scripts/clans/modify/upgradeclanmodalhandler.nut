@@ -38,17 +38,17 @@ gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandl
     select_editbox(newClanTagObj)
     this.onFocus(newClanTagObj)
 
-    // Helps to avoid redundant name length check.
+    
     this.newClanName = this.clanData.name
   }
 
-  // Override.
+  
   function updateSubmitButtonText() {
     let cost = this.clanData.getClanUpgradeCost()
     this.setSubmitButtonText(loc("clan/clan_upgrade/button"), cost)
   }
 
-  // Important override.
+  
   function getSelectedClanType() {
     return this.clanData.clanType.getNextType()
   }
@@ -83,7 +83,7 @@ gui_handlers.UpgradeClanModalHandler <- class (gui_handlers.ModifyClanModalHandl
   }
 
   function getDecoratorsList() {
-    // cannot use non-paid decorators for upgrade
+    
     return ::g_clan_tag_decorator.getDecoratorsForClanType(this.newClanType)
   }
 }

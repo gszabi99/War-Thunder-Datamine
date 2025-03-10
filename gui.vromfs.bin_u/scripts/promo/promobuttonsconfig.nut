@@ -6,16 +6,16 @@ let addPromoButtonConfig = kwarg(function addPromoButtonConfig(promoButtonId, bu
   collapsedIcon = null, collapsedText = null, needUpdateByTimer = false, getCustomSeenId = null,
   updateFunctionInHandler = null, updateByEvents = null, image = null, aspect_ratio = null) {
   promoButtonsConfig[promoButtonId] <- {
-    buttonType              //custom visual type of promo
-    getText                 //function for custom text of promo
+    buttonType              
+    getText                 
     collapsedIcon
     collapsedText
     image
     aspect_ratio
-    getCustomSeenId         //function
-    updateFunctionInHandler // function for update promo in promo handler
-    updateByEvents          // array with events name, for handler subscribe on update of promo
-    needUpdateByTimer       // bool. for update promo in handler by timer
+    getCustomSeenId         
+    updateFunctionInHandler 
+    updateByEvents          
+    needUpdateByTimer       
   }
 })
 

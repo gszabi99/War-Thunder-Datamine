@@ -125,7 +125,7 @@ let directionGroups = [
     type = ThreatType.AI,
     lethalRangeMax = 40000.0
   },
-  //
+  
 
 
 

@@ -1,16 +1,16 @@
 from "%scripts/dagui_natives.nut" import is_cursor_visible_in_gui, is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
-/**
- * Sets an initial mouse pointer pos for a scenes just opened from HUD, because
- * otherwise on PC (where GamepadCursorControls are off) mouse pointer can be
- * located in any random place of the screen. This mouse pos setting should
- * always work for consoles (and can be used as move_mouse_on_obj()), but on
- * PC it works only when mouse pointer was shown recently, or is still invisible
- * (usually it becomes visible little bit later, after GUI scene initialization).
- * When mouse pointer is hidden or displayed recently, it usually means that
- * GUI scene is opened from HUD, where mouse pointer was invisible.
- */
+
+
+
+
+
+
+
+
+
+
 
 let { isMouseCursorVisible } = require("%scripts/controls/mousePointerVisibility.nut")
 let { get_time_msec } = require("dagor.time")

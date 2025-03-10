@@ -181,7 +181,7 @@ let hasRadar = memoizeByMission(function hasRadar(unitId, secondaryWeaponId) {
     let weaponBlkList = weaponsBlk != null ? (weaponsBlk % "Weapon") : []
     let ids = weaponBlkList
       .map(@(v) v.preset)
-      .reduce(@(acc, v) acc.contains(v) ? acc : acc.append(v), []) //warning disable: -unwanted-modification
+      .reduce(@(acc, v) acc.contains(v) ? acc : acc.append(v), []) 
     if (ids.len())
       foreach (slot in unitBlk.WeaponSlots % "WeaponSlot") {
         let wPresets = slot % "WeaponPreset"
@@ -193,7 +193,7 @@ let hasRadar = memoizeByMission(function hasRadar(unitId, secondaryWeaponId) {
   return false
 })
 
-//--------------------------------------------------------------------------------------------------
+
 
 let cfg = {
 
@@ -417,7 +417,7 @@ let cfg = {
     items = [
       { shortcut = [ "ID_TOGGLE_ENGINE", "ID_TOGGLE_ENGINE_HELICOPTER" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ], enable = hasEnginesWithFeatheringControl }
-      null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
+      null 
       { shortcut = [ "ID_COMPLEX_ENGINE" ] }
       { section = "control_engines_separately" }
       { shortcut = [ "ID_AIR_REVERSE" ], enable = @(_unitId) hasThrustReverse() }
@@ -468,7 +468,7 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
         enable = @(_unitId) hasFeatheringControl(0) }
-      null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
+      null 
       null
       null
       null
@@ -486,7 +486,7 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
         enable = @(_unitId) hasFeatheringControl(1) }
-      null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
+      null 
       null
       null
       null
@@ -504,7 +504,7 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
         enable = @(_unitId) hasFeatheringControl(2) }
-      null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
+      null 
       null
       null
       null
@@ -522,7 +522,7 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
         enable = @(_unitId) hasFeatheringControl(3) }
-      null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
+      null 
       null
       null
       null
@@ -540,7 +540,7 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
         enable = @(_unitId) hasFeatheringControl(4) }
-      null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
+      null 
       null
       null
       null
@@ -558,7 +558,7 @@ let cfg = {
       { shortcut = [ "ID_TOGGLE_ENGINE" ] }
       { shortcut = [ "ID_TOGGLE_PROP_FEATHERING" ],
         enable = @(_unitId) hasFeatheringControl(5) }
-      null // { shortcut = [ "ID_TOGGLE_EXTINGUISHER" ], enable = hasEngineExtinguishers }
+      null 
       null
       null
       null
@@ -665,8 +665,8 @@ let cfg = {
       { shortcut = [ "ID_SHIP_WEAPON_PRIMARY" ],    enable = hasWeaponPrimary    }
       { shortcut = [ "ID_SHIP_WEAPON_SECONDARY" ],  enable = hasWeaponSecondary  }
       { shortcut = [ "ID_SHIP_WEAPON_MACHINEGUN" ], enable = hasWeaponMachinegun }
-      null // TODO: Toggle USEROPT_SINGLE_SHOT_BY_TURRET off
-      null // TODO: Toggle USEROPT_SINGLE_SHOT_BY_TURRET on
+      null 
+      null 
       null
       null
       null

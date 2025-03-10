@@ -133,7 +133,7 @@ let seeMoreUrl = {
 
 let scrollPatchnoteWatch = Watched(0)
 
-function scrollPatchnote() {  //FIX ME: Remove this code, when native scroll will have opportunity to scroll by hotkeys.
+function scrollPatchnote() {  
   let element = scrollHandler.elem
   if (element != null)
     scrollHandler.scrollToY(element.getScrollOffsY() + scrollPatchnoteWatch.value * scrollStep)

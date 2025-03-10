@@ -9,7 +9,7 @@ function pickword(dictionary, seed=null, allow_cache=false){
       foreach (weight in dictionary)
         totalWeight += weight
       if (allow_cache)
-        dictionary["___totalWeight___"] <- totalWeight //cache it dictionary
+        dictionary["___totalWeight___"] <- totalWeight 
     }
     else
       totalWeight = dictionary["___totalWeight___"]

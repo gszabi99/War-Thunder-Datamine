@@ -11,16 +11,16 @@ let { cutPrefix } = require("%sqstd/string.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
 
-/*
-  config {
-    purchaseData = (getPurchaseData) //required
-    image = (string)  //full path to image
-    imageRatioHeight = (float)
-    header = (string)
-    text = (string)
-    checkPackage = (string)  //when entitlement bought ask player to download this package
-  }
-*/
+
+
+
+
+
+
+
+
+
+
 
 gui_handlers.ReqPurchaseWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -31,7 +31,7 @@ gui_handlers.ReqPurchaseWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   header = ""
   text = ""
   image = ""
-  imageRatioHeight = 0.75 //same with blk
+  imageRatioHeight = 0.75 
   btnStoreText = "#msgbox/btn_onlineShop"
 
   static function open(config) {

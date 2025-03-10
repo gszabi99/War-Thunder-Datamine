@@ -70,7 +70,7 @@ function isShipWithoutPurshasedTorpedoes(unit) {
 
   local torpedoes = null
   if (isUnitHaveSecondaryWeapons(unit))
-    torpedoes = unit.getWeapons().findvalue(@(weapon) weapon.name == "torpedoes")    //!!! FIX ME: Need determine weapons by weapon mask. WeaponMask now available only for air
+    torpedoes = unit.getWeapons().findvalue(@(weapon) weapon.name == "torpedoes")    
 
   if (!torpedoes)
     return false

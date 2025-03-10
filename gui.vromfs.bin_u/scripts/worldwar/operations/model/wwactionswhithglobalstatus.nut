@@ -44,7 +44,7 @@ function getMyClanOperation() {
 
 let getMapByName = @(mapName) ::g_ww_global_status_type.MAPS.getList()?[mapName]
 
-//always return queue. do not return null
+
 let getQueueByMapName = @(mapName) ::g_ww_global_status_type.QUEUE.getList()?[mapName] ?? ::WwQueue(mapName)
 
 let getOperationGroupByMapId = @(mapId)
@@ -71,7 +71,7 @@ function isWwOperationInviteEnable() {
     && getOperationById(wwOperationId)?.isMyClanParticipate()
 }
 
-::g_ww_global_status_actions <- {   //!!!FIX ME: This global table used in main scripts. It is necessary to remove use of world war scripts from the main scripts and remove this table
+::g_ww_global_status_actions <- {   
   getOperationById
   getMapByName
 }

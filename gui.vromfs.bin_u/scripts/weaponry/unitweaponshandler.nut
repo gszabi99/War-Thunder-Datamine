@@ -107,21 +107,21 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateAllItems()
   }
 
-  /*
-    columnsConfig = {
-      itemWidth = 1
-      columns = [  //len <= modsInRow / width
-        [
-          { id = "string"
-            header = "string"  //optional
-            itemType = weaponsItem.unknown
-            bulGroupIdx = int  //only for bullets
-          }
-        ]
-        ...
-      ]
-    }
-  */
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   function fillWeaponryByColumnsConfig(config) {
     let view = {
       bgBlocks = []
@@ -335,7 +335,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       res.columns[col].append(this.getCellConfig(this.getBulletsItemId(gIdx), header, weaponsItem.modification, gIdx))
     }
 
-    res.columns = res.columns.filter(@(v) v.len() > 0) //filter empty columns
+    res.columns = res.columns.filter(@(v) v.len() > 0) 
     totalColumns = res.columns.len()
 
     let maxColumns = (this.modsInRow / res.itemWidth) || 1
@@ -392,7 +392,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let weaponName = getLastWeapon(this.unit.name)
     foreach (weapon in this.unit.getWeapons()) {
       let found = weapon.name == weaponName
-      //no point to check all weapons visibility and counts when we need only one
+      
       if (!found && defWeapon)
         continue
 
@@ -407,7 +407,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!defWeapon)
         defWeapon = weapon
     }
-    if (defWeapon) //validate selected weapon
+    if (defWeapon) 
       this.setWeapon(defWeapon.name)
     return defWeapon
   }
@@ -481,7 +481,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       updateItemBulletsSlider(itemObj, this.bulletsManager, bulGroup)
   }
 
-  //included to updateBullets but much faster than full bullets update
+  
   function updateAllBulletCountSliders() {
     let groups = this.getBulletsGroups()
     foreach (gIdx, bulGroup in groups)
@@ -567,10 +567,10 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (!this.bulletsManager.changeBulletsCount(bulGroup, obj.getValue()))
-      this.updateBulletCountSlider(bulGroup, groupIndex) //move back current slider when value not changed
+      this.updateBulletCountSlider(bulGroup, groupIndex) 
   }
 
-  function onChangeBullets(diff = 1) { //gamepad shortcut - search selected
+  function onChangeBullets(diff = 1) { 
     if (!this.bulletsManager.canChangeBulletsCount())
       return
     let listObj = this.scene.findObject("weaponry_list")
@@ -594,7 +594,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onBulletsDecrease() { this.onChangeBullets(-1) }
   function onBulletsIncrease() { this.onChangeBullets(1) }
 
-  function onModChangeBullets(obj, diff = 1) { //real button, can be called not for selected mod, but have holderId
+  function onModChangeBullets(obj, diff = 1) { 
     let group = this.getBulletGroupByItemId(obj.holderId)
     if (group)
       this.bulletsManager.changeBulletsCount(group, group.bulletsCount + diff)

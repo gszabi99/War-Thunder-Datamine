@@ -93,7 +93,7 @@ local funcPointAction = null
 function setPointActionMode(actionType, actionName, cb) {
   showEntitySelect(false)
   setEditMode(DE4_MODE_POINT_ACTION)
-  setPointActionPreview("", 0.0) // default
+  setPointActionPreview("", 0.0) 
   typePointAction(actionType)
   namePointAction(actionName)
   funcPointAction = cb

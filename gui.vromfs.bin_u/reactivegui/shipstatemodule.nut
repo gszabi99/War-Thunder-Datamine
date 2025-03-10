@@ -4,7 +4,7 @@ let { eventbus_send } = require("eventbus")
 let { brokenEnginesCount, enginesInCooldown, enginesCount,
   transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
   artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
-  steering, sightAngle, fwdAngle, hasAiGunners, fov, blockMoveControl, heroCoverPartsRelHp
+  steering, sightAngle, fwdAngle, hasAiGunners, fov, blockMoveControl, heroCoverPartsRelHp, isCoverDestroyed
 } = require("shipState.nut")
 let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
 let { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
@@ -12,7 +12,7 @@ let { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
 let { needShowDmgIndicator } = require("hudState.nut")
 let dmModule = require("dmModule.nut")
 let { damageModule, shipSteeringGauge, hudLogBgColor } = require("style/colors.nut").hud
-let { lerp, sin } = require("%sqstd/math.nut")
+let { lerp, sin, round } = require("%sqstd/math.nut")
 
 const STATE_ICON_MARGIN = 1
 const STATE_ICON_SIZE = 54
@@ -21,7 +21,7 @@ const TOP_PANEL_ICON_SIZE = 32
 let iconSize = hdpxi(STATE_ICON_SIZE)
 let topPanelIconSize = hdpxi(TOP_PANEL_ICON_SIZE)
 
-let coverPartsBarIndicatorWidth = hdpx(170)
+let allCoverPartsBarsWidth = hdpx(165)
 
 enum CoverPartHpThreshold {
   MAX  = 0.995
@@ -50,13 +50,13 @@ let images = {
   sightCone = Picture("+ui/gameuiskin#map_camera")
   gunner = Picture($"!ui/gameuiskin#ship_crew_gunner.svg:{iconSize}:{iconSize}")
   driver = Picture($"!ui/gameuiskin#ship_crew_driver.svg:{iconSize}:{iconSize}")
-  // Top panel icons
+  
   hull = Picture($"!ui/gameuiskin#ship_hull.svg:{topPanelIconSize}:{topPanelIconSize}")
   shipCrew = Picture($"!ui/gameuiskin#ship_crew.svg:{topPanelIconSize}:{topPanelIconSize}")
 
   bg = Picture("!ui/gameuiskin#debriefing_bg_grad@@ss")
 
-  gunnerState = [ //according to AI_GUNNERS_ enum
+  gunnerState = [ 
     Picture($"!ui/gameuiskin#ship_gunner_state_hold_fire.svg:{iconSize}:{iconSize}")
     Picture($"!ui/gameuiskin#ship_gunner_state_fire_at_will.svg:{iconSize}:{iconSize}")
     Picture($"!ui/gameuiskin#ship_gunner_state_air_targets.svg:{iconSize}:{iconSize}")
@@ -369,15 +369,16 @@ let shipStateDisplay = {
 
 let xraydoll = {
   size = [1, 1]
-  rendObj = ROBJ_XRAYDOLL     ///Need add ROBJ_XRAYDOLL in scene for correct update isVisibleDmgIndicator state
+  rendObj = ROBJ_XRAYDOLL     
 }
 
 function mkCoverPartsBars(heroCoverPartsRelHpV) {
   let partsCount = heroCoverPartsRelHpV.len()
   if (partsCount == 0)
     return null
+  let barsMarginsCount = partsCount + 1
   let barsMarginX = hdpx(2)
-  let width = (coverPartsBarIndicatorWidth / partsCount) - (partsCount + 1) * barsMarginX / partsCount
+  let width = round((allCoverPartsBarsWidth - barsMarginsCount * barsMarginX) / partsCount)
   return heroCoverPartsRelHpV.map(@(hp) {
     size = [width, hdpx(6)]
     margin = [0, barsMarginX]
@@ -389,16 +390,24 @@ function mkCoverPartsBars(heroCoverPartsRelHpV) {
   })
 }
 
-let coverPartsBar = @() {
+let mkCoverPartsContainerBar = @(isCoverDestroyedV) @() {
+  key = {}
   watch = heroCoverPartsRelHp
-  size = [coverPartsBarIndicatorWidth, SIZE_TO_CONTENT]
   vplace = ALIGN_BOTTOM
-  padding = [hdpx(2), 0]
+  padding = hdpx(4)
   flow = FLOW_HORIZONTAL
   rendObj = ROBJ_BOX
   borderColor = 0xff565656
-  borderWidth = hdpx(1)
+  borderWidth = hdpx(2)
+
   children = mkCoverPartsBars(heroCoverPartsRelHp.get())
+
+  animations = isCoverDestroyedV ? [{
+    prop = AnimProp.borderColor,
+    from = 0x00000000, to = damageModule.alert,
+    duration = 1, easing = InSine,
+    loop = true, play = true,
+  }] : null
 }
 
 let coverPartsIndicator = {
@@ -414,7 +423,8 @@ let coverPartsIndicator = {
       rendObj = ROBJ_IMAGE
       image = images.hull
     }
-    {
+    @() {
+      watch = isCoverDestroyed
       vplace = ALIGN_CENTER
       flow = FLOW_VERTICAL
       children = [
@@ -423,7 +433,7 @@ let coverPartsIndicator = {
           text = loc("HUD/SHIP_HULL_STRENGTH")
           font = Fonts.tiny_text_hud
         }
-        coverPartsBar
+        mkCoverPartsContainerBar(isCoverDestroyed.get())
       ]
     }
   ]

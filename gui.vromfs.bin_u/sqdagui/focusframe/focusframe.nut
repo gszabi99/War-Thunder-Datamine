@@ -39,7 +39,7 @@ local focusFrame = {
         continue
 
       let modalCounter = obj.getModalCounter()
-      if (curObj && modalCounter > curModalCounter) //use last obj if same counter
+      if (curObj && modalCounter > curModalCounter) 
         continue
 
       curObj = obj
@@ -50,7 +50,7 @@ local focusFrame = {
       this.playAnimDelayed(curObj, tgtObj)
   }
 
-  //!!FIX ME: perform delayed sometimes called instently without real delay. this function try to catch this
+  
   function playAnimDelayed(curObj, tgtObj, shouldCheckDelayedBug = true) {
     curObj.getScene().performDelayed(this, function() {
       if (!check_obj(curObj) || !check_obj(tgtObj))

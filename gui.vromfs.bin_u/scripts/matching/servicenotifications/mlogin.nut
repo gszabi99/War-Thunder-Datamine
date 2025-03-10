@@ -10,7 +10,7 @@ let { totalRooms, totalPlayers, onlineInfoServerTimeParam, onlineInfoServerTimeR
 
 local lastShowUpdatePopupTime = -60000
 
-/**[DEPRECATED] this notification callbacks call by mathing forced**/
+
 function onOnlineInfoUpdated(params) {
   if ("utc_time" in params) {
     onlineInfoServerTimeParam.set(params.utc_time.tointeger())

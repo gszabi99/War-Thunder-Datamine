@@ -1,23 +1,23 @@
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
-/*
-  widget API:
-  static createLayout()  - return widget layout
 
-  setContainer(containerObj) - link current widget to current @containerObj (daguiObj)
-  validateContent() - validate current widget container (repaceContent layout on invalid)
 
-  setValue(value)
-             @value > 0  - setText value and show widget with text
-             @value == 0 - hide widget
-             @value < 0  - show only icon
-             also validateContent when @value != 0
 
-  setWidgetVisible(value)  - set widget visibility  to @value
-  setText(text)            - set widget text to @text
-                             @text == ""   - hide widgetText
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let NewIconWidget = class {
   widgetContainerTag = "newIconWidget"

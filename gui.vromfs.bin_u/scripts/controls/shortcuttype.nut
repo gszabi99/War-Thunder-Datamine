@@ -151,27 +151,27 @@ g_shortcut_type.template <- {
   isAssigned = function (_shortcutId, _preset = null) { return false }
 
 
-  /**
-   * Expands complex shortcuts and axes to most suitable
-   * list of common shortcuts or axis for display
-   */
+  
+
+
+
   expand = function (shortcutId, _showKeyBoardShortcutsForMouseAim) { return [shortcutId] }
 
 
-  /**
-   * @return array of Input instances
-   * Array contains atlast one element (NullInput)
-   */
+  
+
+
+
   getInputs = kwarg(function getInputs(shortcutId, _preset = null,
     _isMouseHigherPriority = true, showShortcutsNameIfNotAssign = false) {
     return [getNullInput(shortcutId, showShortcutsNameIfNotAssign)]
   })
 
 
-  /**
-   * @return first Input for @shortcutId or NullInput.
-   * Also tries to find input with most suitable device type.
-   */
+  
+
+
+
   getFirstInput = function (shortcutId, preset = null, showShortcutsNameIfNotAssign = false) {
     let inputs = this.getInputs({
       shortcutId
@@ -296,7 +296,7 @@ enumsAddTypes(g_shortcut_type, {
       return this.getUseAxisShortcuts([shortcutId], Axis(axisDescription, AXIS_MODIFIERS.NONE, preset), preset)
     })
 
-    commonShortcutActiveAxis =    //when axis are activated by common shortcut
+    commonShortcutActiveAxis =    
     {
       camx            = @() getShortcuts(["ID_CAMERA_NEUTRAL"])
       camy            = @() getShortcuts(["ID_CAMERA_NEUTRAL"])
@@ -308,7 +308,7 @@ enumsAddTypes(g_shortcut_type, {
       helicopter_camy = @() getShortcuts(["ID_CAMERA_NEUTRAL"])
       submarine_camx  = @() getShortcuts(["ID_CAMERA_NEUTRAL"])
       submarine_camy  = @() getShortcuts(["ID_CAMERA_NEUTRAL"])
-      //
+      
 
 
 
@@ -355,7 +355,7 @@ enumsAddTypes(g_shortcut_type, {
       if (shortcutId.indexof("=min") != null)
         return $"{fullAxisId}_rangeMin"
 
-      //actualy imposible situation if isAssigned used befor expand
+      
       return ""
     }
 
@@ -413,7 +413,7 @@ enumsAddTypes(g_shortcut_type, {
         return [shortcutId]
       else if (isAxisAssignedToShortcuts(fullAxisId))
         return [this.transformHalfAxisToShortcuts(shortcutId)]
-      else // if mouseAxisAssigned
+      else 
         return [shortcutId]
     }
 

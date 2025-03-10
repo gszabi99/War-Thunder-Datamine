@@ -27,26 +27,26 @@ let { isWorldWarEnabled, canPlayWorldwar } = require("%scripts/globalWorldWarScr
 let { deferOnce } = require("dagor.workcycle")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
-/**
- * Game mode manager incapsulates working
- * with current game mode id and game modes data.
- *
- * Game mode data has following structure:
- * {
- *   id       - string id (eventId for events or id for domination modes)
- *   source   - link to dominationModes item or event
- *   type     - event or dominationModes item
- *   locId    - localization to show in list
- *   modeIdx  - index in dominationModes array
- *   diffCode - difficulty code (0, 1, 2...) or -1 if code is invalid
- * }
- *
- * Setting new game mode will cause manager
- * to broadcast "CurrentGameModeIdChanged" event.
- *
- * Manager updates game modes array when (game) events
- * and player stats data is updated.
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 local userGameModeId = null
 local currentGameModeId = null
@@ -102,9 +102,9 @@ let getCurrentGameModeId = @() currentGameModeId
 let getUserGameModeId = @() userGameModeId
 let setUserGameModeId = @(id) userGameModeId = id
 
-/**
-  * Returns game mode data by id.
-  */
+
+
+
 let getGameModeById = @(id) gameModeById?[id]
 
 function setCurrentGameModeId(id, save, isUserSelected = false) {
@@ -131,7 +131,7 @@ function setCurrentGameModeById(id, isUserSelected = false) {
 
 let featuredModes = [
   {
-    /*World War*/
+    
     modeId = "world_war_featured_game_mode"
     text = @() loc("mainmenu/btnWorldwar")
     textDescription = @() ::g_world_war.getPlayedOperationText()
@@ -156,7 +156,7 @@ let featuredModes = [
     }
   }
   {
-    /*War Thunder League*/
+    
     modeId = "tss_featured_game_mode"
     text = @() loc("mainmenu/btnTournamentsTSS")
     textDescription = @() null
@@ -173,7 +173,7 @@ let featuredModes = [
       && !isCrossPlayEnabled()
   }
   {
-    /*Events*/
+    
     modeId = "tournaments_and_event_featured_game_mode"
     text = function () {
       let activeEventsNum = events.getEventsVisibleInEventsWindowCount()
@@ -194,7 +194,7 @@ let featuredModes = [
     inactiveColor = @() !isMultiplayerPrivilegeAvailable.value
   }
   {
-    /*Custom Battles*/
+    
     modeId = "custom_battles_featured_game_mode"
     text = function () {
       return loc("mainmenu/btnSkirmish")
@@ -211,17 +211,17 @@ let featuredModes = [
     inactiveColor = @() isMeNewbie() || !isMultiplayerPrivilegeAvailable.value
       || hasMultiplayerRestritionByBalance()
   }
-  //{
-    /*dynamic campaign*/
-  //}
-  //{
-    /*single missions*/
-  //}
+  
+    
+  
+  
+    
+  
 ]
 
 let customGameModesBattles = [
   {
-    // "Simulator Battles"
+    
     id = "custom_mode_fullreal"
     difficulty = g_difficulty.SIMULATOR
     image = "#ui/images/game_modes_tiles/mixed_event_02_wide?P1"
@@ -258,19 +258,19 @@ let customGameModesBattles = [
   }
 ]
 
-  /**
-   * Returns current game mode data.
-   */
+  
+
+
 let getCurrentGameMode = @() gameModeById?[currentGameModeId]
 
-  /**
-   * Game modes retrieve method.
-   * @param unitType Optional parameter providing method with unit type filter.
-   *                 Parameter will be ignored if it set to ES_UNIT_TYPE_INVALID.
-   * @param filterFunc Optional filter function with game mode as parameter and
-   *                   boolean return type.
-   * @return Returns array with available game modes.
-   */
+  
+
+
+
+
+
+
+
 function getGameModes(unitType = ES_UNIT_TYPE_INVALID, filterFunc = null) {
   if (unitType == ES_UNIT_TYPE_INVALID && filterFunc == null)
     return gameModes
@@ -291,15 +291,15 @@ function getRequiredUnitTypes(gameMode) {
     : (gameMode?.unitTypes ?? [])
 }
 
-  /**
-   * Returns game mode by unit type and (optionaly) difficulty.
-   * @param unitType Unit type for game mode.
-   * @param diffCode Requires game mode to be with specific difficulty.
-   *                 Not applied if parameter is below zero and game mode
-   *                 with lowest difficulty will be returned.
-   * @param excludeClanGameModes Clan game mode will be skipped during search.
-   * @return Null if game mode not found.
-   */
+  
+
+
+
+
+
+
+
+
 function getGameModeByUnitType(unitType, diffCode = -1, excludeClanGameModes = false) {
   local bestGameMode
   foreach (gameMode in gameModes) {
@@ -342,8 +342,8 @@ function getGameModesPartitions() {
         }
       )
     }
-    // If diff code is not provided
-    // sort game modes by difficulty.
+    
+    
     if (diffCode == -1) {
       partition.gameModes.sort(function (gm1, gm2) {
         return events.diffCodeCompare(gm1.diffCode, gm2.diffCode)
@@ -378,15 +378,15 @@ function getClanBattlesGameModes() {
   })
 }
 
-  /**
-   * Attempts to determine current game mode id
-   * based on local profile data, current unit, etc...
-   * @param ignoreLocalProfile This flag disables attempts to retrieve
-   *                           id from local profile.
-   * @param preferredDiffCode If specified this difficulty will have highest priority.
-   */
+  
+
+
+
+
+
+
 function findCurrentGameModeId(ignoreLocalProfile = false, preferredDiffCode = -1) {
-  //Step 0. Check current queue for gamemode.
+  
   let queue = ::queues.findQueue(null, queueMask, true)
   if (queue && (queue.name in gameModeById))
     return queue.name
@@ -394,13 +394,13 @@ function findCurrentGameModeId(ignoreLocalProfile = false, preferredDiffCode = -
   local idFromAccount = null
   local unitType = ES_UNIT_TYPE_INVALID
   if (!ignoreLocalProfile && isProfileReceived.get()) {
-    // Step 1. Attempting to retrieve current game mode id from account.
+    
     idFromAccount = loadLocalByAccount("selected_random_battle", null)
     if (idFromAccount in gameModeById)
       return idFromAccount
 
-    // Step 2. Player's newbie event is may be not longer available.
-    //         Attempting to get event with same unit type.
+    
+    
     unitType = getUnitTypeByNewbieEventId(idFromAccount)
     if (unitType != ES_UNIT_TYPE_INVALID) {
       local gameMode = null
@@ -413,26 +413,26 @@ function findCurrentGameModeId(ignoreLocalProfile = false, preferredDiffCode = -
     }
   }
 
-  // Step 4. Attempting to retrieve current game mode id from newbie event.
+  
   let event = getNextNewbieEvent(null, null, true)
   let idFromEvent = getTblValue("name", event, null)
   if (idFromEvent in gameModeById)
     return idFromEvent
 
-  // Step 5. Attempting to get unit type from currently selected unit.
+  
   let unit = getCurSlotbarUnit()
   if (unitType == ES_UNIT_TYPE_INVALID && unit != null)
       unitType = getEsUnitType(unit)
 
-  // Step 6. Newbie event not found. If player is newbie and he has
-  //         valid unit type we select easiest game mode.
+  
+  
   let firstUnitType = getFirstChosenUnitType(ES_UNIT_TYPE_INVALID)
   if (unitType == ES_UNIT_TYPE_INVALID
       && firstUnitType != ES_UNIT_TYPE_INVALID
       && isMeNewbie())
     unitType = firstUnitType
 
-  // Step 8. We have unit type. Selecting easiest game mode.
+  
   local gameModeByUnitType = null
   if (preferredDiffCode != -1)
     gameModeByUnitType = getGameModeByUnitType(unitType, preferredDiffCode, true)
@@ -442,19 +442,19 @@ function findCurrentGameModeId(ignoreLocalProfile = false, preferredDiffCode = -
   if (idFromUnitType != null)
     return idFromUnitType
 
-  // Step 9. Player does not have valid unit type.
-  //         Selecting any or nothing.
+  
+  
   if (gameModes.len() > 0)
     return gameModes[0].id
 
-  // Step 10. Nothing found.
+  
   return null
 }
 
 function updateCurrentGameModeId() {
   let curGameModeId = findCurrentGameModeId()
   if (curGameModeId != null) {
-    // This activates saving to profile on first update after profile loaded.
+    
     let save = curGameModeId == null && events.isEventsLoaded()
     setCurrentGameModeId(curGameModeId, save)
   }
@@ -609,7 +609,7 @@ function updateGameModes() {
   broadcastEvent("GameModesUpdated")
 }
 
-//------------- <New Icon Widget> ----------------------
+
 function initShowingGameModesSeen() {
   if (seenShowingGameModesInited)
     return true
@@ -648,7 +648,7 @@ function getAllVisibleGameModes() {
 
 function saveSeenGameModes() {
   if (!seenShowingGameModesInited)
-    return //data not loaded yet
+    return 
 
   let blk = DataBlock()
   foreach (gameMode in getAllVisibleGameModes()) {
@@ -687,11 +687,11 @@ function getUnseenGameModeCount() {
   return unseenGameModesCount
 }
 
-//------------- </New Icon Widget> ----------------------
 
-  /**
-   * Updates current game mode id and game modes array.
-   */
+
+  
+
+
 function updateManager() {
   updateGameModes()
   initShowingGameModesSeen()
@@ -705,10 +705,10 @@ function setLeaderGameMode(id) {
   setCurrentGameModeId(id, false, false)
 }
 
-/**
-   * Function checks if unit suitable for specified game mode.
-   * @param gameMode Gets current game mode if not speficied.
-   */
+
+
+
+
 function isUnitAllowedForGameMode(unit, gameMode = null) {
   if (!unit || unit.disableFlyout)
     return false
@@ -720,11 +720,11 @@ function isUnitAllowedForGameMode(unit, gameMode = null) {
     || events.isUnitAllowedForEvent(getGameModeEvent(gameMode), unit)
 }
 
-  /**
-   * Returns true if preset has at least
-   * one unit allowed for speficied game mode.
-   * @param gameMode Gets current game mode if not speficied.
-   */
+  
+
+
+
+
 function isPresetValidForGameMode(preset, gameMode = null) {
   let unitNames = getTblValue("units", preset, null)
   if (unitNames == null)
@@ -741,7 +741,7 @@ function isPresetValidForGameMode(preset, gameMode = null) {
   return false
 }
 
-function findPresetValidForGameMode(countryId, gameMode = null /* if null then current game mode*/ ) {
+function findPresetValidForGameMode(countryId, gameMode = null  ) {
   let presets = getTblValue(countryId, ::slotbarPresets.presets, null)
   if (presets == null)
     return null

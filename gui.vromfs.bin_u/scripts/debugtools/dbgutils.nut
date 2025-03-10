@@ -1,4 +1,4 @@
-// warning disable: -file:forbidden-function
+
 
 from "%scripts/dagui_natives.nut" import debug_unlock_all, periodic_task_register, copy_to_clipboard, add_warpoints, update_objects_under_windows_state, get_exe_dir, periodic_task_unregister, reload_main_script_module
 from "%scripts/dagui_library.nut" import *

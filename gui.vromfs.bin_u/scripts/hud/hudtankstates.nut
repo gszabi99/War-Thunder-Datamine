@@ -7,7 +7,7 @@ let { hudTankMovementStatesVisible } = require("%scripts/hud/hudConfigByGame.nut
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { measureType } = require("%scripts/measureType.nut")
 
-enum ORDER { //order for movement state info
+enum ORDER { 
   GEAR
   RPM
   CRUISE_CONTROL

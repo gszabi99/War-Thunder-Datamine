@@ -39,7 +39,7 @@ function on_state_update(results) {
 function add_user(uid) {
   if (!is_platform_xbox)
     return
-  // no need to track self
+  
   if (uid == userIdStr.value)
     return
 

@@ -13,34 +13,34 @@ let { hideTooltip } = require("%scripts/utils/delayedTooltip.nut")
 
 const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
 
-/*
-  API
-    ActionsList.create(parent, params)
-      parent - an object, in which will be created ActionsList.
-        No need to make a special object for ActionsList.
-        ActionList will be aligned on border of parent in specified side
 
-      params = {
-        orientation = ALIGN.TOP
 
-        handler = null - handler, which implemets functions, specified in func
-          field of actions.
 
-        actions = [
-          {
-            // icon = ""
-            text = ""
-            action = function (){}
-            // show = function (){return true}
-            // selected = false
-          }
 
-          ...
 
-        ]
-      }
 
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 gui_handlers.ActionsList <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/actionsList/actionsListBlock.blk"
@@ -100,20 +100,21 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
 
     local isIconed = false
     local isVisibleActionFinded = false
-    foreach (_idx, action in this.params.actions) {
-      if (action?.show == null)
-        action.show <- true
-      action.haveSeparator <- isVisibleActionFinded
-      isVisibleActionFinded = isVisibleActionFinded || action.show
-      action.text <- (action?.text ?? "").replace(" ", nbsp)
-      isIconed = isIconed || (action.show && action?.icon != null)
-    }
+    if (this.params?.actions)
+      foreach (_idx, action in this.params.actions) {
+        if (action?.show == null)
+          action.show <- true
+        action.haveSeparator <- isVisibleActionFinded
+        isVisibleActionFinded = isVisibleActionFinded || action.show
+        action.text <- (action?.text ?? "").replace(" ", nbsp)
+        isIconed = isIconed || (action.show && action?.icon != null)
+      }
     this.scene.iconed = isIconed ? "yes" : "no"
 
     let data = handyman.renderCached(__al_item_obj_tpl, this.params)
     this.guiScene.replaceContentFromText(nest, data, data.len(), this)
 
-    // Temp Fix, DaGui cannot recalculate childrens width according to parent after replaceContent
+    
     local maxWidth = this.scene.getSize()[0]
     for (local i = 0; i < nest.childrenCount(); i++) {
       let child = nest.getChild(i)
@@ -123,7 +124,7 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
     }
     nest.width = maxWidth
 
-    if (this.params?.infoBlock) {
+    if (this.params?.infoBlock && (this.params?.actions.len() ?? 0) > 0) {
       let infoBlockSeparator = this.scene.findObject("info_block_separator")
       infoBlockSeparator.show(true)
       infoBlockSeparator.size = $"{maxWidth} - 2@sf/@pf, 1@sf/@pf"
@@ -131,13 +132,13 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
 
     if (showConsoleButtons.value)
       this.guiScene.performDelayed(this, function () {
-        if (!checkObj(nest))
+        if (!nest.isValid())
           return
 
-        let selIdx = this.params.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
+        let selIdx = this.params?.actions.findindex(@(action) (action?.selected ?? false) && (action?.show ?? false)) ?? -1
         this.guiScene.applyPendingChanges(false)
         move_mouse_on_child(nest, max(selIdx, 0))
-        this.updatePosition() // after calling move_mouse_on_child the position can change, cause there is scrollToView() call
+        this.updatePosition() 
       })
   }
 

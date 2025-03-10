@@ -25,7 +25,7 @@ let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
 
   stepIdx = 0
 
-  // Used to check whether tutorial was canceled or not.
+  
   canceled = true
 
   isTutorialCancelable = false
@@ -137,7 +137,7 @@ let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
 
     let waitTime = getTblValue("waitTime", stepData, actionType == tutorAction.WAIT_ONLY ? 1 : -1)
     if (waitTime > 0)
-      Timer(this.scene, waitTime, (@(stepIdx) function() { this.timerNext(stepIdx) })(this.stepIdx), this) //-ident-hides-ident
+      Timer(this.scene, waitTime, (@(stepIdx) function() { this.timerNext(stepIdx) })(this.stepIdx), this) 
 
     this.stepTimeoutSec = TUTOR_STEP_TIMEOUT_SEC
   }
@@ -150,10 +150,10 @@ let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
       boxList.append(b.box)
 
     if (needArrow) {
-      let incSize = to_pixels("3@tutorArrowSize") // arrow height
+      let incSize = to_pixels("3@tutorArrowSize") 
       foreach (b in blocks)
         if (b.hasArrow)
-          boxList.append(b.box.cloneBox(incSize)) // inc targetBox for correct place message
+          boxList.append(b.box.cloneBox(incSize)) 
     }
 
     let mainMsgObj = this.scene.findObject("msg_block")
@@ -222,15 +222,15 @@ let Tutor = class (gui_handlers.BaseGuiHandlerWT) {
 }
 
 function gui_modal_tutor(stepsConfig, wndHandler, isTutorialCancelable = false) {
-//stepsConfig = [
-//  {
-//    obj     - array of objects to show in this step.
-//              (some of object can be array of objects, - they will be combined in one)
-//    text    - text to view
-//    actionType = enum tutorAction    - type of action for the next step (default = tutorAction.ANY_CLICK)
-//    cb      - callback on finish tutor step
-//  }
-//]
+
+
+
+
+
+
+
+
+
   return loadHandler(Tutor, {
     ownerWeak = wndHandler,
     config = stepsConfig,

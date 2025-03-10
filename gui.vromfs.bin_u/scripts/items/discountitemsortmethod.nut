@@ -42,8 +42,8 @@ function parseDiscountDescriptionCountryRank(blk, category) {
         items[$"country{postfix}"].append({
           paramName = cName
           category = category
-          // Same as for "all" discounts
-          // because of same localization strings.
+          
+          
           type = $"all{postfix}"
           discountValue = blk[cName]
           countryName = countryName
@@ -54,8 +54,8 @@ function parseDiscountDescriptionCountryRank(blk, category) {
           items[$"countryRank{postfix}"].append({
             paramName = name
             category = category
-            // Same as for rank-only discounts
-            // because of same localization strings.
+            
+            
             type = $"rank{postfix}"
             discountValue = blk[name]
             rank = i
@@ -112,7 +112,7 @@ function parseDiscountDescriptionCategory(blk) {
   if (blk == null)
     return []
   let category = blk.getBlockName()
-  // Order corresponds to discount priorities.
+  
   let items = []
   addDiscountDescriptionAircrafts(blk?.aircrafts, category, items)
   let descriptionCountryRank = parseDiscountDescriptionCountryRank(blk, category)
@@ -128,13 +128,13 @@ function parseDiscountDescriptionCategory(blk) {
   return items
 }
 
-/**
-* Sorts description items with following rules:
-* First items are sorted by categories. Same order
-* as in blk. Then go all aircraft items sorted again
-* as in discount item blk. Last go all non-aircraft
-* items with order from blk.
-*/
+
+
+
+
+
+
+
 function sortDiscountDescriptionItems(items, sortData) {
   if (sortData == null)
     return
@@ -164,10 +164,10 @@ function sortDiscountDescriptionItems(items, sortData) {
   })
 }
 
-/**
-* Creates special data object that
-* helps to sort discount data items.
-*/
+
+
+
+
 function createDiscountDescriptionSortData(blk) {
   if (blk == null)
     return null
@@ -185,9 +185,9 @@ function createDiscountDescriptionSortData(blk) {
   return sortData
 }
 
-/**
-* Main parsing method.
-*/
+
+
+
 function parseDiscountDescription(blk) {
   if (blk == null)
     return []

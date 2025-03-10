@@ -2,10 +2,10 @@ from "%scripts/dagui_library.nut" import *
 
 let { defer } = require("dagor.workcycle")
 
-//!!FIX ME: replace by real threads after fix crash of datablock in sq thread
+
 let PT_STEP_STATUS = {
-  NEXT_STEP = 0  //default status
-  SKIP_DELAY = 1 //for steps which do nothing no need to delay
+  NEXT_STEP = 0  
+  SKIP_DELAY = 1 
   SUSPEND = 2
 }
 

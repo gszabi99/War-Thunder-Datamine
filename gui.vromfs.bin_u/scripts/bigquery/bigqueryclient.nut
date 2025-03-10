@@ -1,6 +1,6 @@
 #strict
 #allow-root-table
-//pseudo-module for native code
+
 from "%scripts/dagui_natives.nut" import epic_is_running, save_common_local_settings
 from "%scripts/dagui_library.nut" import *
 from "app" import is_dev_version
@@ -35,7 +35,7 @@ function add_sysinfo(table) {
   let sysinfo = get_user_system_info()
 
   local uuid = ""
-  foreach (u in ["uuid0", "uuid2"]) {  // biosUuid, systemHddId
+  foreach (u in ["uuid0", "uuid2"]) {  
     local str = sysinfo?[u] ?? ""
     str = str.slice(str.len() / 2)
     uuid = $"{uuid}{str}"
@@ -96,13 +96,13 @@ function bq_client_no_auth(event, uniqueId, table) {
     data = {}
   }
 
-  ww_leaderboard.request(request, function(_response) {})  // cloud-server
+  ww_leaderboard.request(request, function(_response) {})  
   log($"BQ CLIENT_NO_AUTH {event} {params} [{uniqueId}]")
 }
 
 
 function generate_unique_id() {
-  // period of one second is not enough for random-seed, let's increase it
+  
   let seed = get_rnd_seed()
   set_rnd_seed(ref_time_ticks())
   let uniqueId = format("%.8X%.8X", get_local_unixtime(), rnd() * rnd())
@@ -111,7 +111,7 @@ function generate_unique_id() {
 }
 
 
-function bqSendNoAuth(event, start = false) {  // NOTE: call after 'reset PlayerProfile' in log
+function bqSendNoAuth(event, start = false) {  
   local blk = get_common_local_settings_blk()
   local save = false
 

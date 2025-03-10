@@ -7,10 +7,10 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
 
-/*
-  config = { itemsCountX, itemsCountY, sizeX, sizeY,
-    spaceX, spaceY, items, hasDeleteBtn, itemTypeLoc, getTooltip }
-*/
+
+
+
+
 
 function openSelectionWindow(config, applyFunc, owner = null) {
   handlersManager.loadHandler(gui_handlers.SelectionWindow, {
@@ -225,7 +225,7 @@ gui_handlers.SelectionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     let obj = this.scene.findObject("search_edit_box")
     if (obj.isValid()) {
       obj.setValue("")
-      // Toggling enable status to make it lose focus.
+      
       obj.enable(false)
       obj.enable(true)
     }

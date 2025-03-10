@@ -174,12 +174,12 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getViewArray(gameModesArray) {
     let view = []
-    // First go all wide featured game modes then - non-wide.
+    
     local numNonWideGameModes = 0
     foreach (isWide in [ true, false ]) {
       while (true) {
         let gameMode = this.getGameModeByCondition(gameModesArray,
-          @(gameMode) gameMode.displayWide == isWide) // warning disable: -iterator-in-lambda
+          @(gameMode) gameMode.displayWide == isWide) 
         if (gameMode == null)
           break
         if (!isWide)
@@ -190,14 +190,14 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
     this.sortByUnitType(view)
-    // Putting a dummy block to show featured links in one line.
+    
     if ((numNonWideGameModes & 1) == 1)
       view.append(this.createGameModeView(null))
     return view
   }
 
   function sortByUnitType(gameModeViews) {
-    gameModeViews.sort(function(a, b) { // warning disable: -return-different-types
+    gameModeViews.sort(function(a, b) { 
       foreach (unitType in unitTypes.types) {
         if (b.isWide != a.isWide)
           return b.isWide <=> a.isWide
@@ -344,7 +344,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       isFeatured = true
       onClick = "onGameModeSelect"
       onHover = "markGameModeSeen"
-      // Used to easily backtrack corresponding game mode.
+      
       gameMode = gameMode
       inactiveColor = (gameMode?.inactiveColor ?? @() false)() || inactiveColor
       crossPlayRestricted = crossPlayRestricted
@@ -360,19 +360,19 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!isMultiplayerPrivilegeAvailable.value)
       return loc("xbox/noMultiplayer")
 
-    if (!crossplayModule.needShowCrossPlayInfo()) //No need tooltip on other platforms
+    if (!crossplayModule.needShowCrossPlayInfo()) 
       return null
 
-    //Always send to other platform if enabled
-    //Need to notify about it
+    
+    
     if (crossplayModule.isCrossPlayEnabled())
       return loc("xbox/crossPlayEnabled")
 
-    //If only platform - no need to notify
+    
     if (isEventPlatformOnlyAllowed(event))
       return null
 
-    //Notify that crossplay is strongly required
+    
     return loc("xbox/crossPlayRequired")
   }
 
@@ -438,10 +438,10 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     return view
   }
 
-  /**
-   * Find appropriate game mode from array and returns it.
-   * If game mode is not null, it will be removed from array.
-   */
+  
+
+
+
   function chooseGameModeEsUnitType(gameModes, esUnitType, esUnitTypesFilter) {
     return this.getGameModeByCondition(gameModes,
       @(gameMode) u.max(getRequiredUnitTypes(gameMode).filter(

@@ -6,7 +6,7 @@ let { get_time_msec } = require("dagor.time")
 const START_DRAG_OFFSET = 3
 const DOUBLE_CLICK_TRESHOLD = 250
 
-// To detect the start of drag gestures without moving an object
+
 let class DragStartListener {
   eventMask = EV_MOUSE_L_BTN | EV_MOUSE_NOT_ON_OBJ | EV_MOUSE_MOVE
 
@@ -81,10 +81,10 @@ let class DragStartListener {
     obj.setIntProp(this.isMousePressedPID, is_up ? 0 : 1)
     obj.setIntProp(this.isDraggingPID, 0)
     if (!this.getIsObjDragging(obj)) {
-      this.notifyParentRMouse(obj, mx, my, is_up, bits) // !!!FIX ME - Due to a bug in the posNavigator, it does not receive onLMouse events.
-                                                        // As a workround, we throw onExtMouse into it.
-                                                        // The right click was left because bhvPosNavigator did not process the left click as expected.
-      if (!obj?.isValid()) //after simulate parent click the object has become invalid
+      this.notifyParentRMouse(obj, mx, my, is_up, bits) 
+                                                        
+                                                        
+      if (!obj?.isValid()) 
         return RETCODE_HALT
     }
 

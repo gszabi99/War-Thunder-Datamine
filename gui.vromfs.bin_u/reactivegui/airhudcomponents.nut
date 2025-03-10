@@ -1,6 +1,6 @@
 from "%rGui/globals/ui_library.nut" import *
 
-//script used for common script between Helicopter and aircraft
+
 let { bw, bh, rw, rh } = require("style/screenState.nut")
 let { IsTwsActivated, IsTwsDamaged, CollapsedIcon, IsRwrHudVisible, IsMlwsLwsHudVisible } = require("twsState.nut")
 let { mkRadar } = require("radarComponent.nut")
@@ -60,7 +60,7 @@ let twsElement = @(colorWatch, posWatched, size) function() {
 let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 let radarPicDamaged = Picture("!ui/gameuiskin#radar_stby_icon")
 
-//radar posX is watched because it use safeAreaSize on aircraftHud
+
 let radarElement = @(colorWatch, position) function() {
   let radarVisible = (IsRadarVisible.value || IsRadar2Visible.value) && (!isCollapsedRadarInReplay.value || !isPlayingReplay.value)
   let res = { watch = [IsRadarVisible, IsRadar2Visible, IsRadarDamaged, colorWatch, rw, bw, rh, bh, isCollapsedRadarInReplay, IsRadarHudVisible, isPlayingReplay] }

@@ -69,10 +69,10 @@ local isMouseCursorVisible = is_cursor_visible_in_gui()
 local visibleTime = 0
 
 local MP_CHAT_PARAMS = {
-  selfHideInput = false     // Hide input on send/cancel
-  hiddenInput = false       // Chat is read-only
-  selfHideLog = false       // Hide log on timer
-  isInSpectateMode = false  // is player in spectate mode
+  selfHideInput = false     
+  hiddenInput = false       
+  selfHideLog = false       
+  isInSpectateMode = false  
   selectInputIfFocusLost = false
 }
 
@@ -143,7 +143,7 @@ function formatMessageText(message, text) {
 }
 
 function getTextFromMessage(message) {
-  if (message.sender == "") {//system
+  if (message.sender == "") {
     let timeString = time.secondsToString(message.time, false)
     return $"{timeString} <color=@chatActiveInfoColor>{loc(message.text)}</color>"
   }
@@ -430,7 +430,7 @@ function makeChatTextFromLog() {
   afterLogFormat()
 }
 
-let chatHandler = { //Contains functions used in the dagui scene
+let chatHandler = { 
   function onUpdate(obj, dt) {
     let sceneData = findSceneDataByObj(obj)
     if (sceneData)
@@ -491,7 +491,7 @@ let chatHandler = { //Contains functions used in the dagui scene
   }
 
   function onChatWrapAttempt() {
-    // Do nothing, just to prevent hud chat editbox from losing focus.
+    
   }
 
   function onChatTabChange(obj) {
@@ -580,7 +580,7 @@ function detachGameChatSceneData(sceneData) {
   handlersManager.updateControlsAllowMask()
 }
 
-function enable_game_chat_input(data) { // called from client
+function enable_game_chat_input(data) { 
   let { value } = data
   if (value)
     broadcastEvent("MpChatInputRequested")
@@ -598,7 +598,7 @@ eventbus_subscribe("enable_game_chat_input", @(p) enable_game_chat_input(p))
 ::add_text_to_editbox <- function add_text_to_editbox(obj, text) {
   let value = obj.getValue()
   let pos = obj.getIntProp(dagui_propid_get_name_id(":behaviour_edit_position_pos"), -1)
-  if (pos > 0 && pos < value.len()) // warning disable: -range-check
+  if (pos > 0 && pos < value.len()) 
     obj.setValue("".concat(value.slice(0, pos), text, value.slice(pos)))
   else
     obj.setValue($"{value}{text}")

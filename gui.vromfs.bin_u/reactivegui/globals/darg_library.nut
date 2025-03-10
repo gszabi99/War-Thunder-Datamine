@@ -1,4 +1,4 @@
-// Put to global namespace for compatibility
+
 from "math" import min, max, clamp
 require("%sqstd/globalState.nut").setUniqueNestKey("darg")
 let { utf8 } = require("%globalScripts/ui_globals.nut")
@@ -29,4 +29,4 @@ return frp.__merge(
     colorArr,
     WtBhv = require("wt.behaviors")
   }
-) //disable: -dlog-warn
+) 

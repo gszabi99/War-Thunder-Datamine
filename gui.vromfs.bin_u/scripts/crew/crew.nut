@@ -18,13 +18,13 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
 
-local crewLevelBySkill = 5 //crew level from any maxed out skill
-local totalSkillsSteps = 5 //steps available for leveling.
+local crewLevelBySkill = 5 
+local totalSkillsSteps = 5 
 
 let crewSkillPages = []
 let availableCrewSkills = {}
 let unseenIconsNeeds = {}
-let unitCrewTrainReq = {} //[crewUnitType] = array
+let unitCrewTrainReq = {} 
 
 let minCrewLevel = {
   [CUT_AIRCRAFT] = 1.5,
@@ -54,10 +54,10 @@ function createCrewBuyPointsHandler(crew) {
   return handlersManager.loadHandler(gui_handlers.CrewBuyPointsHandler, { crew })
 }
 
-/**
- * This function is used both in CrewModalHandler,
- * CrewBuyPointsHandler and CrewUnitSpecHandler.
- */
+
+
+
+
 function getCrewButtonRow(obj, scene, tblObj = null) {
   if (tblObj == null)
     tblObj = scene.findObject("skills_table")
@@ -155,7 +155,7 @@ function purchaseNewCrewSlot(country, onTaskSuccess, onTaskFail = null) {
   return addTask(taskId, { showProgressBox = true }, onTaskSuccess, onTaskFail)
 }
 
-function getSkillMaxCrewLevel(_skillItem) { // todo remove unused param
+function getSkillMaxCrewLevel(_skillItem) { 
   return crewLevelBySkill
 }
 
@@ -173,12 +173,12 @@ function getSkillCrewLevel(skillItem, newValue, prevValue = 0) {
   return stdMath.round_by_value(level, 0.01)
 }
 
-// crewSkillPages : [
-//   {
-//     id = "pilot"
-//     items = [{ name = eyesight, costTbl = [1, 5, 10]}, ...]
-//   }
-// ]
+
+
+
+
+
+
 function loadCrewSkills() {
   crewSkillPages.clear()
   unitCrewTrainReq.clear()
@@ -289,7 +289,7 @@ function isAllCrewsMinLevel() {
   return true
 }
 
-//crewUnitType == -1 - all unitTypes
+
 function isCrewMaxLevel(crew, unit, country, crewUnitType = -1) {
   foreach (page in crewSkillPages) {
     if (crewUnitType >= 0 && !page.isVisible(crewUnitType))
@@ -342,7 +342,7 @@ function getNextCrewSkillStepCost(skillItem, curValue, stepsAmount = 1) {
 function getMaxAvailbleCrewStepValue(skillItem, curValue, skillPoints) {
   let maxValue = getCrewMaxSkillValue(skillItem)
   let maxCost = skillPoints + getCrewSkillCost(skillItem, curValue, 0)
-  if (getCrewSkillCost(skillItem, maxValue, 0) <= maxCost) //to correct work if maxValue % step != 0
+  if (getCrewSkillCost(skillItem, maxValue, 0) <= maxCost) 
     return maxValue
 
   local resValue = curValue
@@ -353,8 +353,8 @@ function getMaxAvailbleCrewStepValue(skillItem, curValue, skillPoints) {
   return resValue
 }
 
-//crewUnitType == -1 - all unitTypes
-//action = function(page, skillItem)
+
+
 function doWithAllSkills(crew, crewUnitType, action) {
   let country = getCrewCountry(crew)
   foreach (page in crewSkillPages) {
@@ -369,7 +369,7 @@ function doWithAllSkills(crew, crewUnitType, action) {
   }
 }
 
-//crewUnitType == -1 - all unitTypes
+
 function getCrewSkillPointsToMaxAllSkills(crew, unit, crewUnitType = -1) {
   local res = 0
   doWithAllSkills(crew, crewUnitType,
@@ -458,7 +458,7 @@ function getCrewSkillPageIdToRunTutorial(crew) {
 
 let minStepsForCrewStatus = [1, 2, 3]
 
-function count_available_skills(crew, crewUnitType) { //return part of availbleskills 0..1
+function count_available_skills(crew, crewUnitType) { 
   let curPoints = ("skillPoints" in crew) ? crew.skillPoints : 0
   if (!curPoints)
     return {needUnseenIcon = false, count = 0}

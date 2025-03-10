@@ -342,24 +342,24 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     local bObj = null
     let hasKeyboard = isPlatformPC
 
-    //Flip
+    
     let btn_toggle_mirror_text = "".concat(loc("decals/flip"), (hasKeyboard ? " (F)" : ""))
     bObj = this.scene.findObject("btn_toggle_mirror")
     if (checkObj(bObj))
       bObj.setValue(btn_toggle_mirror_text)
 
-    //TwoSided
+    
     let text = $"{loc("decals/switch_mode")}{(hasKeyboard ? " (T)" : "")}{loc("ui/colon")}"
     let labelObj = this.scene.findObject("two_sided_label")
     if (labelObj?.isValid())
       labelObj.setValue(text)
 
-    //Size
+    
     bObj = this.scene.findObject("push_to_change_size")
     if (bObj?.isValid() ?? false)
       bObj.setValue(getAxisTextOrAxisName("decal_scale"))
 
-    //Rotate
+    
     bObj = this.scene.findObject("push_to_rotate")
     if (bObj?.isValid() ?? false)
       bObj.setValue(getAxisTextOrAxisName("decal_rotate"))
@@ -367,7 +367,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getSelectedBuiltinSkinId() {
     let res = this.previewSkinId || get_last_skin(this.unit.name)
-    return res == "" ? "default" : res // get_last_skin() can return empty string.
+    return res == "" ? "default" : res 
   }
 
   function exportSampleUserSkin(_obj) {
@@ -380,7 +380,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    let allowCurrentSkin = this.access_SkinsUnrestrictedExport // true - current skin, false - default skin.
+    let allowCurrentSkin = this.access_SkinsUnrestrictedExport 
     let success = save_current_skin_template(allowCurrentSkin)
 
     let templateName =$"template_{this.unit.name}"
@@ -832,9 +832,9 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let canFindUnitOnMarketplace = !canUseCoupon && !canBuyOnline && !canBuyIngame && ::canBuyUnitOnMarketplace(this.unit)
 
     if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0) {
-      //Override for ingameShop.
-      //There is rare posibility, that shop data is empty.
-      //Because of external error.
+      
+      
+      
       canBuyOnline = false
     }
 
@@ -1014,10 +1014,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       })
     }
 
-    //Flip
+    
     let showMirror = show && decoratorType.canMirror()
     showObjById("btn_toggle_mirror", showMirror, this.scene)
-    //TwoSided
+    
     let showAbsBf = show && decoratorType.canToggle()
     showObjById("two_sided", showAbsBf, this.scene)
 
@@ -1026,12 +1026,12 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateDecoratorActionBtnStates() {
-    // TwoSided
+    
     local obj = this.scene.findObject("two_sided_select")
     if (checkObj(obj))
       obj.setValue(this.getTwoSidedState())
 
-    // Flip
+    
     obj = this.scene.findObject("btn_toggle_mirror")
     if (checkObj(obj)) {
       let enabled = get_mirror_current_decal()
@@ -1233,7 +1233,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     local onOkFunc = function() {}
     if (canBuyUnit(this.unit))
-      onOkFunc = (@(unit) function() { buyUnit(unit) })(this.unit) //-ident-hides-ident
+      onOkFunc = (@(unit) function() { buyUnit(unit) })(this.unit) 
 
     this.msgBox("unit_locked", loc("decals/needToBuyUnit"), [["ok", onOkFunc ]], "ok")
     return false
@@ -1254,7 +1254,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           { purchase = skinDecorator.getName(), cost = priceText }),
         skinDecorator.getCost())
       this.msgBox("skin_locked", msgText,
-        [["ok", (@(previewSkinId) function() { this.buySkin(previewSkinId, cost) })(this.previewSkinId) ], //-ident-hides-ident
+        [["ok", (@(previewSkinId) function() { this.buySkin(previewSkinId, cost) })(this.previewSkinId) ], 
         ["cancel", function() {} ]], "ok")
     }
     else
@@ -1414,8 +1414,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.isDecoratorItemUsed = true
 
     if (!this.decoratorPreview && isDecal) {
-      //getSlotInfo is too slow for decals (~150ms)(because of code func get_decal_in_slot),
-      // so it better to use as last check, so not to worry with lags
+      
+      
       let slotInfo = this.getSlotInfo(curSlotIdx, false, this.currentType)
       if (!slotInfo.isEmpty && decorator.id != slotInfo.decalId) {
         this.currentState = decoratorEditState.REPLACE
@@ -1721,7 +1721,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.applySkin(skinId)
     }
     else if (access.isDownloadable) {
-      // Starting skin download...
+      
       showResource(skinId, "skin", Callback(this.onSkinReadyToShow, this))
     }
     else if (skinId != this.previewSkinId) {
@@ -1917,8 +1917,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
       return
 
-    // TestFlight wnd can have a Slotbar, where unit can be changed.
-    let afterCloseFunc = (@(owner, unit) function() { //-ident-hides-ident
+    
+    let afterCloseFunc = (@(owner, unit) function() { 
       let newUnitName = getShowedUnitName()
       if (newUnitName == "")
         return setShowUnit(unit)
@@ -2056,18 +2056,18 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       labelObj.setValue(text)
   }
 
-  function onMirror() { // Flip
+  function onMirror() { 
     mirror_current_decal()
     this.updateDecoratorActionBtnStates()
   }
 
-  function onTwoSided() { // TwoSided
+  function onTwoSided() { 
     let obj = this.scene.findObject("two_sided_select")
     if (checkObj(obj))
       obj.setValue((obj.getValue() + 1) % obj.childrenCount())
   }
 
-  function onTwoSidedSelect(obj) { // TwoSided select
+  function onTwoSidedSelect(obj) { 
     this.setTwoSidedState(obj.getValue())
   }
 
@@ -2154,7 +2154,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function goBack() {
-    // clear only when closed by player to can go through test fly with previewed skin
+    
     clearLivePreviewParams()
     this.guiScene.performDelayed(this, base.goBack)
     hangar_focus_model(false)

@@ -17,7 +17,7 @@ gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
     this.scene.findObject("bc_shop_header").setValue(loc("flightmenu/btnActivateOrder"))
   }
 
-  /*override*/ function updateButtons() {
+   function updateButtons() {
     let item = this.getCurItem()
     let mainActionData = item ? item.getMainActionData() : null
     let showMainAction = !!mainActionData
@@ -41,7 +41,7 @@ gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
       in_flight_menu(false)
   }
 
-  /*override*/ function onTimer(obj, dt) {
+   function onTimer(obj, dt) {
     base.onTimer(obj, dt)
     this.updateButtons()
   }
@@ -50,8 +50,8 @@ gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
     this.fillPage()
   }
 
-  /*override*/ function onMainActionComplete(result) {
-    // This forces "Activate" button for each item to update.
+   function onMainActionComplete(result) {
+    
     if (base.onMainActionComplete(result))
       this.fillPage()
   }
@@ -60,7 +60,7 @@ gui_handlers.OrderActivationWindow <- class (gui_handlers.ItemsList) {
     this.goBack()
   }
 
-  /*override*/ function isItemLocked(item) {
+   function isItemLocked(item) {
     return !checkCurrentMission(item)
   }
 }

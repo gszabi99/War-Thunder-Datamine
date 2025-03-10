@@ -40,7 +40,7 @@ skillParametersRequestType._getSelectedParameters <- function _getSelectedParame
     return res
 
   let values = this.getValues()
-  // Filling values request object with selected values if not set already.
+  
   foreach (memberData in crewSkillPages) {
     let valueMemberName = memberData.id
     if (!(valueMemberName in values))
@@ -85,8 +85,8 @@ enums.addTypes(skillParametersRequestType, {
       foreach (valueMemberName, memberBlk in calcBlk) {
         values[valueMemberName] <- {}
         foreach (valueSkillName, _skillBlk in memberBlk) {
-          // Gunner's count is maxed-out as a base value.
-          // Everything else is zero'ed.
+          
+          
           local value = 0
           if (valueMemberName == "gunner" && valueSkillName == "members")
             value = getMaxSkillValue("gunner", "members")
@@ -103,13 +103,13 @@ enums.addTypes(skillParametersRequestType, {
       return {
         specialization = crewSpecTypes.BASIC.code
 
-        // This skill is same as leadership but related to aircraft unit type.
+        
         gunner = { members = getMaxSkillValue("gunner", "members") }
 
-        // This skill affects only tank unit type.
+        
         commander = { leadership = 0 }
 
-        // This skill affects only ship unit type.
+        
         ship_commander = { leadership = 0 }
       }
     }
@@ -118,13 +118,13 @@ enums.addTypes(skillParametersRequestType, {
   CURRENT_VALUES_NO_LEADERSHIP = {
     getValues = function () {
       return {
-        // This skill is same as leadership but related to aircraft unit type.
+        
         gunner = { members = getMaxSkillValue("gunner", "members") }
 
-        // This skill affects only tank unit type.
+        
         commander = { leadership = 0 }
 
-        // This skill affects only ship unit type.
+        
         ship_commander = { leadership = 0 }
       }
     }

@@ -6,7 +6,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_start_items_list } = require("%scripts/items/startItemsShop.nut")
 
-const minWindowWidthScale = 1.33  //1.33@sf
+const minWindowWidthScale = 1.33  
 
 gui_handlers.WorkshopPreview <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType      = handlerType.MODAL

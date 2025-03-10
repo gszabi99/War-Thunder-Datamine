@@ -56,15 +56,15 @@ let g_hud_hints_manager = {
   guiScene = null
 
   activeHints = activeHints
-  animatedRemovedHints = [] //hints set to remove animation. to be able instant finish them
+  animatedRemovedHints = [] 
 
   timers = DaguiSceneTimers(TIMERS_CHECK_INTEVAL, "hudHintsTimers")
 
-  hintIdx = 0 //used only for unique hint id
+  hintIdx = 0 
 
-  lastShowedTimeDict = {} // key = uid, value = lastShowedTime
+  lastShowedTimeDict = {} 
 
-  delayedShowTimers = {} // key = hint.name, value = timer
+  delayedShowTimers = {} 
 
   function init(v_nest) {
     this.subscribe()
@@ -116,7 +116,7 @@ let g_hud_hints_manager = {
     this.removeAllHints("isHideOnWatchedHeroChanged")
   }
 
-  //return false if can't
+  
   function findSceneObjects() {
     this.scene = this.nest.findObject("hud_hints_nest")
     if (!checkObj(this.scene))
@@ -144,7 +144,7 @@ let g_hud_hints_manager = {
     let screenWidth = to_pixels($"sw")
 
     let {pos = [0, 0], size = [0, 0]} = value
-    local dmgPanelRightSide = size[0] + pos[0]// its global coords
+    local dmgPanelRightSide = size[0] + pos[0]
     if(dmgPanelRightSide == 0)
       dmgPanelRightSide = hintContainerScreenBorder
 
@@ -473,7 +473,7 @@ let g_hud_hints_manager = {
     if (!checkObj(hintNestObj))
       return
 
-    this.checkRemovedHints(hintData.hint) //remove hints with not finished animation if needed
+    this.checkRemovedHints(hintData.hint) 
     this.removeSingleInNestHints(hintData.hint)
 
     let id = hintData.hint.name + (++this.hintIdx)
@@ -640,7 +640,7 @@ let g_hud_hints_manager = {
     if (!(this.nest?.isValid() ?? false))
       return
     this.updatePosHudHintBlock()
-    handlersManager.updateWidgets() //update pos for SHIP_OBSTACLE_RF widget
+    handlersManager.updateWidgets() 
   }
 }
 

@@ -16,7 +16,7 @@ let values    = [1.0, 0.95, 0.9, 0.85]
 let items     = ["100%", "95%", "90%", "85%"]
 if (is_platform_xbox) {
   const XBOX_SAFE_AREA = 0.89
-  // so remove all below of it to fit in.
+  
   for (local i = values.len() - 1; i >= 0; i--) {
     if (values[i] < XBOX_SAFE_AREA) {
       values.remove(i)
@@ -26,7 +26,7 @@ if (is_platform_xbox) {
 }
 
 
-let getFixedValue = @() //return -1 when not fixed
+let getFixedValue = @() 
   is_stereo_mode() ? 1.0
   : isPlatformSony ? sony.getDisplaySafeArea()
   : useTouchscreen ? 0.9

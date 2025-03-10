@@ -136,7 +136,7 @@ function getHudKillStreakShortcutId() {
     return "ID_SHIP_KILLSTREAK_WHEEL_MENU"
   if (hudUnitType == HUD_UNIT_TYPE.AIRCRAFT)
     return "ID_PLANE_KILLSTREAK_WHEEL_MENU"
-  //
+  
 
 
 
@@ -149,14 +149,14 @@ g_hud_action_bar_type.template <- {
   code = -1
   backgroundImage = ""
 
-  /**
-   * For all items, which should be grouped
-   * as stricks this field is true, even if
-   * this item is not a kill streak reward.
-   *
-   * In present design this field is true for
-   * artillery and special unit.
-   */
+  
+
+
+
+
+
+
+
   isForMFM = false
   isForWheelMenu = @() false
   isForSelectWeaponMenu = @() false
@@ -188,7 +188,7 @@ g_hud_action_bar_type.template <- {
       return $"ID_SUBMARINE_ACTION_BAR_ITEM_{shortcutIdx + 1}"
     if (hudUnitType == HUD_UNIT_TYPE.SHIP)
       return $"ID_SHIP_ACTION_BAR_ITEM_{shortcutIdx + 1}"
-    //
+    
 
 
 
@@ -544,9 +544,9 @@ enumsAddTypes(g_hud_action_bar_type, {
   ANTI_AIR_TARGET = {
     code = EII_ANTI_AIR_TARGET
     _name = "anti_air_target"
-    _icon = "" //"#ui/gameuiskin#anti_air_target" //there is no such icon now
-                                                  //commented for avoid crash
-    _title = "" //loc("encyclopedia/anti_air")
+    _icon = "" 
+                                                  
+    _title = "" 
   }
 
   SPECIAL_UNIT = {
@@ -561,7 +561,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     }
 
     getIcon = function (_actionItem, killStreakTag = null, _unit = null, _hudUnitType = null) {
-      // killStreakTag is expected to be "bomber", "attacker" or "fighter".
+      
       if (u.isString(killStreakTag))
         return $"#ui/gameuiskin#{killStreakTag}_streak"
       return ""

@@ -12,29 +12,29 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 
-/*
-  config = {
-    unit  //unit for weapons
-    onChangeValueCb = function(chosenWeaponryItem)   //callback on value select (only if value was changed)
-    weaponItemParams = null //list of special items render params (for updateModItem in weaponryVisual.nut)
 
-    align = "top"/"bottom"/"left"/"right"
-    alignObj = DaguiObj  //object to align menu
 
-    list = [
-      {
-        //must have parameter:
-        weaponryItem //weapon or modification from unit
 
-        //optional parameters:
-        selected = false
-        enabled = true
-        visualDisabled = false
-      }
-      ...
-    ]
-  }
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function guiStartWeaponrySelectModal(config) {
   handlersManager.loadHandler(gui_handlers.WeaponrySelectModal, config)
 }
@@ -75,7 +75,7 @@ function guiStartChooseUnitWeapon(unit, cb, params = CHOOSE_WEAPON_PARAMS) {
   }
 
   if (needSecondaryWeaponsWnd(unit))
-    weaponryPresetsWnd.open({ //open modal menu for air and helicopter only
+    weaponryPresetsWnd.open({ 
         unit = unit
         chooseMenuList   = list
         initLastWeapon   = curWeaponName
@@ -127,7 +127,7 @@ gui_handlers.WeaponrySelectModal <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!weaponryItem) {
         script_net_assert_once("cant load weaponry",
           $"Error: empty weaponryItem for WeaponrySelectModal. unit = {this.unit?.name}")
-        this.list = null //goback
+        this.list = null 
         return null
       }
 

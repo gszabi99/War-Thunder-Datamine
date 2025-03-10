@@ -11,7 +11,7 @@ enum MAP_PREVIEW_TYPE {
   DYNAMIC_SUMMARY
 }
 
-//load/unload mission preview depend on visible preview scenes and their modal counter
+
 let previewList = []
 local curPreview = null
 
@@ -109,8 +109,8 @@ function setPreview(previewType, mapObj, missionBlk, param = null) {
   refreshCurPreview(preview == curPreview)
 }
 
-//add or replace (by scene) preview to show.
-//obj is scene to check visibility and modal counter (not a obj with tqactical map behavior)
+
+
 function setMapPreview(mapObj, missionBlk) {
   setPreview(MAP_PREVIEW_TYPE.MISSION_MAP, mapObj, missionBlk)
 }

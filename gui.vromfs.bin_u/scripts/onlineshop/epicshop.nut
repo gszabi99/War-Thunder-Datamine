@@ -72,7 +72,7 @@ gui_handlers.EpicShop <- class (gui_handlers.IngameConsoleStore) {
 
 let openIngameStore = kwarg(
   function(chapter = null, curItemId = "", afterCloseFunc = null,
-    statsdMetric = "unknown", unitName = "") {//-declared-never-used -unused-func-param
+    statsdMetric = "unknown", unitName = "") {
     if (!isInArray(chapter, [null, "", "eagles"]))
       return false
 

@@ -15,8 +15,8 @@ let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarVie
 let { showAirExpWpBonus } = require("%scripts/bonusModule.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
 
-const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 // when select slot by right click button
-                                                    // then menu vehilce opened and close
+const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 
+                                                    
 
 local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.MODAL

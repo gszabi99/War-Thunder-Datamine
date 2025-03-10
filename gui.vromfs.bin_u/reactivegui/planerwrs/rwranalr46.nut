@@ -205,7 +205,7 @@ let directionGroups = [
     type = ThreatType.AIRBORNE_PULSE_DOPPLER,
     lethalRangeMax = 40000.0
   },
-  //
+  
 
 
 

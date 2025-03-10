@@ -15,10 +15,10 @@ let blockNameByDirection = {
     rangeMax = "topKey"
   }
 }
-/**
- * Input keyboard axis.
- * Container for displayed axis keyboard by min-max range
- */
+
+
+
+
 let KeyboardAxis = class (InputBase) {
   elements = null
   isCompositAxis = null

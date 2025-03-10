@@ -2506,6 +2506,7 @@
               "N001",
               "N010",
               "V004",
+              "N011M",
               "Type 1473",
               "ELTA EL/M-2001B",
               "ELTA EL/M-2052",
@@ -2539,6 +2540,7 @@
               "N001",
               "N010",
               "V004",
+              "N011M",
               "Type 1473",
               "ELTA EL/M-2001B",
               "ELTA EL/M-2052",
@@ -2868,8 +2870,8 @@
       "type": "mlws",
       "name": "ARI 23348/1",
       "targetSignatureType": "radar",
-      "rcs": 1.0,
-      "range": 12000.0,
+      "rcs": 0.045,
+      "range": 5500.0,
       "matchSector": 10.0,
       "signalHoldTime": 2.0,
       "closureRateMin": 100.0,
@@ -3581,6 +3583,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "tiald"
             }
           },
           {
@@ -3773,6 +3779,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "tiald"
             }
           },
           {
@@ -4123,6 +4133,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "tiald"
             }
           },
           {
@@ -4333,6 +4347,10 @@
               "external": true,
               "separate": true,
               "machLimit": 1.4
+            },
+            "DependentWeaponPreset": {
+              "slot": 5,
+              "preset": "tiald"
             }
           },
           {
@@ -4810,11 +4828,13 @@
     "minHeight": 0.0,
     "minSpeed": 0.0,
     "hasSafeExit": true,
-    "fxEmitter": [
-      "blister1",
+    "wreck": [
       "blister2",
-      "blister1",
-      "blister2"
+      "blister4"
+    ],
+    "fxEmitter": [
+      "blister2",
+      "blister4"
     ],
     "seat": [
       "seat_01",

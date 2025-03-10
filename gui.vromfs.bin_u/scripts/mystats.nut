@@ -31,14 +31,14 @@ let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
-/*
-  getStats() - Returns stats or null if stats have not been received yet. Requests stats update when needed.
-    Broadcasts the event "MyStatsUpdated" after receiving the result.
-  markStatsReset() - Marks stats for resetting to update them with the next request.
-  isStatsLoaded() - Returns a boolean indicating whether the stats are loaded.
-  isMeNewbie() - Returns a boolean indicating whether the player is a newbie based on stats.
-  isNewbieEventId(eventId) - Returns a boolean indicating whether the event is in the newbie events list in the config.
-*/
+
+
+
+
+
+
+
+
 
 local summaryNameArray = [
   "pvp_played"
@@ -50,7 +50,7 @@ local summaryNameArray = [
   "single_played"
 ]
 
-const UPDATE_DELAY = 3600000 //once per hour, we have to force update after each battle or debriefing.
+const UPDATE_DELAY = 3600000 
 let newPlayersBattles = {}
 let newbieByUnitType = {}
 let newbieNextEvent = {}
@@ -100,7 +100,7 @@ function requestMyStats() {
   let time = get_time_msec()
   if (isInUpdate && time - lastUpdate < 45000)
     return
-  if (!resetStats && myStats && time - lastUpdate < UPDATE_DELAY) //once per 15min
+  if (!resetStats && myStats && time - lastUpdate < UPDATE_DELAY) 
     return
 
   isInUpdate = true
@@ -114,11 +114,11 @@ function requestMyStats() {
     })
 }
 
-/**
- * Determines whether the user is a newbie based on their stats.
- * Note: This function is for internal use only.
- * The result may be inconsistent if there are no stats available.
- */
+
+
+
+
+
 function getIsNewbie() {
   foreach (_esUnitType, isNewbie in newbieByUnitType)
     if (!isNewbie)
@@ -173,24 +173,24 @@ function getClassFlags(unitType) {
   return (1 << EUCT_TOTAL) - 1
 }
 
-/**
-  * Returns the sum of specified fields in player statistics.
-  *
-  *  summaryName - The game mode. Available values:
-  *  - pvp_played
-  *  - skirmish_played
-  *  - dynamic_played
-  *  - campaign_played
-  *   -builder_played
-  *  - other_played
-  *  - single_played
 
-  *  filter - Table configuration {
-  *    addArray - array of fields to sum
-  *    subtractArray - array of fields to subtract
-  *    unitType - unit type filter; if not specified, getting both
-  *  }
-  */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function getSummary(summaryName, filter = {}) {
   local res = 0
   let pvpSummary = getTblValue(summaryName, getTblValue("summary", myStats))
@@ -279,8 +279,8 @@ function checkUnitInSlot(requiredUnitRank, unitType) {
 
 function checkRecountNewbie() {
   let statsLoaded = isStatsLoaded()
-  // When modifying the newbie recount,
-  // remember to check if the stats are loaded for the newbie tutor.
+  
+  
 
   if (!needRecountNewbie || !statsLoaded) {
     if (!statsLoaded || (newbie ?? false))
@@ -365,7 +365,7 @@ function resetStatsParams() {
   maxUnitsUserRank = null
 }
 
-function getSummaryFromProfile(func, unitType = null, diff = null, mode = 1 /*domination*/ ) {
+function getSummaryFromProfile(func, unitType = null, diff = null, mode = 1  ) {
   local res = 0.0
   let classFlags = getClassFlags(unitType)
   for (local i = 0; i < EUCT_TOTAL; ++i)
@@ -388,7 +388,7 @@ function getUserstat(paramName) {
   return res
 }
 
-// public
+
 
 function getTotalTimePlayedSec() {
   local sec = 0
@@ -439,7 +439,7 @@ function getUnitTypeByNewbieEventId(eventId) {
   return getTblValue(eventId, unitTypeByNewbieEventId, ES_UNIT_TYPE_INVALID)
 }
 
-function getNextNewbieEvent(country = null, unitType = null, checkSlotbar = true) { //return null when no newbie event
+function getNextNewbieEvent(country = null, unitType = null, checkSlotbar = true) { 
   checkRecountNewbie()
   if (!country)
     country = profileCountrySq.value
@@ -519,8 +519,8 @@ function onEventCrewTakeUnit(params) {
 }
 
 ::my_stats <- {
-  getTimePlayed // fixme circ ref
-  isNewbieEventId // fixme circ ref
+  getTimePlayed 
+  isNewbieEventId 
 }
 
 seenTitles.setListGetter(@() getTitles())

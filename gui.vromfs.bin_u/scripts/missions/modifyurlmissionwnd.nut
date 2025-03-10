@@ -15,7 +15,7 @@ gui_handlers.modifyUrlMissionWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   validateNameRegexp = regexp2(@"[""'*/\\\^`~]")
 
-  urlMission = null //when null - create new urlMission
+  urlMission = null 
 
   curName = ""
   curUrl = ""

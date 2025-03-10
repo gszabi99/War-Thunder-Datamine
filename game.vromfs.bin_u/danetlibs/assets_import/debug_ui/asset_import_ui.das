@@ -37,7 +37,7 @@ def asset_import_viewer()
       if imgui::Checkbox("Enable clipmap invalidation on texture asset changes", safe_addr(clipmapInvalidation))
         asset__clipmapInvalidationEnabled = clipmapInvalidation
         if clipmapInvalidation
-          broadcastEvent([[InvalidateClipmap]])
+          broadcastEvent(InvalidateClipmap())
       imgui::EndTabItem()
 
 

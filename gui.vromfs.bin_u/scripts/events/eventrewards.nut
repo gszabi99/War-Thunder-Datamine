@@ -14,12 +14,12 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 
-                                 //param name in tournament configs //param name in userlogs configs
+                                 
 let getRewardConditionId = @(rewardBlk) rewardBlk?.condition_type ?? rewardBlk?.awardType ?? ""
 
-/**
- * Returns a pure value of reward condition
- */
+
+
+
 let getConditionValue = @(rewardBlk) rewardBlk?.value ?? rewardBlk?.fieldValue ?? -1
 
 let getConditionField = @(rewardBlk) rewardBlk?.fieldName ?? ""
@@ -58,14 +58,14 @@ function getSequenceWinsText(rewardBlk, progress = null) {
   return res
  }
 
-/**
- * Tournament rewards conditions
- */
+
+
+
 let rewardConditionsList = {
-  /**
-   * Main condition for some value in leaderboards. For eaxample 10 wins or
-   * 500 raiting.
-   */
+  
+
+
+
   reach_value = {
     id = "reach_value"
     function updateProgress(reward_blk, event, eventEconomicName, callback, context) {
@@ -83,10 +83,10 @@ let rewardConditionsList = {
     getText = getLeaderboardConditionText
   }
 
-  /**
-   * Same as reach_value condition, but reward with this condition can be
-   * received multiple times. For exapmle for each 10 wictories
-   */
+  
+
+
+
   field_number = {
     id = "field_number"
     function updateProgress(reward_blk, event, eventEconomicName, callback, context) {
@@ -105,9 +105,9 @@ let rewardConditionsList = {
     getText = getLeaderboardConditionText
   }
 
-  /**
-   * Condition based on players position in leaderboards.
-   */
+  
+
+
   position = {
     id = "position"
     function updateProgress(reward_blk, event, eventEconomicName, callback, context) {
@@ -125,10 +125,10 @@ let rewardConditionsList = {
     getText = getLeaderboardConditionText
   }
 
-  /**
-   * Simmilar to position condition, but reward received when player in best
-   * 50% of all tournaments competitors.
-   */
+  
+
+
+
   percent = {
     id = "percent"
     updateProgress = @(...) null
@@ -148,12 +148,12 @@ let getRewardConditionById = @(conditionId) rewardConditionsList?[conditionId]
 
 let getRewardCondition = @(rewardBlk) getRewardConditionById(getRewardConditionId(rewardBlk))
 
-let rewardsConfig = [ //first in list have higher priority to show icon or to generate text.
-  //id            - (string) id to genenerate condition name, take value from blk, geneate icon
-  //locId         - (string) id to show in description
-  //getValue      - function to getValue from rewardBlk.  return null when no value in blk.
-  //                when not set work as return blk[id]
-  //getIconStyle  - return style for icon when it a primary reward
+let rewardsConfig = [ 
+  
+  
+  
+  
+  
   { id = "money"
     locId = ""
     getValue = function(blk) {
@@ -276,7 +276,7 @@ function getSortedRewardsByConditions(event, awardsBlk  = null) {
     res[condName].append(blk)
   }
 
-  //sort rewards
+  
   foreach (condName, typeData in res)
     typeData.sort(function(a, b) {
         let aValue = getConditionValue(a)
@@ -374,18 +374,18 @@ function isRewardReceived(reward_blk, eventEconomicName) {
   let conditionId = getRewardConditionId(reward_blk)
   local ending = ""
 
-  //field_number rewards does not contain condition name
+  
   if (conditionId != "field_number")
     ending = $"{ending}{conditionId}_"
 
-  //every reward has field number
+  
   ending = $"{ending}{reward_blk.fieldName}_"
 
-  //handlind rewards with range
+  
   if ("valueMin" in reward_blk)
     ending = $"{ending}{reward_blk.valueMin}-"
 
-  //and every raward has value
+  
   ending = $"{ending}{reward_blk.value}"
 
   for (local i = 0; i < infoBlk.awards.blockCount(); i++) {
@@ -398,9 +398,9 @@ function isRewardReceived(reward_blk, eventEconomicName) {
   return false
 }
 
-/**
- * Retures next reward for specified
- */
+
+
+
 function getNextReward(rewardBlk, event) {
   if (!event || !haveRewards(event))
     return null

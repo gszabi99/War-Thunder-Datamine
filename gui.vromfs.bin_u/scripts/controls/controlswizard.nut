@@ -91,7 +91,7 @@ let aircraft_controls_wizard_config = [
           axis.relative = !isAxis
           commitControls()
         }
-      skip = ["msg/holdThrottleForWEP"] //dont work in axis, but need to correct prevItem work, when skipList used in onAxisDone
+      skip = ["msg/holdThrottleForWEP"] 
     }
     { id = "msg/holdThrottleForWEP", type = CONTROL_TYPE.MSG_BOX
       options = ["#options/yes", "#options/no", "options/skip"],
@@ -139,7 +139,7 @@ let aircraft_controls_wizard_config = [
 
   { id = "ID_VIEW_CONTROL_HEADER", type = CONTROL_TYPE.HEADER }
     { id = "msg/viewControl", type = CONTROL_TYPE.MSG_BOX
-      options = ["#options/yes", "#options/no"], //defValue = 0
+      options = ["#options/yes", "#options/no"], 
       skipAllBefore = [null, "ID_FULL_AERODYNAMICS_HEADER"]
     }
 
@@ -173,14 +173,14 @@ let aircraft_controls_wizard_config = [
     "ID_TOGGLE_VIEW"
     "ID_TARGET_CAMERA"
 
-      //hidden when no use mouse
+      
       { id = "msg/mouseWheelAction", type = CONTROL_TYPE.MSG_BOX
         options = ["controls/none", "controls/zoom", "controls/throttle"], defValue = 1
         onButton = function(value) {
           this.curJoyParams.setMouseAxis(2, ["", "zoom", "throttle"][value])
         }
       }
-      "ID_CAMERA_NEUTRAL" //mouse look
+      "ID_CAMERA_NEUTRAL" 
 
     "ID_ZOOM_TOGGLE"
     { id = "zoom", type = CONTROL_TYPE.AXIS, filterHide = [globalEnv.EM_MOUSE_AIM]
@@ -294,10 +294,10 @@ let tank_controls_wizard_config = [
     "ID_ZOOM_TOGGLE"
 
   { id = "ID_MISC_CONTROL_HEADER", type = CONTROL_TYPE.HEADER }
-    "ID_TACTICAL_MAP"  //common for everyone
-    "ID_MPSTATSCREEN"  //common for everyone
-    "ID_TOGGLE_CHAT_TEAM" //common for everyone
-    "ID_TOGGLE_CHAT" //common for everyone
+    "ID_TACTICAL_MAP"  
+    "ID_MPSTATSCREEN"  
+    "ID_TOGGLE_CHAT_TEAM" 
+    "ID_TOGGLE_CHAT" 
 
   { id = "msg/wizard_done_msg", type = CONTROL_TYPE.MSG_BOX }
 ]
@@ -369,7 +369,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   curIdx = -1
   curItem = null
   isPresetAlreadyApplied = false
-  maxCheckSc = -1  //max shortcutIdx to checkassign dupes
+  maxCheckSc = -1  
   isListenButton = false
   isListenAxis = false
   isButtonsListenInCurBox = false
@@ -456,7 +456,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       }
       else if (item.type == CONTROL_TYPE.AXIS) {
         item.modifiersId = {}
-        foreach (name in ["rangeMax", "rangeMin"]) { //order is important
+        foreach (name in ["rangeMax", "rangeMin"]) { 
           item.modifiersId[name] <- []
           foreach (a in item.axesList) {
             item.modifiersId[name].append(this.shortcutNames.len())
@@ -585,7 +585,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     if (this.prevItems.len() == 0)
       return
 
-    if (this.msgTimer > 0) { //after axis bind message
+    if (this.msgTimer > 0) { 
       this.msgTimer = 0
       this.isRepeat = true
     }
@@ -886,7 +886,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     this.onButtonDone()
   }
 
-  function isKbdOrMouse(devs) { // warning disable: -named-like-return-bool
+  function isKbdOrMouse(devs) { 
     local isKbd = null
     foreach (d in devs)
       if (d > 0)
@@ -909,7 +909,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       else {
         for (local i = this.shortcuts[shortcutId].len() - 1; i >= 0; i--)
           if (isKbd == this.isKbdOrMouse(this.shortcuts[shortcutId][i].dev))
-            this.shortcuts[shortcutId].remove(i)   //remove shortcuts by same device type
+            this.shortcuts[shortcutId].remove(i)   
         this.shortcuts[shortcutId].append({ dev = devs, btn = btns })
         if (this.shortcuts[shortcutId].len() > MAX_SHORTCUTS)
           this.shortcuts[shortcutId].remove(0)
@@ -1068,13 +1068,13 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
     if (!this.axisApplyParams.isSlider) {
       let minDev = min(abs(config.max), abs(config.min))
-      if (minDev >= 3200) //10%
+      if (minDev >= 3200) 
         this.axisApplyParams.kMul = 0.1 * floor(320000.0 / minDev)
       else
-        this.axisApplyParams.isSlider = true  //count this axis as slider
+        this.axisApplyParams.isSlider = true  
     }
     if (this.axisApplyParams.isSlider) {
-      this.axisApplyParams.kMul = 2.0 * 32000 / (config.max - config.min) * 1.05 //accuracy 5%
+      this.axisApplyParams.kMul = 2.0 * 32000 / (config.max - config.min) * 1.05 
       this.axisApplyParams.kMul = 0.1 * ceil(10.0 * this.axisApplyParams.kMul)
       this.axisApplyParams.kAdd = -0.5 * (config.min + config.max) / 32000 * this.axisApplyParams.kMul
     }
@@ -1104,7 +1104,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
     commitControls()
 
-    //clear hotkey min|max when use axis
+    
     foreach (arr in this.curItem.modifiersId)
       foreach (id in arr)
         this.shortcuts[id] = []
@@ -1177,13 +1177,13 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     let curPreset = getCurControlsPreset()
     let numAxes = curPreset.getNumAxes()
     if (numAxes > this.presetupAxisRawValues.len())
-      this.initAxisPresetup(false) //add new founded axes
+      this.initAxisPresetup(false) 
 
-    local deviation = 12000 //foundedAxis deviation, cant be lower than a initial value
+    local deviation = 12000 
     for (local i = 0; i < numAxes; i++) {
       let rawPos = device.getAxisPosRaw(i)
       if (rawPos != 0 && !this.presetupAxisRawValues[i].inited) {
-        //Some joysticks return zero at first and only then init the current value
+        
         this.presetupAxisRawValues[i].inited = true
         this.presetupAxisRawValues[i].def = rawPos
         this.presetupAxisRawValues[i].min = rawPos
@@ -1201,10 +1201,10 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
         foundAxis = i
         deviation = dPos
 
-        if (fabs(rawPos - this.presetupAxisRawValues[i].last) < 1000) {  //check stucked axes
+        if (fabs(rawPos - this.presetupAxisRawValues[i].last) < 1000) {  
           this.presetupAxisRawValues[i].stuckTime += dt
           if (this.presetupAxisRawValues[i].stuckTime > 3.0)
-            this.presetupAxisRawValues[i].def = rawPos //change cur value to def becoase of stucked
+            this.presetupAxisRawValues[i].def = rawPos 
         }
         else {
           this.presetupAxisRawValues[i].last = rawPos
@@ -1240,9 +1240,9 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     if (this.selectedAxisNum < 0) {
       if (foundAxis != this.bindAxisNum) {
         this.bindAxisNum = foundAxis
-//        if (selectedAxisNum>=0 && bindAxisNum<0)
-//          bindAxisNum = selectedAxisNum
-//        else
+
+
+
         this.axisCurTime = 0.0
       }
     }
@@ -1273,7 +1273,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     }
 
     if (checkTime)
-      if ((this.axisCurTime >= this.axisFixTime && fabs(val) > 3000) || this.axisCurTime >= 2.0 * this.axisFixTime)  //double wait time near zero
+      if ((this.axisCurTime >= this.axisFixTime && fabs(val) > 3000) || this.axisCurTime >= 2.0 * this.axisFixTime)  
         if (this.selectedAxisNum != this.bindAxisNum) {
           this.selectedAxisNum = this.bindAxisNum
           this.bindAxisFixVal = this.bindAxisCurVal

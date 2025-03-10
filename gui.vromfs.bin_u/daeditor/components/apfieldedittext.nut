@@ -71,7 +71,7 @@ function fieldEditText_(params={}) {
       if (val != null && setVal(val)) {
         anim_start($"{comp_name}{"".join(path??[])}")
         gui_scene.clearTimer(updateTextFromEcsTimeout)
-        gui_scene.resetTimeout(0.1, updateTextFromEcs) //do this in case when some es changes components
+        gui_scene.resetTimeout(0.1, updateTextFromEcs) 
         return
       }
     }

@@ -10,7 +10,7 @@ let currentPenaltyDesc = Watched({})
 
 function isDevoiced() {
   currentPenaltyDesc.update(penalty.getPenaltyStatus())
-  //currentPenaltyDesc.update({ status = penalty.DEVOICE, duration = 360091, category="FOUL", comment="test ban", seconds_left=2012})
+  
   let penaltyStatus = currentPenaltyDesc.value?.status
   return penaltyStatus == penalty.DEVOICE || penaltyStatus == penalty.SILENT_DEVOICE
 }

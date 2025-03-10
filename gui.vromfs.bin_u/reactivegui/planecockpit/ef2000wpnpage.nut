@@ -16,39 +16,39 @@ let baseSpacing = 4.5
 let wpnName = @(fullWpnName) fullWpnName.replace("_default", "")
 
 let posWeapons = [
-  [50.0 + 0.0,   0.0   ], // 00 Unknown
+  [50.0 + 0.0,   0.0   ], 
 
-  [50.0 - 33.0,  65.0  ], // 01 leftmost wing, SRAAM
-  [50.0 - 27.0,  57.0  ], // 02 left wing, Brimstone, bombs, AAM
-  [50.0 - 19.0,  52.0  ], // 03 left wing, Brimstone, bombs
-  [50.0 - 12.0,  37.0  ], // 04 left wing, Brimstone, bombs
-  [50.0 - 5.0,   67.0  ], // 05 left rear fuselage, MRAAM
-  [50.0 - 5.0,   37.0  ], // 06 left front fuselage, MRAAM
-  [50.0 + 0.0,   52.0  ], // 07 centerline, TGP
-  [50.0 + 5.0,   37.0  ], // 08 right front fuselage, MRAAM
-  [50.0 + 5.0,   67.0  ], // 09 right rear fuselage, MRAAM
-  [50.0 + 12.0,  37.0  ], // 10 right wing, Brimstone, bombs
-  [50.0 + 19.0,  52.0  ], // 11 right wing, Brimstone, bombs
-  [50.0 + 27.0,  57.0  ], // 12 right wing, Brimstone, bombs, AAM
-  [50.0 + 33.0,  65.0  ], // 13 rightmost wing, SRAAM
+  [50.0 - 33.0,  65.0  ], 
+  [50.0 - 27.0,  57.0  ], 
+  [50.0 - 19.0,  52.0  ], 
+  [50.0 - 12.0,  37.0  ], 
+  [50.0 - 5.0,   67.0  ], 
+  [50.0 - 5.0,   37.0  ], 
+  [50.0 + 0.0,   52.0  ], 
+  [50.0 + 5.0,   37.0  ], 
+  [50.0 + 5.0,   67.0  ], 
+  [50.0 + 12.0,  37.0  ], 
+  [50.0 + 19.0,  52.0  ], 
+  [50.0 + 27.0,  57.0  ], 
+  [50.0 + 33.0,  65.0  ], 
 ]
 
 let posLabels = [
-  [50.0 + 0.0,   0.0   ], // 00 Unknown
+  [50.0 + 0.0,   0.0   ], 
 
-  [50.0 - 35.0,  80.0  ], // 01 leftmost wing, SRAAM
-  [50.0 - 29.0,  74.0  ], // 02 left wing, Brimstone, bombs, AAM
-  [50.0 - 19.0 + 1.0,  62.0  ], // 03 left wing, Brimstone, bombs (This is real somehow)
-  [50.0 - 14.0,  47.0  ], // 04 left wing, Brimstone, bombs
-  [50.0 - 7.0,   83.0  ], // 05 left rear fuselage, MRAAM
-  [50.0 - 7.0,   53.0  ], // 06 left front fuselage, MRAAM
-  [50.0 + 0.0,   65.0  ], // 07 centerline, TGP
-  [50.0 + 7.0,   53.0  ], // 08 right front fuselage, MRAAM
-  [50.0 + 7.0,   83.0  ], // 09 right rear fuselage, MRAAM
-  [50.0 + 14.0,  47.0  ], // 10 right wing, Brimstone, bombs
-  [50.0 + 19.0 + 1.0,  62.0  ], // 11 right wing, Brimstone, bombs (This is real somehow)
-  [50.0 + 29.0,  74.0  ], // 12 right wing, Brimstone, bombs, AAM
-  [50.0 + 35.0,  80.0  ], // 13 rightmost wing, SRAAM
+  [50.0 - 35.0,  80.0  ], 
+  [50.0 - 29.0,  74.0  ], 
+  [50.0 - 19.0 + 1.0,  62.0  ], 
+  [50.0 - 14.0,  47.0  ], 
+  [50.0 - 7.0,   83.0  ], 
+  [50.0 - 7.0,   53.0  ], 
+  [50.0 + 0.0,   65.0  ], 
+  [50.0 + 7.0,   53.0  ], 
+  [50.0 + 7.0,   83.0  ], 
+  [50.0 + 14.0,  47.0  ], 
+  [50.0 + 19.0 + 1.0,  62.0  ], 
+  [50.0 + 29.0,  74.0  ], 
+  [50.0 + 35.0,  80.0  ], 
 ]
 
 let aircraftOutline = {
@@ -215,7 +215,7 @@ let sraam = @(pos, selected = false, size = [5, 22]) {
       24.5,   19.3,
       13.0,   13.6,
       13.0,   2.6,
-      // Subdivided semi-ellipse
+      
       11.7,   1.8,
       9.3,    1.1,
       6.0,    0.7,
@@ -321,9 +321,9 @@ let brimstone = @(pos, selected = false) function() {
         22.5,    5.5,
       ],
       [VECTOR_SECTOR,
-        0.0,    5.5, // x, y
-        22.0,   7.0, // radius
-        180.0,  0.0, // angles
+        0.0,    5.5, 
+        22.0,   7.0, 
+        180.0,  0.0, 
       ]
     ]
   }
@@ -368,8 +368,8 @@ let targetingPod = @(pos, size = [25, 20]) {
     ],
     [VECTOR_FILL_COLOR, Color(255, 255, 255, 255)],
     [VECTOR_ELLIPSE,
-      0.0,    7.0,  // x, y
-      4.2,    5.5   // radii
+      0.0,    7.0,  
+      4.2,    5.5   
     ],
   ]
 }
@@ -433,7 +433,7 @@ let lgb = @(pos, selected = false, size = [4, 20]) {
   color = baseColor
   lineWidth = baseLineWidth
   commands = [
-    [VECTOR_POLY, // Body
+    [VECTOR_POLY, 
       -11.0,   16.4,
       -16.5,   17.5,
       -22.0,   19.1,
@@ -465,7 +465,7 @@ let lgb = @(pos, selected = false, size = [4, 20]) {
       11.0,    16.4,
     ],
     [VECTOR_FILL_COLOR, Color(255, 255, 255, 255)],
-    [VECTOR_POLY, // Seeker
+    [VECTOR_POLY, 
       0.0,     0.0,
       -17.5,   5.5,
       -17.5,   9.3,
@@ -477,7 +477,7 @@ let lgb = @(pos, selected = false, size = [4, 20]) {
       17.5,    9.3,
       17.5,    5.5,
     ],
-    [VECTOR_POLY, // Tail
+    [VECTOR_POLY, 
       -30.5,   79.6,
       -57.0,   86.6,
       -57.0,   95.8,
@@ -518,7 +518,7 @@ let fuelTank = @(pos, size = [8, 40]) {
   color = baseColor
   lineWidth = baseLineWidth
   commands = [
-    [VECTOR_POLY, // Body
+    [VECTOR_POLY, 
       -1.0,    0.0,
       -5.0,    0.2,
       -9.0,    0.6,
@@ -639,17 +639,17 @@ let weapons = function() {
     let jettisoned = WeaponSlotsJettisoned.get()[i]
     let selected = (weaponSlotName == curWpn)
 
-    /******************/
-    /* EF2000 weapons */
-    /******************/
+    
+    
+    
 
-    // MRAAM (AIM-120)
+    
     if (weaponSlotName.contains("aim_120") && weaponSlotCnt > 0) {
       weaponsChildren.append(mraam(posWeapons[weaponSlot], selected))
       weaponsLabels.append(label("MRAAM", posLabels[weaponSlot]))
       continue
     }
-    // SRAAM (AIM-9)
+    
     if (weaponSlotName.contains("aim9") && weaponSlotCnt > 0) {
       if (weaponSlotTotalCnt == 1 && weaponSlotCnt == 1)
         weaponsChildren.append(sraam(posWeapons[weaponSlot], selected))
@@ -663,7 +663,7 @@ let weapons = function() {
       weaponsLabels.append(label("SRAAM", posLabels[weaponSlot]))
       continue
     }
-    // Brimstone
+    
     if (weaponSlotName.contains("brimstone")) {
       weaponsChildren.append(brimstoneTri(
         posWeapons[weaponSlot], weaponSlotCnt, selected,
@@ -673,13 +673,13 @@ let weapons = function() {
         weaponsLabels.append(label("BRMST", posLabels[weaponSlot]))
       continue
     }
-    // Targeting pod
+    
     if (weaponSlotName.contains("targeting_pod")) {
       weaponsChildren.append(targetingPod(posWeapons[weaponSlot]))
       weaponsLabels.append(label("TDP", posLabels[weaponSlot]))
       continue
     }
-    // Paveway
+    
     if (weaponSlotName.contains("paveway") || weaponSlotName.contains("mk18")) {
       if (weaponSlotTotalCnt == 1 && weaponSlotCnt == 1) {
         weaponsChildren.append(lgb(posWeapons[weaponSlot], selected))
@@ -695,34 +695,34 @@ let weapons = function() {
       }
       continue
     }
-    // LJDAM
+    
     if (weaponSlotName.contains("gbu_54b") && weaponSlotCnt > 0) {
       weaponsChildren.append(lgb(posWeapons[weaponSlot], selected))
       weaponsLabels.append(label("LJDAM", posLabels[weaponSlot]))
       continue
     }
-    // Mk.83
+    
     if (weaponSlotName.contains("mk_83") && weaponSlotCnt > 0) {
       weaponsChildren.append(bomb(posWeapons[weaponSlot], selected))
       weaponsLabels.append(label("MK83", posLabels[weaponSlot]))
       continue
     }
-    // Mk.84
+    
     if (weaponSlotName.contains("mk_84") && weaponSlotCnt > 0) {
       weaponsChildren.append(bomb(posWeapons[weaponSlot], selected))
       weaponsLabels.append(label("MK84", posLabels[weaponSlot]))
       continue
     }
-    // 1000L fuel tank
+    
     if (weaponSlotName.contains("1000l_ef_2000") && weaponSlotCnt > 0) {
       weaponsChildren.append(fuelTank(posWeapons[weaponSlot]))
       weaponsLabels.append(label("1000L", posLabels[weaponSlot]))
       continue
     }
 
-    /*******************/
-    /* Generic weapons */
-    /*******************/
+    
+    
+    
 
     if (triggerName == weaponTriggerName.BOMBS_TRIGGER && weaponSlotCnt > 0) {
       weaponsChildren.append(bomb(posWeapons[weaponSlot], selected))

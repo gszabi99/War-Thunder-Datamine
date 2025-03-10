@@ -15,7 +15,7 @@ let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let activeSeenLists = {}
 
 local SeenList = class {
-  id = "" //unique list id
+  id = "" 
 
   listGetter = null
   canBeNew = null
@@ -38,41 +38,41 @@ local SeenList = class {
     subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
   }
 
-  /*************************************************************************************************/
-  /*************************************PUBLIC FUNCTIONS *******************************************/
-  /*************************************************************************************************/
+  
+  
+  
 
   function setListGetter(getter) {
     this.listGetter = getter
   }
 
-  //sublistId must be uniq with usual entities, because they able to be used in usual entities list
+  
   function setSubListGetter(sublistId, subListGetterFunc) {
     this.subListGetters[sublistId] <- subListGetterFunc
   }
   isSubList = @(name) name in this.subListGetters
 
-  //make entity unseen if it missing in the list for such amount of days
-  //better to set this when full list available by listGetter
+  
+  
   function setDaysToUnseen(days) {
     this.daysToUnseen = days
     this.validateEntitesDays()
   }
 
-  //when no data in the current storage, this function will be called to gather data fromprevious storage.
-  //func result must be table { <entity> = <last seen days> }
-  //better also clear data in the previous storage, beacuse result will be saved in correct place.
-  //so compatibility function will be called only once per account.
+  
+  
+  
+  
   function setCompatibilityLoadData(func) {
     this.compatibilityLoadData = func
   }
 
-  //func = (bool) function(entity). Returns can entity from the list be marked as new or not
+  
   function setCanBeNewFunc(func) {
     this.canBeNew = func
   }
 
-  //call this when list which can be received by listGetter has changed
+  
   function onListChanged() {
     this.validateEntitesDays()
     seenListEvents.notifyChanged(this.id, null)
@@ -82,11 +82,11 @@ local SeenList = class {
   isNewSaved = @(entity) !(entity in this.entitiesData)
   hasSeen    = @() this.entitiesData.len() > 0
 
-  //when null, will mark all entities received by listGetter
+  
   markSeen   = @(entityOrList = null) this.setSeen(entityOrList, true)
   markUnseen = @(entityOrList = null) this.setSeen(entityOrList, false)
 
-  function getNewCount(entityList = null) { //when null, count all entities
+  function getNewCount(entityList = null) { 
     this.initOnce()
 
     local res = 0
@@ -112,9 +112,9 @@ local SeenList = class {
     seenListEvents.notifyChanged(this.id, null)
   }
 
-  /*************************************************************************************************/
-  /************************************PRIVATE FUNCTIONS *******************************************/
-  /*************************************************************************************************/
+  
+  
+  
 
   function initOnce() {
     if (this.isInited || !isProfileReceived.get())
@@ -175,7 +175,7 @@ local SeenList = class {
   }
 
   function setSeen(entityOrList, shouldSeen) {
-    if (!isProfileReceived.get()) //Don't try to mark or init seen list before profile received
+    if (!isProfileReceived.get()) 
       return
 
     this.initOnce()
@@ -195,8 +195,8 @@ local SeenList = class {
         continue
       }
       if (!this.canBeNew(entity))
-        continue //no need to hcange seen state for entities that can't be new.
-                 //they need to be marked unseen when they become can be new.
+        continue 
+                 
       if (this.isNewSaved(entity) == shouldSeen)
         changedList.append(entity)
       if (shouldSeen)

@@ -22,10 +22,10 @@ function updateAeroSmokeList() {
   let smokeList = (blk % "smoke_fx").map(function(inst) {
     let res = DataBlock()
     res.setFrom(inst)
-    res.locOrd <- -1          // Sort order by location
+    res.locOrd <- -1          
     foreach (idx, p in locations)
       if ((res?[p] ?? "") != "")
-        res.locOrd += idx + 1 //Otherwise order is equal for tail and triple (no location)
+        res.locOrd += idx + 1 
     return res
   })
 

@@ -19,7 +19,7 @@ let { ArmyFlags } = require("worldwarConst")
   isUpdateRequired = false
 }
 
-/******************* Public ********************/
+
 
 ::g_operations.forcedFullUpdate <- function forcedFullUpdate() {
   this.isUpdateRequired = true
@@ -83,7 +83,7 @@ let { ArmyFlags } = require("worldwarConst")
   return operationUnits
 }
 
-/***************** Private ********************/
+
 
 ::g_operations.getCurrentOperation <- function getCurrentOperation() {
   let operationId = wwGetOperationId()
@@ -93,7 +93,7 @@ let { ArmyFlags } = require("worldwarConst")
   return this.operationStatusById[operationId]
 }
 
-/************* onEvent Handlers ***************/
+
 
 ::g_operations.onEventWWFirstLoadOperation <- function onEventWWFirstLoadOperation(_params) {
   this.isUpdateRequired = true

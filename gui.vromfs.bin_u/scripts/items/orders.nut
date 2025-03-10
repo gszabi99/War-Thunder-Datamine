@@ -47,21 +47,21 @@ let activeOrder = persist("activeOrder", @() {
   targetPlayer = null
   timeToSwitchTarget = -1
 
-  // Handyman status text view-object.
-  // Used both for active and finished
-  // orders but with different templates.
-  // For sake of simplicity it is used in
-  // status text bottom as well.
+  
+  
+  
+  
+  
   statusTextView = {}
 })
-// Order which was active before current.
-// Used to show info about order result.
+
+
 let prevActiveOrder = persist("prevActiveOrder", @() { value = null })
 let cooldownTimeleft = persist("cooldownTimeleft", @() { value = 0 })
 
-// Holds data received from 'on_order_result_received' callback.
-// This is a forced workaround for order objective not holding
-// winner's latest score when order finishes.
+
+
+
 let winnerScoreDataByOrderId = persist("winnerScoreDataByOrderId", @() {})
 let orderStatusPosition = persist("orderStatusPosition", @() { value = [] })
 
@@ -77,8 +77,8 @@ let emptyPlayerData = {
   userId = null
 }
 
-// This is a cache object.
-// Use 'getPlayerDataById' to access.
+
+
 let playerDataById = {}
 
 let statusColorScheme = {
@@ -110,45 +110,45 @@ local ordersToActivate = null
 local isActivationProgress = false
 
 let debugPlayers = []
-// debugPlayers = [
-//   {
-//     scoreData = {
-//       playerId = -1
-//       score = 1024
-//       playerData = {
-//         userId = "test_player_id_1"
-//         name = "test_player_1"
-//         team = 1
-//       }
-//     }
-//   }, {
-//     scoreData = {
-//       playerId = -1
-//       score = 512
-//       playerData = {
-//         userId = "test_player_id_2"
-//         name = "test_player_2"
-//         team = 2
-//       }
-//     }
-//   }, {
-//     scoreData = {
-//       playerId = -1
-//       score = 256
-//       playerData = {
-//         userId = "test_player_id_3"
-//         name = "test_player_3"
-//         team = 2
-//       }
-//     }
-//   }
-// ]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 let getOrderAutoActivateHint = @() loc("guiHints/order_auto_activate",
   { time = $"{AUTO_ACTIVATE_TIME} {loc("mainmenu/seconds")}" })
 
-// This takes in account fact that item was used during current battle.
-// @see items_classes.Order.getAmount()
+
+
 let collectOrdersToActivate = @() ordersToActivate = getInventoryList(
   itemType.ORDER, @(item) item.getAmount() > 0).sort(@(a, b) a.expiredTimeSec <=> b.expiredTimeSec)
 
@@ -237,12 +237,12 @@ function getOrderActivateInfoText() {
 let isInSpectatorMode = @() ::isPlayerDedicatedSpectator() || is_replay_playing()
 let showActivateOrderButton = @() !isInSpectatorMode() && ordersCanBeUsed()
 
-// Returns amount of times item was used by this player during
-// current session. This data is reset when battle ends.
+
+
 let getTimesUsedOrderItem = @(orderItem) getTblValue(orderItem.id, timesUsedByOrderItemId, 0)
 
-// Manually managing activated order items as there's no way
-// to retrieve this kind of info from server.
+
+
 let isOrderItemActive = @(orderItem) isInArray(orderItem.id, activeLocalOrderIds)
 
 let isOrderInfoVisible = @() hasActiveOrder.value
@@ -276,36 +276,36 @@ function debugPrint(message) {
     log($"orders: debugPrint:\n{message}")
 }
 
-// Returns true if order was activated less
-// than specified amount of time ago.
+
+
 function checkOrderActivationTime(timeSeconds) {
   if (activeOrder.orderItem == null)
     return false
   return getOrderTimeleft(activeOrder) >= activeOrder.orderItem.timeTotal - timeSeconds
 }
 
-// @param orderObject 'activeOrder' or 'prevActiveOrder'
-// @param fullUpdate Setting to 'true' will update parameters
-// that are not changing for same order.
+
+
+
 function updateStatusTextView(orderObject, fullUpdate) {
-  // Possible when another player activates an order.
+  
   if (orderObject == null)
     return
 
   let view = orderObject.statusTextView
 
   if (fullUpdate) {
-    // Order name
+    
     view.orderActiveLabel <- loc("icon/orderSymbol")
     view.orderName <- orderObject.orderItem.getStatusOrderName()
 
     view.orderTimeleftLabel <- loc("icon/timer")
 
-    // Order starter
+    
     view.orderStarterLabel <- "".concat(loc("items/order/status/starter"), loc("ui/colon"))
     view.orderStarter <- ::build_mplayer_name(orderObject.starterPlayer)
 
-    // Order target
+    
     view.orderTargetLabel <- "".concat(loc("items/order/status/target"), loc("ui/colon"))
 
     view.cooldownTimeleftLabel <- "".concat(loc("items/order/status/cooldown"), loc("ui/colon"))
@@ -313,7 +313,7 @@ function updateStatusTextView(orderObject, fullUpdate) {
     view.timeToSwitchTargetLabel <- "".concat(loc("items/order/status/timeToSwitchTarget"), loc("ui/colon"))
   }
 
-  // Order description
+  
   let orderTypeParams = orderObject?.orderItem.typeParams
   view.orderDescription <- orderTypeParams != null
     ? orderObject.orderType.getObjectiveDescription(orderTypeParams, statusColorScheme,
@@ -361,7 +361,7 @@ function getStatusText() {
 }
 
 function getCooldownTimeleft() {
-  // Returns 1 or 2 as team indices.
+  
   let playerTeam = get_mp_local_team()
   if (playerTeam == Team.Any)
     return -1
@@ -370,7 +370,7 @@ function getCooldownTimeleft() {
   return getTblValue("orderCooldownLeft", localTeamTbl, 0)
 }
 
-// Called only when no active order.
+
 let updateCooldownTimeleft = @() cooldownTimeleft.value = max(getCooldownTimeleft(), 0)
 
 function getStatusTextBottom() {
@@ -398,16 +398,16 @@ function getStatusContent(orderObject, isHalignRight = false) {
   return handyman.renderCached("%gui/items/orderStatus.tpl", view)
 }
 
-// Implementation of this method will change after
-// switching to multiple active orders by same player.
+
+
 function updateActiveLocalOrders() {
   let starterUid = getTblValue("userId", activeOrder.starterPlayer, null)
   let itemId = getTblValue("id", activeOrder.orderItem, null)
   for (local i = activeLocalOrderIds.len() - 1; i >= 0; --i) {
     let id = activeLocalOrderIds[i]
 
-    // How? We don't know yet.
-    // Added assertions for further investigation.
+    
+    
     if (id == null) {
       debugTableData(activeLocalOrderIds)
       assert(false,
@@ -466,7 +466,7 @@ function onOrderAccepted(useResultCode, isSilent = false) {
   isActivationProgress = false
 }
 
-// This is order counter local in scope of one battle.
+
 let getOrderId = @(orderObjective) getTblValue("id", orderObjective, -1)
 
 function activateOrder(orderItem, onComplete = null, isSilent = false) {
@@ -494,12 +494,12 @@ function activateOrder(orderItem, onComplete = null, isSilent = false) {
     onOrderAccepted(orderUseResult.RESTRICTED_MISSION.code, isSilent)
 }
 
-// Activates order, which soon expire.
+
 function activateSoonExpiredOrder() {
   if (!hasFeature("OrderAutoActivate") || isActivationProgress)
     return
 
-  // If some orders expired during other one active
+  
   ordersToActivate = ordersToActivate.filter(@(inst) !inst.isExpired())
 
   for (local i = 0; i < ordersToActivate.len(); i++) {
@@ -516,8 +516,8 @@ function activateSoonExpiredOrder() {
   }
 }
 
-// Order status is: running, failed, succeed.
-// @see objectiveStatus
+
+
 function getOrderStatus(orderObjective) {
   let statusCode = getTblValue("status", orderObjective, -1)
   return getObjectiveStatusByCode(statusCode)
@@ -535,7 +535,7 @@ function getOrderType(orderObjective) {
   return orderItem.orderType
 }
 
-// Returns null-object player data if nothing found.
+
 function getPlayerDataById(playerId) {
   if (!ordersEnabled) {
     debugPrint("orders: getPlayerDataById: Calling when orders are disabled.")
@@ -565,8 +565,8 @@ function getLocalPlayerData() {
   return localPlayerData
 }
 
-// Adds local player data and score
-// dummy to specified scores array.
+
+
 function addLocalPlayerScoreData(scores) {
   let checkFunc = is_replay_playing()
     ? @(p) p.id == spectatorWatchedHero.id
@@ -591,14 +591,14 @@ function addLocalPlayerScoreData(scores) {
 function prepareStatusScores(statusScores, orderObject) {
   statusScores.sort(orderObject.orderType.sortPlayerScores)
 
-  // Remove score data with not player data.
+  
   for (local i = statusScores.len() - 1; i >= 0; --i) {
     let playerData = getPlayerDataByScoreData(statusScores[i])
     if (playerData == null)
       statusScores.remove(i)
   }
 
-  // Update players indexes
+  
   local localPlayerIndex = -1
   foreach (idx, score in statusScores) {
     score.playerIndex <- idx
@@ -613,16 +613,16 @@ function prepareStatusScores(statusScores, orderObject) {
   if (localPlayerIndex == -1)
     return
 
-  // Removing players preceding local player so that it
-  // will be within first 'maxRowsInScoreTable' players.
+  
+  
   while (localPlayerIndex >= MAX_ROWS_IN_SCORE_TABLE) {
     statusScores.remove(MAX_ROWS_IN_SCORE_TABLE - 1)
     --localPlayerIndex
   }
 }
 
-// Returns valid order scores, taking in account fact that when order
-// finishes it's objective-object does not hold valid score for winner.
+
+
 function getOrderScores(orderObject) {
   local scores = orderObject?.orderObjective.score
   if (scores != null) {
@@ -667,8 +667,8 @@ function getScoreTableTexts() {
   })
 }
 
-// Warning text with explanation why player can't activate item.
-// Returns empty string if player can activate item.
+
+
 function getWarningText(selectedOrderItem = null) {
   if (hasActiveOrder.value)
     return loc("items/order/activateOrderWarning/hasActiveOrder")
@@ -691,12 +691,12 @@ function updateActiveOrder(dispatchEvents = true, isForced = false) {
   local activeOrderChanged = false
   local orderStatusChanged = false
 
-  // See what's changed.
+  
   let orderObjective = getActiveOrderObjective()
 
-  // This means that there's active order but it
-  // is not fully loaded yet. Better bail out and
-  // update on next updateActiveOrder() call.
+  
+  
+  
   let starterId = getTblValue("starterId", orderObjective, -1)
   if (starterId == -1 && orderObjective != null && !isForced)
     return
@@ -706,7 +706,7 @@ function updateActiveOrder(dispatchEvents = true, isForced = false) {
   else if (activeOrder.orderStatus != getOrderStatus(orderObjective))
     orderStatusChanged = true
 
-  // Update active order model.
+  
   let oldActiveOrder = clone activeOrder
   activeOrder.orderId = getOrderId(orderObjective)
   activeOrder.orderObjective = orderObjective
@@ -717,22 +717,22 @@ function updateActiveOrder(dispatchEvents = true, isForced = false) {
 
   let objectiveStarterId = getTblValue("starterId", orderObjective, -1)
   let orderStartId = getTblValue("id", activeOrder.starterPlayer, -1)
-  // Updating starterPlayer table only if it's really required as it's expensive.
+  
   if (orderStartId != objectiveStarterId || activeOrder.starterPlayer == null)
     activeOrder.starterPlayer = getPlayerDataById(objectiveStarterId)
 
   let objectiveTargetId = getTblValue("targetId", orderObjective, -1)
   let orderTargetId = getTblValue("id", activeOrder.targetPlayer, -1)
-  // Same idea as started player.
+  
   if (orderTargetId != objectiveTargetId || activeOrder.targetPlayer == null)
     activeOrder.targetPlayer = getPlayerDataById(objectiveTargetId)
 
   hasActiveOrder.value = orderObjective != null
 
-  // Handle this player's active orders.
+  
   updateActiveLocalOrders()
 
-  // Update previous active order.
+  
   if (activeOrder.orderObjective == null
       && oldActiveOrder.orderStatus == objectiveStatus.RUNNING
       && activeOrder.orderStatus != objectiveStatus.RUNNING
@@ -742,15 +742,15 @@ function updateActiveOrder(dispatchEvents = true, isForced = false) {
   else if (activeOrderChanged && activeOrder.orderStatus == objectiveStatus.RUNNING)
     prevActiveOrder.value = null
 
-  // Cooldown starts after order becomes
-  // active and goes down to zero.
+  
+  
   if (!hasActiveOrder.value)
     updateCooldownTimeleft()
 
   updateHideOrderBlock()
 
-  // Preparing handyman-view both for current active
-  // order and previous order when it's on cooldown.
+  
+  
   if ((activeOrderChanged || orderStatusChanged) && hasActiveOrder.value)
     updateStatusTextView(activeOrder, true)
   if (cooldownTimeleft.value > 0 && prevActiveOrder.value != null)
@@ -779,9 +779,9 @@ function updateActiveOrder(dispatchEvents = true, isForced = false) {
 
 let onOrderTimerUpdate = @(_obj, _dt) updateActiveOrder()
 
-// @param fullUpdate Setting to 'true' forces
-// to rebuild whole status object content.
-// Used to avoid multiple 'replaceContent' calls.
+
+
+
 function updateOrderStatusObject(statusObj, fullUpdate) {
   if (!checkObj(statusObj))
     return
@@ -795,7 +795,7 @@ function updateOrderStatusObject(statusObj, fullUpdate) {
     let guiScene = statusObj.getScene()
     guiScene.replaceContentFromText(statusObj, statusContent, statusContent.len(), null)
 
-    // (Re)enable timer.
+    
     let orderTimerObj = statusObj.findObject("order_timer")
     if (checkObj(orderTimerObj))
       orderTimerObj.setUserData({ onOrderTimerUpdate })
@@ -807,17 +807,17 @@ function updateOrderStatusObject(statusObj, fullUpdate) {
   if (!showStatus)
     return
 
-  // Updating order status text.
+  
   let statusTextObj = statusObj.findObject("status_text")
   if (checkObj(statusTextObj))
     statusTextObj.setValue(getStatusText())
 
-  // Updating order bottom status text.
+  
   let statusTextBottomObj = statusObj.findObject("status_text_bottom")
   if (checkObj(statusTextBottomObj))
     statusTextBottomObj.setValue(getStatusTextBottom())
 
-  // Updating order score table.
+  
   let tableTexts = getScoreTableTexts()
   let showTable = tableTexts != null && tableTexts.len()
   let statusTableObj = statusObj.findObject("status_table")
@@ -832,7 +832,7 @@ function updateOrderStatusObject(statusObj, fullUpdate) {
     }
   }
 
-  // Hiding rows without data.
+  
   for (local i = numScores; i < MAX_ROWS_IN_SCORE_TABLE; ++i) {
     let rowObj = getRowObjByIndex(i, statusObj)
     assert(rowObj != null, "Error updating order status: Row object not found.")
@@ -840,7 +840,7 @@ function updateOrderStatusObject(statusObj, fullUpdate) {
   }
 }
 
-// Returns true if player can activate some order now.
+
 function orderCanBeActivated() {
   if (!ordersCanBeUsed() || !hasOrdersToActivate())
     return false
@@ -860,20 +860,20 @@ function saveOrderStatusPositionAndSize() {
     return
 
   let frameObj = ordersStatusObj.findObject("order_status_frame")
-  if (!checkObj(frameObj)) // Possible if not in spectator mode.
+  if (!checkObj(frameObj)) 
     return
 
   let frameSize = frameObj.getSize()
 
-  // Frame object has invalid size. This means it
-  // was not rendered yet. Bail out then.
+  
+  
   if (frameSize[0] == -1)
     return
 
   orderStatusPosition.value = frameObj.getPosRC()
   let statusObjPosition = ordersStatusObj.getPosRC()
 
-  // Saving frame object position relative to parent.
+  
   orderStatusPosition.value[0] -= statusObjPosition[0]
   orderStatusPosition.value[1] -= statusObjPosition[1]
 }
@@ -991,13 +991,13 @@ function enableOrdersWithoutDagui() {
 ::cross_call_api.active_order_request_update <- @() updateActiveOrder()
 ::cross_call_api.active_order_enable <- @() enableOrdersWithoutDagui()
 
-// This method is called from within C++.
-// Triggered only when some player gets a reward.
+
+
 function on_order_result_received(data) {
   let { player, param } = data
-  // Parameter 'orderId' comes as a string (e.g. "activeOrder.orderId")
-  // this is a misleading naming. But 'winnerScoreDataByOrderId' uses actual
-  // orderId so here is an assumption that order is still active.
+  
+  
+  
   let actualOrderId = activeOrder.orderId
   winnerScoreDataByOrderId[actualOrderId] <- {
     playerId = player

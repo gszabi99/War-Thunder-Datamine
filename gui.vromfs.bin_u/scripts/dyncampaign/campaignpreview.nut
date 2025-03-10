@@ -84,7 +84,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
 
-//    guiScene["scene-info"]["text"] = "one long line\none long line\none long line"
+
     let stats = ["wins", "sectors", "bombers", "fighters", "infantry", "tanks", "artillery", "ships"]
     let sides = ["ally", "enemy"]
     for (local i = 0; i < stats.len(); i++) {
@@ -102,7 +102,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
         this.logObj.append(this.buildLogLine(this.info.getBlock(i)))
 
     let country = (playerSide == 2) ? this.info.getStr("country_axis", "germany") : this.info.getStr("country_allies", "usa")
-    //wtf??
+    
     log($"2 country = {country}")
     if (country != "")
       this.guiScene["briefing-flag"]["background-image"] = getCountryFlagImg($"bgflag_country_{country}")
@@ -183,7 +183,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     ret.victory <- blk.getBool("isVictory", false)
-    ret.sideIcon <- blk.getInt("owner", 1) ?  //1 - allies, 2 - axis
+    ret.sideIcon <- blk.getInt("owner", 1) ?  
                       "#ui/gameuiskin#team_allies_icon.svg" : "#ui/gameuiskin#team_axis_icon.svg"
 
     ret.showInSmallLog <- blk.getBool("showInSmallLog", false)
@@ -281,7 +281,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let handlerClass = class {
       function goBack(_obj) {
-        let delayedAction = (@(handler, guiScene, infoBoxObject) function() { //-ident-hides-ident
+        let delayedAction = (@(handler, guiScene, infoBoxObject) function() { 
           guiScene.destroyElement(infoBoxObject)
           handler.isInInfo = false
           handler.showNav(true)
@@ -338,10 +338,10 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
 
     foreach (name, text in logTextsToSet)
       this.guiScene[name].setValue(text)
-/*
-    this.msgBox("info", data,
-      [
-        ["ok", function() {} ]
-      ], "ok") */
+
+
+
+
+
   }
 }

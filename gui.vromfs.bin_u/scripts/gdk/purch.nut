@@ -38,7 +38,7 @@ function update_purchases() {
     return
   }
   xbox_on_login(false, function(result) {
-    let success = result == 0 // YU2_OK
+    let success = result == 0 
     logX($"Login succeeded: {success}")
     if (success) {
       xbox_on_purchases_updated()

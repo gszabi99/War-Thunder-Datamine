@@ -197,7 +197,7 @@ gui_handlers.squadInviteListWnd <- class (gui_handlers.BaseGuiHandlerWT) {
         ], "no")
   }
 
-  /**event handlers**/
+  
   function onEventSquadInvitesChanged(_params) {
     this.doWhenActiveOnce("updateInviteesList")
   }

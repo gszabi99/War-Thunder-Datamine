@@ -68,18 +68,18 @@ function sortByParam(arr, param) {
   return arr
 }
 
-/**
- * Returns structure table of boosters.
- * This structure looks like this:
- * {
- *   <sort_order> = {
- *     publick = [array of public boosters]
- *     personal = [array of personal boosters]
- *   }
- *  maxSortOrder = <maximum sort_order>
- * }
- * Public and personal arrays of boosters sorted by effect type
- */
+
+
+
+
+
+
+
+
+
+
+
+
 function sortBoosters(boosters, effectType) {
   let res = {
     maxSortOrder = 0
@@ -112,12 +112,12 @@ function getBoostersEffectsArray(itemsArray, effectType) {
   return res
 }
 
-/**
- * Summs effects of passed boosters and returns table in format:
- * {
- *   <boosterEffectType.name> = <value in percent>
- * }
- */
+
+
+
+
+
+
 function getBoostersEffects(boosters) {
   let result = {}
   foreach (effectType in boosterEffectType) {

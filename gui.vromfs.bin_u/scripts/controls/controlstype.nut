@@ -66,9 +66,9 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 }
 
-::set_helpers_mode_and_option <- function set_helpers_mode_and_option(mode) { //setGuiOptionsMode required
-  set_option(USEROPT_HELPERS_MODE, mode) //for next loadDifficulty()
-  set_control_helpers_mode(mode); //instant
+::set_helpers_mode_and_option <- function set_helpers_mode_and_option(mode) { 
+  set_option(USEROPT_HELPERS_MODE, mode) 
+  set_control_helpers_mode(mode); 
 }
 
 ::setControlTypeByID <- function setControlTypeByID(ct_id) {
@@ -77,7 +77,7 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
 
   local ct_preset = ""
   if (ct_id == "ct_own") {
-    // This case is only for gui_handlers.ControlType, it starts ControlsWizard scene after that.
+    
     ct_preset = "keyboard"
     ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
     save_profile(false)
@@ -116,7 +116,7 @@ gui_handlers.ControlType <- class (gui_handlers.BaseGuiHandlerWT) {
   if (isPlatformSony || isPlatformXboxOne || isPlatformSteamDeck) {
     let presetMode = get_option(USEROPT_CONTROLS_PRESET)
     ct_preset = parseControlsPresetName(presetMode.values[presetMode.value])
-    //TODO: is it obsolete?
+    
     local realisticPresetNames = ["default", "xboxone_simulator", "stimdeck_simulator"]
     local mouseAimPresetNames = ["dualshock4", "xboxone_ma", "stimdeck_ma"]
     if (ct_preset.name in realisticPresetNames)

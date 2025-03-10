@@ -85,7 +85,7 @@ function checkUnlockedCountries() {
   return curUnlocked
 }
 
-function checkUnlockedCountriesByAirs() { //starter packs
+function checkUnlockedCountriesByAirs() { 
   local haveUnlocked = false
   foreach (air in getAllUnits())
     if (!isUnitDefault(air)

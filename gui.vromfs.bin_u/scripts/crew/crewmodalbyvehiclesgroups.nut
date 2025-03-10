@@ -35,7 +35,7 @@ let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {
     let curUnit = this.getCurCrewUnit(this.crew)
     let curGroupName = curCountryGroups.groupIdByUnitName?[curUnit?.name] ?? ""
 
-    let sortData = [] // { unit, locname }
+    let sortData = [] 
     foreach (unit in (curCountryGroups.groups?[curGroupName].units ?? []))
       if (unit.getCrewUnitType() == this.curCrewUnitType) {
         let isCurrent = curUnit?.name == unit.name

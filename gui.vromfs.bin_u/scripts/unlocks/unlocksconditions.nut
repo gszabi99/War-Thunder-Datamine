@@ -112,12 +112,12 @@ let bitModesList = {
   char_mission_completed     = "name"
   char_buy_modification_list = "name"
   missionCompleted           = "mission"
-  char_unit_exist            = "unit" // must be here but in old format was skipped
+  char_unit_exist            = "unit" 
 }
 
 let modeTypesWithoutProgress = [
   ""
-  "char_always_progress" // char_always_progress do not have progress, only check conditions
+  "char_always_progress" 
   "char_crew_skill"
 ]
 
@@ -226,7 +226,7 @@ function getUnlockConditions(modeBlk) {
     : []
 }
 
-// sets hidden param for hiding some conditions
+
 function hideConditionsFromBlk(blk, unlockBlk) {
   let conditionsArray = getUnlockConditions(blk)
   for (local i = conditionsArray.len() - 1; i >= 0; --i) {
@@ -304,7 +304,7 @@ function loadMainProgressCondition(blk) {
     if (blk?[p])
       res[p] <- blk[p]
 
-  // uniq modeType params
+  
   if (modeType == "unlockCount")
     res.unlockType <- blk?.unlockType ?? ""
   else if (modeType == "unlockOpenCount" || modeType == "unlockStageCount") {
@@ -314,7 +314,7 @@ function loadMainProgressCondition(blk) {
       foreach (unlockId in (blk % "unlock")) {
         let unlock = getUnlockById(unlockId)
         if (unlock == null) {
-          let debugUnlockData = blk?.unlock ?? toString(blk) // warning disable: -declared-never-used
+          let debugUnlockData = blk?.unlock ?? toString(blk) 
           assert(false, "ERROR: Unlock does not exist")
           continue
         }
@@ -373,7 +373,7 @@ function loadParamsConditions(blk) {
     res.append(createCondition("unitClass", cond))
   }
 
-  if (blk?.type == "maxUnitsRankOnStartMission") { // 2 params conditions instead of 1 base
+  if (blk?.type == "maxUnitsRankOnStartMission") { 
     let minRank = blk?.minRank ?? 0
     let maxRank = blk?.maxRank ?? minRank
     if (minRank) {
@@ -404,7 +404,7 @@ function mergeConditionToList(newCond, list) {
   let cType = newCond.type
   let cond = findCondition(list, cType, getTblValue("locGroup", newCond, null))
   if (!cond)
-    return list.append(newCond) // warning disable: -unwanted-modification
+    return list.append(newCond) 
 
   if (!newCond.values)
     return
@@ -417,9 +417,9 @@ function mergeConditionToList(newCond, list) {
     cond.values.extend((type(newCond.values) == "array") ? newCond.values : [newCond.values])
   }
 
-  // merge specific by type
+  
   if (cType == "modes") {
-    let idx = u.find_in_array(cond.values, "online") // remove mode online if there is ther modes (clan, event, etc)
+    let idx = u.find_in_array(cond.values, "online") 
     if (idx >= 0 && cond.values.len() > 1)
       cond.values.remove(idx)
   }
@@ -686,27 +686,27 @@ function loadCondition(blk, unlockBlk) {
   return res
 }
 
-// returns array of conditions, unlockBlk - main body of unlock
-//
-// condition format:
-// type = string
-// values = null || array of values
-// needToShowInHeader - shows values in header of unlock (used in battletasks and battlepass challenges)
-// locGroup - group values in one loc string instead of different string for each value.
-//
-// specific params for main progresscondition (type == "mode"):
-// modeType - mode type of conditions with progress
-//   such condition can be only one in list, and always first.
-// modeTypeLocID  - locId for mode type
+
+
+
+
+
+
+
+
+
+
+
+
 function loadConditionsFromBlk(blk, unlockBlk = DataBlock()) {
   let res = []
-  let mainCond = loadMainProgressCondition(blk) // main condition by modeType
+  let mainCond = loadMainProgressCondition(blk) 
   if (mainCond)
     res.append(mainCond)
 
-  res.extend(loadParamsConditions(blk)) // conditions by mode params - elite, country etc
+  res.extend(loadParamsConditions(blk)) 
 
-  hideConditionsFromBlk(blk, unlockBlk) // don't show conditions by rule
+  hideConditionsFromBlk(blk, unlockBlk) 
 
   let conditionsArray = getUnlockConditions(blk)
   foreach (condBlk in conditionsArray) {
@@ -717,7 +717,7 @@ function loadConditionsFromBlk(blk, unlockBlk = DataBlock()) {
   return res
 }
 
-// generates conditions texts, adds colorized "<text>: <valueText>" to text
+
 function addToText(text, name, valueText = "", color = "unlockActiveColor", separator = "\n") {
   text = (text.len() ? separator : "").concat(text, name)
   if (valueText != "")

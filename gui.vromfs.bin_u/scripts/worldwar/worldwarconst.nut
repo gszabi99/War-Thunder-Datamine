@@ -15,13 +15,13 @@ enum WW_ARMY_RELATION_ID {
 }
 
 enum WW_GLOBAL_STATUS_TYPE {
- //bit enum
+ 
   QUEUE              = 0x0001
   ACTIVE_OPERATIONS  = 0x0002
   MAPS               = 0x0004
   OPERATIONS_GROUPS  = 0x0008
 
-  //masks
+  
   ALL                = 0x000F
 }
 

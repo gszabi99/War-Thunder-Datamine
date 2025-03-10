@@ -45,7 +45,7 @@ function requestItemsByItemdefIds(itemdefIdsList) {
   inventoryClient.requestItemdefsByIds(itemdefIdsList)
 }
 
-// fixme remove redundant parameter
+
 function findItemById(id, _typeMask = itemType.ALL) {
   checkUpdateList()
   let item = shopItemById?[id] ?? itemsByItemdefId?[id]
@@ -121,9 +121,9 @@ function getItemOrRecipeBundleById(id) {
     return item
 
   item = createItem(itemType.RECIPES_BUNDLE, itemDefDesc)
-  // This item is not visible in the inventory or shop,
-  // so there's no need for a special event regarding its creation.
-  // However, we need to be able to find it by ID to work with it correctly later.
+  
+  
+  
   itemsByItemdefId[item.id] <- item
   return item
 }
@@ -152,7 +152,7 @@ function isItemsManagerEnabled() {
 }
 
 function getItemsSortComparator(itemsSeenList = null) {
-  return function(item1, item2) { //warning disable: -return-different-types
+  return function(item1, item2) { 
     if (!item1 || !item2)
       return item2 <=> item1
     return item2.isActive() <=> item1.isActive()
@@ -170,7 +170,7 @@ function getRawInventoryItemAmount(itemdefid) {
   return rawInventoryItemAmountsByItemdefId?[itemdefid] ?? 0
 }
 
-// promo
+
 function consumeItemFromPromo(handler, params) {
   let itemId = params?[0]
   if (itemId == null)
@@ -206,11 +206,11 @@ function getShopVisibleSeenIds() {
   return newVal
 }
 
-// seen
+
 let seenIdCanBeNew = {}
 function canSeenIdBeNew(seenId) {
   if (!(seenId in seenIdCanBeNew) || seenIdCanBeNew[seenId] == null) {
-    let id = to_integer_safe(seenId, seenId, false) //ext inventory items id needs to be convert to int
+    let id = to_integer_safe(seenId, seenId, false) 
     let item = findItemById(id)
     let itemCanBeNew = item && !(getAircraftByName(item.getTopPrize()?.unit)?.isBought() ?? false)
     seenIdCanBeNew[seenId] <- itemCanBeNew
@@ -350,7 +350,7 @@ addListenersWithoutEnv({
   }
 })
 
-// event from native code:
+
 function onItemsLoaded() {
   isInventoryInternalUpdated = true
   markInventoryUpdate()
@@ -358,7 +358,7 @@ function onItemsLoaded() {
 eventbus_subscribe("on_items_loaded", @(_) deferOnce(onItemsLoaded))
 
 ::ItemsManager <- {
-  // circ reft and some other issues with the export
+  
   requestItemsByItemdefIds
   collectUserlogItemdefs
   findItemById

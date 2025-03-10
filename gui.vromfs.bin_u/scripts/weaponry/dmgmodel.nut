@@ -53,7 +53,7 @@ function getLinearValueFromP2blk(blk, x) {
   return pMin.y + (pMax.y - pMin.y) * (x - pMin.x) / (pMax.x - pMin.x)
 }
 
-/** Returns -1 if no such angle found. */
+
 function getAngleByProbabilityFromP2blk(blk, x) {
   for (local i = 0; i < blk.paramCount() - 1; ++i) {
     let p1 = blk.getParamValue(i)
@@ -66,8 +66,8 @@ function getAngleByProbabilityFromP2blk(blk, x) {
     let probability2 = p2.y
     if ((probability1 <= x && x <= probability2) || (probability2 <= x && x <= probability1)) {
       if (probability1 == probability2) {
-        // This means that we are on the left side of
-        // probability-by-angle curve.
+        
+        
         if (x == 1)
           return max(angle1, angle2)
         else
@@ -79,7 +79,7 @@ function getAngleByProbabilityFromP2blk(blk, x) {
   return -1
 }
 
-/** Returns -1 if nothing found. */
+
 function getMaxProbabilityFromP2blk(blk) {
   local result = -1
   for (local i = 0; i < blk.paramCount(); ++i) {
@@ -93,22 +93,22 @@ function getMaxProbabilityFromP2blk(blk) {
 function getRichochetPresetBlk(presetData) {
   if (presetData == null)
     return null
-  // First cycle through all preset blocks searching
-  // for block with "caliberToArmor:r = 1".
+  
+  
   for (local i = 0; i < presetData.blockCount(); ++i) {
     let presetBlock = presetData.getBlock(i)
     if (presetBlock?.caliberToArmor == 1)
       return presetBlock
   }
-  // If no such block found then try to find block
-  // without "caliberToArmor" property.
+  
+  
   for (local i = 0; i < presetData.blockCount(); ++i) {
     let presetBlock = presetData.getBlock(i)
     if (!("caliberToArmor" in presetBlock))
       return presetBlock
   }
-  // If still nothing found then return presetData
-  // as it is a preset block itself.
+  
+  
   return presetData
 }
 
@@ -132,8 +132,8 @@ function getRicochetDataByPreset(presetDataBlk) {
         addMaxProbability = true
     }
 
-    // If, say, we didn't find angle with 100% ricochet chance,
-    // then showing angle for max possible probability.
+    
+    
     if (addMaxProbability) {
       let maxProbability = getMaxProbabilityFromP2blk(ricochetPresetBlk)
       let angleAtMaxProbability = getAngleByProbabilityFromP2blk(ricochetPresetBlk, maxProbability)
@@ -224,7 +224,7 @@ function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass) {
   if (!isDataBlock(explTypeBlk))
     return res
 
-  //armored vehicles data
+  
   let explMassInTNT = explosiveMass * (explTypeBlk?.strengthEquivalent ?? 0)
 
   let splashParamsBlk = blk?.explosiveTypeToSplashParams
@@ -242,7 +242,7 @@ function getDestructionInfoTexts(explosiveType, explosiveMass, ammoMass) {
     }
   }
 
-  //not armored vehicles data
+  
   let fillingRatio = ammoMass ? explosiveMass / ammoMass : 1.0
   let brisanceMass = explosiveMass * (explTypeBlk?.brisanceEquivalent ?? 0)
 

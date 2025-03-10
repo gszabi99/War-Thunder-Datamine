@@ -129,12 +129,12 @@ let ControlsInput = class {
     if (!this.checkActive(obj))
       return RETCODE_HALT
 
-    // Gamepad START btn is reserved for toggling the input listening mode off/on.
+    
     if (btn_idx == 4 && isXInputDevice())
       return RETCODE_NOTHING
 
     if (!is_up) {
-      let ignore = (btn_idx >= joy.getButtonCount()) //<-- ignore PoV hats for now
+      let ignore = (btn_idx >= joy.getButtonCount()) 
       print($"btn_idx {btn_idx}")
       if (!ignore) {
         let id = JOYSTICK_DEVICE_0_ID

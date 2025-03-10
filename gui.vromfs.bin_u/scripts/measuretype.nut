@@ -18,10 +18,10 @@ let measureType = {
     byName = {}
   }
   template = {
-    name = "" // Same as in measureUnits.blk.
+    name = "" 
     userOptCode = -1
-    orderCode = -1 // Required if userOptCode != -1.
-    presize = 0.01 //presize to round by
+    orderCode = -1 
+    presize = 0.01 
 
     getMeasureUnitsName = @() loc(this.getMeasureUnitsLocKey())
     getMeasureUnitsLocKey = @() this.userOptCode != -1
@@ -57,7 +57,7 @@ addTypes(measureType, {
     orderCode = 0
   }
 
-  SPEED_PER_SEC = { //only m/s atm
+  SPEED_PER_SEC = { 
     name = "speed_per_sec"
     getMeasureUnitsLocKey = @() "measureUnits/metersPerSecond_climbSpeed"
   }
@@ -168,7 +168,7 @@ addTypes(measureType, {
           addMeasureUnits ? $" {this.getMeasureUnitsName()}" : ""
         )
 
-      // Start from kilobytes
+      
       local sizeInUnits = ceil(value.tofloat() / this.unitFactorStep)
       local usedUnitIdx = 0
       while (sizeInUnits >= this.unitFactorStep && usedUnitIdx < this.unitNamesList.len() - 1) {

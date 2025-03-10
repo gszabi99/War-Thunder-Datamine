@@ -71,15 +71,15 @@ class ClanTagDecorator {
   }
 
 
-  /**
-   * Return array of ClanTagDecorator's
-   * @deocratorsBlk - datablock in format:
-   * {
-   *   decor:t='<start><end>'; //start and end have equal length
-   *
-   *   ...
-   * }
-   */
+  
+
+
+
+
+
+
+
+
   function getDecoratorsInternal(decoratorsBlk, free = false) {
     let decorators = []
 

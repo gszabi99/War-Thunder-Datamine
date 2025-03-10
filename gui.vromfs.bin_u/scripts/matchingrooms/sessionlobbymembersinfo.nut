@@ -46,7 +46,7 @@ function getRoomMemberInfo(member) {
   let pub = member?.public ?? {}
   let res = {
     memberId = member.memberId
-    userId = member.userId.tostring() //member info same format as get_mplayers_list
+    userId = member.userId.tostring() 
     name = member.name
     isLocal = isMyUserId(member.userId)
     spectator = getTblValue("spectator", member, false)
@@ -62,7 +62,7 @@ function getRoomMemberInfo(member) {
       res.state = isRoomMemberInSession(member) ? PLAYER_IN_LOBBY_READY : PLAYER_IN_LOBBY_NOT_READY
   }
   else if (!isUserCanChangeReadyInLobby() && res.state == PLAYER_IN_LOBBY_NOT_READY)
-    res.state = PLAYER_IN_LOBBY_READY //player cant change ready self, and will go to battle event when no ready.
+    res.state = PLAYER_IN_LOBBY_READY 
   return res
 }
 
@@ -78,9 +78,9 @@ function isRoomMemberOperator(member) {
 }
 
 function invitePlayerToSessionRoom(uid) {
-  if (SessionLobbyState.roomId == INVALID_ROOM_ID) { // we are not in room. nothere to invite
-    let is_in_room = isInSessionRoom.get()                   // warning disable: -declared-never-used
-    let room_id = SessionLobbyState.roomId                          // warning disable: -declared-never-used
+  if (SessionLobbyState.roomId == INVALID_ROOM_ID) { 
+    let is_in_room = isInSessionRoom.get()                   
+    let room_id = SessionLobbyState.roomId                          
     script_net_assert("trying to invite into room without roomId")
     return
   }
@@ -98,10 +98,10 @@ function kickPlayerFromRoom(member) {
       kickMember({ roomId = SessionLobbyState.roomId, memberId = member.memberId }, function(p) { checkMatchingError(p) })
 }
 
-/**
- * Returns true if unit available for spawn is player's own unit with own crew.
- * Returns false for non player's (random, etc.) units available for spawn.
- */
+
+
+
+
 function isUsedPlayersOwnUnit(member, unitId) {
   return (member?.crafts_info ?? []).findvalue(@(ci) ci.name == unitId) != null
 }
@@ -109,7 +109,7 @@ function isUsedPlayersOwnUnit(member, unitId) {
 function getRoomMembersReadyStatus() {
   let res = {
     readyToStart = true
-    ableToStart = false //can be not full ready, but able to start.
+    ableToStart = false 
     haveNotReady = false
     statusText = loc("multiplayer/readyToGo")
   }

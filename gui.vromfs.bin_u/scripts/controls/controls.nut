@@ -86,7 +86,7 @@ function getAxisActivationShortcutData(shortcuts, item, preset) {
     else
       inputs.extend(buttons)
   }
-  // Use only axis input if has no shortcuts for combination
+  
   if (scArr.len() == 0 && axisInput)
     inputs.append(axisInput)
 
@@ -98,43 +98,43 @@ function getAxisActivationShortcutData(shortcuts, item, preset) {
 ::shortcutsList <- shortcutsListModule.types
 
 function resetDefaultControlSettings() {
-  set_option_multiplier(OPTION_AILERONS_MULTIPLIER,         0.79); //USEROPT_AILERONS_MULTIPLIER
-  set_option_multiplier(OPTION_ELEVATOR_MULTIPLIER,         0.64); //USEROPT_ELEVATOR_MULTIPLIER
-  set_option_multiplier(OPTION_RUDDER_MULTIPLIER,           0.43); //USEROPT_RUDDER_MULTIPLIER
-  set_option_multiplier(OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER,   0.79); //
-  set_option_multiplier(OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER,  0.64); //
-  set_option_multiplier(OPTION_HELICOPTER_PEDALS_MULTIPLIER,        0.43); //
-  set_option_multiplier(OPTION_ZOOM_SENSE,                  0); //USEROPT_ZOOM_SENSE
-  set_option_multiplier(OPTION_MOUSE_SENSE,                 0.5); //USEROPT_MOUSE_SENSE
-  set_option_multiplier(OPTION_MOUSE_AIM_SENSE,             0.5); //USEROPT_MOUSE_AIM_SENSE
-  set_option_multiplier(OPTION_GUNNER_VIEW_SENSE,           1); //USEROPT_GUNNER_VIEW_SENSE
-  set_option_multiplier(OPTION_ATGM_AIM_SENS_HELICOPTER,    1); //USEROPT_ATGM_AIM_SENS_HELICOPTER
-  set_option_multiplier(OPTION_MOUSE_JOYSTICK_DEADZONE,     0.1); //mouseJoystickDeadZone
+  set_option_multiplier(OPTION_AILERONS_MULTIPLIER,         0.79); 
+  set_option_multiplier(OPTION_ELEVATOR_MULTIPLIER,         0.64); 
+  set_option_multiplier(OPTION_RUDDER_MULTIPLIER,           0.43); 
+  set_option_multiplier(OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER,   0.79); 
+  set_option_multiplier(OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER,  0.64); 
+  set_option_multiplier(OPTION_HELICOPTER_PEDALS_MULTIPLIER,        0.43); 
+  set_option_multiplier(OPTION_ZOOM_SENSE,                  0); 
+  set_option_multiplier(OPTION_MOUSE_SENSE,                 0.5); 
+  set_option_multiplier(OPTION_MOUSE_AIM_SENSE,             0.5); 
+  set_option_multiplier(OPTION_GUNNER_VIEW_SENSE,           1); 
+  set_option_multiplier(OPTION_ATGM_AIM_SENS_HELICOPTER,    1); 
+  set_option_multiplier(OPTION_MOUSE_JOYSTICK_DEADZONE,     0.1); 
   set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_DEADZONE,     0.1);
-  set_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENSIZE,   0.6); //mouseJoystickScreenSize
+  set_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENSIZE,   0.6); 
   set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENSIZE,   0.6);
-  set_option_multiplier(OPTION_MOUSE_JOYSTICK_SENSITIVITY,  2); //mouseJoystickSensitivity
+  set_option_multiplier(OPTION_MOUSE_JOYSTICK_SENSITIVITY,  2); 
   set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SENSITIVITY,  2);
-  set_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENPLACE,  0); //mouseJoystickScreenPlace
+  set_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENPLACE,  0); 
   set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENPLACE,  0);
-  set_option_multiplier(OPTION_MOUSE_AILERON_RUDDER_FACTOR, 0.5); //mouseAileronRudderFactor
+  set_option_multiplier(OPTION_MOUSE_AILERON_RUDDER_FACTOR, 0.5); 
   set_option_multiplier(OPTION_HELICOPTER_MOUSE_AILERON_RUDDER_FACTOR, 0.5);
-  set_option_multiplier(OPTION_CAMERA_SMOOTH,               0); //
-  set_option_multiplier(OPTION_CAMERA_SPEED,                1.13); //
-  set_option_multiplier(OPTION_CAMERA_MOUSE_SPEED,          4); //
-  set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_AIR,        0.0); //
-  set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_HELICOPTER, 0.0); //
-  set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_TANK,       0.0); //
-  set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SHIP,       0.0); //
-  set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SUBMARINE,  0.0); //
-  set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_AIR,        0.5); //
-  set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_HELICOPTER, 0.5); //
-  set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_TANK,       0.5); //
-  set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SHIP,       0.5); //
-  set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SUBMARINE,  0.5); //
+  set_option_multiplier(OPTION_CAMERA_SMOOTH,               0); 
+  set_option_multiplier(OPTION_CAMERA_SPEED,                1.13); 
+  set_option_multiplier(OPTION_CAMERA_MOUSE_SPEED,          4); 
+  set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_AIR,        0.0); 
+  set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_HELICOPTER, 0.0); 
+  set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_TANK,       0.0); 
+  set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SHIP,       0.0); 
+  set_option_multiplier(OPTION_AIM_TIME_NONLINEARITY_SUBMARINE,  0.0); 
+  set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_AIR,        0.5); 
+  set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_HELICOPTER, 0.5); 
+  set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_TANK,       0.5); 
+  set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SHIP,       0.5); 
+  set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_SUBMARINE,  0.5); 
 
-  set_option_mouse_joystick_square(0); //mouseJoystickSquare
-  set_option_gain(1); //USEROPT_FORCE_GAIN
+  set_option_mouse_joystick_square(0); 
+  set_option_gain(1); 
 }
 
 ::can_change_helpers_mode <- function can_change_helpers_mode() {
@@ -201,7 +201,7 @@ local axisMappedOnMouse = {
   helicopter_mouse_aim_y = @(_isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
   submarine_mouse_aim_x  = @(_isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
   submarine_mouse_aim_y  = @(_isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
-  //
+  
 
 
 
@@ -216,7 +216,7 @@ local axisMappedOnMouse = {
   helicopter_camy        = @(_isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
   submarine_camx         = @(_isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
   submarine_camy         = @(_isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
-  //
+  
 
 
 
@@ -345,7 +345,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       { scene = this.scene.findObject("control_navigation")
         onSelectCb = Callback(this.doNavigateToSection, this)
         panelWidth        = "0.35@sf, ph"
-        // Align to helpers_mode and table first row
+        
         headerHeight      = "0.05@sf + @sf/@pf"
         headerOffsetX     = "0.015@sf"
         headerOffsetY     = "0.015@sf"
@@ -358,7 +358,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     if (this.filterObjId) {
       let filterObj = this.scene.findObject(this.filterObjId)
       if (checkObj(filterObj) && this.filterValues && filterObj.childrenCount() == this.filterValues.len() && !::preset_changed)
-        return //no need to refill filters
+        return 
     }
 
     local modsBlock = null
@@ -510,7 +510,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     let listValue = groupsList.getValue()
     if (groupsList.getValue() != curValue)
       groupsList.setValue(curValue)
-    if (listValue <= 0 && curValue == 0) //when list value == -1 it doesnt send on_select event when we switch value to 0
+    if (listValue <= 0 && curValue == 0) 
       this.onControlsGroupChange()
   }
 
@@ -544,7 +544,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   function fillControlGroupTab(groupId) {
     local data = "";
     let joyParams = joystickGetCurSettings();
-    local gRow = 0  //for even and odd color by groups
+    local gRow = 0  
     local isSectionShowed = true
     local isHelpersVisible = false
 
@@ -715,7 +715,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
         if (activationShortcut != "")
           data = $"{getTextMarkup(this.getSymbol(""))}{activationShortcut}"
       }
-      //--- options controls list  ---
+      
       foreach (modifier, id in item.modifiersId)
         if (modifier != "") {
           let scData = getShortcutData(this.shortcuts, id, false, curPreset)
@@ -879,7 +879,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     set_control_helpers_mode(filterId);
     this.filter = this.filterValues[filterId];
     this.fillControlGroupsList();
-    //doControlsGroupChange();
+    
   }
 
   function selectRowByRowIdx(idx) {
@@ -1616,14 +1616,14 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   }
 
   function onManageBackup() {
-    if (!this.isValid()) //updateCurPresetForExport use scene objects, and no need open backup manager, if controls window is not valid
+    if (!this.isValid()) 
       return
     this.updateCurPresetForExport()
     gui_handlers.ControlsBackupManager.open()
   }
 
   function onExportToFile() {
-    if (!this.isValid()) //updateCurPresetForExport use scene objects, and no need open export to file modal, if controls window is not valid
+    if (!this.isValid()) 
       return
     this.updateCurPresetForExport()
 
@@ -1896,7 +1896,7 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
   return loc("ui/comma").join([ baseTxt, hotkeyTxt ], true)
 }
 
-//*************************Functions***************************//
+
 
 ::hackTextAssignmentForR2buttonOnPS4 <- function hackTextAssignmentForR2buttonOnPS4(mainText) {
   if (isPlatformSony) {

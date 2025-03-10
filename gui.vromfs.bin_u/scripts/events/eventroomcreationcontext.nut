@@ -27,7 +27,7 @@ enum CREWS_READY_STATUS {
   HAS_ALLOWED              = 0x0001
   HAS_REQUIRED_AND_ALLOWED = 0x0002
 
-  //mask
+  
   READY                    = 0x0003
 }
 
@@ -55,9 +55,9 @@ let EventRoomCreationContext = class {
     this.initMissionsOnce()
   }
 
-  /*************************************************************************************************/
-  /*************************************PUBLIC FUNCTIONS *******************************************/
-  /*************************************************************************************************/
+  
+  
+  
 
   function getOptionsList() {
     let options = [
@@ -161,7 +161,7 @@ let EventRoomCreationContext = class {
     return res
   }
 
-  //same format result as events.getCantJoinReasonData
+  
   function getCantCreateReasonData(params = null) {
     params = params ? clone params : {}
     params.isCreationCheck <- true
@@ -191,9 +191,9 @@ let EventRoomCreationContext = class {
     return res
   }
 
-  /*************************************************************************************************/
-  /************************************PRIVATE FUNCTIONS *******************************************/
-  /*************************************************************************************************/
+  
+  
+  
 
   function initMissionsOnce() {
     this.chosenMissionsList = []
@@ -290,7 +290,7 @@ let EventRoomCreationContext = class {
 
   function getRoomCreateParams() {
     let res = {
-      ranks = [1, MAX_COUNTRY_RANK] //matching do nt allow to create session before ranks is set
+      ranks = [1, MAX_COUNTRY_RANK] 
     }
 
     foreach (team in g_team.getTeams())

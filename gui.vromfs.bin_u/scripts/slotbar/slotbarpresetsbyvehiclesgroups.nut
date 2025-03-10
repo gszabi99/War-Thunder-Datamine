@@ -15,9 +15,9 @@ let { split } = require("%sqstd/string.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 
 local curPreset = {
-  groupsList = {} //groups config by country
-  countryPresets = {} //units list in slotbar by country
-  presetId = "" //eventId or mapId for WW
+  groupsList = {} 
+  countryPresets = {} 
+  presetId = "" 
 }
 
 local cachedPresetsListByEventId = {}
@@ -110,7 +110,7 @@ function validatePresets(_presetId, groupsList, countryPresets) {
          continue
       }
 
-      presetUnits[i] = null   //not found unit group, need clear slot.
+      presetUnits[i] = null   
       emptySLots.append(i)
     }
 

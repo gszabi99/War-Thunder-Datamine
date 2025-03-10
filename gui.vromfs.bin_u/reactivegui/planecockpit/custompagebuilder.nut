@@ -31,6 +31,20 @@ function su30Devices(pos, size) {
   }
 }
 
+function su30RadarElevation(pos, size) {
+  return {
+    rendObj = ROBJ_DAS_CANVAS
+    pos
+    size
+    script = load_das("%rGui/planeCockpit/mfdSu30Radar.das")
+    drawFunc = "draw_radar_hud"
+    setupFunc = "setup_radar_data"
+    color = Color(10, 202, 10, 250)
+    isElevationMode = true
+    font = Fonts.hud
+  }
+}
+
 function yellow(pos, size) {
   return {
     rendObj = ROBJ_SOLID
@@ -73,7 +87,8 @@ let pageByName = {
   fa18cRadarAzEl,
   su30Devices,
   f18Wpn,
-  su30smWpn
+  su30smWpn,
+  su30RadarElevation
 }
 
 function mfdCustomPages() {

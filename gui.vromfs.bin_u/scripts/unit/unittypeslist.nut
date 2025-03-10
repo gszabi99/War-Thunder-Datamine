@@ -25,14 +25,14 @@ let crewUnitTypeConfig = {
 
 let unitTypes = {
   template = {
-    typeName = "" //filled automatically by typeName
+    typeName = "" 
     name = ""
-    lowerName = "" //filled automatically by name.tolower()
+    lowerName = "" 
     tag = ""
     armyId = ""
     esUnitType = ES_UNIT_TYPE_INVALID
-    bit = 0      //unitType bit for it mask. filled by esUnitType  (bit = 1 << esUnitType)
-    bitCrewType = 0 //crewUnitType bit for it mask
+    bit = 0      
+    bitCrewType = 0 
     visualSortOrder = -1
     uiSkin = "!#ui/unitskin#"
     fontIcon = ""
@@ -144,10 +144,10 @@ let unitTypes = {
   }
 
   function addTypes(list) {
-    //This block needed to transform array to table,
-    //with sortorder key, because:
-    //1) Too many calls such as unitType.AIRCRAFT, i.e. directly to table;
-    //2) To keep setted order, because table don't have order
+    
+    
+    
+    
     local sortOrder = 0
     let typesTable = {}
     list.each(function(t) {

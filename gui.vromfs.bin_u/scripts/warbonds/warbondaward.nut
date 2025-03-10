@@ -21,7 +21,7 @@ let WarbondAward = class {
   specialTasks = 0
   reqMaxUnitRank = -1
 
-  //special params for award view
+  
   needAllBoughtIcon = true
   imgNestDoubleSize = ""
 
@@ -313,7 +313,7 @@ let WarbondAward = class {
 
   getSeenId = @() "".concat((this.isValid() ? ($"{this.warbondWeak.getSeenId()}_") : ""), this.id)
 
-  /******************* params override to use in item.tpl ***********************************/
+  
   function modActionName() { return this.canBuy() ? this.getBuyText(true) : null }
   function price() { return this.getCostText() }
   function contentIconData() { return this.awardType.getContentIconData(this.blk) }
@@ -322,7 +322,7 @@ let WarbondAward = class {
   function itemIndex() { return this.getFullId() }
   function headerText() { return this.awardType.getIconHeaderText(this.blk) }
   unseenIcon = @() !this.isItemLocked() && bhvUnseen.makeConfigStr(SEEN.WARBONDS_SHOP, this.getSeenId())
-  /************************** end of params override ****************************************/
+  
 }
 
 return { WarbondAward }

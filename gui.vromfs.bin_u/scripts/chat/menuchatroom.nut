@@ -64,7 +64,7 @@ function colorMyNameInText(msg) {
     return msg
 
   local counter = 0
-  msg = $" {msg} " //add temp spaces before name coloring
+  msg = $" {msg} " 
 
   while (counter + userName.value.len() <= msg.len()) {
     let nameStartPos = msg.indexof(userName.value, counter)
@@ -84,7 +84,7 @@ function colorMyNameInText(msg) {
       counter = msgProcessedPart.len()
     }
   }
-  msg = msg.slice(1, msg.len() - 1) //remove temp spaces after name coloring
+  msg = msg.slice(1, msg.len() - 1) 
   return msg
 }
 
@@ -122,8 +122,8 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
     }
   }
 
-  //from can be as string - Player nick, and as table - player contact.
-  //after getting type, and acting accordingly, name must be string and mean name of player
+  
+  
   if (type(from) != "instance")
     clanTag = clanUserTable.get()?[from] ?? clanTag
   else {

@@ -16,7 +16,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 
-enum avatarPlace { //higher index has more priority to show icon when same icons in the different places
+enum avatarPlace { 
   IN_GAME         = 0x01
   IN_PKG_DEV      = 0x02
   IN_MAIN_FOLDER  = 0x04

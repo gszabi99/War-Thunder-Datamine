@@ -72,18 +72,18 @@ function guiStartOpenTrophy(configsTable = {}) {
 
   let trophyItem = findItemById(itemId)
   if (!trophyItem) {
-    let configsArrayString = toString(configsArray, 2) // warning disable: -declared-never-used
-    let isLoggedInValue = isLoggedIn.get()              // warning disable: -declared-never-used
-    let { dbgTrophiesListInternal, dbgLoadedTrophiesCount, // warning disable: -declared-never-used
-      dbgUpdateInternalItemsCount // warning disable: -declared-never-used
+    let configsArrayString = toString(configsArray, 2) 
+    let isLoggedInValue = isLoggedIn.get()              
+    let { dbgTrophiesListInternal, dbgLoadedTrophiesCount, 
+      dbgUpdateInternalItemsCount 
     } = getInternalItemsDebugInfo()
-    let dbgLoadedItemsInternalCount = itemsListInternal.len() // warning disable: -declared-never-used
+    let dbgLoadedItemsInternalCount = itemsListInternal.len() 
     let trophiesBlk = get_price_blk()?.trophy
-    let currentItemsInternalCount = itemsListInternal.len() // warning disable: -declared-never-used
-    let currentTrophiesInternalCount = dbgTrophiesListInternal.len() // warning disable: -declared-never-used
-    let trophiesListInternalString = toString(dbgTrophiesListInternal)  // warning disable: -declared-never-used
-    let trophiesBlkString = toString(trophiesBlk)  // warning disable: -declared-never-used
-    local trophyBlkString = toString(trophiesBlk?[itemId]) // warning disable: -declared-never-used
+    let currentItemsInternalCount = itemsListInternal.len() 
+    let currentTrophiesInternalCount = dbgTrophiesListInternal.len() 
+    let trophiesListInternalString = toString(dbgTrophiesListInternal)  
+    let trophiesBlkString = toString(trophiesBlk)  
+    local trophyBlkString = toString(trophiesBlk?[itemId]) 
 
     script_net_assert_once("not found trophyItem", "Trophy Reward: Not found item. Don't show reward.")
     return
@@ -144,8 +144,8 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   isDisassemble = false
 
   haveItems = false
-  rewardItem = null //reward item to show button "go to item"
-  isRewardItemActual = false //reward item cn be received, but not visible.
+  rewardItem = null 
+  isRewardItemActual = false 
   opened = false
   animFinished = false
 
@@ -230,7 +230,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (titleWidthPx > titleMaxWidthPx) {
       titleObj.caption = "no"
 
-      if (frameWidth == "@chestRewardFrameWidth") // has already max width
+      if (frameWidth == "@chestRewardFrameWidth") 
         return
 
       let titleSmallerWidthPx = daguiFonts.getStringWidthPx(title, "fontNormal", this.guiScene)
@@ -260,7 +260,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.isRouletteStarted())
       this.useSingleAnimation = false
 
-    showObjById(this.useSingleAnimation ? "reward_roullete" : "open_chest_animation", false, this.scene) //hide not used animation
+    showObjById(this.useSingleAnimation ? "reward_roullete" : "open_chest_animation", false, this.scene) 
     let animId = this.useSingleAnimation ? "open_chest_animation" : "reward_roullete"
     let animObj = this.scene.findObject(animId)
     if (checkObj(animObj)) {
@@ -269,7 +269,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
         this.guiScene.playSound(this.singleAnimationGuiSound ?? "chest_open")
         let delay = to_integer_safe(animObj?.chestReplaceDelay, 0)
         Timer(animObj, 0.001 * delay, this.openChest, this)
-        Timer(animObj, 1.0, this.onOpenAnimFinish, this) //!!FIX ME: Some times animation finish not apply css, and we miss onOpenAnimFinish
+        Timer(animObj, 1.0, this.onOpenAnimFinish, this) 
       }
     }
     else
@@ -418,7 +418,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
       if (rewardType == "unit" || rewardType == "rentedUnit") {
         this.unit = getAircraftByName(reward[rewardType]) || this.unit
-        //Datablock adapter used only to avoid bug with duplicate timeHours in userlog.
+        
         this.rentTimeHours = DataBlockAdapter(reward)?.timeHours || this.rentTimeHours
         continue
       }
@@ -470,7 +470,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     local btnObj = showObjById("btn_rewards_list", isShowRewardListBtn, this.scene)
     if (isShowRewardListBtn)
       btnObj.setValue(loc(this.getRewardsListLocId()))
-    showObjById("open_chest_animation", !this.animFinished, this.scene) //hack tooltip bug
+    showObjById("open_chest_animation", !this.animFinished, this.scene) 
     showObjById("btn_ok", this.animFinished, this.scene)
     showObjById("btn_back", this.animFinished || (this.trophyItem?.isAllowSkipOpeningAnim() ?? false), this.scene)
 
@@ -552,7 +552,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       this.updateButtons()
   }
 
-  function updateRewardItem() { //ext item will come later, so need to wait until it received to show button
+  function updateRewardItem() { 
     if (!this.haveItems || this.isRewardItemActual)
       return false
 

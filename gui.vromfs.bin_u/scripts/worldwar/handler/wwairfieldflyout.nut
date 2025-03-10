@@ -58,7 +58,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/emptySceneWithGamercard.blk"
   sceneTplName = "%gui/worldWar/airfieldFlyOut.tpl"
 
-  position = null //receives as Point2()
+  position = null 
   armyTargetName = null
   cellIdx = -1
   onSuccessfullFlyoutCb = null
@@ -76,7 +76,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   selectedGroupFlyArmies = 0
   isArmyComboValue = false
 
-  maxChoosenUnitsMask = WW_UNIT_CLASS.NONE //bitMask
+  maxChoosenUnitsMask = WW_UNIT_CLASS.NONE 
 
   hasUnitsToFly = false
   prevSelectedUnitsMask = WW_UNIT_CLASS.NONE
@@ -233,7 +233,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
     this.sendButtonObj = this.scene.findObject("send_aircrafts_button")
     this.updateVisibleUnits()
 
-    //--- After all units filled ---
+    
     this.fillFlyOutDescription(true)
     this.fillArmyLimitDescription()
   }

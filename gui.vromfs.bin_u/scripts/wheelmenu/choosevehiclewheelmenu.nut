@@ -7,7 +7,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 
-//--------------------------------------------------------------------------------------------------
+
 
 gui_handlers.chooseVehicleMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   wndControlsAllowMaskWhenActive = CtrlsInGui.CTRL_IN_UNLIM_CTRL_MENU
@@ -88,21 +88,21 @@ function openMenu(cfg) {
     handlersManager.loadHandler(gui_handlers.chooseVehicleMenuHandler, params)
 }
 
-//--------------------------------------------------------------------------------------------------
 
-//choose vehicle menu config
-/*let cfg = [
-  {
-    name = "germ_at_gun_pak38_1"
-    isEnabled = true
-    shortcutId = "ID_VOICE_MESSAGE_1"
-  }
-  {
-    name = "germ_at_gun_pak38_2"
-    isEnabled = false
-    shortcutId = "ID_VOICE_MESSAGE_2"
-  }
-]*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 eventbus_subscribe("showChooseVehicleMenu", function(params) {
   if (params.isShow) {

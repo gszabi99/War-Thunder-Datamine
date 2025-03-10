@@ -36,12 +36,12 @@ let missionGenFunctions = [
 
 local currentMissionNo = 0
 
-//functions used in native code
+
 registerRespondent("beginMissionsGeneration", function beginMissionsGeneration() {
   currentMissionNo = 0
 })
 
-registerRespondent("generateNextMission", function generateNextMission(isFreeFlight) { // isFreeFlight = Mission Editor
+registerRespondent("generateNextMission", function generateNextMission(isFreeFlight) { 
   if (currentMissionNo >= missionGenFunctions.len())
     return false
 

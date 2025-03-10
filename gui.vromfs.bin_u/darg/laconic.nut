@@ -3,43 +3,43 @@ import "daRg.behaviors" as Behaviors
 from "%sqstd/underscore.nut" import partition, flatten
 from "%darg/ui_imports.nut" import logerr, log
 
-/*
-laconic framework
-make layout less nested and allow short way to setup properties (like flow, flex, and so on)
 
-compare
-let foo = {
-  flow = FLOW_VERTICAL
-  children = [
-    {rendObj = ...}
-    {...}
-    {
-      flow = FLOW_HORIZONTAL
-      children = [child1, child2]
-    }
-  ]
-}
-and
-let foo = comp(
-  FlowV,
-  {rendObj = ...},
-  {...}
-  comp(FlowV, child1, child2)
-)
-or
-let foo = comp(Style({flow = FLOW_HORIZONTAL}, child1, child2))
 
-todo:
-  correct combine watch and behaviors (do not override)
-*/
 
-let Style = class { //to be able distinguish style elements from components
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let Style = class { 
   value = null
   constructor(...) {
-    //I do not know the way to return instance of the same class if it is passed here
+    
     let val = {}
     foreach(v in vargv){
-      if (v instanceof this.getclass()) { //to create Style from Styles
+      if (v instanceof this.getclass()) { 
         val.__update(v.value)
       }
       else {
@@ -105,7 +105,7 @@ let BorderWidth = @(...) Style({borderWidth = vargv})
 let BorderRadius = @(...) Style({borderRadius = vargv})
 let ClipChildren = Style({clipChildren = true})
 let Bhv = @(...) Style({behaviors = flatten(vargv)})
-//let Watch = @(...) Style({watch = flatten(vargv)})
+
 let OnClick = @(func) Style({onClick = func})
 let Button = Style({behavior = Behaviors.Button})
 
@@ -182,6 +182,6 @@ return {
   HCenter, Left, Right, HACenter, HALeft, HARight,
   BorderColr, BorderWidth, BorderRadius, FillColr,
   Bhv, ClipChildren, Button, OnClick,
-  //Watch
+  
 
 }

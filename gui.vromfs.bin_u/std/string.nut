@@ -4,7 +4,7 @@ let { clamp, log10, min } = require("math")
 let regexp2 = require_optional("regexp2")
 let utf8 = require_optional("utf8")
 
-//pairs list taken from http://www.ibm.com/support/knowledgecenter/ssw_ibm_i_72/nls/rbagslowtoupmaptable.htm
+
 const CASE_PAIR_LOWER = "abcdefghijklmnopqrstuvwxyzàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿāăąćĉċčďđēĕėęěĝğġģĥħĩīĭįıĳĵķĺļľŀłńņňŋōŏőœŕŗřśŝşšţťŧũūŭůűųŵŷźżžƃƅƈƌƒƙơƣƥƨƭưƴƶƹƽǆǉǌǎǐǒǔǖǘǚǜǟǡǣǥǧǩǫǭǯǳǵǻǽǿȁȃȅȇȉȋȍȏȑȓȕȗɓɔɗɘəɛɠɣɨɩɯɲɵʃʈʊʋʒάέήίαβγδεζηθικλμνξοπρσςτυφχψωϊϋόύώϣϥϧϩϫϭϯабвгдежзийклмнопрстуфхцчшщъыьэюяёђѓєѕіїјљњћќўџѡѣѥѧѩѫѭѯѱѳѵѷѹѻѽѿҁґғҕҗҙқҝҟҡңҥҧҩҫҭүұҳҵҷҹһҽҿӂӄӈӌӑӓӕӗәӛӝӟӡӣӥӧөӫӯӱӳӵӹաբգդեզէըթժիլխծկհձղճմյնշոչպջռսվտրցւփքօֆაბგდევზთიკლმნოპჟრსტუფქღყშჩცძწჭხჯჰჱჲჳჴჵḁḃḅḇḉḋḍḏḑḓḕḗḙḛḝḟḡḣḥḧḩḫḭḯḱḳḵḷḹḻḽḿṁṃṅṇṉṋṍṏṑṓṕṗṙṛṝṟṡṣṥṧṩṫṭṯṱṳṵṷṹṻṽṿẁẃẅẇẉẋẍẏẑẓẕạảấầẩẫậắằẳẵặẹẻẽếềểễệỉịọỏốồổỗộớờởỡợụủứừửữựỳỵỷỹἀἁἂἃἄἅἆἇἐἑἒἓἔἕἠἡἢἣἤἥἦἧἰἱἲἳἴἵἶἷὀὁὂὃὄὅὑὓὕὗὠὡὢὣὤὥὦὧᾀᾁᾂᾃᾄᾅᾆᾇᾐᾑᾒᾓᾔᾕᾖᾗᾠᾡᾢᾣᾤᾥᾦᾧᾰᾱῐῑῠῡⓐⓑⓒⓓⓔⓕⓖⓗⓘⓙⓚⓛⓜⓝⓞⓟⓠⓡⓢⓣⓤⓥⓦⓧⓨⓩａｂｃｄｅｆｇｈｉｊｋｌｍｎｏｐｑｒｓｔｕｖｗｘｙｚ"
 const CASE_PAIR_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞŸĀĂĄĆĈĊČĎĐĒĔĖĘĚĜĞĠĢĤĦĨĪĬĮIĲĴĶĹĻĽĿŁŃŅŇŊŌŎŐŒŔŖŘŚŜŞŠŢŤŦŨŪŬŮŰŲŴŶŹŻŽƂƄƇƋƑƘƠƢƤƧƬƯƳƵƸƼǄǇǊǍǏǑǓǕǗǙǛǞǠǢǤǦǨǪǬǮǱǴǺǼǾȀȂȄȆȈȊȌȎȐȒȔȖƁƆƊƎƏƐƓƔƗƖƜƝƟƩƮƱƲƷΆΈΉΊΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΣΤΥΦΧΨΩΪΫΌΎΏϢϤϦϨϪϬϮАБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯЁЂЃЄЅІЇЈЉЊЋЌЎЏѠѢѤѦѨѪѬѮѰѲѴѶѸѺѼѾҀҐҒҔҖҘҚҜҞҠҢҤҦҨҪҬҮҰҲҴҶҸҺҼҾӁӃӇӋӐӒӔӖӘӚӜӞӠӢӤӦӨӪӮӰӲӴӸԱԲԳԴԵԶԷԸԹԺԻԼԽԾԿՀՁՂՃՄՅՆՇՈՉՊՋՌՍՎՏՐՑՒՓՔՕՖႠႡႢႣႤႥႦႧႨႩႪႫႬႭႮႯႰႱႲႳႴႵႶႷႸႹႺႻႼႽႾႿჀჁჂჃჄჅḀḂḄḆḈḊḌḎḐḒḔḖḘḚḜḞḠḢḤḦḨḪḬḮḰḲḴḶḸḺḼḾṀṂṄṆṈṊṌṎṐṒṔṖṘṚṜṞṠṢṤṦṨṪṬṮṰṲṴṶṸṺṼṾẀẂẄẆẈẊẌẎẐẒẔẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼẾỀỂỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪỬỮỰỲỴỶỸἈἉἊἋἌἍἎἏἘἙἚἛἜἝἨἩἪἫἬἭἮἯἸἹἺἻἼἽἾἿὈὉὊὋὌὍὙὛὝὟὨὩὪὫὬὭὮὯᾈᾉᾊᾋᾌᾍᾎᾏᾘᾙᾚᾛᾜᾝᾞᾟᾨᾩᾪᾫᾬᾭᾮᾯᾸᾹῘῙῨῩⒶⒷⒸⒹⒺⒻⒼⒽⒾⒿⓀⓁⓂⓃⓄⓅⓆⓇⓈⓉⓊⓋⓌⓍⓎⓏＡＢＣＤＥＦＧＨＩＪＫＬＭＮＯＰＱＲＳＴＵＶＷＸＹＺ"
 local INVALID_INDEX = -1
@@ -16,42 +16,42 @@ local trimRegExp = null
 local stripTagsConfig = null
 local escapeConfig = null
 
-/**
- * Joins array elements into a string with the glue string between each element.
- * This function is a reverse operation to g_string.split()
- * @param {string[]} pieces - The array of strings to join.
- * @param {string}   glue - glue string.
- * @return {string} - String containing all the array elements in the same order,
- *                    with the glue string between each element.
- */
-// Reverse operation to split()
+
+
+
+
+
+
+
+
+
 function implode(pieces = [], glue = "") {
   return glue.join(pieces, true)
 }
 
-/**
- * Joins array elements into a string with the glue string between each element.
- * Like implode(), but doesn't skip empty strings, so it is lossless
- * and safe for packing string data into a string, when empty sub-strings are important.
- * This function is a reverse operation to g_string.split()
- * @param {string[]} pieces - The array of strings to join.
- * @param {string}   glue - glue string.
- * @return {string} - String containing all the array elements in the same order,
- *                    with the glue string between each element.
- */
+
+
+
+
+
+
+
+
+
+
 function join(pieces, glue="") {
   return glue.join(pieces)
 }
 
-/**
- * Splits a string into an array of sub-strings.
- * Like Squirrel split(), but doesn't skip empty strings, so it is lossless
- * and safe for extracting string data from a string, when empty sub-strings are important.
- * This function is a reverse operation to g_string.join()
- * @param {string} joined - The string to split.
- * @param {string} glue - glue string.
- * @return {string[]} - Array of sub-strings.
- */
+
+
+
+
+
+
+
+
+
 function split(joined, glue, isIgnoreEmpty = false) {
   return (!isIgnoreEmpty) ? joined.split(glue)
             : joined.split(glue).filter(@(v) v!="")
@@ -328,7 +328,7 @@ function tostring_r(inp, params=defTostringParams) {
         let info = input.len.getfuncinfos()
         if (!info.native && info.parameters.len()==1)
           maxind = input.len()-1
-        else if (info.native && info.typecheck.len()==1 && (info.typecheck[0]==32|| info.typecheck[0]==64)) //this is instance
+        else if (info.native && info.typecheck.len()==1 && (info.typecheck[0]==32|| info.typecheck[0]==64)) 
           maxind = input.len()-1
       }
     }
@@ -373,7 +373,7 @@ function tostring_r(inp, params=defTostringParams) {
           stream.writestring(" = ")
         }
         stream.writestring("[")
-        write_to_string(value, $"{indent}{indentOnNewline}", curdeeplevel+1, true, arrSep, indent) //warning disable: -param-pos
+        write_to_string(value, $"{indent}{indentOnNewline}", curdeeplevel+1, true, arrSep, indent) 
         stream.writestring("]")
         if (arrayElem && li!=maxind)
           stream.writestring(sep)
@@ -408,32 +408,32 @@ function tostring_r(inp, params=defTostringParams) {
 }
 
 
-/**
- * Retrieves a substring from the string. The substring starts and ends at a specified indexes.
- * Like Python operator slice.
- * @param {string}  str - Input string.
- * @param {integer} start - Substring start index. If it is negative, the returned string will
- *                          start at the start'th character from the end of input string.
- * @param {integer} [end] - Substring end index.  If it is negative, the returned string will
- *                          end at the end'th character from the end of input string.
- * @return {string} - substring, or on error - part of substring or empty string.
- */
+
+
+
+
+
+
+
+
+
+
 function slice(str, start = 0, end = null) {
   str = str ?? ""
   return str.slice(start, end ?? str.len())
 }
 
-/**
- * Retrieves a substring from the string. The substring starts at a specified index
- * and has a specified length.
- * Like PHP function substr().
- * @param {string}  str - Input string.
- * @param {integer} start - Substring start index. If it is negative, the returned string will
- *                          start at the start'th character from the end of input string.
- * @param {integer} [length] - Substring length. If it is negative, the returned string will
- *                             end at the end'th character from the end of input string.
- * @return {string} - substring, or on error - part of substring or empty string.
- */
+
+
+
+
+
+
+
+
+
+
+
 function substring(str, start = 0, length = null) {
   local end = length
   if (length != null && length >= 0) {
@@ -447,40 +447,40 @@ function substring(str, start = 0, length = null) {
   return slice(str, start, end)
 }
 
-/**
- * Determines whether the beginning of the string matches a specified substring.
- * Like C# function String.StartsWith().
- * @param {string}  str - Input string.
- * @param {string}  value - Matching substring.
- * @return {boolean}
- */
+
+
+
+
+
+
+
 function startsWith(str, value) {
   str = str ?? ""
   value = value ?? ""
   return str.startswith(value)
 }
 
-/**
- * Determines whether the end of the string matches the specified substring.
- * Like C# function String.EndsWith().
- * @param {string}  str - Input string.
- * @param {string}  value - Matching substring.
- * @return {boolean}
- */
+
+
+
+
+
+
+
 function endsWith(str, value) {
   str = str ?? ""
   value = value ?? ""
   return str.endswith(value)
 }
 
-/**
- * Reports the index of the first occurrence in the string of a specified substring.
- * Like C# function String.IndexOf().
- * @param {string}  str - Input string.
- * @param {string}  value - Searching substring.
- * @param {integer} [startIndex=0] - Search start index.
- * @return {integer} - index, or -1 if not found.
- */
+
+
+
+
+
+
+
+
 function indexOf(str, value, startIndex = 0) {
   str = str ?? ""
   value = value ?? ""
@@ -488,14 +488,14 @@ function indexOf(str, value, startIndex = 0) {
   return idx ?? INVALID_INDEX
 }
 
-/**
- * Reports the index of the last occurrence in the string of a specified substring.
- * Like C# function String.LastIndexOf().
- * @param {string}  str - Input string.
- * @param {string}  value - Searching substring.
- * @param {integer} [startIndex=0] - Search start index.
- * @return {integer} - index, or -1 if not found.
- */
+
+
+
+
+
+
+
+
 function lastIndexOf(str, value, startIndex = 0) {
   str = str ?? ""
   value = value ?? ""
@@ -511,14 +511,14 @@ function lastIndexOf(str, value, startIndex = 0) {
   return idx
 }
 
-/**
- * Reports the index of the first occurrence in the string of any substring in a specified array.
- * Like C# function String.IndexOfAny().
- * @param {string}   str - Input string.
- * @param {string[]} anyOf - Array of substrings to search for.
- * @param {integer}  [startIndex=0] - Search start index.
- * @return {integer} - index, or -1 if not found.
- */
+
+
+
+
+
+
+
+
 function indexOfAny(str, anyOf, startIndex = 0) {
   str = str ?? ""
   anyOf = anyOf ?? [ "" ]
@@ -531,14 +531,14 @@ function indexOfAny(str, anyOf, startIndex = 0) {
   return idx
 }
 
-/**
- * Reports the index of the last occurrence in the string of any substring in a specified array.
- * Like C# function String.LastIndexOfAny().
- * @param {string}   str - Input string.
- * @param {string[]} anyOf - Array of substrings to search for.
- * @param {integer}  [startIndex=0] - Search start index.
- * @return {integer} - index, or -1 if not found.
- */
+
+
+
+
+
+
+
+
 function lastIndexOfAny(str, anyOf, startIndex = 0) {
   str = str ?? ""
   anyOf = anyOf ?? [ "" ]
@@ -551,7 +551,7 @@ function lastIndexOfAny(str, anyOf, startIndex = 0) {
   return idx
 }
 
-//returns the number of entries of @substr in @str.
+
 function countSubstrings(str, substr) {
   local res = -1
   local findex = -1
@@ -569,32 +569,32 @@ function replace(str, from, to) {
   return (str ?? "").replace(from, to)
 }
 
-/**
- * Strips leading and trailing whitespace characters.
- * Like Java function trim().
- * @param {string} str - Input string.
- * @return {string} - String without whitespace chars.
- */
+
+
+
+
+
+
 function trim(str) {
   str = str ?? ""
-  return trimRegExp ? trimRegExp.replace("", str) : str // TODO: Compare with str.strip()
+  return trimRegExp ? trimRegExp.replace("", str) : str 
 }
 
-/*
-  getroottable()["rfsUnitTest"] <- function() {
-    local resArr = []
-    local testValArray = [0.0, 0.000024325, 0.0001, 0.5, 0.9999, 1.0, 5.126, 12.0, 120.057, 123.0, 6548.0, 72356.0, 1234567.0]
-    for (local presize = 1e+6; presize >= 1e-10; presize *= 0.1) {
-      local positive = ", ".join(testValArray.map(@(val) floatToStringRounded(val * presize, presize)))
-      local negative = ", ".join(testValArray.map(@(val) floatToStringRounded(-val * presize, presize)))
-      resArr.append($"presize {presize} -> {positive}, {negative}")
-    }
-    return "\n".join(resArr)
-  }
-//presize 1e+06 -> 1000000, 12000000, 123000000, 6547000000, 72356000000, 120000000, 4300000000, 1234567000000
-//presize 0.001 -> 0.001, 0.012, 0.123, 6.548, 72.356, 0.120, 4.300, 1234.567
-//presize 1e-10 -> 0.0000000001, 0.0000000012, 0.0000000123, 0.0000006548, 0.0000072356, 0.0000000120, 0.0000004300, 0.0001234567'
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function floatToStringRounded(value, presize) {
   if (presize >= 1) {
@@ -731,10 +731,10 @@ function utf8CharToInt(str) {
     let { ofs = null, mask = null } = i > 0 ? nextOctet
       : firstOctet?[list.len() - 1]
     if (ofs == null)
-      return 0 //too many chars
+      return 0 
     let val = list[i]
     if ((val & ~mask) != ofs)
-      return 0 //bad code
+      return 0 
     res += (val & mask) << ((list.len() - 1 - i) * 6)
   }
 
@@ -743,11 +743,11 @@ function utf8CharToInt(str) {
 
 
 function hexStringToInt(hexString) {
-  // Does the string start with '0x'? If so, remove it
+  
   if (hexString.len() >= 2 && hexString.slice(0, 2) == "0x")
     hexString = hexString.slice(2)
 
-  // Get the integer value of the remaining string
+  
   local res = 0
   foreach (character in hexString) {
     local nibble = character - '0'
@@ -759,7 +759,7 @@ function hexStringToInt(hexString) {
   return res
 }
 
-//Return defValue when incorrect prefix
+
 function cutPrefix(id, prefix, defValue = null) {
   if (!id)
     return defValue
@@ -814,7 +814,7 @@ function escape(str) {
 }
 
 function pprint(...){
-  //most of this code should be part of tostring_r probably - at least part of braking long lines
+  
   function findlast(str, substr, startidx=0){
     local ret = null
     for(local i=startidx; i<str.len(); i++) {
@@ -875,18 +875,18 @@ function validateEmail(no_dump_email) {
     return false
 
   local dompart = str[str.len()-1]
-  if (dompart.len() > 253 || dompart.len() < 4) //RFC + domain should be at least x.xx
+  if (dompart.len() > 253 || dompart.len() < 4) 
     return false
 
   local quotes = locpart.indexof("\"")
   if (quotes && quotes != 0)
-    return false //quotes only at the begining
+    return false 
 
   if (quotes == null && locpart.indexof("@")!=null)
-    return false //no @ without quotes
+    return false 
 
-  if (dompart.indexof(".") == null || dompart.indexof(".") > dompart.len() - 3) // warning disable: -func-can-return-null -potentially-nulled-ops
-    return false  //too short first level domain or no periods
+  if (dompart.indexof(".") == null || dompart.indexof(".") > dompart.len() - 3) 
+    return false  
 
   return true
 }
@@ -932,7 +932,7 @@ function obj2stringarray(obj, curpath = null){
       res.extend(obj2stringarray(v, [].extend(curpath).append(k)))
   }
   else {
-    res.append($"{"/".join(curpath)}={tostring_any(obj, null, false)}") // ?? add types?
+    res.append($"{"/".join(curpath)}={tostring_any(obj, null, false)}") 
   }
   return res
 }

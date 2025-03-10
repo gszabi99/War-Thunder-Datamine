@@ -24,7 +24,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
   let ws = get_warpoints_blk()
   let wpMax = ws.dynPlanesMaxCost
 
-//planes cost and warpoint ratio calculate
+
   let playerFighterPlane = getAnyPlayerFighter(0, wpMax)
   local playerPlaneCost = getAircraftCost(playerFighterPlane)
   if (playerPlaneCost == 0) {
@@ -39,7 +39,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
 
   let planeCost = planeCostCalculate(playerPlaneCost, enemyPlaneCost)
 
-//bombers count
+
   local bombersCount = 0
 
   local ground_type = ""
@@ -125,7 +125,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
   }
 
   bombersCount = clamp(bombersCount, 8, 32)
-//enemy waves and fighter count calculate
+
   let waveCount = bombersCount < 16 ? 1
     : bombersCount < 24 ? rndRangeInt(1, 2)
     : rndRangeInt(2, 3)
@@ -140,7 +140,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
   if (allyCount < 4)
     allyCount = 0
 
-//enemy planes in each wave
+
   local bombersCount_temp = bombersCount
   local enemyFightersCount_temp = enemyFightersCount
   let bombersInWave = bombersCount_temp / waveCount
@@ -185,7 +185,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
   }
 
 
-//battle distance calculate
+
   local countTime = 1
   if (bombersCount / waveCount > 15)
     countTime = 1.33
@@ -228,7 +228,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
   mgSetInt("variables/enemy2_time", enemy2Time)
   mgSetInt("variables/enemy3_time", enemy3Time)
 
-//armada setup
+
   mgSetupArmada("#player.fighter", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane)
   mgSetupArmada("#player_cut.any", "player_start", Point3(0, 0, 0), bombtargets, "", 4, 4, playerFighterPlane)
   gmMarkCutsceneArmadaLooksLike("#player_cut.any", "#player.fighter")
@@ -263,7 +263,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
   mgSetMinMaxAircrafts("enemy", "fighter", 0, 24)
   mgSetMinMaxAircrafts("enemy", "bomber", 8, 32)
 
-//mission warpoint cost calculate
+
   let mission_mult = sqrt(bombersCount / 15.0 + 0.05)
   let missionWpCost = warpointCalculate(mission_preset_name, allyCount / 0.6,
     enemyFightersCount + bombersCount * 0.5, planeCost, playerFighterPlane, mission_mult)
@@ -278,7 +278,7 @@ function generateBombingDefMission(isFreeFlight, createGroundUnitsProc) {
 
   mgSetBool("variables/training_mode", isFreeFlight)
 
-//  mgDebugDump("E:/dagor2/skyquake/develop/gameBase/gameData/missions/dynamic_campaign/objectives/testBombingDefense_temp.blk")
+
   if (mgFullLogs())
     debug_dump_stack()
 

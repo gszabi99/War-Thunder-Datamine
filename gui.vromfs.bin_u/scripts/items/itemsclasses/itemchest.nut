@@ -294,7 +294,7 @@ let Chest = class (ItemExternal) {
     return base.getDescRecipeListHeader(showAmount, totalAmount, isMultipleExtraItems, hasFakeRecipes, timeText)
   }
 
-  function validateCategoryTypeArray(paramsArray) { //To correctly display weights for items that have "_" in their name
+  function validateCategoryTypeArray(paramsArray) { 
     if (paramsArray.len() < 2)
       return paramsArray
 
@@ -352,7 +352,7 @@ let Chest = class (ItemExternal) {
       }
 
       let categ = this.categoryWeight[categoryIdx]
-      if (categ?.weight != null)  //All prizes of this type are filled by one group
+      if (categ?.weight != null)  
         continue
 
       if (!hasRarity) {

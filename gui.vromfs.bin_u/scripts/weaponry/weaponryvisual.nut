@@ -103,8 +103,8 @@ function getBulletImageConfig(unit, item) {
 
   let bulletsSet = getBulletsSetData(unit, bIcoItem.name)
   if (!unit?.isTank() && bulletsSet == null) {
-    let unitName = unit.name // warning disable: -declared-never-used
-    let bulletsSetName = item.name // warning disable: -declared-never-used
+    let unitName = unit.name 
+    let bulletsSetName = item.name 
     debug_dump_stack()
     logerr("No bullets in bullets set")
   }
@@ -119,7 +119,7 @@ let getTooltipId = @(unitName, mod, params)
 
 
 function getBonusTierViewParams(item, params = {}) {
-  return item.__update({  // -unwanted-modification
+  return item.__update({  
     itemWidth = params?.itemWidth ?? 1
     posX = params?.posX ?? 0
     posY = params?.posY ?? 0
@@ -221,7 +221,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
   if (bulletImageConfig != null)
     res.__update(bulletImageConfig)
   res.itemImg = getItemImage(unit, visualItem)
-  let statusTbl = getItemStatusTbl(unit, visualItem)
+  let statusTbl = getItemStatusTbl(unit, visualItem, params?.isModeEnabledFn)
   let canBeDisabled = isCanBeDisabled(item)
   let isSwitcher = (visualItem.type == weaponsItem.weapon) ||
     (visualItem.type == weaponsItem.primaryWeapon) ||
@@ -273,9 +273,9 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
     res.nameTextWithPrice = "".concat(res.nameTextWithPrice, loc("ui/parentheses/space", { text = spawnScoreCost }))
   let showProgress = isResearchInProgress || isResearchPaused
   local isNestedFreeModNearUnlocked = false
-  if ((itemReqExp == 0) && (visualItem?.reqModification ?? []).len() > 0) { // isNestedFreeMod
+  if ((itemReqExp == 0) && (visualItem?.reqModification ?? []).len() > 0) { 
     let parentMod = getModificationByName(unit, visualItem.reqModification[0])
-    isNestedFreeModNearUnlocked = canResearchItem(unit, parentMod) // NearUnlocked
+    isNestedFreeModNearUnlocked = canResearchItem(unit, parentMod) 
   }
   res.isShowPrice = (!showProgress && (statusTbl.showPrice || canResearch)) || isNestedFreeModNearUnlocked
   res.hideProgressBlock = !showProgress
@@ -357,7 +357,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
       res.sliderProgressType = "doubleProgress"
       let pairVisualItem = linkedBulGroup.getSelBullet()
       pairModName = pairVisualItem.name
-      let pairStatusTbl = getItemStatusTbl(unit, pairVisualItem)
+      let pairStatusTbl = getItemStatusTbl(unit, pairVisualItem, params?.isModeEnabledFn)
       let amountText = getAmountAndMaxAmountText(pairStatusTbl.amount,
         pairStatusTbl.maxAmount, pairStatusTbl.showMaxAmount)
       let amountTextColor = pairStatusTbl.amount < pairStatusTbl.amountWarningValue
@@ -447,8 +447,8 @@ function updateModItem(unit, item, itemObj, showButtons, handler, params = {}) {
   let viewParams = getWeaponItemViewParams(id, unit, item,
     params.__merge({ showButtons = showButtons }))
   let { isTooltipByHold, tooltipId, actionBtnCanShow, actionHoldDummyCanShow } = viewParams
-  // For single-line textareas, enforce non-breaking text to prevent line wrapping,
-  // ensuring maximum visibility of the displayed text.
+  
+  
   let isSingleLine = !viewParams.hideBulletsChoiceBlock
   itemObj.findObject("name").setValue(isSingleLine
     ? viewParams.nameText.replace(" ", nbsp)
@@ -669,7 +669,7 @@ function createModBundle(id, unit, itemsList, itemsType, holderObj, handler, par
     itemsType = weaponsItem.modification
 
   if (itemsList.len() == 1) {
-    itemsList[0].hideStatus <- true //!!FIX ME: Remove modify data
+    itemsList[0].hideStatus <- true 
     let { itemLayout } = createItemLayoutFunc.call(handler, id, unit, itemsList[0], itemsType, params)
     guiScene.appendWithBlk(holderObj, itemLayout, handler)
     return itemsList[0]
@@ -697,7 +697,7 @@ function createModBundle(id, unit, itemsList, itemsType, holderObj, handler, par
 
   hoverObj.width =$"{cols}@modCellWidth"
   let rootSize = guiScene.getRoot().getSize()
-  let rightSide = bundleObj.getPosRC()[0] < 0.7 * rootSize[0] //better to use width const here, but need const calculator from dagui for that
+  let rightSide = bundleObj.getPosRC()[0] < 0.7 * rootSize[0] 
   if (rightSide)
     hoverObj.pos = "0.5pw-0.5@modCellWidth, ph"
   else

@@ -12,7 +12,7 @@ let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { onSystemOptionsApply, canUseGraphicsOptions, getSystemOptionInfoView } = require("%scripts/options/systemOptions.nut")
 let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
 let { is_xboxone_X } = require("%sqstd/platform.nut")
-//
+
 
 
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -60,7 +60,6 @@ let otherOptionsList = @() [
   ["options/header/otherOptions"],
   [USEROPT_MENU_SCREEN_SAFE_AREA, "spinner", safeAreaMenu.canChangeValue()],
   [USEROPT_SUBTITLES, "spinner"],
-  [USEROPT_HUD_SCREENSHOT_LOGO, "spinner", is_platform_pc],
   [USEROPT_SAVE_ZOOM_CAMERA, "spinner"],
   [USEROPT_HOLIDAYS, "list"]
 ]
@@ -89,7 +88,7 @@ let getMainOptions = function() {
       [USEROPT_PS4_CROSSPLAY, "spinner", isPlatformSony && hasFeature("PS4CrossNetwork") && !isInFlight()],
       [USEROPT_PS4_ONLY_LEADERBOARD, "spinner", isPlatformSony && hasFeature("ConsoleSeparateLeaderboards")],
       [USEROPT_CLUSTERS, "spinner", ! isInFlight() && isPlatformSony],
-      //
+      
 
 
       [USEROPT_FONTS_CSS, "spinner"],
@@ -227,8 +226,8 @@ let getMainOptions = function() {
       [USEROPT_AUTO_TARGET_CHANGE_SHIP, "spinner"],
       [USEROPT_REALISTIC_AIMING_SHIP, "spinner",
         (!isInFlight() || get_mission_difficulty() == g_difficulty.ARCADE.gameTypeName)],
-      // TODO: separate from tank [USEROPT_TACTICAL_MAP_SIZE, "slider"],
-      // TODO: separate from tank [USEROPT_MAP_ZOOM_BY_LEVEL, "spinner"],
+      
+      
       [USEROPT_FOLLOW_BULLET_CAMERA, "spinner", hasFeature("enableFollowBulletCamera")],
       [USEROPT_RADAR_MODE_SELECT, "spinner", isShipOrBoat && isAllowRadarMode],
       [USEROPT_RADAR_SCAN_PATTERN_SELECT, "spinner", isShipOrBoat && isAllowRadarMode],

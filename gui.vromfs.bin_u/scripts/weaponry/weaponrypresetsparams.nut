@@ -69,7 +69,7 @@ function getTypeByPurpose(weaponry) {
       if (checkIsNotWeaponry(inst))
         continue
       foreach (w in inst.weaponBlocks) {
-        // Lack of bullet types or all types that is not in PURPOSE_TYPE is AIR_TO_GROUND type
+        
         local isFound = false
         if (w.bulletType != null)
           foreach (pTypeName, pType in PURPOSE_TYPE) {
@@ -167,7 +167,7 @@ function getBlocks(weaponry) {
 function getWeaponryDistribution(weaponry, preset, unitName, isCentral = false) {
   let isEvenCount = weaponry.num % 2 == 0
   let isAllocateByGroup = preset.totalItemsAmount > preset.weaponsSlotCount
-  // Group weapons when numbers of free tiers less then weapon items amount
+  
   if (isAllocateByGroup) {
     if (!isCentral && isEvenCount) {
       let tier = createTier(weaponry, preset.name, unitName, weaponry.num / 2)
@@ -176,10 +176,10 @@ function getWeaponryDistribution(weaponry, preset, unitName, isCentral = false) 
     else
       return [createTier(weaponry, preset.name, unitName)]
   }
-  // Place one weapon item per one tier when tiers amount is enough
+  
   let res = []
   for (local i = 0; i < weaponry.num; i++) {
-    // Set empty tier in center when count is EVEN
+    
     if (isCentral && isEvenCount && i == weaponry.num / 2)
       res.append({ tierId = -1 })
     res.append(createTier(weaponry, preset.name,  unitName, 1))
@@ -188,32 +188,32 @@ function getWeaponryDistribution(weaponry, preset, unitName, isCentral = false) 
   return res
 }
 
-// Needs to keep in mind a few kinds of entities:
-//  - simply weapon such as "bombs", "rockets" etc
-//  - group of weapons (a few instances of the same type weapon placed into one tier) such as "bombs_group"
-//  - weapon block (a few instances of the same type weapon united in functional block,
-//    looked like one whole and being an one new entity) such as "rockets_block".
+
+
+
+
+
 function getWeaponryGroup(preset, groupOrder) {
   let res = []
   foreach (triggerType in groupOrder)
     if (preset?.weaponsByTypes[triggerType] != null)
       foreach (w in preset.weaponsByTypes[triggerType].weaponBlocks)
         res.extend(getBlocks(w.__merge({ tType = triggerType })))
-  // Needs additional sort by ammo to define "heaviest" block among identical mass blocks
+  
   return res.sort(@(a, b) b.massKg <=> a.massKg || b.ammo <=> a.ammo)
 }
 
-// It set indexes to tiers place symmetric from center to edges
+
 function getIndexedTiers(tiers, tiersCount, weaponsSlotCount) {
   let middleTierIdx = ceil(weaponsSlotCount / 2.0).tointeger() - 1
-  if (tiersCount == 0) { // CENTRAL part of tiers
+  if (tiersCount == 0) { 
     let delta = ceil(tiers.len() / 2.0).tointeger() - 1
     for (local i = 0; i < tiers.len(); i++)
       tiers[i].tierId = middleTierIdx - (delta - i)
   }
-  else { // SIDE part of tiers
+  else { 
     let isEvenCount = tiers.len() % 2 == 0
-    if (!isEvenCount) // if SIDE tier has odd number of weapons
+    if (!isEvenCount) 
       unAllocatedTiers.append(tiers.pop())
     let lim = tiers.len() / 2
     let delta = ceil(tiersCount / 2.0).tointeger()
@@ -231,11 +231,11 @@ function getPredefinedTiers(preset, unitName) {
   let filledTiers = {}
   foreach (triggerType, triggers in (preset?.weaponsByTypes ?? {}))
     foreach (weaponry in triggers.weaponBlocks)
-      if (weaponry?.tiers && !u.isEmpty(weaponry.tiers)) { // Tiers config takes effect only when all weapons in preset have tiers
+      if (weaponry?.tiers && !u.isEmpty(weaponry.tiers)) { 
         let amountPerTier = weaponry.amountPerTier ?? 1
         let iconType = weaponry.iconType
         foreach (idx, tier in weaponry.tiers) {
-          let tierId = min(idx, preset.weaponsSlotCount - 1) // To avoid possible mistakes from config with incorrect tier idx
+          let tierId = min(idx, preset.weaponsSlotCount - 1) 
           let params = {
             tierId = tierId
             tType = triggerType
@@ -244,7 +244,7 @@ function getPredefinedTiers(preset, unitName) {
             tooltipLang = tier?.tooltipLang
           }
           if (filledTiers?[tierId]) {
-            // Create additional tiers info and add it on already existing tier if two weapons placed per one tier
+            
             let currTier = u.search(res, @(p) p.tierId == tierId)
             if (currTier) {
               currTier.weaponry.addWeaponry <- weaponry.__merge(params.__merge({
@@ -266,7 +266,7 @@ function getPredefinedTiers(preset, unitName) {
   if (res.len() == 0)
     return res
 
-  // Add empty tiers in set if predefined tiers exist
+  
   for (local i = res.len(); i < preset.weaponsSlotCount; i++)
     for (local j = 0; j < preset.weaponsSlotCount; j++)
       if (filledTiers?[j] == null) {
@@ -291,20 +291,20 @@ function getTiers(unit, preset) {
               preset, unit.name, res.len() == 0), res.len(), preset.weaponsSlotCount))
         }
 
-    // Check tiers count and remove excess tiers
+    
     if (res.len() > preset.weaponsSlotCount)
       do {
         unAllocatedTiers.append(res.remove(0), res.pop())
       }
       while (res.len() > preset.weaponsSlotCount)
 
-    // Add empty tiers if it's needed and allocate them symmetric
+    
     let emptyTiers = []
     for (local i = res.len(); i < preset.weaponsSlotCount; i++)
       emptyTiers.append({ tierId = -1 })
     res.extend(getIndexedTiers(emptyTiers, res.len(), preset.weaponsSlotCount))
 
-    // Add unallocated tiers on free places from central tier if it's free
+    
     foreach (_idx, tier in res)
       if (!tier?.img  && unAllocatedTiers.len())
         foreach (prop, value in unAllocatedTiers.pop())
@@ -336,7 +336,7 @@ let sortPresetsList = @(a, b)
   || b.isDefault <=> a.isDefault
   || b.totalMass <=> a.totalMass
 
-function updateUnitWeaponsByPreset(unit) {  //!!! FIX ME: why is this here and why modify weapons get from wpcost
+function updateUnitWeaponsByPreset(unit) {  
   if (!unit)
     return
 
@@ -434,7 +434,7 @@ function getPresetView(unit, preset, weaponry, favoriteArr, availableWeapons = n
     updateTiersActivity(presetView.tiersView, availableWeapons, presetView.weaponsSlotCount)
 
   if ((preset?.presetType != null) && !CHAPTER_ORDER.contains(preset.presetType))
-    CHAPTER_ORDER.append(preset.presetType) // Needs add custom preset type in order array to get right chapter order
+    CHAPTER_ORDER.append(preset.presetType) 
 
   return presetView
 }

@@ -4,24 +4,24 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { Point2 } = require("dagor.math")
 let { format } = require("string")
 
-/* guiBox API
-  isIntersect(box)      - (bool) return true if box intersect current
 
-  addBox(box)           - modify current box to minimal size which contains both boxes
-  cutBox(boxToCutFrom)  - return array of boxes which fill full empty space of boxToCutFrom not intersect with current
-                          return null when no intersections with boxToCutFrom
-                          return empty array when boxToCutFrom completely inside current box
 
-  incSize(kAdd, kMul)   - increase box size around
-  setFromDaguiObj(obj)  - set size and pos from dagui object params
-  cloneBox(incSize = 0) - clones box. can increase new box size when incSize != 0
-  getBlkText(tag)       - generate text with this tag for replaceContentFromText in guiScene
-*/
+
+
+
+
+
+
+
+
+
+
+
 
 local GuiBox
 GuiBox = class {
-  c1 = null  //[x1, y1]
-  c2 = null  //[x2, y2]
+  c1 = null  
+  c2 = null  
   priority = 0
   isToStringForDebug = true
 
@@ -71,7 +71,7 @@ GuiBox = class {
                     (box.c2[1] > this.c1[1]) ? this.c1[1] : this.c2[1])
   }
 
-  function cutBox(box) { //return array of boxes cutted from box
+  function cutBox(box) { 
     if (!this.isIntersect(box))
       return null
 
@@ -133,7 +133,7 @@ function blockToView(block) {
 
 
 
-const _isNoDelayOnClick = false //optional no delay on_click for lightboxes
+const _isNoDelayOnClick = false 
 
 local getBlockFromObjData
 
@@ -191,17 +191,17 @@ const _lightBlock = "tutorLight"
 const _darkBlock = "tutorDark"
 const _isFullscreen = true
 const _sizeIncMul = 0
-const _sizeIncAdd = -2 //boxes size decreased for more accurate view of close objects
+const _sizeIncAdd = -2 
 
 function createHighlight(scene, objDataArray, handler = null, params = null) {
-  //obj Config = [{
-  //    obj          //    DaGuiObject,
-                     // or string obj name in scene,
-                     // or table with size and pos,
-                     // or array of objects to highlight as one
-  //    box          // GuiBox - can be used instead of obj
-  //    id, onClick
-  //  }...]
+  
+  
+                     
+                     
+                     
+  
+  
+  
   let guiScene = scene.getScene()
   let sizeIncMul = getTblValue("sizeIncMul", params, _sizeIncMul)
   let sizeIncAdd = getTblValue("sizeIncAdd", params, _sizeIncAdd)

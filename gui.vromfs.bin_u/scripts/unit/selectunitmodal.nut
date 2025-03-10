@@ -234,7 +234,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
     let obj = this.scene.findObject("search_edit_box")
     if (obj.isValid()) {
       obj.setValue("")
-      // Toggling enable status to make it lose focus.
+      
       obj.enable(false)
       obj.enable(true)
     }

@@ -31,7 +31,7 @@ let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
   return res
 }
 
-//pack can be a single pack or packs array
+
 ::g_crew_points.buyPack <- function buyPack(crew, packsList, onSuccess = null, onCancel = @() null) {
   if (!u.isArray(packsList))
     packsList = [packsList]
@@ -73,6 +73,6 @@ let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
   if (!packs.len())
     return []
 
-  let bestPack = packs.top() //while it only for developers it enough
+  let bestPack = packs.top() 
   return array(ceil(skillPoints.tofloat() / bestPack.skills), bestPack)
 }

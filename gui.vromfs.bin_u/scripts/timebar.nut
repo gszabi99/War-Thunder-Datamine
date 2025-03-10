@@ -1,9 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 
 
-/**
- * Some utility functions for work with timBar gui object
- */
+
+
+
 
 let { fabs } = require("math")
 
@@ -30,11 +30,11 @@ function setCurrentTime(timeBarObj, currentTime) {
 
 let getDirectionName = @(timeBarObj) (timeBarObj?.direction != null) ? timeBarObj.direction : "forward"
 
-/**
- * Set current time to timeBar
- * @time_bar_obj - timeBar object
- * @current_time - time in seconds
- */
+
+
+
+
+
 
 let getDirection = @(timeBarObj)_direction[getDirectionName(timeBarObj)]
 
@@ -51,11 +51,11 @@ function _setDirection(timeBarObj, direction) {
 
 let pauseTimer = @(timeBarObj) _setSpeed(timeBarObj, 0)
 
-/**
- * Set full period time to timeBar
- * @time_bar_obj - timeBar object
- * @period_time - time in seconds
- */
+
+
+
+
+
 function setPeriod(timeBarObj, periodTime, isCyclic = false) {
   let speed = periodTime ? 360.0 / periodTime : 0
   _setSpeed(timeBarObj, speed)

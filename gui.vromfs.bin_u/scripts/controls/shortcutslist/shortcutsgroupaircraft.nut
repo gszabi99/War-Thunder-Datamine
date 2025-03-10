@@ -45,7 +45,7 @@ return [
     isHelpersVisible = true
     needShowInHelp = true
   }
-//-------------------------------------------------------
+
   {
     id = "ID_PLANE_OPERATIONS_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -66,7 +66,7 @@ return [
     onClick = @() controlsOperations.swapGamepadSticks(ActionGroup.AIRPLANE)
     showFunc = @() hasXInputDevice()
   }
-//-------------------------------------------------------
+
   {
     id = "ID_PLANE_MODE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -115,7 +115,7 @@ return [
     id = "ID_FBW_MODE"
     filterShow = [globalEnv.EM_FULL_REAL]
   }
-//-------------------------------------------------------
+
   {
     id = "ID_PLANE_AXES_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -124,7 +124,7 @@ return [
     id = "mouse_z"
     type = CONTROL_TYPE.MOUSE_AXIS
     axis_num = MouseAxis.MOUSE_SCROLL
-    values = ["none", "throttle", "zoom", /*"elevator",*/ "camy", /* "weapon"*/ ]
+    values = ["none", "throttle", "zoom",  "camy",  ]
     onChangeValue = "onMouseWheel"
     showFunc = @() hasFeature("EnableMouse")
   }
@@ -224,7 +224,7 @@ return [
     filterHide = [globalEnv.EM_MOUSE_AIM]
     optionType = USEROPT_FORCE_GAIN
   }
-//-------------------------------------------------------
+
   {
     id = "ID_PLANE_MECHANIZATION_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -284,7 +284,7 @@ return [
     id = "ID_CHUTE"
     checkAssign = false
   }
-//-------------------------------------------------------
+
   {
     id = "ID_PLANE_FIRE_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -451,7 +451,7 @@ return [
     id = "ID_TOGGLE_MLWS_FLARES_SLAVING"
     checkAssign = false
   }
-  //
+  
 
 
 
@@ -512,7 +512,7 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-  //
+  
 
 
 
@@ -599,7 +599,7 @@ return [
     id = "ID_DESIGNATE_TARGET"
     checkAssign = false
   }
-//-------------------------------------------------------
+
   {
     id = "ID_PLANE_GUNNERS_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -644,7 +644,7 @@ return [
     type = CONTROL_TYPE.SWITCH_BOX
     optionType = USEROPT_GUNNER_INVERTY
   }
-//-------------------------------------------------------
+
   {
     id = "ID_PLANE_VIEW_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -763,7 +763,7 @@ return [
     checkAssign = false
     dontCheckDupes = true
   }
-//-------------------------------------------------------
+
   {
     id = "ID_PLANE_OTHER_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -842,7 +842,7 @@ return [
     showFunc = hasXInputDevice
     checkAssign = @() isXInputDevice()
   }
-//-------------------------------------------------------
+
   {
     id = "ID_INSTRUCTOR_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -878,7 +878,7 @@ return [
     filterShow = [globalEnv.EM_INSTRUCTOR]
     optionType = USEROPT_INSTRUCTOR_SIMPLE_JOY
   }
-//-------------------------------------------------------
+
   {
     id = "ID_PLANE_MOUSE_AIM_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -909,7 +909,7 @@ return [
     value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_AIR)
     setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_AIM_ACCELERATION_DELAY_AIR, objValue / 100.0)
   }
-//-------------------------------------------------------
+
   {
     id = "ID_PLANE_JOYSTICK_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -1025,7 +1025,7 @@ return [
     showFunc = @() is_mouse_available() && (getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
     checkAssign = false
   }
-//-------------------------------------------------------
+
   {
     id = "ID_TRIM_CONTROL_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -1064,7 +1064,7 @@ return [
     filterShow = [globalEnv.EM_FULL_REAL]
     checkAssign = false
   }
-//-------------------------------------------------------
+
   {
     id = "ID_MANUAL_ENGINE_CONTROL_HEADER"
     type = CONTROL_TYPE.SECTION
@@ -1181,7 +1181,7 @@ return [
     filterShow = [globalEnv.EM_FULL_REAL]
     checkAssign = false
   }
-  //
+  
 
 
 

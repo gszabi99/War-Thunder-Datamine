@@ -223,7 +223,7 @@ gui_handlers.InvitesWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventChatOpenPrivateRoom(_p) {
-    this.goBack() //close invites menu when open private caht message in scene behind
+    this.goBack() 
   }
 
   function onDestroy() {

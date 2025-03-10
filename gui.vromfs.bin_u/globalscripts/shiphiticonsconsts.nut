@@ -16,7 +16,7 @@ let ShipHitIconVisibilityMask = {
   [ShipHitIconId.HIT_PIERCE_THROUGH] = 8
 }
 
-let ShipHitIconCfgId = {  // map to id used in loc and in hud.blk
+let ShipHitIconCfgId = {  
   [ShipHitIconId.HIT]                = "simpleHit",
   [ShipHitIconId.HIT_EFFECTIVE]      = "effectiveHit",
   [ShipHitIconId.HIT_INEFFECTIVE]    = "ineffectiveHit",

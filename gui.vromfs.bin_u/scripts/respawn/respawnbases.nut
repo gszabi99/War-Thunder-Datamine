@@ -9,7 +9,7 @@ let { isInFlight } = require("gameplayBinding")
 
 local respawnBases = {
   MAP_ID_NOTHING = RespawnBase.MAP_ID_NOTHING
-  selectedBaseData = null //null when not inited for current mission. reset every battle
+  selectedBaseData = null 
 
   function getSelectedBase() {
     return this.selectedBaseData?.respBase

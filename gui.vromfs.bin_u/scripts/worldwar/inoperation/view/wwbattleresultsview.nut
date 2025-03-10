@@ -16,7 +16,7 @@ enum UNIT_STATS {
   KILLED
   INACTIVE
   REMAIN
-  TOTAL // enum size
+  TOTAL 
 }
 
 let WwBattleResultsView = class {
@@ -48,7 +48,7 @@ let WwBattleResultsView = class {
     foreach (team in this.battleRes.teams) {
       foreach (wwUnit in team.unitsInitial) {
         if (wwUnit.getWwUnitType() == g_ww_unit_type.UNKNOWN) {
-          let unitName = wwUnit.name // warning disable: -declared-never-used
+          let unitName = wwUnit.name 
           script_net_assert_once("UNKNOWN wwUnitType", "wwUnitType is UNKNOWN in wwBattleResultsView")
           continue
         }
@@ -116,13 +116,13 @@ let WwBattleResultsView = class {
     foreach (wwUnitTypeCode in unitTypesBattle)
       unitTypeStats[wwUnitTypeCode] <- array(UNIT_STATS.TOTAL, 0)
 
-    // unitsInitial shows unit counts at the moment armies joins the battle.
-    // unitsCasualties snapshot is taken exactly at battle finish time.
-    // unitsRemain snapshot is taken some moments AFTER the battle finish time, and its counts can be lower
-    //   than it should, because army loses extra units while retreating. Thats why unitsRemain is unreliable.
+    
+    
+    
+    
 
-    // Vehicle units have unitsInitial, unitsCasualties, and unitsRemain which is unreliable (must be calculated as initial-casualties).
-    // But anyway, vehicle units must extract remainInactive from that unreliable unitsRemain (it can be non-zero for Aircrafts).
+    
+    
 
     let unitsGroups = wwOperationUnitsGroups.getUnitsGroups()
     let needShowUnitsByGroups = unitsGroups != null
@@ -149,7 +149,7 @@ let WwBattleResultsView = class {
           break
         }
 
-      let remainActive = (initialActive + initialInactive) - casualties - remainInactive // Fixes vehicle units remain counts
+      let remainActive = (initialActive + initialInactive) - casualties - remainInactive 
       let inactiveAdded = remainInactive - initialInactive
 
       if (wwUnitTypeCode in unitTypeStats) {
@@ -160,7 +160,7 @@ let WwBattleResultsView = class {
         stats[UNIT_STATS.REMAIN]    += remainActive
       }
 
-      if (wwUnitType.esUnitCode == ES_UNIT_TYPE_INVALID) // fake unit
+      if (wwUnitType.esUnitCode == ES_UNIT_TYPE_INVALID) 
         continue
 
       let isShowInactiveCount = isInArray(wwUnitTypeCode, unitTypesInactive)

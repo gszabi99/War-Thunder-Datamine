@@ -30,23 +30,23 @@ enum FONT_SAVE_ID {
   LARGE = "big"
   HUGE = "huge"
 
-  //wop_1_69_3_x fonts
+  
   PX = "px"
   SCALE = "scale"
 
-  //wop_1_69_3_X
+  
   PX_COMPATIBILITY = "%gui/const/const_pxFonts.css"
   SCALE_COMPATIBILITY = "%gui/const/const_fonts.css"
 }
 
 enum FONT_SIZE_ORDER {
-  PX    //wop_1_69_3_X
+  PX    
   TINY
   SMALL
   COMPACT
   MEDIUM
   LARGE
-  SCALE  //wop_1_69_3_X
+  SCALE  
   HUGE
 }
 
@@ -75,17 +75,17 @@ let g_font = {
 }
 
 g_font.template <- {
-  id = ""  //by type name
+  id = ""  
   fontGenId = ""
   saveId = ""
-  saveIdCompatibility = null //array of ids. need to easy switch between fonts by feature
+  saveIdCompatibility = null 
   isScaleable = true
   sizeMultiplier = 1.0
-  sizeOrder = 0 //FONT_SIZE_ORDER
+  sizeOrder = 0 
 
   isAvailable = @(_sWidth, _sHeight) true
   getFontSizePx = @(sWidth, sHeight) round(this.sizeMultiplier * getFontsSh(sWidth, sHeight)).tointeger()
-  getPixelToPixelFontSizeOutdatedPx = @(_sWidth, _sHeight) 800 //!!TODO: remove this together with old fonts
+  getPixelToPixelFontSizeOutdatedPx = @(_sWidth, _sHeight) 800 
   isLowWidthScreen = function() {
     let sWidth = screen_width()
     let sHeight = screen_height()
@@ -106,7 +106,7 @@ g_font.template <- {
       pxFontTgtOutdated = this.getPixelToPixelFontSizeOutdatedPx(sWidth, sHeight)
     }
     if (config.scrnTgt <= 0) {
-      let configStr = toString(config) // warning disable: -declared-never-used
+      let configStr = toString(config) 
       script_net_assert_once("Bad screenTgt", "Bad screenTgt const at load fonts css")
     }
     foreach (prefixId in daguiFonts.getRealFontNamePrefixesMap())
@@ -114,7 +114,7 @@ g_font.template <- {
     return handyman.renderCached("%gui/const/const_fonts_css.tpl", config)
   }
 
-  //text visible in options
+  
   getOptionText = @() "".concat(
     loc($"fontSize/{this.id.tolower()}"),
     loc("ui/parentheses/space", { text = "{0}%".subst(round(100 * this.sizeMultiplier).tointeger()) }))
@@ -206,7 +206,7 @@ g_font.getSmallestFont <- function getSmallestFont(sWidth, sHeight) {
   return res
 }
 
-g_font.getFixedFont <- function getFixedFont() { //return null if can change fonts
+g_font.getFixedFont <- function getFixedFont() { 
   let availableFonts = this.getAvailableFonts()
   return availableFonts.len() == 1 ? availableFonts[0] : null
 }
@@ -216,7 +216,7 @@ function canChange() {
 }
 
 function getDefault() {
-  let { getFixedFont, SMALL, LARGE, MEDIUM, HUGE, COMPACT } = g_font //-ident-hides-ident
+  let { getFixedFont, SMALL, LARGE, MEDIUM, HUGE, COMPACT } = g_font 
   let fixedFont = getFixedFont()
   if (fixedFont)
     return fixedFont
@@ -252,7 +252,7 @@ g_font.getCurrent <- function getCurrent() {
 
   local fontSaveId = loadLocalAccountSettings(FONTS_SAVE_PATH)
   local res = getAvailableFontBySaveId(fontSaveId)
-  if (!res) { //compatibility with 1.77.0.X
+  if (!res) { 
     fontSaveId = loadLocalByScreenSize(FONTS_SAVE_PATH)
     if (fontSaveId) {
       res = getAvailableFontBySaveId(fontSaveId)
@@ -269,7 +269,7 @@ function saveFontToConfig(font) {
     setSystemConfigOption(FONTS_SAVE_PATH_CONFIG, font.saveId)
 }
 
-//return isChanged
+
 g_font.setCurrent <- function setCurrent(font) {
   if (!canChange())
     return false

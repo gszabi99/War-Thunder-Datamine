@@ -44,8 +44,8 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   wndOptionsMode = OPTIONS_MODE_DYNAMIC
 
   applyAtClose = false
-  can_generate_missions = true //FIXME:
-  // Remove can_generate_missions parameter and find out how not to generate two map regenerations
+  can_generate_missions = true 
+  
   needSlotbar = true
 
   function initScreen() {
@@ -280,7 +280,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     let obj = this.scene.findObject(desc.id)
 
     if (desc.values.len() == 0) {
-      let settings = toString({                      // warning disable: -declared-never-used
+      let settings = toString({                      
         DYN_MAP = this.getSceneOptValue(USEROPT_DYN_MAP),
         DYN_ZONE = this.getSceneOptValue(USEROPT_DYN_ZONE),
         DYN_SURROUND = this.getSceneOptValue(USEROPT_DYN_SURROUND),
@@ -294,10 +294,10 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
         LIMITED_FUEL = this.scene.findObject(get_option(USEROPT_LIMITED_FUEL)?.id ?? "").getValue(),
         LIMITED_AMMO = this.scene.findObject(get_option(USEROPT_LIMITED_AMMO)?.id ?? "").getValue()
       })
-      let currentUnit = showedUnit.value?.name         // warning disable: -declared-never-used
-      let slotbarUnit = getCurSlotbarUnit()?.name // warning disable: -declared-never-used
-      let optId = desc.id                              // warning disable: -declared-never-used
-      let values = toString(desc.values)             // warning disable: -declared-never-used
+      let currentUnit = showedUnit.value?.name         
+      let slotbarUnit = getCurSlotbarUnit()?.name 
+      let optId = desc.id                              
+      let values = toString(desc.values)             
       script_net_assert_once("MissionBuilder", "ERROR: Empty value in options.")
       return
     }
@@ -408,7 +408,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     set_mission_settings("missionFull", fullMissionBlk)
     select_mission_full(missionBlk, fullMissionBlk);
 
-    //dlog("missionBlk:"); debugTableData(missionBlk)
+    
 
     loadHandler(gui_handlers.MissionBuilderTuner)
   }

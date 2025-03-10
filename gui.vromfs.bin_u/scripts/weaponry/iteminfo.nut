@@ -50,7 +50,8 @@ function isModStatusResearched(unit, mod) {
   return (s & ES_ITEM_STATUS_RESEARCHED) != 0
 }
 
-function getItemStatusTbl(unit, item) {
+function getItemStatusTbl(unit, item, isModeEnabledFn = null) {
+  let isModEnabled = isModeEnabledFn ? isModeEnabledFn() : isModificationEnabled(unit.name, item.name)
   let isOwn = isUnitUsable(unit)
   let res = {
     amount = getItemAmount(unit, item)
@@ -82,18 +83,18 @@ function getItemStatusTbl(unit, item) {
   }
   else if (item.type == weaponsItem.primaryWeapon) {
     res.equipped = getLastPrimaryWeapon(unit) == item.name
-    if (item.name == "") //default
+    if (item.name == "") 
       res.unlocked = isOwn
     else {
       res.maxAmount = wp_get_modification_max_count(unit.name, item.name)
-      res.equipped = res.amount && isModificationEnabled(unit.name, item.name)
+      res.equipped = res.amount && isModEnabled
       res.unlocked = res.amount || canBuyMod(unit, item)
-      res.showPrice = false //amount < maxAmount
+      res.showPrice = false 
     }
   }
   else if (item.type == weaponsItem.modification || item.type == weaponsItem.expendables) {
     let groupDef = ("isDefaultForGroup" in item) ? item.isDefaultForGroup : -1
-    if (groupDef >= 0) { //default bullets, always bought.
+    if (groupDef >= 0) { 
       res.unlocked = isOwn
       let currBullet = groupDef < unit.unitType.bulletSetsQuantity ? getSavedBullets(unit.name, groupDef) : ""
       res.equipped = currBullet == "" || currBullet == item.name
@@ -111,7 +112,7 @@ function getItemStatusTbl(unit, item) {
           && res.maxAmount == 1
           && res.canBuyMore
           && getItemCost(unit, item).wp > 0
-        res.equipped = res.amount && isModificationEnabled(unit.name, item.name)
+        res.equipped = res.amount && isModEnabled
         res.goldUnlockable = !res.unlocked && hasFeature("SpendGold")
           && isReqModificationsUnlocked(unit, item) && canBeResearched(unit, item, false)
         if (item.type == weaponsItem.expendables)
@@ -124,8 +125,8 @@ function getItemStatusTbl(unit, item) {
 
         if (isOwn && res.amount && isModUpgradeable(item.name)) {
           res.curUpgrade = get_modification_level(unit.name, item.name)
-          res.maxUpgrade = 1 //only 1 upgrade level planned to be used atm.
-          //so no point to add complex logic about max upgrade detection right now.
+          res.maxUpgrade = 1 
+          
         }
       }
       else {
@@ -245,7 +246,7 @@ function getItemUpgradesStatus(unit, item) {
   if (item.type == weaponsItem.modification) {
     let curPrimWeaponName = getLastPrimaryWeapon(unit)
     let weapMod = getModificationByName(unit, curPrimWeaponName)
-    let upgradesList = getItemUpgradesList(weapMod || unit) //default weapon upgrades stored in unit
+    let upgradesList = getItemUpgradesList(weapMod || unit) 
     if (upgradesList)
       foreach (list in upgradesList)
         if (isInArray(item.name, list))
@@ -295,8 +296,8 @@ function getAllModsCost(unit, open = false) {
       }
     }
 
-    // premium modifications or ammo is separated,
-    // so no need to show it's price with other modifications.
+    
+    
     if (skipSummary)
       continue
 

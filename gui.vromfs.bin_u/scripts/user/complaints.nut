@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { is_myself_anyof_moderators } = require("%scripts/utils_sa.nut")
 let { get_time_msec } = require("dagor.time")
 
-const timeToComplainExpiredMS = 900000 // 15 minutes
+const timeToComplainExpiredMS = 900000 
 
 enum canComplainCheckResults {
   CAN_COMPLAIN = 0
@@ -12,12 +12,12 @@ enum canComplainCheckResults {
 }
 
 let complaintsCache = {
-/*
-uid = {
-  sessionIds = [sessionId1, sessionId2, ...] - user can complain on other user only once during each session
-  // lastComplaintTime = 0 - if user not in battle he can complain on other user only once in 15 minutes
-}
-*/
+
+
+
+
+
+
 }
 
 let isComplaintTimerExpired = @(uid) ( get_time_msec() - complaintsCache[uid].lastComplaintTime ) > timeToComplainExpiredMS

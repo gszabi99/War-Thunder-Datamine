@@ -4,14 +4,14 @@ let { check_obj } = require("%sqDagui/daguiUtil.nut")
 let { abs } = require("math")
 let focusTarget = require("%sqDagui/focusFrame/bhvFocusFrameTarget.nut")
 
-//uses the first child to play anim.
-//set self position and size according to target
-//if animation function not set
-//it set state _blink=yes to child object to start anim (so it should be tuned self as you need)
 
-local registerFunc = null      //registerFunc(obj)
-local unregisterFunc = null    //unregisterFunc(obj)
-local animFunc = null         //animFunc(animObj, curTargetObjData, prevTargetObjData), where objData = { obj, size, pos }
+
+
+
+
+local registerFunc = null      
+local unregisterFunc = null    
+local animFunc = null         
 local hideTgtImageTimeMsec = 0
 
 let minDiffForAnimPx = 10
@@ -75,7 +75,7 @@ function play(obj, targetObj) {
 
   obj.setUserData(curData)
 
-  //set image visual from target
+  
   let focusImageSource = targetObj.getFinalProp("focusImageSource")
   let imagePrefixList = {
     ["background-"] = focusImageSource != "foreground",
@@ -94,14 +94,14 @@ function play(obj, targetObj) {
   if (hideTgtImageTimeMsec > 0)
     setDelay(obj, hideTgtImageTimeMsec)
 
-  //set position and size
+  
   obj.position = "root"
   obj.left = curData.pos[0]
   obj.top = curData.pos[1]
   obj.width = curData.size[0]
   obj.height = curData.size[1]
 
-  //start anim
+  
   if (animFunc)
     animFunc(animObj, curData, prevData)
   animObj._blink = "yes"

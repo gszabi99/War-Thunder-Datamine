@@ -10,15 +10,15 @@ let defaultAxisWatch = ["decal_move_x", "decal_move_y"]
 const maxAbsoluteAxisValue = 1.0
 let getArtilleryAxisWatch = @() [defaultAxisWatch]
 
-/**
-* Return array [dx, dy] of current cursor displasement with the stick.
-* dx and dy are floats [0;+1].
-*
-* @dt - time form last update
-* @NonlinearityPower - (integer) in this power length of deviation vecotr will be powered
-*   to make control more accurate. Lentgh of deviation vector is bounded in [0,+1]
-* @axisValues - result of getMaxDeviatedAxisInfo()
-*/
+
+
+
+
+
+
+
+
+
 
 function getPositionDelta(dt, nonlinearityPower, axisValues) {
   let distance = pow(axisValues.normLength, nonlinearityPower) * dt
@@ -56,7 +56,7 @@ function getMaxDeviatedAxisInfo(axisData = null, deadzone = 0.0652) {
 
   let signX = rawX >= 0 ? 1 : -1
   let signY = rawY >= 0 ? 1 : -1
-  let denominator = maxAbsoluteAxisValue - deadzone //to normalize
+  let denominator = maxAbsoluteAxisValue - deadzone 
   let rawSide = sqrt(pow(rawX, 2) + pow(rawY, 2))
 
   result.x = rawX

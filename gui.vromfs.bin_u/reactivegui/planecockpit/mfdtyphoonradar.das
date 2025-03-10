@@ -215,6 +215,12 @@ def draw_target_info(var ctx : GuiContext&; pos : float2; size : float2; data : 
   ctx |> set_font(data.fontId, 0, 0)
   ctx |> set_font_ht(data.fontSize)
 
+  if target.typeId != ""
+    let typeIds <- {{ "hud/small" => "SMALL"; "hud/medium" => "MEDIUM"; "hud/large" => "LARGE"}}
+    get(typeIds, target.typeId) <| $(idText)
+      ctx |> goto_xy(pos.x + size.x * 0.14, pos.y + size.y * 0.8)
+      ctx |> draw_str_scaled(1.0, idText, idText |> length())
+
   let unit = get_unit(int(target.id))
   if unit == null || unit.isDelayed
     return
@@ -230,9 +236,6 @@ def draw_target_info(var ctx : GuiContext&; pos : float2; size : float2; data : 
   ctx |> render_frame(pos.x + size.x * 0.3 - 5., pos.y - 8. - aBox.width.y, pos.x + size.x * 0.3 + aBox.width.x + 5., pos.y, data.lineWidth)
 
   ctx |> set_color(whiteColor)
-  let small = "SMALL"
-  ctx |> goto_xy(pos.x + size.x * 0.14, pos.y + size.y * 0.8)
-  ctx |> draw_str_scaled(1.0, small, small |> length())
 
   let spd = "{roundi(unit.speed * mpsToKnots)}KT"
   ctx |> goto_xy(pos.x + size.x * 0.25, pos.y + size.y * 0.8)

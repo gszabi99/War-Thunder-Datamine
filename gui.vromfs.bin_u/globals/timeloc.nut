@@ -1,16 +1,16 @@
 let { loc } = require("dagor.localize")
 
-/*
-!!!!!
-This is bad module cause it depends on loc global function and on specific localization keys
-and it kept here only for migration period
 
-These functions also has very poor API:
-  secondsToString(time, true, false, 2) - guess what is it for
-  hoursToString(time / 3600.0, true, true, true, false) ??
 
-!!!!
-*/
+
+
+
+
+
+
+
+
+
 
 let timeBase = require("%sqstd/time.nut")
 let { format } = require("string")
@@ -53,7 +53,7 @@ function hoursToString(time, full = true, useSeconds = false, dontShowZeroParam 
       format((time >= 1) ? "%02d%s" : "%d%s", mm, i18n("measureUnits/minutes")))
   }
 
-  if ((((ss > 0 || !dontShowZeroParam) && useSeconds) || res.len() == 0) && (time < 1.0 / 6)) { // < 10min
+  if ((((ss > 0 || !dontShowZeroParam) && useSeconds) || res.len() == 0) && (time < 1.0 / 6)) { 
     if (res.len() > 0)
       res.append(" ")
     res.append(fullUnits ? i18n("measureUnits/full/seconds", { n = ss }) :
@@ -127,7 +127,7 @@ function buildTimeStr(timeTable, showZeroSeconds = false, showSeconds = true) {
     return format("%d:%02d", timeTable.hour, timeTable.min)
 }
 
-let buildDateTimeStr = @(timeTable, showZeroSeconds = false, showSeconds = true, formatStr = "{date}.{time}") //warning disable: -forgot-subst
+let buildDateTimeStr = @(timeTable, showZeroSeconds = false, showSeconds = true, formatStr = "{date}.{time}") 
   formatStr.subst({ date = buildDateStr(timeTable), time = buildTimeStr(timeTable, showZeroSeconds, showSeconds) })
 
 function buidPartialTimeStr(timeSec) {

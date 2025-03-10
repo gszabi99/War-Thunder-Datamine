@@ -30,7 +30,7 @@ enum chatRoomCheckOrder {
 enum chatRoomTabOrder {
   THREADS_LIST
   SYSTEM
-  STATIC  //cant be closed
+  STATIC  
   REGULAR
   PRIVATE
   HIDDEN
@@ -41,7 +41,7 @@ let g_chat_room_type = {
 }
 
 g_chat_room_type.template <- {
-  typeName = "" //Generic from type.
+  typeName = "" 
   roomPrefix = "#"
   checkOrder = chatRoomCheckOrder.CUSTOM
   tabOrder = chatRoomTabOrder.REGULAR
@@ -49,11 +49,11 @@ g_chat_room_type.template <- {
 
   checkRoomId = function(roomId) { return startsWith(roomId, this.roomPrefix) }
 
-  //roomId params depend on roomType
+  
   getRoomId   = function(param1, _param2 = null) { return $"{this.roomPrefix}{param1}" }
 
   roomNameLocId = null
-    //localized roomName
+    
   getRoomName = function(roomId, _isColored = false) {
     if (this.roomNameLocId)
       return loc(this.roomNameLocId)
@@ -67,7 +67,7 @@ g_chat_room_type.template <- {
   canVoiceChat = false
   canBeClosed = function(_roomId) { return true }
   needSave = function() { return false }
-  needSwitchRoomOnJoin = false //do not use it in pair with needSave
+  needSwitchRoomOnJoin = false 
   canInviteToRoom = false
   onlyOwnerCanInvite = true
   isVisibleInSearch = function() { return false }
@@ -97,8 +97,8 @@ g_chat_room_type.template <- {
   needCountAsImportant = false
   needShowMessagePopup = true
 
-  isHaveOwner =  true //To remove "@" symbol in nickname of creator of room added by the IRC server
-                      //!!!FIX ME: Nickname can start with "@" symbol. And there is no way to find out the owner by the config from the IRC server
+  isHaveOwner =  true 
+                      
 }
 
 enumsAddTypes(g_chat_room_type, {
@@ -121,13 +121,13 @@ enumsAddTypes(g_chat_room_type, {
 
     checkRoomId  = function(roomId) { return !startsWith(roomId, this.roomPrefix) }
     getRoomId    = function(playerName, ...) { return playerName }
-    getRoomName  = function(roomId, isColored = false) { //roomId == playerName
+    getRoomName  = function(roomId, isColored = false) { 
       local res = getPlayerFullName(getPlayerName(roomId), clanUserTable.get()?[roomId] ?? "")
       if (isColored)
         res = colorize(getSenderColor(roomId), res)
       return res
     }
-    getRoomColorTag = function(roomId) { //roomId == playerName
+    getRoomColorTag = function(roomId) { 
       if (g_squad_manager.isInMySquad(roomId, false))
         return "squad"
       if (isPlayerNickInContacts(roomId, EPL_FRIENDLIST))
@@ -148,7 +148,7 @@ enumsAddTypes(g_chat_room_type, {
     isVisible = @() hasMenuChatPrivate.value
   }
 
-  SQUAD = { //param - random
+  SQUAD = { 
     roomPrefix = "#_msquad_"
     roomNameLocId = "squad/name"
     inviteLocIdNoNick = "squad/receiveInvite/noNick"
@@ -175,7 +175,7 @@ enumsAddTypes(g_chat_room_type, {
     isVisible = @() hasMenuChatSquad.value
   }
 
-  CLAN = { //para - clanId
+  CLAN = { 
     tabOrder = chatRoomTabOrder.STATIC
     roomPrefix = "#_clan_"
     roomNameLocId = "clan/name"
@@ -189,7 +189,7 @@ enumsAddTypes(g_chat_room_type, {
     isVisible = @() hasMenuChatClan.value
   }
 
-  SYSTEM = { //param none
+  SYSTEM = { 
     tabOrder = chatRoomTabOrder.SYSTEM
     roomPrefix = "#___empty___"
     havePlayersList = false
@@ -201,7 +201,7 @@ enumsAddTypes(g_chat_room_type, {
     isVisible = @() hasMenuChatSystem.value
   }
 
-  MP_LOBBY = { //param SessionLobby.getRoomId()
+  MP_LOBBY = { 
     tabOrder = chatRoomTabOrder.HIDDEN
     roomPrefix = "#lobby_room_"
     havePlayersList = false
@@ -223,7 +223,7 @@ enumsAddTypes(g_chat_room_type, {
         }
       return false
     }
-    getRoomId = function(roomName, lang = null) { //room id is  #<<roomName>>_<<validated lang>>
+    getRoomId = function(roomName, lang = null) { 
       if (!lang)
         lang = loc("current_lang")
       foreach (r in globalChatRooms) {
@@ -256,7 +256,7 @@ enumsAddTypes(g_chat_room_type, {
         return loc(this.roomNameLocId)
 
       local title = threadInfo.getTitle()
-      //use text only before first linebreak
+      
       let idx = title.indexof("\n")
       if (idx)
         title = title.slice(0, idx)

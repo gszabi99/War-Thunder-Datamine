@@ -3,10 +3,10 @@ let { posNavigator } = require("bhvPosNavigator.nut")
 
 let MultiSelect = class (posNavigator) {
   bhvId = "MultiSelect"
-  valuePID = dagui_propid_add_name_id("bitValue")  //values by bits   chosen:yes;
-  selectedPID = dagui_propid_add_name_id("_selected")    //only 1     selected:yes;
+  valuePID = dagui_propid_add_name_id("bitValue")  
+  selectedPID = dagui_propid_add_name_id("_selected")    
 
-  chosenPID = dagui_propid_add_name_id("chosen")    //only to init property if it not used in css.
+  chosenPID = dagui_propid_add_name_id("chosen")    
   canChooseByMClick = true
 
   function getValue(obj) {
@@ -28,13 +28,13 @@ let MultiSelect = class (posNavigator) {
   function chooseItems(obj, bitValue, needSound = true) {
     local needNotify = false
     let total = obj.childrenCount()
-    bitValue = bitValue & ((1 << total) - 1) //validate mask by len
+    bitValue = bitValue & ((1 << total) - 1) 
 
     let prevValue = this.getValue(obj)
     needNotify = prevValue != bitValue
 
     local soundName = null
-    let valuesToUpdate = bitValue | prevValue //all what was selected or need to select
+    let valuesToUpdate = bitValue | prevValue 
     for (local i = 0; i < total; i++)
       if (valuesToUpdate & (1 << i)) {
         let childObj = this.getChildObj(obj, i)

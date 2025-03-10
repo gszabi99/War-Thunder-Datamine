@@ -1,11 +1,11 @@
-// warning disable: -file:forbidden-function
+
 
 let dagorDebug = require("dagor.debug")
 let string = require("string.nut")
 let { split_by_chars } = require("string")
 let math = require("math")
 let tostring_r = string.tostring_r
-let join = string.join //like join, but skip emptylines
+let join = string.join 
 
 function print_(val, separator="\n"){
   print($"{val}{separator}")
@@ -67,7 +67,7 @@ function Log(tostringfunc=null) {
     return @(...) log("".concat(prefix, " ".join(vargv.map(@(val) tostring_r(val, {compact=true, maxdeeplevel=DEF_MAX_DEEPLEVEL tostringfunc=tostringfunc})))))
   }
   function dlog_prefix(prefix) {
-    return @(...) dlog.acall([null, prefix].extend(vargv))  //disable: -dlog-warn
+    return @(...) dlog.acall([null, prefix].extend(vargv))  
   }
 
   function wlog(watched, prefix = null, transform=null, logger = log) {
@@ -98,7 +98,7 @@ function Log(tostringfunc=null) {
     vlog
     v = vlog
     log
-    dlog //disable: -dlog-warn
+    dlog 
     d = dlog
     dlogsplit
     debugTableData
@@ -106,7 +106,7 @@ function Log(tostringfunc=null) {
     with_prefix
     dlog_prefix
     wlog
-    //lowlevel dagor functions
+    
     debug = dagorDebug.debug
     logerr = dagorDebug.logerr
     screenlog = dagorDebug.screenlog

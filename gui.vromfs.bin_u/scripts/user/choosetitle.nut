@@ -68,7 +68,7 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
     let maxColumns = (to_pixels("1@rw - 1@scrollBarSize") / titleWidth).tointeger() || 1
     let columns = clamp(gRatioColumns, min(3, maxColumns), maxColumns)
 
-    //sort alphabetically, and by columns
+    
     titlesData.sort(@(a, b) a.lowerText <=> b.lowerText)
     let orderedData = []
     let rows = ceil(titlesData.len().tofloat() / columns).tointeger()

@@ -16,10 +16,10 @@ local EpicShopPurchasableItem = class {
 
   mediaItemType = "dlc"
   catalogNamespace = "dlc"
-  price = 0         // Price with discount as number
-  listPrice = 0     // Original price without discount as number
-  priceText = ""      // Price with discount as string
-  listPriceText = ""  // Original price without discount as string
+  price = 0         
+  listPrice = 0     
+  priceText = ""      
+  listPriceText = ""  
   currencyCode = null
   discount = 0
   isPurchasable = false
@@ -57,7 +57,7 @@ local EpicShopPurchasableItem = class {
     this.description = blk?.DescriptionText ?? ""
     this.longDescription = blk?.LongDescriptionText ?? ""
 
-    this.price = (blk?.CurrentPrice ?? 0) * 0.01 // 100 = kopeyki
+    this.price = (blk?.CurrentPrice ?? 0) * 0.01 
     this.listPrice = (blk?.OriginalPrice ?? 0) * 0.01
     this.priceText = this.price.tostring()
     this.listPriceText = this.listPrice.tostring()
@@ -77,7 +77,7 @@ local EpicShopPurchasableItem = class {
   }
 
   update = function(blk) {
-    this.isBought = this.isMultiConsumable ? false : ((blk?.PurchasedCount ?? 0) > 0) // PurchasedCount - depricated in EOS starts 1.15.2
+    this.isBought = this.isMultiConsumable ? false : ((blk?.PurchasedCount ?? 0) > 0) 
   }
 
   getPriceText = function() {

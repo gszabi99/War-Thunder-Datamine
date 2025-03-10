@@ -63,6 +63,10 @@
       "transmission1_dm": {
         "genericDamageMult": 1.6,
         "hp": 30.5
+      },
+      "apu1_dm": {
+        "genericDamageMult": 1.6,
+        "hp": 30.5
       }
     },
     "boron_carbide20": {
@@ -369,61 +373,55 @@
             "smoke": 0.2
           },
           {
+            "damage": 30.0,
+            "wing_r_dm": 0.5,
+            "wing_l_dm": 0.5
+          },
+          {
             "damage": 50.0,
-            "tail_dm": 0.6
+            "wing_r_dm": 0.7,
+            "wing_l_dm": 0.7
           },
           {
             "damage": 70.0,
-            "tail_dm": 0.8
-          },
-          {
-            "damage": 100.0,
-            "tail_dm": 1.0
+            "wing_r_dm": 0.9,
+            "wing_l_dm": 0.9
           }
         ],
         "onKill": [
           {
-            "tail_dm": 1.0,
-            "nothing": 12.0
-          },
-          {
-            "damage": 3.0,
-            "tail_dm": 1.0,
-            "nothing": 9.0
-          },
-          {
-            "damage": 7.0,
-            "tail_dm": 1.0,
-            "nothing": 8.0
+            "wingcontrol_l_dm": 1.0,
+            "wingcontrol_r_dm": 1.0,
+            "nothing": 14.0
           },
           {
             "damage": 10.0,
-            "tail_dm": 1.0,
-            "nothing": 7.0
-          },
-          {
-            "damage": 20.0,
-            "tail_dm": 1.0,
-            "nothing": 6.0
-          },
-          {
-            "damage": 30.0,
-            "tail_dm": 1.0,
+            "wing_l_dm": 1.0,
+            "wing_r_dm": 1.0,
             "nothing": 5.0
           },
           {
-            "damage": 50.0,
-            "tail_dm": 1.0,
+            "damage": 20.0,
+            "wing_l_dm": 1.0,
+            "wing_r_dm": 1.0,
             "nothing": 4.0
           },
           {
-            "damage": 70.0,
-            "tail_dm": 1.0,
+            "damage": 30.0,
+            "wing_l_dm": 1.0,
+            "wing_r_dm": 1.0,
             "nothing": 3.0
           },
           {
-            "damage": 100.0,
-            "tail_dm": 1.0
+            "damage": 50.0,
+            "wing_l_dm": 1.0,
+            "wing_r_dm": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 70.0,
+            "wing_l_dm": 1.0,
+            "wing_r_dm": 1.0
           }
         ]
       },
@@ -602,16 +600,19 @@
         "name": "cockpit_countrol1_dm"
       },
       {
-        "name": "lectronic_block1_dm"
+        "name": "electronic_block1_dm"
       },
       {
-        "name": "lectronic_block2_dm"
+        "name": "electronic_block2_dm"
       },
       {
-        "name": "lectronic_block3_dm"
+        "name": "electronic_block3_dm"
       },
       {
         "name": "ircm1_dm"
+      },
+      {
+        "name": "apu1_dm"
       },
       {
         "name": "tail_dm",

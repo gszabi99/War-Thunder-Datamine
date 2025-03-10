@@ -462,7 +462,7 @@ function onRepair(debuffs_data) {
   let iconObj = placeObj.findObject("icon")
   if (isAutoRepairing && timersUnitType == ES_UNIT_TYPE_TANK && repairingParts != null) {
     local partsArray = repairingParts?.name ?? []
-    partsArray = type(partsArray) == "array" ? partsArray : [partsArray] //if datablock contain one part, then it converted to string
+    partsArray = type(partsArray) == "array" ? partsArray : [partsArray] 
     let tracksPartsArray = partsArray.filter(@(part) startsWith(part, "track_") || startsWith(part, "wheel_"))
     iconObj["background-image"] = tracksPartsArray.len() == partsArray.len() ? "#ui/gameuiskin#track_state_indicator.svg"
       : "#ui/gameuiskin#icon_repair_in_progress.svg"
@@ -752,8 +752,8 @@ function onZoneCapturingEvent(eventData) {
   let timerObj = placeObj.findObject("time_text")
   timerObj.setValue(curZoneCaptureName)
 
-  //hide timer when no progress too long.
-  //because we not receive self capture stop event, only team
+  
+  
   SecondsUpdater(timerObj, function(_obj, _p) {
     if (lastZoneCaptureUpdate + zoneCaptureOutdateTimeMsec > get_time_msec())
       return false

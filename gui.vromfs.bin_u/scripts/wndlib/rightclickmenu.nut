@@ -11,19 +11,19 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 
-/*
-  config = [
-    {
-      text = string
-      action = function
-      show = boolean || function
-      onUpdateButton = function(params)  //return table { text = "new button text", enable = true, stopUpdate = false }
-                                         //updates button once per sec.
-      hasSeparator = boolean
-    }
-    ...
-  ]
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
   wndType      = handlerType.MODAL
@@ -56,7 +56,7 @@ gui_handlers.RightClickMenu <- class (BaseGuiHandler) {
       if ("show" in item && !((type(item.show) == "function") ? item.show.call(this.owner) : item.show))
         continue
 
-      local actionData = null //lineDiv
+      local actionData = null 
       local enabled = true
       if ("enabled" in item)
         enabled = type(item.enabled) == "function"

@@ -206,17 +206,17 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onThreadsActivate(obj) {
     if (showConsoleButtons.value)
-      this.openThreadMenu() //gamepad shortcut
+      this.openThreadMenu() 
     else
-      this.onJoinThread(obj) //dblClick
+      this.onJoinThread(obj) 
   }
 
   function onThreadSelect() {
-    //delayed callbac
+    
     if (!checkObj(this.listObj) || !this.listObj.childrenCount())
       return
 
-    //sellImg is bigger than item, so for correct view while selecting by gamepad need to scroll to selImg
+    
     let val = getObjValidIndex(this.listObj)
     local childObj = this.listObj.getChild(val < 0 ? 0 : val)
     if (!checkObj(childObj))
@@ -265,7 +265,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventChatFilterChanged(_p) {
     this.markListChanged()
     if (this.isSceneActive()) {
-      //wait to apply all options before update scene.
+      
       let cb = Callback(this.updateAll, this)
       this.guiScene.performDelayed(this, function() { cb() })
     }

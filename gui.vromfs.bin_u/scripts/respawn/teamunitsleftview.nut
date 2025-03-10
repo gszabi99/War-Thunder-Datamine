@@ -20,7 +20,7 @@ gui_handlers.teamUnitsLeftView <- class (gui_handlers.BaseGuiHandlerWT) {
   collapsedInfoTimer = -1
 
   function initScreen() {
-    this.scene.setUserData(this) //to not unload handler even when scene not loaded
+    this.scene.setUserData(this) 
     this.scene.findObject(this.blockId).setUserData(this)
 
     this.updateInfo()

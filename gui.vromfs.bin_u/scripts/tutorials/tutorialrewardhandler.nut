@@ -76,7 +76,7 @@ local TutorialRewardHandler = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     this.updateDecoratorButton()
-    if (this.decorator != null) { //Not show new unlock window
+    if (this.decorator != null) { 
       let decoratorId = this.decorator.id
       getUserLogsList({
         show = [EULT_NEW_UNLOCK]
@@ -156,7 +156,7 @@ function tryOpenTutorialRewardHandler() {
     return false
 
   let mainGameMode = get_game_mode()
-  set_game_mode(GM_TRAINING)  //req to check progress
+  set_game_mode(GM_TRAINING)  
   let progress = get_mission_progress(tutorialRewardData.value.fullMissionName)
   set_game_mode(mainGameMode)
 
@@ -207,7 +207,7 @@ function tryOpenTutorialRewardHandler() {
   }
 
   clearTutorialRewardData()
-  return newCountries && newCountries.len() > 0 //is new countries unlocked by tutorial?
+  return newCountries && newCountries.len() > 0 
 }
 
 return {

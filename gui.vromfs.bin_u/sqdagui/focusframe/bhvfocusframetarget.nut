@@ -1,7 +1,7 @@
 from "%sqDagui/daguiNativeApi.nut" import *
 
-local onSetTarget = null    //onSetTarget(oDaguiObject)
-local onUnsetTarget = null  //onUnsetTarget(DaguiObject)
+local onSetTarget = null    
+local onUnsetTarget = null  
 local shouldHideImage = false
 
 function hideImage(obj) {
@@ -26,7 +26,7 @@ function unhideImage(obj) {
 let class bhvFocusFrameTarget {
   function onAttach(obj) {
     if (onSetTarget) {
-      //instant hide image, because there is a single frame before animaton start with correct object sizes
+      
       if (shouldHideImage)
         hideImage(obj)
       onSetTarget(obj)

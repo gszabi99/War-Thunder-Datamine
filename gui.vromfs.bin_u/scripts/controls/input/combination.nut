@@ -3,12 +3,12 @@ from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 
-/**
- * Input combination.
- * Container for several elements, which represets single input.
- * It may be a key combination (Ctrl + A) or
- * combinations of several axes (left gamebad trigger + right gamepad trigger.
- */
+
+
+
+
+
+
 let Combination = class (InputBase) {
   elements = null
 

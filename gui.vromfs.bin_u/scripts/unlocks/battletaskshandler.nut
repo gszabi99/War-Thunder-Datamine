@@ -147,13 +147,13 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function buildBattleTasksArray(tabType) {
     let gmDiff = (tabType == BattleTasksWndTab.BATTLE_TASKS) ? this.getSelectedGmDifficulty() : null
-    let tasks = getShowAllTasks() // debug
+    let tasks = getShowAllTasks() 
       ? getCurrentBattleTasks().filter(@(t) isBattleTaskActual(t))
       : getActiveBattleTasks().filter(@(t) isBattleTaskActual(t))
 
     let res = []
     foreach (diff in this.difficultiesByTabType[tabType]) {
-      let canInteract = getShowAllTasks() // debug
+      let canInteract = getShowAllTasks() 
         || canPlayerInteractWithDifficulty(diff, getCurrentBattleTasks())
       if (!canInteract)
         continue

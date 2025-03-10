@@ -6,9 +6,9 @@ let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
-// DEPRECATED
-// Interface of ControlsPreset and ControlsManager for controls.nut
-// TODO: Rewrite controls with new ControlsPreset and ControlsManager classes
+
+
+
 
 
 function getShortcuts(list, preset = null) {

@@ -72,7 +72,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("U_F").show(!isDynamicLut);
     this.scene.findObject("UWhite").show(!isDynamicLut);
 
-    //lensFlare
+    
     if (useLenseFlares()) {
       let lfm = getLenseFlareMode();
       let showLenseFlareSettings = lfm > 0;
@@ -83,7 +83,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     if (isDynamicLut)
       return;
 
-    //tonemapping
+    
     let tm = getTonemappingMode();
 
     let reinard = tm == 1;
@@ -198,7 +198,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function initScreen() {
-    //change shader variables
+    
     setTonemappingMode(getTonemappingMode());
     if (useLenseFlares())
       setLenseFlareMode(getLenseFlareMode());
@@ -245,7 +245,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     setUF(getDefaultUF(), true);
     setUWhite(getDefaultUWhite(), true);
     setLutTexture(getDefaultLutTexture());
-    setIsUsingDynamicLut(true); // need to be before setTonemappingMode
+    setIsUsingDynamicLut(true); 
     setTonemappingMode(getDefaultTonemappingMode());
     if (useLenseFlares()) {
       setLenseFlareMode(getDefaultLenseFlareMode());
@@ -264,7 +264,7 @@ gui_handlers.PostFxSettings <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!obj)
       return;
 
-    setIsUsingDynamicLut(obj.getValue()); //need to be set first
+    setIsUsingDynamicLut(obj.getValue()); 
     setTonemappingMode(getTonemappingMode());
     this.updateVisibility();
   }

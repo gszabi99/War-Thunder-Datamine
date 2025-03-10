@@ -20,7 +20,7 @@ let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
 
   myClanCountries = null
   myClanQueueTime = -1
-  cachedClanId = -1 //need to update clan data if clan changed
+  cachedClanId = -1 
 
   constructor(v_map, v_data = null) {
     this.map = v_map

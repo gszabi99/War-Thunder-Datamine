@@ -16,19 +16,19 @@ let { myClanInfo } = require("%scripts/clans/clanState.nut")
 let currentPresence = {}
 let helperObj = {}
 
-/**
- * Checks if presence has something new
- * comparing to current presence. Used
- * to skip 'set_presence' call if nothing
- * changed.
- */
+
+
+
+
+
+
 function checkPresence(presence) {
   if (presence == null)
     return false
   helperObj.clear()
 
-  // Selecting only properties that can
-  // be inequal with current presence.
+  
+  
   foreach (key, _value in presence)
     helperObj[key] <- currentPresence?[key]
 
@@ -39,7 +39,7 @@ function setUserPresence(presence) {
   if (!isLoggedIn.get() || !checkPresence(presence))
     return
 
-  // Copy new values to current presence object.
+  
   foreach (key, value in presence)
     currentPresence[key] <- value
   matchingApiFunc("mpresence.set_presence", @(_) null, presence)
@@ -48,7 +48,7 @@ function setUserPresence(presence) {
 
 function setBattlePresence(presenceName = null, event = null) {
   if (presenceName == null || event == null)
-    setUserPresence({ status = null }) // Sets presence to "Online".
+    setUserPresence({ status = null }) 
   else {
     setUserPresence({ status = {
       [presenceName] = {
@@ -79,9 +79,9 @@ function updateBattlePresence() {
 
 function initUserPresence() {
   updateBattlePresence()
-  // Call updateClanTagPresence()
-  // is not needed as this info comes
-  // to client from char-server on login.
+  
+  
+  
 }
 
 addListenersWithoutEnv({

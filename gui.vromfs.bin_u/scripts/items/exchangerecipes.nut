@@ -182,11 +182,11 @@ function showUseErrorMsg(recipes, componentItem) {
       widthByParentParent = true
       headerParams = { hasHeaderPadding = true }
     }),
-    baseHandler = get_cur_base_gui_handler(), //FIX ME: used only for tooltip
+    baseHandler = get_cur_base_gui_handler(), 
     cancel_fn = function() {}
   }
 
-  //Suggest to buy not enough item on marketplace
+  
   local requiredItem = null
   if (isMarketplaceEnabled() && recipes.len() == 1)
     foreach (c in recipes[0].components)
@@ -688,7 +688,7 @@ local ExchangeRecipes = class {
       : component.has ? "goodTextColor"
       : "badTextColor"
 
-  //////////////////////////////////// Internal functions ////////////////////////////////////
+  
 
   function getMaterialsListForExchange(recipesQuantity) {
     let res = []
@@ -719,7 +719,7 @@ local ExchangeRecipes = class {
   }
 
   function doExchange(componentItem, amount = 1, params = {}) {
-    let recipe = this //to not remove recipe until operation complete
+    let recipe = this 
     params = params ?? {}
     if (componentItem.canRecraftFromRewardWnd()) {
       params.__update({

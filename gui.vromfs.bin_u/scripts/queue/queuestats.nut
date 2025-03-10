@@ -31,36 +31,36 @@ class QueueStats {
   maxClusterName = ""
 
   teamsQueueTable = null
-  /*
-  teamsQueueTable = {
-    [cluster] = {
-      playersCount = <total players>
-      TeamA = { "<rank>" = <players>, playersCount = <total team players> }
-      TeamB = { "<rank>" = <players>, playersCount = <total team players> }
-    }
-  }
-  */
+  
+
+
+
+
+
+
+
+
 
   countriesQueueTable = null
-  /*
-  countriesQueueTable = {
-    [cluster] = {
-      <country name> = {
-        "<rank>" = <players>
-      }
-    }
-  }
-  */
+  
+
+
+
+
+
+
+
+
 
   myClanQueueTable = null
-  /*
-  myClanQueueTable = { "<rank>" = <players> }
-  */
+  
+
+
 
   clansQueueTable = null
-  /*
-  myClanQueueTable = { "<rank>" = <clans>, clansCount = <total clans> }
-  */
+  
+
+
 
   constructor(queue) {
     local queueEvent = ::queues.getQueueEvent(queue)
@@ -72,9 +72,9 @@ class QueueStats {
     this.source = {}
   }
 
-  /*************************************************************************************************/
-  /*************************************PUBLIC FUNCTIONS *******************************************/
-  /*************************************************************************************************/
+  
+  
+  
 
   function applyQueueInfo(queueInfo) {
     if (!("queueId" in queueInfo) || !("cluster" in queueInfo))
@@ -148,7 +148,7 @@ class QueueStats {
       ?? this.countriesQueueTable?[this.maxClusterName]
   }
 
-  //for clans queues
+  
   function getClansCount() {
     return getTblValue("clansCount", this.getClansQueueTable(), 0)
   }
@@ -165,9 +165,9 @@ class QueueStats {
 
   getClusters = @() this.source != null ? this.source.keys() : []
 
-  /*************************************************************************************************/
-  /************************************PRIVATE FUNCTIONS *******************************************/
-  /*************************************************************************************************/
+  
+  
+  
 
   function calcQueueTable() {
     this.teamsQueueTable = {}
@@ -182,13 +182,13 @@ class QueueStats {
         if (playersCount > playersOnMaxCluster) {
           this.maxClusterName = cluster
           playersOnMaxCluster = playersCount
-          this.isSymmetric = this.teamsQueueTable[cluster].isSymmetric //set symmetric by max queue symmetric
+          this.isSymmetric = this.teamsQueueTable[cluster].isSymmetric 
         }
       }
     }
   }
 
-  //return player count on cluster
+  
   function gatherClusterData(cluster, statsByQueueId) {
     let dataByTeams = {
       playersCount = 0
@@ -206,7 +206,7 @@ class QueueStats {
     }
 
     this.teamsQueueTable[cluster] <- dataByTeams
-    this.countriesQueueTable[cluster] <- this.remapCountries(dataByCountries) //britain -> country_britain
+    this.countriesQueueTable[cluster] <- this.remapCountries(dataByCountries) 
   }
 
   function mergeToDataByTeams(dataByTeams, stats) {
@@ -291,7 +291,7 @@ class QueueStats {
     foreach (_cluster, statsByQueueId in this.source)
       foreach (stats in statsByQueueId)
         if (this.gatherClansData(stats))
-          break //clans are multiclusters always. so no need to try merge this data
+          break 
   }
 
   function gatherClansData(stats) {

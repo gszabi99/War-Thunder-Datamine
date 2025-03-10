@@ -22,7 +22,7 @@ let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let knownTournamentInvites = []
 
 let TournamentBattle = class (BaseInvite) {
-  //custom class params, not exist in base invite
+  
   battleId = ""
   inviteTime = -1
   startTime = -1

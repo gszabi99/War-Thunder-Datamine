@@ -6,11 +6,11 @@ let { addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 
-/*
- * Search in price.blk:
- * Search param is a name of a unit
- * Return an array of entitlement names
-*/
+
+
+
+
+
 
 local shopPriceBlkCache = null
 local purchaseDataCache = {}
@@ -59,10 +59,10 @@ function searchEntitlementsByUnit(unitName) {
 
 let getGoodsChapter = @(goodsName) getShopPriceBlk()?[goodsName].chapter ?? ""
 
-/**
- * Returns array of entitlements that
- * unlock feature with provided name.
- */
+
+
+
+
 function getEntitlementsByFeature(name) {
   let entitlements = []
   if (name == null)
@@ -77,17 +77,17 @@ function getEntitlementsByFeature(name) {
   return entitlements
 }
 
-/*
-  search first available entitlemnt to purchase to get current entitlement.by name
-  _res - internal parametr - do not use from outside
 
-  return {
-    canBePurchased = (bool)
-    guid = (string) or null
-    customPurchaseLink = (string) or null
-    sourceEntitlement =  (string)   - entitlement which need to buy to get requested entitlement
-  }
-*/
+
+
+
+
+
+
+
+
+
+
 
 function createPurchaseData(goodsName = "", guid = null, customPurchaseLink = null) {
   let res = {
@@ -121,7 +121,7 @@ function getPurchaseData(goodsName) {
     return createPurchaseData(goodsName, guid)
 
   purchaseDataRecursion++
-  //search in gifts or fingerPrints
+  
   local res = null
   let priceBlk = getShopPriceBlk()
   let numBlocks = priceBlk.blockCount()
@@ -145,8 +145,8 @@ function getPurchaseData(goodsName) {
   return res ?? createPurchaseData(goodsName)
 }
 
-//return purchaseData (look getPurchaseData) of first found entitlement which can be purchased.
-// or empty purchase data
+
+
 function getFeaturePurchaseData(feature) {
   local res = null
   foreach (entitlement in getEntitlementsByFeature(feature)) {
@@ -157,8 +157,8 @@ function getFeaturePurchaseData(feature) {
   return res ?? createPurchaseData()
 }
 
-//return purchaseDatas (look getPurchaseData) of all entitlements which can be purchased.
-// or empty array
+
+
 function getAllFeaturePurchases(feature) {
   let res = []
   foreach (entitlement in getEntitlementsByFeature(feature)) {

@@ -353,6 +353,7 @@
       "aircraftAsTarget": true,
       "friendFoeId": true,
       "mainBeamNotchWidth": 60.0,
+      "targetId": true,
       "distance": {
         "presents": true,
         "minValue": 500.0,
@@ -425,6 +426,7 @@
       "mainBeamNotchWidth": 40.0,
       "mainBeamNotchMaxElevation": 4.0,
       "track": true,
+      "targetId": true,
       "distance": {
         "presents": true,
         "minValue": 200.0,
@@ -449,6 +451,7 @@
       "angularAccuracy": 0.05,
       "distanceAccuracy": 12.0,
       "track": true,
+      "targetId": true,
       "distance": {
         "presents": true,
         "minValue": 200.0,
@@ -460,6 +463,7 @@
       "groundClutter": false,
       "aircraftAsTarget": true,
       "friendFoeId": true,
+      "targetId": true,
       "mainBeamDopplerSpeed": true,
       "distance": {
         "presents": true,
@@ -488,6 +492,7 @@
       "distanceAccuracy": 15.0,
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
+      "targetId": true,
       "track": true,
       "distance": {
         "presents": true,
@@ -2763,5 +2768,28 @@
         }
       }
     }
-  }
+  },
+  "targetTypeId": [
+    {
+      "name": "hud/small",
+      "sizeRange": [
+        0.0,
+        5.0
+      ]
+    },
+    {
+      "name": "hud/medium",
+      "sizeRange": [
+        5.0,
+        25.0
+      ]
+    },
+    {
+      "name": "hud/large",
+      "sizeRange": [
+        25.0,
+        500.0
+      ]
+    }
+  ]
 }

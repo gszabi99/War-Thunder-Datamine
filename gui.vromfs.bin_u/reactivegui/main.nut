@@ -8,11 +8,11 @@ start_es_loading()
 
 gui_scene.setConfigProps({ clickRumbleEnabled = false })
 
-require("%rGui/hudChatCtrlsState.nut") //need this for controls mask updated
+require("%rGui/hudChatCtrlsState.nut") 
 require("%rGui/ctrlsState.nut")
 
 require("consoleCmd.nut")
-require("%sqstd/regScriptProfiler.nut")("darg", dlog) // warning disable: -forbidden-function
+require("%sqstd/regScriptProfiler.nut")("darg", dlog) 
 
 let widgets = require("%rGui/widgets.nut")
 let { inspectorRoot } = require("%darg/helpers/inspector.nut")

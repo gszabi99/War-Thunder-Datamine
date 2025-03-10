@@ -14,13 +14,13 @@ let g_team = {
   types = []
 
   template = {
-    id = "" //filled automatically by type id
+    id = "" 
     code = -1
     opponentTeamCode = -1
     name = ""
     shortNameLocId = ""
     cssLabel = ""
-    teamCountriesOption = -1 //USEROPT_*
+    teamCountriesOption = -1 
 
     getName = function() {
       return loc($"events/{this.name}")

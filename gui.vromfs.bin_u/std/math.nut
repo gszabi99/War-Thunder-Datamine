@@ -5,9 +5,9 @@ const GOLDEN_RATIO = 1.618034
 function minByAbs(a, b) { return (math.fabs(a) < math.fabs(b))? a : b }
 function maxByAbs(a, b) { return (math.fabs(a) > math.fabs(b))? a : b }
 
-//round @value to valueble @digits amount
-// roundToDigits(1.23, 2) = 1.2
-// roundToDigits(123, 2) = 120
+
+
+
 function roundToDigits(value, digits) {
   if (value==0) return value
   let log = math.log10(math.fabs(value))
@@ -15,8 +15,8 @@ function roundToDigits(value, digits) {
   return mul*math.floor(0.5+value.tofloat()/mul)
 }
 
-//round @value by @roundValue
-//round_by_value(1.56, 0.1) = 1.6
+
+
 function round_by_value(value, roundValue) {
   return math.floor(value.tofloat() / roundValue + 0.5) * roundValue
 }
@@ -41,23 +41,23 @@ function change_bit_mask(bitMask, bitMaskToSet, value) {
   return (bitMask & ~bitMaskToSet) | (value? bitMaskToSet : 0)
 }
 
-/**
-* Linear interpolation of f(value) where:
-* f(valueMin) = resMin
-* f(valueMax) = resMax
-*/
+
+
+
+
+
 function lerp(valueMin, valueMax, resMin, resMax, curValue) {
   if (valueMin == valueMax)
     return 0.5 * (resMin + resMax)
   return resMin + (resMax - resMin) * (curValue - valueMin) / (valueMax - valueMin)
 }
 
-/**
-* Linear interpolation of f(value) where:
-* f(valueMin) = resMin
-* f(valueMax) = resMax
-* but result is clamped by min/max values
-*/
+
+
+
+
+
+
 let lerpClamped = @(valueMin, valueMax, resMin, resMax, tvalue)
   lerp(valueMin, valueMax, resMin, resMax,
     valueMax > valueMin ? math.clamp(tvalue, valueMin, valueMax) : math.clamp(tvalue, valueMax, valueMin))
@@ -82,11 +82,11 @@ function interpolateArray(arr, value) {
   return 0
 }
 
-/*
-* return columns amount for the table with <total> same size items
-* with a closer table size to golden ratio
-* <widthToHeight> is a item size ratio (width / height)
-*/
+
+
+
+
+
 function calc_golden_ratio_columns(total, widthToHeight = 1.0) {
   let rows = (math.sqrt(total.tofloat() / GOLDEN_RATIO * widthToHeight) + 0.5).tointeger() || 1
   return math.ceil(total.tofloat() / rows).tointeger()
@@ -109,7 +109,7 @@ let romanNumeralLookup = [
 ]
 let maxRomanDigit = 3
 
-//Function from http://blog.stevenlevithan.com/archives/javascript-roman-numeral-converter
+
 function getRomanNumeral(num) {
   let t = type(num)
   if ((t != "integer" && t != "float") || num < 0)
@@ -143,22 +143,22 @@ function splitThousands(val, spacer = " ") {
   return res
 }
 
-/**
- * Calculates average value from array.
- * @param {array} list - Array of integers or floats.
- * @return {float|null} - Average value, or null for empty array.
- */
+
+
+
+
+
 function average(list) {
   let n = list.len()
   return n == 0 ? null
     : list.reduce(@(sum, v) sum + v, 0.0) / n
 }
 
-/**
- * Calculates median value from array.
- * @param {array} sortedList - Array of integers or floats. MUST be sorted!
- * @return {float|null} - Median value, or null for empty array.
- */
+
+
+
+
+
 function median(sortedList) {
   let n = sortedList.len()
   return n == 0 ? null
@@ -172,7 +172,7 @@ function truncateToMultiple(number, multiple) {
   return math.floor(number / multiple) * multiple
 }
 
-//EXPORT content for require
+
 let export = math.__merge({
   GOLDEN_RATIO
   minByAbs

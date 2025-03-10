@@ -250,7 +250,7 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
 
   gm_engine_sound__is_playing = is_playing(gm_engine_sound__event) || is_playing(gm_engine_sound__event_inside)
   let newPos = unit.unitTm * gm_engine_sound__pos_offset
-  if !unit.isFarAway && (length_sq(newPos - gm_engine_sound__pos) > 0.09)
+  if length_sq(newPos - gm_engine_sound__pos) > 0.09
     if gm_engine_sound__is_playing
       gm_engine_sound__event |> set_pos_and_ori(gm_engine_sound__pos, gm.velocity, unit.unitTm[0], unit.unitTm[1])
     gm_engine_sound__stop_event |> set_pos(gm_engine_sound__pos)
@@ -410,17 +410,7 @@ def gm_engine_on_play_stop_es(evt : CmdEnginePlayStopSound;
   if (curEventName != "") && !is_playing(curEvent)
     curEvent |> play(string(curEventName), gm_engine_sound__pos)
 
-
-[es(tag=sound, REQUIRE_NOT = disabled)]
-def gm_engine_on_set_pos_es(evt : CmdEngineSoundSetPosForced;
-                            var gm_engine_sound__pos : float3&;
-                            gm_engine_sound__event : SoundEvent)
-  gm_engine_sound__pos = evt.pos
-  if is_playing(gm_engine_sound__event)
-    gm_engine_sound__event |> set_pos(gm_engine_sound__pos)
-
-
-//-- FOR ADDITIONAL SOUND--------------------------------------------------------------------------------------
+//---------------------------------------------------------------------------------------------------
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
 def gm_additional_engine_on_unsteal_es(evt : CmdEngineUnstealSound;

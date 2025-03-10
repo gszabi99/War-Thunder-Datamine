@@ -1,7 +1,7 @@
 from "%globalScripts/logs.nut" import *
-//
-// Dirty Words tables for Chinese language.
-//
+
+
+
 
 let LANGS_CN = [ "Chinese" ]
 

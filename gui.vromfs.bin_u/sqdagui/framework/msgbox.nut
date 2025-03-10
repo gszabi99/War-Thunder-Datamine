@@ -7,9 +7,9 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { stripTags } =  require("%sqstd/string.nut")
 let { open_url_by_obj } = require("open_url_by_obj.nut")
 
-let scene_msg_boxes_list = [] //FIX ME need to make it part of handler manager
+let scene_msg_boxes_list = [] 
 
-//  {id, text, buttons, defBtn}
+
 let gui_scene_boxes = []
 
 function remove_scene_box(id) {
@@ -157,7 +157,7 @@ function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null) {
                   b[1].call(srcHandlerObj)
 
                 if (isDestroy) {
-                  remove_scene_box(bId) //!!FIX ME: need refactoring about this list
+                  remove_scene_box(bId) 
                   saved_scene_msg_box.value = null
                   destroyMsgBox(bObj)
                   clear_msg_boxes_list()
@@ -201,7 +201,7 @@ function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null) {
 
       function onUpdate(_obj, dt) {
         reset_msg_box_check_anim_time()
-        // If buttons need
+        
         if (this.showButtonsTimer > 0) {
           this.showButtonsTimer -= dt
           if (this.showButtonsTimer <= 0) {
@@ -265,7 +265,7 @@ function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null) {
           let locTxtId = (btn[0].slice(0, 1) == "#") ? btn[0] : $"#msgbox/btn_{btn[0]}"
           local btnText = "".concat("text:t='", locTxtId, "'; id:t='", btn[0], "'; on_click:t='onButton';")
           if (buttons.len() == 1)
-            btnText = "".concat(btnText, "btnName:t='AB'; ") //Enter and Esc for the single button
+            btnText = "".concat(btnText, "btnName:t='AB'; ") 
           blkText = "".concat(blkText, "Button_text { ", animParams, btnText, "}")
           idx++
           if (btn[0] == def_btn)
@@ -312,7 +312,7 @@ function scene_msg_box(id, gui_scene, text, buttons, def_btn, options = null) {
     }
   }
   if (!buttons)
-    needWaitAnim = true  //if no buttons, than wait anim always need
+    needWaitAnim = true  
 
   if (needWaitAnim) {
     let waitObj = msgbox.findObject("msgWaitAnimation")

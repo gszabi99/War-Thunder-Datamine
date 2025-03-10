@@ -56,7 +56,7 @@ let fixesList = [
     valueFunction = function() {
       return [[isXInputDevice() ? {
         deviceId = GAMEPAD_ENTER_SHORTCUT.dev[0]
-        buttonId = GAMEPAD_ENTER_SHORTCUT.btn[0] // used in mission hints
+        buttonId = GAMEPAD_ENTER_SHORTCUT.btn[0] 
       } :
       {
         deviceId = SHORTCUT.KEY_SPACE.dev[0]
@@ -173,7 +173,7 @@ function commitGuiOptions() {
   setGuiOptionsMode(mainOptionsMode)
 }
 
-/* Commit controls to game client */
+
 function commitControls() {
   if (isControlsCommitPerformed)
     return
@@ -182,10 +182,10 @@ function commitControls() {
   fixControls()
   commitGuiOptions()
 
-  // Check helpers options and fix if nessesary
+  
   broadcastEvent("BeforeControlsCommit")
 
-  // Send controls to C++ client
+  
   set_current_controls(getCurControlsPreset())
 
   clearCurControlsPresetGuiOptions()
@@ -212,7 +212,7 @@ function fillUseroptControlsPresetDescr(_optionId, descr, _context) {
   descr.trParams <- "optionWidthInc:t='double';"
 
   if (!isPlatformSony && !isPlatformXboxOne)
-    descr.values.insert(0, "") //custom preset
+    descr.values.insert(0, "") 
   let p = getCurControlsPreset()?.getBasePresetInfo()
     ?? getNullControlsPresetInfo()
   for (local k = 0; k < descr.values.len(); k++) {
@@ -251,8 +251,8 @@ function setUseroptControlsPreset(value, descr, _optionId) {
 registerOption(USEROPT_CONTROLS_PRESET, fillUseroptControlsPresetDescr, setUseroptControlsPreset)
 
 addListenersWithoutEnv({
-  // While controls reloaded on PS4 from uncrorrect blk when mission started
-  // it is required to commit controls when mission start.
+  
+  
   function MissionStarted(_) {
     if (isPlatformSony)
       commitControls()
@@ -261,7 +261,7 @@ addListenersWithoutEnv({
 
 eventbus_subscribe("controls_fix_device_mapping", @(_) controlsFixDeviceMapping())
 
-// Function called from C++ code
+
 ::load_controls <- function load_controls(blkOrPresetPath) {
   let otherPreset = ControlsPreset(blkOrPresetPath)
   if (otherPreset.isLoaded && otherPreset.hotkeys.len() > 0) {

@@ -57,7 +57,7 @@ function getSearchTokenByQuery(searchStr) {
 
 function findUnitsByLocName(searchStr, needIncludeHidden = false, needIncludeNotInShop = false) {
   if (!searchTokensCache.len())
-    rebuildCache() // hack, restores cache after scripts reload.
+    rebuildCache() 
 
   let searchToken = getSearchTokenByQuery(searchStr)
   if (searchToken == "")
@@ -71,7 +71,7 @@ function findUnitsByLocName(searchStr, needIncludeHidden = false, needIncludeNot
 
 function isUnitLocNameMatchSearchStr(unit, searchStr) {
   if (!searchTokensCache.len())
-    rebuildCache() // hack, restores cache after scripts reload.
+    rebuildCache() 
 
   let searchToken = getSearchTokenByQuery(searchStr)
   if (searchToken == "")

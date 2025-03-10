@@ -38,8 +38,8 @@ gui_handlers.WwOperationDescriptionCustomHandler <- class (gui_handlers.WwMapDes
     this.fillOperationBackground()
     this.updateStatus()
     this.updateTeamsInfo()
-    // to get corrct preview Map size updateMap() calls with delay
-    // because Map size based on size of other objects
+    
+    
     this.guiScene.performDelayed(this, function() {
       if (this.isValid())
         this.updateMap()

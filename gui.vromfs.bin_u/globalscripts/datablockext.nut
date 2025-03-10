@@ -42,12 +42,12 @@ function setBlkValueByPath(blk, path, val) {
     blk = blk.addBlock(dir)
   }
 
-  //If current value is equal to existent in DataBlock don't override it
+  
   if (isEqual(blk?[key], val))
-    return type(val) == "instance" //If the same instance was changed, then need to save
+    return type(val) == "instance" 
 
-  //Remove DataBlock slot if it contains an instance or if it has different type
-  //from new value
+  
+  
   local destType = type(blk?[key])
   if (destType == "instance")
     blk.removeBlock(key)

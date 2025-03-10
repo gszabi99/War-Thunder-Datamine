@@ -14,9 +14,9 @@ let { isRequireUnlockForUnit } = require("%scripts/unit/unitStatus.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 
-let overrrideSlotbarMissionName = mkWatched(persist, "overrrideSlotbarMissionName", "") //recalc slotbar only on mission change
-let overrideSlotbar = mkWatched(persist, "overrideSlotbar", null) //null or []
-let userSlotbarCountry = mkWatched(persist, "userSlotbarCountry", "") //for return user country after reset override slotbar
+let overrrideSlotbarMissionName = mkWatched(persist, "overrrideSlotbarMissionName", "") 
+let overrideSlotbar = mkWatched(persist, "overrideSlotbar", null) 
+let userSlotbarCountry = mkWatched(persist, "userSlotbarCountry", "") 
 let selectedCountryByMissionName = hardPersistWatched("selectedCountryByMissionName", {})
 
 overrideSlotbar.subscribe(@(_) broadcastEvent("OverrideSlotbarChanged"))
@@ -44,7 +44,7 @@ function addCrewToCountryData(countryData, crewId, countryId, crewUnitName) {
 function getMissionEditSlotbarBlk(missionName) {
   let misBlk = getUrlOrFileMissionMetaInfo(missionName)
   let editSlotbar = misBlk?.editSlotbar
-  //override slotbar does not support keepOwnUnits atm.
+  
   if (!isDataBlock(editSlotbar) || editSlotbar.keepOwnUnits)
     return null
   return editSlotbar
@@ -59,7 +59,7 @@ function calcSlotbarOverrideByMissionName(missionName, event = null) {
     return res
 
   res = []
-  local crewId = -1 //negative crews are invalid, so we prevent any actions with such crews.
+  local crewId = -1 
   foreach (country in shopCountriesList) {
     let countryInfo = editSlotbar?[country]
     if (!countryInfo || !countryInfo.len()

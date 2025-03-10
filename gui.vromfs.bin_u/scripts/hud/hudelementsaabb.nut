@@ -97,7 +97,7 @@ function getHudElementAabb(elemId) {
     : aabbList?[name](params)
 }
 
-::get_ingame_map_aabb <- function get_ingame_map_aabb() { return aabbList.map() }  //this function used in native code
+::get_ingame_map_aabb <- function get_ingame_map_aabb() { return aabbList.map() }  
 
 eventbus_subscribe("update_damage_panel_state", @(value) update_damage_panel_state(value))
 

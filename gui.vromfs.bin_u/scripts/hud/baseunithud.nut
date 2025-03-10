@@ -45,7 +45,10 @@ gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventShowHud(_p) {
     if (this.isReinitDelayed) {
       this.actionBar?.reinit()
+      this.onControlsChanged()
       this.isReinitDelayed = false
     }
   }
+
+  onControlsChanged = @() null
 }

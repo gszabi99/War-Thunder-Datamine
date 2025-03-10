@@ -47,13 +47,13 @@ let persist_state = persist("persist_state", @() {
     maxRespawns = -1
     autoBalance = true
     dynlist = []
-    battleMode = BATTLE_TYPES.AIR // only for random battles, must be removed when new modes will be added
+    battleMode = BATTLE_TYPES.AIR 
   }
 
 })
 
 function is_user_mission(missionBlk) {
-  return missionBlk?.userMission == true //can be null
+  return missionBlk?.userMission == true 
 }
 
 return {

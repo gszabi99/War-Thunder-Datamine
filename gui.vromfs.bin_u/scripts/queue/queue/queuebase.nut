@@ -12,15 +12,15 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let BaseQueue = class {
   id = 0
   name = ""
-  typeBit = QUEUE_TYPE_BIT.UNKNOWN //FIX ME: should to rename this also
+  typeBit = QUEUE_TYPE_BIT.UNKNOWN 
   queueType = g_queue_type.UNKNOWN
   state = queueStates.NOT_IN_QUEUE
 
-  params = null //params = { clusters = array of strings, mode = string, country = string, team = int}
-                //params.members = { [uid] = { country, slots } }
+  params = null 
+                
   activateTime = -1
-  queueUidsList = null // { <queueUid> = <getQueueData> }
-  queueStats = null //created on first stats income. We dont know stats version before
+  queueUidsList = null 
+  queueStats = null 
   selfActivated = false
 
   constructor(queueId, v_queueType, v_params) {
@@ -40,7 +40,7 @@ let BaseQueue = class {
 
   function addQueueByParams(_qParams) {}
 
-  //return true if queue changed
+  
   function removeQueueByParams(_leaveData) {
     return false
   }
@@ -89,10 +89,10 @@ let BaseQueue = class {
   static function leaveAll(_successCallback, _errorCallback, _needShowError = false) {}
 
   function hasCustomMode() { return false }
-  //is already exist queue with custom mode.
-  //custom mode can be switched off, but squad leader can set to queue with custom mode.
+  
+  
   function isCustomModeQUeued() { return false }
-  //when custom mode switched on, it will be queued automatically
+  
   function isCustomModeSwitchedOn() { return false }
   function switchCustomMode(_shouldQueue) {}
   static function isAllowedToSwitchCustomMode() { return !g_squad_manager.isInSquad() || g_squad_manager.isSquadLeader() }

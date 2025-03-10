@@ -2,12 +2,12 @@ from "%scripts/dagui_library.nut" import *
 let { get_ranks_blk } = require("blkGetters")
 
 local startMissionInsteadOfQueue = null
-/* Debug sample
-  startMissionInsteadOfQueue = {
-    name = "guadalcanal_night_fight"
-    //isBotsAllowed = true
-  }
-*/
+
+
+
+
+
+
 
 let updateStartMissionInsteadOfQueue = function() {
   let rBlk = get_ranks_blk()

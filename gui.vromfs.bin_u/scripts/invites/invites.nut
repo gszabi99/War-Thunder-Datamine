@@ -236,7 +236,7 @@ function rescheduleInvitesTask() {
 
   local triggerDelay = nextTriggerTimestamp - get_charserver_time_sec();
   if (triggerDelay < 1)
-    triggerDelay = 1  //  in case we have some timed outs
+    triggerDelay = 1  
 
   let self = callee()
   let cb = function(_dt = 0) {

@@ -4,8 +4,8 @@ let { posNavigator } = require("bhvPosNavigator.nut")
 
 let ActivateSelect = class (posNavigator) {
   bhvId = "ActivateSelect"
-  valuePID = dagui_propid_add_name_id("value")  //values by bits   chosen:yes;
-  selectedPID = dagui_propid_add_name_id("_selected")    //only 1     selected:yes;
+  valuePID = dagui_propid_add_name_id("value")  
+  selectedPID = dagui_propid_add_name_id("_selected")    
   canChooseByMClick = true
 
   function setValue(obj, value) {

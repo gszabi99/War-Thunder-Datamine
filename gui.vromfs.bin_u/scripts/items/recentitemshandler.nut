@@ -90,7 +90,7 @@ gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let params = {
-      // Prevents popup from going off-screen.
+      
       align = "left"
       obj = obj
     }
@@ -119,8 +119,8 @@ gui_handlers.RecentItemsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventInventoryUpdate(_params) {
-    //Because doWhenActiveOnce checks visibility end enable status
-    //have to call forced update
+    
+    
     if (this.wasShown)
       this.doWhenActiveOnce("updateHandler")
     else

@@ -39,16 +39,16 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let blk = get_shop_blk();
 
-    for (local shopCountry = 0; shopCountry < blk.blockCount(); shopCountry++) {  //country
+    for (local shopCountry = 0; shopCountry < blk.blockCount(); shopCountry++) {  
       let cblk = blk.getBlock(shopCountry);
       if (cblk.getBlockName() != this.country)
         continue;
 
-      for (local page = 0; page < cblk.blockCount(); page++) { //pages
+      for (local page = 0; page < cblk.blockCount(); page++) { 
         let pblk = cblk.getBlock(page)
-        for (local range = 0; range < pblk.blockCount(); range++) {  //ranges
+        for (local range = 0; range < pblk.blockCount(); range++) {  
           let rblk = pblk.getBlock(range)
-          for (local aircraft = 0; aircraft < rblk.blockCount(); aircraft++) { //aircrafts
+          for (local aircraft = 0; aircraft < rblk.blockCount(); aircraft++) { 
             let airBlk = rblk.getBlock(aircraft);
             local air = getAircraftByName(airBlk.getBlockName())
             if (air) {
@@ -58,7 +58,7 @@ gui_handlers.RankUpModal <- class (gui_handlers.BaseGuiHandlerWT) {
               }
             }
             else
-              for (local group = 0; group < airBlk.blockCount(); group++) { //airgroup
+              for (local group = 0; group < airBlk.blockCount(); group++) { 
                 let gAirBlk = airBlk.getBlock(group);
                 air = getAircraftByName(gAirBlk.getBlockName());
                 if (this.isShowUnit(air, showAsUnlock)) {

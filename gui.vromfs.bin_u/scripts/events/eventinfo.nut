@@ -92,7 +92,7 @@ function isEventVisibleByFeature(event) {
   return hasFeature("OnlineShopPacks") && getFeaturePurchaseData(feature).canBePurchased
 }
 
-//when @checkFeature return pack only if player has feature access to event.
+
 function getEventReqPack(event, checkFeature = false) {
   let feature = getEventReqFeature(event)
   if (isEmpty(feature) || (checkFeature && !hasFeature(feature)))
@@ -100,8 +100,8 @@ function getEventReqPack(event, checkFeature = false) {
   return getFeaturePack(feature)
 }
 
-//return true if me and all my squad members has packs requeired by event feature
-//show msgBox askingdownload when no silent
+
+
 function checkEventFeaturePacks(event, isSilent = false) {
   let pack = getEventReqPack(event)
   if (!pack)

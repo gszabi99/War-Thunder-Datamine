@@ -19,7 +19,7 @@ function isUnitDefault(unit) {
   return is_default_aircraft(unit.name)
 }
 
-function isUnitMaxExp(unit) { //temporary while not exist correct status between in_research and canBuy
+function isUnitMaxExp(unit) { 
   return isUnitSpecial(unit) || (getUnitReqExp(unit) <= getUnitExp(unit))
 }
 
@@ -152,15 +152,15 @@ function isUnitDescriptionValid(unit) {
   if (!hasFeature("UnitInfo"))
     return false
   if (hasFeature("WikiUnitInfo"))
-    return true // Because there is link to wiki.
+    return true 
   let desc = unit ? loc($"encyclopedia/{unit.name}/desc", "") : ""
   return desc != "" && desc != loc("encyclopedia/no_unit_description")
 }
 
-/**
- * Returns true if unit can be installed in slotbar,
- * unit can be decorated with decals, etc...
- */
+
+
+
+
 function isUnitUsable(unit) {
   return unit ? unit.isUsable() : false
 }
@@ -195,7 +195,7 @@ function isUnitAvailableForGM(air, gm) {
   if (air == null || !air.unitType.isAvailable())
     return false
   if (gm == GM_TEST_FLIGHT)
-    return air.testFlight != "" || air.isAir() || air.isHelicopter() //For airplanes and helicopters is enable universal testflight
+    return air.testFlight != "" || air.isAir() || air.isHelicopter() 
   if (gm == GM_DYNAMIC)
     return air.isAir()
   if (gm == GM_BUILDER)

@@ -6,14 +6,14 @@ local backgroundColor = Color(0, 0, 0, 75)
 local greenColorGrid = Color(10, 202, 10, 200)
 local targetSectorColor = Color(10, 40, 10, 200)
 local fontOutlineFxFactor = max(70, hdpx(90))
-local hudFontHgt = hdpx(getFontDefHt("hud")) //currently equals to hdpx(20), but it doesnt that important
+local hudFontHgt = hdpx(getFontDefHt("hud")) 
 
 local blueHex = 0xFF
 local greenHex = 0xFF00
 local redHex = 0xFF0000
 local alphaHex = 0xFF000000
 
-// some element doesn't appear clear in black => use white
+
 let isDarkColor = memoize(function(color) {
   let sumOfRGB = (color & blueHex) + ((color & greenHex) >> 8) + ((color & redHex) >> 16)
   return sumOfRGB < 100
@@ -35,7 +35,7 @@ function mixColor(colorA, colorB, mixValue) {
     (colorA & alphaHex) >> 24)
 }
 
-//used for aircraft turret Sight turret/fixedGun overheat/jam and fixed gun overheat / AAM tracker SNR
+
 function relativCircle(percent, circleSize) {
   if (percent >= 0.99999999)
     return [ [VECTOR_ELLIPSE, 0, 0, circleSize * 1.3, circleSize * 1.3] ]

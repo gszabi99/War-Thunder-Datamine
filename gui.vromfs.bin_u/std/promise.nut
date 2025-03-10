@@ -1,7 +1,7 @@
-/*
-  Promise
-  copypasted from some JS code
-*/
+
+
+
+
 
 const P_PENDING = "pending"
 const P_FULFILLED = "fulfilled"
@@ -52,7 +52,7 @@ Promise = class {
 
   function then(onFulfilled, onRejected=@(...) null) {
       let state = this._state
-      return Promise(function(resolve, reject) { // -disable-warning: -ident-hides-ident
+      return Promise(function(resolve, reject) { 
           if (state.status == P_PENDING) {
               state.onFulfilledCallbacks.append(function() {
                   try {

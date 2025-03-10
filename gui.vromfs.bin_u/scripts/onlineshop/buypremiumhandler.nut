@@ -4,13 +4,11 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
-let { utf8ToUpper } = require("%sqstd/string.nut")
-let { format } = require("string")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getEntitlementDescription, getEntitlementName, getPricePerEntitlement,
-  getEntitlementAmount } = require("%scripts/onlineShop/entitlements.nut")
+  getEntitlementAmount, getEntitlementFullTimeText } = require("%scripts/onlineShop/entitlements.nut")
 let time = require("%scripts/time.nut")
 let { Cost } = require("%scripts/money.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -42,7 +40,6 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     )
     this.reinitScreen()
     this.scene.findObject("premiumTimer").setUserData(this)
-    this.scene.findObject("premiumText").setValue(utf8ToUpper(loc("charServer/entitlement/PremiumAccount")))
   }
 
   function reinitScreen() {
@@ -93,7 +90,8 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         name = item.name
         digits
         premiumCost = Cost(0, item.goldCost)
-        savings = (item.savings > 0) ? format(loc("charServer/entitlement/discount"), item.savings) : ""
+        savings = (item.savings > 0) ? loc("charServer/entitlement/discount/short", { savings = item.savings }) : ""
+        days = getEntitlementFullTimeText(item)
       }
     })
 

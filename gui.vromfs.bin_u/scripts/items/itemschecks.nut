@@ -18,7 +18,7 @@ function isItemVisible(item, shopTab) {
     : false
 }
 
-// Returns a mask for items, showing only the available features.
+
 function checkItemsMaskFeatures(itemsMask) {
   foreach (iType, feature in itemTypeFeatures)
     if ((itemsMask & iType) && !hasFeature(feature))

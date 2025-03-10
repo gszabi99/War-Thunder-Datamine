@@ -65,7 +65,7 @@ enumsAddTypes(g_mp_chat_mode, {
       && !::isPlayerDedicatedSpectator()
   }
 
-  PRIVATE = { //dosnt work atm, but still exist in enum
+  PRIVATE = { 
     id = CHAT_MODE_PRIVATE
     name = "private"
     sortOrder = mpChatModeSort.PRIVATE

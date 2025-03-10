@@ -218,8 +218,8 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     if (!checkObj(listObj))
       return
 
-    //"-1", "+1" cos value is what we get from dropright, 0 is not recognized axis there,
-    // but we have 0 axis
+    
+    
 
     if (listObj.getValue() - 1 == this.bindAxisNum)
       return
@@ -276,14 +276,14 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
       return
 
     local foundAxis = -1
-    local deviation = 12000 //foundedAxis deviation, cant be lower than a initial value
+    local deviation = 12000 
     let totalAxes = curDevice.getNumAxes()
 
     for (local i = 0; i < totalAxes; i++) {
       let rawValues = this.getAxisRawValues(curDevice, i)
       let rawPos = curDevice.getAxisPosRaw(i)
       if (!rawValues.inited && rawPos != 0) {
-        rawValues.def = rawPos //reinit
+        rawValues.def = rawPos 
         rawValues.inited = true
       }
       let dPos = rawPos - rawValues.def
@@ -292,10 +292,10 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
         foundAxis = i
         deviation = abs(dPos)
 
-        if (fabs(rawPos - rawValues.last) < 1000) {  //check stucked axes
+        if (fabs(rawPos - rawValues.last) < 1000) {  
           rawValues.stuckTime += dt
           if (rawValues.stuckTime > 3.0)
-            rawValues.def = rawPos //change cur value to def becoase of stucked
+            rawValues.def = rawPos 
         }
         else {
           rawValues.last = rawPos
@@ -312,7 +312,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     if (this.bindAxisNum < 0)
       return
 
-    //!!FIX ME: Have to adjust the code below taking values from the table and only when they change
+    
     local val = curDevice.getAxisPosRaw(this.bindAxisNum) / 32000.0
 
     let isInv = this.scene.findObject("invertAxis").getValue()

@@ -45,10 +45,10 @@ let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
 let { getSessionLobbyMissionNameLoc, getRoomRequiredCrafts, getRoomMGameMode, getMembersCountByTeams
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
-enum eRoomFlags { //bit enum. sorted by priority
-  CAN_JOIN              = 0x8000 //set by CAN_JOIN_MASK, used for sorting
+enum eRoomFlags { 
+  CAN_JOIN              = 0x8000 
 
-  ROOM_TIER             = 0x4000 //5 bits to room tier. used only to sort rooms
+  ROOM_TIER             = 0x4000 
 
   AVAILABLE_FOR_SQUAD   = 0x0100
   HAS_PLACES            = 0x0080
@@ -56,17 +56,17 @@ enum eRoomFlags { //bit enum. sorted by priority
 
   HAS_COUNTRY           = 0x0020
   HAS_UNIT_MATCH_RULES  = 0x0010
-  HAS_AVAILABLE_UNITS   = 0x0008 //has available unis by game mode without checking room rules
+  HAS_AVAILABLE_UNITS   = 0x0008 
   HAS_REQUIRED_UNIT     = 0x0004
   IS_ALLOWED_BY_BALANCE = 0x0002
 
-  //masks
+  
   NONE                  = 0x0000
   CAN_JOIN_MASK         = 0x00FE
   ALL                   = 0xFFFF
 }
 
-const EROOM_FLAGS_KEY_NAME = "_flags" //added to room root params for faster sort.
+const EROOM_FLAGS_KEY_NAME = "_flags" 
 const NOTICEABLE_RESPONCE_DELAY_TIME_MS = 250
 
 gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -542,7 +542,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function generateChapters(roomsList) {
     this.updateChaptersTree(roomsList)
 
-    this.selectedIdx = 1 //select first room by default
+    this.selectedIdx = 1 
     let view = { items = [] }
 
     foreach (_idx, chapter in this.chaptersTree) {
@@ -678,7 +678,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(false, false)
     for (local i = 0; i < this.roomsListObj.childrenCount(); i++) {
       let obj = this.roomsListObj.getChild(i)
-      if (obj.id == itemName) { //is chapter block, can collapse
+      if (obj.id == itemName) { 
         this.updateCollapseChapterStatus(obj)
         newValue = i
         continue
@@ -715,7 +715,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   _isDelayedCrewchangedStarted = false
   function onEventCrewChanged(_p) {
-    if (this._isDelayedCrewchangedStarted) //!!FIX ME: need to solve multiple CrewChanged events after change preset
+    if (this._isDelayedCrewchangedStarted) 
       return
     this._isDelayedCrewchangedStarted = true
     this.guiScene.performDelayed(this, function() {
@@ -732,7 +732,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventEventsDataUpdated(_p) {
-    //is event still exist
+    
     if (events.getEventByEconomicName(getEventEconomicName(this.event)))
       return
 

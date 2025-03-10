@@ -46,7 +46,7 @@ function getCombineLocNameMission(missionInfo) {
     }
   }
 
-  //we dont have lang and postfix
+  
   if (locName == "")
     locName = $"missions/{misInfoName}"
   return locName

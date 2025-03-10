@@ -46,7 +46,7 @@ let canExchangeItem = @(passExchangeItem) (passExchangeItem?.canReceivePrize() ?
 let findExchangeItem = @(battlePassUnlockExchangeId) findItemById(
   to_integer_safe(battlePassUnlockExchangeId ?? -1, battlePassUnlockExchangeId ?? -1, false))
 
-//do not update anything in battle or profile not recived, as it can be time consuming and not needed in battle anyway
+
 let canUpdateConfig = Computed(@() isProfileReceived.value && !isInBattleState.value)
 
 let seasonShopConfig = Computed(function(prev) {
@@ -55,8 +55,8 @@ let seasonShopConfig = Computed(function(prev) {
   else if (prev == FRP_INITIAL && !canUpdateConfig.value)
     return {}
 
-  let checkItemsShopListVersion = itemsShopListVersion.value // -declared-never-used
-  let checkInventoryListVersion = inventoryListVersion.value // -declared-never-used
+  let checkItemsShopListVersion = itemsShopListVersion.value 
+  let checkInventoryListVersion = inventoryListVersion.value 
   return {
     purchaseWndItems = battlePassShopConfig.value ?? []
     seasonId = season.value
@@ -218,7 +218,7 @@ local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
     markRowsSeen()
   }
 
-  function disableBattlePassRows() { //disable battle pass buy button
+  function disableBattlePassRows() { 
     let listObj = this.scene.findObject("items_list")
     if (!listObj?.isValid())
       return
@@ -295,7 +295,7 @@ local BattlePassShopWnd = class (gui_handlers.BaseGuiHandlerWT) {
       isBought = this.isGoodsBought(goodsConfig)
       isDisabled = isBought
       if (hasAdditionalTrophyItem)
-        isBought = isBought && !additionalTrophyItem.canBuyTrophyByLimit() //trophy of improved battle pass is already buy
+        isBought = isBought && !additionalTrophyItem.canBuyTrophyByLimit() 
       if (battlePassUnlock != null)
         cost = cost + getUnlockCost(battlePassUnlock.id)
       seenRowName = $"{passExchangeItem?.id ?? battlePassUnlock?.id ?? ""}_{additionalTrophyItems?[0].id ?? ""}"

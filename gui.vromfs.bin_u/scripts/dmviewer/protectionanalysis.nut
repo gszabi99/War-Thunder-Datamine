@@ -84,7 +84,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.hintHandler = protectionAnalysisHint.open(this.scene.findObject("hint_scene"))
     this.registerSubHandler(this.hintHandler)
 
-    switch_damage = true //value is off by default it will be changed in AllowSimulation
+    switch_damage = true 
     allow_cutting = false
     explosionTest = false
 
@@ -99,7 +99,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     if (isShowProtectionMapOptions) {
       let value = loadLocalAccountSettings(CB_VERTICAL_ANGLE, true)
       cbVerticalAngleObj.setValue(value)
-      if (!value) //Need change because y_nulling value is true by default
+      if (!value) 
         set_protection_map_y_nulling(!value)
     }
 
@@ -212,7 +212,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!showHints || !checkObj(hObj))
       return
 
-    //hint for simulate shot
+    
     let showHint = hasFeature("HangarHitcamera")
     let bObj = showObjById("analysis_hint_shot", showHint, this.scene)
     if (showHint && checkObj(bObj)) {

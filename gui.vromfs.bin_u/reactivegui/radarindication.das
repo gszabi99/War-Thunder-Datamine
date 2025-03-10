@@ -122,3 +122,12 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
 
     if target.hasAimPos
       ctx |> render_ellipse_aa(target.aimPos, float2(targetOnScreenWidth * 0.25), ctx |> hdpx(4.), e3dColor, transparentColor)
+
+    let idText = loc(target.id)
+    if idText != ""
+      let idStrBox = get_str_bbox(idText, idText |> length(), fctx)
+      ctx |> goto_xy(target.pos.x - 0.5 * idStrBox.width.x, target.pos.y - 0.5 * targetOnScreenWidth + ctx |> hdpx(5.) - idStrBox.width.y)
+      ctx |> set_font(data.fontId, 0, 0)
+      ctx |> set_font_ht(data.fontSize);
+      ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
+      ctx |> draw_str_scaled(1.0, idText, idText |> length())

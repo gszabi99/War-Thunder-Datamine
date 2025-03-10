@@ -273,25 +273,25 @@
       "maxDistance": 7500.0,
       "explosiveType": "petn",
       "explosiveMass": 0.0052,
-      "normalizationPreset": "ap",
-      "ricochetPreset": "ap",
-      "groundRicochetPreset": "ap_ground",
+      "normalizationPreset": "heat",
+      "ricochetPreset": "he",
+      "groundRicochetPreset": "he_small_caliber_ground",
       "secondaryShattersPreset": "ap",
-      "stabilityThreshold": 0.05,
+      "stabilityThreshold": 0.5,
       "stabilityCaliberToArmorThreshold": 5.0,
-      "stabilityReductionAfterRicochet": 0.5,
+      "stabilityReductionAfterRicochet": 0.3,
       "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "aphe_t",
+      "bulletType": "sap_hei_t",
       "slopeEffectPreset": "ap",
       "fresnel": [
         0.23,
         0.1,
         2.0
       ],
-      "shellAnimation": "video/shells_animations/aphe_t_shell.ivf",
-      "explodeTreshold": 3.0,
-      "fuseDelayDist": 1.5,
-      "checkIntegrityAfterExplosion": true,
+      "explodeOnRendinst": true,
+      "shellAnimation": "video/shells_animations/sapi_shell.ivf",
+      "explodeTreshold": 1.0,
+      "fuseDelayDist": 0.2,
       "relativeVelHitShift": [
         [
           300.0,
@@ -320,71 +320,24 @@
       "stabilityRicochetModifier": {
         "mod1": [
           0.0,
-          0.05
+          0.5
         ],
         "mod2": [
-          20.0,
-          0.1
+          15.0,
+          0.7
         ],
         "mod3": [
-          [
-            30.0,
-            0.2
-          ],
-          [
-            45.0,
-            0.3
-          ]
+          30.0,
+          0.99
         ]
       },
       "damage": {
         "kinetic": {
           "damageType": "generic",
-          "demarrePenetrationK": 0.9,
+          "demarrePenetrationK": 0.52,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
-        }
-      },
-      "testProperties": {
-        "checkIntegrityAfterExplosion": true,
-        "damage": {
-          "shatter": {
-            "useRealShatters": true,
-            "countPortion": 0.6,
-            "segment": [
-              {
-                "radiusScale": 1.0,
-                "penetrationScale": 0.75,
-                "damageScale": 1.5,
-                "angles": [
-                  0.0,
-                  180.0
-                ],
-                "countPortion": 0.4
-              },
-              {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.75,
-                "angles": [
-                  45.0,
-                  105.0
-                ],
-                "countPortion": 0.5
-              },
-              {
-                "radiusScale": 1.0,
-                "penetrationScale": 1.0,
-                "damageScale": 1.5,
-                "angles": [
-                  130.0,
-                  180.0
-                ],
-                "countPortion": 0.1
-              }
-            ]
-          }
         }
       },
       "hitpower": {
@@ -1745,25 +1698,25 @@
         "maxDistance": 7500.0,
         "explosiveType": "petn",
         "explosiveMass": 0.0052,
-        "normalizationPreset": "ap",
-        "ricochetPreset": "ap",
-        "groundRicochetPreset": "ap_ground",
+        "normalizationPreset": "heat",
+        "ricochetPreset": "he",
+        "groundRicochetPreset": "he_small_caliber_ground",
         "secondaryShattersPreset": "ap",
-        "stabilityThreshold": 0.05,
+        "stabilityThreshold": 0.5,
         "stabilityCaliberToArmorThreshold": 5.0,
-        "stabilityReductionAfterRicochet": 0.5,
+        "stabilityReductionAfterRicochet": 0.3,
         "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "aphe_t",
+        "bulletType": "sap_hei_t",
         "slopeEffectPreset": "ap",
         "fresnel": [
           0.23,
           0.1,
           2.0
         ],
-        "shellAnimation": "video/shells_animations/aphe_t_shell.ivf",
-        "explodeTreshold": 3.0,
-        "fuseDelayDist": 1.5,
-        "checkIntegrityAfterExplosion": true,
+        "explodeOnRendinst": true,
+        "shellAnimation": "video/shells_animations/sapi_shell.ivf",
+        "explodeTreshold": 1.0,
+        "fuseDelayDist": 0.2,
         "relativeVelHitShift": [
           [
             300.0,
@@ -1792,71 +1745,24 @@
         "stabilityRicochetModifier": {
           "mod1": [
             0.0,
-            0.05
+            0.5
           ],
           "mod2": [
-            20.0,
-            0.1
+            15.0,
+            0.7
           ],
           "mod3": [
-            [
-              30.0,
-              0.2
-            ],
-            [
-              45.0,
-              0.3
-            ]
+            30.0,
+            0.99
           ]
         },
         "damage": {
           "kinetic": {
             "damageType": "generic",
-            "demarrePenetrationK": 0.9,
+            "demarrePenetrationK": 0.52,
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
-          }
-        },
-        "testProperties": {
-          "checkIntegrityAfterExplosion": true,
-          "damage": {
-            "shatter": {
-              "useRealShatters": true,
-              "countPortion": 0.6,
-              "segment": [
-                {
-                  "radiusScale": 1.0,
-                  "penetrationScale": 0.75,
-                  "damageScale": 1.5,
-                  "angles": [
-                    0.0,
-                    180.0
-                  ],
-                  "countPortion": 0.4
-                },
-                {
-                  "radiusScale": 1.0,
-                  "penetrationScale": 1.0,
-                  "damageScale": 1.75,
-                  "angles": [
-                    45.0,
-                    105.0
-                  ],
-                  "countPortion": 0.5
-                },
-                {
-                  "radiusScale": 1.0,
-                  "penetrationScale": 1.0,
-                  "damageScale": 1.5,
-                  "angles": [
-                    130.0,
-                    180.0
-                  ],
-                  "countPortion": 0.1
-                }
-              ]
-            }
           }
         },
         "hitpower": {

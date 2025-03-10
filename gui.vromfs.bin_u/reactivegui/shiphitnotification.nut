@@ -8,16 +8,16 @@ let { shipHitIconsVisibilityStateFlags } = require("options/options.nut")
 let { ShipHitIconId, ShipHitIconVisibilityMask,
   IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
 
-// behavior
+
 const SHOW_RESET_DEFAULT_DURATION = 10
 const DEFAULT_ICON_SIZE = 40
 const DEFAULT_ICON_FONT = "very_tiny_text_hud"
 
-// hit indicators animation props
+
 const ICONHIT_MAX_SCALE = 1.25
 const ICONHIT_SHOW_TIME = 0.2
 
-// hit indicators box animation props
+
 const HITBOX_FADE_OUT_TIME = 1
 
 function mkAppearAnim(trigger) {
@@ -104,7 +104,7 @@ function mkIcon(baseCfg, iconCfg, watched) {
 }
 
 
-// configuration
+
 local scriptConfig = null
 
 function readIconConfig(baseCfg, iconBlk, ico, watched, params) {
@@ -280,7 +280,7 @@ let hitNotifications = function() {
       }
     ]
   }
-    // centered in case if hit cam is not available
+    
   if (!alignHitCamera || !isHitcamSet.get()) {
     return res.__merge({
       hplace = ALIGN_CENTER

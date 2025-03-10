@@ -42,12 +42,12 @@ function setColoredDoubleTextToButton(nestObj, btnId, coloredText) {
   return setDoubleTextToButton(nestObj, btnId, removeTextareaTags(coloredText), coloredText)
 }
 
-//instead of wpCost you can use direc Cost  (instance of money)
 
-/**
- * placePriceTextToButton(nestObj, btnId, localizedText, wpCost (int), goldCost (int))
- * placePriceTextToButton(nestObj, btnId, localizedText, cost (Cost) )
- */
+
+
+
+
+
 function placePriceTextToButton(nestObj, btnId, localizedText, arg1 = 0, arg2 = 0, fullCost = null, viewParams = {}) {
   let { textColor = "", priceTextColor = "" }  = viewParams
   let cost = u.isMoney(arg1) ? arg1 : Cost(arg1, arg2)

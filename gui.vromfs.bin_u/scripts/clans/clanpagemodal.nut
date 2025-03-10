@@ -249,7 +249,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.scene.findObject("nest_lock_clan_req").clan_locked = !clanMembershipAcceptance.getValue(this.clanData) ? "yes" : "no"
 
-        // Showing clan name in special header object if possible.
+        
     let clanName = $"{this.clanData.tag} {this.clanData.name}"
     let headerTextObj = this.scene.findObject("clan_page_header_text")
     let clanTitleObj = this.scene.findObject("clan-title")
@@ -587,7 +587,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     local rowIdx = 0
     local rowBlock = ""
     let rowHeader = [{ width = "0.25pw" }]
-    /*header*/
+    
     foreach (item in clan_data_list) {
       rowHeader.append({
                        image = $"#ui/gameuiskin#lb_{item.id}.svg"
@@ -601,7 +601,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       "class:t='smallIconsStyle'; background-color:t='@separatorBlockColor'"))
     rowIdx++
 
-    /*body*/
+    
     foreach (diff in g_difficulty.types) {
       if (!diff.isAvailable() || !getShowInSquadronStatistics(diff))
         continue
@@ -632,7 +632,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function fillClanWwMemberList() {
     if (this.curWwMembers == null)
-      this.updateCurWwMembers() //fill default wwMembers list
+      this.updateCurWwMembers() 
     this.lbTableWeak.updateParams(
       leaderboardModel,
       ::ww_leaderboards_list,
@@ -674,9 +674,9 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
         active   = this.isSortByColumn(column.id)
         tooltip  = column?.getTooltipText(this.clanData?.historyDepth.tostring()) ?? column.tooltip
       }
-      // It is important to set width to
-      // all rows if column has fixed width.
-      // Next two lines fix table layout issue.
+      
+      
+      
       if (column?.iconStyle ?? false)
         rowData.width <- "0.01@sf"
       headerRow.append(rowData)
@@ -909,7 +909,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(obj))
       return
 
-    let dataIdx = obj.getValue() - 1 // skiping header row
+    let dataIdx = obj.getValue() - 1 
     this.onSelectedPlayerIdx(dataIdx)
   }
 

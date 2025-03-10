@@ -5,7 +5,7 @@ let { InputBase } = require("%scripts/controls/input/inputBase.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 
 let DoubleAxis = class (InputBase) {
-  //bit mask array of axis ids from JoystickParams().getAxis()
+  
   axisIds = null
 
   deviceId = null

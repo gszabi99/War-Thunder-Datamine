@@ -19,7 +19,7 @@ function bitMaskToSstring(enumTable, mask) {
   foreach (constName, constVal in enumTable)
     if (stdMath.number_of_set_bits(constVal) == 1 && (constVal & mask)) {
       res += (res.len() ? " | " : "") + constName
-      mask = mask & ~constVal //ignore duplicates
+      mask = mask & ~constVal 
     }
   return res
 }

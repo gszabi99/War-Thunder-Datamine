@@ -11,11 +11,11 @@ let sensorViewIndicatorsDas = {
   backColor = Color(0, 0, 0, 255)
   fontSize = 14
 }
-/*
-let sensorViewIndicators = {
-  size = flex()
-  rendObj = ROBJ_SENSOR_VIEW_INDICATORS
-  fontSize = 14
-}
-*/
+
+
+
+
+
+
+
 return sensorViewIndicatorsDas

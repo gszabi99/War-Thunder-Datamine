@@ -37,7 +37,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function initScreen() {
     if (!this.curPage || !this.crew) {
-      this.scene = null //make handler invalid to unsubscribe from events.
+      this.scene = null 
       script_net_assert_once("failed load crewSkillsPage", format("Error: try to init CrewSkillsPageHandler without page data (%s) or crew (%s)",
                                    toString(this.curPage), toString(this.crew)))
       return
@@ -167,7 +167,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isRecrutedCurCrew())
       return
 
-    let row = getCrewButtonRow(obj, this.scene, this.scene) // -param-pos
+    let row = getCrewButtonRow(obj, this.scene, this.scene) 
     if (this.curPage.items.len() > 0 && (!this.repeatButton || isRepeat)) {
       let item = this.curPage.items[row]
       let value = getCrewSkillValue(this.crew.id, this.unit, this.curPage.id, item.name)
@@ -210,7 +210,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onButtonMax(_obj) {
-    // onProgressButton(obj, true, true)
+    
   }
 
   function getSkillMaxAvailable(skillItem) {
@@ -231,7 +231,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
     if (this.pageOnInit || !obj || !this.isRecrutedCurCrew())
       return
 
-    let row = getCrewButtonRow(obj, this.scene, this.scene) // -param-pos
+    let row = getCrewButtonRow(obj, this.scene, this.scene) 
     if (this.curPage.items.len() == 0)
       return
 
@@ -269,7 +269,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
   function askBuySkills() {
     this.needAskBuySkills = false
 
-    // Duplicate check.
+    
     if (checkObj(this.guiScene["buySkillPoints"]))
       return
 
@@ -280,7 +280,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
     local defaultButton = "ok"
     if (spendGold) {
       text = "\n".concat(text, loc("shop/purchaseMoreSkillPoints"))
-      buttonsArray.insert(0, ["yes", (@(crew) function() { createCrewBuyPointsHandler(crew) })(this.crew)]) //-ident-hides-ident
+      buttonsArray.insert(0, ["yes", (@(crew) function() { createCrewBuyPointsHandler(crew) })(this.crew)]) 
       defaultButton = "yes"
     }
     this.msgBox("buySkillPoints", text, buttonsArray, defaultButton)
@@ -385,7 +385,7 @@ local class CrewSkillsPageHandler (gui_handlers.BaseGuiHandlerWT) {
       id = specType.code
       icon = icon
       enable = isEnabled ? "yes" : "no"
-      display = (icon != "") ? "show" : "none" //"none" - hide but not affect button place
+      display = (icon != "") ? "show" : "none" 
       isExpertSpecType
       bars = array(barsCount)
       barsCount

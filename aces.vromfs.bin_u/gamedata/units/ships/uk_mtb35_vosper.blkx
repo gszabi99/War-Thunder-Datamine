@@ -4171,8 +4171,8 @@
         "useEmitter": true,
         "barrelDP": "main_caliber_gun_01_dm",
         "breechDP": "main_caliber_gun_01_dm",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
+        "defaultYaw": 180.0,
+        "defaultPitch": 20.0,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -4258,8 +4258,8 @@
         "useEmitter": true,
         "barrelDP": "main_caliber_gun_01_dm",
         "breechDP": "main_caliber_gun_01_dm",
-        "defaultYaw": 0.0,
-        "defaultPitch": 0.0,
+        "defaultYaw": 180.0,
+        "defaultPitch": 20.0,
         "allowableDelta": 2.0,
         "ChainfireTime": 60.0,
         "DelayAfterShoot": 0.0,
@@ -4371,10 +4371,7 @@
       "prevModification": "12mm_vickers_mk5_navy_HEI_ammo_pack"
     },
     "ship_torpedoes": {},
-    "new_aux_caliber_turrets": {},
-    "new_main_caliber_turrets": {
-      "prevModification": "new_aux_caliber_turrets"
-    },
+    "new_main_caliber_turrets": {},
     "ship_main_caliber_support": {},
     "torpedoes_movement_mode": {
       "effects": {
@@ -4388,7 +4385,7 @@
   },
   "ammoStowages": {
     "ammo1": {
-      "weaponTrigger": "gunner1",
+      "weaponTrigger": "gunner0",
       "shells": {
         "fatalFire": true,
         "fatalExplosion": true,
@@ -4412,13 +4409,13 @@
         "collisionNode": "tt_02_dm"
       },
       {
-        "node": "auxiliary_caliber_turret_01",
+        "node": "main_caliber_turret_01",
         "idx": 2,
         "mass": 1000.0,
         "cutDamage": 350.0,
         "deviation": 0.6,
         "rotation": 2.1,
-        "collisionNode": "auxiliary_caliber_turret_01_dm"
+        "collisionNode": "main_caliber_turret_01_dm"
       },
       {
         "node": "mast_02",

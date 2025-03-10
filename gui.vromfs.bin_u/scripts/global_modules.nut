@@ -1,12 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 
-/** (anti)pattern service locator. We need it to avoid circullar dependecies.
-  used for forward declaration.
-  The main improvemetn is that you can verify that module can be defined only once
-  usage:
-    let {getGlobalModule} = require("%scripts/global_modules.nut")
-    let g_squad_manager = getGlobalModule("g_squad_manager")
-*/
+
+
+
+
+
+
+
 
 let services = {}
 let lateBindings = {}

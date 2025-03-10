@@ -476,7 +476,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventWWStopWorldWar(_p) {
     if (!isProfileReceived.get())
-      return // to avoid MainMenu initialization during logout stage
+      return 
 
     this.goBack()
     if (g_squad_manager.isSquadMember() && g_squad_manager.isMeReady())
@@ -647,7 +647,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
           local strenght = getTblValue(wwUnit.stengthGroupExpClass, armyStrengthsTable)
           if (!strenght) {
             strenght = {
-              unitIcon = wwUnit.getWwUnitClassIco()
+              unitIcon = wwUnit.getUnitTypeOrClassIcon()
               unitName = wwUnit.getUnitStrengthGroupTypeText()
               shopItemType = wwUnit.getUnitRole()
               count = 0

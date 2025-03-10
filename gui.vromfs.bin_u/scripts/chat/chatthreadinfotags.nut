@@ -24,8 +24,8 @@ g_chat_thread_tag._getTagStringBoolForBoolTag <- function _getTagStringBoolForBo
 g_chat_thread_tag.template <- {
   prefix = ""
   threadInfoParamName = null
-  isRegular = true //regular tags are converted direct to threadInfo params.
-  isReadOnly = false //do not send this tag on modify tags
+  isRegular = true 
+  isReadOnly = false 
 
   checkTag = function(tag) {
     return startsWith(tag, this.prefix)
@@ -123,7 +123,7 @@ enumsAddTypes(g_chat_thread_tag, {
       threadInfo[this.threadInfoParamName].clear()
     }
     setThreadInfoProperty = function(threadInfo, valueString) {
-      threadInfo[this.threadInfoParamName].insert(0, valueString) //tags checked in inverted order
+      threadInfo[this.threadInfoParamName].insert(0, valueString) 
     }
     getTagString = function(threadInfo) {
       threadInfo.sortLangList()

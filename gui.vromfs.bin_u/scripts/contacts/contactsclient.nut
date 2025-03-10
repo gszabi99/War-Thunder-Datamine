@@ -91,7 +91,7 @@ function perform_contact_action(action, request, params) {
     if (subResult != null)
       result = subResult
 
-    // Failure only if its explicitly defined in result
+    
     if ("success" in result && !result.success) {
       if (typeof onFailureCb == "function") {
         onFailureCb(result?.error)
@@ -196,7 +196,7 @@ let contactsClient = {
 
 }
 
-// console commands
+
 function contacts_get() {
   contacts_request_rpcjson("GetContacts",  { groups = [GAME_GROUP_NAME] }
     @(result) logC("GetContacts", result))

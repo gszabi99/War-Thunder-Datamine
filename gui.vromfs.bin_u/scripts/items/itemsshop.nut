@@ -79,10 +79,10 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/items/itemsShop.blk"
   shouldBlurSceneBgFn = needUseHangarDof
 
-  curTab = 0 //first itemsTab
-  visibleTabs = null //[]
+  curTab = 0 
+  visibleTabs = null 
   curSheet = null
-  curItem = null //last selected item to restore selection after change list
+  curItem = null 
   hoverHoldAction = null
 
   tabHasChanged = false
@@ -107,7 +107,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   headerOffsetX = null
   isNavCollapsed = false
 
-  // Used to avoid expensive get...List and further sort.
+  
   itemsListValid = false
   infoHandler = null
   isMouseMode = true
@@ -141,7 +141,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       this.curTab = 0
 
     this.curSheet = sheetData ? sheetData.sheet
-      : this.curSheet ? sheets.findSheet(this.curSheet, sheets.ALL) //it can be simple table, need to find real sheeet by it
+      : this.curSheet ? sheets.findSheet(this.curSheet, sheets.ALL) 
       : this.sheetsArray.findvalue((@(s) s.isEnabled(this.curTab)).bindenv(this))
     this.initSubsetId = sheetData ? sheetData.subsetId : this.initSubsetId
 
@@ -153,8 +153,8 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.hoverHoldAction = mkHoverHoldAction(this.scene.findObject("hover_hold_timer"))
 
-    // If items shop was opened not in menu - player should not
-    // be able to navigate through sheets and tabs.
+    
+    
     let checkIsInMenu = isInMenu() || hasFeature("devItemShop")
     let checkEnableShop = checkIsInMenu && hasFeature("ItemsShop")
     if (!checkEnableShop)
@@ -206,7 +206,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!newSheet)
       return
 
-    this.isItemTypeChangeUpdate = true  //No need update item when fill subset if changed item type
+    this.isItemTypeChangeUpdate = true  
     this.curSheet = newSheet
     this.itemsListValid = false
 
@@ -230,7 +230,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let subsetId = this.curSubsetId
     this.navigationHandlerWeak.onCollapse(collapseBtnObj)
     if (collapseBtnObj.getParent().collapsed == "no")
-      this.getSheetsListObj().setValue( //set selection on chapter item if not found item with subsetId just in case to avoid crash
+      this.getSheetsListObj().setValue( 
         u.search(this.navItems, @(item) item?.subsetId == subsetId)?.idx ?? obj.idx)
   }
 
@@ -318,17 +318,17 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateSheets(resetPage = true) {
-    this.isSheetsInUpdate = true //there can be multiple sheets changed on switch tab, so no need to update items several times.
+    this.isSheetsInUpdate = true 
     this.guiScene.setUpdatesEnabled(false, false)
     this.initSheetsOnce()
 
-    let typesObj = this.getSheetsListObj() //!!FIX ME: Why we use object from navigation panel here?
+    let typesObj = this.getSheetsListObj() 
     let seenListId = getSeenIdByTabIdx(this.curTab)
     local curValue = -1
     let childsTotal = typesObj.childrenCount()
 
     if (childsTotal < this.navItems.len()) {
-      let navItemsTotal = this.navItems.len() // warning disable: -declared-never-used
+      let navItemsTotal = this.navItems.len() 
       script_net_assert_once("Bad count on update unseen tabs",
         "ItemsShop: Not all sheets exist on update sheets list unseen icon")
     }
@@ -407,7 +407,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (this.isInRecyclingTab()) {
       let createItemsDescObj = this.scene.findObject("create_items_desc_with_count_txt")
-      if (createItemsDescObj.getValue() == "") // If the text is empty, we set it to some default so the recycling_controls block can get proper initial size.
+      if (createItemsDescObj.getValue() == "") 
         createItemsDescObj.setValue(loc("items/recycling/descWithNumberOfRecycledItems",
           { unusedItemsCount = 0, maxNewItemsCount = 0 }))
 
@@ -539,7 +539,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       this.updateItemInfo()
 
     generatePaginator(this.scene.findObject("paginator_place"), this,
-      this.curPage, ceil(this.itemsList.len().tofloat() / this.itemsPerPage) - 1, null, true /*show last page*/ )
+      this.curPage, ceil(this.itemsList.len().tofloat() / this.itemsPerPage) - 1, null, true  )
 
     if (!this.itemsList.len())
       this.focusSheetsList()
@@ -549,7 +549,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       this.updateCreateNewItemsTxtAndControls()
       this.updateRecycleButton()
       this.updateItemsToRecycleSliders()
-      listObj.isSkipMoving = "yes" // Allows selecting the embedded item's slider with the dirpad
+      listObj.isSkipMoving = "yes" 
     } else {
       this.recycler = null
       listObj.isSkipMoving = "no"
@@ -718,7 +718,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
         this.startCraftTutorial(curSet, tutorialItem, craftTreeBtnObj)
     }
 
-    if (!this.updateButtonsBar()) //buttons below are hidden if item action bar is hidden
+    if (!this.updateButtonsBar()) 
       return
 
     let buttonObj = showObjById("btn_main_action", showMainAction, this.scene)
@@ -893,9 +893,9 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let item = this.itemsList?[id]
     let obj = this.scene.findObject($"shop_item_{id}")
 
-    // Need to change list object current index because of
-    // we can click on action button in non selected item
-    // and wrong item will be updated after main action
+    
+    
+    
     let listObj = this.getItemsListObj()
     if (listObj.getValue() != id && id >= 0 && id < listObj.childrenCount())
       listObj.setValue(id)
@@ -1027,10 +1027,10 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     return this.scene.findObject("nav_list")
   }
 
-  /**
-   * Returns all the data required to restore current window state:
-   * curSheet, curTab, selected item, etc...
-   */
+  
+
+
+
   function getHandlerRestoreData() {
     let data = {
       openData = {
@@ -1046,9 +1046,9 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     return data
   }
 
-  /**
-   * Returns -1 if item was not found.
-   */
+  
+
+
   function getItemIndexById(itemId) {
     foreach (itemIndex, item in this.itemsList) {
       if (item.id == itemId)
@@ -1123,7 +1123,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     this.doWhenActiveOnce("updateInventoryItemsList")
   }
 
-  //dependence by blk
+  
   onChangeSortOrder = @(_obj) null
   onChangeSortParam = @(_obj) null
   onShowBattlePass = @(_obj) null
