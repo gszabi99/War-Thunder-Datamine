@@ -13,10 +13,10 @@ require daslib/macro_boost
 require daslib/strings_boost
 require daslib/defer
 
-/*
-options debugger
-require daslib/debug
-*/
+
+
+
+
 
 let LOG_MATCH = false
 
@@ -41,7 +41,7 @@ def log_m(msg : string) {
 }
 
 [macro_function]
-def match_error(var errors : array<MatchError>; msg : string; at : LineInfo) {// !!!do not put access.at in there
+def match_error(var errors : array<MatchError>; msg : string; at : LineInfo) {
     errors |> push(MatchError(msg = msg, at = unsafe(addr(at))))
 }
 
@@ -101,12 +101,12 @@ def match_copy(what : TypeDeclPtr; wths : Expression?; makeType : TypeDeclPtr; a
 
 [macro_function]
 def match_struct(what : TypeDeclPtr; wths : ExprMakeStruct?; access : ExpressionPtr; var to : MatchTo) {
-    // if its a pointer to ast::Expression or such, we need to 'as' cast first
+    
     if (wths.makeType.isHandle && isExpression(wths.makeType)
             && what.isPointer && what.firstType != null && isExpression(what.firstType)) {
         return match_as_is(what, wths, wths.makeType,  wths.makeType.annotation.name, access, to)
     }
-    // if its pointer to structure, automatically dereference it
+    
     if (what.baseType == Type.tPointer && what.firstType != null && (what.firstType.isStructure || what.firstType.isHandle)) {
         var inscope cond_nz <- qmacro($e(access) != null)
         cond_nz |> force_at(wths.at)
@@ -152,7 +152,7 @@ def match_struct(what : TypeDeclPtr; wths : ExprMakeStruct?; access : Expression
     }
     for (i in range(wthsLength)) {
         for (mf in *wths.structs[i]) {
-            if (true) {// to create scope
+            if (true) {
                 var inscope new_access <- whatDim == 1 ? qmacro($e(access).$f(mf.name)) : qmacro($e(access)[$v(i)].$f(mf.name))
                 new_access |> force_at(wths.at)
                 var inscope ftype <- get_field_type(what, string(mf.name), what.flags.constant)
@@ -180,7 +180,7 @@ def match_tuple(what : TypeDeclPtr; wths : ExprMakeTuple?; access : ExpressionPt
         to.errors |> match_error("{describe(what)} type does not match [[{describe(wths.makeType)} ... ]] tuple", wths.at)
         return false
     }
-    // find if there is ..., get its index
+    
     var tagIndex = INT_MAX
     for (v, i in wths.values, count()) {
         if ((v is ExprTag) && (v as ExprTag).name == "...") {
@@ -191,7 +191,7 @@ def match_tuple(what : TypeDeclPtr; wths : ExprMakeTuple?; access : ExpressionPt
             tagIndex = i
         }
     }
-    // check lengths
+    
     let wthsLength = length(wths.values)
     let whatDim = length(what.argTypes)
     if (tagIndex == INT_MAX) {
@@ -207,11 +207,11 @@ def match_tuple(what : TypeDeclPtr; wths : ExprMakeTuple?; access : ExpressionPt
     }
     log_m("\tuple match passed\n")
     for (i in range(wthsLength)) {
-        if (i == tagIndex) {// skip ...
+        if (i == tagIndex) {
             continue
         }
         let ei = i <= tagIndex ? i : whatDim - (wthsLength - i)
-        if (true) {// to create scope for defer delete
+        if (true) {
             var inscope new_access <- qmacro($e(access).$f("_{ei}")); new_access |> force_at(wths.at)
             if (!match_any(what.argTypes[ei], get_ptr(wths.values[i]), new_access, to)) {
                 return false
@@ -225,7 +225,7 @@ def match_tuple(what : TypeDeclPtr; wths : ExprMakeTuple?; access : ExpressionPt
 def match_array(what : TypeDeclPtr; wths : ExprMakeArray?; dynamic : bool; access : ExpressionPtr; var to : MatchTo) {
     let wdl = length(what.dim)
     var inscope recT : TypeDeclPtr
-    // find if there is ..., get its index
+    
     var tagIndex = INT_MAX
     for (v, i in wths.values, count()) {
         if ((v is ExprTag) && (v as ExprTag).name == "...") {
@@ -236,9 +236,9 @@ def match_array(what : TypeDeclPtr; wths : ExprMakeArray?; dynamic : bool; acces
             tagIndex = i
         }
     }
-    // check lengths
+    
     let wthsLength = length(wths.values)
-    if (wdl != 0) {// check if static array
+    if (wdl != 0) {
         if (dynamic) {
             to.errors |> match_error("{describe(what)} is not a dynamic array", wths.at)
             return false
@@ -261,7 +261,7 @@ def match_array(what : TypeDeclPtr; wths : ExprMakeArray?; dynamic : bool; acces
             to.errors |> match_error("{describe(what)} type does not match [[{describe(wths.recordType)}[{wthsLength}] ... ]] array", wths.at)
             return false
         }
-    } elif (!what.isGoodArrayType) {// check if dynamic array
+    } elif (!what.isGoodArrayType) {
         to.errors |> match_error("{describe(what)} is not an array", wths.at)
         return false
     } else {
@@ -312,7 +312,7 @@ def match_variant(what : TypeDeclPtr; wths : ExprMakeVariant?; access : Expressi
         return false
     }
     for (mf, i in wths.variants, count()) {
-        if (true) {// to create scope for defer delete
+        if (true) {
             var inscope new_access <- whatDim == 1 ? qmacro($e(access) as $f(mf.name)) : qmacro($e(access)[$v(i)] as $f(mf.name))
             new_access |> force_at(wths.at)
             var inscope ftype <- get_field_type(what, string(mf.name), what.flags.constant)
@@ -358,7 +358,7 @@ def match_as_variant(what : TypeDeclPtr; wthAs : ExprAsVariant?; access : Expres
 
 [macro_function]
 def match_type(what : TypeDeclPtr; wthmt : ExprCall?; access : ExpressionPtr; var to : MatchTo) {
-    if (length(wthmt.arguments) != 2) {// match_type(expr, type)
+    if (length(wthmt.arguments) != 2) {
         to.errors |> match_error("match_type expects 2 arguments", wthmt.at)
         return false
     }
@@ -386,7 +386,7 @@ def match_type(what : TypeDeclPtr; wthmt : ExprCall?; access : ExpressionPtr; va
 
 [macro_function]
 def match_expr(what : TypeDeclPtr; wthmt : ExprCall?; access : ExpressionPtr; var to : MatchTo) {
-    if (length(wthmt.arguments) != 1) {// match_expr(expr)
+    if (length(wthmt.arguments) != 1) {
         to.errors |> match_error("match_expr expects 1 argument", wthmt.at)
         return false
     }
@@ -453,7 +453,7 @@ def match_or(what : TypeDeclPtr; wth : ExprOp2?; access : ExpressionPtr; var to 
     }
     delete to.declarations
     unsafe {
-        to.declarations <- toL.declarations // because its a superset
+        to.declarations <- toL.declarations 
     }
     var inscope lcond <- join_conditions(toL.conditions, wth.left.at)
     var inscope rcond <- join_conditions(toR.conditions, wth.right.at)
@@ -591,15 +591,15 @@ def join_conditions(var conditions : array<ExpressionPtr>; at : LineInfo) : Expr
 
 [call_macro(name="match")]
 class MatchMacro : AstCallMacro {
-    //! Implements `match` macro.
+    
     report_match_errors = true
     multi_match = false
     def override canVisitArgument(expr : smart_ptr<ExprCallMacro>; argIndex : int) : bool {
-        // if we are reporting errors, and macro did not fold - no point showing errors inside match - there will be too many, and they are meaningless
+        
         return !is_reporting_compilation_errors()
     }
     def override canFoldReturnResult(expr : smart_ptr<ExprCallMacro>) : bool {
-        // function can't decide if its void or not, until match is folded
+        
         return false
     }
     def override preVisit(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprCallMacro>) : void {
@@ -608,7 +608,7 @@ class MatchMacro : AstCallMacro {
         return if (blk._type == null)
         return if (!blk._type.isGoodBlockType)
         return if (!(blk is ExprMakeBlock))
-        // we mark all if's inside the match to not fold, so that we can fold the match later
+        
         var eblk = ((blk as ExprMakeBlock)._block as ExprBlock)
         for (ee in eblk.list) {
             if (ee is ExprIfThenElse) {
@@ -710,43 +710,43 @@ class MatchMacro : AstCallMacro {
 
 [call_macro(name="static_match")]
 class StaticMatchMacro : MatchMacro {
-    //! Implements `static_match` macro.
+    
     override report_match_errors = false
 }
 
 [call_macro(name="multi_match")]
 class MultiMatchMacro : MatchMacro {
-    //! Implements `multi_match` macro.
+    
     override multi_match = true
 }
 
 [call_macro(name="static_multi_match")]
 class StaticMultiMatchMacro : MatchMacro {
-    //! Implements `static_multi_match` macro.
+    
     override multi_match = true
     override report_match_errors = false
 }
 
 [structure_macro(name="match_as_is")]
 class MatchAsIs : AstStructureAnnotation {
-    //! Implements `match_as_is` annotation.
-    //! This annotation is used to mark that structure can be matched with different type via is and as machinery.
+    
+    
 }
 
 [structure_macro(name="match_copy")]
 class MatchCopy : AstStructureAnnotation {
-    //! Implements `match_copy` annotation.
-    //! This annotation is used to mark that structure can be matched with different type via match_copy machinery.
+    
+    
 }
 
 
 def public match_type(anytype, anything) : void {
-    //! this is a macro, it will be replaced with a match expression of specified type
+    
     pass
 }
 
 def public match_expr(anything) : void {
-    //! this is a macro, it will be replaced with a match expression
+    
     pass
 }
 

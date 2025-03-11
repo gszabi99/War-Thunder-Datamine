@@ -14,7 +14,7 @@ require %game.events
 require %game.unit.ammo_stowage_common
 
 
-// TODO: dag::Index16 support
+
 let INVALID_GEOM_NODE_ID = -1
 
 
@@ -147,8 +147,8 @@ def fire_system_get_fire_sphere(fire_id : int; at_time : float;
       fire_params.maxFireTime.x, fire_params.maxFireTime.y, radius.x, radius.y));
 
 
-// NOTE: unfortunately, right now this logic must be mirrored in
-// EventOnBurnDamageToPart event handler
+
+
 [with_bundle(v)]
 def fire_system_can_part_burn(part_id : PartId;
                               v : tuple<

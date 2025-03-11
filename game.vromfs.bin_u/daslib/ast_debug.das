@@ -125,7 +125,7 @@ class SampleStackWalker : DapiStackWalker {
         }
     }
     def override onAfterCall(pp : Prologue) : bool {
-        return false    // only stack top
+        return false    
     }
 }
 

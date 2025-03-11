@@ -19,102 +19,102 @@ require daslib/macro_boost
 
 
 def operator ?[] (a : json::JsonValue const? ==const; key : string) : JsonValue? const {
-    //! Returns the value of the key in the JSON object, if it exists.
+    
     return a != null && a.value is _object ? (a.value as _object)?[key] ?? JVNull() : JVNull()
 }
 
 def operator ?[] (var a : json::JsonValue? ==const; key : string) : JsonValue? {
-    //! Returns the value of the key in the JSON object, if it exists.
+    
     return a != null && a.value is _object ? (a.value as _object)?[key] ?? JVNull() : JVNull()
 }
 
 def operator ?.(a : json::JsonValue const? ==const; key : string) : JsonValue? const {
-    //! Returns the value of the key in the JSON object, if it exists.
+    
     return a != null && a.value is _object ? (a.value as _object)?[key] ?? JVNull() : JVNull()
 }
 
 def operator ?.(var a : json::JsonValue? ==const; key : string) : JsonValue? {
-    //! Returns the value of the key in the JSON object, if it exists.
+    
     return a != null && a.value is _object ? (a.value as _object)?[key] ?? JVNull() : JVNull()
 }
 
 def operator ?[] (a : json::JsonValue const? ==const; idx : int) : JsonValue? const {
-    //! Returns the value of the index in the JSON array, if it exists.
+    
     return a != null && a.value is _array ? (a.value as _array)?[idx] ?? JVNull() : JVNull()
 }
 
 def operator ?[] (var a : json::JsonValue? ==const; idx : int) : JsonValue? {
-    //! Returns the value of the index in the JSON array, if it exists.
+    
     return a != null && a.value is _array ? (a.value as _array)?[idx] ?? JVNull() : JVNull()
 }
 
 def operator ??(a : json::JsonValue const?; val : double) : double {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _number ? a.value as _number : val
 }
 
 def operator ??(a : json::JsonValue const?; val : float) : float {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _number ? float(a.value as _number) : val
 }
 
 def operator ??(a : json::JsonValue const?; val : int8) : int8 {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _number ? int8(a.value as _number) : val
 }
 
 def operator ??(a : json::JsonValue const?; val : int16) : int16 {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _number ? int16(a.value as _number) : val
 }
 
 def operator ??(a : json::JsonValue const?; val : int) : int {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _number ? int(a.value as _number) : val
 }
 
 def operator ??(a : json::JsonValue const?; val : int64) : int64 {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _number ? int64(a.value as _number) : val
 }
 
 def operator ??(a : json::JsonValue const?; val : uint8) : uint8 {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _number ? uint8(a.value as _number) : val
 }
 
 def operator ??(a : json::JsonValue const?; val : uint16) : uint16 {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _number ? uint16(a.value as _number) : val
 }
 
 def operator ??(a : json::JsonValue const?; val : uint) : uint {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _number ? uint(a.value as _number) : val
 }
 
 def operator ??(a : json::JsonValue const?; val : uint64) : uint64 {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _number ? uint64(a.value as _number) : val
 }
 
 def operator ??(a : json::JsonValue const?; val : bool) : bool {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _bool ? a.value as _bool : val
 }
 
 def operator ??(a : json::JsonValue const?; val : string) : string {
-    //! Returns the value of the JSON object, if it exists, otherwise returns the default value.
+    
     return a != null && a.value is _string ? a.value as _string : val
 }
 
 def operator ?. value(a : JsonValue const? ==const) : JsValue const? {
-    //! Returns the value of the JSON object, if it exists.
+    
     return a . ?. value
 }
 
 def operator ?. value(var a : JsonValue? ==const) : JsValue? {
-    //! Returns the value of the JSON object, if it exists.
+    
     return a . ?. value
 }
 
@@ -137,13 +137,13 @@ def private is_json_ptr_value(td : TypeDeclPtr) {
 }
 
 
-// replacing ExprIsVariant(value,name) => ExprIsVariant(value.value,name)
-// replacing ExprAsVariant(value,name) => ExprAsVariant(value.value,name)
-// if value is json::JsonValue?
+
+
+
 [variant_macro(name="better_json")]
 class private BetterJsonMacro : AstVariantMacro {
-    //! This macro is used to implement `is json_value` and `as json_value` runtime checks.
-    //! It essencially substitutes `value as name` with `value.value as name` and `value is name` with `value.value is name`.
+    
+    
     def override visitExprIsVariant(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprIsVariant>) : ExpressionPtr {
         if (is_json_ptr_value(expr.value._type)) {
             var inscope vdr <- new ExprField(at = expr.at, name := "value", value <- clone_expression(expr.value))
@@ -175,13 +175,13 @@ class private BetterJsonMacro : AstVariantMacro {
 
 [reader_macro(name="json")]
 class private JsonReader : AstReaderMacro {
-    //! This macro implements embedding of the JSON object into the program::
-    //!   var jsv = %json~
-    //!   {
-    //!     "name": "main_window",
-    //!     "value": 500,
-    //!     "size": [1,2,3]
-    //!   } %%
+    
+    
+    
+    
+    
+    
+    
     def override accept(prog : ProgramPtr; mod : Module?; var expr : ExprReader?; ch : int; info : LineInfo) : bool {
         append(expr.sequence, ch)
         if (ends_with(expr.sequence, "%%")) {
@@ -203,7 +203,7 @@ class private JsonReader : AstReaderMacro {
 
 [expect_any_enum(ent), template(ent)]
 def from_JV(v : JsonValue const explicit?; ent : auto(EnumT); defV : EnumT = default<EnumT>) : EnumT {
-    //! Parse a JSON value and return the corresponding native value.
+    
     if (v == null || !((v.value is _string) || (v.value is _number))) {
         return defV
     }
@@ -359,7 +359,7 @@ def from_JV(v : JsonValue const explicit?; ent : bitfield; defV : bitfield = bit
 
 [expect_any_vector_type(v)]
 def JV(v : auto(VecT)) {
-    //! Creates `JsonValue` out of value.
+    
     static_if (typeinfo vector_dim(type<VecT>) == 2) {
         return JV({"x" => JV(v.x), "y" => JV(v.y)})
     } static_elif (typeinfo vector_dim(type<VecT>) == 3) {
@@ -534,9 +534,9 @@ def JV(value) : JsonValue? {
         var map : table<string; JsonValue?>
         apply(value) <| $(name : string; field) {
             static_if (typeinfo is_function(field)) {
-                pass // skip functions
+                pass 
             } static_elif (typeinfo is_void_pointer(field)) {
-                pass // skip void?
+                pass 
             } static_elif (typeinfo is_pointer(field)) {
                 if (field != null) {
                     map |> insert(name, _::JV(field))

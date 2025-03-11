@@ -18,7 +18,7 @@ require daslib/static_let
 require daslib/defer
 require daslib/safe_addr
 
-var private @ignore_heap_usage context : EditorContext? // ignore heap usage because it is used c++ heap
+var private @ignore_heap_usage context : EditorContext? 
 
 [finalize]
 def shutdown()
@@ -67,10 +67,10 @@ def get_link_node(link : int)
 
 
 def in_pin(id : int; blk : block<() : void>)
-  // imgui_node_editor::PushStyleVar(StyleVar StyleVar_PinArrowSize, 10f)
-  // imgui_node_editor::PushStyleVar(StyleVar StyleVar_PinArrowWidth, 10f)
-  // imgui_node_editor::PushStyleColor(StyleColor StyleColor_PinRect, float4(1f, 0f, 0f, 1f))
-  // imgui_node_editor::PushStyleVar(StyleVar StyleVar_PinCorners, 3f)
+  
+  
+  
+  
   BeginPin(id, PinKind.Input) <|
     Dummy(float2(10))
 
@@ -78,17 +78,17 @@ def in_pin(id : int; blk : block<() : void>)
     let min = GetItemRectMin() - float2(16, 0)
     let max = GetItemRectMax() - float2(16, 0)
     var drawList = GetWindowDrawList()
-    // *drawList |> AddRectFilled(min, max, 0xFFFFFFFF)
+    
     *drawList |> AddTriangleFilled(min, float2(max.x, (min.y + max.y) * 0.5), float2(min.x, max.y), 0xFFFFFFFF)
-    // *drawList |> AddCircleFilled((min + max) * 0.5, 5f, 0xFFFFFFFF)// 0xFFFFb032)
+    
     PinRect(min - offset, max + offset)
     let pin = float2(min.x, (min.y + max.y) * 0.5) + float2(1, 0)
     PinPivotRect(pin, pin)
 
     blk |> invoke()
 
-  // imgui_node_editor::PopStyleVar(2)
-  // imgui_node_editor::PopStyleColor(1)
+  
+  
 
 
 def out_pin(id : int; text : string implicit; blk : block<() : void>)
@@ -107,13 +107,13 @@ def out_pin(id : int; text : string implicit; indent : float; blk : block<() : v
 
   ImGuiEx_NextColumn()
 
-  // imgui_node_editor::PushStyleVar(StyleVar StyleVar_PinArrowSize, 10f)
-  // imgui_node_editor::PushStyleVar(StyleVar StyleVar_PinArrowWidth, 10f)
-  // imgui_node_editor::PushStyleVar(StyleVar StyleVar_PinCorners, 3f)
-  // let size = GetNodeSize()
-  // SetNextItemWidth(-FLT_MIN)
+  
+  
+  
+  
+  
   BeginPin(id, PinKind.Output) <|
-    // to center pin vertically against the pin text
+    
     let pinSize = 10.0
     let pinOffset = float2(0.0, GetItemRectSize().y / 2.0 - pinSize)
 
@@ -122,17 +122,17 @@ def out_pin(id : int; text : string implicit; indent : float; blk : block<() : v
     let min = GetItemRectMin() + float2(8, 3) + pinOffset
     let max = GetItemRectMax() + float2(8, 3) + pinOffset
     var drawList = GetWindowDrawList()
-    // *drawList |> AddRectFilled(min, max, 0xFFFFFFFF)
-    // *drawList |> AddCircleFilled((min + max) * 0.5, 5f, 0xFFFFFFFF)
+    
+    
     *drawList |> AddTriangleFilled(min, float2(max.x, (min.y + max.y) * 0.5), float2(min.x, max.y), 0xFFFFFFFF)
     let margin = float2(3, 3)
     PinRect(min - margin, max + margin)
     let pin = float2(min.x, (min.y + max.y) * 0.5) + float2(9, 0)
     PinPivotRect(pin, pin)
 
-    //blk |> invoke()
+    
 
-  // imgui_node_editor::PopStyleVar(2)
+  
   ImGuiEx_EndColumn()
 
 
@@ -144,7 +144,7 @@ def link_child(var graph : AnimationGraph; var nod : IAnimBlendNode?; outId : in
     context.links |> emplace <|  (outId, get_input_node_idx(childNodeId))
     return
 
-  if *childNode |> anim_blend_node_isSubOf(AnimBlendNodeNullCID) // remap to null node
+  if *childNode |> anim_blend_node_isSubOf(AnimBlendNodeNullCID) 
     let nullNodeId = graph |> anim_graph_getBlendNodeId("null")
     if nullNodeId >= 0
       context.links |> emplace <|  (outId, get_input_node_idx(nullNodeId))
@@ -499,17 +499,17 @@ def render_AnimBlendCtrl_ParametricSwitcher(var nod : IAnimBlendNode?; var graph
     add_input_param(paramId, ++inNodeIdx, "", nodeId, state, graph, context)
 
     *node |> AnimBlendCtrl_ParametricSwitcher_getChildren <| $(nodeValuePairs)
-      // We have some huge switches in which a ton of values connect to a handfull of different nodes,
-      // i.e. deciding what body anim to use based on the weapon selected.
-      // Displaying all of those make huge unredable nodes and is a mess in general.
-      // So we group all values by output node and display only the output nodes.
-      // We can still display values list in a hint since it is occasionally useful.
-      // nvp = Node Value Pair
-      var childNodeToPairIndex : array<array<int>> // Inner array contains indicies into nodeValuePairs array.
+      
+      
+      
+      
+      
+      
+      var childNodeToPairIndex : array<array<int>> 
       for nvpIdx, nvp in range(length(nodeValuePairs)), nodeValuePairs
-        // Find if some other value already referenced the node this pair is referencing.
+        
         let nodeIdx = childNodeToPairIndex |> find_index_if() <| $(it)
-          return nvp.node.get() == nodeValuePairs[it[0]].node.get() // Zero index since all nodes in the array should be the same.
+          return nvp.node.get() == nodeValuePairs[it[0]].node.get() 
 
         if nodeIdx < 0
           childNodeToPairIndex |> emplace(array(nvpIdx))
@@ -529,8 +529,8 @@ def render_AnimBlendCtrl_ParametricSwitcher(var nod : IAnimBlendNode?; var graph
               assume child = nodeValuePairs[nvpIdx]
               let start = child |> AnimBlendCtrl_ParametricSwitcherItemAnim_getStart()
               let end = child |> AnimBlendCtrl_ParametricSwitcherItemAnim_getEnd()
-              // When animGraph generates param switch ranges from enums it generates ranges like [enumVal - 0.1, enumVal + 0.1]
-              // Using this we can guess that ranges of length < 0.3 are probably enum values and we can try find one
+              
+              
               var paramName = ""
               if end - start < 0.3
                 let possibleParamId = floori(end)
@@ -544,20 +544,20 @@ def render_AnimBlendCtrl_ParametricSwitcher(var nod : IAnimBlendNode?; var graph
     imgui::PopStyleVar()
 
 
-// [unused_argument(nod, graph, state, context)]
-// def render_AnimBlendNodeLeaf(var nod: IAnimBlendNode?; var graph: AnimationGraph; var state: IAnimStateHolder; var context: AnimgraphContext)
-//   unsafe
-//     var node = reinterpret<AnimBlendNodeLeaf?> nod
-//     let anim = *node |> AnimBlendNodeLeaf_get_anim()
-//     let res = get_game_resource_name(anim.resId)
-//     Text("a2d: {res}")
 
-//     imgui::Text("isAdditive: {node.isAdditive}")
-//     imgui::Text("isAnimationIgnored: {node.isAnimationIgnored}")
 
-//     imgui::Text("duration: {*node |> AnimBlendNodeLeaf_getDuration(state)}")
-//     imgui::Text("time scale param: {*node |> AnimBlendNodeLeaf_getTimeScaleParamId(state)}")
-//     imgui::Text("avg speed: {*node |> AnimBlendNodeLeaf_getAvgSpeed(state)}")
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 [unused_argument(nod, graph, state, context)]
@@ -581,7 +581,7 @@ def render_AnimPostBlendParamFromNode(var nod : IAnimBlendNode?; var graph : Ani
     render_AnimPostBlendCtrl(nod, graph, state, context, weight)
     assume node = reinterpret<AnimPostBlendParamFromNode?> nod
     imgui::Spacing()
-    // draw_param_info(graph, state, node.varId, "varId") // not really useful unless we get underlying inline ptr param
+    
     imgui::Text("node: {node.nodeName}")
     imgui::Text("slotId: {node.slotId} ({animchar_getSlotName(node.slotId)})")
     draw_param_info(graph, state, node.destVarId, "destVarId")
@@ -609,11 +609,11 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
   push(renderers, tuple(AnimBlendCtrl_BinaryIndirectSwitchCID, @@render_AnimBlendCtrl_BinaryIndirectSwitch))
   push(renderers, tuple(AnimBlendCtrl_ParametricSwitcherCID, @@render_AnimBlendCtrl_ParametricSwitcher))
   push(renderers, tuple(AnimBlendCtrl_LinearPolyCID, @@render_AnimBlendCtrl_LinearPoly))
-  // push(renderers, tuple(AnimBlendNodeLeafCID, @@render_AnimBlendNodeLeaf))
+  
   push(renderers, tuple(AnimBlendNodeStillLeafCID, @@render_AnimBlendNodeStillLeaf))
 
   push(renderers, tuple(AnimPostBlendParamFromNodeCID, @@render_AnimPostBlendParamFromNode))
-  push(renderers, tuple(AnimPostBlendCtrlCID, @@render_AnimPostBlendCtrl)) // should be last as this is a generic pbc renderer
+  push(renderers, tuple(AnimPostBlendCtrlCID, @@render_AnimPostBlendCtrl)) 
 
   var ctx : AnimgraphContext
 
@@ -648,17 +648,17 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
     resetState = false
     drawMode = DrawNodesMode.ACTIVE
     nodesToShow.clear()
-    // reset focus on to the content when opening the editor or changing graph
+    
     autoAlign = true
     focusContent = true
 
   imgui::Checkbox("Apply selected state", safe_addr(resetState))
   reset_state = resetState
 
-  // graph |> anim_graph_getStRec <| $(stateRecs)
-  //   for stateRec in stateRecs
-  //     imgui::SameLine()
-  //     imgui::Text("{stateRec}")
+  
+  
+  
+  
 
   if imgui::CollapsingHeader("States")
     let statesCount = graph.stateCount
@@ -790,7 +790,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
   if context == null
     var config = Config()
-    // config.SettingsFile = "Simple.json"
+    
     context = CreateEditor(safe_addr(config))
 
   SetCurrentEditor(context)
@@ -801,16 +801,16 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
   style.PinRounding = 0f
   style.NodePadding = float4(12, 4, 12, 8)
   imgui::PushStyleColor(ImGuiCol.Text, float4(1))
-  // style.Colors[int(StyleColor StyleColor_Bg)].w = 1f
-  // style.Colors[int(StyleColor StyleColor_NodeBg)] = float4(0.12, 0.12, 0.12, 1.0)
-  // style.Colors[int(StyleColor StyleColor_NodeBg)].w = 1f
+  
+  
+  
 
   var drawList = imgui::GetWindowDrawList()
 
-  var animNodesCount = 0 // includes pbcNodesCount and bnlNodesCount
+  var animNodesCount = 0 
   var pbcNodesCount = 0
   var bnlNodesCount = 0
-  var activeBlendNodesCount = 0 // excludes activePbcNodesCount and activeBnlNodesCount
+  var activeBlendNodesCount = 0 
   var activePbcNodesCount = 0
   var activeBnlNodesCount = 0
 
@@ -829,7 +829,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
           var nodePtr = graph |> anim_graph_getBlendNodePtr(node.id)
           var weight = abn_wt[node.id]
 
-          // pbcs and bnls save their weights to different pbc_wt and bnl_wt respectively, abn_wt of those will always be 0.0
+          
           if weight > 0.0
             activeBlendNodesCount += 1
 
@@ -855,10 +855,10 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
           if weight > 0.0
             newGraphHash ^= node.id * 16777619
 
-        // We calculate graph hash based on what nodes are active.
-        // When it changes we assume some nodes became active and some inactive.
-        // If there are more inactive nodes on the screen than user wants, we want to delete nodes
-        // which were shown least.
+        
+        
+        
+        
         if graphHash != newGraphHash
           graphHash = newGraphHash
           autoAlign = true
@@ -872,7 +872,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
                 if w > 0.0
                   activeNodesCount += 1
                   val.active = true
-                  val.generation += 1 // We are showing some node again, bump it's generation so it has less chance to be hidden after
+                  val.generation += 1 
                   maxGeneration = max(maxGeneration, val.generation)
                 else
                   val.active = false
@@ -922,8 +922,8 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
             SameLine()
             imgui::TextUnformatted(node.name)
-            // SameLine()
-            // imgui::TextUnformatted("{node.id}")
+            
+            
 
             imgui::Spacing()
 
@@ -944,7 +944,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
           if activeNodeBorder
             imgui_node_editor::PopStyleColor()
 
-          // Colored node header
+          
           let color = nodePtr == null ? 0x600000F0 : \
                       *nodePtr |> anim_blend_node_isSubOf(AnimBlendNodeLeafCID) ? 0x40b032FF : \
                       *nodePtr |> anim_blend_node_isSubOf(AnimPostBlendCtrlCID) ? 0x30b0FF32 : 0x30FFb032
@@ -1068,48 +1068,48 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
       imgui::EndPopup()
     imgui_node_editor::Resume()
 
-    //imgui_node_editor::Group(float2(100))
-    // BeginGroupHint(0)
-    // imgui::Text("foo")
-    // EndGroupHint()
+    
+    
+    
+    
 
 
-// Handle creation action, returns true if editor want to create new object (node or link)
+
     BeginCreate(float4(1), 1.0f) <|
       var inputPinId, outputPinId : PinId
       if QueryNewLink(safe_addr(inputPinId), safe_addr(outputPinId))
         pass
-        // QueryNewLink returns true if editor want to create new link between pins.
-        //
-        // Link can be created only for two valid pins, it is up to you to
-        // validate if connection make sense. Editor is happy to make any.
-        //
-        // Link always goes from input to output. User may choose to drag
-        // link from output pin or input pin. This determine which pin ids
-        // are valid and which are not:
-        //   * input valid, output invalid - user started to drag new ling from input pin
-        //   * input invalid, output valid - user started to drag new ling from output pin
-        //   * input valid, output valid   - user dragged link over other pin, can be validated
-        if inputPinId != 0 && outputPinId != 0// both are valid, let's accept link
-          // ed::AcceptNewItem() return true when user release mouse button.
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        if inputPinId != 0 && outputPinId != 0
+          
           if AcceptNewItem()
-            // Since we accepted new link, lets add one to our list of links.
-            // let newLinkId = g_NextLinkId++
-            // g_Links |> push([[LinkInfo Id=newLinkId, InputId=inputPinId, OutputId=outputPinId]])
-            // Draw new link.
+            
+            
+            
+            
             pass
             visual_log("link! {inputPinId} {outputPinId}")
-            // Link(10005000, inputPinId, outputPinId)
-          // You may choose to reject connection between these nodes
-          // by calling ed::RejectNewItem(). This will allow editor to give
-          // visual feedback by changing link thickness and color.
+            
+          
+          
+          
 
-  // let selectedNum = GetSelectedObjectCount()
-  // var selection: array<int>
-  // selection |> resize(selectedNum)
-  // unsafe
-  //   GetSelectedNodes(reinterpret<int?> addr(selection), selectedNum)
-  // visual_log("{selectedNum} {length(selection)} {selection}")
+  
+  
+  
+  
+  
+  
 
   imgui::PopStyleColor()
 
@@ -1137,19 +1137,19 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
   imgui::EndChild()
   ImGuiEx_NextColumn()
 
-  imgui::BeginChild("__skeleton__", float2(skeletonNodesWidth - 10f /* should be some imgui defined gap value but whatever*/, -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.HorizontalScrollbar)
+  imgui::BeginChild("__skeleton__", float2(skeletonNodesWidth - 10f , -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.HorizontalScrollbar)
 
   var expandAll = false
   expandAll = imgui::Button("Expand all")
 
-  var skeletonNodesToShow : array<bool> // Parallel to geom node tree array, stores if a node should be shown when filter is not empty. If filter is empty array is empty too.
+  var skeletonNodesToShow : array<bool> 
   var filterChanged = false
   filterChanged = *skeletonFilter |> Draw("##skeletonNodesFilter")
   imgui::SameLine()
   if imgui::Button("Clear")
     *skeletonFilter |> Clear()
 
-  // if a node is passed by the filter mark all parent nodes as shown too
+  
   if *skeletonFilter |> IsActive()
     skeletonNodesToShow |> reserve(int(animchar.nodeTree.nodeCount))
     for i in range(int(animchar.nodeTree.nodeCount))
@@ -1168,12 +1168,12 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
 
   ImGuiEx_EndColumn()
 
-    // for stateIdx in range(graph.stateCount)
-    //   let stateName = graph |> anim_graph_getStateName(stateIdx)
-    //   BeginNode(stateIdx + statesOffset) <|
-    //     BeginNodeTitleBar <|
-    //       imgui::TextUnformatted("State: {stateName}")
-    //     imgui::Text(stateName)
+    
+    
+    
+    
+    
+    
 
 
 def draw_skeleton_node_in_tree_recursive(var graph : AnimationGraph;
@@ -1187,7 +1187,7 @@ def draw_skeleton_node_in_tree_recursive(var graph : AnimationGraph;
 
   let node_name = "{node_idx == 0 ? "::root" : tree |> geomtree_getNodeName(node_idx)}"
   if (length(nodesFilter) == 0 || nodesFilter[node_idx]) && imgui::TreeNodeEx("{node_name}##skel_node_{node_idx}", ImGuiTreeNodeFlags.None)
-    let posIdent = 6.0f // just to make pos node a bit more noticable, because it is not a skeleton child
+    let posIdent = 6.0f 
     imgui::Indent(posIdent)
 
     if imgui::TreeNodeEx("positions##skel_pose_{node_idx}", ImGuiTreeNodeFlags.None)

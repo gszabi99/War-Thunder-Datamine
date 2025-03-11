@@ -1,32 +1,20 @@
-/* FileSaver.js
- * A saveAs() FileSaver implementation.
- * 2014-01-24
- *
- * By Eli Grey, http://eligrey.com
- * License: X11/MIT
- *   See LICENSE.md
- */
 
-/*global self */
-/*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
-  plusplus: true */
 
-/*! @source http://purl.eligrey.com/github/FileSaver.js/blob/master/FileSaver.js */
+
+
+
+
 
 var saveAs = saveAs
-  // IE 10+ (native saveAs)
-  || (navigator.msSaveOrOpenBlob && navigator.msSaveOrOpenBlob.bind(navigator))
-  // Everyone else
-  || (function(view) {
+    || (navigator.msSaveOrOpenBlob && navigator.msSaveOrOpenBlob.bind(navigator))
+    || (function(view) {
 	"use strict";
-	// IE <10 is explicitly unsupported
-	if (/MSIE [1-9]\./.test(navigator.userAgent)) {
+		if (/MSIE [1-9]\./.test(navigator.userAgent)) {
 		return;
 	}
 	var
 		  doc = view.document
-		  // only get URL when necessary in case BlobBuilder.js hasn't overridden it yet
-		, get_URL = function() {
+		  		, get_URL = function() {
 			return view.URL || view.webkitURL || view;
 		}
 		, URL = view.URL || view.webkitURL || view
@@ -54,14 +42,11 @@ var saveAs = saveAs
 			var i = deletion_queue.length;
 			while (i--) {
 				var file = deletion_queue[i];
-				if (typeof file === "string") { // file is an object URL
-					URL.revokeObjectURL(file);
-				} else { // file is a File
-					file.remove();
+				if (typeof file === "string") { 					URL.revokeObjectURL(file);
+				} else { 					file.remove();
 				}
 			}
-			deletion_queue.length = 0; // clear queue
-		}
+			deletion_queue.length = 0; 		}
 		, dispatch = function(filesaver, event_types, event) {
 			event_types = [].concat(event_types);
 			var i = event_types.length;
@@ -77,8 +62,7 @@ var saveAs = saveAs
 			}
 		}
 		, FileSaver = function(blob, name) {
-			// First try a.download, then web filesystem, then object URLs
-			var
+						var
 				  filesaver = this
 				, type = blob.type
 				, blob_changed = false
@@ -93,10 +77,8 @@ var saveAs = saveAs
 				, dispatch_all = function() {
 					dispatch(filesaver, "writestart progress write writeend".split(" "));
 				}
-				// on any filesys errors revert to saving with object URLs
-				, fs_error = function() {
-					// don't create more object URLs than needed
-					if (blob_changed || !object_url) {
+								, fs_error = function() {
+										if (blob_changed || !object_url) {
 						object_url = get_object_url(blob);
 					}
 					if (target_view) {
@@ -123,11 +105,7 @@ var saveAs = saveAs
 			}
 			if (can_use_save_link) {
 				object_url = get_object_url(blob);
-				// FF for Android has a nasty garbage collection mechanism
-				// that turns all objects that are not pure javascript into 'deadObject'
-				// this means `doc` and `save_link` are unusable and need to be recreated
-				// `view` is usable though:
-				doc = view.document;
+																				doc = view.document;
 				save_link = doc.createElementNS("http://www.w3.org/1999/xhtml", "a");
 				save_link.href = object_url;
 				save_link.download = name;
@@ -141,18 +119,12 @@ var saveAs = saveAs
 				dispatch_all();
 				return;
 			}
-			// Object and web filesystem URLs have a problem saving in Google Chrome when
-			// viewed in a tab, so I force save with application/octet-stream
-			// http://code.google.com/p/chromium/issues/detail?id=91158
-			if (view.chrome && type && type !== force_saveable_type) {
+												if (view.chrome && type && type !== force_saveable_type) {
 				slice = blob.slice || blob.webkitSlice;
 				blob = slice.call(blob, 0, blob.size, force_saveable_type);
 				blob_changed = true;
 			}
-			// Since I can't be sure that the guessed media type will trigger a download
-			// in WebKit, I append .download to the filename.
-			// https://bugs.webkit.org/show_bug.cgi?id=65440
-			if (webkit_req_fs && name !== "download") {
+												if (webkit_req_fs && name !== "download") {
 				name += ".download";
 			}
 			if (type === force_saveable_type || webkit_req_fs) {
@@ -193,8 +165,7 @@ var saveAs = saveAs
 						}), fs_error);
 					};
 					dir.getFile(name, {create: false}, abortable(function(file) {
-						// delete file if it already exists
-						file.remove();
+												file.remove();
 						save();
 					}), abortable(function(ex) {
 						if (ex.code === ex.NOT_FOUND_ERR) {
@@ -236,8 +207,5 @@ var saveAs = saveAs
 	|| typeof window !== "undefined" && window
 	|| this.content
 ));
-// `self` is undefined in Firefox for Android content script context
-// while `this` is nsIContentFrameMessageManager
-// with an attribute `content` that corresponds to the window
 
 if (typeof module !== "undefined") module.exports = saveAs;

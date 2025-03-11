@@ -19,8 +19,8 @@ def rnd_color()
 def lerp_color(c1, c2 : E3DCOLOR; t : float)
   return E3DCOLOR(uint4(lerp(float4(uint4(c1)), float4(uint4(c2)), float4(t))))
 
-// Convert HSV colour specification to RGB intensities.
-// H in [0, 360], S V R G B in [0,1]
+
+
 [generic]
 def hsv2rgb(hsv : float3)
   var i : int
@@ -68,8 +68,8 @@ def hsv2rgb(hsv : float3)
       rgb.z = q
   return rgb
 
-// Convert RGB intensities to HSV colour specification.
-// H in [0, 360], S V R G B in [0,1]
+
+
 [generic]
 def rgb2hsv(rgb : float3)
   var hsv : float3
@@ -90,20 +90,20 @@ def rgb2hsv(rgb : float3)
   if max > 1e-5f
     hsv.y = (delta / max)
   else
-    // if max is 0, then r = g = b = 0
-    // s = 0, h is undefined
+    
+    
     hsv.y = 0.0
-    hsv.x = 0.0 // undefined
+    hsv.x = 0.0 
     return hsv
 
   if rgb.x >= max
-    hsv.x = (rgb.y - rgb.z) / delta // between yellow & magenta
+    hsv.x = (rgb.y - rgb.z) / delta 
   elif rgb.y >= max
-    hsv.x = 2.0 + (rgb.z - rgb.x) / delta // between cyan & yellow
+    hsv.x = 2.0 + (rgb.z - rgb.x) / delta 
   else
-    hsv.x = 4.0 + (rgb.x - rgb.y) / delta // between magenta & cyan
+    hsv.x = 4.0 + (rgb.x - rgb.y) / delta 
 
-  hsv.x *= 60.0f // degrees
+  hsv.x *= 60.0f 
 
   if hsv.x < 0.0
     hsv.x += 360.0f

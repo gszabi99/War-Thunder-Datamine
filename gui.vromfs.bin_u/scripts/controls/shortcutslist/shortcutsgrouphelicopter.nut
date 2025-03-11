@@ -103,7 +103,7 @@ return [
     needShowInHelp = true
   }
   {
-    id = "ID_MANEVERABILITY_MODE_HELICOPTER"
+    id = "ID_MANEUVERABILITY_MODE_HELICOPTER"
     checkAssign = false
   }
   {

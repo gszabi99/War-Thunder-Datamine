@@ -33,7 +33,7 @@ def load_imgui_daeditor(base_path : string) : bool
     if typeinfo builtin_module_exists(DngShip)
       ok = load_sub_folder(base_path, "daEditor/ship") && ok
 
-  ok = ok // workaround for "variable ... can be made const" in case if both DagorImgui & DagorImgui are absent
+  ok = ok 
   return ok
 
 

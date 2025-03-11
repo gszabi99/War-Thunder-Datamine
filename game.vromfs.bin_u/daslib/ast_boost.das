@@ -554,8 +554,8 @@ def private makeAsOrSafeAs(expr; var enull : ExpressionPtr) {
     return <- tri
 }
 
-// replacing ExprIsVariant(value,name) => ExprOp2('==",value.__rtti,"name")
-// if value is ast::Expr*
+
+
 class BetterRttiVisitor : AstVariantMacro {
     def override visitExprIsVariant(prog : ProgramPtr; mod : Module?; expr : smart_ptr<ExprIsVariant>) : ExpressionPtr {
         if (isExpression(expr.value._type)) {
@@ -751,7 +751,7 @@ def private walk_and_convert_enumeration(data : uint8 const?; info : TypeDeclPtr
 }
 
 def private walk_and_convert(data : uint8 const?; info : TypeDeclPtr; at : LineInfo) : ExpressionPtr {
-    // print("0x{intptr(data)} {describe(info)}\n")
+    
     if (info.dim |> length != 0) {
         return <- walk_and_convert_dim(data, info, at)
     } elif (info.baseType == Type.tArray) {
@@ -1120,7 +1120,7 @@ def private debug_expression_impl(var writer : StringBuilderWriter; expr : Expre
             }
         }
     }
-                // writer |> write(" {name}={describe(xtype)}")
+                
     for_each_field(*ann) <| $(name, cppName, xtype, offset) {
         if (offset != -1u) {
             let tstr = describe(xtype)

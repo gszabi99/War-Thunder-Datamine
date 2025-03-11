@@ -607,7 +607,6 @@ enumsAddTypes(g_hud_messages, {
     showSec = 2
     messageEvent = "InBattleReward"
     hudEvents = {
-      LocalPlayerDead  = @(_ed) this.clearRewardMessage()
       ReinitHud        = @(_ed) this.clearRewardMessage()
     }
 

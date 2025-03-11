@@ -370,6 +370,16 @@ function buildConditionsConfig(blk, showStage = -1) {
     }
   }
 
+  if (config.unlockType == UNLOCKABLE_INVENTORY) {
+    let itemId = config.userLogId.tointeger()
+    let item = findItemById(itemId)
+    if (item != null) {
+      config.locId = item.getName(false)
+      config.desc = item.getDescription()
+      config.image = item.getIconName()
+    }
+  }
+
   return config
 }
 

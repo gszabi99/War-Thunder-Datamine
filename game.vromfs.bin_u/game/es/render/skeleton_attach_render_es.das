@@ -95,7 +95,7 @@ def skeleton_attached_to(base_eid : EntityId;
         bbox3f_add_box(*base_animchar_attaches_bbox_precalculated, animchar_bbox)
 
 
-//before start_async_phys_sim_es require for start phys simulation at the end of parallel update
+
 [es(tag=gameClient, after=slot_attach_init_tms_es, before=start_async_phys_sim_es, parallel_for=4, REQUIRE_NOT=attachedToParent)]
 def skeleton_attach_es(info : ParallelUpdateFrameDelayed;
                        eid : EntityId;
@@ -121,8 +121,8 @@ def skeleton_attach_es(info : ParallelUpdateFrameDelayed;
   skeleton_attached_to(eid, animchar, animchar__visible, attaches_list, info.dt, animchar_bbox, animchar_bsph_precalculated, animchar_attaches_bbox_precalculated);
 
 
-//for independent created attaches
-//we update animchars in animchar_non_updatable_es and don't recalculate bsph e.t.c. components
+
+
 [es(tag=gameClient, track=transform, on_appear, after=animchar_non_updatable_es, REQUIRE_NOT=attachedToParent, REQUIRE=(disableUpdate, attachmentUpdate, transform))]
 def skeleton_attach_not_updatable(evt : Event;
                                   eid : EntityId;
@@ -162,7 +162,7 @@ def init_skeleton_attachment_wtm_ofs(evt : Event;
     recalc_branches(nodeTree, skeleton_attach__skeletonRecalcBranch)
 
     attachment_animchar |> animchar_resetFastPhysWtmOfs(wtmOfs)
-    // simulate fastphys for some frames to let fastphys items settle
+    
     let fastPhysSimTimeOnReset = 1.5
     attachment_animchar |> animchar_updateFastPhys(fastPhysSimTimeOnReset)
 
@@ -197,16 +197,16 @@ def skeleton_attach_save_on_dead_es(evt : Event;
                                     var saved_animchar : AnimcharBaseComponent?)
   save_cur_geom_node_tree(animchar, saved_animchar)
   save_attaches_animchar_tree(attaches_list)
-  // error("ANIMCHAR SAVED {saved_animchar != null}")
+  
 
-// [es(tag=gameClient, on_event=CmdShowHitcamera, REQUIRE_NOT=deadEntity)]
-// def skeleton_attach_save_on_hit_cam_es(evt : Event;
-//                                        hitcamera__target : EntityId)
-//   query(hitcamera__target) <| $ [es] (animchar : AnimcharBaseComponent&;
-//                                       attaches_list : EidList const?;
-//                                       var saved_animchar : AnimcharBaseComponent?)
-//     save_cur_geom_node_tree(animchar, saved_animchar)
-//     save_attaches_animchar_tree(attaches_list)
+
+
+
+
+
+
+
+
 
 [es(tag=gameClient, after=(animated_visible_attachments_act_animchar_es, skeleton_attach_es), parallel_for=4)]
 def skeleton_hide_node_attach_es(info : ParallelUpdateFrameDelayed;

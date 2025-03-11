@@ -108,7 +108,7 @@ return [
     needShowInHelp = true
   }
   {
-    id = "ID_MANEVERABILITY_MODE"
+    id = "ID_MANEUVERABILITY_MODE"
     checkAssign = false
   }
   {

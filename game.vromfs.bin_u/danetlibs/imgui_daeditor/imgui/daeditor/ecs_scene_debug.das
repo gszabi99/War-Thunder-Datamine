@@ -94,7 +94,7 @@ def ecs_scene_window()
 
   imgui::BeginChild("sub", float2(0., -25.))
 
-  // common code must be sync with other daeditor_draw_entity_table
+  
   if BeginTable("split", 2, ImGuiTableFlags.BordersOuter | ImGuiTableFlags.RowBg)
     TableSetupColumn("eid", ImGuiTableColumnFlags.WidthFixed)
     TableSetupColumn("template", ImGuiTableColumnFlags.WidthStretch)

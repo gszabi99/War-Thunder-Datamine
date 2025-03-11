@@ -35,7 +35,7 @@ let private {
     ARGUMENT_VARS = 2ul
     GLOBAL_VARS = 3ul
     STATE_VARS = 4ul
-    // EVAL_POOL = 1000ul
+    
     BLOCKS_POOL = 4000ul
 
     MAX_STACK = 1000ul
@@ -45,9 +45,9 @@ let private {
             print_flags.escapeString
         |   print_flags.namesAndDimensions
         |   print_flags.singleLine
-        // |   print_flags humanReadable
-        // |   print_flags typeQualifiers
-        // |   print_flags refAddresses
+        
+        
+        
     )
 }
 
@@ -640,8 +640,8 @@ def iter_top_child_var(stack : DAStackFrame; cb : block<(res : DAVariable) : voi
         cb |> invoke(c)
     }
 }
-    // for c in stack.state
-    //     cb |> invoke(c)
+    
+    
 
 
 class private DAStackWalker : DapiStackWalker {
@@ -726,7 +726,7 @@ class private DAStackWalker : DapiStackWalker {
                 if (vinfo.name |> starts_with("g```") || vinfo.name == "__rtti_require") {
                     continue
                 }
-                // if vinfo.scope == frame.func
+                
                 collectGlobalAt(*vinfo, frame)
             }
         }
@@ -734,7 +734,7 @@ class private DAStackWalker : DapiStackWalker {
 
 
     def override onCallAOT(pp : Prologue; fileName : string#) : void {
-        // print("AOT {fileName}\n")
+        
         let n = length(ctx.stack)
         if (n > 0) {
             ctx.stack[n - 1].name = pp.info != null ? "def {pp.info.name} [AOT]" : "def [AOT]"
@@ -745,7 +745,7 @@ class private DAStackWalker : DapiStackWalker {
     }
 
     def override onCallAt(pp : Prologue; info : FuncInfo; at : LineInfo) : void {
-        // print("def {info.name} at {at}\n")
+        
         let n = length(ctx.stack)
         if (n > 0) {
             ctx.stack[n - 1].name = "def {info.name}"
@@ -756,7 +756,7 @@ class private DAStackWalker : DapiStackWalker {
     }
 
     def override onCall(pp : Prologue; info : FuncInfo) : void {
-        // print("def {info.name}\n")
+        
         let n = length(ctx.stack)
         if (n > 0) {
             ctx.stack[n - 1].name = "def {info.name}"
@@ -852,7 +852,7 @@ struct private DAContext {
     continueRequested : bool = false
     pauseRequested : bool = false
     stepInRequested : bool = false
-    stepRequestedStack : int = 0// stack depth
+    stepRequestedStack : int = 0
 }
 
 
@@ -1127,7 +1127,7 @@ class private DAgent : DapiDebugAgent {
     def beforePause(var ctxData : DAContext; at : LineInfo) {
         pauseCtx = ctxData.ctx
         pauseAt = unsafe(addr(at))
-        evalFrame.varId = 1000ul //EVAL_POOL
+        evalFrame.varId = 1000ul 
         unsafe {
             delete evalFrame.variables
         }
@@ -1172,9 +1172,9 @@ class private DAgent : DapiDebugAgent {
             return
         }
 
-        // unsafe
-            // self->log("{double(ctx_at(ctx))} step at {string(at.fileInfo.name) |> resolve_path_cache(workingPaths, pathAliases, pathsCache)}:{int(at.line)}\n")
-            // print("{double(ctx_at(ctx))} step at {string(at.fileInfo.name) |> resolve_path_cache(workingPaths, pathAliases, pathsCache)}:{int(at.line)}\n")
+        
+            
+            
 
         if (ctx.category.debugger_attached) {
             self->addContext(ctx)
@@ -1229,7 +1229,7 @@ class private DAgent : DapiDebugAgent {
                 ctx |> set_single_step(ctxData.stepInRequested || ctxData.stepRequestedStack > 0)
                 return
             }
-            // self->log("search break `{file}`:{at.line} - {inBreak}\n")
+            
             var i = 0
             while (i < length(breakpoints)) {
                 var fileBr : string
@@ -1247,7 +1247,7 @@ class private DAgent : DapiDebugAgent {
                     var brIdx = 0
                     while (brIdx < length(brs)) {
                         let br & = unsafe((brs)[brIdx++])
-                        // self->log("search break `{file}` {brs} in {file}\n")
+                        
                         if (br.line != uint(at.line)) {
                             continue
                         }
@@ -1345,7 +1345,7 @@ class private DAgent : DapiDebugAgent {
 
         var alloc = string_heap_bytes_allocated()
         if (alloc > strLimit) {
-            // string_heap_report()
+            
             var report : string
             if (logStrMemory) {
                 report = "STRING HEAP COLLECT: {bytes_hr(alloc)} -> "
@@ -1388,7 +1388,7 @@ class private DAgent : DapiDebugAgent {
             }
         }
 
-        let found = self->getContextDataFor(ctx) <| $(var ctxData : DAContext) {// TODO: speedup getContextDataFor
+        let found = self->getContextDataFor(ctx) <| $(var ctxData : DAContext) {
             *ctxData.ctx |> clear_instruments()
             *ctxData.ctx |> instrument_node(true) <| $(ati) {
                 if (ati.fileInfo == null) {
@@ -1406,7 +1406,7 @@ class private DAgent : DapiDebugAgent {
                         for (br in brs) {
                             if (br.line == ati.line) {
                                 br.state = DABreakpointState.Instrumented
-                                // print("dap: reset breakpoint {file}:{int(br.line)}\n")
+                                
                                 return true
                             }
                         }
@@ -1418,7 +1418,7 @@ class private DAgent : DapiDebugAgent {
         }
 
         if (!found) {
-            // removed context, uninitialize related breakpoints
+            
             let ctxAt = ctx_at(ctx)
             for (brs in values(breakpoints)) {
                 for (br in brs) {
@@ -1450,15 +1450,15 @@ class private DAgent : DapiDebugAgent {
     }
 
     def override onCreateContext(var ctx : Context) : void {
-        // unsafe
-        //     print("dap: context created {intptr(addr(ctx))} {ctx.category} `{ctx.name}`")
+        
+        
         self->addContext(ctx)
         invalidateBreakpoints(ctx)
     }
 
     def override onDestroyContext(var ctx : Context) : void {
-        // unsafe
-        //     print("dap: context destroyed {intptr(addr(ctx))} {ctx.category} `{ctx.name}`\n")
+        
+        
         self->removeContext(ctx)
         invalidateBreakpoints(ctx)
     }
@@ -1495,8 +1495,8 @@ class private DAgent : DapiDebugAgent {
     }
 
     def addContext(var ctx : Context) : bool {
-        // unsafe
-        //     print("dap: add context {intptr(addr(ctx))}")
+        
+        
         let idx = self->getContextIdx(ctx)
         if (idx >= 0) {
             return false
@@ -1544,11 +1544,11 @@ class private DAServer : Server {
 
     disconnected : bool = false
 
-    // message data
+    
     current_string : array<uint8>
     toRead : int = 0
 
-    initialized : int = -1// initialized event: ticks delay
+    initialized : int = -1
     configurationDone : bool = false
     threadsDone : bool = false
 
@@ -1570,7 +1570,7 @@ class private DAServer : Server {
             current_string |> clear()
         }
     }
-        // print("disconnected\n")
+        
 
     def restart() {
         if (_server != null) {
@@ -1611,7 +1611,7 @@ class private DAServer : Server {
                 let str = string(current_string)
                 if (str |> starts_with(prefix)) {
                     unsafe {
-                        let lenStr = chop(str, 16, length(current_string) - length(prefix) - 2) // \r\n length
+                        let lenStr = chop(str, 16, length(current_string) - length(prefix) - 2) 
                         toRead = to_int(lenStr)
                         clear(current_string)
                     }
@@ -1689,7 +1689,7 @@ class private DAServer : Server {
     }
 
     def reqInitialize(seq : double; command : string; arguments : JsonValue?) {
-        // var inscope ini <- InitializeRequestArguments(arguments)
+        
         var inscope res = Capabilities(
                                 supportsConfigurationDoneRequest = true,
                                 supportsRestartRequest = false,
@@ -1698,12 +1698,12 @@ class private DAServer : Server {
                                 supportsExceptionOptions = false,
                                 supportsExceptionFilterOptions = false,
                                 supportsDataBreakpoints = true
-                                // supportsDelayedStackTraceLoading=true
+                                
                     )
         self->sendSuccessResponse(seq, command, JV(res))
         initialized = 100
     }
-        // self->sendEvent("initialized")
+        
 
     def reqConfigurationDone(seq : double; command : string; data : JsonValue?) {
         configurationDone = true
@@ -1764,7 +1764,7 @@ class private DAServer : Server {
     }
 
     def reqDisconnect(seq : double; command : string; data : JsonValue?) {
-        // var inscope ini = DisconnectRequest(data)
+        
         self->sendSuccessResponse(seq, command, null)
         for (ctx in agent.contexts) {
             ctx |> reset_debug_flags()
@@ -1774,7 +1774,7 @@ class private DAServer : Server {
             delete it
         }
         agent.breakpoints |> clear()
-        // ini.arguments.restart
+        
         disconnected = true
     }
 
@@ -1968,7 +1968,7 @@ class private DAServer : Server {
         var inscope res : VariablesResponseBody
         let ctxAndFrame = uint64(ini.variablesReference) / MAX_VARIABLES
         let ctxId = uint64(ctxAndFrame) / MAX_STACK
-        if (ctxId == 0ul) {// eval ctx
+        if (ctxId == 0ul) {
             agent.evalFrame |> find_child_var(uint64(ini.variablesReference)) <| $(child) {
                 if (child.children != null) {
                     let varsNum = length(*child.children)
@@ -2041,7 +2041,7 @@ class private DAServer : Server {
                 }
             }
         }
-        self->sendSuccessResponseStr(seq, command, sprint_json(res, false)) // TODO: , false
+        self->sendSuccessResponseStr(seq, command, sprint_json(res, false)) 
     }
 
     def reqContinue(seq : double; command : string; data : JsonValue?) {
@@ -2148,7 +2148,7 @@ class private DAServer : Server {
                     var inscope vars : table<string; Result>
                     var frame = frameId
                     let stackLen = length(ctxData.stack)
-                    // collect all vars from all blocks till the function frame
+                    
                     while (frame < stackLen && ctxData.stack[frame].isBlock) {
                         frame += 1
                     }
@@ -2189,7 +2189,7 @@ class private DAServer : Server {
     }
 
     def log(msg : string) {
-        // print("{msg}\n")
+        
         if (self->is_connected()) {
             self->sendOutput("console", "{msg}\n")
         }
@@ -2197,33 +2197,33 @@ class private DAServer : Server {
 
     def sendOutput(category : string; output : string) {
         var inscope res = OutputEventBody(category = category, output = output)
-        self->sendRawData(JV({"type" => JV("event"), "event" => JV("output"), "body" => JV(res)}), /*log*/false)
+        self->sendRawData(JV({"type" => JV("event"), "event" => JV("output"), "body" => JV(res)}), false)
     }
 
     def sendEvent(event : string; body : JsonValue?) {
-        self->sendRawData(JV({"type" => JV("event"), "event" => JV(event), "body" => body}), /*log*/true)
+        self->sendRawData(JV({"type" => JV("event"), "event" => JV(event), "body" => body}), true)
     }
 
     def sendSuccessResponse(id : double; command : string; body : JsonValue?) {
         self->sendRawData(JV({"request_seq" => JV(id), "type" => JV("response"),
-                                "body" => body, "command" => JV(command), "success" => JV(true)}), /*log*/true)
+                                "body" => body, "command" => JV(command), "success" => JV(true)}), true)
     }
 
     def sendSuccessResponseStr(id : double; command : string; body : string) {
-        // self->sendRawData(JV({{"request_seq"=>JV(id); "type"=>JV("response");
-        //                         "body"=>body; "command"=>JV(command); "success"=>JV(true)}}), /*log*/true)
-        self->sendRawDataStr("\{\"request_seq\":{id}, \"type\":\"response\", \"body\":{body}, \"command\":\"{command}\", \"success\":true\}", /*log*/true)
+        
+        
+        self->sendRawDataStr("\{\"request_seq\":{id}, \"type\":\"response\", \"body\":{body}, \"command\":\"{command}\", \"success\":true\}", true)
     }
 
-    // https://microsoft.github.io/language-server-protocol/specifications/specification-current/#responseMessage
+    
     def sendRawData(var data : JsonValue?; logData : bool) {
         let msg = write_json(data)
         var packStr = "Content-Length: {length(msg)}\r\n\r\n{msg}"
         if (logData) {
             self->log("<------\n{packStr}")
         }
-        // else
-        //     print("<------\n{packStr}\n")
+        
+        
         unsafe {
             self->send(reinterpret<uint8?> packStr, length(packStr))
             delete data
@@ -2235,8 +2235,8 @@ class private DAServer : Server {
         if (logData) {
             self->log("<------\n{packStr}")
         }
-        // else
-        //     print("<------\n{packStr}\n")
+        
+        
         unsafe {
             self->send(reinterpret<uint8?> packStr, length(packStr))
         }
@@ -2371,7 +2371,7 @@ def private auto_start_debug() {
 }
 
 
-def private use_instruments() {// or stepping debugger
+def private use_instruments() {
     let args <- get_command_line_arguments()
     return !has_value(args, "--das-stepping-debugger")
 }

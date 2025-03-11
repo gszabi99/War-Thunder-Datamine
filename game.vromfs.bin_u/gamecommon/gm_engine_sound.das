@@ -76,7 +76,7 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
       if !useNewEngineSound
         tank_engine__startSoundDelay = engineBlk |> datablock_getReal("startTimeout", tank_engine__startSoundDelay)
         tank_engine__stopSoundDelay = engineBlk |> datablock_getReal("stopTimeout", tank_engine__stopSoundDelay)
-        addSubTemplate(eid, "disabled_update") // delete with old engineSound system for gm
+        addSubTemplate(eid, "disabled_update") 
         return
 
       let outsideBlk = *engineBlk |> datablock_get_block_by_name("outside")
@@ -410,7 +410,7 @@ def gm_engine_on_play_stop_es(evt : CmdEnginePlayStopSound;
   if (curEventName != "") && !is_playing(curEvent)
     curEvent |> play(string(curEventName), gm_engine_sound__pos)
 
-//---------------------------------------------------------------------------------------------------
+
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
 def gm_additional_engine_on_unsteal_es(evt : CmdEngineUnstealSound;

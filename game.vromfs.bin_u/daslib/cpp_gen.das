@@ -18,9 +18,9 @@ require daslib/regex_boost
 
 let verbose = false
 
-/*
-    config
-*/
+
+
+
 
 struct ExEnum {
     name : string
@@ -95,9 +95,9 @@ var all_keywords = fixed_array<string>(
     "bool"
 );
 
-/*
-    end of configuration
-*/
+
+
+
 
 enum ScopeKind {
     Namespace
@@ -243,7 +243,7 @@ def onInner(var root) {
 }
 
 
-[sideeffects] // TODO: fixme. find why we need to specify [sideeffects] here
+[sideeffects] 
 def onLinkageSpec(var root) {
     if (!allow_extern_c) {
         return
@@ -317,7 +317,7 @@ def onEnum(var root) {
 def onVar(var root) {
     let name = root["name"] as _string
     let fullName = getCppName(name)
-    let mangledName = root["mangledName"] as _string // todo: undecorate mangled name
+    let mangledName = root["mangledName"] as _string 
     var qualType = getQualType(root)
     if (verbose) {
         print("global variable {name} // {fullName}\n// {mangledName}\n// {qualType}\n")
@@ -405,7 +405,7 @@ def onInitArg(var root) {
 def onFunctionBody(var root; isMethod : bool; ofClass : string = "") : ClangFunc {
     let name = root["name"] as _string
     let fullName = getCppName(name)
-    let mangledName = root["mangledName"] as _string // todo: undecorate mangled name
+    let mangledName = root["mangledName"] as _string 
     var qualType = getQualType(root)
     if (verbose) {
         print("function {name} // {fullName}\n// {mangledName}\n// {qualType}\n")
@@ -702,19 +702,19 @@ def genStructs(hf, mf, df : FILE const?) {
             continue
         }
         if (alias_types |> key_exists(st.cppName)) {
-            /*
-            let alias_value = alias_types[st.cppName]
-            fprint(mf,"template <> struct typeFactory<{st.cppName}> \{\n")
-            fprint(mf,"\tstatic TypeDeclPtr make(const ModuleLibrary &) \{\n")
-            fprint(mf,"\t\tauto t = make_smart<TypeDecl>({alias_value});\n")
-            fprint(mf,"\t\tt->alias = \"{st.name}\";\n")
-            fprint(mf,"\t\tt->aotAlias = true;\n")
-            fprint(mf,"\t\treturn t;\n")
-            fprint(mf,"\t\}\n")
-            fprint(mf,"\};\n")
-            fprint(mf,"template <> struct typeName<{st.cppName}> \{ constexpr static const char * name() \{ return \"{st.name}\"; \} \};\n")
-            fprint(df,"addAlias(typeFactory<{st.cppName}>::make(lib));\n")
-            */
+            
+
+
+
+
+
+
+
+
+
+
+
+
             continue
         }
         fprint(df, "#ifdef {getDefinePrefix(st.cppName)}\n")
@@ -735,7 +735,7 @@ def genStructs(hf, mf, df : FILE const?) {
             if (!needToGenField(fld)) {
                 continue
             }
-            if (fld.isBitfield) {// TODO: support bitfields
+            if (fld.isBitfield) {
                 continue
             }
             var substType = ""
@@ -837,7 +837,7 @@ def isRefFun(fn) {
 }
 
 def isCmresFun(fn) {
-    // note: hacking cpp type to autodetect CMRES
+    
     let ob = find(fn.ftype, "(")
     assert(ob != -1)
     var cppResType = slice(fn.ftype, 0, ob)
@@ -1120,7 +1120,7 @@ def bindHeaders(fname, outprefix : string) {
                     var root & = unsafe(json as _object)
                     verify(root["kind"] |> is_str <| "TranslationUnitDecl")
                     onInner(root)
-                    // debug(ast,"AST =")
+                    
                     fopen("{outprefix}.h", "wb") <| $(hf) {
                         fwrite(hf, "#pragma once\n\n")
                         fopen("{outprefix}.inc", "wb") <| $(df) {

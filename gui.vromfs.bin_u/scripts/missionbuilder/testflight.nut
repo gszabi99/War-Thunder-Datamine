@@ -46,6 +46,7 @@ let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { enable_current_modifications } = require("%scripts/weaponry/weaponryActions.nut")
 let { queues } = require("%scripts/queue/queueManager.nut")
 let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
+let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} 
 
@@ -474,7 +475,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if(this.weaponsSelectorWeak)
       this.weaponsSelectorWeak.bulletsManager.updateBulletCountOptions()
     else
-      ::UnitBulletsManager(this.unit).updateBulletCountOptions([])
+      UnitBulletsManager(this.unit).updateBulletCountOptions([])
 
 
     enable_bullets_modifications(unitName)

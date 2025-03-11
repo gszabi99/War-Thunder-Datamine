@@ -6,19 +6,19 @@ require math.base
 def linear(p : float)
   return p
 
-// Modeled after the parabola y = x^2
+
 [generic]
 def inQuad(p : float)
   return p * p
 
-// Modeled after the parabola y = -x^2 + 2x
+
 [generic]
 def outQuad(p : float)
   return -(p * (p - 2.f))
 
-// Modeled after the piecewise quadratic
-// y = (1/2)((2x)^2)              [0, 0.5)
-// y = -(1/2)((2x-1)*(2x-3) - 1)  [0.5, 1]
+
+
+
 [generic]
 def inOutQuad(p : float)
   if (p < 0.5f)
@@ -26,20 +26,20 @@ def inOutQuad(p : float)
   else
     return (-2.f * p * p) + (4.f * p) - 1.f
 
-// Modeled after the cubic y = x^3
+
 [generic]
 def inCubic(p : float)
   return p * p * p
 
-// Modeled after the cubic y = (x - 1)^3 + 1
+
 [generic]
 def outCubic(p : float)
   let f = (p - 1.f)
   return f * f * f + 1.f
 
-// Modeled after the piecewise cubic
-// y = (1/2)((2x)^3)        [0, 0.5)
-// y = (1/2)((2x-2)^3 + 2)  [0.5, 1]
+
+
+
 [generic]
 def inOutCubic(p : float)
   if (p < 0.5f)
@@ -47,22 +47,22 @@ def inOutCubic(p : float)
   else
     let f = ((2.f * p) - 2.f)
     return 0.5f * f * f * f + 1.f
- // return (3.f - 2.f * p) * p * p //originally in gameMath/easing
+ 
 
-// Modeled after the quartic x^4
+
 [generic]
 def inQuart(p : float)
   return p * p * p * p
 
-// Modeled after the quartic y = 1 - (x - 1)^4
+
 [generic]
 def outQuart(p : float)
   let f = (p - 1.f)
   return f * f * f * (1.f - p) + 1.f
 
-// Modeled after the piecewise quartic
-// y = (1/2)((2x)^4)         [0, 0.5)
-// y = -(1/2)((2x-2)^4 - 2)  [0.5, 1]
+
+
+
 [generic]
 def inOutQuart(p : float)
   if (p < 0.5f)
@@ -73,23 +73,23 @@ def inOutQuart(p : float)
 
 
 
-// Quintic easing p^5
 
 
-// Modeled after the quintic y = x^5
+
+
 [generic]
 def inQuintic(p : float)
   return p * p * p * p * p
 
-// Modeled after the quintic y = (x - 1)^5 + 1
+
 [generic]
 def outQuintic(p : float)
   let f = (p - 1.f)
   return f * f * f * f * f + 1.f
 
-// Modeled after the piecewise quintic
-// y = (1/2)((2x)^5)        [0, 0.5)
-// y = (1/2)((2x-2)^5 + 2)  [0.5, 1]
+
+
+
 [generic]
 def inOutQuintic(p : float)
   if (p < 0.5f)
@@ -97,45 +97,45 @@ def inOutQuintic(p : float)
   else
     let f = ((2.f * p) - 2.f)
     return 0.5f * f * f * f * f * f + 1.f
-  //return (6.f * p * p - 15.f * p + 10) * p * p * p //originally in gameMath/easing
+  
 
 
-// Sine wave easing ins(p * PI/2)
 
 
-// Modeled after quarter-cycle of sine wave
+
+
 [generic]
 def inSine(p : float)
   return sin((p - 1.f) * TWOPI) + 1.f
 
-// Modeled after quarter-cycle of sine wave (different phase)
+
 [generic]
 def outSine(p : float)
   return sin(p * TWOPI)
 
-// Modeled after half sine wave
+
 [generic]
 def inOutSine(p : float)
   return 0.5f * (1.f - cos(p * PI))
 
 
 
-// Circular easing sqrt(1 - p^2)
 
 
-// Modeled after shifted quadrant IV of unit circle
+
+
 [generic]
 def inCirc(p : float)
   return 1.f - sqrt(1.f - (p * p))
 
-// Modeled after shifted quadrant II of unit circle
+
 [generic]
 def outCirc(p : float)
   return sqrt((2.f - p) * p)
 
-// Modeled after the piecewise circular function
-// y = (1/2)(1 - sqrt(1 - 4x^2))            [0, 0.5)
-// y = (1/2)(sqrt(-(2x - 3)*(2x - 1)) + 1)  [0.5, 1]
+
+
+
 [generic]
 def inOutCirc(p : float)
   if (p < 0.5f)
@@ -145,22 +145,22 @@ def inOutCirc(p : float)
 
 
 
-// Exponential easing, base 2
 
 
-// Modeled after the exponential function y = 2^(10(x - 1))
+
+
 [generic]
 def inExp(p : float)
   return (p == 0.f) ? p : pow(2.f, 10.f * (p - 1.f))
 
-// Modeled after the exponential function y = -2^(-10x) + 1
+
 [generic]
 def outExp(p : float)
   return (p == 1.f) ? p : 1.f - pow(2.f, -10.f * p)
 
-// Modeled after the piecewise exponential
-// y = (1/2)2^(10(2x - 1))          [0,0.5)
-// y = -(1/2)*2^(-10(2x - 1))) + 1  [0.5,1]
+
+
+
 [generic]
 def inOutExp(p : float)
   if (p == 0.f || p == 1.f)
@@ -172,21 +172,21 @@ def inOutExp(p : float)
     return -0.5f * pow(2.f, (-20.f * p) + 10.f) + 1.f
 
 
-// Exponentially-damped sine wave easing
 
-// Modeled after the damped sine wave y = sin(13pi/2*x)*pow(2, 10 * (x - 1))
+
+
 [generic]
 def inElastic(p : float)
   return sin(13.f * TWOPI * p) * pow(2.f, 10.f * (p - 1.f))
 
-// Modeled after the damped sine wave y = sin(-13pi/2*(x + 1))*pow(2, -10x) + 1
+
 [generic]
 def outElastic(p : float)
   return sin(-13.f * TWOPI * (p + 1.f)) * pow(2.f, -10.f * p) + 1.f
 
-// Modeled after the piecewise exponentially-damped sine wave:
-// y = (1/2)*sin(13pi/2*(2*x))*pow(2, 10 * ((2*x) - 1))       [0,0.5)
-// y = (1/2)*(sin(-13pi/2*((2x-1)+1))*pow(2,-10(2*x-1)) + 2)  [0.5, 1]
+
+
+
 [generic]
 def inOutElastic(p : float)
   if (p < 0.5f)
@@ -195,23 +195,23 @@ def inOutElastic(p : float)
     return 0.5f * (sin(-13.f * TWOPI * ((2.f * p - 1.f) + 1.f)) * pow(2.f, -10.f * (2.f * p - 1.f)) + 2.f)
 
 
-// Overshooting cubic easing
 
-// Modeled after the overshooting cubic y = x^3-x*sin(x*pi)
+
+
 [generic]
 def inBack(p : float)
   return p * p * p - p * sin(p * PI)
 
-// Modeled after overshooting cubic y = 1-((1-x)^3-(1-x)*sin((1-x)*pi))
+
 [generic]
 def outBack(p : float)
   let f = (1.f - p)
   return 1.f - (f * f * f - f * sin(f * PI))
 
 
-// Modeled after the piecewise overshooting cubic function:
-// y = (1/2)*((2x)^3-(2x)*sin(2*x*pi))            [0, 0.5)
-// y = (1/2)*(1-((1-x)^3-(1-x)*sin((1-x)*pi))+1)  [0.5, 1]
+
+
+
 [generic]
 def inOutBack(p : float)
   if (p < 0.5f)
@@ -222,7 +222,7 @@ def inOutBack(p : float)
     return 0.5f * (1.f - (f * f * f - f * sin(f * PI))) + 0.5f
 
 
-// Exponentially-decaying bounce easing
+
 
 
 [generic]
@@ -248,7 +248,7 @@ def inOutBounce(p : float)
     return 0.5f * outBounce(p * 2.f - 1.f) + 0.5f
 
 
-// our own internal and shiny
+
 
 [generic]
 def inOutBezier(p : float)

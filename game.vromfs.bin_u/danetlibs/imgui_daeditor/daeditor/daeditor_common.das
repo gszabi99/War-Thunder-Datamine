@@ -24,5 +24,5 @@ def editor_save_entity(eid : EntityId; var blk : DataBlock; override_template_na
     if list != null
       *list |> components_to_blk(sub, "", false)
     else
-      // entity wasn't added to scene
+      
       eid |> components_to_blk(sub, "", false)

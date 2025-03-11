@@ -174,10 +174,11 @@ foreach (fn in [
   "%scripts/shop/shopViewWnd.nut"
   "%scripts/convertExpHandler.nut"
 
-  "%scripts/weaponry/unitBulletsManager.nut"
   "%scripts/dmViewer/dmViewer.nut"
   "%scripts/weaponry/weaponryTypes.nut"
   "%scripts/weaponry/weaponrySelectModal.nut"
+  "%scripts/weaponry/weaponryPresetsWnd.nut"
+
   "%scripts/weaponry/unitWeaponsHandler.nut"
   "%scripts/weaponry/weapons.nut"
   "%scripts/weaponry/weaponWarningHandler.nut"

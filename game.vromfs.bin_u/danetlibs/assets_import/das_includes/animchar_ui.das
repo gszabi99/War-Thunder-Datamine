@@ -14,4 +14,4 @@ def animchar_viewer()
     createEntity("custom_animchar") <| $(init)
       set(init, "transform", find_transform())
       set(init, "animchar__res", assetName)
-//TODO : add all files generation
+

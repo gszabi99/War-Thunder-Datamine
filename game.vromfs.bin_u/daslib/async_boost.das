@@ -13,13 +13,13 @@ require daslib/macro_boost
 
 
 def public await_next_frame() {
-    //! This function is used to suspend coroutine until next frame.
+    
     panic("await_next_frame() should not be called directly, add [async] annotation to the function in that you want to use it")
 }
 
 [tag_function(await_tag)]
 def public await(var a : iterator<variant<res : auto(T); wait : bool>>) : T {
-    //! This function is used to wait for the result of the async function.
+    
     panic("await( ) should not be called directly, add [async] annotation to the function in that you want to use it")
     var res : T
     return <- res
@@ -36,19 +36,19 @@ class AwaitMacro : AstFunctionAnnotation {
 
 [tag_function(await_coroutine_tag)]
 def public await(var a : iterator<bool>) : bool {
-    //! This function is used to wait for the result of the async function.
+    
     panic("await() should not be called directly, add [async] annotation to the function in that you want to use it")
     return false
 }
 
 [tag_function_macro(tag="await_coroutine_tag")]
 class AwaitCoroutineMacro : AstFunctionAnnotation {
-    //! This macro converts await(<coroutine>) expression into::
-    //!
-    //!     for t in THAT
-    //!         yield t
-    //!
-    //! The idea is that coroutine or generator can continuesly yield from another sub-coroutine or generator.
+    
+    
+    
+    
+    
+    
     def override transform(var call : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
         let iname = make_unique_private_name("_await_coroutine", call.at)
         var inscope res <- qmacro_block <| $() {
@@ -63,10 +63,10 @@ class AwaitCoroutineMacro : AstFunctionAnnotation {
 
 [function_macro(name="async")]
 class AsyncMacro : AstFunctionAnnotation {
-    //! This macro converts function into generator.
-    //! Generator yields bool if its a void function (coroutine), and yields the return type otherwise (async return).
-    //! async function can wait for another async function using await(<async fn call>).
-    //! use 'return false' to immediately return from the generator.
+    
+    
+    
+    
     [unused_argument(group, args)] def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         if (func.result.baseType == Type.autoinfer) {
             errors := "async function should have explicit return type"
@@ -334,7 +334,7 @@ class CollectAndReplaceIteratorFields : AstVisitor {
 }
 
 def public async_run(var a : iterator<auto>) {
-    //! This function runs async function until it is finished.
+    
     for (t in a) {
         pass
     }
@@ -342,7 +342,7 @@ def public async_run(var a : iterator<auto>) {
 
 
 def public async_run_all(var a : array<iterator<auto>>) {
-    //! This function runs all async function until they are finished (in parallel, starting from the last one).
+    
     while (true) {
         var i = length(a)
         if (i == 0) {

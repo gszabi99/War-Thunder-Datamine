@@ -12,7 +12,7 @@ require daslib/macro_boost
 
 [typeinfo_macro(name="fields_count")]
 class TypeInfoGetFieldsNum : AstTypeInfoMacro {
-    //! this macro implements "fields_count" type trait, which returns total number of fields in the structure
+    
     def override getAstChange(expr : smart_ptr<ExprTypeInfo>; var errors : das_string) : ExpressionPtr {
         if (expr.typeexpr != null) {
             if (!expr.typeexpr.isStructure) {
@@ -30,7 +30,7 @@ class TypeInfoGetFieldsNum : AstTypeInfoMacro {
 
 [typeinfo_macro(name="safe_has_property")]
 class TypeInfoHasProperty : AstTypeInfoMacro {
-    //! this macro implements "has_property" type trait, which returns true when structure has a property
+    
     def override getAstChange(expr : smart_ptr<ExprTypeInfo>; var errors : das_string) : ExpressionPtr {
         if (expr.typeexpr != null) {
             if (!expr.typeexpr.isHandle && !expr.typeexpr.isStructure) {
@@ -64,7 +64,7 @@ class TypeInfoHasProperty : AstTypeInfoMacro {
 
 [call_macro(name="is_subclass_of")]
 class IsSubclassOf : AstCallMacro {
-    //! Converts to 'true' if the first type is a subclass of the second type.
+    
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
         macro_verify(call.arguments |> length == 2, prog, call.at, "expecting is_subclass_of(classptr,typeexpr)")
         assume classType = call.arguments[0]._type

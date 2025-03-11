@@ -1,6 +1,4 @@
-//Parameter
 
-//Unit systems
 
 const degToRad = Math.PI / 180.0
 const radToDeg = 1.0 / degToRad
@@ -357,7 +355,6 @@ function convertToString(value, unitData)
     return value.toString()
 }
 
-//GUI element
 
 function getControl(param)
 {
@@ -367,7 +364,6 @@ function getControl(param)
   return control
 }
 
-//Prepare
 
 function prepareEnum(param)
 {
@@ -395,7 +391,6 @@ function prepareParameter(param)
       prepareParameter(param.items[i])
 }
 
-//Load
 function loadNumber(param, unitSystemName)
 {
   var control = getControl(param)
@@ -468,16 +463,13 @@ function getParamValue(param, unitSystemName)
   return convertToUnit(param.value, param.unit, unitSystemName)
 }
 
-//Save
 function saveNumber2(param, value, unitSystemName)
 {
   var control = getControl(param)
   if (param.inactive || param.value == undefined)
   {
-    if (param.readOnly) //label
-      control.innerHTML = '-'
-    else //edit
-      control.value = '-'
+    if (param.readOnly)       control.innerHTML = '-'
+    else       control.value = '-'
   }
   else
   {
@@ -492,10 +484,8 @@ function saveNumber2(param, value, unitSystemName)
       precision = 0
     const unitData = unitSystems[unitSystemName][param.unit]
     var str = convertToString(val.toFixed(precision), unitData)
-    if (param.readOnly) //label
-      control.innerHTML = str
-    else //edit
-      control.value = str
+    if (param.readOnly)       control.innerHTML = str
+    else       control.value = str
   }
 }
 
@@ -507,10 +497,8 @@ function saveNumber(param, unitSystemName)
 function saveString(param)
 {
   var control = getControl(param)
-  if (param.readOnly) //label
-    control.innerHTML = (param.inactive || param.value == undefined) ? '-' : param.value
-  else //edit
-    control.value = (param.inactive || param.value == undefined) ? '-' : param.value
+  if (param.readOnly)     control.innerHTML = (param.inactive || param.value == undefined) ? '-' : param.value
+  else     control.value = (param.inactive || param.value == undefined) ? '-' : param.value
 }
   
 function saveBool(param)
@@ -522,8 +510,7 @@ function saveBool(param)
 function saveEnum(param)
 {
   var control = getControl(param)
-  control.value = param.value != undefined ? param.value.toString() : undefined //combo-box
-}
+  control.value = param.value != undefined ? param.value.toString() : undefined }
 
 function saveParameter(param, unitSystemName, triggerOnChange)
 {
@@ -559,7 +546,6 @@ function saveParameter(param, unitSystemName, triggerOnChange)
   }
 }
 
-//Range
 
 function setNumberRange(param, minValue, maxValue, unitSystemName)
 {
@@ -573,21 +559,18 @@ function setNumberRange(param, minValue, maxValue, unitSystemName)
   }
 }
 
-//Active / inactive
 function setParameterActive(param, active, unitSystemName)
 {
   param.inactive = !active
   saveParameter(param, unitSystemName)
 }
 
-//Enable / disable
 function setParameterEnabled(param, enabled, unitSystemName)
 {
   param.disabled = !enabled
   saveParameter(param, unitSystemName)
 }
 
-//Navigation
 function getParameterByPath(root, path)
 {
   var tbl = root
@@ -596,13 +579,11 @@ function getParameterByPath(root, path)
     if (tbl == undefined ||
         tbl.items == undefined)
       return undefined
-    //alert('path tbl ' + path[i])
-    tbl = tbl.items[path[i]]
+        tbl = tbl.items[path[i]]
   }
   if (tbl != undefined)
   {
-    //alert('path key ' + path[path.length - 1])
-    return tbl.items[path[path.length - 1]]
+        return tbl.items[path[path.length - 1]]
   }
 }
 
@@ -614,7 +595,6 @@ function parameterPathToString(path)
   return str
 }
 
-//Serialization
 function serializeParameterToJSON(param)
 {
   if (param.type == 'table')

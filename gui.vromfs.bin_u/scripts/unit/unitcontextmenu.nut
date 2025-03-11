@@ -20,7 +20,7 @@ let selectGroupHandler = require("%scripts/slotbar/selectGroupHandler.nut")
 let crewModalByVehiclesGroups = require("%scripts/crew/crewModalByVehiclesGroups.nut")
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
+let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let { checkUnitWeapons, checkUnitSecondaryWeapons,
   needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
 let { canBuyNotResearched, isUnitInSlotbar, canResearchUnit, isUnitInResearch,
@@ -156,7 +156,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       haveDiscount = getMaxWeaponryDiscountByUnitName(unit.name, ["weapons"]) > 0
       showAction = inMenu &&
         needSecondaryWeaponsWnd(unit) && isUnitHaveSecondaryWeapons(unit)
-      actionFunc = @() weaponryPresetsWnd.open({
+      actionFunc = @() guiStartWeaponryPresets({
         unit = unit
         curEdiff = curEdiff
       })

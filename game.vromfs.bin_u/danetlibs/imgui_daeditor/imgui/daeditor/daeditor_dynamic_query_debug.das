@@ -18,7 +18,7 @@ struct EntityData
   templateStr : string
   distance : float
 
-// common code must be sync with same code in ecs_scene_debug
+
 def private daeditor_draw_entity_table(all_entities : array<EntityData>; var edit_item : EntityId&; var selected_item : EntityId&)
   if !BeginTable("split", 2, ImGuiTableFlags.BordersOuter | ImGuiTableFlags.RowBg)
     return false

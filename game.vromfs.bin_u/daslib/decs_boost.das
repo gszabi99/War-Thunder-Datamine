@@ -17,26 +17,26 @@ require daslib/defer
 require daslib/decs_state
 require daslib/macro_boost
 
-/*
-from:
-    query ( ) <| $ ( pos:float3&; vel:float3; col:uint=0x12345678 )
-        pos += vel
-to:
-    for_each_archetype ( ERQ_HASH, @@ => [[EcsRequest req <- [[string "pos"; "vel"]] ]] ) <| $ ( arch )
-        for pos, vel in get(arch,"pos",type<float3>), get_ro(arch,"vel",type<float3>), get_default_ro(arch,"col",0x12345678)
-            tag
-*/
+
+
+
+
+
+
+
+
+
 
 [block_macro(name="REQUIRE")]
-class DecsReq : AstBlockAnnotation /*! This annotation provides list of required components for entity. */ {}
+class DecsReq : AstBlockAnnotation  {}
 
 [block_macro(name="REQUIRE_NOT")]
-class DecsReqN : AstBlockAnnotation /*! This annotation provides list of components, which are required to not be part of the entity. */ {}
+class DecsReqN : AstBlockAnnotation  {}
 
 [structure_macro(name="decs_template")]
 class DecsTemplate : AstStructureAnnotation {
-    //! This macro creates a template for the given structure.
-    //! `apply_decs_template` and `remove_decs_template` functions are generated for the structure type.
+    
+    
     def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         if (length(st.fields) == 0) {
             errors := "expecting at least one field in the desc_template {st.name}"
@@ -67,7 +67,7 @@ class DecsTemplate : AstStructureAnnotation {
 }
 
 variant ItCheck {
-    //! DECS prefix check.
+    
     yes : string
     no  : bool
 }
@@ -136,7 +136,7 @@ def build_req_from_args(qblk : ExprBlock?) : EcsRequest {
 [macro_function]
 def getter_name(a; const_parent : bool; can_be_optional : bool) {
     var getter = "get_ro"
-    static_if (typeinfo stripped_typename(a) == "ast::FieldDeclaration") {// part of the desc_template
+    static_if (typeinfo stripped_typename(a) == "ast::FieldDeclaration") {
         if (a.init != null && can_be_optional) {
             getter = "get_default_ro"
         } elif (!const_parent) {
@@ -223,15 +223,15 @@ def private append_index_lookup(arch_name : string; var qblock : smart_ptr<ExprB
         vtype.flags |= TypeDeclFlags.constant
     } elif (getter == "get_ro") {
         vtype.flags |= TypeDeclFlags.constant
-        // if length(a._type.dim)==0
+        
         vtype.flags |= TypeDeclFlags.ref
     } else {
-        // if length(a._type.dim)==0
+        
         vtype.flags |= TypeDeclFlags.ref
     }
-        // else
-        //    macro_error(compiling_program(),a.at,"[] arguments are not supported in eid queries yet")
-        //    return false
+        
+        
+        
     vlet.variables |> emplace_new() <| new Variable(at = a.at,
         name := "{prefix}{a.name}{suffix}",
         _type <- vtype,
@@ -250,50 +250,50 @@ enum private DecsQueryType {
 
 [call_macro(name="query")]
 class DecsQueryMacro : AstCallMacro {
-    //! This macro implmenets 'query` functionality. There are 2 types of queries:
-    //!     * query(...) - returns a list of entities matching the query
-    //!     * query(eid) - returns a single entity matching the eid
-    //! For example::
-    //!
-    //!     query() <| $ ( eid:EntityId; pos, vel : float3 )
-    //!         print("[{eid}] pos={pos} vel={vel}\n")
-    //!
-    //! The query above will print all entities with position and velocity.
-    //! Here is another example::
-    //!
-    //!     query(kaboom) <| $ ( var pos:float3&; vel:float3; col:uint=13u )
-    //!         pos += vel
-    //! The query above will add the velocity to the position of an entity with eid kaboom.
-    //!
-    //! Query can have `REQUIRE` and `REQUIRE_NOT` clauses::
-    //!
-    //!     var average : float3
-    //!     query <| $ [REQUIRE(tank)] ( pos:float3 )
-    //!         average += pos
-    //!
-    //! The query above will add `pos` components of all entities, which also have a `tank` component.
-    //!
-    //! Additionally queries can atuomaticall expand components of entities. For example::
-    //!
-    //!     [decs_template(prefix="particle")]
-    //!     struct Particle
-    //!         pos, vel : float3
-    //!     ...
-    //!     query <| $ ( var q : Particle )
-    //!         q.pos += q.vel                  // this is actually particlepos += particlevel
-    //!
-    //!
-    //! In the example above structure q : Particle does not exist as a variable. Instead it is expanded into accessing individual componentes of the entity.
-    //! REQURE section of the query is automatically filled with all components of the template.
-    //! If template prefix is not specified, prefix is taken from the name of the template (would be "Particle_").
-    //! Specifying empty prefix `[decs_template(prefix)]` will result in no prefix beeing added.
-    //!
-    //! Note: apart from tagging structure as a template, the macro also generates `apply_decs_template` and `remove_decs_template` functions.
-    //! `apply_decs_template` is used to add template to an entity, and `remove_decs_template` is used to remove all components of the template from the entity::
-    //!
-    //!     for i in range(3)
-    //!         create_entity <| @ ( eid, cmp )
-    //!             apply_decs_template(cmp, [[Particle pos=float3(i), vel=float3(i+1)]])
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     def override preVisit(prog : ProgramPtr; mod : Module?; var expr : smart_ptr<ExprCallMacro>) : void {
         let totalArgs = length(expr.arguments)
         if (totalArgs != 1 && totalArgs != 2) {
@@ -335,7 +335,7 @@ class DecsQueryMacro : AstCallMacro {
         req.at = EcsRequestPos(expr.at)
         var vreq = verify_request(req)
         macro_verify(vreq.ok, compiling_program(), expr.at, "incorrect query, {vreq.error}")
-        // @@ => [[EcsQuery ...]]
+        
         var inscope erq_fun <- qmacro <| @@ {
             return <- $v(req)
         }
@@ -367,7 +367,7 @@ class DecsQueryMacro : AstCallMacro {
             convert_block_to_loop(qlbody, true, false, false)
             move(qtop) <| qlbody
         } else {
-            // for s1, s2 ...
+            
             var inscope qloop <- new ExprFor(at = qblk.at, visibility = qblk.at)
             qloop.allowIteratorOptimization = true
             qloop.canShadow = true
@@ -459,21 +459,21 @@ class DecsQueryMacro : AstCallMacro {
 
 [call_macro(name="find_query")]
 class DecsFindQueryMacro : DecsQueryMacro {
-    //! This macro implmenets 'find_query` functionality.
-    //! It is similar to `query` in most ways, with the main differences being:
-    //!     * there is no eid-based find query
-    //!     * the find_query stops once the first match is found
-    //! For example::
-    //!
-    //!     let found = find_query <| $ ( pos,dim:float3; obstacle:Obstacle )
-    //!     if !obstacle.wall
-    //!         return false
-    //!     let aabb = [[AABB min=pos-dim*0.5, max=pos+dim*0.5 ]]
-    //!     if is_intersecting(ray, aabb, 0.1, dist)
-    //!         return true
-    //!
-    //! In the example above the find_query will return `true` once the first intesection is found.
-    //! Note: if return is missing, or end of find_query block is reached - its assumed that find_query did not find anything, and will return false.
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     def override visit(prog : ProgramPtr; mod : Module?; var expr : smart_ptr<ExprCallMacro>) : ExpressionPtr {
         macro_verify(length(expr.arguments) == 1, prog, expr.at, "expecting find_query($(block_with_arguments))")
         return <- self->implement(expr, 0, DecsQueryType.find_query)
@@ -482,14 +482,14 @@ class DecsFindQueryMacro : DecsQueryMacro {
 
 [function_macro(name="decs")]
 class DecsEcsMacro : AstFunctionAnnotation {
-    //! This macro converts a function into a DECS pass stage query. Possible arguments are `stage`, 'REQUIRE', and `REQUIRE_NOT`.
-    //! It has all other properties of a `query` (like ability to operate on templates). For example::
-    //!
-    //!     [decs(stage=update_ai, REQUIRE=ai_turret)]
-    //!         def update_ai ( eid:EntityId; var turret:Turret; pos:float3 )
-    //!             ...
-    //!
-    //! In the example above a query is added to the `update_ai` stage. The query also requires that each entity passed to it has an `ai_turret` property.
+    
+    
+    
+    
+    
+    
+    
+    
     def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         let argPass = find_arg(args, "stage")
         if (!(argPass is tString)) {
@@ -505,10 +505,10 @@ class DecsEcsMacro : AstFunctionAnnotation {
         }
         func.flags |= FunctionFlags.privateFunction
         blk.list |> emplace_new <| qmacro($c("_::{func.name}")())
-        var inscope fblk <- new ExprBlock(at = func.body.at)                // new function block
+        var inscope fblk <- new ExprBlock(at = func.body.at)                
         var inscope cqq <- make_call(func.at, "query")
         var cquery = cqq as ExprCallMacro
-        var inscope qblk <- new ExprBlock(at = func.body.at)                // inside the query block
+        var inscope qblk <- new ExprBlock(at = func.body.at)                
         qblk.blockFlags |= ExprBlockFlags.isClosure
         move_new(qblk.returnType) <| new TypeDecl(baseType = Type.tVoid, at = func.at)
         var req, nreq : array<string>
@@ -545,13 +545,13 @@ class DecsEcsMacro : AstFunctionAnnotation {
             qblk.annotations |> emplace(decl)
         }
         var fnbody = func.body as ExprBlock
-        for (el in fnbody.list) {// list goes to inside query
+        for (el in fnbody.list) {
             qblk.list |> emplace_new <| clone_expression(el)
         }
-        for (ef in fnbody.finalList) {// finally goes to new finally
+        for (ef in fnbody.finalList) {
             fblk.finalList |> emplace_new <| clone_expression(ef)
         }
-        for (arg in func.arguments) {// add function arguments to query arguments
+        for (arg in func.arguments) {
             qblk.arguments |> emplace_new <| new Variable(at = arg.at,
                 name := arg.name,
                 _type <- clone_type(arg._type),

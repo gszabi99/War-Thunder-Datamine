@@ -7,15 +7,13 @@ let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
-let { defer } = require("dagor.workcycle")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { secondary_weapon_camera_mode } = require("hangar")
 let { set_weapon_visual } = require("unitCustomization")
 let { sortPresetsList, setFavoritePresets, getWeaponryPresetView,
   getWeaponryByPresetInfo, getCustomWeaponryPresetView
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLastWeapon, setLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -940,17 +938,4 @@ gui_handlers.weaponryPresetsModal <- class (gui_handlers.weaponryPresetsWnd) {
 
   loadHangarModel = @() null
   updateChangeWndHeightButtons= @(_ = null) null
-}
-
-return {
-  open = function(params) {
-    broadcastEvent("BeforeOpenWeaponryPresetsWnd")
-    let handlerClass = isInFlight() ? gui_handlers.weaponryPresetsModal
-      : gui_handlers.weaponryPresetsWnd
-    if (get_cur_gui_scene().isInAct()) {
-      defer(@() handlersManager.loadHandler(handlerClass, params))
-      return
-    }
-    handlersManager.loadHandler(handlerClass, params)
-  }
 }

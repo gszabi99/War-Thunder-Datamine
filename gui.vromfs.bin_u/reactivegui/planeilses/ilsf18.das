@@ -848,19 +848,20 @@ class Component : Canvas
     let isAirCombatMode = isAamMode || isAirGunMode
     return if !isAirCombatMode || !tracking.isActive
 
-    let pos = float2(0.18, -0.07)
+    let pos = float2(0.3, -0.07)
     setFontSize(35)
     setLineSpacing(1.0)
     setCaretPosition(pos)
-    let distanceRateStr = fmt(":>6d", roundi(-tracking.distanceRate * mpsToKnots))
-    printStrLn("{distanceRateStr}Vc")
+    setTextAnchorHorz(AnchorHorz.Left)
+    let distanceRateStr = fmt(":d", roundi(-tracking.distanceRate * mpsToKnots))
+    printStrLn("{distanceRateStr} Vc")
 
     if isAirGunMode
-      let distanceStr = fmt(":>4d", roundi(tracking.distance * metrToFeet))
+      let distanceStr = fmt(":d", roundi(tracking.distance * metrToFeet))
       printStrLn("{distanceStr} FT")
     elif isAamMode
-      let distanceStr = fmt(":>4.1f", tracking.distance * metrToNavMile)
-      printStrLn("{distanceStr}RNG")
+      let distanceStr = fmt(":.1f", tracking.distance * metrToNavMile)
+      printStrLn("{distanceStr} RNG")
 
 
   def drawAamGuidance()
@@ -985,7 +986,7 @@ class Component : Canvas
     return if !tracking.isActive
 
     let pos = float2(0.3, 0.1)
-    setTextAnchorHorz(AnchorHorz.Right)
+    setTextAnchorHorz(AnchorHorz.Left)
     setFontSize(35)
 
     var tthAfterLaunch = (*wc).getLastGuidedWeaponHitTime(int(WeaponTriggerType.AAM_TRIGGER))
@@ -1017,6 +1018,7 @@ class Component : Canvas
     drawHeadingTape()
     drawPitchLadder()
     drawForwardPoint()
+    drawBankingAngle()
 
     let isCombatMode = gearProgress == 0.0
     if isCombatMode
@@ -1036,8 +1038,6 @@ class Component : Canvas
       drawAgmGuidance()
       drawAamReticle()
       drawAamTimeToHit()
-    else
-      drawBankingAngle()
 
     restoreViewport()
 

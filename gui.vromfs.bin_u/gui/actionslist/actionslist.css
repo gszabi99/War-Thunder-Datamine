@@ -1,7 +1,8 @@
 @const actionsListPadding: 3@dp;
-@const actionItemSidePadding: 14*@sf/@pf;
+@const actionItemSidePadding: 8*@sf/@pf;
 @const menuSeparatorPadding: 15*@sf/@pf;
 @const menuSeparatorColor: #11111111;
+@const actionsListBgColor: #222C32;
 
 popup_actions_list {
   re-type:rotation;
@@ -59,7 +60,7 @@ popup_actions_list > itemsList > button {
 
 popup_actions_list[iconed=yes] > itemsList > actionListItem,
 popup_actions_list[iconed=yes] > itemsList > button {
-  padding: 1@actionItemSidePadding + @cIco, 0;
+  padding: 1@actionItemSidePadding + 1@cIco, 0;
 }
 
 popup_actions_list > itemsList > actionListItem > text,

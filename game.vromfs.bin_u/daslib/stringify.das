@@ -11,12 +11,12 @@ require daslib/ast_boost
 
 [reader_macro(name="stringify")]
 class private LongStringReader : AstReaderMacro {
-    //! This macro implements embedding of the long string into the source code.
-    //!   var st = %stringify~
-    //!  This is a long string
-    //!  with multiple lines
-    //!  and special charactes like { this } and "that"
-    //!  %%
+    
+    
+    
+    
+    
+    
     def override accept(prog : ProgramPtr; mod : Module?; var expr : ExprReader?; ch : int; info : LineInfo) : bool {
         append(expr.sequence, ch)
         if (ends_with(expr.sequence, "%%")) {

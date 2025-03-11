@@ -1228,12 +1228,12 @@ enumsAddTypes(g_hud_action_bar_type, {
   MANEUVERABILITY_MODE = {
     code = EII_MANEUVERABILITY_MODE
     _name = "maneverability"
-    _title = loc("hotkeys/ID_MANEVERABILITY_MODE")
+    _title = loc("hotkeys/ID_MANEUVERABILITY_MODE")
     getIcon = @(actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) actionItem?.active
       ? "#ui/gameuiskin#maneuverabilityactive"
       : "#ui/gameuiskin#maneuverability"
-    getShortcut = @(_actionItem, _hudUnitType = null) "ID_MANEVERABILITY_MODE"
-    getTooltipText = @(_actionItem = null) loc("hotkeys/ID_MANEVERABILITY_MODE")
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_MANEUVERABILITY_MODE"
+    getTooltipText = @(_actionItem = null) loc("hotkeys/ID_MANEUVERABILITY_MODE")
   }
 
 })

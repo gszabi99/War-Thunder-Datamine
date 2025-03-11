@@ -15,18 +15,18 @@ require daslib/templates_boost
 
 [expect_any_bitfield(argT), tag_function(each_bitfield_tag), unused_argument(argT)]
 def public each(argT) {
-    //! Same as assert, only the check will be not be repeated after the asseretion failed the first time.
+    
     pass
 }
 
 [tag_function_macro(tag="each_bitfield_tag")]
 class EachBitfieldMacro : AstFunctionAnnotation {
-    //! This macro converts each(bitfield) to the following code::
-    //!     generator<string>() <|
-    //!         yield "field1"
-    //!         yield "field2"
-    //!         ...
-    //!         return false
+    
+    
+    
+    
+    
+    
     def override transform(var call : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
         var inscope yields : array<ExpressionPtr>
         for (name in call.arguments[0]._type.argNames) {

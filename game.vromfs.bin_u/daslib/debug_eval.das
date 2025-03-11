@@ -232,10 +232,10 @@ def expr_value(var st : TokenStream) : Result {
         if (Token(eos = _)) {
             return st |> error("unexpected end of stream")
         }
-        if (Token(number = $v(value))) {// number
+        if (Token(number = $v(value))) {
             return <- Result(value)
         }
-        if (Token(ident = $v(name))) {// identifier
+        if (Token(ident = $v(name))) {
             var ntoken = token(st)
             if (ntoken ?as punkt ?? 0 == '(') {
                 let arg = expr(st);
@@ -256,7 +256,7 @@ def expr_value(var st : TokenStream) : Result {
             }
             return st |> error("unknown variable {name}")
         }
-        if (Token(punkt = '(')) {// '(' expr ')
+        if (Token(punkt = '(')) {
             var res = expr(st);
             if (token(st) ?as punkt ?? 0 != ')') {
                 return st |> error("expecting )")

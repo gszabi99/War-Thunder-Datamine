@@ -33,10 +33,10 @@ def registerAccess(var self : NameSpace; name : string; slot_decl : resource_slo
     for a in slot_decl.read
       actionList |> read(a.slot, a.priority)
 
-    // This closure saves declaration_callback inside itself
-    // This closure can be called several times - declaration_callback will
-    //   stay part of this lambda, inner lambda will get pointer to
-    //   declaration_callback
+    
+    
+    
+    
     let declCB <- @ <|  capture(<- declaration_callback) (var node_handle : daBfgCore::NodeHandle &; var slots_state : ResourceSlotCore::State &)
       let pDeclCB = unsafe(addr(declaration_callback))
       node_handle <- self |> daBfg::registerNode(name) <| @(var reg : daBfg::Registry)

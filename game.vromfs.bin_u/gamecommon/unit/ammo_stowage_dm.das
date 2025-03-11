@@ -23,9 +23,9 @@ require %game.unit.ammo_stowage_events
 require %game.events
 
 
-// ==========================================================================
-// HELPER FUNCS
-// ==========================================================================
+
+
+
 
 
 def get_dm_effect_flag(flags, flag)
@@ -45,7 +45,7 @@ def calc_slot_pos(slot_id : int;
                   v : tuple<
                     ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList
                     >) : float3
-  // TODO: workaround for crach fix, remove it after added check nodes to load!
+  
   if v.ammo_slots__node[slot_id].nodeWtm == null || v.ammo_slots__node[slot_id].cnode == null
     return float3(0.0f)
 
@@ -64,11 +64,11 @@ def ammo_stowage_calc_fill(v : tuple<
   return safediv(float(total_ammo.x), float(total_ammo.y))
 
 
-// ==========================================================================
-// APPLYING AMMO SLOT EFFECT
-// ==========================================================================
 
-// see gather_adjacent_slots
+
+
+
+
 [with_bundle(v)]
 def find_adjacent_slot_in_cluster(cluster_id : int; slot_id : int; adjacent_cluster_id : int;
                                   v : tuple<
@@ -79,22 +79,22 @@ def find_adjacent_slot_in_cluster(cluster_id : int; slot_id : int; adjacent_clus
   let num_ammo = v.ammo_slots__numAmmo[slot_id]
   let ammo_type = get_ammo_slot_type(slot_id, v)
   let slots_range = v.ammo_clusters__slotsRange[adjacent_cluster_id]
-  // try slot with same index in adjacent cluster
+  
   if true
     let rel_slot_id = slot_id - v.ammo_clusters__slotsRange[cluster_id].x + slots_range.x
     assert(rel_slot_id >= slots_range.x)
     if rel_slot_id < slots_range.y && get_ammo_slot_type(rel_slot_id, v) == ammo_type && v.ammo_slots__numAmmo[rel_slot_id].x == num_ammo.x
       return rel_slot_id
-  // search other slots
+  
   for adjacent_slot_id in slots_range.x..slots_range.y
     if get_ammo_slot_type(adjacent_slot_id, v) == ammo_type && v.ammo_slots__numAmmo[adjacent_slot_id].x == num_ammo.x
       return adjacent_slot_id
   return -1
 
-// Used to handle destroyed slots for separate loading. Searches for all clusters and
-// for each cluster type tries to find slot of this type, adjacent to given slot. Returns all
-// slots including one, that was passed.
-// Priotizes clusters of the same stage and size, only returns slots, that have same ammo type and count
+
+
+
+
 [with_bundle(v)]
 def gather_adjacent_slots(stowage_id : int; cluster_id : int; slot_id : int;
                           v : tuple<
@@ -154,7 +154,7 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
                                     ammo_clusters__typeAndStage : UInt16List;
                                     ammo_clusters__slotsRange : IPoint2List
                                     >) : void
-  // resolve combined effects
+  
   if effect == AmmoSlotEffectType FLOODED_AND_DESTROYED
     apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType FLOODED) <| v
     apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType DESTROYED) <| v
@@ -164,7 +164,7 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
     apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType DRIED) <| v
     return
 
-  // skip if effect is a no-op
+  
   if effect == AmmoSlotEffectType RESTORED && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED)
     return
   if effect == AmmoSlotEffectType DESTROYED && !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED)
@@ -174,15 +174,15 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
   if effect == AmmoSlotEffectType DRIED && !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState FLOODED)
     return
 
-  // subtract ammo if slot is destroyed
+  
   if effect == AmmoSlotEffectType DESTROYED
-    // subtract destroyed ammo from gun
+    
     let slot_ammo_type = get_ammo_slot_type(slot_id, v)
     let slot_num_ammo = v.ammo_slots__numAmmo[slot_id].x
     if slot_num_ammo > 0
       ammo_stowage_subtract_weapon_ammo(unit.weap, slot_ammo_type, false, slot_num_ammo, v)
       v.ammo_stowage__ammoLost += slot_num_ammo
-    // start reloading gun if ammo loaded in gun slot was destroyed
+    
     var need_start_reload = slot_num_ammo > 0 && get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage LOADED_IN_GUN)
     if need_start_reload
       let slot_range = v.ammo_clusters__slotsRange[cluster_id]
@@ -195,14 +195,14 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
 
     set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState NEED_SYNC_BULLET_COUNT, true)
 
-    // gather all affected slots (for separate loading) and set ammo to zero
+    
     for adjacent_cluster_and_slot in gather_adjacent_slots(stowage_id, cluster_id, slot_id, v)
       let adjacent_slot_id = adjacent_cluster_and_slot.y
       if adjacent_slot_id != -1
         v.ammo_slots__numAmmo[adjacent_slot_id].x = 0
         ammo_slot_set_dm_enabled(unit, adjacent_slot_id, false, v)
 
-  // change flags & update dm
+  
   if effect == AmmoSlotEffectType DESTROYED
     set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED, false)
     ammo_slot_set_dm_enabled(unit, slot_id, false, v)
@@ -240,9 +240,9 @@ def ammo_stowage_apply_slot_effect_es(evt : EventAmmoStowageApplySlotEffect;
       apply_ammo_slot_effect(unit, remap.stowageId, remap.clusterId, remap.slotId, evt.effect) <| v
 
 
-// ==========================================================================
-// EXPLOSION/SPLASH CALC
-// ==========================================================================
+
+
+
 
 
 struct ExplosionParams
@@ -327,14 +327,14 @@ def calc_explosion_params(unit : Unit?; cluster_id : int; var seed : int;
   if (result.splashDamageTypeId < 0 || result.shatterDamageTypeId < 0) && (result.strengthEquivalent > 0.f || result.brisanceEquivalent > 0.f)
     logerr("ammo stowage exploded with invalid splash/shatter damage type: {result}")
   elif result.splashDamageTypeId < 0
-    // some shells dont have damage type id for splash, so fallback to stowage splash properties
+    
     result.splashDamageTypeId = get_splash_damage_type_id(v.ammo_stowage__splashProperties)
   return result
 
 
-// ==========================================================================
-// FIRE/EXPLOSION EFFECTS LOGIC
-// ==========================================================================
+
+
+
 
 [with_bundle(v)]
 def ammo_stowage_send_explosion_fatal(eid : EntityId; ammo_left : float; var seed : int; full_expl : bool;
@@ -562,14 +562,14 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
         let ammo_left = safediv(v.ammo_stowage__timeAmmoFire, v.ammo_stowage__combustionTime)
         if ammo_left > 0.0f && gfrnd() < v.ammo_stowage__detonateProb * evt.dt
           v.ammo_stowage__timeAmmoFire = -1.0f
-          sendEvent(eid, [[EventAmmoStowageOnEndAmmoFire doKillEffect=false /* fatal explosion will set it */]])
+          sendEvent(eid, [[EventAmmoStowageOnEndAmmoFire doKillEffect=false ]])
           ammo_stowage_send_explosion_fatal(eid, ammo_left, grnd(), false) <| v
       else
         sendEvent(eid, [[EventAmmoStowageOnEndAmmoFire doKillEffect=true]])
 
-  // reset FATAL_FIRE and FATAL_EXPLOSION flags every tick, but only if unit is alive:
-  // - if unit is alive, these flags prevent doing fatal fire/explosion several times in one tick
-  // - if unit is dead, these flags will persist and prevent any new fires/explosions from happening after fatal one
+  
+  
+  
   if get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_FIRE) || get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_EXPLOSION)
     var unit = unit__ref.unit
     if unit.isAlive && !unit.isDelayed
@@ -577,9 +577,9 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
       set_flag(v.ammo_stowage__ammoState, AmmoState FATAL_EXPLOSION, false)
 
 
-// ==========================================================================
-// FATAL FIRE / EXPLOSION
-// ==========================================================================
+
+
+
 
 
 [with_bundle(v)]
@@ -638,9 +638,9 @@ def ammo_stowage_send_explosion_fatal_es(evt : EventAmmoStowageSendExplosionFata
   ammo_stowage_send_explosion_fatal(eid, evt.ammoLeft, evt.seed, evt.fullExpl) <| v
 
 
-// ==========================================================================
-// DAMAGE/DM EFFECT HANDLING
-// ==========================================================================
+
+
+
 
 
 [with_bundle(v)]
@@ -658,11 +658,11 @@ def ammo_stowage_do_fire(unit : Unit?; eid : EntityId; remap : PartRemap; offend
                            ammo_slots__numAmmo : IPoint2List
                            >) : void
   if !remap.partId.valid
-    // Why are we doing fatal fire, if no clusters are hit?
+    
     ammo_stowage_do_fire_fatal(eid, -1, -1, remap.partId, offender) <| v
     return
 
-  // dont set flooded slots on fire
+  
   if get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState FLOODED)
     return
 
@@ -670,16 +670,16 @@ def ammo_stowage_do_fire(unit : Unit?; eid : EntityId; remap : PartRemap; offend
     ammo_stowage_do_fire_fatal(eid, remap.stowageId, remap.clusterId, remap.partId, offender) <| v
     return
 
-  // prevent any new fires from happening, if fatal one had already ocurred
+  
   if get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_FIRE)
     return
 
-  // set cluster on fire
+  
   set_flag(v.ammo_stowage__ammoState, AmmoState ON_FIRE, true)
   set_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState ON_FIRE, true)
   v.ammo_stowage__delayedOffender = offender
 
-  // set fire to all slots, affected by it
+  
   let slots_range = v.ammo_clusters__slotsRange[remap.clusterId]
   for slot_id in slots_range.x..slots_range.y
     if is_ammo_slot_affected_by_dm_effect(unit, remap.stowageId, remap.clusterId, slot_id, v).fire
@@ -711,11 +711,11 @@ def ammo_stowage_do_explosion(unit : Unit?; eid : EntityId; remap : PartRemap; o
                                 >) : void
   let is_full_expl = get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_FULL_EXPL)
   if !remap.partId.valid
-    // Why are we doing fatal explosion, if no clusters are hit?
+    
     ammo_stowage_do_explosion_fatal(eid, -1, -1, remap.partId, offender, seed, is_full_expl) <| v
     return
 
-  // Hack! Charges don't have explosion, only fire
+  
   if get_ammo_cluster_type(remap.clusterId, v) == int(AmmoClusterType CHARGES)
     ammo_stowage_do_fire(unit, eid, remap, offender) <| v
     return
@@ -724,16 +724,16 @@ def ammo_stowage_do_explosion(unit : Unit?; eid : EntityId; remap : PartRemap; o
     ammo_stowage_do_explosion_fatal(eid, remap.stowageId, remap.clusterId, remap.partId, offender, seed, is_full_expl) <| v
     return
 
-  // prevent any new explosions from happening, if fatal one had already ocurred
+  
   if get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_EXPLOSION)
     return
 
-  // set cluster on explode
+  
   set_flag(v.ammo_stowage__ammoState, AmmoState ON_EXPLODE, true)
   set_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState ON_EXPLODE, true)
   v.ammo_stowage__delayedOffender = offender
 
-  // set explosion to all slots, affected by it
+  
   let slots_range = v.ammo_clusters__slotsRange[remap.clusterId]
   for slot_id in slots_range.x..slots_range.y
     if is_ammo_slot_affected_by_dm_effect(unit, remap.stowageId, remap.clusterId, slot_id, v).expl
@@ -786,7 +786,7 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
     if affected_by.fire
       ammo_stowage_do_fire(unit, eid, remap, evt.offender) <| v
 
-  // destroy slot, if part was destroyed and it was not ignited/exploded
+  
   if should_be_hp <= 0.0f && remap.partId.valid && !get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState ON_FIRE) && !get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState ON_EXPLODE)
     sendEventImmediate(eid, [[EventAmmoStowageApplySlotEffect
       partId=partId,

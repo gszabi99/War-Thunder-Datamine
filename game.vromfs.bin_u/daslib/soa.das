@@ -10,19 +10,19 @@ require daslib/ast_boost
 require daslib/templates_boost
 require daslib/strings_boost
 
-// replacing a[index].b with a.b[index]
+
 
 struct public SOA_INDEX {}
 
 [tag_function(soa_call)]
 def public operator .(src : SOA_INDEX explicit; field : string) {
-    // its important that this operator returns `void`, because it would prevent the compiler from cascading infer of wrong type
+    
     assert(false, "this code should never been instanced. soa_call macro replaces the soa[index].field with soa.field[index]")
 }
 
 [tag_function_macro(tag="soa_call")]
 class SoaCallMacro : AstFunctionAnnotation {
-    //! This macro is used to promote a[index].b to a.b[index] for SOA operations
+    
     def override transform(var expr : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
         if (is_in_completion()) {
             return <- default<ExpressionPtr>
@@ -61,10 +61,10 @@ class SoaCallMacro : AstFunctionAnnotation {
 
 [structure_macro(name=soa)]
 class SoaStructMacro : AstStructureAnnotation {
-    //! This macro generates the following::
-    //! * structure, where every field is replaced by an array
-    //! * operator [] to access the structure, which returns [[SOA_INDEX]]
-    //! * length, push, emplace, push_clone, erase
+    
+    
+    
+    
     def override apply(var st : StructurePtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         if (is_in_completion()) {
             var inscope tdef <- new TypeDecl(at = st.at,
@@ -82,31 +82,31 @@ class SoaStructMacro : AstStructureAnnotation {
             errors := "soa macro expects at least one field"
             return false
         }
-        // soa
+        
         var inscope stype <- clone_structure(get_ptr(st))
         stype.name := "{stype.name}`SOA"
         for (fld in stype.fields) {
             move_new(fld._type) <| make_field_type(fld)
         }
-        // [] operator
+        
         var inscope idx_op <- make_index_op(st, stype)
         compiling_module() |> add_function(idx_op)
-        // length()
+        
         var inscope length_op <- make_length(st, stype)
         compiling_module() |> add_function(length_op)
-        // push
+        
         var inscope push_op <- make_named_call(st, stype, "push", "push", true)
         compiling_module() |> add_generic(push_op)
-        // push_clone
+        
         var inscope push_clone_op <- make_named_call(st, stype, "push_clone", "push_clone", true)
         compiling_module() |> add_function(push_clone_op)
-        // emplace
+        
         var inscope emplace_op <- make_named_call(st, stype, "emplace", "emplace", false)
         compiling_module() |> add_function(emplace_op)
-        // erase
+        
         var inscope erase_op <- make_erase(st, stype)
         compiling_module() |> add_function(erase_op)
-        // now types
+        
         compiling_module() |> add_structure(stype)
         return true
     }
@@ -275,7 +275,7 @@ class SoaForLoop : AstForLoopMacro {
                 names |> push <| string(expr.sources[soa_index]._type.structType.fields[0].name)
             }
             for (itn in names) {
-                let si = new_for.iterators |> length            // todo: add 'push'
+                let si = new_for.iterators |> length            
                 new_for.iterators |> resize(si + 1)
                 new_for.iterators[si] := "{it_prefix}`{itn}"
                 new_for.iteratorsAka |> resize(si + 1)

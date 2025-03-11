@@ -2647,7 +2647,7 @@
         "missionStopSpeech": {},
         "triggerEnable": [
           {
-            "target": "tutorial_tank_arcade_010_2_first_target_crosshairs03"
+            "target": "tutorial_tank_arcade_010_first_target_crosshairs02"
           },
           {
             "target": "shootingP1_crosshair_colors_more"
@@ -2676,7 +2676,7 @@
       },
       "actions": {
         "triggerDisable": {
-          "target": "tutorial_tank_arcade_010_2_first_target_crosshairs03"
+          "target": "tutorial_tank_arcade_010_first_target_crosshairs02"
         },
         "playHint": {
           "hintType": "tutorialHint",
@@ -2744,7 +2744,7 @@
         },
         "triggerEnable": [
           {
-            "target": "tutorial_tank_arcade_010_first_target_crosshairs02"
+            "target": "tutorial_tank_arcade_010_2_first_target_crosshairs03"
           },
           {
             "target": "shootingP1_aim_at_crew"
@@ -2773,7 +2773,7 @@
       },
       "actions": {
         "triggerDisable": {
-          "target": "tutorial_tank_arcade_010_first_target_crosshairs02"
+          "target": "tutorial_tank_arcade_010_2_first_target_crosshairs03"
         },
         "playHint": [
           {
@@ -4585,7 +4585,7 @@
         "wait": {
           "time": 0.5
         },
-        "missionStopSpeech": {},
+        "__missionStopSpeech": {},
         "triggerEnable": {
           "target": "targetCamera_start"
         }
@@ -7670,7 +7670,7 @@
             "time": 0.5
           },
           {
-            "time": 2.0
+            "time": 5.0
           }
         ],
         "hudElementSelectionShade": {
@@ -7828,20 +7828,6 @@
             "tutorial_tank_arcade_055_capture_zone_return_to_the_zone01"
           ]
         },
-        "playHint": {
-          "hintType": "tutorialHint",
-          "name": "",
-          "action": "hideCur",
-          "shouldFadeOut": false,
-          "time": -1.0,
-          "priority": 100500,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "shouldBlink": false
-        },
         "missionMarkAsCaptureZone": {
           "army": 0,
           "timeMultiplier": 1.0,
@@ -7858,6 +7844,20 @@
         },
         "wait": {
           "time": 0.5
+        },
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorial_tank_wait_until_capture_ends",
+          "action": "show",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 100500,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "shouldBlink": false
         },
         "triggerEnable": {
           "target": [
@@ -9916,7 +9916,7 @@
           "dialog": "tutorial_tank_arcade_053_capture_zone_target_killed01",
           "subtitles": false
         },
-        "triggerEnable": {
+        "__triggerEnable": {
           "target": "tutorial_tank_arcade_054_capture_zone_wait_until_capture_ends01"
         }
       },

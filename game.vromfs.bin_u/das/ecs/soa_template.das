@@ -300,9 +300,9 @@ struct MakeFuncArg
   argField : bool
 
 def should_check_sizes() : bool
-  // we aot compile scripts with the same dev aot compiler to reduce amount of possible configurations
-  // for aot compiler to know what kind of build it is compiling we pass -sConfig with the value of the $(config) of the game build
-  // this way we can have dev builds with debug checks aoted and release builds with no checks
+  
+  
+  
   if is_in_aot()
     let cmdArgs <- get_command_line_arguments()
     for idx in range(length(cmdArgs) - 1)
@@ -331,7 +331,7 @@ class SoaTemplateStructMacro : AstStructureAnnotation
       )
       compiling_module() |> add_alias(tdef)
       return true
-    // soa
+    
     var inscope stype <- clone_structure(get_ptr(st))
     stype.name := "{stype.name}_SOA"
 
@@ -347,35 +347,35 @@ class SoaTemplateStructMacro : AstStructureAnnotation
 
     let checkSizes = should_check_sizes()
 
-    // push
-    var inscope push_op <- make_named_call(st, stype, "push", "push", /*isConst*/true, checkSizes)
+    
+    var inscope push_op <- make_named_call(st, stype, "push", "push", true, checkSizes)
     compiling_module() |> add_generic(push_op)
-    // push (it, pos)
-    var inscope push_op2 <- make_named_call2_int(st, stype, "push", "push", /*isConst*/true, checkSizes)
+    
+    var inscope push_op2 <- make_named_call2_int(st, stype, "push", "push", true, checkSizes)
     compiling_module() |> add_generic(push_op2)
-    // push_clone
-    // TODO: add this function if need it
-    // var push_clone_op <- make_named_call(st, stype, "push_clone", "push_clone", true)
-    // compiling_module() |> add_function(push_clone_op)
-    // erase
+    
+    
+    
+    
+    
     var inscope erase_op <- make_erase(st, stype, checkSizes)
     compiling_module() |> add_function(erase_op)
-    // erase2
+    
     var inscope erase_op2 <- make_erase2(st, stype, checkSizes)
     compiling_module() |> add_function(erase_op2)
-    // emplace
-    var inscope emplace_op <- make_named_call(st, stype, "emplace", "emplace", /*isConst*/false, checkSizes)
+    
+    var inscope emplace_op <- make_named_call(st, stype, "emplace", "emplace", false, checkSizes)
     compiling_module() |> add_function(emplace_op)
-    // emplace (it, pos)
-    var inscope emplace_op2 <- make_named_call2_int(st, stype, "emplace", "emplace", /*isConst*/false, checkSizes)
+    
+    var inscope emplace_op2 <- make_named_call2_int(st, stype, "emplace", "emplace", false, checkSizes)
     compiling_module() |> add_function(emplace_op2)
-    // clear
+    
     var inscope clear_op <- make_clear(st, stype, checkSizes)
     compiling_module() |> add_function(clear_op)
-    // resize
+    
     var inscope resize_op <- make_resize_reserve(st, stype, "resize", checkSizes)
     compiling_module() |> add_function(resize_op)
-    // reserve
+    
     var inscope reserve_op <- make_resize_reserve(st, stype, "reserve", checkSizes)
     compiling_module() |> add_function(reserve_op)
 
@@ -570,29 +570,29 @@ def collect_and_replace_iterator_fields(prefix : string; blk : ExpressionPtr) : 
   return <- names
 
 
-// [init]
-// def gen()
-//   let types <- {{ "tBool" => "BoolList"; "tString" => "StringList";
-//     "tFloat" => "FloatList";
-//     "tFloat2" => "Point2List"; "tFloat3" => "Point3List"; "tFloat4" => "Point4List";
-//     "tUInt8" => "UInt8List"; "tUInt16" => "UInt16List"; "tUInt" => "UInt32List"; "tUInt64" => "UInt64List";
-//     "tInt8" => "Int8List"; "tInt16" => "Int16List"; "tInt" => "IntList"; "tInt64" => "Int64List";
-//     "tInt2" => "IPoint2List"; "tInt3" => "IPoint3List" }}
 
 
-//   for k, v in keys(types), values(types)
-//     print("    if fld._type.baseType == Type {k}
-//       return typeinfo(ast_typedecl type<ecs::{v}>)\n")
 
 
-//   print("    if fld._type.baseType == Type tHandle")
 
-//   let handleTypes <- {{
-//     "math::float3x4" => "TMatrixList"; "ecs::EntityId" => "EidList";
-//     "DagorMath::E3DCOLOR" => "ColorList"
-//   }}
 
-//   for k, v in keys(handleTypes), values(handleTypes)
-//     let pair <- split(k, "::")
-//     print("      if fld._type.annotation.name == \"{pair[1]}\" && fld._type.annotation._module.name == \"{pair[0]}\"
-//         return typeinfo(ast_typedecl type<ecs::{v}>)\n")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

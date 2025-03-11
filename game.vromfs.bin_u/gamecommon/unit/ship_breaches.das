@@ -231,7 +231,7 @@ def ship_init_repair_parts_info_handle_es(evt : CmdInitComponent;
       ship_repair__partsHp |> push(part_info |> datablock_getReal("hp", 0.5f))
 
 
-// should be generalized in the future
+
 [es]
 def ship_copy_from_handle_es(evt : EventShipCopyFrom;
                              var ship_flooding__waterLeftSide : float&;
@@ -499,10 +499,10 @@ def add_breach_handle_es(evt : EventShipAddBreach;
   pos.x = clamp(pos.x, box.boxMin.x, box.boxMax.x);
   pos.y = clamp(pos.y, box.boxMin.y, box.boxMax.y);
   pos.z = clamp(pos.z, box.boxMin.z, box.boxMax.z);
-  let size = min(evt.size, box.width.x / 8.f); // max diameter is 1/4 of length
+  let size = min(evt.size, box.width.x / 8.f); 
   let amountToRepair = cvt(size, ship_props.breachSizeToRepair.x, ship_props.breachSizeToRepair.y, ship_props.breachSizeToRepair.z, ship_props.breachSizeToRepair.w);
 
-  // TODO: probably we dont need to set max breach count
+  
   let MAX_BREACHES_COUNT = 100
   var breach_id_to_remove = -1
   if length(ship_breaches__id) >= MAX_BREACHES_COUNT
@@ -591,7 +591,7 @@ def ship_unwatering_update_es(info : UpdateStageInfoAct;
     let unit = unit__ref.unit
     if unit.isDelayed
       return
-    // update unwatering time, if has no breaches
+    
     if !has_any_repairable_breaches(unit, v)
       v.ship__unwateringRemainingTime = calc_time_to_unwater(unit) <| v
     else
@@ -650,7 +650,7 @@ def ship_repair_parts_update_es(info : UpdateStageInfoAct;
     return
   assume unit_dm = *unit.visual
 
-  // this seems to be some kind of auto repair, which does not depend on crew or any speed multipliers
+  
   if ship_repair__partIdx >= 0
     ship_repair__partRemainingTime -= info.dt
     if ship_repair__partRemainingTime <= 0.0f
@@ -704,30 +704,30 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
     if amount_to_repair > 0.0f
       water_mass_velocity = size * (50.0f + ship_phys_proxy__velocitySq) * ship_props.breachWaterMassMult
 
-    // update depth scale
+    
     if !is_fatal && current_time > next_check
       let world_pos = unit.unitTm * pos
       let bottom_world_pos = world_pos - float3(0.0f, size, 0.0f)
       var breach_underwater = false
       var water_height = 0.0f
-      get_app().currentScene |> scene_get_water_height(/* out */ water_height, /* out */ breach_underwater, bottom_world_pos, /* trace height */ 100.0f, /* check 3d water */ true)
+      get_app().currentScene |> scene_get_water_height( water_height,  breach_underwater, bottom_world_pos,  100.0f,  true)
       depth_scale = breach_underwater ? min((water_height - (world_pos.y - size)) / (2.0f * size), 1.0f) : -1.0f;
       next_check = current_time + 1.0f
 
-    // add water to breach
+    
     if depth_scale > 0.0 || is_fatal
       let water_delta = (is_fatal ? 1.0f : depth_scale) * water_mass_velocity * info.dt
       let compartment_id = ship_cover_parts__compartmentId[cover_id]
       let cover_parts_range = compartment_id >= 0 ? ship_compartments__coverPartsRange[compartment_id] : int2(cover_id, cover_id + 1)
 
-      // add water to cover parts
+      
       for i in cover_parts_range.x..cover_parts_range.y
-        // calculate max water in cover part
+        
         var max_water = ship_cover_parts__water[i].z
-        if !is_part_dead(dmData, ship_cover_parts__partId[i]) // if part is not dead
-          max_water *= ship_cover_parts__water[i].w // *= maxWaterAlive
+        if !is_part_dead(dmData, ship_cover_parts__partId[i]) 
+          max_water *= ship_cover_parts__water[i].w 
 
-        // add water to part
+        
         let prev_water = ship_cover_parts__water[i].x
         ship_cover_parts__water[i].x = min(max(ship_cover_parts__water[i].x + water_delta, 0.0f), max_water);
         let isWaterAdding = !is_equal_float(prev_water, ship_cover_parts__water[i].x)
@@ -736,11 +736,11 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
           ship_cover_parts__water[i].y = clamp(ship_cover_parts__water[i].y + sign(pos.z) * water_delta, -total_water, total_water);
         leaked_amount += water_delta
 
-        // sync, if water has maxed out
+        
         if prev_water < max_water && ship_cover_parts__water[i].x == max_water
           sendEvent(eid, [[EventShipSyncWater]])
 
-        // check if some parts has drowned
+        
         let inner_parts_range = ship_cover_parts__innerPartsRange[i]
         for j in inner_parts_range.x..inner_parts_range.y
           let crit_water_level = ship_cover_parts__innerPartsCriticalWater[j]
@@ -771,7 +771,7 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
                                          ship_flooding__waterLeftSide : float -const;
                                          ship_flooding__waterRightSide : float -const
                                          >)
-  // we will not pump water if the process was stopped
+  
   let unit = unit__ref.unit
   let ship = as_ship(unit)
   if ship == null || unit.isDelayed
@@ -781,9 +781,9 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
   var avg_breach = float3(0.0f, 0.0f, 0.0f)
   var avg_breach_weight = 0.0f
 
-  // The logic here differs from original one, in original logic pumps will always function, when there are no
-  // breaches, and stopping unwatering manually will not actually stop it, and just will remove time penalty.
-  // Here we fix it by not pumping water, when unwatering is not in progress
+  
+  
+  
   let pump_water_mass_vel = v.ship__unwateringRemainingTime > 0.0f ? calc_pump_mass_vel(unit) <| v : 0.0f
 
   var totalWaterLeftSide = 0.0f
@@ -809,19 +809,19 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
         let pumpedDelta = ship.shipProps.counterFloodingWaterMassVel * info.dt
         part_water.y = clamp(part_water.y - waterDir * pumpedDelta, -maxWater, maxWater)
     else
-      // update water level
+      
       let prev_water = part_water.x
       let roll_ratio = part_water.y / part_water.x
       part_water.x = max(0.0f, part_water.x + pump_water_mass_vel * info.dt)
       part_water.y = part_water.x * roll_ratio
 
-      // restore pumped out parts
+      
       for j in inner_parts_range.x..inner_parts_range.y
         let crit_water_level = v.ship_cover_parts__innerPartsCriticalWater[j]
         if part_water.x <= crit_water_level && prev_water > crit_water_level
           sendEvent(eid, [[EventShipDrownedPartRestored packedPartId=v.ship_cover_parts__innerPartsId[j].packed]])
 
-    // calculate average breach position and total water amount
+    
     additional_water += part_water.x
     let water_scale = min(part_water.x / part_water.z, 1.0f)
     avg_breach += part_pos * water_scale

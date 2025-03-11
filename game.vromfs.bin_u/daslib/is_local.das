@@ -13,7 +13,7 @@ require daslib/ast_boost
 require strings
 
 def is_shared_expr(expr : ExpressionPtr) {
-    //! Returns true if the expression is local to the current scope.
+    
     if (expr is ExprVar) {
         let evar = expr as ExprVar
         if (evar.variable.flags.global_shared) {
@@ -48,7 +48,7 @@ def is_shared_expr(expr : ExpressionPtr) {
 }
 
 def is_local_expr(expr : ExpressionPtr) {
-    //! Returns true if the expression is local to the current scope.
+    
     if (expr is ExprVar) {
         return (expr as ExprVar).varFlags.local
     } elif (expr is ExprAt) {
@@ -68,7 +68,7 @@ def is_local_expr(expr : ExpressionPtr) {
 }
 
 def is_local_or_global_expr(expr : ExpressionPtr) {
-    //! Returns true if expression is local the current scope or global scope.
+    
     if (expr is ExprVar) {
         let ev = expr as ExprVar
         return ev.varFlags.local || !(ev.varFlags.argument || ev.varFlags._block)
@@ -90,7 +90,7 @@ def is_local_or_global_expr(expr : ExpressionPtr) {
 }
 
 def is_scope_expr(expr : ExpressionPtr) {
-    //! Returns true if the expression is a scoped expression, i.e. eventually points to a variable.
+    
     if (expr is ExprVar) {
         return true
     } elif (expr is ExprAt) {

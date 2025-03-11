@@ -78,7 +78,7 @@ struct EventShipWaterNetSync
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
 struct EventShipBreachesNetSync
   unitVersion : uint8
-  breachesPosAndSize : Point4List const? // xyz - pos, w - size
-  breachesIds : IntList const? // each 3 : breach id, part id, compartment id
-  breachesRepairProgress : FloatList const?  // each 3 : amount to repair, leaked amount, depth scale
+  breachesPosAndSize : Point4List const? 
+  breachesIds : IntList const? 
+  breachesRepairProgress : FloatList const?  
 

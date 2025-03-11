@@ -21,7 +21,7 @@ let { OPTIONS_MODE_TRAINING, USEROPT_MODIFICATIONS, USEROPT_BULLETS0, USEROPT_BU
 } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { guiStartWeaponrySelectModal } = require("%scripts/weaponry/weaponrySelectModal.nut")
+let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
 let { set_option } = require("%scripts/options/optionsExt.nut")
 let BulletGroup = require("%scripts/weaponry/unitBulletsGroup.nut")
 
@@ -31,7 +31,7 @@ enum bulletsAmountState {
   LOW_AMOUNT
 }
 
-::UnitBulletsManager <- class {
+let UnitBulletsManager = class {
   unit = null  
   bulGroups = null 
   gunsInfo = null 
@@ -560,3 +560,5 @@ enum bulletsAmountState {
     return null
   }
 }
+
+return UnitBulletsManager

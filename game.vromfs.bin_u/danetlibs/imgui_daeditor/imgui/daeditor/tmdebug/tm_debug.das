@@ -182,7 +182,7 @@ def trasnform_window()
       if camera__active
         var ctm := transform
         ctm[3] += ctm[2] * 2.0
-        let cEid = createEntitySync("cursor_tm") <| $(init)  //sync because we want to select it immediately
+        let cEid = createEntitySync("cursor_tm") <| $(init)  
           init |> set("transform", ctm)
         editor_open(false)
         editor_open(true)

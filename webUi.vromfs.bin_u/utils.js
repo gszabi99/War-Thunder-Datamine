@@ -27,7 +27,6 @@ function rgb_to_hex(r, g, b) {
   return str
 }
 
-// IE support
 if (!Array.indexOf) {
   Array.prototype.indexOf = function(obj) {
     for (var i=0; i<this.length; i++) {

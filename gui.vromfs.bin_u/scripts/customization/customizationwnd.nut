@@ -33,7 +33,7 @@ let { showResource, canStartPreviewScene,
   showDecoratorAccessRestriction } = require("%scripts/customization/contentPreview.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { placePriceTextToButton, warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
+let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let { canBuyNotResearched, isUnitDescriptionValid } = require("%scripts/unit/unitStatus.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -2028,7 +2028,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSecWeaponsInfo(_obj) {
-    weaponryPresetsWnd.open({ unit = this.unit })
+    guiStartWeaponryPresets({ unit = this.unit })
   }
 
   function getTwoSidedState() {

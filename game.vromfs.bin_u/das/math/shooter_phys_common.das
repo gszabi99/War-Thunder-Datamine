@@ -4,7 +4,7 @@ require DagorMath
 
 def phys_accelerate_directional(cur_vel, wish_dir : float3; wish_spd, accel, dt : float) : float3
   let curSpd = dot(cur_vel, wish_dir)
-  if wish_spd <= curSpd // we don't need to accelerate in that direction further, we already have proper velocity in direction
+  if wish_spd <= curSpd 
     return cur_vel
   return cur_vel + wish_dir * min(accel * dt, wish_spd - curSpd)
 

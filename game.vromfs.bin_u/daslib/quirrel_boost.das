@@ -139,7 +139,7 @@ def public getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : table<au
     while (!runtimeError && sq_next(vm, idx) >= 0l) {
         let hasKey = _::getStackValue(vm, -2l) <| $(k : K) {
             let hasValue = _::getStackValue(vm, -1l) <| $(v : V) {
-                res[k] = v // TODO: emplace/copy
+                res[k] = v 
             }
             if (!hasValue) {
                 let valueType = sq_gettype(vm, -1l)
@@ -152,9 +152,9 @@ def public getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : table<au
             to_log(LOG_ERROR, "Unable to read table key. Expected {typeinfo typename(type<K>)}, got {keyType}")
             runtimeError = true
         }
-        sq_pop(vm, 2l) // pop key and value
+        sq_pop(vm, 2l) 
     }
-    sq_pop(vm, 1l) // pop iterator
+    sq_pop(vm, 1l) 
 
     if (!runtimeError) {
         cb |> invoke(res)
@@ -194,15 +194,15 @@ def public pushValue(var vm : SQVM?; val : table<auto(K); auto(V)>) {
     }
 }
 
-// https://quirrel.io/doc/reference/api/object_creation_and_handling.html?highlight=sq_setparamscheck#c.sq_setparamscheck
-// 'o' null                         'u' userdata
-// 'i' integer                      'p' userpointer
-// 'f' float                        'c' closure and nativeclosure
-// 'n' integer or float             'g' generator
-// 'b' bool                         'v' thread
-// 's' string                       'x' instance(class instance)
-// 't' table                        'y' class
-// 'a' array                        '.' any type
+
+
+
+
+
+
+
+
+
 [macro_function]
 def public paramcheck(typ) {
     return "i" if (typ.baseType == Type.tInt || typ.baseType == Type.tInt8 || typ.baseType == Type.tInt16
@@ -217,7 +217,7 @@ def public paramcheck(typ) {
     return "t" if (typ.baseType == Type.tTable)
     return "x" if (typ.baseType == Type.tHandle && typ.annotation.isRefType)
     return "o|{paramcheck(typ.firstType)}" if (typ.baseType == Type.tPointer)
-    return "." // any type
+    return "." 
 }
 
 [macro_function]
@@ -321,7 +321,7 @@ class QuirrelBindAnnotation : AstFunctionAnnotation {
 
     def override patch ( var fn:FunctionPtr; var group:ModuleGroup; args,progArgs:AnnotationArgumentList; var errors : das_string; var astChanged:bool& ) : bool {
         let bindedArg = args |> find_arg("binded")
-        if (bindedArg is tBool) {// function was already binded
+        if (bindedArg is tBool) {
             return true
         }
 

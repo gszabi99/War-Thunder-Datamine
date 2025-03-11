@@ -15,7 +15,7 @@
   "needTpsNightVision": true,
   "isBwOpticSight": true,
   "viewDistKInSight": 6.0,
-  "ils31": true,
+  "ilsJ8HK": true,
   "chinaLang": true,
   "hmdShelZoom": true,
   "rwrIndicator": "TEWS MFD",
@@ -2157,436 +2157,6 @@
       "weapon_lock_lamp_flags1": 6,
       "weapon_lock_lamp_flags2": 8
     },
-    "rwr": {
-      "type": "rwr",
-      "name": "SPO-15",
-      "power": 250.0,
-      "txAngle": [
-        5.0,
-        15.0
-      ],
-      "txSidelobes": -30.0,
-      "rxAngle": [
-        20.0,
-        45.0
-      ],
-      "range": 65000.0,
-      "signalSfxName": "alarm_radar",
-      "band6": true,
-      "band7": true,
-      "band8": true,
-      "detectTracking": true,
-      "targetTracking": false,
-      "targetRangeFinder": true,
-      "targetRange": [
-        5000.0,
-        50000.0
-      ],
-      "friendFoeId": true,
-      "targetHoldTime": 1.0,
-      "mandatoryRecognition": true,
-      "priorityTargetSelection": true,
-      "rangeLamps": [
-        19,
-        4
-      ],
-      "lampsTimeOut": 1.0,
-      "receivers": {
-        "receiver": [
-          {
-            "azimuth": -10.0,
-            "elevation": 0.0,
-            "azimuthWidth": 20.0,
-            "elevationWidth": 60.0,
-            "angleFinder": false
-          },
-          {
-            "azimuth": -30.0,
-            "elevation": 0.0,
-            "azimuthWidth": 20.0,
-            "elevationWidth": 60.0,
-            "angleFinder": false
-          },
-          {
-            "azimuth": -50.0,
-            "elevation": 0.0,
-            "azimuthWidth": 30.0,
-            "elevationWidth": 60.0,
-            "angleFinder": false
-          },
-          {
-            "azimuth": -90.0,
-            "elevation": 0.0,
-            "azimuthWidth": 50.0,
-            "elevationWidth": 60.0,
-            "angleFinder": false
-          },
-          {
-            "azimuth": -150.0,
-            "elevation": 0.0,
-            "azimuthWidth": 65.0,
-            "elevationWidth": 60.0,
-            "angleFinder": false
-          },
-          {
-            "azimuth": 10.0,
-            "elevation": 0.0,
-            "azimuthWidth": 20.0,
-            "elevationWidth": 60.0,
-            "angleFinder": false
-          },
-          {
-            "azimuth": 30.0,
-            "elevation": 0.0,
-            "azimuthWidth": 20.0,
-            "elevationWidth": 60.0,
-            "angleFinder": false
-          },
-          {
-            "azimuth": 50.0,
-            "elevation": 0.0,
-            "azimuthWidth": 30.0,
-            "elevationWidth": 60.0,
-            "angleFinder": false
-          },
-          {
-            "azimuth": 90.0,
-            "elevation": 0.0,
-            "azimuthWidth": 50.0,
-            "elevationWidth": 60.0,
-            "angleFinder": false
-          },
-          {
-            "azimuth": 150.0,
-            "elevation": 0.0,
-            "azimuthWidth": 65.0,
-            "elevationWidth": 60.0,
-            "angleFinder": false
-          },
-          {
-            "azimuth": 0.0,
-            "elevation": 90.0,
-            "azimuthWidth": 180.0,
-            "elevationWidth": 180.0,
-            "angleFinder": false,
-            "indicate": false
-          },
-          {
-            "azimuth": 0.0,
-            "elevation": -90.0,
-            "azimuthWidth": 180.0,
-            "elevationWidth": 180.0,
-            "angleFinder": false,
-            "indicate": false
-          }
-        ]
-      },
-      "groups": {
-        "group": [
-          {
-            "name": "AI pulse",
-            "priority": 3,
-            "type": [
-              "AN/APS-6",
-              "AN/APS-19",
-              "AN/APS-21",
-              "AN/APS-67",
-              "NASARR",
-              "US R21G M1",
-              "AN/APQ-72",
-              "AN/APQ-104",
-              "AN/APQ-120",
-              "AN/APQ-126",
-              "AN/APQ-159",
-              "AN/APQ-113",
-              "AN/APQ-50",
-              "AN/APQ-51",
-              "AN/APQ-94",
-              "AN/APG-26",
-              "AN/APG-33",
-              "Thorium",
-              "RP-1 TA",
-              "RP-1 TT",
-              "RP-5 TA",
-              "RP-5 TT",
-              "CD-30",
-              "Cyrano Ibis",
-              "Cyrano-IV",
-              "DRAC-25A",
-              "DRAC-32A",
-              "DRAA 3D AIDA",
-              "AI Mk.23",
-              "AI Mk.18",
-              "PS-03",
-              "PS-011A 71H IR",
-              "PS-42 TA",
-              "PS-42 TT",
-              "Type 1492",
-              "Type 208A",
-              "AN/APG-30",
-              "AN/ASG-14",
-              "AN/ASG-19",
-              "SRD-1",
-              "SRD-5",
-              "AIDA 2",
-              "ARI.5820",
-              "ARI.5857",
-              "Marconi Type 226",
-              "ELTA EL/M-2001B",
-              "MR-102-Baklan",
-              "MR-104-Rys",
-              "MR-105",
-              "4R-90-Yatagan",
-              "Yakor-M",
-              "Type-275",
-              "Type 903",
-              "AN-SPG-48",
-              "MK25-radar",
-              "WM-27",
-              "SGR-108",
-              "MR-103-Bars",
-              "MR-123-176"
-            ]
-          },
-          {
-            "name": "AI pulse CW off",
-            "search": true,
-            "track": true,
-            "launch": false,
-            "detectLaunch": true,
-            "priority": 3,
-            "type": [
-              "AN/APQ-51",
-              "AN/APQ-72",
-              "AN/APQ-120",
-              "AN/APG-59",
-              "AN/ASG-14",
-              "NASARR",
-              "US R21G M1",
-              "Type 208A"
-            ]
-          },
-          {
-            "name": "AI PD",
-            "detectLaunch": true,
-            "priority": 2,
-            "type": [
-              "AN/APG-66",
-              "AN/APG-68",
-              "AN/APG-63",
-              "AN/APG-65",
-              "AN/APG-67",
-              "AN/APG-76 / AN/ASX-1",
-              "Thales RDY",
-              "N019",
-              "N001",
-              "N010",
-              "V004",
-              "N011M",
-              "Type 1473",
-              "ELTA EL/M-2001B",
-              "ELTA EL/M-2052",
-              "PS-37",
-              "PS-05",
-              "Ferranti Blue Vixen",
-              "CAPTOR-M",
-              "Thales RBE2 AESA",
-              "AN/APG-59",
-              "AN/AWG-9",
-              "Thomson-CSF RDI",
-              "AI.24 Foxhunter",
-              "weapon"
-            ]
-          },
-          {
-            "name": "A/D",
-            "priority": 1,
-            "type": [
-              "1RL34",
-              "AN/VPS-2",
-              "M-247 TA",
-              "ESD RA-20 S",
-              "TriAD TA",
-              "ADATS TA",
-              "ASRAD TA"
-            ]
-          },
-          {
-            "name": "AI pulse CW on",
-            "search": false,
-            "track": false,
-            "launch": true,
-            "detectLaunch": true,
-            "priority": 0,
-            "type": [
-              "AN/APQ-51",
-              "AN/APQ-72",
-              "AN/APQ-120",
-              "AN/APG-59",
-              "AN/ASG-14",
-              "NASARR",
-              "US R21G M1",
-              "Type 208A"
-            ]
-          }
-        ]
-      },
-      "targetsPresenceGroups": {
-        "targetsPresenceGroup": [
-          {
-            "text": "hud/rwr_threat_ai",
-            "group": [
-              "AI pulse",
-              "AI pulse CW off"
-            ]
-          },
-          {
-            "text": "hud/rwr_threat_pd",
-            "group": "AI PD"
-          },
-          {
-            "text": "hud/rwr_threat_nike_hercules"
-          },
-          {
-            "text": "hud/rwr_threat_hawk"
-          },
-          {
-            "text": "hud/rwr_threat_air_defence",
-            "group": "A/D"
-          },
-          {
-            "text": "hud/rwr_threat_cw",
-            "group": "AI pulse CW on"
-          }
-        ]
-      },
-      "typeLamps": {
-        "typeLamp": [
-          {
-            "group": "AI pulse CW on",
-            "lamp": 47,
-            "priorityLamp": 41
-          },
-          {
-            "group": "A/D",
-            "lamp": 48,
-            "priorityLamp": 42
-          },
-          {
-            "lamp": 49,
-            "priorityLamp": 43
-          },
-          {
-            "lamp": 50,
-            "priorityLamp": 44
-          },
-          {
-            "group": "AI PD",
-            "lamp": 51,
-            "priorityLamp": 45
-          },
-          {
-            "group": [
-              "AI pulse",
-              "AI pulse CW off"
-            ],
-            "lamp": 52,
-            "priorityLamp": 46
-          }
-        ]
-      },
-      "directionLamps": {
-        "directionLamp": [
-          {
-            "receiver": 0,
-            "lamp": 24,
-            "priorityLamp": 34
-          },
-          {
-            "receiver": 1,
-            "lamp": 23,
-            "priorityLamp": 33
-          },
-          {
-            "receiver": 2,
-            "lamp": 22,
-            "priorityLamp": 32
-          },
-          {
-            "receiver": 3,
-            "lamp": 21,
-            "priorityLamp": 31
-          },
-          {
-            "receiver": 4,
-            "lamp": 20,
-            "priorityLamp": 30
-          },
-          {
-            "receiver": 5,
-            "lamp": 25,
-            "priorityLamp": 36
-          },
-          {
-            "receiver": 6,
-            "lamp": 26,
-            "priorityLamp": 37
-          },
-          {
-            "receiver": 7,
-            "lamp": 27,
-            "priorityLamp": 38
-          },
-          {
-            "receiver": 8,
-            "lamp": 28,
-            "priorityLamp": 39
-          },
-          {
-            "receiver": 9,
-            "lamp": 29,
-            "priorityLamp": 40
-          },
-          {
-            "receiver": 10,
-            "priorityLamp": 1
-          },
-          {
-            "receiver": 11,
-            "priorityLamp": 2
-          }
-        ]
-      },
-      "typePriorities": {
-        "typePriority": [
-          {
-            "priority": 0,
-            "group": "AI pulse CW on"
-          },
-          {
-            "priority": 1,
-            "group": "A/D"
-          },
-          {
-            "priority": 2,
-            "group": "AI PD"
-          },
-          {
-            "priority": 3,
-            "group": [
-              "AI pulse",
-              "AI pulse CW off"
-            ]
-          }
-        ]
-      },
-      "modeLamps": {
-        "trackLamp": 0,
-        "priorityLamp": 3,
-        "launchLamp": 0,
-        "launchLampBlinkingPeriod": 0.25
-      }
-    },
     "multifunctionDisplays": {
       "display": [
         {
@@ -2950,7 +2520,7 @@
         -0.2,
         0.0
       ],
-      "head": "optic2_turret",
+      "head": "optic3_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
         -89.0,
@@ -2974,11 +2544,11 @@
       },
       {
         "blk": "gameData/sensors/ir_tracker_tgp.blk",
-        "node": "optic2_gun"
+        "node": "optic3_gun"
       },
       {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk",
-        "node": "optic2_gun"
+        "node": "optic3_gun"
       }
     ]
   },
@@ -3197,7 +2767,11 @@
         "aku_58_fin2_b004",
         "aku_58_fin3_b004",
         "aku_58_fin4_b004",
-        "aku_58_fin5_b004"
+        "aku_58_fin5_b004",
+        "pylon_003a",
+        "pylon_007a",
+        "pylon_006a",
+        "pylon_004a"
       ]
     },
     "WeaponSlot": [
@@ -3240,7 +2814,7 @@
               "trigger": "gunner0",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic2_gun",
+              "emitter": "optic3_gun",
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
               "speedYaw": 200.0,
@@ -3248,8 +2822,8 @@
               "parkInDeadzone": true,
               "aimForOperatedShell": true,
               "turret": {
-                "head": "optic2_turret",
-                "gun": "optic2_gun",
+                "head": "optic3_turret",
+                "gun": "optic3_gun",
                 "mainTurret": true
               },
               "limits": {
@@ -3835,7 +3409,7 @@
             "reqModification": "su_25_x29te",
             "ShowNodes": {
               "node": [
-                "j_11b_pylon6_1",
+                "pylon_003a",
                 "aku_58_b001",
                 "aku_58_fin1_b001",
                 "aku_58_fin2_b001",
@@ -4757,7 +4331,8 @@
             "hasTargetingPod": true,
             "ShowNodes": {
               "node": [
-                "fuse_pylon_002",
+                "j_11b_pylon2_3",
+                "j_11b_pylon2_4",
                 "ch_jdc03a",
                 "optic2_turret",
                 "optic2_gun"
@@ -5106,7 +4681,7 @@
             "reqModification": "su_25_x29te",
             "ShowNodes": {
               "node": [
-                "j_11b_pylon6_2",
+                "pylon_007a",
                 "aku_58_b004",
                 "aku_58_fin1_b004",
                 "aku_58_fin2_b004",
@@ -5935,11 +5510,11 @@
             },
             {
               "blk": "gameData/sensors/ir_tracker_tgp.blk",
-              "node": "optic2_gun"
+              "node": "optic3_gun"
             },
             {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk",
-              "node": "optic2_gun"
+              "node": "optic3_gun"
             }
           ]
         }
@@ -6002,7 +5577,7 @@
       "tier": 3
     },
     "su_25_x29te": {
-      "prevModification": "cn_type_500_ls_6",
+      "prevModification": "cn_ls_500j",
       "modClass": "weapon",
       "tier": 4
     }

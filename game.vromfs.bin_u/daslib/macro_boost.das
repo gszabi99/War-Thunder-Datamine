@@ -13,18 +13,18 @@ require daslib/templates_boost
 
 [macro_function, tag_function(macro_verify_tag)]
 def public macro_verify(expr : bool; prog : ProgramPtr; at : LineInfo; message : string) {
-    //! Same as verify, only the check will produce macro error, followed by return [[ExpressionPtr]]
+    
     pass
 }
 
 [tag_function_macro(tag="macro_verify_tag")]
 class MacroVerifyMacro : AstFunctionAnnotation {
-    //! This macro convert macro_verify(expr,message,prog,at) to the following code::
-    //!    if !expr
-    //!        macro_error(prog,at,message)
-    //!        return [[ExpressionPtr]]
+    
+    
+    
+    
     def override transform(var call : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
-        // if ..
+        
         var inscope res <- qmacro_block() <| $() {
             if (!$e(call.arguments[0])) {
                 macro_error($e(call.arguments[1]), $e(call.arguments[2]), $e(call.arguments[3]))
@@ -63,15 +63,15 @@ class CaptureBlock : AstVisitor {
 }
 
 struct public CapturedVariable {
-    //! Stored captured variable together with the `ExprVar` which uses it
+    
     variable : Variable?
     expression : ExprVar?
-    eref : bool             //! this one indicates if its used by reference and does not come from argument. its only used in JIT
+    eref : bool             
 }
 
 [macro_function]
 def public capture_block(expr : ExpressionPtr) : array<CapturedVariable> {
-    //! Collect all captured variables in the expression.
+    
     var astVisitor = new CaptureBlock()
     var inscope adapter <- make_visitor(*astVisitor)
     visit(expr, adapter)
@@ -100,9 +100,9 @@ class ColletFinally : AstVisitor {
 
 [macro_function]
 def public collect_finally(expr : ExpressionPtr; alwaysFor : bool = false) {
-    //! Collect all finally blocks in the expression.
-    //! Returns array of ExprBlock? with all the blocks which have `finally` section
-    //! Does not go into 'make_block' expression, such as `lambda`, or 'block' expressions
+    
+    
+    
     var astVisitor = new ColletFinally(alwaysFor = alwaysFor)
     var inscope adapter <- make_visitor(*astVisitor)
     visit(expr, adapter)
@@ -126,8 +126,8 @@ class ColletLabels : AstVisitor {
 
 [macro_function]
 def public collect_labels(expr : ExpressionPtr) {
-    //! Collect all labels in the expression. Returns array of integer with label indices
-    //! Does not go into 'make_block' expression, such as `lambda`, or 'block' expressions
+    
+    
     var astVisitor = new ColletLabels()
     var inscope adapter <- make_visitor(*astVisitor)
     visit(expr, adapter)
@@ -140,7 +140,7 @@ def public collect_labels(expr : ExpressionPtr) {
 
 [call_macro(name="return_skip_lockcheck")]
 class private ReturnSkipLockcheck : AstCallMacro {
-    //! this is similar to regular return <-, but it does not check for locks
+    
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
         macro_verify(call.arguments |> length == 1, prog, call.at, "expecting return_skip_lockcheck(expr)")
         return <- new ExprReturn(

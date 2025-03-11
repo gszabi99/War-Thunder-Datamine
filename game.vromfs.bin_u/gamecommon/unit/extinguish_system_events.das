@@ -4,7 +4,7 @@ require DagorMath
 require WTDamageModel
 
 
-// hanled in das
+
 [cpp_event(unicast, with_scheme, routing=ROUTING_CLIENT_TO_SERVER)]
 struct EventExtinguishSystemSetActive
   active : bool
@@ -35,7 +35,7 @@ struct EventExtinguishSystemAddExtinguisherCount
 struct EventExtinguishSystemTurnOffExtinguisher
 {}
 
-// handled in cpp
+
 
 [cpp_event(unicast, with_scheme)]
 struct EventExtinguishSystemOnExtinguisherActivate

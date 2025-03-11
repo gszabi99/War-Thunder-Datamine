@@ -7,13 +7,13 @@ require WTDamageModel
 
 [cpp_event(unicast)]
 struct CmdInitComponent
-  modelBlk : DataBlock? // not null
+  modelBlk : DataBlock? 
 
 [cpp_event(unicast)]
 struct EventUnitInitModification
   modEid : EntityId
   modType : string
-  blk : DataBlock? // not null
+  blk : DataBlock? 
 
 [cpp_event(unicast)]
 struct EventUnitDelayedStatusChanged

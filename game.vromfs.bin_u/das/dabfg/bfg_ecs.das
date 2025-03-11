@@ -25,34 +25,34 @@ def is_valid_node_handle(handle_vector : NodeHandleVector&) : bool
     return false
   return handle_vector[0].valid
 
-//! Declare node, that stored in ecs
-//!
-//! This node will be reloaded automatically on das scripts reload.
-//!
-//! For every register node function like this:
-//!
-//! [bfg_ecs_node]
-//! def register_sample_node(var sample_node: NodeHandle &)
-//!   sample_node <- root() |> registerNode("node_name") <| @(var registry : Registry)
-//!     ...
-//!
-//! Will be automatically generated reload function like this:
-//!
-//! [defer_to_act]
-//! def reload_node`register_sample_node()
-//!   query() <| $ [es] (var sample_node: NodeHandle &)
-//!     register_sample_node(sample_node)
-//!
-//! This function will be called in act stage after reloading of script.
-//!
-//! Also supports:
-//! - Additional arguments of function translates to es components
-//! - on_appear, on_event, track, REQUIRE and REQUIRE_NOT pass to [es] macro as is
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 [function_macro(name="bfg_ecs_node")]
 class BfgEcsNodeAnnotation : AstFunctionAnnotation
 
   def declareReloadCallback(func : FunctionPtr; parsed : BfgEcsNodeAnnotationArgs; args : AnnotationArgumentList)
-    // To understand declaration syntax, read https://dascript.org/doc/reference/language/reification.html
+    
 
     var inscope reloadCallback <- qmacro_function("bfg_ecs_reload_node`{func.name}") <| $()
       if !is_dabfg_runtime_initialized()
@@ -63,14 +63,14 @@ class BfgEcsNodeAnnotation : AstFunctionAnnotation
         if bfg_ecs::is_valid_node_handle($i(func.arguments[0].name))
           $c(func.name)($a(parsed.callArguments))
 
-    // Unfortunately, functional macro arguments [es] through $a call
-    // (like function calls) is unsupported.
-    // We have to add REQUIRE by hacky modifying of ast tree.
+    
+    
+    
     assume reloadCallbackBody = reloadCallback.body as ExprBlock
     assume queryCall = reloadCallbackBody.list[1] as ExprCall
     assume queryBlock = (queryCall.arguments[0] as ExprMakeBlock)._block as ExprBlock
     assume queryEsArguments = queryBlock.annotations[0].arguments
-    // Provoke null pointer exception
+    
     assert(queryEsArguments |> length() == 0)
 
     for arg in args

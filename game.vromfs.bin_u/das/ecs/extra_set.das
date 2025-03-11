@@ -1,9 +1,9 @@
 module extra_set shared
 require ecs
 
-//wrappers for ecs::set(ecs::ComponentsInitializer, string, das::array<T>)
-//             ecs::set(ecs::Object, string, das::array<T>)
-//Codegen in end of file
+
+
+
 
 def set(var init : ComponentsInitializer | #; name : string; source : array<bool>)
   using() <| $(var list : BoolList)
@@ -235,29 +235,28 @@ def set(var init : Object | #; name : string; source : array<float3x4>)
       list |> push(value)
     set(init, name, list)
 
-/*
-[init]
-def gen()
-  let types <- {{ "bool" => "BoolList"; "string" => "StringList"; "EntityId" => "EidList"
-    "float" => "FloatList"; "float2" => "Point2List"; "float3" => "Point3List"; "float4" => "Point4List"
-    "uint8" => "UInt8List"; "uint16" => "UInt16List"; "uint" => "UInt32List"; "uint64" => "UInt64List"
-    "int8" => "Int8List"; "int16" => "Int16List"; "int" => "IntList"; "int64" => "Int64List"
-    "int2" => "IPoint2List"; "int3" => "IPoint3List"; "int4" => "IPoint4List" }}
 
 
-  for k, v in keys(types), values(types)
-    print(
-"def set(var init : ComponentsInitializer | #; name : string; source : array<{k}> | array<{k}>#)
-  using() <| $(var list : {v}#)
-    for value in source
-      list |> push(value)
-    set(init, name, list))\n")
-  print("\n")
-  for k, v in keys(types), values(types)
-    print(
-"def set(var init : Object | #; name : string; source : array<{k}> | array<{k}>#)
-  using() <| $(var list : {v}#)
-    for value in source
-      list |> push(value)
-    set(init, name, list))\n")
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

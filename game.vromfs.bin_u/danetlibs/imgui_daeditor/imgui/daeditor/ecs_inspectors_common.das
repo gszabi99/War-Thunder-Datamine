@@ -82,13 +82,13 @@ struct EditorDesc
   fn : ContextEditorFn?
 
 struct ComponentRenderInfo
-  rawData : void? // Pointer to raw data to handle randering with custom renderes
+  rawData : void? 
   typeName : string
-  // When no ecs type can be inferred contains das generated read only display string
-  // If not empty idx and componentId are invalid.
+  
+  
   roVal : string
-  // In case described above stores das type string to display as additional info in inspector, can be useful.
-  // typeName will contain a placeholder value so inspectors know to display it a specific way
+  
+  
   dasTypeName : string
   idx : uint
   componentId : uint16
@@ -101,7 +101,7 @@ typedef
 
 
 let AGENT_NAME = "ecs_inspectors"
-// TODO: rewrite using invoke_debug_agent_function
+
 var private @ignore_heap_usage inspectors : table<string; array<InspectorDesc>>
 var private @ignore_heap_usage editors : array<EditorDesc>
 var private @ignore_heap_usage unselectedInspectors : array<ContextUnselectedInspectorFn?>
@@ -199,31 +199,31 @@ def call_inspector(type_name : string implicit; eid : array<EntityId> implicit; 
       (list)[0].fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
       return
 
-    // field_name and tag
+    
     for it in list
       if it.field_name == field_name && it.tag != 0u && has(eid[0], "", it.tag)
         it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
         return
 
-    // tag
+    
     for it in list
       if it.tag != 0u && has(eid[0], "", it.tag)
         it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
         return
 
-    // field_name
+    
     for it in list
       if it.field_name == field_name
         it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
         return
 
-    // default renderer
+    
     for it in list
       if empty(it.field_name) && it.tag == 0u
         it.fn->call(eid, flags, field_name, refs, level, changed, sub_menu)
         return
 
-    // no valid renderers
+    
     res = false
   return res
 

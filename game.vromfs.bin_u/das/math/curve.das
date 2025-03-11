@@ -2,7 +2,7 @@ module curve shared
 require ecs
 require DagorMath
 
-// piecewise linear curve
+
 def get_value_on_2d_pl_curve(t : float; curve : Array) : float
   let curveChunks = curve |> length() - 1
   let curvePoints = curve |> length()
@@ -20,7 +20,7 @@ def get_value_on_2d_pl_curve(t : float; curve : Array) : float
       if i + 1 < curvePoints
         firstPoint = secondPoint
         continue
-      else //last point
+      else 
         return (*secondPoint).y
     elif t < (*firstPoint).x
       return (*firstPoint).y

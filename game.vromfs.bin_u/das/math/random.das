@@ -83,7 +83,7 @@ def shuffle_seeded(var list; var seed : int&; up_to : int = -1)
     let idx = _rnd_int(seed, 0, maxSize - i - 1)
     swap(list[i], list[i + idx])
 
-//for the case when the list itself cannot be shuffled
+
 def get_shuffled_indexes(list; up_to : int = -1)
   var indexes <- [for idx in iter_range(list); idx]
   shuffle(indexes, up_to)

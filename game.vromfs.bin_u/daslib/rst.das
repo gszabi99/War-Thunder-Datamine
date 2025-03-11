@@ -68,7 +68,7 @@ def call_macro_label_name(mod, value) {
 }
 
 def public function_file_name(value : FunctionPtr | Function?) {
-    //! Get the file name for the function.
+    
     var mn = string(value.name)
     mn = mn |> replace_multiple([(
         "?", "_qm_")])
@@ -134,15 +134,15 @@ def describe_type(td : TypeDeclPtr) {
             }
         } elif (baseType == Type.tHandle) {
             let hname = string(td.annotation.name)
-            if (hname |> starts_with("dasvector`smart_ptr`")) {// 20 characters
+            if (hname |> starts_with("dasvector`smart_ptr`")) {
                 write(writer, "vector<smart_ptr<")
                 write(writer, hname |> slice(20))
                 write(writer, ">>")
-            } elif (hname |> starts_with("dasvector`")) {// 10 characters
+            } elif (hname |> starts_with("dasvector`")) {
                 write(writer, "vector<")
                 write(writer, hname |> slice(10))
                 write(writer, ">")
-            } elif (hname |> starts_with("pair`")) {// 5 characters
+            } elif (hname |> starts_with("pair`")) {
                 write(writer, "pair<")
                 var parts <- split(hname, "`")
                 write(writer, parts[1])
@@ -950,7 +950,7 @@ def function_needs_documenting(func : FunctionPtr) {
             isBuiltin = true
         }
     }
-    // skip builtin operators
+    
     var isOperator = false
     if (isBuiltin) {
         peek(func.name) <| $(name) {
@@ -963,7 +963,7 @@ def function_needs_documenting(func : FunctionPtr) {
     if (isOperator) {
         return false
     }
-    // skip builtin type c'tors
+    
     var isTypeConstructor = false
     if (isBuiltin) {
         peek(func.name) <| $(name) {
@@ -978,7 +978,7 @@ def function_needs_documenting(func : FunctionPtr) {
     if (isTypeConstructor) {
         return false
     }
-    // skip ones starting with _builtin or __builtin
+    
     var isBuiltinName = false
     peek(func.name) <| $(name) {
         if (starts_with(name, "_builtin") || starts_with(name, "__builtin")) {
@@ -1090,7 +1090,7 @@ def document_functions(doc_file : file; mod : Module?; var groups : array<DocGro
 }
 
 struct public DocGroup {
-    //! Group of functions with shared category.
+    
     name : string
     func : array<Function?>
     hidden : bool
@@ -1122,15 +1122,15 @@ def append_to_group_by_regex(var group : DocGroup; mod : Module?; var reg : Rege
 }
 
 def public group_by_regex(name : string; mod : Module?; var reg : Regex) {
-    //! Creates a group of functions with shared category.
-    //! Functions will be added to the group if they match the regular expression.
+    
+    
     var group <- DocGroup(name = name, hidden = false)
     append_to_group_by_regex(group, mod, reg)
     return <- group
 }
 
 def public hide_group(var group : DocGroup) {
-    //! Marks the group as hidden.
+    
     group.hidden = true
     return <- group
 }
@@ -1144,24 +1144,24 @@ def private generate_topic_stub(var tab : table<string; bool>; doc_file : file; 
 
 def private generate_substitute_stub(mod : Module?; substname : string) {
     var st : FStat
-    if (stat(substname, st)) {// this is actually 'see if it exists'
+    if (stat(substname, st)) {
         return
     }
     fopen(substname, "wb") <| $(stub_file) {
         if (stub_file != null) {
             var tab : table<string; bool>
-            // typedefs
+            
             for_each_typedef(mod) <| $(name, value) {
                 generate_topic_stub(tab, stub_file, topic("typedef", mod, name))
             }
-            // enumerations
+            
             for_each_enumeration(mod) <| $(value) {
                 generate_topic_stub(tab, stub_file, topic("enumeration", mod, string(value.name)))
             }
-            // structure everything
+            
             for_each_structure(mod) <| $(value) {
                 if (value.flags.isClass) {
-                    // classes and methods
+                    
                     generate_topic_stub(tab, stub_file, topic("class", mod, string(value.name)))
                     for (fld in value.fields) {
                         if (is_class_method(value, fld._type) && !(fld.flags.generated) && !(fld.flags.parentType) && (fld.flags.implemented)) {
@@ -1169,7 +1169,7 @@ def private generate_substitute_stub(mod : Module?; substname : string) {
                         }
                     }
                 } elif (!value.flags.generated) {
-                    // structures
+                    
                     generate_topic_stub(tab, stub_file, topic("structure", mod, string(value.name)))
                 }
             }
@@ -1183,7 +1183,7 @@ def private generate_substitute_stub(mod : Module?; substname : string) {
                     generate_topic_stub(tab, stub_file, topic("function", mod, "{function_file_name(func)}"))
                 }
             }
-            // annotations
+            
             module_for_each_annotation(mod) <| $(value) {
                 if (value.isBasicStructureAnnotation) {
                     generate_topic_stub(tab, stub_file, topic("structure_annotation", mod, string(value.name)))
@@ -1191,7 +1191,7 @@ def private generate_substitute_stub(mod : Module?; substname : string) {
                     generate_topic_stub(tab, stub_file, topic("any_annotation", mod, string(value.name)))
                 }
             }
-            // variables
+            
             for_each_global(mod) <| $(value) {
                 if (is_global_constant(value)) {
                     generate_topic_stub(tab, stub_file, topic("variable", mod, string(value.name)))
@@ -1220,9 +1220,9 @@ def private getDetailIncludePath(fname, substname : string) {
 }
 
 def public document(name : string; mod : Module?; fname, substname : string; var groups : array<DocGroup>) {
-    //! Document single module given list of `DocGropus`.
-    //! This will generate RST file with documentation for the module.
-    //! Functions which do not match any `DocGroup` will be placed in the `Uncategorized` group.
+    
+    
+    
     static_if (log_documentation) {
         to_log(LOG_INFO, "Documenting {name} into {fname}\n")
     }

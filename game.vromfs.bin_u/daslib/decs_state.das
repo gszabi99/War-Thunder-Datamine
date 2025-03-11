@@ -72,7 +72,7 @@ class ContextStateAgent : DapiDebugAgent {
             report_to_debugger(ctx, "DECS archetype", "{arq.hash}", arq)
             delete arq
         }
-        // report entity requests, pretty version
+        
         for (eq in decsState.ecsQueries) {
             var prq : EcsRequestView
             prq.file = eq.at.file

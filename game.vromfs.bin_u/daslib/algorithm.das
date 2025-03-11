@@ -9,7 +9,7 @@ require daslib/array_boost
 require daslib/contracts
 
 def unique(var a : array<auto(TT)>) {
-    //! Returns array of the elements of a with duplicates removed.
+    
     var pidx = -1
     var b : array<TT -const -&>
     for (e, eidx in a, range(length(a))) {
@@ -22,9 +22,9 @@ def unique(var a : array<auto(TT)>) {
 }
 
 def sort_unique(var a : array<auto(TT)>) {
-    //! Returns array of the elements of a, sorted and with duplicates removed.
-    //! The elements of a are sorted in ascending order.
-    //! The resulted array has only unqiue elements.
+    
+    
+    
     if (empty(a)) {
         return
     }
@@ -35,7 +35,7 @@ def sort_unique(var a : array<auto(TT)>) {
 }
 
 def reverse(var a : array<auto>) {
-    //! Returns array of the elements of a in reverse order.
+    
     let l = length(a)
     let half = l / 2
     let lm1 = l - 1
@@ -45,7 +45,7 @@ def reverse(var a : array<auto>) {
 }
 
 def combine(a, b : array<auto(TT)>) {
-    //! Returns array of the elements of a and then b.
+    
     var c : array<TT>
     reserve(c, length(a) + length(b))
     for (t in a) {
@@ -58,7 +58,7 @@ def combine(a, b : array<auto(TT)>) {
 }
 
 def lower_bound(a : array<auto(TT)>; f, l : int; val : TT const -&) {
-    //! Returns an iterator pointing to the first element in the range [first, last) that is not less than (i.e. greater or equal to) value, or last if no such element is found.
+    
     assert(f >= 0 && f <= l, "lower bound first out of range")
     assert(l >= f && l <= length(a), "lower bound last out of range")
     var count = l - f
@@ -108,8 +108,8 @@ def binary_search(a : array<auto(TT)>; val : TT const -&) {
 }
 
 def binary_search(a : array<auto(TT)>; f, last : int; val : TT const -&) {
-    //! Returns true if an val appears within the range [f, last).
-    //! Array a must be sorted.
+    
+    
     let first = lower_bound(a, f, last, val)
     return (first != last) && (!(val < a[first]))
 }
@@ -125,7 +125,7 @@ def binary_search(a : array<auto(TT)>; f, last : int; val : TT const -&; less : 
     return (first != last) && (!invoke(less, val, a[first]))
 }
 
-// now for all the other types
+
 
 [expect_any_array(a)]
 def reverse(var a) {
@@ -239,7 +239,7 @@ def binary_search(a; f, last : int; val : auto(TT); less : block<(a, b : TT cons
 
 [expect_any_array(arr)]
 def erase_all(var arr; value) {
-    //! Erase all elements equal to value from arr
+    
     static_if (typeinfo stripped_typename(arr[0]) != typeinfo stripped_typename(value)) {
         concept_assert(false, "value type {typeinfo stripped_typename(value)} should be the same as array {typeinfo stripped_typename(arr)} element type {typeinfo stripped_typename(arr[0])}")
         return -1
@@ -255,10 +255,10 @@ def erase_all(var arr; value) {
 }
 
 def topological_sort(nodes : array<auto(Node)>) {
-    //! Topological sort of a graph.
-    //! Each node has an id, and set (table with no values) of dependencies.
-    //! Dependency `before` represents a link from a node, which should appear in the sorted list before the node.
-    //! Returns a sorted list of nodes.
+    
+    
+    
+    
     static_if (!typeinfo has_field <before>(type<Node>) || !typeinfo is_table(nodes[0].before) || !typeinfo has_field <id>(type<Node>)) {
         concept_assert(false, "Node type {typeinfo stripped_typename(type<Node>)} should have fields 'before:table<id>' and 'id'")
     } else {
@@ -289,7 +289,7 @@ def topological_sort(nodes : array<auto(Node)>) {
 }
 
 def intersection(a, b : table<auto(TT)>) : table<TT> {
-    //! Returns the intersection of two sets
+    
     var result : table<TT>
     if (length(a) < length(b)) {
         for (k in keys(a)) {
@@ -308,7 +308,7 @@ def intersection(a, b : table<auto(TT)>) : table<TT> {
 }
 
 def union(a, b : table<auto(TT)>) : table<TT> {
-    //! Returns the union of two sets
+    
     var result : table<TT>
     for (k in keys(a)) {
         result |> insert(k)
@@ -320,7 +320,7 @@ def union(a, b : table<auto(TT)>) : table<TT> {
 }
 
 def difference(a, b : table<auto(TT)>) : table<TT> {
-    //! Returns the difference of two sets
+    
     var result : table<TT>
     for (k in keys(a)) {
         if (!b |> key_exists(k)) {
@@ -331,7 +331,7 @@ def difference(a, b : table<auto(TT)>) : table<TT> {
 }
 
 def identical(a, b : table<auto(TT)>) : bool {
-    //! Returns true if the two sets are identical
+    
     if (length(a) != length(b)) {
         return false
     }

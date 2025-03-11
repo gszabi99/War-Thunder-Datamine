@@ -379,7 +379,7 @@ class RstComment : AstCommentReader {
                 }
             }
         }
-        // to_log(LOG_WARNING, "WARNING: unsupported structure-annotation = {ann.annotation.name} in {st.name}\n")
+        
         if (!is_annotation && structure_comment != "") {
             let topic_name = st.flags.isClass ? "class" : "structure"
             write_to_detail("{topic_name}-{prog.thisModuleName}-{st.name}", structure_comment)

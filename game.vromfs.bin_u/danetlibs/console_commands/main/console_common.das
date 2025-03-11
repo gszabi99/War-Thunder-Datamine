@@ -51,14 +51,14 @@ def find_console_hint_entities(str : string;
     if camera__active
       let camPos = camera_transform[3]
 
-      // Complete match eid entity
+      
       let completeMatchEid = isEid ? EntityId(to_uint(str)) : INVALID_ENTITY_ID
       query(completeMatchEid) <| $ [es] (transform : float3x4 const?)
         let pos = transform != null ? (*transform)[3] : float3(VERY_BIG_NUMBER)
         let camDistanceSq = distance_sq(camPos, pos)
         entities |> emplace(FindConsoleHintEntityResult(eid = completeMatchEid, camDistanceSq = camDistanceSq, pos = pos))
 
-      // Closest to camera entities
+      
       query() <| $ [es] (eid : EntityId;
                          transform : float3x4)
         if eid == completeMatchEid
@@ -73,7 +73,7 @@ def find_console_hint_entities(str : string;
       entities |> sort() <| $(left : FindConsoleHintEntityResult; right : FindConsoleHintEntityResult)
         return left.camDistanceSq < right.camDistanceSq
 
-      // Other entities
+      
       find_query() <| $ [es] (eid : EntityId;
                               transform : float3x4 const?)
         if length(entities) >= hints_count

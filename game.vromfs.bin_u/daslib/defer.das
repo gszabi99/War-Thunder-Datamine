@@ -15,25 +15,25 @@ require daslib/macro_boost
 
 [tag_function(defer_tag)]
 def public defer(blk : block<() : void>) {
-    //! defer a block of code. For example::
-    //!
-    //!     var a = fopen("filename.txt","r")
-    //!     defer <|
-    //!         fclose(a)
-    //!
-    //! Will close the file when 'a' is out of scope.
+    
+    
+    
+    
+    
+    
+    
     pass
 }
 
 def public nada() {
-    //! helper function which does nothing and will be optimized out
+    
     pass
 }
 
 [tag_function_macro(tag="defer_tag")]
 class DeferMacro : AstFunctionAnnotation {
-    //! This macro covnerts defer() <| block expression
-    //! into {}, and move block to the finally section of the current block
+    
+    
     def override transform(var call : smart_ptr<ExprCallFunc>; var errors : das_string) : ExpressionPtr {
         var success = true
         compiling_program() |> get_ast_context(call) <| $(valid, astc) {
@@ -62,8 +62,8 @@ class DeferMacro : AstFunctionAnnotation {
 
 [call_macro(name="defer_delete")]
 class DeferDeleteMacro : AstCallMacro {
-    //! This macro converts defer_delete() expression
-    //! into {}, and add delete expression to the finally section of the current block
+    
+    
     def override visit(prog : ProgramPtr; mod : Module?; var call : smart_ptr<ExprCallMacro>) : ExpressionPtr {
         macro_verify(call.arguments |> length == 1, prog, call.at, "expecting defer_delete(expr)")
         to_compiler_log("{describe(call.at)}: *warning* defer_delete is deprecated. use var inscope instead\n")

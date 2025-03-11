@@ -10,7 +10,7 @@ module json shared public
 require daslib/strings_boost
 
 variant JsValue {
-    //! Single JSON element.
+    
     _object : table<string; JsonValue?>
     _array  : array<JsonValue?>
     _string : string
@@ -20,12 +20,12 @@ variant JsValue {
 }
 
 struct JsonValue {
-    //! JSON value, wraps any JSON element.
+    
     value : JsValue
 }
 
 variant Token {
-    //! JSON input stream token.
+    
     _string : string
     _number : double
     _bool   : bool
@@ -35,18 +35,18 @@ variant Token {
 }
 
 struct TokenAt {
-    //! JSON parsing token. Contains token and its position.
+    
     value : Token
     line, row : int
 }
 
 let private {
-    Token_string = typeinfo variant_index<_string>(type<Token>) //! index of the
+    Token_string = typeinfo variant_index<_string>(type<Token>) 
     Token_symbol = typeinfo variant_index<_symbol>(type<Token>)
 }
 
 def JV(v : string) {
-    //! Creates `JsonValue` out of value.
+    
     return new JsonValue(value <- JsValue(_string = v))
 }
 
@@ -59,7 +59,7 @@ def JV(v : bool) {
 }
 
 def JVNull {
-    //! Creates `JsonValue` representing `null`.
+    
     return new JsonValue(value <- JsValue(_null = null))
 }
 
@@ -340,8 +340,8 @@ def private parse_value(var itv : iterator<TokenAt>; var error : string&) : Json
 }
 
 def read_json(text : string implicit; var error : string&) : JsonValue? {
-    //! reads JSON from the `text` string.
-    //! if `error` is not empty, it contains the parsing error message.
+    
+    
     error = ""
     var lex <- lexer(text)
     var res = parse_value(lex, error)
@@ -360,7 +360,7 @@ def read_json(text : array<uint8>; var error : string&) : JsonValue? {
 var private no_trailing_zeros = false
 
 def set_no_trailing_zeros(value : bool) {
-    //! if `value` is true, then numbers are written without trailing zeros.
+    
     let old_ntz = no_trailing_zeros
     no_trailing_zeros = value
     return old_ntz
@@ -369,7 +369,7 @@ def set_no_trailing_zeros(value : bool) {
 var private no_empty_arrays = false
 
 def set_no_empty_arrays(value : bool) {
-    //! if `value` is true, then empty arrays are not written at all
+    
     let old_nea = no_empty_arrays
     no_empty_arrays = value
     return old_nea
@@ -378,13 +378,13 @@ def set_no_empty_arrays(value : bool) {
 var private allow_duplicate_keys = false
 
 def set_allow_duplicate_keys(value : bool) {
-    //! if `value` is true, then duplicate keys are allowed in objects. the later key overwrites the earlier one.
+    
     let old_adc = allow_duplicate_keys
     allow_duplicate_keys = value
     return old_adc
 }
 
-// note - we use StringBuilderWriter for performance reasons here
+
 def private write_value(var writer : StringBuilderWriter; jsv : JsonValue?; depth : int) {
     if (jsv == null) {
         write(writer, "null")
@@ -460,7 +460,7 @@ def private write_value(var writer : StringBuilderWriter; jsv : JsonValue?; dept
 }
 
 def write_json(val : JsonValue?) : string {
-    //! returns JSON (textual) representation of JsonValue as a string.
+    
     let st = build_string() <| $(var writer) {
         write_value(writer, val, 0)
     }
@@ -468,24 +468,24 @@ def write_json(val : JsonValue?) : string {
 }
 
 def write_json(val : JsonValue?#) : string {
-    //! Overload accepting temporary type
-    unsafe {// Fine, as json doesn't escape the function
+    
+    unsafe {
         return write_json(reinterpret<JsonValue?> val)
     }
 }
 
 def try_fixing_broken_json(var bad : string) {
-    //! fixes broken json. so far supported
-    //! 1. "string" + "string" string concatination
-    //! 2. "text "nested text" text" nested quotes
-    //! 3. extra , at the end of object or array
-    //! 4. /uXXXXXX sequences in the middle of white space
+    
+    
+    
+    
+    
     return build_string <| $(writer) {
         peek_data(bad) <| $(str) {
             var i = 0
             let lstr = length(str)
             while (i < lstr) {
-                // write until beginning of string or end
+                
                 while (i < lstr && str[i] != '"'u8) {
                     if (str[i] == ','u8) {
                         var j = i + 1;
@@ -507,73 +507,73 @@ def try_fixing_broken_json(var bad : string) {
                     writer |> write_char(int(str[i]));
                     i ++;
                 }
-                if (i >= lstr) {// if eof we done
+                if (i >= lstr) {
                     break;
                 }
-                // write the first quote
+                
                 writer |> write_char('"')
                 i ++
-                // write until end of string or end of file
+                
                 label 0:
                 while (i < lstr && str[i] != '"'u8) {
                     writer |> write_char(int(str[i]));
                     i ++;
                 }
-                if (i >= lstr) {// if eof we done, we fix close quote and we are done
+                if (i >= lstr) {
                     writer |> write_char('"')
                     break
                 }
-                // skipping whitespace
+                
                 let nested = i
                 var j = i + 1
                 let any_white_space = j < lstr && is_white_space(int(str[j]))
                 while (j < lstr && is_white_space(int(str[j]))) {
                     j ++
                 }
-                if (j >= lstr) {// if eof we done, we fix close quote and we are done
+                if (j >= lstr) {
                     writer |> write_char('"');
                     break;
                 }
-                // valid JSON things after string are :, }, ], or , if its one of those, we close the string and we are done
+                
                 let strj = int(str[j]);
                 if (strj == ':' || strj == '}' || strj == ']' || strj == ',') {
                     writer |> write_char('"')
                     i ++
                     continue
                 }
-                // now, if its a + - it could be a string concatenation
+                
                 if (strj == '+') {
                     j ++
                     while (j < lstr && is_white_space(int(str[j]))) {
                         j ++
                     }
-                    if (j < lstr && str[j] == '"'u8) {// if it is indeed new string, we go back to string writing, and add a separator
+                    if (j < lstr && str[j] == '"'u8) {
                         writer |> write_char(' ');
                         i = j + 1;
                         goto label 0;
                     }
                 }
-                // ok, its not a string concatination, or a valid character
-                // if it was a whitespace after the quote, we assume its missing ','
+                
+                
                 if (any_white_space) {
                     writer |> write_char('"')
                     writer |> write_char(',')
                     i = nested + 1
                     continue
                 }
-                // . we assume its nested quotes and we replace with \"
+                
                 writer |> write("`")
                 i = nested + 1
                 while (i < lstr && str[i] != '"'u8) {
                     writer |> write_char(int(str[i]));
                     i ++;
                 }
-                if (i >= lstr) {// if eof we done, we fix nested quote and and closing quote and we are done
+                if (i >= lstr) {
                     writer |> write("`");
                     writer |> write_char('"')
                     break
                 }
-                // write the second replaced quote
+                
                 writer |> write("`")
                 i ++
                 goto label 0

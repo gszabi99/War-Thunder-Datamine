@@ -164,7 +164,7 @@ def to_TMatrix(str : string)
     value[3] = length(rows) > 3 ? to_float3(rows[3]) : float3()
   return value
 
-// [[ 138.485, 99.9427, -648.716, 1; 142.237, 103.802, -645.125, 1]]
+
 def to_bbox3f(str : string)
   var value : bbox3f
   let packedStr = str |> replace(" ", "")
@@ -226,7 +226,7 @@ def use_this(blk : block<(val : bool#) : void>) { blk |> invoke(false); }
 def use_this(blk : block<(val : E3DCOLOR#) : void>) { blk |> invoke(E3DCOLOR(0x0)); }
 def use_this(blk : block<(val : int64#) : void>) { blk |> invoke(0l); }
 
-// TODO: move this to ecs_inspector annotation
+
 def is_cont_type(user_type : uint) : bool
   let typeName = getComponentTypes() |> component_types_findTypeName(user_type)
   return is_cont_type(typeName)
@@ -418,7 +418,7 @@ def collect_struct_components(prefix : string; data : uint8?; type_name : string
 
       if ti.basicType == Type.tHandle && ti.annotation != null
         let compTypeName = get_annotation_name(*ti.annotation)
-        if has_inspector(compTypeName) // If an inspector for some type is present, it is probably better than showing individual fields.
+        if has_inspector(compTypeName) 
           comps |> emplace(("{prefix}.{field_name}", ComponentRenderInfo(rawData = field_data, roVal = "", dasTypeName = "", typeName = compTypeName, idx = 0u, componentId = uint16(0))))
         else
           collect_struct_components("{prefix}.{field_name}", field_data, compTypeName, comps, annotations)
@@ -530,16 +530,16 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
     imgui::TextUnformatted("{eid}: {templateName}")
     imgui_hint(templateName)
   else
-    if BeginCombo("##selectEid", "{eid}: {templateName}", ImGuiComboFlags.None) //  NoArrowButton
+    if BeginCombo("##selectEid", "{eid}: {templateName}", ImGuiComboFlags.None) 
       for idx, e in iter_range(eids), eids
         var selected = idx == selectedItem
         var selectedAddr = safe_addr(selected)
         if imgui::Selectable("{e}: {getEntityTemplateName(e)}", selectedAddr)
-          selectedItem = idx // selected eid will be changed in next frame
+          selectedItem = idx 
       EndCombo()
 
   imgui::Separator()
-  call_editor(/*prefix*/true, eids)
+  call_editor(true, eids)
 
   DasHelpMarker("Filter (\"incl,-excl\")\nt:typeName (t:EntityId, t:EidList)")
   imgui::SameLine()
@@ -566,7 +566,7 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
     TableSetupColumn("value", ImGuiTableColumnFlags.WidthStretch)
     TableSetupColumn("menu", ImGuiTableColumnFlags.WidthFixed, TEXT_BASE_WIDTH * 2f)
 
-    // TODO: We can collect theese once per hot reload and store in a global variable to avoid extra work.
+    
     var basicStructAnnotations : table<string; rtti::BasicStructureAnnotation?>
     program_for_each_registered_module() <| $(mod)
       mod |> module_for_each_annotation <| $(ann)
@@ -595,7 +595,7 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
 
       comps |> emplace((name, ComponentRenderInfo(
         rawData = compRef.rawData,
-        roVal = annotationFound ? "(Binded, {length(comps) - compsSizeBefore} fields)" : "(No das bind found)",// Correct term should be "annotation" but it is mainly used internally in das and most people refer to fields as binds.
+        roVal = annotationFound ? "(Binded, {length(comps) - compsSizeBefore} fields)" : "(No das bind found)",
         dasTypeName = "",
         typeName = compTypeName,
         idx = idx,
@@ -635,15 +635,15 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
       let name = c.name
       let lowerName = name |> to_lower()
       if (length(filters) > 0 && !match(filters, lowerName)) || (length(excludeFilters) > 0 && match(excludeFilters, lowerName))
-        // if skipItems > 0
-        //   skipItems -= 1
+        
+        
         continue
 
       let typeName = c.cri.typeName
       let lowerTypeName = typeName |> to_lower()
       if (length(typeFilters) > 0 && !match(typeFilters, lowerTypeName)) || (length(excludeTypeFilters) > 0 && match(excludeTypeFilters, lowerTypeName))
-        // if skipItems > 0
-        //   skipItems -= 1
+        
+        
         continue
 
       if skipItems > 0
@@ -671,12 +671,12 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
         invalidate_item(eid, unsafe(reinterpret<array<ComponentRenderInfo#>#> refs))
 
       let rowsNum = TableGetRowIndex() - idxBefore
-      inflateListNum += rowsNum > 1 ? rowsNum + 5 : 0 // + 5 works, maybe + 10 works too
+      inflateListNum += rowsNum > 1 ? rowsNum + 5 : 0 
       showItems -= rowsNum
 
     EndTable()
 
-  call_editor(/*prefix*/false, eids)
+  call_editor(false, eids)
   imgui::EndChild()
 
   PopID()
@@ -684,7 +684,7 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
 def get_annotation_name(ann : rtti::Annotation | rtti::TypeAnnotation)
   var name = ""
 
-  // same logic as get_underlying_ecs_type
+  
   peek(ann.cppName) <| $(cppName)
     if length(cppName) > 0
       var startAt = 0

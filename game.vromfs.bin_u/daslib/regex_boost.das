@@ -13,9 +13,9 @@ require daslib/regex public
 
 [reader_macro(name="regex")]
 class RegexReader : AstReaderMacro {
-    //! This macro implements embedding of the REGEX object into the AST::
-    //!   var op_regex <- %regex~operator[^a-zA-Z_]%%
-    //! Regex is compiled at the time of parsing, and the resulting object is embedded into the AST.
+    
+    
+    
     def override accept(prog : ProgramPtr; mod : Module?; var expr : ExprReader?; ch : int; info : LineInfo) : bool {
         if (ch != '\n' && ch != '\r') {
             append(expr.sequence, ch)
@@ -38,7 +38,7 @@ class RegexReader : AstReaderMacro {
             macro_error(prog, expr.at, "regular expression did not compile {expr.sequence}")
             return <- default<ExpressionPtr>
         }
-        // TODO: turn into AOT?
+        
         var inscope re_data <- convert_to_expression(regex, expr.at)
         delete regex
         var inscope creg <- new ExprCall(at = expr.at, name := "regex::regex_compile")

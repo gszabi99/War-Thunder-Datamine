@@ -67,10 +67,12 @@
     "hp": 10000.0,
     "hull": {
       "composite_armor_hull_01_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 10.0,
+        "hidableInXrayViewer": true
       },
       "composite_armor_hull_02_dm": {
-        "armorThickness": 4.0
+        "armorThickness": 4.0,
+        "hidableInXrayViewer": true
       },
       "superstructure_front_dm": {
         "armorThickness": 15.0
@@ -187,10 +189,12 @@
       "cumulativeArmorQuality": 1.055,
       "genericArmorQuality": 0.14,
       "ex_armor_r_07_dm": {
-        "armorThickness": 80.0
+        "armorThickness": 80.0,
+        "variableThickness": true
       },
       "ex_armor_l_07_dm": {
-        "armorThickness": 80.0
+        "armorThickness": 80.0,
+        "variableThickness": true
       }
     },
     "grille": {
@@ -1740,8 +1744,8 @@
             180.0
           ],
           "pitch": [
-            -5.4,
-            12.8
+            -6.0,
+            14.0
           ]
         },
         "limitsTable": {
@@ -1749,19 +1753,19 @@
             -180.0,
             -147.0,
             -4.0,
-            12.8
+            14.0
           ],
           "lim2": [
             -147.0,
             147.0,
-            -5.4,
-            12.8
+            -6.0,
+            14.0
           ],
           "lim3": [
             147.0,
             180.0,
             -4.0,
-            12.8
+            14.0
           ]
         },
         "gunStabilizer": {
@@ -1998,7 +2002,7 @@
         10.0,
         3.0
       ],
-      "trackMesh": "cn_ztz_96_phys_track_line",
+      "trackMesh": "cn_vt_5_bangladesh_steel_phys_track_line",
       "trackLen": 0.1385,
       "trackCount": 98,
       "trackFadeTime": 1.1,
@@ -2737,9 +2741,13 @@
     "tank_new_gun": {},
     "art_support": {},
     "tank_engine_smoke_screen_system": {},
-    "airstrike": {},
+    "airstrike": {
+      "modClass": "protection",
+      "tier": 1
+    },
     "improved_optics": {
-      "tier": 3
+      "modClass": "protection",
+      "tier": 2
     },
     "tank_medical_kit": {
       "image": "#ui/gameuiskin#tank_reinforcement_cn"
@@ -2821,7 +2829,7 @@
     "105mm_SAP_ammo_pack": {},
     "105mm_china_HE_VT": {},
     "105mm_china_HE_VT_ammo_pack": {
-      "tier": 3
+      "tier": 2
     },
     "105mm_china_ATGM": {},
     "105mm_china_ATGM_ammo_pack": {
@@ -2829,7 +2837,7 @@
     },
     "tank_smoke_screen_system_mod": {
       "modClass": "protection",
-      "tier": 3,
+      "tier": 4,
       "effects": {
         "commonWeapons": {
           "Weapon": [
@@ -2899,8 +2907,8 @@
                   180.0
                 ],
                 "pitch": [
-                  -5.4,
-                  12.8
+                  -6.0,
+                  14.0
                 ]
               },
               "limitsTable": {
@@ -2908,19 +2916,19 @@
                   -180.0,
                   -147.0,
                   -4.0,
-                  12.8
+                  14.0
                 ],
                 "lim2": [
                   -147.0,
                   147.0,
-                  -5.4,
-                  12.8
+                  -6.0,
+                  14.0
                 ],
                 "lim3": [
                   147.0,
                   180.0,
                   -4.0,
-                  12.8
+                  14.0
                 ]
               },
               "gunStabilizer": {
@@ -3173,7 +3181,7 @@
     "night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight",
       "animation": "video/unitModifications/night_vision_system_thermal.ivf",
-      "tier": 2,
+      "tier": 3,
       "modClass": "protection",
       "effects": {
         "nightVision": {
@@ -3205,6 +3213,7 @@
       }
     },
     "tank_support_ucav": {
+      "tier": 2,
       "effects": {
         "allowSupportPlane": true
       },

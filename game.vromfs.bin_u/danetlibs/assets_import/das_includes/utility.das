@@ -73,7 +73,7 @@ def find_transform()
   var dist = 500.0f
   var norm : float3
   var transfrom = pos_tm(cameraPos)
-  //return transform in far if no collision
+  
   traceray_normalized(cameraPos, dir, dist, norm)
   transfrom[3] = cameraPos + dist * dir
   return transfrom

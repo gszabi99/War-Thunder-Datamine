@@ -47,7 +47,7 @@ def is_typedecl_ptr(t : TypeDeclPtr) {
 
 [function_macro(name="typemacro_function")]
 class TypeMacroMacro : AstFunctionAnnotation {
-    //! This macro converts function into a type macro.
+    
     def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         let className = "{func.name}`TypeMacro"
         var inscope parentType <- typeinfo ast_typedecl(type<ast::AstTypeMacro>)
@@ -90,11 +90,11 @@ class TypeMacroMacro : AstFunctionAnnotation {
             }
         }
 
-        // we expect the following arguments
-        // prog:ProgramPtr
-        // mod:Module?
-        // td:TypeDeclPtr
-        // all other arguments (exprt arg 0, which is typemacro name)
+        
+        
+        
+        
+        
         if (length(func.arguments) < 1) {
             errors := "expecting at least 1 argument (macroArgument: TypeDeclPtr)"
             return false
@@ -110,7 +110,7 @@ class TypeMacroMacro : AstFunctionAnnotation {
         var body = cvtFn.body as ExprBlock
         body.list |> clear
 
-        // we need to check, if there are enough arugments
+        
         let expectedArgs = length(func.arguments)
         var inscope checkE <- qmacro_block() <| $() {
             if (length(td.dimExpr) != $v(expectedArgs)) {
@@ -122,7 +122,7 @@ class TypeMacroMacro : AstFunctionAnnotation {
 
         var inscope retCall <- qmacro($c(func.name)(td))
 
-        // allowed are basic types (int, float etc) and TypeDeclPtr
+        
         for (ai in range(1, length(func.arguments))) {
             let argIndex = ai - 1
             let macroArgIndex = ai

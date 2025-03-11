@@ -3708,22 +3708,71 @@
         "index": 3,
         "tier": 9,
         "order": 5,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "aim9l",
-          "reqModification": "us_aim_9l",
-          "ShowNodes": {
-            "node": "lau7_l1"
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim9l",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": "lau7_l1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "aim_9_003",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
-            "emitter": "aim_9_003",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+          {
+            "iconType": "ltc",
+            "name": "bol_pod",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": "bol_304_container003"
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
+              "emitter": "jet_flame",
+              "bullets": 160,
+              "external": true,
+              "separate": false,
+              "mass": 25.0,
+              "bulletsCartridge": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim9l_bol",
+            "ShowNodes": {
+              "node": "bol_304_container003"
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
+                "emitter": "jet_flame",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 25.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_9l",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
+                "emitter": "aim_9_003",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           }
-        }
+        ]
       },
       {
         "index": 4,
@@ -4276,22 +4325,71 @@
         "index": 9,
         "tier": 3,
         "order": 6,
-        "WeaponPreset": {
-          "iconType": "missile_type_b_air_to_air",
-          "name": "aim9l",
-          "reqModification": "us_aim_9l",
-          "ShowNodes": {
-            "node": "lau7_r1"
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_b_air_to_air",
+            "name": "aim9l",
+            "reqModification": "us_aim_9l",
+            "ShowNodes": {
+              "node": "lau7_r1"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "emitter": "aim_9_004",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
           },
-          "Weapon": {
-            "trigger": "aam",
-            "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
-            "emitter": "aim_9_004",
-            "bullets": 1,
-            "external": true,
-            "separate": true
+          {
+            "iconType": "ltc",
+            "name": "bol_pod",
+            "reqModification": "uk_ltc_bol",
+            "ShowNodes": {
+              "node": "bol_304_container004"
+            },
+            "Weapon": {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
+              "emitter": "jet_flame1",
+              "bullets": 160,
+              "external": true,
+              "separate": false,
+              "mass": 25.0,
+              "bulletsCartridge": 1
+            }
+          },
+          {
+            "iconType": "missile_type_b_air_to_air_ltc_pod",
+            "name": "aim9l_bol",
+            "ShowNodes": {
+              "node": "bol_304_container004"
+            },
+            "Weapon": [
+              {
+                "reqModification": "uk_ltc_bol",
+                "trigger": "countermeasures",
+                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_bol_pod.blk",
+                "emitter": "jet_flame1",
+                "bullets": 160,
+                "external": true,
+                "separate": false,
+                "mass": 25.0,
+                "bulletsCartridge": 1
+              },
+              {
+                "reqModification": "us_aim_9l",
+                "trigger": "aam",
+                "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_bol_pod.blk",
+                "emitter": "aim_9_004",
+                "bullets": 1,
+                "external": true,
+                "separate": true
+              }
+            ]
           }
-        }
+        ]
       },
       {
         "index": 10,
@@ -4711,6 +4809,7 @@
     "new_cover": {
       "tier": 4
     },
+    "countermeasures_launcher_chaff_bol_pod": {},
     "countermeasures_launcher_chaff": {},
     "countermeasures_belt_pack": {
       "modClass": "armor",
@@ -4719,9 +4818,14 @@
       "group": "countermeasures",
       "tier": 1
     },
+    "uk_ltc_bol": {
+      "reqModification": "countermeasures_belt_pack",
+      "modClass": "armor",
+      "tier": 2
+    },
     "f_4c_g_suit": {
-      "prevModification": "countermeasures_belt_pack",
-      "tier": 2,
+      "prevModification": "uk_ltc_bol",
+      "tier": 3,
       "modClass": "armor"
     },
     "air_extinguisher": {

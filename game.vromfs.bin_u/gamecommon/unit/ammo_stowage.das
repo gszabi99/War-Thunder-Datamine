@@ -22,16 +22,16 @@ require %game.unit.ammo_stowage_events
 require %game.events
 
 
-// ==========================================================================
-// RESPAWN/REPAIR/REARM
-// ==========================================================================
+
+
+
 
 
 [with_bundle(v)]
 def ammo_stowage_restore_slots(var v : tuple<
                                  ammo_slots__state : UInt32List
                                  >) : void
-  // water is cleared upon repair/respawn, so it is safe to just set FLOODED to false for all slots
+  
   for state in v.ammo_slots__state
     set_flag(state, AmmoSlotState ENABLED, true)
     set_flag(state, AmmoSlotState FLOODED, false)
@@ -55,9 +55,9 @@ def ammo_stowage_repair_handle(evt : EventUnitRepair; eid : EntityId;
   sendEvent(eid, [[EventBulletsAmountChanged isRefill=false]])
 
 
-// ==========================================================================
-// STOWAGE UPDATE & REPLENISHMENT
-// ==========================================================================
+
+
+
 
 
 [with_bundle(v)]
@@ -127,7 +127,7 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
     set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState EMPTY_AUTO_LOAD, auto_load_present)
 
     if ammo_type_remap.x != stowage_id
-      // ammo type from other stowage - skip
+      
       continue
 
     var loaded_ammo_cnt = 0
@@ -141,11 +141,11 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
         loaded_ammo_cnt += int(gun.chosenBulletType) == ammo_type_remap.w || !enable_per_ammo_types ? gun.currentLoadedAmmoCount : 0
         is_ready_to_shoot = gun.isReadyToShoot || is_ready_to_shoot
       else
-        loaded_ammo_cnt += 1 // todo: base gun
+        loaded_ammo_cnt += 1 
         is_ready_to_shoot = true
     set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState EMPTY_LOADED_AMMO, loaded_ammo_cnt == 0)
     v.ammo_per_type_data__numAmmoFs[glob_ammo_idx] = stage_present[int(AmmoClusterStage FIRST_STAGE)] || stage_present[int(AmmoClusterStage LOADED_IN_GUN)] ? 0 : -1
-    // check if weapon is blocked by broken parts
+    
     var weapon_blocked_by_broken_parts = false
     if stowage_has_elevator_parts && stowage_all_parts_broken
       weapon_blocked_by_broken_parts = true
@@ -153,8 +153,8 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
       weapon_blocked_by_broken_parts = true
     set_flag(v.ammo_per_type_data__state[glob_ammo_idx], AmmoStowagePerAmmoState BLOCKED_BY_BROKEN_PARTS, weapon_blocked_by_broken_parts)
 
-  // if we have LOADED_IN_GUN clusters, we add them to numAmmoFs, otherwise we add FIRST_STAGE clusters
-  // this is required for Weapon::getEmitterNo()
+  
+  
   let fs_cluster_stage = stage_present[int(AmmoClusterStage LOADED_IN_GUN)] ? int(AmmoClusterStage LOADED_IN_GUN) : int(AmmoClusterStage FIRST_STAGE)
 
   var ammo_hash = 1u
@@ -164,12 +164,12 @@ def ammo_stowage_gather_and_update_ammo(unit : Unit?;
     let slots_range = v.ammo_clusters__slotsRange[cluster_id]
     var cluster_ammo = int2(0, 0)
     for slot_id in slots_range.x..slots_range.y
-      // update ammo and hash
+      
       let slot_ammo = v.ammo_slots__numAmmo[slot_id]
       let slot_ammo_type = get_ammo_slot_type(slot_id, v)
       ammo_hash = (ammo_hash * 16777619u) ^ uint(slot_ammo.x * 17 + slot_ammo_type)
       cluster_ammo += slot_ammo
-      // update per ammo type data
+      
       let glob_ammo_idx = per_ammo_offset + slot_ammo_type
       if slot_ammo.x == 0
         continue
@@ -217,58 +217,58 @@ def find_next_slots_to_replenish(stowage_id : int; amount : int;
   let replenish_only_empty = get_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState REPLENISH_ONLY_EMPTY)
   let clusters_range = v.ammo_stowages__clustersRange[stowage_id]
   for to_cluster_id in clusters_range.x..clusters_range.y
-    // check if cluster is suitable to replenish to
+    
     let to_cluster_stage = get_ammo_cluster_stage(to_cluster_id, v)
     let to_cluster_type = get_ammo_cluster_type(to_cluster_id, v)
     if to_cluster_stage > replenished_stage || to_cluster_stage < int(AmmoClusterStage FIRST_STAGE)
       continue
     let to_slots_range = v.ammo_clusters__slotsRange[to_cluster_id]
-    // check if replenishment for this cluster type is already found
+    
     if to_slot_ids[to_cluster_type].x != -1
       continue
-    // gather ammo count by type for target cluster
+    
     for ammo_count in ammo_count_by_type
       ammo_count = 0
     for to_slot_id in to_slots_range.x..to_slots_range.y
       let slot_ammo = v.ammo_slots__numAmmo[to_slot_id].x
       if slot_ammo > 0
         ammo_count_by_type[get_ammo_slot_type(to_slot_id, v)] += slot_ammo
-    // search for slot to replenish to
+    
     for to_slot_id in to_slots_range.x..to_slots_range.y
       if v.ammo_slots__numAmmo[to_slot_id].x == v.ammo_slots__numAmmo[to_slot_id].y
-        continue // skip full slots
+        continue 
       let to_slot_constraint = get_ammo_slot_class_mask(to_slot_id, v)
       for from_cluster_id in (clusters_range.x + 1)..clusters_range.y
         let from_cluster_stage = get_ammo_cluster_stage(from_cluster_id, v)
         let from_cluster_type = get_ammo_cluster_type(from_cluster_id, v)
-        // check if cluster is suitable to replenish from
+        
         if from_cluster_stage <= to_cluster_stage
           continue
         if from_cluster_type != to_cluster_type
           continue
         if (v.ammo_clusters__ammoClassConstraints[from_cluster_id] & to_slot_constraint) == 0u
           continue
-        // search for slot to replenish from
+        
         let from_slots_range = v.ammo_clusters__slotsRange[from_cluster_id]
         for from_slot_id in from_slots_range.x..from_slots_range.y
           if v.ammo_slots__numAmmo[from_slot_id].x < amount
             continue
           let slot_ammo_type = get_ammo_slot_type(from_slot_id, v)
-          // check if we can replenish for this pair of slots
+          
           if !ammo_stowage_can_add_ammo_to_slot(to_cluster_id, to_slot_id, amount, slot_ammo_type, v)
             continue
-          // search for ammo type with least amount in target cluster
+          
           if !(replenished_ammo_type == -1 || ammo_count_by_type[replenished_ammo_type] >= ammo_count_by_type[slot_ammo_type])
             continue
-          // handle REPLENISH_ONLY_EMPTY flag
+          
           if replenish_only_empty && !replenishment_in_progress && ammo_count_by_type[slot_ammo_type] > 0
             continue
-          // if ammo type does not match with previous ammo type - clear all previously found replenishment
+          
           if replenished_ammo_type != slot_ammo_type && replenished_ammo_type != -1
             for cluster_type in 0..int(int(AmmoClusterType NUM_TYPES))
               from_slot_ids[cluster_type] = int2(-1, -1)
               to_slot_ids[cluster_type] = int2(-1, -1)
-          // save replenishment
+          
           from_slot_ids[from_cluster_type] = int2(from_cluster_id, from_slot_id)
           to_slot_ids[to_cluster_type] = int2(to_cluster_id, to_slot_id)
           replenished_ammo_type = slot_ammo_type
@@ -318,16 +318,16 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
   let current_time = float(get_app().usefulTotalTime)
   let weapon_controller = unit.weap
   for stowage_id, replenishment_start_end, replenishment_time, bullets_cartridge, triggers_range in iter_range(v.ammo_stowages__state), v.ammo_stowages__replenishmentStartEnd, v.ammo_stowages__replenishmentTime, v.ammo_stowages__bulletsCartridge, v.ammo_stowages__weaponTriggersRange
-    // update per ammo type state + gather total ammo count in each stage
+    
     let gathered_stowage_data = ammo_stowage_gather_and_update_ammo(unit, stowage_id, v)
 
-    // early exist if replenishment is disabled or unit is burning
+    
     if replenishment_time.x < VERY_SMALL_NUMBER || !allow_replenishment || unit.isBurn
       replenishment_start_end = float2(-1.0f)
       v.ammo_stowages__cachedAmmoHash[stowage_id] = 0u
       continue
 
-    // reset progress if weapon is reloading
+    
     var any_weapon_reloading = false
     for i in triggers_range.x..triggers_range.y
       if weapon_controller.Weapons |> is_weapon_reloading(v.ammo_stowage__weaponTriggers[i], current_time)
@@ -337,7 +337,7 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
       v.ammo_stowages__cachedAmmoHash[stowage_id] = 0u
       continue
 
-    // cancel replenishment if there is no loader available
+    
     var can_reload = false
     for i in triggers_range.x..triggers_range.y
       if unit |> is_loading_crewman_available(v.ammo_stowage__weaponTriggers[i])
@@ -349,36 +349,36 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
       continue
 
     if gathered_stowage_data.hash != v.ammo_stowages__cachedAmmoHash[stowage_id]
-      // print("changed ammo hash {v.ammo_stowages__cachedAmmoHash[stowage_id]} -> {gathered_stowage_data.hash}")
-      // ammo hash changed - update hash and check if replenishment is available
+      
+      
       v.ammo_stowages__cachedAmmoHash[stowage_id] = gathered_stowage_data.hash
       let replenish = find_next_slots_to_replenish(stowage_id, bullets_cartridge, v)
-      // if there is nothing to replenish - cancel replenishment
+      
       if replenish.ammo_type == -1
         replenishment_start_end = float2(-1.0f)
         continue
     elif replenishment_start_end.x < 0.f && replenishment_start_end.y < 0.f
-      // was not replenishing and nothing has changed
+      
       continue
 
-    // start replenishment delay if it havent started yet
+    
     if replenishment_start_end.x < 0.0f
-      replenishment_start_end.x = current_time + /* delay */ replenishment_time.y
+      replenishment_start_end.x = current_time +  replenishment_time.y
       continue
 
-    // start replenishment after a delay
-    if replenishment_start_end.x >= current_time && replenishment_start_end.y < 0.0f // start after delay
-      replenishment_start_end.y = replenishment_start_end.x + /* time */ replenishment_time.x * unit.loaderPenalty
+    
+    if replenishment_start_end.x >= current_time && replenishment_start_end.y < 0.0f 
+      replenishment_start_end.y = replenishment_start_end.x +  replenishment_time.x * unit.loaderPenalty
 
-    // do replenishment
+    
     if current_time > replenishment_start_end.y
       let cur_replenish = find_next_slots_to_replenish(stowage_id, bullets_cartridge, v)
-      // no slots found
+      
       if cur_replenish.ammo_type == -1
         replenishment_start_end = float2(-1.0f)
         continue
 
-      // replenish for each cluster type
+      
       var dm_changed = false
       for cluster_type in 0..int(AmmoClusterType NUM_TYPES)
         let from_cluster_slot_id = cur_replenish.from_cluster_slot_id[cluster_type]
@@ -391,31 +391,31 @@ def ammo_stowage_update_replenishment_and_state_es(info : ParallelUpdateFrameDel
         dm_changed = ammo_slot_update_dm(unit, to_cluster_slot_id.y, v) || dm_changed
         dm_changed = ammo_cluster_balance_slots(unit, from_cluster_slot_id.x, true, v) || dm_changed
         dm_changed = ammo_cluster_balance_slots(unit, to_cluster_slot_id.x, true, v) || dm_changed
-      // update slots dm
+      
       if dm_changed
         sendEvent(eid, [[EventAmmoStowageInvalidateRenderer]])
 
-      // continue replenishment if available
+      
       let next_replenish = find_next_slots_to_replenish(stowage_id, bullets_cartridge, v)
       if next_replenish.ammo_type != -1
         replenishment_start_end.x = replenishment_start_end.y
         replenishment_start_end.y += replenishment_time.x * unit.loaderPenalty
 
-      // update ammo after replenishment & sync
+      
       ammo_stowage_gather_and_update_ammo(unit, stowage_id, v)
       ammo_stowage_send_net_sync(eid) <| v
 
 
-// ==========================================================================
-// MISC ENTITY SYSTEMS
-// ==========================================================================
+
+
+
 
 [es]
 def ammo_stowage_sync_num_ammo_fs_es(act : UpdateStageInfoAct;
                                      var ammo_per_type_data__numAmmoFsSync : IntList&;
                                      ammo_per_type_data__numAmmoFs : IntList)
-  // ammo_per_type_data__numAmmoFs is updated in background thread while it is required in main thread,
-  // so do this
+  
+  
   ammo_per_type_data__numAmmoFsSync := ammo_per_type_data__numAmmoFs
 
 

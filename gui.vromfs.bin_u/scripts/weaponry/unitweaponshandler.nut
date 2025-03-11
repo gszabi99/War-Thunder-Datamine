@@ -17,6 +17,7 @@ let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { guiStartChooseUnitWeapon } = require("%scripts/weaponry/weaponrySelectModal.nut")
+let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 
 gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -40,7 +41,7 @@ gui_handlers.unitWeaponsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   needCheckTutor = true
 
   function initScreen() {
-    this.bulletsManager = ::UnitBulletsManager(this.unit, { isForcedAvailable = this.isForcedAvailable })
+    this.bulletsManager = UnitBulletsManager(this.unit, { isForcedAvailable = this.isForcedAvailable })
     this.updateShowItemParams()
     this.setUnit(this.unit, true)
   }

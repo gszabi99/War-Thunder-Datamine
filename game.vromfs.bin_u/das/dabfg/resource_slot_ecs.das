@@ -24,7 +24,7 @@ def is_valid_access_handle(handle : NodeHandleWithSlotsAccessVector&) : bool
     return false
   return handle[0].valid
 
-//! Declare resource slot access, that stored in ecs
+
 [function_macro(name="resource_slot_ecs")]
 class ResourceSlotEcsAnnotation : AstFunctionAnnotation
 
@@ -75,7 +75,7 @@ class ResourceSlotEcsAnnotation : AstFunctionAnnotation
     )
 
   def declareReloadCallback(func : FunctionPtr; parsed : ResSlotEcsAnnotationArgs; args : AnnotationArgumentList)
-    // To understand declaration syntax, read https://dascript.org/doc/reference/language/reification.html
+    
 
     var inscope reloadCallback <- qmacro_function("resource_slot_reload`{func.name}") <| $()
       if !is_dabfg_runtime_initialized()

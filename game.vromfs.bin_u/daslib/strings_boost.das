@@ -110,7 +110,7 @@ def eq(b : das_string; a : string implicit) {
 }
 
 
-// https://en.wikipedia.org/wiki/Levenshtein_distance
+
 def levenshtein_distance(s, t : string implicit) : int {
     let sLen = length(s)
     let tLen = length(t)
@@ -137,8 +137,8 @@ def levenshtein_distance(s, t : string implicit) : int {
     delete d
 }
 
-// https://en.wikipedia.org/wiki/Levenshtein_distance#Iterative_with_two_matrix_rows
-// https://www.codeproject.com/Articles/13525/Fast-memory-efficient-Levenshtein-algorithm-2
+
+
 def levenshtein_distance_fast(s, t : string implicit) : int {
     let sLen = length(s)
     let tLen = length(t)
@@ -173,7 +173,7 @@ def replace_multiple(source : string; replaces : array<tuple<text : string; repl
     if (empty(source) || empty(replaces)) {
         return source
     }
-    //! replaces occurances of multiple strings in a string. does not support overlap
+    
     return build_string <| $(writer) {
         var index = 0
         let len = source |> length

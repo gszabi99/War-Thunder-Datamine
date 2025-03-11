@@ -49,7 +49,7 @@ def make_rot_cw_zyx(angles : float3) : float3x4
   return tmZ * tmY * tmX
 
 [generic]
-def norm_ang(a : float) : float// [0..TWOPI]
+def norm_ang(a : float) : float
   let na = a < 0. ? a + TWOPI : a
   return na - TWOPI * floor(na / TWOPI)
 
@@ -58,23 +58,23 @@ def norm_ang(a : float2) : float2
   return float2(norm_ang(a.x), norm_ang(a.y))
 
 [generic]
-def dist_ang(a, b) // [0..TWOPI]
+def dist_ang(a, b) 
   return norm_ang(norm_ang(b) - norm_ang(a))
 
 [generic]
-def clamp_ang(a, from, to : float) : float// [0..TWOPI]
+def clamp_ang(a, from, to : float) : float
   let na = norm_ang(a)
   let d = dist_ang(from, to)
   if d <= 1e-3 || dist_ang(from, na) <= d
     return na
   return dist_ang(na, from) < dist_ang(to, na) ? norm_ang(from) : norm_ang(to)
 
-// [0..TWOPI]
+
 [generic]
 def clamp_ang(a : float; limit : float2) : float
   return clamp_ang(a, limit.x, limit.y)
 
-//will also multiply their lengths
+
 [generic]
 def sum_rotation(a, b : float2) : float2
   return float2(a.x * b.x - a.y * b.y,

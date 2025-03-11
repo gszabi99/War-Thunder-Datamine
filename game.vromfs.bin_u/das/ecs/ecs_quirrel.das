@@ -61,7 +61,7 @@ def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : EntityId) :
 
 def pushValue(var vm : SQVM?; val : EntityId) { pushValue(vm, uint(val)); }
 
-// generated block
+
 
 
 def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : Object) : void>) : bool
@@ -661,123 +661,122 @@ def pushValue(var vm : SQVM?; val : int4) : void
   PushInstanceCopy(vm, val)
 
 
-/*
-[init]
-def gen()
-
-  let rwTypes <- [{auto[]
-    "Object";
-    "Array";
-    "StringList";
-    "FloatList";
-    "IntList";
-    "Int8List";
-    "Int16List";
-    "Int64List";
-    "UInt8List";
-    "UInt16List";
-    "UInt32List";
-    "UInt64List";
-    "EidList";
-    "Point2List";
-    "Point3List";
-    "Point4List";
-    "IPoint2List";
-    "IPoint3List";
-    "BoolList";
-    "TMatrixList";
-    "ColorList";
-    "float3x4";
-    "BSphere3";
-    "BBox3"
-  }]
-
-  let valueTypes <- [{auto[]
-    "E3DCOLOR";
-    "Color3";
-    "Color4";
-    "quat";
-    "float2";
-    "float3";
-    "float4";
-    "int2";
-    "int3";
-    "int4"
-  }]
-
-  for typ in rwTypes
-    print("
-def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : {typ}) : void>) : bool
-  GetInstance(vm, idx, false) <| $(var val : {typ}?)
-    cb |> invoke(*val)
-  return true
-
-def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : {typ}) : void>) : bool
-  GetInstance(vm, idx, false) <| $(var val : {typ}?)
-    cb |> invoke(*val)
-  return true
-
-def pushValue(var vm : SQVM?; val : {typ} const? | {typ} const#? | {typ} const?# | {typ} const#?#) : void
-  if val != null
-    PushInstanceCopy(vm, *val)
-  else
-    sq_pushnull(vm)
-
-def pushValue(var vm : SQVM?; val : {typ} | {typ}#) : void
-  PushInstanceCopy(vm, val)");
-
-  for typ in valueTypes
-    print("
-def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : {typ}) : void>) : bool
-  GetInstance(vm, idx, false) <| $(var val : {typ}?)
-    cb |> invoke(*val)
-  return true
-
-def pushValue(var vm : SQVM?; val : {typ} const? | {typ} const#? | {typ} const?# | {typ} const#?#) : void
-  if val != null
-    PushInstanceCopy(vm, *val)
-  else
-    sq_pushnull(vm)
-
-def pushValue(var vm : SQVM?; val : {typ} | {typ}#) : void
-  PushInstanceCopy(vm, val)");
-*/
-
-/*
-[constant_expression(baseTypeName)]
-def push_class_value_slow(var vm : SQVM?; baseTypeName : string; val) : void
-  var found = false
-  find_AbstractStaticClassData() <| $(cls)
-    if cls.className == baseTypeName
-      found = true
-      console_print("push obj of {cls} {val}")
-      sq_pushobject(vm, unsafe(addr(ClassData<T>::classObject)))
-      sq_createinstance(vm, -1l)
-      sq_setinstanceup(vm, -1l, unsafe(addr(val)))
-      // sq_pop(vm, 1l)
-      return true
-    return false
-  if !found
-    to_log(LOG_ERROR, "Unable to push instance with type '{baseTypeName}'")
-    sq_pushnull(vm)
 
 
-def getStackValue(var vm : SQVM?; idx : int64; cb : block<(res : auto(T)) : void>) : bool
-  GetInstance(vm, idx, false) <| $(var val : T?#)
-    cb |> invoke(*val)
-  return true
 
-def getStackValue(var vm : SQVM?; idx : int64; cb : block<(var res : auto(T)) : void>) : bool
-  GetInstance(vm, idx, false) <| $(var val : T?)
-    cb |> invoke(unsafe(reinterpret<T> *val))
-  return true
 
-def pushValue(var vm : SQVM?; val : auto const implicit? implicit) : void
-  if val != null
-    PushInstanceCopy(vm, *val)
-  else
-    sq_pushnull(vm)
 
-def pushValue(var vm : SQVM?; val : auto implicit) : void
-  PushInstanceCopy(vm, val)
- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

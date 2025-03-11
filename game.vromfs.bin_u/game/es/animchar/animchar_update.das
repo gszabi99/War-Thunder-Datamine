@@ -7,5 +7,5 @@ struct UpdateAnimcharEvent
   dt : float
 
 [es(no_order)]
-def animchar_es(info : UpdateStageInfoAct) // same name for save order of es
+def animchar_es(info : UpdateStageInfoAct) 
   broadcastEventImmediate([[UpdateAnimcharEvent curTime=info.curTime, dt=info.dt]]);

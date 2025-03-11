@@ -5,7 +5,6 @@ if(typeof global !== "undefined") { global.numeric = numeric; }
 
 numeric.version = "1.2.6";
 
-// 1. Utility functions
 numeric.bench = function bench (f,interval) {
     var t1,t2,n,i;
     if(typeof interval === "undefined") { interval = 15; }
@@ -3284,160 +3283,45 @@ numeric.MPStoLP = function MPStoLP(MPS) {
 //                             Seeds using the given explicit seed mixed
 //                             together with accumulated entropy.
 //
-//   <script src="http://bit.ly/srandom-512"></script>
-//                             Seeds using physical random bits downloaded
-//                             from random.org.
-//
-//   <script src="https://jsonlib.appspot.com/urandom?callback=Math.seedrandom">
-//   </script>                 Seeds using urandom bits from call.jsonlib.com,
-//                             which is faster than random.org.
-//
-// Examples:
-//
-//   Math.seedrandom("hello");            // Use "hello" as the seed.
-//   document.write(Math.random());       // Always 0.5463663768140734
-//   document.write(Math.random());       // Always 0.43973793770592234
-//   var rng1 = Math.random;              // Remember the current prng.
-//
-//   var autoseed = Math.seedrandom();    // New prng with an automatic seed.
-//   document.write(Math.random());       // Pretty much unpredictable.
-//
-//   Math.random = rng1;                  // Continue "hello" prng sequence.
-//   document.write(Math.random());       // Always 0.554769432473455
-//
-//   Math.seedrandom(autoseed);           // Restart at the previous seed.
-//   document.write(Math.random());       // Repeat the 'unpredictable' value.
-//
-// Notes:
-//
-// Each time seedrandom('arg') is called, entropy from the passed seed
-// is accumulated in a pool to help generate future seeds for the
-// zero-argument form of Math.seedrandom, so entropy can be injected over
-// time by calling seedrandom with explicit data repeatedly.
-//
-// On speed - This javascript implementation of Math.random() is about
-// 3-10x slower than the built-in Math.random() because it is not native
-// code, but this is typically fast enough anyway.  Seeding is more expensive,
-// especially if you use auto-seeding.  Some details (timings on Chrome 4):
-//
-// Our Math.random()            - avg less than 0.002 milliseconds per call
-// seedrandom('explicit')       - avg less than 0.5 milliseconds per call
-// seedrandom('explicit', true) - avg less than 2 milliseconds per call
-// seedrandom()                 - avg about 38 milliseconds per call
-//
-// LICENSE (BSD):
-//
-// Copyright 2010 David Bau, all rights reserved.
-//
-// Redistribution and use in source and binary forms, with or without
-// modification, are permitted provided that the following conditions are met:
-// 
-//   1. Redistributions of source code must retain the above copyright
-//      notice, this list of conditions and the following disclaimer.
-//
-//   2. Redistributions in binary form must reproduce the above copyright
-//      notice, this list of conditions and the following disclaimer in the
-//      documentation and/or other materials provided with the distribution.
-// 
-//   3. Neither the name of this module nor the names of its contributors may
-//      be used to endorse or promote products derived from this software
-//      without specific prior written permission.
-// 
-// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-// "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-//
-/**
- * All code is in an anonymous closure to keep the global namespace clean.
- *
- * @param {number=} overflow 
- * @param {number=} startdenom
- */
+//   <script src="http:
 
-// Patched by Seb so that seedrandom.js does not pollute the Math object.
-// My tests suggest that doing Math.trouble = 1 makes Math lookups about 5%
-// slower.
 numeric.seedrandom = { pow:Math.pow, random:Math.random };
 
 (function (pool, math, width, chunks, significance, overflow, startdenom) {
 
 
-//
-// seedrandom()
-// This is the seedrandom function described above.
-//
 math['seedrandom'] = function seedrandom(seed, use_entropy) {
   var key = [];
   var arc4;
 
-  // Flatten the seed string or build one from local entropy if needed.
-  seed = mixkey(flatten(
+    seed = mixkey(flatten(
     use_entropy ? [seed, pool] :
     arguments.length ? seed :
     [new Date().getTime(), pool, window], 3), key);
 
-  // Use the seed to initialize an ARC4 generator.
-  arc4 = new ARC4(key);
+    arc4 = new ARC4(key);
 
-  // Mix the randomness into accumulated entropy.
-  mixkey(arc4.S, pool);
+    mixkey(arc4.S, pool);
 
-  // Override Math.random
+  
+    
+  math['random'] = function random() {      var n = arc4.g(chunks);                 var d = startdenom;                     var x = 0;                              while (n < significance) {                n = (n + x) * width;                    d *= width;                             x = arc4.g(1);                        }
+    while (n >= overflow) {                   n /= 2;                                 d /= 2;                                 x >>>= 1;                             }
+    return (n + x) / d;                   };
 
-  // This function returns a random double in [0, 1) that contains
-  // randomness in every bit of the mantissa of the IEEE 754 value.
-
-  math['random'] = function random() {  // Closure to return a random double:
-    var n = arc4.g(chunks);             // Start with a numerator n < 2 ^ 48
-    var d = startdenom;                 //   and denominator d = 2 ^ 48.
-    var x = 0;                          //   and no 'extra last byte'.
-    while (n < significance) {          // Fill up all significant digits by
-      n = (n + x) * width;              //   shifting numerator and
-      d *= width;                       //   denominator and generating a
-      x = arc4.g(1);                    //   new least-significant-byte.
-    }
-    while (n >= overflow) {             // To avoid rounding up, before adding
-      n /= 2;                           //   last byte, shift everything
-      d /= 2;                           //   right using integer math until
-      x >>>= 1;                         //   we have exactly the desired bits.
-    }
-    return (n + x) / d;                 // Form the number within [0, 1).
-  };
-
-  // Return the seed that was used
-  return seed;
+    return seed;
 };
 
-//
-// ARC4
-//
-// An ARC4 implementation.  The constructor takes a key in the form of
-// an array of at most (width) integers that should be 0 <= x < (width).
-//
-// The g(count) method returns a pseudorandom integer that concatenates
-// the next (count) outputs from ARC4.  Its return value is a number x
-// that is in the range 0 <= x < (width ^ count).
-//
-/** @constructor */
+
 function ARC4(key) {
   var t, u, me = this, keylen = key.length;
   var i = 0, j = me.i = me.j = me.m = 0;
   me.S = [];
   me.c = [];
 
-  // The empty key [] is treated as [0].
-  if (!keylen) { key = [keylen++]; }
+    if (!keylen) { key = [keylen++]; }
 
-  // Set up S using the standard key scheduling algorithm.
-  while (i < width) { me.S[i] = i++; }
+    while (i < width) { me.S[i] = i++; }
   for (i = 0; i < width; i++) {
     t = me.S[i];
     j = lowbits(j + t + key[i % keylen]);
@@ -3446,8 +3330,7 @@ function ARC4(key) {
     me.S[j] = t;
   }
 
-  // The "g" method returns the next (count) outputs as one number.
-  me.g = function getnext(count) {
+    me.g = function getnext(count) {
     var s = me.S;
     var i = lowbits(me.i + 1); var t = s[i];
     var j = lowbits(me.j + t); var u = s[j];
@@ -3465,41 +3348,25 @@ function ARC4(key) {
     me.j = j;
     return r;
   };
-  // For robust unpredictability discard an initial batch of values.
-  // See http://www.rsa.com/rsalabs/node.asp?id=2009
-  me.g(width);
+      me.g(width);
 }
 
-//
-// flatten()
-// Converts an object tree to nested arrays of strings.
-//
-/** @param {Object=} result 
-  * @param {string=} prop
-  * @param {string=} typ */
+
 function flatten(obj, depth, result, prop, typ) {
   result = [];
   typ = typeof(obj);
   if (depth && typ == 'object') {
     for (prop in obj) {
-      if (prop.indexOf('S') < 5) {    // Avoid FF3 bug (local/sessionStorage)
-        try { result.push(flatten(obj[prop], depth - 1)); } catch (e) {}
+      if (prop.indexOf('S') < 5) {            try { result.push(flatten(obj[prop], depth - 1)); } catch (e) {}
       }
     }
   }
   return (result.length ? result : obj + (typ != 'string' ? '\0' : ''));
 }
 
-//
-// mixkey()
-// Mixes a string seed into a key that is an array of integers, and
-// returns a shortened string seed that is equivalent to the result key.
-//
-/** @param {number=} smear 
-  * @param {number=} j */
+
 function mixkey(seed, key, smear, j) {
-  seed += '';                         // Ensure the seed is a string
-  smear = 0;
+  seed += '';                           smear = 0;
   for (j = 0; j < seed.length; j++) {
     key[lowbits(j)] =
       lowbits((smear ^= key[lowbits(j)] * 19) + seed.charCodeAt(j));
@@ -3509,40 +3376,17 @@ function mixkey(seed, key, smear, j) {
   return seed;
 }
 
-//
-// lowbits()
-// A quick "n mod width" for width a power of 2.
-//
 function lowbits(n) { return n & (width - 1); }
 
-//
-// The following constants are related to IEEE 754 limits.
-//
 startdenom = math.pow(width, chunks);
 significance = math.pow(2, significance);
 overflow = significance * 2;
 
-//
-// When seedrandom.js is loaded, we immediately mix a few bits
-// from the built-in RNG into the entropy pool.  Because we do
-// not want to intefere with determinstic PRNG state later,
-// seedrandom will not call math.random on its own again after
-// initialization.
-//
 mixkey(math.random(), pool);
 
-// End anonymous scope, and pass initial values.
 }(
-  [],   // pool: entropy pool starts empty
-  numeric.seedrandom, // math: package containing random, pow, and seedrandom
-  256,  // width: each RC4 output is 0 <= x < 256
-  6,    // chunks: at least six RC4 outputs for each double
-  52    // significance: there are 52 significant digits in a double
-  ));
-/* This file is a slightly modified version of quadprog.js from Alberto Santini.
- * It has been slightly modified by Sébastien Loisel to make sure that it handles
- * 0-based Arrays instead of 1-based Arrays.
- * License is in resources/LICENSE.quadprog */
+  [],     numeric.seedrandom,   256,    6,      52      ));
+
 (function(exports) {
 
 function base0to1(A) {
@@ -3564,8 +3408,7 @@ function dpori(a, lda, n) {
     for (k = 1; k <= n; k = k + 1) {
         a[k][k] = 1 / a[k][k];
         t = -a[k][k];
-        //~ dscal(k - 1, t, a[1][k], 1);
-        for (i = 1; i < k; i = i + 1) {
+                for (i = 1; i < k; i = i + 1) {
             a[i][k] = t * a[i][k];
         }
 
@@ -3576,8 +3419,7 @@ function dpori(a, lda, n) {
         for (j = kp1; j <= n; j = j + 1) {
             t = a[k][j];
             a[k][j] = 0;
-            //~ daxpy(k, t, a[1][k], 1, a[1][j], 1);
-            for (i = 1; i <= k; i = i + 1) {
+                        for (i = 1; i <= k; i = i + 1) {
                 a[i][j] = a[i][j] + (t * a[i][k]);
             }
         }
@@ -3589,8 +3431,7 @@ function dposl(a, lda, n, b) {
     var i, k, kb, t;
 
     for (k = 1; k <= n; k = k + 1) {
-        //~ t = ddot(k - 1, a[1][k], 1, b[1], 1);
-        t = 0;
+                t = 0;
         for (i = 1; i < k; i = i + 1) {
             t = t + (a[i][k] * b[i]);
         }
@@ -3602,8 +3443,7 @@ function dposl(a, lda, n, b) {
         k = n + 1 - kb;
         b[k] = b[k] / a[k][k];
         t = -b[k];
-        //~ daxpy(k - 1, t, a[1][k], 1, b[1], 1);
-        for (i = 1; i < k; i = i + 1) {
+                for (i = 1; i < k; i = i + 1) {
             b[i] = b[i] + (t * a[i][k]);
         }
     }
@@ -3624,8 +3464,7 @@ function dpofa(a, lda, n, info) {
             a[j][j] = Math.sqrt(s);
         } else {
             for (k = 1; k <= jm1; k = k + 1) {
-                //~ t = a[k][j] - ddot(k - 1, a[1][k], 1, a[1][j], 1);
-                t = a[k][j];
+                                t = a[k][j];
                 for (i = 1; i < k; i = i + 1) {
                     t = t - (a[i][j] * a[i][k]);
                 }
@@ -3803,12 +3642,10 @@ function qpgen2(dmat, dvec, fddmat, n, sol, crval, amat,
             sum = sum / work[l1];
             work[iwrv + i] = sum;
             if (iact[i] < meq) {
-                // continue;
-                break;
+                                break;
             }
             if (sum < 0) {
-                // continue;
-                break;
+                                break;
             }
             t1inf = false;
             it1 = i;
@@ -3818,12 +3655,10 @@ function qpgen2(dmat, dvec, fddmat, n, sol, crval, amat,
             t1 = work[iwuv + it1] / work[iwrv + it1];
             for (i = 1; i <= nact; i = i + 1) {
                 if (iact[i] < meq) {
-                    // continue;
-                    break;
+                                        break;
                 }
                 if (work[iwrv + i] < 0) {
-                    // continue;
-                    break;
+                                        break;
                 }
                 temp = work[iwuv + i] / work[iwrv + i];
                 if (temp < t1) {
@@ -3840,15 +3675,13 @@ function qpgen2(dmat, dvec, fddmat, n, sol, crval, amat,
         if (Math.abs(sum) <= vsmall) {
             if (t1inf) {
                 ierr[1] = 1;
-                // GOTO 999
-                return 999;
+                                return 999;
             } else {
                 for (i = 1; i <= nact; i = i + 1) {
                     work[iwuv + i] = work[iwuv + i] - t1 * work[iwrv + i];
                 }
                 work[iwuv + nact + 1] = work[iwuv + nact + 1] + t1;
-                // GOTO 700
-                return 700;
+                                return 700;
             }
         } else {
             sum = 0;
@@ -3892,8 +3725,7 @@ function qpgen2(dmat, dvec, fddmat, n, sol, crval, amat,
                 } else {
                     for (i = n; i >= nact + 1; i = i - 1) {
                         if (work[i] === 0) {
-                            // continue;
-                            break;
+                                                        break;
                         }
                         gc = Math.max(Math.abs(work[i - 1]), Math.abs(work[i]));
                         gs = Math.min(Math.abs(work[i - 1]), Math.abs(work[i]));
@@ -3906,8 +3738,7 @@ function qpgen2(dmat, dvec, fddmat, n, sol, crval, amat,
                         gs = work[i] / temp;
 
                         if (gc === 1) {
-                            // continue;
-                            break;
+                                                        break;
                         }
                         if (gc === 0) {
                             work[i - 1] = gs * temp;
@@ -3945,8 +3776,7 @@ function qpgen2(dmat, dvec, fddmat, n, sol, crval, amat,
                         bvec[nvl] = -bvec[nvl];
                     }
                 }
-                // GOTO 700
-                return 700;
+                                return 700;
             }
         }
 
@@ -3957,8 +3787,7 @@ function qpgen2(dmat, dvec, fddmat, n, sol, crval, amat,
         l = iwrm + (it1 * (it1 + 1)) / 2 + 1;
         l1 = l + it1;
         if (work[l1] === 0) {
-            // GOTO 798
-            return 798;
+                        return 798;
         }
         gc = Math.max(Math.abs(work[l1 - 1]), Math.abs(work[l1]));
         gs = Math.min(Math.abs(work[l1 - 1]), Math.abs(work[l1]));
@@ -3971,8 +3800,7 @@ function qpgen2(dmat, dvec, fddmat, n, sol, crval, amat,
         gs = work[l1] / temp;
 
         if (gc === 1) {
-            // GOTO 798
-            return 798;
+                        return 798;
         }
         if (gc === 0) {
             for (i = it1 + 1; i <= nact; i = i + 1) {
@@ -4016,8 +3844,7 @@ function qpgen2(dmat, dvec, fddmat, n, sol, crval, amat,
         iact[it1] = iact[it1 + 1];
         it1 = it1 + 1;
         if (it1 < nact) {
-            // GOTO 797
-            return 797;
+                        return 797;
         }
 
         return 0;
@@ -4079,8 +3906,7 @@ function solveQP(Dmat, dvec, Amat, bvec, meq, factorized) {
     factorized = factorized ? base0to1(factorized) : [undefined, 0];
     bvec = bvec ? base0to1(bvec) : [];
 
-    // In Fortran the array index starts from 1
-    n = Dmat.length - 1;
+        n = Dmat.length - 1;
     q = Amat[1].length - 1;
 
     if (!bvec) {
@@ -4126,17 +3952,11 @@ function solveQP(Dmat, dvec, Amat, bvec, meq, factorized) {
 }
 exports.solveQP = solveQP;
 }(numeric));
-/*
-Shanti Rao sent me this routine by private email. I had to modify it
-slightly to work on Arrays instead of using a Matrix object.
-It is apparently translated from http://stitchpanorama.sourceforge.net/Python/svd.py
-*/
+
 
 numeric.svd= function svd(A) {
     var temp;
-//Compute the thin SVD from G. H. Golub and C. Reinsch, Numer. Math. 14, 403-420 (1970)
-	var prec= numeric.epsilon; //Math.pow(2,-52) // assumes double prec
-	var tolerance= 1.e-64/prec;
+	var prec= numeric.epsilon; 	var tolerance= 1.e-64/prec;
 	var itmax= 50;
 	var c=0;
 	var i=0;
@@ -4155,7 +3975,6 @@ numeric.svd= function svd(A) {
 	var q = new Array(n);
 	for (i=0; i<n; i++) e[i] = q[i] = 0.0;
 	var v = numeric.rep([n,n],0);
-//	v.zero();
 	
  	function pythag(a,b)
  	{
@@ -4168,8 +3987,7 @@ numeric.svd= function svd(A) {
 		return b*Math.sqrt(1.0+(a*a/b/b))
 	}
 
-	//Householder's reduction to bidiagonal form
-
+	
 	var f= 0.0;
 	var g= 0.0;
 	var h= 0.0;
@@ -4232,8 +4050,7 @@ numeric.svd= function svd(A) {
 			x=y
 	}
 	
-	// accumulation of right hand gtransformations
-	for (i=n-1; i != -1; i+= -1)
+		for (i=n-1; i != -1; i+= -1)
 	{	
 		if (g != 0.0)
 		{
@@ -4259,8 +4076,7 @@ numeric.svd= function svd(A) {
 		l= i
 	}
 	
-	// accumulation of left hand transformations
-	for (i=n-1; i != -1; i+= -1)
+		for (i=n-1; i != -1; i+= -1)
 	{	
 		l= i+1
 		g= q[i]
@@ -4283,13 +4099,11 @@ numeric.svd= function svd(A) {
 		u[i][i] += 1;
 	}
 	
-	// diagonalization of the bidiagonal form
-	prec= prec*x
+		prec= prec*x
 	for (k=n-1; k != -1; k+= -1)
 	{
 		for (var iteration=0; iteration < itmax; iteration++)
-		{	// test f splitting
-			var test_convergence = false
+		{				var test_convergence = false
 			for (l=k; l != -1; l+= -1)
 			{	
 				if (Math.abs(e[l]) <= prec)
@@ -4300,8 +4114,7 @@ numeric.svd= function svd(A) {
 					break 
 			}
 			if (!test_convergence)
-			{	// cancellation of e[l] if l>0
-				c= 0.0
+			{					c= 0.0
 				s= 1.0
 				var l1= l-1
 				for (i =l; i<k+1; i++)
@@ -4324,22 +4137,17 @@ numeric.svd= function svd(A) {
 					} 
 				}	
 			}
-			// test f convergence
-			z= q[k]
+						z= q[k]
 			if (l== k)
-			{	//convergence
-				if (z<0.0)
-				{	//q[k] is made non-negative
-					q[k]= -z
+			{					if (z<0.0)
+				{						q[k]= -z
 					for (j=0; j < n; j++)
 						v[j][k] = -v[j][k]
 				}
-				break  //break out of iteration loop and move on to next k value
-			}
+				break  			}
 			if (iteration >= itmax-1)
 				throw 'Error: no convergence.'
-			// shift from bottom 2x2 minor
-			x= q[l]
+						x= q[l]
 			y= q[k-1]
 			g= e[k-1]
 			h= e[k]
@@ -4349,8 +4157,7 @@ numeric.svd= function svd(A) {
 				f= ((x-z)*(x+z)+h*(y/(f-g)-h))/x
 			else
 				f= ((x-z)*(x+z)+h*(y/(f+g)-h))/x
-			// next QR transformation
-			c= 1.0
+						c= 1.0
 			s= 1.0
 			for (i=l+1; i< k+1; i++)
 			{	
@@ -4393,27 +4200,20 @@ numeric.svd= function svd(A) {
 		} 
 	}
 		
-	//vt= transpose(v)
-	//return (u,q,vt)
-	for (i=0;i<q.length; i++) 
+			for (i=0;i<q.length; i++) 
 	  if (q[i] < prec) q[i] = 0
 	  
-	//sort eigenvalues	
-	for (i=0; i< n; i++)
+		for (i=0; i< n; i++)
 	{	 
-	//writeln(q)
-	 for (j=i-1; j >= 0; j--)
+		 for (j=i-1; j >= 0; j--)
 	 {
 	  if (q[j] < q[i])
 	  {
-	//  writeln(i,'-',j)
-	   c = q[j]
+		   c = q[j]
 	   q[j] = q[i]
 	   q[i] = c
 	   for(k=0;k<u.length;k++) { temp = u[k][i]; u[k][i] = u[k][j]; u[k][j] = temp; }
 	   for(k=0;k<v.length;k++) { temp = v[k][i]; v[k][i] = v[k][j]; v[k][j] = temp; }
-//	   u.swapCols(i,j)
-//	   v.swapCols(i,j)
 	   i = j	   
 	  }
 	 }	

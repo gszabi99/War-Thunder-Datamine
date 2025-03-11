@@ -3,9 +3,9 @@ require ecs.safe
 require AnimV20
 require %game.events
 
-// No parallel for as after all optimizations it doesn't give any performance boost on PC
-// as each update (for all entities in Enlisted with 20 bots) is 12us on average (on PC)
-// with 41us max observed.
+
+
+
 [es]
 def anim_state_es(info : ParallelUpdateFrameDelayed;
                   animchar__updatable : bool;
@@ -22,7 +22,7 @@ def anim_state_es(info : ParallelUpdateFrameDelayed;
       (!animchar__visible && !animchar__actWhenInvisible &&
       (animchar__accumDt + info.dt) < animchar__dtThreshold))
     return
-  // error("test")
+  
   let speedThresholdRatio = 0.1f
   let speedsAlmostEqual = abs(animchar__animSpeed - animchar__appliedAnimSpeed) <= animchar__appliedAnimSpeed * speedThresholdRatio;
   if (!animchar__animStateDirty && speedsAlmostEqual)
@@ -52,7 +52,7 @@ def anim_states_init_on_create(evt : Event;
       let stateId = state.value ?? 0
       *animGraph |> anim_graph_enqueueState(*animchar.animState, stateId, -1.f, animchar__animSpeed)
     animchar__appliedAnimSpeed = animchar__animSpeed
-    // TODO: There is a system which acts on create for animchar__actOnCreate tagged entities
-    // for some reason anim tree nodes did not get updated unless act was called twice
-    // so we have an extra act here. This is wrong!
+    
+    
+    
     animchar |> animchar_act(0.0, true)

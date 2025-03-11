@@ -69,8 +69,7 @@ function collectPointsStep(argIndex, argsStr, data, tbl, content, unitSystemName
               xaxis: curveFormat.invertAxes ? valueFormat.axis + 1 : undefined,
               yaxis: curveFormat.invertAxes ? undefined : valueFormat.axis + 1,
               color: valueFormat.color[valueSetIndex],
-              //lines: { lineWidth: valueFormat.width - valueSetIndex * 0.5 },
-              lines: { lineWidth: valueFormat.width - valueSetIndex },
+                            lines: { lineWidth: valueFormat.width - valueSetIndex },
               data: points
             })
           }

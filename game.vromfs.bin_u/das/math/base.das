@@ -14,7 +14,7 @@ let
   IDENT_TM = identity3x4()
   VERY_SMALL_NUMBER = 4e-19
 
-let @ignore_heap_usage IDENT_BBOX = BBox3(float3(), 1f) // ignore heap usage because it is used c++ heap
+let @ignore_heap_usage IDENT_BBOX = BBox3(float3(), 1f) 
 
 [generic]
 def deg_to_rad(val)
@@ -42,7 +42,7 @@ def approach_move(from, to : float3; dt : float; tau : float; min_vel : float) :
     return move_to(from, to, dt, min_vel)
   return approach(from, to, dt, tau)
 
-// move_to version for float
+
 [generic]
 def move_to_scalar(from, to, dt, vel : float)
   let d = vel * dt
@@ -61,7 +61,7 @@ def move_to(from, to, dt, vel : float)
 
   return to < from ? from - d : from + d
 
-// move_to version for vector types
+
 [generic]
 def move_to(from, to : auto(algebraic); dt, vel : float)
   let d = vel * dt
@@ -88,7 +88,7 @@ def normalize_default(vec, default_vec)
   let len = length(vec)
   return len > 1e-9 ? vec / len : default_vec
 
-// das implementation of C++ function from dag_mathBase.h
+
 [generic]
 def is_relative_equal_float(a, b : float; max_diff : float = 1e-5; max_rel_diff : float = FLT_EPSILON)
   let diff = abs(a - b)
@@ -98,8 +98,8 @@ def is_relative_equal_float(a, b : float; max_diff : float = 1e-5; max_rel_diff 
   let absB = abs(b)
   return diff <= (absA < absB ? absB : absA) * max_rel_diff
 
-// das implementation of C++ function from dag_mathBase.h
-// if you need are_approximately_equal, use this one instead
+
+
 [generic]
 def is_equal_float(a, b : float; eps : float = 1e-5f)
   return is_relative_equal_float(a, b, eps, FLT_EPSILON)
@@ -116,7 +116,7 @@ def is_equal_float(a, b : float3; eps : float = 1e-5f)
 def is_equal_float(a, b : float4; eps : float = 1e-5f)
   return is_equal_float(a.x, b.x, eps) && is_equal_float(a.y, b.y, eps) && is_equal_float(a.z, b.z, eps) && is_equal_float(a.w, b.w, eps)
 
-// returns signed magnitude of the vector that would result from a regular 3D cross product of the input vectors
+
 [generic]
 def cross2d(a, b : float2) : float
   return a.y * b.x - a.x * b.y

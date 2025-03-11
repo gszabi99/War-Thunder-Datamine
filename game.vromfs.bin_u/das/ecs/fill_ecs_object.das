@@ -5,7 +5,7 @@ require daslib/apply
 
 def add_to_ecs_object(var obj : Object; name : string; value)
   static_if typeinfo is_function(value)
-    pass // skip functions
+    pass 
   static_if typeinfo is_pointer(value)
     if value != null
       add_to_ecs_object(obj, name, *value)

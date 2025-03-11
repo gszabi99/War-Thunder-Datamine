@@ -12,7 +12,7 @@ require daslib/ast_boost
 
 [typeinfo_macro(name="enum_length")]
 class TypeInfoGetEnumLength : AstTypeInfoMacro {
-    //! Implements typeinfo(enum_length EnumOrEnumType) which returns total number of elements in enumeration.
+    
     def override getAstChange(expr : smart_ptr<ExprTypeInfo>; var errors : das_string) : ExpressionPtr {
         if (expr.typeexpr != null) {
             if (!expr.typeexpr.isEnum) {
@@ -29,7 +29,7 @@ class TypeInfoGetEnumLength : AstTypeInfoMacro {
 
 [typeinfo_macro(name="enum_names")]
 class TypeInfoGetEnumNames : AstTypeInfoMacro {
-    //! Implements typeinfo(enum_names EnumOrEnumType) which returns array of strings with enumValue names.
+    
     def override getAstChange(expr : smart_ptr<ExprTypeInfo>; var errors : das_string) : ExpressionPtr {
         if (expr.typeexpr == null) {
             errors := "type is missing or not inferred"

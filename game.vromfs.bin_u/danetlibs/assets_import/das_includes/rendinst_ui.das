@@ -57,7 +57,7 @@ def create_new_rendinst_asset()
       imgui::Text("lod {lodNo}")
       if empty(lodFile)
         imgui::TextColored(float4(1.0, 0.0, 0.0, 1.0), "empty path")
-      //else if () add check of invalid path
+      
       else
         imgui::Text("{lodFile}")
       imgui::SameLine()
@@ -113,7 +113,7 @@ def composit_tree(asset__manager : DagorAssetMgr; var entities : EidList; node :
     let typeIdx = asset__manager |> getAssetTypeId(assetType)
 
     let asset = typeIdx >= 0 ? asset__manager |> findAsset(assetName, typeIdx) : asset__manager |> findAsset(assetName)
-    if asset != null //it's valid situation
+    if asset != null 
 
       let nodeType = (*asset).typeName
       if nodeType == "rendInst"
@@ -140,7 +140,7 @@ def create_composit_entity(name : string; transform : float3x4; nested : bool = 
     return createEntity("composit_rendinst", initList)
   else
     init_entity_object_editor()
-    // sync creation is required to correctly save components for f12 ecs object editor
+    
     let eid = createEntitySync("composit_rendinst", initList)
     scene_insert_empty_entity_record(get_active_scene(), eid, "composit_rendinst")
     entity_object_editor_addEntityWithUndo(eid)

@@ -9,7 +9,7 @@ bitfield RasterFlags {
 }
 
 struct public SurfaceData {
-    //! permanent surface data, can be moved context to context
+    
     data : uint8?
     size : uint64
     flags : RasterFlags
@@ -21,14 +21,14 @@ def public bitmap8_size(size : int2) {
 
 [unsafe_operation]
 def public SurfaceData(size : uint64) {
-    //! allocate surface data
+    
     unsafe {
         return SurfaceData(data = unsafe(reinterpret<uint8?> malloc(size)), size = size)
     }
 }
 
 def public finalize(var data : SurfaceData) {
-    //! free surface data
+    
     if (data.data != null) {
         unsafe {
             free(data.data)
@@ -38,7 +38,7 @@ def public finalize(var data : SurfaceData) {
 }
 
 def public make_bitmap8(var surface : SurfaceData; size : int2; blk : block<(var arg : Bitmap8#) : void>) : void {
-    //! create a temporary bitmap8 out of surface data
+    
     unsafe {
         let numpix = size.x * size.y
         var bmp : Bitmap8
@@ -55,7 +55,7 @@ def public make_bitmap8(var surface : SurfaceData; size : int2; blk : block<(var
 }
 
 struct public Bitmap8 {
-    //! single surface
+    
     size : int2
     flags : RasterFlags
     data : array<uint8>
@@ -63,7 +63,7 @@ struct public Bitmap8 {
 }
 
 def public lock_u8(dim : auto[]; blk : block<(var arg : array<uint8>#) : void>) {
-    //! lock a 2D array of uint8
+    
     let num_elem = typeinfo sizeof(dim)
     unsafe {
         map_to_array(addr(dim[0]), num_elem, blk)
@@ -72,7 +72,7 @@ def public lock_u8(dim : auto[]; blk : block<(var arg : array<uint8>#) : void>) 
 
 [sideeffects, jit, hint(unsafe_range_check, noalias=bmp)]
 def public rast_fillRect(var bmp : Bitmap8#; x, y, w, h : int; color : uint8) {
-    //! fill a rectangle with a color
+    
     let xmin = max(0, x)
     let xmax = min(bmp.size.x, x + w)
     if (xmax <= xmin) {

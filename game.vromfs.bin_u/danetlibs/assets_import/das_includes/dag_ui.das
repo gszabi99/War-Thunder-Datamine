@@ -38,7 +38,7 @@ def get_asset_status_color(status : AssetLoadingStatus)
     return float4(0f, 0f, 1f, 1f)
   elif status == AssetLoadingStatus.Loaded
     return float4(0f, 1f, 0f, 1f)
-  else //status == AssetLoadingStatus NotLoaded
+  else 
     return float4(1f, 1f, 1f, 1f)
 
 def dag_tex_id_to_imgui(tex_id : D3DRESID&)
@@ -46,13 +46,13 @@ def dag_tex_id_to_imgui(tex_id : D3DRESID&)
     return reinterpret<void?> tex_id
 
 def open_file(path : string)
-  //this shell call will open file with default application
+  
   os_shell_execute("open", path, "", "")
 
 def open_folder(path : string)
-  //this replace need for windows explorer
+  
   let windowsPath = path |> replace("/", "\\")
-  //this shell call will open folder with this file and select file
+  
   os_shell_execute("open", "explorer.exe", "/select,{windowsPath}", "")
 
 def asset_dependencies_tree(var asset : DagorAsset?; asset__manager : DagorAssetMgr; is_root = true)

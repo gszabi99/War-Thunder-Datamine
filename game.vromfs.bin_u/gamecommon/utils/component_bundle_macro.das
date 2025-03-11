@@ -6,32 +6,32 @@ require daslib/strings_boost
 require daslib/ast_boost
 require rtti
 
-/*
-Allows passing bundles of components to helper functions (cross module calls are supported):
 
-[with_bundle(v)]
-def func_A(v : tuple<a : int; b : int>; x : int) : int
-  return (v.a + v.b) * x
 
-[with_bundle(v)]
-def func_B(v : tuple<c : float; d : float>; x : float) : float
-  return (v.a + v.b) * x
 
-[es, with_bundle(v)]
-def my_ES(v : tuple<
-            a : int;
-            b : int;
-            c : float;
-            d : float
-          >)
-  v.a = func_A(v, 2)
-  v.c = func_B(v, 2.0)
 
-Limitations:
-- called functions with bundle argument must be declared before call
-- only one bundle argument per function
-- cant nest [block_with_bundle] block inside [with_bundle] function
-*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 struct private BundleMacroResult
   idx : int
@@ -43,7 +43,7 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
   var bundleFieldNames : array<string>
   var bundleFieldNamesValidationSet : table<string; bool>
 
-  // check if function was already processed
+  
   if !is_es
     for ann in func.annotations
       let annName = "{ann.annotation.name}"
@@ -66,7 +66,7 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
     for fnArg in arguments
       funcArgsTbl.insert("{fnArg.name}", true)
 
-  // find and expand bundle arg
+  
   var i = 0
   while i < length(arguments)
     assume arg = arguments[i]
@@ -126,7 +126,7 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
 
   var astVisitor = new ResolveBundlesVisitor()
 
-  // additional validation
+  
   astVisitor.bundleArgName <- bundleArgName
   astVisitor.bundleFieldNamesSetForValidation <- bundleFieldNamesValidationSet
   astVisitor.bundleFieldNames <- bundleFieldNames

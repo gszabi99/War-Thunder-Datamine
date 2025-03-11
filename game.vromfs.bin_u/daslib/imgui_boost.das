@@ -27,7 +27,7 @@ def set(var filter : ImGuiTextFilter; filterText : string)
     filter |> Build()
 
 
-// note - this has to correspond to C++ das::DasImguiInputText structure
+
 struct ImGuiInputTextBuffer
     context : Context?
     callback : lambda<(var it : ImGuiInputTextBuffer; var itc : ImGuiInputTextCallbackData) : int>
@@ -80,7 +80,7 @@ def InputTextWithHint(lab, hint : string; buf : ImGuiInputTextBuffer; flags : Im
 def InputTextMultiline(lab : string; buf : ImGuiInputTextBuffer; siz : float2 = float2(0.0f, 0.0f); flags : ImGuiInputTextFlags = ImGuiInputTextFlags.None)
     return _builtin_InputTextMultiline(buf, lab, siz, flags)
 
-// note - this needs to correspond to C++ structure
+
 struct ImGuiSizeConstraints
     context : Context?
     callback : lambda<(var data : ImGuiSizeCallbackData) : void>
@@ -94,7 +94,7 @@ def ImGuiSizeConstraints(var lmb : lambda<(var data : ImGuiSizeCallbackData) : v
 def SetNextWindowSizeConstraints(size_min, size_max : float2; var cn : ImGuiSizeConstraints)
     _builtin_SetNextWindowSizeConstraints(cn, size_min, size_max)
 
-// note - this needs to correspond to C++ structure
+
 struct ImGuiComboGetter
     context : Context?
     callback : lambda<(idx : int; var result : string&) : bool>
@@ -108,7 +108,7 @@ def ImGuiComboGetter(var lmb : lambda<(idx : int; var result : string&) : bool>)
 def Combo(lab : string; current_item : int? implicit; getter : ImGuiComboGetter; items_count : int; popup_max_height_in_items : int = -1)
     return _builtin_Combo(getter, lab, current_item, items_count, popup_max_height_in_items)
 
-// note - this needs to correspond to C++ structure
+
 struct ImGuiPlotGetter
     context : Context?
     callback : lambda<(idx : int) : float>

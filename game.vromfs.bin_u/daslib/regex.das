@@ -9,7 +9,7 @@ module regex shared public
 require daslib/strings_boost
 
 enum ReOp {
-    //! Type of regular expression operation.
+    
     Char
     Set
     Any
@@ -27,7 +27,7 @@ typedef ReGenRandom = iterator<uint>
 
 
 struct ReNode {
-    //! Single node in regular expression parsing tree.
+    
     op      : ReOp
     id      : int
     @do_not_convert fun2 : function< (var regex : Regex; var node : ReNode?; str : uint8 const?) : uint8 const? >
@@ -46,7 +46,7 @@ struct ReNode {
 }
 
 struct Regex {
-    //! Regular expression.
+    
     root        : ReNode?
     @do_not_convert match : uint8 const?
     groups      : array<tuple<range; string>>
@@ -55,14 +55,14 @@ struct Regex {
 }
 
 variant MaybeReNode {
-    //! Single regular expression node or nothing.
+    
     value   : ReNode?
     nothing : void?
 }
 
-/*
-    Parser
-*/
+
+
+
 
 let private log_parse_enabled = false
 let private log_match_enabled = false
@@ -249,7 +249,7 @@ def private string_from_hex(ch1, ch2 : int) {
     return to_char(from_hex(ch1, ch2))
 }
 
-// <char>	::=	any non metacharacter | "\" metacharacter
+
 def private re_char(expr : string; offset : int) : MaybeReNode {
     trace("re_char", offset)
     if (eos(expr, offset)) {
@@ -295,10 +295,10 @@ def private re_char(expr : string; offset : int) : MaybeReNode {
     return maybe(new ReNode(op = ReOp.Char, text = to_char(ch), textLen = 1, at = range(offset, offset + 1)))
 }
 
-// <set-items>	::=	<set-item> | <set-item> <set-items>
-// <set-item>	::=	<range> | <char>
-// <range>	::=	<char> "-" <char>
-// <char>	::=	any non metacharacter | "\" metacharacter
+
+
+
+
 def private re_set_items(expr : string; offset : int) : MaybeReNode {
     trace("re_set_items", offset)
     if (eos(expr, offset)) {
@@ -398,9 +398,9 @@ def private re_set_items(expr : string; offset : int) : MaybeReNode {
     return maybe(new ReNode(op = ReOp.Set, cset = cset, at = range(offset, iofs)));
 }
 
-// <negative-set>	::=	"[^" <set-items> "]"
-// <positive-set>	::=	"[" <set-items> "]"
-// <set>	::=	<positive-set> | <negative-set>
+
+
+
 def private re_set(expr : string; offset : int) : MaybeReNode {
     trace("re_set", offset)
     if (eos(expr, offset)) {
@@ -434,7 +434,7 @@ def private re_set(expr : string; offset : int) : MaybeReNode {
     return oset
 }
 
-// <any>	::=	"."
+
 def private re_any(expr : string; offset : int) : MaybeReNode {
     trace("re_any", offset)
     if (eos(expr, offset)) {
@@ -446,7 +446,7 @@ def private re_any(expr : string; offset : int) : MaybeReNode {
     return nada()
 }
 
-// <eos>	::=	"$"
+
 def private re_eos(expr : string; offset : int) : MaybeReNode {
     trace("re_eos", offset)
     if (eos(expr, offset)) {
@@ -458,7 +458,7 @@ def private re_eos(expr : string; offset : int) : MaybeReNode {
     return nada()
 }
 
-// <group>	::=	"(" <RE> ")"
+
 def private re_group(expr : string; offset : int) : MaybeReNode {
     trace("re_group", offset)
     if (eos(expr, offset)) {
@@ -478,7 +478,7 @@ def private re_group(expr : string; offset : int) : MaybeReNode {
     return maybe(new ReNode(op = ReOp.Group, subexpr = ore as value, at = range(offset, next(ore) + 1)))
 }
 
-// <elementary-RE>	::=	<group> | <any> | <eos> | <set> | <char>
+
 def private re_elementary(expr : string; offset : int) : MaybeReNode {
     trace("re_elementary", offset)
     if (eos(expr, offset)) {
@@ -511,7 +511,7 @@ def private mk_concat(var left, right : ReNode?) {
     if (left == null) {
         return right
     } elif (left.op == ReOp.Char && right.op == ReOp.Char) {
-        // mk_concat(char(x),char(y)) = char(xy)
+        
         left.at.y = right.at.y
         left.text += right.text
         left.textLen += right.textLen
@@ -520,7 +520,7 @@ def private mk_concat(var left, right : ReNode?) {
         }
         return left
     } elif (left.op == ReOp.Concat && left.right.op == ReOp.Char && right.op == ReOp.Char) {
-        // mk_concat(concat(z,char(x)),char(y)) = concat(z,char(xy))
+        
         var lor = left.right
         left.at.y = right.at.y
         lor.at.y = right.at.y
@@ -538,30 +538,30 @@ def private mk_concat(var left, right : ReNode?) {
 def private mk_union(var left, right : ReNode?) : ReNode? {
     if (left.op == ReOp.Union) {
         left.at.y = right.at.y
-        if (right.op == ReOp.Union) {// union(union(x),union(y)) = union(xy)
+        if (right.op == ReOp.Union) {
             for (x in right.all) {
                 push(left.all, x)
             }
             unsafe {
                 delete right
             }
-        } else {// union(union(x),y) = union(xy)
+        } else {
             push(left.all, right)
         }
         return left
     } elif (right.op == ReOp.Union) {
         right.at.x = left.at.x
-        push(right.all, left)                     // union(x,union(y)) = union(xy)
+        push(right.all, left)                     
         return right
     } else {
         return new ReNode(op = ReOp.Union, all <- array<ReNode?>(left, right), at = range(left.at.x, right.at.y))
     }
 }
 
-// <RE>	::=	<union> | <simple-RE>
-// <union>	::=	<RE> "|" <simple-RE>
-// <simple-RE>	::=	<concatenation> | <basic-RE>
-// <concatenation>	::=	<simple-RE> <basic-RE>
+
+
+
+
 def private  re_re(expr : string; offset : int) : MaybeReNode {
     trace("re_re", offset)
     if (eos(expr, offset)) {
@@ -594,9 +594,9 @@ def private  re_re(expr : string; offset : int) : MaybeReNode {
     return maybe(last)
 }
 
-// <basic-RE>	::=	<star> | <plus> | <elementary-RE>
-// <star>	::=	<elementary-RE> "*"
-// <plus>	::=	<elementary-RE> "+"
+
+
+
 def private re_basic(expr : string; offset : int) : MaybeReNode {
     trace("re_basic", offset)
     if (eos(expr, offset)) {
@@ -674,9 +674,9 @@ def private re_assign_groups(var re : Regex) {
     }
 }
 
-/*
-    matching
-*/
+
+
+
 
 def private re_assign_match_functions(var re : Regex) {
     visit_top_down(re.root) <| $(var node) {
@@ -1013,9 +1013,9 @@ def private re_match2_group(var regex : Regex; var node : ReNode?; str : uint8 c
     return osub
 }
 
-/*
-    early out
-*/
+
+
+
 
 def private re_early_out(var cset : CharSet; node : ReNode?) : bool {
     if (node.op == ReOp.Char) {
@@ -1056,18 +1056,18 @@ def private re_early_out(var cset : CharSet; node : ReNode?) : bool {
     }
 }
 
-/*
-    top level API
-*/
+
+
+
 
 def is_valid(var re : Regex) {
-    //! returns `true` if enumeration compiled correctly
+    
     return re.root != null
 }
 
 def regex_compile(var re : Regex; expr : string) : bool {
-    //! Compile regular expression.
-    //! Validity of the compiled expression is checked by `is_valid`.
+    
+    
     re.root = re_parse(expr)
     if (re.root != null) {
         re_assign_next(re)
@@ -1096,8 +1096,8 @@ def regex_compile(var re : Regex) {
 }
 
 def regex_match(var regex : Regex; str : string; offset : int = 0) : int {
-    //! Returns first match for the regular expression in `str`.
-    //! If `offset` is specified, first that many number of symbols will not be matched.
+    
+    
     if (empty(str)) {
         return -1
     }
@@ -1115,14 +1115,14 @@ def regex_match(var regex : Regex; str : string; offset : int = 0) : int {
 }
 
 def regex_group(regex : Regex; index : int; match : string) {
-    //! Returns string for the given group index and match result.
+    
     let sub_range = regex.groups[index]._0
     return slice(match, sub_range.x, sub_range.y)
 }
 
 [unsafe_deref]
 def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bool>) {
-    //! Iterates through all matches for the given regular expression in `str`.
+    
     if (empty(str)) {
         return
     }
@@ -1132,7 +1132,7 @@ def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bo
         var pstr = reinterpret<uint8 const?> str
         var cstr = pstr
         if (regex.canEarlyOut) {
-            // lets try if it helps
+            
             while (true) {
                 let Ch = int(*cstr)
                 if (Ch == 0) {
@@ -1170,7 +1170,7 @@ def regex_foreach(var regex : Regex; str : string; blk : block<(at : range) : bo
 
 [unsafe_deref]
 def regex_replace(var regex : Regex; str : string; blk : block<(at : string) : string>) {
-    //! Iterates through all matches for the given regular expression in `str`.
+    
     if (empty(str)) {
         return ""
     }
@@ -1181,7 +1181,7 @@ def regex_replace(var regex : Regex; str : string; blk : block<(at : string) : s
             var pstr = reinterpret<uint8 const?> str
             var cstr = pstr
             if (regex.canEarlyOut) {
-                // lets try if it helps
+                
                 while (true) {
                     let Ch = int(*cstr)
                     if (Ch == 0) {
@@ -1219,12 +1219,12 @@ def regex_replace(var regex : Regex; str : string; blk : block<(at : string) : s
     }
 }
 
-/*
-    printer
-*/
+
+
+
 
 def regex_debug(regex : Regex) {
-    //! Prints regular expression and its related information in human readable form.
+    
     debug_re(regex.root, 1)
     print("\n")
     if (regex.canEarlyOut) {
@@ -1241,7 +1241,7 @@ def regex_debug(regex : Regex) {
 }
 
 def debug_set(cset : CharSet) {
-    //! Prints character set in human readable form.
+    
     for (x in range(256)) {
         if ((cset[x >> 5] & uint(1 << (x & 31))) != 0u) {
             if (x >= 32 && x <= 127) {
@@ -1399,7 +1399,7 @@ def private re_gen2_question(var node : ReNode?; var rnd : ReGenRandom; var str 
     }
     var a = 0u
     next(rnd, a)
-    if ((a & 1u) != 0u) {// zero or one?
+    if ((a & 1u) != 0u) {
         var nsub = node.subexpr
         if (nsub != null) {
             invoke(nsub.gen2, nsub, rnd, str)

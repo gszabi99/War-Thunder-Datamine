@@ -63,7 +63,7 @@ def ship_start_damage_control_es(evt : EventShipStartDamageControl;
         return
       ship_damage_control__cooldownEndTime = ship_damage_control__cooldownTime + float(get_app().usefulTotalTime)
       ship_damage_control__priorities = evt.priorities
-    // damage control will start automatically upon any damage
+    
   else
     sendEvent(eid, [[EventShipRequestRepairBreaches repair=false]])
     sendEvent(eid, [[EventRepairSystemRequestRepair repair=false]])
@@ -120,7 +120,7 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
     else
       repair_system_auto_check_delay = rnd_float(0.2f, 0.3f)
 
-  // breaches repair is requested automatically, if breaches are added
+  
 
 
 [es(no_order)]
@@ -143,7 +143,7 @@ def ship_update_time_penalty_es(info : UpdateStageInfoAct;
   if unit.isDelayed
     return
 
-  // in old system we count repair breaches as unwatering process, in new system - as repair process
+  
   let repair_in_progress = repair_system_remaining_repair_time > 0.0f || ship__modernDamageControl && ship__repairBreachesRemainingTime > 0.0f;
   let extinguish_in_progress = is_extinguisher_active(fire_damage__isBurn, extinguish_system_is_assisting, extinguish_system_extinguish_time_end)
   let unwatering_in_progress = ship__unwateringRemainingTime > 0.0f || !ship__modernDamageControl && ship__repairBreachesRemainingTime > 0.0f
@@ -202,5 +202,5 @@ def ship_update_time_penalty_es(info : UpdateStageInfoAct;
     ship_damage_control__extinguishSpeedMult = extinguish_mult > 0.0f ? extinguish_mult : 1.0f
     ship_damage_control__unwateringSpeedMult = unwatering_mult > 0.0f ? unwatering_mult : 1.0f
 
-  // print("{repair_in_progress} {extinguish_in_progress} {unwatering_in_progress}")
-  // print("{ship_damage_control__repairSpeedMult} {ship_damage_control__extinguishSpeedMult} {ship_damage_control__unwateringSpeedMult}")
+  
+  

@@ -6,8 +6,8 @@ require GeomNodeTree
 require %game.events
 require ecs.common
 
-[event(broadcast)]            // require only for use parallel for in different attaches queue's
-struct SlotAttachUpdateEvent  // May be removed when "parallel for" will implemented in das ecs query
+[event(broadcast)]            
+struct SlotAttachUpdateEvent  
   dt : float
 
 def slot_attach_init_tms_impl(dt : float;
@@ -55,7 +55,7 @@ def slot_attach_init_tms_impl(dt : float;
 
 [es(after=visual_offset_updater_es, before=binocular_update_cockpit)]
 def slot_attach_init_tms_es(info : ParallelUpdateFrameDelayed)
-  //no_animchar_attachments_ecs_query
+  
   query() <| $ [es(REQUIRE_NOT=animchar)] (slot_attach__slotId : int;
                                            slot_attach__attachedTo : EntityId;
                                            var transform : float3x4)
@@ -71,7 +71,7 @@ def slot_attach_init_tms_es(info : ParallelUpdateFrameDelayed)
         let wtmOfs = *animchar.nodeTree |> geomtree_getWtmOfs()
         transform = float3x4(tmpTm)
         transform[3] += wtmOfs
-  broadcastEventImmediate([[SlotAttachUpdateEvent dt=info.dt]]); //require for use different priority on update, with parallel for on first
+  broadcastEventImmediate([[SlotAttachUpdateEvent dt=info.dt]]); 
 
 [es(REQUIRE_NOT=(menuPoseTm, slot_attach__secondaryUpdate), REQUIRE=(slot_attach, slot_attach__slotName), parallel_for=4)]
 def slot_attach_first_priority_update_es(info : SlotAttachUpdateEvent;

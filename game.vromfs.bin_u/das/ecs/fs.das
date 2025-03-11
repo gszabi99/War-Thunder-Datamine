@@ -28,7 +28,7 @@ def load_optional_folder(path : string) : bool
 def load_folder_recursive(path : string) : bool
   var ok = true
   var n = 0
-  find_files_in_folder(path, "*.das", /*vromfs*/true, /*realfs*/true, /*subdirs*/true) $(files)
+  find_files_in_folder(path, "*.das", true, true, true) $(files)
     for file in files
       ok = load_das(file) && ok
       n ++
@@ -39,7 +39,7 @@ def load_folder_recursive(path : string) : bool
 
 def load_optional_folder_recursive(path : string) : bool
   var ok = true
-  find_files_in_folder(path, "*.das", /*vromfs*/true, /*realfs*/true, /*subdirs*/true) $(files)
+  find_files_in_folder(path, "*.das", true, true, true) $(files)
     for file in files
       ok = load_das(file) && ok
   return ok

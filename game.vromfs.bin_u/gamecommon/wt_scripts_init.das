@@ -1,4 +1,4 @@
-options no_aot = true//since this is merely loader
+options no_aot = true
 require %dasGameLibs.ecs.fs
 require ECSGlobalTags
 require app

@@ -95,11 +95,11 @@ class LintVisitor : AstVisitor {
 
     def validate_var(v : VariablePtr; can_make_const : bool) {
         let name = string(v.name)
-        if (name |> starts_with("__")) {// system variables
+        if (name |> starts_with("__")) {
             return
         }
         if (name |> starts_with("_")) {
-            if (name |> ends_with("_")) {// _foo_ - ignore too
+            if (name |> ends_with("_")) {
                 return
             }
             if (v.access_flags.access_ref || v.access_flags.access_pass || v.access_flags.access_get || v.init != null) {
@@ -129,7 +129,7 @@ class LintVisitor : AstVisitor {
             }
             return
         }
-        if (can_make_const && v._type.baseType != Type.tPointer && !v._type.flags.constant && !v._type.flags.removeConstant && !v.access_flags.access_ref && v._type.canCloneFromConst) {// && !v._type.flags.smartPtr
+        if (can_make_const && v._type.baseType != Type.tPointer && !v._type.flags.constant && !v._type.flags.removeConstant && !v.access_flags.access_ref && v._type.canCloneFromConst) {
             self->lint_error("variable {v.name}: {describe(v._type)} can be made const (declare with 'let')", v.at)
             return
         }

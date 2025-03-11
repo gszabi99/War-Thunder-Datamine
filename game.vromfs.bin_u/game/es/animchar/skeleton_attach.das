@@ -56,7 +56,7 @@ def skeleton_attach_destroy_attach_es(evt : Event;
     remove_skeleton_attach(eid, animchar)
 
 
-//  Client: item's es - remap after entity will be replicated
+
 
 def skeleton_attach_remap_impl(attach_animchar : AnimcharBaseComponent;
                                skeleton_attach__attachedTo : EntityId;
@@ -122,7 +122,7 @@ def skeleton_attach_init_es(evt : Event;
   query(skeleton_attach__attachedTo) <| $ [es(REQUIRE=animchar)] ()
     sendEventImmediate(eid, [[CmdInitSkeletonAttach]])
     parentFound = true
-  if !parentFound // for case we change/destoy parent when async added sub template
+  if !parentFound 
     removeSubTemplate(eid, "base_skeleton_attach")
 
 [es(tag=gameClient, after=animchar__updater_es, REQUIRE=attachedToParent, before=after_animchar_update_sync, on_event=UpdateAnimcharEvent, REQUIRE_NOT=skeleton_attach__skeletonRemap)]

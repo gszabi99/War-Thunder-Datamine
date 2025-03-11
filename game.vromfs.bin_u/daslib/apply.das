@@ -16,7 +16,7 @@ require math
 
 [macro_function]
 def for_each_subrange(total : int; blk : block<(r : range) : void>) {
-    let MAX_ARGUMENTS = DAS_MAX_FUNCTION_ARGUMENTS - 2  // we need one for the data itself
+    let MAX_ARGUMENTS = DAS_MAX_FUNCTION_ARGUMENTS - 2  
     var i = 0
     while (i < total) {
         let fromI = i
@@ -26,12 +26,12 @@ def for_each_subrange(total : int; blk : block<(r : range) : void>) {
     }
 }
 
-/*
-    def apply`Foo(self:Foo;arg_field1:block<(name:string,value:field1-type):void>;arg_field2:...)
-        invoke(arg_field1,self.field1)
-        invoke(arg_field2,self.field2)
-        ...
-*/
+
+
+
+
+
+
 [macro_function]
 def generateApplyVisitStruct(stype : TypeDeclPtr; frange : range; fnname : string; at : LineInfo; var names : array<string>) {
     assert(stype.baseType == Type.tStructure)
@@ -40,13 +40,13 @@ def generateApplyVisitStruct(stype : TypeDeclPtr; frange : range; fnname : strin
     selfT.flags |= TypeDeclFlags.isExplicit | TypeDeclFlags.explicitConst
     var inscope blkList : array<ExpressionPtr>
     var inscope func_args : array<VariablePtr>
-    // for fld in stype.structType.fields
+    
     for (fldi in frange) {
         if (true) {
             let fld & = unsafe(stype.structType.fields[fldi])
             names |> push(string(fld.name))
             blkList |> emplace_new <|  qmacro(invoke($i("__arg_{fld.name}"), _`_self.$f(fld.name)))
-            var inscope argT <- new TypeDecl(baseType = Type.tBlock, at = at)                      // block<(x:field1type)>
+            var inscope argT <- new TypeDecl(baseType = Type.tBlock, at = at)                      
             var inscope fldT <- clone_type(fld._type)
             if (stype.flags.constant) {
                 fldT.flags |= TypeDeclFlags.constant
@@ -76,12 +76,12 @@ def generateApplyVisitStruct(stype : TypeDeclPtr; fnname : string; at : LineInfo
     return <- names
 }
 
-/*
-    def apply`Foo(self:Foo;arg_field1:block<(name:string,value:field1-type):void>;arg_field2:...)
-        invoke(arg_field1,self.field1)
-        invoke(arg_field2,self.field2)
-        ...
-*/
+
+
+
+
+
+
 [macro_function]
 def generateApplyVisitTuple(stype : TypeDeclPtr; frange : range; fnname : string; at : LineInfo; var names : array<string>) {
     assert(stype.baseType == Type.tTuple)
@@ -96,7 +96,7 @@ def generateApplyVisitTuple(stype : TypeDeclPtr; frange : range; fnname : string
             let fldname = length(stype.argNames) == length(stype.argTypes) ? string(stype.argNames[fldi]) : "_{fldi}"
             names |> push(fldname)
             blkList |> emplace_new <|  qmacro(invoke($i("__arg_{fldname}"), _`_self.$f(fldname)))
-            var inscope argT <- new TypeDecl(baseType = Type.tBlock, at = at)                      // block<(x:field1type)>
+            var inscope argT <- new TypeDecl(baseType = Type.tBlock, at = at)                      
             var inscope fldT <- clone_type(flda)
             if (stype.flags.constant) {
                 fldT.flags |= TypeDeclFlags.constant
@@ -126,16 +126,16 @@ def generateApplyVisitTuple(stype : TypeDeclPtr; fnname : string; at : LineInfo)
     return <- names
 }
 
-/*
-    def apply`Foo(self:Foo;arg_field1:block<(name:string,value:field1-type):void>;arg_field2:...)
-        if variant_index(self)==0
-            invoke(arg_field1,self.field1)
-            return
-        if variant_idnex(self)==2
-            invoke(arg_field2,self.field2)
-            return
-        ...
-*/
+
+
+
+
+
+
+
+
+
+
 [macro_function]
 def generateApplyVisitVariant(stype : TypeDeclPtr; frange : range; fnname : string; at : LineInfo; var names : array<string>) {
     assert(stype.baseType == Type.tVariant)
@@ -156,7 +156,7 @@ def generateApplyVisitVariant(stype : TypeDeclPtr; frange : range; fnname : stri
                 }
             }
             blkList |> emplace(vexpr)
-            var inscope argT <- new TypeDecl(baseType = Type.tBlock, at = at)                      // block<(x:field1type)>
+            var inscope argT <- new TypeDecl(baseType = Type.tBlock, at = at)                      
             var inscope fldT <- clone_type(flda)
             if (stype.flags.constant) {
                 fldT.flags |= TypeDeclFlags.constant
@@ -203,21 +203,21 @@ def clone_block_with_name(name : string; blk : ExpressionPtr) {
     return <- res
 }
 
-[call_macro(name="apply")]  // apply(value, block)
+[call_macro(name="apply")]  
 class ApplyMacro : AstCallMacro {
-    //! This macro implements the apply() pattern. The idea is that for each entry in the structure, variant, or tuple,
-    //! the block will be invoked. Both element name, and element value are passed to the block.
-    //! For example
-    //!
-    //!     struct Bar
-    //!         x, y : float
-    //!     apply([[Bar x=1.,y=2.]]) <| $ ( name:string; field )
-    //!         print("{name} = {field} ")
-    //!
-    //! Would print x = 1.0 y = 2.0
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     def override visit(prog : ProgramPtr; mod : Module?; var expr : smart_ptr<ExprCallMacro>) : ExpressionPtr {
         macro_verify(expr.arguments |> length == 2, prog, expr.at, "expecting apply(value, block)")
-        if (expr.arguments[0]._type != null) {// need value inferred
+        if (expr.arguments[0]._type != null) {
             var inscope argT := expr.arguments[0]._type
             macro_verify(argT.dim |> length == 0, prog, expr.at, "can't apply to dim")
             macro_verify(argT.baseType == Type.tStructure || argT.baseType == Type.tTuple || argT.baseType == Type.tVariant,
@@ -242,7 +242,7 @@ class ApplyMacro : AstCallMacro {
                 macro_error(prog, expr.at, "internal error. can't apply to {describe(argT)}")
                 return <- default<ExpressionPtr>
             }
-            // make a collection of calls
+            
             var inscope calls : array<ExpressionPtr>
             for_each_subrange(nfields) <| $(frange) {
                 var inscope call <- new ExprCall(name := "_::{callName}`{frange.x}`{frange.y}", at = expr.at)

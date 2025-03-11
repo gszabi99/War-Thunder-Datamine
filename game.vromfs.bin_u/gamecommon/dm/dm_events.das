@@ -21,7 +21,8 @@ struct EventOnHitEntity
 [cpp_event(unicast, with_scheme)]
 struct EventSplashHitEntity
   offender : EntityId
-  damage : float
+  splashDamage : float
+  shatterDamage : float
   pos : float3
   dir : float3
 

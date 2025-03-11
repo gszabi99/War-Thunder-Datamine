@@ -30,10 +30,10 @@ var public decsLiveData : array<uint8>
 var private liveContext : smart_ptr<Context>
 
 def public get_live_context : smart_ptr<Context> {
-    //! get live context. WARNING: this does not increase reference count, no need for delete
-    //! intended use is invoke_in_context(get_live_context()) <| @ ...
+    
+    
     unsafe {
-        return liveContext  // we don't clone here?
+        return liveContext  
     }
 }
 
@@ -197,7 +197,7 @@ def set_new_context(var ptr : smart_ptr<Context>; full_restart : bool = false) {
     invoke_live("shutdown")
     if (appPtr != null) {
         unsafe {
-            // fixup decs if its there
+            
             var pvar = get_context_global_variable(appPtr, "decsState")
             if (pvar != null) {
                 var pstate : array<uint8>? = unsafe(reinterpret<array<uint8>?> get_context_global_variable(appPtr, "decsLiveData"))
@@ -217,7 +217,7 @@ def set_new_context(var ptr : smart_ptr<Context>; full_restart : bool = false) {
         appPtr.alwaysErrorOnException = true
         appPtr.alwaysStackWalkOnException = true
         unsafe {
-            // fixup decs if its there
+            
             var pvar = get_context_global_variable(appPtr, "decsState")
             if (pvar != null) {
                 var pstate : array<uint8>? = unsafe(reinterpret<array<uint8>?> get_context_global_variable(appPtr, "decsLiveData"))
@@ -230,7 +230,7 @@ def set_new_context(var ptr : smart_ptr<Context>; full_restart : bool = false) {
                 invoke_in_context(appPtr, css, decsLiveData)
                 delete css
             }
-            // fix-up live context, if its there
+            
             var pctx_var = get_context_global_variable(appPtr, "liveContext")
             if (pctx_var != null) {
                 var lContext <- reinterpret<smart_ptr<Context>> addr(this_context())
@@ -257,7 +257,7 @@ def public recompile(full_restart : bool = false) {
                 if (ok) {
                     simulate(program) <| $(sok; context; serrors) {
                         if (sok) {
-                            // TODO: beep print("reloaded...\n")
+                            
                             to_log(LOG_TRACE, "LIVE: reloaded\n")
                             set_new_context(context, full_restart)
                         } else {

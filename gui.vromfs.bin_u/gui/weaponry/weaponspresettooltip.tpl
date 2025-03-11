@@ -61,14 +61,16 @@ tdiv {
         <<#presetParams>>
         <<^divider>>
         tdiv {
+          width:t='pw'
           margin-bottom:t='1/2@bulletTooltipPadding'
           <<#value>>
-          activeText { text:t='<<value>>'; smallFont:t='yes' }
           textareaNoTab {
-            text:t=' - <<text>>';
+            width:t='fw'
+            max-width:t='fw'
+            text:t='<color=@activeTextColor><<value>></color> - <<text>>'
             smallFont:t='yes'
-            valign:t='center';
-            overlayTextColor:t='minor';
+            valign:t='center'
+            overlayTextColor:t='minor'
           }
           <</value>>
         }
@@ -160,15 +162,17 @@ tdiv {
 
       <<#changeToSpecsParams>>
       tdiv {
+        width:t='pw'
         padding:t='1@bulletTooltipPadding, 0'
         margin-bottom:t='1/2@bulletTooltipPadding'
         <<#effectValue>>
-        textareaNoTab { text:t='<<effectValue>>'; smallFont:t='yes' }
         textareaNoTab {
-          text:t=' - <<text>>';
+          width:t='fw'
+          max-width:t='fw'
+          text:t='<<effectValue>> - <<text>>'
           smallFont:t='yes'
-          valign:t='center';
-          overlayTextColor:t='minor';
+          valign:t='center'
+          overlayTextColor:t='minor'
         }
         <</effectValue>>
       }

@@ -1,17 +1,9 @@
-/* canvas-toBlob.js
- * A canvas.toBlob() implementation.
- * 2013-12-27
- * 
- * By Eli Grey, http://eligrey.com and Devin Samarin, https://github.com/eboyjr
- * License: X11/MIT
- *   See LICENSE.md
- */
 
-/*global self */
-/*jslint bitwise: true, regexp: true, confusion: true, es5: true, vars: true, white: true,
-  plusplus: true */
 
-/*! @source http://purl.eligrey.com/github/canvas-toBlob.js/blob/master/canvas-toBlob.js */
+
+
+
+
 
 (function(view) {
 "use strict";
@@ -45,20 +37,17 @@ var
 				state++;
 				if (state === 4) {
 					buffer[outptr++] = save >>> 16;
-					if (last[1] !== 61 /* padding character */) {
+					if (last[1] !== 61 ) {
 						buffer[outptr++] = save >>> 8;
 					}
-					if (last[0] !== 61 /* padding character */) {
+					if (last[0] !== 61 ) {
 						buffer[outptr++] = save;
 					}
 					state = 0;
 				}
 			}
 		}
-		// 2/3 chance there's going to be some null bytes at the end, but that
-		// doesn't really matter with most image formats.
-		// If it somehow matters for you, truncate the buffer up outptr.
-		return buffer;
+								return buffer;
 	}
 ;
 if (Uint8Array) {
@@ -71,7 +60,7 @@ if (Uint8Array) {
 	]);
 }
 if (HTMLCanvasElement && !canvas_proto.toBlob) {
-	canvas_proto.toBlob = function(callback, type /*, ...args*/) {
+	canvas_proto.toBlob = function(callback, type ) {
 		  if (!type) {
 			type = "image/png";
 		} if (this.mozGetAsFile) {
@@ -87,8 +76,7 @@ if (HTMLCanvasElement && !canvas_proto.toBlob) {
 			, blob
 		;
 		if (Blob.fake) {
-			// no reason to decode a data: URI that's just going to become a data URI again
-			blob = new Blob
+						blob = new Blob
 			if (is_base64) {
 				blob.encoding = "base64";
 			} else {

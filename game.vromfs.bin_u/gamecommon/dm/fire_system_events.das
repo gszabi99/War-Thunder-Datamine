@@ -69,4 +69,4 @@ struct EventFireSystemOnStartBurn
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
 struct EventFireSystemNetSync
   isBurning : bool
-  data : IntList const?  // part id, fire params id of burning parts
+  data : IntList const?  

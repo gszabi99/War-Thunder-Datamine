@@ -156,7 +156,7 @@ def damage_area_update_client_es(act : UpdateStageInfoAct;
         var emitterPos = damage_area__emitterPos[i]
         emitterPos.y += 0.1
         damage_area_update_fx(damage_area__emitterFxIds[i], damage_area__emitterPos[i], up, 1.)
-      /// burn fx
+      
       var count = 1
       if (damage_area__burnFxSize > 0.)
         count = 1 + int(length(damage_area__pos1 - damage_area__emitterPos[i]) / damage_area__burnFxSize)
@@ -169,7 +169,7 @@ def damage_area_update_client_es(act : UpdateStageInfoAct;
           let burnFxId = damage_area_create_fx(damage_area__burnFxType, fxPos, up, true)
           damage_area__burnFxIds |> push(burnFxId)
         damage_area__burnFxCounts[i] = count
-    /// debug
+    
     let dbgId = int(DmDebugTool DAMAGE_AREA)
     if (is_dm_dbg_tool_enabled(dbgId))
       dm_dbg_render_clear(dbgId, damage_area__debugCommonId)
@@ -203,7 +203,7 @@ def damage_area_move_track_es(evt : Event;
     let decalPos = pos1 + decalDir * len
     let decalSize = float2(decalLen + damage_area__scorchMarginSize, damage_area__radius + damage_area__scorchMarginSize)
     add_burning_decals(decalPos, decalDir, decalSize, damage_area__scorchStrength, damage_area__scorchDuration)
-    /// debug
+    
     let dbgId = int(DmDebugTool DAMAGE_AREA)
     if (is_dm_dbg_tool_enabled(dbgId))
       let scorchColor = E3DCOLOR(0xFF000000)

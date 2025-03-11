@@ -46,7 +46,7 @@ def fire_damage_update_es(act : UpdateStageInfoAct;
   let at_time = float(get_app().usefulTotalTime)
   let seed = grnd()
 
-  // update fire damage
+  
   if v.fire_damage__nextUpdateTime < act.curTime
     v.fire_damage__nextUpdateTime = act.curTime + v.fire_damage__updateBurnInterval
     for id, start_time, fire_params_id, packed_part_id, initiator_id in iter_range(v.fire_data__startTime), v.fire_data__startTime, v.fire_data__fireParamsId, v.fire_data__packedPartId, v.fire_data__initiatorId
@@ -70,7 +70,7 @@ def fire_damage_update_es(act : UpdateStageInfoAct;
         atTime = act.curTime
       ]])
 
-  // update underwater (this used to update only when extinguisher was not active, but it does not seem to be reasonable)
+  
   for id, start_time, underwater_timer, fire_params_id, node_id in iter_range(v.fire_data__startTime), v.fire_data__startTime, v.fire_data__underwaterTimer, v.fire_data__fireParamsId, v.fire_data__nodeId
     if start_time < 0.0f
       continue
@@ -256,7 +256,7 @@ def fire_system_respawn_es(evt : EventUnitRespawn; eid : EntityId)
   sendEventImmediate(eid, [[CmdStopBurn]])
 
 
-// -------------------------------- fire net sync --------------------------------------
+
 
 [es(after=fire_damage_update_es, tag=server), with_bundle(v)]
 def fire_system_net_sync_update_es(act : UpdateStageInfoAct;

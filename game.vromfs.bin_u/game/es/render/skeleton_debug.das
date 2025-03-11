@@ -8,11 +8,11 @@ require math.base
 require danetlibs.render_debug.render.draw_debug_common
 require %game.utils.utils_common
 
-// require ecs.ecs_template
-// [ecs_template]
-// struct skeleton_draw_debug
-//   skeletonDrawDebug : Tag
-//   drawGizmos : bool = false
+
+
+
+
+
 
 
 [console_cmd(name="skeleton.debug", hint="Draw all animchar's skeleton nodes")]
@@ -43,7 +43,7 @@ def draw_skeleton_nodes_recursive(tree : GeomNodeTree; node_idx : int; drawGizmo
   draw_cached_debug_sphere(tm[3], 0.01, color, 8)
   if drawGizmos
     draw_cached_gizmo(tm, 0.1, 0.05)
-  add_debug_text_mark(tm[3], tree |> geomtree_getNodeName(node_idx), /*max len*/ -1, /*vertical text offset*/ -0.5f, color);
+  add_debug_text_mark(tm[3], tree |> geomtree_getNodeName(node_idx),  -1,  -0.5f, color);
 
   for i in 0u..childCount
     let childNodeIdx = tree |> geomtree_getChildNodeIdx(node_idx, i)

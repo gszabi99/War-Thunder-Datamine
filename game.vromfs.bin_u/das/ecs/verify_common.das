@@ -47,7 +47,7 @@ def validate_template(name : string; comps : table<string; uint>; cb : block<(su
       break
     let templateComp = tmpl |> getTemplateComponent(compName, compNameHash)
     if templateComp == null || templateComp.isNull
-      // data component!?
+      
       let typName = compTypes |> component_types_getTypeNameById(typeIdx)
       let dataCompId = dataComps |> data_components_findComponentId(compNameHash)
       if dataCompId == INVALID_COMPONENT_INDEX
@@ -87,7 +87,7 @@ def find_template(comps : table<string; uint>; cb : block<(name : string#; tmpl 
         return false
       let templateComp = tmpl |> getTemplateComponent(compName, compNameHash)
       if templateComp == null || templateComp.isNull
-        // data component!?
+        
         let typName = compTypes |> component_types_getTypeNameById(typeIdx)
         let dataCompId = dataComps |> data_components_findComponentId(compNameHash)
         if dataCompId == INVALID_COMPONENT_INDEX

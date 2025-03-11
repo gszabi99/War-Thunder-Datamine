@@ -41,16 +41,16 @@ let country_names = [[string[NUM_COUNTRIES] "australia";
                                   "ussr";
                                   "china";
                                   "france";
-                                  ""; //ch
-                                  ""; //cz
-                                  ""; //hu
-                                  ""; //ko
-                                  ""; //pl
-                                  ""; //pt
-                                  ""; //se
-                                  ""; //sp
-                                  ""; //tr
-                                  ""; //vt
+                                  ""; 
+                                  ""; 
+                                  ""; 
+                                  ""; 
+                                  ""; 
+                                  ""; 
+                                  ""; 
+                                  ""; 
+                                  ""; 
+                                  ""; 
                                   "sweden";
                                   "israel"]]
 

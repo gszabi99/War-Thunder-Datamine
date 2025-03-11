@@ -13,7 +13,7 @@ require daslib/json_boost
 require daslib/strings_boost
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_Initialize
+
 struct InitializeRequestArguments {}
 
 def InitializeRequestArguments(data : JsonValue?) {
@@ -21,7 +21,7 @@ def InitializeRequestArguments(data : JsonValue?) {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_Disconnect
+
 struct DisconnectArguments {
     restart : bool
     terminateDebuggee : bool
@@ -36,7 +36,7 @@ def DisconnectArguments(data : JsonValue?) {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Types_Capabilities
+
 struct Capabilities {
     supportsConfigurationDoneRequest : bool
     supportsRestartRequest : bool
@@ -51,7 +51,7 @@ struct Capabilities {
 
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_SetBreakpoints
+
 struct SetDataBreakpointsArguments {
     breakpoints : array<DataBreakpoint>
 }
@@ -67,10 +67,10 @@ def SetDataBreakpointsArguments(data : JsonValue?) {
     return <- res
 }
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Types_DataBreakpoint
+
 struct DataBreakpoint {
     dataId : string
-    accessType : string// 'read' | 'write' | 'readWrite'
+    accessType : string
     condition : string
     hitCondition : string
     description : string
@@ -87,7 +87,7 @@ def DataBreakpoint(data : JsonValue?) {
             )
 }
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_DataBreakpointInfo
+
 struct DataBreakpointInfoArguments {
     variablesReference : double
     name : string
@@ -104,9 +104,9 @@ struct DataBreakpointInfoResponse {
     dataId : string
     description : string
 }
-    //accessTypes: DataBreakpointAccessType[];
+    
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_SetBreakpoints
+
 struct SetBreakpointsArguments {
     source : Source
     breakpoints : array<SourceBreakpoint>
@@ -126,7 +126,7 @@ def SetBreakpointsArguments(data : JsonValue?) {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Types_Source
+
 struct Source {
     name : string
     path : string
@@ -137,7 +137,7 @@ def Source(data : JsonValue?) {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Types_SourceBreakpoint
+
 struct SourceBreakpoint {
     line : double
 }
@@ -147,13 +147,13 @@ def SourceBreakpoint(data : JsonValue?) {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_SetBreakpoints
+
 struct SetBreakpointsResponse {
     breakpoints : array<Breakpoint>
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Types_Breakpoint
+
 struct Breakpoint {
     id : double
     verified : bool
@@ -163,20 +163,20 @@ struct Breakpoint {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_Threads
+
 struct ThreadsResponseBody {
     threads : array<Thread>
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Types_Thread
+
 struct Thread {
     id : double
     name : string
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_StackTrace
+
 struct StackTraceArguments {
     threadId : double
     startFrame : double
@@ -201,7 +201,7 @@ struct StackFrame {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_Scopes
+
 struct ScopesArguments {
     frameId : double
 }
@@ -215,14 +215,14 @@ struct ScopesResponseBody {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Types_Scope
+
 struct Scope {
     name : string
     variablesReference : double
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_Variables
+
 struct VariablesArguments {
     variablesReference : double
     start : double
@@ -242,7 +242,7 @@ struct VariablesResponseBody {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Types_Variable
+
 struct Variable {
     name : string
     value : string
@@ -262,14 +262,14 @@ def JV(data : Variable) {
     })
 }
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Events_Output
+
 struct OutputEventBody {
     category : string
     output : string
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_Continue
+
 struct ContinueArguments {
     threadId : double
 }
@@ -279,7 +279,7 @@ def ContinueArguments(data : JsonValue?) {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_Pause
+
 struct PauseArguments {
     threadId : double
 }
@@ -289,7 +289,7 @@ def PauseArguments(data : JsonValue?) {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_Pause
+
 struct StepInArguments {
     threadId : double
 }
@@ -299,7 +299,7 @@ def StepInArguments(data : JsonValue?) {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_Next
+
 struct NextArguments {
     threadId : double
 }
@@ -309,7 +309,7 @@ def NextArguments(data : JsonValue?) {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_StepOut
+
 struct StepOutArguments {
     threadId : double
 }
@@ -319,7 +319,7 @@ def StepOutArguments(data : JsonValue?) {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Requests_Evaluate
+
 struct EvaluateArguments {
     expression : string
     frameId : double
@@ -348,15 +348,15 @@ def JV(data : EvaluateResponse) {
 }
 
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Events_Breakpoint
+
 struct BreakpointEvent {
-    reason : string // 'changed' | 'new' | 'removed' | string;
+    reason : string 
     breakpoint : Breakpoint
 }
 
-// https://microsoft.github.io/debug-adapter-protocol/specification#Events_Thread
+
 struct ThreadEvent {
-    reason : string // 'started' | 'exited' | string;
+    reason : string 
     threadId : double
 }
 

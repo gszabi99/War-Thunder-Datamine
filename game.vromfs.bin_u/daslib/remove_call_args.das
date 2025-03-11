@@ -41,7 +41,7 @@ def get_remove_indices(args : AnnotationArgumentList) {
 
 [function_macro(name="remove_call_args")]
 class RemoveCallArgsMacro : AstFunctionAnnotation {
-    //! This macro remove all arguments by given indeces [remove_call_args(arg=(1,2,3))]
+    
     def override apply(var func : FunctionPtr; var group : ModuleGroup; args : AnnotationArgumentList; var errors : das_string) : bool {
         var removeIndices <- get_remove_indices(args)
         if (length(removeIndices) == 0) {
@@ -49,7 +49,7 @@ class RemoveCallArgsMacro : AstFunctionAnnotation {
         }
 
         for (arg in func.arguments) {
-            arg.flags |= VariableFlags.marked_used // to disable errors: unused function argument
+            arg.flags |= VariableFlags.marked_used 
         }
 
         var inscope fn <- clone_function(func)

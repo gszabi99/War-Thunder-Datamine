@@ -62,7 +62,7 @@ def draw_phys_vars_edit(eid : array<EntityId> implicit; flags : uint; name : str
 
     for i in 0..varsCount
       let varName = phys_vars |> getVarName(i)
-      let filteredName = "{i} {varName}" // to allow filtering by both the id and var name
+      let filteredName = "{i} {varName}" 
       if !(*filter |> PassFilter(filteredName))
         continue
 

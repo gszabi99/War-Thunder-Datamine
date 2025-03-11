@@ -16,7 +16,7 @@ def public utf16_to_utf32(high, low : uint) {
 }
 
 def public utf8_encode(var dest_array : array<uint8>&; ch : uint) {
-    //! Converts a codepoint (UTF-32 symbol) to UTF-8 and appends it to the UTF-8 byte array
+    
     if (ch < 0x80) {
         dest_array |> push(uint8(ch))
     } elif (ch < 0x800) {
@@ -36,7 +36,7 @@ def public utf8_encode(var dest_array : array<uint8>&; ch : uint) {
 
 
 def public utf8_encode(ch : uint) : array<uint8> {
-    //! Converts a codepoint (UTF-32 symbol) to the UTF-8 byte array
+    
     if (ch < 0x80) {
         return <-  [ uint8(ch) ]
     } elif (ch < 0x800) {
@@ -59,7 +59,7 @@ def public utf8_encode(ch : uint) : array<uint8> {
 
 
 def public utf8_encode(var dest_array : array<uint8>&; source_utf32_string : array<uint> const implicit) {
-    //! Converts UTF-32 string to UTF-8 and appends it to the UTF-8 byte array
+    
     for (ch in source_utf32_string) {
         dest_array |> utf8_encode(ch)
     }
@@ -67,7 +67,7 @@ def public utf8_encode(var dest_array : array<uint8>&; source_utf32_string : arr
 
 
 def public utf8_encode(source_utf32_string : array<uint> const implicit) : array<uint8> {
-    //! Converts UTF-32 string to UTF-8 and returns it as a UTF-8 byte array
+    
     var dest_array : array<uint8>
     dest_array |> reserve(length(source_utf32_string))
     for (ch in source_utf32_string) {
@@ -78,7 +78,7 @@ def public utf8_encode(source_utf32_string : array<uint> const implicit) : array
 
 
 def public utf8_length(utf8_string : array<uint8> const implicit) : int {
-    //! Returns the number of characters in the UTF-8 string
+    
     var length = 0
     for (ch in utf8_string) {
         if ((uint(ch) & 0xC0) != 0x80) {
@@ -90,7 +90,7 @@ def public utf8_length(utf8_string : array<uint8> const implicit) : int {
 
 
 def public utf8_length(utf8_string : string const) : int {
-    //! Returns the number of characters in the UTF-8 string
+    
     var length = 0
     for (ch in utf8_string) {
         if ((uint(ch) & 0xC0) != 0x80) {
@@ -124,12 +124,12 @@ def public contains_utf8_bom(utf8_string : string const) : bool {
 
 
 
-// Copyright (c) 2008-2009 Bjoern Hoehrmann <bjoern@hoehrmann.de>
-// See http://bjoern.hoehrmann.de/utf-8/decoder/dfa/ for details.
+
+
 
 let shared s_utf8d <-  fixed_array(
-    // The first part of the table maps bytes to character classes that
-    // to reduce the size of the transition table and create bitmasks.
+    
+    
    0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
    0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
    0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,  0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u, 0u,
@@ -139,8 +139,8 @@ let shared s_utf8d <-  fixed_array(
    8u, 8u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u,  2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u, 2u,
   10u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 3u, 4u, 3u, 3u, 11u, 6u, 6u, 6u, 5u, 8u, 8u, 8u, 8u, 8u, 8u, 8u, 8u, 8u, 8u, 8u,
 
-  // The second part is a transition table that maps a combination
-  // of a state of the automaton and a character class to a state.
+  
+  
    0u, 12u, 24u, 36u, 60u, 96u, 84u, 12u, 12u, 12u, 48u, 72u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 12u,
   12u, 0u, 12u, 12u, 12u, 12u, 12u, 0u, 12u, 0u, 12u, 12u, 12u, 24u, 12u, 12u, 12u, 12u, 12u, 24u, 12u, 24u, 12u, 12u,
   12u, 12u, 12u, 12u, 12u, 12u, 12u, 24u, 12u, 12u, 12u, 12u, 12u, 24u, 12u, 12u, 12u, 12u, 12u, 12u, 12u, 24u, 12u, 12u,
@@ -178,7 +178,7 @@ def public is_utf8_string_valid(utf8_string : string const) : bool {
 
 
 def public utf8_decode(var dest_utf32_string : array<uint>&; source_utf8_string : array<uint8> const implicit) {
-    //! Converts UTF-8 string to UTF-32 and appends it to the array of codepoints (UTF-32 string)
+    
     var codepoint = 0u
     var state = 0u
     let length = length(source_utf8_string)
@@ -197,7 +197,7 @@ def public utf8_decode(var dest_utf32_string : array<uint>&; source_utf8_string 
 
 
 def public utf8_decode(source_utf8_string : array<uint8> const implicit) : array<uint> {
-    //! Converts UTF-8 string to UTF-32 and returns it as an array of codepoints (UTF-32 string)
+    
     var dest_utf32_string : array<uint>
     dest_utf32_string |> utf8_decode(source_utf8_string)
     return <- dest_utf32_string
@@ -205,7 +205,7 @@ def public utf8_decode(source_utf8_string : array<uint8> const implicit) : array
 
 
 def public utf8_decode(source_utf8_string : string const) : array<uint> {
-    //! Converts UTF-8 string to UTF-32 and returns it as an array of codepoints (UTF-32 string)
+    
     var dest_utf32_string : array<uint>
     peek_data(source_utf8_string) <| $(arr) {
         dest_utf32_string |> utf8_decode(arr)
@@ -215,7 +215,7 @@ def public utf8_decode(source_utf8_string : string const) : array<uint> {
 
 
 def public utf8_decode(var dest_utf32_string : array<uint>; source_utf8_string : string const) {
-    //! Converts UTF-8 string to UTF-32 and appends it to the array of codepoints (UTF-32 string)
+    
     peek_data(source_utf8_string) <| $(arr) {
         dest_utf32_string |> utf8_decode(arr)
     }

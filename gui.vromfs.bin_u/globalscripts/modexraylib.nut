@@ -120,6 +120,24 @@ function findBlockByName(blk, name) {
   return false
 }
 
+function countBlocksByName(blk, name) {
+  local count = 0
+  for (local b = 0; b < blk.blockCount(); b++) {
+    let block = blk.getBlock(b)
+    if (block.getBlockName() == name)
+      ++count
+  }
+  return count
+}
+
+function findParamValue(blk, paramName, paramValue) {
+  for (local p = 0; p < blk.paramCount(); ++p)
+    if (blk.getParamName(p) == paramName)
+      if (blk.getParamValue(p) == paramValue)
+        return true
+  return false
+}
+
 function findBlockByNameWithParamValue(blk, blockName, paramName, paramValue) {
   for (local b = 0; b < blk.blockCount(); b++) {
     let block = blk.getBlock(b)
@@ -1486,6 +1504,9 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
     let hasHMD = findBlockByName(sensorPropsBlk, "designateHelmetTarget")
     if (hasHMD)
       desc.append("".concat(indent, loc("radar_hms_mode")))
+    let nctrTargetTypes = countBlocksByName(sensorPropsBlk, "targetTypeId")
+    if (nctrTargetTypes > 0)
+      desc.append("".concat(indent, loc("radar_nctr"), colon, nctrTargetTypes))
     if (hasSARH)
       desc.append("".concat(indent, loc("radar_sarh")))
     if (hasMG)
@@ -1796,6 +1817,29 @@ function mkPilotOrHelicopterGunnerDesc(partType, _params, commonData) {
       }
     }
 
+  local autoCmByRwr = false
+  local autoCmByMlws = false
+  local autoCmFusedSensors = false
+  local autoCmMultiProgram = 0
+
+  local threatFlagNames = {}
+  let autoCmBlk = unitBlk.getBlockByName("countermeasure")
+  if (autoCmBlk != null) {
+    for (local b = 0; b < autoCmBlk.blockCount(); b++) {
+      let block = autoCmBlk.getBlock(b)
+      if (block.getBlockName() == "threatId") {
+        for (local p = 0; p < block.paramCount(); ++p)
+          if (block.getParamName(p) == "threatFlag") {
+            let threatFlagName = block.getParamValue(p)
+            if (!threatFlagNames?[threatFlagName])
+              threatFlagNames[threatFlagName] <- true
+          }
+      }
+    }
+    autoCmFusedSensors = autoCmBlk.getBool("sensorsFusion", false)
+    autoCmMultiProgram = countBlocksByName(autoCmBlk, "program")
+  }
+
   foreach (sensorBlk in getUnitSensorsList(commonData)) {
     let sensorFilePath = sensorBlk.getStr("blk", "")
     if (sensorFilePath == "")
@@ -1809,10 +1853,26 @@ function mkPilotOrHelicopterGunnerDesc(partType, _params, commonData) {
       continue
     desc.append("".concat(loc($"avionics_sensor_{sensorType}"), colon,
       getPartLocNameByBlkFile("sensors", sensorFilePath, sensorPropsBlk)))
-    if (sensorType == "rwr")
+    if (sensorType == "rwr") {
       desc.extend(mkRwrTexts(commonData, sensorPropsBlk, "  "))
-    else if (sensorType == "mlws")
+      if (sensorPropsBlk.getBool("automaticCountermeasures", sensorPropsBlk.getBool("automaticFlares", false)))
+        autoCmByRwr = true
+      foreach (threatFlagName, _flag in threatFlagNames)
+        if (findBlockByNameWithParamValue(sensorPropsBlk, "group", "threatFlag", threatFlagName)) {
+          autoCmByRwr = true
+          break
+        }
+    }
+    else if (sensorType == "mlws") {
       desc.extend(mkMlwsTexts(commonData, sensorPropsBlk, "  "))
+      if (sensorPropsBlk.getBool("automaticCountermeasures", sensorPropsBlk.getBool("automaticFlares", false)))
+        autoCmByMlws = true
+      foreach (threatFlagName, _flag in threatFlagNames)
+        if (findParamValue(sensorPropsBlk, "threatFlag", threatFlagName)) {
+          autoCmByMlws = true
+          break
+        }
+    }
   }
 
   if (unitBlk.getBool("hasHelmetDesignator", false))
@@ -1821,6 +1881,20 @@ function mkPilotOrHelicopterGunnerDesc(partType, _params, commonData) {
     desc.append(loc("avionics_aim_spi"))
   if (unitBlk.getBool("laserDesignator", false))
     desc.append(loc("avionics_aim_laser_designator"))
+
+  if (autoCmByRwr || autoCmByMlws) {
+    desc.append(loc("avionics_auto_cm"))
+    local autoCmSensorsText = "".concat(loc("avionics_auto_cm_sensors"), colon)
+    if (autoCmByRwr && autoCmByMlws)
+      autoCmSensorsText = "".concat(autoCmSensorsText, loc("avionics_auto_cm_by_rwr"), autoCmFusedSensors ? "+" : ", ", loc("avionics_auto_cm_by_mlws"))
+    else if (autoCmByRwr)
+      autoCmSensorsText = "".concat(autoCmSensorsText, "avionics_auto_cm_by_rwr")
+    else if (autoCmByMlws)
+      autoCmSensorsText = "".concat(autoCmSensorsText, "avionics_auto_cm_by_mlws")
+    desc.append("".concat("  ", autoCmSensorsText))
+    if (autoCmMultiProgram > 0)
+      desc.append("".concat("  ", loc("avionics_auto_cm_programs"), colon, autoCmMultiProgram))
+  }
 
   let slots = unitBlk?.WeaponSlots
   if (slots) {

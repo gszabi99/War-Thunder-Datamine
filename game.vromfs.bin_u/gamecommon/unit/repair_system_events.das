@@ -1,7 +1,7 @@
 module repair_system_events shared
 require ecs
 
-// handled in das
+
 
 [cpp_event(unicast, with_scheme)]
 struct EventRepairSystemRequestRepair
@@ -36,7 +36,7 @@ struct EventRepairSystemStopRepair
 struct EventRepairSystemSpendToolkit
 {}
 
-// handled in cpp
+
 
 [cpp_event(unicast, with_scheme)]
 struct EventRepairSystemOnRequestedRepair

@@ -200,7 +200,7 @@ class ProfilerDebugAgent : DapiDebugAgent {
         }
     }
     def dump_context_stack(tid : uint64) {
-        // print("context: {tid} // {ctx.name} {ctx.category}\n")
+        
         var root = new PerfNode()
         var stack : array<PerfNode?>
         var sp = root
@@ -223,7 +223,7 @@ class ProfilerDebugAgent : DapiDebugAgent {
                 sp.total_heap_bytes += ev.heapBytes - sp.enter_heap_bytes
                 sp.total_string_heap_bytes += ev.stringHeapBytes - sp.enter_string_heap_bytes
                 sp = length(stack) != 0 ? stack |> back() : root
-                if (length(stack) > 0) {// protection for mismatching enable\disable
+                if (length(stack) > 0) {
                     stack |> pop()
                 }
             }
@@ -241,7 +241,7 @@ class ProfilerDebugAgent : DapiDebugAgent {
         dump("\{\"args\": \{ \"name\": \"{ctxDesc}\" \}, \"name\": \"thread_name\", \"cat\": \"__metadata\", \"ph\": \"M\", \"pid\": 0, \"tid\": {int64(tid)}, \"ts\": 0 \}")
         if (wasDead) { ctx.category |= context_category_flags.dead; }
     }
-        // dump("\{\"args\": \{ \"value\" : \"ns\" \}, \"name\": \"displayTimeUnit\", \"cat\": \"__metadata\", \"ph\": \"M\", \"pid\": 0, \"tid\": {int64(tid)}, \"ts\": 0 \}")
+        
     def dump_events(tid : uint64) {
         for (ev in events[tid].events) {
             dump_event(ev, tid)

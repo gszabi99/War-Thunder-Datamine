@@ -20,7 +20,7 @@ require %game.events
 
 
 
-// ---------------------------- extinguish system update -------------------------------
+
 
 [es(no_order)]
 def extinguish_system_update_es(act : UpdateStageInfoAct;
@@ -50,31 +50,31 @@ def extinguish_system_update_es(act : UpdateStageInfoAct;
       sendEvent(eid, [[EventExtinguishSystemNotifyCrewBusy busy=false]])
       extinguish_system_require_net_sync = true
 
-    // handle extinguish speed multiplier change for warships
+    
     if unit.isShip
       if (is_extinguisher_active(fire_damage__isBurn, extinguish_system_is_assisting, extinguish_system_extinguish_time_end) &&
           extinguish_system_extinguish_time_end > extinguish_system_extinguish_time_start)
-        // calculate total time to extinguish: new (from current speed mult) and current (from current start and end time)
+        
         let new_time_to_extinguish = safediv(extinguish_system_extinguisher_time_min, gm.crewExtinguishSpeedMultiplier)
         let current_time_to_extinguish = extinguish_system_extinguish_time_end - extinguish_system_extinguish_time_start
-        // calculate ratio between these two total times to compute speed multiplier ratio
+        
         let multiplier_ratio = new_time_to_extinguish / current_time_to_extinguish;
-        // modify start and end time accordingly, so the relative progress is kept the same
-        // and so (end - start) will be equal to new_time_to_extinguish
+        
+        
         extinguish_system_extinguish_time_start = (extinguish_system_extinguish_time_start - total_time) * multiplier_ratio + total_time;
         extinguish_system_extinguish_time_end = (extinguish_system_extinguish_time_end - total_time) * multiplier_ratio + total_time;
 
-        // if time change is noticeable, sync
+        
         if abs(new_time_to_extinguish - current_time_to_extinguish) > .5f
           extinguish_system_require_net_sync = true
-          // print("recalculated time to extinguish {current_time_to_extinguish} -> {new_time_to_extinguish} (x{multiplier_ratio} total=x{gm.crewExtinguishSpeedMultiplier}) remaining time: {extinguish_system_extinguish_time_end - total_time}")
+          
 
-    // if extinguishing is complete
+    
     if 0.0 < extinguish_system_extinguish_time_end && extinguish_system_extinguish_time_end < total_time
       let assistee_eid = unit.extinguishAssisteeEid
       let assistant_eid = unit.extinguishAssistantEid
-      assert((assistee_eid != INVALID_ENTITY_ID) == extinguish_system_is_assisting) // has assistee doesnt match is assisting state
-      assert(assistant_eid == INVALID_ENTITY_ID || !extinguish_system_is_assisting) // has assistant but assisting someone
+      assert((assistee_eid != INVALID_ENTITY_ID) == extinguish_system_is_assisting) 
+      assert(assistant_eid == INVALID_ENTITY_ID || !extinguish_system_is_assisting) 
 
       if assistant_eid == INVALID_ENTITY_ID
         let has_mod = has_extinguisher_mod(gm, extinguish_system_extinguisher_count, extinguish_system_extinguisher_count_max)
@@ -85,20 +85,20 @@ def extinguish_system_update_es(act : UpdateStageInfoAct;
         ]])
         sendEvent(eid, [[EventExtinguishSystemSpendExtinguisher]])
 
-  // if all fire is already extinguished, but extinguisher is activated - spend it and turn it off
+  
   elif extinguish_system_extinguish_time_end >= 0.0f
     sendEvent(eid, [[EventExtinguishSystemTurnOffExtinguisher]])
     let assistant_eid = unit.extinguishAssistantEid
     if assistant_eid == INVALID_ENTITY_ID
       sendEvent(eid, [[EventExtinguishSystemSpendExtinguisher]])
 
-  // update cooldown
+  
   if extinguish_system_next_extinguisher_time < total_time && extinguish_system_next_extinguisher_time > 0.0f
     extinguish_system_next_extinguisher_time = -1.0f
     extinguish_system_require_net_sync = true
 
 
-// ---------------------------- extinguish init & reset --------------------------------
+
 
 
 def load_extinguisher_mod_blk(blk : DataBlock&;
@@ -187,8 +187,8 @@ def extinguish_system_init_handle_es(evt : CmdInitComponent;
   extinguish_system_auto_extinguisher = false
   extinguish_system_cooldown = 0.0f
   extinguish_system_crew_busy_time = 5.0f
-  // default values, used when extinguisher is used without initializing with mod blk,
-  // for example for WTM tank bots
+  
+  
   extinguish_system_extinguisher_time_min = 2.0f
   extinguish_system_extinguisher_time_max = 3.0f
   if gm != null
@@ -293,7 +293,7 @@ def extinguish_system_respawn_handle_es(evt : EventUnitRespawn;
   sendEvent(eid, [[EventExtinguishSystemNotifyCrewBusy busy=false]])
 
 
-// ---------------------------- extinguish other events --------------------------------
+
 
 [es]
 def extinguish_system_activate_handle_es(evt : EventExtinguishSystemSetActive;
@@ -373,7 +373,7 @@ def extinguish_system_activate_extinguisher_handle_es(evt : EventExtinguishSyste
     if unit.isAuthority
       var time_to_extinguish = rnd_float(extinguish_system_extinguisher_time_min, extinguish_system_extinguisher_time_max)
       if unit.isShip
-        extinguish_system_extinguish_time_end = 1.0f // for correct calc in crewExtinguishSpeedMultiplier
+        extinguish_system_extinguish_time_end = 1.0f 
         time_to_extinguish = safediv(extinguish_system_extinguisher_time_min, gm.crewExtinguishSpeedMultiplier)
 
       extinguish_system_extinguish_time_start = total_time
@@ -535,11 +535,11 @@ def extinguish_system_add_extinguisher_count_handle_es(evt : EventExtinguishSyst
                                                        var extinguish_system_extinguisher_count_max : int&;
                                                        var extinguish_system_require_net_sync : bool&)
   extinguish_system_extinguisher_count = min(255, extinguish_system_extinguisher_count + evt.count)
-  extinguish_system_extinguisher_count_max = extinguish_system_extinguisher_count // <--- ???
+  extinguish_system_extinguisher_count_max = extinguish_system_extinguisher_count 
   extinguish_system_require_net_sync = true
 
 
-// -------------------------------- extinguisher net sync --------------------------------------
+
 
 
 [es(after=extinguish_system_update_es, tag=server)]

@@ -18,7 +18,7 @@ let { move_mouse_on_child, move_mouse_on_obj, handlersManager } = require("%scri
 let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods,
   isModificationInTree, modsWndWidthRestrictions } = require("%scripts/weaponry/modsTree.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
-let weaponryPresetsWnd = require("%scripts/weaponry/weaponryPresetsWnd.nut")
+let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 let { canBuyMod, canResearchMod, isModResearched, isModUpgradeable, isModClassPremium,
   isModClassExpendable, getModificationByName, findAnyNotResearchedMod,
@@ -1322,7 +1322,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.checkResearchOperation(item))
       return
     if (item.type == weaponsItem.weapon && needSecondaryWeaponsWnd(this.air)) {
-      weaponryPresetsWnd.open({ unit = this.air, curEdiff = this.getCurrentEdiff() }) 
+      guiStartWeaponryPresets({ unit = this.air, curEdiff = this.getCurrentEdiff() }) 
       return
     }
     if (!this.canPerformAction(item, amount))

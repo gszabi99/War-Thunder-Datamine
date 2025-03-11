@@ -1,63 +1,7 @@
-/*!
- * jsoneditor.js
- *
- * @brief
- * JSONEditor is a web-based tool to view, edit, and format JSON.
- * It shows data a clear, editable treeview.
- *
- * Supported browsers: Chrome, Firefox, Safari, Opera, Internet Explorer 8+
- *
- * @license
- * This json editor is open sourced with the intention to use the editor as
- * a component in your own application. Not to just copy and monetize the editor
- * as it is.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not
- * use this file except in compliance with the License. You may obtain a copy
- * of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
- * the License.
- *
- * Copyright (c) 2011-2013 Jos de Jong, http://jsoneditoronline.org
- *
- * @author  Jos de Jong, <wjosdejong@gmail.com>
- * @version 2.3.0-SNAPSHOT
- * @date    2013-05-28
- */
+
 (function () {
 
-/**
- * @constructor JSONEditor
- * @param {Element} container    Container element
- * @param {Object}  [options]    Object with options. available options:
- *                               {String} mode      Editor mode. Available values:
- *                                                  'tree' (default), 'view',
- *                                                  'form', 'text', and 'code'.
- *                               {function} change  Callback method, triggered
- *                                                  on change of contents
- *                               {Boolean} search   Enable search box.
- *                                                  True by default
- *                                                  Only applicable for modes
- *                                                  'tree', 'view', and 'form'
- *                               {Boolean} history  Enable history (undo/redo).
- *                                                  True by default
- *                                                  Only applicable for modes
- *                                                  'tree', 'view', and 'form'
- *                               {String} name      Field name for the root node.
- *                                                  Only applicable for modes
- *                                                  'tree', 'view', and 'form'
- *                               {Number} indentation   Number of indentation
- *                                                      spaces. 4 by default.
- *                                                      Only applicable for
- *                                                      modes 'text' and 'code'
- * @param {Object | undefined} json JSON object
- */
+
 function JSONEditor (container, options, json) {
     if (!(this instanceof JSONEditor)) {
         throw new Error('JSONEditor constructor called without "new".');
@@ -68,30 +12,10 @@ function JSONEditor (container, options, json) {
     }
 }
 
-/**
- * Configuration for all registered modes. Example:
- * {
- *     tree: {
- *         editor: TreeEditor,
- *         data: 'json'
- *     },
- *     text: {
- *         editor: TextEditor,
- *         data: 'text'
- *     }
- * }
- *
- * @type { Object.<String, {editor: Object, data: String} > }
- */
+
 JSONEditor.modes = {};
 
-/**
- * Create the JSONEditor
- * @param {Element} container    Container element
- * @param {Object}  [options]    See description in constructor
- * @param {Object | undefined} json JSON object
- * @private
- */
+
 JSONEditor.prototype._create = function (container, options, json) {
     this.container = container;
     this.options = options || {};
@@ -101,48 +25,30 @@ JSONEditor.prototype._create = function (container, options, json) {
     this.setMode(mode);
 };
 
-/**
- * Detach the editor from the DOM
- * @private
- */
+
 JSONEditor.prototype._delete = function () {};
 
-/**
- * Set JSON object in editor
- * @param {Object | undefined} json      JSON data
- */
+
 JSONEditor.prototype.set = function (json) {
     this.json = json;
 };
 
-/**
- * Get JSON from the editor
- * @returns {Object} json
- */
+
 JSONEditor.prototype.get = function () {
     return this.json;
 };
 
-/**
- * Set string containing JSON for the editor
- * @param {String | undefined} jsonText
- */
+
 JSONEditor.prototype.setText = function (jsonText) {
     this.json = util.parse(jsonText);
 };
 
-/**
- * Get stringified JSON contents from the editor
- * @returns {String} jsonText
- */
+
 JSONEditor.prototype.getText = function () {
     return JSON.stringify(this.json);
 };
 
-/**
- * Set a field name for the root node.
- * @param {String | undefined} name
- */
+
 JSONEditor.prototype.setName = function (name) {
     if (!this.options) {
         this.options = {};
@@ -150,20 +56,12 @@ JSONEditor.prototype.setName = function (name) {
     this.options.name = name;
 };
 
-/**
- * Get the field name for the root node.
- * @return {String | undefined} name
- */
+
 JSONEditor.prototype.getName = function () {
     return this.options && this.options.name;
 };
 
-/**
- * Change the mode of the editor.
- * JSONEditor will be extended with all methods needed for the chosen mode.
- * @param {String} mode     Available modes: 'tree' (default), 'view', 'form',
- *                          'text', and 'code'.
- */
+
 JSONEditor.prototype.setMode = function (mode) {
     var container = this.container,
         options = util.extend({}, this.options),
@@ -175,8 +73,7 @@ JSONEditor.prototype.setMode = function (mode) {
     if (config) {
         try {
             if (config.data == 'text') {
-                // text
-                name = this.getName();
+                                name = this.getName();
                 data = this.getText();
 
                 this._delete();
@@ -188,8 +85,7 @@ JSONEditor.prototype.setMode = function (mode) {
                 this.setText(data);
             }
             else {
-                // json
-                name = this.getName();
+                                name = this.getName();
                 data = this.get();
 
                 this._delete();
@@ -217,15 +113,9 @@ JSONEditor.prototype.setMode = function (mode) {
     }
 };
 
-/**
- * Throw an error. If an error callback is configured in options.error, this
- * callback will be invoked. Else, a regular error is thrown.
- * @param {Error} err
- * @private
- */
+
 JSONEditor.prototype._onError = function(err) {
-    // TODO: onError is deprecated since version 2.2.0. cleanup some day
-    if (typeof this.onError === 'function') {
+        if (typeof this.onError === 'function') {
         util.log('WARNING: JSONEditor.onError is deprecated. ' +
             'Use options.error instead.');
         this.onError(err);
@@ -239,22 +129,7 @@ JSONEditor.prototype._onError = function(err) {
     }
 };
 
-/**
- * @constructor TreeEditor
- * @param {Element} container    Container element
- * @param {Object}  [options]    Object with options. available options:
- *                               {String} mode      Editor mode. Available values:
- *                                                  'tree' (default), 'view',
- *                                                  and 'form'.
- *                               {Boolean} search   Enable search box.
- *                                                  True by default
- *                               {Boolean} history  Enable history (undo/redo).
- *                                                  True by default
- *                               {function} change  Callback method, triggered
- *                                                  on change of contents
- *                               {String} name      Field name for the root node.
- * @param {Object | undefined} json JSON object
- */
+
 function TreeEditor(container, options, json) {
     if (!(this instanceof TreeEditor)) {
         throw new Error('TreeEditor constructor called without "new".');
@@ -263,16 +138,9 @@ function TreeEditor(container, options, json) {
     this._create(container, options, json);
 }
 
-/**
- * Create the TreeEditor
- * @param {Element} container    Container element
- * @param {Object}  [options]    See description in constructor
- * @param {Object | undefined} json JSON object
- * @private
- */
+
 TreeEditor.prototype._create = function (container, options, json) {
-    // check availability of JSON parser (not available in IE7 and older)
-    if (typeof(JSON) == 'undefined') {
+        if (typeof(JSON) == 'undefined') {
         throw new Error ('Your browser does not support JSON. \n\n' +
             'Please install the newest version of your browser.\n' +
             '(all modern browsers support JSON).');
@@ -284,8 +152,7 @@ TreeEditor.prototype._create = function (container, options, json) {
     this.container = container;
     this.dom = {};
     this.highlighter = new Highlighter();
-    this.selection = undefined; // will hold the last input selection
-
+    this.selection = undefined; 
     this._setOptions(options);
 
     if (this.options.history && !this.mode.view) {
@@ -298,121 +165,88 @@ TreeEditor.prototype._create = function (container, options, json) {
     this.set(json || {});
 };
 
-/**
- * Detach the editor from the DOM
- * @private
- */
+
 TreeEditor.prototype._delete = function () {
     if (this.frame && this.container && this.frame.parentNode == this.container) {
         this.container.removeChild(this.frame);
     }
 };
 
-/**
- * Initialize and set default options
- * @param {Object}  [options]    See description in constructor
- * @private
- */
+
 TreeEditor.prototype._setOptions = function (options) {
     this.options = {
         search: true,
         history: true,
         mode: 'tree',
-        name: undefined   // field name of root node
-    };
+        name: undefined       };
 
-    // copy all options
-    if (options) {
+        if (options) {
         for (var prop in options) {
             if (options.hasOwnProperty(prop)) {
                 this.options[prop] = options[prop];
             }
         }
 
-        // check for deprecated options
-        if (options['enableSearch']) {
-            // deprecated since version 1.6.0, 2012-11-03
-            this.options.search = options['enableSearch'];
+                if (options['enableSearch']) {
+                        this.options.search = options['enableSearch'];
             util.log('WARNING: Option "enableSearch" is deprecated. Use "search" instead.');
         }
         if (options['enableHistory']) {
-            // deprecated since version 1.6.0, 2012-11-03
-            this.options.history = options['enableHistory'];
+                        this.options.history = options['enableHistory'];
             util.log('WARNING: Option "enableHistory" is deprecated. Use "history" instead.');
         }
         if (options['mode'] == 'editor') {
-            // deprecated since version 2.2.0, 2013-04-30
-            this.options.mode = 'tree';
+                        this.options.mode = 'tree';
             util.log('WARNING: Mode "editor" is deprecated. Use "tree" instead.');
         }
         if (options['mode'] == 'viewer') {
-            // deprecated since version 2.2.0, 2013-04-30
-            this.options.mode = 'view';
+                        this.options.mode = 'view';
             util.log('WARNING: Mode "viewer" is deprecated. Use "view" instead.');
         }
     }
 
-    // interpret the mode options
-    this.mode = {
+        this.mode = {
         edit: (this.options.mode != 'view' && this.options.mode != 'form'),
         view: (this.options.mode == 'view'),
         form: (this.options.mode == 'form')
     };
 };
 
-// node currently being edited
 TreeEditor.focusNode = undefined;
 
-/**
- * Set JSON object in editor
- * @param {Object | undefined} json      JSON data
- * @param {String}             [name]    Optional field name for the root node.
- *                                       Can also be set using setName(name).
- */
+
 TreeEditor.prototype.set = function (json, name) {
-    // adjust field name for root node
-    if (name) {
-        // TODO: deprecated since version 2.2.0. Cleanup some day.
-        util.log('Warning: second parameter "name" is deprecated. ' +
+        if (name) {
+                util.log('Warning: second parameter "name" is deprecated. ' +
             'Use setName(name) instead.');
         this.options.name = name;
     }
 
-    // verify if json is valid JSON, ignore when a function
-    if (json instanceof Function || (json === undefined)) {
+        if (json instanceof Function || (json === undefined)) {
         this.clear();
     }
     else {
-        this.content.removeChild(this.table);  // Take the table offline
-
-        // replace the root node
-        var params = {
+        this.content.removeChild(this.table);  
+                var params = {
             'field': this.options.name,
             'value': json
         };
         var node = new Node(this, params);
         this._setRoot(node);
 
-        // expand
-        var recurse = false;
+                var recurse = false;
         this.node.expand(recurse);
 
-        this.content.appendChild(this.table);  // Put the table online again
-    }
+        this.content.appendChild(this.table);      }
 
-    // TODO: maintain history, store last state and previous document
-    if (this.history) {
+        if (this.history) {
         this.history.clear();
     }
 };
 
-/**
- * Get JSON object from editor
- * @return {Object | undefined} json
- */
+
 TreeEditor.prototype.get = function () {
-    // remove focus from currently edited node
-    if (TreeEditor.focusNode) {
+        if (TreeEditor.focusNode) {
         TreeEditor.focusNode.blur();
     }
 
@@ -424,26 +258,17 @@ TreeEditor.prototype.get = function () {
     }
 };
 
-/**
- * Get the text contents of the TreeEditor
- * @return {String} jsonText
- */
+
 TreeEditor.prototype.getText = function() {
     return JSON.stringify(this.get());
 };
 
-/**
- * Set the text contents of the TreeEditor
- * @param {String} jsonText
- */
+
 TreeEditor.prototype.setText = function(jsonText) {
     this.set(util.parse(jsonText));
 };
 
-/**
- * Set a field name for the root node.
- * @param {String | undefined} name
- */
+
 TreeEditor.prototype.setName = function (name) {
     this.options.name = name;
     if (this.node) {
@@ -451,17 +276,12 @@ TreeEditor.prototype.setName = function (name) {
     }
 };
 
-/**
- * Get the field name for the root node.
- * @return {String | undefined} name
- */
+
 TreeEditor.prototype.getName = function () {
     return this.options.name;
 };
 
-/**
- * Remove the root node from the editor
- */
+
 TreeEditor.prototype.clear = function () {
     if (this.node) {
         this.node.collapse();
@@ -470,39 +290,21 @@ TreeEditor.prototype.clear = function () {
     }
 };
 
-/**
- * Set the root node for the json editor
- * @param {Node} node
- * @private
- */
+
 TreeEditor.prototype._setRoot = function (node) {
     this.clear();
 
     this.node = node;
 
-    // append to the dom
-    this.tbody.appendChild(node.getDom());
+        this.tbody.appendChild(node.getDom());
 };
 
-/**
- * Search text in all nodes
- * The nodes will be expanded when the text is found one of its childs,
- * else it will be collapsed. Searches are case insensitive.
- * @param {String} text
- * @return {Object[]} results  Array with nodes containing the search results
- *                             The result objects contains fields:
- *                             - {Node} node,
- *                             - {String} elem  the dom element name where
- *                                              the result is found ('field' or
- *                                              'value')
- */
+
 TreeEditor.prototype.search = function (text) {
     var results;
     if (this.node) {
-        this.content.removeChild(this.table);  // Take the table offline
-        results = this.node.search(text);
-        this.content.appendChild(this.table);  // Put the table online again
-    }
+        this.content.removeChild(this.table);          results = this.node.search(text);
+        this.content.appendChild(this.table);      }
     else {
         results = [];
     }
@@ -510,50 +312,27 @@ TreeEditor.prototype.search = function (text) {
     return results;
 };
 
-/**
- * Expand all nodes
- */
+
 TreeEditor.prototype.expandAll = function () {
     if (this.node) {
-        this.content.removeChild(this.table);  // Take the table offline
-        this.node.expand();
-        this.content.appendChild(this.table);  // Put the table online again
-    }
+        this.content.removeChild(this.table);          this.node.expand();
+        this.content.appendChild(this.table);      }
 };
 
-/**
- * Collapse all nodes
- */
+
 TreeEditor.prototype.collapseAll = function () {
     if (this.node) {
-        this.content.removeChild(this.table);  // Take the table offline
-        this.node.collapse();
-        this.content.appendChild(this.table);  // Put the table online again
-    }
+        this.content.removeChild(this.table);          this.node.collapse();
+        this.content.appendChild(this.table);      }
 };
 
-/**
- * The method onChange is called whenever a field or value is changed, created,
- * deleted, duplicated, etc.
- * @param {String} action  Change action. Available values: "editField",
- *                         "editValue", "changeType", "appendNode",
- *                         "removeNode", "duplicateNode", "moveNode", "expand",
- *                         "collapse".
- * @param {Object} params  Object containing parameters describing the change.
- *                         The parameters in params depend on the action (for
- *                         example for "editValue" the Node, old value, and new
- *                         value are provided). params contains all information
- *                         needed to undo or redo the action.
- * @private
- */
+
 TreeEditor.prototype._onAction = function (action, params) {
-    // add an action to the history
-    if (this.history) {
+        if (this.history) {
         this.history.add(action, params);
     }
 
-    // trigger the onChange callback
-    if (this.options.change) {
+        if (this.options.change) {
         try {
             this.options.change();
         }
@@ -563,11 +342,7 @@ TreeEditor.prototype._onAction = function (action, params) {
     }
 };
 
-/**
- * Start autoscrolling when given mouse position is above the top of the
- * editor contents, or below the bottom.
- * @param {Number} mouseY  Absolute mouse position in pixels
- */
+
 TreeEditor.prototype.startAutoScroll = function (mouseY) {
     var me = this;
     var content = this.content;
@@ -575,8 +350,7 @@ TreeEditor.prototype.startAutoScroll = function (mouseY) {
     var height = content.clientHeight;
     var bottom = top + height;
     var margin = 24;
-    var interval = 50; // ms
-
+    var interval = 50; 
     if ((mouseY < top + margin) && content.scrollTop > 0) {
         this.autoScrollStep = ((top + margin) - mouseY) / 3;
     }
@@ -605,9 +379,7 @@ TreeEditor.prototype.startAutoScroll = function (mouseY) {
     }
 };
 
-/**
- * Stop auto scrolling. Only applicable when scrolling
- */
+
 TreeEditor.prototype.stopAutoScroll = function () {
     if (this.autoScrollTimer) {
         clearTimeout(this.autoScrollTimer);
@@ -619,23 +391,14 @@ TreeEditor.prototype.stopAutoScroll = function () {
 };
 
 
-/**
- * Set the focus to an element in the TreeEditor, set text selection, and
- * set scroll position.
- * @param {Object} selection  An object containing fields:
- *                            {Element | undefined} dom     The dom element
- *                                                          which has focus
- *                            {Range | TextRange} range     A text selection
- *                            {Number} scrollTop            Scroll position
- */
+
 TreeEditor.prototype.setSelection = function (selection) {
     if (!selection) {
         return;
     }
 
     if ('scrollTop' in selection && this.content) {
-        // TODO: animated scroll
-        this.content.scrollTop = selection.scrollTop;
+                this.content.scrollTop = selection.scrollTop;
     }
     if (selection.range) {
         util.setSelectionOffset(selection.range);
@@ -645,14 +408,7 @@ TreeEditor.prototype.setSelection = function (selection) {
     }
 };
 
-/**
- * Get the current focus
- * @return {Object} selection An object containing fields:
- *                            {Element | undefined} dom     The dom element
- *                                                          which has focus
- *                            {Range | TextRange} range     A text selection
- *                            {Number} scrollTop            Scroll position
- */
+
 TreeEditor.prototype.getSelection = function () {
     return {
         dom: TreeEditor.domFocus,
@@ -661,21 +417,12 @@ TreeEditor.prototype.getSelection = function () {
     };
 };
 
-/**
- * Adjust the scroll position such that given top position is shown at 1/4
- * of the window height.
- * @param {Number} top
- * @param {function(boolean)} [callback]   Callback, executed when animation is
- *                                         finished. The callback returns true
- *                                         when animation is finished, or false
- *                                         when not.
- */
+
 TreeEditor.prototype.scrollTo = function (top, callback) {
     var content = this.content;
     if (content) {
         var editor = this;
-        // cancel any running animation
-        if (editor.animateTimeout) {
+                if (editor.animateTimeout) {
             clearTimeout(editor.animateTimeout);
             delete editor.animateTimeout;
         }
@@ -684,13 +431,11 @@ TreeEditor.prototype.scrollTo = function (top, callback) {
             delete editor.animateCallback;
         }
 
-        // calculate final scroll position
-        var height = content.clientHeight;
+                var height = content.clientHeight;
         var bottom = content.scrollHeight - height;
         var finalScrollTop = Math.min(Math.max(top - height / 4, 0), bottom);
 
-        // animate towards the new scroll position
-        var animate = function () {
+                var animate = function () {
             var scrollTop = content.scrollTop;
             var diff = (finalScrollTop - scrollTop);
             if (Math.abs(diff) > 3) {
@@ -699,8 +444,7 @@ TreeEditor.prototype.scrollTo = function (top, callback) {
                 editor.animateTimeout = setTimeout(animate, 50);
             }
             else {
-                // finished
-                if (callback) {
+                                if (callback) {
                     callback(true);
                 }
                 content.scrollTop = finalScrollTop;
@@ -717,18 +461,13 @@ TreeEditor.prototype.scrollTo = function (top, callback) {
     }
 };
 
-/**
- * Create main frame
- * @private
- */
+
 TreeEditor.prototype._createFrame = function () {
-    // create the frame
-    this.frame = document.createElement('div');
+        this.frame = document.createElement('div');
     this.frame.className = 'jsoneditor';
     this.container.appendChild(this.frame);
 
-    // create one global event listener to handle all events from all nodes
-    var editor = this;
+        var editor = this;
     var onEvent = function (event) {
         editor._onEvent(event);
     };
@@ -738,9 +477,7 @@ TreeEditor.prototype._createFrame = function () {
 
         onEvent(event);
 
-        // prevent default submit action of buttons when TreeEditor is located
-        // inside a form
-        if (target.nodeName == 'BUTTON') {
+                        if (target.nodeName == 'BUTTON') {
             util.preventDefault(event);
         }
     };
@@ -754,21 +491,14 @@ TreeEditor.prototype._createFrame = function () {
     this.frame.onmouseup = onEvent;
     this.frame.onmouseover = onEvent;
     this.frame.onmouseout = onEvent;
-    // Note: focus and blur events do not propagate, therefore they defined
-    // using an eventListener with useCapture=true
-    // see http://www.quirksmode.org/blog/archives/2008/04/delegating_the.html
-    util.addEventListener(this.frame, 'focus', onEvent, true);
+                util.addEventListener(this.frame, 'focus', onEvent, true);
     util.addEventListener(this.frame, 'blur', onEvent, true);
-    this.frame.onfocusin = onEvent;  // for IE
-    this.frame.onfocusout = onEvent; // for IE
-
-    // create menu
-    this.menu = document.createElement('div');
+    this.frame.onfocusin = onEvent;      this.frame.onfocusout = onEvent; 
+        this.menu = document.createElement('div');
     this.menu.className = 'menu';
     this.frame.appendChild(this.menu);
 
-    // create expand all button
-    var expandAll = document.createElement('button');
+        var expandAll = document.createElement('button');
     expandAll.className = 'expand-all';
     expandAll.title = 'Expand all fields';
     expandAll.onclick = function () {
@@ -776,8 +506,7 @@ TreeEditor.prototype._createFrame = function () {
     };
     this.menu.appendChild(expandAll);
 
-    // create expand all button
-    var collapseAll = document.createElement('button');
+        var collapseAll = document.createElement('button');
     collapseAll.title = 'Collapse all fields';
     collapseAll.className = 'collapse-all';
     collapseAll.onclick = function () {
@@ -785,15 +514,12 @@ TreeEditor.prototype._createFrame = function () {
     };
     this.menu.appendChild(collapseAll);
 
-    // create undo/redo buttons
-    if (this.history) {
-        // create separator
-        var separator = document.createElement('span');
+        if (this.history) {
+                var separator = document.createElement('span');
         separator.innerHTML = '&nbsp;';
         this.menu.appendChild(separator);
 
-        // create undo button
-        var undo = document.createElement('button');
+                var undo = document.createElement('button');
         undo.className = 'undo';
         undo.title = 'Undo last action (Ctrl+Z)';
         undo.onclick = function () {
@@ -802,8 +528,7 @@ TreeEditor.prototype._createFrame = function () {
         this.menu.appendChild(undo);
         this.dom.undo = undo;
 
-        // create redo button
-        var redo = document.createElement('button');
+                var redo = document.createElement('button');
         redo.className = 'redo';
         redo.title = 'Redo (Ctrl+Shift+Z)';
         redo.onclick = function () {
@@ -812,57 +537,41 @@ TreeEditor.prototype._createFrame = function () {
         this.menu.appendChild(redo);
         this.dom.redo = redo;
 
-        // register handler for onchange of history
-        this.history.onChange = function () {
+                this.history.onChange = function () {
             undo.disabled = !editor.history.canUndo();
             redo.disabled = !editor.history.canRedo();
         };
         this.history.onChange();
     }
 
-    // create search box
-    if (this.options.search) {
+        if (this.options.search) {
         this.searchBox = new SearchBox(this, this.menu);
     }
 };
 
-/**
- * Perform an undo action
- * @private
- */
+
 TreeEditor.prototype._onUndo = function () {
     if (this.history) {
-        // undo last action
-        this.history.undo();
+                this.history.undo();
 
-        // trigger change callback
-        if (this.options.change) {
+                if (this.options.change) {
             this.options.change();
         }
     }
 };
 
-/**
- * Perform a redo action
- * @private
- */
+
 TreeEditor.prototype._onRedo = function () {
     if (this.history) {
-        // redo last action
-        this.history.redo();
+                this.history.redo();
 
-        // trigger change callback
-        if (this.options.change) {
+                if (this.options.change) {
             this.options.change();
         }
     }
 };
 
-/**
- * Event handler
- * @param event
- * @private
- */
+
 TreeEditor.prototype._onEvent = function (event) {
     event = event || window.event;
     var target = event.target || event.srcElement;
@@ -881,41 +590,29 @@ TreeEditor.prototype._onEvent = function (event) {
     }
 };
 
-/**
- * Event handler for keydown. Handles shortcut keys
- * @param {Event} event
- * @private
- */
+
 TreeEditor.prototype._onKeyDown = function (event) {
     var keynum = event.which || event.keyCode;
     var ctrlKey = event.ctrlKey;
     var shiftKey = event.shiftKey;
     var handled = false;
 
-    if (keynum == 9) { // Tab or Shift+Tab
-        // FIXME: selecting all text on tab key does not work on IE8 (-> put selectContentEditable() in keyup too?)
-        //Node.select(TreeEditor.domFocus);
-        setTimeout(function () {
-            // select all text when moving focus to an editable div
-            util.selectContentEditable(TreeEditor.domFocus);
+    if (keynum == 9) {                         setTimeout(function () {
+                        util.selectContentEditable(TreeEditor.domFocus);
         }, 0);
     }
 
     if (this.searchBox) {
-        if (ctrlKey && keynum == 70) { // Ctrl+F
-            this.searchBox.dom.search.focus();
+        if (ctrlKey && keynum == 70) {             this.searchBox.dom.search.focus();
             this.searchBox.dom.search.select();
             handled = true;
         }
-        else if (keynum == 114 || (ctrlKey && keynum == 71)) { // F3 or Ctrl+G
-            var focus = true;
+        else if (keynum == 114 || (ctrlKey && keynum == 71)) {             var focus = true;
             if (!shiftKey) {
-                // select next search result (F3 or Ctrl+G)
-                this.searchBox.next(focus);
+                                this.searchBox.next(focus);
             }
             else {
-                // select previous search result (Shift+F3 or Ctrl+Shift+G)
-                this.searchBox.previous(focus);
+                                this.searchBox.previous(focus);
             }
 
             handled = true;
@@ -923,14 +620,10 @@ TreeEditor.prototype._onKeyDown = function (event) {
     }
 
     if (this.history) {
-        if (ctrlKey && !shiftKey && keynum == 90) { // Ctrl+Z
-            // undo
-            this._onUndo();
+        if (ctrlKey && !shiftKey && keynum == 90) {                         this._onUndo();
             handled = true;
         }
-        else if (ctrlKey && shiftKey && keynum == 90) { // Ctrl+Shift+Z
-            // redo
-            this._onRedo();
+        else if (ctrlKey && shiftKey && keynum == 90) {                         this._onRedo();
             handled = true;
         }
     }
@@ -941,10 +634,7 @@ TreeEditor.prototype._onKeyDown = function (event) {
     }
 };
 
-/**
- * Create main table
- * @private
- */
+
 TreeEditor.prototype._createTable = function () {
     var contentOuter = document.createElement('div');
     contentOuter.className = 'outer';
@@ -958,16 +648,12 @@ TreeEditor.prototype._createTable = function () {
     this.table.className = 'content';
     this.content.appendChild(this.table);
 
-    // IE8 does not handle overflow='auto' correctly.
-    // Therefore, set overflow to 'scroll'
-    var ieVersion = util.getInternetExplorerVersion();
+            var ieVersion = util.getInternetExplorerVersion();
     if (ieVersion == 8) {
         this.content.style.overflow = 'scroll';
     }
 
-    // create colgroup where the first two columns don't have a fixed
-    // width, and the edit columns do have a fixed width
-    var col;
+            var col;
     this.colgroupContent = document.createElement('colgroup');
     if (this.mode.edit) {
         col = document.createElement('col');
@@ -987,7 +673,6 @@ TreeEditor.prototype._createTable = function () {
     this.frame.appendChild(contentOuter);
 };
 
-// register modes at the JSONEditor
 JSONEditor.modes.tree = {
     editor: TreeEditor,
     data: 'json'
@@ -1000,7 +685,6 @@ JSONEditor.modes.form = {
     editor: TreeEditor,
     data: 'json'
 };
-// Deprecated modes (deprecated since version 2.2.0)
 JSONEditor.modes.editor = {
     editor: TreeEditor,
     data: 'json'
@@ -1010,20 +694,7 @@ JSONEditor.modes.viewer = {
     data: 'json'
 };
 
-/**
- * Create a TextEditor and attach it to given container
- * @constructor TextEditor
- * @param {Element} container
- * @param {Object} [options]         Object with options. available options:
- *                                   {String} mode         Available values:
- *                                                         "text" (default)
- *                                                         or "code".
- *                                   {Number} indentation  Number of indentation
- *                                                         spaces. 4 by default.
- *                                   {function} change     Callback method
- *                                                         triggered on change
- * @param {JSON | String} [json]     initial contents of the formatter
- */
+
 function TextEditor(container, options, json) {
     if (!(this instanceof TextEditor)) {
         throw new Error('TextEditor constructor called without "new".');
@@ -1032,32 +703,22 @@ function TextEditor(container, options, json) {
     this._create(container, options, json);
 }
 
-/**
- * Create a TextEditor and attach it to given container
- * @constructor TextEditor
- * @param {Element} container
- * @param {Object} [options]         See description in constructor
- * @param {JSON | String} [json]     initial contents of the formatter
- * @private
- */
+
 TextEditor.prototype._create = function (container, options, json) {
-    // check availability of JSON parser (not available in IE7 and older)
-    if (typeof(JSON) == 'undefined') {
+        if (typeof(JSON) == 'undefined') {
         throw new Error('Your browser does not support JSON. \n\n' +
             'Please install the newest version of your browser.\n' +
             '(all modern browsers support JSON).');
     }
 
-    // read options
-    options = options || {};
+        options = options || {};
     this.options = options;
     if (options.indentation) {
         this.indentation = Number(options.indentation);
     }
     this.mode = (options.mode == 'code') ? 'code' : 'text';
     if (this.mode == 'code') {
-        // verify whether Ace editor is available and supported
-        if (typeof ace === 'undefined') {
+                if (typeof ace === 'undefined') {
             this.mode = 'text';
             util.log('WARNING: Cannot load code editor, Ace library not loaded. ' +
                 'Falling back to plain text editor');
@@ -1071,32 +732,24 @@ TextEditor.prototype._create = function (container, options, json) {
 
     var me = this;
     this.container = container;
-    this.editor = undefined;    // ace code editor
-    this.textarea = undefined;  // plain text editor (fallback when Ace is not available)
-    this.indentation = 4;       // number of spaces
-
+    this.editor = undefined;        this.textarea = undefined;      this.indentation = 4;       
     this.width = container.clientWidth;
     this.height = container.clientHeight;
 
     this.frame = document.createElement('div');
     this.frame.className = 'jsoneditor';
     this.frame.onclick = function (event) {
-        // prevent default submit action when TextEditor is located inside a form
-        util.preventDefault(event);
+                util.preventDefault(event);
     };
 
-    // create menu
-    this.menu = document.createElement('div');
+        this.menu = document.createElement('div');
     this.menu.className = 'menu';
     this.frame.appendChild(this.menu);
 
-    // create format button
-    var buttonFormat = document.createElement('button');
-    //buttonFormat.innerHTML = 'Format';
-    buttonFormat.className = 'format';
+        var buttonFormat = document.createElement('button');
+        buttonFormat.className = 'format';
     buttonFormat.title = 'Format JSON data, with proper indentation and line feeds';
-    //buttonFormat.className = 'jsoneditor-button';
-    this.menu.appendChild(buttonFormat);
+        this.menu.appendChild(buttonFormat);
     buttonFormat.onclick = function () {
         try {
             me.format();
@@ -1106,13 +759,10 @@ TextEditor.prototype._create = function (container, options, json) {
         }
     };
 
-    // create compact button
-    var buttonCompact = document.createElement('button');
-    //buttonCompact.innerHTML = 'Compact';
-    buttonCompact.className = 'compact';
+        var buttonCompact = document.createElement('button');
+        buttonCompact.className = 'compact';
     buttonCompact.title = 'Compact JSON data, remove all whitespaces';
-    //buttonCompact.className = 'jsoneditor-button';
-    this.menu.appendChild(buttonCompact);
+        this.menu.appendChild(buttonCompact);
     buttonCompact.onclick = function () {
         try {
             me.compact();
@@ -1130,9 +780,7 @@ TextEditor.prototype._create = function (container, options, json) {
 
     if (this.mode == 'code') {
         this.editorDom = document.createElement('div');
-        this.editorDom.style.height = '100%'; // TODO: move to css
-        this.editorDom.style.width = '100%'; // TODO: move to css
-        this.content.appendChild(this.editorDom);
+        this.editorDom.style.height = '100%';         this.editorDom.style.width = '100%';         this.content.appendChild(this.editorDom);
 
         var editor = ace.edit(this.editorDom);
         editor.setTheme('ace/theme/jsoneditor');
@@ -1149,46 +797,38 @@ TextEditor.prototype._create = function (container, options, json) {
         poweredBy.target = '_blank';
         poweredBy.className = 'poweredBy';
         poweredBy.onclick = function () {
-            // TODO: this anchor falls below the margin of the content,
-            // therefore the normal a.href does not work. We use a click event
-            // for now, but this should be fixed.
-            window.open(poweredBy.href, poweredBy.target);
+                                                window.open(poweredBy.href, poweredBy.target);
         };
         this.menu.appendChild(poweredBy);
 
         if (options.change) {
-            // register onchange event
-            editor.on('change', function () {
+                        editor.on('change', function () {
                 options.change();
             });
         }
     }
     else {
-        // load a plain text textarea
-        var textarea = document.createElement('textarea');
+                var textarea = document.createElement('textarea');
         textarea.className = 'content';
         textarea.spellcheck = false;
         this.content.appendChild(textarea);
         this.textarea = textarea;
 
         if (options.change) {
-            // register onchange event
-            if (this.textarea.oninput === null) {
+                        if (this.textarea.oninput === null) {
                 this.textarea.oninput = function () {
                     options.change();
                 }
             }
             else {
-                // oninput is undefined. For IE8-
-                this.textarea.onchange = function () {
+                                this.textarea.onchange = function () {
                     options.change();
                 }
             }
         }
     }
 
-    // load initial json object or string
-    if (typeof(json) == 'string') {
+        if (typeof(json) == 'string') {
         this.setText(json);
     }
     else {
@@ -1196,25 +836,16 @@ TextEditor.prototype._create = function (container, options, json) {
     }
 };
 
-/**
- * Detach the editor from the DOM
- * @private
- */
+
 TextEditor.prototype._delete = function () {
     if (this.frame && this.container && this.frame.parentNode == this.container) {
         this.container.removeChild(this.frame);
     }
 };
 
-/**
- * Throw an error. If an error callback is configured in options.error, this
- * callback will be invoked. Else, a regular error is thrown.
- * @param {Error} err
- * @private
- */
+
 TextEditor.prototype._onError = function(err) {
-    // TODO: onError is deprecated since version 2.2.0. cleanup some day
-    if (typeof this.onError === 'function') {
+        if (typeof this.onError === 'function') {
         util.log('WARNING: JSONEditor.onError is deprecated. ' +
             'Use options.error instead.');
         this.onError(err);
@@ -1228,25 +859,19 @@ TextEditor.prototype._onError = function(err) {
     }
 };
 
-/**
- * Compact the code in the formatter
- */
+
 TextEditor.prototype.compact = function () {
     var json = util.parse(this.getText());
     this.setText(JSON.stringify(json));
 };
 
-/**
- * Format the code in the formatter
- */
+
 TextEditor.prototype.format = function () {
     var json = util.parse(this.getText());
     this.setText(JSON.stringify(json, null, this.indentation));
 };
 
-/**
- * Set focus to the formatter
- */
+
 TextEditor.prototype.focus = function () {
     if (this.textarea) {
         this.textarea.focus();
@@ -1256,9 +881,7 @@ TextEditor.prototype.focus = function () {
     }
 };
 
-/**
- * Resize the formatter
- */
+
 TextEditor.prototype.resize = function () {
     if (this.editor) {
         var force = false;
@@ -1266,26 +889,17 @@ TextEditor.prototype.resize = function () {
     }
 };
 
-/**
- * Set json data in the formatter
- * @param {Object} json
- */
+
 TextEditor.prototype.set = function(json) {
     this.setText(JSON.stringify(json, null, this.indentation));
 };
 
-/**
- * Get json data from the formatter
- * @return {Object} json
- */
+
 TextEditor.prototype.get = function() {
     return util.parse(this.getText());
 };
 
-/**
- * Get the text contents of the TextEditor
- * @return {String} jsonText
- */
+
 TextEditor.prototype.getText = function() {
     if (this.textarea) {
         return this.textarea.value;
@@ -1296,10 +910,7 @@ TextEditor.prototype.getText = function() {
     return '';
 };
 
-/**
- * Set the text contents of the TextEditor
- * @param {String} jsonText
- */
+
 TextEditor.prototype.setText = function(jsonText) {
     if (this.textarea) {
         this.textarea.value = jsonText;
@@ -1309,7 +920,6 @@ TextEditor.prototype.setText = function(jsonText) {
     }
 };
 
-// register modes at the JSONEditor
 JSONEditor.modes.text = {
     editor: TextEditor,
     data: 'text',
@@ -1321,19 +931,9 @@ JSONEditor.modes.code = {
     load: TextEditor.prototype.format
 };
 
-/**
- * @constructor Node
- * Create a new Node
- * @param {TreeEditor} editor
- * @param {Object} [params] Can contain parameters:
- *                          {string}  field
- *                          {boolean} fieldEditable
- *                          {*}       value
- *                          {String}  type  Can have values 'auto', 'array',
- *                                          'object', or 'string'.
- */
+
 function Node (editor, params) {
-    /** @type {TreeEditor} */
+    
     this.editor = editor;
     this.dom = {};
     this.expanded = false;
@@ -1348,28 +948,18 @@ function Node (editor, params) {
     }
 };
 
-/**
- * Set parent node
- * @param {Node} parent
- */
+
 Node.prototype.setParent = function(parent) {
     this.parent = parent;
 };
 
-/**
- * Set field
- * @param {String}  field
- * @param {boolean} [fieldEditable]
- */
+
 Node.prototype.setField = function(field, fieldEditable) {
     this.field = field;
     this.fieldEditable = (fieldEditable == true);
 };
 
-/**
- * Get field
- * @return {String}
- */
+
 Node.prototype.getField = function() {
     if (this.field === undefined) {
         this._getDomField();
@@ -1378,29 +968,21 @@ Node.prototype.getField = function() {
     return this.field;
 };
 
-/**
- * Set value. Value is a JSON structure or an element String, Boolean, etc.
- * @param {*} value
- * @param {String} [type]  Specify the type of the value. Can be 'auto',
- *                         'array', 'object', or 'string'
- */
+
 Node.prototype.setValue = function(value, type) {
     var childValue, child;
 
-    // first clear all current childs (if any)
-    var childs = this.childs;
+        var childs = this.childs;
     if (childs) {
         while (childs.length) {
             this.removeChild(childs[0]);
         }
     }
 
-    // TODO: remove the DOM of this Node
-
+    
     this.type = this._getType(value);
 
-    // check if type corresponds with the provided type
-    if (type && type != this.type) {
+        if (type && type != this.type) {
         if (type == 'string' && this.type == 'auto') {
             this.type = type;
         }
@@ -1412,13 +994,11 @@ Node.prototype.setValue = function(value, type) {
     }
 
     if (this.type == 'array') {
-        // array
-        this.childs = [];
+                this.childs = [];
         for (var i = 0, iMax = value.length; i < iMax; i++) {
             childValue = value[i];
             if (childValue !== undefined && !(childValue instanceof Function)) {
-                // ignore undefined and functions
-                child = new Node(this.editor, {
+                                child = new Node(this.editor, {
                     'value': childValue
                 });
                 this.appendChild(child);
@@ -1427,14 +1007,12 @@ Node.prototype.setValue = function(value, type) {
         this.value = '';
     }
     else if (this.type == 'object') {
-        // object
-        this.childs = [];
+                this.childs = [];
         for (var childField in value) {
             if (value.hasOwnProperty(childField)) {
                 childValue = value[childField];
                 if (childValue !== undefined && !(childValue instanceof Function)) {
-                    // ignore undefined and functions
-                    child = new Node(this.editor, {
+                                        child = new Node(this.editor, {
                         'field': childField,
                         'value': childValue
                     });
@@ -1445,29 +1023,15 @@ Node.prototype.setValue = function(value, type) {
         this.value = '';
     }
     else {
-        // value
-        this.childs = undefined;
+                this.childs = undefined;
         this.value = value;
-        /* TODO
-         if (typeof(value) == 'string') {
-         var escValue = JSON.stringify(value);
-         this.value = escValue.substring(1, escValue.length - 1);
-         util.log('check', value, this.value);
-         }
-         else {
-         this.value = value;
-         }
-         */
+        
     }
 };
 
-/**
- * Get value. Value is a JSON structure
- * @return {*} value
- */
-Node.prototype.getValue = function() {
-    //var childs, i, iMax;
 
+Node.prototype.getValue = function() {
+    
     if (this.type == 'array') {
         var arr = [];
         this.childs.forEach (function (child) {
@@ -1491,20 +1055,12 @@ Node.prototype.getValue = function() {
     }
 };
 
-/**
- * Get the nesting level of this node
- * @return {Number} level
- */
+
 Node.prototype.getLevel = function() {
     return (this.parent ? this.parent.getLevel() + 1 : 0);
 };
 
-/**
- * Create a clone of a node
- * The complete state of a clone is copied, including whether it is expanded or
- * not. The DOM elements are not cloned.
- * @return {Node} clone
- */
+
 Node.prototype.clone = function() {
     var clone = new Node(this.editor);
     clone.type = this.type;
@@ -1516,8 +1072,7 @@ Node.prototype.clone = function() {
     clone.expanded = this.expanded;
 
     if (this.childs) {
-        // an object or array
-        var cloneChilds = [];
+                var cloneChilds = [];
         this.childs.forEach(function (child) {
             var childClone = child.clone();
             childClone.setParent(clone);
@@ -1526,25 +1081,19 @@ Node.prototype.clone = function() {
         clone.childs = cloneChilds;
     }
     else {
-        // a value
-        clone.childs = undefined;
+                clone.childs = undefined;
     }
 
     return clone;
 };
 
-/**
- * Expand this node and optionally its childs.
- * @param {boolean} [recurse] Optional recursion, true by default. When
- *                            true, all childs will be expanded recursively
- */
+
 Node.prototype.expand = function(recurse) {
     if (!this.childs) {
         return;
     }
 
-    // set this node expanded
-    this.expanded = true;
+        this.expanded = true;
     if (this.dom.expand) {
         this.dom.expand.className = 'expanded';
     }
@@ -1558,11 +1107,7 @@ Node.prototype.expand = function(recurse) {
     }
 };
 
-/**
- * Collapse this node and optionally its childs.
- * @param {boolean} [recurse] Optional recursion, true by default. When
- *                            true, all childs will be collapsed recursively
- */
+
 Node.prototype.collapse = function(recurse) {
     if (!this.childs) {
         return;
@@ -1570,24 +1115,20 @@ Node.prototype.collapse = function(recurse) {
 
     this.hideChilds();
 
-    // collapse childs in case of recurse
-    if (recurse != false) {
+        if (recurse != false) {
         this.childs.forEach(function (child) {
             child.collapse(recurse);
         });
 
     }
 
-    // make this node collapsed
-    if (this.dom.expand) {
+        if (this.dom.expand) {
         this.dom.expand.className = 'collapsed';
     }
     this.expanded = false;
 };
 
-/**
- * Recursively show all childs when they are expanded
- */
+
 Node.prototype.showChilds = function() {
     var childs = this.childs;
     if (!childs) {
@@ -1600,8 +1141,7 @@ Node.prototype.showChilds = function() {
     var tr = this.dom.tr;
     var table = tr ? tr.parentNode : undefined;
     if (table) {
-        // show row with append button
-        var append = this.getAppend();
+                var append = this.getAppend();
         var nextTr = tr.nextSibling;
         if (nextTr) {
             table.insertBefore(append, nextTr);
@@ -1610,17 +1150,14 @@ Node.prototype.showChilds = function() {
             table.appendChild(append);
         }
 
-        // show childs
-        this.childs.forEach(function (child) {
+                this.childs.forEach(function (child) {
             table.insertBefore(child.getDom(), append);
             child.showChilds();
         });
     }
 };
 
-/**
- * Hide the node with all its childs
- */
+
 Node.prototype.hide = function() {
     var tr = this.dom.tr;
     var table = tr ? tr.parentNode : undefined;
@@ -1631,9 +1168,7 @@ Node.prototype.hide = function() {
 };
 
 
-/**
- * Recursively hide all childs
- */
+
 Node.prototype.hideChilds = function() {
     var childs = this.childs;
     if (!childs) {
@@ -1643,28 +1178,21 @@ Node.prototype.hideChilds = function() {
         return;
     }
 
-    // hide append row
-    var append = this.getAppend();
+        var append = this.getAppend();
     if (append.parentNode) {
         append.parentNode.removeChild(append);
     }
 
-    // hide childs
-    this.childs.forEach(function (child) {
+        this.childs.forEach(function (child) {
         child.hide();
     });
 };
 
 
-/**
- * Add a new child to the node.
- * Only applicable when Node value is of type array or object
- * @param {Node} node
- */
+
 Node.prototype.appendChild = function(node) {
     if (this._hasChilds()) {
-        // adjust the link to the parent
-        node.setParent(this);
+                node.setParent(this);
         node.fieldEditable = (this.type == 'object');
         if (this.type == 'array') {
             node.index = this.childs.length;
@@ -1672,8 +1200,7 @@ Node.prototype.appendChild = function(node) {
         this.childs.push(node);
 
         if (this.expanded) {
-            // insert into the DOM, before the appendRow
-            var newTr = node.getDom();
+                        var newTr = node.getDom();
             var appendTr = this.getAppend();
             var table = appendTr ? appendTr.parentNode : undefined;
             if (appendTr && table) {
@@ -1689,17 +1216,10 @@ Node.prototype.appendChild = function(node) {
 };
 
 
-/**
- * Move a node from its current parent to this node
- * Only applicable when Node value is of type array or object
- * @param {Node} node
- * @param {Node} beforeNode
- */
+
 Node.prototype.moveBefore = function(node, beforeNode) {
     if (this._hasChilds()) {
-        // create a temporary row, to prevent the scroll position from jumping
-        // when removing the node
-        var tbody = (this.dom.tr) ? this.dom.tr.parentNode : undefined;
+                        var tbody = (this.dom.tr) ? this.dom.tr.parentNode : undefined;
         if (tbody) {
             var trTemp = document.createElement('tr');
             trTemp.style.height = tbody.clientHeight + 'px';
@@ -1723,20 +1243,12 @@ Node.prototype.moveBefore = function(node, beforeNode) {
     }
 };
 
-/**
- * Move a node from its current parent to this node
- * Only applicable when Node value is of type array or object.
- * If index is out of range, the node will be appended to the end
- * @param {Node} node
- * @param {Number} index
- */
+
 Node.prototype.moveTo = function (node, index) {
     if (node.parent == this) {
-        // same parent
-        var currentIndex = this.childs.indexOf(node);
+                var currentIndex = this.childs.indexOf(node);
         if (currentIndex < index) {
-            // compensate the index for removal of the node itself
-            index++;
+                        index++;
         }
     }
 
@@ -1744,38 +1256,28 @@ Node.prototype.moveTo = function (node, index) {
     this.moveBefore(node, beforeNode);
 };
 
-/**
- * Insert a new child before a given node
- * Only applicable when Node value is of type array or object
- * @param {Node} node
- * @param {Node} beforeNode
- */
+
 Node.prototype.insertBefore = function(node, beforeNode) {
     if (this._hasChilds()) {
         if (beforeNode == this.append) {
-            // append to the child nodes
-
-            // adjust the link to the parent
-            node.setParent(this);
+            
+                        node.setParent(this);
             node.fieldEditable = (this.type == 'object');
             this.childs.push(node);
         }
         else {
-            // insert before a child node
-            var index = this.childs.indexOf(beforeNode);
+                        var index = this.childs.indexOf(beforeNode);
             if (index == -1) {
                 throw new Error('Node not found');
             }
 
-            // adjust the link to the parent
-            node.setParent(this);
+                        node.setParent(this);
             node.fieldEditable = (this.type == 'object');
             this.childs.splice(index, 0, node);
         }
 
         if (this.expanded) {
-            // insert into the DOM
-            var newTr = node.getDom();
+                        var newTr = node.getDom();
             var nextTr = beforeNode.getDom();
             var table = nextTr ? nextTr.parentNode : undefined;
             if (nextTr && table) {
@@ -1790,12 +1292,7 @@ Node.prototype.insertBefore = function(node, beforeNode) {
     }
 };
 
-/**
- * Insert a new child before a given node
- * Only applicable when Node value is of type array or object
- * @param {Node} node
- * @param {Node} afterNode
- */
+
 Node.prototype.insertAfter = function(node, afterNode) {
     if (this._hasChilds()) {
         var index = this.childs.indexOf(afterNode);
@@ -1809,24 +1306,16 @@ Node.prototype.insertAfter = function(node, afterNode) {
     }
 };
 
-/**
- * Search in this node
- * The node will be expanded when the text is found one of its childs, else
- * it will be collapsed. Searches are case insensitive.
- * @param {String} text
- * @return {Node[]} results  Array with nodes containing the search text
- */
+
 Node.prototype.search = function(text) {
     var results = [];
     var index;
     var search = text ? text.toLowerCase() : undefined;
 
-    // delete old search data
-    delete this.searchField;
+        delete this.searchField;
     delete this.searchValue;
 
-    // search in field
-    if (this.field != undefined) {
+        if (this.field != undefined) {
         var field = String(this.field).toLowerCase();
         index = field.indexOf(search);
         if (index != -1) {
@@ -1837,16 +1326,12 @@ Node.prototype.search = function(text) {
             });
         }
 
-        // update dom
-        this._updateDomField();
+                this._updateDomField();
     }
 
-    // search in value
-    if (this._hasChilds()) {
-        // array, object
-
-        // search the nodes childs
-        if (this.childs) {
+        if (this._hasChilds()) {
+        
+                if (this.childs) {
             var childResults = [];
             this.childs.forEach(function (child) {
                 childResults = childResults.concat(child.search(text));
@@ -1854,8 +1339,7 @@ Node.prototype.search = function(text) {
             results = results.concat(childResults);
         }
 
-        // update dom
-        if (search != undefined) {
+                if (search != undefined) {
             var recurse = false;
             if (childResults.length == 0) {
                 this.collapse(recurse);
@@ -1866,8 +1350,7 @@ Node.prototype.search = function(text) {
         }
     }
     else {
-        // string, auto
-        if (this.value != undefined ) {
+                if (this.value != undefined ) {
             var value = String(this.value).toLowerCase();
             index = value.indexOf(search);
             if (index != -1) {
@@ -1879,22 +1362,16 @@ Node.prototype.search = function(text) {
             }
         }
 
-        // update dom
-        this._updateDomValue();
+                this._updateDomValue();
     }
 
     return results;
 };
 
-/**
- * Move the scroll position such that this node is in the visible area.
- * The node will not get the focus
- * @param {function(boolean)} [callback]
- */
+
 Node.prototype.scrollTo = function(callback) {
     if (!this.dom.tr || !this.dom.tr.parentNode) {
-        // if the node is not visible, expand its parents
-        var parent = this.parent;
+                var parent = this.parent;
         var recurse = false;
         while (parent) {
             parent.expand(recurse);
@@ -1908,15 +1385,9 @@ Node.prototype.scrollTo = function(callback) {
 };
 
 
-// stores the element name currently having the focus
 Node.focusElement = undefined;
 
-/**
- * Set focus to this node
- * @param {String} [elementName]  The field name of the element to get the
- *                                focus available values: 'drag', 'menu',
- *                                'expand', 'field', 'value' (default)
- */
+
 Node.prototype.focus = function(elementName) {
     Node.focusElement = elementName;
 
@@ -1992,51 +1463,31 @@ Node.prototype.focus = function(elementName) {
     }
 };
 
-/**
- * Select all text in an editable div after a delay of 0 ms
- * @param {Element} editableDiv
- */
+
 Node.select = function(editableDiv) {
     setTimeout(function () {
         util.selectContentEditable(editableDiv);
     }, 0);
 };
 
-/**
- * Update the values from the DOM field and value of this node
- */
+
 Node.prototype.blur = function() {
-    // retrieve the actual field and value from the DOM.
-    this._getDomValue(false);
+        this._getDomValue(false);
     this._getDomField(false);
 };
 
-/**
- * Duplicate given child node
- * new structure will be added right before the cloned node
- * @param {Node} node           the childNode to be duplicated
- * @return {Node} clone         the clone of the node
- * @private
- */
+
 Node.prototype._duplicate = function(node) {
     var clone = node.clone();
 
-    /* TODO: adjust the field name (to prevent equal field names)
-     if (this.type == 'object') {
-     }
-     */
+    
 
     this.insertAfter(clone, node);
 
     return clone;
 };
 
-/**
- * Check if given node is a child. The method will check recursively to find
- * this node.
- * @param {Node} node
- * @return {boolean} containsNode
- */
+
 Node.prototype.containsNode = function(node) {
     if (this == node) {
         return true;
@@ -2044,8 +1495,7 @@ Node.prototype.containsNode = function(node) {
 
     var childs = this.childs;
     if (childs) {
-        // TODO: use the js5 Array.some() here?
-        for (var i = 0, iMax = childs.length; i < iMax; i++) {
+                for (var i = 0, iMax = childs.length; i < iMax; i++) {
             if (childs[i].containsNode(node)) {
                 return true;
             }
@@ -2055,55 +1505,34 @@ Node.prototype.containsNode = function(node) {
     return false;
 };
 
-/**
- * Move given node into this node
- * @param {Node} node           the childNode to be moved
- * @param {Node} beforeNode     node will be inserted before given
- *                                         node. If no beforeNode is given,
- *                                         the node is appended at the end
- * @private
- */
+
 Node.prototype._move = function(node, beforeNode) {
     if (node == beforeNode) {
-        // nothing to do...
-        return;
+                return;
     }
 
-    // check if this node is not a child of the node to be moved here
-    if (node.containsNode(this)) {
+        if (node.containsNode(this)) {
         throw new Error('Cannot move a field into a child of itself');
     }
 
-    // remove the original node
-    if (node.parent) {
+        if (node.parent) {
         node.parent.removeChild(node);
     }
 
-    // create a clone of the node
-    var clone = node.clone();
+        var clone = node.clone();
     node.clearDom();
 
-    // insert or append the node
-    if (beforeNode) {
+        if (beforeNode) {
         this.insertBefore(clone, beforeNode);
     }
     else {
         this.appendChild(clone);
     }
 
-    /* TODO: adjust the field name (to prevent equal field names)
-     if (this.type == 'object') {
-     }
-     */
+    
 };
 
-/**
- * Remove a child from the node.
- * Only applicable when Node value is of type array or object
- * @param {Node} node   The child node to be removed;
- * @return {Node | undefined} node  The removed node on success,
- *                                             else undefined
- */
+
 Node.prototype.removeChild = function(node) {
     if (this.childs) {
         var index = this.childs.indexOf(node);
@@ -2111,8 +1540,7 @@ Node.prototype.removeChild = function(node) {
         if (index != -1) {
             node.hide();
 
-            // delete old search results
-            delete node.searchField;
+                        delete node.searchField;
             delete node.searchValue;
 
             var removedNode = this.childs.splice(index, 1)[0];
@@ -2126,37 +1554,25 @@ Node.prototype.removeChild = function(node) {
     return undefined;
 };
 
-/**
- * Remove a child node node from this node
- * This method is equal to Node.removeChild, except that _remove firex an
- * onChange event.
- * @param {Node} node
- * @private
- */
+
 Node.prototype._remove = function (node) {
     this.removeChild(node);
 };
 
-/**
- * Change the type of the value of this Node
- * @param {String} newType
- */
+
 Node.prototype.changeType = function (newType) {
     var oldType = this.type;
 
     if (oldType == newType) {
-        // type is not changed
-        return;
+                return;
     }
 
     if ((newType == 'string' || newType == 'auto') &&
         (oldType == 'string' || oldType == 'auto')) {
-        // this is an easy change
-        this.type = newType;
+                this.type = newType;
     }
     else {
-        // change from array to object, or from string/auto to object/array
-        var table = this.dom.tr ? this.dom.tr.parentNode : undefined;
+                var table = this.dom.tr ? this.dom.tr.parentNode : undefined;
         var lastTr;
         if (this.expanded) {
             lastTr = this.getAppend();
@@ -2166,15 +1582,12 @@ Node.prototype.changeType = function (newType) {
         }
         var nextTr = (lastTr && lastTr.parentNode) ? lastTr.nextSibling : undefined;
 
-        // hide current field and all its childs
-        this.hide();
+                this.hide();
         this.clearDom();
 
-        // adjust the field and the value
-        this.type = newType;
+                this.type = newType;
 
-        // adjust childs
-        if (newType == 'object') {
+                if (newType == 'object') {
             if (!this.childs) {
                 this.childs = [];
             }
@@ -2211,8 +1624,7 @@ Node.prototype.changeType = function (newType) {
             this.expanded = false;
         }
 
-        // create new DOM
-        if (table) {
+                if (table) {
             if (nextTr) {
                 table.insertBefore(this.getDom(), nextTr);
             }
@@ -2224,8 +1636,7 @@ Node.prototype.changeType = function (newType) {
     }
 
     if (newType == 'auto' || newType == 'string') {
-        // cast value to the correct type
-        if (newType == 'string') {
+                if (newType == 'string') {
             this.value = String(this.value);
         }
         else {
@@ -2238,12 +1649,7 @@ Node.prototype.changeType = function (newType) {
     this.updateDom({'updateIndexes': true});
 };
 
-/**
- * Retrieve value from DOM
- * @param {boolean} [silent]  If true (default), no errors will be thrown in
- *                            case of invalid data
- * @private
- */
+
 Node.prototype._getDomValue = function(silent) {
     if (this.dom.value && this.type != 'array' && this.type != 'object') {
         this.valueInnerText = util.getInnerText(this.dom.value);
@@ -2251,8 +1657,7 @@ Node.prototype._getDomValue = function(silent) {
 
     if (this.valueInnerText != undefined) {
         try {
-            // retrieve the value
-            var value;
+                        var value;
             if (this.type == 'string') {
                 value = this._unescapeHTML(this.valueInnerText);
             }
@@ -2274,27 +1679,18 @@ Node.prototype._getDomValue = function(silent) {
         }
         catch (err) {
             this.value = undefined;
-            // TODO: sent an action with the new, invalid value?
-            if (silent != true) {
+                        if (silent != true) {
                 throw err;
             }
         }
     }
 };
 
-/**
- * Update dom value:
- * - the text color of the value, depending on the type of the value
- * - the height of the field, depending on the width
- * - background color in case it is empty
- * @private
- */
+
 Node.prototype._updateDomValue = function () {
     var domValue = this.dom.value;
     if (domValue) {
-        // set text color depending on value type
-        // TODO: put colors in css
-        var v = this.value;
+                        var v = this.value;
         var t = (this.type == 'auto') ? typeof(v) : this.type;
         var isUrl = (t == 'string' && util.isUrl(v));
         var color = '';
@@ -2311,20 +1707,16 @@ Node.prototype._updateDomValue = function () {
             color = 'orange';
         }
         else if (this._hasChilds()) {
-            // note: typeof(null)=="object", therefore check this.type instead of t
-            color = '';
+                        color = '';
         }
         else if (v === null) {
-            color = '#004ED0';  // blue
-        }
+            color = '#004ED0';          }
         else {
-            // invalid value
-            color = 'black';
+                        color = 'black';
         }
         domValue.style.color = color;
 
-        // make backgound color lightgray when empty
-        var isEmpty = (String(this.value) == '' && this.type != 'array' && this.type != 'object');
+                var isEmpty = (String(this.value) == '' && this.type != 'array' && this.type != 'object');
         if (isEmpty) {
             util.addClassName(domValue, 'empty');
         }
@@ -2332,16 +1724,14 @@ Node.prototype._updateDomValue = function () {
             util.removeClassName(domValue, 'empty');
         }
 
-        // underline url
-        if (isUrl) {
+                if (isUrl) {
             util.addClassName(domValue, 'url');
         }
         else {
             util.removeClassName(domValue, 'url');
         }
 
-        // update title
-        if (t == 'array' || t == 'object') {
+                if (t == 'array' || t == 'object') {
             var count = this.childs ? this.childs.length : 0;
             domValue.title = this.type + ' containing ' + count + ' items';
         }
@@ -2354,8 +1744,7 @@ Node.prototype._updateDomValue = function () {
             domValue.title = '';
         }
 
-        // highlight when there is a search result
-        if (this.searchValueActive) {
+                if (this.searchValueActive) {
             util.addClassName(domValue, 'highlight-active');
         }
         else {
@@ -2368,23 +1757,15 @@ Node.prototype._updateDomValue = function () {
             util.removeClassName(domValue, 'highlight');
         }
 
-        // strip formatting from the contents of the editable div
-        util.stripFormatting(domValue);
+                util.stripFormatting(domValue);
     }
 };
 
-/**
- * Update dom field:
- * - the text color of the field, depending on the text
- * - the height of the field, depending on the width
- * - background color in case it is empty
- * @private
- */
+
 Node.prototype._updateDomField = function () {
     var domField = this.dom.field;
     if (domField) {
-        // make backgound color lightgray when empty
-        var isEmpty = (String(this.field) == '' && this.parent.type != 'array');
+                var isEmpty = (String(this.field) == '' && this.parent.type != 'array');
         if (isEmpty) {
             util.addClassName(domField, 'empty');
         }
@@ -2392,8 +1773,7 @@ Node.prototype._updateDomField = function () {
             util.removeClassName(domField, 'empty');
         }
 
-        // highlight when there is a search result
-        if (this.searchFieldActive) {
+                if (this.searchFieldActive) {
             util.addClassName(domField, 'highlight-active');
         }
         else {
@@ -2406,17 +1786,11 @@ Node.prototype._updateDomField = function () {
             util.removeClassName(domField, 'highlight');
         }
 
-        // strip formatting from the contents of the editable div
-        util.stripFormatting(domField);
+                util.stripFormatting(domField);
     }
 };
 
-/**
- * Retrieve field from DOM
- * @param {boolean} [silent]  If true (default), no errors will be thrown in
- *                            case of invalid data
- * @private
- */
+
 Node.prototype._getDomField = function(silent) {
     if (this.dom.field && this.fieldEditable) {
         this.fieldInnerText = util.getInnerText(this.dom.field);
@@ -2440,43 +1814,31 @@ Node.prototype._getDomField = function(silent) {
         }
         catch (err) {
             this.field = undefined;
-            // TODO: sent an action here, with the new, invalid value?
-            if (silent != true) {
+                        if (silent != true) {
                 throw err;
             }
         }
     }
 };
 
-/**
- * Clear the dom of the node
- */
-Node.prototype.clearDom = function() {
-    // TODO: hide the node first?
-    //this.hide();
-    // TODO: recursively clear dom?
 
+Node.prototype.clearDom = function() {
+            
     this.dom = {};
 };
 
-/**
- * Get the HTML DOM TR element of the node.
- * The dom will be generated when not yet created
- * @return {Element} tr    HTML DOM TR Element
- */
+
 Node.prototype.getDom = function() {
     var dom = this.dom;
     if (dom.tr) {
         return dom.tr;
     }
 
-    // create row
-    dom.tr = document.createElement('tr');
+        dom.tr = document.createElement('tr');
     dom.tr.node = this;
 
     if (this.editor.mode.edit) {
-        // create draggable area
-        var tdDrag = document.createElement('td');
+                var tdDrag = document.createElement('td');
         if (this.parent) {
             var domDrag = document.createElement('button');
             dom.drag = domDrag;
@@ -2486,8 +1848,7 @@ Node.prototype.getDom = function() {
         }
         dom.tr.appendChild(tdDrag);
 
-        // create context menu
-        var tdMenu = document.createElement('td');
+                var tdMenu = document.createElement('td');
         var menu = document.createElement('button');
         dom.menu = menu;
         menu.className = 'contextmenu';
@@ -2496,8 +1857,7 @@ Node.prototype.getDom = function() {
         dom.tr.appendChild(tdMenu);
     }
 
-    // create tree and field
-    var tdField = document.createElement('td');
+        var tdField = document.createElement('td');
     dom.tr.appendChild(tdField);
     dom.tree = this._createDomTree();
     tdField.appendChild(dom.tree);
@@ -2507,11 +1867,7 @@ Node.prototype.getDom = function() {
     return dom.tr;
 };
 
-/**
- * DragStart event, fired on mousedown on the dragarea at the left side of a Node
- * @param {Event} event
- * @private
- */
+
 Node.prototype._onDragStart = function (event) {
     event = event || window.event;
 
@@ -2543,14 +1899,9 @@ Node.prototype._onDragStart = function (event) {
     util.preventDefault(event);
 };
 
-/**
- * Drag event, fired when moving the mouse while dragging a Node
- * @param {Event} event
- * @private
- */
+
 Node.prototype._onDrag = function (event) {
-    // TODO: this method has grown too large. Split it in a number of methods
-    event = event || window.event;
+        event = event || window.event;
     var mouseY = util.getMouseY(event);
     var mouseX = util.getMouseX(event);
 
@@ -2559,15 +1910,12 @@ Node.prototype._onDrag = function (event) {
     var topThis, topPrev, topFirst, heightThis, bottomNext, heightNext;
     var moved = false;
 
-    // TODO: add an ESC option, which resets to the original position
-
-    // move up/down
-    trThis = this.dom.tr;
+    
+        trThis = this.dom.tr;
     topThis = util.getAbsoluteTop(trThis);
     heightThis = trThis.offsetHeight;
     if (mouseY < topThis) {
-        // move up
-        trPrev = trThis;
+                trPrev = trThis;
         do {
             trPrev = trPrev.previousSibling;
             nodePrev = Node.getNodeFromTarget(trPrev);
@@ -2580,8 +1928,7 @@ Node.prototype._onDrag = function (event) {
         }
 
         if (!nodePrev) {
-            // move to the first node
-            trRoot = trThis.parentNode.firstChild;
+                        trRoot = trThis.parentNode.firstChild;
             trPrev = trRoot ? trRoot.nextSibling : undefined;
             nodePrev = Node.getNodeFromTarget(trPrev);
             if (nodePrev == this) {
@@ -2590,8 +1937,7 @@ Node.prototype._onDrag = function (event) {
         }
 
         if (nodePrev) {
-            // check if mouseY is really inside the found node
-            trPrev = nodePrev.dom.tr;
+                        trPrev = nodePrev.dom.tr;
             topPrev = trPrev ? util.getAbsoluteTop(trPrev) : 0;
             if (mouseY > topPrev + heightThis) {
                 nodePrev = undefined;
@@ -2604,8 +1950,7 @@ Node.prototype._onDrag = function (event) {
         }
     }
     else {
-        // move down
-        trLast = (this.expanded && this.append) ? this.append.getDom() : this.dom.tr;
+                trLast = (this.expanded && this.append) ? this.append.getDom() : this.dom.tr;
         trFirst = trLast ? trLast.nextSibling : undefined;
         if (trFirst) {
             topFirst = util.getAbsoluteTop(trFirst);
@@ -2618,11 +1963,8 @@ Node.prototype._onDrag = function (event) {
                     heightNext = trNext ? (bottomNext - topFirst) : 0;
 
                     if (nodeNext.parent.childs.length == 1 && nodeNext.parent.childs[0] == this) {
-                        // We are about to remove the last child of this parent,
-                        // which will make the parents appendNode visible.
-                        topThis += 24 - 1;
-                        // TODO: dangerous to suppose the height of the appendNode a constant of 24-1 px.
-                    }
+                                                                        topThis += 24 - 1;
+                                            }
                 }
 
                 trNext = trNext.nextSibling;
@@ -2630,28 +1972,19 @@ Node.prototype._onDrag = function (event) {
             while (trNext && mouseY > topThis + heightNext);
 
             if (nodeNext && nodeNext.parent) {
-                // calculate the desired level
-                var diffX = (mouseX - this.drag.mouseX);
+                                var diffX = (mouseX - this.drag.mouseX);
                 var diffLevel = Math.round(diffX / 24 / 2);
-                var level = this.drag.level + diffLevel; // desired level
-                var levelNext = nodeNext.getLevel();     // level to be
-
-                // find the best fitting level (move upwards over the append nodes)
-                trPrev = nodeNext.dom.tr.previousSibling;
+                var level = this.drag.level + diffLevel;                 var levelNext = nodeNext.getLevel();     
+                                trPrev = nodeNext.dom.tr.previousSibling;
                 while (levelNext < level && trPrev) {
                     nodePrev = Node.getNodeFromTarget(trPrev);
                     if (nodePrev == this || nodePrev._isChildOf(this)) {
-                        // neglect itself and its childs
-                    }
+                                            }
                     else if (nodePrev instanceof AppendNode) {
                         var childs = nodePrev.parent.childs;
                         if (childs.length > 1 ||
                             (childs.length == 1 && childs[0] != this)) {
-                            // non-visible append node of a list of childs
-                            // consisting of not only this node (else the
-                            // append node will change into a visible "empty"
-                            // text when removing this node).
-                            nodeNext = Node.getNodeFromTarget(trPrev);
+                                                                                                                                            nodeNext = Node.getNodeFromTarget(trPrev);
                             levelNext = nodeNext.getLevel();
                         }
                         else {
@@ -2665,8 +1998,7 @@ Node.prototype._onDrag = function (event) {
                     trPrev = trPrev.previousSibling;
                 }
 
-                // move the node when its position is changed
-                if (trLast.nextSibling != nodeNext.dom.tr) {
+                                if (trLast.nextSibling != nodeNext.dom.tr) {
                     nodeNext.parent.moveBefore(this, nodeNext);
                     moved = true;
                 }
@@ -2675,22 +2007,16 @@ Node.prototype._onDrag = function (event) {
     }
 
     if (moved) {
-        // update the dragging parameters when moved
-        this.drag.mouseX = mouseX;
+                this.drag.mouseX = mouseX;
         this.drag.level = this.getLevel();
     }
 
-    // auto scroll when hovering around the top of the editor
-    this.editor.startAutoScroll(mouseY);
+        this.editor.startAutoScroll(mouseY);
 
     util.preventDefault(event);
 };
 
-/**
- * Drag event, fired on mouseup after having dragged a node
- * @param {Event} event
- * @private
- */
+
 Node.prototype._onDragEnd = function (event) {
     event = event || window.event;
 
@@ -2703,8 +2029,7 @@ Node.prototype._onDragEnd = function (event) {
     };
     if ((params.startParent != params.endParent) ||
         (params.startIndex != params.endIndex)) {
-        // only register this action if the node is actually moved to another place
-        this.editor._onAction('moveNode', params);
+                this.editor._onAction('moveNode', params);
     }
 
     document.body.style.cursor = this.drag.oldCursor;
@@ -2719,18 +2044,12 @@ Node.prototype._onDragEnd = function (event) {
         delete this.mouseup;
     }
 
-    // Stop any running auto scroll
-    this.editor.stopAutoScroll();
+        this.editor.stopAutoScroll();
 
     util.preventDefault(event);
 };
 
-/**
- * Test if this node is a child of an other node
- * @param {Node} node
- * @return {boolean} isChild
- * @private
- */
+
 Node.prototype._isChildOf = function (node) {
     var n = this.parent;
     while (n) {
@@ -2743,20 +2062,12 @@ Node.prototype._isChildOf = function (node) {
     return false;
 };
 
-/**
- * Create an editable field
- * @return {Element} domField
- * @private
- */
+
 Node.prototype._createDomField = function () {
     return document.createElement('div');
 };
 
-/**
- * Set highlighting for this node and all its childs.
- * Only applied to the currently visible (expanded childs)
- * @param {boolean} highlight
- */
+
 Node.prototype.setHighlight = function (highlight) {
     if (this.dom.tr) {
         this.dom.tr.className = (highlight ? 'highlight' : '');
@@ -2773,54 +2084,34 @@ Node.prototype.setHighlight = function (highlight) {
     }
 };
 
-/**
- * Update the value of the node. Only primitive types are allowed, no Object
- * or Array is allowed.
- * @param {String | Number | Boolean | null} value
- */
+
 Node.prototype.updateValue = function (value) {
     this.value = value;
     this.updateDom();
 };
 
-/**
- * Update the field of the node.
- * @param {String} field
- */
+
 Node.prototype.updateField = function (field) {
     this.field = field;
     this.updateDom();
 };
 
-/**
- * Update the HTML DOM, optionally recursing through the childs
- * @param {Object} [options] Available parameters:
- *                          {boolean} [recurse]         If true, the
- *                          DOM of the childs will be updated recursively.
- *                          False by default.
- *                          {boolean} [updateIndexes]   If true, the childs
- *                          indexes of the node will be updated too. False by
- *                          default.
- */
+
 Node.prototype.updateDom = function (options) {
-    // update level indentation
-    var domTree = this.dom.tree;
+        var domTree = this.dom.tree;
     if (domTree) {
         domTree.style.marginLeft = this.getLevel() * 24 + 'px';
     }
 
-    // update field
-    var domField = this.dom.field;
+        var domField = this.dom.field;
     if (domField) {
         if (this.fieldEditable == true) {
-            // parent is an object
-            domField.contentEditable = this.editor.mode.edit;
+                        domField.contentEditable = this.editor.mode.edit;
             domField.spellcheck = false;
             domField.className = 'field';
         }
         else {
-            // parent is an array this is the root node
-            domField.className = 'readonly';
+                        domField.className = 'readonly';
         }
 
         var field;
@@ -2839,8 +2130,7 @@ Node.prototype.updateDom = function (options) {
         domField.innerHTML = this._escapeHTML(field);
     }
 
-    // update value
-    var domValue = this.dom.value;
+        var domValue = this.dom.value;
     if (domValue) {
         var count = this.childs ? this.childs.length : 0;
         if (this.type == 'array') {
@@ -2854,37 +2144,27 @@ Node.prototype.updateDom = function (options) {
         }
     }
 
-    // update field and value
-    this._updateDomField();
+        this._updateDomField();
     this._updateDomValue();
 
-    // update childs indexes
-    if (options && options.updateIndexes == true) {
-        // updateIndexes is true or undefined
-        this._updateDomIndexes();
+        if (options && options.updateIndexes == true) {
+                this._updateDomIndexes();
     }
 
     if (options && options.recurse == true) {
-        // recurse is true or undefined. update childs recursively
-        if (this.childs) {
+                if (this.childs) {
             this.childs.forEach(function (child) {
                 child.updateDom(options);
             });
         }
     }
 
-    // update row with append button
-    if (this.append) {
+        if (this.append) {
         this.append.updateDom();
     }
 };
 
-/**
- * Update the DOM of the childs of a node: update indexes and undefined field
- * names.
- * Only applicable when structure is an array or object
- * @private
- */
+
 Node.prototype._updateDomIndexes = function () {
     var domValue = this.dom.value;
     var childs = this.childs;
@@ -2912,10 +2192,7 @@ Node.prototype._updateDomIndexes = function () {
     }
 };
 
-/**
- * Create an editable value
- * @private
- */
+
 Node.prototype._createDomValue = function () {
     var domValue;
 
@@ -2931,16 +2208,14 @@ Node.prototype._createDomValue = function () {
     }
     else {
         if (!this.editor.mode.edit && util.isUrl(this.value)) {
-            // create a link in case of read-only editor and value containing an url
-            domValue = document.createElement('a');
+                        domValue = document.createElement('a');
             domValue.className = 'value';
             domValue.href = this.value;
             domValue.target = '_blank';
             domValue.innerHTML = this._escapeHTML(this.value);
         }
         else {
-            // create and editable or read-only div
-            domValue = document.createElement('div');
+                        domValue = document.createElement('div');
             domValue.contentEditable = !this.editor.mode.view;
             domValue.spellcheck = false;
             domValue.className = 'value';
@@ -2951,14 +2226,9 @@ Node.prototype._createDomValue = function () {
     return domValue;
 };
 
-/**
- * Create an expand/collapse button
- * @return {Element} expand
- * @private
- */
+
 Node.prototype._createDomExpandButton = function () {
-    // create expand button
-    var expand = document.createElement('button');
+        var expand = document.createElement('button');
     if (this._hasChilds()) {
         expand.className = this.expanded ? 'expanded' : 'collapsed';
         expand.title =
@@ -2974,38 +2244,30 @@ Node.prototype._createDomExpandButton = function () {
 };
 
 
-/**
- * Create a DOM tree element, containing the expand/collapse button
- * @return {Element} domTree
- * @private
- */
+
 Node.prototype._createDomTree = function () {
     var dom = this.dom;
     var domTree = document.createElement('table');
     var tbody = document.createElement('tbody');
-    domTree.style.borderCollapse = 'collapse'; // TODO: put in css
-    domTree.appendChild(tbody);
+    domTree.style.borderCollapse = 'collapse';     domTree.appendChild(tbody);
     var tr = document.createElement('tr');
     tbody.appendChild(tr);
 
-    // create expand button
-    var tdExpand = document.createElement('td');
+        var tdExpand = document.createElement('td');
     tdExpand.className = 'tree';
     tr.appendChild(tdExpand);
     dom.expand = this._createDomExpandButton();
     tdExpand.appendChild(dom.expand);
     dom.tdExpand = tdExpand;
 
-    // create the field
-    var tdField = document.createElement('td');
+        var tdField = document.createElement('td');
     tdField.className = 'tree';
     tr.appendChild(tdField);
     dom.field = this._createDomField();
     tdField.appendChild(dom.field);
     dom.tdField = tdField;
 
-    // create a separator
-    var tdSeparator = document.createElement('td');
+        var tdSeparator = document.createElement('td');
     tdSeparator.className = 'tree';
     tr.appendChild(tdSeparator);
     if (this.type != 'object' && this.type != 'array') {
@@ -3014,8 +2276,7 @@ Node.prototype._createDomTree = function () {
     }
     dom.tdSeparator = tdSeparator;
 
-    // create the value
-    var tdValue = document.createElement('td');
+        var tdValue = document.createElement('td');
     tdValue.className = 'tree';
     tr.appendChild(tdValue);
     dom.value = this._createDomValue();
@@ -3025,10 +2286,7 @@ Node.prototype._createDomTree = function () {
     return domTree;
 };
 
-/**
- * Handle an event. The event is catched centrally by the editor
- * @param {Event} event
- */
+
 Node.prototype.onEvent = function (event) {
     var type = event.type,
         target = event.target || event.srcElement,
@@ -3037,9 +2295,7 @@ Node.prototype.onEvent = function (event) {
         focusNode,
         expandable = this._hasChilds();
 
-    // check if mouse is on menu or on dragarea.
-    // If so, highlight current row and its childs
-    if (target == dom.drag || target == dom.menu) {
+            if (target == dom.drag || target == dom.menu) {
         if (type == 'mouseover') {
             this.editor.highlighter.highlight(this);
         }
@@ -3048,13 +2304,11 @@ Node.prototype.onEvent = function (event) {
         }
     }
 
-    // drag events
-    if (type == 'mousedown' && target == dom.drag) {
+        if (type == 'mousedown' && target == dom.drag) {
         this._onDragStart(event);
     }
 
-    // context menu events
-    if (type == 'click' && target == dom.menu) {
+        if (type == 'click' && target == dom.menu) {
         var highlighter = node.editor.highlighter;
         highlighter.highlight(node);
         highlighter.lock();
@@ -3066,19 +2320,15 @@ Node.prototype.onEvent = function (event) {
         });
     }
 
-    // expand events
-    if (type == 'click' && target == dom.expand) {
+        if (type == 'click' && target == dom.expand) {
         if (expandable) {
-            var recurse = event.ctrlKey; // with ctrl-key, expand/collapse all
-            this._onExpand(recurse);
+            var recurse = event.ctrlKey;             this._onExpand(recurse);
         }
     }
 
-    // value events
-    var domValue = dom.value;
+        var domValue = dom.value;
     if (target == domValue) {
-        //noinspection FallthroughInSwitchStatementJS
-        switch (type) {
+                switch (type) {
             case 'focus':
                 focusNode = this;
                 break;
@@ -3125,8 +2375,7 @@ Node.prototype.onEvent = function (event) {
         }
     }
 
-    // field events
-    var domField = dom.field;
+        var domField = dom.field;
     if (target == domField) {
         switch (type) {
             case 'focus':
@@ -3167,18 +2416,14 @@ Node.prototype.onEvent = function (event) {
         }
     }
 
-    // focus
-    // when clicked in whitespace left or right from the field or value, set focus
-    var domTree = dom.tree;
+            var domTree = dom.tree;
     if (target == domTree.parentNode) {
         switch (type) {
             case 'click':
                 var left = (event.offsetX != undefined) ?
                     (event.offsetX < (this.getLevel() + 1) * 24) :
-                    (util.getMouseX(event) < util.getAbsoluteLeft(dom.tdSeparator));// for FF
-                if (left || expandable) {
-                    // node is expandable when it is an object or array
-                    if (domField) {
+                    (util.getMouseX(event) < util.getAbsoluteLeft(dom.tdSeparator));                if (left || expandable) {
+                                        if (domField) {
                         util.setEndOfContentEditable(domField);
                         domField.focus();
                     }
@@ -3209,10 +2454,7 @@ Node.prototype.onEvent = function (event) {
     }
 };
 
-/**
- * Key down event handler
- * @param {Event} event
- */
+
 Node.prototype.onKeyDown = function (event) {
     var keynum = event.which || event.keyCode;
     var target = event.target || event.srcElement;
@@ -3222,9 +2464,7 @@ Node.prototype.onKeyDown = function (event) {
     var handled = false;
     var prevNode, nextNode, nextDom, nextDom2;
 
-    // util.log(ctrlKey, keynum, event.charCode); // TODO: cleanup
-    if (keynum == 13) { // Enter
-        if (target == this.dom.value) {
+        if (keynum == 13) {         if (target == this.dom.value) {
             if (!this.editor.mode.edit || event.ctrlKey) {
                 if (util.isUrl(this.value)) {
                     window.open(this.value, '_blank');
@@ -3235,79 +2475,55 @@ Node.prototype.onKeyDown = function (event) {
         else if (target == this.dom.expand) {
             var expandable = this._hasChilds();
             if (expandable) {
-                var recurse = event.ctrlKey; // with ctrl-key, expand/collapse all
-                this._onExpand(recurse);
+                var recurse = event.ctrlKey;                 this._onExpand(recurse);
                 target.focus();
                 handled = true;
             }
         }
     }
-    else if (keynum == 68) {  // D
-        if (ctrlKey) {   // Ctrl+D
-            this._onDuplicate();
+    else if (keynum == 68) {          if (ctrlKey) {               this._onDuplicate();
             handled = true;
         }
     }
-    else if (keynum == 69) { // E
-        if (ctrlKey) {       // Ctrl+E and Ctrl+Shift+E
-            this._onExpand(shiftKey);  // recurse = shiftKey
-            target.focus(); // TODO: should restore focus in case of recursing expand (which takes DOM offline)
+    else if (keynum == 69) {         if (ctrlKey) {                   this._onExpand(shiftKey);              target.focus();             handled = true;
+        }
+    }
+    else if (keynum == 77) {         if (ctrlKey) {             this.showContextMenu(target);
             handled = true;
         }
     }
-    else if (keynum == 77) { // M
-        if (ctrlKey) { // Ctrl+M
-            this.showContextMenu(target);
+    else if (keynum == 46) {         if (ctrlKey) {                   this._onRemove();
             handled = true;
         }
     }
-    else if (keynum == 46) { // Del
-        if (ctrlKey) {       // Ctrl+Del
-            this._onRemove();
+    else if (keynum == 45) {         if (ctrlKey && !shiftKey) {                   this._onInsertBefore();
+            handled = true;
+        }
+        else if (ctrlKey && shiftKey) {               this._onInsertAfter();
             handled = true;
         }
     }
-    else if (keynum == 45) { // Ins
-        if (ctrlKey && !shiftKey) {       // Ctrl+Ins
-            this._onInsertBefore();
-            handled = true;
-        }
-        else if (ctrlKey && shiftKey) {   // Ctrl+Shift+Ins
-            this._onInsertAfter();
-            handled = true;
-        }
-    }
-    else if (keynum == 35) { // End
-        if (altKey) { // Alt+End
-            // find the last node
-            var lastNode = this._lastNode();
+    else if (keynum == 35) {         if (altKey) {                         var lastNode = this._lastNode();
             if (lastNode) {
                 lastNode.focus(Node.focusElement || this._getElementName(target));
             }
             handled = true;
         }
     }
-    else if (keynum == 36) { // Home
-        if (altKey) { // Alt+Home
-            // find the first node
-            var firstNode = this._firstNode();
+    else if (keynum == 36) {         if (altKey) {                         var firstNode = this._firstNode();
             if (firstNode) {
                 firstNode.focus(Node.focusElement || this._getElementName(target));
             }
             handled = true;
         }
     }
-    else if (keynum == 37) {        // Arrow Left
-        if (altKey && !shiftKey) {  // Alt + Arrow Left
-            // move to left element
-            var prevElement = this._previousElement(target);
+    else if (keynum == 37) {                if (altKey && !shiftKey) {                          var prevElement = this._previousElement(target);
             if (prevElement) {
                 this.focus(this._getElementName(prevElement));
             }
             handled = true;
         }
-        else if (altKey && shiftKey) { // Alt + Shift Arrow left
-            if (this.expanded) {
+        else if (altKey && shiftKey) {             if (this.expanded) {
                 var appendDom = this.getAppend();
                 nextDom = appendDom ? appendDom.nextSibling : undefined;
             }
@@ -3328,18 +2544,13 @@ Node.prototype.onKeyDown = function (event) {
             }
         }
     }
-    else if (keynum == 38) {        // Arrow Up
-        if (altKey && !shiftKey) {  // Alt + Arrow Up
-            // find the previous node
-            prevNode = this._previousNode();
+    else if (keynum == 38) {                if (altKey && !shiftKey) {                          prevNode = this._previousNode();
             if (prevNode) {
                 prevNode.focus(Node.focusElement || this._getElementName(target));
             }
             handled = true;
         }
-        else if (altKey && shiftKey) { // Alt + Shift + Arrow Up
-            // find the previous node
-            prevNode = this._previousNode();
+        else if (altKey && shiftKey) {                         prevNode = this._previousNode();
             if (prevNode && prevNode.parent) {
                 prevNode.parent.moveBefore(this, prevNode);
                 this.focus(Node.focusElement || this._getElementName(target));
@@ -3347,17 +2558,13 @@ Node.prototype.onKeyDown = function (event) {
             handled = true;
         }
     }
-    else if (keynum == 39) {        // Arrow Right
-        if (altKey && !shiftKey) {  // Alt + Arrow Right
-            // move to right element
-            var nextElement = this._nextElement(target);
+    else if (keynum == 39) {                if (altKey && !shiftKey) {                          var nextElement = this._nextElement(target);
             if (nextElement) {
                 this.focus(this._getElementName(nextElement));
             }
             handled = true;
         }
-        else if (altKey && shiftKey) { // Alt + Shift Arrow Right
-            dom = this.getDom();
+        else if (altKey && shiftKey) {             dom = this.getDom();
             var prevDom = dom.previousSibling;
             if (prevDom) {
                 prevNode = Node.getNodeFromTarget(prevDom);
@@ -3370,18 +2577,13 @@ Node.prototype.onKeyDown = function (event) {
             }
         }
     }
-    else if (keynum == 40) {        // Arrow Down
-        if (altKey && !shiftKey) {  // Alt + Arrow Down
-            // find the next node
-            nextNode = this._nextNode();
+    else if (keynum == 40) {                if (altKey && !shiftKey) {                          nextNode = this._nextNode();
             if (nextNode) {
                 nextNode.focus(Node.focusElement || this._getElementName(target));
             }
             handled = true;
         }
-        else if (altKey && shiftKey) { // Alt + Shift + Arrow Down
-            // find the 2nd next node and move before that one
-            if (this.expanded) {
+        else if (altKey && shiftKey) {                         if (this.expanded) {
                 nextNode = this.append ? this.append._nextNode() : undefined;
             }
             else {
@@ -3409,16 +2611,10 @@ Node.prototype.onKeyDown = function (event) {
     }
 };
 
-/**
- * Handle the expand event, when clicked on the expand button
- * @param {boolean} recurse   If true, child nodes will be expanded too
- * @private
- */
+
 Node.prototype._onExpand = function (recurse) {
     if (recurse) {
-        // Take the table offline
-        var table = this.dom.tr.parentNode; // TODO: not nice to access the main table like this
-        var frame = table.parentNode;
+                var table = this.dom.tr.parentNode;         var frame = table.parentNode;
         var scrollTop = frame.scrollTop;
         frame.removeChild(table);
     }
@@ -3431,23 +2627,18 @@ Node.prototype._onExpand = function (recurse) {
     }
 
     if (recurse) {
-        // Put the table online again
-        frame.appendChild(table);
+                frame.appendChild(table);
         frame.scrollTop = scrollTop;
     }
 };
 
-/**
- * Remove this node
- * @private
- */
+
 Node.prototype._onRemove = function() {
     this.editor.highlighter.unhighlight();
     var childs = this.parent.childs;
     var index = childs.indexOf(this);
 
-    // adjust the focus
-    var oldSelection = this.editor.getSelection();
+        var oldSelection = this.editor.getSelection();
     if (childs[index + 1]) {
         childs[index + 1].focus();
     }
@@ -3459,11 +2650,9 @@ Node.prototype._onRemove = function() {
     }
     var newSelection = this.editor.getSelection();
 
-    // remove the node
-    this.parent._remove(this);
+        this.parent._remove(this);
 
-    // store history action
-    this.editor._onAction('removeNode', {
+        this.editor._onAction('removeNode', {
         'node': this,
         'parent': this.parent,
         'index': index,
@@ -3472,10 +2661,7 @@ Node.prototype._onRemove = function() {
     });
 };
 
-/**
- * Duplicate this node
- * @private
- */
+
 Node.prototype._onDuplicate = function() {
     var oldSelection = this.editor.getSelection();
     var clone = this.parent._duplicate(this);
@@ -3491,13 +2677,7 @@ Node.prototype._onDuplicate = function() {
     });
 };
 
-/**
- * Handle insert before event
- * @param {String} [field]
- * @param {*} [value]
- * @param {String} [type]   Can be 'auto', 'array', 'object', or 'string'
- * @private
- */
+
 Node.prototype._onInsertBefore = function (field, value, type) {
     var oldSelection = this.editor.getSelection();
 
@@ -3521,13 +2701,7 @@ Node.prototype._onInsertBefore = function (field, value, type) {
     });
 };
 
-/**
- * Handle insert after event
- * @param {String} [field]
- * @param {*} [value]
- * @param {String} [type]   Can be 'auto', 'array', 'object', or 'string'
- * @private
- */
+
 Node.prototype._onInsertAfter = function (field, value, type) {
     var oldSelection = this.editor.getSelection();
 
@@ -3551,13 +2725,7 @@ Node.prototype._onInsertAfter = function (field, value, type) {
     });
 };
 
-/**
- * Handle append event
- * @param {String} [field]
- * @param {*} [value]
- * @param {String} [type]   Can be 'auto', 'array', 'object', or 'string'
- * @private
- */
+
 Node.prototype._onAppend = function (field, value, type) {
     var oldSelection = this.editor.getSelection();
 
@@ -3580,11 +2748,7 @@ Node.prototype._onAppend = function (field, value, type) {
     });
 };
 
-/**
- * Change the type of the node's value
- * @param {String} newType
- * @private
- */
+
 Node.prototype._onChangeType = function (newType) {
     var oldType = this.type;
     if (newType != oldType) {
@@ -3602,12 +2766,7 @@ Node.prototype._onChangeType = function (newType) {
     }
 };
 
-/**
- * Sort the childs of the node. Only applicable when the node has type 'object'
- * or 'array'.
- * @param {String} direction   Sorting direction. Available values: "asc", "desc"
- * @private
- */
+
 Node.prototype._onSort = function (direction) {
     if (this._hasChilds()) {
         var order = (direction == 'desc') ? -1 : 1;
@@ -3617,11 +2776,9 @@ Node.prototype._onSort = function (direction) {
         var oldChilds = this.childs;
         var oldSort = this.sort;
 
-        // copy the array (the old one will be kept for an undo action
-        this.childs = this.childs.concat();
+                this.childs = this.childs.concat();
 
-        // sort the arrays
-        this.childs.sort(function (a, b) {
+                this.childs.sort(function (a, b) {
             if (a[prop] > b[prop]) return order;
             if (a[prop] < b[prop]) return -order;
             return 0;
@@ -3640,10 +2797,7 @@ Node.prototype._onSort = function (direction) {
     }
 };
 
-/**
- * Create a table row with an append button.
- * @return {HTMLElement | undefined} buttonAppend or undefined when inapplicable
- */
+
 Node.prototype.getAppend = function () {
     if (!this.append) {
         this.append = new AppendNode(this.editor);
@@ -3652,12 +2806,7 @@ Node.prototype.getAppend = function () {
     return this.append.getDom();
 };
 
-/**
- * Find the node from an event target
- * @param {Node} target
- * @return {Node | undefined} node  or undefined when not found
- * @static
- */
+
 Node.getNodeFromTarget = function (target) {
     while (target) {
         if (target.node) {
@@ -3669,17 +2818,12 @@ Node.getNodeFromTarget = function (target) {
     return undefined;
 };
 
-/**
- * Get the previously rendered node
- * @return {Node | null} previousNode
- * @private
- */
+
 Node.prototype._previousNode = function () {
     var prevNode = null;
     var dom = this.getDom();
     if (dom && dom.parentNode) {
-        // find the previous field
-        var prevDom = dom;
+                var prevDom = dom;
         do {
             prevDom = prevDom.previousSibling;
             prevNode = Node.getNodeFromTarget(prevDom);
@@ -3689,17 +2833,12 @@ Node.prototype._previousNode = function () {
     return prevNode;
 };
 
-/**
- * Get the next rendered node
- * @return {Node | null} nextNode
- * @private
- */
+
 Node.prototype._nextNode = function () {
     var nextNode = null;
     var dom = this.getDom();
     if (dom && dom.parentNode) {
-        // find the previous field
-        var nextDom = dom;
+                var nextDom = dom;
         do {
             nextDom = nextDom.nextSibling;
             nextNode = Node.getNodeFromTarget(nextDom);
@@ -3710,11 +2849,7 @@ Node.prototype._nextNode = function () {
     return nextNode;
 };
 
-/**
- * Get the first rendered node
- * @return {Node | null} firstNode
- * @private
- */
+
 Node.prototype._firstNode = function () {
     var firstNode = null;
     var dom = this.getDom();
@@ -3726,11 +2861,7 @@ Node.prototype._firstNode = function () {
     return firstNode;
 };
 
-/**
- * Get the last rendered node
- * @return {Node | null} lastNode
- * @private
- */
+
 Node.prototype._lastNode = function () {
     var lastNode = null;
     var dom = this.getDom();
@@ -3745,61 +2876,44 @@ Node.prototype._lastNode = function () {
     return lastNode;
 };
 
-/**
- * Get the next element which can have focus.
- * @param {Element} elem
- * @return {Element | null} nextElem
- * @private
- */
+
 Node.prototype._previousElement = function (elem) {
     var dom = this.dom;
-    // noinspection FallthroughInSwitchStatementJS
-    switch (elem) {
+        switch (elem) {
         case dom.value:
             if (this.fieldEditable) {
                 return dom.field;
             }
-        // intentional fall through
-        case dom.field:
+                case dom.field:
             if (this._hasChilds()) {
                 return dom.expand;
             }
-        // intentional fall through
-        case dom.expand:
+                case dom.expand:
             return dom.menu;
         case dom.menu:
             if (dom.drag) {
                 return dom.drag;
             }
-        // intentional fall through
-        default:
+                default:
             return null;
     }
 };
 
-/**
- * Get the next element which can have focus.
- * @param {Element} elem
- * @return {Element | null} nextElem
- * @private
- */
+
 Node.prototype._nextElement = function (elem) {
     var dom = this.dom;
-    // noinspection FallthroughInSwitchStatementJS
-    switch (elem) {
+        switch (elem) {
         case dom.drag:
             return dom.menu;
         case dom.menu:
             if (this._hasChilds()) {
                 return dom.expand;
             }
-        // intentional fall through
-        case dom.expand:
+                case dom.expand:
             if (this.fieldEditable) {
                 return dom.field;
             }
-        // intentional fall through
-        case dom.field:
+                case dom.field:
             if (!this._hasChilds()) {
                 return dom.value;
             }
@@ -3808,14 +2922,7 @@ Node.prototype._nextElement = function (elem) {
     }
 };
 
-/**
- * Get the dom name of given element. returns null if not found.
- * For example when element == dom.field, "field" is returned.
- * @param {Element} element
- * @return {String | null} elementName  Available elements with name: 'drag',
- *                                      'menu', 'expand', 'field', 'value'
- * @private
- */
+
 Node.prototype._getElementName = function (element) {
     var dom = this.dom;
     for (var name in dom) {
@@ -3828,17 +2935,11 @@ Node.prototype._getElementName = function (element) {
     return null;
 };
 
-/**
- * Test if this node has childs. This is the case when the node is an object
- * or array.
- * @return {boolean} hasChilds
- * @private
- */
+
 Node.prototype._hasChilds = function () {
     return this.type == 'array' || this.type == 'object';
 };
 
-// titles with explanation for the different types
 Node.TYPE_TITLES = {
     'auto': 'Field type "auto". ' +
         'The field type is automatically determined from the value ' +
@@ -3852,12 +2953,7 @@ Node.TYPE_TITLES = {
         'but always returned as string.'
 };
 
-/**
- * Show a contextmenu for this node
- * @param {HTMLElement} anchor   Anchor element to attache the context menu to.
- * @param {function} [onClose]   Callback method called when the context menu
- *                               is being closed.
- */
+
 Node.prototype.showContextMenu = function (anchor, onClose) {
     var node = this;
     var titles = Node.TYPE_TITLES;
@@ -3938,13 +3034,11 @@ Node.prototype.showContextMenu = function (anchor, onClose) {
     }
 
     if (this.parent && this.parent._hasChilds()) {
-        // create a separator
-        items.push({
+                items.push({
             'type': 'separator'
         });
 
-        // create append button (for last child node only)
-        var childs = node.parent.childs;
+                var childs = node.parent.childs;
         if (node == childs[childs.length - 1]) {
             items.push({
                 'text': 'Append',
@@ -3991,8 +3085,7 @@ Node.prototype.showContextMenu = function (anchor, onClose) {
             });
         }
 
-        // create insert button
-        items.push({
+                items.push({
             'text': 'Insert',
             'title': 'Insert a new field with type \'auto\' before this field (Ctrl+Ins)',
             'submenuTitle': 'Select the type of the field to be inserted',
@@ -4036,8 +3129,7 @@ Node.prototype.showContextMenu = function (anchor, onClose) {
             ]
         });
 
-        // create duplicate button
-        items.push({
+                items.push({
             'text': 'Duplicate',
             'title': 'Duplicate this field (Ctrl+D)',
             'className': 'duplicate',
@@ -4046,8 +3138,7 @@ Node.prototype.showContextMenu = function (anchor, onClose) {
             }
         });
 
-        // create remove button
-        items.push({
+                items.push({
             'text': 'Remove',
             'title': 'Remove this field (Ctrl+Del)',
             'className': 'remove',
@@ -4061,12 +3152,7 @@ Node.prototype.showContextMenu = function (anchor, onClose) {
     menu.show(anchor);
 };
 
-/**
- * get the type of a value
- * @param {*} value
- * @return {String} type   Can be 'object', 'array', 'string', 'auto'
- * @private
- */
+
 Node.prototype._getType = function(value) {
     if (value instanceof Array) {
         return 'array';
@@ -4081,18 +3167,10 @@ Node.prototype._getType = function(value) {
     return 'auto';
 };
 
-/**
- * cast contents of a string to the correct type. This can be a string,
- * a number, a boolean, etc
- * @param {String} str
- * @return {*} castedStr
- * @private
- */
+
 Node.prototype._stringCast = function(str) {
     var lower = str.toLowerCase(),
-        num = Number(str),          // will nicely fail with '123ab'
-        numFloat = parseFloat(str); // will nicely fail with '  '
-
+        num = Number(str),                  numFloat = parseFloat(str); 
     if (str == '') {
         return '';
     }
@@ -4113,30 +3191,17 @@ Node.prototype._stringCast = function(str) {
     }
 };
 
-/**
- * escape a text, such that it can be displayed safely in an HTML element
- * @param {String} text
- * @return {String} escapedText
- * @private
- */
+
 Node.prototype._escapeHTML = function (text) {
     var htmlEscaped = String(text)
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
-        .replace(/  /g, ' &nbsp;') // replace double space with an nbsp and space
-        .replace(/^ /, '&nbsp;')   // space at start
-        .replace(/ $/, '&nbsp;');  // space at end
-
+        .replace(/  /g, ' &nbsp;')         .replace(/^ /, '&nbsp;')           .replace(/ $/, '&nbsp;');  
     var json = JSON.stringify(htmlEscaped);
     return json.substring(1, json.length - 1);
 };
 
-/**
- * unescape a string.
- * @param {String} escapedText
- * @return {String} text
- * @private
- */
+
 Node.prototype._unescapeHTML = function (escapedText) {
     var json = '"' + this._escapeJSON(escapedText) + '"';
     var htmlEscaped = util.parse(json);
@@ -4146,18 +3211,9 @@ Node.prototype._unescapeHTML = function (escapedText) {
         .replace(/&nbsp;/g, ' ');
 };
 
-/**
- * escape a text to make it a valid JSON string. The method will:
- *   - replace unescaped double quotes with '\"'
- *   - replace unescaped backslash with '\\'
- *   - replace returns with '\n'
- * @param {String} text
- * @return {String} escapedText
- * @private
- */
+
 Node.prototype._escapeJSON = function (text) {
-    // TODO: replace with some smart regex (only when a new solution is faster!)
-    var escaped = '';
+        var escaped = '';
     var i = 0, iMax = text.length;
     while (i < iMax) {
         var c = text.charAt(i);
@@ -4170,8 +3226,7 @@ Node.prototype._escapeJSON = function (text) {
 
             c = text.charAt(i);
             if ('"\\/bfnrtu'.indexOf(c) == -1) {
-                escaped += '\\';  // no valid escape character
-            }
+                escaped += '\\';              }
             escaped += c;
         }
         else if (c == '"') {
@@ -4186,46 +3241,32 @@ Node.prototype._escapeJSON = function (text) {
     return escaped;
 };
 
-/**
- * @constructor AppendNode
- * @extends Node
- * @param {TreeEditor} editor
- * Create a new AppendNode. This is a special node which is created at the
- * end of the list with childs for an object or array
- */
+
 function AppendNode (editor) {
-    /** @type {TreeEditor} */
+    
     this.editor = editor;
     this.dom = {};
 }
 
 AppendNode.prototype = new Node();
 
-/**
- * Return a table row with an append button.
- * @return {Element} dom   TR element
- */
+
 AppendNode.prototype.getDom = function () {
-    // TODO: implement a new solution for the append node
-    var dom = this.dom;
+        var dom = this.dom;
 
     if (dom.tr) {
         return dom.tr;
     }
 
-    // a row for the append button
-    var trAppend = document.createElement('tr');
+        var trAppend = document.createElement('tr');
     trAppend.node = this;
     dom.tr = trAppend;
 
-    // TODO: consistent naming
-
+    
     if (this.editor.mode.edit) {
-        // a cell for the dragarea column
-        dom.tdDrag = document.createElement('td');
+                dom.tdDrag = document.createElement('td');
 
-        // create context menu
-        var tdMenu = document.createElement('td');
+                var tdMenu = document.createElement('td');
         dom.tdMenu = tdMenu;
         var menu = document.createElement('button');
         menu.className = 'contextmenu';
@@ -4234,8 +3275,7 @@ AppendNode.prototype.getDom = function () {
         tdMenu.appendChild(dom.menu);
     }
 
-    // a cell for the contents (showing text 'empty')
-    var tdAppend = document.createElement('td');
+        var tdAppend = document.createElement('td');
     var domText = document.createElement('div');
     domText.innerHTML = '(empty)';
     domText.className = 'readonly';
@@ -4248,25 +3288,20 @@ AppendNode.prototype.getDom = function () {
     return trAppend;
 };
 
-/**
- * Update the HTML dom of the Node
- */
+
 AppendNode.prototype.updateDom = function () {
     var dom = this.dom;
     var tdAppend = dom.td;
     if (tdAppend) {
         tdAppend.style.paddingLeft = (this.getLevel() * 24 + 26) + 'px';
-        // TODO: not so nice hard coded offset
-    }
+            }
 
     var domText = dom.text;
     if (domText) {
         domText.innerHTML = '(empty ' + this.parent.type + ')';
     }
 
-    // attach or detach the contents of the append node:
-    // hide when the parent has childs, show when the parent has no childs
-    var trAppend = dom.tr;
+            var trAppend = dom.tr;
     if (!this.isVisible()) {
         if (dom.tr.firstChild) {
             if (dom.tdDrag) {
@@ -4291,27 +3326,17 @@ AppendNode.prototype.updateDom = function () {
     }
 };
 
-/**
- * Check whether the AppendNode is currently visible.
- * the AppendNode is visible when its parent has no childs (i.e. is empty).
- * @return {boolean} isVisible
- */
+
 AppendNode.prototype.isVisible = function () {
     return (this.parent.childs.length == 0);
 };
 
-/**
- * Show a contextmenu for this node
- * @param {HTMLElement} anchor   The element to attach the menu to.
- * @param {function} [onClose]   Callback method called when the context menu
- *                               is being closed.
- */
+
 AppendNode.prototype.showContextMenu = function (anchor, onClose) {
     var node = this;
     var titles = Node.TYPE_TITLES;
     var items = [
-        // create append button
-        {
+                {
             'text': 'Append',
             'title': 'Append a new field with type \'auto\' (Ctrl+Shift+Ins)',
             'submenuTitle': 'Select the type of the field to be appended',
@@ -4360,17 +3385,13 @@ AppendNode.prototype.showContextMenu = function (anchor, onClose) {
     menu.show(anchor);
 };
 
-/**
- * Handle an event. The event is catched centrally by the editor
- * @param {Event} event
- */
+
 AppendNode.prototype.onEvent = function (event) {
     var type = event.type;
     var target = event.target || event.srcElement;
     var dom = this.dom;
 
-    // highlight the append nodes parent
-    var menu = dom.menu;
+        var menu = dom.menu;
     if (target == menu) {
         if (type == 'mouseover') {
             this.editor.highlighter.highlight(this.parent);
@@ -4380,8 +3401,7 @@ AppendNode.prototype.onEvent = function (event) {
         }
     }
 
-    // context menu events
-    if (type == 'click' && target == dom.menu) {
+        if (type == 'click' && target == dom.menu) {
         var highlighter = this.editor.highlighter;
         highlighter.highlight(this.parent);
         highlighter.lock();
@@ -4398,15 +3418,7 @@ AppendNode.prototype.onEvent = function (event) {
     }
 };
 
-/**
- * A context menu
- * @param {Object[]} items    Array containing the menu structure
- *                            TODO: describe structure
- * @param {Object} [options]  Object with options. Available options:
- *                            {function} close    Callback called when the
- *                                                context menu is being closed.
- * @constructor
- */
+
 function ContextMenu (items, options) {
     this.dom = {};
 
@@ -4415,24 +3427,19 @@ function ContextMenu (items, options) {
     this.anchor = undefined;
     this.items = items;
     this.eventListeners = {};
-    this.selection = undefined; // holds the selection before the menu was opened
-    this.visibleSubmenu = undefined;
+    this.selection = undefined;     this.visibleSubmenu = undefined;
     this.onClose = options ? options.close : undefined;
 
-    // create a container element
-    var menu = document.createElement('div');
+        var menu = document.createElement('div');
     menu.className = 'jsoneditor-contextmenu';
     dom.menu = menu;
 
-    // create a list to hold the menu items
-    var list = document.createElement('ul');
+        var list = document.createElement('ul');
     list.className = 'menu';
     menu.appendChild(list);
     dom.list = list;
-    dom.items = []; // list with all buttons
-
-    // create a (non-visible) button to set the focus to the menu
-    var focusButton = document.createElement('button');
+    dom.items = []; 
+        var focusButton = document.createElement('button');
     dom.focusButton = focusButton;
     var li = document.createElement('li');
     li.style.overflow = 'hidden';
@@ -4443,8 +3450,7 @@ function ContextMenu (items, options) {
     function createMenuItems (list, domItems, items) {
         items.forEach(function (item) {
             if (item.type == 'separator') {
-                // create a separator
-                var separator = document.createElement('div');
+                                var separator = document.createElement('div');
                 separator.className = 'separator';
                 li = document.createElement('li');
                 li.appendChild(separator);
@@ -4453,12 +3459,10 @@ function ContextMenu (items, options) {
             else {
                 var domItem = {};
 
-                // create a menu item
-                var li = document.createElement('li');
+                                var li = document.createElement('li');
                 list.appendChild(li);
 
-                // create a button in the menu item
-                var button = document.createElement('button');
+                                var button = document.createElement('button');
                 button.className = item.className;
                 domItem.button = button;
                 if (item.title) {
@@ -4472,18 +3476,15 @@ function ContextMenu (items, options) {
                 }
                 li.appendChild(button);
 
-                // create the contents of the button
-                if (item.submenu) {
-                    // add the icon to the button
-                    var divIcon = document.createElement('div');
+                                if (item.submenu) {
+                                        var divIcon = document.createElement('div');
                     divIcon.className = 'icon';
                     button.appendChild(divIcon);
                     button.appendChild(document.createTextNode(item.text));
 
                     var buttonSubmenu;
                     if (item.click) {
-                        // submenu and a button with a click handler
-                        button.className += ' default';
+                                                button.className += ' default';
 
                         var buttonExpand = document.createElement('button');
                         domItem.buttonExpand = buttonExpand;
@@ -4497,22 +3498,19 @@ function ContextMenu (items, options) {
                         buttonSubmenu = buttonExpand;
                     }
                     else {
-                        // submenu and a button without a click handler
-                        var divExpand = document.createElement('div');
+                                                var divExpand = document.createElement('div');
                         divExpand.className = 'expand';
                         button.appendChild(divExpand);
 
                         buttonSubmenu = button;
                     }
 
-                    // attach a handler to expand/collapse the submenu
-                    buttonSubmenu.onclick = function () {
+                                        buttonSubmenu.onclick = function () {
                         me._onExpandItem(domItem);
                         buttonSubmenu.focus();
                     };
 
-                    // create the submenu
-                    var domSubItems = [];
+                                        var domSubItems = [];
                     domItem.subItems = domSubItems;
                     var ul = document.createElement('ul');
                     domItem.ul = ul;
@@ -4522,8 +3520,7 @@ function ContextMenu (items, options) {
                     createMenuItems(ul, domSubItems, item.submenu);
                 }
                 else {
-                    // no submenu, just a button with clickhandler
-                    button.innerHTML = '<div class="icon"></div>' + item.text;
+                                        button.innerHTML = '<div class="icon"></div>' + item.text;
                 }
 
                 domItems.push(domItem);
@@ -4532,21 +3529,14 @@ function ContextMenu (items, options) {
     }
     createMenuItems(list, this.dom.items, items);
 
-    // TODO: when the editor is small, show the submenu on the right instead of inline?
-
-    // calculate the max height of the menu with one submenu expanded
-    this.maxHeight = 0; // height in pixels
-    items.forEach(function (item) {
+    
+        this.maxHeight = 0;     items.forEach(function (item) {
         var height = (items.length + (item.submenu ? item.submenu.length : 0)) * 24;
         me.maxHeight = Math.max(me.maxHeight, height);
     });
 }
 
-/**
- * Get the currently visible buttons
- * @return {Array.<HTMLElement>} buttons
- * @private
- */
+
 ContextMenu.prototype._getVisibleButtons = function () {
     var buttons = [];
     var me = this;
@@ -4561,55 +3551,43 @@ ContextMenu.prototype._getVisibleButtons = function () {
                 if (subItem.buttonExpand) {
                     buttons.push(subItem.buttonExpand);
                 }
-                // TODO: change to fully recursive method
-            });
+                            });
         }
     });
 
     return buttons;
 };
 
-// currently displayed context menu, a singleton. We may only have one visible context menu
 ContextMenu.visibleMenu = undefined;
 
-/**
- * Attach the menu to an anchor
- * @param {HTMLElement} anchor
- */
+
 ContextMenu.prototype.show = function (anchor) {
     this.hide();
 
-    // calculate whether the menu fits below the anchor
-    var windowHeight = util.getWindowHeight();
+        var windowHeight = util.getWindowHeight();
     var anchorHeight = anchor.offsetHeight;
     var menuHeight = this.maxHeight;
 
-    // position the menu
-    var left = util.getAbsoluteLeft(anchor);
+        var left = util.getAbsoluteLeft(anchor);
     var top = util.getAbsoluteTop(anchor);
     if (top + anchorHeight + menuHeight < windowHeight) {
-        // display the menu below the anchor
-        this.dom.menu.style.left = left + 'px';
+                this.dom.menu.style.left = left + 'px';
         this.dom.menu.style.top = (top + anchorHeight) + 'px';
         this.dom.menu.style.bottom = '';
     }
     else {
-        // display the menu above the anchor
-        this.dom.menu.style.left = left + 'px';
+                this.dom.menu.style.left = left + 'px';
         this.dom.menu.style.top = '';
         this.dom.menu.style.bottom = (windowHeight - top) + 'px';
     }
 
-    // attach the menu to the document
-    document.body.appendChild(this.dom.menu);
+        document.body.appendChild(this.dom.menu);
 
-    // create and attach event listeners
-    var me = this;
+        var me = this;
     var list = this.dom.list;
     this.eventListeners.mousedown = util.addEventListener(
         document, 'mousedown', function (event) {
-            // hide menu on click outside of the menu
-            event = event || window.event;
+                        event = event || window.event;
             var target = event.target || event.srcElement;
             if ((target != list) && !me._isChildOf(target, list)) {
                 me.hide();
@@ -4619,8 +3597,7 @@ ContextMenu.prototype.show = function (anchor) {
         });
     this.eventListeners.mousewheel = util.addEventListener(
         document, 'mousewheel', function () {
-            // hide the menu on mouse scroll
-            util.stopPropagation(event);
+                        util.stopPropagation(event);
             util.preventDefault(event);
         });
     this.eventListeners.keydown = util.addEventListener(
@@ -4628,8 +3605,7 @@ ContextMenu.prototype.show = function (anchor) {
             me._onKeyDown(event);
         });
 
-    // move focus to the first button in the context menu
-    this.selection = util.getSelection();
+        this.selection = util.getSelection();
     this.anchor = anchor;
     setTimeout(function () {
         me.dom.focusButton.focus();
@@ -4641,21 +3617,16 @@ ContextMenu.prototype.show = function (anchor) {
     ContextMenu.visibleMenu = this;
 };
 
-/**
- * Hide the context menu if visible
- */
+
 ContextMenu.prototype.hide = function () {
-    // remove the menu from the DOM
-    if (this.dom.menu.parentNode) {
+        if (this.dom.menu.parentNode) {
         this.dom.menu.parentNode.removeChild(this.dom.menu);
         if (this.onClose) {
             this.onClose();
         }
     }
 
-    // remove all event listeners
-    // all event listeners are supposed to be attached to document.
-    for (var name in this.eventListeners) {
+            for (var name in this.eventListeners) {
         if (this.eventListeners.hasOwnProperty(name)) {
             var fn = this.eventListeners[name];
             if (fn) {
@@ -4670,36 +3641,27 @@ ContextMenu.prototype.hide = function () {
     }
 };
 
-/**
- * Expand a submenu
- * Any currently expanded submenu will be hided.
- * @param {Object} domItem
- * @private
- */
+
 ContextMenu.prototype._onExpandItem = function (domItem) {
     var me = this;
     var alreadyVisible = (domItem == this.expandedItem);
 
-    // hide the currently visible submenu
-    var expandedItem = this.expandedItem;
+        var expandedItem = this.expandedItem;
     if (expandedItem) {
-        //var ul = expandedItem.ul;
-        expandedItem.ul.style.height = '0';
+                expandedItem.ul.style.height = '0';
         expandedItem.ul.style.padding = '';
         setTimeout(function () {
             if (me.expandedItem != expandedItem) {
                 expandedItem.ul.style.display = '';
                 util.removeClassName(expandedItem.ul.parentNode, 'selected');
             }
-        }, 300); // timeout duration must match the css transition duration
-        this.expandedItem = undefined;
+        }, 300);         this.expandedItem = undefined;
     }
 
     if (!alreadyVisible) {
         var ul = domItem.ul;
         ul.style.display = 'block';
-        var height = ul.clientHeight; // force a reflow in Firefox
-        setTimeout(function () {
+        var height = ul.clientHeight;         setTimeout(function () {
             if (me.expandedItem == domItem) {
                 ul.style.height = (ul.childNodes.length * 24) + 'px';
                 ul.style.padding = '5px 10px';
@@ -4710,11 +3672,7 @@ ContextMenu.prototype._onExpandItem = function (domItem) {
     }
 };
 
-/**
- * Handle onkeydown event
- * @param {Event} event
- * @private
- */
+
 ContextMenu.prototype._onKeyDown = function (event) {
     event = event || window.event;
     var target = event.target || event.srcElement;
@@ -4722,11 +3680,8 @@ ContextMenu.prototype._onKeyDown = function (event) {
     var handled = false;
     var buttons, targetIndex, prevButton, nextButton;
 
-    if (keynum == 27) { // ESC
-        // hide the menu on ESC key
-
-        // restore previous selection and focus
-        if (this.selection) {
+    if (keynum == 27) {         
+                if (this.selection) {
             util.setSelection(this.selection);
         }
         if (this.anchor) {
@@ -4737,28 +3692,22 @@ ContextMenu.prototype._onKeyDown = function (event) {
 
         handled = true;
     }
-    else if (keynum == 9) { // Tab
-        if (!event.shiftKey) { // Tab
-            buttons = this._getVisibleButtons();
+    else if (keynum == 9) {         if (!event.shiftKey) {             buttons = this._getVisibleButtons();
             targetIndex = buttons.indexOf(target);
             if (targetIndex == buttons.length - 1) {
-                // move to first button
-                buttons[0].focus();
+                                buttons[0].focus();
                 handled = true;
             }
         }
-        else { // Shift+Tab
-            buttons = this._getVisibleButtons();
+        else {             buttons = this._getVisibleButtons();
             targetIndex = buttons.indexOf(target);
             if (targetIndex == 0) {
-                // move to last button
-                buttons[buttons.length - 1].focus();
+                                buttons[buttons.length - 1].focus();
                 handled = true;
             }
         }
     }
-    else if (keynum == 37) { // Arrow Left
-        if (target.className == 'expand') {
+    else if (keynum == 37) {         if (target.className == 'expand') {
             buttons = this._getVisibleButtons();
             targetIndex = buttons.indexOf(target);
             prevButton = buttons[targetIndex - 1];
@@ -4768,25 +3717,21 @@ ContextMenu.prototype._onKeyDown = function (event) {
         }
         handled = true;
     }
-    else if (keynum == 38) { // Arrow Up
-        buttons = this._getVisibleButtons();
+    else if (keynum == 38) {         buttons = this._getVisibleButtons();
         targetIndex = buttons.indexOf(target);
         prevButton = buttons[targetIndex - 1];
         if (prevButton && prevButton.className == 'expand') {
-            // skip expand button
-            prevButton = buttons[targetIndex - 2];
+                        prevButton = buttons[targetIndex - 2];
         }
         if (!prevButton) {
-            // move to last button
-            prevButton = buttons[buttons.length - 1];
+                        prevButton = buttons[buttons.length - 1];
         }
         if (prevButton) {
             prevButton.focus();
         }
         handled = true;
     }
-    else if (keynum == 39) { // Arrow Right
-        buttons = this._getVisibleButtons();
+    else if (keynum == 39) {         buttons = this._getVisibleButtons();
         targetIndex = buttons.indexOf(target);
         nextButton = buttons[targetIndex + 1];
         if (nextButton && nextButton.className == 'expand') {
@@ -4794,17 +3739,14 @@ ContextMenu.prototype._onKeyDown = function (event) {
         }
         handled = true;
     }
-    else if (keynum == 40) { // Arrow Down
-        buttons = this._getVisibleButtons();
+    else if (keynum == 40) {         buttons = this._getVisibleButtons();
         targetIndex = buttons.indexOf(target);
         nextButton = buttons[targetIndex + 1];
         if (nextButton && nextButton.className == 'expand') {
-            // skip expand button
-            nextButton = buttons[targetIndex + 2];
+                        nextButton = buttons[targetIndex + 2];
         }
         if (!nextButton) {
-            // move to first button
-            nextButton = buttons[0];
+                        nextButton = buttons[0];
         }
         if (nextButton) {
             nextButton.focus();
@@ -4812,20 +3754,14 @@ ContextMenu.prototype._onKeyDown = function (event) {
         }
         handled = true;
     }
-    // TODO: arrow left and right
-
+    
     if (handled) {
         util.stopPropagation(event);
         util.preventDefault(event);
     }
 };
 
-/**
- * Test if an element is a child of a parent element.
- * @param {Element} child
- * @param {Element} parent
- * @return {boolean} isChild
- */
+
 ContextMenu.prototype._isChildOf = function (child, parent) {
     var e = child.parentNode;
     while (e) {
@@ -4839,17 +3775,12 @@ ContextMenu.prototype._isChildOf = function (child, parent) {
 };
 
 
-/**
- * @constructor History
- * Store action history, enables undo and redo
- * @param {JSONEditor} editor
- */
+
 function History (editor) {
     this.editor = editor;
     this.clear();
 
-    // map with all supported actions
-    this.actions = {
+        this.actions = {
         'editField': {
             'undo': function (params) {
                 params.node.updateField(params.oldValue);
@@ -4941,28 +3872,13 @@ function History (editor) {
             }
         }
 
-        // TODO: restore the original caret position and selection with each undo
-        // TODO: implement history for actions "expand", "collapse", "scroll", "setDocument"
-    };
+                    };
 }
 
-/**
- * The method onChange is executed when the History is changed, and can
- * be overloaded.
- */
+
 History.prototype.onChange = function () {};
 
-/**
- * Add a new action to the history
- * @param {String} action  The executed action. Available actions: "editField",
- *                         "editValue", "changeType", "appendNode",
- *                         "removeNode", "duplicateNode", "moveNode"
- * @param {Object} params  Object containing parameters describing the change.
- *                         The parameters in params depend on the action (for
- *                         example for "editValue" the Node, old value, and new
- *                         value are provided). params contains all information
- *                         needed to undo or redo the action.
- */
+
 History.prototype.add = function (action, params) {
     this.index++;
     this.history[this.index] = {
@@ -4971,45 +3887,32 @@ History.prototype.add = function (action, params) {
         'timestamp': new Date()
     };
 
-    // remove redo actions which are invalid now
-    if (this.index < this.history.length - 1) {
+        if (this.index < this.history.length - 1) {
         this.history.splice(this.index + 1, this.history.length - this.index - 1);
     }
 
-    // fire onchange event
-    this.onChange();
+        this.onChange();
 };
 
-/**
- * Clear history
- */
+
 History.prototype.clear = function () {
     this.history = [];
     this.index = -1;
 
-    // fire onchange event
-    this.onChange();
+        this.onChange();
 };
 
-/**
- * Check if there is an action available for undo
- * @return {Boolean} canUndo
- */
+
 History.prototype.canUndo = function () {
     return (this.index >= 0);
 };
 
-/**
- * Check if there is an action available for redo
- * @return {Boolean} canRedo
- */
+
 History.prototype.canRedo = function () {
     return (this.index < this.history.length - 1);
 };
 
-/**
- * Undo the last action
- */
+
 History.prototype.undo = function () {
     if (this.canUndo()) {
         var obj = this.history[this.index];
@@ -5027,14 +3930,11 @@ History.prototype.undo = function () {
         }
         this.index--;
 
-        // fire onchange event
-        this.onChange();
+                this.onChange();
     }
 };
 
-/**
- * Redo the last action
- */
+
 History.prototype.redo = function () {
     if (this.canRedo()) {
         this.index++;
@@ -5053,25 +3953,17 @@ History.prototype.redo = function () {
             }
         }
 
-        // fire onchange event
-        this.onChange();
+                this.onChange();
     }
 };
 
-/**
- * @constructor SearchBox
- * Create a search box in given HTML container
- * @param {JSONEditor} editor    The JSON Editor to attach to
- * @param {Element} container               HTML container element of where to
- *                                          create the search box
- */
+
 function SearchBox (editor, container) {
     var searchBox = this;
 
     this.editor = editor;
     this.timeout = undefined;
-    this.delay = 200; // ms
-    this.lastText = undefined;
+    this.delay = 200;     this.lastText = undefined;
 
     this.dom = {};
     this.dom.container = container;
@@ -5101,8 +3993,7 @@ function SearchBox (editor, container) {
     divInput.title = 'Search fields and values';
     td.appendChild(divInput);
 
-    // table to contain the text input and search button
-    var tableInput = document.createElement('table');
+        var tableInput = document.createElement('table');
     divInput.appendChild(tableInput);
     var tbodySearch = document.createElement('tbody');
     tableInput.appendChild(tbodySearch);
@@ -5120,8 +4011,7 @@ function SearchBox (editor, container) {
     search.oninput = function (event) {
         searchBox._onDelayedSearch(event);
     };
-    search.onchange = function (event) { // For IE 8
-        searchBox._onSearch(event);
+    search.onchange = function (event) {         searchBox._onSearch(event);
     };
     search.onkeydown = function (event) {
         searchBox._onKeyDown(event);
@@ -5133,8 +4023,7 @@ function SearchBox (editor, container) {
         search.select();
     };
 
-    // TODO: ESC in FF restores the last input, is a FF bug, https://bugzilla.mozilla.org/show_bug.cgi?id=598819
-    td = document.createElement('td');
+        td = document.createElement('td');
     td.appendChild(search);
     tr.appendChild(td);
 
@@ -5159,11 +4048,7 @@ function SearchBox (editor, container) {
     tr.appendChild(td);
 }
 
-/**
- * Go to the next search result
- * @param {boolean} [focus]   If true, focus will be set to the next result
- *                            focus is false by default.
- */
+
 SearchBox.prototype.next = function(focus) {
     if (this.results != undefined) {
         var index = (this.resultIndex != undefined) ? this.resultIndex + 1 : 0;
@@ -5174,11 +4059,7 @@ SearchBox.prototype.next = function(focus) {
     }
 };
 
-/**
- * Go to the prevous search result
- * @param {boolean} [focus]   If true, focus will be set to the next result
- *                            focus is false by default.
- */
+
 SearchBox.prototype.previous = function(focus) {
     if (this.results != undefined) {
         var max = this.results.length - 1;
@@ -5190,16 +4071,9 @@ SearchBox.prototype.previous = function(focus) {
     }
 };
 
-/**
- * Set new value for the current active result
- * @param {Number} index
- * @param {boolean} [focus]   If true, focus will be set to the next result.
- *                            focus is false by default.
- * @private
- */
+
 SearchBox.prototype._setActiveResult = function(index, focus) {
-    // de-activate current active result
-    if (this.activeResult) {
+        if (this.activeResult) {
         var prevNode = this.activeResult.node;
         var prevElem = this.activeResult.elem;
         if (prevElem == 'field') {
@@ -5212,16 +4086,14 @@ SearchBox.prototype._setActiveResult = function(index, focus) {
     }
 
     if (!this.results || !this.results[index]) {
-        // out of range, set to undefined
-        this.resultIndex = undefined;
+                this.resultIndex = undefined;
         this.activeResult = undefined;
         return;
     }
 
     this.resultIndex = index;
 
-    // set new node active
-    var node = this.results[this.resultIndex].node;
+        var node = this.results[this.resultIndex].node;
     var elem = this.results[this.resultIndex].elem;
     if (elem == 'field') {
         node.searchFieldActive = true;
@@ -5232,18 +4104,14 @@ SearchBox.prototype._setActiveResult = function(index, focus) {
     this.activeResult = this.results[this.resultIndex];
     node.updateDom();
 
-    // TODO: not so nice that the focus is only set after the animation is finished
-    node.scrollTo(function () {
+        node.scrollTo(function () {
         if (focus) {
             node.focus(elem);
         }
     });
 };
 
-/**
- * Cancel any running onDelayedSearch.
- * @private
- */
+
 SearchBox.prototype._clearDelay = function() {
     if (this.timeout != undefined) {
         clearTimeout(this.timeout);
@@ -5251,16 +4119,9 @@ SearchBox.prototype._clearDelay = function() {
     }
 };
 
-/**
- * Start a timer to execute a search after a short delay.
- * Used for reducing the number of searches while typing.
- * @param {Event} event
- * @private
- */
+
 SearchBox.prototype._onDelayedSearch = function (event) {
-    // execute the search after a short delay (reduces the number of
-    // search actions while typing in the search text box)
-    this._clearDelay();
+            this._clearDelay();
     var searchBox = this;
     this.timeout = setTimeout(function (event) {
             searchBox._onSearch(event);
@@ -5268,27 +4129,18 @@ SearchBox.prototype._onDelayedSearch = function (event) {
         this.delay);
 };
 
-/**
- * Handle onSearch event
- * @param {Event} event
- * @param {boolean} [forceSearch]  If true, search will be executed again even
- *                                 when the search text is not changed.
- *                                 Default is false.
- * @private
- */
+
 SearchBox.prototype._onSearch = function (event, forceSearch) {
     this._clearDelay();
 
     var value = this.dom.search.value;
     var text = (value.length > 0) ? value : undefined;
     if (text != this.lastText || forceSearch) {
-        // only search again when changed
-        this.lastText = text;
+                this.lastText = text;
         this.results = this.editor.search(text);
         this._setActiveResult(undefined);
 
-        // display search results
-        if (text != undefined) {
+                if (text != undefined) {
             var resultCount = this.results.length;
             switch (resultCount) {
                 case 0: this.dom.results.innerHTML = 'no&nbsp;results'; break;
@@ -5302,88 +4154,59 @@ SearchBox.prototype._onSearch = function (event, forceSearch) {
     }
 };
 
-/**
- * Handle onKeyDown event in the input box
- * @param {Event} event
- * @private
- */
+
 SearchBox.prototype._onKeyDown = function (event) {
     event = event || window.event;
     var keynum = event.which || event.keyCode;
-    if (keynum == 27) { // ESC
-        this.dom.search.value = '';  // clear search
-        this._onSearch(event);
+    if (keynum == 27) {         this.dom.search.value = '';          this._onSearch(event);
         util.preventDefault(event);
         util.stopPropagation(event);
     }
-    else if (keynum == 13) { // Enter
-        if (event.ctrlKey) {
-            // force to search again
-            this._onSearch(event, true);
+    else if (keynum == 13) {         if (event.ctrlKey) {
+                        this._onSearch(event, true);
         }
         else if (event.shiftKey) {
-            // move to the previous search result
-            this.previous();
+                        this.previous();
         }
         else {
-            // move to the next search result
-            this.next();
+                        this.next();
         }
         util.preventDefault(event);
         util.stopPropagation(event);
     }
 };
 
-/**
- * Handle onKeyUp event in the input box
- * @param {Event} event
- * @private
- */
+
 SearchBox.prototype._onKeyUp = function (event) {
     event = event || window.event;
     var keynum = event.which || event.keyCode;
-    if (keynum != 27 && keynum != 13) { // !show and !Enter
-        this._onDelayedSearch(event);   // For IE 8
-    }
+    if (keynum != 27 && keynum != 13) {         this._onDelayedSearch(event);       }
 };
 
-/**
- * The highlighter can highlight/unhighlight a node, and
- * animate the visibility of a context menu.
- * @constructor Highlighter
- */
+
 function Highlighter () {
     this.locked = false;
 }
 
-/**
- * Hightlight given node and its childs
- * @param {Node} node
- */
+
 Highlighter.prototype.highlight = function (node) {
     if (this.locked) {
         return;
     }
 
     if (this.node != node) {
-        // unhighlight current node
-        if (this.node) {
+                if (this.node) {
             this.node.setHighlight(false);
         }
 
-        // highlight new node
-        this.node = node;
+                this.node = node;
         this.node.setHighlight(true);
     }
 
-    // cancel any current timeout
-    this._cancelUnhighlight();
+        this._cancelUnhighlight();
 };
 
-/**
- * Unhighlight currently highlighted node.
- * Will be done after a delay
- */
+
 Highlighter.prototype.unhighlight = function () {
     if (this.locked) {
         return;
@@ -5393,10 +4216,7 @@ Highlighter.prototype.unhighlight = function () {
     if (this.node) {
         this._cancelUnhighlight();
 
-        // do the unhighlighting after a small delay, to prevent re-highlighting
-        // the same node when moving from the drag-icon to the contextmenu-icon
-        // or vice versa.
-        this.unhighlightTimer = setTimeout(function () {
+                                this.unhighlightTimer = setTimeout(function () {
             me.node.setHighlight(false);
             me.node = undefined;
             me.unhighlightTimer = undefined;
@@ -5404,10 +4224,7 @@ Highlighter.prototype.unhighlight = function () {
     }
 };
 
-/**
- * Cancel an unhighlight action (if before the timeout of the unhighlight action)
- * @private
- */
+
 Highlighter.prototype._cancelUnhighlight = function () {
     if (this.unhighlightTimer) {
         clearTimeout(this.unhighlightTimer);
@@ -5415,27 +4232,18 @@ Highlighter.prototype._cancelUnhighlight = function () {
     }
 };
 
-/**
- * Lock highlighting or unhighlighting nodes.
- * methods highlight and unhighlight do not work while locked.
- */
+
 Highlighter.prototype.lock = function () {
     this.locked = true;
 };
 
-/**
- * Unlock highlighting or unhighlighting nodes
- */
+
 Highlighter.prototype.unlock = function () {
     this.locked = false;
 };
 
-// create namespace
 util = {};
 
-// Internet Explorer 8 and older does not support Array.indexOf,
-// so we define it here in that case
-// http://soledadpenades.com/2007/05/17/arrayindexof-in-internet-explorer/
 if(!Array.prototype.indexOf) {
     Array.prototype.indexOf = function(obj){
         for(var i = 0; i < this.length; i++){
@@ -5447,9 +4255,6 @@ if(!Array.prototype.indexOf) {
     }
 }
 
-// Internet Explorer 8 and older does not support Array.forEach,
-// so we define it here in that case
-// https://developer.mozilla.org/en-US/docs/JavaScript/Reference/Global_Objects/Array/forEach
 if (!Array.prototype.forEach) {
     Array.prototype.forEach = function(fn, scope) {
         for(var i = 0, len = this.length; i < len; ++i) {
@@ -5458,29 +4263,18 @@ if (!Array.prototype.forEach) {
     }
 }
 
-/**
- * Parse JSON using the parser built-in in the browser.
- * On exception, the jsonString is validated and a detailed error is thrown.
- * @param {String} jsonString
- */
+
 util.parse = function (jsonString) {
     try {
         return JSON.parse(jsonString);
     }
     catch (err) {
-        // try to throw a more detailed error message using validate
-        util.validate(jsonString);
+                util.validate(jsonString);
         throw err;
     }
 };
 
-/**
- * Validate a string containing a JSON object
- * This method uses JSONLint to validate the String. If JSONLint is not
- * available, the built-in JSON parser of the browser is used.
- * @param {String} jsonString   String with an (invalid) JSON object
- * @throws Error
- */
+
 util.validate = function (jsonString) {
     if (typeof(jsonlint) != 'undefined') {
         jsonlint.parse(jsonString);
@@ -5490,12 +4284,7 @@ util.validate = function (jsonString) {
     }
 };
 
-/**
- * Extend object a with the properties of object b
- * @param {Object} a
- * @param {Object} b
- * @return {Object} a
- */
+
 util.extend = function (a, b) {
     for (var prop in b) {
         if (b.hasOwnProperty(prop)) {
@@ -5505,11 +4294,7 @@ util.extend = function (a, b) {
     return a;
 };
 
-/**
- * Remove all properties from object a
- * @param {Object} a
- * @return {Object} a
- */
+
 util.clear = function (a) {
     for (var prop in a) {
         if (a.hasOwnProperty(prop)) {
@@ -5519,33 +4304,21 @@ util.clear = function (a) {
     return a;
 };
 
-/**
- * Output text to the console, if console is available
- * @param {...*} args
- */
+
 util.log = function(args) {
     if (console && typeof console.log === 'function') {
         console.log.apply(console, arguments);
     }
 };
 
-/**
- * Test whether a text contains a url (matches when a string starts
- * with 'http://*' or 'https://*' and has no whitespace characters)
- * @param {String} text
- */
+
 var isUrlRegex = /^https?:\/\/\S+$/;
 util.isUrl = function (text) {
     return (typeof text == 'string' || text instanceof String) &&
         isUrlRegex.test(text);
 };
 
-/**
- * Retrieve the absolute left value of a DOM element
- * @param {Element} elem    A dom element, for example a div
- * @return {Number} left    The absolute left position of this element
- *                          in the browser page.
- */
+
 util.getAbsoluteLeft = function (elem) {
     var left = elem.offsetLeft;
     var body = document.body;
@@ -5558,12 +4331,7 @@ util.getAbsoluteLeft = function (elem) {
     return left;
 };
 
-/**
- * Retrieve the absolute top value of a DOM element
- * @param {Element} elem    A dom element, for example a div
- * @return {Number} top    The absolute top position of this element
- *                          in the browser page.
- */
+
 util.getAbsoluteTop = function (elem) {
     var top = elem.offsetTop;
     var body = document.body;
@@ -5576,102 +4344,71 @@ util.getAbsoluteTop = function (elem) {
     return top;
 };
 
-/**
- * Get the absolute, vertical mouse position from an event.
- * @param {Event} event
- * @return {Number} mouseY
- */
+
 util.getMouseY = function (event) {
     var mouseY;
     if ('pageY' in event) {
         mouseY = event.pageY;
     }
     else {
-        // for IE8 and older
-        mouseY = (event.clientY + document.documentElement.scrollTop);
+                mouseY = (event.clientY + document.documentElement.scrollTop);
     }
 
     return mouseY;
 };
 
-/**
- * Get the absolute, horizontal mouse position from an event.
- * @param {Event} event
- * @return {Number} mouseX
- */
+
 util.getMouseX = function (event) {
     var mouseX;
     if ('pageX' in event) {
         mouseX = event.pageX;
     }
     else {
-        // for IE8 and older
-        mouseX = (event.clientX + document.documentElement.scrollLeft);
+                mouseX = (event.clientX + document.documentElement.scrollLeft);
     }
 
     return mouseX;
 };
 
-/**
- * Get the window height
- * @return {Number} windowHeight
- */
+
 util.getWindowHeight = function () {
     if ('innerHeight' in window) {
         return window.innerHeight;
     }
     else {
-        // for IE8 and older
-        return Math.max(document.body.clientHeight,
+                return Math.max(document.body.clientHeight,
             document.documentElement.clientHeight);
     }
 };
 
-/**
- * add a className to the given elements style
- * @param {Element} elem
- * @param {String} className
- */
+
 util.addClassName = function(elem, className) {
     var classes = elem.className.split(' ');
     if (classes.indexOf(className) == -1) {
-        classes.push(className); // add the class to the array
-        elem.className = classes.join(' ');
+        classes.push(className);         elem.className = classes.join(' ');
     }
 };
 
-/**
- * add a className to the given elements style
- * @param {Element} elem
- * @param {String} className
- */
+
 util.removeClassName = function(elem, className) {
     var classes = elem.className.split(' ');
     var index = classes.indexOf(className);
     if (index != -1) {
-        classes.splice(index, 1); // remove the class from the array
-        elem.className = classes.join(' ');
+        classes.splice(index, 1);         elem.className = classes.join(' ');
     }
 };
 
-/**
- * Strip the formatting from the contents of a div
- * the formatting from the div itself is not stripped, only from its childs.
- * @param {Element} divElement
- */
+
 util.stripFormatting = function (divElement) {
     var childs = divElement.childNodes;
     for (var i = 0, iMax = childs.length; i < iMax; i++) {
         var child = childs[i];
 
-        // remove the style
-        if (child.style) {
-            // TODO: test if child.attributes does contain style
-            child.removeAttribute('style');
+                if (child.style) {
+                        child.removeAttribute('style');
         }
 
-        // remove all attributes
-        var attributes = child.attributes;
+                var attributes = child.attributes;
         if (attributes) {
             for (var j = attributes.length - 1; j >= 0; j--) {
                 var attribute = attributes[j];
@@ -5681,41 +4418,18 @@ util.stripFormatting = function (divElement) {
             }
         }
 
-        // recursively strip childs
-        util.stripFormatting(child);
+                util.stripFormatting(child);
     }
 };
 
-/**
- * Set focus to the end of an editable div
- * code from Nico Burns
- * http://stackoverflow.com/users/140293/nico-burns
- * http://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity
- * @param {Element} contentEditableElement   A content editable div
- */
+
 util.setEndOfContentEditable = function (contentEditableElement) {
     var range, selection;
-    if(document.createRange) {//Firefox, Chrome, Opera, Safari, IE 9+
-        range = document.createRange();//Create a range (a range is a like the selection but invisible)
-        range.selectNodeContents(contentEditableElement);//Select the entire contents of the element with the range
-        range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
-        selection = window.getSelection();//get the selection object (allows you to change selection)
-        selection.removeAllRanges();//remove any selections already made
-        selection.addRange(range);//make the range you have just created the visible selection
-    }
-    else if(document.selection) {//IE 8 and lower
-        range = document.body.createTextRange();//Create a range (a range is a like the selection but invisible)
-        range.moveToElementText(contentEditableElement);//Select the entire contents of the element with the range
-        range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
-        range.select();//Select the range (make it the visible selection
-    }
+    if(document.createRange) {        range = document.createRange();        range.selectNodeContents(contentEditableElement);        range.collapse(false);        selection = window.getSelection();        selection.removeAllRanges();        selection.addRange(range);    }
+    else if(document.selection) {        range = document.body.createTextRange();        range.moveToElementText(contentEditableElement);        range.collapse(false);        range.select();    }
 };
 
-/**
- * Select all text of a content editable div.
- * http://stackoverflow.com/a/3806004/1262753
- * @param {Element} contentEditableElement   A content editable div
- */
+
 util.selectContentEditable = function (contentEditableElement) {
     if (!contentEditableElement || contentEditableElement.nodeName != 'DIV') {
         return;
@@ -5735,11 +4449,7 @@ util.selectContentEditable = function (contentEditableElement) {
     }
 };
 
-/**
- * Get text selection
- * http://stackoverflow.com/questions/4687808/contenteditable-selected-text-save-and-restore
- * @return {Range | TextRange | null} range
- */
+
 util.getSelection = function () {
     if (window.getSelection) {
         var sel = window.getSelection();
@@ -5752,11 +4462,7 @@ util.getSelection = function () {
     return null;
 };
 
-/**
- * Set text selection
- * http://stackoverflow.com/questions/4687808/contenteditable-selected-text-save-and-restore
- * @param {Range | TextRange | null} range
- */
+
 util.setSelection = function (range) {
     if (range) {
         if (window.getSelection) {
@@ -5769,15 +4475,7 @@ util.setSelection = function (range) {
     }
 };
 
-/**
- * Get selected text range
- * @return {Object} params  object containing parameters:
- *                              {Number}  startOffset
- *                              {Number}  endOffset
- *                              {Element} container  HTML element holding the
- *                                                   selected text element
- *                          Returns null if no text selection is found
- */
+
 util.getSelectionOffset = function () {
     var range = util.getSelection();
 
@@ -5790,43 +4488,28 @@ util.getSelectionOffset = function () {
         };
     }
     else {
-        // TODO: implement getSelectionOffset for IE8
-    }
+            }
 
     return null;
 };
 
-/**
- * Set selected text range in given element
- * @param {Object} params   An object containing:
- *                              {Element} container
- *                              {Number} startOffset
- *                              {Number} endOffset
- */
+
 util.setSelectionOffset = function (params) {
     if (document.createRange && window.getSelection) {
         var selection = window.getSelection();
         if(selection) {
             var range = document.createRange();
-            // TODO: do not suppose that the first child of the container is a textnode,
-            //       but recursively find the textnodes
-            range.setStart(params.container.firstChild, params.startOffset);
+                                    range.setStart(params.container.firstChild, params.startOffset);
             range.setEnd(params.container.firstChild, params.endOffset);
 
             util.setSelection(range);
         }
     }
     else {
-        // TODO: implement setSelectionOffset for IE8
-    }
+            }
 };
 
-/**
- * Get the inner text of an HTML element (for example a div element)
- * @param {Element} element
- * @param {Object} [buffer]
- * @return {String} innerText
- */
+
 util.getInnerText = function (element, buffer) {
     var first = (buffer == undefined);
     if (first) {
@@ -5843,13 +4526,11 @@ util.getInnerText = function (element, buffer) {
         };
     }
 
-    // text node
-    if (element.nodeValue) {
+        if (element.nodeValue) {
         return buffer.flush() + element.nodeValue;
     }
 
-    // divs or other HTML elements
-    if (element.hasChildNodes()) {
+        if (element.hasChildNodes()) {
         var childNodes = element.childNodes;
         var innerText = '';
 
@@ -5879,29 +4560,17 @@ util.getInnerText = function (element, buffer) {
     }
     else {
         if (element.nodeName == 'P' && util.getInternetExplorerVersion() != -1) {
-            // On Internet Explorer, a <p> with hasChildNodes()==false is
-            // rendered with a new line. Note that a <p> with
-            // hasChildNodes()==true is rendered without a new line
-            // Other browsers always ensure there is a <br> inside the <p>,
-            // and if not, the <p> does not render a new line
-            return buffer.flush();
+                                                                        return buffer.flush();
         }
     }
 
-    // br or unknown
-    return '';
+        return '';
 };
 
-/**
- * Returns the version of Internet Explorer or a -1
- * (indicating the use of another browser).
- * Source: http://msdn.microsoft.com/en-us/library/ms537509(v=vs.85).aspx
- * @return {Number} Internet Explorer version, or -1 in case of an other browser
- */
+
 util.getInternetExplorerVersion = function() {
     if (_ieVersion == -1) {
-        var rv = -1; // Return value assumes failure.
-        if (navigator.appName == 'Microsoft Internet Explorer')
+        var rv = -1;         if (navigator.appName == 'Microsoft Internet Explorer')
         {
             var ua = navigator.userAgent;
             var re  = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
@@ -5916,36 +4585,22 @@ util.getInternetExplorerVersion = function() {
     return _ieVersion;
 };
 
-/**
- * cached internet explorer version
- * @type {Number}
- * @private
- */
+
 var _ieVersion = -1;
 
-/**
- * Add and event listener. Works for all browsers
- * @param {Element}     element    An html element
- * @param {string}      action     The action, for example "click",
- *                                 without the prefix "on"
- * @param {function}    listener   The callback function to be executed
- * @param {boolean}     [useCapture] false by default
- * @return {function}   the created event listener
- */
+
 util.addEventListener = function (element, action, listener, useCapture) {
     if (element.addEventListener) {
         if (useCapture === undefined)
             useCapture = false;
 
         if (action === "mousewheel" && navigator.userAgent.indexOf("Firefox") >= 0) {
-            action = "DOMMouseScroll";  // For Firefox
-        }
+            action = "DOMMouseScroll";          }
 
         element.addEventListener(action, listener, useCapture);
         return listener;
     } else {
-        // IE browsers
-        var f = function () {
+                var f = function () {
             return listener.call(element, window.event);
         };
         element.attachEvent("on" + action, f);
@@ -5953,68 +4608,48 @@ util.addEventListener = function (element, action, listener, useCapture) {
     }
 };
 
-/**
- * Remove an event listener from an element
- * @param {Element}  element   An html dom element
- * @param {string}   action    The name of the event, for example "mousedown"
- * @param {function} listener  The listener function
- * @param {boolean}  [useCapture]   false by default
- */
+
 util.removeEventListener = function(element, action, listener, useCapture) {
     if (element.removeEventListener) {
-        // non-IE browsers
-        if (useCapture === undefined)
+                if (useCapture === undefined)
             useCapture = false;
 
         if (action === "mousewheel" && navigator.userAgent.indexOf("Firefox") >= 0) {
-            action = "DOMMouseScroll";  // For Firefox
-        }
+            action = "DOMMouseScroll";          }
 
         element.removeEventListener(action, listener, useCapture);
     } else {
-        // IE browsers
-        element.detachEvent("on" + action, listener);
+                element.detachEvent("on" + action, listener);
     }
 };
 
 
-/**
- * Stop event propagation
- * @param {Event} event
- */
+
 util.stopPropagation = function (event) {
     if (!event) {
         event = window.event;
     }
 
     if (event.stopPropagation) {
-        event.stopPropagation();  // non-IE browsers
-    }
+        event.stopPropagation();      }
     else {
-        event.cancelBubble = true;  // IE browsers
-    }
+        event.cancelBubble = true;      }
 };
 
 
-/**
- * Cancels the event if it is cancelable, without stopping further propagation of the event.
- * @param {Event} event
- */
+
 util.preventDefault = function (event) {
     if (!event) {
         event = window.event;
     }
 
     if (event.preventDefault) {
-        event.preventDefault();  // non-IE browsers
-    }
+        event.preventDefault();      }
     else {
-        event.returnValue = false;  // IE browsers
-    }
+        event.returnValue = false;      }
 };
 
 
-// module exports
 var jsoneditor = {
     'JSONEditor': JSONEditor,
     'JSONFormatter': function () {
@@ -6024,35 +4659,26 @@ var jsoneditor = {
     'util': util
 };
 
-/**
- * load jsoneditor.css
- */
+
 var loadCss = function () {
-    // get the script location, and built the css file name from the js file name
-    // http://stackoverflow.com/a/2161748/1262753
-    var scripts = document.getElementsByTagName('script');
+            var scripts = document.getElementsByTagName('script');
     var jsFile = scripts[scripts.length-1].src.split('?')[0];
     var cssFile = jsFile.substring(0, jsFile.length - 2) + 'css';
 
-    // load css
-    var link = document.createElement('link');
+        var link = document.createElement('link');
     link.type = 'text/css';
     link.rel = 'stylesheet';
     link.href = cssFile;
     document.getElementsByTagName('head')[0].appendChild(link);
 };
 
-/**
- * CommonJS module exports
- */
+
 if (typeof(module) != 'undefined' && typeof(exports) != 'undefined') {
     loadCss();
     module.exports = exports = jsoneditor;
 }
 
-/**
- * AMD module exports
- */
+
 if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
     define(function () {
         loadCss();
@@ -6060,8 +4686,7 @@ if (typeof(require) != 'undefined' && typeof(define) != 'undefined') {
     });
 }
 else {
-    // attach the module to the window, load as a regular javascript file
-    window['jsoneditor'] = jsoneditor;
+        window['jsoneditor'] = jsoneditor;
 }
 
 

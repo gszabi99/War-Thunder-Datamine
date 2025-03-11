@@ -343,7 +343,7 @@ def isDasNative(var t : TypeDeclPtr) : bool
   if length(t.dim) > 0
     return true
 
-  // These are interop types by default, see blobBindings.cpp
+  
   return (
     t.baseType != Type.tBool &&
     t.baseType != Type.tInt8 &&
@@ -361,7 +361,7 @@ def isDasNative(var t : TypeDeclPtr) : bool
 
 [macro_function]
 def useDasCtorDtor(var t : TypeDeclPtr) : bool
-  // For Pods, we can use memset to 0 on the C++ side
+  
   return !t.isPod && isDasNative(t)
 
 [macro_function]
@@ -369,7 +369,7 @@ def private tryAddBlobSpecializations(var blobType : TypeDeclPtr; hasDefValue : 
   let mangledBlobTypeName = get_mangled_name(blobType)
   let blobTypeHash = hash(mangledBlobTypeName)
 
-  // We add 2 new types per blob type: blob request and blob handle
+  
   var inscope vrr_type <- typeinfo ast_typedecl(type<VirtualResourceRequest>)
   var vrrBase = vrr_type.structType
   var inscope blobRequestStruct <- clone_structure(vrrBase)
@@ -407,9 +407,9 @@ def private tryAddBlobSpecializations(var blobType : TypeDeclPtr; hasDefValue : 
 
   if useDasCtorDtor(blobType)
     var inscope exprReinterpret <- qmacro(unsafe(reinterpret<$t(blobType)?> self))
-    // NOTE: some project use the "please error out if some optimizations
-    // were not possible due to aliasing restrictions" mode, so we need to
-    // explicitly say that no aliasing is happening here, hence the `assumeNoAlias`
+    
+    
+    
     var inscope exprDeref <- new ExprPtr2Ref(subexpr <- exprReinterpret, assumeNoAlias = true)
     var inscope blobCtorFn <- qmacro_function("ctor`{blobTypeHash}") <| \
       $(var self : void?) : void {
@@ -433,9 +433,9 @@ def private tryAddBlobSpecializations(var blobType : TypeDeclPtr; hasDefValue : 
 
   if hasDefValue
     var inscope exprReinterpret <- qmacro(unsafe(reinterpret<$t(blobType)?> self))
-    // NOTE: some project use the "please error out if some optimizations
-    // were not possible due to aliasing restrictions" mode, so we need to
-    // explicitly say that no aliasing is happening here, hence the `assumeNoAlias`
+    
+    
+    
     var inscope exprDeref <- new ExprPtr2Ref(subexpr <- exprReinterpret, assumeNoAlias = true)
     var inscope blobDefCtorFn <- qmacro_function("ctor_def`{blobTypeHash}") <| \
       $(var self : void?; def_value : $t(blobType)) : void {
@@ -446,9 +446,9 @@ def private tryAddBlobSpecializations(var blobType : TypeDeclPtr; hasDefValue : 
   compiling_module() |> add_structure(blobRequestStruct)
   compiling_module() |> add_structure(blobHandleStruct)
 
-// when we do registry |> create("kek") |> blob(type<int>), we need to
-// generate a bunch of stuff and inject it into the script to be used by
-// the following functions like handle, get, etc.
+
+
+
 [call_macro(name="blob")]
 class BlobMacro : AstCallMacro
   [unused_argument(mod)] def override visit(prog : ProgramPtr; mod : Module ?; var expr : smart_ptr<ExprCallMacro>) : ExpressionPtr
@@ -480,7 +480,7 @@ class BlobMacro : AstCallMacro
                  "Blob type must not be void! Got '{describe(blobType)}'")
     macro_verify(!blobType.isConst, prog, expr.at,
                  "Blob type must not be a constant! Got {describe(blobType)}")
-    // hasValue -> !useDasCtorDtor(blobType)
+    
     macro_verify(!hasValue || !useDasCtorDtor(blobType), prog, expr.at,
                  "Non-pod types are not supported yet! Got {describe(blobType)}")
 

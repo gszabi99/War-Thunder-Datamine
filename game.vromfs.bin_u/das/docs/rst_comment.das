@@ -1,4 +1,4 @@
-//fmt:ignore-file
+
 options indenting = 4
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
@@ -151,10 +151,10 @@ class RstComment : AstCommentReader
         if state != ParserState.enum_decl
             panic_rst("expecting enum_decl, got {state}")
         state = ParserState.enum_entry
-        // enum_entry_comment = ""
+        
     def override afterEnumerationEntry ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterEnumerationEntry {name} // {enum_entry_comment}")
-        // enum_entry_comment =""
+        
     def override afterEnumerationEntries ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterEnumerationEntries")
         if state != ParserState.enum_entry
@@ -179,12 +179,12 @@ class RstComment : AstCommentReader
         if state != ParserState.bitfield_alias
             panic_rst("expecting bitfield_alias, got {state}")
         state = ParserState.bitfield_entry
-        // bitfield_entry_comment = ""
+        
     def override afterBitfieldEntry ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterBitfieldEntry {name} // {bitfield_entry_comment}")
         if state != ParserState.bitfield_entry
             panic_rst("expecting bitfield_entry, got {state}")
-        // bitfield_entry_comment = ""
+        
     def override afterBitfieldEntries ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterBitfieldEntries")
         state = ParserState.bitfield_alias
@@ -207,12 +207,12 @@ class RstComment : AstCommentReader
         if state != ParserState.variant_alias
             panic_rst("expecting variant_alias, got {state}")
         state = ParserState.variant_entry
-        // variant_entry_comment = ""
+        
     def override afterVariantEntry ( name:string; prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterVariantEntry {name} // {variant_entry_comment}")
         if state != ParserState.variant_entry
             panic_rst("expecting variant_entry, got {state}")
-        // variant_entry_comment = ""
+        
     def override afterVariantEntries ( prog:ProgramPtr; mod:Module?; info:LineInfo ) : void
         debug_rst("afterVariantEntries")
         if state != ParserState.variant_entry
@@ -286,9 +286,9 @@ class RstComment : AstCommentReader
                     write_to_detail("capture_macro-{get_module_name(prog, mod)}-{ann_name}", structure_comment)
                     is_annotation = true
                     break
-                // else
-                //     to_log(LOG_WARNING, "WARNING: unsupported structure-annotation = {ann.annotation.name} in {st.name}\n")
-        // to_log(LOG_WARNING, "WARNING: unsupported structure-annotation = {ann.annotation.name} in {st.name}\n")
+                
+                
+        
         for fc in field_comments
             if fc.kind=="function"
                 write_to_detail("function-{get_module_name(prog, mod)}-{st.name}-{fc.name}", fc.comment)
