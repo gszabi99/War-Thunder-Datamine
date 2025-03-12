@@ -694,7 +694,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
           this.readyForRespawn = false
 
         if (this.isRespawn)
-          setMousePointerInitialPos(this.getSlotbar()?.getCurrentCrewSlot().findObject("extra_info_block"))
+          setMousePointerInitialPos(this.getSlotbar()?.getCurrentCrewSlot())
       }
     }
     else {

@@ -55,6 +55,12 @@ let directionGroups = [
     lethalRangeMax = 40000.0
   },
   {
+    text = "S30",
+    type = ThreatType.AI,
+    originalName = "S30",
+    lethalRangeMax = 40000.0
+  },
+  {
     text = "S24",
     type = ThreatType.AI,
     originalName = "S24",

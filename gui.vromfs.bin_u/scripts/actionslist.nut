@@ -41,6 +41,11 @@ const __al_item_obj_tpl = "%gui/actionsList/actionsListItem.tpl"
 
 
 
+
+function isActionListParamsValid(params) {
+  return (params?.infoBlock != null || ((params?.actions.len() ?? 0) > 0))
+}
+
 gui_handlers.ActionsList <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
   sceneBlkName = "%gui/actionsList/actionsListBlock.blk"
@@ -54,8 +59,15 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
   static function open(v_parentObj, v_params) {
     if (!checkObj(v_parentObj)
       || v_parentObj.getFinalProp("refuseOpenHoverMenu") == "yes"
-      || gui_handlers.ActionsList.hasActionsListOnObject(v_parentObj))
+      || gui_handlers.ActionsList.hasActionsListOnObject(v_parentObj)
+      || !isActionListParamsValid(v_params))
       return
+
+    let actionList = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
+    if (actionList && actionList.scene.isValid()) {
+      actionList.close()
+      actionList.scene.getScene()?.destroyElement(actionList.scene)
+    }
 
     let params = {
       scene = v_parentObj
@@ -82,10 +94,6 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
   }
 
   function fillList() {
-    if (!this.params?.infoBlock
-      && (!("actions" in this.params) || this.params.actions.len() <= 0))
-        return this.goBack()
-
     if (this.params?.cssParams)
       foreach (param, val in this.params.cssParams)
         this.scene[param] = val
@@ -96,12 +104,12 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
       this.guiScene.replaceContentFromText(infoBlock, infoData, infoData.len(), this)
     }
 
+    this.scene.hasActions = (this.params?.actions.len() ?? 0) == 0 ? "no" : "yes"
     let nest = this.scene.findObject("list_nest")
-
     local isIconed = false
     local isVisibleActionFinded = false
     if (this.params?.actions)
-      foreach (_idx, action in this.params.actions) {
+      foreach (action in this.params.actions) {
         if (action?.show == null)
           action.show <- true
         action.haveSeparator <- isVisibleActionFinded
@@ -183,7 +191,7 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
 
   function close() {
     this.goBack()
-    broadcastEvent("ClosedUnitItemMenu")
+    broadcastEvent("ClosedActionsList", {listParent = this.parentObj})
   }
 
   function onFocus(obj) {

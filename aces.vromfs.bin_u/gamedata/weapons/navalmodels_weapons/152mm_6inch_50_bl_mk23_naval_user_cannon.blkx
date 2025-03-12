@@ -47,7 +47,8 @@
     "caliber": 0.152,
     "speed": 841.0,
     "maxDistance": 60000.0,
-    "Cx": 0.29801,
+    "Cx": 1.06717,
+    "ballisticsModel": "LAW_1943",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -67,7 +68,6 @@
     "useEffectiveArmorThicknessForShatter": true,
     "shellAnimation": "video/shells_animations/he.ivf",
     "bulletName": "152mm_50_5_10crh_he",
-    "dynamicKv": true,
     "splashFallBySquare": true,
     "relativeVelArmorShift": [
       200.0,
@@ -78,7 +78,6 @@
     "fuseDelay": 0.001,
     "fuseOnWater": true,
     "fuseOnWaterProbability": 1.0,
-    "penetrationBySpeed": true,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
     "explosionEffect": "hit_161_205mm_metal_he",
     "groundCollisionEffect": "hit_161_205mm_dirt_he",
@@ -431,7 +430,8 @@
       "caliber": 0.152,
       "speed": 841.0,
       "maxDistance": 60000.0,
-      "Cx": 0.29801,
+      "Cx": 1.06717,
+      "ballisticsModel": "LAW_1943",
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -451,7 +451,6 @@
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "152mm_50_5_10crh_he",
-      "dynamicKv": true,
       "splashFallBySquare": true,
       "relativeVelArmorShift": [
         200.0,
@@ -462,7 +461,6 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "penetrationBySpeed": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_161_205mm_metal_he",
       "groundCollisionEffect": "hit_161_205mm_dirt_he",
@@ -816,7 +814,8 @@
       "caliber": 0.152,
       "speed": 841.0,
       "maxDistance": 60000.0,
-      "Cx": 0.29801,
+      "Cx": 1.06717,
+      "ballisticsModel": "LAW_1943",
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
       "groundRicochetPreset": "apbc_ground",
@@ -836,7 +835,6 @@
       ],
       "shellAnimation": "video/shells_animations/sap.ivf",
       "bulletName": "152mm_50_5_10crh_cpbc",
-      "dynamicKv": true,
       "splashFallBySquare": true,
       "relativeVelArmorShift": [
         200.0,
@@ -880,7 +878,7 @@
       "damage": {
         "kinetic": {
           "damageType": "generic",
-          "demarrePenetrationK": 0.82,
+          "demarrePenetrationK": 0.9,
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
@@ -1189,6 +1187,47 @@
           "fx": "hit_12_18mm_metal_ap"
         }
       }
+    },
+    "development": {
+      "info": {
+        "diameter": 0.152,
+        "weight": 50.8,
+        "speed": 823.0
+      },
+      "target": {
+        "targetRange": 9140.0,
+        "maxRange": 23300.0
+      }
+    },
+    "btest": {
+      "range": 9140.0,
+      "velocity": 418.0,
+      "maxRange": 23300.0,
+      "range0": {
+        "range": 9140.0,
+        "startSpeed": 823.0,
+        "endSpeed": 418.0,
+        "tof": 15.9,
+        "maxHeight": 1.82,
+        "fallAngle": 10.0,
+        "shotAngle": 6.2
+      },
+      "range1": {
+        "range": 13720.0,
+        "endSpeed": 335.0,
+        "tof": 29.4,
+        "maxHeight": 30.48,
+        "fallAngle": 23.6,
+        "shotAngle": 13.1
+      },
+      "range2": {
+        "range": 18290.0,
+        "endSpeed": 331.0,
+        "tof": 47.2,
+        "maxHeight": 7.31,
+        "fallAngle": 39.9,
+        "shotAngle": 24.1
+      }
     }
   },
   "152mm_uk_navy_5_10crh_dist_fuse": {
@@ -1200,7 +1239,8 @@
       "caliber": 0.152,
       "speed": 841.0,
       "maxDistance": 60000.0,
-      "Cx": 0.29801,
+      "Cx": 1.06717,
+      "ballisticsModel": "LAW_1943",
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -1221,7 +1261,6 @@
       "bulletName": "152mm_50_5_10crh_df_he",
       "timeFuseDistanceError": 50.0,
       "explosionInAir": true,
-      "dynamicKv": true,
       "splashFallBySquare": true,
       "relativeVelArmorShift": [
         200.0,
@@ -1232,7 +1271,6 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "penetrationBySpeed": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_161_205mm_metal_he",
       "groundCollisionEffect": "hit_161_205mm_dirt_he",
@@ -1564,7 +1602,8 @@
       "caliber": 0.152,
       "speed": 841.0,
       "maxDistance": 60000.0,
-      "Cx": 0.29801,
+      "Cx": 1.06717,
+      "ballisticsModel": "LAW_1943",
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -1584,7 +1623,6 @@
       "shellAnimation": "video/shells_animations/he_vt_tank.ivf",
       "bulletName": "152mm_50_5_10crh_vt_he",
       "hasProximityFuse": true,
-      "dynamicKv": true,
       "splashFallBySquare": true,
       "relativeVelArmorShift": [
         200.0,
@@ -1595,7 +1633,6 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "penetrationBySpeed": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_161_205mm_metal_he",
       "groundCollisionEffect": "hit_161_205mm_dirt_he",

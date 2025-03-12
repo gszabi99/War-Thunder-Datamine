@@ -199,6 +199,12 @@ let directionGroups = [
     originalName = "S34"
   },
   {
+    text = "Y"
+    desc = "FLANKERH"
+
+    originalName = "S30"
+  },
+  {
     text = "F"
     desc = "F-4 AI"
 

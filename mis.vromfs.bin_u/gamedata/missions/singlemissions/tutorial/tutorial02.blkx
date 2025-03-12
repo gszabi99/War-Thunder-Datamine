@@ -2423,17 +2423,21 @@
             "target_marking": 0,
             "fastClimb": false,
             "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "instructor",
             "move_type": "teleport",
-            "lookat": "airfield00",
-            "velocity": 250.0
+            "lookat": "airfield01",
+            "velocity": 180.0
           },
           {
             "object_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "airfield00",
+            "target": "spawnpoint02",
             "target_marking": 0,
             "waypointReachedDist": 10.0,
             "recalculatePathDist": -1.0,
@@ -2444,8 +2448,13 @@
             "useUnitHeightForTele": true,
             "shouldKeepFormation": false,
             "teleportHeightValue": 1000.0,
-            "horizontalDirectionForTeleport": true,
-            "object": "instructor"
+            "horizontalDirectionForTeleport": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "shouldKeepAirFormation": true,
+            "object": "instructor",
+            "move_type": "move"
           }
         ],
         "showSmartCutscene": {
@@ -2476,7 +2485,10 @@
             "target": "land_cutscene_dialogue"
           },
           {
-            "target": "land_cutscene_skip"
+            "target": [
+              "land_cutscene_skip",
+              "land_cutscene_instructor_land"
+            ]
           },
           {
             "target": [
@@ -2490,7 +2502,7 @@
             "time": 2.0
           },
           {
-            "time": 5.0
+            "time": 8.0
           },
           {
             "time": 296.0
@@ -2540,6 +2552,64 @@
         },
         "triggerDisable": {
           "target": "land_cutscene_skip"
+        }
+      },
+      "else_actions": {}
+    },
+    "land_cutscene_instructor_land": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isOnGround",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "instructor"
+        },
+        "unitWhenProperties": {
+          "object": "instructor",
+          "func": "less",
+          "value": 10.0,
+          "property": "speed",
+          "check_filter": "all",
+          "object_type": "isAlive",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
+        }
+      },
+      "actions": {
+        "unitRestore": {
+          "target_marking": 0,
+          "ressurectIfDead": false,
+          "fullRestore": true,
+          "target": "instructor",
+          "power": 0.0
+        },
+        "unitSetProperties": {
+          "object": "instructor",
+          "move_type": "stand",
+          "throttle": 0.0,
+          "movable": false,
+          "cannotMove": true,
+          "aiEnabled": false,
+          "stayOnGround": true
         }
       },
       "else_actions": {}
@@ -4538,7 +4608,7 @@
       },
       "conditions": {
         "unitWhenInArea": {
-          "math": "3D",
+          "math": "2D",
           "object_type": "isAlive",
           "object_marking": 0,
           "check_objects": "any",
@@ -16389,6 +16459,34 @@
           948.95,
           5.4,
           -11201.8
+        ]
+      ],
+      "props": {
+        "forceReplication": true
+      }
+    },
+    "spawnpoint02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          137.099,
+          0.0,
+          -5.26681
+        ],
+        [
+          0.0,
+          137.2,
+          0.0
+        ],
+        [
+          5.26681,
+          0.0,
+          137.099
+        ],
+        [
+          435.7,
+          0.7,
+          -11799.8
         ]
       ],
       "props": {

@@ -1,18 +1,29 @@
 <<#hasExtraInfoBlock>>
 extraInfoBlock {
   id:t='extra_info_block'
-  isEmptySlot:t='<<@isEmptySlot>>'
-  hasActions:t='<<#hasActions>>yes<</hasActions>><<^hasActions>>no<</hasActions>>'
-  <<#hasActions>>
   interactive:t='yes'
-  <</hasActions>>
-  on_r_click:t='onCrewSlotClick'
-  on_click:t='onCrewSlotClick'
-  crewIdInCountry:t='<<crewIdInCountry>>'
-  crewId='<<crewId>>'
-  <<#forcedUnit>>forcedUnit:t='<<forcedUnit>>'<</forcedUnit>>
 
   content {
+    behavior:t='button'
+    on_r_click:t='onCrewSlotClick'
+    on_click:t='onCrewSlotClick'
+    <<#hasActions>>
+      interactive:t='yes'
+      hasActions:t='yes'
+      on_hover:t='onCrewBlockHover'
+      on_drag_start:t='onCrewDragStart'
+    <</hasActions>>
+
+    <<^hasActions>>
+      hasActions:t='no'
+      on_hover:t='showCrewSlotHint'
+    <</hasActions>>
+
+    crewIdInCountry:t='<<crewIdInCountry>>'
+    crewId='<<crewId>>'
+    <<#forcedUnit>>forcedUnit:t='<<forcedUnit>>'<</forcedUnit>>
+    isEmptySlot:t='<<@isEmptySlot>>'
+
     crewInfoNumBlock {
       icon {
         margin-right:t='@sf/@pf'
@@ -48,12 +59,7 @@ extraInfoBlock {
 
     slotHoverHighlight {}
     slotBottomGradientLine {}
-
-    on_hover:t='onCrewBlockHover'
     focus_border {}
   }
-  <<#hasActions>>
-  on_drag_start:t='onCrewDragStart'
-  <</hasActions>>
 }
 <</hasExtraInfoBlock>>

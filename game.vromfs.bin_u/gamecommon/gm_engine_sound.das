@@ -199,7 +199,7 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
   if unit.isCameraInCockpit
     if is_playing(gm_engine_sound__event)
       abandon(gm_engine_sound__event)
-    if gm_engine_sound__should_play && !is_playing(gm_engine_sound__event_inside)
+    if gm_engine_sound__should_play && !is_playing(gm_engine_sound__event_inside) && gm_engine_sound__event_inside_name != ""
       gm_engine_sound__event_inside |> play(string(gm_engine_sound__event_inside_name))
   else
     if is_playing(gm_engine_sound__event_inside)
@@ -324,7 +324,7 @@ def gm_engine_on_start_es(evt : CmdEngineStartSound;
                           var gm_engine_sound__event_inside : SoundEvent&)
   assume curEvent = gm_engine_sound__is_inside ? gm_engine_sound__event_inside : gm_engine_sound__event
   assume curEventName = gm_engine_sound__is_inside ? gm_engine_sound__event_inside_name : gm_engine_sound__event_name
-  if !is_playing(curEvent)
+  if !is_playing(curEvent) && curEventName != ""
     curEvent |> play(string(curEventName), gm_engine_sound__pos)
   gm_engine_sound__should_play = true
 
@@ -353,7 +353,7 @@ def gm_engine_on_unsteal_es(evt : CmdEngineUnstealSound;
                             gm_engine_sound__pos : float3;
                             gm_engine_sound__event_name : das_string;
                             var gm_engine_sound__event : SoundEvent&)
-  if !is_playing(gm_engine_sound__event)
+  if !is_playing(gm_engine_sound__event) && gm_engine_sound__event_name != ""
     gm_engine_sound__event |> play(string(gm_engine_sound__event_name), gm_engine_sound__pos)
 
 
@@ -417,7 +417,7 @@ def gm_additional_engine_on_unsteal_es(evt : CmdEngineUnstealSound;
                                        gm_additional_engine_sound__pos : float3;
                                        gm_additional_engine_sound__event_name : das_string;
                                        var gm_additional_engine_sound__event : SoundEvent&)
-  if !is_playing(gm_additional_engine_sound__event)
+  if !is_playing(gm_additional_engine_sound__event) && gm_additional_engine_sound__event_name != ""
     gm_additional_engine_sound__event |> play(string(gm_additional_engine_sound__event_name), gm_additional_engine_sound__pos)
 
 [es(tag=sound, REQUIRE_NOT = disabled)]

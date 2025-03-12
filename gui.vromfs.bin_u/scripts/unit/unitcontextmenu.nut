@@ -404,13 +404,15 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
 })
 
 let showMenu = function showMenu(params) {
-  if (params == null || params?.needClose) {
-    handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)?.close()
+  if (params?.needClose) {
+    let handler = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
+    handler?.close()
     if ((!showConsoleButtons.value || is_mouse_last_time_used()) && params?.unitObj)
       if (showConsoleButtons.value)
         delayedTooltipOnHover(params?.unitObj)
       else
         params.handler.guiScene.updateTooltip(params?.unitObj)
+    unitContextMenuState(null)
     return
   }
 
@@ -428,10 +430,15 @@ let showMenu = function showMenu(params) {
   gui_handlers.ActionsList.open(params.unitObj, listData)
 }
 
-unitContextMenuState.subscribe(function (v) {
-    showMenu(v)
-})
+unitContextMenuState.subscribe(@(val) val != null ? showMenu(val) : null)
+
+function onCloseActionsList(data) {
+  if (unitContextMenuState.get()?.unitObj == null ||
+    unitContextMenuState.get().unitObj != data.listParent)
+    return
+  unitContextMenuState(null)
+}
 
 addListenersWithoutEnv({
-  ClosedUnitItemMenu = @(_p) unitContextMenuState(null)
+   ClosedActionsList = onCloseActionsList
 })

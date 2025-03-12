@@ -2584,11 +2584,11 @@
     "lightRadius2": 0.35,
     "sightInFov": [
       50.5,
-      1.5
+      0.77
     ],
     "sightOutFov": [
       40.5,
-      18.0
+      24.0
     ],
     "sightFov": [
       1.0,
@@ -2600,8 +2600,8 @@
         3.2
       ],
       [
-        18.0,
-        1.5
+        24.0,
+        0.77
       ]
     ],
     "devices": {
@@ -3414,8 +3414,8 @@
   "nightVision": {
     "sightTPodThermal": {
       "resolution": [
-        800,
-        600
+        1200,
+        800
       ],
       "noiseFactor": 0.04
     }
@@ -4881,7 +4881,7 @@
             },
             "Weapon": {
               "trigger": "targetingPod",
-              "blk": "gameData/Weapons/equipment/gr_litening_pod_targeting_pod.blk",
+              "blk": "gameData/Weapons/equipment/gr_litening_iii_targeting_pod.blk",
               "emitter": "litening_2_pod",
               "bullets": 1
             },
@@ -4904,10 +4904,15 @@
               }
             ],
             "sensors": {
-              "sensor": {
-                "blk": "gameData/sensors/ir_tracker_tgp.blk",
-                "node": "optic1_gun"
-              }
+              "sensor": [
+                {
+                  "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+                },
+                {
+                  "blk": "gameData/sensors/ir_tracker_tgp.blk",
+                  "node": "optic1_gun"
+                }
+              ]
             }
           },
           {
@@ -5420,12 +5425,12 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "gr_litening_pod": {
+    "gr_litening_iii_pod": {
       "modClass": "weapon",
       "tier": 1
     },
     "us_gbu_laser": {
-      "reqModification": "gr_litening_pod",
+      "reqModification": "gr_litening_iii_pod",
       "modClass": "weapon",
       "tier": 2
     },

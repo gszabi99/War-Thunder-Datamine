@@ -5,6 +5,7 @@ require RadarHud
 require strings
 require FlightModelWrap
 require HeroManager
+require app
 require Unit
 require math
 require GamePhys
@@ -216,10 +217,9 @@ def draw_target_info(var ctx : GuiContext&; pos : float2; size : float2; data : 
   ctx |> set_font_ht(data.fontSize)
 
   if target.typeId != ""
-    let typeIds <- {{ "hud/small" => "SMALL"; "hud/medium" => "MEDIUM"; "hud/large" => "LARGE"}}
-    get(typeIds, target.typeId) <| $(idText)
-      ctx |> goto_xy(pos.x + size.x * 0.14, pos.y + size.y * 0.8)
-      ctx |> draw_str_scaled(1.0, idText, idText |> length())
+    let idText = loc(target.typeId)
+    ctx |> goto_xy(pos.x + size.x * 0.14, pos.y + size.y * 0.8)
+    ctx |> draw_str_scaled(1.0, idText, idText |> length())
 
   let unit = get_unit(int(target.id))
   if unit == null || unit.isDelayed

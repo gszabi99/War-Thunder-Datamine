@@ -4056,6 +4056,12 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = get_gui_option_in_mode(optionId, OPTIONS_MODE_GAMEPLAY)
   },
+  [USEROPT_HELI_MOUSE_AIM_ROLL_OVERRIDE_ENABLED] = function(optionId, descr, _context) {
+    descr.id = "mouseAimRollOverrideEnabled"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.defaultValue = get_gui_option(optionId)
+  },
   [USEROPT_XRAY_FILTER_TANK] = function(optionId, descr, context) {
     descr.id = "xray_filter"
     let filters = getTankXrayFilter(context?.unitName)
@@ -4699,6 +4705,7 @@ let optionsSetMap = {
   [USEROPT_HORIZONTAL_SPEED] = @(value, _descr, _optionId) set_option_horizontal_speed(value ? 1 : 0),
   [USEROPT_HELICOPTER_HELMET_AIM] = @(value, _descr, _optionId) set_option_use_oculus_to_aim_helicopter(value ? 1 : 0),
   [USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW] = @(value, _descr, _optionId) set_option_auto_pilot_on_gunner_view_helicopter(value),
+  [USEROPT_HELI_MOUSE_AIM_ROLL_OVERRIDE_ENABLED] = def_set_gui_option,
   [USEROPT_HUE_HELICOPTER_HUD_ALERT] = function(value, descr, _optionId) {
     if (hasFeature("reactivGuiForAircraft"))
       setAlertHelicopterHues(descr.values[value][0], descr.values[value][1], descr.values[value][2], value)

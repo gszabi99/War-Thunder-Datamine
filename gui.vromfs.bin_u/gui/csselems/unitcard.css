@@ -1066,12 +1066,8 @@ unitItemContainer.swapCrewsDnD[dragging=yes] > shopItem > extraInfoBlock > conte
   cursor:drag-n-drop;
 }
 
-extraInfoBlock:hover {
+extraInfoBlock:hover > content {
   behavior:dragStartListener;
-}
-
-extraInfoBlock {
-  behavior: button;
 }
 
 slotMissionHintContainer {
@@ -1112,19 +1108,19 @@ extraInfoBlock:hover > content > slotBottomGradientLine {
   display:show;
 }
 
-extraInfoBlock[hasActions=no] > content {
+content[hasActions=no] {
   cursor:normal;
 }
 
-extraInfoBlock[isEmptySlot=yes] > content > crewNumText {
+content[isEmptySlot=yes] > crewNumText {
   display:show;
 }
 
-extraInfoBlock[isEmptySlot=yes] > content > crewInfoNumBlock {
+content[isEmptySlot=yes] > crewInfoNumBlock {
   display:hide;
 }
 
-extraInfoBlock[isEmptySlot=yes][needHugeFooter=yes] > content > crewInfoNumBlock {
+extraInfoBlock[needHugeFooter=yes] > content[isEmptySlot=yes] > crewInfoNumBlock {
   display:show;
 }
 

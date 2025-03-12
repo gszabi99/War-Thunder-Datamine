@@ -1673,7 +1673,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function onCrewDragStart(obj) {
     removeAllGenericTooltip()
     this.hideAllPopups()
-    let draggedObj = obj.getParent().getParent()
+    let draggedObj = obj.getParent().getParent().getParent()
     swapCrewsBegin(draggedObj, this.getCurrentAirsTable())
   }
 
@@ -1689,17 +1689,24 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onCrewSlotClick(obj) {
+    if (obj?.isEmptySlot != "yes") {
+      let crewIdInCountry = obj.crewIdInCountry.tointeger()
+      this.selectCrew(crewIdInCountry)
+    }
     let handler = this
-    deferOnce(@() obj.isValid() ? handler.onOpenCrewPopup(obj) : null)
+    if (obj?.hasActions == "yes")
+      deferOnce(@() obj.isValid() ? handler.onOpenCrewPopup(obj) : null)
   }
 
-  function onOpenCrewPopup(obj, closeOnUnhover = true) {
+  function onOpenCrewPopup(obj, closeOnUnhover = true, openByHover = false) {
     if (handlersManager.findHandlerClassInScene(gui_handlers.SwapCrewsHandler) != null)
       return
 
     if (this.crewPopupSlotObj?.isValid() && obj.isEqual(this.crewPopupSlotObj)) {
       let actionsList = handlersManager.findHandlerClassInScene(gui_handlers.ActionsList)
-      if (actionsList) {
+      if (actionsList && obj.isEqual(actionsList.parentObj)) {
+        if (openByHover)
+          return
         actionsList.close()
         this.crewPopupSlotObj = null
         return
@@ -1769,6 +1776,11 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onCrewBlockHover(_obj) {
     this.hideAllPopups()
+  }
+
+  function showCrewSlotHint(obj) {
+    let handler = this
+    deferOnce(@() obj.isValid() ? handler.onOpenCrewPopup(obj, true, true) : null)
   }
 
   function onUnitHover(obj) {

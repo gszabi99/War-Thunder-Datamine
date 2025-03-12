@@ -102,6 +102,11 @@ let directionGroups = [
     originalName = "S24",
   },
   {
+    text = "S30",
+    type = ThreatType.AI,
+    originalName = "S30",
+  },
+  {
     text = "F4",
     type = ThreatType.AI,
     originalName = "F4",

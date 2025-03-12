@@ -5,6 +5,7 @@ require RadarHud
 require %rGui.utils.canvas_common
 require strings
 require math
+require app
 require Unit
 require HeroManager
 require Plane
@@ -385,13 +386,12 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
 
         if target.isDetected || target.isTracked
           if target.typeId != ""
-            let typeIds <- {{ "hud/single prop" => "ПРОП"; "hud/multi prop" => "ПРОПxN"; "hud/single jet" => "ТРД"; "hud/multi jet" => "ТРДxN"; "hud/helicopter" => "ВЕРТ"; "hud/rocket" => "РАКЕТА"}}
-            get(typeIds, target.typeId) <| $(idText)
-              let name = "{idText}"
-              let nameBox = get_str_bbox(name, name |> length(), fctx)
-              ctx |> goto_xy(pos.x + size.x - nameBox.width.x, pos.y + size.y - float(selectedCnt) * (nameBox.width.y + 4.))
-              ctx |> draw_str_scaled(1., name, name |> length())
-              selectedCnt += 1
+            let idText = loc(target.typeId)
+            let name = "{idText}"
+            let nameBox = get_str_bbox(name, name |> length(), fctx)
+            ctx |> goto_xy(pos.x + size.x - nameBox.width.x, pos.y + size.y - float(selectedCnt) * (nameBox.width.y + 4.))
+            ctx |> draw_str_scaled(1., name, name |> length())
+            selectedCnt += 1
       elif !target.isTracked
         let line <- to_array_move([[float2[2]
           p - float2(markSize, 0.);

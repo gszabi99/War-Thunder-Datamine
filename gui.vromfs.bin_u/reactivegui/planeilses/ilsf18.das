@@ -211,8 +211,8 @@ class Component : Canvas
 
     isGroundRocketMode = (secondaryWeapon != null && secondaryWeapon.trigger_no == int(WeaponTriggerType.ROCKETS_TRIGGER))
 
-    isAamMode = (fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_AIR_TARGET) && secondaryWeapon != null &&
-      secondaryWeapon.trigger_no == int(WeaponTriggerType.AAM_TRIGGER))
+    isAamMode = (fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_AIR_TARGET) || (secondaryWeapon != null &&
+      secondaryWeapon.trigger_no == int(WeaponTriggerType.AAM_TRIGGER)))
 
     isAgmMode = (fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_ROCKET) && secondaryWeapon != null &&
       secondaryWeapon.trigger_no == int(WeaponTriggerType.AGM_TRIGGER))
@@ -934,12 +934,14 @@ class Component : Canvas
     drawArrowHead(pos + velDir * (radius + arrowLength), velDir, arrowSize)
 
     let hasDgftDist = get_radar_hud_aam_launch_zone_dist_dgft_max() > 0.0
-    let maxDist = hasDgftDist ? get_radar_hud_aam_launch_zone_dist_dgft_max() : get_radar_hud_aam_launch_zone_dist_max()
-    let minDist = hasDgftDist ? get_radar_hud_aam_launch_zone_dist_dgft_min() : get_radar_hud_aam_launch_zone_dist_min()
+    let maxDist = get_radar_hud_aam_launch_zone_dist_max()
+    let minDist = get_radar_hud_aam_launch_zone_dist_min()
+    let maxNoEscapeRange = get_radar_hud_aam_launch_zone_dist_dgft_max()
     var curDist = get_radar_hud_aam_launch_zone_dist()
     let curDistAngle = PI - clamp(curDist, 0.0, 1.0) * PI2
     let minDistAngle = PI - clamp(minDist, 0.0, 1.0) * PI2
     let maxDistAngle = PI - clamp(maxDist, 0.0, 1.0) * PI2
+    let maxNoEscapeAngle = PI - clamp(maxNoEscapeRange, 0.0, 1.0) * PI2
 
     let halfLineWidthRel = 0.5 * defaultLineWidthHdpxRel
     setLineWidth(1.5 * defaultLineWidth)
@@ -964,6 +966,9 @@ class Component : Canvas
     sincos(minDistAngle, dir.x, dir.y)
     let minDistTriangleVerts = triangle.to_array().scale(triangleSize).rotate(-dir.x, dir.y).translate(pos + dir * (radius + halfLineWidthRel))
     drawClosedPolyLine(minDistTriangleVerts)
+    sincos(maxNoEscapeAngle, dir.x, dir.y)
+    let maxNoEscapeTriangleVerts = triangle.to_array().scale(triangleSize).rotate(-dir.x, dir.y).translate(pos + dir * (radius + halfLineWidthRel))
+    drawClosedPolyLine(maxNoEscapeTriangleVerts)
 
     let blinksPerSecond = 2.5
     let isBlink = fract(blinksPerSecond * totalTime) < 0.5

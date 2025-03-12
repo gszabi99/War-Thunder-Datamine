@@ -1108,8 +1108,11 @@
     "tiltShakeMultiplierForTanks": 0.0,
     "tiltShakeMultiplierForShips": 0.0,
     "condition": {
-      "not": {
-        "isFlightModel": {}
+      "and": {
+        "not": {
+          "isFlightModel": {}
+        },
+        "haveWeaponCtrl": {}
       }
     },
     "up": {
@@ -1269,13 +1272,6 @@
         0.0
       ],
       "dist": 20.0
-    }
-  },
-  "human": {
-    "type": "HumanCamera",
-    "FPS": false,
-    "condition": {
-      "isHuman": {}
     }
   },
   "fps_suit": {

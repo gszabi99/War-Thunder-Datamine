@@ -2141,7 +2141,7 @@
             "target": "pre_player_restore02"
           },
           {
-            "target": "aerialTest_elevator02"
+            "target": "aerialTest_elevator01_invertY"
           }
         ],
         "moAddMissionObjective": {
@@ -2179,14 +2179,81 @@
           "ignoreDifficulty": true,
           "target": "instructor_way00"
         },
-        "wait": [
+        "wait": {
+          "time": 5.0
+        }
+      },
+      "else_actions": {}
+    },
+    "aerialTest_elevator01_invertY": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "playerWhenOptions": {
+          "guiOptionBool": "USEROPT_INVERTY"
+        }
+      },
+      "actions": {
+        "playHint": [
           {
-            "time": 5.0
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_elevator02",
+            "action": "show",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "elevator=min",
+            "shouldBlink": false,
+            "showKeyBoardShortcutsForMouseAim": true
           },
           {
-            "time": 4.0
+            "hintType": "tutorialHint",
+            "name": "hints/tutorial_elevator02",
+            "action": "hideCur",
+            "shouldFadeOut": false,
+            "time": -1.0,
+            "priority": 0,
+            "isOverFade": false,
+            "target_marking": 0,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "item": "elevator=max",
+            "shouldBlink": false
           }
         ],
+        "triggerEnable": {
+          "target": "aerialTest_elevator02"
+        },
+        "wait": {
+          "time": 4.0
+        },
+        "missionPlayDialogue": {
+          "dialog": "tutorial_m1_d09_1",
+          "subtitles": false
+        },
+        "hudElementBlink": {
+          "element": "alt",
+          "time": 2.0,
+          "blink": true
+        }
+      },
+      "else_actions": {
         "playHint": [
           {
             "hintType": "tutorialHint",
@@ -2220,6 +2287,12 @@
             "shouldBlink": false
           }
         ],
+        "triggerEnable": {
+          "target": "aerialTest_elevator02"
+        },
+        "wait": {
+          "time": 4.0
+        },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d09_1",
           "subtitles": false
@@ -2229,8 +2302,7 @@
           "time": 2.0,
           "blink": true
         }
-      },
-      "else_actions": {}
+      }
     },
     "aerialTest_elevator02": {
       "is_enabled": false,
@@ -3221,51 +3293,89 @@
         ]
       },
       "actions": {
-        "playHint": [
-          {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_turn01",
-            "action": "hide",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "ailerons",
-            "shouldBlink": false
-          },
-          {
-            "hintType": "tutorialHint",
-            "name": "hints/tutorial_turn02",
-            "action": "show",
-            "shouldFadeOut": false,
-            "time": -1.0,
-            "priority": 0,
-            "isOverFade": false,
-            "target_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "item": "elevator=min",
-            "shouldBlink": false,
-            "showKeyBoardShortcutsForMouseAim": true
-          }
-        ],
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorial_turn01",
+          "action": "hide",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "ailerons",
+          "shouldBlink": false
+        },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d13_2",
           "subtitles": true
         },
         "triggerEnable": {
           "target": [
+            "aerialTest_turn02_invertY",
             "aerialTest_turn03",
             "aerialTest_turnFail"
           ]
         }
       },
       "else_actions": {}
+    },
+    "aerialTest_turn02_invertY": {
+      "is_enabled": false,
+      "comments": "here must be the condition which detects turn",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 0.01
+        }
+      },
+      "conditions": {
+        "playerWhenOptions": {
+          "guiOptionBool": "USEROPT_INVERTY"
+        }
+      },
+      "actions": {
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorial_turn02",
+          "action": "show",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "elevator=max",
+          "shouldBlink": false,
+          "showKeyBoardShortcutsForMouseAim": true
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "tutorialHint",
+          "name": "hints/tutorial_turn02",
+          "action": "show",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "elevator=min",
+          "shouldBlink": false,
+          "showKeyBoardShortcutsForMouseAim": true
+        }
+      }
     },
     "aerialTest_turn03": {
       "is_enabled": false,

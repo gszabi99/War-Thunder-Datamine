@@ -48,7 +48,8 @@
       "caliber": 0.305,
       "speed": 869.0,
       "maxDistance": 100000.0,
-      "Cx": 0.49198,
+      "Cx": 0.42474,
+      "ballisticsModel": "ADVANCED_DYNAMIC_KV",
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -79,7 +80,6 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "penetrationBySpeed": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_206_290mm_metal_he",
       "groundCollisionEffect": "hit_206_290mm_dirt_he",
@@ -431,7 +431,8 @@
       "caliber": 0.305,
       "speed": 831.0,
       "maxDistance": 100000.0,
-      "Cx": 0.49198,
+      "Cx": 0.42474,
+      "ballisticsModel": "ADVANCED_DYNAMIC_KV",
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -462,7 +463,6 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "penetrationBySpeed": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_206_290mm_metal_he",
       "groundCollisionEffect": "hit_206_290mm_dirt_he",
@@ -816,7 +816,8 @@
       "caliber": 0.305,
       "speed": 869.0,
       "maxDistance": 100000.0,
-      "Cx": 0.49198,
+      "Cx": 0.42474,
+      "ballisticsModel": "ADVANCED_DYNAMIC_KV",
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -847,7 +848,6 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "penetrationBySpeed": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
       "explosionEffect": "hit_206_290mm_metal_he",
       "groundCollisionEffect": "hit_206_290mm_dirt_he",
@@ -1201,7 +1201,8 @@
       "caliber": 0.305,
       "speed": 869.0,
       "maxDistance": 100000.0,
-      "Cx": 0.49198,
+      "Cx": 0.42474,
+      "ballisticsModel": "ADVANCED_DYNAMIC_KV",
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
       "groundRicochetPreset": "apbc_ground",
@@ -1221,7 +1222,6 @@
       ],
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "305mm_4crh_mark_6a_apc",
-      "dynamicKv": true,
       "splashFallBySquare": true,
       "relativeVelArmorShift": [
         200.0,
@@ -1574,6 +1574,56 @@
           "fx": "hit_12_18mm_metal_ap"
         }
       }
+    },
+    "development": {
+      "info": {
+        "diameter": 0.305,
+        "length": 1.008,
+        "weight": 389.8,
+        "speed": 862.0
+      },
+      "target": {
+        "targetRange": 9140.0,
+        "maxRange": 19380.0
+      }
+    },
+    "btest": {
+      "range": 9140.0,
+      "velocity": 456.0,
+      "maxRange": 19380.0,
+      "range0": {
+        "range": 6860.0,
+        "startSpeed": 862.0,
+        "endSpeed": 621.0,
+        "tof": 1.1,
+        "maxHeight": 1.82,
+        "fallAngle": 4.1,
+        "shotAngle": 3.5
+      },
+      "range1": {
+        "range": 9140.0,
+        "endSpeed": 555.0,
+        "tof": 1.5,
+        "maxHeight": 7.31,
+        "fallAngle": 6.3,
+        "shotAngle": 4.7
+      },
+      "range2": {
+        "range": 13720.0,
+        "endSpeed": 456.0,
+        "tof": 2.4,
+        "maxHeight": 30.48,
+        "fallAngle": 13.0,
+        "shotAngle": 8.4
+      },
+      "range3": {
+        "range": 18290.0,
+        "endSpeed": 397.0,
+        "tof": 4.5,
+        "maxHeight": 7.31,
+        "fallAngle": 22.3,
+        "shotAngle": 13.2
+      }
     }
   },
   "305mm_uk_4crh_mk7a_navy_cpc": {
@@ -1585,7 +1635,8 @@
       "caliber": 0.305,
       "speed": 869.0,
       "maxDistance": 100000.0,
-      "Cx": 0.49198,
+      "Cx": 0.42474,
+      "ballisticsModel": "ADVANCED_DYNAMIC_KV",
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
       "groundRicochetPreset": "apbc_ground",

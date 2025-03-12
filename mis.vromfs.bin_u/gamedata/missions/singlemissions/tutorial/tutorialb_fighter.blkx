@@ -3520,10 +3520,7 @@
           "realtimeTriggers": false
         },
         "triggerEnable": {
-          "target": [
-            "map_press_button_hint",
-            "mission_timer"
-          ]
+          "target": "map_press_button_hint"
         },
         "wait": {
           "time": 1.0
@@ -3551,17 +3548,7 @@
           "time": 0.01
         }
       },
-      "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_TACTICAL_MAP",
-          "pressed": false
-        },
-        "varCompareInt": {
-          "var_value": "timer",
-          "value": 10,
-          "comparasion_func": "more"
-        }
-      },
+      "conditions": {},
       "actions": {
         "triggerDisable": {
           "target": "mission_timer"
@@ -3593,10 +3580,6 @@
         }
       },
       "conditions": {
-        "playerShortcutPressed": {
-          "control": "ID_TACTICAL_MAP",
-          "pressed": false
-        },
         "varCompareInt": {
           "var_value": "timer",
           "value": 10,

@@ -47,7 +47,8 @@
     "caliber": 0.356,
     "speed": 823.0,
     "maxDistance": 100000.0,
-    "Cx": 0.35652,
+    "Cx": 1.13364,
+    "ballisticsModel": "LAW_1943",
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -67,9 +68,7 @@
     "useEffectiveArmorThicknessForShatter": true,
     "shellAnimation": "video/shells_animations/he.ivf",
     "bulletName": "356mm_class_b_mk9_he",
-    "dynamicKv": true,
     "splashFallBySquare": true,
-    "hitPowerMult": 2.0,
     "relativeVelHitShift": [
       300.0,
       1000.0
@@ -79,15 +78,14 @@
     "fuseDelay": 0.001,
     "fuseOnWater": true,
     "fuseOnWaterProbability": 1.0,
-    "penetrationBySpeed": true,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
-    "explosionEffect": "hit_206_290mm_metal_he",
-    "groundCollisionEffect": "hit_206_290mm_dirt_he",
-    "ricochetEffect": "hit_206_290mm_metal_he",
-    "waterCollisionEffect": "hit_206_290mm_water",
-    "explosionPatchRadius": 5.0,
-    "waterRicochetEffect": "hit_206_290mm_water",
-    "groundRicochetEffect": "hit_206_290mm_dirt_ap",
+    "explosionEffect": "hit_291_390mm_metal_he",
+    "groundCollisionEffect": "hit_291_390mm_dirt_he",
+    "ricochetEffect": "hit_291_390mm_metal_he",
+    "waterCollisionEffect": "hit_291_390mm_water",
+    "explosionPatchRadius": 5.5,
+    "waterRicochetEffect": "hit_291_390mm_water",
+    "groundRicochetEffect": "hit_291_390mm_dirt_ap",
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
     "stabilityRicochetModifier": {
@@ -190,124 +188,124 @@
     },
     "collisions": {
       "default": {
-        "fx": "hit_206_290mm_dirt_he",
-        "ricochetFx": "hit_206_290mm_dirt_ap"
+        "fx": "hit_291_390mm_dirt_he",
+        "ricochetFx": "hit_291_390mm_dirt_ap"
       },
       "horLandMesh": {
-        "fx": "hit_206_290mm_dirt_he",
-        "ricochetFx": "hit_206_290mm_dirt_ap"
+        "fx": "hit_291_390mm_dirt_he",
+        "ricochetFx": "hit_291_390mm_dirt_ap"
       },
       "soil": {
-        "fx": "hit_206_290mm_dirt_he",
-        "ricochetFx": "hit_206_290mm_dirt_ap"
+        "fx": "hit_291_390mm_dirt_he",
+        "ricochetFx": "hit_291_390mm_dirt_ap"
       },
       "dirt": {
-        "fx": "hit_206_290mm_dirt_he",
-        "ricochetFx": "hit_206_290mm_dirt_ap"
+        "fx": "hit_291_390mm_dirt_he",
+        "ricochetFx": "hit_291_390mm_dirt_ap"
       },
       "road": {
-        "fx": "hit_206_290mm_dirt_he",
-        "ricochetFx": "hit_206_290mm_dirt_ap"
+        "fx": "hit_291_390mm_dirt_he",
+        "ricochetFx": "hit_291_390mm_dirt_ap"
       },
       "roadSoil": {
-        "fx": "hit_206_290mm_dirt_he",
-        "ricochetFx": "hit_206_290mm_dirt_ap"
+        "fx": "hit_291_390mm_dirt_he",
+        "ricochetFx": "hit_291_390mm_dirt_ap"
       },
       "bricks_red": {
-        "fx": "hit_206_290mm_stone_he",
-        "ricochetFx": "hit_206_290mm_stone_ap"
+        "fx": "hit_291_390mm_stone_he",
+        "ricochetFx": "hit_291_390mm_stone_ap"
       },
       "steppe": {
-        "fx": "hit_206_290mm_sand_he",
-        "ricochetFx": "hit_206_290mm_sand_ap"
+        "fx": "hit_291_390mm_sand_he",
+        "ricochetFx": "hit_291_390mm_sand_ap"
       },
       "sand": {
-        "fx": "hit_206_290mm_sand_he",
-        "ricochetFx": "hit_206_290mm_sand_ap"
+        "fx": "hit_291_390mm_sand_he",
+        "ricochetFx": "hit_291_390mm_sand_ap"
       },
       "duneSand": {
-        "fx": "hit_206_290mm_sand_he",
-        "ricochetFx": "hit_206_290mm_sand_ap"
+        "fx": "hit_291_390mm_sand_he",
+        "ricochetFx": "hit_291_390mm_sand_ap"
       },
       "roadSand": {
-        "fx": "hit_206_290mm_sand_he",
-        "ricochetFx": "hit_206_290mm_sand_ap"
+        "fx": "hit_291_390mm_sand_he",
+        "ricochetFx": "hit_291_390mm_sand_ap"
       },
       "quickSand": {
-        "fx": "hit_206_290mm_sand_he",
-        "ricochetFx": "hit_206_290mm_sand_ap"
+        "fx": "hit_291_390mm_sand_he",
+        "ricochetFx": "hit_291_390mm_sand_ap"
       },
       "snow": {
-        "fx": "hit_206_290mm_snow_he",
-        "ricochetFx": "hit_206_290mm_snow_ap"
+        "fx": "hit_291_390mm_snow_he",
+        "ricochetFx": "hit_291_390mm_snow_ap"
       },
       "ice": {
-        "fx": "hit_206_290mm_snow_he",
-        "ricochetFx": "hit_206_290mm_snow_ap"
+        "fx": "hit_291_390mm_snow_he",
+        "ricochetFx": "hit_291_390mm_snow_ap"
       },
       "roadSnow": {
-        "fx": "hit_206_290mm_snow_he",
-        "ricochetFx": "hit_206_290mm_snow_ap"
+        "fx": "hit_291_390mm_snow_he",
+        "ricochetFx": "hit_291_390mm_snow_ap"
       },
       "snowLower": {
-        "fx": "hit_206_290mm_snow_he",
-        "ricochetFx": "hit_206_290mm_snow_ap"
+        "fx": "hit_291_390mm_snow_he",
+        "ricochetFx": "hit_291_390mm_snow_ap"
       },
       "glass": {
-        "fx": "hit_206_290mm_metal_he",
-        "ricochetFx": "hit_206_290mm_metal_ap"
+        "fx": "hit_291_390mm_metal_he",
+        "ricochetFx": "hit_291_390mm_metal_ap"
       },
       "wood": {
-        "fx": "hit_206_290mm_wood_he",
-        "ricochetFx": "hit_206_290mm_wood_ap"
+        "fx": "hit_291_390mm_wood_he",
+        "ricochetFx": "hit_291_390mm_wood_ap"
       },
       "steel": {
-        "fx": "hit_206_290mm_metal_he",
-        "ricochetFx": "hit_206_290mm_metal_ap"
+        "fx": "hit_291_390mm_metal_he",
+        "ricochetFx": "hit_291_390mm_metal_ap"
       },
       "metal": {
-        "fx": "hit_206_290mm_metal_he",
-        "ricochetFx": "hit_206_290mm_metal_ap"
+        "fx": "hit_291_390mm_metal_he",
+        "ricochetFx": "hit_291_390mm_metal_ap"
       },
       "tank_structural_steel": {
-        "fx": "hit_206_290mm_metal_he",
-        "ricochetFx": "hit_206_290mm_metal_ap"
+        "fx": "hit_291_390mm_metal_he",
+        "ricochetFx": "hit_291_390mm_metal_ap"
       },
       "aluminum_armor": {
-        "fx": "hit_206_290mm_metal_he",
-        "ricochetFx": "hit_206_290mm_metal_ap"
+        "fx": "hit_291_390mm_metal_he",
+        "ricochetFx": "hit_291_390mm_metal_ap"
       },
       "tank_rubber_screens": {
-        "fx": "hit_206_290mm_stone_he",
-        "ricochetFx": "hit_206_290mm_stone_ap"
+        "fx": "hit_291_390mm_stone_he",
+        "ricochetFx": "hit_291_390mm_stone_ap"
       },
       "buildings": {
-        "fx": "hit_206_290mm_stone_he",
-        "ricochetFx": "hit_206_290mm_stone_ap"
+        "fx": "hit_291_390mm_stone_he",
+        "ricochetFx": "hit_291_390mm_stone_ap"
       },
       "verLandMesh": {
-        "fx": "hit_206_290mm_stone_he",
-        "ricochetFx": "hit_206_290mm_stone_ap"
+        "fx": "hit_291_390mm_stone_he",
+        "ricochetFx": "hit_291_390mm_stone_ap"
       },
       "concrete": {
-        "fx": "hit_206_290mm_stone_he",
-        "ricochetFx": "hit_206_290mm_stone_ap"
+        "fx": "hit_291_390mm_stone_he",
+        "ricochetFx": "hit_291_390mm_stone_ap"
       },
       "rocks": {
-        "fx": "hit_206_290mm_stone_he",
-        "ricochetFx": "hit_206_290mm_stone_ap"
+        "fx": "hit_291_390mm_stone_he",
+        "ricochetFx": "hit_291_390mm_stone_ap"
       },
       "rocksSlippery": {
-        "fx": "hit_206_290mm_stone_he",
-        "ricochetFx": "hit_206_290mm_stone_ap"
+        "fx": "hit_291_390mm_stone_he",
+        "ricochetFx": "hit_291_390mm_stone_ap"
       },
       "fabric": {
-        "fx": "hit_206_290mm_stone_he",
-        "ricochetFx": "hit_206_290mm_stone_ap"
+        "fx": "hit_291_390mm_stone_he",
+        "ricochetFx": "hit_291_390mm_stone_ap"
       },
       "stone_snow": {
-        "fx": "hit_206_290mm_snow_he",
-        "ricochetFx": "hit_206_290mm_snow_ap"
+        "fx": "hit_291_390mm_snow_he",
+        "ricochetFx": "hit_291_390mm_snow_ap"
       }
     },
     "shatterCollisions": {
@@ -432,7 +430,8 @@
       "caliber": 0.356,
       "speed": 834.0,
       "maxDistance": 100000.0,
-      "Cx": 0.34414,
+      "Cx": 1.02814,
+      "ballisticsModel": "LAW_1943",
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -452,9 +451,7 @@
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "356mm_mk19_hc",
-      "dynamicKv": true,
       "splashFallBySquare": true,
-      "hitPowerMult": 2.0,
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -464,15 +461,14 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "penetrationBySpeed": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
-      "explosionEffect": "hit_206_290mm_metal_he",
-      "groundCollisionEffect": "hit_206_290mm_dirt_he",
-      "ricochetEffect": "hit_206_290mm_metal_he",
-      "waterCollisionEffect": "hit_206_290mm_water",
-      "explosionPatchRadius": 5.0,
-      "waterRicochetEffect": "hit_206_290mm_water",
-      "groundRicochetEffect": "hit_206_290mm_dirt_ap",
+      "explosionEffect": "hit_291_390mm_metal_he",
+      "groundCollisionEffect": "hit_291_390mm_dirt_he",
+      "ricochetEffect": "hit_291_390mm_metal_he",
+      "waterCollisionEffect": "hit_291_390mm_water",
+      "explosionPatchRadius": 5.5,
+      "waterRicochetEffect": "hit_291_390mm_water",
+      "groundRicochetEffect": "hit_291_390mm_dirt_ap",
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
@@ -575,124 +571,124 @@
       },
       "collisions": {
         "default": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "horLandMesh": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "soil": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "dirt": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "road": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "roadSoil": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "bricks_red": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "steppe": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "sand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "duneSand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "roadSand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "quickSand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "snow": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "ice": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "roadSnow": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "snowLower": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "glass": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "wood": {
-          "fx": "hit_206_290mm_wood_he",
-          "ricochetFx": "hit_206_290mm_wood_ap"
+          "fx": "hit_291_390mm_wood_he",
+          "ricochetFx": "hit_291_390mm_wood_ap"
         },
         "steel": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "metal": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "tank_structural_steel": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "aluminum_armor": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "tank_rubber_screens": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "buildings": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "verLandMesh": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "concrete": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "rocks": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "rocksSlippery": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "fabric": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "stone_snow": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         }
       },
       "shatterCollisions": {
@@ -818,7 +814,8 @@
       "caliber": 0.356,
       "speed": 792.0,
       "maxDistance": 100000.0,
-      "Cx": 0.34414,
+      "Cx": 1.07178,
+      "ballisticsModel": "LAW_1943",
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
       "groundRicochetPreset": "apbc_ground",
@@ -838,7 +835,6 @@
       ],
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "356mm_mk16_apcbc",
-      "dynamicKv": true,
       "splashFallBySquare": true,
       "relativeVelArmorShift": [
         200.0,
@@ -850,13 +846,13 @@
       "hpThresholdForFuse": 0.000001,
       "fuseOnWater": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
-      "explosionEffect": "hit_206_290mm_metal_ap",
-      "groundCollisionEffect": "hit_206_290mm_dirt_ap",
-      "ricochetEffect": "hit_206_290mm_metal_ap",
-      "waterCollisionEffect": "hit_206_290mm_water",
-      "explosionPatchRadius": 4.0,
-      "waterRicochetEffect": "hit_206_290mm_water",
-      "groundRicochetEffect": "hit_206_290mm_dirt_ap",
+      "explosionEffect": "hit_291_390mm_metal_ap",
+      "groundCollisionEffect": "hit_291_390mm_dirt_ap",
+      "ricochetEffect": "hit_291_390mm_metal_ap",
+      "waterCollisionEffect": "hit_291_390mm_water",
+      "explosionPatchRadius": 4.2,
+      "waterRicochetEffect": "hit_291_390mm_water",
+      "groundRicochetEffect": "hit_291_390mm_dirt_ap",
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
@@ -959,124 +955,124 @@
       },
       "collisions": {
         "default": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "horLandMesh": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "soil": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "dirt": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "road": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "roadSoil": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "bricks_red": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "steppe": {
-          "fx": "hit_206_290mm_sand_ap",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_ap",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "sand": {
-          "fx": "hit_206_290mm_sand_ap",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_ap",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "duneSand": {
-          "fx": "hit_206_290mm_sand_ap",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_ap",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "roadSand": {
-          "fx": "hit_206_290mm_sand_ap",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_ap",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "quickSand": {
-          "fx": "hit_206_290mm_sand_ap",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_ap",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "snow": {
-          "fx": "hit_206_290mm_snow_ap",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_ap",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "ice": {
-          "fx": "hit_206_290mm_snow_ap",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_ap",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "roadSnow": {
-          "fx": "hit_206_290mm_snow_ap",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_ap",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "snowLower": {
-          "fx": "hit_206_290mm_snow_ap",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_ap",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "glass": {
-          "fx": "hit_206_290mm_metal_ap",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_ap",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "wood": {
-          "fx": "hit_206_290mm_wood_ap",
-          "ricochetFx": "hit_206_290mm_wood_ap"
+          "fx": "hit_291_390mm_wood_ap",
+          "ricochetFx": "hit_291_390mm_wood_ap"
         },
         "steel": {
-          "fx": "hit_206_290mm_metal_ap",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_ap",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "metal": {
-          "fx": "hit_206_290mm_metal_ap",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_ap",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "tank_structural_steel": {
-          "fx": "hit_206_290mm_metal_ap",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_ap",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "aluminum_armor": {
-          "fx": "hit_206_290mm_metal_ap",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_ap",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "tank_rubber_screens": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "buildings": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "verLandMesh": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "concrete": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "rocks": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "rocksSlippery": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "fabric": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "stone_snow": {
-          "fx": "hit_206_290mm_snow_ap",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_ap",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         }
       },
       "shatterCollisions": {
@@ -1202,7 +1198,8 @@
       "caliber": 0.356,
       "speed": 823.0,
       "maxDistance": 100000.0,
-      "Cx": 0.32414,
+      "Cx": 1.13364,
+      "ballisticsModel": "LAW_1943",
       "normalizationPreset": "apbc",
       "ricochetPreset": "apbc",
       "groundRicochetPreset": "apbc_ground",
@@ -1222,7 +1219,6 @@
       ],
       "shellAnimation": "video/shells_animations/aphe.ivf",
       "bulletName": "356mm_mk8_apcbc",
-      "dynamicKv": true,
       "splashFallBySquare": true,
       "relativeVelArmorShift": [
         200.0,
@@ -1234,13 +1230,13 @@
       "hpThresholdForFuse": 0.000001,
       "fuseOnWater": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
-      "explosionEffect": "hit_206_290mm_metal_ap",
-      "groundCollisionEffect": "hit_206_290mm_dirt_ap",
-      "ricochetEffect": "hit_206_290mm_metal_ap",
-      "waterCollisionEffect": "hit_206_290mm_water",
-      "explosionPatchRadius": 4.0,
-      "waterRicochetEffect": "hit_206_290mm_water",
-      "groundRicochetEffect": "hit_206_290mm_dirt_ap",
+      "explosionEffect": "hit_291_390mm_metal_ap",
+      "groundCollisionEffect": "hit_291_390mm_dirt_ap",
+      "ricochetEffect": "hit_291_390mm_metal_ap",
+      "waterCollisionEffect": "hit_291_390mm_water",
+      "explosionPatchRadius": 4.2,
+      "waterRicochetEffect": "hit_291_390mm_water",
+      "groundRicochetEffect": "hit_291_390mm_dirt_ap",
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
@@ -1343,124 +1339,124 @@
       },
       "collisions": {
         "default": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "horLandMesh": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "soil": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "dirt": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "road": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "roadSoil": {
-          "fx": "hit_206_290mm_dirt_ap",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_ap",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "bricks_red": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "steppe": {
-          "fx": "hit_206_290mm_sand_ap",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_ap",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "sand": {
-          "fx": "hit_206_290mm_sand_ap",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_ap",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "duneSand": {
-          "fx": "hit_206_290mm_sand_ap",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_ap",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "roadSand": {
-          "fx": "hit_206_290mm_sand_ap",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_ap",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "quickSand": {
-          "fx": "hit_206_290mm_sand_ap",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_ap",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "snow": {
-          "fx": "hit_206_290mm_snow_ap",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_ap",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "ice": {
-          "fx": "hit_206_290mm_snow_ap",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_ap",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "roadSnow": {
-          "fx": "hit_206_290mm_snow_ap",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_ap",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "snowLower": {
-          "fx": "hit_206_290mm_snow_ap",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_ap",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "glass": {
-          "fx": "hit_206_290mm_metal_ap",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_ap",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "wood": {
-          "fx": "hit_206_290mm_wood_ap",
-          "ricochetFx": "hit_206_290mm_wood_ap"
+          "fx": "hit_291_390mm_wood_ap",
+          "ricochetFx": "hit_291_390mm_wood_ap"
         },
         "steel": {
-          "fx": "hit_206_290mm_metal_ap",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_ap",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "metal": {
-          "fx": "hit_206_290mm_metal_ap",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_ap",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "tank_structural_steel": {
-          "fx": "hit_206_290mm_metal_ap",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_ap",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "aluminum_armor": {
-          "fx": "hit_206_290mm_metal_ap",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_ap",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "tank_rubber_screens": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "buildings": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "verLandMesh": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "concrete": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "rocks": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "rocksSlippery": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "fabric": {
-          "fx": "hit_206_290mm_stone_ap",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_ap",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "stone_snow": {
-          "fx": "hit_206_290mm_snow_ap",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_ap",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         }
       },
       "shatterCollisions": {
@@ -1586,7 +1582,8 @@
       "caliber": 0.356,
       "speed": 823.0,
       "maxDistance": 100000.0,
-      "Cx": 0.35652,
+      "Cx": 1.13364,
+      "ballisticsModel": "LAW_1943",
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -1606,9 +1603,7 @@
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "356mm_class_b_mk9_he",
-      "dynamicKv": true,
       "splashFallBySquare": true,
-      "hitPowerMult": 2.0,
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -1618,15 +1613,14 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "penetrationBySpeed": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
-      "explosionEffect": "hit_206_290mm_metal_he",
-      "groundCollisionEffect": "hit_206_290mm_dirt_he",
-      "ricochetEffect": "hit_206_290mm_metal_he",
-      "waterCollisionEffect": "hit_206_290mm_water",
-      "explosionPatchRadius": 5.0,
-      "waterRicochetEffect": "hit_206_290mm_water",
-      "groundRicochetEffect": "hit_206_290mm_dirt_ap",
+      "explosionEffect": "hit_291_390mm_metal_he",
+      "groundCollisionEffect": "hit_291_390mm_dirt_he",
+      "ricochetEffect": "hit_291_390mm_metal_he",
+      "waterCollisionEffect": "hit_291_390mm_water",
+      "explosionPatchRadius": 5.5,
+      "waterRicochetEffect": "hit_291_390mm_water",
+      "groundRicochetEffect": "hit_291_390mm_dirt_ap",
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
@@ -1729,124 +1723,124 @@
       },
       "collisions": {
         "default": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "horLandMesh": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "soil": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "dirt": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "road": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "roadSoil": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "bricks_red": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "steppe": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "sand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "duneSand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "roadSand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "quickSand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "snow": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "ice": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "roadSnow": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "snowLower": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "glass": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "wood": {
-          "fx": "hit_206_290mm_wood_he",
-          "ricochetFx": "hit_206_290mm_wood_ap"
+          "fx": "hit_291_390mm_wood_he",
+          "ricochetFx": "hit_291_390mm_wood_ap"
         },
         "steel": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "metal": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "tank_structural_steel": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "aluminum_armor": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "tank_rubber_screens": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "buildings": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "verLandMesh": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "concrete": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "rocks": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "rocksSlippery": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "fabric": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "stone_snow": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         }
       },
       "shatterCollisions": {
@@ -1972,7 +1966,8 @@
       "caliber": 0.356,
       "speed": 823.0,
       "maxDistance": 100000.0,
-      "Cx": 0.34414,
+      "Cx": 1.16364,
+      "ballisticsModel": "LAW_1943",
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -1992,9 +1987,7 @@
       "useEffectiveArmorThicknessForShatter": true,
       "shellAnimation": "video/shells_animations/he.ivf",
       "bulletName": "356mm_class_b_mk11_he",
-      "dynamicKv": true,
       "splashFallBySquare": true,
-      "hitPowerMult": 2.0,
       "relativeVelHitShift": [
         300.0,
         1000.0
@@ -2004,15 +1997,14 @@
       "fuseDelay": 0.001,
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
-      "penetrationBySpeed": true,
       "selfDestructionFx": "explosion_air_selfexplosion_big",
-      "explosionEffect": "hit_206_290mm_metal_he",
-      "groundCollisionEffect": "hit_206_290mm_dirt_he",
-      "ricochetEffect": "hit_206_290mm_metal_he",
-      "waterCollisionEffect": "hit_206_290mm_water",
-      "explosionPatchRadius": 5.0,
-      "waterRicochetEffect": "hit_206_290mm_water",
-      "groundRicochetEffect": "hit_206_290mm_dirt_ap",
+      "explosionEffect": "hit_291_390mm_metal_he",
+      "groundCollisionEffect": "hit_291_390mm_dirt_he",
+      "ricochetEffect": "hit_291_390mm_metal_he",
+      "waterCollisionEffect": "hit_291_390mm_water",
+      "explosionPatchRadius": 5.5,
+      "waterRicochetEffect": "hit_291_390mm_water",
+      "groundRicochetEffect": "hit_291_390mm_dirt_ap",
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
       "stabilityRicochetModifier": {
@@ -2115,124 +2107,124 @@
       },
       "collisions": {
         "default": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "horLandMesh": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "soil": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "dirt": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "road": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "roadSoil": {
-          "fx": "hit_206_290mm_dirt_he",
-          "ricochetFx": "hit_206_290mm_dirt_ap"
+          "fx": "hit_291_390mm_dirt_he",
+          "ricochetFx": "hit_291_390mm_dirt_ap"
         },
         "bricks_red": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "steppe": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "sand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "duneSand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "roadSand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "quickSand": {
-          "fx": "hit_206_290mm_sand_he",
-          "ricochetFx": "hit_206_290mm_sand_ap"
+          "fx": "hit_291_390mm_sand_he",
+          "ricochetFx": "hit_291_390mm_sand_ap"
         },
         "snow": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "ice": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "roadSnow": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "snowLower": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         },
         "glass": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "wood": {
-          "fx": "hit_206_290mm_wood_he",
-          "ricochetFx": "hit_206_290mm_wood_ap"
+          "fx": "hit_291_390mm_wood_he",
+          "ricochetFx": "hit_291_390mm_wood_ap"
         },
         "steel": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "metal": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "tank_structural_steel": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "aluminum_armor": {
-          "fx": "hit_206_290mm_metal_he",
-          "ricochetFx": "hit_206_290mm_metal_ap"
+          "fx": "hit_291_390mm_metal_he",
+          "ricochetFx": "hit_291_390mm_metal_ap"
         },
         "tank_rubber_screens": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "buildings": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "verLandMesh": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "concrete": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "rocks": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "rocksSlippery": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "fabric": {
-          "fx": "hit_206_290mm_stone_he",
-          "ricochetFx": "hit_206_290mm_stone_ap"
+          "fx": "hit_291_390mm_stone_he",
+          "ricochetFx": "hit_291_390mm_stone_ap"
         },
         "stone_snow": {
-          "fx": "hit_206_290mm_snow_he",
-          "ricochetFx": "hit_206_290mm_snow_ap"
+          "fx": "hit_291_390mm_snow_he",
+          "ricochetFx": "hit_291_390mm_snow_ap"
         }
       },
       "shatterCollisions": {

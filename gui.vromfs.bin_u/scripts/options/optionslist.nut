@@ -171,6 +171,7 @@ let getMainOptions = function() {
       [USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW, "spinner"],
       [USEROPT_ALTERNATIVE_TPS_CAMERA, "spinner"],
       [USEROPT_HELI_COCKPIT_HUD_DISABLED, "spinner"],
+      [USEROPT_HELI_MOUSE_AIM_ROLL_OVERRIDE_ENABLED, "spinner"],
       [USEROPT_LWS_IND_H_RADIUS, "slider"],
       [USEROPT_LWS_IND_H_ALPHA, "slider"],
       [USEROPT_LWS_IND_H_SCALE, "slider"],
