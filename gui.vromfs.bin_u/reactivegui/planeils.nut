@@ -47,7 +47,10 @@ let ilsF18 = createScriptComponent("%rGui/planeIlses/ilsF18.das", {
   fontId = Fonts.hud
   ilsFovDeg = 17.6
 })
-let ilsCth3022Su30 = createScriptComponent("%rGui/planeIlses/ilsCth3022Su30.das", { fontId = Fonts.ils31 })
+let ilsCth3022Su30 = createScriptComponent("%rGui/planeIlses/ilsCth3022Su30.das", {
+  fontId = Fonts.ils31
+  fontIdLatin = Fonts.hud
+})
 
 let ilsSetting = Computed(function() {
   let res = {

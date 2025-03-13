@@ -121,7 +121,9 @@ def targets_on_screen(var ctx : GuiContext&; data : CanvasParams&)
       ctx |> draw_str_scaled(1.0, spdText, spdText |> length())
 
     if target.hasAimPos
-      ctx |> render_ellipse_aa(target.aimPos, float2(targetOnScreenWidth * 0.25), ctx |> hdpx(4.), e3dColor, transparentColor)
+      var screenPos = float2(0.)
+      if world_to_screen(target.aimPos, screenPos)
+        ctx |> render_ellipse_aa(screenPos, float2(targetOnScreenWidth * 0.25), ctx |> hdpx(4.), e3dColor, transparentColor)
 
     let idText = loc(target.id)
     if idText != ""

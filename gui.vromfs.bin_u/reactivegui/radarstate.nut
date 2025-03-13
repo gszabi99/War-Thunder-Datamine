@@ -335,7 +335,7 @@ interop.updateTarget <- function (index,
 
 const targetLifeTime = 5.0
 
-interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_speed, los_speed, rad_speed, is_detected, is_tracked, alt_rel = null, has_aim = false, aim_x = 0.0, aim_y = 0.0) {
+interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_speed, los_speed, rad_speed, is_detected, is_tracked, alt_rel = null, has_aim = false, aim_x = 0.0, aim_y = 0.0, aim_z = 0.0) {
   local needUpdate = false
   if (!screenTargets) {
     screenTargets = {}
@@ -360,6 +360,7 @@ interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_sp
       hasAim = has_aim
       aimX = aim_x
       aimY = aim_y
+      aimZ = aim_z
     }
   }
   else {
@@ -376,6 +377,7 @@ interop.updateScreenTarget <- function(id, x, y, dist, los_hor_speed, los_ver_sp
       hasAim = has_aim
       aimX = aim_x
       aimY = aim_y
+      aimZ = aim_z
     })
     needUpdate = needUpdate || !isEqual(screenTarget, new_tgt)
     screenTarget.__update(new_tgt)

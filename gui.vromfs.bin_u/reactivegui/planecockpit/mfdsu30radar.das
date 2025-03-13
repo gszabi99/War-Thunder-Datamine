@@ -392,13 +392,13 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
             ctx |> goto_xy(pos.x + size.x - nameBox.width.x, pos.y + size.y - float(selectedCnt) * (nameBox.width.y + 4.))
             ctx |> draw_str_scaled(1., name, name |> length())
             selectedCnt += 1
-      elif !target.isTracked
+      elif !target.isTracked && !target.isDetected
         let line <- to_array_move([[float2[2]
           p - float2(markSize, 0.);
           p + float2(markSize, 0.)
           ]])
         ctx |> render_line_aa(line, false, data.lineWidth, float2(0, 0), data.color)
-      if target.isAttacked || target.isTracked || (isIrst && target.isSelected)
+      if target.isAttacked || target.isTracked || (isIrst && target.isSelected) || target.isDetected
         let diamond <- to_array_move([[float2[4]
          float2(p.x + markSize * 2., p.y);
          float2(p.x, p.y + markSize * 2.);

@@ -139,6 +139,7 @@
     "hasChutes": false,
     "hasParkingBrakeControl": false,
     "hasLightsControl": false,
+    "hasManeuverabilityMode": false,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -215,7 +216,7 @@
       },
       "Arm": {
         "Arm": [
-          0.0,
+          0.11,
           0.6,
           2.1
         ],
@@ -373,6 +374,8 @@
         0.0,
         0.0
       ],
+      "FlowInertia": 0.0,
+      "ClockWiseAOA": false,
       "Areas": {
         "Main": 30.5
       },
@@ -442,7 +445,7 @@
         0.34,
         1.02
       ],
-      "FlowInertia": 0.0693337,
+      "FlowInertia": 0.0693526,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 3.49,
@@ -514,7 +517,7 @@
         1.1,
         0.0
       ],
-      "FlowInertia": 0.0990478,
+      "FlowInertia": 0.0990748,
       "SlipStreamDistance": 6.6,
       "Areas": {
         "Main": 1.691,
@@ -1089,7 +1092,33 @@
         1.0,
         1.0,
         1.0
-      ]
+      ],
+      "NozzleAnglesRanges": {
+        "Horizontal": [
+          -180.0,
+          180.0
+        ],
+        "Vertical": [
+          -180.0,
+          180.0
+        ]
+      },
+      "NozzleAnglesAxesWeights": {
+        "Horizontal": {
+          "Ailerons": 1.0,
+          "Elevator": 0.0,
+          "Rudder": 1.0,
+          "Vtol": 0.0,
+          "Reverse": 0.0
+        },
+        "Vertical": {
+          "Ailerons": 0.0,
+          "Elevator": 1.0,
+          "Rudder": 0.0,
+          "Vtol": 1.0,
+          "Reverse": 1.0
+        }
+      }
     }
   },
   "PropellerType0": {
@@ -1273,7 +1302,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -90.0,
+      90.0,
       90.0
     ],
     "Pos": [
@@ -1297,7 +1326,7 @@
     "CorrectPropellerToTransmissionLink": false
   },
   "Mass": {
-    "EmptyMass": 5426.421,
+    "EmptyMass": 5426.42,
     "MaxFuelMass0": 1516.0,
     "MaxFuelMassExternal0": 0.0,
     "FuelAccumulatorCapacity0": 1.3,
@@ -1390,7 +1419,11 @@
       "oil1_dm": 45.0,
       "oil2_dm": 35.0
     },
-    "PartsWithSurface": {}
+    "PartsWithSurface": {
+      "tailcontrol_dm": 0.0,
+      "wingcontrol_l_dm": 0.0,
+      "wingcontrol_r_dm": 0.0
+    }
   },
   "SelfSealingTanks": {
     "tank1_dm": true,
@@ -1412,7 +1445,7 @@
   },
   "Gear": {
     "SinkFactor": 1400.0,
-    "SinkRateMult": 0.534833,
+    "SinkRateMult": 0.545956,
     "WaterFriction": 0.3,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.5,
@@ -1955,6 +1988,10 @@
         2147440000.0
       ],
       "AoaLimitsMult": [
+        1.0,
+        1.0
+      ],
+      "AoaLimitsManeuverabilityMult": [
         1.0,
         1.0
       ],

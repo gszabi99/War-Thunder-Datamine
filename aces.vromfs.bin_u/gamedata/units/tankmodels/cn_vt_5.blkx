@@ -187,7 +187,7 @@
     "additional_armor_plate": {
       "armorClass": "hull_side_special_armor",
       "cumulativeArmorQuality": 1.055,
-      "genericArmorQuality": 0.14,
+      "genericArmorQuality": 0.2,
       "ex_armor_r_07_dm": {
         "armorThickness": 80.0,
         "variableThickness": true
@@ -202,6 +202,15 @@
       "hp": 300.0,
       "ex_armor_l_09_dm": {},
       "ex_armor_r_09_dm": {}
+    },
+    "hull_spall_liner": {
+      "armorClass": "armour_aramide_fabric",
+      "hp": 200.0,
+      "armorThickness": 20.0,
+      "stopChanceOnDeadPart": 0.0,
+      "spall_liner_01_dm": {},
+      "spall_liner_02_dm": {},
+      "spall_liner_03_dm": {}
     },
     "turret_grille_armor": {
       "hp": 300.0,
@@ -392,9 +401,6 @@
       "drive_turret_h_dm": {
         "armorThrough": 15.0
       },
-      "driver_controls_dm": {
-        "armorThrough": 15.0
-      },
       "drive_turret_v_01_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -451,25 +457,13 @@
         "hp": 50.0,
         "armorThrough": 3.0
       },
-      "electronic_equipment_dm": {
-        "hp": 60.0,
-        "armorThrough": 3.0
-      },
       "electronic_equipment_01_dm": {
-        "hp": 60.0,
-        "armorThrough": 3.0
-      },
-      "fire_control_system_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
       },
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
-      },
-      "power_system_dm": {
-        "hp": 60.0,
-        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -3286,6 +3280,7 @@
           "fatalFire": false,
           "fatalExplosion": false,
           "autoLoad": true,
+          "autoloader": "autoloader_dm",
           "ammo_turret_01_dm": {
             "count": 1
           },

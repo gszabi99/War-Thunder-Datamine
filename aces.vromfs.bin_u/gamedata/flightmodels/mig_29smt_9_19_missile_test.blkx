@@ -12,6 +12,7 @@
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
   "ilsHasRadarHud": true,
+  "isBwOpticSight": true,
   "havePointOfInterestDesignator": true,
   "rwrIndicator": "L-150",
   "ils31": true,
@@ -2903,14 +2904,11 @@
               "scale": 0.8
             },
             {
-              "type": "ils_on_camera"
-            },
-            {
               "type": "map",
               "hideBackground": true
             },
             {
-              "type": "target_tracking",
+              "type": "target_tracking_bw",
               "turretIdx": 0
             }
           ]
@@ -2926,11 +2924,8 @@
           "cameraFromShell": true,
           "page": [
             {
-              "type": "target_tracking",
+              "type": "target_tracking_bw",
               "turretIdx": 0
-            },
-            {
-              "type": "ils_on_camera"
             },
             {
               "type": "map",

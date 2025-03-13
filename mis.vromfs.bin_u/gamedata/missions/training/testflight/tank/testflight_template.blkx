@@ -73,20 +73,7 @@
           "loc_name": "",
           "spawnEffect": false,
           "isGroundZone": false,
-          "isUnit": false,
           "radius": -1.0,
-          "isStrictSpawn": false,
-          "isAirfield": false,
-          "useExisting": false,
-          "isIndividual": false,
-          "removeAreas": false,
-          "canSpawnOnNeutral": false,
-          "showOnMap": true,
-          "onlyOnePlayerPerSpawnPoint": false,
-          "resetStrictSpawnIndex": false,
-          "replaceAreas": false,
-          "forceCreate": false,
-          "ignoreTeamsOnReuse": false,
           "target": [
             "artillery_spawn01",
             "artillery_spawn02",
@@ -94,6 +81,19 @@
             "artillery_spawn04"
           ],
           "team": "A",
+          "isStrictSpawn": false,
+          "resetStrictSpawnIndex": false,
+          "isAirfield": false,
+          "isUnit": false,
+          "forceCreate": false,
+          "useExisting": false,
+          "ignoreTeamsOnReuse": false,
+          "isIndividual": false,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "removeAreas": false,
+          "replaceAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
           "tags": {
             "artillery": true
           }
@@ -346,6 +346,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "flight_target01"
         },
         "triggerEnable": {
@@ -418,6 +419,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "flight_target02"
         },
         "triggerEnable": {
@@ -464,6 +466,85 @@
         },
         "triggerEnable": {
           "target": "respawn_plane3"
+        }
+      },
+      "else_actions": {}
+    },
+    "spawn_helicopter1": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "objectExists": [
+          {
+            "target": "helicopter_target01",
+            "type": "unit"
+          },
+          {
+            "target": "helispawn_area01",
+            "type": "area"
+          }
+        ]
+      },
+      "actions": {
+        "varSetInt": {
+          "value": 0,
+          "var": "timer_replay"
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "helicopter_target01",
+          "target": "helispawn_area01",
+          "lookAtTargetUponRespawn": "flight_point02"
+        },
+        "unitLoadBehTree": {
+          "name": "missionHitThePoint",
+          "objects": "helicopter_target01",
+          "loadType": "tree"
+        },
+        "unitMoveTo": {
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target": "flight_point02",
+          "target_var_name": "",
+          "target_var_comp_op": "equal",
+          "target_var_value": 0,
+          "target_marking": 0,
+          "waypointReachedDist": 10.0,
+          "recalculatePathDist": -1.0,
+          "follow_target": false,
+          "fastClimb": false,
+          "destTimeMode": false,
+          "teleportHeightType": "absolute",
+          "useUnitHeightForTele": true,
+          "shouldKeepFormation": false,
+          "shouldKeepAirFormation": true,
+          "teleportHeightValue": 1000.0,
+          "horizontalDirectionForTeleport": true,
+          "object": "helicopter_target01",
+          "move_type": "move"
+        },
+        "triggerEnable": {
+          "target": [
+            "respawn_helicopter1",
+            "timer_start"
+          ]
         }
       },
       "else_actions": {}
@@ -830,6 +911,73 @@
           ],
           "object": "flight_target03",
           "target": "spawn_area03"
+        }
+      },
+      "else_actions": {}
+    },
+    "respawn_helicopter1": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ANY",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {
+        "unitWhenStatus": {
+          "object_type": "isInactive",
+          "check_objects": "any",
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "target_type": "isAlive",
+          "check_period": 1.0,
+          "object": "helicopter_target01"
+        },
+        "varCompareInt": {
+          "var_value": "timer_replay",
+          "value": 60,
+          "comparasion_func": "more"
+        }
+      },
+      "actions": {
+        "triggerDisable": {
+          "target": "timer_start"
+        },
+        "wait": [
+          {
+            "time": 15.0
+          },
+          {
+            "time": 1.0
+          }
+        ],
+        "unitPutToSleep": {
+          "target": "helicopter_target01"
+        },
+        "varSetInt": {
+          "value": 0,
+          "var": "timer_replay"
+        },
+        "triggerEnable": {
+          "target": "timer_start"
+        },
+        "unitRespawn": {
+          "delay": 1.0,
+          "offset": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "object": "helicopter_target01",
+          "target": "helispawn_area01",
+          "lookAtTargetUponRespawn": "flight_point02"
         }
       },
       "else_actions": {}
@@ -1378,6 +1526,29 @@
         ]
       },
       "else_actions": {}
+    },
+    "timer_start": {
+      "is_enabled": false,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": true
+      },
+      "events": {
+        "periodicEvent": {
+          "time": 1.0
+        }
+      },
+      "conditions": {},
+      "actions": {
+        "varModify": {
+          "operator": "add",
+          "value": 1.0,
+          "var": "timer_replay"
+        }
+      },
+      "else_actions": {}
     }
   },
   "mission_objectives": {
@@ -1396,7 +1567,8 @@
     "atgm_time": 3,
     "atgm_unit": "",
     "player": "",
-    "atgm_unit_spawn": ""
+    "atgm_unit_spawn": "",
+    "timer_replay": 0
   },
   "dialogs": {},
   "airfields": {},

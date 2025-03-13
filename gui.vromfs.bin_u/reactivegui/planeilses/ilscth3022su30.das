@@ -28,6 +28,7 @@ let hudPadding = float2(0.02)
 
 struct PropStorage
   fontId : int
+  fontIdLatin : int
 
 struct Tracking
   isActive : bool
@@ -36,7 +37,6 @@ struct Tracking
   distanceRate : float
   dirNorm : float3
   angVel : float3
-  ilsPosValid : bool
   ilsPos : float2
 
 struct Radar
@@ -47,6 +47,7 @@ struct Radar
   isTwsMode : bool
   isHdnMode : bool
   isHmdMode : bool
+  isGmtMode : bool
   azimuthMin : float
   azimuthMax : float
   elevationMin : float
@@ -79,11 +80,6 @@ struct Shapes
     float2(0.015,  0.006);
     float2(0.015,  0.015);
   ]]
-
-
-struct Ccip
-  ilsPosValid : bool
-  ilsPos : float2
 
 
 struct Ccrp
@@ -124,7 +120,6 @@ def loc_wpn(str : string) : string
 
 class Component : Canvas
   isValid : bool
-  isMetricUnits : bool
 
   app : AcesApp?
   hero : Unit?
@@ -136,11 +131,13 @@ class Component : Canvas
   visual : Visual
   ws : WeaponSlots?
 
+  fontId : int
+  fontIdLatin : int
+
   radar : Radar
   toi : Tracking
   spi : SensorPoi
   radarScopeSize : float2
-  ccip : Ccip
   ccrp : Ccrp
   guidance : Guidance
 
@@ -158,6 +155,7 @@ class Component : Canvas
   hasReleasePerm : bool
   isOutsideRminRmax : bool
   fpmPos : float2
+  nctr : string
 
   defaultLineWidth : float
   defaultFontSize : int
@@ -183,6 +181,9 @@ class Component : Canvas
     totalTime = float(app.usefulTotalTime)
     ws = new WeaponSlots(hero, app, fmw, wc)
 
+    fontId = props.fontId
+    fontIdLatin = props.fontIdLatin
+
     isValid = true
     defaultColor = *fmw.cockpit->getPageColor(MfdPageType.MFD_PLANE_ILS)
     defaultLineWidth = floor(5.0 * fmw.cockpit.ilsLineWidthScale)
@@ -206,10 +207,6 @@ class Component : Canvas
       spi.distance = length(spi.pos - hero.unitTm[3])
       spi.ilsPos = worldPosToHud(spi.pos)
 
-    if get_ils_target_pos_valid()
-      ccip.ilsPosValid = true
-      ccip.ilsPos = toRelPos(get_ils_target_pos())
-
     get_selected_secondary_weapon(fmw) <| $(var weapon : Weapon?#)
       secondaryWeapon := weapon
 
@@ -220,12 +217,14 @@ class Component : Canvas
     radar.elevationMax = get_radar_hud_scan_elevation_max()
     radar.displayRangeMax = get_radar_hud_distance_max()
     radar.displayRangeMin = get_radar_hud_distance_min()
+
     let radarModeName = get_radar_hud_mode_name()
     radar.isAcmMode = find(radarModeName, "ACM") >= 0
     radar.isTrkMode = find(radarModeName, "track") >= 0
     radar.isTwsMode = find(radarModeName, "TWS") >= 0
     radar.isHdnMode = find(radarModeName, "HDN") >= 0
     radar.isHmdMode = find(radarModeName, "HMD") >= 0
+    radar.isGmtMode = find(radarModeName, "GTM") >= 0
     radar.isIrst = get_radar_hud_is_irst() && find(radarModeName, "IRST") >= 0
     radar.isVerticalScan = radar.elevationMax - radar.elevationMin > 2.0 * (radar.azimuthMax - radar.azimuthMin)
 
@@ -237,10 +236,7 @@ class Component : Canvas
         toi.distanceRate = target.distanceRate
         toi.dirNorm = target.dirNorm
         toi.angVel = target.angVel
-        var ilsPos : float2
-        if world_to_ils_screen(fmw, toi.pos, ilsPos)
-          toi.ilsPosValid = true
-          toi.ilsPos = toRelPos(ilsPos)
+        toi.ilsPos = worldPosToHud(toi.pos)
 
     isAirGunMode = fmw.sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_AIR_CANNONS)
     isAirGunUnrangedMode = isAirGunMode && !toi.isActive
@@ -704,6 +700,7 @@ class Component : Canvas
           let dlzNezMaxY = pos.y - dlzNezMax * length
           drawLine(float2(pos.x, dlzNezMaxY), float2(pos.x + stepWidth, dlzNezMaxY))
 
+        isOutsideRminRmax = toi.distance / float(radar.displayRangeMax * 1000.0) > dlzMax
         setLineWidth(defaultLineWidth)
 
     // Target range
@@ -780,6 +777,7 @@ class Component : Canvas
 
 
   def drawBScopeTargets()
+    setFontSize(roundi(0.5 * float(defaultFontSize)))
     get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
       for t in targets
         continue if !t.isEnemy
@@ -793,23 +791,24 @@ class Component : Canvas
           (clamp(t.azimuthRel, 0.0, 1.0) - 0.5) * radarScopeSize.x,
           (-clamp(t.distanceRel, 0.0, 1.0) + 0.5) * radarScopeSize.y)
 
-        if t.isAttacked
-          drawLine(float2(pos.x, pos.y + 0.02), float2(pos.x, pos.y - 0.02))
-          drawLine(float2(pos.x + 0.01, pos.y), float2(pos.x - 0.01, pos.y))
+        if t.isAttacked || t.isTracked || t.isDetected
           drawClosedPolyLine(shapes.diamond.to_array().translate(pos))
+        else
+          drawCross(pos, float2(0.02))
 
-        if t.isDetected || t.isTracked
-          drawClosedPolyLine(shapes.diamond.to_array().translate(pos))
-        elif !t.isAttacked
-          setFillColor(defaultColor)
-          let size = float2(0.01, 0.0015)
-          drawBox(pos - size, pos + size)
-          setFillColor(nullColor)
+        if t.isTracked || t.isDetected
+          if isAamMode && !isOutsideRminRmax && (guidance.lockState == GuidanceLockState.RESULT_TRACKING || guidance.lockState == GuidanceLockState.RESULT_LOCK_AFTER_LAUNCH)
+            drawLine(float2(pos.x, pos.y + 0.02), float2(pos.x, pos.y - 0.02))
+            drawLine(float2(pos.x + 0.01, pos.y), float2(pos.x - 0.01, pos.y))
+        if t.isAttacked
+          drawCross(pos, float2(0.02))
+
+        drawStrAnchored(pos - float2(0.015, 0.0), "{int(t.id)}", AnchorHorz.Right, AnchorVert.Center)
+    setFontSize(defaultFontSize)
 
 
   def drawCScopeTargets()
-    let elMax = -(get_radar_hud_scan_elevation_max() - get_radar_hud_elevation_min()) / (get_radar_hud_elevation_max() - get_radar_hud_elevation_min()) + 0.5
-    let elMin = -(get_radar_hud_scan_elevation_min() - get_radar_hud_elevation_min()) / (get_radar_hud_elevation_max() - get_radar_hud_elevation_min()) + 0.5
+    setFontSize(roundi(0.5 * float(defaultFontSize)))
     get_radar_hud_targets() <| $(targets : array<RadarTarget> const#)
       for t in targets
         continue if !t.isEnemy
@@ -828,13 +827,20 @@ class Component : Canvas
           (clamp(t.azimuthRel, 0.0, 1.0) - 0.5) * radarScopeSize.x,
           (-clamp(elevationRel, 0.0, 1.0) + 0.5) * radarScopeSize.y)
 
-        if t.isDetected || t.isTracked
+        if t.isAttacked || t.isTracked || t.isDetected
           drawClosedPolyLine(shapes.diamond.to_array().translate(pos))
         else
-          setFillColor(defaultColor)
-          let size = float2(0.01, 0.0015)
-          drawBox(pos - size, pos + size)
-          setFillColor(nullColor)
+          drawCross(pos, float2(0.02))
+
+        if t.isTracked || t.isDetected
+          if !isOutsideRminRmax && (guidance.lockState == GuidanceLockState.RESULT_TRACKING || guidance.lockState == GuidanceLockState.RESULT_LOCK_AFTER_LAUNCH)
+            drawLine(float2(pos.x, pos.y + 0.02), float2(pos.x, pos.y - 0.02))
+            drawLine(float2(pos.x + 0.01, pos.y), float2(pos.x - 0.01, pos.y))
+        if t.isAttacked
+          drawCross(pos, float2(0.02))
+
+        drawStrAnchored(pos - float2(0.015, 0.0), "{int(t.id)}", AnchorHorz.Right, AnchorVert.Center)
+    setFontSize(defaultFontSize)
 
 
   def drawRadarAzimuthElevation()
@@ -940,8 +946,13 @@ class Component : Canvas
     drawStrAnchored(pos, radar.isHdnMode ? "ППС" : "ЗПС", AnchorHorz.Center, AnchorVert.Center)
 
 
-  def drawRangeMode(isShortRange : bool)
-    drawStrAnchored(float2(0.44, 0.24), isShortRange ? "ББВ" : "ДБВ", AnchorHorz.Center, AnchorVert.Center)
+  def drawRadarMode()
+    var mode = "ДБВ"
+    if radar.isHmdMode || radar.isAcmMode
+      mode = "ББВ"
+    elif radar.isGmtMode
+      mode = "ДБП"
+    drawStrAnchored(float2(0.44, 0.24), mode, AnchorHorz.Center, AnchorVert.Center)
 
 
   def drawSensorOperatingMode()
@@ -972,15 +983,14 @@ class Component : Canvas
   def drawTargetTrackingStatus()
     return if !radar.isTrkMode
 
-    let pos = float2(0.43, 0.195)
-    drawStrAnchored(pos, "СЦ", AnchorHorz.Center, AnchorVert.Center)
+    drawStrAnchored(float2(0.43, 0.195), "СЦ", AnchorHorz.Center, AnchorVert.Center)
 
 
   def drawRadar()
     return if !radar.isEmitting && !radar.isHmdMode
     // Labels
     drawAspectMode()
-    drawRangeMode(radar.isAcmMode || radar.isHmdMode)
+    drawRadarMode()
     drawSensorOperatingMode()
     drawTargetTrackingStatus()
     // Radar symbology occluded
@@ -1000,17 +1010,21 @@ class Component : Canvas
     elif radar.isAcmMode
       drawScanArea()
     elif radar.isIrst
+      drawRadarRangeScale()
       drawCScopeTargets()
       drawRadarAzimuthElevation()
       drawLosTarget()
       drawSelectionCue()
-      drawRadarRangeScale()
+      drawMissileLeadMarker()
+      drawNctr()
     else
+      drawRadarRangeScale()
       drawBScopeTargets()
       drawRadarAzimuthElevation()
-      drawRadarRangeScale()
       drawLosTarget()
       drawSelectionCue()
+      drawMissileLeadMarker()
+      drawNctr()
 
     drawTargetSpeedAlt()
 
@@ -1217,7 +1231,7 @@ class Component : Canvas
       return
 
     drawStrAnchored(float2(0.43, 0.3), "НС", AnchorHorz.Center, AnchorVert.Center)
-    // return if !ccip.ilsPosValid
+
     var pos = float2(0.0)
     if fcm.isCannonFireDirectionValid
       pos = worldPosToHud((hero.unitTm * fcm.averageCannonPosition) + fcm.cannonAimDirection);
@@ -1227,6 +1241,8 @@ class Component : Canvas
       var gyroOffset = inverse(hero.unitTm) * fcm.cannonAimPosition
       gyroOffset = offsetPitchRotTm * gyroOffset
       pos = worldPosToHud(hero.unitTm * gyroOffset)
+    else
+      return
 
     drawReticle(pos)
     drawDot(pos)
@@ -1350,20 +1366,20 @@ class Component : Canvas
     drawStrAnchored(pos, "ЛД", AnchorHorz.Center, AnchorVert.Center)
 
 
+  def worldPosToHud(pos : float3)
+    return worldVecToHud(pos - hero.pos)
+
+
   def worldVecToHud(dirVec : float3)
-    var localVec = float3x3(inverse(hero.unitTm)) * dirVec
+    var localVec = quat_mul_vec(math::quat(inverse(hero.unitTm)), dirVec)
     let isBehind = localVec.x < 0.0 // Point in rear hemisphere
     if isBehind
       localVec.x = -localVec.x
     localVec = fast_normalize(localVec)
-    let yaw = (atan2(localVec.x, localVec.z) - PI_2)
-    let pitch = asin(localVec.y)
-    var result = float2(yaw / hudFovLimits.x, -pitch / hudFovLimits.y)
+    let screenX = (atan2(localVec.x, localVec.z) - PI_2)
+    let screenY = asin(localVec.y)
+    var result = float2(screenX / hudFovLimits.x, -screenY / hudFovLimits.y)
     return !isBehind ? result : result * 100.0
-
-
-  def worldPosToHud(pos : float3)
-    return worldVecToHud(pos - hero.pos)
 
 
   def angleToHud(angle : float2)
@@ -1435,10 +1451,74 @@ class Component : Canvas
 
 
   def drawPermanentLabels()
-    drawStrAnchored(float2(-0.45, 0.3), "МАКС", AnchorHorz.Center, AnchorVert.Center)
     setFontSize(roundi(0.7   * float(defaultFontSize)))
     drawStrAnchored(float2(0.42, 0.39), "УВОД ОТКЛ", AnchorHorz.Center, AnchorVert.Center)
     setFontSize(defaultFontSize)
+
+
+  def drawMissileLeadMarker()
+    return if !isAamMode
+
+    let radius = 0.012
+    get_radar_hud_screen_targets() <| $(targets : array<RadarScreenTarget> const#)
+      for t in targets
+        continue if !t.isDetected && !t.isTracked && !t.hasAimPos && !t.isEnemy
+
+        nctr := t.id
+        var pos = worldPosToHud(t.aimPos)
+        if isOutOfCanvas(pos, hudPadding)
+          return if fract(totalTime * 2.0) < 0.5
+
+          let dir = fast_normalize(pos)
+          let rt = traceRayToCanvasEdges(float2(0.0), dir, 1.8 * hudPadding)
+          pos = rt * dir
+        drawCircle(pos, radius)
+
+
+  def drawNctr()
+    return if nctr.empty()
+
+    setFont(fontIdLatin)
+    setFontSize(defaultFontSize)
+    drawStrAnchored(float2(0.43, 0.15), loc(nctr), AnchorHorz.Center, AnchorVert.Center)
+    setFont(fontId)
+    setFontSize(defaultFontSize)
+
+
+  def drawThrottle()
+    return if !fmw.isLocalControl
+
+    let relEngPower = fmw.fm.appliedCT.getPower(0)
+    var throttle = "МГ"
+    if relEngPower >= 1.009 && *fmw.fm.EI->propulsion_isAfterburnerEffective(fmw.fm)
+      throttle = "Ф"
+    elif relEngPower >= 0.635
+      throttle = "МАКС"
+    drawStrAnchored(float2(-0.45, 0.3), throttle, AnchorHorz.Center, AnchorVert.Center)
+
+
+  def drawArtificialHorizon()
+    let euler = euler_from_quat(math::quat(hero.unitTm))
+    var pos = -angleToHud(float2(0.0, euler.y))
+    var isClamped = false;
+
+    if isOutOfCanvas(pos, 2.0 * hudPadding)
+      let dir = fast_normalize(pos)
+      let rt = traceRayToCanvasEdges(float2(0.0), dir, 2.0 * hudPadding)
+      pos = rt * dir
+      isClamped = true
+    var sina, cosa : float = 0.0
+    sincos(euler.z, sina, cosa)
+    let line = [[auto
+      float2(pos.x + 1.0, pos.y);
+      float2(pos.x - 1.0, pos.y)
+    ]]
+    setLineWidth(0.7 * defaultLineWidth)
+    if isClamped
+      drawDashedPolyLine(line.to_array().rotate(sina, cosa), 0.008, 0.012)
+    else
+      drawPolyLine(line.to_array().rotate(sina, cosa))
+    setLineWidth(defaultLineWidth)
 
 
   def drawFlightSymbology()
@@ -1447,6 +1527,7 @@ class Component : Canvas
       drawRollScale()
       drawRollIndicator()
       drawHeadingTape()
+      drawArtificialHorizon()
     drawFpm()
     drawVsi()
     drawAlt()
@@ -1472,6 +1553,7 @@ class Component : Canvas
     drawWeaponSlots()
     drawPermanentLabels()
     drawReleasePerm()
+    drawThrottle()
     restoreViewport()
 
 
@@ -1483,3 +1565,4 @@ def render(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : Ren
 [export]
 def setup(props : Properties&; var propStorage : PropStorage&)
   propStorage.fontId = getInt(props, "fontId", 0)
+  propStorage.fontIdLatin = getInt(props, "fontIdLatin", 0)

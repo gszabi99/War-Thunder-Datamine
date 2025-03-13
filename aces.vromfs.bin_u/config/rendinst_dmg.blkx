@@ -14161,6 +14161,15 @@
       "material": "transparentBeton"
     },
     {
+      "name": "iron_fence_a",
+      "destroyedModelName": "iron_fence_a_destr_phobj",
+      "destructionImpulse": 1000.0,
+      "fx": "ad_metal",
+      "dmPreset": "dural_props",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    {
       "name": "european_road_column_a",
       "destroyedModelName": "european_road_column_a_destr_phobj",
       "destructionImpulse": 5000.0,
@@ -14199,6 +14208,24 @@
     {
       "name": "road_column_a",
       "destroyedModelName": "road_column_a_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "isParent": true
+    },
+    {
+      "name": "iron_fence_a_column_a",
+      "destroyedModelName": "iron_fence_a_column_a_destr_phobj",
+      "destructionImpulse": 5000.0,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "isParent": true
+    },
+    {
+      "name": "iron_fence_a_column_b",
+      "destroyedModelName": "iron_fence_a_column_b_destr_phobj",
       "destructionImpulse": 5000.0,
       "fx": "ad_metal_small",
       "fxScale": 1.0,
@@ -40218,71 +40245,81 @@
     "town_building_ruin_a": {
       "physRes": "town_building_ruin_a_destr_phobj",
       "destructionImpulse": 200000.0,
+      "impulseThreshold": 3.0,
       "fx": "ad_dust_stucco",
-      "dmPreset": "adobe_brick",
+      "dmPreset": "brick_concrete_column",
       "isParent": true
     },
     "town_building_ruin_b": {
       "physRes": "town_building_ruin_b_destr_phobj",
       "destructionImpulse": 200000.0,
+      "impulseThreshold": 3.0,
       "fx": "ad_dust_stucco",
-      "dmPreset": "adobe_brick",
+      "dmPreset": "brick_concrete_column",
       "isParent": true
     },
     "town_building_ruin_c": {
       "physRes": "town_building_ruin_c_destr_phobj",
       "destructionImpulse": 200000.0,
+      "impulseThreshold": 3.0,
       "fx": "ad_dust_stucco",
-      "dmPreset": "adobe_brick",
+      "dmPreset": "brick_concrete_column",
       "isParent": true
     },
     "town_building_ruin_d": {
       "physRes": "town_building_ruin_d_destr_phobj",
       "destructionImpulse": 200000.0,
+      "impulseThreshold": 3.0,
       "fx": "ad_dust_stucco",
-      "dmPreset": "adobe_brick",
+      "dmPreset": "brick_concrete_column",
       "isParent": true
     },
     "town_building_ruin_e": {
-      "physRes": "town_building_ruin_i_destr_phobj",
+      "physRes": "town_building_ruin_e_destr_phobj",
       "destructionImpulse": 200000.0,
+      "impulseThreshold": 3.0,
       "fx": "ad_dust_stucco",
-      "dmPreset": "adobe_brick",
+      "dmPreset": "brick_concrete_column",
       "isParent": true
     },
     "town_building_ruin_f": {
       "physRes": "town_building_ruin_f_destr_phobj",
       "destructionImpulse": 200000.0,
+      "impulseThreshold": 3.0,
       "fx": "ad_dust_stucco",
-      "dmPreset": "adobe_brick",
+      "dmPreset": "brick_concrete_column",
       "isParent": true
     },
     "town_building_ruin_g": {
       "physRes": "town_building_ruin_g_destr_phobj",
       "destructionImpulse": 200000.0,
+      "impulseThreshold": 3.0,
       "fx": "ad_dust_stucco",
-      "dmPreset": "adobe_brick",
+      "dmPreset": "brick_concrete_column",
       "isParent": true
     },
     "town_building_ruin_h": {
       "physRes": "town_building_ruin_h_destr_phobj",
       "destructionImpulse": 200000.0,
+      "impulseThreshold": 3.0,
       "fx": "ad_dust_stucco",
-      "dmPreset": "adobe_brick",
+      "dmPreset": "brick_concrete_column",
       "isParent": true
     },
     "town_building_ruin_i": {
       "physRes": "town_building_ruin_i_destr_phobj",
       "destructionImpulse": 200000.0,
+      "impulseThreshold": 3.0,
       "fx": "ad_dust_stucco",
-      "dmPreset": "adobe_brick",
+      "dmPreset": "brick_concrete_column",
       "isParent": true
     },
     "town_building_ruin_j": {
       "physRes": "town_building_ruin_j_destr_phobj",
       "destructionImpulse": 200000.0,
+      "impulseThreshold": 3.0,
       "fx": "ad_dust_stucco",
-      "dmPreset": "adobe_brick",
+      "dmPreset": "brick_concrete_column",
       "isParent": true
     },
     "town_building_ruin_floor_a": {
@@ -51593,12 +51630,10 @@
       "fxScale": 1.0
     },
     "road_column_d": {
-      "physRes": "road_column_d_destr_phobj",
-      "hp": 12.0,
-      "impulseThreshold": 8.0,
+      "destroyedModelName": "road_column_d_destr_phobj",
+      "destructionImpulse": 5000.0,
       "fx": "ad_dust_stucco",
-      "fxScale": 1.0,
-      "dmPreset": "dural_props"
+      "fxScale": 1.0
     },
     "ussr_fence_concrete_po2_4000_a": {
       "physRes": "ussr_fence_concrete_po2_4000_a_destr_phobj",
@@ -51799,30 +51834,6 @@
       "fxTemplate": "envir_destr_concrete_small_effect",
       "fxScale": 1.0,
       "material": "transparentCamera"
-    },
-    "iron_fence_a": {
-      "physRes": "iron_fence_a_destr_phobj",
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "fxTemplate": "ad_metal_small",
-      "fxScale": 1.0,
-      "stopsBullets": true
-    },
-    "iron_fence_a_column_a": {
-      "physRes": "iron_fence_a_column_a_destr_phobj",
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "fxTemplate": "ad_metal_small",
-      "fxScale": 1.0,
-      "stopsBullets": true
-    },
-    "iron_fence_a_column_b": {
-      "physRes": "iron_fence_a_column_b_destr_phobj",
-      "hp": 10.0,
-      "impulseThreshold": 1.0,
-      "fxTemplate": "ad_metal_small",
-      "fxScale": 1.0,
-      "stopsBullets": true
     },
     "brick_fence_a": {
       "physRes": "brick_fence_a_destr_phobj",

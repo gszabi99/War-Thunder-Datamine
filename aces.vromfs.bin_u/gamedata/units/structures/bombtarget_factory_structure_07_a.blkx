@@ -6,19 +6,10 @@
   "hasDmg": false,
   "hasDmg2": true,
   "hasDmg2Collision": true,
-  "bulletHitFx": "ground_model_hit",
-  "partDamageFx": "part_damage",
-  "explosionFx": "bomb_expl_5000kg",
-  "fireFx": "fire_ground_large_fx",
+  "explosionFx": "explosion_ship_large",
+  "fireFx": "fire_ground_large_oil",
   "timeToFire": 600.0,
   "timeToSmoke": 600.0,
-  "DamageParts": {
-    "armor10": {
-      "body_dm": {
-        "hp": 1000.0
-      }
-    }
-  },
   "DamageEffects": {
     "part": {
       "name": "body_dm",
@@ -28,6 +19,13 @@
       },
       "onHit": {
         "fire": 0.1
+      }
+    }
+  },
+  "DamageParts": {
+    "armor10": {
+      "body_dm": {
+        "hp": 1400.0
       }
     }
   }
