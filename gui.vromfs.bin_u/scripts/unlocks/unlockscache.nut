@@ -6,7 +6,6 @@ let { regionalUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_unlocks_blk, get_personal_unlocks_blk } = require("blkGetters")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { get_updated_unlocks_ids } = require("chard")
 
 let unlocksCacheById = persist("unlocksCacheById", @() {})
 let personalUnlocksCacheById = persist("personalUnlocksCacheById", @() {})
@@ -89,45 +88,13 @@ function clearCombinedCache() {
 
 let cacheCharUnlocks = @() cacheProfileUnlocks(get_unlocks_blk(), "charUnlocks")
 
-function updateCacheCharUnlocks() {
-  let { cacheById, cacheArray, cacheByType, cacheIdxs } = unlocksCaches.charUnlocks
-  if (cacheById.len() == 0) {
-    cacheCharUnlocks()
-    return
-  }
-
-  let { updated_unlocks, overflowed } = get_updated_unlocks_ids()
-  if (overflowed) {
-    cacheCharUnlocks()
-    return
-  }
-
-  let updatedUnlocksTbl = {}
-  updated_unlocks.each(@(v) updatedUnlocksTbl[v] <- true)
-  let unlocks = get_unlocks_blk() % "unlockable"
-  foreach (unlock in unlocks) {
-    let { id = null } = unlock
-    if (id not in updatedUnlocksTbl)
-      continue
-
-    if (id not in cacheById) {
-      addUnlockToCache(unlock, "charUnlocks")
-    }
-
-    cacheById[id] = unlock
-    let { idxInArray, idxInType } = cacheIdxs[id]
-    cacheArray[idxInArray] = unlock
-    cacheByType[unlock.type][idxInType] = unlock
-  }
-}
-
 function cache() {
   if (isCacheValid.value)
     return
 
   isCacheValid.value = true
   clearCombinedCache()
-  updateCacheCharUnlocks()
+  cacheCharUnlocks()
   if (!isLoggedIn.get())
     return
 
