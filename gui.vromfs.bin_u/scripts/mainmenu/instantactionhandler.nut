@@ -1004,7 +1004,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let slotbar = this.getSlotbar()
-    let curSlotExtraInfoObj = slotbar?.getCurrentCrewSlot().findObject("extra_info_block")
+    let curSlotExtraInfoObj = slotbar?.getCurrentCrewSlot().findObject("extra_info_content")
     if (!curSlotExtraInfoObj)
       return
 

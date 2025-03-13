@@ -797,7 +797,7 @@ function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine = null) 
         let tntEqText = getTntEquivalentText(explosiveType, explosiveMass)
         if (tntEqText.len())
           addParamsToRes(tntEqText, loc("bullet_properties/explosiveMassInTNTEquivalent"))
-        if (weaponType == "bombs" && unit.unitType != unitTypes.SHIP) {
+        if ((weaponType == "bombs" || weaponType == "guided bombs") && unit.unitType != unitTypes.SHIP) {
           let destrTexts = getDestructionInfoTexts(explosiveType, explosiveMass, massKg)
           foreach (key in ["maxArmorPenetration", "destroyRadiusArmored", "destroyRadiusNotArmored"]) {
             let valueText = destrTexts[$"{key}Text"]

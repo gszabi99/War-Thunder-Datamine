@@ -1,9 +1,9 @@
 <<#hasExtraInfoBlock>>
 extraInfoBlock {
-  id:t='extra_info_block'
   interactive:t='yes'
 
   content {
+    id:t='extra_info_content'
     behavior:t='button'
     on_r_click:t='onCrewSlotClick'
     on_click:t='onCrewSlotClick'

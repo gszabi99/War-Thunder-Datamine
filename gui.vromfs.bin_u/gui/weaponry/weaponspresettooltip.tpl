@@ -2,18 +2,18 @@ tdiv {
   flow:t='vertical'
   width:t='pw'
 
-  <<^presetsNames>>
   <<#reqText>>
   weaponTooltipBlock {
     width:t='pw'
+    <<^presetsNames>>
     margin-bottom:t='1/2@bulletTooltipPadding'
+    <</presetsNames>>
     padding:t='1@bulletTooltipPadding, 1/2@bulletTooltipPadding'
     tooltipDesc {
       text:t='<<reqText>>'
     }
   }
   <</reqText>>
-  <</presetsNames>>
 
   weaponTooltipBlock {
     flow:t='vertical'

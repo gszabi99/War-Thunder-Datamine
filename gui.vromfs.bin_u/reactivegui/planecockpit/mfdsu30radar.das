@@ -387,7 +387,7 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
         if target.isDetected || target.isTracked
           if target.typeId != ""
             let idText = loc(target.typeId)
-            let name = "{idText}"
+            let name = "{idText} {int(target.id)}"
             let nameBox = get_str_bbox(name, name |> length(), fctx)
             ctx |> goto_xy(pos.x + size.x - nameBox.width.x, pos.y + size.y - float(selectedCnt) * (nameBox.width.y + 4.))
             ctx |> draw_str_scaled(1., name, name |> length())
