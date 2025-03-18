@@ -2,7 +2,9 @@
   "root": {
     "type": "big",
     "blur": {},
-    "blur_foreground": {},
+    "blur_foreground": {
+      "filledDark": "yes"
+    },
     "tdiv": {
       "pos": "0, 0.5ph-0.5h",
       "position": "absolute",
@@ -57,7 +59,7 @@
       "tdiv": [
         {
           "max-width": "8@premiumItemWidth",
-          "width": "0.833pw",
+          "size": "0.833pw, fh-@bh",
           "pos": "pw/2 - w/2, 0",
           "margin-top": "7@blockInterval",
           "position": "relative",
@@ -66,13 +68,16 @@
           "textarea": {
             "id": "premiumInfoText",
             "width": "fw",
+            "max-height": "ph",
             "wrapRight": "yes",
-            "font-bold": "@fontNormal"
+            "font-bold": "@fontNormal",
+            "overflow-y": "auto"
           },
           "tdiv": [
             {
+              "id": "separator",
               "position": "relative",
-              "size": "2@sf/@pf, 500@sf/@pf + 3@blockInterval",
+              "width": "1@dp",
               "background-color": "#4B4F53",
               "margin": "5@blockInterval, 0, 5@blockInterval, 0"
             },

@@ -16,7 +16,7 @@ let itemsGap = shHud(0.4)
 let iconHeight = fontHeight
 let iconWidth = (48.0 / 20 * iconHeight).tointeger()
 
-let inactiveColor = Color(180, 180, 180)
+let inactiveColor = Color(90, 90, 90)
 let activeColor = Color(255, 255, 255)
 
 let barsCount = 20

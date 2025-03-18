@@ -35,6 +35,7 @@ let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nu
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 let { checkReconnect } =require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { initUserPresence } = require("%scripts/userPresence.nut")
+let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
 let delayed_gblk_error_popups = []
 function showGblkErrorPopup(errCode, path) {
@@ -139,8 +140,8 @@ function onMainMenuReturn(handler, isAfterLogin) {
   }
 
   if (!isAfterLogin && isAllowPopups) {
-    handler.doWhenActive(@() ::dmViewer.checkShowViewModeTutor(DM_VIEWER_XRAY))
-    handler.doWhenActive(@() ::dmViewer.checkShowViewModeTutor(DM_VIEWER_ARMOR))
+    handler.doWhenActive(@() dmViewer.checkShowViewModeTutor(DM_VIEWER_XRAY))
+    handler.doWhenActive(@() dmViewer.checkShowViewModeTutor(DM_VIEWER_ARMOR))
   }
 
   if (isAfterLogin && isAllowPopups) {

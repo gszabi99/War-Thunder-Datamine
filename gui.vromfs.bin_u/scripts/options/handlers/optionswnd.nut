@@ -438,8 +438,8 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
     this.joinEchoChannel(!this.echoTest);
     if (echoButton) {
-      echoButton.text = (this.echoTest) ? (loc("options/leaveEcho")) : (loc("options/joinEcho"));
-      echoButton.tooltip = (this.echoTest) ? (loc("guiHints/leaveEcho")) : (loc("guiHints/joinEcho"));
+      echoButton.setValue(this.echoTest ? loc("options/leaveEcho") : loc("options/joinEcho"))
+      echoButton.tooltip = this.echoTest ? loc("guiHints/leaveEcho") : loc("guiHints/joinEcho")
     }
   }
 

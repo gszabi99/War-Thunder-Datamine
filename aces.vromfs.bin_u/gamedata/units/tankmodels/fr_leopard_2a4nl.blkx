@@ -441,7 +441,7 @@
       "gun_mask_02_dm": {
         "armorThickness": 20.0
       },
-      "gun_mask_03_dm": {
+      "gun_trunnion_dm": {
         "armorThickness": 240.0,
         "armorClass": "tank_structural_steel",
         "hidableInViewer": false
@@ -653,11 +653,6 @@
         "hp": 40.0,
         "armorThrough": 15.0
       },
-      "drive_turret_h_01_dm": {
-        "hp": 40.0,
-        "armorThrough": 15.0,
-        "fireParamsPreset": "hydraulic_internal"
-      },
       "drive_turret_v_02_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -690,6 +685,11 @@
         "hp": 40.0,
         "armorThrough": 15.0
       },
+      "turret_hydraulics_dm": {
+        "hp": 250.0,
+        "armorThrough": 15.0,
+        "fireParamsPreset": "hydraulic_internal"
+      },
       "radiator_dm": {
         "hp": 50.0,
         "armorThrough": 5.0
@@ -710,9 +710,17 @@
         "hp": 60.0,
         "armorThrough": 3.0
       },
+      "fire_control_system_dm": {
+        "hp": 60.0,
+        "armorThrough": 3.0
+      },
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
+      },
+      "drive_turret_h_01_dm": {
+        "hp": 250.0,
+        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -1867,6 +1875,55 @@
         }
       },
       {
+        "name": "turret_hydraulics_dm",
+        "onHit": [
+          {
+            "damageType": "cumulative",
+            "fire": 0.2,
+            "damage": 75.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "explosion",
+            "fire": 0.3,
+            "damage": 30.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.05,
+            "damage": 20.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.1,
+            "damage": 70.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.3,
+            "damage": 200.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "generic",
+            "fire": 0.4,
+            "damage": 300.0,
+            "fHitCritical": true
+          },
+          {
+            "damageType": "fire",
+            "fire": 0.1
+          }
+        ],
+        "onKill": {
+          "fire": 1.0,
+          "fHitCritical": true
+        }
+      },
+      {
         "name": "drive_turret_h_01_dm",
         "onHit": [
           {
@@ -1912,24 +1969,10 @@
         ],
         "onKill": {
           "fire": 1.0,
-          "fHitCritical": true,
-          "action": {
-            "kill": true,
-            "type": "secondaryDamage",
-            "part": [
-              "drive_turret_h_dm",
-              "drive_turret_v_dm"
-            ]
-          }
+          "fHitCritical": true
         }
       }
     ]
-  },
-  "xrayOverride": {
-    "drive_turret_h_01_dm": {
-      "overrideTitle": "hydraulic_pump",
-      "hideDescription": true
-    }
   },
   "tank_crew": {
     "changeTimeMult": 1.0,
@@ -3351,8 +3394,14 @@
           "barrel": "bone_gun_barrel",
           "gunnerDm": "gunner_dm",
           "secondGunnerDm": "commander_dm",
-          "verDriveDm": "drive_turret_v_dm",
-          "horDriveDm": "drive_turret_h_dm"
+          "verDriveDm": [
+            "drive_turret_v_dm",
+            "drive_turret_h_01_dm"
+          ],
+          "horDriveDm": [
+            "drive_turret_h_dm",
+            "drive_turret_h_01_dm"
+          ]
         },
         "limits": {
           "yaw": [
@@ -3705,8 +3754,14 @@
                 "barrel": "bone_gun_barrel",
                 "gunnerDm": "gunner_dm",
                 "secondGunnerDm": "commander_dm",
-                "verDriveDm": "drive_turret_v_dm",
-                "horDriveDm": "drive_turret_h_dm"
+                "verDriveDm": [
+                  "drive_turret_v_dm",
+                  "drive_turret_h_01_dm"
+                ],
+                "horDriveDm": [
+                  "drive_turret_h_dm",
+                  "drive_turret_h_01_dm"
+                ]
               },
               "limits": {
                 "yaw": [
@@ -4042,7 +4097,6 @@
       "tier": 3,
       "effects": {
         "nightVision": {
-          "nightVisionDmPart": "fire_control_system_dm",
           "gunnerThermal": {
             "resolution": [
               500,
@@ -4120,5 +4174,15 @@
         "to": "nl_camo_carc_winter_stripes*"
       }
     }
-  ]
+  ],
+  "xrayOverride": {
+    "drive_turret_h_01_dm": {
+      "overrideTitle": "hydraulic_pump",
+      "hideDescription": true
+    },
+    "fire_control_system_dm": {
+      "overrideTitle": "fire_control_system",
+      "hideDescription": true
+    }
+  }
 }

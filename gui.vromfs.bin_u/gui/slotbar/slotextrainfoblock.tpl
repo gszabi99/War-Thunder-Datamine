@@ -10,7 +10,6 @@ extraInfoBlock {
     <<#hasActions>>
       interactive:t='yes'
       hasActions:t='yes'
-      on_hover:t='onCrewBlockHover'
       on_drag_start:t='onCrewDragStart'
     <</hasActions>>
 

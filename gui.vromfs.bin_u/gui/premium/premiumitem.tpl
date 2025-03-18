@@ -60,7 +60,9 @@
       premiumName = <<name>>
       pos:t='0.5pw-0.5w, ph-h-1@blockInterval'
       position:t='absolute'
+      width:t='pw-2@blockInterval'
       noMargin:t='yes'
+      reduceMinimalWidth:t='yes'
       btnName:t='A'
       on_click:t='onBuy'
       text:t='#mainmenu/btnBuy'

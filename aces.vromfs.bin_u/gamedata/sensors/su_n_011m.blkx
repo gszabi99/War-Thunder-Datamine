@@ -1902,101 +1902,6 @@
             "dopplerSpeedRelWidthMin": 0.05
           }
         },
-        "initMprf": {
-          "setMprfTargetDesignationRange": {},
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setStandbyMode",
-              "actionTemplateName": "setMprfStandbyMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setSearchMode",
-              "actionTemplateName": "setMprfSearchMode"
-            },
-            {
-              "fsm": "main",
-              "name": "designateTarget",
-              "actionTemplateName": "designatedTargetSearch"
-            },
-            {
-              "fsm": "main",
-              "name": "resetSearchMode",
-              "actionTemplateName": "resetRadarSearchMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setBvrLockMode",
-              "actionTemplateName": "setMprfBvrLockMode"
-            }
-          ]
-        },
-        "setMprf": {
-          "setMprfTargetDesignationRange": {},
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setStandbyMode",
-              "actionTemplateName": "setMprfStandbyMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setSearchMode",
-              "actionTemplateName": "setMprfSearchMode"
-            },
-            {
-              "fsm": "main",
-              "name": "designateTarget",
-              "actionTemplateName": "designatedTargetSearch"
-            },
-            {
-              "fsm": "main",
-              "name": "setBvrLockMode",
-              "actionTemplateName": "setMprfBvrLockMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetSearchMode",
-              "actionTemplateName": "resetRadarSearchMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setBvrLockMode",
-              "actionTemplateName": "setMprfBvrLockMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setBvrTrackMode",
-              "actionTemplateName": "setRadarBvrTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetBvrTrackMode",
-              "actionTemplateName": "resetRadarBvrTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetBvrLockMode",
-              "actionTemplateName": "resetRadarBvrLockMode"
-            }
-          ],
-          "doCustomActionTemplate": {
-            "fsm": "main",
-            "name": "resetSearchMode"
-          },
-          "clearTargets": {},
-          "setFsmActive": [
-            {
-              "fsm": "main",
-              "active": false
-            },
-            {
-              "fsm": "main",
-              "active": true
-            }
-          ]
-        },
         "setMprfTws": {
           "setMprfTargetDesignationRange": {},
           "setCustomActionTemplate": [
@@ -2029,71 +1934,6 @@
               "fsm": "main",
               "name": "setBvrLockMode",
               "actionTemplateName": "setMprfBvrLockMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setBvrTrackMode",
-              "actionTemplateName": "setRadarBvrTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetBvrTrackMode",
-              "actionTemplateName": "resetRadarBvrTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetBvrLockMode",
-              "actionTemplateName": "resetRadarBvrLockMode"
-            }
-          ],
-          "doCustomActionTemplate": {
-            "fsm": "main",
-            "name": "resetSearchMode"
-          },
-          "clearTargets": {},
-          "setFsmActive": [
-            {
-              "fsm": "main",
-              "active": false
-            },
-            {
-              "fsm": "main",
-              "active": true
-            }
-          ]
-        },
-        "setHprf": {
-          "setHprfTargetDesignationRange": {},
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setStandbyMode",
-              "actionTemplateName": "setHprfStandbyMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setSearchMode",
-              "actionTemplateName": "setHprfSearchMode"
-            },
-            {
-              "fsm": "main",
-              "name": "designateTarget",
-              "actionTemplateName": "designatedTargetSearch"
-            },
-            {
-              "fsm": "main",
-              "name": "setBvrLockMode",
-              "actionTemplateName": "setHprfBvrLockMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetSearchMode",
-              "actionTemplateName": "resetRadarSearchMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setBvrLockMode",
-              "actionTemplateName": "setHprfBvrLockMode"
             },
             {
               "fsm": "main",
@@ -2192,6 +2032,36 @@
             }
           ]
         },
+        "initMprfTws": {
+          "setMprfTargetDesignationRange": {},
+          "setCustomActionTemplate": [
+            {
+              "fsm": "main",
+              "name": "setStandbyMode",
+              "actionTemplateName": "setMprfTwsStandbyMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setSearchMode",
+              "actionTemplateName": "setMprfTwsSearchMode"
+            },
+            {
+              "fsm": "main",
+              "name": "designateTarget",
+              "actionTemplateName": "designatedTargetTws"
+            },
+            {
+              "fsm": "main",
+              "name": "resetSearchMode",
+              "actionTemplateName": "resetTwsMode"
+            },
+            {
+              "fsm": "main",
+              "name": "setBvrLockMode",
+              "actionTemplateName": "setMprfBvrLockMode"
+            }
+          ]
+        },
         "setHprfVelocity": {
           "setHprfTargetDesignationRange": {},
           "setCustomActionTemplate": [
@@ -2237,65 +2107,6 @@
             }
           ],
           "clearTargets": {},
-          "setFsmActive": [
-            {
-              "fsm": "main",
-              "active": false
-            },
-            {
-              "fsm": "main",
-              "active": true
-            }
-          ]
-        },
-        "setGtm": {
-          "setMprfTargetDesignationRange": {},
-          "setCustomActionTemplate": [
-            {
-              "fsm": "main",
-              "name": "setStandbyMode",
-              "actionTemplateName": "setGtmStandbyMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setSearchMode",
-              "actionTemplateName": "setGtmSearchMode"
-            },
-            {
-              "fsm": "main",
-              "name": "setBvrLockMode",
-              "actionTemplateName": "setGtmBvrLockMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetBvrLockMode",
-              "actionTemplateName": "resetGtmBvrLockMode"
-            },
-            {
-              "fsm": "main",
-              "name": "designateTarget",
-              "actionTemplateName": "designatedTargetSearch"
-            },
-            {
-              "fsm": "main",
-              "name": "setBvrTrackMode",
-              "actionTemplateName": "setGtmBvrTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetBvrTrackMode",
-              "actionTemplateName": "resetRadarBvrTrackMode"
-            },
-            {
-              "fsm": "main",
-              "name": "resetSearchMode",
-              "actionTemplateName": "resetGtmTrackMode"
-            }
-          ],
-          "doCustomActionTemplate": {
-            "fsm": "main",
-            "name": "resetSearchMode"
-          },
           "setFsmActive": [
             {
               "fsm": "main",
@@ -2368,25 +2179,12 @@
         }
       },
       "transitions": {
-        "initToMprf": {
+        "initToMprfTws": {
           "stateFrom": "init",
           "event": "fsmActivate",
-          "stateTo": "mprf",
-          "actions": {
-            "initMprf": {},
-            "setCustomActionTemplate": {
-              "fsm": "radarSearchModes",
-              "name": "restore",
-              "actionTemplateName": "setMprf"
-            }
-          }
-        },
-        "mprfToMprfTws": {
-          "stateFrom": "mprf",
-          "command": "modeSwitch",
           "stateTo": "mprfTws",
           "actions": {
-            "setMprfTws": {},
+            "initMprfTws": {},
             "setCustomActionTemplate": {
               "fsm": "radarSearchModes",
               "name": "restore",
@@ -2394,21 +2192,8 @@
             }
           }
         },
-        "mprfTwsToHprf": {
+        "mprfTwsToHprfTws": {
           "stateFrom": "mprfTws",
-          "command": "modeSwitch",
-          "stateTo": "hprf",
-          "actions": {
-            "setHprf": {},
-            "setCustomActionTemplate": {
-              "fsm": "radarSearchModes",
-              "name": "restore",
-              "actionTemplateName": "setHprf"
-            }
-          }
-        },
-        "hprfToHprfTws": {
-          "stateFrom": "hprf",
           "command": "modeSwitch",
           "stateTo": "hprfTws",
           "actions": {
@@ -2433,21 +2218,8 @@
             }
           }
         },
-        "HprfVelocityToGtm": {
+        "HprfVelocityToGtmTws": {
           "stateFrom": "hprfVelocity",
-          "command": "modeSwitch",
-          "stateTo": "gtm",
-          "actions": {
-            "setGtm": {},
-            "setCustomActionTemplate": {
-              "fsm": "radarSearchModes",
-              "name": "restore",
-              "actionTemplateName": "setGtm"
-            }
-          }
-        },
-        "gtmToGtmTws": {
-          "stateFrom": "gtm",
           "command": "modeSwitch",
           "stateTo": "gtmTws",
           "actions": {
@@ -2459,16 +2231,16 @@
             }
           }
         },
-        "gtmTwsToMprf": {
+        "gtmTwsToMprfTws": {
           "stateFrom": "gtmTws",
           "command": "modeSwitch",
-          "stateTo": "mprf",
+          "stateTo": "mprfTws",
           "actions": {
-            "setMprf": {},
+            "setMprfTws": {},
             "setCustomActionTemplate": {
               "fsm": "radarSearchModes",
               "name": "restore",
-              "actionTemplateName": "setMprf"
+              "actionTemplateName": "setMprfTws"
             }
           }
         }

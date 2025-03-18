@@ -54,7 +54,7 @@ let { minValuesToShowRewardPremium, MAX_COUNTRY_RANK
 } = require("%scripts/ranks.nut")
 let { getDebriefingResult, getDynamicResult, debriefingRows, isDebriefingResultFull,
   gatherDebriefingResult, getCountedResultId, debriefingAddVirtualPremAcc, getTableNameById,
-  updateDebriefingResultGiftItemsInfo, setDebriefingResult
+  updateDebriefingResultGiftItemsInfo, setDebriefingResult, rewardsBonusTypes
 } = require("%scripts/debriefing/debriefingFull.nut")
 let { isMissionExtrByName, selectNextAvailCampaignMission,
   addMissionListFull } = require("%scripts/missions/missionsUtils.nut")
@@ -1914,7 +1914,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         if (cfg.row.rowType != currency && cfg.row.rewardType != currency)
           continue
         let currencySourcesView = []
-        foreach (source in [ "noBonus", "premAcc", "premMod", "booster" ]) {
+        foreach (source in rewardsBonusTypes) {
           let val = rowTbl?[$"{source}{capitalize(currency)}"] ?? 0
           if (val <= 0)
             continue

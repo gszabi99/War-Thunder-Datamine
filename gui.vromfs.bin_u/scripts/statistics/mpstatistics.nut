@@ -150,7 +150,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     updateActiveOrder()
     let isOrderCanBeActivated = orderCanBeActivated()
     if (checkObj(obj)) {
-      obj.text = getActivateButtonLabel()
+      obj.setValue(getActivateButtonLabel())
       obj.inactiveColor = !isOrderCanBeActivated ? "yes" : "no"
     }
     if (isOrderCanBeActivated

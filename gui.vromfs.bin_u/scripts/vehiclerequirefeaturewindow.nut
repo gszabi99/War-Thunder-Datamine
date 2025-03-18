@@ -125,7 +125,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
   }
 
   function onTimerUpdate(_obj, _dt) {
-    if (!::is_app_active() || steam_is_overlay_active() || is_builtin_browser_active())
+    if (!is_app_active() || steam_is_overlay_active() || is_builtin_browser_active())
       this.needFullUpdate = true
     else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false

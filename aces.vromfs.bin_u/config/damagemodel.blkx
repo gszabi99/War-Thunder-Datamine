@@ -4241,13 +4241,16 @@
       "hpForRepair": 0.6
     },
     "radiator_dm": {
-      "completely": true
+      "completely": true,
+      "modRequired": false
     },
     "radiator_l_dm": {
-      "completely": true
+      "completely": true,
+      "modRequired": false
     },
     "radiator_r_dm": {
-      "completely": true
+      "completely": true,
+      "modRequired": false
     },
     "track_l_dm": {
       "speed": 1.7,
@@ -4623,6 +4626,11 @@
       "modRequired": false,
       "partRepairHp": 1.0,
       "hpForRepair": 0.7
+    },
+    "turret_hydraulics_dm": {
+      "speed": 1.3,
+      "completely": true,
+      "modRequired": false
     }
   },
   "leftTrackNodes": {
@@ -10894,7 +10902,9 @@
       "isTank": true,
       "partClass": [
         "drive_turret_h",
-        "drive_turret_v"
+        "drive_turret_v",
+        "gun_trunnion",
+        "turret_hydraulics"
       ]
     },
     "electronic": {

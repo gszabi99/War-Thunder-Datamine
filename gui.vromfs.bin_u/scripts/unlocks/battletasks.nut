@@ -14,7 +14,6 @@ let statsd = require("statsd")
 let { isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { loadConditionsFromBlk } = require("%scripts/unlocks/unlocksConditions.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { cachePersonalUnlocks } = require("%scripts/unlocks/unlocksCache.nut")
 let { updateTimeParamsFromBlk, getDifficultyTypeByName,
   EASY_TASK, MEDIUM_TASK, HARD_TASK, UNKNOWN_TASK
 } = require("%scripts/unlocks/battleTaskDifficulty.nut")
@@ -512,7 +511,6 @@ function sendReceiveRewardRequest(battleTask) {
 
   let taskId = char_send_blk("cln_reward_specific_battle_task", blk)
   addTask(taskId, { showProgressBox = true }, function() {
-    cachePersonalUnlocks()
     ::update_gamercards()
     broadcastEvent("BattleTasksIncomeUpdate")
     broadcastEvent("BattleTasksRewardReceived")

@@ -46,6 +46,7 @@ const TOOLTIP_MINIMIZE_SCREEN_WIDTH_PERCENT = 0.95
 
 local debriefingResult = null
 local dynamicResult = -1
+let rewardsBonusTypes = ["noBonus", "premAcc", "premMod", "booster"]
 
 function countWholeRewardInTable(table, currency, specParam = null) {
   if (!table || table.len() == 0)
@@ -235,8 +236,9 @@ debriefingRows = [
     icon = "icon/mpstats/damageZone"
   }
   { id = "ReturnSpawnCost"
-    rowType = ""
+    rowType = "num"
     showByModes = isGameModeVersus
+    customValueName = "numReturnSpawnCost"
     text = "exp_reasons/return_spawn_cost"
   }
   { id = "MissionObjective"
@@ -1224,6 +1226,53 @@ function updateDebriefingResultGiftItemsInfo() {
   debriefingResult.giftItemsInfo <- giftItemsInfo
 }
 
+function gatherReturnSpawnCost() {
+  let spawnCostLogs = getUserLogsList({ show = [EULT_SESSION_RESULT], currentRoomOnly = true })
+  let returnSpawnCostLogs = spawnCostLogs?[0].container.eventReturnSpawnCost.event ?? []
+  debriefingResult.returnSpawnCost <- u.isArray(returnSpawnCostLogs) ? returnSpawnCostLogs : [returnSpawnCostLogs]
+  debriefingResult.exp.wpReturnSpawnCost <- debriefingResult.returnSpawnCost
+    .reduce(@(total, b) total + (b?.wpNoBonus ?? 0), 0)
+  if (debriefingResult.returnSpawnCost.len() == 0)
+    return
+
+  let tblReturnSpawnCost = {}
+  let totalReturnSpawnCost = {}
+  let rewardTypes = ["wp"]
+  foreach (data in debriefingResult.returnSpawnCost) {
+    let airName = data.unit
+    let airStats = debriefingResult.exp.aircrafts?[airName]
+    if (airStats == null)
+      continue
+
+    if (tblReturnSpawnCost?[airName] == null) {
+      tblReturnSpawnCost[airName] <- {}
+      totalReturnSpawnCost[airName] <- {}
+    }
+    airStats.numReturnSpawnCost <- (airStats?.numReturnSpawnCost ?? 0) + 1
+
+    let tblTotal = airStats.tblTotal
+    foreach (rewardType in rewardTypes)
+      foreach (source in rewardsBonusTypes) {
+        let val = data?[$"{rewardType}{capitalize(source)}"] ?? 0
+        if (val > 0) {
+          let fullRewardTypeName = $"{source}{capitalize(rewardType)}"
+          tblReturnSpawnCost[airName][fullRewardTypeName] <- (tblReturnSpawnCost?[airName][fullRewardTypeName] ?? 0) + val
+          totalReturnSpawnCost[airName][rewardType] <- (totalReturnSpawnCost[airName]?[rewardType] ?? 0) + val
+          if (tblTotal?[fullRewardTypeName])
+            tblTotal[fullRewardTypeName] = tblTotal[fullRewardTypeName] + val
+          airStats[$"{rewardType}Total"] <- (airStats[$"{rewardType}Total"] ?? 0) + val
+        }
+      }
+  }
+
+  foreach (airName, data in debriefingResult.exp.aircrafts)
+    if (tblReturnSpawnCost?[airName]) {
+      data["tblReturnSpawnCost"] <- tblReturnSpawnCost[airName]
+      foreach (rewardType, val in totalReturnSpawnCost[airName])
+        data[$"{rewardType}ReturnSpawnCost"] <- val
+    }
+}
+
 function gatherDebriefingResult() {
   let gm = get_game_mode()
   if (gm == GM_DYNAMIC)
@@ -1331,11 +1380,6 @@ function gatherDebriefingResult() {
     debriefingResult.exp.ptmLapTimesArray <- get_race_lap_times()
   }
 
-  let returnSpawnCostLogs = getUserLogsList({ show = [EULT_SESSION_RESULT], currentRoomOnly = true })?[0].container.eventReturnSpawnCost.event ?? []
-  debriefingResult.returnSpawnCost <- u.isArray(returnSpawnCostLogs) ? returnSpawnCostLogs : [returnSpawnCostLogs]
-  debriefingResult.exp.wpReturnSpawnCost <- debriefingResult.returnSpawnCost
-    .reduce(@(total, b) total + (b?.wpNoBonus ?? 0), 0)
-
   let sessionTime = getTblValue("sessionTime", debriefingResult.exp, 0)
   local timePlayed = 0.0
   foreach (_airName, airData in debriefingResult.exp.aircrafts) {
@@ -1356,13 +1400,13 @@ function gatherDebriefingResult() {
   let trournamentBaseReward = getDebriefingBaseTournamentReward()
   debriefingResult.exp.wpTournamentBaseReward <- trournamentBaseReward.wp
   debriefingResult.exp.goldTournamentBaseReward <- trournamentBaseReward.gold
-  let wpTotal = getTblValue("wpTotal", debriefingResult.exp, 0)
-  if (wpTotal >= 0)
-    debriefingResult.exp.wpTotal <- wpTotal + trournamentBaseReward.wp + debriefingResult.exp.wpReturnSpawnCost
-
   debriefingResult.exp.expMission <- getTblValue("expMission", exp, 0) + getTblValue("expRace", exp, 0)
   debriefingResult.exp.wpMission <- getTblValue("wpMission", exp, 0) + getTblValue("wpRace", exp, 0)
   debriefingResult.exp.expSkillBonus <- getTblValue("expSkillBonusTotal", exp, 0)
+  gatherReturnSpawnCost()
+  let wpTotal = getTblValue("wpTotal", debriefingResult.exp, 0)
+  if (wpTotal >= 0)
+    debriefingResult.exp.wpTotal <- wpTotal + trournamentBaseReward.wp + debriefingResult.exp.wpReturnSpawnCost
 
   let resPointsLogs = getUserLogsList({ show = [EULT_SESSION_RESULT], currentRoomOnly = true })?[0].container.researchPoints.unit ?? []
   debriefingResult.researchPointsUnits <- u.isArray(resPointsLogs) ? resPointsLogs : [resPointsLogs]
@@ -1375,6 +1419,7 @@ function gatherDebriefingResult() {
     [g_team.A.code] = missionRules.getOverrideCountryIconByTeam(g_team.A.code),
     [g_team.B.code] = missionRules.getOverrideCountryIconByTeam(g_team.B.code)
   }
+
   updateDebriefingExpInvestmentData()
   calculateDebriefingTabularData(false)
   recountDebriefingResult()
@@ -1472,4 +1517,5 @@ return {
   debriefingAddVirtualPremAcc
   getTableNameById
   updateDebriefingResultGiftItemsInfo
+  rewardsBonusTypes
 }

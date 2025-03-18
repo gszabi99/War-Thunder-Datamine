@@ -316,7 +316,9 @@
       "ex_decor_07_dm": {},
       "ex_decor_09_dm": {},
       "ex_decor_l_06_dm": {},
-      "ex_decor_r_07_dm": {}
+      "ex_decor_r_07_dm": {},
+      "ex_decor_l_07_dm": {},
+      "ex_decor_r_08_dm": {}
     },
     "grille": {
       "armorClass": "grille_structural_steel",
@@ -566,6 +568,10 @@
       },
       "drive_turret_h_05_dm": {
         "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "turret_hydraulics_dm": {
+        "hp": 250.0,
         "armorThrough": 15.0
       },
       "radiator_dm": {
@@ -1787,6 +1793,18 @@
             }
           }
         ]
+      },
+      {
+        "name": "ex_decor_l_02_dm",
+        "onKill": {
+          "ex_decor_l_07_dm": 1.0
+        }
+      },
+      {
+        "name": "ex_decor_r_02_dm",
+        "onKill": {
+          "ex_decor_r_08_dm": 1.0
+        }
       }
     ]
   },

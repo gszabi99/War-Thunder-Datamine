@@ -40,8 +40,8 @@
   "type": "typeLightTank",
   "DamageParts": {
     "formatVersion": 2,
-    "armorClass": "steel",
-    "hp": 10000.0,
+    "armorClass": "aluminium",
+    "hp": 1000.0,
     "hull": {
       "body_dm": {
         "genericDamageMult": 0.01,
@@ -52,9 +52,9 @@
       "wheel_support_dm": {}
     },
     "body_shields": {
-      "armorClass": "steel",
+      "armorClass": "aluminium",
       "armorThickness": 10.0,
-      "hp": 100.0,
+      "hp": 5.0,
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "ex_armor_01_dm": {
@@ -185,6 +185,10 @@
       },
       "drive_turret_h_05_dm": {
         "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "turret_hydraulics_dm": {
+        "hp": 250.0,
         "armorThrough": 15.0
       },
       "radiator_dm": {
@@ -930,7 +934,7 @@
   },
   "MetaParts": {
     "body": {
-      "hp": 100000.0,
+      "hp": 1000.0,
       "part": "body_dm"
     }
   },

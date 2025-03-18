@@ -107,18 +107,18 @@ def fire_damage_process_start_burn_event(eid : EntityId;
                                            fire_data__startTime : FloatList;
                                            fire_data__extinguishProgress : FloatList;
                                            fire_data__underwaterTimer : FloatList
-                                           >)
+                                           >) : int
   if unit.visual == null
-    return
+    return -1
   assume dm = *unit.visual
   let geom_node_id = part_id.valid ? dm_get_geom_node_id_by_part_id(dm, int(part_id.globalId)) : INVALID_GEOM_NODE_ID
   let coll_node = dm_get_collision_node_by_part_id(dm, int(part_id.globalId))
   if coll_node == null
-    return
+    return -1
 
   let fire_params = get_fire_params(fire_params_id)
   if fire_params == null || fire_params.damage <= 0.0f
-    return
+    return -1
 
   let radius : tuple<radius : float; final_radius : float> = fire_system_calc_burn_radius(*fire_params, coll_node.boundingSphere, unit.collisionData.boundingSphere.r)
   var offset : float3
@@ -149,6 +149,7 @@ def fire_damage_process_start_burn_event(eid : EntityId;
       partId=part_id,
       sph = float4(sph.c.x, sph.c.y, sph.c.z, sph.r)
     ]])
+  return fire_id
 
 
 [es, with_bundle(v)]
@@ -266,19 +267,27 @@ def fire_system_net_sync_update_es(act : UpdateStageInfoAct;
                                      fire_data__fireParamsId : IntList;
                                      fire_data__startTime : FloatList;
                                      fire_system_require_net_sync : bool -const;
-                                     fire_damage__isBurn : bool
+                                     fire_damage__isBurn : bool;
+                                     fire_fx__id : IntList;
+                                     fire_fx__fxId : IntList
                                      >)
   if !v.fire_system_require_net_sync
     return
   v.fire_system_require_net_sync = false
 
   using() <| $(var data : IntList)
-    data |> reserve(length(v.fire_data__packedPartId) * 2)
-    for start_time, packed_part_id, fire_params_id in v.fire_data__startTime, v.fire_data__packedPartId, v.fire_data__fireParamsId
-      let is_burning = start_time >= 0.0f
+    data |> reserve(length(v.fire_data__packedPartId) * 3)
+    for i in range(length(v.fire_data__startTime))
+      let is_burning = v.fire_data__startTime[i] >= 0.0f
       if is_burning
-        data |> push(int(packed_part_id))
-        data |> push(fire_params_id)
+        data |> push(int(v.fire_data__packedPartId[i]))
+        data |> push(v.fire_data__fireParamsId[i])
+        var attached_fx_id = -1
+        for fire_id, fire_fx_id in v.fire_fx__id, v.fire_fx__fxId
+          if fire_id == i
+            attached_fx_id = fire_fx_id
+            break
+        data |> push(attached_fx_id)
 
     send_net_event(eid, [[EventFireSystemNetSync
       isBurning = v.fire_damage__isBurn,
@@ -300,7 +309,10 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
                                      fire_data__startTime : FloatList;
                                      fire_data__extinguishProgress : FloatList;
                                      fire_data__underwaterTimer : FloatList;
-                                     fire_damage__isBurn : bool -const
+                                     fire_damage__isBurn : bool;
+                                     fire_fx__id : ecs::IntList;
+                                     fire_fx__fxId : ecs::IntList;
+                                     fire_fx__paramsId : ecs::IntList
                                      >)
   let total_time = float(get_app().usefulTotalTime)
   let was_burning = v.fire_damage__isBurn;
@@ -311,12 +323,13 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
   elif was_burning && !evt.isBurning
     sendEvent(eid, [[CmdStopBurn]])
 
-  var burning_parts : array<tuple<packed_part_id : uint; fire_params_id : int; already_burning : bool>>
-  burning_parts |> reserve(length(*evt.data) / 2)
-  for i in range(0, length(*evt.data) / 2)
-    let packed_part_id = uint((*evt.data)[i * 2])
-    let fire_params_id = (*evt.data)[i * 2 + 1]
-    burning_parts |> push([[auto packed_part_id, fire_params_id, false]])
+  var burning_parts : array<tuple<packed_part_id : uint; fire_params_id : int; fx_id : int; already_burning : bool>>
+  burning_parts |> reserve(length(*evt.data) / 3)
+  for i in range(0, length(*evt.data) / 3)
+    let packed_part_id = uint((*evt.data)[i * 3])
+    let fire_params_id = (*evt.data)[i * 3 + 1]
+    let fx_id = (*evt.data)[i * 3 + 2]
+    burning_parts |> push([[auto packed_part_id, fire_params_id, fx_id, false]])
 
   for fire_id, packed_part_id in iter_range(v.fire_data__packedPartId), v.fire_data__packedPartId
     var fire_found = false
@@ -326,11 +339,12 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
         part.already_burning = true
         break
     if !fire_found
+      
       fire_system_stop_single_burn(eid, fire_id, v)
 
   for part in burning_parts
     if !part.already_burning
-      fire_damage_process_start_burn_event(
+      let fire_id = fire_damage_process_start_burn_event(
         eid,
         unit__ref.unit,
         unpack_part_id(part.packed_part_id),
@@ -339,3 +353,9 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
         make_offender_data(-1, -1),
         float4(0.0f)
       ) <| v
+      
+      
+      if fire_id >= 0
+        v.fire_fx__id |> push(fire_id)
+        v.fire_fx__fxId |> push(part.fx_id)
+        v.fire_fx__paramsId |> push(part.fire_params_id)

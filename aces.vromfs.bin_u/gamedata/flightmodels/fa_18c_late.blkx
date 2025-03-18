@@ -2283,11 +2283,12 @@
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
     "hmdBlockIlsArea": [
-      0.5,
-      -0.4,
-      0.55,
-      0.6
+      0.37,
+      0.08,
+      0.63,
+      0.66
     ],
+    "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
       5.055,
@@ -3191,6 +3192,7 @@
               "9K33",
               "2S6",
               "Roland",
+              "Rapier",
               "Crotal"
             ]
           }
@@ -3261,6 +3263,7 @@
             {
               "type": "radar",
               "customRadar": "fa18cRadarATTK",
+              "scale": 0.95,
               "fontSize": 20
             },
             {
@@ -3300,11 +3303,8 @@
             {
               "type": "radar",
               "customRadar": "fa18cRadarATTK",
+              "scale": 0.95,
               "fontSize": 20
-            },
-            {
-              "type": "custom",
-              "pageName": "f18Wpn"
             },
             {
               "type": "custom",
@@ -3322,6 +3322,7 @@
             0.25,
             1.0
           ],
+          "cameraFromTargetingPod": true,
           "page": [
             {
               "type": "custom",
@@ -5163,7 +5164,8 @@
             "ShowNodes": {
               "node": [
                 "lau_116_1_lift",
-                "lau_116_1_aim_120_adapter"
+                "lau_116_1_aim_120_adapter",
+                "lau_116_1"
               ]
             },
             "HideNodes": {
@@ -5368,7 +5370,8 @@
             "ShowNodes": {
               "node": [
                 "lau_116_2_lift",
-                "lau_116_2_aim_120_adapter"
+                "lau_116_2_aim_120_adapter",
+                "lau_116_2"
               ]
             },
             "HideNodes": {
@@ -6819,6 +6822,13 @@
         "from": "fa_18c_late_n*"
       }
     ]
+  },
+  "default_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "us_330gal_fa_18_drop_tank_c*",
+      "to": "us_330gal_fa_18_drop_tank_red_devils_c*"
+    }
   },
   "parachutes": {
     "emitterRange": [

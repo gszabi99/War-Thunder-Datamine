@@ -416,6 +416,29 @@ return [
   }
 
   {
+    id = "ID_TANK_SCOUT_UAV_HEADER"
+    type = CONTROL_TYPE.SECTION
+  }
+  {
+    id = "ID_START_SUPPORT_PLANE"
+    checkAssign = false
+    showFunc = @() hasFeature("TankSupportPlane")
+  }
+  {
+    id = "ID_TOGGLE_UAV_CAMERA"
+    checkAssign = false
+  }
+  {
+    id = "ID_SUPPORT_PLANE_ORBITING"
+    checkAssign = false
+    showFunc = @() hasFeature("TankSupportPlane")
+  }
+  {
+    id = "ID_DESIGNATE_TARGET"
+    checkAssign = false
+  }
+
+  {
     id = "ID_TANK_OTHER_HEADER"
     type = CONTROL_TYPE.SECTION
   }
@@ -488,20 +511,6 @@ return [
     id = "ID_SCOUT"
     checkAssign = false
     showFunc = @() hasFeature("ActiveScouting")
-  }
-  {
-    id = "ID_START_SUPPORT_PLANE"
-    checkAssign = false
-    showFunc = @() hasFeature("TankSupportPlane")
-  }
-  {
-    id = "ID_TOGGLE_UAV_CAMERA"
-    checkAssign = false
-  }
-  {
-    id = "ID_SUPPORT_PLANE_ORBITING"
-    checkAssign = false
-    showFunc = @() hasFeature("TankSupportPlane")
   }
   {
     id = "ID_START_UGV"

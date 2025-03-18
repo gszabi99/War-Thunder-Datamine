@@ -60,6 +60,7 @@ struct Radar
   isVerticalScan : bool
   isAcmMode : bool
   isTrkMode : bool
+  isTwsMode : bool
   azimuthMin : float
   azimuthMax : float
   elevationMin : float
@@ -187,6 +188,7 @@ class Component : Canvas
     radar.elevationMax = get_radar_hud_scan_elevation_max()
     radar.isAcmMode = find(get_radar_hud_mode_name(), "ACM") >= 0
     radar.isTrkMode = find(get_radar_hud_mode_name(), "track") >= 0
+    radar.isTwsMode = find(get_radar_hud_mode_name(), "TWS") >= 0
     radar.isVerticalScan = radar.elevationMax - radar.elevationMin > 2.0 * (radar.azimuthMax - radar.azimuthMin)
 
     let infVector = float3(10000.0, 0.0, 0.0)
@@ -808,7 +810,7 @@ class Component : Canvas
 
   def drawRadarAirTracking()
     let isAirCombatMode = isAamMode || isAirGunMode
-    return if !isAirCombatMode || !radar.isTrkMode || !tracking.isActive || !tracking.ilsPosValid
+    return if !isAirCombatMode || (!radar.isTrkMode && !radar.isTwsMode) || !tracking.isActive || !tracking.ilsPosValid
 
     let boresightToTarget = tracking.ilsPos - gunBoresightPos
     let length = length(boresightToTarget)

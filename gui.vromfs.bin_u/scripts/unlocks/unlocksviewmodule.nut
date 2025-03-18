@@ -375,7 +375,7 @@ function buildConditionsConfig(blk, showStage = -1) {
     let item = findItemById(itemId)
     if (item != null) {
       config.locId = item.getName(false)
-      config.desc = item.getDescription()
+      config.locDescId = item.getBaseDescription()
       config.image = item.getIconName()
     }
   }

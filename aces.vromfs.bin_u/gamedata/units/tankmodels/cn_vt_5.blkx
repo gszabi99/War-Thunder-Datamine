@@ -67,7 +67,7 @@
     "hp": 10000.0,
     "hull": {
       "composite_armor_hull_01_dm": {
-        "armorThickness": 10.0,
+        "armorThickness": 20.0,
         "hidableInXrayViewer": true
       },
       "composite_armor_hull_02_dm": {
@@ -75,24 +75,24 @@
         "hidableInXrayViewer": true
       },
       "superstructure_front_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 20.0
       },
       "turret_03_top_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 20.0
       },
       "body_front_dm": {
         "armorThickness": 15.0
       },
       "turret_03_front_dm": {
         "armorClass": "RHAHH_tank_modern",
-        "armorThickness": 10.0,
+        "armorThickness": 25.0,
         "hidableInViewer": true
       },
       "body_bottom_dm": {
         "armorThickness": 10.0
       },
       "body_side_dm": {
-        "armorThickness": 15.0
+        "armorThickness": 20.0
       },
       "body_back_dm": {
         "armorThickness": 10.0
@@ -101,7 +101,7 @@
         "armorThickness": 10.0
       },
       "superstructure_top_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 15.0
       },
       "turret_03_back_dm": {
         "armorThickness": 5.0
@@ -110,13 +110,13 @@
         "armorThickness": 5.0
       },
       "superstructure_side_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "body_top_dm": {
         "armorThickness": 5.0
       },
       "turret_04_side_dm": {
-        "armorThickness": 25.0
+        "armorThickness": 50.0
       }
     },
     "turret": {
@@ -129,11 +129,9 @@
         "armorThickness": 30.0
       },
       "turret_02_side_dm": {
-        "armorClass": "CHA_tank",
         "armorThickness": 50.0
       },
       "turret_front_dm": {
-        "armorClass": "CHA_tank",
         "armorThickness": 50.0
       },
       "turret_02_bottom_dm": {
@@ -141,7 +139,7 @@
         "armorThickness": 20.0
       },
       "turret_bottom_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 15.0
       },
       "turret_top_dm": {
         "armorThickness": 15.0
@@ -210,7 +208,13 @@
       "stopChanceOnDeadPart": 0.0,
       "spall_liner_01_dm": {},
       "spall_liner_02_dm": {},
-      "spall_liner_03_dm": {}
+      "spall_liner_03_dm": {},
+      "spall_liner_04_dm": {},
+      "spall_liner_05_dm": {},
+      "spall_liner_06_dm": {},
+      "spall_liner_07_dm": {},
+      "spall_liner_08_dm": {},
+      "spall_liner_09_dm": {}
     },
     "turret_grille_armor": {
       "hp": 300.0,
@@ -439,6 +443,10 @@
       },
       "drive_turret_h_05_dm": {
         "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "turret_hydraulics_dm": {
+        "hp": 250.0,
         "armorThrough": 15.0
       },
       "radiator_dm": {
@@ -1588,6 +1596,26 @@
             }
           }
         ]
+      },
+      {
+        "name": "ex_armor_l_09_dm",
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": "composite_armor_turret_02_dm"
+          }
+        }
+      },
+      {
+        "name": "ex_armor_r_09_dm",
+        "onKill": {
+          "action": {
+            "kill": true,
+            "type": "secondaryDamage",
+            "part": "composite_armor_turret_01_dm"
+          }
+        }
       }
     ]
   },

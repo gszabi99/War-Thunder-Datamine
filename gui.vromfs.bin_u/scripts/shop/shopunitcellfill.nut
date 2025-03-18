@@ -323,7 +323,7 @@ function updateCardStatus(obj, _id, statusTbl) {
   let mainBtnObj = obj.findObject("mainActionButton")
   setBool(mainBtnObj, "forceHide", !hasMainButton)
   if (hasMainButton) {
-    mainBtnObj.text = mainButtonText
+    mainBtnObj.setValue(mainButtonText)
     showInObj(mainBtnObj, "mainActionIcon", mainButtonIcon != "")["background-image"] = mainButtonIcon
   }
 

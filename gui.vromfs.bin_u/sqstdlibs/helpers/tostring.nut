@@ -154,6 +154,8 @@ toString = function (val, recursion = 1, addStr = "") {
       return format("Point2(%s, %s)", floatToStr(val.x), floatToStr(val.y))
     else if (u.isPoint3(val))
       return format("Point3(%s, %s, %s)", floatToStr(val.x), floatToStr(val.y), floatToStr(val.z))
+    else if (u.isPoint4(val))
+      return format("Point4(%s, %s, %s, %s)", floatToStr(val.x), floatToStr(val.y), floatToStr(val.z), floatToStr(val.w))
     else if (u.isColor4(val))
       return format("Color4(%d/255.0, %d/255.0, %d/255.0, %d/255.0)", 255 * val.r, 255 * val.g, 255 * val.b, 255 * val.a)
     else if (u.isTMatrix(val)) {

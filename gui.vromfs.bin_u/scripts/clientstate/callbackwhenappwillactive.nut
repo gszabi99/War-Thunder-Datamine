@@ -16,7 +16,7 @@ function callIsAppActiveOrRegisterTask(_dt = 0) {
   }
 
   local needUpdateTimer = false
-  let isActive = ::is_app_active() && !steam_is_overlay_active() && !is_builtin_browser_active()
+  let isActive = is_app_active() && !steam_is_overlay_active() && !is_builtin_browser_active()
   if (isAppActive == isActive)
     needUpdateTimer = true
 

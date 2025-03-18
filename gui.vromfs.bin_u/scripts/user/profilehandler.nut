@@ -1771,7 +1771,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   }
 
   function onUpdate(_obj, _dt) {
-    if (this.pending_logout && ::is_app_active() && !steam_is_overlay_active() && !is_builtin_browser_active()) {
+    if (this.pending_logout && is_app_active() && !steam_is_overlay_active() && !is_builtin_browser_active()) {
       this.pending_logout = false
       this.guiScene.performDelayed(this, function() {
         startLogout()

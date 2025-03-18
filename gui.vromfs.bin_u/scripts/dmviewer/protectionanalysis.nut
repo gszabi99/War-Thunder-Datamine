@@ -26,6 +26,7 @@ let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
 local switch_damage = false
 local allow_cutting = false
@@ -67,7 +68,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   getSceneTplView = @() this.getOptionsView(this.unit)
 
   function initScreen() {
-    ::dmViewer.init(this)
+    dmViewer.init(this)
     hangar_focus_model(true)
     this.guiScene.performDelayed(this, @() hangar_set_dm_viewer_mode(this.protectionAnalysisMode))
     this.setSceneTitle(" ".concat(loc("mainmenu/btnProtectionAnalysis"),

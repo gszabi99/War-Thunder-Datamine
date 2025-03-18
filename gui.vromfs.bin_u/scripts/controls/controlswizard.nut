@@ -1229,7 +1229,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
   }
 
   function onAxisInputTimer(_obj, dt) {
-    if (!this.isListenAxis || !::is_app_active() || steam_is_overlay_active())
+    if (!this.isListenAxis || !is_app_active() || steam_is_overlay_active())
       return
 
     let device = joystick_get_default()

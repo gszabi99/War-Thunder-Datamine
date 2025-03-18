@@ -47,7 +47,7 @@ elemViewType.addTypes({
       obj.show(isVisible)
       if (!isVisible)
         return
-      obj.text = $"-{maxDiscount}%"
+      obj.setValue($"-{maxDiscount}%")
     }
   }
 })

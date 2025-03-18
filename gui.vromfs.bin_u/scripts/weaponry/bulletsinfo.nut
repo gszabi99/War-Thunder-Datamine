@@ -1191,7 +1191,9 @@ function isModificationIsShell(unit, mod) {
     return false
 
   let bulletsSet = getBulletsSetData(unit, modName)
+
   return bulletsSet != null
+    && bulletsSet?.weaponType != WEAPON_TYPE.COUNTERMEASURES 
 }
 
 return {

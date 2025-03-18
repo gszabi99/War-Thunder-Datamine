@@ -3,17 +3,15 @@ from "%scripts/dagui_natives.nut" import rented_units_get_expired_time_sec, get_
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import INFO_DETAIL
 
-let { DM_VIEWER_NONE, DM_VIEWER_XRAY } = require("hangar")
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
+let { isDataBlock } = require("%sqStdLibs/helpers/u.nut")
 let userstat = require("userstat")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format, split_by_chars } = require("string")
 let DataBlock  = require("DataBlock")
 let { blkFromPath } = require("%sqstd/datablock.nut")
 let dbgExportToFile = require("%globalScripts/debugTools/dbgExportToFile.nut")
-let { getPartType } = require("%globalScripts/modeXrayLib.nut")
 let shopSearchCore = require("%scripts/shop/shopSearchCore.nut")
 let { getWeaponInfoText, getWeaponNameText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { isWeaponAux, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -27,7 +25,6 @@ let { getUnitMassPerSecValue } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { register_command } = require("console")
 let { get_meta_mission_info_by_gm_and_name } = require("guiMission")
 let { hotasControlImagePath } = require("%scripts/controls/hotas.nut")
-let { stripTags } = require("%sqstd/string.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
@@ -158,63 +155,9 @@ function debug_export_unit_weapons_descriptions() {
   })
 }
 
-function debug_export_unit_xray_parts_descriptions(partIdWhitelist = null, unitIdsWhitelist = null, unitIdsBlacklist = null) {
-  ::dmViewer.isDebugBatchExportProcess = true
-  ::dmViewer.toggle(DM_VIEWER_XRAY)
-  dbgExportToFile.export({
-    resultFilePath = "export/unitsXray.blk"
-    itemsPerFrame = 1
-    list = function() {
-      let res = []
-      let wpCost = get_wpcost_blk()
-      for (local i = 0; i < wpCost.blockCount(); i++) {
-        let unitId = wpCost.getBlock(i).getBlockName()
-        if (unitIdsWhitelist != null && !unitIdsWhitelist.contains(unitId))
-          continue
-        if (unitIdsBlacklist?.contains(unitId) ?? false)
-          continue
-        let unit = getAircraftByName(unitId)
-        if (unit?.isInShop)
-          res.append(unit)
-      }
-      return res
-    }()
-    itemProcessFunc = function(unit) {
-      let blk = DataBlock()
-
-      ::dmViewer.updateUnitInfo(unit.name)
-      let partNames = []
-      let damagePartsBlk = ::dmViewer.unitBlk?.DamageParts
-      if (damagePartsBlk)
-        for (local b = 0; b < damagePartsBlk.blockCount(); b++) {
-          let partsBlk = damagePartsBlk.getBlock(b)
-          for (local p = 0; p < partsBlk.blockCount(); p++)
-            u.appendOnce(partsBlk.getBlock(p).getBlockName(), partNames)
-        }
-      partNames.sort()
-
-      foreach (partName in partNames) {
-        if (partIdWhitelist != null && partIdWhitelist.findindex(@(v) partName.startswith(v)) == null)
-          continue
-        let params = { name = partName }
-        let info = ::dmViewer.getPartTooltipInfo(getPartType(partName, ::dmViewer.xrayRemap), params)
-        if (info.title != "" || info.desc.len()) {
-          let descText = "\n".join(info.desc.map(@(v) v?.value ?? v))
-          blk[partName] <- stripTags("\n".join([ info.title, descText ], true))
-        }
-      }
-      return blk.paramCount() != 0 ? { key = unit.name, value = blk } : null
-    }
-    onFinish = function() {
-      ::dmViewer.isDebugBatchExportProcess = false
-      ::dmViewer.toggle(DM_VIEWER_NONE)
-    }
-  })
-}
-
 function dbg_loading_brief(gm = GM_SINGLE_MISSION, missionName = "east_china_s01", slidesAmount = 0) {
   let missionBlk = get_meta_mission_info_by_gm_and_name(gm, missionName)
-  if (!u.isDataBlock(missionBlk))
+  if (!isDataBlock(missionBlk))
     return dlog($"Not found mission {missionName}") 
 
   let filePath = missionBlk?.mis_file
@@ -223,7 +166,7 @@ function dbg_loading_brief(gm = GM_SINGLE_MISSION, missionName = "east_china_s01
   let fullBlk = blkFromPath(filePath)
 
   let briefing = fullBlk?.mission_settings.briefing
-  if (!u.isDataBlock(briefing) || !briefing.blockCount())
+  if (!isDataBlock(briefing) || !briefing.blockCount())
     return dlog("Mission does not have briefing") 
 
   let briefingClone = DataBlock()
@@ -356,7 +299,6 @@ register_command(debug_reload_and_restart_debriefing, "debug.reload_and_restart_
 register_command(debug_debriefing_unlocks, "debug.debriefing_unlocks")
 register_command(show_hotas_window_image, "debug.show_hotas_window_image")
 register_command(debug_export_unit_weapons_descriptions, "debug.export_unit_weapons_descriptions")
-register_command(debug_export_unit_xray_parts_descriptions, "debug.export_unit_xray_parts_descriptions")
 register_command(@() dbg_loading_brief(), "debug.loading_brief")
 register_command(dbg_loading_brief, "debug.loading_brief_custom")
 register_command(debug_show_unit, "debug.show_unit")

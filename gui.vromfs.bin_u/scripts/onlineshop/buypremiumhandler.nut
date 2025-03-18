@@ -96,12 +96,17 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     })
 
     let data = handyman.renderCached("%gui/premium/premiumItem.tpl", { items })
-    this.guiScene.replaceContentFromText(this.scene.findObject("premiumList"), data, data.len(), this)
+    let premiumListObj = this.scene.findObject("premiumList")
+    this.guiScene.replaceContentFromText(premiumListObj, data, data.len(), this)
 
     if (this.goods.len() == 0)
       return
     let descText = getEntitlementDescription(this.goods[0], this.goods[0].name)
-    this.scene.findObject("premiumInfoText").setValue(descText)
+    let premiumInfoTextObj = this.scene.findObject("premiumInfoText")
+    premiumInfoTextObj.setValue(descText)
+
+    this.guiScene.applyPendingChanges(true)
+    this.scene.findObject("separator")["height"] = max(premiumListObj.getSize()[1], premiumInfoTextObj.getSize()[1])
   }
 
   function updateCurrentPremiumInfo(_obj = null, _dt = null) {

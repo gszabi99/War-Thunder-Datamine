@@ -7,7 +7,7 @@ let { S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT, compareWeap
   mkAircraftFuelTankDesc, mkWeaponDesc, mkAmmoDesc, mkTankArmorPartDesc, mkCoalBunkerDesc, mkSensorDesc,
   mkCountermeasureDesc, mkApsSensorDesc, mkApsLauncherDesc, mkAvionicsDesc, mkCommanderPanoramicSightDesc,
   mkFireDirecirOrRangefinderDesc, mkFireControlRoomOrBridgeDesc, mkPowerSystemDesc, mkFireControlSystemDesc,
-  mkElectronicEquipmentDesc, mkSimpleDescByPartType
+  mkHydraulicsSystemDesc, mkElectronicEquipmentDesc, mkSimpleDescByPartType
 } = require("%globalScripts/modeXrayLib.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -101,10 +101,12 @@ let xrayDescCtorsMap = {
   bridge = mkFireControlRoomOrBridgeDesc
   power_system = mkPowerSystemDesc
   fire_control_system = mkFireControlSystemDesc
+  turret_hydraulics = mkHydraulicsSystemDesc
   electronic_equipment = mkElectronicEquipmentDesc
   
   autoloader = mkSimpleDescByPartType
   driver_controls = mkSimpleDescByPartType
+  gun_trunnion = mkSimpleDescByPartType
 }
 
 let getModEffectMul = @(commonData, modId, effectId)

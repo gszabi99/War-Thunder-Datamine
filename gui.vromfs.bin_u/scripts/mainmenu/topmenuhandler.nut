@@ -32,6 +32,7 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { needShowGameModesNotLoadedMsg } = require("%scripts/matching/matchingGameModes.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { lastChatSceneShow } = require("%scripts/chat/chatConsts.nut")
+let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
 class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.ROOT
@@ -248,7 +249,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
     let closeResearch = this.getObj("research_closeButton")
     let showButton = shopMove.moveOut == "yes"
 
-    ::dmViewer.update()
+    dmViewer.update()
 
     if (showButton)
       this.guiScene.playSound("menu_appear")

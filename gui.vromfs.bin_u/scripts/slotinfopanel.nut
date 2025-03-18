@@ -40,6 +40,7 @@ let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { queues } = require("%scripts/queue/queueManager.nut")
 let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
+let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
 function getSkillCategoryView(crewData, unit) {
   let unitType = unit?.unitType ?? unitTypes.INVALID
@@ -103,7 +104,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     this.infoPanelObj = this.scene.findObject("slot_info_side_panel")
     this.infoPanelObj.show(true)
-    ::dmViewer.init(this)
+    dmViewer.init(this)
 
     
     let buttonsPlace = this.scene.findObject("buttons_place")
@@ -147,7 +148,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     }
 
     
-    ::dmViewer.update()
+    dmViewer.update()
 
     this.updateSceneVisibility()
   }
@@ -184,12 +185,12 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
 
   function onShowExternalDmPartsChange(obj) {
     if (checkObj(obj))
-      ::dmViewer.showExternalPartsArmor(obj.getValue())
+      dmViewer.showExternalPartsArmor(obj.getValue())
   }
 
   function onShowExtendedHintsChange(obj) {
     saveLocalAccountSettings("dmViewer/needShowExtHints", obj.getValue())
-    ::dmViewer.resetXrayCache()
+    dmViewer.resetXrayCache()
   }
 
   function onCollapseButton() {
@@ -198,11 +199,11 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onAirInfoToggleDMViewer(obj) {
-    ::dmViewer.toggle(obj.getValue())
+    dmViewer.toggle(obj.getValue())
   }
 
   function onDMViewerHintTimer(obj, _dt) {
-    ::dmViewer.placeHint(obj)
+    dmViewer.placeHint(obj)
   }
 
   function updateContentVisibility(_obj = null) {
@@ -292,7 +293,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (show) {
-      ::dmViewer.init(this)
+      dmViewer.init(this)
       this.doWhenActiveOnce("updateVisibleTabContent")
     }
     base.onSceneActivate(show)

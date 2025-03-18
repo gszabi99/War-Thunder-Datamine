@@ -352,6 +352,10 @@ let BaseItem = class {
     return loc($"item/{this.id}/desc", "")
   }
 
+  function getBaseDescription() {
+    return loc($"item/{this.id}/desc", "")
+  }
+
   function getDescriptionUnderTable() { return "" }
   function getDescriptionAboveTable() { return "" }
   function getLongDescriptionMarkup(_params = null) { return "" }

@@ -1,11 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getTimestampFromStringUtc } = require("%scripts/time.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { get_shop_blk } = require("blkGetters")
-let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitDefault } = require("%scripts/unit/unitStatus.nut")
 
 let shopPromoteUnits = mkWatched(persist, "shopPromoteUnits", {})
@@ -46,43 +44,27 @@ function generateUnitShopInfo() {
       for (local r = 0; r < totalRanges; r++) {
         let rblk = pblk.getBlock(r)
         let totalAirs = rblk.blockCount()
-        local prevAir = null
 
         for (local a = 0; a < totalAirs; a++) {
           let airBlk = rblk.getBlock(a)
           let airName = airBlk.getBlockName()
           local air = getAircraftByName(airName)
 
-          if (airBlk?.reqAir != null)
-            prevAir = airBlk.reqAir
-
           if (air) {
-            air.applyShopBlk(airBlk, prevAir)
-            prevAir = air.name
+            air.applyShopBlk(airBlk)
             fillPromoteUnitsList(airBlk, air)
           }
           else { 
             let groupTotal = airBlk.blockCount()
-            local firstIGroup = null
             let groupName = airName
             for (local ga = 0; ga < groupTotal; ga++) {
               let gAirBlk = airBlk.getBlock(ga)
               air = getAircraftByName(gAirBlk.getBlockName())
               if (!air)
                 continue
-              air.applyShopBlk(gAirBlk, prevAir, groupName)
-              prevAir = air.name
-              if (!firstIGroup)
-                firstIGroup = air
+              air.applyShopBlk(gAirBlk, groupName)
               fillPromoteUnitsList(gAirBlk, air)
             }
-
-            if (firstIGroup
-                && !isUnitSpecial(firstIGroup)
-                && !isUnitGift(firstIGroup))
-              prevAir = firstIGroup.name
-            else
-              prevAir = null
           }
         }
       }

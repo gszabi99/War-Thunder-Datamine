@@ -220,8 +220,18 @@ function getMassInfo(sourceBlk) {
   foreach (pattern in massPatterns)
     foreach (nameVariant in pattern.variants)
       if (nameVariant in sourceBlk)
-        return format(" ".concat(loc("shop/tank_mass"), loc(pattern.langKey)), sourceBlk[nameVariant])
+        return format(" ".concat(loc("shop/tank_mass"), loc(pattern.langKey)), round(sourceBlk[nameVariant]))
   return ""
+}
+
+function mkAnglesRangeText(rawX, rawY, isNegativeZeroForX = false) {
+  let x = round(rawX).tointeger()
+  let y = round(rawY).tointeger()
+  if (x + y == 0)
+    return $"±{y}{unitsDeg}"
+  let signX = isNegativeZeroForX && x == 0 ? "-" : (x >= 0 ? "+" : "")
+  let signY = y >= 0 ? "+" : ""
+  return $"{signX}{x}{unitsDeg}/{signY}{y}{unitsDeg}"
 }
 
 
@@ -531,8 +541,18 @@ function getWeaponByXrayPartName(unitWeaponsList, weaponPartName, linkedPartName
         if (weapon.turret?[partKey] == linkedPartName)
           return weapon
     foreach (linkKey in partLinkSources)
-      if (linkKey in weapon && weapon[linkKey] == weaponPartName)
+      if (weapon?[linkKey] == weaponPartName)
         return weapon
+  }
+  foreach (weapon in unitWeaponsList) {
+    if (weapon?.turret.gunnerDm == weaponPartName)
+      return weapon
+    if (weapon?.turret.head != null && $"{weapon.turret.head}_dm" == weaponPartName)
+      return weapon
+    if (weapon?.turret.gun != null && $"{weapon.turret.gun}_dm" == weaponPartName)
+      return weapon
+  }
+  foreach (weapon in unitWeaponsList) {
     if (isPoint2(weapon?.emitterGenRange)) {
       let rangeMin = min(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
       let rangeMax = max(weapon.emitterGenRange.x, weapon.emitterGenRange.y)
@@ -626,11 +646,10 @@ function getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, ne
       continue
 
     let { x, y } = g.angles
-    let anglesText = (x + y == 0) ? format("±%d%s", abs(y), unitsDeg)
-      : (isSwaped && g.canSwap) ? format("%+d%s/%+d%s", abs(y) * getSign(x), unitsDeg, abs(x) * getSign(y), unitsDeg)
-      : format("%+d%s/%+d%s", x, unitsDeg, y, unitsDeg)
-
-    desc.append(" ".concat(loc(g.label), anglesText))
+    let needSwap = isSwaped && g.canSwap
+    let degX = needSwap ? abs(y) * getSign(x) : x
+    let degY = needSwap ? abs(x) * getSign(y) : y
+    desc.append(" ".concat(loc(g.label), mkAnglesRangeText(degX, degY, true)))
   }
 
   if (needSingleAxis || status.isPrimary || [S_SHIP, S_BOAT].contains(simUnitType)) {
@@ -842,7 +861,7 @@ let haveFirstStageShells = @(unitBlk, trigger)
   getAmmoStowageBlockByParam(unitBlk, trigger, "firstStage") ?? false
 
 function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, commonData) {
-  let { unitBlk, crewId, simUnitType, getUnitWeaponsList, getCommonWeapons, toFloatSafe,
+  let { unitBlk, crewId, simUnitType, getUnitWeaponsList, toFloatSafe,
     getProp_tankReloadTime, getProp_tankReloadTimeTop,
     getProp_shipReloadTimeMainDef, getProp_shipReloadTimeAuxDef, getProp_shipReloadTimeAaDef
   } = commonData
@@ -912,8 +931,7 @@ function getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, c
     }
 
     if (!reloadTimeS) {
-      cyclicShotFreqS = getCommonWeapons(unitBlk, "")
-        .findvalue(@(inst) inst.trigger == weaponInfoBlk.trigger)?.shotFreq ?? cyclicShotFreqS
+      cyclicShotFreqS = weaponInfoBlk?.shotFreq ?? cyclicShotFreqS
       shotFreqRPM = cyclicShotFreqS * 60
 
       if (haveFirstStageShells(unitBlk, weaponInfoBlk?.trigger)) {
@@ -1025,12 +1043,9 @@ function mkWeaponDesc(partType, params, commonData) {
   local weaponPartName = null
   let turretWeaponsNames = {} 
   if (partType == "main_caliber_turret" || partType == "auxiliary_caliber_turret" || partType == "aa_turret") {
-    weaponPartName = partName.replace("turret", "gun")
     let unitWeaponsList = getUnitWeaponsList(commonData)
     foreach (weapon in unitWeaponsList)
-      if (weapon?.turret.gunnerDm == partName && weapon?.breechDP) {
-        weaponPartName = weapon.breechDP
-
+      if (weapon?.turret.gunnerDm == partName) {
         let weaponName = getWeaponNameByBlkPath(weapon?.blk ?? "")
         if (weaponName == "")
           continue
@@ -1041,7 +1056,8 @@ function mkWeaponDesc(partType, params, commonData) {
 
     if (turretWeaponsNames.len() > 0)
       foreach(weaponName, weaponsCount in turretWeaponsNames)
-        desc.append("".concat(loc($"weapons/{weaponName}"), format(loc("weapons/counter"), weaponsCount)))
+        desc.append("".concat(loc($"weapons/{weaponName}"),
+          weaponsCount > 1 ? format(loc("weapons/counter"), weaponsCount) : ""))
   }
   local weaponInfoBlk = null
   let triggerParam = "trigger"
@@ -1069,19 +1085,22 @@ function mkWeaponDesc(partType, params, commonData) {
 
     let weaponBlkLink = weaponInfoBlk?.blk ?? ""
     let weaponName = getWeaponNameByBlkPath(weaponBlkLink)
+    let weaponNameStr = weaponName != "" && turretWeaponsNames.len() == 0
+      ? loc($"weapons/{weaponName}")
+      : ""
     let unitWeaponsList = getUnitWeaponsList(commonData)
     let ammo = isSpecialBullet ? 1 : getWeaponTotalBulletCount(unitWeaponsList, partType, weaponInfoBlk)
-    let shouldShowAmmoInTitle = isSpecialBulletEmitter
-    let ammoTxt = ammo > 1 && shouldShowAmmoInTitle ? format(loc("weapons/counter"), ammo) : ""
 
-    if (weaponName != "" && turretWeaponsNames.len() == 0)
-      desc.append("".concat(loc($"weapons/{weaponName}"), ammoTxt))
-    if (weaponInfoBlk && ammo > 1 && !shouldShowAmmoInTitle)
-      desc.append("".concat(loc("shop/ammo"), colon, ammo))
-
-    if (isSpecialBullet || isSpecialBulletEmitter)
-      desc[desc.len() - 1] = "".concat(desc.top(), getWeaponDescTextByWeaponInfoBlk(commonData, weaponInfoBlk))
+    if (isSpecialBullet || isSpecialBulletEmitter) {
+      let ammoTxt = ammo > 1 ? format(loc("weapons/counter"), ammo) : ""
+      desc.append("".concat(weaponNameStr, ammoTxt,
+        getWeaponDescTextByWeaponInfoBlk(commonData, weaponInfoBlk)))
+    }
     else {
+      if (weaponNameStr != "")
+        desc.append(weaponNameStr)
+      if (ammo > 1)
+        desc.append("".concat(loc("shop/ammo"), colon, ammo))
       let status = getWeaponStatus(weaponPartName, weaponInfoBlk, commonData)
       desc.extend(getWeaponShotFreqAndReloadTimeDesc(weaponName, weaponInfoBlk, status, commonData))
       desc.append(getMassInfo(blkOptFromPath(weaponBlkLink)))
@@ -1532,14 +1551,10 @@ function mkApsTexts(infoBlk) {
     desc.append("".concat(loc("xray/model"), colon, loc($"aps/{model}")))
   if (horAngles)
     desc.append("".concat(loc("xray/aps/protected_sector/hor"), colon,
-      (horAngles.x + horAngles.y == 0
-        ? format("±%d%s", abs(horAngles.y), unitsDeg)
-        : format("%+d%s/%+d%s", horAngles.x, unitsDeg, horAngles.y, unitsDeg))))
+      mkAnglesRangeText(horAngles.x, horAngles.y)))
   if (verAngles)
     desc.append("".concat(loc("xray/aps/protected_sector/vert"), colon,
-      (verAngles.x + verAngles.y == 0
-        ? format("±%d%s", abs(verAngles.y), unitsDeg)
-        : format("%+d%s/%+d%s", verAngles.x, unitsDeg, verAngles.y, unitsDeg))))
+      mkAnglesRangeText(verAngles.x, verAngles.y)))
   if (reloadTime)
     desc.append("".concat(loc("xray/aps/reloadTime"), colon,
       reloadTime, " ", unitsSec))
@@ -2131,6 +2146,34 @@ function mkFireControlSystemDesc(partType, params, commonData) {
   return { desc }
 }
 
+function mkHydraulicsSystemDesc(partType, params, commonData) {
+  let { getUnitWeaponsList } = commonData
+  let partName = params.name
+  let desc = []
+  let partsList = []
+  let unitWeaponsList = getUnitWeaponsList(commonData)
+  foreach (weapon in unitWeaponsList) {
+    if (weapon?.stabilizerDmPart == partName) {
+      appendOnce(loc("armor_class/gun_stabilizer"), partsList)
+      continue
+    }
+
+    let turretBlk = weapon?.turret
+    if (turretBlk == null)
+      continue
+
+    eachParam(turretBlk, function(val,key) {
+      if (key == "verDriveDm" && val == partName)
+        appendOnce(loc("armor_class/drive_turret_v"), partsList)
+      if (key == "horDriveDm" && val == partName)
+        appendOnce(loc("armor_class/drive_turret_h"), partsList)
+    })
+  }
+
+  desc.append(loc($"armor_class/desc/{partType}", { partsList = "\n".join(partsList, true) }))
+  return { desc }
+}
+
 function mkElectronicEquipmentDesc(partType, params, commonData) {
   let partName = params.name
   let desc = []
@@ -2210,6 +2253,7 @@ return {
   mkFireDirecirOrRangefinderDesc
   mkFireControlRoomOrBridgeDesc
   mkFireControlSystemDesc
+  mkHydraulicsSystemDesc
   mkElectronicEquipmentDesc
   mkPowerSystemDesc
   mkSimpleDescByPartType

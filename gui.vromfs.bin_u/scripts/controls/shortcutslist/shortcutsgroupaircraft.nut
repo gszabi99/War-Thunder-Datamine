@@ -595,10 +595,6 @@ return [
     checkAssign = false
     needShowInHelp = true
   }
-  {
-    id = "ID_DESIGNATE_TARGET"
-    checkAssign = false
-  }
 
   {
     id = "ID_PLANE_GUNNERS_HEADER"

@@ -258,10 +258,13 @@ let ItemExternal = class (BaseItem) {
       desc.append("".concat(loc("ugm/tags"), loc("ui/colon"), loc("ui/comma").join(tags, true)))
     }
 
-    if (! this.itemDef?.tags?.hideDesc)
-      desc.append(this.itemDef?.description ?? "")
+    desc.append(this.getBaseDescription())
 
     return "\n\n".join(desc, true)
+  }
+
+  function getBaseDescription() {
+    return !this.itemDef?.tags.hideDesc ? (this.itemDef?.description ?? "") : ""
   }
 
   function getIcon(_addItemName = true) {

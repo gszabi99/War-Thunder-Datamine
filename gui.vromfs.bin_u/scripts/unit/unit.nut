@@ -210,6 +210,7 @@ local Unit = class {
     this.showShortestUnitInfo      = this.tags.contains("showShortestUnitInfo")
     this.hasWeaponSlots            = uWpCost?.hasWeaponSlots ?? false
     this.defaultBeltParam          = uWpCost?.defaultBeltParam
+    this.reqAir                    = uWpCost?.reqAir
 
     foreach (weapon in this.weapons)
       weapon.type <- ::g_weaponry_types.WEAPON.type
@@ -258,9 +259,8 @@ local Unit = class {
     return split_by_chars(listStr, separator).contains(targetPlatform)
   }
 
-  function applyShopBlk(shopUnitBlk, prevShopUnitName, unitGroupName = null) {
+  function applyShopBlk(shopUnitBlk, unitGroupName = null) {
     this.isInShop = true
-    this.reqAir = prevShopUnitName
     this.futureReqAir = shopUnitBlk?.futureReqAir
     this.futureReqAirDesc = shopUnitBlk?.futureReqAirDesc
     this.group = unitGroupName

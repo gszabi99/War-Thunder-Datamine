@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
+let { registerRespondent } = require("scriptRespondent")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setBlkValueByPath, getBlkValueByPath } = require("%globalScripts/dataBlockExt.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
@@ -13,8 +14,7 @@ let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nu
 
 const EATT_UNKNOWN = -1
 
-eventbus_subscribe("onUpdateProfile", function(msg) {
-  let { taskId = -1, action = "", transactionType = EATT_UNKNOWN } = msg
+function onUpdateProfile(taskId, action, transactionType) {
   broadcastEvent("ProfileUpdated", { taskId, action, transactionType })
 
   if (!isLoggedIn.get())
@@ -22,6 +22,13 @@ eventbus_subscribe("onUpdateProfile", function(msg) {
 
   ::update_gamercards()
   eventbus_send("request_show_banned_status_msgbox", {showBanOnly = true})
+}
+
+registerRespondent("onUpdateProfile", onUpdateProfile) 
+                                                       
+eventbus_subscribe("onUpdateProfile", function(msg) {
+  let { taskId = -1, action = "", transactionType = EATT_UNKNOWN } = msg
+  onUpdateProfile(taskId, action, transactionType)
 })
 
 

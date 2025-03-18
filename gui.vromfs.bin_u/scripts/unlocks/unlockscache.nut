@@ -101,11 +101,6 @@ function cache() {
   cacheProfileUnlocks(get_personal_unlocks_blk(), "personalUnlocks")
 }
 
-function cachePersonalUnlocks() {
-  clearCombinedCache()
-  cacheProfileUnlocks(get_personal_unlocks_blk(), "personalUnlocks")
-}
-
 function invalidateCache() {
   isCacheValid.value = false
   broadcastEvent("UnlocksCacheInvalidate")
@@ -180,5 +175,4 @@ return {
   getAllUnlocksWithBlkOrder
   getUnlockById
   getUnlocksByTypeInBlkOrder
-  cachePersonalUnlocks
 }

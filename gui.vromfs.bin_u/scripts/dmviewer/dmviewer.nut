@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import hangar_show_external_dm_parts_change
 from "%scripts/dagui_library.nut" import *
+let { register_command } = require("console")
 let { S_UNDEFINED, getPartType, getPartNameLocText } = require("%globalScripts/modeXrayLib.nut")
 let { GAMEPAD_ENTER_SHORTCUT }  = require("%scripts/controls/rawShortcuts.nut")
 let { get_difficulty_by_ediff } = require("%scripts/difficulty.nut")
@@ -557,6 +558,9 @@ dmViewer = {
       return
     }
 
+    if (this.isDebugBatchExportProcess && params?.name != null)
+      return
+
     local needUpdatePos = false
     local needUpdateContent = false
 
@@ -618,8 +622,12 @@ dmViewer = {
     let isShowDebugStr = debugStr != null
     let debugTxtObj = obj.findObject("dmviewer_debug")
     debugTxtObj.show(isShowDebugStr)
-    if (isShowDebugStr)
-      debugTxtObj.setValue(debugStr)
+    if (isShowDebugStr) {
+      let weapTriggerTxt = ("weapon_trigger" in params)
+        ? colorize("warningTextColor", $" + {params.weapon_trigger}")
+        : ""
+      debugTxtObj.setValue("".concat(colorize("badTextColor", debugStr), weapTriggerTxt))
+    }
 
     showObjById("dmviewer_anim", !!info.animation, handler.scene)["movie-load"] = info.animation
 
@@ -834,4 +842,6 @@ subscribe_handler(dmViewer, g_listener_priority.DEFAULT_HANDLER)
 
 eventbus_subscribe("on_hangar_damage_part_pick", @(p) dmViewer.updateHint(p))
 
-::dmViewer <- dmViewer
+register_command(@() dmViewer.isDebugMode = !dmViewer.isDebugMode, "ui.debug.dm_viewer")
+
+return dmViewer

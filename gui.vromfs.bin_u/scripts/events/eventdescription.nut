@@ -174,7 +174,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
         ? loc("options/custom")
         : events.getDifficultyText(this.selectedEvent.name)
       let respawnText = events.getRespawnsText(this.selectedEvent)
-      eventDifficultyObj.text = format(" %s %s", difficultyText, respawnText)
+      eventDifficultyObj.setValue(format(" %s %s", difficultyText, respawnText))
     }
 
     
@@ -207,7 +207,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       if (showMessage) {
         let locId = "".concat("events/allowSwitchClan/",
           events.isEventAllowSwitchClan(this.selectedEvent).tostring())
-        allowSwitchClanObj.text = loc(locId)
+        allowSwitchClanObj.setValue(loc(locId))
       }
     }
 

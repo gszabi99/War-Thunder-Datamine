@@ -788,7 +788,7 @@ function HarrierAirGuns(width, height) {
 
 function HarrierGroundGunsAndBombs(width, height) {
   return @() {
-    watch = [CannonMode, isTakeOffOrLanding]
+    watch = [CannonMode, BombCCIPMode, isTakeOffOrLanding]
     size = [width, height]
     children = (CannonMode.get() || BombCCIPMode.get()) && !isTakeOffOrLanding.get() ? [
       CCIPLine,

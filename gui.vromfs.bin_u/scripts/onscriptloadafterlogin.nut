@@ -174,7 +174,6 @@ foreach (fn in [
   "%scripts/shop/shopViewWnd.nut"
   "%scripts/convertExpHandler.nut"
 
-  "%scripts/dmViewer/dmViewer.nut"
   "%scripts/weaponry/weaponryTypes.nut"
   "%scripts/weaponry/weaponrySelectModal.nut"
   "%scripts/weaponry/weaponryPresetsWnd.nut"
@@ -341,9 +340,11 @@ require("%scripts/debugTools/dbgVoiceChat.nut")
 require("%scripts/debugTools/dbgDumpTools.nut")
 require("%scripts/debugTools/dbgUtilsAfterLogin.nut")
 require("%scripts/debugTools/dbgMarketplace.nut")
+require("%scripts/dmViewer/modeXrayDebugExport.nut")
 
 require("%scripts/exportInfo/skinsLocExporter.nut")
 require("%scripts/onlineShop/buyPremiumHandler.nut")
+require("%scripts/unlocks/requestInventoryUnlocks.nut")
 
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 if (isAuthorized.get() || disable_network()) 

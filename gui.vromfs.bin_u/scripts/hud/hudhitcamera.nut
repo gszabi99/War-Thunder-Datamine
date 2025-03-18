@@ -149,7 +149,7 @@ function updateCoverPartsHp() {
 function updateDebuffItem(item, unitInfo, partName = null, dmgParams = null) {
   local data = null
   if (item.id == "SHIP_COMPARTMENTS")
-    data =  item.getInfo(coverPartsHpData)
+    data =  item.getInfo(coverPartsHpData, unitInfo)
   else
     data = item.getInfo(camInfo, unitInfo, partName, dmgParams)
   let isShow = data != null
@@ -204,7 +204,7 @@ function reset() {
   coverPartsHpData = []
 }
 
-function getTargetInfo(unitId, unitVersion, unitType, isUnitKilled) {
+function getTargetInfo(unitId, unitVersion, unitType, isUnitKilled, unitName = null) {
   if (!(unitId in unitsInfo) || unitsInfo[unitId].unitVersion != unitVersion)
     unitsInfo[unitId] <- {
       unitId
@@ -221,6 +221,7 @@ function getTargetInfo(unitId, unitVersion, unitType, isUnitKilled) {
       crewRelativePrev = -1
       crewRelativeCurr = -1
       importantEvents = {}
+      unitName
     }
 
   let info = unitsInfo[unitId]
@@ -443,6 +444,7 @@ function onHitCameraEvent(mode, result, info) {
   curUnitId      = info?.unitId ?? curUnitId
   curUnitVersion = info?.unitVersion ?? curUnitVersion
   curUnitType    = newUnitType
+
   if (isStarted) {
     camInfo      = info
     if ((scene?.isValid() ?? false)) {
@@ -473,7 +475,7 @@ function onHitCameraEvent(mode, result, info) {
 
   if (isVisible) {
     local unitInfo = getTargetInfo(curUnitId, curUnitVersion,
-      curUnitType, isKillingHitResult(hitResult))
+      curUnitType, isKillingHitResult(hitResult), info?.unitName)
     foreach (item in (debuffsListsByUnitType?[curUnitType] ?? [])) {
       updateDebuffItem(item, unitInfo)
 

@@ -70,6 +70,8 @@ let { getRgbStrFromHsv } = require("colorCorrector")
         "tank_countermeasure"
         "tank_fire_control_system"
         "tank_electronic_equipment"
+        "turret_hydraulics"
+        
         "ship_main_caliber_gun"
         "ship_auxiliary_caliber_gun"
         "ship_main_caliber_turret"

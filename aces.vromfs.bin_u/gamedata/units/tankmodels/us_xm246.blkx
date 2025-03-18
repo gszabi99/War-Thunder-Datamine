@@ -177,6 +177,12 @@
       },
       "turret_08_top_dm": {
         "armorThickness": 25.4
+      },
+      "turret_09_front_dm": {
+        "armorThickness": 5.0
+      },
+      "turret_09_top_dm": {
+        "armorThickness": 5.0
       }
     },
     "turret_hh_steel": {
@@ -212,6 +218,9 @@
         "armorThickness": 25.4
       },
       "turret_07_top_dm": {
+        "armorThickness": 25.4
+      },
+      "turret_08_side_dm": {
         "armorThickness": 25.4
       },
       "turret_08_back_dm": {
@@ -480,6 +489,10 @@
       },
       "drive_turret_h_05_dm": {
         "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "turret_hydraulics_dm": {
+        "hp": 250.0,
         "armorThrough": 15.0
       },
       "radiator_dm": {
@@ -1968,25 +1981,30 @@
             "fire_control_system_dm"
           ],
           "shootingDmPart": "fire_control_system_dm",
-          "selfDirectedPart": {
-            "node": "antenna_target_tagging_mount",
-            "limits": [
-              -180.0,
-              180.0
-            ],
-            "turnSpeed": 80.0
-          },
-          "linkedAnimPart": {
-            "verNode": "bone_camera_gunner_sight_v",
-            "verLimits": [
-              -10.0,
-              85.0
-            ],
-            "verOriginLimits": [
-              -10.0,
-              85.0
-            ]
-          }
+          "linkedAnimPart": [
+            {
+              "verNode": "antenna_target_tagging",
+              "verLimits": [
+                0.0,
+                65.0
+              ],
+              "verOriginLimits": [
+                -5.0,
+                85.0
+              ]
+            },
+            {
+              "verNode": "bone_camera_gunner_sight_v",
+              "verLimits": [
+                -10.0,
+                85.0
+              ],
+              "verOriginLimits": [
+                -10.0,
+                85.0
+              ]
+            }
+          ]
         },
         "limits": {
           "yaw": [
@@ -2076,7 +2094,7 @@
           "fire_control_system_dm",
           "power_system_dm"
         ],
-        "recoilOffset": 0.25,
+        "recoilOffset": 0.05,
         "recoilMultiplier": 0.7,
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
@@ -2238,7 +2256,8 @@
     "animatedBones": {
       "node": [
         "bone_roll_01",
-        "bone_camera_gunner_sight_v"
+        "bone_camera_gunner_sight_v",
+        "antenna_target_tagging"
       ]
     }
   },
@@ -3529,25 +3548,30 @@
                   "fire_control_system_dm"
                 ],
                 "shootingDmPart": "fire_control_system_dm",
-                "selfDirectedPart": {
-                  "node": "antenna_target_tagging_mount",
-                  "limits": [
-                    -180.0,
-                    180.0
-                  ],
-                  "turnSpeed": 80.0
-                },
-                "linkedAnimPart": {
-                  "verNode": "bone_camera_gunner_sight_v",
-                  "verLimits": [
-                    -10.0,
-                    85.0
-                  ],
-                  "verOriginLimits": [
-                    -10.0,
-                    85.0
-                  ]
-                }
+                "linkedAnimPart": [
+                  {
+                    "verNode": "antenna_target_tagging",
+                    "verLimits": [
+                      0.0,
+                      65.0
+                    ],
+                    "verOriginLimits": [
+                      -5.0,
+                      85.0
+                    ]
+                  },
+                  {
+                    "verNode": "bone_camera_gunner_sight_v",
+                    "verLimits": [
+                      -10.0,
+                      85.0
+                    ],
+                    "verOriginLimits": [
+                      -10.0,
+                      85.0
+                    ]
+                  }
+                ]
               },
               "limits": {
                 "yaw": [
@@ -3637,7 +3661,7 @@
                 "fire_control_system_dm",
                 "power_system_dm"
               ],
-              "recoilOffset": 0.25,
+              "recoilOffset": 0.05,
               "recoilMultiplier": 0.7,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -3852,7 +3876,8 @@
           "animatedBones": {
             "node": [
               "bone_roll_01",
-              "bone_camera_gunner_sight_v"
+              "bone_camera_gunner_sight_v",
+              "antenna_target_tagging"
             ]
           }
         }

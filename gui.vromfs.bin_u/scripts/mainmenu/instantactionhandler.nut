@@ -89,6 +89,8 @@ let { getMyClanCandidates, isHaveRightsToReviewCandidates, openClanRequestsWnd
   } = require("%scripts/clans/clanCandidates.nut")
 let { getChatObject } = require("%scripts/chat/chatUtils.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
+
 let SlotbarPresetsTutorial = require("%scripts/slotbar/slotbarPresetsTutorial.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -159,7 +161,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateStartButton()
 
     this.inited = true
-    ::dmViewer.update()
+    dmViewer.update()
     initBackgroundModelHint(this)
     requestAllPatchnotes()
   }
@@ -357,7 +359,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.setCurQueue(::queues.isQueueActive(_queue) ? _queue : null)
     this.updateStartButton()
-    ::dmViewer.update()
+    dmViewer.update()
   }
 
   function onEventCurrentGameModeIdChanged(_params) {

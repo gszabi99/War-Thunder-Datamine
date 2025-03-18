@@ -199,7 +199,8 @@ gui_handlers.ChooseSlotbarPreset <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let objBtn = this.scene.findObject("btn_preset_load")
     if (checkObj(objBtn))
-      objBtn.text = loc(isNonCurrentPresetSelected ? "mainmenu/btnApply" : "mainmenu/btnClose")
+      objBtn.setValue(
+        loc(isNonCurrentPresetSelected ? "mainmenu/btnApply" : "mainmenu/btnClose"))
   }
 
   function onItemSelect(_obj) {

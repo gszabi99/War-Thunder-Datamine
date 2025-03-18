@@ -1672,7 +1672,6 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onCrewDragStart(obj) {
     removeAllGenericTooltip()
-    this.hideAllPopups()
     let draggedObj = obj.getParent().getParent().getParent()
     swapCrewsBegin(draggedObj, this.getCurrentAirsTable())
   }
@@ -1682,9 +1681,6 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     let crew = getCrew(this.curSlotCountryId, crewIdInCountry)
     if (!crew)
       return
-
-    this.hideAllPopups()
-
     swapCrewHandler.open(crew, this.getCurrentAirsTable(), this)
   }
 
@@ -1764,28 +1760,9 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     gui_handlers.ActionsList.open(obj, params)
   }
 
-  function hideAllPopups(_obj = null) {
-    let table = this.getCurrentAirsTable()
-    for (local i = 0; i < table.childrenCount(); i++) {
-      let item = table.getChild(i)
-      let popup = item.findObject("extra_info_block_crew_hint")
-      if(popup != null)
-        popup["showed"] = "no"
-    }
-  }
-
-  function onCrewBlockHover(_obj) {
-    this.hideAllPopups()
-  }
-
   function showCrewSlotHint(obj) {
     let handler = this
     deferOnce(@() obj.isValid() ? handler.onOpenCrewPopup(obj, true, true) : null)
-  }
-
-  function onUnitHover(obj) {
-    base.onUnitHover(obj)
-    this.hideAllPopups()
   }
 
   function updateMarkers() {

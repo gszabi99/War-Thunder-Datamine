@@ -160,11 +160,21 @@ enumsAddTypes(g_hud_enemy_debuffs, {
   }
 
   SHIP_COMPARTMENTS = {
-    unitTypesMask = unitTypes.SHIP.bit
+    unitTypesMask = unitTypes.SHIP.bit | unitTypes.BOAT.bit
     isUpdateByEnemyDamageState = true
 
-    getInfo = function(data) {
-      return data.len() > 0
+    getInfo = function(data, unitInfo) {
+      if (unitInfo.unitType == ES_UNIT_TYPE_SHIP) 
+        return data.len() > 0
+
+      
+      if (!unitInfo.unitName)
+        return null
+      let unit = getAircraftByName(unitInfo.unitName)
+      if (!unit)
+        return null
+      let isUnitFregat = unit.tags.contains("type_frigate")
+      return isUnitFregat ? data.len() > 0 : null
     }
   }
 

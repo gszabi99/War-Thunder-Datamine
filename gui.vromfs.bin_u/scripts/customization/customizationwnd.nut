@@ -85,6 +85,7 @@ let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { hangar_play_presentation_anim, hangar_stop_presentation_anim, is_presentation_animation_playing } = require("hangarEventCommand")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
+let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
 
@@ -983,20 +984,20 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (this.currentState & decoratorEditState.EDITING) {
-      bObj.text = loc("mainmenu/btnCancel")
+      bObj.setValue(loc("mainmenu/btnCancel"))
       bObj["skip-navigation"] = "yes"
       return
     }
 
     if ((this.currentState & decoratorEditState.SELECT) && showConsoleButtons.value) {
       if (this.decorMenu?.isCurCategoryListObjHovered()) {
-        bObj.text = loc("mainmenu/btnCollapse")
+        bObj.setValue(loc("mainmenu/btnCollapse"))
         bObj["skip-navigation"] = "no"
         return
       }
     }
 
-    bObj.text = loc("mainmenu/btnBack")
+    bObj.setValue(loc("mainmenu/btnBack"))
     bObj["skip-navigation"] = "no"
   }
 
@@ -1513,7 +1514,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateSceneOnEditMode(isInEditMode, decoratorType, contentUpdate = false) {
     if (decoratorType == decoratorTypes.DECALS)
-      ::dmViewer.update()
+      dmViewer.update()
 
     let slotInfo = this.getSlotInfo(this.getCurrentDecoratorSlot(decoratorType), true, decoratorType)
     if (contentUpdate) {
@@ -1589,7 +1590,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           if (!this.buyDecorator(decorator, cost, afterPurchDo))
             return this.forceResetInstalledDecorators()
 
-          ::dmViewer.update()
+          dmViewer.update()
           this.onFinishInstallDecoratorOnUnit(true)
         }],
       ["cancel", this.onMsgBoxCancel]
@@ -2320,10 +2321,10 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.skinToBan = $"{this.unit.name}/{skinId}"
 
     if(isSkinBanned(this.skinToBan))
-      btnBanAutoselect.text = loc("customization/skin/return_to_autoselect")
+      btnBanAutoselect.setValue(loc("customization/skin/return_to_autoselect"))
     else {
       btnBanAutoselect.enable(isAllowToExclude)
-      btnBanAutoselect.text = loc("customization/skin/exclude_from_autoselect")
+      btnBanAutoselect.setValue(loc("customization/skin/exclude_from_autoselect"))
     }
   }
 
