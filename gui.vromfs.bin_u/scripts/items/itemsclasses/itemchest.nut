@@ -393,6 +393,10 @@ let Chest = class (ItemExternal) {
 
     return this.categoryByItems
   }
+
+  function getBaseDescription() {
+    return this.getDescription()
+  }
 }
 
 registerItemClass(Chest)

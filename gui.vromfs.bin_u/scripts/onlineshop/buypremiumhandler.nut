@@ -42,7 +42,7 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("premiumTimer").setUserData(this)
   }
 
-  function reinitScreen() {
+  function reinitScreen(_params = null) {
     this.updatePremiumShopData()
     this.updateCurrentPremiumInfo()
   }

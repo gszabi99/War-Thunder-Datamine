@@ -25,7 +25,8 @@ let { itemsShopListVersion, inventoryListVersion,
   rawInventoryItemAmountsByItemdefId, shopVisibleSeenIds
 } = require("%scripts/items/itemsManagerState.nut")
 let { genericItemsForCyberCafeLevel, checkUpdateList, checkInventoryUpdate,
-  reqUpdateList, reqUpdateItemDefsList, needInventoryUpdate
+  setReqUpdateList, setReqUpdateItemDefsList, getReqUpdateItemDefsList, getNeedInventoryUpdate,
+  setNeedInventoryUpdate
 } = require("%scripts/items/itemsManagerChecks.nut")
 let { getItemsFromList, getShopList } = require("%scripts/items/itemsManagerGetters.nut")
 let { shopSmokeItems, createItem } = require("%scripts/items/itemsTypeClasses.nut")
@@ -252,7 +253,7 @@ seenInventory.setCompatibilityLoadData(makeSeenCompatibility("seen_inventory_ite
 
 
 function markItemsDefsListUpdate() {
-  reqUpdateItemDefsList.set(true)
+  setReqUpdateItemDefsList(true)
   shopVisibleSeenIds.set(null)
   clearSeenCashe()
   seenItems.onListChanged()
@@ -262,7 +263,7 @@ function markItemsDefsListUpdate() {
 
 local lastItemDefsUpdatedelayedCall = 0
 function markItemsDefsListUpdateDelayed() {
-  if (reqUpdateItemDefsList.get())
+  if (getReqUpdateItemDefsList())
     return
   if (lastItemDefsUpdatedelayedCall
       && lastItemDefsUpdatedelayedCall + LOST_DELAYED_ACTION_MSEC > get_time_msec())
@@ -276,10 +277,10 @@ function markItemsDefsListUpdateDelayed() {
 }
 
 function markInventoryUpdate() {
-  if (needInventoryUpdate.get())
+  if (getNeedInventoryUpdate())
     return
 
-  needInventoryUpdate.set(true)
+  setNeedInventoryUpdate(true)
   inventoryVisibleSeenIds = null
   if (!isInventoryFullUpdate && isInventoryInternalUpdated && !inventoryClient.isWaitForInventory()) {
     isInventoryFullUpdate = true
@@ -292,7 +293,7 @@ function markInventoryUpdate() {
 
 local lastInventoryUpdateDelayedCall = 0
 function markInventoryUpdateDelayed() {
-  if (needInventoryUpdate.get())
+  if (getNeedInventoryUpdate())
     return
   if (lastInventoryUpdateDelayedCall
       && lastInventoryUpdateDelayedCall < get_time_msec() + LOST_DELAYED_ACTION_MSEC)
@@ -308,7 +309,7 @@ function markInventoryUpdateDelayed() {
 }
 
 function markItemsListUpdate() {
-  reqUpdateList.set(true)
+  setReqUpdateList(true)
   shopVisibleSeenIds.set(null)
   seenItems.setDaysToUnseen(OUT_OF_DATE_DAYS_ITEMS_SHOP)
   clearSeenCashe()
@@ -335,7 +336,7 @@ addListenersWithoutEnv({
   }
   function LoginComplete(_) {
     setShouldCheckAutoConsume(true)
-    reqUpdateList.set(true)
+    setReqUpdateList(true)
   }
   function SignOut(_) {
     isInventoryFullUpdate = false

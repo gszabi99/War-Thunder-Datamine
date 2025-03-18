@@ -257,8 +257,23 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (curVal < 0)
       return
 
-    let selObj = obj.getChild(curVal)
-    if (!checkObj(selObj))
+    local selObj = null
+    let containersCount = obj.childrenCount()
+    local addedIndex = 0
+    for (local i = 0; i < containersCount; i++) {
+      let btnsContainer = obj.getChild(i)
+      if ((btnsContainer?.isContainer ?? "no") == "no")
+        continue
+      let btnsCount = btnsContainer.childrenCount()
+      if (curVal > addedIndex + btnsCount) {
+        addedIndex += btnsCount
+        continue
+      }
+      selObj = btnsContainer.getChild(curVal - addedIndex)
+      break
+    }
+
+    if (!selObj?.isValid())
       return
     let eventName = selObj?._on_click ?? selObj?.on_click ?? selObj?.on_change_value
     if (!eventName || !(eventName in this))

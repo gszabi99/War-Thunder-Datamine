@@ -369,6 +369,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       additionalMassKg = 0
       explosiveType = null
       explosiveMass = 0
+      cumulativeDamage = 0
       hasAdditionalExplosiveInfo = true
       dropSpeedRange = null
       dropHeightRange = null
@@ -453,6 +454,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       item.massLbs = itemBlk?.mass_lbs ?? item.massLbs
       item.explosiveType = itemBlk?.explosiveType ?? item.explosiveType
       item.explosiveMass = itemBlk?.explosiveMass ?? item.explosiveMass
+      item.cumulativeDamage = itemBlk?.cumulativeDamage.armorPower ?? item.cumulativeDamage
       item.hasAdditionalExplosiveInfo = itemBlk?.fireDamage == null
       item.iconType = isGun ? weaponBlk?.iconType : item.iconType ?? itemBlk?.iconType
       item.amountPerTier = isGun ? weaponBlk?.amountPerTier

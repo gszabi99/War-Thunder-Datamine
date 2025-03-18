@@ -92,9 +92,14 @@ function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
 }
 
 
-function addArmorPiercingDataToDescTbl(descTbl, unit, blk, tType) {
+function addArmorPiercingDataToDescTbl(descTbl, unit, blk, tType, weaponInfoData) {
   if (TYPES_ARMOR_PIERCING.contains(tType)) {
-    let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, blk, true, false))
+    let bulletsSet = {
+      explosiveType = weaponInfoData?.resultWeaponBlocks[0][0].explosiveType ?? 0
+      explosiveMass = weaponInfoData?.resultWeaponBlocks[0][0].explosiveMass ?? 0
+      cumulativeDamage = weaponInfoData?.resultWeaponBlocks[0][0].cumulativeDamage ?? 0
+    }
+    let bulletsData = buildBulletsData(calculate_tank_bullet_parameters(unit.name, blk, true, false), bulletsSet)
     addArmorPiercingToDescForBullets(bulletsData, descTbl)
   }
   if (descTbl?.bulletPenetrationData)
@@ -130,11 +135,12 @@ function getSingleWeaponDescTbl(unit, params) {
   }
   let res = {}
 
-  let { presetsWeapons } = getPresetWeaponsDescArray(unit, makeWeaponInfoData(unit, weaponInfoParams), params)
+  let weaponInfoData = makeWeaponInfoData(unit, weaponInfoParams)
+  let { presetsWeapons } = getPresetWeaponsDescArray(unit, weaponInfoData, params)
   if (presetsWeapons.len())
     res.presetsWeapons <- presetsWeapons
 
-  addArmorPiercingDataToDescTbl(res, unit, blkPath, tType)
+  addArmorPiercingDataToDescTbl(res, unit, blkPath, tType, weaponInfoData)
   return res
 }
 
@@ -201,7 +207,7 @@ function getWeaponDescTbl(unit, params) {
     return res
   }
 
-  addArmorPiercingDataToDescTbl(res, unit, blk, tType)
+  addArmorPiercingDataToDescTbl(res, unit, blk, tType, weaponInfoData)
   if (res?.bulletPenetrationData.kineticPenetration && narrowPenetrationTable)
     res.bulletPenetrationData.narrowPenetrationTable <- true
   return res

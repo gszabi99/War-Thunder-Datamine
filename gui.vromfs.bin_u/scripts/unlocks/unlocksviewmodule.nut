@@ -47,7 +47,7 @@ let { addTooltipTypes, getTooltipType } = require("%scripts/utils/genericTooltip
 let { zero_money, Cost } = require("%scripts/money.nut")
 let { MAX_COUNTRY_RANK, getRankByExp } = require("%scripts/ranks.nut")
 let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
-let { findItemById, getRawInventoryItemAmount } = require("%scripts/items/itemsManager.nut")
+let { findItemById, getRawInventoryItemAmount, getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
 let { getRegionalUnlockProgress, isRegionalUnlock } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { getPlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
@@ -371,13 +371,10 @@ function buildConditionsConfig(blk, showStage = -1) {
   }
 
   if (config.unlockType == UNLOCKABLE_INVENTORY) {
-    let itemId = config.userLogId.tointeger()
-    let item = findItemById(itemId)
-    if (item != null) {
-      config.locId = item.getName(false)
-      config.locDescId = item.getBaseDescription()
-      config.image = item.getIconName()
-    }
+    let item = getItemOrRecipeBundleById(config.userLogId.tointeger())
+    config.locId = item?.getName(false) ?? ""
+    config.locDescId = item?.getBaseDescription() ?? ""
+    config.image = item?.getIconName() ?? ""
   }
 
   return config

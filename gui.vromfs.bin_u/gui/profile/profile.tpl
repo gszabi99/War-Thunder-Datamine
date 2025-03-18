@@ -831,6 +831,7 @@ root {
 
         profileContent {
           id:t='collections-container'
+          padding-top:t='3@blockInterval'
           size:t='pw, fh'
           flow:t='horizontal'
         }

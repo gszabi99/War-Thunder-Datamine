@@ -33,9 +33,9 @@ local genericItemsForCyberCafeLevel = -1
 
 local ignoreItemLimits = false
 
-let reqUpdateList = Watched(true)
-let reqUpdateItemDefsList = Watched(true)
-let needInventoryUpdate = Watched(true)
+local reqUpdateList = true
+local reqUpdateItemDefsList = true
+local needInventoryUpdate = true
 
 function fillFakeItemsList() {
   let curLevel = get_cyber_cafe_level()
@@ -79,9 +79,9 @@ function fillFakeItemsList() {
 }
 
 function checkItemDefsUpdate() {
-  if (!reqUpdateItemDefsList.get())
+  if (!reqUpdateItemDefsList)
     return false
-  reqUpdateItemDefsList.set(false)
+  reqUpdateItemDefsList = false
 
   itemsListExternal.clear()
   
@@ -112,10 +112,10 @@ function checkItemDefsUpdate() {
 }
 
 function checkShopItemsUpdate() {
-  if (!reqUpdateList.get())
+  if (!reqUpdateList)
     return false
 
-  reqUpdateList.set(false)
+  reqUpdateList = false
   PRICE.checkUpdate()
   itemsListInternal.clear()
   dbgTrophiesListInternal.clear()
@@ -184,9 +184,9 @@ function checkUpdateList() {
 }
 
 function checkInventoryUpdate() {
-  if (!needInventoryUpdate.get())
+  if (!needInventoryUpdate)
     return
-  needInventoryUpdate.set(false)
+  needInventoryUpdate = false
 
   inventory.clear()
   inventoryItemById.clear()
@@ -306,9 +306,11 @@ function needIgnoreItemLimits() {
 }
 
 return {
-  reqUpdateList
-  reqUpdateItemDefsList
-  needInventoryUpdate
+  setReqUpdateList = @(v) reqUpdateList = v
+  getReqUpdateItemDefsList = @() reqUpdateItemDefsList
+  setReqUpdateItemDefsList = @(v) reqUpdateItemDefsList = v
+  getNeedInventoryUpdate = @() needInventoryUpdate
+  setNeedInventoryUpdate = @(v) needInventoryUpdate = v
 
   genericItemsForCyberCafeLevel
   checkUpdateList
