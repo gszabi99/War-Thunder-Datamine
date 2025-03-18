@@ -507,34 +507,10 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/he_pf.ivf",
-      "canChangeFuseMode": true,
       "bulletName": "155mm_plz_05_he_vt",
       "hitPowerMult": 50.0,
+      "canChangeFuseMode": true,
       "hasProximityFuse": true,
-      "nearHitPower": [
-        1.0,
-        50.0
-      ],
-      "midHitPower": [
-        0.9,
-        300.0
-      ],
-      "farHitPower": [
-        0.1,
-        700.0
-      ],
-      "endHitPower": [
-        0.008,
-        1500.0
-      ],
-      "relativeVelHitShift": [
-        300.0,
-        1000.0
-      ],
-      "relativeVelArmorShift": [
-        200.0,
-        1000.0
-      ],
       "fuseOnWater": true,
       "fuseOnWaterProbability": 1.0,
       "ricochetTimeToLive": 0.085,
@@ -567,6 +543,20 @@
       "pressureDamage": {
         "damageType": "pressure"
       },
+      "hitpower": {
+        "HitPower0m": [
+          1.0,
+          500.0
+        ],
+        "HitPower5000m": [
+          0.5,
+          5000.0
+        ],
+        "HitPower7000m": [
+          0.1,
+          7000.0
+        ]
+      },
       "proximityFuse": {
         "radius": 3.0,
         "armDistance": 300.0,
@@ -576,6 +566,13 @@
         "minimalAltitude": 1.5
       },
       "damage": {
+        "kinetic": {
+          "damageType": "generic",
+          "demarrePenetrationK": 0.15,
+          "demarreSpeedPow": 1.43,
+          "demarreMassPow": 0.71,
+          "demarreCaliberPow": 1.07
+        },
         "explosive": {
           "radius": 0.5,
           "offset": 0.2
@@ -685,19 +682,8 @@
           ]
         }
       },
-      "armorpower": {
-        "ArmorPower0m": [
-          20.0,
-          100.0
-        ],
-        "ArmorPower4000m": [
-          16.0,
-          4000.0
-        ],
-        "ArmorPower10000m": [
-          0.0,
-          10000.0
-        ]
+      "shatterDamage": {
+        "breachConeAngle": 45.0
       },
       "visual": {
         "range_percent_of_ammo": [
