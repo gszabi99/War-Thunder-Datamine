@@ -36,6 +36,10 @@ let getTextNoWeapons = @(unit, isPrimary) isPrimary ? loc("weapon/noPrimaryWeapo
 
 let stackableWeapons = [WEAPON_TYPE.TURRETS]
 
+let weaponsToCountAsOneWeapon = [ TRIGGER_TYPE.AAM, TRIGGER_TYPE.AGM, TRIGGER_TYPE.ATGM, TRIGGER_TYPE.ROCKETS,
+  TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.SMOKE, TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES,
+  "fuel tanks" ]
+
 function stackWeaponsData(weaponType, triggers) {
   if (isInArray(weaponType, stackableWeapons)) {  
     for (local i = 0; i < triggers.len(); i++) {
@@ -69,15 +73,17 @@ function updateWeaponBlocks(resultWeaponBlocks, turretsData, trigger, weaponType
   foreach (weaponName, weapon in trigger.weaponBlocks) {
     weapon.weaponType <- weaponType
     weapon.weaponName <- weaponName
+
+    let weaponTrigger = trigger.trigger
     
     if (TRIGGER_TYPE.TURRETS in trigger) {
       weapon[TRIGGER_TYPE.TURRETS] <- trigger[TRIGGER_TYPE.TURRETS]
-      weapon.trigger <- trigger.trigger
-      if (trigger.trigger in turretsData) {
-        turretsData[trigger.trigger].guns.append(weapon)
+      weapon.trigger <- weaponTrigger
+      if (weaponTrigger in turretsData) {
+        turretsData[weaponTrigger].guns.append(weapon)
         continue
       }
-      turretsData[trigger.trigger] <- {
+      turretsData[weaponTrigger] <- {
         caliber = weapon.caliber
         guns = [weapon]
       }
@@ -85,7 +91,17 @@ function updateWeaponBlocks(resultWeaponBlocks, turretsData, trigger, weaponType
     }
     local hasWeapon = false
     foreach (newWeapon in resultWeaponBlocks) {
-      if ((newWeapon?.guns[0].bulletName ?? "") == weapon?.bulletName) {
+      let newWeaponName = newWeapon?.guns[0].weaponName
+      let newWeaponBulletName = newWeapon?.guns[0].bulletName
+
+      local needToStack = false
+      if (weaponsToCountAsOneWeapon.contains(weaponTrigger) &&
+        !!newWeaponBulletName && newWeaponBulletName == weapon?.bulletName)
+          needToStack = true
+      else if (!!newWeaponName && newWeaponName == weaponName)
+        needToStack = true
+
+      if (needToStack ) {
         newWeapon.guns[0].ammo += weapon.ammo
         hasWeapon = true
         break
