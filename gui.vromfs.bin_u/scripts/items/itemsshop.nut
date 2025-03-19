@@ -961,6 +961,10 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let listObj = this.getItemsListObj()
+    if (!listObj?.isValid())
+      return
+
+    let listObjChildrenCount = listObj.childrenCount()
     let startIdx = this.curPage * this.itemsPerPage
     let lastIdx = min((this.curPage + 1) * this.itemsPerPage, this.itemsList.len())
     for (local i = startIdx; i < lastIdx; i++) {
@@ -974,8 +978,12 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!item.hasTimer() && !item?.hasLifetimeTimer())
         continue
 
-      let itemObj = checkObj(listObj) ? listObj.getChild(i - this.curPage * this.itemsPerPage) : null
-      if (!checkObj(itemObj))
+      let childIdx = i - this.curPage * this.itemsPerPage
+      if (childIdx >= listObjChildrenCount)
+        continue
+
+      let itemObj = listObj.getChild(childIdx)
+      if (!itemObj.isValid())
         continue
 
       local timeTxtObj = itemObj.findObject("expire_time")

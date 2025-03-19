@@ -250,11 +250,10 @@ def gm_engine_sound_update_es(act : ParallelUpdateFrameDelayed;
 
   gm_engine_sound__is_playing = is_playing(gm_engine_sound__event) || is_playing(gm_engine_sound__event_inside)
   let newPos = unit.unitTm * gm_engine_sound__pos_offset
-  if length_sq(newPos - gm_engine_sound__pos) > 0.09
-    if gm_engine_sound__is_playing
-      gm_engine_sound__event |> set_pos_and_ori(gm_engine_sound__pos, gm.velocity, unit.unitTm[0], unit.unitTm[1])
-    gm_engine_sound__stop_event |> set_pos(gm_engine_sound__pos)
-    gm_engine_sound__start_event |> set_pos(gm_engine_sound__pos)
+  if gm_engine_sound__is_playing && length_sq(newPos - gm_engine_sound__pos) > 0.09
+    gm_engine_sound__event |> set_pos_and_ori(newPos, gm.velocity, unit.unitTm[0], unit.unitTm[1])
+    gm_engine_sound__stop_event |> set_pos(newPos)
+    gm_engine_sound__start_event |> set_pos(newPos)
     gm_engine_sound__pos = newPos
 
   if unit.isDelayed

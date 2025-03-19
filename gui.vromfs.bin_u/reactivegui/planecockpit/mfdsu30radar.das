@@ -245,7 +245,7 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
   if !isElevation && !isSpeed
     let maxDist = get_radar_hud_distance_max()
     for i in range(0, 6)
-      let dist = "{float(i) * maxDist * 0.2}"
+      let dist = fmt(":d", roundi(float(i) * maxDist * 0.2))
       let distBox = get_str_bbox(dist, dist |> length(), fctx)
       ctx |> goto_xy(pos.x - offset - distBox.width.x - markW, pos.y + size.y * 0.2 * (5. - float(i)) + distBox.width.y * 0.5)
       ctx |> draw_str_scaled(1., dist, dist |> length())
