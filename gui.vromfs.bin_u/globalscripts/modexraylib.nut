@@ -1040,7 +1040,7 @@ function mkWeaponDesc(partType, params, commonData) {
   let desc = []
   local partLocId = partType
 
-  local weaponPartName = null
+  let weaponPartName = partName
   let turretWeaponsNames = {} 
   if (partType == "main_caliber_turret" || partType == "auxiliary_caliber_turret" || partType == "aa_turret") {
     let unitWeaponsList = getUnitWeaponsList(commonData)
@@ -1074,7 +1074,6 @@ function mkWeaponDesc(partType, params, commonData) {
   }
 
   if (weaponInfoBlk == null) {
-    weaponPartName = weaponPartName ?? partName
     let unitWeaponsList = getUnitWeaponsList(commonData)
     weaponInfoBlk = getWeaponByXrayPartName(unitWeaponsList, weaponPartName, null)
   }
