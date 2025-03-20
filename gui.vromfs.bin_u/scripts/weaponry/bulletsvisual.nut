@@ -196,7 +196,7 @@ function getArmorPiercingViewData(armorPiercing, dist) {
   if (armorPiercing.len() <= 0 || !armorPiercing?[0].len())
     return { props = res, baseArmorPiercing = 0, baseDistance = 0 }
 
-  let angles = u.keys(armorPiercing?[0]) ?? []
+  let angles = (armorPiercing?[0] ?? {}).keys().sort(@(a, b) a <=> b)
   local ranges = null
   foreach (angle in angles) {
     if (!ranges) {

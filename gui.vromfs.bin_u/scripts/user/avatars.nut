@@ -46,4 +46,5 @@ seenAvatars.setListGetter(getAllowedIcons)
 
 return {
   getIcons = getIcons
+  getAvatarIconById = @(id) getIcons()?[id] ?? "cardicon_default"
 }

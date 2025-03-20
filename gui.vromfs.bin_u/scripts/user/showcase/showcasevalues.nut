@@ -6,6 +6,7 @@ let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let { measureType } = require("%scripts/measureType.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { round_by_value } = require("%sqstd/math.nut")
 
 let defaultShowcaseType = "air_arcade"
 let diffNames = ["arcade", "historical", "simulation"]
@@ -115,6 +116,7 @@ let showcaseValues = {
     icon = "lb_average_active_kills_by_spawn"
     locId = "stats/average_active_kills_by_deaths"
     valueId = "efficiency_vs_players"
+    getValue = @(params, val) round_by_value(getStatsValue(params, val, params.scorePeriod), 0.1)
   },
   ai_kill_by_spawns = {
     type = "stat"
@@ -122,6 +124,7 @@ let showcaseValues = {
     locId = "stats/average_script_kills_by_deaths"
     valueId = "efficiency_vs_ai"
     canShow = @(params) !gamemodesNoAiStats.contains(params.showcaseType)
+    getValue = @(params, val) round_by_value(getStatsValue(params, val, params.scorePeriod), 0.1)
   },
   average_score = {
     type = "stat"
