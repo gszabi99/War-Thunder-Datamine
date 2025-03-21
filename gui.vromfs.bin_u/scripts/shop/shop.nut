@@ -2413,13 +2413,14 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  function collapseAllCellsContainers(needCollapse) {
+  function collapseAllCellsContainers(needCollapse, params = null) {
+    let {needInstantAnim = false} = params
     let tableObj = this.getTableObj()
     local containerIndex = 0
     local rankTable = this.getRankTable(tableObj, containerIndex)
     while (rankTable != null) {
       if (rankTable.isVisible() && (needCollapse != (rankTable.isCollapsed == "yes"))) {
-        let collapsParams = {needCollapse, isInstant = false, containerIndex}
+        let collapsParams = {needCollapse, isInstant = needInstantAnim, containerIndex}
         this.collapseCellsContainer(collapsParams, rankTable)
         this.saveRankCollapsedToData(this.curCountry, this.curPage, $"{containerIndex}", needCollapse)
       }

@@ -36,7 +36,8 @@ let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 let { getWarbondsBalanceText } = require("%scripts/warbonds/warbondsManager.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
-let { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO, getRecyclingItemUniqKey } = require("%scripts/items/itemsRecycler.nut")
+let { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO, getRecyclingItemUniqKey, MAXIMUM_CRAFTS_AT_ONCE_TIME
+} = require("%scripts/items/itemsRecycler.nut")
 let { enqueueItem, requestLimits } = require("%scripts/items/itemLimits.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -842,7 +843,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.scene.findObject("create_items_desc_with_count_txt").setValue(txt)
 
-    createItemsSliderObj.maxvalue = unusedItemsCount / CRAFT_PART_TO_NEW_ITEM_RATIO
+    createItemsSliderObj.maxvalue = min(unusedItemsCount / CRAFT_PART_TO_NEW_ITEM_RATIO, MAXIMUM_CRAFTS_AT_ONCE_TIME)
     this.updateSelectAmountTextAndButtons(createItemsSliderObj)
   }
 

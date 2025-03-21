@@ -239,7 +239,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
     let visibleObj = this.scene.findObject("shop_items_visible_div")
     if (!visibleObj)
       return
-
+    this.collapseAllCellsContainers(false, {needInstantAnim = true})
     let visibleBox = GuiBox().setFromDaguiObj(visibleObj)
     let unitsObj = []
     foreach (newUnit in getAllUnits())

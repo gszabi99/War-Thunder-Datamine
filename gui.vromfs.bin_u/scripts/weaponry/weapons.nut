@@ -695,12 +695,27 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateBuyAllButton() {
-    let btnId = "btn_buyAll"
-    let cost = getAllModsCost(this.air, true)
-    let show = !cost.isZero() && isUnitUsable(this.air) && hasFeature("BuyAllModifications")
-    showObjById(btnId, show, this.scene)
-    if (show)
-      placePriceTextToButton(this.scene, btnId, loc("mainmenu/btnBuyAll"), cost)
+    let canBuyAll = isUnitUsable(this.air) && hasFeature("BuyAllModifications")
+    if (!canBuyAll) {
+      showObjById("btn_buyAll", false, this.scene)
+      showObjById("btn_buyAllResearched", false, this.scene)
+      return
+    }
+
+    let costResearched = getAllModsCost(this.air)
+    let isVisibleBuyAllResearched = !costResearched.isZero()
+    showObjById("btn_buyAllResearched", isVisibleBuyAllResearched, this.scene)
+    if (isVisibleBuyAllResearched) {
+      placePriceTextToButton(this.scene, "btn_buyAllResearched", loc("mainmenu/btnBuyAllResearched"), costResearched)
+      showObjById("btn_buyAll", false, this.scene)
+      return
+    }
+
+    let costAll = getAllModsCost(this.air, true)
+    let isVisibleBuyAll = !costAll.isZero()
+    showObjById("btn_buyAll", isVisibleBuyAll, this.scene)
+    if (isVisibleBuyAll)
+      placePriceTextToButton(this.scene, "btn_buyAll", loc("mainmenu/btnBuyAll"), costAll)
   }
 
   function updateAllItems() {
@@ -1558,6 +1573,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onBuyAllButton() {
     this.onBuyAll()
   }
+
+  onBuyAllResearchedButton = @() this.onBuyAll(false)
 
   function onBuyAll(forceOpen = true, silent = false) {
     let unit = this.air

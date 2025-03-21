@@ -13,6 +13,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 const GENERIC_ITEM_GENERATOR_ID = 299030
 const SINGLE_GENERATOR_ID_OFFSET = 20
 const CRAFT_PART_TO_NEW_ITEM_RATIO = 2
+const MAXIMUM_CRAFTS_AT_ONCE_TIME = 100
 
 let RECYCLED_ITEMS_IDS = [299000, 299001, 299002, 299003, 299004]
 
@@ -226,4 +227,10 @@ let ItemsRecycler = class {
   }
 }
 
-return { ItemsRecycler, CRAFT_PART_TO_NEW_ITEM_RATIO, RECYCLED_ITEMS_IDS, getRecyclingItemUniqKey }
+return {
+  ItemsRecycler,
+  CRAFT_PART_TO_NEW_ITEM_RATIO,
+  RECYCLED_ITEMS_IDS,
+  MAXIMUM_CRAFTS_AT_ONCE_TIME,
+  getRecyclingItemUniqKey
+}
