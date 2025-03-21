@@ -316,21 +316,21 @@ let maxMinLaunchDist = @() {
    [
      @() {
        watch = [minAamDistMarkPos, IlsColor]
-       size = [pw(180), ph(4)]
+       size = [pw(180), ph(1)]
        pos = [pw(100), ph(minAamDistMarkPos.value - 2)]
        rendObj = ROBJ_SOLID
        color = IlsColor.value
      },
      @() {
        watch = [maxAamDistMarkPos, IlsColor]
-       size = [pw(180), ph(4)]
+       size = [pw(180), ph(1)]
        pos = [pw(100), ph(maxAamDistMarkPos.value - 2)]
        rendObj = ROBJ_SOLID
        color = IlsColor.value
      },
      (AamDistMarkDgftVis.value ? @() {
        watch = [maxAamDistMarkDgftPos, IlsColor]
-       size = [pw(180), ph(4)]
+       size = [pw(180), ph(1)]
        pos = [pw(100), ph(maxAamDistMarkDgftPos.value - 2)]
        rendObj = ROBJ_SOLID
        color = IlsColor.value
