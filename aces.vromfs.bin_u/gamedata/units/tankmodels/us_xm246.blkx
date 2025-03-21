@@ -175,13 +175,13 @@
       "turret_05_side_dm": {
         "armorThickness": 25.4
       },
-      "turret_08_top_dm": {
-        "armorThickness": 25.4
-      },
       "turret_09_front_dm": {
         "armorThickness": 5.0
       },
       "turret_09_top_dm": {
+        "armorThickness": 5.0
+      },
+      "ex_decor_03_dm": {
         "armorThickness": 5.0
       }
     },
@@ -230,6 +230,9 @@
         "armorThickness": 25.4
       },
       "turret_02_bottom_dm": {
+        "armorThickness": 25.4
+      },
+      "turret_08_top_dm": {
         "armorThickness": 25.4
       },
       "turret_top_dm": {
@@ -317,11 +320,15 @@
     },
     "gun": {
       "armorClass": "tank_barrel",
-      "hp": 120.0,
-      "armorThickness": 20.0,
+      "hp": 100.0,
+      "armorThickness": 10.0,
       "gun_barrel_01_dm": {},
       "gun_barrel_02_dm": {},
-      "gun_barrel_03_dm": {}
+      "gun_barrel_03_dm": {
+        "armorThrough": 10.0,
+        "armorThickness": 5.0,
+        "hp": 50.0
+      }
     },
     "body_shields": {
       "armorClass": "tank_structural_steel",
@@ -1983,7 +1990,7 @@
           "shootingDmPart": "fire_control_system_dm",
           "linkedAnimPart": [
             {
-              "verNode": "antenna_target_tagging",
+              "verNode": "bone_roll_02",
               "verLimits": [
                 0.0,
                 65.0
@@ -2248,16 +2255,19 @@
           ],
           "pitch": [
             -5.0,
-            35.0
+            30.0
           ]
         }
       }
     ],
     "animatedBones": {
       "node": [
+        "antenna_target_location",
+        "antenna_target_location_mount",
+        "ex_decor_03",
         "bone_roll_01",
-        "bone_camera_gunner_sight_v",
-        "antenna_target_tagging"
+        "bone_roll_02",
+        "bone_camera_gunner_sight_v"
       ]
     }
   },
@@ -3550,7 +3560,7 @@
                 "shootingDmPart": "fire_control_system_dm",
                 "linkedAnimPart": [
                   {
-                    "verNode": "antenna_target_tagging",
+                    "verNode": "bone_roll_02",
                     "verLimits": [
                       0.0,
                       65.0
@@ -3815,7 +3825,7 @@
                 ],
                 "pitch": [
                   -5.0,
-                  35.0
+                  30.0
                 ]
               }
             },
@@ -3875,9 +3885,12 @@
           ],
           "animatedBones": {
             "node": [
+              "antenna_target_location",
+              "antenna_target_location_mount",
+              "ex_decor_03",
               "bone_roll_01",
-              "bone_camera_gunner_sight_v",
-              "antenna_target_tagging"
+              "bone_roll_02",
+              "bone_camera_gunner_sight_v"
             ]
           }
         }
