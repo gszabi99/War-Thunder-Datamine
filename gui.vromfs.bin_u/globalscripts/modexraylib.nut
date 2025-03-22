@@ -1411,10 +1411,10 @@ function mkRadarTexts(commonData, sensorPropsBlk, indent) {
       lookUp = true
   }
 
-  let hasTwsPlus = findBlockByName(sensorPropsBlk, "matchTargetsOfInterest")
-  let hasTwsEsa = findBlockByName(sensorPropsBlk, "addTargetTrack")
-  let hasTws = !hasTwsEsa && findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
   let hasRam = findBlockByName(sensorPropsBlk, "ram")
+  let hasTwsEsa = !hasRam && findBlockByName(sensorPropsBlk, "addTargetTrack")
+  let hasTwsPlus = !hasTwsEsa && findBlockByName(sensorPropsBlk, "matchTargetsOfInterest")
+  let hasTws = !hasTwsPlus && findBlockByName(sensorPropsBlk, "updateTargetOfInterest")
   let isTrackRadar = findBlockByName(sensorPropsBlk, "updateActiveTargetOfInterest")
   let hasSARH = findBlockByName(sensorPropsBlk, "setIllumination")
   let hasMG = findBlockByName(sensorPropsBlk, "setWeaponRcTransmissionTimeOut")
