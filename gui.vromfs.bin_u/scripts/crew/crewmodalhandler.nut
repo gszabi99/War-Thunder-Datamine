@@ -103,6 +103,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   curUnit = null
   isCrewUpgradeInProgress = false
+  selectedCrewUnitTypes = {}
 
   function initScreen() {
     if (!this.scene)
@@ -115,6 +116,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (country)
       switchProfileCountry(country)
 
+    this.selectedCrewUnitTypes.clear()
     this.initMainParams(true, true)
 
     if (this.showTutorial)
@@ -174,7 +176,9 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.curUnit = this.getCurCrewUnit(this.crew)
-    this.curCrewUnitType = reinitUnitType ? (this.curUnit?.getCrewUnitType?() ?? this.curCrewUnitType) : this.curCrewUnitType
+
+    this.curCrewUnitType = this.selectedCrewUnitTypes?[this.curUnit?.name ?? "empty"] ??
+      (reinitUnitType ? (this.curUnit?.getCrewUnitType?() ?? this.curCrewUnitType) : this.curCrewUnitType)
 
     ::update_gamercards()
     if (reloadSkills)
@@ -334,6 +338,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onChangeUnitType(obj) {
     this.curCrewUnitType = obj.getValue()
+    this.selectedCrewUnitTypes[this.curUnit?.name ?? "empty"] <- this.curCrewUnitType
     this.updateUnitType()
   }
 

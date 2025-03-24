@@ -215,14 +215,15 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
 
   function update_dynamic_map() {
     let descr = get_option(USEROPT_DYN_MAP)
-    let txt = create_option_list(descr.id, descr.items, descr.value, descr.cb, false)
     let dObj = this.scene.findObject(descr.id)
+    if (!dObj?.isValid())
+      return
+    let txt = create_option_list(descr.id, descr.items, descr.value, descr.cb, false)
     this.guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
 
     this.init_builder_map()
     if (descr.cb in this)
       this[descr.cb](dObj)
-    return descr
   }
 
   function update_dynamic_layout(guiScene, _obj, _descr) {

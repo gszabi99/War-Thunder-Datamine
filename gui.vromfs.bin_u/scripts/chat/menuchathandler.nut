@@ -960,7 +960,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (!pos || !size)
       return
 
-    let rootSize = this.guiScene.getRoot().getSize()
+    let rootSize = [screen_width(), screen_height()]
     for (local i = 0; i <= 1; i++) 
       if (pos[i] < topMenuBorders[i][0] * rootSize[i])
         pos[i] = (topMenuBorders[i][0] * rootSize[i]).tointeger()
