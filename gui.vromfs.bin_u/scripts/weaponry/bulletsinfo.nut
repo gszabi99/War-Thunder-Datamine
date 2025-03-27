@@ -8,7 +8,7 @@ let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { blkFromPath, eachParam, copyParamsToTable } = require("%sqstd/datablock.nut")
-let { ceil, change_bit } = require("%sqstd/math.nut")
+let { ceil, change_bit, interpolateArray } = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getCommonWeapons,
   getLastPrimaryWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath
 } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -60,6 +60,26 @@ let BULLETS_LIST_PARAMS = {
 }
 
 let unitsPrimaryBulletsInfo = {}
+
+local squashArmorAnglesScale = {} 
+
+let anglesToCalcDamageMultiplier = [0, 30, 60] 
+
+function getSquashArmorAnglesScale() {
+  if (squashArmorAnglesScale.len())
+    return squashArmorAnglesScale
+
+  let squashAnglesModelParams = [] 
+  let blk = DataBlock()
+  blk.load("gameData/damage_model/damage_system.blk")
+  eachParam(blk?.splash.squashArmorAnglesScale, @(v) squashAnglesModelParams.append(v))
+
+  foreach(angle in anglesToCalcDamageMultiplier)
+    squashArmorAnglesScale[angle] <- interpolateArray(squashAnglesModelParams, angle)
+
+  return squashArmorAnglesScale
+}
+
 
 
 
@@ -270,6 +290,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
                   maxToRespawn = mod?.maxToRespawn ?? 0
                   bulletAnimations = clone bulletAnimations
                   cumulativeDamage = paramsBlk?.cumulativeDamage.armorPower ?? 0
+                  cumulativeByNormal = paramsBlk?.cumulativeByNormal ?? false
                 }
         }
         else
@@ -1234,4 +1255,6 @@ return {
   isPairBulletsGroup
   getLinkedGunIdx
   isModificationIsShell
+  getSquashArmorAnglesScale
+  anglesToCalcDamageMultiplier
 }

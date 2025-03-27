@@ -164,7 +164,10 @@ addListenersWithoutEnv({
 
   
   SessionDestroyed = @(_p) invalidateCrewsList()
-  OverrideSlotbarChanged = @(_p) invalidateCrewsList(true)
+  function OverrideSlotbarChanged(_p) {
+    if (invalidateCrewsList(true))
+      reinitSlotbars()
+  }
   SignOut = @(_p) isSlotbarUpdateSuspended = false
   LoadingStateChange = @(_p) isSlotbarUpdateSuspended = false
 }, DEFAULT_HANDLER)

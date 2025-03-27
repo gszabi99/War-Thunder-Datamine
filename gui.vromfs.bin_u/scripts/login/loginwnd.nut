@@ -330,6 +330,9 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       handler = this
       closeOnUnhover = true
       actions = []
+      cssParams = {
+        hasAnim = "yes"
+      }
     }
     for (local i = 0; i < this.localizationInfo.len(); i++) {
       let lang = this.localizationInfo[i]

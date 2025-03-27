@@ -37,6 +37,7 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { measureType, getMeasureTypeByName } = require("%scripts/measureType.nut")
 let { isGameModeVersus } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
+let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
 
 const KGF_TO_NEWTON = 9.807
 
@@ -370,6 +371,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       explosiveType = null
       explosiveMass = 0
       cumulativeDamage = 0
+      cumulativeByNormal = null
       hasAdditionalExplosiveInfo = true
       dropSpeedRange = null
       dropHeightRange = null
@@ -455,6 +457,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
       item.explosiveType = itemBlk?.explosiveType ?? item.explosiveType
       item.explosiveMass = itemBlk?.explosiveMass ?? item.explosiveMass
       item.cumulativeDamage = itemBlk?.cumulativeDamage.armorPower ?? item.cumulativeDamage
+      item.cumulativeByNormal = itemBlk?.cumulativeByNormal ?? item.cumulativeByNormal
       item.hasAdditionalExplosiveInfo = itemBlk?.fireDamage == null
       item.iconType = isGun ? weaponBlk?.iconType : item.iconType ?? itemBlk?.iconType
       item.amountPerTier = isGun ? weaponBlk?.amountPerTier
@@ -782,6 +785,19 @@ function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine = null) 
 
     if (weapon?.armDistance)
       addParamsToRes(measureType.DEPTH.getMeasureUnitsText(weapon?.armDistance), loc("torpedo/armingDistance"))
+
+    
+    
+    if (!newLine) {
+      let unitType = getEsUnitType(unit)
+      if (weapon.dropSpeedRange && isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])) {
+        let speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
+        let speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
+        addParamsToRes("{0} {1}".subst(speedKmph, loc("ui/parentheses", { text = speedMps })), loc("weapons/drop_speed_range_text"))
+      }
+      if (weapon.dropHeightRange)
+        addParamsToRes(countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y]), loc("weapons/drop_height_range_text"))
+    }
   }
 
   if (weapon?.machLimit)

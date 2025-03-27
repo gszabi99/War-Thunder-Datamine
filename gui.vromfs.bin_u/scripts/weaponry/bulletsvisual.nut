@@ -16,8 +16,8 @@ let {
 
         getBulletsSetData,
         getBulletAnnotation,
-        getBulletsSearchName,
-        getModifIconItem,
+        getBulletsSearchName, anglesToCalcDamageMultiplier,
+        getModifIconItem, getSquashArmorAnglesScale,
         getModificationBulletsEffect } = require("%scripts/weaponry/bulletsInfo.nut")
 let { WEAPON_TYPE,
   isCaliberCannon, getWeaponNameByBlkPath } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -78,8 +78,6 @@ let bulletArmorPiercingMainParamDistanceText = @"
 "
 
 let DEG_TO_RAD = PI / 180.0
-let cos30 = cos(30*DEG_TO_RAD)
-let cos60 = cos(60*DEG_TO_RAD)
 
 function resetBulletIcons() {
   bulletIcons.clear()
@@ -252,7 +250,7 @@ function addArmorPiercingToDesc(bulletsData, descTbl) {
 
 function addArmorPiercingToDescForBullets(bulletsData, descTbl) {
   let { armorPiercingDist, armorPiercingKinetic, cumulativeDamage = 0, explosiveType = null,
-    explosiveMass = 0 } = bulletsData
+    explosiveMass = 0, cumulativeByNormal = false } = bulletsData
   let { props, baseArmorPiercing, baseDistance } = getArmorPiercingViewData(armorPiercingKinetic, armorPiercingDist)
   let highEnergyPenetration = explosiveType == null || explosiveMass == 0 ? 0
     : round_by_value(getMaxArmorPiercing(explosiveType, explosiveMass), 0.1)
@@ -264,7 +262,7 @@ function addArmorPiercingToDescForBullets(bulletsData, descTbl) {
 
   let isKineticDmg = maxPenetartion == baseArmorPiercing
   let armorPiercingIconId = isKineticDmg ? "penetration_kinetic_icon"
-    : maxPenetartion == cumulativeDamageInt ? "penetration_cumulative_jet_icon"
+    : maxPenetartion == cumulativeDamageInt && !cumulativeByNormal ? "penetration_cumulative_jet_icon"
     : "penetration_high_explosive_fragmentation_icon"
 
   let bulletBaseArmorPiercing = {
@@ -283,16 +281,33 @@ function addArmorPiercingToDescForBullets(bulletsData, descTbl) {
     descTbl.bulletMainParams <- (descTbl?.bulletMainParams ?? []).append(bulletBaseArmorPiercing)
 
   let degText = loc("measureUnits/deg")
+
+  local cumulativePenetration = null
+  if (cumulativeDamageInt != 0) {
+    cumulativePenetration = {}
+    cumulativePenetration.icon <- cumulativeByNormal ? "!#ui/gameuiskin#penetration_high_explosive_fragmentation_icon.svg"
+      : "!#ui/gameuiskin#penetration_cumulative_jet_icon.svg"
+    cumulativePenetration.cumulativeTitle <- cumulativeByNormal ? loc("bullet_properties/armorPiercing/affected_armor")
+      : loc("bullet_properties/armorPiercing/cumulative")
+
+    cumulativePenetration.props <- []
+
+    let multipliers = getSquashArmorAnglesScale()
+    foreach(idx, angle in anglesToCalcDamageMultiplier) {
+      cumulativePenetration.props.append({
+        value = $"{round(cumulativeDamage * (cumulativeByNormal ? (multipliers?[angle] ?? 1)
+          : cos(angle*DEG_TO_RAD))).tointeger()} {loc("measureUnits/mm")}"
+        angle = $"{angle}{degText}"
+        isLastRow = idx == anglesToCalcDamageMultiplier.len() - 1
+      })
+    }
+  }
+
   descTbl.bulletPenetrationData <- (descTbl?.bulletPenetrationData ?? {}).__update({
     highEnergyPenetration = highEnergyPenetration == 0 ? null
       : $"{highEnergyPenetration} {loc("measureUnits/mm")}"
     kineticPenetration = baseArmorPiercing != 0 ? { props } : null
-    cumulativePenetration = cumulativeDamageInt == 0 ? null
-      : { props = [
-          { value = $"{cumulativeDamageInt} {loc("measureUnits/mm")}", angle = $"0{degText}" }
-          { value = $"{round(cumulativeDamage * cos30).tointeger()} {loc("measureUnits/mm")}", angle = $"30{degText}" }
-          { value = $"{round(cumulativeDamage * cos60).tointeger()} {loc("measureUnits/mm")}", angle = $"60{degText}", isLastRow = true }
-      ]}
+    cumulativePenetration
   })
 }
 
@@ -615,6 +630,7 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
     armorPiercingKinetic = []
     isCountermeasure
     cumulativeDamage = 0
+    cumulativeByNormal = false
   }
 
   if (bulletsSet?.bullets?[0] == "napalm_tank") {
@@ -627,6 +643,7 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
   }
 
   bulletsData.cumulativeDamage = bulletsSet?.cumulativeDamage ?? 0
+  bulletsData.cumulativeByNormal = bulletsSet?.cumulativeByNormal ?? false
 
   if (isCountermeasure) {
     let whitelistParams = [ "bulletType" ]

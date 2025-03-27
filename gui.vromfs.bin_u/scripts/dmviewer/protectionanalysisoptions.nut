@@ -529,6 +529,8 @@ options.addTypes({
             bullets = weaponBlk % "bullet"
             cartridge = 0
             bulletAnimations = [curBlk?.shellAnimation ?? ""]
+            cumulativeDamage = curBlk?.cumulativeDamage.armorPower ?? 0
+            cumulativeByNormal = curBlk?.cumulativeByNormal ?? false
           })
 
         this.items.append({

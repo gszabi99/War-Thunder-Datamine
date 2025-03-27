@@ -184,7 +184,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let event = events.getEvent(this.curEventId)
     let showOverrideSlotbar = needShowOverrideSlotbar(event)
     if (showOverrideSlotbar)
-      updateOverrideSlotbar(events.getEventMission(this.curEventId))
+      updateOverrideSlotbar(events.getEventMission(this.curEventId), event)
     else
       resetSlotbarOverrided()
     this.createSlotbar({

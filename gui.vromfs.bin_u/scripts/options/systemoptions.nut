@@ -515,8 +515,10 @@ function antiAliasingOptions() {
 function antiAliasingOptionsWithVersion() {
   let modesString = get_antialiasing_options(getGuiValue("enableVr"))
   return modesString.split(";").map(function(mode) {
-    let [name, version = null] = mode.split("|")
-    let locName = localize("antialiasingMode", name)
+    let [name, version = null, replace_from = null, replace_to = null] = mode.split("|")
+    local locName = localize("antialiasingMode", name)
+    if (replace_from != null && replace_to != null)
+      locName = locName.replace(replace_from, replace_to)
     let text = version != null
       ? " - v".concat(locName, version)
       : locName

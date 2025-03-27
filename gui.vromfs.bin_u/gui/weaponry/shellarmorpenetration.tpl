@@ -54,7 +54,7 @@ shellTooltipPenetrationBlock {
       tdiv {
         width:t='pw'
         textareaNoTab {
-          text:t='<<?bullet_properties/armorPiercing/cumulative>> (<<?bullet_properties/hitAngle>>)'
+          text:t='<<cumulativeTitle>> (<<?bullet_properties/hitAngle>>)'
           valign:t='center'
           overlayTextColor:t='minor'
           smallFont:t='yes'
@@ -64,7 +64,7 @@ shellTooltipPenetrationBlock {
           size:t='1@sIco, 1@sIco'
           pos:t='1@blockInterval, 0.5ph-0.5h'
           position:t='relative'
-          background-image:t='!#ui/gameuiskin#penetration_cumulative_jet_icon.svg'
+          background-image:t='<<icon>>'
           background-svg-size:t='1@sIco, 1@sIco'
         }
       }

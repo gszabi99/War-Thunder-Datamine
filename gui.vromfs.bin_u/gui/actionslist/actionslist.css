@@ -15,14 +15,18 @@ popup_actions_list {
   behaviour:massTransparency;
   transp-base:0;
   transp-end:255;
-  transp-time:300;
+  transp-time:1;
   border:yes;
   border-color:@extraInfoBlockBorderColor;
   border-offset:1@sf/@pf;
   move_out: no;
 }
 
-popup_actions_list[closeOnUnhover=yes]{
+popup_actions_list[hasAnim=yes] {
+  transp-time:300;
+}
+
+popup_actions_list[closeOnUnhover=yes] {
   move_out: yes;
 }
 
@@ -38,8 +42,12 @@ popup_actions_list[close=yes] {
 }
 
 popup_actions_list[move_out=yes] {
-  transp-time:-300;
+  transp-time:-1;
   selfRemoveOnFinish:-1;
+}
+
+popup_actions_list[move_out=yes][hasAnim=yes] {
+  transp-time:-300;
 }
 
 popup_actions_list > itemsList {

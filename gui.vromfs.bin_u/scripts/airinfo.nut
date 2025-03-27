@@ -854,7 +854,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
 
     let shotFreq = ("shotFreq" in currentParams && currentParams.shotFreq > 0) ? currentParams.shotFreq : null;
 
-    let loader = skillParametersRequestType.CURRENT_VALUES.getParameters(crew?.id ?? -1, air)[difficulty.crewSkillName]["loader"]
+    let loader = skillParametersRequestType.CURRENT_VALUES.getParameters(crew?.id ?? -1, air)[difficulty.crewSkillName]?.loader
     let reloadTime = loader?["loading_time_mult"]["tankLoderReloadingTime"]
 
     let visibilityFactor = ("visibilityFactor" in currentParams && currentParams.visibilityFactor > 0) ? currentParams.visibilityFactor : null;

@@ -5,7 +5,7 @@ let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/sub
 let { regionalUnlocks } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { get_unlocks_blk, get_personal_unlocks_blk } = require("blkGetters")
-let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 let unlocksCacheById = persist("unlocksCacheById", @() {})
 let personalUnlocksCacheById = persist("personalUnlocksCacheById", @() {})
@@ -95,7 +95,7 @@ function cache() {
   isCacheValid.value = true
   clearCombinedCache()
   cacheCharUnlocks()
-  if (!isLoggedIn.get())
+  if (!isProfileReceived.get())
     return
 
   cacheProfileUnlocks(get_personal_unlocks_blk(), "personalUnlocks")
@@ -166,7 +166,7 @@ regionalUnlocks.subscribe(function(_) {
 
 addListenersWithoutEnv({
   SignOut = @(_) clearAllCache()
-  LoginComplete = @(_) clearAllCache()
+  ProfileReceived = @(_) clearAllCache()
   ProfileUpdated = @(_) invalidateCache()
 }, g_listener_priority.CONFIG_VALIDATION)
 

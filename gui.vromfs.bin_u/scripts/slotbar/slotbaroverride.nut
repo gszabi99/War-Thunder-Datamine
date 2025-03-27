@@ -113,7 +113,7 @@ function updateOverrideSlotbar(missionName, event = null) {
   if (isEqual(overrideSlotbar.value, newOverrideSlotbar))
     return
 
-  if (!isSlotbarOverrided())
+  if (!isSlotbarOverrided(missionName, event))
     userSlotbarCountry(profileCountrySq.value)
   overrideSlotbar(newOverrideSlotbar)
   let missionCountry = selectedCountryByMissionName.get()?[missionName]
