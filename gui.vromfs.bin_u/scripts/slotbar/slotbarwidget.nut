@@ -404,7 +404,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         if (unit && (!isAllowedByLockedSlots || !isUnitEnabledByRandomGroups || isUnitForcedHiden))
           continue
 
-        let crewIdVisible = crewInSlots.indexof(crew.id) ?? idx
+        let crewIdVisible = needShowLockedSlots ? (crewInSlots.indexof(crew.id) ?? idx) : null
         this.addCrewData(countryData.crews,
           { crew = crew, unit = unit, isUnlocked = isUnlocked, status = status, crewIdVisible })
       }

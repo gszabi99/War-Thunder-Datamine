@@ -20,5 +20,5 @@ ecs.register_es("debug_dedic_logerrs_es",
     },
   },
   {
-    comps_ro = [["server_load_stat__frameCnt", ecs.TYPE_INT]]
+    comps_rq=["server_load_stat__load"]
   })

@@ -27,6 +27,10 @@ let visibleRewards = [
     }
   }
   {
+    id = "eventKillHuman"
+    locId = "expEventScore/killHuman"
+  }
+  {
     id = "eventAssist"
     locId = "expEventScore/assist"
   }

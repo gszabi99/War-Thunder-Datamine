@@ -17,7 +17,7 @@ let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
 let { isPlatformXboxOne, isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { isLeaderboardsAvailable, isEventForClan, getMaxLobbyDisbalance
+let { isLeaderboardsAvailable, isEventForClan, getMaxLobbyDisbalance, getCustomViewCountryData
 } = require("%scripts/events/eventInfo.nut")
 let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventRewards.nut")
 let { get_meta_mission_info_by_name } = require("guiMission")
@@ -126,7 +126,8 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       if (playersCountObj)
         playersCountObj.setValue(sides.len() > 1 ? this.getTeamPlayersCountText(team, teamData, roomMGM) : "")
 
-      fillCountriesList(this.getObject("countries", teamObj), events.getCountries(teamData))
+      fillCountriesList(this.getObject("countries", teamObj), events.getCountries(teamData),
+        getCustomViewCountryData(roomMGM))
       let unitTypes = events.getUnitTypesByTeamDataAndName(teamData, teamName)
       let roomSpecialRules = this.room && getRoomSpecialRules(this.room)
       events.fillAirsList(this, teamObj, teamData, unitTypes, roomSpecialRules)

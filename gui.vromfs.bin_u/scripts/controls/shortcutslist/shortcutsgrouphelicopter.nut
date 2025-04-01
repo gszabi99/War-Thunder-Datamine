@@ -133,6 +133,10 @@ return [
     }
   }
   {
+    id = "helicopter_buoyancy"
+    type = CONTROL_TYPE.AXIS
+  }
+  {
     id = "helicopter_climb"
     type = CONTROL_TYPE.AXIS
     filterShow = [ globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR ]

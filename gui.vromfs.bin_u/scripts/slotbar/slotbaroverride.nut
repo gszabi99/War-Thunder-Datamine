@@ -50,10 +50,26 @@ function getMissionEditSlotbarBlk(missionName) {
   return editSlotbar
 }
 
+function convertSlotbarDataBlock(blk) {
+  let countries = {}
+  for (local i = 0; i < blk.blockCount(); i++) {
+    let countryBlk = blk.getBlock(i)
+    let countryName = countryBlk.getBlockName()
+    countries[countryName] <- []
+    for (local n = 0; n < countryBlk.blockCount(); n++) {
+      let crewBlk = countryBlk.getBlock(n)
+      let crew = convertBlk(crewBlk)
+      crew.crewName <- crewBlk.getBlockName()
+      countries[countryName].append(crew)
+    }
+  }
+  return countries
+}
+
 function calcSlotbarOverrideByMissionName(missionName, event = null) {
   local res = null
   let editSlotBarData = event?.mission_decl.editSlotbar ?? getMissionEditSlotbarBlk(missionName)
-  let editSlotbar = isDataBlock(editSlotBarData) ? convertBlk(editSlotBarData) : editSlotBarData
+  let editSlotbar = isDataBlock(editSlotBarData) ? convertSlotbarDataBlock(editSlotBarData) : editSlotBarData
 
   if (!editSlotbar)
     return res
@@ -72,7 +88,7 @@ function calcSlotbarOverrideByMissionName(missionName, event = null) {
       if (crewData?.needToShowInEventWnd == false)
         continue
 
-      addCrewToCountryData(countryData, crewId--, res.len() - 1, crewName)
+      addCrewToCountryData(countryData, crewId--, res.len() - 1, crewData?.crewName ?? crewName)
     }
   }
   if (!res.len())

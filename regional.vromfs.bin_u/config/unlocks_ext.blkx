@@ -1399,7 +1399,7 @@
     },
     {
       "id": "italeri_us_m1a1_hc_usmc_abrams_rent_us_m4_sherman",
-      "userLogId": "wt_rent_us_m4_sherman_store",
+      "userLogId": "wt_rent_us_m4a1_1942_sherman_store",
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "italeri",
@@ -1666,7 +1666,7 @@
     },
     {
       "id": "italeri_f_16c_block_50_rent_us_m4_sherman",
-      "userLogId": "wt_rent_us_m4_sherman_store",
+      "userLogId": "wt_rent_us_m4a1_1942_sherman_store",
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "italeri",
@@ -4487,6 +4487,49 @@
           {
             "type": "unlocked",
             "unlock": "jp_shi_1st_sensha_rentai_burma_1942"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_03_28_uk_airforce_day_2025_decal",
+      "locId": "decals/uk_airforce_day_2025_decal",
+      "locDescId": "gift_decal_trophy/desc",
+      "userLogId": "2025_03_28_uk_airforce_day_2025_decal",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "british_air_force_day",
+      "costGold": 199,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_britain"
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-03-31 10:00:00",
+            "endDate": "2025-04-02 11:30:00"
           }
         ]
       }
@@ -69680,10 +69723,14 @@
             "inSessionAnd": false,
             "class": [
               "it_cruiser_zara_class",
+              "it_cruiser_bolzano",
               "it_cruiser_zara_class_pola",
               "it_cruiser_trento",
               "it_destroyer_soldati_serie1_camicianera",
+              "it_destroyer_navigatori_class_verazzano",
               "it_cruiser_garibaldi_class_abruzzi",
+              "uk_battleship_q_elizabet_class_barham",
+              "uk_battleship_q_elizabet_class_warspite",
               "uk_cruiser_leander",
               "uk_cruiser_liverpool",
               "uk_destroyer_g_garland",
@@ -96607,8 +96654,8 @@
       "chapter": "2025_03_tank",
       "icon": "!https://static-ggc.gaijin.net/units/it_fiat_6614_firos.avif",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 7,
@@ -96632,8 +96679,8 @@
       "group": "coupon_upgrade",
       "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
-      "manualOpen": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 2147483646,
@@ -96691,7 +96738,7 @@
       "amount_trophies": 1,
       "chapter": "2025_03_tank",
       "lockStyle": "lock",
-      "manualOpen": true,
+      "hidden": true,
       "showInDesc": true,
       "mode": {
         "type": "char_unlocks",
@@ -96718,7 +96765,7 @@
       "icon": "!https://static-ggc.gaijin.net/decals/03_2025_tank_event.avif",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 2,
@@ -96742,7 +96789,7 @@
       "amount_trophies": 1,
       "chapter": "2025_03_tank",
       "lockStyle": "lock",
-      "manualOpen": true,
+      "hidden": true,
       "showInDesc": true,
       "mode": {
         "type": "char_unlocks",
@@ -96769,7 +96816,7 @@
       "icon": "!https://static-ggc.gaijin.net/decals/03_2025_tank_event.avif",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 4,
@@ -96793,7 +96840,7 @@
       "amount_trophies": 1,
       "chapter": "2025_03_tank",
       "lockStyle": "lock",
-      "manualOpen": true,
+      "hidden": true,
       "showInDesc": true,
       "mode": {
         "type": "char_unlocks",
@@ -96818,7 +96865,7 @@
       "chapter": "2025_03_tank",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 6,
@@ -96837,6 +96884,7 @@
       "id": "25_03_2025_tank_stage",
       "locId": "marathon_tank_stage_7/name",
       "chapter": "2025_03_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 899,
@@ -96899,6 +96947,7 @@
       "id": "23_03_2025_tank_stage",
       "locId": "marathon_tank_stage_6/name",
       "chapter": "2025_03_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 899,
@@ -96961,6 +97010,7 @@
       "id": "21_03_2025_tank_stage",
       "locId": "marathon_tank_stage_5/name",
       "chapter": "2025_03_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 899,
@@ -97023,6 +97073,7 @@
       "id": "19_03_2025_tank_stage",
       "locId": "marathon_tank_stage_4/name",
       "chapter": "2025_03_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 899,
@@ -97085,6 +97136,7 @@
       "id": "17_03_2025_tank_stage",
       "locId": "marathon_tank_stage_3/name",
       "chapter": "2025_03_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 899,
@@ -97147,6 +97199,7 @@
       "id": "15_03_2025_tank_stage",
       "locId": "marathon_tank_stage_2/name",
       "chapter": "2025_03_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 899,
@@ -97209,6 +97262,7 @@
       "id": "13_03_2025_tank_stage",
       "locId": "marathon_tank_stage_1/name",
       "chapter": "2025_03_tank",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "costGold": 899,

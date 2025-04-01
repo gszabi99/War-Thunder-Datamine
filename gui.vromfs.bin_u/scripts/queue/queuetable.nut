@@ -19,7 +19,7 @@ let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getClusterShortName, isClusterUnstable
 } = require("%scripts/onlineInfo/clustersManagement.nut")
-let { isEventForClan } = require("%scripts/events/eventInfo.nut")
+let { isEventForClan, getCustomViewCountryData } = require("%scripts/events/eventInfo.nut")
 let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
@@ -159,19 +159,13 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (countriesList.len() == 0)
       availCountriesObj.show(false)
     else {
-      let blk = handyman.renderCached("%gui/countriesList.tpl",
-                                          {
-                                            countries = function() {
-                                              let res = []
-                                              foreach (country in countriesList)
-                                                res.append({
-                                                  countryName = country
-                                                  countryIcon = getCountryIcon(country)
-                                                })
-                                              return res
-                                            }
-                                          })
-
+      let customViewCountryData = getCustomViewCountryData(event)
+      let blk = handyman.renderCached("%gui/countriesList.tpl", {
+        countries = countriesList.map(@(countryName) {
+          countryName
+          countryIcon = getCountryIcon(customViewCountryData?[countryName].icon ?? countryName)
+        })
+      })
       let iconsObj = availCountriesObj.findObject("countries_icons")
       availCountriesObj.show(true)
       this.guiScene.replaceContentFromText(iconsObj, blk, blk.len(), this)
@@ -328,27 +322,28 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let statsObj = tblObj.findObject($"{Team.A}_block")
-    let teamData = events.getTeamData(::queues.getQueueEvent(queue), Team.A)
-    let playersCountText = loc("ui/colon").concat(loc("events/clans_count"), queueStats.getClansCount())
+    if (!statsObj?.isValid())
+      return
+
+    let event = ::queues.getQueueEvent(queue)
+    let teamData = events.getTeamData(event, Team.A)
+    let isShowTeamData = teamData && teamData.len()
+    statsObj.show(isShowTeamData)
+    if (!isShowTeamData)
+      return
+
+    statsObj.bgTeamColor = "any"
+    statsObj.findObject("team_name").setValue("")
+    statsObj.findObject("players_count").setValue(
+      loc("ui/colon").concat(loc("events/clans_count"), queueStats.getClansCount()))
+
+    fillCountriesList(statsObj.findObject("countries"), events.getCountries(teamData),
+      getCustomViewCountryData(event))
+
+    let queueTableObj = statsObj.findObject("table_queue_stat")
+    if (!queueTableObj?.isValid())
+      return
     let tableMarkup = this.getClanQueueTableMarkup(queueStats)
-
-    this.fillQueueTeam(statsObj, teamData, tableMarkup, playersCountText)
-  }
-
-  
-  function fillQueueTeam(teamObj, teamData, tableMarkup, playersCountText,  teamColor = "any", teamName = "") {
-    if (!checkObj(teamObj))
-      return
-
-    teamObj.bgTeamColor = teamColor
-    teamObj.show(teamData && teamData.len())
-    fillCountriesList(teamObj.findObject("countries"), events.getCountries(teamData))
-    teamObj.findObject("team_name").setValue(teamName)
-    teamObj.findObject("players_count").setValue(playersCountText)
-
-    let queueTableObj = teamObj.findObject("table_queue_stat")
-    if (!checkObj(queueTableObj))
-      return
     this.guiScene.replaceContentFromText(queueTableObj, tableMarkup, tableMarkup.len(), this)
   }
 

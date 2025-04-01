@@ -397,6 +397,7 @@
     "unitType": -1,
     "canChangeUnit": false,
     "unit__missionName": "",
+    "team": -1,
     "_replicated": [
       "uid",
       "unitVersion"
@@ -440,14 +441,20 @@
   "aircraft": {
     "_use": [
       "base_unit",
-      "aircraft_ext",
-      "vehicle_grid_obj"
+      "aircraft_ext"
     ],
+    "agent_dangers__tag": "plane",
+    "ai_target__noiseLevel": 0.0,
     "unit_storage__aircraft": {},
+    "plane_net_phys": {},
     "unit_tag__aircraft:tag": {},
     "shell_start_fx_eids:list<eid>": {
       "_tags": "render"
-    }
+    },
+    "ai_target": {
+      "_tags": "server"
+    },
+    "unitAiTargetPos:tag": {}
   },
   "barrage_ballon": {
     "_use": [
@@ -490,6 +497,8 @@
       "tank_phys_tracks"
     ],
     "_replicated": "reloadedFromAmmoBoxCount",
+    "agent_dangers__tag": "vehicle",
+    "ai_target__noiseLevel": 0.0,
     "unit_storage__tank": {},
     "vehicle_net_phys": {},
     "unit_tag__tank:tag": {},
@@ -514,7 +523,11 @@
       "primary": false,
       "secondary": false,
       "special": false
-    }
+    },
+    "ai_target": {
+      "_tags": "server"
+    },
+    "unitAiTargetPos:tag": {}
   },
   "ship": {
     "_use": [
@@ -600,6 +613,7 @@
       "human_grid_obj"
     ],
     "restricted_area_timer": -1.0,
+    "agent_dangers__tag": "human",
     "human_net_phys": {},
     "unit_storage__human": {},
     "unit_tag__human:tag": {},

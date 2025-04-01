@@ -1,0 +1,271 @@
+{
+  "germ_inf_gw": {
+    "_use": "base_soldier",
+    "human_equipment__initialEquip:object": {
+      "random_face": "face",
+      "attachable_wear_short_hands_item": "hands",
+      "attachable_wear_ger_pants_w_m14_boots_item": "pants",
+      "attachable_wear_ger_m15_bluse_w_equip_item": "tunic",
+      "attachable_wear_ger_m17_helmet_item": "helmet"
+    },
+    "_group": {
+      "human_sound__killEventPath": "event/soldier/vo/enemy_kill_de",
+      "human_sound__attackEventPath": "event/soldier/vo/melee_charge_de",
+      "_tags": "sound"
+    }
+  },
+  "uk_inf_gw": {
+    "_use": "base_soldier",
+    "human_equipment__initialEquip:object": {
+      "random_face": "face",
+      "attachable_wear_short_hands_item": "hands",
+      "attachable_wear_uk_sd_trousers_w_b5_boots_item": "pants",
+      "attachable_wear_uk_sd_tunic_w_webbing_item": "tunic",
+      "attachable_wear_uk_mk1_brodie_helmet_item": "helmet"
+    },
+    "_group": {
+      "human_sound__killEventPath": "event/soldier/vo/enemy_kill_en",
+      "human_sound__attackEventPath": "event/soldier/vo/melee_charge_en",
+      "_tags": "sound"
+    }
+  },
+  "smle_mk3_gun_equip": {
+    "human_weap__weapTemplates:object": {
+      "primary": "smle_mk3_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "lee_enfield_no4_mk1_magazine": 3,
+      "geballte_ladung_grenade_item": 2
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "smle_mk3_gun",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "mp_18_gun_equip": {
+    "human_weap__weapTemplates:object": {
+      "primary": "mp_18_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "mp_18_magazine": 3,
+      "geballte_ladung_grenade_item": 2
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "mp_18_gun",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "browning_m1918_gun_equip": {
+    "human_weap__weapTemplates:object": {
+      "primary": "browning_m1918_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "browning_m1918_magazine": 3,
+      "geballte_ladung_grenade_item": 2
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "browning_m1918_gun",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "smle_mk3_gun_bayonet_equip": {
+    "human_weap__weapTemplates:object": {
+      "primary": "smle_mk3_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "lee_enfield_no4_mk1_magazine": 3,
+      "geballte_ladung_grenade_item": 2
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "smle_mk3_gun",
+          "grenade_thrower"
+        ]
+      }
+    },
+    "human_weap__weapInfo:array": {
+      "weapInfo:object": [
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0,
+          "gunMods:object": {
+            "bayonet": "smle_mk3_bayonet"
+          }
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        }
+      ]
+    }
+  },
+  "pre_war_kar98k_gun_bayonet_equip": {
+    "human_weap__weapTemplates:object": {
+      "primary": "pre_war_kar98k_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "mauser98k_magazine": 3,
+      "geballte_ladung_grenade_item": 2
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "pre_war_kar98k_gun",
+          "grenade_thrower"
+        ]
+      }
+    },
+    "human_weap__weapInfo:array": {
+      "weapInfo:object": [
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0,
+          "gunMods:object": {
+            "bayonet": "sg_8498_III_bayonet"
+          }
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        },
+        {
+          "reserveAmmoTemplate": "",
+          "numReserveAmmo": 0
+        }
+      ]
+    }
+  },
+  "pre_war_kar98k_gun_equip": {
+    "human_weap__weapTemplates:object": {
+      "primary": "pre_war_kar98k_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "mauser98k_magazine": 3,
+      "geballte_ladung_grenade_item": 2
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "pre_war_kar98k_gun",
+          "grenade_thrower"
+        ]
+      }
+    }
+  },
+  "lewis_lmg_gun_equip": {
+    "human_weap__weapTemplates:object": {
+      "primary": "lewis_lmg_gun",
+      "secondary": "",
+      "tertiary": "",
+      "melee": "",
+      "grenade": "grenade_thrower"
+    },
+    "inventory__itemCreateTemplates:object": {
+      "lewis_lmg_magazine": 3,
+      "geballte_ladung_grenade_item": 2
+    },
+    "_group": {
+      "_tags": "server",
+      "human_weap__template_deps:ecs::TemplatesListToInstantiate": {},
+      "human_weap__template_deps_list:list<t>": {
+        "tmpl": [
+          "lewis_lmg_gun",
+          "grenade_thrower"
+        ]
+      }
+    }
+  }
+}

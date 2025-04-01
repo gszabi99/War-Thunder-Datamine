@@ -18,10 +18,18 @@
   },
   "server_load_stat": {
     "_use": "replicating",
-    "_replicated": "server_load_stat__load",
+    "_replicated": [
+      "server_load_stat__load",
+      "server_load_stat__asan"
+    ],
     "_tracked": "server_load_stat__load",
-    "server_load_stat__frameCnt": 0,
     "server_load_stat__timer": 1.0,
-    "server_load_stat__load": 0.0
+    "server_load_stat__load": 0.0,
+    "server_load_stat__asan": false,
+    "_group": {
+      "_tags": "server",
+      "server_load_stat__sumLoadPerTimer": 0.0,
+      "server_load_stat__framesCount": 0
+    }
   }
 }

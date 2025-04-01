@@ -5,7 +5,6 @@ let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getSlotbarOverrideData, isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
 let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isInFlight } = require("gameplayBinding")
 let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
@@ -44,7 +43,8 @@ function getCrewInfo(isInBattle) {
   return crewInfo
 }
 
-local crewsList = !isLoggedIn.get() ? [] : getCrewInfo(isInBattleState.value)
+local crewsList = !isLoggedIn.get() ? [] : getCrewInfo(isInFlight())
+local isInFlightCrewsList = isInFlight()
 local version = 0
 local isSlotbarUpdateSuspended = false
 local isSlotbarUpdateRequired = false
@@ -71,7 +71,7 @@ function refresh() {
   
   
   
-  crewsList = getCrewInfo(isInBattleState.value)
+  crewsList = getCrewInfo(isInFlight())
   isCrewListOverrided.set(false)
 }
 
@@ -102,7 +102,7 @@ function flushSlotbarUpdate() {
 
 function invalidateCrewsList(needForceInvalidate = false) {
   if (!needForceInvalidate && ((isSlotbarOverrided() && !isInFlight())
-      || isEqual(crewsList, getCrewInfo(isInBattleState.value))))
+      || isEqual(crewsList, getCrewInfo(isInFlight()))))
     return false
 
   crewsList = [] 
@@ -124,11 +124,6 @@ let suspendSlotbarUpdates = @() isSlotbarUpdateSuspended = true
   suspendSlotbarUpdates
   getCrewsList
 }
-
-isInBattleState.subscribe(function(_v) {
-  if (invalidateCrewsList())
-    reinitSlotbars()
-})
 
 addListenersWithoutEnv({
   function ProfileUpdated(p) {
@@ -169,7 +164,14 @@ addListenersWithoutEnv({
       reinitSlotbars()
   }
   SignOut = @(_p) isSlotbarUpdateSuspended = false
-  LoadingStateChange = @(_p) isSlotbarUpdateSuspended = false
+  function LoadingStateChange(_p) {
+    isSlotbarUpdateSuspended = false
+    if (isInFlightCrewsList == isInFlight())
+      return
+    isInFlightCrewsList = isInFlight()
+    if (invalidateCrewsList())
+      reinitSlotbars()
+  }
 }, DEFAULT_HANDLER)
 
 return {

@@ -113,6 +113,7 @@ let tableColumns = [
     cellTransformFn = function(cellValue, reward) {
       let unitLocId = doesLocTextExist($"{cellValue}_shop") ? $"{cellValue}_shop"
         : doesLocTextExist($"{cellValue}_0") ? $"{cellValue}_0"
+        : reward?.victimUnit == "soldier" ? "soldier"
         : reward?.victimUnitFileName ? $"{reward.victimUnitFileName}_0"
         : cellValue
 

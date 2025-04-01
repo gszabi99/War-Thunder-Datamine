@@ -29,7 +29,8 @@ let expEventLocIds = {
   [EXP_EVENT_HELP_TO_ALLIES]     = "expEventScore/helpToAllies",
   [EXP_EVENT_SEVERE_DAMAGE]      = "expEventScore/severeDamage",
   [EXP_EVENT_MISSILE_EVADE]      = "expEventScore/missileEvade",
-  [EXP_EVENT_SHELL_INTERCEPTION] = "expEventScore/shellInterception"
+  [EXP_EVENT_SHELL_INTERCEPTION] = "expEventScore/shellInterception",
+  [EXP_EVENT_KILL_HUMAN]         = "expEventScore/killHuman",
 }
 
 let g_mplayer_param_type = {

@@ -7,7 +7,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { zero_money, Cost } = require("%scripts/money.nut")
 let { get_game_params } = require("gameparams")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-let { shopIsModificationPurchased } = require("chardResearch")
+let { shopIsModificationPurchased, shopIsModificationEnabled } = require("chardResearch")
 
 let AMMO = {
   PRIMARY      = 0, 
@@ -112,7 +112,7 @@ function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAPONS_WA
 
   for (local i = 0; i < unit.unitType.bulletSetsQuantity; i++) {
     let modifName = getSavedBullets(unit.name, i)
-    if (modifName != "")
+    if (modifName != "" && shopIsModificationEnabled(unit.name, modifName))
       addAmmoData(getAmmoAmountData(unit, modifName, AMMO.MODIFICATION))
   }
 

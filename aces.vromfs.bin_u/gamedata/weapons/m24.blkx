@@ -1,0 +1,96 @@
+{
+  "mass": 0.6,
+  "momentOfInertia": [
+    0.04,
+    0.008,
+    0.04
+  ],
+  "caliber": 0.04,
+  "speed": 18.5,
+  "speedPitch": 5.0,
+  "maxDistance": 5.0,
+  "physMat": "grenadeRay",
+  "useFutureContacts": true,
+  "logCCD": false,
+  "frictionGround": 1.2,
+  "noSleepAtTheSlopeCos": 0.766,
+  "addToWorld": true,
+  "ccdClipVelocityMult": 0.0,
+  "entityTemplate": "m24_grenade",
+  "entityPhysTemplate": "m24_grenade_phys",
+  "explosiveType": "tnt",
+  "explosiveMass": 0.18,
+  "collisionResource": {
+    "props": {
+      "volumeBox": "box"
+    }
+  },
+  "ccdSpheres": {
+    "ccd": [
+      [
+        0.0,
+        0.05,
+        0.0,
+        0.015
+      ],
+      [
+        0.0,
+        0.2,
+        0.0,
+        0.015
+      ],
+      [
+        0.0,
+        -0.05,
+        0.0,
+        0.015
+      ]
+    ]
+  },
+  "solver": {
+    "energyConservation": 0.85
+  },
+  "visual": {
+    "template": "m24_grenade_item+item_in_world"
+  },
+  "detonation": {
+    "onHit": false,
+    "timer": 5.0
+  },
+  "splashDamage": {
+    "radius": [
+      1.0,
+      10.0
+    ],
+    "penetration": [
+      15.0,
+      2.0
+    ],
+    "damage": 75.0,
+    "dmgOffset": [
+      0.0,
+      0.25,
+      0.0
+    ]
+  },
+  "explFx": {
+    "fxScale": [
+      0.8,
+      0.9
+    ],
+    "effectTemplName": "explosion_effect_small+disable_effect_sfx"
+  },
+  "shellSound": {
+    "explosionPath": "impact/grenade",
+    "grenadeThrowPath": "/weapon/grenade/activate"
+  },
+  "shellSoundNet": {
+    "throwPhrase": "grenadeThrow"
+  },
+  "damage": {
+    "explosive": {
+      "strengthEquivalent": 1.0,
+      "brisanceEquivalent": 1.0
+    }
+  }
+}

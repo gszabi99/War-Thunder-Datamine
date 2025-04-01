@@ -1274,6 +1274,18 @@
       "dist": 20.0
     }
   },
+  "human": {
+    "type": "HumanCamera",
+    "FPS": false,
+    "condition": {
+      "and": {
+        "isHuman": {},
+        "not": {
+          "haveWeaponCtrl": {}
+        }
+      }
+    }
+  },
   "fps_suit": {
     "type": "FpsFlightCamera",
     "fov": 85.0,
@@ -4297,6 +4309,7 @@
     },
     "human": {
       "camName": [
+        "human",
         "tps_ground",
         "aim_ground"
       ]

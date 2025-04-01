@@ -1,0 +1,2416 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1,
+      "wing": [
+        "t1_player01",
+        "t1_player02",
+        "t1_player03",
+        "t1_player04",
+        "t1_player05",
+        "t1_player06",
+        "t1_player07",
+        "t1_player08",
+        "t1_player09",
+        "t1_player10",
+        "t1_player11",
+        "t1_player12",
+        "t1_player13",
+        "t1_player14",
+        "t1_player15",
+        "t1_player16",
+        "t1_player17",
+        "t1_player18",
+        "t1_player19",
+        "t1_player20",
+        "t1_player21",
+        "t1_player22",
+        "t1_player23",
+        "t1_player24",
+        "t1_player25",
+        "t1_player26",
+        "t1_player27",
+        "t1_player28",
+        "t1_player29",
+        "t1_player30",
+        "t1_player31",
+        "t1_player32"
+      ]
+    },
+    "player_teamB": {
+      "army": 2,
+      "wing": [
+        "t2_player01",
+        "t2_player02",
+        "t2_player03",
+        "t2_player04",
+        "t2_player05",
+        "t2_player06",
+        "t2_player07",
+        "t2_player08",
+        "t2_player09",
+        "t2_player10",
+        "t2_player11",
+        "t2_player12",
+        "t2_player13",
+        "t2_player14",
+        "t2_player15",
+        "t2_player16",
+        "t2_player17",
+        "t2_player18",
+        "t2_player19",
+        "t2_player20",
+        "t2_player21",
+        "t2_player22",
+        "t2_player23",
+        "t2_player24",
+        "t2_player25",
+        "t2_player26",
+        "t2_player27",
+        "t2_player28",
+        "t2_player29",
+        "t2_player30",
+        "t2_player31",
+        "t2_player32"
+      ]
+    },
+    "mission": {
+      "level": "levels/water.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy",
+      "locName": "missions/_NConq;battle_of_jutland/name",
+      "locDesc": "missions/_simple_NConq/desc",
+      "scoreLimit": 7000,
+      "timeLimit": 60,
+      "deathPenaltyMul": 4.0,
+      "randomSpawnTeams": false,
+      "showTacticalMapCellSize": true,
+      "country_axis": "germany",
+      "country_allies": "ussr",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": false,
+        "isTanksAllowed": false,
+        "isShipsAllowed": true,
+        "isHelicoptersAllowed": false
+      }
+    },
+    "briefing": {
+      "place_loc": "",
+      "date_loc": "",
+      "objective_loc": "",
+      "music": "action_01",
+      "part": {
+        "event": "",
+        "minTime": 0,
+        "slide": {
+          "map": true,
+          "minTime": 4,
+          "picture": "",
+          "showAirMap": false,
+          "icon": [
+            {
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "briefing_t1_shipspawn01"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "briefing_t1_shipspawn02"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_shipspawn01"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "briefing_t2_shipspawn02"
+            },
+            {
+              "icontype": "basezone_A",
+              "side": "neutral",
+              "target": "nconq_capture_area"
+            }
+          ],
+          "battleArea": {
+            "target": "nconq_battle_area"
+          }
+        }
+      }
+    }
+  },
+  "imports": {
+    "import_record": {
+      "file": "gamedata/missions/templates/player_unit_template.blk",
+      "importAreas": true,
+      "importUnits": true,
+      "importTriggers": true,
+      "importMissionObjectives": true,
+      "importWayPoints": true,
+      "importDialogs": true,
+      "showAreas": true,
+      "showUnits": true,
+      "showTriggers": true,
+      "showMissionObjectives": true,
+      "showWayPoints": true,
+      "showDialogs": true,
+      "excludes": {}
+    }
+  },
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "init": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionBattleArea": {
+          "air": false,
+          "ground": true,
+          "mapArea": true,
+          "airMapArea": false,
+          "killArea": false,
+          "detectionArea": false,
+          "killOutOfBattleArea": true,
+          "area": "nconq_battle_area",
+          "team": "Both"
+        },
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "missions/battleship_spawn",
+            "radius": -1.0,
+            "target": "t1_spawn_battleship_squad",
+            "team": "A",
+            "areaNameForSortingByProximity": "nconq_capture_area",
+            "isIndividual": true,
+            "tags": {
+              "air": false,
+              "ship": true,
+              "type_destroyer": false,
+              "type_light_cruiser": false,
+              "type_heavy_cruiser": false,
+              "type_battlecruiser": false,
+              "type_battleship": true
+            }
+          },
+          {
+            "loc_name": "missions/battlecruiser_spawn",
+            "radius": -1.0,
+            "target": "t1_spawn_battlecruiser_squad",
+            "team": "A",
+            "areaNameForSortingByProximity": "nconq_capture_area",
+            "isIndividual": true,
+            "tags": {
+              "air": false,
+              "ship": true,
+              "type_battlecruiser": true,
+              "type_battleship": false
+            }
+          },
+          {
+            "loc_name": "missions/battleship_spawn",
+            "radius": -1.0,
+            "target": "t2_spawn_battleship_squad",
+            "team": "B",
+            "areaNameForSortingByProximity": "nconq_capture_area",
+            "isIndividual": true,
+            "tags": {
+              "air": false,
+              "ship": true,
+              "type_destroyer": false,
+              "type_light_cruiser": false,
+              "type_heavy_cruiser": false,
+              "type_battlecruiser": false,
+              "type_battleship": true
+            }
+          },
+          {
+            "loc_name": "missions/battlecruiser_spawn",
+            "radius": -1.0,
+            "target": "t2_spawn_battlecruiser_squad",
+            "team": "B",
+            "areaNameForSortingByProximity": "nconq_capture_area",
+            "isIndividual": true,
+            "tags": {
+              "air": false,
+              "ship": true,
+              "type_battlecruiser": true,
+              "type_battleship": false
+            }
+          }
+        ],
+        "missionMarkAsCaptureZone": {
+          "army": 0,
+          "timeMultiplier": 10.0,
+          "disableZone": false,
+          "name_for_respawn_base": "",
+          "target": "nconq_capture_area",
+          "canCaptureOnGround": true,
+          "playAirfieldSound": false,
+          "canCaptureInAir": false,
+          "canCaptureByGM": true,
+          "zoneType": "domination",
+          "useHUDMarkers": true,
+          "showBorderOnMap": true,
+          "zoneDefenders": {}
+        }
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true,
+    "avg_Conq_objective": {
+      "is_enabled": true,
+      "comments": "",
+      "type": "abstractMissionObjective",
+      "props": {
+        "isPrimary": true,
+        "timeLimit": 3600
+      },
+      "onSuccess": {},
+      "onFailed": {}
+    }
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "area_squad": [
+      {
+        "name": "t1_spawn_battleship_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -7600.0,
+            0.0,
+            -9500.0
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_spawn_battleship_01",
+            "t1_spawn_battleship_02",
+            "t1_spawn_battleship_03",
+            "t1_spawn_battleship_04",
+            "t1_spawn_battleship_05",
+            "t1_spawn_battleship_06",
+            "t1_spawn_battleship_07",
+            "t1_spawn_battleship_08",
+            "t1_spawn_battleship_09",
+            "t1_spawn_battleship_10",
+            "t1_spawn_battleship_11",
+            "t1_spawn_battleship_12",
+            "t1_spawn_battleship_13",
+            "t1_spawn_battleship_14",
+            "t1_spawn_battleship_15",
+            "t1_spawn_battleship_16"
+          ]
+        }
+      },
+      {
+        "name": "t1_spawn_battlecruiser_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            -9500.0,
+            0.0,
+            5900.0
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_spawn_battlecruiser_01",
+            "t1_spawn_battlecruiser_02",
+            "t1_spawn_battlecruiser_03",
+            "t1_spawn_battlecruiser_04",
+            "t1_spawn_battlecruiser_05",
+            "t1_spawn_battlecruiser_06",
+            "t1_spawn_battlecruiser_07",
+            "t1_spawn_battlecruiser_08",
+            "t1_spawn_battlecruiser_09",
+            "t1_spawn_battlecruiser_10",
+            "t1_spawn_battlecruiser_11",
+            "t1_spawn_battlecruiser_12",
+            "t1_spawn_battlecruiser_13",
+            "t1_spawn_battlecruiser_14",
+            "t1_spawn_battlecruiser_15",
+            "t1_spawn_battlecruiser_16"
+          ]
+        }
+      },
+      {
+        "name": "t2_spawn_battleship_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            7600.0,
+            0.0,
+            -9400.0
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_spawn_battleship_01",
+            "t2_spawn_battleship_02",
+            "t2_spawn_battleship_03",
+            "t2_spawn_battleship_04",
+            "t2_spawn_battleship_05",
+            "t2_spawn_battleship_06",
+            "t2_spawn_battleship_07",
+            "t2_spawn_battleship_08",
+            "t2_spawn_battleship_09",
+            "t2_spawn_battleship_10",
+            "t2_spawn_battleship_11",
+            "t2_spawn_battleship_12",
+            "t2_spawn_battleship_13",
+            "t2_spawn_battleship_14",
+            "t2_spawn_battleship_15",
+            "t2_spawn_battleship_16"
+          ]
+        }
+      },
+      {
+        "name": "t2_spawn_battlecruiser_squad",
+        "tm": [
+          [
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            8100.0,
+            0.0,
+            6200.0
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_spawn_battlecruiser_01",
+            "t2_spawn_battlecruiser_02",
+            "t2_spawn_battlecruiser_03",
+            "t2_spawn_battlecruiser_04",
+            "t2_spawn_battlecruiser_05",
+            "t2_spawn_battlecruiser_06",
+            "t2_spawn_battlecruiser_07",
+            "t2_spawn_battlecruiser_08",
+            "t2_spawn_battlecruiser_09",
+            "t2_spawn_battlecruiser_10",
+            "t2_spawn_battlecruiser_11",
+            "t2_spawn_battlecruiser_12",
+            "t2_spawn_battlecruiser_13",
+            "t2_spawn_battlecruiser_14",
+            "t2_spawn_battlecruiser_15",
+            "t2_spawn_battlecruiser_16"
+          ]
+        }
+      }
+    ]
+  },
+  "areas": {
+    "briefing_t2_shipspawn01": {
+      "type": "Point",
+      "tm": [
+        [
+          0.965035,
+          0.0,
+          -0.262121
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.262121,
+          0.0,
+          0.965035
+        ],
+        [
+          6500.0,
+          0.0,
+          7500.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_shipspawn01": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.133916,
+          0.0,
+          -0.990992
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.990992,
+          0.0,
+          -0.133916
+        ],
+        [
+          -8500.0,
+          0.0,
+          5000.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "briefing_t1_shipspawn02": {
+      "type": "Point",
+      "tm": [
+        [
+          -0.133916,
+          0.0,
+          -0.990992
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.990992,
+          0.0,
+          -0.133916
+        ],
+        [
+          -8500.0,
+          0.00585938,
+          -7500.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "nconq_battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -33000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -33000.0
+        ],
+        [
+          -500.0,
+          0.0,
+          -1700.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "nconq_capture_area": {
+      "type": "Cylinder",
+      "tm": [
+        [
+          -16000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -16000.0
+        ],
+        [
+          -500.0,
+          0.0,
+          -1700.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "area17_15km": {
+      "type": "Box",
+      "tm": [
+        [
+          -17000.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1000.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          -15000.0
+        ],
+        [
+          -500.0,
+          0.0,
+          -200.0
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "briefing_t2_shipspawn02": {
+      "type": "Point",
+      "tm": [
+        [
+          0.965035,
+          0.0,
+          -0.262121
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.262121,
+          0.0,
+          0.965035
+        ],
+        [
+          8500.0,
+          0.0,
+          -7500.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -11100.0,
+          0.0,
+          -12300.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -10894.8,
+          0.0,
+          -11736.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -10689.6,
+          0.0,
+          -11172.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -10484.4,
+          0.0,
+          -10608.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -9937.82,
+          0.0,
+          -11446.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -9732.61,
+          0.0,
+          -10882.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -9527.39,
+          0.0,
+          -10318.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -9322.18,
+          0.0,
+          -9754.54
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -9116.97,
+          0.0,
+          -9190.72
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -8911.76,
+          0.0,
+          -8626.91
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -8706.54,
+          0.0,
+          -8063.09
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -8501.33,
+          0.0,
+          -7499.27
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -7954.79,
+          0.0,
+          -8336.71
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -7749.58,
+          0.0,
+          -7772.89
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -7544.36,
+          0.0,
+          -7209.08
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battleship_16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          -7339.15,
+          0.0,
+          -6645.26
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          11100.0,
+          0.0,
+          -12300.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          10894.8,
+          0.0,
+          -11736.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          10689.6,
+          0.0,
+          -11172.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          10484.4,
+          0.0,
+          -10608.6
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          9937.82,
+          0.0,
+          -11446.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          9732.61,
+          0.0,
+          -10882.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          9527.39,
+          0.0,
+          -10318.4
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          9322.18,
+          0.0,
+          -9754.54
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          9116.97,
+          0.0,
+          -9190.72
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          8911.76,
+          0.0,
+          -8626.91
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          8706.54,
+          0.0,
+          -8063.09
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          8501.33,
+          0.0,
+          -7499.27
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          7954.79,
+          0.0,
+          -8336.71
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          7749.58,
+          0.0,
+          -7772.89
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          7544.37,
+          0.0,
+          -7209.08
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battleship_16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00000762939,
+          0.0,
+          200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          -200.0,
+          0.0,
+          -0.00000762939
+        ],
+        [
+          7339.15,
+          0.0,
+          -6645.26
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -13000.0,
+          -0.000976562,
+          7800.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -12540.4,
+          -0.000976562,
+          7414.33
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -12080.8,
+          -0.000976562,
+          7028.66
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -11621.2,
+          -0.000976562,
+          6643.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -11566.6,
+          -0.000976562,
+          7641.51
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -11106.9,
+          -0.000976562,
+          7255.81
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -10647.2,
+          -0.000976562,
+          6870.14
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -10187.6,
+          -0.000976562,
+          6484.47
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -9728.02,
+          -0.000976562,
+          6098.81
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -9268.38,
+          -0.000976562,
+          5713.13
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -8808.76,
+          -0.000976562,
+          5327.46
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -8349.12,
+          -0.000976562,
+          4941.78
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -8294.52,
+          -0.000976562,
+          5940.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -7834.9,
+          -0.000976562,
+          5554.62
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -7375.27,
+          -0.000976562,
+          5168.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_spawn_battlecruiser_16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          100.0,
+          0.0,
+          -173.205
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          173.205,
+          0.0,
+          100.0
+        ],
+        [
+          -6915.65,
+          -0.000976562,
+          4783.28
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_01": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          7700.0,
+          -0.000976562,
+          6700.0
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_02": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          7494.79,
+          -0.000976562,
+          7263.82
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_03": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          7289.58,
+          -0.000976562,
+          7827.63
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_04": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          7084.37,
+          -0.000976562,
+          8391.45
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_05": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          6537.82,
+          -0.000976562,
+          7554.02
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_06": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          6332.61,
+          -0.000976562,
+          8117.83
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_07": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          6127.4,
+          -0.000976562,
+          8681.65
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_08": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          5922.19,
+          -0.000976562,
+          9245.46
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_09": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          5716.98,
+          -0.000976562,
+          9809.28
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_10": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          5511.76,
+          -0.000976562,
+          10373.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_11": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          5306.55,
+          -0.000976562,
+          10936.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_12": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          5101.34,
+          -0.000976562,
+          11500.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_13": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          4554.8,
+          -0.000976562,
+          10663.3
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_14": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          4349.59,
+          -0.000976562,
+          11227.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_15": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          4144.38,
+          -0.000976562,
+          11790.9
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t2_spawn_battlecruiser_16": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.0000152588,
+          0.0,
+          -200.0
+        ],
+        [
+          0.0,
+          200.0,
+          0.0
+        ],
+        [
+          200.0,
+          0.0,
+          -0.0000152588
+        ],
+        [
+          3939.16,
+          -0.000976562,
+          12354.7
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": false
+      }
+    ]
+  },
+  "wayPoints": {}
+}

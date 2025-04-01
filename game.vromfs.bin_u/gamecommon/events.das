@@ -10,6 +10,7 @@ require %game.unit.extinguish_system_events
 require %game.unit.ship_events
 require Weapon
 require DaWeapons
+require PropsManager
 
 
 [cpp_event(broadcast)]
@@ -156,6 +157,10 @@ struct EventOnConnectedToServer {}
 [cpp_event(unicast)]
 struct CmdForceMusic
   name : das_string
+
+[cpp_event(unicast)]
+struct CmdHeroRespawn
+{}
 
 [cpp_event(broadcast)]
 struct CmdLockHangarMusic
@@ -304,6 +309,24 @@ struct RequestMultipleGunsSlotEquipNextGun
 struct CmdSelectWeaponSlot
   slot : uint8
 
+[cpp_event(unicast)]
+struct CmdNetUnitShot
+  pos : float3
+  vel : float3
+  shellId : PropsId
+
+[cpp_event(unicast)]
+struct CmdNetShot
+  shellId : int16
+  damageId : int16
+  ballisticsId : int16
+  gunPropsId : int16
+  atTime : float
+  initialLifeTime : float
+  tm : float3x4
+  vel : float3
+  firingMode : uint
+  bombBayHeight : float
 
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
 struct HumanWeapThrowBackAbort {}
@@ -415,3 +438,47 @@ struct CmdUIShowWeaponsBlock {}
 [cpp_event(unicast)]
 struct CmdApplyRagdollParameters
   cur_time : float
+
+[event(unicast)]
+struct CmdReinitWeapons {}
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct HumanRequestSetWishAmmoItemType
+  slot_id : int
+  item_id : int
+  is_grenade_slot_current : bool
+
+[event(unicast)]
+struct EventOnGrenadeThrow
+  gun_props_id : int
+
+[event(unicast, routing=ROUTING_CLIENT_CONTROLLED_ENTITY_TO_SERVER)]
+struct HumanRequestUnloadAmmo
+  slotId : int
+
+[cpp_event(unicast)]
+struct CmdSetWishAmmoItemType
+  slot_id : int
+  item_id : int
+
+[event(unicast)]
+struct CmdToggleWishAmmoItemType
+  slot_id : int
+
+[event(unicast)]
+struct CmdStartNextReloadState {}
+
+[event(unicast)]
+struct EventUpdatedItemContainer {}
+
+[cpp_event(broadcast, with_scheme)]
+struct EventZoneCaptured
+  areaId : int
+  wasArmy : uint8
+  army : uint8
+
+[cpp_event(unicast, with_scheme)]
+struct EventGroundModelCollision
+  offender : EntityId
+  impulse : float
+  pos : float3

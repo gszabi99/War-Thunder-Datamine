@@ -1,0 +1,47 @@
+{
+  "attachable_pants": {
+    "_use": "attachable_wear",
+    "footprintType": 1,
+    "_tracked": "attaches_list",
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": "knee"
+    },
+    "torn_wounds__name_list:list<t>": {
+      "name": [
+        "right_leg",
+        "left_leg"
+      ]
+    },
+    "item__equipToSlots:array": {
+      "slot": "pants"
+    }
+  },
+  "attachable_wear_ger_pants_w_m14_boots_item": {
+    "_use": "attachable_pants",
+    "item__uniqueName": "attachable_wear_ger_pants_w_m14_boots_item",
+    "animchar__res": "ger_pants_w_m14_boots_char",
+    "collres__res": "ger_pants_w_m14_boots_collision"
+  },
+  "attachable_wear_uk_sd_trousers_w_b5_boots_item": {
+    "_use": "attachable_pants",
+    "item__uniqueName": "attachable_wear_uk_sd_trousers_w_b5_boots_item",
+    "animchar__res": "uk_sd_trousers_w_b5_boots_char",
+    "collres__res": "uk_sd_trousers_w_b5_boots_collision"
+  },
+  "attachable_wear_ru_vkpo_uniform_pants_item": {
+    "_use": "attachable_pants",
+    "item__uniqueName": "attachable_wear_ru_vkpo_uniform_pants_item",
+    "animchar__res": "ru_vkpo_uniform_pants_char",
+    "collres__res": "ru_vkpo_uniform_pants_collision"
+  },
+  "attachable_wear_ru_vkpo_uniform_pants_atacs_fg_item": {
+    "_use": [
+      "attachable_pants",
+      "attachable_wear_ru_vkpo_uniform_pants_item"
+    ],
+    "animchar__objTexReplace:object": {
+      "ru_army_uniform_pants_tex_d*": "ru_army_uniform_pants_atacs_fg_tex_d*"
+    }
+  }
+}

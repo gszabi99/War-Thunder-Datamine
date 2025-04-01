@@ -1,0 +1,53 @@
+{
+  "attachable_tunic": {
+    "_use": "attachable_wear",
+    "animchar_hider__camThreshold": 0.01,
+    "torn_wounds__name_list:list<t>": {
+      "name": [
+        "right_hand_tunic",
+        "left_hand_tunic",
+        "chest"
+      ]
+    },
+    "item__equipToSlots:array": {
+      "slot": "tunic"
+    },
+    "bipodDontHideAttach:tag": {},
+    "bipodDontHideAttachButChildren:tag": {}
+  },
+  "attachable_wear_ger_m15_bluse_w_equip_item": {
+    "_use": "attachable_tunic",
+    "item__uniqueName": "attachable_wear_ger_m15_bluse_w_equip_item",
+    "animchar__res": "ger_m15_bluse_w_equip_char",
+    "collres__res": "ger_m15_bluse_w_equip_collision",
+    "animchar_fast_phys__res": "ger_m15_bluse_w_equip_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_uk_sd_tunic_w_webbing_item": {
+    "_use": "attachable_tunic",
+    "item__uniqueName": "attachable_wear_uk_sd_tunic_w_webbing_item",
+    "animchar__res": "uk_sd_tunic_w_webbing_char",
+    "collres__res": "uk_sd_tunic_w_webbing_collision",
+    "animchar_fast_phys__res": "uk_sd_tunic_w_webbing_fastphys",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    }
+  },
+  "attachable_wear_ru_vkpo_uniform_tunic_item": {
+    "_use": "attachable_tunic",
+    "item__uniqueName": "attachable_wear_ru_vkpo_uniform_tunic_item",
+    "animchar__res": "ru_vkpo_uniform_tunic_char",
+    "collres__res": "ru_vkpo_uniform_tunic_collision"
+  },
+  "attachable_wear_ru_vkpo_uniform_tunic_atacs_fg_item": {
+    "_use": [
+      "attachable_tunic",
+      "attachable_wear_ru_vkpo_uniform_tunic_item"
+    ],
+    "animchar__objTexReplace:object": {
+      "ru_vkpo_uniform_shirt_band_tex_d*": "ru_vkpo_uniform_shirt_atacs_fg_tex_d*"
+    }
+  }
+}

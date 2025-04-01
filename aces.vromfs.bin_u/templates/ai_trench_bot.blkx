@@ -1,0 +1,375 @@
+{
+  "trench_bot_spawner": {
+    "team": -1,
+    "trench_bot_spawner__id": 0,
+    "trench_bot_spawner__active": true,
+    "trench_bot_spawner__blocked": false,
+    "trench_bot_spawner__botTemplate": "base_soldier",
+    "trench_bot_spawner__botCount": 0,
+    "trench_bot_spawner__maxBotCount": 0,
+    "trench_bot_spawner__minCapacityToStorm": 0.8,
+    "trench_bot_spawner__minCapacityToBeStormed": 0.7,
+    "trench_bot_spawner__spawnDelay": [
+      1.0,
+      2.0
+    ],
+    "trench_bot_spawner__nextSpawnAt": 0.0,
+    "trench_bot_spawner__stormedSpawnerId": -1,
+    "trench_bot_spawner__coverIdAssignmentDir": [
+      1.0,
+      0.0,
+      0.0
+    ],
+    "trench_bot_spawner__humanPresenceCode": 0,
+    "trench_bot_spawner__vehiclePresenceCode": 0,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "trench_bot_spawner__equipTemplates:list<t>": {},
+    "trench_bot_spawner__equipTemplateWeights:list<r>": {},
+    "trench_bot_spawner__equipTemplateProbabilities:list<r>": {},
+    "trench_bot_spawner__stormOnCapturedAreaNames:list<t>": {},
+    "trench_bot_spawner__stormedSpawnerEid:eid": {},
+    "trench_bot_spawner__gridDetectorAreaIds:list<i>": {},
+    "trench_bot_spawner__gridDetectorAreaEids:list<eid>": {}
+  },
+  "trench_bot_timed_storm": {
+    "_singleton": true,
+    "trench_bot_timed_storm__minInterval": 90.0,
+    "trench_bot_timed_storm__spawnerIdPairs:list<ip2>": {},
+    "trench_bot_timed_storm__spawnerEidPairs:list<ip2>": {},
+    "trench_bot_timed_storm__stormAt:list<r>": {}
+  },
+  "trench_bot_spawner_team_uk": {
+    "_use": "trench_bot_spawner",
+    "trench_bot_spawner__botTemplate": "uk_inf_gw",
+    "trench_bot_spawner__equipTemplates:list<t>": {
+      "tmpl": [
+        "smle_mk3_gun_equip",
+        "smle_mk3_gun_bayonet_equip",
+        "browning_m1918_gun_equip"
+      ]
+    },
+    "trench_bot_spawner__equipTemplateWeights:list<r>": {
+      "weight": [
+        22.5,
+        67.5,
+        10.0
+      ]
+    }
+  },
+  "trench_bot_spawner_team_germ": {
+    "_use": "trench_bot_spawner",
+    "trench_bot_spawner__botTemplate": "germ_inf_gw",
+    "trench_bot_spawner__equipTemplates:list<t>": {
+      "tmpl": [
+        "pre_war_kar98k_gun_equip",
+        "pre_war_kar98k_gun_bayonet_equip",
+        "mp_18_gun_equip"
+      ]
+    },
+    "trench_bot_spawner__equipTemplateWeights:list<r>": {
+      "weight": [
+        22.5,
+        67.5,
+        10.0
+      ]
+    }
+  },
+  "trench_bot": {
+    "_tracked": "trench_bot__generalState",
+    "_replicated": "trench_bot__generalState",
+    "beh_tree__node": "trench_bot",
+    "beh_tree__enabled": false,
+    "trench_bot__generalState": 0,
+    "trench_bot__finalPosition": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "trench_bot__lookAtPosition": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "trench_bot__lookAtPositionCrouching": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "trench_bot__stormedPosition": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "unit__className": "human/trench_bot",
+    "beh_tree__blackboard__enemyTeam": 0,
+    "trench_bot__spawnerEid:eid": {},
+    "trench_bot__occupiedSpawnerEid:eid": {},
+    "trench_bot__coverEid:eid": {},
+    "trench_bot__stormedCoverEid:eid": {},
+    "trench_bot__pathToCover:list<p3>": {},
+    "trench_bot:tag": {},
+    "vehicleNavAreaUser:tag": {}
+  },
+  "trench_cover": {
+    "trench_cover__id": 0,
+    "trench_cover__spawnerId": -1,
+    "trench_cover__entryOffset": [
+      0.5,
+      2.0
+    ],
+    "trench_cover__waypointId": -1,
+    "trench_cover__lookAtTargetId": -1,
+    "trench_cover__sideDirMode": 0,
+    "trench_cover__lookAtCrouchingOffset": [
+      1.0,
+      3.0
+    ],
+    "trench_cover__lookAtCrouchingVertOffsetRange": [
+      -1.0,
+      -0.5
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "trench_cover__active": true,
+    "trench_cover__occupied": false,
+    "trench_cover__blocked": false,
+    "trench_cover__blockedInt": 0,
+    "trench_cover__blockCheckInterval": 1.0,
+    "trench_cover__nextBlockCheckAt": 0.0,
+    "trench_cover__vehicleBlockageRadius": 3.0,
+    "trench_cover__spawnerEid:eid": {},
+    "trench_cover__waypointEid:eid": {},
+    "trench_cover__lookAtTargetEid:eid": {}
+  },
+  "trench_target": {
+    "trench_target__id": 0,
+    "trench_target__isInverted": false,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ]
+  },
+  "trench_waypoint": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "trench_waypoint__spawnerId": -1,
+    "trench_waypoint__id": 0,
+    "trench_waypoint__prevId": -1,
+    "trench_waypoint__coverIdFrom": -1,
+    "trench_waypoint__coverIdTo": -1,
+    "trench_waypoint__blocked": false,
+    "trench_waypoint__blockCheckInterval": 1.0,
+    "trench_waypoint__nextBlockCheckAt": 0.0,
+    "trench_waypoint__vehicleBlockageRadius": 1.0,
+    "trench_waypoint__friendlyHumanBlockageRadius": 1.0,
+    "trench_waypoint__friendlyHumanBlockageCount": 3,
+    "trench_waypoint__spawnerEid:eid": {},
+    "trench_waypoint__prevEid:eid": {}
+  },
+  "trench_nav_area": {
+    "trench_nav_area__id": 0,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "trench_nav_area__weight": [
+      10.0,
+      10.0
+    ],
+    "box_zone:tag": {}
+  },
+  "trench_obstacle": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "trenchObstacle:tag": {},
+    "box_zone:tag": {}
+  },
+  "vehicle_nav_area_enabler": {
+    "enableVehicleNavArea:tag": {}
+  },
+  "moving_nav_area_reaction_enabler": {
+    "enableMovingNavAreaReaction:tag": {}
+  },
+  "moving_nav_area": {
+    "moving_nav_area__lastPosition": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "moving_nav_area__deltaPositionThreshold": 4.0,
+    "moving_nav_area__radius": [
+      15.0,
+      5.0
+    ],
+    "moving_nav_area__weight": [
+      12.0,
+      5.0
+    ],
+    "movingNavArea:tag": {}
+  },
+  "trench_bot_moving_nav_area": {
+    "_use": "moving_nav_area",
+    "moving_nav_area__radius": [
+      1.5,
+      5.0
+    ],
+    "moving_nav_area__weight": [
+      5.0,
+      0.0
+    ],
+    "moving_nav_area__disableOnDeath:tag": {}
+  },
+  "grid_detector_area": {
+    "grid_detector_area__id": 0,
+    "grid_detector_area__gridType": "",
+    "grid_detector_area__updateInterval": 1.0,
+    "grid_detector_area__nextUpdateAt": 0.0,
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "box_zone:tag": {},
+    "grid_detector_area__teamPresence:list<b>": {
+      "value": [
+        false,
+        false,
+        false
+      ]
+    }
+  }
+}

@@ -4059,13 +4059,13 @@
       "onHit": [
         {
           "damageType": "fire",
-          "expl": 0.03,
+          "expl": 0.05,
           "damage": 55.0,
           "fHitCritical": false
         },
         {
           "damageType": "fire",
-          "expl": 0.05,
+          "expl": 0.08,
           "damage": 74.0,
           "fHitCritical": false
         }
@@ -4079,13 +4079,13 @@
       "onHit": [
         {
           "damageType": "fire",
-          "fire": 0.05,
+          "fire": 0.07,
           "damage": 55.0,
           "fHitCritical": false
         },
         {
           "damageType": "fire",
-          "fire": 0.08,
+          "fire": 0.1,
           "damage": 74.0,
           "fHitCritical": false
         }
@@ -4093,13 +4093,12 @@
     },
     "ammunition_storage_aux": {
       "onKill": {
-        "fire": 0.49,
-        "expl": 0.51,
+        "expl": 1.0,
         "fHitCritical": false
       },
       "onHit": {
         "damageType": "fire",
-        "fire": 0.15,
+        "expl": 0.15,
         "damage": 79.0,
         "fHitCritical": false
       }
@@ -4111,7 +4110,7 @@
       },
       "onHit": {
         "damageType": "fire",
-        "fire": 0.1,
+        "fire": 0.3,
         "damage": 50.0,
         "fHitCritical": false
       }
@@ -4222,8 +4221,12 @@
           "main_caliber_turret_15_dm"
         ],
         "onKill": {
-          "fire": 0.49,
-          "nothing": 0.51
+          "fire": 0.85
+        },
+        "onHit": {
+          "damageType": "fire",
+          "fire": 0.2,
+          "damage": 70.0
         }
       },
       {
@@ -4244,25 +4247,32 @@
           "elevator_14_dm",
           "elevator_15_dm"
         ],
+        "onKill": {
+          "fire": [
+            1.0,
+            0.74
+          ],
+          "nothing": 0.26
+        },
         "onHit": [
           {
             "damageType": "fire",
-            "fire": 0.2,
+            "fire": 0.3,
             "damage": 50.0
           },
           {
             "damageType": "explosion",
-            "fire": 0.2,
+            "fire": 0.5,
             "damage": 500.0
           },
           {
             "damageType": "generic",
-            "fire": 0.08,
+            "fire": 0.5,
             "damage": 3000.0
           },
           {
             "damageType": "generic",
-            "fire": 0.1,
+            "fire": 0.5,
             "damage": 4700.0
           }
         ]
@@ -4301,8 +4311,8 @@
           "auxiliary_caliber_turret_30_dm"
         ],
         "onKill": {
-          "fire": 0.1,
-          "nothing": 0.9
+          "fire": 0.85,
+          "nothing": 0.86
         }
       },
       {

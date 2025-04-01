@@ -1,0 +1,89 @@
+{
+  "attachable_backpack": {
+    "_use": "attachable_wear",
+    "menu_item__rotationOffset": [
+      -0.15,
+      0.1,
+      0.0
+    ],
+    "attachable_backpack__capacity": 0,
+    "item__equipToSlots:array": {
+      "slot": "backpack"
+    }
+  },
+  "attachable_wear_modular_assault_pack_w_gloves_item": {
+    "_use": "attachable_backpack",
+    "item__uniqueName": "attachable_wear_modular_assault_pack_w_gloves_item",
+    "animchar__res": "modular_assault_pack_w_gloves_char",
+    "collres__res": "modular_assault_pack_w_gloves_collision",
+    "animchar_fast_phys__res": "modular_assault_pack_w_gloves_fastphys",
+    "_tracked": "attaches_list",
+    "animchar_fast_phys": {
+      "_tags": "gameClient"
+    },
+    "attaches_list:list<eid>": {},
+    "skeleton_attach__remapAffectSlots:list<t>": {
+      "slot": "d_c4bomb"
+    },
+    "skeleton_attach__remapParentSlots:list<t>": {
+      "slot": "chest_armor"
+    }
+  },
+  "attachable_wear_modular_assault_pack_w_gloves_dflora_item": {
+    "_use": [
+      "attachable_backpack",
+      "attachable_wear_modular_assault_pack_w_gloves_item"
+    ],
+    "animchar__objTexReplace:object": {
+      "multicam_tex_d*": "digital_flora_tex_d*"
+    },
+    "camouflage_override:array": {
+      "material1:object": {
+        "material_id": 1,
+        "color_multiplier": 4.0,
+        "camouflage_scale_and_offset": [
+          1.6,
+          1.6,
+          0.0,
+          0.0
+        ]
+      },
+      "material2:object": {
+        "material_id": 2,
+        "solid_fill_color": [
+          0.498,
+          0.435,
+          0.08,
+          1.0
+        ]
+      },
+      "material3:object": {
+        "material_id": 3,
+        "solid_fill_color": [
+          0.551,
+          0.58,
+          0.216,
+          1.0
+        ]
+      },
+      "material4:object": {
+        "material_id": 4,
+        "solid_fill_color": [
+          0.551,
+          0.48,
+          0.116,
+          1.0
+        ]
+      },
+      "material5:object": {
+        "material_id": 5,
+        "solid_fill_color": [
+          0.853,
+          0.76,
+          0.292,
+          1.0
+        ]
+      }
+    }
+  }
+}

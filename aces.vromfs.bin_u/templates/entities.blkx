@@ -11,7 +11,8 @@
     "%wtlibs/templates/grid.blk",
     "%wtlibs/templates/fx.blk",
     "%wtlibs/templates/damage_model.blk",
-    "%wtlibs/templates/microdetail.blk"
+    "%wtlibs/templates/microdetail.blk",
+    "%gameBase/templates/humans.entities.blk"
   ],
   "backmodel_spawn_point": {
     "_use": "spawn_point",
@@ -1998,5 +1999,9 @@
     "_use": "ammo_box",
     "ri_extra__name": "ammunition_box_construction_99x50x27_static",
     "ammo_box__triggerGroupNo": 4
+  },
+  "tank": {
+    "_override": true,
+    "_use": "still_obstacle"
   }
 }

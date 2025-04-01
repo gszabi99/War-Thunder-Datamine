@@ -10112,6 +10112,17 @@
         228
       ],
       "deviation": 5.0
+    },
+    "tinyTrail": {
+      "particleHalfSizeFrom": 0.004,
+      "particleHalfSizeTo": 0.016,
+      "color": [
+        228,
+        228,
+        228,
+        228
+      ],
+      "deviation": 5.0
     }
   },
   "turbulence": {
@@ -11824,7 +11835,8 @@
         "shipBoundingHeightDetectionMult": [
           1.0,
           0.05
-        ]
+        ],
+        "humanDetectionMult": 8.0
       },
       "normal": {
         "distDetectionK": 0.95,
@@ -11869,7 +11881,8 @@
         "shipBoundingHeightDetectionMult": [
           1.0,
           0.05
-        ]
+        ],
+        "humanDetectionMult": 8.0
       },
       "far": {
         "distDetectionK": 1.3,
@@ -11914,7 +11927,8 @@
         "shipBoundingHeightDetectionMult": [
           1.0,
           0.05
-        ]
+        ],
+        "humanDetectionMult": 8.0
       }
     },
     "allowControlHelpers": {
@@ -12409,9 +12423,9 @@
         "dust": {
           "name": "dust",
           "color": [
-            0.35,
-            0.3,
-            0.24
+            0.62,
+            0.58,
+            0.52
           ],
           "metalness": 0.0,
           "texScale": 3.7,
@@ -12421,12 +12435,12 @@
         "mud": {
           "name": "mud",
           "color": [
-            0.045,
-            0.042,
-            0.045
+            0.22,
+            0.21,
+            0.198
           ],
           "metalness": 0.0,
-          "texScale": 3.7,
+          "texScale": 12.7,
           "maxLevel": 1.0,
           "topProjScale": 0.0
         }
@@ -12443,9 +12457,9 @@
         "dust": {
           "name": "dust",
           "color": [
-            0.35,
-            0.3,
-            0.24
+            0.62,
+            0.58,
+            0.52
           ],
           "metalness": 0.0,
           "texScale": 3.7,
@@ -12455,12 +12469,12 @@
         "mud": {
           "name": "mud",
           "color": [
-            0.045,
-            0.042,
-            0.045
+            0.22,
+            0.21,
+            0.198
           ],
           "metalness": 0.0,
-          "texScale": 3.7,
+          "texScale": 12.7,
           "maxLevel": 1.0,
           "topProjScale": 0.0
         }
@@ -12485,10 +12499,25 @@
           "texScale": 3.4,
           "maxLevel": 1.0,
           "topProjScale": 4.00997
+        },
+        "mud": {
+          "name": "mud",
+          "color": [
+            0.22,
+            0.21,
+            0.198
+          ],
+          "metalness": 0.0,
+          "texScale": 12.7,
+          "maxLevel": 1.0,
+          "topProjScale": 0.0
         }
       },
       "materialTextures": {
-        "texName": "tank_snow_mask"
+        "texName": [
+          "tank_snow_mask",
+          "tank_dirt_mask"
+        ]
       }
     }
   },
@@ -22381,6 +22410,22 @@
         {
           "name": "wheel_r_02_dm",
           "modelNames": "amd_35_kwk39"
+        },
+        {
+          "name": "wheel_r_01_dm",
+          "modelNames": "garford_putilov"
+        },
+        {
+          "name": "wheel_r_02_dm",
+          "modelNames": "garford_putilov"
+        },
+        {
+          "name": "wheel_l_01_dm",
+          "modelNames": "garford_putilov"
+        },
+        {
+          "name": "wheel_l_02_dm",
+          "modelNames": "garford_putilov"
         }
       ]
     },
@@ -23247,6 +23292,9 @@
         },
         {
           "name": "apu"
+        },
+        {
+          "name": "air_balloon"
         }
       ]
     }
@@ -27280,5 +27328,10 @@
     "minFlapsForSpeedReduction": 0.11,
     "flapsSpeedReduction": 15.0,
     "minDirVelAngleDegrees": 6.0
+  },
+  "navQueryFilterWeights": {
+    "jumpWeight": 10.0,
+    "jumpDownWeight": 2.0,
+    "jumpDownThreshold": 0.4
   }
 }

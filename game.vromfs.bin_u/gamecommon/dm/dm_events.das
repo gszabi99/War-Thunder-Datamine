@@ -12,6 +12,7 @@ struct EventOnHitEntity
   impactRes : int
   offender : EntityId
   bullet : EntityId
+  packedProjPropsId : uint
   pos : float3
   dir : float3
   norm : float3
@@ -21,6 +22,7 @@ struct EventOnHitEntity
 [cpp_event(unicast, with_scheme)]
 struct EventSplashHitEntity
   offender : EntityId
+  packedProjPropsId : uint
   splashDamage : float
   shatterDamage : float
   pos : float3
@@ -29,6 +31,7 @@ struct EventSplashHitEntity
 [cpp_event(unicast, with_scheme)]
 struct EventShatterHitEntity
   offender : EntityId
+  packedProjPropsId : uint
   damage : float
   pos : float3
   dir : float3

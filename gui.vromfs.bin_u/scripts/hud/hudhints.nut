@@ -2647,9 +2647,15 @@ enums.addTypes(g_hud_hints, {
     getLocId = function(_hintData) {
       let misBlk = DataBlock()
       get_current_mission_desc(misBlk)
-      return misBlk?.shouldReturnSpawnCostInExitZone
-        ? "\n".concat(loc("hints/ammo_used_exit_zone"), loc("hints/return_spawn_cost_exit_zone"))
-        : "hints/ammo_used_exit_zone"
+      local locId = loc("hints/ammo_used_exit_zone")
+      if (misBlk?.shouldReturnSpawnCostInExitZone)
+        locId = $"{locId}\n{loc("hints/return_spawn_cost_exit_zone")}"
+      if ((misBlk?.returnSpawnScorePartInExitZone ?? 0) == 1)
+        locId = $"{locId}\n{loc("hints/return_spawn_score_full_exit_zone")}"
+      else if ((misBlk?.returnSpawnScorePartInExitZone ?? 0) > 0)
+        locId = $"{locId}\n{loc("hints/return_spawn_score_partial_exit_zone")}"
+
+      return locId
     }
     lifeTime = 15.0
     isHideOnDeath = true

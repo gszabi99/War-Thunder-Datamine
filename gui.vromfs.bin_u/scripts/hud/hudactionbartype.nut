@@ -25,7 +25,7 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR,
   EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON,
-  EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE
+  EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -1234,6 +1234,42 @@ enumsAddTypes(g_hud_action_bar_type, {
       : "#ui/gameuiskin#maneuverability"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_MANEUVERABILITY_MODE"
     getTooltipText = @(_actionItem = null) loc("hotkeys/ID_MANEUVERABILITY_MODE")
+  }
+
+  BOMBER_VIEW = {
+    code = EII_BOMBER_VIEW
+    _name = "bomber_view"
+    _title = loc("hotkeys/ID_CAMERA_BOMBVIEW")
+    _icon = "#ui/gameuiskin#bomb_sight_action"
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_CAMERA_BOMBVIEW"
+    getTooltipText = @(_actionItem = null) loc("hotkeys/ID_CAMERA_BOMBVIEW")
+  }
+
+  THIRD_PERSON_VIEW = {
+    code = EII_3RD_PERSON_VIEW
+    _name = "3rd_person_view"
+    _title = loc("hotkeys/ID_CAMERA_TPS")
+    _icon = "#ui/gameuiskin#airship_3rd_person_view"
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_CAMERA_TPS"
+    getTooltipText = @(_actionItem = null) loc("hotkeys/ID_CAMERA_TPS")
+  }
+
+  BUOYANCY_UP = {
+    code = EII_BUOYANCY_UP
+    _name = "buoyancy_up"
+    _title = loc("hotkeys/buoyancy_rangeMax")
+    _icon = "#ui/gameuiskin#buoyancy_up"
+    getShortcut = @(_actionItem, _hudUnitType = null) "buoyancy_rangeMax"
+    getTooltipText = @(_actionItem = null) loc("hotkeys/buoyancy_rangeMax")
+  }
+
+  BUOYANCY_DOWN = {
+    code = EII_BUOYANCY_DOWN
+    _name = "buoyancy_down"
+    _title = loc("hotkeys/buoyancy_rangeMin")
+    _icon = "#ui/gameuiskin#buoyancy_down"
+    getShortcut = @(_actionItem, _hudUnitType = null) "buoyancy_rangeMin"
+    getTooltipText = @(_actionItem = null) loc("hotkeys/buoyancy_rangeMin")
   }
 
 })

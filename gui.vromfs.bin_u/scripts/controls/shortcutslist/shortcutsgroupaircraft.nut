@@ -195,6 +195,11 @@ return [
     checkAssign = false
   }
   {
+    id = "buoyancy"
+    type = CONTROL_TYPE.AXIS
+    checkAssign = false
+  }
+  {
     id = "climb"
     type = CONTROL_TYPE.AXIS
     checkAssign = false

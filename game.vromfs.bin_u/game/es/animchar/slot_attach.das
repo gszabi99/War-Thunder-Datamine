@@ -53,7 +53,7 @@ def slot_attach_init_tms_impl(dt : float;
       if (animchar_node_wtm != null && animchar_render__root_pos != null)
         animchar_copy_nodes(attachmentAnimChar, *animchar_node_wtm, *animchar_render__root_pos);
 
-[es(after=visual_offset_updater_es, before=binocular_update_cockpit)]
+[es(after=(visual_offset_updater_es, animchar_es), before=binocular_update_cockpit)]
 def slot_attach_init_tms_es(info : ParallelUpdateFrameDelayed)
   
   query() <| $ [es(REQUIRE_NOT=animchar)] (slot_attach__slotId : int;

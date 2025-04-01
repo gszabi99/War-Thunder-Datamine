@@ -9,6 +9,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
+let { getCustomViewCountryData } = require("%scripts/events/eventInfo.nut")
 
 gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
   timerUpdateObjId = "queue_box"
@@ -76,13 +77,18 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
     }
   }
 
-  function fillQueueTeam(teamObj, teamData, tableMarkup, playersCountText,  teamColor = "any", teamName = "") {
+  function fillQueueTeam(teamObj, teamData, tableMarkup, playersCountText, teamColor = "any", teamName = "") {
     if (!checkObj(teamObj))
       return
 
     teamObj.bgTeamColor = teamColor
-    teamObj.show(!!(teamData && teamData.len()))
-    fillCountriesList(teamObj.findObject("countries"), events.getCountries(teamData))
+    let isShowTeamData = !!(teamData && teamData.len())
+    teamObj.show(isShowTeamData)
+    if (!isShowTeamData)
+      return
+
+    fillCountriesList(teamObj.findObject("countries"), events.getCountries(teamData),
+      getCustomViewCountryData(this.event))
     teamObj.findObject("team_name").setValue(teamName)
     teamObj.findObject("players_count").setValue(playersCountText)
 

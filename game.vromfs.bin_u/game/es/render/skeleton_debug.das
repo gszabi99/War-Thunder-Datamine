@@ -8,11 +8,11 @@ require math.base
 require danetlibs.render_debug.render.draw_debug_common
 require %game.utils.utils_common
 
-
-
-
-
-
+require ecs.ecs_template
+[ecs_template]
+struct skeleton_draw_debug
+  skeletonDrawDebug : Tag
+  drawGizmos : bool = false
 
 
 [console_cmd(name="skeleton.debug", hint="Draw all animchar's skeleton nodes")]

@@ -263,6 +263,25 @@ def calc_win_loose_track_name(is_win : bool) : string
   let heroCountryId = (hero != null && !hero.isDelayed) ? hero.unitCountryId : -1
   return make_win_loose_event_name(heroCountryId, is_win)
 
+[es(tag=sound, after=music_es)]
+def music_update_special_params_es(info : ParallelUpdateFrameDelayed;
+                                   var music__intencity : float&;
+                                   music__intencityToMax : float)
+  if !has_special_params()
+    return
+  music__intencity = min(music__intencity + (1. / music__intencityToMax) * info.dt, 1.01)
+
+  var isDead = 0.
+  let hero = get_controlled_hero()
+  if hero != null
+    isDead = !hero.isAlive ? 1. : 0.
+  set_special_params(music__intencity, isDead)
+
+[es(on_event=CmdHeroRespawn)]
+def music_respawn_handler_es(evt : Event;
+                             var music__intencity : float&)
+  music__intencity = 0.
+
 [es(tag=sound)]
 def music_es(info : ParallelUpdateFrameDelayed;
              music__battleRadiusAirSq : float;
@@ -308,6 +327,8 @@ def music_es(info : ParallelUpdateFrameDelayed;
         else
           update_battle_state(music__battleRadiusAirSq, music__battleRadiusGroundSq, music__battleEnemiesThreshold, music__curBattleState, music__cooldownBattle, music__cooldownCalm, music__timerBattle, info.dt)
         music__curUnitType = heroUnitType
+        if has_special_params()
+          music__curBattleState = int(BattleState.CALM)  
         musicState = get_music_state_from_battle_state(hero, music__curBattleState)
     if !heroExist
       return
