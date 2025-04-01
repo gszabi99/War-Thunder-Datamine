@@ -825,7 +825,7 @@
       ]
     },
     "Temperature": {
-      "OilRadiatorAuto": true,
+      "OilRadiatorAuto": false,
       "RadiatorAuto": true,
       "NoIgnitionWaterHeatProducingFactor": 0.15,
       "WaterRadiatorEffectPower": 5.0,
@@ -833,10 +833,10 @@
       "WaterMinThermostatThermalConductionCoeff": 0.3,
       "WaterMinLevelThermalConductionCoeff": 0.2,
       "WaterThermalConductionCrossCoeffTable": [
-        0.4,
-        0.2,
-        0.02,
-        0.2
+        0.004,
+        0.002,
+        0.0002,
+        0.002
       ],
       "WaterBoilingTemperature": 140.0,
       "WaterThermostatInertia": 20.0,
@@ -848,10 +848,10 @@
       "OilMinThermostatThermalConductionCoeff": 0.3,
       "OilMinLevelThermalConductionCoeff": 0.2,
       "OilThermalConductionCrossCoeffTable": [
-        0.4,
-        0.2,
-        0.02,
-        0.2
+        0.004,
+        0.002,
+        0.002,
+        0.002
       ],
       "OilBoilingTemperature": 360.0,
       "OilThermostatInertia": 20.0,
@@ -873,7 +873,7 @@
       "OilTemperatureNoFlow": 71.0,
       "WaterTemperatureInertia": 0.7,
       "OilTemperatureInertia": 0.7,
-      "HasOil": true,
+      "HasOil": false,
       "Mode0": {
         "Altitude": 1000.0,
         "RPM": 400.0,
@@ -932,10 +932,16 @@
         "RecoverTime": 60.0
       },
       "Load4": {
-        "WaterTemperature": 115.0,
-        "OilTemperature": 100.0,
+        "WaterTemperature": 125.0,
+        "OilTemperature": 110.0,
         "WorkTime": 7200.0,
         "RecoverTime": 60.0
+      },
+      "Load5": {
+        "WaterTemperature": 150.0,
+        "OilTemperature": 140.0,
+        "WorkTime": 60.0,
+        "RecoverTime": 30.0
       },
       "RadiatorMode0": {
         "Throttle": 0.88,
