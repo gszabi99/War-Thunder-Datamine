@@ -52,8 +52,7 @@ def get_trench_bot_look_at_position(pos : float3; stormed_cover_eid : EntityId; 
 
 
 def trench_storm(offender_trench_bot_spawner_id : int)
-  query() <| $ [es] (eid : EntityId;
-                     trench_bot__spawnerEid : EntityId;
+  query() <| $ [es] (trench_bot__spawnerEid : EntityId;
                      trench_bot__coverEid : EntityId;
                      trench_bot__stormedCoverEid : EntityId;
                      trench_bot__stormedPosition : float3;
@@ -85,7 +84,6 @@ def trench_storm(offender_trench_bot_spawner_id : int)
       trench_bot__lookAtPositionCrouching = additionalPositions.lookAtCrouching
       clear(trench_bot__pathToCover)
       push(trench_bot__pathToCover, trench_bot__finalPosition)
-      addSubTemplate(eid, "moving_nav_area_reaction_enabler+trench_bot_moving_nav_area")
 
 
 def make_trench_cover_id_eid_map(spawner_id : int)
