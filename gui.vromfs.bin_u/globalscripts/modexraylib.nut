@@ -224,14 +224,16 @@ function getMassInfo(sourceBlk) {
   return ""
 }
 
-function mkAnglesRangeText(rawX, rawY, isNegativeZeroForX = false) {
-  let x = round(rawX).tointeger()
-  let y = round(rawY).tointeger()
+function mkAnglesRangeText(rawX, rawY, isNegativeZeroForX = false, needToRound = true) {
+  let x = (needToRound || rawX == 0) ? round(rawX).tointeger() : rawX
+  let y = (needToRound || rawY == 0) ? round(rawY).tointeger() : rawY
+  let xStr = (needToRound || rawX == 0) ? format("%d", x) : format("%.1f", x)
+  let yStr = (needToRound || rawY == 0) ? format("%d", y) : format("%.1f", y)
   if (x + y == 0)
-    return $"±{y}{unitsDeg}"
+    return $"±{yStr}{unitsDeg}"
   let signX = isNegativeZeroForX && x == 0 ? "-" : (x >= 0 ? "+" : "")
   let signY = y >= 0 ? "+" : ""
-  return $"{signX}{x}{unitsDeg}/{signY}{y}{unitsDeg}"
+  return $"{signX}{xStr}{unitsDeg}/{signY}{yStr}{unitsDeg}"
 }
 
 
@@ -649,7 +651,7 @@ function getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, ne
     let needSwap = isSwaped && g.canSwap
     let degX = needSwap ? abs(y) * getSign(x) : x
     let degY = needSwap ? abs(x) * getSign(y) : y
-    desc.append(" ".concat(loc(g.label), mkAnglesRangeText(degX, degY, true)))
+    desc.append(" ".concat(loc(g.label), mkAnglesRangeText(degX, degY, true, false)))
   }
 
   if (needSingleAxis || status.isPrimary || [S_SHIP, S_BOAT].contains(simUnitType)) {

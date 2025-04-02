@@ -832,7 +832,10 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     thickness = currentParams.armorThicknessTurret;
     holderObj.findObject("aircraft-armorThicknessTurret").setValue(format("%d / %d / %d %s", thickness[0].tointeger(), thickness[1].tointeger(), thickness[2].tointeger(), loc("measureUnits/mm")))
     let angles = currentParams.angleVerticalGuidance;
-    holderObj.findObject("aircraft-angleVerticalGuidance").setValue(format("%d / %d%s", angles[0].tointeger(), angles[1].tointeger(), loc("measureUnits/deg")))
+    let [xAngle, yAngle] = angles
+    let xAngleStr = xAngle == 0 ? format("%d", xAngle) : format("%.1f", xAngle)
+    let yAngleStr = yAngle == 0 ? format("%d", yAngle) : format("%.1f", yAngle)
+    holderObj.findObject("aircraft-angleVerticalGuidance").setValue("".concat(xAngleStr, " / ", yAngleStr, loc("measureUnits/deg")))
     let armorPiercing = currentParams.armorPiercing;
     if (armorPiercing.len() > 0) {
       let textParts = []

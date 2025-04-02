@@ -765,8 +765,8 @@ function BasicSeaHarrier(width, height) {
 function HarrierAAM(width, height) {
   return @() {
     size = [width, height]
-    watch = [AAMRocketMode, isTakeOffOrLanding, RadarTargetPosValid]
-    children = AAMRocketMode.get() && !isTakeOffOrLanding.get() ? [
+    watch = [AAMRocketMode, RadarTargetPosValid]
+    children = AAMRocketMode.get() ? [
       RocketLockTargetDiamond,
       RadarRangeDecagon,
       RadarTargetPosValid.get() ? RocketLaunchPrompt : null,
@@ -777,8 +777,8 @@ function HarrierAAM(width, height) {
 function HarrierAirGuns(width, height) {
   return @() {
     size = [width, height]
-    watch = [AirCannonMode, isTakeOffOrLanding]
-    children = AirCannonMode.get() && !isTakeOffOrLanding.get() ? [
+    watch = [AirCannonMode]
+    children = AirCannonMode.get() ? [
       BulletsImpactLine,
       RangingCircle,
       RangeOctagon
@@ -788,9 +788,9 @@ function HarrierAirGuns(width, height) {
 
 function HarrierGroundGunsAndBombs(width, height) {
   return @() {
-    watch = [CannonMode, BombCCIPMode, isTakeOffOrLanding]
+    watch = [CannonMode, BombCCIPMode]
     size = [width, height]
-    children = (CannonMode.get() || BombCCIPMode.get()) && !isTakeOffOrLanding.get() ? [
+    children = (CannonMode.get() || BombCCIPMode.get()) ? [
       CCIPLine,
       AimMark,
       DepressionCarret,

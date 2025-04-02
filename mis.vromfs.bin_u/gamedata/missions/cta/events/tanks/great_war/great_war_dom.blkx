@@ -396,7 +396,7 @@
       },
       "else_actions": {}
     },
-    "hide_dead_bombers_on_ground": {
+    "hide_dead_zeppelins": {
       "is_enabled": true,
       "comments": "",
       "props": {
@@ -406,12 +406,12 @@
       },
       "events": {
         "periodicEvent": {
-          "time": 1.0
+          "time": 0.5
         }
       },
       "conditions": {
         "unitWhenStatus": {
-          "object_type": "isOnGround",
+          "object_type": "isKilled",
           "check_objects": "any",
           "object_marking": 0,
           "object_var_name": "",
@@ -419,21 +419,115 @@
           "object_var_value": 0,
           "target_type": "isAlive",
           "check_period": 1.0,
-          "object": "all_players_squad",
-          "unit_type_ex": "isKilled"
+          "object": "all_players_squad"
         },
         "unitCheckTag": {
           "target": "all_players_squad",
           "useForTriggerFiltered": true,
           "tags": {
-            "type_bomber": true
+            "type_bomber": true,
+            "country_germany": true
           }
         }
       },
       "actions": {
+        "unitPlayEffect": [
+          {
+            "effect_type": "specify",
+            "effect": "explosion_ship_large_ammo",
+            "offset": [
+              80.0,
+              -10.0,
+              0.0
+            ],
+            "show": true,
+            "attach": true,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "target": "all_players_squad",
+            "useForTriggerFiltered": true
+          },
+          {
+            "effect_type": "specify",
+            "effect": "explosion_ship_large",
+            "offset": [
+              30.0,
+              -10.0,
+              0.0
+            ],
+            "show": true,
+            "attach": true,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "target": "all_players_squad",
+            "useForTriggerFiltered": true,
+            "delayForObjects": [
+              0.2,
+              0.1
+            ]
+          },
+          {
+            "effect_type": "specify",
+            "effect": "explosion_ship_large_ammo",
+            "offset": [
+              -30.0,
+              -15.0,
+              0.0
+            ],
+            "show": true,
+            "attach": true,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "target": "all_players_squad",
+            "useForTriggerFiltered": true,
+            "delayForObjects": [
+              0.4,
+              0.1
+            ]
+          },
+          {
+            "effect_type": "specify",
+            "effect": "explosion_ship_large",
+            "offset": [
+              -80.0,
+              -10.0,
+              0.0
+            ],
+            "show": true,
+            "attach": true,
+            "scale": 1.0,
+            "loopSpawn": true,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "target": "all_players_squad",
+            "useForTriggerFiltered": true,
+            "delayForObjects": [
+              0.6,
+              0.0
+            ]
+          }
+        ],
         "unitPutToSleep": {
           "target": "all_players_squad",
-          "useForTriggerFiltered": true
+          "useForTriggerFiltered": true,
+          "delayForObjects": [
+            2.2,
+            0.0
+          ]
         }
       },
       "else_actions": {}

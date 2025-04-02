@@ -784,6 +784,9 @@ class Component : Canvas
         continue if t.targetType == int(RadarTargetType.TYPE_OWN_WEAPON)
         continue if t.targetType == int(RadarTargetType.TYPE_OWN_WEAPON_TARGET)
 
+        if t.isDetected || t.isTracked
+          nctr := t.typeId
+
         let isClamped = t.azimuthRel < 0.0 || t.azimuthRel > 1.0 || t.distanceRel < 0.0 || t.distanceRel > 1.0
         continue if isClamped && fract(totalTime * 2.0) < 0.5
 
@@ -814,6 +817,10 @@ class Component : Canvas
         continue if !t.isEnemy
         continue if t.targetType == int(RadarTargetType.TYPE_OWN_WEAPON)
         continue if t.targetType == int(RadarTargetType.TYPE_OWN_WEAPON_TARGET)
+
+        if t.isDetected || t.isTracked
+          nctr := t.typeId
+
         // Scale elevation up to full radar display
         var elevationRel = t.elevationRel
         if !t.isTracked
@@ -1464,7 +1471,6 @@ class Component : Canvas
       for t in targets
         continue if !t.isDetected && !t.isTracked && !t.hasAimPos && !t.isEnemy
 
-        nctr := t.id
         var pos = worldPosToHud(t.aimPos)
         if isOutOfCanvas(pos, hudPadding)
           return if fract(totalTime * 2.0) < 0.5
