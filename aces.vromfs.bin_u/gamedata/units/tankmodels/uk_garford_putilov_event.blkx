@@ -2209,7 +2209,7 @@
     }
   },
   "VehiclePhys": {
-    "deformViscCoeff": 1500.0,
+    "deformViscCoeff": 500.0,
     "Mass": {
       "Empty": 8000.0,
       "Fuel": 600.0,
@@ -2237,21 +2237,18 @@
       "height": 0.0,
       "width": 0.38,
       "trackPhysMat": "wheel",
-      "rollingFrictionCoeff": [
-        0.07,
-        0.115
+      "fricFrontal": [
+        3.5,
+        2.5
       ],
-      "rollingFrictionNormCoeff": [
-        3.0,
-        5.0
-      ]
+      "resistanceMult": 0.01
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
       "cls_body": "convex_hull"
     },
     "engine": {
-      "horsePowers": 100.0,
+      "horsePowers": 135.0,
       "maxRPM": 1300.0,
       "minRPM": 400.0
     },
@@ -2264,13 +2261,13 @@
       "gearRatios": {
         "ratio": [
           -1.58,
-          -2.36,
-          -4.75,
-          -9.3,
+          -2.95,
+          -3.15,
+          -12.0,
           0.0,
-          9.3,
-          4.75,
-          2.36,
+          12.0,
+          4.5,
+          3.15,
           1.58
         ]
       }
