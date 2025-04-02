@@ -363,8 +363,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 30.0
       }
@@ -413,8 +413,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 20.0
       }
@@ -436,8 +436,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 20.0
       }
@@ -503,8 +503,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 20.0
       }
@@ -611,8 +611,8 @@
             "distanceWidth": 2000.0,
             "distanceRelWidthMin": 0.05,
             "dopplerSpeedRange": [
-              -1500.0,
-              1500.0
+              -2500.0,
+              2500.0
             ],
             "dopplerSpeedWidth": 60.0,
             "dopplerSpeedRelWidthMin": 0.05
@@ -682,12 +682,21 @@
           },
           "setDistGatePos": {
             "source": "targetDesignation",
-            "width": 2000.0
+            "width": [
+              2000.0,
+              2000.0
+            ]
           },
           "setRelSpeedGatePos": {
             "source": "constRange",
-            "pos": 0.0,
-            "width": 3000.0
+            "pos": [
+              0.0,
+              0.0
+            ],
+            "width": [
+              3000.0,
+              3000.0
+            ]
           },
           "setScanPattern": {
             "scanPattern": "bvrLockSearch"
@@ -1238,55 +1247,6 @@
           },
           "setModeName": {
             "name": "TWS GTM search"
-          }
-        },
-        "setGtmBvrLockMode": {
-          "setBvrLockModeCommon": {},
-          "setFsmActive": {
-            "fsm": "acmLock",
-            "active": true
-          },
-          "setScanPattern": {
-            "scanPattern": "bvrLockSearch"
-          },
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "surfaceSearch"
-          },
-          "setDistGatePos": {
-            "source": "targetDesignation",
-            "width": 2000.0
-          },
-          "setRelSpeedGatePos": {
-            "source": "constRange",
-            "pos": 0.0,
-            "width": 3000.0
-          },
-          "setModeName": {
-            "name": "GTM acquisition"
-          }
-        },
-        "setGtmTwsBvrLockMode": {
-          "setGtmBvrLockMode": {},
-          "setModeName": {
-            "name": "TWS GTM acquisition"
-          }
-        },
-        "resetGtmBvrLockMode": {
-          "setFsmActive": {
-            "fsm": "acmLock",
-            "active": false
-          }
-        },
-        "setGtmBvrTrackMode": {
-          "setTrackMode": {},
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "surfaceTrack"
           }
         }
       },

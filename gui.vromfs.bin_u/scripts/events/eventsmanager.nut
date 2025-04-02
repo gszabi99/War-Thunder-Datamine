@@ -1949,17 +1949,21 @@ let Events = class {
     chapters.updateChapters()
   }
 
-  function getEventMission(eventId) {
+  function getEventMission(eventId, shouldReturnFirst = false) {
     if (!this.checkEventId(eventId))
       return ""
     let list = __game_events[eventId].mission_decl.missions_list
-    if (list.len() == 1)
+    if (list.len() == 1) {
       if (type(list) == "array" && type(list[0]) == "string")
         return list[0]
       else if (type(list) == "table")
         foreach (key, _value in list)
           if (type(key) == "string")
             return key
+    }
+    else if (shouldReturnFirst && type(list) == "table" && list.keys().len() > 0 && type(list.keys()[0]) == "string") {
+      return list.keys()[0]
+    }
     return ""
   }
 

@@ -66,6 +66,24 @@
           "sideLobesSensitivity": -50.0
         }
       }
+    },
+    "GTMTrack": {
+      "sideLobesAttenuation": -20.0,
+      "power": 1000.0,
+      "band": 8,
+      "rcs": 40.0,
+      "range": 18000.0,
+      "rangeMax": 25000.0,
+      "multipathEffect": [
+        0.0,
+        1.0,
+        60.0,
+        0.0
+      ],
+      "antenna": {
+        "angleHalfSens": 0.5,
+        "sideLobesSensitivity": -50.0
+      }
     }
   },
   "illuminationTransmitter": {
@@ -168,6 +186,25 @@
       "width": 3.0,
       "barHeight": 2.5,
       "barsCount": 3,
+      "rowMajor": false,
+      "indicate": true
+    },
+    "GTMBvrLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -40.0,
+        40.0
+      ],
+      "elevationLimits": [
+        -55.0,
+        25.0
+      ],
+      "rollStabLimit": 90.0,
+      "pitchStabLimit": 60.0,
+      "period": 0.5,
+      "width": 10.0,
+      "barHeight": 0.5,
+      "barsCount": 4,
       "rowMajor": false,
       "indicate": true
     },
@@ -279,8 +316,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -900.0,
-        "maxValue": 900.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 38.0
       }
@@ -320,8 +357,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -900.0,
-        "maxValue": 900.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 24.0
       }
@@ -368,8 +405,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -900.0,
-        "maxValue": 900.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 24.0
       }
@@ -390,8 +427,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -900.0,
-        "maxValue": 900.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 24.0
       }
@@ -942,20 +979,17 @@
             "name": "TWS GTM search"
           }
         },
-        "setGtmBvrLockMode": {
+        "setGtmTwsBvrLockModeCommon": {
           "setBvrLockModeCommon": {},
           "setFsmActive": {
             "fsm": "bvrLock",
             "active": true
           },
           "setScanPattern": {
-            "scanPattern": "bvrLockSearch"
+            "scanPattern": "GTMBvrLock"
           },
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "GTMSearch"
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
           },
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -966,14 +1000,11 @@
             "pos": 0.0,
             "width": 3000.0
           },
-          "setModeName": {
-            "name": "GTM acquisition"
-          }
-        },
-        "setGtmTwsBvrLockMode": {
-          "setGtmBvrLockMode": {},
-          "setModeName": {
-            "name": "TWS GTM acquisition"
+          "setTransiver": {
+            "transiver": "GTMTrack"
+          },
+          "setSignal": {
+            "signal": "GTMTrack"
           }
         },
         "resetGtmBvrLockMode": {
@@ -983,12 +1014,54 @@
           }
         },
         "setGtmBvrTrackMode": {
-          "setTrackMode": {},
+          "setEnabled": {
+            "value": true
+          },
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "track"
+          },
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": true
+          },
           "setTransiver": {
-            "transiver": "GTM"
+            "transiver": "GTMTrack"
           },
           "setSignal": {
             "signal": "GTMTrack"
+          }
+        },
+        "resetGtmBvrTrackMode": {
+          "clearTargetsOfInterest": {},
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": false
+          }
+        },
+        "setGtmBvrLockMode": {
+          "setGtmTwsBvrLockModeCommon": {},
+          "setModeName": {
+            "name": "GTM acquisition"
+          }
+        },
+        "setGtmTwsBvrLockMode": {
+          "setGtmTwsBvrLockModeCommon": {},
+          "setModeName": {
+            "name": "TWS GTM acquisition"
           }
         },
         "setAcmTrackMode": {
@@ -1884,6 +1957,11 @@
               },
               {
                 "fsm": "main",
+                "name": "resetBvrTrackMode",
+                "actionTemplateName": "resetGtmBvrTrackMode"
+              },
+              {
+                "fsm": "main",
                 "name": "resetSearchMode",
                 "actionTemplateName": "resetSearchMode"
               }
@@ -1939,6 +2017,11 @@
                 "fsm": "main",
                 "name": "setBvrTrackMode",
                 "actionTemplateName": "setGtmBvrTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetBvrTrackMode",
+                "actionTemplateName": "resetGtmBvrTrackMode"
               },
               {
                 "fsm": "main",
@@ -2498,6 +2581,73 @@
             "extrapolate": {},
             "setModeName": {
               "name": "track memory"
+            }
+          }
+        }
+      }
+    },
+    "gtmTrack": {
+      "stateInit": "track",
+      "transitions": {
+        "detect": {
+          "event": "update",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        },
+        "track": {
+          "event": "targetDetected",
+          "actions": {
+            "updateActiveTargetOfInterest": {
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {
+                "accelLim": [
+                  150.0,
+                  150.0
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              }
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          }
+        },
+        "extrapolate": {
+          "event": "targetNotDetected",
+          "actions": {
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 3.0,
+              "dirRateLim": 1.0
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
             }
           }
         }

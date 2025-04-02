@@ -273,6 +273,25 @@
       "barsCount": 2,
       "rowMajor": true,
       "indicate": true
+    },
+    "gtmBvrLock": {
+      "type": "pyramide",
+      "azimuthLimits": [
+        -60.0,
+        60.0
+      ],
+      "elevationLimits": [
+        -60.0,
+        60.0
+      ],
+      "rollStabLimit": 70.0,
+      "pitchStabLimit": 30.0,
+      "period": 0.25,
+      "width": 7.0,
+      "barHeight": 1.0,
+      "barsCount": 2,
+      "rowMajor": false,
+      "indicate": true
     }
   },
   "signals": {
@@ -304,8 +323,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 30.0
       }
@@ -341,8 +360,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 20.0
       }
@@ -363,8 +382,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 20.0
       }
@@ -858,20 +877,17 @@
             "name": "GTM search"
           }
         },
-        "setGtmBvrLockMode": {
+        "setGtmTwsBvrLockModeCommon": {
           "setBvrLockModeCommon": {},
           "setFsmActive": {
             "fsm": "bvrLock",
             "active": true
           },
           "setScanPattern": {
-            "scanPattern": "bvrLockSearch"
+            "scanPattern": "gtmBvrLock"
           },
-          "setTransiver": {
-            "transiver": "gtm"
-          },
-          "setSignal": {
-            "signal": "gtmSearch"
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
           },
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -882,8 +898,11 @@
             "pos": 0.0,
             "width": 3000.0
           },
-          "setModeName": {
-            "name": "GTM acquisition"
+          "setTransiver": {
+            "transiver": "gtm"
+          },
+          "setSignal": {
+            "signal": "gtmTrack"
           }
         },
         "resetGtmBvrLockMode": {
@@ -893,12 +912,54 @@
           }
         },
         "setGtmBvrTrackMode": {
-          "setTrackMode": {},
+          "setEnabled": {
+            "value": true
+          },
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "track"
+          },
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": true
+          },
           "setTransiver": {
             "transiver": "gtm"
           },
           "setSignal": {
             "signal": "gtmTrack"
+          }
+        },
+        "resetGtmBvrTrackMode": {
+          "clearTargetsOfInterest": {},
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": false
+          }
+        },
+        "setGtmBvrLockMode": {
+          "setGtmTwsBvrLockModeCommon": {},
+          "setModeName": {
+            "name": "GTM acquisition"
+          }
+        },
+        "setGtmTwsBvrLockMode": {
+          "setGtmTwsBvrLockModeCommon": {},
+          "setModeName": {
+            "name": "TWS GTM acquisition"
           }
         }
       },
@@ -1896,6 +1957,11 @@
               },
               {
                 "fsm": "main",
+                "name": "resetBvrTrackMode",
+                "actionTemplateName": "resetGtmBvrTrackMode"
+              },
+              {
+                "fsm": "main",
                 "name": "resetSearchMode",
                 "actionTemplateName": "resetSearchMode"
               }
@@ -2081,6 +2147,73 @@
             "designateTargetUnderCue": {
               "type": 0,
               "sensorIndex": 1
+            }
+          }
+        }
+      }
+    },
+    "gtmTrack": {
+      "stateInit": "track",
+      "transitions": {
+        "detect": {
+          "event": "update",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        },
+        "track": {
+          "event": "targetDetected",
+          "actions": {
+            "updateActiveTargetOfInterest": {
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {
+                "accelLim": [
+                  150.0,
+                  150.0
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              }
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          }
+        },
+        "extrapolate": {
+          "event": "targetNotDetected",
+          "actions": {
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 3.0,
+              "dirRateLim": 1.0
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
             }
           }
         }

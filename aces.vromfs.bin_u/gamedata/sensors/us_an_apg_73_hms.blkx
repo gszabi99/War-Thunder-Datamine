@@ -364,8 +364,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 30.0
       }
@@ -418,8 +418,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 20.0
       }
@@ -441,8 +441,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 20.0
       }
@@ -465,8 +465,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 20.0
       }
@@ -494,8 +494,8 @@
       },
       "dopplerSpeed": {
         "presents": true,
-        "minValue": -1500.0,
-        "maxValue": 1500.0,
+        "minValue": -2500.0,
+        "maxValue": 2500.0,
         "signalWidthMin": 2.0,
         "width": 20.0
       }
@@ -616,8 +616,8 @@
             "distanceWidth": 2000.0,
             "distanceRelWidthMin": 0.05,
             "dopplerSpeedRange": [
-              -1500.0,
-              1500.0
+              -2500.0,
+              2500.0
             ],
             "dopplerSpeedWidth": 60.0,
             "dopplerSpeedRelWidthMin": 0.05
@@ -1127,7 +1127,7 @@
             "name": "GTM standby"
           }
         },
-        "setGtmBvrLockMode": {
+        "setGtmTwsBvrLockModeCommon": {
           "setBvrLockModeCommon": {},
           "setFsmActive": {
             "fsm": "bvrLock",
@@ -1136,11 +1136,8 @@
           "setScanPattern": {
             "scanPattern": "bvrLockSearch"
           },
-          "setTransiver": {
-            "transiver": "GTM"
-          },
-          "setSignal": {
-            "signal": "GTMSearch"
+          "setCenterAzimuth": {
+            "source": "targetDesignation"
           },
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -1151,14 +1148,11 @@
             "pos": 0.0,
             "width": 3000.0
           },
-          "setModeName": {
-            "name": "GTM acquisition"
-          }
-        },
-        "setGtmTwsBvrLockMode": {
-          "setGtmBvrLockMode": {},
-          "setModeName": {
-            "name": "TWS GTM acquisition"
+          "setTransiver": {
+            "transiver": "GTM"
+          },
+          "setSignal": {
+            "signal": "GTMTrack"
           }
         },
         "resetGtmBvrLockMode": {
@@ -1168,12 +1162,54 @@
           }
         },
         "setGtmBvrTrackMode": {
-          "setTrackMode": {},
+          "setEnabled": {
+            "value": true
+          },
+          "setScanPatternSet": {},
+          "setScanPattern": {
+            "scanPattern": "track"
+          },
+          "addTargetOfInterest": {},
+          "setLastTargetOfInterestActive": {},
+          "updateActiveTargetOfInterest": {},
+          "setCenterAzimuth": {
+            "source": "activeTargetOfInterest"
+          },
+          "setCenterElevation": {
+            "source": "activeTargetOfInterest"
+          },
+          "setDistGatePos": {
+            "source": "activeTargetOfInterest",
+            "width": 0.0
+          },
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": true
+          },
           "setTransiver": {
             "transiver": "GTM"
           },
           "setSignal": {
             "signal": "GTMTrack"
+          }
+        },
+        "resetGtmBvrTrackMode": {
+          "clearTargetsOfInterest": {},
+          "setFsmActive": {
+            "fsm": "gtmTrack",
+            "active": false
+          }
+        },
+        "setGtmBvrLockMode": {
+          "setGtmTwsBvrLockModeCommon": {},
+          "setModeName": {
+            "name": "GTM acquisition"
+          }
+        },
+        "setGtmTwsBvrLockMode": {
+          "setGtmTwsBvrLockModeCommon": {},
+          "setModeName": {
+            "name": "TWS GTM acquisition"
           }
         },
         "setHmdStandbyMode": {
@@ -2105,6 +2141,11 @@
               },
               {
                 "fsm": "main",
+                "name": "resetBvrTrackMode",
+                "actionTemplateName": "resetGtmBvrTrackMode"
+              },
+              {
+                "fsm": "main",
                 "name": "resetSearchMode",
                 "actionTemplateName": "resetSearchMode"
               }
@@ -2160,6 +2201,11 @@
                 "fsm": "main",
                 "name": "setBvrTrackMode",
                 "actionTemplateName": "setGtmBvrTrackMode"
+              },
+              {
+                "fsm": "main",
+                "name": "resetBvrTrackMode",
+                "actionTemplateName": "resetGtmBvrTrackMode"
               },
               {
                 "fsm": "main",
@@ -2864,6 +2910,73 @@
             "extrapolate": {},
             "setModeName": {
               "name": "track memory"
+            }
+          }
+        }
+      }
+    },
+    "gtmTrack": {
+      "stateInit": "track",
+      "transitions": {
+        "detect": {
+          "event": "update",
+          "actions": {
+            "detectTarget": {
+              "ignoreOwnWeapon": true,
+              "rangeMult": 1.0
+            }
+          }
+        },
+        "track": {
+          "event": "targetDetected",
+          "actions": {
+            "updateActiveTargetOfInterest": {
+              "dirFilter": {
+                "rateLim": [
+                  0.78,
+                  0.78
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              },
+              "distFilter": {
+                "accelLim": [
+                  150.0,
+                  150.0
+                ],
+                "limTimeOut": 1.0,
+                "inertialTimeMax": 1.0
+              }
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
+            }
+          }
+        },
+        "extrapolate": {
+          "event": "targetNotDetected",
+          "actions": {
+            "extrapolateTargetsOfInterest": {},
+            "clearTargetsOfInterest": {
+              "timeOut": 3.0,
+              "dirRateLim": 1.0
+            },
+            "setCenterAzimuth": {
+              "source": "activeTargetOfInterest"
+            },
+            "setCenterElevation": {
+              "source": "activeTargetOfInterest"
+            },
+            "setDistGatePos": {
+              "source": "activeTargetOfInterest",
+              "width": 0.0
             }
           }
         }
