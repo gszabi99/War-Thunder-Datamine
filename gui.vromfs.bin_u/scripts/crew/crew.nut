@@ -140,7 +140,7 @@ function getCrewTrainCost(crew, unit) {
   if (!unit)
     return res
   if (crew)
-    res.wp = get_training_cost(crew.id, unit.name).cost
+    res.wp = get_training_cost(crew.id, unit.name)?.cost ?? unit.trainCost
   else
     res.wp = unit.trainCost
   return res
