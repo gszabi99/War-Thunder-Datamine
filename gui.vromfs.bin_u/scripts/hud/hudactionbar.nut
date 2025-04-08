@@ -834,6 +834,7 @@ let class ActionBar {
     if (!this.useWheelmenu)
       return
 
+    updateActionBar()
     this.updateKillStreaksActions()
     if (this.killStreaksActions.len() == 0)
       return

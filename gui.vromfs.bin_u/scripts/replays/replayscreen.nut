@@ -42,6 +42,7 @@ local canPlayReplay = @(replay) replay != null && is_replay_turned_on()
 
 let autosaveReplayMaxCount = 100
 let autosaveReplayPrefix = "#"
+const replayFileExt = "wrpl"
 
 ::current_replay <- ""
 ::back_from_replays <- null
@@ -137,6 +138,9 @@ function autosaveReplay() {
 
   let name = $"{autosaveReplayPrefix}{get_new_replay_filename()}"
   on_save_replay(name) 
+
+  let currentReplayPath = "\\".concat(get_replays_dir(), $"{name}.{replayFileExt}")
+  ::current_replay = currentReplayPath
 }
 
 gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {

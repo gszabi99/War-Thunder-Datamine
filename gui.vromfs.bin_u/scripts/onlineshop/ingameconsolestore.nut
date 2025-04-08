@@ -585,4 +585,29 @@ gui_handlers.IngameConsoleStore <- class (gui_handlers.BaseGuiHandlerWT) {
     if (listObj?.isValid())
       listObj.showItemButton = this.isMouseMode ? "yes" : "no"
   }
+
+  function getHandlerRestoreData() {
+    let data = {
+      openData = {
+        chapter = this.chapter
+        itemsCatalog = this.itemsCatalog
+        curSheet = this.curSheet
+        curSheetId = this.curSheetId
+        curPage = this.curPage
+        sheetsArray = this.sheetsArray
+        curItem = this.curItem
+        afterCloseFunc = this.afterCloseFunc
+        titleLocId = this.titleLocId
+        storeLocId = this.storeLocId
+        seenEnumId = this.seenEnumId
+        seenList = this.seenList
+      }
+    }
+    return data
+  }
+
+  function onEventBeforeStartShowroom(_params) {
+    handlersManager.requestHandlerRestore(this, gui_handlers.MainMenu)
+  }
+
 }
