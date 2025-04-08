@@ -1123,7 +1123,10 @@
         },
         "playerControls": {
           "setStatus": "enable",
-          "control": "ID_BOMBS"
+          "control": [
+            "ID_BOMBS",
+            "ID_FIRE_SECONDARY"
+          ]
         },
         "triggerEnable": {
           "target": [
@@ -1754,6 +1757,29 @@
               1.0,
               1.0
             ],
+            "target": "explosion07",
+            "radiusOffset": [
+              0.0,
+              0.0
+            ]
+          },
+          {
+            "effect": "bomb_expl_100kg",
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "show": true,
+            "loop": false,
+            "scale": 1.0,
+            "effect_type": "specify",
+            "attach": false,
+            "loopSpawn": true,
+            "delay": [
+              1.0,
+              1.0
+            ],
             "target": "explosion08",
             "radiusOffset": [
               0.0,
@@ -1782,29 +1808,221 @@
               0.0,
               0.0
             ]
-          },
+          }
+        ],
+        "unitDamage": [
           {
-            "effect": "bomb_expl_100kg",
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
             "offset": [
               0.0,
               0.0,
               0.0
             ],
-            "show": true,
-            "loop": false,
-            "scale": 1.0,
-            "effect_type": "specify",
-            "attach": false,
-            "loopSpawn": true,
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "crowd_enemy_vehicles01",
+            "doExplosion": true
+          },
+          {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
             "delay": [
               1.0,
               1.0
             ],
-            "target": "explosion10",
-            "radiusOffset": [
+            "offset": [
+              0.0,
               0.0,
               0.0
-            ]
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": [
+              "crowd_enemy_plane06",
+              "crowd_enemy_plane07",
+              "crowd_enemy_plane12"
+            ],
+            "doExplosion": true
+          },
+          {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": [
+              "crowd_enemy_plane08",
+              "crowd_enemy_plane09",
+              "crowd_enemy_plane11",
+              "crowd_enemy_plane10"
+            ],
+            "doExplosion": true
+          },
+          {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": [
+              "crowd_enemy_vehicles06",
+              "crowd_enemy_vehicles03",
+              "crowd_enemy_vehicles00"
+            ],
+            "doExplosion": true
+          },
+          {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "crowd_enemy_vehicles02",
+            "doExplosion": true
+          },
+          {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "crowd_enemy_plane05",
+            "doExplosion": true
+          },
+          {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "crowd_enemy_vehicles04",
+            "doExplosion": true
+          },
+          {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "crowd_enemy_vehicles05",
+            "doExplosion": true
+          },
+          {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "crowd_enemy_plane04",
+            "doExplosion": true
+          },
+          {
+            "power": 1.0,
+            "useEffect": false,
+            "countEffects": 1,
+            "delay": [
+              1.0,
+              1.0
+            ],
+            "offset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "radiusOffset": [
+              10.0,
+              15.0
+            ],
+            "target": "crowd_enemy_vehicles01",
+            "doExplosion": true
           }
         ],
         "missionDestroyArea": [
@@ -1841,15 +2059,15 @@
           },
           {
             "target_type": "ALL",
+            "area": "explosion07"
+          },
+          {
+            "target_type": "ALL",
             "area": "explosion08"
           },
           {
             "target_type": "ALL",
             "area": "explosion09"
-          },
-          {
-            "target_type": "ALL",
-            "area": "explosion10"
           }
         ],
         "triggerEnable": [
@@ -3276,11 +3494,14 @@
           "object": "enemy_planes"
         },
         "unitSetProperties": {
+          "object": [
+            "enemy_planes",
+            "enemy_planes"
+          ],
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "enemy_planes",
           "attack_type": "hold_fire"
         },
         "varSetInt": {
@@ -3412,7 +3633,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_intro_p01",
-          "subtitles": false
+          "showInGame": false
         },
         "triggerEnable": {
           "target": "dialogue_intro_p02"
@@ -3437,7 +3658,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_intro_p02",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3459,7 +3680,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_intro_p03",
-          "subtitles": false
+          "showInGame": false
         },
         "triggerEnable": {
           "target": "dialogue_intro_p04"
@@ -3484,7 +3705,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_intro_p04",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3506,7 +3727,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_intro_p05",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3528,7 +3749,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_sight_p01",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3550,7 +3771,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_sight_p02",
-          "subtitles": false
+          "showInGame": false
         },
         "triggerEnable": {
           "target": "dialogue_sight_p03"
@@ -3575,7 +3796,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_sight_p03",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3597,7 +3818,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_sight_p04",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3619,7 +3840,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_sight_p05",
-          "subtitles": false
+          "showInGame": false
         },
         "triggerEnable": {
           "target": "dialogue_sight_p06"
@@ -3644,7 +3865,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_sight_p06",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3666,7 +3887,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_drop_bombs_p01",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3688,7 +3909,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_drop_bombs_p02",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3710,7 +3931,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_drop_bombs_p03",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3732,7 +3953,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_drop_bombs_p04",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3754,7 +3975,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_turrets_p01",
-          "subtitles": false
+          "showInGame": false
         },
         "triggerEnable": {
           "target": "dialogue_turrets_p02"
@@ -3779,7 +4000,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_turrets_p02",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3801,7 +4022,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_turrets_p03",
-          "subtitles": false
+          "showInGame": false
         }
       },
       "else_actions": {}
@@ -3836,7 +4057,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_turrets_p04",
-          "subtitles": false
+          "showInGame": false
         },
         "triggerEnable": {
           "target": "dialogue_turrets_p05"
@@ -3861,7 +4082,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_turrets_alt_p04",
-          "subtitles": false
+          "showInGame": false
         },
         "triggerEnable": {
           "target": "dialogue_turrets_p05"
@@ -3886,7 +4107,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorialB_bomber_turrets_p05",
-          "subtitles": false
+          "showInGame": false
         },
         "bigQueryAddRecord": {
           "name": "tutorialB_bomber",
@@ -4272,9 +4493,9 @@
             0.573576
           ],
           [
-            -12185.8,
-            127.85,
-            2053.6
+            -12143.0,
+            192.1,
+            2061.75
           ]
         ],
         "unit_class": "he-111h-6",
@@ -4336,9 +4557,9 @@
             0.939693
           ],
           [
-            -12245.4,
-            129.55,
-            2022.05
+            -12202.7,
+            193.8,
+            2030.2
           ]
         ],
         "unit_class": "he-111h-6",
@@ -4400,9 +4621,9 @@
             0.843391
           ],
           [
-            -12212.0,
-            127.75,
-            2021.75
+            -12169.2,
+            192.0,
+            2029.9
           ]
         ],
         "unit_class": "he-111h-6",
@@ -4464,9 +4685,9 @@
             0.67559
           ],
           [
-            -12056.3,
-            127.75,
-            2134.1
+            -11986.0,
+            203.0,
+            2027.95
           ]
         ],
         "unit_class": "he-111h-6",
@@ -4528,9 +4749,9 @@
             0.5373
           ],
           [
-            -12028.9,
-            127.75,
-            2150.85
+            -11973.9,
+            190.7,
+            2149.4
           ]
         ],
         "unit_class": "he-111h-6",
@@ -4592,9 +4813,9 @@
             0.5373
           ],
           [
-            -11824.5,
+            -11880.9,
             127.75,
-            2300.85
+            2352.45
           ]
         ],
         "unit_class": "he-111h-6",
@@ -4784,9 +5005,9 @@
             -0.737277
           ],
           [
-            -11422.5,
+            -11466.3,
             127.75,
-            2402.9
+            2333.75
           ]
         ],
         "unit_class": "he-111h-6",
@@ -4848,9 +5069,9 @@
             -0.737277
           ],
           [
-            -11440.3,
+            -11484.1,
             127.75,
-            2432.55
+            2363.4
           ]
         ],
         "unit_class": "he-111h-6",
@@ -4912,9 +5133,9 @@
             -0.737277
           ],
           [
-            -11388.1,
+            -11431.9,
             127.75,
-            2426.65
+            2357.5
           ]
         ],
         "unit_class": "he-111h-6",
@@ -4976,9 +5197,9 @@
             -0.737277
           ],
           [
-            -11411.4,
+            -11455.2,
             127.75,
-            2455.15
+            2386.0
           ]
         ],
         "unit_class": "he-111h-6",
@@ -5445,9 +5666,9 @@
             -0.608761
           ],
           [
-            -11481.5,
+            -11513.0,
             185.5,
-            2266.8
+            2203.65
           ]
         ],
         "unit_class": "germ_opelBlitz_med",
@@ -5557,9 +5778,9 @@
             0.608761
           ],
           [
-            -11984.3,
+            -11894.9,
             185.5,
-            2290.3
+            2274.25
           ]
         ],
         "unit_class": "germ_opelBlitz_med",
@@ -5613,9 +5834,9 @@
             0.608761
           ],
           [
-            -12111.8,
+            -11805.4,
             185.5,
-            2273.85
+            2140.15
           ]
         ],
         "unit_class": "germ_horch",
@@ -6260,9 +6481,9 @@
           100.0
         ],
         [
-          -11644.5,
+          -11525.5,
           185.5,
-          2276.3
+          2193.7
         ]
       ],
       "props": {

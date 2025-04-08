@@ -175,6 +175,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "player",
             "move_type": "teleport"
           },
@@ -198,6 +199,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "instructor",
             "move_type": "teleport"
           }
@@ -482,7 +484,7 @@
         ],
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/cutsc_skip",
             "action": "show",
             "time": -1.0,
@@ -497,7 +499,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/cutsc_skip",
             "action": "hide",
             "time": -1.0,
@@ -532,6 +534,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "instructor"
         },
         "triggerDisable": {
@@ -558,11 +561,11 @@
         "missionPlayDialogue": [
           {
             "dialog": "tutorial_m1_d01",
-            "subtitles": true
+            "showInGame": true
           },
           {
             "dialog": "tutorial_m1_d02",
-            "subtitles": true
+            "showInGame": true
           }
         ],
         "unitLoadBehTree": {
@@ -579,7 +582,7 @@
           }
         ],
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/cutsc_skip",
           "action": "hide",
           "time": -1.0,
@@ -644,7 +647,7 @@
           ]
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/cutsc_skip",
           "action": "hide",
           "time": -1.0,
@@ -680,6 +683,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "instructor",
             "move_type": "teleport",
             "speed": 300.0,
@@ -705,6 +709,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "instructor"
           }
         ],
@@ -762,7 +767,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d03_1",
-          "subtitles": true
+          "showInGame": true
         }
       },
       "else_actions": {}
@@ -795,7 +800,8 @@
         "missionStopSpeech": {},
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d03_4",
-          "subtitles": false
+          "subtitles": false,
+          "showInGame": false
         },
         "playerControls": [
           {
@@ -860,7 +866,7 @@
           ]
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_elevator01",
           "action": "show",
           "shouldFadeOut": false,
@@ -912,7 +918,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_elevator01",
           "action": "hide",
           "shouldFadeOut": false,
@@ -932,7 +938,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d03_2",
-          "subtitles": true
+          "showInGame": true
         },
         "triggerEnable": {
           "target": "groundTest_ailerons01"
@@ -963,7 +969,7 @@
           ]
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_ailerons01",
           "action": "show",
           "shouldFadeOut": false,
@@ -1015,7 +1021,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_ailerons01",
           "action": "hide",
           "shouldFadeOut": false,
@@ -1034,7 +1040,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d03_3",
-          "subtitles": true
+          "showInGame": true
         },
         "triggerEnable": {
           "target": "groundTest_rudder01"
@@ -1065,7 +1071,7 @@
           ]
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_rudder01",
           "action": "show",
           "shouldFadeOut": false,
@@ -1116,7 +1122,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_rudder01",
           "action": "hide",
           "shouldFadeOut": false,
@@ -1135,7 +1141,8 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d03_4",
-          "subtitles": false
+          "subtitles": false,
+          "showInGame": false
         },
         "triggerEnable": {
           "target": [
@@ -1185,7 +1192,7 @@
           ]
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_gears03",
           "action": "show",
           "shouldFadeOut": false,
@@ -1236,7 +1243,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_gears03",
           "action": "hide",
           "shouldFadeOut": false,
@@ -1302,7 +1309,7 @@
           "control": "ID_TOGGLE_ENGINE"
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_toggleEngine",
           "action": "show",
           "shouldFadeOut": false,
@@ -1342,7 +1349,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_toggleEngine",
           "action": "hide",
           "shouldFadeOut": false,
@@ -1433,7 +1440,7 @@
           ]
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_toggleEngine",
           "action": "show",
           "shouldFadeOut": false,
@@ -1475,7 +1482,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_toggleEngine",
           "action": "hideCur",
           "shouldFadeOut": false,
@@ -1538,14 +1545,14 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d04_1",
-          "subtitles": true
+          "showInGame": true
         },
         "playerControls": {
           "setStatus": "enable",
           "control": "AXIS_THROTTLE"
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_throttle01",
           "action": "show",
           "shouldFadeOut": false,
@@ -1597,7 +1604,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_throttle01",
           "action": "hide",
           "shouldFadeOut": false,
@@ -1638,11 +1645,11 @@
         "missionPlayDialogue": [
           {
             "dialog": "tutorial_m1_d04_2",
-            "subtitles": true
+            "showInGame": true
           },
           {
             "dialog": "tutorial_m1_d05",
-            "subtitles": true
+            "showInGame": true
           }
         ],
         "hudElementBlink": [
@@ -1677,7 +1684,7 @@
       "actions": {
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_rudder02",
             "action": "show",
             "shouldFadeOut": false,
@@ -1695,7 +1702,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_rudder02",
             "action": "hideCur",
             "shouldFadeOut": false,
@@ -1881,7 +1888,7 @@
           ]
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_gears01",
           "action": "show",
           "shouldFadeOut": false,
@@ -1900,7 +1907,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d06",
-          "subtitles": true
+          "showInGame": true
         }
       },
       "else_actions": {}
@@ -1939,7 +1946,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_gears01",
           "action": "hide",
           "shouldFadeOut": false,
@@ -1995,7 +2002,7 @@
           ]
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_gears01",
           "action": "show",
           "shouldFadeOut": false,
@@ -2018,7 +2025,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d06",
-          "subtitles": true
+          "showInGame": true
         }
       },
       "else_actions": {}
@@ -2054,7 +2061,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_gears01",
           "action": "hide",
           "shouldFadeOut": false,
@@ -2101,7 +2108,7 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d08",
-          "subtitles": true
+          "showInGame": true
         }
       },
       "else_actions": {}
@@ -2169,6 +2176,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "instructor"
         },
         "missionMarkAsWaypoint": {
@@ -2206,7 +2214,7 @@
       "actions": {
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_elevator02",
             "action": "show",
             "shouldFadeOut": false,
@@ -2222,7 +2230,7 @@
             "showKeyBoardShortcutsForMouseAim": true
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_elevator02",
             "action": "hideCur",
             "shouldFadeOut": false,
@@ -2245,7 +2253,8 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d09_1",
-          "subtitles": false
+          "subtitles": false,
+          "showInGame": false
         },
         "hudElementBlink": {
           "element": "alt",
@@ -2256,7 +2265,7 @@
       "else_actions": {
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_elevator02",
             "action": "show",
             "shouldFadeOut": false,
@@ -2272,7 +2281,7 @@
             "showKeyBoardShortcutsForMouseAim": true
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_elevator02",
             "action": "hideCur",
             "shouldFadeOut": false,
@@ -2295,7 +2304,8 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d09_1",
-          "subtitles": false
+          "subtitles": false,
+          "showInGame": false
         },
         "hudElementBlink": {
           "element": "alt",
@@ -2370,20 +2380,20 @@
         "missionPlayDialogue": [
           {
             "dialog": "tutorial_m1_d09_2",
-            "subtitles": true
+            "showInGame": true
           },
           {
             "dialog": "tutorial_m1_d09_3",
-            "subtitles": true
+            "showInGame": true
           },
           {
             "dialog": "tutorial_m1_d09_4",
-            "subtitles": true
+            "showInGame": true
           }
         ],
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "",
             "action": "hideCur",
             "shouldFadeOut": false,
@@ -2397,7 +2407,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_ailerons02",
             "action": "show",
             "shouldFadeOut": false,
@@ -2433,6 +2443,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "instructor",
           "move_type": "teleport"
         },
@@ -2538,7 +2549,7 @@
         "missionStopSpeech": {},
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/cutsc_skip",
             "action": "hide",
             "shouldFadeOut": false,
@@ -2553,7 +2564,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_ailerons02",
             "action": "show",
             "shouldFadeOut": false,
@@ -2577,7 +2588,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d09_4",
-          "subtitles": true
+          "showInGame": true
         }
       },
       "else_actions": {}
@@ -2614,7 +2625,7 @@
           "target": "aerialTest_ailerons02_2"
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_ailerons02",
           "action": "hide",
           "shouldFadeOut": false,
@@ -2672,7 +2683,7 @@
           "target": "aerialTest_ailerons02_1"
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_ailerons02",
           "action": "hide",
           "shouldFadeOut": false,
@@ -2821,10 +2832,10 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d10_1",
-          "subtitles": true
+          "showInGame": true
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_rudder02",
           "action": "show",
           "shouldFadeOut": false,
@@ -2873,7 +2884,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_rudder02",
           "action": "hide",
           "shouldFadeOut": false,
@@ -2892,7 +2903,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d10_2",
-          "subtitles": true
+          "showInGame": true
         },
         "triggerEnable": {
           "target": "aerialTest_throttle01"
@@ -2916,7 +2927,7 @@
       "conditions": {},
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_throttle02",
           "action": "show",
           "shouldFadeOut": false,
@@ -2966,7 +2977,7 @@
       "actions": {
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_throttle02",
             "action": "hide",
             "shouldFadeOut": false,
@@ -2981,7 +2992,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_throttle03",
             "action": "show",
             "shouldFadeOut": false,
@@ -2998,7 +3009,7 @@
         ],
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d10_3",
-          "subtitles": true
+          "showInGame": true
         },
         "wait": {
           "time": 1.0
@@ -3038,7 +3049,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_throttle03",
           "action": "hide",
           "shouldFadeOut": false,
@@ -3078,10 +3089,10 @@
       "actions": {
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d10_4",
-          "subtitles": true
+          "showInGame": true
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_boost",
           "action": "show",
           "shouldFadeOut": false,
@@ -3123,7 +3134,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_boost",
           "action": "hide",
           "shouldFadeOut": false,
@@ -3142,7 +3153,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d10_5",
-          "subtitles": true
+          "showInGame": true
         },
         "triggerEnable": {
           "target": [
@@ -3241,10 +3252,10 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d13_1",
-          "subtitles": true
+          "showInGame": true
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_turn01",
           "action": "show",
           "shouldFadeOut": false,
@@ -3294,7 +3305,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_turn01",
           "action": "hide",
           "shouldFadeOut": false,
@@ -3310,7 +3321,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d13_2",
-          "subtitles": true
+          "showInGame": true
         },
         "triggerEnable": {
           "target": [
@@ -3342,25 +3353,7 @@
       },
       "actions": {
         "playHint": {
-          "hintType": "tutorialHint",
-          "name": "hints/tutorial_turn02",
-          "action": "show",
-          "shouldFadeOut": false,
-          "time": -1.0,
-          "priority": 0,
-          "isOverFade": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "item": "elevator=max",
-          "shouldBlink": false,
-          "showKeyBoardShortcutsForMouseAim": true
-        }
-      },
-      "else_actions": {
-        "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_turn02",
           "action": "show",
           "shouldFadeOut": false,
@@ -3372,6 +3365,24 @@
           "object_var_comp_op": "equal",
           "object_var_value": 0,
           "item": "elevator=min",
+          "shouldBlink": false,
+          "showKeyBoardShortcutsForMouseAim": true
+        }
+      },
+      "else_actions": {
+        "playHint": {
+          "hintType": "standard",
+          "name": "hints/tutorial_turn02",
+          "action": "show",
+          "shouldFadeOut": false,
+          "time": -1.0,
+          "priority": 0,
+          "isOverFade": false,
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
+          "item": "elevator=max",
           "shouldBlink": false,
           "showKeyBoardShortcutsForMouseAim": true
         }
@@ -3405,7 +3416,7 @@
           "target": "aerialTest_turnFail"
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_turn02",
           "action": "hide",
           "shouldFadeOut": false,
@@ -3462,7 +3473,7 @@
           ]
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_turn02",
           "action": "hide",
           "shouldFadeOut": false,
@@ -3520,7 +3531,7 @@
           "target": "aerialTest_turn03"
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_turn01",
           "action": "show",
           "shouldFadeOut": false,
@@ -3652,7 +3663,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d13_ps4",
-          "subtitles": true
+          "showInGame": true
         },
         "missionMarkAsWaypoint": {
           "visible": true,
@@ -3663,7 +3674,7 @@
           "target": "way01"
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_turn_ps4_hint",
           "action": "show",
           "shouldFadeOut": false,
@@ -3707,7 +3718,7 @@
           "time": 1.0
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_turn_ps4_hint",
           "action": "hideCur",
           "shouldFadeOut": false,
@@ -3814,15 +3825,15 @@
         "missionPlayDialogue": [
           {
             "dialog": "tutorial_m1_d11",
-            "subtitles": true
+            "showInGame": true
           },
           {
             "dialog": "tutorial_m1_d12_1",
-            "subtitles": true
+            "showInGame": true
           },
           {
             "dialog": "tutorial_m1_d12_2",
-            "subtitles": true
+            "showInGame": true
           }
         ],
         "triggerDisable": [
@@ -3854,6 +3865,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "player",
             "move_type": "teleport",
             "lookat": "instructor",
@@ -3879,6 +3891,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "instructor",
             "move_type": "teleport",
             "lookat": "instructor",
@@ -3969,7 +3982,7 @@
         ],
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/cutsc_skip",
             "action": "show",
             "time": -1.0,
@@ -3984,7 +3997,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/cutsc_skip",
             "action": "hide",
             "time": -1.0,
@@ -3999,7 +4012,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_spin01",
             "action": "show",
             "shouldFadeOut": false,
@@ -4046,7 +4059,7 @@
         },
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/cutsc_skip",
             "action": "hide",
             "time": -1.0,
@@ -4061,7 +4074,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_spin01",
             "action": "show",
             "shouldFadeOut": false,
@@ -4079,11 +4092,11 @@
         "missionPlayDialogue": [
           {
             "dialog": "tutorial_m1_d12_1",
-            "subtitles": true
+            "showInGame": true
           },
           {
             "dialog": "tutorial_m1_d12_2",
-            "subtitles": true
+            "showInGame": true
           }
         ],
         "triggerEnable": {
@@ -4119,7 +4132,7 @@
         },
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_spin01",
             "action": "hide",
             "shouldFadeOut": false,
@@ -4133,7 +4146,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_spin02",
             "action": "show",
             "shouldFadeOut": false,
@@ -4185,7 +4198,7 @@
         },
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_spin01",
             "action": "hide",
             "shouldFadeOut": false,
@@ -4199,7 +4212,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_spin02",
             "action": "show",
             "shouldFadeOut": false,
@@ -4248,7 +4261,7 @@
       "actions": {
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_spin02",
             "action": "hide",
             "shouldFadeOut": false,
@@ -4267,7 +4280,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_spin02",
             "action": "hide",
             "shouldFadeOut": false,
@@ -4327,7 +4340,8 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d14",
-          "subtitles": false
+          "subtitles": false,
+          "showInGame": false
         },
         "missionSetFade": [
           {
@@ -4383,6 +4397,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "player",
             "move_type": "teleport",
             "lookat": "way01",
@@ -4408,6 +4423,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "instructor"
           }
         ],
@@ -4475,11 +4491,11 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d15",
-          "subtitles": true
+          "showInGame": true
         },
         "playHint": [
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_trimmer",
             "action": "show",
             "shouldFadeOut": false,
@@ -4494,7 +4510,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_trimmer",
             "action": "hide",
             "shouldFadeOut": false,
@@ -4509,7 +4525,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_resetTrimmer",
             "action": "show",
             "shouldFadeOut": false,
@@ -4524,7 +4540,7 @@
             "shouldBlink": false
           },
           {
-            "hintType": "tutorialHint",
+            "hintType": "standard",
             "name": "hints/tutorial_resetTrimmer",
             "action": "hide",
             "shouldFadeOut": false,
@@ -4608,6 +4624,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "player",
           "move_type": "teleport",
           "lookat": "way01",
@@ -4729,6 +4746,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "player",
           "move_type": "teleport",
           "lookat": "way02",
@@ -4850,6 +4868,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "player",
           "move_type": "teleport",
           "lookat": "way03",
@@ -4971,6 +4990,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "player",
           "move_type": "teleport",
           "lookat": "way04",
@@ -5032,7 +5052,7 @@
         },
         "missionPlayDialogue": {
           "dialog": "tutorial_m1_d16",
-          "subtitles": true
+          "showInGame": true
         },
         "missionCompleted": {
           "timer": false,
@@ -5175,7 +5195,7 @@
           "objects": "player"
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_throttle01",
           "action": "show",
           "shouldFadeOut": false,
@@ -5337,6 +5357,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "player",
           "move_type": "teleport",
           "lookat": "instructor_way00",
@@ -5485,6 +5506,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "player",
           "move_type": "teleport",
           "speed": 300.0,
@@ -5644,13 +5666,14 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "player",
           "move_type": "teleport",
           "lookat": "instructor",
           "velocity": 250.0
         },
         "playHint": {
-          "hintType": "tutorialHint",
+          "hintType": "standard",
           "name": "hints/tutorial_spin01",
           "action": "show",
           "shouldFadeOut": false,
