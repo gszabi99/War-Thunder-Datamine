@@ -4492,6 +4492,131 @@
       }
     },
     {
+      "id": "2025_04_09_philippine_pack_unlocks",
+      "locDescId": "2025_04_09_philippine_pack_unlocks/desc",
+      "userLogId": "2025_04_09_philippine_pack_unlock",
+      "hideWhenUnlocked": "title_protector_of_people",
+      "icon": "https://staticfiles.warthunder.com/upload/image/!2025/04/event/200_philippine_eagle_decal_a687b436585a9fb436ff777e75aec30b.png",
+      "lockStyle": "lock",
+      "chapter": "holidays",
+      "group": "moments_of_valor_philippines",
+      "type": "trophy",
+      "amount_trophies": 2,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 3,
+        "unlock": [
+          "2025_04_09_f-5c_play_3_battles",
+          "2025_04_09_f-86f-35_play_3_battles",
+          "2025_04_09_us_m5a1_stuart_canadian_5st_arm_play_3_battles"
+        ],
+        "condition": {
+          "type": "char_time_range",
+          "beginDate": "2025-04-09 08:00:00",
+          "endDate": "2025-04-16 08:30:00"
+        }
+      }
+    },
+    {
+      "id": "2025_04_09_f-5c_play_3_battles",
+      "type": "achievement",
+      "chapter": "holidays",
+      "group": "moments_of_valor_philippines",
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "f-5c",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-04-09 08:00:00",
+            "endDate": "2025-04-16 08:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_04_09_f-86f-35_play_3_battles",
+      "type": "achievement",
+      "chapter": "holidays",
+      "group": "moments_of_valor_philippines",
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "f-86f-35",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-04-09 08:00:00",
+            "endDate": "2025-04-16 08:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "2025_04_09_us_m5a1_stuart_canadian_5st_arm_play_3_battles",
+      "type": "achievement",
+      "chapter": "holidays",
+      "group": "moments_of_valor_philippines",
+      "shouldMarkUnits": true,
+      "showInDesc": true,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnit",
+            "class": "us_m5a1_stuart_canadian_5st_arm",
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-04-09 08:00:00",
+            "endDate": "2025-04-16 08:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2025_04_11_ovi_key_store",
       "type": "award",
       "hidden": true
@@ -17168,6 +17293,12 @@
     },
     {
       "id": "title_aspiring_whale",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_protector_of_people",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
