@@ -5,12 +5,6 @@ require DagorMath
 
 
 [generic] 
-def closest_pt_on_line(point, a, b)
-  let dir = normalize(b - a)
-  let t = dot((point - a), dir)
-  return a + dir * t
-
-[generic] 
 def closest_pt_on_seg(point, a, b; var t : float&)
   let dir = normalize(b - a)
   t = dot((point - a), dir)
