@@ -62,6 +62,7 @@
       "shatterArmorQuality": 0.5,
       "restrainDamage": 0.05,
       "armorThickness": 15.0,
+      "napalmDamageMult": 100.0,
       "body_bottom_dm": {},
       "body_top_dm": {},
       "gun_barrel_dm": {}
@@ -135,6 +136,13 @@
         },
         {
           "conditionDamageType": "cumulative",
+          "expl": 1.0,
+          "conditionDamage": 10.0,
+          "kill": true,
+          "killEffect": "scorched"
+        },
+        {
+          "conditionDamageType": "napalm",
           "expl": 1.0,
           "conditionDamage": 10.0,
           "kill": true,

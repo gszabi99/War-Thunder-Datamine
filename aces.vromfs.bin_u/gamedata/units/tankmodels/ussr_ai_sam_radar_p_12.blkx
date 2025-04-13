@@ -60,6 +60,7 @@
       "explosionArmorQuality": 0.2,
       "shatterArmorQuality": 0.2,
       "restrainDamage": 0.1,
+      "napalmDamageMult": 100.0,
       "armorClass": "RHA_tank",
       "body_dm": {
         "armorThickness": 20.0,
@@ -120,6 +121,13 @@
         },
         {
           "conditionDamageType": "cumulative",
+          "expl": 1.0,
+          "conditionDamage": 10.0,
+          "kill": true,
+          "killEffect": "scorched"
+        },
+        {
+          "conditionDamageType": "napalm",
           "expl": 1.0,
           "conditionDamage": 10.0,
           "kill": true,
