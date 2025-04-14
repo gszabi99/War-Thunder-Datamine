@@ -64,7 +64,7 @@ function onEventSignOut(_params) {
   parametersByCrewId.clear()
 }
 
-function getBaseDescriptionText(memberName, skillName, _crew) {
+function getBaseDescriptionText(memberName, skillName, skillParamsList) {
   local locId = format("crew/%s/%s/tooltip", memberName, skillName)
   local locParams = null
 
@@ -74,42 +74,18 @@ function getBaseDescriptionText(memberName, skillName, _crew) {
 
     let blk = get_game_params_blk()
     let detectDefaults = blk?.detectDefaults
+    let defaultHearingDistance = blk?.tankAlwaysDetectedDistance ?? 0
+    let hearingDistance =
+      skillParamsList?.currentParametersByRequestType[skillParametersRequestType.CURRENT_VALUES].hearingDistance[0].value ?? defaultHearingDistance
+
     locParams = {
       targetingMul = getTblValue("distanceMultForTargetingView", detectDefaults, 1.0)
       binocularMul = getTblValue("distanceMultForBinocularView", detectDefaults, 1.0)
+      distance = hearingDistance
     }
   }
 
   return loc(locId, locParams)
-}
-
-function getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit) {
-  let resArray = [getBaseDescriptionText(memberName, skillName, crew)]
-  if (unit && unit.unitType.crewUnitType != crewUnitType) {
-    let text = loc("crew/skillsWorkWithUnitsSameType")
-    resArray.append(colorize("warningTextColor", text))
-  }
-  else if (crew && memberName == "groundService" && skillName == "repair") {
-    let fullParamsList = skillParametersRequestType.CURRENT_VALUES.getParameters(crew.id, unit)
-    let repairRank = fullParamsList?[difficulty.crewSkillName][memberName].repairRank.groundServiceRepairRank ?? 0
-    if (repairRank != 0 && unit && unit.rank > repairRank) {
-      let text = loc("crew/notEnoughRepairRank", {
-                          rank = colorize("activeTextColor", get_roman_numeral(unit.rank))
-                          level = colorize("activeTextColor",
-                            getMinSkillsUnitRepairRank(unit.rank))
-                         })
-      resArray.append(colorize("warningTextColor", text))
-    }
-  }
-  else if (memberName == "loader" && skillName == "loading_time_mult") {
-    let wBlk = get_wpcost_blk()
-    if (unit && wBlk?[unit.name].primaryWeaponAutoLoader) {
-      let text = loc("crew/loader/loading_time_mult/tooltipauto")
-      resArray.append(colorize("warningTextColor", text))
-    }
-  }
-
-  return "\n".join(resArray, true)
 }
 
 
@@ -177,6 +153,35 @@ function getParametersByRequestType(crewId, skillsList, difficulty, requestType,
   return res
 }
 
+function getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit, skillParamsList) {
+  let resArray = [getBaseDescriptionText(memberName, skillName, skillParamsList)]
+  if (unit && unit.unitType.crewUnitType != crewUnitType) {
+    let text = loc("crew/skillsWorkWithUnitsSameType")
+    resArray.append(colorize("warningTextColor", text))
+  }
+  else if (crew && memberName == "groundService" && skillName == "repair") {
+    let fullParamsList = skillParametersRequestType.CURRENT_VALUES.getParameters(crew.id, unit)
+    let repairRank = fullParamsList?[difficulty.crewSkillName][memberName].repairRank.groundServiceRepairRank ?? 0
+    if (repairRank != 0 && unit && unit.rank > repairRank) {
+      let text = loc("crew/notEnoughRepairRank", {
+                          rank = colorize("activeTextColor", get_roman_numeral(unit.rank))
+                          level = colorize("activeTextColor",
+                            getMinSkillsUnitRepairRank(unit.rank))
+                         })
+      resArray.append(colorize("warningTextColor", text))
+    }
+  }
+  else if (memberName == "loader" && skillName == "loading_time_mult") {
+    let wBlk = get_wpcost_blk()
+    if (unit && wBlk?[unit.name].primaryWeaponAutoLoader) {
+      let text = loc("crew/loader/loading_time_mult/tooltipauto")
+      resArray.append(colorize("warningTextColor", text))
+    }
+  }
+
+  return "\n".join(resArray, true)
+}
+
 function getSortedArrayByParamsTable(parameters, crewUnitType) {
   let res = []
   foreach (name, valuesArr in parameters) {
@@ -229,8 +234,7 @@ function filterSkillsList(skillsList) {
   return res
 }
 
-
-function getSkillListParameterRowsView(crew, difficulty, notFilteredSkillsList, crewUnitType, unit) {
+function getSkillParamsList(crew, difficulty, notFilteredSkillsList, crewUnitType, unit) {
   let skillsList = filterSkillsList(notFilteredSkillsList)
 
   let columnTypes = getColumnsTypesList(skillsList, crewUnitType)
@@ -251,15 +255,23 @@ function getSkillListParameterRowsView(crew, difficulty, notFilteredSkillsList, 
     selectedParametersByRequestType[requestType] <-
       getParametersByRequestType(crew.id, skillsList,  difficulty, requestType, true, unit)
   }
+  return {columnTypes, currentParametersByRequestType, selectedParametersByRequestType}
+}
 
-  
-  let res = parseParameters(columnTypes,
-    currentParametersByRequestType, selectedParametersByRequestType, crewUnitType)
+function getSkillRowsViewInternal(skillParamsList, crew, crewUnitType, unit) {
+  let res = parseParameters(skillParamsList.columnTypes,
+    skillParamsList.currentParametersByRequestType, skillParamsList.selectedParametersByRequestType, crewUnitType)
   
   if (res.len()) 
-    res.insert(0, getSkillListHeaderRow(crew, columnTypes, unit))
+    res.insert(0, getSkillListHeaderRow(crew, skillParamsList.columnTypes, unit))
 
   return res
+}
+
+
+function getSkillListParameterRowsView(crew, difficulty, skillsList, crewUnitType, unit) {
+  let skillParamsList = getSkillParamsList(crew, difficulty, skillsList, crewUnitType, unit)
+  return getSkillRowsViewInternal(skillParamsList, crew, crewUnitType, unit)
 }
 
 function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUnitType, unit) {
@@ -267,13 +279,13 @@ function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUn
     memberName = memberName
     skillName = skillName
   }]
-
+  let skillParamsList = getSkillParamsList(crew, difficulty, skillsList, crewUnitType, unit)
   let view = {
     skillName = loc($"crew/{skillName}")
-    tooltipText = getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit)
+    tooltipText = getTooltipText(memberName, skillName, crewUnitType, crew, difficulty, unit, skillParamsList)
 
     
-    parameterRows = getSkillListParameterRowsView(crew, difficulty, skillsList, crewUnitType, unit)
+    parameterRows = getSkillRowsViewInternal(skillParamsList, crew, crewUnitType, unit)
     footnoteText = "".concat(loc("shop/all_info_relevant_to_current_game_mode"),
       loc("ui/colon"), difficulty.getLocName())
   }
@@ -288,7 +300,6 @@ function getSkillDescriptionView(crew, difficulty, memberName, skillName, crewUn
   let firstRow = getTblValue(1, view.parameterRows)
   view.progressBarValue <- getTblValue("progressBarValue", firstRow)
   view.progressBarSelectedValue <- getTblValue("progressBarSelectedValue", firstRow)
-
   return view
 }
 

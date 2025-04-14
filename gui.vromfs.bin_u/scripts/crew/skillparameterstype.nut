@@ -153,6 +153,13 @@ enums.enumsAddTypes(g_skill_parameters_type, {
     getValue = @(requestType, parametersByRequestType, params = null) !requestType || !getCachedCrewUnit() ? 0
       : getCachedCrewUnit().getCrewTotalCount() - defaultGetValue(requestType, parametersByRequestType, params)
   }
+
+  BASE_HEARING_DISTANCE = {
+    paramNames = "hearingDistance"
+    parseColumns = function(_paramData, _columnTypes, _parametersByRequestType, _selectedParametersByRequestType, _resArray) {
+      
+    }
+  }
 })
 
 g_skill_parameters_type.getTypeByParamName <- function getTypeByParamName(paramName) {
