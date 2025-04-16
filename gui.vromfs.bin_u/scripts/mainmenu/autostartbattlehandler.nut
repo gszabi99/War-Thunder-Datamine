@@ -15,8 +15,9 @@ let { get_charserver_time_sec } = require("chard")
 let { OPTIONS_MODE_MP_DOMINATION } = require("%scripts/options/optionsExtNames.nut")
 let { sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart, leaveAllQueuesSilent } = require("%scripts/queue/queueManager.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
+let { isQueueActive, isQueuesEqual, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
 
 let { getCurrentGameMode, getGameModeEvent
 } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -42,7 +43,7 @@ let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
 
     this.autoStartQueueWnd = this.scene.findObject("autoStartQueueWnd")
 
-    this.setCurQueue(queues.findQueue({}, this.queueMask))
+    this.setCurQueue(findQueue({}, this.queueMask))
     this.updateTip()
     this.updateWaitTime()
     this.updateQueueWaitIconImage()
@@ -105,7 +106,7 @@ let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function goBack() {
     this.guiScene.performDelayed(this, gui_start_mainmenu)
-    queues.leaveAllQueuesSilent()
+    leaveAllQueuesSilent()
     base.goBack()
   }
 
@@ -118,20 +119,20 @@ let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
         }, false, true)
       return
     }
-    queues.checkAndStart((@() this.joinMpQueue()).bindenv(this), null, "isCanNewflight")
+    checkQueueAndStart((@() this.joinMpQueue()).bindenv(this), null, "isCanNewflight")
   }
 
   function onEventQueueChangeState(p) {
     let queue = p?.queue
-    if (queues.isQueuesEqual(queue, this.getCurQueue())) {
+    if (isQueuesEqual(queue, this.getCurQueue())) {
       this.updateScene()
       return
     }
 
-    if (!queues.checkQueueType(p.queue, this.queueMask))
+    if (!checkQueueType(p.queue, this.queueMask))
       return
 
-    this.setCurQueue(queues.isQueueActive(p.queue) ? p.queue : null)
+    this.setCurQueue(isQueueActive(p.queue) ? p.queue : null)
   }
 
   function onEventQueueInfoUpdated(_params) {
@@ -142,7 +143,7 @@ let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateScene() {
-    let showQueueTbl = queues.isQueueActive(this.getCurQueue())
+    let showQueueTbl = isQueueActive(this.getCurQueue())
     this.setShowQueueTable(showQueueTbl)
   }
 
@@ -187,7 +188,7 @@ let class AutoStartBattleHandler (gui_handlers.BaseGuiHandlerWT) {
     if (timeLeft < 0)
       return this.goBack()
 
-    if (!queues.isQueueActive(this.curQueue)
+    if (!isQueueActive(this.curQueue)
         && sessionLobbyStatus.get() == lobbyStates.NOT_IN_ROOM)
       return this.goBack()
 

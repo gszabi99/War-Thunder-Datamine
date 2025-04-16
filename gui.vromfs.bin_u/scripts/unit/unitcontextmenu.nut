@@ -56,7 +56,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { canChangeCrewUnits } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
 
@@ -94,7 +94,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = "#ui/gameuiskin#slot_showroom.svg"
       showAction = inMenu
       actionFunc = function () {
-        queues.checkAndStart(function () {
+        checkQueueAndStart(function () {
           broadcastEvent("BeforeStartShowroom")
           showedUnit(unit)
           handlersManager.animatedSwitchScene(gui_start_decals)
@@ -116,7 +116,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = "#ui/gameuiskin#slot_change_aircraft.svg"
       showAction = inMenu && canChangeCrewUnits()
       actionFunc = function () {
-        queues.checkAndStart(
+        checkQueueAndStart(
           function() {
             checkSquadUnreadyAndDo(
               @() selectUnitHandler.open(crew, slotbar),
@@ -312,7 +312,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       icon       = unit.unitType.testFlightIcon
       showAction = inMenu && ::isTestFlightAvailable(unit, shouldSkipUnitCheck)
       actionFunc = function () {
-        queues.checkAndStart(@() guiStartTestflight({ unit, shouldSkipUnitCheck }),
+        checkQueueAndStart(@() guiStartTestflight({ unit, shouldSkipUnitCheck }),
           null, "isCanNewflight")
       }
     }
@@ -358,7 +358,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
       iconRotation = 90
       showAction = inMenu && hasSlotbarByUnitsGroups && crew != null && slotbar != null
       actionFunc = function () {
-        queues.checkAndStart(
+        checkQueueAndStart(
           function() {
             checkSquadUnreadyAndDo(
               @() selectGroupHandler.open(crew, slotbar),

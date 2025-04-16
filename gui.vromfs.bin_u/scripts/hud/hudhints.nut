@@ -31,6 +31,7 @@ let { g_hud_hint_types } = require("%scripts/hud/hudHintTypes.nut")
 let { objectiveStatus } = require("%scripts/misObjectives/objectiveStatus.nut")
 let { getLocalTeamForMpStats } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
 
 const DEFAULT_MISSION_HINT_PRIORITY = 100
 const CATASTROPHIC_HINT_PRIORITY = 0
@@ -273,7 +274,7 @@ let genMissionHint = @(hintType, checkHintTypeNameFunc) {
       let varStyle = getTblValue("variable_style", hintData)
       if (varStyle == "playerId") {
         let player = get_mplayer_by_id(varValue)
-        varValue = ::build_mplayer_name(player)
+        varValue = buildMplayerName(player)
       }
       res = loc(res, { var = varValue })
     }
@@ -1154,7 +1155,7 @@ enums.addTypes(g_hud_hints, {
 
       res = "".concat(res,
         loc(locId, {
-          player = player ? ::build_mplayer_name(player) : ""
+          player = player ? buildMplayerName(player) : ""
           time = time.secondsToString(eventData?.timeSeconds ?? 0, true, true)
         })
       )

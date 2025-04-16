@@ -29,8 +29,8 @@ let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getBestUnitForPreview } = require("%scripts/customization/contentPreviewState.nut")
 let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -67,7 +67,7 @@ function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = fals
     return "not_in_hangar"
   if (!hangar_is_model_loaded())
     return "hangar_not_ready"
-  if (!isInMenu() || checkIsInQueue()
+  if (!isInMenu() || isAnyQueuesActive()
       || (g_squad_manager.isSquadMember() && g_squad_manager.isMeReady())
       || hasSessionInLobby())
     return "temporarily_forbidden"

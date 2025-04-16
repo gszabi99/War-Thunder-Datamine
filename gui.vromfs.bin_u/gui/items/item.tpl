@@ -193,55 +193,57 @@ itemDiv {
     }
     <</nameText>>
 
-    <<#unseenIcon>>
-    unseenIcon {
+    tdiv {
       pos:t='pw-w, 0'
       position:t='absolute'
-      value:t='<<unseenIcon>>'
-      <<#isUnseenAlarmIcon>>
-      isAlarm:t='yes'
-      <</isUnseenAlarmIcon>>
-      unseenText {}
-    }
-    <</unseenIcon>>
-
-    <<#amount>>
-    itemAmountText {
-      text:t='<<amount>>'
-      <<#overlayAmountTextColor>>
-      overlayTextColor:t='<<overlayAmountTextColor>>'
-      <</overlayAmountTextColor>>
-      <<#hasIncrasedAmountTextSize>>
-      hasIncrasedAmountTextSize:t='yes'
-      <</hasIncrasedAmountTextSize>>
-      <<#isInTransfer>>
-      animated_wait_icon {
-        pos:t='-w, 38%ph-50%h'
-        class:t='inTextRowAbsolute'
-        background-rotation:t = '0'
+      <<#unseenIcon>>
+      unseenIcon {
+        value:t='<<unseenIcon>>'
+        noMargin:t='yes'
+        <<#isUnseenAlarmIcon>>
+        isAlarm:t='yes'
+        <</isUnseenAlarmIcon>>
+        unseenText {}
       }
-      <</isInTransfer>>
-    }
-    <</amount>>
+      <</unseenIcon>>
 
-    img {
-      id:t='alarm_icon'
-      height:t='1@newWidgetIconHeight'
-      min-width:t='1@newWidgetIconHeight'
-      pos:t='pw-w, 0'
-      position:t='absolute'
-      padding-left:t='0.5h'
-      re-type:t='fgPict'
-      foreground-color:t='@white'
-      foreground-image:t='#ui/gameuiskin#alarmclock_icon.svg'
-      foreground-svg-size:t='1@newWidgetIconHeight, 1@newWidgetIconHeight'
-      foreground-repeat:t='aspect-ratio'
-      foreground-align:t='left'
-      <<^alarmIcon>>
-      display:t='hide'
-      <</alarmIcon>>
-    }
+      img {
+        id:t='alarm_icon'
+        height:t='1@newWidgetIconHeight'
+        min-width:t='1@newWidgetIconHeight'
+        margin-left:t='0.5@blockInterval'
+        padding-left:t='0.5h'
+        re-type:t='fgPict'
+        foreground-color:t='@white'
+        foreground-image:t='#ui/gameuiskin#alarmclock_icon.svg'
+        foreground-svg-size:t='1@newWidgetIconHeight, 1@newWidgetIconHeight'
+        foreground-repeat:t='aspect-ratio'
+        foreground-align:t='left'
+        <<^alarmIcon>>
+        display:t='hide'
+        <</alarmIcon>>
+      }
 
+      <<#amount>>
+      itemAmountText {
+        margin-left:t='0.5@blockInterval'
+        text:t='<<amount>>'
+        <<#overlayAmountTextColor>>
+        overlayTextColor:t='<<overlayAmountTextColor>>'
+        <</overlayAmountTextColor>>
+        <<#hasIncrasedAmountTextSize>>
+        hasIncrasedAmountTextSize:t='yes'
+        <</hasIncrasedAmountTextSize>>
+        <<#isInTransfer>>
+        animated_wait_icon {
+          pos:t='-w, 38%ph-50%h'
+          class:t='inTextRowAbsolute'
+          background-rotation:t = '0'
+        }
+        <</isInTransfer>>
+      }
+      <</amount>>
+    }
     tdiv {
       position:t='absolute'
       pos:t='0, ph-h'

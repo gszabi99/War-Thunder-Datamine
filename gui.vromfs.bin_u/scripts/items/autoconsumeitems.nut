@@ -7,6 +7,7 @@ let { addTask, TASK_CB_TYPE } = require("%scripts/tasker.nut")
 let { getUserstatItemRewardData } = require("%scripts/userstat/userstatItemsRewards.nut")
 let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 
+const MAX_ITEMS_TO_MULTICONSUME_PER_REQUEST = 300
 local shouldCheckAutoConsume = false
 
 let failedAutoConsumeItemsByItemdefId = {}
@@ -75,16 +76,23 @@ function clearItemsListsForAutoConsume() {
 function getItemsBlkForMultiAutoConsume(list) {
   let res = DataBlock()
   let itemsBlk = res.addBlock("items")
+  local counter = 0 
   foreach (item in list) {
     if (!item.amountByUids)
       continue
+    if (counter >= MAX_ITEMS_TO_MULTICONSUME_PER_REQUEST)
+      break
 
     foreach (uid, amount in item.amountByUids) {
       if ((uid in failedAutoConsumeItemsById) || amount <= 0)
         continue
+      if (counter >= MAX_ITEMS_TO_MULTICONSUME_PER_REQUEST)
+        break
+      let amountToConsume = min(amount, MAX_ITEMS_TO_MULTICONSUME_PER_REQUEST - counter)
       let itemBlk = itemsBlk.addNewBlock("item")
       itemBlk.setInt("itemId", uid.tointeger())
-      itemBlk.setInt("quantity", amount)
+      itemBlk.setInt("quantity", amountToConsume)
+      counter+=amountToConsume
     }
   }
   return res

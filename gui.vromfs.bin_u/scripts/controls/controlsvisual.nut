@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { stripTags } = require("%sqstd/string.nut")
 
 function getLocalizedShortcutName(shortcutId) {
   return loc($"hotkeys/{shortcutId}")
@@ -10,14 +11,84 @@ function getLocalizedShortcutName(shortcutId) {
 
 let axisModifiers = ["_rangeMin", "_rangeMax"]
 
-let getFirstShortcutText = @(shortcutId) ::get_shortcut_text({
+let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
+
+function getLocalizedXinpControlName(text, deviceId) {
+  if (deviceId != STD_KEYBOARD_DEVICE_ID)
+    return getLocaliazedPS4ControlName(text)
+  return ""
+}
+
+function getSeparatedControlLocId(text) {
+  local txt = text
+  local index_txt = ""
+
+  if (txt.indexof("Button ") == 0) 
+    index_txt = "".concat(" ", txt.slice("Button ".len()))
+  else if (txt.indexof("Button") == 0) 
+    index_txt = "".concat(" ", txt.slice("Button".len()))
+
+  if (index_txt != "")
+    txt = $"{loc("key/Button")}{index_txt}"
+
+  return txt
+}
+
+function getLocTextControlName(text) {
+  let locText = loc($"key/{text}", "")
+  if (locText != "")
+    return locText
+
+  return getSeparatedControlLocId(text)
+}
+
+function getLocalizedControlName(preset, deviceId, buttonId) {
+  let text = preset.getButtonName(deviceId, buttonId)
+  let locText = getLocalizedXinpControlName(text, deviceId)
+  if (locText != "")
+    return locText
+
+  return getLocTextControlName(text)
+}
+
+function addHotkeyTxt(hotkeyTxt, baseTxt = "", colored = true) {
+  hotkeyTxt = colored ? colorize("hotkeyColor", hotkeyTxt) : hotkeyTxt
+  return loc("ui/comma").join([ baseTxt, hotkeyTxt ], true)
+}
+
+let getShortcutText = kwarg(function getShortcutText(shortcuts,
+  shortcutId, cantBeEmpty = true, strip_tags = false, preset = null, colored = true) {
+  if (!(shortcutId in shortcuts))
+    return ""
+
+  preset = preset || getCurControlsPreset()
+  local data = ""
+  for (local i = 0; i < shortcuts[shortcutId].len(); i++) {
+    let textArr = []
+    let sc = shortcuts[shortcutId][i]
+
+    for (local j = 0; j < sc.dev.len(); j++)
+      textArr.append(getLocalizedControlName(preset, sc.dev[j], sc.btn[j]))
+
+    if (textArr.len() == 0)
+      continue
+
+    let text = " + ".join(textArr)
+    data = addHotkeyTxt(strip_tags ? stripTags(text) : text, data, colored)
+  }
+
+  if (cantBeEmpty && data == "")
+    data = "---"
+
+  return data
+})
+
+let getFirstShortcutText = @(shortcutId) getShortcutText({
   shortcuts = getShortcuts([ shortcutId ])
   shortcutId = 0
   cantBeEmpty = false
   colored = false
 })
-
-let getLocaliazedPS4ControlName = @(text) loc($"xinp/{text}", "")
 
 function remapAxisName(preset, axisId) {
   let text = preset.getAxisName(axisId)
@@ -62,44 +133,6 @@ function getAxisTextOrAxisName(shortcutId) {
   return text != "" ? text : loc($"controls/{shortcutId}")
 }
 
-function getSeparatedControlLocId(text) {
-  local txt = text
-  local index_txt = ""
-
-  if (txt.indexof("Button ") == 0) 
-    index_txt = "".concat(" ", txt.slice("Button ".len()))
-  else if (txt.indexof("Button") == 0) 
-    index_txt = "".concat(" ", txt.slice("Button".len()))
-
-  if (index_txt != "")
-    txt = $"{loc("key/Button")}{index_txt}"
-
-  return txt
-}
-
-function getLocalizedXinpControlName(text, deviceId) {
-  if (deviceId != STD_KEYBOARD_DEVICE_ID)
-    return getLocaliazedPS4ControlName(text)
-  return ""
-}
-
-function getLocTextControlName(text) {
-  let locText = loc($"key/{text}", "")
-  if (locText != "")
-    return locText
-
-  return getSeparatedControlLocId(text)
-}
-
-function getLocalizedControlName(preset, deviceId, buttonId) {
-  let text = preset.getButtonName(deviceId, buttonId)
-  let locText = getLocalizedXinpControlName(text, deviceId)
-  if (locText != "")
-    return locText
-
-  return getLocTextControlName(text)
-}
-
 function getShortLocalizedControlName(preset, deviceId, buttonId) {
   let text = preset.getButtonName(deviceId, buttonId)
   local locText = getLocalizedXinpControlName(text, deviceId)
@@ -120,4 +153,6 @@ return {
   getLocalizedControlName
   getShortLocalizedControlName
   remapAxisName
+  getShortcutText
+  addHotkeyTxt
 }

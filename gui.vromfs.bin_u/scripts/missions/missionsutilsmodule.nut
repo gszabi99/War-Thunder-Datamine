@@ -15,6 +15,7 @@ let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { buildRewardText } = require("%scripts/missions/missionsText.nut")
 let { getSessionLobbyMissionData } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { getOptionsMode } = require("%scripts/options/optionsList.nut")
 
 let MISSION_OBJECTIVE = {
   KILLS_AIR           = 0x0001
@@ -132,7 +133,7 @@ function getMissionRewardsMarkup(dataBlk, misName, rewardsConfig) {
 }
 
 function restartCurrentMission() {
-  setGuiOptionsMode(::get_options_mode(get_game_mode()))
+  setGuiOptionsMode(getOptionsMode(get_game_mode()))
   restart_mission()
 }
 

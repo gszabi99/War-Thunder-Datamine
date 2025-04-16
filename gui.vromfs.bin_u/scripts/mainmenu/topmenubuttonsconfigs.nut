@@ -54,7 +54,7 @@ let { isWorldWarEnabled, canPlayWorldwar, getCantPlayWorldwarReasonText
 let { openLeaderboardWindow } = require("%scripts/leaderboard/leaderboard.nut")
 let { checkPlayWorldwarAccess, openOperationsOrQueues } = require("%scripts/globalWorldwarUtils.nut")
 let { isWarbondsShopAvailable, openWarbondsShop } = require("%scripts/warbonds/warbondsManager.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { isItemsManagerEnabled } = require("%scripts/items/itemsManager.nut")
 let { isAnyCampaignAvailable } = require("%scripts/missions/missionsUtils.nut")
 
@@ -73,7 +73,7 @@ let list = {
       if (isShowGoldBalanceWarning())
         return
 
-      queues.checkAndStart(
+      checkQueueAndStart(
         Callback(@() this.goForwardIfOnline(guiStartSkirmish, false), handler),
         null,
         "isCanNewflight"
@@ -95,7 +95,7 @@ let list = {
       if (!checkPlayWorldwarAccess())
         return
 
-      queues.checkAndStart(
+      checkQueueAndStart(
         Callback(@() this.goForwardIfOnline(@() openOperationsOrQueues(), false), handler),
         null,
         "isCanNewflight"

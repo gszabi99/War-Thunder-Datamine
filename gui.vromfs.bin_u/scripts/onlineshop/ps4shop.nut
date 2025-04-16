@@ -27,6 +27,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { gui_start_mainmenu_reload } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 let persistent = {
   sheetsArray = []
@@ -238,7 +239,7 @@ let openIngameStoreImpl = kwarg(
       return true
     }
 
-    ::queues.checkAndStart(function() {
+    checkQueueAndStart(function() {
       get_gui_scene().performDelayed(getroottable(),
         function() {
           if (item)

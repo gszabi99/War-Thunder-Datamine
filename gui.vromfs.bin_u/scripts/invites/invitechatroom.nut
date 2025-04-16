@@ -8,7 +8,7 @@ let { format } = require("string")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { menuChatHandler } = require("%scripts/chat/menuChatHandler.nut")
+let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")
 
 let ChatRoom = class (BaseInvite) {
   

@@ -10,6 +10,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { isAnyQueuesActive, getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
+let { updateQueueInfoByType } = require("%scripts/queue/queueInfo.nut")
 
 gui_handlers.WwQueueInfo <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -34,11 +36,11 @@ gui_handlers.WwQueueInfo <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onTimerUpdate(_obj, _dt) {
-    let currentBattleQueue = ::queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
+    let currentBattleQueue = getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
     if (!currentBattleQueue)
       return
 
-    ::queues.updateQueueInfoByType(g_queue_type.WW_BATTLE,
+    updateQueueInfoByType(g_queue_type.WW_BATTLE,
       function(queueInfo) {
         broadcastEvent("QueueInfoRecived", { queue_info = queueInfo })
       })
@@ -46,7 +48,7 @@ gui_handlers.WwQueueInfo <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventQueueInfoRecived(params) {
     let queueInfo = params?.queue_info
-    if (!queueInfo || !::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE))
+    if (!queueInfo || !isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE))
       return
 
     foreach (battleInfo in queueInfo) {

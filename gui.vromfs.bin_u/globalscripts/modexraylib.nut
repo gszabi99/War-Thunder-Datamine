@@ -694,12 +694,12 @@ function getWeaponDriveTurretTexts(commonData, weaponPartName, weaponInfoBlk, ne
       }
 
       if (speed != 0) {
-        let speedTxt = speed < 10 ? format("%.1f", speed) : format("%d", round(speed))
+        let speedTxt = format("%.1f", speed)
         let res = { value = "".concat(loc($"crewSkillParameter/{a.modifName}"), colon, speedTxt, unitsDegPerSec) }
         if (simUnitType == S_TANK) {
           let topVal = a.getTankTopVal(commonData) * speedMul
           if (topVal > speed)
-            res.topValue <- "".concat(topVal < 10 ? format("%.1f", topVal) : format("%d", round(topVal)), unitsDegPerSec)
+            res.topValue <- "".concat(format("%.1f", topVal), unitsDegPerSec)
         }
         desc.append(res)
       }
@@ -1286,7 +1286,7 @@ function mkCoalBunkerDesc(_partType, _params, commonData) {
 function getUnitSensorsList(commonData) {
   let { unitDataCache } = commonData
   if ("sensorBlkList" not in unitDataCache) {
-    let { unitBlk, unit, findAnyModEffectValueBlk, isModAvailableOrFree,
+    let { unitBlk, unitName, findAnyModEffectValueBlk, isModAvailableOrFree,
       isDebugBatchExportProcess
     } = commonData
     let sensorBlkList = []
@@ -1305,10 +1305,12 @@ function getUnitSensorsList(commonData) {
       if (unitBlk?.WeaponSlots)
         foreach (slotBlk in unitBlk.WeaponSlots % "WeaponSlot")
           foreach (slotPresetBlk in (slotBlk % "WeaponPreset"))
-            if (slotPresetBlk?.sensors && slotPresetBlk?.reqModification
-                && isModAvailableOrFree(unit.name, slotPresetBlk.reqModification))
-              for (local b = 0; b < slotPresetBlk.sensors.blockCount(); b++)
-                appendOnce(slotPresetBlk.sensors.getBlock(b), sensorBlkList, false, isEqual)
+            if (slotPresetBlk?.sensors != null) {
+              if (isDebugBatchExportProcess || slotPresetBlk?.reqModification == null
+                  || isModAvailableOrFree(unitName, slotPresetBlk.reqModification))
+                for (local b = 0; b < slotPresetBlk.sensors.blockCount(); b++)
+                  appendOnce(slotPresetBlk.sensors.getBlock(b), sensorBlkList, false, isEqual)
+            }
     }
     unitDataCache.sensorBlkList <- sensorBlkList
   }

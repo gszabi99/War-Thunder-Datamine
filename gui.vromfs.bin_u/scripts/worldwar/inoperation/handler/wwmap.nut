@@ -47,8 +47,8 @@ let { getRearZones, getRearZonesOwnedToSide, getRearZonesLostBySide
 } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 const WW_LOG_REQUEST_DELAY = 1
 const WW_LOG_EVENT_LOAD_AMOUNT = 10
@@ -458,7 +458,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       }
     }
 
-    let isInOperationQueue = queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
+    let isInOperationQueue = isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
     if (isInOperationQueue)
       return g_world_war.leaveWWBattleQueues()
 
@@ -1389,7 +1389,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     this.currentSelectedObject == mapObjectSelect.LOG_ARMY
 
   isOperationActive = @() !isOperationFinished()
-  isInQueue = @() this.isOperationActive() && queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
+  isInQueue = @() this.isOperationActive() && isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE)
 
   function onTransportArmyLoad() {
     this.setActionMode(AUT_TransportLoad)

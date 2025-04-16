@@ -46,15 +46,6 @@ function onQueueInfoUpdated(params) {
   broadcastEvent("QueueInfoRecived", { queue_info = params })
 }
 
-function onQueueJoin(params) {
-  let queue = ::queues.createQueue(params)
-  ::queues.afterJoinQueue(queue)
-}
-
-function notifyQueueLeave(params) {
-  ::queues.afterLeaveQueues(params)
-}
-
 function fetchClustersList(params, cb) {
   matchingApiFunc("wtmm_static.fetch_clusters_list", cb, params)
 }
@@ -86,8 +77,6 @@ function enqueueInSession(params, cb) {
 matchingRpcSubscribe("match.notify_clusters_changed", onClustersChanged)
 matchingRpcSubscribe("match.notify_game_modes_changed", onGameModesChangedRndDelay)
 matchingRpcSubscribe("match.update_queue_info", onQueueInfoUpdated)
-matchingRpcSubscribe("match.notify_queue_join", onQueueJoin)
-matchingRpcSubscribe("match.notify_queue_leave", notifyQueueLeave)
 
 subscriptions.addListenersWithoutEnv({
   SignOut = @(_) clearChangedGameModesParams()
@@ -103,7 +92,6 @@ subscriptions.addListenersWithoutEnv({
 })
 
 return {
-  notifyQueueLeave
   enqueueInSession
   fetchGameModesDigest
   fetchGameModesInfo

@@ -68,6 +68,7 @@ let { getRoomMemberPublicParam } = require("%scripts/matchingRooms/sessionLobbyM
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
+let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     
@@ -305,10 +306,6 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     }
   ]
 
-  widgetsList = [{
-    widgetId = DargWidgets.DAMAGE_PANEL
-  }]
-
   function initScreen() {
     registerPersistentData("Spectator", this, [ "debugMode" ])
 
@@ -393,7 +390,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     for (local i = 0; i < objReplayControls.childrenCount(); i++) {
       let obj = objReplayControls.getChild(i)
       if (obj?.is_shortcut && obj?.id) {
-        local hotkeys = ::get_shortcut_text({
+        local hotkeys = getShortcutText({
           shortcuts = getShortcuts([ obj.id ])
           shortcutId = 0
           cantBeEmpty = false
@@ -1500,7 +1497,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
             let shortcuts = getShortcuts(keys.shortcuts)
             let locNames = []
             foreach (idx, _data in shortcuts) {
-              let shortcutsText = ::get_shortcut_text({
+              let shortcutsText = getShortcutText({
                 shortcuts = shortcuts,
                 shortcutId = idx,
                 strip_tags = true

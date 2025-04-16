@@ -147,12 +147,12 @@ let { checkNonApprovedResearches } = require("%scripts/researches/researchAction
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { haveLobby } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { isUsedPlayersOwnUnit } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
-let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
 let { getCurMpTitle, getLocalTeamForMpStats } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { getWPIcon, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
 let { fill_unlock_block } = require("%scripts/unlocks/unlocks.nut")
 let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
+let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 let { guiStartMpLobby, goForwardSessionLobbyAfterDebriefing, checkLeaveRoomInDebriefing
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
@@ -3051,7 +3051,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   function isToBattleActionEnabled() {
     return (this.skipAnim || this.state == debrState.done)
       && (this.gm == GM_DOMINATION) && !!(this.gameType & GT_VERSUS)
-      && !checkIsInQueue()
+      && !isAnyQueuesActive()
       && !(g_squad_manager.isSquadMember() && g_squad_manager.isMeReady())
       && !hasSessionInLobby()
       && !this.hasAnyFinishedResearch()

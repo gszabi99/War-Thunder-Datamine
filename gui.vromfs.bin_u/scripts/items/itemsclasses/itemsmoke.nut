@@ -25,7 +25,7 @@ let DataBlock = require("DataBlock")
 let { getUnlockTypeById } = require("unlocks")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { set_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 
 function mergeToBlk(sourceTable, blk) {
@@ -166,7 +166,7 @@ let Smoke = class (BaseItem) {
     }, misInfo)
 
     select_training_mission(misInfo)
-    queues.checkAndStart(@() get_cur_base_gui_handler().goForward(guiStartFlight),
+    checkQueueAndStart(@() get_cur_base_gui_handler().goForward(guiStartFlight),
       null, "isCanNewflight")
   }
 

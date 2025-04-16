@@ -47,10 +47,12 @@ let { getMissionsComplete } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getPkgLocName } = require("%scripts/clientState/contentPacks.nut")
 let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart, leaveQueue } = require("%scripts/queue/queueManager.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 let { create_event_description } = require("%scripts/events/eventDescription.nut")
 let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
+let { isQueueActive, findQueue, isEventQueue } = require("%scripts/queue/queueState.nut")
+let { getQueueMode, getQueuePreferredViewClass } = require("%scripts/queue/queueInfo.nut")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
@@ -305,8 +307,8 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurEventQueue() {
-    let q = queues.findQueue({}, QUEUE_TYPE_BIT.EVENT)
-    return (q && queues.isQueueActive(q)) ? q : null
+    let q = findQueue({}, QUEUE_TYPE_BIT.EVENT)
+    return (q && isQueueActive(q)) ? q : null
   }
 
   function isInEventQueue() {
@@ -318,11 +320,11 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!q)
       return
 
-    queues.leaveQueue(q, { isCanceledByPlayer = true })
+    leaveQueue(q, { isCanceledByPlayer = true })
   }
 
   function onEventQueueChangeState(p) {
-    if (!queues.isEventQueue(p?.queue))
+    if (!isEventQueue(p?.queue))
       return
 
     this.updateQueueInterface()
@@ -340,7 +342,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onOpenClusterSelect(obj) {
-    queues.checkAndStart(
+    checkQueueAndStart(
       Callback(@() openClustersMenuWnd(obj, "bottom"), this),
       null,
       "isCanChangeCluster")
@@ -381,7 +383,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.skipCheckQueue = true
-    this.selectEvent(queues.getQueueMode(this.queueToShow))
+    this.selectEvent(getQueueMode(this.queueToShow))
     this.skipCheckQueue = false
   }
 
@@ -494,7 +496,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let queueObj = showObjById("div_before_chapters_list", true, this.scene)
     queueObj.height = "ph"
-    let queueHandlerClass = this.queueToShow && queues.getQueuePreferredViewClass(this.queueToShow)
+    let queueHandlerClass = this.queueToShow && getQueuePreferredViewClass(this.queueToShow)
     let queueHandler = loadHandler(queueHandlerClass, {
       scene = queueObj,
       leaveQueueCb = Callback(this.onLeaveEvent, this)
@@ -504,7 +506,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateQueueInterface() {
-    if (!this.queueToShow || !queues.isQueueActive(this.queueToShow))
+    if (!this.queueToShow || !isQueueActive(this.queueToShow))
       this.queueToShow = this.getCurEventQueue()
     this.checkQueueInfoBox()
     this.restoreQueueParams()

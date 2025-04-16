@@ -38,7 +38,7 @@ let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
 let { getMaxWeaponryDiscountByUnitName } = require("%scripts/discounts/discountUtils.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
@@ -166,7 +166,7 @@ let class SlotInfoPanel (gui_handlers.BaseGuiHandlerWT) {
     if (!unit)
       return
 
-    queues.checkAndStart(@() guiStartTestflight({ unit }), null, "isCanNewflight")
+    checkQueueAndStart(@() guiStartTestflight({ unit }), null, "isCanNewflight")
   }
 
   function onAirInfoWeapons() {

@@ -19,22 +19,13 @@ let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
 let { get_game_mode } = require("mission")
 let { quit_to_debriefing, interrupt_multiplayer } = require("guiMission")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
-let { OPTIONS_MODE_GAMEPLAY, OPTIONS_MODE_CAMPAIGN, OPTIONS_MODE_TRAINING,
-  OPTIONS_MODE_SINGLE_MISSION, OPTIONS_MODE_DYNAMIC, OPTIONS_MODE_MP_DOMINATION,
-  OPTIONS_MODE_MP_SKIRMISH
-} = require("%scripts/options/optionsExtNames.nut")
-let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { add_msg_box, remove_scene_box, update_msg_boxes, reset_msg_box_check_anim_time, need_new_msg_box_anim
 } = require("%sqDagui/framework/msgBox.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { get_warpoints_blk, get_ranks_blk } = require("blkGetters")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { measureType } = require("%scripts/measureType.nut")
-let { is_mode_with_teams, get_mplayer_color } = require("%scripts/utils_sa.nut")
-let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
-
-::usageRating_amount <- [0.0003, 0.0005, 0.001, 0.002]
+let { is_mode_with_teams } = require("%scripts/utils_sa.nut")
+let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
 
 ::current_wait_screen <- null
 
@@ -134,21 +125,6 @@ eventbus_subscribe("PsnLoginStateChanged", @(p) p?.isSignedIn ? null : on_lost_p
   }
 }
 
-let optionsModeByGameMode = {
-  [GM_CAMPAIGN]          = OPTIONS_MODE_CAMPAIGN,
-  [GM_TRAINING]          = OPTIONS_MODE_TRAINING,
-  [GM_TEST_FLIGHT]       = OPTIONS_MODE_TRAINING,
-  [GM_SINGLE_MISSION]    = OPTIONS_MODE_SINGLE_MISSION,
-  [GM_USER_MISSION]      = OPTIONS_MODE_SINGLE_MISSION,
-  [GM_DYNAMIC]           = OPTIONS_MODE_DYNAMIC,
-  [GM_BUILDER]           = OPTIONS_MODE_DYNAMIC,
-  [GM_DOMINATION]        = OPTIONS_MODE_MP_DOMINATION,
-  [GM_SKIRMISH]          = OPTIONS_MODE_MP_SKIRMISH,
-}
-
-::get_options_mode <- function get_options_mode(game_mode) {
-  return optionsModeByGameMode?[game_mode] ?? OPTIONS_MODE_GAMEPLAY
-}
 
 ::get_squad_bonus_for_same_cyber_cafe <- function get_squad_bonus_for_same_cyber_cafe(effectType, num = -1) {
   if (num < 0)
@@ -211,16 +187,11 @@ let optionsModeByGameMode = {
 }
 
 ::getCountryByAircraftName <- function getCountryByAircraftName(airName) { 
-  let country = ::getShopCountry(airName)
+  let country = getShopCountry(airName)
   let cPrefixLen = "country_".len()
   if (country.len() > cPrefixLen)
     return country.slice(cPrefixLen)
   return ""
-}
-
-::getShopCountry <- function getShopCountry(airName) {
-  let air = getAircraftByName(airName)
-  return air?.shopCountry ?? ""
 }
 
 ::is_game_mode_with_spendable_weapons <- function is_game_mode_with_spendable_weapons() {
@@ -241,38 +212,6 @@ local last_update_entitlements_time = get_time_msec()
     return update_entitlements()
   }
   return -1
-}
-
-::get_number_of_units_by_years <- function get_number_of_units_by_years(country, years) {
-  let result = {}
-  foreach (year in years) {
-    result[$"year{year}"] <- 0
-    result[$"beforeyear{year}"] <- 0
-  }
-
-  foreach (air in getAllUnits()) {
-    if (getEsUnitType(air) != ES_UNIT_TYPE_AIRCRAFT)
-      continue
-    if (!("tags" in air) || !air.tags)
-      continue;
-    if (air.shopCountry != country)
-      continue;
-
-    local maxYear = 0
-    foreach (year in years) {
-      let parameter = $"year{year}";
-      foreach (tag in air.tags)
-        if (tag == parameter) {
-          result[parameter]++
-          maxYear = max(year, maxYear)
-        }
-    }
-    if (maxYear)
-      foreach (year in years)
-        if (year > maxYear)
-          result[$"beforeyear{year}"]++
-  }
-  return result;
 }
 
 ::on_have_to_start_chard_op <- function on_have_to_start_chard_op(message) {
@@ -343,28 +282,7 @@ local server_message_end_time = 0
 
 
 
-::build_mplayer_name <- function build_mplayer_name(player, colored = true, withClanTag = true, withUnit = false, unitNameLoc = "") {
-  if (!player)
-    return ""
 
-  local unitName = ""
-  if (withUnit) {
-    if (unitNameLoc == "") {
-      let unitId = player.aircraftName
-      if (unitId != "")
-        unitNameLoc = loc($"{unitId}_1")
-    }
-    if (unitNameLoc != "")
-      unitName = loc("ui/parentheses", { text = unitNameLoc })
-  }
-
-  let clanTag = withClanTag && !player?.isBot ? player.clanTag : ""
-  let name = getPlayerFullName(player?.isBot ? player.name : getPlayerName(player.name),
-                                              clanTag,
-                                              unitName)
-
-  return colored ? colorize(get_mplayer_color(player), name) : name
-}
 
 ::destroy_session_scripted <- function destroy_session_scripted(sourceInfo) {
   let needEvent = is_mplayer_peer()

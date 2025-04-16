@@ -9,7 +9,6 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { askPurchaseDecorator, askConsumeDecoratorCoupon,
   findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { canGetDecoratorFromTrophy } = require("%scripts/items/itemsManagerGetters.nut")
 
@@ -124,9 +123,6 @@ local CollectionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurDecoratorObj() {
-    if (showConsoleButtons.value && !this.collectionDecalsListObj.isHovered())
-      return null
-
     let value = getObjValidIndex(this.collectionDecalsListObj)
     if (value < 0)
       return null
@@ -137,22 +133,23 @@ local CollectionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function updateDecoratorInfo() {
     let decoratorConfig = this.getDecoratorConfig()
     let decorator = decoratorConfig?.decorator
-    let hasInfo = decorator != null
-    let infoNestObj = showObjById("decorator_info", hasInfo, this.scene)
-    if (hasInfo) {
-      let imgRatio = 1.0 / (decorator?.decoratorType.getRatio(decorator) ?? 1)
-      updateDecoratorDescription(infoNestObj, this, decorator?.decoratorType, decorator, {
-        additionalDescriptionMarkup = decoratorConfig.isPrize
-          ? this.collectionsList?[decoratorConfig?.collectionIdx ?? -1]?.getCollectionViewForPrize({ hasHorizontalFlow = true })
-          : null
-        imgSize = ["1@profileMedalSizeBig", $"{imgRatio}@profileMedalSizeBig"]
-        showAsTrophyContent = !decorator?.canBuyUnlock(null)
-          && !decorator?.canGetFromCoupon(null)
-          && !decorator?.canBuyCouponOnMarketplace(null)
-          && canGetDecoratorFromTrophy(decorator)
-        needAddIndentationUnderImage = false
-      })
-    }
+    if (decorator == null)
+      return
+
+    let infoNestObj = showObjById("decorator_info", true, this.scene)
+    let imgRatio = 1.0 / decorator.decoratorType.getRatio(decorator)
+    updateDecoratorDescription(infoNestObj, this, decorator.decoratorType, decorator, {
+      additionalDescriptionMarkup = decoratorConfig.isPrize
+        ? this.collectionsList?[decoratorConfig?.collectionIdx ?? -1]?.getCollectionViewForPrize({ hasHorizontalFlow = true })
+        : null
+      imgSize = ["1@profileMedalSizeBig", $"{imgRatio}@profileMedalSizeBig"]
+      showAsTrophyContent = !decorator.canBuyUnlock(null)
+        && !decorator.canGetFromCoupon(null)
+        && !decorator.canBuyCouponOnMarketplace(null)
+        && canGetDecoratorFromTrophy(decorator)
+      needAddIndentationUnderImage = false
+    })
+
     this.updateButtons(decoratorConfig)
   }
 
@@ -191,6 +188,8 @@ local CollectionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function updateCollectionsList() {
     this.collectionsList = this.filterCollectionsList()
     this.updateContentVisibility()
+    if (this.collectionsList.len() != this.collectionsListObj.childrenCount())
+      this.fillCollectionsList()
   }
 
   function onEventProfileUpdated(_p) {

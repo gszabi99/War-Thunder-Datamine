@@ -8,7 +8,7 @@ let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGu
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 gui_handlers.ShopViewWnd <- class (gui_handlers.ShopMenuHandler) {
   wndType = handlerType.MODAL
@@ -72,7 +72,7 @@ function openShopViewWndFromPromo(params) {
     switchProfileCountry(country)
     showUnitInShop() }, this)
   if (country != profileCountrySq.value)
-    queues.checkAndStart(
+    checkQueueAndStart(
       acceptCallback,
       null,
       "isCanModifyCrew")

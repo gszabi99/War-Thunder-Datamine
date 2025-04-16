@@ -70,8 +70,8 @@ let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { setNationBonusMarkState, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
-let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 local lastUnitType = null
 
@@ -2020,7 +2020,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isSceneActive())
       return
 
-    if (needSelectCrew && !checkIsInQueue())
+    if (needSelectCrew && !isAnyQueuesActive())
       takeUnitInSlotbar(unit, {
         unitObj = this.getAirObj(unit.name)
         cellClass = "shopClone"
@@ -2041,7 +2041,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showUnitInShop(unitId) {
-    if (!this.isSceneActive() || checkIsInQueue() || this.shopResearchMode)
+    if (!this.isSceneActive() || isAnyQueuesActive() || this.shopResearchMode)
       return
 
     this.highlightUnitsClear()

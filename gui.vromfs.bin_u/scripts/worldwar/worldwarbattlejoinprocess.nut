@@ -1,10 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 
-
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { get_time_msec } = require("dagor.time")
 let { wwGetOperationId } = require("worldwar")
 let { getBrokenAirsInfo, checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
+let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
+let { joinQueue, checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 let WwBattleJoinProcess = class {
   wwBattle = null
@@ -69,10 +70,10 @@ let WwBattleJoinProcess = class {
   }
 
   function joinStep3_internal() {
-    if (::queues.isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE))
+    if (isAnyQueuesActive(QUEUE_TYPE_BIT.WW_BATTLE))
       return this.remove()
 
-    ::queues.checkAndStart(
+    checkQueueAndStart(
       Callback(this.joinStep4_repairInfo, this),
       Callback(this.remove, this),
       "isCanNewflight"
@@ -95,7 +96,7 @@ let WwBattleJoinProcess = class {
   }
 
   function joinStep5_paramsForQueue() {
-    ::queues.joinQueue({
+    joinQueue({
       operationId = wwGetOperationId()
       battleId = this.wwBattle.id
       wwBattle = this.wwBattle

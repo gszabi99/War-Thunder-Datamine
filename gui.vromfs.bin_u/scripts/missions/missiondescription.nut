@@ -26,6 +26,7 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
 let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { isMissionForUnitType, canPlayGamemodeBySquad } = require("%scripts/missions/missionsUtils.nut")
+let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
 
 
 
@@ -239,7 +240,7 @@ gui_handlers.MissionDescription <- class (gui_handlers.BaseGuiHandlerWT) {
       config.aircraft <- "; ".concat(getUnitName(aircraft),
         getWeaponNameText(aircraft, null, blk.getStr("player_weapons", ""), ", "))
 
-      let country = ::getShopCountry(aircraft)
+      let country = getShopCountry(aircraft)
       log($"aircraft = {aircraft} country = {country}")
       config.flag <- getCountryIcon(country, true)
     }

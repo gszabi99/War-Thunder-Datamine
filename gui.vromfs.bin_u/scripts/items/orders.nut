@@ -30,6 +30,7 @@ let { orderTypes } = require("%scripts/items/orderType.nut")
 let { objectiveStatus, getObjectiveStatusByCode
 } = require("%scripts/misObjectives/objectiveStatus.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
+let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
 
 const AUTO_ACTIVATE_TIME = 60
 const MAX_ROWS_IN_SCORE_TABLE = 3
@@ -303,7 +304,7 @@ function updateStatusTextView(orderObject, fullUpdate) {
 
     
     view.orderStarterLabel <- "".concat(loc("items/order/status/starter"), loc("ui/colon"))
-    view.orderStarter <- ::build_mplayer_name(orderObject.starterPlayer)
+    view.orderStarter <- buildMplayerName(orderObject.starterPlayer)
 
     
     view.orderTargetLabel <- "".concat(loc("items/order/status/target"), loc("ui/colon"))
@@ -323,7 +324,7 @@ function updateStatusTextView(orderObject, fullUpdate) {
   view.orderTimeleft <- time.secondsToString(getOrderTimeleft(orderObject))
   view.cooldownTimeleft <- time.secondsToString(cooldownTimeleft.value)
   if (orderObject.targetPlayer != emptyPlayerData)
-    view.orderTarget <- ::build_mplayer_name(orderObject.targetPlayer)
+    view.orderTarget <- buildMplayerName(orderObject.targetPlayer)
   if (orderObject.timeToSwitchTarget != -1)
     view.timeToSwitchTarget <- time.secondsToString(orderObject.timeToSwitchTarget)
 }
@@ -662,7 +663,7 @@ function getScoreTableTexts() {
     let playerData = getPlayerDataByScoreData(item)
     return {
       score = orderObject.orderType.formatScore(item.score)
-      player =  ". ".concat((getTblValue("playerIndex", item, 0) + 1), ::build_mplayer_name(playerData))
+      player =  ". ".concat((getTblValue("playerIndex", item, 0) + 1), buildMplayerName(playerData))
     }
   })
 }
@@ -925,7 +926,7 @@ function onEventActiveOrderChanged(params) {
   local text = ""
   if (hasActiveOrder.value) {
     text = loc("items/order/hudMessage/activate", {
-      playerName = ::build_mplayer_name(activeOrder.starterPlayer)
+      playerName = buildMplayerName(activeOrder.starterPlayer)
       orderName = activeOrder.orderItem.getName(false)
     })
     isOrdersHidden = false

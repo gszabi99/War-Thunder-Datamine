@@ -17,7 +17,7 @@ let { INVITE_CHAT_LINK_PREFIX, registerInviteUserlogHandler, showExpiredInvitePo
 } = require("%scripts/invites/invites.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 
 let knownTournamentInvites = []
 

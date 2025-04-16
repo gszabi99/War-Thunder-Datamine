@@ -1,147 +1,164 @@
 {
   "padding": "1@tooltipPadding",
+  "class": "",
   "tdiv": {
     "width": "pw",
     "flow": "vertical",
-    "tdiv": [
-      {
+    "allowActionTooltipBlock": {
+      "id": "allow_action_text_block",
+      "width": "pw",
+      "display": "hide",
+      "textareaNoTab": {
+        "id": "allow_action_text",
         "width": "pw",
-        "div": [
-          {
-            "id": "award_image_sizer",
-            "size": "@profileUnlockIconSize, @profileUnlockIconSize",
-            "layeredIconContainer": {
-              "id": "award_image",
-              "size": "ph, ph",
-              "pos": "50%pw-50%w, 50%ph-50%h",
-              "position": "absolute"
-            },
-            "img": {
-              "id": "award_multiplier",
-              "background-image": "#ui/gameuiskin#window_body_shadow",
-              "pos": "ph-w, ph-h + 0.05ph",
-              "position": "absolute",
-              "display": "hide",
-              "textarea": {
-                "id": "amount_text",
-                "caption": "yes",
-                "overlayTextColor": "userlog",
-                "text": "",
-                "removeParagraphIndent": "yes",
-                "padding": "0.05ph"
+        "smallFont": "yes",
+        "textHide": "yes"
+      }
+    },
+    "contentBlock": {
+      "id": "contentBlock",
+      "css-hier-invalidate": "yes",
+      "width": "pw",
+      "tdiv": [
+        {
+          "width": "pw",
+          "div": [
+            {
+              "id": "award_image_sizer",
+              "size": "@profileUnlockIconSize, @profileUnlockIconSize",
+              "layeredIconContainer": {
+                "id": "award_image",
+                "size": "ph, ph",
+                "pos": "50%pw-50%w, 50%ph-50%h",
+                "position": "absolute"
+              },
+              "img": {
+                "id": "award_multiplier",
+                "background-image": "#ui/gameuiskin#window_body_shadow",
+                "pos": "ph-w, ph-h + 0.05ph",
+                "position": "absolute",
+                "display": "hide",
+                "textarea": {
+                  "id": "amount_text",
+                  "caption": "yes",
+                  "overlayTextColor": "userlog",
+                  "text": "",
+                  "removeParagraphIndent": "yes",
+                  "padding": "0.05ph"
+                }
               }
-            }
-          },
-          {
-            "pos": "1@tooltipPadding, 0",
-            "position": "relative",
-            "flow": "vertical",
-            "width": "fw - 1@tooltipPadding",
-            "textareaNoTab": [
-              {
-                "id": "award_title_text",
-                "width": "pw"
-              },
-              {
-                "id": "unlock_name",
-                "width": "pw",
-                "pare-text": "yes",
-                "overlayTextColor": "unlockHeader",
-                "padding-top": "6@sf/@pf"
-              },
-              {
-                "id": "desc_text",
-                "smallFont": "yes",
-                "width": "pw",
-                "padding-top": "2@dp"
-              },
-              {
-                "id": "mainCond",
-                "width": "pw",
-                "overflow": "hidden",
-                "smallFont": "yes",
-                "text": "",
-                "margin-top": "@blockInterval"
-              },
-              {
-                "id": "multDesc",
-                "width": "pw",
-                "overflow": "hidden",
-                "smallFont": "yes",
-                "text": ""
-              },
-              {
-                "id": "conds",
-                "width": "pw",
-                "overflow": "hidden",
-                "smallFont": "yes",
-                "text": "",
-                "margin-top": "@blockInterval"
-              },
-              {
-                "id": "obtain_info",
-                "width": "pw",
-                "overflow": "hidden",
-                "smallFont": "yes",
-                "text": ""
-              },
-              {
-                "id": "mult_awards_text",
-                "smallFont": "yes",
-                "width": "pw"
-              },
-              {
-                "id": "award_text",
-                "smallFont": "yes",
-                "width": "pw"
-              }
-            ],
-            "challengeDescriptionProgress": {
-              "id": "progress",
-              "max-width": "pw",
-              "value": "",
-              "display": "hide"
             },
-            "div": {
-              "id": "state",
-              "flow": "horizontal",
-              "width": "pw",
-              "padding-top": "6@sf/@pf",
-              "display": "hide",
-              "cardImg": {
-                "id": "state_icon",
-                "pos": "-20%w, 0",
-                "size": "@unlockIconSize, @unlockIconSize",
-                "re-type": "9rect",
-                "background-repeat": "expand",
-                "background-image": "#ui/gameuiskin#favorite",
-                "margin": "0, 0, 8@sf/@pf, 0"
-              },
-              "tdiv": {
-                "width": "fw",
-                "pos": "0, ph/2-h/2",
-                "position": "relative",
-                "flow": "h-flow",
-                "textareaNoTab": {
-                  "id": "state_text",
+            {
+              "pos": "1@tooltipPadding, 0",
+              "position": "relative",
+              "flow": "vertical",
+              "width": "fw - 1@tooltipPadding",
+              "textareaNoTab": [
+                {
+                  "id": "award_title_text",
+                  "width": "pw"
+                },
+                {
+                  "id": "unlock_name",
                   "width": "pw",
+                  "pare-text": "yes",
+                  "overlayTextColor": "unlockHeader",
+                  "padding-top": "6@sf/@pf"
+                },
+                {
+                  "id": "desc_text",
                   "smallFont": "yes",
-                  "hideEmptyText": "yes"
+                  "width": "pw",
+                  "padding-top": "2@dp"
+                },
+                {
+                  "id": "mainCond",
+                  "width": "pw",
+                  "overflow": "hidden",
+                  "smallFont": "yes",
+                  "text": "",
+                  "margin-top": "@blockInterval"
+                },
+                {
+                  "id": "multDesc",
+                  "width": "pw",
+                  "overflow": "hidden",
+                  "smallFont": "yes",
+                  "text": ""
+                },
+                {
+                  "id": "conds",
+                  "width": "pw",
+                  "overflow": "hidden",
+                  "smallFont": "yes",
+                  "text": "",
+                  "margin-top": "@blockInterval"
+                },
+                {
+                  "id": "obtain_info",
+                  "width": "pw",
+                  "overflow": "hidden",
+                  "smallFont": "yes",
+                  "text": ""
+                },
+                {
+                  "id": "mult_awards_text",
+                  "smallFont": "yes",
+                  "width": "pw"
+                },
+                {
+                  "id": "award_text",
+                  "smallFont": "yes",
+                  "width": "pw"
+                }
+              ],
+              "challengeDescriptionProgress": {
+                "id": "progress",
+                "max-width": "pw",
+                "value": "",
+                "display": "hide"
+              },
+              "div": {
+                "id": "state",
+                "flow": "horizontal",
+                "width": "pw",
+                "padding-top": "6@sf/@pf",
+                "display": "hide",
+                "cardImg": {
+                  "id": "state_icon",
+                  "pos": "-20%w, 0",
+                  "size": "@unlockIconSize, @unlockIconSize",
+                  "re-type": "9rect",
+                  "background-repeat": "expand",
+                  "background-image": "#ui/gameuiskin#favorite",
+                  "margin": "0, 0, 8@sf/@pf, 0"
+                },
+                "tdiv": {
+                  "width": "fw",
+                  "pos": "0, ph/2-h/2",
+                  "position": "relative",
+                  "flow": "h-flow",
+                  "textareaNoTab": {
+                    "id": "state_text",
+                    "width": "pw",
+                    "smallFont": "yes",
+                    "hideEmptyText": "yes"
+                  }
                 }
               }
             }
-          }
-        ]
-      },
-      {
-        "id": "subunlocks",
-        "flow": "h-flow",
-        "width": "0.5@sf",
-        "position": "relative",
-        "pos": "50%(pw-w), 0",
-        "margin-top": "@blockInterval",
-        "display": "hide"
-      }
-    ]
+          ]
+        },
+        {
+          "id": "subunlocks",
+          "flow": "h-flow",
+          "width": "0.5@sf",
+          "position": "relative",
+          "pos": "50%(pw-w), 0",
+          "margin-top": "@blockInterval",
+          "display": "hide"
+        }
+      ]
+    }
   }
 }

@@ -17,7 +17,7 @@ let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { getContact } = require("%scripts/contacts/contacts.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart, leaveAllQueues } = require("%scripts/queue/queueManager.nut")
 let { showExpiredInvitePopup, removeInviteToSquad } = require("%scripts/invites/invites.nut")
 
 let Squad = class (BaseInvite) {
@@ -130,7 +130,7 @@ let Squad = class (BaseInvite) {
 
   function checkAutoAcceptInvite() {
     let invite = this
-    queues.leaveAllQueues(null, function() {
+    leaveAllQueues(null, function() {
       if (!invite.isValid())
         return
 
@@ -199,7 +199,7 @@ let Squad = class (BaseInvite) {
       return
 
     let acceptCallback = Callback(this._implAccept, this)
-    let callback = function () { queues.checkAndStart(acceptCallback, null, "isCanNewflight") }
+    let callback = function () { checkQueueAndStart(acceptCallback, null, "isCanNewflight") }
     let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
       { allowWhenAlone = false, msgId = "squad/leave_squad_for_invite" },
       callback

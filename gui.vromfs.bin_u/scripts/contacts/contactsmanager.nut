@@ -21,6 +21,13 @@ const EPLX_CLAN = "clan"
 const EPLX_PS4_FRIENDS = "ps4_friends"
 const EPLX_STEAM = "s"
 
+let maxContactsByGroup = {
+  [EPL_FRIENDLIST] = 300,
+  [EPL_BLOCKLIST] = 300,
+  [EPL_RECENT_SQUAD] = 100,
+  OTHER = 100
+}
+
 let contactsGroupsDefault = [EPLX_SEARCH, EPL_FRIENDLIST, EPL_RECENT_SQUAD, EPL_BLOCKLIST]
 
 let contactsGroupWithoutMaxCount = {
@@ -65,6 +72,8 @@ let contactsByGroups = persist("contactsByGroups", @() {})
 
 
 
+
+let getMaxContactsByGroup = @(groupName) maxContactsByGroup?[groupName] ?? maxContactsByGroup.OTHER
 
 let predefinedContactsGroupToWtGroup = { 
   approved = EPL_FRIENDLIST
@@ -186,10 +195,10 @@ function addRecentContacts(contacts) {
       uidsToSave[uid] <- serverTime
   }
   uidsToSave = uidsToSave.__update(recentGroup.value)
-  if (uidsToSave.len() > EPL_MAX_PLAYERS_IN_LIST) {
+  if (uidsToSave.len() > maxContactsByGroup.recent) {
     let resArray = uidsToSave.keys().map(@(v) { uid = v, serverTime = uidsToSave[v] })
     resArray.sort(@(a, b) b.serverTime <=> a.serverTime)
-    for (local i = EPL_MAX_PLAYERS_IN_LIST; i < resArray.len(); i++)
+    for (local i = maxContactsByGroup.recent; i < resArray.len(); i++)
       uidsToSave.$rawdelete(resArray[i].uid)
   }
 
@@ -354,4 +363,5 @@ return {
   clanUserTable
   findContactByPSNId
   findContactByXboxId
+  getMaxContactsByGroup
 }

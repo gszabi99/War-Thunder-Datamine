@@ -26,7 +26,7 @@ let { boosterEffectType } = require("%scripts/items/boosterEffect.nut")
 let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
 let { getTournamentRewardData, getLogNameByType, getUserLogsList, updateRepairCost } = require("%scripts/userLog/userlogUtils.nut")
 let { getTotalRewardDescText, getConditionText } = require("%scripts/events/eventRewards.nut")
-let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { stripTags, cutPrefix, split, startsWith, endsWith } = require("%sqstd/string.nut")
@@ -62,8 +62,14 @@ let { RECYCLED_ITEMS_IDS } = require("%scripts/items/itemsRecycler.nut")
 let { ps4CheckAndReplaceContentDisabledText } = require("%scripts/clans/clanTextInfo.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { itemType } = require("%scripts/items/itemsConsts.nut")
-let { getTrophyRewardText, getRewardsListViewData } = require("%scripts/items/prizesView.nut")
+let { getTrophyRewardText, getRewardsListViewData, getPrizeImageByConfig,
+  getPrizeTypeIcon } = require("%scripts/items/prizesView.nut")
 let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
+let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
+let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
+let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 
 let imgFormat = @"img {size:t='%s'; background-image:t='%s';
  background-repeat:t='aspect-ratio'; margin-right:t='0.01@scrn_tgt;'} "
@@ -93,6 +99,23 @@ let clanActionNames = {
   [ULC_UPGRADE_CLAN]            = "clan_was_upgraded",
   [ULC_UPGRADE_MEMBERS]         = "clan_max_members_count_was_increased",
 }
+
+let defaultViewParams = {
+  availableAmount = 1
+  showPrice = false
+  interactive = true
+  showAction = false
+  bigPicture = false
+  isPrizeUnitBought = false
+  contentIcon = false
+  enableBackground = false
+  isItemLocked = false
+  hasButton = true
+  onClick = null
+  showSellAmount = false
+  hasFocusBorder = true
+}
+
 let getClanActionName = @(action) clanActionNames?[action] ?? "unknown"
 
 function getDecoratorUnlock(resourceId, resourceType) {
@@ -176,6 +199,37 @@ function getUserlogImageItem(item, params = {}) {
 
   params = defaultParams.__merge(params)
   return item ? handyman.renderCached(("%gui/items/item.tpl"), { items = item.getViewData(params) }) : ""
+}
+
+function getExternalInventoryTrophyContent(config) {
+  local contentType = getTrophyRewardType(config)
+  contentType = contentType != "resourceType" ? contentType : config.resourceType
+  let itemData = { image = "", icon = "" }
+
+  if(contentType != "unit") {
+    itemData.image = getPrizeImageByConfig(config, !isRewardItem(contentType), "", true)
+
+    local icon = null
+    if (contentType == "unlock") {
+      let unlock = getUnlockById(config.unlock)
+      if (unlock != null) {
+        let unlockConditions = buildConditionsConfig(unlock)
+        let unlockData = ::build_log_unlock_data(unlockConditions)
+        icon = unlockData?.descrImage ?? unlockData?.image
+      }
+    }
+
+    itemData.icon = icon ?? getPrizeTypeIcon(config, true)
+  }
+  else {
+    let unit = getAircraftByName(config.unit)
+    itemData.icon = getUnitTooltipImage(unit)
+    itemData.image = handyman.renderCached(("%gui/items/item.tpl"), { items = defaultViewParams.__merge({
+      tooltipId = getTooltipType("UNIT").getTooltipId(config.unit)
+      layered_image = LayersIcon.getIconData(null, itemData.icon) })
+    })
+  }
+  return itemData
 }
 
 function getUserlogViewData(logObj) {
@@ -520,14 +574,14 @@ function getUserlogViewData(logObj) {
   else if (logObj.type == EULT_BUYING_AIRCRAFT) {
     res.name = "".concat(format(loc($"userlog/{logName}"), getUnitName(logObj.aname)), priceText)
     res.logImg = "#ui/gameuiskin#log_buy_aircraft"
-    let country = ::getShopCountry(logObj.aname)
+    let country = getShopCountry(logObj.aname)
     if (checkCountry(country, "getShopCountry"))
       res.logImg2 = getCountryIcon(country)
   }
   else if (logObj.type == EULT_REPAIR_AIRCRAFT) {
     res.name = "".concat(format(loc($"userlog/{logName}"), getUnitName(logObj.aname)), priceText)
     res.logImg = "#ui/gameuiskin#log_repair_aircraft"
-    let country = ::getShopCountry(logObj.aname)
+    let country = getShopCountry(logObj.aname)
     if (checkCountry(country, "getShopCountry"))
       res.logImg2 = getCountryIcon(country)
   }
@@ -547,7 +601,7 @@ function getUserlogViewData(logObj) {
         Cost(logObj[$"cost{idx}"]).toStringWithParams({ isWpAlwaysShown = true }))
       totalCost += logObj[$"cost{idx}"]
       if (oneCountry) {
-        let c = ::getShopCountry(airName)
+        let c = getShopCountry(airName)
         if (idx == 0)
           country = c
         else if (country != c)
@@ -774,7 +828,7 @@ function getUserlogViewData(logObj) {
                      unitName = colorize("userlogColoredText", getUnitName(logObj.aname))
                    }), priceText)
     res.logImg = "#ui/gameuiskin#log_buy_spare_aircraft"
-    let country = ::getShopCountry(logObj.aname)
+    let country = getShopCountry(logObj.aname)
     if (checkCountry(country, "getShopCountry"))
       res.logImg2 = getCountryIcon(country)
   }
@@ -1055,7 +1109,7 @@ function getUserlogViewData(logObj) {
     res.name <- loc($"userlog/{logName}/name", locTbl)
     res.description <- "".concat(loc($"userlog/{logName}/desc", locTbl), desc)
 
-    let country = ::getShopCountry(logObj.unit)
+    let country = getShopCountry(logObj.unit)
     if (checkCountry(country, "getShopCountry"))
       res.logImg2 = getCountryIcon(country)
   }
@@ -1116,11 +1170,17 @@ function getUserlogViewData(logObj) {
 
     if (isItemDefAutoConsume && isExtTrophy) {
       let usedText = getTrophyRewardText(logObj, false, "userlogColoredText")
-      let receivedItem = findItemById(logObj?.item)
-
       res.name = " ".concat(loc("ItemBlueprintAssembleUnitInfo"), usedText)
-      res.logImg = receivedItem?.getSmallIconName()
-      res.descriptionBlk <- getUserlogImageItem(receivedItem)
+      let receivedItem = findItemById(logObj?.item)
+      if (receivedItem == null) {
+        let { image, icon } = getExternalInventoryTrophyContent(logObj)
+        res.logImg = icon
+        res.descriptionBlk <- image
+      }
+      else {
+        res.logImg = receivedItem.getSmallIconName()
+        res.descriptionBlk <- getUserlogImageItem(receivedItem)
+      }
     }
     else if (item) {
       let tags = item?.itemDef.tags
@@ -1273,7 +1333,7 @@ function getUserlogViewData(logObj) {
       locId = $"userlog/{logName}"
       let unit =  getTblValue("unit", logObj)
       if (unit != null)
-        res.logImg2 = getCountryIcon(::getShopCountry(unit))
+        res.logImg2 = getCountryIcon(getShopCountry(unit))
       let numSpares = getTblValue("numSpares", logObj, 1)
       res.name = loc($"{locId}_name/universalSpare", {
                      numSparesColored = colorize("userlogColoredText", numSpares)
@@ -1377,7 +1437,7 @@ function getUserlogViewData(logObj) {
 
     res.logImg = "#ui/gameuiskin#convert_xp.svg"
     let unitName = logObj["unit"]
-    let country = ::getShopCountry(unitName)
+    let country = getShopCountry(unitName)
     if (checkCountry(country, "getShopCountry"))
       res.logImg2 = getCountryIcon(country)
 

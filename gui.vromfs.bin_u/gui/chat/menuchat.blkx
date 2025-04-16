@@ -290,11 +290,12 @@
             }
           }
         ],
-        "tdiv": {
+        "ChatInputPlace": {
           "id": "chat_input_place",
           "width": "pw",
           "pos": "0, 0",
           "position": "relative",
+          "sendHintType": "menu",
           "EditBox": {
             "id": "menuchat_input",
             "width": "fw",
@@ -321,6 +322,21 @@
             "on_click": "onChatSend",
             "noMargin": "yes",
             "showConsoleImage": "no"
+          },
+          "SendButtonHint": {
+            "id": "btn_send_hint",
+            "position": "absolute",
+            "display": "hide",
+            "padding": "15@sf/@pf",
+            "background-color": "@frameHeaderBackgroundColor",
+            "border-color": "@frameDarkMenuBorderColor",
+            "border": "yes",
+            "border-offset": "@dp",
+            "textareaNoTab": {
+              "width": "pw",
+              "text": "#chat/send_disabled_hint",
+              "smallFont": "yes"
+            }
           }
         }
       }

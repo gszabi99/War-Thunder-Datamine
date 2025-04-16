@@ -44,7 +44,7 @@ let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let DataBlock = require("DataBlock")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { enable_current_modifications } = require("%scripts/weaponry/weaponryActions.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 
@@ -372,7 +372,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (isInSessionRoom.get())
       return this.goBack()
 
-    queues.checkAndStart(
+    checkQueueAndStart(
       Callback(function() {
         this.applyFunc = function() {
           if (get_gui_option(USEROPT_DIFFICULTY) == "custom") {

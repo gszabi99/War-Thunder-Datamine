@@ -6,6 +6,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let clanRewardsModal = require("%scripts/rewards/clanRewardsModal.nut")
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 let { gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")
+let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
 
 function openComplainWnd(clanData) {
   local leader = u.search(clanData.members, @(member) member.role == ECMR_LEADER)
@@ -15,7 +16,7 @@ function openComplainWnd(clanData) {
 }
 
 function requestOpenComplainWnd(clanId) {
-  if (!::tribunal.canComplaint())
+  if (!tribunal.canComplaint())
     return
 
   let taskId = clan_request_info(clanId, "", "")

@@ -55,7 +55,12 @@ tdiv {
       }
       weaponPresetTooltipParams {
         width:t='pw'
+        <<^noInternalPadding>>
         padding:t='1@bulletTooltipPadding, 1@bulletTooltipPadding, 1@bulletTooltipPadding, 1/2@bulletTooltipPadding'
+        <</noInternalPadding>>
+        <<#noInternalPadding>>
+        padding:t='0'
+        <</noInternalPadding>>
         flow:t='vertical'
 
         <<#presetParams>>
@@ -188,14 +193,12 @@ tdiv {
     }
     <</changeToSpecs>>
 
-    <<^presetsNames>>
     <<#showFooter>>
     div {
       width:t='pw'
       include "%gui/weaponry/weaponTooltipFooter.tpl"
     }
     <</showFooter>>
-    <</presetsNames>>
   }
 }
 

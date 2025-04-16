@@ -46,9 +46,10 @@ let { updateContact, update_contacts_by_list } = require("%scripts/contacts/cont
 let { invitePlayerToSessionRoom } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { isMemberInMySquadByName, isMemberInMySquadById } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
-let { checkIsInQueue, queues } = require("%scripts/queue/queueManager.nut")
+let { leaveAllQueues } = require("%scripts/queue/queueManager.nut")
 let { presenceTypes, getByPresenceParams, getCurrentPresenceType } = require("%scripts/user/presenceType.nut")
 let { addInviteToSquad } = require("%scripts/invites/invites.nut")
+let { isAnyQueuesActive, hasActiveQueueWithType } = require("%scripts/queue/queueState.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -167,7 +168,7 @@ g_squad_manager = {
     && g_squad_manager.getPlayerStatusInMySquad(uid) >= squadMemberState.SQUAD_MEMBER
 
   canSwitchReadyness = @() g_squad_manager.isSquadMember() && g_squad_manager.canManageSquad()
-    && !checkIsInQueue()
+    && !isAnyQueuesActive()
 
   canChangeSquadSize = @(shouldCheckLeader = true) hasFeature("SquadSizeChange")
     && (!shouldCheckLeader || g_squad_manager.isSquadLeader())
@@ -324,7 +325,7 @@ g_squad_manager = {
     if (!isSetNoReady && !isInSquad)
       return
 
-    if (checkIsInQueue() && !isLeader && isInSquad && isSetNoReady) {
+    if (isAnyQueuesActive() && !isLeader && isInSquad && isSetNoReady) {
       addPopup(null, loc("squad/cant_switch_off_readyness_in_queue"))
       return
     }
@@ -401,8 +402,8 @@ g_squad_manager = {
     memberData.online = isOnline
     if (!isOnline) {
       memberData.isReady = false
-      if (g_squad_manager.isSquadLeader() && queues.isAnyQueuesActive())
-        queues.leaveAllQueues()
+      if (g_squad_manager.isSquadLeader() && isAnyQueuesActive())
+        leaveAllQueues()
     }
 
     updateContact(memberData.getData())
@@ -730,7 +731,7 @@ g_squad_manager = {
     if (!hasFeature("Squad"))
       return
 
-    if (!g_squad_manager.canJoinSquad() || !g_squad_manager.canManageSquad() || queues.isAnyQueuesActive())
+    if (!g_squad_manager.canJoinSquad() || !g_squad_manager.canManageSquad() || isAnyQueuesActive())
       return
 
     g_squad_manager.setState(squadState.JOINING)
@@ -1108,7 +1109,7 @@ g_squad_manager = {
 
     if (g_squad_manager.isSquadLeader()) {
       if (!g_squad_manager.readyCheck())
-        queues.leaveAllQueues()
+        leaveAllQueues()
 
       if (canInviteIntoSession() && memberData.canJoinSessionRoom())
         invitePlayerToSessionRoom(memberData.uid)
@@ -1128,7 +1129,7 @@ g_squad_manager = {
     if (smData.state == squadState.IN_SQUAD)
       g_squad_manager.setState(squadState.LEAVING)
 
-    queues.leaveAllQueues()
+    leaveAllQueues()
     g_chat.leaveSquadRoom()
 
     smData.cyberCafeSquadMembersNum = -1
@@ -1329,7 +1330,7 @@ g_squad_manager = {
     g_squad_manager.joinSquadChatRoom()
 
     if (g_squad_manager.isSquadLeader() && !g_squad_manager.readyCheck())
-      queues.leaveAllQueues()
+      leaveAllQueues()
 
     if (!alreadyInSquad)
       g_squad_manager.checkUpdateStatus(squadStatusUpdateState.MENU)
@@ -1500,7 +1501,7 @@ g_squad_manager = {
   }
 
   function onEventQueueChangeState(_params) {
-    if (!queues.hasActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE))
+    if (!hasActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE))
       g_squad_manager.setCrewsReadyFlag(false)
 
     g_squad_manager.updatePresenceSquad()

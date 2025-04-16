@@ -9,7 +9,7 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
-let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
+let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 let { RESEARCHED_MODE_FOR_CHECK, RESEARCHED_UNIT_FOR_CHECK } = require ("%scripts/researches/researchConsts.nut")
 
@@ -78,7 +78,7 @@ function removeResearchBlock(researchBlock) {
 ::abandoned_researched_items_for_session <- abandoned_researched_items_for_session 
 
 function checkNonApprovedResearches(needUpdateResearchTable = false, needResearchAction = true) {
-  if (!isInMenu() || checkIsInQueue())
+  if (!isInMenu() || isAnyQueuesActive())
     return false
 
   if (needUpdateResearchTable) {

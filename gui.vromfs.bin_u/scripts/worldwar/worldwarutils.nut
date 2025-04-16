@@ -58,6 +58,8 @@ let { updateConfigurableValues, getLastPlayedOperationId, getLastPlayedOperation
 } = require("%scripts/worldWar/worldWarStates.nut")
 let { curOperationCountry, invalidateRearZones } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
 let { openWWOperationChatRoomById } = require("%scripts/chat/chat.nut")
+let { findQueueByName } = require("%scripts/queue/queueState.nut")
+let { leaveQueue, leaveQueueByType } = require("%scripts/queue/queueManager.nut")
 
 const WW_LAST_OPERATION_LOG_SAVE_ID = "worldWar/lastReadLog/operation"
 const WW_UNIT_WEAPON_PRESET_PATH = "worldWar/weaponPreset/"
@@ -318,11 +320,11 @@ let g_world_war = {
     g_squad_manager.cancelWwBattlePrepare()
 
     if (battle) {
-      let queue = ::queues.findQueueByName(battle.getQueueId())
-      ::queues.leaveQueue(queue)
+      let queue = findQueueByName(battle.getQueueId())
+      leaveQueue(queue)
     }
     else
-      ::queues.leaveQueueByType(QUEUE_TYPE_BIT.WW_BATTLE)
+      leaveQueueByType(QUEUE_TYPE_BIT.WW_BATTLE)
   }
 
   function onEventWWGlobalStatusChanged(p) {

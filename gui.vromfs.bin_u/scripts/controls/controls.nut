@@ -32,7 +32,7 @@ let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { getShortcutById, getTextMarkup, getShortcutData, getInputsMarkup, isShortcutMapped,
   restoreShortcuts } = require("%scripts/controls/shortcutsUtils.nut")
 let { get_game_mode } = require("mission")
-let { utf8ToLower, stripTags } = require("%sqstd/string.nut")
+let { utf8ToLower } = require("%sqstd/string.nut")
 let { recommendedControlPresets, getControlsPresetBySelectedType, getCurrentHelpersMode
 } = require("%scripts/controls/controlsUtils.nut")
 let { joystickSetCurSettings, setShortcutsAndSaveControls,
@@ -45,8 +45,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USER
 } = require("%scripts/options/optionsExtNames.nut")
 let { get_current_mission_info } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
-let { getLocaliazedPS4ControlName, getLocalizedControlName, remapAxisName
-} = require("%scripts/controls/controlsVisual.nut")
+let { getLocaliazedPS4ControlName, remapAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { switchControlsMode, gui_start_controls_type_choice
 } = require("%scripts/controls/startControls.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
@@ -1862,38 +1861,6 @@ let mkTextShortcutRow = kwarg(@(scId, id, trAdd, trName, scData = "")
     hotkeyData.markup = res
   }
   return hotkeyData
-}
-
-::get_shortcut_text <- kwarg(function get_shortcut_text(shortcuts,
-  shortcutId, cantBeEmpty = true, strip_tags = false, preset = null, colored = true) {
-  if (!(shortcutId in shortcuts))
-    return ""
-
-  preset = preset || getCurControlsPreset()
-  local data = ""
-  for (local i = 0; i < shortcuts[shortcutId].len(); i++) {
-    let textArr = []
-    let sc = shortcuts[shortcutId][i]
-
-    for (local j = 0; j < sc.dev.len(); j++)
-      textArr.append(getLocalizedControlName(preset, sc.dev[j], sc.btn[j]))
-
-    if (textArr.len() == 0)
-      continue
-
-    let text = " + ".join(textArr)
-    data = ::addHotkeyTxt(strip_tags ? stripTags(text) : text, data, colored)
-  }
-
-  if (cantBeEmpty && data == "")
-    data = "---"
-
-  return data
-})
-
-::addHotkeyTxt <- function addHotkeyTxt(hotkeyTxt, baseTxt = "", colored = true) {
-  hotkeyTxt = colored ? colorize("hotkeyColor", hotkeyTxt) : hotkeyTxt
-  return loc("ui/comma").join([ baseTxt, hotkeyTxt ], true)
 }
 
 

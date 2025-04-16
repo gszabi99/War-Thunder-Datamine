@@ -25,7 +25,7 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getUserlogViewData } = require("%scripts/userLog/userlogViewData.nut")
 let { get_local_unixtime } = require("dagor.time")
-let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { showLeaveSessionFirstPopup } = require("%scripts/invites/invites.nut")
 

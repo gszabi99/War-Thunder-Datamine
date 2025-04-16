@@ -31,6 +31,7 @@ let { isInSessionRoom, getSessionLobbyMaxMembersCount } = require("%scripts/matc
 let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { isMissionForUnitType, isSkirmishWithKillStreaks } = require("%scripts/missions/missionsUtils.nut")
+let { getOptionsMode } = require("%scripts/options/optionsList.nut")
 
 ::get_briefing_options <- function get_briefing_options(gm, gt, missionBlk) {
   let optionItems = []
@@ -220,7 +221,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
   function initScreen() {
     base.initScreen()
     let gm = get_game_mode()
-    setGuiOptionsMode(::get_options_mode(gm))
+    setGuiOptionsMode(getOptionsMode(gm))
 
     let campaignName = currentCampaignId.get()
     this.missionName = currentCampaignMission.get()

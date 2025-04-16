@@ -517,9 +517,6 @@ warbondShopLevel[hasOverlayIcon=no] {
 }
 
 itemAmountText {
-  pos:pw-w-1@itemPadding, 1@itemPadding;
-  position:absolute;
-
   behaviour:textArea;
   re-type:textarea;
   font:@fontSmall;
@@ -528,12 +525,7 @@ itemAmountText {
 }
 
 itemAmountText[hasIncrasedAmountTextSize=yes] {
-  pos:pw-w-0.5@itemPadding, 0;
   font:@fontMedium;
-}
-
-[smallItems=yes] itemAmountText {
-  pos:pw-w, 0;
 }
 
 [smallItems=yes] itemAmountText[hasIncrasedAmountTextSize=yes] {

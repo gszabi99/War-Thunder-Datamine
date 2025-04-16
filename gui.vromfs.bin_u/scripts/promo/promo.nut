@@ -402,17 +402,40 @@ function isPromoVisibleByAction(block) {
 let checkPromoBlockUnlock = @(block)
   ("reqUnlock" in block) ? checkUnlockString(block.reqUnlock) : true
 
-let isPromoLinkVisible = @(block)
-  isEmpty(block?.link) || hasFeature("AllowExternalLink")
+let isPromoLinkVisible = @(block) isEmpty(block?.link) || hasFeature("AllowExternalLink")
 
-let checkBlockVisibility = @(block) (isAvailableForCurLang(block)
-  && checkPromoBlockReqFeature(block)
-  && checkPromoBlockReqEntitlement(block)
-  && checkPromoBlockUnlock(block)
-  && checkBlockTime(block)
-  && isPromoVisibleByAction(block)
-  && isVisibleByConditions(block)
-  && isPromoLinkVisible(block)) || getShowAllPromoBlocks()
+function checkMultiVisibleBlocks(block) {
+  local countVisible = 0
+  let blocksCount = block.blockCount()
+  for (local i = 0; i < blocksCount; ++i)
+    if (checkBlockTime(convertBlk(block.getBlock(i)))) {
+      ++countVisible
+      if (countVisible > 1)
+        return true
+    }
+  return false
+}
+
+function hasVisibleBlocksInMultiblock(block) {
+  let blocksCount = block.blockCount()
+  for (local i = 0; i < blocksCount; ++i)
+    if (checkBlockTime(convertBlk(block.getBlock(i))))
+      return true
+  return false
+}
+
+let isMultiblock = @(block) block?.multiple ?? false
+
+let checkBlockVisibility = @(block) getShowAllPromoBlocks() ||
+  (isAvailableForCurLang(block)
+    && checkPromoBlockReqFeature(block)
+    && checkPromoBlockReqEntitlement(block)
+    && checkPromoBlockUnlock(block)
+    && checkBlockTime(block)
+    && isPromoVisibleByAction(block)
+    && isVisibleByConditions(block)
+    && isPromoLinkVisible(block)
+    && (!isMultiblock(block) || hasVisibleBlocksInMultiblock(block)))
 
 let visibilityStatuses = {}
 let getPromoVisibilityById = @(id) getTblValue(id, visibilityStatuses, false)
@@ -513,15 +536,6 @@ function getType(block) {
   return getPromoButtonConfig(block.getBlockName())?.buttonType ?? PROMO_BUTTON_TYPE.ARROW
 }
 
-function checkMultiVisibleBlocks(block) {
-  local countVisible = 0
-  let blocksCount = block.blockCount()
-  for (local i = 0; i < blocksCount; ++i)
-    if (checkBlockTime(convertBlk(block.getBlock(i))))
-      ++countVisible
-  return countVisible > 1
-}
-
 let defaultCollapsedIcon = loc("icon/news")
 
 function getPromoCollapsedIcon(view, promoButtonId) {
@@ -573,12 +587,12 @@ function generatePromoBlockView(block) {
 
   let isDebugModeEnabled = getShowAllPromoBlocks()
   let blocksCount = block.blockCount()
-  let isMultiblock = block?.multiple ?? false
-  let hasMultiVisibleBlocks = isMultiblock ? checkMultiVisibleBlocks(block) : false
+  let isMulti = isMultiblock(block)
+  let hasMultiVisibleBlocks = isMulti && checkMultiVisibleBlocks(block)
   view.isMultiblock <- hasMultiVisibleBlocks
   view.radiobuttons <- []
 
-  if (isMultiblock) {
+  if (isMulti) {
     let value = to_integer_safe(multiblockData?[id]?.value ?? 0)
     let switchVal = to_integer_safe(block?.switch_time_sec
       || DEFAULT_TIME_SWITCH_SEC)
@@ -594,18 +608,18 @@ function generatePromoBlockView(block) {
   }
 
   view.type <- getType(block)
-  let requiredBlocks = isMultiblock ? blocksCount : 1
-  local hasImage = isMultiblock
+  let requiredBlocks = isMulti ? blocksCount : 1
+  local hasImage = isMulti
   local counter = 0
   for (local i = 0; i < requiredBlocks; ++i) {
-    let checkBlock = isMultiblock ? block.getBlock(i) : block
+    let checkBlock = isMulti ? block.getBlock(i) : block
     let fillBlock = convertBlk(checkBlock)
     let isVisibleSubBlock = checkBlockTime(fillBlock)
 
-    if (isMultiblock)
+    if (isMulti)
       multiBlockTbl[i] <- isVisibleSubBlock
 
-    if (isMultiblock && !isVisibleSubBlock)
+    if (isMulti && !isVisibleSubBlock)
       continue
 
     let blockId = view.id + (hasMultiVisibleBlocks ? $"_{counter}" : "")
@@ -624,7 +638,7 @@ function generatePromoBlockView(block) {
     }
 
     local link = getPromoLinkText(fillBlock)
-    if (isEmpty(link) && isMultiblock)
+    if (isEmpty(link) && isMulti)
       link = getPromoLinkText(block)
     if (!isEmpty(link)) {
       fillBlock.link <- link
@@ -641,8 +655,8 @@ function generatePromoBlockView(block) {
       hasImage = true
     }
 
-    local text = promoButtonConfig?.getText() ?? getViewText(fillBlock, isMultiblock ? "" : null)
-    if (isEmpty(text) && isMultiblock)
+    local text = promoButtonConfig?.getText() ?? getViewText(fillBlock, isMulti ? "" : null)
+    if (isEmpty(text) && isMulti)
       text = getViewText(block)
     fillBlock.text <- text
     fillBlock.needAutoScroll <- getStringWidthPx(text, "fontNormal")
@@ -664,7 +678,7 @@ function generatePromoBlockView(block) {
     view.radiobuttons.append({ selected = isBlockSelected })
   }
 
-  if (isMultiblock)
+  if (isMulti)
     multiblockData[id].subBlockInfo <- multiBlockTbl
 
   if (view.fillBlocks.len() == 1)

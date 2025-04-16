@@ -44,7 +44,7 @@ let { dismissMember } = require("%scripts/clans/clanActions.nut")
 let { getMyClanRights, haveRankToChangeRoles } = require("%scripts/clans/clanInfo.nut")
 let { invitePlayerToSessionRoom, kickPlayerFromRoom } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { canInvitePlayerToSessionRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { joinFriendsQueue } = require("%scripts/queue/queueManager.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { gui_modal_ban, gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")
 let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
@@ -174,7 +174,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
           else if (!canInteractCrossPlatform)
             checkAndShowCrossplayWarning()
           else
-            queues.joinFriendsQueue(contact.inGameEx, eventId)
+            joinFriendsQueue(contact.inGameEx, eventId)
         }
       })
     }

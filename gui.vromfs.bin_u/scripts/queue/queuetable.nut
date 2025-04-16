@@ -25,6 +25,9 @@ let { isMeNewbie } = require("%scripts/myStats.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { createQueueViewByCountries, updateQueueViewByCountries } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
+let { isQueueActive, isQueuesEqual, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
+let { getQueueEvent, isClanQueue, getQueueCountry, getQueueClusters, getMyRankInQueue
+} = require("%scripts/queue/queueInfo.nut")
 
 dagui_propid_add_name_id("_queueTableGenCode")
 
@@ -41,7 +44,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
   build_IA_shop_filters = false
 
   function initScreen() {
-    this.setCurQueue(::queues.findQueue({}, this.queueMask))
+    this.setCurQueue(findQueue({}, this.queueMask))
     this.updateWaitTime()
 
     this.scene.findObject("queue_players_total").show(!isMeNewbie())
@@ -54,7 +57,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
   curQueue = null
   function getCurQueue() { return this.curQueue }
   function setCurQueue(value) {
-    if (::queues.isQueuesEqual(this.curQueue, value))
+    if (isQueuesEqual(this.curQueue, value))
       return
 
     this.curQueue = value
@@ -69,7 +72,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getCurCountry() {
     let queue = this.getCurQueue()
-    return queue != null ? ::queues.getQueueCountry(queue) : ""
+    return queue != null ? getQueueCountry(queue) : ""
   }
 
   function goBack() {
@@ -180,7 +183,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(queueTblObj))
       return
 
-    let showQueueTbl = ::queues.isQueueActive(this.getCurQueue())
+    let showQueueTbl = isQueueActive(this.getCurQueue())
     this.setShowQueueTable(showQueueTbl)
     if (!showQueueTbl)
       return
@@ -211,10 +214,10 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     let view = { tabs = [] }
     view.tabs.append({ tabName = "#multiplayer/currentWaitTime" })
 
-    if (::queues.isClanQueue(queue))
+    if (isClanQueue(queue))
       view.tabs.append({ tabName = "#multiplayer/currentPlayers" })
     else {
-      foreach (clusterName in ::queues.getQueueClusters(queue)) {
+      foreach (clusterName in getQueueClusters(queue)) {
         let isUnstable = isClusterUnstable(clusterName)
         view.tabs.append({
           id = clusterName
@@ -232,7 +235,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     let queue = this.getCurQueue()
     this.updateTabs(queue)
 
-    let event = ::queues.getQueueEvent(queue)
+    let event = getQueueEvent(queue)
     if (!event)
       return
 
@@ -240,7 +243,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!checkObj(nestObj))
       return
 
-    let genCode = $"{event.name}_{::queues.getQueueCountry(queue)}_{::queues.getMyRankInQueue(queue)}"
+    let genCode = $"{event.name}_{getQueueCountry(queue)}_{getMyRankInQueue(queue)}"
     if (nestObj?._queueTableGenCode == genCode) {
       this.updateTabContent()
       return
@@ -283,14 +286,14 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     let timerObj = this.scene.findObject("waiting_time")
     let tableObj = this.scene.findObject("ia_tooltip_table")
     let clanTableObj = this.scene.findObject("queue_box_container")
-    let isClanQueue = ::queues.isClanQueue(queue)
+    let isClanQueueValue = isClanQueue(queue)
     let isQueueTableVisible = value > 0
     timerObj.show(!isQueueTableVisible)
-    tableObj.show(isQueueTableVisible && !isClanQueue)
-    clanTableObj.show(isQueueTableVisible && isClanQueue)
+    tableObj.show(isQueueTableVisible && !isClanQueueValue)
+    clanTableObj.show(isQueueTableVisible && isClanQueueValue)
 
     local curCluster = null
-    if (!isClanQueue) {
+    if (!isClanQueueValue) {
       let listBoxObjItemObj = clustersListBoxObj.childrenCount() > value
         ? clustersListBoxObj.getChild(value)
         : null
@@ -304,7 +307,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!isQueueTableVisible)
       return
 
-    if (isClanQueue)
+    if (isClanQueueValue)
       this.updateClanQueueTable()
     else if (curCluster != null)
       updateQueueViewByCountries(tableObj, this.getCurQueue(), curCluster)
@@ -325,7 +328,7 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!statsObj?.isValid())
       return
 
-    let event = ::queues.getQueueEvent(queue)
+    let event = getQueueEvent(queue)
     let teamData = events.getTeamData(event, Team.A)
     let isShowTeamData = teamData && teamData.len()
     statsObj.show(isShowTeamData)
@@ -416,16 +419,16 @@ gui_handlers.QueueTable <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventQueueChangeState(p) {
     let queue = p?.queue
-    if (!::queues.checkQueueType(queue, this.queueMask))
+    if (!checkQueueType(queue, this.queueMask))
       return
 
-    if (::queues.isQueuesEqual(queue, this.getCurQueue())) {
+    if (isQueuesEqual(queue, this.getCurQueue())) {
       this.fillQueueInfo()
       this.updateScene()
       return
     }
 
-    if (::queues.isQueueActive(this.getCurQueue()))
+    if (isQueueActive(this.getCurQueue()))
       return 
 
     this.setCurQueue(queue)

@@ -4,6 +4,7 @@ from "%scripts/chat/chatConsts.nut" import voiceChatStats
 from "%scripts/utils_sa.nut" import save_to_json, is_myself_anyof_moderators
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
+let { get_game_params_blk } = require("blkGetters")
 let { g_chat, isRoomWWOperation } = require("%scripts/chat/chat.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -65,9 +66,14 @@ let { getChatObject, isUserBlockedByPrivateSetting } = require("%scripts/chat/ch
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { wwIsOperationLoaded } = require("worldwar")
 let { acceptInviteByLink, addChatRoomInvite } = require("%scripts/invites/invites.nut")
+let { ceil } = require("%sqstd/math.nut")
+let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
+
+let chatUpdateSendBtnTextDelaySec = get_game_params_blk()?.floodFilter.chatMessagesTime ?? 2
+const CHAT_SEND_BTN_ADD_DELAY_SEC = 0.3 
 
 enum chatErrorName {
   NO_SUCH_NICK_CHANNEL    = "401"
@@ -98,7 +104,6 @@ let voiceChatIcons = {
 let menu_chat_sizes = {}
 let last_send_messages = []
 let defaultChatRooms = ["general"]
-let menuChatHandler = Watched(null)
 
 let sortChatUsers = @(a, b) a.name <=> b.name
 let sendEventUpdateChatFeatures = @() broadcastEvent("UpdateChatFeatures")
@@ -158,7 +163,6 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   constructor(gui_scene, params = {}) {
     registerPersistentData("MenuChatHandler", this, ["roomsInited"]) 
-
     base.constructor(gui_scene, params)
     subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
   }
@@ -281,14 +285,15 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     return false
   }
 
-  function checkChatAvailableInCurRoom(callback) {
-    if (this.curRoom == null || this.curRoom.hasCustomViewHandler) {
+  function checkChatAvailableInRoom(roomId, callback) {
+    let room = g_chat.getRoomById(roomId)
+    if (room == null || room.hasCustomViewHandler) {
       callback?(false)
       return
     }
 
-    if (this.curRoom.type == g_chat_room_type.PRIVATE) {
-      checkChatEnableWithPlayer(this.curRoom.id, callback)
+    if (room.type == g_chat_room_type.PRIVATE) {
+      checkChatEnableWithPlayer(roomId, callback)
       return
     }
 
@@ -306,7 +311,9 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       this.setSavedSizes()
       this.scene.findObject("menu_chat_update").setUserData(this)
       local thisCapture = this
-      this.checkChatAvailableInCurRoom(function(canChat) {
+      this.checkAndUpdateSendBtn()
+
+      this.checkChatAvailableInRoom(this?.curRoom.id, function(canChat) {
         thisCapture.showChatInput(canChat)
         thisCapture.scene.findObject("menuchat_input")["max-len"] = g_chat.MAX_MSG_LEN.tostring()
         thisCapture.searchInited = false
@@ -415,12 +422,14 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return false
 
     this.curRoom = roomData
+    this.checkAndUpdateSendBtn()
+
     showObjById("btn_showPlayersList", !this.alwaysShowPlayersList() && roomData.havePlayersList, this.scene)
     showObjById("btn_showSearchList", true, this.scene)
     showObjById("menu_chat_text_block", !roomData.hasCustomViewHandler, this.scene)
 
     local thisCapture = this
-    this.checkChatAvailableInCurRoom(function(canChat) {
+    this.checkChatAvailableInRoom(roomData.id, function(canChat) {
       thisCapture.showChatInput(canChat)
     })
 
@@ -1007,9 +1016,13 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   
-  function onUpdate(_obj, _dt) {
-    if (!lastChatSceneShow.get())
+  function onUpdate(timerObj, _dt) {
+    let customChatSceneData = this.getSceneDataByActionObj(timerObj)
+    let customChatScene = customChatSceneData?.scene
+    if (!lastChatSceneShow.get() && !(customChatScene?.isValid() ?? false))
       return
+
+    this.checkAndUpdateSendBtn(customChatSceneData)
 
     this.loadSizes()
     this.onPresenceDetectionTick()
@@ -1362,6 +1375,11 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
         foreach (roomData in g_chat.rooms) {
           if ((roomId == "") || roomData.id == roomId) {
             roomData.addMessage(mBlock)
+
+            if (roomData?.customScene) {
+              this.updateCustomChatTexts()
+              continue
+            }
 
             if (!thisCapture.curRoom)
               continue
@@ -2066,15 +2084,13 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
        this.squadMsg(format(loc("squad/invited_player"), getPlayerName(contact.name)))
   }
 
-  function checkValidAndSpamMessage(msg, room = null, isPrivate = false) {
+  function checkValidAndSpamMessage(msg, isPrivate = false) {
     if (is_chat_message_empty(msg))
       return false
     if (isPrivate || is_myself_anyof_moderators())
       return true
     if (is_chat_message_allowed(msg))
       return true
-    this.addRoomMsg(room ? room : this.curRoom.id, "", loc("charServer/ban/reason/SPAM"))
-
     return false
   }
 
@@ -2101,15 +2117,56 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     this.chatSendAction(obj, true)
   }
 
+  function getTimeToActivateSendBtnSec() {
+    return this.chatSendBtnActivateTime != null
+      ? max((this.chatSendBtnActivateTime - get_time_msec()) / 1000, 0)
+      : 0
+  }
+
+  function toggleSendBtnHint(sceneData, show) {
+    showObjById("btn_send_hint", show, sceneData.scene)
+  }
+
+  function checkAndUpdateSendBtn(sceneData = null) {
+    if (this.chatSendBtnActivateTime == null)
+      return
+
+    let chatScene = sceneData?.scene
+    let sendBtn = chatScene?.findObject("btn_send") ?? this?.scene.findObject("btn_send")
+    if (!(sendBtn?.isValid() ?? false))
+      return
+
+    let roomId = sceneData?.room ?? this.curRoom?.id ?? ""
+    if (roomId == "")
+      return
+
+    let roomData = g_chat.getRoomById(roomId)
+    let isChatAvailableInCurRoom = roomData?.isChatAvailableInCurRoom ?? true
+    let leftTimeToActivateSendBtnSec = this.getTimeToActivateSendBtnSec()
+    let needToShowSendTitle = leftTimeToActivateSendBtnSec == 0
+    sendBtn.enable(needToShowSendTitle && isChatAvailableInCurRoom)
+    sendBtn.setValue(needToShowSendTitle ? loc("chat/send")
+      : $"{format("%d", ceil(min(leftTimeToActivateSendBtnSec, chatUpdateSendBtnTextDelaySec)))}{loc("measureUnits/seconds")}")
+
+    if (this.hasErrorOnSendMessage && needToShowSendTitle) {
+      this.hasErrorOnSendMessage = false
+      this.toggleSendBtnHint(sceneData, false)
+    }
+  }
+
   function chatSendAction(obj, isFromButton = false) {
     let sceneData = this.getSceneDataByActionObj(obj)
     if (!sceneData)
       return
 
-    if (sceneData.room == "")
+    let roomId = sceneData.room
+    if (roomId == "")
       return
 
-    this.lastActionRoom = sceneData.room
+    if (this.getTimeToActivateSendBtnSec() > 0)
+      return
+
+    this.lastActionRoom = roomId
     let inputObj = sceneData.scene.findObject("menuchat_input")
     let value = checkObj(inputObj) ? inputObj.getValue() : ""
     if (value == "") {
@@ -2119,11 +2176,10 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    inputObj.setValue("")
-    this.sendMessageToRoom(value, sceneData.room)
+    this.sendMessageToRoom(value, sceneData, inputObj)
   }
 
-  function sendMessageToRoom(msg, roomId) {
+  function sendMessageToRoom(msg, sceneData, inputObj) {
     last_send_messages.append(msg)
     if (last_send_messages.len() > g_chat.MAX_LAST_SEND_MESSAGES)
       last_send_messages.remove(0)
@@ -2136,6 +2192,10 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (!msg)
       return
 
+    let roomId = sceneData.room
+    if (roomId == "")
+      return
+
     if (this.checkAndPrintDevoiceMsg(roomId))
       return
 
@@ -2145,13 +2205,24 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (privateData)
       this.onChatPrivate(privateData)
     else {
-      if (this.checkValidAndSpamMessage(msg, roomId)) {
+      if (this.checkValidAndSpamMessage(msg)) {
+        inputObj.setValue("")
+        this.toggleSendBtnHint(sceneData, false)
         if (g_chat.isSystemChatRoom(roomId))
           this.addRoomMsg(roomId, "", loc("chat/cantWriteInSystem"))
         else {
           ::gchat_chat_message(gchat_escape_target(roomId), msg)
           this.guiScene.playSound("chat_send")
         }
+      }
+      else {
+        this.hasErrorOnSendMessage = true
+        this.toggleSendBtnHint(sceneData, true)
+      }
+      if (!is_myself_anyof_moderators()) {
+        this.chatSendBtnActivateTime = get_time_msec()
+          + (chatUpdateSendBtnTextDelaySec + CHAT_SEND_BTN_ADD_DELAY_SEC) * 1000
+        this.checkAndUpdateSendBtn(sceneData)
       }
     }
   }
@@ -2177,7 +2248,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onChatPrivate(data) {
-    if (!this.checkValidAndSpamMessage(data.msg, null, true))
+    if (!this.checkValidAndSpamMessage(data.msg, true))
       return
     if (!this.curRoom)
       return
@@ -2398,6 +2469,8 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function resetChat() {
     last_send_messages.clear()
     this.roomsInited = false
+    this.chatSendBtnActivateTime = null
+    this.hasErrorOnSendMessage = false
   }
 
   function fillSearchList() {
@@ -2649,6 +2722,10 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     let objGuiScene = sceneObj.getScene()
     objGuiScene.replaceContent(sceneObj, "%gui/chat/customChat.blk", this)
+    let timer = sceneObj.findObject("custom_chat_timer")
+    timer._customRoomId = roomId
+    timer.setUserData(this)
+
     foreach (name in ["menuchat_input", "btn_send", "btn_prevMsg", "btn_nextMsg"]) {
       let obj = sceneObj.findObject(name)
       obj._customRoomId = roomId
@@ -2677,12 +2754,11 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (!roomData || !checkObj(roomData.customScene))
       return
 
-    this.checkChatAvailableInCurRoom(function(isChatAvailable) {
-      foreach (objName in ["menuchat_input", "btn_send"]) {
-        let obj = roomData.customScene.findObject(objName)
-        if (checkObj(obj))
-          obj.enable(isChatAvailable)
-      }
+    this.checkChatAvailableInRoom(roomData.id, function(isChatAvailable) {
+      roomData.isChatAvailableInCurRoom <- isChatAvailable
+      showObjById("menuchat_input", isChatAvailable, roomData.customScene)
+      showObjById("btn_send", isChatAvailable, roomData.customScene)
+      this.checkAndUpdateSendBtn()
     })
   }
 
@@ -2786,6 +2862,8 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       isChatEnabled(true)
   }
 
+  chatSendBtnActivateTime = null
+  hasErrorOnSendMessage = false
   scene = null
   sceneChanged = true
   roomsInited = false

@@ -26,6 +26,22 @@ let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
 let { IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
 
+let optionsModeByGameMode = {
+  [GM_CAMPAIGN]          = OPTIONS_MODE_CAMPAIGN,
+  [GM_TRAINING]          = OPTIONS_MODE_TRAINING,
+  [GM_TEST_FLIGHT]       = OPTIONS_MODE_TRAINING,
+  [GM_SINGLE_MISSION]    = OPTIONS_MODE_SINGLE_MISSION,
+  [GM_USER_MISSION]      = OPTIONS_MODE_SINGLE_MISSION,
+  [GM_DYNAMIC]           = OPTIONS_MODE_DYNAMIC,
+  [GM_BUILDER]           = OPTIONS_MODE_DYNAMIC,
+  [GM_DOMINATION]        = OPTIONS_MODE_MP_DOMINATION,
+  [GM_SKIRMISH]          = OPTIONS_MODE_MP_SKIRMISH,
+}
+
+function getOptionsMode(game_mode) {
+  return optionsModeByGameMode?[game_mode] ?? OPTIONS_MODE_GAMEPLAY
+}
+
 let getSystemOptions = @() {
   name = "graphicsParameters"
   fillFuncName = "fillSystemOptions"
@@ -396,4 +412,5 @@ return {
   getOptionsList = getOptionsList
   overrideMainOptions = @(fn) overrideMainOptionsFn = fn
   overrideSoundOptions = @(fn) overrideSoundOptionsFn = fn
+  getOptionsMode
 }

@@ -24,7 +24,8 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { USEROPT_HELPERS_MODE, USEROPT_VIEWTYPE, USEROPT_HELPERS_MODE_GM,
   USEROPT_CONTROLS_PRESET } = require("%scripts/options/optionsExtNames.nut")
-let { getLocalizedControlName, remapAxisName } = require("%scripts/controls/controlsVisual.nut")
+let { getLocalizedControlName, remapAxisName, getShortcutText,
+  addHotkeyTxt } = require("%scripts/controls/controlsVisual.nut")
 let { steam_is_overlay_active } = require("steam")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { getCurControlsPreset, setPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
@@ -702,16 +703,16 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
       let axis = this.curJoyParams.getAxis(this.curItem.axisIndex[0])
       let curPreset = getCurControlsPreset()
       if (axis.axisId >= 0)
-        axisAssignText = ::addHotkeyTxt(remapAxisName(curPreset, axis.axisId))
+        axisAssignText = addHotkeyTxt(remapAxisName(curPreset, axis.axisId))
       if (this.isButtonsListenInCurBox)
-        buttonAssignText = ::get_shortcut_text({
+        buttonAssignText = getShortcutText({
           shortcuts = this.shortcuts,
           shortcutId = this.curItem.modifiersId[this.axisMaxChosen ? "rangeMin" : "rangeMax"][0],
           cantBeEmpty = false
         })
     }
     else if (this.curItem.type == CONTROL_TYPE.SHORTCUT)
-      buttonAssignText = ::get_shortcut_text({
+      buttonAssignText = getShortcutText({
         shortcuts = this.shortcuts,
         shortcutId = this.curItem.shortcutId,
         cantBeEmpty = false

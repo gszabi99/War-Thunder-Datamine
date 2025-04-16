@@ -22,13 +22,14 @@ let { get_mp_session_id_str } = require("multiplayer")
 let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { getChatThreadsList } = require("%scripts/chat/chatLatestThreads.nut")
+let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
 
 function gui_modal_ban(playerInfo, cLog = null) {
   handlersManager.loadHandler(gui_handlers.BanHandler, { player = playerInfo, chatLog = cLog })
 }
 
 function gui_modal_complain(playerInfo, cLog = null) {
-  if (!::tribunal.canComplaint())
+  if (!tribunal.canComplaint())
     return
 
   handlersManager.loadHandler(gui_handlers.ComplainHandler, { pInfo = playerInfo, chatLog = cLog })

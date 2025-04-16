@@ -1099,7 +1099,9 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let medalCountry = cb.getStr("country", "")
       if (medalCountry == "")
-        return
+        continue
+      if (cb?.hideUntilUnlocked && !this.isMedalUnlocked(name))
+        continue
 
       if (this.medalsByCountry?[medalCountry] == null)
         this.medalsByCountry[medalCountry] <- {unlocked = 0, total = 0, items = [] }

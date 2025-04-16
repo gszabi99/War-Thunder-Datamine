@@ -20,6 +20,7 @@ let { show_marketplace, ProductKind } = require("%gdkLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 let sheetsArray = []
 xboxProceedItems.subscribe(function(val) {
@@ -190,7 +191,7 @@ let openIngameStoreImpl = kwarg(
       return true
     }
 
-    ::queues.checkAndStart(Callback(function() {
+    checkQueueAndStart(Callback(function() {
       set_xbox_on_purchase_cb(afterCloseFunc)
       get_gui_scene().performDelayed(getroottable(),
         function() {

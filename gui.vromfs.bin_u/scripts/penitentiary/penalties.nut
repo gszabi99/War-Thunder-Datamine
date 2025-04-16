@@ -7,6 +7,7 @@ let { format } = require("string")
 let time = require("%scripts/time.nut")
 let penalty = require("penalty")
 let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { leaveAllQueuesSilent } = require("%scripts/queue/queueManager.nut")
 
 
 
@@ -103,7 +104,7 @@ function showBannedStatusMsgBox(showBanOnly = false) {
   if (st.status == penalty.BAN) {
     banType  = "ban"
     fn = @() eventbus_send("request_logout", {})
-    ::queues.leaveAllQueuesSilent()
+    leaveAllQueuesSilent()
     leaveSessionRoom()
   }
   else if (st.status == penalty.DEVOICE) {

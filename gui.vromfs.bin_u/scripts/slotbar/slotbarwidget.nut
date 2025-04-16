@@ -1311,7 +1311,9 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   function updateSlotsStatuses(unitSlots) {
     foreach (slot in unitSlots) {
       let { obj, unit, crew } = slot
-      obj.shopStat = getUnitItemStatusText(this.getUnitStatus(unit, crew, unit.shopCountry).status)
+      obj.shopStat = (isCrewListOverrided.get() || (crew.isUnitOverrided ?? false))
+        ? "mounted"
+        : getUnitItemStatusText(this.getUnitStatus(unit, crew, unit.shopCountry).status)
       let isBroken = unit.isBroken()
       obj.isBroken = isBroken ? "yes" : "no"
       showObjById("repair_icon", isBroken, obj)
@@ -1521,10 +1523,11 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
 
       let isVisualDisabled = crewData?.isVisualDisabled ?? false
       let isLocalState = !isCrewListOverrided.get() && (crewData?.isLocalState ?? true)
+      let isUnitOverrided = (crew?.isUnitOverrided ?? false) || isCrewListOverrided.get()
       let airParams = {
         emptyText      = isVisualDisabled ? "" : this.emptyText,
         crewImage      = $"#ui/gameuiskin#slotbar_crew_free_{countryData.country.slice(8)}"
-        status         = getUnitItemStatusText(crewData.status),
+        status         = isUnitOverrided ? "mounted" : getUnitItemStatusText(crewData.status),
         hasActions     = this.hasActions && !isCrewListOverrided.get()
         hasCrewHint    = this.hasCrewHint
         toBattle       = this.toBattle
@@ -1549,8 +1552,9 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
           needCrewInfo = !isCrewListOverrided.get()
           showLocalState = isLocalState
           needCrewModificators = true
-          needShopInfo = this.needCheckUnitUnlock
+          needShopInfo = this.needCheckUnitUnlock && !isUnitOverrided
           crewId = crew?.id
+          hideRepairInfo = isUnitOverrided
         }
         missionRules = this.missionRules
         forceCrewInfoUnit = this.unitForSpecType

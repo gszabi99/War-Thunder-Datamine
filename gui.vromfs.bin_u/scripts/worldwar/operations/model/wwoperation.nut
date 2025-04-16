@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import ww_start_war, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
+
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -9,7 +10,7 @@ let { getMapByName } = require("%scripts/worldWar/operations/model/wwActionsWhit
 let { addTask } = require("%scripts/tasker.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getLastPlayedOperationId, getLastPlayedOperationCountry } = require("%scripts/worldWar/worldWarStates.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
 
 enum WW_OPERATION_STATUSES {
   UNKNOWN = -1
@@ -107,7 +108,7 @@ let WwOperation = class {
     }
 
     if (g_squad_manager.isSquadMember()) {
-      let queue = queues.getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
+      let queue = getActiveQueueWithType(QUEUE_TYPE_BIT.WW_BATTLE)
       if (queue && queue.getQueueWwOperationId() != this.id)
         return res.__update({
           reasonText = loc("worldWar/cantJoinBecauseOfQueue", { operationInfo = this.getNameText() })

@@ -10,11 +10,12 @@
       "auto-scroll": "yes",
       "flow": "vertical"
     },
-    "tdiv": {
+    "ChatInputPlace": {
       "id": "chat_input_place",
       "size": "pw, @buttonHeight",
       "pos": "0, 0.5*@scrn_tgt/100.0",
       "position": "relative",
+      "sendHintType": "custom",
       "EditBox": {
         "id": "menuchat_input",
         "width": "fw",
@@ -36,6 +37,21 @@
         "enable": "no",
         "noMargin": "yes",
         "showConsoleImage": "no"
+      },
+      "SendButtonHint": {
+        "id": "btn_send_hint",
+        "position": "absolute",
+        "display": "hide",
+        "padding": "15@sf/@pf",
+        "background-color": "@frameHeaderBackgroundColor",
+        "border-color": "@frameDarkMenuBorderColor",
+        "border": "yes",
+        "border-offset": "@dp",
+        "textareaNoTab": {
+          "width": "pw",
+          "text": "#chat/send_disabled_hint",
+          "smallFont": "yes"
+        }
       }
     },
     "dummy": [
@@ -51,6 +67,12 @@
         "behaviour": "accesskey",
         "accessKey": "Alt Down"
       }
-    ]
+    ],
+    "tdiv": {
+      "id": "custom_chat_timer",
+      "behaviour": "Timer",
+      "timer_handler_func": "onUpdate",
+      "timer_interval_msec": "1000"
+    }
   }
 }

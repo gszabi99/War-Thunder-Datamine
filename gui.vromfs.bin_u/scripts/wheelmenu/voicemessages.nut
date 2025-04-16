@@ -13,6 +13,7 @@ let { get_game_mode, get_game_type } = require("mission")
 let { chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 
 const HIDDEN_CATEGORY_NAME = "hidden"
 const LIMIT_SHOW_VOICE_MESSAGE_PETALS = 8
@@ -102,7 +103,7 @@ function getVoiceMessageListLine(index, is_category, name, squad, targetName, _m
 
     for (local sc = 0; sc < shortcuts.len(); sc++)
       if (shortcuts[sc].len())
-        scText.append(::get_shortcut_text({ shortcuts = shortcuts, shortcutId = 0 }))
+        scText.append(getShortcutText({ shortcuts = shortcuts, shortcutId = 0 }))
   }
 
   return {

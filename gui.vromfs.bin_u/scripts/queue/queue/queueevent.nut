@@ -25,9 +25,10 @@ let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let BaseQueue = require("%scripts/queue/queue/queueBase.nut")
 let { registerQueueClass, getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
 let { get_option_in_mode } = require("%scripts/options/optionsExt.nut")
-
-let { getShouldEventQueueCustomMode, setShouldEventQueueCustomMode, requestLeaveQueue
+let { getShouldEventQueueCustomMode, setShouldEventQueueCustomMode, requestLeaveQueue, findQueueByName
 } = require("%scripts/queue/queueState.nut")
+let { getQueueCountry, getQueueSlots } = require("%scripts/queue/queueInfo.nut")
+let { leaveAllQueuesSilent, joinQueueImpl } = require("%scripts/queue/queueManager.nut")
 
 function getCustomMgm(eventName) {
   return events.getCustomGameMode(events.getEvent(eventName))
@@ -40,7 +41,7 @@ function hasCustomModeByEventName(eventName) {
 function hasOptions(eventName) {
   return hasCustomModeByEventName(eventName)
     && getQueueClass("Event").isAllowedToSwitchCustomMode()
-    && !::queues.findQueueByName(eventName, true)
+    && !findQueueByName(eventName, true)
 }
 
 function getOptions(eventName) {
@@ -188,8 +189,8 @@ let Event = class (BaseQueue) {
       && (members == null || members.findvalue(@(m) (m?.queueProfileJwt ?? "") == "") == null)
     qp.players <- {
       [userIdStr.value] = {
-        country = ::queues.getQueueCountry(this)  
-        slots = ::queues.getQueueSlots(this)
+        country = getQueueCountry(this)
+        slots = getQueueSlots(this)
         dislikedMissions = prefParams.dislikedMissions
         bannedMissions = prefParams.bannedMissions
         fakeName = !get_option_in_mode(USEROPT_DISPLAY_MY_REAL_NICK, OPTIONS_MODE_GAMEPLAY).value
@@ -201,7 +202,7 @@ let Event = class (BaseQueue) {
     if (members)
       foreach (uid, m in members) {
         qp.players[uid] <- {
-          country = ("country" in m) ? m.country : ::queues.getQueueCountry(this)
+          country = ("country" in m) ? m.country : getQueueCountry(this)
           dislikedMissions = m?.dislikedMissions ?? []
           bannedMissions = m?.bannedMissions ?? []
           fakeName = m?.fakeName ?? false
@@ -291,11 +292,11 @@ let Event = class (BaseQueue) {
       if (queue.state != queueStates.ACTUALIZE)
         return
       if (res == EASTE_ERROR_DENIED_DUE_TO_AAS_LIMITS) {
-        ::queues.leaveAllQueuesSilent()
+        leaveAllQueuesSilent()
         markToShowMultiplayerLimitByAasMsg()
         return
       }
-      ::queues.joinQueueImpl(queue)
+      joinQueueImpl(queue)
     })
   }
 }

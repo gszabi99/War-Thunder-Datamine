@@ -8,8 +8,8 @@ let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nu
 let { register_command } = require("console")
 let logS = log_with_prefix("[Steam Items] ")
 let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
-let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
+let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 let steamNewItems = mkWatched(persist, "steamNewItems", [])
 wlog(steamNewItems, "[Steam Items]: newitems ")
@@ -46,7 +46,7 @@ let showSteamItemNotification = function(itemInfo) {
 }
 
 function tryShowSteamItemsNotification(items = []) {
-  if (!isInMenu() || checkIsInQueue())
+  if (!isInMenu() || isAnyQueuesActive())
     return
 
   items.each(function(itemInfo) {

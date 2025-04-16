@@ -10,6 +10,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getClusterShortName, isClusterUnstable
 } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { createQueueViewByCountries, updateQueueViewByCountries } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
+let { getQueueCountry, getQueueClusters } = require("%scripts/queue/queueInfo.nut")
 
 gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
   sceneBlkName   = "%gui/events/eventQueueByCountries.blk"
@@ -46,7 +47,7 @@ gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
     if (countrySets.len() < 2)
       return
 
-    let myCountry = ::queues.getQueueCountry(this.queue)
+    let myCountry = getQueueCountry(this.queue)
     let sortedSets = clone countrySets
     sortedSets.sort(function(a, b) {
       let countryDiff = (myCountry in a.allCountries ? 0 : 1) - (myCountry in b.allCountries ? 0 : 1)
@@ -117,7 +118,7 @@ gui_handlers.QiHandlerByCountries <- class (gui_handlers.QiHandlerBase) {
     }
 
     let view = { tabs = [] }
-    foreach (clusterName in ::queues.getQueueClusters(this.queue)) {
+    foreach (clusterName in getQueueClusters(this.queue)) {
       let isUnstable = isClusterUnstable(clusterName)
       view.tabs.append({
         id = clusterName

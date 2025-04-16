@@ -84,9 +84,9 @@ gui_handlers.SelectionWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     let listObj = this.scene.findObject("images_list")
     let config = this.config
     let { itemsCountX, itemsCountY, sizeX, sizeY, spaceX, spaceY } = config
-
-    listObj.size =
-      $"{itemsCountX} * ({sizeX} + {spaceX}) + {spaceX}, {itemsCountY} * ({sizeY} + {spaceY}) + {spaceY}"
+    let listObjWidth = itemsCountX * to_pixels(sizeX) + (itemsCountX + 1) * to_pixels(spaceX)
+    let listObjHeight = itemsCountY * to_pixels(sizeY) + (itemsCountY + 1) * to_pixels(spaceY)
+    listObj.size = $"{listObjWidth}, {listObjHeight}"
     this.itemsPerPage = itemsCountX * itemsCountY
   }
 

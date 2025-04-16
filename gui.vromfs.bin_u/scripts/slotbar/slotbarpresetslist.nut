@@ -7,7 +7,7 @@ let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.nut")
 
 ::SlotbarPresetsList <- class {
@@ -187,7 +187,7 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
   }
 
   function checkChangePresetAndDo(action) {
-    queues.checkAndStart(
+    checkQueueAndStart(
       Callback(function() {
         checkSquadUnreadyAndDo(
           Callback(function() {

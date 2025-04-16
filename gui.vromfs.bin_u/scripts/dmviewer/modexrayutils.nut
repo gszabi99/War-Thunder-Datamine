@@ -169,7 +169,7 @@ function getCrewSkillsCur(commonData) {
   let { unitDataCache, unit, difficulty, crewId } = commonData
   if ("crewSkillsCur" not in unitDataCache)
     unitDataCache.crewSkillsCur <- unit == null ? null
-      : skillParametersRequestType.BASE_VALUES.getParameters(crewId ?? -1, unit)[difficulty.crewSkillName]
+      : skillParametersRequestType.CURRENT_VALUES.getParameters(crewId ?? -1, unit)[difficulty.crewSkillName]
   return unitDataCache.crewSkillsCur
 }
 
@@ -177,7 +177,7 @@ function getCrewSkillsTop(commonData) {
   let { unitDataCache, unit, difficulty } = commonData
   if ("crewSkillsTop" not in unitDataCache)
     unitDataCache.crewSkillsTop <- unit == null ? null
-      : skillParametersRequestType.BASE_VALUES.getParameters(-1, unit)[difficulty.crewSkillName]
+      : skillParametersRequestType.MAX_VALUES.getParameters(-1, unit)[difficulty.crewSkillName]
   return unitDataCache.crewSkillsTop
 }
 
@@ -207,7 +207,7 @@ let getProp_tankMainTurretSpeedPitchTop = @(commonData)
 let getProp_tankReloadTime = @(commonData)
   getCrewSkillsCur(commonData)?.loader.loading_time_mult.tankLoderReloadingTime ?? 0.0
 let getProp_tankReloadTimeTop = @(commonData)
-  getCrewSkillsTop(commonData)?.tank_gunner.tracking.turnTurretSpeed ?? 0.0
+  getCrewSkillsTop(commonData)?.loader.loading_time_mult.tankLoderReloadingTime ?? 0.0
 
 let getProp_shipReloadTimeMainDef = @(commonData, weaponName)
   get_wpcost_blk()?[commonData.unitName][$"shipMainCaliberReloadTime_{weaponName}"] ?? 0.0

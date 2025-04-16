@@ -24,6 +24,8 @@ let { updateAircraftWarpoints, loadPlayerExpTable, initPrestigeByRank } = requir
 let { setUnlocksPunctuationWithoutSpace } = require("%scripts/langUtils/localization.nut")
 let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
+let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
+let { usageRatingAmount } = require("%scripts/airInfo.nut")
 
 let allUnits = getAllUnits()
 
@@ -80,7 +82,8 @@ function countUsageAmountOnce() {
     }
   }
 
-  if (shopStatsAirs.len() <= ::usageRating_amount.len())
+  let usageRatingAmountLen = usageRatingAmount.len()
+  if (shopStatsAirs.len() <= usageRatingAmountLen)
     return
 
   shopStatsAirs.sort(function(a, b) {
@@ -91,9 +94,9 @@ function countUsageAmountOnce() {
     return 0;
   })
 
-  for (local i = 0; i < ::usageRating_amount.len(); i++) {
-    let idx = floor((i + 1).tofloat() * shopStatsAirs.len() / (::usageRating_amount.len() + 1) + 0.5)
-    ::usageRating_amount[i] = (idx == shopStatsAirs.len() - 1) ? shopStatsAirs[idx] : 0.5 * (shopStatsAirs[idx] + shopStatsAirs[idx + 1])
+  for (local i = 0; i < usageRatingAmountLen; i++) {
+    let idx = floor((i + 1).tofloat() * shopStatsAirs.len() / (usageRatingAmountLen + 1) + 0.5)
+    usageRatingAmount[i] = (idx == shopStatsAirs.len() - 1) ? shopStatsAirs[idx] : 0.5 * (shopStatsAirs[idx] + shopStatsAirs[idx + 1])
   }
   usageAmountCounted = true
 }
@@ -112,7 +115,7 @@ function countUsageAmountOnce() {
   function() { return updateAircraftWarpoints(10) }
 
   function() {
-    ::tribunal.init()
+    tribunal.init()
     clearMapsCache() 
     set_crosshair_icons([])
     crosshair_colors.clear()

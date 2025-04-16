@@ -13,7 +13,8 @@ let { getFavoriteUnlocks } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnlockMainCondDescByCfg, getUnlockMultDescByCfg, getUnlockDesc, getUnlockCondsDescByCfg,
-  getUnlockTitle, getUnlockSnapshotText, needShowLockIcon, getUnlockImageConfig, buildConditionsConfig
+  getUnlockTitle, getUnlockSnapshotText, needShowLockIcon, getUnlockImageConfig, buildConditionsConfig,
+  getRewardCfgByUnlockCfg, getSubunlocksView, getUnlockStagesView
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isBattleTask, isBattleTasksAvailable, isBattleTaskDone, getBattleTaskById,
   getCurBattleTasksByGm
@@ -79,8 +80,8 @@ function getFavUnlocksView() {
     let imageCfg = getUnlockImageConfig(cfg)
     let image = LayersIcon.getIconData(imageCfg.style, imageCfg.image,
       imageCfg.ratio, null, imageCfg.params)
-    let { rewardText, tooltipId } = ::g_unlock_view.getRewardConfig(cfg)
-    let { subunlocks = null } = ::g_unlock_view.getSubunlocksView(cfg, NUM_SUBUNLOCK_COLUMNS, true)
+    let { rewardText, tooltipId } = getRewardCfgByUnlockCfg(cfg)
+    let { subunlocks = null } = getSubunlocksView(cfg, NUM_SUBUNLOCK_COLUMNS, true)
 
     view.items.append({
       icon = getFavUnlockIcon(cfg.id)
@@ -97,7 +98,7 @@ function getFavUnlocksView() {
       rewardText
       rewardTooltipId = tooltipId
       subunlocks
-      stages = ::g_unlock_view.getStagesView(cfg)
+      stages = getUnlockStagesView(cfg)
     })
   }
   return view

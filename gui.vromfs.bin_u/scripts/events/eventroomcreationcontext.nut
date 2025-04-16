@@ -20,7 +20,7 @@ let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
-let { createSessionLobbyEventRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { createSessionLobbyEventRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 
 enum CREWS_READY_STATUS {

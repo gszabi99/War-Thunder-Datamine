@@ -65,6 +65,7 @@ tdiv {
               descriptionNest {
                 id:t='tierDesc'
                 width:t='pw'
+                margin-top:t='1.5@bulletTooltipPadding'
               }
             }
           }

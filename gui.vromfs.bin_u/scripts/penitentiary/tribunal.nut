@@ -7,7 +7,7 @@ let { get_game_settings_blk } = require("blkGetters")
 
 let complaintCategories = freeze(["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "BOT2", "NICK_HATESPEECH", "SPAM", "OTHER"])
 
-::tribunal <- {
+let tribunal = {
   maxComplaintCount = 10
   minComplaintCount = 5
   maxDaysToCheckComplains = 10
@@ -24,23 +24,23 @@ let complaintCategories = freeze(["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "B
 
     foreach (p in ["maxComplaintCount", "minComplaintCount", "maxDaysToCheckComplains", "maxComplaintsFromMe"])
       if (blk?[p] != null)
-        ::tribunal[p] = blk[p]
+        this[p] = blk[p]
   }
 
   function checkComplaintCounts() {
     if (!hasFeature("Tribunal"))
       return
 
-    ::tribunal.complaintsData = get_player_complaint_counts()
-    if (::tribunal.complaintsData?.is_need_complaint_notify)
-      ::tribunal.showComplaintMessageBox(::tribunal.complaintsData)
+    this.complaintsData = get_player_complaint_counts()
+    if (this.complaintsData?.is_need_complaint_notify)
+     this.showComplaintMessageBox(this.complaintsData)
   }
 
   function canComplaint() {
     if (!hasFeature("Tribunal"))
       return true
 
-    ::tribunal.complaintsData = get_player_complaint_counts()
+    this.complaintsData = get_player_complaint_counts()
     if (this.complaintsData && this.complaintsData.complaint_count_own >= this.maxComplaintsFromMe) {
       let text = format(loc("charServer/complaintsLimitExpired"), this.maxComplaintsFromMe)
       showInfoMsgBox(text, "tribunal_msg_box")
@@ -86,4 +86,5 @@ let complaintCategories = freeze(["FOUL", "ABUSE", "HATE", "TEAMKILL", "BOT", "B
 
 return {
   complaintCategories
+  tribunal
 }

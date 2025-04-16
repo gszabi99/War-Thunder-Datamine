@@ -26,6 +26,7 @@ let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
 let { isWorldWarEnabled, canPlayWorldwar } = require("%scripts/globalWorldWarScripts.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { isQueueActive, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
 
 
 
@@ -387,7 +388,7 @@ function getClanBattlesGameModes() {
 
 function findCurrentGameModeId(ignoreLocalProfile = false, preferredDiffCode = -1) {
   
-  let queue = ::queues.findQueue(null, queueMask, true)
+  let queue = findQueue(null, queueMask, true)
   if (queue && (queue.name in gameModeById))
     return queue.name
 
@@ -791,7 +792,7 @@ addListenersWithoutEnv({
     updateManager()
   }
   function QueueChangeState(p) {
-    if (::queues.checkQueueType(p?.queue, queueMask) && ::queues.isQueueActive(p?.queue))
+    if (checkQueueType(p?.queue, queueMask) && isQueueActive(p?.queue))
       updateCurrentGameModeId()
   }
   function SignOut(_p) {

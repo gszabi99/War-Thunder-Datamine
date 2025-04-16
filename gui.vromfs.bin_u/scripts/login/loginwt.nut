@@ -28,6 +28,7 @@ let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { sessionLobbyHostCb } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { startLoginProcess } = require("%scripts/login/loginProcess.nut")
 let { setLoginState } = require("%scripts/login/loginManager.nut")
+let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
@@ -82,7 +83,7 @@ function firstMainMenuLoad() {
   ::updateContentPacks()
 
   handler.doWhenActive(@() ::checkNewNotificationUserlogs(true))
-  handler.doWhenActive(@() ::tribunal.checkComplaintCounts())
+  handler.doWhenActive(@() tribunal.checkComplaintCounts())
   handler.doWhenActive(@() broadcastEvent("ChatCheckVoiceChatSuggestion"))
 
   if (!fetch_profile_inited_once()) {
@@ -136,7 +137,6 @@ function firstMainMenuLoad() {
       )
     })
 
-  ::queues.init()
   set_host_cb(null, function(p) { sessionLobbyHostCb(p) })
 
   ::update_gamercards()

@@ -7,6 +7,7 @@ let { get_ranks_blk } = require("blkGetters")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { Cost } = require("%scripts/money.nut")
 let { findUnitNoCase, getEsUnitType } = require("%scripts/unit/unitParams.nut")
+let getAllUnits = require("%scripts/unit/allUnits.nut")
 
 enum bit_unit_status {
   locked      = 1
@@ -101,6 +102,38 @@ function getPrevUnit(unit) {
   return "reqAir" in unit ? getAircraftByName(unit.reqAir) : null
 }
 
+function getNumberOfUnitsByYears(country, years) {
+  let result = {}
+  foreach (year in years) {
+    result[$"year{year}"] <- 0
+    result[$"beforeyear{year}"] <- 0
+  }
+
+  foreach (air in getAllUnits()) {
+    if (getEsUnitType(air) != ES_UNIT_TYPE_AIRCRAFT)
+      continue
+    if (!("tags" in air) || !air.tags)
+      continue;
+    if (air.shopCountry != country)
+      continue;
+
+    local maxYear = 0
+    foreach (year in years) {
+      let parameter = $"year{year}";
+      foreach (tag in air.tags)
+        if (tag == parameter) {
+          result[parameter]++
+          maxYear = max(year, maxYear)
+        }
+    }
+    if (maxYear)
+      foreach (year in years)
+        if (year > maxYear)
+          result[$"beforeyear{year}"]++
+  }
+  return result;
+}
+
 return {
   bit_unit_status,
   getUnitTypeTextByUnit, getUnitName,
@@ -115,4 +148,5 @@ return {
   getUnitTypeText
   getUnitTypeByText
   image_for_air
+  getNumberOfUnitsByYears
 }

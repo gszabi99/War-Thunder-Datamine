@@ -23,10 +23,11 @@ let { web_rpc } = require("%scripts/webRPC.nut")
 let { get_mission_settings, set_mission_settings, isRemoteMissionVar, matchSearchGm, currentCampaignId } = require("%scripts/missions/missionsStates.nut")
 let { UrlMission } = require("%scripts/missions/urlMission.nut")
 let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
-
-let { updateRoomAttributes, guiStartMpLobby, continueCoopWithSquad, startCoopBySquad,
-  createSessionLobbyRoom
+let { updateRoomAttributes, guiStartMpLobby, continueCoopWithSquad
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { createSessionLobbyRoom, startCoopBySquad
+} = require("%scripts/matchingRooms/sessionLobbyActions.nut")
+let { getOptionsMode } = require("%scripts/options/optionsList.nut")
 
 const DYNAMIC_REQ_COUNTRY_RANK = 1
 
@@ -36,7 +37,7 @@ let backFromBriefingParams = mkWatched(persist, "backFromBriefingParams", { even
 function guiStartSessionList() {
   loadHandler(gui_handlers.SessionsList,
                   {
-                    wndOptionsMode = ::get_options_mode(get_game_mode())
+                    wndOptionsMode = getOptionsMode(get_game_mode())
                     backSceneParams = { eventbusName = "gui_start_mainmenu" }
                   })
 }

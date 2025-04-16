@@ -25,11 +25,10 @@ let { loadCondition, isBitModeType, getMainProgressCondition, isNestedUnlockMode
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, isUnlockComplete, getUnlockType, isUnlockOpened, canClaimUnlockReward, isUnlockExist,
   isUnlockVisibleByTime, debugLogVisibleByTimeInfo, canClaimUnlockRewardForUnit, getUnlockRewardCost,
-  isUnlockVisible
-} = require("%scripts/unlocks/unlocksModule.nut")
+  isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { getDecoratorById, getDecorator } = require("%scripts/customization/decorCache.nut")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
-let { cutPrefix } = require("%sqstd/string.nut")
+let { cutPrefix, stripTags } = require("%sqstd/string.nut")
 let { getLocIdsArray } = require("%scripts/langUtils/localization.nut")
 let { getUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 let { season, seasonLevel, getLevelByExp } = require("%scripts/battlePass/seasonState.nut")
@@ -56,6 +55,10 @@ let { get_charserver_time_sec } = require("chard")
 let { activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
 let { isUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isBattleTask, getBattleTaskNameById } = require("%scripts/unlocks/battleTasks.nut")
+let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
+
+const MAX_STAGES_NUM = 10 
+const SUB_UNLOCKS_COL_COUNT = 4
 
 let getEmptyConditionsConfig = @() {
   id = ""
@@ -1637,12 +1640,42 @@ function fillUnlockDescription(unlockConfig, unlockObj) {
   previewPrizeBtnObj.unlockId = unlockConfig.id
 }
 
+function getRewardCfgByUnlockCfg(unlockConfig) {
+  let id = unlockConfig.id
+  let unlockType = unlockConfig.unlockType
+  let res = {
+    rewardText = ""
+    tooltipId = getTooltipType("REWARD_TOOLTIP").getTooltipId(id)
+  }
+
+  if (isInArray(unlockType, [UNLOCKABLE_DECAL, UNLOCKABLE_MEDAL, UNLOCKABLE_SKIN]))
+    res.rewardText = getUnlockNameText(unlockType, id)
+  else if (unlockType == UNLOCKABLE_TITLE)
+    res.rewardText = format(loc("reward/title"), getUnlockNameText(unlockType, id))
+  else if (unlockType == UNLOCKABLE_TROPHY) {
+    let item = findItemById(id, itemType.TROPHY)
+    if (item) {
+      res.rewardText = item.getName() 
+      res.tooltipId = getTooltipType("ITEM").getTooltipId(id)
+    }
+  }
+
+  if (res.rewardText != "")
+    res.rewardText = " ".concat(loc("challenge/reward"), colorize("activeTextColor", res.rewardText))
+
+  let showStages = ("stages" in unlockConfig) && (unlockConfig.stages.len() > 1)
+  if ((showStages && unlockConfig.curStage >= 0) || ("reward" in unlockConfig))
+    res.rewardText = getRewardText(unlockConfig, unlockConfig.curStage)
+
+  return res
+}
+
 function fillReward(unlockConfig, unlockObj) {
   let rewardObj = unlockObj.findObject("reward")
   if (!checkObj(rewardObj))
     return
 
-  let { rewardText, tooltipId } = ::g_unlock_view.getRewardConfig(unlockConfig)
+  let { rewardText, tooltipId } = getRewardCfgByUnlockCfg(unlockConfig)
 
   let tooltipObj = rewardObj.findObject("tooltip")
   if (checkObj(tooltipObj))
@@ -1707,6 +1740,183 @@ function getConditionsToUnlockShowcaseById(unlockId) {
     conds = getUnlockMainCondDescByCfg(subunlockCfg ?? config, {})
 
   return conds
+}
+
+function getSubunlockTooltipMarkup(unlockCfg, subunlockId, allowActionText = "") {
+  if (unlockCfg.type == "char_resources") {
+    let decorator = getDecoratorById(subunlockId)
+    return decorator
+      ? getTooltipType("DECORATION").getMarkup(decorator.id, decorator.decoratorType.unlockedItemType)
+      : ""
+  }
+
+  let hasUnlock = getUnlockById(subunlockId) != null
+  return hasUnlock
+    ? getTooltipType("UNLOCK").getMarkup(subunlockId, { showProgress = true, allowActionText })
+    : ""
+}
+
+function fillUnlockStages(unlockConfig, unlockObj, context) {
+  if (!unlockObj?.isValid())
+    return
+  let stagesObj = unlockObj.findObject("stages")
+  if (!stagesObj?.isValid())
+    return
+
+  local textStages = ""
+  let needToFillStages = unlockConfig.needToFillStages && unlockConfig.stages.len() <= MAX_STAGES_NUM
+  if (needToFillStages)
+    for (local i = 0; i < unlockConfig.stages.len(); i++) {
+      let stage = unlockConfig.stages[i]
+      let curValStage = (unlockConfig.curVal > stage.val) ? stage.val : unlockConfig.curVal
+      let isUnlockedStage = curValStage >= stage.val
+      textStages = "".concat(textStages, "unlocked { {parity} substrateImg {} img { background-image:t='{image}' } {tooltip} }"
+        .subst({
+          image = isUnlockedStage ? $"#ui/gameuiskin#stage_unlocked_{i+1}" : $"#ui/gameuiskin#stage_locked_{i+1}"
+          parity = i % 2 == 0 ? "class:t='even';" : "class:t='odd';"
+          tooltip = getTooltipType("UNLOCK_SHORT").getMarkup(unlockConfig.id, { stage = i })
+        }))
+    }
+
+  unlockObj.getScene().replaceContentFromText(stagesObj, textStages, textStages.len(), context)
+}
+
+function getSubunlocksView(cfg, numColumns = 2, includeTooltip = false) {
+  if (cfg.hideSubunlocks)
+    return null
+  let isBitMode = isBitModeType(cfg.type)
+  let titles = getLocForBitValues(cfg.type, cfg.names, cfg.hasCustomUnlockableList)
+  let subunlocks = []
+  foreach (idx, title in titles) {
+    let unlockId = cfg.names[idx]
+    let unlockBlk = getUnlockById(unlockId)
+    if (!isUnlockVisible(unlockBlk) && !(unlockBlk?.showInDesc ?? false))
+      continue
+    let isUnlocked = isBitMode ? is_bit_set(cfg.curVal, idx) : isUnlockOpened(unlockId)
+    let tooltipMarkup = includeTooltip ? getSubunlockTooltipMarkup(cfg, unlockId) : null
+    subunlocks.append({ title, isUnlocked, numColumns, tooltipMarkup })
+  }
+  return (subunlocks.len() > 0) ? { subunlocks } : null
+}
+
+function getUnlockStagesView(cfg) {
+  let needToFillStages = cfg.needToFillStages && cfg.stages.len() <= MAX_STAGES_NUM
+  if (!needToFillStages)
+    return []
+
+  let stages = []
+  for (local i = 0; i < cfg.stages.len(); ++i) {
+    let stage = cfg.stages[i]
+    let curValStage = (cfg.curVal > stage.val) ? stage.val : cfg.curVal
+    let isUnlockedStage = curValStage >= stage.val
+    stages.append({
+      image = isUnlockedStage
+        ? $"#ui/gameuiskin#stage_unlocked_{i + 1}"
+        : $"#ui/gameuiskin#stage_locked_{i + 1}"
+      even = i % 2 == 0
+      tooltip = getTooltipType("UNLOCK_SHORT").getMarkup(cfg.id, { stage = i })
+    })
+  }
+  return stages
+}
+
+function canPurchaseConditionUnlock(unlock) {
+  let unlockId = unlock.id
+  if ((unlock?.stages ?? []).len() > 1)
+    return false
+
+  if (isUnlockOpened(unlockId))
+    return false
+
+  let cost = getUnlockCost(unlockId)
+  if (cost.gold > 0 && !hasFeature("SpendGold"))
+    return false
+
+  if (cost.isZero())
+    return false
+
+  if (unlock?.manualOpen && canClaimUnlockReward(unlockId))
+    return false
+
+  return isUnlockVisibleByTime(unlockId, false)
+}
+
+function fillUnlockConditions(unlockConfig, unlockObj, context, simplified = false) {
+  if (!checkObj(unlockObj))
+    return
+
+  let hiddenObj = unlockObj.findObject("hidden_block")
+  if (!checkObj(hiddenObj))
+    return
+
+  let conditions = []
+  if (!unlockConfig.hideSubunlocks) {
+    let isBitMode = isBitModeType(unlockConfig.type)
+    let names = getLocForBitValues(unlockConfig.type, unlockConfig.names, unlockConfig.hasCustomUnlockableList)
+    for (local i = 0; i < names.len(); i++) {
+      let unlockId = unlockConfig.names[i]
+      let unlock = getUnlockById(unlockId)
+      if (unlock && !isUnlockVisible(unlock) && !(unlock?.showInDesc ?? false))
+        continue
+
+      let isShowAsButton = !simplified && unlock != null && getUnlockType(unlockId) != UNLOCKABLE_STREAK && isUnlockVisible(unlock)
+
+      this.guiScene.applyPendingChanges(true)
+
+      let maxButtonWidth = hiddenObj.getSize()[0] / SUB_UNLOCKS_COL_COUNT
+      let conditionDescription = stripTags(names[i])
+      let textWidth = getStringWidthPx(conditionDescription, "fontNormal", this.guiScene)
+      let hasAutoscrollText = (textWidth + to_pixels("2@buttonTextPadding")) > maxButtonWidth
+      local allowActionText = ""
+      if (!simplified && isShowAsButton) {
+        let canPurchase = canPurchaseConditionUnlock(unlock)
+        allowActionText = $"{canPurchase ? loc("profile/unlockConditions/allowActionText") : ""} {loc("profile/unlockConditions/goToTheTask")}"
+      }
+
+      conditions.append({
+        isUnlocked = isBitMode ? is_bit_set(unlockConfig.curVal, i) : isUnlockOpened(unlockId)
+        conditionDescription
+        isShowAsButton
+        unlockId
+        hasAutoscrollText
+        isSimplified = simplified
+        hasUnlockImg = ("image" in unlockConfig) && unlockConfig.image != ""
+        tooltipMarkup = getSubunlockTooltipMarkup(unlockConfig, unlockId, allowActionText)
+      })
+    }
+  }
+
+  unlockObj.findObject("expandImg").show(conditions.len() > 0)
+  let markUpData = handyman.renderCached("%gui/profile/unlockConditions.tpl", { conditions })
+  unlockObj.getScene().replaceContentFromText(hiddenObj, markUpData, markUpData.len(), context)
+}
+
+function fillSimplifiedUnlockInfo(unlockBlk, unlockObj, context) {
+  let isShowUnlock = unlockBlk != null && isUnlockVisible(unlockBlk)
+  unlockObj.show(isShowUnlock)
+  if (!isShowUnlock)
+    return
+
+  let unlockConfig = buildConditionsConfig(unlockBlk)
+  let subunlockCfg = getSubunlockCfg(unlockConfig.conditions)
+  buildUnlockDesc(subunlockCfg ?? unlockConfig)
+  unlockObj.id = unlockConfig.id
+
+  fillUnlockTitle(unlockConfig, unlockObj)
+  fillUnlockImage(unlockConfig, unlockObj)
+  fillReward(unlockConfig, unlockObj)
+  updateLockStatus(unlockConfig, unlockObj)
+  updateProgress(subunlockCfg ?? unlockConfig, unlockObj)
+  fillUnlockConditions(subunlockCfg ?? unlockConfig, unlockObj, context, true)
+
+  unlockObj.findObject("removeFromFavoritesBtn").unlockId = unlockBlk.id
+  unlockObj.findObject("snapshotBtn").unlockId = unlockBlk.id
+
+  let tooltipObj = unlockObj.findObject("unlock_tooltip")
+  tooltipObj.tooltipId = getTooltipType("UNLOCK_SHORT").getTooltipId(unlockConfig.id, {
+    showChapter = true
+    showSnapshot = true
+  })
 }
 
 addTooltipTypes({
@@ -1775,7 +1985,7 @@ addTooltipTypes({
       obj.findObject("reward").setValue(reward)
 
 
-      let view = ::g_unlock_view.getSubunlocksView(subunlockCfg ?? config)
+      let view = getSubunlocksView(subunlockCfg ?? config)
       if (view) {
         let markup = handyman.renderCached("%gui/unlocks/subunlocks.tpl", view)
         let nestObj = obj.findObject("subunlocks")
@@ -1877,4 +2087,10 @@ return {
   getSubunlockCfg
   getTooltipMarkupByModeType
   getUnlocksListView
+  fillUnlockConditions
+  getRewardCfgByUnlockCfg
+  fillUnlockStages
+  getSubunlocksView
+  getUnlockStagesView
+  fillSimplifiedUnlockInfo
 }

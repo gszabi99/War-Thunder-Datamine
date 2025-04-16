@@ -24,8 +24,8 @@ let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
 let { hasMenuChatPrivate } = require("%scripts/user/matchingFeature.nut")
 let { is_chat_message_empty } = require("chat")
 let { isGuestLogin } = require("%scripts/user/profileStates.nut")
-let { EPLX_SEARCH, contactsWndSizes, contactsGroups, contactsByGroups, contactsGroupWithoutMaxCount
-} = require("%scripts/contacts/contactsManager.nut")
+let { EPLX_SEARCH, contactsWndSizes, contactsGroups, contactsByGroups,
+  contactsGroupWithoutMaxCount, getMaxContactsByGroup } = require("%scripts/contacts/contactsManager.nut")
 let { searchContactsResults, searchContacts, addContact, removeContact
 } = require("%scripts/contacts/contactsState.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
@@ -44,6 +44,7 @@ let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalW
 let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
+
 
 ::contacts_prev_scenes <- [] 
 ::last_contacts_scene_show <- false
@@ -295,13 +296,13 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function getContactsTotalText(gName) {
     let contactsCount = this.contactsArrByGroups[gName].len()
     let contactsCountText = gName in contactsGroupWithoutMaxCount ? contactsCount
-      : $"{contactsCount}/{EPL_MAX_PLAYERS_IN_LIST}"
+      : $"{contactsCount}/{getMaxContactsByGroup(gName)}"
     return loc("contacts/totalCount", { contactsCount = contactsCountText })
   }
 
   function getFilteredPlayerListData(gName) {
     local playerList = this.contactsArrByGroups?[gName]
-    if (playerList == null || playerList.len() <= EPL_MAX_PLAYERS_IN_LIST)
+    if (playerList == null || playerList.len() <= getMaxContactsByGroup(gName))
       return playerList
     let filterText = this.searchText
     playerList = playerList.filter(function(contact) {
@@ -353,7 +354,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       this.guiScene.setUpdatesEnabled(false, false)
     let playerList = this.getFilteredPlayerListData(gName)
     local visibleContactsCount = min(playerList.len(),
-      (this.visibleContactsByGroup?[gName]  ?? EPL_MAX_PLAYERS_IN_LIST))
+      (this.visibleContactsByGroup?[gName] ?? getMaxContactsByGroup(gName)))
     let isNotFullListVisible = visibleContactsCount < playerList.len()
     if (isNotFullListVisible)
       visibleContactsCount++
@@ -640,7 +641,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         || !(this.curGroup in this.contactsArrByGroups))
       return
 
-    if (this.contactsArrByGroups[this.curGroup].len() > EPL_MAX_PLAYERS_IN_LIST) {
+    if (this.contactsArrByGroups[this.curGroup].len() > getMaxContactsByGroup(this.curGroup)) {
       this.fillPlayersList(this.curGroup)
       return
     }
@@ -879,7 +880,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     let curValue = obj.getValue()
     let visibleCount = this.visibleContactsByGroup?[this.curGroup]
-      ?? EPL_MAX_PLAYERS_IN_LIST
+      ?? getMaxContactsByGroup(this.curGroup)
     if (curValue >= visibleCount) {
       this.curPlayer = null
       return
@@ -889,7 +890,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function activateObjInCurGroupList(obj, value) {
     let visibleCount = this.visibleContactsByGroup?[this.curGroup]
-      ?? EPL_MAX_PLAYERS_IN_LIST
+      ?? getMaxContactsByGroup(this.curGroup)
     if (value >= visibleCount) { 
       this.showMorePlayers()
       return
@@ -1252,12 +1253,12 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let playerList = this.getFilteredPlayerListData(gName)
     let contactsCount = playerList?.len() ?? 0
     let visibleContactsCount = this.visibleContactsByGroup?[gName]
-      ?? EPL_MAX_PLAYERS_IN_LIST
+      ?? getMaxContactsByGroup(gName)
     if (contactsCount <= visibleContactsCount)
       return
 
     this.visibleContactsByGroup[gName] <-
-      min(visibleContactsCount + EPL_MAX_PLAYERS_IN_LIST, contactsCount)
+      min(visibleContactsCount + getMaxContactsByGroup(gName), contactsCount)
     this.fillPlayersList(gName)
   }
 }

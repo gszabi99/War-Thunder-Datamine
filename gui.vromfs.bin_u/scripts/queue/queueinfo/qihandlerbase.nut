@@ -4,6 +4,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { updateShortQueueInfo } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
+let { isQueueActive, findQueue } = require("%scripts/queue/queueState.nut")
+let { getQueueEvent } = require("%scripts/queue/queueInfo.nut")
 
 gui_handlers.QiHandlerBase <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -45,8 +47,8 @@ gui_handlers.QiHandlerBase <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkCurQueue(forceUpdate = false) {
-    local q = ::queues.findQueue({}, this.queueTypeMask)
-    if (q && !::queues.isQueueActive(q))
+    local q = findQueue({}, this.queueTypeMask)
+    if (q && !isQueueActive(q))
       q = null
 
     if (this.needAutoDestroy && !q)
@@ -57,7 +59,7 @@ gui_handlers.QiHandlerBase <- class (gui_handlers.BaseGuiHandlerWT) {
       return isQueueChanged
 
     this.queue = q
-    this.event = this.queue && ::queues.getQueueEvent(this.queue)
+    this.event = this.queue && getQueueEvent(this.queue)
     if (!this.isStatsCreated) {
       this.createStats()
       this.isStatsCreated = true

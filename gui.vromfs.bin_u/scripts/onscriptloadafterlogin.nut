@@ -55,8 +55,6 @@ foreach (fn in [
   "%scripts/leaderboard/leaderboardTable.nut"
   "%scripts/leaderboard/leaderboard.nut"
 
-  "%scripts/queue/queueManager.nut"
-
   "%scripts/events/eventDisplayType.nut"
   "%scripts/events/eventsChapter.nut"
   "%scripts/events/eventsManager.nut"
@@ -157,7 +155,6 @@ foreach (fn in [
   "%scripts/contacts/contacts.nut"
 
   "%scripts/unlocks/unlocks.nut"
-  "%scripts/unlocks/unlocksView.nut"
   "%scripts/debriefing/rankUpModal.nut"
   "%scripts/unlocks/showUnlockHandler.nut"
   "%scripts/promo/battleTasksPromoHandler.nut"
@@ -302,6 +299,13 @@ foreach (fn in [
 ]) {
   loadOnce(fn)
 }
+
+require("%scripts/queue/queue/queueEvent.nut")
+require("%scripts/queue/queue/queueWwBattle.nut") 
+require("%scripts/queue/queueInfo/qiHandlerBase.nut")
+require("%scripts/queue/queueInfo/qiHandlerByTeams.nut")
+require("%scripts/queue/queueInfo/qiHandlerByCountries.nut")
+require("%scripts/queue/queueTable.nut")
 
 require("%scripts/controls/controlsFootballNy2021Hack.nut")
 require("%scripts/slotbar/elems/unlockMarkerElem.nut")

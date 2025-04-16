@@ -6,7 +6,7 @@ let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/sub
 let { APP_ID } = require("app")
 let { format } = require("string")
 let { updateContactsGroups, predefinedContactsGroupToWtGroup,
-  updateContactsListFromContactsServer } = require("%scripts/contacts/contactsManager.nut")
+  updateContactsListFromContactsServer, getMaxContactsByGroup } = require("%scripts/contacts/contactsManager.nut")
 let { matchingApiFunc, matchingApiNotify, matchingRpcSubscribe
 } = require("%scripts/matching/api.nut")
 let { register_command } = require("console")
@@ -241,7 +241,7 @@ function canAddPlayerToContactsList(groupName) {
     return true
 
   showInfoMsgBox(
-    format(loc("msg/cant_add/too_many_contacts"), EPL_MAX_PLAYERS_IN_LIST),
+    format(loc("msg/cant_add/too_many_contacts"), getMaxContactsByGroup(groupName)),
     "cant_add_contact"
   )
 

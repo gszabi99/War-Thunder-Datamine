@@ -87,7 +87,9 @@ let WEAPON_TYPE = {
 
 let CONSUMABLE_TYPES = [ TRIGGER_TYPE.AAM, TRIGGER_TYPE.AGM, TRIGGER_TYPE.ATGM, TRIGGER_TYPE.GUIDED_BOMBS,
   TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.TORPEDOES, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.MINES,
-  TRIGGER_TYPE.SMOKE, TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES]
+  TRIGGER_TYPE.SMOKE, TRIGGER_TYPE.FLARES, TRIGGER_TYPE.CHAFFS, TRIGGER_TYPE.COUNTERMEASURES ]
+
+let NOT_WEAPON_TYPES = [ "targetingPod", "fuel tanks" ]
 
 let WEAPON_TAG = {
   ADD_GUN          = "additionalGuns"
@@ -788,9 +790,8 @@ function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine = null) 
 
     
     
-    if (!newLine) {
-      let unitType = getEsUnitType(unit)
-      if (weapon.dropSpeedRange && isInArray(unitType, [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER])) {
+    if (!newLine && [ES_UNIT_TYPE_AIRCRAFT, ES_UNIT_TYPE_HELICOPTER].contains(unit.esUnitType)) {
+      if (weapon.dropSpeedRange) {
         let speedKmph = countMeasure(0, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
         let speedMps  = countMeasure(3, [weapon.dropSpeedRange.x, weapon.dropSpeedRange.y])
         addParamsToRes("{0} {1}".subst(speedKmph, loc("ui/parentheses", { text = speedMps })), loc("weapons/drop_speed_range_text"))
@@ -1075,6 +1076,7 @@ return {
   WEAPON_TYPE
   WEAPON_TAG
   CONSUMABLE_TYPES
+  NOT_WEAPON_TYPES
   WEAPON_TEXT_PARAMS
   getLastWeapon
   validateLastWeapon

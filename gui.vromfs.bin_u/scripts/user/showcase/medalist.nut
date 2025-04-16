@@ -119,18 +119,29 @@ function onMedalChooseApply(slotIdx, medalData, scene, terseInfo) {
 }
 
 function getMedalsStats(playerStats) {
-  let unlockedMedals = playerStats?.unlocks.medals
+  let unlockedMedals = playerStats?.unlocks.medal
   let allMedals = getUnlocksByTypeInBlkOrder("medal")
 
-  if (unlockedMedals != null)
-    return {totalCount = allMedals.len(), gained = unlockedMedals.len()}
+  local totalCount = 0
+  if (unlockedMedals != null) {
+    foreach (medal in allMedals) {
+      if (medal?.hideUntilUnlocked && !isUnlockOpened(medal.id, UNLOCKABLE_MEDAL))
+        continue
+      totalCount++
+    }
+    return {totalCount, gained = unlockedMedals.len()}
+  }
 
   local gained = 0
-  foreach (medal in allMedals)
+  foreach (medal in allMedals) {
+    if (medal?.hideUntilUnlocked && !isUnlockOpened(medal.id, UNLOCKABLE_MEDAL))
+      continue
+    totalCount++
     if (medal?.country != null && isUnlockOpened(medal.id, UNLOCKABLE_MEDAL))
       gained++
+  }
 
-  return {totalCount = allMedals.len(), gained}
+  return {totalCount, gained}
 }
 
 function getMedalsForSelect(playerStats, terseInfo) {

@@ -25,7 +25,7 @@ let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyStat
 let { isUnitAllowedForRoom, hasUnitRequirementsInRoom, isUnitRequiredForRoom
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { isCrewLockedByPrevBattle, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { isCanModifyCrew, checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 enum CTU_PROGRESS {
   NOT_STARTED
@@ -75,7 +75,7 @@ let CrewTakeUnitProcess = class {
   stepsList = {
     [CTU_PROGRESS.CHECK_QUEUE] = function() {
       if (this.crew || this.unit)
-        queues.checkAndStart(this.nextStepCb, this.removeCb, "isCanModifyCrew")
+        checkQueueAndStart(this.nextStepCb, this.removeCb, "isCanModifyCrew")
       else
         this.nextStep() 
     },
@@ -333,7 +333,7 @@ let CrewTakeUnitProcess = class {
   function onEventQueueChangeState(_p) {
     if (this.curProgress > CTU_PROGRESS.CHECK_QUEUE
         && (this.crew || this.unit)
-        && !queues.isCanModifyCrew())
+        && !isCanModifyCrew())
       this.remove()
   }
 

@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import  get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, shop_get_premium_account_ent_name
 from "%scripts/dagui_library.nut" import *
 
+let { floor } = require("math")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
@@ -77,7 +78,11 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     let items = this.goods.map(function(item) {
-      let amount = getEntitlementAmount(item).tostring()
+      local amount = getEntitlementAmount(item)
+      if (amount < 1)
+        amount = floor(amount * 24 + 0.5).tointeger()
+      amount = amount.tostring()
+
       let digits = []
       for (local i = 0; i < amount.len(); i++) {
         let digit = amount.slice(i, i + 1)

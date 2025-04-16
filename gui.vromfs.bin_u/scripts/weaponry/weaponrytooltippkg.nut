@@ -23,7 +23,7 @@ let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod, getBulletsNam
 let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorPiercingToDescForBullets
   checkBulletParamsBeforeRender
 } = require("%scripts/weaponry/bulletsVisual.nut")
-let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, getPrimaryWeaponsList, isWeaponEnabled,
+let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES,getPrimaryWeaponsList, isWeaponEnabled,
   addWeaponsFromBlk, getWeaponExtendedInfo
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText, makeWeaponInfoData
@@ -43,6 +43,16 @@ const UI_BASE_REWARD_DECORATION = 10
 
 function setWidthForWeaponsPresetTooltip(obj, descTbl) {
   obj["weaponTooltipWidth"] = descTbl?.bulletPenetrationData ? "full" : "narrow"
+}
+
+function setInternalPadingForWeaponsPresetTooltip(descTbl) {
+  if (descTbl?.presetsWeapons == null)
+    return
+
+  foreach(preset in descTbl.presetsWeapons) {
+    if ((preset?.presetParams ?? []).len() == 0)
+      preset.noInternalPadding <- true
+  }
 }
 
 function updateModType(unit, mod) {
@@ -68,7 +78,7 @@ function updateSpareType(spare) {
 
 function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
   
-  let showOnlyNamesAndSpecs = params?.showOnlyNamesAndSpecs ?? false
+  let { showOnlyNamesAndSpecs = false } = params
   let presetsWeapons = []
   let presetsNames = {
     names = []
@@ -77,7 +87,13 @@ function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
     foreach(weapon in weaponBlockSet) {
       let weaponName = weapon.weaponName
       local presetName = loc($"weapons/{weaponName}")
-      if (weapon.ammo > 1)
+      if ([WEAPON_TYPE.GUNS, WEAPON_TYPE.CANNON].contains(weapon.weaponType)) {
+        if (weapon.num > 1)
+          presetName = " ".concat(presetName, format(loc("weapons/counter/right/short"), weapon.num))
+        let ammoAmountString = "".concat(loc("shop/ammo"), loc("ui/colon"), weapon.ammo)
+        presetName = "".concat(presetName, loc("ui/parentheses/space", { text = ammoAmountString }))
+      }
+      else if (weapon.ammo > 1)
         presetName = "".concat(presetName, " ", format(loc("weapons/counter/right/short"), weapon.ammo))
 
       if (showOnlyNamesAndSpecs) {
@@ -160,6 +176,9 @@ function buildWeaponDescHeader(params, count) {
   let { name, tType, ammo } = params
 
   local weaponName = loc($"weapons/{name}")
+  if (NOT_WEAPON_TYPES.contains(tType))
+    return weaponName
+
   local header = ""
 
   if (isInArray(tType, CONSUMABLE_TYPES))
@@ -214,7 +233,7 @@ function getWeaponDescTbl(unit, params) {
 }
 
 function getTierDescTbl(unit, params) {
-  let { tooltipLang, name, addWeaponry, presetName, tierId } = params
+  let { tooltipLang, name, addWeaponry, presetName, tierId, isGun = false } = params
 
   if (tooltipLang != null)
     return { reqText = loc(tooltipLang) }
@@ -238,24 +257,35 @@ function getTierDescTbl(unit, params) {
     ? getWeaponDescTbl(unit, getTierTooltipParams(addWeaponry, presetName, tierId))
     : null
 
+  
+  let needAddPresetNameAnTheEnd = weaponryDesc.presetsWeapons.len() == 0
+
   if (!additionalWeaponryDesc) {
-    if (!!res.presetsWeapons?[0]) {
-      let tierName = buildWeaponDescHeader(params, weaponryDesc.count)
+    let tierName = buildWeaponDescHeader(params, weaponryDesc.count)
+    if (!!res.presetsWeapons?[0] && !isGun)
       res.presetsWeapons[0].presetName <- tierName
-    }
+    else if (needAddPresetNameAnTheEnd)
+      res.presetsWeapons.append({ presetName = tierName, noInternalPadding = true })
     return res
   }
 
   let isSameWeapons = loc($"weapons/{name}") == loc($"weapons/{addWeaponry.name}")
-  if (!!res.presetsWeapons?[0]) {
-    let weaponsCount = isSameWeapons ? weaponryDesc.count + additionalWeaponryDesc.count
-      : weaponryDesc.count
-    res.presetsWeapons[0].presetName <- buildWeaponDescHeader(params, weaponsCount)
-  }
+  let weaponsCount = isSameWeapons ? weaponryDesc.count + additionalWeaponryDesc.count
+    : weaponryDesc.count
+
+  let resPresetName = buildWeaponDescHeader(params, weaponsCount)
+  if (!!res.presetsWeapons?[0])
+    res.presetsWeapons[0].presetName <- resPresetName
+
   if (!isSameWeapons) {
-    additionalWeaponryDesc.presetName <- buildWeaponDescHeader(addWeaponry, additionalWeaponryDesc.count)
-    res.presetsWeapons.append(additionalWeaponryDesc)
+    res.presetsWeapons.append({
+      presetName = buildWeaponDescHeader(addWeaponry, additionalWeaponryDesc.count)
+      presetParams = additionalWeaponryDesc?.presetsWeapons[0].presetParams ?? []
+    })
   }
+
+  if (needAddPresetNameAnTheEnd)
+    res.presetsWeapons.append({ presetName = resPresetName })
 
   if ("bulletParams" in additionalWeaponryDesc) {
     if (!res.bulletParams)
@@ -263,6 +293,8 @@ function getTierDescTbl(unit, params) {
     if(!isEqual(res.bulletParams, additionalWeaponryDesc.bulletParams))
       res.bulletParams.extend(additionalWeaponryDesc.bulletParams)
   }
+
+  setInternalPadingForWeaponsPresetTooltip(res)
 
   return res
 }

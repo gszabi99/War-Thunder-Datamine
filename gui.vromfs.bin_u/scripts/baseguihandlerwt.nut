@@ -39,6 +39,8 @@ let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/generi
 let { steamContactsGroup } = require("%scripts/contacts/contactsManager.nut")
 let { defer } = require("dagor.workcycle")
 let { fill_gamer_card } = require("%scripts/gamercard.nut")
+let { getQueuesInfoText } = require("%scripts/queue/queueState.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -596,7 +598,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function onQueuesTooltipOpen(obj) {
     this.guiScene.replaceContent(obj, "%gui/queue/queueInfoTooltip.blk", this)
     SecondsUpdater(obj.findObject("queue_tooltip_root"), function(obj_, _params) {
-      obj_.findObject("text").setValue(::queues.getQueuesInfoText())
+      obj_.findObject("text").setValue(getQueuesInfoText())
     })
   }
 
@@ -778,7 +780,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function checkAndStart(onSuccess, onCancel, checkName, checkParam = null) {
-    ::queues.checkAndStart(callback.make(onSuccess, this), callback.make(onCancel, this),
+    checkQueueAndStart(callback.make(onSuccess, this), callback.make(onCancel, this),
       checkName, checkParam)
   }
 

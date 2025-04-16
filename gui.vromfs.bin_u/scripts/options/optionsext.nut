@@ -49,7 +49,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { rnd } = require("dagor.random")
-let { format, split_by_chars } = require("string")
+let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { TARGET_HUE_ALLY, TARGET_HUE_ENEMY, TARGET_HUE_SQUAD, TARGET_HUE_SPECTATOR_ALLY,
   TARGET_HUE_SPECTATOR_ENEMY, TARGET_HUE_RELOAD, TARGET_HUE_RELOAD_DONE, TARGET_HUE_AIRCRAFT_HUD,
@@ -106,7 +106,6 @@ let { getFullUnlockDesc, buildConditionsConfig } = require("%scripts/unlocks/unl
 let { switchProfileCountry, profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { debug_dump_stack } = require("dagor.debug")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { is_bit_set } = require("%sqstd/math.nut")
 let { dynamicGetZones } = require("dynamicMission")
 let { get_option_auto_show_chat, get_option_ptt, set_option_ptt,
   get_option_chat_filter, set_option_chat_filter,
@@ -128,11 +127,10 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { getCountryFlagsPresetName, getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getGameLocalizationInfo, setGameLocalization } = require("%scripts/langUtils/language.nut")
 let { get_game_params_blk, get_user_skins_profile_blk, get_unittags_blk } = require("blkGetters")
-let { getClustersList, getClusterShortName } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { isEnabledCustomLocalization, setCustomLocalization,
   getLocalization, hasWarningIcon } = require("%scripts/langUtils/customLocalization.nut")
 let { isInFlight } = require("gameplayBinding")
-let { isInSessionRoom, getSessionLobbyPassword, getSessionLobbyMissionParam, getSessionLobbyPublicParam
+let { isInSessionRoom, getSessionLobbyMissionParam, getSessionLobbyPublicParam
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isMeAllowedToBeAddedToContacts, setAbilityToBeAddedToContacts } = require("%scripts/contacts/contactsState.nut")
 let { havePremium } = require("%scripts/user/premium.nut")
@@ -158,8 +156,7 @@ let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let g_font = require("%scripts/options/fonts.nut")
 let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/options/options.nut")
-let { changeRoomPassword } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { getShouldEventQueueCustomMode, setShouldEventQueueCustomMode } = require("%scripts/queue/queueState.nut")
+let { getShouldEventQueueCustomMode, setShouldEventQueueCustomMode, isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { getOrderAutoActivateHint } = require("%scripts/items/orders.nut")
 let { set_autologin_enabled, is_autologin_enabled } = require("%scripts/options/optionsBeforeLogin.nut")
 
@@ -699,76 +696,6 @@ function useropt_friendly_skill(optionId, descr, _context) {
   descr.items = ["#options/skill0", "#options/skill1", "#options/skill2"]
   descr.values = [0, 1, 2]
   descr.defaultValue = 2
-}
-
-function useropt_clusters(optionId, descr, _context) {
-  descr.id = "cluster"
-  descr.controlType = optionId == USEROPT_RANDB_CLUSTERS
-    ? optionControlType.BIT_LIST
-    : optionControlType.LIST
-
-  if (getClustersList().len() > 0) {
-    descr.items = getClustersList().map(@(c) {
-      text = getClusterShortName(c.name)
-      name = c.name
-      image = c.isUnstable ? "#ui/gameuiskin#urgent_warning.svg" : null
-      tooltip = c.isUnstable ? loc("multiplayer/cluster_connection_unstable") : null
-      isUnstable = c.isUnstable
-      isDefault = c.isDefault
-      isAuto = false
-      isVisible = c.name != "SA"
-    }).append({
-      text = loc("options/auto")
-      name = "auto"
-      image = null
-      tooltip = loc("options/auto/tooltip", {
-        clusters = ", ".join(getClustersList().map(@(c) getClusterShortName(c.name)))
-      })
-      isUnstable = false
-      isDefault = false
-      isAuto = true
-      isVisible = true
-    })
-    if (optionId == USEROPT_CLUSTERS)
-      descr.items = descr.items.filter(@(i) i.isVisible)
-    descr.values = descr.items.map(@(i) i.name)
-    descr.defaultValue = "auto"
-  }
-  else {
-    
-    descr.items = [{
-      text = "---"
-      name = "---"
-      image = null
-      tooltip = null
-      isUnstable = false
-      isDefault = false
-      isAuto = false
-      isVisible = true
-    }]
-    descr.values = [""]
-    descr.value = descr.controlType == optionControlType.BIT_LIST ? 1 : ""
-    descr.defaultValue = ""
-    return
-  }
-
-  descr.prevValue = get_gui_option_in_mode(optionId, OPTIONS_MODE_MP_DOMINATION)
-  if (optionId == USEROPT_CLUSTERS) {
-    if (isInSessionRoom.get())
-      descr.prevValue = getSessionLobbyPublicParam("cluster", null)
-  }
-  else if (optionId == USEROPT_RANDB_CLUSTERS) {
-    descr.value = 0
-    if (u.isString(descr.prevValue)) {
-      local selectedValues = split_by_chars(descr.prevValue, ";")
-      let isAuto = selectedValues.contains("auto")
-      if (isAuto)
-        selectedValues = [descr.defaultValue]
-      descr.value = get_bit_value_by_array(selectedValues, descr.values)
-    }
-    if (descr.value == 0)
-      descr.value = get_bit_value_by_array([descr.defaultValue], descr.values) || 1
-  }
 }
 
 function useropt_clan_requirements_min_air_rank(optionId, descr, _context) {
@@ -1756,17 +1683,6 @@ let optionsMap = {
     descr.defaultValue = false
     if (isInSessionRoom.get())
       descr.prevValue = getSessionLobbyMissionParam("dedicatedReplay", false)
-  },
-  [USEROPT_SESSION_PASSWORD] = function(_optionId, descr, _context) {
-    descr.id = "session_password"
-    descr.controlType = optionControlType.EDITBOX
-    descr.controlName <- "editbox"
-    descr.value = getSessionLobbyPassword()
-    descr.getValueLocText = function(val) {
-      if (val == true)
-        return loc("options/yes")
-      return loc("options/no")
-    }
   },
   [USEROPT_TAKEOFF_MODE] = useropt_takeoff_mode,
   [USEROPT_LANDING_MODE] = useropt_takeoff_mode,
@@ -3216,8 +3132,6 @@ let optionsMap = {
       }
     descr.optionCb = "onProfileChange"
   },
-  [USEROPT_CLUSTERS] = useropt_clusters,
-  [USEROPT_RANDB_CLUSTERS] = useropt_clusters,
   [USEROPT_PLAY_INACTIVE_WINDOW_SOUND] = function(optionId, descr, _context) {
     descr.id = "playInactiveWindowSound"
     descr.controlType = optionControlType.CHECKBOX
@@ -3742,7 +3656,7 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.optionCb = "onChangeCrossPlay"
     descr.value = crossplayModule.isCrossPlayEnabled()
-    descr.enabled <- !::checkIsInQueue()
+    descr.enabled <- !isAnyQueuesActive()
   },
   
 
@@ -4816,7 +4730,6 @@ let optionsSetMap = {
   [USEROPT_BIT_CHOOSE_UNITS_SHOW_UNSUPPORTED_FOR_CUSTOM_LIST] = def_set_gui_option,
   [USEROPT_MP_TEAM_COUNTRY_RAND] = set_useropt_mp_team_country_rand,
   [USEROPT_MP_TEAM_COUNTRY] = set_useropt_mp_team_country_rand,
-  [USEROPT_SESSION_PASSWORD] = @(value, _descr, _optionId) changeRoomPassword(value ? value : ""),
   [USEROPT_BULLETS0] = set_useropt_bullets0,
   [USEROPT_BULLETS1] = set_useropt_bullets0,
   [USEROPT_BULLETS2] = set_useropt_bullets0,
@@ -4936,37 +4849,6 @@ let optionsSetMap = {
   [USEROPT_DAMAGE_INDICATOR_SIZE] = set_useropt_damage_indicator_size,
   [USEROPT_TACTICAL_MAP_SIZE] = set_useropt_damage_indicator_size,
   [USEROPT_AIR_RADAR_SIZE] = @(value, _descr, optionId) set_gui_option_in_mode(optionId, value, OPTIONS_MODE_GAMEPLAY),
-  [USEROPT_CLUSTERS] = function(value, descr, optionId) {
-    if (value >= 0 && value < descr.values.len())
-      set_gui_option_in_mode(optionId, descr.values[value], OPTIONS_MODE_MP_DOMINATION)
-  },
-  [USEROPT_RANDB_CLUSTERS] = function(value, descr, optionId) {
-    if (value >= 0 && value <= (1 << descr.values.len()) - 1) {
-      let autoIdx = descr.values.findindex(@(v) v == "auto")
-
-      local prevVal = get_option(USEROPT_RANDB_CLUSTERS).value
-      local isAutoSelected = false
-      local isAutoDeselected = false
-      if (autoIdx != null) {
-        let prevAutoVal = is_bit_set(prevVal, autoIdx)
-        let curAutoVal = is_bit_set(value, autoIdx)
-        isAutoSelected = !prevAutoVal && curAutoVal
-        isAutoDeselected = prevAutoVal && !curAutoVal
-      }
-
-      local clusters = isAutoSelected ? ["auto"]
-        : isAutoDeselected ? descr.values.filter(@(_, i) descr.items[i].isVisible && descr.items[i].isDefault)
-        : (value == 0) && (autoIdx != null) ? ["auto"]
-        : descr.values.filter(@(_, i) !descr.items[i].isAuto && descr.items[i].isVisible && is_bit_set(value, i))
-
-      if (clusters.len() == 0) 
-        clusters = descr.values.filter(@(_, i) descr.items[i].isVisible && !descr.items[i].isAuto)
-
-      let newVal = ";".join(clusters)
-      set_gui_option_in_mode(optionId, newVal, OPTIONS_MODE_MP_DOMINATION)
-      broadcastEvent("ClusterChange")
-    }
-  },
   [USEROPT_PLAY_INACTIVE_WINDOW_SOUND] = def_set_gui_option,
   [USEROPT_INTERNET_RADIO_ACTIVE] = function(value, _descr, _optionId) {
     let internet_radio_options = get_internet_radio_options()

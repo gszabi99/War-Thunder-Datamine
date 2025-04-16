@@ -38,7 +38,7 @@ let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isUnitAllowedForRoom } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { isCanModifyCrew } = require("%scripts/queue/queueManager.nut")
 
 
 require("%scripts/slotbar/hangarVehiclesPreset.nut")
@@ -435,7 +435,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     if (this.isLoading)
       return false
     country = country ?? profileCountrySq.value
-    if (!(country in slotbarPresets) || !isInMenu() || !queues.isCanModifyCrew())
+    if (!(country in slotbarPresets) || !isInMenu() || !isCanModifyCrew())
       return false
     if (!isCountryAllCrewsUnlockedInHangar(country)) {
       if (verbose)

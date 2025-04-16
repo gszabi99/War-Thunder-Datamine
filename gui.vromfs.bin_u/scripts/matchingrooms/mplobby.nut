@@ -47,6 +47,7 @@ let { setMyTeamInRoom, setSessionLobbyReady, switchMyTeamInRoom, switchSpectator
   tryJoinSession, startSession
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getOptionsMode } = require("%scripts/options/optionsList.nut")
 
 function getLobbyChatRoomId() {
   return g_chat_room_type.MP_LOBBY.getRoomId(getSessionLobbyRoomId())
@@ -80,7 +81,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     this.curGMmode = getSessionLobbyGameMode()
-    setGuiOptionsMode(::get_options_mode(this.curGMmode))
+    setGuiOptionsMode(getOptionsMode(this.curGMmode))
 
     this.scene.findObject("mplobby_update").setUserData(this)
 
@@ -140,7 +141,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.curGMmode != mpMode) {
       this.curGMmode = mpMode
       set_game_mode(this.curGMmode)
-      setGuiOptionsMode(::get_options_mode(this.curGMmode))
+      setGuiOptionsMode(getOptionsMode(this.curGMmode))
     }
 
     fillSessionInfo(this.scene, getSessionInfo())

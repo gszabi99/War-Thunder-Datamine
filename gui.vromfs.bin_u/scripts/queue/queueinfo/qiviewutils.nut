@@ -10,6 +10,8 @@ let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { USEROPT_COUNTRY } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { findQueue } = require("%scripts/queue/queueState.nut")
+let { getQueueEvent, getQueueCountry, getMyRankInQueue } = require("%scripts/queue/queueInfo.nut")
 
 function getQueueInfo(queue, txt = null) {
   if (!queue)
@@ -49,8 +51,8 @@ function createQueueViewByCountries(nestObj, queue, event) {
     })
 
   
-  let myCountry = ::queues.getQueueCountry(queue)
-  let myRank = ::queues.getMyRankInQueue(queue)
+  let myCountry = getQueueCountry(queue)
+  let myRank = getMyRankInQueue(queue)
   let countriesSets = events.getAllCountriesSets(event)
   local canMeetCountries = {}
   foreach (cSet in countriesSets)
@@ -88,7 +90,7 @@ function updateQueueViewByCountries(nestObj, queue, curCluster) {
   if (!queueStats)
     return
 
-  let event = ::queues.getQueueEvent(queue)
+  let event = getQueueEvent(queue)
   if (events.needRankInfoInQueue(event)) {
     let countriesQueueTable = queueStats.getCountriesQueueTable(curCluster)
     let countryOption = ::get_option(USEROPT_COUNTRY)
@@ -119,7 +121,7 @@ function updateShortQueueInfo(timerObj, textObj, iconObj, txt = null) {
   if (!checkObj(timerObj))
     return
   SecondsUpdater(timerObj,  function(_obj, _p) {
-    let queue = ::queues.findQueue({}) 
+    let queue = findQueue({}) 
     if (checkObj(textObj))
       textObj.setValue(getQueueInfo(queue, txt))
     if (checkObj(iconObj))

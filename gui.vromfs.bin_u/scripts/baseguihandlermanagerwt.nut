@@ -33,6 +33,7 @@ let { blurHangar } = require("%scripts/hangar/hangarModule.nut")
 let { getMpChatControlsAllowMask } = require("%scripts/chat/mpChatState.nut")
 let { isLoggedIn, isAuthorized } = require("%appGlobals/login/loginState.nut")
 let g_font = require("%scripts/options/fonts.nut")
+let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")
 
 dagui_propid_add_name_id("has_ime")
 dagui_propid_add_name_id("platformId")
@@ -330,7 +331,7 @@ handlersManager.__update({
           res = res & mask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | mask))
         }
 
-    let menuChatMask = getroottable()?.menu_chat_handler.getControlsAllowMask()
+    let menuChatMask = menuChatHandler.get()?.getControlsAllowMask()
     if (menuChatMask != null)
       res = res & menuChatMask | (CtrlsInGui.CTRL_WINDOWS_ALL & (res | menuChatMask))
 

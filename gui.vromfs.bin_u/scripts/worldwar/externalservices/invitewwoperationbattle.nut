@@ -9,7 +9,7 @@ let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
@@ -86,7 +86,7 @@ let WwOperationBattle = class (BaseInvite) {
   }
 
   function accept() {
-    queues.checkAndStart(
+    checkQueueAndStart(
       Callback(function() {
         g_world_war.joinOperationById(this.operationId, null, false,
           Callback(function() {

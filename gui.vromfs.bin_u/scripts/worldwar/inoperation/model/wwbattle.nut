@@ -42,6 +42,7 @@ let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getWwSetting, getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
 let { getPlayWorldwarConditionText, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
+let { findQueueByName } = require("%scripts/queue/queueState.nut")
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
@@ -1309,7 +1310,7 @@ WwBattleView = class  {
     if (this.playerSide == SIDE_NONE || g_squad_manager.isSquadMember())
       return ""
 
-    let currentBattleQueue = ::queues.findQueueByName(this.battle.getQueueId(), true)
+    let currentBattleQueue = findQueueByName(this.battle.getQueueId(), true)
     local canJoinLocKey = ""
     if (currentBattleQueue != null)
       canJoinLocKey = "worldWar/canJoinStatus/in_queue"

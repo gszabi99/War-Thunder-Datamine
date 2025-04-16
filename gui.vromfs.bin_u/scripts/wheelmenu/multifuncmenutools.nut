@@ -12,6 +12,7 @@ let getMfmHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.mul
 let getMfmSectionTitle = @(section) section?.getTitle() ?? loc(section?.title ?? "")
 let { register_command } = require("console")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 
 local isDebugMode = false
 register_command(function() {
@@ -97,7 +98,7 @@ function makeMfmSection(cfg, id, unitId, hudUnitType) {
 
     local shortcutText = ""
     if (!isEmpty && is_platform_pc)
-      shortcutText = ::get_shortcut_text({
+      shortcutText = getShortcutText({
         shortcuts = getShortcuts([ $"ID_VOICE_MESSAGE_{idx+1}" ])
         shortcutId = 0
         cantBeEmpty = false

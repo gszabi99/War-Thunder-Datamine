@@ -15,8 +15,8 @@ let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut"
 let { getNightBattlesUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { getUnlockNameText, doPreviewUnlockPrize, fillUnlockProgressBar, fillUnlockDescription,
   fillUnlockImage, fillReward, fillUnlockTitle, fillUnlockPurchaseButton, fillUnlockManualOpenButton,
-  updateLockStatus, updateUnseenIcon, buildUnlockDesc, buildConditionsConfig
-} = require("%scripts/unlocks/unlocksViewModule.nut")
+  updateLockStatus, updateUnseenIcon, buildUnlockDesc, buildConditionsConfig, fillUnlockConditions,
+  fillUnlockStages } = require("%scripts/unlocks/unlocksViewModule.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
 let { isUnlockFav, canAddFavorite, toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { getUnlockCost, findUnusableUnitForManualUnlock } = require("%scripts/unlocks/unlocksModule.nut")
@@ -126,12 +126,12 @@ let class NightBattlesOptionsWnd (gui_handlers.BaseGuiHandlerWT) {
   function fillUnlockInfo(unlockBlk, unlockObj) {
     let itemData = buildConditionsConfig(unlockBlk)
     buildUnlockDesc (itemData)
-    ::g_unlock_view.fillUnlockConditions(itemData, unlockObj, this)
+    fillUnlockConditions(itemData, unlockObj, this)
     fillUnlockProgressBar(itemData, unlockObj)
     fillUnlockDescription(itemData, unlockObj)
     fillUnlockImage(itemData, unlockObj)
     fillReward(itemData, unlockObj)
-    ::g_unlock_view.fillStages(itemData, unlockObj, this)
+    fillUnlockStages(itemData, unlockObj, this)
     fillUnlockTitle(itemData, unlockObj)
     initUnlockFavInContainer(itemData.id, unlockObj)
     fillUnlockPurchaseButton(itemData, unlockObj)

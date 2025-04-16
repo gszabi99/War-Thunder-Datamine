@@ -38,6 +38,7 @@ let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { setTimeout, clearTimer, defer } = require("dagor.workcycle")
 let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
 let { openShipHitIconsMenu } = require("%scripts/options/handlers/shipHitIconsMenu.nut")
+let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -310,7 +311,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
   function getShortcutText(shortcut_id_name) {
     let shortcut = getShortcuts([shortcut_id_name])
-    let data = ::get_shortcut_text({ shortcuts = shortcut, shortcutId = 0 })
+    let data = getShortcutText({ shortcuts = shortcut, shortcutId = 0 })
     return data == "" ? "---" : data
 }
 
@@ -326,7 +327,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     setShortcutsAndSaveControls(shortcut, [shortcut_id_name]);
     this.save(false);
 
-    let data = ::get_shortcut_text({ shortcuts = shortcut, shortcutId = 0 })
+    let data = getShortcutText({ shortcuts = shortcut, shortcutId = 0 })
     this.scene.findObject(shortcut_object_name).setValue(data);
   }
 
@@ -397,7 +398,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
 
   function getPttShortcutText() {
     let ptt_shortcut = getShortcuts(["ID_PTT"]);
-    let pttShortcutText = ::get_shortcut_text({ shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false });
+    let pttShortcutText = getShortcutText({ shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false });
     return pttShortcutText == ""
       ? "---"
       : $"<color=@hotkeyColor>{::hackTextAssignmentForR2buttonOnPS4(pttShortcutText)}</color>"
@@ -419,7 +420,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     setShortcutsAndSaveControls(ptt_shortcut, ["ID_PTT"]);
     this.save(false);
 
-    local data = ::get_shortcut_text({ shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false })
+    local data = getShortcutText({ shortcuts = ptt_shortcut, shortcutId = 0, cantBeEmpty = false })
     data = $"<color=@hotkeyColor>{::hackTextAssignmentForR2buttonOnPS4(data)}</color>"
     this.scene.findObject("ptt_shortcut").setValue(data);
   }

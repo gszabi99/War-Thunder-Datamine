@@ -15,9 +15,10 @@ let { getEventEconomicName, checkEventFeaturePacks, isEventForNewbies
 } = require("%scripts/events/eventInfo.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { isMeNewbieOnUnitType, getUnitTypeByNewbieEventId } = require("%scripts/myStats.nut")
-let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
+let { checkQueueAndStart, joinQueue } = require("%scripts/queue/queueManager.nut")
 let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
+let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -113,7 +114,7 @@ let EventJoinProcess = class {
 
     let handler = this
     tryOpenCaptchaHandler(
-      @() queues.checkAndStart(
+      @() checkQueueAndStart(
         Callback(handler.joinStep2_multiplayer_restriction, handler),
         Callback(handler.remove, handler),
         "isCanNewflight",
@@ -165,7 +166,7 @@ let EventJoinProcess = class {
   function joinStep4_internal() {
     this.processStepName = "joinStep4_internal"
     let mGameMode = events.getMGameMode(this.event, this.room)
-    if (queues.isAnyQueuesActive(QUEUE_TYPE_BIT.EVENT) ||
+    if (isAnyQueuesActive(QUEUE_TYPE_BIT.EVENT) ||
         !::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true, showOfflineSquadMembersPopup = true }))
       return this.remove()
     if (events.checkEventDisableSquads(this, this.event.name))
@@ -220,7 +221,7 @@ let EventJoinProcess = class {
       }
       if (membersData)
         joinEventParams.members <- membersData
-      queues.joinQueue(joinEventParams)
+      joinQueue(joinEventParams)
     }
 
     this.onDone()

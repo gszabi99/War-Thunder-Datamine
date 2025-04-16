@@ -7,8 +7,9 @@ let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { roomState, cleanupRoomState, isNotifyForCurrentRoom, connectToHost,
   mergeAttribs, updateMemberAttributes, addRoomMember, removeRoomMember
 } = require("%scripts/matching/serviceNotifications/mroomsState.nut")
-let { onSettingsChanged, onMemberInfoUpdate, onMemberJoin, joinSessionRoom, onMemberLeave
+let { onSettingsChanged, onMemberInfoUpdate, onMemberJoin
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { joinSessionRoom, onMemberLeave } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { addSessionRoomInvite } = require("%scripts/invites/invites.nut")
 
 

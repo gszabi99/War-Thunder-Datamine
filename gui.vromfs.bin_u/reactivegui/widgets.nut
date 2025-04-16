@@ -13,7 +13,6 @@ let mkScoreboard = require("hud/scoreboard/mkScoreboard.nut")
 let aircraftHud = require("aircraftHud.nut")
 let helicopterHud = require("helicopterHud.nut")
 let tankHud = require("tankHud.nut")
-let xrayIndicator = require("hud/xrayIndicator.nut")
 let changelog = require("changelog/changelog.ui.nut")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { isInSpectatorMode } = require("%rGui/respawnWndState.nut")
@@ -74,8 +73,6 @@ let widgetsMap = {
     size = flex()
     children = changelog
   },
-
-  [DargWidgets.DAMAGE_PANEL] = @() xrayIndicator,
 
   [DargWidgets.RESPAWN] = @() @() {
     watch = isInSpectatorMode

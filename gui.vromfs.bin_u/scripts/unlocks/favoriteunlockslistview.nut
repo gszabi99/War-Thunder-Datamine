@@ -6,7 +6,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getFavoriteUnlocks, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { storeUnlockProgressSnapshot } = require("%scripts/unlocks/unlockProgressSnapshots.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { updateProgress, getSubunlockCfg, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { updateProgress, getSubunlockCfg, buildConditionsConfig,
+  fillSimplifiedUnlockInfo } = require("%scripts/unlocks/unlocksViewModule.nut")
 
 gui_handlers.FavoriteUnlocksListView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -41,7 +42,7 @@ gui_handlers.FavoriteUnlocksListView <- class (gui_handlers.BaseGuiHandlerWT) {
 
     for (local i = 0; i < total; i++) {
       let unlockObj = this.getUnlockObj(i)
-      ::g_unlock_view.fillSimplifiedUnlockInfo(this.curFavoriteUnlocksBlk.getBlock(i), unlockObj, this)
+      fillSimplifiedUnlockInfo(this.curFavoriteUnlocksBlk.getBlock(i), unlockObj, this)
     }
 
     showObjById("no_favorites_txt",

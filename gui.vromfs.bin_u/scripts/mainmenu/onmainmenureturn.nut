@@ -33,7 +33,7 @@ let { checkDecalsOnOtherPlayersOptions }  = require("%scripts/customization/sugg
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
-let { checkReconnect } =require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { checkReconnect } =require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { initUserPresence } = require("%scripts/userPresence.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 

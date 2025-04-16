@@ -1,19 +1,15 @@
 from "%scripts/dagui_natives.nut" import set_presence_to_player
 from "%scripts/dagui_library.nut" import *
-from "%scripts/teamsConsts.nut" import Team
 from "%scripts/queue/queueConsts.nut" import queueStates
 from "%scripts/queue/queueType.nut" import g_queue_type
 
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { isTable } = require("%sqStdLibs/helpers/u.nut")
 let { SERVER_ERROR_REQUEST_REJECTED } = require("matching.errors")
-let u = require("%sqStdLibs/helpers/u.nut")
-let { loadOnce, registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
-let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let clustersModule = require("%scripts/clusterSelect.nut")
-let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
 let { getSelSlotsData } = require("%scripts/slotbar/slotbarState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
@@ -22,628 +18,392 @@ let { rnd } = require("dagor.random")
 let { checkMatchingError, matchingErrorString, matchingRpcSubscribe } = require("%scripts/matching/api.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { isInSessionRoom, isWaitForQueueRoom, sessionLobbyStatus } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { isEventForClan } = require("%scripts/events/eventInfo.nut")
 let QueueStats = require("%scripts/queue/queueStats.nut")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 let { setWaitForQueueRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
+let { isQueueActive, findQueue, findQueueByName, isAnyQueuesActive, getActiveQueueTypes,
+  addQueueToList, getQueuesList, removeQueueFromList, clearAllQueues, applyQueueInfo,
+  pushQueueInfoUpdatedEvent, findAllQueues
+} = require("%scripts/queue/queueState.nut")
+let { getQueueEvent, isClanQueue, getQueueMode, getQueueCountry, getMyRankInQueue
+} = require("%scripts/queue/queueInfo.nut")
+
+let lastQueueId = mkWatched(persist, "lastQueueId", -1)
+local lastQueueReqParams = null
+local progressBox        = null
+local isLeaveDelayed     = false
 
 let hiddenMatchingError = {
   SERVER_ERROR_NOT_IN_QUEUE = true
 }
 
-foreach (fn in [
-                 "queueType.nut"
-                 "queue/queueEvent.nut"
-                 "queue/queueWwBattle.nut" 
-                 "queueInfo/qiHandlerBase.nut"
-                 "queueInfo/qiHandlerByTeams.nut"
-                 "queueInfo/qiHandlerByCountries.nut"
-                 "queueTable.nut"
-               ])
-  loadOnce($"%scripts/queue/{fn}") 
+function changeState(queue, queueState) {
+  if (queue.state == queueState)
+    return
 
-let QueueManager = class {
-  state              = queueStates.NOT_IN_QUEUE
+  let wasAnyActive = isAnyQueuesActive()
 
-  progressBox        = null
-  queuesList         = null
-  lastId             = -1
-  lastQueueReqParams = null
-  isLeaveDelayed     = false
+  queue.state = queueState
+  queue.activateTime = isQueueActive(queue) ? get_time_msec() : -1
+  broadcastEvent("QueueChangeState", { queue = queue })
 
-  delayedInfoUpdateEventtTime = -1
+  if (wasAnyActive != isAnyQueuesActive)
+    ::update_gamercards()
+}
 
-  queue_diff_params = ["mode", "team"]
+function removeQueue(queue) {
+  changeState(queue, queueStates.NOT_IN_QUEUE)
+  return removeQueueFromList(queue)
+}
 
-  constructor() {
-    this.init()
-    registerPersistentData("QueueManager", this, ["queuesList", "lastId", "state"])
-    subscribe_handler(this, g_listener_priority.DEFAULT_HANDLER)
-  }
+function afterLeaveQueue(queue, msg = null) {
+  removeQueue(queue)
+  if (msg && !checkObj(get_gui_scene()["leave_queue_msgbox"]))
+    showInfoMsgBox(msg, "leave_queue_msgbox")
+}
 
-  function init() {
-    this.queuesList = []
-    this.lastId     = -1
-  }
 
-  function createQueue(params, needModifyParamsByType = false) {
-    let queueType = g_queue_type.getQueueTypeByParams(params)
-
-    if (needModifyParamsByType)
-      params = queueType.prepareQueueParams(params)
-
-    local queue = this.findQueue(params)
-    if (queue) {
-      queue.addQueueByParams(params)
-      return queue
+function notifyQueueLeave(params) {
+  let list = findAllQueues(params)
+  foreach (q in list)
+    if (q.removeQueueByParams(params)) {
+      if (!q.isActive())
+        removeQueue(q)
+      else
+        broadcastEvent("QueueChanged", q)
     }
+}
 
-    queue = queueType.createQueue(this.lastId++, params)
-    this.queuesList.append(queue)
+function showProgressBox(show, text = "charServer/purchase0") {
+  if (checkObj(progressBox)) {
+    progressBox.getScene().destroyElement(progressBox)
+    broadcastEvent("ModalWndDestroy")
+    progressBox = null
+  }
+  if (show)
+    progressBox = scene_msg_box("queue_action", null, loc(text),
+      [["cancel", function() {}]], "cancel",
+      { waitAnim = true,
+        delayedButtons = 30
+      })
+}
 
+function createQueue(params, needModifyParamsByType = false) {
+  let queueType = g_queue_type.getQueueTypeByParams(params)
+
+  if (needModifyParamsByType)
+    params = queueType.prepareQueueParams(params)
+
+  local queue = findQueue(params)
+  if (queue) {
+    queue.addQueueByParams(params)
     return queue
   }
 
-  function removeQueue(queue) {
-    this.changeState(queue, queueStates.NOT_IN_QUEUE)
-    foreach (idx, q in this.queuesList)
-      if (q.id == queue.id)
-        return this.queuesList.remove(idx)
-  }
+  let lastId = lastQueueId.get() + 1
+  lastQueueId.set(lastId)
+  queue = queueType.createQueue(lastId, params)
+  addQueueToList(queue)
+  return queue
+}
 
-  function isEqual(params1, params2, null_is_equal = true) {
-    foreach (p in this.queue_diff_params)
-      if ((p in params1) != (p in params2)) {
-        if (!null_is_equal)
-          return false
-      }
-      else if ((p in params1) && params1[p] != params2[p])
-        return false
-    return true
-  }
+function afterJoinQueue(queue) {
+  changeState(queue, queueStates.IN_QUEUE)
+  set_presence_to_player("queue")
+}
 
-  function findQueue(params, typeMask = -1, checkActive = true) {
-    foreach (q in this.queuesList)
-      if ((typeMask < 0 || (typeMask & q.typeBit)) && (!checkActive || this.isQueueActive(q)))
-          if (this.isEqual(params, q.params))
-            return q
-    return null
-  }
-
-  function isQueuesEqual(q1, q2) {
-    if (!q1 || !q2)
-      return !q1 == !q2
-    return q1.id == q2.id
-  }
-
-  function findAllQueues(params, typeMask = -1) {
-    let res = []
-    foreach (q in this.queuesList)
-      if (typeMask < 0 || (typeMask & q.typeBit))
-        if (this.isEqual(params, q.params))
-          res.append(q)
-    return res
-  }
-
-  function findQueueByName(name, isActive = false) {
-    foreach (queue in this.queuesList)
-      if (queue.name == name && (!isActive || this.isQueueActive(queue)))
-        return queue
-    return null
-  }
-
-  function findQueueByQueueUid(queueUid) {
-    foreach (queue in this.queuesList)
-      if (queueUid in queue.queueUidsList)
-        return queue
-    return null
-  }
-
-  function getActiveQueueTypes() {
-    let res = []
-    foreach (queue in this.queuesList)
-      if (this.isQueueActive(queue))
-         u.appendOnce(queue.queueType, res)
-
-    return res
-  }
-
-  function getActiveQueueWithType(typeBit) {
-    foreach (queue in this.queuesList)
-      if ((typeBit & queue.typeBit) && this.isQueueActive(queue))
-        return queue
-
-    return null
-  }
-
-  function hasActiveQueueWithType(typeBit) {
-    return this.getActiveQueueWithType(typeBit) != null
-  }
-
-  function isQueueActive(queue) {
-    return queue != null && (queue.state == queueStates.IN_QUEUE
-      || queue.state == queueStates.ACTUALIZE
-      || queue.state == queueStates.JOINING_QUEUE)
-  }
-
-  function isAnyQueuesActive(typeMask = -1) {
-    foreach (q in this.queuesList)
-      if (typeMask < 0 || (typeMask & q.typeBit))
-        if (this.isQueueActive(q))
-          return true
-    return false
-  }
-
-  function getActiveQueueByName(_id) {
-    foreach (q in this.queuesList)
-      if (this.isQueueActive(q))
-        return true
-    return false
-  }
-
-  function leaveQueueByType(typeBit = -1) {
-    if (typeBit < 0)
-      return this.leaveAllQueues()
-
-    foreach (queue in this.queuesList)
-      if ((typeBit & queue.typeBit) && this.isQueueActive(queue))
-        this.leaveQueue(queue)
-  }
-
-  function changeState(queue, queueState) {
-    if (queue.state == queueState)
-      return
-
-    let wasAnyActive = this.isAnyQueuesActive()
-
-    queue.state = queueState
-    queue.activateTime = this.isQueueActive(queue) ? get_time_msec() : -1
-    broadcastEvent("QueueChangeState", { queue = queue })
-
-    if (wasAnyActive != this.isAnyQueuesActive)
-      ::update_gamercards()
-  }
-
-  function getQueueType(queue) {
-    return queue.typeBit
-  }
-
-  function cantSquadQueueMsgBox(params = null, reasonText = "") {
-    log($"Error: cant join queue with squad. {reasonText}")
-    if (params)
-      debugTableData(params)
-
-    local msg = loc("squad/cant_join_queue")
-    if (reasonText)
-      msg = $"{msg}\n{reasonText}"
-    showInfoMsgBox(msg, "cant_join_queue")
-  }
-
-  function showProgressBox(show, text = "charServer/purchase0") {
-    if (checkObj(this.progressBox)) {
-      this.progressBox.getScene().destroyElement(this.progressBox)
-      broadcastEvent("ModalWndDestroy")
-      this.progressBox = null
-    }
-    if (show)
-      this.progressBox = scene_msg_box("queue_action", null, loc(text),
-        [["cancel", function() {}]], "cancel",
-        { waitAnim = true,
-          delayedButtons = 30
-        })
-  }
-
-  function joinFriendsQueue(inGameEx, eventId) {
-    this.joinQueue({
-      mode = eventId
-      country = profileCountrySq.value
-      slots = getSelSlotsData().slots
-      clusters = clustersModule.getCurrentClusters()
-      queueSelfActivated = true
-      team = inGameEx.team.tointeger()
-      roomId = inGameEx.roomId.tointeger()
-      gameQueueId = inGameEx.gameQueueId
-    })
-  }
-
-  function joinQueueImpl(queue) {
-    queue.join(
-      Callback(function(_response) {
-        this.afterJoinQueue(queue)
-        if (this.isLeaveDelayed || (this.findQueueByName(queue.name) == null))
-          this.leaveQueue(queue)
-      }, this),
-      Callback(function(_response) {
-        this.removeQueue(queue)
-        if (this.isLeaveDelayed)
-          this.showProgressBox(false)
-      }, this)
-    )
-    this.changeState(queue, queueStates.JOINING_QUEUE)
-  }
-
-  function joinQueue(params) {
-    if (params == null)
-      return log("Error: cancel join queue because params = null.")
-    if (this.findQueue(params))
-      return log("Error: cancel join queue because already exist.")
-
-    this.isLeaveDelayed = false
-    this.lastQueueReqParams = clone params
-    broadcastEvent("BeforeJoinQueue")
-    let queue = this.createQueue(params, true)
-    if (queue.hasActualQueueData()) {
-      this.joinQueueImpl(queue)
+function getOnLeaveQueueErrorCallback(queue) {
+  return function(response) {
+    showProgressBox(false)
+    if (response.error == SERVER_ERROR_REQUEST_REJECTED) {
+      
+      setWaitForQueueRoom(true)
       return
     }
 
-    this.changeState(queue, queueStates.ACTUALIZE)
-    queue.actualizeData()
+    if ((response?.error_id ?? matchingErrorString(response.error)) not in hiddenMatchingError)
+      checkMatchingError(response)
+    removeQueue(queue)
   }
+}
 
-  function afterJoinQueue(queue) {
-    this.changeState(queue, queueStates.IN_QUEUE)
-    set_presence_to_player("queue")
-  }
+function getOnLeaveQueueSuccessCallback(_queue) {
+  return @(_response) showProgressBox(false)
+}
 
-  function leaveAllQueues(params = null, postAction = null, postCancelAction = null, silent = false) { 
-    if (params) {
-      let list = this.findAllQueues(params)
-      foreach (q in list)
-        this.leaveQueue(q)
-      return
+function getOnLeaveAllQueuesErrorCallback(postAction, postCancelAction, silent) {
+  return function(response) {
+    showProgressBox(false)
+    if (response.error == SERVER_ERROR_REQUEST_REJECTED) {
+      
+      if (postCancelAction)
+        postCancelAction()
+      setWaitForQueueRoom(true)
     }
+    else {
+      if ((response?.error_id ?? matchingErrorString(response.error)) not in hiddenMatchingError)
+        checkMatchingError(response, !silent)
+      notifyQueueLeave({})
 
-    if (!this.isAnyQueuesActive())
-      return postAction && postAction()
-
-    this.showProgressBox(true, "wait/queueLeave")
-
-    let callback = this._getOnLeaveQueueErrorCallback(postAction, postCancelAction, silent)
-    foreach (queueType in this.getActiveQueueTypes())
-      queueType.leaveAllQueues(callback, callback, false)
-
-    foreach (q in this.queuesList)
-      if (q.state != queueStates.NOT_IN_QUEUE)
-        this.changeState(q, queueStates.LEAVING_QUEUE)
-  }
-
-  function _getOnLeaveQueueErrorCallback(postAction, postCancelAction, silent) {
-    return Callback(function(response) {
-      this.showProgressBox(false)
-      if (response.error == SERVER_ERROR_REQUEST_REJECTED) {
-        
-        if (postCancelAction)
-          postCancelAction()
-        setWaitForQueueRoom(true)
+      
+      
+      
+      if (!isWaitForQueueRoom.get() && !isInSessionRoom.get()) {
+        if (postAction)
+          postAction()
       }
       else {
-        if ((response?.error_id ?? matchingErrorString(response.error)) not in hiddenMatchingError)
-          checkMatchingError(response, !silent)
-        this.afterLeaveQueues({})
-
-        
-        
-         
-        if (!isWaitForQueueRoom.get() && !isInSessionRoom.get()) {
-          if (postAction)
-            postAction()
-        }
-        else {
-          if (postCancelAction)
-            postCancelAction()
-        }
+        if (postCancelAction)
+          postCancelAction()
       }
-    }, this)
-  }
-
-  function leaveAllQueuesSilent() {
-    return this.leaveAllQueues(null, null, null, true)
-  }
-
-  function leaveQueue(queue, params = {}) {
-    if (queue.state == queueStates.LEAVING_QUEUE)
-      return
-    if (queue.state == queueStates.NOT_IN_QUEUE || queue.state == queueStates.ACTUALIZE)
-      return this.removeQueue(queue)
-    if (queue.state == queueStates.JOINING_QUEUE) {
-      this.isLeaveDelayed = true
-      this.showProgressBox(true, "wait/queueLeave")
-      return
     }
-
-    this.lastQueueReqParams = null
-    this.showProgressBox(true, "wait/queueLeave")
-
-    sendBqEvent("CLIENT_GAMEPLAY_1", "exit_waiting_for_battle_screen", {
-      waitingTime = queue.getActiveTime()
-      queueType = queue.queueType.typeName
-      eventId = this.getQueueMode(queue)
-      country = this.getQueueCountry(queue)
-      rank = this.getMyRankInQueue(queue)
-      isCanceledByPlayer = params?.isCanceledByPlayer ?? false
-    })
-
-    queue.leave(
-      this.getOnLeaveQueueSuccessCallback(queue),
-      this.getOnLeaveQueueErrorCallback(queue)
-    )
-
-    this.changeState(queue, queueStates.LEAVING_QUEUE)
-  }
-
-  function getOnLeaveQueueErrorCallback(queue) {
-    return Callback(function(response) {
-      this.showProgressBox(false)
-      if (response.error == SERVER_ERROR_REQUEST_REJECTED) {
-        
-        setWaitForQueueRoom(true)
-        return
-      }
-
-      if ((response?.error_id ?? matchingErrorString(response.error)) not in hiddenMatchingError)
-        checkMatchingError(response)
-      this.removeQueue(queue)
-    }, this)
-  }
-
-  function getOnLeaveQueueSuccessCallback(_queue) {
-    return Callback(@(_response) this.showProgressBox(false), this)
-  }
-
-  function afterLeaveQueue(queue, msg = null) {
-    this.removeQueue(queue)
-    if (msg && !checkObj(get_gui_scene()["leave_queue_msgbox"]))
-      showInfoMsgBox(msg, "leave_queue_msgbox")
-  }
-
-  
-  function afterLeaveQueues(params) {
-    let list = this.findAllQueues(params)
-    foreach (q in list)
-      if (q.removeQueueByParams(params)) {
-        if (!q.isActive())
-          this.removeQueue(q)
-        else
-          broadcastEvent("QueueChanged", q)
-      }
-  }
-
-  function leaveAllQueuesAndDo(action, cancelAction = null) {
-    this.leaveAllQueues(null, action, cancelAction)
-  }
-
-  function isCanModifyQueueParams(typeMask) {
-    return this.findQueue({}, typeMask) == null
-  }
-
-  function isCanNewflight(...) {
-    return !this.isAnyQueuesActive()
-  }
-
-  function isCanChangeCluster(...) {
-    return !this.isAnyQueuesActive()
-  }
-
-  function isCanUseOnlineShop(...) {
-    return !this.isAnyQueuesActive()
-  }
-
-  function isCanGoForward(...) {
-    return true
-  }
-
-  function isCanModifyCrew(...) {
-    return !this.isAnyQueuesActive()
-  }
-
-  function isCanAirChange(...) {
-    if (!this.isCanGoForward())
-      return false
-
-    foreach (q in this.queuesList)
-      if (this.isQueueActive(q)) {
-        let event = this.getQueueEvent(q)
-        if (event && !events.isEventMultiSlotEnabled(event))
-          return false
-      }
-    return true
-  }
-
-  function isClanQueue(queue) {
-    let event = events.getEvent(queue.name)
-    if (event == null)
-      return false
-    return isEventForClan(event)
-  }
-
-  function getQueueEvent(queue) {
-    return events.getEvent(queue.name)
-  }
-
-  function getQueueMode(queue) {
-    return ("mode" in queue.params) ? queue.params.mode : ""
-  }
-
-  function getQueueTeam(queue) {
-    return ("team" in queue.params) ? queue.params.team : Team.Any
-  }
-
-  function getQueueCountry(queue) {
-    return ("country" in queue.params) ? queue.params.country : ""
-  }
-
-  function getQueueClusters(queue) {
-    return queue?.queueStats.getClusters() ?? []
-  }
-
-  function getQueueSlots(queue) {
-    return ("slots" in queue.params) ? queue.params.slots : null
-  }
-
-  function getQueueOperationId(queue) {
-    return queue.params?.operationId ?? -1
-  }
-
-  function getMyRankInQueue(queue) {
-    let event = this.getQueueEvent(queue)
-    if (!event)
-      return -1
-
-    let country = this.getQueueCountry(queue)
-    return events.getSlotbarRank(event,
-                                   country,
-                                   getTblValue(country, this.getQueueSlots(queue), 0)
-                                  )
-  }
-
-  function getQueuesInfoText() {
-    local text = loc("inQueueList/header")
-    foreach (queue in this.queuesList)
-      if (this.isQueueActive(queue))
-        text = $"{text}\n{queue.getDescription()}"
-
-    return text
-  }
-
-  function isEventQueue(queue) {
-    if (!queue)
-      return false
-    return queue.typeBit == QUEUE_TYPE_BIT.EVENT
-  }
-
-  function isDominationQueue(queue) {
-    if (!queue)
-      return false
-    return queue.typeBit == QUEUE_TYPE_BIT.DOMINATION
-  }
-
-  function checkQueueType(queue, typeMask) {
-    return (getTblValue("typeBit", queue, 0) & typeMask) != 0
-  }
-
-  function getQueuePreferredViewClass(queue) {
-    let defaultHandler = gui_handlers.QiHandlerByTeams
-    let event = this.getQueueEvent(queue)
-    if (!event)
-      return defaultHandler
-    if (!isEventForClan(event) && events.isEventSymmetricTeams(event))
-      return gui_handlers.QiHandlerByCountries
-    return defaultHandler
-  }
-
-  function onEventClanInfoUpdate(_params) {
-    if (!myClanInfo.get())
-      foreach (queue in this.queuesList)
-        if (this.isClanQueue(queue))
-          this.leaveQueue(queue)
-  }
-
-  function applyQueueInfo(info, statsClass) {
-    let queue = ("queueId" in info) ? this.findQueueByQueueUid(info.queueId)
-                  : ("name" in info)  ? this.findQueueByName(info.name)
-                                      : null
-    if (!queue)
-      return false
-
-    if (!queue.queueStats)
-      queue.queueStats = statsClass(queue)
-
-    return queue.queueStats.applyQueueInfo(info)
-  }
-
-  function onEventQueueInfoRecived(params) {
-    let queueInfo = params?.queue_info
-    if (!u.isTable(queueInfo))
-      return
-
-    if (this.applyQueueInfo(queueInfo, QueueStats))
-      this.pushQueueInfoUpdatedEvent()
-  }
-
-  function pushQueueInfoUpdatedEvent() {
-    if (this.delayedInfoUpdateEventtTime > 0 && get_time_msec() - this.delayedInfoUpdateEventtTime < 1000)
-      return
-
-    let guiScene = get_gui_scene()
-    if (!guiScene)
-      return
-
-    this.delayedInfoUpdateEventtTime = get_time_msec()
-    guiScene.performDelayed(this, function() {
-       this.delayedInfoUpdateEventtTime = -1
-       if (this.isAnyQueuesActive())
-        broadcastEvent("QueueInfoUpdated")
-     })
-  }
-
-  function updateQueueInfoByType(queueType, successCb, errorCb = null, needAllQueues = false) {
-    queueType.updateInfo(
-      successCb,
-      errorCb,
-      needAllQueues
-    )
-  }
-
-  function onEventMatchingDisconnect(_p) {
-    this.afterLeaveQueues({})
-  }
-
-  function onEventMatchingConnect(_p) {
-    this.afterLeaveQueues({})
-  }
-
-  function checkAndStart(onSuccess, onCancel, checkName, checkParams = null) {
-    if (!(checkName in this) || this[checkName](checkParams)) {
-      if (onSuccess)
-        onSuccess()
-      return
-    }
-
-    if (!::g_squad_utils.canJoinFlightMsgBox(
-           {
-             isLeaderCanJoin = true,
-             msgId = "squad/only_leader_can_cancel"
-           }, onSuccess, onCancel
-         )
-       )
-      return
-
-    if (checkParams?.isSilentLeaveQueue) {
-      this.leaveAllQueuesAndDo(onSuccess, onCancel)
-      return
-    }
-
-    scene_msg_box("requeue_question", null, loc("msg/cancel_queue_question"),
-      [["ok", Callback(@() this.leaveAllQueuesAndDo(onSuccess, onCancel), this)], ["no", onCancel]],
-      "ok",
-      { cancel_fn = onCancel ?? @()null, checkDuplicateId = true })
-  }
-
-  function onEventLobbyStatusChange(_p) {
-    if (sessionLobbyStatus.get() == lobbyStates.IN_SESSION)
-      this.lastQueueReqParams = null
   }
 }
 
-let queues = QueueManager()
+function leaveQueue(queue, params = {}) {
+  if (queue.state == queueStates.LEAVING_QUEUE)
+    return
+  if (queue.state == queueStates.NOT_IN_QUEUE || queue.state == queueStates.ACTUALIZE)
+    return removeQueue(queue)
+  if (queue.state == queueStates.JOINING_QUEUE) {
+    isLeaveDelayed = true
+    showProgressBox(true, "wait/queueLeave")
+    return
+  }
 
-matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
-  if (params?.service != "match" || queues.lastQueueReqParams == null)
+  lastQueueReqParams = null
+  showProgressBox(true, "wait/queueLeave")
+
+  sendBqEvent("CLIENT_GAMEPLAY_1", "exit_waiting_for_battle_screen", {
+    waitingTime = queue.getActiveTime()
+    queueType = queue.queueType.typeName
+    eventId = getQueueMode(queue)
+    country = getQueueCountry(queue)
+    rank = getMyRankInQueue(queue)
+    isCanceledByPlayer = params?.isCanceledByPlayer ?? false
+  })
+
+  queue.leave(
+    getOnLeaveQueueSuccessCallback(queue),
+    getOnLeaveQueueErrorCallback(queue)
+  )
+
+  changeState(queue, queueStates.LEAVING_QUEUE)
+}
+
+function leaveAllQueues(params = null, postAction = null, postCancelAction = null, silent = false) { 
+  if (params) {
+    let list = findAllQueues(params)
+    foreach (q in list)
+      leaveQueue(q)
+    return
+  }
+
+  if (!isAnyQueuesActive())
+    return postAction && postAction()
+
+  showProgressBox(true, "wait/queueLeave")
+
+  let callback = getOnLeaveAllQueuesErrorCallback(postAction, postCancelAction, silent)
+  foreach (queueType in getActiveQueueTypes())
+    queueType.leaveAllQueues(callback, callback, false)
+
+  foreach (q in getQueuesList())
+    if (q.state != queueStates.NOT_IN_QUEUE)
+      changeState(q, queueStates.LEAVING_QUEUE)
+}
+
+function leaveAllQueuesSilent() {
+  return leaveAllQueues(null, null, null, true)
+}
+
+function leaveAllQueuesAndDo(action, cancelAction = null) {
+  leaveAllQueues(null, action, cancelAction)
+}
+
+function leaveQueueByType(typeBit = -1) {
+  if (typeBit < 0)
+    return leaveAllQueues()
+
+  foreach (queue in getQueuesList())
+    if ((typeBit & queue.typeBit) && isQueueActive(queue))
+      leaveQueue(queue)
+}
+
+function joinQueueImpl(queue) {
+  queue.join(
+    function(_response) {
+      afterJoinQueue(queue)
+      if (isLeaveDelayed || (findQueueByName(queue.name) == null))
+        leaveQueue(queue)
+    },
+    function(_response) {
+      removeQueue(queue)
+      if (isLeaveDelayed)
+        showProgressBox(false)
+    }
+  )
+  changeState(queue, queueStates.JOINING_QUEUE)
+}
+
+function joinQueue(params) {
+  if (params == null)
+    return log("Error: cancel join queue because params = null.")
+  if (findQueue(params))
+    return log("Error: cancel join queue because already exist.")
+
+  isLeaveDelayed = false
+  lastQueueReqParams = clone params
+  broadcastEvent("BeforeJoinQueue")
+  let queue = createQueue(params, true)
+  if (queue.hasActualQueueData()) {
+    joinQueueImpl(queue)
+    return
+  }
+
+  changeState(queue, queueStates.ACTUALIZE)
+  queue.actualizeData()
+}
+
+function joinFriendsQueue(inGameEx, eventId) {
+  joinQueue({
+    mode = eventId
+    country = profileCountrySq.value
+    slots = getSelSlotsData().slots
+    clusters = clustersModule.getCurrentClusters()
+    queueSelfActivated = true
+    team = inGameEx.team.tointeger()
+    roomId = inGameEx.roomId.tointeger()
+    gameQueueId = inGameEx.gameQueueId
+  })
+}
+
+function isCanGoForward(...) {
+  return true
+}
+
+function isCanNewflight(...) {
+  return !isAnyQueuesActive()
+}
+
+function isCanModifyCrew(...) {
+  return !isAnyQueuesActive()
+}
+
+function isCanAirChange(...) {
+  if (!isCanGoForward())
+    return false
+
+  foreach (q in getQueuesList())
+    if (isQueueActive(q)) {
+      let event = getQueueEvent(q)
+      if (event && !events.isEventMultiSlotEnabled(event))
+        return false
+    }
+  return true
+}
+
+function isCanModifyQueueParams(typeMask) {
+  return findQueue({}, typeMask) == null
+}
+
+function isCanChangeCluster(...) {
+  return !isAnyQueuesActive()
+}
+
+function isCanUseOnlineShop(...) {
+  return !isAnyQueuesActive()
+}
+
+let checkAndStartFunctions = {
+  isCanGoForward
+  isCanNewflight
+  isCanModifyCrew
+  isCanAirChange
+  isCanModifyQueueParams
+  isCanChangeCluster
+  isCanUseOnlineShop
+}
+
+function checkQueueAndStart(onSuccess, onCancel, checkName, checkParams = null) {
+  if (!(checkName in checkAndStartFunctions) || checkAndStartFunctions[checkName](checkParams)) {
+    if (onSuccess)
+      onSuccess()
+    return
+  }
+
+  if (!::g_squad_utils.canJoinFlightMsgBox({
+        isLeaderCanJoin = true,
+        msgId = "squad/only_leader_can_cancel"
+      }, onSuccess, onCancel))
     return
 
-  queues.init()
-  addDelayedAction(
-    Callback(@() queues.joinQueue(queues.lastQueueReqParams), queues),
-    5000 + rnd() % 5000)
-})
+  if (checkParams?.isSilentLeaveQueue) {
+    leaveAllQueuesAndDo(onSuccess, onCancel)
+    return
+  }
 
-function checkIsInQueue() {
-  return queues.isAnyQueuesActive()
+  scene_msg_box("requeue_question", null, loc("msg/cancel_queue_question"),
+    [["ok", @() leaveAllQueuesAndDo(onSuccess, onCancel)], ["no", onCancel]],
+    "ok",
+    { cancel_fn = onCancel ?? @()null, checkDuplicateId = true })
 }
 
-::checkIsInQueue <- checkIsInQueue
-::queues <- queues
+function onQueueJoin(params) {
+  let queue = createQueue(params)
+  afterJoinQueue(queue)
+}
 
-return { queues , checkIsInQueue }
+addListenersWithoutEnv({
+  MatchingDisconnect = @(_) notifyQueueLeave({})
+  MatchingConnect = @(_) notifyQueueLeave({})
+
+  function LobbyStatusChange(_p) {
+    if (sessionLobbyStatus.get() == lobbyStates.IN_SESSION)
+      lastQueueReqParams = null
+  }
+
+  function ClanInfoUpdate(_params) {
+    if (!myClanInfo.get())
+      foreach (queue in getQueuesList())
+        if (isClanQueue(queue))
+          leaveQueue(queue)
+  }
+
+  function QueueInfoRecived(params) {
+    let queueInfo = params?.queue_info
+    if (!isTable(queueInfo))
+      return
+
+    if (applyQueueInfo(queueInfo, QueueStats))
+      pushQueueInfoUpdatedEvent()
+  }
+}, g_listener_priority.DEFAULT_HANDLER)
+
+matchingRpcSubscribe("match.notify_queue_join", onQueueJoin)
+matchingRpcSubscribe("match.notify_queue_leave", notifyQueueLeave)
+matchingRpcSubscribe("mkeeper.notify_service_started", function(params) {
+  if (params?.service != "match" || lastQueueReqParams == null)
+    return
+
+  lastQueueId.set(-1)
+  clearAllQueues()
+  addDelayedAction(@() joinQueue(lastQueueReqParams), 5000 + rnd() % 5000)
+})
+
+return {
+  afterLeaveQueue
+  notifyQueueLeave
+  createQueue
+  afterJoinQueue
+  leaveQueue
+  leaveAllQueues
+  leaveAllQueuesSilent
+  leaveQueueByType
+  joinQueueImpl
+  joinQueue
+  joinFriendsQueue
+  checkQueueAndStart
+  isCanModifyCrew
+}

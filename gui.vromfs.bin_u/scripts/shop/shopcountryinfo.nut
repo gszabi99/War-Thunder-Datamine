@@ -45,6 +45,11 @@ function get_units_list(filterFunc) {
   return res
 }
 
+function getShopCountry(airName) {
+  let air = getAircraftByName(airName)
+  return air?.shopCountry ?? ""
+}
+
 registerRespondent("get_units_count_at_rank", get_units_count_at_rank)
 
 return {
@@ -54,4 +59,5 @@ return {
   hasUnitAtRank
   get_units_count_at_rank
   get_units_list
+  getShopCountry
 }

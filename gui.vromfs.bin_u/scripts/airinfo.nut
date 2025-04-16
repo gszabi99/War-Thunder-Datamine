@@ -80,6 +80,8 @@ let { skillParametersRequestType } = require("%scripts/crew/skillParametersReque
 let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
 let { getNotAvailableUnitByBRText } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
+let usageRatingAmount = [0.0003, 0.0005, 0.001, 0.002]
+
 function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   if (!checkObj(obj) || !maxExp)
     return
@@ -428,7 +430,8 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
   holderObj.unitRarity = getUnitRarity(air)
 
   let { showLocalState = true, needCrewModificators = false, needShopInfo = false, needCrewInfo = false,
-    rentTimeHours = -1, isReceivedPrizes = false, researchExpInvest = 0, numSpares = 0, needShowExpiredMessage = false } = params
+    rentTimeHours = -1, isReceivedPrizes = false, researchExpInvest = 0, numSpares = 0, needShowExpiredMessage = false,
+    hideRepairInfo = false } = params
   let warbondId = params?.wbId
   let getEdiffFunc = handler?.getCurrentEdiff
   let ediff = getEdiffFunc ? getEdiffFunc.call(handler) : getCurrentGameModeEdiff()
@@ -832,10 +835,10 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     thickness = currentParams.armorThicknessTurret;
     holderObj.findObject("aircraft-armorThicknessTurret").setValue(format("%d / %d / %d %s", thickness[0].tointeger(), thickness[1].tointeger(), thickness[2].tointeger(), loc("measureUnits/mm")))
     let angles = currentParams.angleVerticalGuidance;
-    let [xAngle, yAngle] = angles
-    let xAngleStr = xAngle == 0 ? format("%d", xAngle) : format("%.1f", xAngle)
-    let yAngleStr = yAngle == 0 ? format("%d", yAngle) : format("%.1f", yAngle)
-    holderObj.findObject("aircraft-angleVerticalGuidance").setValue("".concat(xAngleStr, " / ", yAngleStr, loc("measureUnits/deg")))
+    let [minAngle, maxAngle] = angles
+    let minAngleStr = minAngle == 0 ? "0" : format("%.1f", minAngle)
+    let maxAngleStr = maxAngle == 0 ? "0" : format("+%.1f", maxAngle)
+    holderObj.findObject("aircraft-angleVerticalGuidance").setValue("".concat(minAngleStr, " / ", maxAngleStr, loc("measureUnits/deg")))
     let armorPiercing = currentParams.armorPiercing;
     if (armorPiercing.len() > 0) {
       let textParts = []
@@ -1108,7 +1111,10 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       holderObj.findObject("aircraft-spare").setValue("".concat(spareCount.tostring(), loc("icon/spare")))
   }
 
-  let fullRepairTd = holderObj.findObject("aircraft-full_repair_cost-td")
+  if (hideRepairInfo)
+    holderObj.findObject("aircraft-max_repair_cost-tr")?.show(false)
+
+  let fullRepairTd = !hideRepairInfo ? holderObj.findObject("aircraft-full_repair_cost-td") : null
   if (fullRepairTd) {
     local repairCostData = ""
     let discountsList = {}
@@ -1395,7 +1401,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
         let usage = stats?.flyouts_factor ?? 0.0
         if (usage >= 0.000001) {
           rating = 0
-          foreach (r in ::usageRating_amount)
+          foreach (r in usageRatingAmount)
             if (usage > r)
               rating++
           usageText = loc($"shop/usageRating/{rating}")
@@ -1530,4 +1536,5 @@ return {
   showAirInfo
   getBattleTypeByUnit
   getFontIconByBattleType
+  usageRatingAmount
 }

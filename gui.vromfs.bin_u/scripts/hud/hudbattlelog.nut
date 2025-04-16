@@ -24,6 +24,7 @@ let { getOwnerUnitName } = require("hudActionBar")
 let { getLocForStreak } = require("%scripts/streaks.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
+let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
 
 let getOwnerUnit = @() getAircraftByName(getOwnerUnitName())
 
@@ -367,7 +368,7 @@ let HudBattleLog = {
     let showNamesInKilllog = get_gui_option_in_mode(USEROPT_HUD_SHOW_NAMES_IN_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
     if(showNamesInKilllog && withPlayerName) {
       let showClan = get_gui_option_in_mode(USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
-      return ::build_mplayer_name(player, true, showClan, true, unitNameLoc)
+      return buildMplayerName(player, true, showClan, true, unitNameLoc)
     }
 
     return this.buildPlayerUnitName(player, unitNameLoc)

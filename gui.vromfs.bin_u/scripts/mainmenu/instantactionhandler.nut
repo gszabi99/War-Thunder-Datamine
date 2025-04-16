@@ -92,6 +92,9 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
 let SlotbarPresetsTutorial = require("%scripts/slotbar/slotbarPresetsTutorial.nut")
+let { isQueueActive, findQueue, isAnyQueuesActive, checkQueueType } = require("%scripts/queue/queueState.nut")
+let { getQueueSlots } = require("%scripts/queue/queueInfo.nut")
+let { leaveQueue, joinQueue } = require("%scripts/queue/queueManager.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -156,7 +159,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     this._lastGameModeId = getCurrentGameModeId()
     this.setCurrentGameModeName()
 
-    this.setCurQueue(::queues.findQueue({}, this.queueMask))
+    this.setCurQueue(findQueue({}, this.queueMask))
 
     this.updateStartButton()
 
@@ -355,9 +358,9 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function onEventQueueChangeState(p) {
     let _queue = p?.queue
-    if (!::queues.checkQueueType(_queue, this.queueMask))
+    if (!checkQueueType(_queue, this.queueMask))
       return
-    this.setCurQueue(::queues.isQueueActive(_queue) ? _queue : null)
+    this.setCurQueue(isQueueActive(_queue) ? _queue : null)
     this.updateStartButton()
     dmViewer.update()
   }
@@ -402,7 +405,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getQueueAircraft(country) {
     let queue = this.getCurQueue()
-    let slots = queue == null ? null : ::queues.getQueueSlots(queue)
+    let slots = queue == null ? null : getQueueSlots(queue)
     if (slots && (country in slots)) {
       foreach (_cIdx, c in getCrewsList())
         if (c.country == country)
@@ -609,7 +612,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     
     
     
-    if (::queues.isAnyQueuesActive(this.queueMask) || !::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
+    if (isAnyQueuesActive(this.queueMask) || !::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
       return
 
     EventJoinProcess(event)
@@ -829,7 +832,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       query.members <- membersData
 
     set_presence_to_player("queue")
-    ::queues.joinQueue(query)
+    joinQueue(query)
 
     local chatDiv = null
     if (topMenuHandler.value != null)
@@ -848,7 +851,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (options.len() && !::g_squad_utils.canJoinFlightMsgBox(options))
       return false
 
-    ::queues.leaveQueue(queue, options)
+    leaveQueue(queue, options)
     return true
   }
 

@@ -12,6 +12,7 @@ let events = getGlobalModule("events")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
+let { findQueue, isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 let currentPresence = {}
 let helperObj = {}
@@ -68,8 +69,8 @@ function updateClanTagPresence() {
 function updateBattlePresence() {
   if (isInBattleState.value || isInSessionRoom.get())
     setBattlePresence("in_game", getRoomEvent())
-  else if (::queues.isAnyQueuesActive()) {
-    let queue = ::queues.findQueue({})
+  else if (isAnyQueuesActive()) {
+    let queue = findQueue({})
     let event = events.getEvent(getTblValue("name", queue, null))
     setBattlePresence("in_queue", event)
   }

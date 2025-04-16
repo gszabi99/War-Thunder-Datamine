@@ -8,6 +8,7 @@ let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { deferOnce } = require("dagor.workcycle")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
+let { getQueueEvent, isClanQueue, getMyRankInQueue } = require("%scripts/queue/queueInfo.nut")
 
 const MULTICLUSTER_NAME = "multi"
 
@@ -63,11 +64,11 @@ class QueueStats {
 
 
   constructor(queue) {
-    local queueEvent = ::queues.getQueueEvent(queue)
-    this.isClanStats = ::queues.isClanQueue(queue)
+    local queueEvent = getQueueEvent(queue)
+    this.isClanStats = isClanQueue(queue)
     this.isMultiCluster = this.isClanStats || events.isMultiCluster(queueEvent)
     this.isSymmetric = this.isClanStats
-    this.myRankInQueue = ::queues.getMyRankInQueue(queue)
+    this.myRankInQueue = getMyRankInQueue(queue)
 
     this.source = {}
   }

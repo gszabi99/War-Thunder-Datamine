@@ -9,7 +9,7 @@ let { handlersManager, move_mouse_on_obj } = require("%scripts/baseGuiHandlerMan
 let { getButtonConfigById } = require("%scripts/mainmenu/topMenuButtons.nut")
 let { getTopMenuSectionsOrder } = require("%scripts/mainmenu/topMenuSections.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { checkIsInQueue } = require("%scripts/queue/queueManager.nut")
+let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 const SEPARATOR_POSTFIX = "_separator"
 
@@ -158,7 +158,7 @@ gui_handlers.TopMenuButtonsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateButtonsStatus() {
     let needHideVisDisabled = hasFeature("HideDisabledTopMenuActions")
-    let isInQueue = checkIsInQueue()
+    let isInQueue = isAnyQueuesActive()
     let skipNavigation = this.parentHandlerWeak?.scene
       .findObject("gamercard_div")["gamercardSkipNavigation"] == "yes"
 

@@ -37,7 +37,7 @@ let { getMissionsComplete } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { isSessionStartedInRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 let { create_event_description } = require("%scripts/events/eventDescription.nut")
 let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
@@ -260,7 +260,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onOpenClusterSelect(obj) {
-    queues.checkAndStart(
+    checkQueueAndStart(
       Callback(@() openClustersMenuWnd(obj, "bottom"), this),
       null,
       "isCanChangeCluster")

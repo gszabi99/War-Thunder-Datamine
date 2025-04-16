@@ -6,6 +6,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let { getUnitExtraData, saveUnitExtraData } = require("chard")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 
 let DataBlock = require("DataBlock")
 
@@ -100,7 +101,7 @@ gui_handlers.DamageControlWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getShortcutById(shortcutId) {
-    local shortcut = ::get_shortcut_text({
+    local shortcut = getShortcutText({
       shortcuts = getShortcuts([ shortcutId ])
       shortcutId = 0
       cantBeEmpty = false

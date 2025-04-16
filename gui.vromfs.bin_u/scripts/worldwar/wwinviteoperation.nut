@@ -12,7 +12,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { updateNewInvitesAmount, findInviteByUid, showExpiredInvitePopup, removeInvite
 } = require("%scripts/invites/invites.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
@@ -128,7 +128,7 @@ let Operation = class (BaseInvite) {
       return
 
     let acceptCallback = Callback(this.implAccept, this)
-    let callback = function () { queues.checkAndStart(acceptCallback, null, "isCanNewflight") }
+    let callback = function () { checkQueueAndStart(acceptCallback, null, "isCanNewflight") }
     let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
       { isLeaderCanJoin = true, msgId = "squad/leave_squad_for_invite" },
       callback

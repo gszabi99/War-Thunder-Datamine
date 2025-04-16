@@ -19,8 +19,9 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let ContactsHandler = require("%scripts/contacts/contactsHandler.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
-let { queues, checkIsInQueue } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { updateClanContacts } = require("%scripts/clans/clanActions.nut")
+let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 function guiStartSearchSquadPlayer(_ = null) {
   if (!g_squad_manager.canInviteMember()) {
@@ -33,7 +34,7 @@ function guiStartSearchSquadPlayer(_ = null) {
 }
 
 function openSearchSquadPlayer() {
-  queues.checkAndStart(guiStartSearchSquadPlayer, null,
+  checkQueueAndStart(guiStartSearchSquadPlayer, null,
     "isCanModifyQueueParams", QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE)
 }
 
@@ -168,7 +169,7 @@ addPromoButtonConfig({
     if (!show || !checkObj(buttonObj))
       return
 
-    buttonObj.inactiveColor = checkIsInQueue() ? "yes" : "no"
+    buttonObj.inactiveColor = isAnyQueuesActive() ? "yes" : "no"
   }
   updateByEvents = ["QueueChangeState"]
 })

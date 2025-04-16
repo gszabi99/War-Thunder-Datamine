@@ -22,7 +22,7 @@ let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { getRoomEvent, getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
-let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { broadcastInviteUpdated, showExpiredInvitePopup } = require("%scripts/invites/invites.nut")
 
 let SessionRoom = class (BaseInvite) {

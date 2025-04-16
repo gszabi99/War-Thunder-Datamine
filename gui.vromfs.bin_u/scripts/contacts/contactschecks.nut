@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let { contactsByGroups, EPLX_PS4_FRIENDS } = require("%scripts/contacts/contactsManager.nut")
+let { contactsByGroups, EPLX_PS4_FRIENDS, getMaxContactsByGroup } = require("%scripts/contacts/contactsManager.nut")
 let { isEmpty } = require("%sqStdLibs/helpers/u.nut")
 
 function isPlayerInContacts(uid, groupName) {
@@ -31,7 +31,7 @@ function isPlayerInFriendsGroup(uid, searchByUid = true, playerNick = "") {
   return isFriend
 }
 
-let isMaxPlayersInContactList = @(groupName) contactsByGroups[groupName].len() >= EPL_MAX_PLAYERS_IN_LIST
+let isMaxPlayersInContactList = @(groupName) contactsByGroups[groupName].len() >= getMaxContactsByGroup(groupName)
 
 return {
   isPlayerInContacts

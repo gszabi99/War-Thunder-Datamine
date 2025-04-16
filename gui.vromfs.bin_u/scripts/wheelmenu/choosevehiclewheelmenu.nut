@@ -6,6 +6,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
+let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 
 
 
@@ -53,7 +54,7 @@ function makeMenuView(cfg) {
     local color = isEnabled ? "hudGreenTextColor" : ""
     local shortcutText = ""
     if (is_platform_pc)
-      shortcutText = ::get_shortcut_text({
+      shortcutText = getShortcutText({
         shortcuts = getShortcuts([ shortcutId ])
         shortcutId = 0
         cantBeEmpty = false

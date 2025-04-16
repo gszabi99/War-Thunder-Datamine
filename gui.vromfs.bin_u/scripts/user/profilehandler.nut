@@ -55,7 +55,7 @@ let { launchEmailRegistration, canEmailRegistration, emailRegistrationTooltip,
 let { getUnlockCondsDescByCfg, getUnlockMultDescByCfg, getUnlockNameText, getUnlockMainCondDescByCfg,
   getLocForBitValues, buildUnlockDesc, fillUnlockManualOpenButton, updateUnseenIcon, updateLockStatus,
   fillUnlockImage, fillUnlockProgressBar, fillUnlockDescription, doPreviewUnlockPrize, fillReward,
-  fillUnlockTitle, fillUnlockPurchaseButton, buildConditionsConfig
+  fillUnlockTitle, fillUnlockPurchaseButton, buildConditionsConfig, fillUnlockConditions, fillUnlockStages
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { APP_ID } = require("app")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
@@ -103,6 +103,7 @@ let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpe
 let { saveProfileAppearance, getProfileHeaderBackgrounds } = require("%scripts/user/profileAppearance.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { selectUnitWndFilters } = require("%scripts/user/showcase/showcaseValues.nut")
+let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
 
 require("%scripts/user/userCard/userCard.nut") 
 
@@ -121,7 +122,7 @@ let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
 function getSkinCountry(skinName) {
   let len0 = skinName.indexof("/")
-  return len0 ? ::getShopCountry(skinName.slice(0, len0)) : ""
+  return len0 ? getShopCountry(skinName.slice(0, len0)) : ""
 }
 
 function getUnlockFiltersList(uType, getCategoryFunc) {
@@ -1502,12 +1503,12 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
     unlockObj.show(true)
     unlockObj.enable(true)
 
-    ::g_unlock_view.fillUnlockConditions(itemData, unlockObj, this)
+    fillUnlockConditions(itemData, unlockObj, this)
     fillUnlockProgressBar(itemData, unlockObj)
     fillUnlockDescription(itemData, unlockObj)
     fillUnlockImage(itemData, unlockObj)
     fillReward(itemData, unlockObj)
-    ::g_unlock_view.fillStages(itemData, unlockObj, this)
+    fillUnlockStages(itemData, unlockObj, this)
     fillUnlockTitle(itemData, unlockObj)
     initUnlockFavInContainer(itemData.id, unlockObj)
     fillUnlockPurchaseButton(itemData, unlockObj)
@@ -1535,6 +1536,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
         unlocksListObj.getChild(blockAmount - 1).enable(false)
       }
     }
+    this.guiScene.setUpdatesEnabled(true, true)
+
+    if (unlocksListObj.childrenCount() > 0)
+      unlocksListObj.setValue(0)  
 
     local selIdx = null
     for (local i = 0; i < unlocksList.len(); ++i) {
@@ -1542,17 +1547,14 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       let unlockObj = unlocksListObj.getChild(i)
       unlockObj.id = this.getUnlockBlockId(curUnlock.id)
       unlockObj.holderId = curUnlock.id
-      this.fillUnlockInfo(curUnlock, unlockObj)
 
-      if (selIdx == null
-          && (this.initialUnlockId == curUnlock.id
-            || (this.initialUnlockId == "" && canOpenUnlockManually(curUnlock))))
+      if (selIdx == null && (this.initialUnlockId == curUnlock.id || canOpenUnlockManually(curUnlock))) {
         selIdx = i
-    }
-    this.guiScene.setUpdatesEnabled(true, true)
+        unlocksListObj.setValue(selIdx)
+      }
 
-    if (unlocksListObj.childrenCount() > 0)
-      unlocksListObj.setValue(selIdx ?? 0)
+      this.fillUnlockInfo(curUnlock, unlockObj)
+    }
 
     seenUnlockMarkers.markSeen(getUnlockIds(getCurrentGameModeEdiff())
       .filter(@(unlock) unlocksList.contains(unlock)))
@@ -2337,6 +2339,33 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     let applyCallback = Callback(@() this.fillHeaderBackgroundsList(filterText), this)
     this.applyFilterTimer = setTimeout(0.5, @() applyCallback())
+  }
+
+  function jumpToUnlock(unlockId) {
+    let groupName = this.findGroupName((@(g) g.contains(unlockId)))
+    if (groupName == "")
+      return
+
+    this.initialUnlockId = unlockId
+    let list = this.scene.findObject("unlocks_group_list")
+    let currentIndex = list.getValue()
+
+    let count = list.childrenCount()
+    for (local i = 0; i < count; i++) {
+      let curObj = list.getChild(i)
+      if (curObj.id != groupName)
+        continue
+
+      if (currentIndex != i)
+        list.setValue(i)
+      else
+        this.onUnlockGroupSelect(null)
+    }
+  }
+
+  function onShowUnlockCondition(obj) {
+    let unlockId = obj?.unlockId
+    this.jumpToUnlock(unlockId)
   }
 }
 

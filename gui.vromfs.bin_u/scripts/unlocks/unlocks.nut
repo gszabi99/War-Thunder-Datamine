@@ -11,7 +11,7 @@ let { format } = require("string")
 let { getUnlockLocName, getSubUnlockLocName, getUnlockDesc, getFullUnlockDesc, getUnlockCondsDescByCfg,
   getUnlockMultDescByCfg, getUnlockMainCondDescByCfg, getUnlockMultDesc, getIconByUnlockBlk,
   getUnlockNameText, getUnlockTypeText, getUnlockCostText, buildUnlockDesc, getUnlockableMedalImage,
-  getUnlockIconConfig, buildConditionsConfig
+  getUnlockIconConfig, buildConditionsConfig, getSubunlocksView
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getUnlockCost, hasSpecialMultiStageLocId, hasMultiStageLocId, getMultiStageLocId,
@@ -51,8 +51,21 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
     LayersIcon.replaceIcon(icoObj, iconStyle, image, ratio, null, iconParams, iconConfig)
   }
 
-  let tObj = obj.findObject("award_title_text")
-  tObj.setValue("title" in config ? config.title : "")
+  let allowActionText = config?.allowActionText ?? ""
+  if (allowActionText != "") {
+    let aObj = obj.findObject("allow_action_text")
+    aObj.setValue(allowActionText)
+    showObjById("allow_action_text_block", true, obj)
+
+    obj["transparent"] = "yes"
+    obj["noPadding"] = "yes"
+    obj.findObject("contentBlock")["isShow"] = "yes"
+  }
+
+  if (config.type == UNLOCKABLE_PILOT) {
+    let tObj = obj.findObject("award_title_text")
+    tObj.setValue("title" in config ? config.title : "")
+  }
 
   let uObj = obj.findObject("unlock_name")
   uObj.setValue(getTblValue("name", config, ""))
@@ -75,7 +88,7 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
     obj.findObject("obtain_info").setValue(config?.obtainInfo ?? "")
 
     if (isForTooltip) {
-      let view = ::g_unlock_view.getSubunlocksView(config.unlockCfg)
+      let view = getSubunlocksView(config.unlockCfg)
       if (view) {
         let markup = handyman.renderCached("%gui/unlocks/subunlocks.tpl", view)
         let nestObj = obj.findObject("subunlocks")
@@ -178,6 +191,7 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
   res.rewardText = ""
   res.amount = getTblValue("amount", config, res.amount)
   res.hideAward <- config?.hideAward ?? false
+  res.allowActionText <- config?.allowActionText
 
   let battleTask = getBattleTaskById(realId)
   let isTask = isBattleTask(battleTask)

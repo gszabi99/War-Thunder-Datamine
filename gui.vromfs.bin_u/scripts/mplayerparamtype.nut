@@ -7,6 +7,7 @@ from "%scripts/utils_sa.nut" import is_mode_with_teams
 let { enumsAddTypes, getCachedType } = require("%sqStdLibs/helpers/enums.nut")
 let { MISSION_OBJECTIVE } = require("%scripts/missions/missionsUtilsModule.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
 
 const KG_TO_TONS = 0.001
 
@@ -104,7 +105,7 @@ enumsAddTypes(g_mplayer_param_type, {
     tooltip = "multiplayer/name"
     defVal = ""
     printFunc = function(_val, player) {
-      return ::build_mplayer_name(player, false)
+      return buildMplayerName(player, false)
     }
     diffFunc = g_mplayer_param_type._newer
     width = "1@nameWidth + 1@tablePad"

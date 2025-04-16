@@ -17,8 +17,9 @@ let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
 let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
+let { isAnyQueuesActive, getActiveQueueWithType } = require("%scripts/queue/queueState.nut")
+let { getQueueEvent, getQueueCountry, getQueueOperationId } = require("%scripts/queue/queueInfo.nut")
 
 enum presenceCheckOrder {
   IN_GAME_WW
@@ -66,11 +67,11 @@ enums.addTypes(presenceTypes, {
     locId = "status/in_queue"
     locIdShort = "status/in_queue_short"
     queueTypeMask = QUEUE_TYPE_BIT.EVENT | QUEUE_TYPE_BIT.DOMINATION | QUEUE_TYPE_BIT.NEWBIE
-    isMatch = @() queues.isAnyQueuesActive(this.queueTypeMask)
+    isMatch = @() isAnyQueuesActive(this.queueTypeMask)
     updateParams = function(params) {
-      let queue = queues.getActiveQueueWithType(this.queueTypeMask)
-      params.eventName <- getEventEconomicName(queues.getQueueEvent(queue))
-      params.country <- queues.getQueueCountry(queue)
+      let queue = getActiveQueueWithType(this.queueTypeMask)
+      params.eventName <- getEventEconomicName(getQueueEvent(queue))
+      params.country <- getQueueCountry(queue)
     }
     getLocText = @(presenceParams) loc(this.locId, {
       gameMode = events.getNameByEconomicName(presenceParams?.eventName ?? "")
@@ -111,10 +112,10 @@ enums.addTypes(presenceTypes, {
     locId = "status/in_queue_ww"
     locIdShort = "status/in_queue_short"
     queueTypeMask = QUEUE_TYPE_BIT.WW_BATTLE
-    isMatch = @() isWorldWarEnabled() && queues.isAnyQueuesActive(this.queueTypeMask)
+    isMatch = @() isWorldWarEnabled() && isAnyQueuesActive(this.queueTypeMask)
     updateParams = function(params) {
-      let queue = queues.getActiveQueueWithType(this.queueTypeMask)
-      let operationId = queues.getQueueOperationId(queue)
+      let queue = getActiveQueueWithType(this.queueTypeMask)
+      let operationId = getQueueOperationId(queue)
       let battleId = queue instanceof getQueueClass("WwBattle") ? queue.getQueueWwBattleId() : ""
       let operation = ::g_ww_global_status_actions.getOperationById(operationId)
       if (!operation)
@@ -122,7 +123,7 @@ enums.addTypes(presenceTypes, {
       params.operationId <- operationId
       params.battleId <- battleId
       params.mapId <- operation.getMapId()
-      params.country <- queues.getQueueCountry(queue)
+      params.country <- getQueueCountry(queue)
     }
     getLocText = function(presenceParams) {
       let map = ::g_ww_global_status_actions.getMapByName(presenceParams?.mapId)

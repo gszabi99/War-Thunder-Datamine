@@ -93,14 +93,14 @@ function updateMyStats() {
   broadcastEvent("MyStatsUpdated")
 }
 
-function requestMyStats() {
+function requestMyStats(forced = false) {
   if (!isLoggedIn.get())
     return
 
   let time = get_time_msec()
-  if (isInUpdate && time - lastUpdate < 45000)
+  if (!forced && isInUpdate && time - lastUpdate < 45000)
     return
-  if (!resetStats && myStats && time - lastUpdate < UPDATE_DELAY) 
+  if (!forced && !resetStats && myStats && time - lastUpdate < UPDATE_DELAY) 
     return
 
   isInUpdate = true
@@ -526,7 +526,7 @@ function onEventCrewTakeUnit(params) {
 seenTitles.setListGetter(@() getTitles())
 
 addListenersWithoutEnv({
-  LoginComplete = @(_) requestMyStats()
+  ProfileUpdated = @(_) requestMyStats(true)
   UnitBought = @(_) markStatsReset()
   AllModificationsPurchased = @(_) markStatsReset()
   EventsDataUpdated = @(_) needRecountNewbie = true

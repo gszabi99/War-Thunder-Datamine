@@ -48,6 +48,7 @@ let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { guiStartMpLobby } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { getMisListType } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { getOptionsMode } = require("%scripts/options/optionsList.nut")
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 let MODIFICATION_TUTORIAL_CHAPTERS = ["tutorial_aircraft_modification", "tutorial_tank_modification"]
@@ -816,7 +817,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
         forbiddenDifficulty = this.missionBlk?.forbiddenDifficulty
       }
       applyAtClose = false
-      wndOptionsMode = ::get_options_mode(this.gm)
+      wndOptionsMode = getOptionsMode(this.gm)
       owner = this
       applyFunc = applyFunc
     }
@@ -1169,7 +1170,7 @@ let RemoteMissionModalHandler = class (CampaignChapter) {
     return {
       options = optionItems
       applyAtClose = false
-      wndOptionsMode = ::get_options_mode(this.gm)
+      wndOptionsMode = getOptionsMode(this.gm)
       owner = this
       applyFunc = applyFunc
       cancelFunc = Callback(function() {

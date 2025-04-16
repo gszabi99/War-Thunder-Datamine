@@ -31,9 +31,10 @@ let { addTask } = require("%scripts/tasker.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { updateShortQueueInfo } = require("%scripts/queue/queueInfo/qiViewUtils.nut")
-let { queues } = require("%scripts/queue/queueManager.nut")
+let { leaveQueue } = require("%scripts/queue/queueManager.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard.nut")
+let { isQueueActive, findQueue, isEventQueue } = require("%scripts/queue/queueState.nut")
 
 function getActiveTicketTxt(event) {
   if (!event)
@@ -97,7 +98,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateQueueInterface() {
-    if (!this.queueToShow || !queues.isQueueActive(this.queueToShow))
+    if (!this.queueToShow || !isQueueActive(this.queueToShow))
       this.queueToShow = this.getCurEventQueue()
     let slotbar = this.getSlotbar()
     if (slotbar)
@@ -105,12 +106,12 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurEventQueue() {
-    local q = queues.findQueue({}, QUEUE_TYPE_BIT.EVENT)
-    return (q && queues.isQueueActive(q)) ? q : null
+    local q = findQueue({}, QUEUE_TYPE_BIT.EVENT)
+    return (q && isQueueActive(q)) ? q : null
   }
 
   function onEventQueueChangeState(p) {
-    if (!queues.isEventQueue(p?.queue))
+    if (!isEventQueue(p?.queue))
       return
 
     this.updateQueueInterface()
@@ -365,7 +366,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
     if (!q)
       return
 
-    queues.leaveQueue(q, { isCanceledByPlayer = true })
+    leaveQueue(q, { isCanceledByPlayer = true })
   }
 
   onEventSquadStatusChanged = @(_p) this.updateApplyButton()

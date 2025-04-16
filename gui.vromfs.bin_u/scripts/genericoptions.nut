@@ -37,8 +37,10 @@ let { havePremium } = require("%scripts/user/premium.nut")
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
 let { add_tank_alt_crosshair_template } = require("crosshair")
 let { get_current_campaign, get_mission_settings } = require("%scripts/missions/missionsStates.nut")
-let { checkIsInQueue, queues } = require("%scripts/queue/queueManager.nut")
+let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { getMissionAllowedUnittypesMask, isSkirmishWithKillStreaks } = require("%scripts/missions/missionsUtils.nut")
+let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
+let { getNumberOfUnitsByYears } = require("%scripts/unit/unitInfo.nut")
 
 function get_country_by_team(team_index) {
   local countries = null
@@ -235,7 +237,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     if (opt == null)
       return
 
-    this.enableOptionRow(opt, !checkIsInQueue())
+    this.enableOptionRow(opt, !isAnyQueuesActive())
   }
 
   function getOptionObj(option) {
@@ -425,7 +427,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
     let optValue = get_option(USEROPT_DISPLAY_MY_REAL_NICK).value
     if (optValue == obj.getValue())
       return
-    queues.checkAndStart(@() broadcastEvent("UpdateGamercards"), @() obj.setValue(optValue), "isCanNewflight")
+    checkQueueAndStart(@() broadcastEvent("UpdateGamercards"), @() obj.setValue(optValue), "isCanNewflight")
   }
 
   function setCrossNetworkChatValue(obj, value, needSendNotification = false) {
@@ -553,7 +555,7 @@ gui_handlers.GenericOptions <- class (gui_handlers.BaseGuiHandlerWT) {
       set_option(USEROPT_MP_TEAM_COUNTRY, cobj.getValue())
     }
     let yearOption = get_option(USEROPT_YEAR)
-    let unitsByYears = ::get_number_of_units_by_years(country, yearOption.valuesInt)
+    let unitsByYears = getNumberOfUnitsByYears(country, yearOption.valuesInt)
     let yearObj = this.getObj(yearOption.id)
     if (!yearObj)
       return;
