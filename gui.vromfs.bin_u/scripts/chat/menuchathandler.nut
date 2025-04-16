@@ -1377,7 +1377,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
             roomData.addMessage(mBlock)
 
             if (roomData?.customScene) {
-              this.updateCustomChatTexts()
+              thisCapture.updateCustomChatTexts()
               continue
             }
 
