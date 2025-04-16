@@ -2703,7 +2703,7 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return { room = customRoom.id, scene = customRoom.customScene }
     }
     else if (this.checkScene())
-      return { room = this.curRoom.id, scene = this.scene }
+      return { room = this.curRoom?.id, scene = this.scene }
 
     return null
   }
