@@ -173,6 +173,9 @@ def gm_engine_sound_init_es(evt : CmdInitComponent;
                 let eventStop = cutomAiBlk |> datablock_getStr("eventStop", "")
                 gm_engine_sound__stop_event_name := path + "/" + eventStop
 
+def reset_cached_params(var cached_params : FloatList&)
+  for p in cached_params
+    p = -1.f
 
 [es(tag=sound, REQUIRE = controlledHero, REQUIRE_NOT = disabled)]
 def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
@@ -192,8 +195,8 @@ def gm_engine_sound_update_inside_es(act : UpdateStageInfoAct;
 
   if gm_engine_sound__is_inside != unit.isCameraInCockpit
     gm_engine_sound__loadswitch = false
-    for p in gm_engine_sound__cached_params
-      p = -1.f
+    reset_cached_params(gm_engine_sound__cached_params)
+
   gm_engine_sound__is_inside = unit.isCameraInCockpit
 
   if unit.isCameraInCockpit
@@ -351,9 +354,11 @@ def gm_engine_on_steal_es(evt : CmdEngineStealSound;
 def gm_engine_on_unsteal_es(evt : CmdEngineUnstealSound;
                             gm_engine_sound__pos : float3;
                             gm_engine_sound__event_name : das_string;
+                            var gm_engine_sound__cached_params : FloatList&;
                             var gm_engine_sound__event : SoundEvent&)
   if !is_playing(gm_engine_sound__event) && gm_engine_sound__event_name != ""
     gm_engine_sound__event |> play(string(gm_engine_sound__event_name), gm_engine_sound__pos)
+    reset_cached_params(gm_engine_sound__cached_params)
 
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
@@ -363,6 +368,7 @@ def gm_engine_on_play_start_es(evt : CmdEnginePlayStartSound;
                                gm_engine_sound__is_inside : bool;
                                gm_engine_sound__start_event_name : das_string;
                                gm_engine_sound__start_inside_name : das_string;
+                               var gm_engine_sound__cached_params : FloatList&;
                                var gm_engine_sound__stop_event : SoundEvent&;
                                var gm_engine_sound__start_event : SoundEvent&;
                                var gm_engine_sound__start_inside_event : SoundEvent&;
@@ -381,6 +387,7 @@ def gm_engine_on_play_start_es(evt : CmdEnginePlayStartSound;
 
   if (curEventName != "") && !is_playing(curEvent)
     curEvent |> play(string(curEventName), gm_engine_sound__pos)
+    reset_cached_params(gm_engine_sound__cached_params)
 
 
 [es(tag=sound, REQUIRE_NOT = disabled)]
