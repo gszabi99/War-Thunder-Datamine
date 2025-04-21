@@ -4492,6 +4492,69 @@
       }
     },
     {
+      "id": "2025_04_18_easter_key_store",
+      "type": "award",
+      "hidden": true
+    },
+    {
+      "id": "2025_04_18_decal_easter_egg",
+      "locId": "decals/easter_egg",
+      "userLogId": "2025_04_18_decal_easter_egg",
+      "hideUntilPrevUnlocked": "2025_04_18_easter_key_store",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "easter",
+      "mode": {
+        "type": "char_login_time_range",
+        "beginDate": "2025-04-18 10:00:00",
+        "endDate": "2025-04-23 07:30:00",
+        "condition": {
+          "type": "char_unlocked",
+          "unlock": "2025_04_18_easter_key_store"
+        }
+      }
+    },
+    {
+      "id": "2025_04_18_decal_easter_rabbit",
+      "locId": "decals/easter_rabbit",
+      "locDescId": "gift_decal_trophy/desc",
+      "userLogId": "2025_04_18_decal_easter_rabbit",
+      "hideUntilPrevUnlocked": "2025_04_18_easter_key_store",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "easter",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 2,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "unlocked",
+            "unlock": "2025_04_18_easter_key_store"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-04-18 10:00:00",
+            "endDate": "2025-04-23 07:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2025_04_11_cosmonautics_day_2025_decal",
       "locId": "decals/cosmonautics_day_2025_decal",
       "locDescId": "gift_decal_trophy/desc",
@@ -4546,6 +4609,7 @@
       "group": "moments_of_valor_philippines",
       "type": "trophy",
       "amount_trophies": 2,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 3,
