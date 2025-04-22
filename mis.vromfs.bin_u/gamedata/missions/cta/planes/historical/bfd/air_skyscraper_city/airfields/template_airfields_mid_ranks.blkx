@@ -18,7 +18,27 @@
   "imports": {},
   "triggers": {
     "isCategory": true,
-    "is_enabled": true
+    "is_enabled": true,
+    "airfield_mid_clean_area": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionDestroyArea": {
+          "target_type": "rendinsts",
+          "area": "t1_clean_area"
+        }
+      },
+      "else_actions": {}
+    }
   },
   "mission_objectives": {
     "isCategory": true,
@@ -51,7 +71,7 @@
           [
             -14369.2,
             107.863,
-            -14669.6
+            -15083.7
           ]
         ],
         "unit_class": "dynaf_pg_1line_ground",
@@ -115,7 +135,7 @@
           [
             -14443.8,
             96.2482,
-            -13677.7
+            -14176.2
           ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
@@ -173,7 +193,7 @@
           [
             -14823.3,
             75.5133,
-            -14718.7
+            -15217.2
           ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
@@ -231,7 +251,7 @@
           [
             -15013.0,
             54.8876,
-            -14822.7
+            -15321.2
           ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
@@ -289,7 +309,7 @@
           [
             -14278.2,
             95.2293,
-            -15865.7
+            -16364.2
           ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
@@ -347,7 +367,7 @@
           [
             -14086.4,
             101.562,
-            -14640.9
+            -15139.4
           ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
@@ -405,7 +425,7 @@
           [
             -13960.1,
             102.371,
-            -14064.3
+            -14562.8
           ]
         ],
         "unit_class": "germ_37mm_flak43_airfield",
@@ -463,7 +483,7 @@
           [
             -14777.5,
             108.435,
-            -15734.8
+            -16233.2
           ]
         ],
         "unit_class": "germ_88mm_flak36",
@@ -521,7 +541,7 @@
           [
             -14603.0,
             76.9341,
-            -14030.4
+            -14528.9
           ]
         ],
         "unit_class": "germ_88mm_flak36",
@@ -579,7 +599,7 @@
           [
             -13483.3,
             105.189,
-            -14535.8
+            -15034.2
           ]
         ],
         "unit_class": "germ_88mm_flak36",
@@ -637,7 +657,7 @@
           [
             -13476.8,
             205.932,
-            -13605.5
+            -14104.0
           ]
         ],
         "unit_class": "germ_88mm_flak36",
@@ -1934,6 +1954,32 @@
           -15169.8,
           499.995,
           -17573.9
+        ]
+      ],
+      "props": {}
+    },
+    "t1_clean_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -1018.08,
+          0.0,
+          153.499
+        ],
+        [
+          0.0,
+          127.114,
+          0.0
+        ],
+        [
+          -206.926,
+          0.0,
+          -1372.43
+        ],
+        [
+          -14356.1,
+          52.65,
+          -14706.1
         ]
       ],
       "props": {}
