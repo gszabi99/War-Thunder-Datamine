@@ -234,6 +234,32 @@
         },
         "else_actions": {}
       },
+      "t2_set_initial_mp_score": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "timeExpires": {
+            "time": 3.0
+          }
+        },
+        "conditions": {},
+        "actions": {
+          "comment": {
+            "value": "reduce the attack team's score so that the defending team wins by default"
+          },
+          "gameMPChangeScore": {
+            "value": -1,
+            "valueSystem": "amount",
+            "team": "B"
+          }
+        },
+        "else_actions": {}
+      },
       "spawn_logic": {
         "isCategory": true,
         "is_enabled": true,
