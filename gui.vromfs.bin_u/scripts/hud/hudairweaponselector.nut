@@ -5,7 +5,7 @@ let { setAllowedControlsMask } = require("controlsMask")
 let { getWeaponryByPresetInfo } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { get_all_weapons, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset,
+let { get_all_weapons, can_set_weapon, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset,
  COUNTER_MEASURE_MODE_FLARE, COUNTER_MEASURE_MODE_CHAFF, has_secondary_weapons, set_countermeasures_mode} = require("weaponSelector")
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager} = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -317,6 +317,8 @@ let class HudAirWeaponSelector {
       let stat = this.lastTiersStats[i]
       let weaponCell = this.nestObj.findObject($"tier_{stat.tierId}")
       if (weaponCell == null)
+        continue
+      if (weaponCell.weaponIdx != "-1" && !can_set_weapon(stat.weaponIdx))
         continue
       weaponCell.weaponIdx = $"{stat.weaponIdx}"
       weaponCell.hasBullets = stat.count > 0 ? "yes" : "no"
