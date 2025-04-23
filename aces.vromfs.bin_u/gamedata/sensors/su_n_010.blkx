@@ -2183,8 +2183,7 @@
         "setCueDist": {
           "command": "cueAxisY",
           "actions": {
-            "setCueDist": {},
-            "setCueDopplerSpeed": {}
+            "setCueDist": {}
           }
         },
         "setCueElevation": {
@@ -2198,7 +2197,35 @@
           "actions": {
             "setDetectedTargetActive": {}
           }
-        }
+        },
+        "centerZone": [
+          {
+            "command": "directionAxesReset",
+            "actions": {
+              "setCueToBoresight": {},
+              "setCenterAzimuth": {
+                "source": "designationCue"
+              },
+              "setCenterElevation": {
+                "source": "designationCue"
+              },
+              "updateActiveDetectedTarget": {}
+            }
+          },
+          {
+            "command": "directionAxesReset",
+            "actions": {
+              "setCueToBoresight": {},
+              "setCenterAzimuth": {
+                "source": "designationCue"
+              },
+              "setCenterElevation": {
+                "source": "designationCue"
+              },
+              "updateActiveDetectedTarget": {}
+            }
+          }
+        ]
       }
     },
     "radarBvrLock": {
@@ -3085,8 +3112,7 @@
         "setCueDist": {
           "command": "cueAxisY",
           "actions": {
-            "setCueDist": {},
-            "setCueDopplerSpeed": {}
+            "setCueDist": {}
           }
         },
         "setCueElevation": {
@@ -3112,6 +3138,19 @@
               "type": 0,
               "sensorIndex": 1
             }
+          }
+        },
+        "centerZone": {
+          "command": "directionAxesReset",
+          "actions": {
+            "setCueToBoresight": {},
+            "setCenterAzimuth": {
+              "source": "designationCue"
+            },
+            "setCenterElevation": {
+              "source": "designationCue"
+            },
+            "updateActiveDetectedTarget": {}
           }
         }
       }

@@ -542,6 +542,16 @@
           "actions": {
             "setDetectedTargetActive": {}
           }
+        },
+        "centerZone": {
+          "command": "directionAxesReset",
+          "actions": {
+            "setCueToBoresight": {},
+            "setCenterElevation": {
+              "source": "designationCue"
+            },
+            "updateActiveDetectedTarget": {}
+          }
         }
       }
     },

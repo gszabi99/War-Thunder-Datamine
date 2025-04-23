@@ -7,6 +7,7 @@
   "transivers": {
     "track": {
       "power": 60.0,
+      "active": false,
       "band": -1,
       "rcs": 3000.0,
       "range": 10000.0,
@@ -415,6 +416,12 @@
               "ignoreOwnWeapon": true,
               "rangeMult": 1.0
             }
+          }
+        },
+        "aim": {
+          "command": "aim",
+          "actions": {
+            "setCenterToAim": {}
           }
         }
       }
