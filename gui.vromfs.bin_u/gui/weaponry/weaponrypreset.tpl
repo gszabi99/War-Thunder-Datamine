@@ -31,17 +31,11 @@ weaponryPreset {
       id:t='tiersNest_<<presetId>>'
       presetId:t='<<presetId>>'
       flow:t='horizontal'
-      behaviour:t='posNavigator'
-      showSelect:t='always'
-      canSelectNone:t='yes'
-      navigatorShortcuts:t='yes'
       css-hier-invalidate:t='yes'
       total-input-transparent:t='yes'
-      on_select:t='onCellSelect'
-      on_r_click:t='onPresetMenuOpen'
-      on_dbl_click:t='onModItemDblClick'
-      on_click:t='onTierClick'
-      on_unhover:t='onPresetUnhover'
+      isContainer:t='yes'
+      interactive:t='yes'
+      shortcut-on-hover:t='yes'
       presetHeader {
         id:t='presetHeader_<<presetId>>'
         presetId:t='<<presetId>>'
@@ -89,6 +83,8 @@ weaponryPreset {
         tierId:t='<<tierId>>'
         size:t='@tierIconSize, @tierIconSize'
         <<^isActive>>enable:t='no'<</isActive>>
+        interactive:t='yes'
+        shortcut-on-hover:t='yes'
         img {
           size:t='@tierIconSize, @tierIconSize'
           position:t='relative'
@@ -121,6 +117,7 @@ weaponryPreset {
     input-transparent:t='no'
     css-hier-invalidate:t='yes'
     on_click:t='onCollapse'
+    isNavInContainerBtn:t='yes'
     activeText{}
     ButtonImg {}
     text {

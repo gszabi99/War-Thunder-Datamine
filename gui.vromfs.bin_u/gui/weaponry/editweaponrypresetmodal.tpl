@@ -44,6 +44,19 @@ tdiv {
     }
     tdiv {
       id:t='presetNest'
+      behavior:t='inContainersNavigator'
+      deep:t='3'
+      navigatorShortcuts:t='yes'
+      moveX:t='linear'
+      moveY:t='closest'
+      total-input-transparent:t='yes'
+
+      on_select:t='onCellSelect'
+      on_r_click:t='onPresetMenuOpen'
+      on_dbl_click:t='onModItemDblClick'
+      on_click:t='onTierClick'
+      on_unhover:t='onPresetUnhover'
+
       include "%gui/weaponry/weaponryPreset.tpl"
     }
     tdiv {

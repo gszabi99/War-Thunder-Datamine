@@ -39,13 +39,24 @@ tdiv {
           tdiv {
             size:t='fw, fh'
             overflow-y:t='auto'
+            behavior:t='inContainersNavigator'
+            deep:t='4'
+            navigatorShortcuts:t='all'
+            moveX:t='linear'
+            moveY:t='closest'
+            total-input-transparent:t='yes'
+
+            on_select:t='onCellSelect'
+            on_r_click:t='onPresetMenuOpen'
+            on_dbl_click:t='onModItemDblClick'
+            on_click:t='onTierClick'
+            on_unhover:t='onPresetUnhover'
 
             tdiv {
               id:t='presetNest'
               size:t='<<presetsWidth>>, ph'
               margin-right:t='1@scrollBarSize'
               flow:t='vertical'
-
               include "%gui/weaponry/weaponryPreset.tpl"
             }
           }

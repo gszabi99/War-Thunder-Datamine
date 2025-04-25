@@ -42,6 +42,7 @@ let { addTask } = require("%scripts/tasker.nut")
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
+let { getChildInContainers } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
 
 const MY_FILTERS = "weaponry_presets/filters"
 
@@ -278,19 +279,23 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onCellSelect(obj) {
-    let presetId = obj.presetId.tointeger()
     let value = obj.getValue()
-
-    if (value < 0) {
-      if (presetId == this.curPresetIdx) {
-        this.selectPreset(null)
-        this.selectTier(null)
-      }
+    let cellObj = getChildInContainers(obj, value)
+    if (!cellObj?.isValid() || (cellObj?.presetId == null && cellObj?.tierId == null)) {
+      this.selectPreset(null)
+      this.selectTier(null)
+      return
+    }
+    if (cellObj?.presetId) {
+      this.selectPreset(cellObj?.presetId.tointeger())
+      this.selectTier(-1)
       return
     }
 
+    let tier = cellObj.tierId.tointeger()
+    let presetId = cellObj.getParent().presetId.tointeger()
     this.selectPreset(presetId)
-    this.selectTier(value - 1)
+    this.selectTier(tier)
   }
 
   function onPresetUnhover(obj) {

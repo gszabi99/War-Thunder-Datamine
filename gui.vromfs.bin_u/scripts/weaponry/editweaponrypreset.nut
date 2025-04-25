@@ -2,7 +2,6 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let regexp2 = require("regexp2")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -24,6 +23,7 @@ let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 let { set_weapon_visual_custom_blk } = require("unitCustomization")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
+let { getChildInContainers } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
 
 const MASS_KG_PRESIZE = 0.1
 
@@ -191,16 +191,9 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getCurrenTierObj() {
-    let presetObj = this.presetNest.findObject("tiersNest_")
-    let value = getObjValidIndex(presetObj)
-    if (value < 0)
-      return null
-
-    let tierObj = presetObj.getChild(value)
-    if (!tierObj?.isValid())
-      return null
-
-    return tierObj
+    let tierIndex = this.presetNest.getValue()
+    let tierObj = getChildInContainers(this.presetNest, tierIndex)
+    return (tierObj?.isValid() && tierObj?.tierId) ? tierObj : null
   }
 
   function editPreset() {

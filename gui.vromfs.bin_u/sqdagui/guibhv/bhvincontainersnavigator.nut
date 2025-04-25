@@ -1,6 +1,46 @@
 from "%sqDagui/daguiNativeApi.nut" import *
 let { posNavigator } = require("bhvPosNavigator.nut")
 
+function getChildObjRecursively(obj, value, params) {
+  if (!obj.isVisible())
+    return null
+
+  if (obj?.isNavInContainerBtn == "yes") {
+    if (value == params.currentIndex)
+      return obj
+    params.currentIndex++
+    return null
+  }
+
+  if (obj?.isContainer) {
+    let childsCount = obj.childrenCount()
+    if (value >= params.currentIndex && value < childsCount + params.currentIndex)
+      return obj.getChild(value - params.currentIndex)
+    params.currentIndex += childsCount
+    return null
+  }
+
+  if (params.currentDeep > 0) {
+    let childsCount = obj.childrenCount()
+    params.currentDeep--
+    for (local i = 0; i < childsCount; i++) {
+      let cObj = obj.getChild(i)
+      if (cObj?.needSkipNavigation == "yes")
+        continue
+      let findedChild = getChildObjRecursively(cObj, value, params)
+      if (findedChild != null)
+        return findedChild
+    }
+    params.currentDeep++
+  }
+  return null
+}
+
+function getChildInContainers(obj, value) {
+  let params = {currentCollapsed = 0, currentDeep = (obj?.deep ?? 0).tointeger(), currentIndex = 0}
+  return getChildObjRecursively(obj, value, params)
+}
+
 let InContainersNavigator = class(posNavigator){
   bhvId = "inContainersNavigator"
 
@@ -17,44 +57,8 @@ let InContainersNavigator = class(posNavigator){
     return RETCODE_NOTHING
   }
 
-  function getChildObjRecursively(obj, value, params) {
-    if (!obj.isVisible())
-      return null
-
-    if (obj?.isNavInContainerBtn == "yes") {
-      if (value == params.currentIndex)
-        return obj
-      params.currentIndex++
-      return null
-    }
-
-    if (obj?.isContainer) {
-      let childsCount = obj.childrenCount()
-      if (value >= params.currentIndex && value < childsCount + params.currentIndex)
-        return obj.getChild(value - params.currentIndex)
-      params.currentIndex += childsCount
-      return null
-    }
-
-    if (params.currentDeep > 0) {
-      let childsCount = obj.childrenCount()
-      params.currentDeep--
-      for (local i = 0; i < childsCount; i++) {
-        let cObj = obj.getChild(i)
-        if (cObj?.needSkipNavigation == "yes")
-          continue
-        let findedChild = this.getChildObjRecursively(cObj, value, params)
-        if (findedChild != null)
-          return findedChild
-      }
-      params.currentDeep++
-    }
-    return null
-  }
-
   function getChildObj(obj, value) {
-    let params = {currentCollapsed = 0, currentDeep = (obj?.deep ?? 0).tointeger(), currentIndex = 0}
-    return this.getChildObjRecursively(obj, value, params)
+    return getChildInContainers(obj, value)
   }
 
   function eachSelectableRecursively(obj, handler, params) {
@@ -119,11 +123,13 @@ let InContainersNavigator = class(posNavigator){
     })
     return { hoveredObj, hoveredIdx }
   }
-
   onInsert = @(_obj, _child, _index) {}
 
 }
 
 replace_script_gui_behaviour("inContainersNavigator", InContainersNavigator)
 
-return {InContainersNavigator}
+return {
+  InContainersNavigator
+  getChildInContainers
+}

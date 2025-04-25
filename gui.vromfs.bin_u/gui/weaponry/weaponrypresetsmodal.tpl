@@ -21,8 +21,21 @@ root {
       css-hier-invalidate:t='yes'
 
       tdiv {
+        behavior:t='inContainersNavigator'
         height:t='ph'
         overflow-y:t='auto'
+        deep:t='4'
+        navigatorShortcuts:t='all'
+        moveX:t='linear'
+        moveY:t='closest'
+        total-input-transparent:t='yes'
+
+        on_select:t='onCellSelect'
+        on_r_click:t='onPresetMenuOpen'
+        on_dbl_click:t='onModItemDblClick'
+        on_click:t='onTierClick'
+        on_unhover:t='onPresetUnhover'
+
         tdiv {
           id:t='presetNest'
           width:t='<<presetsWidth>>'
