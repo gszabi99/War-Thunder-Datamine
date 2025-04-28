@@ -23,22 +23,40 @@
     "spectator_points": {}
   },
   "imports": {
-    "import_record": {
-      "file": "gameData/missions/templates/player_unit_template.blk",
-      "importAreas": true,
-      "importUnits": true,
-      "importTriggers": true,
-      "importMissionObjectives": true,
-      "importWayPoints": true,
-      "importDialogs": true,
-      "showAreas": true,
-      "showUnits": true,
-      "showTriggers": true,
-      "showMissionObjectives": true,
-      "showWayPoints": true,
-      "showDialogs": true,
-      "excludes": {}
-    }
+    "import_record": [
+      {
+        "file": "gameData/missions/templates/player_unit_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gameData/missions/templates/ww_no_attackers_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      }
+    ]
   },
   "triggers": {
     "isCategory": true,
@@ -95,7 +113,10 @@
           "varSetInt": [
             {
               "value": 7,
-              "var": "t1_sam_site_count_initial",
+              "var": [
+                "t1_sam_site_count_initial",
+                "t1_sam_site_count_active"
+              ],
               "fromDescriptor": "SAMCount"
             },
             {
@@ -234,6 +255,57 @@
         },
         "else_actions": {}
       },
+      "create_detection_zones": {
+        "is_enabled": true,
+        "comments": "",
+        "props": {
+          "actionsType": "PERFORM_ONE_BY_ONE",
+          "conditionsType": "ALL",
+          "enableAfterComplete": false
+        },
+        "events": {
+          "initMission": {}
+        },
+        "conditions": {
+          "objectExists": [
+            {
+              "target": "@t1_detection_area_name",
+              "type": "area"
+            },
+            {
+              "target": "@t2_detection_area_name",
+              "type": "area"
+            }
+          ]
+        },
+        "actions": {
+          "missionBattleArea": [
+            {
+              "air": true,
+              "ground": false,
+              "mapArea": false,
+              "airMapArea": false,
+              "killArea": false,
+              "detectionArea": true,
+              "killOutOfBattleArea": false,
+              "area": "@t1_detection_area_name",
+              "team": "B"
+            },
+            {
+              "air": true,
+              "ground": false,
+              "mapArea": false,
+              "airMapArea": false,
+              "killArea": false,
+              "detectionArea": true,
+              "killOutOfBattleArea": false,
+              "area": "@t2_detection_area_name",
+              "team": "A"
+            }
+          ]
+        },
+        "else_actions": {}
+      },
       "t2_set_initial_mp_score": {
         "is_enabled": true,
         "comments": "",
@@ -295,7 +367,8 @@
                 "radius": -1.0,
                 "target": "t1_spawn_area",
                 "postfix": "",
-                "isStrictSpawn": true,
+                "isStrictPosAndDir": true,
+                "shouldSpawnAwayFromOtherPlayers": true,
                 "maxBasesCount": 3,
                 "createRandomBase": true,
                 "isIndividual": true,
@@ -321,7 +394,8 @@
                 "radius": -1.0,
                 "target": "t2_spawn_area",
                 "postfix": "",
-                "isStrictSpawn": true,
+                "isStrictPosAndDir": true,
+                "shouldSpawnAwayFromOtherPlayers": true,
                 "maxBasesCount": 3,
                 "createRandomBase": true,
                 "isIndividual": true,
@@ -347,7 +421,8 @@
                 "radius": -1.0,
                 "target": "t2_helicopter_spawn_area",
                 "postfix": "",
-                "isStrictSpawn": true,
+                "isStrictPosAndDir": true,
+                "shouldSpawnAwayFromOtherPlayers": true,
                 "maxBasesCount": 4,
                 "createRandomBase": true,
                 "isIndividual": true,
@@ -374,7 +449,8 @@
                 "radius": -1.0,
                 "target": "@t1_initial_spawn_name",
                 "team": "A",
-                "isStrictSpawn": true,
+                "isStrictPosAndDir": true,
+                "shouldSpawnAwayFromOtherPlayers": true,
                 "isIndividual": true,
                 "showOnMap": false,
                 "tags": {
@@ -391,7 +467,8 @@
                 "radius": -1.0,
                 "target": "@t2_initial_spawn_name",
                 "team": "B",
-                "isStrictSpawn": true,
+                "isStrictPosAndDir": true,
+                "shouldSpawnAwayFromOtherPlayers": true,
                 "isIndividual": true,
                 "showOnMap": false,
                 "tags": {
@@ -408,7 +485,8 @@
                 "radius": -1.0,
                 "target": "@t2_initial_helicopter_spawn_name",
                 "team": "B",
-                "isStrictSpawn": true,
+                "isStrictPosAndDir": true,
+                "shouldSpawnAwayFromOtherPlayers": true,
                 "isIndividual": true,
                 "showOnMap": false,
                 "tags": {
@@ -497,7 +575,8 @@
                 "radius": -1.0,
                 "target": "t1_spawn_area",
                 "postfix": "",
-                "isStrictSpawn": true,
+                "isStrictPosAndDir": true,
+                "shouldSpawnAwayFromOtherPlayers": true,
                 "maxBasesCount": 3,
                 "createRandomBase": true,
                 "isIndividual": true,
@@ -523,7 +602,8 @@
                 "radius": -1.0,
                 "target": "t2_spawn_area",
                 "postfix": "",
-                "isStrictSpawn": true,
+                "isStrictPosAndDir": true,
+                "shouldSpawnAwayFromOtherPlayers": true,
                 "maxBasesCount": 3,
                 "createRandomBase": true,
                 "isIndividual": true,
@@ -549,7 +629,8 @@
                 "radius": -1.0,
                 "target": "t2_helicopter_spawn_area",
                 "postfix": "",
-                "isStrictSpawn": true,
+                "isStrictPosAndDir": true,
+                "shouldSpawnAwayFromOtherPlayers": true,
                 "maxBasesCount": 4,
                 "createRandomBase": true,
                 "isIndividual": true,
@@ -1790,6 +1871,8 @@
     "t1_exit_zone_squad_name": "t1_exit_zone_squad",
     "t2_exit_zone_squad_name": "t2_exit_zone_squad",
     "t2_exit_zone_helicopter_squad_name": "t2_exit_zone_helicopter_squad",
+    "t1_detection_area_name": "t1_detection_area",
+    "t2_detection_area_name": "t2_detection_area",
     "battle_area_name": "battle_area",
     "t1_sam_site_squad_name": "t1_sam_site_squad",
     "t1_sam_site_area_idx": 1,

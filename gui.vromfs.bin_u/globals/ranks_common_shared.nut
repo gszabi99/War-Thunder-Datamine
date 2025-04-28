@@ -32,6 +32,7 @@ let mapWpUnitClassToWpUnitType = {
   exp_heavy_tank = DS_UT_TANK
   exp_tank_destroyer = DS_UT_TANK
   exp_SPAA = DS_UT_TANK
+  exp_ai_sam_tracking_radar = DS_UT_TANK
   exp_torpedo_boat = DS_UT_SHIP
   exp_gun_boat = DS_UT_SHIP
   exp_torpedo_gun_boat = DS_UT_SHIP
