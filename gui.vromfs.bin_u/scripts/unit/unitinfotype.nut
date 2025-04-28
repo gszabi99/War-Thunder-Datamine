@@ -1,8 +1,9 @@
 from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
+from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
-let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
+let { isUnitSpecial, EDIFF_SHIFT } = require("%appGlobals/ranks_common_shared.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
@@ -241,6 +242,31 @@ enums.addTypesByGlobalName("g_unit_info_type", [
           let mode = diff.getEgdName()
           blk.value[mode] = unit.getBattleRating(diff.getEdiff())
           blk.valueText[mode] = format("%.1f", blk.value[mode])
+        }
+    }
+  }
+  {
+    id = "air_ground_battle_rating"
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
+    headerLocId = "shop/battle_rating"
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
+      blk.value = DataBlock()
+      blk.valueText = DataBlock()
+      foreach (diff in g_difficulty.types)
+        if (diff.egdCode != EGD_NONE) {
+          let mode = diff.getEgdName()
+          let ediff = diff.getEdiff()
+          let battleRating = unit.getBattleRating(ediff)
+
+          foreach (battleTypeIter in BATTLE_TYPES) {
+            let battleRatingByBattleType = unit.getBattleRating(ediff % EDIFF_SHIFT + EDIFF_SHIFT * battleTypeIter)
+            let isShipHardcore = (battleTypeIter == BATTLE_TYPES.SHIP) && (diff == g_difficulty.SIMULATOR)
+
+            if (battleRatingByBattleType != battleRating && !isShipHardcore) {
+              blk.value[mode] = battleRatingByBattleType
+              blk.valueText[mode] = format("%.1f", blk.value[mode])
+            }
+          }
         }
     }
   }
