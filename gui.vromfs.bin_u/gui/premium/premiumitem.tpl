@@ -45,6 +45,16 @@
       text:t='<<premiumCost>>'
       font-pixht:t='0.9@fontHeightBigBold'
       overlayTextColor:t='active'
+      <<#hasDiscount>>
+      discount {
+        type:t='premium'
+        text:t='<<discount>>'
+        pos:t='pw-45%w, 0.5h-ph'
+        position:t='absolute'
+        rotation:t='-30'
+        order-popup:t='yes'
+      }
+      <</hasDiscount>>
     }
 
     textareaNoTab {

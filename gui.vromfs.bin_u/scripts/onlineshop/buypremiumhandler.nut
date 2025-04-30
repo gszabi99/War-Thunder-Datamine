@@ -91,12 +91,18 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           ratioCoeff = getRatioCoeff(digit)
         })
       }
+
+      let discount = item?.goldDiscount ?? 0
+
       return {
         name = item.name
         digits
         premiumCost = Cost(0, item.goldCost)
         savings = (item.savings > 0) ? loc("charServer/entitlement/discount/short", { savings = item.savings }) : ""
         days = getEntitlementFullTimeText(item)
+        isOnlinePurchase = item?.onlinePurchase ?? false
+        hasDiscount = discount > 0
+        discount = $"-{discount}%"
       }
     })
 

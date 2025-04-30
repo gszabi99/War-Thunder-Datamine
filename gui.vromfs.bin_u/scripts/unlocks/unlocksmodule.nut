@@ -163,9 +163,6 @@ function isUnlockVisibleByTime(id, hasIncludTimeBefore = true, resWhenNoTimeLimi
 }
 
 function isHiddenByUnlockedUnlocks(unlockBlk) {
-  if (isUnlockOpened(unlockBlk?.id))
-    return false
-
   foreach (value in (unlockBlk % "hideWhenUnlocked")) {
     local unlockedCount = 0
     let unlockIds = value.split("; ")
