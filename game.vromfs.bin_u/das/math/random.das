@@ -47,6 +47,9 @@ def rnd_point_on_ring(var seed : int&; radius_from, radius_to : float) : float2
   sincos(2f * PI * rndAngle, s, c)
   return float2(radius * c, radius * s)
 
+def rnd_point_on_ring(var seed : int&; radius : float2) : float2
+  return rnd_point_on_ring(seed, radius.x, radius.y)
+
 def choose_index_by_weight(list)
   var totalWeight = .0
   for item in list
@@ -54,6 +57,39 @@ def choose_index_by_weight(list)
   var rnd = gfrnd() * totalWeight
   for item, idx in list, iter_range(list)
     rnd -= item.weight
+    if rnd <= .0
+      return idx
+  return _::length(list) - 1
+
+def choose_index_by_weight(var seed : int&; list)
+  var totalWeight = .0
+  for item in list
+    totalWeight += item.weight
+  var rnd = _rnd_float(seed, .0, totalWeight)
+  for item, idx in list, iter_range(list)
+    rnd -= item.weight
+    if rnd <= .0
+      return idx
+  return _::length(list) - 1
+
+def choose_weight(list)
+  var totalWeight = .0
+  for item in list
+    totalWeight += item
+  var rnd = gfrnd() * totalWeight
+  for item, idx in list, iter_range(list)
+    rnd -= item
+    if rnd <= .0
+      return idx
+  return _::length(list) - 1
+
+def choose_weight(var seed : int&; list)
+  var totalWeight = .0
+  for item in list
+    totalWeight += item
+  var rnd = _rnd_float(seed, .0, totalWeight)
+  for item, idx in list, iter_range(list)
+    rnd -= item
     if rnd <= .0
       return idx
   return _::length(list) - 1
