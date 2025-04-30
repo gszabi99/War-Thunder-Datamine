@@ -8,8 +8,8 @@ let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getEntitlementDescription, getEntitlementName, getPricePerEntitlement,
-  getEntitlementAmount, getEntitlementFullTimeText } = require("%scripts/onlineShop/entitlements.nut")
+let { getEntitlementDescription, getEntitlementName, getPricePerEntitlement, getEntitlementPriceFloat,
+  getEntitlementAmount, getEntitlementFullTimeText, getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
 let time = require("%scripts/time.nut")
 let { Cost } = require("%scripts/money.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -68,11 +68,12 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           item[paramName] <- ib.getParamValue(j)
       }
 
+      let itemCost = getEntitlementPriceFloat(item)
       if (groupCost == null)
         groupCost = getPricePerEntitlement(item)
 
       let amount = getEntitlementAmount(item)
-      let savings = ((1 - (item.goldCost / (amount * groupCost))) * 100).tointeger()
+      let savings = ((1 - (itemCost / (amount * groupCost))) * 100).tointeger()
       item.savings <- (savings >= MIN_DISPLAYED_PERCENT_SAVING) ? savings : 0
       this.goods.append(item)
     }
@@ -97,7 +98,7 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return {
         name = item.name
         digits
-        premiumCost = Cost(0, item.goldCost)
+        premiumCost = getEntitlementPrice(item)
         savings = (item.savings > 0) ? loc("charServer/entitlement/discount/short", { savings = item.savings }) : ""
         days = getEntitlementFullTimeText(item)
         isOnlinePurchase = item?.onlinePurchase ?? false
