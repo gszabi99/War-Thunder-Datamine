@@ -22,7 +22,7 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
 const LOCAL_AGREED_EULA_VERSION_SAVE_ID = "agreedEulaVersion" 
 
-local eulaVesion = -1
+local eulaVersion = -1
 
 let localAgreedEulaVersion = hardPersistWatched("localAgreedEulaVersion", 0)
 
@@ -34,10 +34,9 @@ let shortLangToEulaLang = {
 }
 
 function getEulaVersion() {
-  if ( eulaVesion == -1) {
-    eulaVesion = to_integer_safe(loc("eula_version", "12"))
-  }
-  return eulaVesion
+  if (eulaVersion == -1)
+    eulaVersion = to_integer_safe(getCurCircuitOverride("eulaVersion") ?? loc("eula_version", "12"))
+  return eulaVersion
 }
 
 function getExistFileNameByPrefixAndPostfix(prefix, postfix) {
