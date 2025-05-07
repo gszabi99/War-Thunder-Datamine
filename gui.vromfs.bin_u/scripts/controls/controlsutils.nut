@@ -133,7 +133,7 @@ function getControlsList(unitType, unitTags = []) {
 
 function onJoystickConnected() {
   updateExtWatched({ haveXinputDevice = hasXInputDevice() })
-  if (!isInMenu() || !hasFeature("ControlsDeviceChoice"))
+  if (!isInMenu() || !hasFeature("ControlsDeviceChoice") || !isLoggedIn.get())
     return
   let action = function() { gui_start_controls_type_choice() }
   let buttons = [{
