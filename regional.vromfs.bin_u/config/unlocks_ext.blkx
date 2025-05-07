@@ -4610,8 +4610,7 @@
       "lockStyle": "lock",
       "type": "trophy",
       "amount_trophies": 1,
-      "chapter": "holidays",
-      "group": "victoryday",
+      "chapter": "victoryday",
       "hidden": true,
       "mode": {
         "type": "missionsWonScore",
@@ -19921,96 +19920,7 @@
       "hidden": true
     },
     {
-      "id": "de_jg51_sqn_eye",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hideForLang": "HChinese",
-      "mode": {
-        "type": "totalMissionScore",
-        "score": 2147483646,
-        "chardType": "char_static_progress",
-        "num": 15000000,
-        "hostCondition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "playerUnitRank",
-            "minRank": 3,
-            "inSession": true,
-            "inSessionAnd": false
-          },
-          {
-            "type": "playerType",
-            "unitType": "aircraft",
-            "inSession": true
-          },
-          {
-            "type": "playerCountry",
-            "country": "country_germany"
-          }
-        ]
-      }
-    },
-    {
-      "id": "cn_armored_artillery_regiment_decal",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hideForLang": "HChinese",
-      "mode": {
-        "type": "killedPlayersScore",
-        "num": 40,
-        "condition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "offenderUnitRank",
-            "minRank": 3
-          },
-          {
-            "type": "offenderType",
-            "unitType": "typeTankDestroyer"
-          },
-          {
-            "type": "playerCountry",
-            "country": "country_china"
-          }
-        ]
-      }
-    },
-    {
-      "id": "uk_valhalla_emblem_decal",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hideForLang": "HChinese",
-      "mode": {
-        "type": "awardDamage",
-        "num": 40000,
-        "condition": [
-          {
-            "type": "online"
-          },
-          {
-            "type": "offenderUnitRank",
-            "minRank": 3
-          },
-          {
-            "type": "offenderType",
-            "unitType": "ship"
-          },
-          {
-            "type": "playerCountry",
-            "country": "country_britain"
-          }
-        ]
-      }
-    },
-    {
-      "id": "jp_248_sentai_emblem_decal",
+      "id": "ussr_victor_of_berlin_decal",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -20034,17 +19944,17 @@
           },
           {
             "type": "playerType",
-            "unitType": "aircraft"
+            "unitType": "tank"
           },
           {
             "type": "playerCountry",
-            "country": "country_japan"
+            "country": "country_ussr"
           }
         ]
       }
     },
     {
-      "id": "se_text_apocalypse_decal",
+      "id": "ge_stug_abt_907",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -20062,17 +19972,17 @@
           },
           {
             "type": "offenderType",
-            "unitType": "typeLightTank"
+            "unitType": "typeTankDestroyer"
           },
           {
             "type": "playerCountry",
-            "country": "country_sweden"
+            "country": "country_germany"
           }
         ]
       }
     },
     {
-      "id": "su_9_gv_iap_alelyukhin",
+      "id": "uk_no_603_sqn_scottie",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -20094,38 +20004,36 @@
           },
           {
             "type": "playerCountry",
-            "country": "country_ussr"
+            "country": "country_britain"
           }
         ]
       }
     },
     {
-      "id": "it_36_sqn_12g_horse",
+      "id": "it_dragaggio_emblem_decal",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
       "mode": {
-        "type": "killedPlayersScore",
-        "num": 20,
-        "mulArcade": 1,
-        "mulRealistic": 2,
-        "mulHardcore": 2,
+        "type": "captures",
+        "num": 10,
         "condition": [
           {
             "type": "online"
           },
           {
-            "type": "offenderUnitRank",
-            "minRank": 3
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
           },
           {
-            "type": "weaponType",
-            "weapon": "aam"
-          },
-          {
-            "type": "offenderType",
-            "unitType": "aircraft"
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
           },
           {
             "type": "playerCountry",
@@ -20135,40 +20043,41 @@
       }
     },
     {
-      "id": "fr_spa_84_fox_head",
+      "id": "jp_10th_bat_6th_div",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
       "mode": {
-        "type": "killedGroundScore",
-        "typeLocID": "conditions/skinUnlockProgress",
-        "locMultDescId": "skinUnlockMulByModes/killedGroundScore/desc",
-        "mulArcade": 1,
-        "mulRealistic": 2,
-        "mulHardcore": 2,
-        "num": 30,
+        "type": "missionsPlayedScore",
+        "num": 20,
         "condition": [
           {
             "type": "online"
           },
           {
-            "type": "offenderUnitRank",
-            "minRank": 3
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
           },
           {
-            "type": "offenderType",
-            "unitType": "aircraft"
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
           },
           {
             "type": "playerCountry",
-            "country": "country_france"
+            "country": "country_japan"
           }
         ]
       }
     },
     {
-      "id": "usa_text_dropped_inscription_decal",
+      "id": "cn_3rd_fg_cacw_decal",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -20197,24 +20106,24 @@
           },
           {
             "type": "playerType",
-            "unitType": "tank"
+            "unitType": "aircraft"
           },
           {
             "type": "playerCountry",
-            "country": "country_usa"
+            "country": "country_china"
           }
         ]
       }
     },
     {
-      "id": "pl_22nd_asc_wojtek",
+      "id": "il_366_armored_decal",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
       "mode": {
         "type": "killedPlayersScore",
-        "num": 30,
+        "num": 60,
         "condition": [
           {
             "type": "online"
@@ -20228,19 +20137,186 @@
             "unitType": "tank"
           },
           {
-            "type": "weaponType",
-            "weapon": [
-              "generic",
-              "rocket"
-            ]
-          },
-          {
-            "type": "bulletCaliber",
-            "caliber": 0.12,
-            "notLess": true
+            "type": "playerCountry",
+            "country": "country_israel"
           }
         ]
       }
+    },
+    {
+      "id": "fr_invulnerable_inscription_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "unlockStageCount",
+        "num": 1,
+        "unlock": "heroic_survivor",
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_france"
+          }
+        ]
+      }
+    },
+    {
+      "id": "us_867_bmb_sqn_wolf",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "killedGroundScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 30,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_usa"
+          }
+        ]
+      }
+    },
+    {
+      "id": "se_f8_sqn_falcon",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 15000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerType",
+            "unitType": "aircraft",
+            "inSession": true
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_sweden"
+          }
+        ]
+      }
+    },
+    {
+      "id": "de_jg51_sqn_eye",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "cn_armored_artillery_regiment_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "uk_valhalla_emblem_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "jp_248_sentai_emblem_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "se_text_apocalypse_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "su_9_gv_iap_alelyukhin",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "it_36_sqn_12g_horse",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "fr_spa_84_fox_head",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "usa_text_dropped_inscription_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "pl_22nd_asc_wojtek",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "hideUntilUnlocked": true
     },
     {
       "id": "se_f12_bomb_decal",
@@ -20643,14 +20719,6 @@
     },
     {
       "id": "su_104_gviap_tiger",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hideForLang": "HChinese",
-      "hideUntilUnlocked": true
-    },
-    {
-      "id": "jp_10th_bat_6th_div",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -21115,13 +21183,6 @@
     },
     {
       "id": "fr_3rd_machine_gun_regiment",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hideUntilUnlocked": true
-    },
-    {
-      "id": "se_f8_sqn_falcon",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -22080,13 +22141,6 @@
       "hidden": true
     },
     {
-      "id": "us_867_bmb_sqn_wolf",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hidden": true
-    },
-    {
       "id": "uk_royal_wessex_yeomanry",
       "type": "decal",
       "chapter": "decals",
@@ -22585,13 +22639,6 @@
     },
     {
       "id": "ro_grupul_1_vanatoare",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hidden": true
-    },
-    {
-      "id": "ge_stug_abt_907",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -42057,7 +42104,7 @@
           },
           {
             "type": "battlepassProgress",
-            "progress": 600
+            "progress": 400
           },
           {
             "type": "playerHasFeature",
@@ -74296,7 +74343,39 @@
               "il_2_37_1943",
               "il-10",
               "il_2m_1943",
-              "tu-2"
+              "tu-2",
+              "uk_sherman_II",
+              "uk_sherman_vc_firefly",
+              "uk_sherman_ic_firefly",
+              "uk_daimler_mk_2",
+              "uk_17_pdr_m10_achilles",
+              "uk_a27m_cromwell_1",
+              "uk_a27m_cromwell_5",
+              "uk_a_22f_mk_7_churchill_1944",
+              "uk_crusader_aa_mk_2",
+              "typhoon_mk1b_late",
+              "spitfire_ix",
+              "spitfire_ix_plagis",
+              "spitfire_mk5c_notrop",
+              "tempest_mkv",
+              "us_m10",
+              "us_m18_hellcat",
+              "us_m18_hellcat_black_cat",
+              "us_m36",
+              "us_m4a3e2_sherman_jumbo",
+              "us_m4a3e2_sherman_jumbo_cobra_king",
+              "us_m4a2_sherman",
+              "us_m4a3_105_sherman",
+              "us_m4_sherman_calliope",
+              "us_m4a3e8_76w_sherman",
+              "us_m4a2_76w_sherman",
+              "us_m26_pershing",
+              "p-47d",
+              "p-47d-28",
+              "p-47n-15",
+              "p-51d-5",
+              "p-51d-20-na",
+              "b_26b_c"
             ]
           },
           {
@@ -103035,6 +103114,580 @@
             "type": "timeRange",
             "beginDate": "2025-04-16 11:00:00",
             "endDate": "2025-04-18 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_ussr_t_34_85_zis_53_v80_coupon",
+      "type": "inventory",
+      "userLogId": "50315",
+      "chapter": "2025_05_tank",
+      "icon": "!https://static-ggc.gaijin.net/units/ussr_t_34_85_zis_53_v80.png",
+      "lockStyle": "lock",
+      "isForceVisibleInTree": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 6,
+        "unlock": [
+          "08_05_2025_tank_stage",
+          "10_05_2025_tank_stage",
+          "12_05_2025_tank_stage",
+          "14_05_2025_tank_stage",
+          "16_05_2025_tank_stage",
+          "18_05_2025_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_ussr_t_34_85_zis_53_v80_tradable_coupon",
+      "locDescId": "gift_coupon_upgrade/desc",
+      "type": "inventory",
+      "userLogId": "215130",
+      "chapter": "2025_05_tank",
+      "group": "coupon_upgrade",
+      "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
+      "lockStyle": "lock",
+      "isForceVisibleInTree": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 500000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-05-08 11:00:00",
+            "endDate": "2025-05-20 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "gift_2025_05_tank_trophy_1",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_05_tank",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 1,
+        "unlock": [
+          "08_05_2025_tank_stage",
+          "10_05_2025_tank_stage",
+          "12_05_2025_tank_stage",
+          "14_05_2025_tank_stage",
+          "16_05_2025_tank_stage",
+          "18_05_2025_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2025_05_tank_decal_trophy_1",
+      "locId": "item/gift_2025_05_tank_decal_trophy",
+      "locDescId": "gift_decals_trophy/desc",
+      "userLogId": "2025_05_tank_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_05_tank",
+      "icon": "!https://static-ggc.gaijin.net/decals/05_2025_tank_event.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 2,
+        "unlock": [
+          "08_05_2025_tank_stage",
+          "10_05_2025_tank_stage",
+          "12_05_2025_tank_stage",
+          "14_05_2025_tank_stage",
+          "16_05_2025_tank_stage",
+          "18_05_2025_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2025_05_tank_trophy_2",
+      "locId": "item/gift_prize_trophy",
+      "locDescId": "gift_prize_trophy/desc",
+      "userLogId": "winter_quest_2023_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_05_tank",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 3,
+        "unlock": [
+          "08_05_2025_tank_stage",
+          "10_05_2025_tank_stage",
+          "12_05_2025_tank_stage",
+          "14_05_2025_tank_stage",
+          "16_05_2025_tank_stage",
+          "18_05_2025_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2025_05_tank_decal_trophy_2",
+      "locId": "item/gift_2025_05_tank_decal_trophy",
+      "locDescId": "gift_decals_trophy/desc",
+      "userLogId": "2025_05_tank_event_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_05_tank",
+      "icon": "!https://static-ggc.gaijin.net/decals/05_2025_tank_event.avif",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 4,
+        "unlock": [
+          "08_05_2025_tank_stage",
+          "10_05_2025_tank_stage",
+          "12_05_2025_tank_stage",
+          "14_05_2025_tank_stage",
+          "16_05_2025_tank_stage",
+          "18_05_2025_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "gift_2025_05_tank_avatar_trophy",
+      "locDescId": "gift_avatar_trophy/desc",
+      "userLogId": "2025_05_tank_event_avatar_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "2025_05_tank",
+      "lockStyle": "lock",
+      "showInDesc": true,
+      "manualOpen": true,
+      "mode": {
+        "type": "char_unlocks",
+        "num": 5,
+        "unlock": [
+          "08_05_2025_tank_stage",
+          "10_05_2025_tank_stage",
+          "12_05_2025_tank_stage",
+          "14_05_2025_tank_stage",
+          "16_05_2025_tank_stage",
+          "18_05_2025_tank_stage"
+        ]
+      }
+    },
+    {
+      "id": "18_05_2025_tank_stage",
+      "locId": "marathon_tank_stage_6/name",
+      "chapter": "2025_05_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-05-18 11:00:00",
+            "endDate": "2025-05-20 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "16_05_2025_tank_stage",
+      "locId": "marathon_tank_stage_5/name",
+      "chapter": "2025_05_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-05-16 11:00:00",
+            "endDate": "2025-05-18 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "14_05_2025_tank_stage",
+      "locId": "marathon_tank_stage_4/name",
+      "chapter": "2025_05_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-05-14 11:00:00",
+            "endDate": "2025-05-16 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "12_05_2025_tank_stage",
+      "locId": "marathon_tank_stage_3/name",
+      "chapter": "2025_05_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-05-12 11:00:00",
+            "endDate": "2025-05-14 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "10_05_2025_tank_stage",
+      "locId": "marathon_tank_stage_2/name",
+      "chapter": "2025_05_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-05-10 11:00:00",
+            "endDate": "2025-05-12 11:30:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "08_05_2025_tank_stage",
+      "locId": "marathon_tank_stage_1/name",
+      "chapter": "2025_05_tank",
+      "type": "achievement",
+      "group": "tasks",
+      "costGold": 699,
+      "costGoldDiscountProgress0": 29750000,
+      "costGoldDiscountValue0": 50,
+      "costGoldDiscountProgress1": 33250000,
+      "costGoldDiscountValue1": 80,
+      "visibleDays": 1.0,
+      "visibleDaysAfter": 30.0,
+      "showInDesc": true,
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 35000000,
+        "mulMode3": 1.0,
+        "mulMode4": 1.33,
+        "mulMode5": 1.8,
+        "forceShowMulMode": 3,
+        "mulRank1": 0.9,
+        "mulRank2": 0.9,
+        "mulRank3": 0.9,
+        "mulRank4": 0.9,
+        "mulRank5": 1.0,
+        "mulRank6": 1.1,
+        "mulRank7": 1.2,
+        "mulRank8": 1.2,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "minRankForEvent": 1,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "gameModeInfoString",
+            "name": "name",
+            "exactName": false,
+            "value": [
+              "tank_event_in_random_battles_arcade",
+              "tank_event_in_random_battles_historical",
+              "tank_random_battles_simulation"
+            ],
+            "locParamName": "conditions/missionType",
+            "locValuePrefix": "missions/short/"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-05-08 11:00:00",
+            "endDate": "2025-05-10 11:30:00"
           }
         ]
       }
