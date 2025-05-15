@@ -274,6 +274,7 @@ def render_AnimBlendNodeParametricLeaf(var nod : IAnimBlendNode?; var graph : An
       if sourceAnim != null
         let sourceRes = get_game_resource_name(sourceAnim.resId)
         imgui::Text("  source a2d: {sourceRes}")
+    imgui::Text("isAdditive: {node.isAdditive}")
     imgui::Text("weight: {fmt(":.2f", weight)}")
     imgui::Text("duration: {*node |> anim_blend_node_getDuration(state)}")
     imgui::Text("avg speed: {*node |> anim_blend_node_getAvgSpeed(state)}")
