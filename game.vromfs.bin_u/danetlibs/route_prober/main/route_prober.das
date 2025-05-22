@@ -289,9 +289,14 @@ def evaluate_server_route(evt : ChangeServerRoute)
       print("RP: not enough echo packets {minEchoHistory} / {ECHO_HISTORY_MAX_LENGTH}; trying again in {next_evaluation}s")
       return true
 
+    let count = int(get_server_route_count())
+    var rttList : array<uint>
+    rttList |> resize(count)
+
     query() <| $ [es(REQUIRE=routeStats)] (route_id : uint;
                                            rtt_estimation : uint;
                                            var rtt_diff_sum : int&)
+      rttList[route_id] = rtt_estimation
       if route_id == currentRoute
         return
       let rttDiff : int = get_percent_diff(currentRttEstimation, rtt_estimation)
@@ -308,9 +313,13 @@ def evaluate_server_route(evt : ChangeServerRoute)
         bestRoute = route_id
         bestRttEstimation = rtt_estimation
 
+    var rttString : string
+    for i in range(count)
+      rttString += (i > 0 ? ", " : "") + string(rttList[i])
+
     print("RP: Current server route #{int(currentRoute)} available={!evt.currentIsUnresponsive} "
         + "rtt estimation={int(currentRttEstimation)} best route #{int(bestRoute)} "
-        + "rtt estimation={int(bestRttEstimation)} max diff sum={maxDiffSum}")
+        + "rtt estimation={int(bestRttEstimation)} max diff sum={maxDiffSum} rtt=[{rttString}]")
 
     if bestRoute != currentRoute
       report_midgame_switch(bestRoute)
