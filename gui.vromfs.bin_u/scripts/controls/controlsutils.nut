@@ -16,7 +16,7 @@ let { eventbus_subscribe } = require("eventbus")
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let {  OPTIONS_MODE_GAMEPLAY, USEROPT_MOUSE_USAGE,
-  USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_GEAR_CONTROL, USEROPT_SEPERATED_ENGINE_CONTROL_SHIP,
+  USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_GEAR_CONTROL,
   USEROPT_BULLET_COUNT0, USEROPT_HELPERS_MODE
 } = require("%scripts/options/optionsExtNames.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
@@ -36,7 +36,6 @@ let { getPresetWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { blkOptFromPath, blkFromPath } = require("%sqstd/datablock.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { get_meta_missions_info_by_chapters, get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
-let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { hasMappedSecondaryWeaponSelector, isShortcutMapped } = require("%scripts/controls/shortcutsUtils.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { get_game_params_blk } = require("blkGetters")
@@ -457,14 +456,7 @@ function getRequiredControlsForUnit(unit, helpersMode) {
     actionBarShortcutFormat = "ID_ACTION_BAR_ITEM_%d"
   }
   else if (unitType == unitTypes.SHIP || unitType == unitTypes.BOAT) {
-    controls = ["ship_steering", "ID_TOGGLE_VIEW_SHIP"]
-
-    let isSeperatedEngineControl =
-      get_gui_option_in_mode(USEROPT_SEPERATED_ENGINE_CONTROL_SHIP, OPTIONS_MODE_GAMEPLAY)
-    if (isSeperatedEngineControl)
-      controls.append("ship_port_engine", "ship_star_engine")
-    else
-      controls.append("ship_main_engine")
+    controls = ["ship_steering", "ID_TOGGLE_VIEW_SHIP", "ship_main_engine"]
 
     let weaponGroups = [
       {

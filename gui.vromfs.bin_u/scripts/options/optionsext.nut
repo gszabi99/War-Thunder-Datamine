@@ -1196,12 +1196,6 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.defaultValue = false
   },
-  [USEROPT_SEPERATED_ENGINE_CONTROL_SHIP] = function(_optionId, descr, _context) {
-    descr.id = "seperatedEngineControlShip"
-    descr.controlType = optionControlType.CHECKBOX
-    descr.controlName <- "switchbox"
-    descr.defaultValue = false
-  },
   [USEROPT_BULLET_FALL_INDICATOR_SHIP] = function(_optionId, descr, _context) {
     descr.id = "bulletFallIndicatorShip"
     descr.controlType = optionControlType.CHECKBOX
@@ -4806,7 +4800,6 @@ let optionsSetMap = {
   [USEROPT_AUTOMATIC_TRANSMISSION_TANK] = set_useropt_landing_mode,
   [USEROPT_WHEEL_CONTROL_SHIP] = set_useropt_landing_mode,
   [USEROPT_JOYFX] = set_useropt_landing_mode,
-  [USEROPT_SEPERATED_ENGINE_CONTROL_SHIP] = set_useropt_landing_mode,
   [USEROPT_BULLET_FALL_INDICATOR_SHIP] = set_useropt_landing_mode,
   [USEROPT_BULLET_FALL_SOUND_SHIP] = set_useropt_landing_mode,
   [USEROPT_SINGLE_SHOT_BY_TURRET] = set_useropt_landing_mode,
