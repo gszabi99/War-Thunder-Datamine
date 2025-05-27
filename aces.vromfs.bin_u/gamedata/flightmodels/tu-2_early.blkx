@@ -2845,6 +2845,13 @@
         "blk": "gameData/FlightModels/weaponPresets/tu-2_early_6x_fab250.blk"
       },
       {
+        "name": "tu-2_early_6x_brab250",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_6x_brab250.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
         "name": "tu-2_early_1x_fab500",
         "blk": "gameData/FlightModels/weaponPresets/tu-2_early_1x_fab500.blk"
       },
@@ -2857,6 +2864,13 @@
         "blk": "gameData/FlightModels/weaponPresets/tu-2_early_3x_fab500.blk"
       },
       {
+        "name": "tu-2_early_3x_brab500",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_3x_brab500.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
+      },
+      {
         "name": "tu-2_early_1x_fab1000",
         "blk": "gameData/FlightModels/weaponPresets/tu-2_early_1x_fab1000.blk"
       },
@@ -2867,6 +2881,13 @@
       {
         "name": "tu-2_early_3x_fab1000",
         "blk": "gameData/FlightModels/weaponPresets/tu-2_early_3x_fab1000.blk"
+      },
+      {
+        "name": "tu-2_early_3x_brab1000",
+        "blk": "gameData/FlightModels/weaponPresets/tu-2_early_3x_brab1000.blk",
+        "weaponConfig": {
+          "presetType": "AIR_TO_SEA"
+        }
       }
     ]
   },
@@ -3111,6 +3132,26 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "brab250_external",
+            "reqModification": "der_19pk",
+            "ShowNodes": {
+              "node": [
+                "bomb250kg_pylon1",
+                "bomb_pylon1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+              "emitter": "bomb_250sv_5",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_special",
             "name": "fab500_external",
             "reqModification": "pe-2_dz-40",
@@ -3131,9 +3172,29 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "brab500_external",
+            "reqModification": "der_19pk",
+            "ShowNodes": {
+              "node": [
+                "bomb500kg_pylon1",
+                "bomb_pylon1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_500m43_ap.blk",
+              "emitter": "bomb_500sv_1",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_heavy",
             "name": "fab1000_external",
-            "reqModification": "su_fab_1000",
+            "reqModification": "der_19pk",
             "ShowNodes": {
               "node": [
                 "bomb1000kg_pylon1",
@@ -3143,6 +3204,26 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
+              "emitter": "bomb_1000sv_1",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "brab1000_external",
+            "reqModification": "der_19pk",
+            "ShowNodes": {
+              "node": [
+                "bomb1000kg_pylon1",
+                "bomb_pylon1"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_1000m43_ap.blk",
               "emitter": "bomb_1000sv_1",
               "external": true,
               "separate": true,
@@ -3242,6 +3323,29 @@
             ]
           },
           {
+            "iconType": "bombs_middle_high_drag_group_x2",
+            "name": "brab250_x2",
+            "reqModification": "der_19pk",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "emitter": "bomb_250sv_1",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "emitter": "bomb_250sv_2",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              }
+            ]
+          },
+          {
             "iconType": "bombs_large_group_x4",
             "name": "fab250_x4",
             "reqModification": "pe-2_dz-40",
@@ -3281,6 +3385,45 @@
             ]
           },
           {
+            "iconType": "bombs_middle_high_drag_group_x4",
+            "name": "brab250_x4",
+            "reqModification": "der_19pk",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "emitter": "bomb13",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "emitter": "bomb14",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "emitter": "bomb9",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+                "emitter": "bomb10",
+                "separate": true,
+                "machLimit": 1.01,
+                "bullets": 1
+              }
+            ]
+          },
+          {
             "iconType": "bombs_special",
             "name": "fab500_internal",
             "reqModification": "pe-2_dz-40",
@@ -3294,12 +3437,38 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "brab500_internal",
+            "reqModification": "der_19pk",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_500m43_ap.blk",
+              "emitter": "bomb3",
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_heavy",
             "name": "fab1000_internal",
-            "reqModification": "su_fab_1000",
+            "reqModification": "der_19pk",
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
+              "emitter": "bomb1",
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "brab1000_internal",
+            "reqModification": "der_19pk",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_1000m43_ap.blk",
               "emitter": "bomb1",
               "separate": true,
               "machLimit": 1.01,
@@ -3334,6 +3503,26 @@
             }
           },
           {
+            "iconType": "bombs_middle_high_drag",
+            "name": "brab250_external",
+            "reqModification": "der_19pk",
+            "ShowNodes": {
+              "node": [
+                "bomb250kg_pylon2",
+                "bomb_pylon2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_250_ap.blk",
+              "emitter": "bomb_250sv_6",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_special",
             "name": "fab500_external",
             "reqModification": "pe-2_dz-40",
@@ -3354,9 +3543,29 @@
             }
           },
           {
+            "iconType": "bombs_large_high_drag",
+            "name": "brab500_external",
+            "reqModification": "der_19pk",
+            "ShowNodes": {
+              "node": [
+                "bomb500kg_pylon2",
+                "bomb_pylon2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_500m43_ap.blk",
+              "emitter": "bomb_500sv_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
             "iconType": "bombs_heavy",
             "name": "fab1000_external",
-            "reqModification": "su_fab_1000",
+            "reqModification": "der_19pk",
             "ShowNodes": {
               "node": [
                 "bomb1000kg_pylon2",
@@ -3366,6 +3575,26 @@
             "Weapon": {
               "trigger": "bombs",
               "blk": "gameData/Weapons/BombGuns/su_fab1000.blk",
+              "emitter": "bomb_1000sv_2",
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01,
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "bombs_heavy_high_drag",
+            "name": "brab1000_external",
+            "reqModification": "der_19pk",
+            "ShowNodes": {
+              "node": [
+                "bomb1000kg_pylon2",
+                "bomb_pylon2"
+              ]
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_brab_1000m43_ap.blk",
               "emitter": "bomb_1000sv_2",
               "external": true,
               "separate": true,
@@ -3435,7 +3664,7 @@
       "modClass": "weapon",
       "tier": 2
     },
-    "su_fab_1000": {
+    "der_19pk": {
       "reqModification": "pe-2_dz-40",
       "modClass": "weapon",
       "tier": 3
