@@ -8,7 +8,7 @@ let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX } = require("%scripts/unit/unitInfoType.nut")
+let { UNIT_CONFIGURATION_MIN, UNIT_CONFIGURATION_MAX, processWeaponPresets, processWeaponPilons } = require("%scripts/unit/unitInfoType.nut")
 let { check_unit_mods_update } = require("%scripts/unit/unitChecks.nut")
 let { export_calculations_parameters_for_wta } = require("unitCalculcation")
 let { saveJson } = require("%sqstd/json.nut")
@@ -16,6 +16,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
 let { getGameLocalizationInfo, setGameLocalization } = require("%scripts/langUtils/language.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { register_command } = require("console")
 
 const ARMY_GROUP = "army"
 const COUNTRY_GROUP = "country"
@@ -375,4 +376,17 @@ function exportUnitInfo(params) {
   return "ok"
 }
 
+function printUnitPresetsInfo(unitName) {
+  let debugLog = dlog 
+  processWeaponPresets(unitName, debugLog)
+}
+
+function printWeaponPilonsInfo(unitName) {
+  let debugLog = dlog 
+  processWeaponPilons(unitName, debugLog)
+}
+
 web_rpc.register_handler("exportUnitInfo", exportUnitInfo)
+
+register_command(@(unitName) printUnitPresetsInfo(unitName), "debug.print_unit_presets")
+register_command(@(unitName) printWeaponPilonsInfo(unitName), "debug.print_pilons")

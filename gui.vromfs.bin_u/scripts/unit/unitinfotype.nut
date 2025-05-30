@@ -1,6 +1,7 @@
 from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 from "%scripts/gameModes/gameModeConsts.nut" import BATTLE_TYPES
+from "%scripts/weaponry/weaponryPresets.nut" import MIN_TIERS_COUNT
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { isUnitSpecial, EDIFF_SHIFT } = require("%appGlobals/ranks_common_shared.nut")
@@ -9,7 +10,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let enums = require("%sqStdLibs/helpers/enums.nut")
-let { eachBlock } = require("%sqstd/datablock.nut")
+let { eachBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let { PI, round, roundToDigits } = require("%sqstd/math.nut")
 let { getUnitTooltipImage, getShipMaterialTexts, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
@@ -89,7 +90,21 @@ enum UNIT_INFO_ORDER{
   HULL_MATERIAL,
   SUPERSTRUCTURE_MATERIAL,
   WEAPON_INFO_TEXT,
-  MODIFICATIONS
+  MODIFICATIONS,
+  WEAPON_PRESETS_SLOTS,
+  PILONS_INFO
+}
+
+enum AIR_WEAPON_TYPE {
+  BOMB_GUN = "bomb"
+  ROCKET_GUN = "rocket"
+  TORPEDO_GUN = "torpedo"
+  BOOSTER_GUN = "booster"
+  AIR_DROP_GUN = "air_drop"
+  CONTAINER = "container"
+  FUEL_TANK_GUN = "fuel_tank"
+  TARGETTING_POD_GUN = "targeting_pod"
+  NONE = ""
 }
 
 const UNIT_CONFIGURATION_MIN = "minChars"
@@ -98,6 +113,234 @@ const UNIT_CONFIGURATION_MAX = "maxChars"
 const COMPARE_MORE_BETTER = "more"
 const COMPARE_LESS_BETTER = "less"
 const COMPARE_NO_COMPARE = "no"
+const TAG_WEAPON = "Weapon"
+const TAG_PRESET = "preset"
+const TAG_WEAPON_SLOT = "WeaponSlot"
+const TAG_WEAPON_PRESET = "WeaponPreset"
+
+function getWeaponType (weaponDataBlk) {
+  if (weaponDataBlk?.bombGun)
+    return AIR_WEAPON_TYPE.BOMB_GUN
+  if (weaponDataBlk?.rocketGun)
+    return AIR_WEAPON_TYPE.ROCKET_GUN
+  if (weaponDataBlk?.torpedoGun)
+    return AIR_WEAPON_TYPE.TORPEDO_GUN
+  if (weaponDataBlk?.fuelTankGun)
+    return AIR_WEAPON_TYPE.FUEL_TANK_GUN
+  if (weaponDataBlk?.boosterGun)
+    return AIR_WEAPON_TYPE.BOOSTER_GUN
+  if (weaponDataBlk?.airDropGun)
+    return AIR_WEAPON_TYPE.AIR_DROP_GUN
+  if (weaponDataBlk?.targetingPodGun)
+    return AIR_WEAPON_TYPE.TARGETTING_POD_GUN
+  if (weaponDataBlk?.container)
+    return AIR_WEAPON_TYPE.CONTAINER
+  return AIR_WEAPON_TYPE.NONE
+}
+
+function getWeaponParams (weaponDataBlk, weaponType) {
+  if (weaponType == AIR_WEAPON_TYPE.BOMB_GUN)
+    return weaponDataBlk?.bomb
+  if (weaponType == AIR_WEAPON_TYPE.ROCKET_GUN)
+    return weaponDataBlk?.rocket
+  if (weaponType == AIR_WEAPON_TYPE.TORPEDO_GUN)
+    return weaponDataBlk?.torpedo
+  if ([AIR_WEAPON_TYPE.FUEL_TANK_GUN, AIR_WEAPON_TYPE.BOOSTER_GUN, AIR_WEAPON_TYPE.AIR_DROP_GUN, AIR_WEAPON_TYPE.TARGETTING_POD_GUN].contains(weaponType))
+    return weaponDataBlk?.payload
+  if(weaponType == AIR_WEAPON_TYPE.CONTAINER) {
+    let data = blkOptFromPath(weaponDataBlk?.blk)
+    let wpType = getWeaponType(data)
+    return getWeaponParams(data, wpType)
+  }
+  return weaponDataBlk
+}
+
+function createWeaponData (weaponDataBlk) {
+  let weaponType = getWeaponType(weaponDataBlk)
+  if (weaponType == AIR_WEAPON_TYPE.NONE)
+    return null
+
+  let paramsBlk = getWeaponParams(weaponDataBlk, weaponType)
+
+  return {
+    type = weaponType
+    mass = paramsBlk?.mass ?? 0
+    dragCx = paramsBlk?.dragCx ?? 0
+  }
+}
+
+function processWeaponPresets(unitName, debugLog = null) {
+  let unitBlk = getFullUnitBlk(unitName)
+  if (!unitBlk?.weapon_presets)
+    return null
+
+  let presets = unitBlk.weapon_presets % TAG_PRESET
+  let presetsInfo = {}
+  local isOld = false
+  let slotsCount = (unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT).tointeger()
+
+  foreach (preset in presets) {
+    let presetBlk = blkOptFromPath(preset.blk)
+    if (!presetBlk)
+      continue
+
+    debugLog?($"preset: {preset.name}")
+
+    let weapons = presetBlk % TAG_WEAPON
+    let hasWeapons = weapons.len() > 0
+    if (!hasWeapons) {
+      presetsInfo[preset.name] <- []
+      debugLog?($"{preset.name}")
+      debugLog?("Empty")
+      continue
+    }
+
+    let slots = array(slotsCount, 0)
+    local requiredModification = preset?.reqModification ?? ""
+
+    let hasSlotBasedWeapons = weapons.findvalue(@(w) w?.slot != null) != null
+
+    if (hasSlotBasedWeapons) {
+      foreach (weapon in weapons) {
+        let weaponSlot = weapon?.slot
+        if (weaponSlot == null || weaponSlot <= 0)
+          continue
+
+        let slot = weaponSlot - 1
+        debugLog?($" {slot} - {weapon.preset}")
+        slots[slot] = weapon?.preset ?? ""
+      }
+    } else {
+      isOld = true
+      let airWeapons = []
+      foreach (weapon in weapons) {
+        let weaponBlk = weapon?.blk
+        if (!weaponBlk)
+          continue
+
+        let weaponDataBlk = blkOptFromPath(weaponBlk)
+        if (!weaponDataBlk)
+          continue
+
+        let weaponData = createWeaponData(weaponDataBlk)
+        if (!weaponData)
+          continue
+
+        airWeapons.append(weaponData)
+      }
+
+      let centerIndex = (slots.len() - 1) / 2
+      let isCenter = airWeapons.len() % 2 != 0
+      let symmetricCount = airWeapons.len() / 2
+      let startIndex = centerIndex - symmetricCount
+      let endIndex = centerIndex + symmetricCount
+
+      foreach (weaponIndex, weapon in airWeapons) {
+        let slotIndex = startIndex + weaponIndex + (isCenter ? 0 : (weaponIndex >= symmetricCount ? 1 : 0))
+        if (slotIndex >= startIndex && slotIndex <= endIndex)
+          slots[slotIndex] = weapon
+      }
+
+      debugLog?($"\nWeapon distribution for {preset.name}:")
+      debugLog?($"Center index: {centerIndex}")
+      debugLog?($"Is center: {isCenter}")
+      debugLog?($"Symmetric count: {symmetricCount}")
+      debugLog?($"Start index: {startIndex}")
+      debugLog?($"End index: {endIndex}")
+      debugLog?("Slots distribution:")
+      foreach (slotIndex, slot in slots) {
+        let weaponInfo = slot ? $"Type: {slot.type}, Mass: {slot.mass}kg" : "Empty"
+        debugLog?($"  Slot {slotIndex}: {weaponInfo}")
+      }
+    }
+
+    presetsInfo[preset.name] <- {
+      slots = slots,
+      requiredModification = requiredModification
+    }
+  }
+
+  return {
+    isOldData = isOld,
+    presetsInfo = presetsInfo
+  }
+}
+
+function processWeaponPilons(unitName, debugLog = null) {
+  let unitBlk = getFullUnitBlk(unitName)
+  let weaponSlots = unitBlk?.WeaponSlots
+  if (!weaponSlots)
+    return null
+
+  let slotsList = []
+  let slots = weaponSlots % TAG_WEAPON_SLOT
+
+  if (slots.len() == 0)
+    return null
+
+  debugLog?($"\n=== Weapon Pilons Info for {unitBlk?.name ?? "unknown"} ===")
+
+  foreach (slot in slots) {
+    let slotIndex = slot?.index ?? -1
+    if (slotIndex == -1)
+      continue
+
+    let tier = slot?.tier ?? slotIndex
+    let slotPresets = []
+    let presets = slot % TAG_WEAPON_PRESET
+
+    debugLog?($"\nSlot #{slotIndex}")
+    debugLog?($"\nTier #{tier}")
+
+    foreach (preset in presets) {
+      debugLog?($"  Preset: {preset.name}")
+      debugLog?($"    Required modification: {preset?.reqModification ?? "none"}")
+
+      let presetWeapons = []
+      let weapons = preset % TAG_WEAPON
+
+      foreach (weapon in weapons) {
+        let weaponBlk = weapon?.blk
+        if (weaponBlk == null)
+          continue
+
+        let weaponDataBlk = blkOptFromPath(weaponBlk)
+        if (weaponDataBlk == null)
+          continue
+
+        let weaponData = createWeaponData(weaponDataBlk)
+        if (weaponData == null)
+          continue
+
+        presetWeapons.append(weaponData)
+        debugLog?($"    Type: {weaponData.type}")
+        debugLog?($"    Mass: {weaponData.mass} kg")
+        debugLog?($"    Drag Coefficient: {weaponData.dragCx}")
+      }
+
+      debugLog?($"    Total weapons: {presetWeapons.len()}")
+
+      slotPresets.append({
+        name = preset.name
+        reqModification = preset?.reqModification ?? ""
+        weapons = presetWeapons
+      })
+    }
+
+    debugLog?($"  Total presets: {slotPresets.len()}")
+
+    slotsList.append({
+      index = slotIndex
+      tier = tier
+      presets = slotPresets
+    })
+  }
+
+  debugLog?($"\nTotal slots: {slotsList.len()}")
+  debugLog?("=== End of Weapon Pilons Info ===\n")
+
+  return slotsList
+}
 
 ::g_unit_info_type <- {
   types = []
@@ -1161,9 +1404,34 @@ enums.addTypesByGlobalName("g_unit_info_type", [
         })
     }
   }
+  {
+    id = "weapon_presets_slots"
+    order = UNIT_INFO_ORDER.WEAPON_PRESETS_SLOTS
+    compare = COMPARE_NO_COMPARE
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
+      let presetsInfo = processWeaponPresets(unit.name)
+      if (presetsInfo)
+        blk.value = presetsInfo
+    }
+  }
+  {
+    id = "pilons_info"
+    order = UNIT_INFO_ORDER.PILONS_INFO
+    compare = COMPARE_NO_COMPARE
+    headerLocId = "shop/pilonsInfo"
+    infoArmyType = UNIT_INFO_ARMY_TYPE.AIR
+    addToExportDataBlock = function(blk, unit, _unitConfiguration) {
+      let slotsList = processWeaponPilons(unit.name)
+      if (slotsList)
+        blk.value = slotsList
+    }
+  }
 ])
 
 return {
   UNIT_CONFIGURATION_MIN,
-  UNIT_CONFIGURATION_MAX
+  UNIT_CONFIGURATION_MAX,
+  processWeaponPresets,
+  processWeaponPilons
 }
