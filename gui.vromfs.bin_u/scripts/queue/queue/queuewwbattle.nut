@@ -8,6 +8,7 @@ let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { defaultDiffCode } = require("%scripts/globalWorldwarUtils.nut")
 let BaseQueue = require("%scripts/queue/queue/queueBase.nut")
 let { registerQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
+let { getSquadMembersFlyoutDataByUnitsGroups } = require("%scripts/squads/squadUtils.nut")
 
 let WwBattle = class (BaseQueue) {
   function init() {
@@ -64,7 +65,7 @@ let WwBattle = class (BaseQueue) {
       return qp
 
     let queueMembersParams = g_squad_manager.isSquadLeader()
-      ? ::g_squad_utils.getMembersFlyoutDataByUnitsGroups()
+      ? getSquadMembersFlyoutDataByUnitsGroups()
       : {
         [userIdStr.value] = { crafts_info = slotbarPresets.getCurCraftsInfo() }
       }

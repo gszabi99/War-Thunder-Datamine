@@ -10,7 +10,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { move_mouse_on_obj, select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj, select_editbox } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { saveProfile, forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
@@ -41,11 +42,12 @@ let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { getMissionAllowedUnittypesMask, isSkirmishWithKillStreaks } = require("%scripts/missions/missionsUtils.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { getNumberOfUnitsByYears } = require("%scripts/unit/unitInfo.nut")
+let { getMissionTeamCountries } = require("%scripts/dynCampaign/campaignHelpers.nut")
 
 function get_country_by_team(team_index) {
   local countries = null
   if (get_mission_settings().layout)
-    countries = ::get_mission_team_countries(get_mission_settings().layout)
+    countries = getMissionTeamCountries(get_mission_settings().layout)
   return countries?[team_index] ?? ""
 }
 

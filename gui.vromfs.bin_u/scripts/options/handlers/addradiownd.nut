@@ -6,7 +6,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { is_chat_message_empty } = require("chat")
 
 gui_handlers.AddRadioModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {

@@ -1,7 +1,8 @@
-from "%scripts/dagui_natives.nut" import set_option_favorite_voice_message, add_voice_message, get_player_unit_name, on_voice_message_button, get_option_favorite_voice_message
+from "%scripts/dagui_natives.nut" import set_option_favorite_voice_message, add_voice_message, on_voice_message_button, get_option_favorite_voice_message
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer, is_mode_with_teams
 
+let { get_player_unit_name } = require("unit")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { format } = require("string")
@@ -14,6 +15,8 @@ let { chatSystemMessage } = require("%scripts/chat/mpChatModel.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
+let { registerRespondent } = require("scriptRespondent")
+let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 const HIDDEN_CATEGORY_NAME = "hidden"
 const LIMIT_SHOW_VOICE_MESSAGE_PETALS = 8
@@ -128,7 +131,7 @@ function getCantUseVoiceMessagesReason(isForSquad) {
 let onVoiceMessageAnswer = @(index) on_voice_message_button(index) 
 
 function guiStartVoicemenu(config) {
-  if (::isPlayerDedicatedSpectator())
+  if (isPlayerDedicatedSpectator())
     return null
 
   let joyParams = joystickGetCurSettings()
@@ -234,7 +237,8 @@ function showVoiceMessageList(show, category, squad, targetName) {
                                 squadMsg = squad,
                                 category = category }) != null
 }
-::show_voice_message_list <- showVoiceMessageList 
+
+registerRespondent("showVoiceMessageListNative", showVoiceMessageList)
 
 let removeFavoriteVoiceMessage = @(index) set_option_favorite_voice_message(index, -1)
 
@@ -243,11 +247,12 @@ function resetFastVoiceMessages() {
     removeFavoriteVoiceMessage(i)
 }
 
-::is_voice_messages_muted <- function is_voice_messages_muted(name) { 
+function isVoiceMessagesMuted(name) {
   return localDevoice.isMuted(name, localDevoice.DEVOICE_RADIO)
     || isPlayerNickInContacts(name, EPL_BLOCKLIST)
 }
 
+registerRespondent("isVoiceMessagesMutedNative", isVoiceMessagesMuted)
 
 let getVoiceMessageNames = @() voiceMessageNames
 

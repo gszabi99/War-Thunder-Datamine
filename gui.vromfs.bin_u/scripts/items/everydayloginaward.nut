@@ -1,7 +1,8 @@
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
 
-let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")

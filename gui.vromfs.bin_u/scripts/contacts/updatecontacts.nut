@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
-let { isPlatformSony, is_gdk } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { updateContacts = @(...) null } = isPlatformSony ? require("%scripts/contacts/psnContactsManager.nut")
     : is_gdk ? require("%scripts/contacts/xboxContactsManager.nut")
     : null

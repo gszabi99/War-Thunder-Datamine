@@ -10,11 +10,13 @@ let stdMath = require("%sqstd/math.nut")
 let { ceil } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
-let DataBlock = require("DataBlock")
 let { get_skills_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { getUnitTypesInCountries } = require("%scripts/unit/unitInfo.nut")
+let { getUnitCrewDataById } = require("%scripts/crew/unitCrewCache.nut")
 
 const UPGR_CREW_TUTORIAL_SKILL_NUMBER = 2
 
@@ -38,17 +40,15 @@ let maxCrewLevel = {
   [CUT_SHIP] = 100
 }
 
-let getCrewList = @() ::g_crews_list.getCrewsList()
-
 function isCountryHasAnyEsUnitType(country, esUnitTypeMask) {
-  let typesList = getTblValue(country, ::get_unit_types_in_countries(), {})
+  let typesList = getTblValue(country, getUnitTypesInCountries(), {})
   foreach (esUnitType, isInCountry in typesList)
     if (isInCountry && (esUnitTypeMask & (1 << esUnitType)))
       return true
   return false
 }
 
-let getCrew = @(countryId, idInCountry) getCrewList()?[countryId].crews[idInCountry]
+let getCrew = @(countryId, idInCountry) getCrewsList()?[countryId].crews[idInCountry]
 
 function createCrewBuyPointsHandler(crew) {
   return handlersManager.loadHandler(gui_handlers.CrewBuyPointsHandler, { crew })
@@ -98,7 +98,7 @@ function getCrewSkillItem(memberName, skillName) {
 }
 
 function getCrewSkillValue(crewId, unit, memberName, skillName) {
-  let unitCrewData = ::g_unit_crew_cache.getUnitCrewDataById(crewId, unit)
+  let unitCrewData = getUnitCrewDataById(crewId, unit)
   return unitCrewData?[memberName][skillName] ?? 0
 }
 
@@ -131,7 +131,7 @@ function getCrewUnit(crew) {
 }
 
 function getCrewCountry(crew) {
-  let countryData = getTblValue(crew.idCountry, getCrewList())
+  let countryData = getTblValue(crew.idCountry, getCrewsList())
   return countryData ? countryData.country : ""
 }
 
@@ -279,7 +279,7 @@ function getCrewLevel(crew, unit, crewUnitType, countByNewValues = false) {
 }
 
 function isAllCrewsMinLevel() {
-  foreach (checkedCountrys in getCrewList())
+  foreach (checkedCountrys in getCrewsList())
     foreach (crew in checkedCountrys.crews)
       foreach (unitType in unitTypes.types)
         if (unitType.isAvailable()
@@ -383,47 +383,6 @@ function getCrewSkillPointsToMaxAllSkills(crew, unit, crewUnitType = -1) {
   return res
 }
 
-function maximazeAllSkillsImpl(crew, unit, crewUnitType) {
-  let blk = DataBlock()
-  doWithAllSkills(crew, crewUnitType,
-    function(page, skillItem) {
-      let maxValue = getCrewMaxSkillValue(skillItem)
-      let curValue = getCrewSkillValue(crew.id, unit, page.id, skillItem.name)
-      if (maxValue > curValue)
-        blk.addBlock(page.id)[skillItem.name] = maxValue - curValue
-    }
-  )
-
-  let isTaskCreated = addTask(
-    shop_upgrade_crew(crew.id, blk),
-    { showProgressBox = true },
-    function() {
-      broadcastEvent("CrewSkillsChanged", { crew, unit })
-      ::g_crews_list.flushSlotbarUpdate()
-    },
-    @(_err) ::g_crews_list.flushSlotbarUpdate()
-  )
-
-  if (isTaskCreated)
-    ::g_crews_list.suspendSlotbarUpdates()
-}
-
-function buyAllCrewSkills(crew, unit, crewUnitType) {
-  let totalPointsToMax = getCrewSkillPointsToMaxAllSkills(crew, unit, crewUnitType)
-  if (totalPointsToMax <= 0)
-    return
-
-  let curPoints = getTblValue("skillPoints", crew, 0)
-  if (curPoints >= totalPointsToMax)
-    return maximazeAllSkillsImpl(crew, unit, crewUnitType)
-
-  let packs = ::g_crew_points.getPacksToBuyAmount(getCrewCountry(crew), totalPointsToMax)
-  if (!packs.len())
-    return
-
-  ::g_crew_points.buyPack(crew, packs, @() maximazeAllSkillsImpl(crew, unit, crewUnitType))
-}
-
 function hasSkillPointsToRunTutorial(crew, unit, crewUnitType, skillPage) {
   local skillCount = 0
   local skillPointsNeeded = 0
@@ -523,7 +482,7 @@ function updateCrewSkillsAvailable(forceUpdate = false) {
   loadCrewSkillsOnce()
   availableCrewSkills.clear()
   unseenIconsNeeds.clear()
-  foreach (cList in getCrewList())
+  foreach (cList in getCrewsList())
     foreach (_idx, crew in cList?.crews || []) {
       let data = {}
       let unseenIconsData = {}
@@ -613,7 +572,6 @@ return {
   getNextCrewSkillStepCost
   getMaxAvailbleCrewStepValue
   getCrewSkillPointsToMaxAllSkills
-  buyAllCrewSkills
   getCrewSkillPageIdToRunTutorial
   getSkillCrewLevel
   loadCrewSkills
@@ -621,4 +579,5 @@ return {
   updateCrewSkillsAvailable
   getCrewStatus
   isCrewNeedUnseenIcon
+  doWithAllSkills
 }

@@ -9,7 +9,7 @@ let { buildConditionsConfig, getUnlockNameText, getUnlockImageConfig
 } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { isArray } = require("%sqstd/underscore.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
 

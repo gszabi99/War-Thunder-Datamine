@@ -1,8 +1,8 @@
 {
   "type": "radar",
   "name": "Type 1493",
-  "weaponTargetsMax": 8,
-  "launchedMissilesPredictedPositionsMax": 8,
+  "weaponTargetsMax": 6,
+  "launchedMissilesPredictedPositionsMax": 6,
   "showMissileLaunchZone": true,
   "showMissileDgftLaunchZone": true,
   "showMissileAimLead": true,
@@ -263,6 +263,20 @@
       "barsCount": 2,
       "rowMajor": false,
       "centerElevation": 15.0,
+      "indicate": true
+    },
+    "radarBoresightLock": {
+      "type": "cone",
+      "azimuthLimits": [
+        -70.0,
+        70.0
+      ],
+      "elevationLimits": [
+        -45.0,
+        60.0
+      ],
+      "period": 0.5,
+      "width": 1.25,
       "indicate": true
     },
     "radarHmdLock": {
@@ -576,8 +590,8 @@
       "mainBeamNotchWidth": 40.0,
       "distance": {
         "presents": true,
-        "minValue": 250.0,
-        "maxValue": 10000.0,
+        "minValue": 200.0,
+        "maxValue": 74000.0,
         "width": 250.0
       },
       "dopplerSpeed": {
@@ -596,8 +610,8 @@
       "mainBeamNotchWidth": 40.0,
       "distance": {
         "presents": true,
-        "minValue": 250.0,
-        "maxValue": 20000.0,
+        "minValue": 200.0,
+        "maxValue": 74000.0,
         "width": 250.0
       },
       "dopplerSpeed": {
@@ -661,7 +675,8 @@
       ]
     },
     "radarAcmLock": {
-      "scanPattern1": "radarVerticalLock"
+      "scanPattern1": "radarVerticalLock",
+      "scanPattern2": "radarBoresightLock"
     },
     "irstAcmLock": {
       "scanPattern1": "irstVerticalLock"
@@ -682,7 +697,7 @@
       "range5": 25000.0
     },
     "acm": {
-      "range1": 10000.0
+      "range1": 20000.0
     },
     "hmd": {
       "range1": 20000.0
@@ -747,14 +762,12 @@
         },
         "designatedTargetSearch": {
           "designateTargetUnderCue": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "cue",
+            "self": true
           },
           "designateActiveDetectedTarget": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "target",
+            "self": true
           }
         },
         "setTrackMode": {
@@ -924,7 +937,7 @@
         },
         "designatedTargetTws": {
           "designateActiveDetectedTarget": {
-            "type": 0,
+            "type": "target",
             "self": true,
             "sensorIndex": 0
           }
@@ -1632,7 +1645,10 @@
           "stateTo": "checkDesignationType0",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": [
+                "target",
+                "cue"
+              ]
             }
           }
         },
@@ -2375,7 +2391,7 @@
             ],
             "distanceRange": [
               0.0,
-              60000.0
+              90000.0
             ],
             "distanceWidth": 2000.0,
             "distanceRelWidthMin": 0.05
@@ -2394,7 +2410,7 @@
             ],
             "distanceRange": [
               0.0,
-              60000.0
+              90000.0
             ],
             "distanceWidth": 3000.0,
             "distanceRelWidthMin": 0.05
@@ -2987,7 +3003,7 @@
           "event": "scanFinished",
           "actions": {
             "matchTargetsOfInterest": {
-              "limit": 10,
+              "limit": 20,
               "posGateTimeInitial": [
                 2.0,
                 4.0
@@ -3034,19 +3050,6 @@
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": {}
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "sensorIndex": 1
-            }
           }
         },
         "centerZone": {

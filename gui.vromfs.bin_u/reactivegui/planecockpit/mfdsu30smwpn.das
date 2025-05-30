@@ -68,7 +68,7 @@ class Component : Canvas
   slotCount : int = 6
   slotOffset : float2 = float2(0.02, 0.05)
   slotHeight : float = 0.5
-  stationIds <- [[auto 1; 2; 3; 4; 5; 6; 7; 8; 9; 10; 11; 12]]
+  stationIds <- fixed_array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12)
 
 
   def Component(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; props : PropStorage&)
@@ -103,7 +103,7 @@ class Component : Canvas
     outlUnit = 0.085 * outlScale.x              // Unit for scaling aircraft parts
     outlWing = 1.0 * outlScale.x               // Wingspan
     outlPylon = float2(0.003, 0.05)    // Pylon width & height
-    stationIds <- [[auto 11; 9; 7; 5; 3; 1; 2; 4; 6; 8; 10; 12]] // Station numbering
+    stationIds <- fixed_array(11, 9, 7, 5, 3, 1, 2, 4, 6, 8, 10, 12) // Station numbering
     slotCount = stationIds.length() // Number of slots on the aircraft
     slotOffset = float2(0.02, 0.08) // Offset of the first slot from the wingtip
     slotHeight = 0.4                // Maximum length of slot connector lines
@@ -112,7 +112,7 @@ class Component : Canvas
   def calcStations() : array<float2>
     let mid = 12 / 2
     let wing = outlWing * 0.5
-    return <- [{
+    return <- [
       for i in 0 .. slotCount;
       float2(
         lerp(-wing + slotOffset.x, wing - slotOffset.x, float(i) / float(slotCount - 1)),
@@ -120,7 +120,7 @@ class Component : Canvas
         ? lerp(slotOffset.y, slotHeight, float(i) / float(mid - 1))
         : lerp(slotHeight, slotOffset.y, float(i - mid) / float(mid - 1))
       )
-    }]
+    ]
 
 
   def drawOsbLabels()
@@ -286,11 +286,10 @@ class Component : Canvas
     drawBox(float2(-outlUnit * 2.0, 0.0) + outlTransl, float2(-outlUnit, outlUnit * 0.5) + outlTransl)
     setFillColor(E3DCOLOR(0x0))
     // Vertical stabs
-    let stab = [[auto
-      float2(outlUnit * 2.0 + outlUnit * 0.15, 0.0);
-      float2(outlUnit * 2.0 - outlUnit * 0.15, 0.0);
-      float2(outlUnit * 2.0, -outlUnit * 1.6);
-    ]]
+    let stab = fixed_array(
+      float2(outlUnit * 2.0 + outlUnit * 0.15, 0.0),
+      float2(outlUnit * 2.0 - outlUnit * 0.15, 0.0),
+      float2(outlUnit * 2.0, -outlUnit * 1.6))
     drawFilledPoly(stab.to_array().translate(outlTransl))
     drawFilledPoly(stab.to_array().inv_x().translate(outlTransl))
 
@@ -318,7 +317,6 @@ class Component : Canvas
 
   def drawWeaponLabel(slot : WeaponSlot&)
     let mid = slotCount / 2
-    let idx = slot.slot % mid
     var pos = float2(0.31, stations[slot.slot].y)
     if slot.slot >= mid
       pos += float2(0.12, 0.0)
@@ -328,7 +326,7 @@ class Component : Canvas
   def drawWeaponAmmo(ammo : array<int>)
     var slot = 0
     while slot < slotCount
-      var pos = float2(0.54, stations[slot].y)
+      let pos = float2(0.54, stations[slot].y)
       let ammo1 = ammo[slot]
       let ammo2 = ammo[slotCount - 1 - slot]
       if ammo1 + ammo2 != 0
@@ -337,7 +335,7 @@ class Component : Canvas
 
 
   def drawWeaponSlots()
-    var ammo <- [{for i in 0 .. slotCount; 0}]
+    var ammo <- [for _i in 0 .. slotCount; 0]
     for i in 0 .. ws.length()
       continue if (hero.slotIdByWeaponId[i] <= 0)
       var slot = ws.getWeaponSlot(i)

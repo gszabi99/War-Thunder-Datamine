@@ -3,13 +3,13 @@ from "%scripts/dagui_library.nut" import *
 let { get_player_tags } = require("auth_wt")
 let {
   isXboxScarlett,
+  isXboxOne,
   isXbox,
   isPS4,
   isPS5,
   isSony,
   isPC,
   is_console,
-  is_gdk,
   consoleRevision } = require("%sqstd/platform.nut")
 let { is_running_on_steam_deck } = require("steam")
 let {
@@ -26,7 +26,7 @@ let PS4_REGION_NAMES = {
   [SCE_REGION_SCEJ]  = "scej"
 }
 
-let isPlayerFromXboxOne = @(name) isXbox && isXBoxPlayerName(name)
+let isPlayerFromXboxOne = @(name) is_gdk && isXBoxPlayerName(name)
 let isPlayerFromPS4 = @(name) isSony && isPS4PlayerName(name)
 
 let isMePS4Player = @() get_player_tags().indexof("ps4") != null
@@ -49,7 +49,7 @@ let canInteractCrossConsole = function(name) {
   if (!isXBOXPlayer && (isPC || isSony))
     return true
 
-  if ((isPS4Player && isSony) || (isXBOXPlayer && isXbox))
+  if ((isPS4Player && isSony) || (isXBOXPlayer && is_gdk))
     return true
 
   if (!isPs4XboxOneInteractionAvailable(name))
@@ -65,7 +65,8 @@ function isPlatformShieldTv() {
 return {
   targetPlatform = platformId
   consoleRevision
-  isPlatformXboxOne = isXbox 
+  isPlatformXbox = isXbox
+  isPlatformXboxOne = isXboxOne
   isPlatformXboxScarlett = isXboxScarlett
   isPlatformPS4 = isPS4
   isPlatformPS5 = isPS5
@@ -73,7 +74,6 @@ return {
   isPlatformPC = isPC
   isPlatformSteamDeck = is_running_on_steam_deck()
   is_console
-  is_gdk
 
   isXBoxPlayerName = isXBoxPlayerName
   isPS4PlayerName = isPS4PlayerName

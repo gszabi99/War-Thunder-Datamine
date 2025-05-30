@@ -11,7 +11,7 @@ let screenInfo = require("%scripts/options/screenInfo.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { is_stereo_mode } = require("vr")
 let { setFontDefHt, getFontDefHt, getFontInitialHt } = require("fonts")
-let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck, isPlatformShieldTv
+let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck, isPlatformShieldTv
 } = require("%scripts/clientState/platform.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { setScrnTgt } = require("%scripts/utils/screenUtils.nut")
@@ -223,7 +223,7 @@ function getDefault() {
 
   if (is_stereo_mode())
     return SMALL
-  if (isPlatformShieldTv() || isPlatformSony || isPlatformXboxOne || is_steam_big_picture())
+  if (isPlatformShieldTv() || isPlatformSony || isPlatformXbox || is_steam_big_picture())
     return LARGE
   if (isSmallScreen)
     return HUGE

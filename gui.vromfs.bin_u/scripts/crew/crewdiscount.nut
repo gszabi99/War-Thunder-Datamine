@@ -5,7 +5,7 @@ let { get_warpoints_blk, get_price_blk } = require("blkGetters")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { format } = require("string")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
-let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
+let { getDiscountByPath, generateDiscountInfo } = require("%scripts/discounts/discountUtils.nut")
 
 function getCrewDiscountInfo(countryId = -1, idInCountry = -1) {
   if (countryId < 0 || idInCountry < 0)
@@ -66,7 +66,7 @@ function getCrewDiscountsTooltipByInfo(discountInfo, showBuyPoints = true) {
   if (showBuyPoints)
     table["mainmenu/btnBuySkillPoints"] <- discountInfo.buyPoints
 
-  return ::g_discount.generateDiscountInfo(table, format(loc("discount/specialization/tooltip"), maxDiscount)).discountTooltip
+  return generateDiscountInfo(table, format(loc("discount/specialization/tooltip"), maxDiscount)).discountTooltip
 }
 
 return {

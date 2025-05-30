@@ -1,10 +1,10 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
 
-let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getSelectedChild, findChild, findChildIndex } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, getSelectedChild, findChild, findChildIndex
+} = require("%sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 gui_handlers.SkipableMsgBox <- class (gui_handlers.BaseGuiHandlerWT) {

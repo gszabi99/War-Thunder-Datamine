@@ -5,10 +5,11 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getPlayWorldwarConditionText } = require("%scripts/worldWar/worldWarGlobalStates.nut")
+let { getMemberStatusLocId, getSquadMemberAvailableUnitsCheckingData } = require("%scripts/squads/squadUtils.nut")
 
 gui_handlers.WwSquadList <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -61,7 +62,7 @@ gui_handlers.WwSquadList <- class (gui_handlers.BaseGuiHandlerWT) {
     memberObj.uid = memberData.uid
     memberObj.findObject("is_ready_icon").isReady =
       memberData.isReady ? "yes" : "no"
-    let memberUnitsData = ::g_squad_utils.getMemberAvailableUnitsCheckingData(
+    let memberUnitsData = getSquadMemberAvailableUnitsCheckingData(
       memberData, this.remainUnits, this.country)
     memberObj.findObject("has_vehicles_icon").isReady =
       memberUnitsData.joinStatus == memberStatus.READY ? "yes" : "no"
@@ -79,7 +80,7 @@ gui_handlers.WwSquadList <- class (gui_handlers.BaseGuiHandlerWT) {
     else if (!memberData.isReady)
       alertText = loc("multiplayer/state/player_is_not_ready")
     else if (memberUnitsData.joinStatus != memberStatus.READY)
-      alertText = loc(::g_squad_utils.getMemberStatusLocId(memberUnitsData.joinStatus))
+      alertText = loc(getMemberStatusLocId(memberUnitsData.joinStatus))
     else if (!memberData.isCrewsReady)
       alertText = loc("multiplayer/state/crews_not_ready")
 

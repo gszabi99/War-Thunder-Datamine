@@ -36,8 +36,8 @@ def public get_remap(remap : IPoint4List&; partId : PartId) : PartRemap
   if idx < length(remap) && idx >= 0
     let r = remap[idx]
     if r.x >= 0
-      return [[PartRemap() partId=partId, stowageId=r.y, clusterId=r.z, slotId=r.w]]
-  return [[PartRemap() partId=PartId(), stowageId=-1, clusterId=-1, slotId=-1]]
+      return PartRemap(partId = partId, stowageId = r.y, clusterId = r.z, slotId = r.w)
+  return PartRemap(partId = PartId(), stowageId = -1, clusterId = -1, slotId = -1)
 
 def public add_remap(var remap : IPoint4List&; part : PartRemap) : bool
   assert(part.partId.valid)
@@ -68,11 +68,11 @@ def public get_ammo_cluster_stage(cluster_id : int; v : tuple<ammo_clusters__typ
 
 [with_bundle(v)]
 def get_ammo_slot_type(slot_id : int;  v : tuple<ammo_slots__ammoMaskAndType : UInt32List>) : int
-  return int(v.ammo_slots__ammoMaskAndType[slot_id] & 0xffu);
+  return int(v.ammo_slots__ammoMaskAndType[slot_id] & 0xffu)
 
 [with_bundle(v)]
 def get_ammo_slot_class_mask(slot_id : int;  v : tuple<ammo_slots__ammoMaskAndType : UInt32List>) : uint
-  return uint(v.ammo_slots__ammoMaskAndType[slot_id] >> 8u);
+  return uint(v.ammo_slots__ammoMaskAndType[slot_id] >> 8u)
 
 
 
@@ -82,7 +82,7 @@ def get_ammo_slot_class_mask(slot_id : int;  v : tuple<ammo_slots__ammoMaskAndTy
 
 [with_bundle(v)]
 def public ammo_slot_set_dm_enabled(var unit : Unit?; slot_id : int; is_enabled : bool; v : tuple<ammo_slots__partId : PartIdList>) : bool
-  let slot_part_id = v.ammo_slots__partId[slot_id];
+  let slot_part_id = v.ammo_slots__partId[slot_id]
   assume dvm = *unit.visual
   if dvm |> dm_is_part_enabled(slot_part_id) != is_enabled
     dvm |> dm_set_part_enabled(slot_part_id, is_enabled)
@@ -105,7 +105,7 @@ def ammo_stowage_get_num_ammo_addable_to_slot(cluster_id : int; slot_id : int; n
                                                 ammo_slots__numAmmo : IPoint2List;
                                                 ammo_stowage__ammoTypeToMask : UInt32List
                                                 >) : int
-  if !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED) && !get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState RESTORE_AFTER_DEAD)
+  if !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ENABLED) && !get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState.RESTORE_AFTER_DEAD)
     return 0
   let slot_ammo = v.ammo_slots__numAmmo[slot_id]
   if num_ammo == 0 || slot_ammo.x == slot_ammo.y
@@ -142,7 +142,7 @@ def ammo_stowage_add_ammo_to_slot_no_check(slot_id : int; num_ammo : int; ammo_t
   slot_ammo.x = min(slot_ammo.x + num_ammo, slot_ammo.y)
   v.ammo_slots__numAmmo[slot_id] = slot_ammo
   if slot_ammo.x > 0
-    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED, true)
+    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ENABLED, true)
 
 [with_bundle(v)]
 def ammo_stowage_add_ammo_to_slot_partial(cluster_id : int; slot_id : int; var num_ammo : int&; ammo_type : int;
@@ -195,9 +195,9 @@ def ammo_stowage_try_swap_slots(slot_1_id : int; slot_2_id : int;
   v.ammo_slots__numAmmo[slot_1_id].x = ammo_count_2.x
   v.ammo_slots__numAmmo[slot_2_id].x = ammo_count_1.x
   if ammo_count_1.x > 0
-    set_flag(v.ammo_slots__state[slot_2_id], AmmoSlotState ENABLED, true)
+    set_flag(v.ammo_slots__state[slot_2_id], AmmoSlotState.ENABLED, true)
   if ammo_count_2.x > 0
-    set_flag(v.ammo_slots__state[slot_1_id], AmmoSlotState ENABLED, true)
+    set_flag(v.ammo_slots__state[slot_1_id], AmmoSlotState.ENABLED, true)
   return true
 
 
@@ -237,7 +237,7 @@ def ammo_cluster_balance_slots(var unit : Unit?; cluster_id : int; update_dm : b
     if search_slot_id < from_slot_id
       ammo_stowage_extract_ammo_from_slot(from_slot_id, ammo_count, v)
       ammo_stowage_add_ammo_to_slot_no_check(search_slot_id, ammo_count, ammo_type, v)
-      set_flag(v.ammo_slots__state[search_slot_id], AmmoSlotState ENABLED, true)
+      set_flag(v.ammo_slots__state[search_slot_id], AmmoSlotState.ENABLED, true)
       if update_dm
         ammo_slot_set_dm_enabled(unit, search_slot_id, true, v)
         ammo_slot_set_dm_enabled(unit, from_slot_id, false, v)
@@ -277,7 +277,7 @@ def private ammo_stowage_iter_weapons_arr_impl(weap : WeaponController const?;
     if gun != null
       bullet_set_cnt = max(length(gun.properties.bulletSets), bullet_set_cnt)
 
-  var base_ammo_info = [[WeaponAndAmmoInfo
+  var base_ammo_info = WeaponAndAmmoInfo(
     stowage_id = stowage_id,
     bullet_set_id = 0,
     first_weapon_idx = weapons_arr[0],
@@ -286,7 +286,7 @@ def private ammo_stowage_iter_weapons_arr_impl(weap : WeaponController const?;
     max_count = 0,
     loaded_count = 0,
     max_loaded_count = 0
-  ]]
+  )
   for bullet_set_id in 0..bullet_set_cnt
     
     var ammo_info := base_ammo_info
@@ -394,7 +394,7 @@ def ammo_stowage_iter_all_ammo_types(weap : WeaponController const?;
                                        ammo_stowage__weaponTriggers : IntList
                                        >;
                                      fn : block<(info : WeaponAndAmmoInfo) : void>) : void
-  let per_ammo_types_enabled = get_flag(v.ammo_stowage__ammoState, AmmoState ENABLE_PER_AMMO_TYPES)
+  let per_ammo_types_enabled = get_flag(v.ammo_stowage__ammoState, AmmoState.ENABLE_PER_AMMO_TYPES)
   var next_ammo_type = 0
   for stowage_id in iter_range(v.ammo_stowages__weaponTriggersRange)
     ammo_stowage_iter_weapons_and_bullet_sets_impl(
@@ -416,7 +416,7 @@ def ammo_stowage_iter_all_weapons_and_bullet_sets(weap : WeaponController const?
                                                     ammo_stowage__weaponTriggers : IntList
                                                     >;
                                                   fn : block<(info : WeaponAndAmmoInfo) : void>) : void
-  let per_ammo_types_enabled = get_flag(v.ammo_stowage__ammoState, AmmoState ENABLE_PER_AMMO_TYPES)
+  let per_ammo_types_enabled = get_flag(v.ammo_stowage__ammoState, AmmoState.ENABLE_PER_AMMO_TYPES)
   var next_ammo_type = 0
   for stowage_id in iter_range(v.ammo_stowages__weaponTriggersRange)
     ammo_stowage_iter_weapons_and_bullet_sets_impl(
@@ -438,7 +438,7 @@ def ammo_stowage_iter_all_stowages_and_bullets(weap : WeaponController const?;
                                                  ammo_stowage__weaponTriggers : IntList
                                                  >;
                                                fn : block<(stowage_id : int; info_arr : array<WeaponAndAmmoInfo>) : void>) : void
-  let per_ammo_types_enabled = get_flag(v.ammo_stowage__ammoState, AmmoState ENABLE_PER_AMMO_TYPES)
+  let per_ammo_types_enabled = get_flag(v.ammo_stowage__ammoState, AmmoState.ENABLE_PER_AMMO_TYPES)
   var next_ammo_type = 0
   var info_arr : array<WeaponAndAmmoInfo>
   info_arr |> reserve(8)
@@ -466,14 +466,14 @@ struct AmmoPropsInfo
   shatterDamageTypeId : int
 
 def private fill_ammo_props_info(props) : AmmoPropsInfo
-  return [[AmmoPropsInfo
+  return AmmoPropsInfo(
     ballisticsProps = get_proj_ballistics(props),
     explosiveProps = get_explosive_props(props),
     kineticMass = get_kinetic_mass(props),
     powderPortion = get_powder_portion(props),
     splashDamageTypeId = get_splash_damage_type(props),
     shatterDamageTypeId = get_shatter_damage_type(props)
-  ]]
+  )
 
 [with_bundle(v)]
 def ammo_stowage_iter_all_ammo_props(weap : WeaponController const?; ammo_type : int;
@@ -483,7 +483,7 @@ def ammo_stowage_iter_all_ammo_props(weap : WeaponController const?; ammo_type :
                                        ammo_stowage__weaponsIds : IntList
                                        >;
                                      fn : block<(props : AmmoPropsInfo; fraction : float) : void>) : void
-  let iter_all_bullet_sets = !get_flag(v.ammo_stowage__ammoState, AmmoState ENABLE_PER_AMMO_TYPES)
+  let iter_all_bullet_sets = !get_flag(v.ammo_stowage__ammoState, AmmoState.ENABLE_PER_AMMO_TYPES)
   let ammo_type_remap = v.ammo_stowage__ammoTypeRemap[ammo_type]
 
   
@@ -522,7 +522,7 @@ def ammo_stowage_subtract_weapon_ammo(weap : WeaponController const?; ammo_type 
                                         ammo_stowage__ammoTypeRemap : IPoint4List;
                                         ammo_stowage__weaponsIds : IntList
                                         >) : void
-  let iter_all_bullet_sets = !get_flag(v.ammo_stowage__ammoState, AmmoState ENABLE_PER_AMMO_TYPES)
+  let iter_all_bullet_sets = !get_flag(v.ammo_stowage__ammoState, AmmoState.ENABLE_PER_AMMO_TYPES)
 
   let ammo_type_remap = v.ammo_stowage__ammoTypeRemap[ammo_type]
   let weapon_range = int2(ammo_type_remap.y, ammo_type_remap.z)
@@ -537,7 +537,7 @@ def ammo_stowage_subtract_weapon_ammo(weap : WeaponController const?; ammo_type 
       total_bs_count += length(gun_i.properties.bulletSets)
 
   var remaining_subtract = subtract
-  for subtract_per_bs in [[int subtract / total_bs_count; 1]]
+  for subtract_per_bs in fixed_array<int>(subtract / total_bs_count, 1)
     for _ in 0..total_bs_count
       var subtract_from_this_bs = min(subtract_per_bs, remaining_subtract)
       if subtract_from_this_bs == 0
@@ -608,4 +608,4 @@ def public ammo_stowage_send_net_sync(eid : EntityId; v : tuple<
       if slot_ammo.x == slot_ammo.y
         continue
       bs |> WriteCompressed(slot_ammo.x)
-    send_net_event(eid, [[EventAmmoStowageNetSync bs=ecs_addr(bs)]])
+    send_net_event(eid, EventAmmoStowageNetSync(bs = ecs_addr(bs)))

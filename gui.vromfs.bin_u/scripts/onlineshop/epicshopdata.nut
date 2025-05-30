@@ -6,17 +6,19 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let statsd = require("statsd")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
+let { eventbus_subscribe } = require("eventbus")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_EPIC_SHOP)
 
 let EpicShopPurchasableItem = require("%scripts/onlineShop/EpicShopPurchasableItem.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 const LOG_PREFIX = "[EpicStore] "
 let logS = log_with_prefix(LOG_PREFIX)
 
 let canUseIngameShop = epic_is_running
 
-let shopItemsQueryResult = mkWatched(persist, "shopItemsQueryResult", null) 
+let shopItemsQueryResult = mkWatched(persist, "shopItemsQueryResult", null)
 let isLoadingInProgress = Watched(false)
 let isInitedOnce = Watched(false)
 
@@ -46,7 +48,7 @@ isInitedOnce.subscribe(function(val) {
 shopItemsQueryResult.subscribe(function(v) {
   isLoadingInProgress(false)
 
-  if (!v || !v.blockCount()) {
+  if (!v || !v.len()) {
     statsd.send_counter("sq.ingame_store.open.empty_catalog", 1)
     logerr($"{LOG_PREFIX}Empty catalog. Don't open shop")
     return
@@ -54,17 +56,17 @@ shopItemsQueryResult.subscribe(function(v) {
 })
 
 let epicCatalog = Computed(function() {
-  if (!shopItemsQueryResult.value)
+  let itemsInfo = shopItemsQueryResult.get()
+  if (!itemsInfo)
     return {}
 
   let res = {}
-  for (local i = 0; i < shopItemsQueryResult.value.blockCount(); i++) {
-    let itemBlk = shopItemsQueryResult.value.getBlock(i)
-    let item = EpicShopPurchasableItem(itemBlk)
+  itemsInfo.each(function(value, _key) {
+    let item = EpicShopPurchasableItem(value)
     if (!(item.mediaItemType in res))
       res[item.mediaItemType] <- []
     res[item.mediaItemType].append(item)
-  }
+  })
   return res
 })
 
@@ -107,7 +109,7 @@ function updateSpecificItemInfo(itemId) {
 
 function onUpdateItemCb(blk) {
   epic_update_purchases_on_auth()
-  addTask(::update_entitlements_limited(true))
+  addTask(updateEntitlementsLimited(true))
 
   let itemId = blk.id
   if (!epicItems.value?[itemId]) {
@@ -146,9 +148,9 @@ subscriptions.addListenersWithoutEnv({
   }
 }, g_listener_priority.CONFIG_VALIDATION)
 
-getroottable()["epic_shop_items_callback"] <- @(res) shopItemsQueryResult(res)
-getroottable()["epic_shop_item_purchased_callback"] <- updateSpecificItemInfo
-getroottable()["epic_shop_item_callback"] <- onUpdateItemCb
+eventbus_subscribe("epicShopItemPurchasedCallback", @(res) updateSpecificItemInfo(res.itemId))
+eventbus_subscribe("epicShopItemCallback", @(res) onUpdateItemCb(res))
+eventbus_subscribe("epicShopItemsCallback", @(res) shopItemsQueryResult(res))
 
 return {
   canUseIngameShop

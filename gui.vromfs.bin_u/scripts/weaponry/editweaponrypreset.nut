@@ -5,7 +5,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let regexp2 = require("regexp2")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCustomWeaponryPresetView, editSlotInPreset, getPresetWeightRestrictionText, getTierIcon
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { addWeaponsFromBlk } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -313,7 +314,7 @@ let class EditWeaponryPresetsModal (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getWeightCapacityText() {
-    let maxWeight = this.unitBlk?.WeaponSlots?.maxloadMass
+    let maxWeight = this.unitBlk?.WeaponSlots.maxloadMass
     if (maxWeight == null)
       return ""
     let totalWeightStr = this.getKgUnitsText(this.getTotalWeight(), false)

@@ -12,7 +12,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 let { format } = require("string")
 let regexp2 = require("regexp2")
@@ -40,6 +41,8 @@ let { isSessionStartedInRoom } = require("%scripts/matchingRooms/sessionLobbySta
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 let { create_event_description } = require("%scripts/events/eventDescription.nut")
+let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+
 let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
 
 let { getSessionLobbyMissionNameLoc, getRoomRequiredCrafts, getRoomMGameMode, getMembersCountByTeams
@@ -112,7 +115,7 @@ gui_handlers.EventRoomsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (events.getEventDiffCode(event) == DIFFICULTY_HARDCORE &&
-        !::check_package_and_ask_download("pkg_main"))
+        !checkPackageAndAskDownload("pkg_main"))
       return
 
     handlersManager.loadHandler(gui_handlers.EventRoomsHandler,

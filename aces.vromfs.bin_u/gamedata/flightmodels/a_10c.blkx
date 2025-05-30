@@ -2348,6 +2348,7 @@
       0.73,
       0.85
     ],
+    "hmdScreenBlockRad": 0.06,
     "hmdEnabledByDefault": true,
     "collimatorSize": 0.15,
     "staticAimPitch": 0.0,
@@ -2411,6 +2412,24 @@
       0.1
     ],
     "lightRadius3": 0.3,
+    "hmdBlock": {
+      "ils": {
+        "pos": [
+          5.55,
+          0.375,
+          0.0
+        ],
+        "rad": 0.06
+      },
+      "full_devices": {
+        "pos": [
+          5.22,
+          -0.119,
+          0.0
+        ],
+        "rad": 0.414
+      }
+    },
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2889,7 +2908,9 @@
               "Gepard TT",
               "Antelope",
               "PGZ-09 TT",
-              "Type-87 TT"
+              "Type-87 TT",
+              "Phalanx Search Radar",
+              "Phalanx Track Radar"
             ]
           },
           {
@@ -3658,7 +3679,84 @@
               "turretIdx": 0
             },
             {
-              "type": "map"
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
             }
           ]
         },
@@ -3678,9 +3776,6 @@
             {
               "type": "target_tracking",
               "turretIdx": 0
-            },
-            {
-              "type": "map"
             }
           ]
         },
@@ -3854,10 +3949,6 @@
   },
   "sensors": {
     "sensor": [
-      {
-        "blk": "gameData/sensors/ir_tracker_tgp.blk",
-        "node": "optic2_gun"
-      },
       {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk"
       },
@@ -4067,7 +4158,7 @@
                 "emitter": "emtr_flare1",
                 "bullets": 120,
                 "external": true,
-                "separate": false,
+                "separate": true,
                 "bulletsCartridge": 1
               },
               {
@@ -4076,7 +4167,7 @@
                 "emitter": "emtr_flare4",
                 "bullets": 120,
                 "external": true,
-                "separate": false,
+                "separate": true,
                 "bulletsCartridge": 1
               },
               {
@@ -4085,7 +4176,7 @@
                 "emitter": "emtr_flare2",
                 "bullets": 120,
                 "external": true,
-                "separate": false,
+                "separate": true,
                 "bulletsCartridge": 1
               },
               {
@@ -4094,7 +4185,7 @@
                 "emitter": "emtr_flare3",
                 "bullets": 120,
                 "external": true,
-                "separate": false,
+                "separate": true,
                 "bulletsCartridge": 1
               }
             ]
@@ -4153,7 +4244,7 @@
                 "emitter": "emtr_flare1",
                 "bullets": 120,
                 "external": true,
-                "separate": false,
+                "separate": true,
                 "bulletsCartridge": 1
               },
               {
@@ -4162,7 +4253,7 @@
                 "emitter": "emtr_flare4",
                 "bullets": 120,
                 "external": true,
-                "separate": false,
+                "separate": true,
                 "bulletsCartridge": 1
               },
               {
@@ -4171,7 +4262,7 @@
                 "emitter": "emtr_flare2",
                 "bullets": 120,
                 "external": true,
-                "separate": false,
+                "separate": true,
                 "bulletsCartridge": 1
               },
               {
@@ -4180,7 +4271,7 @@
                 "emitter": "emtr_flare3",
                 "bullets": 120,
                 "external": true,
-                "separate": false,
+                "separate": true,
                 "bulletsCartridge": 1
               }
             ]
@@ -6406,7 +6497,8 @@
             "sensors": {
               "sensor": {
                 "blk": "gameData/sensors/ir_tracker_tgp.blk",
-                "node": "optic2_gun"
+                "node": "optic2_gun",
+                "powerButtonIdx": -1
               }
             },
             "BannedWeaponPreset": {
@@ -6948,10 +7040,6 @@
         },
         "sensors": {
           "sensor": [
-            {
-              "blk": "gameData/sensors/ir_tracker_tgp.blk",
-              "node": "optic2_gun"
-            },
             {
               "blk": "gameData/sensors/LaserDesignatorSensor.blk"
             },

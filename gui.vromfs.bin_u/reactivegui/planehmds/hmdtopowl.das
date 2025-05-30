@@ -74,7 +74,7 @@ def draw_central_mark(var ctx : GuiContext&; rdata : ElemRenderData& const; data
 def draw_bar_altitude(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; alt : int)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   let altStr = "{alt} ft"
   ctx |> goto_xy(rdata.pos.x + rdata.size.x * 0.62, rdata.pos.y + rdata.size.y * 0.35)
@@ -85,11 +85,11 @@ def draw_climb(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Canv
   get_font_context(fctx, data.fontId, 0, 0, 18)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(18);
+  ctx |> set_font_ht(18)
 
   let offset = 0.345 + cvt(float(vspeed), 1000., -1000., -0.02, 0.02)
-  let line <- to_array_move([[float2[2] rdata.pos + float2(rdata.size.x * 0.66, rdata.size.y * 0.345);
-   rdata.pos + float2(rdata.size.x * 0.67, rdata.size.y * offset)]])
+  let line <- to_array_move(fixed_array<float2>(rdata.pos + float2(rdata.size.x * 0.66, rdata.size.y * 0.345),
+   rdata.pos + float2(rdata.size.x * 0.67, rdata.size.y * offset)))
   ctx |> render_line_aa(line, false, data.lineWidth, float2(0., 0.), data.color)
 
   let climbStr = "{vspeed}"
@@ -100,7 +100,7 @@ def draw_climb(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Canv
 def draw_altitude(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; alt : int)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
 
@@ -110,19 +110,19 @@ def draw_altitude(var ctx : GuiContext&; rdata : ElemRenderData& const; data : C
   ctx |> goto_xy(pos.x, pos.y + strBox.width.y * 0.5)
   ctx |> draw_str_scaled(1.0, altStr, altStr |> length())
 
-  let coord <- to_array_move([[float2[3] pos - float2(rdata.size.x * 0.01, 0.);
-   pos - float2(rdata.size.x * 0.005, 0.);
-   pos - float2(0., rdata.size.y * 0.01)]])
+  let coord <- to_array_move(fixed_array<float2>(pos - float2(rdata.size.x * 0.01, 0.),
+   pos - float2(rdata.size.x * 0.005, 0.),
+   pos - float2(0., rdata.size.y * 0.01)))
   ctx |> render_line_aa(coord, false, data.lineWidth, float2(0., 0.), data.color)
-  let coord2 <- to_array_move([[float2[2] pos - float2(rdata.size.x * 0.005, 0.);
-   pos + float2(0., rdata.size.y * 0.01)]])
+  let coord2 <- to_array_move(fixed_array<float2>(pos - float2(rdata.size.x * 0.005, 0.),
+   pos + float2(0., rdata.size.y * 0.01)))
   ctx |> render_line_aa(coord2, false, data.lineWidth, float2(0., 0.), data.color)
 
   let totalSize = rdata.size.y * 0.1
   let scalePos = pos - float2(rdata.size.x * 0.02, 0.)
   let zeroPos = scalePos + float2(0., float(alt) * 0.1 * totalSize)
-  let lineCoord <- to_array_move([[float2[2] scalePos - float2(0., totalSize);
-   scalePos + float2(0., min(totalSize, zeroPos.y - scalePos.y))]])
+  let lineCoord <- to_array_move(fixed_array<float2>(scalePos - float2(0., totalSize),
+   scalePos + float2(0., min(totalSize, zeroPos.y - scalePos.y))))
   ctx |> render_line_aa(lineCoord, false, data.lineWidth, float2(0., 0.), data.color)
   if alt <= 100
     for i in range(0, 11)
@@ -130,20 +130,20 @@ def draw_altitude(var ctx : GuiContext&; rdata : ElemRenderData& const; data : C
       let verOffset = alt <= 10 ? (totalSize * float(alt - i) * 0.1) : float(alt - 10 + i * 10) * 0.01 * totalSize
       if verOffset > totalSize
         continue
-      let smallLineCoord <- to_array_move([[float2[2] scalePos + float2(0., verOffset);
-      scalePos + float2(len, verOffset)]])
+      let smallLineCoord <- to_array_move(fixed_array<float2>(scalePos + float2(0., verOffset),
+      scalePos + float2(len, verOffset)))
       ctx |> render_line_aa(smallLineCoord, false, data.lineWidth, float2(0., 0.), data.color)
 
   let markFontSize = int(float(data.fontSize) * 0.8)
   get_font_context(fctx, data.fontId, 0, 0, markFontSize)
-  ctx |> set_font_ht(markFontSize);
+  ctx |> set_font_ht(markFontSize)
   for i in range(-2, 3)
     let markVal = (alt / 50) * 50 + i * 50
     if markVal <= 0 || alt - markVal > 100
       continue
     let markPos = scalePos + float2(0., float(alt - markVal) * 0.01 * totalSize - (alt <= 10 ? totalSize * 0.5 : 0.))
     let markEnd = markPos + float2(rdata.size.x * (markVal % 100 == 0 ? 0.008 : 0.005), 0.)
-    let markCoord <- to_array_move([[float2[2] markPos; markEnd]])
+    let markCoord <- to_array_move(fixed_array<float2>(markPos, markEnd))
     ctx |> render_line_aa(markCoord, false, data.lineWidth, float2(0., 0.), data.color)
     if markVal % 100 == 0 && abs(markVal - alt) > 20
       let text = "{markVal}"
@@ -156,7 +156,7 @@ def draw_speed(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Canv
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   let spdStr = "{speed} kts"
   let strBox = get_str_bbox(spdStr, spdStr |> length(), fctx)
@@ -170,7 +170,7 @@ def draw_roll_pitch(var ctx : GuiContext&; rdata : ElemRenderData& const; data :
   get_font_context(fctx, data.fontId, 0, 0, markFontSize)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(markFontSize);
+  ctx |> set_font_ht(markFontSize)
 
   ctx |> setRotViewTm(pos.x, pos.y, deg_to_rad(-roll), 0., false)
   for i in range(-2, 3)
@@ -179,20 +179,20 @@ def draw_roll_pitch(var ctx : GuiContext&; rdata : ElemRenderData& const; data :
     if markPos.y < rdata.size.y * 0.3
       continue
     if markVal != 0
-      let markCoord1 <- to_array_move([[float2[3] markPos + float2(-rdata.size.x * 0.05, ctx |> hdpx(12.) * float(sign(markVal)));
-       markPos - float2(rdata.size.x * 0.05, 0.);
-       markPos - float2(rdata.size.x * 0.032, 0.)]])
+      let markCoord1 <- to_array_move(fixed_array<float2>(markPos + float2(-rdata.size.x * 0.05, ctx |> hdpx(12.) * float(sign(markVal))),
+       markPos - float2(rdata.size.x * 0.05, 0.),
+       markPos - float2(rdata.size.x * 0.032, 0.)))
       ctx |> render_line_aa(markCoord1, false, data.lineWidth, float2(0., 0.), data.color)
-      let markCoord2 <- to_array_move([[float2[3] markPos + float2(rdata.size.x * 0.05, ctx |> hdpx(12.) * float(sign(markVal)));
-       markPos + float2(rdata.size.x * 0.05, 0.);
-       markPos + float2(rdata.size.x * 0.032, 0.)]])
+      let markCoord2 <- to_array_move(fixed_array<float2>(markPos + float2(rdata.size.x * 0.05, ctx |> hdpx(12.) * float(sign(markVal))),
+       markPos + float2(rdata.size.x * 0.05, 0.),
+       markPos + float2(rdata.size.x * 0.032, 0.)))
       ctx |> render_line_aa(markCoord2, false, data.lineWidth, float2(0., 0.), data.color)
     else
-      let markCoord1 <- to_array_move([[float2[2] markPos - float2(rdata.size.x * 0.05, 0.);
-       markPos - float2(rdata.size.x * 0.03, 0.)]])
+      let markCoord1 <- to_array_move(fixed_array<float2>(markPos - float2(rdata.size.x * 0.05, 0.),
+       markPos - float2(rdata.size.x * 0.03, 0.)))
       ctx |> render_line_aa(markCoord1, false, data.lineWidth, float2(0., 0.), data.color)
-      let markCoord2 <- to_array_move([[float2[2] markPos + float2(rdata.size.x * 0.05, 0.);
-       markPos + float2(rdata.size.x * 0.03, 0.)]])
+      let markCoord2 <- to_array_move(fixed_array<float2>(markPos + float2(rdata.size.x * 0.05, 0.),
+       markPos + float2(rdata.size.x * 0.03, 0.)))
       ctx |> render_line_aa(markCoord2, false, data.lineWidth, float2(0., 0.), data.color)
     if markVal != 0
       let textPos1 = markPos + float2(rdata.size.x * 0.05, 0.)
@@ -205,8 +205,8 @@ def draw_roll_pitch(var ctx : GuiContext&; rdata : ElemRenderData& const; data :
       ctx |> draw_str_scaled(1.0, text, text |> length())
 
   let arrowPos = rdata.pos + float2(rdata.size.x * 0.5, rdata.size.y * 0.26)
-  let arrowPoints <- to_array_move([[float2[3] arrowPos; arrowPos + float2(ctx |> hdpx(-5.), ctx |> hdpx(12.));
-   arrowPos + float2(ctx |> hdpx(5.), ctx |> hdpx(12.))]])
+  let arrowPoints <- to_array_move(fixed_array<float2>(arrowPos, arrowPos + float2(ctx |> hdpx(-5.), ctx |> hdpx(12.)),
+   arrowPos + float2(ctx |> hdpx(5.), ctx |> hdpx(12.))))
   ctx |> render_poly(arrowPoints, data.color)
   ctx |> render_box(arrowPos.x - ctx |> hdpx(5.), arrowPos.y + ctx |> hdpx(15.), arrowPos.x + ctx |> hdpx(5.), arrowPos.y + ctx |> hdpx(20.))
 
@@ -220,12 +220,12 @@ def draw_roll_pitch(var ctx : GuiContext&; rdata : ElemRenderData& const; data :
     if i != 0
       let posSt = origin + float2(rdata.size.y * 0.25 * cosa, rdata.size.y * 0.25 * sina)
       let posEnd = origin + float2(rdata.size.y * (i != 3 && i != -3 ? 0.26 : 0.27) * cosa, rdata.size.y * (i != 3 && i != -3 ? 0.26 : 0.27) * sina)
-      let markCoord <- to_array_move([[float2[2] posSt; posEnd]])
+      let markCoord <- to_array_move(fixed_array<float2>(posSt, posEnd))
       ctx |> render_line_aa(markCoord, false, data.lineWidth, float2(0., 0.), data.color)
     else
-      let markCoord <- to_array_move([[float2[3] origin - float2(0., rdata.size.y * 0.25);
-       origin - float2(ctx |> hdpx(6.), rdata.size.y * 0.265);
-       origin - float2(ctx |> hdpx(-6.), rdata.size.y * 0.265)]])
+      let markCoord <- to_array_move(fixed_array<float2>(origin - float2(0., rdata.size.y * 0.25),
+       origin - float2(ctx |> hdpx(6.), rdata.size.y * 0.265),
+       origin - float2(ctx |> hdpx(-6.), rdata.size.y * 0.265)))
       ctx |> render_line_aa(markCoord, true, data.lineWidth, float2(0., 0.), data.color)
 
 def draw_aim_lock(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
@@ -247,13 +247,13 @@ def draw_compass(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
   get_font_context(fctx, data.fontId, 0, 0, markFontSize)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(markFontSize);
+  ctx |> set_font_ht(markFontSize)
 
   for i in range(-3, 4)
     let markVal = (int(compass) / 5) * 5 + i * 5
     let markPos = pos + float2((-compass + float(markVal)) * 0.006 * rdata.size.x, 0.)
-    let markCoord <- to_array_move([[float2[2] markPos + float2(0., -ctx |> hdpx(markVal % 10 == 0 ? 15. : 12.));
-      markPos + float2(0., markVal % 10 != 0 ? -ctx |> hdpx(3.) : 0.)]])
+    let markCoord <- to_array_move(fixed_array<float2>(markPos + float2(0., -ctx |> hdpx(markVal % 10 == 0 ? 15. : 12.)),
+      markPos + float2(0., markVal % 10 != 0 ? -ctx |> hdpx(3.) : 0.)))
     ctx |> render_line_aa(markCoord, false, data.lineWidth, float2(0., 0.), data.color)
     if markVal % 10 == 0
       let text = "{markVal / 10}"
@@ -275,7 +275,7 @@ def draw_hmd_azimuth(var ctx : GuiContext&; rdata : ElemRenderData& const; data 
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   let azStr = fmt(":d", roundi(azimuth))
   let strBox = get_str_bbox(azStr, azStr |> length(), fctx)
@@ -290,7 +290,7 @@ def draw_ground_speed(var ctx : GuiContext&; rdata : ElemRenderData& const; data
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   let gs = roundi(length(float2(vel.x, vel.z)) * mpsToKnots)
   let spdStr = "GS {gs}"

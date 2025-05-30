@@ -1,10 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
-let { calc_personal_boost, calc_public_boost } = require("%appGlobals/ranks_common_shared.nut")
-let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
-let { getBoostersEffectsArray, sortBoosters } = require("%scripts/items/boosterEffect.nut")
-let { getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let {shouldDisguiseItem } = require("%scripts/items/workshop/workshop.nut")
@@ -158,99 +154,6 @@ function fillItemDescr(item, holderObj, handler = null, shopDesc = false, prefer
     }
 }
 
-function getActiveBoostersDescription(boostersArray, effectType, selectedItem = null, plainText = false) {
-  if (!boostersArray || boostersArray.len() == 0)
-    return ""
-
-  let getColoredNumByType =  function(num) {
-    let value = plainText ? $"+{num.tointeger()}%" : colorize("activeTextColor", $"+{num.tointeger()}%")
-    let currency = effectType.getCurrencyMark(plainText)
-    return "".concat(value, currency)
-  }
-
-  let separateBoosters = []
-
-  let itemsArray = []
-  foreach (booster in boostersArray) {
-    if (booster.showBoosterInSeparateList)
-      separateBoosters.append($"{booster.getName()}{loc("ui/colon")}{booster.getEffectDesc(true, effectType, plainText)}")
-    else
-      itemsArray.append(booster)
-  }
-  if (separateBoosters.len())
-    separateBoosters.append("\n")
-
-  let sortedItemsTable = sortBoosters(itemsArray, effectType)
-  let detailedDescription = []
-  for (local i = 0; i <= sortedItemsTable.maxSortOrder; i++) {
-    let arraysList = getTblValue(i, sortedItemsTable)
-    if (!arraysList || arraysList.len() == 0)
-      continue
-
-    let personalTotal = arraysList.personal.len() == 0
-      ? 0
-      : calc_personal_boost(getBoostersEffectsArray(arraysList.personal, effectType))
-
-    let publicTotal = arraysList.public.len() == 0
-      ? 0
-      : calc_public_boost(getBoostersEffectsArray(arraysList.public, effectType))
-
-    let isBothBoosterTypesAvailable = personalTotal != 0 && publicTotal != 0
-
-    local header = ""
-    let detailedArray = []
-    local insertedSubHeader = false
-
-    foreach (_j, arrayName in ["personal", "public"]) {
-      let arr = arraysList[arrayName]
-      if (arr.len() == 0)
-        continue
-
-      let personal = arr[0].personal
-      let boostNum = personal ? personalTotal : publicTotal
-
-      header = arr[0].eventConditions
-        ? getFullUnlockCondsDescInline(arr[0].eventConditions)
-        : loc("mainmenu/boosterType/common")
-
-      local subHeader = "".concat("* ", loc($"mainmenu/booster/{arrayName}"))
-      if (isBothBoosterTypesAvailable)
-        subHeader = loc("ui/colon").concat(subHeader, getColoredNumByType(boostNum))
-
-
-      detailedArray.append(subHeader)
-
-      let effectsArray = []
-      foreach (idx, item in arr) {
-        let effOld = personal ? calc_personal_boost(effectsArray) : calc_public_boost(effectsArray)
-        effectsArray.append(item[effectType.name])
-        let effNew = personal ? calc_personal_boost(effectsArray) : calc_public_boost(effectsArray)
-
-        local string = arr.len() == 1 ? "" : $"{idx+1}) "
-        string = $"{string}{item.getEffectDesc(false, null, plainText)}{loc("ui/comma")}"
-        string = $"{string}{loc("items/booster/giveRealBonus", {realBonus = getColoredNumByType(format("%.02f", effNew - effOld).tofloat())})}"
-        string = $"{string}{idx == arr.len()-1 ? loc("ui/dot") : loc("ui/semicolon")}"
-
-        if (selectedItem != null && selectedItem.id == item.id)
-          string = colorize("userlogColoredText", string)
-
-        detailedArray.append(string)
-      }
-
-      if (!insertedSubHeader) {
-        let totalBonus = publicTotal + personalTotal
-        header = $"{header}{loc("ui/colon")}{getColoredNumByType(totalBonus)}"
-        detailedArray.insert(0, header)
-        insertedSubHeader = true
-      }
-    }
-    detailedDescription.append("\n".join(detailedArray, true))
-  }
-
-  let description = $"{loc("mainmenu/boostersTooltip", { currencyMark = effectType.getCurrencyMark(plainText) })}{loc("ui/colon")}\n"
-  return $"{description}{"\n".join(separateBoosters, true)}{"\n\n".join(detailedDescription, true)}"
-}
-
 function updateExpireAlarmIcon(item, itemObj) {
   if (!itemObj?.isValid())
     return
@@ -369,7 +272,6 @@ addTooltipTypes({
 return {
   fillItemDescr
   fillDescTextAboutDiv
-  getActiveBoostersDescription
   updateExpireAlarmIcon
   fillItemDescUnderTable
 }

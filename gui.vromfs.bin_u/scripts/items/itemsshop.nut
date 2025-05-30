@@ -7,10 +7,12 @@ from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { show_obj, getObjValidIndex, enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
+let { show_obj, getObjValidIndex, enableObjsByTable, move_mouse_on_child_by_value,
+  move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { ceil } = require("math")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_obj, isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let sheets = require("%scripts/items/itemsShopSheets.nut")
 let itemInfoHandler = require("%scripts/items/itemInfoHandler.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
@@ -156,13 +158,13 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
 
     
     
-    let checkIsInMenu = isInMenu() || hasFeature("devItemShop")
+    let checkIsInMenu = isInMenu.get() || hasFeature("devItemShop")
     let checkEnableShop = checkIsInMenu && hasFeature("ItemsShop")
     if (!checkEnableShop)
       this.scene.findObject("wnd_title").setValue(loc(getNameByTabIdx(itemsTab.INVENTORY)))
 
     show_obj(this.getTabsListObj(), checkEnableShop)
-    show_obj(this.getSheetsListObj(), isInMenu)
+    show_obj(this.getSheetsListObj(), isInMenu.get())
     showObjById("sorting_block", false, this.scene)
 
     this.updateWarbondsBalance()
@@ -746,7 +748,7 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
     let activateText = (!showMainAction && item?.isInventoryItem
       && item.amount && !this.isInRecyclingTab()) ? item.getActivateInfo() : ""
     this.scene.findObject("activate_info_text").setValue(activateText)
-    showObjById("btn_preview", item ? (item.canPreview() && isInMenu()) : false, this.scene)
+    showObjById("btn_preview", item ? (item.canPreview() && isInMenu.get()) : false, this.scene)
 
     let altActionText = item?.getAltActionName({
       canRunCustomMission = !showMainAction

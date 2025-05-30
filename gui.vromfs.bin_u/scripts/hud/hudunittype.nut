@@ -26,8 +26,8 @@ let unitTypeByHudUnitType = {
   [SHIP_EX]          = unitTypes.SHIP,
   [AIRCRAFT]         = unitTypes.AIRCRAFT,
   [HELICOPTER]       = unitTypes.HELICOPTER,
-  [HUMAN]            = unitTypes.TANK,
-  
+
+
 
 
 }
@@ -38,8 +38,8 @@ let hudTypeByHudUnitType = {
   [SHIP_EX]          = HUD_TYPE.SHIP,
   [AIRCRAFT]         = HUD_TYPE.AIR,
   [HELICOPTER]       = HUD_TYPE.HELICOPTER,
-  [HUMAN]            = HUD_TYPE.TANK,
-  
+
+
 
 
 }

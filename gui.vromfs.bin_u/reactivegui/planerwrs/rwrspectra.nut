@@ -27,7 +27,7 @@ let styleText = {
 function createCompass(gridStyle) {
   let markAngleStep = 10.0
   let markAngle = PI * markAngleStep / 180.0
-  let markDashCount = 360.0 / markAngleStep
+  let markDashCount = (360.0 / markAngleStep).tointeger()
   let dotCommands = array(markDashCount / 3 * 2).map(
     @(_, i) [ VECTOR_ELLIPSE, 50 + cos(((i / 2) * 3 + 1 + (i % 2)) * markAngle) * 100, 50 + sin(((i / 2) * 3 + 1 + (i % 2)) * markAngle) * 100, 1, 1 ] )
   let dots = {
@@ -47,6 +47,19 @@ function createCompass(gridStyle) {
   let textDashCount = 360.0 / textAngleStep
   let compassFontSizeMult = 2.0
   for (local i = 0; i < textDashCount; ++i) {
+    let degrees = (i * textAngleStep).tointeger()
+    local txt = ""
+    if (degrees == 0)
+      txt = "N"
+    else if (degrees == 90)
+      txt = "E"
+    else if (degrees == 180)
+      txt = "S"
+    else if (degrees == 270)
+      txt = "W"
+    else
+      txt = format("%02d", degrees * 0.1)
+
     childrens.append({
       rendObj = ROBJ_TEXT
       pos = [pw(sin(i * textMarkAngle) * 100), ph(-cos(i * textMarkAngle) * 100)],
@@ -54,7 +67,7 @@ function createCompass(gridStyle) {
       color = white,
       font = styleText.font,
       fontSize = gridStyle.fontScale * styleText.fontSize * compassFontSizeMult,
-      text = (i * textAngleStep).tointeger(),
+      text = txt,
       halign = ALIGN_CENTER,
       valign = ALIGN_CENTER,
       transform = {

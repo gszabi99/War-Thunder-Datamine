@@ -493,12 +493,12 @@
           "actions": {
             "updateActiveDetectedTarget": {},
             "designateActiveDetectedTarget": {
-              "type": 0,
+              "type": "target",
               "self": true,
               "sensorIndex": 0
             },
             "designateTargetUnderCue": {
-              "type": 0,
+              "type": "cue",
               "self": true,
               "sensorIndex": 0
             }
@@ -510,7 +510,10 @@
           "stateTo": "checkLockType0",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": [
+                "target",
+                "cue"
+              ]
             }
           }
         },
@@ -529,7 +532,7 @@
           "stateTo": "checkLockType1",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 1
+              "type": "los"
             }
           }
         },
@@ -549,7 +552,7 @@
           "stateTo": "checkLockType2",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 2
+              "type": "visual"
             }
           }
         },

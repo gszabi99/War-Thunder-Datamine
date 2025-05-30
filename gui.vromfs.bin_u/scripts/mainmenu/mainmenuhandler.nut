@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import stop_gui_sound, set_presence_to_player, shop_get_unlock_crew_cost, shop_get_unlock_crew_cost_gold
 from "%scripts/dagui_library.nut" import *
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { debug_dump_stack } = require("dagor.debug")
@@ -11,7 +11,7 @@ let contentStateModule = require("%scripts/clientState/contentState.nut")
 let topMenuHandlerClass = require("%scripts/mainmenu/topMenuHandler.nut")
 let { topMenuHandler } = require("%scripts/mainmenu/topMenuStates.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { tryOpenTutorialRewardHandler } = require("%scripts/tutorials/tutorialRewardHandler.nut")
 let { getCrewUnlockTime, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -22,13 +22,17 @@ let { create_promo_blocks } = require("%scripts/promo/promoHandler.nut")
 let { get_warpoints_blk } = require("blkGetters")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userName, userIdStr } = require("%scripts/user/profileStates.nut")
-let { getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarState.nut")
-let { invalidateCrewsList, reinitAllSlotbars } = require("%scripts/slotbar/crewsList.nut")
-let { checkPackageAndAskDownloadOnce } = require("%scripts/clientState/contentPacks.nut")
+let { reinitAllSlotbars } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewUnlockTimeByUnit } = require("%scripts/slotbar/slotbarStateData.nut")
+let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { checkPackageAndAskDownloadOnce,
+  checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { getMyClanCandidates, isHaveRightsToReviewCandidates } = require("%scripts/clans/clanCandidates.nut")
 let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { totalRooms, totalPlayers } = require("%scripts/onlineInfo/onlineInfo.nut")
+let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   rootHandlerClass = topMenuHandlerClass.getHandler()
@@ -60,6 +64,10 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
       leaveSessionRoom()
     }
     stop_gui_sound("deb_count") 
+  }
+
+  function afterBaseHandlerLoaded () {
+    handlersManager.setLastBaseHandlerStartParams({ eventbusName = "gui_start_mainmenu" })
   }
 
   function onStart() {
@@ -114,10 +122,10 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   }
 
   function onLoadModels() {
-    if (isPlatformSony || isPlatformXboxOne)
+    if (isPlatformSony || isPlatformXbox)
       showInfoMsgBox(contentStateModule.getClientDownloadProgressText())
     else
-      ::check_package_and_ask_download("pkg_main", loc("msgbox/ask_package_download"))
+      checkPackageAndAskDownload("pkg_main", loc("msgbox/ask_package_download"))
   }
 
   function initPromoBlock() {
@@ -143,9 +151,9 @@ gui_handlers.MainMenu <- class (gui_handlers.InstantDomination) {
   }
 
   function updateLowQualityModelWarning() {
-    let lowQuality = !::is_loaded_model_high_quality()
+    let lowQuality = !isLoadedModelHighQuality()
     showObjById("low-quality-model-warning", lowQuality, this.scene)
-    if (lowQuality && this.isSceneActive() && isInMenu())
+    if (lowQuality && this.isSceneActive() && isInMenu.get())
       checkPackageAndAskDownloadOnce("pkg_main", "air_in_hangar")
   }
 

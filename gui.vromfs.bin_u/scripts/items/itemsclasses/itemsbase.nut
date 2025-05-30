@@ -68,6 +68,8 @@ let { hoursToString, secondsToHours, getTimestampFromStringUtc } = require("%scr
 let { validateLink, openUrl } = require("%scripts/onlineShop/url.nut")
 let lottie = require("%scripts/utils/lottie.nut")
 let { checkLegalRestrictions, isHiddenByCountry } = require("%scripts/items/itemRestrictions.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 
@@ -507,7 +509,7 @@ let BaseItem = class {
 
     let item = this
     let onSuccessCb = function() {
-      ::update_gamercards()
+      updateGamercards()
       item.forceRefreshLimits()
       if (cb)
         cb({

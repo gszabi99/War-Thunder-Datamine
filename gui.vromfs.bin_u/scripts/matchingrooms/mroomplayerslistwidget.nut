@@ -18,7 +18,8 @@ from "%scripts/teams.nut" import g_team
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { getRoomMembersInfoList } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")

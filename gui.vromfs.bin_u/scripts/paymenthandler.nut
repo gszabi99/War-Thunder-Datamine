@@ -2,7 +2,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.PaymentHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType         = handlerType.MODAL
@@ -10,7 +11,6 @@ gui_handlers.PaymentHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   owner           = null
 
   items = []
-  selItem = null
   cancel_fn = null
 
   function initScreen() {
@@ -38,6 +38,8 @@ gui_handlers.PaymentHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if ("callback" in item && item.callback)
       if (this.owner)
         item.callback.call(this.owner)
+      else
+        item.callback()
     this.goBack()
   }
 }

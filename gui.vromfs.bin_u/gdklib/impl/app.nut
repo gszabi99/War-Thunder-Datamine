@@ -8,7 +8,8 @@ function register_activation_callback(callback) {
     let senderXuid = result?.sender_xuid
     let invitedXuid = result?.invited_xuid
     let invitationData = result?.data
-    callback?(senderXuid, invitedXuid, invitationData)
+    let isFromInvitation = result?.is_from_invitation
+    callback?(senderXuid, invitedXuid, invitationData, isFromInvitation)
   })
 }
 

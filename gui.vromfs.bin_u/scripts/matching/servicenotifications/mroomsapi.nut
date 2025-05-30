@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import get_dyncampaign_b64blk
 from "%scripts/dagui_library.nut" import *
 
 let crossplayModule = require("%scripts/social/crossplay.nut")
-let { isPlatformSony, is_gdk } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { checkMatchingError, matchingApiFunc } = require("%scripts/matching/api.nut")
 let { roomState, cleanupRoomState, addRoomMember, onSelfReady } = require("%scripts/matching/serviceNotifications/mroomsState.nut")
 
@@ -76,7 +76,7 @@ function setMemberAttributes(params, cb) {
 }
 
 function setRoomAttributes(params, cb) {
-  log($"[PSMT] setting room attributes: {params?.public?.psnMatchId}")
+  log($"[PSMT] setting room attributes: {params?.public.psnMatchId}")
   matchingApiFunc("mrooms.set_attributes", cb, params)
 }
 

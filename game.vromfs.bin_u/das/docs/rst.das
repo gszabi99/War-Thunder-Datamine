@@ -1,5 +1,6 @@
 
 options indenting = 4
+options gen2 = false
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
 options no_aot = true
@@ -218,6 +219,19 @@ def describe_type_short(td:TypeDeclPtr)
 
     return cleanup_type_short(res)
 
+def public describe_short(expr : Expression? | smart_ptr<Expression>&)
+    if expr is ExprMakeStruct
+        let str = expr as ExprMakeStruct
+        var count = 0
+        for it in str.structs
+            for _ in *it
+                count++
+        if count == 0
+            var res = describe_type_short(str.makeType) + "()"
+            return res
+
+    return describe(expr)
+
 def rst_describe_function_short(func:FunctionPtr|Function?)
     var inscope args : array<string>
     for x in func.arguments
@@ -225,7 +239,7 @@ def rst_describe_function_short(func:FunctionPtr|Function?)
         continue if x._type.baseType == Type.fakeLineInfo
         let prefix = x._type.flags.removeConstant ? "var " : ""
         if x.init != null
-            args |> push("{prefix}{x.name}: {describe_type_short(x._type)} = {describe(x.init)}")
+            args |> push("{prefix}{x.name}: {describe_type_short(x._type)} = {describe_short(x.init)}")
         else
             args |> push("{prefix}{x.name}: {describe_type_short(x._type)}")
 
@@ -790,7 +804,7 @@ def document_function_declaration(doc_file:file;domain,func_name:string;
             first = false
             fwrite(doc_file,"{an}: {describe_type_short(at)}")
             if length(argInits) > i && argInits[i] != null
-                fwrite(doc_file," = {describe(argInits[i])}")
+                fwrite(doc_file," = {describe_short(argInits[i])}")
     fwrite(doc_file,")")
     if resType != null && !resType.isVoid
         fwrite(doc_file," : {describe_type_short(resType)}")
@@ -858,7 +872,8 @@ def is_trivial_ctor(func:FunctionPtr)
     return false
 
 def is_class_method(value; fld : FieldDeclaration&)
-    return is_class_method(unsafe(reinterpret<StructurePtr> value), fld._type) && length(fld._type.argNames) > 0 && fld._type.argNames[0] == "self"
+    return fld.flags.classMethod
+    
 
 def document_classes(doc_file:file;mods:array<Module?>)
     var any = false
@@ -1365,9 +1380,9 @@ struct public DocGroup
     @do_not_delete _module : Module?
 
 def debug_group(var group:DocGroup)
-    to_log(LOG_DEBUG, "Group {group.name}\n")
+    print("Group {group.name}\n")
     for func in group.func
-        to_log(LOG_DEBUG, "\t{rst_describe_function_short(func.fn)}\n")
+        print("\t{rst_describe_function_short(func.fn)}\n")
     return <- group
 
 def public append_to_group_by_regex(var group:DocGroup; var mod:Module?; var reg:Regex) : DocGroup&
@@ -1474,7 +1489,7 @@ def public mkdir_rec(path : string) : bool
 
 def public documents(name:string; mods:array<Module?>; fname:string; var groups:array<DocGroup>; var hook : DocsHook = DocsHook())
     static_if log_documentation
-        to_log(LOG_INFO, "Documenting {name} into {fname}\n")
+        print("Documenting {name} into {fname}\n")
     if length(mods)==0
         panic("missing module {name}")
     let path = "{topic_root}/{fname}"

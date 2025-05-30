@@ -19,6 +19,7 @@ let LaserAgmSelectedCnt = Watched(-1)
 let ShellCnt = Watched(0)
 let AdlPoint = [0, 0]
 let FwdPoint = [0, 0]
+let HasPrimaryGun = Watched(false)
 let CurWeaponName = Watched("")
 let CurWeaponGidanceType = Watched(-1)
 let GunBullets0 = Watched(0)
@@ -58,6 +59,7 @@ let planeState = {
   ShellCnt,
   FwdPoint,
   AdlPoint,
+  HasPrimaryGun,
   CurWeaponName,
   CurWeaponGidanceType,
   GunBullets0,

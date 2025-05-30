@@ -1,3 +1,4 @@
+options indenting = 2
 module safe shared
 require ecs
 require DagorMath

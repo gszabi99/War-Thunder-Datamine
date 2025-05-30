@@ -15,7 +15,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { getClustersList } = require("%scripts/onlineInfo/clustersManagement.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")

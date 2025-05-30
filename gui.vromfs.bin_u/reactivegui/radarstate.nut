@@ -298,7 +298,8 @@ interop.updateTarget <- function (index,
                                     azimuth_rel, elevation_rel, distance_rel,
                                     azimuth_width_rel, elevation_width_rel, distance_width_rel,
                                     los_hor_speed, los_ver_speed, los_speed,
-                                    age_rel, is_selected, is_detected, is_enemy, signal_rel) {
+                                    age_rel, is_selected, is_detected, is_enemy, signal_rel,
+                                    typeId, heightRel, radSpeed) {
   local needUpdate = false
   if (index >= targets.len()) {
     targets.resize(index + 1)
@@ -326,6 +327,9 @@ interop.updateTarget <- function (index,
     isDetected = is_detected
     isEnemy = is_enemy
     signalRel = signalRel
+    typeId = typeId
+    heightRel = heightRel
+    radSpeed = radSpeed
   }
   needUpdate = needUpdate || !isEqual(old_tgt, targets[index])
 

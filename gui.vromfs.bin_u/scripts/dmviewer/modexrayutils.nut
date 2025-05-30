@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { get_modifications_blk, get_wpcost_blk } = require("blkGetters")
 let { shopIsModificationEnabled } = require("chardResearch")
 let { appendOnce, copy } = require("%sqStdLibs/helpers/u.nut")
-let { S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT, compareWeaponFunc
+let { S_UNDEFINED, S_AIRCRAFT, S_HELICOPTER, S_TANK, S_SHIP, S_BOAT, compareWeaponFunc,
   mkTankCrewMemberDesc, mkGunnerDesc, mkPilotDesc, mkEngineDesc, mkTransmissionDesc, mkDriveTurretDesc,
   mkAircraftFuelTankDesc, mkWeaponDesc, mkAmmoDesc, mkTankArmorPartDesc, mkCoalBunkerDesc, mkSensorDesc,
   mkCountermeasureDesc, mkApsSensorDesc, mkApsLauncherDesc, mkAvionicsDesc, mkCommanderPanoramicSightDesc,
@@ -13,12 +13,13 @@ let { measureType } = require("%scripts/measureType.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getParametersByCrewId } = require("%scripts/crew/crewSkillParameters.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
-let { KGF_TO_NEWTON, isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon,
+let { isCaliberCannon, getCommonWeapons, getLastPrimaryWeapon,
   getPrimaryWeaponsList, getWeaponNameByBlkPath, getTurretGuidanceSpeedMultByDiff
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getUnitWeapons } = require("%scripts/weaponry/weaponryPresets.nut")
 let { isModAvailableOrFree } = require("%scripts/weaponry/modificationInfo.nut")
 let { getWeaponXrayDescText } = require("%scripts/weaponry/weaponryDescription.nut")
+let { getFmFile } = require("%scripts/unit/unitParams.nut")
 
 let unitTypeToSimpleUnitTypeMap = {
   [ES_UNIT_TYPE_AIRCRAFT] = S_AIRCRAFT,
@@ -128,7 +129,7 @@ function findAnyModEffectValueBlk(commonData, effectId) {
 function getUnitFmBlk(commonData) {
   let { unitDataCache, unitName, unitBlk } = commonData
   if ("fmBlk" not in unitDataCache)
-    unitDataCache.fmBlk <- ::get_fm_file(unitName, unitBlk)
+    unitDataCache.fmBlk <- getFmFile(unitName, unitBlk)
   return unitDataCache.fmBlk
 }
 
@@ -266,9 +267,6 @@ let toStr_thrustKgf = @(v) measureType.THRUST_KGF.getMeasureUnitsText(v)
 let toStr_distance = @(v) measureType.DISTANCE.getMeasureUnitsText(v)
 
 let xrayCommonGetters = {
-  toIntegerSafe = to_integer_safe
-  toFloatSafe = to_float_safe
-  KGF_TO_NEWTON
   isCaliberCannon
   getCommonWeapons
   getWeaponNameByBlkPath

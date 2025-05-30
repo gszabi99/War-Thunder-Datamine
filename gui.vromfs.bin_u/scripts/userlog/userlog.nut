@@ -7,8 +7,8 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let { move_mouse_on_child_by_value, move_mouse_on_obj, isInMenu
-} = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { set_gui_option, get_gui_option, setGuiOptionsMode, getGuiOptionsMode
 } = require("guiOptions")
@@ -24,19 +24,12 @@ let { guiStartBattleTasksWnd } = require("%scripts/unlocks/battleTasksHandler.nu
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
 let { getUserlogViewData } = require("%scripts/userLog/userlogViewData.nut")
+let { hiddenUserlogs } = require("%scripts/userLog/userlogConsts.nut")
 let { get_local_unixtime } = require("dagor.time")
 let { joinBattle } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { showLeaveSessionFirstPopup } = require("%scripts/invites/invites.nut")
-
-::hidden_userlogs <- [
-  EULT_NEW_STREAK,
-  EULT_SESSION_START,
-  EULT_WW_START_OPERATION,
-  EULT_WW_CREATE_OPERATION,
-  EULT_WW_END_OPERATION,
-  EULT_WW_AWARD
-]
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 function isMissionExtrCheckFucn(userLog) {
   if (userLog?.type != EULT_INVENTORY_ADD_ITEM || userLog?.roomId == null)
@@ -51,7 +44,7 @@ function isMissionExtrCheckFucn(userLog) {
 let userlogPages = [
   {
     id = "all"
-    hide = ::hidden_userlogs
+    hide = hiddenUserlogs
     checkFunc = isMissionExtrCheckFucn
   }
   {
@@ -144,7 +137,7 @@ let actionByLogType = {
     if (battleId == null)
       return
 
-    if (!isInMenu())
+    if (!isInMenu.get())
       return showLeaveSessionFirstPopup()
 
     if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))
@@ -362,7 +355,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = total - 1; i >= 0; i--) {
       let blk = DataBlock()
       get_user_log_blk_body(i, blk)
-      if (!isInArray(blk?.type, ::hidden_userlogs)) {
+      if (!hiddenUserlogs.contains(blk?.type)) {
         if (index == counter && !blk?.disabled) {
           if (disable_user_log_entry(i)) {
             needSave = true
@@ -387,7 +380,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       if (checkObj(obj))
         obj.show(count > 0)
     }
-    ::update_gamercards()
+    updateGamercards()
   }
 
   function goBack() {
@@ -450,7 +443,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
     this.initPage(newPage)
     set_gui_option(USEROPT_USERLOG_FILTER, value)
-    ::update_gamercards()
+    updateGamercards()
   }
 
   function onRefresh(_obj) {
@@ -459,7 +452,7 @@ gui_handlers.UserLogHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.updateTabNewIconWidgets()
     }
     this.initPage(this.curPage)
-    ::update_gamercards()
+    updateGamercards()
   }
 
   function onUpdateItemsDef() {

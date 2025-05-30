@@ -1,11 +1,11 @@
 from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { isMatchingError, matchingErrorString } = require("%scripts/matching/api.nut")
 let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
-let { getBannedMessage } = require("%scripts/penitentiary/penalties.nut")
+let { getBannedMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
 let { SERVER_ERROR_PLAYER_BANNED } = require("matching.errors")
 
 let errCodeToStringMap = {
@@ -84,7 +84,7 @@ function get_error_data(header, error_code) {
   return res
 }
 
-::error_message_box <- function error_message_box(header, error_code, buttons, def_btn, options = {}, message = null) {
+function showErrorMessageBox(header, error_code, buttons, def_btn, options = {}, message = null) {
   let guiScene = get_gui_scene()
   if (checkObj(guiScene["errorMessageBox"]))
     return
@@ -99,7 +99,7 @@ function get_error_data(header, error_code) {
 
   let errData = get_error_data(header, error_code)
 
-  if (!isPlatformXboxOne) {
+  if (!isPlatformXbox) {
     let errorLinkFormatText = loc(getCurCircuitOverride($"errorLinkFormatLocId_{errData.errCode}", "msgbox/error_link_format_game"))
     errData.text = "".concat(errData.text, "\n\n",
       (isPlatformSony ? "" : ("".concat(errorLinkFormatText, loc("ui/colon")))))
@@ -120,4 +120,5 @@ function get_error_data(header, error_code) {
 
 return {
   get_yu2_error_text
+  showErrorMessageBox
 }

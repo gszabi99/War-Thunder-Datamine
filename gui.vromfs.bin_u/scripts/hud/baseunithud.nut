@@ -4,7 +4,7 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getHasCompassObservable } = require("hudCompassState")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
-let { isInKillerCamera } = require("%scripts/hud/hudState.nut")
+let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
 
 gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
   scene = null
@@ -26,8 +26,8 @@ gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
         updateFunc = @(obj, value) obj.top = value ? "1@multiplayerScoreTopPosUnderCompass" : "0.015@shHud"
       },
       {
-        watch = isInKillerCamera
-        updateFunc = @(obj, value) obj.show(!value)
+        watch = isPlayerAlive
+        updateFunc = @(obj, value) obj.show(value)
       }]))
     }
   }

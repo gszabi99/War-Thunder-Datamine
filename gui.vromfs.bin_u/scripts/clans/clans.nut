@@ -4,10 +4,10 @@ from "%scripts/clans/clanConsts.nut" import CLAN_SEASON_NUM_IN_YEAR_SHIFT
 from "%scripts/contacts/contactsConsts.nut" import contactEvent
 from "%scripts/clans/clanState.nut" import is_in_clan, MY_CLAN_UPDATE_DELAY_MSEC, lastUpdateMyClanTime, myClanInfo
 
-let { g_chat } = require("%scripts/chat/chat.nut")
+let { chatRooms } = require("%scripts/chat/chatStorage.nut")
+let { isRoomClan } = require("%scripts/chat/chatRooms.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { split_by_chars } = require("string")
 let { get_time_msec, unixtime_to_utc_timetbl } = require("dagor.time")
@@ -25,15 +25,11 @@ let { getMyClanMembers } = require("%scripts/clans/clanInfo.nut")
 let { setSeenCandidatesBlk, parseSeenCandidates } = require("%scripts/clans/clanCandidates.nut")
 let { get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 const CLAN_ID_NOT_INITED = ""
 
-local get_my_clan_data_free = true
-
-registerPersistentData("ClansGlobals", getroottable(),
-  [
-    "get_my_clan_data_free"
-  ])
+let clansPersistent = persist("clansPersistent", @() { isInRequestMyClanData  = false })
 
 ::g_clans <- {
   lastClanId = CLAN_ID_NOT_INITED 
@@ -148,7 +144,7 @@ function handleNewMyClanData() {
 
 ::requestMyClanData <- function requestMyClanData(forceUpdate = false) {
   let myClanPrevMembersUid = getMyClanMembers().map(@(m) m.uid)
-  if (!get_my_clan_data_free)
+  if (clansPersistent.isInRequestMyClanData)
     return
 
   ::g_clans.checkClanChangedEvent()
@@ -162,7 +158,7 @@ function handleNewMyClanData() {
       clearClanTagForRemovedMembers(myClanPrevMembersUid, [])
       broadcastEvent("ClanInfoUpdate")
       broadcastEvent("ClanChanged") 
-      ::update_gamercards()
+      updateGamercards()
     }
     return
   }
@@ -173,7 +169,7 @@ function handleNewMyClanData() {
 
   lastUpdateMyClanTime.set(get_time_msec())
   let taskId = clan_request_my_info()
-  get_my_clan_data_free = false
+  clansPersistent.isInRequestMyClanData = true
   addBgTaskCb(taskId, function() {
     let wasCreated = !myClanInfo.get()
     myClanInfo.set(get_clan_info_table())
@@ -183,9 +179,9 @@ function handleNewMyClanData() {
       clearClanTagForRemovedMembers(myClanPrevMembersUid, myClanCurrMembersUid)
 
     handleNewMyClanData()
-    get_my_clan_data_free = true
+    clansPersistent.isInRequestMyClanData = false
     broadcastEvent("ClanInfoUpdate")
-    ::update_gamercards()
+    updateGamercards()
     if (wasCreated)
       broadcastEvent("ClanChanged") 
   })
@@ -403,9 +399,8 @@ class ClanSeasonTitle {
 
 ::getMyClanMemberPresence <- function getMyClanMemberPresence(nick) {
   let clanActiveUsers = []
-
-  foreach (roomData in g_chat.rooms)
-    if (g_chat.isRoomClan(roomData.id) && roomData.users.len() > 0) {
+  foreach (roomData in chatRooms)
+    if (isRoomClan(roomData.id) && roomData.users.len() > 0) {
       foreach (user in roomData.users)
         clanActiveUsers.append(user.name)
       break

@@ -23,6 +23,7 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { guiStartUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { guiStartOpenTrophy } = require("%scripts/items/trophyRewardWnd.nut")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
+let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
 
 function debug_show_test_unlocks(chapter = "test", group = null) {
   if (!is_dev_version())
@@ -31,7 +32,7 @@ function debug_show_test_unlocks(chapter = "test", group = null) {
   let awardsList = []
   foreach (_id, unlock in getAllUnlocks())
     if ((!chapter || unlock?.chapter == chapter) && (!group || unlock.group == group))
-      awardsList.append(::build_log_unlock_data({ id = unlock.id }))
+      awardsList.append(build_log_unlock_data({ id = unlock.id }))
   let titleText = "".concat("debug_show_test_unlocks (total: ", awardsList.len(), ")")
   showUnlocksGroupWnd(awardsList, titleText)
 }
@@ -48,7 +49,7 @@ function debug_show_all_streaks() {
     total++
 
     if (!hasMultiStageLocId(unlock.id)) {
-      let data = ::build_log_unlock_data({ id = unlock.id })
+      let data = build_log_unlock_data({ id = unlock.id })
       data.title = unlock.id
       awardsList.append(data)
     }
@@ -56,7 +57,7 @@ function debug_show_all_streaks() {
       let paramShift = unlock?.stage.param ?? 0
       foreach (key, _stageId in multiStageLocIdConfig[unlock.id]) {
         let stage = is_numeric(key) ? key : 99
-        let data = ::build_log_unlock_data({ id = unlock.id, stage = stage - paramShift })
+        let data = build_log_unlock_data({ id = unlock.id, stage = stage - paramShift })
         data.title = $"{unlock.id} / {stage}"
         awardsList.append(data)
       }
@@ -153,7 +154,7 @@ function gen_all_unlocks_desc_to_blk(path = "unlockDesc", showCost = false, show
 
 function debug_show_unlock_popup(unlockId) {
   guiStartUnlockWnd(
-    ::build_log_unlock_data(
+    build_log_unlock_data(
       buildConditionsConfig(
         getUnlockById(unlockId)
       )

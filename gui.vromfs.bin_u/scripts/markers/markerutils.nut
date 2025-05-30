@@ -4,7 +4,6 @@ from "%scripts/mainConsts.nut" import SEEN
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { promoteUnits } = require("%scripts/unit/remainingTimeUnit.nut")
 let { getUnitsWithNationBonuses, getNationBonusMarkState } = require("%scripts/nationBonuses/nationBonuses.nut")
-let { getUnitsDiscounts } = require("%scripts/discounts/discounts.nut")
 let { getUnitsWithUnlock } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
@@ -20,6 +19,7 @@ let { TIME_DAY_IN_SECONDS, buildDateTimeStr, getTimestampFromStringUtc } = requi
 let { hoursToString } = require("%appGlobals/timeLoc.nut")
 let { get_charserver_time_sec } = require("chard")
 let { get_ranks_blk } = require("blkGetters")
+let { getUnitsDiscounts } = require("%scripts/discounts/discountsState.nut")
 
 let { expNewNationBonusDailyBattleCount = 1 } = get_ranks_blk()
 

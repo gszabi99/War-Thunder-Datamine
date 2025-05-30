@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 from "%scripts/shop/shopCountriesList.nut" import checkCountry
 
-let { g_chat } = require("%scripts/chat/chat.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { g_team } = require("%scripts/teams.nut")
@@ -22,8 +21,8 @@ let { getEntitlementConfig, getEntitlementName, getEntitlementPrice } = require(
 let { isCrossPlayEnabled, getTextWithCrossplayIcon, needShowCrossPlayInfo
 } = require("%scripts/social/crossplay.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
-let { boosterEffectType } = require("%scripts/items/boosterEffect.nut")
-let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
+let { getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
+let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { getTournamentRewardData, getLogNameByType, getUserLogsList, updateRepairCost } = require("%scripts/userLog/userlogUtils.nut")
 let { getTotalRewardDescText, getConditionText } = require("%scripts/events/eventRewards.nut")
 let { getUnlockNameText, buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -42,7 +41,7 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
-let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { BASE_ITEM_TYPE_ICON, getItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 let { eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
@@ -66,6 +65,9 @@ let { getTrophyRewardText, getRewardsListViewData, getPrizeImageByConfig,
   getPrizeTypeIcon } = require("%scripts/items/prizesView.nut")
 let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
 let { getShopCountry } = require("%scripts/shop/shopCountryInfo.nut")
+let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
+let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { getTrophyRewardType, isRewardItem } = require("%scripts/items/trophyReward.nut")
@@ -214,7 +216,7 @@ function getExternalInventoryTrophyContent(config) {
       let unlock = getUnlockById(config.unlock)
       if (unlock != null) {
         let unlockConditions = buildConditionsConfig(unlock)
-        let unlockData = ::build_log_unlock_data(unlockConditions)
+        let unlockData = build_log_unlock_data(unlockConditions)
         icon = unlockData?.descrImage ?? unlockData?.image
       }
     }
@@ -763,7 +765,7 @@ function getUserlogViewData(logObj) {
     res.logImg = "#ui/gameuiskin#log_online_shop"
   }
   else if (logObj.type == EULT_NEW_UNLOCK) {
-    let config = ::build_log_unlock_data(logObj)
+    let config = build_log_unlock_data(logObj)
 
     res.name = config.title
     if (config.name != "")
@@ -849,7 +851,7 @@ function getUserlogViewData(logObj) {
     res.name = "".concat(loc($"userlog/{logName}/{typeTxt}", info), priceText)
 
     if ("comment" in logObj && logObj.comment != "") {
-      res.description <- "".concat(loc("clan/userlogComment"), "\n", ps4CheckAndReplaceContentDisabledText(g_chat.filterMessageText(logObj.comment, false)))
+      res.description <- "".concat(loc("clan/userlogComment"), "\n", ps4CheckAndReplaceContentDisabledText(filterMessageText(logObj.comment, false)))
       res.tooltip = res.description
     }
   }
@@ -868,7 +870,7 @@ function getUserlogViewData(logObj) {
       resourceType = decoratorType.resourceType
     }
     else {
-      config = ::build_log_unlock_data(logObj)
+      config = build_log_unlock_data(logObj)
       resourceType = logObj?.isAerobaticSmoke ? "smoke" : get_name_by_unlock_type(config.type)
     }
 
@@ -1544,7 +1546,7 @@ function getUserlogViewData(logObj) {
     if (awardData) {
       let wbPriceText = getWarbondPriceText(awardData?.cost ?? 0)
       let awardBlk = DataBlockAdapter(awardData)
-      let awardType = ::g_wb_award_type.getTypeByBlk(awardBlk)
+      let awardType = warBondAwardType.getTypeByBlk(awardBlk)
       res.name = awardType.getUserlogBuyText(awardBlk, wbPriceText)
     }
   }

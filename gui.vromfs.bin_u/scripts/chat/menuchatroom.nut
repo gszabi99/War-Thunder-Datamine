@@ -17,6 +17,8 @@ let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
+let { isRoomClan } = require("%scripts/chat/chatRooms.nut")
+let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"
@@ -157,7 +159,7 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
     messageType = myself ? MESSAGE_TYPE.MY : MESSAGE_TYPE.INCOMMING
 
     if (needCensore)
-      msg = g_chat.filterMessageText(msg, myself)
+      msg = filterMessageText(msg, myself)
 
     msgColor = privateMsg ? privateColor : ""
 
@@ -209,7 +211,8 @@ function newRoom(id, customScene = null, ownerHandler = null) {
     id = id
 
     type = rType
-    canBeClosed = rType.canBeClosed(id)
+    forceCanBeClosed = null
+    canBeClosed = @() this.forceCanBeClosed != null ? this.forceCanBeClosed : rType.canBeClosed(id)
     havePlayersList = rType.havePlayersList
     hasCustomViewHandler = rType.hasCustomViewHandler
 
@@ -243,7 +246,7 @@ function newRoom(id, customScene = null, ownerHandler = null) {
         this.mBlocks.append(mBlock)
       }
 
-      if (g_chat.isRoomClan(id))
+      if (isRoomClan(id))
         mBlock.clanTag = ""
 
       if (mBlock.text == "" && mBlock.from != "") {

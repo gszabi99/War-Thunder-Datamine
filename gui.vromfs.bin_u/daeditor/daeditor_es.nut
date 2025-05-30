@@ -44,6 +44,39 @@ function getEntityExtraName(eid) {
   return extraName.strip() == "" ? null : extraName
 }
 
+function getSceneLoadTypeText(v) {
+  let loadTypeVal = type(v) == "int" || type(v) == "integer" ? v : v.loadType
+  let loadType = (
+    (loadTypeVal == 1) ? "COMMON" :
+    (loadTypeVal == 2) ? "CLIENT" :
+    (loadTypeVal == 3) ? "IMPORT" :
+    "UNKNOWN"
+  )
+  return loadType
+}
+
+function getSceneId(loadType, index) {
+  return (index << 2) | loadType
+}
+
+function getSceneIdOf(scene) {
+  return getSceneId(scene.loadType, scene.index)
+}
+
+function getSceneIdLoadType(sceneId) {
+  return (sceneId & (1 | 2))
+}
+
+function getSceneIdIndex(sceneId) {
+  return (sceneId >> 2)
+}
+
 return {
   getEntityExtraName
+
+  getSceneLoadTypeText
+  getSceneId
+  getSceneIdOf
+  getSceneIdLoadType
+  getSceneIdIndex
 }

@@ -13,7 +13,7 @@ let { sortPresetsList, setFavoritePresets, getWeaponryPresetView,
   getWeaponryByPresetInfo, getCustomWeaponryPresetView
 } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { getLastWeapon, setLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getItemAmount, getItemCost, getItemStatusTbl } = require("%scripts/weaponry/itemInfo.nut")
 let { getWeaponItemViewParams } = require("%scripts/weaponry/weaponryVisual.nut")
@@ -43,12 +43,16 @@ let { loadModel } = require("%scripts/hangarModelLoadManager.nut")
 let { round_by_value } = require("%sqstd/math.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { getChildInContainers } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
+let { clearTimer, setTimeout } = require("dagor.workcycle")
 
 const MY_FILTERS = "weaponry_presets/filters"
+const DELAY_BEFORE_GET_PRESET_DESCRIPTION = 0.5
 
 let FILTER_OPTIONS = ["Favorite", "Available", 1, 2, 3, 4]
 
 let predifineWndHeightsInTiers = [3.0, 7.0, 13.0]
+
+let isGettingWeaponEffects = Watched(false)
 
 gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType              = handlerType.BASE
@@ -83,6 +87,7 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   availableWeapons     = null
   presetsHeightInTiers = 0
   tierSize             = 0
+  showPresetInfoTimer  = null
 
   function getSceneTplView() {
     this.weaponryByPresetInfo = getWeaponryByPresetInfo(this.unit, this.chooseMenuList)
@@ -209,8 +214,10 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.curPresetIdx == presetIdx && !isForced)
       return
 
-    if (!this.presetNest?.isValid())
+    if (!this.presetNest?.isValid()) {
+      isGettingWeaponEffects.set(false)
       return
+    }
 
     local childIdx = this.presetIdxToChildIdx?[this.curPresetIdx]
     if (childIdx != null)
@@ -230,7 +237,15 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.setSelectedWeaponVisual()
 
-    this.updateDesc()
+    let updateCb = Callback(@() this.updateDesc(), this)
+    if (this.showPresetInfoTimer)
+      clearTimer(this.showPresetInfoTimer)
+    this.showPresetInfoTimer = setTimeout(DELAY_BEFORE_GET_PRESET_DESCRIPTION, function() {
+      if (!isGettingWeaponEffects.get()) {
+        isGettingWeaponEffects.set(true)
+        updateCb()
+      }
+    })
     this.updateButtons()
   }
 
@@ -416,18 +431,43 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     return true
   }
 
+  function checkItemBeforeGetDescFn(item, effect) {
+    let res = {
+      item = null
+      effect = null
+    }
+    let descObj = this.scene.findObject("desc")
+    let currentPreset = this.presets?[this.curPresetIdx].weaponPreset
+    if (!currentPreset) {
+      this.guiScene.replaceContentFromText(descObj, "", 0, this)
+      isGettingWeaponEffects.set(false)
+    }
+    else if (currentPreset.name == effect?.modifName) {
+      isGettingWeaponEffects.set(false)
+      res.item <- item
+      res.effect <- effect
+    }
+    else {
+      res.item <- currentPreset
+    }
+    return res
+  }
+
   function updateDesc() {
     let descObj = this.scene.findObject("desc")
     if (this.curPresetIdx == null) {
       this.guiScene.replaceContentFromText(descObj, "", 0, this)
+      isGettingWeaponEffects.set(false)
       return
     }
+
     updateWeaponTooltip(descObj, this.unit, this.presets[this.curPresetIdx].weaponPreset, this, {
       curEdiff = this.curEdiff
       detail = INFO_DETAIL.FULL
       needDescInArrayForm = true
       markupFileName = "%gui/weaponry/weaponsPresetTooltip.tpl"
       showOnlyNamesAndSpecs = true
+      checkItemBeforeGetDescFn = Callback(this.checkItemBeforeGetDescFn, this)
     })
   }
 
@@ -864,6 +904,9 @@ gui_handlers.weaponryPresetsWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onDestroy() {
+    if(this.showPresetInfoTimer)
+      clearTimer(this.showPresetInfoTimer)
+    isGettingWeaponEffects.set(false)
     this.setChosenWeaponVisual()
     secondary_weapon_camera_mode(false)
   }

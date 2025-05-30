@@ -1,0 +1,190 @@
+{
+  "id": "",
+  "margin": "1@hudActionBarItemOffset, 0",
+  "padding": "0.003@shHud",
+  "css-hier-invalidate": "yes",
+  "display": "hide",
+  "action_bar_item": {
+    "id": "itemContent",
+    "size": "pw, ph",
+    "position": "absolute",
+    "background-color": "#77333333",
+    "selected": "",
+    "active": "",
+    "enable": "",
+    "css-hier-invalidate": "yes",
+    "actionId": "",
+    "behaviour": [
+      "button",
+      "touchArea"
+    ],
+    "on_click": "activateAction",
+    "overrideClick": "",
+    "action_item_content": {
+      "css-hier-invalidate": "yes",
+      "size": "pw, ph",
+      "background-color": "#55222222",
+      "selected_action_bg": {
+        "size": "pw, ph",
+        "position": "absolute",
+        "pos": "0, 0",
+        "background-image": "#ui/gameuiskin#circle_gradient_white",
+        "background-color": "#FFFFFF",
+        "display": "hide"
+      },
+      "transpBlinkAnimation": [
+        {
+          "id": "importantFire",
+          "size": "1.05pw, 1.05ph",
+          "position": "absolute",
+          "pos": "-0.025pw, -0.025ph",
+          "input-transparent": "yes",
+          "background-color": "#D77D00",
+          "color-factor": "0",
+          "_transp-timer": "1",
+          "transp-func": "doubleBlink",
+          "transp-time": "1000",
+          "_blink": "no",
+          "blend-time": "0"
+        },
+        {
+          "id": "availability",
+          "size": "pw, ph",
+          "position": "absolute",
+          "pos": "0, 0",
+          "input-transparent": "yes",
+          "background-image": "#ui/gameuiskin#action_blink",
+          "background-color": "#FFFFFF",
+          "color-factor": "0",
+          "_transp-timer": "1",
+          "transp-func": "doubleBlink",
+          "transp-time": "1000",
+          "_blink": "no",
+          "blend-time": "0"
+        }
+      ],
+      "tdiv": [
+        {
+          "id": "bulletsSetIcon",
+          "size": "pw, ph",
+          "css-hier-invalidate": "yes",
+          "display": "hide"
+        },
+        {
+          "id": "mainActionButton",
+          "behaviour": "BhvHint",
+          "position": "absolute",
+          "left": "pw/2 - w/2",
+          "top": "- h - 0.005@shHud",
+          "value": "",
+          "display": "hide"
+        },
+        {
+          "id": "activatedActionButton",
+          "behaviour": "BhvHint",
+          "position": "absolute",
+          "pos": "pw/2 - w/2, -h - 0.005@shHud",
+          "value": "",
+          "hasShortcut": "no",
+          "display": "hide"
+        }
+      ],
+      "img": {
+        "id": "action_icon",
+        "size": "pw, ph",
+        "background-svg-size": "pw, ph",
+        "background-image": "",
+        "display": "hide"
+      },
+      "actionItemCooldown": [
+        {
+          "id": "cooldown",
+          "sector-angle-1": "360",
+          "inc-factor": "0",
+          "background-color": "#cc0c111c"
+        },
+        {
+          "id": "progressCooldown",
+          "sector-angle-1": "360",
+          "inc-factor": "0",
+          "background-color": "#88080C12"
+        },
+        {
+          "id": "blockedCooldown",
+          "sector-angle-1": "360",
+          "inc-factor": "0",
+          "background-color": "#99020202"
+        }
+      ],
+      "textarea": [
+        {
+          "id": "amount_text",
+          "pos": "pw - w, ph - h + 0.004@shHud",
+          "position": "absolute",
+          "hudFont": "small",
+          "shadeStyle": "outline33pct",
+          "text-align": "right",
+          "text": ""
+        },
+        {
+          "id": "automatic_text",
+          "pos": "pw -w -0.002@shHud, 0.004@shHud",
+          "position": "absolute",
+          "hudFont": "small",
+          "shadeStyle": "outline33pct",
+          "text-align": "right",
+          "text": "#actionBar/action/automatic/abbr"
+        }
+      ],
+      "actionBarItemTextShortcut": {
+        "id": "shortcutTextNest",
+        "position": "absolute",
+        "pos": "pw/2 - w/2, -h",
+        "re-type": "9rect",
+        "background-color": "#C0FFFFFF",
+        "background-repeat": "expand",
+        "background-image": "#ui/gameuiskin#block_bg_rounded_gray",
+        "background-position": "4, 4, 4, 4",
+        "padding": "0.002@shHud, 0.002@shHud, 0.002@shHud, 0",
+        "margin-bottom": "0.004@shHud",
+        "min-height": "@hudActionBarTextShHight",
+        "display": "hide",
+        "textarea": {
+          "id": "shortcutText",
+          "pos": "pw/2-w/2, ph/2-h/2",
+          "position": "relative",
+          "text-align": "center",
+          "hudFont": "small",
+          "shortcut": "yes",
+          "text": ""
+        },
+        "img": {
+          "id": "actionCollapseBtn",
+          "size": "12@sf/@pf, 16@sf/@pf",
+          "position": "absolute",
+          "pos": "2@sf/@pf, (ph - h)/2",
+          "background-repeat": "aspect-ratio",
+          "background-image": "#ui/gameuiskin#icon_collapse_action_bar.svg",
+          "rotation": "180",
+          "display": "hide"
+        }
+      }
+    }
+  },
+  "tooltipLayer": {
+    "id": "tooltipLayer",
+    "size": "pw, ph",
+    "position": "absolute",
+    "input-transparent": "yes",
+    "tooltip-float": "horizontal",
+    "tooltip-timeout": "",
+    "tooltip": "",
+    "tooltipObj": {
+      "id": "tooltipObj",
+      "on_tooltip_open": "onGenericTooltipOpen",
+      "on_tooltip_close": "onTooltipObjClose",
+      "tooltipId": "",
+      "display": "hide"
+    }
+  }
+}

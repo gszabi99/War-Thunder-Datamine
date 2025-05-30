@@ -2,7 +2,6 @@ options gen2
 options indenting = 4
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
-options no_aot = true
 options strict_smart_pointers = true
 
 module spoof shared private
@@ -60,7 +59,7 @@ def spoof_args(invocation : string; blk : block<(var res : array<tuple<string; s
 }
 
 [macro_function]
-def next_ident(it : iterator<int>; var Ch : int&; var ident : string&) : bool {
+def next_ident(var it : iterator<int>; var Ch : int&; var ident : string&) : bool {
     var id : array<uint8>
     Ch = -1
     while (next(it, Ch)) {

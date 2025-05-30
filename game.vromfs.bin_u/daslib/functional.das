@@ -81,7 +81,7 @@ def map(var src : iterator<auto(TT)>; blk : function<(what : TT -&) : auto(QQ)>)
 }
 
 
-def private reduce_any(it : iterator<auto(TT)>; functor) {
+def private reduce_any(var it : iterator<auto(TT)>; functor) {
     var left : TT -&
     var first = true
     for (right in it) {
@@ -103,24 +103,24 @@ def private reduce_any(it : iterator<auto(TT)>; functor) {
 }
 
 
-def reduce(it : iterator<auto(TT)>; blk : lambda<(left, right : TT -&) : TT const -&>) {
+def reduce(var it : iterator<auto(TT)>; blk : lambda<(left, right : TT -&) : TT const -&>) {
     
     
     return reduce_any(it, blk)
 }
 
 
-def reduce(it : iterator<auto(TT)>; blk : function<(left, right : TT -&) : TT const -&>) {
+def reduce(var it : iterator<auto(TT)>; blk : function<(left, right : TT -&) : TT const -&>) {
     return reduce_any(it, blk)
 }
 
 
-def reduce(it : iterator<auto(TT)>; blk : block<(left, right : TT -&) : TT const -&>) {
+def reduce(var it : iterator<auto(TT)>; blk : block<(left, right : TT -&) : TT const -&>) {
     return reduce_any(it, blk)
 }
 
 
-def sum(it : iterator<auto(TT)>) {
+def sum(var it : iterator<auto(TT)>) {
     
     
     var temp : TT -&
@@ -146,6 +146,16 @@ def any(it) {
     }
 }
 
+def any(var it : iterator<auto(TT)>) {
+    
+    for (x in it) {
+        if (x) {
+            return true
+        }
+    }
+    return false
+}
+
 
 def all(it) {
     
@@ -160,6 +170,16 @@ def all(it) {
         }
         return true
     }
+}
+
+def all(var it : iterator<auto(TT)>) {
+    
+    for (x in it) {
+        if (!x) {
+            return false
+        }
+    }
+    return true
 }
 
 def cycle(var src : iterator<auto(TT)>) {

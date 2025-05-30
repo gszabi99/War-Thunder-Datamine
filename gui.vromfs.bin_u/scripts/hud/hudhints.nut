@@ -30,7 +30,7 @@ let { isEqual } = require("%sqstd/underscore.nut")
 let { g_hud_hint_types } = require("%scripts/hud/hudHintTypes.nut")
 let { objectiveStatus } = require("%scripts/misObjectives/objectiveStatus.nut")
 let { getLocalTeamForMpStats } = require("%scripts/statistics/mpStatisticsUtil.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { getCurControlsPreset, getPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
 
 const DEFAULT_MISSION_HINT_PRIORITY = 100
@@ -103,6 +103,20 @@ function getUniqueShortcuts(shortcuts) {
   }
 
   return uniqShortcuts
+}
+
+function getAxisShortCutLoc(schId) {
+  let shortcutId = $"{schId}_rangeMax"
+  local shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(shortcutId)
+  let hasShortcut = shortcutType.getFirstInput(shortcutId, getPreviewControlsPreset(), false)?.getMarkup() != null
+  if (hasShortcut)
+    return "".concat("{{", schId, "_rangeMin}} - {{", schId,"_rangeMax}}")
+
+  shortcutType = g_shortcut_type.getShortcutTypeByShortcutId(schId)
+  let isAxisAssigned = shortcutType.isAssigned(schId)
+  if (isAxisAssigned)
+    return "".concat("{{", schId, "}}")
+  return "".concat("\"", loc($"controls/{schId}"), "\"")
 }
 
 g_hud_hints._buildText <- function _buildText(data) {
@@ -439,7 +453,6 @@ g_hud_hints.template <- {
   priority = 0
   
   isWrapInRowAllowed = false
-
   getHintNestId = g_hud_hints._getHintNestId
   getHintStyle = g_hud_hints._getHintStyle
 
@@ -596,7 +609,7 @@ enums.addTypes(g_hud_hints, {
   }
 
   BLOCK_X_RAY_CAMERA = {
-    hintType = g_hud_hint_types.COMMON
+    hintType = g_hud_hint_types.WARNING_HINTS
     locId = "hints/x_ray_unavailable"
     showEvent = "hint:xrayCamera:showBlockHint"
     lifeTime = 1.0
@@ -738,6 +751,7 @@ enums.addTypes(g_hud_hints, {
 
   DEAD_PILOT_HINT = {
     hintType = g_hud_hint_types.COMMON
+    getHintNestId = @() "warning_hints"
     locId = "hints/dead_pilot"
     showEvent = "hint:dead_pilot:show"
     lifeTime = 5.0
@@ -1048,7 +1062,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/move_suspension_blocked"
     showEvent = "hint:move_suspension_blocked"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   YOU_CAN_EXIT_HINT = {
@@ -1668,6 +1681,22 @@ enums.addTypes(g_hud_hints, {
     lifeTime = 5.0
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   OFFER_REPAIR = {
     hintType = g_hud_hint_types.REPAIR
     getLocId = function (data) {
@@ -1764,7 +1793,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/friendly_fire_warning"
     showEvent = "hint:friendly_fire_warning"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   NEED_STOP_FOR_FIRE = {
@@ -1772,7 +1800,6 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/need_stop_for_fire"
     showEvent = "hint:need_stop_for_fire"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   NEED_STOP_FOR_HULL_AIMING = {
@@ -1781,7 +1808,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:need_stop_for_hull_aiming:show"
     hideEvent = "hint:need_stop_for_hull_aiming:hide"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   HULL_AIMING_WITH_CAMERA = {
@@ -1790,7 +1816,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:hull_aiming_with_camera:show"
     hideEvent = "hint:hull_aiming_with_camera:hide"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   STOP_TERRAFORM_FOR_HULL_AIMING = {
@@ -1798,7 +1823,6 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/stop_terraform_for_hull_aiming"
     showEvent = "hint:stop_terraform_for_hull_aiming"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   NEED_STOP_FOR_TERRAFORM = {
@@ -1806,7 +1830,6 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/need_stop_for_terraform"
     showEvent = "hint:need_stop_for_terraform"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   WAIT_LAUNCHER = {
@@ -1815,7 +1838,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:wait_launcher_ready"
     hideEvent = "hint:wait_launcher_ready_hide"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   FPS_TO_VIRTUAL_FPS_HINT = {
@@ -1839,7 +1861,6 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/commander_view_with_nv_on"
     showEvent = "hint:commander_view_with_nv_on:show"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   COMMANDER_IS_UNCONSCIOUS = {
@@ -1847,7 +1868,6 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/commander_is_unconscious"
     showEvent = "hint:commander_is_unconscious:show"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   VERY_FEW_CREW = {
@@ -1855,7 +1875,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/is_very_few_crew"
     showEvent = "hint:very_few_crew:show"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   SUPPORT_PLANE_OFFER = {
@@ -1865,7 +1884,42 @@ enums.addTypes(g_hud_hints, {
     hideEvent = "hint:support_plane_offer:hide"
     lifeTime = 5.0
     totalCount = 3
+  }
+
+  SUPPORT_PLANE_HIT = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/support_plane_hit"
+    showEvent = "hint:support_plane_hit"
+    lifeTime = 5.0
     isHideOnDeath = true
+    isHideOnWatchedHeroChanged = true
+  }
+  SUPPORT_PLANE_DROWN = {
+    hintType = g_hud_hint_types.COMMON
+    lifeTime = 10.0
+    locId = "hints/support_plane_drown"
+    showEvent = "hint:support_plane_drown:show"
+    hideEvent = "hint:support_plane_drown:hide"
+  }
+  SUPPORT_PLANE_BURN = {
+    hintType = g_hud_hint_types.COMMON
+    lifeTime = 10.0
+    locId = "hints/support_plane_burn"
+    showEvent = "hint:support_plane_burn:show"
+    hideEvent = "hint:support_plane_burn:hide"
+  }
+  SUPPORT_PLANE_OUT_OF_MAP = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/support_plane_out_of_map"
+    showEvent = "hint:support_plane_out_of_map:show"
+    hideEvent = "hint:support_plane_out_of_map:hide"
+  }
+  SUPPORT_PLANE_REPAIR_NEEDED = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/support_plane_repair_needed"
+    lifeTime = 10.0
+    showEvent = "hint:support_plane_repair_needed:show"
+    hideEvent = "hint:support_plane_repair_needed:hide"
   }
 
   SHOT_FREQUENCY_CHANGED = {
@@ -1873,7 +1927,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/shot_frequency_changed"
     showEvent = "hint:shot_frequency_changed:show"
     lifeTime = 5.0
-    isHideOnDeath = true
     getLocParams = @(hintData) { shotFreq = loc($"hints/shotFreq/{hintData.shotFreq}") }
   }
 
@@ -1883,7 +1936,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:change_bullet_type_for_set"
     totalCount = 8
     lifeTime = 4.0
-    isHideOnDeath = true
   }
 
   IRCM_FAIL_GUIDANCE = {
@@ -1891,7 +1943,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/ircm_fail_guidance"
     showEvent = "hint:ircm_fail_guidance:show"
     lifeTime = 1.0
-    isHideOnDeath = true
   }
 
   NUCLEAR_KILLSTREAK_REACH_AREA = {
@@ -1899,7 +1950,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/reach_battlearea_to_activate_the_bomb"
     showEvent = "hint:nuclear_killstreak_reach_area:show"
     hideEvent = "hint:nuclear_killstreak_reach_area:hide"
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -1908,7 +1958,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/drop_the_bomb"
     showEvent = "hint:nuclear_killstreak_drop_the_bomb:show"
     hideEvent = "hint:nuclear_killstreak_drop_the_bomb:hide"
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -1917,7 +1966,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/wait_for_aiming"
     showEvent = "hint:wait_for_aiming"
     lifeTime = 3.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -1959,7 +2007,6 @@ enums.addTypes(g_hud_hints, {
     noKeyLocId = "hints/request_extinguish_help_no_key"
     showEvent = "hint:request_extinguish_help"
     hideEvent = "hint:request_extinguish_help_hide"
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
     getShortcuts =  function(_data) {
       return g_hud_action_bar_type.EXTINGUISHER.getVisualShortcut()
@@ -2005,7 +2052,6 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/owner_torpedo_alert"
     showEvent = "hint:owner_torpedo_alert:show"
     hideEvent = "hint:owner_torpedo_alert:hide"
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2038,7 +2084,6 @@ enums.addTypes(g_hud_hints, {
     shortcuts = "ID_PLANE_SMOKE_SCREEN_GENERATOR"
     lifeTime = 10.0
     shouldBlink = true
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = false
     getLocParams = @(hintData) {
       minAlt = hintData.minAlt
@@ -2076,6 +2121,7 @@ enums.addTypes(g_hud_hints, {
 
   ACCEPT_SORRY_OFFER = {
     hintType = g_hud_hint_types.REPAIR 
+    getHintNestId = @() "warning_hints"
     locId = "hints/accept_sorry"
     getNoKeyLocId = @() isXInputDevice()
       ? "hints/accept_sorry_nokey/xinput"
@@ -2095,6 +2141,7 @@ enums.addTypes(g_hud_hints, {
 
   AWAIT_SORRY = {
     hintType = g_hud_hint_types.REPAIR 
+    getHintNestId = @() "warning_hints"
     locId     = "hints/await_sorry"
     showEvent = "hint:await_sorry:show"
     hideEvent = "hint:await_sorry:hide"
@@ -2108,7 +2155,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/shot_failed_aps_working"
     showEvent = "hint:shot_failed_aps_working:show"
     lifeTime = 3.0
-    isHideOnDeath = true
   }
 
   ALLOW_COMMANDER_AIM_MODE = {
@@ -2118,7 +2164,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:allow_commander_aim_mode:show"
     shouldBlink = true
     lifeTime = 10.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
     shortcuts = "ID_COMMANDER_AIM_MODE"
   }
@@ -2128,7 +2173,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/cant_spawn_ugv"
     showEvent = "hint:cant_spawn_ugv:show"
     lifeTime = 3.0
-    isHideOnDeath = true
   }
 
   CANT_SPAWN_UNLIM_CTRL = {
@@ -2136,7 +2180,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/cant_spawn_unlim_ctrl"
     showEvent = "hint:cant_spawn_unlim_ctrl:show"
     lifeTime = 3.0
-    isHideOnDeath = true
   }
 
   KILL_STREAK_FIGHTER_REVERTED = {
@@ -2144,7 +2187,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/kill_streak_fighter_reverted"
     showEvent = "hint:kill_streak_fighter_reverted"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   NOT_IN_BURAV_CTRL_RADIUS = {
@@ -2152,7 +2194,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/not_in_burav_ctrl_radius"
     showEvent = "hint:not_in_burav_ctrl_radius"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   BURAV_CTRL_BY_OTHER = {
@@ -2160,7 +2201,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/burav_ctrl_by_other_player"
     showEvent = "hint:burav_ctrl_by_other_player"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   BURAV_TARGET_NOT_IN_BATTLE_AREA = {
@@ -2168,7 +2208,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/burav_target_not_in_battle_area"
     showEvent = "hint:burav_target_not_in_battle_area"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   BURAV_TARGET_NOT_IN_CTRL_RADIUS = {
@@ -2176,7 +2215,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/burav_target_not_ctrl_radius"
     showEvent = "hint:burav_target_not_ctrl_radius"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   ROCKET_LAUNCHER_IN_WATER = {
@@ -2184,7 +2222,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/rocket_launcher_in_water"
     showEvent = "hint:rocket_launcher_in_water"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2193,7 +2230,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/burav_in_delay"
     showEvent = "hint:burav_in_delay:show"
     hideEvent = "hint:burav_in_delay:hide"
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2202,7 +2238,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/burav_ctrl_by_enemy"
     showEvent = "hint:burav_ctrl_by_enemy:show"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2211,7 +2246,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/burav_ctrl_by_ally"
     showEvent = "hint:burav_ctrl_by_ally:show"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2221,7 +2255,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:burav_controlling:show"
     hideEvent = "hint:burav_controlling:hide"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2230,7 +2263,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/burav_in_delay_click"
     showEvent = "hint:burav_in_delay_click"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2240,7 +2272,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:plane_can_repair_assist"
     lifeTime = 10.0
     totalCount = 5
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2249,7 +2280,6 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/plane_have_potential_assistee"
     showEvent = "hint:plane_have_potential_assistee"
     lifeTime = 3.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2266,7 +2296,6 @@ enums.addTypes(g_hud_hints, {
         : getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_SENSOR_SWITCH_HELICOPTER"
         : ""
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   TARGET_LOCK_SENSOR_DAMAGED = {
@@ -2274,7 +2303,6 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/target_lock_sensor_damaged"
     showEvent = "hint:target_lock_sensor_damaged"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2288,7 +2316,6 @@ enums.addTypes(g_hud_hints, {
       : getHudUnitType() == HUD_UNIT_TYPE.HUMAN ? "ID_HUMAN_NIGHT_VISION"
       : getHudUnitType() == HUD_UNIT_TYPE.HELICOPTER ? "ID_HELI_GUNNER_NIGHT_VISION"
       : "ID_PLANE_NIGHT_VISION"
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2463,7 +2490,6 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/auto_emergency_surfacing"
     showEvent = "hint:auto_emergency_surfacing"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
     shouldBlink = true
   }
@@ -2474,7 +2500,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/ship_depth_charge_salvo"
     lifeTime = 5.0
     totalCount=2
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2485,7 +2510,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/saclos_guidance_mode_auto"
     hideEvent = "hint:saclos_guidance_mode_direct"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
   SACLOS_GUIDANCE_MODE_DIRECT = {
@@ -2494,7 +2518,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/saclos_guidance_mode_direct"
     hideEvent = "hint:saclos_guidance_mode_lead"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
   SACLOS_GUIDANCE_MODE_LEAD = {
@@ -2503,7 +2526,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/saclos_guidance_mode_lead"
     hideEvent = "hint:saclos_guidance_mode_auto"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2513,7 +2535,6 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/submarine_cant_dive"
     showEvent = "hint:submarine_cant_dive"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
     shouldBlink = true
   }
@@ -2523,7 +2544,6 @@ enums.addTypes(g_hud_hints, {
     locId     = "hints/submarine_cant_surfacing"
     showEvent = "hint:submarine_cant_surfacing"
     lifeTime = 5.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
     shouldBlink = true
   }
@@ -2534,7 +2554,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:submarine_emergency_sufracing"
     lifeTime = 5.0
     totalCount = 2
-    isHideOnDeath = true
   }
 
   SUBMARINE_CANT_SUBMERGE_TANKS_DESTROYED = {
@@ -2543,7 +2562,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:submarine_cant_submerge_tanks_destroyed"
     lifeTime = 5.0
     totalCount = 2
-    isHideOnDeath = true
   }
 
   SUBMARINE_CANT_SURFACE_ONLY_EMERGENCY = {
@@ -2552,7 +2570,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:submarine_cant_surface_only_emergecy"
     lifeTime = 5.0
     totalCount = 2
-    isHideOnDeath = true
   }
 
   SUBMARINE_FULL_REPAIR_ONLY_ON_SURFACE = {
@@ -2561,7 +2578,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:submarine_full_repair_only_on_surface"
     lifeTime = 5.0
     totalCount = 2
-    isHideOnDeath = true
   }
 
   SUBMARINE_NOISE_LEVEL = {
@@ -2570,7 +2586,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:submarine_noise_level"
     lifeTime = 15.0
     totalCount=2
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2580,7 +2595,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:rage_scanner_active"
     lifeTime = 5.0
     totalCount=2
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
   }
 
@@ -2631,7 +2645,6 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:aircraft_has_boosters"
     shortcuts = "ID_IGNITE_BOOSTERS"
     lifeTime = 15.0
-    isHideOnDeath = true
   }
 
   SHIP_COVER_DESTROYED = {
@@ -2639,7 +2652,6 @@ enums.addTypes(g_hud_hints, {
     locId = "hints/cover_destroyed"
     showEvent = "hint:cover_destroyed:show"
     lifeTime = 5.0
-    isHideOnDeath = true
   }
 
   AMMO_USED_EXIT_ZONE = {
@@ -2659,16 +2671,24 @@ enums.addTypes(g_hud_hints, {
       return locId
     }
     lifeTime = 15.0
-    isHideOnDeath = true
     isHideOnWatchedHeroChanged = true
+  }
+
+  NET_WARNING_HINT = {
+    hintType = g_hud_hint_types.WARNING_HINTS
+    getLocId = @(eventData) eventData.text
+    toggleHint = [
+      "warn:net_slow",
+      "warn:net_unresponsive"
+    ]
+    isHideOnDeath = false
+    shouldBlink = true
   }
 
   GENERAL_WARNING_HIT = {
     hintType = g_hud_hint_types.WARNING_HINTS
     getLocId = @(eventData) eventData.text
     toggleHint = [
-      "warn:net_slow",
-      "warn:net_unresponsive",
       "warn:crit_airbrake",
       "warn:crit_flutter",
       "warn:high_engine_rpm",
@@ -2688,7 +2708,6 @@ enums.addTypes(g_hud_hints, {
       "warn:stamina_loose_control",
       "warn:follow_the_path"
     ]
-    isHideOnDeath = false
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
@@ -2697,7 +2716,6 @@ enums.addTypes(g_hud_hints, {
     hintType = g_hud_hint_types.WARNING_HINTS
     getLocId = @(eventData) eventData.text
     toggleHint = ["warn:return_to_zone"]
-    isHideOnDeath = false
     shouldBlink = true
   }
 
@@ -2705,7 +2723,6 @@ enums.addTypes(g_hud_hints, {
     hintType = g_hud_hint_types.WARNING_HINTS
     getLocId = @(eventData) eventData.text
     toggleHint = ["warn:custom"]
-    isHideOnDeath = false
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
@@ -2715,7 +2732,6 @@ enums.addTypes(g_hud_hints, {
     getLocId = @(eventData) eventData.text
     toggleHint = ["warn:crit_flaps"]
     shortcuts = "ID_FLAPS"
-    isHideOnDeath = false
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
@@ -2725,7 +2741,6 @@ enums.addTypes(g_hud_hints, {
     getLocId = @(eventData) eventData.text
     toggleHint = ["warn:crit_gears"]
     shortcuts = "ID_GEAR"
-    isHideOnDeath = false
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
@@ -2735,7 +2750,6 @@ enums.addTypes(g_hud_hints, {
     getLocId = @(eventData) eventData.text
     toggleHint = ["warn:set_takeoff_flaps_for_takeoff"]
     shortcuts = "ID_FLAPS"
-    isHideOnDeath = false
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
@@ -2745,7 +2759,6 @@ enums.addTypes(g_hud_hints, {
     getLocId = @(eventData) eventData.text
     toggleHint = ["warn:crit_cockpit_door"]
     shortcuts = "ID_TOGGLE_COCKPIT_DOOR"
-    isHideOnDeath = false
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
@@ -2754,7 +2767,6 @@ enums.addTypes(g_hud_hints, {
     hintType = g_hud_hint_types.WARNING_HINTS
     getLocId = @(eventData) "".concat(loc("HUD_DANGEROUS_OVERLOAD")," ", eventData?.val ?? "", loc("HUD_CRIT_OVERLOAD_G"))
     toggleHint = ["warn:danger_overload"]
-    isHideOnDeath = false
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
@@ -2763,7 +2775,6 @@ enums.addTypes(g_hud_hints, {
     hintType = g_hud_hint_types.WARNING_HINTS
     getLocId = @(eventData) "".concat(loc("HUD_CRIT_OVERLOAD")," ", eventData?.val ?? "", loc("HUD_CRIT_OVERLOAD_G"))
     toggleHint = ["warn:crit_overload"]
-    isHideOnDeath = false
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
   }
@@ -2772,7 +2783,6 @@ enums.addTypes(g_hud_hints, {
     hintType = g_hud_hint_types.WARNING_HINTS
     getLocId = @(eventData) eventData.text
     toggleHint = ["warn:royal_area"]
-    isHideOnDeath = false
     buildText = @(data) data.isShrinkZone ? colorize("@red", data.text) : colorize("@white", data.text)
     shouldBlink = true
     isAllowedByDiff = { [g_difficulty.SIMULATOR.name] = false }
@@ -2791,6 +2801,113 @@ enums.addTypes(g_hud_hints, {
     showEvent = "hint:manual_sensor_tilt_control"
     lifeTime  = 5.0
   }
+
+  SENSOR_TARGET_CYCLIC_SWITCH = {
+    hintType  = g_hud_hint_types.REPAIR
+    locId     = "hints/sensor_target_cyclic_switch"
+    showEvent = "hint:sensor_target_cyclic_switch"
+    lifeTime  = 5.0
+  }
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  DRONE_ENTER_ORBITING_MODE = {
+    hintType = g_hud_hint_types.COMMON
+    getLocParams = @(_eventData) {roll = getAxisShortCutLoc("ailerons"), pitch = getAxisShortCutLoc("elevator")}
+    locId     = "hints/drone_orbit_mode_controls"
+    showEvent = "hint:drone_enter_orbiting_mode"
+    hideEvent = "hint:drone_leave_orbiting_mode"
+    lifeTime  = 8.0
+    isHideOnWatchedHeroChanged = true
+  }
+
+  DRONE_ORBITING_CTRL_HINTS_COUNTER = {
+    showEvent = "hint:drone_orbiting_ctrl_hints_counter"
+    totalCount = 3
+    secondsOfForgetting = 90*(3600*24)
+    uid = 11247
+  }
+
 },
 function() {
   this.name = $"hint_{this.typeName.tolower()}"

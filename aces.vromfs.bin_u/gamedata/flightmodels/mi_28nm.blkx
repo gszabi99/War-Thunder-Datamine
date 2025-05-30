@@ -1802,7 +1802,84 @@
               "hideVerAngle": false
             },
             {
-              "type": "map"
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 25,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                100,
+                0,
+                255
+              ],
+              "orient": "hdgUp",
+              "centerMarkType": "circle",
+              "centerMarkFillColor": [
+                0,
+                100,
+                0,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                100,
+                0,
+                255
+              ],
+              "centerMarkScale": 0.01,
+              "centerMarkSpeed": false,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                255,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": true,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                0,
+                100,
+                0,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "azScaleType": "lines",
+              "azScaleSize": 15000.0,
+              "azScaleColor": [
+                0,
+                100,
+                0,
+                255
+              ],
+              "headingIndFillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "centerCross": true,
+              "time": true,
+              "mapBackground": false,
+              "extent": 38000.0,
+              "markers": true,
+              "metricUnits": true
             },
             {
               "type": "rwr"
@@ -2453,7 +2530,8 @@
       },
       {
         "blk": "gameData/sensors/ir_tracker.blk",
-        "node": "optic1_gun"
+        "node": "optic1_gun",
+        "powerButtonIdx": -1
       },
       {
         "blk": "gameData/sensors/su_spo-150.blk"
@@ -4017,7 +4095,8 @@
             },
             {
               "blk": "gameData/sensors/ir_tracker.blk",
-              "node": "optic1_gun"
+              "node": "optic1_gun",
+              "powerButtonIdx": -1
             },
             {
               "blk": "gameData/sensors/su_spo-150.blk"

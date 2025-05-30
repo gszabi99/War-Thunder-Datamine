@@ -9,10 +9,8 @@ let { g_mission_type } = require("%scripts/missions/missionType.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let regexp2 = require("regexp2")
 let time = require("%scripts/time.nut")
 let replayMetadata = require("%scripts/replays/replayMetadata.nut")
@@ -24,13 +22,15 @@ let { startsWith, endsWith } = require("%sqstd/string.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getMissionName, getMissionTimeText, getWeatherLocName } = require("%scripts/missions/missionsText.nut")
-let { move_mouse_on_child_by_value, select_editbox, loadHandler,
-  handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { countSizeInItems, move_mouse_on_child_by_value, select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { canOpenHitsAnalysisWindow, openHitsAnalysisWindow } = require("%scripts/dmViewer/hitsAnalysis.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { resetSessionLobbyPlayersInfo } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { buildMpTable } = require("%scripts/statistics/mpStatisticsUtil.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 const REPLAY_SESSION_ID_MIN_LENGTH = 16
 
@@ -44,10 +44,8 @@ let autosaveReplayMaxCount = 100
 let autosaveReplayPrefix = "#"
 const replayFileExt = "wrpl"
 
-::current_replay <- ""
+let currentReplay = persist("currentReplay", @() { path = "" })
 ::back_from_replays <- null
-
-registerPersistentData("ReplayScreenGlobals", getroottable(), ["current_replay"])
 
 function guiStartReplays() {
   loadHandler(gui_handlers.ReplayScreen)
@@ -69,8 +67,8 @@ function guiStartReplayBattle(sessionId, backFunc) {
     backFunc()
   }
   reqUnlockByClient("view_replay")
-  ::current_replay = getReplayUrlBySessionId(sessionId)
-  on_view_replay(::current_replay)
+  currentReplay.path = getReplayUrlBySessionId(sessionId)
+  on_view_replay(currentReplay.path)
 }
 
 function guiModalRenameReplay(base_name, base_path, func_owner, after_rename_func, after_func = null) {
@@ -140,7 +138,7 @@ function autosaveReplay() {
   on_save_replay(name) 
 
   let currentReplayPath = "\\".concat(get_replays_dir(), $"{name}.{replayFileExt}")
-  ::current_replay = currentReplayPath
+  currentReplay.path = currentReplayPath
 }
 
 gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
@@ -174,18 +172,18 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("chapter_include_block").show(true)
     showObjById("btn_open_folder", is_platform_windows, this.scene)
 
-    ::update_gamercards()
+    updateGamercards()
     this.loadReplays()
 
     local selItem = 0
-    if (::current_replay != "") {
+    if (currentReplay.path != "") {
       foreach (index, replay in this.replays)
-        if (replay.path == ::current_replay) {
+        if (replay.path == currentReplay.path) {
           this.curPage = index / this.replaysPerPage
           selItem = index
           break
         }
-      ::current_replay = ""
+      currentReplay.path = ""
     }
     this.calculateReplaysPerPage()
     this.updateMouseMode()
@@ -554,7 +552,7 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!canPlayReplay(curReplay))
       return
 
-    if (!::g_squad_utils.canJoinFlightMsgBox())
+    if (!canJoinFlightMsgBox())
       return
 
     set_presence_to_player("replay")
@@ -568,8 +566,8 @@ gui_handlers.ReplayScreen <- class (gui_handlers.BaseGuiHandlerWT) {
         guiStartMenuReplays()
       }
       reqUnlockByClient("view_replay")
-      ::current_replay = this.replays[index].path
-      on_view_replay(::current_replay)
+      currentReplay.path = this.replays[index].path
+      on_view_replay(currentReplay.path)
       this.isReplayPressed = false
     })
   }
@@ -718,4 +716,5 @@ return {
   guiStartReplays
   autosaveReplay
   guiModalNameAndSaveReplay
+  currentReplay
 }

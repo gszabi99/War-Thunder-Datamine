@@ -1,8 +1,8 @@
-from "%scripts/dagui_natives.nut" import get_player_unit_name
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
+let { get_player_unit_name } = require("unit")
 let { isXInputDevice } = require("controls")
 let { getHudUnitType } = require("hudState")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")

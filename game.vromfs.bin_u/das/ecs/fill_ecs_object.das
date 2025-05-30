@@ -1,3 +1,4 @@
+options indenting = 2
 module fill_ecs_object shared
 require ecs
 require daslib/apply

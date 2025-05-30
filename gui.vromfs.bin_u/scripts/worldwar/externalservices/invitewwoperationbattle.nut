@@ -8,7 +8,7 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
@@ -76,7 +76,7 @@ let WwOperationBattle = class (BaseInvite) {
   }
 
   function haveRestrictions() {
-    return !isInMenu()
+    return !isInMenu.get()
   }
 
   function getRestrictionText() {
@@ -98,8 +98,8 @@ let WwOperationBattle = class (BaseInvite) {
   }
 
   function onEventQueueChangeState(p) {
-    if (p?.queue?.params?.operationId == this.operationId &&
-        p?.queue?.params?.battleId == this.battleId)
+    if (p?.queue.params.operationId == this.operationId &&
+        p?.queue.params.battleId == this.battleId)
       this.remove()
   }
 }

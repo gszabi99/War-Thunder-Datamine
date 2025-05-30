@@ -19,13 +19,13 @@ let { isSensorViewMode, setSensorViewFilter, getSensorViewFilter,
   
 } = require("camera_control")
 let { INVALID_SQUAD_ID } = require("matching.errors")
-let { getObjValidIndex, enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, getObjValidIndex, enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { CHAT_MODE_ALL, chat_set_mode, toggle_ingame_chat } = require("chat")
 let u = require("%sqStdLibs/helpers/u.nut")
 let time = require("%scripts/time.nut")
@@ -53,7 +53,6 @@ let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 let { isInFlight } = require("gameplayBinding")
-let { isInSessionRoom, getMemberByName } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { updateActionBar } = require("%scripts/hud/actionBarState.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { gui_start_tactical_map } = require("%scripts/tacticalMap.nut")
@@ -64,11 +63,12 @@ let { register_command } = require("console")
 let { replaySystemWindowOpen, replaySystemWindowClose } = require("%scripts/replays/replaySystemWindow.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
-let { getRoomMemberPublicParam } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
+let { currentReplay } = require("%scripts/replays/replayScreen.nut")
+let { registerRespondent } = require("scriptRespondent")
 
 enum SPECTATOR_MODE {
   RESPAWN     
@@ -317,10 +317,11 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
     if (isReplay) {
       
       ::back_from_replays = ::back_from_replays || gui_start_mainmenu
-      ::current_replay = ::current_replay.len() ? ::current_replay : getFromSettingsBlk("viewReplay", "")
+      currentReplay.path = currentReplay.path.len() ? currentReplay.path : getFromSettingsBlk("viewReplay", "")
+      let pathForMetadata = currentReplay.path.replace("/0000.wrpl", "/0001.wrpl")
 
       
-      replayMetadata.restoreReplayScriptCommentsBlk(::current_replay)
+      replayMetadata.restoreReplayScriptCommentsBlk(pathForMetadata)
     }
 
     this.gotRefereeRights = (mplayerTable?.spectator ?? 0) == 1
@@ -422,7 +423,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       this.replayTimeSpeedMin = timeSpeeds[0]
       this.replayTimeSpeedMax = timeSpeeds[timeSpeeds.len() - 1]
 
-      let info = ::current_replay.len() && get_replay_info(::current_replay)
+      let info = currentReplay.path.len() && get_replay_info(currentReplay.path)
       let comments = info?.comments
       if (comments) {
         this.replayAuthorUserId = comments?.authorUserId ?? this.replayAuthorUserId
@@ -461,7 +462,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       if (!page?.options)
         continue
       foreach ( option in page.options ) {
-        if (option?.comboBox?.makeValue)
+        if (option?.comboBox.makeValue)
           this.scene.findObject(option.comboBox.id)?.setValue(option.comboBox.makeValue())
       }
     }
@@ -1578,19 +1579,6 @@ function spectatorDebugMode() {
 
 register_command(spectatorDebugMode, "debug.spectatorDebugMode")
 
-::isPlayerDedicatedSpectator <- function isPlayerDedicatedSpectator(name = null) {
-  if (name) {
-    let member = isInSessionRoom.get() ? getMemberByName(name) : null
-    return member ? !!getRoomMemberPublicParam(member, "spectator") : false
-  }
-  return !!((get_local_mplayer() ?? {})?.spectator ?? 0)
-}
-::cross_call_api.isPlayerDedicatedSpectator <- ::isPlayerDedicatedSpectator
-
-::get_spectator_air_hud_offset_x <- function get_spectator_air_hud_offset_x() { 
-  return spectator_air_hud_offset_x
-}
-
 function on_player_requested_artillery(data) { 
   let { userId } = data
   let handler = handlersManager.findHandlerClassInScene(gui_handlers.Spectator)
@@ -1625,3 +1613,5 @@ eventbus_subscribe("on_open_replay_system_window", @(_p) on_open_replay_system_w
 eventbus_subscribe("replayWait", function (event) {
   broadcastEvent("ReplayWait", event)
 })
+
+registerRespondent("onGetSpectatorAirHudOffsetX", @() spectator_air_hud_offset_x)

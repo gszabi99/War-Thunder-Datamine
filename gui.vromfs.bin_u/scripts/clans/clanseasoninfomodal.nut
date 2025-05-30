@@ -4,7 +4,8 @@ from "%scripts/clans/clanConsts.nut" import CLAN_SEASON_MEDAL_TYPE
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
-let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getSelectedChild, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
@@ -12,7 +13,6 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { format } = require("string")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")

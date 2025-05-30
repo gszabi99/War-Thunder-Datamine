@@ -4,7 +4,7 @@ let { get_time_msec } = require("dagor.time")
 let { removeUserstatItemRewardToShow } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { resetTimeout } = require("dagor.workcycle")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 
 
@@ -95,7 +95,7 @@ function checkRecivedAllPrizes(config) {
 }
 
 function checkShowExternalTrophyRewardWnd() {
-  if (!isInMenu())
+  if (!isInMenu.get())
     return
 
   foreach (idx, trophyConfig in delayedTrophies) {

@@ -5,7 +5,7 @@ from "%scripts/utils_sa.nut" import is_mode_with_teams
 
 let { getRoomMembers, isUserCanChangeReadyInLobby, hasSessionInLobby, isInSessionRoom,
   SessionLobbyState, isMeSessionLobbyRoomOwner, getSessionLobbyGameType, getSessionLobbyMissionParam,
-  getSessionLobbyMaxMembersCount
+  getSessionLobbyMaxMembersCount, getMemberByName
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { invitePlayerToRoom, kickMember } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
@@ -13,6 +13,7 @@ let { isMyUserId } = require("%scripts/user/profileStates.nut")
 let { checkMatchingError } = require("%scripts/matching/api.nut")
 let { INVALID_ROOM_ID, INVALID_SQUAD_ID } = require("matching.errors")
 let { abs } = require("math")
+let { get_local_mplayer } = require("mission")
 
 let memberDefaults = freeze({
   team = Team.Any
@@ -51,7 +52,8 @@ function getRoomMemberInfo(member) {
     isLocal = isMyUserId(member.userId)
     spectator = getTblValue("spectator", member, false)
     isBot = false
-    pilotIcon = userInfo?.pilotIcon ?? "cardicon_default"
+    pilotIcon = userInfo?.pilotIcon ?? ""
+    pilotId = userInfo?.pilotId ?? ""
     frame = userInfo?.frame ?? ""
   }
   foreach (key, value in memberDefaults)
@@ -168,6 +170,15 @@ function getRoomMembersReadyStatus() {
   return res
 }
 
+function isPlayerDedicatedSpectator(name = null) {
+  if (name) {
+    let member = isInSessionRoom.get() ? getMemberByName(name) : null
+    return member ? !!getRoomMemberPublicParam(member, "spectator") : false
+  }
+  return !!get_local_mplayer()?.spectator
+}
+::cross_call_api.isPlayerDedicatedSpectator <- isPlayerDedicatedSpectator
+
 return {
   getRoomMemberPublicParam
   isRoomMemberInSession
@@ -178,4 +189,5 @@ return {
   kickPlayerFromRoom
   isUsedPlayersOwnUnit
   getRoomMembersReadyStatus
+  isPlayerDedicatedSpectator
 }

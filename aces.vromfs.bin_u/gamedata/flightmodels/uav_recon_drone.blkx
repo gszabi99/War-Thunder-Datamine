@@ -1,0 +1,495 @@
+{
+  "model": "uav_quadcopter",
+  "fmFile": "fm/uav_quadcopter.blk",
+  "MetaPartsBlk": "gameData/FlightModels/dm/metaparts/uav_quadcopter_metaparts.blk",
+  "exhaustEffectsBlk": "gameData/FlightModels/exhaustEffects/exhaustEffects_common.blk",
+  "gForceTolerationMult": 0.0001,
+  "tpsCameraOffset": [
+    12.0,
+    -3.5,
+    0.0
+  ],
+  "mustHaveCockpit": false,
+  "orbitAvaible": [
+    false,
+    true
+  ],
+  "gyroSight": false,
+  "gearSinkRangeLR": 0.001,
+  "gearSinkRangeC": 0.001,
+  "disableAerobaticsSmoke": true,
+  "haveOpticTurret": true,
+  "isBwOpticSight": true,
+  "havePointOfInterestDesignator": true,
+  "radarCrossSectionAspectMultFront": 1e-9,
+  "radarCrossSectionAspectMultSide": 1e-9,
+  "radarCrossSectionAspectMultRear": 1e-9,
+  "type": "typeFighter",
+  "paratrooper": "usa_para",
+  "overheatBlk": "gameData/FlightModels/dm/overheat.blk",
+  "damagePartsToCollisionObjectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_objects.blk",
+  "damagePartsToFmPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_fm_parts_map_tailless.blk",
+  "damagePartsToHudPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_hud_parts_map.blk",
+  "damagePartsDependencyMapBlk": "gameData/FlightModels/DM/dm_parts_additional_dependency_map.blk",
+  "damagePartsToCollisionPointsMapBlk": "gameData/FlightModels/DM/dm_parts_to_collision_points_map.blk",
+  "damagePartsToWeaponsMapBlk": "gameData/FlightModels/DM/dm_parts_to_weapons_map.blk",
+  "damagePartsToAvionicsPartsMapBlk": "gameData/FlightModels/DM/dm_parts_to_avionics_parts_map.blk",
+  "damagePartsToVisualEffectsMapBlk": "gameData/FlightModels/DM/dm_parts_to_visual_effects_map.blk",
+  "damagePartsExcludeFromHoleBlk": "gameData/FlightModels/DM/dm_parts_exclude_from_hole.blk",
+  "explosion_dmBlk": "gameData/FlightModels/DM/commonExplosion.blk",
+  "fireParamsPreset": "uav_micro",
+  "fightAiBehaviour": "fighter",
+  "autopilotImpl": "Full",
+  "fullAutopilotIndSpeedTransition": [
+    2210.0,
+    2250.0
+  ],
+  "fullAutopilotVtolTransition": [
+    -1.0,
+    -1.0
+  ],
+  "customClassIco": "!#ui/gameuiskin#uav_quadcopter_ico.svg",
+  "customImage": "!#ui/unitskin#uav_quadcopter",
+  "customTooltipImage": "!#ui/aircrafts/uav_quadcopter",
+  "verifyEcsTemplate": false,
+  "DamageParts": {
+    "c_wood40": {
+      "fuse_dm": {
+        "hp": 44.5
+      }
+    },
+    "dural": {
+      "engine1_dm": {
+        "hp": 19.5
+      },
+      "engine2_dm": {
+        "hp": 19.5
+      },
+      "engine3_dm": {
+        "hp": 19.5
+      },
+      "engine4_dm": {
+        "hp": 19.5
+      }
+    },
+    "steel": {
+      "gear_l_dm": {
+        "hp": 39.5
+      },
+      "gear_r_dm": {
+        "hp": 39.5
+      },
+      "gear_c_dm": {
+        "hp": 39.5
+      }
+    },
+    "steel_tank_light": {
+      "tank1_dm": {
+        "hp": 24.5
+      }
+    }
+  },
+  "DamageEffects": {
+    "part": [
+      {
+        "name": "engine1_dm"
+      },
+      {
+        "name": "engine2_dm"
+      },
+      {
+        "name": "engine3_dm"
+      },
+      {
+        "name": "engine4_dm"
+      },
+      {
+        "name": "fuse_dm",
+        "onHit": [
+          {
+            "flame": 0.2,
+            "smoke": 0.2
+          },
+          {
+            "damage": 30.0,
+            "wing_r_dm": 0.3,
+            "wing_l_dm": 0.3
+          },
+          {
+            "damage": 50.0,
+            "wing_r_dm": 0.5,
+            "wing_l_dm": 0.5
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.2,
+            "wingcontrol_l_dm": 0.2,
+            "wingcontrol_r_dm": 0.2
+          }
+        ],
+        "onKill": [
+          {
+            "wingcontrol_l_dm": 1.0,
+            "wingcontrol_r_dm": 1.0,
+            "nothing": 9.0
+          },
+          {
+            "damage": 7.0,
+            "wing_l_dm": 1.0,
+            "wing_r_dm": 1.0,
+            "nothing": 5.0
+          },
+          {
+            "damage": 10.0,
+            "wing_l_dm": 1.0,
+            "wing_r_dm": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "wing_l_dm": 1.0,
+            "wing_r_dm": 1.0,
+            "nothing": 3.0
+          },
+          {
+            "damage": 30.0,
+            "wing_l_dm": 1.0,
+            "wing_r_dm": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 5.0,
+            "wing_l_dm": 1.0,
+            "wing_r_dm": 1.0
+          },
+          {
+            "damage": 200.0,
+            "wingcontrol_dm": 0.4,
+            "wingcontrol_l_dm": 0.4,
+            "wingcontrol_r_dm": 0.4
+          }
+        ]
+      },
+      {
+        "name": "gear_l_dm",
+        "onHit": [
+          {
+            "damage": 15.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 25.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 40.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
+      },
+      {
+        "name": "gear_r_dm",
+        "onHit": [
+          {
+            "damage": 15.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 25.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 40.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
+      },
+      {
+        "name": "gear_c_dm",
+        "onHit": [
+          {
+            "damage": 15.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 25.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 40.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 60.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": {
+          "cut": 1.0
+        }
+      },
+      {
+        "name": "tank1_dm",
+        "onHit": [
+          {
+            "fire": 0.05,
+            "leak": 0.5
+          },
+          {
+            "damage": 7.0,
+            "fire": 0.5,
+            "leak": 0.7
+          },
+          {
+            "damage": 20.0,
+            "fire": 0.9,
+            "leak": 0.9
+          },
+          {
+            "damage": 80.0,
+            "expl": 0.5,
+            "fire": 0.9,
+            "leak": 0.9
+          }
+        ],
+        "onKill": [
+          {
+            "fire": 3.0,
+            "leak": 12.0,
+            "nothing": 85.0
+          },
+          {
+            "damage": 30.0,
+            "fire": 25.0,
+            "leak": 25.0
+          },
+          {
+            "damage": 50.0,
+            "fire": 50.0,
+            "leak": 30.0
+          }
+        ]
+      }
+    ]
+  },
+  "effects": {
+    "waterExplosionEffect": "water_explosion_medium",
+    "landExplosionEffect": "hit_28_38mm_stone_ap",
+    "landCrashShortFireEffect": [
+      "ad_sand",
+      ""
+    ],
+    "landCrashFireEffect": "ad_sand",
+    "landCrashSmokeEffect": "",
+    "explosionEffect": "",
+    "explosionPiecesEffect": "",
+    "cutPartEffect": "",
+    "createExplosionCrater": false
+  },
+  "Params": {
+    "Range": 1086.31
+  },
+  "Sound": {
+    "Engine": "engine_uav_2",
+    "gun": "gun_default",
+    "eventWreck": "wreck_uav"
+  },
+  "cockpit": {
+    "zoomOutFov": 22.46,
+    "zoomInFov": 7.37,
+    "sightInFov": 1.2,
+    "sightOutFov": -1.0,
+    "sightFov": 0.001,
+    "cameraHeightOnGround": 0.1
+  },
+  "propellers": {
+    "prop0": -1,
+    "prop1": -1,
+    "prop2": -1,
+    "prop3": -1,
+    "engine0": 1,
+    "engine1": 1,
+    "engine2": 1,
+    "engine3": 1
+  },
+  "nightVision": {
+    "sightTPodThermal": {
+      "resolution": [
+        1024,
+        768
+      ],
+      "noiseFactor": 0.05
+    }
+  },
+  "gunnerOpticFps": {
+    "Target": {
+      "pos": [
+        0.2,
+        -0.1,
+        0.0
+      ],
+      "head": "optic1_turret",
+      "crosshairPreset": "test_crosshair",
+      "offsetRotatable": true,
+      "angularLimits": [
+        -180.0,
+        180.0,
+        -90.0,
+        90.0
+      ],
+      "opticType": "",
+      "turretNo": 0
+    }
+  },
+  "sensors": {
+    "sensor": {
+      "blk": "gameData/sensors/ir_tracker_360.blk",
+      "node": "optic1_gun"
+    }
+  },
+  "commonWeapons": {
+    "Weapon": {
+      "dummy": true,
+      "trigger": "gunner0",
+      "triggerGroup": "primary",
+      "blk": "gameData/Weapons/dummy_weapon.blk",
+      "emitter": "optic1_gun",
+      "defaultYaw": 0.0,
+      "defaultPitch": 0.0,
+      "speedYaw": 200.0,
+      "speedPitch": 200.0,
+      "parkInDeadzone": true,
+      "aimForOperatedShell": true,
+      "turret": {
+        "head": "optic1_turret",
+        "gun": "optic1_gun",
+        "mainTurret": true
+      },
+      "limits": {
+        "yaw": [
+          -180.0,
+          180.0
+        ],
+        "pitch": [
+          -90.0,
+          90.0
+        ]
+      }
+    }
+  },
+  "weapon_presets": {
+    "preset": {
+      "name": "ucav_scout_default",
+      "blk": "gameData/FlightModels/weaponPresets/uav_quadcopter_default.blk"
+    }
+  },
+  "jetwash": {
+    "radius": 10.0,
+    "minDist": 50.0,
+    "timeToLive": 45.0,
+    "maxPower": 6.0,
+    "maxSegments": 50
+  },
+  "turbulence": {
+    "segmentlength": 100.0,
+    "startSpeed": 28.0,
+    "maxSpeed": 140.0,
+    "maxPower": 6.0,
+    "initialRadius": 12.0,
+    "radiusSpeed": 2.0
+  },
+  "fireParams": {},
+  "arcadeOverride": {
+    "maxSpeedMultiplier": 1.01,
+    "wepOverspeed": 1.05
+  },
+  "balanceData": {
+    "accSpd": 1.66541,
+    "climbSpeed": 10.6,
+    "maxSpeed": 163.61,
+    "turnTime": 22.8833
+  },
+  "cutting": {
+    "_emtr_break_wing0_l_from": [
+      -0.0725679,
+      0.0100818,
+      0.0851684
+    ],
+    "_emtr_break_wing0_l_to": [
+      -0.0725679,
+      0.0100818,
+      0.0951684
+    ],
+    "emtr_break_wing1_l_from": [
+      -0.0725679,
+      0.0100818,
+      0.233173
+    ],
+    "emtr_break_wing1_l_to": [
+      -0.0725679,
+      0.0100818,
+      0.310681
+    ],
+    "emtr_break_wing2_l_from": [
+      -0.0725679,
+      0.0100818,
+      0.426941
+    ],
+    "emtr_break_wing2_l_to": [
+      -0.0725679,
+      0.0100818,
+      0.618358
+    ],
+    "_emtr_break_wing0_r_from": [
+      -0.0726432,
+      0.0100818,
+      -0.0852361
+    ],
+    "_emtr_break_wing0_r_to": [
+      -0.0726432,
+      0.0100818,
+      -0.0952361
+    ],
+    "emtr_break_wing1_r_from": [
+      -0.0726432,
+      0.0100818,
+      -0.233624
+    ],
+    "emtr_break_wing1_r_to": [
+      -0.0726432,
+      0.0100818,
+      -0.310974
+    ],
+    "emtr_break_wing2_r_from": [
+      -0.0726432,
+      0.0100818,
+      -0.426999
+    ],
+    "emtr_break_wing2_r_to": [
+      -0.0726432,
+      0.0100818,
+      -0.618393
+    ],
+    "emtr_break_wing_tail": [
+      -0.536209,
+      0.0,
+      0.0
+    ],
+    "finCut": false
+  }
+}

@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import disable_network, sign_out, exit_game
+from "%scripts/dagui_natives.nut" import sign_out, exit_game
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_multiplayer
 
@@ -7,22 +7,23 @@ let { set_disable_autorelogin_once } = require("loginState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { isInFlight } = require("gameplayBinding")
-let { isXbox } = require("%sqstd/platform.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { resetLogin } = require("%scripts/login/loginManager.nut")
+let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
+let { shouldDisableMenu, disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let needLogoutAfterSession = mkWatched(persist, "needLogoutAfterSession", false)
 
 
 local platformLogout = null
-if (isXbox) {
+if (is_gdk) {
   platformLogout = require("%scripts/gdk/loginState.nut").logout
 }
 
 
 function canLogout() {
-  return !disable_network()
+  return !disableNetwork
 }
 
 
@@ -37,10 +38,10 @@ function doLogout() {
       return
     }
     else
-      ::destroy_session_scripted("on start logout")
+      destroySessionScripted("on start logout")
   }
 
-  if (::should_disable_menu() || isProfileReceived.get())
+  if (shouldDisableMenu || isProfileReceived.get())
     broadcastEvent("BeforeProfileInvalidation") 
 
   log("Start Logout")

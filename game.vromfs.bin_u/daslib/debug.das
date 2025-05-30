@@ -5,7 +5,8 @@ options indenting = 4
 options no_global_variables = false
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
-options persistent_heap = true
+options persistent_heap
+options gc
 options strict_smart_pointers = true
 options stack = 4_194_304
 
@@ -176,7 +177,6 @@ class DAWalker : DapiDataWalker {
 
     varsStack : array<DAVariable?>
     @do_not_delete frame : DAStackFrame?
-    visited : array<tuple<ps : void?; hash : uint64>>
     inlinePreviewLimit : int = 100
 
     def startWalk(var f : DAStackFrame; var v : DAVariable; cb : block<() : void>) {
@@ -187,7 +187,6 @@ class DAWalker : DapiDataWalker {
         cb |> invoke()
         frame = null
         varsStack |> clear()
-        delete visited
     }
 
     def popStack() {
@@ -212,19 +211,6 @@ class DAWalker : DapiDataWalker {
                 v.value = v._type
             }
         }
-    }
-
-    def override canVisitStructure(ps : void?; si : StructInfo) : bool {
-        for (vis in visited) {
-            if (vis.ps == ps && vis.hash == si.hash) {
-                return false
-            }
-        }
-        return true
-    }
-
-    def override beforeStructure(ps : void const?; si : StructInfo) : void {
-        visited |> emplace((ps, si.hash))
     }
 
     def override beforeStructureField(ps : void?; si : StructInfo; pv : void?; vi : VarInfo; last : bool) : void {
@@ -256,7 +242,6 @@ class DAWalker : DapiDataWalker {
     }
 
     def override afterStructure(ps : void?; si : StructInfo) : void {
-        visited |> erase(length(visited) - 1)
         self->closeCont()
         let n = length(varsStack)
         if (n > 0) {
@@ -271,7 +256,6 @@ class DAWalker : DapiDataWalker {
     }
 
     def override afterStructureCancel(ps : void?; si : StructInfo) : void {
-        visited |> erase(length(visited) - 1)
         self->closeCont()
         let n = length(varsStack)
         if (n > 0) {
@@ -2248,7 +2232,7 @@ class private DAServer : Server {
             "text" => empty(text) ? JVNull() : JV(text),
             "threadId" => JV(double(ctx.id)),
             "allThreadsStopped" => JV(false),
-            "hitBreakpointIds" => brId == -1ul ? null : JV([ JV(brId)])
+            "hitBreakpointIds" => brId == -1ul ? JVNull() : JV([ JV(brId)])
         }))
     }
 }

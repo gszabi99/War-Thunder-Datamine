@@ -184,6 +184,24 @@ let timersList = [
     icon = "#ui/gameuiskin#icon_smoke_screen_in_progress.svg"
     needTimeText = true
   }
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ]
 
 function getViewData() {
@@ -764,6 +782,79 @@ function onZoneCapturingEvent(eventData) {
   })
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function hudDisplayTimersInit(nest, v_unitType) {
   scene = nest.findObject("display_timers")
   if (!(scene?.isValid() ?? false))
@@ -800,6 +891,12 @@ function hudDisplayTimersInit(nest, v_unitType) {
   g_hud_event_manager.subscribe("MissionResult", onMissionResult)
 
   g_hud_event_manager.subscribe("zoneCapturingEvent", onZoneCapturingEvent)
+
+
+
+
+
+
 
   if (getTblValue("isDead", get_local_mplayer(), false))
     clearAllTimers()

@@ -9,7 +9,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 let { FRP_INITIAL } = require("frp")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { maxSeasonLvl, battlePassShopConfig, season } = require("%scripts/battlePass/seasonState.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")

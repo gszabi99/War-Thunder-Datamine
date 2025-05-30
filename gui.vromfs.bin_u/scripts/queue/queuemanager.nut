@@ -22,12 +22,15 @@ let QueueStats = require("%scripts/queue/queueStats.nut")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 let { setWaitForQueueRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { myClanInfo } = require("%scripts/clans/clanState.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+
 let { isQueueActive, findQueue, findQueueByName, isAnyQueuesActive, getActiveQueueTypes,
   addQueueToList, getQueuesList, removeQueueFromList, clearAllQueues, applyQueueInfo,
   pushQueueInfoUpdatedEvent, findAllQueues
 } = require("%scripts/queue/queueState.nut")
 let { getQueueEvent, isClanQueue, getQueueMode, getQueueCountry, getMyRankInQueue
 } = require("%scripts/queue/queueInfo.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 let lastQueueId = mkWatched(persist, "lastQueueId", -1)
 local lastQueueReqParams = null
@@ -49,7 +52,7 @@ function changeState(queue, queueState) {
   broadcastEvent("QueueChangeState", { queue = queue })
 
   if (wasAnyActive != isAnyQueuesActive)
-    ::update_gamercards()
+    updateGamercards()
 }
 
 function removeQueue(queue) {
@@ -333,7 +336,7 @@ function checkQueueAndStart(onSuccess, onCancel, checkName, checkParams = null) 
     return
   }
 
-  if (!::g_squad_utils.canJoinFlightMsgBox({
+  if (!canJoinFlightMsgBox({
         isLeaderCanJoin = true,
         msgId = "squad/only_leader_can_cancel"
       }, onSuccess, onCancel))

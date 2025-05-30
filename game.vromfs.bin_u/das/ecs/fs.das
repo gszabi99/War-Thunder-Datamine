@@ -1,3 +1,4 @@
+options indenting = 2
 module fs shared
 require DagorFindFiles
 require DagorSystem

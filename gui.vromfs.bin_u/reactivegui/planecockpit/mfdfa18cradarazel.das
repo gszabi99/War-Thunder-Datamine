@@ -27,7 +27,19 @@ def foreach_targets(blk : block<(target : RadarTarget const const#; i : int) : v
       invoke(blk, t, i)
 
 // elevation over distance
-class RadarAzElFormatFrame : MfdFA18CBase
+class RadarAzElFormatFrame : Canvas
+  frameHalfSizeRel : float2 = float2(0.375)
+  scaleMarkLength : float = 0.05
+  dugoutHeight : float = 0.05
+  targetBoxHalfSize : float2 = float2(0.025, 0.01)
+  baseScale : float = 0.95
+  buttonCollumnX = array<float>(
+    -0.32, -0.16, 0.0, 0.16, 0.32
+  )
+  buttonRowY = array<float>(
+    -0.32, -0.14, 0.0, 0.2, 0.35
+  )
+
   unit : Unit?
   fmw : FlightModelWrap?
 
@@ -55,8 +67,13 @@ class RadarAzElFormatFrame : MfdFA18CBase
   maxScanElevation : float = 0.0
 
   def RadarAzElFormatFrame(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
-    MfdFA18CBase`MfdFA18CBase(self, guiCtx, rdata, rstate)
+    Canvas`Canvas(self, guiCtx, rdata, rstate)
 
+    frameHalfSizeRel = data.frameHalfSizeRel
+    scaleMarkLength = data.scaleMarkLength
+    dugoutHeight = data.dugoutHeight
+    targetBoxHalfSize = data.targetBoxHalfSize
+    baseScale = data.baseScale
     baseColor = data.color
 
     setColor(data.color)
@@ -247,7 +264,7 @@ class RadarAzElFormatFrame : MfdFA18CBase
     setViewport(float2(-0.5, -0.5 - dugoutHeight), float2(0.5, 0.5))
 
     foreach_targets() <| $(var target; i)
-      if target.targetType == int(RadarTargetType TYPE_TARGET)
+      if target.targetType == int(RadarTargetType.TYPE_TARGET)
         var azimuth = 0.0
         if get_radar_hud_has_azimuth_scale()
           azimuth = azimuthRelToDeg(target.azimuthRel)

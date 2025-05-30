@@ -36,7 +36,7 @@ function createCompass(gridStyle) {
 
   let markAngleStep = 5.0
   let markAngle = PI * markAngleStep / 180.0
-  let markDashCount = 360.0 / markAngleStep
+  let markDashCount = (360.0 / markAngleStep).tointeger()
   let azimuthMarkLength = 4
 
   let commands = array(markDashCount).map(@(_, i) [

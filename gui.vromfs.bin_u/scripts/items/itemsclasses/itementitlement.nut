@@ -16,7 +16,7 @@ let Entitlement = class (ItemCouponBase) {
 
   getEntitlement = @() this.metaBlk?.entitlement
   canConsume = @() this.isInventoryItem && this.getEntitlement() != null
-  showAsContentItem = @() this.itemDef?.tags?.showAsContentItem ?? false
+  showAsContentItem = @() this.itemDef?.tags.showAsContentItem ?? false
   function getConfig() {
     let config = getEntitlementConfig(this.getEntitlement())
     if (config != null)

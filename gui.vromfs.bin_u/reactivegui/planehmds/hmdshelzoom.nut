@@ -2,7 +2,7 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { GuidanceLockResult } = require("guidanceConstants")
 let { IlsColor, IlsLineScale } = require("%rGui/planeState/planeToolsState.nut")
-let { GuidanceLockState, HmdDesignation, HmdFovMult } = require("%rGui/rocketAamAimState.nut")
+let { GuidanceLockState, HmdDesignation} = require("%rGui/rocketAamAimState.nut")
 let { HmdSensorDesignation } = require("%rGui/radarState.nut")
 let { isInVr } = require("%rGui/style/screenState.nut")
 
@@ -10,8 +10,8 @@ let { baseLineWidth } = require("hmdConstants.nut")
 
 function crosshair(width, _height) {
   return @() {
-    watch = [ HmdFovMult, HmdDesignation, HmdSensorDesignation, GuidanceLockState, IlsColor ]
-    size = [width * 0.05 * HmdFovMult.value, width * 0.05 * HmdFovMult.value]
+    watch = [ HmdDesignation, HmdSensorDesignation, GuidanceLockState, IlsColor ]
+    size = [width * 0.05, width * 0.05]
     halign = ALIGN_CENTER
     valign = ALIGN_CENTER
     rendObj = ROBJ_VECTOR_CANVAS

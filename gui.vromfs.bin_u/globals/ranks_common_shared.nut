@@ -177,7 +177,7 @@ function calc_public_boost(bostersArray) {
 function get_spawn_score_param(paramName, defaultNum) {
   let ws = get_warpoints_blk()
   let misBlk = get_current_mission_info_cached()
-  let sessionMRank = misBlk?.ranks?.max ?? 0
+  let sessionMRank = misBlk?.ranks.max ?? 0
   let modeName = get_emode_name(get_mission_mode())
   let overrideBlock = ws?.respawn_points?[modeName]?["override_params_by_session_rank"]
   local overrideBlockName = ""
@@ -372,7 +372,7 @@ function validate_custom_mission(misblk) {
     validate_custom_mission_last_error = $"{validate_custom_mission_last_error}{str}";
   }
 
-  let md = misblk?.mission_settings?.mission
+  let md = misblk?.mission_settings.mission
   if (!file_exists(md?.level ?? ""))
     err("".concat("Unknown location ", (md?.level ?? "null")))
   let levelBlk = "".concat((md?.level ?? "").slice(0, -3), "blk")
@@ -382,7 +382,7 @@ function validate_custom_mission(misblk) {
   
   
 
-  let units_include = misblk?.mission_settings?.units_include
+  let units_include = misblk?.mission_settings.units_include
   if (units_include != null)
     for (local i = 0; i < units_include.blockCount(); i++) {
       let inc = units_include.getBlock(i);

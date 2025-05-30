@@ -3,6 +3,8 @@ from "%scripts/dagui_library.nut" import *
 local contactsHandlerClass = null 
 local contactsHandler = null  
 
+local lastContactsSceneShow = false
+
 function loadContactsToObj(obj, owner) {
   if (!checkObj(obj) || contactsHandlerClass == null)
     return
@@ -46,4 +48,6 @@ return {
   setContactsHandlerClass = @(handlerClass) contactsHandlerClass = handlerClass
   switchContactsObj
   isContactsWindowActive
+  getLastContactsSceneShow = @() lastContactsSceneShow
+  setLastContactsSceneShow = @(status) lastContactsSceneShow = status
 }

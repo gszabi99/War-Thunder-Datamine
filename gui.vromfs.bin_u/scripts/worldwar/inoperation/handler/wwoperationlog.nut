@@ -4,7 +4,7 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { WW_LOG_BATTLE_TOOLTIP } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
+let { getWwTooltipType } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { wwGetPlayerSide, wwGetZoneName, wwClearOutlinedZones, wwUpdateHoverArmyName } = require("worldwar")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
@@ -15,6 +15,7 @@ let { getWWLogsData, applyWWLogsFilter, saveLastReadWWLogMark,
   getUnreadedWWLogsNumber, requestNewWWLogs } = require("%scripts/worldWar/inOperation/model/wwOperationLog.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { GuiBox } = require("%scripts/guiBox.nut")
+let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 const WW_MAX_TOP_LOGS_NUMBER_TO_REMOVE = 5
 const WW_LOG_MAX_DISPLAY_AMOUNT = 40
@@ -212,7 +213,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
         status = wwBattleView.getStatus(),
         battleId = wwBattleView.getId() })
 
-    let tooltipId = WW_LOG_BATTLE_TOOLTIP.getTooltipId("",
+    let tooltipId = getWwTooltipType("WW_LOG_BATTLE_TOOLTIP").getTooltipId("",
       { currentId = wwBattleView.getId() })
     let tooltipObj = bodyObj.findObject("battle_icon_tooltip")
     if (checkObj(tooltipObj))
@@ -482,7 +483,7 @@ gui_handlers.WwOperationLog <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function markZoneByArmyName(armyName) {
-    let wwArmy = g_world_war.getArmyByName(armyName)
+    let wwArmy = getArmyByName(armyName)
     if (!wwArmy)
       return
 

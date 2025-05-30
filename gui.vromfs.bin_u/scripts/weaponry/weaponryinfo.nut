@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import get_option_torpedo_dive_depth_auto, shop_is_weapon_purchased, shop_is_weapon_available, get_option_torpedo_dive_depth
+from "%scripts/dagui_natives.nut" import shop_is_weapon_purchased, shop_is_weapon_available
 from "%scripts/dagui_library.nut" import *
+from "weaponryOptions" import get_option_torpedo_dive_depth, get_option_torpedo_dive_depth_auto
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_ZERO, UNIT_WEAPONS_READY, UNIT_WEAPONS_WARNING, INFO_DETAIL
 
 let { get_game_params_blk } = require("blkGetters")
@@ -304,9 +305,9 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
 
     if (weaponsFilterFunc?(weaponBlkPath, weaponBlk) == false)
       continue
-    let bulletName = weaponBlk?.rocket?.bulletName
-      ?? weaponBlk?.payload?.bulletName
-      ?? weaponBlk?.bomb?.bulletName
+    let bulletName = weaponBlk?.rocket.bulletName
+      ?? weaponBlk?.payload.bulletName
+      ?? weaponBlk?.bomb.bulletName
 
     local currentTypeName =  weapon?.turret != null ? WEAPON_TYPE.TURRETS : WEAPON_TYPE.CONTAINER_ITEM
     local weaponTag = WEAPON_TAG.BULLET
@@ -526,7 +527,7 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
             }
             else if (itemBlk.guidance?.opticalFlowSeeker != null) {
               let targetSignatureType = itemBlk.guidance?.opticalFlowSeeker != null ?
-                itemBlk.guidance?.opticalFlowSeeker?.targetSignatureType : itemBlk.guidance?.opticalFlowSeeker?.visibilityType
+                itemBlk.guidance?.opticalFlowSeeker.targetSignatureType : itemBlk.guidance?.opticalFlowSeeker.visibilityType
               if (targetSignatureType == "optic")
                 item.guidanceType <- "tv"
               else
@@ -676,16 +677,19 @@ function addWeaponsFromBlk(weapons, weaponsArr, unit, weaponsFilterFunc = null, 
 }
 
 
-function getWeaponExtendedInfo(weapon, weaponType, unit, ediff, newLine = null) {
+function getWeaponExtendedInfo(weapon, unit, par) {
+  let { weaponType, ediff, newLine = null } = par
   let res = []
-  let colon = loc("ui/colon")
   let activeEdiff = ediff ?? getShopDiffCode()
   function addParamsToRes(value, text) {
-    res.append({ value, text, separator = colon })
+    res.append({ value, text, separator = loc("ui/colon") })
   }
 
   local massText = null
-  if (weapon.massLbs > 0) {
+  if ([WEAPON_TYPE.GUNS, WEAPON_TYPE.CANNON].contains(weaponType)
+    && (weapon?.additionalMassKg ?? 0) > 0)
+    massText = getMeasureTypeByName("kg", true).getMeasureUnitsText(weapon.additionalMassKg)
+  else if (weapon.massLbs > 0) {
     massText = getMeasureTypeByName("lbs", true).getMeasureUnitsText(weapon.massLbs)
     if (weapon.massKg > 0)
       massText = $"{massText} ({getMeasureTypeByName("kg", true).getMeasureUnitsText(weapon.massKg)})"

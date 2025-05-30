@@ -10,6 +10,7 @@ let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { cutPrefix } = require("%sqstd/string.nut")
 let { get_gui_regional_blk } = require("blkGetters")
 let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
+let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 
 
 
@@ -97,7 +98,7 @@ gui_handlers.ReqPurchaseWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (!u.isEmpty(this.checkPackage))
-      ::check_package_and_ask_download(this.checkPackage)
+      checkPackageAndAskDownload(this.checkPackage)
 
     this.goBack()
   }

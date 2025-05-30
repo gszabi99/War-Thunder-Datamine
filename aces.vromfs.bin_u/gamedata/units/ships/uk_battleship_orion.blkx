@@ -27,7 +27,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_big",
-  "explosionFx": "explosion_ship_large",
+  "explosionFx": "explosion_ship_big",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
   "deadCoverCountToDelayedSinking": 3,
@@ -3059,8 +3059,8 @@
       "armorThickness": 25.4,
       "hydroShockArmorQuality": 0.2,
       "hidableInViewer": true,
-      "genericDamageMult": 0.025,
-      "explosionDamageMult": 0.45,
+      "genericDamageMult": 0.075,
+      "explosionDamageMult": 0.85,
       "shatterDamageMult": 0.0,
       "hydroShockDamageMult": 10.0,
       "pressureDamageMult": 0.0,
@@ -4112,7 +4112,7 @@
       "onHit": [
         {
           "damageType": "fire",
-          "expl": 0.05,
+          "expl": 1.0,
           "damage": 55.0,
           "fHitCritical": false
         },
@@ -4132,7 +4132,7 @@
       "onHit": [
         {
           "damageType": "fire",
-          "fire": 0.07,
+          "fire": 1.0,
           "damage": 55.0,
           "fHitCritical": false
         },
@@ -4151,7 +4151,7 @@
       },
       "onHit": {
         "damageType": "fire",
-        "expl": 0.15,
+        "expl": 1.0,
         "damage": 79.0,
         "fHitCritical": false
       }
@@ -4163,7 +4163,7 @@
       },
       "onHit": {
         "damageType": "fire",
-        "fire": 0.3,
+        "fire": 1.0,
         "damage": 50.0,
         "fHitCritical": false
       }
@@ -4176,16 +4176,8 @@
       },
       "onHit": {
         "damageType": "fire",
-        "expl": 0.07,
+        "expl": 1.0,
         "damage": 60.0,
-        "fHitCritical": false
-      }
-    },
-    "handling_room": {
-      "onKill": {
-        "expl": 0.2,
-        "fire": 0.3,
-        "nothing": 0.5,
         "fHitCritical": false
       }
     },
@@ -4291,11 +4283,7 @@
           "elevator_05_dm"
         ],
         "onKill": {
-          "fire": [
-            1.0,
-            0.74
-          ],
-          "nothing": 0.26
+          "fire": 1.0
         },
         "onHit": [
           {
@@ -4886,13 +4874,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
@@ -4978,13 +4966,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_01",
@@ -5070,13 +5058,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_02",
@@ -5162,13 +5150,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_02",
@@ -5254,13 +5242,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_03",
@@ -5344,13 +5332,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_03",
@@ -5434,13 +5422,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_04",
@@ -5514,13 +5502,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_04",
@@ -5594,13 +5582,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_05",
@@ -5654,13 +5642,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "main_caliber_turret_05",
@@ -5714,13 +5702,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_01",
@@ -5788,13 +5776,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_02",
@@ -5862,13 +5850,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_03",
@@ -5936,13 +5924,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_04",
@@ -6010,13 +5998,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_05",
@@ -6084,13 +6072,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_06",
@@ -6158,13 +6146,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_07",
@@ -6218,13 +6206,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_08",
@@ -6278,13 +6266,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_09",
@@ -6338,13 +6326,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_10",
@@ -6398,13 +6386,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_11",
@@ -6478,13 +6466,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_12",
@@ -6558,13 +6546,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_13",
@@ -6638,13 +6626,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_14",
@@ -6719,13 +6707,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_15",
@@ -6780,13 +6768,13 @@
         "randomAngle": 0.0,
         "accuracyBotMultAir": 0.0,
         "accuracyAir": 0.0,
-        "accuracyGnd": 0.75,
-        "errMeasureVel": 10.0,
-        "errTargettingOn100kmph": 0.0,
-        "errMeasureVelFast": 10.0,
-        "errMeasureVelFwdShift": 0.5,
-        "errMeasureVelDir": 1.5,
-        "errTargetting": 5.0,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
         "errExplTime": 0.0,
         "turret": {
           "head": "auxiliary_caliber_turret_16",
@@ -7097,7 +7085,7 @@
       },
       {
         "name": "ready_use_ammo_fire",
-        "lifetime": 20.0,
+        "lifetime": 60.0,
         "fx": {
           "name": "ship_fire_huge",
           "centerDmgPart": true,
@@ -7108,7 +7096,7 @@
         "name": "ready_use_ammo_explosion",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_medium_ammo_aux",
           "centerDmgPart": false,
           "isFireBurnMark": false
         }
@@ -7118,22 +7106,22 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_01",
             "isFireBurnMark": false
           },
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big",
             "emitter": "emtr_fire_ammo_02",
             "isFireBurnMark": false
           },
           {
-            "name": "explosion_ship_large_ammo",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_03",
             "isFireBurnMark": false
           },
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_second",
             "emitter": "emtr_fire_ammo_04",
             "isFireBurnMark": false
           },
@@ -7508,85 +7496,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large",
-            "emitter": "emtr_explosion_center_01",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "explosion_ship_large_second",
-            "emitter": "emtr_explosion_center_02",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "explosion_ship_large_second",
-            "emitter": "emtr_explosion_center_03",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_explosion_center_01"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_explosion_center_02"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_explosion_center_03"
-          }
-        ],
-        "wreckages": {
-          "count": 8,
-          "speed": 60.0,
-          "angle": 70.0,
-          "fxName": "fire_trails_explosion_big"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 20.0,
-        "fx": [
-          {
-            "name": "explosion_ship_large_ammo",
-            "emitter": "emtr_explosion_center_01",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "explosion_ship_large_ammo_second",
-            "emitter": "emtr_explosion_center_02",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "explosion_ship_large_ammo_second",
-            "emitter": "emtr_explosion_center_03",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_explosion_center_01"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_explosion_center_02"
-          },
-          {
-            "name": "water_explosion_medium",
-            "emitter": "emtr_explosion_center_03"
-          }
-        ],
-        "wreckages": {
-          "count": 12,
-          "speed": 60.0,
-          "angle": 70.0,
-          "fxName": "fire_trails_explosion_big"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 20.0,
-        "fx": [
-          {
-            "name": "explosion_ship_large",
+            "name": "explosion_ship_big",
             "emitter": "emtr_explosion_center_01",
             "isFireBurnMark": false
           },
@@ -7601,6 +7511,124 @@
             "isFireBurnMark": false
           },
           {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ],
+        "wreckages": [
+          {
+            "count": 5,
+            "speed": 50.0,
+            "angle": 70.0,
+            "fxName": "fire_trails_explosion_big"
+          },
+          {
+            "count": 8,
+            "speed": 70.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_med"
+          },
+          {
+            "count": 7,
+            "speed": 65.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 7,
+            "speed": 45.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 20.0,
+        "fx": [
+          {
+            "name": "explosion_ship_big",
+            "emitter": "emtr_explosion_center_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_big_ammo_aux",
+            "emitter": "emtr_explosion_center_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_big_second",
+            "emitter": "emtr_explosion_center_03",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "water_explosion_medium",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ],
+        "wreckages": [
+          {
+            "count": 7,
+            "speed": 40.0,
+            "angle": 40.0,
+            "fxName": "fire_trails_explosion_big"
+          },
+          {
+            "count": 9,
+            "speed": 70.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_big"
+          },
+          {
+            "count": 7,
+            "speed": 60.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_med"
+          },
+          {
+            "count": 7,
+            "speed": 50.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_smal"
+          }
+        ]
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 20.0,
+        "fx": [
+          {
+            "name": "explosion_ship_big",
+            "emitter": "emtr_explosion_center_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_big",
+            "emitter": "emtr_explosion_center_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_big_ammo_aux",
+            "emitter": "emtr_explosion_center_03",
+            "isFireBurnMark": false
+          },
+          {
             "name": "water_explosion_big",
             "emitter": "emtr_explosion_center_01"
           },
@@ -7613,18 +7641,38 @@
             "emitter": "emtr_explosion_center_03"
           }
         ],
-        "wreckages": {
-          "count": 15,
-          "speed": 60.0,
-          "angle": 70.0,
-          "fxName": "fire_trails_explosion_big"
-        }
+        "wreckages": [
+          {
+            "count": 7,
+            "speed": 40.0,
+            "angle": 40.0,
+            "fxName": "fire_trails_explosion_big"
+          },
+          {
+            "count": 9,
+            "speed": 62.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_big"
+          },
+          {
+            "count": 7,
+            "speed": 40.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_med"
+          },
+          {
+            "count": 13,
+            "speed": 60.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_smal"
+          }
+        ]
       },
       {
         "name": "ammo_fire_1",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_01",
           "isFireBurnMark": false
         }
@@ -7633,7 +7681,7 @@
         "name": "ammo_fire_2",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_02",
           "isFireBurnMark": false
         }
@@ -7642,7 +7690,7 @@
         "name": "ammo_fire_3",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_03",
           "isFireBurnMark": false
         }
@@ -7651,7 +7699,7 @@
         "name": "ammo_fire_4",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_04",
           "isFireBurnMark": false
         }
@@ -7660,7 +7708,7 @@
         "name": "ammo_fire_5",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_05",
           "isFireBurnMark": false
         }
@@ -7669,7 +7717,7 @@
         "name": "ammo_fire_6",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_06",
           "isFireBurnMark": false
         }
@@ -7679,7 +7727,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_01",
             "isFireBurnMark": false
           },
@@ -7694,7 +7742,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_02",
             "isFireBurnMark": false
           },
@@ -7709,7 +7757,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_03",
             "isFireBurnMark": false
           },
@@ -7724,7 +7772,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_04",
             "isFireBurnMark": false
           },
@@ -7739,7 +7787,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_05",
             "isFireBurnMark": false
           },
@@ -7754,7 +7802,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_06",
             "isFireBurnMark": false
           },
@@ -7768,7 +7816,7 @@
         "name": "ammo_aux_fire_1",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_small_ammo_second",
+          "name": "explosion_ship_big_ammo_aux_fire",
           "emitter": "emtr_fire_ammo_01"
         }
       },
@@ -7776,7 +7824,7 @@
         "name": "ammo_aux_fire_2",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_small_ammo_second",
+          "name": "explosion_ship_big_ammo_aux_fire",
           "emitter": "emtr_fire_ammo_02"
         }
       },
@@ -7784,7 +7832,7 @@
         "name": "ammo_aux_fire_3",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_small_ammo_second",
+          "name": "explosion_ship_big_ammo_aux_fire",
           "emitter": "emtr_fire_ammo_03"
         }
       },
@@ -7792,7 +7840,7 @@
         "name": "ammo_aux_fire_4",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_small_ammo_second",
+          "name": "explosion_ship_big_ammo_aux_fire",
           "emitter": "emtr_fire_ammo_04"
         }
       },
@@ -7800,7 +7848,7 @@
         "name": "ammo_aux_fire_5",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_small_ammo_second",
+          "name": "explosion_ship_big_ammo_aux_fire",
           "emitter": "emtr_fire_ammo_05"
         }
       },
@@ -7808,7 +7856,7 @@
         "name": "ammo_aux_explosion_1",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_aux",
           "emitter": "emtr_fire_ammo_01"
         }
       },
@@ -7816,7 +7864,7 @@
         "name": "ammo_aux_explosion_2",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_aux",
           "emitter": "emtr_fire_ammo_02"
         }
       },
@@ -7824,7 +7872,7 @@
         "name": "ammo_aux_explosion_3",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_aux",
           "emitter": "emtr_fire_ammo_03"
         }
       },
@@ -7832,7 +7880,7 @@
         "name": "ammo_aux_explosion_4",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_aux",
           "emitter": "emtr_fire_ammo_04"
         }
       },
@@ -7840,7 +7888,7 @@
         "name": "ammo_aux_explosion_5",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_aux",
           "emitter": "emtr_fire_ammo_05"
         }
       },
@@ -7915,227 +7963,227 @@
         "fxActHitRad": 3.0,
         "fx": [
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_01"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_02"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_03"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_04"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_05"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_06"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_07"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_08"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_09"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_10"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_11"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_12"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_13"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_14"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_15"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_small_dmg_16"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_01"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_02"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_03"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_04"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_05"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_06"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_07"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_08"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_09"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_10"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_11"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_12"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_13"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_14"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_15"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_small_dmg_16"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_dmg_01"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_dmg_02"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_dmg_03"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_dmg_04"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_dmg_05"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_dmg_06"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_engine_01"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_engine_02"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_engine_03"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_engine_04"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_engine_05"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_fire_engine_06"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_engine_01"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_engine_02"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_engine_03"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_engine_04"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_engine_05"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_engine_06"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_dmg_01"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_dmg_02"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_dmg_03"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_dmg_04"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_dmg_05"
           },
           {
-            "name": "ship_fire_nosmoke_big",
+            "name": "ship_fire_onlysmoke_big",
             "emitter": "emtr_smoke_dmg_06"
           }
         ]
@@ -8165,6 +8213,34 @@
     "bowSplashUpDirMult": 4.0,
     "bowSplashSpawnRate": 1.0,
     "bowSplashNormalMult": 2.0
+  },
+  "shipSinkingFx": {
+    "emit": [
+      {
+        "fx": "water_ship_sinking_big",
+        "pos": [
+          0.0,
+          0.2,
+          0.0
+        ]
+      },
+      {
+        "fx": "water_ship_sinking_big_second",
+        "pos": [
+          0.27,
+          0.2,
+          0.0
+        ]
+      },
+      {
+        "fx": "water_ship_sinking_big_second",
+        "pos": [
+          -0.27,
+          0.2,
+          0.0
+        ]
+      }
+    ]
   },
   "splashFireFx": {
     "damage": 10.0,
@@ -8501,14 +8577,14 @@
     }
   },
   "breaches": {
-    "repairSpeed": 30.0,
+    "repairSpeed": 22.0,
     "waterMassVel": -145000.0,
     "waterMassMult": 300.0,
     "sizeToRepair": [
       0.01,
-      5.0,
-      25.0,
-      600.0
+      10.0,
+      100.0,
+      1250.0
     ],
     "additionalWaterDeathThreshold": 35000000.0,
     "additionalWaterShouldDiePercent": 0.29,
@@ -8519,8 +8595,8 @@
     "maxCriticalHeelingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
     "sideCenterOfMassOffsetPercent": 0.07,
-    "minCaliberToBreach": 0.18,
-    "minExplRadiusToBreach": 0.3,
+    "minCaliberToBreach": 0.2,
+    "minExplRadiusToBreach": 0.5,
     "deadCoverCounterfloodingRel": 0.5,
     "counterFloodingWaterMassVel": 35000.0
   },

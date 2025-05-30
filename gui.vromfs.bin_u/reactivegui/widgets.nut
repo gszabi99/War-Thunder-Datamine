@@ -13,6 +13,9 @@ let mkScoreboard = require("hud/scoreboard/mkScoreboard.nut")
 let aircraftHud = require("aircraftHud.nut")
 let helicopterHud = require("helicopterHud.nut")
 let tankHud = require("tankHud.nut")
+
+
+
 let changelog = require("changelog/changelog.ui.nut")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 let { isInSpectatorMode } = require("%rGui/respawnWndState.nut")
@@ -35,9 +38,9 @@ let widgetsMap = {
       return shipHud
     else if (hudUnitType.isSubmarine() && !isPlayingReplay.value)
       return shipExHud
-    else if (hudUnitType.isHuman())
-      return tankHud
     
+
+
 
 
 
@@ -106,8 +109,8 @@ let widgets = @() {
     widgetsState
   ]
   children = widgetsState.value.map(@(widget) {
-    size = widget?.transform?.size ?? [sw(100), sh(100)]
-    pos = widget?.transform?.pos ?? [0, 0]
+    size = widget?.transform.size ?? [sw(100), sh(100)]
+    pos = widget?.transform.pos ?? [0, 0]
     children = widgetsMap?[widget.widgetId]()
   }).append(cursor)
 }

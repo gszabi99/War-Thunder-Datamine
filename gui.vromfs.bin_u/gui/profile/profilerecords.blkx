@@ -1,12 +1,11 @@
 {
+  "margin-top": "2@blockInterval",
   "tdiv": {
-    "id": "filters_div",
     "flow": "horizontal",
-    "width": "pw",
+    "size": "pw, 8@blockInterval",
     "position": "relative",
-    "padding-right": "450@sf/@pf",
-    "bgcolor": "#11080808",
-    "margin-bottom": "1@blockInterval",
+    "bgcolor": "@evenTrColor",
+    "margin-bottom": "2@blockInterval",
     "HorizontalListBox": {
       "id": "modes_list",
       "fullTransparent": "yes",
@@ -16,20 +15,21 @@
       "on_select": "onStatsModeChange"
     },
     "tdiv": {
-      "width": "450@sf/@pf",
-      "left": "pw-w",
+      "size": "450@sf/@pf, ph",
       "position": "absolute",
-      "flow": "horizontal",
+      "left": "pw-w-1@blockInterval",
+      "popupFilter": {
+        "margin-right": "1@blockInterval",
+        "valign": "center"
+      },
       "EditBox": {
         "id": "filter_edit_box",
         "width": "fw",
         "on_change_value": "applyFilter",
         "on_cancel_edit": "onFilterCancel",
         "text": "",
-        "edit-hint": "#contacts/search_placeholder"
-      },
-      "popupFilter": {
-        "margin-left": "1@blockInterval"
+        "edit-hint": "#contacts/search_placeholder",
+        "valign": "center"
       }
     }
   },

@@ -104,7 +104,7 @@
         "armorThickness": 15.0
       },
       "turret_03_back_dm": {
-        "armorThickness": 5.0
+        "armorThickness": 10.0
       },
       "superstructure_bottom_dm": {
         "armorThickness": 5.0
@@ -2013,8 +2013,8 @@
         6.0
       ],
       "CenterOfGravity": [
-        0.1,
-        0.5,
+        -0.2,
+        1.5,
         0.0
       ],
       "CenterOfGravityClampY": [
@@ -2039,7 +2039,7 @@
       "trackFadeTime": 1.1,
       "trackEmitSparks": false,
       "trackMaxHeight": 1.3,
-      "trackStartOffset": 0.001
+      "trackStartOffset": 0.05
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
@@ -2053,7 +2053,7 @@
     "mechanics": {
       "steerType": "clutch_braking",
       "maxBrakeForce": 200000.0,
-      "driveGearRadius": 0.3,
+      "driveGearRadius": 0.28,
       "mainGearRatio": 5.47,
       "sideGearRatio": 0.58,
       "neutralGearRatio": 8.5,
@@ -2078,7 +2078,7 @@
         0.2
       ],
       "defaultGearRadius": 0.3,
-      "frontBackGearRadius": 0.29,
+      "frontBackGearRadius": 0.27,
       "topGearRadius": 0.1,
       "defaultDampeningForce": [
         200000.0,
@@ -2556,12 +2556,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 8,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 8,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -2576,12 +2590,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 10,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 10,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -2590,12 +2618,26 @@
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
         },
-        "wreckages": {
-          "count": 10,
-          "speed": 13.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 10,
+            "speed": 20.0,
+            "angle": 40.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -2610,12 +2652,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 12,
-          "speed": 25.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_med"
-        }
+        "wreckages": [
+          {
+            "count": 25,
+            "speed": 25.0,
+            "angle": 40.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 35.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -2630,12 +2686,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 14,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 14,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "full_expl",
@@ -3311,6 +3381,7 @@
       "removeLoadedAmmo": true,
       "replenishmentDelay": 4.0,
       "replenishmentTime": 30.0,
+      "fireSplashRadiusConstraint": 5.0,
       "shells": [
         {
           "fireParamsPreset": "turret_bustle",

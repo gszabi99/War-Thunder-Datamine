@@ -130,8 +130,8 @@ return function(config, customFeedParams) {
   }
 
   let images = getActivityFeedImages(customFeedParams)
-  let largeImage = customFeedParams?.images?.large || images?.large
-  let smallImage = customFeedParams?.images?.small || images?.small
+  let largeImage = customFeedParams?.images.large || images?.large
+  let smallImage = customFeedParams?.images.small || images?.small
 
   let body = {
     captions = customFeedParams?.captions ?? getFilledFeedTextByLang($"activityFeed/{locId}")

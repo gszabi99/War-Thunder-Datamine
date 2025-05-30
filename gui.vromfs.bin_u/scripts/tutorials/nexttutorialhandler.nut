@@ -26,6 +26,7 @@ let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { guiStartTutorial, guiStartFlight
 } = require("%scripts/missions/startMissionsList.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
+let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 
 const NEW_PLAYER_TUTORIAL_CHOICE_STATISTIC_SAVE_ID = "statistic:new_player_tutorial_choice"
 
@@ -87,7 +88,7 @@ local NextTutorialHandler = class (gui_handlers.BaseGuiHandlerWT) {
     saveTutorialToCheckReward(this.tutorialMission)
     saveLocalByAccount($"firstRunTutorial_{this.tutorialMission.name}", true)
     this.setLaunchedTutorialQuestions()
-    ::destroy_session_scripted("on start tutorial")
+    destroySessionScripted("on start tutorial")
 
     set_game_mode(GM_TRAINING)
     select_mission(this.tutorialMission, true)

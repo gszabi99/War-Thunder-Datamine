@@ -32,7 +32,7 @@ let Unlock = class (ItemCouponBase) {
       return "#ui/gameuiskin#item_type_warpoints.svg"
     if ((config?.reward.frp ?? 0) > 0)
       return "#ui/gameuiskin#item_type_RP.svg"
-    if ((config?.rewardWarbonds?.wbAmount ?? 0) > 0)
+    if ((config?.rewardWarbonds.wbAmount ?? 0) > 0)
       return "#ui/gameuiskin#item_type_warbonds.svg"
 
     return this.typeIcon

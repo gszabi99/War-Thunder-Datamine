@@ -4,6 +4,8 @@ let DataBlock  = require("DataBlock")
 let { getCurrentPreset } = require("controls")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 
+let isPresetChanged = Watched(false)
+
 function getLoadedPresetBlk() {
   let presetBlk = DataBlock()
   getCurrentPreset(presetBlk)
@@ -34,4 +36,5 @@ return {
   setCurControlsPreset
   getPreviewControlsPreset
   setPreviewControlsPreset
+  isPresetChanged
 }

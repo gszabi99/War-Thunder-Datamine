@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_argv, dgs_argc, dgs_get_argv, get_cur_circuit_name, set_login_pass, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, enable_keyboard_locks_change_tracking, get_two_step_code_async2, set_network_circuit
+from "%scripts/dagui_natives.nut" import get_login_pass, check_login_pass, save_profile, dgs_get_argv, get_cur_circuit_name, set_login_pass, load_local_settings, enable_keyboard_layout_change_tracking, is_steam_big_picture, enable_keyboard_locks_change_tracking, get_two_step_code_async2, set_network_circuit
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE, USE_STEAM_LOGIN_AUTO_SETTING_ID
 from "%scripts/options/optionsCtors.nut" import create_option_combobox
@@ -9,14 +9,14 @@ let { getLocalLanguage } = require("language")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let statsd = require("statsd")
-let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")
 let showTitleLogo = require("%scripts/viewUtils/showTitleLogo.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let twoStepModal = require("%scripts/login/twoStepModal.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
-let { setFocusToNextObj, getObjValue } = require("%sqDagui/daguiUtil.nut")
+let { select_editbox, setFocusToNextObj, getObjValue } = require("%sqDagui/daguiUtil.nut")
 let { setGuiOptionsMode } = require("guiOptions")
 let { getDistr, convertExternalJwtToAuthJwt } = require("auth_wt")
 let { dgs_get_settings } = require("dagor.system")
@@ -43,6 +43,7 @@ let { close_browser_modal, browser_set_external_url } = require("%scripts/online
 let { addLoginState } = require("%scripts/login/loginManager.nut")
 let { set_autologin_enabled, is_autologin_enabled } = require("%scripts/options/optionsBeforeLogin.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
+let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
 const MAX_GET_2STEP_CODE_ATTEMPTS = 10
 const GUEST_LOGIN_SAVE_ID = "guestLoginId"
@@ -173,18 +174,9 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       linksObj.findObject("btn_support_link").link = getCurCircuitOverride("supportURL", loc("url/support"))
     }
 
-    if ("dgs_get_argv" in getroottable()) {
-      let s = dgs_get_argv("stoken")
-      if (!u.isEmpty(s))
-        lp.stoken <- s
-    }
-    else if ("dgs_argc" in getroottable())
-      for (local i = 1; i < dgs_argc(); i++) {
-        let str = dgs_argv(i);
-        let idx = str.indexof("-stoken:")
-        if (idx != null)
-          lp.stoken <- str.slice(idx + 8)
-      }
+    let s = dgs_get_argv("stoken")
+    if (!u.isEmpty(s))
+      lp.stoken <- s
 
     if (("stoken" in lp) && lp.stoken != null && lp.stoken != "") {
       this.stoken = lp.stoken
@@ -522,7 +514,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
 
   function showConnectionErrorMessageBox(errorMsg) {
     let onTryAgain = Callback(this.onLoginErrorTryAgain, this)
-    ::error_message_box("yn1/connect_error", errorMsg,
+    showErrorMessageBox("yn1/connect_error", errorMsg,
       [["exit", exitGame], ["tryAgain", onTryAgain]], "tryAgain", { cancel_fn = onTryAgain })
   }
 
@@ -568,7 +560,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       bqSendNoAuth(result == YU2_WRONG_LOGIN ? "auth:wrong_login" : "auth:wrong_param")
       if (this.was_using_stoken)
         return;
-      ::error_message_box("yn1/connect_error", result, 
+      showErrorMessageBox("yn1/connect_error", result, 
       [
         ["recovery", @() openUrl(getCurCircuitOverride("recoveryPasswordURL", loc("url/recovery")), false, false, "login_wnd")],
         ["exit", exitGame],
@@ -580,7 +572,7 @@ gui_handlers.LoginWndHandler <- class (BaseGuiHandler) {
       bqSendNoAuth("auth:ssl_error")
       if (this.was_using_stoken)
         return;
-      ::error_message_box("yn1/connect_error", result,
+      showErrorMessageBox("yn1/connect_error", result,
       [
         ["disableSSLCheck", Callback(function() { this.setDisableSslCertBox(true) }, this)],
         ["exit", exitGame],

@@ -1,8 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { adjustWindowSizeByConfig, countSizeInItems } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, adjustWindowSizeByConfig, countSizeInItems } = require("%sqDagui/daguiUtil.nut")
 let { ceil } = require("math")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut")
@@ -23,8 +23,9 @@ let { getProfileAvatarFrames, getProfileAvatars } = require("%scripts/user/profi
 let { getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 
-::gui_choose_image <- function gui_choose_image(applyFunc, owner, scene = null) {
+function gui_choose_image(applyFunc, owner, scene = null) {
   let params = { owner, applyFunc }
   if (scene != null)
     params.scene <- scene
@@ -34,9 +35,10 @@ let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nu
 
 function getStoredAvatarIndex() {
   let userInfo = getUserInfo(userIdStr.get())
-  if (userInfo == null || userInfo.pilotIcon == "")
+  if (userInfo == null)
     return 0
-  return getProfileAvatars().findindex(@(v) v.unlockId == userInfo.pilotIcon)
+  let pilotIcon = getAvatarIconIdByUserInfo(userInfo)
+  return getProfileAvatars().findindex(@(v) v.unlockId == pilotIcon)
 }
 
 function getStoredFrameIndex() {
@@ -451,4 +453,8 @@ gui_handlers.ChooseImage <- class (gui_handlers.BaseGuiHandlerWT) {
 
   getSelectedIndex = @(imageType = null) this.currentListValues[imageType ?? this.currentListId].currentIndex
   setSelectedIndex = @(value, imageType = null) this.currentListValues[imageType ?? this.currentListId].currentIndex = value
+}
+
+return {
+  gui_choose_image
 }

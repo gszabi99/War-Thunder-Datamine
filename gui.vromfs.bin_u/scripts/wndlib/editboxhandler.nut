@@ -2,7 +2,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
 
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
-let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")

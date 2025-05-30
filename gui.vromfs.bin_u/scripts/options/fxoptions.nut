@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_hdr_enabled, save_profile
+from "%scripts/dagui_natives.nut" import save_profile
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsCtors.nut" import create_option_slider
 
@@ -7,6 +7,10 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
+
+let { getPaperWhiteNits, setPaperWhiteNits, getDefaultPaperWhiteNits,
+  getHdrBrightness, setHdrBrightness, getDefaultHdrBrightness,
+  getHdrShadows, setHdrShadows, getDefaultHdrShadows, isHdrEnabled } = require("graphicsOptions")
 
 const LOCAL_PATH_SHOWED_HDR_ON_START = "isShowedHdrSettingsOnStart"
 
@@ -34,7 +38,7 @@ gui_handlers.fxOptions <- class (BaseGuiHandler) {
     foreach (_idx, s in this.settings) {
       s.min *= s.scale
       s.max *= s.scale
-      local val = getroottable()?[$"get_{s.id}"]() ?? 0
+      local val = s.getter()
       if (s?.recScale)
         val *= s.scale
 
@@ -69,13 +73,13 @@ gui_handlers.fxOptions <- class (BaseGuiHandler) {
       val /= curSetting.scale
 
     this.updateSliderTextValue(obj.id, val)
-    getroottable()?[$"set_{curSetting.id}"](val, true)
+    curSetting.setter(val, true)
   }
 
   function onResetToDefaults() {
     foreach (s in this.settings) {
-      local defVal = getroottable()?[$"get_default_{s.id}"]() ?? 0
-      getroottable()?[$"set_{s.id}"](defVal, true)
+      local defVal = s.defgetter()
+      s.setter(defVal, true)
       this.updateSliderTextValue(s.id, defVal)
       if (s?.recScale)
         defVal *= s.scale
@@ -109,9 +113,14 @@ return {
   openHdrSettings = @() handlersManager.loadHandler(gui_handlers.fxOptions, {
     LOCAL_PATH_SHOWED_ON_START = LOCAL_PATH_SHOWED_HDR_ON_START
     settings = [
-      { id = "paper_white_nits", min = 1, max = 10 step = 5, scale = 50 }, 
-      { id = "hdr_brightness", min = 0.5, max = 2, step = 1, scale = 10, recScale = true }, 
-      { id = "hdr_shadows", min = 0, max = 2, step = 1, scale = 10, recScale = true }
+      { id = "paper_white_nits", min = 1, max = 10 step = 5, scale = 50,
+        getter = getPaperWhiteNits, setter = setPaperWhiteNits, defgetter = getDefaultPaperWhiteNits }, 
+
+      { id = "hdr_brightness", min = 0.5, max = 2, step = 1, scale = 10, recScale = true,
+        getter = getHdrBrightness, setter = setHdrBrightness, defgetter = getDefaultHdrBrightness }, 
+
+      { id = "hdr_shadows", min = 0, max = 2, step = 1, scale = 10, recScale = true,
+        getter = getHdrShadows, setter = setHdrShadows, defgetter = getDefaultHdrShadows }
   ] })
-  needShowHdrSettingsOnStart = @() is_hdr_enabled() && !loadLocalByAccount(LOCAL_PATH_SHOWED_HDR_ON_START, false)
+  needShowHdrSettingsOnStart = @() isHdrEnabled() && !loadLocalByAccount(LOCAL_PATH_SHOWED_HDR_ON_START, false)
 }

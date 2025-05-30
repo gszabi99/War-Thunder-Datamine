@@ -1,0 +1,252 @@
+{
+  "tdiv": {
+    "id": "page_content",
+    "size": "pw, ph",
+    "flow": "vertical",
+    "margin-top": "2@blockInterval",
+    "tdiv": [
+      {
+        "flow": "horizontal",
+        "size": "pw, 8@blockInterval",
+        "position": "relative",
+        "bgcolor": "@evenTrColor",
+        "margin-bottom": "2@blockInterval",
+        "textareaNoTab": {
+          "id": "total_received",
+          "margin-left": "1@blockInterval",
+          "valign": "center",
+          "overlayTextColor": "active"
+        },
+        "tdiv": {
+          "size": "243@sf/@pf, ph",
+          "position": "absolute",
+          "left": "pw-w-1@blockInterval",
+          "EditBox": {
+            "id": "filter_edit_box",
+            "width": "pw",
+            "on_change_value": "applyDecalFilter",
+            "on_cancel_edit": "onFilterCancel",
+            "text": "",
+            "edit-hint": "#contacts/search_placeholder",
+            "valign": "center"
+          }
+        }
+      },
+      {
+        "id": "content",
+        "position": "relative",
+        "size": "pw, fh",
+        "flow": "horizontal",
+        "profileContentLeft": {
+          "id": "treeDecalsNest"
+        },
+        "profileContentSeparator": {},
+        "profileContentRight": {
+          "flow": "vertical",
+          "profileContentDesc": {
+            "id": "decal_info",
+            "position": "relative",
+            "flow": "horizontal",
+            "profileContentBigIcon": {
+              "position": "relative",
+              "size": "1@itemIconBlockHeight, 1@itemIconBlockHeight",
+              "img": {
+                "id": "decalImage"
+              }
+            },
+            "tdiv": {
+              "width": "fw",
+              "flow": "vertical",
+              "profilePageTitle": {
+                "id": "decalTitle",
+                "text": "",
+                "max-width": "pw",
+                "pare-text": "yes",
+                "overlayTextColor": "unlockHeader",
+                "padding-bottom": "10@sf/@pf"
+              },
+              "challengeDescriptionProgress": {
+                "id": "decalProgress",
+                "isProfileUnlockProgress": "yes",
+                "value": "",
+                "display": "hide",
+                "margin-bottom": "8@sf/@pf"
+              },
+              "profilePageText": [
+                {
+                  "id": "decalMainCond",
+                  "width": "pw",
+                  "overflow": "hidden",
+                  "text": "",
+                  "color": "@profilePageTextColor",
+                  "margin-bottom": "8@sf/@pf"
+                },
+                {
+                  "id": "decalDesc",
+                  "width": "pw",
+                  "overflow": "hidden",
+                  "text": "",
+                  "margin-top": "14@sf/@pf",
+                  "color": "@profilePageTextColor"
+                },
+                {
+                  "id": "decalMultDecs",
+                  "width": "pw",
+                  "overflow": "hidden",
+                  "text": "",
+                  "margin-top": "1@blockInterval",
+                  "color": "@profilePageTextColor"
+                },
+                {
+                  "id": "decalConds",
+                  "width": "pw",
+                  "overflow": "hidden",
+                  "text": "",
+                  "margin-top": "1@blockInterval",
+                  "color": "@profilePageTextColor"
+                },
+                {
+                  "id": "decalPrice",
+                  "width": "pw",
+                  "text": "",
+                  "margin-top": "1@blockInterval",
+                  "color": "@profilePageTextColor"
+                }
+              ],
+              "tdiv": {
+                "position": "relative",
+                "flow": "horizontal",
+                "margin-top": "8@sf/@pf",
+                "left": "-1@buttonTextPadding",
+                "Button_text": [
+                  {
+                    "id": "btn_buy_decorator",
+                    "btnName": "X",
+                    "on_click": "onBuyDecorator",
+                    "display": "hide",
+                    "text": "#mainmenu/btnOrder",
+                    "hideText": "yes",
+                    "showButtonImageOnConsole": "no",
+                    "visualStyle": "purchase",
+                    "buttonWink": {},
+                    "buttonGlance": {},
+                    "ButtonImg": {},
+                    "textarea": {
+                      "id": "btn_buy_decorator_text",
+                      "class": "buttonText"
+                    }
+                  },
+                  {
+                    "id": "btn_use_decorator",
+                    "visualStyle": "secondary",
+                    "btnName": "L3",
+                    "_on_click": "onDecalUse",
+                    "display": "hide",
+                    "text": "#decorator/use/decal",
+                    "ButtonImg": {},
+                    "buttonWink": {}
+                  },
+                  {
+                    "id": "btn_preview",
+                    "visualStyle": "secondary",
+                    "btnName": "L3",
+                    "_on_click": "onDecalPreview",
+                    "display": "hide",
+                    "text": "#mainmenu/btnPreview",
+                    "showButtonImageOnConsole": "no",
+                    "class": "image",
+                    "img": {
+                      "background-image": "#ui/gameuiskin#btn_preview.svg"
+                    },
+                    "ButtonImg": {},
+                    "buttonWink": {}
+                  },
+                  {
+                    "id": "btn_go_to_collection",
+                    "btnName": "R3",
+                    "on_click": "onGotoCollection",
+                    "display": "hide",
+                    "visualStyle": "secondary",
+                    "text": "#collection/go_to_collection",
+                    "showButtonImageOnConsole": "no",
+                    "class": "image",
+                    "buttonWink": {},
+                    "img": {
+                      "background-image": "#ui/gameuiskin#collection.svg"
+                    },
+                    "ButtonImg": {}
+                  },
+                  {
+                    "id": "btn_marketplace_find_coupon",
+                    "btnName": "X",
+                    "on_click": "onMarketplaceFindCoupon",
+                    "display": "hide",
+                    "text": "#msgbox/btn_find_on_marketplace",
+                    "showButtonImageOnConsole": "no",
+                    "visualStyle": "secondary",
+                    "class": "image",
+                    "buttonWink": {},
+                    "img": {
+                      "background-image": "#ui/gameuiskin#gc.svg"
+                    },
+                    "ButtonImg": {}
+                  },
+                  {
+                    "id": "btn_marketplace_consume_coupon",
+                    "btnName": "X",
+                    "on_click": "onMarketplaceConsumeCoupon",
+                    "display": "hide",
+                    "text": "#item/consume/coupon",
+                    "showButtonImageOnConsole": "no",
+                    "visualStyle": "secondary",
+                    "class": "image",
+                    "buttonWink": {},
+                    "img": {
+                      "background-image": "#ui/gameuiskin#gc.svg"
+                    },
+                    "ButtonImg": {}
+                  },
+                  {
+                    "id": "checkbox_favorites",
+                    "position": "relative",
+                    "text": "",
+                    "tooltip": "",
+                    "on_click": "unlockToFavorites",
+                    "unlockId": "",
+                    "btnName": "LT",
+                    "visualStyle": "secondary",
+                    "isChecked": "no",
+                    "ButtonImg": {},
+                    "buttonWink": {}
+                  }
+                ]
+              }
+            }
+          },
+          "tdiv": {
+            "id": "decals_separator",
+            "position": "relative",
+            "size": "pw, 2@sf/@pf",
+            "background-color": "@separatorColor",
+            "margin": "0, 6@sf/@pf, 0, 19@sf/@pf"
+          },
+          "medalsList": {
+            "medalsListContent": {
+              "id": "decals_zone",
+              "on_select": "onDecalSelect"
+            }
+          }
+        }
+      }
+    ],
+    "textareaNoTab": {
+      "id": "empty_text",
+      "overlayTextColor": "active",
+      "normalFont": "yes",
+      "position": "absolute",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "text": "#profile/decals/filterStrong",
+      "display": "hide"
+    }
+  }
+}

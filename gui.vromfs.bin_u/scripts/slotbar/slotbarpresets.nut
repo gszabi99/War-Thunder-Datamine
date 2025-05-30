@@ -7,12 +7,11 @@ let { loadLocalByAccount, saveLocalByAccount
 let regexp2 = require("regexp2")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isCountrySlotbarHasUnits, initSelectedCrews, getCrewsListByCountry,
-  isCountryAllCrewsUnlockedInHangar, selectCrew, getSelectedCrews
-} = require("%scripts/slotbar/slotbarState.nut")
+let { isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits, getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
+let { initSelectedCrews, selectCrew, flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
 let { clearBorderSymbols, split } = require("%sqstd/string.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
+let { batchTrainCrew } = require("%scripts/crew/crewTrain.nut")
 let { forceSaveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { deep_clone } = require("%sqstd/underscore.nut")
@@ -27,13 +26,12 @@ let { getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getCurrentGameModeId, setCurrentGameModeById, getGameModeById,
   getGameModeByUnitType, findCurrentGameModeId, isPresetValidForGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
-} = require("%scripts/slotbar/crewsList.nut")
+let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
@@ -50,11 +48,12 @@ const PRESETS_VERSION_SAVE_ID = "presetsVersion"
 
 let isEqualPreset = @(p1, p2) isEqual(p1.crews, p2.crews) && isEqual(p1.units, p2.units)
 
-let slotbarPresets = persist("slotbarPresets", @() {})
+let slotbarPresetsByCountry = persist("slotbarPresetsByCountry", @() {})
 let slotbarPresetsSeletected = persist("slotbarPresetsSeletected", @() {})
 let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
-::slotbarPresets <- {
+local slotbarPresets = null
+slotbarPresets = {
   activeTypeBonusByCountry = null
 
   baseCountryPresetsAmount = 8
@@ -66,7 +65,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   validatePresetNameRegexp = regexp2(@"^#|[;|\\<>]")
 
   
-  presets = slotbarPresets
+  presets = slotbarPresetsByCountry
 
   
   selected = slotbarPresetsSeletected
@@ -82,11 +81,11 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   }
 
   function newbieInit(newbiePresetsData) {
-    slotbarPresets.clear()
+    slotbarPresetsByCountry.clear()
     foreach (presetDataItem in newbiePresetsData.presetDataItems) {
       
       let countryId = presetDataItem.country
-      slotbarPresets[countryId] <- this.presets?[countryId] ?? []
+      slotbarPresetsByCountry[countryId] <- this.presets?[countryId] ?? []
       if (!presetDataItem.hasUnits && !this.canHaveEmptyPresets(countryId))
         continue
       let gameMode = getGameModeByUnitType(presetDataItem.unitType, -1, true)
@@ -104,9 +103,9 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
           preset.selected = taskData.crewId
       }
       this._updateInfo(preset)
-      slotbarPresets[presetDataItem.country].append(preset)
+      slotbarPresetsByCountry[presetDataItem.country].append(preset)
 
-      let presetIndex = slotbarPresets[presetDataItem.country].len() - 1
+      let presetIndex = slotbarPresetsByCountry[presetDataItem.country].len() - 1
       presetDataItem.presetIndex <- presetIndex
 
       if (newbiePresetsData.selectedCountry == presetDataItem.country &&
@@ -137,19 +136,19 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   }
 
   function initCountry(countryId) {
-    slotbarPresets[countryId] <- this.getPresetsList(countryId)
+    slotbarPresetsByCountry[countryId] <- this.getPresetsList(countryId)
     local selPresetId = loadLocalByAccount($"slotbar_presets/{countryId}/selected", null)
     let slotbarPreset = this.createPresetFromSlotbar(countryId)
-    if (selPresetId != null && (selPresetId in slotbarPresets[countryId])
-        && isEqualPreset(slotbarPresets[countryId][selPresetId], slotbarPreset)) {
+    if (selPresetId != null && (selPresetId in slotbarPresetsByCountry[countryId])
+        && isEqualPreset(slotbarPresetsByCountry[countryId][selPresetId], slotbarPreset)) {
       slotbarPresetsSeletected[countryId] <- selPresetId
       return
     }
 
-    selPresetId = selPresetId != null && (selPresetId in slotbarPresets[countryId])
+    selPresetId = selPresetId != null && (selPresetId in slotbarPresetsByCountry[countryId])
       ? selPresetId
       : 0
-    foreach (idx, preset in slotbarPresets[countryId])
+    foreach (idx, preset in slotbarPresetsByCountry[countryId])
       if (isEqualPreset(preset, slotbarPreset)) {
         selPresetId = idx
         break
@@ -160,13 +159,13 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   function list(countryId = null) {
     countryId = countryId ?? profileCountrySq.value
     let res = []
-    if (!(countryId in slotbarPresets)) {
+    if (!(countryId in slotbarPresetsByCountry)) {
       res.append(this.createPresetFromSlotbar(countryId))
       return res
     }
 
     let currentIdx = this.getCurrent(countryId, -1)
-    foreach (idx, preset in slotbarPresets[countryId]) {
+    foreach (idx, preset in slotbarPresetsByCountry[countryId]) {
       if (idx == currentIdx)
         this.updatePresetFromSlotbar(preset, countryId)
       res.append(preset)
@@ -193,7 +192,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
   function canCreate() {
     local countryId = profileCountrySq.value
-    return (countryId in slotbarPresets) && slotbarPresets[countryId].len() < this.getMaxPresetsCount(countryId)
+    return (countryId in slotbarPresetsByCountry) && slotbarPresetsByCountry[countryId].len() < this.getMaxPresetsCount(countryId)
       && this.canEditCountryPresets(countryId)
   }
 
@@ -281,9 +280,9 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     if (!this.canCreate())
       return false
     let countryId = profileCountrySq.value
-    slotbarPresets[countryId].append(this.createEmptyPreset(countryId, slotbarPresets[countryId].len()))
+    slotbarPresetsByCountry[countryId].append(this.createEmptyPreset(countryId, slotbarPresetsByCountry[countryId].len()))
     this.save(countryId)
-    broadcastEvent("SlotbarPresetsChanged", { showPreset = slotbarPresets[countryId].len() - 1 })
+    broadcastEvent("SlotbarPresetsChanged", { showPreset = slotbarPresetsByCountry[countryId].len() - 1 })
     return true
   }
 
@@ -292,15 +291,15 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
       return false
     let countryId = profileCountrySq.value
     let newPreset = deep_clone(fromPreset).__update({ title = $"{fromPreset.title} *" })
-    slotbarPresets[countryId].append(newPreset)
+    slotbarPresetsByCountry[countryId].append(newPreset)
     this.save(countryId)
-    broadcastEvent("SlotbarPresetsChanged", { showPreset = slotbarPresets[countryId].len() - 1 })
+    broadcastEvent("SlotbarPresetsChanged", { showPreset = slotbarPresetsByCountry[countryId].len() - 1 })
     return true
   }
 
   function canErase() {
     let countryId = profileCountrySq.value
-    return (countryId in slotbarPresets) && slotbarPresets[countryId].len() > this.minCountryPresets
+    return (countryId in slotbarPresetsByCountry) && slotbarPresetsByCountry[countryId].len() > this.minCountryPresets
   }
 
   function erase(idx) {
@@ -309,20 +308,20 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     let countryId = profileCountrySq.value
     if (idx == slotbarPresetsSeletected[countryId])
       return
-    slotbarPresets[countryId].remove(idx)
+    slotbarPresetsByCountry[countryId].remove(idx)
     if (slotbarPresetsSeletected[countryId] != null && slotbarPresetsSeletected[countryId] > idx)
       slotbarPresetsSeletected[countryId]--
     this.save(countryId)
-    broadcastEvent("SlotbarPresetsChanged", { showPreset = min(idx, slotbarPresets[countryId].len() - 1) })
+    broadcastEvent("SlotbarPresetsChanged", { showPreset = min(idx, slotbarPresetsByCountry[countryId].len() - 1) })
     return true
   }
 
   function move(idx, offset) {
     let countryId = profileCountrySq.value
-    let newIdx = clamp(idx + offset, 0, slotbarPresets[countryId].len() - 1)
+    let newIdx = clamp(idx + offset, 0, slotbarPresetsByCountry[countryId].len() - 1)
     if (newIdx == idx)
       return false
-    slotbarPresets[countryId].insert(newIdx, slotbarPresets[countryId].remove(idx))
+    slotbarPresetsByCountry[countryId].insert(newIdx, slotbarPresetsByCountry[countryId].remove(idx))
     if (slotbarPresetsSeletected[countryId] != null) {
       if (slotbarPresetsSeletected[countryId] == idx)
         slotbarPresetsSeletected[countryId] = newIdx
@@ -342,10 +341,10 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
 
   function rename(idx) {
     let countryId = profileCountrySq.value
-    if (!(countryId in slotbarPresets) || !(idx in slotbarPresets[countryId]))
+    if (!(countryId in slotbarPresetsByCountry) || !(idx in slotbarPresetsByCountry[countryId]))
       return
 
-    let oldName = slotbarPresets[countryId][idx].title
+    let oldName = slotbarPresetsByCountry[countryId][idx].title
     openEditBoxDialog({
                       title = loc("mainmenu/newPresetName"),
                       maxLen = 16,
@@ -355,18 +354,18 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
                         return value != null && clearBorderSymbols(value).len() > 0
                       },
                       validateFunc = function (value) {
-                        return ::slotbarPresets.validatePresetName(value)
+                        return slotbarPresets.validatePresetName(value)
                       },
                       okFunc = @(newName) this.onChangePresetName(idx, clearBorderSymbols(newName), countryId)
                     })
   }
 
   function onChangePresetName(idx, newName, countryId) {
-    let oldName = slotbarPresets[countryId][idx].title
+    let oldName = slotbarPresetsByCountry[countryId][idx].title
     if (oldName == newName)
       return
 
-    slotbarPresets[countryId][idx].title <- newName
+    slotbarPresetsByCountry[countryId][idx].title <- newName
     this.save(countryId)
     broadcastEvent("SlotbarPresetsChanged", { showPreset = idx })
   }
@@ -389,17 +388,17 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   function save(countryId = null, shouldSaveProfile = true) {
     if (!countryId)
       countryId = profileCountrySq.value
-    if (!this.canEditCountryPresets(countryId) || !(countryId in slotbarPresets))
+    if (!this.canEditCountryPresets(countryId) || !(countryId in slotbarPresetsByCountry))
       return false
     let cfgBlk = loadLocalByAccount($"slotbar_presets/{countryId}")
     local blk = null
-    if (slotbarPresets[countryId].len() > 0) {
-      let curPreset = getTblValue(slotbarPresetsSeletected[countryId], slotbarPresets[countryId])
+    if (slotbarPresetsByCountry[countryId].len() > 0) {
+      let curPreset = getTblValue(slotbarPresetsSeletected[countryId], slotbarPresetsByCountry[countryId])
       if (curPreset && countryId == profileCountrySq.value)
         this.updatePresetFromSlotbar(curPreset, countryId)
 
       let presetsList = []
-      foreach (_idx, p in slotbarPresets[countryId]) {
+      foreach (_idx, p in slotbarPresetsByCountry[countryId]) {
         if (p.units.len() == 0 && !this.canHaveEmptyPresets(countryId))
           continue
         presetsList.append("|".join([
@@ -435,7 +434,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     if (this.isLoading)
       return false
     country = country ?? profileCountrySq.value
-    if (!(country in slotbarPresets) || !isInMenu() || !isCanModifyCrew())
+    if (!(country in slotbarPresetsByCountry) || !isInMenu.get() || !isCanModifyCrew())
       return false
     if (!isCountryAllCrewsUnlockedInHangar(country)) {
       if (verbose)
@@ -469,7 +468,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
     countryId = countryId ?? profileCountrySq.value
     this.save(countryId) 
 
-    let preset = getTblValue(idx, slotbarPresets[countryId])
+    let preset = getTblValue(idx, slotbarPresetsByCountry[countryId])
     if (!this.canLoadPreset(preset))
       return false
 
@@ -547,7 +546,7 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
         flushSlotbarUpdate()
         this.onTrainCrewTasksFail()
       },
-      ::slotbarPresets)
+      slotbarPresets)
 
     return true
   }
@@ -856,4 +855,8 @@ let slotbarPresetsVersion = persist("slotbarPresetsVersion", @() {ver=0})
   }
 }
 
-subscribe_handler(::slotbarPresets)
+subscribe_handler(slotbarPresets)
+
+::slotbarPresets <- slotbarPresets 
+
+return slotbarPresets

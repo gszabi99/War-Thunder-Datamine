@@ -10,13 +10,14 @@ let { is_replay_playing } = require("replays")
 let { ActionBar } = require("%scripts/hud/hudActionBar.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { HudWithWeaponSelector } = require("%scripts/hud/hudWithWeaponSelector.nut")
+let hudEnemyDamage = require("%scripts/hud/hudEnemyDamage.nut")
 
 gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
   sceneBlkName = "%gui/hud/hudHelicopter.blk"
 
   function initScreen() {
     base.initScreen()
-    ::hudEnemyDamage.init(this.scene)
+    hudEnemyDamage.init(this.scene)
     this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
     this.updatePosHudMultiplayerScore()
     this.updateTacticalMapVisibility()
@@ -30,7 +31,7 @@ gui_handlers.HudHeli <- class (HudWithWeaponSelector) {
     base.reinitScreen()
     this.actionBar.reinit()
     this.updateTacticalMapVisibility()
-    ::hudEnemyDamage.reinit()
+    hudEnemyDamage.reinit()
     this.updateDmgIndicatorState()
   }
 

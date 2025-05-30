@@ -71,7 +71,17 @@
   <</bottomCenterText>>
 
   <<#statusLock>>
-  LockedImg { statusLock:t='<<statusLock>>' }
+    LockedImg {
+      statusLock:t='<<statusLock>>'
+      <<#lockText>>
+      textarea {
+        position:t='absolute'
+        pos:t='-w - 2@sf/@pf, (ph-h)/2'
+        smallFont:t='yes'
+        text:t='<<lockText>>'
+      }
+      <</lockText>>
+    }
   <</statusLock>>
 
   <<#miniIcon>>

@@ -12,7 +12,7 @@ let { hasUnitInFullMissionBlk } = require("%scripts/missions/missionsUtils.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 
 function upgradeUrlMission(fullMissionBlk) {
-  let misBlk = fullMissionBlk?.mission_settings?.mission
+  let misBlk = fullMissionBlk?.mission_settings.mission
   if (!fullMissionBlk || !misBlk)
     return
 

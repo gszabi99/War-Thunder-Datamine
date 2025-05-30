@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_unlock_type, get_nicks_find_result_blk, myself_can_devoice, myself_can_ban, req_player_public_statinfo, find_nicks_by_prefix, set_char_cb, get_player_public_stats, req_player_public_statinfo_by_player_id
+from "%scripts/dagui_natives.nut" import get_nicks_find_result_blk, myself_can_devoice, myself_can_ban, req_player_public_statinfo, find_nicks_by_prefix, set_char_cb, get_player_public_stats, req_player_public_statinfo_by_player_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/leaderboard/leaderboardConsts.nut" import LEADERBOARD_VALUE_TOTAL, LEADERBOARD_VALUE_INHISTORY
 from "%scripts/mainConsts.nut" import SEEN
@@ -10,11 +10,9 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
-let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { getUnlockById, getAllUnlocksWithBlkOrder, getUnlocksByTypeInBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
-let { isXBoxPlayerName, canInteractCrossConsole, isPlatformSony, isPlatformXboxOne,
+let { isXBoxPlayerName, canInteractCrossConsole, isPlatformSony, isPlatformXbox,
   isPlayerFromPS4
 } = require("%scripts/clientState/platform.nut")
 let { hasAllFeatures } = require("%scripts/user/features.nut")
@@ -28,10 +26,7 @@ let { fillProfileSummary, getExternalPlayerStatsFromBlk,
   airStatsListConfig } = require("%scripts/user/userInfoStats.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { APP_ID } = require("app")
-let { getUnlockNameText, getUnlockableMedalImage, buildUnlockDesc, getUnlockMainCondDescByCfg,
-  getUnlockMultDescByCfg, getUnlockCondsDescByCfg, buildConditionsConfig
-} = require("%scripts/unlocks/unlocksViewModule.nut")
-let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { floor } = require("math")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
@@ -48,15 +43,14 @@ let { openNickEditBox, getCustomNick } = require("%scripts/contacts/customNickna
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
-let { isUnlockVisible, getUnlockRewardText } = require("%scripts/unlocks/unlocksModule.nut")
-let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { forceRequestUserInfoData, getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { getShowcaseTitleViewData, getShowcaseViewData, trySetBestShowcaseMode } = require("%scripts/user/profileShowcase.nut")
-let { fill_gamer_card, addGamercardScene } = require("%scripts/gamercard.nut")
+let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
+let { addGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
@@ -65,21 +59,10 @@ let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { checkClanTagForDirtyWords, ps4CheckAndReplaceContentDisabledText } = require("%scripts/clans/clanTextInfo.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { gui_modal_ban, gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")
-
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-
 let g_font = require("%scripts/options/fonts.nut")
-
-
-function getUnlockFiltersList(uType, getCategoryFunc) {
-  let categories = []
-  let unlocks = getUnlocksByTypeInBlkOrder(uType)
-  foreach (unlock in unlocks)
-    if (isUnlockVisible(unlock))
-      u.appendOnce(getCategoryFunc(unlock), categories, true)
-
-  return categories
-}
+let { openMedalsPage } = require("%scripts/user/medals/medalsHandler.nut")
+let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 
 function getCurrentWndDifficulty() {
   let diffCode = loadLocalByAccount("wnd/diffMode", getCurrentShopDifficulty().diffCode)
@@ -123,7 +106,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   statsSortBy = ""
   statsSortReverse = false
   curStatsPage = 0
-  filterCountryName = null
   player = null
   searchPlayerByNick = false
   infoReady = false
@@ -137,21 +119,19 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   filterTypes = {}
   applyFilterTimer = null
-  medalsByCountry = null
   isProfileInited = false
 
   nameStats = ""
   isMyPage = false
-  isPageFilling = false
-  medalsFilters = []
   curFilter = null
-  selMedalIdx = null
   terseInfo = null
   showcaseScale = 1
   isSmallSize = false
   currentHeaderBackgroundId = null
   currentAvatarFrameId = null
   currentAvatarId = null
+  medalsPageHandlerWeak = null
+  filterCountryName = ""
 
   function getSceneTplView() {
     let maxHeight  = to_pixels("sh - 1@maxAccountHeaderHeight - 1@frameFooterHeight - 1@bh - 10@sf/@pf").tofloat()
@@ -179,7 +159,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     else
       setBreadcrumbGoBackParams(this)
 
-    this.selMedalIdx = {}
     if (!this.scene || !this.info || !(("uid" in this.info) || ("id" in this.info) || ("name" in this.info)))
       return this.goBack()
 
@@ -242,9 +221,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.fillGamercard()
     this.updateButtons()
-
-    let medalCountries = getUnlockFiltersList("medal", @(unlock) unlock?.country)
-    this.medalsFilters = shopCountriesList.filter(@(c) medalCountries.contains(c))
   }
 
   function initTabs() {
@@ -330,15 +306,17 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showSheetDiv(name) {
+    local divObj = null
     foreach (div in ["usercard", "records", "stats", "medals"]) {
       let show = div == name
-      let divObj = this.scene.findObject($"{div}-container")
+      divObj = this.scene.findObject($"{div}-container")
       if (checkObj(divObj)) {
         divObj.show(show)
         if (show)
           this.updateDifficultySwitch(divObj)
       }
     }
+    return divObj
   }
 
   function isPageHasProfileHandler(sheet) {
@@ -380,7 +358,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.fillTitleName(this.player.title, false)
     this.fillClanInfo(this.player)
     this.fillModeListBox(this.scene.findObject("profile-container"), this.curMode)
-    fill_gamer_card(this.player, "profile-", this.scene)
+    fillGamercard(this.player, "profile-", this.scene)
     this.scene.findObject("profile_loading").show(false)
     this.isProfileInited = true
   }
@@ -388,7 +366,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function onEventContactsUpdated(_p) {
     if (this.isMyPage)
       return
-    fill_gamer_card(this.player, "profile-", this.scene)
+    fillGamercard(this.player, "profile-", this.scene)
   }
 
   function fillTitleName(name, setEmpty = true) {
@@ -423,7 +401,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!(params?.externalIds))
       return
 
-    if (this.player?.uid != params?.request?.uid && this.player?.id != params?.request?.playerId)
+    if (this.player?.uid != params?.request.uid && this.player?.id != params?.request.playerId)
       return
 
     let isMe = userIdStr.value == this.player?.uid
@@ -435,7 +413,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.fillAdditionalName(this.curPlayerExternalIds?.steamName ?? "", "steamName")
 
-    showObjById("btn_xbox_profile", isPlatformXboxOne && !isMe && (this.curPlayerExternalIds?.xboxId ?? "") != "", this.scene)
+    showObjById("btn_xbox_profile", isPlatformXbox && !isMe && (this.curPlayerExternalIds?.xboxId ?? "") != "", this.scene)
     showObjById("btn_psn_profile", isPlatformSony && !isMe && psnSocial?.open_player_profile != null && (this.curPlayerExternalIds?.psnId ?? "") != "", this.scene)
   }
 
@@ -856,7 +834,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let isPS4Player = isPlayerFromPS4(this.player.name)
     let isXBoxOnePlayer = isXBoxPlayerName(this.player.name)
-    let canBlock = !isPlatformXboxOne || !isXBoxOnePlayer
+    let canBlock = !isPlatformXbox || !isXBoxOnePlayer
     let canInteractCC = canInteractCrossConsole(this.player.name)
 
     let sheet = this.getCurSheet()
@@ -980,37 +958,17 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function showMedalsSheet() {
-    this.showSheetDiv("medals")
-    if (this.medalsByCountry == null)
-      this.fillMedalsByCountry()
-
-    let selCategory = this.filterCountryName ?? profileCountrySq.value
-    local selIdx = 0
-    let view = { items = [] }
-
-    foreach (idx, filter in this.medalsFilters) {
-      if (filter == selCategory)
-        selIdx = idx
-      let medalsData = this.medalsByCountry?[filter]
-      view.items.append({
-        text = $"#{filter}",
-        objects = format("text {text:t='%s'}", $"{medalsData?.unlocked ?? 0}/{medalsData?.total ?? 1}")
-      })
-    }
-
-    let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
-    let pageList = this.scene.findObject("medals_list")
-    this.guiScene.replaceContentFromText(pageList, data, data.len(), this)
-
-    let isEqualIdx = selIdx == pageList.getValue()
-    pageList.setValue(selIdx)
-    if (isEqualIdx) 
-      this.onMedalsCountrySelect(pageList)
-  }
-
-
-  function onMedalsCountrySelect(_obj) {
-    this.fillMedalsZone()
+    let medalsDiv = this.showSheetDiv("medals")
+    if (this.medalsPageHandlerWeak != null)
+      return
+    this.medalsPageHandlerWeak = openMedalsPage({
+      scene = medalsDiv
+      player = this.player
+      isOwnStats = this.isOwnStats
+      openParams = {
+        initCountry = this.filterCountryName
+      }
+    })
   }
 
   function updateUnlockFav(_name, containerObj) {
@@ -1018,113 +976,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function unlockToFavorites(_obj = null) {}
-
-  function onMedalSelect(obj) {
-    if (!checkObj(obj))
-      return
-
-    let idx = obj.getValue()
-    let itemObj = idx >= 0 && idx < obj.childrenCount() ? obj.getChild(idx) : null
-    let name = checkObj(itemObj) && itemObj?.id
-    let unlock = name && getUnlockById(name)
-    if (!unlock)
-      return
-
-    let containerObj = this.scene.findObject("medals_info")
-    let descObj = checkObj(containerObj) && containerObj.findObject("medals_desc")
-    if (!checkObj(descObj))
-      return
-
-    if (!this.isPageFilling)
-      this.selMedalIdx[this.curFilter] <- idx
-
-    let config = buildUnlockDesc(buildConditionsConfig(unlock))
-    let rewardText = getUnlockRewardText(name)
-    let progressData = this.isOwnStats ? config.getProgressBarData() : null
-
-    let view = {
-      title = loc($"{name}/name")
-      image = getUnlockableMedalImage(name, true)
-      unlockProgress = progressData?.value ?? 0
-      hasProgress = progressData?.show ?? false
-      mainCond = getUnlockMainCondDescByCfg(config, { showSingleStreakCondText = true })
-      multDesc = getUnlockMultDescByCfg(config)
-      conds = getUnlockCondsDescByCfg(config)
-      rewardText = rewardText != "" ? rewardText : null
-    }
-
-    let markup = handyman.renderCached("%gui/profile/profileMedal.tpl", view)
-    this.guiScene.setUpdatesEnabled(false, false)
-    this.guiScene.replaceContentFromText(descObj, markup, markup.len(), this)
-    this.updateUnlockFav(name, containerObj)
-    this.guiScene.setUpdatesEnabled(true, true)
-  }
-
-  function fillMedalsZone() {
-    let pageIdx = this.scene.findObject("medals_list").getValue()
-    if (pageIdx < 0 || pageIdx >= this.medalsFilters.len())
-      return
-
-    this.isPageFilling = true
-    this.guiScene.setUpdatesEnabled(false, false)
-
-    local view = { items = [] }
-    let country = this.medalsFilters[pageIdx]
-    this.curFilter = country
-    view.items = this.medalsByCountry?[country].items ?? []
-    local data = handyman.renderCached("%gui/commonParts/imgFrame.tpl", view)
-
-    let medalsObj = this.scene.findObject("medals_zone")
-    this.guiScene.replaceContentFromText(medalsObj, data, data.len(), this)
-    this.guiScene.setUpdatesEnabled(true, true)
-
-    local curIndex = this.selMedalIdx?[country] ?? 0
-    let total = medalsObj.childrenCount()
-    curIndex = total ? clamp(curIndex, 0, total - 1) : -1
-    medalsObj.setValue(curIndex)
-
-    this.onMedalSelect(medalsObj)
-    this.isPageFilling = false
-  }
-
-  function fillMedalsByCountry() {
-    this.medalsByCountry = {}
-    let unlocks = getAllUnlocksWithBlkOrder()
-    foreach (cb in unlocks) {
-      let name = cb.getStr("id", "")
-      let unlockType = cb?.type ?? ""
-      let unlockTypeId = get_unlock_type(unlockType)
-      if (unlockTypeId != UNLOCKABLE_MEDAL || !isUnlockVisible(cb) || isBattleTask(cb))
-        continue
-
-      let medalCountry = cb.getStr("country", "")
-      if (medalCountry == "")
-        continue
-      if (cb?.hideUntilUnlocked && !this.isMedalUnlocked(name))
-        continue
-
-      if (this.medalsByCountry?[medalCountry] == null)
-        this.medalsByCountry[medalCountry] <- {unlocked = 0, total = 0, items = [] }
-
-      let item = {
-        id = name
-        tag = "imgSelectable"
-        unlocked = this.isMedalUnlocked(name)
-        image = getUnlockableMedalImage(name, true)
-        imgClass = "profileMedals"
-        focusBorder = true
-      }
-      this.medalsByCountry[medalCountry].total += 1
-      if (item.unlocked)
-        this.medalsByCountry[medalCountry].unlocked += 1
-
-      this.medalsByCountry[medalCountry].items.append(item)
-    }
-  }
-
-  function isMedalUnlocked(name) {
-    return this.player?.unlocks.medal[name] != null
-  }
 
   function onLeaderboard() {
     let userId = (this.player?.uid ?? "-1").tointeger()
@@ -1155,11 +1006,12 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (infos == null)
       return
 
+    let pilotIcon = getAvatarIconIdByUserInfo(infos)
     this.terseInfo = {}
     this.terseInfo.schType <- infos.shcType
     this.terseInfo.background <- infos.background
     this.terseInfo.frame <- infos.frame
-    this.terseInfo.pilotIcon <- infos.pilotIcon
+    this.terseInfo.pilotIcon <- pilotIcon
     this.terseInfo.showcase <- infos?.showcase
       ? clone infos.showcase
       : {}

@@ -41,7 +41,7 @@ def fire_damage_update_es(act : UpdateStageInfoAct;
 
   let now_burning = check_is_burning(v)
   if !now_burning
-    sendEventImmediate(eid, [[CmdStopBurn]])
+    sendEventImmediate(eid, CmdStopBurn())
 
   let at_time = float(get_app().usefulTotalTime)
   let seed = grnd()
@@ -60,15 +60,15 @@ def fire_damage_update_es(act : UpdateStageInfoAct;
         continue
 
       let sph = fire_system_get_fire_sphere(id, at_time, v)
-      sendEvent(eid, [[EventOnBurnDamageToPart
-        fireId=id,
-        packedPartId=packed_part_id,
-        fireParamsId=fire_params_id,
-        initiatorId=initiator_id,
-        seed=seed,
+      sendEvent(eid, EventOnBurnDamageToPart(
+        fireId = id,
+        packedPartId = packed_part_id,
+        fireParamsId = fire_params_id,
+        initiatorId = initiator_id,
+        seed = seed,
         sph = float4(sph.c.x, sph.c.y, sph.c.z, sph.r),
         atTime = act.curTime
-      ]])
+      ))
 
   
   for id, start_time, underwater_timer, fire_params_id, node_id in iter_range(v.fire_data__startTime), v.fire_data__startTime, v.fire_data__underwaterTimer, v.fire_data__fireParamsId, v.fire_data__nodeId
@@ -128,27 +128,27 @@ def fire_damage_process_start_burn_event(eid : EntityId;
     offset = coll_node.boundingSphere.c
 
   let at_time = float(get_app().usefulTotalTime)
-  let fire_id = fire_system_start_single_burn(eid, [[StartSingleBurnDesc()
-    partId=part_id,
-    nodeId=geom_node_id,
-    fireParamsId=fire_params_id,
-    fireFxId=fire_fx_id,
-    offset=offset,
-    centerDmgPart=coll_node.tm * coll_node.modelBBox.center,
-    radius=radius.radius,
-    finalRadius=radius.final_radius,
-    atTime=at_time,
-    initiatorId=offender |> get_bullet_uid()
-  ]]) <| v
+  let fire_id = fire_system_start_single_burn(eid, StartSingleBurnDesc(
+    partId = part_id,
+    nodeId = geom_node_id,
+    fireParamsId = fire_params_id,
+    fireFxId = fire_fx_id,
+    offset = offset,
+    centerDmgPart = coll_node.tm * coll_node.modelBBox.center,
+    radius = radius.radius,
+    finalRadius = radius.final_radius,
+    atTime = at_time,
+    initiatorId = offender |> get_bullet_uid()
+  )) <| v
 
   if fire_id >= 0 && !v.fire_damage__isBurn
     v.fire_damage__isBurn = true
     let sph = fire_system_get_fire_sphere(fire_id, at_time) <| v
-    sendEvent(eid, [[EventFireSystemStartBurning
-      offender=offender,
-      partId=part_id,
+    sendEvent(eid, EventFireSystemStartBurning(
+      offender = offender,
+      partId = part_id,
       sph = float4(sph.c.x, sph.c.y, sph.c.z, sph.r)
-    ]])
+    ))
   return fire_id
 
 
@@ -233,7 +233,7 @@ def fire_damage_stop_burn_es(evt : CmdStopBurn;
                                fire_system_require_net_sync : bool;
                                fire_damage__isBurn : bool
                                >)
-  sendEvent(eid, [[EventOnStopBurn wasBurning=v.fire_damage__isBurn]])
+  sendEvent(eid, EventOnStopBurn(wasBurning = v.fire_damage__isBurn))
   v.fire_data__packedPartId |> clear()
   v.fire_data__nodeId |> clear()
   v.fire_data__fireParamsId |> clear()
@@ -249,12 +249,12 @@ def fire_damage_stop_burn_es(evt : CmdStopBurn;
 
 [es]
 def fire_system_repair_es(evt : EventUnitRepair; eid : EntityId)
-  sendEventImmediate(eid, [[CmdStopBurn]])
+  sendEventImmediate(eid, CmdStopBurn())
 
 
 [es]
 def fire_system_respawn_es(evt : EventUnitRespawn; eid : EntityId)
-  sendEventImmediate(eid, [[CmdStopBurn]])
+  sendEventImmediate(eid, CmdStopBurn())
 
 
 
@@ -289,10 +289,10 @@ def fire_system_net_sync_update_es(act : UpdateStageInfoAct;
             break
         data |> push(attached_fx_id)
 
-    send_net_event(eid, [[EventFireSystemNetSync
+    send_net_event(eid, EventFireSystemNetSync(
       isBurning = v.fire_damage__isBurn,
-      data=ecs_addr(data)
-    ]])
+      data = ecs_addr(data)
+    ))
 
 
 [es(tag=netClient), with_bundle(v)]
@@ -315,13 +315,13 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
                                      fire_fx__paramsId : ecs::IntList
                                      >)
   let total_time = float(get_app().usefulTotalTime)
-  let was_burning = v.fire_damage__isBurn;
-  v.fire_damage__isBurn = evt.isBurning;
+  let was_burning = v.fire_damage__isBurn
+  v.fire_damage__isBurn = evt.isBurning
 
   if !was_burning && evt.isBurning
-    sendEvent(eid, [[EventFireSystemOnStartBurn offender=[[OffenderData]]]])
+    sendEvent(eid, EventFireSystemOnStartBurn(offender = OffenderData(uninitialized)))
   elif was_burning && !evt.isBurning
-    sendEvent(eid, [[CmdStopBurn]])
+    sendEvent(eid, CmdStopBurn())
 
   var burning_parts : array<tuple<packed_part_id : uint; fire_params_id : int; fx_id : int; already_burning : bool>>
   burning_parts |> reserve(length(*evt.data) / 3)
@@ -329,7 +329,7 @@ def fire_system_net_sync_handle_es(evt : EventFireSystemNetSync;
     let packed_part_id = uint((*evt.data)[i * 3])
     let fire_params_id = (*evt.data)[i * 3 + 1]
     let fx_id = (*evt.data)[i * 3 + 2]
-    burning_parts |> push([[auto packed_part_id, fire_params_id, fx_id, false]])
+    burning_parts |> push((packed_part_id, fire_params_id, fx_id, false))
 
   for fire_id, packed_part_id in iter_range(v.fire_data__packedPartId), v.fire_data__packedPartId
     var fire_found = false

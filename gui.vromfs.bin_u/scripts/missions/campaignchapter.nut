@@ -14,7 +14,8 @@ let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -48,7 +49,9 @@ let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { guiStartMpLobby } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { getMisListType } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-let { getOptionsMode } = require("%scripts/options/optionsList.nut")
+let { getOptionsMode } = require("%scripts/options/options.nut")
+let { checkDiffPkg, checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 let MODIFICATION_TUTORIAL_CHAPTERS = ["tutorial_aircraft_modification", "tutorial_tank_modification"]
@@ -334,7 +337,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
     if (checkSeen && was_video_seen(videoName))
       return
 
-    if (!::check_package_and_ask_download("hc_pacific"))
+    if (!checkPackageAndAskDownload("hc_pacific"))
       return
 
     this.guiScene.performDelayed(this, function(_obj) {
@@ -543,7 +546,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    if (!::g_squad_utils.canJoinFlightMsgBox({
+    if (!canJoinFlightMsgBox({
            isLeaderCanJoin = canPlayGamemodeBySquad(this.gm),
            showOfflineSquadMembersPopup = true
            maxSquadSize = getMaxPlayersForGamemode(this.gm)
@@ -789,7 +792,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
 
   function afterMissionOptionsApply() {
     let diffCode = get_mission_settings().diff
-    if (!::check_diff_pkg(diffCode))
+    if (!checkDiffPkg(diffCode))
       return
 
     this.checkedNewFlight(function() {

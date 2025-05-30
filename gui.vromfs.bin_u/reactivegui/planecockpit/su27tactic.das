@@ -51,7 +51,7 @@ def draw_scale(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Canv
   ctx |> draw_line(pos.x + 0.1 * sz.x, pos.y + 0.98 * sz.y, pos.x + 0.1 * sz.x, pos.y + 0.96 * sz.y, ctx |> hdpx(2.))
 
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
 
@@ -72,7 +72,7 @@ def draw_tas(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Canvas
 
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   let speedText = fmt(":d", roundi(hero.speed * 3.6))
   let speedTextBox = get_str_bbox(speedText, speedText |> length(), fctx)
@@ -88,9 +88,9 @@ def b_scope_sector(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   ctx |> render_sector_aa(origin, sectorR, float2(-PI, 0.), 1.2,
    data.color, transparentColor)
 
-  let coord <- to_array_move([[float2[3] float2(pos.x + sz.x * 0.5, origin.y - sectorR.y - sz.y * 0.02);
-   float2(pos.x + sz.x * 0.48, origin.y - sectorR.y + sz.y * 0.02);
-   float2(pos.x + sz.x * 0.52, origin.y - sectorR.y + sz.y * 0.02)]])
+  let coord <- to_array_move(fixed_array<float2>(float2(pos.x + sz.x * 0.5, origin.y - sectorR.y - sz.y * 0.02),
+   float2(pos.x + sz.x * 0.48, origin.y - sectorR.y + sz.y * 0.02),
+   float2(pos.x + sz.x * 0.52, origin.y - sectorR.y + sz.y * 0.02)))
   ctx |> render_line_aa(coord, true, 2., float2(0, 0), data.color)
   ctx |> draw_line(pos.x + sz.x * 0.5, origin.y - sectorR.y - sz.y * 0.03, pos.x + sz.x * 0.5, origin.y - sectorR.y, 2.)
 
@@ -117,7 +117,7 @@ def draw_targets(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
     color *= (1. - target.ageRel) * signalRel
     let e3dColor = E3DCOLOR(Color4(color))
 
-    if target.targetType == int(RadarTargetType TYPE_TARGET)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET)
       var distanceRel = 0.9
       var radialWidthRel = 0.05
       if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
@@ -146,9 +146,9 @@ def draw_targets(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
         let los = sqrt(target.losSpeed * target.losSpeed + target.losHorSpeed * target.losHorSpeed) * 0.1
         ctx |> draw_line(pos.x, pos.y, pos.x, pos.y + los, 2.)
         if target.isTracked
-          let coord <- to_array_move([[float2[3] pos;
-            float2(pos.x + rdata.size.x * 0.02, pos.y - rdata.size.y * 0.03);
-            float2(pos.x - rdata.size.x * 0.02, pos.y - rdata.size.y * 0.03)]])
+          let coord <- to_array_move(fixed_array<float2>(pos,
+            float2(pos.x + rdata.size.x * 0.02, pos.y - rdata.size.y * 0.03),
+            float2(pos.x - rdata.size.x * 0.02, pos.y - rdata.size.y * 0.03)))
           ctx |> render_line_aa(coord, true, 2., float2(0, 0), data.color)
 
         ctx |> resetViewTm()

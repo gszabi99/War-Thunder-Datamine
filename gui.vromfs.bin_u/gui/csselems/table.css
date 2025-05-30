@@ -434,6 +434,10 @@ unitContactRow[even=yes] {
   background-color:@evenTrColor;
 }
 
+unitContactRow[total=yes] > text {
+  color:@totalTextColor;
+}
+
 tr[even=yes][queueTableRow=yes] {
   background-color:@evenQueueTableTrColor;
 }
@@ -613,43 +617,43 @@ tr[selected=yes] > td > text, tr[selected=yes] activeText
 
 }
 
-[team=red] activeText, [team=red] textareaNoTab {
+[team=red] > tr > td > activeText, [team=red] > tr > td > textareaNoTab {
   color:@teamRedColor;
 }
-[team=blue] activeText, [team=blue] textareaNoTab {
+[team=blue] > tr > td > activeText, [team=blue] > tr > td > textareaNoTab {
   color:@teamBlueColor;
 }
 
-[team=red] [inGame=no] activeText,
-[team=red] [inGame=no] textareaNoTab {
+[team=red] > tr[inGame=no] > td > activeText,
+[team=red] > tr[inGame=no] > td > textareaNoTab {
   color:@teamRedInactiveColor;
 }
 
-[team=blue] [inGame=no] activeText,
-[team=blue] [inGame=no] textareaNoTab {
+[team=blue] > tr[inGame=no] > td > activeText,
+[team=blue] > tr[inGame=no] > td > textareaNoTab {
   color:@teamBlueInactiveColor;
 }
 
-tr[winnerPlace=1st] activeText,
-tr[winnerPlace=1st] textareaNoTab {
+tr[winnerPlace=1st] > td > activeText,
+tr[winnerPlace=1st] > td > textareaNoTab {
   color:@raceMode1stPlace;
 }
-tr[winnerPlace=2nd] activeText,
-tr[winnerPlace=2nd] textareaNoTab {
+tr[winnerPlace=2nd] > td > activeText,
+tr[winnerPlace=2nd] > td > textareaNoTab {
   color:@raceMode2ndPlace;
 }
 
-tr[inMySquad=yes] activeText,
-tr[inMySquad=yes] textareaNoTab {
+tr[inMySquad=yes] > td > activeText,
+tr[inMySquad=yes] > td > textareaNoTab {
   color:@mySquadColor;
 }
-tr[spectator=yes] activeText,
-tr[spectator=yes] textareaNoTab {
+tr[spectator=yes] td > activeText,
+tr[spectator=yes] td > textareaNoTab {
   color:@spectatorColor;
 }
 
-tr[mainPlayer=yes] activeText, tr[mainPlayer=yes] > td > text,
-text[mainPlayer=yes], tr[mainPlayer=yes] textareaNoTab {
+tr[mainPlayer=yes] > td > activeText, tr[mainPlayer=yes] > td > text,
+text[mainPlayer=yes], tr[mainPlayer=yes] > td > textareaNoTab {
   color:@mainPlayerColor;
 }
 

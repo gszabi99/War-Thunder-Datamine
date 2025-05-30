@@ -2,7 +2,7 @@ tdiv {
   id:t='hud_live_stats'
   pos:t='pw/2-w/2, ph/2-h/2'
   position:t='relative'
-  width:t='pw'
+  width:t='0.85*pw'
   padding:t='1@sIco'
   flow:t='vertical'
 

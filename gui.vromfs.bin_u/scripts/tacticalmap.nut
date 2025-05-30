@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import close_ingame_gui, get_cur_unit_weapon_preset, is_respawn_screen, get_player_unit_name
+from "%scripts/dagui_natives.nut" import close_ingame_gui, is_respawn_screen
 from "%scripts/dagui_library.nut" import *
+let { get_player_unit_name, get_cur_unit_weapon_preset } = require("unit")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
@@ -21,6 +22,7 @@ let { setAllowMoveCenter, isAllowedMoveCenter, setForcedHudType, getCurHudType,
   setPointSettingMode, isPointSettingMode, resetPointOfInterest, isPointOfInterestSet  } = require("guiTacticalMap")
 let { hasSightStabilization } = require("vehicleModel")
 let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjectivesView.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 function gui_start_tactical_map(params = {}) {
   let { forceTacticalControl = false } = params
@@ -165,7 +167,7 @@ gui_handlers.TacticalMap <- class (gui_handlers.BaseGuiHandlerWT) {
       if (is_respawn_screen()) {
         this.guiScene.performDelayed({}, function() {
           eventbus_send("gui_start_respawn")
-          ::update_gamercards()
+          updateGamercards()
         })
       }
 

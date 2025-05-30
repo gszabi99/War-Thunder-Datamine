@@ -3,6 +3,7 @@ module anim_graph_common shared
 
 require imgui
 require DagorImgui
+require DagorDataBlock
 require AnimV20
 require DagorConsole
 require DagorMath
@@ -459,6 +460,13 @@ def render_AnimBlendCtrl_BinaryIndirectSwitch(var nod : IAnimBlendNode?; var gra
         out_pin(outId, "{idx + 1}) '{get_node_name(graph, childNode)}'") <|
           link_child(graph, nod, outId, childNode, context)
 
+[unused_argument(nod, graph, state, context)]
+def render_AnimBlendCtrl_SetMotionMatchingTag(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
+  unsafe
+    assume node = *reinterpret<AnimBlendCtrl_SetMotionMatchingTag?> nod
+    imgui::Text("weight: {fmt(":.2f", weight)}")
+    imgui::Text("tag: {node.tagName}")
+
 
 [unused_argument(nod, graph, state, context)]
 def render_AnimBlendCtrl_LinearPoly(var nod : IAnimBlendNode?; var graph : AnimationGraph; var state : IAnimStateHolder; var context : AnimgraphContext; weight : float)
@@ -596,7 +604,7 @@ enum DrawNodesMode
   ACTIVE_AND_HISTORY
 
 [unused_argument(state)]
-def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGraph; var state : IAnimStateHolder; var reset_state : bool&; var params_filter : ImGuiTextFilter&)
+def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGraph; var state : IAnimStateHolder; var reset_state : bool&; var params_filter : ImGuiTextFilter&; var states_filter : ImGuiTextFilter&)
 
   var renderers : array<tuple<uint; BlendNodeRenderer>>
   push(renderers, tuple(AnimBlendNodeNullCID, @@render_AnimBlendNodeNull))
@@ -608,6 +616,7 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
   push(renderers, tuple(AnimBlendCtrl_RandomSwitcherCID, @@render_AnimBlendCtrl_RandomSwitcher))
   push(renderers, tuple(AnimBlendCtrl_HubCID, @@render_AnimBlendCtrl_Hub))
   push(renderers, tuple(AnimBlendCtrl_BinaryIndirectSwitchCID, @@render_AnimBlendCtrl_BinaryIndirectSwitch))
+  push(renderers, tuple(AnimBlendCtrl_SetMotionMatchingTagCID, @@render_AnimBlendCtrl_SetMotionMatchingTag))
   push(renderers, tuple(AnimBlendCtrl_ParametricSwitcherCID, @@render_AnimBlendCtrl_ParametricSwitcher))
   push(renderers, tuple(AnimBlendCtrl_LinearPolyCID, @@render_AnimBlendCtrl_LinearPoly))
   
@@ -621,7 +630,6 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
   ImGuiEx_BeginColumn()
 
   let paramsWidth = 250f
-  let skeletonNodesWidth = 450f
   imgui::BeginChild("__params__", float2(paramsWidth, -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.None)
 
   var autoAlign = imgui::Button("Align")
@@ -638,9 +646,29 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
     var nodesToShow : table<int; tuple<generation : int; active : bool>>
     var nodesToShowMaxInactiveCount = 50
     var graphHash = 0
+    var bookmarksLoaded = false
+    var bookmarkedStates : array<string>
+    var bookmarkedParams : array<string>
+    var pbcListShowActiveOnly = true
+    var bnlListShowActiveOnly = true
 
   static_let_finalize <|
     var skeletonFilter = new ImGuiTextFilter
+
+  if !bookmarksLoaded
+    bookmarksLoaded = true
+    bookmarkedStates |> clear()
+    bookmarkedParams |> clear()
+
+    let load = $ <| (name : string; var bookmarks : array<string>)
+      imgui_get_blk() |> datablock_get_block(name) <| $(blk)
+        blk |> datablock_for_each_block() <| $(stateBlk)
+          let bookmarkName = stateBlk |> datablock_getBlockName()
+          if bookmarkName != "" && bookmarks |> find_index(bookmarkName) < 0
+            bookmarks |> push(bookmarkName)
+
+    invoke(load, "animgraph_viewer_bookmarked_states", bookmarkedStates)
+    invoke(load, "animgraph_viewer_bookmarked_params", bookmarkedParams)
 
   let graphPtr = intptr(unsafe(addr(graph)))
   if lastGraphPtr != graphPtr
@@ -652,529 +680,645 @@ def render_anim_graph2(animchar : AnimcharBaseComponent; var graph : AnimationGr
     
     autoAlign = true
     focusContent = true
+    pbcListShowActiveOnly = true
+    bnlListShowActiveOnly = true
 
-  imgui::Checkbox("Apply selected state", safe_addr(resetState))
-  reset_state = resetState
+  graph |> anim_graph_getAnimNodeNames <| $(nodes)
+    graph |> animchar_getAnimBlendNodeWeights(state) <| $(abn_wt; bnl_wt; pbc_wt)
 
-  
-  
-  
-  
+      imgui::Checkbox("Apply selected state", safe_addr(resetState))
+      reset_state = resetState
 
-  if imgui::CollapsingHeader("States")
-    let statesCount = graph.stateCount
+      
+      
+      
+      
 
-    var isSelected = forcedState == -1
-    if imgui::Selectable("None", isSelected, ImGuiSelectableFlags.SpanAllColumns)
-      forcedState = -1
+      if imgui::CollapsingHeader("Force States")
+        let statesCount = graph.stateCount
 
-    for stateId in range(statesCount)
-      let stateName = graph |> anim_graph_getStateName(stateId)
-      let stateIdx = graph |> anim_graph_getStateIdx(stateName)
-      isSelected = forcedState == stateIdx
-      if imgui::Selectable("{stateName} ({stateIdx})", isSelected, ImGuiSelectableFlags.SpanAllColumns)
-        forcedState = stateIdx
+        var isSelected = forcedState == -1
+        if imgui::Selectable("None", isSelected, ImGuiSelectableFlags.SpanAllColumns)
+          forcedState = -1
 
-  if resetState && forcedState >= 0
-    graph |> anim_graph_enqueueState(state, forcedState)
+        for stateId in range(statesCount)
+          let stateName = graph |> anim_graph_getStateName(stateId)
+          let stateIdx = graph |> anim_graph_getStateIdx(stateName)
+          isSelected = forcedState == stateIdx
+          if imgui::Selectable("{stateName} ({stateIdx})", isSelected, ImGuiSelectableFlags.SpanAllColumns)
+            forcedState = stateIdx
 
-  if imgui::CollapsingHeader("Parameters")
-    static_let <|
-      var showHiddenParams = false
-    imgui::Checkbox("Show hidden params", safe_addr(showHiddenParams))
-    imgui::Text("Params filter:")
-    params_filter |> Draw("##paramsFilter")
+      if resetState && forcedState >= 0
+        graph |> anim_graph_enqueueState(state, forcedState)
 
-    Spacing()
-    graph |> anim_graph_getParamNames <| $(params)
-      imgui::Text("Total params count: {length(params)}")
-      imgui::Separator()
-      for param in params
-        let paramType = graph |> anim_graph_getParamType(param.id)
+      var saveBookmarks = false
+
+      if imgui::CollapsingHeader("States")
+        imgui::Text("States filter:")
+        states_filter |> Draw("##statesFilter")
+        Spacing()
+
+        for stateId in range(graph.stateCount)
+          let stateName = graph |> anim_graph_getStateName(stateId)
+          let stateIdx = graph |> anim_graph_getStateIdx(stateName)
+
+          if !(states_filter |> PassFilter(stateName))
+            continue
+
+          if imgui::Button("{stateName} ({stateIdx})##states_{stateName}")
+            graph |> anim_graph_enqueueState(state, stateIdx)
+
+          if imgui::BeginPopupContextItem("StateContextMenu##states_{stateName}")
+            let bookmarkIndex = bookmarkedStates |> find_index(stateName)
+            if bookmarkIndex < 0 && imgui::MenuItem("Bookmark")
+              bookmarkedStates |> push(stateName)
+              saveBookmarks = true
+            elif bookmarkIndex >= 0 && imgui::MenuItem("Remove Bookmark")
+              bookmarkedStates |> erase(bookmarkIndex)
+              saveBookmarks = true
+            imgui::EndPopup()
+
+      var eraseBookmarkParamId = -1
+
+      let drawParam = $ <| (id : int; prefix : string; name : string; showHiddenParams : bool)
+        let popup = $ <| ()
+          if imgui::BeginPopupContextItem("ParamContextMenu##{prefix}params_{name}")
+            let bookmarkIndex = bookmarkedParams |> find_index(name)
+            if bookmarkIndex < 0 && imgui::MenuItem("Bookmark")
+              bookmarkedParams |> push(name)
+              saveBookmarks = true
+            elif bookmarkIndex >= 0 && imgui::MenuItem("Remove Bookmark")
+              eraseBookmarkParamId = bookmarkIndex
+              saveBookmarks = true
+            imgui::EndPopup()
+
+        let paramType = graph |> anim_graph_getParamType(id)
         if paramType == PT_Reserved
-          continue
-
-        if !showHiddenParams && param.name |> character_at(0) == ':'
-          continue
-
-        if !(params_filter |> PassFilter(param.name))
-          continue
+          return
 
         if paramType == PT_ScalarParam
-          imgui::Text("({param.id}) {param.name}")
-          var value = state |> anim_state_holder_getParam(param.id)
+          imgui::Text("({id}) {name}")
+          invoke(popup)
+          var value = state |> anim_state_holder_getParam(id)
           let min = -1e8
           let max = 1e8
           SetNextItemWidth(-FLT_MIN)
-          if imgui::DragScalar("##{param.name}", ImGuiDataType.Float, safe_addr(value), 0.01, safe_addr(min), safe_addr(max), "%.2f", ImGuiSliderFlags.None)
-            state |> anim_state_holder_setParam(param.id, value)
+          if imgui::DragScalar("##{name}", ImGuiDataType.Float, safe_addr(value), 0.01, safe_addr(min), safe_addr(max), "%.2f", ImGuiSliderFlags.None)
+            state |> anim_state_holder_setParam(id, value)
           Spacing()
 
         elif paramType == PT_ScalarParamInt
-          imgui::Text("({param.id}) {param.name}")
-          let value = state |> anim_state_holder_getParamInt(param.id)
+          imgui::Text("({id}) {name}")
+          invoke(popup)
+          let value = state |> anim_state_holder_getParamInt(id)
           let step = 1
           let fastStep = 5
           SetNextItemWidth(-FLT_MIN)
-          if imgui::InputScalar("##{param.name}", ImGuiDataType.S32, safe_addr(value), safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags.None)
-            state |> anim_state_holder_setParamInt(param.id, value)
+          if imgui::InputScalar("##{name}", ImGuiDataType.S32, safe_addr(value), safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags.None)
+            state |> anim_state_holder_setParamInt(id, value)
           Spacing()
 
         elif showHiddenParams
           if paramType == PT_TimeParam
-            imgui::Text("({param.id}) {param.name}")
-            let timeValue = state |> anim_state_holder_getParam(param.id)
+            invoke(popup)
+            imgui::Text("({id}) {name}")
+            let timeValue = state |> anim_state_holder_getParam(id)
             let min = -1e8
             let max = 1e8
             let availableWidth = imgui::GetContentRegionAvail().x
             SetNextItemWidth(availableWidth * 0.5f)
-            if imgui::DragScalar("##{param.name}_time", ImGuiDataType.Float, safe_addr(timeValue),  0.01, safe_addr(min), safe_addr(max), "%.2f", ImGuiSliderFlags.None)
-              state |> anim_state_holder_setParam(param.id, timeValue)
+            if imgui::DragScalar("##{name}_time", ImGuiDataType.Float, safe_addr(timeValue),  0.01, safe_addr(min), safe_addr(max), "%.2f", ImGuiSliderFlags.None)
+              state |> anim_state_holder_setParam(id, timeValue)
             imgui::SameLine()
-            let value = state |> anim_state_holder_getTimeScaleParamId(param.id)
+            let value = state |> anim_state_holder_getTimeScaleParamId(id)
             let step = 1
             let fastStep = 5
             SetNextItemWidth(availableWidth * 0.5f)
-            if imgui::InputScalar("##{param.name}_scale", ImGuiDataType.S32, safe_addr(value), safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags.None)
-              state |> anim_state_holder_setTimeScaleParamId(param.id, value)
+            if imgui::InputScalar("##{name}_scale", ImGuiDataType.S32, safe_addr(value), safe_addr(step), safe_addr(fastStep), "%d", ImGuiInputTextFlags.None)
+              state |> anim_state_holder_setTimeScaleParamId(id, value)
             Spacing()
 
           elif paramType == PT_InlinePtr
-            imgui::Text("({param.id}) {param.name}")
+            imgui::Text("({id}) {name}")
+            invoke(popup)
             imgui::TextUnformatted("  <PT_InlinePtr>")
             Spacing()
 
           elif paramType == PT_InlinePtrCTZ
-            imgui::Text("({param.id}) {param.name}")
+            imgui::Text("({id}) {name}")
+            invoke(popup)
             imgui::TextUnformatted("  <PT_InlinePtrCTZ>")
             Spacing()
 
           elif paramType == PT_Fifo3
-            imgui::Text("({param.id}) {param.name}")
+            imgui::Text("({id}) {name}")
+            invoke(popup)
             imgui::TextUnformatted("  <PT_Fifo3>")
             Spacing()
 
           elif paramType == PT_Effector
-            imgui::Text("({param.id}) {param.name}")
+            imgui::Text("({id}) {name}")
+            invoke(popup)
             imgui::TextUnformatted("  <PT_Effector>")
             Spacing()
 
           else
-            imgui::Text("({param.id}) {param.name}")
+            imgui::Text("({id}) {name}")
             Spacing()
 
-  if imgui::CollapsingHeader("Slots")
-    for i in range(animchar |> animchar_getAttachmentSlotsCount())
-      let slotId = animchar |> animchar_getAttachmentSlotId(i)
-      imgui::Text("({slotId}) {animchar_getSlotName(slotId)}")
+      if imgui::CollapsingHeader("Parameters")
+        static_let <|
+          var showHiddenParams = false
+        imgui::Checkbox("Show hidden params", safe_addr(showHiddenParams))
+        imgui::Text("Params filter:")
+        params_filter |> Draw("##paramsFilter")
 
-  if imgui::CollapsingHeader("Post Blend Controllers ({length(graph.blender.pbCtrl)})")
-    for pbcPtr in graph.blender.pbCtrl
-      let pbc = get(pbcPtr)
-      imgui::Text("{graph |> anim_graph_getBlendNodeName(pbc)}")
+        Spacing()
+        graph |> anim_graph_getParamNames <| $(params)
+          imgui::Text("Total params count: {length(params)}")
+          imgui::Separator()
 
-  if imgui::CollapsingHeader("Blend Node Leafs ({length(graph.blender.bnl)})")
-    for bnlPtr in graph.blender.bnl
-      let bnl = get(bnlPtr)
-      imgui::Text("{graph |> anim_graph_getBlendNodeName(bnl)}")
+          for param in params
+            if !showHiddenParams && param.name |> character_at(0) == ':'
+              continue
 
-  imgui::EndChild()
-  ImGuiEx_NextColumn()
+            if !(params_filter |> PassFilter(param.name))
+              continue
 
-  let graphViewControlBarHeight = 42.0f
-  let graphSize = float2(
-    imgui::GetContentRegionAvail().x - skeletonNodesWidth,
-    imgui::GetContentRegionAvail().y - graphViewControlBarHeight
-  )
+            invoke(drawParam, param.id, "", "{param.name}", showHiddenParams)
 
-  imgui::BeginChild("__graph__", float2(graphSize.x, -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.None)
+      if imgui::CollapsingHeader("Bookmarked states and params")
+        if length(bookmarkedStates) + length(bookmarkedParams) == 0
+          imgui::Text("No bookmarks found.\nRight click on param\\state to add\\remove.")
 
-  if context == null
-    var config = Config()
-    
-    context = CreateEditor(safe_addr(config))
+        var eraseBookmarkedStatedx = -1
+        imgui::Text("States:")
+        for stateName in bookmarkedStates
+          let stateIdx = graph |> anim_graph_getStateIdx(stateName)
+          if stateIdx < 0
+            continue
 
-  SetCurrentEditor(context)
+          if imgui::Button("{stateName} ({stateIdx})##bookmarkStates_{stateName}")
+            graph |> anim_graph_enqueueState(state, stateIdx)
 
-  var style & = unsafe(imgui_node_editor::GetStyle())
-  style.NodeRounding = 0f
-  style.GroupRounding = 0f
-  style.PinRounding = 0f
-  style.NodePadding = float4(12, 4, 12, 8)
-  imgui::PushStyleColor(ImGuiCol.Text, float4(1))
-  
-  
-  
+          if imgui::BeginPopupContextItem("StateContextMenu##bookmarkStates_{stateIdx}")
+            let bookmarkIndex = bookmarkedStates |> find_index(stateName)
+            if bookmarkIndex >= 0 && imgui::MenuItem("Remove Bookmark") 
+              eraseBookmarkedStatedx = bookmarkIndex
+            imgui::EndPopup()
 
-  var drawList = imgui::GetWindowDrawList()
+        if eraseBookmarkedStatedx >= 0
+          bookmarkedStates |> erase(eraseBookmarkedStatedx)
+          saveBookmarks = true
 
-  var animNodesCount = 0 
-  var pbcNodesCount = 0
-  var bnlNodesCount = 0
-  var activeBlendNodesCount = 0 
-  var activePbcNodesCount = 0
-  var activeBnlNodesCount = 0
+        imgui::Text("Params:")
+        for paramName in bookmarkedParams
+          let paramId = graph.anim_graph_getParamId(paramName)
+          if paramId < 0
+            continue
 
-  Begin("Anim graph", graphSize) <|
-    graph |> anim_graph_getAnimNodeNames <| $(nodes)
-      graph |> animchar_getAnimBlendNodeWeights(state) <| $(abn_wt; bnl_wt; pbc_wt)
-        animNodesCount = abn_wt |> length()
-        pbcNodesCount = pbc_wt |> length()
-        bnlNodesCount = bnl_wt |> length()
+          invoke(drawParam, paramId, "bookmark", paramName, true)
 
-        var weights : array<float>
-        weights |> reserve(length(nodes))
+      if eraseBookmarkParamId >= 0
+        bookmarkedParams.erase(eraseBookmarkParamId)
+        saveBookmarks = true
 
-        var newGraphHash = 0
-        for node in nodes
-          var nodePtr = graph |> anim_graph_getBlendNodePtr(node.id)
-          var weight = abn_wt[node.id]
+      if saveBookmarks
+        let save = $ <| (name : string; bookmarks : array<string>)
+          if !(imgui_get_blk() |> datablock_block_exists(name))
+            imgui_get_blk() |> datablock_add_new_block(name)
+          imgui_get_blk() |> datablock_get_block(name) <| $(blk)
+            blk |> datablock_clear_data()
+            for bookmarkName in bookmarks
+              blk |> datablock_add_new_block(bookmarkName)
 
+        invoke(save, "animgraph_viewer_bookmarked_states", bookmarkedStates)
+        invoke(save, "animgraph_viewer_bookmarked_params", bookmarkedParams)
+        imgui_save_blk()
+
+      if imgui::CollapsingHeader("Slots")
+        for i in range(animchar |> animchar_getAttachmentSlotsCount())
+          let slotId = animchar |> animchar_getAttachmentSlotId(i)
+          imgui::Text("({slotId}) {animchar_getSlotName(slotId)}")
+
+      if imgui::CollapsingHeader("Post Blend Controllers ({length(graph.blender.pbCtrl)})")
+        imgui::Checkbox("Show active only##pbc", safe_addr(pbcListShowActiveOnly))
+        for i, pbcPtr in range(length(graph.blender.pbCtrl)), graph.blender.pbCtrl
+          if pbcListShowActiveOnly && pbc_wt[i] == 0.0
+            continue
+          let pbc = get(pbcPtr)
+          imgui::Text("{graph |> anim_graph_getBlendNodeName(pbc)}")
+
+      if imgui::CollapsingHeader("Blend Node Leafs ({length(graph.blender.bnl)})")
+        imgui::Checkbox("Show active only##bnl", safe_addr(bnlListShowActiveOnly))
+        for i, bnlPtr in range(length(graph.blender.bnl)), graph.blender.bnl
+          if bnlListShowActiveOnly && bnl_wt[i] == 0.0
+            continue
+          let bnl = get(bnlPtr)
+          imgui::Text("{graph |> anim_graph_getBlendNodeName(bnl)}")
+
+      imgui::EndChild()
+      ImGuiEx_NextColumn()
+
+      imgui::BeginTabBar("Tabs")
+
+      let graphViewControlBarHeight = 24.0f
+      let graphSize = float2(
+        imgui::GetContentRegionAvail().x,
+        imgui::GetContentRegionAvail().y - graphViewControlBarHeight
+      )
+
+      if imgui::BeginTabItem("Graph")
+        defer <|
+          imgui::EndTabItem()
+
+        if context == null
+          var config = Config()
           
-          if weight > 0.0
-            activeBlendNodesCount += 1
+          context = CreateEditor(safe_addr(config))
 
-          if nodePtr == null
-            weights |> push(weight)
-            continue
+        SetCurrentEditor(context)
 
-          if *nodePtr |> anim_blend_node_isSubOf(AnimBlendNodeLeafCID)
-            unsafe
-              let bnlNode = reinterpret<AnimBlendNodeLeaf?> nodePtr
-              weight = bnl_wt[(*bnlNode).bnlId]
-              if weight > 0.0
-                activeBnlNodesCount += 1
-          elif *nodePtr |> anim_blend_node_isSubOf(AnimPostBlendCtrlCID)
-            unsafe
-              let pbcNode = reinterpret<AnimPostBlendCtrl?> nodePtr
-              weight = pbc_wt[(*pbcNode).pbcId]
-              if weight > 0.0
-                activePbcNodesCount += 1
-
-          weights |> push(weight)
-
-          if weight > 0.0
-            newGraphHash ^= node.id * 16777619
-
+        var style & = unsafe(imgui_node_editor::GetStyle())
+        style.NodeRounding = 0f
+        style.GroupRounding = 0f
+        style.PinRounding = 0f
+        style.NodePadding = float4(12, 4, 12, 8)
+        imgui::PushStyleColor(ImGuiCol.Text, float4(1))
         
         
         
-        
-        if graphHash != newGraphHash
-          graphHash = newGraphHash
-          autoAlign = true
-          if drawMode == DrawNodesMode.ACTIVE_AND_HISTORY
-            var activeNodesCount = 0
-            var maxGeneration = 0
-            for idx, w in range(length(weights)), weights
-              var wasActive = false
-              nodesToShow |> get(idx) <| $(var val)
-                wasActive = true
-                if w > 0.0
-                  activeNodesCount += 1
-                  val.active = true
-                  val.generation += 1 
-                  maxGeneration = max(maxGeneration, val.generation)
-                else
-                  val.active = false
-              if !wasActive && w > 0.0
-                nodesToShow |> insert(idx, tuple(0, true))
-                activeNodesCount += 1
 
-            if length(nodesToShow) - activeNodesCount > nodesToShowMaxInactiveCount
-              var keysToDelete : array<int>
-              var keysToDeleteCount = length(nodesToShow) - activeNodesCount - nodesToShowMaxInactiveCount
-              for genToDelete in range(maxGeneration - 1)
-                for val, key in values(nodesToShow), keys(nodesToShow)
-                  if val.generation < genToDelete && weights[key] == 0.0
-                    keysToDelete |> push(key)
-                    keysToDeleteCount -= 1
+        var drawList = imgui::GetWindowDrawList()
 
-                if keysToDeleteCount == 0
-                  break
-
-              for key in keysToDelete
-                nodesToShow |> erase(key)
+        var animNodesCount = 0 
+        var pbcNodesCount = 0
+        var bnlNodesCount = 0
+        var activeBlendNodesCount = 0 
+        var activePbcNodesCount = 0
+        var activeBnlNodesCount = 0
 
 
-        for idx, node in range(length(nodes)), nodes
-          let weight = weights[idx]
-          if drawMode == DrawNodesMode.ACTIVE && weight == 0.0
-            continue
-          if drawMode == DrawNodesMode.ACTIVE_AND_HISTORY && !key_exists(nodesToShow, idx)
-            continue
+        Begin("Anim graph", graphSize) <|
+          animNodesCount = abn_wt |> length()
+          pbcNodesCount = pbc_wt |> length()
+          bnlNodesCount = bnl_wt |> length()
 
-          let activeNodeBorder = drawMode != DrawNodesMode.ACTIVE && weight > 0.0
-          if activeNodeBorder
-            imgui_node_editor::PushStyleColor(StyleColor.NodeBorder, float4(0.58, 0.96, 0.23f, 1f))
+          var weights : array<float>
+          weights |> reserve(length(nodes))
 
-          var nodePtr = graph |> anim_graph_getBlendNodePtr(node.id)
+          var newGraphHash = 0
+          for node in nodes
+            var nodePtr = graph |> anim_graph_getBlendNodePtr(node.id)
+            var weight = abn_wt[node.id]
 
-          BeginNode(get_node_idx(node.id)) <|
-            Dummy(float2(nodeWidth, 0f))
-
-            let inId = get_input_node_idx(node.id)
-            in_pin(inId) <|
-              pass
+            
+            if weight > 0.0
+              activeBlendNodesCount += 1
 
             if nodePtr == null
-              imgui::Text("\nThis node has failed to load.\nProbably there was in error in this char's animTree.")
-              return
+              weights |> push(weight)
+              continue
 
-            SameLine()
-            imgui::TextUnformatted(node.name)
-            
-            
+            if *nodePtr |> anim_blend_node_isSubOf(AnimBlendNodeLeafCID)
+              unsafe
+                let bnlNode = reinterpret<AnimBlendNodeLeaf?> nodePtr
+                weight = bnl_wt[(*bnlNode).bnlId]
+                if weight > 0.0
+                  activeBnlNodesCount += 1
+            elif *nodePtr |> anim_blend_node_isSubOf(AnimPostBlendCtrlCID)
+              unsafe
+                let pbcNode = reinterpret<AnimPostBlendCtrl?> nodePtr
+                weight = pbc_wt[(*pbcNode).pbcId]
+                if weight > 0.0
+                  activePbcNodesCount += 1
 
-            imgui::Spacing()
+            weights |> push(weight)
 
-            let className = *nodePtr |> anim_blend_node_class_name()
-            imgui::Text(className)
-
-            var foundRender = false
-            for render in renderers
-              if *nodePtr |> anim_blend_node_isSubOf(render._0)
-                unsafe
-                  imgui::Text("ID: {reinterpret<uint64> nodePtr}")
-                render._1 |> invoke(nodePtr, graph, state, ctx, weight)
-                foundRender = true
-                break
-            if !foundRender
-              imgui::Text("Error: no renderer")
-
-          if activeNodeBorder
-            imgui_node_editor::PopStyleColor()
+            if weight > 0.0
+              newGraphHash ^= node.id * 16777619
 
           
-          let color = nodePtr == null ? 0x600000F0 : \
-                      *nodePtr |> anim_blend_node_isSubOf(AnimBlendNodeLeafCID) ? 0x40b032FF : \
-                      *nodePtr |> anim_blend_node_isSubOf(AnimPostBlendCtrlCID) ? 0x30b0FF32 : 0x30FFb032
-          let min = GetItemRectMin() + float2(1)
-          let max = GetItemRectMax()
-          *drawList |> AddRectFilled(min, float2(max.x - 1f, min.y + 26f), color)
-
-    for idx, lnk in iter_range(ctx.links), ctx.links
-      var color = float4(1, 1, 1, 1)
-      if drawMode != DrawNodesMode.ACTIVE
-        nodesToShow |> get(get_link_node(lnk.inIdx)) <| $(val)
-          if val.active
-            color = float4(0.58, 0.96, 0.23f, 1f)
-      imgui_node_editor::Link(idx, lnk.outIdx, lnk.inIdx, color)
-
-    let animNodeCount = graph.animNodeCount
-    let startParamsIdx = get_node_idx(animNodeCount)
-    var paramsOffset = startParamsIdx
-    for idx, it in range(length(ctx.links), length(ctx.links) + length(ctx.params)), ctx.params
-      if it.paramId < 0
-        continue
-      let paramName = graph |> anim_graph_getParamName(it.paramId)
-      BeginNode(++paramsOffset) <|
-        out_pin(++paramsOffset, paramName, 0f) <|
-          pass
-        imgui_node_editor::Link(idx, paramsOffset, it.inIdx, float4(1, 1, 1, 1))
-
-
-    assume rootNode = *graph.root
-    let rootNodeId = rootNode |> anim_blend_node_getAnimNodeId()
-    if autoAlign
-      var children : array<int>
-      children |> push(rootNodeId)
-      var allNodes : table<int; bool>
-      for i in range(graph.animNodeCount)
-        allNodes.insert(i, has_children(ctx.links, i))
-
-      let HGAP = 100f
-      let VGAP = 50f
-      let PADDING = 10f
-      var maxWidth = 0f
-      var offset = float2(PADDING)
-
-      while length(children) > 0 || length(allNodes) > 0
-        var copyChildren := children
-        delete children
-
-        for childId in copyChildren
-          if childId == -1 || !key_exists(allNodes, childId)
-            continue
-          allNodes |> erase(childId)
-          collect_children(ctx.links, childId, children)
-
-          SetNodePosition(get_node_idx(childId), offset)
-          let dim = GetNodeSize(get_node_idx(childId))
-          offset.y += dim.y + VGAP
-          maxWidth = max(dim.x, maxWidth)
-
-        offset.y = PADDING
-        offset.x += maxWidth + HGAP
-        if length(children) == 0
-          var found = false
-          for it in keys(allNodes)
-            allNodes |> get(it) <| $(val)
-              if val
-                children |> push(it)
-                found = true
-            if found
-              break
-          if !found
-            break
-
-
-      maxWidth = 0f
-      for childId in keys(allNodes)
-        SetNodePosition(get_node_idx(childId), offset)
-        let dim = GetNodeSize(get_node_idx(childId))
-        offset.y += dim.y + VGAP
-        maxWidth = max(dim.x, maxWidth)
-        if offset.y > 2000f
-          offset.x += maxWidth + HGAP
-          offset.y = PADDING
-          maxWidth = 0f
-
-      var paramIdx = startParamsIdx + 1
-      for _idx, it in range(length(ctx.links), length(ctx.links) + length(ctx.params)), ctx.params
-        if it.paramId < 0
-          continue
-        let selfDim = GetNodeSize(paramIdx)
-        let nodeIdx = get_node_idx(it.inIdx / nodeScale - 1)
-        let nodeDim = GetNodeSize(nodeIdx)
-        let pos = GetNodePosition(nodeIdx)
-        let inNodeOffset = it.inIdx - nodeIdx - inputOffset - 1
-        SetNodePosition(paramIdx, pos + float2(-selfDim.x - 50f, nodeDim.y * 0.5 + float(inNodeOffset) * 30f))
-        paramIdx += 2
-
-    if focusRoot
-      imgui_node_editor::ClearSelection()
-      imgui_node_editor::SelectNode(get_node_idx(rootNodeId), true)
-      NavigateToSelection(false, 0.2f)
-
-    if focusContent
-      NavigateToContent(0.2f)
-
-    imgui_node_editor::Suspend()
-    static_let <|
-      var contextMenuLinkId = -1
-    if imgui_node_editor::ShowLinkContextMenu(safe_addr(contextMenuLinkId))
-      imgui::OpenPopup("link_context_menu")
-
-    if imgui::BeginPopup("link_context_menu")
-      var startPinId = -1
-      var endPinId = -1
-      GetLinkPins(contextMenuLinkId, safe_addr(startPinId), safe_addr(endPinId))
-      if startPinId >= 0 && imgui::Selectable("Go to start")
-        imgui_node_editor::SelectNode(get_node_idx(startPinId / nodeScale - 1))
-        NavigateToSelection(false, -1f)
-      if endPinId >= 0 && imgui::Selectable("Go to end")
-        imgui_node_editor::SelectNode(get_node_idx(endPinId / nodeScale - 1))
-        NavigateToSelection(false, -1f)
-      imgui::EndPopup()
-    imgui_node_editor::Resume()
-
-    
-    
-    
-    
-
-
-
-    BeginCreate(float4(1), 1.0f) <|
-      var inputPinId, outputPinId : PinId
-      if QueryNewLink(safe_addr(inputPinId), safe_addr(outputPinId))
-        pass
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        if inputPinId != 0 && outputPinId != 0
-          
-          if AcceptNewItem()
-            
-            
-            
-            
-            pass
-            visual_log("link! {inputPinId} {outputPinId}")
-            
           
           
           
+          if graphHash != newGraphHash
+            graphHash = newGraphHash
+            autoAlign = true
+            if drawMode == DrawNodesMode.ACTIVE_AND_HISTORY
+              var activeNodesCount = 0
+              var maxGeneration = 0
+              for idx, w in range(length(weights)), weights
+                var wasActive = false
+                nodesToShow |> get(idx) <| $(var val)
+                  wasActive = true
+                  if w > 0.0
+                    activeNodesCount += 1
+                    val.active = true
+                    val.generation += 1 
+                    maxGeneration = max(maxGeneration, val.generation)
+                  else
+                    val.active = false
+                if !wasActive && w > 0.0
+                  nodesToShow |> insert(idx, tuple(0, true))
+                  activeNodesCount += 1
 
-  
-  
-  
-  
-  
-  
+              if length(nodesToShow) - activeNodesCount > nodesToShowMaxInactiveCount
+                var keysToDelete : array<int>
+                var keysToDeleteCount = length(nodesToShow) - activeNodesCount - nodesToShowMaxInactiveCount
+                for genToDelete in range(maxGeneration - 1)
+                  for val, key in values(nodesToShow), keys(nodesToShow)
+                    if val.generation < genToDelete && weights[key] == 0.0
+                      keysToDelete |> push(key)
+                      keysToDeleteCount -= 1
 
-  imgui::PopStyleColor()
+                  if keysToDeleteCount == 0
+                    break
 
-  SetCurrentEditor(null)
+                for key in keysToDelete
+                  nodesToShow |> erase(key)
 
-  imgui::Text("Total Node Count: {animNodesCount} (active: {activeBlendNodesCount + activePbcNodesCount + activeBnlNodesCount})  |  PBCs: {pbcNodesCount} (active: {activePbcNodesCount})  |  BNLs: {bnlNodesCount} (active: {activeBnlNodesCount})  |")
-  imgui::SameLine()
-  if imgui::Button("Draw all{drawMode == DrawNodesMode.ALL ? " (X)" : ""}")
-    drawMode = DrawNodesMode.ALL
-  imgui::SameLine()
-  if imgui::Button("Draw active{drawMode == DrawNodesMode.ACTIVE ? " (X)" : ""}")
-    drawMode = DrawNodesMode.ACTIVE
-  imgui::SameLine()
-  if imgui::Button("Draw active and history{drawMode == DrawNodesMode.ACTIVE_AND_HISTORY ? " (X)" : ""}")
-    drawMode = DrawNodesMode.ACTIVE_AND_HISTORY
-  if drawMode == DrawNodesMode.ACTIVE_AND_HISTORY
-    imgui::SameLine()
-    let step = 1
-    imgui::Text("Max inactive nodes: ")
-    imgui::SameLine()
-    imgui::PushItemWidth(120.0f)
-    InputScalar("##Max inactive nodes", ImGuiDataType.S32, safe_addr(nodesToShowMaxInactiveCount), safe_addr(step), safe_addr(step), "%d", ImGuiInputTextFlags.None)
-    imgui::PopItemWidth()
 
-  imgui::EndChild()
-  ImGuiEx_NextColumn()
+          for idx, node in range(length(nodes)), nodes
+            let weight = weights[idx]
+            if drawMode == DrawNodesMode.ACTIVE && weight == 0.0
+              continue
+            if drawMode == DrawNodesMode.ACTIVE_AND_HISTORY && !key_exists(nodesToShow, idx)
+              continue
 
-  imgui::BeginChild("__skeleton__", float2(skeletonNodesWidth - 10f , -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.HorizontalScrollbar)
+            let activeNodeBorder = drawMode != DrawNodesMode.ACTIVE && weight > 0.0
+            if activeNodeBorder
+              imgui_node_editor::PushStyleColor(StyleColor.NodeBorder, float4(0.58, 0.96, 0.23f, 1f))
 
-  var expandAll = false
-  expandAll = imgui::Button("Expand all")
+            var nodePtr = graph |> anim_graph_getBlendNodePtr(node.id)
 
-  var skeletonNodesToShow : array<bool> 
-  var filterChanged = false
-  filterChanged = *skeletonFilter |> Draw("##skeletonNodesFilter")
-  imgui::SameLine()
-  if imgui::Button("Clear")
-    *skeletonFilter |> Clear()
+            BeginNode(get_node_idx(node.id)) <|
+              Dummy(float2(nodeWidth, 0f))
 
-  
-  if *skeletonFilter |> IsActive()
-    skeletonNodesToShow |> reserve(int(animchar.nodeTree.nodeCount))
-    for i in range(int(animchar.nodeTree.nodeCount))
-      if *skeletonFilter |> PassFilter(*animchar.nodeTree |> geomtree_getNodeName(i))
-        skeletonNodesToShow |> push(true)
-        var parentNode = *animchar.nodeTree |> geomtree_getParentNodeIdx(i)
-        while parentNode != -1
-          skeletonNodesToShow[parentNode] = true
-          parentNode = *animchar.nodeTree |> geomtree_getParentNodeIdx(parentNode)
-      else
-        skeletonNodesToShow |> push(false)
+              let inId = get_input_node_idx(node.id)
+              in_pin(inId) <|
+                pass
 
-  draw_skeleton_node_in_tree_recursive(graph, *animchar.nodeTree, skeletonNodesToShow, 0, expandAll, filterChanged)
+              if nodePtr == null
+                imgui::Text("\nThis node has failed to load.\nProbably there was in error in this char's animTree.")
+                return
 
-  imgui::EndChild()
+              SameLine()
+              imgui::TextUnformatted(node.name)
+              
+              
 
-  ImGuiEx_EndColumn()
+              imgui::Spacing()
 
-    
-    
-    
-    
-    
-    
+              let className = *nodePtr |> anim_blend_node_class_name()
+              imgui::Text(className)
+
+              var foundRender = false
+              for render in renderers
+                if *nodePtr |> anim_blend_node_isSubOf(render._0)
+                  unsafe
+                    imgui::Text("ID: {reinterpret<uint64> nodePtr}")
+                  render._1 |> invoke(nodePtr, graph, state, ctx, weight)
+                  foundRender = true
+                  break
+              if !foundRender
+                imgui::Text("Error: no renderer")
+
+            if activeNodeBorder
+              imgui_node_editor::PopStyleColor()
+
+            
+            let color = nodePtr == null ? 0x600000F0 : \
+                        *nodePtr |> anim_blend_node_isSubOf(AnimBlendNodeLeafCID) ? 0x40b032FF : \
+                        *nodePtr |> anim_blend_node_isSubOf(AnimPostBlendCtrlCID) ? 0x30b0FF32 : 0x30FFb032
+            let min = GetItemRectMin() + float2(1)
+            let max = GetItemRectMax()
+            *drawList |> AddRectFilled(min, float2(max.x - 1f, min.y + 26f), color)
+
+          for idx, lnk in iter_range(ctx.links), ctx.links
+            var color = float4(1, 1, 1, 1)
+            if drawMode != DrawNodesMode.ACTIVE
+              nodesToShow |> get(get_link_node(lnk.inIdx)) <| $(val)
+                if val.active
+                  color = float4(0.58, 0.96, 0.23f, 1f)
+            imgui_node_editor::Link(idx, lnk.outIdx, lnk.inIdx, color)
+
+          let animNodeCount = graph.animNodeCount
+          let startParamsIdx = get_node_idx(animNodeCount)
+          var paramsOffset = startParamsIdx
+          for idx, it in range(length(ctx.links), length(ctx.links) + length(ctx.params)), ctx.params
+            if it.paramId < 0
+              continue
+            let paramName = graph |> anim_graph_getParamName(it.paramId)
+            BeginNode(++paramsOffset) <|
+              out_pin(++paramsOffset, paramName, 0f) <|
+                pass
+              imgui_node_editor::Link(idx, paramsOffset, it.inIdx, float4(1, 1, 1, 1))
+
+
+          assume rootNode = *graph.root
+          let rootNodeId = rootNode |> anim_blend_node_getAnimNodeId()
+          if autoAlign
+            var children : array<int>
+            children |> push(rootNodeId)
+            var allNodes : table<int; bool>
+            for i in range(graph.animNodeCount)
+              allNodes.insert(i, has_children(ctx.links, i))
+
+            let HGAP = 100f
+            let VGAP = 50f
+            let PADDING = 10f
+            var maxWidth = 0f
+            var offset = float2(PADDING)
+
+            while length(children) > 0 || length(allNodes) > 0
+              var copyChildren := children
+              delete children
+
+              for childId in copyChildren
+                if childId == -1 || !key_exists(allNodes, childId)
+                  continue
+                allNodes |> erase(childId)
+                collect_children(ctx.links, childId, children)
+
+                SetNodePosition(get_node_idx(childId), offset)
+                let dim = GetNodeSize(get_node_idx(childId))
+                offset.y += dim.y + VGAP
+                maxWidth = max(dim.x, maxWidth)
+
+              offset.y = PADDING
+              offset.x += maxWidth + HGAP
+              if length(children) == 0
+                var found = false
+                for it in keys(allNodes)
+                  allNodes |> get(it) <| $(val)
+                    if val
+                      children |> push(it)
+                      found = true
+                  if found
+                    break
+                if !found
+                  break
+
+
+            maxWidth = 0f
+            for childId in keys(allNodes)
+              SetNodePosition(get_node_idx(childId), offset)
+              let dim = GetNodeSize(get_node_idx(childId))
+              offset.y += dim.y + VGAP
+              maxWidth = max(dim.x, maxWidth)
+              if offset.y > 2000f
+                offset.x += maxWidth + HGAP
+                offset.y = PADDING
+                maxWidth = 0f
+
+            var paramIdx = startParamsIdx + 1
+            for _idx, it in range(length(ctx.links), length(ctx.links) + length(ctx.params)), ctx.params
+              if it.paramId < 0
+                continue
+              let selfDim = GetNodeSize(paramIdx)
+              let nodeIdx = get_node_idx(it.inIdx / nodeScale - 1)
+              let nodeDim = GetNodeSize(nodeIdx)
+              let pos = GetNodePosition(nodeIdx)
+              let inNodeOffset = it.inIdx - nodeIdx - inputOffset - 1
+              SetNodePosition(paramIdx, pos + float2(-selfDim.x - 50f, nodeDim.y * 0.5 + float(inNodeOffset) * 30f))
+              paramIdx += 2
+
+          if focusRoot
+            imgui_node_editor::ClearSelection()
+            imgui_node_editor::SelectNode(get_node_idx(rootNodeId), true)
+            NavigateToSelection(false, 0.2f)
+
+          if focusContent
+            NavigateToContent(0.2f)
+
+          imgui_node_editor::Suspend()
+          static_let <|
+            var contextMenuLinkId = -1
+          if imgui_node_editor::ShowLinkContextMenu(safe_addr(contextMenuLinkId))
+            imgui::OpenPopup("link_context_menu")
+
+          if imgui::BeginPopup("link_context_menu")
+            var startPinId = -1
+            var endPinId = -1
+            GetLinkPins(contextMenuLinkId, safe_addr(startPinId), safe_addr(endPinId))
+            if startPinId >= 0 && imgui::Selectable("Go to start")
+              imgui_node_editor::SelectNode(get_node_idx(startPinId / nodeScale - 1))
+              NavigateToSelection(false, -1f)
+            if endPinId >= 0 && imgui::Selectable("Go to end")
+              imgui_node_editor::SelectNode(get_node_idx(endPinId / nodeScale - 1))
+              NavigateToSelection(false, -1f)
+            imgui::EndPopup()
+          imgui_node_editor::Resume()
+
+          
+          
+          
+          
+
+
+          
+          BeginCreate(float4(1), 1.0f) <|
+            var inputPinId, outputPinId : PinId
+            if QueryNewLink(safe_addr(inputPinId), safe_addr(outputPinId))
+              pass
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              
+              if inputPinId != 0 && outputPinId != 0
+                
+                if AcceptNewItem()
+                  
+                  
+                  
+                  
+                  pass
+                  visual_log("link! {inputPinId} {outputPinId}")
+                  
+                
+                
+                
+
+        
+        
+        
+        
+        
+        
+
+        imgui::PopStyleColor()
+
+        SetCurrentEditor(null)
+
+        imgui::Text("Total Node Count: {animNodesCount} (active: {activeBlendNodesCount + activePbcNodesCount + activeBnlNodesCount})  |  PBCs: {pbcNodesCount} (active: {activePbcNodesCount})  |  BNLs: {bnlNodesCount} (active: {activeBnlNodesCount})  |")
+        imgui::SameLine()
+        if imgui::Button("Draw all{drawMode == DrawNodesMode.ALL ? " (X)" : ""}")
+          drawMode = DrawNodesMode.ALL
+        imgui::SameLine()
+        if imgui::Button("Draw active{drawMode == DrawNodesMode.ACTIVE ? " (X)" : ""}")
+          drawMode = DrawNodesMode.ACTIVE
+        imgui::SameLine()
+        if imgui::Button("Draw active and history{drawMode == DrawNodesMode.ACTIVE_AND_HISTORY ? " (X)" : ""}")
+          drawMode = DrawNodesMode.ACTIVE_AND_HISTORY
+        if drawMode == DrawNodesMode.ACTIVE_AND_HISTORY
+          imgui::SameLine()
+          let step = 1
+          imgui::Text("Max inactive nodes: ")
+          imgui::SameLine()
+          imgui::PushItemWidth(120.0f)
+          InputScalar("##Max inactive nodes", ImGuiDataType.S32, safe_addr(nodesToShowMaxInactiveCount), safe_addr(step), safe_addr(step), "%d", ImGuiInputTextFlags.None)
+          imgui::PopItemWidth()
+
+
+      if imgui::BeginTabItem("Skeleton")
+        defer <|
+          imgui::EndTabItem()
+        imgui::BeginChild("__skeleton__", float2(-FLT_MIN, -FLT_MIN), ImGuiChildFlags.Border, ImGuiWindowFlags.HorizontalScrollbar)
+        defer <|
+          imgui::EndChild()
+
+        var expandAll = false
+        expandAll = imgui::Button("Expand all")
+
+        var skeletonNodesToShow : array<bool> 
+        var filterChanged = false
+        filterChanged = *skeletonFilter |> Draw("##skeletonNodesFilter")
+        imgui::SameLine()
+        if imgui::Button("Clear")
+          *skeletonFilter |> Clear()
+
+        
+        if *skeletonFilter |> IsActive()
+          skeletonNodesToShow |> reserve(int(animchar.nodeTree.nodeCount))
+          for i in range(int(animchar.nodeTree.nodeCount))
+            if *skeletonFilter |> PassFilter(*animchar.nodeTree |> geomtree_getNodeName(i))
+              skeletonNodesToShow |> push(true)
+              var parentNode = *animchar.nodeTree |> geomtree_getParentNodeIdx(i)
+              while parentNode != -1
+                skeletonNodesToShow[parentNode] = true
+                parentNode = *animchar.nodeTree |> geomtree_getParentNodeIdx(parentNode)
+            else
+              skeletonNodesToShow |> push(false)
+
+        draw_skeleton_node_in_tree_recursive(graph, *animchar.nodeTree, skeletonNodesToShow, 0, expandAll, filterChanged)
+
+      imgui::EndTabBar()
+      ImGuiEx_EndColumn()
+
+        
+        
+        
+        
+        
+        
 
 
 def draw_skeleton_node_in_tree_recursive(var graph : AnimationGraph;

@@ -1,11 +1,11 @@
 from "%scripts/dagui_library.nut" import *
-from "%scripts/dagui_natives.nut" import disable_network
 
 let { matching_call, matching_listen_notify, matching_notify, matching_listen_rpc, matching_send_response } = require("matching.api")
 let { eventbus_subscribe, eventbus_subscribe_onehit } = require("eventbus")
 let { OPERATION_COMPLETE, is_matching_error, matching_error_string } = require("matching.errors")
 let { replace } = require("%sqstd/string.nut")
 let { get_last_session_debug_info } = require("%scripts/matchingRooms/sessionDebugInfo.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 
  
@@ -87,7 +87,7 @@ function checkMatchingError(params, showError = true) {
   if (params.error == OPERATION_COMPLETE)
     return true
 
-  if (!showError || disable_network())
+  if (!showError || disableNetwork)
     return false
 
   let errorId = getTblValue("error_id", params) || matching_error_string(params.error)

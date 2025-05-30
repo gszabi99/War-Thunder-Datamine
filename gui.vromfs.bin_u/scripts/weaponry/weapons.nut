@@ -7,14 +7,14 @@ from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 from "%scripts/utils_sa.nut" import get_flush_exp_text, roman_numerals, check_aircraft_tags
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
 let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { toPixels, move_mouse_on_child, move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods,
   isModificationInTree, modsWndWidthRestrictions } = require("%scripts/weaponry/modsTree.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
@@ -69,7 +69,8 @@ let { get_meta_mission_info_by_name } = require("guiMission")
 let { needShowUnseenModTutorialForUnitMod, markSeenModTutorial,
   startModTutorialMission } = require("%scripts/missions/modificationTutorial.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
-let { isUnitInSlotbar, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
+let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
@@ -83,6 +84,8 @@ let { enable_modifications } = require("%scripts/weaponry/weaponryActions.nut")
 let { RESEARCHED_MODE_FOR_CHECK } = require ("%scripts/researches/researchConsts.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { weaponryTypes } = require("%scripts/weaponry/weaponryTypes.nut")
 
 local timerPID = dagui_propid_add_name_id("_size-timer")
 const HEADER_LEN_PER_CELL = 16
@@ -1098,7 +1101,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       else
         this.createBundle(secondaryWeapons, weaponsItem.weapon, 0, this.mainModsObj, offsetX, offsetY)
       columnsList.append(this.getWeaponsColumnData(
-        ::g_weaponry_types.WEAPON.getHeader(this.air)).__merge(
+        weaponryTypes.WEAPON.getHeader(this.air)).__merge(
           {
             haveWarning = checkUnitSecondaryWeapons(this.air) != UNIT_WEAPONS_READY
             warningId = "weapons"
@@ -1520,7 +1523,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       applyAtClose = false
       wndOptionsMode = OPTIONS_MODE_TRAINING
       applyFunc = function() {
-        if (!::g_squad_utils.canJoinFlightMsgBox())
+        if (!canJoinFlightMsgBox())
           return
         this.shouldBeRestoredOnMainMenu = true
         currentCampaignMission.set(misInfo?.name ?? "")

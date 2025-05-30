@@ -1,5 +1,6 @@
-from "%scripts/dagui_natives.nut" import is_gun_vertical_convergence_allowed, get_option_torpedo_dive_depth_auto
+from "%scripts/dagui_natives.nut" import is_gun_vertical_convergence_allowed
 from "%scripts/dagui_library.nut" import *
+from "weaponryOptions" import get_option_torpedo_dive_depth_auto
 from "%scripts/controls/controlsConsts.nut" import optionControlType
 from "%scripts/respawn/respawnConsts.nut" import RespawnOptUpdBit
 from "radarOptions" import get_radar_mode_names, set_option_radar_name, get_radar_scan_pattern_names, set_option_radar_scan_pattern_name, get_radar_range_values
@@ -302,7 +303,12 @@ options.addTypes({
     needCallCbOnContentUpdate = true
     isShowForUnit = @(p) p.haveRespawnBases
     getUseropt = @(p) {
-      items = p.respawnBasesList.map(@(spawn) { text = spawn.getTitle() })
+      items = p.respawnBasesList.map(function(spawn) {
+        let res = { text = spawn.getTitle() }
+        if (p?.isBadWeatherForAircraft && spawn.isSpawnIsAirfiled())
+          res.image <- "#ui/gameuiskin#weather_cloud_lightning.svg"
+        return res
+      })
       value = p.respawnBasesList.indexof(p.curRespawnBase) ?? -1
     }
     isNeedUpdContentByTrigger = @(trigger, p) _isNeedUpdContentByTrigger(trigger, p) && p.isRespawnBasesChanged

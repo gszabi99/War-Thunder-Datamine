@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import is_steam_big_picture, set_dagui_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 
-let { isPlatformSony, isPlatformXboxOne, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { hasXInputDevice } = require("controls")
@@ -14,7 +14,7 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
 
 ::get_is_console_mode_force_enabled <- function get_is_console_mode_force_enabled() {
   return isPlatformSony
-         || isPlatformXboxOne
+         || isPlatformXbox
          || is_platform_android
          || isPlatformShieldTv()
          || (is_steam_big_picture() && hasXInputDevice())

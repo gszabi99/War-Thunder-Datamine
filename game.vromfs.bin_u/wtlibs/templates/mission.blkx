@@ -242,5 +242,76 @@
         0.0
       ]
     ]
+  },
+  "base_capture_zone_proxy": {
+    "_use": "objective_zone_navmesh",
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "capture_zone__zoneId": -1,
+    "capture_zone__radius": 1.0,
+    "capture_zone__progress": 0.0,
+    "_tracked": [
+      "active",
+      "capzone__progress",
+      "capzone__capTeam",
+      "capzone__owningTeam"
+    ],
+    "active": true,
+    "capzone__progress": 0.0,
+    "capzone__capTeam": -1,
+    "capzone__owningTeam": -1,
+    "capzone__maxTeamPresence": 4,
+    "capture_zone__team:u8": {
+      "value": 0
+    },
+    "teamPresence:object": {}
+  },
+  "objective_zone_navmesh": {
+    "_group": {
+      "_tags": "server",
+      "capzone__hasNearestNavmeshPos": false,
+      "capzone__nearestNavmeshPos": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "capzone__minRadius": -1.0,
+      "capzone__insideNavmeshPositions:list<p3>": {},
+      "capzone__outsideNavmeshPositions:list<p3>": {}
+    }
+  },
+  "capture_zone_proxy_sphere": {
+    "_use": "base_capture_zone_proxy",
+    "sphere_zone__radius": 8.0
+  },
+  "capture_zone_proxy_box": {
+    "_use": "base_capture_zone_proxy",
+    "box_zone:tag": {}
+  },
+  "capture_zone_proxy_cylinder": {
+    "_use": "capture_zone_proxy_sphere"
+  },
+  "capture_zone_proxy_point": {
+    "_use": "capture_zone_proxy_sphere"
   }
 }

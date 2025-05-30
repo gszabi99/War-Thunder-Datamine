@@ -1,15 +1,16 @@
-from "%scripts/dagui_natives.nut" import fill_joysticks_desc, get_cur_unit_weapon_preset, get_axis_index
+from "%scripts/dagui_natives.nut" import fill_joysticks_desc, get_axis_index
 from "%scripts/dagui_library.nut" import *
 from "modules" import on_module_unload
+from "unit" import get_cur_unit_weapon_preset
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { startsWith } = require("%sqstd/string.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { isXInputDevice, hasXInputDevice } = require("controls")
 let time = require("%scripts/time.nut")
 let controllerState = require("controllerState")
-let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { get_gui_option, get_unit_option } = require("guiOptions")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { eventbus_subscribe } = require("eventbus")
@@ -28,7 +29,7 @@ let { parseControlsPresetName, getHighestVersionControlsPreset
 } = require("%scripts/controls/controlsPresets.nut")
 let { get_option, get_option_in_mode } = require("%scripts/options/optionsExt.nut")
 let DataBlock  = require("DataBlock")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
+let { getFullUnitBlk, getFmFile } = require("%scripts/unit/unitParams.nut")
 let { TRIGGER_TYPE, getLastWeapon, getCommonWeapons, getLastPrimaryWeapon
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { isInFlight } = require("gameplayBinding")
@@ -38,10 +39,10 @@ let { g_difficulty } = require("%scripts/difficulty.nut")
 let { get_meta_missions_info_by_chapters, get_mission_difficulty_int, get_mission_difficulty } = require("guiMission")
 let { hasMappedSecondaryWeaponSelector, isShortcutMapped } = require("%scripts/controls/shortcutsUtils.nut")
 let { shopIsModificationEnabled } = require("chardResearch")
-let { get_game_params_blk } = require("blkGetters")
+let { get_game_params_blk, get_current_mission_info } = require("blkGetters")
 let { isBulletGroupActive } = require("%scripts/weaponry/bulletsInfo.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
-let globalEnv = require("globalEnv")
+let { ControlHelpersMode } = require("globalEnv")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let vehicleModel = require("vehicleModel")
@@ -52,6 +53,8 @@ let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
+let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
 
 const CLASSIC_PRESET = "classic"
 const SHOOTER_PRESET = "shooter"
@@ -61,7 +64,7 @@ let recommendedControlPresets = [
   CLASSIC_PRESET
   SHOOTER_PRESET
 ]
-if (isPlatformXboxOne)
+if (isPlatformXbox)
   recommendedControlPresets.append(THRUSTMASTER_HOTAS_ONE_PERESET)
 
 let presetsNamesByTypes =
@@ -99,7 +102,7 @@ function checkOptionValue(optName, checkValue) {
 function getControlsList(unitType, unitTags = []) {
   local isHeaderPassed = true
   local isSectionPassed = true
-  let controlsList = ::shortcutsList.filter(function(sc) {
+  let controlsList = shortcutsList.filter(function(sc) {
     if (sc.type != CONTROL_TYPE.HEADER && sc.type != CONTROL_TYPE.SECTION) {
       if (isHeaderPassed && isSectionPassed && "showFunc" in sc)
         return sc.showFunc()
@@ -132,7 +135,7 @@ function getControlsList(unitType, unitTags = []) {
 
 function onJoystickConnected() {
   updateExtWatched({ haveXinputDevice = hasXInputDevice() })
-  if (!isInMenu() || !hasFeature("ControlsDeviceChoice") || !isLoggedIn.get())
+  if (!isInMenu.get() || !hasFeature("ControlsDeviceChoice") || !isLoggedIn.get())
     return
   let action = function() { gui_start_controls_type_choice() }
   let buttons = [{
@@ -166,7 +169,7 @@ function onControllerEvent() {
   if (isKeyboardOrMouseConnectedBefore == isKeyboardOrMouseConnected)
     return
   isKeyboardOrMouseConnectedBefore = isKeyboardOrMouseConnected
-  if (!isKeyboardOrMouseConnected || !isInMenu())
+  if (!isKeyboardOrMouseConnected || !isInMenu.get())
     return
   let action = function() { ::gui_modal_controlsWizard() }
   let buttons = [{
@@ -307,13 +310,13 @@ function getRequiredControlsForUnit(unit, helpersMode) {
     foreach (sensor in (unitBlk.sensors % "sensor"))
       hasControllableRadar = hasControllableRadar || blkOptFromPath(sensor?.blk)?.type == "radar"
 
-  let isMouseAimMode = helpersMode == globalEnv.EM_MOUSE_AIM
+  let isMouseAimMode = helpersMode == ControlHelpersMode.EM_MOUSE_AIM
 
   if (unitType == unitTypes.AIRCRAFT) {
-    let fmBlk = ::get_fm_file(unitId, unitBlk)
+    let fmBlk = getFmFile(unitId, unitBlk)
     let unitControls = fmBlk?.AvailableControls || DataBlock()
 
-    let gotInstructor = isMouseAimMode || helpersMode == globalEnv.EM_INSTRUCTOR
+    let gotInstructor = isMouseAimMode || helpersMode == ControlHelpersMode.EM_INSTRUCTOR
     let option = get_option_in_mode(USEROPT_INSTRUCTOR_GEAR_CONTROL, OPTIONS_MODE_GAMEPLAY)
     let instructorGearControl = gotInstructor && option.value
 
@@ -425,6 +428,10 @@ function getRequiredControlsForUnit(unit, helpersMode) {
 
 
 
+
+
+
+
   else if (unitType == unitTypes.TANK) {
     controls = [ "gm_throttle", "gm_steering", "gm_mouse_aim_x", "gm_mouse_aim_y", "ID_TOGGLE_VIEW_GM", "ID_FIRE_GM", "ID_REPAIR_TANK" ]
 
@@ -445,7 +452,7 @@ function getRequiredControlsForUnit(unit, helpersMode) {
     let gameParams = get_game_params_blk()
     let missionDifficulty = get_mission_difficulty()
     let difficultyName = g_difficulty.getDifficultyByName(missionDifficulty).settingsName
-    let difficultySettings = gameParams?.difficulty_settings?.baseDifficulty?[difficultyName]
+    let difficultySettings = gameParams?.difficulty_settings.baseDifficulty[difficultyName]
 
     let tags = unit?.tags || []
     let scoutPresetId = difficultySettings?.scoutPreset ?? ""
@@ -549,7 +556,7 @@ function getRequiredControlsForUnit(unit, helpersMode) {
 function getCurrentHelpersMode() {
   let difficulty = isInFlight() ? get_mission_difficulty_int() : getCurrentShopDifficulty().diffCode
   if (difficulty == 2)
-    return (is_platform_pc ? globalEnv.EM_FULL_REAL : globalEnv.EM_REALISTIC)
+    return (is_platform_pc ? ControlHelpersMode.EM_FULL_REAL : ControlHelpersMode.EM_REALISTIC)
   let option = get_option_in_mode(USEROPT_HELPERS_MODE, OPTIONS_MODE_GAMEPLAY)
   return option.values[option.value]
 }
@@ -558,12 +565,12 @@ function getUnmappedControls(controls, helpersMode, getLocNames = true, shouldCh
   let unmapped = []
 
   let joyParams = joystickGetCurSettings()
-  foreach (item in ::shortcutsList) {
+  foreach (item in shortcutsList) {
     if (isInArray(item.id, controls)) {
       if ((("filterHide" in item) && isInArray(helpersMode, item.filterHide))
         || (("filterShow" in item) && !isInArray(helpersMode, item.filterShow))
         || (("showFunc" not in item) || !item.showFunc())
-        || (shouldCheckRequirements && helpersMode == globalEnv.EM_MOUSE_AIM && !item.reqInMouseAim))
+        || (shouldCheckRequirements && helpersMode == ControlHelpersMode.EM_MOUSE_AIM && !item.reqInMouseAim))
         continue
 
       if (item.type == CONTROL_TYPE.SHORTCUT) {
@@ -572,7 +579,7 @@ function getUnmappedControls(controls, helpersMode, getLocNames = true, shouldCh
           continue
 
         let altIds = item?.alternativeIds ?? []
-        foreach (otherItem in ::shortcutsList)
+        foreach (otherItem in shortcutsList)
           if ((otherItem?.alternativeIds ?? []).indexof(item.id) != null)
             u.appendOnce(otherItem.id, altIds)
         local isMapped = false
@@ -647,21 +654,39 @@ function getUnmappedControlsForTutorial(missionId, helpersMode) {
   let isAllowedCondition = @(condition) condition?.gamepadControls == null || condition.gamepadControls == isXinput
 
   let conditionsList = []
+  let skippedShortcuts = []
   foreach (trigger in missionBlk.triggers) {
     if (type(trigger) != "instance")
       continue
 
     let condition = (trigger?.props.conditionsType != "ANY") ? "ALL" : "ANY"
-
     let shortcuts = []
     if (trigger?.conditions) {
+      let shortcutsBounded = trigger.conditions % "playerShortcutBounded"
+      let shortcutsBoundedCount = shortcutsBounded?.len() ?? 0
+      if (shortcutsBoundedCount > 0) {
+        let hasAlternatePath = trigger?.else_action
+          || (condition == "ANY" && shortcutsBoundedCount < (trigger % "conditions").len())
+
+        if (hasAlternatePath)
+          foreach (playerShortcutBounded in shortcutsBounded)
+            if (playerShortcutBounded?.control && isAllowedCondition(playerShortcutBounded)) {
+              let id = playerShortcutBounded.control
+              if (tutorialSkipControl?[id]() ?? false)
+                continue
+              let alias = (id in tutorialControlAliases) ? tutorialControlAliases[id] : id
+              if (alias && !isInArray(alias, skippedShortcuts))
+                skippedShortcuts.append(alias)
+            }
+      }
+
       foreach (playerShortcutPressed in trigger.conditions % "playerShortcutPressed")
         if (playerShortcutPressed?.control && isAllowedCondition(playerShortcutPressed)) {
           let id = playerShortcutPressed.control
           if (tutorialSkipControl?[id]() ?? false)
             continue
           let alias = (id in tutorialControlAliases) ? tutorialControlAliases[id] : id
-          if (alias && !isInArray(alias, shortcuts))
+          if (alias && !isInArray(alias, shortcuts) && !isInArray(alias, skippedShortcuts))
             shortcuts.append(alias)
         }
 
@@ -791,6 +816,19 @@ addListenersWithoutEnv({
   LoginComplete = @(_) controllerState.add_event_handler(onControllerEvent)
 })
 
+function canChangeHelpersMode() {
+  if (!isInFlight())
+    return true
+
+  let missionBlk = DataBlock()
+  get_current_mission_info(missionBlk)
+
+  foreach (_part, block in checkTutorialsList)
+    if (block.tutorial == missionBlk.name)
+      return false
+  return true
+}
+
 return {
   getControlsList
   getMouseUsageMask
@@ -802,4 +840,5 @@ return {
   getRequiredControlsForUnit
   getCurrentHelpersMode
   getUnmappedControlsForCurrentMission
+  canChangeHelpersMode
 }

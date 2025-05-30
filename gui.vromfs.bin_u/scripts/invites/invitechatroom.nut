@@ -14,6 +14,7 @@ let ChatRoom = class (BaseInvite) {
   
   roomId = ""
   roomType = g_chat_room_type.DEFAULT_ROOM
+  needCheckCanChatWithPlayer = true
 
   static function getUidByParams(params) {
     return "".concat("CR_", getTblValue("inviterName", params, ""), "/", getTblValue("roomId", params, ""))
@@ -22,12 +23,19 @@ let ChatRoom = class (BaseInvite) {
   function updateCustomParams(params, initial = false) {
     this.roomId = getTblValue("roomId", params, "")
     this.roomType = g_chat_room_type.getRoomType(this.roomId)
+    let cb = Callback(@() this.checkInviteRoomType(initial), this)
+    this.setDelayed(true)
+    this.updateCanChatWithPlayer(cb)
+  }
 
+  function checkInviteRoomType(initial) {
     if (this.roomType == g_chat_room_type.THREAD) {
       let threadInfo = g_chat.addThreadInfoById(this.roomId)
       threadInfo.checkRefreshThread()
       if (threadInfo.lastUpdateTime < 0)
         this.setDelayed(true)
+      else
+        this.setDelayed(false)
       if (initial)
         add_event_listener("ChatThreadInfoChanged",
                              function (data) {
@@ -35,14 +43,19 @@ let ChatRoom = class (BaseInvite) {
                                  this.setDelayed(false)
                              },
                              this)
+      return
     }
-    else if (this.roomType == g_chat_room_type.SQUAD
-             && this.inviterName == g_squad_manager.getLeaderNick())
+    if (this.roomType == g_chat_room_type.SQUAD
+        && this.inviterName == g_squad_manager.getLeaderNick()) {
       this.autoAccept()
+      return
+    }
+
+    this.setDelayed(false)
   }
 
   function isValid() {
-    return this.roomId != "" && this.roomType.isAllowed() && !this.haveRestrictions()
+    return this.roomId != "" && this.roomType.isAllowed()
   }
 
   function haveRestrictions() {

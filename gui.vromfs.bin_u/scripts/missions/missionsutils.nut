@@ -29,7 +29,6 @@ let canPlayGamemodeBySquad = @(gm) !g_squad_manager.isNotAloneOnline()
   || gm == GM_SINGLE_MISSION || gm == GM_SKIRMISH
 
 
-
 function getMaxPlayersForGamemode(gm) {
   if (isInArray(gm, [GM_SINGLE_MISSION, GM_DYNAMIC, GM_BUILDER]))
     return COOP_MAX_PLAYERS
@@ -166,6 +165,29 @@ function getMissionCondition(misBlk) {
   return condition
 }
 
+let BAD_WEATHER_CONDITIONS = ["hazy", "poor", "blind", "rain", "thunder"]
+
+function isMissionWithBadWeatherConditions() {
+  let misBlk = DataBlock()
+  get_current_mission_desc(misBlk)
+
+  let weatherText = misBlk?.weather ?? ""
+  if (!weatherText.len())
+    return false
+
+  return BAD_WEATHER_CONDITIONS.contains(weatherText)
+}
+
+function getBadWeatherTooltipText(isBadWeather, hasAirfield, isSpawnAutoChanged = false) {
+  if (!isBadWeather)
+    return ""
+  let locKey = "bad_weather_conditions"
+  local tText = loc($"{locKey}/{hasAirfield ? "long" : "short"}")
+  if (isSpawnAutoChanged)
+    tText = "\n".concat(tText, loc($"{locKey}/airfiled_changed"))
+  return tText
+}
+
 function setMissionEnviroment(obj) {
   if (!(obj?.isValid() ?? false))
     return
@@ -270,4 +292,6 @@ return {
   isSkirmishWithKillStreaks
   getMaxPlayersForGamemode
   canPlayGamemodeBySquad
+  isMissionWithBadWeatherConditions
+  getBadWeatherTooltipText
 }

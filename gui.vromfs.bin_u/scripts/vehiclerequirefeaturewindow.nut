@@ -7,7 +7,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { floor } = require("math")
-let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
 
 let { getEntitlementConfig, getEntitlementName } = require("%scripts/onlineShop/entitlements.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
@@ -19,6 +19,7 @@ let { getAllFeaturePurchases, getPurchaseData } = require("%scripts/onlineShop/o
 let { openBrowserByPurchaseData } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { steam_is_overlay_active } = require("steam")
 let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
+let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -129,7 +130,7 @@ gui_handlers.VehicleRequireFeatureWindow <- class (gui_handlers.BaseGuiHandlerWT
       this.needFullUpdate = true
     else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false
-      this.taskId = ::update_entitlements_limited()
+      this.taskId = updateEntitlementsLimited()
       if (this.taskId < 0)
         return
       set_char_cb(this, this.slotOpCb)

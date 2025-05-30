@@ -225,9 +225,9 @@ function calculateRanksAndSectionsPos(page) {
         if (airItem?.isFakeUnit)
           isFakeBranch = true
         rangeRanks[airItem.rank] = hasRankPosXY ?
-          max(rangeRanks[airItem.rank], (airItem?.rankPosXY?.y ?? 1).tointeger())
+          max(rangeRanks[airItem.rank], (airItem?.rankPosXY.y ?? 1).tointeger())
           : rangeRanks[airItem.rank] + 1
-        maxColumns = max(maxColumns, (airItem?.rankPosXY?.x ?? 1).tointeger())
+        maxColumns = max(maxColumns, (airItem?.rankPosXY.x ?? 1).tointeger())
       }
       foreach (rankNum, rank in rangeRanks)
         if (isFakeBranch) { 
@@ -242,13 +242,13 @@ function calculateRanksAndSectionsPos(page) {
           if (("air" in airItem) && (isUnitSpecial(airItem.air) || isUnitGift(airItem.air)
             || airItem.air?.isSquadronVehicle?())) {
             if (!foundPremium) {
-              sectionsPos.insert(1, hasRankPosXY ? (airItem?.rankPosXY?.x ?? 1).tointeger() - 1 : range)
+              sectionsPos.insert(1, hasRankPosXY ? (airItem?.rankPosXY.x ?? 1).tointeger() - 1 : range)
               foundPremium = true
               if (!hasRankPosXY)
                 break
             }
             else
-              sectionsPos[1] = min(sectionsPos[1], (airItem?.rankPosXY?.x ?? 1).tointeger() - 1)
+              sectionsPos[1] = min(sectionsPos[1], (airItem?.rankPosXY.x ?? 1).tointeger() - 1)
           }
     }
   }

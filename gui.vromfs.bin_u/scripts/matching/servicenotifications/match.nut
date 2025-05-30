@@ -58,8 +58,11 @@ function fetchGameModesDigest(params, cb) {
   matchingApiFunc("wtmm_static.fetch_game_modes_digest", cb, params)
 }
 
-local debug_mm = null
-register_command(@(enable) debug_mm = enable, "matchmacking.set_debug_mm")
+let debug_mm = persist("debug_mm", @() {
+  enable = null
+})
+
+register_command(@(enable) debug_mm.enable = enable, "matchmacking.set_debug_mm")
 
 function enqueueInSession(params, cb) {
   let missionName = get_forced_network_mission()
@@ -68,8 +71,8 @@ function enqueueInSession(params, cb) {
 
   if (!crossplayModule.isCrossPlayEnabled())
     params["crossplay_restricted"] <- true
-  if (debug_mm != null)
-    params["debug_mm"] <- debug_mm
+  if (debug_mm.enable != null)
+    params["debug_mm"] <- debug_mm.enable
 
   matchingApiFunc("match.enqueue", cb, params)
 }

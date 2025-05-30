@@ -15,8 +15,9 @@ function ComputedImmediate(...) {
   return c
 }
 
-let isObservable = @(v) type(v)=="instance" && v instanceof Watched
 let isComputed = @(v) type(v)=="instance" && v instanceof Computed
+let isWatched = @(v) type(v)=="instance" && v instanceof Watched
+let isObservable = @(v) isWatched(v) || isComputed(v)
 
 function watchedTable2TableOfWatched(state, fieldsList = null) {
   assert(isObservable(state), "state has to be Watched")
@@ -193,6 +194,18 @@ function WatchedRo(val) {
 }
 
 
+function getWatcheds(func) {
+  assert(type(func) == "function")
+  let num = func.getfuncinfos().freevars
+  let res = []
+  for (local i=0; i< num; i++) {
+    let var = func.getfreevar(i).value
+    if ( var instanceof Watched )
+      res.append(var)
+  }
+  return res
+}
+
 return {
   mkLatestByTriggerStream
   mkTriggerableLatestWatchedSetAndStorage
@@ -213,4 +226,6 @@ return {
   WatchedRo
   isObservable
   isComputed
+  isWatched
+  getWatcheds
 }

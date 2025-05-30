@@ -36,7 +36,7 @@ function do_login(callback) {
     presence.subscribe_to_changes()
     store.initialize(function(ssucc) {
       logX($"Store initialized: {ssucc}")
-      relationships.cleanup()
+      relationships.cleanup_relationships()
       update_relationships(false, function() {
         logX("Relationships updated")
         relationships.subscribe_to_changes()

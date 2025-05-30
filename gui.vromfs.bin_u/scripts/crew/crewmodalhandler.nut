@@ -36,18 +36,20 @@ let { showCurBonus } = require("%scripts/bonusModule.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { isAllCrewsMinLevel, getCrewName, getCrewLevel,
   getCrewSkillNewValue, getCrewSkillCost, getSkillCrewLevel, isCrewMaxLevel,
-  getCrewSkillPointsToMaxAllSkills, buyAllCrewSkills, createCrewUnitSpecHandler,
+  getCrewSkillPointsToMaxAllSkills, createCrewUnitSpecHandler,
   createCrewBuyPointsHandler, getCrewUnit, getCrew, getCrewSkillValue, crewSkillPages,
   loadCrewSkills
 } = require("%scripts/crew/crew.nut")
+let { buyAllCrewSkills } = require("%scripts/crew/crewActions.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit, getSpecTypeByCrewAndUnitName
 } = require("%scripts/crew/crewSpecType.nut")
 let { getCrewDiscountInfo, getCrewMaxDiscountByInfo, getCrewDiscountsTooltipByInfo
 } = require("%scripts/crew/crewDiscount.nut")
-let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
-} = require("%scripts/slotbar/crewsList.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 function gui_modal_crew(params = {}) {
@@ -180,7 +182,7 @@ gui_handlers.CrewModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.curCrewUnitType = this.selectedCrewUnitTypes?[this.curUnit?.name ?? "empty"] ??
       (reinitUnitType ? (this.curUnit?.getCrewUnitType?() ?? this.curCrewUnitType) : this.curCrewUnitType)
 
-    ::update_gamercards()
+    updateGamercards()
     if (reloadSkills)
       loadCrewSkills()
 

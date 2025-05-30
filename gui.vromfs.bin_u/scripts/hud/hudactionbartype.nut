@@ -7,7 +7,7 @@ let { enumsAddTypes, enumsGetCachedType } = require("%sqStdLibs/helpers/enums.nu
 let time = require("%scripts/time.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { getActionShortcutIndexByType, getActionBarUnitName, getOwnerUnitName, getActionDataByType } = require("hudActionBar")
 let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SPECIAL_UNIT, EII_WINCH, EII_WINCH_DETACH, EII_WINCH_ATTACH, EII_TOOLKIT,
@@ -24,8 +24,10 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_SHIP_DAMAGE_CONTROL, EII_NIGHT_VISION, EII_SIGHT_STABILIZATION, EII_SIGHT_STABILIZATION_OFF, EII_RAGE_SCANNER_ACTION, EII_MULTIPLE_CHOICE_SPECIAL_WEAPON_ACTIVATE,
   EII_UGV, EII_MINE_DETONATION, EII_UNLIMITED_CONTROL, EII_DESIGNATE_TARGET,
   EII_ROCKET_AIR, EII_AGM_AIR, EII_AAM_AIR, EII_BOMB_AIR, EII_GUIDED_BOMB_AIR,
-  EII_JUMP, EII_SPRINT, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON,
-  EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89
+  EII_HUMAN_WEAPON, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON,
+  EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89,
+  EII_SLAVE_UNIT_SPAWN, EII_SLAVE_UNIT_SWITCH, EII_LANDING_GEAR, EII_EXTERNAL_FUEL_TANK_AIR, EII_HOVER_MODE, EII_FBW_MODE,
+  EII_MOUSE_AIM_OVERRIDE_ROLL, EII_MULTI_FUNCTIONAL_MENU, EII_ANTI_AIR_COMPLEX_MENU
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
@@ -481,6 +483,10 @@ enumsAddTypes(g_hud_action_bar_type, {
     _icon = "#ui/gameuiskin#artillery_fire"
     _title = loc("hotkeys/ID_ACTION_BAR_ITEM_5")
     needAnimOnIncrementCount = true
+    getShortcut = @(_actionItem, hudUnitType = null)
+      hudUnitType == HUD_UNIT_TYPE.HUMAN
+        ? "ID_HUMAN_ARTILLERY_STRIKE"
+        : "ID_ACTION_BAR_ITEM_5"
     getIcon = function (_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
       local mis = get_current_mission_info_cached()
       if ((mis?.customArtilleryImage ?? "") != "")
@@ -651,7 +657,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     _name = "ship_current_trigger_group"
     getShortcut = @(_actionItem, _hudUnitType = null)
       get_option(USEROPT_WHEEL_CONTROL_SHIP)?.value
-        && (isXInputDevice() || isPlatformSony || isPlatformXboxOne)
+        && (isXInputDevice() || isPlatformSony || isPlatformXbox)
           ? "ID_SHIP_SELECTWEAPON_WHEEL_MENU"
           : "ID_SHIP_SWITCH_TRIGGER_GROUP"
     getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
@@ -1108,28 +1114,6 @@ enumsAddTypes(g_hud_action_bar_type, {
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_DESIGNATE_TARGET"
   }
 
-  JUMP = {
-    code = EII_JUMP
-    _name = "jump"
-    _title = loc("hotkeys/ID_HUMAN_JUMP")
-    _icon = "#ui/gameuiskin#exoskelet_jump"
-    getShortcut = @(_actionItem, _hudUnitType = null) "ID_HUMAN_JUMP"
-    getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      return actionItem?.weaponName ?? this._icon
-    }
-  }
-
-  SPRINT = {
-    code = EII_SPRINT
-    _name = "sprint"
-    _title = loc("hotkeys/ID_HUMAN_SPRINT")
-    _icon = "#ui/gameuiskin#exoskelet_run"
-    getShortcut = @(_actionItem, _hudUnitType = null) "ID_HUMAN_SPRINT"
-    getIcon = function (actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) {
-      return actionItem?.weaponName ?? this._icon
-    }
-  }
-
   TOGGLE_VIEW  = {
     code = EII_TOGGLE_VIEW
     _name = "toggle_view"
@@ -1271,6 +1255,132 @@ enumsAddTypes(g_hud_action_bar_type, {
     getShortcut = @(_actionItem, _hudUnitType = null) "buoyancy_rangeMin"
     getTooltipText = @(_actionItem = null) loc("hotkeys/buoyancy_rangeMin")
   }
+
+  SLAVE_UNIT_SPAWN = {
+    code = EII_SLAVE_UNIT_SPAWN
+    _name = "slave_unit_spawn"
+    _title = loc("hotkeys/ID_SLAVE_UNIT_SPAWN")
+    _icon = "#ui/gameuiskin#change_controlled_unit"
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SLAVE_UNIT_SPAWN"
+  }
+
+  SLAVE_UNIT_SWITCH = {
+    code = EII_SLAVE_UNIT_SWITCH
+    _name = "slave_unit_switch"
+    _title = loc("hotkeys/ID_SLAVE_UNIT_SWITCH")
+    _icon = "#ui/gameuiskin#change_controlled_unit"
+    isForWheelMenu = @() true
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SLAVE_UNIT_SWITCH"
+  }
+
+  LANDING_GEAR = {
+    code = EII_LANDING_GEAR
+    _name = "landing_gear"
+    _title = loc("hotkeys/ID_GEAR")
+    _icon = "#ui/gameuiskin#toggle_gear"
+    getShortcut = function(_actionItem, hudUnitType = null) {
+      if (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
+        return "ID_GEAR_HELICOPTER"
+      return "ID_GEAR"
+    }
+    getTooltipText = @(_actionItem = null) loc("hotkeys/ID_GEAR")
+  }
+
+  EXTERNAL_FUEL_TANK_AIR = {
+    code = EII_EXTERNAL_FUEL_TANK_AIR
+    _name = "external_fuel_tank_air"
+    _icon = "#ui/gameuiskin#drop_tank"
+    _title = loc("hotkeys/ID_FUEL_TANKS")
+    getShortcut = function(_actionItem, _hudUnitType = null) {
+      return "ID_FUEL_TANKS"
+    }
+    getTooltipText = @(actionItem = null) $"{this._title}{getCooldownText(actionItem)}"
+  }
+
+  HOVER_MODE = {
+    code = EII_HOVER_MODE
+    _name = "hover"
+    _title = loc("hotkeys/ID_CONTROL_MODE")
+    getIcon = @(_actionItem, _killStreakTag = null, _unit = null, hudUnitType = null) hudUnitType == HUD_UNIT_TYPE.HELICOPTER
+      ? "#ui/gameuiskin#heli_vtol_deactivation"
+      : "#ui/gameuiskin#aircraft_vtol_activation"
+    getShortcut = function(_actionItem, hudUnitType = null) {
+      if (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
+        return "ID_CONTROL_MODE_HELICOPTER"
+      return "ID_CONTROL_MODE"
+    }
+    getTooltipText = @(_actionItem = null) loc("hotkeys/ID_CONTROL_MODE")
+  }
+
+  FBW_MODE = {
+    code = EII_FBW_MODE
+    _name = "fbw"
+    _title = loc("hotkeys/ID_FBW_MODE")
+    getIcon = @(_actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) "#ui/gameuiskin#countrol_sas"
+    getShortcut = function(_actionItem, hudUnitType = null) {
+      if (hudUnitType == HUD_UNIT_TYPE.HELICOPTER)
+        return "ID_FBW_MODE_HELICOPTER"
+      return "ID_FBW_MODE"
+    }
+    getTooltipText = @(_actionItem = null) loc("hotkeys/ID_FBW_MODE")
+  }
+
+  MOUSE_AIM_OVERRIDE_ROLL = {
+    code = EII_MOUSE_AIM_OVERRIDE_ROLL
+    _name = "mouse_aim_override_roll"
+    _title = loc("hotkeys/ID_MOUSE_AIM_OVERRIDE_ROLL_HELICOPTER")
+    getIcon = @(actionItem, _killStreakTag = null, _unit = null, _hudUnitType = null) actionItem?.active
+      ? "#ui/gameuiskin#roll_hor_auto"
+      : "#ui/gameuiskin#roll_manual"
+    getShortcut = function(_actionItem, _hudUnitType = null) {
+      return "ID_MOUSE_AIM_OVERRIDE_ROLL_HELICOPTER"
+    }
+    getTooltipText = @(_actionItem = null) loc("hotkeys/ID_MOUSE_AIM_OVERRIDE_ROLL_HELICOPTER")
+  }
+
+  MULTI_FUNCTIONAL_MENU = {
+    code = EII_MULTI_FUNCTIONAL_MENU
+    _name = "multi_functional_menu"
+    _title = loc("hotkeys/ID_SHOW_MULTIFUNC_WHEEL_MENU")
+    _icon = "#ui/gameuiskin#multi_function_menu"
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_SHOW_MULTIFUNC_WHEEL_MENU"
+  }
+
+  ANTI_AIR_COMPLEX_MENU = {
+    code = EII_ANTI_AIR_COMPLEX_MENU
+    _name = "anti_air_complex_menu"
+    _title = loc("hotkeys/ID_TOGGLE_AA_COMPLEX_MENU")
+    _icon = "#ui/gameuiskin#multi_function_menu"
+    getShortcut = @(_actionItem, _hudUnitType = null) "ID_TOGGLE_AA_COMPLEX_MENU"
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 })
 

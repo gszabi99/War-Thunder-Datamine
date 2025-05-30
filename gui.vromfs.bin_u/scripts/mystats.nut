@@ -23,7 +23,7 @@ let { getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { getSlotbarUnitTypes } = require("%scripts/slotbar/slotbarState.nut")
+let { getSlotbarUnitTypes } = require("%scripts/slotbar/slotbarStateData.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
@@ -93,14 +93,14 @@ function updateMyStats() {
   broadcastEvent("MyStatsUpdated")
 }
 
-function requestMyStats(forced = false) {
+function requestMyStats() {
   if (!isLoggedIn.get())
     return
 
   let time = get_time_msec()
-  if (!forced && isInUpdate && time - lastUpdate < 45000)
+  if (isInUpdate && time - lastUpdate < 45000)
     return
-  if (!forced && !resetStats && myStats && time - lastUpdate < UPDATE_DELAY) 
+  if (!resetStats && myStats && time - lastUpdate < UPDATE_DELAY) 
     return
 
   isInUpdate = true
@@ -526,7 +526,10 @@ function onEventCrewTakeUnit(params) {
 seenTitles.setListGetter(@() getTitles())
 
 addListenersWithoutEnv({
-  ProfileUpdated = @(_) requestMyStats(true)
+  ProfileUpdated = function(_) {
+    markStatsReset()
+    requestMyStats()
+  }
   UnitBought = @(_) markStatsReset()
   AllModificationsPurchased = @(_) markStatsReset()
   EventsDataUpdated = @(_) needRecountNewbie = true

@@ -44,9 +44,6 @@ function getMyClanOperation() {
 
 let getMapByName = @(mapName) ::g_ww_global_status_type.MAPS.getList()?[mapName]
 
-
-let getQueueByMapName = @(mapName) ::g_ww_global_status_type.QUEUE.getList()?[mapName] ?? ::WwQueue(mapName)
-
 let getOperationGroupByMapId = @(mapId)
   u.search(::g_ww_global_status_type.OPERATIONS_GROUPS.getList(), @(og) og.mapId == mapId)
     ?? ::WwOperationsGroup(mapId)
@@ -81,7 +78,6 @@ return {
   getNearestMapToBattle
   getMyClanOperation
   getMapByName
-  getQueueByMapName
   getOperationGroupByMapId
   isMyClanInQueue
   getOperationById

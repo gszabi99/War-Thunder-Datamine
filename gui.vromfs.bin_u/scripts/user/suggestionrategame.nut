@@ -3,7 +3,6 @@ from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
 
 let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
-let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { TIME_HOUR_IN_SECONDS } = require("%sqstd/time.nut")
 let { getShopItem } = require("%scripts/onlineShop/entitlementsShopData.nut")
@@ -101,7 +100,7 @@ function initConfig() {
 function setNeedShowRate(debriefingResult, myPlace) {
   
   
-  if ((!isPlatformXboxOne && !steam_is_running()) || debriefingResult == null)
+  if ((!is_gdk && !steam_is_running()) || debriefingResult == null)
     return
 
   foreach (config in configSteamReviewWnd) {
@@ -178,7 +177,7 @@ function setNeedShowRate(debriefingResult, myPlace) {
 }
 
 function tryOpenXboxRateReviewWnd() {
-  if (!isPlatformXboxOne || loadLocalAccountSettings(RATE_WND_TIME_SAVE_ID, 0) > 0)
+  if (!is_gdk || loadLocalAccountSettings(RATE_WND_TIME_SAVE_ID, 0) > 0)
     return false
 
   saveLocalAccountSettings(RATE_WND_TIME_SAVE_ID, get_charserver_time_sec())
@@ -219,7 +218,7 @@ function openSteamRateReviewFromPromoBlock(popupConfig) {
 }
 
 function checkShowRateWnd() {
-  if (needShowRateWnd.value && isPlatformXboxOne) {
+  if (needShowRateWnd.value && is_gdk) {
     tryOpenXboxRateReviewWnd()
     needShowRateWnd(false)
     return

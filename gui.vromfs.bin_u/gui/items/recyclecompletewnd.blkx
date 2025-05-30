@@ -1,0 +1,69 @@
+{
+  "root": {
+    "blur": {},
+    "blur_foreground": {},
+    "gamercardShadePlace": {
+      "gamercardShade": {}
+    },
+    "frame": {
+      "id": "recycle_frame",
+      "min-width": "0.5@trophyWndWidth",
+      "class": "wndNav",
+      "type": "big",
+      "isCenteredUnderLogo": "yes",
+      "css-hier-invalidate": "yes",
+      "flow": "h-flow",
+      "frame_header": {
+        "textareaNoTab": {
+          "id": "reward_title",
+          "caption": "yes",
+          "overlayTextColor": "active",
+          "text": "#items/recycledComplete"
+        },
+        "Button_close": {
+          "id": "btn_back"
+        }
+      },
+      "tdiv": {
+        "position": "relative",
+        "flow": "vertical",
+        "flow-align": "center",
+        "left": "(pw-w)/2",
+        "width": "pw",
+        "css-hier-invalidate": "yes",
+        "div": {
+          "id": "reward_image_place",
+          "width": "pw",
+          "css-hier-invalidate": "yes",
+          "position": "relative",
+          "flow": "h-flow",
+          "flow-align": "center",
+          "display": "show",
+          "total-input-transparent": "yes"
+        },
+        "textareaNoTab": {
+          "id": "extended_desc",
+          "position": "relative",
+          "left": "(pw-w)/2",
+          "max-width": "pw",
+          "padding": "25@sf/@pf, 5, 25@sf/@pf, 25@sf/@pf",
+          "hideEmptyText": "yes",
+          "text": "#items/recycledNewItems",
+          "text-align": "center"
+        }
+      },
+      "navBar": {
+        "navLeft": {},
+        "navRight": {
+          "Button_text": {
+            "id": "btn_ok",
+            "text": "#mainmenu/btnOk",
+            "btnName": "A",
+            "_on_click": "goBack",
+            "ButtonImg": {}
+          }
+        }
+      }
+    }
+  }
+}

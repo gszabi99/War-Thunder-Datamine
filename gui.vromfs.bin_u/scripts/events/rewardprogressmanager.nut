@@ -74,7 +74,7 @@ let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
       if (getTblValue("eventId", logObj) != eventEconomicName)
         continue
 
-      let leaderbordRow = logObj?.tournamentResult?.newStat
+      let leaderbordRow = logObj?.tournamentResult.newStat
       if (!leaderbordRow)
         return false
 

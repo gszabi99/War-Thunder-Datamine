@@ -10,7 +10,7 @@ require app
 require HeroManager
 require vehicle
 
-[es(REQUIRE=unit_tag__tank)]
+[es(REQUIRE=unit_tag__tank, no_order)]
 def tank_engine_stage_updater_es(act : UpdateStageInfoAct;
                                  eid : EntityId;
                                  var vehicle_net_phys : VehiclePhysActor&;
@@ -23,39 +23,39 @@ def tank_engine_stage_updater_es(act : UpdateStageInfoAct;
                                  var tank_engine__commandSent : bool&)
   let wasEngineState = tank_engine__stage
 
-  if tank_engine__stage == uint8(TankEngineStage STAGE_STOPPED)
+  if tank_engine__stage == uint8(TankEngineStage.STAGE_STOPPED)
     vehicle_phys_setIsICEWorking(vehicle_net_phys.phys, tank_engine__isWorking)
     if tank_engine__isWorking
-      tank_engine__stage = uint8(TankEngineStage STAGE_STARTING)
+      tank_engine__stage = uint8(TankEngineStage.STAGE_STARTING)
 
-  elif tank_engine__stage == uint8(TankEngineStage STAGE_STARTING)
+  elif tank_engine__stage == uint8(TankEngineStage.STAGE_STARTING)
     tank_engine__startDelayTimer -= act.dt
     if tank_engine__startDelayTimer <= 0.0f
-      tank_engine__stage = uint8(TankEngineStage STAGE_READY)
+      tank_engine__stage = uint8(TankEngineStage.STAGE_READY)
 
-  elif tank_engine__stage == uint8(TankEngineStage STAGE_READY)
+  elif tank_engine__stage == uint8(TankEngineStage.STAGE_READY)
     tank_engine__startDelayTimer = tank_engine__startDelay
-    tank_engine__stage = uint8(TankEngineStage STAGE_NOMINAL)
+    tank_engine__stage = uint8(TankEngineStage.STAGE_NOMINAL)
     tank_engine__commandSent = false
     vehicle_net_phys.phys.disableEngineOmega = false
 
-  elif tank_engine__stage == uint8(TankEngineStage STAGE_NOMINAL)
+  elif tank_engine__stage == uint8(TankEngineStage.STAGE_NOMINAL)
     if !tank_engine__isWorking
-      tank_engine__stage = uint8(TankEngineStage STAGE_STOPPING)
+      tank_engine__stage = uint8(TankEngineStage.STAGE_STOPPING)
 
-  elif tank_engine__stage == uint8(TankEngineStage STAGE_STOPPING)
+  elif tank_engine__stage == uint8(TankEngineStage.STAGE_STOPPING)
     tank_engine__stopDelayTimer -= act.dt
     if tank_engine__stopDelayTimer < 0.0
-      tank_engine__stage = uint8(TankEngineStage STAGE_TURNING_OFF)
+      tank_engine__stage = uint8(TankEngineStage.STAGE_TURNING_OFF)
 
-  elif tank_engine__stage == uint8(TankEngineStage STAGE_TURNING_OFF)
+  elif tank_engine__stage == uint8(TankEngineStage.STAGE_TURNING_OFF)
     tank_engine__commandSent = false
-    tank_engine__stage = uint8(TankEngineStage STAGE_STOPPED)
+    tank_engine__stage = uint8(TankEngineStage.STAGE_STOPPED)
     tank_engine__stopDelayTimer = tank_engine__stopDelay
     vehicle_net_phys.phys.disableEngineOmega = true
 
   if tank_engine__stage != wasEngineState
-    sendEvent(eid, [[EventTankEngineStageChanged newStage=tank_engine__stage]])
+    sendEvent(eid, EventTankEngineStageChanged(newStage = tank_engine__stage))
 
 [es]
 def tank_engine_state_init_es(evt : CmdInitComponent;
@@ -85,8 +85,8 @@ def tank_engine_state_toggle_es(evt : EventTryToggleGMEngine;
   if tank_engine__commandSent
     return
   tank_engine__commandSent = true
-  sendEvent(eid, [[EventGmEngineOnOff
-      value=!tank_engine__isWorking]])
+  sendEvent(eid, EventGmEngineOnOff(
+      value = !tank_engine__isWorking))
 
 [es, unused_argument(evt)]
 def tank_engine_state_turn_on_es(evt : EventTryEnableEngine;
@@ -96,8 +96,8 @@ def tank_engine_state_turn_on_es(evt : EventTryEnableEngine;
   if tank_engine__commandSent || tank_engine__isWorking
     return
   tank_engine__commandSent = true
-  sendEvent(eid, [[EventGmEngineOnOff
-      value=true]])
+  sendEvent(eid, EventGmEngineOnOff(
+      value = true))
 
 [es(tag=server)]
 def tank_engine_state_on_off_es(evt : EventGmEngineOnOff;

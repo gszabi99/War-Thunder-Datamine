@@ -25,7 +25,7 @@
       "date_loc": "",
       "objective_loc": "",
       "music": "action_01",
-      "viewAreaScale": 2.0,
+      "viewAreaScale": 1.0,
       "part": {
         "event": "",
         "minTime": 0,
@@ -38,8 +38,8 @@
             "width": 1,
             "side": "enemy",
             "point": [
-              "target_point_02",
-              "target_respawn_01_pt"
+              "target_point_briefing",
+              "enemy_briefing"
             ]
           },
           "icon": [
@@ -52,15 +52,18 @@
             {
               "icontype": "fighter",
               "side": "enemy",
-              "target": "target_respawn_01_pt",
-              "lookAt": "target_point_01"
+              "target": "enemy_briefing",
+              "lookAt": "target_point_briefing"
             },
             {
               "icontype": "capturezone",
               "side": "enemy",
-              "target": "target_point_02"
+              "target": "target_point_briefing"
             }
-          ]
+          ],
+          "battleArea": {
+            "target": "battle_area"
+          }
         }
       }
     }
@@ -102,6 +105,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "target_air01",
           "move_type": "teleport",
           "speed": 500.0,
@@ -1401,6 +1405,87 @@
           -4598.18,
           636.795,
           3485.91
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "enemy_briefing": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.60717,
+          -0.238229,
+          9.65109
+        ],
+        [
+          -0.0621309,
+          9.99702,
+          0.229983
+        ],
+        [
+          -9.65389,
+          0.00000590052,
+          -2.60791
+        ],
+        [
+          -3586.65,
+          122.85,
+          1363.75
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "target_point_briefing": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -2.60717,
+          -0.238229,
+          9.65109
+        ],
+        [
+          -0.0621309,
+          9.99702,
+          0.229983
+        ],
+        [
+          -9.65389,
+          0.00000590052,
+          -2.60791
+        ],
+        [
+          -3071.2,
+          636.794,
+          2310.95
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "battle_area": {
+      "type": "Box",
+      "tm": [
+        [
+          -642.388,
+          -58.6979,
+          2377.96
+        ],
+        [
+          -2.89259,
+          465.425,
+          10.7072
+        ],
+        [
+          -2378.65,
+          0.00145385,
+          -642.57
+        ],
+        [
+          -3276.8,
+          496.15,
+          1551.3
         ]
       ],
       "objLayer": 0,

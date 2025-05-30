@@ -5,12 +5,12 @@ from "%scripts/controls/rawShortcuts.nut" import GAMEPAD_ENTER_SHORTCUT
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { hasFakeRecipesInList } = require("%scripts/items/exchangeRecipes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { ceil } = require("math")
 let u = require("%sqStdLibs/helpers/u.nut")
 let stdMath = require("%sqstd/math.nut")
 let tutorAction = require("%scripts/tutorials/tutorialActions.nut")
-let { findChildIndex, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, findChildIndex, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 
 local MIN_ITEMS_IN_ROW = 7

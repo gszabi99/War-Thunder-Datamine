@@ -31,6 +31,7 @@ let { objectiveStatus, getObjectiveStatusByCode
 } = require("%scripts/misObjectives/objectiveStatus.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
+let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 const AUTO_ACTIVATE_TIME = 60
 const MAX_ROWS_IN_SCORE_TABLE = 3
@@ -235,7 +236,7 @@ function getOrderActivateInfoText() {
   return ""
 }
 
-let isInSpectatorMode = @() ::isPlayerDedicatedSpectator() || is_replay_playing()
+let isInSpectatorMode = @() isPlayerDedicatedSpectator() || is_replay_playing()
 let showActivateOrderButton = @() !isInSpectatorMode() && ordersCanBeUsed()
 
 
@@ -526,7 +527,7 @@ function getOrderStatus(orderObjective) {
 
 function getOrderItem(orderObjective) {
   let objectiveId = getTblValue("objectiveId", orderObjective, null)
-  return findItemById(objectiveId, itemType.ORDER)
+  return findItemById(objectiveId)
 }
 
 function getOrderType(orderObjective) {

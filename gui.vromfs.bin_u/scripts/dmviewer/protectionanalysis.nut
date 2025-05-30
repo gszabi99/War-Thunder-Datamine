@@ -7,7 +7,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { hangar_focus_model, hangar_set_dm_viewer_mode, DM_VIEWER_NONE, DM_VIEWER_PROTECTION } = require("hangar")
 let protectionAnalysisOptions = require("%scripts/dmViewer/protectionAnalysisOptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let protectionAnalysisHint = require("%scripts/dmViewer/protectionAnalysisHint.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let controllerState = require("controllerState")
@@ -20,7 +21,8 @@ let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { get_replay_hits_dir, repeat_shot_from_file, set_replay_hits_mode,
-  on_update_loaded_model, restore_loaded_model } = require("replays")
+  on_update_loaded_model, restore_loaded_model, get_last_shot_blk, is_last_shot_valid,
+  invalidate_last_shot } = require("replays")
 let DataBlock = require("DataBlock")
 let { setShowUnit, getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
@@ -45,9 +47,10 @@ let helpHintsParams = [
 ]
 
 function isValidHitData(hitData) {
-  foreach (paramName in ["object", "offenderObject", "ammo", "distance"])
-    if (paramName not in hitData)
-      return false
+  if ("ammo" not in hitData || "distance" not in hitData)
+    return false
+  if (hitData.getStr("object", "") == "" || hitData.getStr("offenderObject", "") == "")
+    return false
   return true
 }
 
@@ -61,6 +64,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   unit = null
   applyFilterTimer = null
   hitFilePath = null
+  hitDataRaw = null
   hitData = null
   isAllowResetHitAnalysis = false
 
@@ -121,6 +125,8 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
     showObjById("btnOpenHitFile", hasFeature("HitsAnalysis") && is_platform_pc)
     showObjById("btnSimulateHit", false)
+
+    this.scene.findObject("validate_last_shot_timer").setUserData(this)
   }
 
   onSave = @(obj) protectionAnalysisOptions.isSaved = obj?.getValue()
@@ -165,6 +171,7 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     repairUnit()
     set_protection_analysis_editing(false)
     restore_loaded_model()
+    invalidate_last_shot()
     set_replay_hits_mode(false)
     base.goBack()
   }
@@ -352,6 +359,26 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     handlersManager.requestHandlerRestore(this, this.getclass())
   }
 
+  function onSaveHitFile() {
+    handlersManager.loadHandler(gui_handlers.FileDialog, {
+      isSaveFile = true
+      dirPath = get_replay_hits_dir()
+      pathTag = "replay_hits"
+      onSelectCallback = Callback(this.onSaveSelectCallback, this)
+      extension = "blk"
+      currentFilter = "blk"
+    })
+  }
+
+  function onSaveSelectCallback(path) {
+    if (!is_last_shot_valid())
+      return false
+    let lastShotBlk = DataBlock()
+    get_last_shot_blk(lastShotBlk)
+    lastShotBlk.saveToTextFile(path)
+    return true
+  }
+
   function onOpenHitFile(_) {
     restore_loaded_model()
     handlersManager.loadHandler(gui_handlers.FileDialog, {
@@ -365,10 +392,20 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSelectCallback(path) {
+    invalidate_last_shot()
     this.hitFilePath = path
-    this.hitData = DataBlock()
-    let res = this.hitData.tryLoad(this.hitFilePath)
-    if (!res || !isValidHitData(this.hitData)) {
+    this.hitDataRaw = DataBlock()
+    let res = this.hitDataRaw.tryLoad(this.hitFilePath)
+    if (res) {
+      if (isValidHitData(this.hitDataRaw))
+        this.hitData = this.hitDataRaw
+      else {
+        this.hitData = this.hitDataRaw.getBlockByName("context")
+        if (!this.hitData || !isValidHitData(this.hitData))
+          this.hitData = null
+      }
+    }
+    if (!this.hitData) {
       showInfoMsgBox(loc("hitsAnalisys/openHitFile/error"))
       this.hitData = null
       set_replay_hits_mode(false)
@@ -441,12 +478,16 @@ gui_handlers.ProtectionAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
     this.isAllowResetHitAnalysis = true
     return true
   }
+
+  function onValidateLastShot(_, __) {
+    showObjById("btnSaveHitFile", hasFeature("HitsAnalysis") && is_platform_pc && is_last_shot_valid())
+  }
 }
 
 return {
   canOpen = function(unit) {
     return hasFeature("DmViewerProtectionAnalysis")
-      && isInMenu()
+      && isInMenu.get()
       && !hasSessionInLobby()
       && unit?.unitType.canShowProtectionAnalysis() == true
   }

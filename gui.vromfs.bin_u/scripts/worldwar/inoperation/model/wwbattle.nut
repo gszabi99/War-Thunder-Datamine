@@ -39,14 +39,50 @@ let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOper
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { WwUnit } = require("%scripts/worldWar/inOperation/model/wwUnit.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getWwSetting, getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
 let { getPlayWorldwarConditionText, canJoinWorldwarBattle } = require("%scripts/worldWar/worldWarGlobalStates.nut")
 let { findQueueByName } = require("%scripts/queue/queueState.nut")
+let { canJoinByMySquad, getMemberStatusLocId, getSquadMemberAvailableUnitsCheckingData,
+  getSquadMembersAvailableUnitsCheckingData
+} = require("%scripts/squads/squadUtils.nut")
+let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { getAllOperationUnitsBySide } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
 const WW_BATTLES_SORT_TIME_STEP = 120
 const WW_MAX_PLAYERS_DISBALANCE_DEFAULT = 3
 const MAX_BATTLE_WAIT_TIME_MIN_DEFAULT = 30
+
+
+
+
+
+
+
+
+
+
+
+
+
+function checkAvailableUnits(availableUnitsArrays, controlUnits, availableUnitsArrayIndex = 0) {
+  if (availableUnitsArrays.len() >= availableUnitsArrayIndex)
+    return true
+
+  let units = availableUnitsArrays[availableUnitsArrayIndex]
+  foreach (_idx, name in units) {
+    if (controlUnits[name] <= 0)
+      continue
+
+    controlUnits[name]--
+    if (checkAvailableUnits(availableUnitsArrays, controlUnits, availableUnitsArrayIndex++))
+      return true
+
+    controlUnits[name]++
+  }
+
+  return false
+}
 
 local WwBattleView 
 
@@ -280,7 +316,7 @@ let WwBattle = class {
           if (armyName.len() == 0)
             continue
 
-          let army = ::g_world_war.getArmyByName(armyName)
+          let army = getArmyByName(armyName)
           if (!army) {
             script_net_assert_once("WW can't find army", $"ww: can't find army {armyName}")
             continue
@@ -455,11 +491,11 @@ let WwBattle = class {
     }
 
     let remainUnits = this.getUnitsRequiredForJoin(team, side)
-    let myCheckingData = ::g_squad_utils.getMemberAvailableUnitsCheckingData(
+    let myCheckingData = getSquadMemberAvailableUnitsCheckingData(
       getMyStateData(), remainUnits, team.country)
     if (myCheckingData.joinStatus != memberStatus.READY) {
       res.code = WW_BATTLE_CANT_JOIN_REASON.UNITS_NOT_ENOUGH_AVAILABLE
-      res.reasonText = loc(::g_squad_utils.getMemberStatusLocId(myCheckingData.joinStatus))
+      res.reasonText = loc(getMemberStatusLocId(myCheckingData.joinStatus))
       return res
     }
 
@@ -508,7 +544,7 @@ let WwBattle = class {
       return reasonData
     }
 
-    if (!::g_squad_utils.canJoinByMySquad(null, team.country)) {
+    if (!canJoinByMySquad(null, team.country)) {
       reasonData.code = WW_BATTLE_CANT_JOIN_REASON.SQUAD_WRONG_SIDE
       reasonData.reasonText = loc("worldWar/squad/membersHasDifferentSide")
       return reasonData
@@ -540,7 +576,7 @@ let WwBattle = class {
     }
 
     let remainUnits = this.getUnitsRequiredForJoin(team, side)
-    let membersCheckingDatas = ::g_squad_utils.getMembersAvailableUnitsCheckingData(remainUnits, team.country)
+    let membersCheckingDatas = getSquadMembersAvailableUnitsCheckingData(remainUnits, team.country)
 
     let langConfig = []
     local shortMessage = ""
@@ -549,7 +585,7 @@ let WwBattle = class {
         let memberLangConfig = [
           systemMsg.makeColoredValue(COLOR_TAG.USERLOG, data.memberData.name),
           "ui/colon",
-          ::g_squad_utils.getMemberStatusLocId(data.joinStatus)
+          getMemberStatusLocId(data.joinStatus)
         ]
         langConfig.append(memberLangConfig)
         if (!shortMessage.len())
@@ -637,7 +673,7 @@ let WwBattle = class {
     foreach (_idx, data in membersCheckingDatas)
       unbrokenAvailableUnits.append(data.unbrokenAvailableUnits)
 
-    return ::g_squad_utils.checkAvailableUnits(unbrokenAvailableUnits, remainUnits)
+    return checkAvailableUnits(unbrokenAvailableUnits, remainUnits)
   }
 
   function getAvailableUnitsCountUnderLimit(availableUnits, remainUnits, limit) {
@@ -694,7 +730,7 @@ let WwBattle = class {
     if (unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.BATTLE_UNITS)
       return this.getTeamRemainUnits(team)
     else if (unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.OPERATION_UNITS)
-      return ::g_operations.getAllOperationUnitsBySide(side)
+      return getAllOperationUnitsBySide(side)
     else if (unitAvailability == WW_BATTLE_UNITS_REQUIREMENTS.NO_MATCHING_UNITS)
       return {}
 

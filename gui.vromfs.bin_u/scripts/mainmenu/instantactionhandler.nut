@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import shop_get_unlock_crew_cost, stat_get_value_missions_completed, is_online_available, set_presence_to_player, disable_network, sync_handler_simulate_signal, shop_get_unlock_crew_cost_gold, set_char_cb, get_invited_players_info, clan_get_my_clan_id
+from "%scripts/dagui_natives.nut" import shop_get_unlock_crew_cost, stat_get_value_missions_completed, is_online_available, set_presence_to_player, sync_handler_simulate_signal, shop_get_unlock_crew_cost_gold, set_char_cb, get_invited_players_info, clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCUT
 
@@ -32,9 +32,8 @@ let { showMsgboxIfSoundModsNotAllowed } = require("%scripts/penitentiary/soundMo
 let { getToBattleLocIdShort } = require("%scripts/viewUtils/interfaceCustomization.nut")
 let { needShowChangelog,
   openChangelog, requestAllPatchnotes } = require("%scripts/changelog/changeLogState.nut")
-let { isCountrySlotbarHasUnits, getSelAircraftByCountry, getCurSlotbarUnit,
-  isCountryAllCrewsUnlockedInHangar
-} = require("%scripts/slotbar/slotbarState.nut")
+let { getSelAircraftByCountry, getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
+let { isCountryAllCrewsUnlockedInHangar, isCountrySlotbarHasUnits } = require("%scripts/slotbar/slotbarStateData.nut")
 let { getCrewByAir } = require("%scripts/crew/crewInfo.nut")
 let { getShowedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { initBackgroundModelHint, placeBackgroundModelHint
@@ -60,7 +59,8 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { getEventEconomicName, isEventPlatformOnlyAllowed } = require("%scripts/events/eventInfo.nut")
-let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
+let { checkSquadUnreadyAndDo, canJoinFlightMsgBox, checkSquadMembersMrankDiff
+} = require("%scripts/squads/squadUtils.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let { isStatsLoaded, getNextNewbieEvent, isMeNewbie, getPvpRespawns, getMissionsComplete,
@@ -95,6 +95,8 @@ let SlotbarPresetsTutorial = require("%scripts/slotbar/slotbarPresetsTutorial.nu
 let { isQueueActive, findQueue, isAnyQueuesActive, checkQueueType } = require("%scripts/queue/queueState.nut")
 let { getQueueSlots } = require("%scripts/queue/queueInfo.nut")
 let { leaveQueue, joinQueue } = require("%scripts/queue/queueManager.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   static keepLoaded = true
@@ -549,7 +551,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       missionsComplete = getMissionsComplete()
     }
 
-    ::g_squad_utils.checkMembersMrankDiff(this, Callback(@()
+    checkSquadMembersMrankDiff(this, Callback(@()
       this.checkedNewFlight(function() {
         sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic)
         this.onStartAction()
@@ -577,7 +579,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     }
 
-    if (::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true })) {
+    if (canJoinFlightMsgBox({ isLeaderCanJoin = true })) {
       this.setCurCountry(profileCountrySq.value)
       let gameMode = getCurrentGameMode()
       if (gameMode == null)
@@ -612,7 +614,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     
     
     
-    if (isAnyQueuesActive(this.queueMask) || !::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
+    if (isAnyQueuesActive(this.queueMask) || !canJoinFlightMsgBox({ isLeaderCanJoin = true }))
       return
 
     EventJoinProcess(event)
@@ -800,7 +802,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function afterCountryApply(membersData = null, team = null, event = null) {
-    if (disable_network()) {
+    if (disableNetwork) {
       matchSearchGm.set(GM_DOMINATION)
       this.guiScene.performDelayed(this, function() {
         this.goForwardIfOnline(guiStartSessionList, false)
@@ -848,7 +850,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!queue)
       return false
 
-    if (options.len() && !::g_squad_utils.canJoinFlightMsgBox(options))
+    if (options.len() && !canJoinFlightMsgBox(options))
       return false
 
     leaveQueue(queue, options)
@@ -983,7 +985,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (hasFeature("BattleAutoStart"))
       return
 
-    if (disable_network() || !isStatsLoaded() || !checkObj(this.toBattleButtonObj))
+    if (disableNetwork || !isStatsLoaded() || !checkObj(this.toBattleButtonObj))
       return
 
     if (!tutorialModule.needShowTutorial("toBattle", 1) || getPvpRespawns())
@@ -1075,7 +1077,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
     if (missionCounter >= SlotbarPresetsTutorial.MAX_PLAYS_FOR_GAME_MODE)
       return false
 
-    if (!::slotbarPresets.canEditCountryPresets(this.getCurCountry()))
+    if (!slotbarPresets.canEditCountryPresets(this.getCurCountry()))
       return false
 
     let tutorial = SlotbarPresetsTutorial()
@@ -1152,7 +1154,7 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkNewUnitTypeToBattleTutor() {
-    if (disable_network()
+    if (disableNetwork
       || !isStatsLoaded()
       || !hasFeature("NewUnitTypeToBattleTutorial"))
       return

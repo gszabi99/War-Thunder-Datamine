@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import get_tomoe_unit_icon
 import "%sqstd/math.nut" as stdMath
 import "%scripts/time.nut" as time
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
 
 let { get_unit_icon_by_unit, getUnitCountry, getUnitExp } = require("%scripts/unit/unitInfo.nut")
 let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
@@ -43,6 +44,7 @@ let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { isUnitSpecial, calcBattleRatingFromRank, get_unit_blk_economic_rank_by_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { searchEntitlementsByUnit } = require("%scripts/onlineShop/onlineShopState.nut")
 let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
+let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
 
 let MOD_TIERS_COUNT = 4
 
@@ -213,7 +215,7 @@ local Unit = class {
     this.reqAir                    = uWpCost?.reqAir
 
     foreach (weapon in this.weapons)
-      weapon.type <- ::g_weaponry_types.WEAPON.type
+      weapon.type <- weaponsItem.weapon
 
     if (uWpCost?.weapons != null) {
       if (this.hasWeaponSlots)
@@ -229,7 +231,7 @@ local Unit = class {
 
       this.spare = {
         name = "spare"
-        type = ::g_weaponry_types.SPARE.type
+        type = weaponsItem.spare
         cost = uWpCost?.spare.value || 0
         image = getWeaponImage(this.esUnitType, spareBlk, uWpCost?.spare)
         animation = spareBlk && (spareBlk % "animationByUnit")
@@ -297,7 +299,7 @@ local Unit = class {
   isShipOrBoat          = @() this.esUnitType == ES_UNIT_TYPE_SHIP || this.esUnitType == ES_UNIT_TYPE_BOAT
   isSubmarine           = @() this.esUnitType == ES_UNIT_TYPE_SHIP && this.tags.indexof("submarine") != null
   isHelicopter          = @() this.esUnitType == ES_UNIT_TYPE_HELICOPTER
-  isHuman               = @() this.esUnitType == ES_UNIT_TYPE_TANK && this.tags.indexof("type_exoskeleton") != null
+  isHuman               = @() this.esUnitType == ES_UNIT_TYPE_HUMAN
   
 
 
@@ -372,7 +374,7 @@ local Unit = class {
     let mode = difficulty.getEgdName()
 
     let isSpecial = isUnitSpecial(this)
-    let premPart = isSpecial ? warpoints?.rewardMulVisual?.premRewardMulVisualPart ?? 0.5 : 0.0
+    let premPart = isSpecial ? warpoints?.rewardMulVisual.premRewardMulVisualPart ?? 0.5 : 0.0
     let mul = (uWpCost?[$"rewardMul{mode}"] ?? 1.0) *
       (warpoints?.rewardMulVisual?[$"rewardMulVisual{mode}"] ?? 1.0)
     let timedAward = uWpCost?[$"timedAward{mode}"] ?? 0
@@ -399,7 +401,7 @@ local Unit = class {
   function isVisibleInShop() {
     if (!this.isInShop || !this.unitType.isVisibleInShop())
       return false
-    if (::is_debug_mode_enabled || this.isUsable())
+    if (isDebugModeEnabled.status || this.isUsable())
       return true
     if (this.showOnlyWhenBought)
       return false
@@ -434,11 +436,14 @@ local Unit = class {
   }
 
   function getSkinBlockById(skinId) {
+    this.updateSkinBlocks()
+    return this.skinsBlocks?[skinId]
+  }
+
+  function updateSkinBlocks() {
     if (!this.skinsBlocks.len()) 
       foreach (skin in this.getSkins())
         this.skinsBlocks[skin.name] <- skin
-
-    return this.skinsBlocks?[skinId]
   }
 
   function getPreviewSkinId() {

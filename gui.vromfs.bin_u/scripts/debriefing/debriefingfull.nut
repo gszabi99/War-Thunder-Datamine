@@ -41,6 +41,7 @@ let { getModItemName } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 let { getRoomEvent, getRoomUnitTypesMask } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 
 const TOOLTIP_MINIMIZE_SCREEN_WIDTH_PERCENT = 0.95
 
@@ -1375,7 +1376,7 @@ function gatherDebriefingResult() {
   foreach (_airName, airData in debriefingResult.exp.aircrafts)
     airData["tntDamage"] <- getTblValue("numDamage", airData, 0)
 
-  if ((get_game_type() & GT_RACE) && ("get_race_lap_times" in getroottable())) {
+  if (get_game_type() & GT_RACE) {
     debriefingResult.exp.ptmBestLap <- get_race_best_lap_time()
     debriefingResult.exp.ptmLapTimesArray <- get_race_lap_times()
   }
@@ -1425,7 +1426,7 @@ function gatherDebriefingResult() {
   recountDebriefingResult()
 
   if (is_mplayer_peer())
-    ::destroy_session_scripted("after gather debriefing result")
+    destroySessionScripted("after gather debriefing result")
 }
 
 function debriefingAddVirtualPremAccToStatTbl(data, isRoot) {

@@ -18,8 +18,16 @@ let { forceHideCursor } = require("%scripts/controls/mousePointerVisibility.nut"
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { loadLocalSharedSettings } = require("%scripts/clientState/localProfile.nut")
 let { LOCAL_AGREED_EULA_VERSION_SAVE_ID, openEulaWnd } = require("%scripts/eulaWnd.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
+let { eventbus_subscribe } = require("eventbus")
+
+eventbus_subscribe("PsnAutologin", function(_p) {
+  let loginHandlerPs4 = handlersManager.findHandlerClassInScene(gui_handlers.LoginWndHandlerPs4)
+  if (!loginHandlerPs4)
+    return
+  loginHandlerPs4.onOk()
+})
 
 gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -72,7 +80,7 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
     })
 
     if (this.isAutologin)
-      ::on_ps4_autologin()
+      this.onOk()
   }
 
   function updateButtons(isUpdateAvailable = false) {
@@ -132,10 +140,6 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
     requestPackageUpdateStatus(@(isUpdateAvailable) broadcastEvent("PackageUpdateStatusReceived", { isUpdateAvailable }))
   }
 
-  function onEventPs4AutoLoginRequested(_p) {
-    this.onOk()
-  }
-
   function onEventPackageUpdateStatusReceived(p) {
     this.onPackageUpdateCheckResult(p.isUpdateAvailable)
   }
@@ -145,8 +149,4 @@ gui_handlers.LoginWndHandlerPs4 <- class (BaseGuiHandler) {
   }
 
   function goBack(_obj) {}
-}
-
-::on_ps4_autologin <- function on_ps4_autologin() {
-  broadcastEvent("Ps4AutoLoginRequested")
 }

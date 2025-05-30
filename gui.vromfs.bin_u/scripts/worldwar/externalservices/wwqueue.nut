@@ -14,7 +14,7 @@ let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
 let { getMyClanType } = require("%scripts/clans/clanTextInfo.nut")
 let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
 
-::WwQueue <- class {
+let WwQueue = class {
   map = null
   data = null
 
@@ -239,3 +239,5 @@ let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
 
   getId = @() this.map.getId()
 }
+
+return WwQueue

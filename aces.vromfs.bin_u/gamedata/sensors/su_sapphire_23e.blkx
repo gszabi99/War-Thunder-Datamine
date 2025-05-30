@@ -444,14 +444,12 @@
         },
         "designatedTargetSearch": {
           "designateTargetUnderCue": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "cue",
+            "self": true
           },
           "designateActiveDetectedTarget": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "target",
+            "self": true
           }
         },
         "resetBvrLockMode": {
@@ -840,7 +838,10 @@
           "stateTo": "checkDesignationType0",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": [
+                "target",
+                "cue"
+              ]
             }
           }
         },
@@ -1349,7 +1350,7 @@
         },
         "setSmv": {
           "setTransiver": {
-            "transiver": "mti"
+            "transiver": "pulse"
           },
           "setSignal": {
             "signal": "pulseShort"

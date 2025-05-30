@@ -1827,13 +1827,13 @@
   "cockpit": {
     "headPos": [
       2.9,
-      0.805,
-      -0.006
+      0.815,
+      -0.005
     ],
     "headPosOnShooting": [
       3.0,
-      0.805,
-      -0.006
+      0.815,
+      -0.005
     ],
     "sightInFov": 1.5,
     "sightOutFov": 6.5,
@@ -1977,7 +1977,7 @@
         0.0,
         1000.0
       ],
-      "altitude1_hour": [
+      "altitude1_10k": [
         0.0,
         100000.0
       ],
@@ -2123,10 +2123,10 @@
       "display": [
         {
           "textureArea": [
+            0.0,
+            0.0,
             0.5,
-            0.5,
-            1.0,
-            1.0
+            0.5
           ],
           "cameraFromShell": true,
           "monoDisplayColor": [
@@ -2173,10 +2173,10 @@
         },
         {
           "textureArea": [
-            0.0,
-            0.0,
             0.5,
-            0.5
+            0.5,
+            1.0,
+            1.0
           ],
           "page": {
             "type": "rwr",
@@ -3413,9 +3413,9 @@
   },
   "AfterBurner0": {
     "volumetricAfterBurner": {
-      "name": "jet_blue_f_5",
-      "maxHeight": 8.0,
-      "minHeight": 6.5,
+      "name": "_jet_f_5a_j85",
+      "maxHeight": 7.0,
+      "minHeight": 5.0,
       "heightNoiseStrength": 0.02,
       "heightNoiseSpeed": 30.0,
       "maxRadius": 0.18,
@@ -3435,17 +3435,19 @@
       "minOuterCylinderRadius": 0.22,
       "maxOuterCylinderRadius": 0.22,
       "absorption": 1.0,
-      "colorIntensityMax": 10.0,
+      "colorIntensityMax": 6.0,
       "colorIntensityMin": 1.0,
       "colorOverHeightMult": 0.7,
-      "colorOverDepthMult": 4.0,
-      "colorOverRadiusMult": 3.5,
+      "colorOverDepthMult": 2.0,
+      "colorOverRadiusMult": 3.0,
       "colorOverRadiusFadeOverHeight": 2.0,
       "maxRingOffset": 0.0,
       "minRingOffset": 0.0,
       "ringAbsorption": 1.2,
       "maxRingCount": 17,
-      "minRingCount": 17,
+      "minRingCount": 15,
+      "minStartingRingHeight": 0.5,
+      "maxStartingRingHeight": 0.4,
       "ringIntensityMin": 0.0,
       "ringIntensityMax": 1.0,
       "ringIntensityNoiseStrength": 0.0,
@@ -3457,7 +3459,7 @@
       "radiusNoiseSpeed": 30.0,
       "shakeNoiseStrength": 0.02,
       "shakeNoiseSpeed": 40.0,
-      "ringAngleFadeMult": 0.5,
+      "ringAngleFadeMult": 0.7,
       "colorOverHeightNoiseStrength": 0.1,
       "colorOverHeightNoiseSpeed": 10.0,
       "colorOverRadiusNoiseStrength": 0.25,
@@ -3466,33 +3468,77 @@
       "colorOverDepthNoiseSpeed": 1.0,
       "colorIntensityNoiseStrength": 2.0,
       "colorIntensityNoiseSpeed": 20.0,
-      "minStartingRingHeight": 0.7,
-      "maxStartingRingHeight": 0.8,
-      "ringIntensity": 2.0,
-      "ringFrequency": 11.3097,
+      "minAoABendingMult": 0.0,
+      "maxAoABendingMult": 1.4,
+      "minAoSBendingMult": 0.0,
+      "maxAoSBendingMult": 1.4,
       "preNominalEasingParams": {
         "animationTime": 2.5,
-        "ascendingSmoothIntensityParams": 0.8
+        "ascendingSmoothIntensityParams": 0.8,
+        "flickerRelativTime": 0.33,
+        "flickerSpeed": 1.0,
+        "flickerIntensity": 1.0
       },
       "postNominalEasingParams": {
         "animationTime": 1.5,
-        "ascendingSmoothIntensityParams": 1.0
+        "ascendingSmoothIntensityParams": 1.0,
+        "flickerRelativTime": 0.0,
+        "flickerSpeed": 0.0,
+        "flickerIntensity": 0.0
       },
       "lightProperties": {
         "color": [
           1.0,
-          0.641762,
+          0.495386,
           0.387255
         ],
         "angle": 1.0,
-        "brightness": 25.0,
+        "brightness": 6.0,
         "radius": 20.0,
         "attenuation": 0.75,
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
-        "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.1,
+        "ignitionTextureIntensityMin": 0.005,
+        "ignitionTextureIntensityMax": 0.005,
+        "ignitionBrightnessNoiseStrength": 0.005,
         "ignitionBrightnessNoiseSpeed": 16.0
+      },
+      "NozzleFlames": {
+        "amountOfFlames": 6,
+        "radiusMult": 1.2,
+        "startOffset": -0.3,
+        "endOffsetAddition": 0.8,
+        "intensityMult": 4.0,
+        "innerCircleNoiseScale": 0.4,
+        "innerCircleNoiseStrength": 0.4,
+        "maskNoiseScale": 0.0,
+        "maskNoiseStrength": 0.0,
+        "minInnerCircleParamMult": 1.5,
+        "maxInnerCircleParamMult": 1.0,
+        "lengthNoiseSpeed": 10.0,
+        "lengthNoiseStrength": 0.2,
+        "uvNoiseMaskScale": 0.5,
+        "uvNoiseMaskStrength": 0.02,
+        "FlameMaskTextureOffset": {
+          "maskTextureOffset": [
+            8,
+            56,
+            27,
+            28,
+            29,
+            29
+          ]
+        },
+        "FlameRampTextureOffset": {
+          "rampTextureOffset": [
+            23,
+            23,
+            30,
+            30,
+            30,
+            30
+          ]
+        }
       }
     }
   },

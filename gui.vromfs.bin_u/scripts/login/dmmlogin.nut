@@ -12,6 +12,7 @@ let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { addLoginState } = require("%scripts/login/loginManager.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
+let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
 gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -67,7 +68,7 @@ gui_handlers.LoginWndHandlerDMM <- class (BaseGuiHandler) {
       ], "tryAgain", { cancel_fn = Callback(this.doLogin, this) })
     }
     else {
-      ::error_message_box("yn1/connect_error", result,
+      showErrorMessageBox("yn1/connect_error", result,
       [
         ["exit", exitGame],
         ["tryAgain", Callback(this.doLogin, this)]

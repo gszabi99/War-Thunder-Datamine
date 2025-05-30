@@ -49,14 +49,14 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
       let annName = "{ann.annotation.name}"
       if annName == "_bundle_args"
         for arg in ann.arguments
-          if arg.basicType == Type tString
+          if arg.basicType == Type.tString
             bundleFieldNames <- "{arg.sValue}" |> split(",")
-          elif arg.basicType == Type tInt
+          elif arg.basicType == Type.tInt
             bundleArgIdx = arg.iValue
   if bundleArgIdx >= 0 || get_only
-    return <- [[BundleMacroResult idx=bundleArgIdx, fields <- bundleFieldNames]]
+    return <- BundleMacroResult(idx = bundleArgIdx, fields <- bundleFieldNames)
 
-  var inscope stubLet <- new [[ExprLet() at = func.at, atInit = func.at]]
+  var inscope stubLet <- new ExprLet(at = func.at, atInit = func.at)
 
   let inCompletion = is_in_completion()
   let isValidationRequired = get_DAGOR_DBGLEVEL() > 0 || is_in_aot() || inCompletion
@@ -74,7 +74,7 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
       i++
       continue
 
-    if arg._type.baseType != Type tTuple
+    if arg._type.baseType != Type.tTuple
       macro_error(compiling_program(), arg.at, "bundle argument '{bundleArgName}' must be a tuple")
       break
 
@@ -93,25 +93,25 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
       if true
         var inscope varType <- clone_type(argType)
         if (arg._type.flags.constant || argType.flags.constant) && !argType.flags.removeConstant
-          varType.flags |= TypeDeclFlags constant
+          varType.flags |= TypeDeclFlags.constant
         else
-          varType.flags |= TypeDeclFlags removeConstant
-          varType.flags |= TypeDeclFlags ref
-        var inscope variable : VariablePtr <- new [[Variable()
+          varType.flags |= TypeDeclFlags.removeConstant
+          varType.flags |= TypeDeclFlags.ref
+        var inscope variable : VariablePtr <- new Variable(
           _type <- varType,
-          at=argType.at,
+          at = argType.at,
           name := fieldName
-        ]]
+        )
         arguments |> emplace(variable, ++emplaceIdx)
 
     if inCompletion
       var inscope stubVar <- clone_variable(arg)
-      var inscope stubVarType <- new [[TypeDecl() baseType=Type tPointer, at=arg.at]]
+      var inscope stubVarType <- new TypeDecl(baseType = Type.tPointer, at = arg.at)
       move_new(stubVarType.firstType) <| clone_type(stubVar._type)
-      stubVarType.firstType.flags &= ~(TypeDeclFlags constant)
-      stubVarType.flags |= TypeDeclFlags removeConstant
+      stubVarType.firstType.flags &= ~(TypeDeclFlags.constant)
+      stubVarType.flags |= TypeDeclFlags.removeConstant
       stubVar._type := stubVarType
-      stubVar.flags |= VariableFlags generated
+      stubVar.flags |= VariableFlags.generated
       stubLet.variables |> emplace(stubVar)
     arguments |> erase(i)
 
@@ -120,8 +120,8 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
 
   if !is_es
     var annArgs : array<tuple<argname : string; argvalue : RttiValue>>
-    annArgs |> emplace <| [[auto bundleArgName, [[RttiValue tString=join(bundleFieldNames, ",")]] ]]
-    annArgs |> emplace <| [[auto bundleArgName, [[RttiValue tInt=bundleArgIdx]] ]]
+    annArgs |> emplace <| (bundleArgName, RttiValue(tString = join(bundleFieldNames, ",")))
+    annArgs |> emplace <| (bundleArgName, RttiValue(tInt = bundleArgIdx))
     append_annotation(func, "component_bundle_macro", "_bundle_args", annArgs)
 
   var astVisitor = new ResolveBundlesVisitor()
@@ -140,7 +140,7 @@ def get_or_expand_bundle_args(var func; var arguments; var body : ExpressionPtr;
 
   unsafe
     delete astVisitor
-  return <- [[BundleMacroResult idx=bundleArgIdx, fields <- bundleFieldNames]]
+  return <- BundleMacroResult(idx = bundleArgIdx, fields <- bundleFieldNames)
 
 
 [macro_function]
@@ -170,7 +170,7 @@ def find_unique_function_in_all_modules(name : string)
         res := func
         count ++
   if count > 1
-    return <- [[FunctionPtr]]
+    return <- default<FunctionPtr>
   return <- res
 
 
@@ -218,11 +218,11 @@ class ResolveBundlesVisitor : AstVisitor
     var emplaceIdx = res.idx
     for fieldName in res.fields
       if true
-        var inscope expandedArg : ExpressionPtr <- new [[ExprVar()
-          at=bundleArg.at,
+        var inscope expandedArg : ExpressionPtr <- new ExprVar(
+          at = bundleArg.at,
           name := fieldName,
-          genFlags=ExprGenFlags generated
-        ]]
+          genFlags = ExprGenFlags.generated
+        )
         expr.arguments |> emplace(expandedArg, ++emplaceIdx)
     expr.arguments |> erase(res.idx)
     return <- expr
@@ -232,10 +232,10 @@ class ResolveBundlesVisitor : AstVisitor
       let bundleName = string((expr.value as ExprVar).name)
       if bundleName == bundleArgName
         if find_index(bundleFieldNames, "{expr.name}") != -1
-          return <- new [[ExprVar()
-            at=expr.atField,
+          return <- new ExprVar(
+            at = expr.atField,
             name := expr.name
-          ]]
+          )
         else
           macro_error(compiling_program(), expr.at, "field {expr.name} is not present in bundle {bundleName}")
     return <- expr

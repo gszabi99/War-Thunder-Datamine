@@ -6,7 +6,7 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let localDevoice = require("%scripts/penitentiary/localDevoice.nut")
@@ -35,7 +35,8 @@ let { is_console } = require("%sqstd/platform.nut")
 let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalWorldWarScripts.nut")
 let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
 let { get_mp_session_id_str } = require("multiplayer")
-let { g_chat } = require("%scripts/chat/chat.nut")
+let { isSquadRoomJoined, generateInviteMenu, getRoomById,
+  openChatRoom, isRoomSquad, isImRoomOwner } = require("%scripts/chat/chatRooms.nut")
 let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
 let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
@@ -50,6 +51,7 @@ let { gui_modal_ban, gui_modal_complain } = require("%scripts/penitentiary/banha
 let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { getThreadInfo } = require("%scripts/chat/chatStorage.nut")
 
 
 
@@ -89,7 +91,7 @@ function isLobbyRoom(roomId) {
 }
 
 let notifyPlayerAboutRestriction = function(contact) {
-  if (is_platform_xbox) {
+  if (is_gdk) {
     attemptShowOverlayMessage()
     return
   }
@@ -124,7 +126,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
   let hasChatEnable = isChatEnabled()
 
   let roomId = params?.roomId
-  let roomData = roomId ? g_chat.getRoomById(roomId) : null
+  let roomData = roomId ? getRoomById(roomId) : null
 
   let isMPChat = params?.isMPChat ?? false
   let isMPLobby = params?.isMPLobby ?? false
@@ -132,7 +134,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
 
   local chatLog = params?.chatLog ?? roomData?.getLogForBanhammer()
   let isInPsnBlockList = platformModule.isPlatformSony && contact.isInBlockGroup()
-  let canInviteToSesson = (isXBoxOnePlayer == is_platform_xbox) && !isInPsnBlockList
+  let canInviteToSesson = (isXBoxOnePlayer == is_gdk) && !isInPsnBlockList
 
   local canComplain = !isMe && (params?.canComplain ?? false)
 
@@ -160,7 +162,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
     }
   })
 
-  if (contact.inGameEx && contact.online && isInMenu()) {
+  if (contact.inGameEx && contact.online && isInMenu.get()) {
     let eventId = contact.gameConfig?.eventId
     let event = events.getEvent(eventId)
     if (event && isEnableFriendsJoin(event)) {
@@ -227,7 +229,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
     }
     {
       text = loc("mainmenu/go_to_wishlist")
-      show = !isMe && isFriend && hasFeature("Wishlist") && !is_console && isInMenu()
+      show = !isMe && isFriend && hasFeature("Wishlist") && !is_console && isInMenu.get()
       action = @() tryOpenFriendWishlist(contact.uid)
     }
   )
@@ -244,8 +246,8 @@ let retrieveActions = function(contact, params, comms_state, callback) {
     actions.append(
       {
         text = loc("squadAction/openChat")
-        show = !isMe && g_chat.isSquadRoomJoined() && inMySquad && hasChatEnable
-        action = @() g_chat.openChatRoom(g_chat_room_type.getMySquadRoomId())
+        show = !isMe && isSquadRoomJoined() && inMySquad && hasChatEnable
+        action = @() openChatRoom(g_chat_room_type.getMySquadRoomId())
       }
       {
         text = crossplayModule.getTextWithCrossplayIcon(showCrossPlayIcon, hasApplicationInMySquad
@@ -362,7 +364,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
 
 
   if (hasFeature("Friends")) {
-    let canBlock = !platformModule.isPlatformXboxOne || !isXBoxOnePlayer
+    let canBlock = !platformModule.isPlatformXbox || !isXBoxOnePlayer
 
     actions.append(
       {
@@ -435,7 +437,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
 
   if (hasMenuChat.value) {
     if (hasChatEnable && canInviteToChatRoom) {
-      let inviteMenu = g_chat.generateInviteMenu(name)
+      let inviteMenu = generateInviteMenu(name)
       actions.append({
         text = loc("chat/invite_to_room")
         isVisualDisabled = !canChat || !canInteractCrossConsole || !canInteractCrossPlatform || isProfileMuted || isBlock
@@ -461,7 +463,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
       actions.append(
         {
           text = loc("chat/kick_from_room")
-          show = !g_chat.isRoomSquad(roomId) && !isLobbyRoom(roomId) && g_chat.isImRoomOwner(roomData)
+          show = !isRoomSquad(roomId) && !isLobbyRoom(roomId) && isImRoomOwner(roomData)
           action = @() broadcastEvent("ChatKickPlayerFromRoom", { playerName = name })
         }
         {
@@ -481,7 +483,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
         }
       }
       else {
-        let threadInfo = g_chat.getThreadInfo(roomId)
+        let threadInfo = getThreadInfo(roomId)
         if (threadInfo && threadInfo.ownerNick == name)
           canComplain = true
       }
@@ -504,7 +506,7 @@ let retrieveActions = function(contact, params, comms_state, callback) {
         }
 
         if (!isMPChat) {
-          let threadInfo = g_chat.getThreadInfo(roomId)
+          let threadInfo = getThreadInfo(roomId)
           if (threadInfo) {
             chatLog = chatLog != null ? chatLog : {}
             chatLog.category   <- threadInfo.category

@@ -189,31 +189,34 @@ imgSelectable.mediumSize > img {
   background-svg-size:1.2@profileMedalSize, 1.2@profileMedalSize;
 }
 imgSelectable.smallMedals {
-  size:1.5@profileMedalSizeList, 1.5@profileMedalSizeList;
+  size:180@sf/@pf, 180@sf/@pf;
   re-type:9rect;
   foreground-image:#ui/gameuiskin#item_selection;
   foreground-position:8;
   foreground-repeat:expand;
   foreground-color:#55555555;
-  margin-right:19@sf/@pf;
-  margin-bottom:20@sf/@pf;
+  margin-right:8@sf/@pf;
+  margin-bottom:8@sf/@pf;
+  interactive:yes;
 }
 
 imgSelectable.smallMedals > img {
-  size:@profileMedalSizeList, @profileMedalSizeList;
-  background-svg-size:@profileMedalSizeList, @profileMedalSizeList;
+  size:0.75*pw, 0.75*pw;
+  background-svg-size:0.75*pw, 0.75*pw;
 }
+
 imgSelectable.collectionPrize {
-  size:1@collectionPrizeWidth, 1@collectionPrizeWidth;
+  size:pw, pw;
   re-type:9rect;
   foreground-image:#ui/gameuiskin#item_selection;
   foreground-position:8;
   foreground-repeat:expand;
   foreground-color:#55555555;
+  interactive:yes;
 }
 imgSelectable.collectionPrize > img {
-  size:0.7@collectionPrizeWidth, 0.7@collectionPrizeWidth;
-  background-svg-size:0.7@collectionPrizeWidth, 0.7@collectionPrizeWidth;
+  size:0.7@p.p.w, 0.7@p.p.w;
+  background-svg-size:0.7@p.p.w, 0.7@p.p.w;
 }
 
 imgSelectable:hover {

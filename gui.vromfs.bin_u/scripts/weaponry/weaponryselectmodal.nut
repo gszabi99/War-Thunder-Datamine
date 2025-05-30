@@ -2,9 +2,9 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj
+} = require("%sqDagui/daguiUtil.nut")
 let { ceil, sqrt } = require("math")
-let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { updateModItem, createModItemLayout } = require("%scripts/weaponry/weaponryVisual.nut")
 let { getLastWeapon, setLastWeapon, isWeaponVisible, isWeaponEnabled, isDefaultTorpedoes,
   needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")

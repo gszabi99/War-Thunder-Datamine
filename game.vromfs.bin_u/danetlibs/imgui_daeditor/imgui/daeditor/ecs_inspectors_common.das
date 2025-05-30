@@ -92,6 +92,8 @@ struct ComponentRenderInfo
   dasTypeName : string
   idx : uint
   componentId : uint16
+  
+  isValidComponent : bool
 
 typedef
   InspectorFn = function<(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void>

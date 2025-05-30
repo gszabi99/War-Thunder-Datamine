@@ -1,10 +1,10 @@
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { setPopupMenuPosAndAlign, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 let { USEROPT_RANDB_CLUSTERS } = require("%scripts/options/optionsExtNames.nut")
 let { getClusterFullName } = require("%scripts/onlineInfo/clustersManagement.nut")

@@ -87,6 +87,7 @@
       "scoreLimit": 5300,
       "timeLimit": 25,
       "deathPenaltyMul": 0.4,
+      "allowEmptyTeams": false,
       "country_axis": "germany",
       "country_allies": "usa",
       "restoreType": "attempts",
@@ -322,6 +323,46 @@
       },
       {
         "file": "gameData/missions/templates/air_templates/aat_aaa_template.blk",
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/cta/planes/historical/BfD/air_israel/carriers/template_carriers_low_rank.blk",
+        "rankRange": [
+          1,
+          19
+        ],
+        "importAreas": true,
+        "importUnits": true,
+        "importTriggers": true,
+        "importMissionObjectives": true,
+        "importWayPoints": true,
+        "importDialogs": true,
+        "showAreas": true,
+        "showUnits": true,
+        "showTriggers": true,
+        "showMissionObjectives": true,
+        "showWayPoints": true,
+        "showDialogs": true,
+        "excludes": {}
+      },
+      {
+        "file": "gamedata/missions/cta/planes/historical/BfD/air_israel/carriers/template_carriers_high_rank.blk",
+        "rankRange": [
+          20,
+          1082435209
+        ],
         "importAreas": true,
         "importUnits": true,
         "importTriggers": true,
@@ -771,7 +812,9 @@
           "squad_members": [
             "t1_land_squad",
             "t1_tanks_squad",
-            "t1_bunkers_squad"
+            "t1_bunkers_squad",
+            "t1_carriers_squad",
+            "t1_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }
@@ -804,7 +847,9 @@
           "squad_members": [
             "t2_bunkers_squad",
             "t2_tanks_squad",
-            "t2_land_squad"
+            "t2_land_squad",
+            "t2_carriers_squad",
+            "t2_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }
@@ -900,11 +945,11 @@
           -7427.12
         ]
       ],
-      "unit_class": "b-17e_late",
+      "unit_class": "a5m4",
       "closed_waypoints": false,
       "isShipSpline": false,
       "shipTurnRadius": 100.0,
-      "weapons": "b-17e_8x1000lbs",
+      "weapons": "",
       "bullets0": "",
       "bullets1": "",
       "bullets2": "",

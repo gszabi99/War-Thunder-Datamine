@@ -46,8 +46,7 @@ function requestItemsByItemdefIds(itemdefIdsList) {
   inventoryClient.requestItemdefsByIds(itemdefIdsList)
 }
 
-
-function findItemById(id, _typeMask = itemType.ALL) {
+function findItemById(id) {
   checkUpdateList()
   let item = shopItemById?[id] ?? itemsByItemdefId?[id]
   if (!item && isItemdefId(id))

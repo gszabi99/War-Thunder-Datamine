@@ -2040,16 +2040,27 @@
       0.125
     ],
     "lightPos": [
-      5.572499,
-      0.493945,
-      -0.237387
+      5.656,
+      0.286,
+      0.264
     ],
     "lightColor": [
-      0.62,
-      0.3,
-      0.21
+      0.4,
+      0.15,
+      0.01
     ],
-    "lightAttenuation": 1.0,
+    "lightRadius": 0.45,
+    "lightPos1": [
+      5.74,
+      0.316,
+      -0.217
+    ],
+    "lightColor1": [
+      0.4,
+      0.15,
+      0.01
+    ],
+    "lightRadius1": 0.35,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2198,46 +2209,246 @@
     "Engine": "engine05_06_avon_twin_N1_N2",
     "gun": "gun_default"
   },
-  "commonWeapons": {
-    "hideNodes": {
+  "commonWeapons": {},
+  "weapon_presets": {
+    "preset": [
+      {
+        "name": "canberra_bmk2_500lbs",
+        "blk": "gameData/FlightModels/weaponPresets/canberra_bmk2_500lbs.blk"
+      },
+      {
+        "name": "canberra_bmk2_1000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/canberra_bmk2_1000lbs.blk"
+      },
+      {
+        "name": "canberra_bmk2_4000lbs",
+        "blk": "gameData/FlightModels/weaponPresets/canberra_bmk2_4000lbs.blk"
+      }
+    ]
+  },
+  "WeaponSlots": {
+    "maxloadMass": 3700.0,
+    "maxloadMassLeftConsoles": 1800.0,
+    "maxloadMassRightConsoles": 1800.0,
+    "maxDisbalance": 900.0,
+    "HideNodes": {
       "node": [
         "fuel_l",
         "fuel_r"
       ]
     },
-    "hideDmParts": {
+    "HideDmParts": {
       "node": [
         "tank4_dm",
         "tank5_dm"
       ]
-    }
-  },
-  "weapon_presets": {
-    "preset": [
+    },
+    "WeaponSlot": [
       {
-        "name": "b-57_9x500lbs",
-        "blk": "gameData/FlightModels/weaponPresets/canberra_9x500lbs.blk",
-        "tags": {
-          "free": true
-        }
-      },
-      {
-        "name": "canberra_6x1000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/canberra_6x1000lbs.blk",
-        "reqModification": "EEMBC_mark_1"
-      },
-      {
-        "name": "canberra_1x4000lbs_2x1000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/canberra_1x4000lbs_2x1000lbs.blk",
-        "reqModification": [
-          "EEMBC_mark_1",
-          "EELBC_mark_4"
+        "index": 1,
+        "tier": 5,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_x3_slot1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_002",
+                "bullets": 1,
+                "order": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_008",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_006",
+                "bullets": 1,
+                "order": 7
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group",
+            "name": "1000lb_x3_slot1",
+            "reqModification": "EEMBC_mark_1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "bomb1",
+                "bullets": 1,
+                "order": 1
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "bomb5",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "bomb3",
+                "bullets": 1,
+                "order": 5
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_heavy_middle",
+            "name": "4000lb_x1_slot1",
+            "reqModification": "EELBC_mark_4",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_4000lb_hc_mk4_bomb.blk",
+              "emitter": "4000lb_bomb_002",
+              "bullets": 1,
+              "order": 1
+            }
+          }
         ]
       },
       {
-        "name": "canberra_2x4000lbs",
-        "blk": "gameData/FlightModels/weaponPresets/canberra_2x4000lbs.blk",
-        "reqModification": "EELBC_mark_4"
+        "index": 2,
+        "tier": 7,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "bombs_middle_group",
+            "name": "500lb_x3_slot2",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_003",
+                "bullets": 1,
+                "order": 2
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_009",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_007",
+                "bullets": 1,
+                "order": 5
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_group_x6",
+            "name": "500lb_x6_slot2",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_001",
+                "bullets": 1,
+                "order": 2
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_003",
+                "bullets": 1,
+                "order": 3
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_005",
+                "bullets": 1,
+                "order": 5
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_007",
+                "bullets": 1,
+                "order": 6
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_004",
+                "bullets": 1,
+                "order": 7
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_500lb_he_mc_mk2.blk",
+                "emitter": "uk_500lb_he_mc_mk2_009",
+                "bullets": 1,
+                "order": 8
+              }
+            ],
+            "BannedWeaponPreset": [
+              {
+                "slot": 1,
+                "preset": "1000lb_x3_slot1"
+              },
+              {
+                "slot": 1,
+                "preset": "4000lb_x1_slot1"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large_group",
+            "name": "1000lb_x3_slot2",
+            "reqModification": "EEMBC_mark_1",
+            "Weapon": [
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "bomb2",
+                "bullets": 1,
+                "order": 2
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "bomb6",
+                "bullets": 1,
+                "order": 4
+              },
+              {
+                "trigger": "bombs",
+                "blk": "gameData/Weapons/BombGuns/uk_1000lbs_gp.blk",
+                "emitter": "bomb4",
+                "bullets": 1,
+                "order": 6
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_heavy_middle",
+            "name": "4000lb_x1_slot2",
+            "reqModification": "EELBC_mark_4",
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/uk_4000lb_hc_mk4_bomb.blk",
+              "emitter": "4000lb_bomb_001",
+              "bullets": 1,
+              "order": 2
+            }
+          }
+        ]
       }
     ]
   },

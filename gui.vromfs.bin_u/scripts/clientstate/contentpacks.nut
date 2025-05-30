@@ -9,7 +9,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { format } = require("string")
 let contentStateModule = require("%scripts/clientState/contentState.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
@@ -18,10 +18,12 @@ let { is_fully_translated } = require("acesInfo")
 let DataBlock = require("DataBlock")
 let { stripTags } = require("%sqstd/string.nut")
 let { get_game_settings_blk } = require("blkGetters")
-let { langsById } = require("%scripts/langUtils/language.nut")
+let { langsById, needCheckLangPack } = require("%scripts/langUtils/language.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
 let { getContentPackStatus, requestContentPack, ContentPackStatus } = require("contentpacks")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let g_listener_priority = require("%scripts/g_listener_priority.nut")
 
 function getPkgLocName(pack, isShort = false) {
   return loc(isShort ? $"package/{pack}/short" : $"package/{pack}")
@@ -41,31 +43,115 @@ function check_members_pkg(pack) {
   showInfoMsgBox(msg, "members_req_new_content")
 }
 
-function have_package(packName) {
+function havePackage(packName) {
   if (!contentStateModule.isConsoleClientFullyDownloaded())
     return false
   return getContentPackStatus(packName) == ContentPackStatus.OK
 }
 
+let asked_packages = {}
+function is_asked_pack(pack, askTag = null) {
+  let checkName = askTag!=null ? $"{pack}/{askTag}" : pack
+  return checkName in asked_packages
+}
+
+function request_packages(packList) {
+  foreach (pack in packList)
+    requestContentPack(pack)
+}
+
+function request_packages_and_restart(packList) {
+  request_packages(packList)
+  if (platformId == "linux64")
+    return ::quit_and_run_cmd("./launcher -silentupdate")
+  else if (platformId == "macosx")
+    return ::quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
+  if (is_platform_windows) {
+    let exec = "launcher.exe -silentupdate";
+
+    return ::quit_and_run_cmd(exec)
+  }
+
+  log("ERROR: new_content action not implemented");
+}
+
+function set_asked_pack(pack, askTag = null) {
+  asked_packages[pack] <- true
+  if (askTag)
+    asked_packages[$"{pack}/{askTag}" ] <- true
+}
+
+function checkPackageAndAskDownload(pack, msg = null, continueFunc = null, owner = null, askTag = null, cancelFunc = null) {
+  if (havePackage(pack)
+      || (continueFunc && is_asked_pack(pack, askTag))) {
+    if (continueFunc)
+      call_for_handler(owner, continueFunc)
+    return true
+  }
+
+  local _msg = msg
+  let isFullClient = contentStateModule.getConsoleClientDownloadStatusOnStart()
+  if (isPlatformSony || isPlatformXbox) {
+    if (!isFullClient)
+      _msg = contentStateModule.getClientDownloadProgressText()
+  }
+  else {
+    if (u.isEmpty(_msg)) {
+      let ending = continueFunc ? "/continue" : ""
+      _msg = loc($"msgbox/no_package{ending}")
+    }
+    _msg = format(_msg, colorize("activeTextColor", getPkgLocName(pack)))
+  }
+
+  local defButton = "cancel"
+  let buttons = [[defButton,  function() {
+                     if (cancelFunc)
+                       call_for_handler(owner, cancelFunc)
+                   }]
+                  ]
+
+  if (isPlatformSony) {
+    if (!isFullClient && contentStateModule.isConsoleClientFullyDownloaded()) {
+      buttons.insert(0, ["apply", function() { ps4_update_gui() }])
+      defButton = "apply"
+    }
+  }
+  else if (!is_gdk) {
+    buttons.insert(0, ["download",  function() {
+                       request_packages_and_restart([pack])
+                     }])
+  }
+
+  if (continueFunc) {
+    defButton = "continue"
+    buttons.append(["continue",  function() {
+                     call_for_handler(owner, continueFunc)
+                   }])
+  }
+  scene_msg_box("req_new_content", null, _msg, buttons, defButton)
+  set_asked_pack(pack, askTag)
+  return false
+}
+
 function checkPackageFull(pack, silent = false) {
   local res = true
   if (silent)
-    res = have_package(pack)
+    res = havePackage(pack)
   else
-    res = ::check_package_and_ask_download(pack)
+    res = checkPackageAndAskDownload(pack)
 
   res = res && (silent || check_members_pkg(pack))
   return res
 }
 
-function check_gamemode_pkg(gm, silent = false) {
+function checkGamemodePkg(gm, silent = false) {
   if (isInArray(gm, [GM_SINGLE_MISSION, GM_SKIRMISH, GM_DYNAMIC, GM_USER_MISSION]))
     return checkPackageFull("pkg_main", silent)
 
   return true
 }
 
-function check_diff_pkg(diff, silent = false) {
+function checkDiffPkg(diff, silent = false) {
   foreach (d in [DIFFICULTY_HARDCORE, DIFFICULTY_CUSTOM])
     if (diff == d || get_difficulty_name(d) == diff)
       return checkPackageFull("pkg_main", silent)
@@ -91,29 +177,8 @@ function checkReqContent(ename, blk) {
   return null
 }
 
-function request_packages(packList) {
-  foreach (pack in packList)
-    requestContentPack(pack)
-}
-
-function request_packages_and_restart(packList) {
-  request_packages(packList)
-  if (platformId == "linux64")
-    return ::quit_and_run_cmd("./launcher -silentupdate")
-  else if (platformId == "macosx")
-    return ::quit_and_run_cmd("../../../../MacOS/launcher -silentupdate")
-  if (is_platform_windows) {
-    let exec = "launcher.exe -silentupdate";
-
-    return ::quit_and_run_cmd(exec)
-  }
-
-  log("ERROR: new_content action not implemented");
-}
-
-
-::updateContentPacks <- function updateContentPacks() {
-  if (isPlatformSony || isPlatformXboxOne)
+function updateContentPacks() {
+  if (isPlatformSony || isPlatformXbox)
     return 
 
   if (!isLoggedIn.get())
@@ -123,7 +188,7 @@ function request_packages_and_restart(packList) {
 
   let reqPacksList = []
   for (local i = reqPacksList.len() - 1; i >= 0; i--)
-    if (have_package(reqPacksList[i]))
+    if (havePackage(reqPacksList[i]))
       reqPacksList.remove(i)
 
   eachBlock(getShopPriceBlk(),
@@ -138,7 +203,7 @@ function request_packages_and_restart(packList) {
   local text = ""
   let langId = getLocalLanguage()
   let langPack = $"pkg_{langId}"
-  if (!have_package(langPack) && is_fully_translated(langId)) {
+  if (!havePackage(langPack) && is_fully_translated(langId)) {
     if (!reqPacksList.len())
       text = loc("yn1/have_new_content_lang")
     u.appendOnce(langPack, reqPacksList)
@@ -179,96 +244,9 @@ function request_packages_and_restart(packList) {
     "ok")
 }
 
-
-let asked_packages = {}
-function is_asked_pack(pack, askTag = null) {
-  let checkName = askTag!=null ? $"{pack}/{askTag}" : pack
-  return checkName in asked_packages
-}
-
-function set_asked_pack(pack, askTag = null) {
-  asked_packages[pack] <- true
-  if (askTag)
-    asked_packages[$"{pack}/{askTag}" ] <- true
-}
-
-::check_package_and_ask_download <- function check_package_and_ask_download(pack, msg = null, continueFunc = null, owner = null, askTag = null, cancelFunc = null) {
-  if (have_package(pack)
-      || (continueFunc && is_asked_pack(pack, askTag))) {
-    if (continueFunc)
-      call_for_handler(owner, continueFunc)
-    return true
-  }
-
-  local _msg = msg
-  let isFullClient = contentStateModule.getConsoleClientDownloadStatusOnStart()
-  if (isPlatformSony || isPlatformXboxOne) {
-    if (!isFullClient)
-      _msg = contentStateModule.getClientDownloadProgressText()
-  }
-  else {
-    if (u.isEmpty(_msg)) {
-      let ending = continueFunc ? "/continue" : ""
-      _msg = loc($"msgbox/no_package{ending}")
-    }
-    _msg = format(_msg, colorize("activeTextColor", getPkgLocName(pack)))
-  }
-
-  local defButton = "cancel"
-  let buttons = [[defButton,  function() {
-                     if (cancelFunc)
-                       call_for_handler(owner, cancelFunc)
-                   }]
-                  ]
-
-  if (isPlatformSony) {
-    if (!isFullClient && contentStateModule.isConsoleClientFullyDownloaded()) {
-      buttons.insert(0, ["apply", function() { ps4_update_gui() }])
-      defButton = "apply"
-    }
-  }
-  else if (!is_platform_xbox) {
-    buttons.insert(0, ["download",  function() {
-                       request_packages_and_restart([pack])
-                     }])
-  }
-
-  if (continueFunc) {
-    defButton = "continue"
-    buttons.append(["continue",  function() {
-                     call_for_handler(owner, continueFunc)
-                   }])
-  }
-  scene_msg_box("req_new_content", null, _msg, buttons, defButton)
-  set_asked_pack(pack, askTag)
-  return false
-}
-
 function checkPackageAndAskDownloadOnce(pack, askTag = null, msg = null) {
   if (!is_asked_pack(pack, askTag))
-    ::check_package_and_ask_download(pack, msg, null, null, askTag)
-}
-
-::check_localization_package_and_ask_download <- function check_localization_package_and_ask_download(langId = null) {
-  langId = langId ?? getLocalLanguage()
-  let pack = $"pkg_{langId}"
-  if (have_package(pack) || !is_fully_translated(langId))
-    return
-
-  local params = null
-  if (langId != "English") {
-    let messageEn = stripTags(loc("yn1/have_new_content_lang/en"))
-    let buttonsEn = stripTags(format("[%s] = %s, [%s] = %s",
-      loc("msgbox/btn_download"), loc("msgbox/btn_download/en"),
-      loc("msgbox/btn_cancel"), loc("msgbox/btn_cancel/en")))
-    params = {
-      data_below_text = "".concat("tdiv { flow:t='vertical' textarea {left:t='pw/2-w/2' position:t='relative' text:t='",
-        messageEn, "'} textarea {left:t='pw/2-w/2' position:t='relative' text:t='", buttonsEn, "'} }")
-    }
-  }
-
-  scene_msg_box("req_pkg_locatization", null, loc("yn1/have_new_content_lang"),
-    [["download", function() { request_packages_and_restart([pack]) }], ["cancel"]], "cancel", params)
+    checkPackageAndAskDownload(pack, msg, null, null, askTag)
 }
 
 function checkSpeechCountryUnitLocalizationPackageAndAskDownload() {
@@ -279,7 +257,7 @@ function checkSpeechCountryUnitLocalizationPackageAndAskDownload() {
       continue
 
     let langPack = $"pkg_{langId}"
-    if (!have_package(langPack))
+    if (!havePackage(langPack))
       reqPacksList.append(langPack)
   }
 
@@ -304,7 +282,7 @@ function checkSpeechCountryUnitLocalizationPackageAndAskDownload() {
 function restart_to_launcher() {
   if (isPlatformSony)
     return startLogout()
-  else if (is_platform_xbox)
+  else if (is_gdk)
     return exitGame()
   else if (platformId == "linux64")
     return ::quit_and_run_cmd("./launcher -silentupdate")
@@ -320,7 +298,7 @@ function restart_to_launcher() {
 }
 
 
-::error_load_model_and_restart <- function error_load_model_and_restart(model) {
+::error_load_model_and_restart <- function error_load_model_and_restart(model) { 
   local _msg = loc("msgbox/no_package/info")
   _msg = format(_msg, colorize("activeTextColor", model))
 
@@ -340,19 +318,50 @@ function restart_to_launcher() {
   )
 
 }
-addPromoAction("content_pack", @(_handler, params, _obj) ::check_package_and_ask_download(params?[0] ?? ""),
-  @(params) hasFeature("Packages") && !have_package(params?[0] ?? ""))
 
-::have_package <- have_package
-::check_gamemode_pkg <- check_gamemode_pkg
-::check_diff_pkg <- check_diff_pkg
+function checkLocalizationPackageAndAskDownload(langId = null) {
+  langId = langId ?? getLocalLanguage()
+  let pack = $"pkg_{langId}"
+  if (havePackage(pack) || !is_fully_translated(langId))
+    return
+
+  local params = null
+  if (langId != "English") {
+    let messageEn = stripTags(loc("yn1/have_new_content_lang/en"))
+    let buttonsEn = stripTags(format("[%s] = %s, [%s] = %s",
+      loc("msgbox/btn_download"), loc("msgbox/btn_download/en"),
+      loc("msgbox/btn_cancel"), loc("msgbox/btn_cancel/en")))
+    params = {
+      data_below_text = "".concat("tdiv { flow:t='vertical' textarea {left:t='pw/2-w/2' position:t='relative' text:t='",
+        messageEn, "'} textarea {left:t='pw/2-w/2' position:t='relative' text:t='", buttonsEn, "'} }")
+    }
+  }
+
+  scene_msg_box("req_pkg_locatization", null, loc("yn1/have_new_content_lang"),
+    [["download", function() { request_packages_and_restart([pack]) }], ["cancel"]], "cancel", params)
+}
+
+addPromoAction("content_pack", @(_handler, params, _obj) checkPackageAndAskDownload(params?[0] ?? ""),
+  @(params) hasFeature("Packages") && !havePackage(params?[0] ?? ""))
+
+addListenersWithoutEnv({
+  function onEventNewSceneLoaded(_p) {
+    if (!needCheckLangPack.get())
+      return
+
+    checkLocalizationPackageAndAskDownload()
+    needCheckLangPack.set(false)
+  }
+}, g_listener_priority.DEFAULT_HANDLER)
 
 return {
   getPkgLocName
-  have_package
+  havePackage
   checkPackageFull
-  check_gamemode_pkg
-  check_diff_pkg
+  checkGamemodePkg
+  checkDiffPkg
   checkSpeechCountryUnitLocalizationPackageAndAskDownload
   checkPackageAndAskDownloadOnce
+  checkPackageAndAskDownload
+  updateContentPacks
 }

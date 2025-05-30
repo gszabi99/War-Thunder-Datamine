@@ -8,10 +8,8 @@ replace_script_gui_behaviour("worldWarMapControls", worldWarMapControls)
 foreach (fn in [
                  "services/wwService.nut"
                  "operations/model/wwGlobalStatusType.nut"
-                 "externalServices/wwQueue.nut"
                  "externalServices/inviteWwOperationBattle.nut"
                  "model/wwUnitType.nut"
-                 "inOperation/wwOperations.nut"
                  "inOperation/model/wwOperationArmies.nut"
                  "inOperation/model/wwOperationModel.nut"
                  "inOperation/model/wwAirfield.nut"
@@ -71,3 +69,4 @@ require("%scripts/worldWar/wwSquadManager.nut")
 require("%scripts/worldWar/wwInvites.nut")
 require("%scripts/worldWar/wwInviteOperation.nut")
 require("%scripts/worldWar/wwOperationChatRoomType.nut")
+require("%scripts/worldWar/wwGenericTooltipTypesInit.nut")

@@ -2,10 +2,10 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getObjValue } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, getObjValue } = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { move_mouse_on_child_by_value, is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 
 gui_handlers.navigationPanel <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM

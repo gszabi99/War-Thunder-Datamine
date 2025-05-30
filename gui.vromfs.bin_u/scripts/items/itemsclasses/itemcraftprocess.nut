@@ -17,7 +17,7 @@ let CraftProcess = class (ItemExternal) {
   static itemExpiredLocId = "items/craft_process/finished"
   static descReceipesListWithCurQuantities = false
 
-  isDisassemble       = @() this.itemDef?.tags?.isDisassemble == true
+  isDisassemble       = @() this.itemDef?.tags.isDisassemble == true
   canConsume          = @() false
   canAssemble         = @() false
   canConvertToWarbonds = @() false
@@ -65,7 +65,7 @@ let CraftProcess = class (ItemExternal) {
     if (resultItemsShowOpening.len()) {
       let openTrophyWndConfigs = resultItemsShowOpening.map(@(extItem) {
         id = trophyId
-        item = extItem?.itemdef?.itemdefid
+        item = extItem?.itemdef.itemdefid
         count = extItem?.quantity ?? 0
       })
       eventbus_send("guiStartOpenTrophy", {

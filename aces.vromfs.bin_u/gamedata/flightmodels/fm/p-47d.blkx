@@ -139,6 +139,7 @@
     "hasChutes": false,
     "hasParkingBrakeControl": false,
     "hasLightsControl": false,
+    "hasManeuverabilityMode": false,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -373,6 +374,8 @@
         0.0,
         0.0
       ],
+      "FlowInertia": 0.0,
+      "ClockWiseAOA": false,
       "Areas": {
         "Main": 26.62
       },
@@ -442,7 +445,7 @@
         0.34,
         1.02
       ],
-      "FlowInertia": 0.0501594,
+      "FlowInertia": 0.0503312,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 3.49,
@@ -514,7 +517,7 @@
         1.13,
         0.0
       ],
-      "FlowInertia": 0.100319,
+      "FlowInertia": 0.100663,
       "SlipStreamDistance": 6.6,
       "Areas": {
         "Main": 1.291,
@@ -1097,7 +1100,33 @@
         1.0,
         1.0,
         1.0
-      ]
+      ],
+      "NozzleAnglesRanges": {
+        "Horizontal": [
+          -180.0,
+          180.0
+        ],
+        "Vertical": [
+          -180.0,
+          180.0
+        ]
+      },
+      "NozzleAnglesAxesWeights": {
+        "Horizontal": {
+          "Ailerons": 1.0,
+          "Elevator": 0.0,
+          "Rudder": 1.0,
+          "Vtol": 0.0,
+          "Reverse": 0.0
+        },
+        "Vertical": {
+          "Ailerons": 0.0,
+          "Elevator": 1.0,
+          "Rudder": 0.0,
+          "Vtol": 1.0,
+          "Reverse": 1.0
+        }
+      }
     }
   },
   "PropellerType0": {
@@ -1281,7 +1310,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      0.0,
+      -180.0,
       90.0
     ],
     "Pos": [
@@ -1416,7 +1445,7 @@
   },
   "Gear": {
     "SinkFactor": 1400.0,
-    "SinkRateMult": 1.0328,
+    "SinkRateMult": 1.04962,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.0,
@@ -1914,6 +1943,10 @@
         1.0,
         1.0
       ],
+      "AoaLimitsManeuverabilityMult": [
+        1.0,
+        1.0
+      ],
       "AoaLimitsMargin": 5.0,
       "AoaLimiterPushBackRateMult": [
         0.0,
@@ -2062,6 +2095,10 @@
         1.0
       ],
       "ClimbMax": [
+        0.0,
+        0.0
+      ],
+      "SpeedMult": [
         0.0,
         0.0
       ],

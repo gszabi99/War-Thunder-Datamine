@@ -32,31 +32,31 @@ enum BattleState
 let NUM_COUNTRIES = 21
 let NUM_OPERATOR_COUNTRIES = 3
 
-let country_names = [[string[NUM_COUNTRIES] "australia";
-                                  "britain";
-                                  "germany";
-                                  "italy";
-                                  "japan";
-                                  "usa";
-                                  "ussr";
-                                  "china";
-                                  "france";
-                                  ""; 
-                                  ""; 
-                                  ""; 
-                                  ""; 
-                                  ""; 
-                                  ""; 
-                                  ""; 
-                                  ""; 
-                                  ""; 
-                                  ""; 
-                                  "sweden";
-                                  "israel"]]
+let country_names = fixed_array<string>("australia",
+                                  "britain",
+                                  "germany",
+                                  "italy",
+                                  "japan",
+                                  "usa",
+                                  "ussr",
+                                  "china",
+                                  "france",
+                                  "", 
+                                  "", 
+                                  "", 
+                                  "", 
+                                  "", 
+                                  "", 
+                                  "", 
+                                  "", 
+                                  "", 
+                                  "", 
+                                  "sweden",
+                                  "israel")
 
-let operator_country_names = [[string[NUM_OPERATOR_COUNTRIES] "south_africa";
-                                  "hungary";
-                                  "finland";]]
+let operator_country_names = fixed_array<string>("south_africa",
+                                  "hungary",
+                                  "finland")
 
 [es(tag=sound, on_event=(EventEntityCreated, EventComponentsAppear))]
 def music_init_es(evt : Event;
@@ -71,8 +71,8 @@ def music_init_es(evt : Event;
                   var music__cooldownCalm : float&)
   music__forced = false
   music__lockedHangar = false
-  music__curBattleState = int(BattleState CALM)
-  init_delayed_forced_track();
+  music__curBattleState = int(BattleState.CALM)
+  init_delayed_forced_track()
   using() <| $(var blk : DataBlock)
     if datablock_load(blk, "config/sound_studio.blk")
       let musicBlk = blk |> datablock_get_block_by_name("music")
@@ -87,23 +87,23 @@ def music_init_es(evt : Event;
 
 def get_game_state(forced : bool) : GameState
   if is_in_hangar()
-    return forced ? GameState FORCED : GameState HANGAR
+    return forced ? GameState.FORCED : GameState.HANGAR
   else
     let app = get_app()
     if app != null
       if app.isMissionRunning
-        let localPlayer = getLocalPlayer()
+        let localPlayer = player_get_local()
         if forced
-          return GameState FORCED
+          return GameState.FORCED
         elif localPlayer != null && (!localPlayer.isInFlight || *app |> checkInFlightMenu(false))
-          return GameState MISSION_MENU
+          return GameState.MISSION_MENU
         else
-          return GameState MISSION
+          return GameState.MISSION
       elif app.isMissionSuccessful
-        return GameState WIN
+        return GameState.WIN
       elif app.isMissionFailed
-        return GameState LOOSE
-  return GameState UNDEFINED
+        return GameState.LOOSE
+  return GameState.UNDEFINED
 
 
 def get_battle_state(radius_air_sq : float;
@@ -111,7 +111,7 @@ def get_battle_state(radius_air_sq : float;
                      max_num_enemies : int) : BattleState
   let hero = get_controlled_hero()
   if hero == null || hero.isDelayed
-    return BattleState CALM
+    return BattleState.CALM
   let heroPos = hero.pos
 
   var numEnemies = 0
@@ -120,7 +120,7 @@ def get_battle_state(radius_air_sq : float;
     let unit = unit__ref.unit
     if unit.army != hero.army && !unit.isDelayed
       let unitPos = unit.pos
-      let radiusSq = (unitType == int(UnitType UT_Airplane)) ? radius_air_sq : radius_ground_sq
+      let radiusSq = (unitType == int(UnitType.UT_Airplane)) ? radius_air_sq : radius_ground_sq
       if (length_sq(unitPos - heroPos) < radiusSq)
         numEnemies++
 
@@ -130,8 +130,8 @@ def get_battle_state(radius_air_sq : float;
       maxRage = true
 
   if (numEnemies > max_num_enemies || maxRage)
-    return BattleState ACTION
-  return BattleState CALM
+    return BattleState.ACTION
+  return BattleState.CALM
 
 
 def delay_battle_state(new_state : BattleState;
@@ -150,9 +150,9 @@ def rank_is_top_tier(unit_rank : int;
                      unit_type : int) : bool
   let topTierThresholdAir = 5
   let topTierThresholdTank = 6
-  if unit_type == int(UnitType UT_HeavyVehicle)
+  if unit_type == int(UnitType.UT_HeavyVehicle)
     return unit_rank >= topTierThresholdTank
-  elif unit_type == int(UnitType UT_Airplane)
+  elif unit_type == int(UnitType.UT_Airplane)
     return unit_rank >= topTierThresholdAir
   else
     return false
@@ -163,8 +163,8 @@ def unit_rank_or_type_changed(unit_rank : int;
                               cur_unit_rank : int;
                               cur_unit_type : int) : bool
   let rankChanged = (rank_is_top_tier(cur_unit_rank, cur_unit_type) != rank_is_top_tier(unit_rank, unit_type))
-  let typeChanged = (unit_type == int(UnitType UT_HeavyVehicle) || unit_type == int(UnitType UT_Airplane)) ? (unit_type != cur_unit_type) : false
-  return rankChanged || typeChanged;
+  let typeChanged = (unit_type == int(UnitType.UT_HeavyVehicle) || unit_type == int(UnitType.UT_Airplane)) ? (unit_type != cur_unit_type) : false
+  return rankChanged || typeChanged
 
 
 def get_current_country_id(default_value : int) : int
@@ -192,34 +192,34 @@ def update_battle_state(battle_radius_air_sq : float;
                         var timer_battle : float&;
                         dt : float)
   let battleState = get_battle_state(battle_radius_air_sq, battle_radius_ground_sq, battle_enemies_threshold)
-  let cooldown = (battleState == BattleState ACTION) ? cooldown_battle : cooldown_calm
+  let cooldown = (battleState == BattleState.ACTION) ? cooldown_battle : cooldown_calm
   timer_battle += dt
-  if delay_battle_state(battleState, cur_battle_state, timer_battle, cooldown) || cur_battle_state >= int(BattleState TOP_TIER)
+  if delay_battle_state(battleState, cur_battle_state, timer_battle, cooldown) || cur_battle_state >= int(BattleState.TOP_TIER)
     cur_battle_state = int(battleState)
 
 
 def get_music_state_from_battle_state(unit : Unit?;
                                       battle_state : int) : GameMusicState
-  if battle_state == int(BattleState CALM)
+  if battle_state == int(BattleState.CALM)
     if unit.isShip
-      return GameMusicState MUSIC_STATE_CALM_SHIPS
+      return GameMusicState.MUSIC_STATE_CALM_SHIPS
     elif unit.isTank
-      return GameMusicState MUSIC_STATE_CALM_TANKS
+      return GameMusicState.MUSIC_STATE_CALM_TANKS
     else
-      return GameMusicState MUSIC_STATE_CALM
-  elif battle_state == int(BattleState ACTION)
+      return GameMusicState.MUSIC_STATE_CALM
+  elif battle_state == int(BattleState.ACTION)
     if unit.isShip
-      return GameMusicState MUSIC_STATE_ACTION_SHIPS
+      return GameMusicState.MUSIC_STATE_ACTION_SHIPS
     elif unit.isTank
-      return GameMusicState MUSIC_STATE_ACTION_TANKS
+      return GameMusicState.MUSIC_STATE_ACTION_TANKS
     else
-      return GameMusicState MUSIC_STATE_ACTION
-  elif battle_state == int(BattleState TOP_TIER)
+      return GameMusicState.MUSIC_STATE_ACTION
+  elif battle_state == int(BattleState.TOP_TIER)
     if unit.isTank
-      return GameMusicState MUSIC_STATE_TOP_TIER_TANK
+      return GameMusicState.MUSIC_STATE_TOP_TIER_TANK
     else
-      return GameMusicState MUSIC_STATE_TOP_TIER_AIR
-  return GameMusicState MUSIC_STATE_CALM
+      return GameMusicState.MUSIC_STATE_TOP_TIER_AIR
+  return GameMusicState.MUSIC_STATE_CALM
 
 
 def make_hangar_operator_event_name(id : int) : string
@@ -233,9 +233,9 @@ def make_hangar_event_name(id : int) : string
   return country_names[id] + "_main_theme"
 
 def get_hangar_event_name_by_hero_type(hero_type : int) : string
-  if hero_type == int(UnitType UT_Ship) || hero_type == int(UnitType UT_Submarine)
+  if hero_type == int(UnitType.UT_Ship) || hero_type == int(UnitType.UT_Submarine)
     return "menu"
-  elif hero_type == int(UnitType UT_HeavyVehicle)
+  elif hero_type == int(UnitType.UT_HeavyVehicle)
     return "menu_ground"
   else
     return "menu_air"
@@ -300,18 +300,22 @@ def music_es(info : ParallelUpdateFrameDelayed;
              music__operatorCountryId : int;
              var music__curUnitType : int&)
   let curMusicState = get_music_state()
-  let gameState = get_game_state(music__forced)
-  var musicState = GameMusicState MUSIC_STATE_CALM
+  let winOrLoosePlaying = ((curMusicState == int(GameMusicState.MUSIC_STATE_WIN) ||
+                            curMusicState == int(GameMusicState.MUSIC_STATE_LOOSE)) &&
+                            is_track_playing())
+
+  let gameState = get_game_state(music__forced && !winOrLoosePlaying)
+  var musicState = GameMusicState.MUSIC_STATE_CALM
   var hangarCountryId = -1
   var hangarTypeChanged = false
-  if gameState == GameState HANGAR
+  if gameState == GameState.HANGAR
     hangarCountryId = music__operatorCountryId >= 0 ? NUM_COUNTRIES : get_current_country_id(music__curHangarCountry_id)
-    musicState = GameMusicState MUSIC_STATE_HANGAR
+    musicState = GameMusicState.MUSIC_STATE_HANGAR
     ecs::query() <| $ [es(REQUIRE=controlledHero)] (unitType : int)
       if music__curUnitType != unitType
         hangarTypeChanged = true
         music__curUnitType = unitType
-  elif gameState == GameState MISSION
+  elif gameState == GameState.MISSION
     var heroRank = -1
     var heroUnitType = -1
     var heroExist = false
@@ -323,7 +327,7 @@ def music_es(info : ParallelUpdateFrameDelayed;
         heroRank = hero.props.unitRank
         let app = get_app()
         if loot_carrier__capacity == null && rank_is_top_tier(heroRank, heroUnitType) && app.isMultiplayerGame
-          music__curBattleState = int(BattleState TOP_TIER)
+          music__curBattleState = int(BattleState.TOP_TIER)
         else
           update_battle_state(music__battleRadiusAirSq, music__battleRadiusGroundSq, music__battleEnemiesThreshold, music__curBattleState, music__cooldownBattle, music__cooldownCalm, music__timerBattle, info.dt)
         music__curUnitType = heroUnitType
@@ -332,23 +336,20 @@ def music_es(info : ParallelUpdateFrameDelayed;
         musicState = get_music_state_from_battle_state(hero, music__curBattleState)
     if !heroExist
       return
-  elif gameState == GameState FORCED
-    musicState = GameMusicState MUSIC_STATE_FORCED
-  elif gameState == GameState WIN
-    musicState = GameMusicState MUSIC_STATE_WIN
-  elif gameState == GameState LOOSE
-    musicState = GameMusicState MUSIC_STATE_LOOSE
-  elif gameState == GameState MISSION_MENU
+  elif gameState == GameState.FORCED
+    musicState = GameMusicState.MUSIC_STATE_FORCED
+  elif gameState == GameState.WIN
+    musicState = GameMusicState.MUSIC_STATE_WIN
+  elif gameState == GameState.LOOSE
+    musicState = GameMusicState.MUSIC_STATE_LOOSE
+  elif gameState == GameState.MISSION_MENU
     return
 
   let lockedHangar = music__lockedHangar && is_track_playing()
   let hangarCountryChanged = hangarCountryId >= 0 && music__curHangarCountry_id != hangarCountryId
-  let winOrLoosePlaying = ((curMusicState == int(GameMusicState MUSIC_STATE_WIN) ||
-                            curMusicState == int(GameMusicState MUSIC_STATE_LOOSE)) &&
-                            is_track_playing())
-  let hangarTrackEnded = curMusicState == int(GameMusicState MUSIC_STATE_HANGAR) && !is_track_playing()
+  let hangarTrackEnded = curMusicState == int(GameMusicState.MUSIC_STATE_HANGAR) && !is_track_playing()
 
-  if musicState == GameMusicState MUSIC_STATE_HANGAR
+  if musicState == GameMusicState.MUSIC_STATE_HANGAR
     if !lockedHangar && !winOrLoosePlaying
       if music__useHangarMusicForUnitType
         if hangarTypeChanged
@@ -362,15 +363,15 @@ def music_es(info : ParallelUpdateFrameDelayed;
       music__lockedHangar = false
     elif hangarTrackEnded
       overwrite_and_set_music_state(int(musicState), "")
-  elif musicState == GameMusicState MUSIC_STATE_FORCED
+  elif musicState == GameMusicState.MUSIC_STATE_FORCED
     if music__forcedEvtName != ""
-      if curMusicState != int(GameMusicState MUSIC_STATE_FORCED) || string(music__curForcedEvtName) != music__forcedEvtName
+      if curMusicState != int(GameMusicState.MUSIC_STATE_FORCED) || string(music__curForcedEvtName) != music__forcedEvtName
         overwrite_and_set_music_state(int(musicState), music__forcedEvtName)
         music__curForcedEvtName := music__forcedEvtName
         music__lockedHangar = false
-  elif musicState == GameMusicState MUSIC_STATE_WIN || musicState == GameMusicState MUSIC_STATE_LOOSE
+  elif musicState == GameMusicState.MUSIC_STATE_WIN || musicState == GameMusicState.MUSIC_STATE_LOOSE
     if int(musicState) != curMusicState
-      let win_loose_track = calc_win_loose_track_name(musicState == GameMusicState MUSIC_STATE_WIN)
+      let win_loose_track = calc_win_loose_track_name(musicState == GameMusicState.MUSIC_STATE_WIN)
       overwrite_and_set_music_state(int(musicState), win_loose_track)
   else
     if int(musicState) != curMusicState

@@ -2,7 +2,8 @@ from "%scripts/dagui_natives.nut" import clan_get_role_rank, clan_get_role_name,
 from "%scripts/dagui_library.nut" import *
 
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
-let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")

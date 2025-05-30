@@ -3,11 +3,10 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import call_for_handler
 
 let { broadcastEvent, addListenersWithoutEnv, DEFAULT_HANDLER } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { charRequestJwtFromServer, get_char_extended_error } = require("chard")
-let { EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS } = require("chardConst")
-let { format } = require("string")
+let { charRequestJwtFromServer } = require("chard")
 let { eventbus_subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
+let { getErrorText } = require("%scripts/hud/serverMessages.nut")
 
 enum TASK_CB_TYPE {
   BASIC,
@@ -161,14 +160,15 @@ function executeTaskCb(taskId, taskResult, taskCbType = TASK_CB_TYPE.BASIC, data
   }
 
   if (taskData.showErrorMessageBox)
-    showInfoMsgBox(::getErrorText(taskResult), "char_connecting_error")
+    showInfoMsgBox(getErrorText(taskResult), "char_connecting_error")
 }
 
 function charCallback(taskId, _taskType, taskResult, _taskCbType = TASK_CB_TYPE.BASIC, _data = null) {
   executeTaskCb(taskId, taskResult)
 }
 
-function onCharRequestJsonFromServerComplete(taskId, _requestName, data, result) {
+function onCharRequestJsonFromServerComplete(msg) {
+  let {taskId, data=null, result=null} = msg
   executeTaskCb(taskId, result, TASK_CB_TYPE.REQUEST_DATA, data)
 }
 
@@ -187,23 +187,12 @@ function restoreCharCallback() {
   set_char_cb(taskerCharCb, taskerCharCb.charCallback)
 }
 
-
-::onCharRequestJsonFromServerComplete <- onCharRequestJsonFromServerComplete 
+eventbus_subscribe("onCharRequestJsonFromServerComplete", onCharRequestJsonFromServerComplete)
 
 
 ::onCharRequestBlkFromServerComplete <- onCharRequestBlkFromServerComplete 
 
 eventbus_subscribe("onCharRequestJwtFromServerComplete", onCharRequestJwtFromServerComplete)
-
-
-::getErrorText <- function getErrorText(result) {
-  local text = loc($"charServer/updateError/{result.tostring()}")
-  if (result == EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS) {
-    let notAllowedChars = get_char_extended_error()
-    text = format(text, notAllowedChars)
-  }
-  return text
-}
 
 restoreCharCallback()
 

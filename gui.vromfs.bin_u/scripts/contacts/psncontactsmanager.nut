@@ -11,7 +11,7 @@ let { psnApprovedUids, psnBlockedUids, findContactByPSNId } = require("%scripts/
 let { fetchContacts, updatePresencesByList } = require("%scripts/contacts/contactsState.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEqual } = u
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { updateContact } = require("%scripts/contacts/contactsActions.nut")
 
@@ -180,7 +180,7 @@ function updateContacts(needIgnoreInitedFlag = false) {
   if (!isPlatformSony)
     return
 
-  if (!isInMenu()) {
+  if (!isInMenu.get()) {
     if (needIgnoreInitedFlag && isContactsUpdated.value)
       isContactsUpdated(false)
     return

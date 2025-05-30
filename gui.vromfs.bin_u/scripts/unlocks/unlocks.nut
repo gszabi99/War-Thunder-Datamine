@@ -26,7 +26,7 @@ let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType } = require("%scripts/customization/types.nut")
 let { getLocTextFromConfig } = require("%scripts/langUtils/language.nut")
 let { getCrewSpTextIfNotZero } = require("%scripts/crew/crewPointsText.nut")
-let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { shopSmokeItems } = require("%scripts/items/itemsTypeClasses.nut")
 let { getCrewName } = require("%scripts/crew/crew.nut")
 let { isStringInteger } = require("%sqstd/string.nut")
@@ -144,7 +144,7 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
   }
 }
 
-::build_unlock_tooltip_by_config <- function build_unlock_tooltip_by_config(obj, config, handler) {
+function build_unlock_tooltip_by_config(obj, config, handler) {
   let guiScene = obj.getScene()
   guiScene.replaceContent(obj, "%gui/unlocks/unlockBlock.blk", handler)
 
@@ -153,7 +153,7 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
   fill_unlock_block(obj, config, true)
 }
 
-::build_log_unlock_data <- function build_log_unlock_data(config) {
+function build_log_unlock_data(config) {
   let showLocalState = config?.showLocalState ?? true
   let showProgress   = showLocalState && (config?.showProgress ?? false)
   let needTitle      = config?.needTitle ?? true
@@ -554,6 +554,12 @@ function fill_unlock_block(obj, config, isForTooltip = false) {
   return res
 }
 
+
+::build_unlock_tooltip_by_config <- build_unlock_tooltip_by_config
+::build_log_unlock_data <- build_log_unlock_data
+
 return {
   fill_unlock_block
+  build_log_unlock_data
+  build_unlock_tooltip_by_config
 }

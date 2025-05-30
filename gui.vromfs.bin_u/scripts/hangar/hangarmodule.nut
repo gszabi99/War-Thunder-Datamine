@@ -1,14 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/dagui_natives.nut" import enable_dof, disable_dof
 
-function canBlurHangar() {
-  return ("enable_dof" in getroottable())
-}
-
 function blurHangar(enable, params = null) {
-  if (!canBlurHangar())
-    return
-
   if (enable) {
     enable_dof(
       params?.nearFrom ?? 0, 

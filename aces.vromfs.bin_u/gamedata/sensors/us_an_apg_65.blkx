@@ -20,7 +20,7 @@
         0.0
       ],
       "antenna": {
-        "angleHalfSens": 3.9,
+        "angleHalfSens": 3.0,
         "sideLobesSensitivity": -32.0
       }
     },
@@ -38,7 +38,7 @@
         0.0
       ],
       "antenna": {
-        "angleHalfSens": 3.9,
+        "angleHalfSens": 3.0,
         "sideLobesSensitivity": -32.0
       }
     },
@@ -56,7 +56,7 @@
         0.0
       ],
       "antenna": {
-        "angleHalfSens": 3.9,
+        "angleHalfSens": 3.0,
         "sideLobesSensitivity": -32.0
       }
     },
@@ -74,7 +74,7 @@
         0.0
       ],
       "antenna": {
-        "angleHalfSens": 3.9,
+        "angleHalfSens": 3.0,
         "sideLobesSensitivity": -32.0
       }
     },
@@ -92,7 +92,7 @@
         0.0
       ],
       "antenna": {
-        "angleHalfSens": 3.9,
+        "angleHalfSens": 3.0,
         "sideLobesSensitivity": -32.0
       }
     }
@@ -230,11 +230,11 @@
         60.0
       ],
       "period": 1.2,
-      "width": 25.0,
-      "barHeight": 3.0,
+      "width": 37.0,
+      "barHeight": 2.5,
       "barsCount": 2,
       "rowMajor": false,
-      "centerElevation": 30.0,
+      "centerElevation": 23.0,
       "indicate": true
     },
     "hudLock": {
@@ -247,12 +247,12 @@
         -60.0,
         60.0
       ],
-      "period": 1.2,
+      "period": 2.0,
       "width": 10.0,
-      "barHeight": 4.0,
-      "barsCount": 5,
+      "barHeight": 2.5,
+      "barsCount": 8,
       "rowMajor": true,
-      "centerElevation": -4.0,
+      "centerElevation": 4.0,
       "indicate": true
     },
     "boresightLock": {
@@ -265,8 +265,8 @@
         -60.0,
         60.0
       ],
-      "period": 0.2,
-      "width": 2.0,
+      "period": 0.5,
+      "width": 0.1,
       "indicate": true
     },
     "bvrLockTws": {
@@ -672,14 +672,12 @@
         },
         "designatedTargetSearch": {
           "designateTargetUnderCue": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "cue",
+            "self": true
           },
           "designateActiveDetectedTarget": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "target",
+            "self": true
           }
         },
         "resetBvrLockMode": {
@@ -853,7 +851,7 @@
         },
         "designatedTargetTws": {
           "designateActiveDetectedTarget": {
-            "type": 0,
+            "type": "target",
             "self": true,
             "sensorIndex": 0
           }
@@ -1246,7 +1244,10 @@
           "stateTo": "checkDesignationType0",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": [
+                "target",
+                "cue"
+              ]
             }
           }
         },
@@ -1859,6 +1860,9 @@
               "fsm": "main",
               "name": "resetSearchMode"
             },
+            "setDesignationSourceType": {
+              "sourceType": "radarSs"
+            },
             "setFsmActive": [
               {
                 "fsm": "main",
@@ -1984,6 +1988,9 @@
             "doCustomActionTemplate": {
               "fsm": "main",
               "name": "resetSearchMode"
+            },
+            "setDesignationSourceType": {
+              "sourceType": "radar"
             },
             "setFsmActive": [
               {
@@ -2204,19 +2211,6 @@
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": {}
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "sensorIndex": 1
-            }
           }
         },
         "centerZone": {

@@ -24,5 +24,5 @@ def is_crew_busy(is_burning : bool; is_assisting : bool; crew_busy_time : float)
 
 def extinguish_system_can_reignite(last_extinguish_time : float)
   let app = get_app()
-  return last_extinguish_time < 0.f || float(app.usefulTotalTime) > last_extinguish_time + get_game_params().reignitionDelayAfterExtinguisherUse;
+  return last_extinguish_time < 0.f || float(app.usefulTotalTime) > last_extinguish_time + get_game_params().reignitionDelayAfterExtinguisherUse
 

@@ -16,7 +16,7 @@ function fieldEditText_(params={}) {
   let group = ElemGroup()
   let compType = typeof compVal
   let stateFlags = Watched(0)
-  let isValid = Computed(@() isValueTextValid(compType, curText.value))
+  let isValid = Computed(@() isValueTextValid(compType, curText.get()))
 
   function onChange(text){
     curText.update(text)
@@ -30,13 +30,13 @@ function fieldEditText_(params={}) {
 
   function updateTextFromEcsTimeout() {
     updateTextFromEcs()
-    if (!isFocus.value)
+    if (!isFocus.get())
       gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout)
   }
 
   function updateComponentByTimer() {
     if (rawComponentName == "transform") {
-      if (isFocus.value)
+      if (isFocus.get())
         gui_scene.clearTimer(updateTextFromEcsTimeout)
       else
         gui_scene.resetTimeout(0.1, updateTextFromEcsTimeout)
@@ -47,7 +47,7 @@ function fieldEditText_(params={}) {
   updateComponentByTimer()
 
   function frame() {
-    let frameColor = (stateFlags.value & S_KB_FOCUS) ? colors.FrameActive : colors.FrameDefault
+    let frameColor = (stateFlags.get() & S_KB_FOCUS) ? colors.FrameActive : colors.FrameDefault
     return {
       rendObj = ROBJ_FRAME group=group size = [flex(), gridHeight] color = frameColor watch = stateFlags
       onElemState = @(sf) stateFlags.update(sf)
@@ -59,12 +59,12 @@ function fieldEditText_(params={}) {
       return
     let checkVal = getCompVal(eid, rawComponentName, path)
     let checkValText = compValToString(checkVal)
-    if (checkValText == curText.value)
+    if (checkValText == curText.get())
       return
-    if (isValid.value) {
+    if (isValid.get()) {
       local val = null
       try {
-        val = convertTextToVal(checkVal, compType, curText.value)
+        val = convertTextToVal(checkVal, compType, curText.get())
       } catch(e) {
         val = null
       }
@@ -84,13 +84,13 @@ function fieldEditText_(params={}) {
       size = [flex(), SIZE_TO_CONTENT]
       margin = gridMargin
 
-      color = !isValid.value
+      color = !isValid.get()
                 ? colors.TextError
                 : curRO
                   ? colors.TextReadOnly
                   : colors.TextDefault
 
-      text = curText.value
+      text = curText.get()
       behavior = curRO ? null : Behaviors.TextInput
       group = group
       watch = [curText, isValid]

@@ -15,6 +15,7 @@ let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { MAX_REWARDS_SHOW_IN_TROPHY } = require("%scripts/items/trophyReward.nut")
 let { getPrizeTooltipConfig, getRewardsListViewData } = require("%scripts/items/prizesView.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
 
 let delayedUnlocksQueue = {}
 
@@ -89,7 +90,7 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!config)
         continue
       let unlockConditions = buildConditionsConfig(config)
-      let unlock = ::build_log_unlock_data(unlockConditions)
+      let unlock = build_log_unlock_data(unlockConditions)
       this.unlocks.append(unlock)
 
       let shrinkedUnlock = {}
@@ -222,7 +223,7 @@ gui_handlers.UnlockRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     local layersData = ""
     let show_count = min(MAX_REWARDS_SHOW_IN_TROPHY, this.unlocks.len())
     for (local i = 0; i < show_count; i++)
-      layersData += this.getImageLayer(this.unlocks[i], this.shrinkedUnlocks[i])
+      layersData = "".concat(layersData, this.getImageLayer(this.unlocks[i], this.shrinkedUnlocks[i]))
 
     if (layersData == "")
       return ""

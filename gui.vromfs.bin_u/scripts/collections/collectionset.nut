@@ -2,15 +2,15 @@ from "%scripts/dagui_library.nut" import *
 
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
-let { ceil } = require("math")
-let { getPrizesListView } = require("%scripts/items/prizesView.nut")
+let { getPrizesListViewData, getPrizesListMarkupByData } = require("%scripts/items/prizesView.nut")
+let { utf8ToLower } = require("%sqstd/string.nut")
 
 local CollectionsSet = class {
   id = "" 
   uid = -1
   reqFeature = null
   locId = ""
-
+  searchName = ""
   collectionItems = null
   prize = null
 
@@ -32,6 +32,8 @@ local CollectionsSet = class {
       if (resource != null)
         this.collectionItems.append(resource)
     }
+
+    this.searchName = utf8ToLower(this.getLocName())
   }
 
   getDecoratorObjId = @(collectionIdx, decoratorId) $"{collectionIdx};{decoratorId}"
@@ -40,38 +42,30 @@ local CollectionsSet = class {
   getLocName        = @() loc(this.locId)
   _tostring         = @() $"CollectionSet {this.id} (collectionItemsAmount = {this.collectionItems.len()})"
 
-  function getView(countItemsInRow, collectionNum) {
+  function getView(collectionNum) {
     local unlockedItemsCount = 0
-    let itemsView = this.collectionItems.map((function(decorator, idx) {
+    let itemsView = this.collectionItems.map((function(decorator) {
       let decoratorType = decorator.decoratorType
       decoratorType.updateDownloadableDecoratorsInfo(decorator)
-      let column = idx - countItemsInRow * (idx / countItemsInRow)
-      let row = idx / countItemsInRow
       let isUnlocked = decorator.isUnlocked()
       if (isUnlocked)
         unlockedItemsCount++
       return {
         id = this.getDecoratorObjId(collectionNum, decorator.id)
-        pos = $"{column}@collectionItemSizeWithIndent, {row}@collectionItemSizeWithIndent"
         tag = "imgSelectable"
-        unlocked = true
+        unlocked = isUnlocked ? "yes" : null
         image = decoratorType.getImage(decorator)
         imgRatio = decoratorType.getRatio(decorator)
-        imgClass = "smallMedals"
+        imgClass = "profileCollection"
         focusBorder = true
         tooltipId = getTooltipType("DECORATION").getTooltipId(decorator.id, decoratorType.unlockedItemType)
-        miniIcon = isUnlocked ? "#ui/gameuiskin#check.svg" : "#ui/gameuiskin#locked.svg"
-        miniIconColor = isUnlocked ? "@goodTextColor" : "@white"
-        miniIconPos = "pw - w, ph - h - 0.75@blockInterval"
-        miniIconSize = "1@sIco, 1@sIco"
       }
     }).bindenv(this))
 
     let decoratorType = this.prize.decoratorType
     let isUnlocked = this.prize.isUnlocked()
-    itemsView.append({
+    let mainPrize = {
       id = $"{collectionNum};{this.prize.id}"
-      pos = $"{countItemsInRow}@collectionItemSizeWithIndent + 9@blockInterval, 0"
       tag = "imgSelectable"
       unlocked = true
       image = decoratorType.getImage(this.prize)
@@ -79,7 +73,7 @@ local CollectionsSet = class {
       imgClass = "collectionPrize"
       focusBorder = true
       tooltipId = getTooltipType("DECORATION").getTooltipId(this.prize.id, decoratorType.unlockedItemType, {
-        additionalDescriptionMarkup = this.getCollectionViewForPrize()
+        additionalDescriptionMarkup = this.getCollectionViewMarkup()
       })
       topLeftText = loc("reward")
       topRightText = isUnlocked ? "" : $"{unlockedItemsCount}/{this.collectionItems.len()}"
@@ -87,14 +81,11 @@ local CollectionsSet = class {
       miniIconColor = isUnlocked ? "@goodTextColor" : "@white"
       miniIconPos = "pw - w, ph - h - 1.5@blockInterval"
       miniIconSize = "1@dIco, 1@dIco"
-    })
-
-    let rows = ceil(this.collectionItems.len() / countItemsInRow.tofloat()).tointeger()
-    let viewHeight = to_pixels($"{rows}@collectionItemSizeWithIndent")
+    }
 
     return {
       items = itemsView
-      viewHeight = max(to_pixels("1@collectionPrizeWidth"), viewHeight)
+      mainPrize
     }
   }
 
@@ -111,14 +102,17 @@ local CollectionsSet = class {
     }
   }
 
-  function getCollectionViewForPrize(params = {}) {
-    let { hasHorizontalFlow = false } = params
-    return getPrizesListView(
+  function getCollectionViewMarkup(params = {}) {
+    let { hasHorizontalFlow = false, fixedTitleWidth = null } = params
+    let data = getPrizesListViewData(
       this.collectionItems.map(@(r) {
         resource = r.id
         resourceType = r.decoratorType.resourceType
       }),
-      { receivedPrizes = true, hasHorizontalFlow }, false)
+      { receivedPrizes = true, hasHorizontalFlow }, false
+    )
+    data.fixedTitleWidth <- fixedTitleWidth
+    return getPrizesListMarkupByData(data)
   }
 }
 

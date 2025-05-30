@@ -19,6 +19,7 @@ let { getAllTips } = require("%scripts/loading/loadingTips.nut")
 let { multiplyDaguiColorStr } = require("%sqDagui/daguiUtil.nut")
 let { getSystemConfigOption, setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
+let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
 
 function reload_dagui() {
   get_cur_gui_scene()?.resetGamepadMouseTarget()
@@ -30,7 +31,7 @@ function reload_dagui() {
 
 function gui_do_debug_unlock() {
   debug_unlock_all?()
-  ::is_debug_mode_enabled = true
+  isDebugModeEnabled.status = true
   ::update_all_units()
   add_warpoints(500000, false)
   broadcastEvent("DebugUnlockEnabled")
@@ -166,4 +167,5 @@ return {
   debug_open_url
   reload_dagui
   gui_do_debug_unlock
+  isDebugModeEnabled
 }

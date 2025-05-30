@@ -9,7 +9,7 @@ require DagorSystem
 require DagorMath
 require DagorDebug3D
 require imgui/imgui_boost
-require strings_boost
+require daslib.strings_boost
 require daslib/safe_addr
 require daslib/instance_function
 require daslib/defer
@@ -21,7 +21,7 @@ def getComponentRenderInfoFromComponentRef(compRef : EntityComponentRef)
   unsafe
     let compTypes & = getComponentTypes()
     let compTypeName = compTypes |> component_types_findTypeName(compRef.userType)
-    return <- ComponentRenderInfo(rawData = compRef.rawData, roVal = "", dasTypeName = "", typeName = compTypeName, idx = 0u, componentId = compRef.componentId)
+    return <- ComponentRenderInfo(rawData = compRef.rawData, roVal = "", dasTypeName = "", typeName = compTypeName, idx = 0u, componentId = compRef.componentId, isValidComponent = true)
 
 [ecs_inspector(type_name="bbox3f")]
 def draw_bbox3f(eid : array<EntityId> implicit; flags : uint; name : string; refs : array<ComponentRenderInfo#>#; level : int; var changed : bool?; sub_menu : block<(var changed : bool?) : bool>) : void

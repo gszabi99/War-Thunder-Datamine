@@ -9,6 +9,7 @@ let fontsState = require("%rGui/style/fontsState.nut")
 let { bh } = require("%rGui/style/screenState.nut")
 let { isTank } = require("%rGui/hudUnitType.nut")
 let { isVisibleTankGunsAmmoIndicator } = require("%rGui/options/options.nut")
+let { isUnitAlive } = require("%rGui/hudState.nut")
 
 let panelMarginBottom = shHud(0.6)
 let panelHeight = hdpx(60)
@@ -104,7 +105,7 @@ let isCollapsButtonVisible = Computed(@() isActionBarVisible.get() && isActionBa
   && (!isCollapseBtnHidden.get() || !isActionBarCollapsed.get()))
 
 function actionBarTopPanel() {
-  let canShowTankGunsAmmo = isTank() && isVisibleTankGunsAmmoIndicator.get() && !isActionBarCollapsed.get()
+  let canShowTankGunsAmmo = isTank() && isVisibleTankGunsAmmoIndicator.get() && !isActionBarCollapsed.get() && isUnitAlive.get()
 
   return {
     watch = [panelY, panelWidth, isCollapsButtonVisible, isActionBarCollapsed, isVisibleTankGunsAmmoIndicator]

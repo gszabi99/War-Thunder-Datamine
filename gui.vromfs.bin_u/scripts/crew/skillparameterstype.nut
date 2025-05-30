@@ -7,6 +7,7 @@ let { getMeasureTypeBySkillParameterName } = require("%scripts/crew/crewSkills.n
 let { measureType } = require("%scripts/measureType.nut")
 let { getCachedCrewUnit } = require("%scripts/crew/crewShortCache.nut")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
+let skillParametersColumnType = require("%scripts/crew/skillParametersColumnType.nut")
 
 let g_skill_parameters_type = {
   types = []
@@ -86,9 +87,9 @@ g_skill_parameters_type.template <- {
   getDiffSign = function(parametersByRequestType, parameterName) {
     let params = { parameterName = parameterName, idx = 0, columnIndex = 0 }
     let baseValue = this.getValue(
-      ::g_skill_parameters_column_type.BASE.currentParametersRequestType, parametersByRequestType, params)
+      skillParametersColumnType.BASE.currentParametersRequestType, parametersByRequestType, params)
     let maxValue = this.getValue(
-      ::g_skill_parameters_column_type.MAX.currentParametersRequestType, parametersByRequestType, params)
+      skillParametersColumnType.MAX.currentParametersRequestType, parametersByRequestType, params)
     return maxValue >= baseValue
   }
 

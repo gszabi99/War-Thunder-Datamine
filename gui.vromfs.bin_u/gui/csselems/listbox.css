@@ -789,3 +789,44 @@ premiumItem > Button_text {
 premiumItem:hover > Button_text {
   display:show;
 }
+
+skinsListItem {
+  css-hier-invalidate:yes;
+  size:0.32*pw, @baseTrHeight;
+  total-input-transparent:yes;
+  background-color:@transparent;
+}
+
+skinsListItem:hover {
+  background-color: @listboxHoverOptionColor;
+}
+
+[show_console_buttons=yes] skinsListItem:hover {
+  needFocusBorder:yes;
+}
+
+skinsListItem[selected=yes] {
+  background-color:@listboxSelOptionColor;
+}
+
+skinsListItem > tdiv > textareaNoTab {
+  behaviour:OverflowScroller;
+  move-pixel-per-sec:20*@scrn_tgt/100.0;
+  move-sleep-time:2000;
+  move-delay-time:2000;
+  color:@headerOptionTextColor;
+  move-start:no;
+}
+
+skinsListItem:hover > tdiv > textareaNoTab {
+  color:@activeTextColor;
+  move-start:yes;
+}
+
+skinsListItem[selected=yes] > tdiv > textareaNoTab {
+  color:@activeTextColor;
+}
+
+skinsListItem[selected=yes] > tdiv > textareaNoTab {
+  move-start:yes;
+}

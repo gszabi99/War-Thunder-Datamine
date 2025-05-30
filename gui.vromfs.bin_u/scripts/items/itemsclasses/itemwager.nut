@@ -112,7 +112,7 @@ let Wager = class (BaseItem) {
       return
 
     this.winIcon = this.getWinIcon(blk?.win)
-    this.reqWinsNum = blk?.win?.num ?? 0
+    this.reqWinsNum = blk?.win.num ?? 0
     this.rewardType = this.checkRewardType(blk)
     this.minWager = blk?.minWager ?? 0
     if (this.curWager == null)

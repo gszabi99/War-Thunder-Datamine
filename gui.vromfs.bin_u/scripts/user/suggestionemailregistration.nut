@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import ps4_open_url_logged_in, xbox_link_email
 from "%scripts/dagui_library.nut" import *
 
 let { openUrl } = require("%scripts/onlineShop/url.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformPC
+let { isPlatformSony, isPlatformPC
 } = require("%scripts/clientState/platform.nut")
 let { havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { register_command } = require("console")
@@ -20,6 +20,8 @@ let { addPopup } = require("%scripts/popups/popups.nut")
 let { steam_is_running } = require("steam")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
+let { showWaitScreen, closeWaitScreen } = require("%scripts/waitScreen/waitScreen.nut")
+let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
 let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 
@@ -34,7 +36,7 @@ function launchGuestEmailRegistration(stoken) {
 eventbus_subscribe("onGetStokenForGuestEmail", function(msg) {
   let { status, stoken = null } = msg
   if (status != YU2_OK)
-    ::error_message_box("yn1/connect_error", status, [["ok"]], "ok")
+    showErrorMessageBox("yn1/connect_error", status, [["ok"]], "ok")
   else
     launchGuestEmailRegistration(stoken)
 })
@@ -67,7 +69,7 @@ function checkShowGuestEmailRegistrationAfterLogin() {
 }
 
 let canEmailRegistration = isPlatformSony ? @() havePlayerTag("psnlogin")
-  : isPlatformXboxOne ? @() havePlayerTag("livelogin") && hasFeature("AllowXboxAccountLinking")
+  : is_gdk ? @() havePlayerTag("livelogin") && hasFeature("AllowXboxAccountLinking")
   : steam_is_running() ? @() havePlayerTag("steamlogin") && hasFeature("AllowSteamAccountLinking")
   : @() false
 
@@ -126,9 +128,9 @@ function checkShowPS4EmailRegistration() {
 }
 
 function sendXboxEmailBind(val) {
-  ::show_wait_screen("msgbox/please_wait")
+  showWaitScreen("msgbox/please_wait")
   xbox_link_email(val, function(status) {
-    ::close_wait_screen()
+    closeWaitScreen()
     addPopup("", colorize(
       status == YU2_OK ? "activeTextColor" : "warningTextColor",
       loc($"mainmenu/XboxOneEmailRegistration/result/{status}")
@@ -173,15 +175,15 @@ function checkShowXboxEmailRegistration() {
 
 let checkShowEmailRegistration = isPlatformSony ? checkShowPS4EmailRegistration
   : steam_is_running() ? checkShowSteamEmailRegistration
-  : isPlatformXboxOne ? checkShowXboxEmailRegistration
+  : is_gdk ? checkShowXboxEmailRegistration
   : @() null
 
 let emailRegistrationTooltip = isPlatformSony ? loc("mainmenu/PS4EmailRegistration/desc")
-  : isPlatformXboxOne ? loc("mainmenu/XboxOneEmailRegistration/desc")
+  : is_gdk ? loc("mainmenu/XboxOneEmailRegistration/desc")
   : loc("mainmenu/SteamEmailRegistration/desc")
 
 let launchEmailRegistration = isPlatformSony ? launchPS4EmailRegistration
-  : isPlatformXboxOne ? launchXboxEmailRegistration
+  : is_gdk ? launchXboxEmailRegistration
   : steam_is_running() ? launchSteamEmailRegistration
   : @() null
 

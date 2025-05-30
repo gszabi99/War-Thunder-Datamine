@@ -3735,7 +3735,7 @@
     "bomber": [
       {
         "name": "hp52_hampden_mk1_late",
-        "weap": "hp52_hampden_tbmk1_4x1000lb",
+        "weap": "hp52_hampden_mk1_late_4x1000lb",
         "rankRange": [
           0,
           6
@@ -3903,7 +3903,7 @@
       },
       {
         "name": "z_1007_bis_serie3",
-        "weap": "z_1007_6x250kg_3x100kg_t",
+        "weap": "z_1007_6x250kg",
         "rankRange": [
           7,
           10
@@ -4111,7 +4111,7 @@
       },
       {
         "name": "canberra_bmk2",
-        "weap": "canberra_6x1000lbs",
+        "weap": "canberra_bmk2_1000lbs",
         "rankRange": [
           19,
           22
@@ -6652,7 +6652,6 @@
     "isFarAwayTanksEnabled": true,
     "minSilhouetteElemSize": 3,
     "maxSilhouetteElemSize": 12,
-    "silhouetteFadeDist": 200.0,
     "silhouetteFadeSize": 2.0
   },
   "predictionVolumeParams": {
@@ -7616,7 +7615,8 @@
       "radar": 2,
       "ins": 3,
       "crosshair": 4,
-      "helmet": 5
+      "helmet": 5,
+      "radarSs": 6
     }
   },
   "opticalSeeker": {
@@ -7740,6 +7740,7 @@
   },
   "tws": {
     "showReceierSector": true,
+    "detectOwnWeapon": false,
     "detectFriendlies": true
   },
   "lws": {
@@ -7788,6 +7789,7 @@
     "impulseBasedAircraftToSceneCollisionWithCollisionObjects": false,
     "impulseBasedAircraftGearToSceneCollision": false,
     "isSimulatedRendinstCollisionCheat": false,
+    "networkTraceRayDelayTicks": 20,
     "collisionTracesMax": 32,
     "staticObjectsRayCastLength": -1.0,
     "rendInstNormalTraceRayLength": 0.1,

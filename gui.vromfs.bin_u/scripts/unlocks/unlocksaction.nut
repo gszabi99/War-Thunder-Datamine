@@ -11,6 +11,7 @@ let { getUnlockCost } = require("%scripts/unlocks/unlocksModule.nut")
 let { isRegionalUnlock } = require("%scripts/unlocks/regionalUnlocks.nut")
 let { hangar_get_current_unit_name } = require("hangar")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { getErrorText } = require("%scripts/hud/serverMessages.nut")
 
 function openUnlockManually(unlockId, onSuccess = null) {
   if (isRegionalUnlock(unlockId)) {
@@ -40,7 +41,7 @@ function buyUnlockImpl(unlockId, unitName, cost, onSuccessCb = null, onErrorCb =
     },
     onSuccessCb,
     function(result) {
-      addPopup("", colorize("activeTextColor", ::getErrorText(result)))
+      addPopup("", colorize("activeTextColor", getErrorText(result)))
       onErrorCb?()
     }
   )

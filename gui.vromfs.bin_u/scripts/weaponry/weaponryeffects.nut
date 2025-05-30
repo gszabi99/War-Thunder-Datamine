@@ -393,8 +393,8 @@ function getDesc(unit, effects, p = DESC_PARAMS) {
 
   if ("weaponMods" in effects)
     foreach (idx, w in effects.weaponMods) {
-      w.withLevel     <- effects?.withLevel?.weaponMods?[idx] ?? {}
-      w.withOverdrive <- effects?.withOverdrive?.weaponMods?[idx] ?? {}
+      w.withLevel     <- effects?.withLevel.weaponMods?[idx] ?? {}
+      w.withOverdrive <- effects?.withOverdrive.weaponMods?[idx] ?? {}
 
       desc = weaponEffectsType.types.reduce(reduceFunction(unit, w, modeId), [])
       if (desc.len()) {

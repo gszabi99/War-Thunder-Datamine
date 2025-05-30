@@ -7,7 +7,7 @@ let transportManager = require("%scripts/worldWar/inOperation/wwTransportManager
 let actionModesManager = require("%scripts/worldWar/inOperation/wwActionModesManager.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { getArmyByName, getSelectedArmies } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 enum ORDER {
   ENTRENCH
@@ -68,7 +68,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
         return true
 
       foreach (armyName in armiesNames) {
-        let army = g_world_war.getArmyByName(armyName)
+        let army = getArmyByName(armyName)
         if (army.hasEntrenchAbility)
           return false
       }
@@ -77,7 +77,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     }
     isEnabled = function() {
       if (!isOperationFinished())
-        foreach (army in g_world_war.getSelectedArmies())
+        foreach (army in getSelectedArmies())
           if (!army.isEntrenched())
             return true
 
@@ -104,7 +104,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
     keyboardShortcut = "A"
     style = $"accessKey:'J:{WW_MAP_CONSPLE_SHORTCUTS.PREPARE_FIRE} | A';"
     getActionName = function() {
-      let isSAM = ww_get_selected_armies_names().findindex(@(armyName) g_world_war.getArmyByName(armyName).isSAM) != null
+      let isSAM = ww_get_selected_armies_names().findindex(@(armyName) getArmyByName(armyName).isSAM) != null
       let textFire = isSAM ? loc("actionBarItem/weapon_lock") : loc("worldWar/armyFire")
       return actionModesManager.getCurActionModeId() == AUT_ArtilleryFire
         ? loc("worldWar/armyCancel")
@@ -116,7 +116,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
         return true
 
       foreach (armyName in armiesNames) {
-        let army = g_world_war.getArmyByName(armyName)
+        let army = getArmyByName(armyName)
         if (army.hasArtilleryAbility)
           return false
       }
@@ -144,7 +144,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
         return true
 
       foreach (armyName in armiesNames) {
-        let army = g_world_war.getArmyByName(armyName)
+        let army = getArmyByName(armyName)
         if (army.isTransport())
           return false
       }
@@ -183,7 +183,7 @@ enums.addTypesByGlobalName("g_ww_map_controls_buttons",
         return true
 
       foreach (armyName in armiesNames) {
-        let army = g_world_war.getArmyByName(armyName)
+        let army = getArmyByName(armyName)
         if (army.isTransport())
           return false
       }

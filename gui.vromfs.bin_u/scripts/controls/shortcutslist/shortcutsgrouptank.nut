@@ -5,7 +5,7 @@ let { get_option_multiplier, set_option_multiplier,
 } = require("gameOptions")
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
 let { CONTROL_TYPE, AxisDirection, ConflictGroups } = require("%scripts/controls/controlsConsts.nut")
@@ -270,6 +270,10 @@ return [
     checkAssign = false
   }
   {
+    id = "ID_TOGGLE_AA_COMPLEX_MENU"
+    checkAssign = false
+  }
+  {
     id = "ID_TOGGLE_VIEW_GM"
     needShowInHelp = true
   }
@@ -304,7 +308,7 @@ return [
     id = "gm_target_camera"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    condition = @() isPlatformSony || isPlatformXboxOne
+    condition = @() isPlatformSony || isPlatformXbox
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
   }
   {
@@ -514,6 +518,16 @@ return [
   }
   {
     id = "ID_START_UGV"
+    checkAssign = false
+    showFunc = @() hasFeature("TankSupportPlane")
+  }
+  {
+    id = "ID_SLAVE_UNIT_SPAWN"
+    checkAssign = false
+    showFunc = @() hasFeature("TankSupportPlane")
+  }
+  {
+    id = "ID_SLAVE_UNIT_SWITCH"
     checkAssign = false
     showFunc = @() hasFeature("TankSupportPlane")
   }

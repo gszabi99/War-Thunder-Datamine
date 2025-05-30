@@ -85,7 +85,7 @@ def draw_bar_alt(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
 def draw_ralt(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; fmw : FlightModelWrap?)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(int(float(data.fontSize) * 0.9));
+  ctx |> set_font_ht(int(float(data.fontSize) * 0.9))
 
   let altStr = "{fmt(":d", roundi(fmw.fm.currentAlt * metrToFeet))}R"
   ctx |> goto_xy(rdata.pos.x + rdata.size.x * 0.62, rdata.pos.y + rdata.size.y * 0.65)
@@ -134,8 +134,8 @@ def draw_horizont(var ctx : GuiContext&; rdata : ElemRenderData& const; data : C
     if !world_to_hmd_screen(anglePoint, hmdAngPos)
       continue
 
-    let p1 = anglePoint - normalDir * 100.;
-    let p2 = anglePoint + normalDir * 100.;
+    let p1 = anglePoint - normalDir * 100.
+    let p2 = anglePoint + normalDir * 100.
     var hmdAngPos1 : float2
     var hmdAngPos2 : float2
     world_to_hmd_screen(p1, hmdAngPos1)
@@ -182,7 +182,7 @@ def draw_hmd_azimuth(var ctx : GuiContext&; rdata : ElemRenderData& const; data 
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   let azStr = fmt(":d", roundi(azimuth))
   let strBox = get_str_bbox(azStr, azStr |> length(), fctx)
@@ -196,7 +196,7 @@ def draw_plane_azimuth(var ctx : GuiContext&; rdata : ElemRenderData& const; dat
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   let azStr = fmt(":d", roundi(azimuth))
   let strBox = get_str_bbox(azStr, azStr |> length(), fctx)
@@ -220,7 +220,7 @@ def draw_aim_lock(var ctx : GuiContext&; rdata : ElemRenderData& const; data : C
       let labelColor = E3DCOLOR(Color4(float4(0.1, 0.2, 1., 1.)))
       ctx |> set_color(labelColor)
       ctx |> set_font(data.fontId, 0, 0)
-      ctx |> set_font_ht(labelFontSize);
+      ctx |> set_font_ht(labelFontSize)
       let str = "MRK A"
       let strBox = get_str_bbox(str, str |> length(), fctx)
       ctx |> goto_xy(hmdPos.x - strBox.width.x * 0.5, hmdPos.y + strBox.width.y + size + ctx |> hdpx(5.))
@@ -238,7 +238,7 @@ def draw_plane_marks(var ctx : GuiContext&; rdata : ElemRenderData& const; data 
 
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(labelFontSize);
+  ctx |> set_font_ht(labelFontSize)
   foreach_targets() <| $(var unit)
     if unit != null && !unit.isDelayed && (!unit.isFarAway || !unit.isFarAwayForSensors) && unit != hero && unit.army == hero.army
       var screenPos : float2
@@ -257,7 +257,7 @@ def draw_plane_marks(var ctx : GuiContext&; rdata : ElemRenderData& const; data 
 
 def draw_laser_indicator(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; fmw : FlightModelWrap?)
   var aimLock : float3
-  if get_point_of_interest(aimLock) || fmw.sightMode >= int(CockpitSightMode HUD_SIGHT_MODE_GROUND_CANNONS)
+  if get_point_of_interest(aimLock) || fmw.sightMode >= int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_CANNONS)
     let str = "*"
     ctx |> set_color(data.color)
     ctx |> goto_xy(rdata.pos.x + rdata.size.x * 0.375, rdata.pos.y + rdata.size.y * 0.58)

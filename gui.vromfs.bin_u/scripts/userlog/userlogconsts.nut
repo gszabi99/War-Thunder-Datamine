@@ -8,4 +8,16 @@ enum USERLOG_POPUP {
   NONE                  = 0x0000
 }
 
-return { USERLOG_POPUP }
+let hiddenUserlogs = [
+  EULT_NEW_STREAK,
+  EULT_SESSION_START,
+  EULT_WW_START_OPERATION,
+  EULT_WW_CREATE_OPERATION,
+  EULT_WW_END_OPERATION,
+  EULT_WW_AWARD
+]
+
+return {
+  USERLOG_POPUP
+  hiddenUserlogs
+}

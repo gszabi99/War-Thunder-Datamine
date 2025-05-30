@@ -11,7 +11,7 @@ let { requestUnknownXboxIds } = require("%scripts/contacts/externalContactsServi
 let { findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let { isInFlight } = require("gameplayBinding")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { add_msg_box } = require("%sqDagui/framework/msgBox.nut")
 let { quitMission } = require("%scripts/hud/startHud.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
@@ -150,7 +150,7 @@ function requestXboxPlayerAndDo(xuid, cb) {
 function onSystemInviteAccept(xuid) {
   logX($"onSquadInviteAccept: sender {xuid}")
 
-  if (!isLoggedIn.get() || !isInMenu()) {
+  if (!isLoggedIn.get() || !isInMenu.get()) {
     postponedInvitation(xuid)
     logX($"postpone invite accept, while not in menu")
     if (isInFlight()) {

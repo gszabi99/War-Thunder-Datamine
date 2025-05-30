@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { floor } = require("math")
@@ -10,6 +10,8 @@ let { getCrewSpText } = require("%scripts/crew/crewPointsText.nut")
 let { getCrewCountry, getCrewButtonRow } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { showDiscount } = require("%scripts/discounts/discountUtils.nut")
+let { getSkillPointsPacks } = require("%scripts/crew/crewPoints.nut")
+let { buySkillPointsPack } = require("%scripts/crew/crewPointsBuyActions.nut")
 
 gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -19,7 +21,7 @@ gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   crew = null
 
   function initScreen() {
-    this.buyPointsPacks = ::g_crew_points.getSkillPointsPacks(getCrewCountry(this.crew))
+    this.buyPointsPacks = getSkillPointsPacks(getCrewCountry(this.crew))
     this.scene.findObject("wnd_title").setValue(loc("mainmenu/btnBuySkillPoints"))
 
     let rootObj = this.scene.findObject("wnd_frame")
@@ -93,7 +95,7 @@ gui_handlers.CrewBuyPointsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!(row in this.buyPointsPacks))
       return
 
-    ::g_crew_points.buyPack(this.crew, this.buyPointsPacks[row],
+    buySkillPointsPack(this.crew, this.buyPointsPacks[row],
       Callback(this.goBack, this),
       Callback(@() move_mouse_on_child(this.scene.findObject("buy_table"), row), this))
   }

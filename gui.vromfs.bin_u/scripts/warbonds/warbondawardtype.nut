@@ -19,10 +19,6 @@ let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getFullWPIcon } = require("%scripts/items/prizesView.nut")
 
-::g_wb_award_type <- {
-  types = []
-}
-
 function requestBuyByName(warbond, blk) {
   let reqBlk = DataBlock()
   reqBlk.warbond = warbond.id
@@ -47,43 +43,6 @@ let getBoughtCountByName = @(warbond, blk)
   get_warbond_item_bought_count_with_name(warbond.id, warbond.listId, blk?.type, blk?.name ?? "")
 local getBoughtCountByAmount = @(warbond, blk)
   get_warbond_item_bought_count_with_amount(warbond.id, warbond.listId, blk?.type, blk?.amount ?? 1)
-
-
-::g_wb_award_type.template <- {
-  id = EWBAT_INVALID 
-  getLayeredImage = function(_blk, _warbond) { return "" }
-  getContentIconData = function(_blk) { return null } 
-  getIconHeaderText = function(_blk) { return null }
-  getTooltipId = @(_blk, _warbond) null 
-
-  hasCommonDesc = true
-  getNameText = function(_blk) { return "" }
-  getDescText = function(_blk) { return "" }
-  getDescriptionImage = function(blk, warbond) { return this.getLayeredImage(blk, warbond) }
-  getDescItem = function(_blk) { return null } 
-
-  canPreview = @(_blk) false
-  doPreview = @(_blk) null
-
-  requestBuy = requestBuyByName 
-  getBoughtCount = getBoughtCountByName 
-  canBuy = @(_warbond, _blk) true
-  getMaxBoughtCount = @(_warbond, blk) blk?.maxBoughtCount ?? 0
-  showAvailableAmount = true
-
-  isReqSpecialTasks = false
-  hasIncreasingLimit = false
-  canBuyReasonLocId = @(_warbond, _blk) this.isReqSpecialTasks ? "item/specialTasksPersonalUnlocks/purchaseRestriction" : ""
-  userlogResourceTypeText = ""
-  getUserlogBuyText = function(blk, priceText) {
-    if (priceText != "")
-      priceText = loc("ui/parentheses/space", { text = priceText })
-    return "".concat(this.getUserlogBuyTextBase(blk), priceText)
-  }
-  getUserlogBuyTextBase = function(blk) {
-    return format("".concat(loc("userlog/buy_resource/", this.userlogResourceTypeText)), this.getNameText(blk))
-  }
-}
 
 let makeWbAwardItem = function(changesTbl = null) {
   let res = {
@@ -126,7 +85,52 @@ let makeWbAwardItem = function(changesTbl = null) {
   return res
 }
 
-enums.addTypesByGlobalName("g_wb_award_type", {
+let warBondAwardType = {
+  types = []
+
+  template = {
+    id = EWBAT_INVALID 
+    getLayeredImage = function(_blk, _warbond) { return "" }
+    getContentIconData = function(_blk) { return null } 
+    getIconHeaderText = function(_blk) { return null }
+    getTooltipId = @(_blk, _warbond) null 
+
+    hasCommonDesc = true
+    getNameText = function(_blk) { return "" }
+    getDescText = function(_blk) { return "" }
+    getDescriptionImage = function(blk, warbond) { return this.getLayeredImage(blk, warbond) }
+    getDescItem = function(_blk) { return null } 
+
+    canPreview = @(_blk) false
+    doPreview = @(_blk) null
+
+    requestBuy = requestBuyByName 
+    getBoughtCount = getBoughtCountByName 
+    canBuy = @(_warbond, _blk) true
+    getMaxBoughtCount = @(_warbond, blk) blk?.maxBoughtCount ?? 0
+    showAvailableAmount = true
+
+    isReqSpecialTasks = false
+    hasIncreasingLimit = false
+    canBuyReasonLocId = @(_warbond, _blk) this.isReqSpecialTasks ? "item/specialTasksPersonalUnlocks/purchaseRestriction" : ""
+    userlogResourceTypeText = ""
+    getUserlogBuyText = function(blk, priceText) {
+      if (priceText != "")
+        priceText = loc("ui/parentheses/space", { text = priceText })
+      return "".concat(this.getUserlogBuyTextBase(blk), priceText)
+    }
+    getUserlogBuyTextBase = function(blk) {
+      return format("".concat(loc("userlog/buy_resource/", this.userlogResourceTypeText)), this.getNameText(blk))
+    }
+  }
+
+  function getTypeByBlk(blk) {
+    let typeInt = warbond_get_type_by_name(blk?.type ?? "invalid")
+    return getTblValue(typeInt, this, this[EWBAT_INVALID])
+  }
+}
+
+enums.addTypes(warBondAwardType, {
   [EWBAT_INVALID] = {
     requestBuy = function(...) { return -1 }
   },
@@ -321,7 +325,4 @@ enums.addTypesByGlobalName("g_wb_award_type", {
 },
 null, "id")
 
-::g_wb_award_type.getTypeByBlk <- function getTypeByBlk(blk) {
-  let typeInt = warbond_get_type_by_name(blk?.type ?? "invalid")
-  return getTblValue(typeInt, this, this[EWBAT_INVALID])
-}
+return warBondAwardType

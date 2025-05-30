@@ -73,11 +73,11 @@ function getActionBarItemAabb(actionTypeName = null) {
   if (actionItemId == -1)
     return null
 
-  let actionObj = actionBarObj.findObject(getActionBarObjId(actionItemId))
-  if (!actionObj?.isValid())
+  let nestActionObj = actionBarObj.findObject(getActionBarObjId(actionItemId))
+  if (!nestActionObj?.isValid())
     return null
 
-  return getDaguiObjAabb(actionObj)
+  return getDaguiObjAabb(nestActionObj.findObject("itemContent"))
 }
 
 let aabbList = {
@@ -97,7 +97,9 @@ function getHudElementAabb(elemId) {
     : aabbList?[name](params)
 }
 
-::get_ingame_map_aabb <- function get_ingame_map_aabb() { return aabbList.map() }  
+registerForNativeCall("get_ingame_map_aabb", function get_ingame_map_aabb() {
+  return aabbList.map()
+})
 
 eventbus_subscribe("update_damage_panel_state", @(value) update_damage_panel_state(value))
 

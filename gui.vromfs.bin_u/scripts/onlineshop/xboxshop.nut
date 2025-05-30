@@ -2,10 +2,12 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import xboxMediaItemType
 from "%scripts/mainConsts.nut" import SEEN
 
+let { defer } = require("dagor.workcycle")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 require("%scripts/onlineShop/ingameConsoleStore.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 let { xboxProceedItems, canUseIngameShop, requestData, getShopItem
 } = require("%scripts/onlineShop/xboxShopData.nut")
@@ -20,7 +22,10 @@ let { show_marketplace, ProductKind } = require("%gdkLib/impl/store.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { updateOnlineShopDiscounts } = require("%scripts/discounts/discounts.nut")
 
 let sheetsArray = []
 xboxProceedItems.subscribe(function(val) {
@@ -115,7 +120,7 @@ gui_handlers.XboxShop <- class (gui_handlers.IngameConsoleStore) {
           itemId = this.curItem.id,
           action = "purchased"
         })
-        addTask(::update_entitlements_limited(),
+        addTask(updateEntitlementsLimited(),
           {
             showProgressBox = true
             progressBoxText = loc("charServer/checking")
@@ -123,10 +128,10 @@ gui_handlers.XboxShop <- class (gui_handlers.IngameConsoleStore) {
           Callback(function() {
             this.updateSorting()
             this.fillItemsList()
-            ::g_discount.updateOnlineShopDiscounts()
+            updateOnlineShopDiscounts()
 
             if (this.curItem.isMultiConsumable || wasPurchasePerformed)
-              ::update_gamercards()
+              updateGamercards()
           }, this)
         )
       }
@@ -135,14 +140,14 @@ gui_handlers.XboxShop <- class (gui_handlers.IngameConsoleStore) {
   }
 
   function goBack() {
-    addTask(::update_entitlements_limited(),
+    addTask(updateEntitlementsLimited(),
       {
         showProgressBox = true
         progressBoxText = loc("charServer/checking")
       },
       Callback(function() {
-        ::g_discount.updateOnlineShopDiscounts()
-        ::update_gamercards()
+        updateOnlineShopDiscounts()
+        updateGamercards()
       })
     )
 
@@ -193,17 +198,15 @@ let openIngameStoreImpl = kwarg(
 
     checkQueueAndStart(Callback(function() {
       set_xbox_on_purchase_cb(afterCloseFunc)
-      get_gui_scene().performDelayed(getroottable(),
-        function() {
-          local curItem = getShopItem(curItemId)
-          if (curItem)
-            curItem.showDetails(statsdMetric)
-          else {
-            let productKind = (chapter == "eagles") ? ProductKind.Consumable : ProductKind.Durable
-            show_marketplace(productKind, null)
-          }
+      defer(function() {
+        local curItem = getShopItem(curItemId)
+        if (curItem)
+          curItem.showDetails(statsdMetric)
+        else {
+          let productKind = (chapter == "eagles") ? ProductKind.Consumable : ProductKind.Durable
+          show_marketplace(productKind, null)
         }
-      )
+      })
     }, this), null, "isCanUseOnlineShop")
 
     return true
@@ -240,7 +243,7 @@ return {
   openIngameStore
   getEntStoreLocId
   getEntStoreIcon = @() canUseIngameShop() ? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
-  isEntStoreTopMenuItemHidden = @(...) !canUseIngameShop() || !isInMenu()
+  isEntStoreTopMenuItemHidden = @(...) !canUseIngameShop() || !isInMenu.get()
   getEntStoreUnseenIcon = @() SEEN.EXT_XBOX_SHOP
   openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({ statsdMetric = "topmenu" })
 }

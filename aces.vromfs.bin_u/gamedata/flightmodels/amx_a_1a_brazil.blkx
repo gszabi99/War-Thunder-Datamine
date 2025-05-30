@@ -2065,6 +2065,10 @@
     "sightInFov": 1.5,
     "sightOutFov": 18.0,
     "sightFov": 1.0,
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "zoomOutFov": 18.0,
     "zoomInFov": 1.5,
     "headPos": [
@@ -2340,7 +2344,84 @@
               "type": "ils_duplicate"
             },
             {
-              "type": "map"
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
             }
           ]
         },
@@ -2478,14 +2559,16 @@
         800,
         600
       ],
-      "noiseFactor": 0.04
+      "noiseFactor": 0.04,
+      "index": 1
     },
     "sightThermal": {
       "resolution": [
         500,
         300
       ],
-      "noiseFactor": 0.05
+      "noiseFactor": 0.05,
+      "index": 2
     },
     "gunnerIr": {
       "resolution": [
@@ -2522,7 +2605,8 @@
         14.0
       ],
       "opticType": "targeting",
-      "turretNo": 0
+      "turretNo": 0,
+      "nvIndex": 1
     }
   },
   "sensors": {

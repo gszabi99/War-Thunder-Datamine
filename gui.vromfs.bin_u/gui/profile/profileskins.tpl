@@ -14,22 +14,31 @@ tdiv {
         max-height:t='<<ratio>>*h'
         max-width:t='<<ratio>>*w'
         background-image:t='<<image>>'
-        status:t='<<status>>'
       }
     }
   }
 
   tdiv {
-    size:t='fw'
+    width:t='fw'
     flow:t='vertical'
     padding-left:t='5@sf/@pf'
     padding-top:t='10@sf/@pf'
-
-    profilePageTitle {
-      text-align:t='left'
-      text:t='<<unitName>>, <<skinName>>'
+    tdiv {
+      width:t='pw'
+      img {
+        background-image:t='#ui/gameuiskin#locked.svg'
+        size:t='@cIco, @cIco'
+        background-svg-size:t='@cIco, @cIco'
+        background-repeat:t='aspect-ratio'
+        display:t='<<#unlocked>>hide<</unlocked>><<^unlocked>>show<</unlocked>>'
+        valign:t='center'
+      }
+      profilePageTitle {
+        text-align:t='left'
+        text:t='<<skinName>>'
+        valign:t='center'
+      }
     }
-
     tdiv {
       width:t='pw'
       flow:t='vertical'

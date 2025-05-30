@@ -5,6 +5,7 @@ let { INVALID_ROOM_ID } = require("matching.errors")
 let { isInteger } = require("%sqStdLibs/helpers/u.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
+let { requestUsersInfo } = require("%scripts/user/usersInfoManager.nut")
 
 let sessionLobbyStatus = hardPersistWatched("sessionLobby.status", lobbyStates.NOT_IN_ROOM)
 let isInSessionLobbyEventRoom = hardPersistWatched("sessionLobby.isInEventRoom", false)
@@ -73,6 +74,12 @@ let getSessionLobbyMembers = @() SessionLobbyState.members
 let getSessionLobbyMyState = @() SessionLobbyState.myState
 let getIsSpectatorSelectLocked = @() SessionLobbyState.isSpectatorSelectLocked
 
+function preloadUsersInfoForTooltips() {
+  let usersIds = SessionLobbyState.playersInfo.keys()
+    .map(@(id) id.tostring())
+  requestUsersInfo(usersIds)
+}
+
 function updateSessionLobbyPlayersInfo() {
   
   if ("players_info" in SessionLobbyState.settings) {
@@ -82,6 +89,7 @@ function updateSessionLobbyPlayersInfo() {
       SessionLobbyState.playersInfo[pinfo.id] <- pinfo
       playersInfoByNames[pinfo.name] <- pinfo
     }
+    preloadUsersInfoForTooltips()
     return
   }
 
@@ -98,6 +106,7 @@ function updateSessionLobbyPlayersInfo() {
       playersInfoByNames[pinfo.name] <- pinfo
     }
   }
+  preloadUsersInfoForTooltips()
 }
 
 function resetSessionLobbyPlayersInfo() {

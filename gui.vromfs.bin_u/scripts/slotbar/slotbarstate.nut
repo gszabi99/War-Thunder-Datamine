@@ -1,59 +1,34 @@
 from "%scripts/dagui_natives.nut" import is_default_aircraft
 from "%scripts/dagui_library.nut" import *
 
-let DataBlock = require("DataBlock")
-let { getShowedUnitName } = require("%scripts/slotbar/playerCurUnit.nut")
 let { get_game_mode } = require("mission")
 let { isInFlight } = require("gameplayBinding")
-let { appendOnce } = require("%sqStdLibs/helpers/u.nut")
-let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
-let { isCrewLockedByPrevBattle, getCrewUnlockTime, getCrewByAir } = require("%scripts/crew/crewInfo.nut")
+let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { loadLocalByAccount, saveLocalByAccount
-} = require("%scripts/clientState/localProfileDeprecated.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
-let { isUnitInSlotbar, isUnitAvailableForGM } = require("%scripts/unit/unitStatus.nut")
-let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { loadLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
+let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
-let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { canChangeCrewUnits, getSessionLobbyMaxRespawns } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { getMyCrewUnitsState, getBrokenUnits } = require("%scripts/slotbar/crewsListInfo.nut")
+let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
+let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
+let { getAvailableCrewId, saveSelectedCrews, selectedCrews, getReserveAircraftName, isCountrySlotbarHasUnits, ignoreTransactions } = require("%scripts/slotbar/slotbarStateData.nut")
+let { getCrewsList, invalidateCrewsList, isCrewListOverrided } = require("%scripts/slotbar/crewsList.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { batchTrainCrew } = require("%scripts/crew/crewTrain.nut")
+let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
-let selectedCrews = persist("selectedCrews", @() [])
-
-function getCrewsListByCountry(country) {
-  foreach (countryData in ::g_crews_list.getCrewsList())
-    if (countryData.country == country)
-      return countryData.crews
-  return []
-}
-
-function isCountrySlotbarHasUnits(countryId) {
-  return getCrewsListByCountry(countryId).findvalue(@(crew) getCrewUnit(crew) != null) != null
-}
-
-function getAvailableCrewId(countryId) {
-  local id = -1
-  let curUnitId = getShowedUnitName()
-  foreach (idx, crew in (::g_crews_list.getCrewsList()?[countryId].crews ?? [])) {
-    if (("aircraft" not in crew) || crew.aircraft == "")
-      continue
-
-    if (crew.aircraft == curUnitId) {
-      id = idx
-      break
-    }
-    if (id < 0)
-      id = idx
-  }
-  return id
-}
+local isInFlightCrewsList = isInFlight()
+local isSlotbarUpdateSuspended = false
+local isSlotbarUpdateRequired = false
+local isReinitSlotbarsInProgress = false
 
 function selectAvailableCrew(countryId) {
   local isAnyUnitInSlotbar = false
-  if ((countryId in ::g_crews_list.getCrewsList()) && (countryId in selectedCrews)) {
+  if ((countryId in getCrewsList()) && (countryId in selectedCrews)) {
     local id = getAvailableCrewId(countryId)
     isAnyUnitInSlotbar = id >= 0
     selectedCrews[countryId] = max(0, id)
@@ -61,71 +36,20 @@ function selectAvailableCrew(countryId) {
   return isAnyUnitInSlotbar
 }
 
-function saveSelectedCrews() {
-  if (!isLoggedIn.get())
-    return
-
-  let blk = DataBlock()
-  foreach (cIdx, country in ::g_crews_list.getCrewsList())
-    blk[country.country] = selectedCrews?[cIdx] ?? 0
-  saveLocalByAccount("selected_crews", blk)
-}
-
-function getCrewById(id) {
-  foreach (_cId, cList in ::g_crews_list.getCrewsList())
-    if ("crews" in cList)
-      foreach (_idx, crew in cList.crews)
-       if (crew.id == id)
-         return crew
-  return null
-}
-
-function checkReserveUnit(unit, paramsTable) {
-  let country = getTblValue("country", paramsTable, "")
-  let unitType = getTblValue("unitType", paramsTable, ES_UNIT_TYPE_AIRCRAFT)
-  let ignoreUnits = getTblValue("ignoreUnits", paramsTable, [])
-  let ignoreSlotbarCheck = getTblValue("ignoreSlotbarCheck", paramsTable, false)
-
-  return (unit.shopCountry == country)
-    && (getEsUnitType(unit) == unitType || unitType == ES_UNIT_TYPE_INVALID)
-    && !isInArray(unit.name, ignoreUnits)
-    && is_default_aircraft(unit.name)
-    && unit.isBought()
-    && unit.isVisibleInShop()
-    && (ignoreSlotbarCheck || !isUnitInSlotbar(unit))
-}
-
-function getReserveAircraftName(paramsTable) {
-  let preferredCrew = getTblValue("preferredCrew", paramsTable, null)
-
-  
-  let trainedSpec = getTblValue("trainedSpec", preferredCrew, {})
-
-  foreach (unitName, _unitSpec in trainedSpec) {
-    let unit = getAircraftByName(unitName)
-    if (unit != null && checkReserveUnit(unit, paramsTable))
-      return unit.name
-  }
-
-  foreach (unit in getAllUnits())
-    if (checkReserveUnit(unit, paramsTable))
-      return unit.name
-
-  return ""
-}
-
 function initSelectedCrews(forceReload = false) {
   if (!isProfileReceived.get())
     return
 
-  if (!forceReload && (!::g_crews_list.getCrewsList().len() || selectedCrews.len() == ::g_crews_list.getCrewsList().len()))
+  let crewList = getCrewsList()
+  let crewListLen = crewList.len()
+  if (!forceReload && (!crewListLen || selectedCrews.len() == crewListLen))
     return
 
   let selCrewsBlk = loadLocalByAccount("selected_crews", null)
   local needSave = false
 
-  selectedCrews.resize(::g_crews_list.getCrewsList().len(), 0)
-  foreach (cIdx, country in ::g_crews_list.getCrewsList()) {
+  selectedCrews.resize(crewListLen, 0)
+  foreach (cIdx, country in crewList) {
     let crewIdx = selCrewsBlk?[country.country] ?? 0
     if ((country?.crews[crewIdx].aircraft ?? "") != "")
       selectedCrews[cIdx] = crewIdx
@@ -146,10 +70,31 @@ function initSelectedCrews(forceReload = false) {
   broadcastEvent("CrewChanged")
 }
 
+function reinitSlotbars() {
+  if (isSlotbarUpdateSuspended) {
+    isSlotbarUpdateRequired = true
+    log("ignore reinitSlotbars: updates suspended")
+    return
+  }
+
+  isSlotbarUpdateRequired = false
+  if (isReinitSlotbarsInProgress) {
+    script_net_assert_once("reinitAllSlotbars recursion", "reinitAllSlotbars: recursive call found")
+    return
+  }
+
+  isReinitSlotbarsInProgress = true
+  initSelectedCrews(true)
+  broadcastEvent("CrewsListChanged")
+  isReinitSlotbarsInProgress = false
+}
+
+let reinitAllSlotbars = @() reinitSlotbars()
+
 function getSelSlotsData() {
   initSelectedCrews()
   let data = { slots = {}, units = {} }
-  foreach (cIdx, country in ::g_crews_list.getCrewsList()) {
+  foreach (cIdx, country in getCrewsList()) {
     local unit = getCrewUnit(country.crews?[selectedCrews[cIdx]])
     if (unit == null && isCountrySlotbarHasUnits(country.country)) {
       selectAvailableCrew(cIdx)
@@ -159,28 +104,6 @@ function getSelSlotsData() {
     data.units[country.country] <- unit?.name ?? ""
   }
   return data
-}
-
-function isCountryAllCrewsUnlockedInHangar(countryId) {
-  foreach (tbl in ::g_crews_list.getCrewsList())
-    if (tbl.country == countryId)
-      foreach (crew in tbl.crews)
-        if (isCrewLockedByPrevBattle(crew))
-          return false
-  return true
-}
-
-function getSlotbarUnitTypes(country) {
-  let res = []
-  foreach (countryData in ::g_crews_list.getCrewsList())
-    if (countryData.country == country)
-      foreach (crew in countryData.crews)
-        if (("aircraft" in crew) && crew.aircraft != "") {
-          let unit = getAircraftByName(crew.aircraft)
-          if (unit)
-            appendOnce(getEsUnitType(unit), res)
-        }
-  return res
 }
 
 function selectCrewSilentNoCheck(countryId, idInCountry) {
@@ -198,12 +121,11 @@ function selectCrew(countryId, idInCountry, airChanged = false) {
 
   selectCrewSilentNoCheck(countryId, idInCountry)
   broadcastEvent("CrewChanged")
-  ::g_squad_utils.updateMyCountryData(!isInFlight())
 }
 
 function getSelAircraftByCountry(country) {
   initSelectedCrews()
-  foreach (cIdx, c in ::g_crews_list.getCrewsList())
+  foreach (cIdx, c in getCrewsList())
     if (c.country == country)
       return getCrewUnit(c.crews?[selectedCrews[cIdx]])
   return null
@@ -222,78 +144,77 @@ function isUnitUnlockedInSlotbar(unit, crew, country, missionRules, needDbg = fa
         && getSessionLobbyMaxRespawns() == 1)
       unlocked = getCurSlotbarUnit() == unit
   }
-
   return unlocked
 }
 
-let getCrewUnlockTimeByUnit = @(unit) unit == null ? 0
- : getCrewUnlockTime(getCrewByAir(unit))
-
-let isCrewSlotEmpty = @(crew) crew?.aircraft == ""
-
-function getBestTrainedCrewIdxForUnit(unit, mustBeEmpty, compareToCrew = null) {
-  if (!unit)
-    return -1
-
-  let crews = getCrewsListByCountry(unit.shopCountry)
-  if (!crews.len())
-    return -1
-
-  local maxSpecCrewIdx = -1
-  local maxSpecCode = -1
-
-  if (compareToCrew) {
-    maxSpecCrewIdx = getTblValue("idInCountry", compareToCrew, maxSpecCrewIdx)
-    maxSpecCode = getSpecTypeByCrewAndUnit(compareToCrew, unit).code
-  }
-
-  foreach (idx, crew in crews) {
-    let specType = getSpecTypeByCrewAndUnit(crew, unit)
-    if (specType.code > maxSpecCode && (!mustBeEmpty || isCrewSlotEmpty(crew))) {
-      maxSpecCrewIdx = idx
-      maxSpecCode = specType.code
-    }
-  }
-
-  return maxSpecCrewIdx
+function flushSlotbarUpdate() {
+  isSlotbarUpdateSuspended = false
+  if (isSlotbarUpdateRequired)
+    reinitSlotbars()
 }
 
-function getFirstEmptyCrewSlot(country = null) {
-  if (!country)
-    country = profileCountrySq.value
+function suspendSlotbarUpdates() {
+  isSlotbarUpdateSuspended = true
+}
 
-  local crew = null
-  foreach (_idx, crewBlock in ::g_crews_list.getCrewsList())
-    if (crewBlock.country == country) {
-      crew = crewBlock.crews
-      break
+addListenersWithoutEnv({
+  function ProfileUpdated(p) {
+    if (p.transactionType == EATT_UPDATE_ENTITLEMENTS)
+      updateShopCountriesList()
+
+    let brokenUnitsCached = getMyCrewUnitsState().brokenAirs
+    let brokenUnitsUpdated = getBrokenUnits()
+
+    local hasRepairedUnits = false
+    foreach (unit in brokenUnitsCached) {
+      if (unit not in brokenUnitsUpdated) {
+        hasRepairedUnits = true
+        break
+      }
     }
 
-  if (crew == null)
-    return -1
+    if (isProfileReceived.get() && !isInArray(p.transactionType, ignoreTransactions)
+        && invalidateCrewsList(hasRepairedUnits) && !disableNetwork)
+      reinitSlotbars()
+  }
 
-  foreach (idx, crewBlock in crew)
-    if (isCrewSlotEmpty(crewBlock))
-      return idx
+  function UnlockedCountriesUpdate(_p) {
+    updateShopCountriesList()
+    if (isProfileReceived.get() && invalidateCrewsList())
+      reinitSlotbars()
+  }
 
-  return -1
-}
+  function LobbyIsInRoomChanged(_p) {
+    if (isCrewListOverrided.get())
+      invalidateCrewsList()
+  }
+
+  
+  SessionDestroyed = @(_p) invalidateCrewsList()
+  function OverrideSlotbarChanged(_p) {
+    if (invalidateCrewsList(true))
+      reinitSlotbars()
+  }
+  SignOut = @(_p) isSlotbarUpdateSuspended = false
+
+  function LoadingStateChange(_p) {
+    isSlotbarUpdateSuspended = false
+    if (isInFlightCrewsList == isInFlight())
+      return
+    isInFlightCrewsList = isInFlight()
+    if (invalidateCrewsList())
+      reinitSlotbars()
+  }
+}, DEFAULT_HANDLER)
 
 return {
-  isCountrySlotbarHasUnits
   getSelSlotsData
   isUnitUnlockedInSlotbar
   initSelectedCrews
-  getSelectedCrews = @(crewCountryId) selectedCrews?[crewCountryId] ?? -1
   getSelAircraftByCountry
   getCurSlotbarUnit
-  getCrewsListByCountry
-  isCountryAllCrewsUnlockedInHangar
-  getCrewById
-  getSlotbarUnitTypes
   selectCrew
-  getCrewUnlockTimeByUnit
-  getBestTrainedCrewIdxForUnit
-  getFirstEmptyCrewSlot
-  getReserveAircraftName
+  reinitAllSlotbars
+  flushSlotbarUpdate
+  suspendSlotbarUpdates
 }

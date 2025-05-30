@@ -3,15 +3,20 @@
   "projectile": {
     "_use": "ecs_no_debug",
     "active": false,
-    "proj_trace_handle": -1
+    "proj__traceHandle": -1
   },
   "projectile_physics": {
-    "projectile_phys_obj": {}
+    "proj__physObj": {}
+  },
+  "projectile_client_entity": {
+    "proj__ownerPlayerId": -1,
+    "proj__clientEntityId:u32": {}
   },
   "bullet": {
     "_use": "projectile",
     "bullet_client_lod:u8": {},
-    "bullet_component": {}
+    "bullet_component": {},
+    "bullet__penetratedEids:list<eid>": {}
   },
   "shell_delayed": {
     "shell_delayed:tag": {

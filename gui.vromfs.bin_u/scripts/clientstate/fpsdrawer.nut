@@ -6,7 +6,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let { subscribe, unsubscribe } = require("eventbus")
 let { isShowDebugInterface = @() false, is_app_loaded = @() false } = require("app") 
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 
 
 const QUALITY_COLOR_EPIC = "constantColorFps"
@@ -85,7 +85,7 @@ function updateTexts(objects, params) {
   let { fps, ping, pl, sessionId, latency, latencyA, latencyR } = params
   let fpsInt = (fps + 0.5).tointeger();
   local fpsText = ""
-  let isAllowedForPlatform = !isPlatformSony && !isPlatformXboxOne && !is_platform_android
+  let isAllowedForPlatform = !isPlatformSony && !isPlatformXbox && !is_platform_android
   let isAllowedForUser = hasFeature("FpsCounterOverride")
   if ((is_dev_version() || isAllowedForPlatform || isAllowedForUser) && fpsInt < 10000 && fpsInt > 0)
     fpsText = colorize(getFpsColor(fpsInt), format("FPS: %d", fpsInt))

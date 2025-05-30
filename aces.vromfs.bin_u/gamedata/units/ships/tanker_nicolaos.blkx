@@ -24,7 +24,7 @@
   "timeToSmoke": 300.0,
   "hasExpl": false,
   "exhaustFx": "ship_exhaust_med",
-  "explosionFx": "explosion_ship_large",
+  "explosionFx": "explosion_ship_big",
   "decorCutProps": "battleship",
   "propSplashEffects": "propSplashEffects_underwater",
   "hideNodesInDmg": {
@@ -1334,7 +1334,7 @@
       },
       {
         "name": "torpedo_explosion",
-        "lifetime": 30.0,
+        "lifetime": 20.0,
         "fx": {
           "name": "explosion_ship_small_ammo",
           "centerDmgPart": false,
@@ -1343,7 +1343,7 @@
       },
       {
         "name": "ready_use_ammo_fire",
-        "lifetime": 30.0,
+        "lifetime": 60.0,
         "fx": {
           "name": "ship_fire_huge",
           "centerDmgPart": true,
@@ -1352,9 +1352,9 @@
       },
       {
         "name": "ready_use_ammo_explosion",
-        "lifetime": 30.0,
+        "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_small_ammo",
+          "name": "explosion_ship_medium_ammo_aux",
           "centerDmgPart": false,
           "isFireBurnMark": false
         }
@@ -1364,22 +1364,22 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_01",
             "isFireBurnMark": false
           },
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big",
             "emitter": "emtr_fire_ammo_02",
             "isFireBurnMark": false
           },
           {
-            "name": "explosion_ship_large_ammo",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_03",
             "isFireBurnMark": false
           },
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_second",
             "emitter": "emtr_fire_ammo_04",
             "isFireBurnMark": false
           },
@@ -1754,85 +1754,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large",
-            "emitter": "emtr_explosion_center_01",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "explosion_ship_large_second",
-            "emitter": "emtr_explosion_center_02",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "explosion_ship_large_second",
-            "emitter": "emtr_explosion_center_03",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_01"
-          },
-          {
-            "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_02"
-          },
-          {
-            "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_03"
-          }
-        ],
-        "wreckages": {
-          "count": 8,
-          "speed": 60.0,
-          "angle": 70.0,
-          "fxName": "fire_trails_explosion_big"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 20.0,
-        "fx": [
-          {
-            "name": "explosion_ship_large_ammo",
-            "emitter": "emtr_explosion_center_01",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "explosion_ship_large_ammo_second",
-            "emitter": "emtr_explosion_center_02",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "explosion_ship_large_ammo_second",
-            "emitter": "emtr_explosion_center_03",
-            "isFireBurnMark": false
-          },
-          {
-            "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_01"
-          },
-          {
-            "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_02"
-          },
-          {
-            "name": "underwater_explosion_sub",
-            "emitter": "emtr_explosion_center_03"
-          }
-        ],
-        "wreckages": {
-          "count": 12,
-          "speed": 60.0,
-          "angle": 70.0,
-          "fxName": "fire_trails_explosion_big"
-        }
-      },
-      {
-        "name": "big_bang",
-        "lifetime": 20.0,
-        "fx": [
-          {
-            "name": "explosion_ship_large",
+            "name": "explosion_ship_big",
             "emitter": "emtr_explosion_center_01",
             "isFireBurnMark": false
           },
@@ -1859,18 +1781,156 @@
             "emitter": "emtr_explosion_center_03"
           }
         ],
-        "wreckages": {
-          "count": 14,
-          "speed": 60.0,
-          "angle": 70.0,
-          "fxName": "fire_trails_explosion_big"
-        }
+        "wreckages": [
+          {
+            "count": 5,
+            "speed": 50.0,
+            "angle": 70.0,
+            "fxName": "fire_trails_explosion_big"
+          },
+          {
+            "count": 8,
+            "speed": 70.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_med"
+          },
+          {
+            "count": 7,
+            "speed": 65.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 7,
+            "speed": 45.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 20.0,
+        "fx": [
+          {
+            "name": "explosion_ship_big",
+            "emitter": "emtr_explosion_center_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_big_ammo_aux",
+            "emitter": "emtr_explosion_center_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_big_second",
+            "emitter": "emtr_explosion_center_03",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ],
+        "wreckages": [
+          {
+            "count": 5,
+            "speed": 50.0,
+            "angle": 70.0,
+            "fxName": "fire_trails_explosion_big"
+          },
+          {
+            "count": 8,
+            "speed": 70.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_med"
+          },
+          {
+            "count": 7,
+            "speed": 65.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 7,
+            "speed": 45.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
+      },
+      {
+        "name": "big_bang",
+        "lifetime": 20.0,
+        "fx": [
+          {
+            "name": "explosion_ship_big",
+            "emitter": "emtr_explosion_center_01",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_big",
+            "emitter": "emtr_explosion_center_02",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "explosion_ship_big_ammo_aux",
+            "emitter": "emtr_explosion_center_03",
+            "isFireBurnMark": false
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_01"
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_02"
+          },
+          {
+            "name": "underwater_explosion_sub",
+            "emitter": "emtr_explosion_center_03"
+          }
+        ],
+        "wreckages": [
+          {
+            "count": 5,
+            "speed": 50.0,
+            "angle": 70.0,
+            "fxName": "fire_trails_explosion_big"
+          },
+          {
+            "count": 8,
+            "speed": 70.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_med"
+          },
+          {
+            "count": 7,
+            "speed": 65.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 7,
+            "speed": 45.0,
+            "angle": 80.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "ammo_fire_1",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_01",
           "isFireBurnMark": false
         }
@@ -1879,7 +1939,7 @@
         "name": "ammo_fire_2",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_02",
           "isFireBurnMark": false
         }
@@ -1888,7 +1948,7 @@
         "name": "ammo_fire_3",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_03",
           "isFireBurnMark": false
         }
@@ -1897,7 +1957,7 @@
         "name": "ammo_fire_4",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_04",
           "isFireBurnMark": false
         }
@@ -1906,7 +1966,7 @@
         "name": "ammo_fire_5",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_05",
           "isFireBurnMark": false
         }
@@ -1915,7 +1975,7 @@
         "name": "ammo_fire_6",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_fire",
           "emitter": "emtr_fire_ammo_06",
           "isFireBurnMark": false
         }
@@ -1925,7 +1985,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_01",
             "isFireBurnMark": false
           },
@@ -1940,7 +2000,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_02",
             "isFireBurnMark": false
           },
@@ -1955,7 +2015,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_03",
             "isFireBurnMark": false
           },
@@ -1970,7 +2030,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_04",
             "isFireBurnMark": false
           },
@@ -1985,7 +2045,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_05",
             "isFireBurnMark": false
           },
@@ -2000,7 +2060,7 @@
         "lifetime": 20.0,
         "fx": [
           {
-            "name": "explosion_ship_large_ammo_second",
+            "name": "explosion_ship_big_ammo",
             "emitter": "emtr_fire_ammo_06",
             "isFireBurnMark": false
           },
@@ -2014,7 +2074,7 @@
         "name": "ammo_aux_fire_1",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_small_ammo_second",
+          "name": "explosion_ship_big_ammo_aux_fire",
           "emitter": "emtr_fire_ammo_01"
         }
       },
@@ -2022,7 +2082,7 @@
         "name": "ammo_aux_fire_2",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_small_ammo_second",
+          "name": "explosion_ship_big_ammo_aux_fire",
           "emitter": "emtr_fire_ammo_02"
         }
       },
@@ -2030,7 +2090,7 @@
         "name": "ammo_aux_fire_3",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_small_ammo_second",
+          "name": "explosion_ship_big_ammo_aux_fire",
           "emitter": "emtr_fire_ammo_03"
         }
       },
@@ -2038,7 +2098,7 @@
         "name": "ammo_aux_fire_4",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_small_ammo_second",
+          "name": "explosion_ship_big_ammo_aux_fire",
           "emitter": "emtr_fire_ammo_04"
         }
       },
@@ -2046,7 +2106,7 @@
         "name": "ammo_aux_explosion_1",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_aux",
           "emitter": "emtr_fire_ammo_01"
         }
       },
@@ -2054,7 +2114,7 @@
         "name": "ammo_aux_explosion_2",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_aux",
           "emitter": "emtr_fire_ammo_02"
         }
       },
@@ -2062,7 +2122,7 @@
         "name": "ammo_aux_explosion_3",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_aux",
           "emitter": "emtr_fire_ammo_03"
         }
       },
@@ -2070,7 +2130,7 @@
         "name": "ammo_aux_explosion_4",
         "lifetime": 20.0,
         "fx": {
-          "name": "explosion_ship_big_ammo_second",
+          "name": "explosion_ship_big_ammo_aux",
           "emitter": "emtr_fire_ammo_04"
         }
       },
@@ -2163,6 +2223,34 @@
     "bowSplashUpDirMult": 4.0,
     "bowSplashSpawnRate": 1.0,
     "bowSplashNormalMult": 2.0
+  },
+  "shipSinkingFx": {
+    "emit": [
+      {
+        "fx": "water_ship_sinking_big",
+        "pos": [
+          0.0,
+          0.2,
+          0.0
+        ]
+      },
+      {
+        "fx": "water_ship_sinking_big_second",
+        "pos": [
+          0.27,
+          0.2,
+          0.0
+        ]
+      },
+      {
+        "fx": "water_ship_sinking_big_second",
+        "pos": [
+          -0.27,
+          0.2,
+          0.0
+        ]
+      }
+    ]
   },
   "breaches": {
     "repairSpeed": 50.0,

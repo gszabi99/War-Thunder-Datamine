@@ -226,11 +226,6 @@ addListenersWithoutEnv({
 
 eventbus_subscribe("on_dl_content_skins_invalidate", @(_) invalidateCache())
 
-
-eventbus_subscribe("update_unit_skins_list", function update_unit_skins_list(evt) {
-  getAircraftByName(evt.unitName)?.resetSkins()
-})
-
 return {
   getDecorator
   getDecoratorById

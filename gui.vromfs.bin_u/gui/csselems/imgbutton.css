@@ -178,6 +178,24 @@ LockedImg[statusLock=country] {
   size:@lIco,@lIco;
   background-color:@white;
 }
+LockedImg[statusLock=gold] {
+  size:0,@cIco;
+  size:0,0;
+  pos:pw-w-2@sf/@pf, ph-h-4@sf/@pf;
+}
+
+LockedImg[statusLock=gold] > textarea {
+  position:relative;
+  pos:-w,-h;
+}
+
+LockedImg[statusLock=market] {
+  pos:pw-w-4@sf/@pf, ph-h-4@sf/@pf;
+  size:@cIco, @cIco;
+  background-color:@white;
+  background-image:#ui/gameuiskin#gc.svg;
+  background-svg-size:@cIco, @cIco;
+}
 
 img[click_to_resize] {
   tooltip:#click_to_view_image;

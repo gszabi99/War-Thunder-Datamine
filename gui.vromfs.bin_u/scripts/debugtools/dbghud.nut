@@ -4,13 +4,14 @@ from "%scripts/dagui_library.nut" import *
 let { g_hud_tutorial_elements } = require("%scripts/hud/hudTutorialElements.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
 let { frnd, rnd } = require("dagor.random")
-let { HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG } = require("hudMessages")
+let { HUD_MSG_OBJECTIVE, HUD_MSG_DAMAGE, HUD_MSG_MULTIPLAYER_DMG, HUD_MSG_DEATH_REASON } = require("hudMessages")
 let { getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { get_game_settings_blk } = require("blkGetters")
 let { set_in_battle_time_to_kick_show_timer, set_in_battle_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { GO_WIN, MISSION_CAPTURING_ZONE } = require("guiMission")
 let { register_command } = require("console")
 let { add_streak_message, getLocForStreak } = require("%scripts/streaks.nut")
+let { get_local_mplayer } = require("mission")
 
 local dbg_msg_obj_counter = 0
 function hud_message_objective_debug(show = true, alwaysShow = false) {
@@ -184,6 +185,58 @@ function mission_hint_remove() {
   g_hud_event_manager.onHudEvent("hint:missionHint:remove")
 }
 
+function hud_killer_card_debug() {
+  g_hud_event_manager.onHudEvent("HudMessage",
+    {
+      type = HUD_MSG_MULTIPLAYER_DMG
+      isKill = true
+      action = "kill"
+      victimPlayerId = get_local_mplayer().id
+      unitName = "Name"
+      unitType = "ship"
+      unitNameLoc = "Killer unit"
+      victimUnitName = "name"
+      victimUnitType = "ship"
+      victimUnitNameLoc = "Victim Unit"
+      killerProjectileName = "85mm_br_372"
+      playerId = 0
+    })
+
+  g_hud_event_manager.onHudEvent("HudMessage",
+    {
+      type = HUD_MSG_DEATH_REASON
+      id = -1
+      text = ""
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 register_command(hud_message_objective_debug, "debug.hud.message_objective_debug")
 register_command(hud_message_player_damage_debug, "debug.hud.message_player_damage_debug")
 register_command(hud_message_kill_log_debug, "debug.hud.message_kill_log_debug")
@@ -205,6 +258,15 @@ register_command(test_hint_skip_xray_shot, "debug.hud.test_hint_skip_xray_shot")
 register_command(text_hint_mission_hint_zoom, "debug.hud.text_hint_mission_hint_zoom")
 register_command(text_tutorial_hint_with_shortcuts_engine_add, "debug.hud.text_tutorial_hint_with_shortcuts_engine_add")
 register_command(mission_hint_remove, "debug.hud.mission_hint_remove")
+register_command(hud_killer_card_debug, "debug.hud.killer_card")
+
+
+
+
+
+
+
+
 
 return {
   hud_message_objective_debug

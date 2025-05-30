@@ -85,12 +85,12 @@ function onEventUserInfoManagerDataUpdated(params) {
 }
 
 function onEventUpdateExternalsIDs(params) {
-  if (!(params?.request?.uid) || !(params?.externalIds))
+  if (!(params?.request.uid) || !(params?.externalIds))
     return
 
   let config = params.externalIds
   config.uid <- params.request.uid
-  if (params?.request?.afterSuccessUpdateFunc)
+  if (params?.request.afterSuccessUpdateFunc)
     config.afterSuccessUpdateFunc <- params.request.afterSuccessUpdateFunc
 
   updateContact(config)

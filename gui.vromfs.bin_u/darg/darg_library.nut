@@ -1,6 +1,7 @@
 from "%sqstd/frp.nut" import *
 from "daRg" import *
 import "daRg.behaviors" as Behaviors
+from "%sqstd/functools.nut" import Set
 
 let {tostring_r} = require("%sqstd/string.nut")
 let {min}  = require("math")
@@ -40,9 +41,8 @@ function isDargComponent(comp) {
     return true
   if (c_type != "table" && c_type != "class")
     return false
-  let knownProps = ["size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"]
   foreach(k, _val in c) {
-    if (knownProps.contains(k))
+    if (k in Set("size","rendObj","children","watch","behavior","halign","valign","flow","pos","hplace","vplace"))
       return true
   }
   return false
@@ -54,9 +54,12 @@ let hdpx = sh(100) <= sw(75)
   ? @(pixels) sh(100.0 * pixels / 1080)
   : @(pixels) sw(75.0 * pixels / 1080)
 
-let hdpxi = @(pixels) hdpx(pixels).tointeger()
+mark_pure(hdpx)
 
-let fsh = sh(100) <= sw(75) ? sh : @(v) sw(0.75 * v)
+let hdpxi = mark_pure(@(pixels) hdpx(pixels).tointeger())
+
+let fsh = mark_pure(sh(100) <= sw(75) ? sh : @(v) sw(0.75 * v))
+
 
 let wrapParams= {width=0, flowElemProto={}, hGap=null, vGap=0, height=null, flow=FLOW_HORIZONTAL}
 function wrap(elems, params=wrapParams) {
@@ -71,13 +74,13 @@ function wrap(elems, params=wrapParams) {
   let height = params?.height ?? SIZE_TO_CONTENT
   let width = params?.width ?? SIZE_TO_CONTENT
   let dimensionLim = isFlowHor ? width : height
-  assert(["array"].indexof(type(elems))!=null, "elems should be array")
-  assert(["float","integer"].indexof(type(dimensionLim))!=null, @() "can't flow over {0} non numeric type".subst(isFlowHor ? "width" :"height"))
+  assert(type(elems)=="array", "elems should be array")
+  assert(type(dimensionLim) in {float=1,integer=1}, @() "can't flow over {0} non numeric type".subst(isFlowHor ? "width" :"height"))
   let hgap = params?.hGap ?? wrapParams?.hGap
   let vgap = params?.vGap ?? wrapParams?.vGap
   local gap = isFlowHor ? hgap : vgap
   let secondaryGap = isFlowHor ? vgap : hgap
-  if (["float","integer"].contains(type(gap)))
+  if (type(gap) in {float=1,integer=1})
     gap = isFlowHor ? freeze({size=[gap,0]}) : freeze({size=[0,gap]})
   let flowElemProto = params?.flowElemProto ?? {}
   let flowElems = []
@@ -135,12 +138,14 @@ function dump_observables() {
 }
 
 let colorPart = @(value) min(255, (value + 0.5).tointeger())
-function mul_color(color, mult) {
+function mul_color(color, mult, alpha_mult=1) {
   return Color(  colorPart(((color >> 16) & 0xff) * mult),
                  colorPart(((color >>  8) & 0xff) * mult),
                  colorPart((color & 0xff) * mult),
-                 colorPart(((color >> 24) & 0xff) * mult))
+                 colorPart(((color >> 24) & 0xff) * mult * alpha_mult))
 }
+
+mark_pure(mul_color)
 
 function XmbNode(params={}) {
   return clone params
@@ -173,4 +178,6 @@ return {
   isDargComponent
   fsh
   Behaviors
+  getWatcheds
+  Set
 }

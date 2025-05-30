@@ -19,6 +19,7 @@ let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let { mkCollapseButton } = require("airHudComponents.nut")
 let mkTankSight = require("%rGui/tankSight.nut")
+let { aaComplexMenu, isAAComplexMenuActive } = require("%rGui/antiAirComplexMenu/antiAirComplexMenu.nut")
 
 
 
@@ -106,10 +107,10 @@ function Root() {
   return {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
-    watch = [IndicatorsVisible, isBScope]
+    watch = [IndicatorsVisible, isBScope, isAAComplexMenuActive]
     size = [sw(100), sh(100)]
     children = [
-      mkRadar()
+      isAAComplexMenuActive.get() ? null : mkRadar()
       @(){
         watch = needRadarCollapsedIcon
         children = needRadarCollapsedIcon.value ? @(){
@@ -132,9 +133,11 @@ function Root() {
 
 
       @(){
-        watch = [isCollapsedRadarInReplay, isPlayingReplay]
+        watch = [isCollapsedRadarInReplay, isPlayingReplay, isAAComplexMenuActive]
         size = flex()
-        children = !isCollapsedRadarInReplay.value ?
+        children = isAAComplexMenuActive.get()
+            ? aaComplexMenu
+            : !isCollapsedRadarInReplay.value ?
         [
           radarHud(isBScope.value ? sh(40) : sh(32), isBScope.value ? sh(40) : sh(32), radarPosComputed.value[0], radarPosComputed.value[1], radarColor, true)
           isPlayingReplay.value ? mkCollapseButton([radarPosComputed.value[0] + (isBScope.value ? sh(40) : sh(32)), radarPosComputed.value[1]], isCollapsedRadarInReplay) : null

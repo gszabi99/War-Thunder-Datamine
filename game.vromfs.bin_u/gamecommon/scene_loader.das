@@ -1,6 +1,6 @@
 require ecs
 require DagorRandom
-require Level
+require level
 
 [es(on_event=EventEntityCreated)]
 def scene_loader_es(evt : Event;

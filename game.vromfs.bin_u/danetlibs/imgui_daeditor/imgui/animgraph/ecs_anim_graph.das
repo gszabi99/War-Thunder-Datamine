@@ -17,6 +17,7 @@ def ecs_anim_graph2()
 
   static_let_finalize <|
     var paramsFilter = new ImGuiTextFilter
+    var statesFilter = new ImGuiTextFilter
 
   let size = imgui::GetWindowSize()
   if size.x <= 500f || size.y <= 500f
@@ -26,7 +27,7 @@ def ecs_anim_graph2()
     var graph = animchar.animGraph
     if graph != null
       var resetState = false
-      render_anim_graph2(animchar, *graph, *animchar.animState, resetState, *paramsFilter)
+      render_anim_graph2(animchar, *graph, *animchar.animState, resetState, *paramsFilter, *statesFilter)
       if resetState
         eid |> addSubTemplate("animchar_lock_anim_state_change")
         if animchar__animState != null

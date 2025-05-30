@@ -1,22 +1,19 @@
-<<^noNeedNest>>
 actionBarItemDiv {
-  <<#nestIndex>>
-    id:t='<<nestIndex>>_nest'
-  <</nestIndex>>
+  id:t='<<id>>'
   <<^nopadding>>
     margin:t='1@hudActionBarItemOffset, 0'
     padding:t='0.003@shHud'
   <</nopadding>>
   css-hier-invalidate:t='yes';
-<</noNeedNest>>
   action_bar_item {
-    id:t='<<id>>'
+    id:t='itemContent'
     size:t='pw, ph'
     position:t='absolute'
     background-color:t='#77333333'
     selected:t='<<selected>>'
     active:t='<<active>>'
     enable:t='<<enable>>'
+    actionId:t='<<actionId>>'
     css-hier-invalidate:t='yes'
 
     behaviour:t='button'
@@ -152,6 +149,4 @@ actionBarItemDiv {
     tooltip:t='<<tooltipText>>'
     <</tooltipId>>
   }
-<<^noNeedNest>>
 }
-<</noNeedNest>>

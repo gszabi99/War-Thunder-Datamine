@@ -44,6 +44,8 @@ let BaseGuiHandler = class {
     this.initScreen()
   }
 
+  function afterBaseHandlerLoaded() {}
+
   function setParams(params) {
     foreach (name, value in params)
       if (name in this)

@@ -5,7 +5,7 @@ from "%scripts/clans/clanState.nut" import is_in_clan
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
 let { canResearchUnit } = require("%scripts/unit/unitStatus.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 
 let isAllClanUnitsResearched = @() getAllUnits().findvalue(
@@ -33,7 +33,7 @@ function needChooseClanUnitResearch() {
 }
 
 function isHaveNonApprovedClanUnitResearches() {
-  if (!isInMenu() || isAnyQueuesActive())
+  if (!isInMenu.get() || isAnyQueuesActive())
     return false
 
   return needChooseClanUnitResearch()

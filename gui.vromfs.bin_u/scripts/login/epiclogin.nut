@@ -9,6 +9,7 @@ let { setVersionText } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let { addLoginState } = require("%scripts/login/loginManager.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
+let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
 gui_handlers.LoginWndHandlerEpic <- class (gui_handlers.LoginWndHandler) {
   sceneBlkName = "%gui/loginBoxSimple.blk"
@@ -38,7 +39,7 @@ gui_handlers.LoginWndHandlerEpic <- class (gui_handlers.LoginWndHandler) {
       addLoginState(LOGIN_STATE.AUTHORIZED)
     }
     else {
-      ::error_message_box("yn1/connect_error", result,
+      showErrorMessageBox("yn1/connect_error", result,
       [
         ["exit", exitGame],
         ["tryAgain", Callback(this.doLogin, this)]

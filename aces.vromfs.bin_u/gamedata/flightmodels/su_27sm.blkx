@@ -1934,12 +1934,7 @@
     "hasAirCannonIlsMode": true,
     "isDoubleBulletImpactLine": true,
     "slotCount": 10,
-    "hmdBlockIlsArea": [
-      0.37,
-      0.05,
-      0.63,
-      0.63
-    ],
+    "hmdScreenBlockRad": 0.06,
     "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
@@ -1992,6 +1987,24 @@
       0.0
     ],
     "lightRadius2": 0.4,
+    "hmdBlock": {
+      "ils": {
+        "pos": [
+          8.8,
+          1.08,
+          -0.012
+        ],
+        "rad": 0.12
+      },
+      "full_devices": {
+        "pos": [
+          8.431,
+          0.55,
+          -0.01
+        ],
+        "rad": 0.39
+      }
+    },
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2225,10 +2238,6 @@
               "pageName": "su27Pod"
             },
             {
-              "type": "map",
-              "hideBackground": true
-            },
-            {
               "type": "target_tracking_bw",
               "turretIdx": 0
             }
@@ -2241,10 +2250,92 @@
             1.0,
             0.5
           ],
-          "page": {
-            "type": "rwr",
-            "scale": 0.75
-          }
+          "page": [
+            {
+              "type": "rwr",
+              "scale": 0.75
+            },
+            {
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 18,
+              "lineWidth": 1.0,
+              "lineColor": [
+                211,
+                211,
+                211,
+                120
+              ],
+              "orient": "hdgUp",
+              "centerMarkType": "plane",
+              "centerMarkFillColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": false,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": true,
+              "distScaleBeyondAzScale": true,
+              "distScaleStepSize": 10000.0,
+              "distScaleColor": [
+                211,
+                211,
+                211,
+                120
+              ],
+              "distScaleNumbers": true,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "lines",
+              "azScaleSize": 20000.0,
+              "azScaleColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": false,
+              "extent": 55000.0,
+              "markers": true,
+              "metricUnits": true
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2262,10 +2353,6 @@
             {
               "type": "target_tracking_bw",
               "turretIdx": 0
-            },
-            {
-              "type": "map",
-              "hideBackground": true
             },
             {
               "type": "radar",
@@ -2370,10 +2457,10 @@
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -38.0,
-        38.0,
-        -55.0,
-        38.0
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
       ],
       "opticType": "tv",
       "turretNo": 0,
@@ -3206,7 +3293,8 @@
               "emitter": "aku_58_kh_29l_001",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -3911,7 +3999,8 @@
               "emitter": "aku_58_kh_29l_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -4889,7 +4978,8 @@
               "emitter": "aku_58_kh_29l_003",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -5561,7 +5651,8 @@
               "emitter": "aku_58_kh_29l_004",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -6930,9 +7021,9 @@
   },
   "AfterBurner0": {
     "volumetricAfterBurner": {
-      "name": "jet_blue_blue_modern",
-      "maxHeight": 13.0,
-      "minHeight": 9.0,
+      "name": "_jet_su_27sm_al_31f_m1",
+      "maxHeight": 12.0,
+      "minHeight": 8.0,
       "heightNoiseStrength": 0.0,
       "heightNoiseSpeed": 20.0,
       "maxRadius": 0.38,
@@ -6952,28 +7043,30 @@
       "minOuterCylinderRadius": 0.45,
       "maxOuterCylinderRadius": 0.5,
       "absorption": 1.0,
-      "colorIntensityMax": 10.0,
+      "colorIntensityMax": 5.0,
       "colorIntensityMin": 1.0,
       "colorOverHeightMult": 0.7,
-      "colorOverDepthMult": 3.5,
-      "colorOverRadiusMult": 5.5,
+      "colorOverDepthMult": 2.0,
+      "colorOverRadiusMult": 3.0,
       "colorOverRadiusFadeOverHeight": 2.0,
       "maxRingOffset": 0.0,
       "minRingOffset": 20.0,
       "ringAbsorption": 1.2,
       "maxRingCount": 16,
       "minRingCount": 13,
+      "minStartingRingHeight": 1.677,
+      "maxStartingRingHeight": 1.641,
       "ringIntensityMin": 0.0,
-      "ringIntensityMax": 2.0,
+      "ringIntensityMax": 1.2,
       "ringIntensityNoiseStrength": 0.0,
       "ringIntensityNoiseSpeed": 1.0,
       "ringOffsetNoiseStrength": 1.0,
       "ringOffsetNoiseSpeed": 20.0,
       "rampTextureOffset": 1,
-      "radiusNoiseStrength": 0.06,
-      "radiusNoiseSpeed": 20.0,
-      "shakeNoiseStrength": 0.01,
-      "shakeNoiseSpeed": 30.0,
+      "radiusNoiseStrength": 0.1,
+      "radiusNoiseSpeed": 10.0,
+      "shakeNoiseStrength": 0.06,
+      "shakeNoiseSpeed": 20.0,
       "ringAngleFadeMult": 0.7,
       "colorOverHeightNoiseStrength": 0.1,
       "colorOverHeightNoiseSpeed": 10.0,
@@ -6983,21 +7076,23 @@
       "colorOverDepthNoiseSpeed": 10.0,
       "colorIntensityNoiseStrength": 2.0,
       "colorIntensityNoiseSpeed": 30.0,
-      "minStartingRingHeight": 0.93,
-      "maxStartingRingHeight": 0.82,
-      "ringIntensity": 2.0,
-      "ringFrequency": 11.3097,
+      "minAoABendingMult": 0.0,
+      "maxAoABendingMult": 1.4,
+      "minAoSBendingMult": 0.0,
+      "maxAoSBendingMult": 1.4,
       "preNominalEasingParams": {
-        "animationTime": 3.0,
+        "animationTime": 3.5,
         "ascendingSmoothIntensityParams": 0.7,
-        "flickerRelativTime": 0.15,
-        "flickerSpeed": 20.0
+        "flickerRelativTime": 0.33,
+        "flickerSpeed": 10.0,
+        "flickerIntensity": 1.0
       },
       "postNominalEasingParams": {
         "animationTime": 1.0,
         "ascendingSmoothIntensityParams": 1.0,
         "flickerRelativTime": 0.0,
-        "flickerSpeed": 0.0
+        "flickerSpeed": 0.0,
+        "flickerIntensity": 0.0
       },
       "lightProperties": {
         "color": [
@@ -7006,14 +7101,56 @@
           1.0
         ],
         "angle": 1.0,
-        "brightness": 20.0,
+        "brightness": 10.0,
         "radius": 20.0,
         "attenuation": 0.8,
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
-        "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.1,
+        "ignitionTextureIntensityMin": 0.01,
+        "ignitionTextureIntensityMax": 0.01,
+        "ignitionBrightnessNoiseStrength": 0.01,
         "ignitionBrightnessNoiseSpeed": 16.0
+      },
+      "NozzleFlames": {
+        "amountOfFlames": 8,
+        "radiusMult": 1.3,
+        "startOffset": 0.7,
+        "endOffsetAddition": 1.5,
+        "intensityMult": 5.0,
+        "innerCircleNoiseScale": 0.6,
+        "innerCircleNoiseStrength": 0.4,
+        "maskNoiseScale": 0.0,
+        "maskNoiseStrength": 0.0,
+        "minInnerCircleParamMult": 1.8,
+        "maxInnerCircleParamMult": 1.0,
+        "lengthNoiseSpeed": 10.0,
+        "lengthNoiseStrength": 0.3,
+        "uvNoiseMaskScale": 0.5,
+        "uvNoiseMaskStrength": 0.1,
+        "FlameMaskTextureOffset": {
+          "maskTextureOffset": [
+            0,
+            1,
+            2,
+            4,
+            4,
+            5,
+            5,
+            5
+          ]
+        },
+        "FlameRampTextureOffset": {
+          "rampTextureOffset": [
+            23,
+            23,
+            26,
+            26,
+            24,
+            24,
+            6,
+            6
+          ]
+        }
       }
     }
   }

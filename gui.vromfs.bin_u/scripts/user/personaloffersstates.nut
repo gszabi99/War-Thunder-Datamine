@@ -18,7 +18,7 @@ let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getEntitlementConfig } = require("%scripts/onlineShop/entitlements.nut")
 let { getTrophyRewardType } = require("%scripts/items/trophyReward.nut")
-let { g_discount } = require("%scripts/discounts/discounts.nut")
+let { getUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 
 let curPersonalOffer = mkWatched(persist, "curPersonalOffer", null)
 let checkedOffers = mkWatched(persist, "checkedOffers", {})
@@ -76,7 +76,7 @@ function getContentUnitDiscount(offerContent) {
   local res = 0
   foreach(offer in offerContent)
     if (getTrophyRewardType(offer) == "unit")
-      res = max(res, g_discount.getUnitDiscount(getAircraftByName(offer.unit)))
+      res = max(res, getUnitDiscount(getAircraftByName(offer.unit)))
   return res
 }
 

@@ -3,55 +3,58 @@ from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { get_time_msec } = require("dagor.time")
-let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { wwGetOperationId } = require("worldwar")
 let { WwOperationModel } = require("model/wwOperationModel.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { ArmyFlags } = require("worldwarConst")
 
-::g_operations <- {
-  operationStatusById = {}
+const UPDATE_REFRESH_DELAY = 1000
 
-  UPDATE_REFRESH_DELAY = 1000
+let operationStatusById = {}
+local lastUpdateTime = 0
+local isUpdateRequired = false
 
-  lastUpdateTime = 0
-  isUpdateRequired = false
+function getCurrentOperation() {
+  let operationId = wwGetOperationId()
+  if (!(operationId in operationStatusById))
+    operationStatusById[operationId] <- WwOperationModel()
+
+  return operationStatusById[operationId]
 }
 
-
-
-::g_operations.forcedFullUpdate <- function forcedFullUpdate() {
-  this.isUpdateRequired = true
-  this.fullUpdate()
+function getArmiesByStatus(status) {
+  return getCurrentOperation().armies.getArmiesByStatus(status)
 }
 
-::g_operations.fullUpdate <- function fullUpdate() {
-  if (!this.isUpdateRequired)
+function getArmiesCache() {
+  return getCurrentOperation().armies.armiesByStatusCache
+}
+
+function fullUpdateCurrentOperation() {
+  if (!isUpdateRequired)
     return
 
   let curTime = get_time_msec()
-  if (curTime - this.lastUpdateTime < this.UPDATE_REFRESH_DELAY)
+  if (curTime - lastUpdateTime < UPDATE_REFRESH_DELAY)
     return
 
-  this.getCurrentOperation().update()
+  getCurrentOperation().update()
 
-  this.lastUpdateTime = curTime
-  this.isUpdateRequired = false
+  lastUpdateTime = curTime
+  isUpdateRequired = false
 }
 
-::g_operations.getArmiesByStatus <- function getArmiesByStatus(status) {
-  return this.getCurrentOperation().armies.getArmiesByStatus(status)
+function forcedFullUpdateCurrentOperation() {
+  isUpdateRequired = true
+  fullUpdateCurrentOperation()
 }
 
-::g_operations.getArmiesCache <- function getArmiesCache() {
-  return this.getCurrentOperation().armies.armiesByStatusCache
-}
-
-::g_operations.getAirArmiesNumberByGroupIdx <- function getAirArmiesNumberByGroupIdx(groupIdx,
+function getAirArmiesNumberByGroupIdx(groupIdx,
   overrideUnitType) {
   local armyCount = 0
-  foreach (wwArmyByStatus in this.getArmiesCache())
+  foreach (wwArmyByStatus in getArmiesCache())
     foreach (wwArmyByGroup in wwArmyByStatus)
       foreach (wwArmy in wwArmyByGroup)
         if (wwArmy.getArmyGroupIdx() == groupIdx
@@ -63,7 +66,7 @@ let { ArmyFlags } = require("worldwarConst")
   return armyCount
 }
 
-::g_operations.getAllOperationUnitsBySide <- function getAllOperationUnitsBySide(side) {
+function getAllOperationUnitsBySide(side) {
   let operationUnits = {}
   let blk = DataBlock()
   ww_get_sides_info(blk)
@@ -83,29 +86,21 @@ let { ArmyFlags } = require("worldwarConst")
   return operationUnits
 }
 
+addListenersWithoutEnv({
+  WWFirstLoadOperation       = @(_) isUpdateRequired = true
+  WWLoadOperation            = @(_) forcedFullUpdateCurrentOperation()
+  function WWArmyPathTrackerStatus(params) {
+    let armyName = params?.army
+    getCurrentOperation().armies.updateArmyStatus(armyName)
+  }
+}, g_listener_priority.DEFAULT_HANDLER)
 
-
-::g_operations.getCurrentOperation <- function getCurrentOperation() {
-  let operationId = wwGetOperationId()
-  if (!(operationId in this.operationStatusById))
-    this.operationStatusById[operationId] <- WwOperationModel()
-
-  return this.operationStatusById[operationId]
+return {
+  getCurrentOperation
+  getArmiesByStatus
+  getArmiesCache
+  fullUpdateCurrentOperation
+  forcedFullUpdateCurrentOperation
+  getAirArmiesNumberByGroupIdx
+  getAllOperationUnitsBySide
 }
-
-
-
-::g_operations.onEventWWFirstLoadOperation <- function onEventWWFirstLoadOperation(_params) {
-  this.isUpdateRequired = true
-}
-
-::g_operations.onEventWWLoadOperation <- function onEventWWLoadOperation(_params) {
-  this.forcedFullUpdate()
-}
-
-::g_operations.onEventWWArmyPathTrackerStatus <- function onEventWWArmyPathTrackerStatus(params) {
-  let armyName = getTblValue("army", params)
-  this.getCurrentOperation().armies.updateArmyStatus(armyName)
-}
-
-subscribe_handler(::g_operations, g_listener_priority.DEFAULT_HANDLER)

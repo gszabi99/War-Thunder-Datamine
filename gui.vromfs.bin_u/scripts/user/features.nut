@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import disable_network, local_player_has_feature, has_ray_query
+from "%scripts/dagui_natives.nut" import local_player_has_feature, has_ray_query
 
 let { Watched } = require("frp")
 let { isDataBlock } = require("%sqstd/underscore.nut")
@@ -6,6 +6,8 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { platformId } = require("%sqstd/platform.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { get_game_settings_blk } = require("blkGetters")
+let mkWatched = require("%globalScripts/mkWatched.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let is_platform_windows = ["win32", "win64"].contains(platformId)
 
@@ -57,25 +59,25 @@ let defaults = Watched({
   BritainBoatsInFirstCountryChoice      = true
   BritainShipsInFirstCountryChoice      = true
   JapanAircraftsInFirstCountryChoice    = true
-  JapanTanksInFirstCountryChoice        = disable_network()
-  JapanBoatsInFirstCountryChoice        = disable_network()
-  JapanShipsInFirstCountryChoice        = disable_network()
+  JapanTanksInFirstCountryChoice        = disableNetwork
+  JapanBoatsInFirstCountryChoice        = disableNetwork
+  JapanShipsInFirstCountryChoice        = disableNetwork
   ChinaAircraftsInFirstCountryChoice    = true
   ChinaTanksInFirstCountryChoice        = true
-  ChinaBoatsInFirstCountryChoice        = disable_network()
-  ChinaShipsInFirstCountryChoice        = disable_network()
+  ChinaBoatsInFirstCountryChoice        = disableNetwork
+  ChinaShipsInFirstCountryChoice        = disableNetwork
   ItalyAircraftsInFirstCountryChoice    = true
   ItalyTanksInFirstCountryChoice        = true
-  ItalyBoatsInFirstCountryChoice        = disable_network()
-  ItalyShipsInFirstCountryChoice        = disable_network()
+  ItalyBoatsInFirstCountryChoice        = disableNetwork
+  ItalyShipsInFirstCountryChoice        = disableNetwork
   FranceAircraftsInFirstCountryChoice   = true
-  FranceTanksInFirstCountryChoice       = disable_network()
-  FranceBoatsInFirstCountryChoice       = disable_network()
-  FranceShipsInFirstCountryChoice       = disable_network()
-  DmViewerProtectionAnalysis            = disable_network()
+  FranceTanksInFirstCountryChoice       = disableNetwork
+  FranceBoatsInFirstCountryChoice       = disableNetwork
+  FranceShipsInFirstCountryChoice       = disableNetwork
+  DmViewerProtectionAnalysis            = disableNetwork
   DmViewerExternalArmorHiding           = true
 
-  Helicopters = disable_network()
+  Helicopters = disableNetwork
 
   Tribunal = false
 
@@ -108,9 +110,9 @@ let defaults = Watched({
   BuyAllModifications = false
   Packages = true
   DecalsUse = true
-  AttachablesUse = disable_network()
+  AttachablesUse = disableNetwork
   UserSkins = true
-  SkinsPreviewOnUnboughtUnits = disable_network()
+  SkinsPreviewOnUnboughtUnits = disableNetwork
   SkinAutoSelect = false
   UserMissions = true
   UserMissionsSkirmishLocal = false
@@ -120,9 +122,9 @@ let defaults = Watched({
   ServerReplay = true
   Encyclopedia = true
   Benchmark = true
-  DamageModelViewer = disable_network()
+  DamageModelViewer = disableNetwork
   ShowNextUnlockInfo = false
-  extendedReplayInfo = disable_network()
+  extendedReplayInfo = disableNetwork
   LiveBroadcast = false
   showAllUnitsRanks = false
   EarlyExitCrewUnlock = false
@@ -157,18 +159,18 @@ let defaults = Watched({
   ItemModUpgrade = false
   ModUpgradeDifference = false
 
-  BulletParamsForAirs = disable_network()
+  BulletParamsForAirs = disableNetwork
 
-  TankDetailedDamageIndicator = disable_network()
-  ShipDetailedDamageIndicator = disable_network()
+  TankDetailedDamageIndicator = disableNetwork
+  ShipDetailedDamageIndicator = disableNetwork
 
   ActiveScouting = false
 
   PromoBlocks = true
-  ShowAllPromoBlocks = disable_network()
+  ShowAllPromoBlocks = disableNetwork
   ShowAllBattleTasks = false
 
-  ExtendedCrewSkillsDescription = disable_network()
+  ExtendedCrewSkillsDescription = disableNetwork
   UnitInfo = true
   WikiUnitInfo = true
   ExpertToAce = false
@@ -176,14 +178,14 @@ let defaults = Watched({
 
   HiddenLeaderboardRows = false
   LiveStats = false
-  streakVoiceovers = disable_network()
-  SpectatorUnitDmgIndicator = disable_network()
+  streakVoiceovers = disableNetwork
+  SpectatorUnitDmgIndicator = disableNetwork
 
   ProfileMedals = true
   UserCards = true
   SlotbarShowBattleRating = true
   GlobalShowBattleRating = false
-  VideoPreview = disable_network()
+  VideoPreview = disableNetwork
 
   ClanRegions = false
   ClanAnnouncements = false
@@ -202,8 +204,8 @@ let defaults = Watched({
 
   DisableSwitchPresetOnTutorialForHotas4 = false
 
-  MissionsChapterHidden = disable_network()
-  MissionsChapterTest = disable_network()
+  MissionsChapterHidden = disableNetwork
+  MissionsChapterTest = disableNetwork
 
   ChinaForbidden = true 
   ClanBattleSeasonAvailable = true
@@ -211,9 +213,9 @@ let defaults = Watched({
   CheckTwoStepAuth = false
   CheckGaijinPass = false
 
-  AerobaticTricolorSmoke = disable_network()
+  AerobaticTricolorSmoke = disableNetwork
 
-  XRayDescription = disable_network()
+  XRayDescription = disableNetwork
 
   ControlsDeviceChoice = true
   ControlsAdvancedSettings = true
@@ -260,7 +262,7 @@ let defaults = Watched({
   FpsCounterOverride = false
   BulletAnimation = true
   BuyAllPresets = false
-  enableFollowBulletCamera = disable_network()
+  enableFollowBulletCamera = disableNetwork
   ProtectionMap = false
   CrewMap = true
   OrderAutoActivate = false
@@ -291,12 +293,17 @@ let defaults = Watched({
   optionGFXAPIVulkan = true
   optionConsolePreset = true
   ReplaySystemWindow = true
+  DevFeatures = true
 })
 
-let override = Watched({})
+let override = mkWatched(persist, "override", {})
 let cache = {}
 
 defaults.subscribe(@(...) cache.clear())
+override.subscribe(@(...) cache.clear())
+
+let setOverrideFeature = @(value, name) override.mutate(@(t) t[name] <- value)
+override.whiteListMutatorClosure(setOverrideFeature)
 
 function hasFeatureBasic(name) {
   local res = override.value?[name] ?? cache?[name]
@@ -304,7 +311,7 @@ function hasFeatureBasic(name) {
     return res
 
   res = defaults.value?[name] ?? false
-  if (!disable_network())
+  if (!disableNetwork)
     res = local_player_has_feature(name, res)
 
   cache[name] <- res
@@ -322,7 +329,6 @@ function getFeaturePack(name) {
 function hasFeature(name) {
   if (name in cache)
     return cache[name]
-
   local confirmingResult = true
   local baseName = name
   if (name.len() > 1 && name.slice(0, 1) == "!") {
@@ -364,6 +370,7 @@ return {
   defaults
   override
 
+  setOverrideFeature
   getFeaturePack
   hasFeature
   hasAllFeatures

@@ -1,9 +1,9 @@
-from "%scripts/dagui_natives.nut" import switch_gui_scene, enable_dirpad_control_mouse, get_dagui_pre_include_css_str, is_steam_big_picture, is_mouse_last_time_used, ps4_is_circle_selected_as_enter_button, set_dagui_pre_include_css_str, set_gui_vr_params, set_hud_width_limit
+from "%scripts/dagui_natives.nut" import switch_gui_scene, enable_dirpad_control_mouse, get_dagui_pre_include_css_str, is_steam_big_picture, ps4_is_circle_selected_as_enter_button, set_dagui_pre_include_css_str, set_gui_vr_params, set_hud_width_limit
 from "%scripts/dagui_library.nut" import *
 let { setAllowedControlsMask } = require("controlsMask")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager, is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
+let { handlersManager } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let colorCorrector = require("colorCorrector")
@@ -13,12 +13,12 @@ let { deferOnce } = require("dagor.workcycle")
 let { is_stereo_mode } = require("vr")
 let { get_mp_local_team } = require("mission")
 let screenInfo = require("%scripts/options/screenInfo.nut")
-let {getSafearea, is_low_width_screen, getCurrentFont, setCurrentFont} = require("%scripts/options/safeAreaMenu.nut")
+let {getSafearea, getCurrentFont, setCurrentFont} = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let gamepadIcons = require("%scripts/controls/gamepadIcons.nut")
 let focusFrame = require("%scripts/viewUtils/focusFrameWT.nut")
 let { setSceneActive, reloadDargUiScript } = require("reactiveGuiCommand")
-let { isPlatformSony, isPlatformXboxOne, targetPlatform } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox, targetPlatform } = require("%scripts/clientState/platform.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
@@ -33,7 +33,10 @@ let { blurHangar } = require("%scripts/hangar/hangarModule.nut")
 let { getMpChatControlsAllowMask } = require("%scripts/chat/mpChatState.nut")
 let { isLoggedIn, isAuthorized } = require("%appGlobals/login/loginState.nut")
 let g_font = require("%scripts/options/fonts.nut")
+let { getCurrentWaitScreen } = require("%scripts/waitScreen/waitScreen.nut")
 let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")
+let { setLastGamercardSceneIfExist } = require("%scripts/gamercard/gamercardHelpers.nut")
+let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 dagui_propid_add_name_id("has_ime")
 dagui_propid_add_name_id("platformId")
@@ -71,7 +74,7 @@ function generatePreLoadCssString() {
   let menuSafearea = getSafearea()
 
   let config = [
-    { name = "target_pc",         value = (isPlatformSony || isPlatformXboxOne) ? "no" : "yes" }
+    { name = "target_pc",         value = (isPlatformSony || isPlatformXbox) ? "no" : "yes" }
     { name = "swMain",            value = screenInfo.getMainScreenSizePx()[0].tostring() }
     { name = "_safearea_menu_w",  value = format("%.2f", menuSafearea[0]) }
     { name = "_safearea_menu_h",  value = format("%.2f", menuSafearea[1]) }
@@ -90,7 +93,7 @@ function generateColorConstantsConfig() {
     return []
 
   let cssConfig = []
-  let standardColors = !isLoggedIn.get() || !::isPlayerDedicatedSpectator()
+  let standardColors = !isLoggedIn.get() || !isPlayerDedicatedSpectator()
   let forcedColors = get_team_colors()
   let hasForcedColors = ("colorTeamA" in forcedColors) && ("colorTeamB" in forcedColors)
   local allyTeam, allyTeamColor, enemyTeamColor
@@ -252,7 +255,7 @@ handlersManager.__update({
       return
     let curHandler = this.getActiveBaseHandler()
     if (curHandler)
-      ::set_last_gc_scene_if_exist(curHandler.scene)
+      setLastGamercardSceneIfExist(curHandler.scene)
   }
 
   function animatedSwitchScene(startFunc) {
@@ -311,14 +314,14 @@ handlersManager.__update({
     let rootObj = guiScene.getRoot()
 
     
-    let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || is_steam_big_picture()
+    let hasIME = isPlatformSony || isPlatformXbox || is_platform_android || is_steam_big_picture()
     rootObj["has_ime"] = hasIME ? "yes" : "no"
     rootObj["platformId"] = targetPlatform
   }
 
 
   function calcCurrentControlsAllowMask() {
-    if (checkObj(::current_wait_screen))
+    if (checkObj(getCurrentWaitScreen()))
       return CtrlsInGui.CTRL_ALLOW_NONE
     if (is_active_msg_box_in_scene(get_cur_gui_scene()))
       return CtrlsInGui.CTRL_ALLOW_NONE
@@ -474,7 +477,7 @@ handlersManager.__update({
   function setGuiRootOptions(guiScene, forceUpdate = true) {
     let rootObj = guiScene.getRoot()
     rootObj["show_console_buttons"] = showConsoleButtons.value ? "yes" : "no" 
-    if ("ps4_is_circle_selected_as_enter_button" in getroottable() && ps4_is_circle_selected_as_enter_button())
+    if (ps4_is_circle_selected_as_enter_button())
       rootObj["swap_ab"] = "yes";
 
     if (!forceUpdate)
@@ -502,45 +505,8 @@ function gui_start_empty_screen(...) {
     guiScene.clearDelayed() 
 }
 
-function isInMenu() {
-  return !is_in_loading_screen() && !isInFlight()
-}
-
 function gui_finish_loading() {
   handlersManager.validateHandlersAfterLoading()
-}
-
-function move_mouse_on_obj(obj) { 
-  if (obj?.isValid())
-    obj.setMouseCursorOnObject()
-}
-
-function move_mouse_on_child(obj, idx = 0) { 
-  if (is_mouse_last_time_used() || !obj?.isValid() || obj.childrenCount() <= idx || idx < 0)
-    return
-  let child = obj.getChild(idx)
-  if (!child.isValid())
-    return
-  child.scrollToView()
-  get_cur_gui_scene().performDelayed({}, function() {
-    if (!child?.isValid())
-      return
-    child.setMouseCursorOnObject()
-  })
-}
-
-function move_mouse_on_child_by_value(obj) { 
-  if (obj?.isValid())
-    move_mouse_on_child(obj, obj.getValue())
-}
-
-function select_editbox(obj) {
-  if (!obj?.isValid())
-    return
-  if (is_mouse_last_time_used())
-    obj.select()
-  else
-    obj.setMouseCursorOnObject()
 }
 
 let needDebug = getFromSettingsBlk("debug/debugGamepadCursor", false)
@@ -557,12 +523,5 @@ return {
 
   loadHandler = @(handlerClass, params = {}) handlersManager.loadHandler(handlerClass, params)
   get_cur_base_gui_handler
-  is_low_width_screen
-  isInMenu
   gui_finish_loading
-  move_mouse_on_obj
-  move_mouse_on_child
-  move_mouse_on_child_by_value
-  select_editbox
-  is_in_loading_screen
 }

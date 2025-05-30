@@ -2047,11 +2047,11 @@
   },
   "cockpit": {
     "targetingPodFov": [
-      18.0,
-      1.0
+      4.0,
+      0.75
     ],
-    "sightInFov": 1.0,
-    "sightOutFov": 18.0,
+    "sightInFov": 0.75,
+    "sightOutFov": 4.0,
     "sightFov": 1.0,
     "headPos": [
       4.136,
@@ -2073,12 +2073,7 @@
       2024,
       2024
     ],
-    "hmdBlockIlsArea": [
-      0.25,
-      -0.4,
-      0.65,
-      0.75
-    ],
+    "hmdScreenBlockRad": 0.06,
     "hmdEnabledByDefault": true,
     "mirror": true,
     "mirrorPos": [
@@ -2142,6 +2137,24 @@
       0.1
     ],
     "lightRadius3": 0.25,
+    "hmdBlock": {
+      "ils": {
+        "pos": [
+          5.136,
+          1.0,
+          0.0
+        ],
+        "rad": 0.12
+      },
+      "full_devices": {
+        "pos": [
+          4.738,
+          0.483,
+          0.002
+        ],
+        "rad": 0.39
+      }
+    },
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2201,6 +2214,86 @@
               "scale": 0.83
             },
             {
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                105,
+                105,
+                105,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "triangle",
+              "centerMarkFillColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "centerMarkLineColor": [
+                0,
+                200,
+                0,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": false,
+              "spi": true,
+              "spiColor": [
+                0,
+                230,
+                230,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": true,
+              "distScaleBeyondAzScale": true,
+              "distScaleStepSize": 14000.0,
+              "distScaleColor": [
+                105,
+                105,
+                105,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "azScaleType": "line",
+              "azScaleSize": 10000.0,
+              "azScaleColor": [
+                105,
+                105,
+                105,
+                255
+              ],
+              "headingIndFillColor": [
+                105,
+                105,
+                105,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 35000.0,
+              "metricUnits": false
+            },
+            {
               "type": "ils_duplicate"
             },
             {
@@ -2215,9 +2308,6 @@
             {
               "type": "target_tracking",
               "turretIdx": 0
-            },
-            {
-              "type": "map"
             }
           ]
         },
@@ -2261,9 +2351,6 @@
             {
               "type": "custom",
               "pageName": "rafaleWpn"
-            },
-            {
-              "type": "map"
             }
           ]
         },
@@ -2286,9 +2373,6 @@
             {
               "type": "custom",
               "pageName": "rafaleWpn"
-            },
-            {
-              "type": "map"
             },
             {
               "type": "rwr",
@@ -2370,17 +2454,6 @@
                 ]
               }
             }
-          }
-        },
-        {
-          "textureArea": [
-            0.5,
-            0.75,
-            0.75,
-            1.0
-          ],
-          "page": {
-            "type": "map"
           }
         },
         {
@@ -4189,7 +4262,7 @@
   },
   "AfterBurner0": {
     "volumetricAfterBurner": {
-      "name": "jet_orange_ef_2000",
+      "name": "_jet_rafale_m88",
       "maxHeight": 9.0,
       "minHeight": 6.0,
       "heightNoiseStrength": 0.0,
@@ -4209,9 +4282,9 @@
       "outerCylinderHeightFadeNoiseStrength": 2.0,
       "outerCylinderHeightFadeNoiseSpeed": 10.0,
       "minOuterCylinderRadius": 0.3,
-      "maxOuterCylinderRadius": 0.35,
+      "maxOuterCylinderRadius": 0.33,
       "absorption": 1.0,
-      "colorIntensityMax": 10.0,
+      "colorIntensityMax": 5.0,
       "colorIntensityMin": 2.0,
       "colorOverHeightMult": 3.0,
       "colorOverDepthMult": 2.0,
@@ -4244,33 +4317,81 @@
       "colorOverDepthNoiseSpeed": 10.0,
       "colorIntensityNoiseStrength": 2.0,
       "colorIntensityNoiseSpeed": 30.0,
+      "minAoABendingMult": 0.0,
+      "maxAoABendingMult": 1.4,
+      "minAoSBendingMult": 0.0,
+      "maxAoSBendingMult": 1.4,
       "preNominalEasingParams": {
-        "animationTime": 2.0,
+        "animationTime": 3.0,
         "ascendingSmoothIntensityParams": 3.0,
         "flickerRelativTime": 0.2,
-        "flickerSpeed": 20.0
+        "flickerSpeed": 20.0,
+        "flickerIntensity": 1.0
       },
       "postNominalEasingParams": {
         "animationTime": 1.5,
         "ascendingSmoothIntensityParams": 1.0,
         "flickerRelativTime": 0.0,
-        "flickerSpeed": 0.0
+        "flickerSpeed": 0.0,
+        "flickerIntensity": 0.0
       },
       "lightProperties": {
         "color": [
           1.0,
-          0.889273,
-          0.686275
+          0.419694,
+          0.210784
         ],
         "angle": 1.0,
-        "brightness": 20.0,
+        "brightness": 8.0,
         "radius": 20.0,
         "attenuation": 0.8,
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
-        "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.1,
+        "ignitionTextureIntensityMin": 0.01,
+        "ignitionTextureIntensityMax": 0.01,
+        "ignitionBrightnessNoiseStrength": 0.01,
         "ignitionBrightnessNoiseSpeed": 16.0
+      },
+      "NozzleFlames": {
+        "amountOfFlames": 8,
+        "radiusMult": 1.2,
+        "startOffset": -0.1,
+        "endOffsetAddition": 1.3,
+        "intensityMult": 4.0,
+        "innerCircleNoiseScale": 0.5,
+        "innerCircleNoiseStrength": 0.4,
+        "maskNoiseScale": 0.0,
+        "maskNoiseStrength": 0.0,
+        "minInnerCircleParamMult": 1.5,
+        "maxInnerCircleParamMult": 1.2,
+        "lengthNoiseSpeed": 10.0,
+        "lengthNoiseStrength": 0.3,
+        "uvNoiseMaskScale": 0.4,
+        "uvNoiseMaskStrength": 0.03,
+        "FlameMaskTextureOffset": {
+          "maskTextureOffset": [
+            59,
+            60,
+            3,
+            4,
+            4,
+            5,
+            5,
+            5
+          ]
+        },
+        "FlameRampTextureOffset": {
+          "rampTextureOffset": [
+            23,
+            23,
+            23,
+            23,
+            23,
+            23,
+            23,
+            23
+          ]
+        }
       }
     }
   },

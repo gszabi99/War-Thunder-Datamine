@@ -150,14 +150,23 @@ tdiv {
     <<@previewImage>>
 
     textareaNoTab {
-      <<^hasHorizontalFlow>>
-      <<^widthByParentParent>>
-      width:t='fw'
-      <</widthByParentParent>>
-      <<#widthByParentParent>>
-      max-width:t='p.p.p.p.w -1@dIco -1@itemPadding <<#icon2>>-1@dIco<</icon2>> <<#buttonsCount>>-2@sIco*<<buttonsCount>><</buttonsCount>>'
-      <</widthByParentParent>>
-      <</hasHorizontalFlow>>
+      <<^fixedTitleWidth>>
+        <<^hasHorizontalFlow>>
+        <<^widthByParentParent>>
+        width:t='fw'
+        <</widthByParentParent>>
+        <<#widthByParentParent>>
+        max-width:t='p.p.p.p.w -1@dIco -1@itemPadding <<#icon2>>-1@dIco<</icon2>> <<#buttonsCount>>-2@sIco*<<buttonsCount>><</buttonsCount>>'
+        <</widthByParentParent>>
+        <</hasHorizontalFlow>>
+      <</fixedTitleWidth>>
+      <<#fixedTitleWidth>>
+        width:t='<<fixedTitleWidth>>'
+        height:t='1@dIco'
+        overflow:t='hidden'
+        pare-text:t='yes'
+      <</fixedTitleWidth>>
+
       pos:t='0, ph/2-h/2'; position:t='relative'
       <<#previewImage>>margin-left:t='@itemPadding'<</previewImage>>
       interactive:t='yes'

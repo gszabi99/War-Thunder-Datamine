@@ -8,10 +8,11 @@ let { get_local_custom_settings_blk } = require("blkGetters")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
 
 
 function loadLocalByAccount(path, defValue = null) {
-  if (!::should_disable_menu() && !isProfileReceived.get()) {
+  if (!shouldDisableMenu && !isProfileReceived.get()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings read: loadLocalByAccount at login state ",
       getStateDebugStr()))
@@ -38,7 +39,7 @@ function loadLocalByAccount(path, defValue = null) {
 
 
 function saveLocalByAccount(path, value, saveFunc = saveProfile) {
-  if (!::should_disable_menu() && !isProfileReceived.get()) {
+  if (!shouldDisableMenu && !isProfileReceived.get()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings read: saveLocalByAccount at login state ",
       getStateDebugStr()))

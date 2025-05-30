@@ -2,10 +2,10 @@ from "%scripts/dagui_library.nut" import *
 
 let { setUnits, getSlotItem, getCurPreset } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { batchTrainCrew } = require("%scripts/crew/crewActions.nut")
+let { batchTrainCrew } = require("%scripts/crew/crewTrain.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getCrewLevel, getMaxCrewLevel } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes } = require("%scripts/crew/crewSpecType.nut")
 

@@ -42,6 +42,7 @@ let { findItemById, findItemByUid, getInventoryItemById, refreshExtInventory,
   markInventoryUpdateDelayed, getInventoryItemByCraftedFrom
 } = require("%scripts/items/itemsManager.nut")
 let { getPrizesListView } = require("%scripts/items/prizesView.nut")
+let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 
 let emptyBlk = DataBlock()
 
@@ -135,7 +136,7 @@ let ItemExternal = class (BaseItem) {
          this.aditionalConfirmationMsg[action] <- confirmationMsg?[idx] ?? ""
     }
     this.rarity = itemRarity.get(this.itemDef?.item_quality, this.itemDef?.name_color)
-    this.shouldAutoConsume = !!itemDefDesc?.tags?.autoConsume || this.canOpenForGold()
+    this.shouldAutoConsume = !!itemDefDesc?.tags.autoConsume || this.canOpenForGold()
 
     this.link = inventoryClient.getMarketplaceItemUrl(this.id, itemDesc?.itemid) || ""
 
@@ -442,13 +443,13 @@ let ItemExternal = class (BaseItem) {
   cantConsumeYet      = @() this.isInventoryItem && this.itemDef?.tags.cantConsumeYet
   canAssemble         = @() !this.isExpired() && this.getVisibleRecipes().len() > 0
   canConvertToWarbonds = @() this.isInventoryItem && !this.isExpired() && hasFeature("ItemConvertToWarbond") && this.amount > 0 && this.getWarbondRecipe() != null
-  canDisassemble       = @() this.isInventoryItem && this.itemDef?.tags?.canBeDisassembled
+  canDisassemble       = @() this.isInventoryItem && this.itemDef?.tags.canBeDisassembled
     && !this.isExpired() && this.getDisassembleRecipe() != null
-  canBeModified           = @() this.isInventoryItem && this.itemDef?.tags?.canBeModified != null
+  canBeModified           = @() this.isInventoryItem && this.itemDef?.tags.canBeModified != null
     && !this.isExpired() && this.getModifiedRecipe() != null
   getMaxRecipesToShow = @() 1
 
-  hasMainActionDisassemble  = @() this.itemDef?.tags?.canBeDisassembled == "mainAction"
+  hasMainActionDisassemble  = @() this.itemDef?.tags.canBeDisassembled == "mainAction"
   needShowAsDisassemble     = @() this.hasMainActionDisassemble() || (this.canDisassemble() && !this.canAssemble())
 
   function getMainActionData(isShort = false, params = {}) {
@@ -812,7 +813,7 @@ let ItemExternal = class (BaseItem) {
   function getDisassembleRecipe() {
     foreach (genItemdefId in inventoryClient.getChestGeneratorItemdefIds(this.id)) {
       let gen = getItemGenerator(genItemdefId)
-      if (!gen || !gen?.tags?.isDisassemble)
+      if (!gen || !gen?.tags.isDisassemble)
         continue
       let recipes = gen.getRecipesWithComponent(this.id)
       if (recipes.len())
@@ -955,7 +956,7 @@ let ItemExternal = class (BaseItem) {
     foreach (recipe in recipes) {
       let item = getInventoryItemById(recipe.generatorId)
       if (item)
-        return item?.itemDef?.type == "delayedexchange" ? item : null
+        return item?.itemDef.type == "delayedexchange" ? item : null
     }
 
     return null
@@ -1052,7 +1053,7 @@ let ItemExternal = class (BaseItem) {
   function cancelCrafting(cb = null, params = {}) {
     let craftingItem = this.getCraftingItem()
 
-    if (!craftingItem || craftingItem?.itemDef?.type != "delayedexchange")
+    if (!craftingItem || craftingItem?.itemDef.type != "delayedexchange")
       return false
 
     
@@ -1068,7 +1069,7 @@ let ItemExternal = class (BaseItem) {
     return true
   }
 
-  isHiddenItem = @() !this.isEnabled() || this.isCraftResult() || this.itemDef?.tags?.devItem == true
+  isHiddenItem = @() !this.isEnabled() || this.isCraftResult() || this.itemDef?.tags.devItem == true
   isEnabled = @() this.requirement == null || hasFeature(this.requirement)
   function getAdditionalConfirmMessage(actionName, delimiter = "\n") {
      let locKey = this.aditionalConfirmationMsg?[actionName]
@@ -1079,7 +1080,7 @@ let ItemExternal = class (BaseItem) {
   }
 
   getCustomMissionBlk = function() {
-    let misName = this.itemDef?.tags?.canRunCustomMission
+    let misName = this.itemDef?.tags.canRunCustomMission
     if (!misName)
       return null
 
@@ -1099,7 +1100,7 @@ let ItemExternal = class (BaseItem) {
         return false
 
     let misBlk = get_meta_mission_info_by_name(this.itemDef.tags.canRunCustomMission)
-    if (misBlk?.requiredPackage != null && !::check_package_and_ask_download(misBlk.requiredPackage))
+    if (misBlk?.requiredPackage != null && !checkPackageAndAskDownload(misBlk.requiredPackage))
       return true
 
     broadcastEvent("BeforeStartCustomMission")
@@ -1117,7 +1118,7 @@ let ItemExternal = class (BaseItem) {
     let res = base.getViewData(params)
     if (res.layered_image == "")
       res.nameText <- this.getName()
-    let markPresetName = this.itemDef?.tags?.markingPreset
+    let markPresetName = this.itemDef?.tags.markingPreset
     if (!markPresetName)
       return res
 
@@ -1168,7 +1169,7 @@ let ItemExternal = class (BaseItem) {
   }
 
   function getDescriptionUnderTitle() {
-    let markPresetName = this.itemDef?.tags?.markingPreset
+    let markPresetName = this.itemDef?.tags.markingPreset
     if (!markPresetName || this.isDisguised)
       return ""
 
@@ -1184,7 +1185,7 @@ let ItemExternal = class (BaseItem) {
       return this.locIdsList
 
     this.locIdsList = this.getLocIdsListImpl()
-    let localizationPreset = this.itemDef?.tags?.customLocalizationPreset
+    let localizationPreset = this.itemDef?.tags.customLocalizationPreset
     if (localizationPreset)
       this.locIdsList.__update(getCustomLocalizationPresets(localizationPreset))
 
@@ -1210,8 +1211,8 @@ let ItemExternal = class (BaseItem) {
   })
 
   hasUsableRecipe = @() this.getVisibleRecipes().findindex(@(r) r.isUsable) != null
-  needOfferBuyAtExpiration = @() !this.isHiddenItem() && this.itemDef?.tags?.offerToBuyAtExpiration
-  isVisibleInWorkshopOnly = @() this.itemDef?.tags?.showInWorkshopOnly ?? false
+  needOfferBuyAtExpiration = @() !this.isHiddenItem() && this.itemDef?.tags.offerToBuyAtExpiration
+  isVisibleInWorkshopOnly = @() this.itemDef?.tags.showInWorkshopOnly ?? false
   getDescRecipesMarkup = @(params) getRequirementsMarkup(this.getMyRecipes(), this, params)
   getIconName = @() this.isDisguised ? this.getSmallIconName() : this.itemDef.icon_url
   hasUsableRecipeOrNotRecipes = function () {
@@ -1226,14 +1227,14 @@ let ItemExternal = class (BaseItem) {
     let substitutionItem = this.getSubstitutionItem()
     return substitutionItem != null
       ? substitutionItem.getBoostEfficiency()
-      : this.itemDef?.tags?.boostEfficiency.tointeger()
+      : this.itemDef?.tags.boostEfficiency.tointeger()
   }
 
-  getEffectOnOpenChest = @() getEffectOnOpenChestPresetById(this.itemDef?.tags?.effectOnOpenChest ?? "")
-  canCraftOnlyInCraftTree = @() this.itemDef?.tags?.canCraftOnlyInCraftTree ?? false
-  showAllowableRecipesOnly = @() this.itemDef?.tags?.showAllowableRecipesOnly ?? false
-  canRecraftFromRewardWnd = @() this.itemDef?.tags?.allowRecraftFromRewardWnd ?? false
-  getQuality = @() this.itemDef?.tags?.quality ?? "common"
+  getEffectOnOpenChest = @() getEffectOnOpenChestPresetById(this.itemDef?.tags.effectOnOpenChest ?? "")
+  canCraftOnlyInCraftTree = @() this.itemDef?.tags.canCraftOnlyInCraftTree ?? false
+  showAllowableRecipesOnly = @() this.itemDef?.tags.showAllowableRecipesOnly ?? false
+  canRecraftFromRewardWnd = @() this.itemDef?.tags.allowRecraftFromRewardWnd ?? false
+  getQuality = @() this.itemDef?.tags.quality ?? "common"
   getExpireType = @() null
   showAlwaysAsEnabledAndUnlocked = @() this.itemDef?.tags.showAlwaysAsEnabledAndUnlocked ?? false
   showAsEmptyItem = @() (this.getSubstitutionItem() ?? this).itemDef?.tags.showAsEmptyItem

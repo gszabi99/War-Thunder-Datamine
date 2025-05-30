@@ -15,8 +15,11 @@ let { init_with_ui } = require("%scripts/gdk/user.nut")
 let { login } = require("%scripts/gdk/loginState.nut")
 let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { openEulaWnd } = require("%scripts/eulaWnd.nut")
-let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { setProjectAwards } = require("%scripts/viewUtils/projectAwards.nut")
+let { showWaitScreen, closeWaitScreen } = require("%scripts/waitScreen/waitScreen.nut")
+let { is_xbox } = require("%sqstd/platform.nut")
 
 
 gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
@@ -42,7 +45,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
     let tipHint = stripTags(loc("ON_GAME_ENTER_YOU_APPLY_EULA", { sendShortcuts = "{{INPUT_BUTTON GAMEPAD_START}}"}))
     let hintBlk = "".concat("loadingHint{pos:t='50%(pw-w), 0.5ph-0.5h' position:t='absolute' width:t='2/3sw' behaviour:t='bhvHint' value:t='", tipHint, "'}")
 
-    let data = handyman.renderCached("%gui/commonParts/buttonsList.tpl", {buttons = [{
+    local buttons = [{
       id = "authorization_button"
       text = "#HUD_PRESS_A_CNT"
       shortcut = "AX"
@@ -60,16 +63,22 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
       funcName = "onChangeGamertag"
       mousePointerCenteringBelowText = true
       actionParamsMarkup = "shadeStyle:t='shadowed'"
-    },{
-      id = "show_eula_button"
-      shortcut = "start"
-      funcName = "onEulaButton"
-      delayed = true
-      visualStyle = "noBgr"
-      mousePointerCenteringBelowText = true
-      actionParamsMarkup = $"bigBoldFont:t='yes'; shadeStyle:t='shadowed'; {hintBlk}"
-      showOnSelect = "no"
-    }]})
+    }]
+
+    if (is_xbox) {
+      buttons.append({
+        id = "show_eula_button"
+        shortcut = "start"
+        funcName = "onEulaButton"
+        delayed = true
+        visualStyle = "noBgr"
+        mousePointerCenteringBelowText = true
+        actionParamsMarkup = $"bigBoldFont:t='yes'; shadeStyle:t='shadowed'; {hintBlk}"
+        showOnSelect = "no"
+      })
+    }
+
+    let data = handyman.renderCached("%gui/commonParts/buttonsList.tpl", {buttons})
 
     this.guiScene.prependWithBlk(this.scene.findObject("authorization_button_place"), data, this)
     this.updateGamertag()
@@ -86,12 +95,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
       return
 
     this.isLoginInProcess = true
-    this.loginStep1_checkGamercard()
-  }
-
-  function loginStep1_checkGamercard() {
     if (get_gamertag() == "") {
-      this.isLoginInProcess = false
       this.needAutoLogin = true
       this.onChangeGamertag()
       return
@@ -102,10 +106,10 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
 
   function performLogin() {
     this.needAutoLogin = false
-    ::show_wait_screen("msgbox/please_wait")
+    showWaitScreen("msgbox/please_wait")
     login(
       function(err_code) {
-        ::close_wait_screen()
+        closeWaitScreen()
         if (err_code == 0) { 
           if (this.shouldHideCursor)
             forceHideCursor(false)
@@ -132,6 +136,7 @@ gui_handlers.LoginWndHandlerXboxOne <- class (BaseGuiHandler) {
   }
 
   function updateGamertag() {
+    this.isLoginInProcess = false
     local text = get_gamertag()
     if (text != "")
       text = loc("xbox/playAs", { name = text })

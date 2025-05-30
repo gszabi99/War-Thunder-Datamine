@@ -15,6 +15,8 @@ let { remapAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { assignButtonWindow } = require("%scripts/controls/assignButtonWnd.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
 gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
   wndType = handlerType.MODAL
@@ -56,7 +58,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     if (checkObj(timerObj))
       timerObj.setUserData(this)
 
-    ::update_gamercards()
+    updateGamercards()
   }
 
   function reinitScreen() {
@@ -371,7 +373,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     if (!wheelObj)
       return false
 
-    foreach (item in ::shortcutsList)
+    foreach (item in shortcutsList)
       if (item.id == mWheelId) {
         let value = wheelObj.getValue()
         if (("values" in item) && (value in item.values) && (item.values[value] == "zoom")) {
@@ -426,7 +428,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
       return []
 
     let res = []
-    foreach (item in ::shortcutsList)
+    foreach (item in shortcutsList)
       if (item.type == CONTROL_TYPE.AXIS && item != this.axisItem && (checkGroup & item.checkGroup)) {
         let axis = this.curJoyParams.getAxis(item.axisIndex)
         if (curAxisId == axis.axisId)
@@ -617,7 +619,7 @@ gui_handlers.AxisControls <- class (gui_handlers.Hotkeys) {
     this.shortcuts = params.shortcuts
     this.shortcutItems = params.shortcutItems
     let axisId = this.axisItem.id
-    this.axisItem = ::shortcutsList.findvalue(@(s) s.id == axisId) ?? this.axisItem
+    this.axisItem = shortcutsList.findvalue(@(s) s.id == axisId) ?? this.axisItem
     this.reinitScreen()
   }
 }

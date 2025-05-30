@@ -714,7 +714,7 @@ let class InventoryClient {
   }
 
   function updatePrice(watch, result, typeOfPrice) {
-    let itemPrices = result?.response?.itemPrices
+    let itemPrices = result?.response.itemPrices
     if (!u.isArray(itemPrices)) {
       notifyPricesChanged()
       return

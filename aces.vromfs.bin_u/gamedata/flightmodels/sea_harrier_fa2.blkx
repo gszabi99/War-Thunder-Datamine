@@ -1903,7 +1903,11 @@
       3.0,
       0.3
     ],
-    "isDoubleBulletImpactLine": true,
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
+    "isDoubleBulletImpactLine": false,
     "hasAirCannonIlsMode": true,
     "hasAAMRocketMode": true,
     "mirror": true,
@@ -2155,7 +2159,84 @@
               "type": "ils_duplicate"
             },
             {
-              "type": "map"
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
             },
             {
               "type": "radar",
@@ -2213,46 +2294,133 @@
             0.5,
             0.4
           ],
-          "page": {
-            "type": "radar",
-            "scale": 0.92,
-            "hideBackground": true,
-            "hasAviaHorizont": true,
-            "hideBeam": false,
-            "beamShape": "caret",
-            "fontScale": 0.65,
-            "lineColor": [
-              0,
-              255,
-              7
-            ],
-            "targetForm": "square",
-            "modeColor": [
-              0,
-              255,
-              7
-            ],
-            "verAngleColor": [
-              0,
-              255,
-              7
-            ],
-            "horAngleColor": [
-              0,
-              255,
-              7
-            ],
-            "scaleColor": [
-              0,
-              255,
-              7
-            ],
-            "targetColor": [
-              0,
-              255,
-              7
-            ]
-          }
+          "page": [
+            {
+              "type": "radar",
+              "scale": 0.92,
+              "font": "usa_ils",
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "targetForm": "square",
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "centerRadar": true
+            },
+            {
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
+            },
+            {
+              "type": "ils_duplicate"
+            }
+          ]
         },
         {
           "textureArea": [

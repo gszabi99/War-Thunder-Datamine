@@ -4,8 +4,9 @@ let { register_command, command } = require("console")
 let { object_to_json_string } = require("json")
 let { get_wpcost_blk } = require("blkGetters")
 let { file } = require("io")
+let { getUnitFileName } = require("vehicleModel")
 let { DM_VIEWER_NONE, DM_VIEWER_XRAY } = require("hangar")
-let { mkpath } = require("dagor.fs")
+let { mkpath, file_exists } = require("dagor.fs")
 let { get_time_msec } = require("dagor.time")
 let { setInterval, clearTimer } = require("dagor.workcycle")
 let { eachBlock } = require("%sqstd/datablock.nut")
@@ -101,7 +102,7 @@ function loadAllItemsAndDo(params, onFinishCb) {
       return
     if (unitsBlacklist?.contains(unitName) ?? false)
       return
-    if (!getAircraftByName(unitName)?.isInShop)
+    if (!getAircraftByName(unitName)?.isInShop || !file_exists(getUnitFileName(unitName)))
       return
     loadAllItemsProgress.todo.append(unitName)
   })

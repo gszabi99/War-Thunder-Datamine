@@ -2,7 +2,8 @@ from "%scripts/dagui_natives.nut" import char_send_blk
 from "%scripts/dagui_library.nut" import *
 
 let { eventbus_subscribe } = require("eventbus")
-let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { isDataBlock, isString, isEmpty, isTable, search } = require("%sqStdLibs/helpers/u.nut")
@@ -190,7 +191,7 @@ function canInteractWithDifficulty(task) {
   return showAllTasks || canPlayerInteractWithDifficulty(diff, currentTasksArray)
 }
 
-let canActivateSpecialTask = @() isInMenu()
+let canActivateSpecialTask = @() isInMenu.get()
   && search(proposedTasksArray, isSpecialBattleTask) != null
   && search(activeTasksArray, isSpecialBattleTask) == null
 
@@ -474,7 +475,7 @@ function updateTasksData() {
   currentTasksArray.sort(compareBattleTasks)
   activeTasksArray.sort(compareBattleTasks)
 
-  if (isInMenu())
+  if (isInMenu.get())
     checkNewSpecialTasks()
 
   updateCompleteTaskWatched()

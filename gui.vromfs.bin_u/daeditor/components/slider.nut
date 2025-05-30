@@ -49,7 +49,7 @@ function slider(orient, var, options={}) {
       rendObj = ROBJ_SOLID
       size  = [fsh(1), fsh(2)]
       group = group
-      color = calcKnobColor(knobStateFlags.value)
+      color = calcKnobColor(knobStateFlags.get())
       watch = knobStateFlags
       onElemState = @(sf) knobStateFlags.update(sf)
     }
@@ -66,17 +66,17 @@ function slider(orient, var, options={}) {
     hotkeys = [
       ["Left | J:D.Left", sliderLeftLoc, function() {
         let delta = maxval > minval ? -pageScroll : pageScroll
-        onChange(math.clamp(scaling.to(var.value + delta, minval, maxval), 0, 1))
+        onChange(math.clamp(scaling.to(var.get() + delta, minval, maxval), 0, 1))
       }],
       ["Right | J:D.Right", sliderRightLoc, function() {
         let delta = maxval > minval ? pageScroll : -pageScroll
-        onChange(math.clamp(scaling.to(var.value + delta, minval, maxval), 0, 1))
+        onChange(math.clamp(scaling.to(var.get() + delta, minval, maxval), 0, 1))
       }],
     ]
   }
 
   return function() {
-    let factor = math.clamp(scaling.to(var.value, minval, maxval), 0, 1)
+    let factor = math.clamp(scaling.to(var.get(), minval, maxval), 0, 1)
     return {
       size = flex()
       behavior = Behaviors.Slider
@@ -104,12 +104,12 @@ function slider(orient, var, options={}) {
         {
           group = group
           rendObj = ROBJ_SOLID
-          color = (sliderStateFlags.value & S_HOVER) ? colors.TextHighlight : colors.TextDefault
+          color = (sliderStateFlags.get() & S_HOVER) ? colors.TextHighlight : colors.TextDefault
           size = [flex(factor), fsh(1)]
 
           children = {
             rendObj = ROBJ_FRAME
-            color = calcFrameColor(sliderStateFlags.value)
+            color = calcFrameColor(sliderStateFlags.get())
             borderWidth = [hdpx(1),0,hdpx(1),hdpx(1)]
             size = flex()
           }
@@ -123,12 +123,12 @@ function slider(orient, var, options={}) {
 
           children = {
             rendObj = ROBJ_FRAME
-            color = calcFrameColor(sliderStateFlags.value)
+            color = calcFrameColor(sliderStateFlags.get())
             borderWidth = [1,1,1,0]
             size = flex()
           }
         }
-        sliderStateFlags.value & S_HOVER ? hotkeysElem  : null
+        sliderStateFlags.get() & S_HOVER ? hotkeysElem  : null
       ]
     }
   }

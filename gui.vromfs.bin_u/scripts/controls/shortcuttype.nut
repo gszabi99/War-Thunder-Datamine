@@ -3,10 +3,9 @@ from "%scripts/dagui_library.nut" import *
 let regexp2 = require("regexp2")
 let { split_by_chars } = require("string")
 let { addTypes, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
-let globalEnv = require("globalEnv")
-let { getShortcutById, isAxisBoundToMouse, getComplexAxesId,
-  isComponentsAssignedToSingleInputItem, isShortcutMapped
-} = require("%scripts/controls/shortcutsUtils.nut")
+let { ControlHelpersMode } = require("globalEnv")
+let { isAxisBoundToMouse, getComplexAxesId, isComponentsAssignedToSingleInputItem,
+  isShortcutMapped } = require("%scripts/controls/shortcutsUtils.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
 let { endsWith } = require("%sqstd/string.nut")
 let { isXInputDevice } = require("controls")
@@ -20,6 +19,7 @@ let { DoubleAxis } = require("%scripts/controls/input/doubleAxis.nut")
 let { InputImage } = require("%scripts/controls/input/image.nut")
 let { joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { getCurrentHelpersMode } = require("%scripts/controls/controlsUtils.nut")
+let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
 function getNullInput(shortcutId, showShortcutsNameIfNotAssign) {
   let nullInput = NullInput()
@@ -84,7 +84,7 @@ function isAssignedToJoyAxis(shortcutId) {
 }
 
 function isAssignedToAxis(shortcutId, showKeyBoardShortcutsForMouseAim = false) {
-  let isMouseAimMode = getCurrentHelpersMode() == globalEnv.EM_MOUSE_AIM
+  let isMouseAimMode = getCurrentHelpersMode() == ControlHelpersMode.EM_MOUSE_AIM
   if ((!showKeyBoardShortcutsForMouseAim || !isMouseAimMode)
     && isAxisBoundToMouse(shortcutId))
     return true
@@ -308,6 +308,8 @@ enumsAddTypes(g_shortcut_type, {
       helicopter_camy = @() getShortcuts(["ID_CAMERA_NEUTRAL"])
       submarine_camx  = @() getShortcuts(["ID_CAMERA_NEUTRAL"])
       submarine_camy  = @() getShortcuts(["ID_CAMERA_NEUTRAL"])
+      human_camx      = @() getShortcuts(["ID_CAMERA_NEUTRAL"])
+      human_camy      = @() getShortcuts(["ID_CAMERA_NEUTRAL"])
       
 
 

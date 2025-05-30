@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_unlock_type
 from "%scripts/dagui_library.nut" import *
 
-let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { is_bit_set } = require("%sqstd/math.nut")
 let { isBitModeType, isNestedUnlockMode, getMainConditionListPrefix,
@@ -29,6 +29,7 @@ let { activeUnlocks, getUnlockReward } = require("%scripts/unlocks/userstatUnloc
 let { fillWarbondAwardDesc } = require("%scripts/warbonds/warbondAwardView.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
+let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
 
 function mkUnlockConfigByBattleTask(task) {
   local config = buildConditionsConfig(task)
@@ -115,7 +116,7 @@ function getRewardMarkUpConfig(task, config) {
   rewardMarkUp.itemMarkUp <- $"{rewardMarkUp?.itemMarkUp ?? ""}{unlockReward.itemMarkUp}"
 
   if (difficulty == MEDIUM_TASK) {
-    let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(::g_wb_award_type[EWBAT_BATTLE_TASK])
+    let specialTaskAward = ::g_warbonds.getCurrentWarbond()?.getAwardByType(warBondAwardType[EWBAT_BATTLE_TASK])
     if (specialTaskAward?.awardType.hasIncreasingLimit) {
       let rewardText = loc("warbonds/canBuySpecialTasks/awardTitle", { count = 1 })
       reward = reward != "" ? $"{reward}\n{rewardText}" : rewardText

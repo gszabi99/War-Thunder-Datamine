@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, optionControlType
 
-let globalEnv = require("globalEnv")
+let { ControlHelpersMode } = require("globalEnv")
 let { set_gui_option } = require("guiOptions")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
@@ -103,33 +103,33 @@ function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) 
   
   if (forcedByOption == USEROPT_MOUSE_USAGE) {
     if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
-      options.helpersMode = globalEnv.EM_MOUSE_AIM
+      options.helpersMode = ControlHelpersMode.EM_MOUSE_AIM
     else
-      options.helpersMode = max(options.helpersMode, globalEnv.EM_INSTRUCTOR)
+      options.helpersMode = max(options.helpersMode, ControlHelpersMode.EM_INSTRUCTOR)
     }
   else if (USEROPT_INSTRUCTOR_ENABLED == forcedByOption) {
     if (options.instructorEnabled)
-      options.helpersMode = min(options.helpersMode, globalEnv.EM_INSTRUCTOR)
+      options.helpersMode = min(options.helpersMode, ControlHelpersMode.EM_INSTRUCTOR)
     else
-      options.helpersMode = max(options.helpersMode, globalEnv.EM_REALISTIC)
+      options.helpersMode = max(options.helpersMode, ControlHelpersMode.EM_REALISTIC)
   }
   else if (USEROPT_AUTOTRIM == forcedByOption) {
     if (options.autotrim)
-      options.helpersMode = min(options.helpersMode, globalEnv.EM_REALISTIC)
+      options.helpersMode = min(options.helpersMode, ControlHelpersMode.EM_REALISTIC)
     else
-      options.helpersMode = globalEnv.EM_FULL_REAL
+      options.helpersMode = ControlHelpersMode.EM_FULL_REAL
   }
   else if (options.helpersMode == null) {
     
     if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
-      options.helpersMode = globalEnv.EM_MOUSE_AIM
+      options.helpersMode = ControlHelpersMode.EM_MOUSE_AIM
     else if (options.autotrim == false)
-      options.helpersMode = globalEnv.EM_FULL_REAL
+      options.helpersMode = ControlHelpersMode.EM_FULL_REAL
     else if (options.instructorEnabled == false)
-      options.helpersMode = globalEnv.EM_REALISTIC
+      options.helpersMode = ControlHelpersMode.EM_REALISTIC
     else
       options.helpersMode = is_platform_android ?
-        globalEnv.EM_INSTRUCTOR : globalEnv.EM_MOUSE_AIM
+        ControlHelpersMode.EM_INSTRUCTOR : ControlHelpersMode.EM_MOUSE_AIM
   }
 
 
@@ -139,22 +139,22 @@ function onHelpersChanged(forcedByOption = null, forceUpdateFromPreset = false) 
 
   
   let helpersMode = options.helpersMode
-  if ( helpersMode == globalEnv.EM_FULL_REAL) {
+  if ( helpersMode == ControlHelpersMode.EM_FULL_REAL) {
     options.instructorEnabled = false
     options.autotrim = false
     if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
       options.mouseUsage = options.mouseUsageNoAim
   }
-  else if (helpersMode == globalEnv.EM_REALISTIC) {
+  else if (helpersMode == ControlHelpersMode.EM_REALISTIC) {
     options.instructorEnabled = false
     if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
       options.mouseUsage = options.mouseUsageNoAim
   }
-  else if (helpersMode == globalEnv.EM_INSTRUCTOR) {
+  else if (helpersMode == ControlHelpersMode.EM_INSTRUCTOR) {
     if (options.mouseUsage == AIR_MOUSE_USAGE.AIM)
       options.mouseUsage = options.mouseUsageNoAim
   }
-  else if ( helpersMode == globalEnv.EM_MOUSE_AIM) {
+  else if ( helpersMode == ControlHelpersMode.EM_MOUSE_AIM) {
     options.mouseUsage = AIR_MOUSE_USAGE.AIM
   }
 
@@ -233,10 +233,10 @@ function fillUseroptHelpersModeDescr(optionId, descr, _context) {
       tooltip = $"#options/{types[t]}/tooltip"
     })
   descr.values = [
-    globalEnv.EM_MOUSE_AIM,
-    globalEnv.EM_INSTRUCTOR,
-    globalEnv.EM_REALISTIC,
-    globalEnv.EM_FULL_REAL
+    ControlHelpersMode.EM_MOUSE_AIM,
+    ControlHelpersMode.EM_INSTRUCTOR,
+    ControlHelpersMode.EM_REALISTIC,
+    ControlHelpersMode.EM_FULL_REAL
   ]
   descr.optionCb = "onHelpersModeChange"
   descr.defaultValue = getAircraftHelpersOptionValue(optionId)
@@ -252,10 +252,10 @@ function fillUseroptHelpersModeGMDescr(_optionId, descr, _context) {
       tooltip = $"#options/{types[t]}/tank/tooltip"
     })
   descr.values = [
-    globalEnv.EM_MOUSE_AIM,
-    globalEnv.EM_INSTRUCTOR,
-    globalEnv.EM_REALISTIC,
-    globalEnv.EM_FULL_REAL
+    ControlHelpersMode.EM_MOUSE_AIM,
+    ControlHelpersMode.EM_INSTRUCTOR,
+    ControlHelpersMode.EM_REALISTIC,
+    ControlHelpersMode.EM_FULL_REAL
   ]
   descr.optionCb = "onHelpersModeChange"
   descr.defaultValue = get_option(USEROPT_HELPERS_MODE).value

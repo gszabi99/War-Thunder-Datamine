@@ -16,7 +16,7 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let events = getGlobalModule("events")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
-let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
+let { isInMenu, isInBattleState } = require("%scripts/clientState/clientStates.nut")
 let { SessionLobbyState, isInSessionRoom, isMeSessionLobbyRoomOwner, getRoomCreatorUid, isSessionStartedInRoom,
   getSessionLobbyMaxMembersCount, getSessionLobbyPlayerInfoByUid, isInSessionLobbyEventRoom, isMemberHost,
   sessionLobbyStatus
@@ -25,7 +25,6 @@ let { userIdInt64, userName, isMyUserId } = require("%scripts/user/profileStates
 let { matchingApiFunc, checkMatchingError } = require("%scripts/matching/api.nut")
 let { requestJoinRoom, serializeDyncampaign, requestCreateRoom
 } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { leaveSessionRoom, setSessionLobbySettings, switchSessionLobbyStatus, updateMemberHostParams,
   changeRoomPassword, needCheckReconnect, syncAllSessionLobbyInfo, initMyParamsByMemberInfo,
   returnStatusToRoom, checkAutoStart, destroyRoom, setLastRound, setRoomInSession, prepareSettings
@@ -46,6 +45,7 @@ let openEditBoxDialog = require("%scripts/wndLib/editBoxHandler.nut")
 let { getEventEconomicName, isEventWithLobby } = require("%scripts/events/eventInfo.nut")
 let { clearMpChatLog } = require("%scripts/chat/mpChatModel.nut")
 let { setUserPresence } = require("%scripts/userPresence.nut")
+let { updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
 
 local delayedJoinRoomFunc = null
 let isReconnectChecking = mkWatched(persist, "isReconnectChecking", false)
@@ -233,7 +233,7 @@ function afterRoomJoining(params) {
   SessionLobbyState.members = getTblValue("members", params, [])
   initMyParamsByMemberInfo()
   clearMpChatLog()
-  ::g_squad_utils.updateMyCountryData()
+  updateMyCountryData()
 
   let public = getTblValue("public", params, SessionLobbyState.settings)
   if (!isMeSessionLobbyRoomOwner.get() || isEmpty(SessionLobbyState.settings)) {
@@ -313,7 +313,7 @@ function onMemberLeave(params, kicked = false) {
       if (isMyUserId(m.userId)) {
         afterLeaveRoom()
         if (kicked) {
-          if (!isInMenu()) {
+          if (!isInMenu.get()) {
             quit_to_debriefing()
             interrupt_multiplayer(true)
             in_flight_menu(false)

@@ -3149,7 +3149,7 @@
   "sensors": {
     "sensor": [
       {
-        "blk": "gameData/sensors/su_spo-15.blk"
+        "blk": "gameData/sensors/su_spo-15lm.blk"
       },
       {
         "blk": "gameData/sensors/LaserDesignatorSensor.blk"
@@ -3478,7 +3478,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large",
-            "name": "ub_32",
+            "name": "ub_32_slot2",
             "ShowNodes": {
               "node": "pylon_1_holder"
             },
@@ -3486,12 +3486,13 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_001",
-              "external": true
+              "external": true,
+              "order": 17
             }
           },
           {
             "iconType": "nar_large",
-            "name": "s_8ko",
+            "name": "s_8ko_slot2",
             "reqModification": "mi_24_s8_block",
             "ShowNodes": {
               "node": "pylon_a_1_holder"
@@ -3500,24 +3501,25 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "b8m_001",
-              "external": true
+              "external": true,
+              "order": 17
             }
           },
           {
             "iconType": "nar_he_special",
-            "name": "c13",
+            "name": "c13_slot2",
             "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
               "emitter": "b13_001",
               "external": true,
-              "machLimit": 1.01
+              "order": 17
             }
           },
           {
             "iconType": "rockets_he_middle",
-            "name": "s_24b",
+            "name": "s_24b_slot2",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b001"
@@ -3529,12 +3531,13 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 17
             }
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25o_1",
+            "name": "s_25o_1_slot2",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -3548,7 +3551,8 @@
               "emitter": "su_s_25o_rocket_001",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 17
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25o_rocket.blk",
@@ -3557,7 +3561,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25of_1",
+            "name": "s_25of_1_slot2",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -3571,7 +3575,8 @@
               "emitter": "su_s_25o_rocket_001",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 17
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25of_rocket.blk",
@@ -3580,7 +3585,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25ofm_1",
+            "name": "s_25ofm_1_slot2",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -3594,7 +3599,8 @@
               "emitter": "su_s_25o_rocket_001",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 17
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25ofm_rocket.blk",
@@ -3603,7 +3609,7 @@
           },
           {
             "iconType": "bombs_small_group_x4",
-            "name": "fab_100",
+            "name": "fab_100_slot2",
             "ShowNodes": {
               "node": "pylon_a_1_holder"
             },
@@ -3612,13 +3618,12 @@
               "blk": "gameData/Weapons/containers/mbd2_67u_su_ofab_100_120_x4.blk",
               "emitter": "mbd2_67u_001",
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_middle",
-            "name": "fab_250",
+            "name": "fab_250_slot2",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_1_holder"
@@ -3629,13 +3634,12 @@
               "emitter": "ofab250_001",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_large",
-            "name": "fab_500",
+            "name": "fab_500_slot2",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_1_holder"
@@ -3646,13 +3650,12 @@
               "emitter": "fab_500m_62_001",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_middle_high_drag",
-            "name": "fab_250sh",
+            "name": "fab_250sh_slot2",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_1_holder"
@@ -3663,13 +3666,12 @@
               "emitter": "fab_500m_62_001",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_large_high_drag",
-            "name": "fab_500sh",
+            "name": "fab_500sh_slot2",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_1_holder"
@@ -3680,13 +3682,12 @@
               "emitter": "fab_500m_62_001",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "napalm_large",
-            "name": "zb_500",
+            "name": "zb_500_slot2",
             "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_1_holder"
@@ -3697,7 +3698,6 @@
               "emitter": "fab_500m_62_001",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           }
@@ -3710,7 +3710,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large",
-            "name": "ub_32",
+            "name": "ub_32_slot3",
             "ShowNodes": {
               "node": "pylon_2_holder"
             },
@@ -3718,12 +3718,13 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_002",
-              "external": true
+              "external": true,
+              "order": 15
             }
           },
           {
             "iconType": "nar_large",
-            "name": "s_8ko",
+            "name": "s_8ko_slot3",
             "reqModification": "mi_24_s8_block",
             "ShowNodes": {
               "node": "pylon_a_2_holder"
@@ -3732,24 +3733,25 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "b8m_002",
-              "external": true
+              "external": true,
+              "order": 15
             }
           },
           {
             "iconType": "nar_he_special",
-            "name": "c13",
+            "name": "c13_slot3",
             "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
               "emitter": "b13_002",
               "external": true,
-              "machLimit": 1.01
+              "order": 15
             }
           },
           {
             "iconType": "rockets_he_middle",
-            "name": "s_24b",
+            "name": "s_24b_slot3",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b002"
@@ -3761,12 +3763,13 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 15
             }
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25o_2",
+            "name": "s_25o_2_slot3",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -3780,7 +3783,8 @@
               "emitter": "su_s_25o_rocket_002",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 15
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25o_rocket.blk",
@@ -3789,7 +3793,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25of_2",
+            "name": "s_25of_2_slot3",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -3803,7 +3807,8 @@
               "emitter": "su_s_25o_rocket_002",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 15
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25of_rocket.blk",
@@ -3812,7 +3817,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25ofm_2",
+            "name": "s_25ofm_2_slot3",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -3826,7 +3831,8 @@
               "emitter": "su_s_25o_rocket_002",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 15
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25ofm_rocket.blk",
@@ -3835,7 +3841,7 @@
           },
           {
             "iconType": "rockets_he_large_special_laser",
-            "name": "s25l_1",
+            "name": "s25l_1_slot3",
             "reqModification": "su_17_s25",
             "hasTargetingPod": true,
             "ShowNodes": {
@@ -3850,7 +3856,8 @@
               "emitter": "su_s_25l_rocket_002",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 15
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25l_rocket.blk",
@@ -3859,7 +3866,7 @@
           },
           {
             "iconType": "bombs_small_group_x4",
-            "name": "fab_100",
+            "name": "fab_100_slot3",
             "ShowNodes": {
               "node": "pylon_a_2_holder"
             },
@@ -3868,13 +3875,12 @@
               "blk": "gameData/Weapons/containers/mbd2_67u_su_ofab_100_120_x4.blk",
               "emitter": "mbd2_67u_002",
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_middle",
-            "name": "fab_250",
+            "name": "fab_250_slot3",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_2_holder"
@@ -3885,13 +3891,12 @@
               "emitter": "ofab250_002",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_large",
-            "name": "fab_500",
+            "name": "fab_500_slot3",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_2_holder"
@@ -3902,13 +3907,12 @@
               "emitter": "fab_500m_62_002",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_middle_high_drag",
-            "name": "fab_250sh",
+            "name": "fab_250sh_slot3",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_2_holder"
@@ -3919,13 +3923,12 @@
               "emitter": "fab_500m_62_002",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_large_high_drag",
-            "name": "fab_500sh",
+            "name": "fab_500sh_slot3",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_2_holder"
@@ -3936,13 +3939,12 @@
               "emitter": "fab_500m_62_002",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "napalm_large",
-            "name": "zb_500",
+            "name": "zb_500_slot3",
             "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_2_holder"
@@ -3953,7 +3955,6 @@
               "emitter": "fab_500m_62_002",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -4022,7 +4023,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large",
-            "name": "ub_32",
+            "name": "ub_32_slot4",
             "ShowNodes": {
               "node": "pylon_3_holder"
             },
@@ -4030,12 +4031,13 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_003",
-              "external": true
+              "external": true,
+              "order": 13
             }
           },
           {
             "iconType": "nar_large",
-            "name": "s_8ko",
+            "name": "s_8ko_slot4",
             "reqModification": "mi_24_s8_block",
             "ShowNodes": {
               "node": "pylon_a_3_holder"
@@ -4044,24 +4046,25 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "b8m_003",
-              "external": true
+              "external": true,
+              "order": 13
             }
           },
           {
             "iconType": "nar_he_special",
-            "name": "c13",
+            "name": "c13_slot4",
             "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
               "emitter": "b13_003",
               "external": true,
-              "machLimit": 1.01
+              "order": 13
             }
           },
           {
             "iconType": "rockets_he_middle",
-            "name": "s_24b",
+            "name": "s_24b_slot4",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b003"
@@ -4073,12 +4076,13 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 13
             }
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25o_3",
+            "name": "s_25o_3_slot4",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -4092,7 +4096,8 @@
               "emitter": "su_s_25o_rocket_003",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 13
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25o_rocket.blk",
@@ -4101,7 +4106,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25of_3",
+            "name": "s_25of_3_slot4",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -4115,7 +4120,8 @@
               "emitter": "su_s_25o_rocket_003",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 13
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25of_rocket.blk",
@@ -4124,7 +4130,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25ofm_3",
+            "name": "s_25ofm_3_slot4",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -4138,7 +4144,8 @@
               "emitter": "su_s_25o_rocket_003",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 13
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25ofm_rocket.blk",
@@ -4147,7 +4154,7 @@
           },
           {
             "iconType": "rockets_he_large_special_laser",
-            "name": "s25l_2",
+            "name": "s25l_2_slot4",
             "reqModification": "su_17_s25",
             "hasTargetingPod": true,
             "ShowNodes": {
@@ -4162,7 +4169,8 @@
               "emitter": "su_s_25l_rocket_003",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 13
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25l_rocket.blk",
@@ -4342,7 +4350,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large",
-            "name": "ub_32",
+            "name": "ub_32_slot5",
             "ShowNodes": {
               "node": "pylon_4_holder"
             },
@@ -4350,12 +4358,13 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_004",
-              "external": true
+              "external": true,
+              "order": 11
             }
           },
           {
             "iconType": "nar_large",
-            "name": "s_8ko",
+            "name": "s_8ko_slot5",
             "reqModification": "mi_24_s8_block",
             "ShowNodes": {
               "node": "pylon_a_4_holder"
@@ -4364,24 +4373,25 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "b8m_004",
-              "external": true
+              "external": true,
+              "order": 11
             }
           },
           {
             "iconType": "nar_he_special",
-            "name": "c13",
+            "name": "c13_slot5",
             "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
               "emitter": "b13_004",
               "external": true,
-              "machLimit": 1.01
+              "order": 11
             }
           },
           {
             "iconType": "rockets_he_middle",
-            "name": "s_24b",
+            "name": "s_24b_slot5",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b004"
@@ -4393,12 +4403,13 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 11
             }
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25o_4",
+            "name": "s_25o_4_slot5",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -4412,7 +4423,8 @@
               "emitter": "su_s_25o_rocket_004",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 11
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25o_rocket.blk",
@@ -4421,7 +4433,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25of_4",
+            "name": "s_25of_4_slot5",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -4435,7 +4447,8 @@
               "emitter": "su_s_25o_rocket_004",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 11
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25of_rocket.blk",
@@ -4444,7 +4457,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25ofm_4",
+            "name": "s_25ofm_4_slot5",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -4458,7 +4471,8 @@
               "emitter": "su_s_25o_rocket_004",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 11
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25ofm_rocket.blk",
@@ -4587,7 +4601,8 @@
               "emitter": "aku_58_kh_29l_001",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -4651,7 +4666,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large",
-            "name": "ub_32",
+            "name": "ub_32_slot6",
             "ShowNodes": {
               "node": "pylon_5_holder"
             },
@@ -4659,12 +4674,13 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_005",
-              "external": true
+              "external": true,
+              "order": 12
             }
           },
           {
             "iconType": "nar_large",
-            "name": "s_8ko",
+            "name": "s_8ko_slot6",
             "reqModification": "mi_24_s8_block",
             "ShowNodes": {
               "node": "pylon_a_5_holder"
@@ -4673,24 +4689,25 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "b8m_005",
-              "external": true
+              "external": true,
+              "order": 12
             }
           },
           {
             "iconType": "nar_he_special",
-            "name": "c13",
+            "name": "c13_slot6",
             "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
               "emitter": "b13_005",
               "external": true,
-              "machLimit": 1.01
+              "order": 12
             }
           },
           {
             "iconType": "rockets_he_middle",
-            "name": "s_24b",
+            "name": "s_24b_slot6",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b005"
@@ -4702,12 +4719,13 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 12
             }
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25o_5",
+            "name": "s_25o_5_slot6",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -4721,7 +4739,8 @@
               "emitter": "su_s_25o_rocket_005",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 12
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25o_rocket.blk",
@@ -4730,7 +4749,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25of_5",
+            "name": "s_25of_5_slot6",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -4744,7 +4763,8 @@
               "emitter": "su_s_25o_rocket_005",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 12
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25of_rocket.blk",
@@ -4753,7 +4773,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25ofm_5",
+            "name": "s_25ofm_5_slot6",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -4767,7 +4787,8 @@
               "emitter": "su_s_25o_rocket_005",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 12
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25ofm_rocket.blk",
@@ -4896,7 +4917,8 @@
               "emitter": "aku_58_kh_29l_002",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -4960,7 +4982,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large",
-            "name": "ub_32",
+            "name": "ub_32_slot7",
             "ShowNodes": {
               "node": "pylon_6_holder"
             },
@@ -4968,12 +4990,13 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_006",
-              "external": true
+              "external": true,
+              "order": 14
             }
           },
           {
             "iconType": "nar_large",
-            "name": "s_8ko",
+            "name": "s_8ko_slot7",
             "reqModification": "mi_24_s8_block",
             "ShowNodes": {
               "node": "pylon_a_6_holder"
@@ -4982,24 +5005,25 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "b8m_006",
-              "external": true
+              "external": true,
+              "order": 14
             }
           },
           {
             "iconType": "nar_he_special",
-            "name": "c13",
+            "name": "c13_slot7",
             "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
               "emitter": "b13_006",
               "external": true,
-              "machLimit": 1.01
+              "order": 14
             }
           },
           {
             "iconType": "rockets_he_middle",
-            "name": "s_24b",
+            "name": "s_24b_slot7",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b006"
@@ -5011,12 +5035,13 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 14
             }
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25o_6",
+            "name": "s_25o_6_slot7",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -5030,7 +5055,8 @@
               "emitter": "su_s_25o_rocket_006",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 14
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25o_rocket.blk",
@@ -5039,7 +5065,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25of_6",
+            "name": "s_25of_6_slot7",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -5053,7 +5079,8 @@
               "emitter": "su_s_25o_rocket_006",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 14
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25of_rocket.blk",
@@ -5062,7 +5089,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25ofm_6",
+            "name": "s_25ofm_6_slot7",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -5076,7 +5103,8 @@
               "emitter": "su_s_25o_rocket_006",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 14
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25ofm_rocket.blk",
@@ -5085,7 +5113,7 @@
           },
           {
             "iconType": "rockets_he_large_special_laser",
-            "name": "s25l_3",
+            "name": "s25l_3_slot7",
             "reqModification": "su_17_s25",
             "hasTargetingPod": true,
             "ShowNodes": {
@@ -5100,7 +5128,8 @@
               "emitter": "su_s_25l_rocket_006",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 14
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25l_rocket.blk",
@@ -5280,7 +5309,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large",
-            "name": "ub_32",
+            "name": "ub_32_slot8",
             "ShowNodes": {
               "node": "pylon_7_holder"
             },
@@ -5288,12 +5317,13 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_007",
-              "external": true
+              "external": true,
+              "order": 16
             }
           },
           {
             "iconType": "nar_large",
-            "name": "s_8ko",
+            "name": "s_8ko_slot8",
             "reqModification": "mi_24_s8_block",
             "ShowNodes": {
               "node": "pylon_a_7_holder"
@@ -5302,24 +5332,25 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "b8m_007",
-              "external": true
+              "external": true,
+              "order": 16
             }
           },
           {
             "iconType": "nar_he_special",
-            "name": "c13",
+            "name": "c13_slot8",
             "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
               "emitter": "b13_007",
               "external": true,
-              "machLimit": 1.01
+              "order": 16
             }
           },
           {
             "iconType": "rockets_he_middle",
-            "name": "s_24b",
+            "name": "s_24b_slot8",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b007"
@@ -5331,12 +5362,13 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 16
             }
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25o_7",
+            "name": "s_25o_7_slot8",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -5350,7 +5382,8 @@
               "emitter": "su_s_25o_rocket_007",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 16
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25o_rocket.blk",
@@ -5359,7 +5392,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25of_7",
+            "name": "s_25of_7_slot8",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -5373,7 +5406,8 @@
               "emitter": "su_s_25o_rocket_007",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 16
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25of_rocket.blk",
@@ -5382,7 +5416,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25ofm_7",
+            "name": "s_25ofm_7_slot8",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -5396,7 +5430,8 @@
               "emitter": "su_s_25o_rocket_007",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 16
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25ofm_rocket.blk",
@@ -5405,7 +5440,7 @@
           },
           {
             "iconType": "rockets_he_large_special_laser",
-            "name": "s25l_4",
+            "name": "s25l_4_slot8",
             "reqModification": "su_17_s25",
             "hasTargetingPod": true,
             "ShowNodes": {
@@ -5420,7 +5455,8 @@
               "emitter": "su_s_25l_rocket_007",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 16
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25l_rocket.blk",
@@ -5429,7 +5465,7 @@
           },
           {
             "iconType": "bombs_small_group_x4",
-            "name": "fab_100",
+            "name": "fab_100_slot8",
             "ShowNodes": {
               "node": "pylon_a_7_holder"
             },
@@ -5438,13 +5474,12 @@
               "blk": "gameData/Weapons/containers/mbd2_67u_su_ofab_100_120_x4.blk",
               "emitter": "mbd2_67u_007",
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_middle",
-            "name": "fab_250",
+            "name": "fab_250_slot8",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_7_holder"
@@ -5455,13 +5490,12 @@
               "emitter": "ofab250_007",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_large",
-            "name": "fab_500",
+            "name": "fab_500_slot8",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_7_holder"
@@ -5472,13 +5506,12 @@
               "emitter": "fab_500m_62_007",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_middle_high_drag",
-            "name": "fab_250sh",
+            "name": "fab_250sh_slot8",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_7_holder"
@@ -5489,13 +5522,12 @@
               "emitter": "fab_500m_62_007",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_large_high_drag",
-            "name": "fab_500sh",
+            "name": "fab_500sh_slot8",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_7_holder"
@@ -5506,13 +5538,12 @@
               "emitter": "fab_500m_62_007",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "napalm_large",
-            "name": "zb_500",
+            "name": "zb_500_slot8",
             "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_7_holder"
@@ -5523,7 +5554,6 @@
               "emitter": "fab_500m_62_007",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
@@ -5592,7 +5622,7 @@
         "WeaponPreset": [
           {
             "iconType": "nar_ap_large",
-            "name": "ub_32",
+            "name": "ub_32_slot9",
             "ShowNodes": {
               "node": "pylon_8_holder"
             },
@@ -5600,12 +5630,13 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/ub_32a_24_su_s5k.blk",
               "emitter": "ub_32a_24_008",
-              "external": true
+              "external": true,
+              "order": 18
             }
           },
           {
             "iconType": "nar_large",
-            "name": "s_8ko",
+            "name": "s_8ko_slot9",
             "reqModification": "mi_24_s8_block",
             "ShowNodes": {
               "node": "pylon_a_8_holder"
@@ -5614,24 +5645,25 @@
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b8m_s8ko.blk",
               "emitter": "b8m_008",
-              "external": true
+              "external": true,
+              "order": 18
             }
           },
           {
             "iconType": "nar_he_special",
-            "name": "c13",
+            "name": "c13_slot9",
             "reqModification": "mi_28_C13",
             "Weapon": {
               "trigger": "rockets",
               "blk": "gameData/Weapons/containers/b13l_s13of.blk",
               "emitter": "b13_008",
               "external": true,
-              "machLimit": 1.01
+              "order": 18
             }
           },
           {
             "iconType": "rockets_he_middle",
-            "name": "s_24b",
+            "name": "s_24b_slot9",
             "reqModification": "il_28sh_s24",
             "ShowNodes": {
               "node": "apu_68_b008"
@@ -5643,12 +5675,13 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "machLimit": 1.01
+              "machLimit": 1.01,
+              "order": 18
             }
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25o_8",
+            "name": "s_25o_8_slot9",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -5662,7 +5695,8 @@
               "emitter": "su_s_25o_rocket_008",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 18
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25o_rocket.blk",
@@ -5671,7 +5705,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25of_8",
+            "name": "s_25of_8_slot9",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -5685,7 +5719,8 @@
               "emitter": "su_s_25o_rocket_008",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 18
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25of_rocket.blk",
@@ -5694,7 +5729,7 @@
           },
           {
             "iconType": "rockets_he_large_special",
-            "name": "s_25ofm_8",
+            "name": "s_25ofm_8_slot9",
             "reqModification": "su_17_s25",
             "ShowNodes": {
               "node": [
@@ -5708,7 +5743,8 @@
               "emitter": "su_s_25o_rocket_008",
               "bullets": 1,
               "separate": true,
-              "external": true
+              "external": true,
+              "order": 18
             },
             "WeaponContainers": {
               "blk": "gameData/Weapons/rocketGuns/su_s_25ofm_rocket.blk",
@@ -5717,7 +5753,7 @@
           },
           {
             "iconType": "bombs_small_group_x4",
-            "name": "fab_100",
+            "name": "fab_100_slot9",
             "ShowNodes": {
               "node": "pylon_a_8_holder"
             },
@@ -5726,13 +5762,12 @@
               "blk": "gameData/Weapons/containers/mbd2_67u_su_ofab_100_120_x4.blk",
               "emitter": "mbd2_67u_008",
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_middle",
-            "name": "fab_250",
+            "name": "fab_250_slot9",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_8_holder"
@@ -5743,13 +5778,12 @@
               "emitter": "ofab250_008",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_large",
-            "name": "fab_500",
+            "name": "fab_500_slot9",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_8_holder"
@@ -5760,13 +5794,12 @@
               "emitter": "fab_500m_62_008",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_middle_high_drag",
-            "name": "fab_250sh",
+            "name": "fab_250sh_slot9",
             "reqModification": "mi_24_fab_250",
             "ShowNodes": {
               "node": "pylon_8_holder"
@@ -5777,13 +5810,12 @@
               "emitter": "fab_500m_62_008",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "bombs_large_high_drag",
-            "name": "fab_500sh",
+            "name": "fab_500sh_slot9",
             "reqModification": "mi_24_fab_500",
             "ShowNodes": {
               "node": "pylon_8_holder"
@@ -5794,13 +5826,12 @@
               "emitter": "fab_500m_62_008",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           },
           {
             "iconType": "napalm_large",
-            "name": "zb_500",
+            "name": "zb_500_slot9",
             "reqModification": "zb_500",
             "ShowNodes": {
               "node": "pylon_8_holder"
@@ -5811,7 +5842,6 @@
               "emitter": "fab_500m_62_008",
               "bullets": 1,
               "external": true,
-              "separate": true,
               "machLimit": 1.01
             }
           }

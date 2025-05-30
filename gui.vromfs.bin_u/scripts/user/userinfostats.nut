@@ -353,13 +353,13 @@ function fillProfileSummary(sObj, summary, diff) {
         if (!row)
           continue
 
-        data += row
+        data = "".concat(data, row)
         textsToSet[$"txt_{rowId}"] <- "".concat(loc(item.name), " (", loc($"mainmenu/type_{statsFm[i].tolower()}"), ")")
       }
     else {
       let row = buildProfileSummaryRowData(item, summary, diff)
       if (row)
-        data += row
+        data = "".concat(data, row)
     }
   }
 
@@ -372,7 +372,7 @@ function fillProfileSummary(sObj, summary, diff) {
 
 function getCountryMedals(countryId, profileData = null) {
   let res = []
-  let medalsList = profileData?.unlocks?.medal ?? []
+  let medalsList = profileData?.unlocks.medal ?? []
   let unlocks = getUnlocksByTypeInBlkOrder("medal")
   foreach (cb in unlocks)
     if (cb?.country == countryId)

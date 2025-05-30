@@ -61,14 +61,14 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
   if fmw.fm.EI.numEngines > 0
     assume propulsion = *(fmw.fm.EI)
     propulsion_getEngine(propulsion, 0) <| $(mainEngine)
-      let rpmRel = mainEngine.omegaRel;
+      let rpmRel = mainEngine.omegaRel
       draw_rep_rpm(ctx, rdata.pos + float2(rdata.size.x * 0.01, rdata.size.y * 0.57), rdata.size * 0.37, rpmRel)
 
 def draw_plane_mark(var ctx : GuiContext&; pos : float2; size : float2)
-  let plane <- to_array_move([[float2[4] pos;
-   pos + float2(size.x * 0.75, -size.y * 0.5);
-   pos + float2(size.x, -size.y);
-   pos + float2(size.x, 0.)]])
+  let plane <- to_array_move(fixed_array<float2>(pos,
+   pos + float2(size.x * 0.75, -size.y * 0.5),
+   pos + float2(size.x, -size.y),
+   pos + float2(size.x, 0.)))
   ctx |> render_poly(plane, white)
 
 def draw_overload(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; overload : float)
@@ -76,7 +76,7 @@ def draw_overload(var ctx : GuiContext&; pos : float2; size : float2; data : Can
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   ctx |> set_color(green)
   for i in range(12)
@@ -98,9 +98,9 @@ def draw_overload(var ctx : GuiContext&; pos : float2; size : float2; data : Can
   ctx |> draw_line(scalePos.x, scalePos.y + size.y * 0.8, scalePos.x, scalePos.y + size.y, 3.)
 
   let curPos = scalePos + float2(0, size.y * (0.7 - overload * 0.075))
-  let triangle <- to_array_move([[float2[3] curPos;
-    float2(curPos.x - size.x * 0.3, curPos.y - size.y * 0.02);
-    float2(curPos.x - size.x * 0.3, curPos.y + size.y * 0.02)]])
+  let triangle <- to_array_move(fixed_array<float2>(curPos,
+    float2(curPos.x - size.x * 0.3, curPos.y - size.y * 0.02),
+    float2(curPos.x - size.x * 0.3, curPos.y + size.y * 0.02)))
   ctx |> render_poly(triangle, white)
 
 def draw_climb(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasParams&; tangage : float)
@@ -108,7 +108,7 @@ def draw_climb(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
   ctx |> set_color(green)
 
   for i in range(11)
@@ -116,7 +116,7 @@ def draw_climb(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
     let outPos = pos + float2(-size.x * cos(angle), -size.y * sin(angle))
     let mul = i % 2 > 0 ? 0.985 : 0.97
     let inPos = pos + float2(-size.x * cos(angle), -size.y * sin(angle)) * mul
-    let coord <- to_array_move([[float2[2] outPos; inPos]])
+    let coord <- to_array_move(fixed_array<float2>(outPos, inPos))
     ctx |> render_line_aa(coord, false, 2., float2(0.), green)
 
     if i != 0 && i < 10 && i % 2 == 0
@@ -149,7 +149,7 @@ def draw_avia_horizont(var ctx : GuiContext&; pos : float2; size : float2; data 
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   for i in range(-5, 7)
     let markVal = (int(tangage) / 5) * 5 + i * 5
@@ -172,22 +172,22 @@ def draw_avia_horizont(var ctx : GuiContext&; pos : float2; size : float2; data 
 
   ctx |> setRotViewTm(origin.x, origin.y, roll * degToRad, 0., false)
 
-  let leftWing <- to_array_move([[float2[5] origin - float2(size.x * 0.49, 0.);
-   origin - float2(size.x * 0.15, 0.);
-   origin - float2(size.x * 0.125, -size.y * 0.05);
-   origin - float2(size.x * 0.1, 0.);
-   origin - float2(size.x * 0.03, 0.)]])
+  let leftWing <- to_array_move(fixed_array<float2>(origin - float2(size.x * 0.49, 0.),
+   origin - float2(size.x * 0.15, 0.),
+   origin - float2(size.x * 0.125, -size.y * 0.05),
+   origin - float2(size.x * 0.1, 0.),
+   origin - float2(size.x * 0.03, 0.)))
   ctx |> render_line_aa(leftWing, false, 5., float2(0.), black)
-  let rightWing <- to_array_move([[float2[5] origin + float2(size.x * 0.49, 0.);
-   origin + float2(size.x * 0.15, 0.);
-   origin + float2(size.x * 0.125, size.y * 0.05);
-   origin + float2(size.x * 0.1, 0.);
-   origin + float2(size.x * 0.03, 0.)]])
+  let rightWing <- to_array_move(fixed_array<float2>(origin + float2(size.x * 0.49, 0.),
+   origin + float2(size.x * 0.15, 0.),
+   origin + float2(size.x * 0.125, size.y * 0.05),
+   origin + float2(size.x * 0.1, 0.),
+   origin + float2(size.x * 0.03, 0.)))
   ctx |> render_line_aa(rightWing, false, 5., float2(0.), black)
-  let dot <- to_array_move([[float2[2] origin; origin]])
+  let dot <- to_array_move(fixed_array<float2>(origin, origin))
   ctx |> render_line_aa(dot, false, 6., float2(0.), black)
-  let tail <- to_array_move([[float2[2] origin - float2(0., size.y * 0.08);
-   origin - float2(0., size.y * 0.16)]])
+  let tail <- to_array_move(fixed_array<float2>(origin - float2(0., size.y * 0.08),
+   origin - float2(0., size.y * 0.16)))
   ctx |> render_line_aa(tail, false, 5., float2(0.), black)
 
   ctx |> resetViewTm()
@@ -201,8 +201,8 @@ def draw_avia_horizont(var ctx : GuiContext&; pos : float2; size : float2; data 
     angle += 90.
     let cosa = cos(angle * degToRad)
     let sina = sin(angle * degToRad)
-    let mark <- to_array_move([[float2[2] origin + float2(cosa * size.y * 0.36, sina * size.y * 0.36);
-     origin + float2(cosa * size.y * outL, sina * size.y * outL)]])
+    let mark <- to_array_move(fixed_array<float2>(origin + float2(cosa * size.y * 0.36, sina * size.y * 0.36),
+     origin + float2(cosa * size.y * outL, sina * size.y * outL)))
     ctx |> render_line_aa(mark, false, 3., float2(0.), black)
 
     if angleM == 30. || angleM == 60.
@@ -219,13 +219,13 @@ def draw_avia_horizont(var ctx : GuiContext&; pos : float2; size : float2; data 
   ctx |> set_color(white)
   ctx |> draw_line(origin.x - size.x * 0.44, origin.y - size.y * 0.23, origin.x - size.x * 0.44, origin.y + size.y * 0.23, 3.)
   ctx |> draw_line(origin.x + size.x * 0.44, origin.y - size.y * 0.23, origin.x + size.x * 0.44, origin.y + size.y * 0.23, 3.)
-  let lArrow <- to_array_move([[float2[3] origin - float2(size.x * 0.5, size.y * 0.03);
-   origin - float2(size.x * 0.45, 0.);
-   origin - float2(size.x * 0.5, -size.y * 0.03)]])
+  let lArrow <- to_array_move(fixed_array<float2>(origin - float2(size.x * 0.5, size.y * 0.03),
+   origin - float2(size.x * 0.45, 0.),
+   origin - float2(size.x * 0.5, -size.y * 0.03)))
   ctx |> render_line_aa(lArrow, false, 3., float2(0.), white)
-  let rArrow <- to_array_move([[float2[3] origin + float2(size.x * 0.5, size.y * 0.03);
-   origin + float2(size.x * 0.45, 0.);
-   origin + float2(size.x * 0.5, -size.y * 0.03)]])
+  let rArrow <- to_array_move(fixed_array<float2>(origin + float2(size.x * 0.5, size.y * 0.03),
+   origin + float2(size.x * 0.45, 0.),
+   origin + float2(size.x * 0.5, -size.y * 0.03)))
   ctx |> render_line_aa(rArrow, false, 3., float2(0.), white)
 
 def draw_compass(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; compass : float)
@@ -234,13 +234,13 @@ def draw_compass(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_color(green)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   for i in range(-4, 5)
     let markVal = (int(compass) / 5) * 5 + i * 5
     let markPos = pos + float2((-compass + float(markVal)) * 0.008 * rdata.size.x, 0.)
-    let markCoord <- to_array_move([[float2[2] markPos + float2(0., markVal % 10 == 0 ? 3. : 9.);
-      markPos + float2(0., 15.)]])
+    let markCoord <- to_array_move(fixed_array<float2>(markPos + float2(0., markVal % 10 == 0 ? 3. : 9.),
+      markPos + float2(0., 15.)))
     ctx |> render_line_aa(markCoord, false, 2., float2(0., 0.), green)
     if markVal % 10 == 0
       let text = "{markVal / 10}"
@@ -248,13 +248,13 @@ def draw_compass(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Ca
       ctx |> goto_xy(markPos.x - markStrBox.width.x * 0.5, markPos.y)
       ctx |> draw_str_scaled(1.0, text, text |> length())
 
-  let lineCoord <- to_array_move([[float2[2] pos - float2(rdata.size.x * 0.2, -15.);
-    pos + float2(rdata.size.x * 0.2, 15.)]])
+  let lineCoord <- to_array_move(fixed_array<float2>(pos - float2(rdata.size.x * 0.2, -15.),
+    pos + float2(rdata.size.x * 0.2, 15.)))
   ctx |> render_line_aa(lineCoord, false, 2., float2(0., 0.), green)
 
-  let centerMark <- to_array_move([[float2[3] pos + float2(-10., 30.);
-    pos + float2(0., 15.);
-    pos + float2(10., 30.)]])
+  let centerMark <- to_array_move(fixed_array<float2>(pos + float2(-10., 30.),
+    pos + float2(0., 15.),
+    pos + float2(10., 30.)))
   ctx |> render_line_aa(centerMark, false, 2., float2(0., 0.), white)
 
 def draw_vario(var ctx : GuiContext&; rdata : ElemRenderData& const; pos : float2; size : float2; data : CanvasParams&; vspeed : float)
@@ -265,7 +265,7 @@ def draw_vario(var ctx : GuiContext&; rdata : ElemRenderData& const; pos : float
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_color(white)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   let text = "{roundi(vspeed)}"
   let strBox = get_str_bbox(text, text |> length(), fctx)
@@ -286,12 +286,12 @@ def draw_vario(var ctx : GuiContext&; rdata : ElemRenderData& const; pos : float
     rot = cvt(absS, 20., 30., PI * 0.38, PI * 0.5) * sign(vspeed)
   ctx |> setRotViewTm(pos.x + size.x * 0.5, pos.y + size.y * 0.5, rot, 0., false)
 
-  let lineCoord <- to_array_move([[float2[2] float2(pos.x + size.x * 0.05, pos.y + size.y * 0.5);
-    float2(pos.x + size.x * 0.3, pos.y + size.y * 0.5);]])
+  let lineCoord <- to_array_move(fixed_array<float2>(float2(pos.x + size.x * 0.05, pos.y + size.y * 0.5),
+    float2(pos.x + size.x * 0.3, pos.y + size.y * 0.5)))
   ctx |> render_line_aa(lineCoord, false, 2., float2(0., 0.), white)
-  let poly <- to_array_move([[float2[3] float2(pos.x + size.x * 0.05, pos.y + size.y * 0.5);
-    float2(pos.x + size.x * 0.1, pos.y + size.y * 0.46);
-    float2(pos.x + size.x * 0.1, pos.y + size.y * 0.54);]])
+  let poly <- to_array_move(fixed_array<float2>(float2(pos.x + size.x * 0.05, pos.y + size.y * 0.5),
+    float2(pos.x + size.x * 0.1, pos.y + size.y * 0.46),
+    float2(pos.x + size.x * 0.1, pos.y + size.y * 0.54)))
   ctx |> render_poly(poly, white)
 
   ctx |> resetViewTm()
@@ -303,7 +303,7 @@ def draw_altitude(var ctx : GuiContext&; pos : float2; size : float2; data : Can
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   let tc = float2(0.)
   ctx |> set_color(yellow)
@@ -328,12 +328,12 @@ def draw_altitude(var ctx : GuiContext&; pos : float2; size : float2; data : Can
   let rotKm = cvt(alt, 0., 10000., PI * 0.5, PI * 2.5)
   ctx |> setRotViewTm(pos.x + size.x * 0.5, pos.y + size.y * 0.5, rotKm, 0., false)
 
-  let lineCoord <- to_array_move([[float2[2] float2(pos.x + size.x * 0.2, pos.y + size.y * 0.5);
-    float2(pos.x + size.x * 0.5, pos.y + size.y * 0.5);]])
+  let lineCoord <- to_array_move(fixed_array<float2>(float2(pos.x + size.x * 0.2, pos.y + size.y * 0.5),
+    float2(pos.x + size.x * 0.5, pos.y + size.y * 0.5)))
   ctx |> render_line_aa(lineCoord, false, 5., float2(0., 0.), white)
-  let poly <- to_array_move([[float2[3] float2(pos.x + size.x * 0.2, pos.y + size.y * 0.5);
-    float2(pos.x + size.x * 0.27, pos.y + size.y * 0.45);
-    float2(pos.x + size.x * 0.27, pos.y + size.y * 0.55);]])
+  let poly <- to_array_move(fixed_array<float2>(float2(pos.x + size.x * 0.2, pos.y + size.y * 0.5),
+    float2(pos.x + size.x * 0.27, pos.y + size.y * 0.45),
+    float2(pos.x + size.x * 0.27, pos.y + size.y * 0.55)))
   ctx |> render_poly(poly, white)
 
   ctx |> resetViewTm()
@@ -341,12 +341,12 @@ def draw_altitude(var ctx : GuiContext&; pos : float2; size : float2; data : Can
   let rot = cvt(alt % 1000., 0., 1000., PI * 0.5, PI * 2.5)
   ctx |> setRotViewTm(pos.x + size.x * 0.5, pos.y + size.y * 0.5, rot, 0., false)
 
-  let lineCoord2 <- to_array_move([[float2[2] float2(pos.x + size.x * 0.1, pos.y + size.y * 0.5);
-    float2(pos.x + size.x * 0.5, pos.y + size.y * 0.5);]])
+  let lineCoord2 <- to_array_move(fixed_array<float2>(float2(pos.x + size.x * 0.1, pos.y + size.y * 0.5),
+    float2(pos.x + size.x * 0.5, pos.y + size.y * 0.5)))
   ctx |> render_line_aa(lineCoord2, false, 3., float2(0., 0.), white)
-  let poly2 <- to_array_move([[float2[3] float2(pos.x + size.x * 0.05, pos.y + size.y * 0.5);
-    float2(pos.x + size.x * 0.12, pos.y + size.y * 0.48);
-    float2(pos.x + size.x * 0.12, pos.y + size.y * 0.52);]])
+  let poly2 <- to_array_move(fixed_array<float2>(float2(pos.x + size.x * 0.05, pos.y + size.y * 0.5),
+    float2(pos.x + size.x * 0.12, pos.y + size.y * 0.48),
+    float2(pos.x + size.x * 0.12, pos.y + size.y * 0.52)))
   ctx |> render_poly(poly2, white)
 
   ctx |> resetViewTm()
@@ -367,12 +367,12 @@ def draw_speed_device(var ctx : GuiContext&; pos : float2; size : float2; data :
     rotSp = cvt(spd, 277.78, 416.67, PI * 2., PI * 2.5)
   ctx |> setRotViewTm(pos.x + size.x * 0.5, pos.y + size.y * 0.5, rotSp, 0., false)
 
-  let lineCoord <- to_array_move([[float2[2] float2(pos.x + size.x * 0.05, pos.y + size.y * 0.5);
-    float2(pos.x + size.x * 0.5, pos.y + size.y * 0.5);]])
+  let lineCoord <- to_array_move(fixed_array<float2>(float2(pos.x + size.x * 0.05, pos.y + size.y * 0.5),
+    float2(pos.x + size.x * 0.5, pos.y + size.y * 0.5)))
   ctx |> render_line_aa(lineCoord, false, 3., float2(0., 0.), white)
-  let poly <- to_array_move([[float2[3] float2(pos.x + size.x * 0.05, pos.y + size.y * 0.5);
-    float2(pos.x + size.x * 0.12, pos.y + size.y * 0.48);
-    float2(pos.x + size.x * 0.12, pos.y + size.y * 0.52);]])
+  let poly <- to_array_move(fixed_array<float2>(float2(pos.x + size.x * 0.05, pos.y + size.y * 0.5),
+    float2(pos.x + size.x * 0.12, pos.y + size.y * 0.48),
+    float2(pos.x + size.x * 0.12, pos.y + size.y * 0.52)))
   ctx |> render_poly(poly, white)
 
   ctx |> resetViewTm()
@@ -382,7 +382,7 @@ def draw_heights(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
   let newFontSize = int(float(data.fontSize) * 1.5)
   get_font_context(fctx, data.fontId, 0, 0, newFontSize)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(newFontSize);
+  ctx |> set_font_ht(newFontSize)
   ctx |> set_color(green)
 
   let text = "{roundi(barHei)}"
@@ -400,11 +400,10 @@ def draw_speeds(var ctx : GuiContext&; pos : float2; size : float2; data : Canva
   let newFontSize = int(float(data.fontSize) * 1.5)
   get_font_context(fctx, data.fontId, 0, 0, newFontSize)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(newFontSize);
+  ctx |> set_font_ht(newFontSize)
   ctx |> set_color(green)
 
   let text = "{roundi(ias * mpsToKmh)}"
-  let strBox = get_str_bbox(text, text |> length(), fctx)
   ctx |> goto_xy(pos.x + 10., pos.y + size.y * 0.09)
   ctx |> draw_str_scaled(1.f, text, text |> length())
 
@@ -422,14 +421,14 @@ def draw_speeds(var ctx : GuiContext&; pos : float2; size : float2; data : Canva
   ctx |> goto_xy(machPos.x, machPos.y)
   ctx |> draw_str_scaled(1.f, machText, machText |> length())
 
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
   let machSmText = ".{roundi((mach * 100.) % 100.)}"
   let machSmBox = get_str_bbox(machSmText, machSmText |> length(), fctxSmall)
   machPos.x += machBox.width.x
   ctx |> goto_xy(machPos.x, machPos.y)
   ctx |> draw_str_scaled(1.f, machSmText, machSmText |> length())
 
-  ctx |> set_font_ht(newFontSize);
+  ctx |> set_font_ht(newFontSize)
   machPos.x += machSmBox.width.x
   ctx |> goto_xy(machPos.x, machPos.y)
   ctx |> draw_char_u(uint16('M'))

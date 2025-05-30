@@ -44,7 +44,15 @@ bhvAvatar.init({
 
 seenAvatars.setListGetter(getAllowedIcons)
 
+function getAvatarIconIdByUserInfo(userInfo) {
+  let { pilotIcon = "", pilotId = "" } = userInfo
+  if (pilotIcon != "")
+    return pilotIcon
+
+  return getIcons()?[pilotId] ?? "cardicon_default"
+}
+
 return {
   getIcons = getIcons
-  getAvatarIconById = @(id) getIcons()?[id] ?? "cardicon_default"
+  getAvatarIconIdByUserInfo
 }

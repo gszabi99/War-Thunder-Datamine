@@ -24,6 +24,8 @@ let { RenderCategory } = require("worldwarConst")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
+let { getCurrentOperation, getAirArmiesNumberByGroupIdx
+} = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
 let unitsTypesList = {
   [airfieldTypes.AT_HELIPAD] = [
@@ -106,7 +108,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getSceneTplView() {
     this.accessList = g_world_war.getMyAccessLevelListForCurrentBattle()
-    this.currentOperation = ::g_operations.getCurrentOperation()
+    this.currentOperation = getCurrentOperation()
     this.unitsGroups = wwOperationUnitsGroups.getUnitsGroups()
 
     return {
@@ -279,7 +281,7 @@ gui_handlers.WwAirfieldFlyOut <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function calcSelectedGroupAirArmiesNumber() {
-    local armyCount = ::g_operations.getAirArmiesNumberByGroupIdx(this.selectedGroupIdx,
+    local armyCount = getAirArmiesNumberByGroupIdx(this.selectedGroupIdx,
       this.airfield.airfieldType.overrideUnitType)
     for (local idx = 0; idx < g_world_war.getAirfieldsCount(); idx++) {
       let af = g_world_war.getAirfieldByIndex(idx)

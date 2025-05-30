@@ -19,26 +19,23 @@ popup_actions_list {
   border:yes;
   border-color:@extraInfoBlockBorderColor;
   border-offset:1@sf/@pf;
-  move_out: no;
+  isMouseOvered:no;
 }
 
 popup_actions_list[hasAnim=yes] {
   transp-time:300;
 }
 
-popup_actions_list[closeOnUnhover=yes] {
-  move_out: yes;
-}
-
 [popupMenuWithoutHover=yes] > popup_actions_list[closeOnUnhover=yes],
 popup_actions_list[closeOnUnhover=yes][_transp-direction=1],
 :hover > popup_actions_list[closeOnUnhover=yes],
 popup_actions_list:hover[hasActions=yes][closeOnUnhover=yes] {
-  move_out: no;
+  isMouseOvered:yes;
+  move_out:no;
 }
 
 popup_actions_list[close=yes] {
-  move_out: yes;
+  move_out:yes;
 }
 
 popup_actions_list[move_out=yes] {
@@ -51,7 +48,7 @@ popup_actions_list[move_out=yes][hasAnim=yes] {
 }
 
 popup_actions_list > itemsList {
-  flow: vertical;
+  flow:vertical;
   css-hier-invalidate:yes;
 }
 
@@ -60,8 +57,8 @@ popup_actions_list > itemsList > button {
   border: yes;
   border-color:@transparent;
   padding: 1@actionItemSidePadding, 0;
-  min-height: 1@buttonHeight;
-  min-width: pw;
+  min-height:1@buttonHeight;
+  min-width:pw;
   css-hier-invalidate: yes;
   flow:horizontal;
 }

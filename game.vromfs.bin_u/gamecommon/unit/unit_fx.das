@@ -9,7 +9,7 @@ require %game.events
 require %game.unit_events
 
 
-[es]
+[es(no_order)]
 def unit_fx_updater_es(info : UpdateStageInfoAct;
                        var unit__ref : UnitRef;
                        active : bool;
@@ -60,7 +60,7 @@ def unit_fx_event_on_start_burn_es(evt : EventOnStartSingleBurn;
   if !active
     return
 
-  let fireParams = get_fire_params(evt.fireParamsId);
+  let fireParams = get_fire_params(evt.fireParamsId)
   assert(fireParams != null)
   if fireParams == null
     return
@@ -110,7 +110,7 @@ def unit_fx_stop_burn_es(evt : Event;
   if !active
     return
   for fxId in fire_fx__fxId
-    unit_fx |> stopFxEventByIndex(fxId, false);
+    unit_fx |> stopFxEventByIndex(fxId, false)
   fire_fx__id |> clear()
   fire_fx__fxId |> clear()
   fire_fx__paramsId |> clear()

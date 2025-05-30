@@ -2359,16 +2359,16 @@
       "blister2"
     ],
     "lightPos": [
-      1.37533,
-      0.338089,
-      -0.001728
+      1.361,
+      0.16,
+      -0.027
     ],
     "lightColor": [
-      0.32,
-      0.1,
-      0.01
+      0.4,
+      0.2,
+      0.05
     ],
-    "lightAttenuation": 5.0,
+    "lightRadius": 0.4,
     "devices": {
       "pedals": [
         -1.0,
@@ -2585,8 +2585,8 @@
   "weapon_presets": {
     "preset": [
       {
-        "name": "sb_2m_103c_default",
-        "blk": "gameData/FlightModels/weaponPresets/sb_2m_103c_default.blk"
+        "name": "sb_2m_105_default",
+        "blk": "gameData/FlightModels/weaponPresets/sb_2m_105_default.blk"
       },
       {
         "name": "sb_2m_103c_fab_250",
@@ -2812,6 +2812,21 @@
         "order": 2,
         "WeaponPreset": [
           {
+            "iconType": "bombs_small",
+            "name": "fab_100_slot1",
+            "ShowNodes": {
+              "node": "pylon_bomb1"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+              "emitter": "bomb250_3",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
+          {
             "iconType": "bombs_middle",
             "name": "fab_250_slot1",
             "reqModification": "sb-2_der-25",
@@ -2939,6 +2954,21 @@
         "tier": 5,
         "order": 1,
         "WeaponPreset": [
+          {
+            "iconType": "bombs_small",
+            "name": "fab_100_slot3",
+            "ShowNodes": {
+              "node": "pylon_bomb2"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/su_fab100.blk",
+              "emitter": "bomb250_4",
+              "bullets": 1,
+              "external": true,
+              "separate": true
+            }
+          },
           {
             "iconType": "bombs_middle",
             "name": "fab_250_slot3",

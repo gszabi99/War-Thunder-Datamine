@@ -22,6 +22,8 @@ let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
 
 const PROCESS_TIME_OUT = 60000
 local activePurchaseProcess = null
@@ -196,7 +198,7 @@ local class WeaponsPurchaseProcess {
     if (u.isEmpty(this.modItem))
       return this.getAllModificationsPrice()
 
-    if (::g_weaponry_types.getUpgradeTypeByItem(this.modItem).canBuy(this.unit, this.modItem))
+    if (getUpgradeTypeByItem(this.modItem).canBuy(this.unit, this.modItem))
       return getItemCost(this.unit, this.modItem)
 
     return getItemUnlockCost(this.unit, this.modItem)
@@ -229,7 +231,7 @@ local class WeaponsPurchaseProcess {
     let taskId = char_send_blk("cln_buy_all_modification", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { 
-      ::update_gamercards()
+      updateGamercards()
       broadcastEvent("ModificationPurchased", { unit = unit })
       broadcastEvent("AllModificationsPurchased", { unit = unit })
       ::updateAirAfterSwitchMod(unit, "")
@@ -263,7 +265,7 @@ local class WeaponsPurchaseProcess {
     let taskId = char_send_blk("cln_buy_spare_aircrafts", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, afterSuccessfullPurchaseCb) function() { 
-      ::update_gamercards()
+      updateGamercards()
       broadcastEvent("SparePurchased", { unit = unit })
       afterSuccessfullPurchaseCb?()
     })(this.unit, this.afterSuccessfullPurchaseCb)
@@ -297,7 +299,7 @@ local class WeaponsPurchaseProcess {
     let taskId = char_send_blk("cln_buy_weapon", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = (@(unit, modName, afterSuccessfullPurchaseCb) function() { 
-      ::update_gamercards()
+      updateGamercards()
       ::updateAirAfterSwitchMod(unit)
       broadcastEvent("WeaponPurchased", { unit = unit, weaponName = modName })
       afterSuccessfullPurchaseCb?()
@@ -334,7 +336,7 @@ local class WeaponsPurchaseProcess {
     let taskId = char_send_blk("cln_buy_modification", blk)
     let taskOptions = { showProgressBox = true, progressBoxText = loc("charServer/purchase") }
     let afterOpFunc = Callback(function() {
-      ::update_gamercards()
+      updateGamercards()
       ::updateAirAfterSwitchMod(this.unit, this.modName)
 
       let newResearch = shop_get_researchable_module_name(this.unit.name)

@@ -7,8 +7,8 @@ let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getObjValue } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox, getObjValue } = require("%sqDagui/daguiUtil.nut")
 let time = require("%scripts/time.nut")
 let statsd = require("statsd")
 let exitGame = require("%scripts/utils/exitGame.nut")
@@ -17,6 +17,7 @@ let { Timer } = require("%sqDagui/timer/timer.nut")
 let { isExternalApp2StepAllowed, isHasEmail2StepTypeSync, isHasWTAssistant2StepTypeSync, isHasGaijinPass2StepTypeSync } = require("auth_wt")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { addLoginState } = require("%scripts/login/loginManager.nut")
+let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
 local authDataByTypes = {
   mail = { text = "#mainmenu/2step/confirmMail", img = "{prefix}two_step_email" } 
@@ -110,7 +111,7 @@ gui_handlers.twoStepModal <- class (BaseGuiHandler) {
      }
 
     else {
-      ::error_message_box("yn1/connect_error", result,
+      showErrorMessageBox("yn1/connect_error", result,
       [
         ["exit", exitGame],
         ["tryAgain", null]

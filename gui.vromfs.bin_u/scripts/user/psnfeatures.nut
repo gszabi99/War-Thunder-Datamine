@@ -9,6 +9,7 @@ let { isCrossPlayEnabled } = require("%scripts/social/crossplay.nut")
 let { eventbus_subscribe } = require("eventbus")
 let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getSessionLobbyMyState } = require("%scripts/matchingRooms/sessionLobbyState.nut")
+let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 eventbus_subscribe("psPlusSuggested", @(_r) requestPremiumStatusUpdate(@(_r) null))
 
@@ -26,7 +27,7 @@ function startPremiumFeatureReporting() {
       {},
       function(_dt) {
         if (is_multiplayer())
-          reportPremiumFeatureUsage(isCrossPlayEnabled(), ::isPlayerDedicatedSpectator())
+          reportPremiumFeatureUsage(isCrossPlayEnabled(), isPlayerDedicatedSpectator())
       },
       1,
       EPTF_IN_FLIGHT,

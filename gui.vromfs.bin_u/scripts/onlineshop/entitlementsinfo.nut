@@ -2,47 +2,51 @@ from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { getBundlesBlockName } = require("%scripts/onlineShop/onlineBundles.nut")
-let { requestMultipleItems } = require("%scripts/onlineShop/shopItemInfo.nut")
+let { requestMultipleItems } = require("auth_wt")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 let bundlesShopInfo = Watched(null)
+let lists = {}
 
 function updateBundlesShopInfo() {
   if (!isLoggedIn.get() || bundlesShopInfo.value || !isPlatformPC)
     return
 
-  let guidsList = []
+  lists.guidsList <- []
 
-  let bundlesList = GUI.get()?.bundles?[getBundlesBlockName()] ?? {}
-  for (local i = 0; i < bundlesList.paramCount(); i++)
-    guidsList.append(bundlesList.getParamValue(i))
+  lists.bundlesList <- GUI.get()?.bundles?[getBundlesBlockName()] ?? {}
+  for (local i = 0; i < lists.bundlesList.paramCount(); i++)
+    lists.guidsList.append(lists.bundlesList.getParamValue(i))
 
-  if (guidsList.len())
-    requestMultipleItems(
-      guidsList,
-      function(res) {
-        log($"[ENTITLEMENTS INFO] Received success result, {res.status}")
-        let resList = {}
-        foreach (id, guid in bundlesList)
-          if (guid in res.items)
-            resList[id] <- res.items[guid].__merge({ guid })
-          else
-            log($"[ENTITLEMENTS INFO] Skip saving {id} - {guid}")
-        bundlesShopInfo(resList)
-      },
-      function() {
-        log("[ENTITLEMENTS INFO] Received failure result")
-        debugTableData(guidsList)
-      }
-    )
+  if (lists.guidsList.len())
+    requestMultipleItems(lists.guidsList, "requestMultipleItemsCb")
   else
     bundlesShopInfo({})
 }
 
+eventbus_subscribe("requestMultipleItemsCb", function(result) {
+  if (result.status != 0) {
+    log("[ENTITLEMENTS INFO] Received failure result")
+    debugTableData(lists.guidsList)
+    return
+  }
+
+  log($"[ENTITLEMENTS INFO] Received success result, {result.status}")
+  let resList = {}
+  foreach (id, guid in lists.bundlesList)
+    if (guid in result.items)
+      resList[id] <- result.items[guid].__merge({ guid })
+    else
+      log($"[ENTITLEMENTS INFO] Skip saving {id} - {guid}")
+  bundlesShopInfo(resList)
+})
+
 function resetCache() {
+  lists.clear()
   bundlesShopInfo(null)
   updateBundlesShopInfo()
 }

@@ -12,8 +12,10 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { move_mouse_on_obj, isInMenu, handlersManager, loadHandler, is_in_loading_screen
-} = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { format } = require("string")
 let { get_char_extended_error } = require("chard")
 let { EASTE_ERROR_NICKNAME_HAS_NOT_ALLOWED_CHARS } = require("chardConst")
@@ -33,14 +35,15 @@ let { checkShowMatchingConnect } = require("%scripts/matching/matchingOnline.nut
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { switchContactsObj, isContactsWindowActive } = require("%scripts/contacts/contactsHandlerState.nut")
 let { addTask, charCallback, restoreCharCallback } = require("%scripts/tasker.nut")
-let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
-let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { checkSquadUnreadyAndDo, initSquadWidgetHandler } = require("%scripts/squads/squadUtils.nut")
+let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { openGenericTooltip, closeGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { steamContactsGroup } = require("%scripts/contacts/contactsManager.nut")
 let { defer } = require("dagor.workcycle")
-let { fill_gamer_card } = require("%scripts/gamercard.nut")
+let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
 let { getQueuesInfoText } = require("%scripts/queue/queueState.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
+let { topMenuRightSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
 
 local stickedDropDown = null
 let defaultSlotbarActions = [
@@ -121,7 +124,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   function getNavbarTplView() { return null }
 
   function fillGamercard() {
-    fill_gamer_card(null, "gc_", this.scene)
+    fillGamercard(null, "gc_", this.scene)
     this.initGcBackButton()
     this.initSquadWidget()
     this.initVoiceChatWidget()
@@ -140,7 +143,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     if (!checkObj(nestObj))
       return
 
-    this.squadWidgetHandlerWeak = ::init_squad_widget_handler(nestObj)
+    this.squadWidgetHandlerWeak = initSquadWidgetHandler(nestObj)
     this.registerSubHandler(this.squadWidgetHandlerWeak)
   }
 
@@ -157,11 +160,9 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
     if (this.rightSectionHandlerWeak)
       return
 
-    this.rightSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(this.scene.findObject("topmenu_menu_panel_right"),
-                                                                          this,
-                                                                          ::g_top_menu_right_side_sections,
-                                                                          this.scene.findObject("right_gc_panel_free_width")
-                                                                         )
+    this.rightSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
+      this.scene.findObject("topmenu_menu_panel_right"), this, topMenuRightSideSections,
+      this.scene.findObject("right_gc_panel_free_width"))
     this.registerSubHandler(this.rightSectionHandlerWeak)
   }
 
@@ -249,7 +250,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
         progressBoxText = loc("charServer/checking")
       }
       let taskSuccessCallback = Callback(function () {
-          if (isRanksAllowed.bindenv(this)(this.task))
+          if (isRanksAllowed(this, this.task))
             this.goForward(this.startFunc)
         }, this)
       addTask(this.taskId, taskOptions, taskSuccessCallback)
@@ -343,7 +344,7 @@ let BaseGuiHandlerWT = class (BaseGuiHandler) {
   }
 
   function onProfile(_obj) {
-    let canShowReward = isInMenu() && getManualUnlocks().len() >= 1
+    let canShowReward = isInMenu.get() && getManualUnlocks().len() >= 1
     let params = canShowReward ? {
       initialSheet = "UnlockAchievement"
       initialUnlockId = getManualUnlocks()[0].id

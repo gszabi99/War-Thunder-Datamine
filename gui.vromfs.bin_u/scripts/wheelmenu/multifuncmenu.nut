@@ -5,6 +5,7 @@ let { openMfm, getMfmSectionTitle, getMfmHandler } = require("%scripts/wheelmenu
 let cfg = require("%scripts/wheelmenu/multifuncmenuCfg.nut")
 let { emulateShortcut, isXInputDevice } = require("controls")
 let { eventbus_subscribe } = require("eventbus")
+let { registerRespondent } = require("scriptRespondent")
 
 
 
@@ -84,10 +85,12 @@ eventbus_subscribe("on_multifunc_menu_request", function on_multifunc_menu_reque
 })
 
 
-::on_multifunc_menu_item_selected <- function on_multifunc_menu_item_selected(btnIdx, isDown) {
+function onMultifuncMenuItemSelected(btnIdx, isDown) {
   getMfmHandler()?.onShortcutSelectCallback(btnIdx, isDown)
   return true
 }
+
+registerRespondent("onMultifuncMenuItemSelectedNative", onMultifuncMenuItemSelected)
 
 eventbus_subscribe("on_multifunc_menu_activate_item", function on_multifunc_menu_activate_item(...) {
   getMfmHandler()?.onActivateItemCallback()

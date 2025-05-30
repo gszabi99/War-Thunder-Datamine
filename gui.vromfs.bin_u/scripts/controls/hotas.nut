@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { loadLocalByAccount, saveLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { secondsToMilliseconds, minutesToSeconds } = require("%scripts/time.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let {getstackinfos} = require("debug")
 let { addPopup } = require("%scripts/popups/popups.nut")
@@ -19,23 +19,23 @@ function unreachable() {
   script_net_assert_once(id, msg)
 }
 
-let hotasControlImageFileName = isPlatformXboxOne ? "t-flight-hotas-one" : "t-flight-hotas-4"
+let hotasControlImageFileName = isPlatformXbox ? "t-flight-hotas-one" : "t-flight-hotas-4"
 
 function askHotasPresetChange() {
-  if ((!isPlatformSony && !isPlatformXboxOne) || loadLocalByAccount("wnd/detectThrustmasterHotas", false))
+  if ((!isPlatformSony && !isPlatformXbox) || loadLocalByAccount("wnd/detectThrustmasterHotas", false))
     return
 
   saveLocalByAccount("wnd/detectThrustmasterHotas", true)
 
   let questionLocId =
     isPlatformSony ? "msgbox/controller_hotas4_found" :
-    isPlatformXboxOne ? "msgbox/controller_hotas_one_found" :
+    isPlatformXbox ? "msgbox/controller_hotas_one_found" :
     unreachable()
 
   let mainAction = function() {
     let presetName =
       isPlatformSony ? "thrustmaster_hotas4" :
-      isPlatformXboxOne ? "xboxone_thrustmaster_hotas_one" :
+      isPlatformXbox ? "xboxone_thrustmaster_hotas_one" :
       unreachable()
     ::apply_joy_preset_xchange(getControlsPresetFilename(presetName))
   }
@@ -64,7 +64,7 @@ return {
   checkJoystickThustmasterHotas = function(changePreset = true) {
     let deviceId =
       isPlatformSony ? hotasPS4DevId :
-      isPlatformXboxOne ? hotasXONEDevId :
+      isPlatformXbox ? hotasXONEDevId :
       null
 
     if (deviceId == null || !isLoggedIn.get())

@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { format } = require("string")
 let { rnd } = require("dagor.random")
 let stdMath = require("%sqstd/math.nut")
@@ -117,7 +117,7 @@ function validate() {
 }
 
 function getDefaultUnitTypeMask() {
-  if (!isLoggedIn.get() || isInMenu())
+  if (!isLoggedIn.get() || isInMenu.get())
     return existTipsMask
 
   local res = 0

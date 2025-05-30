@@ -533,6 +533,20 @@ function clearMemoizeCaches(){
     cache.clear()
 }
 
+
+function setImpl(arr){
+  let res = {}
+  foreach (i in arr)
+    res[i] <- i
+  return res
+}
+
+function Set(...){
+  if (vargv.len()==1 && typeof(vargv[0]) == "array")
+    return setImpl(vargv[0])
+  return setImpl(vargv)
+}
+
 return {
   partial
   pipe
@@ -552,4 +566,5 @@ return {
   tryCatch
   mkMemoizedMapSet
   clearMemoizeCaches
+  Set
 }

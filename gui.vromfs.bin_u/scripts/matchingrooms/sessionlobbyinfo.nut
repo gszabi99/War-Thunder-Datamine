@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/mainConsts.nut" import global_max_players_versus
 
-let { get_meta_mission_info_by_name, get_mission_difficulty_int } = require("guiMission")
+let { get_meta_mission_info_by_name } = require("guiMission")
 let { isInFlight } = require("gameplayBinding")
 let { format } = require("string")
 let { INVALID_SQUAD_ID } = require("matching.errors")
@@ -25,7 +25,8 @@ let { getMissionLocIdsArray, getUrlOrFileMissionMetaInfo, getSessionLobbyMission
 let { getModeById } = require("%scripts/matching/matchingGameModes.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getCurSlotbarUnit, getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { secondsToString } = require("%scripts/time.nut")
 let { floor } = require("math")
@@ -35,6 +36,7 @@ let { g_url_missions } = require("%scripts/missions/urlMissionsList.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { g_mislist_type } =  require("%scripts/missions/misListType.nut")
 let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
+let { get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 
 const CUSTOM_GAMEMODE_KEY = "_customGameMode"
 const MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS = 0.6
@@ -270,7 +272,7 @@ function getBattleRatingParamByPlayerInfo(member, esUnitTypeFilter = null) {
   let craftsInfo = member?.crafts_info
   if (craftsInfo == null)
     return null
-  let difficulty = isInFlight() ? get_mission_difficulty_int() : getCurrentShopDifficulty().diffCode
+  let difficulty = isInFlight() ? get_mission_mode() : getCurrentShopDifficulty().diffCode
   let units = []
   foreach (unitInfo in craftsInfo) {
     let unitName = unitInfo.name
@@ -279,6 +281,7 @@ function getBattleRatingParamByPlayerInfo(member, esUnitTypeFilter = null) {
       continue
 
     units.append({
+      unitName
       rating = unit?.getBattleRating(difficulty) ?? 0
       name = loc($"{unitName}_shop")
       rankUnused = unitInfo?.rankUnused ?? false
@@ -298,7 +301,7 @@ function getNotAvailableUnitByBRText(unit, room = null) {
     return null
 
   let curBR = unit.getBattleRating(isInFlight()
-    ? get_mission_difficulty_int()
+    ? get_mission_mode()
     : getCurrentShopDifficulty().diffCode)
   let maxBR = (getBattleRatingParamByPlayerInfo(getSessionLobbyPlayerInfoByUid(userIdInt64.value),
     ES_UNIT_TYPE_SHIP)?.units?[0]?.rating ?? 0) + MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS

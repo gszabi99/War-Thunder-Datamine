@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let DataBlock = require("DataBlock")
-let { move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { getDynamicResult } = require("%scripts/debriefing/debriefingFull.nut")
@@ -17,6 +17,7 @@ let { getDynamicLayouts } = require("%scripts/missions/missionsUtils.nut")
 let { gui_start_mainmenu } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { guiStartMislist } = require("%scripts/missions/startMissionsList.nut")
 let { guiStartDynamicResults } = require("%scripts/dynCampaign/campaignResults.nut")
+let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 
 gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/dynamicSummary.blk"
@@ -261,7 +262,7 @@ gui_handlers.CampaignPreview <- class (gui_handlers.BaseGuiHandlerWT) {
         ["yes", function() {
           let gt = get_game_type()
           if (gt & GT_COOPERATIVE)
-            ::destroy_session_scripted("after question quit mission from campaign preview")
+            destroySessionScripted("after question quit mission from campaign preview")
           this.goForward(gui_start_mainmenu)
         }],
         ["no", function() {}]

@@ -1,9 +1,10 @@
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
-from "%scripts/dagui_natives.nut" import is_player_unit_alive, is_crew_slot_was_ready_at_host, get_auto_refill, get_cur_circuit_name, shop_get_first_win_wp_rate, get_crew_slot_cost, get_player_unit_name, is_first_win_reward_earned, shop_get_first_win_xp_rate, is_respawn_screen, get_spare_aircrafts_count
+from "%scripts/dagui_natives.nut" import is_crew_slot_was_ready_at_host, get_auto_refill, get_cur_circuit_name, shop_get_first_win_wp_rate, get_crew_slot_cost, is_first_win_reward_earned, shop_get_first_win_xp_rate, is_respawn_screen, get_spare_aircrafts_count
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/mainConsts.nut" import SEEN
 
+let { get_player_unit_name, is_player_unit_alive } = require("unit")
 let { deferOnce } = require("dagor.workcycle")
 let { getObjIdByPrefix } = require("%scripts/utils_sa.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -12,19 +13,21 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getObjValidIndex, toPixels } = require("%sqDagui/daguiUtil.nut")
 let callback = require("%sqStdLibs/helpers/callback.nut")
 let selectUnitHandler = require("%scripts/slotbar/selectUnitHandler.nut")
 let { getWeaponsStatusName, checkUnitWeapons } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getNearestSelectableChildIndex } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
-let { getBitStatus, isUnitElite, isRequireUnlockForUnit, isUnitUsable
+let { isUnitElite, isRequireUnlockForUnit, isUnitUsable
 } = require("%scripts/unit/unitStatus.nut")
+let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
 let { getUnitItemStatusText } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRequireUnlockShortText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
-let { isCountrySlotbarHasUnits, isUnitUnlockedInSlotbar, initSelectedCrews,
-  selectCrew, getSelectedCrews, getCrewById
+let { isCountrySlotbarHasUnits, getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
+let { initSelectedCrews, selectCrew, isUnitUnlockedInSlotbar
 } = require("%scripts/slotbar/slotbarState.nut")
 let { setShowUnit, getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { getAvailableRespawnBases } = require("guiRespawn")
@@ -52,7 +55,7 @@ let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerSta
 let { getCrewLevel, purchaseNewCrewSlot, getCrewUnit, getCrew, updateCrewSkillsAvailable,
   isCrewNeedUnseenIcon } = require("%scripts/crew/crew.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-let { isCrewListOverrided, getCrewsListVersion, getCrewsList
+let { isCrewListOverrided, getCrewsListVersion, getCrewsList, getCrewById
 } = require("%scripts/slotbar/crewsList.nut")
 let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { startSlotbarUnitDnD } = require("%scripts/slotbar/slotbarUnitDnDHandler.nut")
@@ -67,6 +70,7 @@ let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { hasSessionInLobby, canChangeCrewUnits, canChangeCountry } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
 
 const SLOT_NEST_TAG = "unitItemContainer { {0} }"
 
@@ -382,7 +386,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       if (!countryData.isEnabled)
         continue
 
-      let curPreset = ::slotbarPresets.getCurrentPreset(listCountry)
+      let curPreset = slotbarPresets.getCurrentPreset(listCountry)
       local crewInSlots = curPreset?.crewInSlots ?? []
       if (!needEmptySlot)
         crewInSlots = crewInSlots.filter(@(id) curPreset?.crews.contains(id) ?? false)
@@ -996,7 +1000,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.shouldCheckQueue) {
       if (this.checkSelectCountryByIdx(obj)) {
         this.onSlotbarCountryImpl(countryData)
-        ::slotbarPresets.setCurrentGameModeByPreset(countryData.country)
+        slotbarPresets.setCurrentGameModeByPreset(countryData.country)
       }
     }
     else {
@@ -1007,7 +1011,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
         function() {
           if (checkObj(obj)) {
             this.onSlotbarCountryImpl(countryData)
-            ::slotbarPresets.setCurrentGameModeByPreset(countryData.country)
+            slotbarPresets.setCurrentGameModeByPreset(countryData.country)
           }
         },
         function() {
@@ -1164,10 +1168,10 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkSlotbar() {
-    if(::slotbarPresets.isLoading)
+    if(slotbarPresets.isLoading)
       return
 
-    if (this.ignoreCheckSlotbar || !isInMenu())
+    if (this.ignoreCheckSlotbar || !isInMenu.get())
       return
 
     let curCountry = profileCountrySq.value
@@ -1491,7 +1495,7 @@ gui_handlers.SlotbarWidget <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     local countryDataCrews = countryData.crews
-    let crewInSlots = ::slotbarPresets.getCurrentPreset(countryData.country)?.crewInSlots
+    let crewInSlots = slotbarPresets.getCurrentPreset(countryData.country)?.crewInSlots
     if(crewInSlots != null) {
       countryDataCrews = countryData.crews.map(function(c, idx) {
         c.slotIndex <- crewInSlots.indexof(c?.crew.id) ?? idx

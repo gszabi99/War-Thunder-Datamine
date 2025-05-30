@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_online_available, get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, update_entitlements, shop_get_premium_account_ent_name, set_char_cb, yuplay2_get_payment_methods, yuplay2_buy_entitlement, has_entitlement, is_app_active
+from "%scripts/dagui_natives.nut" import is_online_available, get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, update_entitlements, set_char_cb, yuplay2_get_payment_methods, yuplay2_buy_entitlement, has_entitlement, is_app_active
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
@@ -14,7 +14,7 @@ let { getEntitlementDescription, getPricePerEntitlement, getEntitlementTimeText,
   getEntitlementAmount, getFirstPurchaseAdditionalAmount,
   getEntitlementPrice } = require("%scripts/onlineShop/entitlements.nut")
 let { getShopPriceBlk } = require("%scripts/onlineShop/onlineShopState.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
@@ -29,6 +29,10 @@ let { steam_is_running, steam_is_overlay_active } = require("steam")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
 let { get_yu2_error_text } = require("%scripts/utils/errorMsgBox.nut")
+let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
+let { getRemainingPremiumTime } = require("%scripts/user/premium.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { getEntitlementDiscount } = require("%scripts/discounts/discountsState.nut")
 
 let payMethodsCfg = [
   
@@ -163,7 +167,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
             this.chImages[this.goods[name].chapter] <- this.goods[name].chapterImage
         }
 
-        let discount = ::g_discount.getEntitlementDiscount(name)
+        let discount = getEntitlementDiscount(name)
         let view = {
           itemIcon = this.getItemIcon(name)
           id = name
@@ -268,7 +272,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.scene.findObject("btn_buy_online").setValue("".concat(loc("mainmenu/btnBuy"), (this.priceText == "") ? "" : format(" (%s)", this.priceText)))
 
     local discountText = ""
-    let discount = ::g_discount.getEntitlementDiscount(product.name)
+    let discount = getEntitlementDiscount(product.name)
     if (product != null && discount > 0)
       discountText = $"-{discount}%"
     this.scene.findObject("buy_online-discount").setValue(discountText)
@@ -291,7 +295,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.needFullUpdate = true
     else if (this.needFullUpdate && is_online_available()) {
       this.needFullUpdate = false
-      this.taskId = ::update_entitlements_limited()
+      this.taskId = updateEntitlementsLimited()
       if (this.taskId < 0)
         return
 
@@ -452,7 +456,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(this.scene)) {
       this.onItemSelect()
       this.updateItemIcon(this.task)
-      ::update_gamercards()
+      updateGamercards()
     }
     broadcastEvent("OnlineShopPurchaseSuccessful", { purchData = this.goods?[this.task] ?? {} })
   }
@@ -471,7 +475,7 @@ gui_handlers.OnlineShopHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let additionalAmount = getFirstPurchaseAdditionalAmount(item)
     local amountText = ""
     local savingText = ""
-    let discount = ::g_discount.getEntitlementDiscount(item.name)
+    let discount = getEntitlementDiscount(item.name)
     let productInfo = bundlesShopInfo.value?[item.name]
 
     if (additionalAmount > 0)
@@ -532,9 +536,9 @@ gui_handlers.OnlineShopRowHandler <- class (gui_handlers.OnlineShopHandler) {
     let renewText = getEntitlementTimeText(product)
     if (renewText != "") {
       let realname = ("alias" in product) ? product.alias : productId
-      let expire = entitlement_expires_in(realname == "PremiumAccount"
-        ? shop_get_premium_account_ent_name()
-        : realname)
+      let expire = realname == "PremiumAccount" ? getRemainingPremiumTime()
+        : entitlement_expires_in(realname)
+
       if (expire > 0)
         descText = "".concat(descText,
           colorize("chapterUnlockedColor",

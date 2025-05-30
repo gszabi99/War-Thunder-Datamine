@@ -1,6 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { addOptionMode, addUserOption} = require("guiOptions")
+let { getDevFeatures } = require("%scripts/features/devFeatures.nut")
 
 let export = {
   userOptionNameByIdx = {}
@@ -495,6 +496,16 @@ foreach(idx, useropt in optList) {
   let relIdx = addUserOption(useropt) ?? idx
   export[useropt] <- relIdx
   export.userOptionNameByIdx[relIdx] <- useropt
+}
+
+local lastIdx = optList.len()
+let devFeatures = getDevFeatures()
+
+foreach(key, devFeature in devFeatures) {
+  export[key] <- lastIdx
+  export.userOptionNameByIdx[lastIdx] <- key
+  devFeature.idx <- lastIdx
+  lastIdx++
 }
 
 export.testsOptList <- optList 

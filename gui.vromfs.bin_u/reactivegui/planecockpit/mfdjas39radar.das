@@ -70,7 +70,7 @@ def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float
   foreach_targets() <| $(var target)
     let e3dColor = E3DCOLOR(Color4(!target.isEnemy ? allyColor : targetColor))
 
-    if target.targetType == int(RadarTargetType TYPE_TARGET)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET)
       var distanceRel = 0.9
       var heiRel = 0.
       if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
@@ -95,13 +95,13 @@ def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float
         ctx |> set_color(e3dColor)
 
         let los = sqrt(target.losSpeed * target.losSpeed + target.losVerSpeed * target.losVerSpeed) * 0.1
-        let spd <- to_array_move([[float2[2] pos; pos + float2(0., los)]])
+        let spd <- to_array_move(fixed_array<float2>(pos, pos + float2(0., los)))
         ctx |> render_line_aa(spd, false, data.lineWidth,  float2(0, 0), e3dColor)
 
         if target.ageRel > 0.25
-          let triangle <- to_array_move([[float2[3] float2(pos.x, pos.y + size.y * 0.03);
-              float2(pos.x + size.x * 0.015, pos.y - size.y * 0.03);
-              float2(pos.x - size.x * 0.015, pos.y - size.y * 0.03)]])
+          let triangle <- to_array_move(fixed_array<float2>(float2(pos.x, pos.y + size.y * 0.03),
+              float2(pos.x + size.x * 0.015, pos.y - size.y * 0.03),
+              float2(pos.x - size.x * 0.015, pos.y - size.y * 0.03)))
           ctx |> render_poly(triangle, e3dColor)
           ctx |> render_line_aa(triangle, true, data.lineWidth, float2(0, 0), e3dColor)
         else
@@ -109,9 +109,9 @@ def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float
 
         if target.isDetected || target.isTracked
           ctx |> render_ellipse_aa(pos, float2(size.x * 0.02), data.lineWidth, e3dColor, transparentColor)
-          let cross <- to_array_move([[float2[2] pos - float2(size.x * 0.02); pos + float2(size.x * 0.02)]])
+          let cross <- to_array_move(fixed_array<float2>(pos - float2(size.x * 0.02), pos + float2(size.x * 0.02)))
           ctx |> render_line_aa(cross, false, data.lineWidth,  float2(0, 0), e3dColor)
-          let cross2 <- to_array_move([[float2[2] pos - float2(size.x * 0.02, -size.x * 0.02); pos + float2(size.x * 0.02, -size.x * 0.02)]])
+          let cross2 <- to_array_move(fixed_array<float2>(pos - float2(size.x * 0.02, -size.x * 0.02), pos + float2(size.x * 0.02, -size.x * 0.02)))
           ctx |> render_line_aa(cross2, false, data.lineWidth,  float2(0, 0), e3dColor)
 
         ctx |> resetViewTm()
@@ -123,7 +123,7 @@ def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float
 
 def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   let arrowPos = float2(pos.x + size.x * 0.02 + padding, pos.y + size.y * 0.83)
-  let arrow <- to_array_move([[float2[3] arrowPos; float2(pos.x + 5., arrowPos.y - size.y * 0.04); float2(pos.x + 5., arrowPos.y + size.y * 0.04)]])
+  let arrow <- to_array_move(fixed_array<float2>(arrowPos, float2(pos.x + 5., arrowPos.y - size.y * 0.04), float2(pos.x + 5., arrowPos.y + size.y * 0.04)))
   ctx |> render_line_aa(arrow, true, data.lineWidth, float2(0, 0), textColor)
 
   let radarPos = float2(arrowPos.x, pos.y)
@@ -146,10 +146,10 @@ def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : floa
   ctx |> render_sector_aa(arrowPos, float2(size.x) * get_radar_hud_target_distance(), scanAngles, 1., transparentColor, radarScanColor)
 
   let maxAngles = float2(pitch - get_radar_hud_elevation_max(), pitch - get_radar_hud_elevation_min())
-  let sectorL1 <- to_array_move([[float2[2] arrowPos; arrowPos + float2(cos(maxAngles.x), sin(maxAngles.x)) * size.x]])
+  let sectorL1 <- to_array_move(fixed_array<float2>(arrowPos, arrowPos + float2(cos(maxAngles.x), sin(maxAngles.x)) * size.x))
   ctx |> render_line_aa(sectorL1, false, data.lineWidth, float2(0., 0.), textColor)
 
-  let sectorL2 <- to_array_move([[float2[2] arrowPos; arrowPos + float2(cos(maxAngles.y), sin(maxAngles.y)) * size.x]])
+  let sectorL2 <- to_array_move(fixed_array<float2>(arrowPos, arrowPos + float2(cos(maxAngles.y), sin(maxAngles.y)) * size.x))
   ctx |> render_line_aa(sectorL2, false, data.lineWidth, float2(0., 0.), textColor)
 
   draw_targets_hei(ctx, data, arrowPos, radarSize)
@@ -192,9 +192,9 @@ def draw_button_labels(var ctx : GuiContext&; data : CanvasParams&; pos : float2
   get_font_context(fctx, data.fontId, 0, 0, 15)
 
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(15);
+  ctx |> set_font_ht(15)
   ctx |> set_color(textColor)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, textColor, 1)
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, textColor, 1)
 
   let box = get_str_bbox("E", 1, fctx)
   let emgyPos = pos + float2(3., 35.)
@@ -275,9 +275,9 @@ def draw_info(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : 
   draw_horizontal_label(ctx, rdrlpPos, "RDRLP")
 
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(20);
+  ctx |> set_font_ht(20)
   ctx |> set_color(textColor)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, textColor, 1)
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, textColor, 1)
 
   let hero = get_controlled_hero()
   if hero == null || hero.isDelayed
@@ -292,8 +292,7 @@ def draw_info(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : 
   var targetAltKm = 0.0
   var taretSpeedSq = 0.0
   foreach_targets() <| $(var target)
-    let e3dColor = E3DCOLOR(Color4(!target.isEnemy ? allyColor : targetColor))
-    if target.targetType == int(RadarTargetType TYPE_TARGET)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET)
       if target.isDetected || target.isTracked
         hasSelectedTarget = true
         targetAzimuth = get_radar_hud_azimuth_min() + max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min()) * target.azimuthRel
@@ -322,7 +321,7 @@ def draw_info(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : 
     let tgtPos = pos + float2(size.x * 0.5 + 30., size.y * 0.25)
     let azimuthDegVal = norm_ang(atan2(hero.unitTm[0].x, hero.unitTm[0].z) + targetAzimuth) * 180.0 / PI
     let azimuth = "TGT {fmt(": .0f", azimuthDegVal)}"
-    ctx |> set_font_ht(15);
+    ctx |> set_font_ht(15)
     ctx |> goto_xy(tgtPos.x, tgtPos.y)
     ctx |> draw_str_scaled(1.0, azimuth, azimuth |> length())
 
@@ -338,13 +337,13 @@ def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; s
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, 12)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(12);
+  ctx |> set_font_ht(12)
   ctx |> set_color(textColor)
-  ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, textColor, 1)
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, textColor, 1)
   foreach_targets() <| $(var target)
     let e3dColor = E3DCOLOR(Color4(!target.isEnemy ? allyColor : targetColor))
 
-    if target.targetType == int(RadarTargetType TYPE_TARGET)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET)
       var distanceRel = 0.9
       var radialWidthRel = 0.05
       if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
@@ -367,13 +366,13 @@ def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; s
         ctx |> set_color(e3dColor)
         let los = sqrt(target.losSpeed * target.losSpeed + target.losHorSpeed * target.losHorSpeed) * 0.1
         let linePos = pos + float2(0., size.y * 0.02)
-        let spd <- to_array_move([[float2[2] linePos; linePos + float2(0., los)]])
+        let spd <- to_array_move(fixed_array<float2>(linePos, linePos + float2(0., los)))
         ctx |> render_line_aa(spd, false, data.lineWidth,  float2(0, 0), e3dColor)
 
         if target.ageRel > 0.25
-          let triangle <- to_array_move([[float2[3] float2(pos.x, pos.y + size.y * 0.015);
-              float2(pos.x + size.x * 0.015, pos.y - size.y * 0.015);
-              float2(pos.x - size.x * 0.015, pos.y - size.y * 0.015)]])
+          let triangle <- to_array_move(fixed_array<float2>(float2(pos.x, pos.y + size.y * 0.015),
+              float2(pos.x + size.x * 0.015, pos.y - size.y * 0.015),
+              float2(pos.x - size.x * 0.015, pos.y - size.y * 0.015)))
           ctx |> render_poly(triangle, e3dColor)
           ctx |> render_line_aa(triangle, true, data.lineWidth, float2(0, 0), e3dColor)
         else
@@ -381,9 +380,9 @@ def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; s
 
         if target.isDetected || target.isTracked
           ctx |> render_ellipse_aa(pos, float2(size.y * 0.03), data.lineWidth, e3dColor, transparentColor)
-          let cross <- to_array_move([[float2[2] pos - size * 0.03; pos + size * 0.03]])
+          let cross <- to_array_move(fixed_array<float2>(pos - size * 0.03, pos + size * 0.03))
           ctx |> render_line_aa(cross, false, data.lineWidth,  float2(0, 0), e3dColor)
-          let cross2 <- to_array_move([[float2[2] pos - float2(size.x * 0.03, -size.y * 0.03); pos + float2(size.x * 0.03, -size.y * 0.03)]])
+          let cross2 <- to_array_move(fixed_array<float2>(pos - float2(size.x * 0.03, -size.y * 0.03), pos + float2(size.x * 0.03, -size.y * 0.03)))
           ctx |> render_line_aa(cross2, false, data.lineWidth,  float2(0, 0), e3dColor)
 
         let textHei = "{fmt(":d", roundi(target.height * metrToThFeet))}"
@@ -409,15 +408,15 @@ def draw_compass(var ctx : GuiContext&; data : CanvasParams&; origin : float2; r
   get_font_context(fctx, data.fontId, 0, 0, 15)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(15);
+  ctx |> set_font_ht(15)
   ctx |> set_color(textColor)
   for i in range(-3, 4)
     let markVal = (int(compass) / 10) * 10 + i * 10
     let diff = (compass - float(markVal)) * PI / 180.
     let markPos1 = origin + float2(-sin(diff), -cos(diff)) * radius
     let markPos2 = origin + float2(-sin(diff), -cos(diff)) * radius * 1.01
-    let markCoord <- to_array_move([[float2[2] markPos1;
-      markPos2]])
+    let markCoord <- to_array_move(fixed_array<float2>(markPos1,
+      markPos2))
     ctx |> render_line_aa(markCoord, false, data.lineWidth, float2(0., 0.), textColor)
     if markVal % 20 == 0
       let text = "{markVal / 10}"
@@ -446,18 +445,18 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   let cuePos = origin + float2(sin(cueAzimuth), -cos(cueAzimuth)) * get_radar_hud_cue_distance() * radius
   let cueR = get_radar_hud_cue_azimuth_half_width_rel() * size.y * 0.5
   ctx |> render_ellipse_aa(cuePos, float2(cueR), data.lineWidth, textColor, transparentColor)
-  let l1 <- to_array_move([[float2[2] cuePos - float2(cos(cueAzimuth), sin(cueAzimuth)) * cueR; cuePos - float2(cos(cueAzimuth), sin(cueAzimuth)) * (cueR + 10.)]])
+  let l1 <- to_array_move(fixed_array<float2>(cuePos - float2(cos(cueAzimuth), sin(cueAzimuth)) * cueR, cuePos - float2(cos(cueAzimuth), sin(cueAzimuth)) * (cueR + 10.)))
   ctx |> render_line_aa(l1, false, data.lineWidth, float2(0., 0.), textColor)
-  let l2 <- to_array_move([[float2[2] cuePos + float2(cos(cueAzimuth), sin(cueAzimuth)) * cueR; cuePos + float2(cos(cueAzimuth), sin(cueAzimuth)) * (cueR + 10.)]])
+  let l2 <- to_array_move(fixed_array<float2>(cuePos + float2(cos(cueAzimuth), sin(cueAzimuth)) * cueR, cuePos + float2(cos(cueAzimuth), sin(cueAzimuth)) * (cueR + 10.)))
   ctx |> render_line_aa(l2, false, data.lineWidth, float2(0., 0.), textColor)
 
   ctx |> render_sector_aa(origin, radius, anglesExternal, data.lineWidth, textColor, transparentColor)
-  let line1 <- to_array_move([[float2[2] origin; origin - float2(cos(anglesExternal.x), sin(-anglesExternal.x)) * size.y]])
+  let line1 <- to_array_move(fixed_array<float2>(origin, origin - float2(cos(anglesExternal.x), sin(-anglesExternal.x)) * size.y))
   ctx |> render_line_aa(line1, false, data.lineWidth, float2(0., 0.), textColor)
-  let line2 <- to_array_move([[float2[2] origin; origin - float2(cos(anglesExternal.y), sin(-anglesExternal.y)) * size.y]])
+  let line2 <- to_array_move(fixed_array<float2>(origin, origin - float2(cos(anglesExternal.y), sin(-anglesExternal.y)) * size.y))
   ctx |> render_line_aa(line2, false, data.lineWidth, float2(0., 0.), textColor)
 
-  let cline <- to_array_move([[float2[2] origin; origin - float2(0., size.y)]])
+  let cline <- to_array_move(fixed_array<float2>(origin, origin - float2(0., size.y)))
   ctx |> render_line_aa(cline, false, data.lineWidth, float2(0., 0.), textColor)
 
   ctx |> render_sector_aa(origin, radius * 0.5, anglesExternal, data.lineWidth, textColor, transparentColor)
@@ -468,7 +467,7 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   get_font_context(fctx, data.fontId, 0, 0, 15)
   ctx |> set_color(data.color)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(15);
+  ctx |> set_font_ht(15)
   ctx |> set_color(textColor)
 
   let distMul = data.isMetricUnits ? 1. : kMetrToMile

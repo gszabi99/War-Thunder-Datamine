@@ -1,0 +1,83 @@
+{
+  "tdiv": {
+    "id": "page_content",
+    "size": "pw, ph",
+    "flow": "vertical",
+    "margin-top": "2@blockInterval",
+    "tdiv": [
+      {
+        "flow": "horizontal",
+        "size": "pw, 8@blockInterval",
+        "position": "relative",
+        "bgcolor": "@evenTrColor",
+        "margin-bottom": "2@blockInterval",
+        "textareaNoTab": {
+          "id": "total_received",
+          "margin-left": "1@blockInterval",
+          "valign": "center",
+          "overlayTextColor": "active",
+          "text": "Total received"
+        },
+        "tdiv": {
+          "height": "ph",
+          "position": "absolute",
+          "left": "pw-w-1@blockInterval",
+          "EditBox": {
+            "id": "filter_edit_box",
+            "width": "243@sf/@pf",
+            "on_change_value": "applyAchievementsFilter",
+            "on_cancel_edit": "onFilterCancel",
+            "text": "",
+            "edit-hint": "#contacts/search_placeholder",
+            "valign": "center"
+          }
+        }
+      },
+      {
+        "id": "content",
+        "position": "relative",
+        "size": "pw, fh",
+        "flow": "horizontal",
+        "profileContentLeft": {
+          "id": "treeAchievementsNest"
+        },
+        "profileContentSeparator": {},
+        "profileContentRight": {
+          "position": "relative",
+          "size": "@profilePageRightPartWidth, ph",
+          "flow": "vertical",
+          "listbox": {
+            "id": "unlocks_list",
+            "margin-top": "5@sf/@pf",
+            "isProfileUnlocksList": "yes",
+            "flow": "vertical",
+            "size": "pw, fh",
+            "overflow": "auto",
+            "itemInterval": "@unlocksListboxItemInterval",
+            "navigatorShortcuts": "yes",
+            "scrollbarShortcuts": "yes",
+            "on_dbl_click": "unlockToFavoritesByActivateItem",
+            "on_select": "onAchievementSelect"
+          },
+          "tdiv": {
+            "position": "absolute",
+            "top": "ph-h",
+            "size": "pw, 36@sf/@pf",
+            "background-image": "#!ui/images/profile/wnd_gradient.svg",
+            "background-color": "#FF111922",
+            "background-repeat": "expand-svg"
+          }
+        }
+      }
+    ],
+    "textareaNoTab": {
+      "id": "empty_text",
+      "overlayTextColor": "active",
+      "normalFont": "yes",
+      "position": "absolute",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "text": "#profile/collections/filterStrong",
+      "display": "hide"
+    }
+  }
+}

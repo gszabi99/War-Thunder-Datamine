@@ -139,6 +139,7 @@
     "hasChutes": false,
     "hasParkingBrakeControl": false,
     "hasLightsControl": false,
+    "hasManeuverabilityMode": false,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -392,6 +393,8 @@
         0.0,
         0.0
       ],
+      "FlowInertia": 0.0,
+      "ClockWiseAOA": false,
       "Areas": {
         "Main": 26.62
       },
@@ -461,7 +464,7 @@
         0.34,
         1.02
       ],
-      "FlowInertia": 0.0500851,
+      "FlowInertia": 0.0500856,
       "ClockWiseAOA": false,
       "Areas": {
         "Main": 3.49,
@@ -533,7 +536,7 @@
         1.13,
         0.0
       ],
-      "FlowInertia": 0.10017,
+      "FlowInertia": 0.100171,
       "SlipStreamDistance": 6.6,
       "Areas": {
         "Main": 1.291,
@@ -757,7 +760,7 @@
       ],
       "ThrottleRPMAuto0": [
         0.0,
-        1600.0
+        1000.0
       ],
       "ThrottleRPMAuto1": [
         0.5,
@@ -775,7 +778,7 @@
         1.1,
         2800.0
       ],
-      "ShaftRPMMin": 1600.0,
+      "ShaftRPMMin": 1000.0,
       "ShaftRPMMax": 2799.0,
       "ShaftRpmController": true,
       "Power": 2060.0,
@@ -1108,7 +1111,33 @@
         1.0,
         1.0,
         1.0
-      ]
+      ],
+      "NozzleAnglesRanges": {
+        "Horizontal": [
+          -180.0,
+          180.0
+        ],
+        "Vertical": [
+          -180.0,
+          180.0
+        ]
+      },
+      "NozzleAnglesAxesWeights": {
+        "Horizontal": {
+          "Ailerons": 1.0,
+          "Elevator": 0.0,
+          "Rudder": 1.0,
+          "Vtol": 0.0,
+          "Reverse": 0.0
+        },
+        "Vertical": {
+          "Ailerons": 0.0,
+          "Elevator": 1.0,
+          "Rudder": 0.0,
+          "Vtol": 1.0,
+          "Reverse": 1.0
+        }
+      }
     }
   },
   "PropellerType0": {
@@ -1267,7 +1296,7 @@
       "GovernorType": 1,
       "GovernorSpeed": 0.15,
       "GovernorFast": false,
-      "GovernorMinParam": 1100.0,
+      "GovernorMinParam": 1000.0,
       "GovernorMaxParam": 2799.99,
       "GovernorAfterburnerParam": 2800.0,
       "AlwaysEnableTorqueAndGyro": false,
@@ -1292,7 +1321,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -180.0,
+      -90.0,
       90.0
     ],
     "Pos": [
@@ -1421,7 +1450,7 @@
   },
   "Gear": {
     "SinkFactor": 1400.0,
-    "SinkRateMult": 0.00010335,
+    "SinkRateMult": 0.000105069,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": -0.05,
@@ -1956,6 +1985,10 @@
         2147440000.0
       ],
       "AoaLimitsMult": [
+        1.0,
+        1.0
+      ],
+      "AoaLimitsManeuverabilityMult": [
         1.0,
         1.0
       ],

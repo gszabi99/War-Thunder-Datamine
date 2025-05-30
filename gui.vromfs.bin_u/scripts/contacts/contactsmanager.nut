@@ -4,7 +4,7 @@ from "%scripts/contacts/contactsConsts.nut" import contactEvent, GAME_GROUP_NAME
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { request_nick_by_uid_batch } = require("%scripts/matching/requests.nut")
-let { isPlatformSony, is_gdk } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { get_charserver_time_sec } = require("chard")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")

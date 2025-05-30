@@ -83,7 +83,7 @@
       "gun_mask_04_dm": {
         "armorThickness": 25.4
       },
-      "gun_mask_05_dm": {
+      "gun_trunnion_dm": {
         "armorThickness": 150.0,
         "armorEffectiveThicknessMax": 300.0,
         "armorClass": "CHA_tank_modern"
@@ -697,6 +697,14 @@
         "armorThrough": 15.0,
         "fireParamsPreset": "hydraulic_internal"
       },
+      "drive_turret_v_01_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
+      "drive_turret_h_01_dm": {
+        "hp": 40.0,
+        "armorThrough": 15.0
+      },
       "drive_turret_v_02_dm": {
         "hp": 40.0,
         "armorThrough": 15.0
@@ -731,7 +739,8 @@
       },
       "turret_hydraulics_dm": {
         "hp": 250.0,
-        "armorThrough": 15.0
+        "armorThrough": 15.0,
+        "fireParamsPreset": "hydraulic_internal"
       },
       "radiator_dm": {
         "hp": 50.0,
@@ -760,10 +769,6 @@
       "fire_control_system_01_dm": {
         "hp": 60.0,
         "armorThrough": 3.0
-      },
-      "drive_turret_h_01_dm": {
-        "hp": 250.0,
-        "armorThrough": 15.0
       }
     },
     "cannon_breech": {
@@ -1087,6 +1092,7 @@
       "removeLoadedAmmo": true,
       "replenishmentDelay": 4.0,
       "replenishmentTime": 10.0,
+      "fireSplashRadiusConstraint": 5.0,
       "shells": [
         {
           "fireParamsPreset": "turret_bustle",
@@ -1233,11 +1239,8 @@
     }
   },
   "xrayOverride": {
-    "drive_turret_h_01_dm": {
-      "overrideTitle": "hydraulic_pump",
-      "hideDescription": true
-    },
-    "drive_turret_v_01_dm": {
+    "gun_trunnion_dm": {
+      "overrideTitle": "gun_trunnion",
       "hideDescription": true
     },
     "fire_control_system_dm": {
@@ -1346,7 +1349,7 @@
         }
       },
       {
-        "name": "drive_turret_h_01_dm",
+        "name": "turret_hydraulics_dm",
         "onHit": [
           {
             "damageType": "cumulative",
@@ -2177,11 +2180,11 @@
           "secondGunnerDm": "commander_dm",
           "verDriveDm": [
             "drive_turret_v_dm",
-            "drive_turret_h_01_dm"
+            "turret_hydraulics_dm"
           ],
           "horDriveDm": [
             "drive_turret_h_dm",
-            "drive_turret_h_01_dm"
+            "turret_hydraulics_dm"
           ]
         },
         "limits": {
@@ -3008,12 +3011,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 8,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 8,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -3028,12 +3045,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 10,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 10,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -3042,12 +3073,26 @@
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
         },
-        "wreckages": {
-          "count": 10,
-          "speed": 13.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 10,
+            "speed": 20.0,
+            "angle": 40.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -3062,12 +3107,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 12,
-          "speed": 25.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_med"
-        }
+        "wreckages": [
+          {
+            "count": 25,
+            "speed": 25.0,
+            "angle": 40.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 35.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -3082,12 +3141,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 14,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 14,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "full_expl",
@@ -3273,11 +3346,11 @@
                 "secondGunnerDm": "commander_dm",
                 "verDriveDm": [
                   "drive_turret_v_dm",
-                  "drive_turret_h_01_dm"
+                  "turret_hydraulics_dm"
                 ],
                 "horDriveDm": [
                   "drive_turret_h_dm",
-                  "drive_turret_h_01_dm"
+                  "turret_hydraulics_dm"
                 ]
               },
               "limits": {

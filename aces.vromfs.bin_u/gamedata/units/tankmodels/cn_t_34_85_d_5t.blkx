@@ -1,5 +1,5 @@
 {
-  "model": "t_34_85_zis_53",
+  "model": "t_34_85_zis_53_v80",
   "hasExpl": false,
   "hasDmg2": false,
   "hasQualityModels": true,
@@ -52,8 +52,23 @@
       "superstructure_front_dm": {
         "armorThickness": 45.0
       },
+      "superstructure_bottom_dm": {
+        "armorThickness": 20.0
+      },
       "body_side_dm": {
         "armorThickness": 45.0
+      },
+      "body_dm": {
+        "armorThickness": 45.0
+      },
+      "body_01_back_dm": {
+        "armorThickness": 20.0
+      },
+      "body_01_front_dm": {
+        "armorThickness": 20.0
+      },
+      "body_front_dm": {
+        "armorThickness": 10.0
       },
       "superstructure_side_dm": {
         "armorThickness": 45.0
@@ -64,14 +79,11 @@
       "superstructure_top_dm": {
         "armorThickness": 20.0
       },
-      "body_bottom_dm": {
-        "armorThickness": 20.0
-      },
-      "superstructure_bottom_dm": {
-        "armorThickness": 20.0
-      },
       "body_back_dm": {
         "armorThickness": 10.0
+      },
+      "body_bottom_dm": {
+        "armorThickness": 20.0
       },
       "turret_01_back_dm": {
         "armorThickness": 10.0
@@ -89,8 +101,27 @@
         "armorClass": "tank_traks",
         "armorThickness": 20.0,
         "hp": 250.0,
+        "ex_armor_01_dm": {},
+        "ex_armor_02_dm": {},
+        "ex_armor_03_dm": {},
         "ex_armor_04_dm": {},
-        "ex_armor_05_dm": {}
+        "ex_armor_05_dm": {},
+        "ex_armor_r_10_dm": {},
+        "ex_armor_r_03_dm": {},
+        "ex_armor_r_04_dm": {},
+        "ex_armor_r_06_dm": {},
+        "ex_armor_l_02_dm": {},
+        "ex_armor_l_07_dm": {},
+        "ex_armor_l_09_dm": {},
+        "ex_armor_l_10_dm": {},
+        "ex_armor_l_11_dm": {},
+        "ex_armor_l_12_dm": {},
+        "ex_armor_l_13_dm": {},
+        "ex_armor_l_14_dm": {},
+        "ex_armor_r_12_dm": {},
+        "ex_armor_r_13_dm": {},
+        "ex_armor_r_14_dm": {},
+        "ex_armor_r_15_dm": {}
       }
     },
     "turret": {
@@ -113,27 +144,7 @@
         "armorThickness": 10.0,
         "hp": 50.0
       },
-      "optic_turret_01_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_turret_02_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_turret_03_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_turret_04_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
       "optic_turret_05_dm": {
-        "armorThickness": 3.0,
-        "hp": 20.0
-      },
-      "optic_body_mg_dm": {
         "armorThickness": 3.0,
         "hp": 20.0
       },
@@ -158,7 +169,7 @@
         "hp": 3000.0,
         "armorEffectiveThicknessMax": 130.0
       },
-      "body_top_dm": {
+      "body_shield_dm": {
         "armorThickness": 65.0
       },
       "gun_barrel_armor_dm": {
@@ -179,6 +190,9 @@
       },
       "turret_02_front_dm": {
         "armorThickness": 90.0
+      },
+      "turret_commander_dm": {
+        "armorThickness": 90.0
       }
     },
     "mask": {
@@ -189,6 +203,26 @@
         "armorThickness": 200.0
       }
     },
+    "chassis": {
+      "armorClass": "tank_steel_wheels",
+      "hp": 300.0,
+      "armorThickness": 20.0,
+      "wheel_support_dm": {},
+      "wheel_r_01_dm": {},
+      "wheel_r_02_dm": {},
+      "wheel_r_03_dm": {},
+      "wheel_r_04_dm": {},
+      "wheel_r_05_dm": {},
+      "wheel_l_01_dm": {},
+      "wheel_l_02_dm": {},
+      "wheel_l_03_dm": {},
+      "wheel_l_04_dm": {},
+      "wheel_l_05_dm": {},
+      "wheel_r_drive_dm": {},
+      "wheel_l_drive_dm": {},
+      "wheel_r_front_dm": {},
+      "wheel_l_front_dm": {}
+    },
     "body_shields": {
       "armorClass": "tank_structural_steel",
       "hp": 100.0,
@@ -197,7 +231,6 @@
       "createSecondaryShatters": false,
       "hidableInViewer": true,
       "ex_decor_r_01_dm": {},
-      "ex_decor_r_02_dm": {},
       "ex_decor_r_03_dm": {},
       "ex_decor_r_04_dm": {
         "armorThickness": 5.0
@@ -205,11 +238,22 @@
       "ex_decor_r_05_dm": {},
       "ex_decor_r_06_dm": {},
       "ex_decor_r_07_dm": {},
-      "ex_decor_l_01_dm": {},
       "ex_decor_l_03_dm": {},
-      "ex_decor_l_05_dm": {},
       "ex_decor_l_06_dm": {},
-      "ex_decor_l_07_dm": {}
+      "ex_decor_l_07_dm": {},
+      "ex_armor_l_03_dm": {},
+      "ex_armor_l_01_dm": {},
+      "ex_armor_l_04_dm": {},
+      "ex_armor_l_06_dm": {},
+      "ex_armor_l_08_dm": {},
+      "ex_armor_l_05_dm": {},
+      "ex_armor_r_11_dm": {},
+      "ex_armor_r_09_dm": {},
+      "ex_armor_r_02_dm": {},
+      "ex_armor_r_01_dm": {},
+      "ex_armor_r_07_dm": {},
+      "ex_armor_r_08_dm": {},
+      "ex_armor_r_05_dm": {}
     },
     "gun": {
       "armorClass": "tank_barrel",
@@ -217,26 +261,6 @@
       "armorThickness": 30.0,
       "gun_barrel_dm": {},
       "gun_barrel_01_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_02_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_03_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_04_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0,
-        "hp": 50.0
-      },
-      "gun_barrel_05_dm": {
         "armorThrough": 10.0,
         "armorThickness": 5.0,
         "hp": 50.0
@@ -255,46 +279,6 @@
       "track_l_dm": {},
       "track_r_01_dm": {},
       "track_l_01_dm": {}
-    },
-    "chassis": {
-      "armorClass": "tank_steel_wheels",
-      "hp": 300.0,
-      "armorThickness": 20.0,
-      "wheel_r_01_dm": {},
-      "wheel_r_02_dm": {},
-      "wheel_r_03_dm": {},
-      "wheel_r_04_dm": {},
-      "wheel_r_05_dm": {},
-      "wheel_l_01_dm": {},
-      "wheel_l_02_dm": {},
-      "wheel_l_03_dm": {},
-      "wheel_l_04_dm": {},
-      "wheel_l_05_dm": {},
-      "wheel_r_drive_dm": {},
-      "wheel_l_drive_dm": {},
-      "wheel_r_front_dm": {},
-      "wheel_l_front_dm": {},
-      "submodule": {
-        "armorClass": "tank_traks",
-        "armorThickness": 20.0,
-        "hp": 250.0,
-        "ex_armor_01_dm": {},
-        "ex_armor_02_dm": {},
-        "ex_armor_03_dm": {},
-        "ex_armor_turret_01_dm": {},
-        "ex_armor_turret_l_01_dm": {},
-        "ex_armor_turret_l_02_dm": {},
-        "ex_armor_turret_r_01_dm": {},
-        "ex_armor_turret_r_02_dm": {},
-        "ex_armor_body_r_01_dm": {},
-        "ex_armor_body_r_02_dm": {},
-        "ex_armor_body_r_03_dm": {},
-        "ex_armor_body_r_04_dm": {},
-        "ex_armor_body_l_01_dm": {},
-        "ex_armor_body_l_02_dm": {},
-        "ex_armor_body_l_03_dm": {},
-        "ex_armor_body_l_04_dm": {}
-      }
     },
     "equipment_body_turret": {
       "armorClass": "tank_structural_steel",
@@ -1811,7 +1795,10 @@
           ]
         }
       }
-    ]
+    ],
+    "hideNodes": {
+      "node": "ex_decor_01"
+    }
   },
   "weapon_presets": {
     "preset": {
@@ -2376,12 +2363,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 8,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 8,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -2396,12 +2397,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 10,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 10,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -2410,12 +2425,26 @@
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
         },
-        "wreckages": {
-          "count": 10,
-          "speed": 13.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 10,
+            "speed": 20.0,
+            "angle": 40.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -2430,12 +2459,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 12,
-          "speed": 25.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_med"
-        }
+        "wreckages": [
+          {
+            "count": 25,
+            "speed": 25.0,
+            "angle": 40.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 35.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -2450,12 +2493,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 14,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 14,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "full_expl",
@@ -2579,23 +2636,31 @@
     "tank_additional_armor": {
       "tier": 4,
       "modClass": "protection",
-      "invertEnableLogic": true,
+      "invertEnableLogic": false,
       "turn_it_off": false,
       "effects": {
-        "rcostAddParam": 1.0405,
-        "changeMass": -200.0,
+        "rcostAddParam": 0.98,
+        "changeMass": 200.0,
         "hideNodes": {
           "node": [
-            "ex_armor_body_r_01",
-            "ex_armor_body_r_02",
-            "ex_armor_body_r_03",
-            "ex_armor_body_l_01",
-            "ex_armor_body_l_02",
-            "ex_armor_turret_01",
-            "ex_armor_turret_r_01",
-            "ex_armor_turret_r_02",
-            "ex_armor_turret_l_01",
-            "ex_armor_turret_l_02"
+            "ex_decor_l_02",
+            "ex_decor_l_06"
+          ]
+        }
+      },
+      "disableModEffects": {
+        "hideNodes": {
+          "node": [
+            "ex_armor_l_09",
+            "ex_armor_l_10",
+            "ex_armor_l_11",
+            "ex_armor_l_12",
+            "ex_armor_l_13",
+            "ex_armor_l_14",
+            "ex_armor_r_12",
+            "ex_armor_r_13",
+            "ex_armor_r_14",
+            "ex_armor_r_15"
           ]
         }
       }

@@ -3227,12 +3227,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 8,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 8,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -3247,12 +3261,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 10,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 10,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -3261,12 +3289,26 @@
           "name": "tank_explosion_small",
           "emitter": "emtr_explosion_center"
         },
-        "wreckages": {
-          "count": 10,
-          "speed": 13.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 10,
+            "speed": 20.0,
+            "angle": 40.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 25.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -3281,12 +3323,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 12,
-          "speed": 25.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_med"
-        }
+        "wreckages": [
+          {
+            "count": 25,
+            "speed": 25.0,
+            "angle": 40.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 35.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "big_bang",
@@ -3301,12 +3357,26 @@
             "emitter": "emtr_explosion_center"
           }
         ],
-        "wreckages": {
-          "count": 14,
-          "speed": 20.0,
-          "angle": 35.0,
-          "fxName": "fire_trails_explosion_smal"
-        }
+        "wreckages": [
+          {
+            "count": 14,
+            "speed": 25.0,
+            "angle": 45.0,
+            "fxName": "fire_trails_explosion_smal"
+          },
+          {
+            "count": 5,
+            "speed": 30.0,
+            "angle": 20.0,
+            "fxName": "fire_trails_explosion_tiny"
+          },
+          {
+            "count": 5,
+            "speed": 20.0,
+            "angle": 55.0,
+            "fxName": "fire_trails_explosion_tiny"
+          }
+        ]
       },
       {
         "name": "full_expl",
@@ -3810,7 +3880,62 @@
       "image": "#ui/gameuiskin#tank_reinforcement_ussr"
     },
     "modern_tank_laser_rangefinder": {
-      "tier": 2
+      "tier": 2,
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/LaserBeamRidingSensor.blk"
+            },
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
+            }
+          ]
+        }
+      }
     },
     "125mm_ussr_Practice": {},
     "125mm_ussr_APDS_FS_ammo_pack": {},

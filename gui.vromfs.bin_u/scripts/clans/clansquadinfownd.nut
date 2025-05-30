@@ -45,7 +45,7 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {
     this.membersObj = this.scene.findObject("members")
     let viewBlk = handyman.renderCached(this.memberTplName,
-      { members = array(this.squad?.data?.propertis?.maxMembers ?? g_squad_manager.getSMMaxSquadSize(), null) })
+      { members = array(this.squad?.data.properties.maxMembers ?? g_squad_manager.getSMMaxSquadSize(), null) })
     this.guiScene.replaceContentFromText(this.membersObj, viewBlk, viewBlk.len(), this)
     this.scene.findObject("squad_info_update").setUserData(this)
     this.refreshList()
@@ -69,7 +69,7 @@ gui_handlers.clanSquadInfoWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       this.updateMemberView(memberViewIndex++, uid)
     }
 
-    while (memberViewIndex < (this.squad?.data?.propertis?.maxMembers ?? g_squad_manager.getSMMaxSquadSize()))
+    while (memberViewIndex < (this.squad?.data.properties.maxMembers ?? g_squad_manager.getSMMaxSquadSize()))
       this.updateMemberView(memberViewIndex++, null)
     this.selectedIndex = clamp(this.selectedIndex, 0, (this.squad?.members ?? []).len() - 1)
     this.membersObj.setValue(this.selectedIndex)

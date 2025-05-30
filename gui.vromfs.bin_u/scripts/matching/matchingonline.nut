@@ -7,6 +7,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let exitGame = require("%scripts/utils/exitGame.nut")
 let logMC = log_with_prefix("[MATCHING_CONNECT] ")
 let { eventbus_subscribe } = require("eventbus")
+let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
 
 const MATCHING_CONNECT_TIMEOUT = 30
 
@@ -99,7 +100,7 @@ function logoutWithMsgBox(reason, message, _reasonDomain, forceExit = false) {
   let btnName = needExit ? "exit" : "ok"
   let msgCb = needExit ? exitGame : @() null
 
-  ::error_message_box("yn1/connect_error", reason,
+  showErrorMessageBox("yn1/connect_error", reason,
     [[ btnName, msgCb]], btnName,
     { saved = true, cancel_fn = msgCb }, message)
 }

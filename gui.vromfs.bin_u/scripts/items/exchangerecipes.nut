@@ -522,7 +522,7 @@ local ExchangeRecipes = class {
     let forcedVisibleComps = this.getForcedVisibleComps(params?.forcedVisibleResources)
     let allComps = (clone this.components).extend(forcedVisibleComps)
     foreach (component in allComps)
-      if (component.itemdefId != params?.componentToHide?.id
+      if (component.itemdefId != params?.componentToHide.id
        && (visibleResources == null || visibleResources?[component.itemdefId]))
         res.append(DataBlockAdapter({
           item  = component.itemdefId

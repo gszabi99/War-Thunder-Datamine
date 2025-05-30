@@ -15,6 +15,7 @@ let { getChatLatestThreadsUpdateState, getChatLatestThreadsCurListUid, getSearch
   getChatThreadsTimeToRefresh, canRefreshChatThreads, refreshChatThreads, isChatThreadsListNewest,
   getChatThreadsList, openChatThreadsChooseLangsMenu, canChooseThreadsLang
 } = require("%scripts/chat/chatLatestThreads.nut")
+let { getThreadInfo } = require("%scripts/chat/chatStorage.nut")
 
 gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -152,14 +153,14 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
   function getThreadByObj(obj = null) {
     let rId = obj?.roomId
     if (rId && rId.len())
-      return g_chat.getThreadInfo(rId)
+      return getThreadInfo(rId)
 
     if (!checkObj(this.listObj))
       return null
 
     let value = this.listObj.getValue() || 0
     if (value >= 0 && value < this.listObj.childrenCount())
-      return g_chat.getThreadInfo(this.listObj.getChild(value).roomId)
+      return getThreadInfo(this.listObj.getChild(value).roomId)
     return null
   }
 
@@ -244,7 +245,7 @@ gui_handlers.ChatThreadsListView <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!this.isSceneActive())
       return this.markListChanged()
 
-    let threadInfo = g_chat.getThreadInfo(id)
+    let threadInfo = getThreadInfo(id)
     if (threadInfo)
       threadInfo.updateInfoObj(this.scene.findObject($"room_{id}"), !showConsoleButtons.value)
   }

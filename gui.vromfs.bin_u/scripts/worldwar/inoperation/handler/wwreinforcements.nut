@@ -15,6 +15,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
 let { WwReinforcementArmy } = require("%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
@@ -133,7 +134,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
     if (!selectedArmies.len())
       return
 
-    let wwArmy = g_world_war.getArmyByName(selectedArmies[0])
+    let wwArmy = getArmyByName(selectedArmies[0])
     if (wwArmy)
       g_world_war.playArmyActionSound("deploySound", wwArmy)
   }
@@ -226,7 +227,7 @@ gui_handlers.WwReinforcements <- class (BaseGuiHandler) {
 
     if (!selectedArmy) {
       
-      let army = g_world_war.getArmyByName(this.currentReinforcementName)
+      let army = getArmyByName(this.currentReinforcementName)
       if (!army.isValid())
         return
 

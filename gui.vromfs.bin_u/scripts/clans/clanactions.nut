@@ -12,6 +12,7 @@ let { getMyClanRights } = require("%scripts/clans/clanInfo.nut")
 let { EPLX_CLAN, contactsPlayers, contactsByGroups, addContact } = require("%scripts/contacts/contactsManager.nut")
 let { isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 function createClan(params, handler) {
   handler.taskId = char_send_blk("cln_clan_create", params)
@@ -23,7 +24,7 @@ function createClan(params, handler) {
   sync_handler_simulate_signal("clan_info_reload")
   handler.afterSlotOp = function() {
     ::requestMyClanData()
-    ::update_gamercards()
+    updateGamercards()
     handler.msgBox(
       "clan_create_sacces",
       loc("clan/create_clan_success"),
@@ -51,7 +52,7 @@ function editClan(clanId, params, handler) {
     if (clan_get_admin_editor_mode() && "reinitClanWindow" in owner)
       owner.reinitClanWindow()
     else
-      ::update_gamercards()
+      updateGamercards()
     handler.msgBox(
       "clan_edit_sacces",
       loc("clan/edit_clan_success"),
@@ -74,7 +75,7 @@ function disbandClan(clanId, handler) {
           sync_handler_simulate_signal("clan_info_reload")
         handler.afterSlotOp = function() {
             ::requestMyClanData()
-            ::update_gamercards()
+            updateGamercards()
             handler.msgBox("clan_disbanded", loc("clan/clanDisbanded"), [["ok", function() { handler.goBack() } ]], "ok")
           }
       }
@@ -98,7 +99,7 @@ function upgradeClan(clanId, params, handler) {
     if (clan_get_admin_editor_mode() && "reinitClanWindow" in owner)
       owner.reinitClanWindow()
     else
-      ::update_gamercards()
+      updateGamercards()
     handler.msgBox(
       "clan_upgrade_success",
       loc("clan/upgrade_clan_success"),
@@ -114,7 +115,7 @@ function upgradeClanMembers(clanId, handler) {
   let cb = Callback(
        function() {
         broadcastEvent("ClanMembersUpgraded", { clanId = clanId })
-        ::update_gamercards()
+        updateGamercards()
         showInfoMsgBox(loc("clan/members_upgrade_success"), "clan_members_upgrade_success")
       },
       handler)

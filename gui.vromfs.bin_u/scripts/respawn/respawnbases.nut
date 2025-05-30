@@ -15,7 +15,7 @@ local respawnBases = {
     return this.selectedBaseData?.respBase
   }
 
-  function getRespawnBasesData(unit) {
+  function getRespawnBasesData(unit, isBadWeather = false) {
     let res = {
       hasRespawnBases = false
       canChooseRespawnBase = false
@@ -30,7 +30,9 @@ local respawnBases = {
     res.hasRespawnBases = true
     res.canChooseRespawnBase = true
     let lastSelectedBase = this.getSelectedBase()
+    let needToSelectAirfield = isBadWeather && ES_UNIT_TYPE_AIRCRAFT== unit.esUnitType
     local defaultBase = null
+    local airfiled = null
     foreach (_idx, id in rbs) {
       let rb = RespawnBase(id)
       res.basesList.append(rb)
@@ -38,8 +40,12 @@ local respawnBases = {
         res.selBase = rb
       if (!defaultBase || (rb.isDefault <=> defaultBase.isDefault) > 0)
         defaultBase = rb
+      if (rb.isSpawnIsAirfiled())
+        airfiled = rb
     }
 
+    if (needToSelectAirfield && airfiled)
+      defaultBase = airfiled
     let autoSelectedBase = RespawnBase(defaultBase.id, true)
     res.basesList.insert(0, autoSelectedBase)
     if (!res.selBase)

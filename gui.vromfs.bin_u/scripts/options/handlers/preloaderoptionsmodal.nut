@@ -3,7 +3,8 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child_by_value, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLoadingBgName, getFilterBgList, isBgUnlocked, getUnlockIdByLoadingBg,
   getLoadingBgTooltip } = require("%scripts/loading/loadingBgData.nut")
 let { animBgLoad } = require("%scripts/loading/animBg.nut")

@@ -108,7 +108,7 @@ def build_object_es(evt : CmdBuildObject;
     elif baseGun != null
       count += max(0, weapon.prop.bullets)
   if count > 0
-    let idx = evt.triggerGroup == WeaponTriggerGroups TRIGGER_GROUP_SPECIAL_GUN ? 2 : (evt.triggerGroup == WeaponTriggerGroups TRIGGER_GROUP_SECONDARY ? 1 : 0)
+    let idx = evt.triggerGroup == WeaponTriggerGroups.TRIGGER_GROUP_SPECIAL_GUN ? 2 : (evt.triggerGroup == WeaponTriggerGroups.TRIGGER_GROUP_SECONDARY ? 1 : 0)
     count -= reloadedFromAmmoBoxCount[idx]
     if count > 0
       query() <| $ [es] (eid aka box_eid : EntityId; ammo_box__owner : EntityId; ammo_box__triggerGroupNo : int)
@@ -144,7 +144,7 @@ def on_ammo_box_destroy(evt : Event;
       return
     var count = 0
     for i in range(0, 3)
-      let triggerGroup = i == 2 ? WeaponTriggerGroups TRIGGER_GROUP_SPECIAL_GUN : (i == 1 ? WeaponTriggerGroups TRIGGER_GROUP_SECONDARY : WeaponTriggerGroups TRIGGER_GROUP_PRIMARY)
+      let triggerGroup = i == 2 ? WeaponTriggerGroups.TRIGGER_GROUP_SPECIAL_GUN : (i == 1 ? WeaponTriggerGroups.TRIGGER_GROUP_SECONDARY : WeaponTriggerGroups.TRIGGER_GROUP_PRIMARY)
       if !canReloadFromBox[i]
         continue
       foreach_weapon_by_trigger_group(hero.weap.Weapons, triggerGroup) <| $(var weapon)
@@ -162,4 +162,4 @@ def on_ammo_box_destroy(evt : Event;
       if count > 0
         break
     if count <= 0
-      sendEvent(ammo_box__owner, [[EventCantReloadingFromBox]])
+      sendEvent(ammo_box__owner, EventCantReloadingFromBox())

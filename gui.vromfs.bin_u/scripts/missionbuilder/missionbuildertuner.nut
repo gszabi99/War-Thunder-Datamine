@@ -12,7 +12,7 @@ let { format } = require("string")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { get_gui_option } = require("guiOptions")
-let { move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { getLastWeapon, isWeaponVisible } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getWeaponNameText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -29,6 +29,7 @@ let { guiStartFlight, guiStartCdOptions
 let { get_mutable_mission_settings, get_mission_settings } = require("%scripts/missions/missionsStates.nut")
 let { guiStartMpLobby } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -290,7 +291,7 @@ gui_handlers.MissionBuilderTuner <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onApply(_obj) {
-    if (!::g_squad_utils.canJoinFlightMsgBox({
+    if (!canJoinFlightMsgBox({
         maxSquadSize = getMaxPlayersForGamemode(GM_BUILDER)
       }))
       return

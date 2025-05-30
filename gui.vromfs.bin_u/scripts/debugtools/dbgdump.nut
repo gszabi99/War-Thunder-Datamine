@@ -1,92 +1,87 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 
-let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let DataBlock  = require("DataBlock")
 let { split_by_chars } = require("string")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 let datablockConverter = require("%scripts/utils/datablockConverter.nut")
 
-let persistent = {
-  backup = null
-}
 
-registerPersistentData("dbgDump", persistent, [ "backup" ])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let persistent = persist("persistent", @() { backup = null })
 
 function isLoaded() {
   return persistent.backup != null
@@ -98,17 +93,20 @@ function getOriginal(id) {
   return (id in getroottable()) ? getroottable()[id] : null
 }
 
-function getFuncResult(func, a = []) {
-  return func.acall([null].extend(a))
+function getFuncResult(func, a = null) {
+  return func.acall([null].extend(a ?? []))
 }
 
-function pathGet(env, path, defVal) {
+function pathGet(env, path, defVal, debug=false) {
   let keys = split_by_chars(path, ".")
   foreach (key in keys)
     if (key in env)
       env = env[key]
-    else
+    else {
+      if (debug)
+        print($"[DEBUGDUMP] {path} not found")
       return defVal
+    }
   return env
 }
 
@@ -141,12 +139,14 @@ function save(filename, list) {
     let item = u.isString(itemSrc) ? { id = itemSrc } : itemSrc
     let id = item.id
     let hasValue = ("value" in item)
-    let subject = pathGet(rootTable, id, null)
+    let subject = pathGet(rootTable, id, null, !hasValue)
     let isFunction = u.isFunction(subject)
     let args = item?.args ?? []
-    local value = (isFunction && !hasValue) ? getFuncResult(subject, args) :
-      hasValue ? item.value :
-      subject
+    local value = (isFunction && !hasValue)
+      ? getFuncResult(subject, args)
+      : hasValue
+        ? item.value
+        : subject
     if (u.isFunction(value))
       value = value()
     if (isFunction) {
@@ -178,10 +178,9 @@ function unload() {
 }
 
 
-function load(filename, needUnloadPrev = true) {
-  if (needUnloadPrev)
-    unload()
-  persistent.backup = persistent.backup || {}
+function load(filename) {
+  unload()
+  persistent.backup = persistent.backup ?? {}
 
   let rootTable = getroottable()
   let blk = DataBlock()

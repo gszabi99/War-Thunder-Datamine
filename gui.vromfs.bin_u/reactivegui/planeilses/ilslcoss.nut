@@ -93,19 +93,21 @@ let LCOSSRadarRange = @() {
   children = LCOSSRadarRangeVis.value ? [LCOSSRadarRangeMark] : null
 }
 
+let ccrpVisible = Computed(@() BombingMode.value && TimeBeforeBombRelease.get() > 0.0)
 function LCOSS(width, height, hasCCRP) {
   return @() {
+    watch = ccrpVisible
     size = [width, height]
     children = [
       LCOSSCrosshair,
       LCOSSRollMark,
       LCOSSRadarRange,
-      (hasCCRP ? AVQ7CCRP(width, height) : null)
+      (hasCCRP && ccrpVisible.get() ? AVQ7CCRP(width, height) : null)
     ]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = TargetPosValid.value ? (BombingMode.value ? [0, 0] : [TargetPos.value[0] - width * 0.5, TargetPos.value[1] - height * 0.5]) : [0, 0]
+        translate = TargetPosValid.get() ? (BombingMode.get() ? [0, 0] : [TargetPos.get()[0] - width * 0.5, TargetPos.get()[1] - height * 0.5]) : [0, 0]
       }
     }
   }

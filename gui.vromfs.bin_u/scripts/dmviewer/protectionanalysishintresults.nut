@@ -17,9 +17,9 @@ local checkOrder = 0
 enums.addTypes(results, {
   RICOCHETED = {
     checkOrder = checkOrder++
-    checkParams = @(params) params?.lower?.ricochet == CHECK_PROT_RICOCHET_GUARANTEED &&
-                            !params?.lower?.effectiveHit &&
-                            !params?.upper?.effectiveHit
+    checkParams = @(params) params?.lower.ricochet == CHECK_PROT_RICOCHET_GUARANTEED &&
+                            !params?.lower.effectiveHit &&
+                            !params?.upper.effectiveHit
     criticalDamageTestName = "ricochet"
     color = "minorTextColor"
     loc = "hitcamera/result/ricochet"
@@ -28,8 +28,8 @@ enums.addTypes(results, {
   }
   POSSIBLEEFFECTIVE = {
     checkOrder = checkOrder++
-    checkParams = @(params) (params?.upper?.effectiveHit ?? false)
-      || ((params?.lower?.effectiveHit ?? false) && params?.lower?.ricochet == CHECK_PROT_RICOCHET_POSSIBLE)
+    checkParams = @(params) (params?.upper.effectiveHit ?? false)
+      || ((params?.lower.effectiveHit ?? false) && params?.lower.ricochet == CHECK_PROT_RICOCHET_POSSIBLE)
     criticalDamageTestName = "possibleEffective"
     color = "cardProgressTextBonusColor"
     loc = "protection_analysis/result/possible_effective"
@@ -38,8 +38,8 @@ enums.addTypes(results, {
   }
   EFFECTIVE = {
     checkOrder = checkOrder++
-    checkParams = @(params) (params?.lower?.effectiveHit ?? false)
-      && params?.lower?.ricochet != CHECK_PROT_RICOCHET_POSSIBLE
+    checkParams = @(params) (params?.lower.effectiveHit ?? false)
+      && params?.lower.ricochet != CHECK_PROT_RICOCHET_POSSIBLE
     criticalDamageTestName = "effective"
     color = "goodTextColor"
     loc = "protection_analysis/result/effective"
@@ -48,11 +48,11 @@ enums.addTypes(results, {
   }
   NOTPENETRATED = {
     checkOrder = checkOrder++
-    checkParams = @(params) (params?.max?.effectiveHit ?? false) &&
-      ((params?.max?.penetratedArmor?.generic ?? false) ||
-        (params?.max?.penetratedArmor?.genericLongRod ?? false) ||
-        (params?.max?.penetratedArmor?.explosiveFormedProjectile ?? false) ||
-        (params?.max?.penetratedArmor?.cumulative ?? false))
+    checkParams = @(params) (params?.max.effectiveHit ?? false) &&
+      ((params?.max.penetratedArmor.generic ?? false) ||
+        (params?.max.penetratedArmor.genericLongRod ?? false) ||
+        (params?.max.penetratedArmor.explosiveFormedProjectile ?? false) ||
+        (params?.max.penetratedArmor.cumulative ?? false))
     criticalDamageTestName = "notPenetrate"
     color = "badTextColor"
     loc = "protection_analysis/result/not_penetrated"

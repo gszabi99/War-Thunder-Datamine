@@ -21,7 +21,7 @@ function fieldReadOnly(params = {}) {
       watch = valText
       rendObj = ROBJ_TEXT
       size = [flex(), SIZE_TO_CONTENT]
-      text = valText.value
+      text = valText.get()
       margin = fsh(0.5)
     }
   }

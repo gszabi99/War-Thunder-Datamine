@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import run_reactive_gui, get_player_user_id_str, set_show_attachables, disable_network
+from "%scripts/dagui_natives.nut" import run_reactive_gui, get_player_user_id_str, set_show_attachables
 from "app" import is_dev_version
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
@@ -10,7 +10,7 @@ let { steam_is_running } = require("steam")
 let { steam_process_dlc } = require("steam_wt")
 let { getAgreedEulaVersion, setAgreedEulaVersion } = require("sqEulaUtils")
 let { PT_STEP_STATUS, startPseudoThread } = require("%scripts/utils/pseudoThread.nut")
-let { isPlatformSony, isPlatformXboxOne
+let { isPlatformSony, isPlatformXbox
 } = require("%scripts/clientState/platform.nut")
 let { userIdStr, havePlayerTag } = require("%scripts/user/profileStates.nut")
 let { hasLoginState } = require("%scripts/login/loginStates.nut")
@@ -36,6 +36,9 @@ let { needShowHdrSettingsOnStart, openHdrSettings } = require("%scripts/options/
 let { disableMarkSeenAllResourcesForNewUser } = require("%scripts/seen/markSeenResources.nut")
 let { forceUpdateGameModes } = require("%scripts/matching/matchingGameModes.nut")
 let { startLogout } = require("%scripts/login/logout.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
+let { updateDiscountData } = require("%scripts/discounts/discounts.nut")
 
 let loginWTState = persist("loginWTState", @(){ initOptionsPseudoThread = null, shouldRestartPseudoThread = true})
 
@@ -85,10 +88,10 @@ function initLoginPseudoThreadsConfig(cb) {
       ::ItemsManager.requestItemsByItemdefIds(arr)
     }
     function() {
-      ::g_discount.updateDiscountData(true)
+      updateDiscountData(true)
     }
     function() {
-     ::slotbarPresets.init()
+     slotbarPresets.init()
     }
     function() {
       if (steam_is_running())
@@ -111,7 +114,7 @@ function initLoginPseudoThreadsConfig(cb) {
       checkUnlocksByAbTest()
     }
     function() {
-      if (disable_network())
+      if (disableNetwork)
         return
       let currentEulaVersion = getEulaVersion()
       let agreedEulaVersion = getAgreedEulaVersion()
@@ -120,7 +123,7 @@ function initLoginPseudoThreadsConfig(cb) {
         if (loadLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, 0) < currentEulaVersion)
           saveLocalSharedSettings(LOCAL_AGREED_EULA_VERSION_SAVE_ID, currentEulaVersion)
       } else {
-        if ((isPlatformSony || isPlatformXboxOne || steam_is_running())
+        if ((isPlatformSony || isPlatformXbox || steam_is_running())
             && (agreedEulaVersion == 0 || localAgreedEulaVersion.value >= currentEulaVersion)) {
           setAgreedEulaVersion(currentEulaVersion)
           sendBqEvent("CLIENT_GAMEPLAY_1", "eula_screen", "accept")
@@ -134,7 +137,7 @@ function initLoginPseudoThreadsConfig(cb) {
       }
     }
     function() {
-      if (!disable_network() && getAgreedEulaVersion() < getEulaVersion())
+      if (!disableNetwork && getAgreedEulaVersion() < getEulaVersion())
         return PT_STEP_STATUS.SUSPEND
       return null
     }

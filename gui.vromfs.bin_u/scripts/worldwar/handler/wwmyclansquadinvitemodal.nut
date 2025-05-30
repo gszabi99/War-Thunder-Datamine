@@ -59,7 +59,7 @@ gui_handlers.WwMyClanSquadInviteModal <- class (gui_handlers.MyClanSquadsListMod
   }
 
   function canWwBattleInvite(squad) {
-    let presenceParams = squad?.data?.presence ?? {}
+    let presenceParams = squad?.data.presence ?? {}
     let presenceType = getByPresenceParams(presenceParams)
     return presenceType.canInviteToWWBattle && !this.isGameParamsMatch(presenceParams) && this.isSquadOnline(squad)
   }
@@ -84,7 +84,7 @@ gui_handlers.WwMyClanSquadInviteModal <- class (gui_handlers.MyClanSquadsListMod
   }
 
   function getPresence(squad) {
-    let presenceParams = squad?.data?.presence ?? {}
+    let presenceParams = squad?.data.presence ?? {}
     let presenceType = getByPresenceParams(presenceParams)
     let presenceText = presenceType.getLocText(presenceParams)
 

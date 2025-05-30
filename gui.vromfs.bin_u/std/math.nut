@@ -1,33 +1,32 @@
 let math = require("math")
+let { fabs, pow, sqrt, floor, ceil, clamp, log10 } = math
 
 const GOLDEN_RATIO = 1.618034
 
-function minByAbs(a, b) { return (math.fabs(a) < math.fabs(b))? a : b }
-function maxByAbs(a, b) { return (math.fabs(a) > math.fabs(b))? a : b }
+let minByAbs = @(a, b) fabs(a) < fabs(b) ? a : b
+let maxByAbs = @(a, b) fabs(a) > fabs(b) ? a : b
 
 
 
 
 function roundToDigits(value, digits) {
   if (value==0) return value
-  let log = math.log10(math.fabs(value))
-  let mul = math.pow(10, math.floor(log)-digits+1)
-  return mul*math.floor(0.5+value.tofloat()/mul)
+  let log = log10(fabs(value))
+  let mul = pow(10, floor(log) - digits + 1)
+  return mul * floor(0.5 + value.tofloat() / mul)
 }
 
 
 
 function round_by_value(value, roundValue) {
-  return math.floor(value.tofloat() / roundValue + 0.5) * roundValue
+  return floor(value.tofloat() / roundValue + 0.5) * roundValue
 }
-
 
 function number_of_set_bits(i) {
   i = i - ((i >> 1) & (0x5555555555555555));
   i = (i & 0x3333333333333333) + ((i >> 2) & 0x3333333333333333);
   return (((i + (i >> 4)) & 0xF0F0F0F0F0F0F0F) * 0x101010101010101) >> 56;
 }
-
 
 function is_bit_set(bitMask, bitIdx) {
   return (bitMask & 1 << bitIdx) > 0
@@ -60,8 +59,7 @@ function lerp(valueMin, valueMax, resMin, resMax, curValue) {
 
 let lerpClamped = @(valueMin, valueMax, resMin, resMax, tvalue)
   lerp(valueMin, valueMax, resMin, resMax,
-    valueMax > valueMin ? math.clamp(tvalue, valueMin, valueMax) : math.clamp(tvalue, valueMax, valueMin))
-
+    valueMax > valueMin ? clamp(tvalue, valueMin, valueMax) : clamp(tvalue, valueMax, valueMin))
 
 function interpolateArray(arr, value) {
   let maxIdx = arr.len() - 1
@@ -88,19 +86,11 @@ function interpolateArray(arr, value) {
 
 
 function calc_golden_ratio_columns(total, widthToHeight = 1.0) {
-  let rows = (math.sqrt(total.tofloat() / GOLDEN_RATIO * widthToHeight) + 0.5).tointeger() || 1
-  return math.ceil(total.tofloat() / rows).tointeger()
+  let rows = (sqrt(total.tofloat() / GOLDEN_RATIO * widthToHeight) + 0.5).tointeger() || 1
+  return ceil(total.tofloat() / rows).tointeger()
 }
 
-function color2uint(r,g=0,b=0,a=255){
-  if (type(r)=="table") {
-    r = r?.r ?? r
-    g = r?.g ?? g
-    b = r?.b ?? b
-    a = r?.a ?? a
-  }
-  return math.clamp(r+g*256+b*65536+a*16777216, 0, 4294967295)
-}
+let color2uint = @(r, g, b, a = 255) clamp(r + g * 256 + b * 65536 + a * 16777216, 0, 4294967295)
 
 let romanNumeralLookup = [
   "","I","II","III","IV","V","VI","VII","VIII","IX",
@@ -169,7 +159,7 @@ function median(sortedList) {
 function truncateToMultiple(number, multiple) {
   if (multiple == 0)
     return -1
-  return math.floor(number / multiple) * multiple
+  return floor(number / multiple) * multiple
 }
 
 

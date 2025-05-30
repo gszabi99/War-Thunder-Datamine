@@ -26,7 +26,7 @@ let { rewardsSortComparator, MAX_REWARDS_SHOW_IN_TROPHY, getTrophyRewardType, pr
   isRewardItem
 } = require("%scripts/items/trophyReward.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { findItemById, getInventoryItemById, getItemsList } = require("%scripts/items/itemsManager.nut")
 let { getInternalItemsDebugInfo } = require("%scripts/items/itemsManagerDbgState.nut")
 let { itemsListInternal } = require("%scripts/items/itemsManagerState.nut")
@@ -308,7 +308,7 @@ gui_handlers.trophyRewardWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     if (this.isBoxOpening && (this.opened || this.useSingleAnimation)) {
       layersData = itemToShow.getOpenedBigIcon()
       if (this.opened && this.useSingleAnimation)
-        layersData += this.getRewardImage(itemToShow.iconStyle)
+        layersData = "".concat(layersData, this.getRewardImage(itemToShow.iconStyle))
     }
     else
       layersData = itemToShow.getBigIcon()

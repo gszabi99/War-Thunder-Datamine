@@ -1,19 +1,20 @@
 from "%darg/ui_imports.nut" import *
-
 from "%sqstd/ecs.nut" import *
+from "components/style.nut" import colors
+import "entity_editor" as entity_editor
+from "%darg/laconic.nut" import *
+from "%sqstd/underscore.nut" import partition, flatten
 
-let {showEntitySelect, selectedEntities, de4workMode} = require("state.nut")
-let {colors} = require("components/style.nut")
+let {EntitySelectWndId, selectedEntities, de4workMode} = require("state.nut")
 let textButton = require("components/textButton.nut")
 let closeButton = require("components/closeButton.nut")
-let mkWindow = require("components/window.nut")
 let nameFilter = require("components/nameFilter.nut")
-let combobox = require("%daeditor/components/combobox.nut")
 let {makeVertScroll} = require("%daeditor/components/scrollbar.nut")
 let {getEntityExtraName} = require("%daeditor/daeditor_es.nut")
 let { format } = require("string")
-let entity_editor = require("entity_editor")
 let mkSortModeButton = require("components/mkSortModeButton.nut")
+let {addModalWindow, removeModalWindow} = require("%daeditor/components/modalWindows.nut")
+
 let selectedGroup = Watched("")
 let selectionState = mkWatched(persist, "selectionState", {})
 let filterString = mkWatched(persist, "filterString", "")
@@ -29,7 +30,7 @@ local entitySortFuncCache = null
 
 let numSelectedEntities = Computed(function() {
   local nSel = 0
-  foreach (v in selectionState.value) {
+  foreach (v in selectionState.get()) {
     if (v)
       ++nSel
   }
@@ -52,15 +53,15 @@ function matchEntityByText(eid, text) {
 }
 
 let filteredEntites = Computed(function() {
-  local entities = allEntities.value
-  if (filterString.value != "")
-    entities = entities.filter(@(eid) matchEntityByText(eid, filterString.value))
+  local entities = allEntities.get()
+  if (filterString.get() != "")
+    entities = entities.filter(@(eid) matchEntityByText(eid, filterString.get()))
   if (entitySortFuncCache != null)
     entities.sort(entitySortFuncCache)
   return entities
 })
 
-let filteredEntitiesCount = Computed(@() filteredEntites.value.len())
+let filteredEntitiesCount = Computed(@() filteredEntites.get().len())
 
 function applySelection(cb) {
   selectionState.mutate(function(value) {
@@ -71,24 +72,24 @@ function applySelection(cb) {
 
 
 
-let selectAllFiltered = @() applySelection(@(eid, _cur) matchEntityByText(eid, filterString.value))
+let selectAllFiltered = @() applySelection(@(eid, _cur) matchEntityByText(eid, filterString.get()))
 
 let selectNone = @() applySelection(@(_eid, _cur) false)
 
 
-let selectInvert = @() applySelection(@(eid, cur) matchEntityByText(eid, filterString.value) ? !cur : false)
+let selectInvert = @() applySelection(@(eid, cur) matchEntityByText(eid, filterString.get()) ? !cur : false)
 
 
 function scrollBySelection() {
   scrollHandler.scrollToChildren(function(desc) {
-    return ("eid" in desc) && selectionState.value?[desc.eid]
+    return ("eid" in desc) && selectionState.get()?[desc.eid]
   }, 2, false, true)
 }
 
 
 function doSelect() {
   let eids = []
-  foreach (k, v in selectionState.value) if (v) eids.append(k)
+  foreach (k, v in selectionState.get()) if (v) eids.append(k)
   entity_editor.get_instance().selectEntities(eids)
   gui_scene.resetTimeout(0.1, function() {
     selectedEntities.trigger()
@@ -99,22 +100,14 @@ function doSelect() {
 
 function doLocate() {
   let eids = []
-  foreach (k, v in selectionState.value) if (v) eids.append(k)
+  foreach (k, v in selectionState.get()) if (v) eids.append(k)
   entity_editor.get_instance().selectEntities(eids)
   entity_editor.get_instance().zoomAndCenter()
-  
 }
-
-
-function doCancel() {
-  showEntitySelect(false)
-
-}
-
 
 function statusLine() {
-  let nMrk = numSelectedEntities.value
-  let nSel = selectedEntities.value.len()
+  let nMrk = numSelectedEntities.get()
+  let nSel = selectedEntities.get().len()
 
   if (statusAnimTrigger.lastN != null && statusAnimTrigger.lastN != nSel)
     anim_start(statusAnimTrigger)
@@ -137,7 +130,7 @@ function statusLine() {
         rendObj = ROBJ_TEXT
         halign = ALIGN_RIGHT
         size = [flex(), SIZE_TO_CONTENT]
-        text = format("%d listed   ", filteredEntitiesCount.value)
+        text = format("%d listed   ", filteredEntitiesCount.get())
         color = Color(170,170,170)
      }
     ]
@@ -169,7 +162,7 @@ let filter = nameFilter(filterString, {
 function doSelectEid(eid, mod) {
   let eids = []
   local found = false
-  foreach (k, _v in selectedEntities.value) {
+  foreach (k, _v in selectedEntities.get()) {
     if (k == eid)
       found = true
     else if (mod)
@@ -185,7 +178,7 @@ let removeSelectedByEditorTemplate = @(tname) tname.replace("+daeditor_selected+
 
 function listRow(eid, idx) {
   return watchElemState(function(sf) {
-    let isSelected = selectionState.value?[eid]
+    let isSelected = selectionState.get()?[eid]
     let textColor = isSelected ? colors.TextDefault : colors.TextDarker
     let color = isSelected ? colors.Active
       : sf & S_TOP_HOVER ? colors.GridRowHover
@@ -208,21 +201,21 @@ function listRow(eid, idx) {
       function onClick(evt) {
         if (evt.shiftKey) {
           local selCount = 0
-          foreach (_k, v in selectionState.value) {
+          foreach (_k, v in selectionState.get()) {
             if (v)
               ++selCount
           }
           if (selCount > 0) {
             local idx1 = -1
             local idx2 = -1
-            foreach (i, filteredEid in filteredEntites.value) {
+            foreach (i, filteredEid in filteredEntites.get()) {
               if (eid == filteredEid) {
                 idx1 = i
                 idx2 = i
               }
             }
-            foreach (i, filteredEid in filteredEntites.value) {
-              if (selectionState.value?[filteredEid]) {
+            foreach (i, filteredEid in filteredEntites.get()) {
+              if (selectionState.get()?[filteredEid]) {
                 if (idx1 > i)
                   idx1 = i
                 if (idx2 < i)
@@ -237,7 +230,7 @@ function listRow(eid, idx) {
               }
               selectionState.mutate(function(value) {
                 for (local i = idx1; i <= idx2; i++) {
-                  let filteredEid = filteredEntites.value[i]
+                  let filteredEid = filteredEntites.get()[i]
                   value[filteredEid] <- !evt.ctrlKey
                 }
               })
@@ -290,10 +283,10 @@ function listRowMoreLeft(num, idx) {
 
 
 function initEntitiesList() {
-  let entities = entity_editor.get_instance()?.getEntities(selectedGroup.value) ?? []
+  let entities = entity_editor.get_instance()?.getEntities(selectedGroup.get()) ?? []
   foreach (eid in entities) {
-    let isSelected = selectedEntities.value?[eid] ?? false
-    selectionState.value[eid] <- isSelected
+    let isSelected = selectedEntities.get()?[eid] ?? false
+    selectionState.get()[eid] <- isSelected
   }
   allEntities(entities)
   selectionState.trigger()
@@ -309,14 +302,14 @@ entitySortState.subscribe(function(v) {
 selectedGroup.subscribe(@(_) initEntitiesList())
 de4workMode.subscribe(@(_) gui_scene.resetTimeout(0.1, initEntitiesList))
 
-function entitySelectRoot() {
+function mkEntitySelect() {
   let templatesGroups = ["(all workset entities)"].extend(entity_editor.get_instance().getEcsTemplatesGroups())
 
   function listContent() {
     const maxVisibleItems = 500
-    let rows = filteredEntites.value.slice(0, maxVisibleItems).map(@(eid, idx) listRow(eid, idx))
-    if (rows.len() < filteredEntites.value.len())
-      rows.append(listRowMoreLeft(filteredEntites.value.len() - rows.len(), rows.len()))
+    let rows = filteredEntites.get().slice(0, maxVisibleItems).map(@(eid, idx) listRow(eid, idx))
+    if (rows.len() < filteredEntites.get().len())
+      rows.append(listRowMoreLeft(filteredEntites.get().len() - rows.len(), rows.len()))
 
     return {
       watch = [selectionState, filteredEntites]
@@ -330,38 +323,76 @@ function entitySelectRoot() {
 
   let scrollList = makeVertScroll(listContent, {
     scrollHandler
-    rootBase = class {
+    rootBase = {
       size = flex()
       function onAttach() {
         scrollBySelection()
       }
     }
   })
-
-  let content = @() {
+  const WORKSET_FILTER = "workset filter"
+  let closeWorkset = @() removeModalWindow(WORKSET_FILTER)
+  let mkSelectWorkSet = function(ws) {
+    let hovered = Watched(false)
+    let group = ElemGroup()
+    return @() {
+      watch = [hovered, selectedGroup]
+      rendObj = ROBJ_BOX
+      size = const [hdpx(300), SIZE_TO_CONTENT]
+      group
+      children = { rendObj = ROBJ_TEXT text = ws group, behavior = Behaviors.Marquee, scrollOnHover = true, size = [flex(), SIZE_TO_CONTENT] delay = [0.1, 0.5], speed = hdpx(80)}
+      padding = const [hdpx(1), hdpx(5)]
+      key = ws
+      borderWidth = hovered.get() ? hdpx(1) : 0
+      fillColor = hovered.get()
+        ? Color(30,30,30,5)
+        : selectedGroup.get()==ws ? Color(100,120,120) : 0
+      borderColor = Color(160,160,180)
+      behavior = Behaviors.Button
+      onHover = @(on) hovered.set(on)
+      onClick = function(){
+        selectedGroup.set(ws)
+        closeWorkset()
+      }
+    }
+  }
+  return @() {
     flow = FLOW_VERTICAL
     gap = fsh(0.5)
-    watch = [allEntities, selectedEntities]
+    watch = const [allEntities, selectedEntities]
     size = flex()
     children = [
       {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = const [flex(), SIZE_TO_CONTENT]
         flow = FLOW_HORIZONTAL
         children = [
           mkSortModeButton(entitySortState)
-          { size = [sw(0.2), SIZE_TO_CONTENT] }
+          const { size = [sw(0.2), SIZE_TO_CONTENT] }
           filter
-          {
-            size = [sw(11), sh(2.7)]
-            children = combobox(selectedGroup, templatesGroups)
+          function() {
+            
+            return {
+              size = const [sw(11), sh(2.7)]
+              watch = selectedGroup
+
+              children = textButton((selectedGroup.get() ?? "")=="" ? "_unspecified_" : selectedGroup.get(), @() addModalWindow({
+                key = WORKSET_FILTER
+                size = flex()
+                hotkeys = [["Esc", closeWorkset]]
+                padding = hdpx(20)
+                rendObj = ROBJ_SOLID
+                color = Color(30, 30, 30)
+                children = [
+                  { hplace = ALIGN_RIGHT vplace = ALIGN_TOP children = closeButton(closeWorkset)}
+                  { hplace = ALIGN_LEFT vplace = ALIGN_TOP children = {rendObj = ROBJ_TEXT text = "Select filter for working set"}}
+                  { padding = [sh(5), sh(2) ] size = flex() children = makeVertScroll(wrap(templatesGroups.map(mkSelectWorkSet), {width = sw(80)}))}
+                ]
+              }))
+            }
           }
-          closeButton(doCancel)
         ]
       }
-      {
-        size = flex()
-        children = scrollList
-      }
+      { size = flex() children = scrollList }
       statusLine
       {
         flow = FLOW_HORIZONTAL
@@ -380,18 +411,15 @@ function entitySelectRoot() {
         children = [
           textButton("Select", doSelect, {hotkeys=["^Enter"]})
           textButton("Locate", doLocate, {hotkeys=["^Z"]})
-          textButton("Close",  doCancel, {hotkeys=["^Esc"]})
         ]
       }
     ]
   }
-  return mkWindow({
-    onAttach = initEntitiesList
-    id = "entity_select"
-    content
-    saveState = true
-  })()
+}
+return {
+  onAttach = initEntitiesList
+  id = EntitySelectWndId
+  mkContent = mkEntitySelect
+  saveState=true
 }
 
-
-return entitySelectRoot

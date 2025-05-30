@@ -8,13 +8,13 @@ let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { WEAPON_TAG,
         isUnitHaveAnyWeaponsTags } = require("%scripts/weaponry/weaponryInfo.nut")
 let { tryOpenNextTutorialHandler } = require("%scripts/tutorials/nextTutorialHandler.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 
 let g_tutorials_manager = {
   actions = []
 
   function canAct() {
-    if (!isInMenu())
+    if (!isInMenu.get())
       return false
     if (isHandlerInScene(gui_handlers.ShopCheckResearch))
       return false

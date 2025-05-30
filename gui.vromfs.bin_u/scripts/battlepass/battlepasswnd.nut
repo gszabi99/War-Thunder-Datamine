@@ -6,7 +6,7 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { ceil } = require("math")
 let { rnd } = require("dagor.random")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { seasonLevel, season, seasonMainPrizesData } = require("%scripts/battlePass/seasonState.nut")
 let { seasonStages, getStageViewData, doubleWidthStagesIcon  } = require("%scripts/battlePass/seasonStages.nut")
 let { receiveRewards, unlockProgress, activeUnlocks } = require("%scripts/unlocks/userstatUnlocksState.nut")
@@ -20,7 +20,8 @@ let { seasonLvlWatchObj, todayLoginExpWatchObj, loginStreakWatchObj,
 } = require("%scripts/battlePass/watchObjInfoConfig.nut")
 let { openBattlePassShopWnd } = require("%scripts/battlePass/progressShop.nut")
 let { userstatStats, isUserstatMissingData } = require("%scripts/userstat/userstat.nut")
-let { getSelectedChild, findChildIndex, adjustWindowSize } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj, getSelectedChild, findChildIndex, adjustWindowSize
+} = require("%sqDagui/daguiUtil.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let { hasBattlePass } = require("%scripts/battlePass/unlocksRewardsState.nut")
@@ -39,6 +40,8 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { isWarbondsShopAvailable, openWarbondsShop } = require("%scripts/warbonds/warbondsManager.nut")
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 let battlePassRewardTitleLocId = "battlePass/rewardsTitle"
@@ -531,7 +534,7 @@ local BattlePassWnd = class (gui_handlers.BaseGuiHandlerWT) {
   function onViewBattleTaskRequirements() {
     let awardsList = []
     foreach (id in this.getCurrentConfig()?.names ?? [])
-      awardsList.append(::build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
+      awardsList.append(build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
 
     showUnlocksGroupWnd(awardsList, loc("unlocks/requirements"))
   }

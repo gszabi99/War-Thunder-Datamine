@@ -42,58 +42,91 @@ return [
     needShowInHelp = true
   }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   {
     id = "ID_HUMAN_FIRE_HEADER"
     type = CONTROL_TYPE.SECTION
   }
-  {
-    id = "ID_FIRE_HUMAN"
-    needShowInHelp = true
-  }
-  {
-    id = "ID_FIRE_HUMAN_MACHINE_GUN"
-    checkAssign = false
-  }
-  {
-    id = "ID_FIRE_HUMAN_SPECIAL_GUN"
-    needShowInHelp = true
-  }
-  {
-    id = "ID_HUMAN_SMOKE_GRENADE"
-    checkAssign = false
-  }
-  {
-    id = "ID_WEAPON_LOCK_HUMAN"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_SENSOR_TARGET_SWITCH_HUMAN"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_SENSOR_TARGET_LOCK_HUMAN"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_SENSOR_SWITCH_HUMAN"
-    checkAssign = false
-    needShowInHelp = true
-  }
-  {
-    id = "ID_HUMAN_NIGHT_VISION"
-    checkAssign = false
-  }
-  {
-    id = "ID_HUMAN_THERMAL_WHITE_IS_HOT"
-    checkAssign = false
-  }
-  {
-    id = "ID_HUMAN_TOGGLE_RANGEFINDER"
-    checkAssign = false
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   {
     id = "ID_HUMAN_VIEW_HEADER"

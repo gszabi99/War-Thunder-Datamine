@@ -8,7 +8,7 @@ let { IlsColor, IlsLineScale, TvvMark, RadarTargetPosValid, RadarTargetDist,
 let { baseLineWidth, mpsToKnots, metrToFeet, metrToNavMile, feetToNavMile } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { AdlPoint, CurWeaponName, ShellCnt, BulletImpactPoints1, BulletImpactPoints2, BulletImpactLineEnable } = require("%rGui/planeState/planeWeaponState.nut")
-let { Tangage, Overload, BarAltitude, Altitude, Speed, Roll, Mach, MaxOverload } = require("%rGui/planeState/planeFlyState.nut")
+let { Tangage, Overload, BarAltitude, Altitude, Speed, Roll, Mach, MaxOverload, HorizonX, HorizonY } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let { floor, round } = require("%sqstd/math.nut")
 let { IlsTrackerVisible, IlsTrackerX, IlsTrackerY, GuidanceLockState } = require("%rGui/rocketAamAimState.nut")
@@ -891,9 +891,9 @@ function pitch(width, height, generateFunc) {
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = [0, -height * (90.0 - Tangage.value) * 0.05]
+        translate = [HorizonX.value - width * 0.5, HorizonY.value - height * 5]
         rotate = -Roll.value
-        pivot = [0.5, (90.0 - Tangage.value) * 0.1]
+        pivot = [0.5, 9]
       }
     }
   }

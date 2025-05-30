@@ -1,0 +1,40 @@
+options indenting = 4
+options gen2 = false
+require strings
+
+let remap <- {
+        "daslib" => "%daslib",
+    }
+
+
+[export]
+def module_get(req : string, from:string) : tuple<string;string;string>
+    var rs = split_by_chars(req, "./")
+
+    if length(rs) == 0
+        return (req, "{join(rs,"/")}.das", "")
+
+    if length(rs) > 1
+        get(remap, rs[0]) <| $(mount) { rs[0] = mount; }
+
+    let modName = rs[length(rs)-1]
+    return (modName, "{join(rs,"/")}.das", "")
+
+
+def split_by_chars ( text, delim : string implicit ) : array<string>
+    var res : array<string>
+    builtin_string_split_by_char (text, delim) <| $ ( arr : array<string># ) : void
+        res := arr
+    return <- res
+
+
+def join(it : array<string>; separator:string implicit)
+    let st = build_string() <| $ (var writer)
+        var skip_first = true
+        for elem in it
+            if skip_first
+                skip_first = false
+            else
+                write(writer, separator)
+            write(writer, elem)
+    return st

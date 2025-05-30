@@ -10,9 +10,10 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { findInviteClass, invitesClasses } = require("%scripts/invites/invitesClasses.nut")
 let { MAX_POPUPS_ON_SCREEN, addPopup } = require("%scripts/popups/popups.nut")
-let { doWithAllGamercards, updateGcInvites } = require("%scripts/gamercard.nut")
+let { updateGcInvites, doWithAllGamercards } = require("%scripts/gamercard/gamercardHelpers.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { invitesAmount } = require("%scripts/invites/invitesState.nut")
+let { crossNetworkChatStatus } = require("%scripts/social/crossplay.nut")
 
 const INVITE_CHAT_LINK_PREFIX = "INV_"
 const POPUP_TEXT_COLOR = "@chatInfoColor"
@@ -267,6 +268,17 @@ function addFriendInvite(name, uid) {
     return
   addInvite(findInviteClass("Friend"), { inviterName = name, inviterUid = uid })
 }
+
+function updateCanChatWithPlayerForInvites() {
+  foreach (invite in invitesList)
+    invite.updateCanChatWithPlayer()
+  broadcastEvent("InviteReceived") 
+}
+
+crossNetworkChatStatus.subscribe(function(canChat) {
+  if (canChat != null)
+    updateCanChatWithPlayerForInvites()
+})
 
 addListenersWithoutEnv({
   LoginComplete = @(_) fetchNewInvitesFromUserlogs()

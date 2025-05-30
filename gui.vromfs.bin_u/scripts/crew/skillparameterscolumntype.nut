@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { fabs } = require("math")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let { isAffectedBySpecialization, isAffectedByLeadership } = require("%scripts/crew/crewSkills.nut")
 let { getCrewSkillValue } = require("%scripts/crew/crew.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -25,108 +25,83 @@ enum skillColumnOrder {
   UNKNOWN
 }
 
-::g_skill_parameters_column_type <- {
+
+let isSkillNotOnlyForTotalAndTop = @(memberName, skillName)
+  (memberName != "commander" || skillName != "leadership")
+    && (memberName != "ship_commander" || skillName != "leadership")
+    && (memberName != "gunner" || skillName != "members")
+    && (memberName != "groundService" || skillName != "repairRank")
+
+let skillParametersColumnType = {
   types = []
-}
 
-::g_skill_parameters_column_type._checkSkill <- function _checkSkill(_memberName, _skillName) {
-  return true
-}
+  template = {
+    id = "" 
+    headerLocId = ""
+    previousParametersRequestType = null
+    currentParametersRequestType = null
+    textColor = ""
+    imageName = ""
+    imageSize = 0
+    addDummyBlock = false
+    addSignChar = true
+    addMeasureUnits = false
+    sortOrder = skillColumnOrder.UNKNOWN
 
-::g_skill_parameters_column_type._checkCrewUnitType <- function _checkCrewUnitType(_crewUnitType) {
-  return true
-}
+    
 
-::g_skill_parameters_column_type._getHeaderText <- function _getHeaderText() {
-  if (this.headerLocId.len() == 0)
-    return null
-  return loc(this.headerLocId)
-}
 
-::g_skill_parameters_column_type._getHeaderImage <- function _getHeaderImage(_params) {
-  if (this.imageName.len() == 0 || this.imageSize <= 0)
-    return null
-  return this.imageName
-}
+    checkSkill = @(_memberName, _skillName) true
+    
 
-::g_skill_parameters_column_type._getHeaderImageLegendText <- function _getHeaderImageLegendText() {
-  return loc($"crewSkillParameter/legend/{this.id.tolower()}")
-}
 
-::g_skill_parameters_column_type._createValueItem <- function _createValueItem(
-  prevValue, curValue, prevSelectedValue, curSelectedValue, measureType, sign) {
-  local itemText = this.getDiffText(prevValue, curValue, sign, measureType, this.textColor)
-  let selectedDiffText = this.getDiffText(prevSelectedValue - prevValue,
-    curSelectedValue - curValue, sign, measureType, "userlogColoredText", true)
-  itemText = "".concat(itemText, selectedDiffText)
+    checkCrewUnitType = @(_crewUnitType) true
 
-  if (this.addMeasureUnits)
-    itemText = "".concat(itemText, format(" %s", colorize(this.textColor, measureType.getMeasureUnitsName())))
-  let valueItem = {
-    itemText = itemText
+    getHeaderText = @() this.headerLocId.len() == 0 ? null : loc(this.headerLocId)
+    getHeaderImage = @(_params) this.imageName.len() == 0 || this.imageSize <= 0
+      ? null
+      : this.imageName
+    getHeaderImageLegendText = @() loc($"crewSkillParameter/legend/{this.id.tolower()}")
+
+    function createValueItem(
+      prevValue, curValue, prevSelectedValue, curSelectedValue, measureType, sign) {
+      local itemText = this.getDiffText(prevValue, curValue, sign, measureType, this.textColor)
+      let selectedDiffText = this.getDiffText(prevSelectedValue - prevValue,
+        curSelectedValue - curValue, sign, measureType, "userlogColoredText", true)
+      itemText = "".concat(itemText, selectedDiffText)
+
+      if (this.addMeasureUnits)
+        itemText = "".concat(itemText, format(" %s", colorize(this.textColor, measureType.getMeasureUnitsName())))
+      let valueItem = {
+        itemText = itemText
+      }
+      return valueItem
+    }
+
+    function getDiffText(prevValue, curValue, sign, measureType, colorName, isAdditionalText = false) {
+      let diffAbsValue = fabs(curValue - prevValue)
+      if (isAdditionalText && !diffAbsValue)
+        return ""
+
+      local diffText = measureType.getMeasureUnitsText(diffAbsValue, false, true)
+      if (isAdditionalText && diffText == "0")
+        return ""
+
+      local diffSignChar = ""
+      if ((curValue - prevValue < 0) || (this.addSignChar && !diffAbsValue && !sign))
+        diffSignChar = "-"
+      else if (this.addSignChar || isAdditionalText)
+        diffSignChar = "+"
+
+      diffText = $"{diffSignChar}{diffText}"
+      if (diffAbsValue > 0)
+        diffText = colorize(colorName, diffText)
+      return diffText
+    }
   }
-  return valueItem
 }
 
-::g_skill_parameters_column_type._getDiffText <- function _getDiffText(prevValue, curValue, sign, measureType, colorName, isAdditionalText = false) {
-  let diffAbsValue = fabs(curValue - prevValue)
-  if (isAdditionalText && !diffAbsValue)
-    return ""
-
-  local diffText = measureType.getMeasureUnitsText(diffAbsValue, false, true)
-  if (isAdditionalText && diffText == "0")
-    return ""
-
-  local diffSignChar = ""
-  if ((curValue - prevValue < 0) || (this.addSignChar && !diffAbsValue && !sign))
-    diffSignChar = "-"
-  else if (this.addSignChar || isAdditionalText)
-    diffSignChar = "+"
-
-  diffText = $"{diffSignChar}{diffText}"
-  if (diffAbsValue > 0)
-    diffText = colorize(colorName, diffText)
-  return diffText
-}
-
-::g_skill_parameters_column_type._isSkillNotOnlyForTotalAndTop <- function _isSkillNotOnlyForTotalAndTop(memberName, skillName) {
-  return (memberName != "commander" || skillName != "leadership")
-         && (memberName != "ship_commander" || skillName != "leadership")
-         && (memberName != "gunner" || skillName != "members")
-         && (memberName != "groundService" || skillName != "repairRank")
-}
-
-::g_skill_parameters_column_type.template <- {
-  id = "" 
-  headerLocId = ""
-  previousParametersRequestType = null
-  currentParametersRequestType = null
-  textColor = ""
-  imageName = ""
-  imageSize = 0
-  addDummyBlock = false
-  addSignChar = true
-  addMeasureUnits = false
-  sortOrder = skillColumnOrder.UNKNOWN
-
-  
-
-
-  checkSkill = ::g_skill_parameters_column_type._checkSkill
-
-  
-
-
-  checkCrewUnitType = ::g_skill_parameters_column_type._checkCrewUnitType
-
-  getHeaderText = ::g_skill_parameters_column_type._getHeaderText
-  getHeaderImage = ::g_skill_parameters_column_type._getHeaderImage
-  getHeaderImageLegendText = ::g_skill_parameters_column_type._getHeaderImageLegendText
-  createValueItem = ::g_skill_parameters_column_type._createValueItem
-  getDiffText = ::g_skill_parameters_column_type._getDiffText
-}
-
-enums.addTypesByGlobalName("g_skill_parameters_column_type", {
+enumsAddTypes(skillParametersColumnType, {
 
   
 
@@ -138,7 +113,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     currentParametersRequestType = skillParametersRequestType.BASE_VALUES
     addSignChar = false
 
-    checkSkill = ::g_skill_parameters_column_type._isSkillNotOnlyForTotalAndTop
+    checkSkill = isSkillNotOnlyForTotalAndTop
   }
 
   
@@ -154,7 +129,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
     imageName = "#ui/gameuiskin#skill_star_1.svg"
     imageSize = 27
 
-    checkSkill = ::g_skill_parameters_column_type._isSkillNotOnlyForTotalAndTop
+    checkSkill = isSkillNotOnlyForTotalAndTop
   }
 
   
@@ -290,7 +265,7 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
       return ""
     }
 
-    checkSkill = ::g_skill_parameters_column_type._isSkillNotOnlyForTotalAndTop
+    checkSkill = isSkillNotOnlyForTotalAndTop
   }
 
   
@@ -306,8 +281,6 @@ enums.addTypesByGlobalName("g_skill_parameters_column_type", {
   }
 }, null, "id")
 
-::g_skill_parameters_column_type.types.sort(function(a, b) {
-  if (a.sortOrder != b.sortOrder)
-    return a.sortOrder < b.sortOrder ? -1 : 1
-  return 0
-})
+skillParametersColumnType.types.sort(@(a, b) a.sortOrder <=> b.sortOrder)
+
+return skillParametersColumnType

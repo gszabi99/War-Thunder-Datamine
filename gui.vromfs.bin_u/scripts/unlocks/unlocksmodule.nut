@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import wp_get_unlock_cost, has_entitlement, re
 from "%scripts/dagui_library.nut" import *
 from "%scripts/items/itemsConsts.nut" import itemType
 let { Cost } = require("%scripts/money.nut")
-let { isPlatformSony, isPlatformXboxOne
+let { isPlatformSony
 } = require("%scripts/clientState/platform.nut")
 let { number_of_set_bits } = require("%sqstd/math.nut")
 let psnUser = require("sony.user")
@@ -70,7 +70,7 @@ function isUnlockOpened(unlockId, unlockType = -1) {
 
   if (isPlatformSony && unlockType == UNLOCKABLE_TROPHY_PSN)
     return isPsnTrophyUnlocked(getPsnTrophyIdByName(unlockId))
-  if (isPlatformXboxOne && unlockType == UNLOCKABLE_TROPHY_XBOXONE)
+  if (is_gdk && unlockType == UNLOCKABLE_TROPHY_XBOXONE)
     return (get_status(unlockId) == Status.Achieved)
   return true
 }
@@ -189,7 +189,7 @@ function isUnlockVisibleOnCurPlatform(unlockBlk) {
   let unlockType = get_unlock_type(unlockBlk?.type ?? "")
   if (unlockType == UNLOCKABLE_TROPHY_PSN && !isPlatformSony)
     return false
-  if (unlockType == UNLOCKABLE_TROPHY_XBOXONE && !isPlatformXboxOne)
+  if (unlockType == UNLOCKABLE_TROPHY_XBOXONE && !is_gdk)
     return false
   return true
 }

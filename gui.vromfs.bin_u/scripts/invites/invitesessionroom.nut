@@ -18,12 +18,14 @@ let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
 let { isInSessionRoom, getSessionLobbyRoomId, getSessionLobbyGameMode, isUrlMissionByRoom
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getMroomInfo } = require("%scripts/matchingRooms/mRoomInfoManager.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
 let { getRoomEvent, getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { broadcastInviteUpdated, showExpiredInvitePopup } = require("%scripts/invites/invites.nut")
+let { checkGamemodePkg } = require("%scripts/clientState/contentPacks.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 let SessionRoom = class (BaseInvite) {
   
@@ -113,7 +115,7 @@ let SessionRoom = class (BaseInvite) {
   }
 
   function haveRestrictions() {
-    return !isInMenu()
+    return !isInMenu.get()
       || !this.isMissionAvailable()
       || !this.isAvailableByCrossPlay()
       || !isMultiplayerPrivilegeAvailable.value
@@ -158,18 +160,18 @@ let SessionRoom = class (BaseInvite) {
       return
 
     let room = getMroomInfo(this.roomId).getFullRoomData()
-    if (!::check_gamemode_pkg(getSessionLobbyGameMode(room)))
+    if (!checkGamemodePkg(getSessionLobbyGameMode(room)))
       return
 
     this.implAccept()
   }
 
   function implAccept(ignoreCheckSquad = false) {
-    if (!::check_gamemode_pkg(GM_SKIRMISH))
+    if (!checkGamemodePkg(GM_SKIRMISH))
       return
 
     let cb = Callback(function() {
-      let canJoin = ignoreCheckSquad || ::g_squad_utils.canJoinFlightMsgBox(
+      let canJoin = ignoreCheckSquad || canJoinFlightMsgBox(
          { isLeaderCanJoin = true }, Callback(this._implAccept, this))
       if (canJoin)
         this._implAccept()

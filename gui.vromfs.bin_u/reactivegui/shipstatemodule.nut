@@ -4,7 +4,7 @@ let { eventbus_send } = require("eventbus")
 let { brokenEnginesCount, enginesInCooldown, enginesCount,
   transmissionCount, brokenTransmissionCount, transmissionsInCooldown, torpedosCount, brokenTorpedosCount, artilleryType,
   artilleryCount, brokenArtilleryCount, steeringGearsCount, brokenSteeringGearsCount, fire, aiGunnersState, buoyancy,
-  steering, sightAngle, fwdAngle, hasAiGunners, fov, blockMoveControl, heroCoverPartsRelHp, isCoverDestroyed
+  steering, sightAngle, fwdAngle, hasAiGunners, fov, blockMoveControl, heroCoverPartsRelHp, isCoverDestroyed, burningParts
 } = require("shipState.nut")
 let { speedValue, speedUnits, machineSpeed } = require("%rGui/hud/shipStateView.nut")
 let { bestMinCrewMembersCount, minCrewMembersCount, totalCrewMembersCount,
@@ -17,9 +17,11 @@ let { lerp, sin, round } = require("%sqstd/math.nut")
 const STATE_ICON_MARGIN = 1
 const STATE_ICON_SIZE = 54
 const TOP_PANEL_ICON_SIZE = 32
+const FIRE_ICON_SIZE = 24
 
 let iconSize = hdpxi(STATE_ICON_SIZE)
 let topPanelIconSize = hdpxi(TOP_PANEL_ICON_SIZE)
+let fireIconSize = hdpxi(FIRE_ICON_SIZE)
 
 let allCoverPartsBarsWidth = hdpx(165)
 
@@ -46,6 +48,7 @@ let images = {
   torpedo = Picture($"!ui/gameuiskin#ship_torpedo_weapon_state_indicator.svg:{iconSize}:{iconSize}")
   buoyancy = Picture($"!ui/gameuiskin#buoyancy_icon.svg:{iconSize}:{iconSize}")
   fire = "!ui/gameuiskin#fire_indicator.svg:"
+  fireOutline = Picture($"!ui/gameuiskin#fire_indicator_outline.avif:{fireIconSize}:{fireIconSize}")
   steeringMark = Picture($"!ui/gameuiskin#floatage_arrow_down.svg:{iconSize}:{iconSize}")
   sightCone = Picture("+ui/gameuiskin#map_camera")
   gunner = Picture($"!ui/gameuiskin#ship_crew_gunner.svg:{iconSize}:{iconSize}")
@@ -326,12 +329,81 @@ let dollFov = @() {
   ]
 }
 
+
+function makeFireIcons(burningPartsTable) {
+  if (burningPartsTable.len() == 0)
+    return []
+
+  let blinkTime = 1.3
+  let icons = []
+  let scaleFactor = max(dollSize[0], dollSize[1])
+  foreach (partId, pos in burningPartsTable) {
+    let x = dollSize[0] * 0.5 - fireIconSize * 0.5 + pos.x * scaleFactor
+    let y = dollSize[1] * 0.5 - fireIconSize * 0.5 + pos.y * scaleFactor
+    icons.append({
+      key = $"fireOutline_{partId}"
+      pos = [x, y]
+      size = [fireIconSize, fireIconSize]
+      rendObj = ROBJ_IMAGE
+      image = images.fireOutline
+      color =  damageModule.fire
+      opacity = 0
+      transform = {}
+      animations = [
+        {
+          prop = AnimProp.scale
+          from = [1, 1]
+          to = [1.6, 1.6]
+          play = true
+          loop = true
+          easing = InCubic
+          duration = blinkTime * 0.5
+          delay = blinkTime * 0.5
+          loopPause = blinkTime * 0.5
+        }
+        {
+          prop = AnimProp.opacity
+          from = 1
+          to = 0
+          play = true
+          loop = true
+          easing = InCubic
+          duration = blinkTime * 0.5
+          delay = blinkTime * 0.5
+          loopPause = blinkTime * 0.5
+        }
+      ]
+    })
+    icons.append({
+      key = $"fireIcon_{partId}"
+      pos = [x, y]
+      size = [fireIconSize, fireIconSize]
+      rendObj = ROBJ_IMAGE
+      image = picFire
+      color =  damageModule.fire
+      animations = [
+        { prop = AnimProp.opacity, from = 0, to = 1, play = true, loop = true, duration = blinkTime, easing = CosineFull }
+      ]
+    })
+  }
+  return icons
+}
+
+let fireIconsOverlay = @() {
+  watch = burningParts
+  size = dollSize
+  children = makeFireIcons(burningParts.get())
+}
+
 let doll = {
   color = Color(0, 255, 0)
   size = dollSize
   rendObj = ROBJ_XRAYDOLL
   rotateWithCamera = false
-  children = dollFov
+  children = [
+    fireIconsOverlay
+    dollFov
+  ]
 }
 
 let leftBlock = damageModules

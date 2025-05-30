@@ -1564,6 +1564,9 @@
     "turretTurnSfxName": "turret_turn_servo"
   },
   "cockpit": {
+    "sightInFov": 0.5,
+    "sightOutFov": 7.0,
+    "sightFov": 1.0,
     "mfdTextureSize": [
       2048,
       1024
@@ -1637,11 +1640,6 @@
       0.1
     ],
     "lightRadius3": 0.2,
-    "zoomOutFov": 22.46,
-    "zoomInFov": 7.37,
-    "sightInFov": 1.2,
-    "sightOutFov": -1.0,
-    "sightFov": 0.001,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -1826,12 +1824,15 @@
           ],
           "page": [
             {
-              "type": "target_tracking",
+              "type": "target_tracking_bw",
               "turretIdx": 0
             },
             {
               "type": "thermal",
               "turretIdx": 0
+            },
+            {
+              "type": "ils_duplicate"
             },
             {
               "type": "devices",
@@ -2079,12 +2080,6 @@
                   ]
                 }
               }
-            },
-            {
-              "type": "ils_duplicate"
-            },
-            {
-              "type": "map"
             },
             {
               "type": "rwr",
@@ -2356,7 +2351,7 @@
               }
             },
             {
-              "type": "target_tracking",
+              "type": "target_tracking_bw",
               "turretIdx": 0
             },
             {
@@ -2365,9 +2360,6 @@
             },
             {
               "type": "ils_duplicate"
-            },
-            {
-              "type": "map"
             },
             {
               "type": "radar",
@@ -2383,6 +2375,86 @@
             1.0
           ],
           "page": [
+            {
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 18,
+              "lineWidth": 2.0,
+              "lineColor": [
+                255,
+                90,
+                30,
+                255
+              ],
+              "orient": "hdgUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "centerMarkLineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": false,
+              "spi": true,
+              "spiColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": true,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 25000.0,
+              "distScaleColor": [
+                255,
+                90,
+                30,
+                255
+              ],
+              "distScaleNumbers": true,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "lines",
+              "azScaleSize": 50000.0,
+              "azScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": false,
+              "extent": 130000.0,
+              "markers": true,
+              "metricUnits": true
+            },
             {
               "type": "radar",
               "scale": 0.95
@@ -2635,7 +2707,7 @@
               }
             },
             {
-              "type": "target_tracking",
+              "type": "target_tracking_bw",
               "turretIdx": 0
             },
             {
@@ -2644,9 +2716,6 @@
             },
             {
               "type": "ils_duplicate"
-            },
-            {
-              "type": "map"
             },
             {
               "type": "rwr",
@@ -2663,7 +2732,7 @@
           ],
           "page": [
             {
-              "type": "target_tracking",
+              "type": "target_tracking_bw",
               "turretIdx": 0
             },
             {
@@ -2919,9 +2988,6 @@
             },
             {
               "type": "ils_duplicate"
-            },
-            {
-              "type": "map"
             },
             {
               "type": "rwr",
@@ -2980,7 +3046,8 @@
       },
       {
         "blk": "gameData/sensors/ir_tracker.blk",
-        "node": "optic1_gun"
+        "node": "optic1_gun",
+        "powerButtonIdx": -1
       },
       {
         "blk": "gameData/sensors/su_spo-150.blk"
@@ -5429,7 +5496,8 @@
             },
             {
               "blk": "gameData/sensors/ir_tracker.blk",
-              "node": "optic1_gun"
+              "node": "optic1_gun",
+              "powerButtonIdx": -1
             },
             {
               "blk": "gameData/sensors/su_spo-150.blk"

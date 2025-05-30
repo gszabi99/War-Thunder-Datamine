@@ -12,7 +12,6 @@ let time = require("%scripts/time.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { is_replay_playing } = require("replays")
 let { eventbus_send } = require("eventbus")
-let { doesLocTextExist } = require("dagor.localize")
 let { get_mission_time, get_mplayer_by_id, get_local_mplayer } = require("mission")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_SHOW_NAMES_IN_KILLLOG,
   USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, USEROPT_HUD_SHOW_SQUADRON_NAMES_IN_KILLLOG,
@@ -25,6 +24,7 @@ let { getLocForStreak } = require("%scripts/streaks.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { buildMplayerName } = require("%scripts/statistics/mplayersList.nut")
+let { getProjectileNameLoc } = require("%scripts/weaponry/bulletsInfo.nut")
 
 let getOwnerUnit = @() getAircraftByName(getOwnerUnitName())
 
@@ -93,6 +93,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_INVALID]    = "NET_UNIT_KILLED_GM",
     }
     shell = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_UNIT_KILLED_FM",
@@ -100,6 +101,7 @@ let HudBattleLog = {
       [ES_UNIT_TYPE_BOAT]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_SHIP]       = "NET_UNIT_KILLED_GM",
       [ES_UNIT_TYPE_HELICOPTER] = "NET_UNIT_KILLED_FM",
+      [ES_UNIT_TYPE_INVALID]    = "NET_UNIT_KILLED_GM",
     }
     crash = {
       [ES_UNIT_TYPE_AIRCRAFT]   = "NET_PLAYER_HAS_CRASHED",
@@ -402,9 +404,9 @@ let HudBattleLog = {
     let msgAction = msg?.action ?? "kill"
     local iconId = msgAction
     if (msgAction == "kill")
-      iconId += this.getUnitTypeSuffix(this.getUnitTypeEx(msg, false))
+      iconId = "".concat(iconId, this.getUnitTypeSuffix(this.getUnitTypeEx(msg, false)))
     if (msgAction == "kill" || msgAction == "crash")
-      iconId += this.getUnitTypeSuffix(this.getUnitTypeEx(msg, true))
+      iconId = "".concat(iconId, this.getUnitTypeSuffix(this.getUnitTypeEx(msg, true)))
     let icon = loc($"icon/hud_msg_mp_dmg/{iconId}")
 
     let killerProjectileKey = msg?.killerProjectileName ?? ""
@@ -414,10 +416,7 @@ let HudBattleLog = {
     if(!get_gui_option_in_mode(USEROPT_HUD_SHOW_AMMO_TYPE_IN_KILLLOG, OPTIONS_MODE_GAMEPLAY, true))
       return colorize(actionColor, icon)
 
-    let killerProjectileName = doesLocTextExist(killerProjectileKey)
-      ? loc(killerProjectileKey)
-      : loc($"weapons/{killerProjectileKey}/short", "")
-
+    let killerProjectileName = getProjectileNameLoc(killerProjectileKey)
     return colorize(actionColor, $"{icon}{killerProjectileName}")
   }
 

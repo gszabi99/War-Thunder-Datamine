@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import set_option_mouse_joystick_square, is_mo
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, CONTROL_TYPE, AxisDirection, ConflictGroups
 
-let globalEnv = require("globalEnv")
+let { ControlHelpersMode } = require("globalEnv")
 let { get_game_params } = require("gameparams")
 let { get_option_multiplier, set_option_multiplier, get_option_int, set_option_int,
   OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER, OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER,
@@ -15,7 +15,7 @@ let { get_option_multiplier, set_option_multiplier, get_option_int, set_option_i
 } = require("gameOptions")
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { getMouseUsageMask } = require("%scripts/controls/controlsUtils.nut")
 let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED,
@@ -82,7 +82,7 @@ return [
   {
     id = "autotrim_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterHide = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR]
     optionType = USEROPT_AUTOTRIM
     onChangeValue = "onAircraftHelpersChanged"
   }
@@ -92,13 +92,13 @@ return [
   }
   {
     id = "ID_CONTROL_MODE_HELICOPTER"
-    filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
+    filterShow = [ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR]
     checkAssign = false
     needShowInHelp = true
   }
   {
     id = "ID_MOUSE_AIM_OVERRIDE_ROLL_HELICOPTER"
-    filterShow = [globalEnv.EM_MOUSE_AIM]
+    filterShow = [ControlHelpersMode.EM_MOUSE_AIM]
     checkAssign = false
     needShowInHelp = true
   }
@@ -108,7 +108,7 @@ return [
   }
   {
     id = "ID_FBW_MODE_HELICOPTER"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
 
@@ -139,7 +139,7 @@ return [
   {
     id = "helicopter_climb"
     type = CONTROL_TYPE.AXIS
-    filterShow = [ globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR ]
+    filterShow = [ ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR ]
   }
   {
     id = "helicopter_cyclic_roll"
@@ -162,7 +162,7 @@ return [
   {
     id = "helicopter_cyclic_roll_sens"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [ globalEnv.EM_MOUSE_AIM ]
+    filterHide = [ ControlHelpersMode.EM_MOUSE_AIM ]
     value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER)
     setValue = @(_joyParams, objValue)
       set_option_multiplier(OPTION_HELICOPTER_CYCLIC_ROLL_MULTIPLIER, objValue / 100.0)
@@ -170,7 +170,7 @@ return [
   {
     id = "helicopter_cyclic_pitch_sens"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [ globalEnv.EM_MOUSE_AIM ]
+    filterHide = [ ControlHelpersMode.EM_MOUSE_AIM ]
     value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER)
     setValue = @(_joyParams, objValue)
       set_option_multiplier(OPTION_HELICOPTER_CYCLIC_PITCH_MULTIPLIER, objValue / 100.0)
@@ -178,7 +178,7 @@ return [
   {
     id = "helicopter_pedals_sens"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [ globalEnv.EM_MOUSE_AIM ]
+    filterHide = [ ControlHelpersMode.EM_MOUSE_AIM ]
     value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_HELICOPTER_PEDALS_MULTIPLIER)
     setValue = @(_joyParams, objValue)
       set_option_multiplier(OPTION_HELICOPTER_PEDALS_MULTIPLIER, objValue / 100.0)
@@ -485,7 +485,7 @@ return [
   {
     id = "ID_AIM_CAMERA_HELICOPTER"
     checkAssign = false
-    condition = @() isPlatformSony || isPlatformXboxOne
+    condition = @() isPlatformSony || isPlatformXbox
   }
   {
     id = "helicopter_zoom"
@@ -559,30 +559,30 @@ return [
   {
     id = "ID_HELICOPTER_INSTRUCTOR_HEADER"
     type = CONTROL_TYPE.SECTION
-    filterShow = [ globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR ]
+    filterShow = [ ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR ]
   }
   {
     id = "instructor_ground_avoidance_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterShow = [ globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR ]
+    filterShow = [ ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR ]
     optionType = USEROPT_INSTRUCTOR_GROUND_AVOIDANCE
   }
   {
     id = "instructor_gear_control_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterShow = [ globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR ]
+    filterShow = [ ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR ]
     optionType = USEROPT_INSTRUCTOR_GEAR_CONTROL
   }
   {
     id = "instructor_engine_control_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterShow = [ globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR ]
+    filterShow = [ ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR ]
     optionType = USEROPT_INSTRUCTOR_ENGINE_CONTROL
   }
   {
     id = "instructor_simple_joy_helicopter"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterShow = [ globalEnv.EM_INSTRUCTOR ]
+    filterShow = [ ControlHelpersMode.EM_INSTRUCTOR ]
     optionType = USEROPT_INSTRUCTOR_SIMPLE_JOY
   }
 
@@ -634,7 +634,7 @@ return [
   {
     id = "ID_TOGGLE_COLLIMATOR_HELICOPTER"
     checkAssign = false
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
   }
   {
     id = "ID_MFD_1_PAGE"
@@ -685,7 +685,7 @@ return [
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.X
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || isXInputDevice())
+    showFunc = @() (isPlatformSony || isPlatformXbox || isXInputDevice())
     checkAssign = @() isXInputDevice()
   }
   {
@@ -693,20 +693,20 @@ return [
     type = CONTROL_TYPE.AXIS
     axisDirection = AxisDirection.Y
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
-    showFunc = @() (isPlatformSony || isPlatformXboxOne || isXInputDevice())
+    showFunc = @() (isPlatformSony || isPlatformXbox || isXInputDevice())
     checkAssign = @() isXInputDevice()
   }
 
   {
     id = "ID_HELICOPTER_JOYSTICK_HEADER"
     type = CONTROL_TYPE.SECTION
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
   }
   {
     id = "mouse_joystick_mode_helicopter"
     type = CONTROL_TYPE.SPINNER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     options = ["#options/mouse_joy_mode_simple", "#options/mouse_joy_mode_standard"]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = @(_joyParams) get_option_int(OPTION_HELICOPTER_MOUSE_JOYSTICK_MODE)
@@ -715,7 +715,7 @@ return [
   {
     id = "mouse_joystick_sensitivity_helicopter"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = function(_joyParams) {
       let gp = get_game_params()
@@ -733,7 +733,7 @@ return [
   {
     id = "mouse_joystick_deadzone_helicopter"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = function(_joyParams) {
       let dz = get_game_params()?.maxMouseJoystickDeadZone ?? 1.0
@@ -748,7 +748,7 @@ return [
   {
     id = "mouse_joystick_screensize_helicopter"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = function(_joyParams) {
       let gp = get_game_params()
@@ -766,7 +766,7 @@ return [
   {
     id = "mouse_joystick_screen_place_helicopter"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENPLACE)
     setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_HELICOPTER_MOUSE_JOYSTICK_SCREENPLACE, objValue / 100.0)
@@ -774,7 +774,7 @@ return [
   {
     id = "mouse_joystick_aileron_helicopter"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
     value = function(_joyParams) {
       let maxVal = get_game_params()?.maxMouseJoystickAileron ?? 1.0
@@ -788,7 +788,7 @@ return [
   {
     id = "mouse_joystick_rudder_helicopter"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
     value = function(_joyParams) {
       let maxVal = get_game_params()?.maxMouseJoystickRudder ?? 1.0
@@ -802,14 +802,14 @@ return [
   {
     id = "helicopter_mouse_joystick_square"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = @(_joyParams) get_option_mouse_joystick_square()
     setValue = @(_joyParams, objValue) set_option_mouse_joystick_square(objValue)
   }
   {
     id = "ID_HELICOPTER_CENTER_MOUSE_JOYSTICK"
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() is_mouse_available() && (getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
     checkAssign = false
   }
@@ -817,39 +817,39 @@ return [
   {
     id = "ID_HELICOPTER_TRIM_CONTROL_HEADER"
     type = CONTROL_TYPE.SECTION
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
   }
   {
     id = "ID_HELICOPTER_TRIM"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_HELICOPTER_TRIM_RESET"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_HELICOPTER_TRIM_SAVE"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "helicopter_trim_elevator"
     type = CONTROL_TYPE.AXIS
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "helicopter_trim_ailerons"
     type = CONTROL_TYPE.AXIS
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "helicopter_trim_rudder"
     type = CONTROL_TYPE.AXIS
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   

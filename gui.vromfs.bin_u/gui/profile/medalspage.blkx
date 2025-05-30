@@ -1,0 +1,90 @@
+{
+  "tdiv": {
+    "id": "page_content",
+    "size": "pw, ph",
+    "flow": "vertical",
+    "margin-top": "2@blockInterval",
+    "tdiv": [
+      {
+        "flow": "horizontal",
+        "size": "pw, 8@blockInterval",
+        "position": "relative",
+        "bgcolor": "@evenTrColor",
+        "margin-bottom": "2@blockInterval",
+        "textareaNoTab": {
+          "id": "total_received",
+          "margin-left": "1@blockInterval",
+          "valign": "center",
+          "overlayTextColor": "active"
+        },
+        "tdiv": {
+          "size": "243@sf/@pf, ph",
+          "position": "absolute",
+          "left": "pw-w-1@blockInterval",
+          "EditBox": {
+            "id": "filter_edit_box",
+            "width": "pw",
+            "on_change_value": "applyMedalFilter",
+            "on_cancel_edit": "onFilterCancel",
+            "text": "",
+            "edit-hint": "#contacts/search_placeholder",
+            "valign": "center"
+          }
+        }
+      },
+      {
+        "id": "content",
+        "position": "relative",
+        "size": "pw, fh",
+        "flow": "horizontal",
+        "profileContentLeft": {
+          "listbox": {
+            "id": "medals_list",
+            "size": "pw, ph",
+            "position": "relative",
+            "flow-align": "left",
+            "isBigSizeList": "yes",
+            "beyondScrollbar": "yes",
+            "navigator": "posNavigator",
+            "moveX": "linear",
+            "moveY": "closest",
+            "navigatorShortcuts": "yes",
+            "move-only-hover": "yes",
+            "on_select": "onMedalsCountrySelect"
+          }
+        },
+        "profileContentSeparator": {},
+        "profileContentRight": {
+          "size": "@profilePageRightPartWidth, ph",
+          "position": "relative",
+          "flow": "vertical",
+          "profileContentDesc": {
+            "id": "medals_desc",
+            "width": "pw"
+          },
+          "tdiv": {
+            "position": "relative",
+            "size": "pw, 2@sf/@pf",
+            "background-color": "@separatorColor",
+            "margin": "0, 6@sf/@pf, 0, 19@sf/@pf"
+          },
+          "medalsList": {
+            "medalsListContent": {
+              "id": "medals_zone",
+              "on_select": "onMedalSelect"
+            }
+          }
+        }
+      }
+    ],
+    "textareaNoTab": {
+      "id": "empty_text",
+      "overlayTextColor": "active",
+      "normalFont": "yes",
+      "position": "absolute",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "text": "#profile/medals/filterStrong",
+      "display": "hide"
+    }
+  }
+}

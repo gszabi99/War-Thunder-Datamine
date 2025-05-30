@@ -5,7 +5,8 @@ let { eventbus_send } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { loadHandler, handlersManager, isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getStringWidthPx, getFontLineHeightPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { buidPartialTimeStr } = require("%appGlobals/timeLoc.nut")
 let { addListenersWithoutEnv, add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -316,7 +317,7 @@ let offerTypes = {
       local count = prize?.count ?? 1
       let contentItem = item.getContentItem()
       if (contentItem) {
-        count = count * (item?.metaBlk?.count ?? 1)
+        count = count * (item?.metaBlk.count ?? 1)
         item = contentItem
       }
 
@@ -1236,7 +1237,7 @@ function tryOpenChestWindow() {
   if (waitingForShowChest == null)
     return
 
-  if (!isInMenu()) {
+  if (!isInMenu.get()) {
     waitingForShowChest = null
     return
   }

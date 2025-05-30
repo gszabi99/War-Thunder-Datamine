@@ -1,14 +1,14 @@
-from "%scripts/dagui_natives.nut" import disable_network, shop_get_premium_account_ent_name, has_entitlement
+from "%scripts/dagui_natives.nut" import shop_get_premium_account_ent_name, has_entitlement
 from "%scripts/dagui_library.nut" import *
 
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { format } = require("string")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { get_wpcost_blk } = require("blkGetters")
-
+let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 function getAircraftRank(curAir) {
   return get_wpcost_blk()?[curAir]?.rank ?? 0
@@ -24,8 +24,8 @@ function haveCountryRankAir(country, rank) {
   return false
 }
 
-function isRanksAllowed(tbl) {
-  if (disable_network())
+function isRanksAllowed(handler, tbl) {
+  if (disableNetwork)
     return true
 
   let silent = tbl?.silent ?? false
@@ -60,7 +60,7 @@ function isRanksAllowed(tbl) {
   }
 
   if ("unlock" in tbl)
-    if (!isUnlockOpened(tbl.unlock, UNLOCKABLE_SINGLEMISSION) && !::is_debug_mode_enabled) {
+    if (!isUnlockOpened(tbl.unlock, UNLOCKABLE_SINGLEMISSION) && !isDebugModeEnabled.status) {
       if (!silent) {
         let msg = "".concat(loc("charServer/needUnlock"), "\n\n", getFullUnlockDescByName(tbl.unlock, 1))
         showInfoMsgBox(msg, "in_demo_only_singlemission_unlock")
@@ -74,9 +74,6 @@ function isRanksAllowed(tbl) {
       return true
     else if (!silent && (tbl.entitlement == shop_get_premium_account_ent_name())) {
       let guiScene = get_gui_scene()
-      local handler = this
-      if (!handler || handler == getroottable())
-        handler = get_cur_base_gui_handler()
       let askFunc = function(locText, _entitlement) {
         if (hasFeature("EnablePremiumPurchase")) {
           let text = loc($"charServer/noEntitlement/{locText}")

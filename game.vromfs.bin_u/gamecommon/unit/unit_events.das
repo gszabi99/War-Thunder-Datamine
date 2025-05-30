@@ -19,6 +19,14 @@ struct EventUnitInitModification
 struct EventUnitDelayedStatusChanged
   isDelayed : bool
 
+[cpp_event(unicast)]
+struct EventUnitSpawned
+{}
+
+[cpp_event(unicast)]
+struct EventUnitBecameDead
+{}
+
 [cpp_event(unicast, with_scheme)]
 struct EventUnitRespawn
   atTime : float
@@ -55,3 +63,4 @@ struct CmdApplyPartDamageEffect
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
 struct EventEngineOverheatDamage
   start : bool
+

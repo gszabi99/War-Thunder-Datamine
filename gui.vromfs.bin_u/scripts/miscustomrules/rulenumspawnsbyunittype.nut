@@ -8,7 +8,7 @@ let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let RuleBase = require("%scripts/misCustomRules/ruleBase.nut")
 let { UnitLimitByUnitType, UnitLimitByUnitExpClass } = require("%scripts/misCustomRules/unitLimit.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { get_ds_ut_name_unit_type } = require("%appGlobals/ranks_common_shared.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 

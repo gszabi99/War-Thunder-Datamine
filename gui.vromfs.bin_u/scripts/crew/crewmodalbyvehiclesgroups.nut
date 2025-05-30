@@ -11,7 +11,7 @@ let { utf8ToLower } = require("%sqstd/string.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { purchaseNewCrewSlot } = require("%scripts/crew/crew.nut")
 
 let class CrewModalByVehiclesGroups (gui_handlers.CrewModalHandler) {

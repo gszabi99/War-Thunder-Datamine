@@ -6,7 +6,7 @@ require DagorSystem
 require math
 require strings
 require %rGui.utils.helpers_common
-require %rGui.utils.utf8_common
+require %daslib.utf8_utils
 
 def make_bbox(pos : float2; size : float2)
   let rt = pos + float2(size.x, -size.y)
@@ -110,7 +110,7 @@ class Canvas
 
 
   def pushAxes(origin : float2; scale : float2)
-    axesStates.push([[AxesState origin = axesOrigin, scale = axesScale]])
+    axesStates.push(AxesState(origin = axesOrigin, scale = axesScale))
     setAxes(origin, scale)
 
 
@@ -194,8 +194,6 @@ class Canvas
   def setRotation(pos : float2; angle : float)
     var sina, cosa : float
     sincos(angle, sina, cosa)
-    let ax = rotate(float2(1.0, 0.0), sina, cosa)
-    let ay = float2(-ax.y, ax.x)
     let absPos = toAbsPos(pos)
     setRotViewTm(*ctx, absPos.x, absPos.y, angle, 0.0, false)
 
@@ -230,7 +228,7 @@ class Canvas
     else
       ty = 1e10
 
-    return min(tx, ty);
+    return min(tx, ty)
 
 // ****************************************************************************
 // ***   Graphics Methods   ***************************************************
@@ -254,9 +252,11 @@ class Canvas
 
 
   def drawLine(from : float2; to : float2)
-    let line <- to_array_move([[float2[2] toAbsPos(from); toAbsPos(to)]])
+    let line <- to_array_move(fixed_array<float2>(toAbsPos(from), toAbsPos(to)))
     render_line_aa(*ctx, line, false, lineWidthHdpx, float2(0.0), color)
 
+  def drawGradientLine(from : float2; to : float2; innderWidth : float; outerWidht : float)
+    *ctx |> render_line_gradient_out(toAbsPos(from), toAbsPos(to), fillColor, innderWidth, outerWidht, color)
 
   def drawDashedLine(from : float2; to : float2; dash : float; space : float)
     render_line_dashed(*ctx, toAbsPos(from), toAbsPos(to), toAbsY(dash), toAbsY(space), lineWidthHdpx, color)
@@ -268,7 +268,7 @@ class Canvas
 
 
   def drawClosedPolyLine(verts : array<float2>)
-    var len = length(verts)
+    let len = length(verts)
     for i0 in range(0..len)
       let i1 = (i0 + 1) % len
       drawLine(verts[i0], verts[i1])
@@ -280,15 +280,21 @@ class Canvas
 
 
   def drawDashedClosedPolyLine(verts : array<float2>; dash : float; space : float)
-    var len = length(verts)
+    let len = length(verts)
     for i0 in range(0..len)
       let i1 = (i0 + 1) % len
       drawDashedLine(verts[i0], verts[i1], dash, space)
 
 
   def drawFilledPoly(verts : array<float2>)
-    var finalVerts <- [{for v in verts; toAbsPos(v)}]
+    let finalVerts <- [for v in verts; toAbsPos(v)]
     render_poly(*ctx, finalVerts, color)
+
+
+  def drawFilledPolyOutlined(verts : array<float2>)
+    let finalVerts <- [for v in verts; toAbsPos(v)]
+    render_poly(*ctx, finalVerts, fillColor)
+    drawClosedPolyLine(verts)
 
 
   def drawBox(lt : float2; rb : float2)
@@ -347,7 +353,7 @@ class Canvas
 
 
   def drawArrowHead(pos : float2; dir : float2; size : float2)
-    let right = float2(-dir.y, dir.x)
+    let right = fast_normalize(float2(-dir.y, dir.x))
     let halfSize = 0.5 * size
     let rightWing = right * halfSize.x - dir * halfSize.y
     let leftWing = -right * halfSize.x - dir * halfSize.y
@@ -464,7 +470,7 @@ class Canvas
   def printStrLn(str : string; var len : int = 0)
     len = len > 0 ? len : length(str)
     var textPos = get_text_pos(*ctx)
-    var curretPos = textPos
+    let curretPos = textPos
 
     var fctx : StdGuiFontContext
     get_font_context(fctx, font.id, 0, 0, font.size)
@@ -610,8 +616,8 @@ class Canvas
     let hasHigh = high != 0
     if hasHigh
       low = abs(low)
-    let highStr = hasHigh ? string(high) : "";
-    let lowStr = fmt(hasHigh ? ":0>3" : ":>3", low);
+    let highStr = hasHigh ? string(high) : ""
+    let lowStr = fmt(hasHigh ? ":0>3" : ":>3", low)
     let lowLen = length(lowStr)
     let highLen = length(highStr)
     var lowPos = absPos
@@ -630,14 +636,14 @@ class Canvas
 
     lowPos.y -= 0.5 * (highCharSize.y - lowCharSize.y)
 
-    goto_xy(*ctx, lowPos);
+    goto_xy(*ctx, lowPos)
     draw_str_scaled(*ctx, 1.0, lowStr, lowLen)
 
     if hasHigh
-      set_font_ht(*ctx, thousandsFontSize);
-      goto_xy(*ctx, highPos);
+      set_font_ht(*ctx, thousandsFontSize)
+      goto_xy(*ctx, highPos)
       draw_str_scaled(*ctx, 1.0, highStr, highLen)
-      set_font_ht(*ctx, font.size);
+      set_font_ht(*ctx, font.size)
 
     if drawFrame
       let maxWidth = lowCharSize.x * 3.0 + highCharSize.x * float(thousandDigits)

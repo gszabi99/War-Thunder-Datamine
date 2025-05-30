@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/viewUtils/hints.nut" import g_hints
 
-let u = require("%sqStdLibs/helpers/u.nut")
+let { isString } = require("%sqStdLibs/helpers/u.nut")
 let { doesLocTextExist } = require("dagor.localize")
 
 let class BhvHint {
@@ -12,7 +12,8 @@ let class BhvHint {
   isUpdateInProgressPID  = dagui_propid_add_name_id("_isUpdateInProgress")
 
   function onAttach(obj) {
-    if (obj?.value && !obj.getIntProp(this.isUpdateInProgressPID, 0))
+    let value = obj?.value ?? ""
+    if (value != "" && !obj.getIntProp(this.isUpdateInProgressPID, 0))
       obj.getScene().performDelayed(this, function() {
         if (obj.isValid())
           this.updateView(obj)
@@ -21,7 +22,7 @@ let class BhvHint {
   }
 
   function setValue(obj, newValue) {
-    if (!u.isString(newValue) || obj?.value == newValue)
+    if (!isString(newValue) || (obj?.value ?? "") == newValue)
       return
     obj.value = newValue
     this.updateView(obj)

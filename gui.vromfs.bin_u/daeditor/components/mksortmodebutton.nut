@@ -24,7 +24,7 @@ function sortEntityByNames(eid1, eid2) {
 }
 
 function toggleSortMode(state) {
-  let sortMode = state.value?.mode ?? SORT_BY_INDEX
+  let sortMode = state.get()?.mode ?? SORT_BY_INDEX
   if (sortMode == SORT_BY_INDEX)
     state({
       mode = SORT_BY_NAMES
@@ -49,7 +49,7 @@ function mkSortModeButton(state, style={}) {
     rendObj = ROBJ_BOX
     size = SIZE_TO_CONTENT
     watch = [state, stateFlags]
-    fillColor = (stateFlags.value & S_TOP_HOVER) ? Color(255,255,255,255) : fillColor
+    fillColor = (stateFlags.get() & S_TOP_HOVER) ? Color(255,255,255,255) : fillColor
     borderRadius = hdpx(4)
     behavior = Behaviors.Button
 
@@ -58,8 +58,8 @@ function mkSortModeButton(state, style={}) {
 
     children = {
       rendObj = ROBJ_TEXT
-      text = state.value?.mode ?? SORT_BY_INDEX
-      color = (stateFlags.value & S_TOP_HOVER) ? Color(0,0,0) : Color(200,200,200)
+      text = state.get()?.mode ?? SORT_BY_INDEX
+      color = (stateFlags.get() & S_TOP_HOVER) ? Color(0,0,0) : Color(200,200,200)
       margin = fsh(0.5)
     }
   }

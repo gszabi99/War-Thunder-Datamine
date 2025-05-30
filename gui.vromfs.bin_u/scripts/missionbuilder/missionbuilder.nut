@@ -11,7 +11,8 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { rnd } = require("dagor.random")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option, getCdBaseDifficulty } = require("guiOptions")
 let { dynamicInit, dynamicGetList, dynamicTune, dynamicSetTakeoffMode,
 } = require("dynamicMission")
@@ -28,8 +29,10 @@ let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getBattleTypeByUnit } = require("%scripts/airInfo.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { isUnitAvailableForGM } = require("%scripts/unit/unitStatus.nut")
+let { isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { addMissionListFull, getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
+let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 function mergeToBlk(sourceTable, blk) {
   foreach (idx, val in sourceTable)
@@ -137,7 +140,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onApply() {
-    if (!::g_squad_utils.canJoinFlightMsgBox({
+    if (!canJoinFlightMsgBox({
         maxSquadSize = getMaxPlayersForGamemode(GM_BUILDER)
       }))
       return
@@ -147,7 +150,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
         [["ok"]], "ok")
 
     if (isInArray(this.getSceneOptValue(USEROPT_DIFFICULTY), ["hardcore", "custom"]))
-      if (!::check_diff_pkg(g_difficulty.SIMULATOR.diffCode))
+      if (!checkDiffPkg(g_difficulty.SIMULATOR.diffCode))
         return
 
     this.applyOptions()
@@ -350,7 +353,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function applyFunc() {
-    if (!::g_squad_utils.canJoinFlightMsgBox({
+    if (!canJoinFlightMsgBox({
         maxSquadSize = getMaxPlayersForGamemode(GM_BUILDER)
       }))
       return

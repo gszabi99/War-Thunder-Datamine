@@ -27,6 +27,7 @@ let { isWorldWarEnabled, canPlayWorldwar } = require("%scripts/globalWorldWarScr
 let { deferOnce } = require("dagor.workcycle")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { isQueueActive, findQueue, checkQueueType } = require("%scripts/queue/queueState.nut")
+let { get_game_mode } = require("mission")
 
 
 
@@ -802,6 +803,12 @@ addListenersWithoutEnv({
   SquadDataUpdated = @(_) deferOnce(updateVisibleGameMode)
 }, CONFIG_VALIDATION)
 
+
+function isGameModeWithSpendableWeapons() {
+  let mode = get_game_mode()
+  return mode == GM_DOMINATION || mode == GM_TOURNAMENT
+}
+
 return {
   getCurrentGameModeId
   getUserGameModeId
@@ -829,4 +836,5 @@ return {
   findPresetValidForGameMode
   getCurrentShopDifficulty
   getCurrentGameModeEdiff
+  isGameModeWithSpendableWeapons
 }

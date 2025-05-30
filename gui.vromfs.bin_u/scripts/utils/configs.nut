@@ -13,7 +13,6 @@ let configs = {
     isActual = is_price_actual
     requestUpdate = req_price_from_server
     cbName = "PriceUpdated"
-    onConfigUpdate = @() ::g_discount.updateDiscountData()
   }
 
   ENTITLEMENTS_PRICE = {
@@ -21,7 +20,6 @@ let configs = {
     isActual = is_entitlements_price_actual
     requestUpdate = req_entitlements_price_from_server
     cbName = "EntitlementsPriceUpdated"
-    onConfigUpdate = @() ::g_discount.updateDiscountData()
   }
 
   GUI = {

@@ -1,8 +1,8 @@
 from "%scripts/dagui_natives.nut" import get_user_log_time_sec, get_user_logs_count, warbonds_has_active_battle_task, get_user_log_blk_body, disable_user_log_entry
 from "%scripts/dagui_library.nut" import *
-from "%scripts/userLog/userlogConsts.nut" import USERLOG_POPUP
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 
+let { USERLOG_POPUP } = require("%scripts/userLog/userlogConsts.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
@@ -11,7 +11,7 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 let { loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let DataBlock = require("DataBlock")
 let { format } = require("string")
-let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let time = require("%scripts/time.nut")
 let workshop = require("%scripts/items/workshop/workshop.nut")
 let workshopPreview = require("%scripts/items/workshop/workshopPreview.nut")
@@ -31,7 +31,7 @@ let { showEveryDayLoginAwardWnd } = require("%scripts/items/everyDayLoginAward.n
 let { checkShowExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
 let { isUnlockNeedPopup, isUnlockNeedPopupInMenu } = require("unlocks")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
+let { isInMenu, getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { isNewbieInited, isMeNewbie, markStatsReset } = require("%scripts/myStats.nut")
 let { findItemByUid, findItemById, getInventoryItemById, getItemOrRecipeBundleById
@@ -45,6 +45,10 @@ let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { openOperationRewardPopup } = require("%scripts/globalWorldwarUtils.nut")
 let { getWarbondPriceText } = require("%scripts/warbonds/warbondsState.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
+let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+let { openOrUpdateRecycleCompleteWnd } = require("%scripts/items/recycleCompleteWnd.nut")
+
+let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
 
 function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsArray = []) {
   let body = newUserLog?.body
@@ -93,6 +97,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
   let rentsTable = {}
   let specialOffers = {}
   let ignoreRentItems = []
+  let recycledItems = {}
 
   
   
@@ -154,7 +159,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
         let awardBlk = blk?.body.award
         if (awardBlk) {
           let priceText = getWarbondPriceText(awardBlk?.cost ?? 0)
-          let awardType = ::g_wb_award_type.getTypeByBlk(awardBlk)
+          let awardType = warBondAwardType.getTypeByBlk(awardBlk)
           msg = awardType.getUserlogBuyText(awardBlk, priceText)
           if (awardType.id == EWBAT_BATTLE_TASK && !warbonds_has_active_battle_task(awardBlk?.name))
             broadcastEvent("BattleTasksIncomeUpdate")
@@ -167,7 +172,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
       
     }
 
-    if (!isInMenu()) 
+    if (!isInMenu.get()) 
       continue
 
     local markDisabled = false
@@ -223,7 +228,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
       foreach (name, value in blk.body)
         unlock[name] <- value
 
-      let config = ::build_log_unlock_data(unlock)
+      let config = build_log_unlock_data(unlock)
       config.disableLogId <- blk.id
       showUnlockWnd(config)
       shownUserlogNotifications.mutate(@(v) v.append(blk.id))
@@ -273,12 +278,12 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
       if(handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd) != null)
         continue
 
-      let itemId = blk?.body?.itemDefId || blk?.body?.trophyItemDefId || blk?.body?.id || ""
+      let itemId = blk?.body.itemDefId || blk?.body.trophyItemDefId || blk?.body.id || ""
       let item = findItemById(itemId)
       let userstatItemRewardData = getUserstatItemRewardData(itemId)
       let isUserstatRewards = userstatItemRewardData != null
       if (item != null && (!item?.shouldAutoConsume || isUserstatRewards) &&
-        (item?.needShowRewardWnd?() || blk?.body?.id == "@external_inventory_trophy")) {
+        (item?.needShowRewardWnd() || blk?.body.id == "@external_inventory_trophy")) {
         let trophyRewardTable = convertBlk(blk.body)
         if (isUserstatRewards) {
           trophyRewardTable.__update({
@@ -299,7 +304,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
       
       if (itemId in inventoryRewards && (
         (blk.body?.fromInventory && blk.body?.trophy == null)
-        || blk?.body?.id == "@external_inventory_trophy")
+        || blk?.body.id == "@external_inventory_trophy")
       ) {
         local blkBody = convertBlk(blk.body)
         let itemDefId = inventoryRewards[itemId]
@@ -420,6 +425,13 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
     }
     else if (blk?.type == EULT_REMOVE_ITEM) {
       let reason = getTblValue("reason", blk.body, "unknown")
+      if (reason == "replaced") {
+        let recycledId = blk.body.id.tostring()
+        if (recycledItems?[recycledId] == null)
+          recycledItems[recycledId] <- blk.body.count
+        else
+          recycledItems[recycledId] += blk.body.count
+      }
       if (reason == "unknown" || reason == "consumed") {
         let logTypeName = getLogNameByType(blk.type)
         let locId = $"userlog/{logTypeName}/{reason}"
@@ -433,7 +445,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
       markDisabled = true
     }
     else if (blk?.type == EULT_BUYING_RESOURCE) {
-      if (blk?.body?.entName != null && entitlementRewards?[blk.body.entName] == null)
+      if (blk?.body.entName != null && entitlementRewards?[blk.body.entName] == null)
         entitlementRewards[blk.body.entName] <- true
       markDisabled = true
     }
@@ -479,6 +491,9 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
       }))
     }
 
+  if (recycledItems.len() > 0)
+    openOrUpdateRecycleCompleteWnd({itemsIds = recycledItems})
+
   if (seenIdsArray.len())
     disableSeenUserlogs(seenIdsArray)
 
@@ -487,7 +502,7 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
   entitlementRewards.each(
     @(_, entId) handler.doWhenActive(@() showEntitlement(entId, { ignoreAvailability = true })))
   unlockUnits.each(@(logObj) handler.doWhenActive(
-    @() showUnlockWnd(::build_log_unlock_data(logObj))))
+    @() showUnlockWnd(build_log_unlock_data(logObj))))
 
   showUnlocks(unlocksRewards)
 
@@ -523,18 +538,3 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
 addListenersWithoutEnv({
   TrophyWndClose = @(_p) ::checkNewNotificationUserlogs()
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

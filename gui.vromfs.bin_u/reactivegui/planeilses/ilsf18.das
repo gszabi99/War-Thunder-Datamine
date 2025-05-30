@@ -84,8 +84,8 @@ class Component : Canvas
   fcm : FlightControlMode?
   secondaryWeapon : Weapon?
   totalTime : float
-  tvvPos : float2
   heading : float
+  tvvPos : float2
   gearProgress : float
   gunBoresightPos : float2
 
@@ -129,11 +129,14 @@ class Component : Canvas
 
     totalTime = float(get_total_time())
     let dirProjectionToIlsPos = 2.5
-    tvvPos = -(float3x3(inverse(hero.unitTm)) * fast_normalize(hero.vel)).zy * dirProjectionToIlsPos;
-    tvvPos = clamp(tvvPos, float2(-0.5), float2(0.5))
 
     let forward = hero.unitTm[0]
     heading = atan2(forward.x, forward.z)
+
+    let minSpeedSq = 1.0
+    let velocityDir = length_sq(hero.vel) > minSpeedSq ? fast_normalize(hero.vel) : forward
+    tvvPos = -(float3x3(inverse(hero.unitTm)) * velocityDir).zy * dirProjectionToIlsPos
+    tvvPos = clamp(tvvPos, float2(-0.5), float2(0.5))
 
     if get_point_of_interest(poi.pos)
       poi.isSet = true
@@ -262,22 +265,21 @@ class Component : Canvas
     setLineSpacing(1.4)
     setFontSize(35)
 
-    let verts = [[float2
-      float2(1.0, 0.0);
-      float2(0.9, 0.0);
-      float2(0.3, 1.0);
-      float2(0.1, 1.0);
-      float2(0.0, 0.75);
-      float2(0.0, 0.25);
-      float2(0.1, 0.0);
-      float2(0.3, 0.0);
-      float2(0.9, 1.0);
-      float2(1.0, 1.0);
-    ]]
+    let verts = fixed_array<float2>(
+      float2(1.0, 0.0),
+      float2(0.9, 0.0),
+      float2(0.3, 1.0),
+      float2(0.1, 1.0),
+      float2(0.0, 0.75),
+      float2(0.0, 0.25),
+      float2(0.1, 0.0),
+      float2(0.3, 0.0),
+      float2(0.9, 1.0),
+      float2(1.0, 1.0))
 
     let offset = float2(-0.015, -0.022)
     let scale = float2(0.03, 0.02)
-    let alphaVerts = verts.to_array().scale(scale).translate(pos + offset);
+    let alphaVerts = verts.to_array().scale(scale).translate(pos + offset)
     drawPolyLine(alphaVerts)
     let aoaStr = fmt(":>5.1f", fmw.fm.aoa)
 
@@ -328,7 +330,7 @@ class Component : Canvas
     let pos = float2(0.0, -0.25)
     let radius = 0.65
     let length = 0.02
-    let angles = [[float -45.0; -30.0; -15.0; -5.0; 0.0; 5.0; 15.0; 30.0; 45.0;]]
+    let angles = fixed_array<float>(-45.0, -30.0, -15.0, -5.0, 0.0, 5.0, 15.0, 30.0, 45.0)
     var sina = 0.0
     var cosa = 0.0
     let down = float2(0.0, 1.0)
@@ -344,11 +346,10 @@ class Component : Canvas
     let roll = fmw.roll * degToRad
     sincos(-roll, sina, cosa)
     let dir = rotate(down, sina, cosa)
-    let triangle = [[float2
-      float2(0.0, 0.0);
-      float2(0.7, -1.0);
-      float2(-0.7, -1.0);
-    ]]
+    let triangle = fixed_array<float2>(
+      float2(0.0, 0.0),
+      float2(0.7, -1.0),
+      float2(-0.7, -1.0))
 
     let size = float2(0.015)
     let arrPos = pos + dir * (radius - defaultLineWidthHdpxRel)
@@ -363,7 +364,7 @@ class Component : Canvas
     let rb = pos + 0.5 * size
     let count = 3
     let stepRel = size.x / float(count)
-    let heading10deg = (0.5 * float(count + 1) - heading * 36.0 / PI2) % 36.0;
+    let heading10deg = (0.5 * float(count + 1) - heading * 36.0 / PI2) % 36.0
     let linesOffset = fract(heading10deg) * stepRel
     let dotsOffset = fract(0.5 + heading10deg) * stepRel
     setFontSize(35)
@@ -420,26 +421,25 @@ class Component : Canvas
       let pos = zeroPos + float2(0.0, markOffset)
       let markEndY = float(markTangage5deg) / 22.0 * markWidth
       if markTangage5deg > 0
-        let p0 = float2(markStartX, 0.0);
-        let p1 = float2(markEndX, -markEndY);
-        let p2 = float2(markEndX, -markEndY + serifWidth);
+        let p0 = float2(markStartX, 0.0)
+        let p1 = float2(markEndX, -markEndY)
+        let p2 = float2(markEndX, -markEndY + serifWidth)
         drawLine(pos + p1, pos + p0)
         drawLine(pos + p1, pos + p2)
         drawLine(pos + inv_x(p1), pos + inv_x(p0))
         drawLine(pos + inv_x(p1), pos + inv_x(p2))
       elif markTangage5deg < 0
-        let p0 = float2(markStartX, 0.0);
-        let p1 = float2(markEndX, -markEndY);
-        let p2 = float2(markEndX, -markEndY - serifWidth);
-        let adjDashWidth = length(p2 - p1) / 7.0
+        let p0 = float2(markStartX, 0.0)
+        let p1 = float2(markEndX, -markEndY)
+        let p2 = float2(markEndX, -markEndY - serifWidth)
         drawDashedLine(pos + p1, pos + p0, dashWidth, dashWidth)
         drawLine(pos + p1, pos + p2)
         drawDashedLine(pos + inv_x(p1), pos + inv_x(p0), dashWidth, dashWidth)
         drawLine(pos + inv_x(p1), pos + inv_x(p2))
       else
-        let p0 = float2(markStartX, 0.0);
-        let p1 = float2(1.5 * markEndX, -markEndY);
-        let p2 = float2(1.5 * markEndX, -markEndY + 2.0 * serifWidth);
+        let p0 = float2(markStartX, 0.0)
+        let p1 = float2(1.5 * markEndX, -markEndY)
+        let p2 = float2(1.5 * markEndX, -markEndY + 2.0 * serifWidth)
         drawLine(pos + p1, pos + p0)
         drawLine(pos + p1, pos + p2)
         drawLine(pos + inv_x(p1), pos + inv_x(p0))
@@ -463,15 +463,14 @@ class Component : Canvas
     let forwardPoint = hero.pos + forward * 10000.0
     var forwardPointOnIls = float2(0.0)
     if world_to_ils_screen(fmw, forwardPoint, forwardPointOnIls)
-      let points = [[float2
-        float2(-0.5, 0.0);
-        float2(-0.25, 0.0);
-        float2(-0.125, 0.175);
-        float2(0.0, 0.0);
-        float2(0.125, 0.175);
-        float2(0.25, 0.0);
-        float2(0.5, 0.0);
-      ]]
+      let points = fixed_array<float2>(
+        float2(-0.5, 0.0),
+        float2(-0.25, 0.0),
+        float2(-0.125, 0.175),
+        float2(0.0, 0.0),
+        float2(0.125, 0.175),
+        float2(0.25, 0.0),
+        float2(0.5, 0.0))
       let scale = float2(0.1)
       let pos = toRelPos(forwardPointOnIls)
       let verts = points.to_array().scale(scale).translate(pos)
@@ -484,7 +483,6 @@ class Component : Canvas
     setTextAnchorHorz(AnchorHorz.Center)
 
     if isAirGunMode
-      let bulletsCountPos = float2(-0.01, 0.4)
       let bulletsCount = (wc.Weapons.countBullets(int(WeaponTriggerType.MACHINE_GUNS_TRIGGER)) +
         wc.Weapons.countBullets(int(WeaponTriggerType.CANNONS_TRIGGER)) +
         wc.Weapons.countBullets(int(WeaponTriggerType.ADDITIONAL_GUNS_TRIGGER)))
@@ -529,7 +527,7 @@ class Component : Canvas
       printStrLn("CCIP")
     elif isBombingCcrpMode || isBombingGuidedMode
       printStrLn("AUTO")
-      var tth = (*wc).getLastGuidedWeaponHitTime(int(WeaponTriggerType.GUIDED_BOMBS_TRIGGER))
+      let tth = (*wc).getLastGuidedWeaponHitTime(int(WeaponTriggerType.GUIDED_BOMBS_TRIGGER))
       let timeToShowZeroValue = 2.0
 
       if tth > totalTime - timeToShowZeroValue
@@ -704,11 +702,10 @@ class Component : Canvas
     let pullUpOffsetY = min(distance / 20000.0, 0.4)
     let pullUpPos = tvvPos + float2(0.0, pullUpOffsetY)
     let pullUpScale = float2(0.08)
-    let pullUpCuePoints = [[float2
-      float2(0.3, 0.0);
-      float2(0.9, 0.0);
-      float2(1.0, -0.15);
-    ]]
+    let pullUpCuePoints = fixed_array<float2>(
+      float2(0.3, 0.0),
+      float2(0.9, 0.0),
+      float2(1.0, -0.15))
     drawPolyLine(pullUpCuePoints.to_array().scale(pullUpScale).translate(pullUpPos))
     drawPolyLine(pullUpCuePoints.to_array().scale(inv_x(pullUpScale)).translate(pullUpPos))
 
@@ -716,7 +713,7 @@ class Component : Canvas
   def drawBombCcipReticle()
     return if !isBombingCcipMode || fmw.tangage > 15.0
 
-    var impactPos = fcm.bombImpactPosition
+    let impactPos = fcm.bombImpactPosition
     var ilsImpactPosAbs = float2(0.0)
     if !world_to_ils_screen(fmw, impactPos, ilsImpactPosAbs)
       return
@@ -753,7 +750,6 @@ class Component : Canvas
     drawLine(targetPos, targetPos - rayLength * up)
 
     let zeroOffset = dot(up, tvvPos - targetPos)
-    let zeroPos = targetPos + up * zeroOffset
     drawPullUpCue(poi.pos)
 
     if ccrp.timeToRelease > 0.0
@@ -776,12 +772,11 @@ class Component : Canvas
     let pos = poi.ilsPos
     let size = 0.05
     let sideLen = 0.5 * size / SINCOS45
-    let verts = [[float2
-      float2(-0.5, 0.0);
-      float2(0.0, -0.5);
-      float2(0.5, 0.0);
-      float2(0.0, 0.5);
-    ]]
+    let verts = fixed_array<float2>(
+      float2(-0.5, 0.0),
+      float2(0.0, -0.5),
+      float2(0.5, 0.0),
+      float2(0.0, 0.5))
     let dash = sideLen * 0.3
     let space = sideLen * 0.4
     drawDashedClosedPolyLine(verts.to_array().scale(float2(size)).translate(pos), dash, space)
@@ -793,8 +788,6 @@ class Component : Canvas
 
     let angleToRelPos = 4.0 * ilsFovDeg * degToRad
     if radar.isVerticalScan
-      let top = float2(0.0, -0.49)
-      let bottom = float2(0.0, 0.25)
       let horz = float2(radar.azimuthMin, radar.azimuthMax) * angleToRelPos
       let vert = float2(-radar.elevationMax, -radar.elevationMin) * angleToRelPos
       let dash = 0.015
@@ -803,7 +796,6 @@ class Component : Canvas
       drawDashedLine(float2(horz.y, vert.x), float2(horz.y, vert.y), dash, space)
     elif radar.isAcmMode
       let size = float2(radar.azimuthMax - radar.azimuthMin, radar.elevationMax - radar.elevationMin) * angleToRelPos
-      let clampedSize = clamp(size, float2(0.0), float2(0.5))
       let offset = float2(radar.azimuthMin, radar.elevationMin) * angleToRelPos + size * 0.5
       drawDashedEllipse(offset, clamp(size, float2(0.0), float2(0.48)), PI2 / 64.0, PI2 / 64.0, PI / 64.0)
 
@@ -828,12 +820,11 @@ class Component : Canvas
     let blinksPerSecond = 4.0
     let isBlink = fract(blinksPerSecond * totalTime) < 0.5
     if !outOfCanvas || isBlink
-      let points = [[float2
-        float2(-0.5, 0.0);
-        float2(0.0, -0.5);
-        float2(0.5, 0.0);
-        float2(0.0, 0.5);
-      ]]
+      let points = fixed_array<float2>(
+        float2(-0.5, 0.0),
+        float2(0.0, -0.5),
+        float2(0.5, 0.0),
+        float2(0.0, 0.5))
 
       let verts = points.to_array().scale(float2(size)).translate(pos)
       drawClosedPolyLine(verts)
@@ -911,18 +902,17 @@ class Component : Canvas
     let isBlink = fract(blinksPerSecond * totalTime) < 0.5
 
     if !isBlinking || isBlink
-      let points = [[float2
-        float2(-1.0, -1.0);
-        float2(1.0, -1.0);
-        float2(0.0, 0.0);
-      ]]
+      let points = fixed_array<float2>(
+        float2(-1.0, -1.0),
+        float2(1.0, -1.0),
+        float2(0.0, 0.0))
       drawClosedPolyLine(points.to_array().scale(float2(radius)).translate(pos))
 
 
   def drawAamReticle()
     return if !isAamMode || !tracking.isActive
 
-    var pos = gunBoresightPos
+    let pos = gunBoresightPos
     let radius = 0.2
     drawCircle(pos, radius)
 
@@ -939,7 +929,7 @@ class Component : Canvas
     let maxDist = get_radar_hud_aam_launch_zone_dist_max()
     let minDist = get_radar_hud_aam_launch_zone_dist_min()
     let maxNoEscapeRange = get_radar_hud_aam_launch_zone_dist_dgft_max()
-    var curDist = get_radar_hud_aam_launch_zone_dist()
+    let curDist = get_radar_hud_aam_launch_zone_dist()
     let curDistAngle = PI - clamp(curDist, 0.0, 1.0) * PI2
     let minDistAngle = PI - clamp(minDist, 0.0, 1.0) * PI2
     let maxDistAngle = PI - clamp(maxDist, 0.0, 1.0) * PI2
@@ -955,11 +945,10 @@ class Component : Canvas
     sincos(curDistAngle, dir.x, dir.y)
     drawLine(pos + dir * radius, pos + dir * (radius - serifLength))
 
-    let triangle = [[float2
-      float2(0.0, 0.0);
-      float2(0.6, 1.0);
-      float2(-0.6, 1.0);
-    ]]
+    let triangle = fixed_array<float2>(
+      float2(0.0, 0.0),
+      float2(0.6, 1.0),
+      float2(-0.6, 1.0))
 
     let triangleSize = float2(0.02)
     sincos(maxDistAngle, dir.x, dir.y)
@@ -996,7 +985,7 @@ class Component : Canvas
     setTextAnchorHorz(AnchorHorz.Left)
     setFontSize(35)
 
-    var tthAfterLaunch = (*wc).getLastGuidedWeaponHitTime(int(WeaponTriggerType.AAM_TRIGGER))
+    let tthAfterLaunch = (*wc).getLastGuidedWeaponHitTime(int(WeaponTriggerType.AAM_TRIGGER))
     let timeToShowZeroValue = 2.0
     if tthAfterLaunch > totalTime - timeToShowZeroValue
       let time = clamp(roundi(tthAfterLaunch - totalTime), 0, 99)

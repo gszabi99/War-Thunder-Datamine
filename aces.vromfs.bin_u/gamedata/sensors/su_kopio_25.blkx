@@ -6,6 +6,7 @@
   "canMoveCamera": true,
   "weaponTargetsMax": 2,
   "launchedMissilesPredictedPositionsMax": 2,
+  "showMissileAimLead": true,
   "transivers": {
     "mprf": {
       "sideLobesAttenuation": -20.0,
@@ -316,6 +317,7 @@
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
+      "targetId": true,
       "mainBeamNotchWidth": 40.0,
       "mainBeamNotchMaxElevation": 3.5,
       "track": true,
@@ -344,6 +346,7 @@
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 15.0,
+      "targetId": true,
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
       "track": true,
@@ -588,14 +591,12 @@
         },
         "designatedTargetSearch": {
           "designateTargetUnderCue": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "cue",
+            "self": true
           },
           "designateActiveDetectedTarget": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "target",
+            "self": true
           }
         },
         "resetBvrLockMode": {
@@ -763,7 +764,7 @@
         },
         "designatedTargetTws": {
           "designateActiveDetectedTarget": {
-            "type": 0,
+            "type": "target",
             "self": true,
             "sensorIndex": 0
           }
@@ -1108,7 +1109,10 @@
           "stateTo": "checkDesignationType0",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": [
+                "target",
+                "cue"
+              ]
             }
           }
         },
@@ -1676,6 +1680,9 @@
               "fsm": "main",
               "name": "resetSearchMode"
             },
+            "setDesignationSourceType": {
+              "sourceType": "radarSs"
+            },
             "setFsmActive": [
               {
                 "fsm": "main",
@@ -1801,6 +1808,9 @@
             "doCustomActionTemplate": {
               "fsm": "main",
               "name": "resetSearchMode"
+            },
+            "setDesignationSourceType": {
+              "sourceType": "radar"
             },
             "setFsmActive": [
               {
@@ -2020,19 +2030,6 @@
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": {}
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "sensorIndex": 1
-            }
           }
         },
         "centerZone": {
@@ -2429,5 +2426,28 @@
         }
       }
     }
-  }
+  },
+  "targetTypeId": [
+    {
+      "name": "hud/small",
+      "sizeRange": [
+        0.0,
+        5.0
+      ]
+    },
+    {
+      "name": "hud/medium",
+      "sizeRange": [
+        5.0,
+        25.0
+      ]
+    },
+    {
+      "name": "hud/large",
+      "sizeRange": [
+        25.0,
+        500.0
+      ]
+    }
+  ]
 }

@@ -5,7 +5,7 @@ let { setAllowedControlsMask } = require("controlsMask")
 let { getWeaponryByPresetInfo } = require("%scripts/weaponry/weaponryPresetsParams.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { get_all_weapons, can_set_weapon = @(_v) true, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset,
+let { get_all_weapons, can_set_weapon, set_secondary_weapon, get_countermeasures_data, COUNTER_MEASURE_MODE_FLARE_CHAFF, get_current_weapon_preset,
  COUNTER_MEASURE_MODE_FLARE, COUNTER_MEASURE_MODE_CHAFF, has_secondary_weapons, set_countermeasures_mode} = require("weaponSelector")
 let { eventbus_subscribe } = require("eventbus")
 let { handlersManager} = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -238,10 +238,10 @@ let class HudAirWeaponSelector {
     let tierId = to_integer_safe(obj.tierId)
     let tier = this.getTierById(tierId)
 
-    if (tier?.weaponry?.name == null)
+    if (tier?.weaponry.name == null)
       this.selectBtnsById(this.selectedTiers)
     else
-      this.hoverWeaponsByName(tier?.weaponry?.name)
+      this.hoverWeaponsByName(tier?.weaponry.name)
   }
 
   function onAirWeapSelectorUnhover(obj) {
@@ -283,7 +283,7 @@ let class HudAirWeaponSelector {
         maxCount += this.lastTiersStats[i].maxCount
         if (weaponName == null) {
           let tier = this.getTierById(tierId)
-          weaponName = tier?.weaponry?.name
+          weaponName = tier?.weaponry.name
         }
       }
     }

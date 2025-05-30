@@ -35,7 +35,7 @@ let WwReinforcementArmy = class (WwFormation) {
     this.suppliesEndMillisec = armyBlock?.suppliesEndMillisec ?? 0
     this.entrenchEndMillisec = armyBlock?.entrenchEndMillisec ?? 0
 
-    this.unitType = g_ww_unit_type.getUnitTypeByTextCode(armyBlock?.specs?.unitType).code
+    this.unitType = g_ww_unit_type.getUnitTypeByTextCode(armyBlock?.specs.unitType).code
     this.overrideIconId = armyBlock?.iconOverride ?? ""
     this.loadedArmyType = wwGetLoadedArmyType(this.name, true)
     this.hasArtilleryAbility = armyBlock?.specs.canArtilleryFire ?? false

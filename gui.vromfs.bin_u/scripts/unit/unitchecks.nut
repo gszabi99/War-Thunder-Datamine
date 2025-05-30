@@ -14,6 +14,7 @@ let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitExp } = require("%scripts/unit/unitInfo.nut")
 let { buyUnit, CheckFeatureLockAction, checkFeatureLock, showCantBuyOrResearchUnitMsgbox } = require("%scripts/unit/unitActions.nut")
+let { showNotAvailableMsgBox } = require("%scripts/gameModes/gameModeMesasge.nut")
 
 const MODIFICATORS_REQUEST_TIMEOUT_MSEC = 20000
 
@@ -44,7 +45,7 @@ function checkForResearch(unit) {
     if (min(clan_get_exp(), unit.reqExp - getUnitExp(unit)) <= 0
       && (!hasFeature("ClanVehicles") || !is_in_clan())) {
       if (!hasFeature("ClanVehicles")) {
-        ::show_not_available_msg_box()
+        showNotAvailableMsgBox()
         return false
       }
 
@@ -138,6 +139,10 @@ function check_unit_mods_update(air, callBack = null, forceUpdate = false, needM
       afterUpdateAirModificators(air, callBack)
     })
     return false
+  }
+
+  if (air.isHuman()) {
+    return true
   }
 
   air.modificatorsRequestTime = get_time_msec()

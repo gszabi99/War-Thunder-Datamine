@@ -97,14 +97,14 @@ def fire_system_start_single_burn(eid : EntityId; desc : StartSingleBurnDesc;
   v.fire_data__initiatorId[idx] = desc.initiatorId
   v.fire_data__extinguishProgress[idx] = 0.0f
 
-  sendEvent(eid, [[EventOnStartSingleBurn
+  sendEvent(eid, EventOnStartSingleBurn(
     fireId = idx,
     fireParamsId = v.fire_data__fireParamsId[idx],
     fireFxId = desc.fireFxId,
     nodeId = v.fire_data__nodeId[idx],
     offset = v.fire_data__offset[idx],
     dmgPos = desc.centerDmgPart
-  ]])
+  ))
   return idx
 
 [with_bundle(v)]
@@ -114,15 +114,15 @@ def fire_system_stop_single_burn(eid : EntityId; fire_id : int;
                                    fire_data__startTime : FloatList
                                    >)
   if fire_id >= 0 && fire_id < length(v.fire_data__initiatorId)
-    sendEvent(eid, [[EventOnStopSingleBurn fireId=fire_id, initiatorId=v.fire_data__initiatorId[fire_id]]])
-    v.fire_data__startTime[fire_id] = -1.0f;
-    v.fire_data__initiatorId[fire_id] = -1u;
+    sendEvent(eid, EventOnStopSingleBurn(fireId = fire_id, initiatorId = v.fire_data__initiatorId[fire_id]))
+    v.fire_data__startTime[fire_id] = -1.0f
+    v.fire_data__initiatorId[fire_id] = -1u
 
 
 def fire_system_calc_burn_radius(fire_params : FireParams; coll_node_sph : BSphere3; bounding_radius : float)
   let radius = coll_node_sph.r * fire_params.radiusScales.x
   let final_radius = fire_params.radiusScales.y > 0.0f ? coll_node_sph.r * fire_params.radiusScales.y : bounding_radius * 2.0f
-  return [[tuple<float; float> radius, final_radius]]
+  return (radius, final_radius)
 
 
 def fire_system_calc_burn_offset(fire_params : FireParams; coll_node_sph : BSphere3; tree : GeomNodeTree; node_id : int; pos : float3)
@@ -144,7 +144,7 @@ def fire_system_get_fire_sphere(fire_id : int; at_time : float;
   let fire_params = get_fire_params(v.fire_data__fireParamsId[fire_id])
   let radius = v.fire_data__radius[fire_id]
   return BSphere3(v.fire_data__offset[fire_id], cvt(at_time - v.fire_data__startTime[fire_id],
-      fire_params.maxFireTime.x, fire_params.maxFireTime.y, radius.x, radius.y));
+      fire_params.maxFireTime.x, fire_params.maxFireTime.y, radius.x, radius.y))
 
 
 
@@ -157,6 +157,6 @@ def fire_system_can_part_burn(part_id : PartId;
                                 >) : bool
   let remap = get_remap(v.ammo_stowage__partIdRemap, part_id)
   if remap.partId.valid
-    return !get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState FLOODED)
+    return !get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState.FLOODED)
   return true
 

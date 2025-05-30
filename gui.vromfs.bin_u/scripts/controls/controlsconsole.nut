@@ -14,6 +14,7 @@ let { USEROPT_INVERTY, USEROPT_INVERTY_TANK, USEROPT_INVERTCAMERAY,
 } = require("%scripts/options/optionsExtNames.nut")
 let { switchControlsMode } = require("%scripts/controls/startControls.nut")
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
+let { gui_modal_controlsWizard } = require("%scripts/controls/controlsWizard.nut")
 
 gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.BASE
@@ -52,7 +53,7 @@ gui_handlers.ControlsConsole <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onControlsWizard() {
-    ::gui_modal_controlsWizard()
+    gui_modal_controlsWizard()
   }
 
   function onControlsHelp() {

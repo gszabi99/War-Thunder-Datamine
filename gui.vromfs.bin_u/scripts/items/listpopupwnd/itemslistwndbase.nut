@@ -1,8 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
-let { move_mouse_on_child_by_value, move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { setPopupMenuPosAndAlign, move_mouse_on_child_by_value, move_mouse_on_obj
+} = require("%sqDagui/daguiUtil.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 

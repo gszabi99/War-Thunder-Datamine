@@ -31,7 +31,7 @@ class WeaponSlots
   private wc : WeaponController? = null
 
   private selectedWeapon : Weapon const? = null
-  private sightMode : int = int(CockpitSightMode HUD_SIGHT_MODE_MAX)
+  private sightMode : int = int(CockpitSightMode.HUD_SIGHT_MODE_MAX)
   private isWeaponSelectorOn : bool = false
   private chosenShellProps : BaseShellProperties const? = null
   private haveSecondaryWeap : bool = false
@@ -97,21 +97,21 @@ class WeaponSlots
 
 
   def private updateSelectedWeapon()
-    if (sightMode != int(CockpitSightMode HUD_SIGHT_MODE_GROUND_CANNONS)
-      && sightMode != int(CockpitSightMode HUD_SIGHT_MODE_AIR_CANNONS)
+    if (sightMode != int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_CANNONS)
+      && sightMode != int(CockpitSightMode.HUD_SIGHT_MODE_AIR_CANNONS)
       && haveSecondaryWeap)
       if (isWeaponSelectorOn)
         selectedWeapon = secondaryWeapons[0]
       else
         var checkedTrigger = -1
-        if (sightMode == int(CockpitSightMode HUD_SIGHT_MODE_AIR_TARGET))
-          checkedTrigger = int(WeaponTriggerType AAM_TRIGGER)
-        elif (sightMode == int(CockpitSightMode HUD_SIGHT_MODE_GROUND_ROCKET))
-          checkedTrigger = int(WeaponTriggerType ROCKETS_TRIGGER)
-        elif (*fmw |> getNumGunBullets(int(WeaponTriggerType BOMBS_TRIGGER)) > 0)
-          checkedTrigger = int(WeaponTriggerType BOMBS_TRIGGER)
+        if (sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_AIR_TARGET))
+          checkedTrigger = int(WeaponTriggerType.AAM_TRIGGER)
+        elif (sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_ROCKET))
+          checkedTrigger = int(WeaponTriggerType.ROCKETS_TRIGGER)
+        elif (*fmw |> getNumGunBullets(int(WeaponTriggerType.BOMBS_TRIGGER)) > 0)
+          checkedTrigger = int(WeaponTriggerType.BOMBS_TRIGGER)
         else
-          checkedTrigger = int(WeaponTriggerType GUIDED_BOMBS_TRIGGER)
+          checkedTrigger = int(WeaponTriggerType.GUIDED_BOMBS_TRIGGER)
         for i in 0 .. wc.Weapons[checkedTrigger].length()
           if (wc.Weapons[checkedTrigger][i] != null
             && *wc.Weapons[checkedTrigger][i] |> haveBullets(true))
@@ -121,19 +121,19 @@ class WeaponSlots
 
   def private updateChosenShellProps
     if (isWeaponSelectorOn && haveSecondaryWeap)
-      if (sightMode != int(CockpitSightMode HUD_SIGHT_MODE_GROUND_CANNONS))
+      if (sightMode != int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_CANNONS))
         if (!secondaryWeapons.empty())
           chosenShellProps = secondaryWeapons[0].prop.shellProps
     else
       var nextWeaponTrigger = -1
-      if (sightMode == int(CockpitSightMode HUD_SIGHT_MODE_AIR_TARGET))
-        nextWeaponTrigger = int(WeaponTriggerType AAM_TRIGGER)
-      elif (sightMode == int(CockpitSightMode HUD_SIGHT_MODE_GROUND_CANNONS))
+      if (sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_AIR_TARGET))
+        nextWeaponTrigger = int(WeaponTriggerType.AAM_TRIGGER)
+      elif (sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_CANNONS))
         nextWeaponTrigger = -1
-      elif (sightMode == int(CockpitSightMode HUD_SIGHT_MODE_GROUND_ROCKET))
-        nextWeaponTrigger = int(WeaponTriggerType ROCKETS_TRIGGER)
-      elif (sightMode == int(CockpitSightMode HUD_SIGHT_MODE_GROUND_BOMBS_AUTO))
-        nextWeaponTrigger = int(WeaponTriggerType BOMBS_TRIGGER)
+      elif (sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_ROCKET))
+        nextWeaponTrigger = int(WeaponTriggerType.ROCKETS_TRIGGER)
+      elif (sightMode == int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_BOMBS_AUTO))
+        nextWeaponTrigger = int(WeaponTriggerType.BOMBS_TRIGGER)
 
       if (nextWeaponTrigger >= 0)
         let triggerWeapons = wc.Weapons[nextWeaponTrigger]
@@ -173,7 +173,7 @@ class WeaponSlots
         nts = *wc->getNextGun(secondaryWeapons[0].trigger_no, true, true)
       elif selectedWeapon != null && wc.Weapons[selectedWeapon.trigger_no].length() > 0
         nts = *wc->getNextGun(selectedWeapon.trigger_no, true, true)
-      selectedWeapSlot = nts != null && nts.weaponIdx < hero.slotIdByWeaponId.length() ? hero.slotIdByWeaponId[nts.weaponIdx] : -1;
+      selectedWeapSlot = nts != null && nts.weaponIdx < hero.slotIdByWeaponId.length() ? hero.slotIdByWeaponId[nts.weaponIdx] : -1
 def private empty(self : WeaponsConstSpan&) : bool
   return self.length() <= 0
 

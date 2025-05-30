@@ -93,7 +93,7 @@ let Chest = class (ItemExternal) {
   skipRoulette              = @() this.isContentPack()
   isContentPack             = @() this.getGenerator()?.isPack ?? false
   isAllowSkipOpeningAnim    = @() this.itemDef?.tags.isAllowSkipOpeningAnim || is_dev_version()
-  getOpeningAnimId          = @() this.itemDef?.tags?.isLongOpenAnim ? "LONG" : "DEFAULT"
+  getOpeningAnimId          = @() this.itemDef?.tags.isLongOpenAnim ? "LONG" : "DEFAULT"
   function getConfirmMessageData(recipe, quantity) {
     let confirmLocId = quantity == 1 ? this.getLocIdsList().msgBoxConfirm : this.getLocIdsList().msgBoxSeveralConfirm
     let itemName = quantity == 1 ? this.getName() : $"{this.getName()} {loc("ui/multiply")}{quantity}"
@@ -129,7 +129,7 @@ let Chest = class (ItemExternal) {
   }
 
   function getLongDescription() {
-    return this.itemDef?.tags?.hideDesc ? "" : (this.itemDef?.description ?? "")
+    return this.itemDef?.tags.hideDesc ? "" : (this.itemDef?.description ?? "")
   }
 
   function getDescHeaderFunction() {
@@ -138,7 +138,7 @@ let Chest = class (ItemExternal) {
   }
 
   function needShowTextChances() {
-    return this.itemDef?.tags?.showChances ?? false
+    return this.itemDef?.tags.showChances ?? false
   }
 
   function getDropChanceType() {
@@ -148,7 +148,7 @@ let Chest = class (ItemExternal) {
     if (this.needShowTextChances())
       return CHANCE_VIEW_TYPE.TEXT
 
-    if (this.itemDef?.tags?.showDropChance ?? (this.getCategoryWeight().len() > 0))
+    if (this.itemDef?.tags.showDropChance ?? (this.getCategoryWeight().len() > 0))
       return CHANCE_VIEW_TYPE.ICON
 
     return CHANCE_VIEW_TYPE.NONE

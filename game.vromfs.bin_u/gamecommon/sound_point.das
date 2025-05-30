@@ -6,7 +6,7 @@ require DagorSystem
 require app
 require DagorConsole
 
-[es(tag=gameClient, tag=sound)]
+[es(tag=gameClient, tag=sound, no_order)]
 def sound_point_update_client_es(act : UpdateStageInfoAct;
                                  transform : float3x4;
                                  sound_point__event_name : string;
@@ -40,7 +40,7 @@ def sound_radio_localized(evt : Event;
   else
     sound_radio_localized__lang = 0
 
-[es(tag=gameClient, tag=sound)]
+[es(tag=gameClient, tag=sound, no_order)]
 def sound_radio_localized_update_client_es(act : UpdateStageInfoAct;
                                            sound_point__event : SoundEvent;
                                            sound_radio_localized__lang : int)
@@ -48,7 +48,7 @@ def sound_radio_localized_update_client_es(act : UpdateStageInfoAct;
     sound_point__event |> set_var_optional("lang", float(sound_radio_localized__lang))
 
 
-[es(tag=gameClient, tag=sound)]
+[es(tag=gameClient, tag=sound, no_order)]
 def sound_point_constant_update_client_es(act : UpdateStageInfoAct;
                                           transform : float3x4;
                                           sound_point__length : float;
@@ -68,7 +68,7 @@ def sound_point_constant_update_client_es(act : UpdateStageInfoAct;
     sound_point__timeline_pos = float(sound_point__event |> get_timeline_position())
     abandon(sound_point__event)
 
-[es(tag=gameClient, tag=sound)]
+[es(tag=gameClient, tag=sound, no_order)]
 def sound_point_one_shot_update_client_es(act : UpdateStageInfoAct;
                                           eid : EntityId;
                                           transform : float3x4;

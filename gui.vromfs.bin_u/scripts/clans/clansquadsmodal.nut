@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import clan_get_my_clan_id
 from "%scripts/dagui_library.nut" import *
 import "%scripts/squads/squadApplications.nut" as squadApplications
 
-let { g_chat } = require("%scripts/chat/chat.nut")
+let { getRoomById } = require("%scripts/chat/chatRooms.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -171,7 +171,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
     obj.findObject("btn_user_options").leaderUid = newSquad?.leader
     obj.findObject("btn_squad_info").leaderUid = newSquad?.leader
     obj.findObject("application_disabled").show(
-      !(newSquad?.data?.properties?.isApplicationsEnabled ?? true))
+      !(newSquad?.data.properties.isApplicationsEnabled ?? true))
     this.fillPresence(obj, newSquad)
     let buttonsContainerObj = obj.findObject("buttons_container")
     buttonsContainerObj.leaderUid = newSquad?.leader
@@ -204,7 +204,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   function canApplyForMembership(squad) {
     return !squadApplications.hasApplication(squad.leader)
       && !this.isMySquad(squad)
-      && (squad?.data?.properties?.isApplicationsEnabled ?? true)
+      && (squad?.data.properties.isApplicationsEnabled ?? true)
   }
 
   function canRevokeApplication(squad) {
@@ -243,7 +243,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getPresence(squad) {
-    let presenceParams = squad?.data?.presence ?? {}
+    let presenceParams = squad?.data.presence ?? {}
     return getByPresenceParams(presenceParams).getLocText(presenceParams)
   }
 
@@ -268,7 +268,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getMaxMembers(squad) {
-    return squad?.data?.properties?.maxMembers ?? ""
+    return squad?.data.properties.maxMembers ?? ""
   }
 
   function onItemSelect(obj) {
@@ -396,7 +396,7 @@ gui_handlers.MyClanSquadsListModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function refreshOnlineUsersTable() {
     let roomId = g_chat_room_type.CLAN.roomPrefix + clan_get_my_clan_id()
-    let room = g_chat.getRoomById(roomId)
+    let room = getRoomById(roomId)
     if (!room || !("users" in room))
       return
 

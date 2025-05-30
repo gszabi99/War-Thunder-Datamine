@@ -39,6 +39,7 @@ let BaseInvite = class {
   isRejected = false
 
   needCheckSystemRestriction = false 
+  needCheckCanChatWithPlayer = false 
 
   timedShowStamp = -1   
   timedExpireStamp = -1 
@@ -65,20 +66,26 @@ let BaseInvite = class {
     this.inviterNameToLower = utf8ToLower(this.inviterName)
     this.inviterUid = params?.inviterUid ?? this.inviterUid
     this.needShowPopup = params?.needShowPopup ?? true
+    this.updateCustomParams(params, initial)
+  }
 
-    local thisCapture = this
-    checkChatEnableWithPlayer(this.inviterName, function(canChat) {
-      thisCapture.canChatWithPlayer = canChat
-      thisCapture.updateCustomParams(params, initial)
-      thisCapture.showInvitePopup() 
-    })
+  function updateCanChatWithPlayer(cb = null) {
+    if (!this.needCheckCanChatWithPlayer)
+      return
+    let canChatCb = Callback(function(canChat) {
+      this.canChatWithPlayer = canChat
+      cb?()
+    }, this)
+    checkChatEnableWithPlayer(this.inviterName, canChatCb)
   }
 
   function afterScriptsReload(inviteBeforeReload) {
     this.receivedTime = inviteBeforeReload.receivedTime
   }
 
-  function updateCustomParams(_params, _initial = false) {}
+  function updateCustomParams(_params, _initial = false) {
+    this.updateCanChatWithPlayer()
+  }
 
   function isValid() {
     return !this.isAutoAccepted

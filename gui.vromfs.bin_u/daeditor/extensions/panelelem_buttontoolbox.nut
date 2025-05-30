@@ -13,12 +13,11 @@ let toolboxStates = Watched({})
 let toolBoxComponent = makeToolBox(toolboxShown)
 
 function getToolboxState(key){
-  return toolboxStates.value?[key]
+  return toolboxStates.get()?[key]
 }
 
 function setToolboxState(key, val) {
-  toolboxStates.value[key] = val
-  toolboxStates.trigger()
+  toolboxStates.mutate(@(v) v[key] <- val)
 }
 
 function runToolboxCmd(cmd, cmd2 = null, key = null, val = null) {
@@ -51,12 +50,12 @@ function setToolboxPopupPos(x, y) {
 
 function clearToolboxOptions() {
   toolBoxComponent.clearOptions()
-  toolboxStates.value = []
+  toolboxStates.set({})
 }
 
 function addToolboxOption(on, key, val, name, cb, content, tooltip) {
   if (key != null)
-    toolboxStates.value[key] <- val
+    toolboxStates.mutate(@(v) v[key] <- val)
   toolBoxComponent.addOption(on, name, cb, content, tooltip)
 }
 
@@ -75,7 +74,7 @@ propPanelVisible.subscribe(function(v) {
 
 return {
   toolboxShown
-  toolboxButton = mkPanelElemsButton("Toolbox", @() toolboxShown(!toolboxShown.value))
+  toolboxButton = mkPanelElemsButton("Toolbox", @() toolboxShown(!toolboxShown.get()))
   toolboxPopup = toolBoxComponent.panel
 
   setToolboxPopupPos

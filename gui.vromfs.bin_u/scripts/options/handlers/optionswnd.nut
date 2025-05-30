@@ -19,7 +19,7 @@ let fxOptions = require("%scripts/options/fxOptions.nut")
 let { openAddRadioWnd } = require("%scripts/options/handlers/addRadioWnd.nut")
 let preloaderOptionsModal = require("%scripts/options/handlers/preloaderOptionsModal.nut")
 let openTankSightSettings = require("%scripts/options/handlers/tankSightSettings.nut")
-let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { resetTutorialSkip } = require("%scripts/tutorials/tutorialsState.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { SND_NUM_TYPES, get_sound_volume, set_sound_volume, reset_volumes } = require("soundOptions")
@@ -376,7 +376,7 @@ gui_handlers.Options <- class (gui_handlers.GenericOptionsModal) {
     if (!chatStatesCanUseVoice())
       return
 
-    let needShowOptions = isCrossNetworkChatEnabled() || isPlatformXboxOne
+    let needShowOptions = isCrossNetworkChatEnabled() || isPlatformXbox
     let hotkeyOpts = needShowOptions ? {
       shortcutTextareaId = "ptt_shortcut"
       optRowId = "ptt_buttons_block"

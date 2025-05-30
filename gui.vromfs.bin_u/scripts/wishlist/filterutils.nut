@@ -8,6 +8,7 @@ let { getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { isAvailableBuyUnitOnline, isAvailableBuyUnitOnMarketPlace } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
+let { getUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 
 function getUnitBuyTypes(unit, isFriendWishList = false) {
   let res = []
@@ -58,7 +59,7 @@ function getUnitAvailabilityForBuyType(unit, isFriendWishList = false) {
   let isResearchableVehicle = unitBuyTypes.contains("researchable")
 
   let res = []
-  let hasDiscount = ::g_discount.getUnitDiscount(unit) > 0
+  let hasDiscount = getUnitDiscount(unit) > 0
   if(((isSquadronVehicle && isUnitResearched(unit)) || !isSquadronVehicle) && hasDiscount)
     res.append("discount")
 

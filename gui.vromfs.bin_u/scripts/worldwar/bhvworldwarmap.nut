@@ -19,6 +19,7 @@ let { mapCellUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 let { RenderCategory } = require("worldwarConst")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { getRearZonesOwnedToSide } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
+let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 function ww_is_append_path_mode_active() {
   if (!g_world_war.haveManagementAccessForSelectedArmies())
@@ -352,7 +353,7 @@ let worldWarMapControls = class {
     obj.setUserData(params)
     let selectedArmiesInfo = []
     foreach (armyName in selectedArmies) {
-      let army = g_world_war.getArmyByName(armyName)
+      let army = getArmyByName(armyName)
       if (army != null) {
         let info = { name = armyName, hasAccess = army.hasManageAccess() }
         selectedArmiesInfo.append(info)

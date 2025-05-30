@@ -8,9 +8,9 @@ let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let { getUnitName, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { g_discount, getUnitsDiscounts } = require("%scripts/discounts/discounts.nut")
 let { getSortedDiscountUnits, prepareForTooltip, createMoreText } = require("%scripts/markers/markerTooltipUtils.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { haveAnyUnitDiscount, getUnitsDiscounts } = require("%scripts/discounts/discountsState.nut")
 
 function getMaxDiscount(countryId) {
   return getUnitsDiscounts(countryId).reduce(function(res, val) {
@@ -33,7 +33,7 @@ elemViewType.addTypes({
     model = elemModelType.DISCOUNT_MARKER
 
     updateView = function(obj, _params) {
-      let haveDicsount = g_discount.haveAnyUnitDiscount()
+      let haveDicsount = haveAnyUnitDiscount()
       obj.show(haveDicsount)
     }
   }

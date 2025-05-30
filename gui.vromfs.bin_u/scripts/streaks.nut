@@ -233,7 +233,7 @@ function add_streak_message(data) {
 
 eventbus_subscribe("add_streak_message", @(p) add_streak_message(p))
 
-::get_loc_for_streak <- getLocForStreak
+registerForNativeCall("get_loc_for_streak", getLocForStreak)
 
 return {
   add_streak_message

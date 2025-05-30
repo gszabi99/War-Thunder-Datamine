@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRow, buildTableRowNoPad
 from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
 
-let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -35,6 +34,7 @@ let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { cancelMembership } = require("%scripts/clans/clanRequests.nut")
 let { ranked_column_prefix } = require("%scripts/clans/clanInfoTable.nut")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
+let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
 
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
@@ -553,7 +553,7 @@ gui_handlers.ClansModalHandler <- class (gui_handlers.clanPageModal) {
     if (!rowBlk?.astat)
       rowBlk.astat = DataBlock()
     let value = itemId == "members_cnt" ? rowBlk?[itemId] ?? 0
-      : itemId == "slogan" ? g_chat.filterMessageText(rowBlk?[itemId] ?? "", false)
+      : itemId == "slogan" ? filterMessageText(rowBlk?[itemId] ?? "", false)
       : itemId == "fits_requirements" ? ""
       : rowBlk.astat?[itemId] ?? 0
 

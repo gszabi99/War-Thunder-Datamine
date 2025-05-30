@@ -11,6 +11,7 @@ let { convertBlk } = require("%sqstd/datablock.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { hasKnowPrize } = require("%scripts/items/prizesUtils.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { hiddenUserlogs } = require("%scripts/userLog/userlogConsts.nut")
 
 let haveHiddenItem = @(itemDefId) findItemById(itemDefId)?.isHiddenItem()
 
@@ -230,6 +231,21 @@ function isUserlogVisible(blk, filter, idx) {
   return true
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function getUserLogsList(filter) {
   let logs = [];
   let total = get_user_logs_count()
@@ -365,7 +381,7 @@ function check_new_user_logs() {
   for (local i = 0; i < total; i++) {
     let blk = DataBlock()
     get_user_log_blk_body(i, blk)
-    if (blk?.disabled || isInArray(blk?.type, ::hidden_userlogs))
+    if (blk?.disabled || hiddenUserlogs.contains(blk?.type))
       continue
 
     let unlockId = blk?.body.unlockId

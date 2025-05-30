@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import disable_network, copy_to_clipboard
+from "%scripts/dagui_natives.nut" import copy_to_clipboard
 from "%scripts/dagui_library.nut" import *
 
 
@@ -9,7 +9,7 @@ let { claimRegionalUnlockRewards } = require("%scripts/unlocks/regionalUnlocks.n
 let { format } = require("string")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
-let penalties = require("%scripts/penitentiary/penalties.nut")
+let { showBannedStatusMsgBox } = require("%scripts/penitentiary/bannedStatusMsgBox.nut")
 let itemNotifications = require("%scripts/items/itemNotifications.nut")
 let { checkGaijinPassReminder } = require("%scripts/mainmenu/reminderGaijinPass.nut")
 let { systemOptionsMaintain } = require("%scripts/options/systemOptions.nut")
@@ -36,6 +36,8 @@ let { checkNonApprovedResearches } = require("%scripts/researches/researchAction
 let { checkReconnect } =require("%scripts/matchingRooms/sessionLobbyActions.nut")
 let { initUserPresence } = require("%scripts/userPresence.nut")
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
+let { eventbus_subscribe } = require("eventbus")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let delayed_gblk_error_popups = []
 function showGblkErrorPopup(errCode, path) {
@@ -50,7 +52,7 @@ function showGblkErrorPopup(errCode, path) {
                               text = loc("gblk/saveError/copy"),
                               func = @() copy_to_clipboard(msg) }])
 }
-::show_gblk_error_popup <- showGblkErrorPopup 
+eventbus_subscribe("showGblkErrorPopupNative", @(params) showGblkErrorPopup(params.errorType, params.path))
 
 function popGblkErrorPopups() {
   if (!isLoggedIn.get())
@@ -76,8 +78,8 @@ function onMainMenuReturn(handler, isAfterLogin) {
 
   if (!isAfterLogin) {
     checkUnlockedCountriesByAirs()
-    penalties.showBannedStatusMsgBox(true)
-    if (isAllowPopups && !disable_network()) {
+    showBannedStatusMsgBox(true)
+    if (isAllowPopups && !disableNetwork) {
       handler.doWhenActive(checkShowRateWnd)
       handler.doWhenActive(checkJoystickThustmasterHotas)
     }

@@ -219,18 +219,18 @@
             "setStandbyMode": {}
           }
         },
-        "checkLockType1": {
+        "checkLockTypeLos": {
           "stateFrom": "standby",
           "command": "designateTarget",
-          "stateTo": "checkLockType1",
+          "stateTo": "checkLockTypeLos",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 1
+              "type": "los"
             }
           }
         },
         "losLock": {
-          "stateFrom": "checkLockType1",
+          "stateFrom": "checkLockTypeLos",
           "event": "designationTypeEquals",
           "stateTo": "losLock",
           "actions": {
@@ -238,18 +238,18 @@
             "setLosLockMode": {}
           }
         },
-        "checkLockType2": {
-          "stateFrom": "checkLockType1",
+        "checkLockTypeVisual": {
+          "stateFrom": "checkLockTypeLos",
           "event": "designationTypeNotEquals",
-          "stateTo": "checkLockType2",
+          "stateTo": "checkLockTypeVisual",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 2
+              "type": "visual"
             }
           }
         },
         "visualLock": {
-          "stateFrom": "checkLockType2",
+          "stateFrom": "checkLockTypeVisual",
           "event": "designationTypeEquals",
           "stateTo": "visualLock",
           "actions": {
@@ -258,7 +258,7 @@
           }
         },
         "finishLockTypeCheck": {
-          "stateFrom": "checkLockType2",
+          "stateFrom": "checkLockTypeVisual",
           "event": "designationTypeNotEquals",
           "stateTo": "standby"
         },

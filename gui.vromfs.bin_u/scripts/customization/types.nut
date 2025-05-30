@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import player_have_attachable, get_decal_cost_wp, get_skin_cost_wp, player_have_skin, player_have_decal, get_num_attachables_slots, get_skin_cost_gold, get_attachable_cost_gold, save_attachables, get_max_num_attachables_slots, is_decal_allowed, has_entitlement, get_decal_cost_gold, get_attachable_cost_wp
+from "%scripts/dagui_natives.nut" import player_have_attachable, get_decal_cost_wp, player_have_skin, player_have_decal, get_num_attachables_slots, get_attachable_cost_gold, save_attachables, get_max_num_attachables_slots, is_decal_allowed, has_entitlement, get_decal_cost_gold, get_attachable_cost_wp
 from "%scripts/dagui_library.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
@@ -21,7 +21,7 @@ let memoizeByEvents = require("%scripts/utils/memoizeByEvents.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { updateDownloadableSkins } = require("%scripts/customization/downloadableDecorators.nut")
 let { getDecorator } = require("%scripts/customization/decorCache.nut")
-let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin } = require("%scripts/customization/skinUtils.nut")
+let { getPlaneBySkinId, getSkinNameBySkinId, isDefaultSkin, getSkinCost } = require("%scripts/customization/skinUtils.nut")
 let { get_decals_blk, get_skins_blk, get_attachable_blk } = require("blkGetters")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
@@ -461,11 +461,7 @@ enums.addTypes(decoratorTypes, {
         getUnitName(unit), loc("ui/comma"), loc(getUnitCountry(unit)))
     }
 
-    getCost = function(decorator) {
-      let unitName = getPlaneBySkinId(decorator.id)
-      return Cost(max(0, get_skin_cost_wp(unitName, decorator.id)),
-                    max(0, get_skin_cost_gold(unitName, decorator.id)))
-    }
+    getCost = @(decorator) getSkinCost(decorator.id)
 
     getFreeSlotIdx = @(...) 0
     isAvailable = @(unit, checkUnitUsable = true) !!unit && (!checkUnitUsable || unit.isUsable())

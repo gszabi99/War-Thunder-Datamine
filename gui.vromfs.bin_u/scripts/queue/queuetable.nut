@@ -15,7 +15,7 @@ let { topMenuShopActive } = require("%scripts/mainmenu/topMenuStates.nut")
 let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { getQueueWaitIconImageMarkup } = require("%scripts/queue/waitIconImage.nut")
 let { getCurEsUnitTypesMask } = require("%scripts/queue/curEsUnitTypesMask.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getClusterShortName, isClusterUnstable
 } = require("%scripts/onlineInfo/clustersManagement.nut")

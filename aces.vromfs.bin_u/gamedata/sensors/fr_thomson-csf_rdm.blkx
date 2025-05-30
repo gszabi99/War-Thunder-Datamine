@@ -348,6 +348,7 @@
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 12.0,
+      "targetId": true,
       "track": true,
       "distance": {
         "presents": true,
@@ -391,6 +392,7 @@
       "aircraftAsTarget": true,
       "angularAccuracy": 0.05,
       "distanceAccuracy": 12.0,
+      "targetId": true,
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
       "track": true,
@@ -550,14 +552,12 @@
         },
         "designatedTargetSearch": {
           "designateTargetUnderCue": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "cue",
+            "self": true
           },
           "designateActiveDetectedTarget": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "target",
+            "self": true
           }
         },
         "resetBvrLockMode": {
@@ -722,7 +722,7 @@
         },
         "designatedTargetTws": {
           "designateActiveDetectedTarget": {
-            "type": 0,
+            "type": "target",
             "self": true,
             "sensorIndex": 0
           }
@@ -977,7 +977,10 @@
           "stateTo": "checkDesignationType0",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": [
+                "target",
+                "cue"
+              ]
             }
           }
         },
@@ -1733,7 +1736,20 @@
           "actions": {
             "updateTargetOfInterest": {
               "limit": 8,
-              "radius": 1000.0,
+              "posGateTimeInitial": [
+                2.0,
+                4.0
+              ],
+              "posGateRangeInitial": 0.0,
+              "posGateMaxTime": 2.0,
+              "posGateRange": [
+                0.0,
+                1000.0
+              ],
+              "dopplerSpeedGateRange": [
+                0.0,
+                1600.0
+              ],
               "dopplerSpeedGateMaxTime": 8.0
             },
             "updateActiveDetectedTarget": {},
@@ -1768,19 +1784,6 @@
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": {}
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "sensorIndex": 1
-            }
           }
         },
         "centerZone": {
@@ -2236,5 +2239,88 @@
         }
       }
     }
-  }
+  },
+  "targetTypeId": [
+    {
+      "name": "hud/single prop",
+      "targetPropulsion": {
+        "type": "propellers",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi prop",
+      "targetPropulsion": [
+        {
+          "type": "propellers",
+          "num": 2
+        },
+        {
+          "type": "propellers",
+          "num": 3
+        },
+        {
+          "type": "propellers",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/single jet",
+      "targetPropulsion": {
+        "type": "jet",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi jet",
+      "targetPropulsion": [
+        {
+          "type": "jet",
+          "num": 2
+        },
+        {
+          "type": "jet",
+          "num": 3
+        },
+        {
+          "type": "jet",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/helicopter",
+      "targetPropulsion": {
+        "type": "rotors"
+      }
+    },
+    {
+      "name": "hud/rocket",
+      "targetPropulsion": {
+        "type": "rocket"
+      }
+    },
+    {
+      "name": "hud/small",
+      "sizeRange": [
+        0.0,
+        5.0
+      ]
+    },
+    {
+      "name": "hud/medium",
+      "sizeRange": [
+        5.0,
+        25.0
+      ]
+    },
+    {
+      "name": "hud/large",
+      "sizeRange": [
+        25.0,
+        500.0
+      ]
+    }
+  ]
 }

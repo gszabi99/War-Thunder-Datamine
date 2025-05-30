@@ -1,3 +1,4 @@
+options indenting = 2
 module extra_set shared
 require ecs
 

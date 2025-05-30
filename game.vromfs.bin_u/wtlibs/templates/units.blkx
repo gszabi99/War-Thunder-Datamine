@@ -56,6 +56,12 @@
     "fire_fx__fxId:list<i>": {},
     "fire_fx__paramsId:list<i>": {}
   },
+  "unit_proximity_damage": {
+    "proximity_damage__pos:list<p3>": {},
+    "proximity_damage__parts:dm::PartIdList": {},
+    "proximity_damage__partGlobalId:list<i16>": {},
+    "proximity_damage__visualNum:list<i>": {}
+  },
   "unit_ammo_stowage": {
     "_hide": true,
     "ammo_stowage__dpAmmo": [
@@ -119,6 +125,7 @@
     "ammo_clusters__ammoClassConstraints:list<u32>": {},
     "ammo_clusters__splashConstraints:list<p3>": {},
     "ammo_clusters__shatterConstraints:list<p3>": {},
+    "ammo_clusters__fireSplashConstraints:list<p3>": {},
     "ammo_clusters__entityMunition:list<t>": {},
     "ammo_clusters__slotsRange:list<ip2>": {},
     "ammo_clusters__wreckageRange:list<ip2>": {},
@@ -313,10 +320,18 @@
     "gm_additional_engine_sound__event:SoundEvent": {}
   },
   "controlled_hero": {
-    "controlledHero:tag": {}
+    "controlledHero:tag": {},
+    "hero:tag": {}
+  },
+  "controllable_hero_item": {
+    "item__owned_controllable_hero:tag": {}
   },
   "watched_hero": {
-    "watchedHero:tag": {}
+    "watchedHero:tag": {},
+    "watchedByPlr:eid": {}
+  },
+  "watched_by_player_item": {
+    "watchedPlayerItem:tag": {}
   },
   "player_unit": {
     "playerUnit:tag": {}
@@ -333,6 +348,9 @@
     "_use": "unit_init_params_ext",
     "_tags": "server",
     "unit_params__skinName": "",
+    "unit_params__isDelayed": false,
+    "unit_params__playerIdForOwnedUnit": -1,
+    "unit_params__supportPlaneIdx": -1,
     "unit_params__initUnitVersion": 0,
     "unit_params__fireType": -1,
     "unit_params__cloneCount": 1,
@@ -343,6 +361,7 @@
     "_singleton": true,
     "unit_transferred_data__componentsList:list<t>": {
       "name": [
+        "unit__isAlwaysReplicated",
         "killerEid",
         "canChangeUnit",
         "unit_target_list",
@@ -365,7 +384,7 @@
       "base_unit_ext",
       "ecs_no_debug",
       "unit_init_params",
-      "replicate_early"
+      "unit_proximity_damage"
     ],
     "uid": -1,
     "transform": [
@@ -391,7 +410,7 @@
       ]
     ],
     "unit__className": "",
-    "unit__playerNo": -1,
+    "unit__playerId": -1,
     "is_local": false,
     "unitVersion": 0,
     "unitType": -1,
@@ -400,14 +419,25 @@
     "team": -1,
     "_replicated": [
       "uid",
-      "unitVersion"
+      "unitVersion",
+      "ownedByPlr",
+      "supportForPlr"
     ],
     "_tracked": [
-      "unit__playerNo",
-      "unitVersion"
+      "unit__playerId",
+      "unitVersion",
+      "ownedByPlr",
+      "supportForPlr",
+      "unit__isReplicated",
+      "unit__isAlwaysReplicated"
     ],
+    "unit__isReplicated": false,
+    "unit__isAlwaysReplicated": false,
     "unit__ref": {},
-    "killerEid:eid": {}
+    "ownedByPlr:eid": {},
+    "supportForPlr:eid": {},
+    "killerEid:eid": {},
+    "replicate_custom:tag": {}
   },
   "shell_start_fx": {
     "shell_start_fx__timeFx": 0.0,
@@ -437,6 +467,15 @@
       "_tags": "render"
     },
     "shell_start_fx__fxFlags:u32": {}
+  },
+  "base_damage_model_ai_points": {
+    "_tags": "server",
+    "dm_ai__pointsYRange": [
+      0.0,
+      0.0
+    ],
+    "dm_ai__points:list<p3>": {},
+    "dm_ai__pointsInfo:list<ip2>": {}
   },
   "aircraft": {
     "_use": [
@@ -493,9 +532,12 @@
       "ground_unit",
       "tank_ext",
       "vehicle_grid_obj",
+      "base_damage_model_ai_points",
       "gm_engine_sound",
       "tank_phys_tracks"
     ],
+    "unit__reCreateOnRespawn": true,
+    "unit__shouldKeepDeadUnit": true,
     "_replicated": "reloadedFromAmmoBoxCount",
     "agent_dangers__tag": "vehicle",
     "ai_target__noiseLevel": 0.0,
@@ -536,6 +578,8 @@
       "ship_damage_control",
       "gm_engine_sound"
     ],
+    "unit__reCreateOnRespawn": true,
+    "unit__shouldKeepDeadUnit": true,
     "unit_storage__ship": {},
     "unit_tag__ship:tag": {},
     "unit_tag__gm:tag": {},
@@ -574,6 +618,8 @@
       "simple_tank_ext",
       "vehicle_grid_obj"
     ],
+    "unit__reCreateOnRespawn": true,
+    "unit__shouldKeepDeadUnit": true,
     "unit_storage__tank": {},
     "vehicle_net_phys": {},
     "unit_tag__tank:tag": {},
@@ -584,6 +630,8 @@
       "simple_ground_unit",
       "simple_ship_ext"
     ],
+    "unit__reCreateOnRespawn": true,
+    "unit__shouldKeepDeadUnit": true,
     "unit_storage__ship": {},
     "unit_tag__ship:tag": {},
     "unit_tag__gm:tag": {}
@@ -594,6 +642,8 @@
       "trailer_ext",
       "vehicle_grid_obj"
     ],
+    "unit__reCreateOnRespawn": true,
+    "unit__shouldKeepDeadUnit": true,
     "track_sound": {
       "_tags": "sound"
     },

@@ -1,5 +1,6 @@
 from "%darg/ui_imports.nut" import *
 let comboStyle = require("combobox.style.nut")
+let {setTooltip} = require("cursors.nut")
 
 local ComboPopupLayer = 1
 if ("Layers" in getconsttable()) {
@@ -100,7 +101,7 @@ function dropdownBgOverlay(onClick) {
 }
 
 
-function combobox(watches, options, combo_style=comboStyle) {
+function combobox(watches, options, tooltip=null, combo_style=comboStyle) {
   if (type(options)!="instance")
     options = Watched(options)
 
@@ -236,6 +237,7 @@ function combobox(watches, options, combo_style=comboStyle) {
 
       onAttach = onAttachRoot
       onDetach = onDetachRoot
+      onHover = tooltip != null ? @(on) setTooltip(on ? tooltip : null) : null
     })
   }
 }

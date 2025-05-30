@@ -1,10 +1,10 @@
-from "%scripts/dagui_natives.nut" import set_bind_mode
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getLocalizedControlName } = require("%scripts/controls/controlsVisual.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { setBindMode } = require("controls")
 
 function assignButtonWindow(owner, onButtonEnteredFunc) {
   loadHandler(gui_handlers.assignModalButtonWindow, { owner = owner, onButtonEnteredFunc = onButtonEnteredFunc })
@@ -21,7 +21,7 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
   btn = []
 
   function initScreen() {
-    set_bind_mode(true);
+    setBindMode(true);
     this.guiScene.sleepKeyRepeat(true);
     this.isListenButton = true;
     this.scene.select();
@@ -94,7 +94,7 @@ gui_handlers.assignModalButtonWindow <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function goBack() {
     this.guiScene.sleepKeyRepeat(false);
-    set_bind_mode(false);
+    setBindMode(false);
     this.isListenButton = false;
     base.goBack();
   }

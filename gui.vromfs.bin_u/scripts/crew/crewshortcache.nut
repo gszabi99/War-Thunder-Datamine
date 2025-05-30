@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { UNIT_CREW_CACHE_UPDATE } = require("%scripts/g_listener_priority.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 
 

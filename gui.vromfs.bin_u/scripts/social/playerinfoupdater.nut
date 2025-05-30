@@ -75,10 +75,10 @@ let playerInfoUpdater = freeze({
   }
 
   function onEventMyPresenceChanged(presence) {
-    if (presence?.status?.in_game)
+    if (presence?.status.in_game)
       return this.updatePresence(contactPresence.IN_GAME)
 
-    if (presence?.status?.in_queue)
+    if (presence?.status.in_queue)
       return this.updatePresence(contactPresence.IN_QUEUE)
 
     return this.updatePresence(contactPresence.ONLINE)

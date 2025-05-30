@@ -12,11 +12,11 @@ return @(levelLoaded) @() {
   ],
   size = flex(),
   children = [
-    !levelLoaded.value ? null : (
-      editorFreeCam.value ? { rendObj = ROBJ_BOX, fillColor = Color(20,20,20,100), borderRadius = hdpx(10), padding = hdpx(8), hplace = ALIGN_CENTER,
-                              children = txt(showPointAction.value ? $"Free camera [ {namePointAction.value} ]" : "Free camera mode") } :
-      showPointAction.value ? { rendObj = ROBJ_BOX, fillColor = Color(20,20,20,100), borderRadius = hdpx(10), padding = hdpx(8), hplace = ALIGN_CENTER,
-                                children = txt(namePointAction.value) } :
+    !levelLoaded.get() ? null : (
+      editorFreeCam.get() ? { rendObj = ROBJ_BOX, fillColor = const Color(20,20,20,100), borderRadius = const hdpx(10), padding = const hdpx(8), hplace = ALIGN_CENTER,
+                              children = txt(showPointAction.get() ? $"Free camera [ {namePointAction.get()} ]" : const "Free camera mode") } :
+      showPointAction.get() ? { rendObj = ROBJ_BOX, fillColor = const Color(20,20,20,100), borderRadius = const hdpx(10), padding = const hdpx(8), hplace = ALIGN_CENTER,
+                                children = txt(namePointAction.get()) } :
       null
     )
   ]

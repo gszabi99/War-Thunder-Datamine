@@ -4,6 +4,7 @@
   "weaponTargetsMax": 1,
   "showMissileLaunchZone": true,
   "showMissileDgftLaunchZone": true,
+  "showMissileAimLead": true,
   "transivers": {
     "mprf": {
       "sideLobesAttenuation": -20.0,
@@ -544,14 +545,12 @@
         },
         "designatedTargetSearch": {
           "designateTargetUnderCue": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "cue",
+            "self": true
           },
           "designateActiveDetectedTarget": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "target",
+            "self": true
           }
         },
         "setTrackMode": {
@@ -697,7 +696,7 @@
         },
         "designatedTargetTws": {
           "designateActiveDetectedTarget": {
-            "type": 0,
+            "type": "target",
             "self": true,
             "sensorIndex": 0
           }
@@ -1405,7 +1404,10 @@
           "stateTo": "checkDesignationType0",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": [
+                "target",
+                "cue"
+              ]
             }
           }
         },
@@ -2696,9 +2698,24 @@
           "actions": {
             "updateTargetOfInterest": {
               "limit": 10,
-              "radius": 2000.0,
-              "dopplerSpeedGateMaxTime": 8.0,
-              "posGateMaxTime": 4.0
+              "posGateTimeInitial": [
+                2.0,
+                4.0
+              ],
+              "posGateRangeInitial": 0.0,
+              "posGateMaxTime": [
+                2.0,
+                4.0
+              ],
+              "posGateRange": [
+                0.0,
+                2000.0
+              ],
+              "dopplerSpeedGateRange": [
+                0.0,
+                1600.0
+              ],
+              "dopplerSpeedGateMaxTime": 8.0
             },
             "updateActiveDetectedTarget": {},
             "setCueToActiveTargetOfInterest": {
@@ -2734,19 +2751,6 @@
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": {}
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "sensorIndex": 1
-            }
           }
         },
         "centerZone": {

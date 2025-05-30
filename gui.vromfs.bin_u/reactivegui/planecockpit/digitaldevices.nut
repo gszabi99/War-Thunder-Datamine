@@ -5,7 +5,8 @@ let { round_by_value, round } = require("%sqstd/math.nut")
 let { Point2, IPoint3 } = require("dagor.math")
 let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
 let { Speed, Altitude, CompassValue, Mach, FuelConsume, FuelInternal, FuelTotal,
-  RpmRel, RpmRel1, WaterTemp, WaterTemp1, Nozzle0, OilTemp0, Rpm, Rpm1, OilPress0, OilPress1 } = require("%rGui/planeState/planeFlyState.nut")
+  RpmRel, RpmRel1, WaterTemp, WaterTemp1, Nozzle0, OilTemp0, Rpm, Rpm1, OilPress0,
+  OilPress1, BarAltitude } = require("%rGui/planeState/planeFlyState.nut")
 let string = require("string")
 let { mpsToKnots, metrToFeet } = require("%rGui/planeIlses/ilsConstants.nut")
 let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
@@ -14,6 +15,7 @@ let SpeedKnots = Computed(@() round(Speed.value * mpsToKnots).tointeger())
 let MachRounded = Computed(@() round_by_value(Mach.value, 0.01))
 let Course = Computed(@() round(CompassValue.value < 0. ? (360.0 + CompassValue.value) : CompassValue.value).tointeger())
 let AltFeet = Computed(@() (Altitude.value * metrToFeet).tointeger())
+let BarAltFeet = Computed(@() (BarAltitude.get() * metrToFeet).tointeger())
 let FuelConsM = Computed(@() (FuelConsume.value * 60.0).tointeger())
 
 function clockUpdate() {
@@ -28,6 +30,8 @@ let valueTable = {
   ["speed_knots"] = SpeedKnots,
   ["altitude"] = Altitude,
   ["altitude_feet"] = AltFeet,
+  ["bar_altitude"] = BarAltitude,
+  ["bar_altitude_feet"] = BarAltFeet,
   ["mach"] = MachRounded,
   ["course"] = Course,
   ["fuel_cons_per_m"] = FuelConsM,

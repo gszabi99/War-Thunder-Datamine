@@ -1,13 +1,15 @@
-from "%scripts/dagui_natives.nut" import ww_get_zone_idx_world
+from "%scripts/dagui_natives.nut" import ww_get_zone_idx_world, ww_get_selected_armies_names
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 let { getBlkValueByPath } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
-let { WW_MAP_TOOLTIP_TYPE_GROUP, WW_MAP_TOOLTIP_TYPE_ARMY } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
+let { getWwTooltipType } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let DataBlock  = require("DataBlock")
 let { wwGetPlayerSide, wwGetZoneName, wwGetOperationTimeMillisec, wwGetArmyInfo,
   wwGetArmyOverrideIcon, wwGetLoadedArmyType } = require("worldwar")
+let { artilleryReadyState } = require("%appGlobals/worldWar/wwArtilleryStatus.nut")
+let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let { WwArtilleryAmmo } = require("%scripts/worldWar/inOperation/model/wwArtilleryAmmo.nut")
 let { WwPathTracker } = require("%scripts/worldWar/inOperation/model/wwPathTracker.nut")
@@ -353,7 +355,7 @@ let WwArmyView = class {
   }
 
   isFormation    = @() this.formation?.isFormation() ?? false
-  getTooltipId   = @() WW_MAP_TOOLTIP_TYPE_GROUP.getTooltipId(this.getClanId(), {})
+  getTooltipId   = @() getWwTooltipType("WW_MAP_TOOLTIP_TYPE_GROUP").getTooltipId(this.getClanId(), {})
 
   function getArmyAlertText() {
     if (this.isDead())
@@ -962,7 +964,7 @@ WwArmy = class(WwFormation) {
     return WW_ARMY_ACTION_STATUS.IDLE
   }
 
-  getTooltipId = @() WW_MAP_TOOLTIP_TYPE_ARMY.getTooltipId(this.name, { armyName = this.name })
+  getTooltipId = @() getWwTooltipType("WW_MAP_TOOLTIP_TYPE_ARMY").getTooltipId(this.name, { armyName = this.name })
 
   function getPosition() {
     if (!this.pathTracker)
@@ -1006,4 +1008,37 @@ WwArmy = class(WwFormation) {
     return unitsCount
   }
 }
-return { WwArmy, WwArmyView, WwFormation }
+
+function getArmyByName(armyName) {
+  if (!armyName)
+    return null
+  return WwArmy(armyName)
+}
+
+function getSelectedArmies() {
+  let getArmyByNameFunc = getArmyByName
+  return ww_get_selected_armies_names().map(@(name) getArmyByNameFunc(name))
+}
+
+function hasEntrenchedInList(armyNamesList) {
+  for (local i = 0; i < armyNamesList.len(); i++) {
+    let army = getArmyByName(armyNamesList[i])
+    if (army && army.isEntrenched())
+      return true
+  }
+  return false
+}
+
+artilleryReadyState.subscribe(function(p) {
+  let armies = p.keys().map(@(armyName) getArmyByName(armyName))
+  wwEvent("MapArmiesByStatusUpdated", { armies })
+})
+
+return {
+  WwArmy
+  WwArmyView
+  WwFormation
+  getArmyByName
+  getSelectedArmies
+  hasEntrenchedInList
+}

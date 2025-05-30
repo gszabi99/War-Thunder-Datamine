@@ -12,7 +12,9 @@ let { round } = require("math")
 let { format, strip } = require("string")
 let regexp2 = require("regexp2")
 let { is_stereo_configured, configure_stereo } = require("vr")
-let { get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options, is_dx12_supported, get_active_gfx_api } = require("graphicsOptions")
+let { get_available_monitors, get_monitor_info, get_antialiasing_options, get_antialiasing_upscaling_options,
+  get_supported_generated_frames, is_dx12_supported, is_nvidia_gpu, is_amd_gpu,
+  is_intel_gpu, getAutoGfxApi } = require("graphicsOptions")
 let applyRendererSettingsChange = require("%scripts/clientState/applyRendererSettingsChange.nut")
 let { setBlkValueByPath, getBlkValueByPath, blkOptFromPath } = require("%globalScripts/dataBlockExt.nut")
 let { get_primary_screen_info } = require("dagor.system")
@@ -68,11 +70,9 @@ let compModeGraphicsOptions = {
   qualityPresetsOptions = {
     texQuality        = { compMode = true }
     anisotropy        = { compMode = true }
-    tireTracksQuality = { compMode = true }
     lastClipSize      = { compMode = true }
     compatibilityMode = { compMode = true }
     riGpuObjects      = { fullMode = false }
-    compatibilityShadowQuality = { compMode = true, fullMode = false }
   }
   standaloneOptions = {
   }
@@ -104,7 +104,10 @@ local mUiStruct = [
       "antialiasingSharpening"
       "anisotropy"
       "ssaa"
-      "latency"
+      "latency_nvidia"
+      "latency_amd"
+      "latency_intel"
+      "frameGeneration"
     ]
   }
   {
@@ -113,7 +116,6 @@ local mUiStruct = [
       "graphicsQuality"
       "texQuality"
       "shadowQuality"
-      "compatibilityShadowQuality"
       "waterQuality"
       "waterEffectsQuality"
       "cloudsQuality"
@@ -149,6 +151,7 @@ local mUiStruct = [
     items = [
       "rayTracing"
       "bvhDistance"
+      "ptgi"
       "rtao"
       "rtsmQuality"
       "rtsm"
@@ -483,7 +486,6 @@ function localize(optionId, valueId) {
       optionId == "texQuality" ||
       optionId == "shadowQuality" ||
       optionId == "waterEffectsQuality" ||
-      optionId == "compatibilityShadowQuality" ||
       optionId == "fxResolutionQuality" ||
       optionId == "tireTracksQuality" ||
       optionId == "waterQuality" ||
@@ -532,6 +534,25 @@ function antiAliasingUpscalingOptions(blk) {
   return modesString.split(";")
 }
 
+function supportedGeneratedFrames(blk) {
+  let aa = aaUseGui ? getGuiValue("antialiasingMode", "off") : getBlkValueByPath(blk, "video/antialiasing_mode", "off")
+  let mode = aaUseGui ? getGuiValue("mode", "fullscreen") : getBlkValueByPath(blk, "video/mode", "fullscreenwindowed")
+  let frames = get_supported_generated_frames(aa, mode == "fullscreen")
+  return frames
+}
+
+function supportedGeneratedFramesValues(blk) {
+  let frames = supportedGeneratedFrames(blk)
+  let modes = ["zero"]
+  if (frames > 0)
+    modes.append("one")
+  if (frames > 1)
+    modes.append("two")
+  if (frames > 2)
+    modes.append("three")
+  return modes;
+}
+
 function hasAntialiasingUpscaling() {
   let aa = getGuiValue("antialiasingMode", "off")
   let modesString = get_antialiasing_upscaling_options(aa)
@@ -552,11 +573,29 @@ let getAvailablePerfMetricsModes = @() perfValues.filter(@(_, id) id <= 1 || is_
 
 let hasRT = @() hasFeature("optionRT") && !is_platform_macosx && has_ray_query() && getGuiValue("graphicsQuality", "high") != "ultralow"
 let hasRTGUI = @() getGuiValue("rayTracing", "off") != "off" && hasRT()
+let hasRTAOGUI = @() getGuiValue("rayTracing", "off") != "off" && getGuiValue("ptao", "off") == "off" && hasRT()
 let hasRTR = @() getGuiValue("rtr", "off") != "off" && hasRTGUI()
 let hasRTRWater = @() getGuiValue("rtrWater", false) != false && hasRTGUI()
 let isRTVisible = @() hasFeature("optionBVH")
 let isRTAOVisible = @() hasFeature("optionBVH") && hasFeature("optionBVH_AO")
+let isPTGIVisible = @() isRTAOVisible()
 let isRTSMVisible = @() hasFeature("optionBVH") && hasFeature("optionBVH_SM")
+
+function isVsyncEnabledFromLowLatency() {
+  if (is_nvidia_gpu()) {
+    
+    return getGuiValue("latency", "off") == "off"
+  }
+  if (is_amd_gpu()) {
+    
+    return true
+  }
+  if (is_intel_gpu()) {
+    
+    return true
+  }
+  return true
+}
 
 log($"Options hasRT is {hasRT()}")
 if (!hasRT()) {
@@ -722,7 +761,14 @@ mShared = {
     updateOption("antialiasingUpscaling")
   }
 
-  modeClick = @() enableGuiOption("monitor", getOptionDesc("monitor")?.enabled() ?? true)
+  modeClick = function() {
+    aaUseGui = true
+
+    enableGuiOption("monitor", getOptionDesc("monitor")?.enabled() ?? true)
+    updateOption("frameGeneration")
+
+    aaUseGui = false
+  }
 
   antialiasingModeClick = function() {
     aaUseGui = true
@@ -732,13 +778,14 @@ mShared = {
     enableGuiOption("antialiasingUpscaling", hasAntialiasingUpscaling())
 
     updateOption("antialiasingUpscaling")
+    updateOption("frameGeneration")
 
     if (!canBgScale) {
       setGuiValue("ssaa", "none")
       setGuiValue("backgroundScale", 1.0)
     }
 
-    aaUseGui = false;
+    aaUseGui = false
   }
 
   latencyClick = function() {
@@ -872,6 +919,7 @@ mShared = {
     setBlkValueByPath(mBlk, "graphics/enableBVH", rtIsOn)
 
     if (!rtIsOn) {
+      setGuiValue("ptgi", "off")
       setGuiValue("rtao", "off")
       setGuiValue("rtr", "off")
       setGuiValue("rtrRes", "half")
@@ -883,6 +931,7 @@ mShared = {
     }
     if (rt == "low") {
       setGuiValue("bvhDistance", 1000)
+      setGuiValue("ptgi", "off")
       setGuiValue("rtao", "low")
       setGuiValue("rtr", "low")
       setGuiValue("rtrRes", "half")
@@ -893,7 +942,8 @@ mShared = {
       setGuiValue("rtrTranslucent", "medium")
     } else if (rt == "medium") {
       setGuiValue("bvhDistance", 2000)
-      setGuiValue("rtao", "low")
+      setGuiValue("ptgi", "medium")
+      setGuiValue("rtao", "off")
       setGuiValue("rtr", "medium")
       setGuiValue("rtrRes", "half")
       setGuiValue("rtsm", "sun")
@@ -903,7 +953,8 @@ mShared = {
       setGuiValue("rtrTranslucent", "medium")
     } else if (rt == "high") {
       setGuiValue("bvhDistance", 3000)
-      setGuiValue("rtao", "medium")
+      setGuiValue("ptgi", "medium")
+      setGuiValue("rtao", "off")
       setGuiValue("rtr", "high")
       setGuiValue("rtrRes", "half")
       setGuiValue("rtsm", "sun")
@@ -913,7 +964,8 @@ mShared = {
       setGuiValue("rtrTranslucent", "high")
     } else if (rt == "ultra") {
       setGuiValue("bvhDistance", 4000)
-      setGuiValue("rtao", "high")
+      setGuiValue("ptgi", "medium")
+      setGuiValue("rtao", "off")
       setGuiValue("rtr", "high")
       setGuiValue("rtrRes", "full")
       setGuiValue("rtsm", "sun_and_dynamic")
@@ -925,7 +977,8 @@ mShared = {
 
     enableGuiOption("bvhDistance", rtIsOn)
     enableGuiOption("rtr", rtIsOn)
-    enableGuiOption("rtao", rtIsOn)
+    enableGuiOption("ptgi", rtIsOn)
+    enableGuiOption("rtao", rtIsOn && getGuiValue("ptgi") == "off")
     enableGuiOption("rtsm", rtIsOn)
     enableGuiOption("rtsmQuality", rtIsOn)
 
@@ -1101,7 +1154,7 @@ mSettings = {
       desc.items <- desc.values.map(function(value) {
         let optionLocText = loc($"options/gfx_api_{value}")
         if (is_win64 && value == "auto")
-          return { text = "".concat(optionLocText, loc("ui/parentheses/space", {text = loc($"options/gfx_api_{get_active_gfx_api()}") })) }
+          return { text = "".concat(optionLocText, loc("ui/parentheses/space", {text = loc($"options/gfx_api_{getAutoGfxApi()}") })) }
         if (is_win64 && value == "vulkan")
           return { text = "".concat(optionLocText, loc("ui/parentheses/space", { text = "beta" })) }
         return { text = optionLocText }
@@ -1122,9 +1175,13 @@ mSettings = {
   }
   mode = { widgetType = "list" def = "fullscreenwindowed" blk = "video/mode" restart = true
     init = function(_blk, desc) {
-      desc.values <- is_platform_windows
-        ? ["windowed", "fullscreenwindowed", "fullscreen"]
-        : ["windowed", "fullscreen"]
+      desc.values <-
+        (is_platform_windows && is_gdk)
+        ? ["windowed", "fullscreenwindowed"]
+        : (is_platform_windows
+          ? ["windowed", "fullscreenwindowed", "fullscreen"]
+          : ["windowed", "fullscreen"]
+        )
       desc.def = desc.values.top()
       desc.restart <- !is_platform_windows
     }
@@ -1162,7 +1219,7 @@ mSettings = {
     init = function(_blk, desc) {
       desc.values <- [ "vsync_off", "vsync_on" ]
     }
-    enabled = @() getGuiValue("latency", "off") != "on" && getGuiValue("latency", "off") != "boost"
+    enabled = @() isVsyncEnabledFromLowLatency() && getGuiValue("frameGeneration", "zero") == "zero"
   }
   graphicsQuality = { widgetType = "list" def = "high" blk = "graphicsQuality" restart = false
     values = [ "ultralow", "low", "medium", "high", "max", "movie", "custom" ]
@@ -1232,7 +1289,7 @@ mSettings = {
     }
 
   }
-  latency = { widgetType = "list" def = "off" blk = "video/latency" restart = false
+  latency_nvidia = { widgetType = "list" def = "off" blk = "video/latency" restart = false
     init = function(_blk, desc) {
       desc.values <- getAvailableLatencyModes()
       desc.items <- desc.values.map(@(value) { text = localize("latency", value), tooltip = loc($"guiHints/latency_{value}") })
@@ -1248,6 +1305,62 @@ mSettings = {
       return (val == 1) ? "on" : (val == 2) ? "boost" : (val == 4) ? "experimental" : "off"
     }
     onChanged = "latencyClick"
+    enabled = @() getGuiValue("frameGeneration", "zero") == "zero"
+    isVisible = @() is_nvidia_gpu()
+  }
+  latency_amd = { widgetType = "list" def = "off" blk = "video/latency" restart = false
+    init = function(_blk, desc) {
+      desc.values <- getAvailableLatencyModes()
+      desc.items <- desc.values.map(@(value) { text = localize("latency", value) })
+    }
+    getValueFromConfig = function(blk, desc) {
+      return getBlkValueByPath(blk, desc.blk, -1)
+    }
+    setGuiValueToConfig = function(blk, desc, val) {
+      let quality = (val == "on") ? 1 : 0
+      setBlkValueByPath(blk, desc.blk, quality)
+    }
+    configValueToGuiValue = function(val) {
+      return (val == 0) ? "off" : "on"
+    }
+    onChanged = "latencyClick"
+    enabled = @() getGuiValue("frameGeneration", "zero") == "zero"
+    isVisible = @() is_amd_gpu()
+  }
+  latency_intel = { widgetType = "list" def = "off" blk = "video/latency" restart = false
+    init = function(_blk, desc) {
+      desc.values <- getAvailableLatencyModes()
+      desc.items <- desc.values.map(@(value) { text = localize("latency", value) })
+    }
+    getValueFromConfig = function(blk, desc) {
+      return getBlkValueByPath(blk, desc.blk, -1)
+    }
+    setGuiValueToConfig = function(blk, desc, val) {
+      let quality = (val == "on") ? 1 : 0
+      setBlkValueByPath(blk, desc.blk, quality)
+    }
+    configValueToGuiValue = function(val) {
+      return (val == 0) ? "off" : "on"
+    }
+    onChanged = "latencyClick"
+    enabled = @() getGuiValue("frameGeneration", "zero") == "zero"
+    isVisible = @() is_intel_gpu()
+  }
+  frameGeneration = { widgetType = "options_bar" def = "zero" blk = "video/antialiasing_fgc" restart = false
+    init = function(blk, desc) {
+      desc.values <- supportedGeneratedFramesValues(blk)
+      desc.items <- desc.values.map(@(value) { text = localize("framegen", value), tooltip = loc($"guiHints/framegen_{value}") })
+    }
+    getValueFromConfig = function(blk, desc) {
+      return getBlkValueByPath(blk, desc.blk, 0)
+    }
+    setGuiValueToConfig = function(blk, desc, val) {
+      let num = (val == "one") ? 1 : (val == "two") ? 2 : (val == "three") ? 3 : (val == "four") ? 4 : 0
+      setBlkValueByPath(blk, desc.blk, num)
+    }
+    configValueToGuiValue = function(val) {
+      return (val == 1) ? "one" : (val == 2) ? "two" : (val == 3) ? "three" : (val == 4) ? "four" : "zero"
+    }
   }
   perfMetrics = { widgetType = "list" def = "fps" blk = "video/perfMetrics" restart = false
     init = function(_blk, desc) {
@@ -1292,10 +1405,6 @@ mSettings = {
   waterEffectsQuality = { widgetType = "options_bar" def = "high" blk = "graphics/waterEffectsQuality" restart = false
     values = [ "low", "medium", "high" ]
     infoImgPattern = "#ui/images/settings/waterFxQuality/%s"
-  }
-  compatibilityShadowQuality = { widgetType = "options_bar" def = "low" blk = "graphics/compatibilityShadowQuality" restart = false
-    values = [ "low", "medium" ]
-    infoImgPattern = "#ui/images/settings/compShadowQuality/%s"
   }
   fxResolutionQuality = { widgetType = "options_bar" def = "high" blk = "graphics/fxTarget" restart = false
     onChanged = "fxResolutionClick"
@@ -1489,8 +1598,13 @@ mSettings = {
     infoImgPattern = "#ui/images/settings/bvhDistance/%s"
     availableInfoImgVals = [1000, 2650, 4300, 6000]
   }
+  ptgi = { widgetType = "options_bar" def = "off" blk = "graphics/PTGIQuality" restart = false
+    values = ["off", "medium"] enabled = hasRTGUI
+    onChanged = "rtOptionChanged" isVisible = isPTGIVisible
+    infoImgPattern = "#ui/images/settings/ptGIQuality/%s"
+  }
   rtao = { widgetType = "options_bar" def = "off" blk = "graphics/RTAOQuality" restart = false
-    values = ["off", "low", "medium", "high"] enabled = hasRTGUI
+    values = ["off", "low", "medium", "high"] enabled = hasRTAOGUI
     onChanged = "rtOptionChanged" isVisible = isRTAOVisible
     infoImgPattern = "#ui/images/settings/rtAOQuality/%s"
   }
@@ -1693,6 +1807,10 @@ function configWrite() {
     if (mCfgInitial?[id] != value)
       log($"[sysopt] {id}: {mCfgInitial?[id] ?? "null"} -> {value}")
     let desc = getOptionDesc(id)
+
+    if (!(desc?.isVisible() ?? true))
+      continue
+
     if ("setGuiValueToConfig" in desc)
       desc.setGuiValueToConfig(mBlk, desc, value)
     else
@@ -2068,6 +2186,12 @@ function setQualityPreset(presetName, force = false) {
 eventbus_subscribe("on_force_graphics_preset", function(event) {
   let {graphicsPreset} = event
   setQualityPreset(graphicsPreset, true)
+})
+
+eventbus_subscribe("on_force_graphics_preset_and_apply", function(event) {
+  let {graphicsPreset} = event
+  setQualityPreset(graphicsPreset, true)
+  hotReloadOrRestart()
 })
 
 

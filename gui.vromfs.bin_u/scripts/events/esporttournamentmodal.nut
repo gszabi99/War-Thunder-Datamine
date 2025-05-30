@@ -35,6 +35,7 @@ let { leaveQueue } = require("%scripts/queue/queueManager.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
 let { gui_modal_event_leaderboards } = require("%scripts/leaderboard/leaderboard.nut")
 let { isQueueActive, findQueue, isEventQueue } = require("%scripts/queue/queueState.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 function getActiveTicketTxt(event) {
   if (!event)
@@ -353,7 +354,7 @@ local ESportTournament = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onLeaveEvent() {
-    if (!::g_squad_utils.canJoinFlightMsgBox(
+    if (!canJoinFlightMsgBox(
       { isLeaderCanJoin = true, msgId = "squad/only_leader_can_cancel" },
       Callback(this.onLeaveEventActions, this)))
       return

@@ -99,9 +99,24 @@ class QueueStats {
     return true
   }
 
-  function getMaxClusterName() {
+  function getClusterWithMaxPlayers(team = null, onlyOwnRank = false) {
     this.recountQueueOnce()
-    return this.maxClusterName
+    if (team == null)
+      return this.maxClusterName
+
+    local maxClusterName = ""
+    local maxCountInTeam = -1
+    let countName = onlyOwnRank ? "ownRankCount" : "playersCount"
+    foreach (cluster, teamsData in this.teamsQueueTable) {
+      let teamData = teamsData?[team]
+      if (!teamData)
+        continue
+      if (maxCountInTeam < teamData[countName]) {
+        maxClusterName = cluster
+        maxCountInTeam = teamData[countName]
+      }
+    }
+    return maxClusterName
   }
 
   function getTeamsQueueTable(cluster = null) {
@@ -113,11 +128,17 @@ class QueueStats {
   }
 
   function getQueueTableByTeam(teamName, cluster = null) {
-    return getTblValue(teamName, this.getTeamsQueueTable(cluster))
+    return this.getTeamsQueueTable(cluster)?[teamName]
   }
 
-  function getPlayersCountByTeam(teamName, cluster = null) {
-    return getTblValue("playersCount", this.getQueueTableByTeam(teamName, cluster), 0)
+  function getPlayersCountByTeam(teamName, cluster = null, onlyOwnRank = false) {
+    if (onlyOwnRank)
+      return this.getQueueTableByTeam(teamName, cluster)?.ownRankCount ?? 0
+    return this.getQueueTableByTeam(teamName, cluster)?.playersCount ?? 0
+  }
+
+  function getOwnRankCountByTeam(teamName, cluster = null) {
+    return this.getQueueTableByTeam(teamName, cluster)?.ownRankCount ?? 0
   }
 
   function getPlayersCountOfAllRanks(cluster = null) {
@@ -193,6 +214,7 @@ class QueueStats {
   function gatherClusterData(cluster, statsByQueueId) {
     let dataByTeams = {
       playersCount = 0
+      ownRankCount = 0
       isSymmetric = false
     }
     let dataByCountries = {}
@@ -226,14 +248,16 @@ class QueueStats {
 
     let teamAStats = getTblValue("teamA", stats)
     let teamBStats = getTblValue("teamB", stats)
-    let playersCount = this.getCountByRank(teamAStats, this.myRankInQueue)
-                       + this.getCountByRank(teamBStats, this.myRankInQueue)
-    if (playersCount <= dataByTeams.playersCount)
+    let playersTableTeamA = this.gatherCountsTblByRanks(teamAStats)
+    let playersTableTeamB = this.gatherCountsTblByRanks(teamBStats)
+    let totalPlayersCount = playersTableTeamA.playersCount + playersTableTeamB.playersCount
+    if (dataByTeams.playersCount > totalPlayersCount)
       return
 
-    dataByTeams.playersCount <- playersCount
-    dataByTeams.teamA <- this.gatherCountsTblByRanks(teamAStats)
-    dataByTeams.teamB <- this.gatherCountsTblByRanks(teamBStats)
+    dataByTeams.teamA <- playersTableTeamA
+    dataByTeams.teamB <- playersTableTeamB
+    dataByTeams.playersCount = totalPlayersCount
+    dataByTeams.ownRankCount = playersTableTeamA.ownRankCount + playersTableTeamB.ownRankCount
     dataByTeams.isSymmetric <- false
   }
 
@@ -253,10 +277,14 @@ class QueueStats {
   }
 
   function gatherCountsTblByRanks(statsByCountries) {
-    let res = {}
-    for (local i = 1; i <= MAX_COUNTRY_RANK; i++)
-      res[i.tostring()] <- this.getCountByRank(statsByCountries, i)
-    res.playersCount <- getTblValue(this.myRankInQueue.tostring(), res, 0)
+    let res = {playersCount = 0, ownRankCount = 0}
+    for (local i = 1; i <= MAX_COUNTRY_RANK; i++) {
+      let count = this.getCountByRank(statsByCountries, i)
+      if (i == this.myRankInQueue)
+        res.ownRankCount = count
+      res[i.tostring()] <- count
+      res.playersCount += count
+    }
     return res
   }
 

@@ -1,7 +1,8 @@
 let {editorIsActive, editorFreeCam, entitiesListUpdateTrigger, showTemplateSelect,
      showPointAction, callPointActionCallback, resetPointActionMode,
      handleEntityCreated, handleEntityRemoved, handleEntityMoved,
-     de4editMode, de4workMode} = require("state.nut")
+     de4editMode, de4workMode, gizmoBasisType, gizmoBasisTypeEditingDisabled, canChangeGizmoBasisType,
+     gizmoCenterType} = require("state.nut")
 
 let daEditor = require("daEditorEmbedded")
 let entity_editor = require("entity_editor")
@@ -18,11 +19,21 @@ eventbus_subscribe("daEditorEmbedded.onDeSetWorkMode", function onDeSetWorkMode(
 
 eventbus_subscribe("daEditorEmbedded.onDeSetEditMode", function onDeSetEditMode(mode) {
   de4editMode(mode)
-  showTemplateSelect(mode == DE4_MODE_CREATE_ENTITY)
+  showTemplateSelect.set(mode == DE4_MODE_CREATE_ENTITY)
 
   showPointAction(mode == DE4_MODE_POINT_ACTION)
-  if (!showPointAction.value)
+  if (!showPointAction.get())
     resetPointActionMode()
+
+  gizmoBasisTypeEditingDisabled(!canChangeGizmoBasisType())
+})
+
+eventbus_subscribe("daEditorEmbedded.onDeSetGizmoBasis", function onDeSetGizmoBasis(basis) {
+  gizmoBasisType(basis)
+})
+
+eventbus_subscribe("daEditorEmbedded.onDeSetGizmoCenterType", function onDeSetGizmoCenterType(center) {
+  gizmoCenterType(center)
 })
 
 eventbus_subscribe("entity_editor.onEditorActivated", function onEditorActivated(on) {
@@ -57,11 +68,11 @@ eventbus_subscribe("entity_editor.onEditorChanged", function onEditorChanged(_) 
 })
 
 eventbus_subscribe("entity_editor.onEntityAdded", function onEntityAdded(_eid) {
-  entitiesListUpdateTrigger(entitiesListUpdateTrigger.value+1)
+  entitiesListUpdateTrigger.modify(@(v) v+1)
 })
 
 eventbus_subscribe("entity_editor.onEntityRemoved", function onEntityRemoved(eid) {
-  entitiesListUpdateTrigger(entitiesListUpdateTrigger.value+1)
+  entitiesListUpdateTrigger.modify(@(v) v+1)
   handleEntityRemoved(eid)
 })
 

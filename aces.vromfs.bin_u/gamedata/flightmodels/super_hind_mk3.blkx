@@ -1456,6 +1456,10 @@
     "turretTurnSfxName": "turret_turn_servo"
   },
   "cockpit": {
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "headPos": [
       3.158,
       0.115,
@@ -1465,6 +1469,10 @@
       3.158,
       0.115,
       0.022
+    ],
+    "ilsTextureSize": [
+      1024,
+      1024
     ],
     "mirror": true,
     "mirrorPos": [
@@ -1722,7 +1730,224 @@
           "page": [
             {
               "type": "custom",
-              "pageName": "ah64Flt"
+              "pageName": "planeAttitude",
+              "lineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "lindeWidth": 2.0,
+              "frameColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azimuthType": "AzimuthUp",
+              "isMetric": false,
+              "attitude": {
+                "attitudeType": "slicedCircle",
+                "size": [
+                  0.4,
+                  0.5
+                ],
+                "miniatureType": "wings",
+                "miniatureColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "miniatureLineWidth": 5.0,
+                "groundColor": [
+                  19,
+                  69,
+                  139,
+                  255
+                ],
+                "skyColor": [
+                  155,
+                  73,
+                  46,
+                  255
+                ],
+                "bankScaleHalfSpan": 40.0,
+                "bankDelta": 10.0,
+                "bankScaleRadius": 0.2,
+                "bankDashLength": -0.01,
+                "pitchTape": {
+                  "isActive": true,
+                  "pos": [
+                    0.0,
+                    0.0
+                  ],
+                  "size": [
+                    2.0,
+                    1.6
+                  ],
+                  "span": 60.0,
+                  "markedDelta": 10.0,
+                  "markedLineLen": 0.09,
+                  "markFontSize": 10,
+                  "minorDeltaNum": 1,
+                  "minorLineLen": 0.03
+                }
+              },
+              "azimuthTape": {
+                "isLinearTape": true,
+                "isActive": true,
+                "pos": [
+                  0.0,
+                  0.45
+                ],
+                "size": [
+                  0.6,
+                  0.05
+                ],
+                "span": 90.0,
+                "markedDelta": 30.0,
+                "markedLineLen": 0.015,
+                "markFontSize": 15,
+                "minorDeltaNum": 0,
+                "backColor": [
+                  12,
+                  12,
+                  12,
+                  255
+                ],
+                "centralMarkColor": [
+                  0,
+                  255,
+                  255,
+                  255
+                ]
+              },
+              "slip": {
+                "isActive": true,
+                "pos": [
+                  0.0,
+                  0.37
+                ],
+                "size": [
+                  0.3,
+                  0.04
+                ],
+                "backColor": [
+                  64,
+                  64,
+                  64,
+                  255
+                ],
+                "lineColor": [
+                  0,
+                  0,
+                  0,
+                  255
+                ],
+                "indicatorSize": 0.015,
+                "span": 10.0,
+                "deltaDeg": 2.0
+              },
+              "angleOfAttackTape": {
+                "isActive": false,
+                "pos": [
+                  -0.42,
+                  0.0
+                ],
+                "size": [
+                  0.1,
+                  0.3
+                ],
+                "span": 5.0,
+                "markedDelta": 1.0,
+                "markedLineLen": 0.2,
+                "markFontSize": 14,
+                "minorDeltaNum": 0
+              },
+              "iasTape": {
+                "isActive": true,
+                "pos": [
+                  -0.28,
+                  0.0
+                ],
+                "size": [
+                  0.1,
+                  0.6
+                ],
+                "span": 1500.0,
+                "markedDelta": 250.0,
+                "markedLineLen": 0.2,
+                "markFontSize": 14,
+                "minorDeltaNum": 1,
+                "minorLineLen": 0.1
+              },
+              "altitudeTape": {
+                "isActive": true,
+                "pos": [
+                  0.28,
+                  0.0
+                ],
+                "size": [
+                  0.1,
+                  0.6
+                ],
+                "span": 1500.0,
+                "markedDelta": 500.0,
+                "markedLineLen": 0.2,
+                "markFontSize": 14,
+                "minorDeltaNum": 4,
+                "minorLineLen": 0.1
+              },
+              "verticalSpeedTape": {
+                "isActive": false,
+                "pos": [
+                  0.42,
+                  0.0
+                ],
+                "size": [
+                  0.1,
+                  0.3
+                ],
+                "span": 200.0,
+                "markedDelta": 100.0,
+                "markedLineLen": 0.2,
+                "markFontSize": 14,
+                "minorDeltaNum": 4,
+                "minorLineLen": 0.1
+              },
+              "digitalIas": {
+                "isActive": true,
+                "pos": [
+                  -0.28,
+                  -0.4
+                ],
+                "fontSize": 20
+              },
+              "digitalAngleOfAttack": {
+                "isActive": false,
+                "pos": [
+                  -0.35,
+                  -0.35
+                ],
+                "fontSize": 20
+              },
+              "digitalAltitude": {
+                "isActive": true,
+                "pos": [
+                  0.28,
+                  -0.4
+                ],
+                "fontSize": 20
+              },
+              "digitalVerticalSpeed": {
+                "isActive": true,
+                "pos": [
+                  0.28,
+                  -0.35
+                ],
+                "fontSize": 20
+              }
             },
             {
               "type": "rwr",
@@ -1735,9 +1960,6 @@
             {
               "type": "target_tracking",
               "turretIdx": 0
-            },
-            {
-              "type": "map"
             }
           ]
         },
@@ -1758,9 +1980,6 @@
               "turretIdx": 0
             },
             {
-              "type": "map"
-            },
-            {
               "type": "rwr",
               "scale": 0.75
             }
@@ -1774,7 +1993,84 @@
             1.0
           ],
           "page": {
-            "type": "map"
+            "type": "hsd",
+            "scale": 0.95,
+            "color": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "font": "hud",
+            "fontSize": 19,
+            "lineWidth": 2.0,
+            "lineColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "orient": "northUp",
+            "centerMarkType": "heli",
+            "centerMarkFillColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "centerMarkLineColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "centerMarkScale": 0.06,
+            "centerMarkSpeed": true,
+            "spi": true,
+            "spiColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "spiInfo": true,
+            "distScale": true,
+            "distScaleBeyondAzScale": false,
+            "distScaleStepSize": 7000.0,
+            "distScaleColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "distScaleNumbers": false,
+            "distScaleNumbersAngle": 45.0,
+            "distScaleNumbersFillColor": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "azScaleType": "line",
+            "azScaleSize": 12000.0,
+            "azScaleColor": [
+              0,
+              255,
+              0,
+              255
+            ],
+            "headingIndFillColor": [
+              0,
+              0,
+              0,
+              255
+            ],
+            "centerCross": false,
+            "time": true,
+            "mapBackground": true,
+            "markers": true,
+            "extent": 30000.0,
+            "metricUnits": false
           }
         },
         {
@@ -1820,7 +2116,8 @@
     "sensor": [
       {
         "blk": "gameData/sensors/ir_tracker.blk",
-        "node": "optic1_gun"
+        "node": "optic1_gun",
+        "powerButtonIdx": -1
       },
       {
         "blk": "gameData/sensors/LaserBeamRidingSensor.blk",

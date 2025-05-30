@@ -1,3 +1,4 @@
+options indenting = 2
 module linear shared
 require math
 require DagorSystem

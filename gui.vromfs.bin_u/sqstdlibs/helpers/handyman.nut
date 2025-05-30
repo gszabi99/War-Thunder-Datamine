@@ -42,36 +42,30 @@ let loadTemplateText = memoize(@(v) read_text_from_file(v))
 local handyman
 local Scanner = class {
   string = ""
-  tail   = ""
-  pos    = 0
+  pos = 0
 
-  constructor (string_) {
+  constructor(string_) {
     this.string = string_
-    this.tail = string_
     this.pos = 0
   }
 
   
 
 
-  function eos () {
-    return this.tail == ""
+  function eos() {
+    return this.pos >= this.string.len()
   }
 
   
 
 
 
-  function scan (re) {
-    local match = re.search(this.tail)
-
-    if (match && match.begin == 0) {
-      local s = this.tail.slice(0, match.end)
-      this.tail = this.tail.slice(match.end)
-      this.pos += s.len()
-      return s
+  function scan(re) {
+    let match = re.search(this.string, this.pos)
+    if (match && match.begin == this.pos) {
+      this.pos = match.end
+      return this.string.slice(match.begin, match.end)
     }
-
     return ""
   }
 
@@ -80,21 +74,20 @@ local Scanner = class {
 
 
   function scanUntil(re) {
-    local res = re.search(this.tail)
+    let res = re.search(this.string, this.pos)
     local match
 
     if (res == null) {
-      match = this.tail
-      this.tail = ""
+      match = this.string.slice(this.pos)
+      this.pos = this.string.len()
     }
-    else if (res.begin == 0)
+    else if (res.begin == this.pos)
       match = ""
     else {
-      match = this.tail.slice(0, res.begin)
-      this.tail = this.tail.slice(res.begin)
+      match = this.string.slice(this.pos, res.begin)
+      this.pos = res.begin
     }
 
-    this.pos += match.len()
     return match
   }
 }
@@ -601,7 +594,7 @@ handyman = {
       foreach (partialPath in partials)
         this.updateCache(partialPath)
     local tokens = this.tokensByTemplatePath[templatePath]
-    local template = this.tokensByTemplatePath[templatePath]
+    local template = this.templateByTemplatePath[templatePath]
     local context = (type(view) == "instance" && view instanceof Context) ? view : Context(view)
     return this.defaultWriter.renderTokens(tokens, context, partials, template)
   }

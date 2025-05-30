@@ -5,7 +5,7 @@ from "%scripts/items/itemsConsts.nut" import itemType
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let mapPreferencesModal = require("%scripts/missions/mapPreferencesModal.nut")
 let mapPreferencesParams = require("%scripts/missions/mapPreferencesParams.nut")
@@ -25,7 +25,7 @@ let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
 let nightBattlesOptionsWnd = require("%scripts/events/nightBattlesOptionsWnd.nut")
 let smallTeamsOptionsWnd = require("%scripts/events/smallTeamsOptionsWnd.nut")
 let newIconWidget = require("%scripts/newIconWidget.nut")
-let { move_mouse_on_child, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isMeNewbie } = require("%scripts/myStats.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { guiStartModalEvents } = require("%scripts/events/eventsHandler.nut")
@@ -39,6 +39,7 @@ let { getGameModeStartFunction, getGameModeCrossplayTooltip, getGameModeUnlockTo
 } = require("%scripts/gameModes/gameModeManagerView.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
+let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 
 dagui_propid_add_name_id("modeId")
 
@@ -389,7 +390,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
     if (u.isEmpty(trophyName))
       return null
 
-    let trophyItem = findItemById(trophyName, itemType.TROPHY)
+    let trophyItem = findItemById(trophyName)
     if (!trophyItem)
       return null
 
@@ -472,7 +473,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (gameMode?.diffCode == DIFFICULTY_HARDCORE &&
-        !::check_package_and_ask_download("pkg_main"))
+        !checkPackageAndAskDownload("pkg_main"))
       return
 
     let event = getGameModeEvent(gameMode)
@@ -489,7 +490,7 @@ gui_handlers.GameModeSelect <- class (gui_handlers.BaseGuiHandlerWT) {
       let startFunction = getGameModeStartFunction(gameMode?.id ?? gameMode?.modeId)
       if (startFunction != null)
         startFunction(gameMode)
-      else if (gameMode?.displayType?.showInEventsWindow)
+      else if (gameMode?.displayType.showInEventsWindow)
         guiStartModalEvents({ event = event?.name })
       else
         setCurrentGameModeById(gameMode.modeId, true)

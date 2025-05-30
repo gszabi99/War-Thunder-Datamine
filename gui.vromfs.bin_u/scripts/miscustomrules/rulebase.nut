@@ -21,10 +21,9 @@ let { get_current_mission_info_cached, get_warpoints_blk  } = require("blkGetter
 let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { isCrewAvailableInSession } = require("%scripts/respawn/respawnState.nut")
 let { registerMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { isMissionExtrByName } = require("%scripts/missions/missionsUtils.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 
 let Base = class {
   missionParams = null

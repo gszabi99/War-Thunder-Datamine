@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import get_global_stats_blk, disable_network, gather_and_build_aircrafts_list
+from "%scripts/dagui_natives.nut" import get_global_stats_blk, gather_and_build_aircrafts_list
 from "%scripts/dagui_library.nut" import *
 
 let { set_crosshair_icons, set_thermovision_colors, set_modifications_locId_by_caliber, set_bullets_locId_by_caliber,
@@ -26,6 +26,7 @@ let { crosshair_colors } = require("%scripts/options/optionsExt.nut")
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
 let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
 let { usageRatingAmount } = require("%scripts/airInfo.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let allUnits = getAllUnits()
 
@@ -35,7 +36,7 @@ if (showedUnit.value != null)
   showedUnit(allUnits?[showedUnit.value.name])
 
 ::init_options <- function init_options() {
-  if (optionsMeasureUnits.isInitialized() && (isAuthorized.get() || disable_network()))
+  if (optionsMeasureUnits.isInitialized() && (isAuthorized.get() || disableNetwork))
     return
 
   local stepStatus

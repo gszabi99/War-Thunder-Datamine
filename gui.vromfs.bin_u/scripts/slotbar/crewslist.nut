@@ -1,17 +1,13 @@
-from "%scripts/dagui_natives.nut" import get_profile_country, disable_network, get_crew_info
+from "%scripts/dagui_natives.nut" import get_profile_country, get_crew_info
 from "%scripts/dagui_library.nut" import *
 
-let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
-let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getSlotbarOverrideData, isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
-let { updateShopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
-let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { isInFlight } = require("gameplayBinding")
-let { initSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { getMyCrewUnitsState, getBrokenUnits } = require("%scripts/slotbar/crewsListInfo.nut")
 let { hardPersistWatched } = require("%sqstd/globalState.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
 
 function getCrewInfo(isInBattle) {
   let crewInfo = get_crew_info()
@@ -25,7 +21,7 @@ function getCrewInfo(isInBattle) {
 
   let curCountry = get_profile_country()
   if (curCountry == "country_0") {
-    if (!::should_disable_menu())
+    if (!shouldDisableMenu)
       logerr("[CREW_LIST] Country not selected")
     return crewInfo
   }
@@ -44,22 +40,9 @@ function getCrewInfo(isInBattle) {
 }
 
 local crewsList = !isLoggedIn.get() ? [] : getCrewInfo(isInFlight())
-local isInFlightCrewsList = isInFlight()
 local version = 0
-local isSlotbarUpdateSuspended = false
-local isSlotbarUpdateRequired = false
-local isReinitSlotbarsInProgress = false
 
 let isCrewListOverrided = hardPersistWatched("isCrewListOverrided", false)
-let ignoreTransactions = [
-  EATT_SAVING
-  EATT_CLANSYNCPROFILE
-  EATT_CLAN_TRANSACTION
-  EATT_SET_EXTERNAL_ID
-  EATT_BUYING_UNLOCK
-  EATT_COMPLAINT
-  EATT_ENABLE_MODIFICATIONS
-]
 
 function refresh() {
   version++
@@ -73,31 +56,6 @@ function refresh() {
   
   crewsList = getCrewInfo(isInFlight())
   isCrewListOverrided.set(false)
-}
-
-function reinitSlotbars() {
-  if (isSlotbarUpdateSuspended) {
-    isSlotbarUpdateRequired = true
-    log("ignore reinitSlotbars: updates suspended")
-    return
-  }
-
-  isSlotbarUpdateRequired = false
-  if (isReinitSlotbarsInProgress) {
-    script_net_assert_once("reinitAllSlotbars recursion", "reinitAllSlotbars: recursive call found")
-    return
-  }
-
-  isReinitSlotbarsInProgress = true
-  initSelectedCrews(true)
-  broadcastEvent("CrewsListChanged")
-  isReinitSlotbarsInProgress = false
-}
-
-function flushSlotbarUpdate() {
-  isSlotbarUpdateSuspended = false
-  if (isSlotbarUpdateRequired)
-    reinitSlotbars()
 }
 
 function invalidateCrewsList(needForceInvalidate = false) {
@@ -116,71 +74,29 @@ function getCrewsList() {
   return crewsList
 }
 
-let reinitAllSlotbars = @() reinitSlotbars()
-let suspendSlotbarUpdates = @() isSlotbarUpdateSuspended = true
-
-::g_crews_list <- { 
-  flushSlotbarUpdate
-  suspendSlotbarUpdates
-  getCrewsList
+function getCrewById(id) {
+  foreach (_cId, cList in getCrewsList())
+    if ("crews" in cList)
+      foreach (_idx, crew in cList.crews)
+       if (crew.id == id)
+         return crew
+  return null
 }
 
-addListenersWithoutEnv({
-  function ProfileUpdated(p) {
-    if (p.transactionType == EATT_UPDATE_ENTITLEMENTS)
-      updateShopCountriesList()
 
-    let brokenUnitsCached = getMyCrewUnitsState().brokenAirs
-    let brokenUnitsUpdated = getBrokenUnits()
-
-    local hasRepairedUnits = false
-    foreach (unit in brokenUnitsCached) {
-      if (unit not in brokenUnitsUpdated) {
-        hasRepairedUnits = true
-        break
-      }
-    }
-
-    if (isProfileReceived.get() && !isInArray(p.transactionType, ignoreTransactions)
-        && invalidateCrewsList(hasRepairedUnits) && !disable_network())
-      reinitSlotbars()
-  }
-
-  function UnlockedCountriesUpdate(_p) {
-    updateShopCountriesList()
-    if (isProfileReceived.get() && invalidateCrewsList())
-      reinitSlotbars()
-  }
-
-  function LobbyIsInRoomChanged(_p) {
-    if (isCrewListOverrided.get())
-      invalidateCrewsList()
-  }
-
-  
-  SessionDestroyed = @(_p) invalidateCrewsList()
-  function OverrideSlotbarChanged(_p) {
-    if (invalidateCrewsList(true))
-      reinitSlotbars()
-  }
-  SignOut = @(_p) isSlotbarUpdateSuspended = false
-  function LoadingStateChange(_p) {
-    isSlotbarUpdateSuspended = false
-    if (isInFlightCrewsList == isInFlight())
-      return
-    isInFlightCrewsList = isInFlight()
-    if (invalidateCrewsList())
-      reinitSlotbars()
-  }
-}, DEFAULT_HANDLER)
+function getCrewsListByCountry(country) {
+  foreach (countryData in getCrewsList())
+    if (countryData.country == country)
+      return countryData.crews
+  return []
+}
 
 return {
   clearCrewsList = @() crewsList = []
   isCrewListOverrided
   getCrewsListVersion = @() version
-  flushSlotbarUpdate
-  suspendSlotbarUpdates
   invalidateCrewsList
-  reinitAllSlotbars
   getCrewsList
+  getCrewById
+  getCrewsListByCountry
 }

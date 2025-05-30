@@ -66,9 +66,9 @@ function textButton(text, handler, params = {}){
   let textNormal = textStyle.normal
   let boxNormal = boxStyle.normal
   return function(){
-    let s = stateFlags.value
+    let s = stateFlags.get()
     local state = "normal"
-    if (disabled?.value)
+    if (disabled?.get())
       state = "disabled"
     else if (s & S_ACTIVE)
       state = "active"

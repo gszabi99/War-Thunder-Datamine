@@ -16,7 +16,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
-let { isPlatformXboxOne, isPlatformSony } = require("%scripts/clientState/platform.nut")
+let { isPlatformXbox, isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { isLeaderboardsAvailable, isEventForClan, getMaxLobbyDisbalance, getCustomViewCountryData
 } = require("%scripts/events/eventInfo.nut")
 let { haveRewards, getBaseVictoryReward } = require("%scripts/events/eventRewards.nut")
@@ -460,7 +460,7 @@ gui_handlers.EventDescription <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkLbTableVisible(lb_rows, lbCategory) {
-    if (isPlatformSony || isPlatformXboxOne || lbCategory == null || lb_rows.len() == 0)
+    if (isPlatformSony || isPlatformXbox || lbCategory == null || lb_rows.len() == 0)
       return false
 
     return true

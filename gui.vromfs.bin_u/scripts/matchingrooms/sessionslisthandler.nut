@@ -5,8 +5,8 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { move_mouse_on_child_by_value, handlersManager, loadHandler
-} = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let fillSessionInfo = require("%scripts/matchingRooms/fillSessionInfo.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { isGameModeCoop } = require("%scripts/matchingRooms/matchingGameModesUtils.nut")
@@ -30,6 +30,7 @@ let { buildMpTable, countWidthForMpTable } = require("%scripts/statistics/mpStat
 let { canPlayGamemodeBySquad } = require("%scripts/missions/missionsUtils.nut")
 let { updateVehicleInfoButton } = require("%scripts/vehiclesWindow.nut")
 let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
   sceneBlkName = "%gui/sessionsList.blk"
@@ -365,7 +366,7 @@ gui_handlers.SessionsList <- class (gui_handlers.GenericOptions) {
       return this.msgBox("no_room_selected", loc("ui/nothing_selected"), [["ok"]], "ok")
 
     if (g_squad_manager.getSquadRoomId() != room.roomId
-      && !::g_squad_utils.canJoinFlightMsgBox(
+      && !canJoinFlightMsgBox(
           {
             isLeaderCanJoin = canPlayGamemodeBySquad(getSessionLobbyGameMode(room)),
             showOfflineSquadMembersPopup = true

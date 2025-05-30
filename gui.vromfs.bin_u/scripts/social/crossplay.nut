@@ -4,7 +4,7 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let logX = require("%sqstd/log.nut")().with_prefix("[CROSSPLAY] ")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5, is_gdk } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox, isPlatformXboxScarlett, isPlatformPS4, isPlatformPS5 } = require("%scripts/clientState/platform.nut")
 let { check_crossnetwork_communications_permission, CommunicationState } = require("%scripts/gdk/permissions.nut")
 let { crossnetworkPrivilege } = require("%gdkLib/crossnetwork.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_PS4_ONLY_LEADERBOARD
@@ -19,11 +19,9 @@ let PS4_CROSSNETWORK_CHAT_OPT_ID = "ps4CrossNetworkChat"
 
 let crossNetworkPlayStatus = mkWatched(persist, "crossNetworkPlayStatus", null)
 crossNetworkPlayStatus.subscribe(function(v) {
-  logX($"Status updated -> {crossNetworkPlayStatus.value}")
-  if (v) {
-    logX("Broadcasting CrossPlayOptionChanged event")
+  logX($"Status updated -> {v}")
+  if (v != null)
     broadcastEvent("CrossPlayOptionChanged")
-  }
 })
 
 if (is_gdk) {
@@ -107,7 +105,7 @@ let getSeparateLeaderboardPlatformValue = function() {
     if (isPlatformSony)
       return get_gui_option_in_mode(USEROPT_PS4_ONLY_LEADERBOARD, OPTIONS_MODE_GAMEPLAY) == true
 
-    if (isPlatformXboxOne)
+    if (isPlatformXbox)
       return !isCrossNetworkPlayEnabled()
   }
 
@@ -119,7 +117,7 @@ let getSeparateLeaderboardPlatformName = function() {
   if (getSeparateLeaderboardPlatformValue()) {
     if (isPlatformPS4 || isPlatformPS5)
       return "ps4"      
-    if (isPlatformXboxOne || isPlatformXboxScarlett)
+    if (isPlatformXbox || isPlatformXboxScarlett)
       return "xboxone"  
   }
   return ""
@@ -145,7 +143,8 @@ return {
   isCrossPlayEnabled = isCrossNetworkPlayEnabled
   setCrossPlayStatus = setCrossNetworkPlayStatus
   crossNetworkPlayStatus
-  needShowCrossPlayInfo = @() isPlatformXboxOne
+  crossNetworkChatStatus
+  needShowCrossPlayInfo = @() is_gdk
 
   getCrossNetworkChatStatus = getCrossNetworkChatStatus
   setCrossNetworkChatStatus = setCrossNetworkChatStatus

@@ -12,7 +12,7 @@ function listItem(text, action, is_current, _params={}) {
     if (is_current)
       textColor = Color(255,255,235)
     else
-      textColor = (stateFlags.value & S_HOVER) ? Color(255,255,255) : Color(120,150,160)
+      textColor = (stateFlags.get() & S_HOVER) ? Color(255,255,255) : Color(120,150,160)
 
     return {
       behavior = [Behaviors.Button, Behaviors.Marquee]

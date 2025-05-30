@@ -2,7 +2,8 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/mainConsts.nut" import SEEN
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 require("ingameConsoleStore.nut")
 let statsd = require("statsd")
@@ -102,7 +103,7 @@ return {
   openIngameStore
   getEntStoreLocId = @() canUseIngameShop() ? "#topmenu/xboxIngameShop" : "#msgbox/btn_onlineShop"
   getEntStoreIcon = @() canUseIngameShop() ? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
-  isEntStoreTopMenuItemHidden = @(...) !canUseIngameShop() || !isInMenu()
+  isEntStoreTopMenuItemHidden = @(...) !canUseIngameShop() || !isInMenu.get()
   getEntStoreUnseenIcon = @() seenEnumId
   openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({ statsdMetric = "topmenu" })
 }

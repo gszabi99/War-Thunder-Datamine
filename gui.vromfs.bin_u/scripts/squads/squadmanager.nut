@@ -1,10 +1,11 @@
-from "%scripts/dagui_natives.nut" import get_cyber_cafe_level, gchat_is_connected, get_cyber_cafe_id, is_eac_inited
+from "%scripts/dagui_natives.nut" import get_cyber_cafe_level, gchat_is_connected, get_cyber_cafe_id, is_eac_inited, save_short_token
 from "%scripts/dagui_library.nut" import *
 from "%scripts/squads/squadsConsts.nut" import squadState, SQUADS_VERSION, squadMemberState
 import "%scripts/squads/squadApplications.nut" as squadApplications
 from "%scripts/utils_sa.nut" import gen_rnd_password
 
 let { g_chat } = require("%scripts/chat/chat.nut")
+let { isSquadRoomJoined } = require("%scripts/chat/chatRooms.nut")
 let { checkMatchingError, request_matching } = require("%scripts/matching/api.nut")
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
@@ -33,7 +34,7 @@ let { isInSessionRoom, getSessionLobbyRoomId, canInviteIntoSession, isMpSquadCha
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { userIdStr, userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId } = require("worldwar")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { getGlobalModule, lateBindGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { getCurrentGameModeId, setCurrentGameModeById, getUserGameModeId
@@ -50,6 +51,8 @@ let { leaveAllQueues } = require("%scripts/queue/queueManager.nut")
 let { presenceTypes, getByPresenceParams, getCurrentPresenceType } = require("%scripts/user/presenceType.nut")
 let { addInviteToSquad } = require("%scripts/invites/invites.nut")
 let { isAnyQueuesActive, hasActiveQueueWithType } = require("%scripts/queue/queueState.nut")
+let { startLogout } = require("%scripts/login/logout.nut")
+let { canJoinFlightMsgBox, updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
 
 enum squadEvent {
   DATA_RECEIVED = "SquadDataReceived"
@@ -137,6 +140,20 @@ let smData = persist("smData",@() {
   state = squadState.NOT_IN_SQUAD
 })
 
+function checkSquadsVersion(memberSquadsVersion) {
+  if (memberSquadsVersion <= SQUADS_VERSION)
+    return
+
+  scene_msg_box("need_update_squad_version", null, loc("squad/need_reload"),
+    [["relogin", function() {
+      save_short_token()
+      startLogout()
+    } ],
+    ["cancel", function() {}]],
+    "cancel", { cancel_fn = function() {} }
+  )
+}
+
 local g_squad_manager
 
 g_squad_manager = {
@@ -152,7 +169,7 @@ g_squad_manager = {
   canStartStateChanging = @() !g_squad_manager.isStateInTransition()
   canJoinSquad = @() !g_squad_manager.isInSquad() && g_squad_manager.canStartStateChanging()
   canLeaveSquad = @() g_squad_manager.isInSquad() && g_squad_manager.canManageSquad()
-  canManageSquad = @() hasFeature("Squad") && isInMenu()
+  canManageSquad = @() hasFeature("Squad") && isInMenu.get()
   canChangeReceiveApplications = @(shouldCheckLeader = true) hasFeature("ClanSquads")
     && (!shouldCheckLeader || g_squad_manager.isSquadLeader())
 
@@ -745,7 +762,7 @@ g_squad_manager = {
     if (!gchat_is_connected())
       return
 
-    if (g_chat.isSquadRoomJoined())
+    if (isSquadRoomJoined())
       return
 
     if (smData.roomCreateInProgress)
@@ -938,7 +955,7 @@ g_squad_manager = {
         callback,
         null, { squadId = sid }, null)
     }
-    let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
+    let canJoin = canJoinFlightMsgBox(
       { allowWhenAlone = false, msgId = "squad/leave_squad_for_application" },
       cb)
 
@@ -1122,7 +1139,7 @@ g_squad_manager = {
       broadcastEvent("SquadMemberVehiclesChanged")
 
     let memberSquadsVersion = receivedMemberData?.squadsVersion ?? DEFAULT_SQUADS_VERSION
-    ::g_squad_utils.checkSquadsVersion(memberSquadsVersion)
+    checkSquadsVersion(memberSquadsVersion)
   }
 
   function reset() {
@@ -1336,7 +1353,7 @@ g_squad_manager = {
       g_squad_manager.checkUpdateStatus(squadStatusUpdateState.MENU)
 
     g_squad_manager.updateLeaderGameModeId(resSquadData?.data.leaderGameModeId ?? "")
-    squadData.leaderBattleRating = resSquadData?.data?.leaderBattleRating ?? 0
+    squadData.leaderBattleRating = resSquadData?.data.leaderBattleRating ?? 0
 
     broadcastEvent(squadEvent.DATA_UPDATED)
 
@@ -1403,7 +1420,7 @@ g_squad_manager = {
       return
 
     smData.lastUpdateStatus = newStatus
-    ::g_squad_utils.updateMyCountryData()
+    updateMyCountryData()
   }
 
   function startWWBattlePrepare(battleId = null) {
@@ -1431,16 +1448,16 @@ g_squad_manager = {
   onEventPresetsByGroupsChanged = @(_params) g_squad_manager.updateMyMemberData()
   onEventBeforeProfileInvalidation = @(_p) g_squad_manager.reset()
   onEventUpdateEsFromHost = @(_p) g_squad_manager.checkUpdateStatus(squadStatusUpdateState.BATTLE)
-  onEventNewSceneLoaded = @(_p) isInMenu()
+  onEventNewSceneLoaded = @(_p) isInMenu.get()
     ? g_squad_manager.checkUpdateStatus(squadStatusUpdateState.MENU) : null
-  onEventBattleEnded = @(_p) isInMenu()
+  onEventBattleEnded = @(_p) isInMenu.get()
     ? g_squad_manager.checkUpdateStatus(squadStatusUpdateState.MENU) : null
-  onEventSessionDestroyed = @(_p) isInMenu()
+  onEventSessionDestroyed = @(_p) isInMenu.get()
     ? g_squad_manager.checkUpdateStatus(squadStatusUpdateState.MENU) : null
   onEventChatConnected = @(_params) g_squad_manager.joinSquadChatRoom()
   onEventAvatarChanged = @(_p) g_squad_manager.updateMyMemberData()
   onEventCrewsListInvalidate = @(_p) g_squad_manager.updateMyMemberData()
-  onEventUnitRepaired = @(_p) ::g_squad_utils.updateMyCountryData()
+  onEventUnitRepaired = @(_p) updateMyCountryData()
   onEventCrossPlayOptionChanged = @(_p) g_squad_manager.updateMyMemberData()
   onEventMatchingDisconnect = @(_p) g_squad_manager.reset()
 

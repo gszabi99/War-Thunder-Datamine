@@ -24,106 +24,105 @@ let TRANSPARENT = E3DCOLOR(0x00000000)
 let BLACK = E3DCOLOR(0xFF000000)
 let WHITE = E3DCOLOR(0xFFFFFFFF)
 
-let radarModeNames = [[string
-  "hud/standby";
-  "hud/search";
-  "hud/acquisition";
-  "hud/ACM";
-  "hud/HMD";
-  "hud/BST";
-  "hud/VSL";
-  "hud/track";
+let radarModeNames = fixed_array<string>(
+  "hud/standby",
+  "hud/search",
+  "hud/acquisition",
+  "hud/ACM",
+  "hud/HMD",
+  "hud/BST",
+  "hud/VSL",
+  "hud/track",
 
-  "hud/PD VS standby";
-  "hud/PD VS search";
-  "hud/PD VS acquisition";
-  "hud/PD VS ACM";
-  "hud/PD VS BST";
-  "hud/PD VS VSL";
+  "hud/PD VS standby",
+  "hud/PD VS search",
+  "hud/PD VS acquisition",
+  "hud/PD VS ACM",
+  "hud/PD VS BST",
+  "hud/PD VS VSL",
 
-  "hud/PD HDN VS standby";
-  "hud/PD HDN VS search";
-  "hud/PD HDN VS acquisition";
-  "hud/PD HDN VS ACM";
-  "hud/PD HDN VS BST";
-  "hud/PD HDN VS VSL";
+  "hud/PD HDN VS standby",
+  "hud/PD HDN VS search",
+  "hud/PD HDN VS acquisition",
+  "hud/PD HDN VS ACM",
+  "hud/PD HDN VS BST",
+  "hud/PD HDN VS VSL",
 
-  "hud/PD standby";
-  "hud/PD search";
-  "hud/PD acquisition";
-  "hud/PD ACM";
-  "hud/PD HMD";
-  "hud/PD BST";
-  "hud/PD VSL";
-  "hud/PD track";
-  "hud/PD RAM";
+  "hud/PD standby",
+  "hud/PD search",
+  "hud/PD acquisition",
+  "hud/PD ACM",
+  "hud/PD HMD",
+  "hud/PD BST",
+  "hud/PD VSL",
+  "hud/PD track",
+  "hud/PD RAM",
 
-  "hud/PD HDN standby";
-  "hud/PD HDN search";
-  "hud/PD HDN acquisition";
-  "hud/PD HDN ACM";
-  "hud/PD HDN HMD";
-  "hud/PD HDN BST";
-  "hud/PD HDN VSL";
-  "hud/PD HDN track";
+  "hud/PD HDN standby",
+  "hud/PD HDN search",
+  "hud/PD HDN acquisition",
+  "hud/PD HDN ACM",
+  "hud/PD HDN HMD",
+  "hud/PD HDN BST",
+  "hud/PD HDN VSL",
+  "hud/PD HDN track",
 
-  "hud/GTM standby";
-  "hud/GTM search";
-  "hud/GTM acquisition";
-  "hud/GTM ACM";
-  "hud/GTM BST";
-  "hud/GTM VSL";
-  "hud/GTM track";
+  "hud/GTM standby",
+  "hud/GTM search",
+  "hud/GTM acquisition",
+  "hud/GTM ACM",
+  "hud/GTM BST",
+  "hud/GTM VSL",
+  "hud/GTM track",
 
 
-  "hud/LD standby";
-  "hud/LD search";
-  "hud/LD acquisition";
-  "hud/LD ACM";
-  "hud/LD track";
+  "hud/LD standby",
+  "hud/LD search",
+  "hud/LD acquisition",
+  "hud/LD ACM",
+  "hud/LD track",
 
-  "hud/MTI standby";
-  "hud/MTI search";
-  "hud/MTI acquisition";
-  "hud/MTI ACM";
-  "hud/MTI track";
+  "hud/MTI standby",
+  "hud/MTI search",
+  "hud/MTI acquisition",
+  "hud/MTI ACM",
+  "hud/MTI track",
 
-  "hud/TWS standby";
-  "hud/TWS search";
-  "hud/TWS acquisition";
-  "hud/TWS ACM";
-  "hud/TWS BST";
-  "hud/TWS VSL";
-  "hud/TWS track";
+  "hud/TWS standby",
+  "hud/TWS search",
+  "hud/TWS acquisition",
+  "hud/TWS ACM",
+  "hud/TWS BST",
+  "hud/TWS VSL",
+  "hud/TWS track",
 
-  "hud/TWS HDN standby";
-  "hud/TWS HDN search";
-  "hud/TWS HDN acquisition";
-  "hud/TWS HDN ACM";
-  "hud/TWS HDN BST";
-  "hud/TWS HDN VSL";
-  "hud/TWS HDN track";
+  "hud/TWS HDN standby",
+  "hud/TWS HDN search",
+  "hud/TWS HDN acquisition",
+  "hud/TWS HDN ACM",
+  "hud/TWS HDN BST",
+  "hud/TWS HDN VSL",
+  "hud/TWS HDN track",
 
-  "hud/TWS GTM standby";
-  "hud/TWS GTM search";
-  "hud/TWS GTM acquisition";
-  "hud/TWS GTM ACM";
-  "hud/TWS GTM BST";
-  "hud/TWS GTM VSL";
-  "hud/TWS GTM track";
+  "hud/TWS GTM standby",
+  "hud/TWS GTM search",
+  "hud/TWS GTM acquisition",
+  "hud/TWS GTM ACM",
+  "hud/TWS GTM BST",
+  "hud/TWS GTM VSL",
+  "hud/TWS GTM track",
 
-  "hud/IRST standby";
-  "hud/IRST search";
-  "hud/IRST acquisition";
-  "hud/IRST ACM";
-  "hud/IRST HMD";
-  "hud/IRST track";
+  "hud/IRST standby",
+  "hud/IRST search",
+  "hud/IRST acquisition",
+  "hud/IRST ACM",
+  "hud/IRST HMD",
+  "hud/IRST track",
 
-  "hud/air_search";
-  "hud/ground_search";
+  "hud/air_search",
+  "hud/ground_search",
 
-  "hud/auto acquisition";
-  "hud/auto ACM";
-  "hud/auto HMD";
-  "hud/track memory";
-]]
+  "hud/auto acquisition",
+  "hud/auto ACM",
+  "hud/auto HMD",
+  "hud/track memory")

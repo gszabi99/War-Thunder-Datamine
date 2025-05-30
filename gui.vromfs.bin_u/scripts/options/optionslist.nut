@@ -1,7 +1,9 @@
-from "%scripts/dagui_natives.nut" import is_tank_gunner_camera_from_sight_available, is_hdr_enabled, is_compatibility_mode, get_player_unit_name
+from "%scripts/dagui_natives.nut" import is_tank_gunner_camera_from_sight_available, is_compatibility_mode
 from "%scripts/dagui_library.nut" import *
 from "%scripts/options/optionsExtNames.nut" import *
 
+let { get_player_unit_name } = require("unit")
+let { isHdrEnabled } = require("graphicsOptions")
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let safeAreaMenu = require("%scripts/options/safeAreaMenu.nut")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
@@ -10,7 +12,7 @@ let soundDevice = require("soundDevice")
 let { is_stereo_mode } = require("vr")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { onSystemOptionsApply, canUseGraphicsOptions, getSystemOptionInfoView } = require("%scripts/options/systemOptions.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
 let { is_xboxone_X } = require("%sqstd/platform.nut")
 
 
@@ -25,22 +27,7 @@ let { can_add_tank_alt_crosshair, get_user_alt_crosshairs } = require("crosshair
 let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
 let { IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
-
-let optionsModeByGameMode = {
-  [GM_CAMPAIGN]          = OPTIONS_MODE_CAMPAIGN,
-  [GM_TRAINING]          = OPTIONS_MODE_TRAINING,
-  [GM_TEST_FLIGHT]       = OPTIONS_MODE_TRAINING,
-  [GM_SINGLE_MISSION]    = OPTIONS_MODE_SINGLE_MISSION,
-  [GM_USER_MISSION]      = OPTIONS_MODE_SINGLE_MISSION,
-  [GM_DYNAMIC]           = OPTIONS_MODE_DYNAMIC,
-  [GM_BUILDER]           = OPTIONS_MODE_DYNAMIC,
-  [GM_DOMINATION]        = OPTIONS_MODE_MP_DOMINATION,
-  [GM_SKIRMISH]          = OPTIONS_MODE_MP_SKIRMISH,
-}
-
-function getOptionsMode(game_mode) {
-  return optionsModeByGameMode?[game_mode] ?? OPTIONS_MODE_GAMEPLAY
-}
+let { getDevFeaturesList } = require("%scripts/features/devFeatures.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -108,12 +95,12 @@ let getMainOptions = function() {
 
 
       [USEROPT_FONTS_CSS, "spinner"],
-      [USEROPT_GAMMA, "slider", !is_hdr_enabled()],
-      [USEROPT_AUTOLOGIN, "spinner", ! isInFlight() && !(isPlatformSony || isPlatformXboxOne)],
+      [USEROPT_GAMMA, "slider", !isHdrEnabled()],
+      [USEROPT_AUTOLOGIN, "spinner", ! isInFlight() && !(isPlatformSony || isPlatformXbox)],
       [USEROPT_PRELOADER_SETTINGS, "button", hasFeature("LoadingBackgroundFilter") && !isInFlight()],
       [USEROPT_REVEAL_NOTIFICATIONS, "button"],
       [USEROPT_POSTFX_SETTINGS, "button", !is_compatibility_mode()],
-      [USEROPT_HDR_SETTINGS, "button", is_hdr_enabled()],
+      [USEROPT_HDR_SETTINGS, "button", isHdrEnabled()],
       [USEROPT_CONSOLE_GFX_PRESET, "combobox", hasConsolePresets()],
 
       ["options/header/commonBattleParameters"],
@@ -183,7 +170,7 @@ let getMainOptions = function() {
       [USEROPT_HUE_HELICOPTER_HUD_ALERT, "spinner"],
       [USEROPT_HUE_HELICOPTER_MFD, "spinner"],
       [USEROPT_HORIZONTAL_SPEED, "spinner"],
-      [USEROPT_HELICOPTER_HELMET_AIM, "spinner", !(isPlatformSony || isPlatformXboxOne)],
+      [USEROPT_HELICOPTER_HELMET_AIM, "spinner", !(isPlatformSony || isPlatformXbox)],
       [USEROPT_HELICOPTER_AUTOPILOT_ON_GUNNERVIEW, "spinner"],
       [USEROPT_ALTERNATIVE_TPS_CAMERA, "spinner"],
       [USEROPT_HELI_COCKPIT_HUD_DISABLED, "spinner"],
@@ -209,7 +196,7 @@ let getMainOptions = function() {
       [USEROPT_GROUND_RADAR_TARGET_CYCLING, "spinner"],
       [USEROPT_ACTIVATE_GROUND_ACTIVE_COUNTER_MEASURES_ON_SPAWN, "spinner"],
       [USEROPT_TACTICAL_MAP_SIZE, "slider"],
-      [USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isPlatformSony || isPlatformXboxOne) && !is_platform_android],
+      [USEROPT_MAP_ZOOM_BY_LEVEL, "spinner", !(isPlatformSony || isPlatformXbox) && !is_platform_android],
       [USEROPT_SHOW_COMPASS_IN_TANK_HUD, "spinner"],
       [USEROPT_HUE_TANK_THERMOVISION, "spinner"],
       [USEROPT_PITCH_BLOCKER_WHILE_BRACKING, "spinner"],
@@ -254,7 +241,7 @@ let getMainOptions = function() {
       ["options/header/interface"],
       [USEROPT_HUD_SCREEN_SAFE_AREA, "spinner", safeAreaHud.canChangeValue()],
       [USEROPT_GAME_HUD, "spinner"],
-      [USEROPT_HUD_INDICATORS, "spinner", "get_option_hud_indicators" in getroottable()],
+      [USEROPT_HUD_INDICATORS, "spinner"],
       [USEROPT_HUE_SQUAD, "spinner"],
       [USEROPT_HUE_ALLY, "spinner"],
       [USEROPT_HUE_ENEMY, "spinner"],
@@ -334,14 +321,14 @@ let getMainOptions = function() {
         contentPreset.getContentPresets().len() &&
         g_difficulty.SIMULATOR.isAvailable(GM_DOMINATION)],
       [USEROPT_DELAYED_DOWNLOAD_CONTENT, "spinner", hasFeature("delayedDownloadContent")]
-    ].extend(getPrivacyOptionsList(), otherOptionsList())
+    ].extend(getPrivacyOptionsList(), otherOptionsList(), getDevFeaturesList())
   }
 }
 
 local overrideSoundOptionsFn = null
 
 function getSoundOptions() {
-  let needShowVoiceOptions = chatStatesCanUseVoice() && (isCrossNetworkChatEnabled() || isPlatformXboxOne)
+  let needShowVoiceOptions = chatStatesCanUseVoice() && (isCrossNetworkChatEnabled() || isPlatformXbox)
   return overrideSoundOptionsFn?() ?? {
     name = "sound"
     fillFuncName = "fillSoundOptions"
@@ -412,5 +399,4 @@ return {
   getOptionsList = getOptionsList
   overrideMainOptions = @(fn) overrideMainOptionsFn = fn
   overrideSoundOptions = @(fn) overrideSoundOptionsFn = fn
-  getOptionsMode
 }

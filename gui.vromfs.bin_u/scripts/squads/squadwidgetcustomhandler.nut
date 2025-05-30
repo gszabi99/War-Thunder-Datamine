@@ -10,7 +10,6 @@ let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let platformModule = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let daguiFonts = require("%scripts/viewUtils/daguiFonts.nut")
 let crossplayModule = require("%scripts/social/crossplay.nut")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
@@ -25,12 +24,6 @@ let { joinOperationById } = require("%scripts/globalWorldwarUtils.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 
 const SQUAD_MEMBERS_TO_HIDE_TITLE = 3
-
-::init_squad_widget_handler <- function init_squad_widget_handler(nestObj) {
-  if (!hasFeature("Squad") || !hasFeature("SquadWidget") || !checkObj(nestObj))
-    return null
-  return handlersManager.loadCustomHandler(gui_handlers.SquadWidgetCustomHandler, { scene = nestObj })
-}
 
 gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -172,7 +165,7 @@ gui_handlers.SquadWidgetCustomHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onSquadPlus() {
-    if (is_platform_xbox && !hasFeature("SquadInviteIngame")) {
+    if (is_gdk && !hasFeature("SquadInviteIngame")) {
       
       
       

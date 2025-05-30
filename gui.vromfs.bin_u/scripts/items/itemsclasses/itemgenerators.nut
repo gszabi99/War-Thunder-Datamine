@@ -99,11 +99,11 @@ let ItemGenerator = class {
               craftTime = gen.getCraftTime()
               isFake = paramName != "trueRecipe"
               isDisassemble = isDisassemble
-              localizationPresetName = gen?.tags?.customLocalizationPreset ?? localizationPresetName
-              effectOnStartCraftPresetName = gen?.tags?.effectOnStartCraft
+              localizationPresetName = gen?.tags.customLocalizationPreset ?? localizationPresetName
+              effectOnStartCraftPresetName = gen?.tags.effectOnStartCraft
               allowableComponents = gen?.getAllowableRecipeComponents() ?? allowableComponents
-              showRecipeAsProduct = gen?.tags?.showRecipeAsProduct
-              shouldSkipMsgBox = !!gen?.tags?.shouldSkipMsgBox
+              showRecipeAsProduct = gen?.tags.showRecipeAsProduct
+              shouldSkipMsgBox = !!gen?.tags.shouldSkipMsgBox
               needSaveMarkRecipe = gen?.tags.needSaveMarkRecipe ?? true
             })))
             hasAdditionalRecipes = hasAdditionalRecipes || additionalParsedRecipes.len() > 0

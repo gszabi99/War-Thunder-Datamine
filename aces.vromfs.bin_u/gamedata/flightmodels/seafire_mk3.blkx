@@ -2115,16 +2115,16 @@
       0.0
     ],
     "lightPos": [
-      -1.06429,
-      0.39432,
-      0.005927
+      -1.0,
+      0.115,
+      0.0
     ],
     "lightColor": [
-      0.62,
-      0.3,
-      0.21
+      0.35,
+      0.15,
+      0.05
     ],
-    "lightAttenuation": 6.0,
+    "lightRadius": 0.35,
     "devices": {
       "speed": [
         0.0,
@@ -2341,10 +2341,22 @@
     ]
   },
   "weapon_presets": {
-    "preset": {
-      "name": "seafire_mk3_default",
-      "blk": "gameData/FlightModels/weaponPresets/empty.blk"
-    }
+    "preset": [
+      {
+        "name": "seafire_mk3_default",
+        "blk": "gameData/FlightModels/weaponPresets/empty.blk"
+      },
+      {
+        "name": "seafire_mk3_250lb",
+        "blk": "gameData/FlightModels/weaponPresets/seafire_mk3_250lb.blk",
+        "reqModification": "spitfire_sbc"
+      },
+      {
+        "name": "seafire_mk3_500lb",
+        "blk": "gameData/FlightModels/weaponPresets/seafire_mk3_500lb.blk",
+        "reqModification": "spitfire_mbc"
+      }
+    ]
   },
   "user_skin": {
     "name": "seafire_mk3",
@@ -2642,6 +2654,15 @@
     "hispano_mk_2_1943_new_gun": {
       "reqModification": "hispano_mk_2_narrow_chamber_new_gun",
       "tier": 4
+    },
+    "spitfire_sbc": {
+      "modClass": "weapon",
+      "tier": 2
+    },
+    "spitfire_mbc": {
+      "reqModification": "spitfire_sbc",
+      "modClass": "weapon",
+      "tier": 3
     }
   },
   "cutting": {

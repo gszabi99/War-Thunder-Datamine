@@ -984,8 +984,84 @@
               "pageName": "ah64Flt"
             },
             {
-              "type": "map",
-              "hideBackground": true
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "heli",
+              "centerMarkFillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "centerMarkLineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "centerMarkScale": 0.05,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                255,
+                191,
+                0,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": true,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
             }
           ]
         },
@@ -1088,7 +1164,8 @@
     "sensor": [
       {
         "blk": "gameData/sensors/ir_tracker.blk",
-        "node": "optic1_gun"
+        "node": "optic1_gun",
+        "powerButtonIdx": -1
       },
       {
         "blk": "gameData/sensors/us_flir.blk",

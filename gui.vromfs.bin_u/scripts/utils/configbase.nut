@@ -4,7 +4,8 @@ let { get_time_msec } = require("dagor.time")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock = require("DataBlock")
 let { addTask } = require("%scripts/tasker.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 let class ConfigBase {
   
@@ -77,7 +78,7 @@ let class ConfigBase {
   }
 
   function canRequest(forceUpdate = false) {
-    return (!this.isRequestInProgress() && isInMenu()
+    return (!this.isRequestInProgress() && isInMenu.get()
            && (forceUpdate || this.lastRequestTime + this.requestDelayMsec < get_time_msec()))
   }
 
@@ -113,7 +114,7 @@ let class ConfigBase {
 
     let taskId = this.requestUpdate()
     if (taskId == -1) {
-      ::update_entitlements_limited() 
+      updateEntitlementsLimited() 
       onErrorCb?( - 2)
       return
     }

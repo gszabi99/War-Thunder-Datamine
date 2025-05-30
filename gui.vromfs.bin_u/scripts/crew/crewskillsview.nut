@@ -8,7 +8,8 @@ let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerSt
 let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { getCrewById, getSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
+let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
+let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getCrewSkillPoints, getMaxAvailbleCrewStepValue, crewSkillValueToStep, getSkillMaxCrewLevel,
   getCrewTotalSteps, getSkillCrewLevel, getCrewMaxSkillValue, getCrew, getCrewSkillValue

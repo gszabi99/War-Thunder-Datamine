@@ -8,13 +8,13 @@ let DataBlock = require("DataBlock")
 let statsd = require("statsd")
 let psnStore = require("sony.store")
 let psnSystem = require("sony.sys")
-
-let seenEnumId = SEEN.EXT_PS4_SHOP
-
+let { defer } = require("dagor.workcycle")
 let { registerPersistentData } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let seenEnumId = SEEN.EXT_PS4_SHOP
 let seenList = require("%scripts/seen/seenList.nut").get(seenEnumId)
 let { canUseIngameShop, getShopData, getShopItem, getShopItemsTable, isItemsUpdated
 } = require("%scripts/onlineShop/ps4ShopData.nut")
@@ -27,7 +27,9 @@ let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { gui_start_mainmenu_reload } = require("%scripts/mainmenu/guiStartMainmenu.nut")
 let { addBgTaskCb } = require("%scripts/tasker.nut")
+let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
+let { updateOnlineShopDiscounts } = require("%scripts/discounts/discounts.nut")
 
 let persistent = {
   sheetsArray = []
@@ -175,7 +177,7 @@ gui_handlers.Ps4Shop <- class (gui_handlers.IngameConsoleStore) {
 
     this.updateSorting()
     this.fillItemsList()
-    ::g_discount.updateOnlineShopDiscounts()
+    updateOnlineShopDiscounts()
 
     if (isPlayerRecommendedEmailRegistration())
       showPcStorePromo()
@@ -195,7 +197,7 @@ function updatePurchasesReturnMainmenu(afterCloseFunc = null, openStoreResult = 
     return
   }
 
-  let taskId = ::update_entitlements_limited(true)
+  let taskId = updateEntitlementsLimited(true)
   
   if (taskId >= 0) {
     let progressBox = scene_msg_box("char_connecting", null, loc("charServer/checking"), null, null)
@@ -240,20 +242,18 @@ let openIngameStoreImpl = kwarg(
     }
 
     checkQueueAndStart(function() {
-      get_gui_scene().performDelayed(getroottable(),
-        function() {
-          if (item)
-            item.showDescription(statsdMetric)
-          else if (chapter == null || chapter == "") {
-            let res = ps4_open_store("WARTHUNDERAPACKS", false)
-            updatePurchasesReturnMainmenu(afterCloseFunc, res)
-          }
-          else if (chapter == "eagles") {
-            let res = ps4_open_store("WARTHUNDEREAGLES", false)
-            updatePurchasesReturnMainmenu(afterCloseFunc, res)
-          }
+      defer(function() {
+        if (item)
+          item.showDescription(statsdMetric)
+        else if (chapter == null || chapter == "") {
+          let res = ps4_open_store("WARTHUNDERAPACKS", false)
+          updatePurchasesReturnMainmenu(afterCloseFunc, res)
         }
-      )
+        else if (chapter == "eagles") {
+          let res = ps4_open_store("WARTHUNDEREAGLES", false)
+          updatePurchasesReturnMainmenu(afterCloseFunc, res)
+        }
+      })
     }, null, "isCanUseOnlineShop")
 
     return true
@@ -291,7 +291,7 @@ return {
   openIngameStore
   getEntStoreLocId
   getEntStoreIcon = @() canUseIngameShop() ? "#ui/gameuiskin#xbox_store_icon.svg" : "#ui/gameuiskin#store_icon.svg"
-  isEntStoreTopMenuItemHidden = @(...) !canUseIngameShop() || !isInMenu()
+  isEntStoreTopMenuItemHidden = @(...) !canUseIngameShop() || !isInMenu.get()
   getEntStoreUnseenIcon = @() SEEN.EXT_PS4_SHOP
   openEntStoreTopMenuFunc = @(_obj, _handler) openIngameStore({ statsdMetric = "topmenu" })
 }

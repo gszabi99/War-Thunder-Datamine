@@ -4,6 +4,7 @@ from "%scripts/controls/rawShortcuts.nut" import AXIS
 let { CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
+let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
 let Flags = {
   NONE = 0,
@@ -13,7 +14,7 @@ let Flags = {
 let replaceAxes = function(ctrlGroup, replacements, flags = Flags.NONE) {
   local isUpdated = false
   let groupAxes = []
-  foreach (item in ::shortcutsList)
+  foreach (item in shortcutsList)
     if (item.type == CONTROL_TYPE.AXIS && (item.checkGroup & ctrlGroup))
       groupAxes.append(item.id)
 

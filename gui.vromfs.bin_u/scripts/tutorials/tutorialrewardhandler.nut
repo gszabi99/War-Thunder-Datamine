@@ -21,7 +21,8 @@ let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { checkUnlockedCountries } = require("%scripts/firstChoice/firstChoice.nut")
 let { isAnyAwardReceivedByModeType } = require("%scripts/unlocks/unlocksModule.nut")
 let { getPlayerRankByCountry } = require("%scripts/user/userInfoStats.nut")
-let { invalidateCrewsList, reinitAllSlotbars } = require("%scripts/slotbar/crewsList.nut")
+let { invalidateCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { reinitAllSlotbars } = require("%scripts/slotbar/slotbarState.nut")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 
 register_command(

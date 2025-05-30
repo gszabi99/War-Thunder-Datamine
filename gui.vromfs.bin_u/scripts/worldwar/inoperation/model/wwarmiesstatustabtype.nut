@@ -1,9 +1,9 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/worldWar/worldWarConst.nut" import *
 
-
 let enums = require("%sqStdLibs/helpers/enums.nut")
 let { ceil } = require("math")
+let { getArmiesByStatus } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
 ::g_ww_map_armies_status_tab_type <- {
   types = []
@@ -28,7 +28,7 @@ let { ceil } = require("math")
     }
 
     getArmiesCountText = function() {
-      let armies = ::g_operations.getArmiesByStatus(this.status)
+      let armies = getArmiesByStatus(this.status)
 
       let countText = [armies.common.len()]
       if (armies.surrounded.len() > 0)
@@ -47,7 +47,7 @@ let { ceil } = require("math")
     }
 
     getContentViewData = function(itemsPerPage, currentPage) {
-      let armies = ::g_operations.getArmiesByStatus(this.status)
+      let armies = getArmiesByStatus(this.status)
 
       local firstItemIndex = currentPage * itemsPerPage
       let viewsArray = []
@@ -65,7 +65,7 @@ let { ceil } = require("math")
     }
 
     getTotalPageCount = function(itemsPerPage) {
-      let armies = ::g_operations.getArmiesByStatus(this.status)
+      let armies = getArmiesByStatus(this.status)
       return ceil((armies.surrounded.len() + armies.common.len()) / itemsPerPage.tofloat())
     }
   }

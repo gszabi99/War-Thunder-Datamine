@@ -5,7 +5,6 @@ let DataBlock = require("DataBlock")
 let { setTimeout, clearTimer } = require("dagor.workcycle")
 let { charRequestBlk } = require("%scripts/tasker.nut")
 let { isDataBlock, convertBlk } = require("%sqstd/datablock.nut")
-let { getAvatarIconById } = require("%scripts/user/avatars.nut")
 
 
 
@@ -90,13 +89,11 @@ function _convertServerResponse(response) {
   foreach (uid, userInfo in response) {
     if (userInfo?.failed)
       continue
-    local pilotIcon = userInfo?.pilotIcon ?? ""
-    if (pilotIcon == "")
-      pilotIcon = getAvatarIconById(userInfo?.pilotId ?? "")
     let convertedData = {
       uid = uid
       name = userInfo?.nick ?? ""
-      pilotIcon
+      pilotIcon = userInfo?.pilotIcon ?? ""
+      pilotId = userInfo?.pilotId ?? ""
       title = userInfo?.title ?? ""
       clanTag =  userInfo?.clanTag ?? ""
       clanName =  userInfo?.clanName ?? ""

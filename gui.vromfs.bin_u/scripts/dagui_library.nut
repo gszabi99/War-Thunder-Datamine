@@ -12,7 +12,7 @@ let utf8 = require("utf8")
 let isInArray = @(v, arr) arr.contains(v)
 let { Callback } = require("%sqStdLibs/helpers/callback.nut")
 let { hasFeature } = require("%scripts/user/features.nut")
-let { platformId }  = require("%sqstd/platform.nut")
+let { platformId, is_gdk }  = require("%sqstd/platform.nut")
 let { toPixels, showObjById, showObjectsByTable, ALIGN } = require("%sqDagui/daguiUtil.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
 let nativeApi = require("%sqDagui/daguiNativeApi.nut")
@@ -102,6 +102,13 @@ function get_roman_numeral(num) {
   return "".join(thousands.extend(roman))
 }
 
+let registeredFunctions = {}
+function registerForNativeCall(name, func){
+ let root = getroottable()
+ assert(name not in registeredFunctions, @() $"'{name}' already registered")
+ registeredFunctions[name] <- true
+ root[name] <- func
+}
 
 return log.__merge(nativeApi, sharedEnums, {
   min
@@ -111,6 +118,7 @@ return log.__merge(nativeApi, sharedEnums, {
   to_integer_safe
   to_float_safe
   get_roman_numeral
+  registerForNativeCall
 
   nbsp = " " 
   destroyMsgBox
@@ -122,6 +130,7 @@ return log.__merge(nativeApi, sharedEnums, {
   is_platform_windows
   is_platform_android
   is_platform_xbox
+  is_gdk
   is_platform_macosx
   isInArray
   getTblValue

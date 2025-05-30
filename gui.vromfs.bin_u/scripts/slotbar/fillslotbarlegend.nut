@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 let { getCrewSpecTypeByCode, getTrainedCrewSpecCode } = require("%scripts/crew/crewSpecType.nut")
 let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 
 function addLegendData(result, specType) {

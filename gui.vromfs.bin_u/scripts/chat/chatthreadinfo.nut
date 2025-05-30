@@ -2,7 +2,6 @@ from "%scripts/dagui_natives.nut" import gchat_raw_command
 from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import is_myself_anyof_moderators
 
-let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_chat_room_type } = require("%scripts/chat/chatRoomType.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { split_by_chars } = require("string")
@@ -17,10 +16,16 @@ let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { canChooseThreadsLang } = require("%scripts/chat/chatLatestThreads.nut")
 let { checkChatConnected } = require("%scripts/chat/chatHelper.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
+let { restoreReceivedThreadTitle, filterMessageText } = require("%scripts/chat/chatUtils.nut")
+let { getSenderColor } = require("%scripts/chat/chatColors.nut")
+let { isRoomJoined, joinThread } = require("%scripts/chat/chatRooms.nut")
 
 const MAX_THREAD_LANG_VISIBLE = 3
+const THREADS_INFO_TIMEOUT_MSEC = 300000
+const THREADS_INFO_CLEAN_PERIOD_MSEC = 150000  
+const THREAD_INFO_REFRESH_DELAY_MSEC = 60000
 
-::ChatThreadInfo <- class {
+let ChatThreadInfo = class {
   roomId = "" 
   lastUpdateTime = -1
 
@@ -57,13 +62,13 @@ const MAX_THREAD_LANG_VISIBLE = 3
   }
 
   function isOutdated() {
-    return this.lastUpdateTime + g_chat.THREADS_INFO_TIMEOUT_MSEC < get_time_msec()
+    return this.lastUpdateTime + THREADS_INFO_TIMEOUT_MSEC < get_time_msec()
   }
 
   function checkRefreshThread() {
     if (!this.isValid
         || !checkChatConnected()
-        || this.lastUpdateTime + g_chat.THREAD_INFO_REFRESH_DELAY_MSEC > get_time_msec()
+        || this.lastUpdateTime + THREAD_INFO_REFRESH_DELAY_MSEC > get_time_msec()
        )
       return
 
@@ -74,7 +79,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
     if (!dataBlk)
       return
 
-    this.title = g_chat.restoreReceivedThreadTitle(dataBlk.topic) || this.title
+    this.title = restoreReceivedThreadTitle(dataBlk.topic) || this.title
     if (this.title == "")
       this.title = this.roomId
     this.numPosts = dataBlk?.numposts ?? this.numPosts
@@ -141,7 +146,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
   }
 
   function getTitle() {
-    return g_chat.filterMessageText(this.title, this.isMyThread())
+    return filterMessageText(this.title, this.isMyThread())
   }
 
   function getOwnerText(isColored = true, defaultColor = "") {
@@ -150,7 +155,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
     local res = getPlayerFullName(getPlayerName(this.ownerNick), this.ownerClanTag)
     if (isColored)
-      res = colorize(g_chat.getSenderColor(this.ownerNick, false, false, defaultColor), res)
+      res = colorize(getSenderColor(this.ownerNick, false, false, defaultColor), res)
     return res
   }
 
@@ -162,11 +167,11 @@ const MAX_THREAD_LANG_VISIBLE = 3
   }
 
   function isJoined() {
-    return g_chat.isRoomJoined(this.roomId)
+    return isRoomJoined(this.roomId)
   }
 
   function join() {
-    g_chat.joinThread(this.roomId)
+    joinThread(this.roomId)
   }
 
   function showOwnerMenu(position = null) {
@@ -194,7 +199,7 @@ const MAX_THREAD_LANG_VISIBLE = 3
     ]
 
     let contact = getContact(this.ownerUid, this.ownerNick, this.ownerClanTag)
-    playerContextMenu.showMenu(contact, g_chat, {
+    playerContextMenu.showMenu(contact, null, {
       position = position
       roomId = this.roomId
       playerName = this.ownerNick
@@ -269,4 +274,9 @@ const MAX_THREAD_LANG_VISIBLE = 3
 
     return false
   }
+}
+
+return {
+  THREADS_INFO_CLEAN_PERIOD_MSEC
+  ChatThreadInfo
 }

@@ -9,7 +9,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let seenEvents = require("%scripts/seen/seenList.nut").get(SEEN.EVENTS)
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
@@ -21,7 +22,7 @@ let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { suggestAndAllowPsnPremiumFeatures } = require("%scripts/user/psnFeatures.nut")
 let { resetSlotbarOverrided, updateOverrideSlotbar } = require("%scripts/slotbar/slotbarOverride.nut")
-let { needShowOverrideSlotbar, getCustomViewCountryData, getEventEconomicName,
+let { needShowOverrideSlotbar, getCustomViewCountryData, getEventEconomicName, isTeamSizeBalancedEvent,
   isEventWithLobby, getEventReqPack, checkEventFeaturePacks, isEventPlatformOnlyAllowed
 } = require("%scripts/events/eventInfo.nut")
 let { eachParam } = require("%sqstd/datablock.nut")
@@ -45,7 +46,7 @@ let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { getMissionsComplete } = require("%scripts/myStats.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getPkgLocName } = require("%scripts/clientState/contentPacks.nut")
+let { getPkgLocName, havePackage } = require("%scripts/clientState/contentPacks.nut")
 let { getQueueClass } = require("%scripts/queue/queue/queueClasses.nut")
 let { checkQueueAndStart, leaveQueue } = require("%scripts/queue/queueManager.nut")
 let { EventJoinProcess } = require("%scripts/events/eventJoinProcess.nut")
@@ -53,11 +54,16 @@ let { create_event_description } = require("%scripts/events/eventDescription.nut
 let MRoomsList = require("%scripts/matchingRooms/mRoomsList.nut")
 let { isQueueActive, findQueue, isEventQueue } = require("%scripts/queue/queueState.nut")
 let { getQueueMode, getQueuePreferredViewClass } = require("%scripts/queue/queueInfo.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { profileCountrySq, switchProfileCountry } = require("%scripts/user/playerCountry.nut")
+let { remove_scene_box } = require("%sqDagui/framework/msgBox.nut")
+let { get_charserver_time_sec } = require("chard")
 
 const COLLAPSED_CHAPTERS_SAVE_ID = "events_collapsed_chapters"
 const ROOMS_LIST_OPEN_COUNT_SAVE_ID = "tutor/roomsListOpenCount"
 const SHOW_RLIST_ASK_DELAY_DEFAULT = 10
 const SHOW_RLIST_BEFORE_OPEN_DEFAULT = 10
+const CHANGE_TEAM_BOX_ID = "change_team_box"
 
 
 
@@ -130,6 +136,8 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   isMouseMode = true
 
   updateButtonsTimer = null
+  joinProcessStartTime = 0
+  canShowSwitchTeamBox = false
 
   function initScreen() {
     this.mainOptionsMode = getGuiOptionsMode()
@@ -221,7 +229,6 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function goToBattleFromDebriefing() {
     this.joinEvent(true)
   }
-
   function joinEvent(isFromDebriefing = false) {
     let event = events.getEvent(this.curEventId)
     if (!event)
@@ -252,10 +259,89 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         configForStatistic.canIntoToBattle <- false
         sendBqEvent("CLIENT_BATTLE_2", "to_battle_button", configForStatistic)
       })
+
+    this.canShowSwitchTeamBox = this.canAskAboutSwitchTeam()
+    this.joinProcessStartTime = get_charserver_time_sec()
   }
 
   function onUpdate(_obj, _dt) {
+    this.checkAskAboutSwitchTeam()
     this.checkAskOpenRoomsList()
+  }
+
+  function showSwitchTeamMsgBox() {
+    this.canShowSwitchTeamBox = false
+    let thisCapture = this
+    let buttons = [
+      [loc("ok"), @() thisCapture.changeTeam()],
+      [loc("cancel"), @() null]
+    ]
+    let defBtn = "cancel"
+    let options = {cancel_fn = @() null}
+    remove_scene_box(CHANGE_TEAM_BOX_ID)
+    scene_msg_box(CHANGE_TEAM_BOX_ID, null, loc("multiplayer/ask_switch_team"), buttons, defBtn, options)
+  }
+
+  function canAskAboutSwitchTeam() {
+    let squadMembers = g_squad_manager.getMembers()
+    let isSquadLeader = g_squad_manager.isSquadLeader()
+    if (squadMembers.len() > 0 && !isSquadLeader)
+      return false
+    let event = events.getEvent(this.curEventId)
+    if (!event?.suggestToChangeTeamOnQueueDisbalanceSec || !isTeamSizeBalancedEvent(event) || !event?.teamA || !event?.teamB)
+      return false
+    return true
+  }
+
+  function needSwitchTeam() {
+    let event = events.getEvent(this.curEventId)
+    if (this.queueToShow?.queueStats == null || this.queueToShow?.queueStats.isClanStats
+      || !isTeamSizeBalancedEvent(event))
+      return false
+
+    let minTeamSize = events.getMinTeamSize(event)
+    let isSquadLeader = g_squad_manager.isSquadLeader()
+    let movePlayersCount = isSquadLeader ? g_squad_manager.getMembers() : 1
+
+    let curCountry = profileCountrySq.value
+    let playerTeam = event.teamA.countries.contains(curCountry) ? "teamA" : "teamB"
+    let enemyTeam = playerTeam == "teamA" ? "teamB" : "teamA"
+    let queueStats = this.queueToShow.queueStats
+    let clustersName = queueStats.getClusters()
+
+    foreach (cluster in clustersName) {
+      let playerTeamCount = queueStats.getPlayersCountByTeam(playerTeam, cluster) ?? 0
+      let enemyTeamCount = queueStats.getPlayersCountByTeam(enemyTeam, cluster) ?? 0
+      let newTeamCount = playerTeamCount - movePlayersCount
+      if (newTeamCount >= minTeamSize && newTeamCount >= enemyTeamCount + movePlayersCount)
+        return true
+    }
+    return false
+  }
+
+  function checkAskAboutSwitchTeam() {
+    if (!this.isInEventQueue() || !this.canShowSwitchTeamBox)
+      return
+    let event = events.getEvent(this.curEventId)
+    let suggestToChangeTeamTimeExpired = this.joinProcessStartTime + event.suggestToChangeTeamOnQueueDisbalanceSec <= get_charserver_time_sec()
+    if (suggestToChangeTeamTimeExpired)
+      if (this.needSwitchTeam())
+        this.showSwitchTeamMsgBox()
+      else
+        this.canShowSwitchTeamBox = false
+  }
+
+  function changeTeam() {
+    if (this.isInEventQueue())
+      this.onLeaveEvent()
+
+    let event = events.getEvent(this.curEventId)
+    let curCountry = profileCountrySq.value
+    let newTeam = event.teamA.countries.contains(curCountry) ? event.teamB : event.teamA
+    let newCountry = newTeam.countries[0]
+    switchProfileCountry(newCountry)
+    this.joinEvent()
+    this.canShowSwitchTeamBox = false
   }
 
   function checkAskOpenRoomsList() {
@@ -299,7 +385,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onLeaveEvent() {
-    if (!::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true, msgId = "squad/only_leader_can_cancel" },
+    if (!canJoinFlightMsgBox({ isLeaderCanJoin = true, msgId = "squad/only_leader_can_cancel" },
                                              Callback(this.onLeaveEventActions, this)))
       return
     else
@@ -316,6 +402,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onLeaveEventActions() {
+    remove_scene_box(CHANGE_TEAM_BOX_ID)
     let q = this.getCurEventQueue()
     if (!q)
       return
@@ -433,6 +520,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onDestroy() {
+    remove_scene_box(CHANGE_TEAM_BOX_ID)
     seenEvents.markSeen(events.getEventsForEventsWindow())
     resetSlotbarOverrided()
   }
@@ -589,7 +677,7 @@ gui_handlers.EventsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btn_rooms_list", isCurItemInFocus && isEvent && isEventWithLobby(event), this.scene)
 
     let pack = isCurItemInFocus && isEvent ? getEventReqPack(event, true) : null
-    let needDownloadPack = pack != null && !::have_package(pack)
+    let needDownloadPack = pack != null && !havePackage(pack)
     let packBtn = showObjById("btn_download_pack", needDownloadPack, this.scene)
     if (needDownloadPack && packBtn) {
       packBtn.tooltip = getPkgLocName(pack)

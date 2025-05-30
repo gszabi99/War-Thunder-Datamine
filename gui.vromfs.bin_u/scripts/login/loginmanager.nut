@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import epic_is_running, disable_network, ps4_is_chat_enabled, ps4_is_ugc_enabled, get_localization_blk_copy, dgs_get_argv
+from "%scripts/dagui_natives.nut" import epic_is_running, ps4_is_chat_enabled, ps4_is_ugc_enabled, get_localization_blk_copy, dgs_get_argv
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
@@ -14,13 +14,13 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
-let { is_gdk }  = require("%sqstd/platform.nut")
 let { loginState, isLoggedIn, isAuthorized, isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { bqSendLoginState } = require("%scripts/bigQuery/bigQueryClient.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { getSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
 let { destroyLoginProgress } = require("%scripts/login/loginStates.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let cachedLoginData = persist("cachedLoginData", @() { use_dmm_login = null })
 
@@ -55,7 +55,7 @@ function onAuthorizeChanged() {
     return
   }
 
-  if (!disable_network())
+  if (!disableNetwork)
     handlersManager.animatedSwitchScene(function() {
       loadHandler(gui_handlers.WaitForLoginWnd)
     })

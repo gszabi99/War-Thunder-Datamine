@@ -27,9 +27,11 @@ gui_handlers.BenchmarkResultModal <- class (gui_handlers.BaseGuiHandlerWT) {
       resultTableData = this.getStatRow("stat_avgfps", "benchmark/avgfps", avgfps)
 
       let minfps = format("%.1f", this.benchmark_data.benchMinFPS)
-      resultTableData += this.getStatRow("stat_minfps", "benchmark/minfps", minfps)
+      resultTableData = "".concat(resultTableData,
+        this.getStatRow("stat_minfps", "benchmark/minfps", minfps))
 
-      resultTableData += this.getStatRow("stat_total", "benchmark/total", this.benchmark_data.benchTotalFrames)
+      resultTableData = "".concat(resultTableData,
+        this.getStatRow("stat_total", "benchmark/total", this.benchmark_data.benchTotalFrames))
 
       this.guiScene.replaceContentFromText(this.scene.findObject("results_list"), resultTableData, resultTableData.len(), this)
     }

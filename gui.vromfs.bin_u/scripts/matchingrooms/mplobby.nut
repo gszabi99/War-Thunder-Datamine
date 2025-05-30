@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 
-let { g_chat } = require("%scripts/chat/chat.nut")
+let { getRoomById } = require("%scripts/chat/chatRooms.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { g_team } = require("%scripts/teams.nut")
@@ -33,7 +33,7 @@ let { guiStartMislist } = require("%scripts/missions/startMissionsList.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_player_state } = require("%scripts/contacts/playerStateTypes.nut")
 let { checkShowMultiplayerAasWarningMsg } = require("%scripts/user/antiAddictSystem.nut")
-let { fill_gamer_card } = require("%scripts/gamercard.nut")
+let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { getRoomEvent, getRoomSpecialRules, getSessionLobbyLockedCountryData, getRoomMGameMode,
   getRoomMaxDisbalance, canChangeTeamInLobby, canBeSpectator, getLobbyRandomTeam, getRoomActiveTimers,
@@ -47,7 +47,8 @@ let { setMyTeamInRoom, setSessionLobbyReady, switchMyTeamInRoom, switchSpectator
   tryJoinSession, startSession
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getOptionsMode } = require("%scripts/options/optionsList.nut")
+let { getOptionsMode } = require("%scripts/options/options.nut")
+let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 
 function getLobbyChatRoomId() {
   return g_chat_room_type.MP_LOBBY.getRoomId(getSessionLobbyRoomId())
@@ -268,8 +269,8 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
       teamIcoObj.show(teamTxt != "")
       teamIcoObj.tooltip = loc("ui/colon").concat(loc("multiplayer/team"), teamTxt)
     }
-    let playerIcon = (!player || player.isBot) ? "cardicon_bot" : player.pilotIcon
-    fill_gamer_card({
+    let playerIcon = (!player || player.isBot) ? "cardicon_bot" : getAvatarIconIdByUserInfo(player)
+    fillGamercard({
                       name = player.name
                       clanTag = player.clanTag
                       country = player?.country ?? ""
@@ -446,7 +447,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getChatLog() {
-    let chatRoom = g_chat.getRoomById(getLobbyChatRoomId())
+    let chatRoom = getRoomById(getLobbyChatRoomId())
     return chatRoom != null ? chatRoom.getLogForBanhammer() : null
   }
 
@@ -587,6 +588,7 @@ gui_handlers.MPLobby <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     let userInfo = param.usersInfo[this.viewPlayer.userId]
     this.viewPlayer.pilotIcon = userInfo.pilotIcon
+    this.viewPlayer.pilotId = userInfo.pilotId
     this.viewPlayer.frame = userInfo.frame
     this.updatePlayerInfo(this.viewPlayer)
   }

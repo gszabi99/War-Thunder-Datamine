@@ -1,7 +1,8 @@
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { select_editbox, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 gui_handlers.commentModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   function initScreen() {

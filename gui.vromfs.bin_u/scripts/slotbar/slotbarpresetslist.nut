@@ -6,9 +6,10 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { subscribe_handler } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
-let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
 
 ::SlotbarPresetsList <- class {
   scene = null
@@ -27,7 +28,7 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
       return
 
     this.scene.show(true)
-    this.maxPresets = ::slotbarPresets.getTotalPresetsCount()
+    this.maxPresets = slotbarPresets.getTotalPresetsCount()
     this.curPresetsData = array(this.maxPresets, this.NULL_PRESET_DATA)
     let view = {
       presets = array(this.maxPresets, null)
@@ -57,7 +58,7 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
 
   function getPresetsData() {
     let curPresetIdx = this.getCurPresetIdx()
-    let res = u.mapAdvanced(::slotbarPresets.list(this.getCurCountry()),
+    let res = u.mapAdvanced(slotbarPresets.list(this.getCurCountry()),
       @(l, idx, ...) {
         title = l.title
         isEnabled = l.enabled || idx == curPresetIdx 
@@ -143,7 +144,7 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
   }
 
   function getCurPresetIdx() { 
-    return ::slotbarPresets.getCurrent(this.getCurCountry(), 0)
+    return slotbarPresets.getCurrent(this.getCurCountry(), 0)
   }
 
   function getSelPresetIdx() { 
@@ -163,7 +164,7 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
   }
 
   function applySelect() {
-    if (!::slotbarPresets.canLoad(true, this.getCurCountry()))
+    if (!slotbarPresets.canLoad(true, this.getCurCountry()))
       return this.update()
 
     let idx = this.getSelPresetIdx()
@@ -175,7 +176,7 @@ let { gui_choose_slotbar_preset } = require("%scripts/slotbar/slotbarPresetsWnd.
     if (("canPresetChange" in this.ownerWeak) && !this.ownerWeak.canPresetChange())
       return
 
-    ::slotbarPresets.load(idx)
+    slotbarPresets.load(idx)
     this.update()
   }
 

@@ -1,8 +1,7 @@
 from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
 
-let { isPlatformSony, is_gdk
-} = require("%scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 
 let {
   needEntStoreDiscountIcon = false,

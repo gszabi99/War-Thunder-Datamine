@@ -14,6 +14,8 @@ let { WwAirfieldCooldownFormation } = require("wwAirfieldCooldownFormation.nut")
 let { WwArmyOwner } = require("%scripts/worldWar/inOperation/model/wwArmyOwner.nut")
 let WwAirfieldView = require("%scripts/worldWar/inOperation/view/wwAirfieldView.nut")
 let { getWWConfigurableValue } = require("%scripts/worldWar/worldWarStates.nut")
+let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { getCurrentOperation } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
 let WwAirfield = class {
   index  = -1
@@ -144,7 +146,7 @@ let WwAirfield = class {
   function getUnitsInFlyNumber() {
     local unitsNumber = 0
     foreach (armyName in this.armies) {
-      let army = ::g_world_war.getArmyByName(armyName)
+      let army = getArmyByName(armyName)
       if (army.isValid()) {
         army.updateUnits()
         unitsNumber += army.getUnitsNumber()
@@ -202,7 +204,7 @@ let WwAirfield = class {
         customClassAmount += unit.count
     }
 
-    let operation = ::g_operations.getCurrentOperation()
+    let operation = getCurrentOperation()
     let flyoutRange = operation.getUnitsFlyoutRange()
     foreach (mask in [WW_UNIT_CLASS.FIGHTER, WW_UNIT_CLASS.COMBINED, WW_UNIT_CLASS.HELICOPTER]) {
       local additionalAirs = 0

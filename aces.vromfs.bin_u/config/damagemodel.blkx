@@ -90,6 +90,7 @@
   "collisionDamageType": "collision",
   "drowningDamageType": "drowning",
   "fireDamageType": "fire",
+  "ammoFireSplashDamageTypeId": "pressure",
   "sonicWaveBoxScale": 1.0,
   "sonicWaveLandCoveredDamageScale": 1.0,
   "sonicWaveRiCoveredDamageScale": [
@@ -187,8 +188,8 @@
   "weaponReloadWhileExtinguishMult": 0.25,
   "shipboardDamageControlWeight": [
     1.0,
-    1.2,
-    1.4
+    1.1,
+    1.2
   ],
   "criticalBuoyancy": 0.5,
   "enableUnderwaterBombExplosionScale": false,
@@ -4146,23 +4147,23 @@
   "decorCut": {
     "default": {
       "decorCutDamage": 30.0,
-      "decorMass": 10.0,
+      "decorMass": 15.0,
       "decorSpeed": [
         12.0,
-        20.0
+        35.0
       ],
-      "decorCutProbability": 0.4,
-      "decorRotate": 0.6,
-      "wheelCutProbability": 0.2,
+      "decorCutProbability": 0.5,
+      "decorRotate": 0.7,
+      "wheelCutProbability": 0.25,
       "damageToImpulse": 75.0,
       "decorDamageToSpeed": [
         10.0,
         500.0,
         4.0,
-        8.0
+        15.0
       ],
       "fxName": "fire_trails_dstr_smal",
-      "fxCount": 3
+      "fxCount": 2
     },
     "boat": {
       "decorCutDamage": 30.0,
@@ -4740,6 +4741,7 @@
     "cn_object_211": 134,
     "cn_pgz_04a": 134,
     "cn_pgz_09": 140,
+    "cn_pgz_625_fb10": 134,
     "cn_plz_05": 166,
     "cn_plz_83": 166,
     "cn_plz_83_130": 134,
@@ -4850,6 +4852,7 @@
     "fr_leclerc_s2": 140,
     "fr_leclerc_sxxi": 140,
     "fr_leopard_2a4nl": 140,
+    "fr_leopard_2a4nl_les": 140,
     "fr_leopard_2a5nl": 140,
     "fr_leopard_2a6nl": 140,
     "fr_lorraine_100": 140,
@@ -4872,6 +4875,7 @@
     "fr_marder_clovis": 140,
     "fr_marder_df_105": 140,
     "fr_mars_15": 134,
+    "fr_msc": 140,
     "fr_panhard_ebr_1951": 134,
     "fr_panhard_ebr_1954": 134,
     "fr_panhard_ebr_1963": 134,
@@ -4921,6 +4925,8 @@
     "germ_garford_putilov": 134,
     "germ_garford_putilov_event": 134,
     "germ_infanterie_kampfpanzer_churchill": 140,
+    "germ_iris_slm_fcs": 134,
+    "germ_iris_slm_launcher": 134,
     "germ_jgdpz_38t": 134,
     "germ_jgdpz_IV_L48": 140,
     "germ_kanonenjagdpanzer": 140,
@@ -5110,6 +5116,7 @@
     "il_namer_tsrikhon": 140,
     "il_sabra_mk1": 140,
     "il_sholef": 166,
+    "il_spyder_aio": 134,
     "il_ss_11_halftrack": 134,
     "il_tcm_20": 134,
     "il_tiran_4": 140,
@@ -5154,6 +5161,7 @@
     "it_l6": 134,
     "it_l6_leone": 134,
     "it_lancia3ro_100": 134,
+    "it_leopard_1a2": 140,
     "it_leopard_1a5": 140,
     "it_leopard_2a4": 140,
     "it_leopard_2a7_hungary": 140,
@@ -5268,6 +5276,8 @@
     "jp_type_75": 166,
     "jp_type_75_mlrs": 134,
     "jp_type_81_tansam": 134,
+    "jp_type_81_tansam_fcs": 134,
+    "jp_type_81_tansam_launcher": 134,
     "jp_type_87": 140,
     "jp_type_87_rcv": 134,
     "jp_type_87_rcv_prot": 134,
@@ -5301,6 +5311,7 @@
     "sw_cv_9030_fin": 134,
     "sw_cv_9035_dk": 134,
     "sw_cv_90_mk4": 134,
+    "sw_eldenhet_98": 140,
     "sw_ikv_103": 134,
     "sw_ikv_72": 134,
     "sw_ikv_73": 134,
@@ -5320,6 +5331,7 @@
     "sw_lvkv_42": 134,
     "sw_lvkv_90c": 134,
     "sw_lvrbv_701": 134,
+    "sw_m24_chaffee_dk": 134,
     "sw_patria_amv_ctcv_105": 134,
     "sw_pbil_m40": 134,
     "sw_pbv_301": 134,
@@ -5391,6 +5403,7 @@
     "uk_a27m_cromwell_5_rp3": 140,
     "uk_a30_challenger": 140,
     "uk_a30_sp_avenger": 140,
+    "uk_a30_sp_avenger_kit_3rank": 140,
     "uk_a39_tortoise": 140,
     "uk_a_12_mk_2_matilda_2": 140,
     "uk_a_13_mk1": 134,
@@ -5413,6 +5426,7 @@
     "uk_armored_car_mk_2_aa": 134,
     "uk_at_gun_qf17pounder": 134,
     "uk_at_gun_qf6pounder": 134,
+    "uk_badger": 134,
     "uk_bosvark": 134,
     "uk_centurion_action_x": 140,
     "uk_centurion_mk_1": 140,
@@ -5445,6 +5459,7 @@
     "uk_conqueror_mk_2": 140,
     "uk_crusader_aa_mk_1": 134,
     "uk_crusader_aa_mk_2": 134,
+    "uk_crusader_aa_mk_2_kit_3rank": 134,
     "uk_crusader_aa_mk_2_tutorial": 134,
     "uk_crusader_mk_2": 134,
     "uk_crusader_mk_2_the_saint": 134,
@@ -5492,6 +5507,7 @@
     "uk_sherman_II": 140,
     "uk_sherman_ic_firefly": 140,
     "uk_sherman_vc_firefly": 140,
+    "uk_sherman_vc_firefly_kit_3rank": 140,
     "uk_shir_2": 140,
     "uk_skink_aa": 140,
     "uk_sp_17_pdr_valentine": 140,
@@ -5541,6 +5557,7 @@
     "us_m18_hellcat": 134,
     "us_m18_hellcat_black_cat": 134,
     "us_m18_hellcat_black_cat_race": 6666,
+    "us_m18_hellcat_kit_3rank": 134,
     "us_m18_super_hellcat": 134,
     "us_m19": 134,
     "us_m1_abrams": 140,
@@ -5596,6 +5613,7 @@
     "us_m4a3e2_sherman_jumbo": 140,
     "us_m4a3e2_sherman_jumbo_cobra_king": 140,
     "us_m4a3e8_76w_sherman": 140,
+    "us_m4a3e8_76w_sherman_kit_3rank": 140,
     "us_m4a5_ram_2": 140,
     "us_m50_ontos": 134,
     "us_m551": 166,
@@ -5628,6 +5646,9 @@
     "us_mk1_grant": 140,
     "us_rdf_lt": 134,
     "us_skink_aa": 140,
+    "us_skink_aa_kit_3rank": 140,
+    "us_sl_amraam_fcs": 134,
+    "us_sl_amraam_launcher": 134,
     "us_t114": 134,
     "us_t14": 140,
     "us_t18_e2": 134,
@@ -5670,6 +5691,9 @@
     "ussr_9p149": 134,
     "ussr_9p157": 140,
     "ussr_a_12_mk_2_matilda_2A_F96": 140,
+    "ussr_ai_sam_launcher_s_75": 33,
+    "ussr_ai_sam_radar_p_12": 25,
+    "ussr_ai_sam_radar_snr_75": 25,
     "ussr_asu_57": 134,
     "ussr_asu_85": 134,
     "ussr_at_gun_53k": 134,
@@ -5697,6 +5721,7 @@
     "ussr_gaz_dshk": 134,
     "ussr_gaz_mm_72k": 102,
     "ussr_is_1": 140,
+    "ussr_is_1_kit_3rank": 140,
     "ussr_is_2_1943": 140,
     "ussr_is_2_1944": 140,
     "ussr_is_2_1944_321": 140,
@@ -5740,6 +5765,7 @@
     "ussr_pzkpfw_III_ausf_J_L42": 140,
     "ussr_pzkpfw_V": 140,
     "ussr_rbt_5": 134,
+    "ussr_sdkfz_251_21_kit_3rank": 134,
     "ussr_smk": 140,
     "ussr_su_100Y": 140,
     "ussr_su_100_1945": 140,
@@ -5780,6 +5806,8 @@
     "ussr_t_34_85E": 140,
     "ussr_t_34_85_d_5t": 140,
     "ussr_t_34_85_zis_53": 140,
+    "ussr_t_34_85_zis_53_kit_3rank": 140,
+    "ussr_t_34_85_zis_53_v80": 140,
     "ussr_t_35": 140,
     "ussr_t_44": 140,
     "ussr_t_44_100": 140,
@@ -5804,6 +5832,7 @@
     "ussr_t_72b": 140,
     "ussr_t_72b3_2011": 140,
     "ussr_t_72b3_2017_race": 140,
+    "ussr_t_72b3_arena_m": 140,
     "ussr_t_72b_1989": 140,
     "ussr_t_72m2_moderna": 140,
     "ussr_t_80": 134,
@@ -5842,6 +5871,7 @@
     "fr_battleship_courbet_class_courbet": 112,
     "fr_battleship_courbet_class_paris": 112,
     "fr_battleship_dunkerque": 112,
+    "fr_battleship_richelieu_class_richelieu": 126,
     "fr_battleship_strasbourg": 112,
     "fr_cruiser_chateaurenault_class_guichen": 82,
     "fr_cruiser_dugauy_class_dugauy_trouin": 84,
@@ -5889,6 +5919,8 @@
     "germ_battlecruiser_von_der_tann": 112,
     "germ_battleship_baden": 112,
     "germ_battleship_bayern": 112,
+    "germ_battleship_bismarck": 107,
+    "germ_battleship_gneisenau_380mm": 98,
     "germ_battleship_helgoland": 87,
     "germ_battleship_kaiser": 112,
     "germ_battleship_nassau": 92,
@@ -5965,6 +5997,7 @@
     "it_battleship_dante_alighieri": 99,
     "it_battleship_francesco_caracciolo": 112,
     "it_battleship_leonardo_da_vinci": 98,
+    "it_battleship_littorio_class_roma": 107,
     "it_ciclone_class_ghibli": 55,
     "it_cruiser_bartolomeocolleoni_1940": 80,
     "it_cruiser_bolzano": 110,
@@ -6023,6 +6056,7 @@
     "jp_battleship_mutsu": 112,
     "jp_battleship_settsu": 112,
     "jp_battleship_yamashiro": 112,
+    "jp_battleship_yamato": 107,
     "jp_cruiser_agano": 97,
     "jp_cruiser_aoba": 94,
     "jp_cruiser_furutaka": 110,
@@ -6100,6 +6134,7 @@
     "uk_battleship_q_elizabet_class_barham": 96,
     "uk_battleship_q_elizabet_class_warspite": 112,
     "uk_battleship_rodney": 125,
+    "uk_battleship_vanguard": 98,
     "uk_brave_borderer": 30,
     "uk_corvette_orla": 72,
     "uk_corvette_peacock": 72,
@@ -6175,7 +6210,8 @@
     "us_battlecruiser_alaska_class": 98,
     "us_battleship_arizona_1931": 112,
     "us_battleship_arkansas": 112,
-    "us_battleship_colorado_class_colorado": 107,
+    "us_battleship_colorado_class_colorado": 98,
+    "us_battleship_iowa_class_iowa": 98,
     "us_battleship_mississippi": 112,
     "us_battleship_nevada": 127,
     "us_battleship_north_dakota": 96,
@@ -6233,6 +6269,7 @@
     "us_higgins_78ft_pt625": 27,
     "us_higgins_78ft_pt658": 30,
     "us_higgins_78ft_pt71": 23,
+    "us_huckins_78ft_pt95": 30,
     "us_lcm_zippo": 24,
     "us_lcs_l_3": 56,
     "us_nasty_ptf": 30,
@@ -6254,12 +6291,14 @@
     "ussr_aircraftcarrier_baku": 90,
     "ussr_battlecruiser_izmail": 100,
     "ussr_battlecruiser_kronshtadt": 121,
+    "ussr_battlecruiser_sevastopol": 121,
     "ussr_battleship_arhangelsk": 123,
     "ussr_battleship_imperatritsa_mariya": 112,
-    "ussr_battleship_marat": 120,
+    "ussr_battleship_marat": 106,
     "ussr_battleship_novorossiysk": 110,
     "ussr_battleship_parizhskaya_kommuna": 120,
     "ussr_battleship_poltava": 112,
+    "ussr_battleship_pr23_sovetskij_soyuz": 127,
     "ussr_bmo": 35,
     "ussr_cruiser_chapayev": 85,
     "ussr_cruiser_kerch": 85,
@@ -10527,11 +10566,13 @@
     },
     "apds_autocannon": {
       "modelName": "tank_bullet_apdc",
-      "gbufferModelName": "tank_shell_apds"
+      "gbufferModelName": "tank_shell_apds",
+      "penetratorModelName": "tank_shell_apds_deform"
     },
     "apds_tank": {
       "modelName": "tank_bullet_apdc",
-      "gbufferModelName": "tank_shell_apds"
+      "gbufferModelName": "tank_shell_apds",
+      "penetratorModelName": "tank_shell_apds_deform"
     },
     "practice_tank": {
       "modelName": "tank_bullet_heat_fs",
@@ -10539,39 +10580,48 @@
     },
     "apds_early_tank": {
       "modelName": "tank_bullet_apdc",
-      "gbufferModelName": "tank_shell_apds"
+      "gbufferModelName": "tank_shell_apds",
+      "penetratorModelName": "tank_shell_apds_deform"
     },
     "apds_l15_tank": {
       "modelName": "tank_bullet_apdc",
-      "gbufferModelName": "tank_shell_apds"
+      "gbufferModelName": "tank_shell_apds",
+      "penetratorModelName": "tank_shell_apds_deform"
     },
     "apds_fs_tank": {
       "modelName": "tank_bullet_apdsfs",
-      "gbufferModelName": "tank_shell_apdsfs"
+      "gbufferModelName": "tank_shell_apdsfs",
+      "penetratorModelName": "tank_shell_apdsfs_deform"
     },
     "apds_fs_full_body_steel_tank": {
       "modelName": "tank_bullet_apdsfs",
-      "gbufferModelName": "tank_shell_apdsfs"
+      "gbufferModelName": "tank_shell_apdsfs",
+      "penetratorModelName": "tank_shell_apdsfs_deform"
     },
     "apds_fs_tungsten_small_core_tank": {
       "modelName": "tank_bullet_apdsfs",
-      "gbufferModelName": "tank_shell_apdsfs"
+      "gbufferModelName": "tank_shell_apdsfs",
+      "penetratorModelName": "tank_shell_apdsfs_deform"
     },
     "apds_fs_tungsten_l10_l15_tank": {
       "modelName": "tank_bullet_apdsfs_long",
-      "gbufferModelName": "tank_shell_apdsfs_ld_13"
+      "gbufferModelName": "tank_shell_apdsfs_ld_13",
+      "penetratorModelName": "tank_shell_apdsfs_ld_13_deform"
     },
     "apds_fs_tungsten_caliber_fins_tank": {
       "modelName": "tank_bullet_apdsfs_long",
-      "gbufferModelName": "tank_shell_apdsfs_3bm42"
+      "gbufferModelName": "tank_shell_apdsfs_3bm42",
+      "penetratorModelName": "tank_shell_apdsfs_3bm42_deform"
     },
     "apds_fs_long_tank": {
       "modelName": "tank_bullet_apdsfs_long",
-      "gbufferModelName": "tank_shell_apdsfs_long"
+      "gbufferModelName": "tank_shell_apdsfs_long",
+      "penetratorModelName": "tank_shell_apdsfs_long_deform"
     },
     "apds_fs_long_l30_tank": {
       "modelName": "tank_bullet_apdsfs_long",
-      "gbufferModelName": "tank_shell_apdsfs_ld_30"
+      "gbufferModelName": "tank_shell_apdsfs_ld_30",
+      "penetratorModelName": "tank_shell_apdsfs_ld_30_deform"
     },
     "apbc_tank": {
       "modelName": "tank_bullet_apbc",
@@ -10693,7 +10743,7 @@
     "atgm_ke_tank": {
       "modelName": "tank_bullet_he",
       "gbufferModelName": "tank_shell_he",
-      "penetratorModelName": "atgm_ke_penetrator"
+      "penetratorModelName": "atgm_ke_penetrator_deform"
     },
     "atgm_vt_fuze_tank": {
       "modelName": "tank_bullet_he",

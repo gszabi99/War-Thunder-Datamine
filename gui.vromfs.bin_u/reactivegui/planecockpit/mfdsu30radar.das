@@ -52,7 +52,7 @@ def draw_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : Can
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
 
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
   ctx |> set_color(data.color)
 
   let irst = get_radar_hud_is_irst()
@@ -280,7 +280,6 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
     ctx |> draw_str_scaled(1., maxEl, maxEl |> length())
 
     let minEl = "{roundi(rad_to_deg(get_radar_hud_elevation_min()))}"
-    let minElBox = get_str_bbox(minEl, minEl |> length(), fctx)
     ctx |> goto_xy(pos.x + size.x + offset + markW, pos.y + size.y)
     ctx |> draw_str_scaled(1., minEl, minEl |> length())
 
@@ -339,7 +338,7 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
   let scanElevationRange = max(0., get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min())
   let scanElevationRangMul = isElevation && elevRange > 0. && scanElevationRange > 0. ? scanElevationRange / elevRange : 1.
   foreach_targets <| $(var target)
-    if target.targetType == int(RadarTargetType TYPE_TARGET)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET)
       let angleRel = dontScale ? target.azimuthRel : ((target.azimuthRel - minAzimuth) / scanAzimuthRangMul)
       if angleRel < 0. || angleRel > 1.
         return
@@ -354,15 +353,15 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
       ctx |> set_color(color)
       if (target.isSelected || target.isAttacked) && !isIrst
         if !target.isTracked || target.isAttacked
-          let l1 <- to_array_move([[float2[2]
-            p - float2(markSize);
+          let l1 <- to_array_move(fixed_array<float2>(
+            p - float2(markSize),
             p + float2(markSize)
-            ]])
+            ))
           ctx |> render_line_aa(l1, false, data.lineWidth, float2(0, 0), color)
-          let l2 <- to_array_move([[float2[2]
-            p + float2(-markSize, markSize);
+          let l2 <- to_array_move(fixed_array<float2>(
+            p + float2(-markSize, markSize),
             p + float2(markSize, -markSize)
-            ]])
+            ))
           ctx |> render_line_aa(l2, false, data.lineWidth, float2(0, 0), color)
 
         let id = "{int(target.id)}"
@@ -393,18 +392,17 @@ def draw_scope(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
             ctx |> draw_str_scaled(1., name, name |> length())
             selectedCnt += 1
       elif !target.isTracked && !target.isDetected
-        let line <- to_array_move([[float2[2]
-          p - float2(markSize, 0.);
+        let line <- to_array_move(fixed_array<float2>(
+          p - float2(markSize, 0.),
           p + float2(markSize, 0.)
-          ]])
+          ))
         ctx |> render_line_aa(line, false, data.lineWidth, float2(0, 0), data.color)
       if target.isAttacked || target.isTracked || (isIrst && target.isSelected) || target.isDetected
-        let diamond <- to_array_move([[float2[4]
-         float2(p.x + markSize * 2., p.y);
-         float2(p.x, p.y + markSize * 2.);
-         float2(p.x - markSize * 2., p.y);
-         float2(p.x, p.y - markSize * 2.);
-        ]])
+        let diamond <- to_array_move(fixed_array<float2>(
+         float2(p.x + markSize * 2., p.y),
+         float2(p.x, p.y + markSize * 2.),
+         float2(p.x - markSize * 2., p.y),
+         float2(p.x, p.y - markSize * 2.)))
         ctx |> render_line_aa(diamond, true, data.lineWidth, float2(0, 0), color)
         if target.isTracked
           let unit = get_unit(int(target.id))
@@ -432,7 +430,7 @@ def draw_radar(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
 
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
   ctx |> set_color(data.color)
 
   let digText = "{roundi(hero.pos.y)}"
@@ -454,7 +452,7 @@ def draw_radar(var ctx : GuiContext&; pos : float2; size : float2; data : Canvas
 
   var fctxValue : StdGuiFontContext
   get_font_context(fctxValue, data.fontId, 0, 0, 15)
-  ctx |> set_font_ht(15);
+  ctx |> set_font_ht(15)
 
   let maxElev = "+40"
   let maxElevBox = get_str_bbox(maxElev, maxElev |> length(), fctxValue)

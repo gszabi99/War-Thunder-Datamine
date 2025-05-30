@@ -16,6 +16,7 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_DISPLAY_MY_REAL_NICK
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { get_option_in_mode } = require("%scripts/options/optionsExt.nut")
+let { havePackage } = require("%scripts/clientState/contentPacks.nut")
 
 function getMyStateData() {
   let profileInfo = getProfileInfo()
@@ -55,7 +56,7 @@ function getMyStateData() {
   let checkPacks = ["pkg_main"]
   let missed = []
   foreach (pack in checkPacks)
-    if (!::have_package(pack))
+    if (!havePackage(pack))
       missed.append(pack)
   if (missed.len())
     myData.missedPkg <- missed

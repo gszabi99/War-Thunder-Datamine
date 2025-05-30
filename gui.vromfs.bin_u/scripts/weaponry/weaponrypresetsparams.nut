@@ -23,6 +23,7 @@ let { deep_clone } = require("%sqstd/underscore.nut")
 let { getMeasureTypeByName } = require("%scripts/measureType.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
+let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
 
 const WEAPON_PRESET_FAVORITE = "weaponPreset/favorite/"
 
@@ -465,7 +466,7 @@ function getWeaponryByPresetInfo(unit, chooseMenuList = null) {
   let presets = ("weapon_presets" in fullUnitBlk) ? fullUnitBlk.weapon_presets % "preset"
     : []
   foreach (preset in presetsList) {
-    let showInWeaponMenu = ::is_debug_mode_enabled || (presets.findvalue(@(p) p.name == preset.name)?.showInWeaponMenu ?? true)
+    let showInWeaponMenu = isDebugModeEnabled.status || (presets.findvalue(@(p) p.name == preset.name)?.showInWeaponMenu ?? true)
     if(showInWeaponMenu)
       res.presets.append(getWeaponryPresetView(unit, preset, res.favoriteArr, res.availableWeapons))
   }

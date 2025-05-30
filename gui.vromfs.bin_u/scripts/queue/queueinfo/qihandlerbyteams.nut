@@ -10,7 +10,7 @@ let { format } = require("string")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { fillCountriesList } = require("%scripts/matchingRooms/fillCountriesList.nut")
 let { getQueueTeam, getQueueClusters } = require("%scripts/queue/queueInfo.nut")
-let { getCustomViewCountryData } = require("%scripts/events/eventInfo.nut")
+let { getCustomViewCountryData, isTeamSizeBalancedEvent } = require("%scripts/events/eventInfo.nut")
 
 gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
   timerUpdateObjId = "queue_box"
@@ -52,9 +52,10 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
         teamNameLoc = loc($"events/team{team == Team.A ? "A" : "B"}")
       }
 
+      let onlyOwnRankCount = !isTeamSizeBalancedEvent(this.event)
       if (!queueStats.isClanStats) {
-        let clusterName = queueStats.getMaxClusterName()
-        let players = queueStats.getPlayersCountByTeam(teamName, clusterName)
+        let clusterName = queueStats.getClusterWithMaxPlayers(teamName, onlyOwnRankCount)
+        let players = queueStats.getPlayersCountByTeam(teamName, clusterName, onlyOwnRankCount)
         if (clusterName == "")
           playersCountText = loc("events/players_count")
         else
@@ -104,7 +105,8 @@ gui_handlers.QiHandlerByTeams <- class (gui_handlers.QiHandlerBase) {
     let rowParams = "inactive:t='yes'; commonTextColor:t='yes';"
 
     if (queueStats.isMultiCluster) {
-      let maxCluster = queueStats.getMaxClusterName()
+      let onlyOwnRankCount = !isTeamSizeBalancedEvent(this.event)
+      let maxCluster = queueStats.getClusterWithMaxPlayers(teamName, onlyOwnRankCount)
       let teamStats = queueStats.getQueueTableByTeam(teamName, maxCluster)
       let rowData = this.buildQueueStatsRowData(teamStats)
       res = "".concat(res, buildTableRow("", rowData, 0, rowParams, "0"))

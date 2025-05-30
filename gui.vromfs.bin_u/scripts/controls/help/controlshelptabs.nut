@@ -81,7 +81,7 @@ let tabGroups = [
     ]
   }
   {
-    title = platform.isPlatformXboxOne ? "#presets/xboxone/thrustmaster_hotasOne" : "#presets/ps4/thrustmaster_hotas4"
+    title = platform.isPlatformXbox ? "#presets/xboxone/thrustmaster_hotasOne" : "#presets/ps4/thrustmaster_hotas4"
     list = [
       helpTypes.HOTAS4_COMMON
     ]

@@ -201,12 +201,12 @@ class Component : Canvas
 
   def drawBombFill(pos : float2; scale : float2)
     setColor(colors.black)
-    shapes.bomb.body.shapeType = ShapeType PolyFilledOutlined
-    shapes.bomb.fin.shapeType = ShapeType PolyFilledOutlined
+    shapes.bomb.body.shapeType = ShapeType.PolyFilledOutlined
+    shapes.bomb.fin.shapeType = ShapeType.PolyFilledOutlined
     shapes.bomb.body |> poly_draw(self, pos, scale)
     shapes.bomb.fin |> poly_draw_symmetrical(self, true, false, pos, scale)
-    shapes.bomb.body.shapeType = ShapeType Poly
-    shapes.bomb.fin.shapeType = ShapeType Poly
+    shapes.bomb.body.shapeType = ShapeType.Poly
+    shapes.bomb.fin.shapeType = ShapeType.Poly
 
 
   def drawBomb(pos : float2; isSelected : bool; hasSeeker : bool; drawFilled : bool = false)
@@ -308,12 +308,10 @@ class Component : Canvas
     let realBbox = getStringSize(real, real.length())
     let realPos = float2(-0.39, -0.34)
     let realMargin  = 0.005
-    let realRt = realPos + float2(realMargin, -realMargin)
-    let realLb = (realPos - realBbox * float2(1.0, -1.0)) + float2(-realMargin, realMargin)
     setFontSize(42)
 
-    drawStrAnchored(realPos, real, AnchorHorz.Right, AnchorVert.Top)
-    drawBox(realRt, realLb)
+    let bbox = drawStrAnchored(realPos, real, AnchorHorz.Right, AnchorVert.Top)
+    drawBBox(bbox, realMargin)
 
     setColor(colors.white)
     drawStrAnchored(float2(-0.39, -0.10), "SIM", AnchorHorz.Right, AnchorVert.Top)

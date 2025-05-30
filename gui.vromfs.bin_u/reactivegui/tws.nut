@@ -231,7 +231,8 @@ function createAzimuthMark(colorWatch, scale = 1.0, isForTank = false, angleStep
   let dashCount = 360.0 / angleStep
   let circleCnt = max(circles, 1)
   let step = indicatorRadius / circleCnt * scale
-  let azimuthMarksCommands = array(dashCount * circleCnt).map(@(_, i) [
+  let commandsCount = (dashCount * circleCnt).tointeger()
+  let azimuthMarksCommands = array(commandsCount).map(@(_, i) [
     VECTOR_LINE,
     50 + math.cos(i * angle) * (step * (i / dashCount + 1).tointeger() - azimuthMarkLength),
     50 + math.sin(i * angle) * (step * (i / dashCount + 1).tointeger() - azimuthMarkLength),
@@ -807,7 +808,7 @@ let compass = @(colorWatched, forMfd, scale, angleStep) function() {
     return res
 
   let angle = math.PI * angleStep / 180.0
-  let dashCount = 360.0 / angleStep
+  let dashCount = (360.0 / angleStep).tointeger()
 
   let commands = array(dashCount).map(@(_, i) [
     VECTOR_LINE,

@@ -9,7 +9,9 @@ let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let stdMath = require("%sqstd/math.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value, isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { ceil } = require("math")
 let { isUnlockFav, toggleUnlockFav } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
@@ -28,7 +30,7 @@ gui_handlers.ChooseTitle <- class (gui_handlers.BaseGuiHandlerWT) {
   onCompleteFunc = null
 
   static function open(params) {
-    if (!isInMenu() || !getStats())
+    if (!isInMenu.get() || !getStats())
       return
 
     handlersManager.loadHandler(gui_handlers.ChooseTitle, params)

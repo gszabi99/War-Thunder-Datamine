@@ -4,7 +4,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { requestAllItems } = require("%scripts/inventory/steamInventory.nut")
 let { tryUseRecipes } = require("%scripts/items/exchangeRecipes.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let logS = log_with_prefix("[Steam Items] ")
 let { findItemById, getInventoryItemById } = require("%scripts/items/itemsManager.nut")
@@ -46,7 +47,7 @@ let showSteamItemNotification = function(itemInfo) {
 }
 
 function tryShowSteamItemsNotification(items = []) {
-  if (!isInMenu() || isAnyQueuesActive())
+  if (!isInMenu.get() || isAnyQueuesActive())
     return
 
   items.each(function(itemInfo) {

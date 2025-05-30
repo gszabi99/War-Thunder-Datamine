@@ -15,7 +15,7 @@ local lastRequestId = rnd_int(0, 32767)
 
 function lowLevelClientRequest(requestData, callback) {
   lowLevelClient.request(requestData, function(result) {
-    let errorStr = result?.error ?? result?.result?.error
+    let errorStr = result?.error ?? result?.result.error
     if (errorStr != null) {
       let colonPos = errorStr.indexof(":")
       let errorName = colonPos != null ? errorStr.slice(0, colonPos) : errorStr

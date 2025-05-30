@@ -12,8 +12,9 @@ let { isInJoiningGame, getSessionLobbyMissionParams, sessionLobbyStatus, getSess
 let { getRoomEvent, getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getEventDisplayType } = require("%scripts/events/eventInfo.nut")
 let { g_event_display_type } = require("%scripts/events/eventDisplayType.nut")
-let { move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { leaveSessionRoom } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 
 gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -133,7 +134,7 @@ gui_handlers.JoiningGameWaitBox <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.performDelayed(this, function() {
       if (this.timer >= 0)
         return
-      ::destroy_session_scripted("on cancel join game")
+      destroySessionScripted("on cancel join game")
       leaveSessionRoom()
     })
   }

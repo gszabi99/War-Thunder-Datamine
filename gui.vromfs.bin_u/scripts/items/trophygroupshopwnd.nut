@@ -3,7 +3,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_child } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
 let stdMath = require("%sqstd/math.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { ceil, floor, sqrt } = require("math")

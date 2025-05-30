@@ -620,7 +620,7 @@ interop.updateIsMachineGunsEmpty <- function(index, is_empty) {
     IsMachineGunsEmpty.mutate(@(v) v[index] = is_empty)
 }
 
-interop.updateAdditionalCannons <- function(count, seconds, mode, selected) {
+interop.updateAdditionalCannons <- function(count, seconds, mode, selected, _time, _endTime) {
   let curVal = AdditionalCannonsState.value
   if (curVal.count != count || curVal.seconds != seconds || curVal.mode != mode || curVal.selected != selected)
     AdditionalCannonsState({ count, seconds, mode, selected })

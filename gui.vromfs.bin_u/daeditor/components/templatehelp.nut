@@ -328,10 +328,11 @@ function requestSliceLongText(inText, rowLen, cb) {
     cb(firstRow, text)
 }
 
-function mkTemplateTooltip(templName) {
+function mkTemplateTooltip(templName, sceneText="") {
   let templInfo = getTemplateInfo(templName)
 
   let nameStyle = { fontSize = hdpx(17) }
+  let sceneInfoStyle = { fontSize = hdpx(14), color=Color(150,150,150) }
   let extendsStyle = { fontSize = hdpx(12), color=Color(120,200,120) }
   let infoStyle = { fontSize = hdpx(14) }
   let paramNameStyle = { fontSize = hdpx(12), color=Color(150,150,255) }
@@ -518,6 +519,8 @@ function mkTemplateTooltip(templName) {
       children = [
         txt($"{templInfo.name}", nameStyle)
         txt("", skipStyle)
+        sceneText != "" ? txt(sceneText, sceneInfoStyle) : null
+        sceneText != "" ? txt("", skipStyle) : null
         !hasExtends ? null : { flow = FLOW_VERTICAL, children = allExtends }
         allExtendBy
         allInsertTo

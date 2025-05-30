@@ -9,6 +9,7 @@ let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { g_hud_vis_mode } =  require("%scripts/hud/hudVisMode.nut")
 let { g_hud_message_stack } = require("%scripts/hud/hudMessageStack.nut")
 let { g_hud_event_manager } = require("%scripts/hud/hudEventManager.nut")
+let { serverMessageUpdateScene } = require("%scripts/hud/serverMessages.nut")
 let { get_in_battle_time_to_kick_show_timer, get_in_battle_time_to_kick_show_alert } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { isDmgIndicatorVisible } = require("gameplayBinding")
@@ -21,7 +22,7 @@ let { format } = require("string")
 let { eventbus_send, eventbus_subscribe } = require("eventbus")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let time = require("%scripts/time.nut")
-let { isProgressVisible, getHudUnitType, hud_is_in_cutscene, is_hud_visible } = require("hudState")
+let { isProgressVisible, getHudUnitType, hud_is_in_cutscene, is_hud_visible, isHeroSubmarineAboveMinDiveDepth } = require("hudState")
 let safeAreaHud = require("%scripts/options/safeAreaHud.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { getActionBarItems, getActionBarUnitName } = require("hudActionBar")
@@ -39,15 +40,19 @@ let { HudAir } = require("%scripts/hud/hudAir.nut")
 let { HudTank } = require("%scripts/hud/hudTank.nut")
 let { HudShip } = require("%scripts/hud/hudShip.nut")
 let { HudHeli } = require("%scripts/hud/hudHeli.nut")
+
+
+
 let { HudCutscene } = require("%scripts/hud/hudCutscene.nut")
 let { enableOrders } = require("%scripts/items/orders.nut")
 let { initMpChatStates } = require("%scripts/chat/mpChatState.nut")
 let { loadGameChatToObj, detachGameChatSceneData } = require("%scripts/chat/mpChat.nut")
-let { isInKillerCamera } = require("%scripts/hud/hudState.nut")
+let { isInKillerCamera, updateHudStatesSubscribes } = require("%scripts/hud/hudState.nut")
 let { clearStreaks, onUpdateStreaks } =  require("%scripts/streaks.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { getUnmappedControlsForCurrentMission } = require("%scripts/controls/controlsUtils.nut")
+let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 dagui_propid_add_name_id("fontSize")
 
@@ -99,6 +104,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
   isReinitDelayed = false
   needVoiceChat = false
   sideBlockMaxWidth = null
+  isTacticalMapVisibleBySubmarineDepth = true
 
   objectsTable = {
     [USEROPT_DAMAGE_INDICATOR_SIZE] = {
@@ -136,6 +142,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.initDargWidgetsList()
     ::init_options()
     g_hud_event_manager.init()
+    updateHudStatesSubscribes()
     clearStreaks()
     this.initSubscribes()
 
@@ -143,7 +150,8 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     set_option_hud_screen_safe_area(safeAreaHud.getValue())
 
     this.isXinput = isXInputDevice()
-    this.spectatorMode = ::isPlayerDedicatedSpectator() || is_replay_playing()
+    this.spectatorMode = isPlayerDedicatedSpectator() || is_replay_playing()
+    this.isTacticalMapVisibleBySubmarineDepth = isHeroSubmarineAboveMinDiveDepth()
     eventbus_send("updateIsSpectatorMode", this.spectatorMode)
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
@@ -219,6 +227,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     ::g_hud_hints_manager.reinit()
     g_hud_tutorial_elements.reinit()
 
+    this.isTacticalMapVisibleBySubmarineDepth = isHeroSubmarineAboveMinDiveDepth()
     this.unmappedControlsCheck()
     this.warnLowQualityModelCheck()
     this.updateHudVisMode()
@@ -237,6 +246,8 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
         this)
     g_hud_event_manager.subscribe("hudProgress:visibilityChanged",
       @(_eventData) this.updateMissionProgressPlace(), this)
+    g_hud_event_manager.subscribe("tacticalMapVisibility:bySubmarineDepth",
+      @(eventData) this.updateTacticalMapVisibility(eventData.shouldShow), this)
   }
 
   function onShowHud(show = true, needApplyPending = true) {
@@ -277,6 +288,10 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       this.currentHud = handlersManager.loadHandler(HudShip, { scene = hudObj })
     else if (newHudType == HUD_TYPE.HELICOPTER)
       this.currentHud = handlersManager.loadHandler(HudHeli, { scene = hudObj })
+
+
+
+
     else 
       this.currentHud = null
 
@@ -355,15 +370,19 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       && visMode.isPartVisible(HUD_VIS_PART.DMG_PANEL)
       && is_tank_damage_indicator_visible()
 
+    let isTacticalMapVisible = !isInKillerCamera.get()
+      && visMode.isPartVisible(HUD_VIS_PART.MAP)
+      && this.isTacticalMapVisibleBySubmarineDepth
+
     let objsToShow = {
-      xray_render_dmg_indicator = isDmgPanelVisible
-      hud_tank_damage_indicator = isDmgPanelVisible
-      tank_background = isDmgIndicatorVisible() && isDmgPanelVisible
-      hud_tank_tactical_map_nest = !isInKillerCamera.get() && visMode.isPartVisible(HUD_VIS_PART.MAP)
-      hud_kill_log              = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
-      chatPlace                 = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
-      hud_enemy_damage_nest     = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
-      order_status              = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY, true)
+      xray_render_dmg_indicator  = isDmgPanelVisible
+      hud_tank_damage_indicator  = isDmgPanelVisible
+      tank_background            = isDmgIndicatorVisible() && isDmgPanelVisible
+      hud_tank_tactical_map_nest = isTacticalMapVisible
+      hud_kill_log               = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_KILLLOG, OPTIONS_MODE_GAMEPLAY, true)
+      chatPlace                  = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_CHAT_PLACE, OPTIONS_MODE_GAMEPLAY, true)
+      hud_enemy_damage_nest      = visMode.isPartVisible(HUD_VIS_PART.KILLCAMERA)
+      order_status               = get_gui_option_in_mode(USEROPT_HUD_VISIBLE_ORDERS, OPTIONS_MODE_GAMEPLAY, true)
     }
 
     updateExtWatched({
@@ -374,6 +393,11 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.setUpdatesEnabled(false, false)
     showObjectsByTable(this.scene, objsToShow)
     this.guiScene.setUpdatesEnabled(true, true)
+  }
+
+  function updateTacticalMapVisibility(shouldShow) {
+    this.isTacticalMapVisibleBySubmarineDepth = shouldShow
+    showObjById("hud_tank_tactical_map_nest", shouldShow, this.scene)
   }
 
   updateHudVisModeForce = @() this.updateHudVisMode(true)
@@ -560,7 +584,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     let serverMessageTimerObject = this.scene.findObject("server_message_timer")
     if (checkObj(serverMessageTimerObject)) {
       SecondsUpdater(serverMessageTimerObject, (@(scene) function (_obj, _params) {
-        return !::server_message_update_scene(scene)
+        return !serverMessageUpdateScene(scene)
       })(this.scene))
     }
   }

@@ -169,7 +169,7 @@ function getContactTooltipBattleOrSquadStatusTxt(contact, squadStatus, presenceP
     }
   }
 
-  let blk = handyman.renderCached("%gui/contacts/contactTooltip.tpl", view)
+  let blk = handyman.renderCached("%gui/playerTooltip.tpl", view)
   let guiScene = obj.getScene()
   guiScene.replaceContentFromText(obj, blk, blk.len(), handler)
   obj.type="smallPadding"

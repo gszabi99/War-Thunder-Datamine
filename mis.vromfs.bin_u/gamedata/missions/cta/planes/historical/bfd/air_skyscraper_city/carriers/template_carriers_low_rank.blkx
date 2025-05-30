@@ -1,0 +1,1967 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/guadalcanal.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy",
+      "locName": "missions/guadalcanal_BfD_norespawn",
+      "locDesc": "missions/_BfD_norespawn/desc",
+      "scoreLimit": 7600,
+      "timeLimit": 25,
+      "deathPenaltyMul": 0.4,
+      "country_axis": "japan",
+      "country_allies": "usa",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "squad": [
+      {
+        "name": "t2_carriers_squad",
+        "tm": [
+          [
+            -0.293575,
+            0.0,
+            0.955936
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.955936,
+            0.0,
+            -0.293575
+          ],
+          [
+            -28412.4,
+            -2.97986,
+            8983.64
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_carrier_01",
+            "t2_carrier_02"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "t1_carriers_squad",
+        "tm": [
+          [
+            0.293575,
+            0.0,
+            -0.955936
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.955936,
+            0.0,
+            0.293575
+          ],
+          [
+            -27162.3,
+            1.01114,
+            -12817.4
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_carrier_01",
+            "t1_carrier_02"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "t1_carrier_destroyers_squad",
+        "tm": [
+          [
+            0.866026,
+            0.0,
+            0.499999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.499999,
+            0.0,
+            0.866026
+          ],
+          [
+            -30829.7,
+            92.6426,
+            -20707.8
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_destroyer_01",
+            "t1_destroyer_02",
+            "t1_destroyer_03",
+            "t1_destroyer_04"
+          ]
+        }
+      },
+      {
+        "name": "t2_carrier_destroyers_squad",
+        "tm": [
+          [
+            0.866026,
+            0.0,
+            0.499999
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.499999,
+            0.0,
+            0.866026
+          ],
+          [
+            -28120.5,
+            54.998,
+            21132.3
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_destroyer_01",
+            "t2_destroyer_02",
+            "t2_destroyer_03"
+          ]
+        }
+      }
+    ],
+    "ships": [
+      {
+        "name": "t1_carrier_02",
+        "tm": [
+          [
+            -0.00000157952,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            -0.00000157952
+          ],
+          [
+            -25824.6,
+            55.0,
+            -2039.64
+          ]
+        ],
+        "unit_class": "us_aircraftcarrier_lexington",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_carrier_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -25824.5,
+                1.0,
+                -3603.15
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -25824.6,
+                1.0,
+                -11254.5
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -24350.7,
+                1.00195,
+                -11590.3
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t1_carrier_01",
+        "tm": [
+          [
+            -0.00000157952,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            -0.00000157952
+          ],
+          [
+            -29667.2,
+            167.918,
+            -9104.59
+          ]
+        ],
+        "unit_class": "uk_aircraftcarrier_illustrious",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_carrier_03_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -29131.3,
+                113.934,
+                -13456.1
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_03_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -30126.0,
+                113.92,
+                -13043.5
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_03_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -29769.2,
+                113.92,
+                -3423.0
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_carrier_01",
+        "tm": [
+          [
+            0.00000157952,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.00000157952
+          ],
+          [
+            -25869.9,
+            55.0,
+            5381.66
+          ]
+        ],
+        "unit_class": "us_aircraftcarrier_lexington",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_carrier_05_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -25869.9,
+                1.00098,
+                7202.33
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_05_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -25869.9,
+                1.01508,
+                16526.6
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_05_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -27368.6,
+                0.998047,
+                16822.9
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_carrier_02",
+        "tm": [
+          [
+            0.00000157952,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.00000157952
+          ],
+          [
+            -29988.5,
+            54.998,
+            15338.4
+          ]
+        ],
+        "unit_class": "uk_aircraftcarrier_illustrious",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_carrier_06_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -29810.8,
+                0.998047,
+                19291.5
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_06_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -28939.2,
+                0.998047,
+                18740.9
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_06_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -29995.9,
+                6.66797,
+                7211.62
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t1_destroyer_01",
+        "tm": [
+          [
+            -0.00000157952,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            -0.00000157952
+          ],
+          [
+            -26421.4,
+            55.0,
+            -1437.44
+          ]
+        ],
+        "unit_class": "us_destroyer_porter_1942",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_carrier_04_wp_07": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -26076.6,
+                1.00146,
+                -2733.72
+              ]
+            ],
+            "props": {
+              "speed": 28.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_04_wp_08": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -26488.9,
+                0.998535,
+                -11329.5
+              ]
+            ],
+            "props": {
+              "speed": 30.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_04_wp_09": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -23416.5,
+                -126.895,
+                -12100.8
+              ]
+            ],
+            "props": {
+              "speed": 36.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t1_destroyer_03",
+        "tm": [
+          [
+            -0.00000157952,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            -0.00000157952
+          ],
+          [
+            -29941.4,
+            167.918,
+            -8399.35
+          ]
+        ],
+        "unit_class": "uk_destroyer_clemson_churchill",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_carrier_04_wp_10": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -28530.1,
+                113.934,
+                -13694.1
+              ]
+            ],
+            "props": {
+              "speed": 33.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_04_wp_11": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -30711.4,
+                113.919,
+                -13019.8
+              ]
+            ],
+            "props": {
+              "speed": 29.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_carrier_04_wp_12": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -29779.1,
+                113.916,
+                -2441.7
+              ]
+            ],
+            "props": {
+              "speed": 32.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_destroyer_02",
+        "tm": [
+          [
+            0.00000157952,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.00000157952
+          ],
+          [
+            -30387.6,
+            54.998,
+            14453.1
+          ]
+        ],
+        "unit_class": "uk_destroyer_clemson_churchill",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_carrier_04_wp_04": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -30297.2,
+                0.998047,
+                19376.1
+              ]
+            ],
+            "props": {
+              "speed": 32.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t2_carrier_04_wp_05": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -28411.3,
+                0.998047,
+                18757.9
+              ]
+            ],
+            "props": {
+              "speed": 29.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t2_carrier_04_wp_06": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -30029.3,
+                6.66797,
+                6271.55
+              ]
+            ],
+            "props": {
+              "speed": 32.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_destroyer_03",
+        "tm": [
+          [
+            0.00000157952,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.00000157952
+          ],
+          [
+            -25483.3,
+            54.9998,
+            5034.95
+          ]
+        ],
+        "unit_class": "us_destroyer_porter_1941",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_carrier_04_wp_07": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -25831.6,
+                1.00098,
+                6182.58
+              ]
+            ],
+            "props": {
+              "speed": 29.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t2_carrier_04_wp_08": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -25334.3,
+                -113.649,
+                16904.6
+              ]
+            ],
+            "props": {
+              "speed": 36.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t2_carrier_04_wp_09": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -28129.2,
+                0.998047,
+                17195.4
+              ]
+            ],
+            "props": {
+              "speed": 34.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t1_destroyer_02",
+        "tm": [
+          [
+            -0.00000157952,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            -0.00000157952
+          ],
+          [
+            -25503.6,
+            55.0,
+            -1614.22
+          ]
+        ],
+        "unit_class": "us_destroyer_porter_1942",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_destroyer_02_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -25792.3,
+                17.1519,
+                -4172.79
+              ]
+            ],
+            "props": {
+              "speed": 28.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_destroyer_02_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -25657.0,
+                0.998535,
+                -10273.1
+              ]
+            ],
+            "props": {
+              "speed": 29.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_destroyer_02_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -24729.4,
+                -126.895,
+                -11043.8
+              ]
+            ],
+            "props": {
+              "speed": 32.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t1_destroyer_04",
+        "tm": [
+          [
+            -0.00000157952,
+            0.0,
+            -1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            1.0,
+            0.0,
+            -0.00000157952
+          ],
+          [
+            -29622.5,
+            167.918,
+            -8514.49
+          ]
+        ],
+        "unit_class": "uk_destroyer_clemson_churchill",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_destroyer_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -29311.8,
+                113.937,
+                -12955.9
+              ]
+            ],
+            "props": {
+              "speed": 28.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_destroyer_04_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -29845.5,
+                113.918,
+                -12876.3
+              ]
+            ],
+            "props": {
+              "speed": 29.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t1_destroyer_04_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -29783.7,
+                113.916,
+                -4256.47
+              ]
+            ],
+            "props": {
+              "speed": 31.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_destroyer_04",
+        "tm": [
+          [
+            0.00000157952,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.00000157952
+          ],
+          [
+            -26215.5,
+            54.9998,
+            5034.93
+          ]
+        ],
+        "unit_class": "us_destroyer_porter_1941",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_destroyer_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -25897.4,
+                1.00195,
+                7689.11
+              ]
+            ],
+            "props": {
+              "speed": 29.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t2_destroyer_04_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -25954.9,
+                -113.649,
+                15515.6
+              ]
+            ],
+            "props": {
+              "speed": 28.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t2_destroyer_04_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -26981.4,
+                0.999512,
+                16124.3
+              ]
+            ],
+            "props": {
+              "speed": 31.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      },
+      {
+        "name": "t2_destroyer_01",
+        "tm": [
+          [
+            0.00000157952,
+            0.0,
+            1.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -1.0,
+            0.0,
+            0.00000157952
+          ],
+          [
+            -29656.6,
+            54.998,
+            14453.1
+          ]
+        ],
+        "unit_class": "uk_destroyer_clemson_churchill",
+        "closed_waypoints": true,
+        "isShipSpline": true,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_destroyer_05_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -29745.9,
+                0.999023,
+                18379.0
+              ]
+            ],
+            "props": {
+              "speed": 32.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t2_destroyer_05_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -29180.7,
+                0.997559,
+                17845.6
+              ]
+            ],
+            "props": {
+              "speed": 29.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          },
+          "t2_destroyer_05_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -29948.4,
+                6.66602,
+                8291.41
+              ]
+            ],
+            "props": {
+              "speed": 29.0,
+              "moveType": "MOVETO_STRAIGHT"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "areas": {
+    "carriers_area_low": {
+      "type": "Sphere",
+      "tm": [
+        [
+          32000.1,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          32000.1,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          32000.1
+        ],
+        [
+          -32719.3,
+          35.4678,
+          2582.4
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    }
+  },
+  "objLayers": {
+    "layer": [
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      },
+      {
+        "enabled": true
+      }
+    ]
+  },
+  "wayPoints": {}
+}

@@ -18,7 +18,7 @@ let { PRICE, ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
 let { checkUnlockMarkers } = require("%scripts/unlocks/unlockMarkers.nut")
 let { isPlatformPS4 } = require("%scripts/clientState/platform.nut")
 let { isRunningOnPS5 = @() false } = require_optional("sony")
-let { switchContactsObj } = require("%scripts/contacts/contactsHandlerState.nut")
+let { switchContactsObj, getLastContactsSceneShow } = require("%scripts/contacts/contactsHandlerState.nut")
 let { isUsedCustomLocalization, getLocalization } = require("%scripts/langUtils/customLocalization.nut")
 let { getUnlockedCountries } = require("%scripts/firstChoice/firstChoice.nut")
 let math = require("math")
@@ -32,6 +32,9 @@ let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { needShowGameModesNotLoadedMsg } = require("%scripts/matching/matchingGameModes.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { lastChatSceneShow } = require("%scripts/chat/chatConsts.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { topMenuLeftSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
+
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
 class TopMenu (gui_handlers.BaseGuiHandlerWT) {
@@ -76,14 +79,14 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
       this.leftSectionHandlerWeak = gui_handlers.TopMenuButtonsHandler.create(
         this.scene.findObject("topmenu_menu_panel"),
         this,
-        ::g_top_menu_left_side_sections,
+        topMenuLeftSideSections,
         this.scene.findObject("left_gc_panel_free_width")
       )
       this.registerSubHandler(this.leftSectionHandlerWeak)
 
       if (lastChatSceneShow.get())
         this.switchChatWindow()
-      if (::last_contacts_scene_show)
+      if (getLastContactsSceneShow())
         this.onSwitchContacts()
 
       this.initTopMenuTimer()
@@ -171,6 +174,8 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onQueue(inQueue) {
+    if (this.isInQueue == inQueue)
+      return
     this.isInQueue = inQueue
 
     let slotbar = this.getSlotbar()
@@ -316,7 +321,7 @@ class TopMenu (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateGamercards() {
-    ::update_gamercards()
+    updateGamercards()
   }
 
   function updateOnShopWndAnim(isVisible) {

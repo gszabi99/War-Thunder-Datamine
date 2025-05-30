@@ -15,7 +15,7 @@ let stdpath = require("%sqstd/path.nut")
 let { abs } = require("math")
 let { find_files } = require("dagor.fs")
 let { lastIndexOf, INVALID_INDEX, utf8ToUpper, endsWith } = require("%sqstd/string.nut")
-let { select_editbox, move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
 let { measureType } = require("%scripts/measureType.nut")
 
 gui_handlers.FileDialog <- class (gui_handlers.BaseGuiHandlerWT) {

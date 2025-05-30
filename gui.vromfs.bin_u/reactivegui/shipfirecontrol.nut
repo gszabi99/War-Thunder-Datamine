@@ -6,12 +6,15 @@ let { PI, fabs, sqrt, lerpClamped } = require("%sqstd/math.nut")
 let { get_mission_time } = require("mission")
 let { CompassValue } = require("compassState.nut")
 let { greenColor, greenColorGrid } = require("style/airHudStyle.nut")
-let { fov, gunStatesFirstNumber, gunStatesSecondNumber, gunStatesFirstRow, gunStatesSecondRow, artilleryType } = require("shipState.nut")
+let { fov, gunStatesFirstNumber, gunStatesSecondNumber, gunStatesFirstRow,
+  gunStatesSecondRow, artilleryType, showReloadedSignalFirstRow, showReloadedSignalSecondRow
+} = require("shipState.nut")
 let { IsRadarVisible } = require("radarState.nut")
 let fcsState = require("%rGui/fcsState.nut")
 let { actionBarPos, isActionBarCollapsed } = require("%rGui/hud/actionBarState.nut")
 let { eventbus_send } = require("eventbus")
 let { drawArrow } = require("fcsComponent.nut")
+let { FIRST_ROW_SIGNAL_TRIGGER, SECOND_ROW_SIGNAL_TRIGGER, gunState } = require("shipStateConsts.nut")
 
 let redColor = Color(255, 109, 108, 255)
 let greyColor = Color(15, 25, 25, 255)
@@ -21,7 +24,11 @@ let compassSize = [hdpx(500), hdpx(32)]
 let compassPos = [sw(50) - 0.5 * compassSize[0], sh(0.5)]
 let rangefinderProgressBarColor1 = Color(0, 255, 0, 255)
 let rangefinderProgressBarColor2 = Color(100, 100, 100, 50)
-let reloadCircleSize = hdpx(76)
+let reloadCircleSize = hdpxi(76)
+let reloadSignalSize = hdpxi(110)
+let firstGunsRowHeight = hdpx(38)
+let secondGunsRowHeight = hdpx(32)
+let noBulletsIconSize = hdpxi(32)
 
 let gunStatusColors = {
   ready = Color(0, 255, 0, 255)
@@ -37,26 +44,25 @@ let gunStatusColors = {
   empty = Color(0, 0, 0, 0)
 }
 
+let signalPlayedWathByTrigger = {
+  [FIRST_ROW_SIGNAL_TRIGGER] = showReloadedSignalFirstRow,
+  [SECOND_ROW_SIGNAL_TRIGGER] = showReloadedSignalSecondRow
+}
+
 let emptyCircleImg = Picture($"ui/gameuiskin#ship_weapon_status_circle.svg:{reloadCircleSize}:{reloadCircleSize}:P")
+let bluredCircleImg = Picture($"ui/gameuiskin#ship_weapon_reloaded_signal.avif:{reloadSignalSize}:{reloadSignalSize}:P")
 let filledCircleImg = Picture($"ui/gameuiskin#dmg_ship_status_bg.svg:{reloadCircleSize}:{reloadCircleSize}:P")
+let noBulletsIcon = Picture($"ui/gameuiskin#has_no_bullets_icon.svg:{noBulletsIconSize}:{noBulletsIconSize}:P")
 
 let compassComponent = {
   pos = compassPos
   children = compass(compassSize, greenColor)
 }
 
-
-let gunState = {
-  GUN_OVERHEAT = 0
-  GUN_NORMAL = 1
-  GUN_INOPERABLE = 2
-  GUN_DEADZONE = 3
-}
-
-
 let shipFireControlCachedPos = mkWatched(persist, "shipFireControlCachedPos", [0,0])
 shipFireControlCachedPos.subscribe(@(v) eventbus_send("update_ship_fire_control_panel", {pos = v}))
-
+showReloadedSignalFirstRow.subscribe(@(val) val ? anim_start(FIRST_ROW_SIGNAL_TRIGGER) : null)
+showReloadedSignalSecondRow.subscribe(@(val) val ? anim_start(SECOND_ROW_SIGNAL_TRIGGER) : null)
 
 let progressBar = @() {
   watch = [fcsState.OpticsWidth, fcsState.StaticFov]
@@ -243,7 +249,7 @@ function mkFilledCircle(size, color) {
   }
 }
 
-function mkCircle(size, color, fValue = 1) {
+function mkCircle(size, color, fValue = 1, reloadSignalTrigger = "", playReloadSignal = false) {
   return {
     size = [size, size]
     rendObj = ROBJ_PROGRESS_CIRCULAR
@@ -253,7 +259,40 @@ function mkCircle(size, color, fValue = 1) {
     color = color
     fgColor = color
     fValue = fValue
+
+    children = (reloadSignalTrigger == "") ? null : {
+      size = [pw(120), pw(120)]
+      rendObj = ROBJ_IMAGE
+      vplace = ALIGN_CENTER
+      hplace = ALIGN_CENTER
+      image = bluredCircleImg
+      color = color
+      fgColor = color
+      transform = {}
+      opacity = 0
+      animations = [
+        {
+          prop = AnimProp.opacity, from = 0.1, to = 0.5, duration = 0.7, easing = InOutQuad,
+          trigger = reloadSignalTrigger,
+          play = playReloadSignal
+        },
+        {
+          prop = AnimProp.scale, from = [0.85, 0.85], to = [1.6, 1.6], duration = 0.7, easing = InOutQuad,
+          trigger = reloadSignalTrigger,
+          play = playReloadSignal
+        }
+      ]
+    }
   }
+}
+
+let mkNoBulletsIcon = @(size) {
+  size = [size, size]
+  rendObj = ROBJ_IMAGE
+  vplace = ALIGN_CENTER
+  hplace = ALIGN_CENTER
+  image = noBulletsIcon
+  color = Color(255, 175, 45)
 }
 
 function mkProgressCircle(size, startTime, endTime, curTime, color) {
@@ -297,8 +336,8 @@ function mkProgressText(textColor, endTime) {
   }
 }
 
-let mkGunStatus = @(gunStates) function() {
-  let { state, inDeadZone, startTime, endTime, gunProgress } = gunStates.get()
+let mkGunStatus = @(gunStates, reloadedSignalTrigger) function() {
+  let { state, inDeadZone, startTime, endTime, gunProgress, bulletsCount } = gunStates.get()
   if (state < 0)
     return { watch = gunStates }
 
@@ -312,10 +351,16 @@ let mkGunStatus = @(gunStates) function() {
   local textColor = gunStatusColors.ready
   let curTime = get_mission_time();
 
-  if (state == gunState.GUN_INOPERABLE) {
+  if (bulletsCount == 0) {
+    outerColor = gunStatusColors.deadzone
+    textColor = gunStatusColors.deadzone
+    innerColor = gunStatusColors.deadzone
+    neuterColor = gunStatusColors.deadzone
+    overheatColor = gunStatusColors.deadzone
+  } else if (state == gunState.INOPERABLE) {
     innerColor = gunStatusColors.inoperable
     outerColor = gunStatusColors.inoperable
-  } else if (state == gunState.GUN_DEADZONE) {
+  } else if (state == gunState.DEADZONE) {
     innerColor = gunStatusColors.deadzone
     outerColor = gunStatusColors.deadzone
   } else if (inDeadZone) {
@@ -328,7 +373,7 @@ let mkGunStatus = @(gunStates) function() {
 
   let childrenCircles = []
 
-  if (state == gunState.GUN_INOPERABLE) {
+  if (state == gunState.INOPERABLE) {
     childrenCircles.append(mkFilledCircle(ph(100), gunStatusColors.inoperableBackground))
   }
 
@@ -336,20 +381,29 @@ let mkGunStatus = @(gunStates) function() {
     mkCircle(ph(80), innerColor)
   )
 
-  if (state == gunState.GUN_NORMAL) {
+  if (state == gunState.NORMAL) {
     childrenCircles.append(
       mkCircle(ph(100), neuterColor)
       mkProgressCircle(ph(100), startTime, endTime, curTime, outerColor)
       mkProgressText(textColor, endTime)
     )
   } else {
-    childrenCircles.append(mkCircle(ph(100), outerColor))
+    let hasReloadAnim = !inDeadZone && (state != gunState.DEADZONE)
+    if (hasReloadAnim) {
+      let isSignalPlayed = signalPlayedWathByTrigger[reloadedSignalTrigger].get()
+      childrenCircles.append(mkCircle(ph(100), outerColor, 1, reloadedSignalTrigger, isSignalPlayed))
+    } else {
+      childrenCircles.append(mkCircle(ph(100), outerColor))
+    }
   }
 
-  if (state == gunState.GUN_OVERHEAT && gunProgress < 1) {
+  if (state == gunState.OVERHEAT && gunProgress < 1) {
     childrenCircles.append(mkCircle(ph(100), overheatColor, 1 - gunProgress))
   }
 
+  if (bulletsCount == 0) {
+    childrenCircles.append(mkNoBulletsIcon(ph(45)))
+  }
 
   return {
     size = [ph(100), ph(100)]
@@ -358,22 +412,22 @@ let mkGunStatus = @(gunStates) function() {
   }
 }
 
-function mkWeaponsStatus(size, gunStatesNumber, gunStatesArray, icon) {
+function mkWeaponsStatus(size, gunStatesNumber, gunStatesArray, icon, reloadedSignalTrigger) {
   if (gunStatesNumber <= 0) {
     return null
   }
 
   let childrenGuns = [
     {
-        size = [size, size]
-        rendObj = ROBJ_IMAGE
-        image = Picture($"{icon}:{size}:{size}")
+      size = [size, size]
+      rendObj = ROBJ_IMAGE
+      image = Picture($"{icon}:{size}:{size}")
     }
   ]
 
   for (local i = 0; i < gunStatesNumber; ++i) {
     childrenGuns.append(
-      mkGunStatus(gunStatesArray[i])
+      mkGunStatus(gunStatesArray[i], reloadedSignalTrigger)
     )
   }
 
@@ -385,10 +439,7 @@ function mkWeaponsStatus(size, gunStatesNumber, gunStatesArray, icon) {
   }
 }
 
-
 function weaponsStatus(){
-  let firstGunsRowHeight = hdpx(38)
-  let secondGunsRowHeight = hdpx(32)
   let gap = hdpx(11)
 
   let artType = artilleryType.value
@@ -398,9 +449,9 @@ function weaponsStatus(){
                    : "!ui/gameuiskin#artillery_weapon_state_indicator.svg"
 
   let hasSecondRow = gunStatesSecondNumber.value > 0
-  local childrens = [mkWeaponsStatus(firstGunsRowHeight, gunStatesFirstNumber.value, gunStatesFirstRow, firstRowIcon)]
+  local childrens = [mkWeaponsStatus(firstGunsRowHeight, gunStatesFirstNumber.value, gunStatesFirstRow, firstRowIcon, FIRST_ROW_SIGNAL_TRIGGER)]
   if (hasSecondRow) {
-    childrens.append(mkWeaponsStatus(secondGunsRowHeight, gunStatesSecondNumber.value, gunStatesSecondRow, "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg"))
+    childrens.append(mkWeaponsStatus(secondGunsRowHeight, gunStatesSecondNumber.value, gunStatesSecondRow, "!ui/gameuiskin#artillery_secondary_weapon_state_indicator.svg", SECOND_ROW_SIGNAL_TRIGGER))
   }
 
   let height = hasSecondRow ? firstGunsRowHeight + secondGunsRowHeight + gap : firstGunsRowHeight

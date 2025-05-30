@@ -461,12 +461,6 @@
               "text": ""
             },
             {
-              "id": "mission_environment",
-              "overlayTextColor": "premiumNotEarned",
-              "textShade": "yes",
-              "text": ""
-            },
-            {
               "id": "respawn_time_end",
               "overlayTextColor": "premiumNotEarned",
               "textShade": "yes",
@@ -484,7 +478,44 @@
               "textShade": "yes",
               "text": ""
             }
-          ]
+          ],
+          "tdiv": {
+            "textareaNoTab": {
+              "id": "mission_environment",
+              "overlayTextColor": "premiumNotEarned",
+              "textShade": "yes",
+              "text": ""
+            },
+            "tdiv": {
+              "id": "bad_weather_warning",
+              "display": "hide",
+              "margin-left": "1/2@sIco",
+              "tooltip": "",
+              "textareaNoTab": [
+                {
+                  "overlayTextColor": "active",
+                  "text": "("
+                },
+                {
+                  "overlayTextColor": "active",
+                  "text": "#bad_weather_conditions/short"
+                },
+                {
+                  "overlayTextColor": "active",
+                  "text": ")"
+                }
+              ],
+              "img": {
+                "position": "relative",
+                "pos": "0, 0.5ph-0.5h",
+                "size": "1@sIco, 1@sIco",
+                "margin": "1/2@sIco, 0",
+                "background-image": "#ui/gameuiskin#weather_cloud_lightning.svg",
+                "background-svg-size": "1@sIco, 1@sIco",
+                "bgcolor": "#FFFFFF"
+              }
+            }
+          }
         },
         {
           "id": "mission_texts_block_right",

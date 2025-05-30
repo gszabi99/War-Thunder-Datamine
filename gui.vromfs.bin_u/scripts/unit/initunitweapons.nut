@@ -228,12 +228,12 @@ function initUnitModifications(modifications, modificationsBlk, esUnitType) {
     return errorsTextArray
 
   eachBlock(modificationsBlk, function(modBlk, modName) {
-    let mod = { name = modName, type = ::g_weaponry_types.MODIFICATION.type }
+    let mod = { name = modName, type = weaponsItem.modification }
     modifications.append(mod)
     initWeaponry(mod, modBlk, esUnitType)
     initWeaponryUpgrades(mod, modBlk)
     if (isModClassExpendable(mod))
-      mod.type = ::g_weaponry_types.EXPENDABLES.type
+      mod.type = weaponsItem.expendables
 
     if (modBlk?.maxToRespawn)
       mod.maxToRespawn <- modBlk.maxToRespawn

@@ -77,6 +77,7 @@ let unitTypes = {
       return (misBlk?[this.missionSettingsAvailabilityFlag] ?? false) && (!this.isUsedInKillStreaks || !useKillStreaks)
     }
     getMissionAllowedCraftsClassName = @() this.name.tolower()
+    getMatchingUnitType = @() this.esUnitType
 
     bulletSetsQuantity = BULLETS_SETS_QUANTITY_SHORT
     wheelmenuAxis = []

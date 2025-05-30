@@ -19,6 +19,7 @@ let { contactPresence } = require("%scripts/contacts/contactPresence.nut")
 let { can_we_text_user, CommunicationState } = require("%scripts/gdk/permissions.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
+let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 
 class Contact {
   name = ""
@@ -31,7 +32,7 @@ class Contact {
   onlinePresence = contactPresence.UNKNOWN
   squadPresence = null
   forceOffline = false
-  isForceOfflineChecked = !is_platform_xbox
+  isForceOfflineChecked = !is_gdk
 
   voiceStatus = null
 
@@ -74,9 +75,15 @@ class Contact {
   function update(contactData) {
     let isChangedName = (("name" in contactData) && contactData.name != this.name)
       || (("steamName" in contactData) && contactData.steamName != this.steamName)
-    foreach (key, val in contactData)
-      if (key in this)
-        this[key] = val
+    foreach (key, val in contactData) {
+      if (key not in this)
+        continue
+
+      local newVal = val
+      if (key == "pilotIcon")
+        newVal = getAvatarIconIdByUserInfo(contactData)
+      this[key] = newVal
+    }
 
     this.uidInt64 = this.uid != "" ? this.uid.tointeger() : null
     if (isChangedName)
@@ -246,7 +253,7 @@ class Contact {
   }
 
   function checkInteractionStatus(callback) {
-    if (!is_platform_xbox || this.isMe()) {
+    if (!is_gdk || this.isMe()) {
       callback?(CommunicationState.Allowed)
       return
     }

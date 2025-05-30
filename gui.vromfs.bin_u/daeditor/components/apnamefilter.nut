@@ -7,8 +7,8 @@ return @(filterString, selectedCompName) nameFilter(filterString, {
   function onChange(text) {
     filterString.update(text)
 
-    if ((text.len() > 0 ) && selectedCompName.value
-      && !selectedCompName.value.contains(text)) {
+    if ((text.len() > 0 ) && selectedCompName.get()
+      && !selectedCompName.get().contains(text)) {
       selectedCompName.update(null)
     }
   }

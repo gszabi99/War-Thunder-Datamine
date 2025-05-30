@@ -1,8 +1,9 @@
 from "%scripts/dagui_library.nut" import *
+let { getFmFile } = require("%scripts/unit/unitParams.nut")
 
 function getAirFmFile(unit) {
   if (unit.isAir())
-    return ::get_fm_file(unit.name)
+    return getFmFile(unit.name)
   return null
 }
 

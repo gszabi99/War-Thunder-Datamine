@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_user_log_blk_body, disable_user_log_entry, get_user_logs_count
 from "%scripts/dagui_library.nut" import *
 
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let DataBlock = require("DataBlock")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { getTextWithCrossplayIcon,
@@ -100,7 +100,7 @@ let TournamentBattle = class (BaseInvite) {
   }
 
   function haveRestrictions() {
-    return !isInMenu() || !this.isAvailableByCrossPlay() || this.isOutdated() || !isMultiplayerPrivilegeAvailable.value
+    return !isInMenu.get() || !this.isAvailableByCrossPlay() || this.isOutdated() || !isMultiplayerPrivilegeAvailable.value
   }
 
   function getRestrictionText() {
@@ -121,7 +121,7 @@ let TournamentBattle = class (BaseInvite) {
     if (this.isOutdated())
       return showExpiredInvitePopup()
 
-    if (!isInMenu())
+    if (!isInMenu.get())
       return showLeaveSessionFirstPopup()
 
     if (!antiCheat.showMsgboxIfEacInactive({ enableEAC = true }))

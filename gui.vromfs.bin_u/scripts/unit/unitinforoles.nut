@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
+let { get_unittags_blk } = require("blkGetters")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let basicUnitRoles = {
@@ -171,6 +172,25 @@ function getUnitRoleIcon(source) {
   return unitRoleFontIcons?[role] ?? ""
 }
 
+function getUnitRoleIconAndTypeCaption(unit) {
+  let fonticon = getUnitRoleIcon(unit)
+  local typeText = getFullUnitRoleText(unit)
+  let unitType = getEsUnitType(unit)
+  if (unitType == ES_UNIT_TYPE_TANK) {
+    let unitTags = get_unittags_blk()?[unit.name] ?? {}
+    let lootCapacity = unitTags?.Shop.lootCapacity ?? 0
+    if (lootCapacity > 0) {
+      typeText = "".concat(typeText, loc("ui/parentheses/space", {
+      text = "".concat(loc("shop/lootCapacity"), loc("ui/colon"), lootCapacity)
+      }))
+    }
+  }
+
+  return typeText != ""
+    ? colorize(getUnitClassColor(unit), $"{fonticon} {typeText}")
+    : ""
+}
+
 return {
   getUnitRole
   getUnitClassColor
@@ -179,4 +199,5 @@ return {
   basicUnitRoles
   getUnitRoleIcon
   getUnitBasicRole
+  getUnitRoleIconAndTypeCaption
 }

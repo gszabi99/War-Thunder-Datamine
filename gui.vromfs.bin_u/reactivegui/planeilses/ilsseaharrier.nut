@@ -1,11 +1,11 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, BombingMode, RocketMode, AirCannonMode,
+let { IlsColor, TargetPosValid, TargetPos, IlsLineScale, BombingMode, RocketMode, AirCannonMode, GunfireSolutionPointNum,
        AAMRocketMode, CannonMode, BombCCIPMode,RadarTargetPos, RadarTargetPosValid, RadarTargetDist, RadarTargetDistRate,
        IlsPosSize, RadarTargetHeight, RadarTargetAngle, RadarTargetBearing } = require("%rGui/planeState/planeToolsState.nut")
 let { Speed, BarAltitude, Roll, Aoa, Gear, ClimbSpeed, Overload, Tangage } = require("%rGui/planeState/planeFlyState.nut");
 let { mpsToKnots, mpsToFpm, baseLineWidth, metrToFeet, meterToYard, metrToNavMile } = require("ilsConstants.nut")
-let { CurWeaponName, BulletImpactPoints1, BulletImpactLineEnable } = require("%rGui/planeState/planeWeaponState.nut")
+let { CurWeaponName, BulletImpactPoints, BulletImpactLineEnable, HasPrimaryGun } = require("%rGui/planeState/planeWeaponState.nut")
 let { cvt } = require("dagor.math")
 let { compassWrap, generateCompassMarkSUM } = require("ilsCompasses.nut")
 let { yawIndicator, SUMAltitude } = require("commonElements.nut")
@@ -201,13 +201,15 @@ let BarometricHeightText = @() {
   text = $"{HarrierHeight.get().tointeger() - HarrierHeight.get().tointeger() % 20}"
 }
 
-let BarometricHeight = @() {
+let RadarHeightText = @() SUMAltitude(40, [pw(-30), ph(-8)])()
+
+let HeightIndicator = @() {
   watch = [HarrierHeight, IlsColor]
   pos = [pw(83), ph(83)]
   size = [pw(20), ph(20)]
   children = [
     HarrierHeight.get() < 8000 ? CircleHeightIndicator : null,
-    BarometricHeightText,
+    HarrierHeight.get() < 4995 ? RadarHeightText : BarometricHeightText,
   ]
 }
 
@@ -451,9 +453,10 @@ let DepressionCarret = @(){
 
 function getBulletImpactLineCommand() {
   let commands = []
-  for (local i = 0; i < BulletImpactPoints1.get().len() - 2; ++i) {
-    let point1 = BulletImpactPoints1.get()[i]
-    let point2 = BulletImpactPoints1.get()[i + 1]
+  let start = GunfireSolutionPointNum.get() > 0 ? GunfireSolutionPointNum.get() : 0
+  for (local i = start; i < BulletImpactPoints.get().len() - 2; ++i) {
+    let point1 = BulletImpactPoints.get()[i]
+    let point2 = BulletImpactPoints.get()[i + 1]
     if (point1.x == -1 && point1.y == -1)
       continue
     if (point2.x == -1 && point2.y == -1)
@@ -467,7 +470,7 @@ let BulletsImpactLine = @() {
   watch = [CCIPMode, isAAMMode, BulletImpactLineEnable]
   size = flex()
   children = BulletImpactLineEnable.get() && !CCIPMode.get() && !isAAMMode.get() ? @() {
-    watch = [BulletImpactPoints1, IlsColor]
+    watch = [BulletImpactPoints, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
     color = IlsColor.get()
@@ -480,13 +483,14 @@ let RangingCircle = @() {
   watch = [CCIPMode, isAAMMode, BulletImpactLineEnable]
   size = flex()
   children = BulletImpactLineEnable.get() ? @() {
-    watch = [BulletImpactPoints1, IlsColor]
+    watch = [BulletImpactPoints, IlsColor]
     rendObj = ROBJ_VECTOR_CANVAS
     size = flex()
     fillColor = Color(0, 0, 0, 0)
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
-    commands = [[VECTOR_ELLIPSE, BulletImpactPoints1.get()[0].x, BulletImpactPoints1.get()[0].y, 2, 2]]
+    commands = [[VECTOR_ELLIPSE, BulletImpactPoints.get()[GunfireSolutionPointNum.get() > 0 ? GunfireSolutionPointNum.get() : 0].x,
+     BulletImpactPoints.get()[GunfireSolutionPointNum.get() > 0 ? GunfireSolutionPointNum.get() : 0].y, 2, 2]]
   } : null
 }
 
@@ -511,12 +515,13 @@ let RangeOctagon = @() {
   watch = [RadarTargetPosValid, RadarTargetDist, BulletImpactLineEnable]
   size = flex()
   children = BulletImpactLineEnable.get() && RadarTargetPosValid ? @() {
-    watch = [BulletImpactPoints1, IlsColor]
+    watch = [BulletImpactPoints, IlsColor]
     size = flex()
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.get()
     lineWidth = baseLineWidth * IlsLineScale.get()
-    commands = getPolygonByDistance(RadarTargetDist.get() * meterToYard, 100, 8, BulletImpactPoints1.get()[0])
+    commands = getPolygonByDistance(RadarTargetDist.get() * meterToYard, 100, 8,
+     BulletImpactPoints.get()[GunfireSolutionPointNum.get() > 0 ? GunfireSolutionPointNum.get() : 0])
   } : null
 }
 
@@ -529,7 +534,7 @@ let WeaponHudCode = @() {
   color = IlsColor.get()
   fontSize = 45
   font = Fonts.hud
-  text = CurWeaponName.get() != "" ? loc($"{CurWeaponName.get()}/sea_harrier_fa2") : "G6Z"
+  text = CurWeaponName.get() != "" ? loc($"{CurWeaponName.get()}/sea_harrier_fa2") : HasPrimaryGun.get() ? "G6Z" : ""
 }
 
 
@@ -753,9 +758,8 @@ function BasicSeaHarrier(width, height) {
       HorizonLines(width, height),
       AAMRocketMode.get() ? HarrierClimbAngle : null,
       HarrierVerticalSpeed,
-      SUMAltitude(60),
       HarrierSpeed,
-      BarometricHeight,
+      HeightIndicator,
       WeaponHudCode,
       HarrierRadarData
     ]

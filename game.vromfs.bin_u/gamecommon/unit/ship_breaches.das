@@ -188,7 +188,7 @@ def ship_init_cover_parts_handle_es(evt : CmdInitComponent;
 
 [es(tag=netClient, after=ship_init_cover_parts_handle_es)]
 def ship_request_net_sync_on_load_es(evt : CmdInitComponent; eid : EntityId)
-  send_net_event(eid, [[EventShipRequestNetSync]])
+  send_net_event(eid, EventShipRequestNetSync())
 
 
 [es]
@@ -404,11 +404,11 @@ def ship_repair_breaches_update_es(info : UpdateStageInfoAct;
         amount_to_repair -= repair_speed_mult * info.dt
       if amount_to_repair <= 0.0f
         amount_to_repair = 0.0f
-        sendEvent(eid, [[EventShipRemoveBreach breachId=breach_id]])
+        sendEvent(eid, EventShipRemoveBreach(breachId = breach_id))
 
   if was_repairing_breaches && v.ship__repairBreachesRemainingTime <= 0.0f
     v.ship__unwateringRemainingTime = calc_time_to_unwater(unit) <| v
-    sendEvent(eid, [[EventShipSyncWater]])
+    sendEvent(eid, EventShipSyncWater())
 
 
 def soa_safe_erase(var arr; idx)
@@ -444,7 +444,7 @@ def ship_remove_breach_handle_es(evt : EventShipRemoveBreach;
       ship_breaches__coverId |> soa_safe_erase(i)
       ship_breaches__leakedAmount |> soa_safe_erase(i)
       ship_breaches__offender |> soa_safe_erase(i)
-      sendEvent(eid, [[EventShipOnRemoveBreach localPos=local_pos]])
+      sendEvent(eid, EventShipOnRemoveBreach(localPos = local_pos))
       break
 
 
@@ -496,11 +496,11 @@ def add_breach_handle_es(evt : EventShipAddBreach;
   let box = (*unit).boundingBox
   let ship_props = ship.shipProps
   var pos = evt.localPos
-  pos.x = clamp(pos.x, box.boxMin.x, box.boxMax.x);
-  pos.y = clamp(pos.y, box.boxMin.y, box.boxMax.y);
-  pos.z = clamp(pos.z, box.boxMin.z, box.boxMax.z);
-  let size = min(evt.size, box.width.x / 8.f); 
-  let amountToRepair = cvt(size, ship_props.breachSizeToRepair.x, ship_props.breachSizeToRepair.y, ship_props.breachSizeToRepair.z, ship_props.breachSizeToRepair.w);
+  pos.x = clamp(pos.x, box.boxMin.x, box.boxMax.x)
+  pos.y = clamp(pos.y, box.boxMin.y, box.boxMax.y)
+  pos.z = clamp(pos.z, box.boxMin.z, box.boxMax.z)
+  let size = min(evt.size, box.width.x / 8.f) 
+  let amountToRepair = cvt(size, ship_props.breachSizeToRepair.x, ship_props.breachSizeToRepair.y, ship_props.breachSizeToRepair.z, ship_props.breachSizeToRepair.w)
 
   
   let MAX_BREACHES_COUNT = 100
@@ -527,16 +527,16 @@ def add_breach_handle_es(evt : EventShipAddBreach;
   ship_breaches__leakedAmount |> soa_safe_emplace(idx, 0.0f)
   ship_breaches__offender |> soa_safe_emplace(idx, evt.offender)
 
-  sendEvent(eid, [[EventShipOnGotBreach breachId=evt.id, localPos=evt.localPos, offender=evt.offender]])
+  sendEvent(eid, EventShipOnGotBreach(breachId = evt.id, localPos = evt.localPos, offender = evt.offender))
   if ship__unwateringRemainingTime > 0.0f
     ship__unwateringRemainingTime = -1.0f
-    sendEvent(eid, [[EventShipSyncWater]])
-    sendEvent(eid, [[EventShipRequestRepairBreaches repair=true]])
+    sendEvent(eid, EventShipSyncWater())
+    sendEvent(eid, EventShipRequestRepairBreaches(repair = true))
   elif ship__modernDamageControl
-    sendEvent(eid, [[EventShipRequestRepairBreaches repair=true]])
+    sendEvent(eid, EventShipRequestRepairBreaches(repair = true))
 
   if breach_id_to_remove != -1
-    sendEvent(eid, [[EventShipRemoveBreach breachId=breach_id_to_remove]])
+    sendEvent(eid, EventShipRemoveBreach(breachId = breach_id_to_remove))
 
 
 [es]
@@ -561,14 +561,14 @@ def add_fatal_breach_handle_es(evt : EventShipAddFatalBreach;
     if ship_cover_parts__partId[i].id == part_id.id
       ship_breaches__fatalPartId = part_id
       if unit.isAuthority
-        sendEvent(eid, [[EventShipAddBreach
-          id=ship_breaches__nextId++,
-          partId=part_id,
-          size=ship_cover_parts__water[i].z / (ship_props.fatalBreachDrownTime * 50.0f * ship_props.breachWaterMassMult),
+        sendEvent(eid, EventShipAddBreach(
+          id = ship_breaches__nextId++,
+          partId = part_id,
+          size = ship_cover_parts__water[i].z / (ship_props.fatalBreachDrownTime * 50.0f * ship_props.breachWaterMassMult),
           localPos = evt.localPos,
           localNormal = evt.localNormal,
           offender = evt.offender
-        ]])
+        ))
       break
 
 
@@ -596,7 +596,7 @@ def ship_unwatering_update_es(info : UpdateStageInfoAct;
       v.ship__unwateringRemainingTime = calc_time_to_unwater(unit) <| v
     else
       v.ship__unwateringRemainingTime = -1.0f
-      sendEvent(eid, [[EventShipSyncWater]])
+      sendEvent(eid, EventShipSyncWater())
 
 
 [es, with_bundle(v)]
@@ -630,11 +630,11 @@ def ship_request_repair_breaches_handle_es(evt : EventShipRequestRepairBreaches;
           let time_to_unwater = calc_time_to_unwater(unit) <| v
           if time_to_unwater > 0.0f
             v.ship__unwateringRemainingTime = time_to_unwater
-      sendEvent(eid, [[EventShipSyncWater]])
+      sendEvent(eid, EventShipSyncWater())
   else
     v.ship__repairBreachesRemainingTime = 0.0f
     v.ship__unwateringRemainingTime = 0.0f
-    sendEvent(eid, [[EventShipSyncWater]])
+    sendEvent(eid, EventShipSyncWater())
 
 
 [es(no_order)]
@@ -711,7 +711,7 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
       var breach_underwater = false
       var water_height = 0.0f
       get_app().currentScene |> scene_get_water_height( water_height,  breach_underwater, bottom_world_pos,  100.0f,  true)
-      depth_scale = breach_underwater ? min((water_height - (world_pos.y - size)) / (2.0f * size), 1.0f) : -1.0f;
+      depth_scale = breach_underwater ? min((water_height - (world_pos.y - size)) / (2.0f * size), 1.0f) : -1.0f
       next_check = current_time + 1.0f
 
     
@@ -729,23 +729,23 @@ def ship_breaches_add_water_update_es(info : UpdateStageInfoAct;
 
         
         let prev_water = ship_cover_parts__water[i].x
-        ship_cover_parts__water[i].x = min(max(ship_cover_parts__water[i].x + water_delta, 0.0f), max_water);
+        ship_cover_parts__water[i].x = min(max(ship_cover_parts__water[i].x + water_delta, 0.0f), max_water)
         let isWaterAdding = !is_equal_float(prev_water, ship_cover_parts__water[i].x)
         if !ship_phys_proxy__groundCollision && isWaterAdding
           let total_water = ship_cover_parts__water[i].x
-          ship_cover_parts__water[i].y = clamp(ship_cover_parts__water[i].y + sign(pos.z) * water_delta, -total_water, total_water);
+          ship_cover_parts__water[i].y = clamp(ship_cover_parts__water[i].y + sign(pos.z) * water_delta, -total_water, total_water)
         leaked_amount += water_delta
 
         
         if prev_water < max_water && ship_cover_parts__water[i].x == max_water
-          sendEvent(eid, [[EventShipSyncWater]])
+          sendEvent(eid, EventShipSyncWater())
 
         
         let inner_parts_range = ship_cover_parts__innerPartsRange[i]
         for j in inner_parts_range.x..inner_parts_range.y
           let crit_water_level = ship_cover_parts__innerPartsCriticalWater[j]
           if ship_cover_parts__water[i].x > crit_water_level && prev_water <= crit_water_level
-            sendEvent(eid, [[EventShipPartDrowned packedPartId=ship_cover_parts__innerPartsId[j].packed]])
+            sendEvent(eid, EventShipPartDrowned(packedPartId = ship_cover_parts__innerPartsId[j].packed))
 
 
 [es(after=ship_breaches_add_water_update_es), with_bundle(v)]
@@ -819,7 +819,7 @@ def ship_breaches_pump_water_update_es(info : UpdateStageInfoAct;
       for j in inner_parts_range.x..inner_parts_range.y
         let crit_water_level = v.ship_cover_parts__innerPartsCriticalWater[j]
         if part_water.x <= crit_water_level && prev_water > crit_water_level
-          sendEvent(eid, [[EventShipDrownedPartRestored packedPartId=v.ship_cover_parts__innerPartsId[j].packed]])
+          sendEvent(eid, EventShipDrownedPartRestored(packedPartId = v.ship_cover_parts__innerPartsId[j].packed))
 
     
     additional_water += part_water.x
@@ -849,10 +849,10 @@ def send_water_net_sync_event(eid : EntityId;
     for i in 0..partsCount
       cover_parts_water[i] = ship_cover_parts__water[i].x
       cover_parts_water[partsCount + i] = ship_cover_parts__water[i].y
-    send_net_event(eid, [[EventShipWaterNetSync
-      unitVersion=uint8(0),
+    send_net_event(eid, EventShipWaterNetSync(
+      unitVersion = uint8(0),
       coverPartsWaterAndBalance = ecs_addr(cover_parts_water)
-    ]])
+    ))
 
 
 [es(tag=netClient)]
@@ -898,12 +898,12 @@ def send_breaches_net_sync_event(eid : EntityId;
           breaches_repair_progress |> push(ship_breaches__depthScale[i])
           let pos = ship_breaches__pos[i]
           breaches_pos_and_size |> push(float4(pos.x, pos.y, pos.z, ship_breaches__size[i]))
-        send_net_event(eid, [[EventShipBreachesNetSync
+        send_net_event(eid, EventShipBreachesNetSync(
           unitVersion = uint8(0),
           breachesIds = ecs_addr(breaches_ids),
           breachesPosAndSize = ecs_addr(breaches_pos_and_size),
           breachesRepairProgress = ecs_addr(breaches_repair_progress)
-        ]])
+        ))
 
 
 [es(tag=netClient)]
@@ -952,8 +952,8 @@ def ship_handle_breaches_net_sync_es(evt : EventShipBreachesNetSync;
 
 [es(tag=server)]
 def ship_handle_net_sync_request_es(evt : EventShipRequestNetSync; eid : EntityId)
-  sendEvent(eid, [[EventShipSyncWater]])
-  sendEvent(eid, [[EventShipSyncBreaches]])
+  sendEvent(eid, EventShipSyncWater())
+  sendEvent(eid, EventShipSyncBreaches())
 
 
 [es(tag=server)]

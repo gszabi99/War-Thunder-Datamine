@@ -11,7 +11,7 @@ let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { isPlayerInFriendsGroup } = require("%scripts/contacts/contactsChecks.nut")
 
 function getXboxChatEnableStatus() {
-  if (!is_platform_xbox || !isLoggedIn.get())
+  if (!is_gdk || !isLoggedIn.get())
     return CommunicationState.Allowed
   return check_crossnetwork_communications_permission()
 }

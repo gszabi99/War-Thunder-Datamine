@@ -22,6 +22,7 @@ let { getEsUnitType, getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
 
 function getReloadTimeByCaliber(caliber, ediff = null) {
   let diff = get_difficulty_by_ediff(ediff ?? getCurrentGameModeEdiff())
@@ -227,7 +228,11 @@ function getWeaponInfoText(unit, weaponInfoData) {
                 countMeasure(1, [weapon.dropHeightRange.x, weapon.dropHeightRange.y])))
           }
           if (p.detail >= INFO_DETAIL.EXTENDED && unitType != ES_UNIT_TYPE_TANK)
-            tText = "".concat(tText, getWeaponExtendedInfo(weapon, weaponType, unit, p.ediff, $"{p.newLine}{nbsp}{nbsp}{nbsp}{nbsp}"))
+            tText = "".concat(tText, getWeaponExtendedInfo(weapon, unit, {
+              weaponType,
+              ediff = p.ediff,
+              newLine = $"{p.newLine}{nbsp}{nbsp}{nbsp}{nbsp}"
+            }))
         }
       }
       else {
@@ -319,7 +324,7 @@ function getWeaponXrayDescText(weaponBlk, unit, ediff) {
   foreach (weaponType, weaponTypeList in (weaponTypes?.weaponsByTypes ?? {}))
     foreach (weapons in weaponTypeList)
       foreach (weapon in weapons.weaponBlocks)
-        return getWeaponExtendedInfo(weapon, weaponType, unit, ediff, "\n") 
+        return getWeaponExtendedInfo(weapon, unit, { weaponType, ediff, newLine = "\n" }) 
   return ""
 }
 
@@ -339,7 +344,11 @@ function getWeaponDescTextByTriggerGroup(triggerGroup, unit, ediff) {
       return "".concat( 
         loc($"weapons/{weaponName}"),
         format(loc("weapons/counter"), weapon.ammo),
-        getWeaponExtendedInfo(weapon, triggerGroup, unit, ediff, "\n{0}{0}{0}{0}".subst(nbsp))
+        getWeaponExtendedInfo(weapon, unit, {
+          weaponType = triggerGroup
+          ediff
+          newLine = "\n{0}{0}{0}{0}".subst(nbsp)
+        })
       )
   return ""
 }
@@ -402,7 +411,7 @@ function getDefaultBulletName(unit) {
 }
 
 function getModItemName(unit, item, limitedName = true) {
-  return ::g_weaponry_types.getUpgradeTypeByItem(item).getLocName(unit, item, limitedName)
+  return getUpgradeTypeByItem(item).getLocName(unit, item, limitedName)
 }
 
 function getReqModsText(unit, item) {
@@ -441,7 +450,7 @@ function getBulletsListHeader(unit, bulletsList) {
 
 function getFullItemCostText(unit, item, spawnScoreOnly = false) {
   let res = []
-  let wType = ::g_weaponry_types.getUpgradeTypeByItem(item)
+  let wType = getUpgradeTypeByItem(item)
   let misRules = getCurMissionRules()
 
   if ((!isInFlight() || misRules.isWarpointsRespawnEnabled) && !spawnScoreOnly)

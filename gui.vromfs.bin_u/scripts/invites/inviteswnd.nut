@@ -3,11 +3,10 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getSelectedChild, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
 let { checkAndShowMultiplayerPrivilegeWarning, checkAndShowCrossplayWarning,
   isMultiplayerPrivilegeAvailable } = require("%scripts/user/xboxFeatures.nut")
 let { isShowGoldBalanceWarning } = require("%scripts/user/balanceFeatures.nut")
-let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 let { clearBorderSymbols, utf8ToLower } = require("%sqstd/string.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { resetTimeout } = require("dagor.workcycle")
@@ -215,6 +214,10 @@ gui_handlers.InvitesWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventXboxMultiplayerPrivilegeUpdated(_p) {
+    this.updateList()
+  }
+
+  function onEventCrossPlayOptionChanged(_p) {
     this.updateList()
   }
 

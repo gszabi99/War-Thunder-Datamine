@@ -1,3 +1,4 @@
+options indenting = 2
 module soa_template shared private
 options no_aot
 
@@ -107,7 +108,22 @@ def fn_patch(var fn : smart_ptr<Function>; var astChanged : bool&)
   var i = length(fn.arguments)
   while --i >= 0
     assume arg = fn.arguments[i]
-    if !arg.access_flags.access_pass && !arg.access_flags.access_get && !arg.access_flags.access_ref && !arg.access_flags.access_init && ends_with("{arg._aka}", "_SOA")
+    let is_soa_field = ends_with("{arg._aka}", "_SOA")
+
+    
+    let isNonConstSoaArg = (!arg._type.flags.constant &&
+                            !arg._type.flags.removeConstant &&
+                            !arg.access_flags.access_ref &&
+                            (arg._type.baseType != Type.tPointer || !arg.access_flags.access_pass) &&
+                            is_soa_field)
+    
+    
+    
+    if isNonConstSoaArg
+      astChanged = true
+      arg._type.flags |= TypeDeclFlags.constant
+
+    if !arg.access_flags.access_pass && !arg.access_flags.access_get && !arg.access_flags.access_ref && !arg.access_flags.access_init && is_soa_field
       astChanged = true
       removeArgs |> emplace(("arg", RttiValue(tInt = i)))
 
@@ -119,14 +135,28 @@ def fn_patch(var fn : smart_ptr<Function>; var astChanged : bool&)
 
 [macro_function]
 def block_patch(var blk : ExprBlock?; var astChanged : bool&)
-  var indexes : array<int>
   var i = length(blk.arguments)
   while --i >= 0
     assume arg = blk.arguments[i]
-    if !arg.access_flags.access_pass && !arg.access_flags.access_get && !arg.access_flags.access_ref && !arg.access_flags.access_init && ends_with("{arg._aka}", "_SOA")
+
+    let is_soa_field = ends_with("{arg._aka}", "_SOA")
+    
+    let isNonConstSoaArg = (!arg._type.flags.constant &&
+                            !arg._type.flags.removeConstant &&
+                            arg._type.canCloneFromConst &&
+                            !arg.access_flags.access_ref &&
+                            (arg._type.baseType != Type.tPointer || !arg.access_flags.access_pass) &&
+                            is_soa_field)
+    
+    
+    
+    if isNonConstSoaArg
+      astChanged = true
+      arg._type.flags |= TypeDeclFlags.constant
+
+    if !arg.access_flags.access_pass && !arg.access_flags.access_get && !arg.access_flags.access_ref && !arg.access_flags.access_init && is_soa_field
       blk.arguments |> erase(i)
       astChanged = true
-      indexes |> push(i)
   return true
 
 

@@ -65,12 +65,12 @@ def ship_start_damage_control_es(evt : EventShipStartDamageControl;
       ship_damage_control__priorities = evt.priorities
     
   else
-    sendEvent(eid, [[EventShipRequestRepairBreaches repair=false]])
-    sendEvent(eid, [[EventRepairSystemRequestRepair repair=false]])
-    sendEvent(eid, [[EventExtinguishSystemTurnOffExtinguisher]])
+    sendEvent(eid, EventShipRequestRepairBreaches(repair = false))
+    sendEvent(eid, EventRepairSystemRequestRepair(repair = false))
+    sendEvent(eid, EventExtinguishSystemTurnOffExtinguisher())
 
 
-[es]
+[es(before=ship_damage_control_load_priorities_es)]
 def ship_damage_control_init_es(evt : CmdInitComponent;
                                 var ship__modernDamageControl : bool&;
                                 var ship_damage_control__cooldownTime : float&;
@@ -79,7 +79,7 @@ def ship_damage_control_init_es(evt : CmdInitComponent;
   ship__modernDamageControl = false
   *evt.modelBlk |> datablock_get_block("shipDamageControl") <| $(blk)
     ship__modernDamageControl = blk |> datablock_getBool("shipDamageControlEnabled", false)
-    ship_damage_control__cooldownTime = blk |> datablock_getReal("switchPresetCooldown", 10.0f);
+    ship_damage_control__cooldownTime = blk |> datablock_getReal("switchPresetCooldown", 10.0f)
     ship_damage_control__timePenalty = blk |> datablock_getPoint3("shipboardDamageControlWeight", float3(1.0f, 1.2f, 1.4f))
   ship_damage_control__priorities = 0u
 
@@ -105,7 +105,7 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
     return
 
   if fire_damage__isBurn && !is_extinguisher_active(fire_damage__isBurn, extinguish_system_is_assisting, extinguish_system_extinguish_time_end)
-    sendEvent(eid, [[EventExtinguishSystemActivateExtinguisher assisteeId=INVALID_ENTITY_ID]])
+    sendEvent(eid, EventExtinguishSystemActivateExtinguisher(assisteeId = INVALID_ENTITY_ID))
 
   repair_system_auto_check_delay -= act.dt
   if repair_system_auto_check_delay < 0.0f
@@ -115,7 +115,7 @@ def ship_update_damage_control_es(act : UpdateStageInfoAct;
         !ship.isVeryFewCrew && !ship.isCoverDestroyed && is_repair_needed(unit,
           repair_system_state, repair_system_speed_multiplier, repair_system_repair_hp_multiplier,
           repair_system_parts_id, repair_system_parts_state, repair_system_parts_hp, true, true, false))
-      sendEvent(eid, [[EventRepairSystemRequestRepair repair=true]])
+      sendEvent(eid, EventRepairSystemRequestRepair(repair = true))
       repair_system_auto_check_delay = 5.0f
     else
       repair_system_auto_check_delay = rnd_float(0.2f, 0.3f)
@@ -144,7 +144,7 @@ def ship_update_time_penalty_es(info : UpdateStageInfoAct;
     return
 
   
-  let repair_in_progress = repair_system_remaining_repair_time > 0.0f || ship__modernDamageControl && ship__repairBreachesRemainingTime > 0.0f;
+  let repair_in_progress = repair_system_remaining_repair_time > 0.0f || ship__modernDamageControl && ship__repairBreachesRemainingTime > 0.0f
   let extinguish_in_progress = is_extinguisher_active(fire_damage__isBurn, extinguish_system_is_assisting, extinguish_system_extinguish_time_end)
   let unwatering_in_progress = ship__unwateringRemainingTime > 0.0f || !ship__modernDamageControl && ship__repairBreachesRemainingTime > 0.0f
 

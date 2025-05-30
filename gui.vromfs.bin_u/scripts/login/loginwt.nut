@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import stat_get_value_respawns, disable_network, pause_game, fetch_devices_inited_once, set_host_cb, get_num_real_devices, fetch_profile_inited_once
+from "%scripts/dagui_natives.nut" import stat_get_value_respawns, pause_game, fetch_devices_inited_once, set_host_cb, get_num_real_devices, fetch_profile_inited_once
 from "%scripts/dagui_library.nut" import *
 from "%appGlobals/login/loginConsts.nut" import LOGIN_STATE
 
@@ -7,7 +7,7 @@ let { deferOnce } = require("dagor.workcycle")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let penalties = require("%scripts/penitentiary/penalties.nut")
+let { showBannedStatusMsgBox } = require("%scripts/penitentiary/bannedStatusMsgBox.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let onMainMenuReturnActions = require("%scripts/mainmenu/onMainMenuReturnActions.nut")
 let { isPlatformSteamDeck, is_console, isPlatformShieldTv
@@ -29,6 +29,10 @@ let { sessionLobbyHostCb } = require("%scripts/matchingRooms/sessionLobbyManager
 let { startLoginProcess } = require("%scripts/login/loginProcess.nut")
 let { setLoginState } = require("%scripts/login/loginManager.nut")
 let { tribunal } = require("%scripts/penitentiary/tribunal.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { updateContentPacks } = require("%scripts/clientState/contentPacks.nut")
+let { setControlTypeByID } = require("%scripts/controls/controlsTypeUtils.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 const EMAIL_VERIFICATION_SEEN_DATE_SETTING_PATH = "emailVerification/lastSeenDate"
 let EMAIL_VERIFICATION_INTERVAL_SEC = 7 * 24 * 60 * 60
@@ -39,7 +43,7 @@ function gui_start_startscreen(_) {
   log($"platformId is '{platformId }'")
   pause_game(false);
 
-  if (disable_network())
+  if (disableNetwork)
     setLoginState(LOGIN_STATE.AUTHORIZED | LOGIN_STATE.ONLINE_BINARIES_INITED)
   startLoginProcess()
 }
@@ -61,7 +65,7 @@ function go_to_account_web_page(bqKey = "") {
 function needAutoStartBattle() {
   if (!isFirstChoiceShown.value
       || !hasFeature("BattleAutoStart")
-      || disable_network()
+      || disableNetwork
       || stat_get_value_respawns(0, 1) > 0
       || !isProfileReceived.get()
       || !loadLocalAccountSettings("needAutoStartBattle", true))
@@ -80,7 +84,7 @@ function firstMainMenuLoad() {
   if (!handler)
     return 
 
-  ::updateContentPacks()
+  updateContentPacks()
 
   handler.doWhenActive(@() ::checkNewNotificationUserlogs(true))
   handler.doWhenActive(@() tribunal.checkComplaintCounts())
@@ -88,9 +92,9 @@ function firstMainMenuLoad() {
 
   if (!fetch_profile_inited_once()) {
     if (get_num_real_devices() == 0 && !is_platform_android)
-      ::setControlTypeByID("ct_mouse")
+      setControlTypeByID("ct_mouse")
     else if (isPlatformShieldTv())
-      ::setControlTypeByID("ct_xinput")
+      setControlTypeByID("ct_xinput")
     else if (!isPlatformSteamDeck)
       handler.doWhenActive(function() { gui_start_controls_type_choice() })
   }
@@ -139,8 +143,8 @@ function firstMainMenuLoad() {
 
   set_host_cb(null, function(p) { sessionLobbyHostCb(p) })
 
-  ::update_gamercards()
-  penalties.showBannedStatusMsgBox()
+  updateGamercards()
+  showBannedStatusMsgBox()
 
   if (isAutoStart)
     handler.doWhenActiveOnce("startBattle")

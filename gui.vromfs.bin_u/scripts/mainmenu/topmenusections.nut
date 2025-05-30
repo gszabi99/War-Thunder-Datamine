@@ -1,6 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
-let enums = require("%sqStdLibs/helpers/enums.nut")
+let { getCachedType, enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 
 let topMenuSectionsTemplate = {
   name = "unknown"
@@ -72,11 +72,45 @@ function getTopMenuSectionsOrder(sectionsStructure, maxSectionsCount) {
   return sections
 }
 
-let getTopMenuSectionByName = @(name) enums.getCachedType("name", name, this.cache.byName, this, this.template)
+let getTopMenuSectionByName = @(name) getCachedType("name", name, this.cache.byName, this, this.template)
+
+let topMenuLeftSideSections = {
+  types = []
+  cache = {
+    byName = {}
+  }
+
+  template = topMenuSectionsTemplate
+  getSectionByName = getTopMenuSectionByName
+}
+
+
+
+
+
+let addTopMenuLeftSideSections = @(sections) enumsAddTypes(topMenuLeftSideSections, sections)
+
+let topMenuRightSideSections = {
+  types = []
+  cache = {
+    byName = {}
+  }
+
+  template = topMenuSectionsTemplate
+  getSectionByName = getTopMenuSectionByName
+}
+
+let addTopMenuRightSideSections = @(sections) enumsAddTypes(topMenuRightSideSections, sections)
 
 return {
   topMenuSectionsTemplate
   getTopMenuSectionByName
 
   getTopMenuSectionsOrder
+
+  addTopMenuLeftSideSections
+  topMenuLeftSideSections
+
+  addTopMenuRightSideSections
+  topMenuRightSideSections
 }

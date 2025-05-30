@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { isPlayerFromXboxOne } = require("%scripts/clientState/platform.nut")
 let { hasMenuChat } = require("%scripts/chat/chatStates.nut")
-let { getLastGamercardScene } = require("%scripts/gamercard.nut")
+let { getLastGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
 let { find_contact_by_name_and_do } = require("%scripts/contacts/contactsActions.nut")
 let { createMenuChatHandler } = require("%scripts/chat/menuChatHandler.nut")
 let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")

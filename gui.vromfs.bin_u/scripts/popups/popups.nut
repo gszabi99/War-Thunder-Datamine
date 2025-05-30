@@ -5,6 +5,7 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_time_msec } = require("dagor.time")
 let { DEFAULT_HANDLER } = require("%scripts/g_listener_priority.nut")
+let { getActiveGamercardPopupNestObj } = require("%scripts/gamercard/gamercardHelpers.nut")
 
 
 
@@ -59,7 +60,7 @@ function savePopup(newPopup) {
 }
 
 function canShowPopup() {
-  let popupNestObj = ::get_active_gc_popup_nest_obj()
+  let popupNestObj = getActiveGamercardPopupNestObj()
   if (!checkObj(popupNestObj))
     return false
 
@@ -109,7 +110,7 @@ function performDelayedFlushPopupsIfCan() {
             self()
           }
 
-          let popupNestObj = ::get_active_gc_popup_nest_obj()
+          let popupNestObj = getActiveGamercardPopupNestObj()
           popup.show(popupNestObj)
           popupsList.append(popup)
 

@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import  get_entitlement_cost_gold, entitlement_expires_in, purchase_entitlement, shop_get_premium_account_ent_name
+from "%scripts/dagui_natives.nut" import  get_entitlement_cost_gold, purchase_entitlement, is_app_active, is_online_available, set_char_cb
 from "%scripts/dagui_library.nut" import *
 
 let { floor } = require("math")
@@ -17,6 +17,13 @@ let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { ENTITLEMENTS_PRICE } = require("%scripts/utils/configs.nut")
+let { bundlesShopInfo } = require("%scripts/onlineShop/entitlementsInfo.nut")
+let { onOnlinePurchase } = require("%scripts/onlineShop/onlinePurchase.nut")
+let { steam_is_overlay_active } = require("steam")
+let { is_builtin_browser_active } = require("%scripts/onlineShop/browserWndHelpers.nut")
+let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
+let { getRemainingPremiumTime } = require("%scripts/user/premium.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 const MIN_DISPLAYED_PERCENT_SAVING = 5
 
@@ -27,8 +34,10 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/premium/buyPremiumWnd.blk"
   owner = null
   afterCloseFunc = null
+  needFullUpdate = false
 
   goods = []
+  product = null
   lastExpire = null
 
   function initScreen() {
@@ -49,6 +58,7 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updatePremiumShopData() {
+    let chapter = hasFeature("PremiumSubscription") ? "premium_subscription" : "premium"
     this.goods.clear()
     let blk = getShopPriceBlk()
     let numBlocks = blk.blockCount()
@@ -57,7 +67,7 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     for (local i = 0; i < numBlocks; i++) {
       let ib = blk.getBlock(i)
       let name = ib.getBlockName()
-      if (ib?.chapter != "premium")
+      if (ib?.chapter != chapter)
         continue
 
       let item = { name }
@@ -68,12 +78,19 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
           item[paramName] <- ib.getParamValue(j)
       }
 
-      let itemCost = getEntitlementPriceFloat(item)
-      if (groupCost == null)
-        groupCost = getPricePerEntitlement(item)
-
-      let amount = getEntitlementAmount(item)
-      let savings = ((1 - (itemCost / (amount * groupCost))) * 100).tointeger()
+      local savings = 0
+      if (item?.onlinePurchase ?? false) {
+        let productInfo = bundlesShopInfo.get()?[item.name]
+        let discount_mul = productInfo?.discount_mul ?? 1
+        savings = ((1.0 - discount_mul) * 100).tointeger()
+      }
+      else {
+        let itemCost = getEntitlementPriceFloat(item)
+        if (groupCost == null)
+          groupCost = getPricePerEntitlement(item)
+        let amount = getEntitlementAmount(item)
+        savings = ((1 - (itemCost / (amount * groupCost))) * 100).tointeger()
+      }
       item.savings <- (savings >= MIN_DISPLAYED_PERCENT_SAVING) ? savings : 0
       this.goods.append(item)
     }
@@ -122,7 +139,7 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateCurrentPremiumInfo(_obj = null, _dt = null) {
-    let expire = entitlement_expires_in(shop_get_premium_account_ent_name())
+    let expire = getRemainingPremiumTime()
     if (this.lastExpire == expire)
       return
     this.lastExpire = expire
@@ -146,7 +163,7 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function afterModalDestroy() {
-    topMenuHandler.value?.updateExpAndBalance.call(topMenuHandler.value)
+    topMenuHandler.get()?.updateExpAndBalance.call(topMenuHandler.get())
     this.popCloseFunc()
   }
 
@@ -166,21 +183,28 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updateCurrentPremiumInfo()
   }
 
+  function onShopBuy(obj) {
+    this.product = this.goods.findvalue(@(v) v.name == obj["premiumName"])
+    if (this.product == null)
+      return
+    onOnlinePurchase(this.product)
+  }
+
   function onBuy(obj) {
     let productId = obj["premiumName"]
-    let product = this.goods.findvalue(@(v) v.name == productId)
-    if (product == null)
+    this.product = this.goods.findvalue(@(v) v.name == productId)
+    if (this.product == null)
       return
 
     let price = Cost(0, get_entitlement_cost_gold(productId))
     let msgText = warningIfGold(
       loc("onlineShop/needMoneyQuestion",
-        { purchase = getEntitlementName(product), cost = price.getTextAccordingToBalance() }),
+        { purchase = getEntitlementName(this.product), cost = price.getTextAccordingToBalance() }),
       price)
 
     let onCallbackYes = Callback(function() {
       if (checkBalanceMsgBox(price))
-        this.goForwardIfPurchase(product)
+        this.goForwardIfPurchase(this.product)
     }, this)
     purchaseConfirmation("purchase_ask", msgText, onCallbackYes)
   }
@@ -192,5 +216,32 @@ gui_handlers.BuyPremiumHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       broadcastEvent("OnlineShopPurchaseSuccessful", { purchData = product })
       }, this)
     addTask(taskId, taskOptions, taskSuccessCallback)
+  }
+
+  function updateEntitlements() {
+    if (!is_app_active() || steam_is_overlay_active() || is_builtin_browser_active())
+      this.needFullUpdate = true
+    else if (this.needFullUpdate && is_online_available()) {
+      this.needFullUpdate = false
+      this.taskId = updateEntitlementsLimited()
+      if (this.taskId < 0)
+        return
+
+      set_char_cb(this, this.slotOpCb)
+      this.showTaskProgressBox(loc("charServer/checking"))
+      this.afterSlotOp = function() {
+        if (!checkObj(this.scene))
+          return
+        broadcastEvent("EntitlementsUpdatedFromOnlineShop")
+        this.reinitScreen()
+        updateGamercards()
+        broadcastEvent("OnlineShopPurchaseSuccessful", { purchData = this.product ?? {} })
+      }
+    }
+  }
+
+  function onTimer(_obj, _dt) {
+    this.updateCurrentPremiumInfo()
+    this.updateEntitlements()
   }
 }

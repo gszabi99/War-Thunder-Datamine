@@ -140,7 +140,7 @@ def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
   ctx |> set_font_ht(14)
 
   foreach_targets() <| $(var target; i)
-    if target.targetType == int(RadarTargetType TYPE_TARGET)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET)
       let angleRel = target.azimuthRel
       var distanceRel = 0.9
       if target.distanceRel >= 0.
@@ -148,12 +148,11 @@ def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
 
       let p = float2(pos.x + angleRel * size.x, pos.y + (1. - distanceRel) * size.y)
       if target.isEnemy
-        let diamond <- to_array_move([[float2[4]
-         float2(p.x + markSize.x, p.y);
-         float2(p.x, p.y + markSize.y);
-         float2(p.x - markSize.x, p.y);
-         float2(p.x, p.y - markSize.y);
-        ]])
+        let diamond <- to_array_move(fixed_array<float2>(
+         float2(p.x + markSize.x, p.y),
+         float2(p.x, p.y + markSize.y),
+         float2(p.x - markSize.x, p.y),
+         float2(p.x, p.y - markSize.y)))
         ctx |> render_poly(diamond, enemyColor)
         ctx |> render_line_aa(diamond, true, data.lineWidth, float2(0, 0), whiteColor)
       else
@@ -174,22 +173,18 @@ def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
           p.y - target.losSpeed * targetSpdInv * min(markSize.y + targetSpd * 0.5, 3. * markSize.y), data.lineWidth)
 
       if target.isTracked
-        let l1 <- to_array_move([[float2[]
-          p + float2(-markSize.x, -markSize.y);
-          p + float2(-markSize.x * 1.3, -markSize.y * 1.3);
-        ]])
-        let l2 <- to_array_move([[float2[]
-          p + float2(markSize.x, markSize.y);
-          p + float2(markSize.x * 1.3, markSize.y * 1.3);
-        ]])
-        let l3 <- to_array_move([[float2[]
-          p + float2(-markSize.x, markSize.y);
-          p + float2(-markSize.x * 1.3, markSize.y * 1.3);
-        ]])
-        let l4 <- to_array_move([[float2[]
-          p + float2(markSize.x, -markSize.y);
-          p + float2(markSize.x * 1.3, -markSize.y * 1.3);
-        ]])
+        let l1 <- to_array_move(fixed_array(
+          p + float2(-markSize.x, -markSize.y),
+          p + float2(-markSize.x * 1.3, -markSize.y * 1.3)))
+        let l2 <- to_array_move(fixed_array(
+          p + float2(markSize.x, markSize.y),
+          p + float2(markSize.x * 1.3, markSize.y * 1.3)))
+        let l3 <- to_array_move(fixed_array(
+          p + float2(-markSize.x, markSize.y),
+          p + float2(-markSize.x * 1.3, markSize.y * 1.3)))
+        let l4 <- to_array_move(fixed_array(
+          p + float2(markSize.x, -markSize.y),
+          p + float2(markSize.x * 1.3, -markSize.y * 1.3)))
         ctx |> render_line_aa(l1, false, data.lineWidth, float2(0.), whiteColor)
         ctx |> render_line_aa(l2, false, data.lineWidth, float2(0.), whiteColor)
         ctx |> render_line_aa(l3, false, data.lineWidth, float2(0.), whiteColor)
@@ -197,12 +192,11 @@ def draw_targets(var ctx : GuiContext&; pos : float2; size : float2; data : Canv
         draw_target_info(ctx, pos + float2(-size.x * 0.05, size.y), float2(size.x / 0.95, size.y * 0.05), data, i, target)
       elif target.isDetected
         if target.isEnemy
-          let diamond <- to_array_move([[float2[4]
-          float2(p.x + markSize.x * 1.5, p.y);
-          float2(p.x, p.y + markSize.y * 1.5);
-          float2(p.x - markSize.x * 1.5, p.y);
-          float2(p.x, p.y - markSize.y * 1.5);
-          ]])
+          let diamond <- to_array_move(fixed_array<float2>(
+          float2(p.x + markSize.x * 1.5, p.y),
+          float2(p.x, p.y + markSize.y * 1.5),
+          float2(p.x - markSize.x * 1.5, p.y),
+          float2(p.x, p.y - markSize.y * 1.5)))
           ctx |> render_line_aa(diamond, true, data.lineWidth, float2(0, 0), whiteColor)
         else
           ctx |> render_ellipse_aa(p, markSize * 1.5, data.lineWidth, whiteColor, allyColor)
@@ -262,17 +256,17 @@ def draw_cue(var ctx : GuiContext&; pos : float2; size : float2; data : CanvasPa
   let cueDistWidthRel =  get_radar_hud_cue_dist_width_rel()
   let cuePos = pos + float2((get_radar_hud_cue_azimuth() * (get_radar_hud_target_azimuth_width() / azimuthRange - cueAzimuthHwr) + 0.5) * size.x,
           (1. - (0.5 * cueDistWidthRel + get_radar_hud_cue_distance() * get_radar_hud_target_distance() * (1. - cueDistWidthRel))) * size.y)
-  let lcoord <- to_array_move([[float2[2] float2(cuePos.x - cueAzimuthHwr * size.x, cuePos.y);
-   float2(cuePos.x - cueAzimuthHwr * size.x * 0.35, cuePos.y)]])
+  let lcoord <- to_array_move(fixed_array<float2>(float2(cuePos.x - cueAzimuthHwr * size.x, cuePos.y),
+   float2(cuePos.x - cueAzimuthHwr * size.x * 0.35, cuePos.y)))
   ctx |> render_line_aa(lcoord, false, data.lineWidth, float2(0, 0), whiteColor)
-  let rcoord <- to_array_move([[float2[2] float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y);
-   float2(cuePos.x + cueAzimuthHwr * size.x * 0.35, cuePos.y)]])
+  let rcoord <- to_array_move(fixed_array<float2>(float2(cuePos.x + cueAzimuthHwr * size.x, cuePos.y),
+   float2(cuePos.x + cueAzimuthHwr * size.x * 0.35, cuePos.y)))
   ctx |> render_line_aa(rcoord, false, data.lineWidth, float2(0, 0), whiteColor)
-  let tcoord <- to_array_move([[float2[2] float2(cuePos.x, cuePos.y - cueDistWidthRel * size.y * 0.35);
-   float2(cuePos.x, cuePos.y - cueDistWidthRel * size.y)]])
+  let tcoord <- to_array_move(fixed_array<float2>(float2(cuePos.x, cuePos.y - cueDistWidthRel * size.y * 0.35),
+   float2(cuePos.x, cuePos.y - cueDistWidthRel * size.y)))
   ctx |> render_line_aa(tcoord, false, data.lineWidth, float2(0, 0), whiteColor)
-  let bcoord <- to_array_move([[float2[2] float2(cuePos.x, cuePos.y + cueDistWidthRel * size.y * 0.35);
-   float2(cuePos.x, cuePos.y + cueDistWidthRel * size.y)]])
+  let bcoord <- to_array_move(fixed_array<float2>(float2(cuePos.x, cuePos.y + cueDistWidthRel * size.y * 0.35),
+   float2(cuePos.x, cuePos.y + cueDistWidthRel * size.y)))
   ctx |> render_line_aa(bcoord, false, data.lineWidth, float2(0, 0), whiteColor)
 
   var fctx : StdGuiFontContext

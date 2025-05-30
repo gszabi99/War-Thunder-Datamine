@@ -1,5 +1,5 @@
 from "%sqDagui/daguiNativeApi.nut" import DaGuiObject
-from "%scripts/dagui_natives.nut" import disable_network, run_reactive_gui, make_invalid_user_id, get_cur_circuit_name
+from "%scripts/dagui_natives.nut" import run_reactive_gui, make_invalid_user_id, get_cur_circuit_name
 from "%scripts/dagui_library.nut" import *
 from "ecs" import clear_vm_entity_systems, start_es_loading, end_es_loading
 from "%scripts/mainConsts.nut" import COLOR_TAG
@@ -42,7 +42,6 @@ let { ref_time_ticks } = require("dagor.time")
 let { set_rnd_seed } = require("dagor.random")
 
 ::custom_miss_flight <- false
-::is_debug_mode_enabled <- false
 ::first_generation <- true
 
 ::ps4_vsync_enabled <- true
@@ -54,7 +53,7 @@ let { set_rnd_seed } = require("dagor.random")
 
 registerPersistentData("MainGlobals", getroottable(),
   [
-    "is_debug_mode_enabled", "first_generation",
+    "first_generation",
     "showConsoleButtons.value"
   ])
 
@@ -168,7 +167,7 @@ end_es_loading()
 
 let platform = require("%scripts/clientState/platform.nut")
 
-if (platform.is_gdk) {
+if (is_gdk) {
   require("%scripts/gdk/onLoad.nut")
 }
 
@@ -202,7 +201,7 @@ local isFullScriptsLoaded = false
   require("%scripts/hangar/hangarEvent.nut")
   require("%scripts/dirtyWordsFilter.nut").continueInitAfterLogin()
 
-  if (platform.is_gdk)
+  if (is_gdk)
     require("%scripts/global/xboxCallbacks.nut")
 
   if (platform.isPlatformSony) {
@@ -224,22 +223,12 @@ local isFullScriptsLoaded = false
 }
 
 
-{
-  let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
-  let shouldDisableMenu = (disable_network() && getFromSettingsBlk("debug/disableMenu", false))
-    || getFromSettingsBlk("benchmarkMode", false)
-    || getFromSettingsBlk("viewReplay", false)
-
-  ::should_disable_menu <- function should_disable_menu() {
-    return shouldDisableMenu
-  }
-}
-
 if (is_platform_pc && getSystemConfigOption("debug/netLogerr") == null)
     setSystemConfigOption("debug/netLogerr", true)
 
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
-if (isAuthorized.get() || ::should_disable_menu()) { 
+let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
+if (isAuthorized.get() || shouldDisableMenu) { 
   ::load_scripts_after_login_once()
   if (!isInReloading())
     run_reactive_gui()

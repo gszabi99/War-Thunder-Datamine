@@ -45,7 +45,7 @@ def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate 
   let azimuthSectorSize = float2(size.x * 0.9, size.y * 0.85)
   draw_round_radar(ctx, data, azimuthSectorPos, azimuthSectorSize)
 
-  let separator <- to_array_move([[float2[2] pos + float2(-size.x * 0.1, size.y * 0.65); pos + float2(size.x * 1.1, size.y * 0.65)]])
+  let separator <- to_array_move(fixed_array<float2>(pos + float2(-size.x * 0.1, size.y * 0.65), pos + float2(size.x * 1.1, size.y * 0.65)))
   ctx |> render_line_aa(separator, false, data.lineWidth, float2(0., 0.), radarScanZoneAzimuthColor)
 
   let elevationSectorPos = pos + float2(size.x * 0.05, size.y * 0.23)
@@ -68,7 +68,7 @@ def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; s
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
 
   foreach_targets() <| $(var target)
-    if target.targetType == int(RadarTargetType TYPE_TARGET)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET)
       var distanceRel = 0.9
       var radialWidthRel = 0.05
       if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
@@ -90,11 +90,11 @@ def draw_targets(var ctx : GuiContext&; data : CanvasParams&; origin : float2; s
         ctx |> setRotViewTm(pos.x, pos.y, losAngle, 0., false)
 
         let los = sqrt(target.losSpeed * target.losSpeed + target.losHorSpeed * target.losHorSpeed) * speedMaxInv * vectorLenMax
-        let spd <- to_array_move([[float2[2] pos; pos + float2(0., los)]])
+        let spd <- to_array_move(fixed_array<float2>(pos, pos + float2(0., los)))
         ctx |> render_line_aa(spd, false, data.lineWidth, float2(0, 0), targetColor)
 
         if target.isEnemy
-          let shape <- to_array_move([[float2[3] pos + float2(-shapeRadius.x, -shapeRadius.y); pos; pos + float2(shapeRadius.x, -shapeRadius.y)]])
+          let shape <- to_array_move(fixed_array<float2>(pos + float2(-shapeRadius.x, -shapeRadius.y), pos, pos + float2(shapeRadius.x, -shapeRadius.y)))
           if target.isDetected || target.isTracked
             ctx |> render_poly(shape, targetColor)
           else
@@ -110,27 +110,38 @@ let compassColor = white
 def draw_compass(var ctx : GuiContext&; data : CanvasParams&; origin : float2; radius : float; compass : float)
 
   ctx |> set_color(compassColor)
-  let radius2 = float2(radius)
   ctx |> render_sector_aa(origin, float2(radius), float2(PI, 2.0 * PI), data.lineWidth, compassColor, transparentColor)
 
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, 15)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(15);
-  for i in range(-2, 5)
-    let markVal = (int(compass) / 30) * 30 + i * 30
+  ctx |> set_font_ht(15)
+  for i in range(-9, 10)
+    let markVal = (int(compass) / 10) * 10 + i * 10
     let diff = (compass - float(markVal)) * PI / 180.
     let markDir = float2(-sin(diff), -cos(diff))
     let markPos1 = origin + markDir * radius
-    let markPos2 = origin + markDir * radius * 1.05
-    let markCoord <- to_array_move([[float2[2] markPos1;
-      markPos2]])
+    let markPos2 = origin + markDir * radius * 0.95
+    let markCoord <- to_array_move(fixed_array<float2>(markPos1,
+      markPos2))
     ctx |> render_line_aa(markCoord, false, data.lineWidth, float2(0., 0.), compassColor)
-    let text = "{markVal / 10}"
-    let markStrBox = get_str_bbox(text, text |> length(), fctx)
-    let markTextDist = ctx |> hdpx(10.0)
-    ctx |> goto_xy(markPos2.x + markDir.x * markTextDist - 0.5 * markStrBox.width.x, markPos2.y + markDir.y * markTextDist + 0.5 * markStrBox.width.y)
-    ctx |> draw_str_scaled(1.0, text, text |> length())
+    let azimuth = floori(norm_ang_deg(float(markVal)))
+    if azimuth % 30 == 0
+      var text = ""
+      if azimuth == 0
+        text = "N"
+      elif azimuth == 90
+        text = "E"
+      elif azimuth == 180
+        text = "S"
+      elif azimuth == 270
+        text = "W"
+      else
+        text = fmt(":02d", azimuth / 10)
+      let markStrBox = get_str_bbox(text, text |> length(), fctx)
+      let markTextDist = ctx |> hdpx(7.0)
+      ctx |> goto_xy(markPos2.x - markDir.x * markTextDist - 0.5 * markStrBox.width.x, markPos2.y - markDir.y * markTextDist + 0.5 * markStrBox.width.y)
+      ctx |> draw_str_scaled(1.0, text, text |> length())
 
 let ownShipColor = white
 let radarScanZoneAzimuthColor = white
@@ -145,15 +156,15 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   let origin = pos + size * 0.5
 
   let ownShipRadius = float2(0.02, 0.05) * radius
-  let ownShip <- to_array_move([[float2[5] origin + float2(0, -ownShipRadius.y); origin; origin + float2(-ownShipRadius.x, ownShipRadius.y); origin + float2(ownShipRadius.x, ownShipRadius.y); origin]])
+  let ownShip <- to_array_move(fixed_array<float2>(origin + float2(0, -ownShipRadius.y), origin, origin + float2(-ownShipRadius.x, ownShipRadius.y), origin + float2(ownShipRadius.x, ownShipRadius.y), origin))
   ctx |> render_line_aa(ownShip, false, data.lineWidth, float2(0., 0.), ownShipColor)
 
   let elevationRangeInv = 1.0 / max(get_radar_hud_elevation_max() - get_radar_hud_elevation_min(), 0.0)
-  let elevationMarks = [[float[] - 60.0; -40.0; -20.0; -10.0; -5.0; 0.0; 5.0; 10.0; 20.0; 40.0; 60.0]]
+  let elevationMarks = fixed_array(-60.0, -40.0, -20.0, -10.0, -5.0, 0.0, 5.0, 10.0, 20.0, 40.0, 60.0)
   let elevationScaleHalfSize = size.y * 0.5
   let elevationMarkLen = radius * 0.07
   for elevationMark in elevationMarks
-    let elevationMarkLine <- to_array_move([[float2[2] origin + float2(-radius + size.x * 0.1, -0.25 * size.y + elevationMark * PI / 180.0 * elevationRangeInv * elevationScaleHalfSize); origin + float2(-radius + size.x * 0.1 - elevationMarkLen, -0.25 * size.y + elevationMark * PI / 180.0 * elevationRangeInv * elevationScaleHalfSize)]])
+    let elevationMarkLine <- to_array_move(fixed_array<float2>(origin + float2(-radius + size.x * 0.1, -0.25 * size.y + elevationMark * PI / 180.0 * elevationRangeInv * elevationScaleHalfSize), origin + float2(-radius + size.x * 0.1 - elevationMarkLen, -0.25 * size.y + elevationMark * PI / 180.0 * elevationRangeInv * elevationScaleHalfSize)))
     ctx |> render_line_aa(elevationMarkLine, false, data.lineWidth, float2(0., 0.), radarScanZoneElevationMarksColor)
   let tc = float2(0., 0.)
 
@@ -169,10 +180,10 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
   let scanAzimuthMax = get_radar_hud_scan_azimuth_max()
   if (scanAzimuthMax - scanAzimuthMin > 0.01)
     let scanSectorLeftDir = float2(cos(scanAzimuthMin + PI * 0.5), sin(scanAzimuthMin + PI * 0.5))
-    let scanSectorLeft <- to_array_move([[float2[2] origin - scanSectorLeftDir * 0.2 * radius; origin - scanSectorLeftDir * 1.1 * radius]])
+    let scanSectorLeft <- to_array_move(fixed_array<float2>(origin - scanSectorLeftDir * 0.2 * radius, origin - scanSectorLeftDir * 1.1 * radius))
     ctx |> render_line_aa(scanSectorLeft, false, data.lineWidth, float2(0., 0.), radarScanZoneAzimuthColor)
     let scanSectorRightDir = float2(cos(scanAzimuthMax + PI * 0.5), sin(scanAzimuthMax + PI * 0.5))
-    let scanSectorRight <- to_array_move([[float2[2] origin - scanSectorRightDir * 0.2 * radius; origin - scanSectorRightDir * 1.1 * radius]])
+    let scanSectorRight <- to_array_move(fixed_array<float2>(origin - scanSectorRightDir * 0.2 * radius, origin - scanSectorRightDir * 1.1 * radius))
     ctx |> render_line_aa(scanSectorRight, false, data.lineWidth, float2(0., 0.), radarScanZoneAzimuthColor)
     ctx |> render_sector_aa(origin, radius2 * 1.1, float2(scanAzimuthMin - PI * 0.5, scanAzimuthMax - PI * 0.5), data.lineWidth, radarScanZoneAzimuthColor, transparentColor)
 
@@ -189,9 +200,9 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
       let left = float2(fwd.y, -fwd.x)
       let spiScreenPos = origin + float2(dot(left, dirToSpi2), -dot(fwd, dirToSpi2)) / (get_radar_hud_distance_max() * 1000.0) * radius
 
-      let spiShape1 <- to_array_move([[float2[2] spiScreenPos - float2(-spiRadius, -spiRadius); spiScreenPos - float2(spiRadius,  spiRadius)]])
+      let spiShape1 <- to_array_move(fixed_array<float2>(spiScreenPos - float2(-spiRadius, -spiRadius), spiScreenPos - float2(spiRadius,  spiRadius)))
       ctx |> render_line_aa(spiShape1, false, data.lineWidth, float2(0., 0.), radarSpiColor)
-      let spiShape2 <- to_array_move([[float2[2] spiScreenPos - float2(-spiRadius,  spiRadius); spiScreenPos - float2(spiRadius, -spiRadius)]])
+      let spiShape2 <- to_array_move(fixed_array<float2>(spiScreenPos - float2(-spiRadius,  spiRadius), spiScreenPos - float2(spiRadius, -spiRadius)))
       ctx |> render_line_aa(spiShape2, false, data.lineWidth, float2(0., 0.), radarSpiColor)
 
   if get_radar_hud_cue_visible()
@@ -207,15 +218,15 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
     let cueRadiusFar  = (cueDistRel + cueDistHalfWidthRel) * radius
 
     let cueLeftDir = float2(cos(cueAzimuthLeft + PI * 0.5), sin(cueAzimuthLeft + PI * 0.5))
-    let cueLeft <- to_array_move([[float2[2] origin - cueLeftDir * cueRadiusNear; origin - cueLeftDir * cueRadiusFar]])
+    let cueLeft <- to_array_move(fixed_array<float2>(origin - cueLeftDir * cueRadiusNear, origin - cueLeftDir * cueRadiusFar))
     ctx |> render_line_aa(cueLeft, false, data.lineWidth, float2(0., 0.), radarScanZoneAzimuthColor)
     let cueRightDir = float2(cos(cueAzimuthRight + PI * 0.5), sin(cueAzimuthRight + PI * 0.5))
-    let cueRight <- to_array_move([[float2[2] origin - cueRightDir * cueRadiusNear; origin - cueRightDir * cueRadiusFar]])
+    let cueRight <- to_array_move(fixed_array<float2>(origin - cueRightDir * cueRadiusNear, origin - cueRightDir * cueRadiusFar))
     ctx |> render_line_aa(cueRight, false, data.lineWidth, float2(0., 0.), radarScanZoneAzimuthColor)
 
   ctx |> set_color(radarInfoColor)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(15);
+  ctx |> set_font_ht(15)
 
   let distMaxStr = "{fmt(": 3d", roundi(get_radar_hud_distance_max() * kmToNm))} NM"
   ctx |> goto_xy(pos.x + size.x * 1.0, pos.y + size.y * 0.05)
@@ -232,7 +243,7 @@ def draw_round_radar(var ctx : GuiContext&; data : CanvasParams&; pos : float2; 
 
   ctx |> render_sector_aa(origin, radius2 * 0.5, float2(PI, 2.0 * PI), data.lineWidth, radarInnerRingColor, transparentColor)
 
-  let lowerBorder <- to_array_move([[float2[4] origin + float2(-radius2.x, 0.0); origin + float2(-radius2.x, size.y * 0.1); origin + float2(radius2.x, size.y * 0.1); origin + float2(radius2.x, 0.0)]])
+  let lowerBorder <- to_array_move(fixed_array<float2>(origin + float2(-radius2.x, 0.0), origin + float2(-radius2.x, size.y * 0.1), origin + float2(radius2.x, size.y * 0.1), origin + float2(radius2.x, 0.0)))
   ctx |> render_line_aa(lowerBorder, false, data.lineWidth, float2(0., 0.), radarScanZoneAzimuthColor)
 
 def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float2; size : float2)
@@ -248,7 +259,7 @@ def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float
   let maxHei = size.y / size.x * distMax * 1000.
 
   foreach_targets() <| $(var target)
-    if target.targetType == int(RadarTargetType TYPE_TARGET)
+    if target.targetType == int(RadarTargetType.TYPE_TARGET)
       var distanceRel = 0.9
       var heiRel = 0.
       if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
@@ -266,11 +277,11 @@ def draw_targets_hei(var ctx : GuiContext&; data : CanvasParams&; origin : float
         ctx |> setRotViewTm(pos.x, pos.y, losAngle, 0., false)
 
         let los = sqrt(target.losSpeed * target.losSpeed + target.losHorSpeed * target.losHorSpeed) * speedMaxInv * vectorLenMax
-        let spd <- to_array_move([[float2[2] pos; pos + float2(0., los)]])
+        let spd <- to_array_move(fixed_array<float2>(pos, pos + float2(0., los)))
         ctx |> render_line_aa(spd, false, data.lineWidth, float2(0, 0), targetColor)
 
         if target.isEnemy
-          let shape <- to_array_move([[float2[3] pos + float2(-shapeRadius.x, -shapeRadius.y); pos; pos + float2(shapeRadius.x, -shapeRadius.y)]])
+          let shape <- to_array_move(fixed_array<float2>(pos + float2(-shapeRadius.x, -shapeRadius.y), pos, pos + float2(shapeRadius.x, -shapeRadius.y)))
           if target.isDetected || target.isTracked
             ctx |> render_poly(shape, targetColor)
           else
@@ -290,26 +301,26 @@ def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : floa
   let origin = pos + float2(0.0, size.y * 0.5)
 
   let verticalSize = float2(size.x * 0.85, size.y * 0.3)
-  let vertical <- to_array_move([[float2[2] origin + float2(size.x - verticalSize.x, 0.0); origin + float2(size.x - verticalSize.x, verticalSize.y)]])
+  let vertical <- to_array_move(fixed_array<float2>(origin + float2(size.x - verticalSize.x, 0.0), origin + float2(size.x - verticalSize.x, verticalSize.y)))
   ctx |> render_line_aa(vertical, false, data.lineWidth, float2(0., 0.), radarElevationVerticalColor)
 
   let plotSize = float2(size.x * 0.75, size.y * 0.25)
   let plotOrigin = origin + float2(size.x - plotSize.x, (verticalSize.y - plotSize.y) * 0.5 + plotSize.y)
 
-  let altitudeDistanceCorner <- to_array_move([[float2[3] origin + float2(size.x - plotSize.x, (verticalSize.y - plotSize.y) * 0.5);
-    origin + float2(size.x - plotSize.x, (verticalSize.y - plotSize.y) * 0.5 + plotSize.y);
-    origin + float2(size.x, (verticalSize.y - plotSize.y) * 0.5 + plotSize.y)]])
+  let altitudeDistanceCorner <- to_array_move(fixed_array<float2>(origin + float2(size.x - plotSize.x, (verticalSize.y - plotSize.y) * 0.5),
+    origin + float2(size.x - plotSize.x, (verticalSize.y - plotSize.y) * 0.5 + plotSize.y),
+    origin + float2(size.x, (verticalSize.y - plotSize.y) * 0.5 + plotSize.y)))
   ctx |> render_line_aa(altitudeDistanceCorner, false, data.lineWidth, float2(0., 0.), radarElevationGridColor)
 
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, 12)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(12);
+  ctx |> set_font_ht(12)
   ctx |> set_color(radarElevationGridColor)
 
   for i in range(-1, 3)
     let rangeMarkPos = float2(plotOrigin.x + (0.25 + float(i) * 0.25) * plotSize.x, plotOrigin.y)
-    let rangeMark <- to_array_move([[float2[2] rangeMarkPos; rangeMarkPos + float2(0, -size.y * 0.02)]])
+    let rangeMark <- to_array_move(fixed_array<float2>(rangeMarkPos, rangeMarkPos + float2(0, -size.y * 0.02)))
     ctx |> render_line_aa(rangeMark, false, data.lineWidth, float2(0., 0.), radarElevationGridColor)
 
     let distMaxStr = "{fmt(":d", roundi(get_radar_hud_distance_max() * (0.25 + float(i) * 0.25) * kmToNm))}"
@@ -329,7 +340,7 @@ def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : floa
     let ownShipPos = plotOrigin + float2(0, -min(ownAlt / altMax * 0.001, 1.0) * plotSize.y)
 
     let ownShipRadius = float2(0.03, 0.01) * size.y
-    let ownShip <- to_array_move([[float2[5] ownShipPos + float2(ownShipRadius.x, 0); ownShipPos; ownShipPos + float2(-ownShipRadius.x, -ownShipRadius.y); ownShipPos + float2(-ownShipRadius.x, ownShipRadius.y); ownShipPos]])
+    let ownShip <- to_array_move(fixed_array<float2>(ownShipPos + float2(ownShipRadius.x, 0), ownShipPos, ownShipPos + float2(-ownShipRadius.x, -ownShipRadius.y), ownShipPos + float2(-ownShipRadius.x, ownShipRadius.y), ownShipPos))
     ctx |> render_line_aa(ownShip, false, data.lineWidth, float2(0., 0.), ownShipColor)
 
     var pitch = 0.0
@@ -344,10 +355,10 @@ def draw_rectangle_radar(var ctx : GuiContext&; data : CanvasParams&; pos : floa
     if scanElevationMax - scanElevationMin > 0.01
       let scanElevationRange = float2(pitch - scanElevationMin, pitch - scanElevationMax)
       let scanElevationMinDir = float2(cos(scanElevationRange.x), sin(scanElevationRange.x))
-      let scanElevationMinLine <- to_array_move([[float2[2] ownShipPos + scanElevationMinDir * plotSize.x * 0.2; ownShipPos + scanElevationMinDir * plotSize.x]])
+      let scanElevationMinLine <- to_array_move(fixed_array<float2>(ownShipPos + scanElevationMinDir * plotSize.x * 0.2, ownShipPos + scanElevationMinDir * plotSize.x))
       ctx |> render_line_aa(scanElevationMinLine, false, data.lineWidth, float2(0., 0.), radarScanZoneElevationColor)
       let scanElevationMaxDir = float2(cos(scanElevationRange.y), sin(scanElevationRange.y))
-      let scanElevationMaxLine <- to_array_move([[float2[2] ownShipPos + scanElevationMaxDir * plotSize.x * 0.2; ownShipPos + scanElevationMaxDir * plotSize.x]])
+      let scanElevationMaxLine <- to_array_move(fixed_array<float2>(ownShipPos + scanElevationMaxDir * plotSize.x * 0.2, ownShipPos + scanElevationMaxDir * plotSize.x))
       ctx |> render_line_aa(scanElevationMaxLine, false, data.lineWidth, float2(0., 0.), radarScanZoneElevationColor)
 
     draw_targets_hei(ctx, data, ownShipPos, plotSize)

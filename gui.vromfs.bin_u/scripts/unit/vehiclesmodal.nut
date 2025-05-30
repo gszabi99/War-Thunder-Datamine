@@ -14,6 +14,7 @@ let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { showAirExpWpBonus } = require("%scripts/bonusModule.nut")
 let { showUnitDiscount } = require("%scripts/discounts/discountUtils.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 const OPEN_RCLICK_UNIT_MENU_AFTER_SELECT_TIME = 500 
                                                     
@@ -334,7 +335,7 @@ local handlerClass = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnitBought(p) {
-    ::update_gamercards()
+    updateGamercards()
     this.checkUnitItemAndUpdate(getAircraftByName(p?.unitName))
   }
 

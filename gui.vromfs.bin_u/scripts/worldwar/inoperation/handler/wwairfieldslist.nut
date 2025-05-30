@@ -13,6 +13,8 @@ let { wwGetAirfieldsCount, wwGetSelectedAirfield } = require("worldwar")
 let { worldWarMapControls } = require("%scripts/worldWar/bhvWorldWarMap.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { getCurrentOperation, getAirArmiesNumberByGroupIdx
+} = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
 gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
   wndType = handlerType.CUSTOM
@@ -212,7 +214,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
       return
 
     this.selectedGroupAirArmiesNumber.cur = this.calcSelectedGroupAirArmiesNumber(airfield)
-    this.selectedGroupAirArmiesNumber.max = ::g_operations.getCurrentOperation().getGroupAirArmiesLimit(airfield.airfieldType.name)
+    this.selectedGroupAirArmiesNumber.max = getCurrentOperation().getGroupAirArmiesLimit(airfield.airfieldType.name)
   }
 
   function fillArmyLimitDescription(index) {
@@ -234,7 +236,7 @@ gui_handlers.WwAirfieldsList <- class (BaseGuiHandler) {
   function calcSelectedGroupAirArmiesNumber(airfield) {
     let availableArmiesArray = airfield.getAvailableFormations()
     let selectedGroupIdx = availableArmiesArray?[0].getArmyGroupIdx() ?? 0
-    local armyCount = ::g_operations.getAirArmiesNumberByGroupIdx(selectedGroupIdx,
+    local armyCount = getAirArmiesNumberByGroupIdx(selectedGroupIdx,
       airfield.airfieldType.overrideUnitType)
     for (local idx = 0; idx < g_world_war.getAirfieldsCount(); idx++) {
       let af = g_world_war.getAirfieldByIndex(idx)

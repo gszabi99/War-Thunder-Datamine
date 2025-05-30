@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/invalid_user_id.nut" import INVALID_USER_ID
+from "%scripts/controls/controlsConsts.nut" import optionControlType
 
 let contactsClient = require("contactsClient.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -20,6 +21,9 @@ let { contactEvent, statusGroupsToRequest, GAME_GROUP_NAME } = require("%scripts
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { isPlayerInContacts, isMaxPlayersInContactList } = require("%scripts/contacts/contactsChecks.nut")
 let { find_contact_by_name_and_do, update_contacts_by_list } = require("%scripts/contacts/contactsActions.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { USEROPT_ALLOW_ADDED_TO_CONTACTS } = require("%scripts/options/optionsExtNames.nut")
+let { registerOption } = require("%scripts/options/optionsExt.nut")
 
 let logC = log_with_prefix("[CONTACTS STATE] ")
 
@@ -116,7 +120,7 @@ function onUpdateContactsCb(result) {
     updateContactsGroups(result.groups)
 
   broadcastEvent(contactEvent.CONTACTS_GROUP_UPDATE, { groupName = null })
-  ::update_gamercards()
+  updateGamercards()
 }
 
 function fetchContacts() {
@@ -167,7 +171,7 @@ function searchContactsOnline(request, callback = null) {
     "cln_find_users_by_nick_prefix_json",
     request,
     function (result) {
-      if (!(result?.result?.success ?? true)) {
+      if (!(result?.result.success ?? true)) {
         searchContactsResults({})
         if (callback)
           callback()
@@ -292,6 +296,18 @@ let removeContact = @(player, groupName)
 let rejectContact = @(player) execContactsCharAction(player.uid, "contacts_reject_request",
   @() sendFriendChangedEvent(player.uid.tointeger()))
 
+function fillUseroptAllowAddedToContacts(_optionId, descr, _context) {
+  descr.id = "allow_added_to_contacts"
+  descr.controlType = optionControlType.CHECKBOX
+  descr.controlName <- "switchbox"
+  descr.value = isMeAllowedToBeAddedToContacts.get()
+  descr.defaultValue = true
+  descr.defVal <- descr.defaultValue
+}
+
+registerOption(USEROPT_ALLOW_ADDED_TO_CONTACTS, fillUseroptAllowAddedToContacts,
+  @(value, _descr, _optionId) setAbilityToBeAddedToContacts(value))
+
 addListenersWithoutEnv({
   PostboxNewMsg = function(mail_obj) {
     if (mail_obj.mail?.subj == "notify_contacts_update")
@@ -409,7 +425,4 @@ return {
   rejectContact
   updatePresencesByList
   execContactsCharAction
-
-  isMeAllowedToBeAddedToContacts
-  setAbilityToBeAddedToContacts
 }

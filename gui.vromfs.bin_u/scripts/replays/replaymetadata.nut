@@ -80,7 +80,8 @@ let saveReplayScriptCommentsBlk = function(blk) {
 let restoreReplayScriptCommentsBlk = function(replayPath) {
   
   let commentsBlk = get_replay_info(replayPath)?.comments
-  let playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData?.playersInfo) || {}
+  let playersInfo = datablockConverter.blkToData(commentsBlk?.uiScriptsData.playersInfo) || {}
+  let playersMatchingInfo = datablockConverter.blkToData(commentsBlk?.matchingInfo)
 
   
   if (!playersInfo.len()) {
@@ -95,6 +96,8 @@ let restoreReplayScriptCommentsBlk = function(replayPath) {
         clanTag = mplayer?.clanTag
         squad = mplayer?.squadId ?? INVALID_SQUAD_ID
         auto_squad = !!(mplayer?.autoSquad ?? true)
+        crafts_info = playersMatchingInfo?[mplayer.userId]?.crafts_info
+        mrank = playersMatchingInfo?[mplayer.userId]?.mrank ?? 0
       }
     }
   }

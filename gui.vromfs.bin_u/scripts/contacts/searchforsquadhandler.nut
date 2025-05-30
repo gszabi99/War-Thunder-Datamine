@@ -22,6 +22,7 @@ let QUEUE_TYPE_BIT = require("%scripts/queue/queueTypeBit.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { updateClanContacts } = require("%scripts/clans/clanActions.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
+let { canSquad } = require("%scripts/squads/squadUtils.nut")
 
 function guiStartSearchSquadPlayer(_ = null) {
   if (!g_squad_manager.canInviteMember()) {
@@ -112,7 +113,7 @@ gui_handlers.SearchForSquadHandler <- class (ContactsHandler) {
         && g_squad_manager.canInviteMemberByPlatform(contactName)
         && !g_squad_manager.isPlayerInvited(thisCapture.curPlayer?.uid ?? "", contactName)
         && canInvite
-        && ::g_squad_utils.canSquad()
+        && canSquad()
 
       showObjById("btn_squadInvite_bottom", showSquadInvite, thisCapture.scene)
     })

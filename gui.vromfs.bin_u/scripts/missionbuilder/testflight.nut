@@ -12,8 +12,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getLastWeapon, getTorpedoAutoUpdateDepthByDiff } = require("%scripts/weaponry/weaponryInfo.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj, loadHandler, handlersManager
-} = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { getCurrentPreset, bombNbr, hasCountermeasures, hasBombDelayExplosion } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { isTripleColorSmokeAvailable } = require("%scripts/options/optionsManager.nut")
 let actionBarInfo = require("%scripts/hud/hudActionBarInfo.nut")
@@ -33,7 +33,7 @@ let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut"
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getUnitSlotRankText } = require("%scripts/slotbar/slotbarView.nut")
 let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
-let { isUnitInSlotbar, isUnitAvailableForGM } = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar, isUnitAvailableForGM } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { guiStartBuilder, guiStartFlight, guiStartCdOptions
 } = require("%scripts/missions/startMissionsList.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
@@ -43,10 +43,11 @@ let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManag
 let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
 let DataBlock = require("DataBlock")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
-let { enable_current_modifications } = require("%scripts/weaponry/weaponryActions.nut")
+let { enable_current_modifications, updateBulletCountOptions } = require("%scripts/weaponry/weaponryActions.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
-let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
+let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 ::missionBuilderVehicleConfigForBlk <- {} 
 
@@ -161,7 +162,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     if (!air)
       return
 
-    let bulletGroups = this.weaponsSelectorWeak?.bulletsManager.getBulletsGroups() ?? []
+    let bulletGroups = this.weaponsSelectorWeak?.getBulletsGroups() ?? []
     foreach (_idx, bulGroup in bulletGroups)
       this.showOptionRow(bulGroup.getOption(), bulGroup.active)
   }
@@ -323,7 +324,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onMissionBuilder() {
-    if (!::g_squad_utils.canJoinFlightMsgBox({
+    if (!canJoinFlightMsgBox({
         maxSquadSize = getMaxPlayersForGamemode(GM_BUILDER)
       }))
       return
@@ -350,8 +351,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
   }
 
   function onApply(_obj) {
-    let bulletsManager = this.weaponsSelectorWeak?.bulletsManager
-    if (!bulletsManager || !bulletsManager.checkChosenBulletsCount())
+    if (!this.weaponsSelectorWeak?.checkChosenBulletsCount())
       return
 
     broadcastEvent("BeforeStartTestFlight")
@@ -363,7 +363,7 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
       return this.msgBox("not_available", this.getCantFlyText(this.unit), [["ok", function() {} ]], "ok", { cancel_fn = function() {} })
 
     if (isInArray(this.getSceneOptValue(USEROPT_DIFFICULTY), ["hardcore", "custom"]))
-      if (!::check_diff_pkg(g_difficulty.SIMULATOR.diffCode))
+      if (!checkDiffPkg(g_difficulty.SIMULATOR.diffCode))
         return
 
     if (this.unit)
@@ -472,11 +472,8 @@ gui_handlers.TestFlight <- class (gui_handlers.GenericOptionsModal) {
     let unitName = this.unit.name
     unitNameForWeapons.set(unitName)
 
-    if(this.weaponsSelectorWeak)
-      this.weaponsSelectorWeak.bulletsManager.updateBulletCountOptions()
-    else
-      UnitBulletsManager(this.unit).updateBulletCountOptions([])
-
+    let bulletGroups = this.weaponsSelectorWeak?.getBulletsGroups() ?? []
+    updateBulletCountOptions(this.unit, bulletGroups)
 
     enable_bullets_modifications(unitName)
     enable_current_modifications(unitName)

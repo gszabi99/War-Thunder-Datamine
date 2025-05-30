@@ -113,7 +113,7 @@ function getWeaponsByTypes(unitBlk, weaponsBlk, isCommon = true) {
         continue
       }
 
-      addSlotWeaponsFromPreset(res, slot, curPreset, unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT)
+      addSlotWeaponsFromPreset(res, slot, curPreset, unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT)
     }
   }
   
@@ -152,7 +152,7 @@ function getUnitWeapons(unitBlk) {
   let slots = getUnitWeaponSlots(unitBlk).filter(@(s) s?.tier != null)
   if (slots.len() > 0)
     foreach (slot in slots)
-      res.extend(getSlotWeapons(slot, unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT))
+      res.extend(getSlotWeapons(slot, unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT))
   else
     foreach (preset in getUnitPresets(unitBlk))
       foreach (weapon in getPresetWeaponsByPath(unitBlk, preset.blk)) {
@@ -175,7 +175,7 @@ function getSlotsWeaponsForEditPreset(unitBlk) {
   foreach (slot in slots) {
     let slotWeapons = []
     foreach (preset in (slot % "WeaponPreset"))
-      addSlotWeaponsFromPreset(slotWeapons, slot, preset, unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT, isEqualEditSlots)
+      addSlotWeaponsFromPreset(slotWeapons, slot, preset, unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT, isEqualEditSlots)
     res.extend(slotWeapons)
   }
 
@@ -184,7 +184,7 @@ function getSlotsWeaponsForEditPreset(unitBlk) {
 
 function getUnitWeaponsByTier(unit, blkPath, tierId) {
     let unitBlk = getFullUnitBlk(unit.name)
-    let tiersCount = unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT
+    let tiersCount = unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT
 
     return unit.hasWeaponSlots
     ? (getSlotWeapons(getUnitWeaponSlots(unitBlk).findvalue(
@@ -198,7 +198,7 @@ function getUnitWeaponsByPreset(unit, blkPath, presetName) {
   if (unit.hasWeaponSlots) {
     local res = []
     foreach (slot in getUnitWeaponSlots(unitBlk))
-      foreach (weapon in getSlotWeapons(slot, unitBlk?.WeaponSlots?.weaponsSlotCount ?? MIN_TIERS_COUNT))
+      foreach (weapon in getSlotWeapons(slot, unitBlk?.WeaponSlots.weaponsSlotCount ?? MIN_TIERS_COUNT))
         if (getWeaponBlkParams(weapon.blk, {}).weaponBlkPath == blkPath
           && weapon.presetId == presetName)
           res.append(weapon)
@@ -212,7 +212,7 @@ function getUnitWeaponsByPreset(unit, blkPath, presetName) {
 
 function getDefaultPresetId(unitBlk) {
   foreach (block in getUnitPresets(unitBlk))
-    if (block.name.indexof("default") != null || block?.tags?.free)
+    if (block.name.indexof("default") != null || block?.tags.free)
       return block.name
   return null
 }

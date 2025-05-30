@@ -85,7 +85,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
     if (hasTable) {
       local rowIdx = 0
       foreach (row in lbRows)
-        data += this.getTableRowMarkup(row, rowIdx++, selfPos)
+        data = "".concat(data, this.getTableRowMarkup(row, rowIdx++, selfPos))
 
       if (rowIdx < this.rowsInPage) {
         for (local i = rowIdx; i < this.rowsInPage; i++)
@@ -93,7 +93,7 @@ gui_handlers.LeaderboardTable <- class (gui_handlers.BaseGuiHandlerWT) {
         this.isLastPage = true
       }
 
-      data += this.generateSelfRow(selfRow)
+      data = "".concat(data, this.generateSelfRow(selfRow))
     }
 
     let lbTable = this.scene.findObject("lb_table")

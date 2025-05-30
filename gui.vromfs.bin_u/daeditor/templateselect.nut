@@ -31,14 +31,14 @@ function scrollByName(text) {
 
 function scrollBySelection() {
   scrollHandler.scrollToChildren(function(desc) {
-    return ("tpl_name" in desc) && desc.tpl_name==selectedItem.value
+    return ("tpl_name" in desc) && desc.tpl_name==selectedItem.get()
   }, 2, false, true)
 }
 
 function doSelectTemplate(tpl_name) {
   selectedItem(tpl_name)
-  if (selectedItem.value) {
-    let finalTemplateName = selectedItem.value + templatePostfixText.value
+  if (selectedItem.get()) {
+    let finalTemplateName = selectedItem.get() + templatePostfixText.get()
     entity_editor.get_instance().selectEcsTemplate(finalTemplateName)
   }
 }
@@ -49,7 +49,7 @@ let filter = nameFilter(filterText, {
   function onChange(text) {
     filterText(text)
 
-    if (selectedItem.value && text.len()>0 && selectedItem.value.tolower().contains(text.tolower()))
+    if (selectedItem.get() && text.len()>0 && selectedItem.get().tolower().contains(text.tolower()))
       scrollBySelection()
     else if (text.len())
       scrollByName(text)
@@ -98,13 +98,13 @@ function listRow(tpl_name, idx) {
   let stateFlags = Watched(0)
 
   return function() {
-    let isSelected = selectedItem.value == tpl_name
+    let isSelected = selectedItem.get() == tpl_name
 
     local color
     if (isSelected) {
       color = colors.Active
     } else {
-      color = (stateFlags.value & S_TOP_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
+      color = (stateFlags.get() & S_TOP_HOVER) ? colors.GridRowHover : colors.GridBg[idx % colors.GridBg.len()]
     }
 
     return {
@@ -129,20 +129,20 @@ function listRow(tpl_name, idx) {
   }
 }
 
-let selectedGroupTemplates = Computed(@() editorIsActive.value ? entity_editor.get_instance()?.getEcsTemplates(selectedTemplatesGroup.value) ?? [] : [])
+let selectedGroupTemplates = Computed(@() editorIsActive.get() ? entity_editor.get_instance()?.getEcsTemplates(selectedTemplatesGroup.get()) ?? [] : [])
 
 let filteredTemplates = Computed(function() {
   let result = []
-  foreach (tplName in selectedGroupTemplates.value) {
-    if (filterText.value.len()==0 || tplName.tolower().contains(filterText.value.tolower())) {
+  foreach (tplName in selectedGroupTemplates.get()) {
+    if (filterText.get().len()==0 || tplName.tolower().contains(filterText.get().tolower())) {
       result.append(tplName)
     }
   }
   return result
 })
 
-let filteredTemplatesCount = Computed(@() filteredTemplates.value.len())
-let selectedGroupTemplatesCount = Computed(@() selectedGroupTemplates.value.len())
+let filteredTemplatesCount = Computed(@() filteredTemplates.get().len())
+let selectedGroupTemplatesCount = Computed(@() selectedGroupTemplates.get().len())
 
 
 local showWholeList = false
@@ -175,8 +175,8 @@ local doRepeatValidateTemplates = @(_idx) null
 function doValidateTemplates(idx) {
   const validateAfterName = ""
   local skipped = 0
-  while (idx < selectedGroupTemplates.value.len()) {
-    let tplName = selectedGroupTemplates.value[idx]
+  while (idx < selectedGroupTemplates.get().len()) {
+    let tplName = selectedGroupTemplates.get()[idx]
     if (tplName > validateAfterName) {
       vlog($"Validating template {tplName}...")
       selectedItem(tplName)
@@ -206,15 +206,15 @@ function dialogRoot() {
   let maxTemplatesInList = 1000
 
   function listContent() {
-    if (selectedTemplatesGroup.value != showWholeListGroup) {
+    if (selectedTemplatesGroup.get() != showWholeListGroup) {
       showWholeList = false
-      showWholeListGroup = selectedTemplatesGroup.value
+      showWholeListGroup = selectedTemplatesGroup.get()
     }
 
     let rows = []
     let idx = 0
-    foreach (tplName in filteredTemplates.value) {
-      if (filterText.value.len()==0 || tplName.tolower().contains(filterText.value.tolower())) {
+    foreach (tplName in filteredTemplates.get()) {
+      if (filterText.get().len()==0 || tplName.tolower().contains(filterText.get().tolower())) {
         rows.append(listRow(tplName, idx))
       }
       if (!showWholeList && rows.len() >= maxTemplatesInList) {
@@ -234,7 +234,7 @@ function dialogRoot() {
 
   let scrollList = makeVertScroll(listContent, {
     scrollHandler
-    rootBase = class {
+    rootBase = {
       size = flex()
       function onAttach() {
         scrollBySelection()
@@ -250,7 +250,7 @@ function dialogRoot() {
   }
 
   function doCancel() {
-    if (selectedItem.value != null) {
+    if (selectedItem.get() != null) {
       selectedItem(null)
       entity_editor.get_instance().selectEcsTemplate("")
     }
@@ -283,7 +283,7 @@ function dialogRoot() {
             flow = FLOW_HORIZONTAL
             size = [flex(), SIZE_TO_CONTENT]
             children = [
-              txt($"CREATE ENTITY ({filteredTemplatesCount.value}/{selectedGroupTemplatesCount.value})", {
+              txt($"CREATE ENTITY ({filteredTemplatesCount.get()}/{selectedGroupTemplatesCount.get()})", {
                 fontSize = hdpx(15)
                 hplace = ALIGN_CENTER
                 vplace = ALIGN_CENTER
@@ -310,7 +310,7 @@ function dialogRoot() {
             hotkeys = [["^Esc", doCancel]]
             children = [
               textButton("Close", doClose)
-              showDebugButtons.value ? textButton("Validate", @() doValidateTemplates(0), {boxStyle={normal={borderColor=Color(50,50,50,50)}} textStyle={normal={color=Color(80,80,80,80) fontSize=hdpx(12)}}}) : null
+              showDebugButtons.get() ? textButton("Validate", @() doValidateTemplates(0), {boxStyle={normal={borderColor=Color(50,50,50,50)}} textStyle={normal={color=Color(80,80,80,80) fontSize=hdpx(12)}}}) : null
             ]
           }
         ]
@@ -319,7 +319,7 @@ function dialogRoot() {
         size = [sw(17), sh(60)]
         hplace = ALIGN_LEFT
         vplace = ALIGN_CENTER
-        children = templateTooltip.value
+        children = templateTooltip.get()
       }
     ]
   }

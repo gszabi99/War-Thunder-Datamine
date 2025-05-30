@@ -11,8 +11,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let DataBlock = require("DataBlock")
-let { move_mouse_on_child_by_value, select_editbox } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { activateObjsByTable } = require("%sqDagui/daguiUtil.nut")
+let { activateObjsByTable, move_mouse_on_child_by_value, select_editbox
+} = require("%sqDagui/daguiUtil.nut")
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 const LOCAL_SORT_ENTITIES_ID = "saveDataLastSort"

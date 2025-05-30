@@ -18,7 +18,7 @@ let baseLineWidth = LINE_WIDTH * 0.5
 function createCompass(gridStyle, color, backGroundColor, styleText) {
   let markAngleStep = 5.0
   let markAngle = PI * markAngleStep / 180.0
-  let markDashCount = 360.0 / markAngleStep
+  let markDashCount = (360.0 / markAngleStep).tointeger()
   let indicatorRadius = 45
   let azimuthMarkLength = 2
 

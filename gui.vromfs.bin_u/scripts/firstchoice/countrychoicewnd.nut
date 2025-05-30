@@ -4,12 +4,12 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { move_mouse_on_child } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { format } = require("string")
 let { rnd } = require("dagor.random")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewActions.nut")
+let { createBatchTrainCrewRequestBlk } = require("%scripts/crew/crewTrain.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { fillUserNick, unlockCountry, checkUnlockedCountriesByAirs,
   isFirstChoiceShown, getFirstChosenUnitType } = require("%scripts/firstChoice/firstChoice.nut")
@@ -21,9 +21,12 @@ let { OPTIONS_MODE_GAMEPLAY } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { addTask } = require("%scripts/tasker.nut")
-let { getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
+let { getReserveAircraftName } = require("%scripts/slotbar/slotbarStateData.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { getUnitTypesInCountries } = require("%scripts/unit/unitInfo.nut")
+
+let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
 
 local MIN_ITEMS_IN_ROW = 3
 
@@ -73,7 +76,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       this.isFixedUnitType = true
     }
 
-    this.countriesUnits = ::get_unit_types_in_countries()
+    this.countriesUnits = getUnitTypesInCountries()
     this.countries = []
     foreach (country in shopCountriesList)
       if (country in visibleCountries)
@@ -106,7 +109,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function checkSelection(country, unitType) {
-    let availData = ::get_unit_types_in_countries()
+    let availData = getUnitTypesInCountries()
     return availData?[country][unitType.esUnitType] ?? false
   }
 
@@ -276,7 +279,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
                                userIdStr.value,
                                this.selectedUnitType.name,
                                toString(this.countries),
-                               toString(::get_unit_types_in_countries(), 2)
+                               toString(getUnitTypesInCountries(), 2)
                               )
       script_net_assert_once("empty countries list", message)
     }
@@ -434,7 +437,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         
         
         
-        ::slotbarPresets.newbieInit(presetsData)
+        slotbarPresets.newbieInit(presetsData)
 
         checkUnlockedCountriesByAirs()
         broadcastEvent("EventsDataUpdated")
@@ -461,7 +464,7 @@ gui_handlers.CountryChoiceHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getCountriesByUnitType(unitType) {
     let res = []
-    foreach (countryName, countryData in ::get_unit_types_in_countries())
+    foreach (countryName, countryData in getUnitTypesInCountries())
       if (countryData?[unitType])
         res.append(countryName)
 

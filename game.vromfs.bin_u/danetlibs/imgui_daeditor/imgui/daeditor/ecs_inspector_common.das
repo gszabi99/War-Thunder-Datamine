@@ -13,7 +13,7 @@ require DagorDebug3D
 require EcsUtils
 require imgui/imgui_boost
 require strings
-require strings_boost
+require daslib/strings_boost
 require math.base
 require daslib/static_let
 require daslib/safe_addr
@@ -212,7 +212,7 @@ def use_this(blk : block<(val : int#) : void>) { blk |> invoke(0); }
 def use_this(blk : block<(val : uint8#) : void>) { blk |> invoke(uint8(0u)); }
 def use_this(blk : block<(val : uint16#) : void>) { blk |> invoke(uint16(0u)); }
 def use_this(blk : block<(val : uint64#) : void>) { blk |> invoke(uint64(0u)); }
-def use_this(blk : block<(val : string#) : void>) { var str : string# = ""; blk |> invoke(str); }
+def use_this(blk : block<(val : string#) : void>) { let str : string# = ""; blk |> invoke(str); }
 def use_this(blk : block<(val : das_string#) : void>) { using() <| $(var str : das_string) { blk |> invoke(unsafe(reinterpret<das_string#> str)); } }
 def use_this(blk : block<(val : EntityId#) : void>) { blk |> invoke(INVALID_ENTITY_ID); }
 def use_this(blk : block<(val : float#) : void>) { blk |> invoke(0f); }
@@ -413,13 +413,13 @@ def collect_struct_components(prefix : string; data : uint8?; type_name : string
       let field_data = tinfo.basicType == Type.tPointer && tinfo.firstType != null ? *reinterpret<uint8 ??>(data + offset) : data + offset
       let ti & = tinfo.basicType == Type.tPointer && tinfo.firstType != null ? *tinfo.firstType : tinfo
       if field_data == null
-        comps |> emplace(("{prefix}.{field_name}", ComponentRenderInfo(rawData = null, roVal = "null pointer", dasTypeName = "{tinfo.basicType}", typeName = "UnknownBindedStructureFieldType", idx = 0u, componentId = uint16(0))))
+        comps |> emplace(("{prefix}.{field_name}", ComponentRenderInfo(rawData = null, roVal = "null pointer", dasTypeName = "{tinfo.basicType}", typeName = "UnknownBindedStructureFieldType", idx = 0u, componentId = uint16(0), isValidComponent = false)))
         return
 
       if ti.basicType == Type.tHandle && ti.annotation != null
         let compTypeName = get_annotation_name(*ti.annotation)
         if has_inspector(compTypeName) 
-          comps |> emplace(("{prefix}.{field_name}", ComponentRenderInfo(rawData = field_data, roVal = "", dasTypeName = "", typeName = compTypeName, idx = 0u, componentId = uint16(0))))
+          comps |> emplace(("{prefix}.{field_name}", ComponentRenderInfo(rawData = field_data, roVal = "", dasTypeName = "", typeName = compTypeName, idx = 0u, componentId = uint16(0), isValidComponent = false)))
         else
           collect_struct_components("{prefix}.{field_name}", field_data, compTypeName, comps, annotations)
       elif ti.isPod || ti.isConst
@@ -427,7 +427,7 @@ def collect_struct_components(prefix : string; data : uint8?; type_name : string
         var roVal = ""
         if typ == "UnknownBindedStructureFieldType"
           roVal = "{sprint_data(field_data, addr(ti), default<print_flags>)}"
-        comps |> emplace(("{prefix}.{field_name}", ComponentRenderInfo(rawData = field_data, roVal = roVal, dasTypeName = "{ti.basicType}", typeName = typ, idx = 0u, componentId = uint16(0))))
+        comps |> emplace(("{prefix}.{field_name}", ComponentRenderInfo(rawData = field_data, roVal = roVal, dasTypeName = "{ti.basicType}", typeName = typ, idx = 0u, componentId = uint16(0), isValidComponent = false)))
       elif ti.isRefType && ti.annotation != null
         collect_struct_components("{prefix}.{field_name}", field_data, get_annotation_name(*ti.annotation), comps, annotations)
 
@@ -599,7 +599,8 @@ def inspect_item(uid : int; var filter : ImGuiTextFilter; eids : array<EntityId>
         dasTypeName = "",
         typeName = compTypeName,
         idx = idx,
-        componentId = compRef.componentId)))
+        componentId = compRef.componentId,
+        isValidComponent = true)))
 
     comps |> sort() <| $(left; right)
       return left.name < right.name
@@ -700,7 +701,7 @@ def get_annotation_name(ann : rtti::Annotation | rtti::TypeAnnotation)
 [no_aot]
 def invalidate_item(eid : EntityId; refs : array<ComponentRenderInfo#>#)
   for ref in refs
-    if ref.roVal != ""
+    if !ref.isValidComponent
       continue
     nada(getEntityManagerRW() |> getComponentRefRW(eid, ref.componentId))
 

@@ -76,8 +76,8 @@ let class BhvAvatar {
 
     let imgBlk = getConfig()?[image]
     let size = clamp(imgBlk?.size || 1.0, 0.01, 1.0)
-    let x = imgBlk?.pos?.x ?? 0.0
-    let y = imgBlk?.pos?.y ?? 0.0
+    let x = imgBlk?.pos.x ?? 0.0
+    let y = imgBlk?.pos.y ?? 0.0
     let texSize = min(MAX_SMALL_ICON_SIZE_MUL, SHARPEN_SMALL_ICONS / size)
     obj.set_prop_latent("background-repeat",  "part")
     obj.set_prop_latent("background-position",

@@ -183,10 +183,12 @@ function updateDecoratorDescription(obj, handler, decoratorType, decorator, para
   else
     showObjById("progress", false, cObj)
 
-  let iconName = isDefSkin ? ""
-    : hasDecor ? "#ui/gameuiskin#favorite"
-    : "#ui/gameuiskin#locked.svg"
-  cObj.findObject("state")["background-image"] = iconName
+  let stateIcon = cObj.findObject("state")
+  if (stateIcon?.isValid() ?? false) {
+    let iconName = isDefSkin ? ""
+      : hasDecor ? "#ui/gameuiskin#favorite" : "#ui/gameuiskin#locked.svg"
+    stateIcon["background-image"] = iconName
+  }
 }
 
 addTooltipTypes({

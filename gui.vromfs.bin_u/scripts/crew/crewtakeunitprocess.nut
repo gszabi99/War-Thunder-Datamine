@@ -17,10 +17,9 @@ let { isInFlight } = require("gameplayBinding")
 let { addTask } = require("%scripts/tasker.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { checkBalanceMsgBox } = require("%scripts/user/balanceFeatures.nut")
-let { getCrewsListByCountry, selectCrew } = require("%scripts/slotbar/slotbarState.nut")
+let { selectCrew, flushSlotbarUpdate, suspendSlotbarUpdates } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit, purchaseNewCrewSlot, getCrewTrainCost } = require("%scripts/crew/crew.nut")
-let { flushSlotbarUpdate, suspendSlotbarUpdates, getCrewsList
-} = require("%scripts/slotbar/crewsList.nut")
+let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { isInvalidCrewsAllowed } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { isUnitAllowedForRoom, hasUnitRequirementsInRoom, isUnitRequiredForRoom
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")

@@ -33,21 +33,21 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadLocalByScreenSize, saveLocalByScreenSize
 } = require("%scripts/clientState/localProfile.nut")
-let { setContactsHandlerClass } = require("%scripts/contacts/contactsHandlerState.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value, isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { setContactsHandlerClass, getLastContactsSceneShow, setLastContactsSceneShow
+} = require("%scripts/contacts/contactsHandlerState.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
 let { getCustomNick, openNickEditBox } = require("%scripts/contacts/customNicknames.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
-let { CommunicationState } = require("%scripts/gdk/permissions.nut")
 let { tryOpenFriendWishlist } = require("%scripts/wishlist/friendsWishlistManager.nut")
 let { is_console } = require("%sqstd/platform.nut")
 let { isWorldWarEnabled, isWwOperationInviteEnable } = require("%scripts/globalWorldWarScripts.nut")
 let { inviteToWwOperation } = require("%scripts/globalWorldwarUtils.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
+let { canSquad } = require("%scripts/squads/squadUtils.nut")
 
-
-::contacts_prev_scenes <- [] 
-::last_contacts_scene_show <- false
+let contactsPrevScenes = [] 
 
 let sortContacts = @(a, b)
   b.presence.sortOrder <=> a.presence.sortOrder
@@ -142,7 +142,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function updateControlsAllowMask() {
-    if (!::last_contacts_scene_show)
+    if (!getLastContactsSceneShow())
       return
 
     local mask = CtrlsInGui.CTRL_ALLOW_FULL
@@ -157,11 +157,11 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
   function switchScene(obj, newOwner = null, onlyShow = false) {
     if (!checkObj(obj) || (checkObj(this.scene) && this.scene.isEqual(obj))) {
-      if (!onlyShow || !::last_contacts_scene_show)
+      if (!onlyShow || !getLastContactsSceneShow())
         this.sceneShow()
     }
     else {
-      ::contacts_prev_scenes.append({ scene = this.scene, show = ::last_contacts_scene_show, owner = this.owner })
+      contactsPrevScenes.append({ scene = this.scene, show = getLastContactsSceneShow(), owner = this.owner })
       this.owner = newOwner
       this.initScreen(obj)
     }
@@ -175,21 +175,21 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(this.scene))
       return true
 
-    for (local i = ::contacts_prev_scenes.len() - 1; i >= 0; i--) {
-      let prevScene = ::contacts_prev_scenes[i].scene
+    for (local i = contactsPrevScenes.len() - 1; i >= 0; i--) {
+      let prevScene = contactsPrevScenes[i].scene
       if (checkObj(prevScene)) {
-        let handler = ::contacts_prev_scenes[i].owner
+        let handler = contactsPrevScenes[i].owner
         if (!handler.isSceneActiveNoModals() || !prevScene.isVisible())
           continue
-        this.scene = ::contacts_prev_scenes[i].scene
+        this.scene = contactsPrevScenes[i].scene
         this.owner = handler
         this.guiScene = this.scene.getScene()
         this.sceneChanged = true
-        this.sceneShow(::contacts_prev_scenes[i].show || ::last_contacts_scene_show)
+        this.sceneShow(contactsPrevScenes[i].show || getLastContactsSceneShow())
         return true
       }
       else
-        ::contacts_prev_scenes.remove(i)
+        contactsPrevScenes.remove(i)
     }
     this.scene = null
     return false
@@ -207,7 +207,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     this.scene.show(show)
     this.scene.enable(show)
-    ::last_contacts_scene_show = show
+    setLastContactsSceneShow(show)
     if (show) {
       this.validateCurGroup()
       if (!this.reloadSceneData()) {
@@ -278,7 +278,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onUpdate(_obj, dt) {
-    if (::last_contacts_scene_show) {
+    if (getLastContactsSceneShow()) {
       this.updateSizesTimer -= dt
       if (this.updateSizesTimer <= 0) {
         this.updateSizesTimer = this.updateSizesDelay
@@ -323,7 +323,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       totalContacts = this.getContactsTotalText(gName)
       groupName = gName
     }
-    if (gName == EPL_FRIENDLIST && isInMenu()) {
+    if (gName == EPL_FRIENDLIST && isInMenu.get()) {
       if (hasFeature("Invites") && !isGuestLogin.value)
         view.playerButton.append(this.createPlayerButtonView("btnInviteFriend", "#ui/gameuiskin#btn_invite_friend", "onInviteFriend"))
     }
@@ -369,12 +369,14 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       let obj = gObj.getChild(fIdx)
       let f = playerList?[fIdx]
       if (f == null || visibleContactsCount <= fIdx ) {
+        obj.contact_buttons_contact_uid = ""
         obj.show(false)
         continue
       }
 
       obj.show(true)
       obj.id = $"player_{gName}_{fIdx}"
+      obj.findObject("contact_buttons_holder").hasContactButtons = "no"
       if (isNotFullListVisible && ((visibleContactsCount - 1) == fIdx)) {
         obj.findObject("contactName").setValue(loc("mainmenu/showMore"))
         obj.findObject("contactPresence").setValue("")
@@ -385,7 +387,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         imgObj["background-image"] = ""
         imgObj["background-color"] = ""
         obj.findObject("pilotIconImg").setValue("")
-        obj.findObject("contact_buttons_holder").hasContactButtons = "no"
+        obj.contact_buttons_contact_uid = ""
         continue
       }
       obj.contact_buttons_contact_uid = f.uid
@@ -411,7 +413,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       pilotIconObj.setValue(steamAvatar ?? f.pilotIcon)
 
       if (hasHoverButtons)
-        this.updateContactButtonsVisibility(f, obj.findObject("contact_buttons_holder"))
+        this.updateContactButtonsVisibility(f, obj)
     }
     if (!this.isFillContactsListProcess)
       this.guiScene.setUpdatesEnabled(true, true)
@@ -433,21 +435,20 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       inviteToWwOperation(this.curPlayer.uid)
   }
 
-  function updateContactButtonsVisibility(contact, contact_buttons_holder) {
-    if (contact) {
-      local capturedThis = this
-      contact.checkInteractionStatus(function(comms_state) {
-        capturedThis.updateContactButtonsVisibilityImpl(contact, comms_state, contact_buttons_holder)
-      })
-      return
-    }
-    this.updateContactButtonsVisibilityImpl(contact, CommunicationState.Allowed, contact_buttons_holder)
+  function updateContactButtonsVisibility(contact, contactObj) {
+    let capturedThis = this
+    contact.checkInteractionStatus(function(comms_state) {
+      capturedThis.updateContactButtonsVisibilityImpl(contact, comms_state, contactObj)
+    })
   }
 
-  function updateContactButtonsVisibilityImpl(contact, comms_state, contact_buttons_holder) {
+  function updateContactButtonsVisibilityImpl(contact, comms_state, contactObj) {
     if (!this.checkScene())
       return
+    if (!contactObj?.isValid() || contactObj?.contact_buttons_contact_uid != contact.uid)
+      return
 
+    let contact_buttons_holder = contactObj.findObject("contact_buttons_holder")
     let isWtContact = contact.uid != ""
     contact_buttons_holder.hasContactButtons = isWtContact ? "yes" : "no"
     if (!isWtContact)
@@ -471,7 +472,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     showObjById("btn_friendCreateCustomNick", hasFeature("CustomNicks") && !isMe, contact_buttons_holder)
     showObjById("btn_friendAdd", !isMe && !isFriend && !isBlock && canInteractCrossConsole, contact_buttons_holder)
     showObjById("btn_friendRemove", isFriend, contact_buttons_holder)
-    showObjById("btn_wishlistShow", isFriend && hasFeature("Wishlist") && !is_console && isInMenu(), contact_buttons_holder)
+    showObjById("btn_wishlistShow", isFriend && hasFeature("Wishlist") && !is_console && isInMenu.get(), contact_buttons_holder)
     showObjById("btn_blacklistAdd", !isMe && !isFriend && !isBlock && canBlock, contact_buttons_holder)
     showObjById("btn_blacklistRemove", isBlock && canBlock, contact_buttons_holder)
     showObjById("btn_message", this.owner
@@ -490,7 +491,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       && g_squad_manager.canInviteMemberByPlatform(contactName)
       && !g_squad_manager.isPlayerInvited(contact?.uid ?? "", contactName)
       && canInvite
-      && ::g_squad_utils.canSquad()
+      && canSquad()
 
     let btnObj = showObjById("btn_squadInvite", showSquadInvite, contact_buttons_holder)
     if (btnObj && showSquadInvite && contact?.uidInt64)
@@ -971,7 +972,7 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function isContactsWindowActive() {
-    return this.checkScene() && ::last_contacts_scene_show;
+    return this.checkScene() && getLastContactsSceneShow()
   }
 
   function updateButtonInviteText(btnObj, uid) {
@@ -1236,8 +1237,8 @@ let ContactsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let curScene = this.scene
-    if (::contacts_prev_scenes.findvalue(@(v) curScene.isEqual(v.scene)) == null)
-      ::contacts_prev_scenes.append({ scene = this.scene, show = ::last_contacts_scene_show, owner = this.owner })
+    if (contactsPrevScenes.findvalue(@(v) curScene.isEqual(v.scene)) == null)
+      contactsPrevScenes.append({ scene = this.scene, show = getLastContactsSceneShow(), owner = this.owner })
     this.scene = null
     return
   }

@@ -4,7 +4,7 @@ require DagorDebug3D
 require DagorConsole
 require DagorRandom
 require GamePhys
-require Level
+require level
 require Mission
 require WTDamageModel
 require WTFx
@@ -22,7 +22,7 @@ def damage_area_init(evt : Event;
                      damage_area__maxRise : float)
   let vel = damage_area__fallVel * damage_area__velocityMult
   let speed = length(vel)
-  let verSpeed = min(abs(vel.y), sqrt(2. * damage_area__maxRise * gravity()));
+  let verSpeed = min(abs(vel.y), sqrt(2. * damage_area__maxRise * gravity()))
   let horSpeed = sqrt(square(speed) - square(verSpeed))
   var horVel = float2(vel.x, vel.z)
   horVel = normalize(horVel) * horSpeed
@@ -56,12 +56,12 @@ def damage_area_init_client_es(evt : Event;
     var curVel = len * normalize(dir1 * float(i) + dir2 * float(damage_area__emitterCount - i - 1))
     curVel.y *= rnd_float(1. - damage_area__emitterDispersion, 1. + damage_area__emitterDispersion)
     damage_area__emitterVel |> push(curVel)
-    let fxId = damage_area_create_fx(damage_area__fxType, damage_area__pos1, curVel, true);
+    let fxId = damage_area_create_fx(damage_area__fxType, damage_area__pos1, curVel, true)
     damage_area__emitterFxIds |> push(fxId)
     damage_area__emitterPos |> push(damage_area__pos1)
     damage_area__emitterPosPrev |> push(damage_area__pos1)
     damage_area__burnFxCounts |> push(0)
-  let dbgId = int(DmDebugTool DAMAGE_AREA)
+  let dbgId = int(DmDebugTool.DAMAGE_AREA)
   if (is_dm_dbg_tool_enabled(dbgId))
     dm_dbg_render_clear(dbgId, damage_area__debugCommonId)
     dm_dbg_render_clear(dbgId, damage_area__debugTraceId)
@@ -80,7 +80,7 @@ def damage_area_destroy_client_es(evt : Event;
     damage_area_destroy_fx(burnFxId)
 
 
-[es]
+[es(no_order)]
 def damage_area_update_es(act : UpdateStageInfoAct;
                           var damage_area__move : bool&;
                           var damage_area__pos2 : float3&;
@@ -114,8 +114,8 @@ def damage_area_update_server_es(act : UpdateStageInfoAct;
                                  var damage_area__nextUpdateTime : float&)
   if (act.curTime > damage_area__nextUpdateTime)
     damage_area__nextUpdateTime = act.curTime + 1.
-    var pos2 = damage_area__pos2;
-    pos2.y = get_scene_height(damage_area__pos2, false);
+    var pos2 = damage_area__pos2
+    pos2.y = get_scene_height(damage_area__pos2, false)
     volumetric_damage(damage_area__pos1, pos2, damage_area__radius,
       damage_area__damage, damage_area__damageTypeId, damage_area__offender, damage_area__seed)
   elif (act.curTime >= damage_area__endTime)
@@ -165,20 +165,20 @@ def damage_area_update_client_es(act : UpdateStageInfoAct;
         for j in range(damage_area__burnFxCounts[i], count)
           var fxPos = damage_area__pos1 + dir * (damage_area__burnFxSize * float(j))
           if j > 0
-            fxPos.y = get_scene_height(fxPos, false);
+            fxPos.y = get_scene_height(fxPos, false)
           let burnFxId = damage_area_create_fx(damage_area__burnFxType, fxPos, up, true)
           damage_area__burnFxIds |> push(burnFxId)
         damage_area__burnFxCounts[i] = count
     
-    let dbgId = int(DmDebugTool DAMAGE_AREA)
+    let dbgId = int(DmDebugTool.DAMAGE_AREA)
     if (is_dm_dbg_tool_enabled(dbgId))
       dm_dbg_render_clear(dbgId, damage_area__debugCommonId)
       for i in range(damage_area__emitterCount)
         dm_dbg_render_add_line_3d(dbgId, damage_area__debugTraceId, damage_area__emitterPos[i], damage_area__emitterPosPrev[i], damage_area__debugTraceColor)
       if (is_dm_dbg_tool_enabled(dbgId))
-        dm_dbg_render_add_sph(dbgId, damage_area__debugCommonId, damage_area__pos2, damage_area__radius * 1.1, damage_area__debugEmitterColor);
-        var pos2 = damage_area__pos2;
-        pos2.y = get_scene_height(damage_area__pos2, false);
+        dm_dbg_render_add_sph(dbgId, damage_area__debugCommonId, damage_area__pos2, damage_area__radius * 1.1, damage_area__debugEmitterColor)
+        var pos2 = damage_area__pos2
+        pos2.y = get_scene_height(damage_area__pos2, false)
         dm_dbg_render_add_capsule(dbgId, damage_area__debugCommonId, damage_area__pos1, pos2, damage_area__radius, damage_area__debugCombustColor)
   attach_fire_to_wheels(damage_area__pos1, damage_area__pos2, damage_area__radius, eid)
 
@@ -204,7 +204,7 @@ def damage_area_move_track_es(evt : Event;
     let decalSize = float2(decalLen + damage_area__scorchMarginSize, damage_area__radius + damage_area__scorchMarginSize)
     add_burning_decals(decalPos, decalDir, decalSize, damage_area__scorchStrength, damage_area__scorchDuration)
     
-    let dbgId = int(DmDebugTool DAMAGE_AREA)
+    let dbgId = int(DmDebugTool.DAMAGE_AREA)
     if (is_dm_dbg_tool_enabled(dbgId))
       let scorchColor = E3DCOLOR(0xFF000000)
       let left = float2(-decalDir.y, decalDir.x)

@@ -1204,6 +1204,10 @@
       0.6,
       0.0
     ],
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "lightPos1": [
       1.771234,
       0.096575,
@@ -1348,7 +1352,84 @@
               "turretIdx": 0
             },
             {
-              "type": "map"
+              "type": "hsd",
+              "scale": 0.95,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "heli",
+              "centerMarkFillColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "centerMarkScale": 0.06,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": true,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 7000.0,
+              "distScaleColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "line",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": true,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
             },
             {
               "type": "custom",
@@ -1428,7 +1509,8 @@
     "sensor": [
       {
         "blk": "gameData/sensors/ir_tracker.blk",
-        "node": "optic1_gun"
+        "node": "optic1_gun",
+        "powerButtonIdx": -1
       },
       {
         "blk": "gameData/sensors/it_elt_156.blk"
@@ -3100,7 +3182,8 @@
           "sensor": [
             {
               "blk": "gameData/sensors/ir_tracker.blk",
-              "node": "optic1_gun"
+              "node": "optic1_gun",
+              "powerButtonIdx": -1
             },
             {
               "blk": "gameData/sensors/us_an_apr_39.blk"

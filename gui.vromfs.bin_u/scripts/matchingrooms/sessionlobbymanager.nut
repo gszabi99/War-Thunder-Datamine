@@ -20,7 +20,8 @@ let base64 = require("base64")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let events = getGlobalModule("events")
-let { loadHandler, handlersManager, isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { loadHandler, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let ecs = require("%sqstd/ecs.nut")
 let { EventOnConnectedToServer } = require("net")
@@ -66,6 +67,9 @@ let { getMaxEconomicRank } = require("%appGlobals/ranks_common_shared.nut")
 let { setUserPresence } = require("%scripts/userPresence.nut")
 let { USEROPT_SESSION_PASSWORD } = require("%scripts/options/optionsExtNames.nut")
 let { registerOption } = require("%scripts/options/optionsExt.nut")
+let { showErrorMessageBox } = require("%scripts/utils/errorMsgBox.nut")
+
+let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
 
 
 
@@ -643,7 +647,7 @@ function switchStatus(v_status) {
   if (sessionLobbyStatus.get() == lobbyStates.NOT_IN_ROOM) {
     resetParams()
     if (wasStatus == lobbyStates.JOINING_SESSION)
-      ::destroy_session_scripted("on leave room while joining session")
+      destroySessionScripted("on leave room while joining session")
   }
   if (sessionLobbyStatus.get() == lobbyStates.JOINING_SESSION)
     addRecentContacts(g_squad_manager.getSquadMembersDataForContact())
@@ -717,7 +721,7 @@ function prepareSettings(missionSettings) {
     _settings.mission[key] <- isDataBlock(value) ? convertBlk(value) : value
   }
 
-  _settings.mission.keepOwnUnits <- mission?.editSlotbar?.keepOwnUnits ?? true
+  _settings.mission.keepOwnUnits <- mission?.editSlotbar.keepOwnUnits ?? true
   _settings.creator <- userName.value
   _settings.mission.originalMissionName <- getTblValue("name", _settings.mission, "")
   if ("postfix" in _settings.mission && _settings.mission.postfix) {
@@ -1035,7 +1039,7 @@ function startSession() {
       if (!checkMatchingError(p)) {
         if (!haveLobby())
           destroyRoom()
-        else if (isInMenu())
+        else if (isInMenu.get())
           returnStatusToRoom()
         return
       }
@@ -1092,8 +1096,8 @@ function sessionLobbyHostCb(res) {
       else
         leaveSessionRoom()
 
-    ::error_message_box("yn1/connect_error", errorCode,
-      [["ok", @() ::destroy_session_scripted("on error message from host") ]],
+    showErrorMessageBox("yn1/connect_error", errorCode,
+      [["ok", @() destroySessionScripted("on error message from host") ]],
       "ok",
       { saved = true })
   }
@@ -1177,7 +1181,7 @@ eventbus_subscribe("on_connection_failed", function on_connection_failed(evt) {
   let text = evt.reason
   if (!isInSessionRoom.get())
     return
-  ::destroy_session_scripted("on_connection_failed")
+  destroySessionScripted("on_connection_failed")
   leaveSessionRoom()
   showInfoMsgBox(text, "on_connection_failed")
 })

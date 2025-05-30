@@ -10,10 +10,11 @@ let { Cost } = require("%scripts/money.nut")
 let { format, split_by_chars } = require("string")
 let { round } = require("math")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { getBitStatus, canBuyNotResearched, isUnitElite, isUnitInSlotbar, canResearchUnit,
-  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken,
-  isUnitUsable
+let { canBuyNotResearched, isUnitElite, canResearchUnit, isUnitUsable,
+  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken
 } = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
+let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
 let { getUnitItemStatusText, getUnitRarity
 } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
@@ -43,6 +44,7 @@ let timeBase = require("%appGlobals/timeLoc.nut")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
 let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
+let { getUnitDiscount, getGroupDiscount } = require("%scripts/discounts/discountsState.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 let {expNewNationBonusDailyBattleCount = 1} = get_ranks_blk()
@@ -423,7 +425,7 @@ let getUnitStatusTbl = function(unit, params) {
     hasTalismanIcon     = isSpecial || shopIsModificationEnabled(unit.name, "premExpMul")
     priceText           = getUnitShopPriceText(unit)
 
-    discount            = isOwn ? 0 : ::g_discount.getUnitDiscount(unit)
+    discount            = isOwn ? 0 : getUnitDiscount(unit)
     expMul              = wp_shop_get_aircraft_xp_rate(unit.name)
     wpMul               = wp_shop_get_aircraft_wp_rate(unit.name)
     hasObjective        = !shopResearchMode && (bit_unit_status.locked & bitStatus) == 0
@@ -602,7 +604,7 @@ function getGroupStatusTbl(group, params) {
   let primaryUnit = rentedUnit || mountedUnit || (isGroupInResearch && researchingUnit)
     || firstUnboughtUnit || unitsList[0]
   let needUnitNameOnPlate = rentedUnit != null || mountedUnit  != null
-    || (isGroupInResearch && researchingUnit != null) || firstUnboughtUnit != null
+    || (isGroupInResearch && researchingUnit != null) || (firstUnboughtUnit != null && researchingUnit == null)
   let unitForBR = rentedUnit || researchingUnit || firstUnboughtUnit || group
 
   let researchStatusTbl = researchingUnit ? getUnitResearchStatusTbl(researchingUnit, params) : {}
@@ -641,7 +643,7 @@ function getGroupStatusTbl(group, params) {
     isTalismanComplete,
     priceText           = firstUnboughtUnit && !researchingUnit ? getUnitShopPriceText(firstUnboughtUnit) : "",
 
-    discount            = firstUnboughtUnit ? ::g_discount.getGroupDiscount(unitsList) : 0,
+    discount            = firstUnboughtUnit ? getGroupDiscount(unitsList) : 0,
     hasObjective,
     markerHolderId,
     expMul,

@@ -27,15 +27,15 @@ let { deferOnce } = require("dagor.workcycle")
 let getHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
 let { has_secondary_weapons } = require("weaponSelector")
-let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
+let { getFullUnitBlk, getFmFile } = require("%scripts/unit/unitParams.nut")
 
 let memoizeByMission = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])
 
-let hasFlaps = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasFlapsControl ?? false)
-let hasGear  = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasGearControl ?? false)
-let hasAirbrake = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasAirbrake ?? false)
+let hasFlaps = memoize(@(unitId) getFmFile(unitId)?.AvailableControls.hasFlapsControl ?? false)
+let hasGear  = memoize(@(unitId) getFmFile(unitId)?.AvailableControls.hasGearControl ?? false)
+let hasAirbrake = memoize(@(unitId) getFmFile(unitId)?.AvailableControls.hasAirbrake ?? false)
 let hasChute = @(unitId) getFullUnitBlk(unitId)?.parachutes != null
-let hasCockpitDoor = memoize(@(unitId) ::get_fm_file(unitId)?.AvailableControls.hasCockpitDoorControl ?? false)
+let hasCockpitDoor = memoize(@(unitId) getFmFile(unitId)?.AvailableControls.hasCockpitDoorControl ?? false)
 
 let hasMultipleWeaponTriggers = @(_unitId) number_of_set_bits(getWeaponsTriggerGroupsMask()) > 1
 let hasWeaponPrimary    = @(_unitId) is_bit_set(getWeaponsTriggerGroupsMask(), TRIGGER_GROUP_PRIMARY)

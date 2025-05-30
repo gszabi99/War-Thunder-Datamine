@@ -8,7 +8,8 @@ let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { select_editbox, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { enableObjsByTable, select_editbox } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
 let { onInternalMessage, getLogForBanhammer, chatSystemMessage
@@ -18,7 +19,7 @@ let { unblockMessageInLog, getMpChatLog, getCurrentModeId, getMaxLogSize,
   getScenes, appendScene, sceneIdxPID, cleanScenesList, findSceneDataByScene,
   findSceneDataByObj, doForAllScenes, canEnableChatInput
 } = require("%scripts/chat/mpChatState.nut")
-let penalties = require("%scripts/penitentiary/penalties.nut")
+let { getDevoiceMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { isChatEnabled } = require("%scripts/chat/chatStates.nut")
@@ -30,7 +31,6 @@ let { get_mplayers_list, GET_MPLAYERS_LIST, get_mplayer_by_userid } = require("m
 let { USEROPT_AUTO_SHOW_CHAT } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { isInFlight } = require("gameplayBinding")
-let { enableObjsByTable } = require("%sqDagui/daguiUtil.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { defer } = require("dagor.workcycle")
 let { g_mp_chat_mode } =require("%scripts/chat/mpChatMode.nut")
@@ -39,6 +39,8 @@ let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
+let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
+let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 enum mpChatView {
   CHAT
@@ -95,7 +97,7 @@ function isSenderInMySquad(message) {
 function getSenderColor(message) {
   if (isSenderMe(message))
     return senderMeColor
-  if (::isPlayerDedicatedSpectator(message.sender))
+  if (isPlayerDedicatedSpectator(message.sender))
     return senderSpectatorColor
   if (message.team != get_player_army_for_hud() || !is_mode_with_teams())
     return senderEnemyColor
@@ -154,7 +156,7 @@ function getTextFromMessage(message) {
   if (!message.isMyself && isPlayerNickInContacts(message.sender, EPL_BLOCKLIST))
     return formatMessageText(message, g_chat.makeBlockedMsg(message.text))
 
-  return formatMessageText(message, g_chat.filterMessageText(message.text, message.isMyself))
+  return formatMessageText(message, filterMessageText(message.text, message.isMyself))
 }
 
 function isVisibleWithCursor(sceneData) {
@@ -378,7 +380,7 @@ function setInputField(str) {
 }
 
 function checkAndPrintDevoiceMsg() {
-  local devoiceMsgText = penalties.getDevoiceMessage()
+  local devoiceMsgText = getDevoiceMessage()
   if (devoiceMsgText) {
     devoiceMsgText = $"<color=@chatInfoColor>{devoiceMsgText}</color>"
     onInternalMessage(devoiceMsgText)

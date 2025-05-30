@@ -3,11 +3,12 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/onlineShop/onlineShopConsts.nut" import ONLINE_SHOP_TYPES
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isInMenu, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { format } = require("string")
 let { ceil } = require("math")
 let { get_url_for_purchase } = require("url")
-let { isPlatformSony, is_gdk, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformShieldTv } = require("%scripts/clientState/platform.nut")
 let { getShopItem, canUseIngameShop } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { openIngameStore } = require("%scripts/onlineShop/entitlementsShop.nut")
 let callbackWhenAppWillActive = require("%scripts/clientState/callbackWhenAppWillActive.nut")
@@ -24,11 +25,13 @@ let { addTask } = require("%scripts/tasker.nut")
 let { searchEntitlementsByUnit, getGoodsChapter, getPurchaseData } = require("%scripts/onlineShop/onlineShopState.nut")
 let { steam_is_running, steam_get_my_id, steam_get_app_id } = require("steam")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
+let { getUpdateEntitlementsTimeoutMsec,
+  updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 function startEntitlementsUpdater() {
   callbackWhenAppWillActive(function() {
       if (is_online_available())
-        addTask(::update_entitlements_limited(),
+        addTask(updateEntitlementsLimited(),
           {
             showProgressBox = true
             progressBoxText = loc("charServer/checking")
@@ -79,10 +82,10 @@ function openUpdateBalanceMenu(customUrl) {
     }
     {
       text = ""
-      action = ::update_entitlements_limited
+      action = updateEntitlementsLimited
       onUpdateButton = function(_p) {
         local refreshText = loc("charServer/btn/refresh_balance")
-        let updateTimeout = ::get_update_entitlements_timeout_msec()
+        let updateTimeout = getUpdateEntitlementsTimeoutMsec()
         let enable = updateTimeout <= 0
         if (!enable)
           refreshText = "".concat(refreshText, loc("ui/parentheses/space", { text = ceil(0.001 * updateTimeout) }))
@@ -271,7 +274,7 @@ function openBrowserForFirstFoundEntitlement(entitlementsList) {
 }
 
 function launchOnlineShop(owner = null, chapter = null, afterCloseFunc = null, launchedFrom = "unknown") {
-  if (!isInMenu())
+  if (!isInMenu.get())
     return afterCloseFunc?()
 
   if (openIngameStore({ chapter = chapter, afterCloseFunc = afterCloseFunc, statsdMetric = launchedFrom }))

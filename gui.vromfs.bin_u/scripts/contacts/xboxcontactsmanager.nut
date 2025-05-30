@@ -10,7 +10,7 @@ let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let logX = log_with_prefix("[XBOX PRESENCE] ")
 let { retrieve_related_people_list, retrieve_avoid_people_list } = require("%gdkLib/impl/relationships.nut")
 let { isEqual } = require("%sqStdLibs/helpers/u.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { updateContact } = require("%scripts/contacts/contactsActions.nut")
 
@@ -64,7 +64,7 @@ function fetchContactsList() {
 }
 
 function updateContacts(needIgnoreInitedFlag = false) {
-  if (!is_platform_xbox || !isInMenu()) {
+  if (!is_gdk || !isInMenu.get()) {
     if (needIgnoreInitedFlag && persistent.isInitedXboxContacts)
       persistent.isInitedXboxContacts = false
     return
@@ -211,7 +211,7 @@ addListenersWithoutEnv({
   }
 
   function ContactsUpdated(_) {
-    if (!is_platform_xbox)
+    if (!is_gdk)
       return
 
     let xboxContactsToCheck = contactsPlayers.filter(@(contact) contact.needCheckForceOffline())

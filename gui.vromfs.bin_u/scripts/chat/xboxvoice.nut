@@ -12,7 +12,7 @@ let requestedIds = persist("requestedIds", @() {})
 
 
 function is_muted(uid) {
-  if (!is_platform_xbox)
+  if (!is_gdk)
     return false
   return is_voice_chat_member_muted(uid)
 }
@@ -37,7 +37,7 @@ function on_state_update(results) {
 
 
 function add_user(uid) {
-  if (!is_platform_xbox)
+  if (!is_gdk)
     return
   
   if (uid == userIdStr.value)
@@ -54,26 +54,26 @@ function on_external_ids_update(params) {
   log("params:")
   debugTableData(params)
 
-  let reqUid = params?.request?.uid
+  let reqUid = params?.request.uid
   if (!(reqUid in requestedIds))
     return
 
   requestedIds.$rawdelete(reqUid)
-  let xuid = params?.externalIds?.xboxId
+  let xuid = params?.externalIds.xboxId
   let isFriend = isPlayerInFriendsGroup(reqUid)
   add_voice_chat_member(reqUid, xuid, isFriend)
 }
 
 
 function remove_user(uid) {
-  if (!is_platform_xbox)
+  if (!is_gdk)
     return
   remove_voice_chat_member(uid)
 }
 
 
 function on_contacts_update() {
-  if (!is_platform_xbox)
+  if (!is_gdk)
     return
 
   foreach (uid, _ in voiceChatMembers) {

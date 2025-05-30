@@ -6,8 +6,7 @@ let regexp2 = require("regexp2")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { is_chat_message_empty } = require("chat")
 let { clearBorderSymbols } = require("%sqstd/string.nut")
-let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
-let { select_editbox } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { select_editbox, setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 
 gui_handlers.modifyUrlMissionWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL

@@ -4,21 +4,23 @@ ingame_menu{
   re-type:9rect;
 }
 
-optionlist_container {
+optionlist_container, optionlist_container_default {
   input-transparent: yes;
   re-type:9rect;
   background-color:@white;
   background-position:1,5;
   background-repeat:expand;
   background-image:#ui/gameuiskin#option_select_odd;
+  selected-border:none;
+  border:none;
+}
+
+optionlist_container {
   height:50*@scrn_tgt/100.0;
   position:absolute;
   padding:0, 0.01*@scrn_tgt;
   width:1@rw;
-
   pos:50%pw-50%w,50%ph-50%h;
-  selected-border:none;
-  border:none;
   font:@fontMedium;
 }
 

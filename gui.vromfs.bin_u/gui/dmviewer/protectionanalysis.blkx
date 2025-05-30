@@ -158,6 +158,18 @@
                     "ButtonImg": {}
                   },
                   {
+                    "id": "btnSaveHitFile",
+                    "position": "relative",
+                    "text": "#hitsAnalisys/saveHitFile",
+                    "on_click": "onSaveHitFile",
+                    "btnName": "L3",
+                    "noMargin": "yes",
+                    "display": "hide",
+                    "enable": "no",
+                    "margin-top": "1@blockInterval",
+                    "ButtonImg": {}
+                  },
+                  {
                     "id": "btnSimulateHit",
                     "position": "relative",
                     "text": "#hitsAnalisys/replayShot",
@@ -1035,6 +1047,11 @@
       "behaviour": "accesskey",
       "accessKey": "F1",
       "on_click": "onHelp"
+    },
+    "timer": {
+      "id": "validate_last_shot_timer",
+      "timer_handler_func": "onValidateLastShot",
+      "timer_interval_msec": "100"
     }
   }
 }

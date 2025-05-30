@@ -5,10 +5,11 @@ from "%scripts/utils_sa.nut" import is_mode_with_teams
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { enumsAddTypes, getCachedType } = require("%sqStdLibs/helpers/enums.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { hasBattleChatModeAll, hasBattleChatModeTeam, hasBattleChatModeSquad
 } = require("%scripts/user/matchingFeature.nut")
 let { CHAT_MODE_ALL, CHAT_MODE_TEAM, CHAT_MODE_SQUAD, CHAT_MODE_PRIVATE } = require("chat")
+let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
 
 enum mpChatModeSort {
   TEAM
@@ -51,7 +52,7 @@ enumsAddTypes(g_mp_chat_mode, {
     sortOrder = mpChatModeSort.TEAM
     textColor = "@chatTextTeamColor"
 
-    isEnabled = @() hasBattleChatModeTeam.value && !::isPlayerDedicatedSpectator()
+    isEnabled = @() hasBattleChatModeTeam.value && !isPlayerDedicatedSpectator()
       && is_mode_with_teams()
   }
 
@@ -62,7 +63,7 @@ enumsAddTypes(g_mp_chat_mode, {
     textColor = "@chatTextSquadColor"
 
     isEnabled = @() hasBattleChatModeSquad.value && g_squad_manager.isInSquad(true)
-      && !::isPlayerDedicatedSpectator()
+      && !isPlayerDedicatedSpectator()
   }
 
   PRIVATE = { 
@@ -115,7 +116,7 @@ g_mp_chat_mode.getTextAvailableMode <- function getTextAvailableMode() {
 }
 
 g_mp_chat_mode.getChatHint <- function getChatHint() {
-  let hasIME = isPlatformSony || isPlatformXboxOne || is_platform_android || is_steam_big_picture()
+  let hasIME = isPlatformSony || isPlatformXbox || is_platform_android || is_steam_big_picture()
   let chatHelpText = hasIME ? "" : loc("chat/help/send", { sendShortcuts = "{{INPUT_BUTTON KEY_ENTER}}" })
   local availableModeText = this.getTextAvailableMode()
   availableModeText = availableModeText != ""

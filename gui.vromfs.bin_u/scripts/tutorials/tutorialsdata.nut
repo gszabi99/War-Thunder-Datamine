@@ -20,6 +20,7 @@ let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { isDiffUnlocked, getReqTutorial } = require("%scripts/tutorials/tutorialsState.nut")
 let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
+let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
 
 let checkTutorialsList = [ 
   {
@@ -296,7 +297,7 @@ function getSuitableUncompletedTutorialData(unit, diff = -1) {
 }
 
 function checkDiffTutorial(diff, unitType, needMsgBox = true, cancelCb = null) {
-  if (!::check_diff_pkg(diff, !needMsgBox))
+  if (!checkDiffPkg(diff, !needMsgBox))
     return true
   if (!g_difficulty.getDifficultyByDiffCode(diff).needCheckTutorial)
     return false

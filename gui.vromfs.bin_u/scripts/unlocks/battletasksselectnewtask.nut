@@ -12,6 +12,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { addTask } = require("%scripts/tasker.nut")
 let { getCurrentGameModeId } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
 
 gui_handlers.BattleTasksSelectNewTaskWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -94,7 +95,7 @@ gui_handlers.BattleTasksSelectNewTaskWnd <- class (gui_handlers.BaseGuiHandlerWT
     if (!this.isConfigHaveConditions(config))
       return
 
-    let awardsList = config.names.map(@(id) ::build_log_unlock_data(
+    let awardsList = config.names.map(@(id) build_log_unlock_data(
         buildConditionsConfig(getUnlockById(id))
       )
     )

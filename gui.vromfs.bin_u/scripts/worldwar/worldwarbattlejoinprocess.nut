@@ -6,6 +6,9 @@ let { wwGetOperationId } = require("worldwar")
 let { getBrokenAirsInfo, checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
 let { joinQueue, checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
+let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
 
 let WwBattleJoinProcess = class {
   wwBattle = null
@@ -48,7 +51,7 @@ let WwBattleJoinProcess = class {
   }
 
   function joinStep1_squad() {
-    if (!::g_squad_utils.canJoinFlightMsgBox(
+    if (!canJoinFlightMsgBox(
           {
             isLeaderCanJoin = true,
             showOfflineSquadMembersPopup = true
@@ -61,8 +64,8 @@ let WwBattleJoinProcess = class {
   }
 
   function joinStep2_external() {
-    if (!::is_loaded_model_high_quality()) {
-      ::check_package_and_ask_download("pkg_main", null, this.joinStep3_internal, this, "event", this.remove)
+    if (!isLoadedModelHighQuality()) {
+      checkPackageAndAskDownload("pkg_main", null, this.joinStep3_internal, this, "event", this.remove)
       return
     }
 

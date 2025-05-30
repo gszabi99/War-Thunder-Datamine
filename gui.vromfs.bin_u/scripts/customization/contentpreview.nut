@@ -10,7 +10,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { format } = require("string")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
 let { broadcastEvent } = subscriptions
-let { isInMenu, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { hangar_is_model_loaded, hangar_get_loaded_unit_name } = require("hangar")
 let guidParser = require("%scripts/guidParser.nut")
 let globalCallbacks = require("%sqDagui/globalCallbacks/globalCallbacks.nut")
@@ -21,7 +22,7 @@ let { hasAvailableCollections } = require("%scripts/collections/collectionsHandl
 let { getDecorator, getDecoratorByResource } = require("%scripts/customization/decorCache.nut")
 let { getPlaneBySkinId, getSkinNameBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { web_rpc } = require("%scripts/webRPC.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { isInHangar } = require("gameplayBinding")
 let { addPopup } = require("%scripts/popups/popups.nut")
@@ -31,6 +32,7 @@ let { getBestUnitForPreview } = require("%scripts/customization/contentPreviewSt
 let { hasSessionInLobby } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
+let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 
 let downloadTimeoutSec = 15
 local downloadProgressBox = null
@@ -48,8 +50,8 @@ function gui_start_decals(params = null) {
   if (!showedUnit.value
       ||
         (hangar_get_loaded_unit_name() == showedUnit.value.name
-        && !::is_loaded_model_high_quality()
-        && !::check_package_and_ask_download("pkg_main"))
+        && !isLoadedModelHighQuality()
+        && !checkPackageAndAskDownload("pkg_main"))
     )
     return
 
@@ -67,7 +69,7 @@ function getCantStartPreviewSceneReason(shouldAllowFromCustomizationScene = fals
     return "not_in_hangar"
   if (!hangar_is_model_loaded())
     return "hangar_not_ready"
-  if (!isInMenu() || isAnyQueuesActive()
+  if (!isInMenu.get() || isAnyQueuesActive()
       || (g_squad_manager.isSquadMember() && g_squad_manager.isMeReady())
       || hasSessionInLobby())
     return "temporarily_forbidden"
@@ -415,12 +417,14 @@ globalCallbacks.addTypes({
 
 
 
-let rootTable = getroottable()
-rootTable["on_live_skin_data_loaded"] <- @(unitId, skinGuid, result) onSkinDownloaded(unitId, skinGuid, result)
-rootTable["live_start_unit_preview"]  <- @(unitId, skinId, isForApprove) showUnitSkin(unitId, skinId, isForApprove)
+getroottable()["live_start_unit_preview"] <- @(unitId, skinId, isForApprove) showUnitSkin(unitId, skinId, isForApprove)
+
 web_rpc.register_handler("ugc_skin_preview", @(params) liveSkinPreview(params))
 web_rpc.register_handler("market_view_item", @(params) marketViewItem(params))
 web_rpc.register_handler("request_view_unit", @(params) requestUnitPreview(params))
+
+eventbus_subscribe("onLiveSkinDataLoaded", @(res) onSkinDownloaded(res.unitId, res.skinGuid, res.result))
+eventbus_subscribe("liveStartUnitPreview", @(res) showUnitSkin(res.unitId, res.skinId, res.isForApprove))
 
 subscriptions.addListenersWithoutEnv({
   ItemsShopUpdate = @(p) onEventItemsShopUpdate(p)

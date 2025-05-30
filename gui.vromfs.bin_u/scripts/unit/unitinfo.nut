@@ -8,6 +8,9 @@ let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { Cost } = require("%scripts/money.nut")
 let { findUnitNoCase, getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { hangar_get_loaded_unit_name, hangar_is_high_quality } = require("hangar")
+let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
+let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 
 enum bit_unit_status {
   locked      = 1
@@ -134,6 +137,37 @@ function getNumberOfUnitsByYears(country, years) {
   return result;
 }
 
+function isLoadedModelHighQuality(def = true) {
+  if (hangar_get_loaded_unit_name() == "")
+    return def
+  return hangar_is_high_quality()
+}
+
+local __types_for_coutries = null 
+function getUnitTypesInCountries() {
+  if (__types_for_coutries)
+    return __types_for_coutries
+
+  let defaultCountryData = {}
+  foreach (unitType in unitTypes.types)
+    defaultCountryData[unitType.esUnitType] <- false
+
+  __types_for_coutries = {}
+  foreach (country in shopCountriesList)
+    __types_for_coutries[country] <- clone defaultCountryData
+
+  foreach (unit in getAllUnits()) {
+    if (!unit.unitType.isAvailable())
+      continue
+    let esUnitType = unit.unitType.esUnitType
+    let countryData = __types_for_coutries?[getUnitCountry(unit)]
+    if (countryData != null && !countryData?[esUnitType])
+      countryData[esUnitType] <- isUnitBought(unit)
+  }
+
+  return __types_for_coutries
+}
+
 return {
   bit_unit_status,
   getUnitTypeTextByUnit, getUnitName,
@@ -149,4 +183,6 @@ return {
   getUnitTypeByText
   image_for_air
   getNumberOfUnitsByYears
+  isLoadedModelHighQuality
+  getUnitTypesInCountries
 }

@@ -2090,6 +2090,10 @@
     "sightInFov": 1.32,
     "sightOutFov": 6.69,
     "sightFov": 1.0,
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "headPos": [
       4.2,
       1.03,
@@ -2372,7 +2376,84 @@
               "turretIdx": 0
             },
             {
-              "type": "map"
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "triangle",
+              "centerMarkFillColor": [
+                0,
+                0,
+                0,
+                0
+              ],
+              "centerMarkLineColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": false,
+              "spi": true,
+              "spiColor": [
+                0,
+                215,
+                225,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": true,
+              "distScaleBeyondAzScale": true,
+              "distScaleStepSize": 40000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "azScaleType": "line",
+              "azScaleSize": 10000.0,
+              "azScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "headingIndFillColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 40000.0,
+              "metricUnits": false
             }
           ]
         },
@@ -3465,42 +3546,61 @@
     ]
   },
   "modifications": {
-    "cd_98": {
-      "prevModification": "hydravlic_power",
-      "tier": 3
-    },
-    "air_extinguisher": {
-      "modClass": [
-        "armor",
-        "weapon"
-      ],
-      "tier": 4,
-      "invertEnableLogic": false
-    },
-    "hp_105_jet": {
-      "prevModification": "cd_98",
-      "tier": 4
-    },
-    "new_cover": {},
-    "f_4c_CdMin_Fuse": {
-      "tier": 1
-    },
-    "structure_str": {
-      "tier": 2
-    },
-    "f_4c_g_suit": {
-      "tier": 3
-    },
     "new_compressor_jet": {
-      "tier": 1
+      "tier": 1,
+      "modClass": "lth"
     },
     "hydravlic_power": {
       "prevModification": "new_compressor_jet",
       "tier": 2,
+      "modClass": "lth",
       "effects": {
         "aileronBooster": 1.0,
         "elevatorBooster": 0.9
       }
+    },
+    "cd_98": {
+      "prevModification": "hydravlic_power",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "hp_105_jet": {
+      "prevModification": "cd_98",
+      "tier": 4,
+      "modClass": "lth"
+    },
+    "f_4c_CdMin_Fuse": {
+      "tier": 1,
+      "modClass": "lth"
+    },
+    "structure_str": {
+      "prevModification": "f_4c_CdMin_Fuse",
+      "tier": 2,
+      "modClass": "lth"
+    },
+    "new_cover": {
+      "prevModification": "structure_str",
+      "tier": 3,
+      "modClass": "lth"
+    },
+    "countermeasures_launcher_chaff": {},
+    "countermeasures_belt_pack": {
+      "modClass": "armor",
+      "turn_it_off": false,
+      "invertEnableLogic": false,
+      "tier": 1,
+      "group": "q_5b_group"
+    },
+    "f_4c_g_suit": {
+      "modClass": "armor",
+      "prevModification": "countermeasures_belt_pack",
+      "tier": 3
+    },
+    "air_extinguisher": {
+      "modClass": "armor",
+      "prevModification": "f_4c_g_suit",
+      "tier": 4,
+      "invertEnableLogic": false
     },
     "aden_air_targets": {},
     "aden_ground_targets": {},
@@ -3530,14 +3630,6 @@
       "tier": 4,
       "modClass": "weapon",
       "reqModification": "uk_mk_n1_540lb"
-    },
-    "countermeasures_launcher_chaff": {},
-    "countermeasures_belt_pack": {
-      "modClass": "armor",
-      "turn_it_off": false,
-      "invertEnableLogic": false,
-      "tier": 1,
-      "group": "q_5b_group"
     },
     "uk_tiald": {
       "modClass": "weapon",
@@ -3644,14 +3736,14 @@
   },
   "AfterBurner0": {
     "volumetricAfterBurner": {
-      "name": "jet_orange_flat_ww2",
+      "name": "_jet_jaguar_adour",
       "maxHeight": 7.0,
       "minHeight": 5.0,
       "heightNoiseStrength": 1.0,
       "heightNoiseSpeed": 30.0,
       "maxRadius": 0.16,
       "minRadius": 0.11,
-      "maxBaseRadius": 0.21,
+      "maxBaseRadius": 0.18,
       "minBaseRadius": 0.15,
       "relativeCylinderHeightMax": 0.32,
       "relativeCylinderHeightMin": 0.3,
@@ -3664,12 +3756,12 @@
       "outerCylinderHeightFadeNoiseStrength": 3.0,
       "outerCylinderHeightFadeNoiseSpeed": 10.0,
       "minOuterCylinderRadius": 0.24,
-      "maxOuterCylinderRadius": 0.27,
-      "absorption": 9.0,
-      "colorIntensityMax": 8.0,
-      "colorIntensityMin": 5.0,
-      "colorOverHeightMult": 4.0,
-      "colorOverDepthMult": 4.0,
+      "maxOuterCylinderRadius": 0.24,
+      "absorption": 4.0,
+      "colorIntensityMax": 4.0,
+      "colorIntensityMin": 2.0,
+      "colorOverHeightMult": 2.0,
+      "colorOverDepthMult": 2.0,
       "colorOverRadiusMult": 1.0,
       "colorOverRadiusFadeOverHeight": 1.0,
       "maxRingOffset": 0.0,
@@ -3677,6 +3769,8 @@
       "ringAbsorption": 0.0,
       "maxRingCount": 0,
       "minRingCount": 0,
+      "minStartingRingHeight": 0.0,
+      "maxStartingRingHeight": 0.0,
       "ringIntensityMin": 0.0,
       "ringIntensityMax": 0.0,
       "ringIntensityNoiseStrength": 0.0,
@@ -3687,7 +3781,7 @@
       "radiusNoiseStrength": 0.09,
       "radiusNoiseSpeed": 20.0,
       "shakeNoiseStrength": 0.04,
-      "shakeNoiseSpeed": 30.0,
+      "shakeNoiseSpeed": 20.0,
       "ringAngleFadeMult": 0.0,
       "colorOverHeightNoiseStrength": 0.2,
       "colorOverHeightNoiseSpeed": 40.0,
@@ -3695,15 +3789,25 @@
       "colorOverRadiusNoiseSpeed": 40.0,
       "colorOverDepthNoiseStrength": 0.05,
       "colorOverDepthNoiseSpeed": 40.0,
-      "colorIntensityNoiseStrength": 3.0,
+      "colorIntensityNoiseStrength": 2.0,
       "colorIntensityNoiseSpeed": 30.0,
+      "minAoABendingMult": 0.0,
+      "maxAoABendingMult": 1.4,
+      "minAoSBendingMult": 0.0,
+      "maxAoSBendingMult": 1.4,
       "preNominalEasingParams": {
         "animationTime": 2.5,
-        "ascendingSmoothIntensityParams": 0.8
+        "ascendingSmoothIntensityParams": 0.8,
+        "flickerRelativTime": 0.33,
+        "flickerSpeed": 1.0,
+        "flickerIntensity": 1.0
       },
       "postNominalEasingParams": {
         "animationTime": 1.0,
-        "ascendingSmoothIntensityParams": 1.0
+        "ascendingSmoothIntensityParams": 1.0,
+        "flickerRelativTime": 0.0,
+        "flickerSpeed": 0.0,
+        "flickerIntensity": 0.0
       },
       "lightProperties": {
         "color": [
@@ -3712,14 +3816,52 @@
           0.22549
         ],
         "angle": 1.0,
-        "brightness": 17.0,
+        "brightness": 10.0,
         "radius": 20.0,
         "attenuation": 0.8,
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
-        "ignitionTextureIntensity": 0.1,
+        "ignitionTextureIntensityMin": 0.01,
+        "ignitionTextureIntensityMax": 0.01,
         "ignitionBrightnessNoiseStrength": 0.0,
         "ignitionBrightnessNoiseSpeed": 16.0
+      },
+      "NozzleFlames": {
+        "amountOfFlames": 6,
+        "radiusMult": 1.7,
+        "startOffset": -0.3,
+        "endOffsetAddition": 0.5,
+        "intensityMult": 6.0,
+        "innerCircleNoiseScale": 0.5,
+        "innerCircleNoiseStrength": 0.3,
+        "maskNoiseScale": 0.0,
+        "maskNoiseStrength": 0.0,
+        "minInnerCircleParamMult": 1.8,
+        "maxInnerCircleParamMult": 1.0,
+        "lengthNoiseSpeed": 10.0,
+        "lengthNoiseStrength": 0.1,
+        "uvNoiseMaskScale": 0.4,
+        "uvNoiseMaskStrength": 0.05,
+        "FlameMaskTextureOffset": {
+          "maskTextureOffset": [
+            30,
+            31,
+            27,
+            28,
+            29,
+            29
+          ]
+        },
+        "FlameRampTextureOffset": {
+          "rampTextureOffset": [
+            23,
+            23,
+            23,
+            23,
+            23,
+            23
+          ]
+        }
       }
     }
   }

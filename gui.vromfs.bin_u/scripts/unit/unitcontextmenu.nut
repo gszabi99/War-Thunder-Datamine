@@ -7,8 +7,9 @@ let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { Cost } = require("%scripts/money.nut")
 let { format } = require("string")
-let { isInMenu, handlersManager, is_in_loading_screen, loadHandler
-} = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let { getShopItem, canUseIngameShop, getShopItemsTable
 } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { broadcastEvent, addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -23,9 +24,10 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let { checkUnitWeapons, checkUnitSecondaryWeapons,
   needSecondaryWeaponsWnd } = require("%scripts/weaponry/weaponryInfo.nut")
-let { canBuyNotResearched, isUnitInSlotbar, canResearchUnit, isUnitInResearch,
+let { canBuyNotResearched, canResearchUnit, isUnitInResearch,
   isUnitDescriptionValid, isUnitUsable, isUnitFeatureLocked, isUnitResearched
 } = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { isUnitHaveSecondaryWeapons } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { checkForResearch } = require("%scripts/unit/unitChecks.nut")
 let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
@@ -59,6 +61,7 @@ let { canChangeCrewUnits } = require("%scripts/matchingRooms/sessionLobbyState.n
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
+let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -71,7 +74,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
   if (!unit || ("airsGroup" in unit) || actionsNames.len() == 0 || is_in_loading_screen())
     return actions
 
-  let inMenu = isInMenu()
+  let inMenu = isInMenu.get()
   let isUsable  = unit.isUsable()
   crew = crew ?? (hasSlotbarByUnitsGroups ? slotbarPresets.getCrewByUnit(unit) : getCrewByAir(unit))
 
@@ -297,7 +300,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
           : !setResearchManually
             ? function () { onCloseShop?() }
             : isInResearch && !isSquadronVehicle
-              ? function () { ::gui_modal_convertExp(unit) }
+              ? function () { gui_modal_convertExp(unit) }
               : function () {
                   if (!checkForResearch(unit))
                     return

@@ -12,12 +12,14 @@ let { getPvpRespawnsOnUnitType, isStatsLoaded } = require("%scripts/myStats.nut"
 let { guiStartFlight } = require("%scripts/missions/startMissionsList.nut")
 let { currentCampaignMission } = require("%scripts/missions/missionsStates.nut")
 let { getCurrentGameMode } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
-let { enable_current_modifications } = require("%scripts/weaponry/weaponryActions.nut")
+let { enable_current_modifications, updateBulletCountOptions } = require("%scripts/weaponry/weaponryActions.nut")
+let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
+
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 
 let esUnitTypeMisNameMap = {
@@ -86,7 +88,7 @@ function startFleetTrainingMission() {
   if (misName == null)
     return
 
-  ::destroy_session_scripted($"on startFleetTrainingMission")
+  destroySessionScripted($"on startFleetTrainingMission")
 
   set_game_mode(GM_TRAINING)
   setGuiOptionsMode(OPTIONS_MODE_TRAINING)
@@ -96,7 +98,7 @@ function startFleetTrainingMission() {
   set_gui_option(USEROPT_AIRCRAFT, unitName)
   set_gui_option(USEROPT_WEAPONS, "")
   set_gui_option(USEROPT_SKIN, "default")
-  UnitBulletsManager(unit).updateBulletCountOptions()
+  updateBulletCountOptions(unit, UnitBulletsManager(unit).getBulletsGroups())
 
   enable_bullets_modifications(unitName)
   enable_current_modifications(unitName)

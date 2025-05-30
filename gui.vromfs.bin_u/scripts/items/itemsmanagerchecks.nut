@@ -17,7 +17,7 @@ let itemTransfer = require("%scripts/items/itemsTransfer.nut")
 let { setShouldCheckAutoConsume } = require("%scripts/items/autoConsumeItems.nut")
 let { PRICE } = require("%scripts/utils/configs.nut")
 let { get_price_blk } = require("blkGetters")
-let { boosterEffectType } = require("%scripts/items/boosterEffect.nut")
+let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { itemsListInternal,
   itemsList, inventory, inventoryItemById, shopItemById, itemsListExternal, itemsByItemdefId,
   rawInventoryItemAmountsByItemdefId, getInventoryItemType, setExtInventoryUpdateTime
@@ -25,6 +25,7 @@ let { itemsListInternal,
 let { dbgTrophiesListInternal, incDbgUpdateInternalItemsCount
 } = require("%scripts/items/itemsManagerDbgState.nut")
 let { shopSmokeItems, createItem } = require("%scripts/items/itemsTypeClasses.nut")
+let { getCyberCafeBonusByEffectType, getSquadBonusForSameCyberCafe } = require("%scripts/items/bonusEffectsGetters.nut")
 
 const FAKE_ITEM_CYBER_CAFE_BOOSTER_UID = -1
 
@@ -52,8 +53,8 @@ function fillFakeItemsList() {
       iconStyle = "cybercafebonus"
       locId = "item/FakeBoosterForNetCafeLevel"
       rateBoosterParams = {
-        xpRate = floor(100.0 * ::get_cyber_cafe_bonus_by_effect_type(boosterEffectType.RP, level) + 0.5)
-        wpRate = floor(100.0 * ::get_cyber_cafe_bonus_by_effect_type(boosterEffectType.WP, level) + 0.5)
+        xpRate = floor(100.0 * getCyberCafeBonusByEffectType(boosterEffectType.RP, level) + 0.5)
+        wpRate = floor(100.0 * getCyberCafeBonusByEffectType(boosterEffectType.WP, level) + 0.5)
       }
     }
     fillBlock($"FakeBoosterForNetCafeLevel{i || ""}", fakeItemsList, table)
@@ -63,8 +64,8 @@ function fillFakeItemsList() {
     let table = {
       type = itemType.FAKE_BOOSTER
       rateBoosterParams = {
-        xpRate = floor(100.0 * ::get_squad_bonus_for_same_cyber_cafe(boosterEffectType.RP, i) + 0.5)
-        wpRate = floor(100.0 * ::get_squad_bonus_for_same_cyber_cafe(boosterEffectType.WP, i) + 0.5)
+        xpRate = floor(100.0 * getSquadBonusForSameCyberCafe(boosterEffectType.RP, i) + 0.5)
+        wpRate = floor(100.0 * getSquadBonusForSameCyberCafe(boosterEffectType.WP, i) + 0.5)
       }
     }
     fillBlock($"FakeBoosterForSquadFromSameCafe{i}", fakeItemsList, table)
@@ -91,7 +92,7 @@ function checkItemDefsUpdate() {
       let defType = itemDefDesc?.type
 
       if (isInArray(defType, ["playtimegenerator", "generator", "bundle", "delayedexchange"])
-          || !isEmpty(itemDefDesc?.exchange) || itemDefDesc?.tags?.hasAdditionalRecipes)
+          || !isEmpty(itemDefDesc?.exchange) || itemDefDesc?.tags.hasAdditionalRecipes)
         addItemGenerator(itemDefDesc)
 
       if (!isInArray(defType, [ "item", "delayedexchange" ]))
@@ -251,7 +252,7 @@ function checkInventoryUpdate() {
     if (!itemDefDesc.len()) 
       continue
 
-    let iType = getInventoryItemType(itemDefDesc?.tags?.type ?? "")
+    let iType = getInventoryItemType(itemDefDesc?.tags.type ?? "")
     if (iType == itemType.UNKNOWN) {
       logerr($"Inventory: Unknown itemdef.tags.type in item {itemDefDesc?.itemdefid ?? "NULL"}")
       continue
@@ -282,7 +283,7 @@ function checkInventoryUpdate() {
       itemdefsToRequest.append(itemdefid)
       continue
     }
-    let iType = getInventoryItemType(itemdef?.tags?.type ?? "")
+    let iType = getInventoryItemType(itemdef?.tags.type ?? "")
     if (iType == itemType.UNKNOWN) {
       if (isInArray(itemdef?.type, [ "item", "delayedexchange" ]))
         logerr($"Inventory: Transfer: Unknown itemdef.tags.type in item {itemdefid}")

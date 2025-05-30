@@ -1,12 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let { getSettings, getSettingsArray } = require("%appGlobals/worldWar/wwSettings.nut")
 let { artilleryReadyState } = require("%appGlobals/worldWar/wwArtilleryStatus.nut")
-let wwEvent = require("%scripts/worldWar/wwEvent.nut")
-
-artilleryReadyState.subscribe(function(p) {
-  let armies = p.keys().map(@(armyName) ::g_world_war.getArmyByName(armyName))
-  wwEvent("MapArmiesByStatusUpdated", { armies })
-})
 
 let suffix = {
   UT_GROUND = "LoadedGround"

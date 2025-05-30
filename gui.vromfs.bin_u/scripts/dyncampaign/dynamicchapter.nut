@@ -8,7 +8,7 @@ let DataBlock = require("DataBlock")
 let { format } = require("string")
 let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
 let { get_gui_option } = require("guiOptions")
 let { dynamicInit, dynamicGetList } = require("dynamicMission")
 let { get_cur_game_mode_name } = require("mission")
@@ -17,12 +17,14 @@ let { OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY,
   USEROPT_DYN_FL_ADVANTAGE, USEROPT_DYN_WINS_TO_COMPLETE, USEROPT_DIFFICULTY
 } = require("%scripts/options/optionsExtNames.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { get_game_settings_blk } = require("blkGetters")
 let { getDynamicLayouts, addMissionListFull } = require("%scripts/missions/missionsUtils.nut")
 let { DYNAMIC_REQ_COUNTRY_RANK, guiStartDynamicSummary, guiStartCdOptions
 } = require("%scripts/missions/startMissionsList.nut")
 let { set_current_campaign, get_mission_settings, set_mission_settings } = require("%scripts/missions/missionsStates.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
+let { checkDiffPkg } = require("%scripts/clientState/contentPacks.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { isDynamicCountryAllowed } = require("%scripts/dynCampaign/campaignHelpers.nut")
 
 gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   wndType = handlerType.MODAL
@@ -87,7 +89,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
                           misBlk.mission_settings.mission.country_axis
                         ]
       for (local i = countries.len() - 1; i >= 0; i--)
-        if (!::is_dynamic_country_allowed(countries[i]))
+        if (!isDynamicCountryAllowed(countries[i]))
           countries.remove(i)
       if (!countries.len())
         continue
@@ -244,7 +246,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   }
 
   function onStart() {
-    if (!::g_squad_utils.canJoinFlightMsgBox({ msgId = "multiplayer/squad/cantJoinSessionWithSquad" }))
+    if (!canJoinFlightMsgBox({ msgId = "multiplayer/squad/cantJoinSessionWithSquad" }))
       return
 
     let index = this.getSelectedMission()
@@ -289,7 +291,7 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
 
   function checkCustomDifficulty() {
     let diffCode = get_mission_settings().diff
-    if (!::check_diff_pkg(diffCode))
+    if (!checkDiffPkg(diffCode))
       return
 
     this.checkedNewFlight(function() {
@@ -367,39 +369,3 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
 
   function onFav() {}
 }
-
-
-::is_dynamic_country_allowed <- function is_dynamic_country_allowed(country) {
-  let sBlk = get_game_settings_blk()
-  let list = sBlk?.dynamicCountries
-
-  if (!list || !list.paramCount())
-    return true
-  return list?[country] == true
-}
-
-::get_mission_team_countries <- function get_mission_team_countries(layout) {
-  local res = null
-  if (!layout)
-    return res
-
-  let lblk = DataBlock()
-  lblk.load(layout)
-  let mBlk = lblk?.mission_settings.mission
-  if (!mBlk)
-    return res
-
-  let checkDynamic = mBlk?.type == "dynamic"
-
-  res = []
-  foreach (cTag in ["country_allies", "country_axis"]) {
-    local c = mBlk?[cTag] ?? "ussr"
-    if (!checkDynamic || ::is_dynamic_country_allowed(c))
-      c = $"country_{c}"
-    else
-      c = null
-    res.append(c)
-  }
-  return res
-}
-

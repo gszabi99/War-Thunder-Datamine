@@ -89,7 +89,7 @@ struct Mica
 
     float2(0.043,  0.500),
     float2(0.043, -0.390),
-  ], ShapeType Poly, float2(0.0), float2(1.0))
+  ], ShapeType.Poly, float2(0.0), float2(1.0))
 
   seeker = Poly(
   [
@@ -100,7 +100,7 @@ struct Mica
 
     float2(0.043, -0.370),
     float2(0.043, -0.390),
-  ], ShapeType PolyFilledOutlined, float2(0.0), float2(1.0))
+  ], ShapeType.PolyFilledOutlined, float2(0.0), float2(1.0))
 
   strake = Poly(
   [
@@ -108,7 +108,7 @@ struct Mica
     float2(-0.068, -0.096),
     float2(-0.068,  0.239),
     float2(-0.043,  0.251),
-  ], ShapeType PolyLine, float2(0.0), float2(1.0))
+  ], ShapeType.PolyLine, float2(0.0), float2(1.0))
 
   fin = Poly(
   [
@@ -116,7 +116,7 @@ struct Mica
     float2(-0.110,  0.371),
     float2(-0.110,  0.394),
     float2(-0.043,  0.432),
-  ], ShapeType PolyLine, float2(0.0), float2(1.0))
+  ], ShapeType.PolyLine, float2(0.0), float2(1.0))
 
 
 struct Outline
@@ -141,7 +141,7 @@ struct Outline
     float2(0.092, -0.214),
     float2(0.093, -0.332),
     float2(0.059, -0.414),
-  ], ShapeType PolyLine, float2(0.0), float2(1.0))
+  ], ShapeType.PolyLine, float2(0.0), float2(1.0))
 
   canard = Poly(
   [
@@ -149,7 +149,7 @@ struct Outline
     float2(-0.092, -0.214),
     float2(-0.203, -0.184),
     float2(-0.203, -0.224),
-  ], ShapeType Poly, float2(0.0), float2(1.0))
+  ], ShapeType.Poly, float2(0.0), float2(1.0))
 
 
 struct Tank
@@ -180,7 +180,7 @@ struct Tank
     float2(0.038, -0.467),
     float2(0.023, -0.472),
     float2(0.008, -0.475),
-  ], ShapeType Poly, float2(0.0), float2(1.0))
+  ], ShapeType.Poly, float2(0.0), float2(1.0))
 
   fin = Poly(
   [
@@ -188,7 +188,7 @@ struct Tank
     float2(-0.072,  0.333),
     float2(-0.072,  0.454),
     float2(-0.018,  0.454),
-  ], ShapeType PolyLine, float2(0.0), float2(1.0))
+  ], ShapeType.PolyLine, float2(0.0), float2(1.0))
 
 
 struct TargetingPod
@@ -227,7 +227,7 @@ struct TargetingPod
     float2(0.090, -0.302),
     float2(0.078, -0.294),
     float2(0.078, -0.209),
-  ], ShapeType PolyLine, float2(0.0), float2(1.0))
+  ], ShapeType.PolyLine, float2(0.0), float2(1.0))
 
   base = Poly(
   [
@@ -235,7 +235,7 @@ struct TargetingPod
     float2(-0.078,  0.495),
     float2(0.078,  0.495),
     float2(0.078, -0.209),
-  ], ShapeType Poly, float2(0.0), float2(1.0))
+  ], ShapeType.Poly, float2(0.0), float2(1.0))
 
 
 struct MultipleEjector
@@ -285,7 +285,7 @@ struct MultipleEjector
     float2(0.046, -0.491),
     float2(0.028, -0.497),
     float2(0.009, -0.500),
-  ], ShapeType Poly, float2(0.0), float2(1.0))
+  ], ShapeType.Poly, float2(0.0), float2(1.0))
 
 
 struct Bomb
@@ -310,7 +310,7 @@ struct Bomb
     float2(0.016, -0.496),
     float2(0.010, -0.499),
     float2(0.004, -0.500),
-  ], ShapeType Poly, float2(0.0), float2(1.0))
+  ], ShapeType.Poly, float2(0.0), float2(1.0))
 
   fin = Poly(
   [
@@ -318,7 +318,7 @@ struct Bomb
     float2(-0.185,  0.419),
     float2(-0.185,  0.500),
     float2(-0.038,  0.500),
-  ], ShapeType Poly, float2(0.0), float2(1.0))
+  ], ShapeType.Poly, float2(0.0), float2(1.0))
 
   seeker = Poly(
   [
@@ -337,7 +337,7 @@ struct Bomb
     float2(0.016, -0.496),
     float2(0.010, -0.499),
     float2(0.004, -0.500),
-  ], ShapeType PolyFilledOutlined, float2(0.0), float2(1.0))
+  ], ShapeType.PolyFilledOutlined, float2(0.0), float2(1.0))
 
 struct StatusIndicator
   w = Poly(
@@ -349,13 +349,13 @@ struct StatusIndicator
 
     float2(-0.01,  0.03),
     float2(-0.02, -0.02),
-  ], ShapeType PolyLine, float2(0.0), float2(1.0))
+  ], ShapeType.PolyLine, float2(0.0), float2(1.0))
 
   line = Poly(
   [
     float2(-0.01,  0.01),
     float2(0.01, -0.01),
-  ], ShapeType PolyLine, float2(0.0), float2(1.0))
+  ], ShapeType.PolyLine, float2(0.0), float2(1.0))
 
 struct Shapes
   mica = Mica()

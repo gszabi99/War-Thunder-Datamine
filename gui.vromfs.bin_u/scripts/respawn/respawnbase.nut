@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
+let { startsWith } = require("%sqstd/string.nut")
 
 
 let { getRespawnBaseNameById, isDefaultRespawnBase } = require("guiRespawn")
@@ -36,6 +37,13 @@ local RespawnBase = class {
 
   function isEqual(respBase) {
     return respBase != null && this.isAutoSelected == respBase.isAutoSelected && this.id == respBase.id
+  }
+
+  function isSpawnIsAirfiled() {
+    let spawnLocSubName = this.name.split("/")?[1] ?? ""
+    if (spawnLocSubName == "")
+      return false
+    return startsWith(spawnLocSubName, "airfield")
   }
 }
 

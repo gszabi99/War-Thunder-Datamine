@@ -6,6 +6,7 @@ let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weapo
 let { blkFromPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let { getPresetWeapons, getWeaponBlkParams } = require("%scripts/weaponry/weaponryPresets.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
+let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
 
 const USE_DELAY_EXPLOSION_DEFAULT = true
 
@@ -75,7 +76,7 @@ function isShipWithoutPurshasedTorpedoes(unit) {
   if (!torpedoes)
     return false
 
-  if (::g_weaponry_types.getUpgradeTypeByItem(torpedoes).getAmount(unit, torpedoes) > 0)
+  if (getUpgradeTypeByItem(torpedoes).getAmount(unit, torpedoes) > 0)
     return false
 
   return true
@@ -102,7 +103,7 @@ function isAvailablePrimaryWeapon(unit, weaponName) {
     for (local i = 0; i < modificationsCount; i++) {
       let modification = unitBlk.modifications.getBlock(i)
       let modName = modification.getBlockName()
-      let commonWeapons = modification?.effects?.commonWeapons
+      let commonWeapons = modification?.effects.commonWeapons
       if (commonWeapons == null)
         continue
       foreach (weap in (commonWeapons % "Weapon")) {

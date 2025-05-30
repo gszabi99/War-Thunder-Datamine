@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { defer } = require("dagor.workcycle")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
@@ -53,7 +54,7 @@ function goToBattleAction(lastEvent) {
 
     if (!handler && eventDisplayType.showInEventsWindow) {
       guiStartModalEvents()
-      get_cur_gui_scene().performDelayed(getroottable(), function() {
+      defer(function() {
         if (hasAlredyActiveJoinProcess())
           return
         handler = handlersManager.findHandlerClassInScene(gui_handlers.EventsHandler)

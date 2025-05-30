@@ -148,7 +148,7 @@ function updateClanByWWLBAndDo(clanInfo, afterUpdate) {
       let lbData = response?[clanInfo.tag]
       if (lbData) {
         let idx = lbData?.idx
-        let rating = lbData?.rating?.value_total
+        let rating = lbData?.rating.value_total
         if (rating != null)
           clanInfo.rating <- round(rating / 10000.0).tointeger()
         if (idx != null)

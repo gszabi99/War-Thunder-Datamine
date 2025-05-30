@@ -5,6 +5,7 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { wwGetPlayerSide } = require("worldwar")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { getArmiesCache } = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
 ::g_ww_map_reinforcement_tab_type <- {
   types = []
@@ -85,7 +86,7 @@ enums.addTypesByGlobalName("g_ww_map_reinforcement_tab_type", {
     getTabTextPostfix = function() {
       local commonCount = 0
       local surroundedCount = 0
-      foreach (armiesData in ::g_operations.getArmiesCache()) {
+      foreach (armiesData in getArmiesCache()) {
         commonCount += (armiesData?.common ?? []).len()
         surroundedCount += (armiesData?.surrounded ?? []).len()
       }

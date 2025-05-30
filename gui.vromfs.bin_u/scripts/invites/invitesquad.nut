@@ -14,11 +14,12 @@ let { add_event_listener } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { registerInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { format } = require("string")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { checkQueueAndStart, leaveAllQueues } = require("%scripts/queue/queueManager.nut")
 let { showExpiredInvitePopup, removeInviteToSquad } = require("%scripts/invites/invites.nut")
+let { canJoinFlightMsgBox, canSquad } = require("%scripts/squads/squadUtils.nut")
 
 let Squad = class (BaseInvite) {
   
@@ -27,6 +28,7 @@ let Squad = class (BaseInvite) {
   isAccepted = false
   leaderContact = null
   needCheckSystemRestriction = true
+  needCheckCanChatWithPlayer = true
 
   roomId = ""
   roomType = g_chat_room_type.SQUAD
@@ -40,29 +42,6 @@ let Squad = class (BaseInvite) {
     this.leaderId = getTblValue("leaderId", params, this.leaderId)
 
     this.updateInviterContact()
-
-    if (this.inviterName.len() != 0) {
-      
-      log($"InviteSquad: invitername != 0 {platformModule.isPlayerFromXboxOne(this.inviterName)}")
-      if (platformModule.isPlayerFromXboxOne(this.inviterName))
-        this.setDelayed(true)
-    }
-    else {
-      this.setDelayed(true)
-      let cb = Callback(function(_r) {
-                              this.updateInviterContact()
-                              log($"InviteSquad: Callback: invitername == 0 {platformModule.isPlayerFromXboxOne(this.inviterName)}")
-                              if (platformModule.isPlayerFromXboxOne(this.inviterName)) {
-                                this.setDelayed(true)
-                                this.checkAutoAcceptXboxInvite()
-                              }
-                              else
-                                this.setDelayed(false)
-                            }, this)
-      requestUsersInfo([this.leaderId], cb, cb)
-    }
-    this.isAccepted = false
-
     if (initial)
       add_event_listener("SquadStatusChanged",
         function (_p) {
@@ -71,7 +50,31 @@ let Squad = class (BaseInvite) {
             this.onSuccessfulAccept()
         }, this)
 
-    this.checkAutoAcceptXboxInvite()
+    if (this.inviterName.len() != 0) {
+      this.updateCanChatWithPlayerAndCheckAutoAccept()
+      return
+    }
+
+    this.setDelayed(true)
+    let cb = Callback(function(_r) {
+      this.updateInviterContact()
+      this.updateCanChatWithPlayerAndCheckAutoAccept()
+    }, this)
+    requestUsersInfo([this.leaderId], cb, cb)
+  }
+
+  function updateCanChatWithPlayerAndCheckAutoAccept() {
+    let cb = Callback(function() {
+      
+      log($"InviteSquad: invitername != 0 {platformModule.isPlayerFromXboxOne(this.inviterName)}")
+      if (platformModule.isPlayerFromXboxOne(this.inviterName)) {
+        this.setDelayed(true)
+        this.checkAutoAcceptXboxInvite()
+      } else
+        this.setDelayed(false)
+    }, this)
+    this.setDelayed(true)
+    this.updateCanChatWithPlayer(cb)
   }
 
   function updateInviterContact() {
@@ -95,9 +98,9 @@ let Squad = class (BaseInvite) {
   }
 
   function checkAutoAcceptXboxInvite() {
-    if (!is_platform_xbox
+    if (!is_gdk
         || !this.leaderContact
-        || (this.haveRestrictions() && !isInMenu())
+        || (this.haveRestrictions() && !isInMenu.get())
         || !needProceedSquadInvitesAccept()
       )
       return
@@ -123,7 +126,7 @@ let Squad = class (BaseInvite) {
   function autorejectInvite() {
     local thisCapture = this
     this.leaderContact.checkCanInvite(function(canInvite) {
-      if (!::g_squad_utils.canSquad() || !canInvite)
+      if (!canSquad() || !canInvite)
         thisCapture.reject()
     })
   }
@@ -200,7 +203,7 @@ let Squad = class (BaseInvite) {
 
     let acceptCallback = Callback(this._implAccept, this)
     let callback = function () { checkQueueAndStart(acceptCallback, null, "isCanNewflight") }
-    let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
+    let canJoin = canJoinFlightMsgBox(
       { allowWhenAlone = false, msgId = "squad/leave_squad_for_invite" },
       callback
     )

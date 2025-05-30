@@ -65,21 +65,19 @@ struct SensorPoi
 
 
 struct Shapes
-  diamond = [[auto
-    float2(0.01,  0.00);
-    float2(0.00,  0.02);
-    float2(-0.01,  0.00);
-    float2(0.00, -0.02);
-  ]]
-  arrow = [[auto
-    float2(0.000,  0.000);
-    float2(0.015, -0.015);
-    float2(0.015, -0.006);
-    float2(0.040, -0.006);
-    float2(0.040,  0.006);
-    float2(0.015,  0.006);
-    float2(0.015,  0.015);
-  ]]
+  diamond = fixed_array(
+    float2(0.01,  0.00),
+    float2(0.00,  0.02),
+    float2(-0.01,  0.00),
+    float2(0.00, -0.02))
+  arrow = fixed_array(
+    float2(0.000,  0.000),
+    float2(0.015, -0.015),
+    float2(0.015, -0.006),
+    float2(0.040, -0.006),
+    float2(0.040,  0.006),
+    float2(0.015,  0.006),
+    float2(0.015,  0.015))
 
 
 struct Ccrp
@@ -307,18 +305,16 @@ class Component : Canvas
     drawCircle(float2(0.0), 0.004)
     setFillColor(nullColor)
 
-    var wing = [[auto
-      float2(-gap, 0.0);
-      float2(-0.04, 0.0);
-      float2(-0.045, 0.015);
-      float2(-0.05, 0.0);
-      float2(-0.11, 0.0);
-    ]]
+    let wing = fixed_array(
+      float2(-gap, 0.0),
+      float2(-0.04, 0.0),
+      float2(-0.045, 0.015),
+      float2(-0.05, 0.0),
+      float2(-0.11, 0.0))
 
-    var stab = [[auto
-      float2(0.0, -gap);
-      float2(0.0, -0.085);
-    ]]
+    let stab = fixed_array(
+      float2(0.0, -gap),
+      float2(0.0, -0.085))
 
     var sina, cosa = 0.0
     sincos(fmw.roll / 180.0 * PI, sina, cosa)
@@ -363,16 +359,14 @@ class Component : Canvas
       else
         drawDot(float2(size * cosa + pos.x, size * sina + pos.y))
     // Hand
-    let line = [[auto
-      float2(0.0, 0.0);
-      float2(-handSize, 0.0);
-    ]]
+    let line = fixed_array(
+      float2(0.0, 0.0),
+      float2(-handSize, 0.0))
 
-    let arrow = [[auto
-      float2(-handSize + 0.01, -0.005);
-      float2(-handSize, 0.0);
-      float2(-handSize + 0.01, 0.005);
-    ]]
+    let arrow = fixed_array(
+      float2(-handSize + 0.01, -0.005),
+      float2(-handSize, 0.0),
+      float2(-handSize + 0.01, 0.005))
 
     let factor = 80.0 / max
     sincos(clamp(hero.vel.y, -max, max) * factor / 180.0 * PI, sina, cosa)
@@ -390,18 +384,18 @@ class Component : Canvas
 
   def quantizeAlt(alt : float) : int // Based on Su-35
     if alt < 100.0
-      return floori(alt / 2.0) * 2;
+      return floori(alt / 2.0) * 2
     if alt < 500.0
-      return floori(alt / 5.0) * 5;
-    return floori(alt / 10.0) * 10;
+      return floori(alt / 5.0) * 5
+    return floori(alt / 10.0) * 10
 
 
   def quantizeSpeed(speed : float) : int // Based on Su-35
     if speed < 300.0
-      return floori(speed / 2.0) * 2;
+      return floori(speed / 2.0) * 2
     if speed < 400.0
-      return floori(speed / 5.0) * 5;
-    return floori(speed / 10.0) * 10;
+      return floori(speed / 5.0) * 5
+    return floori(speed / 10.0) * 10
 
 
   def drawRalt()
@@ -515,12 +509,11 @@ class Component : Canvas
 
     drawLine(float2(width, posY), float2(-width, posY))
 
-    let n = [[auto
-      float2(-0.008,  0.014);
-      float2(-0.008, -0.014);
-      float2(0.008,  0.014);
-      float2(0.008, -0.014);
-    ]]
+    let n = fixed_array(
+      float2(-0.008,  0.014),
+      float2(-0.008, -0.014),
+      float2(0.008,  0.014),
+      float2(0.008, -0.014))
     drawLine(float2(0.0, posY), float2(0.0, posY + 0.03))
 
     for i in -count..count * 2 + 1
@@ -537,11 +530,10 @@ class Component : Canvas
       else
         drawLine(float2(offset, posY), float2(offset, posY - height * 0.7))
 
-    let caret = [[auto
-      float2(-0.015,  0.034);
-      float2(-0.0,  0.0);
-      float2(0.015,  0.034);
-    ]]
+    let caret = fixed_array(
+      float2(-0.015,  0.034),
+      float2(-0.0,  0.0),
+      float2(0.015,  0.034))
     drawPolyLine(caret.to_array().translate(float2(clamp(headingVelDiff * scale, -width, width), posY)))
     // masking
     setFillColor(maskColor)
@@ -561,9 +553,6 @@ class Component : Canvas
     let divs = 36
     let interval = PI2 / float(divs)
     let size = 0.155
-    let scale =  0.0055 // degrees per canvas unit
-
-    let startAngle = 3.0 * interval
 
     drawSector(pos, float2(size), float2(-1.0 * interval + PI, 3.0 * interval + PI))
 
@@ -626,13 +615,12 @@ class Component : Canvas
 
   def drawAoa()
     let isTvc = fmw.fm.appliedCT.maneuverabilityMode > fmw.fullAutopilotManeuverabilityModeTransition.x
-    let hand = [[auto
-      float2(-0.065, 0.0);
-      float2(0.0, 0.0);
-      float2(0.0, -0.02);
-      float2(-0.015, -0.01);
-      float2(-0.06, 0.0);
-    ]]
+    let hand = fixed_array(
+      float2(-0.065, 0.0),
+      float2(0.0, 0.0),
+      float2(0.0, -0.02),
+      float2(-0.015, -0.01),
+      float2(-0.06, 0.0))
     if isTvc
       drawAoaTvc(hand)
     else
@@ -741,12 +729,11 @@ class Component : Canvas
       let dlzMin = minRange / float(radar.displayRangeMax * 1000.0)
       let dlzMinY = pos.y - dlzMin * length
       if dlzMin < 1.0
-        let bracket = [[auto
-          float2(-stepWidth, 0.01);
-          float2(-stepWidth, 0.0);
-          float2(stepWidth, 0.0);
-          float2(stepWidth, 0.01);
-        ]]
+        let bracket = fixed_array(
+          float2(-stepWidth, 0.01),
+          float2(-stepWidth, 0.0),
+          float2(stepWidth, 0.0),
+          float2(stepWidth, 0.01))
         drawPolyLine(bracket.to_array().translate(float2(pos.x, dlzMinY)))
 
     // Target range
@@ -934,7 +921,7 @@ class Component : Canvas
     let box = float2(0.1, 0.034)
 
     let tangVel = toi.angVel * toi.distance
-    let relVel = tangVel + toi.distanceRate * toi.dirNorm;
+    let relVel = tangVel + toi.distanceRate * toi.dirNorm
     let targetVel = hero.vel + relVel
     let targetSpd = length(targetVel) * mpsToKmh
     let targetBaroAlt = toi.pos.y - app.currentScene.waterLevel
@@ -973,11 +960,12 @@ class Component : Canvas
   def drawHmd()
     let isIrAam = secondaryWeapon?.trigger_no ?? -1 == int(WeaponTriggerType.AAM_TRIGGER) && get_cur_weapon_guidance_type() == GuidanceType.TYPE_OPTICAL
     return if !isIrAam && !radar.isHmdMode
+    return if isIrAam && !radar.isHmdMode && !fmw.cockpit.hmdEnabled && int(guidance.lockState) < int(GuidanceLockState.RESULT_POWER_ON)
 
     let camera = app.flightControlMode.cameraControl.cur
     return if camera == null
 
-    let dirVec = normalize(camera.viewData.lookAt - camera.viewData.lookFrom)
+    let dirVec = fast_normalize(camera.viewData.lookAt - camera.viewData.lookFrom)
     let pos = worldVecToHud(dirVec)
     drawReticle(pos, float2(0.14), float2(0.02))
 
@@ -1140,8 +1128,6 @@ class Component : Canvas
 
     return if !fcm.isCannonImpactValid
 
-    let radius = 0.03
-
     let maxRangeLoSpeed = 1800.0
     let maxRangeHiSPeed = 2200.0
     let minRange = 200.0
@@ -1175,8 +1161,6 @@ class Component : Canvas
     drawTargetingMode(spi.isSet ? "ПрЗ" : "НС")
 
     return if !fcm.isRocketImpactValid
-
-    let radius = 0.03
 
     let maxRange = 4000.0
     let minRange = 500.0
@@ -1241,7 +1225,7 @@ class Component : Canvas
 
     var pos = float2(0.0)
     if fcm.isCannonFireDirectionValid
-      pos = worldPosToHud((hero.unitTm * fcm.averageCannonPosition) + fcm.cannonAimDirection);
+      pos = worldPosToHud((hero.unitTm * fcm.averageCannonPosition) + fcm.cannonAimDirection)
     elif fcm.isCannonAimValid
       var offsetPitchRotTm : float3x4
       rotzTM(fmw.props.staticAimPitch, offsetPitchRotTm)
@@ -1385,7 +1369,7 @@ class Component : Canvas
     localVec = fast_normalize(localVec)
     let screenX = (atan2(localVec.x, localVec.z) - PI_2)
     let screenY = asin(localVec.y)
-    var result = float2(screenX / hudFovLimits.x, -screenY / hudFovLimits.y)
+    let result = float2(screenX / hudFovLimits.x, -screenY / hudFovLimits.y)
     return !isBehind ? result : result * 100.0
 
 
@@ -1397,7 +1381,7 @@ class Component : Canvas
     return if isAirGunMode || isGroundGunMode
 
     let pos = float2(0.0, 0.44)
-    let numbers <- [[auto 11; 9; 7; 5; 3; 1; 2; 4; 6; 8; 10; 12]]
+    let numbers <- fixed_array(11, 9, 7, 5, 3, 1, 2, 4, 6, 8, 10, 12)
     let count = numbers.length()
     let size = float2(0.22, 0.0)
     let boxSize = 0.014
@@ -1405,10 +1389,10 @@ class Component : Canvas
     let eng1Slot = 4
     let eng2Slot = 7
 
-    let stations <- [{
+    let stations <- [
       for i in 0 .. count;
       float2(lerp(-size.x, size.x, float(i) / float(count - 1)), pos.y)
-    }]
+    ]
     // Draw aircraft outline
     setLineWidth(1.6 * defaultLineWidth)
     drawLine(pos + size, pos - size)
@@ -1425,11 +1409,10 @@ class Component : Canvas
     drawBox(float2(eng1Pos.x - engSize, eng1Pos.y), float2(eng1Pos.x + engSize, eng1Pos.y + engSize * 2.0))
     drawBox(float2(eng2Pos.x - engSize, eng1Pos.y), float2(eng2Pos.x + engSize, eng1Pos.y + engSize * 2.0))
 
-    let arrowHead = [[auto
-      float2(-0.01, 0.01);
-      float2(-0.0, -0.0);
-      float2(0.01, 0.01);
-    ]]
+    let arrowHead = fixed_array(
+      float2(-0.01, 0.01),
+      float2(-0.0, -0.0),
+      float2(0.01, 0.01))
 
     setFontSize(roundi(0.5 * float(defaultFontSize)))
     for i in 0 .. ws.length()
@@ -1506,7 +1489,7 @@ class Component : Canvas
   def drawArtificialHorizon()
     let euler = euler_from_quat(math::quat(hero.unitTm))
     var pos = -angleToHud(float2(0.0, euler.y))
-    var isClamped = false;
+    var isClamped = false
 
     if isOutOfCanvas(pos, 2.0 * hudPadding)
       let dir = fast_normalize(pos)
@@ -1515,10 +1498,10 @@ class Component : Canvas
       isClamped = true
     var sina, cosa : float = 0.0
     sincos(euler.z, sina, cosa)
-    let line = [[auto
-      float2(pos.x + 1.0, pos.y);
+    let line = fixed_array(
+      float2(pos.x + 1.0, pos.y),
       float2(pos.x - 1.0, pos.y)
-    ]]
+    )
     setLineWidth(0.7 * defaultLineWidth)
     if isClamped
       drawDashedPolyLine(line.to_array().rotate(sina, cosa), 0.008, 0.012)

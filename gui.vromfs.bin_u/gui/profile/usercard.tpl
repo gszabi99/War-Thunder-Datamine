@@ -197,64 +197,7 @@ root {
 
         profileContent {
           id:t='medals-container'
-          padding-top:t='3@blockInterval'
-          flow:t='horizontal'
-          display:t='hide'
-
-          profileContentLeft {
-            listbox {
-              id:t='medals_list'
-              size:t='pw, ph'
-              position:t='relative'
-              flow-align:t='left'
-              isBigSizeList:t='yes'
-              navigator:t='posNavigator'
-              moveX:t='linear'
-              moveY:t='closest'
-              navigatorShortcuts:t='yes'
-              move-only-hover:t='yes'
-              on_select:t='onMedalsCountrySelect'
-            }
-          }
-
-          profileContentSeparator{}
-
-          profileContentRight {
-            size:t='@profilePageRightPartWidth, ph'
-            position:t='relative'
-            flow:t='vertical'
-
-            tdiv {
-              id:t='medals_info'
-              position:t='relative'
-              flow:t='vertical'
-              overflow-y:t='auto'
-              total-input-transparent:t='yes'
-              width:t='pw'
-
-              tdiv {
-                id:t='medals_desc'
-                flow:t='horizontal'
-                width:t='pw'
-                margin-top:t='16@sf/@pf'
-                margin-bottom:t='1@profilePagePartsMargin'
-              }
-            }
-
-            tdiv {
-              position:t='relative'
-              size:t='pw, 2@sf/@pf'
-              background-color:t='#4B4F53'
-              margin:t='0, 6@sf/@pf, 0, 19@sf/@pf'
-            }
-
-            medalsList {
-              medalsListContent {
-                id:t='medals_zone'
-                on_select:t='onMedalSelect'
-              }
-            }
-          }
+          size:t='pw, fh'
         }
 
         frameSeparator {

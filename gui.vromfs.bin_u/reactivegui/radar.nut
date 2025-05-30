@@ -6,6 +6,7 @@ let dasRadarIndication = load_das("%rGui/radarIndication.das")
 let DataBlock = require("DataBlock")
 let { IPoint3 } = require("dagor.math")
 let {BlkFileName} = require("%rGui/planeState/planeToolsState.nut")
+let { getLangId } = require("dagor.localize")
 
 function radarHud(width, height, x, y, color_watched, has_txt_block = false) {
   return @(){
@@ -40,6 +41,7 @@ let customPages = {
   typhoonRadar = @() load_das("%rGui/planeCockpit/mfdTyphoonRadar.das")
   su30Radar = @() load_das("%rGui/planeCockpit/mfdSu30Radar.das")
   fa18cRadarATTK = @() load_das("%rGui/planeCockpit/mfdfa18cRadarATTK.das")
+  f106Radar = @() load_das("%rGui/planeCockpit/mfdF106Radar.das")
 }
 
 let radarSettings = Computed(function() {
@@ -73,6 +75,7 @@ let radarSettings = Computed(function() {
     cueLowHeiColor = IPoint3(0, 255, 0)
     cueUndergroundColor = IPoint3(0, 255, 0)
     isMetricUnits = false
+    radarModeNameLangId = -1
   }
 
   if (BlkFileName.value == "")
@@ -127,6 +130,7 @@ let radarSettings = Computed(function() {
         cueLowHeiColor = pageBlk.getIPoint3("cueLowHeiColor", IPoint3(-1, -1, -1))
         cueUndergroundColor = pageBlk.getIPoint3("cueUndergroundColor", IPoint3(-1, -1, -1))
         isMetricUnits = pageBlk.getBool("isMetricUnits", false)
+        radarModeNameLangId = getLangId(pageBlk.getStr("radarModeNameLangId", ""))
       }
     }
   }
@@ -137,7 +141,8 @@ let radarMfd = @(pos_and_size, color_watched) function() {
   let { lineWidth, lineColor, modeColor, verAngleColor, scaleColor, hideBeam, hideLaunchZone, hideScale,
    hideHorAngle, hideVerAngle, horAngleColor, targetColor, fontId, hasAviaHorizont, targetFormType,
    backgroundColor, beamShape, netRowCnt, netColor, hideWeaponIndication, cueHeights, fontSize,
-   showScanAzimuth, script, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor, isMetricUnits } = radarSettings.get()
+   showScanAzimuth, script, centerRadar, cueTopHeiColor, cueLowHeiColor, cueUndergroundColor, isMetricUnits,
+   radarModeNameLangId } = radarSettings.get()
   return {
     watch = [color_watched, MfdRadarHideBkg, MfdRadarFontScale, MfdViewMode, pos_and_size, radarSettings]
     size = [pos_and_size.value.w, pos_and_size.value.h]
@@ -178,6 +183,7 @@ let radarMfd = @(pos_and_size, color_watched) function() {
     cueLowHeiColor = cueLowHeiColor.x < 0 ? Color(modeColor.x, modeColor.y, modeColor.z, 255) : Color(cueLowHeiColor.x, cueLowHeiColor.y, cueLowHeiColor.z, 255)
     cueUndergroundColor = cueUndergroundColor.x < 0 ? Color(modeColor.x, modeColor.y, modeColor.z, 255) : Color(cueUndergroundColor.x, cueUndergroundColor.y, cueUndergroundColor.z, 255)
     isMetricUnits
+    radarModeNameLangId
   }
 }
 

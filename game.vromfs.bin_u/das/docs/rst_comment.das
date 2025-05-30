@@ -1,4 +1,5 @@
 
+options gen2 = false
 options indenting = 4
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
@@ -33,7 +34,7 @@ let private DEBUG_COMMENT_READER = false
 [macro_function]
 def private debug_rst ( s : string )
     if DEBUG_COMMENT_READER
-        to_log(LOG_INFO,"{s}\n")
+        print("{s}\n")
 
 def error_rst ( s : string )
     if DEBUG_COMMENT_READER

@@ -80,7 +80,7 @@ return {
 
   subscribe_to_changes = rel.subscribe_to_changes
   unsubscribe_from_changes = rel.unsubscribe_from_changes
-  cleanup = rel.cleanup
+  cleanup_relationships = rel.cleanup
 
   update_friends_list
   update_mute_list

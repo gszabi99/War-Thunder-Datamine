@@ -10,6 +10,7 @@ let { addPopup, removePopupByHandler } = require("%scripts/popups/popups.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { doWithAllGamercards } = require("%scripts/gamercard/gamercardHelpers.nut")
 
 const CLAN_SEEN_CANDIDATES_SAVE_ID = "seen_clan_candidates"
 const MAX_CANDIDATES_NICKNAMES_IN_POPUP = 5
@@ -58,12 +59,19 @@ function loadSeenCandidates() {
   return result
 }
 
+function updateClanAlertIcon() {
+  let needAlert = hasFeature("Clans") && getUnseenCandidatesCount() > 0
+  doWithAllGamercards(function(scene) {
+      showObjById("gc_clanAlert", needAlert, scene)
+    })
+}
+
 function onClanCandidatesChanged() {
   if (!getUnseenCandidatesCount())
     removePopupByHandler(::g_clans)
 
   saveCandidates()
-  ::update_clan_alert_icon()
+  updateClanAlertIcon()
 }
 
 function markClanCandidatesAsViewed() {

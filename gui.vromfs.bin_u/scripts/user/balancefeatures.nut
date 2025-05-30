@@ -1,20 +1,21 @@
 from "%scripts/dagui_natives.nut" import get_cur_rank_info
 from "%scripts/dagui_library.nut" import *
 
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { launchOnlineShop } = require("%scripts/onlineShop/onlineShopModel.nut")
 let { get_gui_balance, hasMultiplayerRestritionByBalance } = require("%scripts/user/balance.nut")
+let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 function isShowGoldBalanceWarning() {
   if (!hasMultiplayerRestritionByBalance())
     return false
 
-  ::update_entitlements_limited()
-  let cancelBtnText = isInMenu() ? "cancel" : "ok"
+  updateEntitlementsLimited()
+  let cancelBtnText = isInMenu.get() ? "cancel" : "ok"
   local defButton = cancelBtnText
   let buttons = [[cancelBtnText, @() null]]
 
-  if (isInMenu()) {
+  if (isInMenu.get()) {
     let purchaseBtn = "#mainmenu/btnBuy"
     defButton = purchaseBtn
     buttons.insert(0, [purchaseBtn,
@@ -37,7 +38,7 @@ function checkBalanceMsgBox(cost, afterCheck = null, silent = false) {
   if (cost.gold > 0 && balance.gold < cost.gold) {
     text = loc("not_enough_gold")
     isGoldNotEnough = true
-    ::update_entitlements_limited()
+    updateEntitlementsLimited()
   }
 
   if (!text)
@@ -45,7 +46,7 @@ function checkBalanceMsgBox(cost, afterCheck = null, silent = false) {
   if (silent)
     return false
 
-  let cancelBtnText = isInMenu() ? "cancel" : "ok"
+  let cancelBtnText = isInMenu.get() ? "cancel" : "ok"
   local defButton = cancelBtnText
   let buttons = [[cancelBtnText,  function() { if (afterCheck) afterCheck (); } ]]
   local shopType = ""
@@ -54,7 +55,7 @@ function checkBalanceMsgBox(cost, afterCheck = null, silent = false) {
   else if (!isGoldNotEnough && hasFeature("SpendGold"))
     shopType = "warpoints"
 
-  if (isInMenu() && shopType != "") {
+  if (isInMenu.get() && shopType != "") {
     let purchaseBtn = "#mainmenu/btnBuy"
     defButton = purchaseBtn
     buttons.insert(0, [purchaseBtn, @() launchOnlineShop(null, shopType, afterCheck, "buy_gold_msg")])

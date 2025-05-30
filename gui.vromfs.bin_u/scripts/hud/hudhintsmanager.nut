@@ -103,12 +103,14 @@ let g_hud_hints_manager = {
   }
 
   function removeAllHints(hintFilterField = "isHideOnDeath") {
-    let hints = this.activeHints.filter(@(hintData) hintData.hint[hintFilterField])
+    let hints = hintFilterField != ""
+      ? this.activeHints.filter(@(hintData) hintData.hint[hintFilterField])
+      : this.activeHints.filter(@(_hintData) true)
     foreach (hintData in hints)
       this.removeHint(hintData, true)
   }
 
-    function onLocalPlayerDead() {
+  function onLocalPlayerDead() {
     this.removeAllHints()
   }
 
@@ -655,4 +657,5 @@ dmPanelStatesAabb.subscribe(function(value) {
 
 subscribe_handler(g_hud_hints_manager, g_listener_priority.DEFAULT_HANDLER)
 register_command(@(hintName) g_hud_hints_manager.isHintShowAllowed(hintName, null), "smart_hints.isHintShowAllowed")
+
 ::g_hud_hints_manager <- g_hud_hints_manager

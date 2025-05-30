@@ -1,14 +1,14 @@
 from "%scripts/dagui_natives.nut" import epic_is_running
 from "%scripts/dagui_library.nut" import *
 
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isPlatformSony, is_gdk, isPlatformPC, canSpendRealMoney
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { isPlatformSony, isPlatformPC, canSpendRealMoney
 } = require("%scripts/clientState/platform.nut")
 
 let {
   getEntStoreLocId = @() "#msgbox/btn_onlineShop",
   getEntStoreIcon = @() "#ui/gameuiskin#store_icon.svg",
-  isEntStoreTopMenuItemHidden = @(...) !isPlatformPC || !hasFeature("SpendGold") || !isInMenu() || !canSpendRealMoney(),
+  isEntStoreTopMenuItemHidden = @(...) !isPlatformPC || !hasFeature("SpendGold") || !isInMenu.get() || !canSpendRealMoney(),
   getEntStoreUnseenIcon = @() null,
   openEntStoreTopMenuFunc = @(_obj, handler) handler.startOnlineShop(null, null, "topmenu"),
   openIngameStore = @(...) false,

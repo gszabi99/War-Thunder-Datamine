@@ -23,7 +23,8 @@ let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { lbCategoryTypes, getLbCategoryTypeByField, getLbCategoryTypeById, eventsTableConfig
+let { getLbCategoryTypeByField, getLbCategoryTypeById, eventsTableConfig,
+  leaderboardsList, leaderboardModes
 } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { leaderboardModel } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { generatePaginator, hidePaginator } = require("%scripts/viewUtils/paginator.nut")
@@ -34,95 +35,6 @@ let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 let showClanPageModal = require("%scripts/clans/showClanPageModal.nut")
-
-::leaderboards_list <- [
-  lbCategoryTypes.PVP_RATIO
-  lbCategoryTypes.VICTORIES_BATTLES
-  lbCategoryTypes.AVERAGE_RELATIVE_POSITION
-  lbCategoryTypes.AIR_KILLS
-  lbCategoryTypes.GROUND_KILLS
-  lbCategoryTypes.NAVAL_KILLS
-  lbCategoryTypes.AVERAGE_ACTIVE_KILLS_BY_SPAWN
-  lbCategoryTypes.AVERAGE_SCRIPT_KILLS_BY_SPAWN
-  lbCategoryTypes.AVERAGE_SCORE
-]
-
-::leaderboard_modes <- [
-  {
-    
-    text = "#mainmenu/arcadeInstantAction"
-    mode = "arcade"
-    diffCode = DIFFICULTY_ARCADE
-  }
-  {
-    
-    text = "#mainmenu/instantAction"
-    mode = "historical"
-    diffCode = DIFFICULTY_REALISTIC
-  }
-  {
-    
-    text = "#mainmenu/fullRealInstantAction"
-    mode = "simulation"
-    diffCode = DIFFICULTY_HARDCORE
-  }
-
-  {
-    
-    text = "#missions/air_event_arcade"
-    mode = "air_arcade"
-    diffCode = DIFFICULTY_ARCADE
-  }
-  {
-    
-    text = "#missions/air_event_historical"
-    mode = "air_realistic"
-    diffCode = DIFFICULTY_REALISTIC
-  }
-  {
-    
-    text = "#missions/air_event_simulator"
-    mode = "air_simulation"
-    diffCode = DIFFICULTY_HARDCORE
-  }
-  {
-    
-    text = "#missions/tank_event_arcade"
-    mode = "tank_arcade"
-    diffCode = DIFFICULTY_ARCADE
-  }
-  {
-    
-    text = "#missions/tank_event_historical"
-    mode = "tank_realistic"
-    diffCode = DIFFICULTY_REALISTIC
-  }
-  {
-    
-    text = "#missions/tank_event_simulator"
-    mode = "tank_simulation"
-    diffCode = DIFFICULTY_HARDCORE
-  }
-  {
-    
-    text = "#missions/ship_event_arcade"
-    mode = "test_ship_arcade"
-    diffCode = DIFFICULTY_ARCADE
-  }
-  {
-    
-    text = "#missions/ship_event_historical"
-    mode = "test_ship_realistic"
-    diffCode = DIFFICULTY_REALISTIC
-  }
-  {
-    
-    text = "#missions/helicopter_event"
-    mode = "helicopter_arcade"
-    diffCode = DIFFICULTY_ARCADE
-    reqFeature = [ "HiddenLeaderboardRows" ]
-  }
-]
 
 function gui_modal_event_leaderboards(params) {
   loadHandler(gui_handlers.EventsLeaderboardWindow, params)
@@ -172,7 +84,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
       this.lbModel.reset()
     }
     if (!this.lb_presets)
-      this.lb_presets = ::leaderboards_list
+      this.lb_presets = leaderboardsList
 
     this.curLbCategory = this.lb_presets[0]
     this.lbType = loadLocalByAccount("leaderboards_type", ETTI_VALUE_INHISORY)
@@ -419,7 +331,7 @@ gui_handlers.LeaderboardWindow <- class (gui_handlers.BaseGuiHandlerWT) {
     this.lbModesList = []
 
     local data = []
-    foreach (_idx, mode in ::leaderboard_modes) {
+    foreach (_idx, mode in leaderboardModes) {
       let diffCode = getTblValue("diffCode", mode)
       if (!g_difficulty.isDiffCodeAvailable(diffCode, GM_DOMINATION))
         continue

@@ -25,6 +25,7 @@ let { IPoint2, Point2, Point3 } = require("dagor.math")
 let hmdF15cBaz = createScriptComponent("%rGui/planeHmds/hmdF15cBazMsip.das", {
   fontId = Fonts.hud
 })
+let hmdF106 = createScriptComponent("%rGui/planeHmds/hmdF106.das")
 
 let hmdSetting = Computed(function() {
   let res = {
@@ -40,6 +41,7 @@ let hmdSetting = Computed(function() {
     isTopOwl = false,
     isTyphoon = false,
     isRafale = false,
+    isF106 = false,
   }
   if (BlkFileName.value == "")
     return res
@@ -59,13 +61,14 @@ let hmdSetting = Computed(function() {
     isTopOwl = blk.getBool("hmdTopOwl", false),
     isTornado = blk.getBool("hmdTornado", false),
     isTyphoon = blk.getBool("hmdTyphoon", false),
-    isRafale = blk.getBool("hmdRafale", false)
+    isRafale = blk.getBool("hmdRafale", false),
+    isF106 = blk.getBool("hmdF106", false)
   }
 })
 
 let isVisible = Computed(@() (HmdVisibleAAM.value || HmdSensorVisible.value || HmdVisible.value) && !HmdBlockIls.value)
 let planeHmd = @(width, height) function() {
-  let { isShelZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon, isRafale } = hmdSetting.value
+  let { isShelZoom, isVtas, isF16c, isF15cBaz, isAh64, isMetric, isJas39, isA10c, isTopOwl, isTornado, isTyphoon, isRafale, isF106 } = hmdSetting.value
   return {
     watch = [hmdSetting, isVisible]
     children = isVisible.value ? [
@@ -79,7 +82,8 @@ let planeHmd = @(width, height) function() {
       (isTopOwl ? hmdTopOwl(width, height) : null),
       (isTornado ? hmdTornado(width, height) : null),
       (isTyphoon ? hmdTyphoon(width, height) : null),
-      (isRafale ? hmdRafale(width, height) : null)
+      (isRafale ? hmdRafale(width, height) : null),
+      (isF106 ? hmdF106(width, height) : null)
     ] : null
   }
 }
@@ -113,7 +117,7 @@ let screenHmdLayout = @() {
   watch = [HmdFovMult, HmdBrightnessMult]
   worldAnchor   = PANEL_ANCHOR_HEAD
   worldGeometry = PANEL_GEOMETRY_RECTANGLE
-  worldOffset   = Point3(0.0, 0.0, 100 * HmdFovMult.value)
+  worldOffset   = Point3(0.0, 0.0, 50.0 * HmdFovMult.value * screenAspectRatio)
   worldSize     = Point2(100 * screenAspectRatio, 100)
   canvasSize    = IPoint2(sw(100), sh(100))
 

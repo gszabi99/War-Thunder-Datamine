@@ -3,7 +3,9 @@ from "%scripts/dagui_library.nut" import *
 let { getUnitFileName } = require("vehicleModel")
 let { eventbus_subscribe } = require("eventbus")
 let DataBlock = require("DataBlock")
+let { blkFromPath } = require("%sqstd/datablock.nut")
 let getAllUnits = require("%scripts/unit/allUnits.nut")
+let { split_by_chars } = require("string")
 
 let cache = {}
 let cacheUnitsBlk = {}
@@ -58,9 +60,22 @@ function findUnitNoCase(unitName) {
   return null
 }
 
+function getFmFile(unitId, unitBlkData = null) {
+  let unitPath = getUnitFileName(unitId)
+  if (unitBlkData == null)
+    unitBlkData = getFullUnitBlk(unitId)
+  let nodes = split_by_chars(unitPath, "/")
+  if (nodes.len())
+    nodes.pop()
+  let unitDir = "/".join(nodes, true)
+  let fmPath = "".concat(unitDir, "/", (unitBlkData?.fmFile ?? ($"fm/{unitId}")))
+  return blkFromPath(fmPath)
+}
+
 return {
   isShipDamageControlEnabled
   findUnitNoCase
   getFullUnitBlk
   getEsUnitType
+  getFmFile
 }

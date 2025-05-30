@@ -8,6 +8,7 @@ let { getSortOrderBySkillParameterName, getMinSkillsUnitRepairRank } = require("
 let { get_game_params_blk, get_wpcost_blk } = require("blkGetters")
 let { skillParametersRequestType } = require("%scripts/crew/skillParametersRequestType.nut")
 let { g_skill_parameters_type } = require("skillParametersType.nut")
+let skillParametersColumnType = require("%scripts/crew/skillParametersColumnType.nut")
 
 let parametersByCrewId = {}
 let skillGroups = { 
@@ -91,7 +92,7 @@ function getBaseDescriptionText(memberName, skillName, skillParamsList) {
 
 function getColumnsTypesList(skillsList, crewUnitType) {
   let columnTypes = []
-  foreach (columnType in ::g_skill_parameters_column_type.types) {
+  foreach (columnType in skillParametersColumnType.types) {
     if (!columnType.checkCrewUnitType(crewUnitType))
       continue
 

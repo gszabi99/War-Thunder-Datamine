@@ -699,9 +699,100 @@ let eventsTableConfig = [
   lbCategoryTypes.EVENT_SCORE_RATING_X10000
 ]
 
+let leaderboardsList = [
+  lbCategoryTypes.PVP_RATIO
+  lbCategoryTypes.VICTORIES_BATTLES
+  lbCategoryTypes.AVERAGE_RELATIVE_POSITION
+  lbCategoryTypes.AIR_KILLS
+  lbCategoryTypes.GROUND_KILLS
+  lbCategoryTypes.NAVAL_KILLS
+  lbCategoryTypes.AVERAGE_ACTIVE_KILLS_BY_SPAWN
+  lbCategoryTypes.AVERAGE_SCRIPT_KILLS_BY_SPAWN
+  lbCategoryTypes.AVERAGE_SCORE
+]
+
+let leaderboardModes = [
+  {
+    
+    text = "#mainmenu/arcadeInstantAction"
+    mode = "arcade"
+    diffCode = DIFFICULTY_ARCADE
+  }
+  {
+    
+    text = "#mainmenu/instantAction"
+    mode = "historical"
+    diffCode = DIFFICULTY_REALISTIC
+  }
+  {
+    
+    text = "#mainmenu/fullRealInstantAction"
+    mode = "simulation"
+    diffCode = DIFFICULTY_HARDCORE
+  }
+
+  {
+    
+    text = "#missions/air_event_arcade"
+    mode = "air_arcade"
+    diffCode = DIFFICULTY_ARCADE
+  }
+  {
+    
+    text = "#missions/air_event_historical"
+    mode = "air_realistic"
+    diffCode = DIFFICULTY_REALISTIC
+  }
+  {
+    
+    text = "#missions/air_event_simulator"
+    mode = "air_simulation"
+    diffCode = DIFFICULTY_HARDCORE
+  }
+  {
+    
+    text = "#missions/tank_event_arcade"
+    mode = "tank_arcade"
+    diffCode = DIFFICULTY_ARCADE
+  }
+  {
+    
+    text = "#missions/tank_event_historical"
+    mode = "tank_realistic"
+    diffCode = DIFFICULTY_REALISTIC
+  }
+  {
+    
+    text = "#missions/tank_event_simulator"
+    mode = "tank_simulation"
+    diffCode = DIFFICULTY_HARDCORE
+  }
+  {
+    
+    text = "#missions/ship_event_arcade"
+    mode = "test_ship_arcade"
+    diffCode = DIFFICULTY_ARCADE
+  }
+  {
+    
+    text = "#missions/ship_event_historical"
+    mode = "test_ship_realistic"
+    diffCode = DIFFICULTY_REALISTIC
+  }
+  {
+    
+    text = "#missions/helicopter_event"
+    mode = "helicopter_arcade"
+    diffCode = DIFFICULTY_ARCADE
+    reqFeature = [ "HiddenLeaderboardRows" ]
+  }
+]
+
 return {
   lbCategoryTypes
   getLbCategoryTypeById
   getLbCategoryTypeByField
   eventsTableConfig
+  leaderboardsList
+  leaderboardModes
 }

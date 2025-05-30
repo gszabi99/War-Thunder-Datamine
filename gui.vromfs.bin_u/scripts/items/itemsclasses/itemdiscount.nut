@@ -15,6 +15,7 @@ let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { buyUnit } = require("%scripts/unit/unitActions.nut")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
+let { updateDiscountData } = require("%scripts/discounts/discounts.nut")
 
 let Discount = class (BaseItem) {
   static iType = itemType.DISCOUNT
@@ -94,7 +95,7 @@ let Discount = class (BaseItem) {
 
     let taskId = char_send_blk("cln_set_current_personal_discount", blk)
     let taskCallback = Callback( function() {
-      ::g_discount.updateDiscountData()
+      updateDiscountData()
       cb({ success = true })
     }, handler)
 

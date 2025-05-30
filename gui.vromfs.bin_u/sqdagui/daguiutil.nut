@@ -448,6 +448,39 @@ function getDaguiObjAabb(obj) {
   }
 }
 
+function move_mouse_on_obj(obj) { 
+  if (obj?.isValid())
+    obj.setMouseCursorOnObject()
+}
+
+function move_mouse_on_child(obj, idx = 0) { 
+  if (is_mouse_last_time_used() || !obj?.isValid() || obj.childrenCount() <= idx || idx < 0)
+    return
+  let child = obj.getChild(idx)
+  if (!child.isValid())
+    return
+  child.scrollToView()
+  get_cur_gui_scene().performDelayed({}, function() {
+    if (!child?.isValid())
+      return
+    child.setMouseCursorOnObject()
+  })
+}
+
+function move_mouse_on_child_by_value(obj) { 
+  if (obj?.isValid())
+    move_mouse_on_child(obj, obj.getValue())
+}
+
+function select_editbox(obj) {
+  if (!obj?.isValid())
+    return
+  if (is_mouse_last_time_used())
+    obj.select()
+  else
+    obj.setMouseCursorOnObject()
+}
+
 return {
   setFocusToNextObj
   getSelectedChild
@@ -471,6 +504,10 @@ return {
   color4ToDaguiString
   multiplyDaguiColorStr
   getDaguiObjAabb
+  move_mouse_on_obj
+  move_mouse_on_child
+  move_mouse_on_child_by_value
+  select_editbox
 
   ALIGN
 }

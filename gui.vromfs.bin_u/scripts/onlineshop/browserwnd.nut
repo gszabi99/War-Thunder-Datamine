@@ -13,19 +13,11 @@ let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { getStringWidthPx } = require("%scripts/viewUtils/daguiFonts.nut")
 let { startsWith, stripTags } = require("%sqstd/string.nut")
 let { addTask } = require("%scripts/tasker.nut")
+let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { eventbus_subscribe } = require("eventbus")
 
-::embedded_browser_event <- function embedded_browser_event(event_type, url, error_desc, error_code,
-  is_main_frame) {
-  broadcastEvent(
-    "EmbeddedBrowser",
-    { eventType = event_type, url = url, errorDesc = error_desc,
-    errorCode = error_code, isMainFrame = is_main_frame, title = "" }
-  );
-}
-
-::notify_browser_window <- function notify_browser_window(params) {
-  broadcastEvent("EmbeddedBrowser", params)
-}
+eventbus_subscribe("notify_browser_window", @(params) broadcastEvent("EmbeddedBrowser", params))
 
 gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
   wndType = handlerType.MODAL
@@ -47,12 +39,12 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
   }
 
   function browserCloseAndUpdateEntitlements() {
-    addTask(::update_entitlements_limited(),
+    addTask(updateEntitlementsLimited(),
                        {
                          showProgressBox = true
                          progressBoxText = loc("charServer/checking")
                        },
-                       @() ::update_gamercards())
+                       @() updateGamercards())
     this.goBack()
   }
 
@@ -88,53 +80,47 @@ gui_handlers.BrowserModalHandler <- class (BaseGuiHandler) {
   }
 
   function onEventEmbeddedBrowser(params) {
-    let evType = params.eventType
-    if (evType == BROWSER_EVENT_DOCUMENT_READY) {
+    let { eventType, url = "", title = "", errorDesc = "" } = params
+    if (eventType == BROWSER_EVENT_DOCUMENT_READY) {
       this.lastLoadedUrl = browser_get_current_url()
       this.toggleWaitAnimation(false)
     }
-    else if (evType == BROWSER_EVENT_FAIL_LOADING_FRAME) {
-      if (params.isMainFrame) {
-        this.toggleWaitAnimation(false)
-        let message = "".concat(loc("browser/error_load_url"), loc("ui/dot"),
-          "\n", loc("browser/error_code"), loc("ui/colon"), params.errorCode, loc("ui/comma"), params.errorDesc)
-        let urlCommentMarkup = this.getUrlCommentMarkupForMsgbox(params.url)
-        this.msgBox("error_load_url", message, [["ok", @() null ]], "ok", { data_below_text = urlCommentMarkup })
-      }
+    else if (eventType == BROWSER_EVENT_FAIL_LOADING_FRAME) {
+      this.toggleWaitAnimation(false)
+      let message = "".concat(loc("browser/error_load_url"), loc("ui/dot"),
+        "\n", loc("browser/error_code"), loc("ui/colon"), errorDesc)
+      let urlCommentMarkup = this.getUrlCommentMarkupForMsgbox(url)
+      this.msgBox("error_load_url", message, [["ok", @() null ]], "ok", { data_below_text = urlCommentMarkup })
     }
-    else if (evType == BROWSER_EVENT_NEED_RESEND_FRAME) {
+    else if (eventType == BROWSER_EVENT_NEED_RESEND_FRAME) {
       this.toggleWaitAnimation(false)
 
       this.msgBox("error", loc("browser/error_should_resend_data"),
           [["#mainmenu/btnBack", this.browserGoBack],
-           ["#mainmenu/btnRefresh",  function() { browser_go(params.url) }]],
+           ["#mainmenu/btnRefresh",  function() { browser_go(url) }]],
            "#mainmenu/btnBack")
     }
-    else if (evType == BROWSER_EVENT_CANT_DOWNLOAD) {
+    else if (eventType == BROWSER_EVENT_CANT_DOWNLOAD) {
       this.toggleWaitAnimation(false)
       showInfoMsgBox(loc("browser/error_cant_download"))
     }
-    else if (evType == BROWSER_EVENT_BEGIN_LOADING_FRAME) {
-      if (params.isMainFrame) {
-        this.toggleWaitAnimation(true)
-        this.setTitle(params.title)
-      }
+    else if (eventType == BROWSER_EVENT_BEGIN_LOADING_FRAME) {
+      this.toggleWaitAnimation(true)
+      this.setTitle(title)
     }
-    else if (evType == BROWSER_EVENT_FINISH_LOADING_FRAME) {
+    else if (eventType == BROWSER_EVENT_FINISH_LOADING_FRAME) {
       this.lastLoadedUrl = browser_get_current_url()
-      if (params.isMainFrame) {
-        this.toggleWaitAnimation(false)
-        this.setTitle(params.title)
-      }
+      this.toggleWaitAnimation(false)
+      this.setTitle(title)
     }
-    else if (evType == BROWSER_EVENT_BROWSER_CRASHED) {
+    else if (eventType == BROWSER_EVENT_BROWSER_CRASHED) {
       log("[BRWS] embedded browser crashed, forcing external")
-      statsd.send_counter("sq.browser.crash", 1, { reason = params.errorDesc })
+      statsd.send_counter("sq.browser.crash", 1, { reason = errorDesc })
       this.browserForceExternal()
       this.goBack()
     }
     else {
-      log("[BRWS] onEventEmbeddedBrowser: unknown event type", params.eventType)
+      log("[BRWS] onEventEmbeddedBrowser: unknown event type", eventType)
     }
   }
 

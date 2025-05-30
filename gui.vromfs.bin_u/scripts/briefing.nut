@@ -31,7 +31,7 @@ let { isInSessionRoom, getSessionLobbyMaxMembersCount } = require("%scripts/matc
 let { create_options_container, get_option } = require("%scripts/options/optionsExt.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { isMissionForUnitType, isSkirmishWithKillStreaks } = require("%scripts/missions/missionsUtils.nut")
-let { getOptionsMode } = require("%scripts/options/optionsList.nut")
+let { getOptionsMode } = require("%scripts/options/options.nut")
 
 ::get_briefing_options <- function get_briefing_options(gm, gt, missionBlk) {
   let optionItems = []

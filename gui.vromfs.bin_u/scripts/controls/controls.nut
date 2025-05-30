@@ -1,40 +1,39 @@
-from "%scripts/dagui_natives.nut" import set_option_mouse_joystick_square, set_control_helpers_mode, set_current_controls, import_current_layout_by_path, get_cur_unit_weapon_preset, import_current_layout, set_option_gain, fetch_devices_inited_once, get_save_load_path, get_axis_index, fill_joysticks_desc, export_current_layout, export_current_layout_by_path
+from "%scripts/dagui_natives.nut" import set_option_mouse_joystick_square, set_current_controls, import_current_layout_by_path, import_current_layout, set_option_gain, fetch_devices_inited_once, get_save_load_path, get_axis_index, fill_joysticks_desc, export_current_layout, export_current_layout_by_path
 from "%scripts/dagui_library.nut" import *
 from "gameOptions" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE
 from "%scripts/mainConsts.nut" import HELP_CONTENT_SET
 from "%scripts/options/optionsCtors.nut" import create_option_dropright, create_option_list, create_option_slider, create_option_switchbox
+from "unit" import get_cur_unit_weapon_preset
 
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let DataBlock  = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { is_low_width_screen, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { AXIS_MODIFIERS, MAX_SHORTCUTS, CONTROL_TYPE, MOUSE_AXIS } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
-let globalEnv = require("globalEnv")
+let { ControlHelpersMode, setControlHelpersMode } = require("globalEnv")
 let controllerState = require("controllerState")
-let shortcutsListModule = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let shortcutsAxisListModule = require("%scripts/controls/shortcutsList/shortcutsAxis.nut")
 let { resetFastVoiceMessages } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformPS4, isPlatformXboxOne, isPlatformPC, isPlatformShieldTv
+let { isPlatformSony, isPlatformPS4, isPlatformXbox, isPlatformPC, isPlatformShieldTv
 } = require("%scripts/clientState/platform.nut")
-let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
-let { getShortcutById, getTextMarkup, getShortcutData, getInputsMarkup, isShortcutMapped,
+let { getTextMarkup, getShortcutData, getInputsMarkup, isShortcutMapped,
   restoreShortcuts } = require("%scripts/controls/shortcutsUtils.nut")
 let { get_game_mode } = require("mission")
 let { utf8ToLower } = require("%sqstd/string.nut")
-let { recommendedControlPresets, getControlsPresetBySelectedType, getCurrentHelpersMode
-} = require("%scripts/controls/controlsUtils.nut")
+let { recommendedControlPresets, getControlsPresetBySelectedType, getCurrentHelpersMode,
+  canChangeHelpersMode } = require("%scripts/controls/controlsUtils.nut")
 let { joystickSetCurSettings, setShortcutsAndSaveControls,
   joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -43,8 +42,6 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USEROPT_MOUSE_USAGE,
   USEROPT_MOUSE_USAGE_NO_AIM, userOptionNameByIdx
 } = require("%scripts/options/optionsExtNames.nut")
-let { get_current_mission_info } = require("blkGetters")
-let { isInFlight } = require("gameplayBinding")
 let { getLocaliazedPS4ControlName, remapAxisName } = require("%scripts/controls/controlsVisual.nut")
 let { switchControlsMode, gui_start_controls_type_choice
 } = require("%scripts/controls/startControls.nut")
@@ -61,7 +58,11 @@ let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nu
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { getControlsPresetFilename, parseControlsPresetName, getHighestVersionControlsPreset
 } = require("%scripts/controls/controlsPresets.nut")
-let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { getCurControlsPreset, isPresetChanged } = require("%scripts/controls/controlsState.nut")
+let { getShortcutById, shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
+let { gui_modal_controlsWizard } = require("%scripts/controls/controlsWizard.nut")
+let { setHelpersModeAndOption } = require("%scripts/controls/controlsTypeUtils.nut")
+
 let { restoreHardcodedKeys, clearCurControlsPresetGuiOptions, setAndCommitCurControlsPreset,
   isLastLoadControlsSucceeded
 } = require("%scripts/controls/controlsManager.nut")
@@ -91,10 +92,6 @@ function getAxisActivationShortcutData(shortcuts, item, preset) {
 
   return getInputsMarkup(inputs)
 }
-
-::preset_changed <- false
-
-::shortcutsList <- shortcutsListModule.types
 
 function resetDefaultControlSettings() {
   set_option_multiplier(OPTION_AILERONS_MULTIPLIER,         0.79); 
@@ -136,31 +133,18 @@ function resetDefaultControlSettings() {
   set_option_gain(1); 
 }
 
-::can_change_helpers_mode <- function can_change_helpers_mode() {
-  if (!isInFlight())
-    return true
-
-  let missionBlk = DataBlock()
-  get_current_mission_info(missionBlk)
-
-  foreach (_part, block in checkTutorialsList)
-    if (block.tutorial == missionBlk.name)
-      return false
-  return true
-}
-
 function switchHelpersModeAndOption(preset = "") {
   let joyCurSettings = joystickGetCurSettings()
   if (joyCurSettings.useMouseAim)
-    ::set_helpers_mode_and_option(globalEnv.EM_MOUSE_AIM)
+    setHelpersModeAndOption(ControlHelpersMode.EM_MOUSE_AIM)
   else if (isPlatformPS4 && preset == getControlsPresetFilename("thrustmaster_hotas4")) {
-    if (getCurrentHelpersMode() == globalEnv.EM_MOUSE_AIM)
-      ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
+    if (getCurrentHelpersMode() == ControlHelpersMode.EM_MOUSE_AIM)
+      setHelpersModeAndOption(ControlHelpersMode.EM_INSTRUCTOR)
   }
-  else if (isPlatformSony || isPlatformXboxOne || isPlatformShieldTv())
-    ::set_helpers_mode_and_option(globalEnv.EM_REALISTIC)
-  else if (getCurrentHelpersMode() == globalEnv.EM_MOUSE_AIM)
-    ::set_helpers_mode_and_option(globalEnv.EM_INSTRUCTOR)
+  else if (isPlatformSony || isPlatformXbox || isPlatformShieldTv())
+    setHelpersModeAndOption(ControlHelpersMode.EM_REALISTIC)
+  else if (getCurrentHelpersMode() == ControlHelpersMode.EM_MOUSE_AIM)
+    setHelpersModeAndOption(ControlHelpersMode.EM_INSTRUCTOR)
 }
 
 
@@ -200,6 +184,8 @@ local axisMappedOnMouse = {
   helicopter_mouse_aim_y = @(_isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
   submarine_mouse_aim_x  = @(_isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
   submarine_mouse_aim_y  = @(_isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
+  human_mouse_aim_x      = @(_isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
+  human_mouse_aim_y      = @(_isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
   
 
 
@@ -215,6 +201,8 @@ local axisMappedOnMouse = {
   helicopter_camy        = @(_isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
   submarine_camx         = @(_isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
   submarine_camy         = @(_isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
+  human_camx             = @(_isMouseAimMode) MOUSE_AXIS.HORIZONTAL_AXIS
+  human_camy             = @(_isMouseAimMode) MOUSE_AXIS.VERTICAL_AXIS
   
 
 
@@ -227,7 +215,7 @@ local axisMappedOnMouse = {
 ::get_mouse_axis <- function get_mouse_axis(shortcutId, helpersMode = null, joyParams = null) {
   let axis = axisMappedOnMouse?[shortcutId]
   if (axis)
-    return axis((helpersMode ?? getCurrentHelpersMode()) == globalEnv.EM_MOUSE_AIM)
+    return axis((helpersMode ?? getCurrentHelpersMode()) == ControlHelpersMode.EM_MOUSE_AIM)
 
   if (!joyParams)
     joyParams = joystickGetCurSettings()
@@ -356,12 +344,12 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   function fillFilterObj() {
     if (this.filterObjId) {
       let filterObj = this.scene.findObject(this.filterObjId)
-      if (checkObj(filterObj) && this.filterValues && filterObj.childrenCount() == this.filterValues.len() && !::preset_changed)
+      if (checkObj(filterObj) && this.filterValues && filterObj.childrenCount() == this.filterValues.len() && !isPresetChanged.get())
         return 
     }
 
     local modsBlock = null
-    foreach (block in ::shortcutsList)
+    foreach (block in shortcutsList)
       if ("isFilterObj" in block && block.isFilterObj) {
         modsBlock = block
         break
@@ -436,8 +424,6 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
   function isScriptOpenFileDialogAllowed() {
     return hasFeature("ScriptImportExportControls")
-      && "export_current_layout_by_path" in getroottable()
-      && "import_current_layout_by_path" in getroottable()
   }
 
   function updateButtons() {
@@ -447,7 +433,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
     showObjById("btn_exportToFile", isImportExportAllowed, this.scene)
     showObjById("btn_importFromFile", isImportExportAllowed, this.scene)
-    showObjById("btn_switchMode", isPlatformSony || isPlatformXboxOne || isPlatformShieldTv(), this.scene)
+    showObjById("btn_switchMode", isPlatformSony || isPlatformXbox || isPlatformShieldTv(), this.scene)
     showObjById("btn_backupManager", gui_handlers.ControlsBackupManager.isAvailable(), this.scene)
     showObjById("btn_controlsWizard", hasFeature("ControlsPresets"), this.scene)
     showObjById("btn_clearAll", !isTutorial, this.scene)
@@ -472,9 +458,9 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       unitTags = getTblValue("tags", currentUnit, [])
     }
 
-    for (local i = 0; i < ::shortcutsList.len(); i++)
-      if (::shortcutsList[i].type == CONTROL_TYPE.HEADER) {
-        let header = ::shortcutsList[i]
+    for (local i = 0; i < shortcutsList.len(); i++)
+      if (shortcutsList[i].type == CONTROL_TYPE.HEADER) {
+        let header = shortcutsList[i]
         if ("filterShow" in header)
           if (!isInArray(this.filter, header.filterShow))
             continue
@@ -530,11 +516,11 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
     let newGroupId = this.controlsGroupsIdList[groupId]
     let isGroupChanged = this.curGroupId != newGroupId
-    if (!isGroupChanged && this.filter == this.lastFilter && !::preset_changed && !forceUpdate)
+    if (!isGroupChanged && this.filter == this.lastFilter && !isPresetChanged.get() && !forceUpdate)
       return
 
     this.lastFilter = this.filter
-    if (!::preset_changed)
+    if (!isPresetChanged.get())
       this.doApplyJoystick()
     this.curGroupId = newGroupId
     this.fillControlGroupTab(this.curGroupId)
@@ -551,13 +537,13 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     this.filledControlGroupTab = []
     local headerId = ""
 
-    for (local n = 0; n < ::shortcutsList.len(); n++) {
-      if (::shortcutsList[n].id != groupId)
+    for (local n = 0; n < shortcutsList.len(); n++) {
+      if (shortcutsList[n].id != groupId)
         continue
 
-      isHelpersVisible = getTblValue("isHelpersVisible", ::shortcutsList[n])
-      for (local i = n + 1; i < ::shortcutsList.len(); i++) {
-        let entry = ::shortcutsList[i]
+      isHelpersVisible = getTblValue("isHelpersVisible", shortcutsList[n])
+      for (local i = n + 1; i < shortcutsList.len(); i++) {
+        let entry = shortcutsList[i]
         if (entry.type == CONTROL_TYPE.HEADER)
           break
         if (entry.type == CONTROL_TYPE.SECTION) {
@@ -624,8 +610,8 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     let navItems = this.navigationHandlerWeak.getNavItems()
     if (navItems.len() > 1) {
       local navId = null
-      for (local i = 0; i < ::shortcutsList.len(); i++) {
-        let entry = ::shortcutsList[i]
+      for (local i = 0; i < shortcutsList.len(); i++) {
+        let entry = shortcutsList[i]
         if (entry.type == CONTROL_TYPE.SECTION)
           navId = entry.id
         if (entry.id != item.id)
@@ -641,12 +627,12 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   }
 
   function onUpdate(_obj, _dt) {
-    if (!::preset_changed)
+    if (!isPresetChanged.get())
       return
 
     this.initMainParams()
     this.updateAxisControlsHandlerParams()
-    ::preset_changed = false
+    isPresetChanged.set(false)
     if (this.forceLoadWizard) {
       this.forceLoadWizard = false
       this.onControlsWizard()
@@ -677,11 +663,11 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
           this.shortcutItems.append(arr[i])
         }
     }
-    addShortcutNames(::shortcutsList)
+    addShortcutNames(shortcutsList)
     addShortcutNames(shortcutsAxisListModule.types)
 
-    for (local i = 0; i < ::shortcutsList.len(); i++) {
-      let item = ::shortcutsList[i]
+    for (local i = 0; i < shortcutsList.len(); i++) {
+      let item = shortcutsList[i]
 
       if (item.type != CONTROL_TYPE.AXIS)
         continue
@@ -737,11 +723,11 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   }
 
   function updateSceneOptions() {
-    for (local i = 0; i < ::shortcutsList.len(); i++) {
-      if (::shortcutsList[i].type == CONTROL_TYPE.AXIS && ::shortcutsList[i].axisIndex >= 0)
-        this.updateAxisShortcuts(::shortcutsList[i])
-      else if (::shortcutsList[i].type == CONTROL_TYPE.SLIDER)
-        this.updateSliderValue(::shortcutsList[i])
+    for (local i = 0; i < shortcutsList.len(); i++) {
+      if (shortcutsList[i].type == CONTROL_TYPE.AXIS && shortcutsList[i].axisIndex >= 0)
+        this.updateAxisShortcuts(shortcutsList[i])
+      else if (shortcutsList[i].type == CONTROL_TYPE.SLIDER)
+        this.updateSliderValue(shortcutsList[i])
     }
   }
 
@@ -753,11 +739,11 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   }
 
   function getRowIdxBYId(id) {
-    return ::shortcutsList.findindex(@(s) s.id == id) ?? -1
+    return shortcutsList.findindex(@(s) s.id == id) ?? -1
   }
 
   getCurItem = @() this.curShortcut
-  getScById = @(scId) ::shortcutsList?[(scId ?? "-1").tointeger()]
+  getScById = @(scId) shortcutsList?[(scId ?? "-1").tointeger()]
 
   function onScHover(obj) {
     if (!showConsoleButtons.value)
@@ -809,9 +795,9 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     if (checkObj(obj)) {
       let valueIdx = obj.getValue()
       local item = null
-      for (local i = 0; i < ::shortcutsList.len(); i++)
-        if (obj?.id == ::shortcutsList[i].id) {
-          item = ::shortcutsList[i]
+      for (local i = 0; i < shortcutsList.len(); i++)
+        if (obj?.id == shortcutsList[i].id) {
+          item = shortcutsList[i]
           break
         }
       if (item != null && "optionType" in item)
@@ -823,9 +809,9 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       if (optionId == USEROPT_HELPERS_MODE)
         continue
       let option = get_option(optionId)
-      for (local i = 0; i < ::shortcutsList.len(); i++)
-        if (::shortcutsList[i]?.optionType == optionId) {
-          let object = this.scene.findObject(::shortcutsList[i].id)
+      for (local i = 0; i < shortcutsList.len(); i++)
+        if (shortcutsList[i]?.optionType == optionId) {
+          let object = this.scene.findObject(shortcutsList[i].id)
           if (checkObj(object) && object.getValue() != option.value)
             object.setValue(option.value)
         }
@@ -859,7 +845,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     if (!(filterId in this.filterValues))
       return
 
-    if (!::can_change_helpers_mode() && this.filter != null) {
+    if (!canChangeHelpersMode() && this.filter != null) {
       foreach (idx, value in this.filterValues)
         if (value == this.filter) {
           if (idx != filterId) {
@@ -875,7 +861,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
         }
       return
     }
-    set_control_helpers_mode(filterId);
+    setControlHelpersMode(filterId);
     this.filter = this.filterValues[filterId];
     this.fillControlGroupsList();
     
@@ -914,8 +900,8 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   }
 
   function updateHidden() {
-    for (local i = 0; i < ::shortcutsList.len(); i++) {
-      let item = ::shortcutsList[i]
+    for (local i = 0; i < shortcutsList.len(); i++) {
+      let item = shortcutsList[i]
       local show = true
       local canBeHidden = true
 
@@ -953,7 +939,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       if (itemIdx < 0)
         continue
 
-      let item = ::shortcutsList[itemIdx]
+      let item = shortcutsList[itemIdx]
       let show = !item.isHidden
 
       if (obj) {
@@ -963,8 +949,8 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       }
     }
 
-    showObjById("btn_preset", this.filter != globalEnv.EM_MOUSE_AIM, this.scene)
-    showObjById("btn_defaultpreset", this.filter == globalEnv.EM_MOUSE_AIM, this.scene)
+    showObjById("btn_preset", this.filter != ControlHelpersMode.EM_MOUSE_AIM, this.scene)
+    showObjById("btn_defaultpreset", this.filter == ControlHelpersMode.EM_MOUSE_AIM, this.scene)
 
     this.dontCheckControlsDupes = ::refillControlsDupes()
   }
@@ -1245,7 +1231,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     let unmapped = []
     let mapped = {}
 
-    foreach (item in ::shortcutsList) {
+    foreach (item in shortcutsList) {
       if (item.type == CONTROL_TYPE.HEADER) {
         let isHeaderVisible = !("showFunc" in item) || item.showFunc.call(this)
         if (isHeaderVisible)
@@ -1256,7 +1242,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       let isRequired = type(item.checkAssign) == "function" ? item.checkAssign() : item.checkAssign
       if (!currentHeader || item.isHidden || !isRequired)
         continue
-      if (this.filter == globalEnv.EM_MOUSE_AIM && !item.reqInMouseAim)
+      if (this.filter == ControlHelpersMode.EM_MOUSE_AIM && !item.reqInMouseAim)
         continue
 
       if (item.type == CONTROL_TYPE.SHORTCUT) {
@@ -1362,7 +1348,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
   function doApplyJoystick() {
     if (this.curJoyParams != null)
-      this.doApplyJoystickImpl(shortcutsListModule.types, this.curJoyParams)
+      this.doApplyJoystickImpl(shortcutsList, this.curJoyParams)
   }
 
   function doApplyJoystickImpl(itemsList, setValueContext) {
@@ -1409,7 +1395,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   }
 
   function onEventControlsPresetChanged(_p) {
-    ::preset_changed = true
+    isPresetChanged.set(true)
   }
 
   function onEventControlsChangedShortcuts(p) {
@@ -1499,7 +1485,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   }
 
   function updateMouseAxis(value, id) {
-    let curItem = shortcutsListModule.types.findvalue(@(v) v.id == id)
+    let curItem = shortcutsList.findvalue(@(v) v.id == id)
     if (!curItem)
       return
 
@@ -1528,7 +1514,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
       if (axis.axisId < 0)
         return
 
-      if (this.filter == globalEnv.EM_MOUSE_AIM) {
+      if (this.filter == ControlHelpersMode.EM_MOUSE_AIM) {
         this.setAxisBind(zoomAxisIndex, -1, axisName)
         return
       }
@@ -1585,7 +1571,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
   function onControlsWizard() {
     this.backAfterSave = false
     this.doApply()
-    ::gui_modal_controlsWizard()
+    gui_modal_controlsWizard()
   }
 
   onControlsWorkshop = @() openUrl(
@@ -1603,7 +1589,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
     let curPreset = getCurControlsPreset()
     let mainOptionsMode = getGuiOptionsMode()
     setGuiOptionsMode(OPTIONS_MODE_GAMEPLAY)
-    foreach (item in ::shortcutsList)
+    foreach (item in shortcutsList)
       if ("optionType" in item && item.optionType in userOptionNameByIdx) {
         let optionName = userOptionNameByIdx[item.optionType]
         let value = get_option(item.optionType).value
@@ -1682,7 +1668,7 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
     let visibilityMap = {}
 
-    foreach (entry in ::shortcutsList) {
+    foreach (entry in shortcutsList) {
       let isShowed =
         (!("filterHide" in entry) || !isInArray(helpersMode, entry.filterHide)) &&
         (!("filterShow" in entry) || isInArray(helpersMode, entry.filterShow)) &&
@@ -1702,8 +1688,8 @@ gui_handlers.Hotkeys <- class (gui_handlers.GenericOptions) {
 
 ::refillControlsDupes <- function refillControlsDupes() {
   let arr = []
-  for (local i = 0; i < ::shortcutsList.len(); i++) {
-    let item = ::shortcutsList[i]
+  for (local i = 0; i < shortcutsList.len(); i++) {
+    let item = shortcutsList[i]
     if ((item.type == CONTROL_TYPE.SHORTCUT)
         && (item.isHidden || (("dontCheckDupes" in item) && item.dontCheckDupes)))
       arr.append(item.id)

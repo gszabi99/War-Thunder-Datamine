@@ -16,6 +16,7 @@ let { g_hud_crew_state } = require("%scripts/hud/hudCrewState.nut")
 let { hudDisplayTimersInit, hudDisplayTimersReInit } = require("%scripts/hud/hudDisplayTimers.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
+let hudEnemyDamage = require("%scripts/hud/hudEnemyDamage.nut")
 
 function updateTacticalMapSwitchingObj(obj, value) {
   obj.findObject("map_btn").toggled = value ? "no" : "yes"
@@ -44,7 +45,7 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
     g_hud_tank_debuffs.init(this.scene)
     g_hud_crew_state.init(this.scene)
     showHudTankMovementStates(this.scene)
-    ::hudEnemyDamage.init(this.scene)
+    hudEnemyDamage.init(this.scene)
     this.actionBar = ActionBar(this.scene.findObject("hud_action_bar"))
     this.updateShowHintsNest()
     this.updatePosHudMultiplayerScore()
@@ -60,7 +61,7 @@ let HudTank = class (gui_handlers.BaseUnitHud) {
 
   function reinitScreen(_params = {}) {
     this.actionBar.reinit()
-    ::hudEnemyDamage.reinit()
+    hudEnemyDamage.reinit()
     hudDisplayTimersReInit()
     g_hud_tank_debuffs.reinit()
     g_hud_crew_state.reinit()

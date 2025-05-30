@@ -13,7 +13,8 @@ let enums = require("%sqStdLibs/helpers/enums.nut")
 let { eachBlock, blkOptFromPath } = require("%sqstd/datablock.nut")
 let time = require("%scripts/time.nut")
 let { PI, round, roundToDigits } = require("%sqstd/math.nut")
-let { getUnitTooltipImage, getShipMaterialTexts, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { getUnitTooltipImage, getShipMaterialTexts, getUnitClassIco, getCharacteristicActualValue
+} = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRole, getUnitBasicRole, getRoleText, getFullUnitRoleText, getUnitClassColor
 } = require("%scripts/unit/unitInfoRoles.nut")
 let { countMeasure } = require("%scripts/options/optionsMeasureUnits.nut")
@@ -407,7 +408,7 @@ function processWeaponPilons(unitName, debugLog = null) {
     foreach (diff in g_difficulty.types)
       if (diff.egdCode != EGD_NONE) {
         let mode = diff.getEgdName()
-        let characteristicArr = ::getCharacteristicActualValue(unit, [item.id, item.id2], function(_value) { return "" }, diff.crewSkillName, false)
+        let characteristicArr = getCharacteristicActualValue(unit, [item.id, item.id2], function(_value) { return "" }, diff.crewSkillName, false)
         blk.value[mode] = unitConfiguration == UNIT_CONFIGURATION_MIN ? characteristicArr[2] : characteristicArr[3]
         blk.valueText[mode] = item.prepareTextFunc(characteristicArr[2])
         let cppUnitChars = unitConfiguration == UNIT_CONFIGURATION_MIN ? unit.minChars : unit.maxChars
@@ -1214,7 +1215,7 @@ enums.addTypesByGlobalName("g_unit_info_type", [
     headerLocId = "info/ship/displacement"
     infoArmyType = UNIT_INFO_ARMY_TYPE.SHIP_BOAT
     addToExportDataBlock = function(blk, unit, _unitConfiguration) {
-      let value = getFullUnitBlk(unit.name)?.ShipPhys?.mass?.TakeOff
+      let value = getFullUnitBlk(unit.name)?.ShipPhys.mass.TakeOff
       local valueText = ""
       if (value != null) {
         valueText = measureType.SHIP_DISPLACEMENT_TON.getMeasureUnitsText(value / 1000, true)

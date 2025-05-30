@@ -113,10 +113,10 @@ def building_process_update_es(info : UpdateStageInfoAct;
             if hero.isAlive && hero.eid != INVALID_ENTITY_ID
               for i in range(length(simpleObject__visibleList))
                 if simpleObject__visibleList[i] && i < length(buildingTemplates)
-                  let triggerGroup = i == 2 ? WeaponTriggerGroups TRIGGER_GROUP_SPECIAL_GUN : (i == 1 ? WeaponTriggerGroups TRIGGER_GROUP_SECONDARY : WeaponTriggerGroups TRIGGER_GROUP_PRIMARY)
+                  let triggerGroup = i == 2 ? WeaponTriggerGroups.TRIGGER_GROUP_SPECIAL_GUN : (i == 1 ? WeaponTriggerGroups.TRIGGER_GROUP_SECONDARY : WeaponTriggerGroups.TRIGGER_GROUP_PRIMARY)
                   var tm = transform
                   tm[3] = transform * simpleObject__offsets[i]
-                  send_net_event(hero.eid, [[CmdBuildObject tm = tm, objectTemplate = string(buildingTemplates[i]), triggerGroup = triggerGroup]])
+                  send_net_event(hero.eid, CmdBuildObject(tm = tm, objectTemplate = string(buildingTemplates[i]), triggerGroup = triggerGroup))
             for visible in simpleObject__visibleList
               visible = false
             showTimer = false
@@ -129,7 +129,7 @@ def building_process_update_es(info : UpdateStageInfoAct;
           showTimer = false
           hintTime = buildingTime
           buildingTimer = -1.
-      debuffUpdateTimer -= info.dt;
+      debuffUpdateTimer -= info.dt
       if debuffUpdateTimer < 0.f || buildingTimer <= 0. || timeDirSign != prevTimerDirSign
         debuffUpdateTimer = 1.
         using() <| $(var eventData : DataBlock)
@@ -158,7 +158,7 @@ def building_preview_switch_es(evt : EventToggleBuildingPreview;
     if (int(builder_preview__triggerGrMask) & (1 << bitNum)) == 0
       continue
     if evt.enable || buildingTimer > 0.
-      let triggerGroup = i == 2 ? WeaponTriggerGroups TRIGGER_GROUP_SPECIAL_GUN : (i == 1 ? WeaponTriggerGroups TRIGGER_GROUP_SECONDARY : WeaponTriggerGroups TRIGGER_GROUP_PRIMARY)
+      let triggerGroup = i == 2 ? WeaponTriggerGroups.TRIGGER_GROUP_SPECIAL_GUN : (i == 1 ? WeaponTriggerGroups.TRIGGER_GROUP_SECONDARY : WeaponTriggerGroups.TRIGGER_GROUP_PRIMARY)
       var count = 0
       foreach_weapon_by_trigger_group(hero.weap.Weapons, triggerGroup) <| $(var weapon)
         let gun = weapon |> as_gun()

@@ -9,7 +9,8 @@ let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let time = require("%scripts/time.nut")
@@ -36,6 +37,8 @@ let { getWarbondsBalanceText, getCurrentWarbond, openWarbondsShop, isWarbondsSho
 } = require("%scripts/warbonds/warbondsManager.nut")
 let { getUserLogsList } = require("%scripts/userLog/userlogUtils.nut")
 let { buildConditionsConfig } = require("%scripts/unlocks/unlocksViewModule.nut")
+let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 function guiStartBattleTasksWnd(taskId = null, tabType = null) {
@@ -254,7 +257,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
                { textType = "textarea", text = loc("debriefing/sessionTime"), tdalign = "right", width = "35%pw" }])
 
       foreach (idx, uLog in finishedTasksUserlogsArray) {
-        let config = ::build_log_unlock_data(uLog)
+        let config = build_log_unlock_data(uLog)
         local text = config.name
         if (!u.isEmpty(config.rewardText))
           text = "".concat(text, loc("ui/parentheses/space", { text = config.rewardText }))
@@ -502,7 +505,7 @@ gui_handlers.BattleTasksWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let awardsList = []
     foreach (id in config.names)
-      awardsList.append(::build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
+      awardsList.append(build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
 
     showUnlocksGroupWnd(awardsList, loc("unlocks/requirements"))
   }

@@ -4,7 +4,7 @@ from "%scripts/mainConsts.nut" import SEEN
 let { getMarkerUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isEqualSimple } = require("%sqstd/underscore.nut")
-let { getBitStatus } = require("%scripts/unit/unitStatus.nut")
+let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
 let seenList = require("%scripts/seen/seenList.nut").get(SEEN.UNLOCK_MARKERS)
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
 let { getUnlockConditions, getTimeRangeCondition } = require("%scripts/unlocks/unlocksConditions.nut")

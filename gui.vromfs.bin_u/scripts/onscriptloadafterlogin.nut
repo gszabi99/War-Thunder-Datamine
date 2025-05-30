@@ -1,4 +1,3 @@
-from "%scripts/dagui_natives.nut" import disable_network
 from "%scripts/dagui_library.nut" import *
 
 log($"onScriptLoadAfterLogin: wt")
@@ -9,13 +8,13 @@ let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")
 require("unit/initUnitTypes.nut")
 require("controls/shortcutsList/updateShortcutsModulesList.nut")
 require("slotInfoPanel/updateSlotInfoPanelButtons.nut")
-require("%scripts/warbonds/warbondAwardType.nut")
 require("mainmenu/instantActionHandler.nut")
 require("mainmenu/mainMenuHandler.nut")
 require("hud/updateHudConfig.nut")
 require("flightMenu/updateFlightMenuButtonTypes.nut")
 require("mainmenu/autoStartBattleHandler.nut")
 require("%scripts/items/itemsClasses/itemsClasses.nut")
+require("%scripts/weaponry/initWeaponryTypes.nut")
 
 foreach (fn in [
   "%scripts/money.nut"
@@ -26,7 +25,7 @@ foreach (fn in [
   "%scripts/options/optionsExt.nut"
   "%scripts/options/initOptions.nut"
 
-  "%scripts/gamercard.nut"
+  "%scripts/gamercard/gamercard.nut"
   "%scripts/popups/popups.nut"
 
   "%scripts/wheelmenu/wheelmenu.nut"
@@ -80,7 +79,6 @@ foreach (fn in [
 
   "%scripts/user/presenceType.nut"
   "%scripts/squads/squadManager.nut"
-  "%scripts/squads/squadUtils.nut"
   "%scripts/squads/squadInviteListWnd.nut"
   "%scripts/squads/squadWidgetCustomHandler.nut"
 
@@ -171,7 +169,6 @@ foreach (fn in [
   "%scripts/shop/shopViewWnd.nut"
   "%scripts/convertExpHandler.nut"
 
-  "%scripts/weaponry/weaponryTypes.nut"
   "%scripts/weaponry/weaponrySelectModal.nut"
   "%scripts/weaponry/weaponryPresetsWnd.nut"
 
@@ -217,10 +214,7 @@ foreach (fn in [
 
   "%scripts/penitentiary/tribunal.nut"
 
-  "%scripts/gamercardDrawer.nut"
-
-  "%scripts/discounts/discounts.nut"
-  "%scripts/discounts/discountUtils.nut"
+  "%scripts/gamercard/gamercardDrawer.nut"
 
   "%scripts/items/itemsManager.nut"
   "%scripts/items/prizesView.nut"
@@ -242,14 +236,12 @@ foreach (fn in [
 
   "%scripts/crew/crewShortCache.nut"
   "%scripts/crew/skillParametersRequestType.nut"
-  "%scripts/crew/skillParametersColumnType.nut"
   "%scripts/crew/skillsPageStatus.nut"
-  "%scripts/crew/crewPoints.nut"
+  "%scripts/crew/crewPointsBuyActions.nut"
   "%scripts/crew/crewBuyPointsHandler.nut"
   "%scripts/crew/crewUnitSpecHandler.nut"
   "%scripts/crew/crewSpecType.nut"
   "%scripts/crew/crew.nut"
-  "%scripts/crew/unitCrewCache.nut"
   "%scripts/crew/skillParametersType.nut"
 
   "%scripts/slotbar/slotbarPresets.nut"
@@ -266,7 +258,6 @@ foreach (fn in [
   "%scripts/hud/hudTankDebuffs.nut"
   "%scripts/hud/hudCrewState.nut"
   "%scripts/hud/hudEnemyDebuffsType.nut"
-  "%scripts/hud/hudEnemyDamage.nut"
   "%scripts/hud/hudRewardMessage.nut"
   "%scripts/hud/hudMessages.nut"
   "%scripts/hud/hudMessageStack.nut"
@@ -300,11 +291,16 @@ foreach (fn in [
   loadOnce(fn)
 }
 
+
+
+
+
 require("%scripts/queue/queue/queueEvent.nut")
 require("%scripts/queue/queue/queueWwBattle.nut") 
 require("%scripts/queue/queueInfo/qiHandlerBase.nut")
 require("%scripts/queue/queueInfo/qiHandlerByTeams.nut")
 require("%scripts/queue/queueInfo/qiHandlerByCountries.nut")
+require("%scripts/queue/queueInfo/qiHandlerTeamBalanced.nut")
 require("%scripts/queue/queueTable.nut")
 
 require("%scripts/controls/controlsFootballNy2021Hack.nut")
@@ -351,5 +347,6 @@ require("%scripts/onlineShop/buyPremiumHandler.nut")
 require("%scripts/unlocks/requestInventoryUnlocks.nut")
 
 let { isAuthorized } = require("%appGlobals/login/loginState.nut")
-if (isAuthorized.get() || disable_network()) 
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
+if (isAuthorized.get() || disableNetwork) 
   require("%scripts/worldWar/worldWar.nut")

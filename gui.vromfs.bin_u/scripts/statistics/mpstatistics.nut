@@ -33,19 +33,25 @@ let { getSkillBonusTooltipText, get_time_to_kick_show_timer, get_time_to_kick_sh
   setMpTable, getLocalTeamForMpStats, buildMpTable, updateTeamCssLabel, countWidthForMpTable
 } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { getEventEconomicName } = require("%scripts/events/eventInfo.nut")
-let { setMissionEnviroment } = require("%scripts/missions/missionsUtils.nut")
-let { is_low_width_screen } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { setMissionEnviroment, getBadWeatherTooltipText } = require("%scripts/missions/missionsUtils.nut")
+let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { openOrdersInventory, updateActiveOrder, orderCanBeActivated,
   getActivateButtonLabel, activateSoonExpiredOrder
 } = require("%scripts/items/orders.nut")
-let { fill_gamer_card } = require("%scripts/gamercard.nut")
+let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { gui_modal_userCard } = require("%scripts/user/userCard/userCardView.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { get_option_in_mode } = require("%scripts/options/optionsExt.nut")
 let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
-
+let { get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
+let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
+let { hasInWishlist, isWishlistFull } = require("%scripts/wishlist/wishlistManager.nut")
+let { addToWishlist } = require("%scripts/wishlist/addWishWnd.nut")
+let { InContainersNavigator } = require("%sqDagui/guiBhv/bhvInContainersNavigator.nut")
+let { needToShowBadWeatherWarning, hasAirfieldRespawn
+} = require("%scripts/respawn/respawnState.nut")
 const OVERRIDE_COUNTRY_ID = "override_country"
 
 function getCompoundedText(firstPart, secondPart, color) {
@@ -307,8 +313,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
 
   function createKillsTbl(objTbl, tbl, tblConfig) {
     let team = getTblValue("team", tblConfig, -1)
-    let showUnits     = tblConfig?.showAircrafts ?? false
-    let showAirIcons  = tblConfig?.showAirIcons  ?? showUnits
+    let showUnits = tblConfig?.showAircrafts ?? false
     let invert = getTblValue("invert", tblConfig, false)
 
     local tblData = [] 
@@ -321,7 +326,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     }
 
     if (this.gameType & GT_COOPERATIVE) {
-      tblData = showAirIcons ? [ "unitIcon", "name" ] : [ "name" ]
+      tblData = showUnits ? [ "unitIcon", "name" ] : [ "name" ]
       foreach (id in tblData)
         markupData.columns[id] <- g_mplayer_param_type.getTypeById(id).getMarkupData()
 
@@ -394,7 +399,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     this.guiScene.replaceContentFromText(obj, markup, markup.len(), this)
   }
 
-  function setKillsTbl(objTbl, team, playerTeam, friendlyTeam, showAirIcons = true, customTbl = null) {
+  function setKillsTbl(objTbl, team, playerTeam, friendlyTeam, showUnitsInfo = true, customTbl = null) {
     if (!checkObj(objTbl))
       return
 
@@ -458,13 +463,14 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
         this.sortTable(tbl)
 
       setMpTable(objTbl, tbl, {
-        showAirIcons
+        showUnitsInfo
         handler = this
         continueRowNum = minRow
         canHasBonusIcon = true
         numberOfWinningPlaces = this.numberOfWinningPlaces
         playersInfo = customTbl?.playersInfo
         roomEventName = this.getRoomEventEconomicName()
+        isDebriefing = !!this?.debriefingResult
       })
       updateTeamCssLabel(objTbl, this.getLocalTeam())
 
@@ -721,7 +727,36 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
 
   function onUserRClick(obj) {
     this.onStatsTblSelect(obj)
-    showSessionPlayerRClickMenu(this, this.getSelectedPlayer(), this.getChatLog())
+    let { hoveredObj } = InContainersNavigator.getHoveredChild(obj)
+    let { contextMenu = "no" } = hoveredObj
+
+    if (contextMenu == "wishlist")
+      this.showAddToFavRClickMenu()
+    else
+      showSessionPlayerRClickMenu(this, this.getSelectedPlayer(), this.getChatLog())
+  }
+
+  function showAddToFavRClickMenu() {
+    let { aircraftName = "" } = this.getSelectedPlayer()
+    let unit = getAircraftByName(aircraftName)
+    if (!unit)
+      return
+
+    let hasInWl = hasInWishlist(unit.name)
+    let isWlFull = isWishlistFull()
+    let isUnitBought = unit.isBought()
+    let canAdd = !hasInWl && !isUnitBought && !isWlFull
+    let disabledReason = isUnitBought ? loc("shop/unit_bought")
+      : hasInWl  ? loc("wishlist/vehicleAlreadyExists")
+      : isWlFull ? loc("wishlist/wishlist_full")
+      : ""
+
+    openRightClickMenu([{
+      text = loc("mainmenu/add_to_wishlist")
+      tooltip = disabledReason
+      isVisualDisabled = !canAdd
+      action = @() canAdd ? addToWishlist(unit) : null
+    }], this)
   }
 
   function onUserOptions(_obj) {
@@ -784,7 +819,7 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
       teamObj.setValue(loc("ui/colon").concat(loc("multiplayer/team"), teamTxt))
     }
 
-    fill_gamer_card({
+    fillGamercard({
                       name = playerInfo ? playerInfo.name : ""
                       clanTag = playerInfo ? playerInfo.clanTag : ""
                       country = playerInfo ? playerInfo.country : ""
@@ -866,9 +901,24 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     let leftBlockObj = this.scene.findObject("mission_texts_block_left")
     if (checkObj(leftBlockObj)) {
       let data = []
-      if (fill)
-        foreach (id in ["mission_environment", "gc_time_end", "gc_score_limit", "gc_time_to_kick"])
+      if (fill) {
+        let missionEnvBlock =
+        @"
+        tdiv {
+          textareaNoTab {
+            id:t='mission_environment'
+            overlayTextColor:t='premiumNotEarned'
+            textShade:t='yes'
+            text:t=''
+          }
+          include '%gui/respawn/badWeatherWarning.blk'
+        }
+        "
+        data.append(missionEnvBlock)
+
+        foreach (id in ["gc_time_end", "gc_score_limit", "gc_time_to_kick"])
           data.append(format(blockSample, id, ""))
+      }
       let dataTxt = "".join(data)
       this.guiScene.replaceContentFromText(leftBlockObj, dataTxt, dataTxt.len(), this)
     }
@@ -1027,12 +1077,25 @@ let MPStatistics = class (gui_handlers.BaseGuiHandlerWT) {
     return getLogForBanhammer()
   }
 
+  getCurrentEdiff = get_mission_mode  
+
   getLocalTeam = @() getLocalTeamForMpStats()
   getOverrideCountryIconByTeam = @(team)
     getCurMissionRules().getOverrideCountryIconByTeam(team)
   getMplayersList = @(t = GET_MPLAYERS_LIST) getMplayersList(t)
 
-  setSceneMissionEnviroment = @() setMissionEnviroment(this.scene.findObject("mission_environment"))
+  function setSceneMissionEnviroment() {
+    setMissionEnviroment(this.scene.findObject("mission_environment"))
+
+    let badWeatherWarningTop = this.scene.findObject("bad_weather_warning")
+    if (!badWeatherWarningTop?.isValid())
+      return
+    let hasBadWeather = needToShowBadWeatherWarning.get()
+    badWeatherWarningTop.show(hasBadWeather)
+    if (!hasBadWeather)
+      return
+    badWeatherWarningTop.tooltip = getBadWeatherTooltipText(hasBadWeather, hasAirfieldRespawn.get())
+  }
 }
 
 gui_handlers.MPStatistics <- MPStatistics

@@ -198,6 +198,7 @@ let handlersManager = {
       let handler = this.findAndReinitHandler(handlerClass, params)
       if (handler) {
         this.setLastBaseHandlerStartParamsByHandler(handlerClass, params)
+        handler.afterBaseHandlerLoaded()
         broadcastEvent("NewSceneLoaded")
         return handler
       }
@@ -221,6 +222,8 @@ let handlersManager = {
     this.lastGuiScene = handler.guiScene
 
     this.setLastBaseHandlerStartParamsByHandler(handlerClass, params)
+    handler.afterBaseHandlerLoaded()
+
     broadcastEvent("NewSceneLoaded")
     return handler
   }

@@ -7,7 +7,7 @@ let platformModule = require("%scripts/clientState/platform.nut")
 let { getContentPackStatus, ContentPackStatus } = require("contentpacks")
 
 let persistentData = {
-  isConsoleClientFullOnStart = !platformModule.isPlatformXboxOne && !platformModule.isPlatformSony
+  isConsoleClientFullOnStart = !platformModule.isPlatformXbox && !platformModule.isPlatformSony
 }
 registerPersistentData("contentState", persistentData,
   ["isConsoleClientFullOnStart"])
@@ -63,7 +63,7 @@ else if (platformModule.isPlatformPS5) {
   getClientDownloadProgressText = @() getSonyProgressText([PS5_CHUNK_FULL_CLIENT])
   isHistoricalCampaignDownloading = @() !ps4_is_chunk_available(PS5_CHUNK_HISTORICAL_CAMPAIGN)
 }
-else if (platformModule.isPlatformXboxOne) {
+else if (platformModule.isPlatformXbox) {
   isConsoleClientFullyDownloaded = @() getContentPackStatus("pkg_main") == ContentPackStatus.OK
   getClientDownloadProgressText = @() isConsoleClientFullyDownloaded()
       ? ("".concat(loc("download/finished"), "\n", loc("msgbox/relogin_required")))

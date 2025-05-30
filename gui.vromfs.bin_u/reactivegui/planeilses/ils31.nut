@@ -9,10 +9,10 @@ let { IlsColor, IlsLineScale, RadarTargetPosValid, RadarTargetDist, DistToTarget
 let { compassWrap, generateCompassMarkASP } = require("ilsCompasses.nut")
 let { ASPAirSymbolWrap, ASPLaunchPermitted, targetsComponent, ASPAzimuthMark, bulletsImpactLine } = require("commonElements.nut")
 let { IsAamLaunchZoneVisible, AamLaunchZoneDistMinVal, AamLaunchZoneDistMaxVal, AamLaunchZoneDistDgftMax,
-  IsRadarVisible, RadarModeNameId, modeNames, ScanElevationMax, ScanElevationMin, Elevation,
+  IsRadarVisible, RadarModeNameId, modeNames, ScanElevationMax, ScanElevationMin, ElevationMin, ElevationMax, Elevation,
   HasAzimuthScale, IsCScopeVisible, HasDistanceScale, targets, Irst, DistanceMax, CueVisible,
   CueAzimuth, TargetRadarAzimuthWidth, AzimuthRange, CueAzimuthHalfWidthRel, CueDist, TargetRadarDist, CueDistWidthRel,
-  IsRadarEmitting, TimeToMissileHitRel } = require("%rGui/radarState.nut")
+  IsRadarEmitting, TimeToMissileHitRel, AzimuthMin, AzimuthMax, ScanAzimuthMin, ScanAzimuthMax } = require("%rGui/radarState.nut")
 let { CurWeaponName, ShellCnt, WeaponSlots, WeaponSlotActive, SelectedTrigger } = require("%rGui/planeState/planeWeaponState.nut")
 let string = require("string")
 let { floor, ceil, round, sqrt, abs } = require("%sqstd/math.nut")
@@ -489,7 +489,11 @@ function createTargetDist(index) {
     size = flex()
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
     color = IlsColor.value
-    commands = [
+    fillColor = Color(0, 0, 0, 0)
+    commands = Irst.get() ?
+      [
+        [VECTOR_ELLIPSE, 100 * angleRel, 100 * (1 - distanceRel), 2, 2]
+      ] : [
       [VECTOR_LINE_DASHED,
         100 * angleLeft,
         100 * (1 - distanceRel),
@@ -741,6 +745,36 @@ let radarEmittingIcon = @() {
   text = "ИЗЛ"
 }
 
+let scanAzimuthMinX = Computed(@() round(cvt(ScanAzimuthMin.get(), AzimuthMin.get(), AzimuthMax.get(), 0, 100).tointeger()))
+let scanAzimuthMaxX = Computed(@() round(cvt(ScanAzimuthMax.get(), AzimuthMin.get(), AzimuthMax.get(), 0, 100).tointeger()))
+let scanAzimuth =  @() {
+  watch = [scanAzimuthMaxX, scanAzimuthMinX]
+  rendObj = ROBJ_VECTOR_CANVAS
+  color = IlsColor.get()
+  size = [pw(45),  ph(1)]
+  pos = [pw(27.5), ph(73.5)]
+  lineWidth = baseLineWidth * IlsLineScale.get()
+  commands = [
+    [VECTOR_LINE, 0, 0, 100, 0],
+    [VECTOR_LINE, scanAzimuthMinX.get(), 100, scanAzimuthMaxX.get(), 100]
+  ]
+}
+
+let scanElevationMinY = Computed(@() round(cvt(ScanElevationMin.get(), ElevationMin.get(), ElevationMax.get(), 100, 0)).tointeger())
+let scanElevationMaxY = Computed(@() round(cvt(ScanElevationMax.get(), ElevationMin.get(), ElevationMax.get(), 100, 0)).tointeger())
+let scanElevation = @() {
+  watch = [scanElevationMinY, scanElevationMaxY]
+  rendObj = ROBJ_VECTOR_CANVAS
+  color = IlsColor.get()
+  size = [pw(1),  ph(45)]
+  pos = [pw(75.5), ph(27.5)]
+  lineWidth = baseLineWidth * IlsLineScale.get()
+  commands = [
+    [VECTOR_LINE, 0, 0, 0, 100],
+    [VECTOR_LINE, 100, scanElevationMinY.get(), 100, scanElevationMaxY.get()]
+  ]
+}
+
 let radar = @(is_cn) function() {
   return {
     watch = [Irst, IsRadarVisible, RadarTargetValid, CCIPMode, AirNoTargetCannonMode, BVBMode, BombingMode, IsRadarEmitting]
@@ -774,7 +808,9 @@ let radar = @(is_cn) function() {
       radarType(is_cn),
       cueIndicator,
       selectedTargetDetails(),
-      (IsRadarEmitting.value && !Irst.value ? radarEmittingIcon : null)
+      (IsRadarEmitting.value && !Irst.value ? radarEmittingIcon : null),
+      (Irst.get() && !RadarTargetValid.get() ? scanElevation : null),
+      (Irst.get() && !RadarTargetValid.get() ? scanAzimuth : null)
     ] : null
   }
 }

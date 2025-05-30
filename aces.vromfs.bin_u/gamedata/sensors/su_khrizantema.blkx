@@ -382,12 +382,12 @@
           "actions": {
             "updateActiveDetectedTarget": {},
             "designateActiveDetectedTarget": {
-              "type": 0,
+              "type": "target",
               "self": true,
               "sensorIndex": 0
             },
             "designateTargetUnderCue": {
-              "type": 0,
+              "type": "cue",
               "self": true,
               "sensorIndex": 0
             }
@@ -399,7 +399,10 @@
           "stateTo": "checkLockType0",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": [
+                "target",
+                "cue"
+              ]
             }
           }
         },
@@ -415,18 +418,18 @@
             "setLockMode": {}
           }
         },
-        "checkLockType1": {
+        "checkLockTypeLos": {
           "stateFrom": "checkLockType0",
           "event": "designationTypeNotEquals",
-          "stateTo": "checkLockType1",
+          "stateTo": "checkLockTypeLos",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 1
+              "type": "los"
             }
           }
         },
         "losLock": {
-          "stateFrom": "checkLockType1",
+          "stateFrom": "checkLockTypeLos",
           "event": "designationTypeEquals",
           "stateTo": "losLock",
           "actions": {
@@ -438,18 +441,18 @@
             "setLosLockMode": {}
           }
         },
-        "checkLockType2": {
-          "stateFrom": "checkLockType1",
+        "checkLockTypeVisual": {
+          "stateFrom": "checkLockTypeLos",
           "event": "designationTypeNotEquals",
-          "stateTo": "checkLockType2",
+          "stateTo": "checkLockTypeVisual",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 2
+              "type": "visual"
             }
           }
         },
         "visualLock": {
-          "stateFrom": "checkLockType2",
+          "stateFrom": "checkLockTypeVisual",
           "event": "designationTypeEquals",
           "stateTo": "visualLock",
           "actions": {
@@ -462,7 +465,7 @@
           }
         },
         "finishLockTypeCheck": {
-          "stateFrom": "checkLockType2",
+          "stateFrom": "checkLockTypeVisual",
           "event": "designationTypeNotEquals",
           "stateTo": "standbyOrSearch"
         },

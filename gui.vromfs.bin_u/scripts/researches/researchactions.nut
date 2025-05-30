@@ -6,7 +6,8 @@ let { isHandlerInScene } = require("%sqDagui/framework/baseGuiHandlerManager.nut
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
 let { sendBqEvent } = require("%scripts/bqQueue/bqQueue.nut")
-let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { register_command } = require("console")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
@@ -78,7 +79,7 @@ function removeResearchBlock(researchBlock) {
 ::abandoned_researched_items_for_session <- abandoned_researched_items_for_session 
 
 function checkNonApprovedResearches(needUpdateResearchTable = false, needResearchAction = true) {
-  if (!isInMenu() || isAnyQueuesActive())
+  if (!isInMenu.get() || isAnyQueuesActive())
     return false
 
   if (needUpdateResearchTable) {

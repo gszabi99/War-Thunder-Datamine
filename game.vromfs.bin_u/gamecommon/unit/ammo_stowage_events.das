@@ -21,7 +21,7 @@ struct EventAmmoStowageDoFireFx
   ammoLeft : float
 
 [cpp_event(unicast, with_scheme)]
-struct EventAmmoStowageCancelReplenishment
+struct EventAmmoStowageResetReplenishment
 {}
 
 [cpp_event(unicast, with_scheme)]
@@ -118,6 +118,11 @@ struct EventAmmoStowageSetup
 [event(unicast, version=0, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
 struct EventAmmoStowageNetSync
   bs : BitStream const?
+
+[event(unicast, version=0, routing=ROUTING_SERVER_TO_CLIENT, filter=target_entity_conn)]
+struct EventAmmoStowageNetSyncReplanishmentReset
+  stowageId : int
+  endTime : float
 
 [event(unicast, routing=ROUTING_SERVER_TO_CLIENT)]
 struct EventAmmoStowageForceReloadGun

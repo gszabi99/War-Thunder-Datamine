@@ -27,7 +27,19 @@ def foreach_targets(blk : block<(target : RadarTarget const const#; i : int) : v
       invoke(blk, t, i)
 
 // azimuth over distance
-class RadarATTKFormatFrame : MfdFA18CBase
+class RadarATTKFormatFrame : Canvas
+  frameHalfSizeRel : float2 = float2(0.375)
+  scaleMarkLength : float = 0.05
+  dugoutHeight : float = 0.05
+  targetBoxHalfSize : float2 = float2(0.025, 0.01)
+  baseScale : float = 0.95
+  buttonCollumnX = array<float>(
+    -0.32, -0.16, 0.0, 0.16, 0.32
+  )
+  buttonRowY = array<float>(
+    -0.32, -0.14, 0.0, 0.2, 0.35
+  )
+
   unit : Unit?
   fmw : FlightModelWrap?
 
@@ -50,8 +62,13 @@ class RadarATTKFormatFrame : MfdFA18CBase
   isEmitting : bool = false
 
   def RadarATTKFormatFrame(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
-    MfdFA18CBase`MfdFA18CBase(self, guiCtx, rdata, rstate)
+    Canvas`Canvas(self, guiCtx, rdata, rstate)
 
+    frameHalfSizeRel = data.frameHalfSizeRel
+    scaleMarkLength = data.scaleMarkLength
+    dugoutHeight = data.dugoutHeight
+    targetBoxHalfSize = data.targetBoxHalfSize
+    baseScale = data.baseScale
     baseColor = data.color
 
     setColor(data.color)
@@ -251,7 +268,7 @@ class RadarATTKFormatFrame : MfdFA18CBase
 
     var drewLaunchZone = false
     foreach_targets() <| $(var target; i)
-      if target.targetType == int(RadarTargetType TYPE_TARGET)
+      if target.targetType == int(RadarTargetType.TYPE_TARGET)
         var distanceRel = -1.0
         if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
           distanceRel = target.distanceRel
@@ -286,7 +303,6 @@ class RadarATTKFormatFrame : MfdFA18CBase
           setFillColor(TRANSPARENT)
           drawSector(targetPos, float2(targetBoxHalfSize.x + padding), float2(-PI, 0))
 
-        let targetElevation = target.elevationRel + ownshipAltitude
         if target.losSpeed < 3000.0
           let velDir = float2(-target.losHorSpeed, -target.losSpeed) * 0.0002
           let velocityOffset = normalize(velDir) * 0.03

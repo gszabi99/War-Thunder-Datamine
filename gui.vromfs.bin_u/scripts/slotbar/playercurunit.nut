@@ -1,6 +1,6 @@
-from "%scripts/dagui_natives.nut" import get_player_unit_name
 from "%scripts/dagui_library.nut" import *
 
+let { get_player_unit_name } = require("unit")
 let { hangar_get_current_unit_name } = require("hangar")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { loadModel } = require("%scripts/hangarModelLoadManager.nut")

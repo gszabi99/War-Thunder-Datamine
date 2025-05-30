@@ -2805,6 +2805,14 @@
       "material": "fabric"
     },
     {
+      "name": "japan_portal_a",
+      "destroyedModelName": "japan_portal_a_destr_phobj",
+      "destructionImpulse": 20000.0,
+      "fx": "ad_wood_small",
+      "stopsBullets": false,
+      "material": "wood"
+    },
+    {
       "name": "oceania_house_a",
       "destroyedModelName": "oceania_house_a_destr_phobj",
       "destructionImpulse": 50000.0,
@@ -10889,7 +10897,8 @@
       "destroyedModelName": "cart_of_hay_a_destr_phobj",
       "destructionImpulse": 20000.0,
       "fx": "ad_wood_small",
-      "stopsBullets": false
+      "stopsBullets": false,
+      "isParent": true
     },
     {
       "name": "wood_trailer_a",
@@ -10946,7 +10955,8 @@
       "fx": "ad_wood_small",
       "fxScale": 1.0,
       "stopsBullets": false,
-      "material": "transparentBeton"
+      "material": "transparentBeton",
+      "isParent": true
     },
     {
       "name": "kennel_b",
@@ -10955,7 +10965,8 @@
       "fx": "ad_wood_small",
       "fxScale": 1.0,
       "stopsBullets": false,
-      "material": "transparentBeton"
+      "material": "transparentBeton",
+      "isParent": true
     },
     {
       "name": "korean_buckets_a",
@@ -11112,7 +11123,13 @@
       "name": "village_barn_b_dp_02",
       "destroyedModelName": "village_barn_b_dp_02_destr_phobj",
       "destructionImpulse": 30000.0,
-      "fx": "ad_wood_big"
+      "fx": "ad_wood_big",
+      "isParent": true
+    },
+    {
+      "name": "hayheap_a",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_haystack"
     },
     {
       "name": "trenches_cover",
@@ -11489,7 +11506,8 @@
       "destroyedModelName": "water_well_a_destr_phobj",
       "destructionImpulse": 30000.0,
       "fx": "ad_wood_snow_small",
-      "stopsBullets": false
+      "stopsBullets": false,
+      "isParent": true
     },
     {
       "name": "wood_barrel_a_snow",
@@ -11506,7 +11524,8 @@
       "destructionImpulse": 20000.0,
       "fx": "ad_wood_snow_small",
       "material": "transparentBeton",
-      "stopsBullets": false
+      "stopsBullets": false,
+      "isParent": true
     },
     {
       "name": "wood_bench_b_snow",
@@ -11816,7 +11835,8 @@
       "destructionImpulse": 5000.0,
       "fx": "ad_wood_small",
       "material": "transparentBeton",
-      "stopsBullets": false
+      "stopsBullets": false,
+      "isParent": true
     },
     {
       "name": "wood_table_b",
@@ -11824,7 +11844,8 @@
       "destructionImpulse": 5000.0,
       "fx": "ad_wood_small",
       "material": "transparentBeton",
-      "stopsBullets": false
+      "stopsBullets": false,
+      "isParent": true
     },
     {
       "name": "wood_table_small_a",
@@ -15606,6 +15627,7 @@
     },
     {
       "name": "88mm_flak_36_canon_a",
+      "debris": "88mm_flak_36_canon_a_dmg",
       "destroyedModelName": "88mm_flak_36_canon_a_destr_phobj",
       "destructionImpulse": 70000.0,
       "fx": "ad_dust_bollard",
@@ -15613,6 +15635,7 @@
     },
     {
       "name": "88mm_flak_36_canon_b",
+      "debris": "88mm_flak_36_canon_a_dmg",
       "destroyedModelName": "88mm_flak_36_canon_b_destr_phobj",
       "destructionImpulse": 70000.0,
       "fx": "ad_dust_bollard",
@@ -16398,6 +16421,22 @@
       "name": "basin_c",
       "destroyedModelName": "basin_c_destr_phobj",
       "destructionImpulse": 20000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "bucket_a",
+      "destructionImpulse": 10000.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "material": "transparentBeton"
+    },
+    {
+      "name": "bucket_b",
+      "destructionImpulse": 10000.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "stopsBullets": false,
@@ -20478,6 +20517,84 @@
       "destructionImpulse": 1000.0,
       "material": "wood",
       "stopsBullets": false
+    },
+    {
+      "name": "modern_urban_house_1_floor_a",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_1_floor_a_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_1_floor_b",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_1_floor_b_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_1_floor_c",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_1_floor_c_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_1_floor_d",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_1_floor_d_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_1_floor_e",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_1_floor_e_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_2_floor_a",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_2_floor_a_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_2_floor_b",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_2_floor_b_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_2_floor_c",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_2_floor_c_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_2_floor_d",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_2_floor_d_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_2_floor_e",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_2_floor_e_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_2_floor_f",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_2_floor_f_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_2_floor_g",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_2_floor_g_dmg",
+      "fx": "ad_buildings_destructions_big"
+    },
+    {
+      "name": "modern_urban_house_2_floor_h",
+      "scaleDebris": false,
+      "debris": "modern_urban_house_2_floor_h_dmg",
+      "fx": "ad_buildings_destructions_big"
     },
     {
       "name": "tree_ivy_white_a",
@@ -25607,6 +25724,31 @@
       "immortal": true
     },
     {
+      "name": "vietnam_bridge_b",
+      "immortal": true,
+      "material": "wood"
+    },
+    {
+      "name": "vietnam_bridge_b_dmg_a",
+      "immortal": true,
+      "material": "wood"
+    },
+    {
+      "name": "vietnam_bridge_b_dmg_b",
+      "immortal": true,
+      "material": "wood"
+    },
+    {
+      "name": "vietnam_bridge_b_dmg_debris",
+      "immortal": true,
+      "material": "wood"
+    },
+    {
+      "name": "vietnam_bridge_b_dmg_nocls",
+      "immortal": true,
+      "material": "wood"
+    },
+    {
       "name": "normandy_bunker_a",
       "immortal": true
     },
@@ -26586,86 +26728,6 @@
       "immortal": true
     },
     {
-      "name": "africa_sinai_big_rock_a",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_big_rock_b",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_big_rock_c",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_medium_rock_a",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_medium_rock_b",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_medium_rock_c",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_a",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_b",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_c",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_d",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_e",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_f",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_g",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_h",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_i",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_j",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_k",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_small_rock_l",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_smaller_rock_a",
-      "immortal": true
-    },
-    {
-      "name": "africa_sinai_smaller_rock_b",
-      "immortal": true
-    },
-    {
       "name": "sinai_big_rock_a",
       "immortal": true
     },
@@ -26787,21 +26849,6 @@
     },
     {
       "name": "tunisia_stone_big_e",
-      "immortal": true,
-      "material": "rocks"
-    },
-    {
-      "name": "tunisia_stone_huge_a",
-      "immortal": true,
-      "material": "rocks"
-    },
-    {
-      "name": "tunisia_stone_huge_b",
-      "immortal": true,
-      "material": "rocks"
-    },
-    {
-      "name": "tunisia_stone_huge_c",
       "immortal": true,
       "material": "rocks"
     },
@@ -29215,21 +29262,6 @@
       "material": "metal"
     },
     {
-      "name": "heap_debris_brick_medium_5x5_a",
-      "immortal": true,
-      "material": "bricks_red"
-    },
-    {
-      "name": "heap_debris_brick_medium_5x5_b",
-      "immortal": true,
-      "material": "bricks_red"
-    },
-    {
-      "name": "heap_debris_brick_medium_10x5",
-      "immortal": true,
-      "material": "bricks_red"
-    },
-    {
       "name": "heap_debris_brick_medium_20x3",
       "immortal": true,
       "material": "bricks_red"
@@ -30380,6 +30412,598 @@
     {
       "name": "dynBase_oil_refinery_sand_mesh",
       "immortal": true
+    },
+    {
+      "name": "sandstone_rock_sharp_smooth_grey_a_a",
+      "immortal": true
+    },
+    {
+      "name": "sandstone_rock_sharp_smooth_grey_a_b",
+      "immortal": true
+    },
+    {
+      "name": "sandstone_rock_sharp_smooth_grey_b",
+      "immortal": true
+    },
+    {
+      "name": "sandstone_rock_sharp_smooth_grey_c_a",
+      "immortal": true
+    },
+    {
+      "name": "sandstone_rock_sharp_smooth_grey_c_b",
+      "immortal": true
+    },
+    {
+      "name": "sandstone_rock_sharp_smooth_grey_d",
+      "immortal": true
+    },
+    {
+      "name": "sandstone_rock_sharp_smooth_grey_e_a",
+      "immortal": true
+    },
+    {
+      "name": "sandstone_rock_sharp_smooth_grey_e_b",
+      "immortal": true
+    },
+    {
+      "name": "earthen_barrack_a",
+      "immortal": true
+    },
+    {
+      "name": "earthen_barrack_b",
+      "immortal": true
+    },
+    {
+      "name": "sunflower_bush_a",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "sunflower_bush_b",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "sunflower_bush_c",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "sunflower_rich_field_a",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "sunflower_rich_field_b",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "sunflower_rich_field_c",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "sunflower_rich_field_d",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "sunflower_rich_field_e",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_a",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_a_carbon",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_b",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_b_carbon",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_c",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_c_carbon",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_d",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_d_carbon",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_green_a",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_green_b",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_green_c",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_bush_green_d",
+      "destructionImpulse": 1000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "burned_branch_a",
+      "destructionImpulse": 300.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_branch_a_fire",
+      "destructionImpulse": 300.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_branch_b",
+      "destructionImpulse": 300.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_branch_b_fire",
+      "destructionImpulse": 300.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_branch_c",
+      "destructionImpulse": 300.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_branch_c_fire",
+      "destructionImpulse": 300.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_branch_d",
+      "destructionImpulse": 300.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_branch_d_fire",
+      "destructionImpulse": 300.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_branch_green_a",
+      "destructionImpulse": 300.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_branch_green_b",
+      "destructionImpulse": 300.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_branch_green_c",
+      "destructionImpulse": 300.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_stump_a",
+      "destroyedModelName": "burned_stump_a_destr_phobj",
+      "destructionImpulse": 600.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_stump_a_fire",
+      "destroyedModelName": "burned_stump_a_fire_destr_phobj",
+      "destructionImpulse": 600.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_stump_b",
+      "destroyedModelName": "burned_stump_b_destr_phobj",
+      "destructionImpulse": 600.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_stump_b_fire",
+      "destroyedModelName": "burned_stump_b_fire_destr_phobj",
+      "destructionImpulse": 600.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_stump_c",
+      "destroyedModelName": "burned_stump_c_destr_phobj",
+      "destructionImpulse": 600.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_stump_c_fire",
+      "destroyedModelName": "burned_stump_c_fire_destr_phobj",
+      "destructionImpulse": 600.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h09_a_fire",
+      "destroyedModelName": "burned_tree_h09_a_fire_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h09_b_fire",
+      "destroyedModelName": "burned_tree_h09_b_fire_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h09_c_fire",
+      "destroyedModelName": "burned_tree_h09_c_fire_destr_phobj",
+      "destructionImpulse": 10000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h15_a_fire",
+      "destroyedModelName": "burned_tree_h15_a_fire_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h15_b_fire",
+      "destroyedModelName": "burned_tree_h15_b_fire_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h15_c_fire",
+      "destroyedModelName": "burned_tree_h15_c_fire_destr_phobj",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "broken_tree_h09_a",
+      "destructionImpulse": 10000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "broken_tree_h09_b",
+      "destructionImpulse": 10000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "broken_tree_h09_c",
+      "destructionImpulse": 10000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "broken_tree_h15_a",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "broken_tree_h15_b",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "broken_tree_h15_c",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h09_a",
+      "destructionImpulse": 10000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h09_b",
+      "destructionImpulse": 10000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h09_c",
+      "destructionImpulse": 10000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h15_a",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h15_b",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h15_c",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "burned_tree_h15_d",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.15,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.1,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
     },
     {
       "name": "branch_broken_a",
@@ -31647,7 +32271,7 @@
       "name": "bush_cotoneaster_lucidus_ball_a",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31656,7 +32280,7 @@
       "name": "bush_cotoneaster_lucidus_ball_b",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31665,7 +32289,7 @@
       "name": "bush_cotoneaster_lucidus_ball_c",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31674,7 +32298,7 @@
       "name": "bush_cotoneaster_lucidus_ball_d",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31683,7 +32307,7 @@
       "name": "bush_cotoneaster_lucidus_ball_small_a",
       "destructionImpulse": 2000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31692,7 +32316,7 @@
       "name": "bush_cotoneaster_lucidus_ball_small_b",
       "destructionImpulse": 2000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31701,7 +32325,7 @@
       "name": "bush_cotoneaster_lucidus_ball_small_c",
       "destructionImpulse": 2000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31710,7 +32334,7 @@
       "name": "bush_cotoneaster_lucidus_ball_small_d",
       "destructionImpulse": 2000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31719,7 +32343,7 @@
       "name": "bush_cotoneaster_lucidus_box_a",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31728,7 +32352,7 @@
       "name": "bush_cotoneaster_lucidus_box_b",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31737,7 +32361,7 @@
       "name": "bush_cotoneaster_lucidus_box_c",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31746,7 +32370,7 @@
       "name": "bush_cotoneaster_lucidus_box_d",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31755,7 +32379,7 @@
       "name": "bush_cotoneaster_lucidus_wild_a",
       "destructionImpulse": 3000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31764,7 +32388,7 @@
       "name": "bush_cotoneaster_lucidus_wild_b",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "ad_bush_felling_leaves_green_small",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31773,7 +32397,7 @@
       "name": "bush_cotoneaster_lucidus_winter_ball_a",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31782,7 +32406,7 @@
       "name": "bush_cotoneaster_lucidus_winter_ball_b",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31791,7 +32415,7 @@
       "name": "bush_cotoneaster_lucidus_winter_ball_c",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31800,7 +32424,7 @@
       "name": "bush_cotoneaster_lucidus_winter_ball_d",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31809,7 +32433,7 @@
       "name": "bush_cotoneaster_lucidus_winter_ball_small_a",
       "destructionImpulse": 2000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31818,7 +32442,7 @@
       "name": "bush_cotoneaster_lucidus_winter_ball_small_b",
       "destructionImpulse": 2000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31827,7 +32451,7 @@
       "name": "bush_cotoneaster_lucidus_winter_ball_small_c",
       "destructionImpulse": 2000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31836,7 +32460,7 @@
       "name": "bush_cotoneaster_lucidus_winter_ball_small_d",
       "destructionImpulse": 2000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31845,7 +32469,7 @@
       "name": "bush_cotoneaster_lucidus_winter_box_a",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31854,7 +32478,7 @@
       "name": "bush_cotoneaster_lucidus_winter_box_b",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31863,7 +32487,7 @@
       "name": "bush_cotoneaster_lucidus_winter_box_c",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31872,7 +32496,7 @@
       "name": "bush_cotoneaster_lucidus_winter_box_d",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31881,7 +32505,7 @@
       "name": "bush_cotoneaster_lucidus_winter_wild_a",
       "destructionImpulse": 3000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31890,7 +32514,7 @@
       "name": "bush_cotoneaster_lucidus_winter_wild_b",
       "destructionImpulse": 2500.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -31899,7 +32523,7 @@
       "name": "hedge_a_01m_045degrees",
       "destroyedModelName": "hedge_a_destr_phobj",
       "destructionImpulse": 100.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -31908,7 +32532,7 @@
       "name": "hedge_a_02m_045degrees",
       "destroyedModelName": "hedge_a_destr_phobj",
       "destructionImpulse": 100.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -31917,7 +32541,7 @@
       "name": "hedge_a_02m_straight",
       "destroyedModelName": "hedge_a_destr_phobj",
       "destructionImpulse": 100.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -31926,7 +32550,7 @@
       "name": "hedge_a_03m_045degrees",
       "destroyedModelName": "hedge_a_destr_phobj",
       "destructionImpulse": 100.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -31935,7 +32559,7 @@
       "name": "hedge_a_04m_030degrees",
       "destroyedModelName": "hedge_a_destr_phobj",
       "destructionImpulse": 100.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -31944,7 +32568,7 @@
       "name": "hedge_a_05m_015degrees",
       "destroyedModelName": "hedge_a_destr_phobj",
       "destructionImpulse": 100.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -31953,7 +32577,7 @@
       "name": "hedge_a_06m_015degrees",
       "destroyedModelName": "hedge_a_destr_phobj",
       "destructionImpulse": 100.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -31962,7 +32586,7 @@
       "name": "hedge_a_07m_015degrees",
       "destroyedModelName": "hedge_a_destr_phobj",
       "destructionImpulse": 100.0,
-      "fx": "ad_bush_felling_leaves_green",
+      "fx": "",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -32160,7 +32784,7 @@
       "name": "bush_beech_small_a",
       "destructionImpulse": 100.0,
       "bushBehaviour": true,
-      "fx": "ad_bush_felling_leaves_green_small",
+      "fx": "ad_bush_felling_leaves_green_tiny",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -32169,7 +32793,7 @@
       "name": "bush_beech_small_b",
       "destructionImpulse": 100.0,
       "bushBehaviour": true,
-      "fx": "ad_bush_felling_leaves_green_small",
+      "fx": "ad_bush_felling_leaves_green_tiny",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -32178,7 +32802,7 @@
       "name": "bush_beech_small_c",
       "destructionImpulse": 100.0,
       "bushBehaviour": true,
-      "fx": "ad_bush_felling_leaves_green_small",
+      "fx": "ad_bush_felling_leaves_green_tiny",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -32187,7 +32811,7 @@
       "name": "bush_beech_small_d",
       "destructionImpulse": 100.0,
       "bushBehaviour": true,
-      "fx": "ad_bush_felling_leaves_green_small",
+      "fx": "ad_bush_felling_leaves_green_tiny",
       "fxScale": 1.0,
       "stopsBullets": false,
       "dmPreset": "bush_props"
@@ -36174,7 +36798,16 @@
       "name": "bush_tilia_cordata_winter_medium_a",
       "destructionImpulse": 3000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green_med",
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "bush_tilia_cordata_fall_medium_a",
+      "destructionImpulse": 3000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -36192,7 +36825,16 @@
       "name": "bush_tilia_cordata_winter_medium_b",
       "destructionImpulse": 3000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green_med",
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "bush_tilia_cordata_fall_medium_b",
+      "destructionImpulse": 3000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -36210,7 +36852,16 @@
       "name": "bush_tilia_cordata_winter_small_a",
       "destructionImpulse": 3000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green_small",
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "bush_tilia_cordata_fall_small_a",
+      "destructionImpulse": 3000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -36228,7 +36879,16 @@
       "name": "bush_tilia_cordata_winter_small_b",
       "destructionImpulse": 3000.0,
       "destrCollisionHeightScale": 1.0,
-      "fx": "ad_bush_felling_leaves_green_small",
+      "fx": "",
+      "fxScale": 1.0,
+      "bushBehaviour": true,
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "bush_tilia_cordata_fall_small_b",
+      "destructionImpulse": 3000.0,
+      "destrCollisionHeightScale": 1.0,
+      "fx": "",
       "fxScale": 1.0,
       "bushBehaviour": true,
       "dmPreset": "bush_props"
@@ -36372,6 +37032,292 @@
       "canopyWidthPart": 0.36,
       "canopyOpacity": 0.7,
       "fx": "ad_tree_felling_leaves_green_small",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_winter_large_a",
+      "destructionImpulse": 40000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.6,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_winter_large_b",
+      "destructionImpulse": 40000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.65,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_winter_large_c",
+      "destructionImpulse": 40000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.65,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_winter_urban_large_a",
+      "destructionImpulse": 40000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.6,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_winter_urban_large_b",
+      "destructionImpulse": 40000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.6,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_winter_medium_a",
+      "destructionImpulse": 25000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.34,
+      "canopyOpacity": 0.7,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_winter_medium_b",
+      "destructionImpulse": 25000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.36,
+      "canopyOpacity": 0.7,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_winter_urban_medium_a",
+      "destructionImpulse": 25000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.34,
+      "canopyOpacity": 0.7,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_winter_urban_medium_b",
+      "destructionImpulse": 25000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.34,
+      "canopyOpacity": 0.7,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_winter_small_a",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.34,
+      "canopyOpacity": 0.7,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_winter_small_b",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.36,
+      "canopyOpacity": 0.7,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_fall_large_a",
+      "destructionImpulse": 40000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.6,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_fall_large_b",
+      "destructionImpulse": 40000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.65,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_fall_large_c",
+      "destructionImpulse": 40000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.65,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_fall_urban_large_a",
+      "destructionImpulse": 40000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.6,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_fall_urban_large_b",
+      "destructionImpulse": 40000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.6,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.3,
+      "canopyOpacity": 1.0,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_medium",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_fall_medium_a",
+      "destructionImpulse": 25000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.34,
+      "canopyOpacity": 0.7,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_fall_medium_b",
+      "destructionImpulse": 25000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.36,
+      "canopyOpacity": 0.7,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_fall_urban_medium_a",
+      "destructionImpulse": 25000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.34,
+      "canopyOpacity": 0.7,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_fall_urban_medium_b",
+      "destructionImpulse": 25000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.34,
+      "canopyOpacity": 0.7,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_fall_small_a",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.34,
+      "canopyOpacity": 0.7,
+      "fx": "",
+      "fxScale": 1.0,
+      "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "tree_tilia_cordata_fall_small_b",
+      "destructionImpulse": 15000.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.56,
+      "canopyTopOffset": 0.1,
+      "canopyWidthPart": 0.36,
+      "canopyOpacity": 0.7,
+      "fx": "",
       "fxScale": 1.0,
       "dmPreset": "trees_small",
       "material": "wood"
@@ -37049,19 +37995,39 @@
     },
     {
       "name": "dry_tree_bush_a",
-      "destructionImpulse": 20000.0,
-      "treeBehaviour": true,
-      "destrCollisionHeightScale": 5.0,
-      "fx": "ad_tree_felling_medium_ground",
-      "fxScale": 1.0
+      "destructionImpulse": 300.0,
+      "bushBehaviour": true,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood",
+      "dmPreset": "bush_props"
     },
     {
       "name": "dry_tree_bush_b",
-      "destructionImpulse": 20000.0,
-      "treeBehaviour": true,
-      "destrCollisionHeightScale": 5.0,
-      "fx": "ad_tree_felling_medium_ground",
-      "fxScale": 1.0
+      "destructionImpulse": 300.0,
+      "bushBehaviour": true,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood",
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "bush_burnt_a",
+      "destructionImpulse": 300.0,
+      "bushBehaviour": true,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood",
+      "dmPreset": "bush_props"
+    },
+    {
+      "name": "bush_burnt_b",
+      "destructionImpulse": 300.0,
+      "bushBehaviour": true,
+      "fx": "",
+      "fxScale": 1.0,
+      "material": "wood",
+      "dmPreset": "bush_props"
     },
     {
       "name": "tree_maple_large_a",
@@ -38132,6 +39098,78 @@
       "fx": "ad_tree_felling_medium_ground",
       "fxScale": 1.0,
       "dmPreset": "trees_small",
+      "material": "wood"
+    },
+    {
+      "name": "bush_ulex_europaeus_h03_a",
+      "destructionImpulse": 5.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.05,
+      "canopyWidthPart": 0.2,
+      "canopyOpacity": 0.8,
+      "fx": "ad_bush_felling_leaves_green_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "bush_ulex_europaeus_h03_b",
+      "destructionImpulse": 5.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.05,
+      "canopyWidthPart": 0.2,
+      "canopyOpacity": 0.8,
+      "fx": "ad_bush_felling_leaves_green_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "bush_ulex_europaeus_h04_a",
+      "destructionImpulse": 5.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.05,
+      "canopyWidthPart": 0.2,
+      "canopyOpacity": 0.8,
+      "fx": "ad_bush_felling_leaves_green_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "bush_ulex_europaeus_h04_b",
+      "destructionImpulse": 5.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.05,
+      "canopyWidthPart": 0.2,
+      "canopyOpacity": 0.8,
+      "fx": "ad_bush_felling_leaves_green_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "bush_ulex_europaeus_h05_a",
+      "destructionImpulse": 5.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.05,
+      "canopyWidthPart": 0.2,
+      "canopyOpacity": 0.8,
+      "fx": "ad_bush_felling_leaves_green_small",
+      "fxScale": 1.0,
+      "material": "wood"
+    },
+    {
+      "name": "bush_ulex_europaeus_h05_b",
+      "destructionImpulse": 5.0,
+      "canopyTriangle": false,
+      "canopyTopPart": 0.5,
+      "canopyTopOffset": 0.05,
+      "canopyWidthPart": 0.2,
+      "canopyOpacity": 0.8,
+      "fx": "ad_bush_felling_leaves_green_small",
+      "fxScale": 1.0,
       "material": "wood"
     },
     {
@@ -39209,6 +40247,14 @@
     "railway_stop_c": {
       "nextRes": "railway_stop_c_dmg",
       "physRes": "railway_stop_c_destr_phobj",
+      "hp": 40.0,
+      "impulseThreshold": 1.5,
+      "fx": "ad_metal_small",
+      "fxScale": 1.0
+    },
+    "railway_stop_d": {
+      "nextRes": "railway_stop_d_dmg",
+      "physRes": "railway_stop_d_destr_phobj",
       "hp": 40.0,
       "impulseThreshold": 1.5,
       "fx": "ad_metal_small",
@@ -40542,6 +41588,45 @@
       "fx": "ad_car_wreck_small",
       "material": "metal"
     },
+    "gaz_aa_4m_civil_a": {
+      "physRes": "gaz_aa_4m_civil_a_destr_phobj",
+      "hp": 10.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "material": "metal",
+      "isParent": true
+    },
+    "gaz_aa_4m_civil_b": {
+      "physRes": "gaz_aa_4m_civil_a_destr_phobj",
+      "hp": 10.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "material": "metal",
+      "isParent": true
+    },
+    "gaz_aa_4m_timber_carrier": {
+      "physRes": "gaz_aa_4m_timber_carrier_destr_phobj",
+      "hp": 10.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "material": "metal",
+      "isParent": true
+    },
+    "gaz_aa_4m_timber_carrier_trailer": {
+      "physRes": "gaz_aa_4m_timber_carrier_trailer_destr_phobj",
+      "hp": 10.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "material": "metal",
+      "isParent": true
+    },
+    "gaz_aa_4m_civil_taligate": {
+      "physRes": "gaz_aa_4m_civil_taligate_destr_phobj",
+      "hp": 10.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "material": "metal"
+    },
     "concrete_fence_barbed_a": {
       "hp": 20.0,
       "fx": "ad_buildings_destructions_big",
@@ -40901,6 +41986,33 @@
       "impulseThreshold": 3.0,
       "nextRes": "rheinland_statue_c_dmg"
     },
+    "rheinland_statue_a_full": {
+      "physRes": "rheinland_statue_a_full_destr_phobj",
+      "hp": 40.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_dust_bollard",
+      "material": "metal",
+      "impulseThreshold": 3.0,
+      "nextRes": "rheinland_statue_a_full_dmg"
+    },
+    "rheinland_statue_b_full": {
+      "physRes": "rheinland_statue_b_full_destr_phobj",
+      "hp": 40.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_dust_bollard",
+      "material": "metal",
+      "impulseThreshold": 3.0,
+      "nextRes": "rheinland_statue_b_full_dmg"
+    },
+    "rheinland_statue_c_full": {
+      "physRes": "rheinland_statue_c_full_destr_phobj",
+      "hp": 40.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_dust_bollard",
+      "material": "metal",
+      "impulseThreshold": 3.0,
+      "nextRes": "rheinland_statue_c_full_dmg"
+    },
     "skoda_octavia_2000": {
       "physRes": "skoda_octavia_2000_destr_phobj",
       "hp": 20.0,
@@ -40910,7 +42022,7 @@
       "isParent": true
     },
     "skoda_octavia_2000_layered": {
-      "physRes": "skoda_octavia_2000_layered_destr_phobj",
+      "physRes": "skoda_octavia_2000_destr_phobj",
       "hp": 20.0,
       "dmPreset": "metal_light_explosive_props",
       "fx": "ad_car_wreck_small",
@@ -40934,7 +42046,7 @@
       "isParent": true
     },
     "vw_golf_2000_layered": {
-      "physRes": "vw_golf_2000_layered_destr_phobj",
+      "physRes": "vw_golf_2000_destr_phobj",
       "hp": 20.0,
       "dmPreset": "metal_light_explosive_props",
       "fx": "ad_car_wreck_small",
@@ -42821,7 +43933,10 @@
     "lamppost_huge_a": {
       "nextRes": "lamppost_huge_a_dmg",
       "hp": 5.0,
-      "material": "steel",
+      "material": [
+        "steel",
+        "transparentCamera"
+      ],
       "impulseThreshold": 19.0,
       "isParent": true,
       "fxTemplate": "envir_destr_metal_med_effect",
@@ -42847,7 +43962,10 @@
     "lamppost_huge_b": {
       "nextRes": "lamppost_huge_b_dmg",
       "hp": 5.0,
-      "material": "steel",
+      "material": [
+        "steel",
+        "transparentCamera"
+      ],
       "impulseThreshold": 19.0,
       "isParent": true,
       "fxTemplate": "envir_destr_metal_med_effect",
@@ -42873,7 +43991,10 @@
     "lamppost_huge_c": {
       "nextRes": "lamppost_huge_c_dmg",
       "hp": 5.0,
-      "material": "steel",
+      "material": [
+        "steel",
+        "transparentCamera"
+      ],
       "impulseThreshold": 19.0,
       "isParent": true,
       "fxTemplate": "envir_destr_metal_med_effect",
@@ -44286,6 +45407,16 @@
       "physRes": "af_cc_pipe_g_destr_phobj",
       "hp": 30.0,
       "impulseThreshold": 5.0,
+      "fx": "ad_metal",
+      "fxScale": 1.0,
+      "material": "metal",
+      "dmPreset": "frame_metal_house",
+      "stopsBullets": false
+    },
+    "af_cc_pipe_base_a": {
+      "physRes": "af_cc_pipe_base_a_destr_phobj",
+      "hp": 50.0,
+      "impulseThreshold": 10.0,
       "fx": "ad_metal",
       "fxScale": 1.0,
       "material": "metal",
@@ -51507,6 +52638,15 @@
       "stopsBullets": false,
       "dmPreset": "metal_props"
     },
+    "abandoned_suburban_building_annex_b": {
+      "nextRes": "abandoned_suburban_building_annex_b_dmg",
+      "physRes": "abandoned_suburban_building_annex_b_destr_phobj",
+      "hp": 20.0,
+      "fx": "ad_metal_snow",
+      "fxScale": 1.0,
+      "stopsBullets": false,
+      "dmPreset": "metal_props"
+    },
     "syrian_concrete_fence_h": {
       "nextRes": "syrian_concrete_fence_h_dmg",
       "physRes": "syrian_concrete_fence_h_destr_phobj",
@@ -52387,6 +53527,27 @@
       "fxScale": 1.0,
       "material": "transparentCamera"
     },
+    "heap_debris_brick_medium_10x5": {
+      "physRes": "heap_debris_brick_medium_10x5_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fxTemplate": "envir_destr_concrete_small_effect",
+      "fxScale": 1.0
+    },
+    "heap_debris_brick_medium_5x5_a": {
+      "physRes": "heap_debris_brick_medium_5x5_a_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fxTemplate": "envir_destr_concrete_small_effect",
+      "fxScale": 1.0
+    },
+    "heap_debris_brick_medium_5x5_b": {
+      "physRes": "heap_debris_brick_medium_5x5_b_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fxTemplate": "envir_destr_concrete_small_effect",
+      "fxScale": 1.0
+    },
     "brick_fence_a": {
       "physRes": "brick_fence_a_destr_phobj",
       "hp": 12.0,
@@ -52563,6 +53724,70 @@
       "fx": "ad_dust_stucco",
       "isParent": true
     },
+    "brick_fence_e_r": {
+      "physRes": "brick_fence_e_r_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    "brick_fence_e_broken_a": {
+      "physRes": "brick_fence_e_broken_a_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    "brick_fence_e_broken_b": {
+      "physRes": "brick_fence_e_broken_b_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    "brick_fence_e_half_a": {
+      "physRes": "brick_fence_e_half_a_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    "brick_fence_e_long_a": {
+      "physRes": "brick_fence_e_long_a_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    "brick_fence_e_long_a_broken_a": {
+      "physRes": "brick_fence_e_long_a_broken_a_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    "brick_fence_e_long_a_broken_b": {
+      "physRes": "brick_fence_e_long_a_broken_b_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
+    "brick_fence_e_quater_a": {
+      "physRes": "brick_fence_e_quater_a_destr_phobj",
+      "hp": 12.0,
+      "impulseThreshold": 8.0,
+      "fx": "ad_dust_stucco",
+      "fxScale": 1.0,
+      "material": "transparentBeton"
+    },
     "brick_fence_column_a": {
       "physRes": "brick_fence_column_a_destr_phobj",
       "hp": 12.0,
@@ -52598,6 +53823,7 @@
       "isParent": true
     },
     "brick_fence_column_c": {
+      "nextRes": "brick_fence_column_c_dmg",
       "physRes": "brick_fence_column_c_destr_phobj",
       "hp": 12.0,
       "impulseThreshold": 8.0,
@@ -52846,6 +54072,60 @@
     },
     "wood_fence_l_column": {
       "physRes": "wood_fence_l_column_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small"
+    },
+    "wood_fence_r_200cm_b": {
+      "physRes": "wood_fence_c_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small"
+    },
+    "wood_fence_r_400cm_a": {
+      "physRes": "wood_fence_c_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small"
+    },
+    "wood_fence_r_400cm_a_broken_a": {
+      "physRes": "wood_fence_c_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small"
+    },
+    "wood_fence_r_400cm_b": {
+      "physRes": "wood_fence_c_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small"
+    },
+    "wood_fence_r_column_a": {
+      "physRes": "wood_fence_l_column_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small"
+    },
+    "wood_fence_r_gate_a": {
+      "physRes": "wood_fence_c_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small"
+    },
+    "wood_fence_r_100cm_a": {
+      "physRes": "wood_fence_c_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small"
+    },
+    "wood_fence_r_100cm_b": {
+      "physRes": "wood_fence_c_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "fx": "ad_fence_wood_small"
+    },
+    "wood_fence_r_200cm_a": {
+      "physRes": "wood_fence_c_destr_phobj",
       "hp": 2.0,
       "impulseThreshold": 0.0,
       "fx": "ad_fence_wood_small"
@@ -56087,6 +57367,55 @@
       "impulseThreshold": 8.0,
       "fx": "ad_dust_stucco"
     },
+    "earthen_barrack_a_bench_a": {
+      "physRes": "earthen_barrack_a_bench_a_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "dmPreset": "wood_small_props",
+      "fx": "ad_wood_small"
+    },
+    "earthen_barrack_a_canopy_a": {
+      "physRes": "earthen_barrack_a_canopy_a_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "dmPreset": "wood_small_props",
+      "fx": "ad_wood_small"
+    },
+    "earthen_barrack_a_canopy_b": {
+      "physRes": "earthen_barrack_a_canopy_b_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "dmPreset": "wood_small_props",
+      "fx": "ad_wood_small"
+    },
+    "earthen_barrack_a_door_a": {
+      "physRes": "earthen_barrack_a_door_a_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "dmPreset": "wood_small_props",
+      "fx": "ad_wood_small"
+    },
+    "earthen_barrack_a_window_a": {
+      "physRes": "earthen_barrack_a_window_a_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "dmPreset": "wood_small_props",
+      "fx": "armoured_glass"
+    },
+    "earthen_barrack_b_door_a": {
+      "physRes": "earthen_barrack_b_door_a_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "dmPreset": "wood_small_props",
+      "fx": "ad_wood_small"
+    },
+    "earthen_barrack_pipe_a": {
+      "physRes": "earthen_barrack_pipe_a_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 0.0,
+      "dmPreset": "wood_small_props",
+      "fx": "ad_dust_stucco"
+    },
     "wall_lantern_a": {
       "physRes": "wall_lantern_a_destr_phobj",
       "hp": 1.0,
@@ -56999,6 +58328,15 @@
       "fx": "ad_hydrant_destruction_faded",
       "fxScale": 1.0
     },
+    "european_hydrant_c": {
+      "nextRes": "european_hydrant_c_dmg",
+      "physRes": "european_hydrant_c_destr_phobj",
+      "hp": 7.0,
+      "impulseThreshold": 1.5,
+      "dmPreset": "dural_props",
+      "fx": "ad_hydrant_destruction_faded",
+      "fxScale": 1.0
+    },
     "european_lamp_post_high_a": {
       "physRes": "european_lamp_post_high_a_destr_phobj",
       "nextRes": "european_lamp_post_high_a_dmg",
@@ -57901,6 +59239,13 @@
       "fx": "ad_wood_small",
       "material": "wood"
     },
+    "pine_stack_a": {
+      "physRes": "pine_stack_a_destr_phobj",
+      "hp": 10.0,
+      "dmPreset": "metal_light_explosive_props",
+      "fx": "ad_car_wreck_small",
+      "material": "metal"
+    },
     "boathouse_a": {
       "nextRes": "boathouse_a_dmg",
       "physRes": "boathouse_a_destr_phobj",
@@ -58147,13 +59492,9 @@
       "hp": 100.0,
       "fx": "ad_explosion_big"
     },
-    "airfield_caponir_gate_b_snow": {
-      "nextRes": "airfield_caponir_gate_b_snow_dmg",
-      "hp": 100.0,
-      "fx": "ad_explosion_big"
-    },
-    "airfield_caponir_gate_a_snow": {
-      "nextRes": "airfield_caponir_gate_a_snow_dmg",
+    "airfield_caponir_gate_snow": {
+      "nextRes": "airfield_caponir_gate_dmg",
+      "physRes": "airfield_caponir_gate_destr_phobj",
       "hp": 100.0,
       "fx": "ad_explosion_big"
     },
@@ -62297,6 +63638,42 @@
     },
     "ammunition_box_construction_120x55x30_static": {
       "physRes": "ammunition_box_construction_120x55x30_static_destr_phobj",
+      "destructionImpulse": 1.0,
+      "hp": 50.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "material": "wood",
+      "dmPreset": "ammo_box"
+    },
+    "wooden_crate_a": {
+      "physRes": "wooden_crate_a_destr_phobj",
+      "destructionImpulse": 1.0,
+      "hp": 50.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "material": "wood",
+      "dmPreset": "ammo_box"
+    },
+    "wooden_crate_b": {
+      "physRes": "wooden_crate_b_destr_phobj",
+      "destructionImpulse": 1.0,
+      "hp": 50.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "material": "wood",
+      "dmPreset": "ammo_box"
+    },
+    "wooden_crate_c": {
+      "physRes": "wooden_crate_c_destr_phobj",
+      "destructionImpulse": 1.0,
+      "hp": 50.0,
+      "fx": "ad_wood_small",
+      "fxScale": 1.0,
+      "material": "wood",
+      "dmPreset": "ammo_box"
+    },
+    "wooden_crate_d": {
+      "physRes": "wooden_crate_d_destr_phobj",
       "destructionImpulse": 1.0,
       "hp": 50.0,
       "fx": "ad_wood_small",

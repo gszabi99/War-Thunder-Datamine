@@ -6,7 +6,7 @@ require %game.events
 
 [console_cmd(name="sound_area.init")]
 def sound_area_init_cmd()
-  broadcastEvent([[EventSoundAreaInit]])
+  broadcastEvent(EventSoundAreaInit())
 
 [console_cmd(name="sound_area.debug")]
 def sound_area_debug()

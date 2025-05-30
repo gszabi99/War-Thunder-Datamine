@@ -203,14 +203,13 @@ function addRoomMember(member) {
   updateMemberAttributes(member, curMember)
 }
 
-
-::get_current_room <- function get_current_room() {
+registerForNativeCall("get_current_room", function get_current_room() {
   return roomState.roomId
-}
+})
 
-::is_player_room_operator <- function is_player_room_operator(user_id) {
+registerForNativeCall("is_player_room_operator", function is_player_room_operator(user_id) {
   return (user_id in roomState.roomOps)
-}
+})
 
 return {
   roomState

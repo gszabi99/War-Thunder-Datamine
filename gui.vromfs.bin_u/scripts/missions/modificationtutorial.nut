@@ -14,6 +14,7 @@ let DataBlock = require("DataBlock")
 let { set_last_called_gui_testflight } = require("%scripts/missionBuilder/testFlightState.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
+let { updateBulletCountOptions } = require("%scripts/weaponry/weaponryActions.nut")
 
 const SEEN_MOD_TUTORIAL_PREFIX = "seen/modification_tutorial"
 
@@ -69,7 +70,7 @@ function startModTutorialMission(unit, modName, tutorialMission, tutorialMission
   set_game_mode(GM_TRAINING)
   set_gui_option(USEROPT_AIRCRAFT, unit.name)
   set_gui_option(USEROPT_WEAPONS, tutorialMissionWeapon ?? "")
-  UnitBulletsManager(unit).updateBulletCountOptions()
+  updateBulletCountOptions(unit, UnitBulletsManager(unit).getBulletsGroups())
 
   let missInfoOvr = DataBlock()
   missInfoOvr.setFrom(misInfo)

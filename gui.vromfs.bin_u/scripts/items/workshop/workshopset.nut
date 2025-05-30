@@ -125,7 +125,7 @@ local WorkshopSet = class {
   isItemIdKnown             = @(item_id) this.initKnownItemsOnce() || item_id in this.knownItemdefs
   isReqItemIdKnown          = @(item_id) item_id in this.knownReqItemdefs
   shouldDisguiseItem        = @(item) !(item.id in this.alwaysVisibleItemdefs) && !this.isItemIdKnown(item.id)
-    && !item?.itemDef?.tags?.alwaysKnownItem
+    && !item?.itemDef.tags.alwaysKnownItem
 
   hasPreview                = @() this.previewBlk != null
 

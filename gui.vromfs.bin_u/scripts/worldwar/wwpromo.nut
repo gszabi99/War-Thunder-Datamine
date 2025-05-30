@@ -1,4 +1,5 @@
 from "%scripts/dagui_library.nut" import *
+
 let { setPromoButtonText, isPromoCollapsed, togglePromoItem, getShowAllPromoBlocks
 } = require("%scripts/promo/promo.nut")
 let { addPromoAction } = require("%scripts/promo/promoActions.nut")
@@ -8,6 +9,7 @@ let { isWorldWarEnabled, canJoinWorldwarBattle } = require("%scripts/worldWar/wo
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { isWWSeasonActive } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
 
 function getWorldWarPromoText(isWwEnabled = null) {
   local text = loc("mainmenu/btnWorldwar")
@@ -45,7 +47,7 @@ addPromoButtonConfig({
 
     setPromoButtonText(buttonObj, id, getWorldWarPromoText(isWwEnabled))
 
-    if ((!::should_disable_menu() && !isProfileReceived.get()) || !isPromoCollapsed(id))
+    if ((!shouldDisableMenu && !isProfileReceived.get()) || !isPromoCollapsed(id))
       return
 
     if (g_world_war.hasNewNearestAvailableMapToBattle())

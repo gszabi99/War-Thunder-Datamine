@@ -1,9 +1,8 @@
-from "%scripts/dagui_natives.nut" import stat_get_value_respawns, disable_network, is_country_available
+from "%scripts/dagui_natives.nut" import stat_get_value_respawns, is_country_available
 from "%scripts/dagui_library.nut" import *
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { isDiffUnlocked } = require("%scripts/tutorials/tutorialsState.nut")
@@ -12,6 +11,7 @@ let getAllUnits = require("%scripts/unit/allUnits.nut")
 let { isUnitDefault, isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { getProfileInfo } = require("%scripts/user/userInfoStats.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 let isFirstChoiceShown = mkWatched(persist, "isFirstChoiceShown", false)
 
@@ -27,11 +27,11 @@ let getFirstChosenUnitType = function(defValue = ES_UNIT_TYPE_INVALID) {
 let isNeedFirstCountryChoice = function() {
   return getFirstChosenUnitType() == ES_UNIT_TYPE_INVALID
          && !stat_get_value_respawns(0, 1)
-         && !disable_network()
+         && !disableNetwork
 }
 
 let fillUserNick = function (nestObj, _headerLocId = null) {
-  if (!isProfileReceived.get() || !isPlatformXboxOne)
+  if (!isProfileReceived.get() || !is_gdk)
     return
 
   if (!nestObj?.isValid())
@@ -44,7 +44,7 @@ let fillUserNick = function (nestObj, _headerLocId = null) {
   let cfg = getProfileInfo()
   let data =  handyman.renderCached("%gui/firstChoice/userNick.tpl", {
       userIcon = cfg?.icon ? $"#ui/images/avatars/{cfg.icon}.avif" : ""
-      userName = colorize("@mainPlayerColor", getPlayerName(cfg?.name ?? ""))
+      userName = colorize("@playerNameColorWhite", getPlayerName(cfg?.name ?? ""))
     })
   guiScene.replaceContentFromText(nestObj, data, data.len(), null)
 }
@@ -67,7 +67,7 @@ function checkUnlockedCountries() {
   if (isNeedFirstCountryChoice())
     return curUnlocked
 
-  let unlockAll = disable_network() || hasFeature("UnlockAllCountries") || isDiffUnlocked(1, ES_UNIT_TYPE_AIRCRAFT)
+  let unlockAll = disableNetwork || hasFeature("UnlockAllCountries") || isDiffUnlocked(1, ES_UNIT_TYPE_AIRCRAFT)
   let wasInList = unlockedCountries.len()
   foreach (_i, country in shopCountriesList)
     if (is_country_available(country)) {

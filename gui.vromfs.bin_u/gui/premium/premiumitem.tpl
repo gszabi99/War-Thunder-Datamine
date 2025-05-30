@@ -65,7 +65,7 @@
       smallFont:t='yes'
       overlayTextColor:t='active'
     }
-
+    <<^isOnlinePurchase>>
     Button_text {
       premiumName = <<name>>
       pos:t='0.5pw-0.5w, ph-h-1@blockInterval'
@@ -82,5 +82,27 @@
       ButtonImg {}
       skip-navigation:t='yes'
     }
+    <</isOnlinePurchase>>
+    <<#isOnlinePurchase>>
+    Button_text {
+      premiumName = <<name>>
+      pos:t='0.5pw-0.5w, ph-h-1@blockInterval'
+      position:t='absolute'
+      width:t='pw-2@blockInterval'
+      noMargin:t='yes'
+      reduceMinimalWidth:t='yes'
+      btnName:t='A'
+      on_click:t='onShopBuy'
+      externalLink:t='yes'
+      activeText {
+        position:t='absolute'
+        pos:t='0.5pw-0.5w, 0.5ph-0.5h - 2@sf/@pf_outdated'
+        text:t='#mainmenu/btnBuy'
+        underline {}
+      }
+      ButtonImg {}
+      skip-navigation:t='yes'
+    }
+    <</isOnlinePurchase>>
   }
 <</items>>

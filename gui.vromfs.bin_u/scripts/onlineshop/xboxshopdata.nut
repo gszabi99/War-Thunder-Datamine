@@ -9,7 +9,6 @@ let seenList = require("%scripts/seen/seenList.nut").get(SEEN.EXT_XBOX_SHOP)
 let statsd = require("statsd")
 let progressMsg = require("%sqDagui/framework/progressMsg.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
-let { is_gdk } = require("%scripts/clientState/platform.nut")
 
 let XboxShopPurchasableItem = require("%scripts/onlineShop/XboxShopPurchasableItem.nut")
 let { gather_products_list } = require("%gdkLib/impl/store.nut")

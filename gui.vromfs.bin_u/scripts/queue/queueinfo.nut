@@ -4,7 +4,7 @@ from "%scripts/teamsConsts.nut" import Team
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isEventForClan } = require("%scripts/events/eventInfo.nut")
+let { isEventForClan, isTeamSizeBalancedEvent } = require("%scripts/events/eventInfo.nut")
 
 function getQueueEvent(queue) {
   return events.getEvent(queue.name)
@@ -64,6 +64,8 @@ function getQueuePreferredViewClass(queue) {
   let event = getQueueEvent(queue)
   if (!event)
     return defaultHandler
+  if (!isEventForClan(event) && isTeamSizeBalancedEvent(event))
+    return gui_handlers.QiHandlerTeamBalanced
   if (!isEventForClan(event) && events.isEventSymmetricTeams(event))
     return gui_handlers.QiHandlerByCountries
   return defaultHandler

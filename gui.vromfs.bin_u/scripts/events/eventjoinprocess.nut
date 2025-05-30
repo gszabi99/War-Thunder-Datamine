@@ -19,6 +19,9 @@ let { joinSessionRoom } = require("%scripts/matchingRooms/sessionLobbyActions.nu
 let { checkQueueAndStart, joinQueue } = require("%scripts/queue/queueManager.nut")
 let { checkBrokenAirsAndDo } = require("%scripts/instantAction.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
+let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { isEventAllowedForAllSquadMembers, canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
 
 const PROCESS_TIME_OUT = 60000
 
@@ -137,7 +140,7 @@ let EventJoinProcess = class {
   function joinStep3_external() {
     this.processStepName = "joinStep3_external"
     if (events.getEventDiffCode(this.event) == DIFFICULTY_HARDCORE &&
-        !::check_package_and_ask_download("pkg_main"))
+        !checkPackageAndAskDownload("pkg_main"))
       return this.remove()
 
     if (!events.checkEventFeature(this.event))
@@ -149,14 +152,14 @@ let EventJoinProcess = class {
       return
     }
 
-    if (!::g_squad_utils.isEventAllowedForAllMembers(getEventEconomicName(this.event)))
+    if (!isEventAllowedForAllSquadMembers(getEventEconomicName(this.event)))
       return this.remove()
 
     if (!checkEventFeaturePacks(this.event))
       return this.remove()
 
-    if (!::is_loaded_model_high_quality()) {
-      ::check_package_and_ask_download("pkg_main", null, this.joinStep4_internal, this, "event", this.remove)
+    if (!isLoadedModelHighQuality()) {
+      checkPackageAndAskDownload("pkg_main", null, this.joinStep4_internal, this, "event", this.remove)
       return
     }
 
@@ -167,7 +170,7 @@ let EventJoinProcess = class {
     this.processStepName = "joinStep4_internal"
     let mGameMode = events.getMGameMode(this.event, this.room)
     if (isAnyQueuesActive(QUEUE_TYPE_BIT.EVENT) ||
-        !::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true, showOfflineSquadMembersPopup = true }))
+        !canJoinFlightMsgBox({ isLeaderCanJoin = true, showOfflineSquadMembersPopup = true }))
       return this.remove()
     if (events.checkEventDisableSquads(this, this.event.name))
       return this.remove()

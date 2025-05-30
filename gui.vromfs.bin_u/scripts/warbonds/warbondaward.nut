@@ -10,11 +10,13 @@ let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandle
 let { addTask } = require("%scripts/tasker.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { FULL_ID_SEPARATOR } = require("%scripts/warbonds/warbondsState.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
 
 let WarbondAward = class {
   id = ""
   idx = 0
-  awardType = ::g_wb_award_type[EWBAT_INVALID]
+  awardType = warBondAwardType[EWBAT_INVALID]
   warbondWeak = null
   blk = null
   ordinaryTasks = 0
@@ -31,7 +33,7 @@ let WarbondAward = class {
     this.warbondWeak = warbond.weakref()
     this.blk = DataBlock()
     this.blk.setFrom(awardBlk)
-    this.awardType = ::g_wb_award_type.getTypeByBlk(this.blk)
+    this.awardType = warBondAwardType.getTypeByBlk(this.blk)
     this.ordinaryTasks = this.blk?.Ordinary ?? 0
     this.specialTasks = this.blk?.Special ?? 0
     this.reqMaxUnitRank = this.blk?.reqMaxUnitRank ?? -1
@@ -159,7 +161,7 @@ let WarbondAward = class {
   }
 
   function onBought() {
-    ::update_gamercards()
+    updateGamercards()
     broadcastEvent("WarbondAwardBought", { award = this })
   }
 

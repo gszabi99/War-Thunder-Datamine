@@ -294,11 +294,11 @@ let ASPAzimuthMark = @() {
 let SUMAltValue = Computed(@() clamp(Altitude.value * metrToFeet, 0, 4995).tointeger())
 let SUMAltThousands = Computed(@() SUMAltValue.value > 1000 ? $"{SUMAltValue.value / 1000}" : "")
 let SUMAltVis = Computed(@() Altitude.value * metrToFeet < 4995)
-function SUMAltitude(font_size) {
+function SUMAltitude(font_size, posiiton = [pw(60), ph(25)]) {
   return @() {
     watch = SUMAltVis
     size = flex()
-    pos = [pw(60), ph(25)]
+    pos = posiiton
     children = SUMAltVis.value ? [
       @() {
         watch = [SUMAltValue, IlsColor]

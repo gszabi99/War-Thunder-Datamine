@@ -3,7 +3,6 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/utils_sa.nut" import buildTableRowNoPad
 from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
 
-let { g_chat } = require("%scripts/chat/chat.nut")
 let { g_clan_type } = require("%scripts/clans/clanType.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { g_difficulty } = require("%scripts/difficulty.nut")
@@ -14,7 +13,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
-let { isPlayerFromPS4, isPlayerFromXboxOne, isPlatformSony, isPlatformXboxOne
+let { isPlayerFromPS4, isPlayerFromXboxOne, isPlatformSony, isPlatformXbox
 } = require("%scripts/clientState/platform.nut")
 let playerContextMenu = require("%scripts/user/playerContextMenu.nut")
 let vehiclesModal = require("%scripts/unit/vehiclesModal.nut")
@@ -47,6 +46,8 @@ let { openComplainWnd, showClanRewardLog } = require("%scripts/clans/clanModalHe
 let { requestMembership } = require("%scripts/clans/clanRequests.nut")
 let { ranked_column_prefix, get_clan_info_table } = require("%scripts/clans/clanInfoTable.nut")
 let { getShowInSquadronStatistics } = require("%scripts/clans/clanSeasons.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
 
 let clan_member_list = [
   { id = "onlineStatus", lbDataType = lbDataType.TEXT, myClanOnly = true, iconStyle = true, needHeader = false }
@@ -220,7 +221,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if (!u.isEmpty(feature) && !hasFeature(feature))
       text = ""
-    text = g_chat.filterMessageText(text, false)
+    text = filterMessageText(text, false)
 
     obj.setValue(text)
   }
@@ -571,7 +572,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
       this.showTaskProgressBox()
       sync_handler_simulate_signal("clan_info_reload")
       this.afterSlotOp = this.guiScene.performDelayed(this, function() {
-          ::update_gamercards()
+          updateGamercards()
           this.msgBox("left_clan", loc("clan/leftClan"),
             [["ok", function() { if (this.isValid()) this.afterClanLeave() } ]], "ok")
         })
@@ -688,7 +689,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
     let isConsoleOnlyPlayers = getSeparateLeaderboardPlatformValue()
     let consoleConst = isPlatformSony
       ? [TP_PS4, TP_PS5]
-      : isPlatformXboxOne
+      : isPlatformXbox
         ? [TP_XBOXONE, TP_XBOX_SCARLETT]
         : [TP_UNKNOWN]
 
@@ -700,7 +701,7 @@ gui_handlers.clanPageModal <- class (gui_handlers.BaseGuiHandlerWT) {
         }
         else {
           if ((isPlatformSony && !isPlayerFromPS4(member.nick))
-            || (isPlatformXboxOne && !isPlayerFromXboxOne(member.nick)))
+            || (isPlatformXbox && !isPlayerFromXboxOne(member.nick)))
             continue
         }
       }

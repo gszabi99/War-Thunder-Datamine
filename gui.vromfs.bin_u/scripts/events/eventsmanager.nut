@@ -7,7 +7,6 @@ from "%scripts/mainConsts.nut" import COLOR_TAG, SEEN, global_max_players_versus
 from "%scripts/clans/clanState.nut" import is_in_clan, myClanInfo
 
 let { getUnitName, getUnitTypeText, getUnitTypeByText } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { g_chat } = require("%scripts/chat/chat.nut")
 let { getGlobalModule, lateBindGlobalModule } = require("%scripts/global_modules.nut")
 let { g_team } = require("%scripts/teams.nut")
@@ -70,7 +69,8 @@ let { getEventEconomicName, getEventTournamentMode, isEventMatchesType, isEventF
 let { getLbCategoryTypeByField, eventsTableConfig } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 let { isCrewLockedByPrevBattle } = require("%scripts/crew/crewInfo.nut")
 let { findRulesClassByName } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getCurSlotbarUnit, getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { getCurSlotbarUnit } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { get_time_msec } = require("dagor.time")
 let { requestEventLeaderboardData, requestEventLeaderboardSelfRow,
   requestCustomEventLeaderboardData, convertLeaderboardData
@@ -89,6 +89,7 @@ let { getRoomSpecialRules, getRoomTeamData, getRoomMGameMode, getMembersCountByT
 let { getMatchingServerTime } = require("%scripts/onlineInfo/onlineInfo.nut")
 let { getItemsList, getInventoryList } = require("%scripts/items/itemsManager.nut")
 let { getBrokenAirsInfo } = require("%scripts/instantAction.nut")
+let { getMemberStatusLocTag, getSquadMembersFlyoutData } = require("%scripts/squads/squadUtils.nut")
 
 const EVENTS_OUT_OF_DATE_DAYS = 15
 const EVENT_DEFAULT_TEAM_SIZE = 16
@@ -743,11 +744,7 @@ let Events = class {
   }
 
   function getMatchingUnitType(unit) {
-    let matchingUnitType = getEsUnitType(unit)
-    
-    if (matchingUnitType == ES_UNIT_TYPE_BOAT)
-      return ES_UNIT_TYPE_SHIP
-    return matchingUnitType
+    return unit?.unitType.getMatchingUnitType() ?? ES_UNIT_TYPE_INVALID
   }
 
   
@@ -1461,31 +1458,47 @@ let Events = class {
     return !roomSpecialRules || this.isUnitMatchesRoomSpecialRules(unit, roomSpecialRules, this.getEDiffByEvent(event))
   }
 
-  function checkRequiredUnits(event, room = null, country = null) {
-    if (!event)
-      return false
-
+  function getTeamWithUnitsReq(event, room = null, country = null) {
     let playersCurCountry = country ?? profileCountrySq.value
-    let ediff = this.getEDiffByEvent(event)
-
     foreach (team in this.getSidesList(event)) {
       let teamData = this.getTeamDataWithRoom(event, team, room)
       if (!this.getRequiredCrafts(teamData).len()
           || !isInArray(playersCurCountry, teamData.countries))
-       continue
-
-      let crews = getCrewsListByCountry(playersCurCountry)
-      foreach (crew in crews) {
-        if (isCrewLockedByPrevBattle(crew))
-          continue
-
-        let unit = getCrewUnit(crew)
-        if (unit && this.isAirRequiredAndAllowedByTeamData(teamData, unit.name, ediff))
-          return true
-      }
-      return false 
+        continue
+      return teamData
     }
-    return true
+    return null
+  }
+
+  function getValidUnitsListForTeam(event, teamData, country, params = null) {
+    let playersCurCountry = country ?? profileCountrySq.value
+    let ediff = this.getEDiffByEvent(event)
+
+    let crews = getCrewsListByCountry(playersCurCountry)
+    let validUnits = []
+    foreach (crew in crews) {
+      if (isCrewLockedByPrevBattle(crew))
+        continue
+
+      let unit = getCrewUnit(crew)
+      if (unit && (teamData == null || this.isAirRequiredAndAllowedByTeamData(teamData, unit.name, ediff))) {
+        validUnits.append(unit)
+        if (params?.isOneEnough)
+          return validUnits
+      }
+    }
+    return validUnits
+  }
+
+  function checkRequiredUnits(event, room = null, country = null) {
+    if (!event)
+      return false
+
+    let teamData = this.getTeamWithUnitsReq(event, room, country)
+    if (teamData == null)
+      return true
+    let validUnits = this.getValidUnitsListForTeam(event, teamData, country, {isOneEnough = true})
+    return validUnits.len() > 0
   }
 
   function isAirRequiredAndAllowedByTeamData(teamData, airName, ediff) {
@@ -1639,7 +1652,7 @@ let Events = class {
       let teamLangConfig = stacks.map(@(s) [
         systemMsg.makeColoredValue(COLOR_TAG.USERLOG, ", ".join(s.names, true)),
         "ui/colon",
-        ::g_squad_utils.getMemberStatusLocTag(s.status)
+        getMemberStatusLocTag(s.status)
       ])
       langConfigByTeam[teamCode] <- teamLangConfig
       if (idx == 0)
@@ -1693,25 +1706,22 @@ let Events = class {
           if (!mgm)
             continue
           let teamsData = this.getMembersFlyoutEventDataImpl(mgm, null, mgmTeams)
+
           local compareTeamData = !!teamsData <=> !!bestTeamsData
             || !teamsData.haveRestrictions <=> !bestTeamsData.haveRestrictions
-            || bestTeamsData.bestCountriesChanged <=> teamsData.bestCountriesChanged
           if (compareTeamData == 0 && teamsData.haveRestrictions)
             compareTeamData = bestTeamsData.cantFlyData.len() <=> teamsData.cantFlyData.len()
 
           if (compareTeamData > 0) {
             bestTeamsData = teamsData
-            if (!bestTeamsData.haveRestrictions && bestTeamsData.bestCountriesChanged == 0)
+            if (!bestTeamsData.haveRestrictions)
               break
           }
         }
-        if (bestTeamsData && !bestTeamsData.haveRestrictions && bestTeamsData.bestCountriesChanged == 0)
+        if (bestTeamsData && !bestTeamsData.haveRestrictions)
           break
       }
     }
-
-    if (bestTeamsData && bestTeamsData.teamsData.len() > 1)
-      bestTeamsData.teamsData = bestTeamsData.teamsData.filter(@(t) t.countriesChanged == bestTeamsData.bestCountriesChanged)
 
     return bestTeamsData
   }
@@ -1722,7 +1732,6 @@ let Events = class {
       cantFlyData = []
       canFlyout = false
       haveRestrictions = true
-      bestCountriesChanged = -1
     }
     foreach (team in teams) {
       let data = this.getMembersFlyoutEventData(roomMgm, room, team)
@@ -1734,9 +1743,6 @@ let Events = class {
         res.haveRestrictions = res.haveRestrictions && data.haveRestrictions
         if (data.haveRestrictions)
           res.cantFlyData.append(data)
-
-        if (res.bestCountriesChanged < 0 || res.bestCountriesChanged > data.countriesChanged)
-          res.bestCountriesChanged = data.countriesChanged
       }
       else
         res.cantFlyData.append(data)
@@ -1747,8 +1753,7 @@ let Events = class {
   function getMembersFlyoutEventData(event, room, team) {
     let mGameMode = this.getMGameMode(event, room)
     let teamData = this.getTeamDataWithRoom(mGameMode, team, room)
-    let canChangeMemberCountry = !room 
-    return ::g_squad_utils.getMembersFlyoutData(teamData, event, canChangeMemberCountry)
+    return getSquadMembersFlyoutData(teamData, event)
   }
 
   function prepareMembersForQueue(membersData) {

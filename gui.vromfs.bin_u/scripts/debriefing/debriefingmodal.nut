@@ -1,15 +1,16 @@
 from "app" import is_dev_version
-from "%scripts/dagui_natives.nut" import stop_gui_sound, show_highlights, save_profile, get_premium_reward_wp, is_online_available, entitlement_expires_in, start_gui_sound, set_presence_to_player, disable_network, get_session_warpoints, shop_get_premium_account_ent_name, set_char_cb, is_highlights_inited, get_premium_reward_xp, purchase_entitlement_and_get_award
+from "%scripts/dagui_natives.nut" import stop_gui_sound, show_highlights, save_profile, get_premium_reward_wp, is_online_available, start_gui_sound, set_presence_to_player, get_session_warpoints, set_char_cb, is_highlights_inited, get_premium_reward_xp, purchase_entitlement_and_get_award
 from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/debriefing/debriefingConsts.nut" import debrState
-from "%scripts/userLog/userlogConsts.nut" import USERLOG_POPUP
 from "%scripts/items/itemsConsts.nut" import itemsTab, itemType
 from "%scripts/social/psConsts.nut" import bit_activity, ps4_activity_feed
 
+let { USERLOG_POPUP } = require("%scripts/userLog/userlogConsts.nut")
 let { getSessionLobbyMissionName } = require("%scripts/missions/missionsUtilsModule.nut")
 let { HudBattleLog } = require("%scripts/hud/hudBattleLog.nut")
 let { eventbus_subscribe } = require("eventbus")
+let { deferOnce } = require("dagor.workcycle")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -20,8 +21,8 @@ let { Cost } = require("%scripts/money.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { move_mouse_on_child, handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
+let { toPixels, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let DataBlock = require("DataBlock")
 let { format, split_by_chars } = require("string")
 let { ceil, floor } = require("math")
@@ -44,8 +45,9 @@ let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { needLogoutAfterSession, startLogout } = require("%scripts/login/logout.nut")
 let activityFeedPostFunc = require("%scripts/social/activityFeed/activityFeedPostFunc.nut")
 let { MODIFICATION } = require("%scripts/weaponry/weaponryTooltips.nut")
-let { boosterEffectType, getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
-let { fillItemDescr, getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
+let { getBoostersEffects, getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
+let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
+let { fillItemDescr } = require("%scripts/items/itemVisual.nut")
 let { getToBattleLocId } = require("%scripts/viewUtils/interfaceCustomization.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { setNeedShowRate } = require("%scripts/user/suggestionRateGame.nut")
@@ -68,7 +70,7 @@ let { goToBattleAction,
 let { checkRankUpWindow } = require("%scripts/debriefing/checkRankUpWindow.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { havePremium } = require("%scripts/user/premium.nut")
+let { havePremium, getRemainingPremiumTime } = require("%scripts/user/premium.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { hasEveryDayLoginAward } = require("%scripts/items/everyDayLoginAward.nut")
 let { is_replay_turned_on, is_replay_saved, is_replay_present,
@@ -150,12 +152,17 @@ let { isUsedPlayersOwnUnit } = require("%scripts/matchingRooms/sessionLobbyMembe
 let { getCurMpTitle, getLocalTeamForMpStats } = require("%scripts/statistics/mpStatisticsUtil.nut")
 let { showUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
 let { getWPIcon, getPrizeImageByConfig } = require("%scripts/items/prizesView.nut")
-let { fill_unlock_block } = require("%scripts/unlocks/unlocks.nut")
+let { fill_unlock_block, build_log_unlock_data,
+  build_unlock_tooltip_by_config } = require("%scripts/unlocks/unlocks.nut")
 let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 let { guiStartMpLobby, goForwardSessionLobbyAfterDebriefing, checkLeaveRoomInDebriefing
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
+let { updateMyCountryData } = require("%scripts/squads/squadUtils.nut")
+let destroySessionScripted = require("%scripts/matchingRooms/destroySessionScripted.nut")
+let { disableNetwork } = require("%globalScripts/clientState/initialState.nut")
 
 const DEBR_LEADERBOARD_LIST_COLUMNS = 2
 const DEBR_AWARDS_LIST_COLUMNS = 3
@@ -251,8 +258,7 @@ function checkRemnantPremiumAccount() {
     return
 
   let currDays = time.getUtcDays()
-  let premAccName = shop_get_premium_account_ent_name()
-  let expire = entitlement_expires_in(premAccName)
+  let expire = getRemainingPremiumTime()
   if (expire > 0)
     saveLocalByAccount("premium/lastDayHavePremium", currDays)
   if (expire >= NOTIFY_EXPIRE_PREMIUM_ACCOUNT)
@@ -294,9 +300,9 @@ function guiStartDebriefingFull(params = {}) {
 
 function gui_start_debriefing(_) {
   if (needLogoutAfterSession.value) {
-    ::destroy_session_scripted("on needLogoutAfterSession from gui_start_debriefing")
+    destroySessionScripted("on needLogoutAfterSession from gui_start_debriefing")
     
-    get_gui_scene().performDelayed(getroottable(), startLogout)
+    deferOnce(startLogout)
     return
   }
 
@@ -307,7 +313,7 @@ function gui_start_debriefing(_) {
      log("gui_nav back_from_replays = null");
      ::back_from_replays = null
      temp_func()
-     ::update_gamercards()
+     updateGamercards()
      return
   }
   else
@@ -330,7 +336,7 @@ function gui_start_debriefing(_) {
       handlersManager.callStartFunc(get_last_called_gui_testflight())
     else
       gui_start_decals()
-    ::update_gamercards()
+    updateGamercards()
     return
   }
   if (::custom_miss_flight) {
@@ -437,8 +443,8 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.isReplay = this.debriefingResult.isReplay
     this.isCurMissionExtr = isMissionExtrByName(this.debriefingResult?.roomEvent.name ?? "")
 
-    if (disable_network()) 
-      ::update_gamercards()
+    if (disableNetwork) 
+      updateGamercards()
 
     this.showTab("") 
 
@@ -576,7 +582,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       if (this.gm == GM_DYNAMIC) {
         save_profile(true)
         if (getDynamicResult() > MISSION_STATUS_RUNNING)
-          ::destroy_session_scripted("on iniScreen debriefing on finish dynCampaign")
+          destroySessionScripted("on iniScreen debriefing on finish dynCampaign")
         else
           g_squad_manager.setReadyFlag(true)
       }
@@ -585,7 +591,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.isInited = false
     ::check_logout_scheduled()
 
-    ::g_squad_utils.updateMyCountryData() 
+    updateMyCountryData() 
 
     this.handleNoAwardsCaption()
 
@@ -595,7 +601,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
         economicName = getEventEconomicName(this.roomEvent)
         difficulty = this.roomEvent?.difficulty ?? getSessionLobbyMissionData()?.difficulty ?? ""
         sessionId = this.debriefingResult?.sessionId ?? ""
-        sessionTime = this.debriefingResult?.exp?.sessionTime ?? 0
+        sessionTime = this.debriefingResult?.exp.sessionTime ?? 0
         originalMissionName = getSessionLobbyMissionName(true)
         missionsComplete = getMissionsComplete()
         result = resTheme
@@ -678,7 +684,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     local logsList = getUserLogsList(filter)
     logsList = combineSimilarAwards(logsList)
     for (local i = logsList.len() - 1; i >= 0; i--)
-      res.append(::build_log_unlock_data(logsList[i]))
+      res.append(build_log_unlock_data(logsList[i]))
 
     
     if (!is_dev_version() || this.debugUnlocks <= res.len())
@@ -694,7 +700,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
     let addAmount = this.debugUnlocks - res.len()
     for (local i = 0; i < addAmount; i++)
-      res.append(::build_log_unlock_data(logsList[i % logsList.len()]))
+      res.append(build_log_unlock_data(logsList[i % logsList.len()]))
 
     return res
   }
@@ -1021,7 +1027,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
   }
 
   function onEventTrophyContentVisible(params) {
-    if (this.giftItems?[0]?.item && this.giftItems[0].item == params?.trophyItem?.id)
+    if (this.giftItems?[0].item && this.giftItems[0].item == params?.trophyItem.id)
       this.fillTrophyContentDiv(params.trophyItem, "inventory_gift_icon")
   }
 
@@ -1046,7 +1052,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       let trophyName = get_pve_trophy_name(val, isVictoryStage)
       let isReceivedInLastBattle = trophyName && trophyName == receivedTrophyName
       let trophy = showTrophiesOnBar && trophyName ?
-        findItemById(trophyName, itemType.TROPHY) : null
+        findItemById(trophyName) : null
 
       stage.append({
         posX = val.tofloat() / maxValue
@@ -2102,7 +2108,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     this.skipAnim = false
     this.state = debrState.showBonuses - 1
     this.switchState()
-    ::update_gamercards()
+    updateGamercards()
   }
 
   function updateAwards(dt) {
@@ -2245,7 +2251,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       return
 
     let config = obj.getUserData()
-    ::build_unlock_tooltip_by_config(obj, config, this)
+    build_unlock_tooltip_by_config(obj, config, this)
   }
 
   function buildPlayersTable() {
@@ -2594,7 +2600,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     if (cfgNames.len() == 0)
       return
 
-    let awards = cfgNames.map(@(id) ::build_log_unlock_data(
+    let awards = cfgNames.map(@(id) build_log_unlock_data(
       buildConditionsConfig(
         getUnlockById(id)
     )))
@@ -2977,7 +2983,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
     }
     else {
       log("no mission_settings.layout, destroy session")
-      ::destroy_session_scripted("on unable to recalc dynamic layout")
+      destroySessionScripted("on unable to recalc dynamic layout")
     }
   }
 
@@ -2987,7 +2993,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
 
   function applyReturn() {
     if (goDebriefingNextFunc != guiStartDynamicSummary)
-      ::destroy_session_scripted("on leave debriefing")
+      destroySessionScripted("on leave debriefing")
 
     if (this.is_show_my_stats())
       setNeedShowRate(this.debriefingResult, this.getMyPlace())
@@ -3074,7 +3080,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       saveLastPlayed(wwBattleRes.getOperationId(), wwBattleRes.getPlayerCountry())
     else {
       let missionRules = getCurMissionRules()
-      let operationId = missionRules?.missionParams?.customRules?.operationId
+      let operationId = missionRules?.missionParams.customRules.operationId
       if (!operationId)
         return
 
@@ -3152,7 +3158,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       disableVisible = true
     })
     foreach (logObj in wnd_unlock_gained)
-      showUnlockWnd(::build_log_unlock_data(logObj))
+      showUnlockWnd(build_log_unlock_data(logObj))
 
     
     let new_rank = getPlayerRankByCountry(country)
@@ -3180,7 +3186,7 @@ gui_handlers.DebriefingModal <- class (gui_handlers.MPStatistics) {
       disableVisible = true
     })
     foreach (logObj in country_unlock_gained) {
-      showUnlockWnd(::build_log_unlock_data(logObj))
+      showUnlockWnd(build_log_unlock_data(logObj))
       if (("unlockId" in logObj) && logObj.unlockId != country && isInArray(logObj.unlockId, shopCountriesList))
         unlockCountry(logObj.unlockId)
     }

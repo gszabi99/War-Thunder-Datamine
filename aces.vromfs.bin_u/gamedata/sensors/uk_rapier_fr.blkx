@@ -249,13 +249,10 @@
             "active": true
           }
         },
-        "setRadarLockMode": {
+        "setRadarLockModeCommon": {
           "setLockModeCommon": {},
           "setModeName": {
             "name": "acquisition"
-          },
-          "setScanPattern": {
-            "scanPattern": "radarLock"
           },
           "setCenterElevation": {
             "source": "constant",
@@ -266,7 +263,19 @@
             "width": 1000.0
           }
         },
-        "setLosVisualPreLockModeCommon": {
+        "setRadarLockModeCue": {
+          "setRadarLockModeCommon": {},
+          "setScanPattern": {
+            "scanPattern": "radarLock"
+          }
+        },
+        "setRadarLockModeTarget": {
+          "setRadarLockModeCommon": {},
+          "setScanPattern": {
+            "scanPattern": "radarLock"
+          }
+        },
+        "setLosVisualLockModeCommon": {
           "setEnabled": {
             "value": true
           },
@@ -283,17 +292,17 @@
             "active": true
           }
         },
-        "setRadarLosVisualPreLockMode": {
+        "setRadarLosVisualLockModeCommon": {
           "setScanPattern": {
             "scanPattern": "radarLosLock"
           },
-          "setLosVisualPreLockModeCommon": {}
+          "setLosVisualLockModeCommon": {}
         },
-        "setIrstLosVisualPreLockMode": {
+        "setIrstLosVisualLockModeCommon": {
           "setScanPattern": {
             "scanPattern": "irstLosLock"
           },
-          "setLosVisualPreLockModeCommon": {}
+          "setLosVisualLockModeCommon": {}
         },
         "setLosLockModeCommon": {
           "setEnabled": {
@@ -307,6 +316,7 @@
           }
         },
         "setRadarLosLockMode": {
+          "setRadarLosVisualLockModeCommon": {},
           "setLosLockModeCommon": {},
           "setModeName": {
             "name": "acquisition"
@@ -318,6 +328,7 @@
           }
         },
         "setIrstLosLockMode": {
+          "setIrstLosVisualLockModeCommon": {},
           "setLosLockModeCommon": {},
           "setModeName": {
             "name": "IRST acquisition"
@@ -344,6 +355,7 @@
           }
         },
         "setRadarVisualLockMode": {
+          "setRadarLosVisualLockModeCommon": {},
           "setVisualLockModeCommon": {},
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -351,6 +363,7 @@
           }
         },
         "setIrstVisualLockMode": {
+          "setIrstLosVisualLockModeCommon": {},
           "setVisualLockModeCommon": {},
           "setDistGatePos": {
             "source": "targetDesignation",
@@ -439,70 +452,89 @@
             "setRadar": {}
           }
         },
-        "radarCheckLockType0": {
+        "checkRadarLockTypeCue": {
           "stateFrom": "radarStandby",
           "command": "designateTarget",
-          "stateTo": "radarCheckLockType0",
+          "stateTo": "checkRadarLockTypeCue",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": "cue"
             }
           }
         },
-        "radarLock": {
-          "stateFrom": "radarCheckLockType0",
+        "lockCue": {
+          "stateFrom": "checkRadarLockTypeCue",
           "event": "designationTypeEquals",
-          "stateTo": "radarLock",
+          "stateTo": "radarLockCue",
           "actions": {
-            "setRadarLockMode": {}
+            "setRadarLockModeCue": {}
           }
         },
-        "radarCheckLockType1": {
-          "stateFrom": "radarCheckLockType0",
+        "checkRadarLockTypeTarget": {
+          "stateFrom": "checkRadarLockTypeCue",
           "event": "designationTypeNotEquals",
-          "stateTo": "radarCheckLockType1",
+          "stateTo": "checkRadarLockTypeTarget",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 1
+              "type": "target"
             }
           }
         },
-        "radarLosLock": {
-          "stateFrom": "radarCheckLockType1",
+        "lockRadarTarget": {
+          "stateFrom": "checkRadarLockTypeTarget",
+          "event": "designationTypeEquals",
+          "stateTo": "radarLockTarget",
+          "actions": {
+            "setRadarLockModeTarget": {}
+          }
+        },
+        "checkRadarLockTypeLos": [
+          {
+            "stateFrom": "checkRadarLockTypeTarget",
+            "event": "designationTypeNotEquals",
+            "stateTo": "checkRadarLockTypeLos",
+            "actions": {
+              "checkDesignationTypeEquals": {
+                "type": "los"
+              }
+            }
+          },
+          {
+            "stateFrom": "checkRadarLockTypeLos",
+            "event": "designationTypeNotEquals",
+            "stateTo": "checkRadarLockTypeVisual",
+            "actions": {
+              "checkDesignationTypeEquals": {
+                "type": "visual"
+              }
+            }
+          }
+        ],
+        "lockRadarLos": {
+          "stateFrom": "checkRadarLockTypeLos",
           "event": "designationTypeEquals",
           "stateTo": "radarLosLock",
           "actions": {
-            "setRadarLosVisualPreLockMode": {},
             "setRadarLosLockMode": {}
           }
         },
-        "radarCheckLockType2": {
-          "stateFrom": "radarCheckLockType1",
-          "event": "designationTypeNotEquals",
-          "stateTo": "radarCheckLockType2",
-          "actions": {
-            "checkDesignationTypeEquals": {
-              "value": 2
-            }
-          }
-        },
-        "radarVisualLock": {
-          "stateFrom": "radarCheckLockType2",
+        "lockRadarVisual": {
+          "stateFrom": "checkRadarLockTypeVisual",
           "event": "designationTypeEquals",
           "stateTo": "radarVisualLock",
           "actions": {
-            "setRadarLosVisualPreLockMode": {},
             "setRadarVisualLockMode": {}
           }
         },
-        "radarFinishLockTypeCheck": {
-          "stateFrom": "radarCheckLockType2",
+        "finishRadarLockTypeCheck": {
+          "stateFrom": "checkRadarLockTypeVisual",
           "event": "designationTypeNotEquals",
           "stateTo": "radarStandby"
         },
         "radarTrack": {
           "stateFrom": [
-            "radarLock",
+            "radarLockCue",
+            "radarLockTarget",
             "radarLosLock",
             "radarVisualLock"
           ],
@@ -518,7 +550,8 @@
         },
         "radarFailedLock": {
           "stateFrom": [
-            "radarLock",
+            "radarLockCue",
+            "radarLockTarget",
             "radarLosLock",
             "radarVisualLock"
           ],
@@ -545,46 +578,46 @@
             "resetTrackMode": {}
           }
         },
-        "irstCheckLockType1": {
-          "stateFrom": "irstStandby",
-          "command": "designateTarget",
-          "stateTo": "irstCheckLockType1",
-          "actions": {
-            "checkDesignationTypeEquals": {
-              "value": 1
+        "checkIrstLockTypeLos": [
+          {
+            "stateFrom": "irstStandby",
+            "command": "designateTarget",
+            "stateTo": "checkIrstLockTypeLos",
+            "actions": {
+              "checkDesignationTypeEquals": {
+                "type": "los"
+              }
+            }
+          },
+          {
+            "stateFrom": "checkIrstLockTypeLos",
+            "event": "designationTypeNotEquals",
+            "stateTo": "checkIrstLockTypeVisual",
+            "actions": {
+              "checkDesignationTypeEquals": {
+                "type": "visual"
+              }
             }
           }
-        },
-        "irstLosLock": {
-          "stateFrom": "irstCheckLockType1",
+        ],
+        "lockIrstLos": {
+          "stateFrom": "checkIrstLockTypeLos",
           "event": "designationTypeEquals",
           "stateTo": "irstLosLock",
           "actions": {
-            "setIrstLosVisualPreLockMode": {},
             "setIrstLosLockMode": {}
           }
         },
-        "irstCheckLockType2": {
-          "stateFrom": "irstCheckLockType1",
-          "event": "designationTypeNotEquals",
-          "stateTo": "irstCheckLockType2",
-          "actions": {
-            "checkDesignationTypeEquals": {
-              "value": 2
-            }
-          }
-        },
-        "irstVisualLock": {
-          "stateFrom": "irstCheckLockType2",
+        "lockIrstVisual": {
+          "stateFrom": "checkIrstLockTypeVisual",
           "event": "designationTypeEquals",
           "stateTo": "irstVisualLock",
           "actions": {
-            "setIrstLosVisualPreLockMode": {},
             "setIrstVisualLockMode": {}
           }
         },
-        "irstFinishLockTypeCheck": {
-          "stateFrom": "irstCheckLockType2",
+        "finishIrstLockTypeCheck": {
+          "stateFrom": "checkIrstLockTypeVisual",
           "event": "designationTypeNotEquals",
           "stateTo": "irstStandby"
         },

@@ -5,7 +5,7 @@ let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { is_in_loading_screen } = require("%sqDagui/framework/baseGuiHandlerManager.nut")
 let psnsm = require("%scripts/social/psnSessionManager/psnSessionManagerApi.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let psnNotify = require("%sonyLib/notifications.nut")
 let { getFilledFeedTextByLang } = require("%scripts/langUtils/localization.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
@@ -297,7 +297,7 @@ let proceedInvite = function(p) {
     return
   }
 
-  if (!isInMenu()) {
+  if (!isInMenu.get()) {
     log("[PSGI:PI] delaying PSN invite until in menu")
     postponeInvite(p)
     get_cur_gui_scene().performDelayed({}, function() {

@@ -15,7 +15,7 @@
       "environment": "Day",
       "weather": "clear",
       "gt_cooperative": true,
-      "restoreType": "tactical control",
+      "restoreType": "attempts",
       "optionalTakeOff": false
     },
     "atmosphere": {
@@ -97,6 +97,9 @@
           },
           {
             "value": ""
+          },
+          {
+            "value": ""
           }
         ],
         "unitLoadBehTree": [
@@ -114,7 +117,8 @@
               "luftwaffe_fighters00",
               "luftwaffe_fighters01",
               "luftwaffe_fighters02",
-              "ally_planes"
+              "ally_planes",
+              "player_wingmates"
             ]
           }
         ],
@@ -195,54 +199,108 @@
         "moAddMissionObjective": {
           "target": "single_britain_theHardestDay_fly00"
         },
-        "unitMoveTo": {
-          "object_marking": 0,
-          "target": "player",
-          "target_marking": 0,
-          "waypointReachedDist": 10.0,
-          "recalculatePathDist": -1.0,
-          "follow_target": true,
-          "teleportHeightType": "absolute",
-          "useUnitHeightForTele": true,
-          "shouldKeepFormation": true,
-          "teleportHeightValue": 1000.0,
-          "horizontalDirectionForTeleport": true,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "fastClimb": false,
-          "destTimeMode": false,
-          "target_var_name": "",
-          "target_var_comp_op": "equal",
-          "target_var_value": 0,
-          "object": "ally_planes",
-          "target_type": "isActive",
-          "follow_offset": [
-            0.0,
-            250.0,
-            0.0
-          ]
-        },
-        "unitAttackTarget": {
-          "playerAttracted": false,
-          "target_marking": 0,
-          "object": "ally_planes",
-          "target": "germany_planes",
-          "fireRandom": true,
-          "targetDistMax": 4000.0,
-          "maxNumAttackersPerTarget": 1,
-          "attackAltRange": [
-            250.0,
-            7000.0
-          ],
-          "keepDeadUnitsInTargetList": true,
-          "anchorTarget": "player",
-          "targetToAnchorDist": [
-            3000.0,
-            4000.0
-          ],
-          "resetObjectToFollow": false
-        }
+        "unitMoveTo": [
+          {
+            "object_marking": 0,
+            "target": "player",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": true,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "shouldKeepAirFormation": true,
+            "object": "ally_planes",
+            "target_type": "isActive",
+            "follow_offset": [
+              0.0,
+              250.0,
+              0.0
+            ]
+          },
+          {
+            "object_marking": 0,
+            "target": "player",
+            "target_marking": 0,
+            "waypointReachedDist": 10.0,
+            "recalculatePathDist": -1.0,
+            "follow_target": true,
+            "teleportHeightType": "absolute",
+            "useUnitHeightForTele": true,
+            "shouldKeepFormation": true,
+            "teleportHeightValue": 1000.0,
+            "horizontalDirectionForTeleport": true,
+            "object_var_name": "",
+            "object_var_comp_op": "equal",
+            "object_var_value": 0,
+            "fastClimb": false,
+            "destTimeMode": false,
+            "target_var_name": "",
+            "target_var_comp_op": "equal",
+            "target_var_value": 0,
+            "shouldKeepAirFormation": false,
+            "object": "player_wingmates",
+            "target_type": "isActive",
+            "follow_offset": [
+              0.0,
+              20.0,
+              0.0
+            ]
+          }
+        ],
+        "unitAttackTarget": [
+          {
+            "playerAttracted": false,
+            "target_marking": 0,
+            "object": "ally_planes",
+            "target": "germany_planes",
+            "fireRandom": true,
+            "targetDistMax": 4000.0,
+            "maxNumAttackersPerTarget": 1,
+            "attackAltRange": [
+              0.0,
+              7000.0
+            ],
+            "keepDeadUnitsInTargetList": true,
+            "anchorTarget": "player",
+            "targetToAnchorDist": [
+              3000.0,
+              4000.0
+            ],
+            "resetObjectToFollow": false
+          },
+          {
+            "playerAttracted": false,
+            "target_marking": 0,
+            "object": "player_wingmates",
+            "target": "germany_planes",
+            "fireRandom": true,
+            "targetDistMax": 4000.0,
+            "maxNumAttackersPerTarget": 1,
+            "attackAltRange": [
+              0.0,
+              2500.0
+            ],
+            "keepDeadUnitsInTargetList": true,
+            "anchorTarget": "player",
+            "targetToAnchorDist": [
+              1500.0,
+              2500.0
+            ],
+            "resetObjectToFollow": false
+          }
+        ]
       },
       "else_actions": {}
     },
@@ -308,13 +366,17 @@
         }
       },
       "conditions": {
-        "unitWhenInArea": {
+        "unitDistanceBetween": {
+          "value": 2500.0,
           "math": "2D",
           "object_type": "isAlive",
           "object_marking": 0,
-          "check_objects": "any",
           "object_var_name": "",
           "object_var_comp_op": "equal",
+          "target_type": "isAlive",
+          "target_marking": 0,
+          "check_objects": "any",
+          "check_targets": "any",
           "object": "player",
           "target": "waypoint00"
         }
@@ -447,6 +509,7 @@
             "fastClimb": false,
             "destTimeMode": false,
             "horizontalDirectionForTeleport": true,
+            "shouldKeepAirFormation": true,
             "object": "luftwaffe_bombers00",
             "speed": 250.0
           },
@@ -470,6 +533,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "luftwaffe_fighters00",
             "target_type": "isActive",
             "follow_offset": [
@@ -498,6 +562,7 @@
             "fastClimb": false,
             "destTimeMode": false,
             "horizontalDirectionForTeleport": true,
+            "shouldKeepAirFormation": true,
             "object": "wave02"
           },
           {
@@ -520,6 +585,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "luftwaffe_fighters01",
             "target_type": "isActive",
             "follow_offset": [
@@ -548,6 +614,7 @@
             "fastClimb": false,
             "destTimeMode": false,
             "horizontalDirectionForTeleport": true,
+            "shouldKeepAirFormation": true,
             "object": "wave03"
           },
           {
@@ -570,6 +637,7 @@
             "target_var_name": "",
             "target_var_comp_op": "equal",
             "target_var_value": 0,
+            "shouldKeepAirFormation": true,
             "object": "luftwaffe_fighters02",
             "target_type": "isActive",
             "follow_offset": [
@@ -586,17 +654,17 @@
             "object": "luftwaffe_fighters00",
             "target": "british_planes",
             "fireRandom": true,
-            "targetDistMax": 4000.0,
+            "targetDistMax": 3000.0,
             "maxNumAttackersPerTarget": 1,
             "attackAltRange": [
-              250.0,
-              7000.0
+              0.0,
+              3000.0
             ],
             "keepDeadUnitsInTargetList": true,
             "anchorTarget": "luftwaffe_bombers00",
             "targetToAnchorDist": [
-              3000.0,
-              4000.0
+              1500.0,
+              3000.0
             ],
             "resetObjectToFollow": false
           },
@@ -606,17 +674,17 @@
             "object": "luftwaffe_fighters01",
             "target": "british_planes",
             "fireRandom": true,
-            "targetDistMax": 4000.0,
+            "targetDistMax": 3000.0,
             "maxNumAttackersPerTarget": 1,
             "attackAltRange": [
-              250.0,
-              7000.0
+              0.0,
+              3000.0
             ],
             "keepDeadUnitsInTargetList": true,
             "anchorTarget": "luftwaffe_bombers01",
             "targetToAnchorDist": [
-              3000.0,
-              4000.0
+              1500.0,
+              3000.0
             ],
             "resetObjectToFollow": false
           },
@@ -626,17 +694,17 @@
             "object": "luftwaffe_fighters02",
             "target": "british_planes",
             "fireRandom": true,
-            "targetDistMax": 4000.0,
+            "targetDistMax": 3000.0,
             "maxNumAttackersPerTarget": 1,
             "attackAltRange": [
-              250.0,
-              7000.0
+              0.0,
+              3000.0
             ],
             "keepDeadUnitsInTargetList": true,
             "anchorTarget": "luftwaffe_bombers02",
             "targetToAnchorDist": [
-              3000.0,
-              4000.0
+              1500.0,
+              3000.0
             ],
             "resetObjectToFollow": false
           }
@@ -644,27 +712,27 @@
         "unitSetIndication": [
           {
             "set": true,
+            "target": "luftwaffe_bombers00",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "luftwaffe_bombers00"
+            "object_var_value": 0
           },
           {
             "set": true,
+            "target": "luftwaffe_bombers01",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "luftwaffe_bombers01"
+            "object_var_value": 0
           },
           {
             "set": true,
+            "target": "luftwaffe_bombers02",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "target": "luftwaffe_bombers02"
+            "object_var_value": 0
           }
         ],
         "moAddMissionObjective": [
@@ -761,15 +829,16 @@
           "fastClimb": false,
           "destTimeMode": false,
           "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
           "object": "luftwaffe_bombers00"
         },
         "unitSetIndication": {
           "set": false,
+          "target": "luftwaffe_bombers00",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "luftwaffe_bombers00"
+          "object_var_value": 0
         },
         "varModify": [
           {
@@ -837,15 +906,16 @@
           "fastClimb": false,
           "destTimeMode": false,
           "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
           "object": "luftwaffe_bombers01"
         },
         "unitSetIndication": {
           "set": false,
+          "target": "luftwaffe_bombers01",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "luftwaffe_bombers01"
+          "object_var_value": 0
         },
         "varModify": [
           {
@@ -913,15 +983,16 @@
           "fastClimb": false,
           "destTimeMode": false,
           "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
           "object": "luftwaffe_bombers02"
         },
         "unitSetIndication": {
           "set": false,
+          "target": "luftwaffe_bombers02",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "luftwaffe_bombers02"
+          "object_var_value": 0
         },
         "varModify": [
           {
@@ -987,6 +1058,7 @@
           "fastClimb": false,
           "destTimeMode": false,
           "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
           "object": "wave01"
         },
         "unitAttackTarget": {
@@ -996,11 +1068,11 @@
         },
         "unitSetIndication": {
           "set": false,
+          "target": "luftwaffe_bombers00",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "luftwaffe_bombers00"
+          "object_var_value": 0
         },
         "varModify": {
           "operator": "add",
@@ -1059,6 +1131,7 @@
           "fastClimb": false,
           "destTimeMode": false,
           "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
           "object": "wave02"
         },
         "unitAttackTarget": {
@@ -1068,11 +1141,11 @@
         },
         "unitSetIndication": {
           "set": false,
+          "target": "luftwaffe_bombers01",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "luftwaffe_bombers01"
+          "object_var_value": 0
         },
         "varModify": {
           "operator": "add",
@@ -1131,6 +1204,7 @@
           "fastClimb": false,
           "destTimeMode": false,
           "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
           "object": "wave03"
         },
         "unitAttackTarget": {
@@ -1140,11 +1214,11 @@
         },
         "unitSetIndication": {
           "set": false,
+          "target": "luftwaffe_bombers02",
           "target_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
-          "object_var_value": 0,
-          "target": "luftwaffe_bombers02"
+          "object_var_value": 0
         },
         "varModify": {
           "operator": "add",
@@ -1221,15 +1295,15 @@
         ],
         "unitSetIndication": {
           "set": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "luftwaffe_bombers00",
             "luftwaffe_bombers01",
             "luftwaffe_bombers02"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "wait": {
           "time": 2.0
@@ -1295,15 +1369,15 @@
         ],
         "unitSetIndication": {
           "set": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "luftwaffe_bombers00",
             "luftwaffe_bombers01",
             "luftwaffe_bombers02"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "wait": {
           "time": 2.0
@@ -1366,15 +1440,15 @@
         ],
         "unitSetIndication": {
           "set": false,
-          "target_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "target": [
             "luftwaffe_bombers00",
             "luftwaffe_bombers01",
             "luftwaffe_bombers02"
-          ]
+          ],
+          "target_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0
         },
         "wait": {
           "time": 2.0
@@ -1428,6 +1502,7 @@
           "fastClimb": false,
           "destTimeMode": false,
           "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
           "object": "luftwaffe_fighters00"
         }
       },
@@ -1476,6 +1551,7 @@
           "fastClimb": false,
           "destTimeMode": false,
           "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
           "object": "luftwaffe_fighters01"
         }
       },
@@ -1524,6 +1600,7 @@
           "fastClimb": false,
           "destTimeMode": false,
           "horizontalDirectionForTeleport": true,
+          "shouldKeepAirFormation": true,
           "object": "luftwaffe_fighters02"
         }
       },
@@ -1743,7 +1820,7 @@
         "applyAllMods": false,
         "props": {
           "army": 1,
-          "count": 4,
+          "count": 1,
           "free_distance": 70.0,
           "floating_distance": 50.0,
           "minimum_distance_to_earth": 20.0,
@@ -1751,7 +1828,7 @@
           "attack_type": "fire_at_will",
           "skill": 4,
           "player": true,
-          "numInWing": 4,
+          "numInWing": 1,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,
@@ -2186,6 +2263,68 @@
           "attack_type": "fire_at_will",
           "skill": 4,
           "numInWing": 2,
+          "plane": {
+            "wing_formation": "Diamond",
+            "row_distances": 3.0,
+            "col_distances": 3.0,
+            "super_formation": "Diamond",
+            "super_row_distances": 1.5,
+            "super_col_distances": 1.5,
+            "ai_skill": "NORMAL",
+            "task": "FLY_WAYPOINT"
+          }
+        },
+        "way": {}
+      },
+      {
+        "name": "player_wingmates",
+        "tm": [
+          [
+            -0.0438216,
+            0.0,
+            -0.99904
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.99904,
+            0.0,
+            -0.0438216
+          ],
+          [
+            35888.4,
+            2155.05,
+            2267.46
+          ]
+        ],
+        "unit_class": "spitfire_mk1",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "spitfire_mk1_default",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 3,
+          "free_distance": 70.0,
+          "floating_distance": 50.0,
+          "minimum_distance_to_earth": 20.0,
+          "altLimit": 6000.0,
+          "attack_type": "fire_at_will",
+          "skill": 4,
+          "numInWing": 3,
           "plane": {
             "wing_formation": "Diamond",
             "row_distances": 3.0,

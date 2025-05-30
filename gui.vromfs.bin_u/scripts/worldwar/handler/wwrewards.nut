@@ -31,8 +31,8 @@ let fetchRewardsTimeData = function(cb) {
     function(userstatTbl) {
       rewardsTimeData = {}
       foreach (key, val in userstatTbl.response.tables) {
-        let rewardTimeStr = val?.interval?.index == 0 && val?.prevInterval?.index != 0 ?
-          val?.prevInterval?.end : val?.interval?.end
+        let rewardTimeStr = val?.interval.index == 0 && val?.prevInterval.index != 0 ?
+          val?.prevInterval.end : val?.interval.end
         rewardsTimeData[key] <- rewardTimeStr ? time.getTimestampFromIso8601(rewardTimeStr) : 0
       }
       cb()

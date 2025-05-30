@@ -5,9 +5,10 @@ let mfdSightHud = require("planeMfdCamera.nut")
 let { MfdRadarColor, radarPosSize } = require("radarState.nut")
 let { radarMfd } = require("%rGui/radar.nut")
 let mfdCustomPages = require("%rGui/planeCockpit/customPageBuilder.nut")
-let { MfdRwrColor, DigitalDevicesVisible, DigDevicesPosSize } = require("planeState/planeToolsState.nut")
+let { MfdRwrColor, DigitalDevicesVisible, DigDevicesPosSize, MfdHsdVisible, MfdHsdPosSize } = require("planeState/planeToolsState.nut")
 let planeRwr = require("planeRwr.nut")
 let digitalDevices = require("planeCockpit/digitalDevices.nut")
+let hsd = require("planeCockpit/hsd.nut")
 
 
 let twsPosComputed = Computed(@() [RwrPosSize.value[0] + 0.17 * RwrPosSize.value[2],
@@ -26,6 +27,12 @@ let digitalDev = @(){
   children = DigitalDevicesVisible.get() ? digitalDevices(DigDevicesPosSize[2], DigDevicesPosSize[3], DigDevicesPosSize[0], DigDevicesPosSize[1]) : null
 }
 
+let mfdHsd = @(){
+  watch = MfdHsdVisible
+  size = flex()
+  children = MfdHsdVisible.get() ? hsd(MfdHsdPosSize[2], MfdHsdPosSize[3], MfdHsdPosSize[0], MfdHsdPosSize[1]) : null
+}
+
 function Root() {
   let children = [
     mkTws
@@ -33,6 +40,7 @@ function Root() {
     mfdSightHud
     mfdCustomPages
     digitalDev
+    mfdHsd
   ]
 
   return {

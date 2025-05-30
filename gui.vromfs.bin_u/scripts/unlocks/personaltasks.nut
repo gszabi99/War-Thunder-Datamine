@@ -3,12 +3,12 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { getSelectedChild, move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { updateChallenges, curSeasonChallenges, getChallengeView
 } = require("%scripts/battlePass/challenges.nut")
 let showUnlocksGroupWnd = require("%scripts/unlocks/unlockGroupWnd.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { getSelectedChild } = require("%sqDagui/daguiUtil.nut")
 let { getFavoriteUnlocks } = require("%scripts/unlocks/favoriteUnlocks.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getUnlockType } = require("%scripts/unlocks/unlocksModule.nut")
@@ -21,6 +21,8 @@ let { isBattleTask, isBattleTasksAvailable, isBattleTaskDone, getBattleTaskById,
 } = require("%scripts/unlocks/battleTasks.nut")
 let { mkUnlockConfigByBattleTask, getBattleTaskView } = require("%scripts/unlocks/battleTasksView.nut")
 let { getRoomEvent } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { build_log_unlock_data } = require("%scripts/unlocks/unlocks.nut")
+
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 
 const NUM_SUBUNLOCK_COLUMNS = 3
@@ -187,7 +189,7 @@ let class PersonalTasksModal (gui_handlers.BaseGuiHandlerWT) {
       : getUnlockById(obj.task_id)
     let unlockCfg = buildConditionsConfig(unlockBlk)
     let reqUnlocks = unlockCfg.names.map(
-      @(id) ::build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
+      @(id) build_log_unlock_data(buildConditionsConfig(getUnlockById(id))))
     showUnlocksGroupWnd(reqUnlocks, loc("unlocks/requirements"))
   }
 }

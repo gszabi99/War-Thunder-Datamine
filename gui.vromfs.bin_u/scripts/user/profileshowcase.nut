@@ -17,6 +17,7 @@ let { aceOfSpades } = require("%scripts/user/showcase/aceOfSpades.nut")
 let { unitsCollector } = require("%scripts/user/showcase/unitsCollector.nut")
 let { medalist } = require("%scripts/user/showcase/medalist.nut")
 let { achivHunter } = require("%scripts/user/showcase/achievementHunter.nut")
+let { leaderboardModes } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 let defaultShowcase = "favorite_mode"
 let getDiffByIndex = @(index) diffNames?[index] ?? diffNames[0]
@@ -139,7 +140,7 @@ function getShowcaseByTerseInfo(terseInfo) {
 
 function getShowcaseGameModes(blockedGameTypes) {
   let list = []
-  foreach (mode in ::leaderboard_modes) {
+  foreach (mode in leaderboardModes) {
     if (blockedGameTypes != null && blockedGameTypes.indexof(mode.mode) != null)
       continue
     let diffCode = mode?.diffCode

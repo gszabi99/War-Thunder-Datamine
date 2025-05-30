@@ -10,7 +10,7 @@ let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscrip
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { split_by_chars } = require("string")
 let { register_command } = require("console")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { registerRespondent } = require("scriptRespondent")
@@ -48,7 +48,7 @@ function getEmptyLangInfo() {
   return langInfo
 }
 
-local needCheckLangPack = false
+let needCheckLangPack = Watched(false)
 let langsByChatId = {}
 let langsListForInventory = {}
 local currentLanguage = null
@@ -78,7 +78,7 @@ function isChineseVersion() {
     || language == "Korean"
 }
 
-let canSwitchGameLocalization = @() !isPlatformSony && !isPlatformXboxOne && !isChineseHarmonized()
+let canSwitchGameLocalization = @() !isPlatformSony && !isPlatformXbox && !isChineseHarmonized()
 
 function _addLangOnce(id, icon = null, chatId = null, hasUnitSpeech = null, isDev = false) {
   if (id in langsById)
@@ -187,7 +187,7 @@ function setGameLocalization(langId, reloadScene = false, suggestPkgDownload = f
   saveLanguage(langId)
 
   if (suggestPkgDownload)
-    needCheckLangPack = true
+    needCheckLangPack.set(true)
 
   let handler = handlersManager.getActiveBaseHandler()
   if (reloadScene && handler)
@@ -275,13 +275,6 @@ let g_language = {
   langsById
   getLanguageName
   getCurLangShortName
-  function onEventNewSceneLoaded(_p) {
-    if (!needCheckLangPack)
-      return
-
-    ::check_localization_package_and_ask_download()
-    needCheckLangPack = false
-  }
 
   function onEventInitConfigs(_p) {
     isListInited = false
@@ -292,6 +285,7 @@ let g_language = {
   isChineseHarmonized
   isChineseVersion
   canSwitchGameLocalization
+  needCheckLangPack
 }
 
 subscribe_handler(g_language, g_listener_priority.DEFAULT_HANDLER)

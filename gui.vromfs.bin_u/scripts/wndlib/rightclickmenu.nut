@@ -5,10 +5,10 @@ from "%scripts/utils_sa.nut" import call_for_handler
 let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { removeTextareaTags } = require("%sqDagui/daguiUtil.nut")
 let SecondsUpdater = require("%sqDagui/timer/secondsUpdater.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { removeTextareaTags, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_time_msec } = require("dagor.time")
 
 

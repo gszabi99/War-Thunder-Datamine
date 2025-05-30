@@ -1,9 +1,22 @@
 from "%rGui/globals/ui_library.nut" import *
 
 let colors = {
-  transparent = Color(0, 0, 0, 0)
-  white = Color(255, 255, 255)
+  transparent = 0x00000000
+  white = 0xFFFFFFFF
   green = Color(0, 255, 0)
+
+  commonIconColor = 0xFFDCDCDC
+  deadIconColor = 0x78321E1E
+  orderMarkerColor = 0x7896ffa0
+
+  hudBlurBgColor = 0xDCDCDCDC
+  hudIconColor = 0x3C808080
+
+  playerColor = Color(0, 255, 102, 118)
+  allyColor = Color(40, 151, 255, 158)
+  enemyColor = Color(255, 76, 40, 158)
+
+  zeroHpColor = 0xFFD6603C
 }
 
 colors.menu <- {
@@ -66,6 +79,7 @@ colors.hud.damageModule <- {
   alertHighlight = Color(255, 255, 255) 
   inactive = inactiveDMColor
   aiSwitchHighlight = colors.green
+  fire = Color(255, 115, 20)
 
   dmModuleDamaged = Color(255, 176, 37)
   dmModuleNormal = inactiveDMColor

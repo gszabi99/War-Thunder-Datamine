@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import shop_set_researchable_unit_module, shop_get_units_list_with_autoset_modules, get_auto_buy_modifications, shop_get_countries_list_with_autoset_units
+from "%scripts/dagui_natives.nut" import shop_set_researchable_unit_module, get_auto_buy_modifications
 from "%scripts/dagui_library.nut" import *
 
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")

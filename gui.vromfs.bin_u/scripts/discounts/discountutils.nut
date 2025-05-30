@@ -4,8 +4,10 @@ let { getBlkByPathArray, eachBlock } = require("%sqstd/datablock.nut")
 let personalDiscount = require("%scripts/discounts/personalDiscount.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
 let { get_price_blk } = require("blkGetters")
+let { format } = require("string")
 let { isUnitGroup } = require("%scripts/unit/unitStatus.nut")
 let { showCurBonus } = require("%scripts/bonusModule.nut")
+let { getUnitDiscount, getGroupDiscount } = require("%scripts/discounts/discountsState.nut")
 
 function invokeMultiArray(multiArray, currentArray, currentIndex, invokeCallback) {
   if (currentIndex == multiArray.len()) {
@@ -85,8 +87,8 @@ function showAirDiscount(obj, airName, group = null, groupValue = null, fullUpda
 
 function showUnitDiscount(obj, unitOrGroup) {
   let discount = isUnitGroup(unitOrGroup)
-    ? ::g_discount.getGroupDiscount(unitOrGroup.airsGroup)
-    : ::g_discount.getUnitDiscount(unitOrGroup)
+    ? getGroupDiscount(unitOrGroup.airsGroup)
+    : getUnitDiscount(unitOrGroup)
   showCurBonus(obj, discount, "buy")
 }
 
@@ -100,10 +102,34 @@ function showDiscount(obj, name, group = null, groupValue = null, fullUpdate = f
   showCurBonus(obj, discount, name, true, fullUpdate)
 }
 
+function generateDiscountInfo(discountsTable, headerLocId = "") {
+  local maxDiscount = 0
+  let headerText = "".concat(loc(headerLocId == "" ? "discount/notification" : headerLocId), "\n")
+  local discountText = ""
+  foreach (locId, discount in discountsTable) {
+    if (discount <= 0)
+      continue
+
+    discountText = "".concat(discountText, loc("discount/list_string", { itemName = loc(locId), discount = discount }), "\n")
+    maxDiscount = max(maxDiscount, discount)
+  }
+
+  if (discountsTable.len() > 20)
+    discountText = format(loc("discount/buy/tooltip"), maxDiscount.tostring())
+
+  if (discountText == "")
+    return {}
+
+  discountText = "".concat(headerText, discountText)
+
+  return { maxDiscount = maxDiscount, discountTooltip = discountText }
+}
+
 return {
   showUnitDiscount
   showDiscount
   getMaxWeaponryDiscountByUnitName
   showAirDiscount
   getDiscountByPath
+  generateDiscountInfo
 }

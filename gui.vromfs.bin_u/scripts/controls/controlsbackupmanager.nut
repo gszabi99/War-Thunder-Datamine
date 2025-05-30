@@ -5,8 +5,9 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let DataBlock = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isPresetChanged } = require("%scripts/controls/controlsState.nut")
 
 gui_handlers.ControlsBackupManager <- class (gui_handlers.SaveDataDialog) {
   function initScreen() {
@@ -51,7 +52,7 @@ gui_handlers.ControlsBackupManager <- class (gui_handlers.SaveDataDialog) {
   function onBackupLoaded(params) {
     this.showWaitAnimation(false)
     if (params.success) {
-      ::preset_changed = true
+      isPresetChanged.set(true)
       broadcastEvent("ControlsPresetChanged")
     }
     else
@@ -78,7 +79,7 @@ gui_handlers.ControlsBackupManager <- class (gui_handlers.SaveDataDialog) {
 
 
   static function isAvailable() {
-    return (isPlatformSony || isPlatformXboxOne) && "request_list_controls_backup" in getroottable()
+    return (isPlatformSony || isPlatformXbox) && "request_list_controls_backup" in getroottable()
   }
 
 

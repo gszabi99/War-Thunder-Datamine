@@ -16,7 +16,7 @@ let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
 let time = require("%scripts/time.nut")
 let { get_time_msec } = require("dagor.time")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
-let { get_game_mode, get_game_type } = require("mission")
+let { get_game_mode, get_game_type, get_mplayer_by_id } = require("mission")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HUD_VISIBLE_KILLLOG, USEROPT_HUD_VISIBLE_REWARDS_MSG,
@@ -26,6 +26,9 @@ let { create_ObjMoveToOBj } = require("%sqDagui/guiBhv/bhvAnim.nut")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 let { get_mission_settings } = require("%scripts/missions/missionsStates.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
+let { getKillerCardView, isKillerCardData, isNeedUpdateKillerCardByUserInfo } = require("%scripts/hud/killerCardUtils.nut")
+let { add_event_listener, removeEventListenersByEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
+let { getUserInfo, forceRequestUserInfoData } = require("%scripts/user/usersInfoManager.nut")
 
 let heightPID = dagui_propid_add_name_id("height")
 
@@ -231,6 +234,7 @@ enumsAddTypes(g_hud_messages, {
     messageEvent = "HudMessage"
     hudEvents = {
       LocalPlayerAlive  = @(_ed) this.clearStack()
+      LocalPlayerDead  = @(_ed) this.clearStack()
     }
 
     onMessage = function (messageData) {
@@ -302,6 +306,7 @@ enumsAddTypes(g_hud_messages, {
     messageEvent = "HudMessage"
     hudEvents = {
       LocalPlayerAlive  = @(_ed) this.clearStack()
+      LocalPlayerDead  = @(_ed) this.clearStack()
     }
 
     onMessage = function (messageData) {
@@ -373,6 +378,7 @@ enumsAddTypes(g_hud_messages, {
     messageEvent = "HudMessage"
     hudEvents = {
       LocalPlayerAlive  = @(_ed) this.clearStack()
+      LocalPlayerDead  = @(_ed) this.clearStack()
     }
 
     onMessage = function (messageData) {
@@ -920,8 +926,14 @@ enumsAddTypes(g_hud_messages, {
         this.addMessage(messageData)
     }
 
+    hasKillerInfo = @(messageData) messageData.id == -1  
+
     addMessage = function (messageData, timestamp = null, needAnimations = true) {
       this.cleanUp()
+      if (g_hud_messages.KILLER_INFO.killerCardView && this.hasKillerInfo(messageData)) {
+        g_hud_messages.KILLER_INFO.showKillerCard()
+        return
+      }
       let message = {
         timer = null
         timestamp = timestamp || get_time_msec()
@@ -985,6 +997,78 @@ enumsAddTypes(g_hud_messages, {
       foreach (message in oldStack)
         if (message.timestamp > timeDelete)
           this.addMessage(message.messageData, message.timestamp, false)
+    }
+  }
+
+  KILLER_INFO = {
+    nestId = "hud_message_killer_card"
+    messageEvent = "HudMessage"
+    killerCardView = null
+    killerId = ""
+    killerMsg = null
+    killerUserInfo = null
+    isVisible = false
+
+    hudEvents = {
+      HudMessageHide = @(_ed) this.destroy()
+      LocalPlayerAlive  = @(_ed) this.destroy()
+    }
+
+    function setKillerUserInfo(killerInfo) {
+      let oldUserInfo = this.killerUserInfo
+      this.killerUserInfo = killerInfo
+      if (!isNeedUpdateKillerCardByUserInfo(oldUserInfo, this.killerUserInfo))
+        return
+      this.killerCardView = getKillerCardView(this.killerMsg, this.killerUserInfo)
+      if (this.isVisible)
+        this.showKillerCard()
+    }
+
+    function onEventUserInfoManagerDataUpdated(data) {
+      if (this.killerId not in data.usersInfo)
+        return
+      removeEventListenersByEnv("UserInfoManagerDataUpdated", this)
+      this.setKillerUserInfo(getUserInfo(this.killerId))
+    }
+
+    function onMessage(messageData) {
+      if (messageData.type != HUD_MSG_MULTIPLAYER_DMG)
+        return
+      if (!isKillerCardData(messageData))
+        return
+      this.killerMsg = messageData
+      this.killerId = get_mplayer_by_id(this.killerMsg.playerId).userId
+
+      add_event_listener("UserInfoManagerDataUpdated", this.onEventUserInfoManagerDataUpdated, this)
+      forceRequestUserInfoData(this.killerId)
+      this.setKillerUserInfo(getUserInfo(this.killerId))
+    }
+
+    function showKillerCard() {
+      if (!this.nest?.isValid())
+        return
+      let markup = handyman.renderCached("%gui/hud/killerInfoCard.tpl", this.killerCardView)
+      this.guiScene.replaceContentFromText(this.nest, markup, markup.len(), this)
+      this.nest.show(true)
+      this.guiScene.applyPendingChanges(false)
+      let cardObj = this.nest.findObject("killer_card")
+      let unitInfo = cardObj.findObject("unit_info")
+      cardObj.width = cardObj.getSize()[0]
+      unitInfo.width = unitInfo.getSize()[0]
+      this.isVisible = true
+    }
+
+    function destroy() {
+      removeEventListenersByEnv("UserInfoManagerDataUpdated", this)
+      this.killerCardView = null
+      this.killerMsg = null
+      this.killerId = ""
+      this.killerUserInfo = null
+      this.isVisible = false
+      if (this.nest?.isValid()) {
+        this.nest.deleteChildren()
+        this.nest.show(false)
+      }
     }
   }
 },

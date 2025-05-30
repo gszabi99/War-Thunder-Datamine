@@ -13,7 +13,7 @@ let { getPromoAction, isVisiblePromoByAction } = require("%scripts/promo/promoAc
 let { getPromoButtonConfig } = require("%scripts/promo/promoButtonsConfig.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { validateLink } = require("%scripts/onlineShop/url.nut")
-let { move_mouse_on_obj } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
 let { is_chat_message_empty } = require("chat")

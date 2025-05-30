@@ -1,7 +1,7 @@
 from "%scripts/dagui_natives.nut" import get_profile_country, set_profile_country
 from "%scripts/dagui_library.nut" import *
 let { getCountryCode } = require("auth_wt")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let sonyUser = require("sony.user")
 let { broadcastEvent, addListenersWithoutEnv, CONFIG_VALIDATION } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { get_region } = require("%gdkLib/impl/app.nut")
@@ -21,7 +21,7 @@ function xboxGetCountryCode() {
 }
 
 let getPlayerCountryCode = isPlatformSony ? @() sonyUser?.country.toupper()
-  : isPlatformXboxOne ? xboxGetCountryCode
+  : isPlatformXbox ? xboxGetCountryCode
   : getCountryCode
 
 let countriesWithRecommendEmailRegistration = {
@@ -48,7 +48,6 @@ function switchProfileCountry(country) {
 
   set_profile_country(country)
   profileCountrySq(country)
-  ::g_squad_utils.updateMyCountryData()
   broadcastEvent("CountryChanged")
 }
 

@@ -255,7 +255,7 @@ function getEntitlementDescription(product, _productId) {
   let paramTbl =  getEntitlementLocParams()
 
   let entLocId = getEntitlementLocId(product)
-  if (entLocId == "PremiumAccount") {
+  if (["PremiumAccount", "PremiumAccountSubscription"].contains(entLocId)) {
     let locArr = premiumAccountDescriptionArr.map(@(d) d.__merge(
       { text = loc(d.locId, paramTbl), isBold = product?.isItem ? false : d.isBold }
     ))

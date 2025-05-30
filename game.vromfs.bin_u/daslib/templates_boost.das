@@ -2,7 +2,6 @@ options gen2
 options indenting = 4
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
-options no_aot = true
 options strict_smart_pointers
 
 module templates_boost shared public
@@ -334,7 +333,7 @@ class private TemplateVisitor : AstVisitor {
     }
 }
 
-def private visit_expression(var expr : ExpressionPtr&; var adapter : smart_ptr<VisitorAdapter>) {
+def visit_expression(var expr : ExpressionPtr&; var adapter : smart_ptr<VisitorAdapter>) {
     unsafe {
         
         var newExpr <- expr |> visit(adapter)

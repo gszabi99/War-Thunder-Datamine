@@ -39,7 +39,7 @@ def track_hero_on_create_es(evt : Event)
   track_controlled_hero()
   track_watched_hero()
 
-[es(tag=gameClient)]
+[es(tag=gameClient, no_order)]
 def track_hero_es(info : UpdateStageInfoAct)
   track_controlled_hero()
   track_watched_hero()

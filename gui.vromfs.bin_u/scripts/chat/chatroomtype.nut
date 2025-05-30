@@ -340,7 +340,18 @@ function addChatRoomType(roomType) {
   resortRooms()
 }
 
+const WWRoomPrefix = "#_ww_"
+let wwRoomsTypeData = {
+  roomPrefix = WWRoomPrefix
+  getOperationId = @(roomId) roomId.split("_")[3].tointeger()
+  getOperationSide = @(roomId) roomId.split("_")[5].tointeger()
+  checkRoomId = @(roomId) roomId.contains(WWRoomPrefix)
+}
+let isRoomWWOperation = @(roomId) wwRoomsTypeData.checkRoomId(roomId)
+
 return {
   g_chat_room_type
   addChatRoomType
+  wwRoomsTypeData
+  isRoomWWOperation
 }

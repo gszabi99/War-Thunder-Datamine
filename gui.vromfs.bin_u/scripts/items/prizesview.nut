@@ -4,7 +4,7 @@ from "%scripts/items/itemsConsts.nut" import *
 
 let { Cost } = require("%scripts/money.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let time = require("%scripts/time.nut")
 let DataBlockAdapter = require("%scripts/dataBlockAdapter.nut")
 let { utf8ToLower } = require("%sqstd/string.nut")
@@ -32,7 +32,7 @@ let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { isUnitBought } = require("%scripts/unit/unitShopInfo.nut")
 let { decoratorTypes, getTypeByUnlockedItemType, getTypeByResourceType } = require("%scripts/customization/types.nut")
 let { buildUnitSlot } = require("%scripts/slotbar/slotbarView.nut")
-let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { BASE_ITEM_TYPE_ICON } = require("%scripts/items/itemsTypeClasses.nut")
 let { findItemById, getItemOrRecipeBundleById } = require("%scripts/items/itemsManager.nut")
 let { getCrewName } = require("%scripts/crew/crew.nut")
@@ -711,7 +711,7 @@ function getPrizeActionButtonsView(prize, params = null) {
     let item = findItemById(itemId)
     if (!item || shouldDisguiseItem(item))
       return view
-    if (item.canPreview() && isInMenu()) {
+    if (item.canPreview() && isInMenu.get()) {
       let gcb = globalCallbacks.ITEM_PREVIEW
       view.append({
         image = "#ui/gameuiskin#btn_preview.svg"
@@ -1573,7 +1573,7 @@ getPrizesViewData = function(prize, showCount = true, params = null) {
   return getViewDataDefault(prize, showCount, params)
 }
 
-function getPrizesListView(content, params = null, hasHeaderWithoutContent = true) {
+function getPrizesListViewData(content, params = null, hasHeaderWithoutContent = true) {
   if (!hasHeaderWithoutContent && !content.len())
     return ""
 
@@ -1605,7 +1605,16 @@ function getPrizesListView(content, params = null, hasHeaderWithoutContent = tru
       view.list.append(data)
     }
   }
-  return handyman.renderCached(template, view)
+  return view
+}
+
+function getPrizesListMarkupByData(viewData) {
+  return handyman.renderCached(template, viewData)
+}
+
+function getPrizesListView(content, params = null, hasHeaderWithoutContent = true) {
+  let viewData = getPrizesListViewData(content, params, hasHeaderWithoutContent)
+  return getPrizesListMarkupByData(viewData)
 }
 
 function getPrizesStacksView(content, fixedAmountHeaderFunc = null, params = {}) {
@@ -1753,4 +1762,6 @@ return {
   getPrizesListText
   getPrizesListView
   getPrizesStacksView
+  getPrizesListViewData
+  getPrizesListMarkupByData
 }

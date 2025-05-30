@@ -94,12 +94,12 @@ function updateMatchData() {
 
 
 function tryCreateMatch(info) {
-  match.props.activityId = getActivityByGameMode(info?.public?.game_mode_name)
+  match.props.activityId = getActivityByGameMode(info?.public.game_mode_name)
   if (match.props.activityId == null)
     return
 
   let updated = processMemberList(info.members)
-  log($"[PSMT] try create match for {match.props.activityId}/{info?.public?.game_mode_name} as {updated.isOwner}")
+  log($"[PSMT] try create match for {match.props.activityId}/{info?.public.game_mode_name} as {updated.isOwner}")
   if (updated.isOwner && match.id == null) {
     psn.send(psn.matches.create(match.props), function(r, _e) {
         match.isOwner = true

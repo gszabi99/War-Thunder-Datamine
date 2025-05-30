@@ -4,9 +4,10 @@ let { BaseGuiHandler } = require("%sqDagui/framework/baseGuiHandler.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { getSelectedChild, setPopupMenuPosAndAlign } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child, move_mouse_on_obj, getSelectedChild, setPopupMenuPosAndAlign
+} = require("%sqDagui/daguiUtil.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { removeAllGenericTooltip } = require("%scripts/utils/genericTooltip.nut")
 let { hideTooltip } = require("%scripts/utils/delayedTooltip.nut")
@@ -79,6 +80,8 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
   function initCustomHandlerScene() {
     this.parentObj = this.scene
     this.scene = this.guiScene.createElementByObject(this.parentObj, this.sceneBlkName, this.sceneBlkTag, this)
+    if (this.closeOnUnhover)
+      this.scene.findObject("update_timer").setUserData(this)
     return true
   }
 
@@ -91,6 +94,24 @@ gui_handlers.ActionsList <- class (BaseGuiHandler) {
       removeAllGenericTooltip()
       hideTooltip()
     }
+  }
+
+  function update(_obj, _dt) {
+    if (!this.scene.isValid() || !this.closeOnUnhover || this.scene.getFinalProp("close") == "yes")
+      return
+    let isOutAnim = this.scene.getFinalProp("move_out") == "yes"
+    let isMouseOvered = this.scene.getFinalProp("isMouseOvered") == "yes"
+    if (isOutAnim || isMouseOvered)
+      return
+
+    let [rectX, rectY] = this.scene.getPos()
+    let [rectW, rectH] = this.scene.getSize()
+    let cursorPos = get_dagui_mouse_cursor_pos()
+    let isCursorInRect = ((cursorPos[0] > rectX) && (cursorPos[1] > rectY)
+      && (cursorPos[0] < rectX + rectW) && (cursorPos[1] < rectY + rectH))
+
+    if (!isCursorInRect)
+      this.scene["move_out"] = "yes"
   }
 
   function fillList() {

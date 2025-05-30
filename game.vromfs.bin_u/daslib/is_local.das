@@ -2,7 +2,6 @@ options gen2
 options indenting = 4
 options no_unused_block_arguments = false
 options no_unused_function_arguments = false
-options no_aot = true
 options strict_smart_pointers = true
 
 module is_local shared public
@@ -11,6 +10,29 @@ require ast public
 require rtti
 require daslib/ast_boost
 require strings
+
+def is_temp_safe(expr : ExpressionPtr) : bool {
+    
+    
+    if (expr is ExprVar) {
+        return (expr as ExprVar).varFlags.local 
+    } elif (expr is ExprAt) {
+        let ea = expr as ExprAt
+        if (ea.subexpr._type != null && ea.subexpr._type.dim |> length != 0) {
+            return is_temp_safe(ea.subexpr)
+        }
+    } elif (expr is ExprField) {
+        let ef = expr as ExprField
+        if (!(ef.value._type.baseType == Type.tHandle) || (ef.value._type.isLocal)) {
+            return is_temp_safe(ef.value)
+        }
+    } elif (expr is ExprSwizzle) {
+        return is_temp_safe((expr as ExprSwizzle).value)    
+    } elif (expr is ExprCall) {
+        return expr._type.isRef                             
+    }
+    return false;
+}
 
 def is_shared_expr(expr : ExpressionPtr) {
     

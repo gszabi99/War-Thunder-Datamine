@@ -104,7 +104,7 @@ class Component : Canvas
     setScale(canvasSize)
 
     totalTime = float(get_total_time())
-    tvvPos = -(float3x3(inverse(hero.unitTm)) * normalize(hero.vel)).zy;
+    tvvPos = -(float3x3(inverse(hero.unitTm)) * normalize(hero.vel)).zy
 
     let forward = hero.unitTm[0]
     heading = atan2(forward.x, forward.z)
@@ -201,11 +201,16 @@ class Component : Canvas
       drawLine(tvvPos + float2(0.0, rbVec.y), tvvPos + float2(0.0, downLine))
 
 
+  def convertAltitude(alt : float)
+    let roundTo = 10.0
+    let h = min(99999.0, roundTo * 0.5 + alt * (isMetricUnits ? 1.0 : metrToFeet))
+    return h - (h % roundTo) - roundTo * 0.5
+
   def drawRadarAltitude()
     return if abs(fmw.roll) > 60.0 || abs(fmw.tangage) > 30.0
 
     let pos = float2(0.25, -0.18)
-    let radarAltitude = min(99999.0, fmw.fm.currentAlt * (isMetricUnits ? 1.0 : metrToFeet))
+    let radarAltitude = convertAltitude(fmw.fm.currentAlt)
     let altStr = fmt(":>5d", roundi(radarAltitude))
     setTextAnchorHorz(AnchorHorz.Left)
     setFontSize(40)
@@ -218,7 +223,7 @@ class Component : Canvas
     let smallerFontSize = 35
     let biggerFontSize = roundi(1.25 * float(smallerFontSize))
     let halfDotSize = 0.003
-    let barometricAltitude = min(99999.0, hero.unitTm[3].y - get_app().currentScene.waterLevel)
+    let barometricAltitude = convertAltitude(hero.unitTm[3].y - get_app().currentScene.waterLevel)
 
     for i in range(0, 10)
       let angle = PI2 / 10.0 * float(i)
@@ -257,7 +262,7 @@ class Component : Canvas
     let rb = pos + 0.5 * size
     let count = 3
     let stepRel = size.x / float(count)
-    let heading10deg = (0.5 * float(count + 1) - heading * 36.0 / PI2) % 36.0;
+    let heading10deg = (0.5 * float(count + 1) - heading * 36.0 / PI2) % 36.0
     let linesOffset = fract(heading10deg) * stepRel
     let dotsOffset = fract(0.5 + heading10deg) * stepRel
     let lineWidthRel = toRelY(lineWidthHdpx)
@@ -308,9 +313,9 @@ class Component : Canvas
       let pos = zeroPos + float2(0.0, markOffset)
       let markEndY = float(markTangage5deg) / 18.0 * markWidth
       if markTangage5deg > 0
-        let p0 = float2(markStartX, 0.0);
-        let p1 = float2(markEndX, markEndY);
-        let p2 = float2(markEndX, markEndY + dashWidth);
+        let p0 = float2(markStartX, 0.0)
+        let p1 = float2(markEndX, markEndY)
+        let p2 = float2(markEndX, markEndY + dashWidth)
         drawLine(pos + p0, pos + p1)
         drawLine(pos + p1, pos + p2)
         drawLine(pos + inv_x(p0), pos + inv_x(p1))
@@ -331,7 +336,7 @@ class Component : Canvas
         let headingLineStart = pos - float2(1.0, 0.0)
         let headingLineEnd = pos + float2(1.0, 0.0)
         drawLine(headingLineStart, headingLineEnd)
-        let heading5deg = heading * 72.0 / PI2;
+        let heading5deg = heading * 72.0 / PI2
         let headingMarksHeight = 0.03
         let headingMarksStep = 0.3
         let headingMarksCount = ceili(1.0 / headingMarksStep)
@@ -440,7 +445,7 @@ class Component : Canvas
   def drawUnifiedTargetMarkWithRange()
     return if !get_ils_target_pos_valid()
 
-    var pos = toRelPos(get_ils_target_pos())
+    let pos = toRelPos(get_ils_target_pos())
     var dist01 = 0.0
     var distMin01 = 0.0
     var distMax01 = 0.0
@@ -498,13 +503,14 @@ class Component : Canvas
     let dash = 0.3 * size
     let space = size - 2.0 * dash
     let angle = -fmw.roll / 180.0 * PI
-
     if radar.isTrkMode && tracking.isActive && tracking.ilsPosValid
-      var ilsPos = tracking.ilsPos
+      let ilsPos = tracking.ilsPos
+      var clampedPos : float2
+      let isTargetOnScreen = clampPos(ilsPos, clampedPos)
+
       let blinksPerSecond = 4.0
       let isBlink = fract(blinksPerSecond * totalTime) < 0.5
-      let maxOffs = float2(0.5 - size)
-      let clampedPos = clamp(ilsPos, -maxOffs, maxOffs)
+
       let gunTargetSize = 0.7 * size
       let gunTargetDash = 0.24 * gunTargetSize
       let gunTargetSpace = 0.5 * (gunTargetSize - 3.0 * gunTargetDash)
@@ -512,7 +518,7 @@ class Component : Canvas
       if secondaryWeapon != null && secondaryWeapon.trigger_no == int(WeaponTriggerType.AAM_TRIGGER)
         let scale = 1.25
         drawDashedRect(clampedPos, float2(scale * gunTargetSize), float2(scale * gunTargetDash), float2(scale * gunTargetSpace))
-      if clampedPos == ilsPos || isBlink
+      if isTargetOnScreen || isBlink
         drawDashedRect(clampedPos, float2(size), float2(dash), float2(space), angle)
         let tm : float3x3 = float3x3(inverse(hero.unitTm))
         let velRel = tracking.dirNorm * tracking.distanceRate + tracking.angVel * tracking.distance
@@ -521,6 +527,20 @@ class Component : Canvas
         let velRelDirection = -fast_normalize((tm * velRel).zx)
         drawLine(clampedPos + 0.75 * size * velAbsDirection, clampedPos + 1.75 * size * velAbsDirection)
         drawLine(clampedPos + 0.75 * size * velRelDirection, clampedPos + 1.25 * size * velRelDirection)
+      if !isTargetOnScreen
+        let arrowOffset = 0.15
+        let arrowLength = float2(0.02, 0.06)
+        let arrowLineLength = 0.03
+        let arrowStart = fast_normalize(clampedPos) * (length(clampedPos) - arrowOffset)
+        let arrowEnd = fast_normalize(clampedPos) * (length(clampedPos) - arrowOffset - arrowLineLength)
+        drawArrowHead(arrowStart, clampedPos, arrowLength)
+        drawLine(arrowStart, arrowEnd)
+
+        let textPos = fast_normalize(clampedPos) * (length(clampedPos) - arrowOffset - arrowLineLength - 0.05)
+        let angleToTarget = acos(dot(tracking.dirNorm, hero.unitTm[0])) * radToDeg
+        let arrowText = fmt(":03d", roundi(angleToTarget))
+        drawStrAnchored(textPos, arrowText, AnchorHorz.Center, AnchorVert.Center)
+
     elif isDogFight
       drawDashedRect(float2(0.0), float2(size), float2(dash), float2(space), angle)
 
@@ -529,17 +549,15 @@ class Component : Canvas
     return if !tracking.isActive || !tracking.ilsPosValid
 
     let size = 0.1
-    let dash = 0.3 * size
-    let space = size - 2.0 * dash
-    var ilsPos = tracking.ilsPos
+    let ilsPos = tracking.ilsPos
     let blinksPerSecond = 4.0
     let isBlink = fract(blinksPerSecond * totalTime) < 0.5
-    let maxOffs = float2(0.5 - size)
-    let clampedPos = clamp(ilsPos, -maxOffs, maxOffs)
+    var clampedPos : float2
+    let isTargetOnScreen = clampPos(ilsPos, clampedPos)
     let gunTargetSize = 0.7 * size
     let gunTargetDash = 0.24 * gunTargetSize
     let gunTargetSpace = 0.5 * (gunTargetSize - 3.0 * gunTargetDash)
-    if clampedPos == ilsPos || isBlink
+    if isTargetOnScreen || isBlink
       drawDashedRect(clampedPos, float2(gunTargetSize), float2(gunTargetDash), float2(gunTargetSpace))
 
 
@@ -595,17 +613,18 @@ class Component : Canvas
 
 
   def drawSelectedWeapon()
-    let pos = float2(-0.3, 0.45)
+    let pos = float2(-0.3, 0.36)
     setFontSize(40)
     setTextAnchorHorz(AnchorHorz.Left)
 
     if isAirGunMode || isGroundGunMode
-      let bulletsCountPos = float2(-0.01, 0.4)
+      let bulletsCountPos = float2(-0.01, 0.31)
       let bulletsCount = (wc.Weapons.countBullets(int(WeaponTriggerType.MACHINE_GUNS_TRIGGER)) +
         wc.Weapons.countBullets(int(WeaponTriggerType.CANNONS_TRIGGER)) +
         wc.Weapons.countBullets(int(WeaponTriggerType.ADDITIONAL_GUNS_TRIGGER)))
+      let bulletsCountText = bulletsCount > 0 ? "{bulletsCount}" : "OUT OF AMMO"
       drawStr(pos, "GUN")
-      drawStr(bulletsCountPos, "{bulletsCount}")
+      drawStr(bulletsCountPos, bulletsCountText)
     else
       let rawName = get_hud_cur_weapon_name()
       return if rawName.empty()
@@ -645,11 +664,11 @@ class Component : Canvas
 
     let radius = 0.032
     let pos = get_ils_aam_tracker_visible() ? toRelPos(get_ils_aam_tracker_pos()) : tracking.ilsPos
-    let maxOffs = float2(0.5 - radius)
-    let clampedPos = clamp(pos, -maxOffs, maxOffs)
+    var clampedPos : float2
+    let isTargetOnScreen = clampPos(pos, clampedPos)
     let blinksPerSecond = 4.0
     let isBlink = fract(blinksPerSecond * totalTime) < 0.5
-    return if isBlink && clampedPos != pos
+    return if isBlink && !isTargetOnScreen
 
     drawCircle(clampedPos, radius)
 
@@ -661,11 +680,11 @@ class Component : Canvas
 
     let radius = 0.032
     let pos = get_ils_aam_tracker_visible() ? toRelPos(get_ils_aam_tracker_pos()) : tracking.ilsPos
-    let maxOffs = float2(0.5 - radius)
-    let clampedPos = clamp(pos, -maxOffs, maxOffs)
+    var clampedPos : float2
+    let isTargetOnScreen = clampPos(pos, clampedPos)
     let blinksPerSecond = 4.0
     let isBlink = fract(blinksPerSecond * totalTime) < 0.5
-    return if isBlink && clampedPos != pos
+    return if isBlink && !isTargetOnScreen
 
     drawCircle(clampedPos, radius)
     if aamLockState == GuidanceLockState.RESULT_TRACKING
@@ -733,10 +752,10 @@ class Component : Canvas
   def drawLaunchDistanceIndicator()
     return if (!isAamMode && !isAirGunMode) || !get_radar_hud_aam_launch_zone_visible()
 
-    var distMax = get_radar_hud_aam_launch_zone_dist_max()
-    var distMaxDgft = get_radar_hud_aam_launch_zone_dist_dgft_max() / distMax
-    var distMin = get_radar_hud_aam_launch_zone_dist_min() / distMax
-    var dist = clamp(get_radar_hud_aam_launch_zone_dist() / distMax, 0.0, 1.05)
+    let distMax = get_radar_hud_aam_launch_zone_dist_max()
+    let distMaxDgft = get_radar_hud_aam_launch_zone_dist_dgft_max() / distMax
+    let distMin = get_radar_hud_aam_launch_zone_dist_min() / distMax
+    let dist = clamp(get_radar_hud_aam_launch_zone_dist() / distMax, 0.0, 1.05)
 
     let pos = float2(0.25, 0.115)
     let size = float2(0.04, 0.25)
@@ -777,6 +796,16 @@ class Component : Canvas
     let pos = float2(0, -0.28)
     setTextAnchorHorz(AnchorHorz.Center)
     drawStr(pos, "TOO SLOW")
+
+  def clampPos(pos : float2; var outPos : float2&; lim : float2 = float2(0.4))
+    let margin = float2(0.5) - lim
+    if isOutOfCanvas(pos, margin)
+      let dir = fast_normalize(pos)
+      let t  = traceRayToCanvasEdges(float2(0.0), fast_normalize(pos), margin)
+      outPos = dir * t
+      return false
+    outPos = pos
+    return true
 
   def draw()
     return if !isValid

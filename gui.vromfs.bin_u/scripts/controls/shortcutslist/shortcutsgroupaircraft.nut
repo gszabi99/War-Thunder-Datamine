@@ -2,7 +2,7 @@ from "%scripts/dagui_natives.nut" import set_option_mouse_joystick_square, is_mo
 from "%scripts/dagui_library.nut" import *
 from "%scripts/controls/controlsConsts.nut" import AIR_MOUSE_USAGE, MAX_CAMERA_SPEED, MIN_CAMERA_SPEED, CONTROL_TYPE, AxisDirection, ConflictGroups
 
-let globalEnv = require("globalEnv")
+let { ControlHelpersMode } = require("globalEnv")
 let { get_game_params } = require("gameparams")
 let { get_option_multiplier, set_option_multiplier, get_option_int, set_option_int,
   OPTION_MOUSE_JOYSTICK_DEADZONE, OPTION_MOUSE_JOYSTICK_SCREENSIZE,
@@ -15,7 +15,7 @@ let { get_option_multiplier, set_option_multiplier, get_option_int, set_option_i
 let controlsOperations = require("%scripts/controls/controlsOperations.nut")
 let { unitClassType } = require("%scripts/unit/unitClassType.nut")
 let unitTypes = require("%scripts/unit/unitTypesList.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox, isPlatformSteamDeck } = require("%scripts/clientState/platform.nut")
 let { ActionGroup, hasXInputDevice, isXInputDevice } = require("controls")
 let { getMouseUsageMask, checkOptionValue } = require("%scripts/controls/controlsUtils.nut")
 let { USEROPT_MOUSE_USAGE, USEROPT_MOUSE_USAGE_NO_AIM, USEROPT_INSTRUCTOR_ENABLED,
@@ -29,7 +29,7 @@ let { hasMappedSecondaryWeaponSelector } = require("%scripts/controls/shortcutsU
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
 
 let isMouseAimSelected = @() (getMouseUsageMask() & AIR_MOUSE_USAGE.AIM) != 0
-let needFullGunnerSettings = @() isPlatformSony || isPlatformXboxOne
+let needFullGunnerSettings = @() isPlatformSony || isPlatformXbox
   || isPlatformSteamDeck || !isMouseAimSelected()
 
 return [
@@ -93,7 +93,7 @@ return [
   {
     id = "autotrim"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterHide = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR]
     optionType = USEROPT_AUTOTRIM
     onChangeValue = "onAircraftHelpersChanged"
   }
@@ -103,7 +103,7 @@ return [
   }
   {
     id = "ID_CONTROL_MODE"
-    filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
+    filterShow = [ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR]
     checkAssign = false
     needShowInHelp = true
   }
@@ -113,7 +113,7 @@ return [
   }
   {
     id = "ID_FBW_MODE"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
   }
 
   {
@@ -174,19 +174,19 @@ return [
   {
     id = "roll_sens"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     optionType = USEROPT_AILERONS_MULTIPLIER
   }
   {
     id = "pitch_sens"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     optionType = USEROPT_ELEVATOR_MULTIPLIER
   }
   {
     id = "yaw_sens"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     optionType = USEROPT_RUDDER_MULTIPLIER
   }
   {
@@ -213,7 +213,7 @@ return [
   {
     id = "invert_x"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterHide = [globalEnv.EM_INSTRUCTOR, globalEnv.EM_REALISTIC, globalEnv.EM_FULL_REAL]
+    filterHide = [ControlHelpersMode.EM_INSTRUCTOR, ControlHelpersMode.EM_REALISTIC, ControlHelpersMode.EM_FULL_REAL]
     optionType = USEROPT_INVERTX
     showFunc = @() checkOptionValue(USEROPT_INVERTY, true)
   }
@@ -226,7 +226,7 @@ return [
   {
     id = "multiplier_force_gain"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     optionType = USEROPT_FORCE_GAIN
   }
 
@@ -277,13 +277,13 @@ return [
     id = "brake_left"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    filterShow = [globalEnv.EM_REALISTIC, globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_REALISTIC, ControlHelpersMode.EM_FULL_REAL]
   }
   {
     id = "brake_right"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    filterShow = [globalEnv.EM_REALISTIC, globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_REALISTIC, ControlHelpersMode.EM_FULL_REAL]
   }
   {
     id = "ID_CHUTE"
@@ -456,12 +456,10 @@ return [
     id = "ID_TOGGLE_MLWS_FLARES_SLAVING"
     checkAssign = false
   }
-  
-
-
-
-
-
+  {
+    id = "ID_TOGGLE_FUEL_DUMPING"
+    checkAssign = false
+  }
   {
     id = "weapon_aim_heading"
     type = CONTROL_TYPE.AXIS
@@ -707,13 +705,13 @@ return [
   {
     id = "ID_AIM_CAMERA"
     checkAssign = false,
-    condition = @() isPlatformSony || isPlatformXboxOne
+    condition = @() isPlatformSony || isPlatformXbox
   }
   {
     id = "target_camera"
     type = CONTROL_TYPE.AXIS
     checkAssign = false
-    condition = @() isPlatformSony || isPlatformXboxOne
+    condition = @() isPlatformSony || isPlatformXbox
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
   }
   {
@@ -783,7 +781,7 @@ return [
   }
   {
     id = "ID_TOGGLE_COLLIMATOR"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
   }
   {
     id = "ID_MFD_1_PAGE_PLANE"
@@ -847,36 +845,36 @@ return [
   {
     id = "ID_INSTRUCTOR_HEADER"
     type = CONTROL_TYPE.SECTION
-    filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
+    filterShow = [ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR]
   }
   {
     id = "instructor_ground_avoidance"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
+    filterShow = [ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR]
     optionType = USEROPT_INSTRUCTOR_GROUND_AVOIDANCE
   }
   {
     id = "instructor_gear_control"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
+    filterShow = [ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR]
     optionType = USEROPT_INSTRUCTOR_GEAR_CONTROL
   }
   {
     id = "instructor_flaps_control"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
+    filterShow = [ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR]
     optionType = USEROPT_INSTRUCTOR_FLAPS_CONTROL
   }
   {
     id = "instructor_engine_control"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterShow = [globalEnv.EM_MOUSE_AIM, globalEnv.EM_INSTRUCTOR]
+    filterShow = [ControlHelpersMode.EM_MOUSE_AIM, ControlHelpersMode.EM_INSTRUCTOR]
     optionType = USEROPT_INSTRUCTOR_ENGINE_CONTROL
   }
   {
     id = "instructor_simple_joy"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterShow = [globalEnv.EM_INSTRUCTOR]
+    filterShow = [ControlHelpersMode.EM_INSTRUCTOR]
     optionType = USEROPT_INSTRUCTOR_SIMPLE_JOY
   }
 
@@ -887,14 +885,14 @@ return [
   {
     id = "mouse_aim_x"
     type = CONTROL_TYPE.AXIS
-    filterHide = [globalEnv.EM_INSTRUCTOR, globalEnv.EM_REALISTIC, globalEnv.EM_FULL_REAL]
+    filterHide = [ControlHelpersMode.EM_INSTRUCTOR, ControlHelpersMode.EM_REALISTIC, ControlHelpersMode.EM_FULL_REAL]
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     axisDirection = AxisDirection.X
   }
   {
     id = "mouse_aim_y"
     type = CONTROL_TYPE.AXIS
-    filterHide = [globalEnv.EM_INSTRUCTOR, globalEnv.EM_REALISTIC, globalEnv.EM_FULL_REAL]
+    filterHide = [ControlHelpersMode.EM_INSTRUCTOR, ControlHelpersMode.EM_REALISTIC, ControlHelpersMode.EM_FULL_REAL]
     hideAxisOptions = ["rangeSet", "relativeAxis", "kRelSpd", "kRelStep"]
     axisDirection = AxisDirection.Y
   }
@@ -914,13 +912,13 @@ return [
   {
     id = "ID_PLANE_JOYSTICK_HEADER"
     type = CONTROL_TYPE.SECTION
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
   }
   {
     id = "mouse_joystick_mode"
     type = CONTROL_TYPE.SPINNER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     options = ["#options/mouse_joy_mode_simple", "#options/mouse_joy_mode_standard"]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = @(_joyParams) get_option_int(OPTION_MOUSE_JOYSTICK_MODE)
@@ -929,7 +927,7 @@ return [
   {
     id = "mouse_joystick_sensitivity"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = function(_joyParams) {
       let gp = get_game_params()
@@ -947,7 +945,7 @@ return [
   {
     id = "mouse_joystick_deadzone"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = function(_joyParams) {
       let dz = get_game_params()?.maxMouseJoystickDeadZone ?? 1.0
@@ -961,7 +959,7 @@ return [
   {
     id = "mouse_joystick_screensize"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = function(_joyParams) {
       let gp = get_game_params()
@@ -979,7 +977,7 @@ return [
   {
     id = "mouse_joystick_screen_place"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = @(_joyParams) 100.0 * get_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENPLACE)
     setValue = @(_joyParams, objValue) set_option_multiplier(OPTION_MOUSE_JOYSTICK_SCREENPLACE, objValue / 100.0)
@@ -987,7 +985,7 @@ return [
   {
     id = "mouse_joystick_aileron"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
     value = function(_joyParams) {
       let maxVal = get_game_params()?.maxMouseJoystickAileron ?? 1.0
@@ -1001,7 +999,7 @@ return [
   {
     id = "mouse_joystick_rudder"
     type = CONTROL_TYPE.SLIDER
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & (AIR_MOUSE_USAGE.JOYSTICK | AIR_MOUSE_USAGE.RELATIVE)
     value = function(_joyParams) {
       let maxVal = get_game_params()?.maxMouseJoystickRudder ?? 1.0
@@ -1015,14 +1013,14 @@ return [
   {
     id = "mouse_joystick_square"
     type = CONTROL_TYPE.SWITCH_BOX
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK
     value = @(_joyParams) get_option_mouse_joystick_square()
     setValue = @(_joyParams, objValue) set_option_mouse_joystick_square(objValue)
   }
   {
     id = "ID_CENTER_MOUSE_JOYSTICK"
-    filterHide = [globalEnv.EM_MOUSE_AIM]
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
     showFunc = @() is_mouse_available() && (getMouseUsageMask() & AIR_MOUSE_USAGE.JOYSTICK)
     checkAssign = false
   }
@@ -1030,39 +1028,39 @@ return [
   {
     id = "ID_TRIM_CONTROL_HEADER"
     type = CONTROL_TYPE.SECTION
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
   }
   {
     id = "ID_TRIM"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_TRIM_RESET"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_TRIM_SAVE"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "trim_elevator"
     type = CONTROL_TYPE.AXIS
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "trim_ailerons"
     type = CONTROL_TYPE.AXIS
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "trim_rudder"
     type = CONTROL_TYPE.AXIS
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
 
@@ -1072,7 +1070,7 @@ return [
   }
   {
     id = "ID_COMPLEX_ENGINE"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
@@ -1082,61 +1080,61 @@ return [
   {
     id = "mixture"
     type = CONTROL_TYPE.AXIS
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "prop_pitch"
     type = CONTROL_TYPE.AXIS
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_PROP_PITCH_AUTO"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "radiator"
     type = CONTROL_TYPE.AXIS
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "oil_radiator"
     type = CONTROL_TYPE.AXIS
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_RADIATOR_AUTO"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "turbo_charger"
     type = CONTROL_TYPE.AXIS
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_TOGGLE_AUTO_TURBO_CHARGER"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_SUPERCHARGER"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_MAGNETO_INCREASE"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_MAGNETO_DECREASE"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
@@ -1149,37 +1147,37 @@ return [
   }
   {
     id = "ID_TOGGLE_1_ENGINE_CONTROL"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_TOGGLE_2_ENGINE_CONTROL"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_TOGGLE_3_ENGINE_CONTROL"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_TOGGLE_4_ENGINE_CONTROL"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_TOGGLE_5_ENGINE_CONTROL"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_TOGGLE_6_ENGINE_CONTROL"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   {
     id = "ID_ENABLE_ALL_ENGINE_CONTROL"
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
     checkAssign = false
   }
   

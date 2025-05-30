@@ -2,10 +2,9 @@ from "%scripts/dagui_library.nut" import *
 
 require("%scripts/mainmenu/topMenuButtonsConfigs.nut") 
 let { is_low_width_screen} = require("%scripts/options/safeAreaMenu.nut")
-let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
-let buttonsList = require("%scripts/mainmenu/topMenuButtons.nut").buttonsListWatch.value
+let buttonsList = require("%scripts/mainmenu/topMenuButtonsList.nut").get()
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { topMenuSectionsTemplate, getTopMenuSectionByName } = require("%scripts/mainmenu/topMenuSections.nut")
+let { addTopMenuLeftSideSections, addTopMenuRightSideSections } = require("%scripts/mainmenu/topMenuSections.nut")
 
 
 enum topMenuLeftSideMergeIndex {
@@ -14,21 +13,11 @@ enum topMenuLeftSideMergeIndex {
   COMMUNITY
 }
 
-let g_top_menu_left_side_sections = {
-  types = []
-  cache = {
-    byName = {}
-  }
-
-  template = topMenuSectionsTemplate
-  getSectionByName = getTopMenuSectionByName
-}
 
 
 
 
-
-enumsAddTypes(g_top_menu_left_side_sections, [
+addTopMenuLeftSideSections([
   {
     name = "menu"
     btnName = "start"
@@ -87,17 +76,7 @@ enumsAddTypes(g_top_menu_left_side_sections, [
   }
 ])
 
-let g_top_menu_right_side_sections = {
-  types = []
-  cache = {
-    byName = {}
-  }
-
-  template = topMenuSectionsTemplate
-  getSectionByName = getTopMenuSectionByName
-}
-
-enumsAddTypes(g_top_menu_right_side_sections, [
+addTopMenuRightSideSections([
   {
     name = "shop"
     visualStyle = "noFrameGold"
@@ -144,6 +123,3 @@ enumsAddTypes(g_top_menu_right_side_sections, [
     ]
   }
 ])
-::g_top_menu_left_side_sections <- g_top_menu_left_side_sections
-::g_top_menu_right_side_sections <- g_top_menu_right_side_sections
-return { g_top_menu_left_side_sections, g_top_menu_right_side_sections }

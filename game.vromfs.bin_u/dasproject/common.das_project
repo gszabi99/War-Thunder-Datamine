@@ -6,28 +6,28 @@ var
   DAS_PAK_ROOT = "."
 
 [export]
-def module_get(req, from:string) : tuple<string;string;string> const
-  var rs <- split_by_chars(req,"./")
+def module_get(req, from : string) : tuple<string; string; string> const
+  var rs <- split_by_chars(req, "./")
   if rs[0] == "daslib"
     return module_get("%" + req, from)
 
-  let mod_name = rs[length(rs)-1]
-  let path_name = join(rs,"/") + ".das"
+  let mod_name = rs[length(rs) - 1]
+  let path_name = join(rs, "/") + ".das"
 
   if is_in_aot() && path_name == "daslib/debug.das"
-    return [[auto "", "", ""]]
+    return ("", "", "")
 
   if starts_with(req, "%")
-    return [[auto mod_name, path_name, ""]]
+    return (mod_name, path_name, "")
 
-  let alias_name = rs[length(rs)-1]
+  let alias_name = rs[length(rs) - 1]
   var prefix = unsafe(mountPointPrefixes?[rs[0]])
   if prefix != null
     rs |> erase(0)
-    return [[auto mod_name, "{*prefix}/{join(rs,"/")}.das", alias_name]]
+    return (mod_name, "{*prefix}/{join(rs,"/")}.das", alias_name)
 
-  return [[auto mod_name, "{DAS_PAK_ROOT}{join(rs,"/")}.das", alias_name]]
+  return (mod_name, "{DAS_PAK_ROOT}{join(rs,"/")}.das", alias_name)
 
 [export]
-def include_get(inc, from:string) : string
+def include_get(inc, from : string) : string
   return starts_with(inc, "%") ? inc : "{DAS_PAK_ROOT}{inc}"

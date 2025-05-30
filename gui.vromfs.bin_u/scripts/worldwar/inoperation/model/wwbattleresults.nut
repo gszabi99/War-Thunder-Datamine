@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let u = require("%sqStdLibs/helpers/u.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { WwBattleResultsView } = require("%scripts/worldWar/inOperation/view/wwBattleResultsView.nut")
-let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { WwArmy, getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let { isOperationFinished } = require("%appGlobals/worldWar/wwOperationState.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
@@ -51,10 +51,10 @@ let WwBattleResults = class {
     this.id = battleBlk?.id ?? ""
     this.time = blk?.time ?? 0
     this.updateAppliedOnHost = battleBlk?.updateAppliedOnHost ?? -1
-    this.locName = battleBlk?.desc?.locName ?? ""
+    this.locName = battleBlk?.desc.locName ?? ""
     this.ordinalNumber = battleBlk?.ordinalNumber ?? 0
-    this.zoneName = blk?.zoneInfo?.zoneName ?? ""
-    this.sessionId = battleBlk?.desc?.sessionId ?? ""
+    this.zoneName = blk?.zoneInfo.zoneName ?? ""
+    this.sessionId = battleBlk?.desc.sessionId ?? ""
 
     let wwArmies = this.getArmies(armiesBlk)
     this.updateTeamsInfo(battleBlk, armyStatesBlk, wwArmies)
@@ -253,7 +253,7 @@ let WwBattleResults = class {
       let clanTag = getTblValue("armyGroupName", armyState, "")
       let unitTypeTextCode = getTblValue("unitType", initialArmy, "")
       let wwUnitType = g_ww_unit_type.getUnitTypeByTextCode(unitTypeTextCode)
-      let wwArmy = g_world_war.getArmyByName(armyName)
+      let wwArmy = getArmyByName(armyName)
       let hasFoundArmy = wwArmy.getUnitType() != g_ww_unit_type.UNKNOWN.code
 
       let armyView = {

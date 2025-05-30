@@ -1,11 +1,7 @@
 profileContentBigIcon {
-  bigMedalPlace {
-    pos:t='(pw-w)/2, (ph-h)/2'
-    parentSize:t='yes'
-    bigMedalImg {
-      background-image:t='<<image>>'
-      background-repeat:t='aspect-ratio'
-    }
+  img {
+    background-image:t='<<image>>'
+    background-repeat:t='aspect-ratio'
   }
 }
 
@@ -24,7 +20,7 @@ tdiv {
   challengeDescriptionProgress {
     isProfileUnlockProgress:t='yes'
     value:t='<<unlockProgress>>'
-    margin-bottom:t='16@sf/@pf'
+    margin-bottom:t='8@sf/@pf'
   }
   <</hasProgress>>
 
@@ -34,6 +30,7 @@ tdiv {
     width:t='pw'
     margin-top:t='@blockInterval'
     padding-bottom:t='5@sf/@pf'
+    margin-bottom:t='8@sf/@pf'
     color:t='@profilePageTextColor'
   }
 

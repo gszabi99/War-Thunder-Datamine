@@ -2,19 +2,19 @@ from "%rGui/globals/ui_library.nut" import *
 from "%globalScripts/loc_helpers.nut" import loc_checked
 
 let string = require("string")
-let { IlsColor, IlsLineScale, TvvMark, IlsAtgmTrackerVisible,
+let { IlsColor, IlsLineScale, TvvIlsMark, IsTVVIlsMarkValid, IlsAtgmTrackerVisible,
       IlsAtgmTargetPos, IlsAtgmLocked, AtgmTargetDist, TargetPosValid,
       TargetPos, RocketMode, CannonMode, BombCCIPMode, DistToTarget,
       BombingMode, AimLockPos, AimLockValid, IlsPosSize, AimLockDist,
-      AirCannonMode, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
+      AirCannonMode, TimeBeforeBombRelease, TVVPitch } = require("%rGui/planeState/planeToolsState.nut")
 let { baseLineWidth, metrToFeet, mpsToKnots, metrToNavMile } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { compassWrap, generateCompassMarkShim } = require("ilsCompasses.nut")
 let { Tangage, BarAltitude, Altitude, Speed, Roll, Overload } = require("%rGui/planeState/planeFlyState.nut");
-let { round, cos, sin, PI } = require("%sqstd/math.nut")
+let { round, cos, sin, PI, lerp } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
-let { ShellCnt, CurWeaponName }  = require("%rGui/planeState/planeWeaponState.nut");
+let { ShellCnt, CurWeaponName, FwdPoint }  = require("%rGui/planeState/planeWeaponState.nut");
 let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
 let { bulletsImpactLine } = require("commonElements.nut")
 
@@ -66,6 +66,11 @@ let a10Altitude = @() {
   text = $"{a10AltValue.value}0R"
 }
 
+function getTVVLerpT() {
+  let speedToUseTVV = 10
+  return IsTVVIlsMarkValid.value ? min(Speed.value / speedToUseTVV, 1) : 0.0
+}
+
 function pitch(width, height, generateFunc) {
   const step = 5.0
   let children = []
@@ -85,11 +90,14 @@ function pitch(width, height, generateFunc) {
     transform = { 
       rotate = -Roll.value
     }
-    update = @() {
-      transform = {
-        translate = [0, -height * (90.0 - Tangage.value) * 0.05]
-        rotate = -Roll.value
-        pivot = [0.5, (90.0 - Tangage.value) * 0.1]
+    update = function() {
+      let angle = 90.0 - lerp(0.0, 1.0, Tangage.value, TVVPitch.value, getTVVLerpT())
+      return {
+        transform = {
+          translate = [0, -height * angle * 0.05]
+          rotate = -Roll.value
+          pivot = [0.5, angle * 0.1]
+        }
       }
     }
   }
@@ -294,13 +302,47 @@ function KaiserTvvLinked(width, height) {
           [VECTOR_LINE, 50, 0, 100, 0],
           [VECTOR_LINE, 0, -50, 0, -80]
         ]
+        animations = [
+          { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "TVV_limit" }
+        ]
       },
       pitch(width, height, generatePitchLine)
     ]
     behavior = Behaviors.RtPropUpdate
-    update = @() {
-      transform = {
-        translate = [TvvMark[0], TvvMark[1]]
+    update = function() {
+      let t = getTVVLerpT()
+      local x = lerp(0.0, 1.0, FwdPoint[0], TvvIlsMark[0], t)
+      local y = lerp(0.0, 1.0, FwdPoint[1], TvvIlsMark[1], t)
+
+      let maxOffset = 0.4
+
+      let xDelta = width * (1.0 - 2.0 * maxOffset)
+      let minX = xDelta
+      let maxX = width - xDelta
+
+      let yDelta = height * (1.0 - 2.0 * maxOffset)
+      let minY = yDelta
+      let maxY = height - yDelta
+
+      local offLimits = false
+      if (x < minX || x > maxX) {
+        x = clamp(x, minX, maxX)
+        offLimits = true
+      }
+      if (y < minY || y > maxY) {
+        y = clamp(y, minY, maxY)
+        offLimits = true
+      }
+
+      if (offLimits)
+        anim_start("TVV_limit")
+      else
+        anim_request_stop("TVV_limit")
+
+      return {
+        transform = {
+          translate = [x, y]
+        }
       }
     }
   }

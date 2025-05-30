@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 let { eventbus_subscribe } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { isPlatformSony, isPlatformXboxOne, isPlatformShieldTv
+let { isPlatformSony, isPlatformXbox, isPlatformShieldTv
 } = require("%scripts/clientState/platform.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
@@ -27,7 +27,7 @@ function gui_start_controls_console(_ = null) {
 }
 
 function gui_start_controls() {
-  if (isPlatformSony || isPlatformXboxOne || isPlatformShieldTv()) {
+  if (isPlatformSony || isPlatformXbox || isPlatformShieldTv()) {
     if (loadLocalAccountSettings(PS4_CONTROLS_MODE_ACTIVATE, true)) {
       gui_start_controls_console()
       return

@@ -1,0 +1,719 @@
+{
+  "selected_tag": "",
+  "bin_dump_file": "",
+  "mission_settings": {
+    "player": {
+      "army": 1
+    },
+    "player_teamB": {
+      "army": 2
+    },
+    "mission": {
+      "level": "levels/guadalcanal.bin",
+      "type": "domination",
+      "environment": "Day",
+      "weather": "hazy",
+      "locName": "missions/guadalcanal_BfD_norespawn",
+      "locDesc": "missions/_BfD_norespawn/desc",
+      "scoreLimit": 7600,
+      "timeLimit": 25,
+      "deathPenaltyMul": 0.4,
+      "country_axis": "japan",
+      "country_allies": "usa",
+      "restoreType": "attempts",
+      "optionalTakeOff": false,
+      "allowedUnitTypes": {
+        "isAirplanesAllowed": true,
+        "isTanksAllowed": false,
+        "isShipsAllowed": false,
+        "isHelicoptersAllowed": false
+      }
+    }
+  },
+  "imports": {},
+  "triggers": {
+    "isCategory": true,
+    "is_enabled": true,
+    "carriers_init_high": {
+      "is_enabled": true,
+      "comments": "",
+      "props": {
+        "actionsType": "PERFORM_ONE_BY_ONE",
+        "conditionsType": "ALL",
+        "enableAfterComplete": false
+      },
+      "events": {
+        "initMission": {}
+      },
+      "conditions": {},
+      "actions": {
+        "missionMarkAsRespawnPoint": [
+          {
+            "loc_name": "missions/carriers_spawn",
+            "spawnEffect": false,
+            "radius": -1.0,
+            "destructionAwardMultiplier": 1.0,
+            "target": [
+              "t1_carrier_01",
+              "t1_carrier_02"
+            ],
+            "team": "A",
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "object": "t1_carriers_squad",
+            "awardByBodyHp": false,
+            "tags": {
+              "type_assault": false,
+              "type_interceptor": false,
+              "type_aa_fighter": false,
+              "type_frontline_bomber": false,
+              "type_longrange_bomber": false,
+              "carrier_take_off": true,
+              "tank": false
+            }
+          },
+          {
+            "loc_name": "missions/carriers_spawn",
+            "spawnEffect": false,
+            "radius": -1.0,
+            "destructionAwardMultiplier": 1.0,
+            "target": [
+              "t2_carrier_01",
+              "t2_carrier_02"
+            ],
+            "team": "B",
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
+            "object": "t2_carriers_squad",
+            "awardByBodyHp": false,
+            "tags": {
+              "type_assault": false,
+              "type_interceptor": false,
+              "type_aa_fighter": false,
+              "type_frontline_bomber": false,
+              "type_longrange_bomber": false,
+              "carrier_take_off": true,
+              "tank": false
+            }
+          }
+        ]
+      },
+      "else_actions": {}
+    }
+  },
+  "mission_objectives": {
+    "isCategory": true,
+    "is_enabled": true
+  },
+  "variables": {},
+  "dialogs": {},
+  "airfields": {},
+  "effects": {},
+  "units": {
+    "ships": [
+      {
+        "name": "t2_carrier_01",
+        "tm": [
+          [
+            -0.999603,
+            0.0,
+            -0.0281903
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0281903,
+            0.0,
+            -0.999603
+          ],
+          [
+            17259.5,
+            28.5,
+            -19514.6
+          ]
+        ],
+        "unit_class": "uk_aircraftcarrier_ark_royal",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t2_carrier_01_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9283.83,
+                1.0,
+                -22209.6
+              ]
+            ],
+            "props": {
+              "speed": 50.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_carrier_01_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1193.76,
+                1.00488,
+                -22061.0
+              ]
+            ],
+            "props": {
+              "speed": 50.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_carrier_01_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                1503.01,
+                1.00586,
+                -14936.1
+              ]
+            ],
+            "props": {
+              "speed": 50.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t2_carrier_01_wp_04": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                9088.38,
+                1.00098,
+                -18130.6
+              ]
+            ],
+            "props": {
+              "speed": 50.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      },
+      {
+        "name": "t1_carrier_01",
+        "tm": [
+          [
+            0.977884,
+            0.0,
+            0.209144
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.209144,
+            0.0,
+            0.977884
+          ],
+          [
+            -19502.7,
+            0.993164,
+            -17389.0
+          ]
+        ],
+        "unit_class": "us_aircraftcarrier_forrestal",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t2_carrier_02",
+        "tm": [
+          [
+            -0.929864,
+            0.0,
+            0.367905
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.367905,
+            0.0,
+            -0.929864
+          ],
+          [
+            19681.3,
+            28.498,
+            -15715.6
+          ]
+        ],
+        "unit_class": "uk_aircraftcarrier_ark_royal",
+        "closed_waypoints": false,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 2,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {}
+      },
+      {
+        "name": "t1_carrier_02",
+        "tm": [
+          [
+            0.998889,
+            0.0,
+            0.0471067
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            -0.0471067,
+            0.0,
+            0.998889
+          ],
+          [
+            -17074.3,
+            0.994141,
+            -20949.1
+          ]
+        ],
+        "unit_class": "us_aircraftcarrier_forrestal",
+        "closed_waypoints": true,
+        "isShipSpline": false,
+        "shipTurnRadius": 100.0,
+        "weapons": "",
+        "bullets0": "",
+        "bullets1": "",
+        "bullets2": "",
+        "bullets3": "",
+        "bulletsCount0": 0,
+        "bulletsCount1": 0,
+        "bulletsCount2": 0,
+        "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
+        "props": {
+          "army": 1,
+          "count": 1,
+          "formation_type": "rows",
+          "formation_div": 3,
+          "formation_step": [
+            2.5,
+            2.0
+          ],
+          "formation_noise": [
+            0.1,
+            0.1
+          ],
+          "uniqueName": "",
+          "attack_type": "fire_at_will"
+        },
+        "way": {
+          "t1_carrier_04_wp_01": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -10376.2,
+                -2.99072,
+                -18806.0
+              ]
+            ],
+            "props": {
+              "speed": 36.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_carrier_04_wp_02": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3099.3,
+                -2.99512,
+                -23194.9
+              ]
+            ],
+            "props": {
+              "speed": 50.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_carrier_04_wp_03": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -3360.77,
+                -2.99805,
+                -16219.9
+              ]
+            ],
+            "props": {
+              "speed": 50.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          },
+          "t1_carrier_04_wp_04": {
+            "type": "normal",
+            "tm": [
+              [
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0
+              ],
+              [
+                -10984.6,
+                1.00391,
+                -16031.2
+              ]
+            ],
+            "props": {
+              "speed": 50.0,
+              "moveType": "MOVETO_STRAIGHT",
+              "tas": false,
+              "shouldKeepFormation": false,
+              "canUsePathFinder": false
+            }
+          }
+        }
+      }
+    ],
+    "squad": [
+      {
+        "name": "t2_carriers_squad",
+        "tm": [
+          [
+            -0.955936,
+            0.0,
+            -0.293576
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.293576,
+            0.0,
+            -0.955936
+          ],
+          [
+            15389.6,
+            -2.99805,
+            -17174.6
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t2_carrier_01",
+            "t2_carrier_02"
+          ],
+          "object_marking": 0
+        }
+      },
+      {
+        "name": "t1_carriers_squad",
+        "tm": [
+          [
+            -0.955936,
+            0.0,
+            -0.293576
+          ],
+          [
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.293576,
+            0.0,
+            -0.955936
+          ],
+          [
+            -15899.8,
+            0.993164,
+            -17468.7
+          ]
+        ],
+        "props": {
+          "squad_members": [
+            "t1_carrier_01",
+            "t1_carrier_02"
+          ],
+          "object_marking": 0
+        }
+      }
+    ]
+  },
+  "areas": {
+    "carriers_area_high": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -0.00390625,
+          0.0,
+          -44000.1
+        ],
+        [
+          0.0,
+          44000.1,
+          0.0
+        ],
+        [
+          44000.1,
+          0.0,
+          -0.00390625
+        ],
+        [
+          -500.001,
+          17.4287,
+          -6819.33
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    }
+  },
+  "objLayers": {},
+  "wayPoints": {}
+}

@@ -18,7 +18,7 @@ struct Poly
 
 
 def Poly(points : array<float2>& const;
-         shapeType : ShapeType = ShapeType PolyLine;
+         shapeType : ShapeType = ShapeType.PolyLine;
          pos : float2 = float2(0.0);
          scale : float2 = float2(1.0)
          )
@@ -36,22 +36,22 @@ def private poly_recalc(var self : Poly&; pos : float2 = float2(0.0); scale : fl
   if (pos == self.pos && scale == self.scale)
     return
   for p, pAbs in self.points, self.pointsAbs
-    pAbs = p * scale + pos;
-  self.scale = scale;
-  self.pos = pos;
+    pAbs = p * scale + pos
+  self.scale = scale
+  self.pos = pos
 
 
 def private poly_render(self : Poly&; var canvas : Canvas&)
-  if self.shapeType == ShapeType PolyLine
+  if self.shapeType == ShapeType.PolyLine
     canvas.drawPolyLine(self.pointsAbs)
     return
-  if self.shapeType == ShapeType Poly
+  if self.shapeType == ShapeType.Poly
     canvas.drawClosedPolyLine(self.pointsAbs)
     return
-  if self.shapeType == ShapeType PolyFilled
+  if self.shapeType == ShapeType.PolyFilled
     canvas.drawFilledPoly(self.pointsAbs)
     return
-  if self.shapeType == ShapeType PolyFilledOutlined
+  if self.shapeType == ShapeType.PolyFilledOutlined
     canvas.drawFilledPoly(self.pointsAbs)
     canvas.drawClosedPolyLine(self.pointsAbs)
     return

@@ -1,3 +1,4 @@
+options indenting = 2
 module base shared
 require math
 require DagorMath

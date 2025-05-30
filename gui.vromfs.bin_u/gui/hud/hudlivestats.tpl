@@ -2,15 +2,15 @@ tdiv {
   id:t='hud_live_stats'
   pos:t='pw/2-w/2, ph/2-h/2'
   position:t='relative'
-  width:t='pw'
+  width:t='0.85*pw'
   padding:t='12/720@shHud'
   flow:t='vertical'
 
   re-type:t='9rect'
-  background-color:t='#000000'
-  background-position:t='0, 3, 0, 4'
+  background-color:t='#FFFFFF'
+  background-position:t='0, 2, 0, 0'
   background-repeat:t='expand'
-  background-image:t='#ui/gameuiskin#expandable_item_sym_selected'
+  background-image:t='!#ui/gameuiskin#live_stats_bg'
 
   <<#title>>
   textareaNoTab {

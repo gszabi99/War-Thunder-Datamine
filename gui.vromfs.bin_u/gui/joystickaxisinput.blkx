@@ -5,7 +5,7 @@
     "blur_foreground": {},
     "frame": {
       "width": "@srw-2*@scrn_tgt/100.0",
-      "pos": "50%pw-50%w, 1@minYposWindow",
+      "pos": "50%pw-50%w, 1@minYposWindow + (sh - 1@bottomMenuPanelHeight - 1@minYposWindow - 1@bh)/2 - h/2",
       "position": "absolute",
       "class": "wndNav",
       "type": "big",
@@ -91,15 +91,17 @@
           }
         ]
       },
-      "optionlist_container": {
-        "style": "padding-top:0; padding-bottom:0; height:53*@scrn_tgt/100.0;",
+      "optionlist_container_default": {
+        "width": "pw",
+        "position": "relative",
         "tdiv": {
           "width": "pw",
-          "max-height": "13*@baseTrHeight+1",
-          "pos": "(pw-w)/2, (ph-h)/2",
-          "position": "absolute",
+          "max-height": "sh - 1@bottomMenuPanelHeight - 1@bh - 1@minYposWindow - 11*@scrn_tgt/100.0 -1@frameFooterHeight - 1@frameHeaderHeight - 2@blockInterval",
+          "pos": "(pw-w)/2, 0",
+          "position": "relative",
           "overflow-y": "auto",
           "flow": "vertical",
+          "padding": "0, 3@sf/@pf",
           "optionsList": {
             "width": "pw",
             "pos": "50%pw-50%w, 0",

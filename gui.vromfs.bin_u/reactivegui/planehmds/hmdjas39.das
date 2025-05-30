@@ -52,7 +52,7 @@ def draw_hmd(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : Rend
   let fmw = hero |> as_fmw()
   if fmw == null
     return
-  let isCcipMode = fmw.sightMode >= int(CockpitSightMode HUD_SIGHT_MODE_GROUND_CANNONS)
+  let isCcipMode = fmw.sightMode >= int(CockpitSightMode.HUD_SIGHT_MODE_GROUND_CANNONS)
   if hero.sensors |> hasSelectedTargetOfInterest() || isCcipMode
     draw_impoved_marker(ctx, data, rdata.pos, rdata.size, hero, isCcipMode)
   else
@@ -106,7 +106,7 @@ def draw_speed(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size :
   let iasStr = fmt(":d", roundi(fmw.ias * (data.isMetricUnits ? mpsToKmh : mpsToKnots)))
   let strBox = get_str_bbox(iasStr, iasStr |> length(), fctx)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
   ctx |> set_color(data.color)
   //ctx |> set_draw_str_attr(FontFxType FFT_GLOW, 0, 0, get_font_fx_color(data.modeColor), get_font_fx_factor(data.modeColor, ctx))
 
@@ -145,7 +145,7 @@ def draw_altitude(var ctx : GuiContext&; data : CanvasParams&; pos : float2; siz
 
   let rtext = "RALT"
   let altBox = get_str_bbox(rtext, rtext |> length(), fctx)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
   ctx |> goto_xy(markPos.x + 5., markPos.y + altBox.width.y + size.y * 0.12)
   ctx |> draw_str_scaled(1.0, rtext, rtext |> length())
 
@@ -167,19 +167,19 @@ def draw_altitude_line(var ctx : GuiContext&; data : CanvasParams&; fctx : StdGu
     let thousands = floor(val / 1000.0)
     let textThousands = fmt(":.0f", thousands)
     let thousandsBox = get_str_bbox(textThousands, textThousands |> length(), fctxH)
-    ctx |> set_font_ht(data.fontSizeAltitudeHigher);
+    ctx |> set_font_ht(data.fontSizeAltitudeHigher)
     ctx |> goto_xy(textX, linePos + thousandsBox.width.y * 0.5)
     ctx |> draw_str_scaled(1.0, textThousands, textThousands |> length())
 
     let houndreeds = val % 1000.0
     let textHoundreeds = fmt(":03.0f", houndreeds)
-    ctx |> set_font_ht(data.fontSizeAltitudeLower);
+    ctx |> set_font_ht(data.fontSizeAltitudeLower)
     ctx |> goto_xy(textX + thousandsBox.width.x, linePos + thousandsBox.width.y * 0.5)
     ctx |> draw_str_scaled(1.0, textHoundreeds, textHoundreeds |> length())
   else
     let text = fmt(":.0f", val)
     let strBox = get_str_bbox(text, text |> length(), fctxH)
-    ctx |> set_font_ht(data.fontSizeAltitudeHigher);
+    ctx |> set_font_ht(data.fontSizeAltitudeHigher)
     ctx |> goto_xy(textX, linePos + strBox.width.y * 0.5)
     ctx |> draw_str_scaled(1.0, text, text |> length())
 
@@ -191,7 +191,7 @@ def draw_marker_with_dist(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   let inner = radius - size.y * 0.01
   let outer = radius + size.y * 0.01
   ctx |> set_color(data.color)
-  let coord <- to_array_move([[float2[2] center; center]])
+  let coord <- to_array_move(fixed_array<float2>(center, center))
   ctx |> render_line_aa(coord, false, data.lineWidth * 2., float2(0.), data.color)
 
   let radarDistSector = dist <= 0. ? -PI : cvt(dist, 0.0, 8400., PI, -PI + 0.01)
@@ -212,7 +212,7 @@ def draw_marker_with_dist(var ctx : GuiContext&; data : CanvasParams&; pos : flo
     let angle = float(i) * 2. * PI * 0.08333 - PI
     let cosa = cos(angle)
     let sina = sin(angle)
-    let pcoord <- to_array_move([[float2[2] float2(center.x + radius * cosa, center.y + radius * sina); float2(center.x + radius * cosa, center.y + radius * sina)]])
+    let pcoord <- to_array_move(fixed_array<float2>(float2(center.x + radius * cosa, center.y + radius * sina), float2(center.x + radius * cosa, center.y + radius * sina)))
     ctx |> render_line_aa(pcoord, false, data.lineWidth * 2., float2(0.), data.color)
 
   if get_radar_hud_aam_launch_zone_visible()
@@ -240,7 +240,7 @@ def draw_marker_with_dist(var ctx : GuiContext&; data : CanvasParams&; pos : flo
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   let distance = dist * (data.isMetricUnits ? 0.001 : metrToNavMile)
   let distText = fmt(":.1f", distance)
@@ -261,7 +261,7 @@ def draw_current_weapon(var ctx : GuiContext&; data : CanvasParams&; pos : float
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
   ctx |> set_font(data.fontId, 0, 0)
-  ctx |> set_font_ht(data.fontSize);
+  ctx |> set_font_ht(data.fontSize)
 
   let weaponName = get_hud_cur_weapon_name() != "" ? loc(get_hud_cur_weapon_name()) : "GUN"
   let textBox = get_str_bbox(weaponName, weaponName |> length(), fctx)
@@ -273,7 +273,7 @@ def draw_current_weapon(var ctx : GuiContext&; data : CanvasParams&; pos : float
 def draw_radar_target_mark(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; hero : Unit?)
   using() <| $(var target : TargetOfInterest#)
     if hero.sensors |> getSelectedTargetOfInterest(hero.detector, target)
-      let worldPos = target.from + target.dirNorm * target.distance;
+      let worldPos = target.from + target.dirNorm * target.distance
       var screenPos : float2
       if world_to_hmd_screen(worldPos, screenPos)
         if screenPos.x > size.x * 0.2 && screenPos.x < size.x * 0.8 && screenPos.y > size.y * 0.2 && screenPos.y < size.y * 0.8

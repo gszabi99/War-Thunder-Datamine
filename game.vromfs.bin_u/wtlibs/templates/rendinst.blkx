@@ -1,5 +1,24 @@
 {
+  "rendinst_extra_base": {
+    "_tracked": "ri_extra__riSyncDesc",
+    "_replicated": "ri_extra__riSyncDesc",
+    "ri_extra__destroyed": false,
+    "ri_extra__destructable": false,
+    "ri_extra__isBeingReplaced": false,
+    "ri_extra__restorablePending": false,
+    "_group": {
+      "_tags": "server",
+      "ri_extra__readyToSync": false,
+      "riExtraAuthority:tag": {},
+      "riOffender:eid": {}
+    },
+    "ri_extra": {},
+    "ri_extra__riSyncDesc": {},
+    "ri_extra__sendSpawnEvent:tag": {},
+    "replicate_custom:tag": {}
+  },
   "rendinst_base": {
+    "_use": "rendinst_extra_base",
     "transform": [
       [
         1.0,
@@ -23,29 +42,18 @@
       ]
     ],
     "_tracked": "transform",
-    "ri_extra__destroyed": false,
     "ri_extra__toGround": false,
-    "ri_extra__destructable": false,
-    "ri_extra__enableDM": true,
-    "ri_extra__riCellIdx": -1,
-    "ri_extra__riOffset": -1,
-    "riExtraAuthority:tag": {
-      "_tags": "server"
-    },
-    "riOffender:eid": {
-      "_tags": "server"
-    },
-    "ri_extra": {},
-    "ri_extra__sendSpawnEvent:tag": {}
+    "ri_extra__enableDM": true
   },
-  "rendinst_handle": {
-    "_use": "rendinst_base",
+  "ri_extra_handle": {
     "ri_extra__handle:u64": {
       "value": -1
     }
   },
   "rendinst": {
     "_use": "rendinst_base",
+    "_tracked": "ri_extra__name",
+    "_replicated": "ri_extra__name",
     "ri_extra__bboxMin": [
       0.0,
       0.0,
@@ -76,5 +84,90 @@
     "ri_extra__enemyDontDamage": false,
     "ri_extra__ownerDontDamage": false,
     "ri_extra__owner:eid": {}
+  },
+  "set_rotation": {
+    "ang_speed_yaw": 0.0,
+    "ang_speed_pitch": 0.0,
+    "ang_speed_roll": 0.0,
+    "local_space": true,
+    "_tracked": [
+      "ang_speed_yaw",
+      "ang_speed_pitch",
+      "ang_speed_roll",
+      "local_space"
+    ],
+    "set_rotation:tag": {}
+  },
+  "net_rendinst": {
+    "_use": [
+      "rendinst",
+      "replicating"
+    ],
+    "rendinstDestrHasNextRes": true,
+    "ri_extra__destructable": true,
+    "isRendinstDestr:tag": {
+      "_tags": "render"
+    }
+  },
+  "enable_ri_motion_on_dist_from_cam": {
+    "ri_motion__enabled": true,
+    "_tracked": "ri_motion__enabled",
+    "ri_motion__enableDistSqFromCam": 500000.0
+  },
+  "animated_scene_rendinst": {
+    "_use": [
+      "replicating",
+      "set_rotation",
+      "enable_ri_motion_on_dist_from_cam",
+      "rendinst_extra_base"
+    ],
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "initialTransform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "_tracked": "transform",
+    "ri_extra__handle:u64": {
+      "value": -1
+    }
   }
 }

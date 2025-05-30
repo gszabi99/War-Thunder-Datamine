@@ -1,6 +1,5 @@
 from "%scripts/dagui_library.nut" import *
 
-let shortcutsListModule = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { setShortcutsAndSaveControls, joystickGetCurSettings,
   getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
@@ -10,8 +9,7 @@ let { Button } = require("%scripts/controls/input/button.nut")
 let { Combination } = require("%scripts/controls/input/combination.nut")
 let { find_in_array } = require("%sqStdLibs/helpers/u.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
-
-let getShortcutById = @(shortcutId) shortcutsListModule?[shortcutId]
+let { getShortcutById } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 
 function isAxisBoundToMouse(shortcutId) {
   return ::is_axis_mapped_on_mouse(shortcutId)
@@ -165,7 +163,6 @@ function hasMappedSecondaryWeaponSelector(unitType) {
 }
 
 return {
-  getShortcutById
   getInputsMarkup
   isAxisBoundToMouse
   getComplexAxesId

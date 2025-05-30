@@ -34,6 +34,7 @@ let { isCountryAvailable } = require("%scripts/firstChoice/firstChoice.nut")
 let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { showDiscount } = require("%scripts/discounts/discountUtils.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 
 enum windowState {
   research,
@@ -41,7 +42,7 @@ enum windowState {
   noUnit
 }
 
-::gui_modal_convertExp <- function gui_modal_convertExp(unit = null) {
+function gui_modal_convertExp(unit = null) {
   if (!hasFeature("SpendGold"))
     return
   if (unit && !canSpendGoldOnUnitWithPopup(unit))
@@ -583,7 +584,7 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       set_char_cb(this, this.slotOpCb)
       this.showTaskProgressBox()
       this.afterSlotOp = function() {
-        ::update_gamercards()
+        updateGamercards()
         broadcastEvent("ExpConvert", { unit = this.unit })
       }
     }
@@ -644,4 +645,10 @@ gui_handlers.ConvertExpHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     this.doWhenActiveOnce("fillContent")
   }
   
+}
+
+::gui_modal_convertExp <- gui_modal_convertExp 
+
+return {
+  gui_modal_convertExp
 }

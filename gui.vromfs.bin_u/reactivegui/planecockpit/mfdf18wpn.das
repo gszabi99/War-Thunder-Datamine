@@ -163,7 +163,7 @@ class Component : Canvas
     return if !toi.isActive
 
     let tangVel = toi.angVel * toi.distance
-    let relVel = tangVel + toi.distanceRate * toi.dirNorm;
+    let relVel = tangVel + toi.distanceRate * toi.dirNorm
     let targetVel = hero.vel + relVel
     let targetSpd = length(targetVel)
     let targetBaroAlt = toi.pos.y - app.currentScene.waterLevel
@@ -315,8 +315,8 @@ class Component : Canvas
     let offsetFrame = 0.04
     let margin = float2(0.01)
     let totalTime = roundi(get_total_time())
-    let min = fmt(":02d", totalTime / 60);
-    let sec = fmt(":02d", totalTime % 60);
+    let min = fmt(":02d", totalTime / 60)
+    let sec = fmt(":02d", totalTime % 60)
 
     drawOsbLabelVert(float2(0.5 - offsetFrame, -0.3), "GUN", true, margin)
     drawStrAnchored(float2(0.42, -0.3), (gunAmmo > 0) ? "RDY" : "STDBY", AnchorHorz.Right, AnchorVert.Center)
@@ -329,7 +329,7 @@ class Component : Canvas
     var pos = float2(-0.3, -0.5 + offsetFrame)
     for k, v in keys(weapons), values(weapons)
       if i > 4
-        break;
+        break
       drawOsbLabel(pos, loc_wpn(k), false)
       if v
         let box = calc_box_points(pos, float2(0.14, getStringSize(loc_wpn(k)).y + margin.y))

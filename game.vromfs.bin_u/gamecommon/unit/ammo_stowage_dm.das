@@ -50,8 +50,8 @@ def calc_slot_pos(slot_id : int;
     return float3(0.0f)
 
   var tm : float3x4 = identity3x4()
-  mat44f_to_TMatrix(*v.ammo_slots__node[slot_id].nodeWtm, tm);
-  return tm * v.ammo_slots__node[slot_id].cnode.boundingSphere.c;
+  mat44f_to_TMatrix(*v.ammo_slots__node[slot_id].nodeWtm, tm)
+  return tm * v.ammo_slots__node[slot_id].cnode.boundingSphere.c
 
 
 [with_bundle(v)]
@@ -123,7 +123,7 @@ def gather_adjacent_slots(stowage_id : int; cluster_id : int; slot_id : int;
     sort(ordered_adjacent_clusters) <| $(a, b)
       return a.y > b.y
 
-  assert(int(AmmoClusterType NUM_TYPES) == 2)
+  assert(int(AmmoClusterType.NUM_TYPES) == 2)
   var slot_by_type : int2[2]
   for cluster_slot_id in slot_by_type
     cluster_slot_id = int2(-1, -1)
@@ -155,27 +155,27 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
                                     ammo_clusters__slotsRange : IPoint2List
                                     >) : void
   
-  if effect == AmmoSlotEffectType FLOODED_AND_DESTROYED
-    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType FLOODED) <| v
-    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType DESTROYED) <| v
+  if effect == AmmoSlotEffectType.FLOODED_AND_DESTROYED
+    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType.FLOODED) <| v
+    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType.DESTROYED) <| v
     return
-  if effect == AmmoSlotEffectType DRIED_AND_RESTORED
-    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType RESTORED) <| v
-    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType DRIED) <| v
-    return
-
-  
-  if effect == AmmoSlotEffectType RESTORED && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED)
-    return
-  if effect == AmmoSlotEffectType DESTROYED && !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED)
-    return
-  if effect == AmmoSlotEffectType FLOODED && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState FLOODED)
-    return
-  if effect == AmmoSlotEffectType DRIED && !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState FLOODED)
+  if effect == AmmoSlotEffectType.DRIED_AND_RESTORED
+    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType.RESTORED) <| v
+    apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType.DRIED) <| v
     return
 
   
-  if effect == AmmoSlotEffectType DESTROYED
+  if effect == AmmoSlotEffectType.RESTORED && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ENABLED)
+    return
+  if effect == AmmoSlotEffectType.DESTROYED && !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ENABLED)
+    return
+  if effect == AmmoSlotEffectType.FLOODED && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState.FLOODED)
+    return
+  if effect == AmmoSlotEffectType.DRIED && !get_flag(v.ammo_slots__state[slot_id], AmmoSlotState.FLOODED)
+    return
+
+  
+  if effect == AmmoSlotEffectType.DESTROYED
     
     let slot_ammo_type = get_ammo_slot_type(slot_id, v)
     let slot_num_ammo = v.ammo_slots__numAmmo[slot_id].x
@@ -183,7 +183,7 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
       ammo_stowage_subtract_weapon_ammo(unit.weap, slot_ammo_type, false, slot_num_ammo, v)
       v.ammo_stowage__ammoLost += slot_num_ammo
     
-    var need_start_reload = slot_num_ammo > 0 && get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage LOADED_IN_GUN)
+    var need_start_reload = slot_num_ammo > 0 && get_ammo_cluster_stage(cluster_id, v) == int(AmmoClusterStage.LOADED_IN_GUN)
     if need_start_reload
       let slot_range = v.ammo_clusters__slotsRange[cluster_id]
       for i in slot_range.x..slot_range.y
@@ -191,9 +191,9 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
           need_start_reload = false
     if need_start_reload
       let ammo_type_remap = v.ammo_stowage__ammoTypeRemap[slot_ammo_type]
-      send_net_event(unit.eid, [[EventAmmoStowageForceReloadGun stowageId=ammo_type_remap.x]])
+      send_net_event(unit.eid, EventAmmoStowageForceReloadGun(stowageId = ammo_type_remap.x))
 
-    set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState NEED_SYNC_BULLET_COUNT, true)
+    set_flag(v.ammo_stowages__state[stowage_id], AmmoStowageState.NEED_SYNC_BULLET_COUNT, true)
 
     
     for adjacent_cluster_and_slot in gather_adjacent_slots(stowage_id, cluster_id, slot_id, v)
@@ -203,16 +203,16 @@ def public apply_ammo_slot_effect(var unit : Unit?; stowage_id : int; cluster_id
         ammo_slot_set_dm_enabled(unit, adjacent_slot_id, false, v)
 
   
-  if effect == AmmoSlotEffectType DESTROYED
-    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED, false)
+  if effect == AmmoSlotEffectType.DESTROYED
+    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ENABLED, false)
     ammo_slot_set_dm_enabled(unit, slot_id, false, v)
-  if effect == AmmoSlotEffectType RESTORED
-    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ENABLED, true)
+  if effect == AmmoSlotEffectType.RESTORED
+    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ENABLED, true)
     ammo_slot_set_dm_enabled(unit, slot_id, true, v)
-  if effect == AmmoSlotEffectType FLOODED
-    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState FLOODED, true)
-  if effect == AmmoSlotEffectType DRIED
-    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState FLOODED, false)
+  if effect == AmmoSlotEffectType.FLOODED
+    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState.FLOODED, true)
+  if effect == AmmoSlotEffectType.DRIED
+    set_flag(v.ammo_slots__state[slot_id], AmmoSlotState.FLOODED, false)
 
 
 [es, with_bundle(v)]
@@ -268,13 +268,13 @@ def is_ammo_slot_affected_by_dm_effect(unit : Unit?; stowage_id : int; cluster_i
                                          ammo_slots__numAmmo : IPoint2List
                                          >) : AffectedByDmEffect
   if stowage_id < 0 || cluster_id < 0 || slot_id < 0 || unit == null
-    return [[AffectedByDmEffect expl=true, fire=true]]
+    return AffectedByDmEffect(expl = true, fire = true)
   let wc = unit.weap
   let slot_ammo = v.ammo_slots__numAmmo[slot_id]
-  var result = [[AffectedByDmEffect expl=false, fire=false]]
+  var result = AffectedByDmEffect(expl = false, fire = false)
   if slot_ammo.x == 0
     return result
-  let is_charges = get_ammo_cluster_type(cluster_id, v) == int(AmmoClusterType CHARGES)
+  let is_charges = get_ammo_cluster_type(cluster_id, v) == int(AmmoClusterType.CHARGES)
   ammo_stowage_iter_all_ammo_props(wc, get_ammo_slot_type(slot_id, v), v) <| $ [unused_argument(fract)] (props; fract : float)
     if !is_charges
       result.expl = props.explosiveProps.mass > 0.f || result.expl
@@ -294,14 +294,14 @@ def calc_explosion_params(unit : Unit?; cluster_id : int; var seed : int;
                             ammo_slots__ammoMaskAndType : UInt32List;
                             ammo_slots__numAmmo : IPoint2List
                             >) : ExplosionParams
-  var result = [[ExplosionParams
-    shellMass=0.0f,
-    powderMass=0.0f,
-    strengthEquivalent=0.0f,
-    brisanceEquivalent=0.0f,
-    splashDamageTypeId=-1,
-    shatterDamageTypeId=-1
-  ]]
+  var result = ExplosionParams(
+    shellMass = 0.0f,
+    powderMass = 0.0f,
+    strengthEquivalent = 0.0f,
+    brisanceEquivalent = 0.0f,
+    splashDamageTypeId = -1,
+    shatterDamageTypeId = -1
+  )
   let detonate_portion = _frnd(seed) * (v.ammo_stowage__nonFatalDetonatePortion.y - v.ammo_stowage__nonFatalDetonatePortion.x) + v.ammo_stowage__nonFatalDetonatePortion.x
   let wc = unit.weap
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
@@ -311,15 +311,15 @@ def calc_explosion_params(unit : Unit?; cluster_id : int; var seed : int;
       continue
     ammo_stowage_iter_all_ammo_props(wc, get_ammo_slot_type(slot_id, v), v) <| $(props; fract : float)
       let bullet_count = float(slot_ammo.x) * fract
-      let fullMass = props.ballisticsProps.mass;
+      let fullMass = props.ballisticsProps.mass
       let explosiveMass = props.explosiveProps.mass * bullet_count * detonate_portion
       let shellMass = props.kineticMass * bullet_count
       let powderMass = props.powderPortion * fullMass * bullet_count
 
       result.shellMass += shellMass
       result.powderMass += powderMass
-      result.strengthEquivalent += explosiveMass * props.explosiveProps.strength;
-      result.brisanceEquivalent += explosiveMass * props.explosiveProps.brisance;
+      result.strengthEquivalent += explosiveMass * props.explosiveProps.strength
+      result.brisanceEquivalent += explosiveMass * props.explosiveProps.brisance
       if result.splashDamageTypeId < 0
         result.splashDamageTypeId = props.splashDamageTypeId
       if result.shatterDamageTypeId < 0
@@ -350,22 +350,22 @@ def ammo_stowage_send_explosion_fatal(eid : EntityId; ammo_left : float; var see
     (_frnd(seed) * (v.ammo_stowage__fatalDetonatePortion.y - v.ammo_stowage__fatalDetonatePortion.x) + v.ammo_stowage__fatalDetonatePortion.x)
   )
   let splash_damage_type_id = get_splash_damage_type_id(v.ammo_stowage__splashProperties)
-  sendEvent(eid, [[EventDoAmmoExplode
-    isFatal=true,
-    fullExpl=full_expl,
-    localPos=float3(0.0f),
-    packedPartId=PartId().packed,
-    rndSeed=seed,
-    splashRadius=float2(splash_params.innerRadius, splash_params.outerRadius),
-    splashPenetration=splash_params.penetration,
-    splashDamage=splash_params.damage,
-    splashDamageTypeId=splash_damage_type_id,
-    shatterRadius=0.0f,
-    shatterCount=0.0f,
-    shatterPenetration=0.0f,
-    shatterDamage=0.0f,
-    shatterDamageTypeId=0
-  ]])
+  sendEvent(eid, EventDoAmmoExplode(
+    isFatal = true,
+    fullExpl = full_expl,
+    localPos = float3(0.0f),
+    packedPartId = PartId().packed,
+    rndSeed = seed,
+    splashRadius = float2(splash_params.innerRadius, splash_params.outerRadius),
+    splashPenetration = splash_params.penetration,
+    splashDamage = splash_params.damage,
+    splashDamageTypeId = splash_damage_type_id,
+    shatterRadius = 0.0f,
+    shatterCount = 0.0f,
+    shatterPenetration = 0.0f,
+    shatterDamage = 0.0f,
+    shatterDamageTypeId = 0
+  ))
 
 
 [with_bundle(v)]
@@ -393,9 +393,9 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
 
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
   var hit_slot_id = -1
-  var cluster_center_pos = float3(0.0f);
+  var cluster_center_pos = float3(0.0f)
   for slot_id in slots_range.x..slots_range.y
-    if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE)
+    if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ON_FIRE)
       hit_slot_id = slot_id
     cluster_center_pos += calc_slot_pos(slot_id) <| v
   if hit_slot_id == -1
@@ -404,8 +404,8 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
   assume dm = *unit.visual
   let part_id = v.ammo_slots__partId[hit_slot_id]
   assume powder_mass_to_splash = v.ammo_stowages__powderMassToSplash[stowage_id]
-  sendEvent(eid, [[EventAmmoStowageDoDelayedFireEffects
-    packedPartId=part_id.packed,
+  sendEvent(eid, EventAmmoStowageDoDelayedFireEffects(
+    packedPartId = part_id.packed,
     stowageId = stowage_id,
     clusterId = cluster_id,
     innerRadius = powder_mass_to_splash.innerRadius |> interpolate_tab_float_interpolate(explosion_params.powderMass),
@@ -414,13 +414,13 @@ def do_fire_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; cluster_
     damage = powder_mass_to_splash.damage |> interpolate_tab_float_interpolate(explosion_params.powderMass),
     damageTypeId = explosion_params.splashDamageTypeId,
     pos = cluster_center_pos / float(slots_range.y - slots_range.x)
-  ]])
-  sendEvent(eid, [[EventFireSystemStartBurnWithOffender
-    partId=part_id,
+  ))
+  sendEvent(eid, EventFireSystemStartBurnWithOffender(
+    partId = part_id,
     fireParamsId = v.ammo_clusters__fireParamsId[cluster_id],
     fireFxId = v.ammo_clusters__fireEvtId[cluster_id],
     offender = v.ammo_stowage__delayedOffender
-  ]])
+  ))
   return true
 
 
@@ -446,9 +446,9 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
 
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
   var hit_slot_id = -1
-  var cluster_center_pos = float3(0.0f);
+  var cluster_center_pos = float3(0.0f)
   for slot_id in slots_range.x..slots_range.y
-    if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE)
+    if hit_slot_id == -1 && get_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ON_EXPLODE)
       hit_slot_id = slot_id
     cluster_center_pos += calc_slot_pos(slot_id) <| v
   if hit_slot_id == -1
@@ -461,18 +461,18 @@ def do_explosion_delayed(var unit : Unit?; eid : EntityId; stowage_id : int; clu
       let geom_node_id = *unit.visual |> dm_get_geom_node_id_by_part_id(int(hit_slot_part_id.globalId))
       let coll_node = *unit.visual |> dm_get_collision_node_by_part_id(int(hit_slot_part_id.globalId))
       let zero = float3(0.0f)
-      *unit_fx |> startFxEvent(v.ammo_clusters__explosionEvtId[cluster_id], geom_node_id, zero, coll_node.boundingSphere.c);
-  sendEvent(eid, [[EventAmmoStowageDoDelayedExplosionEffects
-    packedPartId=hit_slot_part_id.packed,
-    stowageId=stowage_id,
-    clusterId=cluster_id,
-    pos=cluster_center_pos / float(slots_range.y - slots_range.x),
-    strengthEquivalent=explosion_params.strengthEquivalent,
-    brisanceEquivalent=explosion_params.brisanceEquivalent,
-    shellMass=explosion_params.shellMass,
-    splashDamageTypeId=explosion_params.splashDamageTypeId,
-    shatterDamageTypeId=explosion_params.shatterDamageTypeId
-  ]])
+      *unit_fx |> startFxEvent(v.ammo_clusters__explosionEvtId[cluster_id], geom_node_id, zero, coll_node.boundingSphere.c)
+  sendEvent(eid, EventAmmoStowageDoDelayedExplosionEffects(
+    packedPartId = hit_slot_part_id.packed,
+    stowageId = stowage_id,
+    clusterId = cluster_id,
+    pos = cluster_center_pos / float(slots_range.y - slots_range.x),
+    strengthEquivalent = explosion_params.strengthEquivalent,
+    brisanceEquivalent = explosion_params.brisanceEquivalent,
+    shellMass = explosion_params.shellMass,
+    splashDamageTypeId = explosion_params.splashDamageTypeId,
+    shatterDamageTypeId = explosion_params.shatterDamageTypeId
+  ))
   return true
 
 
@@ -494,10 +494,10 @@ def ammo_stowage_disable_affected_slots(var unit : Unit?; stowage_id : int; clus
                                           >) : void
   let slots_range = v.ammo_clusters__slotsRange[cluster_id]
   for slot_id in slots_range.x..slots_range.y
-    if get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE) || get_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE)
-      apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType DESTROYED) <| v
-      set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE, false)
-      set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE, false)
+    if get_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ON_FIRE) || get_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ON_EXPLODE)
+      apply_ammo_slot_effect(unit, stowage_id, cluster_id, slot_id, AmmoSlotEffectType.DESTROYED) <| v
+      set_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ON_EXPLODE, false)
+      set_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ON_FIRE, false)
 
 
 [es, with_bundle(v)]
@@ -532,9 +532,9 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
                                       ammo_slots__node : AmmoStowageSlotCollAndGeomNodesList;
                                       ammo_stowage__splashProperties : SplashProps -const
                                       >)
-  if get_flag(v.ammo_stowage__ammoState, AmmoState ON_FIRE) || get_flag(v.ammo_stowage__ammoState, AmmoState ON_EXPLODE)
-    set_flag(v.ammo_stowage__ammoState, AmmoState ON_FIRE, false)
-    set_flag(v.ammo_stowage__ammoState, AmmoState ON_EXPLODE, false)
+  if get_flag(v.ammo_stowage__ammoState, AmmoState.ON_FIRE) || get_flag(v.ammo_stowage__ammoState, AmmoState.ON_EXPLODE)
+    set_flag(v.ammo_stowage__ammoState, AmmoState.ON_FIRE, false)
+    set_flag(v.ammo_stowage__ammoState, AmmoState.ON_EXPLODE, false)
 
     var unit = unit__ref.unit
     if unit.isDelayed
@@ -543,15 +543,15 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
     for stowage_id, clusters_range in iter_range(v.ammo_stowages__clustersRange), v.ammo_stowages__clustersRange
       for cluster_id in clusters_range.x..clusters_range.y
         var any_affected = false
-        if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState ON_FIRE)
+        if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState.ON_FIRE)
           any_affected = do_fire_delayed(unit, eid, stowage_id, cluster_id, v) || any_affected
-        if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState ON_EXPLODE)
+        if get_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState.ON_EXPLODE)
           any_affected = do_explosion_delayed(unit, eid, stowage_id, cluster_id, v) || any_affected
-        set_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState ON_FIRE, false)
-        set_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState ON_EXPLODE, false)
+        set_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState.ON_FIRE, false)
+        set_flag(v.ammo_clusters__state[cluster_id], AmmoClusterState.ON_EXPLODE, false)
         if any_affected
           ammo_stowage_disable_affected_slots(unit, stowage_id, cluster_id, v)
-          sendEvent(eid, [[EventAmmoStowageInvalidateRenderer]])
+          sendEvent(eid, EventAmmoStowageInvalidateRenderer())
     v.ammo_stowage__delayedOffender |> clear_offender_data()
 
   if v.ammo_stowage__timeAmmoFire > 0.0f
@@ -562,19 +562,19 @@ def ammo_stowage_delayed_effects_es(evt : ParallelUpdateFrameDelayed;
         let ammo_left = safediv(v.ammo_stowage__timeAmmoFire, v.ammo_stowage__combustionTime)
         if ammo_left > 0.0f && gfrnd() < v.ammo_stowage__detonateProb * evt.dt
           v.ammo_stowage__timeAmmoFire = -1.0f
-          sendEvent(eid, [[EventAmmoStowageOnEndAmmoFire doKillEffect=false ]])
+          sendEvent(eid, EventAmmoStowageOnEndAmmoFire(doKillEffect = false ))
           ammo_stowage_send_explosion_fatal(eid, ammo_left, grnd(), false) <| v
       else
-        sendEvent(eid, [[EventAmmoStowageOnEndAmmoFire doKillEffect=true]])
+        sendEvent(eid, EventAmmoStowageOnEndAmmoFire(doKillEffect = true))
 
   
   
   
-  if get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_FIRE) || get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_EXPLOSION)
+  if get_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_FIRE) || get_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_EXPLOSION)
     var unit = unit__ref.unit
     if unit.isAlive && !unit.isDelayed
-      set_flag(v.ammo_stowage__ammoState, AmmoState FATAL_FIRE, false)
-      set_flag(v.ammo_stowage__ammoState, AmmoState FATAL_EXPLOSION, false)
+      set_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_FIRE, false)
+      set_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_EXPLOSION, false)
 
 
 
@@ -588,17 +588,17 @@ def ammo_stowage_do_fire_fatal(eid : EntityId; stowage_id : int; cluster_id : in
                                  ammo_stowage__ammoState : uint -const;
                                  ammo_slots__numAmmo : IPoint2List
                                  >) : void
-  if get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_FIRE)
+  if get_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_FIRE)
     return
-  set_flag(v.ammo_stowage__ammoState, AmmoState FATAL_FIRE, true)
+  set_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_FIRE, true)
   let ammo_left = ammo_stowage_calc_fill(v)
-  sendEvent(eid, [[EventAmmoStowageDoFatalFire
-    stowageId=stowage_id,
-    clusterId=cluster_id,
-    partId=part_id,
-    offender=offender,
-    ammoLeft=ammo_left
-  ]])
+  sendEvent(eid, EventAmmoStowageDoFatalFire(
+    stowageId = stowage_id,
+    clusterId = cluster_id,
+    partId = part_id,
+    offender = offender,
+    ammoLeft = ammo_left
+  ))
 
 
 [with_bundle(v)]
@@ -611,20 +611,20 @@ def ammo_stowage_do_explosion_fatal(eid : EntityId; stowage_id : int; cluster_id
                                       ammo_slots__numAmmo : IPoint2List;
                                       ammo_stowage__splashProperties : SplashProps -const
                                       >) : void
-  if get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_EXPLOSION)
+  if get_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_EXPLOSION)
     return
-  set_flag(v.ammo_stowage__ammoState, AmmoState FATAL_EXPLOSION, true)
+  set_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_EXPLOSION, true)
 
   let ammo_left = ammo_stowage_calc_fill(v)
-  sendEvent(eid, [[EventAmmoStowageDoFatalExplosion
-    stowageId=stowage_id,
-    clusterId=cluster_id,
-    partId=part_id,
-    offender=offender,
-    ammoLeft=ammo_left,
-    seed=seed,
-    fullExpl=full_expl
-  ]])
+  sendEvent(eid, EventAmmoStowageDoFatalExplosion(
+    stowageId = stowage_id,
+    clusterId = cluster_id,
+    partId = part_id,
+    offender = offender,
+    ammoLeft = ammo_left,
+    seed = seed,
+    fullExpl = full_expl
+  ))
   ammo_stowage_send_explosion_fatal(eid, ammo_left, seed, full_expl) <| v
 
 [es, with_bundle(v)]
@@ -663,33 +663,32 @@ def ammo_stowage_do_fire(unit : Unit?; eid : EntityId; remap : PartRemap; offend
     return
 
   
-  if get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState FLOODED)
+  if get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState.FLOODED)
     return
 
-  if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState FIRE_FATAL)
+  if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState.FIRE_FATAL)
     ammo_stowage_do_fire_fatal(eid, remap.stowageId, remap.clusterId, remap.partId, offender) <| v
     return
 
   
-  if get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_FIRE)
+  if get_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_FIRE)
     return
 
   
-  set_flag(v.ammo_stowage__ammoState, AmmoState ON_FIRE, true)
-  set_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState ON_FIRE, true)
+  set_flag(v.ammo_stowage__ammoState, AmmoState.ON_FIRE, true)
+  set_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState.ON_FIRE, true)
   v.ammo_stowage__delayedOffender = offender
 
   
   let slots_range = v.ammo_clusters__slotsRange[remap.clusterId]
   for slot_id in slots_range.x..slots_range.y
     if is_ammo_slot_affected_by_dm_effect(unit, remap.stowageId, remap.clusterId, slot_id, v).fire
-      set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_FIRE, true)
+      set_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ON_FIRE, true)
 
-  sendEventImmediate(eid, [[EventAmmoStowageDoImmediateFireEffects
+  sendEventImmediate(eid, EventAmmoStowageDoImmediateFireEffects(
     packedPartId = remap.partId.packed,
     stowageId = remap.stowageId,
-    clusterId = remap.clusterId,
-  ]])
+    clusterId = remap.clusterId))
 
 
 [with_bundle(v), unused_argument(eid, seed, dm_effects)]
@@ -709,41 +708,41 @@ def ammo_stowage_do_explosion(unit : Unit?; eid : EntityId; remap : PartRemap; o
                                 ammo_slots__numAmmo : IPoint2List;
                                 ammo_stowage__splashProperties : SplashProps -const
                                 >) : void
-  let is_full_expl = get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_FULL_EXPL)
+  let is_full_expl = get_dm_effect_flag(dm_effects, DamageEffectType.DM_EFFECT_FULL_EXPL)
   if !remap.partId.valid
     
     ammo_stowage_do_explosion_fatal(eid, -1, -1, remap.partId, offender, seed, is_full_expl) <| v
     return
 
   
-  if get_ammo_cluster_type(remap.clusterId, v) == int(AmmoClusterType CHARGES)
+  if get_ammo_cluster_type(remap.clusterId, v) == int(AmmoClusterType.CHARGES)
     ammo_stowage_do_fire(unit, eid, remap, offender) <| v
     return
 
-  if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState EXPLOSION_FATAL)
+  if get_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState.EXPLOSION_FATAL)
     ammo_stowage_do_explosion_fatal(eid, remap.stowageId, remap.clusterId, remap.partId, offender, seed, is_full_expl) <| v
     return
 
   
-  if get_flag(v.ammo_stowage__ammoState, AmmoState FATAL_EXPLOSION)
+  if get_flag(v.ammo_stowage__ammoState, AmmoState.FATAL_EXPLOSION)
     return
 
   
-  set_flag(v.ammo_stowage__ammoState, AmmoState ON_EXPLODE, true)
-  set_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState ON_EXPLODE, true)
+  set_flag(v.ammo_stowage__ammoState, AmmoState.ON_EXPLODE, true)
+  set_flag(v.ammo_clusters__state[remap.clusterId], AmmoClusterState.ON_EXPLODE, true)
   v.ammo_stowage__delayedOffender = offender
 
   
   let slots_range = v.ammo_clusters__slotsRange[remap.clusterId]
   for slot_id in slots_range.x..slots_range.y
     if is_ammo_slot_affected_by_dm_effect(unit, remap.stowageId, remap.clusterId, slot_id, v).expl
-      set_flag(v.ammo_slots__state[slot_id], AmmoSlotState ON_EXPLODE, true)
+      set_flag(v.ammo_slots__state[slot_id], AmmoSlotState.ON_EXPLODE, true)
 
-  sendEventImmediate(eid, [[EventAmmoStowageDoImmediateExplosionEffects
+  sendEventImmediate(eid, EventAmmoStowageDoImmediateExplosionEffects(
     packedPartId = remap.partId.packed,
     stowageId = remap.stowageId,
     clusterId = remap.clusterId
-  ]])
+  ))
 
 
 [es, with_bundle(v)]
@@ -777,21 +776,21 @@ def ammo_stowage_part_damage_handler_es(evt : CmdApplyPartDamageEffect;
   let should_be_hp = rel_hp_fixed_to_float(evt.hpFixed)
   let remap = get_remap(v.ammo_stowage__partIdRemap, partId)
   let affected_by = is_ammo_slot_affected_by_dm_effect(unit, remap.stowageId, remap.clusterId, remap.slotId, v)
-  if get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_EXPL) || get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_FULL_EXPL)
+  if get_dm_effect_flag(evt.dmEffects, DamageEffectType.DM_EFFECT_EXPL) || get_dm_effect_flag(evt.dmEffects, DamageEffectType.DM_EFFECT_FULL_EXPL)
     if affected_by.expl
       ammo_stowage_do_explosion(unit, eid, remap, evt.offender, evt.seed, evt.dmEffects) <| v
     elif affected_by.fire
       ammo_stowage_do_fire(unit, eid, remap, evt.offender) <| v
-  if get_dm_effect_flag(evt.dmEffects, DamageEffectType DM_EFFECT_FIRE)
+  if get_dm_effect_flag(evt.dmEffects, DamageEffectType.DM_EFFECT_FIRE)
     if affected_by.fire
       ammo_stowage_do_fire(unit, eid, remap, evt.offender) <| v
 
   
-  if should_be_hp <= 0.0f && remap.partId.valid && !get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState ON_FIRE) && !get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState ON_EXPLODE)
-    sendEventImmediate(eid, [[EventAmmoStowageApplySlotEffect
-      partId=partId,
-      effect=AmmoSlotEffectType DESTROYED
-    ]])
+  if should_be_hp <= 0.0f && remap.partId.valid && !get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState.ON_FIRE) && !get_flag(v.ammo_slots__state[remap.slotId], AmmoSlotState.ON_EXPLODE)
+    sendEventImmediate(eid, EventAmmoStowageApplySlotEffect(
+      partId = partId,
+      effect = AmmoSlotEffectType.DESTROYED
+    ))
 
 
 [es, with_bundle(v)]
@@ -827,7 +826,7 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
     return
 
   assume dm = *unit.visual
-  let on_kill = int(evt.prevHpFixed) > 0 && evt.damage / get_part_hp_prop_value(dm.dmData, remap.partId) >= rel_hp_fixed_to_float(evt.prevHpFixed)
+  let on_kill = int(evt.prevHpFixed) > 0 && evt.damage / get_part_hp_prop_value(unit.dmData, remap.partId) >= rel_hp_fixed_to_float(evt.prevHpFixed)
   if damage_effect_preset_id > length(dm.damageEffects.presets)
     logerr("invalid damage effect preset id {damage_effect_preset_id}")
     return
@@ -845,11 +844,11 @@ def ammo_stowage_on_damage_es(evt : EventUnitDamage;
     dm_effect_on_part_hit(*action, *get_dm_params(), dm_effects, seed, evt.effectProb, evt.effectProbFire, evt.prevHpFixed, is_critical)
 
   let affected_by = is_ammo_slot_affected_by_dm_effect(unit, remap.stowageId, remap.clusterId, remap.slotId, v)
-  if get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_EXPL) || get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_FULL_EXPL)
+  if get_dm_effect_flag(dm_effects, DamageEffectType.DM_EFFECT_EXPL) || get_dm_effect_flag(dm_effects, DamageEffectType.DM_EFFECT_FULL_EXPL)
     if affected_by.expl
       ammo_stowage_do_explosion(unit, eid, remap, evt.offender, seed, dm_effects) <| v
     elif affected_by.fire
       ammo_stowage_do_fire(unit, eid, remap, evt.offender) <| v
-  if get_dm_effect_flag(dm_effects, DamageEffectType DM_EFFECT_FIRE)
+  if get_dm_effect_flag(dm_effects, DamageEffectType.DM_EFFECT_FIRE)
     if affected_by.fire
       ammo_stowage_do_fire(unit, eid, remap, evt.offender) <| v

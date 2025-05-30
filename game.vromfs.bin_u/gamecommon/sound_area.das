@@ -3,7 +3,7 @@ require DagorMath
 require DagorSystem
 require DagorConsole
 require Mission
-require Level
+require level
 require DagorDebug3D
 require Unit
 require HeroManager
@@ -94,7 +94,7 @@ def is_on_edge(bgrid : BoolList;
     return true
   return false
 
-[es(tag=gameClient, tag=sound)]
+[es(tag=gameClient, tag=sound, no_order)]
 def sound_area_update_es(act : UpdateStageInfoAct;
                          sound_area__event_name : string;
                          var sound_area__event : SoundEvent&;
@@ -130,7 +130,7 @@ def draw_debug_mark(pos : float3;
   draw_cached_debug_line(dbgpoint0, dbgpoint1, color)
 
 
-[es(tag=gameClient, tag=sound, REQUIRE = renderDebug)]
+[es(tag=gameClient, tag=sound, REQUIRE = renderDebug, no_order)]
 def sound_area_debug_update_es(act : UpdateStageInfoAct;
                                sound_area__grid_stride : int;
                                sound_area__grid_step : float;

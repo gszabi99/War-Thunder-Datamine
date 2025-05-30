@@ -1007,7 +1007,10 @@
         { name: 'Oil T', type: 'temperature' },
         //Atmosphere
         { name: 'T', type: 'temperature', precision: 1 },
-        { name: 'P', type: 'pressure', precision: 2 }
+        { name: 'P', type: 'pressure', precision: 2 },
+        //Mass
+        { name: 'Mass', type: 'mass', precision: 1 },
+        { name: 'Fuel', type: 'mass', precision: 1 }
       ],
       current: [
       ],
@@ -3447,6 +3450,7 @@
       <td colspan="12"><b>Controls</b></td>  
       <td colspan="10"><b>Engine (single or 1st)</b></td>
       <td colspan="3"><b>Atm</b></td>
+      <td colspan="2"><b>Mass</b></td>
     </tr>
     <tr>
       <td>*</td>  
@@ -3485,10 +3489,14 @@
       <td>Oil T</td>
       <td>T</td>
       <td>P</td>
+      <td>Mass</td>
+      <td>Fuel</td>
     </tr>
     <tr>
       <td><input type="button" id="AddFlightParamsSnapshoot" value="+" onClick="addFlightParamsSnapshoot()"></td>  
       <td>Current</td>  
+      <td>N/A</td>
+      <td>N/A</td>
       <td>N/A</td>
       <td>N/A</td>
       <td>N/A</td>

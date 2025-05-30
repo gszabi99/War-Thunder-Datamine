@@ -45,8 +45,4 @@ register_for_user_change_event(user_change_event_handler)
 register_constrain_callback(on_constrain_callback)
 subscribe_to_relationships_change_events(on_relationships_change)
 
-
-if (is_platform_xbox) {
-  init_default(null)
-}
-
+init_default(null)

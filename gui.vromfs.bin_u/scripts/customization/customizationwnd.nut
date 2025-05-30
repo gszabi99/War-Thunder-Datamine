@@ -60,7 +60,7 @@ let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { USEROPT_USER_SKIN, USEROPT_TANK_CAMO_SCALE, USEROPT_TANK_CAMO_ROTATION,
   USEROPT_TANK_SKIN_CONDITION } = require("%scripts/options/optionsExtNames.nut")
-let { getUnitName, getUnitCost } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCost, isLoadedModelHighQuality } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
 let { get_user_skins_profile_blk } = require("blkGetters")
 let { decoratorTypes, getTypeByResourceType } = require("%scripts/customization/types.nut")
@@ -85,6 +85,10 @@ let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { hangar_play_presentation_anim, hangar_stop_presentation_anim, is_presentation_animation_playing } = require("hangarEventCommand")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
 dagui_propid_add_name_id("gamercardSkipNavigation")
@@ -428,8 +432,8 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     else
       this.updateMainGuiElements()
     if (hangar_get_loaded_unit_name() == this.unit.name
-        && !::is_loaded_model_high_quality())
-      ::check_package_and_ask_download("pkg_main", null, null, this, "air_in_hangar", this.goBack)
+        && !isLoadedModelHighQuality())
+      checkPackageAndAskDownload("pkg_main", null, null, this, "air_in_hangar", this.goBack)
   }
 
   function onEventDecalJobComplete(_params) {
@@ -975,7 +979,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.updateDecoratorActions(isInEditMode, decoratorType)
     this.scene.findObject("gamercard_div")["gamercardSkipNavigation"] = isInEditMode ? "yes" : "no"
-    ::update_gamercards()
+    updateGamercards()
   }
 
   function updateBackButton() {
@@ -1487,7 +1491,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     decorator.decoratorType.save(this.unit.name, false)
 
     let afterSuccessFunc = Callback( function() {
-      ::update_gamercards()
+      updateGamercards()
       this.decorMenu?.updateSelectedCategory(decorator)
       if (afterPurchDo)
         afterPurchDo()
@@ -1690,7 +1694,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!havePremium.value)
       return
 
-    ::update_gamercards()
+    updateGamercards()
     this.updateMainGuiElements()
   }
 
@@ -1845,7 +1849,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function buySkin(skinName, cost) {
     let afterSuccessFunc = Callback( function() {
-        ::update_gamercards()
+        updateGamercards()
         this.applySkin(skinName)
         this.updateMainGuiElements()
       }, this)
@@ -1915,7 +1919,7 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onTestFlight() {
-    if (!::g_squad_utils.canJoinFlightMsgBox({ isLeaderCanJoin = true }))
+    if (!canJoinFlightMsgBox({ isLeaderCanJoin = true }))
       return
 
     

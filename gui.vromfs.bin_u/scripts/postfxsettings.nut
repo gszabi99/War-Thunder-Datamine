@@ -4,7 +4,9 @@ from "%scripts/options/optionsCtors.nut" import create_option_slider, create_opt
 
 let DataBlock = require("DataBlock")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { move_mouse_on_child, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+
 let { format } = require("string")
 let { round } = require("math")
 let { setPostFxVignetteMultiplier, getPostFxVignetteMultiplier, getDefaultPostFxVignetteMultiplier,

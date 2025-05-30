@@ -4,6 +4,7 @@ let logX = require("%sqstd/log.nut")().with_prefix("[XBOX_PURCH] ")
 let {is_any_user_active} = require("%gdkLib/impl/user.nut")
 let {addTask} = require("%scripts/tasker.nut")
 let {isInHangar} = require("gameplayBinding")
+let { updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
 
 
 local callbackReturnFunc = null
@@ -13,7 +14,7 @@ function xbox_on_purchases_updated() {
   if (!is_online_available())
     return
 
-  addTask(::update_entitlements_limited(),
+  addTask(updateEntitlementsLimited(),
                      {
                        showProgressBox = true
                        progressBoxText = loc("charServer/checking")

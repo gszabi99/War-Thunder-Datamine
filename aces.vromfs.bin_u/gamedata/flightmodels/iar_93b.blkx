@@ -3138,7 +3138,7 @@
   },
   "AfterBurner0": {
     "volumetricAfterBurner": {
-      "name": "jet_blue_short_flat",
+      "name": "_jet_iar_93b",
       "maxHeight": 5.0,
       "minHeight": 3.0,
       "heightNoiseStrength": 0.4,
@@ -3193,17 +3193,23 @@
       "colorOverDepthNoiseSpeed": 40.0,
       "colorIntensityNoiseStrength": 3.0,
       "colorIntensityNoiseSpeed": 30.0,
+      "minAoABendingMult": 0.0,
+      "maxAoABendingMult": 1.4,
+      "minAoSBendingMult": 0.0,
+      "maxAoSBendingMult": 1.4,
       "preNominalEasingParams": {
         "animationTime": 2.5,
         "ascendingSmoothIntensityParams": 0.8,
         "flickerRelativTime": 0.33,
-        "flickerSpeed": 1.0
+        "flickerSpeed": 1.0,
+        "flickerIntensity": 1.0
       },
       "postNominalEasingParams": {
         "animationTime": 1.0,
         "ascendingSmoothIntensityParams": 1.0,
         "flickerRelativTime": 0.0,
-        "flickerSpeed": 0.0
+        "flickerSpeed": 0.0,
+        "flickerIntensity": 0.0
       },
       "lightProperties": {
         "color": [
@@ -3217,9 +3223,47 @@
         "attenuation": 0.8,
         "brightnessNoiseStrength": 0.1,
         "brightnessNoiseSpeed": 6.0,
-        "ignitionTextureIntensity": 0.1,
+        "ignitionTextureIntensityMin": 0.1,
+        "ignitionTextureIntensityMax": 0.1,
         "ignitionBrightnessNoiseStrength": 0.02,
         "ignitionBrightnessNoiseSpeed": 16.0
+      },
+      "NozzleFlames": {
+        "amountOfFlames": 6,
+        "radiusMult": 1.5,
+        "startOffset": -0.1,
+        "endOffsetAddition": 0.8,
+        "intensityMult": 4.0,
+        "innerCircleNoiseScale": 0.5,
+        "innerCircleNoiseStrength": 0.4,
+        "maskNoiseScale": 0.0,
+        "maskNoiseStrength": 0.0,
+        "minInnerCircleParamMult": 1.7,
+        "maxInnerCircleParamMult": 1.0,
+        "lengthNoiseSpeed": 10.0,
+        "lengthNoiseStrength": 0.3,
+        "uvNoiseMaskScale": 0.5,
+        "uvNoiseMaskStrength": 0.05,
+        "FlameMaskTextureOffset": {
+          "maskTextureOffset": [
+            30,
+            31,
+            26,
+            28,
+            29,
+            29
+          ]
+        },
+        "FlameRampTextureOffset": {
+          "rampTextureOffset": [
+            23,
+            23,
+            30,
+            30,
+            26,
+            26
+          ]
+        }
       }
     }
   }

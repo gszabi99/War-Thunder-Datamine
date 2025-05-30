@@ -1,3 +1,4 @@
+options indenting = 2
 module random shared
 require math
 require DagorRandom public

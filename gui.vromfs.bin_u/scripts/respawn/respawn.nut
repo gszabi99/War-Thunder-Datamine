@@ -48,7 +48,7 @@ let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpd
 let { setMousePointerInitialPos } = require("%scripts/controls/mousePointerInitialPos.nut")
 let { getEventSlotbarHint } = require("%scripts/slotbar/slotbarOverride.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
-let { showedUnit, setShowUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { showedUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { useTouchscreen } = require("%scripts/clientState/touchScreen.nut")
 let { guiStartMPStatScreenFromGame, getCurMpTitle
   guiStartMPStatScreen } = require("%scripts/statistics/mpStatisticsUtil.nut")
@@ -77,10 +77,11 @@ let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut
 let { register_command } = require("console")
 let { calcBattleRatingFromRank, reset_cur_mission_mode, clear_spawn_score, get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { isCrewAvailableInSession, isSpareAircraftInSlot,
-  isRespawnWithUniversalSpare, getWasReadySlotsMask, getDisabledSlotsMask
+  isRespawnWithUniversalSpare, getWasReadySlotsMask, getDisabledSlotsMask,
+  needToShowBadWeatherWarning, hasAirfieldRespawn
 } = require("%scripts/respawn/respawnState.nut")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
-let { isUnitUnlockedInSlotbar, getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
+let { isUnitUnlockedInSlotbar } = require("%scripts/slotbar/slotbarState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { openRespawnSpareWnd } = require("%scripts/respawn/respawnSpareWnd.nut")
@@ -96,7 +97,7 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { getCrewUnit, getCrew } = require("%scripts/crew/crew.nut")
 let { createAdditionalUnitsViewData, updateUnitSelection, isLockedUnit, setUnitUsed } = require("%scripts/respawn/additionalUnits.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { loadGameChatToObj, detachGameChatSceneData, hideGameChatSceneInput
 } = require("%scripts/chat/mpChat.nut")
 let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
@@ -107,7 +108,9 @@ let AdditionalUnits = require("%scripts/misCustomRules/ruleAdditionalUnits.nut")
 let { isGroundAndAirMission } = require("%scripts/missions/missionType.nut")
 let { clearStreaks } =  require("%scripts/streaks.nut")
 let { gui_load_mission_objectives } = require("%scripts/misObjectives/misObjectivesView.nut")
-
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { isGameModeWithSpendableWeapons } = require("%scripts/gameModes/gameModeManagerState.nut")
+let { isMissionWithBadWeatherConditions, getBadWeatherTooltipText } = require("%scripts/missions/missionsUtils.nut")
 let { getRoomEvent, getRoomUnitTypesMask, getNotAvailableUnitByBRText
 } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
@@ -122,11 +125,12 @@ function getCompoundedText(firstPart, secondPart, color) {
   return "".concat(firstPart, colorize(color, secondPart))
 }
 
-
 let respawnWndState = persist("respawnWndState", @() {
   lastCaAircraft = null
   needRaceFinishResults = false
   beforeFirstFlightInSession = false
+  unitSelectionChanged = false
+  firstSessionUnits = {}
 })
 let usedPlanes = persist("usedPlanes", @() {})
 
@@ -134,6 +138,7 @@ function onMissionStartedMp(_) {
   log("on_mission_started_mp - CLIENT")
   clearStreaks()
   respawnWndState.beforeFirstFlightInSession = true
+  respawnWndState.unitSelectionChanged = false
   clear_spawn_score()
   reset_cur_mission_mode()
   broadcastEvent("MissionStarted")
@@ -264,6 +269,8 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   function initScreen() {
     showObjById("tactical-map-box", true, this.scene)
     showObjById("tactical-map", true, this.scene)
+    needToShowBadWeatherWarning.set(isMissionWithBadWeatherConditions())
+
     if (this.curRespawnBase != null)
       selectRespawnBase(this.curRespawnBase.mapId)
 
@@ -352,7 +359,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.updateControlsAllowMask()
     this.updateVoiceChatWidget(!this.isRespawn)
     getContactsHandler()?.sceneShow(false)
-
 
     if(this.missionRules instanceof AdditionalUnits)
       this.scene.findObject("additionalUnitsNest").show(true)
@@ -662,8 +668,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function initAircraftSelect() {
-    if (showedUnit.value == null)
-      showedUnit(getAircraftByName(respawnWndState.lastCaAircraft))
 
     log($"initScreen aircraft {respawnWndState.lastCaAircraft} showedUnit {showedUnit.value}")
 
@@ -680,10 +684,14 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
           && (this.needRefreshSlotbarOnReinit || !this.slotbarWeak)) {
         this.slotbarInited = false
         this.beforeRefreshSlotbar()
-        this.createSlotbar(this.getSlotbarParams().__update({
+        let slotbarParams = this.getSlotbarParams()
+        this.createSlotbar(slotbarParams.__update({
           slotbarHintText = getEventSlotbarHint(getRoomEvent(), get_local_player_country())
           draggableSlots = false
           showCrewUnseenIcon = false
+          curSlotIdInCountry = (respawnWndState.beforeFirstFlightInSession && !respawnWndState.unitSelectionChanged)
+            ? this.loadFirstSessionUnitSlot(slotbarParams.singleCountry)
+            : -1
         }), "flight_menu_bgd")
         this.afterRefreshSlotbar()
         this.slotReadyAtHostMask = getCrewSlotReadyMask()
@@ -920,9 +928,16 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     if (this.slotbarInited)
       this.prevUnitAutoChangeTimeMsec = -1
-
+    respawnWndState.unitSelectionChanged = true
     this.slotbarInited = true
-    this.onAircraftUpdate()
+    this.updateUnitOptions()
+    this.checkReady()
+    let slotbar = this.getSlotbar()
+    if (slotbar) {
+      let unitName = this.getFirstSessionUnit(slotbar.getForcedCountry())
+      if (unitName)
+        showedUnit(getAircraftByName(unitName))
+    }
   }
 
   function updateWeaponsSelector(isUnitChanged) {
@@ -983,6 +998,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     selectRespawnBase(this.curRespawnBase.mapId)
     this.updateRespawnBaseTimerText()
     this.checkReady()
+    this.updateRespawnWeatherWarning()
   }
 
   function updateTacticalMapHint() {
@@ -1082,7 +1098,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     if (this.canChangeAircraft) {
       let crew = this.getCurCrew()
       setSelectedUnitInfo(unit.name, crew.idInCountry)
-      let rbData = respawnBases.getRespawnBasesData(unit)
+      let rbData = respawnBases.getRespawnBasesData(unit, needToShowBadWeatherWarning.get())
       this.curRespawnBase = rbData.selBase
       this.respawnBasesList = rbData.basesList
       this.haveRespawnBases = rbData.hasRespawnBases
@@ -1105,13 +1121,49 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       obj.show(show)
   }
 
+
+  function hasAirfieldSpawnPoint() {
+    if (!this.respawnBasesList.len())
+      return false
+    return this.respawnBasesList.findvalue(@(spawn) spawn.isSpawnIsAirfiled()) != null
+  }
+
+  function updateTopWeatherWarning() {
+    
+    let warningObj = this.scene.findObject("bad_weather_warning")
+    if (!warningObj?.isValid())
+      return
+    let hasBadWeather = needToShowBadWeatherWarning.get()
+    warningObj.show(hasBadWeather)
+    if (!hasBadWeather)
+      return
+    warningObj.tooltip = getBadWeatherTooltipText(needToShowBadWeatherWarning.get(), hasAirfieldRespawn.get())
+  }
+
+  function updateRespawnWeatherWarning() {
+    
+    let respawnOptionObj = this.scene.findObject("respawn_base")
+    if (!respawnOptionObj?.isValid())
+      return
+    let hasAirfield = hasAirfieldRespawn.get()
+    respawnOptionObj.tooltip = getBadWeatherTooltipText(
+        hasAirfield && needToShowBadWeatherWarning.get(),
+        hasAirfield,
+        hasAirfield && this.curRespawnBase?.isAutoSelected
+      )
+  }
+
+  function updateWeatherWarnings() {
+    this.updateTopWeatherWarning()
+    this.updateRespawnWeatherWarning()
+  }
+
   function updateUnitOptions() {
     let unit = this.getCurSlotUnit()
     local isUnitChanged = false
     if (unit) {
       isUnitChanged = unitNameForWeapons.get() != unit.name
       unitNameForWeapons.set(unit.name)
-      showedUnit(unit)
 
       if (isUnitChanged || this.isFirstUnitOptionsInSession)
         this.preselectUnitWeapon(unit)
@@ -1121,7 +1173,16 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
     this.updateWeaponsSelector(isUnitChanged)
     let isRespawnBasesChanged = this.updateRespawnBases()
-    this.updateOptions(RespawnOptUpdBit.UNIT_ID, { isRespawnBasesChanged })
+
+    let needToUpdateBadWeatherVariables = !!this.curRespawnBase && isRespawnBasesChanged
+    if (needToUpdateBadWeatherVariables)
+      hasAirfieldRespawn.set(this.hasAirfieldSpawnPoint())
+
+    this.updateOptions(RespawnOptUpdBit.UNIT_ID, {
+       isRespawnBasesChanged
+       isBadWeatherForAircraft = ES_UNIT_TYPE_AIRCRAFT == unit?.esUnitType && needToShowBadWeatherWarning.get()
+      })
+    this.updateWeatherWarnings()
     this.isFirstUnitOptionsInSession = false
     this.updateLeftPanelBlock()
     this.updateSkinOptionTooltipId()
@@ -1184,11 +1245,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.updateTacticalMapUnitType(false)
   }
 
-  function onAircraftUpdate() {
-    this.updateUnitOptions()
-    this.checkReady()
-  }
-
   function getSelWeapon() {
     let unit = this.getCurSlotUnit()
     if (unit)
@@ -1228,8 +1284,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       reqUnlockByClient("non_standard_skin")
 
     actionBarInfo.cacheActionDescs(requestData.name)
-
-    setShowUnit(getAircraftByName(requestData.name))
   }
 
   function doSelectAircraft() {
@@ -1300,7 +1354,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     }
 
     local bulletInd = 0;
-    let bulletGroups = this.weaponsSelectorWeak ? this.weaponsSelectorWeak.bulletsManager.getBulletsGroups() : []
+    let bulletGroups = this.weaponsSelectorWeak?.getBulletsGroups() ?? []
     foreach (_groupIndex, bulGroup in bulletGroups) {
       if (!bulGroup.active)
         continue
@@ -1439,7 +1493,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
     this.reset_mp_autostart_countdown()
     if (result == ERR_ACCEPT) {
       this.onApplyAircraft(this.lastRequestData)
-      ::update_gamercards() 
+      updateGamercards() 
       return
     }
 
@@ -1661,12 +1715,11 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
   }
 
   function checkCurAirAmmo(applyFunc) {
-    let bulletsManager = this.weaponsSelectorWeak?.bulletsManager
-    if (!bulletsManager)
+    if (!this.weaponsSelectorWeak)
       return true
 
-    if (bulletsManager.canChangeBulletsCount())
-      return bulletsManager.checkChosenBulletsCount(Callback(@() applyFunc(), this))
+    if (this.weaponsSelectorWeak.canChangeBulletsCount())
+      return this.weaponsSelectorWeak.checkChosenBulletsCount(Callback(@() applyFunc(), this))
 
     let air = this.getCurSlotUnit()
     if (!air)
@@ -1685,8 +1738,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       }
     }
 
-
-    let bulletGroups = bulletsManager.getBulletsGroups()
+    let bulletGroups = this.weaponsSelectorWeak.getBulletsGroups()
     foreach (_groupIndex, bulGroup in bulletGroups) {
       if (!bulGroup.active)
         continue
@@ -1703,7 +1755,7 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
         zero = true
     }
 
-    if (!zero && !::is_game_mode_with_spendable_weapons())
+    if (!zero && !isGameModeWithSpendableWeapons())
       return true
 
     if (textArr.len() && (zero || !get_gui_option(USEROPT_SKIP_WEAPON_WARNING))) { 
@@ -1831,7 +1883,6 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
 
   function doRespawn() {
     log("doRespawnPlayer called")
-    respawnWndState.beforeFirstFlightInSession = false
     this.doRespawnCalled = doRespawnPlayer()
     if (!this.doRespawnCalled) {
       this.onApply()
@@ -1839,6 +1890,9 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return
     }
 
+    if (respawnWndState.beforeFirstFlightInSession)
+      this.saveFirstSessionUnit()
+    respawnWndState.beforeFirstFlightInSession = false
     broadcastEvent("PlayerSpawn", this.lastRequestData)
     if (this.lastRequestData) {
       if (this.lastRequestData.spareUid != "") {
@@ -2533,6 +2587,42 @@ gui_handlers.RespawnHandler <- class (gui_handlers.MPStatistics) {
       return
 
     this.getSlotbar().selectCrew(slotsData[0].crew.idInCountry)
+  }
+
+  function getFirstSessionUnit(country) {
+    return respawnWndState.firstSessionUnits?[country].unit
+  }
+
+  function loadFirstSessionUnitSlot(country) {
+    if (!this.haveSlotbar)
+      return -1
+
+    let unit = this.getFirstSessionUnit(country)
+    if (unit == null)
+      return -1
+    let crewsList = getCrewsListByCountry(country)
+    foreach (crew in crewsList)
+      if (crew?.aircraft == unit)
+        return crew.idInCountry
+    return -1
+  }
+
+  function saveFirstSessionUnit() {
+    if (!this.haveSlotbar)
+      return
+    let slotbar = this.getSlotbar()
+    let country = slotbar?.getForcedCountry()
+    if (!slotbar || !country)
+      return
+
+    let crewsList = getCrewsListByCountry(country)
+    foreach (crew in crewsList)
+      if (crew.idInCountry == slotbar.curSlotIdInCountry) {
+        respawnWndState.firstSessionUnits[country] <- {
+          unit = crew.aircraft
+        }
+        break
+      }
   }
 }
 

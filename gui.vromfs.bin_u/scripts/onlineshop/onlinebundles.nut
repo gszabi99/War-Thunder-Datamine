@@ -4,7 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let subscriptions = require("%sqStdLibs/helpers/subscriptions.nut")
-let { ps4RegionName, isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { ps4RegionName, isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { GUI } = require("%scripts/utils/configs.nut")
 let { convertBlk } = require("%sqstd/datablock.nut")
 
@@ -67,7 +67,7 @@ subscriptions.addListenersWithoutEnv({
 }, g_listener_priority.CONFIG_VALIDATION)
 
 let getBundlesBlockName = @() isPlatformSony ? ps4RegionName()
-  : isPlatformXboxOne ? "xbox"
+  : isPlatformXbox ? "xbox"
   : epic_is_running() ? "epic"
   : "guid"
 

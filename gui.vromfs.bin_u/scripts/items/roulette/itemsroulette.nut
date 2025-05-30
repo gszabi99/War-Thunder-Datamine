@@ -425,7 +425,7 @@ function createItemsMarkup(completeArray) {
       slotRes.insert(0,
         LayersIcon.genDataFromLayer(
           { x = $"{offset * slotIdx}@itemWidth", w = "1@itemWidth" },
-          item?.reward?.layout ?? item?.layout))
+          item?.reward.layout ?? item?.layout))
 
     let layerCfg = LayersIcon.findLayerCfg("roulette_slot")
     local width = 1

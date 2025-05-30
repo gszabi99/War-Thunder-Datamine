@@ -100,7 +100,10 @@ function getPresetWeaponsDescArray(unit, weaponInfoData, params) {
         presetsNames.names.append({ presetName })
         continue
       }
-      let presetParams = getWeaponExtendedInfo(weapon, weapon.weaponType, unit, params?.curEdiff)
+      let presetParams = getWeaponExtendedInfo(weapon, unit, {
+        weaponType = weapon.weaponType
+        ediff = params?.curEdiff
+      })
       presetsWeapons.append({ presetName, presetParams })
     }
   }
@@ -647,14 +650,23 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
 }
 
 function updateWeaponTooltip(obj, unit, item, handler, params = {}, effect = null) {
+  let {
+    markupFileName = "%gui/weaponry/weaponTooltip.tpl"
+    checkItemBeforeGetDescFn = null
+  } = params
+
   let self = callee()
   let descTbl = getItemDescTbl(unit, item, params, effect,
     function(effect_, ...) {
-      if (checkObj(obj) && obj.isVisible())
-        self(obj, unit, item, handler, params, effect_)
+      if (checkObj(obj) && obj.isVisible()) {
+        let itemAndEffectToPass = checkItemBeforeGetDescFn ? checkItemBeforeGetDescFn(item, effect_)
+          : { item , effect = effect_ }
+
+        if (itemAndEffectToPass.item)
+          self(obj, unit, itemAndEffectToPass.item, handler, params, itemAndEffectToPass.effect)
+      }
     })
 
-  let markupFileName = params?.markupFileName ?? "%gui/weaponry/weaponTooltip.tpl"
   let curExp = shop_get_module_exp(unit.name, item.name)
   let is_researched = !isResearchableItem(item) || ((item.name.len() > 0) && isModResearched(unit, item))
   let is_researching = isModInResearch(unit, item)

@@ -80,14 +80,12 @@
         },
         "designatedTargetSearch": {
           "designateTargetUnderCue": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "cue",
+            "self": true
           },
           "designateActiveDetectedTarget": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "target",
+            "self": true
           }
         },
         "setTrackMode": {
@@ -233,7 +231,7 @@
         },
         "designatedTargetTws": {
           "designateActiveDetectedTarget": {
-            "type": 0,
+            "type": "target",
             "self": true,
             "sensorIndex": 0
           }
@@ -960,7 +958,10 @@
           "stateTo": "checkDesignationType0",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": [
+                "target",
+                "cue"
+              ]
             }
           }
         },
@@ -3130,19 +3131,6 @@
             "setDetectedTargetActive": {}
           }
         },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "sensorIndex": 1
-            }
-          }
-        },
         "centerZone": {
           "command": "directionAxesReset",
           "actions": {
@@ -3616,6 +3604,7 @@
       "mainBeamNotchWidth": 40.0,
       "mainBeamNotchMaxElevation": 3.5,
       "track": true,
+      "targetId": true,
       "distance": {
         "presents": true,
         "minValue": 500.0,
@@ -3644,6 +3633,7 @@
       "absDopplerSpeed": false,
       "mainBeamDopplerSpeed": false,
       "track": true,
+      "targetId": true,
       "distance": {
         "presents": true,
         "minValue": 200.0,
@@ -3763,5 +3753,28 @@
     "irstHmdLock": {
       "scanPattern1": "irstHmdLock"
     }
-  }
+  },
+  "targetTypeId": [
+    {
+      "name": "hud/small",
+      "sizeRange": [
+        0.0,
+        5.0
+      ]
+    },
+    {
+      "name": "hud/medium",
+      "sizeRange": [
+        5.0,
+        25.0
+      ]
+    },
+    {
+      "name": "hud/large",
+      "sizeRange": [
+        25.0,
+        500.0
+      ]
+    }
+  ]
 }

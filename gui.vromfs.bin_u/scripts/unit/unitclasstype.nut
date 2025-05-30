@@ -163,6 +163,14 @@ enums.addTypes(unitClassType, {
     unitTypeCode = ES_UNIT_TYPE_SHIP
     checkOrder = checkOrder++
   }
+
+
+
+
+
+
+
+
 },
 function() {
   this.expClassName = this.code == EUCT_SPAA ? this.name.toupper() : this.name

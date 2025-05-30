@@ -16,6 +16,12 @@ let AMMO = {
   WEAPON       = 1
 }
 
+enum bulletsAmountState {
+  READY
+  HAS_UNALLOCATED
+  LOW_AMOUNT
+}
+
 function getAmmoAmount(unit, ammoName, ammoType) {
   if (!ammoName)
     return 0
@@ -121,6 +127,7 @@ function getUnitNotReadyAmmoList(unit, lastWeapon, readyStatus = UNIT_WEAPONS_WA
 
 return {
   AMMO
+  bulletsAmountState
   getUnitNotReadyAmmoList
   getAmmoAmount
   getAmmoMaxAmount

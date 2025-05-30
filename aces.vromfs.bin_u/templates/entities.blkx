@@ -12,7 +12,7 @@
     "%wtlibs/templates/fx.blk",
     "%wtlibs/templates/damage_model.blk",
     "%wtlibs/templates/microdetail.blk",
-    "%gameBase/templates/humans.entities.blk"
+    "%wtlibs/templates/render/ssss.blk"
   ],
   "backmodel_spawn_point": {
     "_use": "spawn_point",
@@ -1303,6 +1303,32 @@
       "chimney_exhaust": 0.15
     }
   },
+  "game_object_creator": {
+    "transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "object_creator:tag": {},
+    "object_creator__createdEid:eid": {}
+  },
   "ad_water_supply_medium": {
     "_use": "ecs_fx",
     "ecs_fx__res": "water_flow_stream_medium_cmps_fx",
@@ -1522,7 +1548,7 @@
   "asset_manager": {
     "_tags": "render",
     "_use": "base_asset_manager",
-    "asset__applicationBlkPath": "assetsImport/application_wt.blk"
+    "asset__applicationBlkPath": "%gameBase/../../assetsImport/application_wt.blk"
   },
   "burav": {
     "_use": [
@@ -1973,6 +1999,39 @@
       "value": 0
     }
   },
+  "slave_unit_preview": {
+    "slave_unit__transform": [
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "slave_unit_preview__radius": 250.0,
+    "slave_unit_preview__canSpawn": false,
+    "slave_unit_preview__availableAngles": [
+      -30.0,
+      30.0
+    ],
+    "nextCheckGridObjectsTime": 0.0,
+    "checkGridObjectsTimeInterval": 0.5,
+    "slave_unit_preview__collObjOffset": 0.5
+  },
   "ammo_box": {
     "_use": [
       "replicating",
@@ -1999,9 +2058,5 @@
     "_use": "ammo_box",
     "ri_extra__name": "ammunition_box_construction_99x50x27_static",
     "ammo_box__triggerGroupNo": 4
-  },
-  "tank": {
-    "_override": true,
-    "_use": "still_obstacle"
   }
 }

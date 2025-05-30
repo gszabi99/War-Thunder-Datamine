@@ -2214,11 +2214,6 @@
     "multifunctionDisplays": {
       "display": [
         {
-          "monoDisplayColor": [
-            0.37,
-            0.45,
-            0.4
-          ],
           "textureArea": [
             0.0,
             0.0,
@@ -2517,20 +2512,92 @@
               }
             },
             {
-              "type": "map"
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
             },
             {
-              "type": "target_tracking",
+              "type": "target_tracking_bw",
               "turretIdx": 0
             }
           ]
         },
         {
-          "monoDisplayColor": [
-            0.37,
-            0.45,
-            0.4
-          ],
           "textureArea": [
             0.5,
             0.5,
@@ -2540,11 +2607,8 @@
           "cameraFromShell": true,
           "page": [
             {
-              "type": "target_tracking",
+              "type": "target_tracking_bw",
               "turretIdx": 0
-            },
-            {
-              "type": "map"
             },
             {
               "type": "devices",
@@ -3278,7 +3342,7 @@
               "bullets": 30,
               "bulletsCartridge": 1,
               "external": true,
-              "separate": false
+              "separate": true
             },
             {
               "trigger": "countermeasures",
@@ -3287,7 +3351,7 @@
               "bullets": 15,
               "bulletsCartridge": 1,
               "external": true,
-              "separate": false
+              "separate": true
             }
           ]
         }
@@ -4638,39 +4702,41 @@
   },
   "AfterBurner0": {
     "volumetricAfterBurner": {
-      "name": "jet_blue_modern_f20",
-      "maxHeight": 10.0,
-      "minHeight": 7.0,
+      "name": "_jet_f_20_f404",
+      "maxHeight": 11.0,
+      "minHeight": 8.0,
       "heightNoiseStrength": 0.0,
       "heightNoiseSpeed": 20.0,
-      "maxRadius": 0.32,
-      "minRadius": 0.35,
-      "maxBaseRadius": 0.4,
+      "maxRadius": 0.38,
+      "minRadius": 0.3,
+      "maxBaseRadius": 0.38,
       "minBaseRadius": 0.35,
-      "relativeCylinderHeightMax": 0.36,
-      "relativeCylinderHeightMin": 0.36,
+      "relativeCylinderHeightMax": 0.17,
+      "relativeCylinderHeightMin": 0.17,
       "outerCylinderAbsorptionMax": 0.5,
       "outerCylinderAbsorptionMin": 0.7,
-      "outerCylinderHeightFadeMax": 7.5,
-      "outerCylinderHeightFadeMin": 5.0,
-      "tailHeightFadeMax": 2.0,
+      "outerCylinderHeightFadeMax": 5.0,
+      "outerCylinderHeightFadeMin": 3.0,
+      "tailHeightFadeMax": 3.0,
       "tailHeightFadeMin": 0.2,
       "outerCylinderHeightFadeNoiseStrength": 2.0,
       "outerCylinderHeightFadeNoiseSpeed": 10.0,
-      "minOuterCylinderRadius": 0.4,
-      "maxOuterCylinderRadius": 0.42,
-      "absorption": 1.0,
+      "minOuterCylinderRadius": 0.3,
+      "maxOuterCylinderRadius": 0.35,
+      "absorption": 1.5,
       "colorIntensityMax": 10.0,
       "colorIntensityMin": 2.0,
       "colorOverHeightMult": 0.5,
-      "colorOverDepthMult": 3.0,
-      "colorOverRadiusMult": 6.0,
+      "colorOverDepthMult": 1.0,
+      "colorOverRadiusMult": 2.0,
       "colorOverRadiusFadeOverHeight": 2.0,
       "maxRingOffset": 0.0,
       "minRingOffset": 20.0,
       "ringAbsorption": 1.2,
-      "maxRingCount": 17,
+      "maxRingCount": 18,
       "minRingCount": 14,
+      "minStartingRingHeight": 1.318,
+      "maxStartingRingHeight": 0.849,
       "ringIntensityMin": 0.0,
       "ringIntensityMax": 1.0,
       "ringIntensityNoiseStrength": 0.0,
@@ -4678,10 +4744,10 @@
       "ringOffsetNoiseStrength": 1.0,
       "ringOffsetNoiseSpeed": 20.0,
       "rampTextureOffset": 0,
-      "radiusNoiseStrength": 0.06,
-      "radiusNoiseSpeed": 20.0,
-      "shakeNoiseStrength": 0.03,
-      "shakeNoiseSpeed": 30.0,
+      "radiusNoiseStrength": 0.1,
+      "radiusNoiseSpeed": 10.0,
+      "shakeNoiseStrength": 0.05,
+      "shakeNoiseSpeed": 10.0,
       "ringAngleFadeMult": 0.7,
       "colorOverHeightNoiseStrength": 0.1,
       "colorOverHeightNoiseSpeed": 10.0,
@@ -4689,35 +4755,79 @@
       "colorOverRadiusNoiseSpeed": 10.0,
       "colorOverDepthNoiseStrength": 0.03,
       "colorOverDepthNoiseSpeed": 10.0,
-      "colorIntensityNoiseStrength": 4.0,
+      "colorIntensityNoiseStrength": 2.0,
       "colorIntensityNoiseSpeed": 30.0,
-      "minStartingRingHeight": 1.7,
-      "maxStartingRingHeight": 1.7,
-      "ringIntensity": 2.0,
-      "ringFrequency": 11.3097,
+      "minAoABendingMult": 0.0,
+      "maxAoABendingMult": 1.4,
+      "minAoSBendingMult": 0.0,
+      "maxAoSBendingMult": 1.4,
       "preNominalEasingParams": {
-        "animationTime": 2.5,
-        "ascendingSmoothIntensityParams": 0.5
+        "animationTime": 3.0,
+        "ascendingSmoothIntensityParams": 0.5,
+        "flickerRelativTime": 0.33,
+        "flickerSpeed": 1.0,
+        "flickerIntensity": 1.0
       },
       "postNominalEasingParams": {
         "animationTime": 1.5,
-        "ascendingSmoothIntensityParams": 1.0
+        "ascendingSmoothIntensityParams": 1.0,
+        "flickerRelativTime": 0.0,
+        "flickerSpeed": 0.0,
+        "flickerIntensity": 0.0
       },
       "lightProperties": {
         "color": [
           1.0,
-          0.889273,
-          0.686275
+          0.431373,
+          0.392157
         ],
         "angle": 1.0,
-        "brightness": 20.0,
+        "brightness": 10.0,
         "radius": 20.0,
         "attenuation": 0.8,
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
-        "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.1,
+        "ignitionTextureIntensityMin": 0.005,
+        "ignitionTextureIntensityMax": 0.005,
+        "ignitionBrightnessNoiseStrength": 0.005,
         "ignitionBrightnessNoiseSpeed": 16.0
+      },
+      "NozzleFlames": {
+        "amountOfFlames": 6,
+        "radiusMult": 1.0,
+        "startOffset": -0.15,
+        "endOffsetAddition": 1.5,
+        "intensityMult": 7.0,
+        "innerCircleNoiseScale": 0.5,
+        "innerCircleNoiseStrength": 0.4,
+        "maskNoiseScale": 0.0,
+        "maskNoiseStrength": 0.0,
+        "minInnerCircleParamMult": 1.9,
+        "maxInnerCircleParamMult": 1.0,
+        "lengthNoiseSpeed": 10.0,
+        "lengthNoiseStrength": 0.1,
+        "uvNoiseMaskScale": 0.5,
+        "uvNoiseMaskStrength": 0.02,
+        "FlameMaskTextureOffset": {
+          "maskTextureOffset": [
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "FlameRampTextureOffset": {
+          "rampTextureOffset": [
+            25,
+            25,
+            23,
+            30,
+            30,
+            30
+          ]
+        }
       }
     }
   },

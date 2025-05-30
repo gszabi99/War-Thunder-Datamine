@@ -1,0 +1,90 @@
+{
+  "tdiv": {
+    "id": "page_content",
+    "size": "pw, ph",
+    "flow": "vertical",
+    "margin-top": "2@blockInterval",
+    "tdiv": [
+      {
+        "flow": "horizontal",
+        "size": "pw, 8@blockInterval",
+        "position": "relative",
+        "bgcolor": "@evenTrColor",
+        "margin-bottom": "2@blockInterval",
+        "textareaNoTab": {
+          "id": "total_received",
+          "margin-left": "1@blockInterval",
+          "valign": "center",
+          "overlayTextColor": "active"
+        },
+        "tdiv": {
+          "size": "450@sf/@pf, ph",
+          "position": "absolute",
+          "left": "pw-w-1@blockInterval",
+          "popupFilter": {
+            "margin-right": "1@blockInterval",
+            "valign": "center"
+          },
+          "EditBox": {
+            "id": "filter_edit_box",
+            "width": "fw",
+            "on_change_value": "applySkinFilter",
+            "on_cancel_edit": "onFilterCancel",
+            "text": "",
+            "edit-hint": "#contacts/search_placeholder",
+            "valign": "center"
+          }
+        }
+      },
+      {
+        "id": "content",
+        "position": "relative",
+        "size": "pw, fh",
+        "flow": "horizontal",
+        "profileContentLeft": {
+          "id": "treeSkinsNest"
+        },
+        "profileContentSeparator": {},
+        "profileContentRight": {
+          "position": "relative",
+          "size": "fw, ph",
+          "flow": "vertical",
+          "tdiv": [
+            {
+              "id": "skin_desc",
+              "flow": "vertical",
+              "size": "pw, 0.33ph",
+              "overflow": "auto"
+            },
+            {
+              "position": "relative",
+              "size": "pw, 2@sf/@pf",
+              "background-color": "@separatorColor",
+              "margin": "0, 6@sf/@pf, 0, 19@sf/@pf"
+            }
+          ],
+          "listbox": {
+            "id": "skins_list",
+            "size": "pw, fh",
+            "margin-top": "1@blockInterval",
+            "flow": "h-flow",
+            "moveX": "linear",
+            "moveY": "closest",
+            "navigatorShortcuts": "yes",
+            "move-only-hover": "yes",
+            "on_select": "onSkinSelect"
+          }
+        }
+      }
+    ],
+    "textareaNoTab": {
+      "id": "empty_text",
+      "overlayTextColor": "active",
+      "normalFont": "yes",
+      "position": "absolute",
+      "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+      "text": "#profile/skins/filterStrong",
+      "display": "hide"
+    }
+  }
+}

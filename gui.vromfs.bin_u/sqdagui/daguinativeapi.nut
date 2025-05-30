@@ -9,7 +9,6 @@ return {
   get_gui_scene = r?["get_gui_scene"] ?? @() null
   get_cur_gui_scene = r?["get_cur_gui_scene"] ?? @() null
   get_main_gui_scene = r?["get_main_gui_scene"] ?? @() null
-
   get_dagui_mouse_cursor_pos = r?["get_dagui_mouse_cursor_pos"] ?? @(...) ""
   get_dagui_mouse_cursor_pos_RC = r?["get_dagui_mouse_cursor_pos_RC"] ?? @(...) ""
   get_dagui_post_include_css_str = r?["get_dagui_post_include_css_str"] ?? @(...) ""
@@ -27,4 +26,5 @@ return {
   del_script_gui_behaviour_events = r?["del_script_gui_behaviour_events"] ?? @(...) ""
   get_button_name = r?["get_button_name"] ?? @(...) null
   DaGuiObject = r?["DaGuiObject"] ?? class {isValid = @() false}
+  is_mouse_last_time_used = r["is_mouse_last_time_used"]
 }

@@ -7,10 +7,10 @@ let events = getGlobalModule("events")
 let { setTranspRecursive } = require("%sqDagui/guiBhv/guiBhvUtils.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { toPixels } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_obj, toPixels } = require("%sqDagui/daguiUtil.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { move_mouse_on_obj, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
 let { canAssignInSlot, setUnit } = require("%scripts/slotbar/slotbarPresetsByVehiclesGroups.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -26,15 +26,14 @@ let { USEROPT_BIT_CHOOSE_UNITS_TYPE, USEROPT_BIT_CHOOSE_UNITS_RANK,
 let { isInSessionRoom, canChangeCrewUnits } = require("%scripts/matchingRooms/sessionLobbyState.nut")
 let { buildUnitSlot, fillUnitSlotTimers, getSlotObj, isUnitEnabledForSlotbar
 } = require("%scripts/slotbar/slotbarView.nut")
-let { getCrewsListByCountry, getBestTrainedCrewIdxForUnit
-} = require("%scripts/slotbar/slotbarState.nut")
+let { getBestTrainedCrewIdxForUnit } = require("%scripts/slotbar/slotbarStateData.nut")
 let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")
 let { getCurrentGameMode, getCurrentGameModeEdiff
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { crewSpecTypes, getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { getCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let { getSessionLobbyMissionNameLoc } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 
 function isUnitInCustomList(unit, params) {
@@ -230,7 +229,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
     this.unitsArray = this.sortUnitsList(this.unitsArray)
 
     this.unitsList = []
-    if (this.slotbarWeak?.ownerWeak?.canShowShop && this.slotbarWeak.ownerWeak.canShowShop())
+    if (this.slotbarWeak?.ownerWeak.canShowShop && this.slotbarWeak.ownerWeak.canShowShop())
       this.unitsList.append(SEL_UNIT_BUTTON.SHOP)
     let needEmptyCrewButton = !this.isSelectByGroups && ((this.crew?.aircraft ?? "") != "")
       && (!hasDefaultUnitsInCountry(this.country) || this.busyUnitsCount >= MIN_NON_EMPTY_SLOTS_IN_COUNTRY)
@@ -356,7 +355,7 @@ local class SelectUnitHandler (gui_handlers.BaseGuiHandlerWT) {
 
   function goToShop() {
     this.goBack()
-    if (this.slotbarWeak?.ownerWeak?.openShop) {
+    if (this.slotbarWeak?.ownerWeak.openShop) {
       let unit = this.getCurCrewUnit()
       this.slotbarWeak.ownerWeak.openShop(unit?.unitType)
     }

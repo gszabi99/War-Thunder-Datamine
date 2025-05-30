@@ -2,9 +2,8 @@ from "%rGui/globals/ui_library.nut" import *
 
 let { interop } = require("%rGui/globals/interop.nut")
 let { fabs } = require("%sqstd/math.nut")
-
 let interopGet = require("interopGen.nut")
-
+let { gunState } = require("shipStateConsts.nut")
 
 let shellHitDamageEvents = {
   hitEventsCount = Watched(0)
@@ -15,7 +14,6 @@ let shellHitDamageEvents = {
 
 let gunStatesFirstRow = []
 let gunStatesSecondRow = []
-
 
 let shipState = {
   speed = Watched(0)
@@ -74,40 +72,59 @@ let shipState = {
   shellHitDamageEvents
   heroCoverPartsRelHp = mkWatched(persist, "shipHeroCoverPartsRelHp", [])
   isCoverDestroyed = Watched(false)
+  reloadingGunsFirstRow = Watched(0)
+  reloadingGunsSecondRow = Watched(0)
+  showReloadedSignalFirstRow = Watched(false)
+  showReloadedSignalSecondRow = Watched(false)
+  burningParts = Watched({})
 }
 
 function isDiff(time1, time2) {
-  return fabs(time1 - time2) >= 0.02;
+  return fabs(time1 - time2) >= 0.02
 }
 
-interop.updateShipGunStatus <- function (index, row, state, inDeadZone, startTime, endTime, gunProgress) {
-  if (row == 1) {
-    while (index >= gunStatesFirstRow.len()) {
-      gunStatesFirstRow.append(Watched(
-        {state = -1, inDeadZone = -1, startTime = 1, endTime = 1, gunProgress = 1}
-      ))
-    }
-    if (gunStatesFirstRow[index].value.state != state ||
-          gunStatesFirstRow[index].value.inDeadZone != inDeadZone ||
-          isDiff(gunStatesFirstRow[index].value.gunProgress, gunProgress) ||
-          isDiff(gunStatesFirstRow[index].value.startTime, startTime) ||
-          isDiff(gunStatesFirstRow[index].value.endTime, endTime)) {
-        gunStatesFirstRow[index]({state = state, inDeadZone = inDeadZone, startTime = startTime, endTime = endTime, gunProgress = gunProgress})
-    }
+function isGunActive(gun) {
+  return gun.inDeadZone == false && (gun.state == gunState.NORMAL || gun.state == gunState.OVERHEAT) && gun.bulletsCount > 0
+}
+
+function isActiveAndReloading(gun) {
+  return isGunActive(gun) && gun.gunProgress < 1
+}
+
+function updateReloadingGunsState(oldGunState, newGunState, row) {
+  if (oldGunState.state == -1)
+    return
+  let reloadingAlarmRow = row == 1 ? shipState.showReloadedSignalFirstRow : shipState.showReloadedSignalSecondRow
+  reloadingAlarmRow.set(false)
+
+  let isOldActiveAndReloading = isActiveAndReloading(oldGunState)
+  let isNewActiveAndReloading = isActiveAndReloading(newGunState)
+  if (isOldActiveAndReloading == isNewActiveAndReloading)
+    return
+  let reloadingRow = row == 1 ? shipState.reloadingGunsFirstRow : shipState.reloadingGunsSecondRow
+  reloadingRow.set(reloadingRow.get() + (isNewActiveAndReloading ? 1 : -1))
+  if (reloadingRow.get() != 0 || !isGunActive(newGunState) || oldGunState.inDeadZone)
+    return
+  reloadingAlarmRow.set(true)
+}
+
+interop.updateShipGunStatus <- function (index, row, state, inDeadZone, startTime, endTime, gunProgress, bulletsCount) {
+  let gunStatesRow = row == 1 ? gunStatesFirstRow : gunStatesSecondRow
+  while (index >= gunStatesRow.len()) {
+    gunStatesRow.append(Watched(
+      {state = -1, inDeadZone = -1, startTime = 1, endTime = 1, gunProgress = 1, bulletsCount = 1}
+    ))
   }
-  else if (row == 2) {
-    while (index >= gunStatesSecondRow.len()) {
-      gunStatesSecondRow.append(Watched(
-        {state = -1, inDeadZone = -1, startTime = 1, endTime = 1, gunProgress = 1}
-      ))
-    }
-    if (gunStatesSecondRow[index].value.state != state ||
-          gunStatesSecondRow[index].value.inDeadZone != inDeadZone ||
-          isDiff(gunStatesSecondRow[index].value.gunProgress, gunProgress) ||
-          isDiff(gunStatesSecondRow[index].value.startTime, startTime) ||
-          isDiff(gunStatesSecondRow[index].value.endTime, endTime)) {
-        gunStatesSecondRow[index]({state = state, inDeadZone = inDeadZone, startTime = startTime, endTime = endTime,  gunProgress = gunProgress})
-    }
+  if (gunStatesRow[index].value.state != state ||
+      gunStatesRow[index].value.inDeadZone != inDeadZone ||
+      isDiff(gunStatesRow[index].value.gunProgress, gunProgress) ||
+      isDiff(gunStatesRow[index].value.startTime, startTime) ||
+      isDiff(gunStatesRow[index].value.endTime, endTime) ||
+      isDiff(gunStatesRow[index].value.bulletsCount, bulletsCount)){
+    let oldStatus = gunStatesRow[index].value
+    let newStatus = {state, inDeadZone, startTime, endTime, gunProgress, bulletsCount}
+    updateReloadingGunsState(oldStatus, newStatus, row)
+    gunStatesRow[index](newStatus)
   }
 }
 

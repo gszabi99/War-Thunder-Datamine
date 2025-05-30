@@ -1,6 +1,6 @@
 from "%scripts/dagui_natives.nut" import wp_get_modification_cost, get_modification_level, shop_get_module_exp, wp_get_modification_max_count, shop_get_module_research_status
 from "%scripts/dagui_library.nut" import *
-from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem
+from "%scripts/weaponry/weaponryConsts.nut" import weaponsItem, MAX_SPARE_AMOUNT
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
@@ -19,11 +19,10 @@ let { getLastWeapon,
 let { canBuyMod, canResearchMod, isModUpgradeable, isReqModificationsUnlocked,
   getModificationByName, isModificationEnabled } = require("%scripts/weaponry/modificationInfo.nut")
 let { getSavedBullets } = require("%scripts/weaponry/savedWeaponry.nut")
-
-const MAX_SPARE_AMOUNT = 100
+let { getUpgradeTypeByItem } = require("%scripts/weaponry/weaponryTypes.nut")
 
 function getItemAmount(unit, item) {
-  return ::g_weaponry_types.getUpgradeTypeByItem(item).getAmount(unit, item)
+  return getUpgradeTypeByItem(item).getAmount(unit, item)
 }
 
 function isResearchableItem(item) {
@@ -42,7 +41,7 @@ function canResearchItem(unit, item, checkCurrent = true) {
 }
 
 function getItemCost(unit, item) {
-  return ::g_weaponry_types.getUpgradeTypeByItem(item).getCost(unit, item)
+  return getUpgradeTypeByItem(item).getCost(unit, item)
 }
 
 function isModStatusResearched(unit, mod) {
@@ -188,7 +187,7 @@ function getByCurBundle(unit, bundle, func, defValue = "") {
 }
 
 function getItemUnlockCost(unit, item) {
-  return ::g_weaponry_types.getUpgradeTypeByItem(item).getUnlockCost(unit, item)
+  return getUpgradeTypeByItem(item).getUnlockCost(unit, item)
 }
 
 function isCanBeDisabled(item) {
@@ -308,7 +307,6 @@ function getAllModsCost(unit, open = false) {
 }
 
 return {
-  MAX_SPARE_AMOUNT
   getItemAmount         = getItemAmount
   isResearchableItem    = isResearchableItem
   canBeResearched       = canBeResearched

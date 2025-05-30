@@ -4,6 +4,7 @@ from "%scripts/dagui_library.nut" import *
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { getCrewsList } = require("%scripts/slotbar/crewsList.nut")
 
 local unitsStateCached = null
 
@@ -19,7 +20,7 @@ function getMyCrewUnitsState(country = null) {
     rank = 0
   }
 
-  foreach (c in ::g_crews_list.getCrewsList()) {
+  foreach (c in getCrewsList()) {
     if (!("crews" in c))
       continue
 
@@ -48,7 +49,7 @@ function getMyCrewUnitsState(country = null) {
 
 function getBrokenUnits() {
   let brokenUnits = {}
-  foreach (c in ::g_crews_list.getCrewsList()) {
+  foreach (c in getCrewsList()) {
     if (!("crews" in c))
       continue
     foreach (crew in c.crews)

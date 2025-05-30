@@ -79,7 +79,7 @@ function scrollbar(scroll_handler, options={}) {
 
     let knob = Knob.__merge({
       size = [flex(elemSize), flex(elemSize)]
-      color = Knob.colorCalc(stateFlags.value)
+      color = Knob.colorCalc(stateFlags.get())
       key = "knob"
     })
 

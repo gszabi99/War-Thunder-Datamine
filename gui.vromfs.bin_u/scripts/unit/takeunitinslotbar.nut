@@ -1,7 +1,7 @@
 from "%scripts/dagui_library.nut" import *
 
 let { checkSquadUnreadyAndDo } = require("%scripts/squads/squadUtils.nut")
-let { isUnitInSlotbar } = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 
 let guiStartSelectingCrew = require("%scripts/slotbar/guiStartSelectingCrew.nut")

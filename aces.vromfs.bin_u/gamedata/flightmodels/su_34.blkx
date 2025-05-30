@@ -2590,11 +2590,87 @@
               "pageName": "su27Pod"
             },
             {
-              "type": "ils_on_camera"
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 18,
+              "lineWidth": 1.0,
+              "lineColor": [
+                211,
+                211,
+                211,
+                120
+              ],
+              "orient": "hdgUp",
+              "centerMarkType": "plane",
+              "centerMarkFillColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": false,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": true,
+              "distScaleBeyondAzScale": true,
+              "distScaleStepSize": 10000.0,
+              "distScaleColor": [
+                211,
+                211,
+                211,
+                120
+              ],
+              "distScaleNumbers": true,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "lines",
+              "azScaleSize": 20000.0,
+              "azScaleColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": false,
+              "extent": 55000.0,
+              "markers": true,
+              "metricUnits": true
             },
             {
-              "type": "map",
-              "hideBackground": true
+              "type": "ils_on_camera"
             },
             {
               "type": "target_tracking_bw",
@@ -2676,10 +2752,6 @@
               "pageName": "su27Pod"
             },
             {
-              "type": "map",
-              "hideBackground": true
-            },
-            {
               "type": "ils_on_camera"
             }
           ]
@@ -2754,10 +2826,6 @@
               "pageName": "su27Pod"
             },
             {
-              "type": "map",
-              "hideBackground": true
-            },
-            {
               "type": "ils_on_camera"
             },
             {
@@ -2826,10 +2894,6 @@
             {
               "type": "custom",
               "pageName": "su30Devices"
-            },
-            {
-              "type": "map",
-              "hideBackground": true
             },
             {
               "type": "ils_on_camera"
@@ -2857,8 +2921,84 @@
           ],
           "page": [
             {
-              "type": "map",
-              "hideBackground": true
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 18,
+              "lineWidth": 1.0,
+              "lineColor": [
+                211,
+                211,
+                211,
+                120
+              ],
+              "orient": "hdgUp",
+              "centerMarkType": "plane",
+              "centerMarkFillColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": false,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": true,
+              "distScaleBeyondAzScale": true,
+              "distScaleStepSize": 10000.0,
+              "distScaleColor": [
+                211,
+                211,
+                211,
+                120
+              ],
+              "distScaleNumbers": true,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "lines",
+              "azScaleSize": 20000.0,
+              "azScaleColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": false,
+              "extent": 55000.0,
+              "markers": true,
+              "metricUnits": true
             },
             {
               "type": "rwr",
@@ -2980,10 +3120,10 @@
       "head": "optic2_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -38.0,
-        38.0,
-        -55.0,
-        38.0
+        -30.0,
+        30.0,
+        -30.0,
+        30.0
       ],
       "opticType": "tv",
       "turretNo": 1,
@@ -4164,7 +4304,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 7
+              "order": 7,
+              "machLimit": 1.01
             }
           },
           {
@@ -4189,7 +4330,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 7
+              "order": 7,
+              "machLimit": 1.01
             }
           },
           {
@@ -4214,7 +4356,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 7
+              "order": 7,
+              "machLimit": 1.5
             }
           },
           {
@@ -4239,7 +4382,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 15
+              "order": 15,
+              "machLimit": 1.5
             }
           },
           {
@@ -4264,7 +4408,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 15
+              "order": 15,
+              "machLimit": 1.5
             }
           },
           {
@@ -4511,6 +4656,9 @@
           {
             "iconType": "bombs_small_group_x2",
             "name": "fab_100_slot3_x2",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4545,6 +4693,9 @@
             "iconType": "bombs_middle_group_x2_m54",
             "name": "fab_250_270_slot3_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4579,6 +4730,9 @@
             "iconType": "bombs_middle_group_x2",
             "name": "fab_250m_62_slot3_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4613,6 +4767,9 @@
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "ofab_250sh_slot3_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4647,6 +4804,9 @@
             "iconType": "bombs_large_group_x2",
             "name": "fab_500m_62_slot3_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4681,6 +4841,9 @@
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_slot3_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4715,6 +4878,9 @@
             "iconType": "napalm_large_group_x2",
             "name": "zb_500_slot3_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4748,6 +4914,9 @@
           {
             "iconType": "nar_large_group",
             "name": "s_8ko_slot3_x2",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4776,6 +4945,9 @@
             "iconType": "nar_he_special_group",
             "name": "s13_slot3_x2",
             "reqModification": "su_s25_s13",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4806,6 +4978,9 @@
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25o_1_slot3_x2",
             "reqModification": "su_s25_s13",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4850,6 +5025,9 @@
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25of_1_slot3_x2",
             "reqModification": "su_s25_s13",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4894,6 +5072,9 @@
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25ofm_1_slot3_x2",
             "reqModification": "su_s25_s13",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -4938,6 +5119,9 @@
             "iconType": "rockets_he_large_special_laser_group_x2",
             "name": "s_25l_slot3_x2",
             "reqModification": "su_s25_s13",
+            "HideNodes": {
+              "node": "pylon_3"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_001",
@@ -5283,7 +5467,8 @@
               "emitter": "pylon_11_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -5307,7 +5492,8 @@
               "emitter": "pylon_11_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -5331,7 +5517,8 @@
               "emitter": "pylon_11_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.5
             }
           },
           {
@@ -5356,7 +5543,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 13
+              "order": 13,
+              "machLimit": 1.5
             }
           },
           {
@@ -5381,7 +5569,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 13
+              "order": 13,
+              "machLimit": 1.5
             }
           },
           {
@@ -5842,7 +6031,8 @@
               "emitter": "pylon_9_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -5866,7 +6056,8 @@
               "emitter": "pylon_9_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -5890,7 +6081,8 @@
               "emitter": "pylon_9_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.5
             }
           },
           {
@@ -5915,7 +6107,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 17
+              "order": 17,
+              "machLimit": 1.5
             }
           },
           {
@@ -5940,7 +6133,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 17
+              "order": 17,
+              "machLimit": 1.5
             }
           },
           {
@@ -6673,7 +6867,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 2
+              "order": 2,
+              "machLimit": 1.5
             }
           },
           {
@@ -7146,7 +7341,8 @@
               "emitter": "pylon_10_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7170,7 +7366,8 @@
               "emitter": "pylon_10_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7194,7 +7391,8 @@
               "emitter": "pylon_10_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.5
             }
           },
           {
@@ -7219,7 +7417,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 18
+              "order": 18,
+              "machLimit": 1.5
             }
           },
           {
@@ -7244,7 +7443,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 18
+              "order": 18,
+              "machLimit": 1.5
             }
           },
           {
@@ -7789,7 +7989,8 @@
               "emitter": "pylon_12_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7813,7 +8014,8 @@
               "emitter": "pylon_12_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.01
             }
           },
           {
@@ -7837,7 +8039,8 @@
               "emitter": "pylon_12_aku_58_kh_29",
               "bullets": 1,
               "external": true,
-              "separate": true
+              "separate": true,
+              "machLimit": 1.5
             }
           },
           {
@@ -7862,7 +8065,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 14
+              "order": 14,
+              "machLimit": 1.5
             }
           },
           {
@@ -7887,7 +8091,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 14
+              "order": 14,
+              "machLimit": 1.5
             }
           },
           {
@@ -8548,7 +8753,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 8
+              "order": 8,
+              "machLimit": 1.01
             }
           },
           {
@@ -8573,7 +8779,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 8
+              "order": 8,
+              "machLimit": 1.01
             }
           },
           {
@@ -8598,7 +8805,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 8
+              "order": 8,
+              "machLimit": 1.5
             }
           },
           {
@@ -8623,7 +8831,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 16
+              "order": 16,
+              "machLimit": 1.5
             }
           },
           {
@@ -8648,7 +8857,8 @@
               "bullets": 1,
               "external": true,
               "separate": true,
-              "order": 16
+              "order": 16,
+              "machLimit": 1.5
             }
           },
           {
@@ -8895,6 +9105,9 @@
           {
             "iconType": "bombs_small_group_x2",
             "name": "fab_100_slot10_x2",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -8929,6 +9142,9 @@
             "iconType": "bombs_middle_group_x2_m54",
             "name": "fab_250_270_slot10_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -8963,6 +9179,9 @@
             "iconType": "bombs_middle_group_x2",
             "name": "fab_250m_62_slot10_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -8997,6 +9216,9 @@
             "iconType": "bombs_middle_high_drag_group_x2",
             "name": "ofab_250sh_slot10_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -9031,6 +9253,9 @@
             "iconType": "bombs_large_group_x2",
             "name": "fab_500m_62_slot10_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -9065,6 +9290,9 @@
             "iconType": "bombs_large_high_drag_group_x2",
             "name": "fab_500sh_slot10_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -9099,6 +9327,9 @@
             "iconType": "napalm_large_group_x2",
             "name": "zb_500_slot10_x2",
             "reqModification": "su_fab_500_upab_500b",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -9132,6 +9363,9 @@
           {
             "iconType": "nar_large_group",
             "name": "s_8ko_slot10_x2",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -9160,6 +9394,9 @@
             "iconType": "nar_he_special_group",
             "name": "s13_slot10_x2",
             "reqModification": "su_s25_s13",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -9190,6 +9427,9 @@
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25o_1_slot10_x2",
             "reqModification": "su_s25_s13",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -9234,6 +9474,9 @@
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25of_1_slot10_x2",
             "reqModification": "su_s25_s13",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -9278,6 +9521,9 @@
             "iconType": "rockets_he_large_special_group_x2",
             "name": "s_25ofm_1_slot10_x2",
             "reqModification": "su_s25_s13",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -9322,6 +9568,9 @@
             "iconType": "rockets_he_large_special_laser_group_x2",
             "name": "s_25l_slot10_x2",
             "reqModification": "su_s25_s13",
+            "HideNodes": {
+              "node": "pylon_4"
+            },
             "ShowNodes": {
               "node": [
                 "pbs_pylon_002",
@@ -10064,7 +10313,7 @@
   },
   "AfterBurner0": {
     "volumetricAfterBurner": {
-      "name": "jet_blue_blue_modern",
+      "name": "_jet_su_34_al_31f_m1",
       "maxHeight": 13.0,
       "minHeight": 9.0,
       "heightNoiseStrength": 0.0,
@@ -10086,28 +10335,30 @@
       "minOuterCylinderRadius": 0.45,
       "maxOuterCylinderRadius": 0.5,
       "absorption": 1.0,
-      "colorIntensityMax": 10.0,
+      "colorIntensityMax": 5.0,
       "colorIntensityMin": 1.0,
       "colorOverHeightMult": 0.7,
-      "colorOverDepthMult": 3.5,
-      "colorOverRadiusMult": 5.5,
+      "colorOverDepthMult": 2.0,
+      "colorOverRadiusMult": 3.0,
       "colorOverRadiusFadeOverHeight": 2.0,
       "maxRingOffset": 0.0,
       "minRingOffset": 20.0,
       "ringAbsorption": 1.2,
       "maxRingCount": 16,
       "minRingCount": 13,
+      "minStartingRingHeight": 0.93,
+      "maxStartingRingHeight": 0.82,
       "ringIntensityMin": 0.0,
-      "ringIntensityMax": 2.0,
+      "ringIntensityMax": 1.2,
       "ringIntensityNoiseStrength": 0.0,
       "ringIntensityNoiseSpeed": 1.0,
       "ringOffsetNoiseStrength": 1.0,
       "ringOffsetNoiseSpeed": 20.0,
       "rampTextureOffset": 1,
-      "radiusNoiseStrength": 0.06,
-      "radiusNoiseSpeed": 20.0,
-      "shakeNoiseStrength": 0.01,
-      "shakeNoiseSpeed": 30.0,
+      "radiusNoiseStrength": 0.1,
+      "radiusNoiseSpeed": 10.0,
+      "shakeNoiseStrength": 0.06,
+      "shakeNoiseSpeed": 20.0,
       "ringAngleFadeMult": 0.7,
       "colorOverHeightNoiseStrength": 0.1,
       "colorOverHeightNoiseSpeed": 10.0,
@@ -10117,21 +10368,23 @@
       "colorOverDepthNoiseSpeed": 10.0,
       "colorIntensityNoiseStrength": 2.0,
       "colorIntensityNoiseSpeed": 30.0,
-      "minStartingRingHeight": 0.93,
-      "maxStartingRingHeight": 0.82,
-      "ringIntensity": 2.0,
-      "ringFrequency": 11.3097,
+      "minAoABendingMult": 0.0,
+      "maxAoABendingMult": 1.4,
+      "minAoSBendingMult": 0.0,
+      "maxAoSBendingMult": 1.4,
       "preNominalEasingParams": {
-        "animationTime": 3.0,
+        "animationTime": 3.5,
         "ascendingSmoothIntensityParams": 0.7,
-        "flickerRelativTime": 0.15,
-        "flickerSpeed": 20.0
+        "flickerRelativTime": 0.33,
+        "flickerSpeed": 10.0,
+        "flickerIntensity": 1.0
       },
       "postNominalEasingParams": {
         "animationTime": 1.0,
         "ascendingSmoothIntensityParams": 1.0,
         "flickerRelativTime": 0.0,
-        "flickerSpeed": 0.0
+        "flickerSpeed": 0.0,
+        "flickerIntensity": 0.0
       },
       "lightProperties": {
         "color": [
@@ -10140,14 +10393,56 @@
           1.0
         ],
         "angle": 1.0,
-        "brightness": 20.0,
+        "brightness": 10.0,
         "radius": 20.0,
         "attenuation": 0.8,
         "brightnessNoiseStrength": 3.0,
         "brightnessNoiseSpeed": 6.0,
-        "ignitionTextureIntensity": 1.0,
-        "ignitionBrightnessNoiseStrength": 0.1,
+        "ignitionTextureIntensityMin": 0.01,
+        "ignitionTextureIntensityMax": 0.01,
+        "ignitionBrightnessNoiseStrength": 0.01,
         "ignitionBrightnessNoiseSpeed": 16.0
+      },
+      "NozzleFlames": {
+        "amountOfFlames": 8,
+        "radiusMult": 1.3,
+        "startOffset": -0.05,
+        "endOffsetAddition": 1.5,
+        "intensityMult": 5.0,
+        "innerCircleNoiseScale": 0.6,
+        "innerCircleNoiseStrength": 0.4,
+        "maskNoiseScale": 0.0,
+        "maskNoiseStrength": 0.0,
+        "minInnerCircleParamMult": 1.8,
+        "maxInnerCircleParamMult": 1.0,
+        "lengthNoiseSpeed": 10.0,
+        "lengthNoiseStrength": 0.3,
+        "uvNoiseMaskScale": 0.5,
+        "uvNoiseMaskStrength": 0.1,
+        "FlameMaskTextureOffset": {
+          "maskTextureOffset": [
+            0,
+            1,
+            2,
+            4,
+            4,
+            5,
+            5,
+            5
+          ]
+        },
+        "FlameRampTextureOffset": {
+          "rampTextureOffset": [
+            23,
+            23,
+            26,
+            26,
+            24,
+            24,
+            6,
+            6
+          ]
+        }
       }
     }
   },

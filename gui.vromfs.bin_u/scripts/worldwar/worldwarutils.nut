@@ -38,7 +38,8 @@ let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
 let { g_ww_unit_type } = require("%scripts/worldWar/model/wwUnitType.nut")
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { WwAirfield } = require("%scripts/worldWar/inOperation/model/wwAirfield.nut")
-let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { getArmyByName, getSelectedArmies, hasEntrenchedInList
+} = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 let { WwBattle } = require("%scripts/worldWar/inOperation/model/wwBattle.nut")
 let { WwReinforcementArmy } = require("%scripts/worldWar/inOperation/model/wwReinforcementArmy.nut")
 let { WwArmyGroup } = require("%scripts/worldWar/inOperation/model/wwArmyGroup.nut")
@@ -57,9 +58,11 @@ let { hoveredAirfieldIndex } = require("%appGlobals/worldWar/wwAirfieldStatus.nu
 let { updateConfigurableValues, getLastPlayedOperationId, getLastPlayedOperationCountry, saveLastPlayed
 } = require("%scripts/worldWar/worldWarStates.nut")
 let { curOperationCountry, invalidateRearZones } = require("%scripts/worldWar/inOperation/wwOperationStates.nut")
-let { openWWOperationChatRoomById } = require("%scripts/chat/chat.nut")
+let { openWWOperationChatRoomById } = require("%scripts/chat/chatRooms.nut")
 let { findQueueByName } = require("%scripts/queue/queueState.nut")
 let { leaveQueue, leaveQueueByType } = require("%scripts/queue/queueManager.nut")
+let { showNotAvailableMsgBox } = require("%scripts/gameModes/gameModeMesasge.nut")
+let { hiddenUserlogs } = require("%scripts/userLog/userlogConsts.nut")
 
 const WW_LAST_OPERATION_LOG_SAVE_ID = "worldWar/lastReadLog/operation"
 const WW_UNIT_WEAPON_PRESET_PATH = "worldWar/weaponPreset/"
@@ -83,7 +86,7 @@ function stopWar() {
 
 function checkPlayWorldwarAccess() {
   if (!isWorldWarEnabled()) {
-    ::show_not_available_msg_box()
+    showNotAvailableMsgBox()
     return false
   }
 
@@ -404,32 +407,12 @@ let g_world_war = {
     return unitsStrenghtBySide
   }
 
-  function getAllOperationUnitsBySide(side) {
-    let allOperationUnits = {}
-    let blk = DataBlock()
-    ww_get_sides_info(blk)
-
-    let sidesBlk = blk?["sides"]
-    if (sidesBlk == null)
-      return allOperationUnits
-
-    let sideBlk = sidesBlk?[side.tostring()]
-    if (sideBlk == null)
-      return allOperationUnits
-
-    foreach (unitName in sideBlk.unitsEverSeen % "item")
-      if (getAircraftByName(unitName))
-        allOperationUnits[unitName] <- true
-
-    return allOperationUnits
-  }
-
   function filterArmiesByManagementAccess(armiesArray) {
     return armiesArray.filter(@(army) army.hasManageAccess())
   }
 
   function haveManagementAccessForSelectedArmies() {
-    let armiesArray = this.getSelectedArmies()
+    let armiesArray = getSelectedArmies()
     return this.filterArmiesByManagementAccess(armiesArray).len() > 0
   }
 
@@ -508,18 +491,6 @@ let g_world_war = {
         }
       )
   }
-
-  function getArmyByName(armyName) {
-    if (!armyName)
-      return null
-    return WwArmy(armyName)
-  }
-
-  function getSelectedArmies() {
-    let getArmyByNameFunc = this.getArmyByName
-    return ww_get_selected_armies_names().map(@(name) getArmyByNameFunc(name))
-  }
-
 
   function getBattleById(battleId) {
     let battles = this.getBattles(
@@ -757,7 +728,7 @@ let g_world_war = {
     if (!this.haveManagementAccessForSelectedArmies())
       return
 
-    if (!this.hasEntrenchedInList(ww_get_selected_armies_names())) {
+    if (!hasEntrenchedInList(ww_get_selected_armies_names())) {
       this.requestMoveSelectedArmies(toX, toY, target, append, cellIdx)
       return
     }
@@ -788,7 +759,7 @@ let g_world_war = {
     let groundArmies = []
     let selectedArmies = ww_get_selected_armies_names()
     for (local i = selectedArmies.len() - 1; i >= 0 ; i--) {
-      let army = this.getArmyByName(selectedArmies.remove(i))
+      let army = getArmyByName(selectedArmies.remove(i))
       if (!army.isValid())
         continue
 
@@ -811,19 +782,8 @@ let g_world_war = {
     }
   }
 
-
-  function hasEntrenchedInList(armyNamesList) {
-    for (local i = 0; i < armyNamesList.len(); i++) {
-      let army = this.getArmyByName(armyNamesList[i])
-      if (army && army.isEntrenched())
-        return true
-    }
-    return false
-  }
-
-
   function stopSelectedArmy() {
-    let filteredArray = this.filterArmiesByManagementAccess(this.getSelectedArmies())
+    let filteredArray = this.filterArmiesByManagementAccess(getSelectedArmies())
     if (!filteredArray.len())
       return
 
@@ -834,7 +794,7 @@ let g_world_war = {
   }
 
   function entrenchSelectedArmy() {
-    let filteredArray = this.filterArmiesByManagementAccess(this.getSelectedArmies())
+    let filteredArray = this.filterArmiesByManagementAccess(getSelectedArmies())
     if (!filteredArray.len())
       return
 
@@ -979,9 +939,9 @@ let g_world_war = {
     let wwUserLogTypes = [EULT_WW_START_OPERATION,
                             EULT_WW_CREATE_OPERATION,
                             EULT_WW_END_OPERATION]
-    for (local i = ::hidden_userlogs.len() - 1; i >= 0; i--)
-      if (isInArray(::hidden_userlogs[i], wwUserLogTypes))
-        ::hidden_userlogs.remove(i)
+    for (local i = hiddenUserlogs.len() - 1; i >= 0; i--)
+      if (wwUserLogTypes.contains(hiddenUserlogs[i]))
+        hiddenUserlogs.remove(i)
   }
 
   function updateOperationPreviewAndDo(operationId, cb, hasProgressBox = false) {
@@ -1012,7 +972,7 @@ let g_world_war = {
     let misBlk = DataBlock()
     get_current_mission_desc(misBlk)
 
-    let battleId = misBlk?.customRules?.battleId
+    let battleId = misBlk?.customRules.battleId
     if (!battleId)
       return ""
 
@@ -1024,7 +984,7 @@ let g_world_war = {
     let misBlk = DataBlock()
     get_current_mission_desc(misBlk)
 
-    let operationId = misBlk?.customRules?.operationId
+    let operationId = misBlk?.customRules.operationId
     if (!operationId)
       return ""
 

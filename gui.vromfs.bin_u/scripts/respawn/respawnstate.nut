@@ -8,6 +8,7 @@ let { get_game_mode } = require("mission")
 let { getUniversalSparesForUnit } = require("%scripts/items/itemsManagerModule.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { get_unit_spawn_score_weapon_mul } = require("%appGlobals/ranks_common_shared.nut")
+let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
 
 let isSpareAircraftInSlot = @(idInCountry) is_bit_set(getSpareSlotsMask(), idInCountry)
 
@@ -53,6 +54,21 @@ let isRespawnWithUniversalSpare = @(crew, unit) is_bit_set(getDisabledSlotsMask(
 
 ::get_unit_spawn_score_weapon_mul <- get_unit_spawn_score_weapon_mul
 
+
+let needToShowBadWeatherWarning = Watched(false)
+
+
+let hasAirfieldRespawn = Watched(false)
+
+
+isInBattleState.subscribe(function(status) {
+  if (status)
+    return
+
+  needToShowBadWeatherWarning.set(false)
+  hasAirfieldRespawn.set(false)
+})
+
 return {
   isCrewAvailableInSession
   isSpareAircraftInSlot
@@ -60,5 +76,7 @@ return {
   getDisabledSlotsMask
   isRespawnWithUniversalSpare
   isUnitDisabledByMatching
+  needToShowBadWeatherWarning
+  hasAirfieldRespawn
 }
 

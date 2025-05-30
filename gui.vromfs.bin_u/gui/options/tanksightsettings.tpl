@@ -164,7 +164,7 @@ frame {
           <<#controls>>
           ComboBox {
             id:t= '<<controlId>>'
-            width:t='pw'
+            size:t='pw, @baseTrHeight - 4@dp' // The height should be set explicitly to prevent incorrect background-svg sizing for ComboBox images
             margin-top:t='1@blockInterval'
             <<@markup>>
           }

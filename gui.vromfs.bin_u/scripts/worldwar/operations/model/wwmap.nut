@@ -8,13 +8,14 @@ let time = require("%scripts/time.nut")
 let wwActionsWithUnitsList = require("%scripts/worldWar/inOperation/wwActionsWithUnitsList.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
-let { getQueueByMapName, getOperationGroupByMapId
-} = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
+let { getOperationGroupByMapId } = require("%scripts/worldWar/operations/model/wwActionsWhithGlobalStatus.nut")
 let { refreshGlobalStatusData } = require("%scripts/worldWar/operations/model/wwGlobalStatus.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { get_charserver_time_sec } = require("chard")
 let { getWwSetting } = require("%scripts/worldWar/worldWarStates.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
+
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
 let WwMap = class {
@@ -251,8 +252,9 @@ let WwMap = class {
     return false
   }
 
+  
   function getQueue() {
-    return getQueueByMapName(this.name)
+    return ::g_ww_global_status_type.QUEUE.getList()?[this.name] ?? WwQueue(this.name)
   }
 
   function getOpGroup() {
@@ -341,7 +343,7 @@ let WwMap = class {
   }
 
   function isClanQueueAvaliable() {
-    let reasonData = ::WwQueue.getCantJoinAnyQueuesReasonData()
+    let reasonData = WwQueue.getCantJoinAnyQueuesReasonData()
     return hasFeature("WorldWarClansQueue") &&
            hasFeature("Clans") &&
            is_in_clan() && this.isActive() &&

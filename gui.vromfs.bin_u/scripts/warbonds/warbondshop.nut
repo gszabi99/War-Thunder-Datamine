@@ -9,9 +9,11 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let time = require("%scripts/time.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value, move_mouse_on_obj, isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_child_by_value, move_mouse_on_obj
+  getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { ceil } = require("math")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let bhvUnseen = require("%scripts/seen/bhvUnseen.nut")
 let seenWarbondsShop = require("%scripts/seen/seenList.nut").get(SEEN.WARBONDS_SHOP)
 let { setColoredDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
@@ -262,7 +264,7 @@ gui_handlers.WarbondsShop <- class (gui_handlers.BaseGuiHandlerWT) {
       && !isHandlerInScene(gui_handlers.BattleTasksWnd), this.scene
     )
 
-    showObjById("btn_preview", (award?.canPreview() ?? false) && isInMenu(), this.scene)
+    showObjById("btn_preview", (award?.canPreview() ?? false) && isInMenu.get(), this.scene)
 
     let mainActionBtn = showObjById("btn_main_action", award != null, this.scene)
     if (!award)

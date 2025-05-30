@@ -19,7 +19,7 @@ let RecipesBundle = class (Chest) {
       this.typeIcon = "#ui/gameuiskin#item_type_trophies.svg"
   }
 
-  isDisassemble         = @() this.itemDef?.tags?.isDisassemble == true
+  isDisassemble         = @() this.itemDef?.tags.isDisassemble == true
   updateNameLoc         = @(locName) this.isDisassemble() ? loc("item/disassemble_header", { name = locName })
     : base.updateNameLoc(locName)
 

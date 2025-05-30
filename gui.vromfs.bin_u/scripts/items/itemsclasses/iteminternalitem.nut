@@ -63,7 +63,7 @@ let InternalItem = class (ItemCouponBase) {
     return base.getViewData(params)
   }
 
-  showAsContentItem = @() this.itemDef?.tags?.showAsContentItem ?? false
+  showAsContentItem = @() this.itemDef?.tags.showAsContentItem ?? false
 
   function getPrizeDescription(count = 1, colored = true) {
     let itemText = this.getShortDescription(colored)

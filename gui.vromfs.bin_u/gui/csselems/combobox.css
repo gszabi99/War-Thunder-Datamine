@@ -340,3 +340,15 @@ ComboBox > option[isDisabled=yes] {
 ComboBox.systemOption {
   width:1@systemOptContainerControlWidth;
 }
+
+tr[optionHeight=doubleAndHalf] > td > ComboBox:expanded option[shown-option=yes] {
+  size:pw,2.5@comboOptContainerHeight;
+}
+
+tr[optionHeight=double] > td > ComboBox:expanded option[shown-option=yes] {
+  size:pw,2@comboOptContainerHeight;
+}
+
+tr[optionHeight=oneAndHalf] > td > ComboBox:expanded option[shown-option=yes] {
+  size:pw,1.5@comboOptContainerHeight;
+}

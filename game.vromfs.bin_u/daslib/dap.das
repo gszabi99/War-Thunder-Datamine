@@ -51,23 +51,6 @@ struct Capabilities {
 
 
 
-
-struct SetDataBreakpointsArguments {
-    breakpoints : array<DataBreakpoint>
-}
-
-def SetDataBreakpointsArguments(data : JsonValue?) {
-    var res <- SetDataBreakpointsArguments()
-    var breakpoints = joj(data, "breakpoints")
-    if (breakpoints != null) {
-        for (it in breakpoints.value as _array) {
-            res.breakpoints |> emplace(DataBreakpoint(it))
-        }
-    }
-    return <- res
-}
-
-
 struct DataBreakpoint {
     dataId : string
     accessType : string
@@ -88,6 +71,22 @@ def DataBreakpoint(data : JsonValue?) {
 }
 
 
+struct SetDataBreakpointsArguments {
+    breakpoints : array<DataBreakpoint>
+}
+
+def SetDataBreakpointsArguments(data : JsonValue?) {
+    var res <- SetDataBreakpointsArguments()
+    var breakpoints = joj(data, "breakpoints")
+    if (breakpoints != null) {
+        for (it in breakpoints.value as _array) {
+            res.breakpoints |> emplace(DataBreakpoint(it))
+        }
+    }
+    return <- res
+}
+
+
 struct DataBreakpointInfoArguments {
     variablesReference : double
     name : string
@@ -103,8 +102,29 @@ def DataBreakpointInfoArguments(data : JsonValue?) {
 struct DataBreakpointInfoResponse {
     dataId : string
     description : string
-}
     
+}
+
+
+
+struct SourceBreakpoint {
+    line : double
+}
+
+def SourceBreakpoint(data : JsonValue?) {
+    return SourceBreakpoint(line = jon(data, "line"))
+}
+
+
+struct Source {
+    name : string
+    path : string
+}
+
+def Source(data : JsonValue?) {
+    return Source(name = jos(data, "name"), path = jos(data, "path"))
+}
+
 
 
 struct SetBreakpointsArguments {
@@ -127,33 +147,6 @@ def SetBreakpointsArguments(data : JsonValue?) {
 
 
 
-struct Source {
-    name : string
-    path : string
-}
-
-def Source(data : JsonValue?) {
-    return Source(name = jos(data, "name"), path = jos(data, "path"))
-}
-
-
-
-struct SourceBreakpoint {
-    line : double
-}
-
-def SourceBreakpoint(data : JsonValue?) {
-    return SourceBreakpoint(line = jon(data, "line"))
-}
-
-
-
-struct SetBreakpointsResponse {
-    breakpoints : array<Breakpoint>
-}
-
-
-
 struct Breakpoint {
     id : double
     verified : bool
@@ -163,16 +156,22 @@ struct Breakpoint {
 }
 
 
-
-struct ThreadsResponseBody {
-    threads : array<Thread>
+struct SetBreakpointsResponse {
+    breakpoints : array<Breakpoint>
 }
+
 
 
 
 struct Thread {
     id : double
     name : string
+}
+
+
+
+struct ThreadsResponseBody {
+    threads : array<Thread>
 }
 
 
@@ -187,17 +186,17 @@ def StackTraceArguments(data : JsonValue?) {
     return <- StackTraceArguments(threadId = jon(data, "threadId"), startFrame = jon(data, "startFrame"), levels = jon(data, "levels"))
 }
 
-struct StackTraceResponseBody {
-    stackFrames : array<StackFrame>
-    totalFrames : double
-}
-
 struct StackFrame {
     id : double
     name : string
     source : Source
     line : double
     column : double
+}
+
+struct StackTraceResponseBody {
+    stackFrames : array<StackFrame>
+    totalFrames : double
 }
 
 
@@ -210,15 +209,16 @@ def ScopesArguments(data : JsonValue?) {
     return <- ScopesArguments(frameId = jon(data, "frameId"))
 }
 
-struct ScopesResponseBody {
-    scopes : array<Scope>
-}
-
 
 
 struct Scope {
     name : string
     variablesReference : double
+}
+
+
+struct ScopesResponseBody {
+    scopes : array<Scope>
 }
 
 
@@ -237,10 +237,6 @@ def VariablesArguments(data : JsonValue?) {
     )
 }
 
-struct VariablesResponseBody {
-    variables : array<Variable>
-}
-
 
 
 struct Variable {
@@ -250,6 +246,11 @@ struct Variable {
     @rename _type : string
     indexedVariables : double
 }
+
+struct VariablesResponseBody {
+    variables : array<Variable>
+}
+
 
 def JV(data : Variable) {
     let valStr = unescape(data.value)

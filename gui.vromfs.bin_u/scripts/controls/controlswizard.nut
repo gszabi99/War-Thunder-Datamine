@@ -1,21 +1,22 @@
-from "%scripts/dagui_natives.nut" import joystick_get_default, set_bind_mode, is_axis_digital, get_axis_index, is_app_active
+from "%scripts/dagui_natives.nut" import joystick_get_default, is_axis_digital, get_axis_index, is_app_active
 from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { move_mouse_on_child, move_mouse_on_obj, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child, move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { MAX_SHORTCUTS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
 let { abs, ceil, fabs, floor } = require("math")
-let globalEnv = require("globalEnv")
+let { ControlHelpersMode } = require("globalEnv")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getHelpPreviewHandler } = require("%scripts/help/helpPreview.nut")
-let { recommendedControlPresets, getControlsPresetBySelectedType
+let { recommendedControlPresets, getControlsPresetBySelectedType, canChangeHelpersMode
 } = require("%scripts/controls/controlsUtils.nut")
 let { joystickSetCurSettings, setShortcutsAndSaveControls,
   joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
@@ -28,8 +29,9 @@ let { getLocalizedControlName, remapAxisName, getShortcutText,
   addHotkeyTxt } = require("%scripts/controls/controlsVisual.nut")
 let { steam_is_overlay_active } = require("steam")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
-let { getCurControlsPreset, setPreviewControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { getCurControlsPreset, setPreviewControlsPreset, isPresetChanged } = require("%scripts/controls/controlsState.nut")
 let { commitControls } = require("%scripts/controls/controlsManager.nut")
+let { setBindMode } = require("controls")
 
 let aircraft_controls_wizard_config = [
   { id = "helpers_mode"
@@ -57,8 +59,8 @@ let aircraft_controls_wizard_config = [
       }
     }
   { id = "msg/use_mouse_for_control", type = CONTROL_TYPE.MSG_BOX
-    filterHide = [globalEnv.EM_MOUSE_AIM]
-    needSkip = @() (isPlatformSony || isPlatformXboxOne)
+    filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
+    needSkip = @() (isPlatformSony || isPlatformXbox)
     options = ["controls/useMouseControl", "controls/useMouseView", "controls/UseMouseNone"],
     skip = [null, null, ["msg/mouseWheelAction", "ID_CAMERA_NEUTRAL"]]
     onButton = function(value) {
@@ -126,7 +128,7 @@ let aircraft_controls_wizard_config = [
     { id = "weapon_aim_pitch",   type = CONTROL_TYPE.AXIS, isVertical = true,       buttonRelative = true }
     "ID_RELOAD_GUNS"
     "ID_GEAR"
-    { id = "ID_AIR_BRAKE", filterShow = [globalEnv.EM_REALISTIC, globalEnv.EM_FULL_REAL] }
+    { id = "ID_AIR_BRAKE", filterShow = [ControlHelpersMode.EM_REALISTIC, ControlHelpersMode.EM_FULL_REAL] }
     "ID_FLAPS"
     "ID_LOCK_TARGET"
     "ID_TOGGLE_LASER_DESIGNATOR"
@@ -151,11 +153,11 @@ let aircraft_controls_wizard_config = [
     { id = "camx", type = CONTROL_TYPE.AXIS, msgType = "_horizontal", relSens = 0.75
       images = ["wizard_camx_right", "wizard_camx_left"]
       axesList = ["camx", "turret_x"]
-      filterHide = [globalEnv.EM_MOUSE_AIM] }
+      filterHide = [ControlHelpersMode.EM_MOUSE_AIM] }
     { id = "camy", type = CONTROL_TYPE.AXIS, isVertical = true, relSens = 0.75
       images = ["wizard_camy_up", "wizard_camy_down"]
       axesList = ["camy", "turret_y"]
-      filterHide = [globalEnv.EM_MOUSE_AIM] }
+      filterHide = [ControlHelpersMode.EM_MOUSE_AIM] }
     { id = "msg/relative_camera_axis", type = CONTROL_TYPE.MSG_BOX
       options = ["#options/yes", "#options/no"],
       skip = ["neutral_cam_pos", null]
@@ -184,73 +186,73 @@ let aircraft_controls_wizard_config = [
       "ID_CAMERA_NEUTRAL" 
 
     "ID_ZOOM_TOGGLE"
-    { id = "zoom", type = CONTROL_TYPE.AXIS, filterHide = [globalEnv.EM_MOUSE_AIM]
+    { id = "zoom", type = CONTROL_TYPE.AXIS, filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
       isSlider = true }
     { id = "msg/trackIR", type = CONTROL_TYPE.MSG_BOX
-      filterHide = [globalEnv.EM_MOUSE_AIM]
+      filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
       options = ["#options/yes", "#options/no", "options/skip"], defValue = 1
       skip = [null, "trackIrZoom", "trackIrZoom"]
     }
       { id = "trackIrZoom", type = CONTROL_TYPE.MSG_BOX
-        filterHide = [globalEnv.EM_MOUSE_AIM]
+        filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
         options = ["#options/yes", "#options/no"]
         onButton = function(value) { if (value < 2) this.curJoyParams.trackIrZoom = value == 0 }
       }
 
 
   { id = "ID_FULL_AERODYNAMICS_HEADER", type = CONTROL_TYPE.HEADER
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
   }
-    { id = "ID_TRIM", filterShow = [globalEnv.EM_FULL_REAL] }
-    { id = "ID_TRIM_RESET", filterShow = [globalEnv.EM_FULL_REAL] }
-    { id = "ID_TRIM_SAVE", filterShow = [globalEnv.EM_FULL_REAL] }
+    { id = "ID_TRIM", filterShow = [ControlHelpersMode.EM_FULL_REAL] }
+    { id = "ID_TRIM_RESET", filterShow = [ControlHelpersMode.EM_FULL_REAL] }
+    { id = "ID_TRIM_SAVE", filterShow = [ControlHelpersMode.EM_FULL_REAL] }
     { id = "helicopter_trim_elevator", type = CONTROL_TYPE.AXIS, isVertical = true, buttonRelative = true
       images = ["wizard_elevator_up", "wizard_elevator_down"]
-      filterShow = [globalEnv.EM_FULL_REAL] }
+      filterShow = [ControlHelpersMode.EM_FULL_REAL] }
     { id = "helicopter_trim_ailerons", type = CONTROL_TYPE.AXIS, msgType = "_horizontal", buttonRelative = true
       images = ["wizard_ailerons_right", "wizard_ailerons_left"]
-      filterShow = [globalEnv.EM_FULL_REAL] }
+      filterShow = [ControlHelpersMode.EM_FULL_REAL] }
     { id = "helicopter_trim_rudder", type = CONTROL_TYPE.AXIS, msgType = "_horizontal", buttonRelative = true
       images = ["wizard_rudder_right", "wizard_rudder_left"]
-      filterShow = [globalEnv.EM_FULL_REAL] }
+      filterShow = [ControlHelpersMode.EM_FULL_REAL] }
     { id = "trim_elevator", type = CONTROL_TYPE.AXIS, isVertical = true, buttonRelative = true
       images = ["wizard_elevator_up", "wizard_elevator_down"]
-      filterShow = [globalEnv.EM_FULL_REAL] }
+      filterShow = [ControlHelpersMode.EM_FULL_REAL] }
     { id = "trim_ailerons", type = CONTROL_TYPE.AXIS, msgType = "_horizontal", buttonRelative = true
       images = ["wizard_ailerons_right", "wizard_ailerons_left"]
-      filterShow = [globalEnv.EM_FULL_REAL] }
+      filterShow = [ControlHelpersMode.EM_FULL_REAL] }
     { id = "trim_rudder", type = CONTROL_TYPE.AXIS, msgType = "_horizontal", buttonRelative = true
       images = ["wizard_rudder_right", "wizard_rudder_left"]
-      filterShow = [globalEnv.EM_FULL_REAL] }
-    { id = "ID_FLAPS_DOWN", filterShow = [globalEnv.EM_FULL_REAL] }
-    { id = "ID_FLAPS_UP", filterShow = [globalEnv.EM_FULL_REAL] }
-    { id = "brake_right",  type = CONTROL_TYPE.AXIS, filterHide = [globalEnv.EM_MOUSE_AIM]
+      filterShow = [ControlHelpersMode.EM_FULL_REAL] }
+    { id = "ID_FLAPS_DOWN", filterShow = [ControlHelpersMode.EM_FULL_REAL] }
+    { id = "ID_FLAPS_UP", filterShow = [ControlHelpersMode.EM_FULL_REAL] }
+    { id = "brake_right",  type = CONTROL_TYPE.AXIS, filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
       images = ["wizard_brake_right_stop", "wizard_brake_right_go"]
       isSlider = true }
-    { id = "brake_left",   type = CONTROL_TYPE.AXIS, filterHide = [globalEnv.EM_MOUSE_AIM]
+    { id = "brake_left",   type = CONTROL_TYPE.AXIS, filterHide = [ControlHelpersMode.EM_MOUSE_AIM]
       images = ["wizard_brake_left_stop", "wizard_brake_left_go"]
       isSlider = true }
 
 
   { id = "ID_ENGINE_CONTROL_HEADER", type = CONTROL_TYPE.HEADER
-    filterShow = [globalEnv.EM_FULL_REAL]
+    filterShow = [ControlHelpersMode.EM_FULL_REAL]
   }
-    { id = "ID_COMPLEX_ENGINE", filterShow = [globalEnv.EM_FULL_REAL] }
-    { id = "ID_TOGGLE_ENGINE", filterShow = [globalEnv.EM_FULL_REAL] }
+    { id = "ID_COMPLEX_ENGINE", filterShow = [ControlHelpersMode.EM_FULL_REAL] }
+    { id = "ID_TOGGLE_ENGINE", filterShow = [ControlHelpersMode.EM_FULL_REAL] }
     { id = "prop_pitch", type = CONTROL_TYPE.AXIS, isSlider = true, buttonRelative = true
-      filterShow = [globalEnv.EM_FULL_REAL] }
-    { id = "ID_PROP_PITCH_AUTO", filterShow = [globalEnv.EM_FULL_REAL] }
+      filterShow = [ControlHelpersMode.EM_FULL_REAL] }
+    { id = "ID_PROP_PITCH_AUTO", filterShow = [ControlHelpersMode.EM_FULL_REAL] }
     { id = "mixture", type = CONTROL_TYPE.AXIS, isSlider = true, buttonRelative = true
-      filterShow = [globalEnv.EM_FULL_REAL] }
+      filterShow = [ControlHelpersMode.EM_FULL_REAL] }
     { id = "radiator", type = CONTROL_TYPE.AXIS, isSlider = true, buttonRelative = true
-      filterShow = [globalEnv.EM_FULL_REAL] }
+      filterShow = [ControlHelpersMode.EM_FULL_REAL] }
     { id = "oil_radiator", type = CONTROL_TYPE.AXIS, isSlider = true, buttonRelative = true,
-      filterShow = [globalEnv.EM_FULL_REAL]  }
-    { id = "ID_RADIATOR_AUTO", filterShow = [globalEnv.EM_FULL_REAL] }
+      filterShow = [ControlHelpersMode.EM_FULL_REAL]  }
+    { id = "ID_RADIATOR_AUTO", filterShow = [ControlHelpersMode.EM_FULL_REAL] }
     { id = "turbo_charger", type = CONTROL_TYPE.AXIS, isSlider = true, buttonRelative = true
-      filterShow = [globalEnv.EM_FULL_REAL] }
-    { id = "ID_TOGGLE_AUTO_TURBO_CHARGER", filterShow = [globalEnv.EM_FULL_REAL] }
-    { id = "ID_SUPERCHARGER", filterShow = [globalEnv.EM_FULL_REAL] }
+      filterShow = [ControlHelpersMode.EM_FULL_REAL] }
+    { id = "ID_TOGGLE_AUTO_TURBO_CHARGER", filterShow = [ControlHelpersMode.EM_FULL_REAL] }
+    { id = "ID_SUPERCHARGER", filterShow = [ControlHelpersMode.EM_FULL_REAL] }
 
 
   { id = "msg/wizard_done_msg", type = CONTROL_TYPE.MSG_BOX }
@@ -265,7 +267,7 @@ let tank_controls_wizard_config = [
   { id = "ID_ENGINE_CONTROL_HEADER", type = CONTROL_TYPE.HEADER }
     { id = "gm_throttle", type = CONTROL_TYPE.AXIS, isVertical = true }
     { id = "gm_steering", type = CONTROL_TYPE.AXIS, msgType = "_horizontal", showInverted = function() { return true } }
-    { id = "gm_clutch", type = CONTROL_TYPE.AXIS, isVertical = true, filterHide = [globalEnv.EM_MOUSE_AIM] }
+    { id = "gm_clutch", type = CONTROL_TYPE.AXIS, isVertical = true, filterHide = [ControlHelpersMode.EM_MOUSE_AIM] }
 
   { id = "ID_BASIC_CONTROL_HEADER", type = CONTROL_TYPE.HEADER }
     "ID_FIRE_GM"
@@ -289,8 +291,8 @@ let tank_controls_wizard_config = [
     "ID_SENSOR_TARGET_LOCK_TANK"
 
   { id = "ID_VIEW_CONTROL_HEADER", type = CONTROL_TYPE.HEADER }
-    { id = "gm_mouse_aim_x", type = CONTROL_TYPE.AXIS, filterHide = [globalEnv.EM_MOUSE_AIM], msgType = "_horizontal" }
-    { id = "gm_mouse_aim_y", type = CONTROL_TYPE.AXIS, filterHide = [globalEnv.EM_MOUSE_AIM], isVertical = true }
+    { id = "gm_mouse_aim_x", type = CONTROL_TYPE.AXIS, filterHide = [ControlHelpersMode.EM_MOUSE_AIM], msgType = "_horizontal" }
+    { id = "gm_mouse_aim_y", type = CONTROL_TYPE.AXIS, filterHide = [ControlHelpersMode.EM_MOUSE_AIM], isVertical = true }
     "ID_TOGGLE_VIEW_GM"
     "ID_ZOOM_TOGGLE"
 
@@ -323,15 +325,16 @@ function initControlsWizardConfig(arr) {
 
 function applySelectedPreset(presetName) {
   if (isInArray(presetName, ["keyboard", "keyboard_shooter"]))
-    set_option(USEROPT_HELPERS_MODE, globalEnv.EM_MOUSE_AIM)
+    set_option(USEROPT_HELPERS_MODE, ControlHelpersMode.EM_MOUSE_AIM)
   return $"config/hotkeys/hotkey.{presetName}.blk"
 }
 
-::gui_modal_controlsWizard <- function gui_modal_controlsWizard() {
+function gui_modal_controlsWizard() {
   if (!hasFeature("ControlsPresets"))
     return
   loadHandler(gui_handlers.controlsWizardModalHandler)
 }
+::gui_modal_controlsWizard <- gui_modal_controlsWizard 
 
 function isInArrayRecursive(v, arr) {
   foreach (i in arr) {
@@ -522,7 +525,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
           return this.nextItem()
       if (isInArray(this.curItem.id, this.skipList))
         return this.nextItem()
-      if (("isFilterObj" in this.curItem) && this.curItem.isFilterObj && !::can_change_helpers_mode()) {
+      if (("isFilterObj" in this.curItem) && this.curItem.isFilterObj && !canChangeHelpersMode()) {
         if ("optionType" in this.curItem) {
           let config = get_option(this.curItem.optionType)
           this.filter = config.values[config.value]
@@ -775,7 +778,7 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     }
 
     this.guiScene.sleepKeyRepeat(value)
-    set_bind_mode(value)
+    setBindMode(value)
   }
 
   function switchListenAxis(value, reinitPresetup = false) {
@@ -1577,8 +1580,8 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
 
   function afterModalDestroy() {
     this.guiScene.sleepKeyRepeat(false)
-    set_bind_mode(false)
-    ::preset_changed = true
+    setBindMode(false)
+    isPresetChanged.set(true)
     setPreviewControlsPreset(null)
     broadcastEvent("ControlsPresetChanged")
   }
@@ -1620,4 +1623,8 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     else
       this.nextItem()
   }
+}
+
+return {
+  gui_modal_controlsWizard
 }

@@ -203,11 +203,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -217,11 +219,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -231,11 +235,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -245,11 +251,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -259,11 +267,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -273,11 +283,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -287,11 +299,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -301,11 +315,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -315,11 +331,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -329,11 +347,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -409,20 +429,20 @@
         "unitSetIndication": [
           {
             "set": true,
+            "target": "t1_quest_units_squad",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "t1_quest_units_squad",
             "team": "B"
           },
           {
             "set": true,
+            "target": "t2_quest_units_squad",
             "target_marking": 0,
             "object_var_name": "",
             "object_var_comp_op": "equal",
             "object_var_value": 0,
-            "target": "t2_quest_units_squad",
             "team": "A"
           }
         ],
@@ -474,27 +494,22 @@
           {
             "loc_name": "missions/bombers_spawn",
             "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
             "radius": -1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "resetStrictSpawnIndex": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t1_bombers_spawn",
             "team": "A",
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "tags": {
               "type_bomber": true,
               "tank": false
@@ -503,27 +518,22 @@
           {
             "loc_name": "missions/bombers_spawn",
             "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
             "radius": -1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "resetStrictSpawnIndex": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t2_bombers_spawn",
             "team": "B",
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "tags": {
               "type_bomber": true,
               "tank": false
@@ -532,27 +542,22 @@
           {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
-            "isAirfield": true,
-            "isUnit": false,
             "radius": -1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "resetStrictSpawnIndex": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t1_airfield",
             "team": "A",
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "tags": {
               "type_hydroplane": false,
               "tank": false
@@ -561,27 +566,22 @@
           {
             "loc_name": "missions/airfield_spawn",
             "spawnEffect": false,
-            "isAirfield": true,
-            "isUnit": false,
             "radius": -1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "resetStrictSpawnIndex": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t2_airfield",
             "team": "B",
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": true,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "tags": {
               "type_hydroplane": false,
               "tank": false
@@ -735,7 +735,7 @@
             24602.9
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 1,
           "active": true
@@ -1065,7 +1065,7 @@
             24146.8
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 2,
           "active": true
@@ -1095,7 +1095,7 @@
             23273.0
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 2,
           "active": true
@@ -1125,7 +1125,7 @@
             22679.9
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 2,
           "active": true
@@ -1155,7 +1155,7 @@
             22592.7
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 2,
           "active": true
@@ -1185,7 +1185,7 @@
             22312.8
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 2,
           "active": true
@@ -1215,7 +1215,7 @@
             24998.1
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 2,
           "active": true
@@ -1586,7 +1586,7 @@
             24102.7
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 1,
           "active": true
@@ -1616,7 +1616,7 @@
             26029.0
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 1,
           "active": true
@@ -1646,7 +1646,7 @@
             26572.5
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 1,
           "active": true
@@ -1676,7 +1676,7 @@
             26851.5
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 1,
           "active": true
@@ -1706,7 +1706,7 @@
             27373.2
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 1,
           "active": true
@@ -1953,7 +1953,7 @@
             22244.8
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 2,
           "active": true
@@ -1983,7 +1983,7 @@
             26926.4
           ]
         ],
-        "unit_class": "dynTrench_small_bunker_axis",
+        "unit_class": "dynTrench_small_bunker_snowed_axis",
         "props": {
           "army": 1,
           "active": true

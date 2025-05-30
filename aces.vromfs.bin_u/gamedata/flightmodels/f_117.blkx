@@ -1693,10 +1693,14 @@
     ],
     "shadowSphereMultiplier": 2.0,
     "gunLightRadiusMul": 0.05,
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "lightPos": [
-      6.592,
-      1.135,
-      0.0
+      5.686,
+      0.755,
+      0.105
     ],
     "lightColor": [
       0.1,
@@ -1705,38 +1709,16 @@
     ],
     "lightRadius": 0.45,
     "lightPos1": [
-      6.452,
-      1.48,
-      0.0
+      5.757,
+      0.686,
+      -0.169
     ],
     "lightColor1": [
       0.1,
       1.31,
       0.2
     ],
-    "lightRadius1": 0.2,
-    "lightPos2": [
-      6.11,
-      0.895,
-      0.4
-    ],
-    "lightColor2": [
-      0.1,
-      1.31,
-      0.2
-    ],
-    "lightRadius2": 0.45,
-    "lightPos3": [
-      6.11,
-      0.895,
-      -0.4
-    ],
-    "lightColor3": [
-      0.1,
-      1.31,
-      0.2
-    ],
-    "lightRadius3": 0.45,
+    "lightRadius1": 0.45,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -1973,14 +1955,9 @@
             0.5,
             0.5
           ],
-          "page": [
-            {
-              "type": "ils_duplicate"
-            },
-            {
-              "type": "map"
-            }
-          ]
+          "page": {
+            "type": "ils_duplicate"
+          }
         },
         {
           "textureArea": [
@@ -1991,7 +1968,84 @@
           ],
           "page": [
             {
-              "type": "map"
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
             },
             {
               "type": "ils_duplicate"

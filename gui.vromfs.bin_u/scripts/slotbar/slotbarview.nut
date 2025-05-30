@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import clan_get_exp, get_spare_aircrafts_count, is_player_unit_alive, get_slot_delay, get_player_unit_name, shop_get_spawn_score, is_era_available, rented_units_get_last_max_full_rent_time, utf8_strlen, is_respawn_screen, is_mouse_last_time_used
+from "%scripts/dagui_natives.nut" import clan_get_exp, get_spare_aircrafts_count, get_slot_delay, shop_get_spawn_score, is_era_available, rented_units_get_last_max_full_rent_time, utf8_strlen, is_respawn_screen, is_mouse_last_time_used
 from "%scripts/dagui_library.nut" import *
 from "%scripts/weaponry/weaponryConsts.nut" import UNIT_WEAPONS_READY
 from "%scripts/misCustomRules/ruleConsts.nut" import RESPAWNS_UNLIMITED
@@ -6,6 +6,7 @@ from "%scripts/utils_sa.nut" import colorTextByValues, get_tomoe_unit_icon
 from "%scripts/clans/clanState.nut" import is_in_clan
 from "guiRespawn" import getNumUsedUnitSpawns
 
+let { get_player_unit_name, is_player_unit_alive } = require("unit")
 let { is_harmonized_unit_image_required } = require("%scripts/langUtils/harmonized.nut")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
@@ -32,9 +33,11 @@ let { canBuyUnit, isUnitGift, isUnitBought } = require("%scripts/unit/unitShopIn
 let { getTooltipType, addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitItemStatusText, getUnitRarity, getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getUnitRole, getUnitRoleIcon } = require("%scripts/unit/unitInfoRoles.nut")
-let { getBitStatus, isUnitElite, isUnitInSlotbar, isUnitDefault, canResearchUnit,
-  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken, isUnitUsable
+let { isUnitElite, isUnitDefault, canResearchUnit, isUnitUsable,
+  isUnitInResearch, isUnitsEraUnlocked, isUnitGroup, isUnitBroken,
 } = require("%scripts/unit/unitStatus.nut")
+let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
+let { getBitStatus } = require("%scripts/unit/unitBitStatus.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { getLastWeapon, checkUnitWeapons, getWeaponsStatusName
 } = require("%scripts/weaponry/weaponryInfo.nut")
@@ -43,7 +46,7 @@ let { isCrewAvailableInSession, isSpareAircraftInSlot, isRespawnWithUniversalSpa
 } = require("%scripts/respawn/respawnState.nut")
 let { getUnitShopPriceText } = require("%scripts/shop/unitCardPkg.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { getCurrentGameModeEdiff, isUnitAllowedForGameMode
 } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { isInSessionRoom } = require("%scripts/matchingRooms/sessionLobbyState.nut")
@@ -59,6 +62,7 @@ let { getRoomEvent, isUnitAllowedForRoom } = require("%scripts/matchingRooms/ses
 let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
+let { getEntitlementUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 
 const DEFAULT_STATUS = "none"
 
@@ -908,7 +912,7 @@ function buildCommonUnitSlot(id, unit, params) {
   
 
   let progressText = showProgress ? getUnitSlotResearchProgressText(unit, priceText) : ""
-  let checkNotification = ::g_discount.getEntitlementUnitDiscount(unit.name)
+  let checkNotification = getEntitlementUnitDiscount(unit.name)
 
   let resView = params.__merge({
     slotId              = $"td_{id}"

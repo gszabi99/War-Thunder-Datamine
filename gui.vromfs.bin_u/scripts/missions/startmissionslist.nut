@@ -8,7 +8,8 @@ let { eventbus_subscribe } = require("eventbus")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let g_squad_manager = getGlobalModule("g_squad_manager")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let { isInMenu, handlersManager, loadHandler, get_cur_base_gui_handler
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager, loadHandler, get_cur_base_gui_handler
 } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let { get_mission_difficulty, do_start_flight } = require("guiMission")
@@ -23,11 +24,15 @@ let { web_rpc } = require("%scripts/webRPC.nut")
 let { get_mission_settings, set_mission_settings, isRemoteMissionVar, matchSearchGm, currentCampaignId } = require("%scripts/missions/missionsStates.nut")
 let { UrlMission } = require("%scripts/missions/urlMission.nut")
 let { getMaxPlayersForGamemode } = require("%scripts/missions/missionsUtils.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+
 let { updateRoomAttributes, guiStartMpLobby, continueCoopWithSquad
 } = require("%scripts/matchingRooms/sessionLobbyManager.nut")
 let { createSessionLobbyRoom, startCoopBySquad
 } = require("%scripts/matchingRooms/sessionLobbyActions.nut")
-let { getOptionsMode } = require("%scripts/options/optionsList.nut")
+let { getOptionsMode } = require("%scripts/options/options.nut")
+let { checkGamemodePkg, checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 const DYNAMIC_REQ_COUNTRY_RANK = 1
 
@@ -62,7 +67,7 @@ function startRemoteMission(params) {
   let url = params.url
   let name = params.name || "remote_mission"
 
-  if (!isInMenu() || handlersManager.isAnyModalHandlerActive())
+  if (!isInMenu.get() || handlersManager.isAnyModalHandlerActive())
     return
 
   let urlMission = UrlMission(name, url)
@@ -163,7 +168,7 @@ function briefingOptionsApply() {
       return get_cur_base_gui_handler().goForward(guiStartFlight)
 
 
-    if (::g_squad_utils.canJoinFlightMsgBox(
+    if (canJoinFlightMsgBox(
           {
             isLeaderCanJoin = get_mission_settings().coop
             allowWhenAlone = false
@@ -237,7 +242,7 @@ function guiStartCampaignNoPack() {
 }
 
 function guiStartCampaign() {
-  return ::check_package_and_ask_download("hc_pacific", null, guiStartCampaignNoPack, null, "campaign")
+  return checkPackageAndAskDownload("hc_pacific", null, guiStartCampaignNoPack, null, "campaign")
 }
 
 function guiStartMenuCampaign() {
@@ -309,7 +314,7 @@ function startCreateWndByGamemode(_handler, _obj) {
     guiStartDynamicLayouts()
   
   
-  ::update_gamercards()
+  updateGamercards()
 }
 
 function buildCheckTable(session, gm = 0) {
@@ -338,13 +343,13 @@ function buildCheckTable(session, gm = 0) {
 }
 
 function checkAndCreateGamemodeWnd(handler, gm) {
-  if (!::check_gamemode_pkg(gm))
+  if (!checkGamemodePkg(gm))
     return
 
   handler.checkedNewFlight( function() {
     let tbl = buildCheckTable(null, gm)
     tbl.silent <- false
-    if (isRanksAllowed.bindenv(handler)(tbl)) {
+    if (isRanksAllowed(handler, tbl)) {
       matchSearchGm.set(gm)
       startCreateWndByGamemode(handler, null)
     }

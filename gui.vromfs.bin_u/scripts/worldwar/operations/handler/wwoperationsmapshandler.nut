@@ -9,7 +9,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { LayersIcon } = require("%scripts/viewUtils/layeredIcon.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
+let { move_mouse_on_child_by_value, getObjValidIndex } = require("%sqDagui/daguiUtil.nut")
 let DataBlock  = require("DataBlock")
 let { format } = require("string")
 let time = require("%scripts/time.nut")
@@ -38,7 +38,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
 let { get_gui_regional_blk, get_es_custom_blk } = require("blkGetters")
 let { charRequestJson } = require("%scripts/tasker.nut")
-let { move_mouse_on_child_by_value, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { guiStartProfile } = require("%scripts/user/profileHandler.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
@@ -50,6 +50,7 @@ let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 let { hasRightsToQueueWWar } = require("%scripts/clans/clanInfo.nut")
 let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
+let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
 
 const MY_CLUSRTERS = "ww/clusters"
 
@@ -542,7 +543,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let hasMap = this.selMap != null
     let isInQueue = isMyClanInQueue()
-    let isQueueJoiningEnabled =  ::WwQueue.getCantJoinAnyQueuesReasonData().canJoin
+    let isQueueJoiningEnabled = WwQueue.getCantJoinAnyQueuesReasonData().canJoin
 
     this.nearestAvailableMapToBattle = getNearestMapToBattle()
     let needShowBeginMapWaitTime = !(this.nearestAvailableMapToBattle?.isActive?() ?? true)
@@ -565,7 +566,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!hasMap)
       return
 
-    let cantJoinAnyQueues = ::WwQueue.getCantJoinAnyQueuesReasonData()
+    let cantJoinAnyQueues = WwQueue.getCantJoinAnyQueuesReasonData()
     let isSquadMember = g_squad_manager.isSquadMember()
     let isClanQueueAvaliable = this.selMap?.isClanQueueAvaliable()
     let myClanOperation = getMyClanOperation()
@@ -1227,7 +1228,7 @@ gui_handlers.WwOperationsMapsHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let isInQueue = isMyClanInQueue()
-    let isQueueJoiningEnabled =  ::WwQueue.getCantJoinAnyQueuesReasonData().canJoin
+    let isQueueJoiningEnabled = WwQueue.getCantJoinAnyQueuesReasonData().canJoin
     let isMyClanOperation = this.selMap != null && this.hasClanOperation &&
       getMyClanOperation()?.data.map == this.selMap?.name
     if (this.selMap?.isClanQueueAvaliable() && isQueueJoiningEnabled && !isInQueue)

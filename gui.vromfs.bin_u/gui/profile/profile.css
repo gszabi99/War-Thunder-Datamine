@@ -1,7 +1,8 @@
 @const profileHeaderPadding:28@sf/@pf;
 @const profileHeaderTopPadding:20@sf/@pf;
 @const profileHeaderBottomPadding:20@sf/@pf;
-@const medalItemMargin:21@sf/@pf;
+@const medalItemMargin:8@sf/@pf;
+@const collectionItemMargin:8@sf/@pf;
 @const unlockListRightMargin:13@sf/@pf;
 @const maxAccountHeaderHeight:54@sf/@pf + 1@frameHeaderHeight + 1@avatarButtonSize + 1@profileHeaderTopPadding + 1@profileHeaderBottomPadding + 1@bh - 1@bhInVr;
 @const minAccountHeaderHeight:1@frameProfileTopOffset + 1@frameHeaderHeight + 1@buttonHeight + 7@sf/@pf + 1@bh - 1@bhInVr;
@@ -36,8 +37,10 @@
 @const showcaseStatIconSize:55@sf/@pf;
 @const showcaseMinStatHeight:159@sf/@pf;
 @const favoriteUnitShowcaseHeight:1@favoriteUnitImageHeight + 2@showcaseLinePadding + 2@showcaseMinStatHeight + 1@showcaseStatNameHeight + 1@showcaseLinePadding;
-
+@const collectionMainPrizeWidth:(pw - 7@collectionItemMargin)/4 + 1@collectionItemMargin;
 @const frameSeparatorHeight: 1@sf/@pf;
+@const profileBgImageAspectRatio: 1920/260 \1;
+@const separatorColor: #4B4F53;
 
 profileContent {
   position:relative;
@@ -51,11 +54,7 @@ profileContentLeft {
 }
 
 profileContentLeft[page=collections] {
-  size:0.225*pw, ph;
-}
-
-profileContentLeft[page=skins] {
-  size:0.28*pw, ph;
+  size:0.18*pw, ph;
 }
 
 profileContentSeparator {
@@ -71,12 +70,19 @@ profileContentRight {
 }
 
 profileContentBigIcon {
-  size:344@sf/@pf, 344@sf/@pf;
-  padding:10@sf/@pf, 20@sf/@pf, 30@sf/@pf, 20@sf/@pf;
+  size:280@sf/@pf, 280@sf/@pf;
+  margin:0, 0, 25@sf/@pf, 20@sf/@pf;
+}
+
+profileContentBigIcon > img {
+  size:pw, ph;
+  position:relative;
+  background-svg-size:w, h;
+  background-repeat:aspect-ratio;
 }
 
 profileContentLeft > listbox {
-  padding:0, 10@sf/@pf, 3@sf/@pf, 0;
+  padding:0, 0, 3@sf/@pf, 0;
 }
 
 bigMedalPlace[parentSize=yes] {
@@ -84,20 +90,39 @@ bigMedalPlace[parentSize=yes] {
 }
 
 imgSelectable.profileMedals {
-  size:186@sf/@pf, 186@sf/@pf;
+  size:(pw - 8@medalItemMargin)/8, (pw - 8@medalItemMargin)/8;
   re-type:9rect;
   foreground-image:#ui/gameuiskin#item_selection;
   foreground-position:8;
   foreground-repeat:expand;
   foreground-color:#22222222;
   margin-left:@medalItemMargin;
+  margin-bottom:@medalItemMargin;
   margin-right:0;
-  margin-bottom:10@sf/@pf;
+  interactive:yes;
 }
 
 imgSelectable.profileMedals > img {
-  size:160@sf/@pf, 160@sf/@pf;
-  background-svg-size:160@sf/@pf, 160@sf/@pf;
+  size:0.9*pw, 0.9*pw;
+  background-svg-size:0.9*pw, 0.9*pw;
+}
+
+imgSelectable.profileCollection {
+  size:(p.p.h - 1@collectionItemMargin)/2, w;
+  re-type:9rect;
+  foreground-image:#ui/gameuiskin#item_selection;
+  foreground-position:8;
+  foreground-repeat:expand;
+  foreground-color:#22222222;
+  margin-left:@collectionItemMargin;
+  margin-bottom:@collectionItemMargin;
+  margin-right:0;
+  interactive:yes;
+}
+
+imgSelectable.profileCollection > img {
+  size:0.9*pw, 0.9*pw;
+  background-svg-size:0.9*pw, 0.9*pw;
 }
 
 medalsList {
@@ -112,7 +137,7 @@ medalsListContent {
   behaviour:posNavigator;
   flow:h-flow;
   flow-align:left;
-  width:1@medalItemMargin + p.p.w + 3@sf/@pf;
+  width:1@medalItemMargin + p.p.w;
   left:-1@medalItemMargin;
   navigatorShortcuts:yes;
   canSelectNone:yes;
@@ -120,6 +145,12 @@ medalsListContent {
 
 medalsList ScrollBar {
   position:absolute;
+  background-color:#FF5555;
+}
+
+collectionsList ScrollBar {
+  margin-left:20@sf/@pf;
+  padding-left:20@sf/@pf;
   background-color:#FF5555;
 }
 
@@ -205,9 +236,10 @@ profilePage .lbTable td:hover cardImg {
   margin:0, 0, 0, 8@sf/@pf;
 }
 
-[isBigSizeList=yes] > shopFilter > shopFilterText {
-  font:@fontNormal;
+[isBigSizeList=yes] > shopFilter > shopFilterText,
+[isBigSizeList=yes] > shopFilter > tdiv > shopFilterText {
   color:#908f8f;
+  move-start:no;
 }
 
 [isBigSizeList=yes] > shopFilter > text {
@@ -219,9 +251,12 @@ profilePage .lbTable td:hover cardImg {
 
 [isBigSizeList=yes] > shopFilter:hover > shopFilterText,
 [isBigSizeList=yes] > shopFilter[selected=yes] > shopFilterText,
+[isBigSizeList=yes] > shopFilter[selected=yes] > tdiv > shopFilterText,
+[isBigSizeList=yes] > shopFilter:hover > tdiv > shopFilterText,
 [isBigSizeList=yes] > shopFilter[selected=yes] > text,
 [isBigSizeList=yes] > shopFilter:hover > text {
   color:#FFFFFF;
+  move-start:yes;
 }
 
 [isBigSizeList=yes] mission_item_text {
@@ -238,8 +273,29 @@ profilePage .lbTable td:hover cardImg {
   margin-bottom:8@sf/@pf;
 }
 
+[isBigSizeList=yes] campaign_item > missionDiv,
 [isBigSizeList=yes] mission_item_unlocked > missionDiv {
-  padding-left:57@sf/@pf;
+  padding-left:0.02@scrn_tgt;
+}
+
+[isBigSizeList=yes] campaign_item > fullSizeCollapseBtn[square=yes] {
+  width:2%@sf;
+}
+
+[isBigSizeList=yes] campaign_item > fullSizeCollapseBtn[square=yes] > activeText {
+  pos:0, ph/2-h/2;
+}
+
+[isBigSizeList=yes] campaign_item > missionDiv > mission_item_text,
+[isBigSizeList=yes] mission_item_unlocked > missionDiv > mission_item_text,
+[isBigSizeList=yes] campaign_item > missionDiv > mission_item_text,
+[isBigSizeList=yes] mission_item_unlocked > missionDiv > mission_item_text,
+[isBigSizeList=yes] campaign_item > missionDiv > mission_item_text {
+  padding:0,0,0,0;
+}
+
+[isBigSizeList=yes] mission_item_unlocked > missionDiv > mission_item_text {
+  margin-left:10@sf/@pf;
 }
 
 [isBigSizeList=yes] campaign_item[collapsed=no] > missionDiv > mission_item_text,
@@ -316,13 +372,6 @@ hiddenDiv[isProfilePageUnlock=yes] unlockCondition > unlockImg {
 
 hiddenDiv[isProfilePageUnlock=yes] Button_text {
   margin-bottom:0;
-}
-
-challengeDescriptionProgress[isProfileDecalsProgress=yes] {
-  margin-top:22@sf/@pf;
-  margin-bottom:15@sf/@pf;
-  height:5@sf/@pf;
-  width:536@sf/@pf;
 }
 
 challengeDescriptionProgress[isProfileUnlockProgress=yes] {
@@ -489,4 +538,11 @@ avatarFrame {
 
 [isEditModeEnabled=yes] button[background-image=""] > editableSlotPlus {
   display:show;
+}
+
+profileContentDesc {
+  flow:horizontal;
+  width:pw;
+  min-height:350@sf/@pf;
+  margin-bottom:1@profilePagePartsMargin;
 }

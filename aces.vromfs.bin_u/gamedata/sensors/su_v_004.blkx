@@ -589,14 +589,12 @@
         },
         "designatedTargetSearch": {
           "designateTargetUnderCue": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "cue",
+            "self": true
           },
           "designateActiveDetectedTarget": {
-            "type": 0,
-            "self": true,
-            "sensorIndex": 0
+            "type": "target",
+            "self": true
           }
         },
         "resetBvrLockMode": {
@@ -765,7 +763,7 @@
         },
         "designatedTargetTws": {
           "designateActiveDetectedTarget": {
-            "type": 0,
+            "type": "target",
             "self": true,
             "sensorIndex": 0
           }
@@ -1122,7 +1120,10 @@
           "stateTo": "checkDesignationType0",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": [
+                "target",
+                "cue"
+              ]
             }
           }
         },
@@ -1690,6 +1691,9 @@
               "fsm": "main",
               "name": "resetSearchMode"
             },
+            "setDesignationSourceType": {
+              "sourceType": "radarSs"
+            },
             "setFsmActive": [
               {
                 "fsm": "main",
@@ -1815,6 +1819,9 @@
             "doCustomActionTemplate": {
               "fsm": "main",
               "name": "resetSearchMode"
+            },
+            "setDesignationSourceType": {
+              "sourceType": "radar"
             },
             "setFsmActive": [
               {
@@ -1983,7 +1990,20 @@
           "actions": {
             "updateTargetOfInterest": {
               "limit": 10,
-              "radius": 1000.0,
+              "posGateTimeInitial": [
+                2.0,
+                4.0
+              ],
+              "posGateRangeInitial": 0.0,
+              "posGateMaxTime": 2.0,
+              "posGateRange": [
+                0.0,
+                1000.0
+              ],
+              "dopplerSpeedGateRange": [
+                0.0,
+                1600.0
+              ],
               "dopplerSpeedGateMaxTime": 8.0
             },
             "updateActiveDetectedTarget": {},
@@ -2018,19 +2038,6 @@
           "command": "switchToTarget",
           "actions": {
             "setDetectedTargetActive": {}
-          }
-        },
-        "designateTarget": {
-          "command": "selectTarget",
-          "actions": {
-            "designateActiveDetectedTarget": {
-              "type": 0,
-              "sensorIndex": 1
-            },
-            "designateTargetUnderCue": {
-              "type": 0,
-              "sensorIndex": 1
-            }
           }
         },
         "scanTrack": {

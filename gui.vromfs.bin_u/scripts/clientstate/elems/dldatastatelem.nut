@@ -1,15 +1,16 @@
 from "%scripts/dagui_natives.nut" import periodic_task_unregister, periodic_task_register
 from "%scripts/dagui_library.nut" import *
 
+let { eventbus_subscribe } = require("eventbus")
 let elemModelType = require("%sqDagui/elemUpdater/elemModelType.nut")
 let elemViewType = require("%sqDagui/elemUpdater/elemViewType.nut")
 
 const HIDE_STAT_TIME_SEC = 1
 const HIDE_STAT_WITH_FAILED_TIME_SEC = 10
 
-::on_show_dldata_stat <- function(stat) {    
+eventbus_subscribe("on_show_dldata_stat", function(stat) {
   elemModelType.DL_DATA_STATE.updateStat(stat)
-}
+})
 
 elemModelType.addTypes({
   DL_DATA_STATE = {

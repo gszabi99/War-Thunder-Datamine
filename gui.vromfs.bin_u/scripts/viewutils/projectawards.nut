@@ -9,7 +9,7 @@ function setProjectAwards(handler) {
   if (! checkObj(awardsObj))
     return
   let blk = GUI.get()
-  if (!blk?.project_awards?.en)
+  if (!blk?.project_awards.en)
     return
 
   local lang = loc("current_lang")

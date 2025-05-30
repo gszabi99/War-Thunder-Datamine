@@ -12,7 +12,8 @@ let { doesLocTextExist } = require("dagor.localize")
 let { calculate_tank_bullet_parameters } = require("unitCalculcation")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { isInMenu, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { image_for_air, getUnitName, getUnitCountry, getUnitCountryIcon } = require("%scripts/unit/unitInfo.nut")
 let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
@@ -84,15 +85,19 @@ function getBulletInfo(unit, hit) {
     return bulletInfoCache[key]
   }
 
-  local bullets = null
-  if (hit.ammo != "" && weaponBlk.getBlockByName(hit.ammo) != null)
-    bullets = weaponBlk[hit.ammo] % "bullet"
-  else if ((bulletSetName ?? "") != "" && weaponBlk.getBlockByName(bulletSetName) != null)
-    bullets = weaponBlk[bulletSetName] % "bullet"
-  else
-    bullets = weaponBlk % "bullet"
+  let bullets = weaponBlk % "bullet"
+  for (local i = 0; i < weaponBlk.blockCount(); i++)
+    bullets.extend(weaponBlk.getBlock(i) % "bullet")
 
-  if (hit.ammoNo not in bullets) {
+  if (bullets.len() == 0) {
+    bulletInfoCache[key] <- {
+      bulletDesc = ""
+    }
+    return bulletInfoCache[key]
+  }
+
+  let bullet = bullets.findvalue(@(v) v.bulletType == hit.ammoType)
+  if (bullet == null) {
     bulletInfoCache[key] <- {
       bulletDesc = ""
     }
@@ -100,11 +105,11 @@ function getBulletInfo(unit, hit) {
   }
 
   let bulletSet = DataBlock()
-  bulletSet.setFrom(bullets[hit.ammoNo])
-  let { bulletType, caliber } = bulletSet
+  bulletSet.setFrom(bullet)
+
   bulletInfoCache[key] <- {
-    bulletName = bulletType
-    bulletDesc = $"{format(loc("caliber/mm"), caliber * 1000)} {loc($"{bulletType}/name/short")}"
+    bulletName = hit.ammoType
+    bulletDesc = $"{format(loc("caliber/mm"), bullet.caliber * 1000)} {loc($"{hit.ammoType}/name/short")}"
     isBulletBelt
     bulletSet
     bulletsSet
@@ -345,7 +350,7 @@ gui_handlers.HitsAnalysis <- class (gui_handlers.BaseGuiHandlerWT) {
 
 function canOpenHitsAnalysisWindow() {
   return hasFeature("HitsAnalysis")
-    && isInMenu()
+    && isInMenu.get()
     && !hasSessionInLobby()
 }
 

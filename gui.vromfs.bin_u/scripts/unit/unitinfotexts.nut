@@ -193,6 +193,29 @@ function getCantBuyUnitReason(unit, isShopTooltip = false) {
   return ""
 }
 
+function getCharacteristicActualValue(air, characteristicName, prepareTextFunc, modeName, showLocalState = true) {
+  let modificators = showLocalState ? "modificators" : "modificatorsBase"
+
+  local showReferenceText = false
+  if (!(characteristicName[0] in air.shop))
+    air.shop[characteristicName[0]] <- 0;
+
+  let value = air.shop[characteristicName[0]] + (air[modificators] ? air[modificators][modeName][characteristicName[1]] : 0)
+  let vMin = air.minChars ? air.shop[characteristicName[0]] + air.minChars[modeName][characteristicName[1]] : value
+  let vMax = air.maxChars ? air.shop[characteristicName[0]] + air.maxChars[modeName][characteristicName[1]] : value
+  local text = prepareTextFunc(value)
+  if (air[modificators] && air[modificators][modeName][characteristicName[1]] == 0) {
+    text = $"<color=@goodTextColor>{text}</color>*"
+    showReferenceText = true
+  }
+
+  let weaponModValue = air?.secondaryWeaponMods.effect[modeName][characteristicName[1]] ?? 0
+  local weaponModText = ""
+  if (weaponModValue != 0)
+    weaponModText = "".concat("<color=@badTextColor>", (weaponModValue > 0 ? " + " : " - "), prepareTextFunc(fabs(weaponModValue)), "</color>")
+  return [text, weaponModText, vMin, vMax, value, air.shop[characteristicName[0]], showReferenceText]
+}
+
 return {
   getUnitTooltipImage
   getChanceToMeetText
@@ -201,4 +224,5 @@ return {
   getUnitRarity
   getUnitClassIco
   getCantBuyUnitReason
+  getCharacteristicActualValue
 }

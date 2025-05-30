@@ -16,11 +16,11 @@ let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let spectatorWatchedHero = require("%scripts/replays/spectatorWatchedHero.nut")
 let { getUnitRole } = require("%scripts/unit/unitInfoRoles.nut")
 let lobbyStates = require("%scripts/matchingRooms/lobbyStates.nut")
-let { updateTopSquadScore, getSquadInfo, isShowSquad,
+let { updateTopSquadScore, isShowSquad,
   getSquadInfoByMemberId, getTopSquadId } = require("%scripts/statistics/squadIcon.nut")
 let { is_replay_playing } = require("replays")
 let { get_game_mode, get_mp_local_team } = require("mission")
-let { get_mission_difficulty_int, get_mission_difficulty, get_mp_session_info } = require("guiMission")
+let { get_mission_difficulty_int, get_mp_session_info } = require("guiMission")
 let { stripTags } = require("%sqstd/string.nut")
 let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
@@ -29,16 +29,18 @@ let { locCurrentMissionName } = require("%scripts/missions/missionsText.nut")
 let { isInFlight } = require("gameplayBinding")
 let { sessionLobbyStatus, getSessionLobbyTeam, getSessionLobbyPlayersInfo
 } = require("%scripts/matchingRooms/sessionLobbyState.nut")
-let { calcBattleRatingFromRank } = require("%appGlobals/ranks_common_shared.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getRankByExp } = require("%scripts/ranks.nut")
 let { isWorldWarEnabled } = require("%scripts/globalWorldWarScripts.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
-let { getRoomRankCalcMode, getBattleRatingParamByPlayerInfo, isMemberInMySquadById
-} = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
+let { isMemberInMySquadById } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { isEqualSquadId } = require("%scripts/squads/squadState.nut")
+let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+require("%scripts/statistics/mpStatisticsPlayerTooltip.nut")
+
+const ICON_SKIP_BG_COLORING = "image_in_progress_ico.svg"
 
 let getKillsForAirBattle = @(player) player.kills
 let getKillsForTankBattle = @(player) player.kills + player.groundKills
@@ -57,6 +59,15 @@ let eventNameBonusTypes = {
 
 let cachedBonusTooltips = {}
 
+let colsWithParamType = { aiTotalKills = true, assists = true, score = true, damageZone = true,
+  raceFinishTime = true, raceLastCheckpoint = true, raceLastCheckpointTime = true,
+  raceBestLapTime = true, missionAliveTime = true, kills = true, deaths = true
+}
+
+let colsWithCustomTooltip = { name = true, aircraft = true, unitIcon = true }
+let colsWithWishlistContextMenu = hasFeature("Wishlist")
+  ? { aircraft = true, unitIcon = true }
+  : { }
 
 function gui_start_mpstatscreen_(params = {}) {
   let isFromGame = params?.isFromGame ?? false
@@ -123,14 +134,6 @@ function getWeaponTypeIcoByWeapon(airName, weapon) {
     break
   }
   return config
-}
-
-function sort_units_for_br_tooltip(u1, u2) {
-  if (u1.rating != u2.rating)
-    return u1.rating > u2.rating ? -1 : 1
-  if (u1.rankUnused != u2.rankUnused)
-    return u1.rankUnused ? 1 : -1
-  return 0
 }
 
 function get_mp_country_by_team(team) {
@@ -211,6 +214,12 @@ function createExpSkillBonusIcon(tooltipFunction) {
   )
 }
 
+function createCellCustomTooltip(tooltipId) {
+  return format(@"tooltip:t='$tooltipObj'; tooltipObj { id:t='%s';
+    on_tooltip_open:t='onGenericTooltipOpen'; on_tooltip_close:t='onTooltipObjClose';
+    display:t='hide' }", tooltipId)
+}
+
 function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
   if (numRows <= 0)
     return ""
@@ -242,9 +251,13 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
       local tdData = ""
       let widthAdd = ((j == 0) || (j == (hdr.len() - 1))) ? "+@tablePad" : ""
       let textPadding = "style:t='padding:@tablePad,0;'; "
+      local customTooltipId = null
 
       if (!isEmpty && (hdr[j] in table[i]))
         item = table[i][hdr[j]]
+
+      if (hdr[j] in colsWithCustomTooltip)
+        customTooltipId = $"{hdr[j]}_tooltip"
 
       if (hdr[j] == "hasPassword") {
         let icon = item ? "#ui/gameuiskin#password.svg" : ""
@@ -336,7 +349,7 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
         let width = $"width:t='{markup[hdr[j]]?.width ?? 1}'; "
         tdData = format("%s activeText { text:t = '%s'; halign:t='center';} ", width, item)
       }
-      else if (isInArray(hdr[j], [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime", "kills" ])) {
+      else if (hdr[j] in colsWithParamType) {
         let txt = isEmpty ? "" : g_mplayer_param_type.getTypeById(hdr[j]).printFunc(item, table[i])
         tdData = format("activeText { text:t='%s' halign:t='center' } ", txt)
         let width = getTblValue("width", getTblValue(hdr[j], markup, {}), "")
@@ -388,6 +401,10 @@ function buildMpTable(table, markupData, hdr, numRows = 1, params = {}) {
       }
 
       trData.append("td { id:t='td_", hdr[j], "'; ")
+      if (customTooltipId)
+        trData.append(createCellCustomTooltip(customTooltipId))
+      if (hdr[j] in colsWithWishlistContextMenu)
+        trData.append("cursor:t='normal'; isNavInContainerBtn:t='no'; contextMenu:t='no'; ")
       if (j == 0)
         trData.append("padding-left:t='@tablePad'; ")
       if (j > 0)
@@ -428,6 +445,13 @@ function getExpBonusIndexForPlayer(player, expSkillBonuses, skillBonusType) {
   return blockCount
 }
 
+function getUnitCardTooltipId(player) {
+  let { aircraftName = "", isSpectator = false, isLocal = false } = player
+  if (aircraftName == "" || aircraftName == "dummy_plane" || isSpectator)
+    return null
+  return getTooltipType("UNIT").getTooltipId(aircraftName,
+    { showLocalState = isLocal, showInFlightInfo = isLocal })
+}
 
 function setMpTable(obj_tbl, table, params = {}) {
   let numTblRows = table.len()
@@ -436,12 +460,12 @@ function setMpTable(obj_tbl, table, params = {}) {
   if (numRows <= 0)
     return
 
-  let showAirIcons = getTblValue("showAirIcons", params, true)
-  let continueRowNum = getTblValue("continueRowNum", params, 0)
-  let numberOfWinningPlaces = getTblValue("numberOfWinningPlaces", params, -1)
+  let { showUnitsInfo = true, continueRowNum = 0, numberOfWinningPlaces = -1,
+    isDebriefing = false } = params
   let playersInfo = params?.playersInfo ?? getSessionLobbyPlayersInfo()
   let needColorizeNotInGame = isInFlight()
   let isReplay = is_replay_playing()
+  let isAlly = obj_tbl?.team == "blue"
 
   updateTopSquadScore(table)
   for (local i = 0; i < numRows; i++) {
@@ -470,6 +494,8 @@ function setMpTable(obj_tbl, table, params = {}) {
       objTr.inGame = isInGame ? "yes" : "no"
     }
 
+    let unitCardTooltipId = showUnitsInfo ? getUnitCardTooltipId(player) : null
+
     let totalCells = objTr.childrenCount()
     for (local idx = 0; idx < totalCells; idx++) {
       let objTd = objTr.getChild(idx)
@@ -487,6 +513,13 @@ function setMpTable(obj_tbl, table, params = {}) {
         table[i].isLocal = spectatorWatchedHero.id == table[i].id
         table[i].isInHeroSquad = isEqualSquadId(spectatorWatchedHero.squadId,
           table[i]?.squadId)
+      }
+
+      if (hdr in colsWithWishlistContextMenu) {
+        let hasUnitCard = !!unitCardTooltipId
+        objTd.cursor = hasUnitCard ? "context-menu" : "normal"
+        objTd.isNavInContainerBtn = hasUnitCard ? "yes" : "no"
+        objTd.contextMenu = hasUnitCard ? "wishlist" : "no"
       }
 
       if (hdr == "team") {
@@ -522,13 +555,13 @@ function setMpTable(obj_tbl, table, params = {}) {
       }
       else if (hdr == "status") {
         let objReady = objTd.findObject("ready-ico")
-        if (checkObj(objReady)) {
-          let playerState = g_player_state.getStateByPlayerInfo(table[i])
+        let playerState = g_player_state.getStateByPlayerInfo(table[i])
+        if (objReady?.isValid()) {
           objReady["background-image"] = playerState.getIcon(table[i])
           objReady["background-color"] = playerState.getIconColor()
-          let desc = playerState.getText(table[i])
-          objReady.tooltip = (desc != "") ? loc("ui/colon").concat(loc("multiplayer/state"), desc) : ""
         }
+        let desc = playerState.getText(table[i])
+        objTd.tooltip = (desc != "") ? loc("ui/colon").concat(loc("multiplayer/state"), desc) : ""
       }
       else if (hdr == "name") {
         local nameText = item
@@ -555,7 +588,6 @@ function setMpTable(obj_tbl, table, params = {}) {
         let objDlcImg = objTd.findObject("dlc-ico")
         if (checkObj(objDlcImg))
           objDlcImg.show(false)
-        local tooltip = nameText
         let isLocal = table[i].isLocal
         
         let isInHeroSquad = table[i]?.isInHeroSquad || isMemberInMySquadById(table[i]?.userId.tointeger())
@@ -563,47 +595,14 @@ function setMpTable(obj_tbl, table, params = {}) {
         objTr.inMySquad  = isInHeroSquad ? "yes" : "no"
         objTr.spectator = table[i]?.spectator ? "yes" : "no"
 
-        let playerInfo = playersInfo?[(table[i].userId).tointeger()]
-        if (!isLocal && isInHeroSquad && playerInfo?.auto_squad)
-          tooltip = $"{tooltip}\n\n{loc("squad/auto")}\n"
-
-        if (!table[i].isBot
-          && get_mission_difficulty() == g_difficulty.ARCADE.gameTypeName
-          && !getCurMissionRules().isWorldWar) {
-          let data = getBattleRatingParamByPlayerInfo(playerInfo)
-          if (data) {
-            let squadInfo = getSquadInfo(data.squad)
-            let isInSquad = squadInfo ? !squadInfo.autoSquad : false
-            let ratingTotal = calcBattleRatingFromRank(data.rank)
-            tooltip = "".concat(tooltip, "\n", loc("debriefing/battleRating/units"), loc("ui/colon"))
-            local showLowBRPrompt = false
-
-            let unitsForTooltip = []
-            for (local j = 0; j < min(data.units.len(), 3); ++j)
-              unitsForTooltip.append(data.units[j])
-            unitsForTooltip.sort(sort_units_for_br_tooltip)
-            for (local j = 0; j < unitsForTooltip.len(); ++j) {
-              let rankUnused = unitsForTooltip[j].rankUnused
-              let formatString = rankUnused
-                ? "\n<color=@disabledTextColor>(%.1f) %s</color>"
-                : "\n<color=@disabledTextColor>(<color=@userlogColoredText>%.1f</color>) %s</color>"
-              if (rankUnused)
-                showLowBRPrompt = true
-              tooltip = "".concat(tooltip, format(formatString, unitsForTooltip[j].rating, unitsForTooltip[j].name))
-            }
-            tooltip = "".concat(tooltip, "\n",
-              loc(isInSquad ? "debriefing/battleRating/squad" : "debriefing/battleRating/total"),
-              loc("ui/colon"), format("%.1f", ratingTotal))
-            if (showLowBRPrompt) {
-              let maxBRDifference = 2.0 
-              let rankCalcMode = getRoomRankCalcMode()
-              if (rankCalcMode)
-                tooltip = "".concat(tooltip, "\n",
-                  loc($"multiplayer/lowBattleRatingPrompt/{rankCalcMode}", { maxBRDifference = format("%.1f", maxBRDifference) }))
-            }
-          }
+        if (!table[i].isBot) {
+          let tooltipId = getTooltipType("MP_STAT_PLAYER").getTooltipId(player, {
+            playersInfo, isAlly, isDebriefing
+          })
+          objTd.findObject("name_tooltip").tooltipId = tooltipId
+        } else {
+          objTd.tooltip = nameText
         }
-        objTr.tooltip = tooltip
       }
       else if (hdr == "unitIcon") {
         local unitIco = ""
@@ -615,7 +614,7 @@ function setMpTable(obj_tbl, table, params = {}) {
           unitIco = g_player_state.HAS_LEAVED_GAME.getIcon(player)
         else if (player?.isDead)
           unitIco = (player?.spectator) ? "#ui/gameuiskin#player_spectator.svg" : "#ui/gameuiskin#dead.svg"
-        else if (showAirIcons && ("aircraftName" in player)) {
+        else if (showUnitsInfo && ("aircraftName" in player)) {
           unitId = player.aircraftName
           unitIco = getUnitClassIco(unitId)
           unitIcoColorType = getUnitRole(unitId)
@@ -626,6 +625,7 @@ function setMpTable(obj_tbl, table, params = {}) {
         if (checkObj(obj)) {
           obj["background-image"] = unitIco
           obj["shopItemType"] = unitIcoColorType
+          obj["skipBgColor"] = unitIco.endswith(ICON_SKIP_BG_COLORING) ? "yes" : "no"
         }
 
         if (params?.canHasBonusIcon) {
@@ -649,6 +649,9 @@ function setMpTable(obj_tbl, table, params = {}) {
             obj["background-svg-size"] = iconSize
           }
         }
+        objTd.tooltip = unitCardTooltipId ? "$tooltipObj" : ""
+        if (unitCardTooltipId)
+          objTd.findObject("unitIcon_tooltip").tooltipId = unitCardTooltipId
       }
       else if (hdr == "aircraft") {
         let objText = objTd.findObject("txt_aircraft")
@@ -665,7 +668,9 @@ function setMpTable(obj_tbl, table, params = {}) {
             tooltip = (unitId != "") ? loc(getUnitName(unitId, false)) : ""
           }
           objText.setValue(text)
-          objText.tooltip = tooltip
+          objTd.tooltip = unitCardTooltipId ? "$tooltipObj" : tooltip
+          if (unitCardTooltipId)
+            objTd.findObject("aircraft_tooltip").tooltipId = unitCardTooltipId
         }
       }
       else if (hdr == "rowNo") {
@@ -684,12 +689,12 @@ function setMpTable(obj_tbl, table, params = {}) {
       else if (hdr == "place") {
         objTd.getChild(0).setValue(item)
       }
-      else if (isInArray(hdr, [ "aiTotalKills", "assists", "score", "damageZone", "raceFinishTime", "raceLastCheckpoint", "raceLastCheckpointTime", "raceBestLapTime", "missionAliveTime", "kills" ])) {
+      else if (hdr in colsWithParamType) {
         let paramType = g_mplayer_param_type.getTypeById(hdr)
         let txt = paramType ? paramType.printFunc(item, table[i]) : ""
         let objText = objTd.getChild(0)
         objText.setValue(txt)
-        objText.tooltip = paramType ? paramType.getTooltip(item, table[i], txt) : ""
+        objTd.tooltip = paramType ? paramType.getTooltip(item, table[i], txt) : ""
       }
       else if (hdr == "numPlayers") {
         local txt = item.tostring()
@@ -729,10 +734,10 @@ function setMpTable(obj_tbl, table, params = {}) {
         if (txt.len() > 0 && txt[0] == '#')
           txt = loc(txt.slice(1))
         let objText = objTd.findObject($"txt_{hdr}")
-        if (objText) {
+        if (objText)
           objText.setValue(txt)
-          objText.tooltip = txt
-        }
+
+        objTd.tooltip = g_mplayer_param_type.getTypeById(hdr).getDefTooltip(txt)
       }
     }
   }

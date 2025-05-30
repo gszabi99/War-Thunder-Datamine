@@ -1,7 +1,7 @@
-from "%scripts/dagui_natives.nut" import save_short_token
 from "%scripts/dagui_library.nut" import *
-from "%scripts/squads/squadsConsts.nut" import *
+from "%scripts/squads/squadsConsts.nut" import squadMemberState, memberStatus
 
+let { isInFlight } = require("gameplayBinding")
 let { getGlobalModule } = require("%scripts/global_modules.nut")
 let events = getGlobalModule("events")
 let g_squad_manager = getGlobalModule("g_squad_manager")
@@ -12,12 +12,12 @@ let systemMsg = require("%scripts/utils/systemMsg.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let antiCheat = require("%scripts/penitentiary/antiCheat.nut")
 let { getXboxChatEnableStatus } = require("%scripts/chat/chatStates.nut")
-let { startLogout } = require("%scripts/login/logout.nut")
 let { recentBR, getBRDataByMrankDiff } = require("%scripts/battleRating.nut")
 let { getMyStateData } = require("%scripts/user/userUtils.nut")
 let { saveLocalAccountSettings, loadLocalAccountSettings
 } = require("%scripts/clientState/localProfile.nut")
-let { isInMenu, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { CommunicationState } = require("%scripts/gdk/permissions.nut")
@@ -36,6 +36,7 @@ let memberStatusLocId = {
   [memberStatus.SELECTED_AIRS_BROKEN]           = "squadMember/selected_airs_broken",
   [memberStatus.NO_REQUIRED_UNITS]              = "squadMember/no_required_units",
   [memberStatus.EAC_NOT_INITED]                 = "squadMember/eac_not_inited",
+  [memberStatus.SELECTED_COUNTRY_NOT_AVAILABLE] = "squadMember/selected_country_not_available",
 }
 
 let locTags = { [MEMBER_STATUS_LOC_TAG_PREFIX] = "unknown" }
@@ -43,123 +44,28 @@ foreach (status, locId in memberStatusLocId)
   locTags[$"{MEMBER_STATUS_LOC_TAG_PREFIX}{status}"] <- locId
 systemMsg.registerLocTags(locTags)
 
-::g_squad_utils <- {
-  getMemberStatusLocId = @(status) memberStatusLocId?[status] ?? "unknown"
-  getMemberStatusLocTag = @(status) $"{MEMBER_STATUS_LOC_TAG_PREFIX}{status in memberStatusLocId ? status : ""}"
+function checkAndShowHasOfflinePlayersPopup() {
+  if (!g_squad_manager.isSquadLeader())
+    return
 
-  canSquad = @() getXboxChatEnableStatus() == CommunicationState.Allowed
+  let offlineMembers = g_squad_manager.getOfflineMembers()
+  if (offlineMembers.len() == 0)
+    return
 
-  getMembersFlyoutDataByUnitsGroups = @() g_squad_manager.getMembers().map(
-    @(member) { crafts_info = member?.craftsInfoByUnitsGroups })
+  let text = loc("ui/colon").concat(loc("squad/has_offline_members"),
+    loc("ui/comma").join(offlineMembers
+      .map(@(memberData) colorize("warningTextColor", getPlayerName(memberData.name))),
+    true))
 
-  canShowMembersBRDiffMsg = @() isProfileReceived.get()
-    && !loadLocalAccountSettings("skipped_msg/membersBRDiff", false)
-
-  checkMembersMrankDiff = function(handler, okFunc) {
-    if (!g_squad_manager.isSquadLeader())
-      return okFunc()
-
-    let brData = getBRDataByMrankDiff()
-    if (brData.len() == 0)
-      return okFunc()
-
-    if (!this.canShowMembersBRDiffMsg())
-      return okFunc()
-
-    let message = loc("multiplayer/squad/members_br_diff_warning", {
-      squadBR = format("%.1f", recentBR.value)
-      players = "\n".join(brData.reduce(@(acc, v, k) acc.append(
-        "".concat(colorize("userlogColoredText", getPlayerName(k)), loc("ui/colon"), format("%.1f", v))), []))
-    })
-
-    loadHandler(gui_handlers.SkipableMsgBox, {
-      parentHandler = handler
-      message = message
-      startBtnText = loc("msgbox/btn_yes")
-      onStartPressed = okFunc
-      skipFunc = function(value) {
-        saveLocalAccountSettings("skipped_msg/membersBRDiff", value)
-      }
-    })
-  }
+  addPopup("", text)
 }
 
-::g_squad_utils.canJoinFlightMsgBox <- function canJoinFlightMsgBox(options = null,
-                                            okFunc = null, cancelFunc = null) {
-  if (!isInMenu()) {
-    addPopup("", loc("squad/cant_join_in_flight"))
-    return false
-  }
-
-  if (!g_squad_manager.isInSquad())
-    return true
-
-  local msgId = getTblValue("msgId", options, "squad/cant_start_new_flight")
-  if (getTblValue("allowWhenAlone", options, true) && !g_squad_manager.isNotAloneOnline())
-    return true
-
-  if (!getTblValue("isLeaderCanJoin", options, false) || !g_squad_manager.isSquadLeader()) {
-    this.showLeaveSquadMsgBox(msgId, okFunc, cancelFunc)
-    return false
-  }
-
-  let maxSize = getTblValue("maxSquadSize", options, 0)
-  if (maxSize > 0 && g_squad_manager.getOnlineMembersCount() > maxSize) {
-    showInfoMsgBox(loc("gamemode/squad_is_too_big",
-      {
-        squadSize = colorize("userlogColoredText", g_squad_manager.getOnlineMembersCount())
-        maxTeamSize = colorize("userlogColoredText", maxSize)
-      }))
-    return false
-  }
-
-  if (g_squad_manager.readyCheck(true)) {
-    if (!::g_squad_utils.checkCrossPlayCondition())
-      return false
-
-    if (getTblValue("showOfflineSquadMembersPopup", options, false))
-      this.checkAndShowHasOfflinePlayersPopup()
-    return true
-  }
-
-  if (g_squad_manager.readyCheck(false)) {
-    this.showRevokeNonAcceptInvitesMsgBox(okFunc, cancelFunc)
-    return false
-  }
-
-  msgId = "squad/not_all_ready"
-  this.showLeaveSquadMsgBox(msgId, okFunc, cancelFunc)
-  return false
+function showCantJoinSquadMsgBox(id, msg, buttons, defBtn, options) {
+  scene_msg_box(id, null, msg, buttons, defBtn, options)
 }
 
-::g_squad_utils.checkCrossPlayCondition <- function checkCrossPlayCondition() {
-  let members = g_squad_manager.getDiffCrossPlayConditionMembers()
-  if (!members.len())
-    return true
-
-  let locId = $"squad/sameCrossPlayConditionAsLeader/{members[0].crossplay ? "disabled" : "enabled"}"
-  let membersNamesArray = members.map(@(member) colorize("warningTextColor", getPlayerName(member.name)))
-  showInfoMsgBox(
-    loc(locId,
-      { names = ",".join(membersNamesArray, true) }
-    ), "members_not_all_crossplay_condition")
-  return false
-}
-
-::g_squad_utils.showRevokeNonAcceptInvitesMsgBox <- function showRevokeNonAcceptInvitesMsgBox(okFunc = null, cancelFunc = null) {
-  ::showCantJoinSquadMsgBox(
-    "revoke_non_accept_invitees",
-    loc("squad/revoke_non_accept_invites"),
-    [["revoke_invites", function() { g_squad_manager.revokeAllInvites(okFunc) } ],
-     ["cancel", cancelFunc]
-    ],
-    "cancel",
-    { cancel_fn = cancelFunc }
-  )
-}
-
-::g_squad_utils.showLeaveSquadMsgBox <- function showLeaveSquadMsgBox(msgId, okFunc = null, cancelFunc = null) {
-  ::showCantJoinSquadMsgBox(
+function showLeaveSquadMsgBox(msgId, okFunc = null, cancelFunc = null) {
+  showCantJoinSquadMsgBox(
     "cant_join",
     loc(msgId),
     [
@@ -173,8 +79,68 @@ systemMsg.registerLocTags(locTags)
   )
 }
 
-::showCantJoinSquadMsgBox <- function showCantJoinSquadMsgBox(id, msg, buttons, defBtn, options) {
-  scene_msg_box(id, null, msg, buttons, defBtn, options)
+function showRevokeNonAcceptInvitesMsgBox(okFunc = null, cancelFunc = null) {
+  showCantJoinSquadMsgBox(
+    "revoke_non_accept_invitees",
+    loc("squad/revoke_non_accept_invites"),
+    [["revoke_invites", function() { g_squad_manager.revokeAllInvites(okFunc) } ],
+     ["cancel", cancelFunc]
+    ],
+    "cancel",
+    { cancel_fn = cancelFunc }
+  )
+}
+
+function checkCrossPlayCondition() {
+  let members = g_squad_manager.getDiffCrossPlayConditionMembers()
+  if (!members.len())
+    return true
+
+  let locId = $"squad/sameCrossPlayConditionAsLeader/{members[0].crossplay ? "disabled" : "enabled"}"
+  let membersNamesArray = members.map(@(member) colorize("warningTextColor", getPlayerName(member.name)))
+  showInfoMsgBox(
+    loc(locId,
+      { names = ",".join(membersNamesArray, true) }
+    ), "members_not_all_crossplay_condition")
+  return false
+}
+
+let getMemberStatusLocId = @(status) memberStatusLocId?[status] ?? "unknown"
+let getMemberStatusLocTag = @(status) $"{MEMBER_STATUS_LOC_TAG_PREFIX}{status in memberStatusLocId ? status : ""}"
+let canSquad = @() getXboxChatEnableStatus() == CommunicationState.Allowed
+
+let getSquadMembersFlyoutDataByUnitsGroups = @() g_squad_manager.getMembers().map(
+  @(member) { crafts_info = member?.craftsInfoByUnitsGroups })
+
+let canShowMembersBRDiffMsg = @() isProfileReceived.get()
+  && !loadLocalAccountSettings("skipped_msg/membersBRDiff", false)
+
+function checkSquadMembersMrankDiff(handler, okFunc) {
+  if (!g_squad_manager.isSquadLeader())
+    return okFunc()
+
+  let brData = getBRDataByMrankDiff()
+  if (brData.len() == 0)
+    return okFunc()
+
+  if (!canShowMembersBRDiffMsg())
+    return okFunc()
+
+  let message = loc("multiplayer/squad/members_br_diff_warning", {
+    squadBR = format("%.1f", recentBR.value)
+    players = "\n".join(brData.reduce(@(acc, v, k) acc.append(
+      "".concat(colorize("userlogColoredText", getPlayerName(k)), loc("ui/colon"), format("%.1f", v))), []))
+  })
+
+  loadHandler(gui_handlers.SkipableMsgBox, {
+    parentHandler = handler
+    message = message
+    startBtnText = loc("msgbox/btn_yes")
+    onStartPressed = okFunc
+    skipFunc = function(value) {
+      saveLocalAccountSettings("skipped_msg/membersBRDiff", value)
+    }
+  })
 }
 
 function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady = false) {
@@ -208,7 +174,54 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
     "ok", { cancel_fn = function() {} })
 }
 
-::g_squad_utils.updateMyCountryData <- function updateMyCountryData(needUpdateSessionLobbyData = true) {
+function canJoinFlightMsgBox(options = null, okFunc = null, cancelFunc = null) {
+  if (!isInMenu.get()) {
+    addPopup("", loc("squad/cant_join_in_flight"))
+    return false
+  }
+
+  if (!g_squad_manager.isInSquad())
+    return true
+
+  local msgId = getTblValue("msgId", options, "squad/cant_start_new_flight")
+  if (getTblValue("allowWhenAlone", options, true) && !g_squad_manager.isNotAloneOnline())
+    return true
+
+  if (!getTblValue("isLeaderCanJoin", options, false) || !g_squad_manager.isSquadLeader()) {
+    showLeaveSquadMsgBox(msgId, okFunc, cancelFunc)
+    return false
+  }
+
+  let maxSize = getTblValue("maxSquadSize", options, 0)
+  if (maxSize > 0 && g_squad_manager.getOnlineMembersCount() > maxSize) {
+    showInfoMsgBox(loc("gamemode/squad_is_too_big",
+      {
+        squadSize = colorize("userlogColoredText", g_squad_manager.getOnlineMembersCount())
+        maxTeamSize = colorize("userlogColoredText", maxSize)
+      }))
+    return false
+  }
+
+  if (g_squad_manager.readyCheck(true)) {
+    if (!checkCrossPlayCondition())
+      return false
+
+    if (getTblValue("showOfflineSquadMembersPopup", options, false))
+      checkAndShowHasOfflinePlayersPopup()
+    return true
+  }
+
+  if (g_squad_manager.readyCheck(false)) {
+    showRevokeNonAcceptInvitesMsgBox(okFunc, cancelFunc)
+    return false
+  }
+
+  msgId = "squad/not_all_ready"
+  showLeaveSquadMsgBox(msgId, okFunc, cancelFunc)
+  return false
+}
+
+function updateMyCountryData(needUpdateSessionLobbyData = true) {
   let memberData = getMyStateData()
   g_squad_manager.updateMyMemberDataAfterActualizeJwt(memberData)
 
@@ -222,12 +235,11 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
     })
 }
 
-::g_squad_utils.getMembersFlyoutData <- function getMembersFlyoutData(teamData, event, canChangeMemberCountry = true) {
+function getSquadMembersFlyoutData(teamData, event) {
   let res = {
     canFlyout = true,
     haveRestrictions = false
     members = []
-    countriesChanged = 0
   }
 
   if (!g_squad_manager.isInSquad() || !teamData)
@@ -251,7 +263,6 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
             countries = []
             selAirs = memberData.selAirs
             selSlots = memberData.selSlots
-            isSelfCountry = false
             dislikedMissions = memberData?.dislikedMissions ?? []
             bannedMissions = memberData?.bannedMissions ?? []
             fakeName = memberData?.fakeName ?? false
@@ -261,22 +272,12 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
     local haveAvailCountries = false
     local isAnyRequiredAndAvailableFound = false
 
-    let checkOnlyMemberCountry = !canChangeMemberCountry
-                                   || isInArray(memberData.country, teamData.countries)
-    if (checkOnlyMemberCountry)
-      mData.isSelfCountry = true
-    else {
-      mData.queueProfileJwt = "" 
-      res.countriesChanged++     
-    }
-
     let brokenUnits = []
     local haveNotBroken = false
     let needCheckRequired = events.getRequiredCrafts(teamData).len() > 0
-    foreach (country in teamData.countries) {
-      if (checkOnlyMemberCountry && country != memberData.country)
-        continue
-
+    local isValidCountry = true
+    let { country } = memberData
+    if (isInArray(country, teamData.countries)) {
       local haveAvailable = false
       local haveRequired  = !needCheckRequired
 
@@ -311,11 +312,16 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
       if (haveAvailable && haveNotBroken && haveRequired)
         mData.countries.append(country)
     }
+    else {
+      isValidCountry = false
+    }
 
     if (shouldUseEac && !(memberData?.isEacInited ?? false))
       mData.status = memberStatus.EAC_NOT_INITED
     else if (!haveAvailCountries)
-      mData.status = respawn ? memberStatus.AIRS_NOT_AVAILABLE : memberStatus.SELECTED_AIRS_NOT_AVAILABLE
+      mData.status = !isValidCountry ? memberStatus.SELECTED_COUNTRY_NOT_AVAILABLE
+      : respawn ? memberStatus.AIRS_NOT_AVAILABLE
+      : memberStatus.SELECTED_AIRS_NOT_AVAILABLE
     else if (!isAnyRequiredAndAvailableFound)
       mData.status = memberStatus.NO_REQUIRED_UNITS
     else if (!mData.countries.len())
@@ -331,15 +337,7 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
   return res
 }
 
-::g_squad_utils.getMembersAvailableUnitsCheckingData <- function getMembersAvailableUnitsCheckingData(remainUnits, country) {
-  let res = []
-  foreach (_uid, memberData in g_squad_manager.getMembers())
-    res.append(this.getMemberAvailableUnitsCheckingData(memberData, remainUnits, country))
-
-  return res
-}
-
-::g_squad_utils.getMemberAvailableUnitsCheckingData <- function getMemberAvailableUnitsCheckingData(memberData, remainUnits, country) {
+function getSquadMemberAvailableUnitsCheckingData(memberData, remainUnits, country) {
   let memberCantJoinData = {
                                canFlyout = true
                                joinStatus = memberStatus.READY
@@ -371,70 +369,15 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
   return memberCantJoinData
 }
 
-::g_squad_utils.checkAndShowHasOfflinePlayersPopup <- function checkAndShowHasOfflinePlayersPopup() {
-  if (!g_squad_manager.isSquadLeader())
-    return
+function getSquadMembersAvailableUnitsCheckingData(remainUnits, country) {
+  let res = []
+  foreach (_uid, memberData in g_squad_manager.getMembers())
+    res.append(getSquadMemberAvailableUnitsCheckingData(memberData, remainUnits, country))
 
-  let offlineMembers = g_squad_manager.getOfflineMembers()
-  if (offlineMembers.len() == 0)
-    return
-
-  let text = loc("ui/colon").concat(loc("squad/has_offline_members"),
-    loc("ui/comma").join(offlineMembers
-      .map(@(memberData) colorize("warningTextColor", getPlayerName(memberData.name))),
-    true))
-
-  addPopup("", text)
+  return res
 }
 
-::g_squad_utils.checkSquadsVersion <- function checkSquadsVersion(memberSquadsVersion) {
-  if (memberSquadsVersion <= SQUADS_VERSION)
-    return
-
-  local message = loc("squad/need_reload")
-  scene_msg_box("need_update_squad_version", null, message,
-                  [["relogin", function() {
-                     save_short_token()
-                     startLogout()
-                   } ],
-                   ["cancel", function() {}]
-                  ],
-                  "cancel", { cancel_fn = function() {} }
-                 )
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-::g_squad_utils.checkAvailableUnits <- function checkAvailableUnits(availableUnitsArrays, controlUnits, availableUnitsArrayIndex = 0) {
-  if (availableUnitsArrays.len() >= availableUnitsArrayIndex)
-    return true
-
-  let units = availableUnitsArrays[availableUnitsArrayIndex]
-  foreach (_idx, name in units) {
-    if (controlUnits[name] <= 0)
-      continue
-
-    controlUnits[name]--
-    if (this.checkAvailableUnits(availableUnitsArrays, controlUnits, availableUnitsArrayIndex++))
-      return true
-
-    controlUnits[name]++
-  }
-
-  return false
-}
-
-::g_squad_utils.canJoinByMySquad <- function canJoinByMySquad(operationId = null, controlCountry = "") {
+function canJoinByMySquad(operationId = null, controlCountry = "") {
   if (operationId == null)
     operationId = g_squad_manager.getWwOperationId()
 
@@ -454,7 +397,7 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
   return true
 }
 
-::g_squad_utils.isEventAllowedForAllMembers <- function isEventAllowedForAllMembers(eventEconomicName, isSilent = false) {
+function isEventAllowedForAllSquadMembers(eventEconomicName, isSilent = false) {
   if (!g_squad_manager.isInSquad())
     return true
 
@@ -476,6 +419,12 @@ function checkSquadUnreadyAndDo(func, cancelFunc = null, shouldCheckCrewsReady =
   return res
 }
 
+function initSquadWidgetHandler(nestObj) {
+  if (!hasFeature("Squad") || !hasFeature("SquadWidget") || !checkObj(nestObj))
+    return null
+  return handlersManager.loadCustomHandler(gui_handlers.SquadWidgetCustomHandler, { scene = nestObj })
+}
+
 registerRespondent("is_in_my_squad", function is_in_my_squad(userId, checkAutosquad = true) {
   return g_squad_manager.isInMySquadById(userId, checkAutosquad)
 })
@@ -485,9 +434,24 @@ registerRespondent("is_in_squad", function is_in_squad(forChat = false) {
 })
 
 addListenersWithoutEnv({
-  CrewsOrderChanged = @(_p) ::g_squad_utils.updateMyCountryData(false)
+  CrewsOrderChanged = @(_p) updateMyCountryData(false)
+  CountryChanged = @(_) updateMyCountryData()
+  CrewChanged = @(_) updateMyCountryData(!isInFlight())
 })
 
 return {
   checkSquadUnreadyAndDo
+  isEventAllowedForAllSquadMembers
+  canJoinByMySquad
+  canJoinFlightMsgBox
+  getMemberStatusLocId
+  getMemberStatusLocTag
+  canSquad
+  getSquadMembersFlyoutDataByUnitsGroups
+  checkSquadMembersMrankDiff
+  updateMyCountryData
+  getSquadMembersFlyoutData
+  getSquadMemberAvailableUnitsCheckingData
+  getSquadMembersAvailableUnitsCheckingData
+  initSquadWidgetHandler
 }

@@ -11,6 +11,7 @@ let DataBlock = require("DataBlock")
 let { get_local_custom_settings_blk, get_common_local_settings_blk } = require("blkGetters")
 let { getStateDebugStr } = require("%scripts/login/loginStates.nut")
 let { isLoggedIn, isProfileReceived } = require("%appGlobals/login/loginState.nut")
+let { shouldDisableMenu } = require("%globalScripts/clientState/initialState.nut")
 
 const EATT_UNKNOWN = -1
 
@@ -33,7 +34,7 @@ eventbus_subscribe("onUpdateProfile", function(msg) {
 
 
 function saveLocalAccountSettings(path, value) {
-  if (!::should_disable_menu() && !isProfileReceived.get()) {
+  if (!shouldDisableMenu && !isProfileReceived.get()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings write: saveLocalAccountSettings at login state ",
       getStateDebugStr()))
@@ -46,7 +47,7 @@ function saveLocalAccountSettings(path, value) {
 }
 
 function loadLocalAccountSettings(path, defValue = null) {
-  if (!::should_disable_menu() && !isProfileReceived.get()) {
+  if (!shouldDisableMenu && !isProfileReceived.get()) {
     debug_dump_stack()
     logerr("".concat("unsafe profile settings read: loadLocalAccountSettings at login state ",
       getStateDebugStr()))

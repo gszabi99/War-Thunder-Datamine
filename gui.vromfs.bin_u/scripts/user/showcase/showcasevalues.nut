@@ -7,6 +7,7 @@ let { measureType } = require("%scripts/measureType.nut")
 let { getCountryFlagImg } = require("%scripts/options/countryFlagsPreset.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { round_by_value } = require("%sqstd/math.nut")
+let { leaderboardsList } = require("%scripts/leaderboard/leaderboardCategoryType.nut")
 
 let defaultShowcaseType = "air_arcade"
 let diffNames = ["arcade", "historical", "simulation"]
@@ -53,7 +54,7 @@ function getPosInLeaderboard(params, value, scorePeriod) {
   if (stat == null)
     return 0
 
-  foreach (lbCategory in ::leaderboards_list)
+  foreach (lbCategory in leaderboardsList)
     if (lbCategory.field == value.valueId) {
       let lbVal = stat.idx < 0 ? -1 : stat.idx + 1
       let text = lbCategory.getItemCell(lbVal, null, false, lbDataType.PLACE)?.text ?? "0"

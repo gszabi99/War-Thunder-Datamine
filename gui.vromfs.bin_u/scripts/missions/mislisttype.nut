@@ -8,7 +8,7 @@ let g_squad_manager = getGlobalModule("g_squad_manager")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { getBlkValueByPath, blkOptFromPath } = require("%sqstd/datablock.nut")
 let { enumsAddTypes } = require("%sqStdLibs/helpers/enums.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { isUnlockVisible } = require("%scripts/unlocks/unlocksModule.nut")
 let { get_meta_mission_info_by_name, get_meta_missions_info_chapter,
   get_meta_missions_info_by_chapters, get_meta_missions_info_by_campaigns,
@@ -24,6 +24,7 @@ let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { isUnitUsable } = require("%scripts/unit/unitStatus.nut")
 let { findUnitNoCase } = require("%scripts/unit/unitParams.nut")
 let { is_user_mission } = require("%scripts/missions/missionsStates.nut")
+let { isDebugModeEnabled } = require("%scripts/debugTools/dbgChecks.nut")
 
 enum mislistTabsOrder {
   BASE
@@ -161,7 +162,7 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
 
       let isChapterSpecial = isInArray(chapterName, [ "hidden", "test" ])
       local canShowChapter = true
-      if (!::is_debug_mode_enabled && isChapterSpecial) {
+      if (!isDebugModeEnabled.status && isChapterSpecial) {
         let featureName = $"MissionsChapter{capitalize(chapterName)}"
         canShowChapter = is_dev_version() || hasFeature(featureName)
       }
@@ -175,7 +176,7 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
       if (this.showChapterHeaders) {
         local isChapterUnlocked = true
         if (lastMission && gm == GM_CAMPAIGN)
-          isChapterUnlocked = isChapterSpecial || ::is_debug_mode_enabled || isMissionComplete(lastMission?.chapter, lastMission?.id)
+          isChapterUnlocked = isChapterSpecial || isDebugModeEnabled.status || isMissionComplete(lastMission?.chapter, lastMission?.id)
         let chapterHeader = this.getMissionConfig(chapterName, true, false, isChapterUnlocked)
         campMissions.append(chapterHeader)
       }
@@ -196,7 +197,7 @@ g_mislist_type._getMissionsList <- function _getMissionsList(isShowCampaigns, ca
     
     if (lastMission && gm == GM_CAMPAIGN
         && (campName == "usa_pacific_41_43" || campName == "jpn_pacific_41_43")) {
-      let isVideoUnlocked = ::is_debug_mode_enabled || isMissionComplete(lastMission?.chapter, lastMission?.id)
+      let isVideoUnlocked = isDebugModeEnabled.status || isMissionComplete(lastMission?.chapter, lastMission?.id)
       res.append(this.getMissionConfig("victory", true, false, isVideoUnlocked))
     }
   }
@@ -277,7 +278,7 @@ g_mislist_type.template <- {
   infoLinkTextLocId = ""
   infoLinkTooltipLocId = ""
   getInfoLinkData = function() {
-    if (isPlatformSony || isPlatformXboxOne)
+    if (isPlatformSony || isPlatformXbox)
       return null
 
     let infoLink = this.getInfoLink()

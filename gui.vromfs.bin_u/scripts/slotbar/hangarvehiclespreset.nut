@@ -4,15 +4,15 @@ from "%scripts/dagui_library.nut" import *
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { getSelectedCrews } = require("%scripts/slotbar/slotbarState.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
+let { getSelectedCrews } = require("%scripts/slotbar/slotbarStateData.nut")
 
 local curSlotCountryId = -1
 local curSlotIdInCountry = -1
 local curPresetId = -1
 
 function updateHangarPreset(forceUpdate = false) {
-  if (!isInMenu())
+  if (!isInMenu.get())
     return
 
   let country = profileCountrySq.value

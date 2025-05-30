@@ -5,7 +5,7 @@ from "%scripts/dagui_library.nut" import *
 let { eventbus_send } = require("eventbus")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
-let { clearCrewsList } = require("%scripts/slotbar/crewsList.nut")
+let { clearCrewsList, getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 let DataBlock  = require("DataBlock")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
@@ -40,7 +40,6 @@ let { userIdInt64 } = require("%scripts/user/profileStates.nut")
 let { wwGetOperationId, wwGetPlayerSide, wwIsOperationLoaded,
   wwGetOperationWinner } = require("worldwar")
 let { curMissionRulesInvalidate, getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
-let { getCrewsListByCountry } = require("%scripts/slotbar/slotbarState.nut")
 let { getCrewUnit } = require("%scripts/crew/crew.nut")
 let { setGameChatLogText } = require("%scripts/chat/mpChat.nut")
 let { getMpChatLog, setMpChatLog } = require("%scripts/chat/mpChatState.nut")
@@ -65,7 +64,6 @@ function debug_dump_debriefing_save(filename) {
     { id = "stat_get_exp", value = getTblValue("expDump", debriefingResult, {}) }
     { id = "get_game_type", value = debriefingResult?.gameType ?? get_game_type() }
     { id = "get_game_mode", value = debriefingResult?.gm ?? get_game_mode() }
-    "get_current_mission_info_cached"
     { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock(); get_current_mission_desc(b); return b } }
     { id = "_fake_mplayers_list", value = getTblValue("mplayers_list", debriefingResult, []) }
     { id = "dynamic_apply_status", value = getDynamicResult() }
@@ -82,9 +80,6 @@ function debug_dump_debriefing_save(filename) {
     { id = "get_player_army_for_hud", value = debriefingResult?.friendlyTeam ?? get_player_army_for_hud() }
     { id = "_fake_sessionlobby_settings", value = getSessionLobbySettings() }
     { id = "_fake_sessionlobby_last_event_name", value = getRoomEvent()?.name ?? "" }
-    "LAST_SESSION_DEBUG_INFO"
-    "get_mission_mode"
-    "get_mission_difficulty_int"
     "get_premium_reward_wp"
     "get_premium_reward_xp"
     { id = "isWorldWarEnabled", value = isWorldWarEnabled() }
@@ -225,17 +220,10 @@ function debug_dump_mpstatistics_save(filename) {
     { id = "_fake_mplayers_list", value = get_mplayers_list(GET_MPLAYERS_LIST, true) }
     { id = "_fake_playersInfo", value = getSessionLobbyPlayersInfo() }
     { id = "_fake_get_current_mission_desc", value = function() { let b = DataBlock(); get_current_mission_desc(b); return b } }
-    "LAST_SESSION_DEBUG_INFO"
-    "is_in_flight"
     "get_player_army_for_hud"
-    "get_mp_tbl_teams"
-    "get_mp_session_info"
     "get_mp_kick_countdown"
     "get_mp_zone_countdown"
     "get_mp_ffa_score_limit"
-    "get_mission_difficulty"
-    "get_mission_difficulty_int"
-    "get_current_mission_info_cached"
     "get_multiplayer_time_left"
     "is_race_started"
     "get_race_checkpoints_count"
@@ -281,7 +269,6 @@ function debug_dump_respawn_save(filename) {
     }
     { id = "get_user_custom_state", args = [ userIdInt64.value, false ] }
     { id = "_fake_mpchat_log", value = getMpChatLog() }
-    "LAST_SESSION_DEBUG_INFO"
     "get_current_mission_info_cached"
     "has_available_slots"
     "get_local_player_country"
@@ -299,15 +286,10 @@ function debug_dump_respawn_save(filename) {
     "get_option_depthcharge_activation_time"
     "get_option_mine_depth"
     "get_option_rocket_fuse_dist"
-    "is_in_flight"
     "get_player_army_for_hud"
-    "get_mp_tbl_teams"
-    "get_mp_session_info"
     "get_mp_kick_countdown"
     "get_mp_zone_countdown"
     "get_mp_ffa_score_limit"
-    "get_mission_difficulty"
-    "get_mission_difficulty_int"
     "get_multiplayer_time_left"
     "is_race_started"
     "get_race_checkpoints_count"

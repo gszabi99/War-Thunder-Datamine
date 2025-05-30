@@ -10,6 +10,7 @@ enum VISUAL_SORT_ORDER {
   AIRCRAFT
   SHIP
   BOAT
+  HUMAN
 }
 
 return {
@@ -158,6 +159,7 @@ return {
     hudTypeCode = HUD_TYPE_TANK
     firstChosenTypeUnlockName = "chosen_unit_type_ship"
     missionSettingsAvailabilityFlag = "isShipsAllowed"
+    getMatchingUnitType = @() ES_UNIT_TYPE_SHIP
     isPresentOnMatching = false
     crewUnitType = CUT_SHIP
     hasAiGunners = true
@@ -178,4 +180,25 @@ return {
     bulletSetsQuantity = BULLETS_SETS_QUANTITY
     wheelmenuAxis = [ "ship_wheelmenu_x", "ship_wheelmenu_y" ]
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -1,9 +1,14 @@
 include common.das_project
 
 let
-  mountPointPrefixes <- {{
-    "ecs" => "%dasGameLibs/ecs";
-    "math" => "%dasGameLibs/math";
-    "danetlibs" => "%danetlibs";
-    "imgui" => "%imgui"
-  }}
+  mountPointPrefixes <- {
+    "ecs" => "%dasGameLibs/ecs",
+    "math" => "%dasGameLibs/math",
+    "danetlibs" => "%danetlibs",
+    "imgui" => "%imgui",
+    "sound_utils" => "%danetlibs/sound/sound_utils",
+    "sound_utils_net" => "%danetlibs/sound/sound_utils_net",
+    "human_sounds" => "%danetlibs/sound/human_sounds",
+    "human_sounds_net" => "%danetlibs/sound/human_sounds_net",
+    "common_sounds" => "%danetlibs/sound/common_sounds"
+  }

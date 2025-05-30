@@ -5,10 +5,12 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { needUseHangarDof } = require("%scripts/viewUtils/hangarDof.nut")
 let { CrewTakeUnitProcess } = require("%scripts/crew/crewTakeUnitProcess.nut")
-let { getCrewById } = require("%scripts/slotbar/slotbarState.nut")
+let { getCrewById } = require("%scripts/slotbar/crewsList.nut")
 let { hasDefaultUnitsInCountry } = require("%scripts/shop/shopUnitsInfo.nut")
 let fillSlotbarLegend = require("%scripts/slotbar/fillSlotbarLegend.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
+
 let slotbarBaseCfg = require("%scripts/slotbar/selectCrewSlotbarBaseCfg.nut")
 
 let class SlotbarUnitDnD (gui_handlers.BaseGuiHandlerWT) {
@@ -26,7 +28,7 @@ let class SlotbarUnitDnD (gui_handlers.BaseGuiHandlerWT) {
   hoveredSlotbarCrewId = -1
 
   function initScreen() {
-    let canSendToVacation = ::slotbarPresets.getCurrentPreset(this.country).units.len() > 1 || !hasDefaultUnitsInCountry(this.country)
+    let canSendToVacation = slotbarPresets.getCurrentPreset(this.country).units.len() > 1 || !hasDefaultUnitsInCountry(this.country)
 
     this.trashBin = this.scene.findObject("unitTrashBin")
 

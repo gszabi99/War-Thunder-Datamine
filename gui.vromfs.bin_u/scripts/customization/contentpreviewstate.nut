@@ -4,7 +4,8 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
 let { isSlotbarOverrided } = require("%scripts/slotbar/slotbarOverride.nut")
-let { getCrewsListByCountry, getReserveAircraftName } = require("%scripts/slotbar/slotbarState.nut")
+let { getReserveAircraftName } = require("%scripts/slotbar/slotbarStateData.nut")
+let { getCrewsListByCountry } = require("%scripts/slotbar/crewsList.nut")
 
 function getBestUnitForPreview(isAllowedByUnitTypesFn, isAvailableFn, forcedUnitId = null) {
   local unit = null

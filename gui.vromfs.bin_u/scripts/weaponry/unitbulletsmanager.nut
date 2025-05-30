@@ -1,14 +1,12 @@
 from "%scripts/dagui_library.nut" import *
 
 let g_listener_priority = require("%scripts/g_listener_priority.nut")
-let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { format } = require("string")
 let { subscribe_handler, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
-let { get_gui_option, getGuiOptionsMode, set_unit_option, set_gui_option } = require("guiOptions")
+let { get_gui_option, getGuiOptionsMode } = require("guiOptions")
 let stdMath = require("%sqstd/math.nut")
-let { AMMO, getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
-let { getOverrideBullets } = require("%scripts/weaponry/weaponryInfo.nut")
+let { AMMO, bulletsAmountState, getAmmoWarningMinimum } = require("%scripts/weaponry/ammoInfo.nut")
 let { getBulletsSetData, getLinkedGunIdx,
         getOptionsBulletsList,
         getBulletsGroupCount,
@@ -16,20 +14,10 @@ let { getBulletsSetData, getLinkedGunIdx,
         getBulletsInfoForPrimaryGuns,
         getAmmoStowageConstraintsByTrigger,
         getBulletsSetMaxAmmoWithConstraints } = require("%scripts/weaponry/bulletsInfo.nut")
-let { OPTIONS_MODE_TRAINING, USEROPT_MODIFICATIONS, USEROPT_BULLETS0, USEROPT_BULLET_COUNT0,
-  USEROPT_BULLETS_WEAPON0
-} = require("%scripts/options/optionsExtNames.nut")
+let { OPTIONS_MODE_TRAINING, USEROPT_MODIFICATIONS } = require("%scripts/options/optionsExtNames.nut")
 let { shopIsModificationPurchased } = require("chardResearch")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let guiStartWeaponrySelectModal = require("%scripts/weaponry/guiStartWeaponrySelectModal.nut")
-let { set_option } = require("%scripts/options/optionsExt.nut")
 let BulletGroup = require("%scripts/weaponry/unitBulletsGroup.nut")
-
-enum bulletsAmountState {
-  READY
-  HAS_UNALLOCATED
-  LOW_AMOUNT
-}
 
 let UnitBulletsManager = class {
   unit = null  
@@ -44,7 +32,8 @@ let UnitBulletsManager = class {
   constructor(v_unit, params = {}) {
     this.gunsInfo = []
     this.isForcedAvailable = params?.isForcedAvailable ?? false
-
+    this.checkPurchased = getGuiOptionsMode() != OPTIONS_MODE_TRAINING
+      || get_gui_option(USEROPT_MODIFICATIONS)
     this.setUnit(v_unit)
     subscribe_handler(this, g_listener_priority.CONFIG_VALIDATION)
   }
@@ -81,9 +70,9 @@ let UnitBulletsManager = class {
     return null
   }
 
-  function getGunTypesCount() {
-    return this.gunsInfo.len() || 1
-  }
+  getGunTypesCount = @() this.gunsInfo.len()
+
+  getActiveGunTypesCount = @() this.gunsInfo.filter(@(g) g.total > 0).len()
 
   getGroupGunInfo = @(linkedIdx, isUniformNoBelts, maxToRespawn) isUniformNoBelts
     ? this.gunsInfo?[linkedIdx].__update({ total = maxToRespawn }) : this.gunsInfo?[linkedIdx]
@@ -207,31 +196,8 @@ let UnitBulletsManager = class {
     return res
   }
 
-  function checkChosenBulletsCount(applyFunc = null) {
-    if (getOverrideBullets(this.unit))
-      return true
-    let readyCounts = this.checkBulletsCountReady()
-    if (readyCounts.status == bulletsAmountState.READY
-      || readyCounts.status == bulletsAmountState.HAS_UNALLOCATED)
-      return true
-
-    let msg = format(loc("multiplayer/notEnoughBullets"), colorize("activeTextColor", readyCounts.required.tostring()))
-
-    loadHandler(gui_handlers.WeaponWarningHandler,
-      {
-        parentHandler = this
-        message = msg
-        list = ""
-        showCheckBoxBullets = false
-        ableToStartAndSkip = readyCounts.status != bulletsAmountState.LOW_AMOUNT
-        onStartPressed = applyFunc
-      })
-
-    return false
-  }
-
   function canChangeBulletsCount() {
-    return this.gunsInfo.len() > 0
+    return this.getActiveGunTypesCount() > 0
   }
 
   function canChangeBulletsActivity() {
@@ -278,28 +244,6 @@ let UnitBulletsManager = class {
       align = align
       onChangeValueCb = Callback(@(mod) this.changeBulletsValue(bulGroup, mod.name), this)
     })
-  }
-
-  function updateBulletCountOptions(bulletGroups = null) {
-    local bulIdx = 0
-    foreach (idx, bulGroup in (bulletGroups ?? this.getBulletsGroups())) {
-      bulIdx = idx
-      let name = bulGroup.active ? bulGroup.getBulletNameForCode(bulGroup.selectedName) : ""
-      let count = bulGroup.active ? bulGroup.bulletsCount : 0
-      set_option(USEROPT_BULLETS0 + bulIdx, name)
-      set_unit_option(this.unit.name, USEROPT_BULLETS0 + bulIdx, name)
-      set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, count)
-      set_gui_option(USEROPT_BULLETS_WEAPON0 + bulIdx, bulGroup.getWeaponName())
-    }
-    ++bulIdx
-
-    while (bulIdx < BULLETS_SETS_QUANTITY) {
-      set_option(USEROPT_BULLETS0 + bulIdx, "")
-      set_unit_option(this.unit.name, USEROPT_BULLETS0 + bulIdx, "")
-      set_gui_option(USEROPT_BULLET_COUNT0 + bulIdx, 0)
-      set_gui_option(USEROPT_BULLETS_WEAPON0 + bulIdx, "")
-      ++bulIdx
-    }
   }
 
 

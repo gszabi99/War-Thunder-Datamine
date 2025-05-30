@@ -335,12 +335,14 @@
           "command": "selectTarget",
           "actions": {
             "designateActiveDetectedTarget": {
-              "type": 0,
+              "type": "target",
               "sensorIndex": 1
             },
             "designateTargetUnderCue": {
-              "type": 0,
-              "sensorIndex": 1
+              "type": "cue",
+              "sensorIndex": 1,
+              "selectTarget": true,
+              "selectedTargetType": "target"
             }
           }
         }

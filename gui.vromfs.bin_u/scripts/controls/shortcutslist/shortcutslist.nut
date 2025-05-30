@@ -4,7 +4,7 @@ let shortcutsEnumData = require("%scripts/controls/shortcutsList/shortcutsEnumDa
 
 let shortcutsModulesList = require("%scripts/controls/shortcutsList/shortcutsModulesList.nut")
 
-let shortcutsList = {
+let shortcutsListTypes = {
   types = []
   template = shortcutsEnumData.template
   addShortcuts = shortcutsEnumData.definitionFunc
@@ -12,11 +12,14 @@ let shortcutsList = {
 
 function updateShortcutsList(value) {
   foreach (list in value)
-    shortcutsList.addShortcuts(list, shortcutsList)
+    shortcutsListTypes.addShortcuts(list, shortcutsListTypes)
 }
 
 updateShortcutsList(shortcutsModulesList.value)
 
 shortcutsModulesList.subscribe(@(v) updateShortcutsList(v))
 
-return shortcutsList
+return {
+  shortcutsList = shortcutsListTypes.types
+  getShortcutById = @(shortcutId) shortcutsListTypes?[shortcutId]
+}

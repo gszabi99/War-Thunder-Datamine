@@ -17,6 +17,7 @@ let { get_price_blk } = require("blkGetters")
 let { leftSpecialTasksBoughtCount } = require("%scripts/warbonds/warbondShopState.nut")
 let { FULL_ID_SEPARATOR, maxAllowedWarbondsBalance } = require("%scripts/warbonds/warbondsState.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
+let warBondAwardType = require("%scripts/warbonds/warbondAwardType.nut")
 
 const OUT_OF_DATE_DAYS_WARBONDS_SHOP = 28
 const WARBOND_ID = "WarBond"
@@ -143,7 +144,7 @@ function updateLeftSpecialTasksBoughtCount() {
   if (!isLoggedIn.get())
     return
 
-  let specialTaskAward = getCurrentWarbond()?.getAwardByType(::g_wb_award_type[EWBAT_BATTLE_TASK])
+  let specialTaskAward = getCurrentWarbond()?.getAwardByType(warBondAwardType[EWBAT_BATTLE_TASK])
   if (specialTaskAward == null) {
     leftSpecialTasksBoughtCount(-1)
     return

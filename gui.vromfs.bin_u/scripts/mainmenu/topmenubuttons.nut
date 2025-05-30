@@ -1,16 +1,15 @@
 from "%scripts/dagui_library.nut" import *
 from "%scripts/mainmenu/topMenuConsts.nut" import TOP_MENU_ELEMENT_TYPE
+let topMenuButtonsList = require("%scripts/mainmenu/topMenuButtonsList.nut")
 let { openOptionsWnd } = require("%scripts/options/handlers/optionsWnd.nut")
 let { gui_start_controls } = require("%scripts/controls/startControls.nut")
 
 let cache = { byId = {} }
 
-let buttonsListWatch = Watched({})
-
 let getButtonConfigById = function(id) {
   if (!(id in cache.byId)) {
-    let buttonCfg = buttonsListWatch.value.findvalue(@(t) t.id == id)
-    cache.byId[id] <- buttonCfg ?? buttonsListWatch.value.UNKNOWN
+    let buttonCfg = topMenuButtonsList.get().findvalue(@(t) t.id == id)
+    cache.byId[id] <- buttonCfg ?? topMenuButtonsList.get().UNKNOWN
   }
   return cache.byId[id]
 }
@@ -46,7 +45,7 @@ function fillButtonConfig(buttonCfg, name) {
 }
 
 let addButtonConfig = @(newBtnConfig, name)
-  buttonsListWatch.mutate(@(v) v[name] <- fillButtonConfig(newBtnConfig, name))
+  topMenuButtonsList.mutate(@(v) v[name] <- fillButtonConfig(newBtnConfig, name))
 
 let defaultButtonsConfig = { 
   UNKNOWN = {}
@@ -67,7 +66,6 @@ let defaultButtonsConfig = {
 defaultButtonsConfig.each(addButtonConfig)
 
 return {
-  buttonsListWatch = buttonsListWatch
   getButtonConfigById = getButtonConfigById
   addButtonConfig
 }

@@ -78,7 +78,7 @@
               "id": "separator",
               "position": "relative",
               "width": "1@dp",
-              "background-color": "#4B4F53",
+              "background-color": "@separatorColor",
               "margin": "5@blockInterval, 0, 5@blockInterval, 0"
             },
             {
@@ -177,7 +177,7 @@
     "div": {
       "id": "premiumTimer",
       "behavior": "Timer",
-      "timer_handler_func": "updateCurrentPremiumInfo",
+      "timer_handler_func": "onTimer",
       "timer_interval_msec": "1000"
     },
     "gamercard_div": {}

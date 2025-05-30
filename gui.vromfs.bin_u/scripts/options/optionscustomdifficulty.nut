@@ -13,7 +13,6 @@ let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
 gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsModal) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/options/genericOptionsModal.blk"
-  titleText = loc("profile/difficulty")
 
   options = null
   afterApplyFunc = null
@@ -23,7 +22,7 @@ gui_handlers.OptionsCustomDifficultyModal <- class (gui_handlers.GenericOptionsM
   ignoreUiCallbacks = false
 
   function initScreen() {
-    this.scene.findObject("header_name").setValue(this.titleText)
+    this.scene.findObject("header_name").setValue(loc("profile/difficulty"))
     this.options = getCustomDifficultyOptions()
     base.initScreen()
     this.updateCurBaseDifficulty()

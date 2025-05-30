@@ -127,7 +127,6 @@ class Component : Canvas
     let altSpan = 1200.0
     let altMarkDelta = 100.0
 
-    let top = barometricAltitude + altSpan * 0.5
     let bot = barometricAltitude - altSpan * 0.5
 
     setViewport(float2(-1.0, 0.0), float2(1.0, 1.0))
@@ -160,7 +159,6 @@ class Component : Canvas
     let iasSpan = 150.0
     let markDelta = 10.0
 
-    let top = ias + iasSpan * 0.5
     let bot = ias - iasSpan * 0.5
 
     setViewport(float2(-1.0, 0.0), float2(1.0, 1.0))
@@ -225,9 +223,6 @@ class Component : Canvas
 
     let degreesHalfWidth = 40
     let dashIntervalDegrees = 10
-
-    let lb = heading - float(degreesHalfWidth)
-    let rb = heading + float(degreesHalfWidth)
 
     let headingI = roundi(heading / float(dashIntervalDegrees))
 

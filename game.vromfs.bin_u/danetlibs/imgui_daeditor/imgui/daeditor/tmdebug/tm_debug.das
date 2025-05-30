@@ -132,6 +132,19 @@ def trasnform_window()
     if imgui::Button("-##cursor_rt[2]")
       rotate_tm(2, -rotStep)
 
+    ImGuiEx_NextColumn()
+
+    imgui::Text("FLIP")
+
+    if imgui::Button("^##cursor_fp[0]")
+      flip_tm(0)
+
+    if imgui::Button("^##cursor_fp[1]")
+      flip_tm(1)
+
+    if imgui::Button("^##cursor_fp[2]")
+      flip_tm(2)
+
     ImGuiEx_EndColumn()
 
 
@@ -210,3 +223,10 @@ def rotate_tm(axis : int; step : float)
     transform[1] = q * transform[1]
     let v3Ln = length(transform[2])
     transform[2] = normalize(cross(transform[0], transform[1])) * v3Ln
+
+def flip_tm(idx : int)
+  let m = fixed_array<float>(-1.0, -1.0, 1.0)
+  query() <| $ [es(REQUIRE=daeditor__selected)] (var transform : float3x4)
+    for i in range(3)
+      let k = (i + idx) % 3
+      transform[k] *= m[i]

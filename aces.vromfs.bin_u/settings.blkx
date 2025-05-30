@@ -11,6 +11,10 @@
   "dasMain": "%appGame/main.das",
   "game_das_script_init": "%appGame/wt_init.das",
   "game_das_loading_threads": 2,
+  "game_das_gen_2_make_syntax": true,
+  "game_das_enable_serialization": true,
+  "game_das_serialization_remove_cache": false,
+  "game_darg_project_script": "dasProject/darg.das_project",
   "localizationVrom": "lang.vromfs.bin",
   "localizationRegionalVrom": "regional.vromfs.bin",
   "__allowedConfigOverrides": {
@@ -233,6 +237,7 @@
       "noVignette": false,
       "freeCamMoveSpd": 0.0,
       "freeCamTurboSpd": 0.0,
+      "useHumanFreeCam": false,
       "enableQuitHotkey": false,
       "disableSslCertCheck": false,
       "trackirSmoothing": 0,
@@ -480,132 +485,7 @@
       "UHD Graphics 6$"
     ]
   },
-  "compatibilityShadows": {
-    "ultralow": {
-      "cascadeWidth": 0,
-      "splitsW": 0,
-      "splitsH": 0,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 30.0,
-      "tpsPowWeight": 0.3,
-      "cockpitShadowDist": 65.0,
-      "cockpitPowWeight": 0.95,
-      "tanksShadowDist": 20.0,
-      "tanksPowWeight": 0.4,
-      "shipsShadowDist": 35.0,
-      "shipsPowWeight": 0.25,
-      "bigShipsShadowDist": 80.0,
-      "bigShipsPowWeight": 0.4,
-      "fadeOut": 10.0,
-      "rotationMargin": 0.1,
-      "staticCascadeCount": 0,
-      "staticCascadeRegMul": 1.0,
-      "staticCascadeTexWidth": 0,
-      "staticCascadeRegWidth": 500.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeFxaaStr": 1.0,
-      "staticCascadeUseRiSecLayer": true,
-      "staticCascadeTransition": true,
-      "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.025,
-      "staticCascadeDepthSlopeBias": 0.02,
-      "useOcclusion": true,
-      "hangarShadowDist": 80.0,
-      "hangarPowWeight": 0.4,
-      "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4,
-      "enableDestructableBboxTest": true,
-      "destructablesMinBboxRadiusTexelMul": 8.0,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 1.5,
-      "staticShadows_relativeBiasMax": 1.5
-    },
-    "low": {
-      "cascadeWidth": 600,
-      "splitsW": 2,
-      "splitsH": 1,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 30.0,
-      "tpsPowWeight": 0.3,
-      "cockpitShadowDist": 65.0,
-      "cockpitPowWeight": 0.95,
-      "tanksShadowDist": 20.0,
-      "tanksPowWeight": 0.4,
-      "shipsShadowDist": 35.0,
-      "shipsPowWeight": 0.25,
-      "bigShipsShadowDist": 80.0,
-      "bigShipsPowWeight": 0.4,
-      "fadeOut": 10.0,
-      "rotationMargin": 0.1,
-      "staticCascadeCount": 1,
-      "staticCascadeRegMul": 1.0,
-      "staticCascadeTexWidth": 512,
-      "staticCascadeRegWidth": 500.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeFxaaStr": 1.0,
-      "staticCascadeUseRiSecLayer": true,
-      "staticCascadeTransition": true,
-      "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.025,
-      "staticCascadeDepthSlopeBias": 0.02,
-      "useOcclusion": true,
-      "hangarShadowDist": 80.0,
-      "hangarPowWeight": 0.4,
-      "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4,
-      "enableDestructableBboxTest": true,
-      "destructablesMinBboxRadiusTexelMul": 8.0,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 1.5,
-      "staticShadows_relativeBiasMax": 1.5
-    },
-    "medium": {
-      "cascadeWidth": 768,
-      "splitsW": 2,
-      "splitsH": 1,
-      "cascadeDepth24bit": false,
-      "tpsShadowDist": 60.0,
-      "tpsPowWeight": 0.3,
-      "cockpitShadowDist": 120.0,
-      "cockpitPowWeight": 0.95,
-      "tanksShadowDist": 40.0,
-      "tanksPowWeight": 0.4,
-      "shipsShadowDist": 60.0,
-      "shipsPowWeight": 0.25,
-      "bigShipsShadowDist": 160.0,
-      "bigShipsPowWeight": 0.4,
-      "fadeOut": 10.0,
-      "rotationMargin": 0.1,
-      "staticCascadeCount": 1,
-      "staticCascadeRegMul": 1.0,
-      "staticCascadeTexWidth": 1024,
-      "staticCascadeRegWidth": 500.0,
-      "staticCascadeStarting": 0,
-      "staticCascadeFxaaStr": 3.0,
-      "staticCascadeUseRiSecLayer": true,
-      "staticCascadeTransition": true,
-      "staticCascadeStopRenderingAfterRegionSplit": true,
-      "staticCascadeDepthBias": 0.025,
-      "staticCascadeDepthSlopeBias": 0.02,
-      "useOcclusion": true,
-      "hangarShadowDist": 80.0,
-      "hangarPowWeight": 0.4,
-      "hangarShipsShadowDist": 80.0,
-      "hangarShipsPowWeight": 0.4,
-      "staticShadows_useRelativeBias": true,
-      "staticShadows_relativeBiasMin": 1.5,
-      "staticShadows_relativeBiasMax": 1.5
-    }
-  },
   "shadows": {
-    "fom_tex_size": 256,
-    "fom_distance": [
-      256.0,
-      128.0
-    ],
-    "fom_height": 128.0,
-    "suitShadowDist": 1500.0,
-    "suitPowWeight": 0.97,
     "hangarShadowDist": 200.0,
     "hangarPowWeight": 0.9,
     "hangarShipsShadowDist": 200.0,
@@ -617,10 +497,14 @@
     "depthConstBias": 0.000021,
     "bigShipForShadowsFrom": 50.0,
     "occlusionSunDirThreshold": 0.5,
-    "staticCascadeForcedRiExtraLod": -1,
-    "staticCascadeConstDepthBias": 0.004,
-    "staticSmallCascadeRiDepthBias": 0.0005,
-    "staticLargeCascadeRiDepthBias": 0.015,
+    "fom": {
+      "texSize": 0,
+      "distance": [
+        256.0,
+        128.0
+      ],
+      "height": 128.0
+    },
     "ultralow": {
       "cascadeWidth": 600,
       "splitsW": 2,
@@ -643,7 +527,6 @@
       "staticCascadeTexWidth": 512,
       "staticCascadeRegWidth": 500.0,
       "staticCascadeStarting": 0,
-      "staticCascadeFxaaStr": 1.0,
       "staticCascadeUseRiSecLayer": true,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
@@ -658,7 +541,10 @@
       "destructablesMinBboxRadiusTexelMul": 8.0,
       "staticShadows_useRelativeBias": true,
       "staticShadows_relativeBiasMin": 1.5,
-      "staticShadows_relativeBiasMax": 1.5
+      "staticShadows_relativeBiasMax": 1.5,
+      "fom": {
+        "texSize": 0
+      }
     },
     "low": {
       "cascadeWidth": 600,
@@ -682,7 +568,6 @@
       "staticCascadeTexWidth": 512,
       "staticCascadeRegWidth": 500.0,
       "staticCascadeStarting": 0,
-      "staticCascadeFxaaStr": 1.0,
       "staticCascadeUseRiSecLayer": true,
       "staticCascadeTransition": true,
       "staticCascadeStopRenderingAfterRegionSplit": true,
@@ -721,7 +606,6 @@
       "staticCascadeTexWidth": 1024,
       "staticCascadeRegWidth": 150.0,
       "staticCascadeStarting": 0,
-      "staticCascadeFxaaStr": 3.0,
       "staticCascadeUseRiSecLayer": false,
       "staticCascadeDepthSlopeBias": 0.01,
       "staticCascadeDepthBiasFlip": 0.001,
@@ -785,17 +669,27 @@
       "staticCascadeTexWidth": 2048,
       "staticCascadeRegWidth": 150.0,
       "staticCascadeStarting": 0,
-      "staticCascadeFxaaStr": 5.0,
       "staticCascadeUseRiSecLayer": false,
       "staticCascadeDepthSlopeBias": 0.01,
       "staticCascadeDepthBiasFlip": 0.001,
       "renderHeightmap": true,
       "useOcclusion": false,
-      "fom_enabled": true,
       "staticShadows_useRelativeBias": true,
       "staticShadows_relativeBiasMin": 0.1,
       "staticShadows_relativeBiasMax": 1.5,
-      "staticCascadeRiExLod0InCascade0": true
+      "staticCascadeRiExLod0InCascade0": true,
+      "fom": {
+        "texSize": 256,
+        "cockpit": {
+          "texSize": 0
+        },
+        "aircraft": {
+          "texSize": 0
+        },
+        "underwater": {
+          "texSize": 0
+        }
+      }
     },
     "ultrahigh": {
       "cascadeWidth": 1200,
@@ -826,17 +720,40 @@
       "useOcclusion": false,
       "staticCascadeDepthSlopeBias": 0.01,
       "staticCascadeDepthBiasFlip": 0.001,
-      "fom_enabled": true,
       "depthAboveTextureSize": 1024,
       "staticShadows_useRelativeBias": true,
       "staticShadows_relativeBiasMin": 0.1,
       "staticShadows_relativeBiasMax": 1.5,
-      "staticCascadeRiExLod0InCascade0": true
+      "staticCascadeRiExLod0InCascade0": true,
+      "fom": {
+        "texSize": 256,
+        "cockpit": {
+          "texSize": 0
+        },
+        "aircraft": {
+          "texSize": 0
+        },
+        "underwater": {
+          "texSize": 0
+        }
+      }
     }
   },
   "_gameres": {
     "basePkgDir": "content/base/res",
     "patchRoot": "patch"
+  },
+  "game_das_serialization_scan_paths": {
+    "it": [
+      "%danetlibs",
+      "%game",
+      "%appGame",
+      "%daslib",
+      "%dasImgui",
+      "%dasGameLibs",
+      "%gameDev",
+      "%scripts"
+    ]
   },
   "mountPoints": {
     "%darg": {
@@ -1113,7 +1030,7 @@
     "safeArea": false,
     "drawDebug": false,
     "disable_backbuffer_aa": true,
-    "maxTexCount": 71680,
+    "maxTexCount": 131072,
     "sRGBrw": true,
     "enableHmdSupport": true,
     "allowDx10Fallback": true,
@@ -1517,6 +1434,16 @@
       "VB2": 65536,
       "VB3": 0
     },
+    "common_4GB": {
+      "IB": 114688,
+      "VB1": 65536,
+      "VB2": 65536,
+      "VB3": 65536,
+      "VB4": 65536,
+      "VB5": 65536,
+      "VB6": 65536,
+      "VB7": 0
+    },
     "common": {
       "IB": 16384,
       "VB1": 65536,
@@ -1577,13 +1504,12 @@
     }
   },
   "phys": {
-    "fixedTimeStepHz": 32,
-    "maxSubSteps": 1
+    "fixedTimeStepHz": -60,
+    "maxSubSteps": 3
   },
   "dx12": {
     "pso_cache_sending_enabled": false,
     "pso_cache_enabled": true,
-    "pso_cache_download_url": "https://pso-cache.gaijin.net",
     "pso_app_key": "war_thunder",
     "debug": {
       "loadPixCapturer": false

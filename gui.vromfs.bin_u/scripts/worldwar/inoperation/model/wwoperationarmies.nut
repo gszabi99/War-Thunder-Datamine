@@ -3,8 +3,7 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 
 let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { wwGetArmiesNames } = require("worldwar")
-let { WwArmy } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
-let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { WwArmy, getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 let WwOperationArmies = class {
   armiesByNameCache = null
@@ -20,7 +19,7 @@ let WwOperationArmies = class {
   }
 
   function updateArmyStatus(armyName) {
-    let army = g_world_war.getArmyByName(armyName)
+    let army = getArmyByName(armyName)
     let cachedArmy = getTblValue(armyName, this.armiesByNameCache, null)
     let hasChanged = !cachedArmy || !cachedArmy.isStatusEqual(army)
 
@@ -46,7 +45,7 @@ let WwOperationArmies = class {
     let changedArmies = []
     let findedCachedArmies = {}
     foreach (armyName in armyNames) {
-      let army = g_world_war.getArmyByName(armyName)
+      let army = getArmyByName(armyName)
       if (!army.hasManageAccess())
         continue
 

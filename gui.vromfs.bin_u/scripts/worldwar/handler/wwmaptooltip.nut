@@ -4,11 +4,11 @@ from "%scripts/worldWar/worldWarConst.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { setObjPosition } = require("%sqDagui/daguiUtil.nut")
-let { WW_MAP_TOOLTIP_TYPE_BATTLE, WW_MAP_TOOLTIP_TYPE_ARMY, WW_MAP_TOOLTIP_TYPE_AIRFIELD
-} = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
+let { getWwTooltipType } = require("%scripts/worldWar/wwGenericTooltipTypes.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { Timer } = require("%sqDagui/timer/timer.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 const SHOW_TOOLTIP_DELAY_TIME = 0.35
 
@@ -108,7 +108,7 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
     this.updatePos()
 
     if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.ARMY) {
-      let hoveredArmy = g_world_war.getArmyByName(this.specs.currentId)
+      let hoveredArmy = getArmyByName(this.specs.currentId)
       this.destroyDescriptionTimer()
 
       this.descriptionTimer = Timer(
@@ -232,13 +232,13 @@ gui_handlers.wwMapTooltip <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function getWWMapIdHoveredObjectId() {
     if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.BATTLE)
-      return WW_MAP_TOOLTIP_TYPE_BATTLE.getTooltipId(this.specs.currentId, this.specs)
+      return getWwTooltipType("WW_MAP_TOOLTIP_TYPE_BATTLE").getTooltipId(this.specs.currentId, this.specs)
 
     if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.ARMY)
-      return WW_MAP_TOOLTIP_TYPE_ARMY.getTooltipId(this.specs.currentId, this.specs)
+      return getWwTooltipType("WW_MAP_TOOLTIP_TYPE_ARMY").getTooltipId(this.specs.currentId, this.specs)
 
     if (this.specs.currentType == WW_MAP_TOOLTIP_TYPE.AIRFIELD)
-      return WW_MAP_TOOLTIP_TYPE_AIRFIELD.getTooltipId(this.specs.currentId, this.specs)
+      return getWwTooltipType("WW_MAP_TOOLTIP_TYPE_AIRFIELD").getTooltipId(this.specs.currentId, this.specs)
 
     return ""
   }

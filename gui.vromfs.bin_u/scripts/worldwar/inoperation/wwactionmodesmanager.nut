@@ -9,6 +9,7 @@ let wwEvent = require("%scripts/worldWar/wwEvent.nut")
 let { addPopup } = require("%scripts/popups/popups.nut")
 let { mapCellUnderCursor, armyUnderCursor, mapCoordsUnderCursor } = require("%appGlobals/wwObjectsUnderCursor.nut")
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
+let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
 
 function setActionMode(modeId = AUT_None) {
   wwSetCurrActionType(modeId)
@@ -24,7 +25,7 @@ function useTransportAction(requestActionCb) {
   let loadArmyName = armyUnderCursor.get() ?? ""
   let cellIdx = mapCellUnderCursor.get()
   foreach (armyName in ww_get_selected_armies_names())
-    if (g_world_war.getArmyByName(armyName).isTransport())
+    if (getArmyByName(armyName).isTransport())
       requestActionCb(armyName, loadArmyName, cellIdx)
 }
 
@@ -56,7 +57,7 @@ let actionModesById = {
       let mapPos = mapCoordsUnderCursor.get()
       let selectedArmies = ww_get_selected_armies_names()
       for (local i = 0; i < selectedArmies.len(); i++) {
-        let army = g_world_war.getArmyByName(selectedArmies[i])
+        let army = getArmyByName(selectedArmies[i])
         if (army.hasArtilleryAbility)
           this.makeArtilleryFire(mapPos, army)
       }

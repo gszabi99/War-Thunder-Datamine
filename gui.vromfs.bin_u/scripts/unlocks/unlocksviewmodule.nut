@@ -659,7 +659,7 @@ let unlockTypeToGetNameFunc = {
     let unlockBlk = getUnlockById(id)
     if (unlockBlk?.locId)
       return getUnlockLocName(unlockBlk)
-    let item = findItemById(id, itemType.TROPHY)
+    let item = findItemById(id)
     return item ? item.getName(false) : loc($"item/{id}")
   },
   [UNLOCKABLE_YEAR] = @(id) (id.len() > 4) ? id.slice(id.len() - 4, id.len()) : "",
@@ -1653,7 +1653,7 @@ function getRewardCfgByUnlockCfg(unlockConfig) {
   else if (unlockType == UNLOCKABLE_TITLE)
     res.rewardText = format(loc("reward/title"), getUnlockNameText(unlockType, id))
   else if (unlockType == UNLOCKABLE_TROPHY) {
-    let item = findItemById(id, itemType.TROPHY)
+    let item = findItemById(id)
     if (item) {
       res.rewardText = item.getName() 
       res.tooltipId = getTooltipType("ITEM").getTooltipId(id)

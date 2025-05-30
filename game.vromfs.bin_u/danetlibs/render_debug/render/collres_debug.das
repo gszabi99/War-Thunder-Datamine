@@ -77,7 +77,7 @@ def draw_node_collision_geometry(collres : CollisionResource;
     var nodeTm : float3x4
     collres_get_collision_node_tm(collres, i, transform, animchar != null ? animchar.nodeTree : null, nodeTm)
     set_cached_debug_lines_wtm(transform)
-    if node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH))
+    if node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH
       let camDirNodeSpace = draw_normals ? rotate(inverse(nodeTm), cam_dir) : float3()
       set_cached_debug_lines_wtm(nodeTm)
       get_collnode_geom(node) <| $(indices; vertices)
@@ -115,11 +115,11 @@ def draw_node_collision_geometry(collres : CollisionResource;
               draw_cached_debug_line(normalPoint, arrowPoint2, normalColor)
               draw_cached_debug_line(normalPoint, arrowPoint3, normalColor)
 
-    elif node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_BOX))
+    elif node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_BOX
       draw_cached_debug_box(node.modelBBox, color)
-    elif node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_SPHERE))
+    elif node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_SPHERE
       draw_cached_debug_sphere(node.boundingSphere.c, node.boundingSphere.r, color, 12)
-    elif node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CAPSULE))
+    elif node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_CAPSULE
       draw_cached_debug_capsule_w(node.capsule, color)
 
 
@@ -192,18 +192,18 @@ def draw_collres_node_names(info : UpdateStageInfoRenderDebug)
 struct collision_ruler_debug
   collisionRulerDebug : bool
 
-def get_node_type_name(node_type : uint8)
-  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH))
+def get_node_type_name(node_type : CollisionResourceNodeType)
+  if node_type == CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH
     return "mesh"
-  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_POINTS))
+  if node_type == CollisionResourceNodeType.COLLISION_NODE_TYPE_POINTS
     return "points"
-  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_BOX))
+  if node_type == CollisionResourceNodeType.COLLISION_NODE_TYPE_BOX
     return "box"
-  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_SPHERE))
+  if node_type == CollisionResourceNodeType.COLLISION_NODE_TYPE_SPHERE
     return "sphere"
-  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CAPSULE))
+  if node_type == CollisionResourceNodeType.COLLISION_NODE_TYPE_CAPSULE
     return "capsule"
-  if node_type == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CONVEX))
+  if node_type == CollisionResourceNodeType.COLLISION_NODE_TYPE_CONVEX
     return "convex"
   return "unknown"
 
@@ -238,7 +238,7 @@ def format_scale(tm : float3x4)
 
 def get_node_info(node) : string
   var geomInfo = "; type: {get_node_type_name(node.nodeType)}"
-  if node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH)) || node.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CONVEX))
+  if node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH || node.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_CONVEX
     get_collnode_geom(node) <| $ [unused_argument(vertices)] (indices; vertices)
       geomInfo += " ({length(indices) / 3} trs)"
   if node.geomNodeId != -1
@@ -288,7 +288,7 @@ def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animch
     let inode = collres |> collres_get_node(i)
     let isTraceable = (uint(inode.behaviorFlags) & uint(BehaviorFlag.TRACEABLE)) != 0u
     let isCollidable = (uint(inode.behaviorFlags) & uint(BehaviorFlag.PHYS_COLLIDABLE)) != 0u
-    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH))
+    if inode.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_MESH
       meshCnt++
       if (uint(inode.flags) & uint(CollisionNodeFlag.ORTHONORMALIZED)) == 0u
         scaledCnt++
@@ -306,15 +306,15 @@ def draw_collres_node_debug(name : string; cam_itm, transform : float3x4; animch
           traceableTriCnt += tri
         if isCollidable
           collidableTriCnt += tri
-    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_POINTS))
+    if inode.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_POINTS
       ptCnt++
-    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_BOX))
+    if inode.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_BOX
       boxCnt++
-    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_SPHERE))
+    if inode.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_SPHERE
       sphCnt++
-    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CAPSULE))
+    if inode.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_CAPSULE
       capCnt++
-    if inode.nodeType == uint8(int(CollisionResourceNodeType.COLLISION_NODE_TYPE_CONVEX))
+    if inode.nodeType == CollisionResourceNodeType.COLLISION_NODE_TYPE_CONVEX
       cvxCnt++
     if isTraceable
       traceableCnt++

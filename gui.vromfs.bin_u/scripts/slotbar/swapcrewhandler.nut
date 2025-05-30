@@ -8,6 +8,7 @@ let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getSlotObj } = require("%scripts/slotbar/slotbarView.nut")
 let { getCrew } = require("%scripts/crew/crew.nut")
 let { abs } = require("math")
+let slotbarPresets = require("%scripts/slotbar/slotbarPresets.nut")
 
 local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -104,7 +105,7 @@ local class SwapCrewHandler (gui_handlers.BaseGuiHandlerWT) {
     let swapedCrews = {}
     swapedCrews[this.slotsCrews[row]] <- this.crew.id
     swapedCrews[this.crew.id] <- this.slotsCrews[row]
-    ::slotbarPresets.swapCrewsInCurrentPreset(swapedCrews)
+    slotbarPresets.swapCrewsInCurrentPreset(swapedCrews)
     this.goBack()
   }
 

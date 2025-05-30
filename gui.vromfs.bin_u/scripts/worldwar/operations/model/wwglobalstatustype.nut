@@ -4,6 +4,8 @@ from "%scripts/mainConsts.nut" import SEEN
 
 let u = require("%sqStdLibs/helpers/u.nut")
 let { WwMap } = require("%scripts/worldWar/operations/model/wwMap.nut")
+let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
+
 let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
 
 let enums = require("%sqStdLibs/helpers/enums.nut")
@@ -65,7 +67,7 @@ enums.addTypesByGlobalName("g_ww_global_status_type", {
 
       let mapsList = ::g_ww_global_status_type.MAPS.getList()
       foreach (mapId, map in mapsList)
-        this.cachedList[mapId] <- ::WwQueue(map, getTblValue(mapId, data))
+        this.cachedList[mapId] <- WwQueue(map, getTblValue(mapId, data))
     }
   }
 

@@ -92,6 +92,10 @@
         "minValue": 100.0,
         "width": 200.0,
         "maxValue": 15000.0
+      },
+      "angles": {
+        "presents": true,
+        "resolution": 0.0001
       }
     }
   },
@@ -153,7 +157,7 @@
             }
           ]
         },
-        "setLockMode": {
+        "setLockModeCommon1": {
           "setModeName": {
             "name": "acquisition"
           },
@@ -166,10 +170,9 @@
           },
           "setEnabled": {
             "value": true
-          },
-          "setScanPattern": {
-            "scanPattern": "lock"
-          },
+          }
+        },
+        "setLockModeCommon2": {
           "resetScanPhase": {},
           "setCenterAzimuth": {
             "source": "targetDesignation"
@@ -178,19 +181,53 @@
           "setFsmActive": {
             "fsm": "lock",
             "active": true
+          }
+        },
+        "setLockModeCue": {
+          "setLockModeCommon1": {},
+          "setScanPattern": {
+            "scanPattern": "lock"
           },
+          "setLockModeCommon2": {},
           "setCenterElevation": {
             "source": "targetDesignation"
           },
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 50.0
+          },
+          "setAngularSize": {
+            "source": "const",
+            "value": 0.05
           }
         },
-        "setLosVisualPreLockMode": {
-          "setEnabled": {
-            "value": true
+        "setLockModeTarget": {
+          "setLockModeCommon1": {},
+          "setScanPattern": {
+            "scanPattern": "lock"
           },
+          "setLockModeCommon2": {},
+          "setCenterElevation": {
+            "source": "targetDesignation"
+          },
+          "setDistGatePos": {
+            "source": "targetDesignation",
+            "width": 50.0
+          },
+          "setAngularSize": {
+            "source": "const",
+            "value": 0.05
+          }
+        },
+        "setLosVisualLockModeCommon": {
+          "setEnabled": [
+            {
+              "value": true
+            },
+            {
+              "value": true
+            }
+          ],
           "setScanPattern": {
             "scanPattern": "losLock"
           },
@@ -205,15 +242,13 @@
           "setFsmActive": {
             "fsm": "lock",
             "active": true
+          },
+          "setModeName": {
+            "name": "acquisition"
           }
         },
         "setLosLockMode": {
-          "setModeName": {
-            "name": "acquisition"
-          },
-          "setEnabled": {
-            "value": true
-          },
+          "setLosVisualLockModeCommon": {},
           "setWeaponDetectionAllowance": {
             "source": "targetDesignation"
           },
@@ -224,15 +259,14 @@
             "source": "constRange",
             "pos": 7500.0,
             "width": 15000.0
+          },
+          "setAngularSize": {
+            "source": "const",
+            "value": 0.05
           }
         },
         "setVisualLockMode": {
-          "setModeName": {
-            "name": "acquisition"
-          },
-          "setEnabled": {
-            "value": true
-          },
+          "setLosVisualLockModeCommon": {},
           "setWeaponDetectionAllowance": {
             "source": "const",
             "value": true
@@ -243,6 +277,10 @@
           "setDistGatePos": {
             "source": "targetDesignation",
             "width": 50.0
+          },
+          "setAngularSize": {
+            "source": "const",
+            "value": 0.05
           }
         },
         "setTrackMode": {
@@ -292,70 +330,89 @@
             "setStandbyMode": {}
           }
         },
-        "checkLockType0": {
+        "checkLockTypeCue": {
           "stateFrom": "standby",
           "command": "designateTarget",
-          "stateTo": "checkLockType0",
+          "stateTo": "checkLockTypeCue",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": "cue"
             }
           }
         },
-        "lock": {
-          "stateFrom": "checkLockType0",
+        "lockCue": {
+          "stateFrom": "checkLockTypeCue",
           "event": "designationTypeEquals",
-          "stateTo": "lock",
+          "stateTo": "lockCue",
           "actions": {
-            "setLockMode": {}
+            "setLockModeCue": {}
           }
         },
-        "checkLockType1": {
-          "stateFrom": "checkLockType0",
+        "checkLockTypeTarget": {
+          "stateFrom": "checkLockTypeCue",
           "event": "designationTypeNotEquals",
-          "stateTo": "checkLockType1",
+          "stateTo": "checkLockTypeTarget",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 1
+              "type": "target"
             }
           }
         },
-        "losLock": {
-          "stateFrom": "checkLockType1",
+        "lockTarget": {
+          "stateFrom": "checkLockTypeTarget",
+          "event": "designationTypeEquals",
+          "stateTo": "lockTarget",
+          "actions": {
+            "setLockModeTarget": {}
+          }
+        },
+        "checkLockTypeLos": [
+          {
+            "stateFrom": "checkLockTypeTarget",
+            "event": "designationTypeNotEquals",
+            "stateTo": "checkLockTypeLos",
+            "actions": {
+              "checkDesignationTypeEquals": {
+                "type": "los"
+              }
+            }
+          },
+          {
+            "stateFrom": "checkLockTypeLos",
+            "event": "designationTypeNotEquals",
+            "stateTo": "checkLockTypeVisual",
+            "actions": {
+              "checkDesignationTypeEquals": {
+                "type": "visual"
+              }
+            }
+          }
+        ],
+        "lockLos": {
+          "stateFrom": "checkLockTypeLos",
           "event": "designationTypeEquals",
           "stateTo": "losLock",
           "actions": {
-            "setLosVisualPreLockMode": {},
             "setLosLockMode": {}
           }
         },
-        "checkLockType2": {
-          "stateFrom": "checkLockType1",
-          "event": "designationTypeNotEquals",
-          "stateTo": "checkLockType2",
-          "actions": {
-            "checkDesignationTypeEquals": {
-              "value": 2
-            }
-          }
-        },
-        "visualLock": {
-          "stateFrom": "checkLockType2",
+        "lockVisual": {
+          "stateFrom": "checkLockTypeVisual",
           "event": "designationTypeEquals",
           "stateTo": "visualLock",
           "actions": {
-            "setLosVisualPreLockMode": {},
             "setVisualLockMode": {}
           }
         },
-        "finishLockTypeCheck": {
-          "stateFrom": "checkLockType2",
+        "finishTypeCheck": {
+          "stateFrom": "checkLockTypeVisual",
           "event": "designationTypeNotEquals",
           "stateTo": "standby"
         },
         "track": {
           "stateFrom": [
-            "lock",
+            "lockCue",
+            "lockTarget",
             "losLock",
             "visualLock"
           ],
@@ -371,7 +428,8 @@
         },
         "failedLock": {
           "stateFrom": [
-            "lock",
+            "lockCue",
+            "lockTarget",
             "losLock",
             "visualLock"
           ],
@@ -468,6 +526,10 @@
             "setDistGatePos": {
               "source": "activeTargetOfInterest",
               "width": 0.0
+            },
+            "setAngularSize": {
+              "source": "activeTargetOfInterest",
+              "value": 1.25
             }
           }
         },

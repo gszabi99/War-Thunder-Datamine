@@ -6,6 +6,8 @@ let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { getCustomViewCountryData } = require("%scripts/worldWar/inOperation/wwOperationCustomAppearance.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let WwQueue = require("%scripts/worldWar/externalServices/wwQueue.nut")
+
 let WwOperation = require("%scripts/worldWar/operations/model/wwOperation.nut")
 
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
@@ -32,7 +34,7 @@ gui_handlers.WwMapDescription <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if ((!v_descItem && v_map) || (v_descItem instanceof WwOperation))
       return handlersManager.loadHandler(gui_handlers.WwOperationDescriptionCustomHandler, params)
-    else if (v_descItem instanceof ::WwQueue)
+    else if (v_descItem instanceof WwQueue)
       return handlersManager.loadHandler(gui_handlers.WwQueueDescriptionCustomHandler, params)
   }
 

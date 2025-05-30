@@ -15,8 +15,8 @@ let { format, split_by_chars } = require("string")
 let { ceil, floor, abs } = require("math")
 let { hangar_get_current_unit_name } = require("hangar")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
-let { move_mouse_on_child, move_mouse_on_child_by_value, handlersManager
-} = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { findChildIndex, move_mouse_on_child, move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let shopTree = require("%scripts/shop/shopTree.nut")
 let shopSearchBox = require("%scripts/shop/shopSearchBox.nut")
 let slotActions = require("%scripts/slotbar/slotActions.nut")
@@ -29,7 +29,6 @@ let { getStatusTbl, getTimedStatusTbl, updateCellStatus, updateCellTimedStatus, 
 let { ShopLines } = require("shopLines.nut")
 let unitContextMenuState = require("%scripts/unit/unitContextMenuState.nut")
 let { hideWaitIcon } = require("%scripts/utils/delayedTooltip.nut")
-let { findChildIndex } = require("%sqDagui/daguiUtil.nut")
 let { isSmallScreen } = require("%scripts/clientState/touchScreen.nut")
 let getShopBlkData = require("%scripts/shop/getShopBlkData.nut")
 let { hasMarkerByUnitName, getUnlockIdByUnitName,
@@ -72,6 +71,9 @@ let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let { getBlockFromObjData, createHighlight } = require("%scripts/guiBox.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
+let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
+let { haveAnyUnitDiscount, getUnitDiscount } = require("%scripts/discounts/discountsState.nut")
+let { generateDiscountInfo } = require("%scripts/discounts/discountUtils.nut")
 
 local lastUnitType = null
 
@@ -572,7 +574,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
         this.unitsByRank[0].append(cell)
         continue
       }
-      let cellRank = cell?.unitOrGroup?.rank ?? cell?.unitOrGroup[0].rank ?? 1
+      let cellRank = cell?.unitOrGroup.rank ?? cell?.unitOrGroup[0].rank ?? 1
       this.maxRank = this.maxRank < cellRank ? cellRank : this.maxRank
       if (this.unitsByRank?[cellRank])
         this.unitsByRank[cellRank].append(cell)
@@ -1485,7 +1487,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function getDiscountByCountryAndArmyId(country, armyId) {
-    if (!::g_discount.haveAnyUnitDiscount())
+    if (!haveAnyUnitDiscount())
       return null
 
     let unitType = unitTypes.getByArmyId(armyId)
@@ -1493,12 +1495,12 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     foreach (unit in getAllUnits())
       if (unit.unitType == unitType
           && unit.shopCountry == country) {
-        let discount = ::g_discount.getUnitDiscount(unit)
+        let discount = getUnitDiscount(unit)
         if (discount > 0)
           discountsList[$"{unit.name}_shop"] <- discount
       }
 
-    return ::g_discount.generateDiscountInfo(discountsList)
+    return generateDiscountInfo(discountsList)
   }
 
   function initSearchBox() {
@@ -1977,7 +1979,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     let unitName = unit.name
     this.selectCellByUnitName(unitName)
-    ::gui_modal_convertExp(unit)
+    gui_modal_convertExp(unit)
   }
 
   function onEventUnitResearch(params) {
@@ -2618,7 +2620,7 @@ gui_handlers.ShopMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventFlushSquadronExp(params) {
-    this.fillAircraftsList(params?.unit?.name)
+    this.fillAircraftsList(params?.unit.name)
   }
 
   getResearchingSquadronVehicle = function() {

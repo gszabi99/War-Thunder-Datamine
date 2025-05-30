@@ -1,4 +1,4 @@
-from "%scripts/dagui_natives.nut" import is_online_available, disable_network, shop_get_premium_account_ent_name, has_entitlement
+from "%scripts/dagui_natives.nut" import is_online_available, has_entitlement
 from "%scripts/dagui_library.nut" import *
 
 let { loadOnce } = require("%sqStdLibs/scriptReloader/scriptReloader.nut")

@@ -130,14 +130,6 @@
       }
     },
     "c_dural3": {
-      "aileron_l_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 29.0
-      },
-      "aileron_r_dm": {
-        "genericDamageMult": 0.3,
-        "hp": 29.0
-      },
       "elevator0_dm": {
         "genericDamageMult": 0.3,
         "hp": 23.8
@@ -157,6 +149,14 @@
       },
       "flap_r_dm": {
         "hp": 50.5
+      },
+      "flaperon_l_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 29.0
+      },
+      "flaperon_r_dm": {
+        "genericDamageMult": 0.3,
+        "hp": 29.0
       },
       "rudder0_dm": {
         "genericDamageMult": 0.3,
@@ -292,88 +292,6 @@
   },
   "DamageEffects": {
     "part": [
-      {
-        "name": "aileron_l_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
-      {
-        "name": "aileron_r_dm",
-        "onHit": [
-          {
-            "damage": 10.0,
-            "cut": 0.1
-          },
-          {
-            "damage": 20.0,
-            "cut": 0.4
-          },
-          {
-            "damage": 30.0,
-            "cut": 0.7
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ],
-        "onKill": [
-          {
-            "cut": 1.0,
-            "nothing": 4.0
-          },
-          {
-            "damage": 20.0,
-            "cut": 1.0,
-            "nothing": 2.0
-          },
-          {
-            "damage": 30.0,
-            "cut": 1.0,
-            "nothing": 1.0
-          },
-          {
-            "damage": 50.0,
-            "cut": 1.0
-          }
-        ]
-      },
       {
         "name": "armor1_dm"
       },
@@ -652,6 +570,88 @@
           {
             "cut": 1.0,
             "nothing": 14.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flaperon_l_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
+          },
+          {
+            "damage": 20.0,
+            "cut": 1.0,
+            "nothing": 2.0
+          },
+          {
+            "damage": 30.0,
+            "cut": 1.0,
+            "nothing": 1.0
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ]
+      },
+      {
+        "name": "flaperon_r_dm",
+        "onHit": [
+          {
+            "damage": 10.0,
+            "cut": 0.1
+          },
+          {
+            "damage": 20.0,
+            "cut": 0.4
+          },
+          {
+            "damage": 30.0,
+            "cut": 0.7
+          },
+          {
+            "damage": 50.0,
+            "cut": 1.0
+          }
+        ],
+        "onKill": [
+          {
+            "cut": 1.0,
+            "nothing": 4.0
           },
           {
             "damage": 20.0,
@@ -2119,16 +2119,16 @@
       0.0
     ],
     "lightPos": [
-      1.579626,
-      0.211944,
-      0.419498
+      1.996,
+      0.487,
+      0.0
     ],
     "lightColor": [
-      0.62,
-      0.3,
-      0.21
+      0.5,
+      0.2,
+      0.02
     ],
-    "lightAttenuation": 4.0,
+    "lightRadius": 0.34,
     "openedGunnerCockpit": true,
     "devices": {
       "stick_ailerons": [

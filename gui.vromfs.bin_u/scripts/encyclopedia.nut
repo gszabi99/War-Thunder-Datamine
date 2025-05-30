@@ -9,9 +9,8 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { reqUnlockByClient } = require("%scripts/unlocks/unlocksModule.nut")
 let { isChineseHarmonized } = require("%scripts/langUtils/language.nut")
 let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nut")
-
-let { move_mouse_on_child_by_value, move_mouse_on_child, loadHandler
-} = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value, move_mouse_on_child } = require("%sqDagui/daguiUtil.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let persistent = persist("persistent", @() { encyclopediaData = [] })
 

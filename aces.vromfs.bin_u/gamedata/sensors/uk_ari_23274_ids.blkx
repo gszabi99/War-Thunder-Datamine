@@ -303,6 +303,9 @@
           ],
           "setSignal": {
             "signal": "surfaceSearch"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
           }
         },
         "resetStandbyMode": {},
@@ -333,6 +336,9 @@
           ],
           "setSignal": {
             "signal": "surfaceSearch"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
           }
         },
         "resetSearchMode": {
@@ -380,6 +386,9 @@
           },
           "setSignal": {
             "signal": "surfaceTrack"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radarSs"
           }
         },
         "resetBvrLockMode": {
@@ -478,6 +487,9 @@
           },
           "setSignal": {
             "signal": "track"
+          },
+          "setDesignationSourceType": {
+            "sourceType": "radar"
           }
         },
         "resetAcmLockMode": {
@@ -537,12 +549,12 @@
           "command": "selectTarget",
           "actions": {
             "designateActiveDetectedTarget": {
-              "type": 0,
+              "type": "target",
               "self": true,
               "sensorIndex": 0
             },
             "designateTargetUnderCue": {
-              "type": 0,
+              "type": "cue",
               "self": true,
               "sensorIndex": 0
             }
@@ -554,7 +566,10 @@
           "stateTo": "checkBvrType0",
           "actions": {
             "checkDesignationTypeEquals": {
-              "value": 0
+              "type": [
+                "target",
+                "cue"
+              ]
             }
           }
         },

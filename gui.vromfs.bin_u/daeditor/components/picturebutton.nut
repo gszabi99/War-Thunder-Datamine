@@ -39,9 +39,9 @@ function pictureButton(params) {
   let stateFlags = Watched(0)
 
   return function() {
-    let color = (params?.checked || (stateFlags.value & S_ACTIVE))
+    let color = (params?.checked || (stateFlags.get() & S_ACTIVE))
                   ? colors.Active
-                  : (stateFlags.value & S_HOVER)
+                  : (stateFlags.get() & S_HOVER)
                       ? colors.Hover
                       : params?.styles?.defColor ?? Color(130,130,130,250)
 

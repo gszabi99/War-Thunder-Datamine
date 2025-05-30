@@ -8,11 +8,12 @@ let { draw_attention_to_inactive_window } = require("app")
 let { get_charserver_time_sec } = require("chard")
 let { registerInviteClass, findInviteClass } = require("%scripts/invites/invitesClasses.nut")
 let BaseInvite = require("%scripts/invites/inviteBase.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { updateNewInvitesAmount, findInviteByUid, showExpiredInvitePopup, removeInvite
 } = require("%scripts/invites/invites.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
+let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
 
 let g_world_war = require("%scripts/worldWar/worldWarUtils.nut")
 
@@ -96,7 +97,7 @@ let Operation = class (BaseInvite) {
   }
 
   getPopupText = @() this.getInviteText()
-  haveRestrictions = @() !isInMenu()
+  haveRestrictions = @() !isInMenu.get()
 
   function getRestrictionText() {
     if (this.haveRestrictions())
@@ -129,7 +130,7 @@ let Operation = class (BaseInvite) {
 
     let acceptCallback = Callback(this.implAccept, this)
     let callback = function () { checkQueueAndStart(acceptCallback, null, "isCanNewflight") }
-    let canJoin = ::g_squad_utils.canJoinFlightMsgBox(
+    let canJoin = canJoinFlightMsgBox(
       { isLeaderCanJoin = true, msgId = "squad/leave_squad_for_invite" },
       callback
     )

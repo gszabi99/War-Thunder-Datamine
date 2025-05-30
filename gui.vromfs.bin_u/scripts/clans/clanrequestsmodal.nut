@@ -5,7 +5,7 @@ from "%scripts/utils_sa.nut" import buildTableRow
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
-let { move_mouse_on_child_by_value } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
 let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let lbDataType = require("%scripts/leaderboard/leaderboardDataType.nut")
 

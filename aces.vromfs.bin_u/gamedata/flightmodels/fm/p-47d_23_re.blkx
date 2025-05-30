@@ -85,7 +85,7 @@
     0.5,
     0.005
   ],
-  "MaxSpeedNearGround": 714.485,
+  "MaxSpeedNearGround": 695.174,
   "MaxSpeedAtAltitude": 697.0,
   "CriticalSpeed": 50.0,
   "ArcadeHelpersSensitivity": 1.0,
@@ -113,7 +113,7 @@
     57068.7,
     34653.7
   ],
-  "SpawnSpeed": 475.574,
+  "SpawnSpeed": 465.919,
   "AvailableControls": {
     "hasAileronControl": true,
     "hasAileronTrimControl": true,
@@ -139,6 +139,7 @@
     "hasChutes": false,
     "hasParkingBrakeControl": false,
     "hasLightsControl": false,
+    "hasManeuverabilityMode": false,
     "HasSweepControlMode": {
       "Manual": false,
       "SemiAuto": false,
@@ -373,6 +374,8 @@
         0.0,
         0.0
       ],
+      "FlowInertia": 0.0,
+      "ClockWiseAOA": false,
       "Areas": {
         "Main": 21.62
       },
@@ -442,7 +445,7 @@
         0.34,
         1.02
       ],
-      "FlowInertia": 0.0599672,
+      "FlowInertia": 0.059954,
       "ClockWiseAOA": true,
       "Areas": {
         "Main": 3.49,
@@ -514,7 +517,7 @@
         1.13,
         0.0
       ],
-      "FlowInertia": 0.199891,
+      "FlowInertia": 0.199846,
       "SlipStreamDistance": 6.6,
       "Areas": {
         "Main": 1.291,
@@ -1097,7 +1100,33 @@
         1.0,
         1.0,
         1.0
-      ]
+      ],
+      "NozzleAnglesRanges": {
+        "Horizontal": [
+          -180.0,
+          180.0
+        ],
+        "Vertical": [
+          -180.0,
+          180.0
+        ]
+      },
+      "NozzleAnglesAxesWeights": {
+        "Horizontal": {
+          "Ailerons": 1.0,
+          "Elevator": 0.0,
+          "Rudder": 1.0,
+          "Vtol": 0.0,
+          "Reverse": 0.0
+        },
+        "Vertical": {
+          "Ailerons": 0.0,
+          "Elevator": 1.0,
+          "Rudder": 0.0,
+          "Vtol": 1.0,
+          "Reverse": 1.0
+        }
+      }
     }
   },
   "PropellerType0": {
@@ -1281,7 +1310,7 @@
       0.0
     ],
     "CyclicPitchAxisDirectionPitch": [
-      -90.0,
+      90.0,
       90.0
     ],
     "Pos": [
@@ -1353,8 +1382,8 @@
       "wing_r_dm": 270.0,
       "spar_l_dm": 120.0,
       "spar_r_dm": 120.0,
-      "aileron_r_dm": 6.0,
       "aileron_l_dm": 6.0,
+      "aileron_r_dm": 6.0,
       "flap_l_dm": 12.0,
       "flap_r_dm": 12.0,
       "mgun4_dm": 35.0,
@@ -1372,29 +1401,27 @@
       "mgun1_dm": 35.0,
       "mgun8_dm": 35.0,
       "rudder_dm": 18.0,
-      "armor1_dm": 55.0,
       "spar1_l_dm": 110.0,
       "spar1_r_dm": 110.0,
       "fin_dm": 40.0,
       "engine1_dm": 1027.17,
       "spar2_l_dm": 85.0,
       "spar2_r_dm": 85.0,
-      "gear_r_dm": 145.0,
       "gear_l_dm": 145.0,
+      "gear_r_dm": 145.0,
       "pilot_dm": 90.0,
       "cover2_dm": 12.0,
       "armor4_dm": 84.2,
       "gear_c_dm": 48.0,
       "oil3_dm": 97.5,
-      "armor2_dm": 21.0,
       "armor3_dm": 150.0,
+      "armor2_dm": 21.0,
       "oil1_dm": 35.0,
       "oil2_dm": 35.0
     },
     "PartsWithSurface": {
       "elevator0_dm": 0.0,
-      "elevator1_dm": 0.0,
-      "cover3_dm": 0.0
+      "elevator1_dm": 0.0
     }
   },
   "SelfSealingTanks": {
@@ -1417,7 +1444,7 @@
   },
   "Gear": {
     "SinkFactor": 1400.0,
-    "SinkRateMult": 1.05474,
+    "SinkRateMult": 1.0671,
     "WaterFriction": 1.0,
     "WaterFrictionDefault": 2.5,
     "GearOffset": 0.0,
@@ -1923,6 +1950,10 @@
         1.0,
         1.0
       ],
+      "AoaLimitsManeuverabilityMult": [
+        1.0,
+        1.0
+      ],
       "AoaLimitsMargin": 5.0,
       "AoaLimiterPushBackRateMult": [
         0.0,
@@ -2075,6 +2106,10 @@
         1.0
       ],
       "ClimbMax": [
+        0.0,
+        0.0
+      ],
+      "SpeedMult": [
         0.0,
         0.0
       ],

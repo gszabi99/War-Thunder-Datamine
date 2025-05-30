@@ -7,7 +7,7 @@ let { script_net_assert_once } = require("%sqStdLibs/helpers/net_errors.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { format } = require("string")
 let crossplayModule = require("%scripts/social/crossplay.nut")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony } = require("%scripts/clientState/platform.nut")
 let u = require("%sqstd/underscore.nut")
 let { fetchRoomsList } = require("%scripts/matching/serviceNotifications/mroomsApi.nut")
 let { getGameModeIdsByEconomicName } = require("%scripts/matching/matchingGameModes.nut")
@@ -134,7 +134,7 @@ MRoomsList = class {
   }
 
   function setPlatformFilter(filter) {
-    if (isPlatformXboxOne) {
+    if (is_gdk) {
       if (!crossplayModule.isCrossPlayEnabled()) {
         filter["public/platformRestriction"] <- {
           test = "eq"

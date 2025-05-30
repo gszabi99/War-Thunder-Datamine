@@ -63,8 +63,12 @@ g_mplayer_param_type.template <- {
     return val != null ? val.tostring() : ""
   }
   getTooltip = function(_val, _player, defText) {
-    return defText
+    return this.getDefTooltip(defText)
   }
+
+  getDefTooltip = @(defText) this.getName() != ""
+    ? loc("ui/colon").concat(this.getName(), defText)
+    : defText
   getName = @(_val = 0) loc(this.tooltip)
   diffFunc = g_mplayer_param_type._substract
 
@@ -142,7 +146,7 @@ enumsAddTypes(g_mplayer_param_type, {
     missionObjective = ~MISSION_OBJECTIVE.WITHOUT_SCORE
 
     getTooltip = function(_val, player, _defText) {
-      let res = []
+      let res = [this.getName()]
       for (local i = 0; i < EXP_EVENT_TOTAL; i++) {
         let rowVal = player?.scoreForExpEvents[$"event{i}"] ?? 0
         if (rowVal <= 0)
@@ -171,13 +175,13 @@ enumsAddTypes(g_mplayer_param_type, {
     }
     getTooltip = function(_val, player, defText) {
       if ((player?.airSevereDamage ?? 0) == 0)
-        return defText
+        return this.getDefTooltip(defText)
 
       let rows = [
         { id = "kills",           label = "multiplayer/air_kills" }
         { id = "airSevereDamage", label = "multiplayer/severe_damage" }
       ]
-      let res = []
+      let res = [this.getName()]
       foreach (row in rows) {
         let rowVal = player?[row.id] ?? 0
         if (rowVal)
@@ -258,7 +262,9 @@ enumsAddTypes(g_mplayer_param_type, {
           res.append($"{loc(row.label)}{loc("ui/colon")}{rowVal}")
       }
       if (res.len() == 0)
-        return defText
+        return this.getDefTooltip(defText)
+
+      res.insert(0, this.getName())
       return "\n".join(res, true)
     }
   }
@@ -280,13 +286,13 @@ enumsAddTypes(g_mplayer_param_type, {
     }
     getTooltip = function(_val, player, defText) {
       if (!(player?.scoutKills ?? 0))
-        return defText
+        return this.getDefTooltip(defText)
 
       let rows = [
         { id = "assists",    label = "multiplayer/assists" }
         { id = "scoutKills", label = "multiplayer/scout_kills" }
       ]
-      let res = []
+      let res = [this.getName()]
       foreach (row in rows) {
         let rowVal = player?[row.id] ?? 0
         if (rowVal)

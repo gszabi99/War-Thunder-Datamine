@@ -12,7 +12,7 @@ let operationBlk = DataBlock()
 let isOperationDataLoaded = Watched(false)
 let currentMapBounds = extWatched("currentMapBounds", null)
 
-let getOperationMapImage = @() $"{operationBlk.map_image}*"
+let getOperationMapImage = @() $"!ui/images/wwmap/{operationBlk.map_image}"
 let getMapSize = @() { width = operationBlk.getReal("map_w", 1.0), height = operationBlk.getReal("map_h", 1.0) }
 let getCellSize = @() operationBlk.getReal("cell_sz", 1.0)
 let getMapAspectRatio = @() operationBlk.getReal("map_h", 1.0) / operationBlk.getReal("map_w", 1.0)

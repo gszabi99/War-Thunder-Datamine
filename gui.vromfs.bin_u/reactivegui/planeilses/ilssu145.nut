@@ -5,15 +5,15 @@ let string = require("string")
 let { compassWrap, generateCompassMarkSU145 } = require("ilsCompasses.nut")
 let { IlsColor, IlsLineScale, BombCCIPMode, RocketMode, BombingMode, TvvMark,
  CannonMode, TargetPosValid, TargetPos, IlsPosSize, TimeBeforeBombRelease } = require("%rGui/planeState/planeToolsState.nut")
-let { baseLineWidth, mpsToKnots, metrToFeet } = require("ilsConstants.nut")
+let { baseLineWidth, mpsToKnots, metrToFeet, weaponTriggerName } = require("ilsConstants.nut")
 let { GuidanceLockResult } = require("guidanceConstants")
 let { lowerSolutionCue } = require("commonElements.nut")
 let { floor, abs, sin, round, atan2, PI } = require("%sqstd/math.nut")
 let { cvt } = require("dagor.math")
 let { degToRad } = require("%sqstd/math_ex.nut")
 let { GuidanceLockState, IlsTrackerX, IlsTrackerY } = require("%rGui/rocketAamAimState.nut")
-let { Speed, BarAltitude, Mach, Aoa, Overload, Tangage, Roll, MaxOverload } = require("%rGui/planeState/planeFlyState.nut")
-let { CurWeaponName, ShellCnt, GunBullets0, GunBullets1 } = require("%rGui/planeState/planeWeaponState.nut")
+let { Speed, BarAltitude, Mach, Aoa, Overload, Roll, MaxOverload, HorizonX, HorizonY } = require("%rGui/planeState/planeFlyState.nut")
+let { CurWeaponName, ShellCnt, GunBullets0, GunBullets1, SelectedTrigger } = require("%rGui/planeState/planeWeaponState.nut")
 let { get_local_unixtime, unixtime_to_local_timetbl } = require("dagor.time")
 let { rwrTargetsTriggers, rwrTargets } = require("%rGui/twsState.nut")
 let { settings } = require("%rGui/planeRwrs/rwrAri23333ThreatsLibrary.nut")
@@ -163,9 +163,9 @@ function pitch(width, height, generateFunc) {
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
-        translate = [0, -height * (90.0 - Tangage.value) * 0.05]
+        translate = [HorizonX.value - width * 0.5, HorizonY.value - height * 5]
         rotate = -Roll.value
-        pivot = [0.5, (90.0 - Tangage.value) * 0.1]
+        pivot = [0.5, 9]
       }
     }
   }
@@ -234,7 +234,8 @@ function generatePitchLine(num) {
 }
 
 let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT_STANDBY)
-let GunMode = Computed(@() !BombCCIPMode.value && !RocketMode.value && !BombingMode.value && !isAAMMode.value && GunBullets0.value >= 0)
+let isAGMMode = Computed(@() SelectedTrigger.value == weaponTriggerName.AGM_TRIGGER)
+let GunMode = Computed(@() !BombCCIPMode.value && !RocketMode.value && !BombingMode.value && !isAAMMode.value && !isAGMMode.value && GunBullets0.value >= 0)
 let HasGndReticle = Computed(@() (GunMode.value && GunBullets0.value > 0) || RocketMode.value || BombCCIPMode.value)
 let groundReticle = @() {
   watch = [HasGndReticle, TargetPosValid]
@@ -278,7 +279,7 @@ let shellName = @() {
   watch = [IlsColor, CurWeaponName, RocketMode, CannonMode, isAAMMode, BombCCIPMode, BombingMode, AamIsReady, HasGndReticle]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(90), ph(BombMode.value ? 65 : 80)]
+  pos = [pw(isAGMMode.value ? 80 : 90), ph(BombMode.value || isAGMMode.value ? 65 : 80)]
   color = IlsColor.value
   fontSize = 45
   font = Fonts.hud
@@ -286,8 +287,9 @@ let shellName = @() {
    (BombingMode.value ? "AUTO" :
     (RocketMode.value ? "RKT" :
      (CannonMode.value ? "GUN" :
+      (isAGMMode.value ? "AGM" :
       (isAAMMode.value ? loc_checked(string.format("%s/su_145", CurWeaponName.value)) :
-      (HasGndReticle.value ? "GUN" : "")))))
+      (HasGndReticle.value ? "GUN" : ""))))))
 }
 
 let aamReadyLabel = @() {
@@ -305,11 +307,11 @@ let shellCount = @() {
   watch = [IlsColor, ShellCnt, GunMode, BombMode, isAAMMode, RocketMode, GunBullets0, GunBullets1]
   size = SIZE_TO_CONTENT
   rendObj = ROBJ_TEXT
-  pos = [pw(80), ph(80)]
+  pos = isAGMMode.value ? [pw(90), ph(65)] : [pw(80), ph(80)]
   color = IlsColor.value
   fontSize = 45
   font = Fonts.hud
-  text = BombMode.value ? "" : (GunMode.value ? string.format("%03d", max(0, GunBullets0.value) + max(0, GunBullets1.value)) : (isAAMMode.value || RocketMode.value ? ShellCnt.value.tointeger() : ""))
+  text = BombMode.value ? "" : (GunMode.value ? string.format("%03d", max(0, GunBullets0.value) + max(0, GunBullets1.value)) : (isAAMMode.value || RocketMode.value || isAGMMode.value ? ShellCnt.value.tointeger() : ""))
 }
 
 let flyDirHide = Computed(@() HasGndReticle.value && abs(TargetPos.value[0] - IlsPosSize[2] * 0.5) < IlsPosSize[2] * 0.05 && abs(TargetPos.value[1] - IlsPosSize[3] * 0.5) < IlsPosSize[3] * 0.05)

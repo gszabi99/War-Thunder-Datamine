@@ -8,7 +8,8 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { loadLocalByAccount } = require("%scripts/clientState/localProfileDeprecated.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { is_low_width_screen, handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { is_low_width_screen } = require("%scripts/options/safeAreaMenu.nut")
+let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { Point2 } = require("dagor.math")
 let DataBlock  = require("DataBlock")
 let time = require("%scripts/time.nut")
@@ -49,6 +50,9 @@ let { checkNonApprovedResearches } = require("%scripts/researches/researchAction
 let { isMapHovered } = require("%appGlobals/worldWar/wwMapHoverState.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { isAnyQueuesActive } = require("%scripts/queue/queueState.nut")
+let { getArmyByName } = require("%scripts/worldWar/inOperation/model/wwArmy.nut")
+let { fullUpdateCurrentOperation, forcedFullUpdateCurrentOperation
+} = require("%scripts/worldWar/inOperation/wwOperations.nut")
 
 const WW_LOG_REQUEST_DELAY = 1
 const WW_LOG_EVENT_LOAD_AMOUNT = 10
@@ -130,7 +134,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     this.setCurrentSelectedObject(mapObjectSelect.NONE)
     this.markMainObjectiveZones()
 
-    ::g_operations.forcedFullUpdate()
+    forcedFullUpdateCurrentOperation()
     let wwLogsData = getWWLogsData()
     wwLogsData.lastReadLogMark = loadLocalByAccount(g_world_war.getSaveOperationLogId(), "")
     requestNewWWLogs(WW_LOG_MAX_LOAD_AMOUNT, !wwLogsData.loaded.len())
@@ -688,7 +692,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
     if (!selectedArmyNames.len())
       return
 
-    let selectedArmy = g_world_war.getArmyByName(selectedArmyNames[0])
+    let selectedArmy = getArmyByName(selectedArmyNames[0])
     if (!selectedArmy.isValid()) {
       wwEvent("MapClearSelection")
       return
@@ -805,7 +809,7 @@ gui_handlers.WwMap <- class (gui_handlers.BaseGuiHandlerWT) {
       this.armyStrengthUpdateTimeRemain = this.UPDATE_ARMY_STRENGHT_DELAY
     }
 
-    ::g_operations.fullUpdate()
+    fullUpdateCurrentOperation()
   }
 
   function updateReinforcements() {

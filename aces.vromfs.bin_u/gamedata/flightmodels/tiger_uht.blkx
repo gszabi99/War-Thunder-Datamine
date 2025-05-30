@@ -1414,6 +1414,13 @@
     "gun": "gun_default"
   },
   "cockpit": {
+    "targetingPodFov": [
+      8.0,
+      0.56
+    ],
+    "sightInFov": 0.56,
+    "sightOutFov": 8.0,
+    "sightFov": 1.0,
     "mfdTextureSize": [
       1024,
       1024
@@ -1452,11 +1459,6 @@
       0.1
     ],
     "lightRadius": 0.45,
-    "zoomOutFov": 22.46,
-    "zoomInFov": 2.46,
-    "sightFov": 5.5,
-    "sightOutFov": 20.0,
-    "sightInFov": 0.8,
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -1605,7 +1607,84 @@
               "turretIdx": 0
             },
             {
-              "type": "map"
+              "type": "hsd",
+              "scale": 0.95,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "heli",
+              "centerMarkFillColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "centerMarkScale": 0.06,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": true,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 7000.0,
+              "distScaleColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "line",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                0,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": true,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
             }
           ]
         },
@@ -1637,9 +1716,6 @@
             {
               "type": "custom",
               "pageName": "ah64Flt"
-            },
-            {
-              "type": "map"
             }
           ]
         }
@@ -3282,6 +3358,9 @@
             },
             {
               "blk": "gameData/sensors/us_altas_2q.blk"
+            },
+            {
+              "blk": "gameData/sensors/LaserDesignatorSensor.blk"
             }
           ]
         }

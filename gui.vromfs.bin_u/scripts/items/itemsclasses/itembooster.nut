@@ -13,8 +13,8 @@ let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut
 let { format } = require("string")
 let DataBlock  = require("DataBlock")
 let time = require("%scripts/time.nut")
-let { boosterEffectType, getActiveBoostersArray } = require("%scripts/items/boosterEffect.nut")
-let { getActiveBoostersDescription } = require("%scripts/items/itemVisual.nut")
+let { getActiveBoostersArray, getActiveBoostersDescription } = require("%scripts/items/boosterEffect.nut")
+let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { loadConditionsFromBlk, getMainProgressCondition } = require("%scripts/unlocks/unlocksConditions.nut")
 let { getFullUnlockCondsDesc,
   getFullUnlockCondsDescInline } = require("%scripts/unlocks/unlocksViewModule.nut")
@@ -24,6 +24,8 @@ let { measureType } = require("%scripts/measureType.nut")
 let { floor } = require("math")
 let { registerItemClass } = require("%scripts/items/itemsTypeClasses.nut")
 let { getInventoryList } = require("%scripts/items/itemsManager.nut")
+let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
+let { getSquadBonusForSameCyberCafe } = require("%scripts/items/bonusEffectsGetters.nut")
 
 function getArrayFromInt(intNum) {
   let arr = []
@@ -283,7 +285,7 @@ let Booster = class (BaseItem) {
       set_char_cb(handler, handler.slotOpCb)
       handler.showTaskProgressBox.call(handler)
       handler.afterSlotOp =  function() {
-        ::update_gamercards()
+        updateGamercards()
         if (cb)
           cb({ success = true })
       }
@@ -406,6 +408,17 @@ let Booster = class (BaseItem) {
     return ", ".join(text, true)
   }
 
+  function getBoosterExpireTimeText() {
+    let timeText = this.getExpireTimeTextShort()
+    if (timeText == "")
+      return ""
+
+    let labelLocId = this.isActive() ? "items/expireTimeLeft" : "items/expireTimeBeforeActivation"
+    let res = "".concat(loc(labelLocId), loc("ui/colon"), colorize("activeTextColor", timeText))
+
+    return res
+  }
+
   function getDescription() {
     local desc = ""
     let locString = this.eventConditions == null
@@ -421,11 +434,12 @@ let Booster = class (BaseItem) {
 
     desc = "".concat(desc, "\n")
 
-    let expireText = this.getCurExpireTimeText()
-    if (expireText != "")
-      desc = "\n".concat(desc, expireText)
     if (this.stopConditions != null)
       desc = "\n".concat(desc, this.getStopConditions())
+
+    let expireText = this.getBoosterExpireTimeText()
+    if (expireText != "")
+      desc = "\n".concat(desc, expireText)
 
     if (this.isActive(true)) {
       let effectTypes = this.getEffectTypes()
@@ -481,16 +495,20 @@ let Booster = class (BaseItem) {
     if (!this.stopConditions)
       return ""
 
-    let textsList = []
     
     let curValue = this.getLeftStopSessions()
     let params = { locEnding = this.isActive() ? "/inverted" : "/activeFor" }
-    textsList.append(getFullUnlockCondsDesc(this.stopConditions, null, curValue, params))
+    local res = getFullUnlockCondsDesc(this.stopConditions, null, curValue, params)
+
+    if (!this.isActive())
+      res = "".concat(res, loc("ui/parentheses/space",
+        { text = format(loc("conditions/max_limit"), this.getExpireAfterActivationText(false)) }
+      ))
 
     if (this.spentInSessionTimeMin)
-      textsList.append(colorize("fadedTextColor", loc("booster/progressFrequency", { num = this.spentInSessionTimeMin })))
+      res = "\n".concat(res, colorize("fadedTextColor", loc("booster/progressFrequency", { num = this.spentInSessionTimeMin })))
 
-    return "\n".join(textsList, true)
+    return res
   }
 
   function getEffectTypes() {
@@ -586,7 +604,7 @@ let FakeBooster = class (Booster) {
 
     let bonusArray = []
     foreach (effect in boosterEffectType) {
-      let value = ::get_squad_bonus_for_same_cyber_cafe(effect)
+      let value = getSquadBonusForSameCyberCafe(effect)
       if (value <= 0)
         continue
       let percent = measureType.PERCENT_FLOAT.getMeasureUnitsText(value, false)

@@ -2,7 +2,7 @@ from "%scripts/dagui_library.nut" import *
 
 let { format } = require("string")
 let { matchingRpcSubscribe } = require("%scripts/matching/api.nut")
-let { isInMenu } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { isInMenu } = require("%scripts/clientState/clientStates.nut")
 let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { roomState, cleanupRoomState, isNotifyForCurrentRoom, connectToHost,
   mergeAttribs, updateMemberAttributes, addRoomMember, removeRoomMember
@@ -17,7 +17,7 @@ function notify_room_invite(params) {
   log("notify_room_invite")
   
 
-  if (!isInMenu() && isLoggedIn.get()) {
+  if (!isInMenu.get() && isLoggedIn.get()) {
     log("Invite rejected: player is already in flight or in loading level or in unloading level");
     return false;
   }

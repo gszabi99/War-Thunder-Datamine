@@ -5,7 +5,7 @@ from "%scripts/controls/rawShortcuts.nut" import SHORTCUT, GAMEPAD_ENTER_SHORTCU
 let { addListenersWithoutEnv, broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let DataBlock  = require("DataBlock")
 let { eventbus_subscribe } = require("eventbus")
-let { isPlatformSony, isPlatformXboxOne } = require("%scripts/clientState/platform.nut")
+let { isPlatformSony, isPlatformXbox } = require("%scripts/clientState/platform.nut")
 let { eachBlock } = require("%sqstd/datablock.nut")
 let { setGuiOptionsMode, getGuiOptionsMode } = require("guiOptions")
 let { hasXInputDevice, isXInputDevice } = require("controls")
@@ -17,6 +17,8 @@ let { OPTIONS_MODE_GAMEPLAY, USEROPT_CONTROLS_PRESET } = optionsExtNames
 let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 let ControlsPreset = require("%scripts/controls/controlsPreset.nut")
 let { getCurControlsPreset, setCurControlsPreset } = require("%scripts/controls/controlsState.nut")
+let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
+
 let { getNullControlsPresetInfo, getControlsPresetsList, getControlsPresetFilename, parseControlsPresetName
 } = require("%scripts/controls/controlsPresets.nut")
 
@@ -103,11 +105,8 @@ function fixDeviceMapping() {
 }
 
 function setDefaultRelativeAxes() {
-  if (!("shortcutsList" in getroottable()))
-    return
-
   let curPreset = getCurControlsPreset()
-  foreach (shortcut in ::shortcutsList)
+  foreach (shortcut in shortcutsList)
     if (shortcut.type == CONTROL_TYPE.AXIS && (shortcut?.isAbsOnlyWhenRealAxis ?? false)) {
       let axis = curPreset.getAxis(shortcut.id)
       if (axis.axisId == -1)
@@ -211,7 +210,7 @@ function fillUseroptControlsPresetDescr(_optionId, descr, _context) {
   descr.values = getControlsPresetsList()
   descr.trParams <- "optionWidthInc:t='double';"
 
-  if (!isPlatformSony && !isPlatformXboxOne)
+  if (!isPlatformSony && !isPlatformXbox)
     descr.values.insert(0, "") 
   let p = getCurControlsPreset()?.getBasePresetInfo()
     ?? getNullControlsPresetInfo()
