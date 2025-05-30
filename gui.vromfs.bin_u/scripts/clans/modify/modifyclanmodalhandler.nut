@@ -12,6 +12,7 @@ let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nu
 let { setFocusToNextObj } = require("%sqDagui/daguiUtil.nut")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { checkClanTagForDirtyWords, stripClanTagDecorators } = require("%scripts/clans/clanTextInfo.nut")
+let { debug } = require("dagor.debug")
 
 gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -88,10 +89,12 @@ gui_handlers.ModifyClanModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     if ((this.clanData == null || this.newClanName != this.clanData.name) &&
       !isNamePassing(this.newClanName)) {
+      debug($"Clan name is not passing: {this.newClanName}")
       errorMsg = "charServer/updateError/16"
     }
     else if ((this.clanData == null || this.newClanTag != this.clanData.tag) &&
       !isNamePassing(stripClanTagDecorators(this.newClanTag))) {
+      debug($"Clan tag is not passing: {stripClanTagDecorators(this.newClanTag)}")
       errorMsg = "charServer/updateError/17"
     }
 
