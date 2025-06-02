@@ -18,6 +18,7 @@ let mpsToKmh = 3.6
 let metrToMile = 0.000621371
 let metrToNavMile = 0.000539957
 let kmetrToNavMile = 0.539957
+let NmToFt = 6076.11549
 let mpsToFpm = 196.8504
 
 let TRANSPARENT = E3DCOLOR(0x00000000)

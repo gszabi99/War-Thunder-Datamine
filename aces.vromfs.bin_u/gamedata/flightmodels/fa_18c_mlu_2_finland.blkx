@@ -16,7 +16,7 @@
   "havePointOfInterestDesignator": true,
   "ilsF18": true,
   "rwrIndicator": "TEWS",
-  "mfdCamTads": true,
+  "mfdCamLitening2": true,
   "hmdF16c": true,
   "isBwOpticSight": true,
   "needTpsNightVision": true,
@@ -4179,7 +4179,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
               "emitter": "aim_9l_1",
               "bullets": 1
             }
@@ -4525,7 +4525,7 @@
             ]
           },
           {
-            "iconType": "guided_bomb_small_jdam",
+            "iconType": "guided_bomb_small_jdam_ltc_pod",
             "name": "us_gbu_54_ltc_bol_slot2",
             "ShowNodes": {
               "node": [
@@ -4840,7 +4840,7 @@
             ]
           },
           {
-            "iconType": "guided_bomb_small_jdam",
+            "iconType": "guided_bomb_small_jdam_ltc_pod",
             "name": "us_gbu_54_ltc_bol_slot3",
             "ShowNodes": {
               "node": [
@@ -4953,6 +4953,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "ptb_wing_right"
             }
           },
           {
@@ -5359,7 +5363,7 @@
             ]
           },
           {
-            "iconType": "guided_bomb_small_jdam",
+            "iconType": "guided_bomb_small_jdam_ltc_pod",
             "name": "us_gbu_54_ltc_bol_slot7",
             "ShowNodes": {
               "node": [
@@ -5442,7 +5446,7 @@
                 "separate": true,
                 "machLimit": 1.01,
                 "dragCx": 0.02,
-                "reqModification": "uk_ltc_bol"
+                "reqModification": "us_gbu_32_31"
               },
               {
                 "trigger": "countermeasures",
@@ -5451,7 +5455,7 @@
                 "bullets": 320,
                 "external": true,
                 "separate": false,
-                "reqModification": "us_gbu_32_31"
+                "reqModification": "uk_ltc_bol"
               }
             ]
           },
@@ -5472,6 +5476,10 @@
               "bullets": 1,
               "external": true,
               "separate": true
+            },
+            "DependentWeaponPreset": {
+              "slot": 3,
+              "preset": "ptb_wing_left"
             }
           },
           {
@@ -5833,7 +5841,7 @@
             ]
           },
           {
-            "iconType": "guided_bomb_small_jdam",
+            "iconType": "guided_bomb_small_jdam_ltc_pod",
             "name": "us_gbu_54_ltc_bol_slot8",
             "ShowNodes": {
               "node": [
@@ -5961,7 +5969,7 @@
               "trigger": "aam",
               "external": true,
               "separate": true,
-              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder.blk",
+              "blk": "gameData/Weapons/rocketGuns/us_aim9l_sidewinder_default.blk",
               "emitter": "aim_9l_2",
               "bullets": 1
             }

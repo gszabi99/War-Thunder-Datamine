@@ -405,7 +405,7 @@ options.addTypes({
 
           let searchName = getBulletsSearchName(unit, value)
           let useDefaultBullet = searchName != value
-          let bulletParameters = calculate_tank_bullet_parameters(unit.name,
+          let bulletParameters = calculate_tank_bullet_parameters(bulletsSet?.supportUnitName ?? unit.name,
             (useDefaultBullet && weaponBlkName) || getModificationBulletsEffect(searchName),
             useDefaultBullet, false)
 
@@ -455,7 +455,7 @@ options.addTypes({
                 bulletParams })
             }
             else
-              addDiv = MODIFICATION.getMarkup(unit.name, value, { hasPlayerInfo = false })
+              addDiv = MODIFICATION.getMarkup(bulletsSet?.supportUnitName ?? unit.name, value, { hasPlayerInfo = false })
 
             bulletNamesSet.append(locName)
             let btName = bulletName || ""

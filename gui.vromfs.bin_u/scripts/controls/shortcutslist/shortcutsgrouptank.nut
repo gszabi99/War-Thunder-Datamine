@@ -517,11 +517,6 @@ return [
     showFunc = @() hasFeature("ActiveScouting")
   }
   {
-    id = "ID_START_UGV"
-    checkAssign = false
-    showFunc = @() hasFeature("TankSupportPlane")
-  }
-  {
     id = "ID_SLAVE_UNIT_SPAWN"
     checkAssign = false
     showFunc = @() hasFeature("TankSupportPlane")
@@ -532,22 +527,29 @@ return [
     showFunc = @() hasFeature("TankSupportPlane")
   }
   {
-    id = "ID_MINE_DETONATION"
-    checkAssign = false
-  }
-  {
-    id = "ID_UNLIMITED_CONTROL"
-    checkAssign = false
-  }
-  {
     id = "ID_TOGGLE_CONSTRUCTION_MODE"
     checkAssign = false
   }
-  {
-    id = "ID_TOGGLE_STEALTH"
-    checkAssign = false
-    showFunc = @() hasFeature("TankStealth")
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   {
     id = "ID_RANGEFINDER"
     checkAssign = false

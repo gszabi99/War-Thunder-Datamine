@@ -1869,6 +1869,13 @@ let optionsMap = {
     descr.controlName <- "switchbox"
     descr.value = get_option_chat_filter() != 0
   },
+  [USEROPT_CHAT_REPUTATION_FILTER] = function(optionId, descr, _context) {
+    descr.id = "chat_reputation_filter"
+    descr.controlType = optionControlType.CHECKBOX
+    descr.controlName <- "switchbox"
+    descr.value = get_gui_option(optionId)
+    descr.defaultValue = false
+  },
   [USEROPT_DAMAGE_INDICATOR_SIZE] = function(optionId, descr, _context) {
     descr.id = "damage_indicator_scale"
     descr.controlType = optionControlType.SLIDER
@@ -4335,6 +4342,7 @@ let optionsSetMap = {
     set_option_chat_filter(value ? 1 : 0)
     broadcastEvent("ChatFilterChanged")
   },
+  [USEROPT_CHAT_REPUTATION_FILTER] = def_set_gui_option,
   [USEROPT_SHOW_PILOT] = @(value, _descr, _optionId) set_option_showPilot(value ? 1 : 0),
   [USEROPT_GUN_VERTICAL_TARGETING] = @(value, _descr, _optionId) set_option_gunVerticalTargeting(value ? 1 : 0),
   [USEROPT_INVERTCAMERAY] = @(value, _descr, _optionId) set_option_camera_invertY(value ? 1 : 0),

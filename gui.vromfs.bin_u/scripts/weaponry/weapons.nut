@@ -640,6 +640,8 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function createItemLayoutForBundle(id, unit, item, iType, params = {}) {
+    if (params?.supportUnitName)
+      item.supportUnitName <- params.supportUnitName
     id = this.addItemToList(item, iType)
     return {
       itemId = id
@@ -647,12 +649,14 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     }
   }
 
-  function createBundle(itemsList, itemsType, subType, holderObj, posX, posY) {
+  function createBundle(itemsList, itemsType, subType, holderObj, posX, posY, supportUnitName = null) {
     createModBundle($"bundle_{this.items.len()}", this.air, itemsList, itemsType, holderObj, this,
       { posX = posX, posY = posY, subType = subType,
-        maxItemsInColumn = 5, createItemLayoutFunc = this.createItemLayoutForBundle
+        maxItemsInColumn = 5,
+        createItemLayoutFunc = this.createItemLayoutForBundle
         cellSizeObj = this.scene.findObject("cell_size")
         curEdiff = this.getCurrentEdiff()
+        supportUnitName
       })
   }
 
@@ -1112,8 +1116,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     
     foreach (groupIndex, bulletsList in this.bulletsByGroupIndex) {
       this.createBundle(getBulletsItemsList(this.air, bulletsList, groupIndex),
-        weaponsItem.bullets, groupIndex, this.mainModsObj, offsetX, offsetY)
-
+        weaponsItem.bullets, groupIndex, this.mainModsObj, offsetX, offsetY, bulletsList?.supportUnitName)
       let name = getBulletsListHeader(this.air, bulletsList)
       columnsList.append(this.getWeaponsColumnData(name).__merge(
         {

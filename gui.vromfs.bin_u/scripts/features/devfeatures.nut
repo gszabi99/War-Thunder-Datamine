@@ -8,6 +8,9 @@ let devFeatures = {
   PremiumSubscription = {
     title = "Enable premium by subscription"
   }
+  ChatReputationFilter = {
+    title = "Enable option blocked message from users witch has bad reputation"
+  }
 }
 
 let hasDevFeature = @(name) name in devFeatures

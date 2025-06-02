@@ -219,6 +219,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
         wpList.append(weapon.blk)
         triggerList.append(weapon.trigger)
       }
+  let supportBlkIdx = {}
   foreach (supportName in getSupportUnits(air.name)) {
     let supportUnit = getAircraftByName(supportName)
     if (supportUnit == null)
@@ -229,6 +230,8 @@ function getBulletsSetData(air, modifName, noModList = null) {
       let supportWeapons = getCommonWeapons(supportUnitBlk, primaryMod)
       foreach (weapon in supportWeapons)
         if (weapon?.blk && !weapon?.dummy && !wpList.contains(weapon.blk)) {
+          let wBlkIdx = wpList.len()
+          supportBlkIdx[wBlkIdx] <- supportName
           wpList.append(weapon.blk)
           triggerList.append(weapon.trigger)
         }
@@ -247,7 +250,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
   local bulSetForIconParam = null
   let fakeBulletsSets = []
   local index = -1
-  foreach (wBlkName in wpList) {
+  foreach (wBlkIdx, wBlkName in wpList) {
     index++
     let wBlk = blkFromPath(wBlkName)
     if (u.isEmpty(wBlk) || (!wBlk?[getModificationBulletsEffect(searchName)] && !noModList))
@@ -309,6 +312,7 @@ function getBulletsSetData(air, modifName, noModList = null) {
                   bulletAnimations = clone bulletAnimations
                   cumulativeDamage = paramsBlk?.cumulativeDamage.armorPower ?? 0
                   cumulativeByNormal = paramsBlk?.cumulativeByNormal ?? false
+                  supportUnitName = supportBlkIdx?[wBlkIdx]
                 }
         }
         else
@@ -882,6 +886,7 @@ function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
     weaponType = WEAPON_TYPE.GUNS
     caliber = 0
     duplicate = false 
+    supportUnitName = null
 
     
     items = []
@@ -908,6 +913,7 @@ function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
       descr.caliber = bData.caliber
       descr.weaponType = bData.weaponType
       descr.isBulletBelt = bData?.isBulletBelt ?? true
+      descr.supportUnitName = bData?.supportUnitName
     }
 
     appendOneBulletsItem(descr, modifName, air, "", params.needTexts) 
@@ -946,6 +952,7 @@ function getBulletsList(airName, groupIdx, params = BULLETS_LIST_PARAMS) {
         descr.caliber = bData.caliber
         descr.weaponType = bData.weaponType
         descr.isBulletBelt = bData?.isBulletBelt ?? true
+        descr.supportUnitName = bData?.supportUnitName
       }
     }
 

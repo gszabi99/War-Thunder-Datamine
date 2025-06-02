@@ -45,6 +45,19 @@
   "bladeAnimVar": "2s19m2_dozer_blade_action",
   "rearmSmokeTimeOnField": 60.0,
   "canReloadNonGuns": true,
+  "smokeScreenActivateTime": 5.0,
+  "smokeScreenEffectTime": 7.0,
+  "smokeScreenRad": 12.0,
+  "smokeScreenOffset": [
+    -3.0,
+    0.0,
+    2.0
+  ],
+  "smokeScreenDmPart": "engine_dm",
+  "smokeScreenFxType": "tank_smokescreen",
+  "smokeScreenFx": "smokescreen_no_therm_small",
+  "smokeVisibilityType1": "visual",
+  "smokeVisibilityType2": "optic",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
@@ -3798,5 +3811,13 @@
         "to": "ussr_camo_modern_desert_deform*"
       }
     }
-  ]
+  ],
+  "smokeScreenExhaustEmitters": {
+    "emitter": [
+      "emtr_exhaust_01",
+      "emtr_exhaust_02",
+      "emtr_exhaust_03",
+      "emtr_exhaust_04"
+    ]
+  }
 }

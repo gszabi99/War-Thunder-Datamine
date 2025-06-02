@@ -1117,7 +1117,9 @@ gui_handlers.ItemsList <- class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventActiveHandlersChanged(_p) {
-    showObjById("black_screen", handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd) != null, this.scene)
+    let needBlackScreen = handlersManager.findHandlerClassInScene(gui_handlers.trophyRewardWnd) != null
+      || handlersManager.findHandlerClassInScene(gui_handlers.recycleCompleteWnd) != null
+    showObjById("black_screen", needBlackScreen, this.scene)
   }
 
   function updateWarbondsBalance() {

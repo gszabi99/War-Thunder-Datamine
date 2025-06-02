@@ -2891,6 +2891,65 @@ enums.addTypes(g_hud_hints, {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   DRONE_ENTER_ORBITING_MODE = {
     hintType = g_hud_hint_types.COMMON
     getLocParams = @(_eventData) {roll = getAxisShortCutLoc("ailerons"), pitch = getAxisShortCutLoc("elevator")}

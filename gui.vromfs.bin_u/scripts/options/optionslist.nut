@@ -289,6 +289,7 @@ let getMainOptions = function() {
       [USEROPT_AUTO_SHOW_CHAT, "spinner"],
       [USEROPT_CHAT_MESSAGES_FILTER, "spinner"],
       [USEROPT_CHAT_FILTER, "spinner"],
+      [USEROPT_CHAT_REPUTATION_FILTER, "spinner", hasFeature("ChatReputationFilter")],
       [USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, "spinner"],
 
       ["options/header/gamepad"],

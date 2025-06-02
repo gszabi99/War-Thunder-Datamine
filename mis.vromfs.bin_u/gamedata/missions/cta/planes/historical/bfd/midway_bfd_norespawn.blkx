@@ -176,11 +176,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -190,11 +192,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -204,11 +208,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -218,11 +224,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -232,11 +240,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -250,11 +260,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -268,11 +280,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -282,11 +296,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -311,22 +327,22 @@
           {
             "loc_name": "missions/air_spawn1",
             "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
             "radius": 650.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t1_common_fighters_spawn",
             "team": "A",
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "tags": {
               "type_bomber": false,
               "type_assault": false,
@@ -341,27 +357,22 @@
           {
             "loc_name": "missions/air_spawn1",
             "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
             "radius": 650.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "isIndividual": false,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t2_common_fighters_spawn",
             "team": "B",
-            "offset": [
-              -200.0,
-              2500.0,
-              -200.0
-            ],
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "tags": {
               "type_bomber": false,
               "type_assault": false,
@@ -390,6 +401,10 @@
       },
       "conditions": {},
       "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "force_air_spawn"
+        },
         "comment": {
           "value": "umen'shaem distanciyu unichtozheniya kvestovyh yunitov"
         },
@@ -466,19 +481,6 @@
             "object_var_value": 0,
             "accuracy": 0.0,
             "effShootingRate": 0.0
-          },
-          {
-            "object": [
-              "t1_carrier_sq",
-              "t2_carrier_sq"
-            ],
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "targetGnd": false,
-            "accuracy": 1.0,
-            "effShootingRate": 1.0
           }
         ],
         "unitMark": {
@@ -703,70 +705,6 @@
         ],
         "wait": {
           "time": 20.0
-        }
-      },
-      "else_actions": {}
-    },
-    "t1_carriers_destroyed": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "less",
-          "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "t1_carrier_sq",
-          "object_var_value": 0
-        }
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": "t1_loose"
-        }
-      },
-      "else_actions": {}
-    },
-    "t2_carriers_destroyed": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "less",
-          "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "t2_carrier_sq",
-          "object_var_value": 0
-        }
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": "t2_loose"
         }
       },
       "else_actions": {}
@@ -8705,7 +8643,9 @@
           "squad_members": [
             "t1_bunkers_squad",
             "t1_destroyer_sq",
-            "t1_cargo_ships_squad"
+            "t1_cargo_ships_squad",
+            "t1_carriers_squad",
+            "t1_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }
@@ -8739,7 +8679,9 @@
             "t2_lcvp_airfield_sq",
             "t2_lcvp_sq",
             "t2_tanks_sq",
-            "t2_destroyer_sq"
+            "t2_destroyer_sq",
+            "t2_carriers_squad",
+            "t2_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }

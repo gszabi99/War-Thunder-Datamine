@@ -327,46 +327,41 @@
     "armorClass": "tank_structural_steel",
     "hp": 10000.0,
     "hull": {
-      "armorThickness": 5.0,
-      "body_top_dm": {},
-      "turret_01_side_dm": {},
-      "body_side_dm": {},
+      "armorThickness": 3.0,
+      "turret_top_dm": {},
       "body_back_dm": {},
-      "turret_bottom_dm": {},
-      "turret_back_dm": {},
-      "turret_front_dm": {
-        "armorThickness": 10.0
-      },
-      "gun_mask_dm": {
-        "armorThickness": 10.0
-      },
-      "gun_mask_01_dm": {
-        "armorThickness": 10.0
-      },
-      "gun_mask_02_dm": {
-        "armorThickness": 10.0
-      }
+      "body_bottom_dm": {},
+      "body_front_dm": {},
+      "body_side_dm": {},
+      "body_top_dm": {},
+      "turret_side_dm": {},
+      "ex_armor_04_dm": {},
+      "ex_armor_05_dm": {},
+      "ex_armor_01_dm": {}
+    },
+    "hull_decor": {
+      "armorThickness": 3.0,
+      "collisionDamageMult": 3.0,
+      "hp": 10.0,
+      "ex_armor_02": {},
+      "ex_decor_01_dm": {},
+      "ex_decor_r_06_dm": {},
+      "ex_decor_l_06_dm": {},
+      "ex_decor_07_dm": {}
+    },
+    "body_side_screens": {
+      "armorClass": "t_90_rubber_fabric_screens",
+      "hp": 10.0,
+      "armorThickness": 10.0,
+      "createSecondaryShatters": false,
+      "ex_decor_l_12_dm": {},
+      "ex_decor_r_12_dm": {}
     },
     "sensor": {
       "armorClass": "tank_structural_steel",
       "armorThickness": 15.0,
       "hp": 200.0,
       "antenna_target_location_dm": {}
-    },
-    "optics": {
-      "armorClass": "optics_tank",
-      "optic_gun_dm": {
-        "armorThickness": 10.0,
-        "hp": 50.0
-      }
-    },
-    "gun": {
-      "armorClass": "tank_barrel",
-      "hp": 50.0,
-      "gun_barrel_dm": {
-        "armorThrough": 10.0,
-        "armorThickness": 5.0
-      }
     },
     "chassis": {
       "armorClass": "car_wheels",
@@ -376,7 +371,10 @@
       "wheel_l_01_dm": {},
       "wheel_r_02_dm": {},
       "wheel_l_02_dm": {},
-      "wheel_support_dm": {}
+      "wheel_l_drive_dm": {},
+      "wheel_r_drive_dm": {},
+      "wheel_support_dm": {},
+      "wheel_support_01_dm": {}
     },
     "crew": {
       "armorClass": "steel_tankman",
@@ -423,14 +421,6 @@
         "armorThrough": 15.0
       },
       "driver_controls_dm": {
-        "armorThrough": 15.0
-      },
-      "drive_turret_v_01_dm": {
-        "hp": 40.0,
-        "armorThrough": 15.0
-      },
-      "drive_turret_h_01_dm": {
-        "hp": 40.0,
         "armorThrough": 15.0
       },
       "drive_turret_v_02_dm": {

@@ -120,9 +120,9 @@
           "showAirMap": false,
           "icon": [
             {
-              "icontype": "carrier",
+              "icontype": "fighter",
               "side": "ally",
-              "target": "t1_carrier01"
+              "target": "t1_far_bomber_spawn"
             },
             {
               "icontype": "destroyer",
@@ -135,9 +135,9 @@
               "target": "t1_attack1_01"
             },
             {
-              "icontype": "carrier",
+              "icontype": "fighter",
               "side": "enemy",
-              "target": "t2_carrier01"
+              "target": "t2_far_bomber_spawn"
             },
             {
               "icontype": "destroyer",
@@ -178,11 +178,13 @@
         "importTriggers": false,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": false,
         "showUnits": true,
         "showTriggers": false,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -192,11 +194,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -206,11 +210,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -220,11 +226,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -234,11 +242,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -252,11 +262,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -270,11 +282,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -284,11 +298,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -309,6 +325,10 @@
       },
       "conditions": {},
       "actions": {
+        "varSetBool": {
+          "value": true,
+          "var": "force_air_spawn"
+        },
         "unitSetProperties": [
           {
             "object": [
@@ -352,18 +372,6 @@
             "fireRandom": true,
             "targetChangeInterval": 5.0,
             "targetChangeProb": 0.25
-          },
-          {
-            "object": [
-              "t1_carrier_sq",
-              "t2_carrier_sq"
-            ],
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "accuracy": 0.9,
-            "effShootingRate": 0.9
           },
           {
             "object": [
@@ -419,27 +427,22 @@
           {
             "loc_name": "missions/air_spawn1",
             "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
             "radius": -1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t1_common_fighter_spawn",
             "team": "A",
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "tags": {
               "type_bomber": false,
               "type_assault": false,
@@ -454,27 +457,22 @@
           {
             "loc_name": "missions/air_spawn1",
             "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
             "radius": -1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "replaceAreas": false,
-            "forceCreate": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t2_common_fighter_spawn",
             "team": "B",
-            "offset": [
-              0.0,
-              0.0,
-              0.0
-            ],
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "tags": {
               "type_bomber": false,
               "type_assault": false,
@@ -8152,7 +8150,6 @@
         ],
         "props": {
           "squad_members": [
-            "t1_carrier_sq",
             "t1_carrier_def01",
             "t1_carrier_def02",
             "t1_carrier_def03",
@@ -8304,7 +8301,6 @@
         ],
         "props": {
           "squad_members": [
-            "t2_carrier_sq",
             "t2_carrier_def01",
             "t2_carrier_def02",
             "t2_carrier_def03",
@@ -8549,7 +8545,6 @@
         ],
         "props": {
           "squad_members": [
-            "t1_carrier_sq",
             "t1_carrier_fleet_sq",
             "t1_attack1_sq",
             "t1_lcvp_sq",
@@ -8584,7 +8579,6 @@
         ],
         "props": {
           "squad_members": [
-            "t2_carrier_sq",
             "t2_carrier_fleet_sq",
             "t2_attack1_sq",
             "t2_lcvp_sq",
@@ -8619,11 +8613,12 @@
         ],
         "props": {
           "squad_members": [
-            "t1_carrier_sq",
             "t1_carrier_fleet_sq",
             "t1_attack1_sq",
             "t1_lcvp_sq",
-            "t1_ground_sq"
+            "t1_ground_sq",
+            "t1_carriers_squad",
+            "t1_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }
@@ -8654,11 +8649,12 @@
         ],
         "props": {
           "squad_members": [
-            "t2_carrier_sq",
             "t2_carrier_fleet_sq",
             "t2_attack1_sq",
             "t2_lcvp_sq",
-            "t2_ground_sq"
+            "t2_ground_sq",
+            "t2_carriers_squad",
+            "t2_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }

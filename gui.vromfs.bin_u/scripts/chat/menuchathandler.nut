@@ -28,7 +28,7 @@ let regexp2 = require("regexp2")
 let { parse_json } = require("json")
 let { clearBorderSymbols, startsWith, replace, stripTags } = require("%sqstd/string.nut")
 let { getDevoiceMessage } = require("%scripts/penitentiary/penaltyMessages.nut")
-let { newRoom, newMessage, initChatMessageListOn } = require("%scripts/chat/menuChatRoom.nut")
+let { newRoom, newMessage, initChatMessageListOn, isBlockChatMessage } = require("%scripts/chat/menuChatRoom.nut")
 let { topMenuBorders } = require("%scripts/mainmenu/topMenuStates.nut")
 let { isChatEnabled, checkChatEnableWithPlayer, isCrossNetworkMessageAllowed, chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { hasMenuGeneralChats, hasMenuChatPrivate, hasMenuChatSquad, hasMenuChatClan, hasMenuChatMPlobby
@@ -72,6 +72,7 @@ let { ceil } = require("%sqstd/math.nut")
 let { menuChatHandler } = require("%scripts/chat/chatHandler.nut")
 let { joinThread, getRoomById, addRoom, isRoomSquad, isRoomClan, openChatRoom } = require("%scripts/chat/chatRooms.nut")
 let { getThreadInfo } = require("%scripts/chat/chatStorage.nut")
+let { reputationType } = require("%scripts/user/usersReputation.nut")
 
 const CHAT_ROOMS_LIST_SAVE_ID = "chatRooms"
 const VOICE_CHAT_SHOW_COUNT_SAVE_ID = "voiceChatShowCount"
@@ -791,13 +792,20 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
 
     let totalMblocks = room.mBlocks.len()
     let numChildrens = messagesContainer.childrenCount()
+    local hasBlockChatMsg = false
     for (local i = 0; i < numChildrens; i++) {
       let msgObj = messagesContainer.getChild(i)
       let textObj  = msgObj.findObject("chat_message_text")
-      if (i < totalMblocks) {
+      if (!hasBlockChatMsg && i < totalMblocks) {
+        let mBlock = room.mBlocks[i]
+        if (mBlock.isBlockChat) {
+          hasBlockChatMsg = true
+          msgObj.show(false)
+          continue
+        }
         msgObj.show(true)
-        msgObj.messageType = room.mBlocks[i].messageType
-        textObj.setValue(room.mBlocks[i].text)
+        msgObj.messageType = mBlock.messageType
+        textObj.setValue(mBlock.text)
       }
       else {
         msgObj.show(false)
@@ -2669,16 +2677,20 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
     })
   }
 
+  function drawCustomRoom(room, roomIdx) {
+    if (checkObj(room.customScene)) {
+      let obj = room.customScene.findObject("custom_chat_text_block")
+      if (checkObj(obj))
+        this.drawRoomTo(room, obj, true)
+    }
+    else if (room.existOnlyInCustom)
+      this.closeRoom(roomIdx)
+  }
+
   function updateCustomChatTexts() {
     for (local idx = g_chat.rooms.len() - 1; idx >= 0; idx--) {
       let room = g_chat.rooms[idx]
-      if (checkObj(room.customScene)) {
-        let obj = room.customScene.findObject("custom_chat_text_block")
-        if (checkObj(obj))
-          this.drawRoomTo(room, obj)
-      }
-      else if (room.existOnlyInCustom)
-        this.closeRoom(idx)
+      this.drawCustomRoom(room, idx)
     }
   }
 
@@ -2864,6 +2876,27 @@ let MenuChatHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function onEventChatCheckIsActive(_params) {
     if (!this.isMenuChatActive())
       isChatEnabled(true)
+  }
+
+  function onEventUserReputationUpdated(data) {
+    foreach (uid, reputation in data) {
+      let roomsCount = g_chat.rooms.len()
+      for (local i = 0; i < roomsCount; i++) {
+        let room = g_chat.rooms[i]
+        if (room.mBlocksByUid?[uid] == null || room.mBlocksByUid[uid].len() == 0)
+          continue
+
+        let userMessages = room.mBlocksByUid[uid]
+        foreach (mblock in userMessages) {
+          mblock.userReputation = reputation.new
+          if (mblock.isBlockChat)
+            mblock.isBlockChat = isBlockChatMessage(mblock)
+          if (reputation.new == reputationType.BAD || reputation.old == reputationType.GOOD)
+            room.updateMessageText(mblock, true)
+        }
+        this.drawCustomRoom(room, i)
+      }
+    }
   }
 
   chatSendBtnActivateTime = null

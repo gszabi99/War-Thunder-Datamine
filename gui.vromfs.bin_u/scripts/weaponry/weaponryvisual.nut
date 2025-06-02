@@ -375,7 +375,7 @@ function getWeaponItemViewParams(id, unit, item, params = {}) {
         })
     }
   }
-  res.tooltipId = params?.tooltipId ?? getTooltipId(unit.name, visualItem, params.__merge({
+  res.tooltipId = params?.tooltipId ?? getTooltipId(item?.supportUnitName ?? unit.name, visualItem, params.__merge({
     hasPlayerInfo = (params?.hasPlayerInfo ?? true) && !isForceHidePlayerInfo
     pairModName
   }))
@@ -688,7 +688,7 @@ function createModBundle(id, unit, itemsList, itemsType, holderObj, handler, par
   local itemsData = ""
   foreach (idx, item in itemsList)
     itemsData = "\n".concat(itemsData, createItemLayoutFunc.call(handler, $"{id}_{idx}", unit, item,
-      itemsType, { posX = (idx / rows).tointeger(), posY = idx % rows }).itemLayout)
+      itemsType, { posX = (idx / rows).tointeger(), posY = idx % rows, supportUnitName = params?.supportUnitName }).itemLayout)
   if (itemsData != "")
     this.guiScene.appendWithBlk(itemsObj, itemsData, this)
 

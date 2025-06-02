@@ -168,11 +168,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -182,11 +184,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -196,11 +200,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -210,11 +216,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -224,11 +232,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -242,11 +252,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -260,11 +272,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -274,11 +288,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -307,23 +323,23 @@
           {
             "loc_name": "missions/air_spawn1",
             "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
             "radius": -1.0,
             "destructionAwardMultiplier": 1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t1_common_fighters_spawn",
             "team": "A",
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "awardByBodyHp": false,
             "tags": {
               "type_assault": false,
@@ -337,23 +353,23 @@
           {
             "loc_name": "missions/air_spawn1",
             "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
             "radius": -1.0,
             "destructionAwardMultiplier": 1.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "canSpawnOnNeutral": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t2_common_fighters_spawn",
             "team": "B",
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "awardByBodyHp": false,
             "tags": {
               "type_assault": false,
@@ -567,6 +583,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "t2_ai_kamikadzies_squad"
         },
         "unitMark": {
@@ -722,6 +739,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "t2_ai_kamikadzies_squad"
         },
         "triggerEnable": {
@@ -888,6 +906,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "t2_ai_kamikadzies_squad",
           "useForTriggerFiltered": true
         }
@@ -1361,6 +1380,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "t1_lcvp_squad",
           "speed": 60.0,
           "useForTriggerFiltered": true
@@ -2294,198 +2314,6 @@
               "canUsePathFinder": false
             }
           },
-          "t1_navy_ship_01_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                12467.8,
-                1.0,
-                1133.6
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_01_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7728.9,
-                1.0,
-                15747.9
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_01_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -5672.2,
-                1.0,
-                17134.8
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_01_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -15027.7,
-                1.0,
-                6404.75
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_01_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -12021.8,
-                1.0,
-                -6194.1
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_01_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -1252.55,
-                1.0,
-                -8814.75
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t1_navy_ship_01_wp_08": {
             "type": "normal",
             "tm": [
@@ -2505,16 +2333,15 @@
                 1.0
               ],
               [
-                3839.78,
+                7148.31,
                 1.00098,
-                -6517.24
+                -3833.35
               ]
             ],
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -2608,198 +2435,6 @@
               "canUsePathFinder": false
             }
           },
-          "t1_navy_ship_02_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11924.0,
-                1.0,
-                305.1
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_02_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7185.15,
-                1.0,
-                14919.4
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_02_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -6215.95,
-                1.0,
-                16306.3
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_02_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -15571.4,
-                1.0,
-                5576.25
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_02_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -12565.5,
-                1.0,
-                -7022.6
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_02_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -1796.3,
-                1.0,
-                -9643.25
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t1_navy_ship_02_wp_08": {
             "type": "normal",
             "tm": [
@@ -2819,16 +2454,15 @@
                 1.0
               ],
               [
-                3296.03,
+                2712.54,
                 1.00098,
-                -7345.74
+                -6550.99
               ]
             ],
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -2922,198 +2556,6 @@
               "canUsePathFinder": false
             }
           },
-          "t1_navy_ship_03_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10866.9,
-                1.0,
-                -164.9
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_03_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                6128.0,
-                1.0,
-                14449.4
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_03_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -7273.1,
-                1.0,
-                15836.3
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_03_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -16628.5,
-                1.0,
-                5106.25
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_03_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -13622.7,
-                1.0,
-                -7492.6
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_03_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -2853.45,
-                1.0,
-                -10113.3
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t1_navy_ship_03_wp_08": {
             "type": "normal",
             "tm": [
@@ -3133,16 +2575,15 @@
                 1.0
               ],
               [
-                2238.88,
+                1840.46,
                 1.00098,
-                -7815.74
+                -7578.27
               ]
             ],
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -3236,198 +2677,6 @@
               "canUsePathFinder": false
             }
           },
-          "t1_navy_ship_04_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11087.4,
-                1.0,
-                1114.95
-              ]
-            ],
-            "props": {
-              "speed": 64.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_04_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                6348.5,
-                1.0,
-                15729.2
-              ]
-            ],
-            "props": {
-              "speed": 65.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_04_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -7052.6,
-                1.0,
-                17116.2
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_04_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -16408.0,
-                1.0,
-                6386.1
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_04_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -13402.2,
-                1.0,
-                -6212.75
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_04_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -2632.95,
-                1.0,
-                -8833.4
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t1_navy_ship_04_wp_08": {
             "type": "normal",
             "tm": [
@@ -3447,16 +2696,15 @@
                 1.0
               ],
               [
-                2459.38,
+                4038.53,
                 1.00098,
-                -6535.89
+                -5333.89
               ]
             ],
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -3550,198 +2798,6 @@
               "canUsePathFinder": false
             }
           },
-          "t1_navy_ship_05_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                11854.0,
-                1.0,
-                1628.45
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_05_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                7115.05,
-                1.0,
-                16242.7
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_05_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -6286.05,
-                1.0,
-                17629.7
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_05_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -15641.5,
-                1.0,
-                6899.6
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_05_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -12635.6,
-                1.0,
-                -5699.25
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_05_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -1866.4,
-                1.0,
-                -8319.9
-              ]
-            ],
-            "props": {
-              "speed": 55.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t1_navy_ship_05_wp_08": {
             "type": "normal",
             "tm": [
@@ -3761,16 +2817,15 @@
                 1.0
               ],
               [
-                3225.93,
+                6286.88,
                 1.00098,
-                -6022.39
+                -3366.74
               ]
             ],
             "props": {
               "speed": 55.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -3864,198 +2919,6 @@
               "canUsePathFinder": false
             }
           },
-          "t1_navy_ship_06_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10259.5,
-                1.0,
-                814.748
-              ]
-            ],
-            "props": {
-              "speed": 64.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_06_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                5520.55,
-                1.0,
-                15429.0
-              ]
-            ],
-            "props": {
-              "speed": 64.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_06_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -7880.55,
-                1.0,
-                16815.9
-              ]
-            ],
-            "props": {
-              "speed": 64.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_06_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -17236.0,
-                1.0,
-                6085.9
-              ]
-            ],
-            "props": {
-              "speed": 64.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_06_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -14230.1,
-                1.0,
-                -6512.95
-              ]
-            ],
-            "props": {
-              "speed": 64.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_06_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -3460.9,
-                1.0,
-                -9133.6
-              ]
-            ],
-            "props": {
-              "speed": 64.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t1_navy_ship_06_wp_08": {
             "type": "normal",
             "tm": [
@@ -4075,16 +2938,15 @@
                 1.0
               ],
               [
-                1631.43,
+                2705.98,
                 1.00098,
-                -6836.09
+                -5372.96
               ]
             ],
             "props": {
               "speed": 64.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -4178,198 +3040,6 @@
               "canUsePathFinder": false
             }
           },
-          "t1_navy_ship_07_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                10472.3,
-                1.0,
-                1968.0
-              ]
-            ],
-            "props": {
-              "speed": 65.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_07_wp_03": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                5733.4,
-                1.0,
-                16582.3
-              ]
-            ],
-            "props": {
-              "speed": 65.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_07_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -7667.7,
-                1.0,
-                17969.2
-              ]
-            ],
-            "props": {
-              "speed": 65.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_07_wp_05": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -17023.2,
-                1.0,
-                7239.15
-              ]
-            ],
-            "props": {
-              "speed": 65.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_07_wp_06": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -14017.3,
-                1.0,
-                -5359.7
-              ]
-            ],
-            "props": {
-              "speed": 65.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t1_navy_ship_07_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -3248.05,
-                1.0,
-                -7980.35
-              ]
-            ],
-            "props": {
-              "speed": 65.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t1_navy_ship_07_wp_08": {
             "type": "normal",
             "tm": [
@@ -4389,16 +3059,15 @@
                 1.0
               ],
               [
-                1844.28,
+                5429.83,
                 1.00098,
-                -5682.84
+                -2641.55
               ]
             ],
             "props": {
               "speed": 65.0,
               "moveType": "MOVETO_STRAIGHT",
               "tas": false,
-              "shouldKeepFormation": false,
               "canUsePathFinder": false
             }
           }
@@ -7338,38 +6007,6 @@
               "canUsePathFinder": false
             }
           },
-          "t1_subquest_units_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -21719.1,
-                0.0,
-                8849.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t1_subquest_units_wp_05": {
             "type": "normal",
             "tm": [
@@ -7483,38 +6120,6 @@
                 6001.7,
                 -59.9,
                 11117.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_subquest_units_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13998.3,
-                -247.2,
-                313.3
               ]
             ],
             "props": {
@@ -7643,38 +6248,6 @@
                 -17323.8,
                 0.0,
                 -4155.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_subquest_units_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -16251.5,
-                0.0,
-                11971.5
               ]
             ],
             "props": {
@@ -7873,38 +6446,6 @@
               "canUsePathFinder": false
             }
           },
-          "t1_subquest_units_02_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -21719.1,
-                0.0,
-                8849.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t1_subquest_units_02_wp_05": {
             "type": "normal",
             "tm": [
@@ -8093,38 +6634,6 @@
               "canUsePathFinder": false
             }
           },
-          "t1_subquest_units_03_wp_04": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -21719.1,
-                0.0,
-                8849.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t1_subquest_units_03_wp_05": {
             "type": "normal",
             "tm": [
@@ -8238,38 +6747,6 @@
                 6001.7,
                 -59.9,
                 11117.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_subquest_units_02_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13998.3,
-                -247.2,
-                313.3
               ]
             ],
             "props": {
@@ -8408,38 +6885,6 @@
               "canUsePathFinder": false
             }
           },
-          "t2_subquest_units_02_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -16251.5,
-                0.0,
-                11971.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
           "t2_subquest_units_02_wp_08": {
             "type": "normal",
             "tm": [
@@ -8553,38 +6998,6 @@
                 6001.7,
                 -59.9,
                 11117.5
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_subquest_units_03_wp_02": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                13998.3,
-                -247.2,
-                313.3
               ]
             ],
             "props": {
@@ -8713,38 +7126,6 @@
                 -17323.8,
                 0.0,
                 -4155.8
-              ]
-            ],
-            "props": {
-              "speed": 300.0,
-              "moveType": "MOVETO_STRAIGHT",
-              "tas": false,
-              "shouldKeepFormation": false,
-              "canUsePathFinder": false
-            }
-          },
-          "t2_subquest_units_03_wp_07": {
-            "type": "normal",
-            "tm": [
-              [
-                1.0,
-                0.0,
-                0.0
-              ],
-              [
-                0.0,
-                1.0,
-                0.0
-              ],
-              [
-                0.0,
-                0.0,
-                1.0
-              ],
-              [
-                -16251.5,
-                0.0,
-                11971.5
               ]
             ],
             "props": {
@@ -9414,7 +7795,9 @@
             "t1_lcvp_squad",
             "t1_tanks_squad",
             "t1_navy_ships_squad",
-            "t1_cargo_ships_squad"
+            "t1_cargo_ships_squad",
+            "t1_carriers_squad",
+            "t1_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }
@@ -9446,7 +7829,9 @@
         "props": {
           "squad_members": [
             "t2_light_bunkers_squad",
-            "t2_bunkers_squad"
+            "t2_bunkers_squad",
+            "t2_carriers_squad",
+            "t2_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }

@@ -351,27 +351,22 @@
           {
             "loc_name": "missions/air_spawn1",
             "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
             "radius": 650.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "canSpawnOnNeutral": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t2_common_fighter_spawn",
             "team": "B",
-            "offset": [
-              -200.0,
-              1200.0,
-              -200.0
-            ],
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "tags": {
               "type_bomber": false,
               "type_assault": false,
@@ -386,27 +381,22 @@
           {
             "loc_name": "missions/air_spawn1",
             "spawnEffect": false,
-            "isAirfield": false,
-            "isUnit": false,
             "radius": 650.0,
-            "isStrictSpawn": false,
-            "useExisting": false,
-            "canSpawnOnNeutral": false,
-            "isIndividual": false,
-            "removeAreas": false,
-            "showOnMap": true,
-            "onlyOnePlayerPerSpawnPoint": false,
-            "resetStrictSpawnIndex": false,
-            "forceCreate": false,
-            "replaceAreas": false,
-            "ignoreTeamsOnReuse": false,
             "target": "t1_common_fighter_spawn",
             "team": "A",
-            "offset": [
-              -200.0,
-              2500.0,
-              -200.0
-            ],
+            "isStrictSpawn": false,
+            "resetStrictSpawnIndex": false,
+            "isAirfield": false,
+            "isUnit": false,
+            "forceCreate": false,
+            "useExisting": false,
+            "ignoreTeamsOnReuse": false,
+            "isIndividual": false,
+            "onlyOnePlayerPerSpawnPoint": false,
+            "removeAreas": false,
+            "replaceAreas": false,
+            "canSpawnOnNeutral": false,
+            "showOnMap": true,
             "tags": {
               "type_bomber": false,
               "type_assault": false,
@@ -561,6 +551,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "t1_ai_plane"
         },
         "unitSetProperties": [
@@ -623,19 +614,6 @@
             "object_var_value": 0,
             "accuracy": 0.0,
             "effShootingRate": 0.0
-          },
-          {
-            "object": [
-              "t2_carrier_sq",
-              "t1_carrier_sq"
-            ],
-            "object_marking": 0,
-            "object_var_name": "",
-            "object_var_comp_op": "equal",
-            "object_var_value": 0,
-            "targetGnd": false,
-            "accuracy": 1.0,
-            "effShootingRate": 1.0
           },
           {
             "object": "t2_ship_squad",
@@ -816,70 +794,6 @@
             ]
           }
         ]
-      },
-      "else_actions": {}
-    },
-    "t2_carriers_destroyed": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "less",
-          "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "t2_carrier_sq",
-          "object_var_value": 0
-        }
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": "t2_loose"
-        }
-      },
-      "else_actions": {}
-    },
-    "t1_carriers_destroyed": {
-      "is_enabled": true,
-      "comments": "",
-      "props": {
-        "actionsType": "PERFORM_ONE_BY_ONE",
-        "conditionsType": "ALL",
-        "enableAfterComplete": false
-      },
-      "events": {
-        "periodicEvent": {
-          "time": 1.0
-        }
-      },
-      "conditions": {
-        "unitWhenCountMatches": {
-          "object_type": "isAlive",
-          "object_marking": 0,
-          "func": "less",
-          "value": 1,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object": "t1_carrier_sq",
-          "object_var_value": 0
-        }
-      },
-      "actions": {
-        "triggerEnable": {
-          "target": "t1_loose"
-        }
       },
       "else_actions": {}
     },
@@ -1746,6 +1660,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "t1_ai_plane"
         },
         "unitAttackTarget": {
@@ -1820,6 +1735,7 @@
           "target_var_name": "",
           "target_var_comp_op": "equal",
           "target_var_value": 0,
+          "shouldKeepAirFormation": true,
           "object": "t1_ai_plane"
         }
       },
@@ -3452,9 +3368,9 @@
                 1.0
               ],
               [
-                10721.5,
-                0.0,
-                -10618.0
+                7007.97,
+                1040.02,
+                -9824.33
               ]
             ],
             "props": {
@@ -3484,9 +3400,9 @@
                 1.0
               ],
               [
-                9054.06,
-                0.0,
-                -3103.62
+                5340.53,
+                1040.02,
+                -2309.96
               ]
             ],
             "props": {
@@ -3516,9 +3432,9 @@
                 1.0
               ],
               [
-                5758.55,
-                0.0,
-                -9017.9
+                2045.02,
+                1040.02,
+                -8224.24
               ]
             ],
             "props": {
@@ -3548,9 +3464,9 @@
                 1.0
               ],
               [
-                4545.97,
-                0.0,
-                -14956.8
+                832.442,
+                1040.02,
+                -14163.1
               ]
             ],
             "props": {
@@ -3640,9 +3556,9 @@
                 1.0
               ],
               [
-                11944.5,
+                4526.48,
                 0.0,
-                -12198.2
+                -10385.6
               ]
             ],
             "props": {
@@ -3672,9 +3588,9 @@
                 1.0
               ],
               [
-                9464.73,
-                0.0,
-                -6317.09
+                4625.86,
+                11.5,
+                -6204.44
               ]
             ],
             "props": {
@@ -3704,9 +3620,9 @@
                 1.0
               ],
               [
-                4643.69,
-                0.0,
-                -2699.53
+                2916.9,
+                0.000976562,
+                -4686.63
               ]
             ],
             "props": {
@@ -3800,9 +3716,9 @@
                 1.0
               ],
               [
-                -859.425,
-                0.0,
-                -17466.2
+                -1866.41,
+                -0.000976562,
+                -15213.8
               ]
             ],
             "props": {
@@ -3832,9 +3748,9 @@
                 1.0
               ],
               [
-                3734.48,
+                966.719,
                 0.0,
-                -17011.9
+                -14546.1
               ]
             ],
             "props": {
@@ -3924,9 +3840,9 @@
                 1.0
               ],
               [
-                11282.3,
-                0.0,
-                -11934.1
+                6319.97,
+                0.00488281,
+                -9474.99
               ]
             ],
             "props": {
@@ -3956,9 +3872,9 @@
                 1.0
               ],
               [
-                4679.81,
-                0.0,
-                -13355.3
+                -282.522,
+                0.00488281,
+                -10896.2
               ]
             ],
             "props": {
@@ -3988,9 +3904,9 @@
                 1.0
               ],
               [
-                6399.14,
-                0.0,
-                -8756.69
+                1436.81,
+                0.00488281,
+                -6297.58
               ]
             ],
             "props": {
@@ -4020,9 +3936,9 @@
                 1.0
               ],
               [
-                10839.3,
-                0.0,
-                -5462.89
+                5876.97,
+                0.00488281,
+                -3003.78
               ]
             ],
             "props": {
@@ -6680,9 +6596,9 @@
                 1.0
               ],
               [
-                1095.07,
-                -21.9,
-                27073.4
+                661.543,
+                -21.8994,
+                20762.2
               ]
             ],
             "props": {
@@ -6776,9 +6692,9 @@
                 1.0
               ],
               [
-                -9252.47,
-                -21.9008,
-                20093.4
+                -5141.51,
+                -21.9014,
+                16296.1
               ]
             ],
             "props": {
@@ -6867,9 +6783,9 @@
                 1.0
               ],
               [
-                1013.59,
-                -21.9,
-                27595.2
+                580.063,
+                -21.8994,
+                21284.1
               ]
             ],
             "props": {
@@ -6963,9 +6879,9 @@
                 1.0
               ],
               [
-                -9677.22,
-                -21.9008,
-                20107.9
+                -5566.26,
+                -21.9014,
+                16310.6
               ]
             ],
             "props": {
@@ -7054,9 +6970,9 @@
                 1.0
               ],
               [
-                1131.31,
-                -21.9,
-                27985.0
+                697.783,
+                -21.8994,
+                21673.9
               ]
             ],
             "props": {
@@ -7150,9 +7066,9 @@
                 1.0
               ],
               [
-                -9011.96,
-                -21.9008,
-                19178.8
+                -4901.0,
+                -21.9014,
+                15381.5
               ]
             ],
             "props": {
@@ -7241,9 +7157,9 @@
                 1.0
               ],
               [
-                1281.93,
-                -21.9,
-                28236.9
+                848.403,
+                -21.8994,
+                21925.8
               ]
             ],
             "props": {
@@ -7337,9 +7253,9 @@
                 1.0
               ],
               [
-                -9466.44,
-                -21.9008,
-                19193.1
+                -5355.48,
+                -21.9014,
+                15395.8
               ]
             ],
             "props": {
@@ -7524,9 +7440,9 @@
                 1.0
               ],
               [
-                -14379.0,
-                -21.9007,
-                8012.8
+                -12062.3,
+                -21.9009,
+                8001.21
               ]
             ],
             "props": {
@@ -7711,9 +7627,9 @@
                 1.0
               ],
               [
-                -13516.6,
-                -21.9007,
-                8090.21
+                -11199.9,
+                -21.9009,
+                8078.62
               ]
             ],
             "props": {
@@ -7898,9 +7814,9 @@
                 1.0
               ],
               [
-                -12654.2,
-                -21.9007,
-                8167.62
+                -10337.5,
+                -21.9009,
+                8156.03
               ]
             ],
             "props": {
@@ -8085,9 +8001,9 @@
                 1.0
               ],
               [
-                -11791.8,
-                -21.9007,
-                8245.03
+                -9475.13,
+                -21.9009,
+                8233.44
               ]
             ],
             "props": {
@@ -9865,7 +9781,9 @@
             "t2_artillery_sq",
             "t2_trucks_squad",
             "t2_heavy_units_squad",
-            "t2_bunkers_squad"
+            "t2_bunkers_squad",
+            "t2_carriers_squad",
+            "t2_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }
@@ -9897,7 +9815,9 @@
         "props": {
           "squad_members": [
             "t1_tanks_sq",
-            "t1_destroyer_sq"
+            "t1_destroyer_sq",
+            "t1_carriers_squad",
+            "t1_carrier_destroyers_squad"
           ],
           "object_marking": 0
         }

@@ -9,16 +9,18 @@ let { format } = require("string")
 let { checkChatEnableWithPlayer } = require("%scripts/chat/chatStates.nut")
 let { endsWith, slice, cutPrefix } = require("%sqstd/string.nut")
 let { get_charserver_time_sec } = require("chard")
-let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY
+let { USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, OPTIONS_MODE_GAMEPLAY,
 } = require("%scripts/options/optionsExtNames.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { userName } = require("%scripts/user/profileStates.nut")
-let { clanUserTable } = require("%scripts/contacts/contactsManager.nut")
+let { clanUserTable, getContactByName } = require("%scripts/contacts/contactsManager.nut")
 let { isPlayerNickInContacts } = require("%scripts/contacts/contactsChecks.nut")
 let { getPlayerFullName } = require("%scripts/contacts/contactsInfo.nut")
 let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { isRoomClan } = require("%scripts/chat/chatRooms.nut")
 let { filterMessageText } = require("%scripts/chat/chatUtils.nut")
+let { getUserReputation, reputationType, hasChatReputationFilter, gerReputationBlockMessage
+} = require("%scripts/user/usersReputation.nut")
 
 enum MESSAGE_TYPE {
   MY          = "my"
@@ -90,6 +92,10 @@ function colorMyNameInText(msg) {
   return msg
 }
 
+function isBlockChatMessage(mBlock) {
+  return mBlock.userReputation == reputationType.REQUEST
+}
+
 function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, important, needCensore, callback) {
   let text = ""
   local clanTag = ""
@@ -97,10 +103,11 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
   local messageType = ""
   local msgColor = ""
   local userColor = ""
+  local userReputation = reputationType.GOOD
   let msgSrc = msg
 
   local createMessage = function() {
-    return {
+    let mblock = {
       fullName = getPlayerFullName(getPlayerName(from), clanTag)
       from = from
       uid = uid
@@ -108,20 +115,19 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
       userColor = userColor
       isMeSender = messageType == MESSAGE_TYPE.MY
       isSystemSender = messageType == MESSAGE_TYPE.SYSTEM
-
       msgs = [msg]
       msgsSrc = [msgSrc]
       msgColor = msgColor
-
+      isBlockChat = false
       important = important
       messageType = messageType
-
+      userReputation = userReputation
       text = text
-
       sTime = get_charserver_time_sec()
-
       messageIndex = 0
     }
+    mblock.isBlockChat = isBlockChatMessage(mblock)
+    return mblock
   }
 
   
@@ -158,8 +164,14 @@ function newMessage(from, msg, privateMsg, myPrivate, overlaySystemColor, import
     userColor = g_chat.getSenderColor(from, true, privateMsg)
     messageType = myself ? MESSAGE_TYPE.MY : MESSAGE_TYPE.INCOMMING
 
-    if (needCensore)
+    if (needCensore) {
       msg = filterMessageText(msg, myself)
+      if (messageType != MESSAGE_TYPE.MY && hasChatReputationFilter()) {
+        let senderContact = getContactByName(from)
+        if (senderContact)
+          userReputation = getUserReputation(senderContact.uid)
+      }
+    }
 
     msgColor = privateMsg ? privateColor : ""
 
@@ -209,7 +221,6 @@ function newRoom(id, customScene = null, ownerHandler = null) {
   let rType = g_chat_room_type.getRoomType(id)
   local r = {
     id = id
-
     type = rType
     forceCanBeClosed = null
     canBeClosed = @() this.forceCanBeClosed != null ? this.forceCanBeClosed : rType.canBeClosed(id)
@@ -227,15 +238,37 @@ function newRoom(id, customScene = null, ownerHandler = null) {
     isCustomScene = customScene != null
 
     users = []
-    mBlocks = []
-
+    mBlocks = [] 
+    mBlocksByUid = {}
     lastTextInput = ""
     joinParams = ""
     roomJoinedIdx = 0
     newImportantMessagesCount = 0
 
+    function addMblock(mBlock) {
+      this.mBlocks.append(mBlock)
+      if (!mBlock.uid)
+        return
+      if (this.mBlocksByUid?[mBlock.uid] != null)
+        this.mBlocksByUid[mBlock.uid].append(mBlock)
+      else
+        this.mBlocksByUid[mBlock.uid] <- [mBlock]
+    }
+
+    function removeMblockAt(idx) {
+      let mBlock = this.mBlocks[idx]
+      this.mBlocks.remove(idx)
+
+      let userMessages = this.mBlocksByUid?[mBlock?.uid]
+      local blokIdx = userMessages?.indexof(mBlock)
+      if ((blokIdx ?? -1) < 0)
+        return
+      userMessages?.remove(blokIdx)
+    }
+
     function addMessage(mBlock) {
       mBlock = clone mBlock
+
       if (this.mBlocks.len() > 0 && !this.isCustomScene && this.mBlocks.top().from == mBlock.from && mBlock.from != "") {
         this.mBlocks.top().msgs.extend(mBlock.msgs)
         this.mBlocks.top().msgsSrc.extend(mBlock.msgsSrc)
@@ -243,27 +276,39 @@ function newRoom(id, customScene = null, ownerHandler = null) {
       }
       else {
         mBlock.messageType = this.isCustomScene ? MESSAGE_TYPE.CUSTOM : mBlock.messageType
-        this.mBlocks.append(mBlock)
+        this.addMblock(mBlock)
       }
 
       if (isRoomClan(id))
         mBlock.clanTag = ""
 
+      this.updateMessageText(mBlock)
+
+      mBlock.messageIndex = persistent.lastCreatedMessageIndex++
+      if (this.mBlocks.len() > g_chat.getMaxRoomMsgAmount())
+        this.removeMblockAt(0)
+    }
+
+    function updateMessageText(mBlock, needForceUpdate = false) {
+      if (needForceUpdate)
+        mBlock.text = ""
+
       if (mBlock.text == "" && mBlock.from != "") {
-          let pLink = g_chat.generatePlayerLink(mBlock.from, mBlock.uid)
-          mBlock.text = format("<Link=%s><Color=%s>%s</Color>:</Link> ", pLink, mBlock.userColor,
-            mBlock.fullName)
+        let pLink = g_chat.generatePlayerLink(mBlock.from, mBlock.uid)
+        mBlock.text = format("<Link=%s><Color=%s>%s</Color>:</Link> ", pLink, mBlock.userColor,
+          mBlock.fullName)
       }
 
-      mBlock.text = "".concat(mBlock.text, !this.isCustomScene ? "\n" : "", mBlock.msgs.top())
-      mBlock.messageIndex = persistent.lastCreatedMessageIndex++
+      let resText = mBlock.userReputation == reputationType.BAD
+        ? gerReputationBlockMessage()
+        : mBlock.msgs.top()
 
-      if (this.mBlocks.len() > g_chat.getMaxRoomMsgAmount())
-        this.mBlocks.remove(0)
+      mBlock.text = "".concat(mBlock.text, !this.isCustomScene ? "\n" : "", resText)
     }
 
     function clear() {
       this.mBlocks = []
+      this.mBlocksByUid = {}
     }
 
     chatLogFormatForBanhammer = @() {
@@ -312,4 +357,5 @@ return {
   newRoom
   newMessage
   initChatMessageListOn
+  isBlockChatMessage
 }

@@ -63,8 +63,10 @@ register_command(function() {
 
 
 function filterMessageText(text, isMyMessage) {
-  if (get_option(USEROPT_CHAT_FILTER).value &&
-    (!isMyMessage || chat_filter_for_myself))
+  if (isMyMessage && !chat_filter_for_myself)
+    return text
+
+  if (get_option(USEROPT_CHAT_FILTER).value)
     return dirtyWordsFilter.checkPhrase(text)
   return text
 }

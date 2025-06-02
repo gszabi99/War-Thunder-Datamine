@@ -156,7 +156,7 @@
       },
       {
         "type": "steeringWheel",
-        "turnSpeed": 0.2,
+        "turnSpeed": 0.5,
         "node": "bone_roll_driver_r_03",
         "absoluteValue": true
       },
@@ -215,12 +215,13 @@
       "turret_back_dm": {},
       "turret_04_front_dm": {},
       "turret_03_side_dm": {},
+      "turret_06_back_dm": {},
+      "turret_06_front_dm": {},
+      "turret_05_bottom_dm": {},
       "turret_02_front_dm": {},
       "turret_03_top_dm": {},
       "turret_02_bottom_dm": {},
       "turret_03_back_dm": {},
-      "turret_05_front_dm": {},
-      "turret_05_top_dm": {},
       "turret_04_side_dm": {},
       "ex_armor_turret_l_01_dm": {},
       "ex_armor_turret_l_02_dm": {},
@@ -290,6 +291,14 @@
       "ex_decor_turret_03_dm": {},
       "turret_04_back_dm": {},
       "turret_04_bottom_dm": {}
+    },
+    "gun": {
+      "armorClass": "tank_barrel",
+      "hp": 50.0,
+      "armorThickness": 25.0,
+      "gun_barrel_dm": {
+        "armorThickness": 10.0
+      }
     },
     "hull_decor": {
       "armorClass": "tank_structural_steel",
@@ -366,6 +375,17 @@
       "wheel_l_04_dm": {},
       "wheel_r_04_dm": {},
       "wheel_support_dm": {}
+    },
+    "body_screens": {
+      "armorClass": "t_90_rubber_fabric_screens",
+      "hp": 200.0,
+      "armorThickness": 8.0,
+      "createSecondaryShatters": false,
+      "hidableInViewer": true,
+      "ex_decor_r_18_dm": {},
+      "ex_decor_r_19_dm": {},
+      "ex_decor_l_19_dm": {},
+      "ex_decor_l_18_dm": {}
     },
     "crew": {
       "armorClass": "steel_tankman",
@@ -2157,6 +2177,44 @@
       20.0,
       20.0
     ]
+  },
+  "PhysSys": {
+    "find": "^bone_suspension_(._\\d\\d)$",
+    "points": {
+      "suspension": {
+        "name": "bone_suspension_$1",
+        "limitMin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limitMax": [
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "wheel": {
+        "name": "bone_wheel_$1",
+        "limitMin": [
+          -1.0,
+          -1.0,
+          0.0
+        ],
+        "limitMax": [
+          1.0,
+          1.0,
+          0.0
+        ]
+      }
+    },
+    "constraints": {
+      "edge": {
+        "from": "suspension",
+        "to": "wheel",
+        "moveNodes": false
+      }
+    }
   },
   "chainIK": {
     "points": [

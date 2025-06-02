@@ -406,6 +406,27 @@ class Canvas
     font.size = fontSize
 
 
+  def getStrBbox(var pos : float2; str : string; anchorHorz : AnchorHorz; anchorVert : AnchorVert; var len : int = 0)
+    pos = toAbsPos(pos)
+    len = len > 0 ? len : length(str)
+
+    var fctx : StdGuiFontContext
+    get_font_context(fctx, font.id, 0, 0, font.size)
+    let size = get_str_bbox(str, len, fctx).width
+
+    if anchorHorz == AnchorHorz.Right
+      pos.x -= size.x
+    elif anchorHorz == AnchorHorz.Center
+      pos.x -= 0.5 * size.x
+
+    if anchorVert == AnchorVert.Top
+      pos.y += size.y
+    elif anchorVert == AnchorVert.Center
+      pos.y += 0.5 * size.y
+
+    return make_bbox(pos, size)
+
+
   def getFontAscent() : float
     var fctx : StdGuiFontContext
     get_font_context(fctx, font.id, 0, 0, font.size)

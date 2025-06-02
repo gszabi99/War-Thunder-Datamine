@@ -37,16 +37,28 @@ gui_handlers.recycleCompleteWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   sceneBlkName = "%gui/items/recycleCompleteWnd.blk"
   recycledItems = null
 
+  cachedRhInPix = 0
+  cachedItemSizeInPix = 0
+  cachedPaddingInPix = 0
+
   function initScreen() {
+    this.cachedRhInPix = to_pixels("1@rh")
+    this.cachedItemSizeInPix = to_pixels($"{ITEM_IMAGE_SIZE} + 2*{ITEM_IMAGE_MARGIN}")
+    this.cachedPaddingInPix = to_pixels(FRAME_PADDING)
     this.drawItems(this.recycledItems)
   }
 
   function drawItems(items) {
     let columnsCount = min(items.len(), MAX_COLUMNS)
+    let maxHeight = 0.7 * this.cachedRhInPix
+    let rowsCount = (items.len() / columnsCount).tointeger()
+    let maxRowsCount = (maxHeight / this.cachedItemSizeInPix).tointeger()
+    if (rowsCount > maxRowsCount) {
+      let scrollContainer = this.scene.findObject("scroll_container")
+      scrollContainer["overflow-y"] = "auto"
+    }
     let frameObj = this.scene.findObject("recycle_frame")
-    let pixItemSize = to_pixels($"{ITEM_IMAGE_SIZE} + 2*{ITEM_IMAGE_MARGIN}")
-    let padding = to_pixels(FRAME_PADDING)
-    frameObj.width = columnsCount * pixItemSize + padding * 2;
+    frameObj.width = columnsCount * this.cachedItemSizeInPix + this.cachedPaddingInPix * 2;
 
     local viewData = {items = []}
     foreach (itemData in items) {
@@ -59,6 +71,7 @@ gui_handlers.recycleCompleteWnd <- class (gui_handlers.BaseGuiHandlerWT) {
       }
       viewData.items.append(data)
     }
+
     let markup = handyman.renderCached("%gui/items/recycleCompleteItem.tpl", viewData)
     let imageObjPlace = this.scene.findObject("reward_image_place")
     this.guiScene.replaceContentFromText(imageObjPlace, markup, markup.len(), this)

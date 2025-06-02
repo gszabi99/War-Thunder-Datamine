@@ -313,32 +313,36 @@
       }
     },
     {
-      "bulletCount": 10,
       "mass": 0.115,
+      "explosiveType": "np_10",
+      "explosiveMass": 0.004,
       "caliber": 0.02,
-      "normalizationPreset": "default",
-      "ricochetPreset": "defaultExt",
-      "groundRicochetPreset": "default",
+      "speed": 705.0,
+      "Cx": 0.59471,
+      "maxDistance": 3000.0,
+      "normalizationPreset": "ap",
+      "ricochetPreset": "ap",
+      "groundRicochetPreset": "ap_ground",
       "secondaryShattersPreset": "ap",
       "stabilityThreshold": 0.05,
       "stabilityCaliberToArmorThreshold": 5.0,
       "stabilityReductionAfterRicochet": 0.5,
-      "stabilityReductionAfterPenetration": 0.15,
-      "bulletType": "ap_i",
-      "shellAnimation": "video/shells_animations/ap_belt.ivf",
-      "bulletName": "20mm_pzbrgr_ph",
-      "speed": 705.0,
-      "Cx": 0.59471,
-      "maxDistance": 3000.0,
-      "onHitChanceMultFire": 3.0,
+      "stabilityReductionAfterPenetration": 0.3,
+      "bulletType": "ap_i_t",
+      "slopeEffectPreset": "ap",
+      "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
+      "bulletName": "20mm_pzsprgr",
       "relativeVelHitShift": [
         300.0,
         1000.0
       ],
+      "checkIntegrityAfterExplosion": true,
       "relativeVelArmorShift": [
         200.0,
         1000.0
       ],
+      "fuseDelayDist": 1.2,
+      "explodeTreshold": 9.0,
       "selfDestructionFx": "explosion_air_selfexplosion_small",
       "explosionEffect": "hit_19_27mm_metal_ap",
       "groundCollisionEffect": "hit_19_27mm_dirt_ap",
@@ -387,6 +391,37 @@
           "demarreSpeedPow": 1.43,
           "demarreMassPow": 0.71,
           "demarreCaliberPow": 1.07
+        }
+      },
+      "testProperties": {
+        "checkIntegrityAfterExplosion": true,
+        "damage": {
+          "shatter": {
+            "useRealShatters": true,
+            "countPortion": 0.75,
+            "segment": [
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 0.75,
+                "damageScale": 1.5,
+                "angles": [
+                  0.0,
+                  180.0
+                ],
+                "countPortion": 0.4
+              },
+              {
+                "radiusScale": 1.0,
+                "penetrationScale": 1.0,
+                "damageScale": 1.75,
+                "angles": [
+                  40.0,
+                  110.0
+                ],
+                "countPortion": 0.6
+              }
+            ]
+          }
         }
       },
       "visual": {
@@ -828,32 +863,36 @@
         }
       },
       {
-        "bulletCount": 10,
         "mass": 0.115,
+        "explosiveType": "np_10",
+        "explosiveMass": 0.004,
         "caliber": 0.02,
-        "normalizationPreset": "default",
-        "ricochetPreset": "defaultExt",
-        "groundRicochetPreset": "default",
+        "speed": 705.0,
+        "Cx": 0.59471,
+        "maxDistance": 3000.0,
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "ap_i",
-        "shellAnimation": "video/shells_animations/ap_belt.ivf",
-        "bulletName": "20mm_pzbrgr_ph",
-        "speed": 705.0,
-        "Cx": 0.59471,
-        "maxDistance": 3000.0,
-        "onHitChanceMultFire": 3.0,
+        "stabilityReductionAfterPenetration": 0.3,
+        "bulletType": "ap_i_t",
+        "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
+        "bulletName": "20mm_pzsprgr",
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "checkIntegrityAfterExplosion": true,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 9.0,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_19_27mm_metal_ap",
         "groundCollisionEffect": "hit_19_27mm_dirt_ap",
@@ -902,6 +941,37 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
           }
         },
         "visual": {
@@ -1065,32 +1135,36 @@
   "15mm_ger_ap": {
     "bullet": [
       {
-        "bulletCount": 10,
         "mass": 0.115,
+        "explosiveType": "np_10",
+        "explosiveMass": 0.004,
         "caliber": 0.02,
-        "normalizationPreset": "default",
-        "ricochetPreset": "defaultExt",
-        "groundRicochetPreset": "default",
+        "speed": 705.0,
+        "Cx": 0.59471,
+        "maxDistance": 3000.0,
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "ap_i",
-        "shellAnimation": "video/shells_animations/ap_belt.ivf",
-        "bulletName": "20mm_pzbrgr_ph",
-        "speed": 705.0,
-        "Cx": 0.59471,
-        "maxDistance": 3000.0,
-        "onHitChanceMultFire": 3.0,
+        "stabilityReductionAfterPenetration": 0.3,
+        "bulletType": "ap_i_t",
+        "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
+        "bulletName": "20mm_pzsprgr",
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "checkIntegrityAfterExplosion": true,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 9.0,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_19_27mm_metal_ap",
         "groundCollisionEffect": "hit_19_27mm_dirt_ap",
@@ -1139,6 +1213,37 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
           }
         },
         "visual": {
@@ -1298,32 +1403,36 @@
         }
       },
       {
-        "bulletCount": 10,
         "mass": 0.115,
+        "explosiveType": "np_10",
+        "explosiveMass": 0.004,
         "caliber": 0.02,
-        "normalizationPreset": "default",
-        "ricochetPreset": "defaultExt",
-        "groundRicochetPreset": "default",
+        "speed": 705.0,
+        "Cx": 0.59471,
+        "maxDistance": 3000.0,
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "ap_i",
-        "shellAnimation": "video/shells_animations/ap_belt.ivf",
-        "bulletName": "20mm_pzbrgr_ph",
-        "speed": 705.0,
-        "Cx": 0.59471,
-        "maxDistance": 3000.0,
-        "onHitChanceMultFire": 3.0,
+        "stabilityReductionAfterPenetration": 0.3,
+        "bulletType": "ap_i_t",
+        "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
+        "bulletName": "20mm_pzsprgr",
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "checkIntegrityAfterExplosion": true,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 9.0,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_19_27mm_metal_ap",
         "groundCollisionEffect": "hit_19_27mm_dirt_ap",
@@ -1372,6 +1481,37 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
           }
         },
         "visual": {
@@ -1531,32 +1671,36 @@
         }
       },
       {
-        "bulletCount": 10,
         "mass": 0.115,
+        "explosiveType": "np_10",
+        "explosiveMass": 0.004,
         "caliber": 0.02,
-        "normalizationPreset": "default",
-        "ricochetPreset": "defaultExt",
-        "groundRicochetPreset": "default",
+        "speed": 705.0,
+        "Cx": 0.59471,
+        "maxDistance": 3000.0,
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "ap_i",
-        "shellAnimation": "video/shells_animations/ap_belt.ivf",
-        "bulletName": "20mm_pzbrgr_ph",
-        "speed": 705.0,
-        "Cx": 0.59471,
-        "maxDistance": 3000.0,
-        "onHitChanceMultFire": 3.0,
+        "stabilityReductionAfterPenetration": 0.3,
+        "bulletType": "ap_i_t",
+        "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
+        "bulletName": "20mm_pzsprgr",
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "checkIntegrityAfterExplosion": true,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 9.0,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_19_27mm_metal_ap",
         "groundCollisionEffect": "hit_19_27mm_dirt_ap",
@@ -1605,6 +1749,37 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
           }
         },
         "visual": {
@@ -2605,32 +2780,36 @@
         }
       },
       {
-        "bulletCount": 10,
         "mass": 0.115,
+        "explosiveType": "np_10",
+        "explosiveMass": 0.004,
         "caliber": 0.02,
-        "normalizationPreset": "default",
-        "ricochetPreset": "defaultExt",
-        "groundRicochetPreset": "default",
+        "speed": 705.0,
+        "Cx": 0.59471,
+        "maxDistance": 3000.0,
+        "normalizationPreset": "ap",
+        "ricochetPreset": "ap",
+        "groundRicochetPreset": "ap_ground",
         "secondaryShattersPreset": "ap",
         "stabilityThreshold": 0.05,
         "stabilityCaliberToArmorThreshold": 5.0,
         "stabilityReductionAfterRicochet": 0.5,
-        "stabilityReductionAfterPenetration": 0.15,
-        "bulletType": "ap_i",
-        "shellAnimation": "video/shells_animations/ap_belt.ivf",
-        "bulletName": "20mm_pzbrgr_ph",
-        "speed": 705.0,
-        "Cx": 0.59471,
-        "maxDistance": 3000.0,
-        "onHitChanceMultFire": 3.0,
+        "stabilityReductionAfterPenetration": 0.3,
+        "bulletType": "ap_i_t",
+        "slopeEffectPreset": "ap",
+        "shellAnimation": "video/shells_animations/ap_i_t_shell.ivf",
+        "bulletName": "20mm_pzsprgr",
         "relativeVelHitShift": [
           300.0,
           1000.0
         ],
+        "checkIntegrityAfterExplosion": true,
         "relativeVelArmorShift": [
           200.0,
           1000.0
         ],
+        "fuseDelayDist": 1.2,
+        "explodeTreshold": 9.0,
         "selfDestructionFx": "explosion_air_selfexplosion_small",
         "explosionEffect": "hit_19_27mm_metal_ap",
         "groundCollisionEffect": "hit_19_27mm_dirt_ap",
@@ -2679,6 +2858,37 @@
             "demarreSpeedPow": 1.43,
             "demarreMassPow": 0.71,
             "demarreCaliberPow": 1.07
+          }
+        },
+        "testProperties": {
+          "checkIntegrityAfterExplosion": true,
+          "damage": {
+            "shatter": {
+              "useRealShatters": true,
+              "countPortion": 0.75,
+              "segment": [
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 0.75,
+                  "damageScale": 1.5,
+                  "angles": [
+                    0.0,
+                    180.0
+                  ],
+                  "countPortion": 0.4
+                },
+                {
+                  "radiusScale": 1.0,
+                  "penetrationScale": 1.0,
+                  "damageScale": 1.75,
+                  "angles": [
+                    40.0,
+                    110.0
+                  ],
+                  "countPortion": 0.6
+                }
+              ]
+            }
           }
         },
         "visual": {

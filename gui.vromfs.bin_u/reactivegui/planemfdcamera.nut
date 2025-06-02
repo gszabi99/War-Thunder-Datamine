@@ -11,6 +11,7 @@ let platan = require("planeCockpit/mfdPlatan.nut")
 let { IsMfdSightHudVisible, MfdSightPosSize } = require("airState.nut")
 let hudUnitType = require("hudUnitType.nut")
 let { createScriptComponent } = require("utils/builders.nut")
+let litening2 = createScriptComponent("%rGui/planeCockpit/mfdLitening2.das", { fontId = Fonts.hud })
 
 let damocles = createScriptComponent("%rGui/planeCockpit/mfdDamocles.das", {
   fontId = Fonts.hud
@@ -25,6 +26,7 @@ let mfdCameraSetting = Computed(function() {
     isTadsApache = false
     isPlatan = false
     isDamocles = false
+    isLitening2 = false
     lineWidthScale = 1.0
     fontScale = 1.0
   }
@@ -41,6 +43,7 @@ let mfdCameraSetting = Computed(function() {
     isTadsApache = blk.getBool("mfdCamTadsApache", false)
     isPlatan = blk.getBool("mfdCamPlatan", false)
     isDamocles = blk.getBool("mfdCamDamocles", false)
+    isLitening2 = blk.getBool("mfdCamLitening2", false)
 
     lineWidthScale = blk.getReal("mfdCamLineScale", 1.0)
     fontScale = blk.getReal("mfdCamFontScale", 1.0)
@@ -48,7 +51,7 @@ let mfdCameraSetting = Computed(function() {
 })
 
 let planeMfdCamera = @(width, height) function() {
-  let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale, isPlatan, isDamocles} = mfdCameraSetting.value
+  let {isShkval, isShkvalKa52, isTads, isTadsApache, lineWidthScale, fontScale, isPlatan, isDamocles, isLitening2} = mfdCameraSetting.value
   return {
     watch = mfdCameraSetting
     children = [
@@ -58,6 +61,7 @@ let planeMfdCamera = @(width, height) function() {
       isTadsApache ? tads(width, height, true) :
       isPlatan ? platan(width, height) :
       isDamocles ? damocles(width, height) :
+      isLitening2 ? litening2(width, height) :
       hudUnitType.isHelicopter() ? heliStockCamera : opticAtgmSight(width, height, 0, 0)
     ]
   }
