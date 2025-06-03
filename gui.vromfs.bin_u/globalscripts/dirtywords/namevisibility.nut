@@ -52,11 +52,20 @@ function isNameNormallyVisible(name) {
   return charsArray.findindex(isClearlyVisibleChar) != null
 }
 
+
 let clearAllWhitespace = @(name) "".join(getUnicodeCharsArray(name)
   .filter(@(c) !whitespaceCharsAllowed.contains(c) && !whitespaceCharsForbidden.contains(c)))
+
+
+let clearExcessiveWhitespace = @(name) "".join(getUnicodeCharsArray(name)
+  .filter(@(c) !whitespaceCharsForbidden.contains(c))
+  .map(@(c) whitespaceCharsAllowed.contains(c) ? " " : c)
+  .reduce(@(res, c) (c != " " || (res?[res.len() - 1] ?? " ") != " ") ? res.append(c) : res, [])
+).strip().replace(" ", "\u00A0")
 
 return {
   isNameNormallyVisible
   clearAllWhitespace
+  clearExcessiveWhitespace
   getUnicodeCharsArray
 }

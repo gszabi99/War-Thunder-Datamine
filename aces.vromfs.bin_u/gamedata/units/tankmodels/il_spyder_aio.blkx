@@ -42,8 +42,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "rearmSmokeTimeOnField": 60.0,
-  "canReloadNonGuns": true,
   "radarAnimVar": "radar_drive",
   "radarDeployTime": 0.0,
   "radarAntenaSpeed": 720.0,
@@ -1984,7 +1982,7 @@
         "defaultPitch": 0.0,
         "speedYaw": 80.0,
         "speedPitch": 0.0,
-        "bullets": 4,
+        "bullets": 8,
         "salvoAmount": 100.0,
         "ChainfireTime": 0.0,
         "DelayAfterShoot": 2.0,
@@ -3254,7 +3252,7 @@
     "headPos": [
       0.0,
       4.15,
-      -10.0
+      -15.0
     ],
     "headPosOnShooting": [
       -0.2,
@@ -3265,6 +3263,40 @@
   },
   "optics": {
     "driverReticule": "car_driver_optics"
+  },
+  "ammoStowages": {
+    "ammo1": {
+      "weaponTrigger": "gunner0",
+      "fatalFire": true,
+      "fatalExplosion": true,
+      "ammoLoadedInGun": true,
+      "shells": {
+        "ammo_turret_01_dm": {
+          "count": 1
+        },
+        "ammo_turret_02_dm": {
+          "count": 1
+        },
+        "ammo_turret_03_dm": {
+          "count": 1
+        },
+        "ammo_turret_04_dm": {
+          "count": 1
+        },
+        "ammo_turret_05_dm": {
+          "count": 1
+        },
+        "ammo_turret_06_dm": {
+          "count": 1
+        },
+        "ammo_turret_07_dm": {
+          "count": 1
+        },
+        "ammo_turret_08_dm": {
+          "count": 1
+        }
+      }
+    }
   },
   "modifications": {
     "new_wheels": {},

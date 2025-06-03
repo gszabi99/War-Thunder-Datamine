@@ -156,10 +156,6 @@ def ecs_scene_window()
       entity_obj_editor_for_each_entity() <| $(ent)
         allEntities |> push(ent.eid)
 
-    var selectedEid = INVALID_ENTITY_ID
-    query() <| $ [es(REQUIRE=daeditor__selected)] (eid : EntityId)
-      selectedEid = eid
-    let selectedTemplateLength = length("+daeditor_selected")
     var allEntitiesNum = length(allEntities)
     if allEntitiesNum > 0
       let hasFilters = length(shingles) > 0
@@ -214,10 +210,12 @@ def ecs_scene_window()
           var misNeighbourCount = 0
           var mismatchCount = 0
           var prevIdx = -1
+          var lastFindIdx = 0
+          var shingleDistance = 0
           let searchedStr = get_entity_displayed_name(templateStr, extraStr)
           if !(*filter |> PassFilter(eidStr))
             for shingle in shingles
-              let idx = find(searchedStr, shingle)
+              let idx = find(searchedStr, shingle, lastFindIdx)
               if idx == -1
                 mismatchCount++
                 if mismatchCount > maxMismatches
@@ -227,15 +225,19 @@ def ecs_scene_window()
                 if misNeighbourCount > maxMisNeighbourCount
                   break
               prevIdx = idx
+              if idx != -1
+                shingleDistance += abs(idx - lastFindIdx)
+                lastFindIdx = idx
             if mismatchCount > maxMismatches || misNeighbourCount > maxMisNeighbourCount
               continue
-          let templStrLength = length(searchedStr) - (eid == selectedEid ? selectedTemplateLength : 0)
-          let itemDistance = float(mismatchCount) + abs(float(templStrLength) - float(length(shingles) + 1)) * 0.015 + float(misNeighbourCount) * 0.5
+          let itemDistance = float(mismatchCount) + float(misNeighbourCount) * 0.5 + float(shingleDistance) * 0.05
           var value = EntityData(eid = eid, eidStr = eidStr, templateStr = templateStr, extraStr = extraStr, distance = itemDistance)
-          let insertIdx = lower_bound(data, value) <| $(x, y) => x.distance < y.distance
-          data |> emplace(value, insertIdx)
+          data |> emplace(value)
         else
           data |> emplace <| EntityData(eid = eid, eidStr = eidStr, templateStr = templateStr, extraStr = extraStr)
+
+      if hasFilters
+        data |> sort <| $(x, y) => x.distance != y.distance ? x.distance < y.distance : uint(x.eid) < uint(y.eid)
 
     var selected : bool
     var selectedAddr = safe_addr(selected)

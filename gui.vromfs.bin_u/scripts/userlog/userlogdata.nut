@@ -428,9 +428,9 @@ function combineUserLogs(currentData, newUserLog, combineKey = null, sumParamsAr
       if (reason == "replaced") {
         let recycledId = blk.body.id.tostring()
         if (recycledItems?[recycledId] == null)
-          recycledItems[recycledId] <- blk.body.count
+          recycledItems[recycledId] <- blk.body?.count ?? 1
         else
-          recycledItems[recycledId] += blk.body.count
+          recycledItems[recycledId] += blk.body?.count ?? 1
       }
       if (reason == "unknown" || reason == "consumed") {
         let logTypeName = getLogNameByType(blk.type)

@@ -33,5 +33,9 @@ addListenersWithoutEnv({
   CrewsListChanged      = @(_p) updateHangarPreset()
   CrewChanged           = @(_p) updateHangarPreset()
   CountryChanged        = @(_p) updateHangarPreset()
-  LoadingStateChange    = @(_p) updateHangarPreset(true)
+})
+
+isInMenu.subscribe(function(v) {
+  if (v)
+    updateHangarPreset(true)
 })

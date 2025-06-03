@@ -334,8 +334,7 @@ function showCrewCount() {
   let crewNestObj = scene.findObject("crew_nest")
   crewNestObj._blink = "yes"
 
-  let data = "".concat("hitCameraLostCrewText { text:t='",
-    colorize("warningTextColor", crewLostCount), "' }")
+  let data = "".concat("hitCameraLostCrewText { text:t='", crewLostCount, "' }")
   get_cur_gui_scene().prependWithBlk(
     crewNestObj.findObject("lost_crew_count"), data, this)
 
@@ -690,9 +689,9 @@ function hitCameraInit(nest) {
 
   minAliveCrewCount = getMinAliveCrewCount()
 
-  g_hud_event_manager.subscribe("EnemyDamageState", onEnemyDamageState, this)
-  g_hud_event_manager.subscribe("HitCameraImportanEvents", onHitCameraImportantEvents, this)
-  g_hud_event_manager.subscribe("LocalPlayerDead", @(_eventData) reset())
+  g_hud_event_manager.subscribe("EnemyDamageState", onEnemyDamageState, scene)
+  g_hud_event_manager.subscribe("HitCameraImportanEvents", onHitCameraImportantEvents, scene)
+  g_hud_event_manager.subscribe("LocalPlayerDead", @(_eventData) reset(), scene)
 
   reset()
   hitCameraReinit()

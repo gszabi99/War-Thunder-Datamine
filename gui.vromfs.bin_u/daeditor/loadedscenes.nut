@@ -13,7 +13,7 @@ let {getEntityExtraName, getSceneLoadTypeText, getSceneId, getSceneIdOf, getScen
 let { format } = require("string")
 let entity_editor = require("entity_editor")
 let mkSortModeButton = require("components/mkSortModeButton.nut")
-let mkSceneSortModeButton = require("components/mkSortSceneModeButton.nut")
+let {defaultScenesSortMode, mkSceneSortModeButton} = require("components/mkSortSceneModeButton.nut")
 let scrollHandler = ScrollHandler()
 let scrollHandlerEntities = ScrollHandler()
 let markedStateScenes = Watched({})
@@ -28,9 +28,9 @@ let selectionStateEntities = mkWatched(persist, "selectionStateEntities", {})
 let allEntities = mkWatched(persist, "allEntities", [])
 let filteredEntities = Watched([])
 
-let sceneSortState = Watched({})
+let sceneSortState = Watched(defaultScenesSortMode)
 
-local sceneSortFuncCache = null
+local sceneSortFuncCache = defaultScenesSortMode.func
 
 let entitySortState = Watched({})
 
@@ -84,23 +84,30 @@ function matchSceneBySelectedEntities(scene, selectedIds) {
 function sceneToText(scene) {
   local sceneId = getSceneIdOf(scene)
   local edit = editedStateScenes.value?[sceneId] ? "> " : "| "
-  local loadType = getSceneLoadTypeText(scene)
-  local index = scene.index
+  local idSeparator = ":"
+  local loadType = "MAIN"
+  local index = ""
+  if (scene.importDepth != 0) {
+    loadType = getSceneLoadTypeText(scene)
+    index = scene.index
+  }
   local path = scene.path
   local entityCount = scene.entityCount
   local order = scene.order
   local relation = ""
-  if (scene.hasParent) {
-    local prefix = ""
-    local loadTypeIndex = allSceneIndices.value[scene.loadType]
-    local parentScene = allScenes.value[loadTypeIndex + scene.parent]
-    while (parentScene.hasParent) {
-      prefix = $"    {prefix}"
-      parentScene = allScenes.value[loadTypeIndex + parentScene.parent]
+  if (sceneSortFuncCache == defaultScenesSortMode.func) {
+    if (scene.hasParent) {
+      local prefix = ""
+      local loadTypeIndex = allSceneIndices.value[scene.loadType]
+      local parentScene = allScenes.value[loadTypeIndex + scene.parent]
+      while (parentScene.hasParent) {
+        prefix = $"    {prefix}"
+        parentScene = allScenes.value[loadTypeIndex + parentScene.parent]
+      }
+      relation = $"{prefix}{scene.imports > 0 ? "+- " : "-- "}"
     }
-    relation = $"{prefix}{scene.imports > 0 ? "+- " : "-- "}"
   }
-  return $"{edit}{loadType}:{index}  {relation}{path} - Entities: {entityCount}  (#{order})"
+  return $"{edit}{loadType}{idSeparator}{index}  {relation}{path} - Entities: {entityCount}  (#{order})"
 }
 
 function matchSceneByText(scene, text) {
@@ -121,7 +128,7 @@ function matchSceneByFilters(scene, selectedIds, selectedIdsCount) {
 }
 
 let filteredScenes = Computed(function() {
-  local scenes = allScenes.get()
+  local scenes = allScenes.get().map(@(scene) scene) 
   if (filterScenesBySelectedEntities.get()) {
     local selectedIds = selectedEntitiesSceneIds.get()
     local selectedIdsCount = getSelectedIdsCount(selectedIds)
@@ -208,6 +215,9 @@ function filterEntities() {
     entities.sort(entitySortFuncCache)
 
   filteredEntities.set(entities)
+
+  entity_editor.get_instance()?.unhideAll()
+  entity_editor.get_instance()?.hideUnmarkedEntities(filteredEntities.get())
 }
 
 filterStringEntities.subscribe(@(_v) filterEntities())

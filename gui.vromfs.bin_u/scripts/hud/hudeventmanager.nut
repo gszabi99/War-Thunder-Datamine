@@ -31,11 +31,19 @@ let g_hud_event_manager = {
       this.pushCallback(event_name, cb)
   }
 
+  function validateEvents(eventSubscribers) {
+    for (local i = eventSubscribers.len() - 1; i >= 0; i--)
+      if (!eventSubscribers[i].isValid())
+        eventSubscribers.remove(i)
+  }
+
   function pushCallback(event_name, callback_obj) {
     if (!(event_name in this.subscribers))
       this.subscribers[event_name] <- []
 
-    this.subscribers[event_name].append(callback_obj)
+    let eventSubscribers = this.subscribers[event_name]
+    this.validateEvents(eventSubscribers)
+    eventSubscribers.append(callback_obj)
   }
 
   function onHudEvent(event_name, event_data = {}) {
@@ -45,9 +53,7 @@ let g_hud_event_manager = {
     this.eventsStack.append(event_name)
 
     let eventSubscribers = this.subscribers[event_name]
-    for (local i = eventSubscribers.len() - 1; i >= 0; i--)
-      if (!eventSubscribers[i].isValid())
-        eventSubscribers.remove(i)
+    this.validateEvents(eventSubscribers)
 
     let data = this.handleData(event_data)
     for (local i = 0; i < eventSubscribers.len(); i++)

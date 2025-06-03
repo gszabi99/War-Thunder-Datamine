@@ -203,13 +203,18 @@ HorizontalListBox > shopFilter[selected=yes] > discount_notification {
   display:hide;
 }
 
-discount_notification[type=up] {
+discount_notification[type=up],
+discount_notification[type=freeExp] {
   background-image:#ui/gameuiskin#discount_icon_up.svg;
-  background-svg-size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
-  size:1@discountBigBoxWidth, 1@discountBigBoxHeight;
+  background-svg-size:1@markerWidth, 1@markerHeight;
+  size:1@markerWidth, 1@markerHeight;
   pos:10%ph, ph;
   position:absolute;
   tooltip:"#discount/notification";
+}
+
+discount_notification[type=freeExp] {
+  pos:0.5pw-0.5w, ph;
 }
 
 discount[type=weaponryItem] {

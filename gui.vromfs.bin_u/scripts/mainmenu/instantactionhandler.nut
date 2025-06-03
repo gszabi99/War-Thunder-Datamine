@@ -480,6 +480,10 @@ gui_handlers.InstantDomination <- class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     if (g_squad_manager.isMeReady()) {
+      let event = events.getEvent(g_squad_manager.getLeaderGameModeId())
+      if (!antiCheat.showMsgboxIfEacInactive(event))
+        this.setSquadReadyFlag()
+
       let id = g_squad_manager.getLeaderGameModeId()
       if (id == "" || id == getCurrentGameModeId())
         this.updateNoticeGMChanged()

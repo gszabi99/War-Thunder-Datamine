@@ -7,7 +7,7 @@ const SORT_BY_ENTITIES  = " ENT# "
 
 function sortScenesByLoadType(scene1, scene2) {
   return scene1.loadType != scene2.loadType ?
-    scene1.loadType <=> scene2.loadType : scene1.index <=> scene2.index
+    scene2.loadType <=> scene1.loadType : scene1.index <=> scene2.index
 }
 
 function sortScenesByEntities(scene1, scene2) {
@@ -20,6 +20,11 @@ function sortScenesByPaths(scene1, scene2) {
   if (path1 != null && path2 != null)
     return path1 <=> path2
   return path1 != null ? 1 : -1
+}
+
+let defaultScenesSortMode = {
+  mode = SORT_BY_LOADTYPE
+  func = sortScenesByLoadType
 }
 
 function toggleScenesSortMode(state) {
@@ -35,10 +40,7 @@ function toggleScenesSortMode(state) {
       func = sortScenesByEntities
     })
   else
-    state({
-      mode = SORT_BY_LOADTYPE
-      func = sortScenesByLoadType
-    })
+    state(defaultScenesSortMode)
 }
 
 function mkSceneSortModeButton(state, style={}) {
@@ -65,4 +67,7 @@ function mkSceneSortModeButton(state, style={}) {
 }
 
 
-return mkSceneSortModeButton
+return {
+  defaultScenesSortMode
+  mkSceneSortModeButton
+}

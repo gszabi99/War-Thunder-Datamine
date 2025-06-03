@@ -4847,6 +4847,21 @@
     "binoculars": "navy_binoculars"
   },
   "sensors": {
+    "sensor": [
+      {
+        "blk": "gameData/sensors/naval/jp_type_22.blk",
+        "designationFromBody": true,
+        "dmPart": [
+          "antenna_target_location_01_dm",
+          "antenna_target_location_02_dm"
+        ]
+      },
+      {
+        "blk": "gameData/sensors/naval/jp_type_13.blk",
+        "designationFromBody": true,
+        "dmPart": "antenna_target_location_03_dm"
+      }
+    ],
     "fireDirecting": [
       {
         "dmPartMain": "fire_control_room_01_dm",
@@ -8221,7 +8236,7 @@
           "fatalFire": false,
           "fatalExplosion": false,
           "damageEffect": "ammunition_storage_shells",
-          "ammunition_storage_shells_02_dm": {
+          "ammunition_storage_shells_03_dm": {
             "count": 130
           }
         }
@@ -8232,7 +8247,7 @@
           "reloadTimeMult": 1.1,
           "fatalFire": true,
           "damageEffect": "ammunition_storage_charges",
-          "ammunition_storage_charges_03_dm": {
+          "ammunition_storage_charges_02_dm": {
             "count": 150
           }
         },

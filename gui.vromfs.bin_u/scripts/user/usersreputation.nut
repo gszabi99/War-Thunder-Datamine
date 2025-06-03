@@ -10,7 +10,7 @@ let { get_gui_option } = require("guiOptions")
 let { USEROPT_CHAT_REPUTATION_FILTER } = require("%scripts/options/optionsExtNames.nut")
 
 const REQUEST_TIMEOUT = 1500
-const USER_REPUTATION_UPDATE_PERIOD = 3600000 
+const USER_REPUTATION_UPDATE_PERIOD = 900000 
 const FORGET_CLAIMS_PERIOD = 30 
 
 enum reputationType {

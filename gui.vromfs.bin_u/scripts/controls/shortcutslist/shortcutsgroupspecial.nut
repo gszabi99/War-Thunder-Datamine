@@ -128,6 +128,11 @@ return [
 
 
 
+
+
+
+
+
   {
     id = "ID_HUMAN_VIEW_HEADER"
     type = CONTROL_TYPE.SECTION

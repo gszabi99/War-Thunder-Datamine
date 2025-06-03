@@ -1,7 +1,7 @@
 {
   "tdiv": [
     {
-      "id": "hud_tutorial_movement_info_arrow",
+      "id": "hud_tutorial_movement_info_button",
       "flow": "vertical",
       "pos": "50.8%pw-100%w, 3%ph-0%h",
       "position": "absolute",
@@ -23,87 +23,86 @@
           "rotation": "0",
           "background-image": "@!ui/gameuiskin#ship_tutorial_direction_down.svg"
         }
-      ]
-    },
-    {
-      "id": "hud_tutorial_movement_info_button",
-      "flow": "vertical",
-      "pos": "50.75%pw-100%w, 19.4%ph-0%h",
-      "position": "absolute",
-      "display": "hide",
-      "tdiv": [
-        {
-          "hintStyle": "hudHintYellow",
-          "behaviour": "bhvHint",
-          "isWrapInRowAllowed": "yes",
-          "flow-align": "left",
-          "position": "relative",
-          "pos": "0, -20%ph-0%h",
-          "display": "show",
-          "value": "{{ship_main_engine_rangeMax}}"
-        },
-        {
-          "hintStyle": "hudHintYellow",
-          "behaviour": "bhvHint",
-          "isWrapInRowAllowed": "yes",
-          "flow-align": "left",
-          "position": "relative",
-          "pos": "0, 10%ph-0%h",
-          "display": "show",
-          "value": "{{ship_main_engine_rangeMin}}"
-        },
-        {
-          "flow": "root",
-          "hintStyle": "hudHintYellow",
-          "behaviour": "bhvHint",
-          "isWrapInRowAllowed": "yes",
-          "flow-align": "left",
-          "position": "absolute",
-          "pos": "60%pw+60%w, 15%ph-0%h",
-          "display": "show",
-          "value": "{{ID_SHIP_FULL_STOP}}"
-        },
-        {
-          "flow": "vertical",
-          "pos": "-10%pw-100%w, 5%ph-0%h",
-          "position": "absolute",
-          "display": "show",
-          "tdiv": [
-            {
-              "shadeStyle": "HudHeader3D",
-              "hintStyle": "hudHintCommon",
-              "behaviour": "bhvHint",
-              "isWrapInRowAllowed": "yes",
-              "position": "relative",
-              "pos": "0, -20%ph-10%h",
-              "display": "show",
-              "value": "missions/tutorial_ship_action/full_forward"
-            },
-            {
-              "shadeStyle": "HudHeader3D",
-              "behaviour": "bhvHint",
-              "hintStyle": "hudHintCommon",
-              "isWrapInRowAllowed": "yes",
-              "position": "relative",
-              "pos": "0, 10%ph+10%h",
-              "display": "show",
-              "value": "missions/tutorial_ship_action/full_back",
-              "style": "font:@fontHudMedium; text-align:right; color:#ffffff;"
-            },
-            {
-              "shadeStyle": "HudHeader3D",
-              "behaviour": "bhvHint",
-              "hintStyle": "hudHintCommon",
-              "isWrapInRowAllowed": "yes",
-              "position": "absolute",
-              "pos": "120%pw+120%w, 15%ph-0%h",
-              "display": "show",
-              "value": "missions/tutorial_ship_action/stop",
-              "style": "font:@fontHudMedium; text-align:right; color:#ebeb22;"
-            }
-          ]
-        }
-      ]
+      ],
+      "tdiv": {
+        "flow": "vertical",
+        "pos": "50.75%pw-100%w, 100%ph+30%h",
+        "position": "absolute",
+        "display": "show",
+        "tdiv": [
+          {
+            "hintStyle": "hudHintYellow",
+            "behaviour": "bhvHint",
+            "isWrapInRowAllowed": "yes",
+            "flow-align": "left",
+            "position": "relative",
+            "pos": "0, -20%ph-0%h",
+            "display": "show",
+            "value": "{{ship_main_engine_rangeMax}}"
+          },
+          {
+            "hintStyle": "hudHintYellow",
+            "behaviour": "bhvHint",
+            "isWrapInRowAllowed": "yes",
+            "flow-align": "left",
+            "position": "relative",
+            "pos": "0, 10%ph-0%h",
+            "display": "show",
+            "value": "{{ship_main_engine_rangeMin}}"
+          },
+          {
+            "flow": "root",
+            "hintStyle": "hudHintYellow",
+            "behaviour": "bhvHint",
+            "isWrapInRowAllowed": "yes",
+            "flow-align": "left",
+            "position": "absolute",
+            "pos": "60%pw+60%w, 15%ph-0%h",
+            "display": "show",
+            "value": "{{ID_SHIP_FULL_STOP}}"
+          },
+          {
+            "flow": "vertical",
+            "pos": "-10%pw-100%w, 5%ph-0%h",
+            "position": "absolute",
+            "display": "show",
+            "tdiv": [
+              {
+                "shadeStyle": "HudHeader3D",
+                "hintStyle": "hudHintCommon",
+                "behaviour": "bhvHint",
+                "isWrapInRowAllowed": "yes",
+                "position": "relative",
+                "pos": "0, -20%ph-10%h",
+                "display": "show",
+                "value": "missions/tutorial_ship_action/full_forward"
+              },
+              {
+                "shadeStyle": "HudHeader3D",
+                "behaviour": "bhvHint",
+                "hintStyle": "hudHintCommon",
+                "isWrapInRowAllowed": "yes",
+                "position": "relative",
+                "pos": "0, 10%ph+10%h",
+                "display": "show",
+                "value": "missions/tutorial_ship_action/full_back",
+                "style": "font:@fontHudMedium; text-align:right; color:#ffffff;"
+              },
+              {
+                "shadeStyle": "HudHeader3D",
+                "behaviour": "bhvHint",
+                "hintStyle": "hudHintCommon",
+                "isWrapInRowAllowed": "yes",
+                "position": "absolute",
+                "pos": "120%pw+120%w, 15%ph-0%h",
+                "display": "show",
+                "value": "missions/tutorial_ship_action/stop",
+                "style": "font:@fontHudMedium; text-align:right; color:#ebeb22;"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "hud_tutorial_steering_info_arrow",

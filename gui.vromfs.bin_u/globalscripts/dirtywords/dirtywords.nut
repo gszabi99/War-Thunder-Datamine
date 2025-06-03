@@ -5,7 +5,7 @@ from "string" import format
 from "auth_wt" import getCountryCode
 from "language" import getLocalLanguage
 from "%sqstd/string.nut" import utf8ToLower, utf8CharToInt
-from "nameVisibility.nut" import isNameNormallyVisible, clearAllWhitespace, getUnicodeCharsArray
+from "nameVisibility.nut" import isNameNormallyVisible, clearAllWhitespace, clearExcessiveWhitespace, getUnicodeCharsArray
 
 
 
@@ -452,7 +452,7 @@ return {
   isPhrasePassing
   checkName
   isNamePassing
-  clearAllWhitespace
+  clearExcessiveWhitespace
   setDebugLogFunc
   debugDirtyWordsFilter
 }

@@ -94,9 +94,9 @@
       "length": 2.936,
       "CxK": 2.5,
       "wingAreaMult": 1.65,
-      "finsAoaHor": 0.333046,
-      "finsAoaVer": 0.333046,
-      "finsLatAccel": 50.0,
+      "finsAoaHor": 0.285336,
+      "finsAoaVer": 0.285336,
+      "finsLatAccel": 57.487,
       "distFromCmToStab": 0.25,
       "mass": 87.4,
       "massEnd": 58.6,
@@ -108,11 +108,11 @@
       "useStartSpeed": true,
       "startSpeed": 0.0,
       "machMax": 3.0,
-      "endSpeed": 1000.0,
+      "endSpeed": 710.0,
       "maxDistance": 12000.0,
       "minDistance": 30.0,
       "rangeMax": 12000.0,
-      "loadFactorMax": 60.0,
+      "loadFactorMax": 50.0,
       "guidanceType": "ir",
       "guidanceSfx": "alarm_con_scan",
       "maxDeltaAngle": 2.0,
@@ -128,6 +128,7 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "aam",
       "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
+      "shellCollision": true,
       "dragCx": 0.014,
       "hasProximityFuse": true,
       "explosionPatchRadius": 4.0,
@@ -166,13 +167,14 @@
         0.0
       ],
       "arcadeProp": {
-        "finsAoaHor": 0.35,
-        "finsAoaVer": 0.35
+        "finsAoaHor": 0.3,
+        "finsAoaVer": 0.3
       },
       "guidance": {
         "warmUpTime": 0.2,
         "workTime": 20.0,
         "uncageBeforeLaunch": true,
+        "permanentlyActivated": true,
         "inertialNavigation": true,
         "inertialNavigationMandatory": true,
         "useTargetVel": true,
@@ -188,16 +190,16 @@
         },
         "orientationAutopilot": {
           "timeOut": 0.15,
-          "controlTime": 1.0,
-          "elevationAdd": 15.0,
+          "controlTime": 1.5,
+          "elevationAdd": 5.0,
           "elevationToHeadingMult": [
-            20.0,
-            20.0,
+            10.0,
+            10.0,
             -1.0,
             -1.0
           ],
-          "angleToAngularRate": 5.0,
-          "accelControlProp": 0.1,
+          "angleToAngularRate": 10.0,
+          "accelControlProp": 0.05,
           "accelControlIntg": 0.0,
           "accelControlIntgLim": 0.0,
           "accelControlDiff": 0.0,
@@ -211,7 +213,7 @@
           "rangeBand3": 0.0,
           "rangeBand7": 0.0,
           "rangeMax": 20000.0,
-          "fov": 3.5,
+          "fov": 5.0,
           "gateWidth": 0.25,
           "bandMaskToReject": 4,
           "minAngleToSun": 10.0,
@@ -228,21 +230,13 @@
         },
         "guidanceAutopilot": {
           "loftEnabled": true,
-          "loftElevation": 20.0,
-          "loftTargetElevation": -10.0,
+          "loftElevation": 32.0,
+          "loftTargetElevation": -15.0,
           "loftAngleToAccelMult": 3.0,
-          "loftTargetOmegaMax": 0.75,
-          "timeToGain3": [
-            0.01,
-            1.0
-          ],
-          "timeToGain4": [
-            1.01,
-            1.0
-          ],
+          "loftTargetOmegaMax": 1.25,
           "baseIndSpeed": 1800.0,
-          "propNavMult": 4.0,
-          "reqAccelMax": 60.0,
+          "propNavMult": 6.0,
+          "reqAccelMax": 50.0,
           "pid0": {
             "time": 4.0,
             "prop": 0.0146,
@@ -251,21 +245,21 @@
             "diff": 0.0004
           },
           "pid1": {
-            "time": 4.01,
+            "time": 6.0,
             "prop": 0.0051,
             "intg": 0.0441,
             "intgLim": 1.0,
             "diff": 0.0005
           },
           "pid2": {
-            "time": 14.0,
+            "time": 7.0,
             "prop": 0.0051,
             "intg": 0.0441,
             "intgLim": 1.0,
             "diff": 0.0005
           },
           "pid3": {
-            "time": 14.01,
+            "time": 8.0,
             "prop": 0.0071,
             "intg": 0.0436,
             "intgLim": 1.0,
@@ -837,9 +831,9 @@
         "length": 2.936,
         "CxK": 2.5,
         "wingAreaMult": 1.65,
-        "finsAoaHor": 0.333046,
-        "finsAoaVer": 0.333046,
-        "finsLatAccel": 50.0,
+        "finsAoaHor": 0.285336,
+        "finsAoaVer": 0.285336,
+        "finsLatAccel": 57.487,
         "distFromCmToStab": 0.25,
         "mass": 87.4,
         "massEnd": 58.6,
@@ -851,11 +845,11 @@
         "useStartSpeed": true,
         "startSpeed": 0.0,
         "machMax": 3.0,
-        "endSpeed": 1000.0,
+        "endSpeed": 710.0,
         "maxDistance": 12000.0,
         "minDistance": 30.0,
         "rangeMax": 12000.0,
-        "loadFactorMax": 60.0,
+        "loadFactorMax": 50.0,
         "guidanceType": "ir",
         "guidanceSfx": "alarm_con_scan",
         "maxDeltaAngle": 2.0,
@@ -871,6 +865,7 @@
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "aam",
         "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
+        "shellCollision": true,
         "dragCx": 0.014,
         "hasProximityFuse": true,
         "explosionPatchRadius": 4.0,
@@ -909,13 +904,14 @@
           0.0
         ],
         "arcadeProp": {
-          "finsAoaHor": 0.35,
-          "finsAoaVer": 0.35
+          "finsAoaHor": 0.3,
+          "finsAoaVer": 0.3
         },
         "guidance": {
           "warmUpTime": 0.2,
           "workTime": 20.0,
           "uncageBeforeLaunch": true,
+          "permanentlyActivated": true,
           "inertialNavigation": true,
           "inertialNavigationMandatory": true,
           "useTargetVel": true,
@@ -931,16 +927,16 @@
           },
           "orientationAutopilot": {
             "timeOut": 0.15,
-            "controlTime": 1.0,
-            "elevationAdd": 15.0,
+            "controlTime": 1.5,
+            "elevationAdd": 5.0,
             "elevationToHeadingMult": [
-              20.0,
-              20.0,
+              10.0,
+              10.0,
               -1.0,
               -1.0
             ],
-            "angleToAngularRate": 5.0,
-            "accelControlProp": 0.1,
+            "angleToAngularRate": 10.0,
+            "accelControlProp": 0.05,
             "accelControlIntg": 0.0,
             "accelControlIntgLim": 0.0,
             "accelControlDiff": 0.0,
@@ -954,7 +950,7 @@
             "rangeBand3": 0.0,
             "rangeBand7": 0.0,
             "rangeMax": 20000.0,
-            "fov": 3.5,
+            "fov": 5.0,
             "gateWidth": 0.25,
             "bandMaskToReject": 4,
             "minAngleToSun": 10.0,
@@ -971,21 +967,13 @@
           },
           "guidanceAutopilot": {
             "loftEnabled": true,
-            "loftElevation": 20.0,
-            "loftTargetElevation": -10.0,
+            "loftElevation": 32.0,
+            "loftTargetElevation": -15.0,
             "loftAngleToAccelMult": 3.0,
-            "loftTargetOmegaMax": 0.75,
-            "timeToGain3": [
-              0.01,
-              1.0
-            ],
-            "timeToGain4": [
-              1.01,
-              1.0
-            ],
+            "loftTargetOmegaMax": 1.25,
             "baseIndSpeed": 1800.0,
-            "propNavMult": 4.0,
-            "reqAccelMax": 60.0,
+            "propNavMult": 6.0,
+            "reqAccelMax": 50.0,
             "pid0": {
               "time": 4.0,
               "prop": 0.0146,
@@ -994,21 +982,21 @@
               "diff": 0.0004
             },
             "pid1": {
-              "time": 4.01,
+              "time": 6.0,
               "prop": 0.0051,
               "intg": 0.0441,
               "intgLim": 1.0,
               "diff": 0.0005
             },
             "pid2": {
-              "time": 14.0,
+              "time": 7.0,
               "prop": 0.0051,
               "intg": 0.0441,
               "intgLim": 1.0,
               "diff": 0.0005
             },
             "pid3": {
-              "time": 14.01,
+              "time": 8.0,
               "prop": 0.0071,
               "intg": 0.0436,
               "intgLim": 1.0,

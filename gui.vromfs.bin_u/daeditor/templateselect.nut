@@ -11,10 +11,16 @@ let combobox = require("%daeditor/components/combobox.nut")
 let {makeVertScroll} = require("%daeditor/components/scrollbar.nut")
 let {mkTemplateTooltip} = require("components/templateHelp.nut")
 
+let {getSceneLoadTypeText} = require("%daeditor/daeditor_es.nut")
+let {defaultScenesSortMode} = require("components/mkSortSceneModeButton.nut")
 let entity_editor = require("entity_editor")
 let daEditor = require("daEditorEmbedded")
 let {DE4_MODE_SELECT} = daEditor
 
+const noSceneSelected = "UNKNOWN:0"
+let allScenes = Watched([])
+let allSceneTexts = Watched([noSceneSelected])
+let selectedScene = Watched(noSceneSelected)
 let selectedItem = Watched(null)
 let filterText = Watched("")
 let templatePostfixText = Watched("")
@@ -200,10 +206,67 @@ function doValidateTemplates(idx) {
 }
 doRepeatValidateTemplates = doValidateTemplates
 
+function sceneToText(scene) {
+  if (scene.importDepth != 0) {
+    local loadType = getSceneLoadTypeText(scene)
+    return $"{loadType}:{scene.index}"
+  }
+  return "MAIN"
+}
+
+allScenes.subscribe(function(v) {
+  v.sort(defaultScenesSortMode.func)
+  allSceneTexts(v.map(@(scene, _idx) sceneToText(scene)))
+  allSceneTexts.value.append(noSceneSelected)
+  local scene = entity_editor.get_instance()?.getTargetScene()
+  if (scene != null && ("loadType" in scene) && ("index" in scene)) {
+    selectedScene.set(sceneToText(scene))
+  } else {
+    selectedScene.set(noSceneSelected)
+  }
+})
+
+selectedScene.subscribe(function(v) {
+  local loadType = 0
+  local index = 0
+  if (v != noSceneSelected) {
+    local selectedSceneIndex = allSceneTexts.value.indexof(v)
+    if (selectedSceneIndex != null) {
+      local scene = allScenes.value[selectedSceneIndex]
+      loadType = scene.loadType
+      index = scene.index
+    }
+  }
+  entity_editor.get_instance()?.setTargetScene(loadType, index)
+})
+
 
 function dialogRoot() {
   let templatesGroups = entity_editor.get_instance().getEcsTemplatesGroups()
   let maxTemplatesInList = 1000
+
+  allScenes(entity_editor.get_instance().getSceneImports() ?? [])
+  let selectedSceneIndex = selectedScene.value != noSceneSelected ? allSceneTexts.value.indexof(selectedScene.value) : null
+  let sceneInfo = selectedSceneIndex != null ? allScenes.value[selectedSceneIndex] : null
+  let sceneTitleStyle = { fontSize = hdpx(17), color=Color(150,150,150,120) }
+  let sceneInfoStyle = { fontSize = hdpx(17), color=Color(180,180,180,120) }
+  let sceneTooltip = function() {
+    return {
+      rendObj = ROBJ_BOX
+      fillColor = Color(30, 30, 30, 220)
+      borderColor = Color(50, 50, 50, 110)
+      size = SIZE_TO_CONTENT
+      borderWidth = hdpx(1)
+      padding = fsh(1)
+      flow = FLOW_VERTICAL
+      children = [
+        txt("Select target scene to create entity in", sceneTitleStyle)
+        txt(selectedScene.value, sceneInfoStyle)
+        sceneInfo != null ? txt($"{sceneInfo.path}", sceneInfoStyle) : null
+      ]
+
+    }
+  }
 
   function listContent() {
     if (selectedTemplatesGroup.get() != showWholeListGroup) {
@@ -262,7 +325,7 @@ function dialogRoot() {
     size = [flex(), flex()]
     flow = FLOW_HORIZONTAL
 
-    watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons, templateTooltip]
+    watch = [filteredTemplatesCount, selectedGroupTemplatesCount, showDebugButtons, templateTooltip, selectedScene]
 
     children = [
       {
@@ -292,6 +355,12 @@ function dialogRoot() {
               closeButton(doClose)
             ]
           }
+
+          {
+            size = [flex(),fontH(100)]
+            children = combobox(selectedScene, allSceneTexts, sceneTooltip)
+          }
+
           {
             size = [flex(),fontH(100)]
             children = combobox(selectedTemplatesGroup, templatesGroups)

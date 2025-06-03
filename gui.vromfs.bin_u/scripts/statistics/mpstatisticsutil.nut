@@ -595,11 +595,14 @@ function setMpTable(obj_tbl, table, params = {}) {
         objTr.inMySquad  = isInHeroSquad ? "yes" : "no"
         objTr.spectator = table[i]?.spectator ? "yes" : "no"
 
-        if (!table[i].isBot) {
+        let userIdInt = player.userId.tointeger()
+        let playerInfo = playersInfo?[player.userId] ?? playersInfo?[userIdInt]
+        if (!player.isBot || (isReplay && userIdInt > 0)) {
           let tooltipId = getTooltipType("MP_STAT_PLAYER").getTooltipId(player, {
-            playersInfo, isAlly, isDebriefing
+            playerInfo, isAlly, isDebriefing
           })
           objTd.findObject("name_tooltip").tooltipId = tooltipId
+          objTd.tooltip = "$tooltipObj"
         } else {
           objTd.tooltip = nameText
         }

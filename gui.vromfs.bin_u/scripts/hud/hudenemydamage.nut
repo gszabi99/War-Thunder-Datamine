@@ -111,14 +111,9 @@ hudEnemyDamage = {
     this.guiScene = this.scene.getScene()
     this.listObj = this.scene.findObject("hud_enemy_damage")
 
-    eventbus_subscribe("EnemyPartsDamage", function(allDamageData) {
-        foreach (damageData in allDamageData) {
-          hudEnemyDamage.onEnemyPartDamage(damageData)
-        }
-      })
     g_hud_event_manager.subscribe("HitcamTargetKilled", function (hitcamData) {
-        this.onHitcamTargetKilled(hitcamData)
-      }, this)
+        hudEnemyDamage.onHitcamTargetKilled(hitcamData)
+      }, this.scene)
 
     this.rebuildWidgets()
     this.resetTargetData()
@@ -289,5 +284,11 @@ hudEnemyDamage = {
     return true
   }
 }
+
+eventbus_subscribe("EnemyPartsDamage", function(allDamageData) {
+  foreach (damageData in allDamageData) {
+    hudEnemyDamage.onEnemyPartDamage(damageData)
+  }
+})
 
 return hudEnemyDamage

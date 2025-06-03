@@ -782,6 +782,9 @@ function mkWeaponPartLocId(partType, partName, weaponInfoBlk, commonData) {
   return partType
 }
 
+let getWeaponLocName = @(weaponName, commonData)
+  loc(commonData?.needUseShortWeaponNames ? $"weapons/{weaponName}/short" : $"weapons/{weaponName}")
+
 function getWeaponTotalBulletCount(unitWeaponsList, partType, weaponInfoBlk) {
   if (partType == "cannon_breech") {
     local result = 0
@@ -1059,7 +1062,7 @@ function mkWeaponDesc(partType, params, commonData) {
 
     if (turretWeaponsNames.len() > 0)
       foreach(weaponName, weaponsCount in turretWeaponsNames)
-        desc.append("".concat(loc($"weapons/{weaponName}"),
+        desc.append("".concat(getWeaponLocName(weaponName, commonData),
           weaponsCount > 1 ? format(loc("weapons/counter"), weaponsCount) : ""))
   }
   local weaponInfoBlk = null
@@ -1088,7 +1091,7 @@ function mkWeaponDesc(partType, params, commonData) {
     let weaponBlkLink = weaponInfoBlk?.blk ?? ""
     let weaponName = getWeaponNameByBlkPath(weaponBlkLink)
     let weaponNameStr = weaponName != "" && turretWeaponsNames.len() == 0
-      ? loc($"weapons/{weaponName}")
+      ? getWeaponLocName(weaponName, commonData)
       : ""
     let unitWeaponsList = getUnitWeaponsList(commonData)
     let ammo = isSpecialBullet ? 1 : getWeaponTotalBulletCount(unitWeaponsList, partType, weaponInfoBlk)
@@ -2071,7 +2074,7 @@ function mkFireDirecirOrRangefinderDesc(_partType, params, commonData) {
     if (weaponNames.len() != 0) {
       desc.append(loc("xray/fire_control/weapons"))
       desc.extend(weaponNames
-        .map(@(n) loc($"weapons/{n}"))
+        .map(@(n) getWeaponLocName(n, commonData))
         .map(@(n) "".concat(bullet, n)))
 
       

@@ -103,6 +103,8 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let decoratorsList = getCachedDataByType(decoratorTypes.DECALS).decoratorsList
 
     foreach (decalId, decal in decoratorsList) {
+      if (!decal.isVisible())
+        continue
       this.decalsCache.append({
         searchId = utf8ToLower(decalId)
         searchName = utf8ToLower(decal.getName())
@@ -206,7 +208,7 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       let isLocked = !decorator.isUnlocked()
       local lockText = null
       local statusLock = isLocked ? "achievement" : null
-      if (isLocked && decorator.unlockBlk == null)
+      if (isLocked && (decorator.unlockBlk == null || decorator.unlockBlk?.hideUntilUnlocked == true))
         if (decorator.getCouponItemdefId() != null) {
           statusLock = "market"
         } else if (!decorator.cost.isZero()) {

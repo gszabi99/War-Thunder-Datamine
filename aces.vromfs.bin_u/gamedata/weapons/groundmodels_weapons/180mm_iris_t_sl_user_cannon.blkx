@@ -97,7 +97,7 @@
       "finsAoaHor": 0.3,
       "finsAoaVer": 0.3,
       "finsLatAccel": 40.0,
-      "distFromCmToStab": 0.25,
+      "distFromCmToStab": 0.2,
       "mass": 155.0,
       "massEnd": 115.0,
       "massEnd1": 92.0,
@@ -110,8 +110,8 @@
       "thrustVectoringAngle": 0.025,
       "useStartSpeed": true,
       "startSpeed": 0.0,
-      "machMax": 3.0,
-      "endSpeed": 700.0,
+      "machMax": 2.25,
+      "endSpeed": 710.0,
       "maxDistance": 40000.0,
       "minDistance": 30.0,
       "rangeMax": 40000.0,
@@ -131,6 +131,7 @@
       "stabilityReductionAfterPenetration": 0.15,
       "bulletType": "aam",
       "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
+      "shellCollision": true,
       "dragCx": 0.014,
       "hasProximityFuse": true,
       "explosionPatchRadius": 4.0,
@@ -167,9 +168,10 @@
         "finsAoaVer": 0.3
       },
       "guidance": {
-        "warmUpTime": 0.2,
+        "warmUpTime": 0.1,
         "workTime": 20.0,
         "uncageBeforeLaunch": true,
+        "permanentlyActivated": true,
         "inertialNavigation": true,
         "inertialNavigationMandatory": true,
         "useTargetVel": true,
@@ -179,18 +181,18 @@
         "reacquireTarget": true,
         "lockMode": "LOAL",
         "guidanceSfx": "alarm_con_scan",
-        "breakLockMaxTime": 40.0,
+        "breakLockMaxTime": 150.0,
         "inertialGuidance": {
           "inertialNavigationDriftSpeed": 0.0,
           "datalink": true
         },
         "orientationAutopilot": {
           "timeOut": 0.15,
-          "controlTime": 1.0,
-          "elevationAdd": 15.0,
+          "controlTime": 1.5,
+          "elevationAdd": 5.0,
           "elevationToHeadingMult": [
-            20.0,
-            20.0,
+            10.0,
+            10.0,
             -1.0,
             -1.0
           ],
@@ -209,7 +211,7 @@
           "rangeBand3": 0.0,
           "rangeBand7": 0.0,
           "rangeMax": 20000.0,
-          "fov": 3.5,
+          "fov": 5.0,
           "gateWidth": 0.25,
           "bandMaskToReject": 4,
           "minAngleToSun": 10.0,
@@ -230,16 +232,8 @@
           "loftTargetElevation": -10.0,
           "loftAngleToAccelMult": 3.0,
           "loftTargetOmegaMax": 0.75,
-          "timeToGain3": [
-            0.01,
-            1.0
-          ],
-          "timeToGain4": [
-            1.01,
-            1.0
-          ],
           "baseIndSpeed": 1800.0,
-          "propNavMult": 4.0,
+          "propNavMult": 6.0,
           "reqAccelMax": 40.0,
           "pid0": {
             "time": 4.0,
@@ -263,10 +257,10 @@
             "intgLim": 1.0
           },
           "pid3": {
-            "time": 15.0,
+            "time": 30.0,
             "prop": 0.0086,
             "intg": 0.0426,
-            "diff": 0.0004,
+            "diff": 0.0006,
             "intgLim": 1.0
           }
         }
@@ -363,16 +357,12 @@
       },
       "proximityFuse": {
         "timeOut": 1.8,
-        "radius": 6.0,
+        "radius": 15.0,
         "detectAirUnits": true,
         "detectShells": true,
         "detectGroundUnits": false,
         "detectGround": false,
-        "minimalAltitude": 25.0,
-        "shellCaliberRange": [
-          0.08,
-          0.2
-        ]
+        "minimalAltitude": 25.0
       },
       "collisions": {
         "default": {
@@ -830,7 +820,7 @@
         "finsAoaHor": 0.3,
         "finsAoaVer": 0.3,
         "finsLatAccel": 40.0,
-        "distFromCmToStab": 0.25,
+        "distFromCmToStab": 0.2,
         "mass": 155.0,
         "massEnd": 115.0,
         "massEnd1": 92.0,
@@ -843,8 +833,8 @@
         "thrustVectoringAngle": 0.025,
         "useStartSpeed": true,
         "startSpeed": 0.0,
-        "machMax": 3.0,
-        "endSpeed": 700.0,
+        "machMax": 2.25,
+        "endSpeed": 710.0,
         "maxDistance": 40000.0,
         "minDistance": 30.0,
         "rangeMax": 40000.0,
@@ -864,6 +854,7 @@
         "stabilityReductionAfterPenetration": 0.15,
         "bulletType": "aam",
         "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
+        "shellCollision": true,
         "dragCx": 0.014,
         "hasProximityFuse": true,
         "explosionPatchRadius": 4.0,
@@ -900,9 +891,10 @@
           "finsAoaVer": 0.3
         },
         "guidance": {
-          "warmUpTime": 0.2,
+          "warmUpTime": 0.1,
           "workTime": 20.0,
           "uncageBeforeLaunch": true,
+          "permanentlyActivated": true,
           "inertialNavigation": true,
           "inertialNavigationMandatory": true,
           "useTargetVel": true,
@@ -912,18 +904,18 @@
           "reacquireTarget": true,
           "lockMode": "LOAL",
           "guidanceSfx": "alarm_con_scan",
-          "breakLockMaxTime": 40.0,
+          "breakLockMaxTime": 150.0,
           "inertialGuidance": {
             "inertialNavigationDriftSpeed": 0.0,
             "datalink": true
           },
           "orientationAutopilot": {
             "timeOut": 0.15,
-            "controlTime": 1.0,
-            "elevationAdd": 15.0,
+            "controlTime": 1.5,
+            "elevationAdd": 5.0,
             "elevationToHeadingMult": [
-              20.0,
-              20.0,
+              10.0,
+              10.0,
               -1.0,
               -1.0
             ],
@@ -942,7 +934,7 @@
             "rangeBand3": 0.0,
             "rangeBand7": 0.0,
             "rangeMax": 20000.0,
-            "fov": 3.5,
+            "fov": 5.0,
             "gateWidth": 0.25,
             "bandMaskToReject": 4,
             "minAngleToSun": 10.0,
@@ -963,16 +955,8 @@
             "loftTargetElevation": -10.0,
             "loftAngleToAccelMult": 3.0,
             "loftTargetOmegaMax": 0.75,
-            "timeToGain3": [
-              0.01,
-              1.0
-            ],
-            "timeToGain4": [
-              1.01,
-              1.0
-            ],
             "baseIndSpeed": 1800.0,
-            "propNavMult": 4.0,
+            "propNavMult": 6.0,
             "reqAccelMax": 40.0,
             "pid0": {
               "time": 4.0,
@@ -996,10 +980,10 @@
               "intgLim": 1.0
             },
             "pid3": {
-              "time": 15.0,
+              "time": 30.0,
               "prop": 0.0086,
               "intg": 0.0426,
-              "diff": 0.0004,
+              "diff": 0.0006,
               "intgLim": 1.0
             }
           }
@@ -1096,16 +1080,12 @@
         },
         "proximityFuse": {
           "timeOut": 1.8,
-          "radius": 6.0,
+          "radius": 15.0,
           "detectAirUnits": true,
           "detectShells": true,
           "detectGroundUnits": false,
           "detectGround": false,
-          "minimalAltitude": 25.0,
-          "shellCaliberRange": [
-            0.08,
-            0.2
-          ]
+          "minimalAltitude": 25.0
         },
         "collisions": {
           "default": {

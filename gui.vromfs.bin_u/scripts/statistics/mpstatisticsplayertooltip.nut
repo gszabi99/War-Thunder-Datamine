@@ -55,8 +55,7 @@ function getUnitsRatingInfo(playerInfo) {
 }
 
 function getTooltipView(player, params) {
-  let { playersInfo, isAlly, isDebriefing } = params
-  let playerInfo = playersInfo?[player.userId] ?? playersInfo?[player.userId.tointeger()]
+  let { playerInfo, isAlly, isDebriefing } = params
   let isUnitListVisible = isDebriefing
     || ((get_mission_difficulty() == g_difficulty.ARCADE.gameTypeName || isAlly)
       && !getCurMissionRules().isWorldWar)

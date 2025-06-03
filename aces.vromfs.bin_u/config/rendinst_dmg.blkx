@@ -6316,7 +6316,7 @@
       "destructionImpulse": 60000.0,
       "fx": "ad_wood_small",
       "fxScale": 1.0,
-      "apexDestructible": true,
+      "apexDestructible": false,
       "material": "wood"
     },
     {
@@ -58212,7 +58212,8 @@
       "impulseThreshold": 1.0,
       "fx": "ad_dust_stucco",
       "fxScale": 1.0,
-      "stopsBullets": false
+      "stopsBullets": false,
+      "isParent": true
     },
     "european_flower_urn_d": {
       "nextRes": "european_flower_urn_d_dmg",
@@ -58221,7 +58222,8 @@
       "impulseThreshold": 1.0,
       "fx": "ad_dust_stucco",
       "fxScale": 1.0,
-      "stopsBullets": false
+      "stopsBullets": false,
+      "isParent": true
     },
     "european_gas_pump_a": {
       "nextRes": "european_gas_pump_a_dmg",
@@ -58523,6 +58525,22 @@
       "fx": "ad_metal",
       "fxScale": 1.0,
       "dmPreset": "metal_props"
+    },
+    "bridge_segment_wood_damaged_8000_a": {
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "isParent": true,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "physRes": "bridge_segment_wood_damaged_8000_a_destr_phobj"
+    },
+    "bridge_segment_wood_damaged_8000_b": {
+      "hp": 5.0,
+      "impulseThreshold": 1.0,
+      "isParent": true,
+      "fx": "ad_wood_big",
+      "fxScale": 1.0,
+      "physRes": "bridge_segment_wood_damaged_8000_b_destr_phobj"
     },
     "watch_tower_b": {
       "nextRes": "watch_tower_b_dmg",
@@ -63695,6 +63713,13 @@
       "fxScale": 1.0,
       "material": "wood",
       "dmPreset": "ammo_box"
+    },
+    "suitcase": {
+      "physRes": "suitcase_destr_phobj",
+      "hp": 2.0,
+      "impulseThreshold": 1.0,
+      "fx": "ad_wood_small",
+      "material": "wood"
     },
     "decal_debris_coal_b": {
       "hp": 1000000.0,

@@ -439,10 +439,10 @@ hitCameraCrew[_blink=no] {
 }
 
 hitCameraLostCrew > hitCameraLostCrewText {
-  behaviour:textArea;
-  re-type:textarea;
+  re-type:text;
   font:@fontHudSmall;
   text-align: right;
+  color:@warningTextColor;
 
   behaviour:basicTransparency;
   transp-base:255;
@@ -453,8 +453,7 @@ hitCameraLostCrew > hitCameraLostCrewText {
 }
 
 hitCamLostCrewRelative > hitCamLostCrewRelativeText {
-  behaviour:textArea;
-  re-type:textarea;
+  re-type:text;
   font:@fontNormal;
   text-shade:"smooth:24";
   text-shade-x:0;
