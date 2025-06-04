@@ -6,7 +6,6 @@ let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { broadcastEvent } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { move_mouse_on_child, move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
-let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 
 let { MAX_SHORTCUTS, CONTROL_TYPE } = require("%scripts/controls/controlsConsts.nut")
 let { format } = require("string")
@@ -328,13 +327,6 @@ function applySelectedPreset(presetName) {
     set_option(USEROPT_HELPERS_MODE, ControlHelpersMode.EM_MOUSE_AIM)
   return $"config/hotkeys/hotkey.{presetName}.blk"
 }
-
-function gui_modal_controlsWizard() {
-  if (!hasFeature("ControlsPresets"))
-    return
-  loadHandler(gui_handlers.controlsWizardModalHandler)
-}
-::gui_modal_controlsWizard <- gui_modal_controlsWizard 
 
 function isInArrayRecursive(v, arr) {
   foreach (i in arr) {
@@ -1623,8 +1615,4 @@ gui_handlers.controlsWizardModalHandler <- class (gui_handlers.BaseGuiHandlerWT)
     else
       this.nextItem()
   }
-}
-
-return {
-  gui_modal_controlsWizard
 }

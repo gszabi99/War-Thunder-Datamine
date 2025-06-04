@@ -65,6 +65,7 @@ function getExtraActionItemsView(unit) {
       cooldownParams = { degree = 360, incFactor = 0 }
       blockedCooldownParams = { degree = 360, incFactor = 0 }
       progressCooldownParams = { degree = 360, incFactor = 0 }
+      tooltipText = loc("tooltip/weaponSelector")
     })
     extraId++
     items.append(item)

@@ -51,6 +51,7 @@ struct EventOnStartShooting
 [cpp_event(unicast)]
 struct EventOnMetaPartDamage
   damage : uint16
+  offender : EntityId
 
 [cpp_event(unicast)]
 struct EventRepairMetaPart

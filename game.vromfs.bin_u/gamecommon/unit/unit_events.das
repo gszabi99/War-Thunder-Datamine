@@ -3,11 +3,13 @@ require ecs
 require dm
 require DagorDataBlock
 require WTDamageModel
+require Unit
 
 
 [cpp_event(unicast)]
 struct CmdInitComponent
   modelBlk : DataBlock? 
+  data : UnitCreationData? 
 
 [cpp_event(unicast)]
 struct EventUnitInitModification

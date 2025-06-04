@@ -6,6 +6,9 @@ let dasVerticalViewIndicator = load_das("%rGui/antiAirComplexMenu/verticalViewIn
 let dasRadarHud = load_das("%rGui/radar.das")
 let { eventbus_subscribe } = require("eventbus")
 let { setAllowedControlsMask } = require("controlsMask")
+let { playerUnitName, isUnitAlive } = require("%rGui/hudState.nut")
+let { isInFlight } = require("%rGui/globalState.nut")
+let { radarSwitchToTarget } = require("antiAirComplexMenuControls")
 
 let radarColor = 0xFF00FF00
 
@@ -32,14 +35,18 @@ let circularRadar = {
   color = radarColor
 }
 
-function createTargetListElement(index, azimuth, distance, height, speed, typeId, fontSize){
+function createTargetListElement(index, azimuth, distance, height, speed, typeId, fontSize, isDetected = false, onClick = null){
   return {
     size = [flex(), hdpx(27)]
-    rendObj = ROBJ_BOX
-    fillColor = 0xAA101010
-    borderColor = 0xFFFFFFFF
+    rendObj = ROBJ_SOLID
+    color = isDetected ? 0xAA404040 :0xAA101010
+    borderWidth = 0
     flow = FLOW_HORIZONTAL
     gap = hdpx(10)
+
+    behavior = onClick != null ? Behaviors.Button : null
+    onClick = onClick
+
     children = [
       {
         size = [pw(4), flex()]
@@ -107,7 +114,10 @@ function createTargetDist(index, hasAzimuthScale, azimuthMin, azimuthRange, hasD
 
   let typeIdText = target.typeId
 
-  return createTargetListElement(index, azimuthText, distanceText, heightText, speedText, typeIdText, hdpx(22))
+  local onClick = function() {
+    radarSwitchToTarget(target.objectId)
+  }
+  return createTargetListElement(index, azimuthText, distanceText, heightText, speedText, typeIdText, hdpx(22), target.isDetected, onClick)
 }
 
 let targetList = @() {
@@ -136,11 +146,15 @@ let targetListMain = {
   ]
 }
 
-
-
+let aaComplexMenuShownByUnitName = {}
 let isAAComplexMenuActive = Watched(false)
-eventbus_subscribe("on_aa_complex_menu_request", function onAAComplexMenuRequest(evt) {
+
+function onAAComplexMenuRequest(evt) {
   let { show } = evt
+  let pUnitName = playerUnitName.get()
+
+  aaComplexMenuShownByUnitName[pUnitName] <- show
+
   isAAComplexMenuActive.set(show)
 
   let controllMask = show ?
@@ -148,6 +162,30 @@ eventbus_subscribe("on_aa_complex_menu_request", function onAAComplexMenuRequest
     | CtrlsInGui.CTRL_ALLOW_FULL
     : CtrlsInGui.CTRL_ALLOW_FULL
   setAllowedControlsMask(controllMask)
+}
+
+eventbus_subscribe("on_aa_complex_menu_request", onAAComplexMenuRequest)
+
+isInFlight.subscribe(function(v) {
+  if (v)
+    return
+  onAAComplexMenuRequest({ show = false })
+  aaComplexMenuShownByUnitName.clear()
+})
+
+playerUnitName.subscribe(function(_) {
+  let pUnitName = playerUnitName.get()
+
+  let isShowAAComplexMenu = !!aaComplexMenuShownByUnitName?[pUnitName]
+  onAAComplexMenuRequest({ show = isShowAAComplexMenu })
+})
+
+isUnitAlive.subscribe(function(v) {
+  if (v)
+    return
+  let pUnitName = playerUnitName.get()
+  aaComplexMenuShownByUnitName[pUnitName] <- false
+  onAAComplexMenuRequest({ show = false })
 })
 
 

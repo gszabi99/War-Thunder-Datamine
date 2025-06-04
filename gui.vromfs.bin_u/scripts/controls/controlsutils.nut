@@ -55,6 +55,8 @@ let { isLoggedIn } = require("%appGlobals/login/loginState.nut")
 let { getCurControlsPreset } = require("%scripts/controls/controlsState.nut")
 let { shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
 let { checkTutorialsList } = require("%scripts/tutorials/tutorialsData.nut")
+let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
+let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 
 const CLASSIC_PRESET = "classic"
 const SHOOTER_PRESET = "shooter"
@@ -161,6 +163,12 @@ function onJoystickConnected() {
 
 local isKeyboardOrMouseConnectedBefore = false
 
+function gui_modal_controlsWizard() {
+  if (!hasFeature("ControlsPresets"))
+    return
+  loadHandler(gui_handlers.controlsWizardModalHandler)
+}
+
 function onControllerEvent() {
   if (!hasFeature("ControlsDeviceChoice") || !hasFeature("ControlsPresets"))
     return
@@ -171,7 +179,7 @@ function onControllerEvent() {
   isKeyboardOrMouseConnectedBefore = isKeyboardOrMouseConnected
   if (!isKeyboardOrMouseConnected || !isInMenu.get())
     return
-  let action = function() { ::gui_modal_controlsWizard() }
+  let action = function() { gui_modal_controlsWizard() }
   let buttons = [{
       id = "change_preset",
       text = loc("msgbox/btn_yes"),
@@ -210,25 +218,6 @@ function getControlsPresetBySelectedType(cType) {
 function onJoystickDisconnected() {
   updateExtWatched({ haveXinputDevice = hasXInputDevice() })
   add_msg_box("cannot_session", loc("pl1/lostController"), [["ok", function() {}]], "ok")
-}
-
-function isDeviceConnected(devId = null) {
-  if (!devId)
-    return false
-
-  let blk = DataBlock()
-  fill_joysticks_desc(blk)
-
-  for (local i = 0; i < blk.blockCount(); i++) {
-    let device = blk.getBlock(i)
-    if (device?.disconnected)
-      continue
-
-    if (device?.devId && device.devId.tolower() == devId.tolower())
-      return true
-  }
-
-  return false
 }
 
 let needRequireEngineControl = @() !CONTROLS_ALLOW_ENGINE_AUTOSTART
@@ -835,10 +824,10 @@ return {
   recommendedControlPresets
   checkOptionValue
   getControlsPresetBySelectedType
-  isDeviceConnected
   needRequireEngineControl
   getRequiredControlsForUnit
   getCurrentHelpersMode
   getUnmappedControlsForCurrentMission
   canChangeHelpersMode
+  gui_modal_controlsWizard
 }

@@ -5,7 +5,7 @@ let { recentBR } = require("%scripts/battleRating.nut")
 
 function isEventMrankConditionComplete(event) {
   if ((event?.antiCheatEnableMrank ?? -1) >= 0)
-    return recentBR.getValue() < event.antiCheatEnableMrank
+    return recentBR.get() < event.antiCheatEnableMrank
   return true
 }
 

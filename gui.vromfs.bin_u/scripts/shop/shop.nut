@@ -104,6 +104,12 @@ let armyDataByPageName = {
     id = ES_UNIT_TYPE_BOAT
     locString = "mainmenu/boats"
   }
+
+
+
+
+
+
 }
 
 

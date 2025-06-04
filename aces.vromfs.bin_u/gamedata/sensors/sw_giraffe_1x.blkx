@@ -17,23 +17,6 @@
     }
   },
   "scanPatterns": {
-    "parking": {
-      "type": "target",
-      "azimuthLimits": [
-        -180.0,
-        180.0
-      ],
-      "elevationLimits": [
-        -10.0,
-        55.0
-      ],
-      "yawStabLimit": 180.0,
-      "pitchStabLimit": 10.0,
-      "rollStabLimit": 10.0,
-      "period": 1.0,
-      "azimuth": 0.0,
-      "elevation": 0.0
-    },
     "search360": {
       "type": "pyramide",
       "azimuthLimits": [
@@ -41,16 +24,17 @@
         180.0
       ],
       "elevationLimits": [
-        -10.0,
-        55.0
+        0.0,
+        70.0
       ],
       "yawStabLimit": 180.0,
       "pitchStabLimit": 10.0,
       "rollStabLimit": 10.0,
       "period": 1.0,
-      "width": 11.0,
+      "width": 35.0,
       "barHeight": 2.5,
       "barsCount": 144,
+      "centerElevation": 35.0,
       "rowMajor": false,
       "barsOneWay": true,
       "isSmoothMajor": true,
@@ -65,6 +49,7 @@
       "angularAccuracy": 0.005,
       "distanceAccuracy": 3.0,
       "targetRadiusMin": 0.7375,
+      "targetId": true,
       "absDopplerSpeed": true,
       "distance": {
         "presents": true,
@@ -142,7 +127,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 11.0
+            "value": 35.0
           },
           "setScanPatternSet": {
             "scanPatternSet": "search"
@@ -167,7 +152,7 @@
           },
           "setCenterElevation": {
             "source": "constant",
-            "value": 11.0
+            "value": 35.0
           },
           "setScanPatternSet": {
             "scanPatternSet": "search"
@@ -424,5 +409,88 @@
   },
   "hideInAvailableModeNameIds": {
     "mode": "standby"
-  }
+  },
+  "targetTypeId": [
+    {
+      "name": "hud/single prop",
+      "targetPropulsion": {
+        "type": "propellers",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi prop",
+      "targetPropulsion": [
+        {
+          "type": "propellers",
+          "num": 2
+        },
+        {
+          "type": "propellers",
+          "num": 3
+        },
+        {
+          "type": "propellers",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/single jet",
+      "targetPropulsion": {
+        "type": "jet",
+        "num": 1
+      }
+    },
+    {
+      "name": "hud/multi jet",
+      "targetPropulsion": [
+        {
+          "type": "jet",
+          "num": 2
+        },
+        {
+          "type": "jet",
+          "num": 3
+        },
+        {
+          "type": "jet",
+          "num": 4
+        }
+      ]
+    },
+    {
+      "name": "hud/helicopter",
+      "targetPropulsion": {
+        "type": "rotors"
+      }
+    },
+    {
+      "name": "hud/rocket",
+      "targetPropulsion": {
+        "type": "rocket"
+      }
+    },
+    {
+      "name": "hud/small",
+      "sizeRange": [
+        0.0,
+        5.0
+      ]
+    },
+    {
+      "name": "hud/medium",
+      "sizeRange": [
+        5.0,
+        25.0
+      ]
+    },
+    {
+      "name": "hud/large",
+      "sizeRange": [
+        25.0,
+        500.0
+      ]
+    }
+  ]
 }

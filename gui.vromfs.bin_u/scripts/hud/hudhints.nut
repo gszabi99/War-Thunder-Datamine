@@ -2967,6 +2967,28 @@ enums.addTypes(g_hud_hints, {
     uid = 11247
   }
 
+  ALL_LAUNCHERS_DEAD = {
+    locId = "hints/all_launcher_units_dead"
+    showEvent = "hint:all_launchers_destroyed:show"
+
+    selfRemove = true
+    isVerticalAlignText = true
+    buildText = function (data) {
+      return " ".concat(g_hud_hints._buildText.call(this, data), g_hint_tag.TIMER.makeFullTag())
+    }
+  }
+
+  SENSOR_UNIT_DEAD = {
+    locId = "hints/sensor_units_dead"
+    showEvent = "hint:sensor_unit_destroyed:show"
+
+    selfRemove = true
+    isVerticalAlignText = true
+    buildText = function (data) {
+      return " ".concat(g_hud_hints._buildText.call(this, data), g_hint_tag.TIMER.makeFullTag())
+    }
+  }
+
 },
 function() {
   this.name = $"hint_{this.typeName.tolower()}"

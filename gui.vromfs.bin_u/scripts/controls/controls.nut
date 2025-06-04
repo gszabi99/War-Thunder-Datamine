@@ -33,7 +33,7 @@ let { getTextMarkup, getShortcutData, getInputsMarkup, isShortcutMapped,
 let { get_game_mode } = require("mission")
 let { utf8ToLower } = require("%sqstd/string.nut")
 let { recommendedControlPresets, getControlsPresetBySelectedType, getCurrentHelpersMode,
-  canChangeHelpersMode } = require("%scripts/controls/controlsUtils.nut")
+  canChangeHelpersMode, gui_modal_controlsWizard } = require("%scripts/controls/controlsUtils.nut")
 let { joystickSetCurSettings, setShortcutsAndSaveControls,
   joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
@@ -60,7 +60,6 @@ let { getControlsPresetFilename, parseControlsPresetName, getHighestVersionContr
 } = require("%scripts/controls/controlsPresets.nut")
 let { getCurControlsPreset, isPresetChanged } = require("%scripts/controls/controlsState.nut")
 let { getShortcutById, shortcutsList } = require("%scripts/controls/shortcutsList/shortcutsList.nut")
-let { gui_modal_controlsWizard } = require("%scripts/controls/controlsWizard.nut")
 let { setHelpersModeAndOption } = require("%scripts/controls/controlsTypeUtils.nut")
 
 let { restoreHardcodedKeys, clearCurControlsPresetGuiOptions, setAndCommitCurControlsPreset,

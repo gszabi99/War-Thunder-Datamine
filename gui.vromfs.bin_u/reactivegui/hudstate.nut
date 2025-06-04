@@ -20,6 +20,7 @@ let hudState = {
   canZoom = false
   isUnitAlive = false
   isInKillerCamera = isInKillerCam()
+  playerUnitName = ""
 }.map(@(val, key) mkWatched(persist, key, val))
 
 let { isInKillerCamera, isVisibleDmgIndicator } = hudState

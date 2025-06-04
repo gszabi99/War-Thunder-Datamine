@@ -4105,179 +4105,91 @@
       {
         "index": 0,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": [
-          {
-            "name": "gau_8a_common",
-            "ShowNodes": {
-              "node": [
-                "an_ale_40_r",
-                "an_ale_40_l"
-              ]
-            },
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/weapons/cannonGAU_8A.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 1174,
-                "spread": 1.0,
-                "rotationAnimScale": "gun_rotate_01:CRS"
-              },
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "parkInDeadzone": false,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -90.0,
-                    90.0
-                  ],
-                  "pitch": [
-                    -90.0,
-                    90.0
-                  ]
-                }
-              },
-              {
-                "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 120,
-                "external": true,
-                "separate": true,
-                "bulletsCartridge": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
-                "emitter": "emtr_flare4",
-                "bullets": 120,
-                "external": true,
-                "separate": true,
-                "bulletsCartridge": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 120,
-                "external": true,
-                "separate": true,
-                "bulletsCartridge": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
-                "emitter": "emtr_flare3",
-                "bullets": 120,
-                "external": true,
-                "separate": true,
-                "bulletsCartridge": 1
-              }
+        "WeaponPreset": {
+          "name": "gau_8a_common",
+          "ShowNodes": {
+            "node": [
+              "an_ale_40_r",
+              "an_ale_40_l"
             ]
           },
-          {
-            "name": "gau_8a_maw_common",
-            "reqModification": "MAW_system_heli_false_thermal_targets",
-            "ShowNodes": {
-              "node": [
-                "an_ale_40_r",
-                "an_ale_40_l"
-              ]
+          "Weapon": [
+            {
+              "trigger": "cannon",
+              "blk": "gameData/weapons/cannonGAU_8A.blk",
+              "emitter": "flare1",
+              "flash": "flare1",
+              "dm": "cannon1_dm",
+              "bullets": 1174,
+              "spread": 1.0,
+              "rotationAnimScale": "gun_rotate_01:CRS"
             },
-            "Weapon": [
-              {
-                "trigger": "cannon",
-                "blk": "gameData/weapons/cannonGAU_8A.blk",
-                "emitter": "flare1",
-                "flash": "flare1",
-                "dm": "cannon1_dm",
-                "bullets": 1174,
-                "spread": 1.0,
-                "rotationAnimScale": "gun_rotate_01:CRS"
+            {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic1_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "parkInDeadzone": false,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic1_turret",
+                "gun": "optic1_gun",
+                "mainTurret": true
               },
-              {
-                "dummy": true,
-                "trigger": "gunner0",
-                "triggerGroup": "primary",
-                "blk": "gameData/Weapons/dummy_weapon.blk",
-                "emitter": "optic1_gun",
-                "defaultYaw": 0.0,
-                "defaultPitch": 0.0,
-                "speedYaw": 25.0,
-                "speedPitch": 25.0,
-                "parkInDeadzone": false,
-                "aimForOperatedShell": true,
-                "turret": {
-                  "head": "optic1_turret",
-                  "gun": "optic1_gun",
-                  "mainTurret": true
-                },
-                "limits": {
-                  "yaw": [
-                    -90.0,
-                    90.0
-                  ],
-                  "pitch": [
-                    -90.0,
-                    90.0
-                  ]
-                }
-              },
-              {
-                "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
-                "emitter": "emtr_flare1",
-                "bullets": 120,
-                "external": true,
-                "separate": true,
-                "bulletsCartridge": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
-                "emitter": "emtr_flare4",
-                "bullets": 120,
-                "external": true,
-                "separate": true,
-                "bulletsCartridge": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
-                "emitter": "emtr_flare2",
-                "bullets": 120,
-                "external": true,
-                "separate": true,
-                "bulletsCartridge": 1
-              },
-              {
-                "trigger": "countermeasures",
-                "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
-                "emitter": "emtr_flare3",
-                "bullets": 120,
-                "external": true,
-                "separate": true,
-                "bulletsCartridge": 1
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
               }
-            ]
-          }
-        ]
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 120,
+              "external": true,
+              "separate": true,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+              "emitter": "emtr_flare4",
+              "bullets": 120,
+              "external": true,
+              "separate": true,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+              "emitter": "emtr_flare2",
+              "bullets": 120,
+              "external": true,
+              "separate": true,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+              "emitter": "emtr_flare3",
+              "bullets": 120,
+              "external": true,
+              "separate": true,
+              "bulletsCartridge": 1
+            }
+          ]
+        }
       },
       {
         "index": 1,
@@ -7027,18 +6939,13 @@
     },
     "maw_countermeasures_launcher_chaff": {},
     "MAW_system_heli_false_thermal_targets_large": {
+      "deactivationIsAllowed": true,
       "modClass": "armor",
       "turn_it_off": false,
       "invertEnableLogic": false,
       "group": "countermeasures",
       "tier": 1,
       "effects": {
-        "commonWeapons": {
-          "Weapon": {
-            "slot": 0,
-            "preset": "gau_8a_maw_common"
-          }
-        },
         "sensors": {
           "sensor": [
             {

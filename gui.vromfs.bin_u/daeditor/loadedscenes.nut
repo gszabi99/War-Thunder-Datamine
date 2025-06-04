@@ -192,7 +192,7 @@ function matchSavedEntity(eid, isSaved) {
 }
 
 local entitySourceStrings = ["Saved", "Generated", "Scene", "All entities"]
-initEntitySources?(entitySourceStrings, entitySourceStrings[2])
+initEntitySources?(entitySourceStrings, entitySourceStrings[3])
 
 function filterEntities() {
   local entities = allEntities.get()

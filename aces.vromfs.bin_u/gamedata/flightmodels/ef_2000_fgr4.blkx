@@ -2916,6 +2916,10 @@
         "blk": "gameData/FlightModels/weaponPresets/typhoon_fgr4_aim_120.blk"
       },
       {
+        "name": "typhoon_fgr4_aim_120c",
+        "blk": "gameData/FlightModels/weaponPresets/typhoon_fgr4_aim_120c.blk"
+      },
+      {
         "name": "typhoon_fgr4_1000lb_mk13",
         "blk": "gameData/FlightModels/weaponPresets/typhoon_fgr4_1000lb_mk13.blk"
       },
@@ -3377,6 +3381,28 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
+              "emitter": "aim_120a_005",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "aim_120c_slot2",
+            "reqModification": "us_aim_120c",
+            "ShowNodes": {
+              "node": [
+                "pylon_4",
+                "mfrl_001"
+              ]
+            },
+            "HideNodes": {
+              "node": "pylon_4_off"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
               "emitter": "aim_120a_005",
               "bullets": 1
             }
@@ -3848,37 +3874,66 @@
         "tier": 8,
         "order": 9,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "missile_type_f_air_to_air_midrange",
-          "name": "aim_120_slot5",
-          "reqModification": "us_aim_120b",
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
-            "emitter": "aim_120a_002",
-            "bullets": 1
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120_slot5",
+            "reqModification": "us_aim_120b",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
+              "emitter": "aim_120a_002",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "aim_120c_slot5",
+            "reqModification": "us_aim_120c",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
+              "emitter": "aim_120a_002",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 6,
         "tier": 7,
         "order": 11,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "missile_type_f_air_to_air_midrange",
-          "name": "aim_120_default_slot6",
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
-            "emitter": "aim_120a_001",
-            "bullets": 1
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120_default_slot6",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
+              "emitter": "aim_120a_001",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "aim_120c_default_slot6",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5_default.blk",
+              "emitter": "aim_120a_001",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 7,
@@ -3941,37 +3996,66 @@
         "tier": 5,
         "order": 12,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "missile_type_f_air_to_air_midrange",
-          "name": "aim_120_default_slot8",
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
-            "emitter": "aim_120a_003",
-            "bullets": 1
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120_default_slot8",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b_default.blk",
+              "emitter": "aim_120a_003",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "aim_120c_default_slot8",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5_default.blk",
+              "emitter": "aim_120a_003",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 9,
         "tier": 4,
         "order": 10,
         "notUseforDisbalanceCalculation": true,
-        "WeaponPreset": {
-          "iconType": "missile_type_f_air_to_air_midrange",
-          "name": "aim_120_slot9",
-          "reqModification": "us_aim_120b",
-          "Weapon": {
-            "trigger": "aam",
-            "external": true,
-            "separate": true,
-            "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
-            "emitter": "aim_120a_004",
-            "bullets": 1
+        "WeaponPreset": [
+          {
+            "iconType": "missile_type_f_air_to_air_midrange",
+            "name": "aim_120_slot9",
+            "reqModification": "us_aim_120b",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
+              "emitter": "aim_120a_004",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "aim_120c_slot9",
+            "reqModification": "us_aim_120c",
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
+              "emitter": "aim_120a_004",
+              "bullets": 1
+            }
           }
-        }
+        ]
       },
       {
         "index": 10,
@@ -4425,6 +4509,28 @@
               "external": true,
               "separate": true,
               "blk": "gameData/Weapons/rocketGuns/us_aim_120b.blk",
+              "emitter": "aim_120a_006",
+              "bullets": 1
+            }
+          },
+          {
+            "iconType": "missile_type_s_air_to_air_midrange",
+            "name": "aim_120c_slot12",
+            "reqModification": "us_aim_120c",
+            "ShowNodes": {
+              "node": [
+                "pylon_3",
+                "mfrl_002"
+              ]
+            },
+            "HideNodes": {
+              "node": "pylon_3_off"
+            },
+            "Weapon": {
+              "trigger": "aam",
+              "external": true,
+              "separate": true,
+              "blk": "gameData/Weapons/rocketGuns/us_aim_120c_5.blk",
               "emitter": "aim_120a_006",
               "bullets": 1
             }
@@ -4993,6 +5099,7 @@
     "maw_countermeasures_launcher_chaff": {},
     "maw_countermeasures_launcher_chaff_large": {},
     "MAW_system_heli_false_thermal_targets_large": {
+      "deactivationIsAllowed": true,
       "modClass": "armor",
       "turn_it_off": false,
       "invertEnableLogic": false,
@@ -5057,22 +5164,17 @@
       "reqModification": "bk_27_belt_pack",
       "tier": 3
     },
-    "gr_litening_iii_pod": {
-      "modClass": "weapon",
-      "tier": 1
-    },
-    "uk_paveway_iv": {
-      "reqModification": "gr_litening_iii_pod",
-      "tier": 2,
+    "us_aim_9l": {
+      "tier": 1,
       "modClass": "weapon"
     },
-    "uk_mk_13_18": {
-      "reqModification": "uk_paveway_iv",
+    "us_aim_9m": {
+      "reqModification": "us_aim_9l",
       "tier": 3,
       "modClass": "weapon"
     },
-    "uk_brimstone_dm": {
-      "reqModification": "uk_mk_13_18",
+    "us_aim_120b": {
+      "reqModification": "us_aim_9m",
       "tier": 4,
       "modClass": "weapon"
     },
@@ -5090,17 +5192,28 @@
       "tier": 3,
       "prevModification": "us_gbu54b"
     },
-    "us_aim_9l": {
-      "tier": 1,
+    "us_aim_120c": {
+      "prevModification": "us_2000lb_mk84",
+      "reqModification": "us_aim_120b",
+      "tier": 4,
       "modClass": "weapon"
     },
-    "us_aim_9m": {
-      "reqModification": "us_aim_9l",
+    "gr_litening_iii_pod": {
+      "modClass": "weapon",
+      "tier": 1
+    },
+    "uk_paveway_iv": {
+      "reqModification": "gr_litening_iii_pod",
+      "tier": 2,
+      "modClass": "weapon"
+    },
+    "uk_mk_13_18": {
+      "reqModification": "uk_paveway_iv",
       "tier": 3,
       "modClass": "weapon"
     },
-    "us_aim_120b": {
-      "reqModification": "us_aim_9m",
+    "uk_brimstone_dm": {
+      "reqModification": "uk_mk_13_18",
       "tier": 4,
       "modClass": "weapon"
     }
