@@ -24,11 +24,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -42,11 +44,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -60,11 +64,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -78,11 +84,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -126,8 +134,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "dummy_aaa"
+          "squad_members": "dummy_aaa",
+          "object_marking": 0
         }
       },
       {
@@ -155,8 +163,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "dummy_aaa"
+          "squad_members": "dummy_aaa",
+          "object_marking": 0
         }
       }
     ],
@@ -198,6 +206,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 2,
         "count": 1,
@@ -570,6 +580,87 @@
       ],
       "objLayer": 3,
       "props": {}
+    },
+    "top_spawns_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          26870.1,
+          0.0,
+          -26870.2
+        ],
+        [
+          0.0,
+          38000.1,
+          0.0
+        ],
+        [
+          26870.2,
+          0.0,
+          26870.1
+        ],
+        [
+          -260.943,
+          500.0,
+          423.57
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_air_spawn_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          214.308,
+          0.0,
+          -209.935
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          209.935,
+          0.0,
+          214.308
+        ],
+        [
+          -13694.1,
+          499.984,
+          13856.1
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_air_spawn_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -221.185,
+          0.0,
+          202.678
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -202.678,
+          0.0,
+          -221.185
+        ],
+        [
+          13164.8,
+          500.0,
+          -13002.5
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
     }
   },
   "objLayers": {
@@ -584,10 +675,10 @@
         "enabled": true
       },
       {
-        "enabled": false
+        "enabled": true
       },
       {
-        "enabled": false
+        "enabled": true
       }
     ]
   },

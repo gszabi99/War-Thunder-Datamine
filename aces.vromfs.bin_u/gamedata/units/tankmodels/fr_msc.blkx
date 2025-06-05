@@ -120,12 +120,6 @@
         "createSecondaryShatters": false,
         "genericArmorQuality": 0.2,
         "cumulativeArmorQuality": 0.8
-      },
-      "turret_01_bottom_dm": {
-        "armorThickness": 50.0,
-        "createSecondaryShatters": false,
-        "genericArmorQuality": 0.7,
-        "cumulativeArmorQuality": 0.85
       }
     },
     "turret_composite_armor": {
@@ -2381,6 +2375,79 @@
             0.0
           ]
         }
+      },
+      {
+        "trigger": "gunner2",
+        "triggerGroup": "machinegun",
+        "blk": "gameData/Weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
+        "emitter": "emtr_mg_flame_04",
+        "flash": "emtr_mg_flame_04",
+        "useEmitter": true,
+        "barrelDP": "gun_barrel_02_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "parkInDeadzone": false,
+        "speedYaw": 60.0,
+        "speedPitch": 60.0,
+        "bullets": 2000,
+        "isBulletBelt": true,
+        "fireConeAngle": 5.0,
+        "ChainfireTime": 0.5,
+        "DelayAfterShoot": 2.0,
+        "accuracyAir": 1.5,
+        "accuracyGnd": 0.0,
+        "errMeasureVel": 0.0,
+        "errMeasureVelFast": 0.0,
+        "errMeasureVelFwdShift": 1.5,
+        "errMeasureVelDir": 0.0,
+        "errTargettingOn100kmph": 0.0,
+        "errTargetting": 3.0,
+        "errExplTime": 0.0,
+        "forestallTime": 0.1,
+        "turret": {
+          "head": "bone_mg_aa_h",
+          "gun": "bone_mg_aa_v",
+          "gunnerDm": "commander_dm",
+          "hasNightVision": false
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -10.0,
+            40.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -90.0,
+            -10.0,
+            40.0
+          ],
+          "lim2": [
+            [
+              -90.0,
+              -60.0,
+              -6.0,
+              40.0
+            ],
+            [
+              -60.0,
+              -30.0,
+              10.0,
+              40.0
+            ]
+          ],
+          "lim3": [
+            -30.0,
+            180.0,
+            -10.0,
+            40.0
+          ]
+        }
       }
     ]
   },
@@ -3486,6 +3553,79 @@
                 "pitch": [
                   -0.0,
                   0.0
+                ]
+              }
+            },
+            {
+              "trigger": "gunner2",
+              "triggerGroup": "machinegun",
+              "blk": "gameData/Weapons/groundModels_weapons/7_62mm_AAN_F1_user_machinegun.blk",
+              "emitter": "emtr_mg_flame_04",
+              "flash": "emtr_mg_flame_04",
+              "useEmitter": true,
+              "barrelDP": "gun_barrel_02_dm",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "parkInDeadzone": false,
+              "speedYaw": 60.0,
+              "speedPitch": 60.0,
+              "bullets": 2000,
+              "isBulletBelt": true,
+              "fireConeAngle": 5.0,
+              "ChainfireTime": 0.5,
+              "DelayAfterShoot": 2.0,
+              "accuracyAir": 1.5,
+              "accuracyGnd": 0.0,
+              "errMeasureVel": 0.0,
+              "errMeasureVelFast": 0.0,
+              "errMeasureVelFwdShift": 1.5,
+              "errMeasureVelDir": 0.0,
+              "errTargettingOn100kmph": 0.0,
+              "errTargetting": 3.0,
+              "errExplTime": 0.0,
+              "forestallTime": 0.1,
+              "turret": {
+                "head": "bone_mg_aa_h",
+                "gun": "bone_mg_aa_v",
+                "gunnerDm": "commander_dm",
+                "hasNightVision": false
+              },
+              "limits": {
+                "yaw": [
+                  -180.0,
+                  180.0
+                ],
+                "pitch": [
+                  -10.0,
+                  40.0
+                ]
+              },
+              "limitsTable": {
+                "lim1": [
+                  -180.0,
+                  -90.0,
+                  -10.0,
+                  40.0
+                ],
+                "lim2": [
+                  [
+                    -90.0,
+                    -60.0,
+                    -6.0,
+                    40.0
+                  ],
+                  [
+                    -60.0,
+                    -30.0,
+                    10.0,
+                    40.0
+                  ]
+                ],
+                "lim3": [
+                  -30.0,
+                  180.0,
+                  -10.0,
+                  40.0
                 ]
               }
             },

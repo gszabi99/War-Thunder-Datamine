@@ -9,7 +9,6 @@ let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { saveLocalSharedSettings, loadLocalAccountSettings } = require("%scripts/clientState/localProfile.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
-let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let { defer, setTimeout, clearTimer } = require("dagor.workcycle")
 let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
@@ -65,11 +64,6 @@ let { openAchievementsPage } = require("%scripts/user/achievements/achievementsH
 
 require("%scripts/user/userCard/userCard.nut") 
 
-let profileSelectedFiltersCache = {
-  unit = []
-  rank = []
-  country = []
-}
 let seenUnlockMarkers = seenList.get(SEEN.UNLOCK_MARKERS)
 let seenManualUnlocks = seenList.get(SEEN.MANUAL_UNLOCKS)
 
@@ -106,12 +100,8 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   curPlayerMode = 0
   curSubFilter = -1
 
-  airStatsList = null
   statsType = ETTI_VALUE_INHISORY
-  statsCountries = null
-  statsSortBy = ""
-  statsSortReverse = false
-  curStatsPage = 0
+
   pending_logout = false
   currentShowcaseName = ""
 
@@ -175,9 +165,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       return this.goBack()
 
     addGamercardScene(this.scene) 
-    this.countryStats = profileSelectedFiltersCache.country
-    this.unitStats = profileSelectedFiltersCache.unit
-    this.rankStats = profileSelectedFiltersCache.rank
 
     this.isOwnStats = true
     this.scene.findObject("profile_update").setUserData(this)
@@ -335,7 +322,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       btn_codeApp = isPlatformPC && !is_gdk && hasFeature("AllowExternalLink") &&
         !havePlayerTag("gjpass") && isInMenu.get() && isProfileOpened && !this.isEditModeEnabled
       btn_EmailRegistration = isProfileOpened && (canEmailRegistration() || needShowGuestEmailRegistration()) && !this.isEditModeEnabled
-      paginator_place = (sheet == "Statistics") && this.airStatsList && (this.airStatsList.len() > this.statsPerPage)
+      paginator_place = sheet == "Statistics"
       btn_achievements_url = (sheet == "UnlockAchievement") && hasFeature("AchievementsUrl")
         && hasFeature("AllowExternalLink")
       btn_SkinPreview = isInMenu.get() && sheet == "UnlockSkin"
@@ -358,6 +345,10 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
           name = getCurCircuitOverride("operatorName", "Gaijin.Net") }))
 
     this.updateEditProfileButtons()
+  }
+
+  function onEventUpdatePaginatorPlace(params) {
+    showObjById("paginator_place", params.visible, this.scene)
   }
 
   function updateEditProfileButtons() {
@@ -527,8 +518,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       this.showSheetDiv("usercard")
     }
     else if (sheet == "Statistics") {
-      this.showSheetDiv("records")
-      this.fillAirStats()
+      this.showServiceRecordsSheet()
     }
     else if (sheet == "Records") {
       this.showSheetDiv("stats")
@@ -815,7 +805,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
   function onEventMyStatsUpdated(_params) {
     let sheet = this.getCurSheet()
     if (sheet == "Statistics")
-      this.fillAirStats()
+      this.showServiceRecordsSheet()
 
     if (this.isPageHasProfileHandler(sheet))
       this.updateStats()
@@ -825,22 +815,6 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function onEventClanInfoUpdate(_params) {
     this.fillClanInfo(getProfileInfo())
-  }
-
-  function initAirStats() {
-    let myStats = getStats()
-    if (!myStats || !checkObj(this.scene))
-      return
-
-    this.initAirStatsPage()
-  }
-
-  function fillAirStats() {
-    let myStats = getStats()
-    if (!this.airStatsInited || !myStats || !myStats.userstat)
-      return this.initAirStats()
-
-    this.fillAirStatsScene(myStats.userstat)
   }
 
   function getPlayerStats() {
@@ -1276,10 +1250,6 @@ function openProfileFromPromo(params, sheet = null) {
 }
 
 addPromoAction("profile", @(_handler, params, _obj) openProfileFromPromo(params))
-
-addListenersWithoutEnv({
-  SignOut = @(_p) profileSelectedFiltersCache.each(@(f) f.clear())
-})
 
 return {
   guiStartProfile

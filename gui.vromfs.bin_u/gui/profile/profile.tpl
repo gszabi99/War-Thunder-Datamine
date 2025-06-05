@@ -383,35 +383,26 @@ root {
 
         profileContent {
           id:t='records-container'
-          flow:t='vertical'
-          total-input-transparent:t='yes'
-          css-hier-invalidate:t='yes'
-          include "%gui/profile/profileRecords.blk"
         }
 
         profileContent {
           id:t='medals-container'
-          size:t='pw, fh'
         }
 
         profileContent {
           id:t='decals-container'
-          size:t='pw, fh'
         }
 
         profileContent {
           id:t='skins-container'
-          size:t='pw, fh'
         }
 
         profileContent {
           id:t='achievements-container'
-          size:t='pw, fh'
         }
 
         profileContent {
           id:t='collections-container'
-          size:t='pw, fh'
         }
 
         frameSeparator {

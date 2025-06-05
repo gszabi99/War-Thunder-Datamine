@@ -43,7 +43,10 @@
   "destroysTrees": true,
   "type": "typeSPAA",
   "radarAnimVar": "radar_drive",
-  "radarDeployTime": 0.0,
+  "radarDeployTime": [
+    0.0,
+    2.0
+  ],
   "radarAntenaSpeed": 720.0,
   "radarCanLockTargetFromTPV": false,
   "sensorTargetTurretTrack": false,
@@ -1935,12 +1938,12 @@
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "optic_gun_dm",
-        "speedYaw": 25.0,
-        "speedPitch": 25.0,
+        "speedYaw": 80.0,
+        "speedPitch": 80.0,
         "bullets": 1,
         "turret": {
-          "head": "bone_camera_gunner",
-          "gun": "bone_camera_gunner"
+          "head": "bone_roll_34",
+          "gun": "bone_roll_33"
         },
         "limits": {
           "yaw": [
@@ -1954,7 +1957,7 @@
         }
       },
       {
-        "trigger": "gunner0",
+        "trigger": "gunner1",
         "triggerGroup": "primary",
         "blk": "gameData/Weapons/groundModels_weapons/160mm_spyder_launcher_user_cannon.blk",
         "useEmitter": true,
@@ -1988,8 +1991,8 @@
         "DelayAfterShoot": 2.0,
         "fireConeAngle": 1.0,
         "targetAngularRateMax": 5.0,
-        "AttackMaxDistance": 12000.0,
-        "AttackMaxRadius": 12000.0,
+        "AttackMaxDistance": 15000.0,
+        "AttackMaxRadius": 15000.0,
         "AttackMaxHeight": 6000.0,
         "AttackMinHeight": 0.0,
         "accuracyAir": 1.5,
@@ -2030,7 +2033,8 @@
     "animatedBones": {
       "node": [
         "bone_roll_26",
-        "bone_gun"
+        "bone_gun",
+        "bone_roll_31"
       ]
     }
   },
@@ -3257,15 +3261,16 @@
     "sightName": "roland_sight",
     "headPos": [
       0.0,
-      4.15,
+      5.0,
       -15.0
     ],
     "headPosOnShooting": [
-      -0.2,
-      5.5,
-      0.5
+      3.75,
+      3.75,
+      0.25
     ],
-    "detectionHeight": 4.15
+    "detectionHeight": 5.15,
+    "bone_turret": ""
   },
   "optics": {
     "driverReticule": "car_driver_optics"
@@ -3416,7 +3421,7 @@
   },
   "sensors": {
     "sensor": {
-      "blk": "gameData/sensors/de_hensoldt_trml_4b.blk",
+      "blk": "gameData/sensors/il_spyder_search.blk",
       "turretIndex": -1,
       "designationFromBody": true,
       "designationTurretIndex": -1,
@@ -3424,7 +3429,7 @@
         "antenna_target_location_dm",
         "electronic_equipment_dm"
       ],
-      "radarParkingAzimuth": 180.0
+      "radarParkingAzimuth": 0.0
     }
   }
 }

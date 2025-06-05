@@ -6,56 +6,39 @@ from "%scripts/utils_sa.nut" import is_myself_anyof_moderators, buildTableRow
 
 let { g_difficulty } = require("%scripts/difficulty.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
-let u = require("%sqStdLibs/helpers/u.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { loadLocalByAccount, saveLocalByAccount
 } = require("%scripts/clientState/localProfileDeprecated.nut")
 let DataBlock = require("DataBlock")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { isXBoxPlayerName, canInteractCrossConsole, isPlatformSony, isPlatformXbox,
-  isPlayerFromPS4
-} = require("%scripts/clientState/platform.nut")
-let { hasAllFeatures } = require("%scripts/user/features.nut")
+  isPlayerFromPS4 } = require("%scripts/clientState/platform.nut")
 let externalIDsService = require("%scripts/user/externalIdsService.nut")
-let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let psnSocial = require("sony.social")
-let { RESET_ID, openPopupFilter } = require("%scripts/popups/popupFilterWidget.nut")
-let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
-let { fillProfileSummary, getExternalPlayerStatsFromBlk,
-  airStatsListConfig } = require("%scripts/user/userInfoStats.nut")
-let { shopCountriesList } = require("%scripts/shop/shopCountriesList.nut")
+let { fillProfileSummary, getExternalPlayerStatsFromBlk } = require("%scripts/user/userInfoStats.nut")
 let { APP_ID } = require("app")
 let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
-let { floor } = require("math")
-let { utf8ToLower } = require("%sqstd/string.nut")
 let { addContact, removeContact } = require("%scripts/contacts/contactsState.nut")
 let { encode_uri_component } = require("url")
 let { get_local_mplayer } = require("mission")
 let { show_profile_card } = require("%gdkLib/impl/user.nut")
-let { getCountryIcon } = require("%scripts/options/countryFlagsPreset.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getEsUnitType } = require("%scripts/unit/unitParams.nut")
 let { userIdStr } = require("%scripts/user/profileStates.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
-let { setTimeout, clearTimer } = require("dagor.workcycle")
+let { setTimeout } = require("dagor.workcycle")
 let { openNickEditBox, getCustomNick } = require("%scripts/contacts/customNicknames.nut")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 let { setDoubleTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { setBreadcrumbGoBackParams } = require("%scripts/breadcrumb.nut")
 let { isInBattleState } = require("%scripts/clientState/clientStates.nut")
-let { getLbItemCell } = require("%scripts/leaderboard/leaderboardHelpers.nut")
 let { getPlayerName } = require("%scripts/user/remapNick.nut")
 let { forceRequestUserInfoData, getUserInfo } = require("%scripts/user/usersInfoManager.nut")
 let { getShowcaseTitleViewData, getShowcaseViewData, trySetBestShowcaseMode } = require("%scripts/user/profileShowcase.nut")
 let { fillGamercard } = require("%scripts/gamercard/fillGamercard.nut")
 let { addGamercardScene } = require("%scripts/gamercard/gamercardHelpers.nut")
 let { getCurrentShopDifficulty } = require("%scripts/gameModes/gameModeManagerState.nut")
-let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
 let { checkCanComplainAndProceed } = require("%scripts/user/complaints.nut")
 let { get_mp_session_id_str } = require("multiplayer")
-let { generatePaginator } = require("%scripts/viewUtils/paginator.nut")
 let { checkClanTagForDirtyWords, ps4CheckAndReplaceContentDisabledText } = require("%scripts/clans/clanTextInfo.nut")
 let { getContact } = require("%scripts/contacts/contacts.nut")
 let { gui_modal_ban, gui_modal_complain } = require("%scripts/penitentiary/banhammer.nut")
@@ -63,6 +46,7 @@ let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nu
 let g_font = require("%scripts/options/fonts.nut")
 let { openMedalsPage } = require("%scripts/user/medals/medalsHandler.nut")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
+let { openServiceRecordsPage } = require("%scripts/user/serviceRecords/serviceRecordsHandler.nut")
 
 function getCurrentWndDifficulty() {
   let diffCode = loadLocalByAccount("wnd/diffMode", getCurrentShopDifficulty().diffCode)
@@ -87,25 +71,13 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   tabImageNameTemplate = "#ui/gameuiskin#sh_%s.svg"
   tabLocalePrefix = "#mainmenu/btn"
 
-  statsPerPage = 0
   showLbPlaces = 0
 
-  airStatsInited = false
   profileInited = false
 
-  airStatsList = null
   statsType = ETTI_VALUE_INHISORY
   statsMode = ""
-  countryStats = null
-  unitStats = null
-  rankStats = null
-  allRanksStats = null
-  availableUTypes = null
-  availableCountries = null
-  availableRanks = null
-  statsSortBy = ""
-  statsSortReverse = false
-  curStatsPage = 0
+
   player = null
   searchPlayerByNick = false
   infoReady = false
@@ -115,15 +87,9 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   lbModesList = null
 
   curPlayerExternalIds = null
-  isFilterVisible = false
-
-  filterTypes = {}
-  applyFilterTimer = null
   isProfileInited = false
 
-  nameStats = ""
   isMyPage = false
-  curFilter = null
   terseInfo = null
   showcaseScale = 1
   isSmallSize = false
@@ -131,6 +97,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   currentAvatarFrameId = null
   currentAvatarId = null
   medalsPageHandlerWeak = null
+  serviceRecordsPageHandlerWeak = null
   filterCountryName = ""
 
   function getSceneTplView() {
@@ -307,16 +274,19 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function showSheetDiv(name) {
     local divObj = null
+    local showed_div = null
     foreach (div in ["usercard", "records", "stats", "medals"]) {
       let show = div == name
       divObj = this.scene.findObject($"{div}-container")
       if (checkObj(divObj)) {
         divObj.show(show)
-        if (show)
+        if (show) {
           this.updateDifficultySwitch(divObj)
+          showed_div = divObj
+        }
       }
     }
-    return divObj
+    return showed_div
   }
 
   function isPageHasProfileHandler(sheet) {
@@ -342,10 +312,10 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     else if (curSheet == "Records") {
       this.showSheetDiv("stats")
       this.fillModeListBox(this.scene.findObject("stats-container"), this.curMode)
-    } else if (curSheet == "Statistics") {
-      this.showSheetDiv("records")
-      this.fillStatistics()
-    } else if (curSheet == "Medal")
+    }
+    else if (curSheet == "Statistics")
+      this.showServiceRecordsSheet()
+    else if (curSheet == "Medal")
       this.showMedalsSheet()
 
     this.updateButtons()
@@ -460,20 +430,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     switchObj.setValue(clamp(this.curMode, 0, childrenCount - 1))
   }
 
-  function onStatsModeChange(obj) {
-    if (!checkObj(obj))
-      return
-
-    let value = obj.getValue()
-    if (this.curMode == value)
-      return
-
-    this.curMode = value
-    this.setCurrentWndDifficulty(this.curMode)
-    this.updateCurrentStatsMode(value)
-    this.fillAirStats()
-  }
-
   function getPlayerStats() {
     return this.player
   }
@@ -483,328 +439,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.statsType = obj.getValue() ? ETTI_VALUE_INHISORY : ETTI_VALUE_TOTAL
     saveLocalByAccount("leaderboards_type", this.statsType)
-  }
-
-  function fillStatistics() {
-    if (!checkObj(this.scene))
-      return
-    this.fillAirStats()
-  }
-
-  function fillAirStats() {
-    if (!checkObj(this.scene))
-      return
-
-    if (!this.airStatsInited)
-      return this.initAirStats()
-
-    this.fillAirStatsScene(this.player.userstat)
-  }
-
-  function initAirStats() {
-    this.countryStats = []
-    foreach (country in shopCountriesList)
-      this.countryStats.append(country)
-    this.initAirStatsPage()
-  }
-
-  function initAirStatsPage() {
-    let sObj = this.scene.findObject("records-container")
-    sObj.findObject("stats_loading").show(false)
-
-    let modesObj = sObj.findObject("modes_list")
-    local selDiff = null
-    local selIdx = -1
-    let view = { items = [] }
-    foreach (diff in g_difficulty.types) {
-      if (!diff.isAvailable())
-        continue
-      view.items.append({ text = diff.getLocName() })
-      if (!selDiff || this.statsMode == diff.egdLowercaseName) {
-        selDiff = diff
-        selIdx = view.items.len() - 1
-      }
-    }
-    this.statsMode = selDiff.egdLowercaseName
-
-    let data = handyman.renderCached("%gui/commonParts/shopFilter.tpl", view)
-    this.guiScene.replaceContentFromText(modesObj, data, data.len(), this)
-    modesObj.setValue(selIdx)
-
-    this.fillUnitListCheckBoxes()
-    this.fillCountriesCheckBoxes()
-    this.fillRanksCheckBoxes()
-    this.nameStats = ""
-
-    let nestObj = this.scene.findObject("filter_nest")
-    openPopupFilter({
-      scene = nestObj
-      onChangeFn = this.onFilterCbChange.bindenv(this)
-      filterTypesFn = this.getFiltersView.bindenv(this)
-      popupAlign = "bottom-right"
-    })
-
-    this.airStatsInited = true
-    this.fillAirStats()
-  }
-
-  function fillUnitListCheckBoxes() {
-    this.availableUTypes = {}
-    if (!this.isOwnStats)
-      this.unitStats = []
-
-    foreach (unitType in unitTypes.types) {
-      if (!unitType.isAvailable())
-        continue
-
-      let typeIdx = unitType.esUnitType
-      this.availableUTypes[unitType.armyId] <- {
-        id    = $"unit_{typeIdx}"
-        idx   = typeIdx
-        image = unitType.testFlightIcon
-        text  = unitType.getArmyLocName()
-      }
-    }
-    this.filterTypes["unit"] <- { referenceArr = this.availableUTypes selectedArr = this.unitStats }
-  }
-
-  function fillCountriesCheckBoxes() {
-    this.availableCountries = {}
-    foreach (idx, inst in shopCountriesList)
-      this.availableCountries[inst] <- {
-        id    = inst
-        idx   = idx
-        image = getCountryIcon(inst)
-        text  = loc(inst)
-      }
-
-    if (!this.countryStats && !this.isOwnStats)
-      this.countryStats = []
-
-    this.filterTypes["country"] <- { referenceArr = this.availableCountries selectedArr = this.countryStats }
-  }
-
-  function fillRanksCheckBoxes() {
-    this.availableRanks = {}
-    if (!this.isOwnStats)
-      this.rankStats = []
-    this.allRanksStats = []
-    for (local i = 1; i <= MAX_COUNTRY_RANK; i++) {
-      this.availableRanks[i] <- {
-        id    = $"rank_{i}"
-        idx   = i
-        text  = $"{loc("shop/age")} {get_roman_numeral(i)}"
-      }
-      this.allRanksStats.append(i)
-    }
-
-    this.filterTypes["rank"] <- { referenceArr = this.availableRanks selectedArr = this.rankStats }
-  }
-
-  function getFiltersView() {
-    let res = []
-    foreach (tName in ["country", "unit", "rank"]) {
-      let selectedArr = this.filterTypes[tName].selectedArr
-      let referenceArr = this.filterTypes[tName].referenceArr
-      let view = { checkbox = [] }
-      foreach (idx, inst in referenceArr)
-        view.checkbox.append({
-          id = inst.id
-          idx = inst.idx
-          image = inst?.image
-          text = inst.text
-          value = isInArray(idx, selectedArr)
-        })
-
-      view.checkbox.sort(@(a, b) a.idx <=> b.idx)
-      res.append(view)
-    }
-
-    return res
-  }
-
-  function onFilterCbChange(objId, tName, value) {
-    let selectedArr = this.filterTypes[tName].selectedArr
-    let referenceArr = this.filterTypes[tName].referenceArr
-    let isReset = objId == RESET_ID
-
-    foreach (idx, inst in referenceArr) {
-      if (!isReset && inst.id != objId)
-        continue
-
-      if (value)
-        u.appendOnce(idx, selectedArr)
-      else
-        this.removeItemFromList(idx, selectedArr)
-    }
-
-    this.fillAirStats()
-  }
-
-  function fillAirStatsScene(airStats) {
-    if (!checkObj(this.scene))
-      return
-
-    this.airStatsList = []
-    
-    let filterUnits = this.unitStats.len() > 0 ? this.unitStats
-      : unitTypes.types.map(@(t) t.isAvailable() ? t.armyId : null).filter(@(t) t)
-    let filterCountry = this.countryStats.len() > 0 ? this.countryStats : shopCountriesList
-    let filterRank = this.rankStats.len() > 0 ? this.rankStats : this.allRanksStats
-    let filterName = this.nameStats
-
-    local checkList = []
-    let typeName = "total"
-    let modeName = this.statsMode
-    if ((modeName in airStats) && (typeName in airStats[modeName]))
-      checkList = airStats[modeName][typeName]
-    foreach (item in checkList) {
-      let air = getAircraftByName(item.name)
-      let airLocName = air ? getUnitName(air, true) : ""
-      let unitTypeShopId = unitTypes.getByEsUnitType(getEsUnitType(air)).armyId
-      if (!isInArray(unitTypeShopId, filterUnits))
-        continue
-
-      if (!isInArray(air.rank, filterRank))
-        continue
-
-      if(filterName != "" && ([airLocName, air.name].findindex(@(v) utf8ToLower(v).indexof(filterName) != null) == null))
-        continue
-
-      if (!("country" in item)) {
-        item.country <- air ? air.shopCountry : ""
-        item.rank <- air ? air.rank : 0
-      }
-      if (! ("locName" in item))
-        item.locName <- airLocName
-      if (isInArray(item.country, filterCountry))
-        this.airStatsList.append(item)
-    }
-
-    if (this.statsSortBy == "")
-      this.statsSortBy = "victories"
-
-    let sortBy = this.statsSortBy
-    let sortReverse = this.statsSortReverse == (sortBy != "locName")
-    this.airStatsList.sort(function(a, b) {
-      let res = b[sortBy] <=> a[sortBy]
-      if (res != 0)
-        return sortReverse ? -res : res
-      return a.locName <=> b.locName || a.name <=> b.name
-    })
-
-    this.curStatsPage = 0
-    this.updateStatPage()
-  }
-
-  function initStatsPerPage() {
-    if (this.statsPerPage > 0)
-      return
-
-    let listObj = this.scene.findObject("airs_stats_table")
-    let size = listObj.getSize()
-    let rowsHeigt = size[1] - this.guiScene.calcString("@leaderboardHeaderHeight", null)
-    this.statsPerPage =   max(1, (rowsHeigt / this.guiScene.calcString("@leaderboardTrHeight",  null)).tointeger())
-  }
-
-  function updateStatPage() {
-    if (!this.airStatsList)
-      return
-
-    this.initStatsPerPage()
-
-    let data = []
-    let posWidth = "0.05@scrn_tgt"
-    let rcWidth = "0.04@scrn_tgt"
-    let nameWidth = "0.2@scrn_tgt"
-    let countryWidth = "0.08@scrn_tgt"
-    let rankWidth = "70@sf/@pf"
-    let headerRow = [
-      { width = posWidth, text = "#", tdalign = "center"}
-      { id = "country", width = countryWidth, text="#options/country", cellType = "splitLeft",
-        tdalign = "center", callback = "onStatsCategory", active = this.statsSortBy == "country" }
-      { id = "rank", width = rankWidth, text = "#sm_rank", tdalign = "center", callback = "onStatsCategory", active = this.statsSortBy == "rank" }
-      { id = "locIcon", width = "0.05@scrn_tgt", cellType = "splitRight" }
-      { id = "locName", width = nameWidth, text = "#options/unit", tdalign = "center", cellType = "splitLeft", callback = "onStatsCategory", active = this.statsSortBy == "locName" }
-    ]
-    foreach (item in airStatsListConfig) {
-      if ("reqFeature" in item && !hasAllFeatures(item.reqFeature))
-        continue
-      if (this.isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly)
-        headerRow.append({
-          id = item.id
-          image = "".concat("#ui/gameuiskin#", item?.icon ?? $"lb_{item.id}", ".svg")
-          tooltip = loc(item?.text ?? $"multiplayer/{item.id}")
-          callback = "onStatsCategory"
-          active = this.statsSortBy == item.id
-          needText = false
-        })
-    }
-    data.append(buildTableRow("row_header", headerRow, null, "isLeaderBoardHeader:t='yes'"))
-
-    let tooltips = {}
-    let fromIdx = this.curStatsPage * this.statsPerPage
-    local toIdx = min(this.airStatsList.len(), (this.curStatsPage + 1) * this.statsPerPage)
-
-    for (local idx = fromIdx; idx < toIdx; idx++) {
-      let rowName = $"row_{idx}"
-      local rowData = null
-      let airData = this.airStatsList[idx]
-      let unitTooltipId = getTooltipType("UNIT").getTooltipId(airData.name)
-
-      rowData = [
-        { text = (idx + 1).tostring(), width = posWidth, tdalign = "center"}
-        { id = "country", width = countryWidth, image = getCountryIcon(airData.country), imageRawParams = "left:t='0.5*(pw-w)'",
-          tdalign = "center", cellType = "splitLeft", needText = false }
-        { id = "rank", width = rankWidth, text = airData.rank.tostring(), tdalign = "center", cellType = "splitRight", active = this.statsSortBy == "rank" }
-        {
-          id = "unit",
-          width = rcWidth,
-          image = getUnitClassIco(airData.name),
-          tooltipId = unitTooltipId,
-          cellType = "splitRight",
-          imageRawParams = "left:t='pw-w-2@sf/@pf';interactive:t='yes';",
-          needText = false,
-          tdalign = "right"
-        }
-        { id = "name", text = getUnitName(airData.name, true), tdalign = "left", active = this.statsSortBy == "name", cellType = "splitLeft", tooltipId = unitTooltipId }
-      ]
-      foreach (item in airStatsListConfig) {
-        if ("reqFeature" in item && !hasAllFeatures(item.reqFeature))
-          continue
-
-        if (this.isOwnStats || !("ownProfileOnly" in item) || !item.ownProfileOnly) {
-          let cell = getLbItemCell(item.id, airData[item.id], item.type)
-          cell.active <- this.statsSortBy == item.id
-          cell.tdalign <- "center"
-          if ("tooltip" in cell) {
-            if (!(rowName in tooltips))
-              tooltips[rowName] <- {}
-            tooltips[rowName][item.id] <- cell.$rawdelete("tooltip")
-          }
-          rowData.append(cell)
-        }
-      }
-      data.append(buildTableRow(rowName, rowData ?? [], idx % 2 == 0))
-    }
-
-    let dataTxt = "".join(data)
-    let tblObj = this.scene.findObject("airs_stats_table")
-    this.guiScene.replaceContentFromText(tblObj, dataTxt, dataTxt.len(), this)
-    foreach (rowName, row in tooltips) {
-      let rowObj = tblObj.findObject(rowName)
-      if (rowObj)
-        foreach (name, value in row)
-          rowObj.findObject(name).tooltip = value
-    }
-    let nestObj = this.scene.findObject("paginator_place")
-    generatePaginator(nestObj, this, this.curStatsPage, floor((this.airStatsList.len() - 1) / this.statsPerPage))
-    this.updateButtons()
-  }
-
-  function goToPage(obj) {
-    this.curStatsPage = obj.to_page.tointeger()
-    this.updateStatPage()
   }
 
   function onChangePilotIcon(_obj) {}
@@ -818,7 +452,6 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     return obj.getChild(sheetIdx).id
   }
-
 
   function updateButtons() {
     if (!checkObj(this.scene))
@@ -843,7 +476,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let isVisibleAchievementsUrlBtn = !isMe && showProfBar && hasFeature("AchievementsUrl") && hasFeature("AllowExternalLink")
 
     showObjectsByTable(this.scene, {
-      paginator_place = showStatBar && (this.airStatsList != null) && (this.airStatsList.len() > this.statsPerPage)
+      paginator_place = showStatBar
       btn_friendAdd = showProfBar && hasFeatureFriends && canInteractCC && !isMe && !isFriend && !isBlock
       btn_friendRemove = showProfBar && hasFeatureFriends && isFriend && (contact?.isInFriendlist() ?? false)
       btn_blacklistAdd = showProfBar && hasFeatureFriends && !isMe && !isFriend && !isBlock && canBlock && !isPS4Player
@@ -913,61 +546,36 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     )
   }
 
-  function removeItemFromList(value, list) {
-    let idx = list.findindex(@(v) v == value)
-    if (idx != null)
-      list.remove(idx)
-  }
-
-  function onStatsCategory(obj) {
-    if (!obj)
-      return
-    let value = obj.id
-    if (this.statsSortBy == value)
-      this.statsSortReverse = !this.statsSortReverse
-    else {
-      this.statsSortBy = value
-      this.statsSortReverse = false
-    }
-    this.guiScene.performDelayed(this, function() { this.fillAirStats() })
-  }
-
   function onOpenAchievementsUrl() {
     openUrl(getCurCircuitOverride("achievementsURL", loc("url/achievements")).subst(
         { appId = APP_ID, name = encode_uri_component(this.player.name) }),
       false, false, "profile_page")
   }
 
-  function onFilterCancel(filterObj) {
-    if (filterObj.getValue() != "")
-      filterObj.setValue("")
-    else
-      this.guiScene.performDelayed(this, this.goBack)
-  }
-
-  function applyFilter(obj) {
-    clearTimer(this.applyFilterTimer)
-    this.nameStats = utf8ToLower(obj.getValue())
-    if(this.nameStats == "") {
-      this.fillAirStats()
-      return
-    }
-
-    let applyCallback = Callback(@() this.fillAirStats(), this)
-    this.applyFilterTimer = setTimeout(0.8, @() applyCallback())
-  }
-
   function showMedalsSheet() {
-    let medalsDiv = this.showSheetDiv("medals")
+    let holder = this.showSheetDiv("medals")
     if (this.medalsPageHandlerWeak != null)
       return
     this.medalsPageHandlerWeak = openMedalsPage({
-      scene = medalsDiv
+      scene = holder
       player = this.player
       isOwnStats = this.isOwnStats
       openParams = {
         initCountry = this.filterCountryName
       }
+    })
+  }
+
+  function showServiceRecordsSheet() {
+    let holder = this.showSheetDiv("records")
+    if (this.serviceRecordsPageHandlerWeak != null)
+      return
+
+    this.serviceRecordsPageHandlerWeak = openServiceRecordsPage({
+      scene = holder
+      player = this.player
+      isOwnStats = this.isOwnStats
+      paginatorHolder = this.scene.findObject("paginator_place")
     })
   }
 

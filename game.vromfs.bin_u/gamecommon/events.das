@@ -8,6 +8,7 @@ require %game.unit.unit_events
 require %game.unit.ammo_stowage_events
 require %game.unit.repair_system_events
 require %game.unit.extinguish_system_events
+require %game.unit.aircraft_events
 require %game.unit.ship_events
 require %game.unit.unit_proximity_damage_events
 require Weapon
@@ -448,6 +449,11 @@ struct EventZoneCaptured
   areaId : int
   wasArmy : uint8
   army : uint8
+
+[cpp_event(broadcast, with_scheme)]
+struct EventBattleAreaStatusChanged
+  active : bool
+  areaId : int
 
 [cpp_event(unicast, with_scheme)]
 struct EventUnitToUnitCollision

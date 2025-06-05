@@ -476,7 +476,93 @@
       0.0
     ],
     "dm_ai__points:list<p3>": {},
-    "dm_ai__pointsInfo:list<ip2>": {}
+    "dm_ai__pointsInfo:list<ip2>": {},
+    "dm_ai__filters:shared:array": {
+      "filter:object": [
+        {
+          "type": "TRACK",
+          "mask": "track_*",
+          "max": 4
+        },
+        {
+          "type": "WHEEL",
+          "mask": "wheel_l_*",
+          "max": 8
+        },
+        {
+          "type": "WHEEL",
+          "mask": "wheel_r_*",
+          "max": 8
+        },
+        {
+          "type": "ENGINE",
+          "mask": "engine_*",
+          "max": 1,
+          "merge": true
+        },
+        {
+          "type": "ENGINE",
+          "mask": "transmission_*",
+          "max": 1,
+          "merge": true
+        },
+        {
+          "type": "TURRET",
+          "mask": "turret_$",
+          "max": 8
+        },
+        {
+          "type": "TURRET",
+          "mask": "aa_turret_#",
+          "max": 8
+        },
+        {
+          "type": "TURRET",
+          "mask": "main_caliber_turret_#",
+          "max": 8
+        },
+        {
+          "type": "BARREL",
+          "mask": "gun_barrel_$",
+          "max": 4
+        },
+        {
+          "type": "BARREL",
+          "mask": "aa_gun_#",
+          "max": 4
+        },
+        {
+          "type": "BARREL",
+          "mask": "main_caliber_gun_#",
+          "max": 4
+        },
+        {
+          "type": "CREW",
+          "mask": "driver_*",
+          "max": 1
+        },
+        {
+          "type": "CREW",
+          "mask": "loader_*",
+          "max": 1
+        },
+        {
+          "type": "CREW",
+          "mask": "gunner_*",
+          "max": 8
+        },
+        {
+          "type": "CREW",
+          "mask": "commander_*",
+          "max": 1
+        },
+        {
+          "type": "CREW",
+          "mask": "machine_gunner_*",
+          "max": 8
+        }
+      ]
+    }
   },
   "aircraft": {
     "_use": [

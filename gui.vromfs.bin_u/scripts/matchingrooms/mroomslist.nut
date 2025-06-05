@@ -137,14 +137,14 @@ MRoomsList = class {
     if (is_gdk) {
       if (!crossplayModule.isCrossPlayEnabled()) {
         filter["public/platformRestriction"] <- {
-          test = "eq"
-          value = "xbox"
+          test = "in"
+          value = ["xbox", "pc_ms_live"]
         }
       }
       else {
         filter["public/platformRestriction"] <- {
           test = "in"
-          value = ["xbox", null]
+          value = ["xbox", "pc_ms_live", null]
         }
       }
     }

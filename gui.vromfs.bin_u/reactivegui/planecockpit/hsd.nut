@@ -124,7 +124,7 @@ let hsdSettings = Computed(function() {
   return res
 })
 
-let hsd = @(width, height, pos_x = 0, pos_y = 0) function() {
+let hsd = @(pos_size) function() {
   let {
     getDasScript,
     color,
@@ -160,9 +160,9 @@ let hsd = @(width, height, pos_x = 0, pos_y = 0) function() {
     metricUnits
   } = hsdSettings.get()
   return {
-    watch = [hsdSettings]
-    size = [width, height]
-    pos = [pos_x, pos_y]
+    watch = [hsdSettings, pos_size]
+    pos = [pos_size.get()[0], pos_size.get()[1]]
+    size = [pos_size.get()[2], pos_size.get()[3]]
     rendObj = ROBJ_DAS_CANVAS
     script = getDasScript()
     drawFunc = "render"

@@ -3,6 +3,7 @@ require DagorImgui
 require imgui
 require imgui/imgui_boost
 require daslib/safe_addr
+require daslib/static_let
 require danetlibs.assets_import.main.import_rendinst_common
 require danetlibs.assets_import.main.asset_manager_events
 require danetlibs.assets_import.das_includes.rendinst_ui
@@ -58,7 +59,12 @@ def asset_import_viewer()
       imgui::EndTabItem()
 
     if imgui::BeginTabItem("Rendinst")
-      spawn_rendinst()
+      static_let <|
+        var spawn_destructible_ri = false
+      spawn_rendinst(spawn_destructible_ri ? "game_rendinst" : "rendinst")
+      if getTemplateByName("game_rendinst") != null
+        imgui::SameLine()
+        imgui::Checkbox("Destructible", safe_addr(spawn_destructible_ri))
       imgui::EndTabItem()
 
     if imgui::BeginTabItem("Composit")

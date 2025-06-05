@@ -71,7 +71,7 @@ let MfdRwrColor = Watched(Color(0, 255, 0, 240))
 let IsLightsOn = Watched(false)
 let HmdBrightnessMult = Watched(1.0)
 let MfdHsdVisible = Watched(false)
-let MfdHsdPosSize = [0, 0, 0, 0]
+let MfdHsdPosSize = Watched([0.0, 0.0, 0.0, 0.0])
 let TVVPitch = Watched(0.0)
 
 let planeState = {
@@ -176,10 +176,9 @@ interop.updateDigDevicesPosSize <- function(x, y, w, h) {
 }
 
 interop.updatePlaneMfdHsdPosSize <- function(x, y, w, h) {
-  MfdHsdPosSize[0] = x
-  MfdHsdPosSize[1] = y
-  MfdHsdPosSize[2] = w
-  MfdHsdPosSize[3] = h
+  let curVal = MfdHsdPosSize.get()
+  if (curVal[0] != x || curVal[1] != y || curVal[2] != w || curVal[3] != h)
+    MfdHsdPosSize([x, y, w, h])
 }
 
 interop.updateAimLockPos <- function(x, y) {

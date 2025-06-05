@@ -69,10 +69,8 @@ class RadarAzElFormatFrame : Canvas
   def RadarAzElFormatFrame(var guiCtx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
     Canvas`Canvas(self, guiCtx, rdata, rstate)
 
-    frameHalfSizeRel = data.frameHalfSizeRel
     scaleMarkLength = data.scaleMarkLength
     dugoutHeight = data.dugoutHeight
-    targetBoxHalfSize = data.targetBoxHalfSize
     baseScale = data.baseScale
     baseColor = data.color
 
@@ -341,3 +339,6 @@ def setup(props : Properties&; var storage : CanvasParams&)
   storage.fontId = props |> getFontId()
   storage.fontSize = props |> getInt("fontSize", 20)
   storage.lineWidth = props |> getFloat("lineWidth", 1.) * 1.
+  storage.scaleMarkLength = props |> getFloat("scaleMarkLength", 0.05)
+  storage.dugoutHeight = props |> getFloat("dugoutHeight", 0.05)
+  storage.baseScale = props |> getFloat("baseScale", 0.95)

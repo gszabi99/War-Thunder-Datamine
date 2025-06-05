@@ -10,6 +10,7 @@ require hud
 require FlightModelWrap
 require HeroManager
 require Unit
+require WTInput
 require %rGui.utils.radar_common
 require %rGui.utils.constants_common
 
@@ -66,6 +67,7 @@ struct CanvasParams
   cueLowHeiColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   cueUndergroundColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   radarModeNameLangId : int = -1
+  handleClicks : bool = false
 
 def rad_to_deg(rad : float)
   return rad * 180. / PI
@@ -129,6 +131,7 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.cueLowHeiColor = props |> getColor("cueLowHeiColor", storage.color)
   storage.cueUndergroundColor = props |> getColor("cueUndergroundColor", storage.color)
   storage.radarModeNameLangId = props |> getInt("radarModeNameLangId", -1)
+  storage.handleClicks = props |> getBool("handleClicks", false)
 
 [export, unused_argument(rstate)]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
@@ -386,6 +389,12 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
   let azimuthRange = max(0., get_radar_hud_azimuth_max() - get_radar_hud_azimuth_min())
   let radius = float2(size.x * 0.5, size.y * 0.5)
 
+  let mousePos = get_mouse_pos()
+  let lt = origin - size * 0.5
+  let rb = origin + size * 0.5
+  let isMouseOnEllement = lt.x <= mousePos.x && mousePos.x <= rb.x && lt.y <= mousePos.y && mousePos.y <= rb.y
+  var needToHandleMouseClick = data.handleClicks && is_left_mouse_btn_down() && isMouseOnEllement
+
   foreach_targets() <| $(var target)
     var distanceRel = 0.9
     var radialWidthRel = 0.05
@@ -484,7 +493,24 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
             ctx |> render_line_dashed(lockPos, ownWeaponTargetPos, ctx |> hdpx(10.), ctx |> hdpx(5.), ctx |> hdpx(2.), e3dColor)
           else
             ctx |> draw_line(ownWeaponPos, ownWeaponTargetPos, ctx |> hdpx(2.))
+    if needToHandleMouseClick
+      let mouseToTargetSq = (pos - mousePos) * (pos - mousePos)
+      let distSq = mouseToTargetSq.x + mouseToTargetSq.y
+      let isPressed = distSq < radius.x * radius.x * 0.001
+      if isPressed
+        radar_switch_to_target(target.sourceObjectId)
+        needToHandleMouseClick = false
 
+  if needToHandleMouseClick
+    let mouseRelPos = float2(
+      cvt(mousePos.x, lt.x, rb.x, -1.0, 1.0),
+      cvt(mousePos.y, lt.y, rb.y, -1.0, 1.0)
+    )
+    let distRel = sqrt(mouseRelPos.x * mouseRelPos.x + mouseRelPos.y * mouseRelPos.y)
+    if distRel <= 1.0
+      let dist = distRel * get_radar_hud_distance_max() * 1000.0
+      let azimuth = atan2(mouseRelPos.x, -mouseRelPos.y) - PI * 0.5
+      set_radar_cue_pos(azimuth, dist)
 
 def b_scope_half_circle_markers(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2; font_size : int)
   if !get_radar_hud_is_visible() && !get_radar_hud_is_visible2()

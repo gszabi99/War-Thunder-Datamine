@@ -155,4 +155,7 @@ let function planeRwrSwitcher(posWatched, sizeWatched, colorWatched, scaleDef, b
   }
 }
 
-return planeRwrSwitcher
+return {
+  planeRwrSwitcher
+  rwrSetting
+}

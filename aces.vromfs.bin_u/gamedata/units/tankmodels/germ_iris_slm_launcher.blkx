@@ -1954,6 +1954,12 @@
         "createGunEffects": true,
         "barrelDP": "gun_barrel_dm",
         "allowableDelta": 180.0,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "speedYaw": 80.0,
@@ -2000,7 +2006,27 @@
             -0.0,
             0.0
           ]
-        }
+        },
+        "onShellStartFx": [
+          {
+            "fx": "dust_expanding_pyro",
+            "weapOffset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "lifetime": 2.0
+          },
+          {
+            "fx": "dust_expanding_smoke",
+            "bboxFract": [
+              -0.5,
+              0.1,
+              0.0
+            ],
+            "lifetime": 6.0
+          }
+        ]
       }
     ],
     "animatedBones": {
@@ -3271,8 +3297,8 @@
     "sightName": "default_tank_spg",
     "headPos": [
       0.0,
-      7.5,
-      -15.0
+      6.5,
+      -10.0
     ],
     "headPosOnShooting": [
       3.75,

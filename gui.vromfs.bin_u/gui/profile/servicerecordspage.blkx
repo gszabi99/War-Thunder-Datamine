@@ -1,0 +1,51 @@
+{
+  "tdiv": {
+    "id": "page_content",
+    "size": "pw, ph",
+    "flow": "vertical",
+    "margin-top": "2@blockInterval",
+    "tdiv": {
+      "flow": "horizontal",
+      "size": "pw, 8@blockInterval",
+      "position": "relative",
+      "bgcolor": "@evenTrColor",
+      "margin-bottom": "2@blockInterval",
+      "HorizontalListBox": {
+        "id": "modes_list",
+        "fullTransparent": "yes",
+        "bottomSelectLine": "yes",
+        "navigatorShortcuts": "yes",
+        "move-only-hover": "yes",
+        "on_select": "onStatsModeChange"
+      },
+      "tdiv": {
+        "size": "450@sf/@pf, ph",
+        "position": "absolute",
+        "left": "pw-w-1@blockInterval",
+        "popupFilter": {
+          "margin-right": "1@blockInterval",
+          "valign": "center"
+        },
+        "EditBox": {
+          "id": "filter_edit_box",
+          "width": "fw",
+          "on_change_value": "applyServiceRecordsFilter",
+          "on_cancel_edit": "onFilterCancel",
+          "text": "",
+          "edit-hint": "#contacts/search_placeholder",
+          "valign": "center"
+        }
+      }
+    },
+    "table": {
+      "id": "units_stats_table",
+      "width": "pw",
+      "height": "fh",
+      "pos": "0.5pw-0.5w, 0",
+      "position": "relative",
+      "class": "lbTable",
+      "higlightRowOnHover": "yes",
+      "text-valign": "center"
+    }
+  }
+}

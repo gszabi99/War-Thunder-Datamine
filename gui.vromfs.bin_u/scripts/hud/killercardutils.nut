@@ -6,7 +6,7 @@ let { format } = require("string")
 let { utf8Capitalize } = require("%sqstd/string.nut")
 let { getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unitInfoRoles.nut")
 let { get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
-let { getProjectileNameLoc } = require("%scripts/weaponry/bulletsInfo.nut")
+let { getProjectileNameLoc, getProjectileIconLayers } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
 
 function isNeedUpdateKillerCardByUserInfo(oldUserInfo, newUserInfo) {
@@ -46,7 +46,8 @@ function getKillerCardView(messageData, userInfo) {
   let battleRatingText = loc("ui/colon")
     .concat(loc("shop/battle_rating"), colorize("@white", format("%.1f", battleRating)))
   let shellNameLoc = killerProjectileName != "" ? getProjectileNameLoc(killerProjectileName, true) : ""
-  let hasShellText = shellNameLoc != ""
+  let hasShellInfo = shellNameLoc != ""
+  let shellIconLayers = getProjectileIconLayers(killerProjectileName)
 
   return {
     cardCaption = "".concat(utf8Capitalize(loc("NET_UNIT_KILLED_BY_PLAYER")), loc("ui/colon"))
@@ -69,10 +70,10 @@ function getKillerCardView(messageData, userInfo) {
     unitName =  loc(killer.aircraft)
     unitTypeText = getUnitRoleIconAndTypeCaption(unit)
     rankAndbattleRatingText = " ".concat(rankText, battleRatingText)
-    shellText =  hasShellText
-      ? loc("ui/colon").concat(loc("logs/ammunition"), colorize("@white", shellNameLoc))
-      : ""
-    hasShellText
+    hasShellInfo
+    shellNameLoc
+    hasShellIcon = shellIconLayers.len() > 0
+    shellIconLayers
   }
 }
 

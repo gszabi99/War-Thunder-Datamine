@@ -1269,6 +1269,18 @@ function getProjectileNameLoc(locKey, needToUseBulletTypeName = false) {
   return ""
 }
 
+local projectileNameToIconsBlk = null
+function getProjectileIconLayers(projectileName) {
+  if (projectileNameToIconsBlk == null) {
+    projectileNameToIconsBlk = DataBlock()
+    projectileNameToIconsBlk.tryLoad("config/killer_projectile_icon.blk")
+  }
+
+  return projectileNameToIconsBlk.getStr(projectileName, "")
+    .split(";")
+    .map(@(layeredIconSrc) { layeredIconSrc })
+}
+
 return {
   BULLET_TYPE
   
@@ -1310,4 +1322,5 @@ return {
   getSquashArmorAnglesScale
   anglesToCalcDamageMultiplier
   getProjectileNameLoc
+  getProjectileIconLayers
 }

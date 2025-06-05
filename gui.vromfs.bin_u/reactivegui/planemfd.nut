@@ -4,13 +4,13 @@ let { MfdRadarColor, MfdRadarEnabled, radarPosSize } = require("radarState.nut")
 let { IsMfdEnabled, MfdRwrColor, RwrScale, RwrBackHide, MfdRadarWithNavVis, MfdRadarNavPosSize,
     MfdVdiVisible, MfdVdiPosSize, DigitalDevicesVisible, DigDevicesPosSize, MfdHsdVisible, MfdHsdPosSize } = require("planeState/planeToolsState.nut")
 let { mfdRwrSettings } = require("tws.nut")
-let planeRwr = require("planeRwr.nut")
+let { planeRwrSwitcher, rwrSetting } = require("planeRwr.nut")
 let { RwrForMfd, RwrPosSize } = require("airState.nut")
 let mfdRadarWithNav = require("planeCockpit/mfdRadarWithNav.nut")
 let mfdVdi = require("planeCockpit/mfdVdi.nut")
 let digitalDevices = require("planeCockpit/digitalDevices.nut")
 let mfdCamera = require("planeMfdCamera.nut")
-let { radarMfd } = require("%rGui/radar.nut")
+let { radarMfd, radarSettings } = require("%rGui/radar.nut")
 let mfdCustomPages = require("%rGui/planeCockpit/customPageBuilder.nut")
 let hsd = require("planeCockpit/hsd.nut")
 
@@ -29,18 +29,18 @@ let planeMFD = @() {
         size = [RwrPosSize.value[2] / RwrScale.get(), RwrPosSize.value[3] / RwrScale.get()]
         color = mfdRwrSettings.get().backgroundColor
       } : null),
-    (RwrForMfd.value ? planeRwr(twsPosComputed, twsSizeComputed, MfdRwrColor, RwrScale.get(), RwrBackHide.get(), 70, 2.0) : null),
+    (RwrForMfd.value ? planeRwrSwitcher(twsPosComputed, twsSizeComputed, MfdRwrColor, RwrScale.get(), RwrBackHide.get(), 70, 2.0) : null),
     mfdCamera,
     mfdCustomPages,
     (MfdRadarWithNavVis.value ? mfdRadarWithNav(MfdRadarNavPosSize[2], MfdRadarNavPosSize[3], MfdRadarNavPosSize[0], MfdRadarNavPosSize[1]) : null),
     (MfdVdiVisible.value ? mfdVdi(MfdVdiPosSize[2], MfdVdiPosSize[3], MfdVdiPosSize[0], MfdVdiPosSize[1]) : null),
     (DigitalDevicesVisible.value ? digitalDevices(DigDevicesPosSize[2], DigDevicesPosSize[3], DigDevicesPosSize[0], DigDevicesPosSize[1]) : null),
-    (MfdHsdVisible.get() ? hsd(MfdHsdPosSize[2], MfdHsdPosSize[3], MfdHsdPosSize[0], MfdHsdPosSize[1]) : null)
+    (MfdHsdVisible.get() ? hsd(MfdHsdPosSize) : null)
   ]
 }
 
 let Root = @() {
-  watch = IsMfdEnabled
+  watch = [IsMfdEnabled, radarSettings, mfdRwrSettings, rwrSetting]
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = [sw(100), sh(100)]

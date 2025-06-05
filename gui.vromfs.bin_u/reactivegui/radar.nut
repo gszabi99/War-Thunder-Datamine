@@ -205,4 +205,5 @@ return {
   radarHud
   radarIndication
   radarMfd
+  radarSettings
 }

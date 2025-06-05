@@ -13,7 +13,7 @@ require CollRes
 require soundEvent
 require Weapon
 require %game.utils.utils_common
-require %appGame.es.constructions_utils
+require %appGame.es.constructions_utils_common
 require DagorMath
 require app
 

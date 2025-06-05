@@ -44,19 +44,16 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "formatVersion": 2,
     "armorClass": "RHA_tank",
     "hp": 10000.0,
     "hull": {
       "superstructure_front_dm": {
-        "armorThickness": 45.0
+        "armorThickness": 5.0
       },
       "superstructure_bottom_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 5.0
       },
       "body_side_dm": {
         "armorThickness": 20.0
@@ -86,7 +83,7 @@
         "armorThickness": 10.0
       },
       "body_bottom_dm": {
-        "armorThickness": 20.0
+        "armorThickness": 5.0
       },
       "turret_01_back_dm": {
         "armorThickness": 10.0
@@ -113,6 +110,9 @@
       },
       "turret_01_top_dm": {
         "armorThickness": 20.0
+      },
+      "turret_side_dm": {
+        "armorThickness": 20.0
       }
     },
     "optics": {
@@ -133,10 +133,8 @@
     "CHA_armor": {
       "armorClass": "CHA_tank",
       "turret_back_dm": {
-        "armorThickness": 20.0
-      },
-      "turret_side_dm": {
-        "armorThickness": 75.0
+        "armorThickness": 20.0,
+        "armorClass": "RHA_tank"
       },
       "turret_front_dm": {
         "armorThickness": 90.0
@@ -174,7 +172,8 @@
     },
     "mask": {
       "gun_mask_dm": {
-        "armorThickness": 40.0
+        "armorThickness": 90.0,
+        "armorClass": "CHA_tank"
       },
       "gun_mask_shield_dm": {
         "armorThickness": 200.0

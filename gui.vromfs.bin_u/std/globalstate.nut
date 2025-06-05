@@ -4,9 +4,10 @@ from "eventbus" import eventbus_send_foreign, eventbus_subscribe
 from "dagor.debug" import logerr
 
 
-from "json" import parse_json, object_to_json_string
+
 from "dagor.memtrace" import is_quirrel_object_larger_than, set_huge_alloc_threshold
 from "dagor.time" import get_time_msec
+from "iostream" import blob
 
 
 
@@ -111,7 +112,8 @@ on_module_unload(function(is_closing) {
 
 
 
-          data = object_to_json_string(val, false)
+          data = blob()
+          data.writeobject(val)
         }
         else
           data = val
@@ -162,7 +164,7 @@ function hardPersistWatched(key, def=null, big_immutable_data = null) {
 
 
 
-        val = parse_json(data)
+        val = data?.readobject()
 
         
         if (big_immutable_data) {

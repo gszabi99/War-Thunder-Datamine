@@ -1,3 +1,4 @@
+module constructions_utils_common shared
 require math.base
 require DagorMath
 require DagorMathUtils

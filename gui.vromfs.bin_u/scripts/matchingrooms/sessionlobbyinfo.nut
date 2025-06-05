@@ -2,6 +2,7 @@ from "%scripts/dagui_library.nut" import *
 from "%scripts/teamsConsts.nut" import Team
 from "%scripts/mainConsts.nut" import global_max_players_versus
 
+let regexp2 = require("regexp2")
 let { get_meta_mission_info_by_name } = require("guiMission")
 let { isInFlight } = require("gameplayBinding")
 let { format } = require("string")
@@ -40,6 +41,7 @@ let { get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 
 const CUSTOM_GAMEMODE_KEY = "_customGameMode"
 const MAX_BR_DIFF_AVAILABLE_AND_REQ_UNITS = 0.6
+let missionLocNameRegexp = regexp2(@"[^a-zA-Z0-9;_\/]")
 
 let roomTimers = [
   {
@@ -528,6 +530,12 @@ function getMembersCountByTeams(room = null, needReadyOnly = false) {
   return res
 }
 
+function isValidMissionLocName(mission) {
+  if (mission?.mission.locNameTeamA != null)
+    return !missionLocNameRegexp.match(mission.mission.locNameTeamA)
+  return !missionLocNameRegexp.match(mission?.mission.locName ?? "")
+}
+
 function getRoomsInfoTbl(roomsList) {
   let res = []
   foreach (room in roomsList) {
@@ -546,8 +554,11 @@ function getRoomsInfoTbl(roomsList) {
       let missionName = urlMission ? urlMission.name : url
       item.mission <- missionName
     }
-    else
+    else {
+      if (!isValidMissionLocName(public))
+        continue
       item.mission <- getSessionLobbyMissionNameLoc(public)
+    }
     if ("creator" in public)
       item.name <- getPlayerName(public?.creator ?? "")
     if ("difficulty" in misData)

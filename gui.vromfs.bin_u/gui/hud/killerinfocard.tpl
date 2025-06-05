@@ -134,18 +134,46 @@ hudFrame {
         font-pixht:t='12/720@shHud'
       }
 
-      <<#hasShellText>>
+      <<#hasShellInfo>>
       separator {
         size:t='pw,1@dp'
-        margin-y:t='7/720@shHud'
+        margin-y:t='4.5/720@shHud'
         bgcolor:t='#666666'
       }
 
-      textareaNoTab {
-        font-pixht:t='12/720@shHud'
-        text:t='<<shellText>>'
+      shellInfo {
+        flow:t='horizontal'
+
+        textareaNoTab {
+          valign:t='center'
+          text:t='<<?logs/ammunition>><<?ui/colon>>'
+          font-pixht:t='12/720@shHud'
+        }
+
+        <<#hasShellIcon>>
+        shellLayeredIcon {
+          size:t='20/720@shHud,20/720@shHud'
+          <<#shellIconLayers>>
+          img {
+            size:t='pw,ph'
+            position:t='absolute'
+            pos:t='0.5pw-0.5w, 0.5ph-0.5h'
+            background-image:t='!<<layeredIconSrc>>'
+            background-svg-size:t='pw, ph'
+            background-repeat:t='aspect-ratio'
+          }
+          <</shellIconLayers>>
+        }
+        <</hasShellIcon>>
+
+        textareaNoTab {
+          valign:t='center'
+          font-pixht:t='12/720@shHud'
+          text:t='<<shellNameLoc>>'
+          overlayTextColor:t='active'
+        }
       }
-      <</hasShellText>>
+      <</hasShellInfo>>
     }
   }
 }

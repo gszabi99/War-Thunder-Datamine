@@ -6,7 +6,7 @@ let { MfdRadarColor, radarPosSize } = require("radarState.nut")
 let { radarMfd } = require("%rGui/radar.nut")
 let mfdCustomPages = require("%rGui/planeCockpit/customPageBuilder.nut")
 let { MfdRwrColor, DigitalDevicesVisible, DigDevicesPosSize, MfdHsdVisible, MfdHsdPosSize } = require("planeState/planeToolsState.nut")
-let planeRwr = require("planeRwr.nut")
+let { planeRwrSwitcher, rwrSetting } = require("planeRwr.nut")
 let digitalDevices = require("planeCockpit/digitalDevices.nut")
 let hsd = require("planeCockpit/hsd.nut")
 
@@ -18,7 +18,7 @@ let twsSizeComputed = Computed(@() [0.66 * RwrPosSize.value[2], 0.66 * RwrPosSiz
 let mkTws = @() {
   watch = [MlwsLwsForMfd, RwrForMfd]
   children = (!MlwsLwsForMfd.value && !RwrForMfd.value) ? null
-    : planeRwr(twsPosComputed, twsSizeComputed, MfdRwrColor, 1.0, false, 70.0, 2.0)
+    : planeRwrSwitcher(twsPosComputed, twsSizeComputed, MfdRwrColor, 1.0, false, 70.0, 2.0)
 }
 
 let digitalDev = @(){
@@ -30,7 +30,7 @@ let digitalDev = @(){
 let mfdHsd = @(){
   watch = MfdHsdVisible
   size = flex()
-  children = MfdHsdVisible.get() ? hsd(MfdHsdPosSize[2], MfdHsdPosSize[3], MfdHsdPosSize[0], MfdHsdPosSize[1]) : null
+  children = MfdHsdVisible.get() ? hsd(MfdHsdPosSize) : null
 }
 
 function Root() {
@@ -47,6 +47,7 @@ function Root() {
     watch = [
       IndicatorsVisible
       IsMfdEnabled
+      rwrSetting
     ]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP

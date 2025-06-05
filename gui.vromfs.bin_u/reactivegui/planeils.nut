@@ -209,7 +209,7 @@ let planeIls = @(width, height) function() {
 }
 
 let planeIlsSwitcher = @() {
-  watch = IlsVisible
+  watch = [IlsVisible, ilsSetting]
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
   size = SIZE_TO_CONTENT

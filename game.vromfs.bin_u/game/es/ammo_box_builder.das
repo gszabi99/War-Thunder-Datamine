@@ -11,7 +11,7 @@ require net
 require CollRes
 require %game.utils.utils_common
 require Weapon
-require %appGame.es.constructions_utils
+require %appGame.es.constructions_utils_common
 require DagorSystem
 require DagorMath
 require Mission

@@ -1681,21 +1681,21 @@ enums.addTypes(g_hud_hints, {
     lifeTime = 5.0
   }
 
+  BLOCK_SPAWN_SLAVE = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "HUD/TXT_SLAVE_FORBIDDEN_OBSTACLES"
+    showEvent = "hint:slave_forbidden_obstacles:show"
+    shouldBlink = false
+    lifeTime = 5.0
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  SPAWN_FORBIDDEN_RANGE = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "HUD/TXT_SPAWN_FORBIDDEN_RANGE"
+    showEvent = "hint:slave_forbidden_range:show"
+    shouldBlink = false
+    lifeTime = 5.0
+  }
 
   OFFER_REPAIR = {
     hintType = g_hud_hint_types.REPAIR

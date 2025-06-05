@@ -1917,14 +1917,13 @@
         "recoilMultiplier": 0.0,
         "stopForFire": true,
         "maxSpeedForFire": 2.0,
-        "staticElevation": 5.0,
         "defaultYaw": 0.0,
-        "defaultPitch": 5.0,
-        "allowableDelta": 20.0,
+        "defaultPitch": 30.0,
+        "allowableDelta": 30.0,
         "barrelDP": "gun_barrel_01_dm",
         "brokenBarrelAllowShoot": false,
         "speedYaw": 100.0,
-        "speedPitch": 40.0,
+        "speedPitch": 0.0,
         "fireConeAngle": [
           1.0,
           1.0
@@ -1960,7 +1959,18 @@
             "fire_control_system_dm"
           ],
           "shootingDmPart": "fire_control_system_dm",
-          "rotatedTurret": "bone_turret"
+          "rotatedTurret": "bone_turret",
+          "linkedAnimPart": {
+            "verNode": "turret_01",
+            "verLimits": [
+              5.0,
+              45.0
+            ],
+            "verOriginLimits": [
+              5.0,
+              45.0
+            ]
+          }
         },
         "limits": {
           "yaw": [
@@ -1968,8 +1978,8 @@
             180.0
           ],
           "pitch": [
-            5.0,
-            45.0
+            30.0,
+            30.0
           ]
         }
       },
@@ -1989,14 +1999,14 @@
         "recoilMultiplier": 0.0,
         "stopForFire": true,
         "maxSpeedForFire": 2.0,
-        "staticElevation": 5.0,
         "circleAim": false,
         "barrelDP": "gun_barrel_01_dm",
         "createGunEffects": true,
         "defaultYaw": 0.0,
-        "defaultPitch": 5.0,
+        "defaultPitch": 30.0,
+        "allowableDelta": 30.0,
         "speedYaw": 100.0,
-        "speedPitch": 40.0,
+        "speedPitch": 0.0,
         "isBulletBelt": true,
         "fireConeAngle": [
           1.0,
@@ -2041,8 +2051,8 @@
             180.0
           ],
           "pitch": [
-            5.0,
-            45.0
+            30.0,
+            30.0
           ]
         }
       }
@@ -3421,5 +3431,95 @@
       "ghosting": 0.7,
       "noiseFactor": 0.2
     }
-  }
+  },
+  "default_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "us_camo_olive*",
+      "to": "us_camo_modern_green*"
+    }
+  },
+  "skin": [
+    {
+      "name": "modern_gray_desert",
+      "nameLocId": "skin/usa_modern_gray_desert",
+      "descLocId": "skin/usa_modern_gray_desert/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_gray_desert*"
+      }
+    },
+    {
+      "name": "us_camo_modern_desert_tan",
+      "nameLocId": "skin/us_camo_modern_desert_tan",
+      "descLocId": "skin/us_camo_modern_desert_tan/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "us_camo_modern_desert_tan*"
+      }
+    },
+    {
+      "name": "modern_seventh_army",
+      "nameLocId": "skin/usa_modern_seventh_army",
+      "descLocId": "skin/usa_modern_seventh_army/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_seventh_army*"
+      }
+    },
+    {
+      "name": "modern_winter_verdant",
+      "nameLocId": "skin/usa_modern_winter_verdant",
+      "descLocId": "skin/usa_modern_winter_verdant/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_winter_verdant*"
+      }
+    },
+    {
+      "name": "modern_snow_temperate",
+      "nameLocId": "skin/usa_modern_snow_temperate",
+      "descLocId": "skin/usa_modern_snow_temperate/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_snow_temperate*"
+      }
+    },
+    {
+      "name": "ger_camo_carc",
+      "nameLocId": "skin/ger_camo_carc",
+      "descLocId": "skin/ger_camo_carc/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "ger_camo_carc*"
+      }
+    },
+    {
+      "name": "usa_modern_red_desert",
+      "nameLocId": "skin/usa_modern_red_desert",
+      "descLocId": "skin/usa_modern_red_desert/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_red_desert*"
+      }
+    },
+    {
+      "name": "usa_modern_summer_verdant",
+      "nameLocId": "skin/usa_modern_summer_verdant",
+      "descLocId": "skin/usa_modern_summer_verdant/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "usa_modern_summer_verdant*"
+      }
+    },
+    {
+      "name": "us_camo_modern_winter_tan",
+      "nameLocId": "skin/us_camo_modern_winter_tan",
+      "descLocId": "skin/us_camo_modern_winter_tan/desc",
+      "replace_tex": {
+        "from": "us_camo_olive*",
+        "to": "us_camo_modern_winter_tan*"
+      }
+    }
+  ]
 }

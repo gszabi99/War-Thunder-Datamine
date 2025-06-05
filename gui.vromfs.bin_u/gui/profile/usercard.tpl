@@ -188,16 +188,10 @@ root {
 
         profileContent {
           id:t='records-container'
-          flow:t='vertical'
-          padding-top:t='4@blockInterval'
-          total-input-transparent:t='yes'
-          include "%gui/profile/profileRecords.blk"
-          display:t='hide'
         }
 
         profileContent {
           id:t='medals-container'
-          size:t='pw, fh'
         }
 
         frameSeparator {

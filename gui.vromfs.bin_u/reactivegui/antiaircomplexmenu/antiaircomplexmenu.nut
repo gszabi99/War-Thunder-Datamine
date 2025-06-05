@@ -24,7 +24,7 @@ let verticalViewIndicator = {
 }
 
 let circularRadar = {
-  size = [hdpx(716), hdpx(512)]
+  size = [hdpx(716), hdpx(752)]
   hplace = ALIGN_CENTER
   vplace = ALIGN_CENTER
   rendObj = ROBJ_DAS_CANVAS
@@ -33,6 +33,7 @@ let circularRadar = {
   setupFunc = "setup_radar_data"
   font = Fonts.hud
   color = radarColor
+  handleClicks = true
 }
 
 function createTargetListElement(index, azimuth, distance, height, speed, typeId, fontSize, isDetected = false, onClick = null){
