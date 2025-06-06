@@ -36,6 +36,7 @@ struct HsdProps
   spi                       : bool
   spiColor                  : E3DCOLOR
   spiInfo                   : bool
+  spiInfoOffset             : float
   distScale                 : bool
   distScaleBeyondAzScale    : bool
   distScaleStepSize         : float
@@ -79,6 +80,7 @@ def hsd_load_props(props : Properties&; var hsd_props : HsdProps&)
   hsd_props.spi                       = props.getBool("spi", true)
   hsd_props.spiColor                  = props.getColor("spiColor", E3DCOLOR(0xFFFFFFFF))
   hsd_props.spiInfo                   = props.getBool("spiInfo", true)
+  hsd_props.spiInfoOffset             = props.getFloat("spiInfoOffset", 0.0)
   hsd_props.distScale                 = props.getBool("distScale", true)
   hsd_props.distScaleBeyondAzScale    = props.getBool("distScaleBeyondAzScale", true)
   hsd_props.distScaleStepSize         = props.getFloat("distScaleStepSize", 5000.0)

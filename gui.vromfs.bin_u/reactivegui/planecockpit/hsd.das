@@ -394,7 +394,7 @@ class Component : Canvas
     let angle = -atan2_est(dir.x * forward.y - dir.y * forward.x, dot(dir, forward))
     let angleStr = "{fmt(":+04d", floori(angle * radToDeg))} {loc("measureUnits/deg")}"
     let distStr = fmt(":.1f", props.metricUnits ? dist * 1e-3 : dist * metrToNavMile)
-    drawStrAnchored(float2(0.45, -0.45), "{angleStr} / {distStr}", AnchorHorz.Right, AnchorVert.Top)
+    drawStrAnchored(float2(0.45 - props.spiInfoOffset, -0.45 + props.spiInfoOffset), "{angleStr} / {distStr}", AnchorHorz.Right, AnchorVert.Top)
     // Time to target
     let velAlongDir = dot(float3(fm.vel).xz, fast_normalize(dir))
     return if velAlongDir < 0.0
@@ -403,7 +403,7 @@ class Component : Canvas
     return if timeToTarget > 60 * 60
 
     let timeStr = "{timeToTarget / 60}:{fmt(":02d", timeToTarget % 60)}"
-    drawStrAnchored(float2(0.45, -0.4), timeStr, AnchorHorz.Right, AnchorVert.Top)
+    drawStrAnchored(float2(0.45 - props.spiInfoOffset, -0.4 + props.spiInfoOffset), timeStr, AnchorHorz.Right, AnchorVert.Top)
 
   def drawCenterCross()
     return if !props.centerCross

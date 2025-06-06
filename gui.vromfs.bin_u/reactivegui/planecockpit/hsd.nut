@@ -45,6 +45,7 @@ let hsdSettings = Computed(function() {
     spi = true
     spiColor = E3DCOLOR(255, 255, 255, 255)
     spiInfo = true
+    spiInfoOffset = 0.0
     distScale = true
     distScaleBeyondAzScale = false
     distScaleStepSize = 5000.0
@@ -101,6 +102,7 @@ let hsdSettings = Computed(function() {
         spi = pageBlk.getBool("spi", true)
         spiColor = pageBlk.getE3dcolor("spiColor", E3DCOLOR(255, 255, 255, 255))
         spiInfo = pageBlk.getBool("spiInfo", true)
+        spiInfoOffset = pageBlk.getReal("spiInfoOffset", 0.0)
         distScale = pageBlk.getBool("distScale", true)
         distScaleBeyondAzScale = pageBlk.getBool("distScaleBeyondAzScale", false)
         distScaleStepSize = max(pageBlk.getReal("distScaleStepSize", 5000.0), 1.0)
@@ -141,6 +143,7 @@ let hsd = @(pos_size) function() {
     spi,
     spiColor,
     spiInfo,
+    spiInfoOffset,
     distScale,
     distScaleBeyondAzScale,
     distScaleStepSize,
@@ -181,6 +184,7 @@ let hsd = @(pos_size) function() {
     spi
     spiColor
     spiInfo
+    spiInfoOffset
     distScale
     distScaleBeyondAzScale
     distScaleStepSize

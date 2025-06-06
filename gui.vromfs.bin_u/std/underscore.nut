@@ -22,12 +22,16 @@ function isDataBlock(obj) {
     return true
   return false
 }
-
-let callableTypes = ["function","table","instance"]
-let recursivetypes =["table","array","class"]
+function _mkset(a, b) {
+  a[b]<-b
+  return a
+}
+let callableTypes = const ["function","table","instance"].reduce(_mkset, {})
+let recursivetypes = const ["table","array","class"].reduce(_mkset, {})
 
 function isCallable(v) {
-  return callableTypes.indexof(type(v)) != null && (v.getfuncinfos() != null)
+  let typ = typeof v
+  return typ=="function" || (typ in callableTypes && (v.getfuncinfos() != null))
 }
 
 function mkIteratee(func){
@@ -153,7 +157,7 @@ function isEqual(val1, val2, customIsEqual={}){
   if (valType in customIsEqual)
     return customIsEqual[valType](val1, val2)
 
-  if (recursivetypes.contains(valType)) {
+  if (valType in recursivetypes) {
     if (val1.len() != val2.len())
       return false
     foreach(key, val in val1) {
@@ -264,7 +268,7 @@ function indexBy(list, iteratee) {
 }
 
 function deep_clone(val) {
-  if (!recursivetypes.contains(type(val)))
+  if (type(val) not in recursivetypes)
     return val
   return val.map(deep_clone)
 }
@@ -279,7 +283,7 @@ function deep_clone(val) {
 
 
 function deep_update(target, source) {
-  if ((recursivetypes.indexof(type(source)) == null)) {
+  if (type(source) not in recursivetypes) {
     target = source
     return target
   }
@@ -291,7 +295,7 @@ function deep_update(target, source) {
     if (!(k in target)){
       target[k] <- deep_clone(v)
     }
-    else if (!recursivetypes.contains(type(v))){
+    else if (type(v) not in recursivetypes){
       target[k] = v
     }
     else {

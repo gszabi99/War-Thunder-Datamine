@@ -4545,6 +4545,50 @@
       }
     },
     {
+      "id": "2025_06_06_d_day_2025_decal",
+      "locId": "decals/d_day_2025_decal",
+      "locDescId": "gift_decal_trophy/desc",
+      "userLogId": "2025_06_06_d_day_2025_decal_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "d_day",
+      "costGold": 199,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerCountry",
+            "country": [
+              "country_britain",
+              "country_usa",
+              "country_france"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-06 11:00:00",
+            "endDate": "2025-06-09 11:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2025_06_01_title_pathway_to_stars_",
       "locId": "2025_06_01_title_pathway_to_stars/name",
       "locDescId": "2025_06_01_title_pathway_to_stars/desc",
@@ -4828,6 +4872,7 @@
       "chapter": "holidays",
       "group": "ca_armed_forces_day",
       "costGold": 199,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -4867,6 +4912,7 @@
       "chapter": "holidays",
       "group": "turkish_air_force_day",
       "costGold": 199,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -4906,6 +4952,7 @@
       "chapter": "holidays",
       "group": "swedish_national_security_day",
       "costGold": 199,
+      "hidden": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -20486,11 +20533,395 @@
       "hidden": true
     },
     {
+      "id": "usa_37th_tank_battalion_4th_armored_division",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "minStat",
+            "value": [
+              3,
+              3,
+              3
+            ],
+            "stat": "place"
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_usa"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-06 11:00:00",
+            "endDate": "2025-07-07 09:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "de_4th_23rd_recon_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "killedGroundScore",
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "num": 30,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_germany"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-06 11:00:00",
+            "endDate": "2025-07-07 09:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "ru_shitov_lion",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "totalMissionScore",
+        "score": 2147483646,
+        "chardType": "char_static_progress",
+        "num": 15000000,
+        "hostCondition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerType",
+            "unitType": "typeFighter",
+            "inSession": true
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_ussr"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-06 11:00:00",
+            "endDate": "2025-07-07 09:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "uk_baldys_bus_inscription_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 20,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_britain"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-06 11:00:00",
+            "endDate": "2025-07-07 09:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "jp_302_tfs_whitetail",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 20,
+        "mulArcade": 1,
+        "mulRealistic": 2,
+        "mulHardcore": 2,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "weaponType",
+            "weapon": "aam"
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_japan"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-06 11:00:00",
+            "endDate": "2025-07-07 09:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cn_1st_opfor_brigade",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 20,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "activity",
+            "percent": 60
+          },
+          {
+            "type": "playerType",
+            "unitType": "tank"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_china"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-06 11:00:00",
+            "endDate": "2025-07-07 09:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "it_la_spacca_inscription_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 40,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "typeLightTank"
+          },
+          {
+            "type": "playerCountry",
+            "country": [
+              "country_italy",
+              "country_hungary"
+            ]
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-06 11:00:00",
+            "endDate": "2025-07-07 09:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "fr_le_malin_badge_decal",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "awardDamage",
+        "num": 40000,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": [
+              "ship",
+              "boat"
+            ]
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_france"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-06 11:00:00",
+            "endDate": "2025-07-07 09:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "se_p7_southern_skane_regiment",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 20,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "tank"
+          },
+          {
+            "type": "weaponType",
+            "weapon": "generic"
+          },
+          {
+            "type": "bulletCaliber",
+            "caliber": 0.04,
+            "notLess": false
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_sweden"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-06 11:00:00",
+            "endDate": "2025-07-07 09:00:00"
+          }
+        ]
+      }
+    },
+    {
+      "id": "iaf_107_sqn_orange_tiger",
+      "type": "decal",
+      "chapter": "decals",
+      "group": "weekly",
+      "hideForLang": "HChinese",
+      "mode": {
+        "type": "killedPlayersScore",
+        "num": 50,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "offenderUnitRank",
+            "minRank": 3
+          },
+          {
+            "type": "offenderType",
+            "unitType": "aircraft"
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_israel"
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-06 11:00:00",
+            "endDate": "2025-07-07 09:00:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "ussr_victor_of_berlin_decal",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
+      "hideUntilUnlocked": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 20,
@@ -20530,6 +20961,7 @@
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
+      "hideUntilUnlocked": true,
       "mode": {
         "type": "killedPlayersScore",
         "num": 50,
@@ -20563,6 +20995,7 @@
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
+      "hideUntilUnlocked": true,
       "mode": {
         "type": "killedPlayersScore",
         "num": 60,
@@ -20596,6 +21029,7 @@
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
+      "hideUntilUnlocked": true,
       "mode": {
         "type": "captures",
         "num": 10,
@@ -20634,6 +21068,7 @@
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
+      "hideUntilUnlocked": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 20,
@@ -20673,6 +21108,7 @@
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
+      "hideUntilUnlocked": true,
       "mode": {
         "type": "missionsPlayedScore",
         "num": 3,
@@ -20717,6 +21153,7 @@
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
+      "hideUntilUnlocked": true,
       "mode": {
         "type": "killedPlayersScore",
         "num": 60,
@@ -20750,6 +21187,7 @@
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
+      "hideUntilUnlocked": true,
       "mode": {
         "type": "unlockStageCount",
         "num": 1,
@@ -20786,6 +21224,7 @@
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
+      "hideUntilUnlocked": true,
       "mode": {
         "type": "killedGroundScore",
         "mulArcade": 1,
@@ -20822,6 +21261,7 @@
       "chapter": "decals",
       "group": "weekly",
       "hideForLang": "HChinese",
+      "hideUntilUnlocked": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 2147483646,
@@ -21637,14 +22077,6 @@
       "hideUntilUnlocked": true
     },
     {
-      "id": "iaf_107_sqn_orange_tiger",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hideForLang": "HChinese",
-      "hideUntilUnlocked": true
-    },
-    {
       "id": "fi_armoured_brigade",
       "type": "decal",
       "chapter": "decals",
@@ -21757,13 +22189,6 @@
     },
     {
       "id": "uk_gloucestershire_regiment",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hideUntilUnlocked": true
-    },
-    {
-      "id": "jp_302_tfs_whitetail",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -22736,13 +23161,6 @@
       "hidden": true
     },
     {
-      "id": "se_p7_southern_skane_regiment",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hidden": true
-    },
-    {
       "id": "jp_301_tfs_frog",
       "type": "decal",
       "chapter": "decals",
@@ -23227,13 +23645,6 @@
     },
     {
       "id": "ussr_12th_guards_tank_corps",
-      "type": "decal",
-      "chapter": "decals",
-      "group": "weekly",
-      "hidden": true
-    },
-    {
-      "id": "usa_37th_tank_battalion_4th_armored_division",
       "type": "decal",
       "chapter": "decals",
       "group": "weekly",
@@ -74438,8 +74849,8 @@
       "chapter": "history_pages",
       "group": "road_to_reichstag",
       "costGold": 1999,
+      "hidden": true,
       "visibleDays": 1.0,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "typeLocID": "conditions/completedTasks",
@@ -74466,6 +74877,7 @@
       "locDescId": "2025_05_27_history_pages_trophy_gift/desc",
       "userLogId": "2021_12_07_memorable_date_trophy",
       "group": "road_to_reichstag",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -74531,6 +74943,7 @@
       "locDescId": "2025_05_23_history_pages_trophy_gift/desc",
       "userLogId": "2022_02_08_memorable_date_trophy",
       "group": "road_to_reichstag",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -74623,6 +75036,7 @@
       "locDescId": "2025_05_18_history_pages_trophy_gift/desc",
       "userLogId": "2021_12_07_memorable_date_trophy",
       "group": "road_to_reichstag",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -74692,6 +75106,7 @@
       "locDescId": "2025_05_13_history_pages_trophy_gift/desc",
       "userLogId": "2023_04_27_memorable_date_trophy",
       "group": "road_to_reichstag",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -74797,6 +75212,7 @@
       "locDescId": "2025_05_10_history_pages_trophy_gift/desc",
       "userLogId": "2022_05_13_memorable_date_trophy",
       "group": "road_to_reichstag",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -74899,6 +75315,7 @@
       "locDescId": "2025_05_07_history_pages_trophy_gift/desc",
       "userLogId": "2022_05_07_memorable_date_trophy",
       "group": "road_to_reichstag",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -75006,6 +75423,7 @@
       "locDescId": "2025_05_04_history_pages_trophy_gift/desc",
       "userLogId": "2021_12_07_memorable_date_trophy",
       "group": "road_to_reichstag",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -75070,6 +75488,7 @@
       "locDescId": "2025_05_01_history_pages_trophy_gift/desc",
       "userLogId": "2021_12_07_memorable_date_trophy",
       "group": "road_to_reichstag",
+      "hidden": true,
       "type": "trophy",
       "amount_trophies": 1,
       "chapter": "history_pages",
@@ -75676,6 +76095,9 @@
             "inSession": true,
             "inSessionAnd": false,
             "class": [
+              "us_battleship_texas",
+              "us_cruiser_new_orleans_class",
+              "us_destroyer_sumner",
               "us_m5a1_stuart",
               "us_m5a1_stuart_td",
               "us_m10",
@@ -75741,7 +76163,13 @@
               "spitfire_mk5b_notrop",
               "typhoon_mk1b",
               "typhoon_mk1b_late",
-              "tempest_mkv"
+              "tempest_mkv",
+              "uk_battleship_rodney",
+              "uk_battleship_q_elizabet_class_warspite",
+              "uk_cruiser_hawkins",
+              "uk_cruiser_arethusa",
+              "uk_destroyer_haida",
+              "uk_destroyer_j_class"
             ]
           },
           {
@@ -105724,7 +106152,7 @@
         "type": "totalMissionScore",
         "score": 2147483646,
         "chardType": "char_static_progress",
-        "num": 600000000,
+        "num": 500000000,
         "mulMode3": 1.0,
         "mulMode4": 1.33,
         "mulMode5": 1.8,

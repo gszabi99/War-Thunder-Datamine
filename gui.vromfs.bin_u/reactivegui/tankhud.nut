@@ -19,7 +19,8 @@ let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let { mkCollapseButton } = require("airHudComponents.nut")
 let mkTankSight = require("%rGui/tankSight.nut")
-let { aaComplexMenu, isAAComplexMenuActive } = require("%rGui/antiAirComplexMenu/antiAirComplexMenu.nut")
+let { aaComplexMenu } = require("%rGui/antiAirComplexMenu/antiAirComplexMenu.nut")
+let { isAAComplexMenuActive } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut")
 
 
 

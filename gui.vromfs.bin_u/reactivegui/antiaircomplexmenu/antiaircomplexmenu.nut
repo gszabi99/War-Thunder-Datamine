@@ -4,10 +4,6 @@ let { targets, TargetsTrigger, HasAzimuthScale, AzimuthMin, AzimuthRange, HasDis
 let { PI, floor, lerp } = require("%sqstd/math.nut")
 let dasVerticalViewIndicator = load_das("%rGui/antiAirComplexMenu/verticalViewIndicator.das")
 let dasRadarHud = load_das("%rGui/radar.das")
-let { eventbus_subscribe } = require("eventbus")
-let { setAllowedControlsMask } = require("controlsMask")
-let { playerUnitName, isUnitAlive } = require("%rGui/hudState.nut")
-let { isInFlight } = require("%rGui/globalState.nut")
 let { radarSwitchToTarget } = require("antiAirComplexMenuControls")
 
 let radarColor = 0xFF00FF00
@@ -32,8 +28,11 @@ let circularRadar = {
   drawFunc = "draw_radar_hud"
   setupFunc = "setup_radar_data"
   font = Fonts.hud
+  fontSize = hdpx(16)
   color = radarColor
+  annotateTargets = true
   handleClicks = true
+  isAAComplexMenuLayout = true
 }
 
 function createTargetListElement(index, azimuth, distance, height, speed, typeId, fontSize, isDetected = false, onClick = null){
@@ -113,7 +112,7 @@ function createTargetDist(index, hasAzimuthScale, azimuthMin, azimuthRange, hasD
 
   let speedText = target.radSpeed > -3000.0 ? string.format("%.1f", target.radSpeed) : "-"
 
-  let typeIdText = target.typeId
+  let typeIdText = loc(target.typeId)
 
   local onClick = function() {
     radarSwitchToTarget(target.objectId)
@@ -147,49 +146,6 @@ let targetListMain = {
   ]
 }
 
-let aaComplexMenuShownByUnitName = {}
-let isAAComplexMenuActive = Watched(false)
-
-function onAAComplexMenuRequest(evt) {
-  let { show } = evt
-  let pUnitName = playerUnitName.get()
-
-  aaComplexMenuShownByUnitName[pUnitName] <- show
-
-  isAAComplexMenuActive.set(show)
-
-  let controllMask = show ?
-      CtrlsInGui.CTRL_IN_AA_COMPLEX_MENU
-    | CtrlsInGui.CTRL_ALLOW_FULL
-    : CtrlsInGui.CTRL_ALLOW_FULL
-  setAllowedControlsMask(controllMask)
-}
-
-eventbus_subscribe("on_aa_complex_menu_request", onAAComplexMenuRequest)
-
-isInFlight.subscribe(function(v) {
-  if (v)
-    return
-  onAAComplexMenuRequest({ show = false })
-  aaComplexMenuShownByUnitName.clear()
-})
-
-playerUnitName.subscribe(function(_) {
-  let pUnitName = playerUnitName.get()
-
-  let isShowAAComplexMenu = !!aaComplexMenuShownByUnitName?[pUnitName]
-  onAAComplexMenuRequest({ show = isShowAAComplexMenu })
-})
-
-isUnitAlive.subscribe(function(v) {
-  if (v)
-    return
-  let pUnitName = playerUnitName.get()
-  aaComplexMenuShownByUnitName[pUnitName] <- false
-  onAAComplexMenuRequest({ show = false })
-})
-
-
 let aaComplexMenu = {
   size = flex()
 
@@ -203,4 +159,4 @@ let aaComplexMenu = {
   ]
 }
 
-return { aaComplexMenu, isAAComplexMenuActive }
+return { aaComplexMenu }

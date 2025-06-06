@@ -56,9 +56,6 @@
     4.06,
     -1.37
   ],
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -4879,10 +4876,7 @@
       },
       {
         "dmPartMain": "fire_control_room_01_dm",
-        "dmPart": [
-          "rangefinder_01_dm",
-          "rangefinder_02_dm"
-        ],
+        "dmPart": "rangefinder_02_dm",
         "measureAccuracy": 0.85,
         "targetLockTime": 20.0,
         "calcTime": 12.0,
@@ -4892,7 +4886,25 @@
           "primary": true,
           "secondary": false,
           "machinegun": false
+        },
+        "dmPartLimits": {
+          "dmPart": "rangefinder_01_dm",
+          "maxYaw": 40.0,
+          "minYaw": -40.0
         }
+      }
+    ]
+  },
+  "radarAnimations": {
+    "anim": [
+      {
+        "radarAnimVar": "radar_target_yaw_rotate",
+        "animatedRadarIdx": 0
+      },
+      {
+        "radarAnimVar": "target_tagging_yaw_rotate",
+        "radarAntenaSpeed": 50.0,
+        "animatedRadarIdx": 1
       }
     ]
   },
@@ -4901,7 +4913,10 @@
       "node": [
         "fire_director_01",
         "rangefinder_01",
-        "rangefinder_02"
+        "rangefinder_02",
+        "antenna_target_location_01",
+        "antenna_target_location_02",
+        "antenna_target_location_03"
       ]
     },
     "Weapon": [

@@ -119,7 +119,7 @@ let { get_mp_session_info, get_mission_set_difficulty_int, get_meta_mission_info
 } = require("guiMission")
 let { color4ToInt } = require("%scripts/utils/colorUtil.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
-let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation
+let { get_tank_skin_condition, get_tank_camo_scale, get_tank_camo_rotation, on_user_skin_profile_changed
 } = require("unitCustomization")
 let { setLastSkin, getSkinsOption, getCurUnitUserSkins, getUserSkinCondition, getUserSkinRotation, getUserSkinScale } = require("%scripts/customization/skins.nut")
 let { stripTags } = require("%sqstd/string.nut")
@@ -4526,7 +4526,9 @@ let optionsSetMap = {
     let unitName = unitNameForWeapons.get()
     if (unitName) {
       if (cdb?[unitName] != (descr.values?[value] ?? "")) {
-        cdb[unitName] = descr.values?[value] ?? ""
+        let skin = descr.values?[value] ?? ""
+        cdb[unitName] = skin
+        on_user_skin_profile_changed(unitName, skin)
         saveProfile()
       }
     }

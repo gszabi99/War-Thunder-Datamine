@@ -67,7 +67,13 @@ struct CanvasParams
   cueLowHeiColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   cueUndergroundColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   radarModeNameLangId : int = -1
+  annotateTargets : bool = false
   handleClicks : bool = false
+  isAAComplexMenuLayout : bool = false
+
+def make_transparent_color(col : E3DCOLOR; transparency : float)
+  let col4 = float4(Color4(col)) * transparency
+  return E3DCOLOR(Color4(col4))
 
 def rad_to_deg(rad : float)
   return rad * 180. / PI
@@ -131,7 +137,9 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.cueLowHeiColor = props |> getColor("cueLowHeiColor", storage.color)
   storage.cueUndergroundColor = props |> getColor("cueUndergroundColor", storage.color)
   storage.radarModeNameLangId = props |> getInt("radarModeNameLangId", -1)
+  storage.annotateTargets = props |> getBool("annotateTargets", false)
   storage.handleClicks = props |> getBool("handleClicks", false)
+  storage.isAAComplexMenuLayout = props |> getBool("isAAComplexMenuLayout", false)
 
 [export, unused_argument(rstate)]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
@@ -395,7 +403,7 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
   let isMouseOnEllement = lt.x <= mousePos.x && mousePos.x <= rb.x && lt.y <= mousePos.y && mousePos.y <= rb.y
   var needToHandleMouseClick = data.handleClicks && is_left_mouse_btn_down() && isMouseOnEllement
 
-  foreach_targets() <| $(var target)
+  foreach_targets() <| $(var target; i)
     var distanceRel = 0.9
     var radialWidthRel = 0.05
     if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
@@ -417,6 +425,8 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
     color *= (1. - target.ageRel) * signalRel
     let e3dColor = E3DCOLOR(Color4(color))
 
+    let targetCircleRadius = radius * 0.04
+
     if target.targetType == int(RadarTargetType.TYPE_TARGET)
       let fullCircle = azimuthRange > PI + 0.035
       let angleLeft = fullCircle ? (angle - 0.5 * angularWidth) : max(angle - 0.5 * angularWidth, get_radar_hud_azimuth_min() - PI * 0.5)
@@ -424,15 +434,28 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
 
       if target.isSelected && get_radar_hud_has_azimuth_scale()
         if target.losSpeed < 30000.
-          ctx |> render_ellipse_aa(pos, radius * 0.04, ctx |> hdpx(2. * data.lineWidth), e3dColor, transparentColor)
+          ctx |> render_ellipse_aa(pos, targetCircleRadius, ctx |> hdpx(2. * data.lineWidth), e3dColor, transparentColor)
           let losPos = origin + float2((cosa * distanceRel + (cosa * target.losSpeed + sina * target.losHorSpeed) * 0.0002) * radius.x,
            (sina * distanceRel + (sina * target.losSpeed - cosa * target.losHorSpeed) * 0.0002) * radius.y)
           ctx |> set_color(e3dColor)
           ctx |> draw_line(pos, losPos, ctx |> hdpx(2. * data.lineWidth))
         else
-          ctx |> render_ellipse_aa(pos, radius * 0.04, ctx |> hdpx(2.), e3dColor, transparentColor)
+          ctx |> render_ellipse_aa(pos, targetCircleRadius, ctx |> hdpx(2.), e3dColor, transparentColor)
       else
-        ctx |> render_sector_aa(origin, radius * distanceRel, float2(angleLeft, angleRight), 100. * radialWidthRel, e3dColor, transparentColor)
+        if data.isAAComplexMenuLayout
+          ctx |> render_ellipse_aa(pos, targetCircleRadius, ctx |> hdpx(2. * data.lineWidth), e3dColor, transparentColor)
+        else
+          ctx |> render_sector_aa(origin, radius * distanceRel, float2(angleLeft, angleRight), 100. * radialWidthRel, e3dColor, transparentColor)
+      if data.annotateTargets
+        var fctx : StdGuiFontContext
+        get_font_context(fctx, data.fontId, 0, 0, int(ctx |> hdpx(10.0)))
+        let annotation = "{i}" // TODO will be replaced with target of interest index
+        let annotationBox = get_str_bbox(annotation, annotation |> length(), fctx)
+
+        let offsetX = -annotationBox.width.x * 0.5
+        let offsetY = pos.y > origin.y ? -targetCircleRadius.y - ctx |> hdpx(4.0) : targetCircleRadius.y + annotationBox.width.y + ctx |> hdpx(4.0)
+        ctx |> goto_xy(pos.x + offsetX, pos.y + offsetY)
+        ctx |> draw_str_scaled(1.0, annotation, annotation |> length())
 
       if target.isDetected
         let azimuthHalfWidth = get_radar_hud_is_visible2() ? get_radar_hud_azimuth_half_width2() : get_radar_hud_azimuth_half_width()
@@ -496,7 +519,7 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
     if needToHandleMouseClick
       let mouseToTargetSq = (pos - mousePos) * (pos - mousePos)
       let distSq = mouseToTargetSq.x + mouseToTargetSq.y
-      let isPressed = distSq < radius.x * radius.x * 0.001
+      let isPressed = distSq < targetCircleRadius.x * targetCircleRadius.x + targetCircleRadius.y * targetCircleRadius.y
       if isPressed
         radar_switch_to_target(target.sourceObjectId)
         needToHandleMouseClick = false
@@ -1174,7 +1197,66 @@ def b_scope(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasP
   polar_radar_targets(ctx, data, pos + size * 0.5, size)
   b_scope_cue(ctx, data, pos + size * 0.5, size)
 
+def b_scope_labels_aa_complex(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
+  var fctx : StdGuiFontContext
+  get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
+
+  ctx |> set_font(data.fontId, 0, 0)
+  ctx |> set_font_ht(data.fontSize)
+  ctx |> set_color(data.color)
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
+
+  let size = float2(min(rdata.size.x, rdata.size.y))
+  let pos = rdata.pos
+
+  let deg = loc("measureUnits/deg")
+
+  let hideMeasures = !get_radar_hud_has_azimuth_scale() || get_radar_hud_scan_azimuth_max() <= get_radar_hud_scan_azimuth_min()
+  let azText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_azimuth_max() - get_radar_hud_scan_azimuth_min()) + 0.5))
+  let elText = fmt(":.0f", floor(rad_to_deg(get_radar_hud_scan_elevation_max() - get_radar_hud_scan_elevation_min()) + 0.5))
+  let textMeasures = !hideMeasures ? "{azText}{deg}x{elText}{deg}" + (get_radar_hud_scan_patterns_max() > 1 ? "*" : "") : ""
+  let strMeasuresBox = get_str_bbox(textMeasures, textMeasures |> length(), fctx)
+  ctx |> goto_xy(pos.x + size.x - strMeasuresBox.width.x, pos.y + size.y - strMeasuresBox.width.y)
+  ctx |> draw_str_scaled(1.0, textMeasures, textMeasures |> length())
+
+  let textDist = (get_radar_hud_velocity_search() ? get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_SPEED, get_radar_hud_distance_max(), true, 1.) :
+     get_measure_units_text(MeasureUnitsTypes.MEASURE_UNIT_DIST, get_radar_hud_distance_max() * 1000., true, 1.))
+  let strDistBox = get_str_bbox(textDist, textDist |> length(), fctx)
+  ctx |> goto_xy(pos.x + size.x * 0.8 - strDistBox.width.x, pos.y + size.y - strDistBox.width.y)
+  ctx |> draw_str_scaled(1.0, textDist, textDist |> length())
+
+  let trackModeId = get_radar_hud_mode_name2_id()
+  let trackModeLocId = trackModeId >= 0 && trackModeId < radarModeNames |> length() ? radarModeNames[trackModeId] : ""
+  let isIRST = starts_with(trackModeLocId, "hud/IRST")
+
+  let outlineColor = data.color
+  let noOutlineColor = make_transparent_color(data.color, 0.5)
+
+  let radarCol = isIRST ? noOutlineColor : outlineColor
+  ctx |> set_color(radarCol)
+  let radarText = loc("hud/radar")
+  let radarTextBox = get_str_bbox(radarText, radarText |> length(), fctx)
+  ctx |> goto_xy(pos.x + size.x * 0.1, pos.y + size.y)
+  ctx |> draw_str_scaled(1.0, radarText, radarText |> length())
+
+  ctx |> set_color(noOutlineColor)
+  let slash = "/"
+  let slashTextBox = get_str_bbox(slash, slash |> length(), fctx)
+  ctx |> goto_xy(pos.x + size.x * 0.1 + radarTextBox.width.x, pos.y + size.y)
+  ctx |> draw_str_scaled(1.0, slash, slash |> length())
+
+  let irstCol = !isIRST ? noOutlineColor : outlineColor
+  ctx |> set_color(irstCol)
+  let irstText = loc("hud/irst")
+  ctx |> goto_xy(pos.x + size.x * 0.1 + radarTextBox.width.x + slashTextBox.width.x, pos.y + size.y)
+  ctx |> draw_str_scaled(1.0, irstText, irstText |> length())
+
+  return float4(5.0)
+
 def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
+  if data.isAAComplexMenuLayout
+    return b_scope_labels_aa_complex(ctx, rdata, data)
+
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize/*hudFontHgt*/)
   var topOffset = 0.
@@ -1259,7 +1341,64 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   ctx |> draw_str_scaled(1.0, textVel, textVel |> length())
   return float4(leftOffset, topOffset, rightOffset, bottomOffset)
 
+def b_scope_background_aa_complex(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+  let center = pos + size * 0.5
+  ctx |> render_ellipse_aa(center, size * 0.5, ctx |> hdpx(1.6), data.color, areaBackgroundColor)
+
+  let color = make_transparent_color(data.color, 0.3)
+  if get_radar_hud_has_distance_scale()
+    let n = 4
+    for i in range(n)
+      let r = 0.5 * float(i) / float(n)
+      ctx |> render_ellipse_aa(center, size * r, ctx |> hdpx(1.2), color, transparentColor)
+
+  var fctx : StdGuiFontContext
+  get_font_context(fctx, data.fontId, 0, 0, data.fontSize/*hudFontHgt*/)
+
+  ctx |> set_font(data.fontId, 0, 0)
+  ctx |> set_font_ht(data.fontSize)
+  ctx |> set_color(data.color)
+  ctx |> set_draw_str_attr(FontFxType.FFT_GLOW, 0, 0, get_font_fx_color(data.color), get_font_fx_factor(data.color, ctx))
+
+  let deg = loc("measureUnits/deg")
+
+  let textOffset = ctx |> hdpx(3.0)
+
+  let text0 = "0{deg}"
+  let strBox0 = get_str_bbox(text0, text0 |> length(), fctx)
+  ctx |> goto_xy(pos.x + size.x * 0.5 - strBox0.width.x * 0.5, pos.y + strBox0.width.y + textOffset)
+  ctx |> draw_str_scaled(1.0, text0, text0 |> length())
+
+  let text90 = "90{deg}"
+  let strBox90 = get_str_bbox(text90, text90 |> length(), fctx)
+  ctx |> goto_xy(pos.x + size.x - strBox90.width.x - textOffset, pos.y + size.y * 0.5 + strBox90.width.y * 0.5)
+  ctx |> draw_str_scaled(1.0, text90, text90 |> length())
+
+  let text180 = "180{deg}"
+  let strBox180 = get_str_bbox(text180, text180 |> length(), fctx)
+  ctx |> goto_xy(pos.x + size.x * 0.5 - strBox180.width.x * 0.5, pos.y + size.y - textOffset)
+  ctx |> draw_str_scaled(1.0, text180, text180 |> length())
+
+  let text270 = "270{deg}"
+  let strBox270 = get_str_bbox(text270, text270 |> length(), fctx)
+  ctx |> goto_xy(pos.x + textOffset, pos.y + size.y * 0.5 + strBox270.width.y * 0.5)
+  ctx |> draw_str_scaled(1.0, text270, text270 |> length())
+
+  let left = float2(pos.x + textOffset * 2.0 + strBox270.width.x, pos.y + size.y * 0.5)
+  let right = float2(pos.x + size.x - textOffset * 2.0 - strBox90.width.x, pos.y + size.y * 0.5)
+  let coordsHor <- to_array_move(fixed_array<float2>(left, right))
+  ctx |> render_line_aa(coordsHor, false, ctx |> hdpx(1.2), float2(0, 0), color)
+
+  let top = float2(pos.x + size.x * 0.5, pos.y + strBox0.width.y + textOffset * 2.0)
+  let bottom = float2(pos.x + size.x * 0.5, pos.y + size.y - strBox180.width.y - textOffset * 2.0)
+  let coordVert <- to_array_move(fixed_array<float2>(top, bottom))
+  ctx |> render_line_aa(coordVert, false, ctx |> hdpx(1.2), float2(0, 0), color)
+
 def b_scope_background(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
+  if data.isAAComplexMenuLayout
+    b_scope_background_aa_complex(ctx, data, pos, size)
+    return
+
   let center = pos + size * 0.5
   ctx |> render_ellipse_aa(center, size * 0.5, ctx |> hdpx(1.6), data.color, areaBackgroundColor)
   let color = is_color_or_white(data.color)

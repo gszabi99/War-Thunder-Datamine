@@ -5554,12 +5554,6 @@
     "Bip01 Pelvis_34": "french_sailor_standing",
     "Bip01 Pelvis_35": "french_sailor_standing",
     "Bip01 Pelvis_36": "french_sailor_standing",
-    "Bip01 Pelvis_39": "french_sailor_sit",
-    "Bip01 Pelvis_40": "french_sailor_sit",
-    "Bip01 Pelvis_43": "french_sailor_sit",
-    "Bip01 Pelvis_44": "french_sailor_sit",
-    "Bip01 Pelvis_47": "french_sailor_sit",
-    "Bip01 Pelvis_48": "french_sailor_sit",
     "Bip01 Pelvis_49": "french_sailor_standing",
     "Bip01 Pelvis_50": "french_sailor_standing",
     "Bip01 Pelvis_51": "french_sailor_standing",
@@ -8504,13 +8498,13 @@
     "mass": {
       "Empty": 38500000.0,
       "momentOfInertia": [
-        90.0,
-        1950.0,
-        1200.0
+        120.0,
+        2800.0,
+        1650.0
       ],
       "CenterOfGravity": [
         -0.9,
-        -0.2,
+        0.4,
         0.0
       ]
     },
@@ -8521,15 +8515,15 @@
         "row": [
           [
             4.5,
-            13.1
+            10.5
           ],
           [
             8.0,
-            21.3
+            17.0
           ],
           [
             16.79,
-            31.7
+            32.3
           ]
         ]
       },
@@ -8545,7 +8539,7 @@
           ],
           [
             5.5,
-            20.0
+            21.0
           ]
         ]
       },
@@ -8618,14 +8612,14 @@
     },
     "hydrodynamics": {
       "bodyArea": 0.0,
-      "mulReaction": 1.4,
+      "mulReaction": 1.5,
       "rudder": {
         "pos": [
           -107.0,
           -2.1,
           0.0
         ],
-        "area": 38.0,
+        "area": 55.0,
         "deflection": 35.0,
         "dmPart": "steering_gear_01_dm"
       }
@@ -8635,12 +8629,12 @@
     "headPosOnShootingHeightMult": 1.75,
     "headPos": [
       0.0,
-      33.0,
-      -145.0
+      34.0,
+      -140.0
     ],
     "headPosOnShooting": [
-      26.0,
-      38.0,
+      22.0,
+      35.0,
       0.0
     ],
     "detectionHeight": 39.3
@@ -8666,7 +8660,10 @@
     "fireDirecting": [
       {
         "dmPartMain": "fire_control_room_01_dm",
-        "dmPart": "fire_director_01_dm",
+        "dmPart": [
+          "fire_director_01_dm",
+          "fire_director_04_dm"
+        ],
         "measureAccuracy": 1.0,
         "targetLockTime": 15.0,
         "calcTime": 8.0,
@@ -8683,7 +8680,6 @@
         "dmPart": [
           "fire_director_02_dm",
           "fire_director_03_dm",
-          "fire_director_04_dm",
           "fire_director_05_dm",
           "fire_director_06_dm"
         ],
@@ -8732,6 +8728,19 @@
           "secondary": true,
           "machinegun": false
         }
+      }
+    ]
+  },
+  "radarAnimations": {
+    "anim": [
+      {
+        "radarAnimVar": "radar_target_yaw_rotate",
+        "animatedRadarIdx": 0
+      },
+      {
+        "radarAnimVar": "target_tagging_yaw_rotate",
+        "radarAntenaSpeed": 50.0,
+        "animatedRadarIdx": 1
       }
     ]
   },

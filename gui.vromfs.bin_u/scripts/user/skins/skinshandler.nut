@@ -6,7 +6,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getUnlockById } = require("%scripts/unlocks/unlocksCache.nut")
 let { getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
-let { getUnitName } = require("%scripts/unit/unitInfo.nut")
+let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { getDecoratorById } = require("%scripts/customization/decorCache.nut")
 let { decoratorTypes } = require("%scripts/customization/types.nut")
 let { toggleUnlockFavButton, initUnlockFavInContainer } = require("%scripts/unlocks/favoriteUnlocks.nut")
@@ -54,6 +54,17 @@ function getSkinName(skinId) {
   return loc(skinsLocalization?[skinId] ?? skinId)
 }
 
+function getUnitParamsFromSkinId(skinId) {
+  let res = { unitCountry = "", unitType = "" }
+  let unit = getAircraftByName(getPlaneBySkinId(skinId))
+  if (unit == null)
+    return res
+
+  res.unitCountry = getUnitCountry(unit)
+  res.unitType = unit.unitType.armyId
+  return res
+}
+
 local SkinsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType          = handlerType.CUSTOM
   sceneBlkName     = "%gui/profile/skinsPage.blk"
@@ -90,7 +101,15 @@ local SkinsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     if (this.openParams == null)
       return
 
-    let { initCountry, initUnitType, initSkinId } = this.openParams
+    local initCountry = this.openParams.initCountry
+    local initUnitType = this.openParams.initUnitType
+    let initSkinId = this.openParams.initSkinId
+
+    if (initCountry == "" && initUnitType == "" && initSkinId != "") {
+      let { unitCountry, unitType } = getUnitParamsFromSkinId(initSkinId)
+      initCountry = unitCountry
+      initUnitType = unitType
+    }
 
     if (initCountry == "")
       return

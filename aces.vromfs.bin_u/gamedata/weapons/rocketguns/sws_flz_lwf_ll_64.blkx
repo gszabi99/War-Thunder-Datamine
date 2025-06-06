@@ -8,6 +8,41 @@
   "mesh": "swiss_flz_lwf_ll_64_79_falco",
   "tags": {},
   "rocket": {
+    "statType": "hydra",
+    "caliber": 0.28956,
+    "length": 2.159,
+    "WdK": [
+      0.1,
+      0.1,
+      0.1
+    ],
+    "CxK": 0.65,
+    "wingAreaMult": 1.85,
+    "finsAoaHor": 0.1,
+    "finsAoaVer": 0.1,
+    "finsLatAccel": 28.0,
+    "distFromCmToStab": 0.1,
+    "mass": 117.3081,
+    "massEnd": 89.56635,
+    "timeFire": 2.09,
+    "force": 27422.328,
+    "fireDelay": 0.0,
+    "timeLife": 30.0,
+    "useStartSpeed": true,
+    "startSpeed": 0.0,
+    "machMax": 3.55,
+    "endSpeed": 1100.0,
+    "maxDistance": 19000.0,
+    "minDistance": 30.0,
+    "rangeMax": 19000.0,
+    "loadFactorMax": 28.0,
+    "guidanceType": "radar",
+    "guidanceSfx": "",
+    "effectOffset": [
+      -1.95,
+      0.0,
+      0.0
+    ],
     "normalizationPreset": "heat",
     "ricochetPreset": "he",
     "groundRicochetPreset": "he_ground",
@@ -17,29 +52,10 @@
     "stabilityReductionAfterRicochet": 0.5,
     "stabilityReductionAfterPenetration": 0.15,
     "bulletType": "aam",
-    "bulletName": "us_aim9b_sidewinder",
-    "caliber": 0.16256,
-    "mass": 57.15264,
-    "massEnd": 43.09128,
     "explosiveType": "hbx",
-    "explosiveMass": 1.247379,
+    "explosiveMass": 8.7,
     "maxDeltaAngle": 0.0,
     "dragCx": 0.018,
-    "length": 1.9812,
-    "distFromCmToStab": 0.1,
-    "wingAreaMult": 1.4,
-    "CxK": 1.81,
-    "WdK": [
-      0.1,
-      0.1,
-      0.1
-    ],
-    "finsAoaHor": 0.2,
-    "finsAoaVer": 0.2,
-    "finsLatAccel": 21.0,
-    "force": 20784.742,
-    "timeFire": 1.4,
-    "fireDelay": 0.0,
     "spawnExplosionFx": false,
     "explosionPatchRadius": 4.0,
     "selfDestructionFx": "explosion_air_selfexplosion_big",
@@ -51,13 +67,11 @@
     "groundRicochetEffect": "hit_133_160mm_dirt_ap",
     "visualShattersWaterOffset": 1.2,
     "visualShattersGroundOffset": 1.2,
-    "fireEffect": "fires_exhaust_jet_early_big",
-    "smokeEffect": "smoke_rocket_tail_light_huge",
+    "fireEffect": "fires_exhaust_jet_mach_discs_med",
+    "smokeEffect": "smoke_rocket_tail_modern_air",
     "smokeEffect2": "",
     "hazeEffect": "haze_missile",
     "endSmokeViscosity": 0.05,
-    "maxDistance": 11000.0,
-    "minDistance": 30.0,
     "distanceFuse": false,
     "hitPowerMult": 400.0,
     "fuseDelayDist": 1.0,
@@ -65,9 +79,8 @@
       0.1,
       0.01
     ],
-    "guidanceSfx": "alarm_spin_scan",
     "shellCollision": true,
-    "guidanceType": "radar",
+    "hasProximityFuse": true,
     "explodeHitPower": 550.0,
     "explodeArmorPower": 75.0,
     "explodeRadius": [
@@ -75,22 +88,79 @@
       3.5
     ],
     "rendinstDamageRadius": 9.0,
-    "statType": "hydra",
     "shutterDamage": true,
     "shutterDamageRadius": 17.0,
     "shutterAmount": 2000,
     "shutterArmorPower": 12.0,
     "shutterHit": 10.0,
-    "advancedMissiles": false,
-    "useStartSpeed": true,
-    "startSpeed": 0.0,
-    "endSpeed": 1100.0,
-    "timeLife": 11.0,
-    "machMax": 3.55,
-    "loadFactorMax": 21.0,
-    "rangeMax": 11000.0,
     "price": 3000.0,
     "iconType": "missile_air_to_air_midrange",
+    "arcadeProp": {
+      "finsAoaHor": 0.11,
+      "finsAoaVer": 0.11
+    },
+    "guidance": {
+      "warmUpTime": 0.5,
+      "workTime": 60.0,
+      "uncageBeforeLaunch": true,
+      "lockAfterLaunch": true,
+      "lockTimeOut": 0.75,
+      "afterLaunchSpeedUp": 170.0,
+      "breakLockMaxTime": 5.0,
+      "radarSeeker": {
+        "band": 8,
+        "sideLobesAttenuation": -16.0,
+        "multipathEffect": [
+          0.0,
+          1.0,
+          60.0,
+          0.0
+        ],
+        "lockAngleMax": 48.0,
+        "angleMax": 48.0,
+        "rateMax": 12.0,
+        "prolongationTimeMax": 1.0,
+        "transmitter": {
+          "power": 200.0,
+          "antenna": {
+            "angleHalfSens": 5.0,
+            "sideLobesSensitivity": -27.0
+          }
+        },
+        "receiver": {
+          "rcs": 2.0,
+          "range": 12500.0,
+          "rangeMax": 18000.0,
+          "timeGainControl": false,
+          "antenna": {
+            "angleHalfSens": 10.0,
+            "sideLobesSensitivity": -15.0
+          }
+        },
+        "distance": {
+          "presents": true,
+          "minValue": 50.0,
+          "maxValue": 15000.0,
+          "width": 300.0,
+          "signalWidthMin": 150.0,
+          "refWidth": 1500.0
+        },
+        "distGate": {
+          "filterAlpha": 0.8,
+          "filterBetta": 0.05
+        }
+      },
+      "guidanceAutopilot": {
+        "timeOut": 2.0,
+        "propNavMult": 4.0,
+        "reqAccelMax": 28.0,
+        "accelControlProp": 0.0031,
+        "accelControlIntg": 0.0736,
+        "accelControlDiff": 0.00035,
+        "baseIndSpeed": 1800.0,
+        "accelControlIntgLim": 1.0
+      }
+    },
     "stabilityRicochetModifier": {
       "mod1": [
         0.0,
@@ -552,62 +622,14 @@
         "offset": 0.9
       }
     },
-    "guidance": {
-      "warmUpTime": 15.0,
-      "workTime": 60.0,
-      "uncageBeforeLaunch": true,
-      "breakLockMaxTime": 5.0,
-      "radarSeeker": {
-        "band": 8,
-        "sideLobesAttenuation": -16.0,
-        "lockAngleMax": 40.0,
-        "angleMax": 45.0,
-        "rateMax": 12.0,
-        "prolongationTimeMax": 1.0,
-        "designationSourceTypeMask": 2,
-        "transmitter": {
-          "power": 200.0,
-          "antenna": {
-            "angleHalfSens": 5.0,
-            "sideLobesSensitivity": -27.0
-          }
-        },
-        "receiver": {
-          "rcs": 2.0,
-          "range": 12500.0,
-          "rangeMax": 18000.0,
-          "antenna": {
-            "angleHalfSens": 10.0,
-            "sideLobesSensitivity": -15.0
-          }
-        },
-        "distance": {
-          "presents": true,
-          "minValue": 50.0,
-          "maxValue": 15000.0,
-          "width": 300.0,
-          "signalWidthMin": 150.0,
-          "refWidth": 1500.0
-        },
-        "distGate": {
-          "filterAlpha": 0.8,
-          "filterBetta": 0.05
-        }
-      },
-      "guidanceAutopilot": {
-        "timeOut": 3.2,
-        "propNavMult": 4.0,
-        "reqAccelMax": 21.0,
-        "accelControlProp": 0.003,
-        "accelControlIntg": 0.0436,
-        "accelControlDiff": 0.0011,
-        "baseIndSpeed": 1800.0,
-        "accelControlIntgLim": 1.0
-      }
-    },
-    "arcadeProp": {
-      "finsAoaHor": 0.2,
-      "finsAoaVer": 0.2
+    "proximityFuse": {
+      "timeOut": 0.8,
+      "radius": 8.0,
+      "detectShells": true,
+      "shellCaliberRange": [
+        0.08,
+        0.2
+      ]
     },
     "armorpower": {
       "ArmorPower0m": [

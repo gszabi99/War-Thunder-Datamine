@@ -10,7 +10,8 @@ let { getFullUnlockDescByName } = require("%scripts/unlocks/unlocksViewModule.nu
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_child_by_value } = require("%sqDagui/daguiUtil.nut")
 let { get_gui_option } = require("guiOptions")
-let { dynamicInit, dynamicGetList } = require("dynamicMission")
+let { dynamicGetList } = require("dynamicMission")
+let { dynamicInitAsync } = require("%scripts/missions/dynCampaingState.nut")
 let { get_cur_game_mode_name } = require("mission")
 let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_DYNAMIC, USEROPT_YEAR, USEROPT_MP_TEAM_COUNTRY,
@@ -283,10 +284,31 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   }
 
   function finalApplyCallback() {
+    let map = get_mission_settings().layout
+
+    local desc = get_option(USEROPT_MP_TEAM_COUNTRY);
+    let team = desc.values[desc.value];
+    let settings = DataBlock();
+    settings.setInt("playerSide", team)
+
+    desc = get_option(USEROPT_DYN_FL_ADVANTAGE);
+    settings.setInt("frontlineAdvantage", desc.values[desc.value])
+
+    desc = get_option(USEROPT_DYN_WINS_TO_COMPLETE);
+    settings.setInt("needWinsToComplete", desc.values[desc.value]);
+
+    desc = get_option(USEROPT_YEAR);
+    settings.setStr("year", desc.values[desc.value]);
+
+    desc = get_option(USEROPT_DIFFICULTY)
+    set_mission_settings("diff", desc.value)
+    settings.setInt("difficulty", desc.value);
+
+    dynamicInitAsync(settings, map)
+  }
+
+  function onEventDynamicCampaignInited(_) {
     this.finalApply()
-    if (get_mission_settings().dynlist.len() == 0)
-      this.msgBox("no_missions_error", loc("msgbox/appearError"),
-        [["ok", this.goBack ]], "ok", { cancel_fn = this.goBack });
   }
 
   function checkCustomDifficulty() {
@@ -303,41 +325,13 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
   }
 
   function finalApply() {
-    let map = get_mission_settings().layout
-
-    local desc = get_option(USEROPT_MP_TEAM_COUNTRY);
-    let team = desc.values[desc.value];
-    let settings = DataBlock();
-    settings.setInt("playerSide", team)
-
-    
-    
-
-    
-    
-
-    
-    
-
-    desc = get_option(USEROPT_DYN_FL_ADVANTAGE);
-    settings.setInt("frontlineAdvantage", desc.values[desc.value])
-
-    desc = get_option(USEROPT_DYN_WINS_TO_COMPLETE);
-    settings.setInt("needWinsToComplete", desc.values[desc.value]);
-
-    desc = get_option(USEROPT_YEAR);
-    settings.setStr("year", desc.values[desc.value]);
-
-    desc = get_option(USEROPT_DIFFICULTY)
-    set_mission_settings("diff", desc.value)
-    settings.setInt("difficulty", desc.value);
-
-    dynamicInit(settings, map)
-    let dynListBlk = DataBlock();
+    let dynListBlk = DataBlock()
     set_mission_settings("dynlist", dynamicGetList(dynListBlk, false))
 
     local playerCountry = ""
-
+    let map = get_mission_settings().layout
+    let desc = get_option(USEROPT_MP_TEAM_COUNTRY)
+    let team = desc.values[desc.value]
     let add = []
     for (local i = 0; i < get_mission_settings().dynlist.len(); i++) {
       let misblk = get_mission_settings().dynlist[i].mission_settings.mission
@@ -357,6 +351,10 @@ gui_handlers.DynamicLayouts <- class (gui_handlers.CampaignChapter) {
       rankCountry = playerCountry
       silentFeature = "ModeDynamic"
     })
+
+    if (get_mission_settings().dynlist.len() == 0)
+      this.msgBox("no_missions_error", loc("msgbox/appearError"),
+        [["ok", this.goBack ]], "ok", { cancel_fn = this.goBack });
   }
 
   function goBack() {

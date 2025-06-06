@@ -2074,9 +2074,6 @@
       {
         "blk": "gameData/sensors/us_flir.blk",
         "node": "optic_gun1"
-      },
-      {
-        "blk": "gameData/sensors/cn_helicopter_z_lws.blk"
       }
     ]
   },
@@ -2291,7 +2288,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
               "bullets": 24,
               "bulletsCartridge": 1,
@@ -2302,7 +2299,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
               "bullets": 24,
               "bulletsCartridge": 1,
@@ -3496,41 +3493,17 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "maw_countermeasures_launcher_chaff": {},
-    "MAW_system_heli_false_thermal_targets_large": {
-      "deactivationIsAllowed": true,
+    "countermeasures_launcher_chaff": {},
+    "countermeasures_belt_pack": {
       "modClass": "weapon",
       "turn_it_off": false,
-      "tier": 1,
       "invertEnableLogic": false,
-      "effects": {
-        "sensors": {
-          "sensor": [
-            {
-              "blk": "gameData/sensors/ir_tracker.blk",
-              "node": "optic_gun1",
-              "powerButtonIdx": -1
-            },
-            {
-              "blk": "gameData/sensors/cn_helicopter_z_mlws.blk"
-            },
-            {
-              "blk": "gameData/sensors/cn_helicopter_z_rwr.blk"
-            },
-            {
-              "blk": "gameData/sensors/us_flir.blk",
-              "node": "optic_gun1"
-            },
-            {
-              "blk": "gameData/sensors/cn_helicopter_z_lws.blk"
-            }
-          ]
-        }
-      }
+      "group": "countermeasures",
+      "tier": 1
     },
     "heli_night_vision_system": {
       "image": "#ui/gameuiskin#thermal_sight",
-      "prevModification": "MAW_system_heli_false_thermal_targets_large",
+      "prevModification": "countermeasures_belt_pack",
       "tier": 3,
       "modClass": "weapon",
       "effects": {

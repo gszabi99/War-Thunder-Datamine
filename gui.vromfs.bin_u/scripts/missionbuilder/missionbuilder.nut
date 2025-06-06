@@ -14,8 +14,9 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { get_gui_option, getCdBaseDifficulty } = require("guiOptions")
-let { dynamicInit, dynamicGetList, dynamicTune, dynamicSetTakeoffMode,
+let { dynamicGetList, dynamicTune, dynamicSetTakeoffMode,
 } = require("dynamicMission")
+let { dynamicInitAsync } = require("%scripts/missions/dynCampaingState.nut")
 let { select_mission_full } = require("guiMission")
 let { setSummaryPreview } = require("%scripts/missions/mapPreview.nut")
 let { OPTIONS_MODE_DYNAMIC, USEROPT_DYN_MAP, USEROPT_DYN_ZONE, USEROPT_DYN_SURROUND,
@@ -49,15 +50,13 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
   applyAtClose = false
   can_generate_missions = true 
   
+  isInRandomizeOptionsProcess = false
   needSlotbar = true
 
   function initScreen() {
     gui_handlers.GenericOptions.initScreen.bindenv(this)()
 
     this.guiScene.setUpdatesEnabled(false, false)
-    this.init_builder_map()
-    this.generate_builder_list(true)
-
     let options =
     [
       [USEROPT_DYN_MAP, "combobox"],
@@ -80,28 +79,15 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     this.optionsContainers.append(container.descr)
     this.setSceneTitle(loc("mainmenu/btnDynamicTraining"), this.scene, "menu-title")
 
-    let desc = get_option(USEROPT_DYN_ZONE)
-    let dynZoneObj = this.guiScene["dyn_zone"]
-    local value = desc.value
-    if (checkObj(dynZoneObj))
-      value = this.guiScene["dyn_zone"].getValue()
+    if (this.needSlotbar)
+      this.createSlotbar()
 
-    setSummaryPreview(this.scene.findObject("tactical-map"), DataBlock(), desc.values[value])
-
-    if (get_mission_settings().dynlist.len() == 0)
-      return this.msgBox("no_missions_error", loc("msgbox/appearError"),
-                     [["ok", this.goBack ]], "ok", { cancel_fn = this.goBack })
-
-    this.update_takeoff()
-
-    this.reinitOptionsList()
     this.guiScene.setUpdatesEnabled(true, true)
 
     if (fetch_first_builder())
       this.randomize_builder_options()
-
-    if (this.needSlotbar)
-      this.createSlotbar()
+    else
+      this.reinitOptionsList()
 
     move_mouse_on_obj(this.scene.findObject("btn_select"))
   }
@@ -178,7 +164,7 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
         break
       }
     settings.setInt("playerSide", playerSide)
-    dynamicInit(settings, mapData.value)
+    dynamicInitAsync(settings, mapData.value)
   }
 
   function generate_builder_list(wait) {
@@ -223,15 +209,10 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
       return
     let txt = create_option_list(descr.id, descr.items, descr.value, descr.cb, false)
     this.guiScene.replaceContentFromText(dObj, txt, txt.len(), this)
-
-    this.init_builder_map()
-    if (descr.cb in this)
-      this[descr.cb](dObj)
+    this.onLayoutChange()
   }
 
   function update_dynamic_layout(guiScene, _obj, _descr) {
-    this.init_builder_map()
-
     let descrWeap = get_option(USEROPT_DYN_ZONE)
     let txt = create_option_list(descrWeap.id, descrWeap.items, descrWeap.value, "onSectorChange", false)
     let dObj = this.scene.findObject(descrWeap.id)
@@ -303,11 +284,16 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
       let optId = desc.id                              
       let values = toString(desc.values)             
       script_net_assert_once("MissionBuilder", "ERROR: Empty value in options.")
-      return
+      return false
     }
 
-    if (obj)
-      obj.setValue(rnd() % desc.values.len())
+    if (!obj?.isValid())
+      return false
+    let newValue = rnd() % desc.values.len()
+    if (newValue == desc.value)
+      return false
+    obj.setValue(newValue)
+    return true
   }
 
   function randomize_builder_options() {
@@ -315,41 +301,40 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
       return
 
     this.can_generate_missions = false
-    this.guiScene.setUpdatesEnabled(false, false)
+    this.isInRandomizeOptionsProcess = true
 
-    this.setRandomOpt(USEROPT_DYN_MAP)
-    this.onLayoutChange(this.scene.findObject("dyn_map"))
+    let hasChaged = this.setRandomOpt(USEROPT_DYN_MAP)
+    if (!hasChaged)
+      this.onLayoutChange()
+  }
+
+  function continueRandomizingOptions() {
+    this.guiScene.setUpdatesEnabled(false, false)
+    local hasChaged = this.setRandomOpt(USEROPT_DYN_ZONE)
+    if (!hasChaged)
+      this.onSectorChange(this.scene.findObject("dyn_zone"))
 
     this.guiScene.performDelayed(this, function() {
+      if (!this.isValid())
+        return
+
+      foreach (o in [USEROPT_TIME, USEROPT_CLIME, USEROPT_DYN_SURROUND])
+        this.setRandomOpt(o)
+
+      this.guiScene.performDelayed(this, function() {
         if (!this.isValid())
           return
 
-        this.setRandomOpt(USEROPT_DYN_ZONE)
-        this.onSectorChange(this.scene.findObject("dyn_zone"))
+        hasChaged = this.setRandomOpt(USEROPT_DMP_MAP)
 
-        this.guiScene.performDelayed(this, function() {
-            if (!this.isValid())
-              return
+        this.can_generate_missions = true
+        this.isInRandomizeOptionsProcess = false
+        this.guiScene.setUpdatesEnabled(true, true)
 
-            foreach (o in [USEROPT_TIME, USEROPT_CLIME, USEROPT_DYN_SURROUND])
-              this.setRandomOpt(o)
-
-            this.guiScene.performDelayed(this, function() {
-                if (!this.isValid())
-                  return
-
-                this.setRandomOpt(USEROPT_DMP_MAP)
-
-                this.can_generate_missions = true
-                this.guiScene.setUpdatesEnabled(true, true)
-
-                this.update_takeoff()
-              }
-            )
-          }
-        )
-      }
-    )
+        if (!hasChaged)
+          this.update_takeoff()
+      })
+    })
   }
 
   function applyFunc() {
@@ -417,13 +402,17 @@ gui_handlers.MissionBuilder <- class (gui_handlers.GenericOptionsModal) {
     loadHandler(gui_handlers.MissionBuilderTuner)
   }
 
-  function onLayoutChange(obj) {
-    this.guiScene.performDelayed(this, function() {
-      if (!this.isValid())
-        return
-      this.updateOptionDescr(obj, this.update_dynamic_layout)
+  function onLayoutChange(_obj = null) {
+    this.init_builder_map()
+  }
+
+  function onEventDynamicCampaignInited(_) {
+    let obj = this.scene.findObject("dyn_map")
+    this.updateOptionDescr(obj, this.update_dynamic_layout)
+    if (this.isInRandomizeOptionsProcess)
+      this.continueRandomizingOptions()
+    else
       this.updateOptionDescr(obj, this.update_dynamic_sector)
-    })
   }
 
   function onMissionChange(_obj) {

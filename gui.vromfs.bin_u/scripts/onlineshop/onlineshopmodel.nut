@@ -27,6 +27,7 @@ let { steam_is_running, steam_get_my_id, steam_get_app_id } = require("steam")
 let { openRightClickMenu } = require("%scripts/wndLib/rightClickMenu.nut")
 let { getUpdateEntitlementsTimeoutMsec,
   updateEntitlementsLimited } = require("%scripts/onlineShop/entitlementsUpdate.nut")
+let { eventbus_subscribe } = require("eventbus")
 
 function startEntitlementsUpdater() {
   callbackWhenAppWillActive(function() {
@@ -310,6 +311,10 @@ function openOnlineShopFromPromo(handler, params) {
 }
 
 addPromoAction("online_shop", @(handler, params, _obj) openOnlineShopFromPromo(handler, params))
+
+eventbus_subscribe("update_purch", function(_) {
+  updateEntitlementsLimited()
+})
 
 return {
   showUnitGoods
