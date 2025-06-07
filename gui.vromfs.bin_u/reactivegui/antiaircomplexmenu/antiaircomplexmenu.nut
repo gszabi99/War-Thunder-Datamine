@@ -5,7 +5,8 @@ let { PI, floor, lerp } = require("%sqstd/math.nut")
 let dasVerticalViewIndicator = load_das("%rGui/antiAirComplexMenu/verticalViewIndicator.das")
 let dasRadarHud = load_das("%rGui/radar.das")
 let { radarSwitchToTarget } = require("antiAirComplexMenuControls")
-
+let { RadarTargetType } = require("guiRadar")
+let { RADAR_TAGET_TYPE_OWN_WEAPON, RADAR_TAGET_TYPE_OWN_WEAPON_TARGET } = RadarTargetType
 let radarColor = 0xFF00FF00
 
 let verticalViewIndicator = {
@@ -100,6 +101,10 @@ function createTargetListElement(index, azimuth, distance, height, speed, typeId
 
 function createTargetDist(index, hasAzimuthScale, azimuthMin, azimuthRange, hasDistanceScale, distanceMin, distanceMax) {
   let target = targets[index]
+
+  if (target.targetType == RADAR_TAGET_TYPE_OWN_WEAPON_TARGET || target.targetType == RADAR_TAGET_TYPE_OWN_WEAPON){
+    return null
+  }
 
   let radToDeg = 180.0 / PI
   let azimuth = (azimuthMin + azimuthRange * target.azimuthRel) * radToDeg

@@ -340,10 +340,15 @@
       "ex_decor_r_06_dm": {},
       "ex_decor_l_06_dm": {}
     },
+    "glass": {
+      "armorClass": "armored_glass",
+      "armorThickness": 40.0,
+      "turret_01_front_dm": {}
+    },
     "gun": {
       "armorClass": "tank_barrel",
       "hp": 50.0,
-      "gun_mask_dm": {
+      "gun_barrel_dm": {
         "armorThrough": 10.0,
         "armorThickness": 5.0
       }
@@ -1985,7 +1990,7 @@
       },
       {
         "trigger": "gunner1",
-        "triggerGroup": "secondary",
+        "triggerGroup": "special",
         "blk": "gameData/Weapons/groundModels_weapons/127mm_aim_9x_user_cannon.blk",
         "flash": "emtr_gun_flame_01",
         "useEmitter": true,
@@ -2099,30 +2104,30 @@
       "cls_gun": "convex_hull"
     },
     "engine": {
-      "horsePowers": 170.0,
-      "maxRPM": 2800.0,
+      "horsePowers": 160.0,
+      "maxRPM": 3400.0,
       "minRPM": 800.0,
       "rpmTau": 1.9
     },
     "mechanics": {
       "maxBrakeForce": 30000.0,
       "driveGearRadius": 0.48,
-      "mainGearRatio": 6.24,
-      "sideGearRatio": 0.85,
+      "mainGearRatio": 7.25,
+      "sideGearRatio": 1.0,
       "tracked": false,
       "gearRatios": {
         "ratio": [
-          -2.678,
-          -5.356,
+          -2.08,
+          -4.16,
           0.0,
-          6.036,
-          3.018,
-          2.283,
-          1.548,
-          1.274,
+          4.96,
+          2.48,
+          1.965,
+          1.45,
+          1.225,
           1.0,
-          0.8825,
-          0.765
+          0.875,
+          0.75
         ]
       }
     },

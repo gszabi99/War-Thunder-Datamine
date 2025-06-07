@@ -267,7 +267,7 @@ let class ActionBar {
   }
 
   function fillActionBarItem(itemObj, itemView) {
-    let { id, selected, active, activeBool, actionId, enableBool, bullets = null, icon = "",
+    let { id, selected, active, activeBool, actionId, enableBool, layeredIcon = null, icon = "",
       cooldownParams, blockedCooldownParams progressCooldownParams, amount, automatic, onClick = null
       showShortcut, isXinput, mainShortcutId, activatedShortcutId = "", actionType = null
       hasSecondActionsBtn, isCloseSecondActionsBtn, shortcutText, isLongScText
@@ -281,10 +281,10 @@ let class ActionBar {
     contentObj.overrideClick = onClick != null ? onClick : ""
     contentObj.enable(enableBool)
 
-    let isShowBulletsIcon = bullets != null
+    let isShowBulletsIcon = layeredIcon != null
     let bulletsSetIconObj = showObjById("bulletsSetIcon", isShowBulletsIcon, contentObj)
     if (isShowBulletsIcon)
-      this.guiScene.replaceContentFromText(bulletsSetIconObj, bullets, bullets.len(), this)
+      this.guiScene.replaceContentFromText(bulletsSetIconObj, layeredIcon, layeredIcon.len(), this)
 
     let isShowIcon = icon != ""
     let actionIconObj = showObjById("action_icon", isShowIcon, contentObj)
@@ -457,7 +457,7 @@ let class ActionBar {
       if (isFakeBullet(modifName) && !(modifName in unit.bulletsSets))
         getBulletsSetData(unit, fakeBullets_prefix, {})
       let data = getBulletsSetData(unit, modifName)
-      viewItem.bullets <- handyman.renderCached("%gui/weaponry/bullets.tpl", getBulletsIconView(data))
+      viewItem.layeredIcon <- handyman.renderCached("%gui/weaponry/bullets.tpl", getBulletsIconView(data))
       viewItem.tooltipId <- MODIFICATION.getTooltipId(unit.name, modifName, { isInHudActionBar = true })
       viewItem.tooltipDelayed <- !this.canControl
     }
@@ -468,7 +468,10 @@ let class ActionBar {
     if (!modifName && item.type != EII_BULLET && item.type != EII_FORCED_GUN) {
       let killStreakTag = getTblValue("killStreakTag", item)
       let killStreakUnitTag = getTblValue("killStreakUnitTag", item)
-      viewItem.icon <- actionBarType.getIcon(item, killStreakUnitTag)
+      if ("getLayeredIcon" in actionBarType)
+        viewItem.layeredIcon <- actionBarType.getLayeredIcon(null, null, unit)
+      else
+        viewItem.icon <- actionBarType.getIcon(item, killStreakUnitTag)
       viewItem.name <- actionBarType.getTitle(item, killStreakTag)
       viewItem.tooltipText <- actionBarType.getTooltipText(item)
     }
@@ -510,7 +513,7 @@ let class ActionBar {
     let unit = this.getActionBarUnit()
     if (item?.type == EII_BULLET) {
       let data = getBulletsSetData(unit, item.modificationName)
-      viewItem.bullets <- handyman.renderCached("%gui/weaponry/bullets.tpl", getBulletsIconView(data))
+      viewItem.layeredIcon <- handyman.renderCached("%gui/weaponry/bullets.tpl", getBulletsIconView(data))
       viewItem.tooltipId <- MODIFICATION.getTooltipId(unit.name, item.modificationName, { isInHudActionBar = true })
     } else if (item?.type != null && item.type != EII_BULLET && item.type != EII_FORCED_GUN) {
       let actionBarType = g_hud_action_bar_type.getByActionItem(item)

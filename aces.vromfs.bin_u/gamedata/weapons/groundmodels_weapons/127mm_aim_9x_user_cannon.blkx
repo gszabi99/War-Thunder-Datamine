@@ -88,28 +88,30 @@
     "rocket": {
       "statType": "hydra",
       "caliber": 0.127,
-      "length": 2.936,
-      "CxK": 2.5,
-      "wingAreaMult": 1.65,
-      "finsAoaHor": 0.333046,
-      "finsAoaVer": 0.333046,
+      "length": 3.02,
+      "CxK": 2.25,
+      "wingAreaMult": 1.25,
+      "finsAoaHor": 0.341152,
+      "finsAoaVer": 0.341152,
       "finsLatAccel": 50.0,
       "distFromCmToStab": 0.25,
-      "mass": 87.4,
-      "massEnd": 58.6,
-      "timeFire": 7.0,
-      "force": 9670.0,
+      "mass": 85.2737,
+      "massEnd": 58.05987,
+      "timeFire": 5.0,
+      "force": 12790.0,
       "fireDelay": 0.0,
       "timeLife": 40.0,
       "thrustVectoringAngle": 0.025,
       "useStartSpeed": true,
       "startSpeed": 0.0,
       "machMax": 3.0,
-      "endSpeed": 1000.0,
+      "endSpeed": 780.0,
       "maxDistance": 12000.0,
       "minDistance": 30.0,
       "rangeMax": 12000.0,
-      "loadFactorMax": 60.0,
+      "loadFactorMax": 50.0,
+      "guidanceType": "ir",
+      "guidanceSfx": "alarm_heatseeker_scan",
       "maxDeltaAngle": 2.0,
       "explosiveType": "pbxn_3",
       "explosiveMass": 3.3566,
@@ -157,6 +159,104 @@
       "arcadeProp": {
         "finsAoaHor": 0.35,
         "finsAoaVer": 0.35
+      },
+      "guidance": {
+        "warmUpTime": 0.2,
+        "workTime": 20.0,
+        "uncageBeforeLaunch": true,
+        "permanentlyActivated": true,
+        "inertialNavigation": true,
+        "inertialNavigationMandatory": true,
+        "useTargetVel": true,
+        "lockDistance": 10000.0,
+        "afterLaunchSpeedUp": 170.0,
+        "lockAfterLaunch": true,
+        "reacquireTarget": true,
+        "lockMode": "LOAL+LOBL",
+        "guidanceSfx": "",
+        "breakLockMaxTime": 40.0,
+        "inertialGuidance": {
+          "inertialNavigationDriftSpeed": 0.1
+        },
+        "orientationAutopilot": {
+          "timeOut": 0.15,
+          "controlTime": 1.0,
+          "elevationAdd": 15.0,
+          "elevationToHeadingMult": [
+            20.0,
+            20.0,
+            -1.0,
+            -1.0
+          ],
+          "angleToAngularRate": 5.0,
+          "accelControlProp": 0.1,
+          "accelControlIntg": 0.0,
+          "accelControlIntgLim": 0.0,
+          "accelControlDiff": 0.0,
+          "useFinsToOrientation": true
+        },
+        "opticalSeeker": {
+          "visibilityType": "infraRed",
+          "rangeBand0": 12000.0,
+          "rangeBand1": 9000.0,
+          "rangeBand2": 9000.0,
+          "rangeBand3": 0.0,
+          "rangeBand7": 0.0,
+          "rangeBand8": 500.0,
+          "rangeMax": 20000.0,
+          "fov": 5.0,
+          "gateWidth": 0.25,
+          "bandMaskToReject": 4,
+          "minAngleToSun": 10.0,
+          "lockAngleMax": 90.0,
+          "angleMax": 90.0,
+          "rateMax": 50.0,
+          "prolongationTimeMax": 5.0,
+          "designationSourceType": [
+            "radar",
+            "ins"
+          ],
+          "constantDesignationSourceType": "radar",
+          "surfaceAsTarget": false
+        },
+        "guidanceAutopilot": {
+          "loftEnabled": true,
+          "loftElevation": 20.0,
+          "loftTargetElevation": -10.0,
+          "loftAngleToAccelMult": 3.0,
+          "loftTargetOmegaMax": 0.75,
+          "baseIndSpeed": 1800.0,
+          "propNavMult": 4.0,
+          "reqAccelMax": 50.0,
+          "pid0": {
+            "time": 2.0,
+            "prop": 0.0096,
+            "intg": 0.0,
+            "intgLim": 0.0,
+            "diff": 0.0
+          },
+          "pid1": {
+            "time": 3.0,
+            "prop": 0.006,
+            "intg": 0.023,
+            "intgLim": 1.0,
+            "diff": 0.0003
+          },
+          "pid2": {
+            "time": 4.0,
+            "prop": 0.006,
+            "intg": 0.023,
+            "intgLim": 1.0,
+            "diff": 0.0003
+          },
+          "pid3": {
+            "time": 5.0,
+            "prop": 0.0031,
+            "intg": 0.0376,
+            "intgLim": 1.0,
+            "diff": 0.0002
+          }
+        }
       },
       "stabilityRicochetModifier": {
         "mod1": [
@@ -710,28 +810,30 @@
       "rocket": {
         "statType": "hydra",
         "caliber": 0.127,
-        "length": 2.936,
-        "CxK": 2.5,
-        "wingAreaMult": 1.65,
-        "finsAoaHor": 0.333046,
-        "finsAoaVer": 0.333046,
+        "length": 3.02,
+        "CxK": 2.25,
+        "wingAreaMult": 1.25,
+        "finsAoaHor": 0.341152,
+        "finsAoaVer": 0.341152,
         "finsLatAccel": 50.0,
         "distFromCmToStab": 0.25,
-        "mass": 87.4,
-        "massEnd": 58.6,
-        "timeFire": 7.0,
-        "force": 9670.0,
+        "mass": 85.2737,
+        "massEnd": 58.05987,
+        "timeFire": 5.0,
+        "force": 12790.0,
         "fireDelay": 0.0,
         "timeLife": 40.0,
         "thrustVectoringAngle": 0.025,
         "useStartSpeed": true,
         "startSpeed": 0.0,
         "machMax": 3.0,
-        "endSpeed": 1000.0,
+        "endSpeed": 780.0,
         "maxDistance": 12000.0,
         "minDistance": 30.0,
         "rangeMax": 12000.0,
-        "loadFactorMax": 60.0,
+        "loadFactorMax": 50.0,
+        "guidanceType": "ir",
+        "guidanceSfx": "alarm_heatseeker_scan",
         "maxDeltaAngle": 2.0,
         "explosiveType": "pbxn_3",
         "explosiveMass": 3.3566,
@@ -779,6 +881,104 @@
         "arcadeProp": {
           "finsAoaHor": 0.35,
           "finsAoaVer": 0.35
+        },
+        "guidance": {
+          "warmUpTime": 0.2,
+          "workTime": 20.0,
+          "uncageBeforeLaunch": true,
+          "permanentlyActivated": true,
+          "inertialNavigation": true,
+          "inertialNavigationMandatory": true,
+          "useTargetVel": true,
+          "lockDistance": 10000.0,
+          "afterLaunchSpeedUp": 170.0,
+          "lockAfterLaunch": true,
+          "reacquireTarget": true,
+          "lockMode": "LOAL+LOBL",
+          "guidanceSfx": "",
+          "breakLockMaxTime": 40.0,
+          "inertialGuidance": {
+            "inertialNavigationDriftSpeed": 0.1
+          },
+          "orientationAutopilot": {
+            "timeOut": 0.15,
+            "controlTime": 1.0,
+            "elevationAdd": 15.0,
+            "elevationToHeadingMult": [
+              20.0,
+              20.0,
+              -1.0,
+              -1.0
+            ],
+            "angleToAngularRate": 5.0,
+            "accelControlProp": 0.1,
+            "accelControlIntg": 0.0,
+            "accelControlIntgLim": 0.0,
+            "accelControlDiff": 0.0,
+            "useFinsToOrientation": true
+          },
+          "opticalSeeker": {
+            "visibilityType": "infraRed",
+            "rangeBand0": 12000.0,
+            "rangeBand1": 9000.0,
+            "rangeBand2": 9000.0,
+            "rangeBand3": 0.0,
+            "rangeBand7": 0.0,
+            "rangeBand8": 500.0,
+            "rangeMax": 20000.0,
+            "fov": 5.0,
+            "gateWidth": 0.25,
+            "bandMaskToReject": 4,
+            "minAngleToSun": 10.0,
+            "lockAngleMax": 90.0,
+            "angleMax": 90.0,
+            "rateMax": 50.0,
+            "prolongationTimeMax": 5.0,
+            "designationSourceType": [
+              "radar",
+              "ins"
+            ],
+            "constantDesignationSourceType": "radar",
+            "surfaceAsTarget": false
+          },
+          "guidanceAutopilot": {
+            "loftEnabled": true,
+            "loftElevation": 20.0,
+            "loftTargetElevation": -10.0,
+            "loftAngleToAccelMult": 3.0,
+            "loftTargetOmegaMax": 0.75,
+            "baseIndSpeed": 1800.0,
+            "propNavMult": 4.0,
+            "reqAccelMax": 50.0,
+            "pid0": {
+              "time": 2.0,
+              "prop": 0.0096,
+              "intg": 0.0,
+              "intgLim": 0.0,
+              "diff": 0.0
+            },
+            "pid1": {
+              "time": 3.0,
+              "prop": 0.006,
+              "intg": 0.023,
+              "intgLim": 1.0,
+              "diff": 0.0003
+            },
+            "pid2": {
+              "time": 4.0,
+              "prop": 0.006,
+              "intg": 0.023,
+              "intgLim": 1.0,
+              "diff": 0.0003
+            },
+            "pid3": {
+              "time": 5.0,
+              "prop": 0.0031,
+              "intg": 0.0376,
+              "intgLim": 1.0,
+              "diff": 0.0002
+            }
+          }
         },
         "stabilityRicochetModifier": {
           "mod1": [

@@ -1277,7 +1277,7 @@ function getProjectileIconLayers(projectileName) {
   }
 
   return projectileNameToIconsBlk.getStr(projectileName, "")
-    .split(";")
+    .split_by_chars(";", true)
     .map(@(layeredIconSrc) { layeredIconSrc })
 }
 

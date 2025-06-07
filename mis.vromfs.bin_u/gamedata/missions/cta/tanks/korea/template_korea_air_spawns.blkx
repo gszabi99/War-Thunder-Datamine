@@ -131,11 +131,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -149,11 +151,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -167,11 +171,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -185,11 +191,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -213,16 +221,16 @@
       "conditions": {},
       "actions": {
         "unitSetProperties": {
-          "object_marking": 0,
-          "object_var_name": "",
-          "object_var_comp_op": "equal",
-          "object_var_value": 0,
           "object": [
             "heli01",
             "heli02",
             "heli03",
             "heli04"
           ],
+          "object_marking": 0,
+          "object_var_name": "",
+          "object_var_comp_op": "equal",
+          "object_var_value": 0,
           "targetableByAi": false,
           "stealthRadius": 0.0
         }
@@ -265,8 +273,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "dummy"
+          "squad_members": "dummy",
+          "object_marking": 0
         }
       },
       {
@@ -294,8 +302,8 @@
           ]
         ],
         "props": {
-          "object_marking": 0,
-          "squad_members": "dummy"
+          "squad_members": "dummy",
+          "object_marking": 0
         }
       }
     ],
@@ -338,6 +346,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 2,
           "count": 1,
@@ -397,6 +407,8 @@
         "bulletsCount1": 0,
         "bulletsCount2": 0,
         "bulletsCount3": 0,
+        "crewSkillK": 0.0,
+        "applyAllMods": false,
         "props": {
           "army": 0,
           "count": 1,
@@ -796,6 +808,87 @@
         ]
       ],
       "objLayer": 3,
+      "props": {}
+    },
+    "top_spawns_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          25000.0,
+          0.0,
+          -43301.4
+        ],
+        [
+          0.0,
+          50000.1,
+          0.0
+        ],
+        [
+          43301.4,
+          0.0,
+          25000.0
+        ],
+        [
+          1247.53,
+          1300.0,
+          1093.48
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_air_spawn_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -163.79,
+          0.0,
+          251.343
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -251.343,
+          0.0,
+          -163.79
+        ],
+        [
+          13749.3,
+          1300.0,
+          -20559.2
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_air_spawn_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          150.001,
+          0.0,
+          -259.809
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          259.809,
+          0.0,
+          150.001
+        ],
+        [
+          -11250.3,
+          1300.0,
+          22738.8
+        ]
+      ],
+      "objLayer": 0,
       "props": {}
     }
   },

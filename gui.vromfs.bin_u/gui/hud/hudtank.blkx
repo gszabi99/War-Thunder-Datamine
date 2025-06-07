@@ -5,58 +5,6 @@
       "pos": "0, ph - h",
       "flow": "vertical",
       "width": "0.5@sf",
-      "voiceChatWidgetNest": {
-        "isClanOnly": "no",
-        "blockSeparator": [
-          {
-            "display": "hide"
-          },
-          {
-            "display": "hide"
-          }
-        ],
-        "emptyVoiceChat": {
-          "tooltip": "#clan/voice_chat/widget",
-          "usertalk": {
-            "id": "voice_chat_no_activity",
-            "type": "noTalk",
-            "fade": "in",
-            "height-end": "1",
-            "_size-timer": "0",
-            "img": {
-              "color-factor": "255",
-              "inacive": "yes",
-              "position": "relative"
-            },
-            "activeText": {
-              "text": "...",
-              "color-factor": "255",
-              "position": "relative"
-            }
-          }
-        },
-        "voiceChatWidgetContainer": {
-          "isSmall": "no",
-          "voiceChatWidget": {
-            "value": "{\"viewId\": \"VOICE_CHAT\"}"
-          }
-        }
-      },
-      "tdiv": [
-        {
-          "id": "order_status",
-          "width": "0.8@itemInfoWidth",
-          "min-width": "0.6@itemInfoWidth"
-        },
-        {
-          "id": "chatPlace"
-        },
-        {
-          "id": "mission_progress_place",
-          "height": "@missionProgressHeight",
-          "display": "hide"
-        }
-      ],
       "dmgIndicatorNest": {
         "id": "hud_tank_damage_indicator",
         "size": "@sizeDamageIndicatorFull, @sizeDamageIndicatorFull",
@@ -98,6 +46,11 @@
             "css-hier-invalidate": "yes"
           }
         }
+      },
+      "tdiv": {
+        "id": "mission_progress_place",
+        "height": "@missionProgressHeight",
+        "display": "hide"
       }
     },
     {

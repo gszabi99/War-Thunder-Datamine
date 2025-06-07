@@ -35,15 +35,15 @@ function getUnitTooltipImage(unit) {
 
   let unitType = getEsUnitType(unit)
   if (unitType == ES_UNIT_TYPE_AIRCRAFT)
-    return $"!ui/aircrafts/{unit.name}"
+    return $"!ui/aircrafts/{unit.name}.avif"
   if (unitType == ES_UNIT_TYPE_HELICOPTER)
-    return $"!ui/aircrafts/{unit.name}"
+    return $"!ui/aircrafts/{unit.name}.avif"
   if (unitType == ES_UNIT_TYPE_TANK)
-    return $"!ui/tanks/{unit.name}"
+    return $"!ui/tanks/{unit.name}.avif"
   if (unitType == ES_UNIT_TYPE_BOAT)
-    return $"!ui/ships/{unit.name}"
+    return $"!ui/ships/{unit.name}.avif"
   if (unitType == ES_UNIT_TYPE_SHIP)
-    return $"!ui/ships/{unit.name}"
+    return $"!ui/ships/{unit.name}.avif"
   return ""
 }
 

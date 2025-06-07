@@ -15,6 +15,7 @@ let fa18cRadarAzEl = createScriptComponentWithPos("%rGui/planeCockpit/mfdfa18cRa
 let rafaleWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdRafaleWpn.das", { fontId = Fonts.hud })
 let f18Wpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdF18Wpn.das", { fontId = Fonts.ah64 })
 let su30smWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdSu30smWpn.das", { fontId = Fonts.hud })
+let f2aWpn = createScriptComponentWithPos("%rGui/planeCockpit/mfdF2aWpn.das", { fontId = Fonts.hud })
 
 
 function su30Devices(pos, size) {
@@ -90,7 +91,8 @@ let pageByName = {
   f18Wpn,
   su30smWpn,
   su30RadarElevation,
-  planeAttitude
+  planeAttitude,
+  f2aWpn
 }
 
 function mfdCustomPages() {

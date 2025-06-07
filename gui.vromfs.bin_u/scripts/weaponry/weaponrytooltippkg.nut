@@ -18,7 +18,7 @@ let { getByCurBundle, canBeResearched, isModInResearch, getDiscountPath, getItem
   isResearchableItem, countWeaponsUpgrade, getItemUpgradesList
 } = require("%scripts/weaponry/itemInfo.nut")
 let { isBullets, isWeaponTierAvailable, isBulletsGroupActiveByMod, getBulletsNamesBySet,
-  getModificationInfo, getModificationName, isBulletsWithoutTracer, getBulletsSetData
+  getModificationInfo, getModificationName, isBulletsWithoutTracer, getBulletsSetData, isPairBulletsGroup
 } = require("%scripts/weaponry/bulletsInfo.nut")
 let { addBulletsParamToDesc, buildBulletsData, addArmorPiercingToDesc, addArmorPiercingToDescForBullets
   checkBulletParamsBeforeRender
@@ -28,7 +28,7 @@ let { WEAPON_TYPE, TRIGGER_TYPE, CONSUMABLE_TYPES, NOT_WEAPON_TYPES,getPrimaryWe
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { getWeaponInfoText, getModItemName, getReqModsText, getFullItemCostText, makeWeaponInfoData
 } = require("weaponryDescription.nut")
-let { isModResearched, isModificationEnabled, getModificationByName
+let { isModResearched, isModificationEnabled, getModificationByName, getModificationBulletsGroup
 } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActionItemAmountText, getActionItemModificationName } = require("%scripts/hud/hudActionBarInfo.nut")
 let { getActionBarItems } = require("hudActionBar")
@@ -37,6 +37,7 @@ let { get_warpoints_blk } = require("blkGetters")
 let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
+let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
 const UI_BASE_REWARD_DECORATION = 10
@@ -631,6 +632,24 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
     }
     if (isBullets(item) && !isBulletsGroupActiveByMod(unit, item) && !isInFlight())
       reqText = "\n".join([reqText, loc("msg/weaponSelectRequired")], true)
+
+    if (statusTbl.amount) {
+      let bulletGroupName = getModificationBulletsGroup(item.name)
+      if (bulletGroupName.indexof(WEAPON_TYPE.COUNTERMEASURES) != null) {
+        let bulletsManager = UnitBulletsManager(unit)
+        let bulGroup = bulletsManager.getBulletGroupBySelectedMod(item)
+        let bullets = bulGroup?.bullets
+        if (isPairBulletsGroup(bullets) && bullets?.items[1].enabled == false) {
+          let mod = getModificationByName(unit, bullets.values[1])
+          local reqModsText = ""
+          foreach (reqModification in mod.reqModification)
+            reqModsText = "".concat(reqModsText == "" ? "" : "\n", loc($"modification/{reqModification}"))
+          if (reqModsText != "")
+            res.topReqBlock <- " ".concat(loc("tooltip/flaresChaffsRatioReq"), reqModsText)
+        }
+      }
+    }
+
     reqText = reqText != "" ? ($"<color=@badTextColor>{reqText}</color>") : ""
 
     if (needShowWWSecondaryWeapons)

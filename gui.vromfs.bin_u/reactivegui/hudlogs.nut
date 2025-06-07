@@ -129,7 +129,7 @@ function init() {
 }
 
 return @() {
-  size = [min(sw(30), sh(53)), SIZE_TO_CONTENT]
+  size = [min(sw(30), shHud(45)), SIZE_TO_CONTENT]
   flow = FLOW_VERTICAL
   watch = isVisible
   children = isVisible.value ? [logsHeader, logsContainer] : []

@@ -24,11 +24,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -42,11 +44,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -60,11 +64,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -78,11 +84,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -119,11 +127,11 @@
           "target": "t1_carrier_squad"
         },
         "unitSetProperties": {
+          "object": "t1_carrier_squad",
           "object_marking": 0,
           "object_var_name": "",
           "object_var_comp_op": "equal",
           "object_var_value": 0,
-          "object": "t1_carrier_squad",
           "stealthRadius": 2000.0,
           "calmDetection": true,
           "attack_type": "return_fire",
@@ -135,25 +143,22 @@
         "missionMarkAsRespawnPoint": {
           "loc_name": "missions/carriers_spawn",
           "spawnEffect": false,
-          "isStrictSpawn": false,
-          "isAirfield": [
-            true,
-            false
-          ],
-          "isUnit": false,
           "radius": -1.0,
-          "useExisting": false,
-          "canSpawnOnNeutral": false,
-          "showOnMap": true,
-          "removeAreas": false,
-          "isIndividual": false,
-          "onlyOnePlayerPerSpawnPoint": false,
-          "resetStrictSpawnIndex": false,
-          "replaceAreas": false,
-          "forceCreate": false,
-          "ignoreTeamsOnReuse": false,
           "target": "t1_carrier_squad",
           "team": "A",
+          "isStrictSpawn": false,
+          "resetStrictSpawnIndex": false,
+          "isAirfield": true,
+          "isUnit": false,
+          "forceCreate": false,
+          "useExisting": false,
+          "ignoreTeamsOnReuse": false,
+          "isIndividual": false,
+          "onlyOnePlayerPerSpawnPoint": false,
+          "removeAreas": false,
+          "replaceAreas": false,
+          "canSpawnOnNeutral": false,
+          "showOnMap": true,
           "tags": {
             "carrier_take_off": true,
             "tank": false,
@@ -550,6 +555,87 @@
         ]
       ],
       "objLayer": 4,
+      "props": {}
+    },
+    "top_spawns_area": {
+      "type": "Sphere",
+      "tm": [
+        [
+          10822.0,
+          0.0,
+          -48814.9
+        ],
+        [
+          0.0,
+          50000.1,
+          0.0
+        ],
+        [
+          48814.9,
+          0.0,
+          10822.0
+        ],
+        [
+          2316.42,
+          500.0,
+          3413.72
+        ]
+      ],
+      "objLayer": 4,
+      "props": {}
+    },
+    "t2_air_spawn_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          292.205,
+          0.0,
+          67.9479
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -67.9479,
+          0.0,
+          292.205
+        ],
+        [
+          -22088.9,
+          499.998,
+          -1997.36
+        ]
+      ],
+      "objLayer": 0,
+      "props": {}
+    },
+    "t1_air_spawn_top": {
+      "type": "Sphere",
+      "tm": [
+        [
+          -286.116,
+          0.0,
+          90.2114
+        ],
+        [
+          0.0,
+          300.0,
+          0.0
+        ],
+        [
+          -90.2114,
+          0.0,
+          -286.116
+        ],
+        [
+          25889.2,
+          500.003,
+          -4682.29
+        ]
+      ],
+      "objLayer": 0,
       "props": {}
     }
   },

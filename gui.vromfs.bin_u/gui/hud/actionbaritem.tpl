@@ -50,17 +50,17 @@ actionBarItemDiv {
         _blink:t='no'
         blend-time:t='0'
       }
-      <<#bullets>>
-        <<@bullets>>
-      <</bullets>>
-      <<^bullets>>
+      <<#layeredIcon>>
+        <<@layeredIcon>>
+      <</layeredIcon>>
+      <<^layeredIcon>>
       img {
         id:t='action_icon'
         size:t='pw, ph'
         background-svg-size:t='pw, ph'
         background-image:t='<<icon>>'
       }
-      <</bullets>>
+      <</layeredIcon>>
       actionItemCooldown {
         id:t='cooldown'
         sector-angle-1:t='<<cooldown>>'

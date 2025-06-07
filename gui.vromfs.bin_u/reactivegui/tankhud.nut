@@ -9,10 +9,11 @@ let { tws } = require("tws.nut")
 let { IsMlwsLwsHudVisible, CollapsedIcon } = require("twsState.nut")
 let sightIndicators = require("hud/tankSightIndicators.nut")
 let activeProtectionSystem = require("%rGui/hud/activeProtectionSystem.nut")
-let { needShowDmgIndicator, dmgIndicatorStates, isPlayingReplay } = require("%rGui/hudState.nut")
+let { needShowDmgIndicator, dmgIndicatorStates, isPlayingReplay, isSpectatorMode
+} = require("%rGui/hudState.nut")
 let { IndicatorsVisible } = require("%rGui/hud/tankState.nut")
 let { lockSight, targetSize } = require("%rGui/hud/targetTracker.nut")
-let { bw, bh } = require("style/screenState.nut")
+let { bw, bh, safeAreaSizeHud } = require("style/screenState.nut")
 let { AzimuthRange, IsRadarVisible, IsRadar2Visible, IsRadarHudVisible, IsCScopeVisible, IsBScopeVisible, isCollapsedRadarInReplay } = require("radarState.nut")
 let { PI } = require("%sqstd/math.nut")
 let { radarHud, radarIndication } = require("%rGui/radar.nut")
@@ -25,6 +26,9 @@ let { isAAComplexMenuActive } = require("%rGui/antiAirComplexMenu/antiAirComplex
 
 
 
+let activeOrder = require("activeOrder.nut")
+let voiceChat = require("chat/voiceChat.nut")
+let hudLogs = require("hudLogs.nut")
 
 let greenColor = Color(10, 202, 10, 250)
 let redColor = Color(255, 35, 30, 255)
@@ -97,6 +101,31 @@ function tankDmgIndicator() {
   }
 }
 
+let leftPanelGap = hdpx(10)
+
+let leftPanel = @() {
+  size = [SIZE_TO_CONTENT, flex()]
+  watch = [safeAreaSizeHud, isSpectatorMode, isAAComplexMenuActive,
+    needShowDmgIndicator, dmgIndicatorStates]
+  margin = [safeAreaSizeHud.get().borders[0], 0,
+    needShowDmgIndicator.get()
+      ? sh(100) - (dmgIndicatorStates.get()?.pos[1] ?? 0) + leftPanelGap
+      : safeAreaSizeHud.get().borders[0],
+    safeAreaSizeHud.get().borders[1]]
+  flow = FLOW_VERTICAL
+  vplace = ALIGN_TOP
+  valign = ALIGN_BOTTOM
+  halign = ALIGN_LEFT
+  gap = leftPanelGap
+  children = isSpectatorMode.get() ? null
+    : isAAComplexMenuActive.get() ? voiceChat
+    : [
+        voiceChat
+        activeOrder
+        hudLogs
+      ]
+}
+
 let radarPic = Picture("!ui/gameuiskin#radar_stby_icon")
 let isBScope = Computed(@() AzimuthRange.value > PI)
 let needRadarCollapsedIcon = Computed(@() IsRadarHudVisible.value && ((!IsRadarVisible.value && !IsRadar2Visible.value) || isCollapsedRadarInReplay.value) &&
@@ -154,6 +183,7 @@ function Root() {
             ]
           }
         : null
+      leftPanel
     ]
   }
 }

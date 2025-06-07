@@ -1,5 +1,6 @@
 from "%scripts/dagui_natives.nut" import request_voice_message_list, is_last_voice_message_list_for_squad
 from "%scripts/dagui_library.nut" import *
+
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { blkOptFromPath } = require("%sqstd/datablock.nut")
 let { is_bit_set, number_of_set_bits } = require("%sqstd/math.nut")
@@ -28,6 +29,11 @@ let getHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multif
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
 let { has_secondary_weapons } = require("weaponSelector")
 let { getFullUnitBlk, getFmFile } = require("%scripts/unit/unitParams.nut")
+
+
+
+
+
 
 let memoizeByMission = @(func, hashFunc = null) memoizeByEvents(func, hashFunc, [ "LoadingStateChange" ])
 
@@ -673,48 +679,47 @@ let cfg = {
     ]
   },
 
-  ["root_human"] = {
-    title = "hotkeys/ID_SHOW_MULTIFUNC_WHEEL_MENU"
-    items = [
-      { section = "radar_human" }
-      null
-      null
-      { section = "targeting_human" }
-      null
-      null
-      null
-      voiceMessagesMenuFunc
-    ]
-  },
 
-  ["targeting_human"] = {
-    title = "hotkeys/ID_FIRE_CONTROL_SYSTEM_HEADER"
-    items = [
-      { shortcut = [ "ID_HUMAN_TOGGLE_RANGEFINDER" ], enable = @(_unitId) canUseRangefinder() }
-      { shortcut = [ "ID_HUMAN_NIGHT_VISION" ], enable = @(_unitId) hasNightVision() }
-      null
-      null
-      { shortcut = [ "ID_HUMAN_THERMAL_WHITE_IS_HOT" ], enable = @(_unitId) hasNightVision() }
-      null
-      null
-      null
-    ]
-  },
 
-  ["radar_human"] = {
-    title = "hotkeys/ID_SENSORS_HEADER"
-    enable = @(unitId) hasRadar(unitId, getLastWeapon(unitId))
-    items = [
-      { shortcut = [ "ID_SENSOR_SWITCH_HUMAN" ] }
-      { shortcut = [ "ID_SENSOR_TARGET_SWITCH_HUMAN" ] }
-      { shortcut = [ "ID_SENSOR_TARGET_LOCK_HUMAN" ] }
-      null
-      null
-      null
-      null
-      null
-    ]
-  },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 return cfg

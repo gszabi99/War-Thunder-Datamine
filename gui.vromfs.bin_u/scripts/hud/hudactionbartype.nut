@@ -1,5 +1,6 @@
 from "%scripts/dagui_library.nut" import *
 
+let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { g_shortcut_type } = require("%scripts/controls/shortcutType.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { isXInputDevice } = require("controls")
@@ -34,6 +35,7 @@ let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { USEROPT_WHEEL_CONTROL_SHIP } = require("%scripts/options/optionsExtNames.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { get_option } = require("%scripts/options/optionsExt.nut")
+let { getSupportUnits, getSupportUnitImage } = require("%scripts/unit/supportUnits.nut")
 
 let shipTriggerGroupIcon = {
   [TRIGGER_GROUP_PRIMARY]         = "!ui/gameuiskin#artillery_weapon_state_indicator.svg",
@@ -1260,18 +1262,30 @@ enumsAddTypes(g_hud_action_bar_type, {
     code = EII_SLAVE_UNIT_SPAWN
     _name = "slave_unit_spawn"
     _title = loc("hotkeys/ID_SLAVE_UNIT_SPAWN")
-    _icon = "#ui/gameuiskin#change_controlled_unit"
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SLAVE_UNIT_SPAWN"
+    getLayeredIcon = function(_actionItem, _killStreakTag, unit, _hudUnitType = null) {
+      let supportUnits = getSupportUnits(unit.name)
+      if (supportUnits.len() == 0)
+        return ""
+      let supportUnitImage = getSupportUnitImage(unit.name) 
+      return handyman.renderCached("%gui/hud/supportUnitLayeredIcon.tpl", { supportUnitImage, isSpawn = true })
+    }
   }
 
   SLAVE_UNIT_SWITCH = {
     code = EII_SLAVE_UNIT_SWITCH
     _name = "slave_unit_switch"
     _title = loc("hotkeys/ID_SLAVE_UNIT_SWITCH")
-    _icon = "#ui/gameuiskin#change_controlled_unit"
     isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SLAVE_UNIT_SWITCH"
+    getLayeredIcon = function(_actionItem, _killStreakTag, unit, _hudUnitType = null) {
+      let supportUnits = getSupportUnits(unit.name)
+      if (supportUnits.len() == 0)
+        return ""
+      let supportUnitImage = getSupportUnitImage(unit.name) 
+      return handyman.renderCached("%gui/hud/supportUnitLayeredIcon.tpl", { supportUnitImage })
+    }
   }
 
   LANDING_GEAR = {
@@ -1351,7 +1365,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     code = EII_ANTI_AIR_COMPLEX_MENU
     _name = "anti_air_complex_menu"
     _title = loc("hotkeys/ID_TOGGLE_AA_COMPLEX_MENU")
-    _icon = "#ui/gameuiskin#multi_function_menu"
+    _icon = "#ui/gameuiskin#radar_control.avif"
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_TOGGLE_AA_COMPLEX_MENU"
   }
 

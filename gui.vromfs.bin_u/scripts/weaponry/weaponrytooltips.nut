@@ -79,9 +79,10 @@ let tooltipTypes = {
       if (!mod)
         return false
 
+      obj["transparent"] = "yes"
+      obj["noPadding"] = "yes"
+
       if (isModificationIsShell(unit, mod)) {
-        obj["noPadding"] = "yes"
-        obj["transparent"] = "yes"
         params.isBulletCard <- true
         params.markupFileName <- "%gui/weaponry/shellTooltip.tpl"
       }
@@ -240,9 +241,10 @@ let tooltipTypes = {
       }
       let canDisplayInfo = tier <= 1 || (infoShownTiers?[tier] ?? false)
 
+      obj["noPadding"] = "yes"
+      obj["transparent"] = "yes"
+
       if (isModificationIsShell(unit, mod)) {
-        obj["noPadding"] = "yes"
-        obj["transparent"] = "yes"
         params.isBulletCard <- true
         params.markupFileName <- "%gui/weaponry/shellTooltip.tpl"
       }

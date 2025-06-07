@@ -423,12 +423,13 @@ function afterLogFormat() {
 
 function makeChatTextFromLog() {
   let logObj = getMpChatLog()
-  mpChatHandlerState.log_text = ""
+  let formattedLogs = []
   foreach (logMsg in logObj) {
     let text = getTextFromMessage(logMsg)
     if (text != "")
-      mpChatHandlerState.log_text = $"{mpChatHandlerState.log_text}\n{text}"
+      formattedLogs.append(text)
   }
+  mpChatHandlerState.log_text = "\n".join(formattedLogs)
   afterLogFormat()
 }
 

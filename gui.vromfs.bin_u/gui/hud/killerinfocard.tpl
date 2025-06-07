@@ -153,6 +153,7 @@ hudFrame {
         <<#hasShellIcon>>
         shellLayeredIcon {
           size:t='20/720@shHud,20/720@shHud'
+          margin-right:t='2/720@shHud'
           <<#shellIconLayers>>
           img {
             size:t='pw,ph'
