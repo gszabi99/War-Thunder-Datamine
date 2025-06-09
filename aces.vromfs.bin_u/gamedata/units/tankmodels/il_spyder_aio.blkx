@@ -3373,6 +3373,69 @@
         }
       }
     },
+    "modern_tank_laser_rangefinder": {
+      "tier": 2,
+      "modClass": "firepower",
+      "effects": {
+        "rangefinderMounted": true,
+        "isLaser": true,
+        "rangefinderDmPart": "fire_control_system_dm",
+        "distanceError": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMin": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMax": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceErrorRealistic": [
+          1.0,
+          1.0,
+          5.0,
+          10.0
+        ],
+        "distanceThresholdMinRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "distanceThresholdMaxRealistic": [
+          1000.0,
+          3000.0,
+          5000.0,
+          9999.0
+        ],
+        "timeMeasurementRange": [
+          0.5,
+          0.5
+        ],
+        "rcostAddParam": 0.98,
+        "sensors": {
+          "sensor": {
+            "blk": "gameData/sensors/il_spyder_search.blk",
+            "turretIndex": -1,
+            "designationFromBody": true,
+            "designationTurretIndex": -1,
+            "dmPart": [
+              "antenna_target_location_dm",
+              "electronic_equipment_dm"
+            ],
+            "radarParkingAzimuth": 0.0
+          }
+        }
+      }
+    },
     "160mm_python_5_aam": {},
     "160mm_derby_aam": {}
   },
