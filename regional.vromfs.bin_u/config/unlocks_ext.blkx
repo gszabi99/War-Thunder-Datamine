@@ -4545,6 +4545,54 @@
       }
     },
     {
+      "id": "2025_06_10_it_coastal_fleet_emblem",
+      "locId": "decals/it_coastal_fleet_emblem",
+      "locDescId": "gift_decal_trophy/desc",
+      "userLogId": "2025_06_10_it_coastal_fleet_emblem_trophy",
+      "type": "trophy",
+      "amount_trophies": 1,
+      "chapter": "holidays",
+      "group": "italian_navy_day",
+      "costGold": 199,
+      "hidden": true,
+      "mode": {
+        "type": "missionsPlayedScore",
+        "num": 3,
+        "condition": [
+          {
+            "type": "online"
+          },
+          {
+            "type": "activity",
+            "percent": 70
+          },
+          {
+            "type": "playerUnitRank",
+            "minRank": 3,
+            "inSession": true,
+            "inSessionAnd": false
+          },
+          {
+            "type": "playerCountry",
+            "country": "country_italy"
+          },
+          {
+            "type": "playerType",
+            "unitType": [
+              "ship",
+              "boat"
+            ],
+            "inSession": true
+          },
+          {
+            "type": "timeRange",
+            "beginDate": "2025-06-10 11:00:00",
+            "endDate": "2025-06-13 07:30:00"
+          }
+        ]
+      }
+    },
+    {
       "id": "2025_06_06_d_day_2025_decal",
       "locId": "decals/d_day_2025_decal",
       "locDescId": "gift_decal_trophy/desc",
@@ -4622,6 +4670,7 @@
       "group": "moments_of_valor_canada",
       "type": "trophy",
       "amount_trophies": 1,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 3,
@@ -4747,6 +4796,7 @@
       "group": "moments_of_valor_canada",
       "type": "trophy",
       "amount_trophies": 1,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 3,
@@ -18263,6 +18313,12 @@
     },
     {
       "id": "title_bird_of_passage",
+      "type": "title",
+      "chapter": "title",
+      "hideUntilUnlocked": true
+    },
+    {
+      "id": "title_viper_zero",
       "type": "title",
       "chapter": "title",
       "hideUntilUnlocked": true
@@ -105461,8 +105517,8 @@
       "chapter": "2025_05_air",
       "icon": "!https://static-ggc.gaijin.net/units/marut_mk1.png",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 7,
@@ -105486,8 +105542,8 @@
       "group": "coupon_upgrade",
       "icon": "https://static-ggc.gaijin.net/items/coupon_upgrade_q4.png",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
-      "manualOpen": true,
       "mode": {
         "type": "totalMissionScore",
         "score": 2147483646,
@@ -105545,8 +105601,8 @@
       "amount_trophies": 1,
       "chapter": "2025_05_air",
       "lockStyle": "lock",
+      "hidden": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 1,
@@ -105572,7 +105628,7 @@
       "icon": "!https://static-ggc.gaijin.net/decals/05_2025_aircraft_event.avif",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 2,
@@ -105596,9 +105652,9 @@
       "amount_trophies": 1,
       "chapter": "2025_05_air",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 3,
@@ -105624,7 +105680,7 @@
       "icon": "!https://static-ggc.gaijin.net/decals/05_2025_aircraft_event.avif",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 4,
@@ -105648,9 +105704,9 @@
       "amount_trophies": 1,
       "chapter": "2025_05_air",
       "lockStyle": "lock",
+      "hidden": true,
       "isForceVisibleInTree": true,
       "showInDesc": true,
-      "manualOpen": true,
       "mode": {
         "type": "char_unlocks",
         "num": 5,
@@ -105674,7 +105730,7 @@
       "chapter": "2025_05_air",
       "lockStyle": "lock",
       "showInDesc": true,
-      "manualOpen": true,
+      "hidden": true,
       "mode": {
         "type": "char_unlocks",
         "num": 6,
@@ -105693,6 +105749,7 @@
       "id": "03_06_2025_aircraft_stage",
       "locId": "marathon_air_stage_7/name",
       "chapter": "2025_05_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -105755,6 +105812,7 @@
       "id": "01_06_2025_aircraft_stage",
       "locId": "marathon_air_stage_6/name",
       "chapter": "2025_05_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -105817,6 +105875,7 @@
       "id": "30_05_2025_aircraft_stage",
       "locId": "marathon_air_stage_5/name",
       "chapter": "2025_05_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -105879,6 +105938,7 @@
       "id": "28_05_2025_aircraft_stage",
       "locId": "marathon_air_stage_4/name",
       "chapter": "2025_05_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -105941,6 +106001,7 @@
       "id": "26_05_2025_aircraft_stage",
       "locId": "marathon_air_stage_3/name",
       "chapter": "2025_05_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -106003,6 +106064,7 @@
       "id": "24_05_2025_aircraft_stage",
       "locId": "marathon_air_stage_2/name",
       "chapter": "2025_05_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
@@ -106065,6 +106127,7 @@
       "id": "22_05_2025_aircraft_stage",
       "locId": "marathon_air_stage_1/name",
       "chapter": "2025_05_air",
+      "hidden": true,
       "type": "achievement",
       "group": "tasks",
       "visibleDays": 1.0,
