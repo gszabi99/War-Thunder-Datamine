@@ -66,7 +66,6 @@ foreach (fn in [
 
   "%scripts/gameModes/gameModeSelect.nut"
   "%scripts/changeCountry.nut"
-  "%scripts/promo/promoViewUtils.nut"
   "%scripts/unlocks/battleTasks.nut"
   "%scripts/mainmenu/topMenuSectionsConfigs.nut"
   "%scripts/mainmenu/topMenuButtonsHandler.nut"

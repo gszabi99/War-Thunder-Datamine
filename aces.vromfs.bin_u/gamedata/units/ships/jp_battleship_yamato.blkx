@@ -353,6 +353,132 @@
         0.0,
         0.0
       ],
+      "suffix": "6",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "model": "japan_sailor_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "7",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "model": "japan_sailor_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
       "suffix": "8",
       "deadHeadAttitudeMin": -55.0,
       "deadHeadAttitudeMax": -40.0,
@@ -3747,6 +3873,8 @@
     "Bip01 Pelvis_1": "japan_sailor_standing",
     "Bip01 Pelvis_4": "japan_sailor_sit",
     "Bip01 Pelvis_5": "japan_sailor_sit",
+    "Bip01 Pelvis_6": "japan_sailor_standing",
+    "Bip01 Pelvis_7": "japan_sailor_standing",
     "Bip01 Pelvis_8": "japan_sailor_sit",
     "Bip01 Pelvis_9": "japan_sailor_sit",
     "Bip01 Pelvis_12": "japan_sailor_sit",
@@ -3965,6 +4093,10 @@
         "hp": 1000.0
       },
       "fire_control_room_01_dm": {
+        "napalmDamageMult": 0.0,
+        "hp": 860.0
+      },
+      "fire_control_room_02_dm": {
         "napalmDamageMult": 0.0,
         "hp": 860.0
       }
@@ -4330,6 +4462,12 @@
       },
       "aa_turret_52_dm": {
         "hp": 100.0
+      },
+      "aa_turret_53_dm": {
+        "hp": 100.0
+      },
+      "aa_turret_54_dm": {
+        "hp": 100.0
       }
     },
     "gun_main_caliber": {
@@ -4581,6 +4719,12 @@
       },
       "aa_gun_52_dm": {
         "hp": 50.0
+      },
+      "aa_gun_53_dm": {
+        "hp": 50.0
+      },
+      "aa_gun_54_dm": {
+        "hp": 50.0
       }
     },
     "gun_barrels": {
@@ -4783,6 +4927,12 @@
       },
       "rangefinder_03_dm": {
         "hp": 100.0
+      },
+      "rangefinder_04_dm": {
+        "hp": 100.0
+      },
+      "rangefinder_05_dm": {
+        "hp": 100.0
       }
     },
     "aircrafts": {
@@ -4913,6 +5063,11 @@
         "armorThickness": 200.0,
         "hp": 10000.0
       },
+      "armor_cit_26_dm": {
+        "armorClass": "ship_RGA",
+        "armorThickness": 200.0,
+        "hp": 10000.0
+      },
       "armor_cit_21_dm": {
         "armorThickness": 230.0,
         "hp": 10000.0
@@ -4928,7 +5083,7 @@
       },
       "armor_cit_08_dm": {
         "armorClass": "ship_RGA",
-        "armorThickness": 280.0,
+        "armorThickness": 270.0,
         "hp": 10000.0
       },
       "armor_cit_10_dm": {
@@ -4940,7 +5095,7 @@
         "hp": 10000.0
       },
       "armor_cit_12_dm": {
-        "armorThickness": 180.0,
+        "armorThickness": 380.0,
         "hp": 10000.0
       },
       "armor_cit_15_dm": {
@@ -4984,6 +5139,11 @@
       "armor_cit_03_dm": {
         "armorClass": "ship_RGA",
         "armorThickness": 560.0,
+        "hp": 10000.0
+      },
+      "armor_cit_25_dm": {
+        "armorClass": "ship_RGA",
+        "armorThickness": 490.0,
         "hp": 10000.0
       },
       "armor_cit_04_dm": {
@@ -5069,51 +5229,59 @@
         "hp": 8500.0
       },
       "armor_cit_l_08_dm": {
+        "armorClass": "ship_RGA",
         "armorThickness": 350.0,
         "hp": 8500.0
       },
       "armor_cit_l_09_dm": {
+        "armorClass": "ship_RGA",
         "armorThickness": 350.0,
         "hp": 8500.0
       },
       "armor_cit_r_08_dm": {
+        "armorClass": "ship_RGA",
         "armorThickness": 350.0,
         "hp": 8500.0
       },
       "armor_cit_r_09_dm": {
+        "armorClass": "ship_RGA",
         "armorThickness": 350.0,
         "hp": 8500.0
       },
       "armor_cit_l_10_dm": {
+        "armorClass": "ship_RGA",
         "armorThickness": 330.0,
         "hp": 8500.0
       },
       "armor_cit_l_11_dm": {
+        "armorClass": "ship_RGA",
         "armorThickness": 330.0,
         "hp": 8500.0
       },
       "armor_cit_r_10_dm": {
+        "armorClass": "ship_RGA",
         "armorThickness": 330.0,
         "hp": 8500.0
       },
       "armor_cit_r_11_dm": {
+        "armorClass": "ship_RGA",
         "armorThickness": 330.0,
         "hp": 8500.0
       },
       "armor_cit_l_12_dm": {
-        "armorThickness": 75.0,
+        "armorThickness": 80.0,
         "hp": 8500.0
       },
       "armor_cit_l_13_dm": {
-        "armorThickness": 75.0,
+        "armorThickness": 80.0,
         "hp": 8500.0
       },
       "armor_cit_r_12_dm": {
-        "armorThickness": 75.0,
+        "armorThickness": 80.0,
         "hp": 8500.0
       },
       "armor_cit_r_13_dm": {
-        "armorThickness": 75.0,
+        "armorThickness": 80.0,
         "hp": 8500.0
       }
     },
@@ -5156,6 +5324,10 @@
         "armorThickness": 410.0,
         "hp": 8500.0
       },
+      "armor_belt_r_06_dm": {
+        "armorThickness": 410.0,
+        "hp": 8500.0
+      },
       "armor_belt_l_01_dm": {
         "armorThickness": 410.0,
         "hp": 8500.0
@@ -5176,91 +5348,191 @@
         "armorThickness": 410.0,
         "hp": 8500.0
       },
-      "armor_belt_r_06_dm": {
-        "armorThickness": 165.0,
+      "armor_belt_l_06_dm": {
+        "armorThickness": 410.0,
         "hp": 8500.0
       },
       "armor_belt_r_07_dm": {
-        "armorThickness": 165.0,
+        "armorThickness": 200.0,
         "hp": 8500.0
       },
       "armor_belt_r_08_dm": {
-        "armorThickness": 165.0,
+        "armorThickness": 200.0,
         "hp": 8500.0
       },
       "armor_belt_r_09_dm": {
-        "armorThickness": 165.0,
+        "armorThickness": 200.0,
         "hp": 8500.0
       },
       "armor_belt_r_10_dm": {
-        "armorThickness": 165.0,
-        "hp": 8500.0
-      },
-      "armor_belt_l_06_dm": {
-        "armorThickness": 165.0,
-        "hp": 8500.0
-      },
-      "armor_belt_l_07_dm": {
-        "armorThickness": 165.0,
-        "hp": 8500.0
-      },
-      "armor_belt_l_08_dm": {
-        "armorThickness": 165.0,
-        "hp": 8500.0
-      },
-      "armor_belt_l_09_dm": {
-        "armorThickness": 165.0,
-        "hp": 8500.0
-      },
-      "armor_belt_l_10_dm": {
-        "armorThickness": 165.0,
+        "armorThickness": 200.0,
         "hp": 8500.0
       },
       "armor_belt_r_11_dm": {
-        "armorThickness": 80.0,
+        "armorThickness": 200.0,
         "hp": 8500.0
       },
       "armor_belt_r_12_dm": {
-        "armorThickness": 80.0,
+        "armorThickness": 200.0,
         "hp": 8500.0
       },
-      "armor_belt_r_13_dm": {
-        "armorThickness": 80.0,
+      "armor_belt_l_07_dm": {
+        "armorThickness": 200.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_08_dm": {
+        "armorThickness": 200.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_09_dm": {
+        "armorThickness": 200.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_10_dm": {
+        "armorThickness": 200.0,
         "hp": 8500.0
       },
       "armor_belt_l_11_dm": {
-        "armorThickness": 80.0,
+        "armorThickness": 200.0,
         "hp": 8500.0
       },
       "armor_belt_l_12_dm": {
-        "armorThickness": 80.0,
+        "armorThickness": 200.0,
         "hp": 8500.0
       },
-      "armor_belt_l_13_dm": {
-        "armorThickness": 80.0,
+      "armor_belt_r_13_dm": {
+        "armorThickness": 165.0,
         "hp": 8500.0
       },
       "armor_belt_r_14_dm": {
-        "armorThickness": 75.0,
+        "armorClass": "ship_RHA",
+        "armorThickness": 165.0,
         "hp": 8500.0
       },
       "armor_belt_r_15_dm": {
-        "armorThickness": 75.0,
+        "armorClass": "ship_RHA",
+        "armorThickness": 165.0,
         "hp": 8500.0
       },
       "armor_belt_r_16_dm": {
-        "armorThickness": 75.0,
+        "armorClass": "ship_RHA",
+        "armorThickness": 165.0,
+        "hp": 8500.0
+      },
+      "armor_belt_r_17_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 165.0,
+        "hp": 8500.0
+      },
+      "armor_belt_r_18_dm": {
+        "armorThickness": 165.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_13_dm": {
+        "armorThickness": 165.0,
         "hp": 8500.0
       },
       "armor_belt_l_14_dm": {
-        "armorThickness": 75.0,
+        "armorClass": "ship_RHA",
+        "armorThickness": 165.0,
         "hp": 8500.0
       },
       "armor_belt_l_15_dm": {
-        "armorThickness": 75.0,
+        "armorClass": "ship_RHA",
+        "armorThickness": 165.0,
         "hp": 8500.0
       },
       "armor_belt_l_16_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 165.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_17_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 165.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_18_dm": {
+        "armorThickness": 165.0,
+        "hp": 8500.0
+      },
+      "armor_belt_r_19_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 80.0,
+        "hp": 8500.0
+      },
+      "armor_belt_r_20_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 80.0,
+        "hp": 8500.0
+      },
+      "armor_belt_r_21_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 80.0,
+        "hp": 8500.0
+      },
+      "armor_belt_r_22_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 80.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_19_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 80.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_20_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 80.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_21_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 80.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_22_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 80.0,
+        "hp": 8500.0
+      },
+      "armor_belt_r_23_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 75.0,
+        "hp": 8500.0
+      },
+      "armor_belt_r_24_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 75.0,
+        "hp": 8500.0
+      },
+      "armor_belt_r_25_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 75.0,
+        "hp": 8500.0
+      },
+      "armor_belt_r_26_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 75.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_23_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 75.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_24_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 75.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_25_dm": {
+        "armorClass": "ship_RHA",
+        "armorThickness": 75.0,
+        "hp": 8500.0
+      },
+      "armor_belt_l_26_dm": {
+        "armorClass": "ship_RHA",
         "armorThickness": 75.0,
         "hp": 8500.0
       }
@@ -5278,6 +5550,7 @@
         "hp": 10000.0
       },
       "turret_01_back_dm": {
+        "armorClass": "ship_RHA",
         "armorThickness": 190.0,
         "hp": 10000.0
       },
@@ -5299,6 +5572,7 @@
         "hp": 10000.0
       },
       "turret_02_back_dm": {
+        "armorClass": "ship_RHA",
         "armorThickness": 190.0,
         "hp": 10000.0
       },
@@ -5320,6 +5594,7 @@
         "hp": 10000.0
       },
       "turret_03_back_dm": {
+        "armorClass": "ship_RHA",
         "armorThickness": 190.0,
         "hp": 10000.0
       },
@@ -5583,12 +5858,6 @@
       },
       "fuel_tank_12_dm": {
         "hp": 3000.0
-      },
-      "fuel_tank_13_dm": {
-        "hp": 3000.0
-      },
-      "fuel_tank_14_dm": {
-        "hp": 3000.0
       }
     },
     "coal_bunkers": {
@@ -5613,12 +5882,12 @@
     }
   },
   "tank_crew": {
-    "minCrewMemberRepairCount": 961,
-    "minCrewMemberAliveCount": 824,
+    "minCrewMemberRepairCount": 1166,
+    "minCrewMemberAliveCount": 999,
     "sailor1": {
       "dmPart": "bridge_dm",
       "role": "sailor",
-      "crew": 14
+      "crew": 15
     },
     "sailor2": {
       "dmPart": "radio_station_01_dm",
@@ -5628,42 +5897,42 @@
     "sailor3": {
       "dmPart": "compartment_01_dm",
       "role": "sailor",
-      "crew": 311
+      "crew": 423
     },
     "sailor4": {
       "dmPart": "compartment_02_dm",
       "role": "sailor",
-      "crew": 238
+      "crew": 323
     },
     "sailor5": {
       "dmPart": "compartment_03_dm",
       "role": "sailor",
-      "crew": 311
+      "crew": 423
     },
     "sailor6": {
       "dmPart": "compartment_04_dm",
       "role": "sailor",
-      "crew": 311
+      "crew": 423
     },
     "sailor7": {
       "dmPart": "compartment_05_dm",
       "role": "sailor",
-      "crew": 238
+      "crew": 323
     },
     "sailor8": {
       "dmPart": "main_caliber_turret_01_dm",
       "role": "sailor",
-      "crew": 24
+      "crew": 25
     },
     "sailor9": {
       "dmPart": "main_caliber_turret_02_dm",
       "role": "sailor",
-      "crew": 24
+      "crew": 25
     },
     "sailor10": {
       "dmPart": "main_caliber_turret_03_dm",
       "role": "sailor",
-      "crew": 24
+      "crew": 25
     },
     "sailor11": {
       "dmPart": "auxiliary_caliber_turret_03_dm",
@@ -5728,17 +5997,17 @@
     "sailor23": {
       "dmPart": "engine_room_01_dm",
       "role": "sailor",
-      "crew": 72
+      "crew": 87
     },
     "sailor24": {
       "dmPart": "engine_room_02_dm",
       "role": "sailor",
-      "crew": 72
+      "crew": 87
     },
     "sailor25": {
       "dmPart": "engine_room_03_dm",
       "role": "sailor",
-      "crew": 70
+      "crew": 85
     },
     "sailor26": {
       "dmPart": "transmission_01_dm",
@@ -5933,29 +6202,34 @@
     "sailor64": {
       "dmPart": "fire_director_11_dm",
       "role": "sailor",
-      "crew": 7
+      "crew": 9
     },
     "sailor65": {
       "dmPart": "fire_director_12_dm",
       "role": "sailor",
-      "crew": 7
+      "crew": 9
     },
     "sailor66": {
       "dmPart": "fire_director_13_dm",
       "role": "sailor",
-      "crew": 12
+      "crew": 16
     },
     "sailor67": {
       "dmPart": "fire_director_14_dm",
       "role": "sailor",
-      "crew": 10
+      "crew": 16
     },
     "sailor68": {
       "dmPart": "fire_control_room_01_dm",
       "role": "sailor",
-      "crew": 14
+      "crew": 15
     },
     "sailor69": {
+      "dmPart": "fire_control_room_02_dm",
+      "role": "sailor",
+      "crew": 15
+    },
+    "sailor70": {
       "dmPart": "radio_station_02_dm",
       "role": "sailor",
       "crew": 10
@@ -5970,13 +6244,13 @@
       "onHit": [
         {
           "damageType": "fire",
-          "expl": 1.0,
+          "expl": 0.7,
           "damage": 55.0,
           "fHitCritical": false
         },
         {
           "damageType": "fire",
-          "expl": 0.08,
+          "expl": 0.9,
           "damage": 74.0,
           "fHitCritical": false
         }
@@ -5984,13 +6258,13 @@
     },
     "ammunition_storage_charges": {
       "onKill": {
-        "fire": 1.0,
+        "fire": 0.7,
         "fHitCritical": false
       },
       "onHit": [
         {
           "damageType": "fire",
-          "fire": 1.0,
+          "fire": 0.9,
           "damage": 55.0,
           "fHitCritical": false
         },
@@ -6707,7 +6981,9 @@
         "dmPart": [
           "rangefinder_01_dm",
           "rangefinder_02_dm",
-          "rangefinder_03_dm"
+          "rangefinder_03_dm",
+          "rangefinder_04_dm",
+          "rangefinder_05_dm"
         ],
         "rotationSpeed": [
           0.0,
@@ -10480,7 +10756,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -10488,31 +10764,31 @@
             -180.0,
             -122.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -122.0,
             -112.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -112.0,
             -78.0,
             43.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -78.0,
             162.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim5": [
             162.0,
             180.0,
             5.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -10569,7 +10845,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -10577,31 +10853,31 @@
             -180.0,
             -122.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -122.0,
             -112.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -112.0,
             -78.0,
             43.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -78.0,
             162.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim5": [
             162.0,
             180.0,
             5.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -10658,7 +10934,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -10666,31 +10942,31 @@
             -180.0,
             -122.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -122.0,
             -112.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -112.0,
             -78.0,
             43.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -78.0,
             162.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim5": [
             162.0,
             180.0,
             5.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -10747,7 +11023,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -10755,31 +11031,31 @@
             -180.0,
             -162.0,
             5.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -162.0,
             78.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim3": [
             78.0,
             112.0,
             43.0,
-            80.0
+            85.0
           ],
           "lim4": [
             112.0,
             122.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim5": [
             122.0,
             180.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -10836,7 +11112,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -10844,31 +11120,31 @@
             -180.0,
             -162.0,
             5.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -162.0,
             78.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim3": [
             78.0,
             112.0,
             43.0,
-            80.0
+            85.0
           ],
           "lim4": [
             112.0,
             122.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim5": [
             122.0,
             180.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -10925,7 +11201,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -10933,31 +11209,31 @@
             -180.0,
             -162.0,
             5.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -162.0,
             78.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim3": [
             78.0,
             112.0,
             43.0,
-            80.0
+            85.0
           ],
           "lim4": [
             112.0,
             122.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim5": [
             122.0,
             180.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -11014,7 +11290,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -11022,43 +11298,43 @@
             -180.0,
             -150.0,
             64.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -150.0,
             -92.0,
             54.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -92.0,
             -80.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -80.0,
             -68.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -68.0,
             86.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim6": [
             86.0,
             102.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim7": [
             102.0,
             180.0,
             62.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -11115,7 +11391,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -11123,43 +11399,43 @@
             -180.0,
             -150.0,
             64.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -150.0,
             -92.0,
             54.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -92.0,
             -80.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -80.0,
             -68.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -68.0,
             86.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim6": [
             86.0,
             102.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim7": [
             102.0,
             180.0,
             62.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -11216,7 +11492,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -11224,43 +11500,43 @@
             -180.0,
             -150.0,
             64.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -150.0,
             -92.0,
             54.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -92.0,
             -80.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -80.0,
             -68.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -68.0,
             86.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim6": [
             86.0,
             102.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim7": [
             102.0,
             180.0,
             62.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -11317,7 +11593,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -11325,43 +11601,43 @@
             -180.0,
             -102.0,
             62.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -102.0,
             -86.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -86.0,
             68.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             68.0,
             80.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim5": [
             80.0,
             92.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim6": [
             92.0,
             150.0,
             54.0,
-            80.0
+            85.0
           ],
           "lim7": [
             150.0,
             180.0,
             64.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -11418,7 +11694,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -11426,43 +11702,43 @@
             -180.0,
             -102.0,
             62.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -102.0,
             -86.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -86.0,
             68.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             68.0,
             80.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim5": [
             80.0,
             92.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim6": [
             92.0,
             150.0,
             54.0,
-            80.0
+            85.0
           ],
           "lim7": [
             150.0,
             180.0,
             64.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -11519,7 +11795,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -11527,43 +11803,43 @@
             -180.0,
             -102.0,
             62.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -102.0,
             -86.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -86.0,
             68.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             68.0,
             80.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim5": [
             80.0,
             92.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim6": [
             92.0,
             150.0,
             54.0,
-            80.0
+            85.0
           ],
           "lim7": [
             150.0,
             180.0,
             64.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -11620,7 +11896,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -11628,43 +11904,43 @@
             -180.0,
             -86.0,
             70.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -86.0,
             -68.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -68.0,
             -50.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -50.0,
             68.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             68.0,
             90.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim6": [
             90.0,
             126.0,
             36.0,
-            80.0
+            85.0
           ],
           "lim7": [
             126.0,
             180.0,
             64.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -11721,7 +11997,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -11729,43 +12005,43 @@
             -180.0,
             -86.0,
             70.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -86.0,
             -68.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -68.0,
             -50.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -50.0,
             68.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             68.0,
             90.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim6": [
             90.0,
             126.0,
             36.0,
-            80.0
+            85.0
           ],
           "lim7": [
             126.0,
             180.0,
             64.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -11822,7 +12098,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -11830,43 +12106,43 @@
             -180.0,
             -86.0,
             70.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -86.0,
             -68.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -68.0,
             -50.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -50.0,
             68.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             68.0,
             90.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim6": [
             90.0,
             126.0,
             36.0,
-            80.0
+            85.0
           ],
           "lim7": [
             126.0,
             180.0,
             64.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -11923,7 +12199,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -11931,43 +12207,43 @@
             -180.0,
             -126.0,
             64.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -126.0,
             -90.0,
             36.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -90.0,
             -68.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -68.0,
             50.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             50.0,
             68.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim6": [
             68.0,
             86.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim7": [
             86.0,
             180.0,
             70.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -12024,7 +12300,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -12032,43 +12308,43 @@
             -180.0,
             -126.0,
             64.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -126.0,
             -90.0,
             36.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -90.0,
             -68.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -68.0,
             50.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             50.0,
             68.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim6": [
             68.0,
             86.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim7": [
             86.0,
             180.0,
             70.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -12125,7 +12401,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -12133,43 +12409,43 @@
             -180.0,
             -126.0,
             64.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -126.0,
             -90.0,
             36.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -90.0,
             -68.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -68.0,
             50.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             50.0,
             68.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim6": [
             68.0,
             86.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim7": [
             86.0,
             180.0,
             70.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -12226,7 +12502,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -12234,43 +12510,43 @@
             -90.0,
             -66.0,
             40.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             -50.0,
             32.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -50.0,
             -36.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -36.0,
             74.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             74.0,
             90.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim6": [
             90.0,
             122.0,
             38.0,
-            80.0
+            85.0
           ],
           "lim7": [
             122.0,
             180.0,
             62.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -12327,7 +12603,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -12335,43 +12611,43 @@
             -90.0,
             -66.0,
             40.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             -50.0,
             32.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -50.0,
             -36.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -36.0,
             74.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             74.0,
             90.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim6": [
             90.0,
             122.0,
             38.0,
-            80.0
+            85.0
           ],
           "lim7": [
             122.0,
             180.0,
             62.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -12428,7 +12704,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -12436,43 +12712,43 @@
             -90.0,
             -66.0,
             40.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             -50.0,
             32.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -50.0,
             -36.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -36.0,
             74.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             74.0,
             90.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim6": [
             90.0,
             122.0,
             38.0,
-            80.0
+            85.0
           ],
           "lim7": [
             122.0,
             180.0,
             62.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -12529,7 +12805,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -12537,43 +12813,43 @@
             -180.0,
             -122.0,
             62.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -122.0,
             -90.0,
             38.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -90.0,
             -74.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -74.0,
             36.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             36.0,
             50.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim6": [
             50.0,
             66.0,
             32.0,
-            80.0
+            85.0
           ],
           "lim7": [
             66.0,
             90.0,
             40.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -12630,7 +12906,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -12638,43 +12914,43 @@
             -180.0,
             -122.0,
             62.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -122.0,
             -90.0,
             38.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -90.0,
             -74.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -74.0,
             36.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             36.0,
             50.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim6": [
             50.0,
             66.0,
             32.0,
-            80.0
+            85.0
           ],
           "lim7": [
             66.0,
             90.0,
             40.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -12731,7 +13007,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -12739,43 +13015,43 @@
             -180.0,
             -122.0,
             62.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -122.0,
             -90.0,
             38.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -90.0,
             -74.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -74.0,
             36.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             36.0,
             50.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim6": [
             50.0,
             66.0,
             32.0,
-            80.0
+            85.0
           ],
           "lim7": [
             66.0,
             90.0,
             40.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -12832,7 +13108,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -12840,13 +13116,13 @@
             -50.0,
             88.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             88.0,
             90.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -12903,7 +13179,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -12911,13 +13187,13 @@
             -50.0,
             88.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             88.0,
             90.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -12974,7 +13250,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -12982,13 +13258,13 @@
             -50.0,
             88.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             88.0,
             90.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -13045,7 +13321,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -13053,13 +13329,13 @@
             -90.0,
             -88.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -88.0,
             50.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -13116,7 +13392,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -13124,13 +13400,13 @@
             -90.0,
             -88.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -88.0,
             50.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -13187,7 +13463,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -13195,13 +13471,13 @@
             -90.0,
             -88.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -88.0,
             50.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -13519,7 +13795,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -13527,19 +13803,19 @@
             -60.0,
             80.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             80.0,
             100.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             100.0,
             120.0,
             22.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -13596,7 +13872,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -13604,19 +13880,19 @@
             -60.0,
             80.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             80.0,
             100.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             100.0,
             120.0,
             22.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -13673,7 +13949,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -13681,19 +13957,19 @@
             -60.0,
             80.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             80.0,
             100.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             100.0,
             120.0,
             22.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -13750,7 +14026,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -13758,19 +14034,19 @@
             -120.0,
             -100.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -100.0,
             -80.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -80.0,
             60.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -13827,7 +14103,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -13835,19 +14111,19 @@
             -120.0,
             -100.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -100.0,
             -80.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -80.0,
             60.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -13904,7 +14180,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -13912,19 +14188,19 @@
             -120.0,
             -100.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -100.0,
             -80.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -80.0,
             60.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -13981,7 +14257,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -13989,31 +14265,31 @@
             -90.0,
             -62.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -62.0,
             6.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             6.0,
             56.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             56.0,
             84.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             84.0,
             90.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -14070,7 +14346,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -14078,31 +14354,31 @@
             -90.0,
             -62.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -62.0,
             6.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             6.0,
             56.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             56.0,
             84.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             84.0,
             90.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -14159,7 +14435,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -14167,31 +14443,31 @@
             -90.0,
             -62.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -62.0,
             6.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             6.0,
             56.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             56.0,
             84.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             84.0,
             90.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -14248,7 +14524,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -14256,31 +14532,31 @@
             -90.0,
             -84.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -84.0,
             -56.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -56.0,
             -6.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -6.0,
             62.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim5": [
             62.0,
             90.0,
             28.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -14337,7 +14613,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -14345,31 +14621,31 @@
             -90.0,
             -84.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -84.0,
             -56.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -56.0,
             -6.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -6.0,
             62.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim5": [
             62.0,
             90.0,
             28.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -14426,7 +14702,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -14434,31 +14710,31 @@
             -90.0,
             -84.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -84.0,
             -56.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -56.0,
             -6.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -6.0,
             62.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim5": [
             62.0,
             90.0,
             28.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -14515,7 +14791,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -14523,25 +14799,25 @@
             -90.0,
             -20.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -20.0,
             68.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             68.0,
             86.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             86.0,
             90.0,
             -2.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -14598,7 +14874,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -14606,25 +14882,25 @@
             -90.0,
             -20.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -20.0,
             68.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             68.0,
             86.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             86.0,
             90.0,
             -2.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -14681,7 +14957,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -14689,25 +14965,25 @@
             -90.0,
             -20.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -20.0,
             68.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             68.0,
             86.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             86.0,
             90.0,
             -2.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -14764,33 +15040,33 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
           "lim1": [
             -90.0,
-            -86.0,
-            -2.0,
-            80.0
+            -20.0,
+            4.0,
+            85.0
           ],
           "lim2": [
-            -86.0,
-            -68.0,
-            -4.0,
-            80.0
+            -20.0,
+            68.0,
+            -8.0,
+            85.0
           ],
           "lim3": [
-            -68.0,
-            20.0,
-            -8.0,
-            80.0
+            68.0,
+            86.0,
+            -4.0,
+            85.0
           ],
           "lim4": [
-            20.0,
+            86.0,
             90.0,
-            4.0,
-            80.0
+            -2.0,
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -14847,33 +15123,33 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
           "lim1": [
             -90.0,
-            -86.0,
-            -2.0,
-            80.0
+            -20.0,
+            4.0,
+            85.0
           ],
           "lim2": [
-            -86.0,
-            -68.0,
-            -4.0,
-            80.0
+            -20.0,
+            68.0,
+            -8.0,
+            85.0
           ],
           "lim3": [
-            -68.0,
-            20.0,
-            -8.0,
-            80.0
+            68.0,
+            86.0,
+            -4.0,
+            85.0
           ],
           "lim4": [
-            20.0,
+            86.0,
             90.0,
-            4.0,
-            80.0
+            -2.0,
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -14930,33 +15206,33 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
           "lim1": [
             -90.0,
-            -86.0,
-            -2.0,
-            80.0
+            -20.0,
+            4.0,
+            85.0
           ],
           "lim2": [
-            -86.0,
-            -68.0,
-            -4.0,
-            80.0
+            -20.0,
+            68.0,
+            -8.0,
+            85.0
           ],
           "lim3": [
-            -68.0,
-            20.0,
-            -8.0,
-            80.0
+            68.0,
+            86.0,
+            -4.0,
+            85.0
           ],
           "lim4": [
-            20.0,
+            86.0,
             90.0,
-            4.0,
-            80.0
+            -2.0,
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15013,7 +15289,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15021,25 +15297,25 @@
             -90.0,
             -72.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -72.0,
             -66.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -66.0,
             70.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             70.0,
             90.0,
             2.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15096,7 +15372,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15104,25 +15380,25 @@
             -90.0,
             -72.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -72.0,
             -66.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -66.0,
             70.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             70.0,
             90.0,
             2.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15179,7 +15455,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15187,25 +15463,25 @@
             -90.0,
             -72.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -72.0,
             -66.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -66.0,
             70.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             70.0,
             90.0,
             2.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15262,7 +15538,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15270,25 +15546,25 @@
             -90.0,
             -70.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -70.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             66.0,
             72.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             72.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15345,7 +15621,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15353,25 +15629,25 @@
             -90.0,
             -70.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -70.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             66.0,
             72.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             72.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15428,7 +15704,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15436,25 +15712,25 @@
             -90.0,
             -70.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -70.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             66.0,
             72.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             72.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15511,7 +15787,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15519,25 +15795,25 @@
             -90.0,
             -74.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -68.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -68.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15594,7 +15870,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15602,25 +15878,25 @@
             -90.0,
             -74.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -68.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -68.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15677,7 +15953,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15685,25 +15961,25 @@
             -90.0,
             -74.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -68.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -68.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15760,7 +16036,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15768,25 +16044,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             68.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             68.0,
             74.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             74.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15843,7 +16119,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15851,25 +16127,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             68.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             68.0,
             74.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             74.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -15926,7 +16202,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -15934,25 +16210,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             68.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             68.0,
             74.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             74.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16009,7 +16285,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16017,25 +16293,25 @@
             -90.0,
             -74.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -66.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16092,7 +16368,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16100,25 +16376,25 @@
             -90.0,
             -74.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -66.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16175,7 +16451,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16183,25 +16459,25 @@
             -90.0,
             -74.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -66.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16258,7 +16534,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16266,25 +16542,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             66.0,
             74.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             74.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16341,7 +16617,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16349,25 +16625,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             66.0,
             74.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             74.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16424,7 +16700,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16432,25 +16708,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             66.0,
             74.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             74.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16507,7 +16783,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16515,25 +16791,25 @@
             -90.0,
             -74.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -66.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16590,7 +16866,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16598,25 +16874,25 @@
             -90.0,
             -74.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -66.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16673,7 +16949,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16681,25 +16957,25 @@
             -90.0,
             -74.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -66.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16756,7 +17032,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16764,25 +17040,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             66.0,
             74.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             74.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16839,7 +17115,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16847,25 +17123,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             66.0,
             74.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             74.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -16922,7 +17198,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -16930,25 +17206,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             66.0,
             74.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             74.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17005,7 +17281,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17013,25 +17289,25 @@
             -105.0,
             -90.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -90.0,
             -64.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -64.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17088,7 +17364,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17096,25 +17372,25 @@
             -105.0,
             -90.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -90.0,
             -64.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -64.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17171,7 +17447,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17179,25 +17455,25 @@
             -105.0,
             -90.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -90.0,
             -64.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -64.0,
             66.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             66.0,
             90.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17254,7 +17530,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17262,25 +17538,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             64.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             64.0,
             90.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             90.0,
             105.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17337,7 +17613,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17345,25 +17621,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             64.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             64.0,
             90.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             90.0,
             105.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17420,7 +17696,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17428,25 +17704,25 @@
             -90.0,
             -66.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -66.0,
             64.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             64.0,
             90.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             90.0,
             105.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17503,7 +17779,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17511,31 +17787,31 @@
             -110.0,
             -100.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -100.0,
             -84.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -84.0,
             -64.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -64.0,
             16.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim5": [
             16.0,
             70.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17592,7 +17868,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17600,31 +17876,31 @@
             -110.0,
             -100.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -100.0,
             -84.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -84.0,
             -64.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -64.0,
             16.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim5": [
             16.0,
             70.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17681,7 +17957,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17689,31 +17965,31 @@
             -110.0,
             -100.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -100.0,
             -84.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -84.0,
             -64.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -64.0,
             16.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim5": [
             16.0,
             70.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17770,7 +18046,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17778,31 +18054,31 @@
             -70.0,
             -16.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -16.0,
             64.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             64.0,
             84.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             84.0,
             100.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim5": [
             100.0,
             110.0,
             8.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17859,7 +18135,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17867,31 +18143,31 @@
             -70.0,
             -16.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -16.0,
             64.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             64.0,
             84.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             84.0,
             100.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim5": [
             100.0,
             110.0,
             8.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -17948,7 +18224,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -17956,31 +18232,31 @@
             -70.0,
             -16.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -16.0,
             64.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             64.0,
             84.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             84.0,
             100.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim5": [
             100.0,
             110.0,
             8.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -18037,7 +18313,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -18045,37 +18321,37 @@
             -110.0,
             -96.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -96.0,
             -78.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -78.0,
             -56.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -56.0,
             2.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim5": [
             2.0,
             58.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim6": [
             58.0,
             90.0,
             26.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -18132,7 +18408,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -18140,37 +18416,37 @@
             -110.0,
             -96.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -96.0,
             -78.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -78.0,
             -56.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -56.0,
             2.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim5": [
             2.0,
             58.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim6": [
             58.0,
             90.0,
             26.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -18227,7 +18503,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -18235,37 +18511,37 @@
             -110.0,
             -96.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -96.0,
             -78.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -78.0,
             -56.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -56.0,
             2.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim5": [
             2.0,
             58.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim6": [
             58.0,
             90.0,
             26.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -18322,7 +18598,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -18330,37 +18606,37 @@
             -90.0,
             -58.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -58.0,
             -2.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -2.0,
             56.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             56.0,
             78.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             78.0,
             96.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             96.0,
             110.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -18417,7 +18693,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -18425,37 +18701,37 @@
             -90.0,
             -58.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -58.0,
             -2.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -2.0,
             56.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             56.0,
             78.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             78.0,
             96.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             96.0,
             110.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -18512,7 +18788,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -18520,37 +18796,37 @@
             -90.0,
             -58.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -58.0,
             -2.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -2.0,
             56.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             56.0,
             78.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             78.0,
             96.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             96.0,
             110.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -18607,7 +18883,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -18615,31 +18891,31 @@
             -90.0,
             -74.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -48.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -48.0,
             -4.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -4.0,
             46.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             46.0,
             90.0,
             34.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -18696,7 +18972,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -18704,31 +18980,31 @@
             -90.0,
             -74.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -48.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -48.0,
             -4.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -4.0,
             46.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             46.0,
             90.0,
             34.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -18785,7 +19061,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -18793,31 +19069,31 @@
             -90.0,
             -74.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -74.0,
             -48.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -48.0,
             -4.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -4.0,
             46.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             46.0,
             90.0,
             34.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -18874,7 +19150,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -18882,31 +19158,31 @@
             -90.0,
             -46.0,
             34.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -46.0,
             4.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim3": [
             4.0,
             48.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             48.0,
             74.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             74.0,
             90.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -18963,7 +19239,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -18971,31 +19247,31 @@
             -90.0,
             -46.0,
             34.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -46.0,
             4.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim3": [
             4.0,
             48.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             48.0,
             74.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             74.0,
             90.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19052,7 +19328,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19060,31 +19336,31 @@
             -90.0,
             -46.0,
             34.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -46.0,
             4.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim3": [
             4.0,
             48.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             48.0,
             74.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             74.0,
             90.0,
             0.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19141,7 +19417,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19149,19 +19425,19 @@
             -90.0,
             -68.0,
             48.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -68.0,
             60.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             60.0,
             90.0,
             40.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19218,7 +19494,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19226,19 +19502,19 @@
             -90.0,
             -68.0,
             48.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -68.0,
             60.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             60.0,
             90.0,
             40.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19295,7 +19571,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19303,19 +19579,19 @@
             -90.0,
             -68.0,
             48.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -68.0,
             60.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             60.0,
             90.0,
             40.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19372,7 +19648,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19380,19 +19656,19 @@
             -90.0,
             -60.0,
             40.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -60.0,
             68.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             68.0,
             90.0,
             48.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19449,7 +19725,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19457,19 +19733,19 @@
             -90.0,
             -60.0,
             40.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -60.0,
             68.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             68.0,
             90.0,
             48.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19526,7 +19802,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19534,19 +19810,19 @@
             -90.0,
             -60.0,
             40.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -60.0,
             68.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             68.0,
             90.0,
             48.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19603,7 +19879,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19611,25 +19887,25 @@
             -180.0,
             -158.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -158.0,
             46.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             46.0,
             76.0,
             42.0,
-            80.0
+            85.0
           ],
           "lim4": [
             76.0,
             90.0,
             68.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19686,7 +19962,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19694,25 +19970,25 @@
             -180.0,
             -158.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -158.0,
             46.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             46.0,
             76.0,
             42.0,
-            80.0
+            85.0
           ],
           "lim4": [
             76.0,
             90.0,
             68.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19769,7 +20045,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19777,25 +20053,25 @@
             -180.0,
             -158.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -158.0,
             46.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             46.0,
             76.0,
             42.0,
-            80.0
+            85.0
           ],
           "lim4": [
             76.0,
             90.0,
             68.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19852,7 +20128,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19860,25 +20136,25 @@
             -90.0,
             -76.0,
             68.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -76.0,
             -46.0,
             42.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -46.0,
             158.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             158.0,
             180.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -19935,7 +20211,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -19943,25 +20219,25 @@
             -90.0,
             -76.0,
             68.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -76.0,
             -46.0,
             42.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -46.0,
             158.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             158.0,
             180.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -20018,7 +20294,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -20026,25 +20302,25 @@
             -90.0,
             -76.0,
             68.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -76.0,
             -46.0,
             42.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -46.0,
             158.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             158.0,
             180.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -20101,7 +20377,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -20109,49 +20385,49 @@
             -180.0,
             -128.0,
             54.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -128.0,
             -96.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -96.0,
             -80.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -80.0,
             52.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             52.0,
             72.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim6": [
             72.0,
             96.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim7": [
             96.0,
             126.0,
             48.0,
-            80.0
+            85.0
           ],
           "lim8": [
             126.0,
             180.0,
             62.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -20208,7 +20484,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -20216,49 +20492,49 @@
             -180.0,
             -128.0,
             54.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -128.0,
             -96.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -96.0,
             -80.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -80.0,
             52.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             52.0,
             72.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim6": [
             72.0,
             96.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim7": [
             96.0,
             126.0,
             48.0,
-            80.0
+            85.0
           ],
           "lim8": [
             126.0,
             180.0,
             62.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -20315,7 +20591,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -20323,49 +20599,49 @@
             -180.0,
             -128.0,
             54.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -128.0,
             -96.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -96.0,
             -80.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -80.0,
             52.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             52.0,
             72.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim6": [
             72.0,
             96.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim7": [
             96.0,
             126.0,
             48.0,
-            80.0
+            85.0
           ],
           "lim8": [
             126.0,
             180.0,
             62.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -20422,7 +20698,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -20430,49 +20706,49 @@
             -180.0,
             -126.0,
             62.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -126.0,
             -96.0,
             48.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -96.0,
             -72.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -72.0,
             -52.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -52.0,
             80.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             80.0,
             96.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim7": [
             96.0,
             128.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim8": [
             128.0,
             180.0,
             54.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -20529,7 +20805,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -20537,49 +20813,49 @@
             -180.0,
             -126.0,
             62.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -126.0,
             -96.0,
             48.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -96.0,
             -72.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -72.0,
             -52.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -52.0,
             80.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             80.0,
             96.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim7": [
             96.0,
             128.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim8": [
             128.0,
             180.0,
             54.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -20636,7 +20912,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -20644,49 +20920,49 @@
             -180.0,
             -126.0,
             62.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -126.0,
             -96.0,
             48.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -96.0,
             -72.0,
             26.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -72.0,
             -52.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -52.0,
             80.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             80.0,
             96.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim7": [
             96.0,
             128.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim8": [
             128.0,
             180.0,
             54.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -20743,7 +21019,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -20751,43 +21027,43 @@
             -180.0,
             -148.0,
             52.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -148.0,
             -126.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -126.0,
             -96.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -96.0,
             -78.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -78.0,
             62.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             62.0,
             78.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim7": [
             78.0,
             90.0,
             18.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -20844,7 +21120,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -20852,43 +21128,43 @@
             -180.0,
             -148.0,
             52.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -148.0,
             -126.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -126.0,
             -96.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -96.0,
             -78.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -78.0,
             62.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             62.0,
             78.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim7": [
             78.0,
             90.0,
             18.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -20945,7 +21221,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -20953,43 +21229,43 @@
             -180.0,
             -148.0,
             52.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -148.0,
             -126.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -126.0,
             -96.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -96.0,
             -78.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -78.0,
             62.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             62.0,
             78.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim7": [
             78.0,
             90.0,
             18.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -21046,7 +21322,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -21054,43 +21330,43 @@
             -90.0,
             -78.0,
             18.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -78.0,
             -62.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -62.0,
             78.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             78.0,
             96.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim5": [
             96.0,
             126.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim6": [
             126.0,
             148.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim7": [
             148.0,
             180.0,
             52.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -21147,7 +21423,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -21155,43 +21431,43 @@
             -90.0,
             -78.0,
             18.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -78.0,
             -62.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -62.0,
             78.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             78.0,
             96.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim5": [
             96.0,
             126.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim6": [
             126.0,
             148.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim7": [
             148.0,
             180.0,
             52.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -21248,7 +21524,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -21256,43 +21532,43 @@
             -90.0,
             -78.0,
             18.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -78.0,
             -62.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -62.0,
             78.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             78.0,
             96.0,
             2.0,
-            80.0
+            85.0
           ],
           "lim5": [
             96.0,
             126.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim6": [
             126.0,
             148.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim7": [
             148.0,
             180.0,
             52.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -21349,7 +21625,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -21357,49 +21633,49 @@
             -180.0,
             -166.0,
             5.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -166.0,
             -76.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -76.0,
             -33.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -33.0,
             66.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim5": [
             66.0,
             83.0,
             9.0,
-            80.0
+            85.0
           ],
           "lim6": [
             83.0,
             122.0,
             35.0,
-            80.0
+            85.0
           ],
           "lim7": [
             122.0,
             157.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim8": [
             157.0,
             180.0,
             5.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -21456,7 +21732,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -21464,49 +21740,49 @@
             -180.0,
             -166.0,
             5.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -166.0,
             -76.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -76.0,
             -33.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -33.0,
             66.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim5": [
             66.0,
             83.0,
             9.0,
-            80.0
+            85.0
           ],
           "lim6": [
             83.0,
             122.0,
             35.0,
-            80.0
+            85.0
           ],
           "lim7": [
             122.0,
             157.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim8": [
             157.0,
             180.0,
             5.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -21563,7 +21839,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -21571,49 +21847,49 @@
             -180.0,
             -166.0,
             5.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -166.0,
             -76.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -76.0,
             -33.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -33.0,
             66.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim5": [
             66.0,
             83.0,
             9.0,
-            80.0
+            85.0
           ],
           "lim6": [
             83.0,
             122.0,
             35.0,
-            80.0
+            85.0
           ],
           "lim7": [
             122.0,
             157.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim8": [
             157.0,
             180.0,
             5.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -21670,7 +21946,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -21678,49 +21954,49 @@
             -180.0,
             -157.0,
             5.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -157.0,
             -122.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -122.0,
             -83.0,
             35.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -83.0,
             -66.0,
             9.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -66.0,
             33.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim6": [
             33.0,
             76.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim7": [
             76.0,
             166.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim8": [
             166.0,
             180.0,
             5.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -21777,7 +22053,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -21785,49 +22061,49 @@
             -180.0,
             -157.0,
             5.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -157.0,
             -122.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -122.0,
             -83.0,
             35.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -83.0,
             -66.0,
             9.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -66.0,
             33.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim6": [
             33.0,
             76.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim7": [
             76.0,
             166.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim8": [
             166.0,
             180.0,
             5.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -21884,7 +22160,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -21892,49 +22168,49 @@
             -180.0,
             -157.0,
             5.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -157.0,
             -122.0,
             12.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -122.0,
             -83.0,
             35.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -83.0,
             -66.0,
             9.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -66.0,
             33.0,
             -3.0,
-            80.0
+            85.0
           ],
           "lim6": [
             33.0,
             76.0,
             -2.0,
-            80.0
+            85.0
           ],
           "lim7": [
             76.0,
             166.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim8": [
             166.0,
             180.0,
             5.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -21991,7 +22267,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -21999,49 +22275,49 @@
             -180.0,
             -129.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -129.0,
             -97.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -97.0,
             -71.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -71.0,
             77.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             77.0,
             85.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim6": [
             85.0,
             91.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim7": [
             91.0,
             127.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim8": [
             127.0,
             180.0,
             22.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -22098,7 +22374,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -22106,49 +22382,49 @@
             -180.0,
             -129.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -129.0,
             -97.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -97.0,
             -71.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -71.0,
             77.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             77.0,
             85.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim6": [
             85.0,
             91.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim7": [
             91.0,
             127.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim8": [
             127.0,
             180.0,
             22.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -22205,7 +22481,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -22213,49 +22489,49 @@
             -180.0,
             -129.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -129.0,
             -97.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -97.0,
             -71.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -71.0,
             77.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim5": [
             77.0,
             85.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim6": [
             85.0,
             91.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim7": [
             91.0,
             127.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim8": [
             127.0,
             180.0,
             22.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -22312,7 +22588,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -22320,49 +22596,49 @@
             -180.0,
             -127.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -127.0,
             -91.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -91.0,
             -85.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -85.0,
             -77.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -77.0,
             71.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             71.0,
             97.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim7": [
             97.0,
             129.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim8": [
             129.0,
             180.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -22419,7 +22695,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -22427,49 +22703,49 @@
             -180.0,
             -127.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -127.0,
             -91.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -91.0,
             -85.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -85.0,
             -77.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -77.0,
             71.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             71.0,
             97.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim7": [
             97.0,
             129.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim8": [
             129.0,
             180.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -22526,7 +22802,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -22534,49 +22810,49 @@
             -180.0,
             -127.0,
             22.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -127.0,
             -91.0,
             28.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -91.0,
             -85.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -85.0,
             -77.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -77.0,
             71.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             71.0,
             97.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim7": [
             97.0,
             129.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim8": [
             129.0,
             180.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -22633,7 +22909,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -22641,61 +22917,61 @@
             -180.0,
             -120.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -120.0,
             -82.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -82.0,
             -66.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -66.0,
             68.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             68.0,
             86.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             86.0,
             96.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim7": [
             96.0,
             114.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim8": [
             114.0,
             132.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim9": [
             132.0,
             152.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim10": [
             152.0,
             180.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -22752,7 +23028,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -22760,61 +23036,61 @@
             -180.0,
             -120.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -120.0,
             -82.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -82.0,
             -66.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -66.0,
             68.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             68.0,
             86.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             86.0,
             96.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim7": [
             96.0,
             114.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim8": [
             114.0,
             132.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim9": [
             132.0,
             152.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim10": [
             152.0,
             180.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -22871,7 +23147,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -22879,61 +23155,61 @@
             -180.0,
             -120.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -120.0,
             -82.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -82.0,
             -66.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -66.0,
             68.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim5": [
             68.0,
             86.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim6": [
             86.0,
             96.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim7": [
             96.0,
             114.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim8": [
             114.0,
             132.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim9": [
             132.0,
             152.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim10": [
             152.0,
             180.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -22990,7 +23266,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -22998,61 +23274,61 @@
             -180.0,
             -152.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -152.0,
             -132.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -132.0,
             -114.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -114.0,
             -96.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -96.0,
             -86.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim6": [
             -86.0,
             -68.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim7": [
             -68.0,
             66.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim8": [
             66.0,
             82.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim9": [
             82.0,
             120.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim10": [
             120.0,
             180.0,
             10.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -23109,7 +23385,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -23117,61 +23393,61 @@
             -180.0,
             -152.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -152.0,
             -132.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -132.0,
             -114.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -114.0,
             -96.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -96.0,
             -86.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim6": [
             -86.0,
             -68.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim7": [
             -68.0,
             66.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim8": [
             66.0,
             82.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim9": [
             82.0,
             120.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim10": [
             120.0,
             180.0,
             10.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -23228,7 +23504,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -23236,61 +23512,61 @@
             -180.0,
             -152.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -152.0,
             -132.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -132.0,
             -114.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -114.0,
             -96.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -96.0,
             -86.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim6": [
             -86.0,
             -68.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim7": [
             -68.0,
             66.0,
             -4.0,
-            80.0
+            85.0
           ],
           "lim8": [
             66.0,
             82.0,
             0.0,
-            80.0
+            85.0
           ],
           "lim9": [
             82.0,
             120.0,
             14.0,
-            80.0
+            85.0
           ],
           "lim10": [
             120.0,
             180.0,
             10.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -23347,7 +23623,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -23355,49 +23631,49 @@
             -180.0,
             -164.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -164.0,
             -138.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -138.0,
             -104.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -104.0,
             36.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim5": [
             36.0,
             94.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim6": [
             94.0,
             112.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim7": [
             112.0,
             140.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim8": [
             140.0,
             180.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -23454,7 +23730,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -23462,49 +23738,49 @@
             -180.0,
             -164.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -164.0,
             -138.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -138.0,
             -104.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -104.0,
             36.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim5": [
             36.0,
             94.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim6": [
             94.0,
             112.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim7": [
             112.0,
             140.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim8": [
             140.0,
             180.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -23561,7 +23837,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -23569,49 +23845,49 @@
             -180.0,
             -164.0,
             6.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -164.0,
             -138.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -138.0,
             -104.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -104.0,
             36.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim5": [
             36.0,
             94.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim6": [
             94.0,
             112.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim7": [
             112.0,
             140.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim8": [
             140.0,
             180.0,
             4.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -23668,7 +23944,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -23676,49 +23952,49 @@
             -180.0,
             -140.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -140.0,
             -112.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -112.0,
             -94.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -94.0,
             -36.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -36.0,
             104.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim6": [
             104.0,
             138.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim7": [
             138.0,
             164.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim8": [
             164.0,
             180.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -23775,7 +24051,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -23783,49 +24059,49 @@
             -180.0,
             -140.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -140.0,
             -112.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -112.0,
             -94.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -94.0,
             -36.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -36.0,
             104.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim6": [
             104.0,
             138.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim7": [
             138.0,
             164.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim8": [
             164.0,
             180.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -23882,7 +24158,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -23890,49 +24166,49 @@
             -180.0,
             -140.0,
             4.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -140.0,
             -112.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -112.0,
             -94.0,
             20.0,
-            80.0
+            85.0
           ],
           "lim4": [
             -94.0,
             -36.0,
             16.0,
-            80.0
+            85.0
           ],
           "lim5": [
             -36.0,
             104.0,
             -8.0,
-            80.0
+            85.0
           ],
           "lim6": [
             104.0,
             138.0,
             8.0,
-            80.0
+            85.0
           ],
           "lim7": [
             138.0,
             164.0,
             10.0,
-            80.0
+            85.0
           ],
           "lim8": [
             164.0,
             180.0,
             6.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -23989,7 +24265,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -23997,19 +24273,19 @@
             -180.0,
             -166.0,
             18.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -166.0,
             -106.0,
             24.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -106.0,
             180.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -24066,7 +24342,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -24074,19 +24350,19 @@
             -180.0,
             -166.0,
             18.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -166.0,
             -106.0,
             24.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -106.0,
             180.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -24143,7 +24419,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -24151,19 +24427,19 @@
             -180.0,
             -166.0,
             18.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -166.0,
             -106.0,
             24.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -106.0,
             180.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -24220,7 +24496,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -24228,19 +24504,19 @@
             -180.0,
             -166.0,
             18.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -166.0,
             -106.0,
             24.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -106.0,
             180.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -24297,7 +24573,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -24305,19 +24581,19 @@
             -180.0,
             -166.0,
             18.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -166.0,
             -106.0,
             24.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -106.0,
             180.0,
             14.0,
-            80.0
+            85.0
           ]
         },
         "gunStabilizer": {
@@ -24374,7 +24650,7 @@
           ],
           "pitch": [
             -10.0,
-            80.0
+            85.0
           ]
         },
         "limitsTable": {
@@ -24382,19 +24658,205 @@
             -180.0,
             -166.0,
             18.0,
-            80.0
+            85.0
           ],
           "lim2": [
             -166.0,
             -106.0,
             24.0,
-            80.0
+            85.0
           ],
           "lim3": [
             -106.0,
             180.0,
             14.0,
-            80.0
+            85.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 120.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 120.0
+        }
+      },
+      {
+        "trigger": "gunner69",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+        "emitter": "emtr_gun_flame_194",
+        "flash": "emtr_gun_flame_194",
+        "useEmitter": true,
+        "barrelDP": "aa_gun_53_dm",
+        "breechDP": "aa_gun_53_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 75.0,
+        "speedPitch": 65.0,
+        "bullets": 1500,
+        "useGunnerTargetingQuality": false,
+        "allowableDelta": 2.0,
+        "ChainfireTime": 60.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 20.0,
+        "aimMaxDist": 4500.0,
+        "randomAngle": 0.0,
+        "accuracyAir": 0.97,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "aa_turret_53",
+          "gun": "aa_gun_53",
+          "barrel": "gun_barrel_194",
+          "gunnerDm": "aa_turret_53_dm",
+          "linkedAnimPart": {
+            "verNode": "bone_radius_foot_01",
+            "verLimits": [
+              0.0,
+              7.0
+            ],
+            "verOriginLimits": [
+              0.0,
+              55.0
+            ]
+          }
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            55.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -170.0,
+            17.0,
+            55.0
+          ],
+          "lim2": [
+            -170.0,
+            -156.0,
+            24.0,
+            55.0
+          ],
+          "lim3": [
+            -156.0,
+            44.0,
+            38.0,
+            55.0
+          ],
+          "lim4": [
+            44.0,
+            180.0,
+            46.0,
+            55.0
+          ]
+        },
+        "gunStabilizer": {
+          "hasVerticalGunFreeMode": true,
+          "hasHorizontal": true,
+          "horizontalOmegaMult": 1.0,
+          "horizontalSpeedLimitKPH": 120.0,
+          "hasVertical": true,
+          "verticalOmegaMult": 1.0,
+          "verticalSpeedLimitKPH": 120.0
+        }
+      },
+      {
+        "trigger": "gunner70",
+        "triggerGroup": "secondary",
+        "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
+        "emitter": "emtr_gun_flame_195",
+        "flash": "emtr_gun_flame_195",
+        "useEmitter": true,
+        "barrelDP": "aa_gun_54_dm",
+        "breechDP": "aa_gun_54_dm",
+        "defaultYaw": 0.0,
+        "defaultPitch": 0.0,
+        "speedYaw": 75.0,
+        "speedPitch": 65.0,
+        "bullets": 1500,
+        "useGunnerTargetingQuality": false,
+        "allowableDelta": 2.0,
+        "ChainfireTime": 60.0,
+        "DelayAfterShoot": 0.0,
+        "aimMinDist": 20.0,
+        "aimMaxDist": 4500.0,
+        "randomAngle": 0.0,
+        "accuracyAir": 0.97,
+        "accuracyGnd": 0.7,
+        "errMeasureVel": 3.0,
+        "errTargettingOn100kmph": 0.3,
+        "errMeasureVelFast": 4.0,
+        "errMeasureVelFwdShift": 0.3,
+        "errMeasureVelDir": 1.0,
+        "errTargetting": 0.1,
+        "errExplTime": 0.0,
+        "turret": {
+          "head": "aa_turret_54",
+          "gun": "aa_gun_54",
+          "barrel": "gun_barrel_195",
+          "gunnerDm": "aa_turret_54_dm",
+          "linkedAnimPart": {
+            "verNode": "bone_radius_foot_02",
+            "verLimits": [
+              0.0,
+              7.0
+            ],
+            "verOriginLimits": [
+              0.0,
+              55.0
+            ]
+          }
+        },
+        "limits": {
+          "yaw": [
+            -180.0,
+            180.0
+          ],
+          "pitch": [
+            -8.0,
+            55.0
+          ]
+        },
+        "limitsTable": {
+          "lim1": [
+            -180.0,
+            -44.0,
+            46.0,
+            55.0
+          ],
+          "lim2": [
+            -44.0,
+            156.0,
+            38.0,
+            55.0
+          ],
+          "lim3": [
+            156.0,
+            170.0,
+            24.0,
+            55.0
+          ],
+          "lim4": [
+            170.0,
+            180.0,
+            17.0,
+            55.0
           ]
         },
         "gunStabilizer": {
@@ -24409,7 +24871,7 @@
       },
       {
         "dummy": true,
-        "trigger": "gunner69",
+        "trigger": "gunner71",
         "triggerGroup": "special",
         "blk": "gameData/Weapons/dummy_weapon.blk",
         "emitter": "aircraft_01",
@@ -24448,7 +24910,7 @@
       },
       {
         "dummy": true,
-        "trigger": "gunner70",
+        "trigger": "gunner72",
         "triggerGroup": "special",
         "blk": "gameData/Weapons/dummy_weapon.blk",
         "emitter": "catapult_mount_02_dm",
@@ -26264,7 +26726,7 @@
     "ammo9": {
       "weaponTrigger": [
         "gunner51",
-        "gunner53",
+        "gunner52",
         "gunner53",
         "gunner54",
         "gunner55",
@@ -26274,13 +26736,15 @@
         "gunner59",
         "gunner60",
         "gunner61",
-        "gunner63",
+        "gunner62",
         "gunner63",
         "gunner64",
         "gunner65",
         "gunner66",
         "gunner67",
-        "gunner68"
+        "gunner68",
+        "gunner69",
+        "gunner70"
       ],
       "explosionEvent": "ammo_explosion_4",
       "fireEvent": "ammo_fire_4",
@@ -28095,6 +28559,13 @@
       "nameLocId": "ship_flag_christmas_03/name",
       "descLocId": "ship_flag_christmas_03/desc",
       "texture": "flag_christmas_03_c*"
+    },
+    "ship_flag_hirihoukenten_01": {
+      "category": "other",
+      "unlockId": "ship_flag_hirihoukenten_01",
+      "nameLocId": "ship_flag_hirihoukenten_01/name",
+      "descLocId": "ship_flag_hirihoukenten_01/desc",
+      "texture": "flag_hirihoukenten_01_c*"
     }
   }
 }

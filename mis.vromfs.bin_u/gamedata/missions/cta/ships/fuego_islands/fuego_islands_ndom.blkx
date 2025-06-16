@@ -99,6 +99,11 @@
               "target": "t1_briefing_spawnpoint_heavy02"
             },
             {
+              "icontype": "destroyer",
+              "side": "ally",
+              "target": "t1_briefing_spawnpoint_heavy03"
+            },
+            {
               "icontype": "ship",
               "side": "enemy",
               "target": "t2_briefing_spawnpoint_light"
@@ -112,6 +117,11 @@
               "icontype": "destroyer",
               "side": "enemy",
               "target": "t2_briefing_spawnpoint_heavy02"
+            },
+            {
+              "icontype": "destroyer",
+              "side": "enemy",
+              "target": "t2_briefing_spawnpoint_heavy03"
             },
             {
               "icontype": "basezone_A",
@@ -142,11 +152,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -156,11 +168,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -170,11 +184,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -184,11 +200,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -566,6 +584,60 @@
       ],
       "objLayer": 0,
       "props": {}
+    },
+    "t1_briefing_spawnpoint_heavy03": {
+      "type": "Point",
+      "tm": [
+        [
+          0.278287,
+          0.0,
+          -0.960498
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.960498,
+          0.0,
+          0.278287
+        ],
+        [
+          7311.27,
+          -39.5498,
+          2967.32
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
+    },
+    "t2_briefing_spawnpoint_heavy03": {
+      "type": "Point",
+      "tm": [
+        [
+          0.278287,
+          0.0,
+          -0.960498
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.960498,
+          0.0,
+          0.278287
+        ],
+        [
+          7341.47,
+          -38.75,
+          -3145.21
+        ]
+      ],
+      "objLayer": 3,
+      "props": {}
     }
   },
   "objLayers": {
@@ -580,7 +652,7 @@
         "enabled": true
       },
       {
-        "enabled": false
+        "enabled": true
       }
     ]
   },

@@ -77,7 +77,7 @@ let unitTypes = require("%scripts/unit/unitTypesList.nut")
 let { bombNbr } = require("%scripts/unit/unitWeaponryInfo.nut")
 let { saveProfile } = require("%scripts/clientState/saveProfile.nut")
 let { checkUnitSpeechLangPackWatch } = require("%scripts/options/optionsManager.nut")
-let { is_xboxone_X } = require("%sqstd/platform.nut")
+let { is_xboxone_X, isPlatformSony } = require("%sqstd/platform.nut")
 let { aeroSmokesList } = require("%scripts/unlocks/unlockSmoke.nut")
 
 
@@ -161,6 +161,7 @@ let { getOrderAutoActivateHint } = require("%scripts/items/orders.nut")
 let { set_autologin_enabled, is_autologin_enabled } = require("%scripts/options/optionsBeforeLogin.nut")
 let { getDevFeaturesOptionsMap, getDevFeaturesOptionsSetMap } = require("%scripts/features/devFeatures.nut")
 let { getMissionTeamCountries } = require("%scripts/dynCampaign/campaignHelpers.nut")
+let { getIsConsoleModeForceEnabled, switchShowConsoleButtons } = require("%scripts/options/consoleMode.nut")
 
 let airSpawnPointNames = {
   [AIR_SPAWN_POINT.AIRFIELD] = @(_unit) loc("multiplayer/airfieldName"),
@@ -403,6 +404,8 @@ addListenersWithoutEnv({
 function getConsolePresets() {
   if (is_xboxone_X)
     return ["#options/quality", "#options/performance"]
+  else if (isPlatformSony)
+    return ["#options/quality", "#options/raytraced"];
   else if (is_hfr_supported())
     return hasFeature("optionRT") ? ["#options/quality", "#options/balanced", "#options/performance", "#options/raytraced"] : ["#options/quality", "#options/balanced", "#options/performance"];
   else if (hasFeature("optionRT"))
@@ -413,6 +416,8 @@ function getConsolePresets() {
 function getConsolePresetsValues() {
   if (is_xboxone_X)
     return [0, 1]
+  else if (isPlatformSony)
+    return [0, 3];
   else if (is_hfr_supported())
     return hasFeature("optionRT") ? [0, 1, 2, 3] : [0, 1, 2]
   else if (hasFeature("optionRT"))
@@ -1098,7 +1103,7 @@ let optionsMap = {
     descr.id = "console_mode"
     descr.controlType = optionControlType.CHECKBOX
     descr.controlName <- "switchbox"
-    descr.defaultValue = ::get_is_console_mode_force_enabled()
+    descr.defaultValue = getIsConsoleModeForceEnabled()
   },
   [USEROPT_GAMEPAD_GYRO_TILT_CORRECTION] = function(_optionId, descr, _context) {
     descr.id = "gamepadGyroTiltCorrection"
@@ -4389,7 +4394,7 @@ let optionsSetMap = {
   [USEROPT_CAMERA_SHAKE_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_CAMERA_SHAKE, value / 50.0),
   [USEROPT_VR_CAMERA_SHAKE_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_VR_CAMERA_SHAKE, value / 50.0),
   [USEROPT_GAMMA] = @(value, _descr, _optionId) set_option_gamma(value / 100.0, true),
-  [USEROPT_CONSOLE_GFX_PRESET] = @(value, _descr, _optionId) set_option_console_preset(value),
+  [USEROPT_CONSOLE_GFX_PRESET] = @(value, descr, _optionId) set_option_console_preset(descr.values[value]),
   [USEROPT_AILERONS_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_AILERONS_MULTIPLIER, value / 100.0),
   [USEROPT_ELEVATOR_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_ELEVATOR_MULTIPLIER, value / 100.0),
   [USEROPT_RUDDER_MULTIPLIER] = @(value, _descr, _optionId) set_option_multiplier(OPTION_RUDDER_MULTIPLIER, value / 100.0),
@@ -4629,7 +4634,7 @@ let optionsSetMap = {
     handlersManager.checkPostLoadCssOnBackToBaseHandler()
     set_gui_option(optionId, value)
   },
-  [USEROPT_ENABLE_CONSOLE_MODE] = @(value, _descr, _optionId) ::switch_show_console_buttons(value),
+  [USEROPT_ENABLE_CONSOLE_MODE] = @(value, _descr, _optionId) switchShowConsoleButtons(value),
   
 
 

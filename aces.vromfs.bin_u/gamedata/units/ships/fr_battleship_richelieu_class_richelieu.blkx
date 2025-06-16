@@ -8046,13 +8046,13 @@
       "onHit": [
         {
           "damageType": "fire",
-          "expl": 1.0,
+          "expl": 0.7,
           "damage": 55.0,
           "fHitCritical": false
         },
         {
           "damageType": "fire",
-          "expl": 0.08,
+          "expl": 0.9,
           "damage": 74.0,
           "fHitCritical": false
         }
@@ -8060,13 +8060,13 @@
     },
     "ammunition_storage_charges": {
       "onKill": {
-        "fire": 1.0,
+        "fire": 0.7,
         "fHitCritical": false
       },
       "onHit": [
         {
           "damageType": "fire",
-          "fire": 1.0,
+          "fire": 0.9,
           "damage": 55.0,
           "fHitCritical": false
         },
@@ -8509,7 +8509,7 @@
       ]
     },
     "engines": {
-      "maxSpeed": 16.79,
+      "maxSpeed": 15.54,
       "maxReverseSpeed": 5.5,
       "speedToTime": {
         "row": [
@@ -8522,7 +8522,7 @@
             17.0
           ],
           [
-            16.79,
+            15.54,
             32.3
           ]
         ]
@@ -24337,7 +24337,7 @@
   "breaches": {
     "repairSpeed": 22.0,
     "waterMassVel": -250000.0,
-    "waterMassMult": 600.0,
+    "waterMassMult": 450.0,
     "sizeToRepair": [
       0.01,
       10.0,
@@ -24345,14 +24345,14 @@
       1250.0
     ],
     "additionalWaterDeathThreshold": 65000000.0,
-    "additionalWaterShouldDiePercent": 0.32,
+    "additionalWaterShouldDiePercent": 0.27,
     "fatalBreachDrownTime": 45.0,
     "maxHeelingAngle": 12.0,
     "maxHeelingTime": 40.0,
     "criticalHeelingAnglePercent": 0.5,
     "maxCriticalHeelingTime": 1.0,
     "heelingDeathHeightOffsetMult": 1.0,
-    "sideCenterOfMassOffsetPercent": 0.15,
+    "sideCenterOfMassOffsetPercent": 0.07,
     "minCaliberToBreach": 0.2,
     "minExplRadiusToBreach": 0.5,
     "deadCoverCounterfloodingRel": 0.5,
@@ -24367,7 +24367,7 @@
       },
       {
         "part": "cover_02_dm",
-        "weight": 0.5,
+        "weight": 0.6,
         "maxWaterAlive": 1.0
       },
       {
@@ -24389,7 +24389,7 @@
       },
       {
         "part": "cover_04_dm",
-        "weight": 1.0,
+        "weight": 0.8,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -24409,21 +24409,15 @@
         "weight": 1.0,
         "maxWaterAlive": 1.0,
         "innerParts": {
-          "part": [
-            {
-              "partNo": "fire_control_room_01_dm",
-              "critWaterLevel": 0.75
-            },
-            {
-              "partNo": "engine_room_01_dm",
-              "critWaterLevel": 0.7
-            }
-          ]
+          "part": {
+            "partNo": "engine_room_01_dm",
+            "critWaterLevel": 0.7
+          }
         }
       },
       {
         "part": "cover_06_dm",
-        "weight": 1.0,
+        "weight": 0.9,
         "maxWaterAlive": 1.0,
         "innerParts": {
           "part": [
@@ -24456,11 +24450,6 @@
       },
       {
         "part": "cover_09_dm",
-        "weight": 0.25,
-        "maxWaterAlive": 1.0
-      },
-      {
-        "part": "cover_10_dm",
         "weight": 0.1,
         "maxWaterAlive": 1.0
       }
@@ -26077,6 +26066,13 @@
       "nameLocId": "ship_flag_christmas_03/name",
       "descLocId": "ship_flag_christmas_03/desc",
       "texture": "flag_christmas_03_c*"
+    },
+    "ship_flag_hirihoukenten_01": {
+      "category": "other",
+      "unlockId": "ship_flag_hirihoukenten_01",
+      "nameLocId": "ship_flag_hirihoukenten_01/name",
+      "descLocId": "ship_flag_hirihoukenten_01/desc",
+      "texture": "flag_hirihoukenten_01_c*"
     }
   }
 }

@@ -6,6 +6,9 @@ let { getUnitTooltipImage } = require("%scripts/unit/unitInfoTexts.nut")
 let supportUnits = {
 }
 
+let baseUnits = {
+}
+
 function getSupportUnits(unitName) {
   if (unitName in supportUnits)
     return supportUnits[unitName]
@@ -21,12 +24,18 @@ function getSupportUnits(unitName) {
     if (!supInfo?.isSlave)
       return
     let supName = supInfo["class"].split("/")?[1] ?? supInfo["class"] ?? ""
-    if (!supPlanes.contains(supName))
+    if (!supPlanes.contains(supName)) {
       supPlanes.append(supName)
+      baseUnits[supName] <- unitName
+    }
   })
 
   supportUnits[unitName] <- supPlanes
   return supPlanes
+}
+
+function getBaseUnit(supportUnitName) {
+  return baseUnits?[supportUnitName]
 }
 
 function getSupportUnitImage(unitName) {
@@ -39,4 +48,5 @@ function getSupportUnitImage(unitName) {
 return {
   getSupportUnits
   getSupportUnitImage
+  getBaseUnit
 }

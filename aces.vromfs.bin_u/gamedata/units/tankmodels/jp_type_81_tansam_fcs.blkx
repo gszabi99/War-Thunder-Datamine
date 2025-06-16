@@ -46,6 +46,7 @@
   "type": "typeSPAA",
   "radarCanLockTargetFromTPV": false,
   "sensorTargetTurretTrack": false,
+  "hasSniperView": false,
   "radarAnimVar": "radar_drive",
   "radarAntenaSpeed": 720.0,
   "radarDeployTime": 3.0,
@@ -2169,7 +2170,10 @@
       }
     },
     "animatedBones": {
-      "node": "bone_turret"
+      "node": [
+        "bone_turret",
+        "bone_roll_01"
+      ]
     }
   },
   "weapon_presets": {
@@ -3503,10 +3507,10 @@
     "manual_extinguisher": {},
     "tank_tool_kit": {},
     "tank_medical_kit": {
-      "image": "#ui/gameuiskin#tank_reinforcement_jp"
+      "image": "!#ui/gameuiskin#tank_reinforcement_jp.avif"
     },
     "tank_medical_kit_expendable": {
-      "image": "#ui/gameuiskin#tank_reinforcement_jp"
+      "image": "!#ui/gameuiskin#tank_reinforcement_jp.avif"
     },
     "airstrike": {},
     "improved_optics": {},

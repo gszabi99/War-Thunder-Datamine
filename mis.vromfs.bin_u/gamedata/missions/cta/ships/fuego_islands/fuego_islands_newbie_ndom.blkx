@@ -48,8 +48,6 @@
     "mission": {
       "level": "levels/avn_fuego_islands.bin",
       "type": "domination",
-      "restoreType": "attempts",
-      "optionalTakeOff": true,
       "environment": "Day",
       "weather": "hazy",
       "locName": "missions/_NDom;fuego_islands/name;missions/naval_newbie",
@@ -58,9 +56,11 @@
       "timeLimit": 30,
       "deathPenaltyMul": 0.5,
       "ctaCaptureZoneEqualPenaltyMul": 0.0,
+      "showTacticalMapCellSize": true,
       "country_axis": "germany",
       "country_allies": "ussr",
-      "showTacticalMapCellSize": true,
+      "restoreType": "attempts",
+      "optionalTakeOff": true,
       "allowedUnitTypes": {
         "isAirplanesAllowed": true,
         "isTanksAllowed": false,
@@ -145,11 +145,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -159,11 +161,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -173,11 +177,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       },
       {
@@ -187,11 +193,13 @@
         "importTriggers": true,
         "importMissionObjectives": true,
         "importWayPoints": true,
+        "importDialogs": true,
         "showAreas": true,
         "showUnits": true,
         "showTriggers": true,
         "showMissionObjectives": true,
         "showWayPoints": true,
+        "showDialogs": true,
         "excludes": {}
       }
     ]
@@ -247,6 +255,8 @@
       "bulletsCount1": 0,
       "bulletsCount2": 0,
       "bulletsCount3": 0,
+      "crewSkillK": 0.0,
+      "applyAllMods": false,
       "props": {
         "army": 1,
         "count": 1,
@@ -292,7 +302,7 @@
         [
           5266.79,
           -39.0479,
-          4149.73
+          2194.22
         ]
       ],
       "objLayer": 3,
@@ -373,7 +383,7 @@
         [
           5143.81,
           -38.75,
-          -4189.52
+          -2221.35
         ]
       ],
       "objLayer": 3,
@@ -608,7 +618,7 @@
         "enabled": true
       },
       {
-        "enabled": false
+        "enabled": true
       }
     ]
   },

@@ -20,7 +20,7 @@ let { LONG_ACTIONBAR_TEXT_LEN, getActionItemAmountText, getActionItemModificatio
   getActionItemStatus } = require("%scripts/hud/hudActionBarInfo.nut")
 let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
 let { getWheelBarItems, activateActionBarAction, getActionBarUnitName } = require("hudActionBar")
-let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN,
+let { EII_BULLET, EII_ARTILLERY_TARGET, EII_EXTINGUISHER, EII_ROCKET, EII_FORCED_GUN, EII_SLAVE_UNIT_STATUS,
   EII_GUIDANCE_MODE, EII_SELECT_SPECIAL_WEAPON, EII_GRENADE } = require("hudActionBarConst")
 let { arrangeStreakWheelActions } = require("%scripts/hud/hudActionBarStreakWheel.nut")
 let { is_replay_playing } = require("replays")
@@ -271,7 +271,7 @@ let class ActionBar {
       cooldownParams, blockedCooldownParams progressCooldownParams, amount, automatic, onClick = null
       showShortcut, isXinput, mainShortcutId, activatedShortcutId = "", actionType = null
       hasSecondActionsBtn, isCloseSecondActionsBtn, shortcutText, isLongScText
-      tooltipId = null, tooltipText = "", tooltipDelayed = false
+      tooltipId = null, tooltipText = "", tooltipDelayed = false, unitIndex = "", isLocked = false
     } = itemView
     itemObj.id = id
     let contentObj = itemObj.findObject("itemContent")
@@ -334,6 +334,9 @@ let class ActionBar {
       tooltipLayerObj["tooltip-timeout"] = ""
       tooltipLayerObj.tooltip = tooltipText
     }
+
+    itemObj.findObject("unitIndex").setValue(unitIndex)
+    itemObj.findObject("lockedIcon").show(isLocked)
   }
 
   function fill() {
@@ -421,6 +424,7 @@ let class ActionBar {
     let { isReady } = getActionItemStatus(item)
     let { cooldownEndTime = 0, cooldownTime = 1, inProgressTime = 1, inProgressEndTime = 0,
       blockedCooldownEndTime = 0, blockedCooldownTime = 1, active = true, available = true } = item
+
     let cooldownParams = available ? this.getWaitGaugeDegreeParams(cooldownEndTime, cooldownTime) : notAvailableColdownParams
     let blockedCooldownParams = this.getWaitGaugeDegreeParams(blockedCooldownEndTime, blockedCooldownTime)
     let progressCooldownParams = this.getWaitGaugeDegreeParams(inProgressEndTime, inProgressTime, !active)
@@ -448,6 +452,11 @@ let class ActionBar {
       automatic                 = ship && (item?.automatic ?? false)
       hasSecondActionsBtn = item?.additionalBulletInfo != null
       isCloseSecondActionsBtn = item?.isWaitSelectSecondAction ?? false
+    }
+
+    if (item.type == EII_SLAVE_UNIT_STATUS) {
+      viewItem.unitIndex <- $"{item.shortcutIdx + 1}"
+      viewItem.isLocked <- item.available && !item.active
     }
 
     let unit = this.getActionBarUnit()
@@ -487,7 +496,6 @@ let class ActionBar {
     let cooldownParams = this.getWaitGaugeDegreeParams(cooldownEndTime, cooldownTime)
     let blockedCooldownParams = this.getWaitGaugeDegreeParams(blockedCooldownEndTime, blockedCooldownTime)
     let progressCooldownParams = this.getWaitGaugeDegreeParams(inProgressEndTime, inProgressTime, !active)
-
     let viewItem = {
       id = getSecondActionBarObjId(itemId)
       actionId = itemId
@@ -659,6 +667,11 @@ let class ActionBar {
         this.getWaitGaugeDegreeParams(blockedCooldownEndTime, blockedCooldownTime))
       this.updateWaitGaugeDegree(itemObj.findObject("progressCooldown"),
         this.getWaitGaugeDegreeParams(inProgressEndTime, inProgressTime, !active))
+
+      if (item.type == EII_SLAVE_UNIT_STATUS) {
+        itemObj.findObject("unitIndex").setValue($"{item.shortcutIdx + 1}")
+        itemObj.findObject("lockedIcon").show(item.available && !item.active)
+      }
     }
 
     this.openSecondActionsMenu(newActionWithMenu)

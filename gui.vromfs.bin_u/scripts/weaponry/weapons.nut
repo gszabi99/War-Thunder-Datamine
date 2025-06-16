@@ -959,7 +959,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
     let tiersArray = this.getResearchedModsArray(size.tier)
     for (local i = 1; i <= size.tier; i++) {
       if (tiersArray[i - 1] == null) {
-        assert(false, format("No modification data for unit '%s' in tier %s.", this.air.name, i.tostring()))
+        assert(false, $"Missing modifications for unit '{this.air.name}' in tier {i}, but there are higher tiers")
         break
       }
       let unlocked = isWeaponTierAvailable(this.air, i)

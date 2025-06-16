@@ -10,7 +10,7 @@ let { format } = require("string")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getVoiceMessageNames, getCategoryLoc } = require("%scripts/wheelmenu/voiceMessages.nut")
 let { KWARG_NON_STRICT } = require("%sqstd/functools.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { showConsoleButtons, getIsConsoleModeEnabled } = require("%scripts/options/consoleMode.nut")
 
 gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
   wndType = handlerType.CUSTOM
@@ -52,7 +52,7 @@ gui_handlers.voiceMenuHandler <- class (gui_handlers.wheelMenuHandler) {
 
   function updateFastVoiceMessagesTable() {
     showObjById("fast_shortcuts_block", true, this.scene)
-    let isConsoleMode = ::get_is_console_mode_enabled()
+    let isConsoleMode = getIsConsoleModeEnabled()
     let textRawParam = format("chatMode:t='%s'; padding-left:t='1@bw'", this.getChatMode())
     let messagesArray = []
     for (local i = 0; i < NUM_FAST_VOICE_MESSAGES; i++) {

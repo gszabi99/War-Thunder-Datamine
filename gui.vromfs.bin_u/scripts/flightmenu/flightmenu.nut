@@ -39,6 +39,7 @@ let { disableOrders } = require("%scripts/items/orders.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { isMissionExtr } = require("%scripts/missions/missionsUtils.nut")
 let { gui_modal_help } = require("%scripts/help/helpWnd.nut")
+let { getBriefingOptions } = require("%scripts/briefing.nut")
 
 function gui_start_briefing_restart(_ = {}) {
   log("gui_start_briefing_restart")
@@ -49,7 +50,7 @@ function gui_start_briefing_restart(_ = {}) {
     let missionInfoBlk = get_meta_mission_info_by_gm_and_name(gm, missionName)
     if (missionInfoBlk != null)
       missionBlk.setFrom(missionInfoBlk)
-    let briefingOptions = ::get_briefing_options(gm, get_game_type(), missionBlk)
+    let briefingOptions = getBriefingOptions(gm, get_game_type(), missionBlk)
     if (briefingOptions.len() == 0)
       return restartCurrentMission()
   }

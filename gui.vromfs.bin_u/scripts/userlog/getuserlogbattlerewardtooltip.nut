@@ -11,7 +11,7 @@ let { addTooltipTypes } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getBattleRewardDetails, getBattleRewardTable } = require("%scripts/userLog/userlogUtils.nut")
 let { Cost } = require("%scripts/money.nut")
 let { getRomanNumeralRankByUnitName } = require("%scripts/unit/unitInfo.nut")
-let { getBulletBeltShortLocId } = require("%scripts/weaponry/weaponryVisual.nut")
+let { getBulletBeltShortLocId } = require("%scripts/weaponry/weaponryInfo.nut")
 
 enum UnitControl {
   UNIT_CONTROL_BOT = 1

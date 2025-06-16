@@ -98,6 +98,18 @@
       "turret_01_side_dm": {
         "armorThickness": 10.0
       },
+      "turret_04_top_dm": {
+        "armorThickness": 20.0,
+        "variableThickness": true
+      },
+      "body_01_bottom_dm": {
+        "armorThickness": 5.0,
+        "armorClass": "tank_structural_steel"
+      },
+      "body_01_side_dm": {
+        "armorThickness": 5.0,
+        "armorClass": "tank_structural_steel"
+      },
       "submodule": {
         "armorClass": "tank_traks",
         "armorThickness": 20.0,
@@ -168,8 +180,7 @@
       },
       "body_front_hatch_dm": {
         "armorThickness": 75.0,
-        "hp": 3000.0,
-        "armorEffectiveThicknessMax": 130.0
+        "variableThickness": true
       },
       "body_shield_dm": {
         "armorThickness": 65.0
@@ -198,6 +209,10 @@
       },
       "gun_mask_dm": {
         "armorThickness": 75.0,
+        "variableThickness": true
+      },
+      "turret_04_front_dm": {
+        "armorThickness": 60.0,
         "variableThickness": true
       }
     },
@@ -704,6 +719,9 @@
       "machine_gunner_11_dm": {},
       "machine_gunner_12_dm": {}
     }
+  },
+  "attachables": {
+    "body_01_back_dm": true
   },
   "sound": {
     "EngineName": "engine_t34",
@@ -2675,10 +2693,10 @@
     "art_support": {},
     "tank_new_gun": {},
     "tank_medical_kit": {
-      "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+      "image": "!#ui/gameuiskin#tank_reinforcement_ussr.avif"
     },
     "tank_medical_kit_expendable": {
-      "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+      "image": "!#ui/gameuiskin#tank_reinforcement_ussr.avif"
     },
     "85mm_ussr_APHE": {},
     "85mm_ussr_APCR": {},

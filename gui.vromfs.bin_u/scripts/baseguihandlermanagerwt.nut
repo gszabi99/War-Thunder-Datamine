@@ -25,7 +25,8 @@ let updateExtWatched = require("%scripts/global/updateExtWatched.nut")
 let { get_team_colors } = require("guiMission")
 let { getFromSettingsBlk } = require("%scripts/clientState/clientStates.nut")
 let { check_obj } = require("%sqDagui/daguiUtil.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { showConsoleButtons, getIsConsoleModeEnabled,
+  switchShowConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { is_active_msg_box_in_scene } = require("%sqDagui/framework/msgBox.nut")
 let { getContactsHandler } = require("%scripts/contacts/contactsHandlerState.nut")
 let { isInFlight } = require("gameplayBinding")
@@ -213,7 +214,7 @@ handlersManager.__update({
     if (this.isMainGuiSceneActive()) 
       lastInFlight = isInFlight()
 
-    focusFrame.enable(::get_is_console_mode_enabled())
+    focusFrame.enable(getIsConsoleModeEnabled())
 
     guiScene.setCursorSizeMul(guiScene.calcString("@cursorSizeMul", null))
     guiScene.setPatternSizeMul(guiScene.calcString("@dp", null))
@@ -304,7 +305,7 @@ handlersManager.__update({
       haveChanges = true
     }
 
-    if (::switch_show_console_buttons(::get_is_console_mode_enabled()))
+    if (switchShowConsoleButtons(getIsConsoleModeEnabled()))
       haveChanges = true
 
     return haveChanges

@@ -68,8 +68,12 @@ struct CanvasParams
   cueUndergroundColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
   radarModeNameLangId : int = -1
   annotateTargets : bool = false
+  planeTargetPicture : Picture?
+  helicopterTargetPicture : Picture?
+  rocketTargetPicture : Picture?
   handleClicks : bool = false
   isAAComplexMenuLayout : bool = false
+  vignetteColor : E3DCOLOR = E3DCOLOR(0xFFFFFFFF)
 
 def make_transparent_color(col : E3DCOLOR; transparency : float)
   let col4 = float4(Color4(col)) * transparency
@@ -138,8 +142,12 @@ def setup_radar_data(props : Properties&; var storage : CanvasParams&)
   storage.cueUndergroundColor = props |> getColor("cueUndergroundColor", storage.color)
   storage.radarModeNameLangId = props |> getInt("radarModeNameLangId", -1)
   storage.annotateTargets = props |> getBool("annotateTargets", false)
+  storage.planeTargetPicture = props |> getPicture("planeTargetPicture")
+  storage.helicopterTargetPicture = props |> getPicture("helicopterTargetPicture")
+  storage.rocketTargetPicture = props |> getPicture("rocketTargetPicture")
   storage.handleClicks = props |> getBool("handleClicks", false)
   storage.isAAComplexMenuLayout = props |> getBool("isAAComplexMenuLayout", false)
+  storage.vignetteColor = props |> getColor("vignetteColor", storage.color)
 
 [export, unused_argument(rstate)]
 def draw_radar_hud(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderState& const; data : CanvasParams&)
@@ -403,7 +411,7 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
   let isMouseOnEllement = lt.x <= mousePos.x && mousePos.x <= rb.x && lt.y <= mousePos.y && mousePos.y <= rb.y
   var needToHandleMouseClick = data.handleClicks && is_mouse_btn_down(1) && isMouseOnEllement
 
-  foreach_targets() <| $(var target; i)
+  foreach_targets() <| $(var target)
     var distanceRel = 0.9
     var radialWidthRel = 0.05
     if get_radar_hud_has_distance_scale() && target.distanceRel >= 0.
@@ -448,16 +456,11 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
 
       if data.annotateTargets
         var fctx : StdGuiFontContext
-        get_font_context(fctx, data.fontId, 0, 0, int(ctx |> hdpx(10.0)))
-        let annotation = "{i}" // TODO will be replaced with target of interest index
-        let annotationBox = get_str_bbox(annotation, annotation |> length(), fctx)
-
-        let offsetX = -annotationBox.width.x * 0.5
-        let offsetY = pos.y > origin.y ? \
-          -targetCircleRadius.y - ctx |> hdpx(4.0) - float(get_font_descent(fctx)) : \
-          targetCircleRadius.y + annotationBox.width.y + ctx |> hdpx(4.0) + float(get_font_ascent(fctx))
-        ctx |> goto_xy(pos.x + offsetX, pos.y + offsetY)
-        ctx |> draw_str_scaled(1.0, annotation, annotation |> length())
+        get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
+        let drawBelow = pos.y > origin.y
+        let offsetY = (ctx |> hdpx(4.0) + targetCircleRadius.y) * (drawBelow ? -1.0 : 1.0)
+        let annotationPos = pos + float2(0.0, offsetY)
+        Radar`drawTargetAnnotation(ctx, target, fctx, annotationPos, drawBelow, data.planeTargetPicture, data.helicopterTargetPicture, data.rocketTargetPicture)
 
       if target.isDetected
         if data.annotateTargets
@@ -1183,10 +1186,19 @@ def foreach_additional_beams(blk : block<(additionalBeam : RadarAdditionalBeam c
       invoke(blk, t)
 
 def b_scope(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
-  let offsets = b_scope_labels(ctx, rdata, data)
-  let totalOffset = float2(offsets.x + offsets.z, offsets.y + offsets.w)
-  let size = float2(min(rdata.size.x - totalOffset.x, rdata.size.y - totalOffset.y))
-  let pos = rdata.pos + (totalOffset.x > totalOffset.y ? float2(offsets.x, (rdata.size.y - size.y) * 0.5) : float2((rdata.size.x - size.x) * 0.5, offsets.y))
+  var size, pos = float2(0.0)
+  if !data.isAAComplexMenuLayout
+    let offsets = b_scope_labels(ctx, rdata, data)
+    let totalOffset = float2(offsets.x + offsets.z, offsets.y + offsets.w)
+    size = float2(min(rdata.size.x - totalOffset.x, rdata.size.y - totalOffset.y))
+    pos = rdata.pos + (totalOffset.x > totalOffset.y ? float2(offsets.x, (rdata.size.y - size.y) * 0.5) : float2((rdata.size.x - size.x) * 0.5, offsets.y))
+  else
+    let offsets = float4(5.0)
+    let totalOffset = float2(offsets.x + offsets.z, offsets.y + offsets.w)
+    size = float2(min(rdata.size.x - totalOffset.x, rdata.size.y - totalOffset.y))
+    pos = rdata.pos + (totalOffset.x > totalOffset.y ? float2(offsets.x, (rdata.size.y - size.y) * 0.5) : float2((rdata.size.x - size.x) * 0.5, offsets.y))
+    b_scope_background_tactical_map_aa_complex(ctx, rdata, data, size)
+    b_scope_labels_aa_complex(ctx, rdata, data)
   b_scope_background(ctx, data, pos, size)
   b_scope_azimuth(ctx, data, pos + size * 0.5, size, false, get_radar_hud_aim_azimuth(), 0., -1., 2.)
   b_scope_azimuth(ctx, data, pos + size * 0.5, size, false, get_radar_hud_turret_azimuth(), 0., -1., 1.)
@@ -1236,38 +1248,9 @@ def b_scope_labels_aa_complex(var ctx : GuiContext&; rdata : ElemRenderData& con
   ctx |> goto_xy(pos.x + size.x * 0.8 - strDistBox.width.x, pos.y + size.y - strDistBox.width.y)
   ctx |> draw_str_scaled(1.0, textDist, textDist |> length())
 
-  let trackModeId = get_radar_hud_mode_name2_id()
-  let trackModeLocId = trackModeId >= 0 && trackModeId < radarModeNames |> length() ? radarModeNames[trackModeId] : ""
-  let isIRST = starts_with(trackModeLocId, "hud/IRST")
-
-  let outlineColor = data.color
-  let noOutlineColor = make_transparent_color(data.color, 0.5)
-
-  let radarCol = isIRST ? noOutlineColor : outlineColor
-  ctx |> set_color(radarCol)
-  let radarText = loc("hud/radar")
-  let radarTextBox = get_str_bbox(radarText, radarText |> length(), fctx)
-  ctx |> goto_xy(pos.x + size.x * 0.1, pos.y + size.y)
-  ctx |> draw_str_scaled(1.0, radarText, radarText |> length())
-
-  ctx |> set_color(noOutlineColor)
-  let slash = "/"
-  let slashTextBox = get_str_bbox(slash, slash |> length(), fctx)
-  ctx |> goto_xy(pos.x + size.x * 0.1 + radarTextBox.width.x, pos.y + size.y)
-  ctx |> draw_str_scaled(1.0, slash, slash |> length())
-
-  let irstCol = !isIRST ? noOutlineColor : outlineColor
-  ctx |> set_color(irstCol)
-  let irstText = loc("hud/irst")
-  ctx |> goto_xy(pos.x + size.x * 0.1 + radarTextBox.width.x + slashTextBox.width.x, pos.y + size.y)
-  ctx |> draw_str_scaled(1.0, irstText, irstText |> length())
-
   return float4(5.0)
 
 def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&)
-  if data.isAAComplexMenuLayout
-    return b_scope_labels_aa_complex(ctx, rdata, data)
-
   var fctx : StdGuiFontContext
   get_font_context(fctx, data.fontId, 0, 0, data.fontSize/*hudFontHgt*/)
   var topOffset = 0.
@@ -1352,10 +1335,31 @@ def b_scope_labels(var ctx : GuiContext&; rdata : ElemRenderData& const; data : 
   ctx |> draw_str_scaled(1.0, textVel, textVel |> length())
   return float4(leftOffset, topOffset, rightOffset, bottomOffset)
 
+def b_scope_background_tactical_map_aa_complex(var ctx : GuiContext&; rdata : ElemRenderData& const; data : CanvasParams&; scope_size : float2)
+  let size = float2(min(rdata.size.x, rdata.size.y))
+  let pos = rdata.pos
+  let center = pos + size * 0.5
+  let scopeToExtent =  rdata.size / scope_size
+  let gradientSize = ctx |> hdpx(100.0)
+  let delta = center - pos
+  let maskSize = sqrt(delta.x * delta.x + delta.y * delta.y) - size.x * 0.5
+
+  ctx |> set_viewport(pos.x, pos.y, pos.x + size.x, pos.y + size.y)
+  render_tactical_map_background(ctx, center, size, get_radar_hud_has_distance_scale() ?  get_radar_hud_distance_max() * 1e3 * max(scopeToExtent.x, scopeToExtent.y) : 15000.0)
+  let transparentVignetteColor = make_transparent_color(data.vignetteColor, 0.8)
+  ctx |> render_ellipse_aa(center, size * 0.5 - float2(gradientSize * 0.5), gradientSize,
+    transparentVignetteColor,
+    transparentColor,
+    transparentColor)
+  ctx |> render_ellipse_aa(center, size * 0.5 + float2(maskSize * 0.5), maskSize,
+    transparentVignetteColor,
+    transparentColor)
+  ctx |> render_rectangle_aa(pos, pos + size, 0.0, transparentColor, areaBackgroundColor)
+  ctx |> restore_viewport()
+
 def b_scope_background_aa_complex(var ctx : GuiContext&; data : CanvasParams&; pos : float2; size : float2)
   let center = pos + size * 0.5
-  ctx |> render_ellipse_aa(center, size * 0.5, ctx |> hdpx(1.6), data.color, areaBackgroundColor)
-
+  ctx |> render_ellipse_aa(center, size * 0.5, ctx |> hdpx(1.6), data.color, transparentColor)
   let color = make_transparent_color(data.color, 0.3)
   if get_radar_hud_has_distance_scale()
     let n = 4

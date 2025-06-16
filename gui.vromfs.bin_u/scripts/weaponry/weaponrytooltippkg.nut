@@ -381,6 +381,50 @@ function getBasesEstimatedDamageRewardArray(unit, item) {
   return res
 }
 
+function getReqModificationsTip(unit, modName, descriptionLocId = "") {
+  let mod = getModificationByName(unit, modName)
+  if (mod?.reqModification == null)
+    return ""
+  local reqText = ""
+  foreach (reqModification in mod.reqModification) {
+    let reqName = getModificationName(unit, reqModification)
+    reqText = reqText == "" ? reqName : ", ".concat(reqText, reqName)
+  }
+
+  return descriptionLocId == "" || reqText == ""
+    ? reqText
+    : " ".concat(loc(descriptionLocId), reqText)
+}
+
+function getTipForBullet(unit, item) {
+  let bulletsManager = UnitBulletsManager(unit, {isForcedAvailable = true})
+  let bulGroup = bulletsManager.getBulletGroupBySelectedMod(item)
+  let bullets = bulGroup?.bullets
+  if (!bullets)
+    return ""
+  local enabledBulletsCount = 0
+  local disabledBullet = null
+  for (local i = 0; i < bullets.items.len(); i++)
+    if (bullets.items[i]?.enabled)
+      enabledBulletsCount += 1
+    else
+      disabledBullet = bullets.values?[i]
+
+  if (enabledBulletsCount > 1 || disabledBullet == null)
+    return ""
+
+  return getReqModificationsTip(unit, disabledBullet, "tooltip/bulletTapesReq")
+}
+
+function getTipForCountermeasures(unit, item) {
+  let bulletsManager = UnitBulletsManager(unit)
+  let bulGroup = bulletsManager.getBulletGroupBySelectedMod(item)
+  let bullets = bulGroup?.bullets
+  if (!bullets || !isPairBulletsGroup(bullets) || bullets?.items[1].enabled == true)
+    return ""
+  return getReqModificationsTip(unit, bullets.values[1], "tooltip/flaresChaffsRatioReq")
+}
+
 function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFunc = null) {
   let res = { name = "", desc = "", delayed = false }
   let needShowWWSecondaryWeapons = item.type == weaponsItem.weapon && isInFlight()
@@ -625,35 +669,32 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
   }
 
   if (hasPlayerInfo) {
-    if (!statusTbl.amount && !needShowWWSecondaryWeapons) {
-      let reqMods = getReqModsText(unit, item)
-      if (reqMods != "")
-        reqText = "\n".join([reqText, reqMods], true)
-    }
-    if (isBullets(item) && !isBulletsGroupActiveByMod(unit, item) && !isInFlight())
-      reqText = "\n".join([reqText, loc("msg/weaponSelectRequired")], true)
-
-    if (statusTbl.amount) {
-      let bulletGroupName = getModificationBulletsGroup(item.name)
-      if (bulletGroupName.indexof(WEAPON_TYPE.COUNTERMEASURES) != null) {
-        let bulletsManager = UnitBulletsManager(unit)
-        let bulGroup = bulletsManager.getBulletGroupBySelectedMod(item)
-        let bullets = bulGroup?.bullets
-        if (isPairBulletsGroup(bullets) && bullets?.items[1].enabled == false) {
-          let mod = getModificationByName(unit, bullets.values[1])
-          local reqModsText = ""
-          foreach (reqModification in mod.reqModification)
-            reqModsText = "".concat(reqModsText == "" ? "" : "\n", loc($"modification/{reqModification}"))
-          if (reqModsText != "")
-            res.topReqBlock <- " ".concat(loc("tooltip/flaresChaffsRatioReq"), reqModsText)
-        }
-      }
-    }
-
-    reqText = reqText != "" ? ($"<color=@badTextColor>{reqText}</color>") : ""
-
     if (needShowWWSecondaryWeapons)
       reqText = getReqTextWorldWarArmy(unit, item)
+    else {
+      let isBulletItem = isBullets(item)
+      if (isBulletItem && statusTbl.unlocked) {
+        let bulletGroupName = getModificationBulletsGroup(item.name)
+        let isCountermeasures = bulletGroupName?.indexof(WEAPON_TYPE.COUNTERMEASURES) != null
+        if (isCountermeasures) {
+          let tip = getTipForCountermeasures(unit, item)
+          if (tip != "")
+            res.topReqBlock <- tip
+        } else if (item?.isDefaultForGroup != null) {
+          let tip = getTipForBullet(unit, item)
+          if (tip != "")
+            reqText = reqText != "" ? "\n".concat(reqText, tip) : tip
+        }
+      }
+      if (!statusTbl.unlocked) {
+        let reqMods = getReqModsText(unit, item)
+        if (reqMods != "")
+          reqText = "\n".join([reqText, reqMods], true)
+        if (isBulletItem && !isBulletsGroupActiveByMod(unit, item) && !isInFlight())
+          reqText = "\n".join([reqText, loc("msg/weaponSelectRequired")], true)
+        reqText = reqText != "" ? ($"<color=@badTextColor>{reqText}</color>") : ""
+      }
+    }
   }
   if (reqText != "")
     res.reqText <- reqText

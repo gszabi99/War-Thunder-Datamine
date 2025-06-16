@@ -16,12 +16,9 @@ let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/c
 let { isUnlockVisible, getUnlockCost, canOpenUnlockManually, findUnusableUnitForManualUnlock, canClaimUnlockRewardForUnit, isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { getCurrentGameModeEdiff } = require("%scripts/gameModes/gameModeManagerState.nut")
-
-
 let { getUnlockTitle, getUnlockNameText, buildUnlockDesc, fillUnlockManualOpenButton, updateUnseenIcon, updateLockStatus,
   fillUnlockImage, fillUnlockProgressBar, fillUnlockDescription, doPreviewUnlockPrize, fillReward,
   fillUnlockTitle, fillUnlockPurchaseButton, buildConditionsConfig, fillUnlockConditions, fillUnlockStages } = require("%scripts/unlocks/unlocksViewModule.nut")
-
 let { getUnlockById, getAllUnlocksWithBlkOrder } = require("%scripts/unlocks/unlocksCache.nut")
 let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 let { getShopDiffCode } = require("%scripts/shop/shopDifficulty.nut")
@@ -29,15 +26,14 @@ let { getUnlockIds } = require("%scripts/unlocks/unlockMarkers.nut")
 let { getManualUnlocks } = require("%scripts/unlocks/personalUnlocks.nut")
 let { makeConfig, makeConfigStrByList } = require("%scripts/seen/bhvUnseen.nut")
 let seenList = require("%scripts/seen/seenList.nut")
-
 let purchaseConfirmation = require("%scripts/purchase/purchaseConfirmationHandler.nut")
 let { openUnlockManually, buyUnlock } = require("%scripts/unlocks/unlocksAction.nut")
-
 let { getUnitName } = require("%scripts/unit/unitInfo.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { openTrophyRewardsList } = require("%scripts/items/trophyRewardList.nut")
 let { rewardsSortComparator } = require("%scripts/items/trophyReward.nut")
 let openUnlockUnitListWnd = require("%scripts/unlocks/unlockUnitListWnd.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const SELECTED_ACHIEVEMENT_SAVE_ID = "wnd/selectedAchievement"
 
@@ -63,11 +59,14 @@ function filterAchievementListFunc(achievement, nameFilter) {
 }
 
 let countedTypes = [
-  "challenge"
-  "achievement"
   "trophy_steam"
   "trophy_psn"
   "trophy_xboxone"
+]
+
+let countedChapters = [
+  "challenges"
+  "achievements"
 ]
 
 local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
@@ -149,8 +148,8 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         searchId = utf8ToLower(unlockBlk.id)
       })
 
-      if (countedTypes.contains(unlockBlk.type) && isUnlockOpened(unlockBlk.id))
-       this.totalReceived++
+      if ((countedTypes.contains(unlockBlk.type) || countedChapters.contains(unlockBlk?.chapter)) && isUnlockOpened(unlockBlk.id))
+        this.totalReceived++
     }
   }
 
@@ -494,6 +493,8 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnlocksCacheInvalidate(_p) {
+    if (!isProfileReceived.get())
+      return
     this.initScreen()
   }
 
@@ -502,6 +503,8 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnlockMarkersCacheInvalidate(_) {
+    if (!isProfileReceived.get())
+      return
     this.initScreen()
   }
 

@@ -24,6 +24,7 @@ let { isCollectionItem } = require("%scripts/collections/collections.nut")
 let { askPurchaseDecorator, askConsumeDecoratorCoupon,
   findDecoratorCouponOnMarketplace } = require("%scripts/customization/decoratorAcquire.nut")
 let { getPlayerCurUnit } = require("%scripts/slotbar/playerCurUnit.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const SELECTED_DECAL_SAVE_ID = "wnd/selectedDecal"
 
@@ -110,7 +111,7 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
         searchName = utf8ToLower(decal.getName())
         decal
         category = decal.category
-        group = decal.group
+        group = decal.group != "" ? decal.group : "other"
       })
 
       if (decoratorTypes.DECALS.isPlayerHaveDecorator(decalId))
@@ -420,7 +421,9 @@ local DecalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnlocksCacheInvalidate(_p) {
-      this.initScreen()
+    if (!isProfileReceived.get())
+      return
+    this.initScreen()
   }
 
   function onEventInventoryUpdate(_p) {

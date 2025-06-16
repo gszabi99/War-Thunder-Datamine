@@ -18,6 +18,7 @@ let { saveLocalAccountSettings, loadLocalAccountSettings } = require("%scripts/c
 let { isUnlockVisible, isUnlockOpened, getUnlockRewardText } = require("%scripts/unlocks/unlocksModule.nut")
 let { isBattleTask } = require("%scripts/unlocks/battleTasks.nut")
 let { profileCountrySq } = require("%scripts/user/playerCountry.nut")
+let { isProfileReceived } = require("%appGlobals/login/loginState.nut")
 
 const SELECTED_MEDAL_SAVE_ID = "wnd/selectedMedal"
 
@@ -259,6 +260,8 @@ let MedalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function onEventUnlocksCacheInvalidate(_p) {
+    if (!isProfileReceived.get())
+      return
     this.updateMedalsList()
   }
 

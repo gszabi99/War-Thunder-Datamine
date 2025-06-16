@@ -50,9 +50,7 @@
   "radarAntenaSpeed": 720.0,
   "radarCanLockTargetFromTPV": false,
   "sensorTargetTurretTrack": false,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
+  "drowningCheckHeightMultiplier": 0.275,
   "controlDevices": {
     "device": [
       {
@@ -1935,6 +1933,7 @@
         "triggerGroup": "primary",
         "blk": "gameData/Weapons/dummy_weapon.blk",
         "emitter": "bone_camera_gunner",
+        "animatedEmitter": "bone_roll_33",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
         "barrelDP": "optic_gun_dm",
@@ -3275,10 +3274,10 @@
     }
   },
   "cockpit": {
-    "zoomOutFov": 9.21719,
-    "zoomInFov": 6.14111,
-    "sightFov": 4.09653,
-    "sightName": "roland_sight",
+    "zoomOutFov": 37.4945,
+    "zoomInFov": 2.72833,
+    "sightFov": 16.6642,
+    "sightName": "spyder_sight",
     "headPos": [
       0.0,
       5.0,
@@ -3340,15 +3339,15 @@
     "tank_tool_kit": {},
     "art_support": {},
     "tank_medical_kit": {
-      "image": "#ui/gameuiskin#tank_reinforcement_ger"
+      "image": "!#ui/gameuiskin#tank_reinforcement_ger.avif"
     },
     "tank_medical_kit_expendable": {
-      "image": "#ui/gameuiskin#tank_reinforcement_ger"
+      "image": "!#ui/gameuiskin#tank_reinforcement_ger.avif"
     },
     "airstrike": {},
     "improved_optics": {},
     "night_vision_system": {
-      "image": "#ui/gameuiskin#thermal_sight",
+      "image": "!#ui/gameuiskin#thermal_sight.avif",
       "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "tier": 3,
       "effects": {
@@ -3514,5 +3513,41 @@
       ],
       "radarParkingAzimuth": 0.0
     }
-  }
+  },
+  "default_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "ger_camo_bronzegruen*",
+      "to": "isr_camo_green*"
+    }
+  },
+  "skin": [
+    {
+      "name": "isr_camo_sandgray",
+      "nameLocId": "skin/isr_camo_sandgray",
+      "descLocId": "skin/isr_camo_sandgray/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "isr_camo_sandgray*"
+      }
+    },
+    {
+      "name": "uk_camo_winter_olive",
+      "nameLocId": "skin/winter",
+      "descLocId": "skin/winter/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "fr_camo_winter_green_white*"
+      }
+    },
+    {
+      "name": "isr_camo_threecolor",
+      "nameLocId": "skin/isr_camo_threecolor",
+      "descLocId": "skin/isr_camo_threecolor/desc",
+      "replace_tex": {
+        "from": "ger_camo_bronzegruen*",
+        "to": "isr_camo_threecolor*"
+      }
+    }
+  ]
 }

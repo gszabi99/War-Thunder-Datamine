@@ -1697,6 +1697,14 @@ enums.addTypes(g_hud_hints, {
     lifeTime = 5.0
   }
 
+  BLOCK_SLAVE_FIRE = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "HUD/TXT_SLAVE_FORBIDDEN_FIRE"
+    showEvent = "hint:slave_forbidden_fire:show"
+    shouldBlink = false
+    lifeTime = 5.0
+  }
+
   OFFER_REPAIR = {
     hintType = g_hud_hint_types.REPAIR
     getLocId = function (data) {
@@ -2989,6 +2997,21 @@ enums.addTypes(g_hud_hints, {
     }
   }
 
+  DEPLOY_LAUNCHER_TO_SHOOT = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/deploy_launcher_to_shoot"
+    showEvent = "hint:deploy_launcher_to_shoot"
+    selfRemove = true
+    lifeTime = 5.0
+  }
+
+  ABSENT_SNIPER_VIEW = {
+    hintType = g_hud_hint_types.COMMON
+    locId = "hints/absent_sniper_view"
+    showEvent = "hint:absent_sniper_view"
+    selfRemove = true
+    lifeTime = 5.0
+  }
 },
 function() {
   this.name = $"hint_{this.typeName.tolower()}"

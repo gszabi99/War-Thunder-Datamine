@@ -13,6 +13,7 @@ let { isInSpectatorMode, isInRespawnWnd } = require("%rGui/respawnWndState.nut")
 let { fontSizeMultiplier } = require("%rGui/style/fontsState.nut")
 let extraction = require("extraction.nut")
 let { sead } = require("assimModes.nut")
+let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 let getNoRespTextSize = @() fpx(22)
 
@@ -54,7 +55,7 @@ return function mkScoreboard() {
 
   let yPos = Computed(function() {
     if (!isInRespawnWnd.get())
-      return HasCompass.get() ? hdpx(50) : 0
+      return HasCompass.get() && !isAAComplexMenuActive.get() ? hdpx(50) : 0
     if (isInSpectatorMode.get())
       return getNoRespTextSize() + hdpx(4)
     return 0

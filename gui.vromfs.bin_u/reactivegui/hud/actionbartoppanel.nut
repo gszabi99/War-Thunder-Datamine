@@ -134,4 +134,8 @@ function actionBarTopPanel() {
   }
 }
 
-return actionBarTopPanel
+return {
+  actionBarTopPanel
+  actionBarTopPanelMarginBottom = panelMarginBottom
+  actionBarTopPanelHeight = panelHeight
+}

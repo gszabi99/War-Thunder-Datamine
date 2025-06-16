@@ -1907,18 +1907,32 @@
         "limitsTable": {
           "lim1": [
             -180.0,
-            -140.0,
+            -138.0,
             -0.0,
             20.0
           ],
           "lim2": [
-            -140.0,
-            140.0,
-            -9.0,
-            20.0
+            [
+              -138.0,
+              -134.0,
+              -6.0,
+              20.0
+            ],
+            [
+              -134.0,
+              134.0,
+              -9.0,
+              20.0
+            ],
+            [
+              134.0,
+              138.0,
+              -6.0,
+              20.0
+            ]
           ],
           "lim3": [
-            140.0,
+            138.0,
             180.0,
             -0.0,
             20.0
@@ -2965,6 +2979,7 @@
       "requiresModelReload": true,
       "turn_it_off": false,
       "effects": {
+        "changeMass": 2300.0,
         "rcostAddParam": 0.99,
         "diggingAvailable": true,
         "diggingActivateTime": 3.0,
@@ -2988,10 +3003,10 @@
       }
     },
     "tank_medical_kit": {
-      "image": "#ui/gameuiskin#tank_reinforcement_ger"
+      "image": "!#ui/gameuiskin#tank_reinforcement_ger.avif"
     },
     "tank_medical_kit_expendable": {
-      "image": "#ui/gameuiskin#tank_reinforcement_ger"
+      "image": "!#ui/gameuiskin#tank_reinforcement_ger.avif"
     },
     "105mm_usa_HESH": {},
     "105mm_usa_HESH_ammo_pack": {
@@ -3056,18 +3071,32 @@
               "limitsTable": {
                 "lim1": [
                   -180.0,
-                  -140.0,
+                  -138.0,
                   -0.0,
                   20.0
                 ],
                 "lim2": [
-                  -140.0,
-                  140.0,
-                  -9.0,
-                  20.0
+                  [
+                    -138.0,
+                    -134.0,
+                    -6.0,
+                    20.0
+                  ],
+                  [
+                    -134.0,
+                    134.0,
+                    -9.0,
+                    20.0
+                  ],
+                  [
+                    134.0,
+                    138.0,
+                    -6.0,
+                    20.0
+                  ]
                 ],
                 "lim3": [
-                  140.0,
+                  138.0,
                   180.0,
                   -0.0,
                   20.0
@@ -3303,7 +3332,7 @@
       }
     },
     "night_vision_system": {
-      "image": "#ui/gameuiskin#thermal_sight",
+      "image": "!#ui/gameuiskin#thermal_sight.avif",
       "animation": "video/unitModifications/night_vision_system_thermal.ivf",
       "tier": 3,
       "effects": {

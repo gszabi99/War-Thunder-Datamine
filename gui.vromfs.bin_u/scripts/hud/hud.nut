@@ -53,6 +53,7 @@ let { get_gui_option_in_mode } = require("%scripts/options/options.nut")
 let { get_option } = require("%scripts/options/optionsExt.nut")
 let { getUnmappedControlsForCurrentMission } = require("%scripts/controls/controlsUtils.nut")
 let { isPlayerDedicatedSpectator } = require("%scripts/matchingRooms/sessionLobbyMembersInfo.nut")
+let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 dagui_propid_add_name_id("fontSize")
 
@@ -371,6 +372,7 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
       && is_tank_damage_indicator_visible()
 
     let isTacticalMapVisible = !isInKillerCamera.get()
+      && !isAAComplexMenuActive.get()
       && visMode.isPartVisible(HUD_VIS_PART.MAP)
       && this.isTacticalMapVisibleBySubmarineDepth
 
@@ -609,3 +611,13 @@ gui_handlers.Hud <- class (gui_handlers.BaseGuiHandlerWT) {
     this.currentHud?.updateDmgIndicatorState()
   }
 }
+
+function updateHudVisModeForce() {
+  let handler = handlersManager.findHandlerClassInScene(gui_handlers.Hud)
+  if (handler == null)
+    return
+  handler.doWhenActiveOnce("updateHudVisModeForce")
+}
+
+isInKillerCamera.subscribe(@(_) updateHudVisModeForce())
+isAAComplexMenuActive.subscribe(@(_) updateHudVisModeForce())

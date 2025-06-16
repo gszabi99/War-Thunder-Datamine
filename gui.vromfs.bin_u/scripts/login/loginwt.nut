@@ -113,6 +113,7 @@ function firstMainMenuLoad() {
     && !isMeNewbie()
     && !havePlayerTag("steam")
     && !is_console
+    && !is_gdk
     && curTime - verificationSeenDate > EMAIL_VERIFICATION_INTERVAL_SEC
   )
     handler.doWhenActive(function () {

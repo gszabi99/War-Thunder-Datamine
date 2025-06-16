@@ -44,6 +44,9 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeMediumTank",
+  "attachables": {
+    "body_01_back_dm": true
+  },
   "sound": {
     "EngineName": "engine_t34",
     "TrackSoundPath": "tanks/engines_tanks",
@@ -2143,7 +2146,8 @@
         "armorThickness": 20.0
       },
       "body_front_dm": {
-        "armorThickness": 10.0
+        "armorThickness": 10.0,
+        "variableThickness": true
       },
       "superstructure_side_dm": {
         "armorThickness": 45.0
@@ -2172,27 +2176,30 @@
       "turret_01_side_dm": {
         "armorThickness": 10.0
       },
+      "turret_04_top_dm": {
+        "armorThickness": 20.0,
+        "variableThickness": true
+      },
+      "body_01_bottom_dm": {
+        "armorThickness": 5.0,
+        "armorClass": "tank_structural_steel"
+      },
+      "body_01_side_dm": {
+        "armorThickness": 5.0,
+        "armorClass": "tank_structural_steel"
+      },
       "submodule": {
         "armorClass": "tank_traks",
         "armorThickness": 20.0,
         "hp": 250.0,
         "ex_armor_01_dm": {},
-        "ex_armor_r_10_dm": {},
+        "ex_armor_03_dm": {},
+        "ex_armor_02_dm": {},
+        "ex_armor_04_dm": {},
+        "ex_armor_05_dm": {},
         "ex_armor_r_03_dm": {},
         "ex_armor_r_04_dm": {},
-        "ex_armor_r_06_dm": {},
-        "ex_armor_l_02_dm": {},
-        "ex_armor_l_07_dm": {},
-        "ex_armor_l_09_dm": {},
-        "ex_armor_l_10_dm": {},
-        "ex_armor_l_11_dm": {},
-        "ex_armor_l_12_dm": {},
-        "ex_armor_l_13_dm": {},
-        "ex_armor_l_14_dm": {},
-        "ex_armor_r_12_dm": {},
-        "ex_armor_r_13_dm": {},
-        "ex_armor_r_14_dm": {},
-        "ex_armor_r_15_dm": {}
+        "ex_armor_r_06_dm": {}
       }
     },
     "turret": {
@@ -2233,12 +2240,12 @@
         "armorThickness": 75.0
       },
       "turret_front_dm": {
-        "armorThickness": 90.0
+        "armorThickness": 75.0,
+        "variableThickness": true
       },
       "body_front_hatch_dm": {
         "armorThickness": 75.0,
-        "hp": 3000.0,
-        "armorEffectiveThicknessMax": 130.0
+        "variableThickness": true
       },
       "body_shield_dm": {
         "armorThickness": 65.0
@@ -2246,9 +2253,6 @@
       "gun_barrel_armor_dm": {
         "armorThickness": 30.0,
         "armorEffectiveThicknessMax": 30.0
-      },
-      "turret_01_front_dm": {
-        "armorThickness": 30.0
       },
       "turret_02_top_dm": {
         "armorThickness": 40.0
@@ -2264,12 +2268,17 @@
       },
       "turret_commander_dm": {
         "armorThickness": 90.0
+      },
+      "gun_mask_dm": {
+        "armorThickness": 75.0,
+        "variableThickness": true
+      },
+      "turret_04_front_dm": {
+        "armorThickness": 60.0,
+        "variableThickness": true
       }
     },
     "mask": {
-      "gun_mask_dm": {
-        "armorThickness": 40.0
-      },
       "gun_mask_shield_dm": {
         "armorThickness": 200.0
       }
@@ -2333,15 +2342,15 @@
       "stopChanceOnDeadPart": 0.0,
       "createSecondaryShatters": false,
       "hidableInViewer": true,
-      "ex_armor_02_dm": {},
-      "ex_armor_03_dm": {},
-      "ex_armor_04_dm": {},
-      "ex_armor_05_dm": {},
       "ex_armor_09_dm": {},
       "ex_armor_10_dm": {},
       "ex_armor_11_dm": {},
       "ex_armor_12_dm": {},
-      "ex_armor_13_dm": {}
+      "ex_armor_13_dm": {},
+      "ex_armor_14_dm": {},
+      "ex_armor_15_dm": {},
+      "ex_armor_16_dm": {},
+      "ex_armor_17_dm": {}
     },
     "gun": {
       "armorClass": "tank_barrel",
@@ -2947,10 +2956,10 @@
     "art_support": {},
     "tank_new_gun": {},
     "tank_medical_kit": {
-      "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+      "image": "!#ui/gameuiskin#tank_reinforcement_ussr.avif"
     },
     "tank_medical_kit_expendable": {
-      "image": "#ui/gameuiskin#tank_reinforcement_ussr"
+      "image": "!#ui/gameuiskin#tank_reinforcement_ussr.avif"
     },
     "85mm_ussr_APHE": {},
     "85mm_ussr_APCR": {},
@@ -2961,12 +2970,12 @@
   "default_skin": {
     "set_tex": [
       {
-        "from": "t_34_85_zis_53_gun_c*",
+        "from": "t_34_85_s53_gun_c*",
         "to": "t_34_85_e_skin_gun_c*",
         "param": "camo_skin_tex"
       },
       {
-        "from": "t_34_85_zis_53_turret_c*",
+        "from": "t_34_85_s53_turret_c*",
         "to": "t_34_85_e_skin_turret_c*",
         "param": "camo_skin_tex"
       }

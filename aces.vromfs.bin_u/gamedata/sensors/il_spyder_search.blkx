@@ -8,8 +8,8 @@
       "power": 1200.0,
       "band": 5,
       "rcs": 2.0,
-      "range": 45000.0,
-      "rangeMax": 90000.0,
+      "range": 60000.0,
+      "rangeMax": 200000.0,
       "antenna": {
         "angleHalfSens": 3.5,
         "sideLobesSensitivity": -35.0
@@ -53,12 +53,13 @@
       "friendFoeId": true,
       "angularAccuracy": 0.12,
       "distanceAccuracy": 10.0,
+      "targetRadiusMin": 0.7375,
       "targetId": true,
       "absDopplerSpeed": true,
       "distance": {
         "presents": true,
         "minValue": 150.0,
-        "maxValue": 90000.0
+        "maxValue": 200000.0
       },
       "dopplerSpeed": {
         "presents": true,
@@ -76,9 +77,10 @@
   },
   "scopeRangeSets": {
     "common": {
-      "range1": 10000.0,
-      "range2": 20000.0,
-      "range3": 40000.0
+      "range1": 20000.0,
+      "range2": 40000.0,
+      "range3": 200000.0,
+      "range4": 10000.0
     }
   },
   "fsms": {
@@ -117,7 +119,7 @@
             "azimuthWidth": 5.0,
             "distanceRange": [
               0.0,
-              45000.0
+              200000.0
             ]
           }
         },
@@ -285,7 +287,10 @@
       }
     },
     "tws": {
-      "stateInit": "search",
+      "stateInit": [
+        "search",
+        "search"
+      ],
       "transitions": {
         "scan": {
           "event": "update",

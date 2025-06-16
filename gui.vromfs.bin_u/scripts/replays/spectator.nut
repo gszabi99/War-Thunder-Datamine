@@ -69,6 +69,7 @@ let { showSessionPlayerRClickMenu } = require("%scripts/user/playerContextMenu.n
 let { getShortcutText } = require("%scripts/controls/controlsVisual.nut")
 let { currentReplay } = require("%scripts/replays/replayScreen.nut")
 let { registerRespondent } = require("scriptRespondent")
+let { getIsConsoleModeEnabled } = require("%scripts/options/consoleMode.nut")
 
 enum SPECTATOR_MODE {
   RESPAWN     
@@ -887,7 +888,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
   }
 
   function selectControlsBlock(_obj) {
-    if (::get_is_console_mode_enabled())
+    if (getIsConsoleModeEnabled())
       this.selectTargetTeamBlock()
   }
 
@@ -900,7 +901,7 @@ let class Spectator (gui_handlers.BaseGuiHandlerWT) {
       return
 
     let curPlayer = this.getTargetPlayer()
-    if (::get_is_console_mode_enabled() && u.isEqual(curPlayer, player)) {
+    if (getIsConsoleModeEnabled() && u.isEqual(curPlayer, player)) {
       let selIndex = getObjValidIndex(obj)
       let selectedPlayerBlock = obj.getChild(selIndex >= 0 ? selIndex : 0)
       showSessionPlayerRClickMenu(

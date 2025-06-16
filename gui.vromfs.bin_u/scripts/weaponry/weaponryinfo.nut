@@ -114,6 +114,23 @@ let WEAPON_TEXT_PARAMS = {
   isSingle              = false 
 }
 
+let bulletsLocIdByCaliber = [
+  "air_target", "air_targets", "all_tracers", "antibomber", "antitank", "apit", "apt",
+  "armor_target", "armor_targets", "fighter", "ground_targets", "mix", "night", "stealth",
+  "tracer", "tracers", "turret_ap", "turret_ap_he", "turret_ap_t", "turret_api", "turret_apit",
+  "turret_apt", "turret_he", "turret_het", "universal"
+]
+
+function getLocIdPrefixByCaliber(name) {
+  foreach(id in bulletsLocIdByCaliber)
+    if (name.endswith(id))
+      return id
+  return name
+}
+
+let getBulletBeltShortLocId = @(id) (id == "" || id.endswith("_default")) ? "modification/default_bullets"
+  : $"{getLocIdPrefixByCaliber(id)}/name/short"
+
 let torpedoSpeedMultByDiff = {}
 let torpedoAutoUpdateDepthByDiff = {}
 
@@ -1115,4 +1132,5 @@ return {
   get_weapon_icons_text
   getTorpedoAutoUpdateDepthByDiff
   getTurretGuidanceSpeedMultByDiff
+  getBulletBeltShortLocId
 }

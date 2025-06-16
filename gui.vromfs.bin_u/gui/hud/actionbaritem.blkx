@@ -89,13 +89,24 @@
           "display": "hide"
         }
       ],
-      "img": {
-        "id": "action_icon",
-        "size": "pw, ph",
-        "background-svg-size": "pw, ph",
-        "background-image": "",
-        "display": "hide"
-      },
+      "img": [
+        {
+          "id": "action_icon",
+          "size": "pw, ph",
+          "background-svg-size": "pw, ph",
+          "background-image": "",
+          "display": "hide"
+        },
+        {
+          "id": "lockedIcon",
+          "position": "absolute",
+          "size": "0.44pw, 0.44ph",
+          "pos": "0.5pw-0.5w, 0.5ph-0.5h",
+          "background-image": "#ui/gameuiskin#launcher_locked.svg",
+          "background-svg-size": "0.44pw, 0.44ph",
+          "display": "hide"
+        }
+      ],
       "actionItemCooldown": [
         {
           "id": "cooldown",
@@ -134,6 +145,14 @@
           "shadeStyle": "outline33pct",
           "text-align": "right",
           "text": "#actionBar/action/automatic/abbr"
+        },
+        {
+          "id": "unitIndex",
+          "position": "absolute",
+          "margin-left": "3@sf/@pf",
+          "hudFont": "small",
+          "samIndex": "yes",
+          "text": ""
         }
       ],
       "actionBarItemTextShortcut": {

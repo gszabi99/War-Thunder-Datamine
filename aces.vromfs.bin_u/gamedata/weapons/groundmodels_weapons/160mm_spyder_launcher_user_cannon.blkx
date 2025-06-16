@@ -39,6 +39,7 @@
   "isBulletBelt": false,
   "notUseDefaultBulletInGui": true,
   "drawRocketInBullet": true,
+  "canChangeLoadedBullet": true,
   "mesh": "i_derby_er_rocket",
   "animChar": "i_derby_er_rocket_char",
   "reloadAnimParam": "rocket_action",
@@ -61,7 +62,7 @@
     ],
     "explodeOnRendinst": true,
     "shellAnimation": "video/shells_animations/sam.ivf",
-    "bulletName": "il_python_5",
+    "bulletName": "il_python_5_sam",
     "caliber": 0.16,
     "sound_path": "tanks/weapon_tanks/atgm",
     "sound_pathStudio": "ground/weapon/atgm/roland",
@@ -91,16 +92,16 @@
       "caliber": 0.16,
       "length": 3.1,
       "WdK": [
-        0.1,
-        0.1,
-        0.1
+        0.15,
+        0.15,
+        0.15
       ],
       "CxK": 2.65,
       "wingAreaMult": 1.45,
       "finsAoaHor": 0.327486,
       "finsAoaVer": 0.327486,
       "finsLatAccel": 63.6357,
-      "distFromCmToStab": 0.2,
+      "distFromCmToStab": 0.25,
       "mass": 105.0,
       "massEnd": 81.0,
       "massEnd1": 63.0,
@@ -162,8 +163,7 @@
       "fuseDelayDist": 1.0,
       "explodeTreshold": 0.1,
       "price": 3000.0,
-      "mesh": "i_derby_er_rocket",
-      "shellAnimChar": "i_derby_er_rocket_deployed_char",
+      "mesh": "python_4_missile",
       "arcadeProp": {
         "finsAoaHor": 0.33,
         "finsAoaVer": 0.33
@@ -188,8 +188,8 @@
         },
         "orientationAutopilot": {
           "timeOut": 0.15,
-          "controlTime": 2.0,
-          "elevationAdd": 25.0,
+          "controlTime": 1.25,
+          "elevationAdd": 20.0,
           "elevationToHeadingMult": [
             20.0,
             20.0,
@@ -232,12 +232,17 @@
           "surfaceAsTarget": false
         },
         "guidanceAutopilot": {
+          "loftEnabled": true,
+          "loftElevation": 27.5,
+          "loftTargetElevation": -3.5,
+          "loftAngleToAccelMult": 20.0,
+          "loftTargetOmegaMax": 0.5,
           "timeOut": 0.2,
-          "propNavMult": 4.0,
+          "propNavMult": 6.0,
           "reqAccelMax": 50.0,
           "accelControlProp": 0.0021,
-          "accelControlIntg": 0.023,
-          "accelControlDiff": 0.00035,
+          "accelControlIntg": 0.022,
+          "accelControlDiff": 0.00025,
           "baseIndSpeed": 1800.0,
           "accelControlIntgLim": 1.0
         }
@@ -766,7 +771,7 @@
       ],
       "explodeOnRendinst": true,
       "shellAnimation": "video/shells_animations/sam.ivf",
-      "bulletName": "il_python_5",
+      "bulletName": "il_python_5_sam",
       "caliber": 0.16,
       "sound_path": "tanks/weapon_tanks/atgm",
       "sound_pathStudio": "ground/weapon/atgm/roland",
@@ -796,16 +801,16 @@
         "caliber": 0.16,
         "length": 3.1,
         "WdK": [
-          0.1,
-          0.1,
-          0.1
+          0.15,
+          0.15,
+          0.15
         ],
         "CxK": 2.65,
         "wingAreaMult": 1.45,
         "finsAoaHor": 0.327486,
         "finsAoaVer": 0.327486,
         "finsLatAccel": 63.6357,
-        "distFromCmToStab": 0.2,
+        "distFromCmToStab": 0.25,
         "mass": 105.0,
         "massEnd": 81.0,
         "massEnd1": 63.0,
@@ -867,8 +872,7 @@
         "fuseDelayDist": 1.0,
         "explodeTreshold": 0.1,
         "price": 3000.0,
-        "mesh": "i_derby_er_rocket",
-        "shellAnimChar": "i_derby_er_rocket_deployed_char",
+        "mesh": "python_4_missile",
         "arcadeProp": {
           "finsAoaHor": 0.33,
           "finsAoaVer": 0.33
@@ -893,8 +897,8 @@
           },
           "orientationAutopilot": {
             "timeOut": 0.15,
-            "controlTime": 2.0,
-            "elevationAdd": 25.0,
+            "controlTime": 1.25,
+            "elevationAdd": 20.0,
             "elevationToHeadingMult": [
               20.0,
               20.0,
@@ -937,12 +941,17 @@
             "surfaceAsTarget": false
           },
           "guidanceAutopilot": {
+            "loftEnabled": true,
+            "loftElevation": 27.5,
+            "loftTargetElevation": -3.5,
+            "loftAngleToAccelMult": 20.0,
+            "loftTargetOmegaMax": 0.5,
             "timeOut": 0.2,
-            "propNavMult": 4.0,
+            "propNavMult": 6.0,
             "reqAccelMax": 50.0,
             "accelControlProp": 0.0021,
-            "accelControlIntg": 0.023,
-            "accelControlDiff": 0.00035,
+            "accelControlIntg": 0.022,
+            "accelControlDiff": 0.00025,
             "baseIndSpeed": 1800.0,
             "accelControlIntgLim": 1.0
           }
@@ -1594,7 +1603,7 @@
         "maxDistance": 20000.0,
         "rangeMax": 20000.0,
         "endSpeed": 825.0,
-        "shellAnimation": "video/shells_animations/ir_homing_sam.ivf",
+        "shellAnimation": "video/shells_animations/ar_homing_sam.ivf",
         "mesh": "i_derby_er_rocket",
         "shellAnimChar": "i_derby_er_rocket_deployed_char",
         "arcadeProp": {

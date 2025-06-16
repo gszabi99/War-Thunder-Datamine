@@ -18,7 +18,7 @@ let {
 let { radarElement, twsElement } = require("airHudComponents.nut")
 let leftPanel = require("airHudLeftPanel.nut")
 let missileSalvoTimer = require("missileSalvoTimer.nut")
-let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
+let { actionBarTopPanel } = require("hud/actionBarTopPanel.nut")
 let { PNL_ID_ILS, PNL_ID_MFD } = require("%rGui/globals/panelIds.nut")
 let { radarHud, radarIndication } = require("%rGui/radar.nut")
 let { isHeliPilotHudDisabled } = require("options/options.nut")

@@ -419,10 +419,15 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard = fal
   }
 
   if ("guidanceType" in bulletsData) {
+    local missileGuidanceFeature = bulletsData?.inertialNavigation ? "+IOG" : ""
+    if (bulletsData?.inertialNavigationDriftSpeed == 0)
+      missileGuidanceFeature = "".concat(missileGuidanceFeature, "+GNSS")
+    if (bulletsData?.datalink)
+      missileGuidanceFeature = "".concat(missileGuidanceFeature, "+DL")
     if (bulletsData.guidanceType == "ir" || bulletsData.guidanceType == "optical") {
       let targetSignatureType = bulletsData?.targetSignatureType != null ? bulletsData?.targetSignatureType : bulletsData?.visibilityType
       addProp(p, loc("missile/guidance"),
-        loc($"missile/guidance/{targetSignatureType == "optic" ? "tv" : "ir"}"))
+        loc($"missile/guidance/{ "".concat(targetSignatureType == "optic" ? "tv" : "ir", missileGuidanceFeature)}"))
       if (bulletsData?.bulletType == "aam" || bulletsData?.bulletType == "sam_tank") {
         if ((bulletsData?.gateWidth != null && bulletsData.gateWidth < bulletsData.fov) ||
              bulletsData.bandMaskToReject != 0)
@@ -443,7 +448,7 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard = fal
     }
     else if (bulletsData.guidanceType == "radar") {
       addProp(p, loc("missile/guidance"),
-        loc($"missile/guidance/{bulletsData.activeRadar ? "ARH" : "SARH"}"))
+        loc($"missile/guidance/{ "".concat(bulletsData.activeRadar ? "ARH" : "SARH", missileGuidanceFeature)}"))
 
       if (bulletsData?.groundClutter != null && bulletsData?.dopplerSpeed != null)
         if (!bulletsData.groundClutter || bulletsData.dopplerSpeed)
@@ -462,7 +467,7 @@ function addAdditionalBulletsInfoToDesc(bulletsData, descTbl, isBulletCard = fal
     }
     else {
       addProp(p, loc("missile/guidance"),
-        loc($"missile/guidance/{bulletsData.guidanceType}"))
+        loc($"missile/guidance/{"".concat(bulletsData.guidanceType, missileGuidanceFeature)}"))
       if ("laserRange" in bulletsData)
         addProp(p, loc("missile/seekerRange"),
           measureType.DISTANCE.getMeasureUnitsText(bulletsData.laserRange))
@@ -716,7 +721,8 @@ function buildBulletsData(bullet_parameters, bulletsSet = null) {
       bulletsData[p] <- bullet_params?[p] ?? 0
 
     foreach (p in ["reloadTimes", "autoAiming", "irBeaconBand", "isBeamRider", "timeLife", "guaranteedRange", "rangeMax",
-      "weaponBlkPath", "guidanceType", "targetSignatureType", "radarRange", "laserRange", "loadFactorMax"]) {
+      "weaponBlkPath", "guidanceType", "targetSignatureType", "radarRange", "laserRange", "loadFactorMax",
+      "inertialNavigation", "inertialNavigationDriftSpeed", "datalink"]) {
       if (p in bullet_params)
         bulletsData[p] <- bullet_params[p]
     }

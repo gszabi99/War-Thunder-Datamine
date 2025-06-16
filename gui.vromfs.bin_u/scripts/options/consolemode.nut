@@ -12,7 +12,7 @@ let { get_gui_option_in_mode, set_gui_option_in_mode } = require("%scripts/optio
 
 let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
 
-::get_is_console_mode_force_enabled <- function get_is_console_mode_force_enabled() {
+function getIsConsoleModeForceEnabled() {
   return isPlatformSony
          || isPlatformXbox
          || is_platform_android
@@ -20,8 +20,8 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
          || (is_steam_big_picture() && hasXInputDevice())
 }
 
-::get_is_console_mode_enabled <- function get_is_console_mode_enabled() {
-  if (::get_is_console_mode_force_enabled())
+function getIsConsoleModeEnabled() {
+  if (getIsConsoleModeForceEnabled())
     return true
 
   if (isProfileReceived.get())
@@ -30,8 +30,8 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
   return getSystemConfigOption("use_gamepad_interface", false)
 }
 
-::switch_show_console_buttons <- function switch_show_console_buttons(showCB) {
-  if (::get_is_console_mode_force_enabled() && !showCB)
+function switchShowConsoleButtons(showCB) {
+  if (getIsConsoleModeForceEnabled() && !showCB)
     return false
   if (showCB == showConsoleButtons.value)
     return false
@@ -51,4 +51,7 @@ let showConsoleButtons = mkWatched(persist, "showConsoleButtons", false)
 
 return {
   showConsoleButtons
+  getIsConsoleModeForceEnabled
+  getIsConsoleModeEnabled
+  switchShowConsoleButtons
 }

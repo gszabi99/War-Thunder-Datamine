@@ -52,6 +52,7 @@ let getNavigationImagesText = require("%scripts/utils/getNavigationImagesText.nu
 let { getOptionsMode } = require("%scripts/options/options.nut")
 let { checkDiffPkg, checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { getBriefingOptions } = require("%scripts/briefing.nut")
 
 const SAVEDATA_PROGRESS_MSG_ID = "SAVEDATA_IO_OPERATION"
 let MODIFICATION_TUTORIAL_CHAPTERS = ["tutorial_aircraft_modification", "tutorial_tank_modification"]
@@ -778,7 +779,7 @@ let CampaignChapter = class (gui_handlers.BaseGuiHandlerWT) {
       select_mission(this.missionBlk, this.gm != GM_DOMINATION && this.gm != GM_SKIRMISH)
 
     let gt = get_game_type()
-    let optionItems = ::get_briefing_options(this.gm, gt, this.missionBlk)
+    let optionItems = getBriefingOptions(this.gm, gt, this.missionBlk)
     let diffOption = u.search(optionItems, function(item) { return getTblValue(0, item) == USEROPT_DIFFICULTY })
     this.needCheckDiffAfterOptions = diffOption != null
 

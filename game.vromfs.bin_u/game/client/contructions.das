@@ -25,6 +25,7 @@ def try_build_object_es(evt : Event;
                         buildingRadius : float;
                         avaliableAngles : float2;
                         transform : float3x4;
+                        var builder_preview__owner : EntityId&;
                         builder_preview__collRes : CollisionResource const?;
                         builder_preview__collObj : CollisionObject;
                         builder_preview__collObjOffset : float;
@@ -69,6 +70,7 @@ def try_build_object_es(evt : Event;
       hud_notify_script("hint:building_forbidden_obstacles:show", eventData)
   else
     buildingTimer = buildingTime
+    builder_preview__owner = hero.eid
     *hero |> toggleBuildingMode()
     simpleObject__transparentColor = float3(0.5, 0.5, 0.5)
 
@@ -89,6 +91,7 @@ def building_process_update_es(info : UpdateStageInfoAct;
                                var buildingTimer : float&;
                                var timeDirSign : int&;
                                transform : float3x4;
+                               builder_preview__owner : EntityId;
                                var simpleObject__visibleList : BoolList&;
                                buildingTime : float;
                                var debuffUpdateTimer : float&;
@@ -100,7 +103,7 @@ def building_process_update_es(info : UpdateStageInfoAct;
   let prevTimerDirSign = timeDirSign
   timeDirSign = 0
   if buildingTimer > 0.
-    let hero = get_controlled_hero()
+    let hero = get_unit_by_eid(builder_preview__owner)
     if hero != null && !hero.isDelayed
       let inArea = length_sq(transform[3] - hero.pos) < buildingRadius * buildingRadius
       if inArea

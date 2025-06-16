@@ -62,10 +62,14 @@ gui_handlers.SelectCrew <- class (gui_handlers.BaseGuiHandlerWT) {
   canSetCurUnit = false
 
   function initScreen() {
+    if (this.unit == null || !this.unit.isUsable()) {
+      this.goBack()
+      return
+    }
+
     this.canSetCurUnit = !this.isHandlerUnitInSlotbar()
 
-    if (!this.unit || !this.unit.isUsable() || (!this.canSetCurUnit && !this.dragAndDropMode)
-        || (this.unitObj != null && !this.unitObj.isValid())) {
+    if ((!this.canSetCurUnit && !this.dragAndDropMode) || (this.unitObj != null && !this.unitObj.isValid())) {
       this.goBack()
       return
     }

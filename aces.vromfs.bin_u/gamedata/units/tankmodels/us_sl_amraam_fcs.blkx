@@ -19,6 +19,7 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
+  "hasSniperView": false,
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
@@ -48,9 +49,6 @@
   "radarDeployTime": 2.0,
   "radarCanLockTargetFromTPV": false,
   "sensorTargetTurretTrack": false,
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "ikGunner": [
     {
       "model": "us_gunner_char",
@@ -348,11 +346,6 @@
       "ex_decor_l_06_dm": {},
       "ex_decor_07_dm": {}
     },
-    "glass": {
-      "armorClass": "armored_glass",
-      "armorThickness": 40.0,
-      "turret_01_front_dm": {}
-    },
     "body_side_screens": {
       "armorClass": "t_90_rubber_fabric_screens",
       "hp": 10.0,
@@ -375,6 +368,8 @@
       "wheel_l_01_dm": {},
       "wheel_r_02_dm": {},
       "wheel_l_02_dm": {},
+      "wheel_r_03_dm": {},
+      "wheel_l_03_dm": {},
       "wheel_l_drive_dm": {},
       "wheel_r_drive_dm": {},
       "wheel_support_dm": {},
@@ -1907,7 +1902,7 @@
     "TrackSoundPathStudio": "ground/engines",
     "TrackSoundName": "tracks_wheels",
     "TrackSoundNameCockpit": "tracks_wheels_interior",
-    "turret_turn": "turret_turn_servo",
+    "turret_turn": "",
     "EngineNameAi": "engine_truck_ai",
     "TrackSoundNameAi": "tracks_ai_wheels"
   },
@@ -2014,7 +2009,7 @@
     },
     "collisionProps": {
       "cls_turret": "convex_hull",
-      "cls_body_01": "convex_hull",
+      "cls_body": "convex_hull",
       "cls_body_02": "convex_hull"
     },
     "engine": {
@@ -3242,9 +3237,9 @@
       -9.5
     ],
     "headPosOnShooting": [
-      -0.0,
+      1.15,
       3.4,
-      1.0
+      0.0
     ],
     "zoomOutFov": 40.0,
     "zoomInFov": 21.0,
@@ -3266,13 +3261,11 @@
     "art_support": {},
     "manual_extinguisher": {},
     "tank_tool_kit": {},
-    "new_tank_horizontal_aiming": {},
-    "new_tank_vertical_aiming": {},
     "tank_medical_kit": {
-      "image": "#ui/gameuiskin#tank_reinforcement_us"
+      "image": "!#ui/gameuiskin#tank_reinforcement_us.avif"
     },
     "tank_medical_kit_expendable": {
-      "image": "#ui/gameuiskin#tank_reinforcement_us"
+      "image": "!#ui/gameuiskin#tank_reinforcement_us.avif"
     },
     "airstrike": {},
     "improved_optics": {},
@@ -3292,17 +3285,6 @@
         "count": 1
       }
     ]
-  },
-  "nightVision": {
-    "driverIr": {
-      "resolution": [
-        800,
-        600
-      ],
-      "lightMult": 5.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.2
-    }
   },
   "default_skin": {
     "name": "default",

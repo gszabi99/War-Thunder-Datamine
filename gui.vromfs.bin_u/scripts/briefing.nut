@@ -33,7 +33,7 @@ let { unitNameForWeapons } = require("%scripts/weaponry/unitForWeapons.nut")
 let { isMissionForUnitType, isSkirmishWithKillStreaks } = require("%scripts/missions/missionsUtils.nut")
 let { getOptionsMode } = require("%scripts/options/options.nut")
 
-::get_briefing_options <- function get_briefing_options(gm, gt, missionBlk) {
+function getBriefingOptions(gm, gt, missionBlk) {
   let optionItems = []
   if (is_benchmark_game_mode() || ::custom_miss_flight)
     return optionItems
@@ -288,7 +288,7 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
 
     this.optionsContainers = []
 
-    let optionItems = ::get_briefing_options(gm, gt, this.missionBlk)
+    let optionItems = getBriefingOptions(gm, gt, this.missionBlk)
     let container = create_options_container("briefing_options", optionItems, true)
     this.guiScene.replaceContentFromText(this.scene.findObject("optionslist"), container.tbl, container.tbl.len(), this)
     if (optionItems.len() > 0) {
@@ -641,4 +641,8 @@ gui_handlers.Briefing <- class (gui_handlers.GenericOptions) {
   missionName = null
   missionBlk = null
   picture = ""
+}
+
+return {
+  getBriefingOptions
 }

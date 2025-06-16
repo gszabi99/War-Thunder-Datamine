@@ -22,13 +22,14 @@ let { hasBayDoor, hasSchraegeMusik, hasThrustReverse, hasExternalFuelTanks, hasC
   getDisplaysWithTogglablePagesBitMask, hasPrimaryWeapons, hasAiGunners, hasGunStabilizer,
   hasAlternativeShotFrequency, getWeaponsTriggerGroupsMask, hasCockpit, hasGunners, hasBombview, hasOpticsFps, hasTvOpticalGuidance,
   hasMissionBombingZones, getEnginesCount, hasFeatheringControl, canUseManualEngineControl, getEngineControlBitMask,
-  hasSpecialWeaponAdditionalSight, isGearsExtended, isMouseAimRollOverride
+  hasSpecialWeaponAdditionalSight, hasSensorsControl, isGearsExtended, isMouseAimRollOverride
 } = require("vehicleModel")
 let { deferOnce } = require("dagor.workcycle")
 let getHandler = @() handlersManager.findHandlerClassInScene(gui_handlers.multifuncMenuHandler)
 let toggleShortcut = @(shortcutId)  getHandler()?.toggleShortcut(shortcutId)
 let { has_secondary_weapons } = require("weaponSelector")
 let { getFullUnitBlk, getFmFile } = require("%scripts/unit/unitParams.nut")
+
 
 
 
@@ -171,6 +172,8 @@ function hasRadarInSensorsBlk(sensorsBlk) {
 }
 
 let hasRadar = memoizeByMission(function hasRadar(unitId, secondaryWeaponId) {
+  if (hasSensorsControl())
+    return true
   let unitBlk = getFullUnitBlk(unitId)
   if (hasRadarInSensorsBlk(unitBlk?.sensors))
     return true
@@ -678,6 +681,10 @@ let cfg = {
       null
     ]
   },
+
+
+
+
 
 
 

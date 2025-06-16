@@ -6,7 +6,7 @@ require WTDamageModel
 require %game.utils.utils_common
 require %game.dm.fire_system_events
 require %game.events
-require %game.unit_events
+require %game.unit.unit_events
 
 
 [es(no_order)]

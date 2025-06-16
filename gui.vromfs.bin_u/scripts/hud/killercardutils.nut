@@ -8,6 +8,7 @@ let { getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unitInfoRoles.nut
 let { get_mission_mode } = require("%appGlobals/ranks_common_shared.nut")
 let { getProjectileNameLoc, getProjectileIconLayers } = require("%scripts/weaponry/bulletsInfo.nut")
 let { getAvatarIconIdByUserInfo } = require("%scripts/user/avatars.nut")
+let { getPlayerName } = require("%scripts/user/remapNick.nut")
 
 function isNeedUpdateKillerCardByUserInfo(oldUserInfo, newUserInfo) {
   return newUserInfo?.pilotIcon != oldUserInfo?.pilotIcon
@@ -45,7 +46,7 @@ function getKillerCardView(messageData, userInfo) {
   let battleRating = unit.getBattleRating(get_mission_mode())
   let battleRatingText = loc("ui/colon")
     .concat(loc("shop/battle_rating"), colorize("@white", format("%.1f", battleRating)))
-  let shellNameLoc = killerProjectileName != "" ? getProjectileNameLoc(killerProjectileName, true) : ""
+  let shellNameLoc = killerProjectileName != "" ? getProjectileNameLoc(killerProjectileName, true, unit) : ""
   let hasShellInfo = shellNameLoc != ""
   let shellIconLayers = getProjectileIconLayers(killerProjectileName)
 
@@ -61,7 +62,7 @@ function getKillerCardView(messageData, userInfo) {
       ? userInfo.background
       : "profile_header_default"
 
-    name = killer.name
+    name = utf8(getPlayerName(killer.name))
     clanTag = killer.clanTag
     title = (userInfo?.title ?? "") != "" ? loc($"title/{killer.title}") : ""
 

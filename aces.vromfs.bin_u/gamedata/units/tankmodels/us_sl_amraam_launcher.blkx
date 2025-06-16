@@ -19,6 +19,7 @@
   "damagedExhaustFx": "tank_broken_exhaust",
   "thermalExhaustFx": "tank_exhaust_nightvision",
   "dustFx": "",
+  "hasSniperView": false,
   "support_unit_class": "structures/ussr_152mm_d1",
   "support_unit_tag": "artillery",
   "useSimpleDeathConditionsAndEffects": false,
@@ -44,9 +45,6 @@
   "destroysRendInstances": true,
   "destroysTrees": true,
   "type": "typeSPAA",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "ikGunner": [
     {
       "model": "us_gunner_char",
@@ -339,11 +337,6 @@
       "ex_decor_01_dm": {},
       "ex_decor_r_06_dm": {},
       "ex_decor_l_06_dm": {}
-    },
-    "glass": {
-      "armorClass": "armored_glass",
-      "armorThickness": 40.0,
-      "turret_01_front_dm": {}
     },
     "gun": {
       "armorClass": "tank_barrel",
@@ -1919,13 +1912,24 @@
         "emitterGenFmt": "bone_rocket_%02d",
         "emittersHierarchy": true,
         "ammoDpGenFmt": "ammo_turret_%02d_dm",
-        "recoilMultiplier": 0.0,
+        "recoilMultiplier": 0.1,
         "stopForFire": true,
-        "maxSpeedForFire": 2.0,
+        "maxSpeedForFire": 5.0,
+        "readyToFireVar": "sl_amraam_launcher_action",
+        "readyToFireTime": 5.0,
+        "battlePositionSpeed": 8.0,
+        "lagStopForFireTime": 1.0,
+        "createGunEffects": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "defaultYaw": 0.0,
-        "defaultPitch": 30.0,
+        "defaultPitch": 0.0,
         "allowableDelta": 30.0,
-        "barrelDP": "gun_barrel_01_dm",
+        "barrelDP": "gun_barrel_dm",
         "brokenBarrelAllowShoot": false,
         "speedYaw": 100.0,
         "speedPitch": 0.0,
@@ -1964,18 +1968,7 @@
             "fire_control_system_dm"
           ],
           "shootingDmPart": "fire_control_system_dm",
-          "rotatedTurret": "bone_turret",
-          "linkedAnimPart": {
-            "verNode": "turret_01",
-            "verLimits": [
-              5.0,
-              45.0
-            ],
-            "verOriginLimits": [
-              5.0,
-              45.0
-            ]
-          }
+          "rotatedTurret": "bone_turret"
         },
         "limits": {
           "yaw": [
@@ -1983,10 +1976,30 @@
             180.0
           ],
           "pitch": [
-            30.0,
-            30.0
+            0.0,
+            0.0
           ]
-        }
+        },
+        "onShellStartFx": [
+          {
+            "fx": "dust_expanding_pyro",
+            "weapOffset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "lifetime": 2.0
+          },
+          {
+            "fx": "dust_expanding_smoke",
+            "bboxFract": [
+              -0.5,
+              0.1,
+              0.0
+            ],
+            "lifetime": 6.0
+          }
+        ]
       },
       {
         "trigger": "gunner1",
@@ -2005,10 +2018,16 @@
         "stopForFire": true,
         "maxSpeedForFire": 2.0,
         "circleAim": false,
-        "barrelDP": "gun_barrel_01_dm",
+        "barrelDP": "gun_barrel_dm",
         "createGunEffects": true,
+        "startFx": "start_torpedo",
+        "startFxOffset": [
+          1.0,
+          0.0,
+          0.0
+        ],
         "defaultYaw": 0.0,
-        "defaultPitch": 30.0,
+        "defaultPitch": 0.0,
         "allowableDelta": 30.0,
         "speedYaw": 100.0,
         "speedPitch": 0.0,
@@ -2056,10 +2075,30 @@
             180.0
           ],
           "pitch": [
-            30.0,
-            30.0
+            0.0,
+            0.0
           ]
-        }
+        },
+        "onShellStartFx": [
+          {
+            "fx": "dust_expanding_pyro",
+            "weapOffset": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "lifetime": 2.0
+          },
+          {
+            "fx": "dust_expanding_smoke",
+            "bboxFract": [
+              -0.5,
+              0.1,
+              0.0
+            ],
+            "lifetime": 6.0
+          }
+        ]
       }
     ]
   },
@@ -3414,28 +3453,16 @@
     "manual_extinguisher": {},
     "tank_tool_kit": {},
     "new_tank_horizontal_aiming": {},
-    "new_tank_vertical_aiming": {},
     "tank_medical_kit": {
-      "image": "#ui/gameuiskin#tank_reinforcement_us"
+      "image": "!#ui/gameuiskin#tank_reinforcement_us.avif"
     },
     "tank_medical_kit_expendable": {
-      "image": "#ui/gameuiskin#tank_reinforcement_us"
+      "image": "!#ui/gameuiskin#tank_reinforcement_us.avif"
     },
     "airstrike": {},
     "improved_optics": {},
     "178mm_aim_120c_aam": {},
     "127mm_aim_9x_aam": {}
-  },
-  "nightVision": {
-    "driverIr": {
-      "resolution": [
-        800,
-        600
-      ],
-      "lightMult": 5.0,
-      "ghosting": 0.7,
-      "noiseFactor": 0.2
-    }
   },
   "default_skin": {
     "name": "default",

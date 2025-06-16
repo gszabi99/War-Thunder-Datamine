@@ -11,9 +11,10 @@
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
   "havePointOfInterestDesignator": true,
+  "laserDesignator": true,
   "ilsF15e": true,
   "mfdCamLitening2": true,
-  "rwrIndicator": "AN/ALR-56",
+  "rwrIndicator": "AN/ALR-67 MFD",
   "isBwOpticSight": true,
   "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
@@ -1986,21 +1987,12 @@
   },
   "cockpit": {
     "targetingPodFov": [
-      18.0,
-      1.5
+      4.0,
+      0.35
     ],
-    "sightInFov": [
-      1.5,
-      50.5
-    ],
-    "sightOutFov": [
-      18.0,
-      40.5
-    ],
-    "sightFov": [
-      1.0,
-      1.0
-    ],
+    "sightInFov": 0.35,
+    "sightOutFov": 4.0,
+    "sightFov": 1.0,
     "headPos": [
       4.65,
       0.88,
@@ -2279,8 +2271,12 @@
             0.5,
             0.5
           ],
-          "cameraFromShell": true,
+          "cameraFromTargetingPod": true,
           "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
             {
               "type": "target_tracking",
               "turretIdx": 0
@@ -2420,15 +2416,11 @@
             1.0,
             0.5
           ],
-          "cameraFromShell": true,
+          "cameraFromTargetingPod": true,
           "page": [
             {
               "type": "custom",
               "pageName": "f2aWpn"
-            },
-            {
-              "type": "target_tracking",
-              "turretIdx": 0
             },
             {
               "type": "radar",
@@ -2475,6 +2467,94 @@
             {
               "type": "rwr",
               "scale": 1.0
+            },
+            {
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
             }
           ]
         },
@@ -2485,86 +2565,97 @@
             0.5,
             1.0
           ],
-          "page": {
-            "type": "hsd",
-            "scale": 1.0,
-            "color": [
-              0,
-              0,
-              0,
-              255
-            ],
-            "font": "hud",
-            "fontSize": 19,
-            "lineWidth": 2.0,
-            "lineColor": [
-              0,
-              255,
-              120,
-              255
-            ],
-            "orient": "northUp",
-            "centerMarkType": "cross",
-            "centerMarkFillColor": [
-              0,
-              255,
-              120,
-              255
-            ],
-            "centerMarkLineColor": [
-              0,
-              255,
-              120,
-              255
-            ],
-            "centerMarkScale": 0.1,
-            "centerMarkSpeed": true,
-            "spi": true,
-            "spiColor": [
-              0,
-              255,
-              120,
-              255
-            ],
-            "spiInfo": true,
-            "distScale": false,
-            "distScaleBeyondAzScale": false,
-            "distScaleStepSize": 5000.0,
-            "distScaleColor": [
-              255,
-              255,
-              255,
-              255
-            ],
-            "distScaleNumbers": false,
-            "distScaleNumbersAngle": 45.0,
-            "distScaleNumbersFillColor": [
-              0,
-              0,
-              0,
-              255
-            ],
-            "azScaleType": "dots",
-            "azScaleSize": 12000.0,
-            "azScaleColor": [
-              0,
-              255,
-              120,
-              255
-            ],
-            "headingIndFillColor": [
-              0,
-              0,
-              0,
-              255
-            ],
-            "centerCross": false,
-            "time": false,
-            "mapBackground": true,
-            "markers": true,
-            "extent": 30000.0,
-            "metricUnits": false
-          }
+          "cameraFromTargetingPod": true,
+          "page": [
+            {
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2616,8 +2707,8 @@
     },
     "sightTPodThermal": {
       "resolution": [
-        800,
-        600
+        1200,
+        800
       ],
       "noiseFactor": 0.04,
       "index": 2
@@ -2666,13 +2757,13 @@
         -0.15,
         0.0
       ],
-      "head": "optic1_turret",
+      "head": "optic3_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -30.0,
-        30.0,
-        -30.0,
-        30.0
+        -89.0,
+        89.0,
+        -155.0,
+        5.0
       ],
       "opticType": "targeting",
       "turretNo": 0,
@@ -2687,6 +2778,9 @@
       },
       {
         "blk": "gameData/sensors/jp_j_apr_4.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
       }
     ]
   },
@@ -2850,9 +2944,37 @@
               }
             },
             {
+              "dummy": true,
+              "trigger": "gunner0",
+              "triggerGroup": "primary",
+              "blk": "gameData/Weapons/dummy_weapon.blk",
+              "emitter": "optic3_gun",
+              "defaultYaw": 0.0,
+              "defaultPitch": 0.0,
+              "speedYaw": 25.0,
+              "speedPitch": 25.0,
+              "parkInDeadzone": false,
+              "aimForOperatedShell": true,
+              "turret": {
+                "head": "optic3_turret",
+                "gun": "optic3_gun",
+                "mainTurret": true
+              },
+              "limits": {
+                "yaw": [
+                  -90.0,
+                  90.0
+                ],
+                "pitch": [
+                  -90.0,
+                  90.0
+                ]
+              }
+            },
+            {
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
-              "emitter": "nozzle1_25",
+              "emitter": "emtr_flare4",
               "bullets": 30,
               "external": true,
               "separate": true,
@@ -2861,7 +2983,25 @@
             {
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
-              "emitter": "nozzle1_27",
+              "emitter": "emtr_flare5",
+              "bullets": 30,
+              "external": true,
+              "separate": true,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true,
+              "separate": true,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare1",
               "bullets": 30,
               "external": true,
               "separate": true,
@@ -3074,7 +3214,7 @@
             }
           },
           {
-            "iconType": "guided_bomb_small_jdam_group_x2",
+            "iconType": "guided_bomb_middle_ljdam_group_x2",
             "name": "bru_55_gbu_54",
             "reqModification": "us_gbu54b",
             "ShowNodes": {
@@ -3087,10 +3227,14 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {
@@ -3288,7 +3432,7 @@
             }
           },
           {
-            "iconType": "guided_bomb_small_jdam_group_x2",
+            "iconType": "guided_bomb_middle_ljdam_group_x2",
             "name": "bru_55_gbu_54",
             "reqModification": "us_gbu54b",
             "ShowNodes": {
@@ -3301,10 +3445,14 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {
@@ -3431,7 +3579,7 @@
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {
@@ -3495,26 +3643,27 @@
         "order": 11,
         "WeaponPreset": {
           "iconType": "flir_container",
-          "name": "j_aaq_2_pod",
-          "reqModification": "j_aaq_2_pod",
+          "name": "sniper_atp_pod",
+          "reqModification": "sniper_atp_pod",
           "hasTargetingPod": true,
           "ShowNodes": {
             "node": [
-              "jp_i_aaq2_flir_pod",
-              "optic1_turret",
-              "optic1_gun"
+              "pylon_sniper_atp",
+              "an_aaq_33_sniper_atp",
+              "optic3_turret",
+              "optic3_gun"
             ]
           },
           "Weapon": {
             "trigger": "targetingPod",
-            "blk": "gameData/Weapons/equipment/jp_i_aaq2_targeting_pod.blk",
-            "emitter": "optic1_turret",
+            "blk": "gameData/Weapons/equipment/us_sniper_atp_targeting_pod.blk",
+            "emitter": "optic3_turret",
             "bullets": 1
           },
           "sensors": {
             "sensor": {
               "blk": "gameData/sensors/ir_tracker_tgp.blk",
-              "node": "optic1_gun",
+              "node": "optic3_gun",
               "powerButtonIdx": -1
             }
           }
@@ -3614,7 +3763,7 @@
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {
@@ -3837,7 +3986,7 @@
             }
           },
           {
-            "iconType": "guided_bomb_small_jdam_group_x2",
+            "iconType": "guided_bomb_middle_ljdam_group_x2",
             "name": "bru_55_gbu_54",
             "reqModification": "us_gbu54b",
             "ShowNodes": {
@@ -3850,10 +3999,14 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {
@@ -4049,7 +4202,7 @@
             }
           },
           {
-            "iconType": "guided_bomb_small_jdam_group_x2",
+            "iconType": "guided_bomb_middle_ljdam_group_x2",
             "name": "bru_55_gbu_54",
             "reqModification": "us_gbu54b",
             "ShowNodes": {
@@ -4062,10 +4215,14 @@
               "external": true,
               "separate": true,
               "machLimit": 1.01
+            },
+            "DependentWeaponPreset": {
+              "slot": 7,
+              "preset": "sniper_atp_pod"
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {
@@ -4307,12 +4464,12 @@
       "modClass": "weapon",
       "tier": 4
     },
-    "j_aaq_2_pod": {
+    "sniper_atp_pod": {
       "modClass": "weapon",
       "tier": 1
     },
     "us_gbu_38": {
-      "prevModification": "j_aaq_2_pod",
+      "reqModification": "sniper_atp_pod",
       "modClass": "weapon",
       "tier": 2
     },
@@ -4322,7 +4479,7 @@
       "tier": 3
     },
     "us_gbu54b": {
-      "prevModification": "us_gbu_31",
+      "reqModification": "us_gbu_31",
       "modClass": "weapon",
       "tier": 4
     },

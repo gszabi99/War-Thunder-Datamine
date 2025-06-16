@@ -30,23 +30,6 @@ let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 
 dagui_propid_add_name_id("_iconBulletName")
 
-let bulletsLocIdByCaliber = [
-  "air_target", "air_targets", "all_tracers", "antibomber", "antitank", "apit", "apt",
-  "armor_target", "armor_targets", "fighter", "ground_targets", "mix", "night", "stealth",
-  "tracer", "tracers", "turret_ap", "turret_ap_he", "turret_ap_t", "turret_api", "turret_apit",
-  "turret_apt", "turret_he", "turret_het", "universal"
-]
-
-function getLocIdPrefixByCaliber(name) {
-  foreach(id in bulletsLocIdByCaliber)
-    if (name.endswith(id))
-      return id
-  return name
-}
-
-let getBulletBeltShortLocId = @(id) (id == "" || id.endswith("_default")) ? "modification/default_bullets"
-  : $"{getLocIdPrefixByCaliber(id)}/name/short"
-
 function getBulletsCountText(curVal, maxVal, unallocated, guns) {
   local restText = ""
   if (unallocated && curVal < maxVal)
@@ -760,5 +743,4 @@ return {
   createModItem                   = createModItem
   createModBundle                 = createModBundle
   updateItemBulletsSlider         = updateItemBulletsSlider
-  getBulletBeltShortLocId
 }

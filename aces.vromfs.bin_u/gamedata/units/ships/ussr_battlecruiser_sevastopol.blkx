@@ -1477,6 +1477,11 @@
       },
       "turret_01_bottom_dm": {
         "armorClass": "ship_RGA",
+        "armorThickness": 90.0,
+        "hp": 10000.0
+      },
+      "turret_04_bottom_dm": {
+        "armorClass": "ship_RGA",
         "armorThickness": 50.0,
         "hp": 10000.0
       },
@@ -1511,6 +1516,11 @@
       },
       "turret_02_bottom_dm": {
         "armorClass": "ship_RGA",
+        "armorThickness": 90.0,
+        "hp": 10000.0
+      },
+      "turret_05_bottom_dm": {
+        "armorClass": "ship_RGA",
         "armorThickness": 50.0,
         "hp": 10000.0
       },
@@ -1543,7 +1553,12 @@
         "armorThickness": 320.0,
         "hp": 10000.0
       },
-      "turret_11_bottom_dm": {
+      "turret_03_bottom_dm": {
+        "armorClass": "ship_RGA",
+        "armorThickness": 90.0,
+        "hp": 10000.0
+      },
+      "turret_06_bottom_dm": {
         "armorClass": "ship_RGA",
         "armorThickness": 50.0,
         "hp": 10000.0
@@ -2091,13 +2106,13 @@
       "onHit": [
         {
           "damageType": "fire",
-          "expl": 1.0,
+          "expl": 0.7,
           "damage": 55.0,
           "fHitCritical": false
         },
         {
           "damageType": "fire",
-          "expl": 0.08,
+          "expl": 0.9,
           "damage": 74.0,
           "fHitCritical": false
         }
@@ -2105,13 +2120,13 @@
     },
     "ammunition_storage_charges": {
       "onKill": {
-        "fire": 1.0,
+        "fire": 0.7,
         "fHitCritical": false
       },
       "onHit": [
         {
           "damageType": "fire",
-          "fire": 1.0,
+          "fire": 0.9,
           "damage": 55.0,
           "fHitCritical": false
         },
@@ -8861,7 +8876,7 @@
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
         "ammunition_storage_shells_01_dm": {
-          "count": 522
+          "count": 252
         }
       },
       "charges": {
@@ -8869,7 +8884,7 @@
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_01_dm": {
-          "count": 522
+          "count": 252
         }
       }
     },
@@ -8898,7 +8913,7 @@
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
         "ammunition_storage_shells_02_dm": {
-          "count": 522
+          "count": 252
         }
       },
       "charges": {
@@ -8906,7 +8921,7 @@
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_02_dm": {
-          "count": 522
+          "count": 252
         }
       }
     },
@@ -8935,7 +8950,7 @@
         "fatalExplosion": false,
         "damageEffect": "ammunition_storage_shells",
         "ammunition_storage_shells_03_dm": {
-          "count": 522
+          "count": 252
         }
       },
       "charges": {
@@ -8943,7 +8958,7 @@
         "fatalFire": true,
         "damageEffect": "ammunition_storage_charges",
         "ammunition_storage_charges_03_dm": {
-          "count": 522
+          "count": 252
         }
       }
     },
@@ -11003,6 +11018,13 @@
       "nameLocId": "ship_flag_christmas_03/name",
       "descLocId": "ship_flag_christmas_03/desc",
       "texture": "flag_christmas_03_c*"
+    },
+    "ship_flag_hirihoukenten_01": {
+      "category": "other",
+      "unlockId": "ship_flag_hirihoukenten_01",
+      "nameLocId": "ship_flag_hirihoukenten_01/name",
+      "descLocId": "ship_flag_hirihoukenten_01/desc",
+      "texture": "flag_hirihoukenten_01_c*"
     }
   }
 }

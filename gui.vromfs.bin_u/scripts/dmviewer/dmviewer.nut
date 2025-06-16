@@ -237,7 +237,7 @@ dmViewer = {
     if (! this.unit)
       return
     this.isSecondaryModsValid = check_unit_mods_update(this.unit)
-            && ::check_secondary_weapon_mods_recount(this.unit)
+      && ::check_secondary_weapon_mods_recount(this.unit)
   }
 
   function onEventSecondWeaponModsUpdated(params) {
@@ -817,6 +817,7 @@ dmViewer = {
   function onEventUnitModsRecount(p) {
     if (p?.unit != this.unit)
       return
+    this.updateSecondaryMods()
     this.resetXrayCache()
   }
 

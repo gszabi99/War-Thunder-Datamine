@@ -527,6 +527,14 @@ return [
     showFunc = @() hasFeature("TankSupportPlane")
   }
   {
+    id = "ID_SLAVE_UNIT_PROHIBIT_0"
+    checkAssign = false
+  }
+  {
+    id = "ID_SLAVE_UNIT_PROHIBIT_1"
+    checkAssign = false
+  }
+  {
     id = "ID_TOGGLE_CONSTRUCTION_MODE"
     checkAssign = false
   }

@@ -10,7 +10,8 @@ let { eventbus_subscribe } = require("eventbus")
 let { blkFromPath, eachParam, copyParamsToTable } = require("%sqstd/datablock.nut")
 let { ceil, change_bit, interpolateArray } = require("%sqstd/math.nut")
 let { WEAPON_TYPE, getLastWeapon, isCaliberCannon, getCommonWeapons,
-  getLastPrimaryWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath
+  getLastPrimaryWeapon, getPrimaryWeaponsList, getWeaponNameByBlkPath,
+  getBulletBeltShortLocId
 } = require("%scripts/weaponry/weaponryInfo.nut")
 let { AMMO, getAmmoAmountData } = require("%scripts/weaponry/ammoInfo.nut")
 let { isModResearched, isModAvailableOrFree, getModificationByName,
@@ -34,6 +35,7 @@ let { getFullUnitBlk } = require("%scripts/unit/unitParams.nut")
 let { isGameModeWithSpendableWeapons } = require("%scripts/gameModes/gameModeManagerState.nut")
 let { doesLocTextExist } = require("dagor.localize")
 let { getSupportUnits } = require("%scripts/unit/supportUnits.nut")
+let { floatToText } = require("%scripts/langUtils/textFormat.nut")
 
 let BULLET_TYPE = {
   ROCKET_AIR          = "rocket_aircraft"
@@ -1243,29 +1245,44 @@ let isPairBulletsGroup = @(bullets) bullets.values.len() == 2
   && bullets.weaponType == WEAPON_TYPE.COUNTERMEASURES
   && !(bullets?.isBulletBelt ?? true)
 
-function isModificationIsShell(unit, mod) {
+function getModBulletSet(unit, mod) {
   let modName = getModifIconItem(unit, mod)?.name ?? mod?.name
-  if (!modName)
-    return false
-
-  let bulletsSet = getBulletsSetData(unit, modName)
-
-  return bulletsSet != null
-    && bulletsSet?.weaponType != WEAPON_TYPE.COUNTERMEASURES 
+  return !modName ? null : getBulletsSetData(unit, modName)
 }
 
-function getProjectileNameLoc(locKey, needToUseBulletTypeName = false) {
+function isShell(bulletsSet) {
+  return bulletsSet?.weaponType != WEAPON_TYPE.COUNTERMEASURES
+}
+
+function isModificationIsShell(unit, mod) {
+  let bulletsSet = getModBulletSet(unit, mod)
+  return bulletsSet != null && isShell(bulletsSet)
+}
+
+function getProjectileNameLoc(locKey, needToUseBulletTypeName = false, unit = null) {
   if (locKey == "artillery")
     return loc("multiplayer/artillery")
   if (doesLocTextExist(locKey))
     return loc(locKey)
   if (doesLocTextExist($"weapons/{locKey}/short"))
     return loc($"weapons/{locKey}/short")
-  if (needToUseBulletTypeName && doesLocTextExist($"{locKey}/name"))
-    return loc($"{locKey}/name")
 
-  if (needToUseBulletTypeName && locKey != "")
-    logerr($"Can't find localization for projectile {locKey}")
+  if (needToUseBulletTypeName) {
+    if (doesLocTextExist($"{locKey}/name"))
+      return loc($"{locKey}/name")
+    if (unit) {
+      let caliber = (unit?.modifications.findvalue(@(m) m.name == locKey).caliber ?? 0) * 1000
+      let bulletLocId = getBulletBeltShortLocId(locKey)
+      if (caliber && doesLocTextExist(bulletLocId)) {
+        let caliberString = caliber % 1 != 0
+          ? format(loc("caliber/mm_decimals"), floatToText(caliber))
+          : format(loc("caliber/mm"), caliber)
+        return $"{caliberString} {loc(bulletLocId)}"
+      }
+    }
+    if (locKey != "")
+      logerr($"Can't find localization for projectile {locKey}")
+  }
   return ""
 }
 

@@ -3,6 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let u = require("%sqStdLibs/helpers/u.nut")
 let { handlerType } = require("%sqDagui/framework/handlerType.nut")
+let { animSwitchCollapsedText, getVisibleCollapsedTextObj } = require("%scripts/promo/promoViewUtils.nut")
 
 gui_handlers.teamUnitsLeftView <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.CUSTOM
@@ -87,11 +88,11 @@ gui_handlers.teamUnitsLeftView <- class (gui_handlers.BaseGuiHandlerWT) {
     this.collapsedInfoUnitLimit = unitLimit
     let text = this.getRespTextByUnitLimit(unitLimit)
     if (needAnim) {
-      ::g_promo_view_utils.animSwitchCollapsedText(this.scene, this.blockId, text)
+      animSwitchCollapsedText(this.scene, this.blockId, text)
       return
     }
 
-    let obj = ::g_promo_view_utils.getVisibleCollapsedTextObj(this.scene, this.blockId)
+    let obj = getVisibleCollapsedTextObj(this.scene, this.blockId)
     if (checkObj(obj))
       obj.setValue(text)
   }

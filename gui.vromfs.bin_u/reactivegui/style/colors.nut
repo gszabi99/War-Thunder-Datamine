@@ -6,7 +6,7 @@ let colors = {
   green = Color(0, 255, 0)
 
   commonIconColor = 0xFFDCDCDC
-  deadIconColor = 0x78321E1E
+  deadIconColor = 0xA0A0A0A0
   orderMarkerColor = 0x7896ffa0
 
   hudBlurBgColor = 0xDCDCDCDC

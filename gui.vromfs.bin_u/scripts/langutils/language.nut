@@ -16,6 +16,8 @@ let { setSystemConfigOption } = require("%globalScripts/systemConfig.nut")
 let { registerRespondent } = require("scriptRespondent")
 let { getCurCircuitOverride } = require("%appGlobals/curCircuitOverride.nut")
 
+let langWithCommaDelimiters = ["fr", "it", "de", "ru", "pl", "cz", "tr", "pt", "uk", "hu", "be", "ro"]
+
 let steamLanguages = freeze({
   English = "english"
   French = "french"
@@ -286,6 +288,7 @@ let g_language = {
   isChineseVersion
   canSwitchGameLocalization
   needCheckLangPack
+  langWithCommaDelimiters
 }
 
 subscribe_handler(g_language, g_listener_priority.DEFAULT_HANDLER)

@@ -38,7 +38,7 @@ let { joystickSetCurSettings, setShortcutsAndSaveControls,
   joystickGetCurSettings, getShortcuts } = require("%scripts/controls/controlsCompatibility.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { set_option, get_option } = require("%scripts/options/optionsExt.nut")
-let { showConsoleButtons } = require("%scripts/options/consoleMode.nut")
+let { showConsoleButtons, switchShowConsoleButtons } = require("%scripts/options/consoleMode.nut")
 let { OPTIONS_MODE_GAMEPLAY, USEROPT_HELPERS_MODE, USEROPT_CONTROLS_PRESET, USEROPT_MOUSE_USAGE,
   USEROPT_MOUSE_USAGE_NO_AIM, userOptionNameByIdx
 } = require("%scripts/options/optionsExtNames.nut")
@@ -163,7 +163,7 @@ local shortcutsNotChangeByPreset = [
   restoreShortcuts(scToRestore, shortcutsNotChangeByPreset)
 
   if (is_platform_pc)
-    ::switch_show_console_buttons(preset.indexof("xinput") != null)
+    switchShowConsoleButtons(preset.indexof("xinput") != null)
 
   if (updateHelpersMode)
     switchHelpersModeAndOption(preset)

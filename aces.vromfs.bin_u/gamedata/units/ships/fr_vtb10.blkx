@@ -42,9 +42,6 @@
   "perfectRangefinder": true,
   "supportsCombinedPriSecTriggers": true,
   "debrisPreset": "debris_preset_boat",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "hideNodesInDmg": {
     "node": "flag"
   },
@@ -148,134 +145,6 @@
       }
     ]
   },
-  "ikGunner": [
-    {
-      "model": "french_sailor_char",
-      "maxHeadHorAngle": 60.0,
-      "maxHeadDownAngle": 60.0,
-      "maxHeadUpAngle": 10.0,
-      "headNode": "Bip01 Head",
-      "pelvisNode": "Bip01 Pelvis",
-      "pelvisTargetNode": "Bip01 Pelvis_",
-      "crouchDelta": [
-        -0.3,
-        -0.3,
-        0.1
-      ],
-      "suffix": "1",
-      "deadHeadAttitudeMin": -55.0,
-      "deadHeadAttitudeMax": -40.0,
-      "ikNode": [
-        {
-          "downNode": "Bip01 L Hand",
-          "midNode": "Bip01 L Forearm",
-          "upNode": "Bip01 L UpperArm",
-          "targetNode": "lefthand_",
-          "flexionDir": [
-            0.5,
-            -0.5,
-            0.3
-          ]
-        },
-        {
-          "downNode": "Bip01 R Hand",
-          "midNode": "Bip01 R Forearm",
-          "upNode": "Bip01 R UpperArm",
-          "targetNode": "righthand_",
-          "flexionDir": [
-            -0.5,
-            -0.5,
-            0.3
-          ]
-        },
-        {
-          "downNode": "Bip01 L Foot",
-          "midNode": "Bip01 L Calf",
-          "upNode": "Bip01 L Thigh",
-          "targetNode": "pedal_lfoot_",
-          "flexionDir": [
-            0.1,
-            1.0,
-            -1.0
-          ]
-        },
-        {
-          "downNode": "Bip01 R Foot",
-          "midNode": "Bip01 R Calf",
-          "upNode": "Bip01 R Thigh",
-          "targetNode": "pedal_rfoot_",
-          "flexionDir": [
-            -0.1,
-            1.0,
-            -1.0
-          ]
-        }
-      ]
-    },
-    {
-      "model": "french_officer_char",
-      "maxHeadHorAngle": 60.0,
-      "maxHeadDownAngle": 60.0,
-      "maxHeadUpAngle": 10.0,
-      "headNode": "Bip01 Head",
-      "pelvisNode": "Bip01 Pelvis",
-      "pelvisTargetNode": "Bip01 Pelvis_",
-      "crouchDelta": [
-        0.0,
-        0.0,
-        0.0
-      ],
-      "suffix": "2",
-      "deadHeadAttitudeMin": -55.0,
-      "deadHeadAttitudeMax": -40.0,
-      "ikNode": [
-        {
-          "downNode": "Bip01 L Hand",
-          "midNode": "Bip01 L Forearm",
-          "upNode": "Bip01 L UpperArm",
-          "targetNode": "lefthand_",
-          "flexionDir": [
-            0.5,
-            -0.5,
-            0.3
-          ]
-        },
-        {
-          "downNode": "Bip01 R Hand",
-          "midNode": "Bip01 R Forearm",
-          "upNode": "Bip01 R UpperArm",
-          "targetNode": "righthand_",
-          "flexionDir": [
-            -0.5,
-            -0.5,
-            0.3
-          ]
-        },
-        {
-          "downNode": "Bip01 L Foot",
-          "midNode": "Bip01 L Calf",
-          "upNode": "Bip01 L Thigh",
-          "targetNode": "pedal_lfoot_",
-          "flexionDir": [
-            -0.2,
-            1.0,
-            -1.0
-          ]
-        },
-        {
-          "downNode": "Bip01 R Foot",
-          "midNode": "Bip01 R Calf",
-          "upNode": "Bip01 R Thigh",
-          "targetNode": "pedal_rfoot_",
-          "flexionDir": [
-            -0.6,
-            1.0,
-            -1.0
-          ]
-        }
-      ]
-    }
-  ],
   "attach": {
     "Bip01 Pelvis_1": "french_sailor_standing",
     "Bip01 Pelvis_2": "french_officer_standing"
@@ -3733,8 +3602,143 @@
       "nameLocId": "ship_flag_christmas_03/name",
       "descLocId": "ship_flag_christmas_03/desc",
       "texture": "flag_christmas_03_c*"
+    },
+    "ship_flag_hirihoukenten_01": {
+      "category": "other",
+      "unlockId": "ship_flag_hirihoukenten_01",
+      "nameLocId": "ship_flag_hirihoukenten_01/name",
+      "descLocId": "ship_flag_hirihoukenten_01/desc",
+      "texture": "flag_hirihoukenten_01_c*"
     }
   },
+  "ikGunner": [
+    {
+      "model": "french_sailor_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        -0.5,
+        -0.8,
+        0.8
+      ],
+      "suffix": "1",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            0.1,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.1,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    },
+    {
+      "model": "french_officer_char",
+      "maxHeadHorAngle": 60.0,
+      "maxHeadDownAngle": 60.0,
+      "maxHeadUpAngle": 10.0,
+      "headNode": "Bip01 Head",
+      "pelvisNode": "Bip01 Pelvis",
+      "pelvisTargetNode": "Bip01 Pelvis_",
+      "crouchDelta": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "suffix": "2",
+      "deadHeadAttitudeMin": -55.0,
+      "deadHeadAttitudeMax": -40.0,
+      "ikNode": [
+        {
+          "downNode": "Bip01 L Hand",
+          "midNode": "Bip01 L Forearm",
+          "upNode": "Bip01 L UpperArm",
+          "targetNode": "lefthand_",
+          "flexionDir": [
+            0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 R Hand",
+          "midNode": "Bip01 R Forearm",
+          "upNode": "Bip01 R UpperArm",
+          "targetNode": "righthand_",
+          "flexionDir": [
+            -0.5,
+            -0.5,
+            0.3
+          ]
+        },
+        {
+          "downNode": "Bip01 L Foot",
+          "midNode": "Bip01 L Calf",
+          "upNode": "Bip01 L Thigh",
+          "targetNode": "pedal_lfoot_",
+          "flexionDir": [
+            -0.2,
+            1.0,
+            -1.0
+          ]
+        },
+        {
+          "downNode": "Bip01 R Foot",
+          "midNode": "Bip01 R Calf",
+          "upNode": "Bip01 R Thigh",
+          "targetNode": "pedal_rfoot_",
+          "flexionDir": [
+            -0.6,
+            1.0,
+            -1.0
+          ]
+        }
+      ]
+    }
+  ],
   "DamageParts": {
     "formatVersion": 2,
     "createSecondaryShatters": false,
@@ -4045,7 +4049,7 @@
           "verNode": "bone_radius_foot_01",
           "verLimits": [
             0.0,
-            12.0
+            10.0
           ],
           "verOriginLimits": [
             0.0,
@@ -4188,6 +4192,19 @@
       "deviation": 0.6,
       "rotation": 2.1,
       "collisionNode": "ex_decor_15_dm"
+    }
+  },
+  "default_skin": {
+    "name": "default",
+    "replace_tex": {
+      "from": "camo_flatgullgrey*",
+      "to": "camo_greyblueblack_spots*",
+      "param": "camo_skin_tex"
+    },
+    "set_tex": {
+      "from": "vtb8_c*",
+      "to": "vtb10_skin_c*",
+      "param": "camo_skin_tex"
     }
   }
 }

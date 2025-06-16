@@ -4088,7 +4088,15 @@
       },
       "anti_air_complex_menu": {
         "shortcutIdx": -1
-      }
+      },
+      "slave_unit_status": [
+        {
+          "shortcutIdx": 0
+        },
+        {
+          "shortcutIdx": 1
+        }
+      ]
     },
     "wheelActions": {
       "weaponSelect": [
@@ -4893,5 +4901,26 @@
         ]
       }
     }
+  },
+  "radarTargetIconTypes": {
+    "default": "JET",
+    "entry": [
+      {
+        "targetTypeIdStr": "hud/helicopter",
+        "iconType": "HELI"
+      },
+      {
+        "targetTypeIdStr": "hud/rocket",
+        "iconType": "ROCKET"
+      },
+      {
+        "targetTypeIdStr": [
+          "hud/small",
+          "hud/medium",
+          "hud/large"
+        ],
+        "iconType": "NONE"
+      }
+    ]
   }
 }

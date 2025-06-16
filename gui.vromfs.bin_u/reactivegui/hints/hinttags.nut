@@ -1,13 +1,10 @@
 from "%rGui/globals/ui_library.nut" import *
 
-let shortcuts = require("shortcuts.nut")
+let { getShortcut } = require("shortcuts.nut")
 let colors = require("%rGui/style/colors.nut")
 
 let hintTags = {
-  shortcut = function(config, override) {
-    return shortcuts(config, override)
-  }
-
+  shortcut = getShortcut
   text = function(config, override) {
     return {
       size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]

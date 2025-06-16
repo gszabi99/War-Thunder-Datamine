@@ -11,9 +11,10 @@
   "haveCCRPForBombs": true,
   "haveCCRPForGun": true,
   "havePointOfInterestDesignator": true,
-  "ilsMarconiAvionics": true,
+  "laserDesignator": true,
+  "ilsF15e": true,
   "mfdCamLitening2": true,
-  "rwrIndicator": "AN/ALR-56",
+  "rwrIndicator": "AN/ALR-67 MFD",
   "isBwOpticSight": true,
   "jetEnginePowerFullScale": true,
   "standardExhaustFxType": "jet_exhaust",
@@ -49,9 +50,6 @@
   "fightAiBehaviour": "fighter",
   "autopilotImpl": "FBW",
   "paratrooper": "usa_irvin_5000_ejection_para",
-  "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2005,18 +2003,30 @@
       1.0
     ],
     "headPos": [
-      4.6,
-      0.89,
+      4.65,
+      0.88,
       0.0
     ],
     "headPosOnShooting": [
-      4.7,
-      0.89,
+      4.75,
+      0.88,
       0.0
     ],
+    "mirror": true,
+    "mirrorPos": [
+      5.125,
+      1.038,
+      0.0
+    ],
+    "mirrorNorm": [
+      -0.995,
+      -0.1,
+      0.0
+    ],
+    "mirrorNode": "blister13",
     "lightPos": [
-      4.95,
-      0.5,
+      5.273,
+      0.605,
       0.0
     ],
     "lightColor": [
@@ -2026,9 +2036,9 @@
     ],
     "lightRadius": 0.35,
     "lightPos1": [
-      4.78,
-      0.3,
-      0.4
+      5.149,
+      0.396,
+      0.393
     ],
     "lightColor1": [
       0.05,
@@ -2037,9 +2047,9 @@
     ],
     "lightRadius1": 0.2,
     "lightPos2": [
-      4.78,
-      0.3,
-      -0.4
+      5.14,
+      0.321,
+      -0.408
     ],
     "lightColor2": [
       0.05,
@@ -2048,8 +2058,8 @@
     ],
     "lightRadius2": 0.2,
     "lightPos3": [
-      4.88,
-      0.65,
+      5.145,
+      0.699,
       0.0
     ],
     "lightColor3": [
@@ -2058,6 +2068,10 @@
       0.1
     ],
     "lightRadius3": 0.15,
+    "mfdTextureSize": [
+      1024,
+      1024
+    ],
     "devices": {
       "stick_ailerons": [
         -1.0,
@@ -2092,6 +2106,14 @@
         1.0
       ],
       "pedals6": [
+        -1.0,
+        1.0
+      ],
+      "pedals7": [
+        -1.0,
+        1.0
+      ],
+      "pedals8": [
         -1.0,
         1.0
       ],
@@ -2149,14 +2171,6 @@
         0.0,
         1000.0
       ],
-      "altitude1_10k": [
-        0.0,
-        100000.0
-      ],
-      "altitude1_min": [
-        0.0,
-        1000.0
-      ],
       "altitude_koef": 3.28,
       "bank": [
         -8.0,
@@ -2171,14 +2185,6 @@
         90.0
       ],
       "aviahorizon_roll": [
-        -180.0,
-        180.0
-      ],
-      "aviahorizon_pitch1": [
-        -90.0,
-        90.0
-      ],
-      "aviahorizon_roll1": [
         -180.0,
         180.0
       ],
@@ -2202,10 +2208,6 @@
         0.0,
         360.0
       ],
-      "compass1": [
-        0.0,
-        360.0
-      ],
       "clock_hour": [
         0.0,
         12.0
@@ -2220,7 +2222,7 @@
       ],
       "rpm": [
         0.0,
-        10200.0
+        16550.0
       ],
       "oil_pressure": [
         0.0,
@@ -2245,10 +2247,6 @@
       "fuel1": [
         0.0,
         1905.0
-      ],
-      "carb_temperature": [
-        -50.0,
-        150.0
       ],
       "g_meter": [
         -5.0,
@@ -2282,13 +2280,12 @@
             0.5,
             0.5
           ],
-          "monoDisplayColor": [
-            0.37,
-            0.5,
-            0.4
-          ],
-          "cameraFromShell": true,
+          "cameraFromTargetingPod": true,
           "page": [
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
             {
               "type": "target_tracking",
               "turretIdx": 0
@@ -2414,21 +2411,260 @@
               "markers": true,
               "extent": 30000.0,
               "metricUnits": false
+            },
+            {
+              "type": "custom",
+              "pageName": "f2aWpn"
             }
           ]
         },
         {
           "textureArea": [
             0.5,
-            0.5,
+            0.0,
             1.0,
+            0.5
+          ],
+          "cameraFromTargetingPod": true,
+          "page": [
+            {
+              "type": "custom",
+              "pageName": "f2aWpn"
+            },
+            {
+              "type": "radar",
+              "scale": 0.92,
+              "hideBackground": true,
+              "hasAviaHorizont": true,
+              "hideBeam": false,
+              "beamShape": "caret",
+              "fontScale": 0.65,
+              "lineColor": [
+                0,
+                255,
+                7
+              ],
+              "targetForm": "square",
+              "modeColor": [
+                0,
+                255,
+                7
+              ],
+              "verAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "horAngleColor": [
+                0,
+                255,
+                7
+              ],
+              "scaleColor": [
+                0,
+                255,
+                7
+              ],
+              "targetColor": [
+                0,
+                255,
+                7
+              ],
+              "centerRadar": true,
+              "showCueHeights": true
+            },
+            {
+              "type": "rwr",
+              "scale": 1.0
+            },
+            {
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            }
+          ]
+        },
+        {
+          "textureArea": [
+            0.0,
+            0.5,
+            0.5,
             1.0
           ],
-          "page": {
-            "type": "rwr",
-            "scale": 1.0,
-            "hideBackground": true
-          }
+          "cameraFromTargetingPod": true,
+          "page": [
+            {
+              "type": "hsd",
+              "scale": 1.0,
+              "color": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "font": "hud",
+              "fontSize": 19,
+              "lineWidth": 2.0,
+              "lineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "orient": "northUp",
+              "centerMarkType": "cross",
+              "centerMarkFillColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkLineColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "centerMarkScale": 0.1,
+              "centerMarkSpeed": true,
+              "spi": true,
+              "spiColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "spiInfo": true,
+              "distScale": false,
+              "distScaleBeyondAzScale": false,
+              "distScaleStepSize": 5000.0,
+              "distScaleColor": [
+                255,
+                255,
+                255,
+                255
+              ],
+              "distScaleNumbers": false,
+              "distScaleNumbersAngle": 45.0,
+              "distScaleNumbersFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "azScaleType": "dots",
+              "azScaleSize": 12000.0,
+              "azScaleColor": [
+                0,
+                255,
+                120,
+                255
+              ],
+              "headingIndFillColor": [
+                0,
+                0,
+                0,
+                255
+              ],
+              "centerCross": false,
+              "time": false,
+              "mapBackground": true,
+              "markers": true,
+              "extent": 30000.0,
+              "metricUnits": false
+            },
+            {
+              "type": "thermal",
+              "turretIdx": 0
+            },
+            {
+              "type": "target_tracking",
+              "turretIdx": 0
+            }
+          ]
         },
         {
           "textureArea": [
@@ -2440,8 +2676,8 @@
           "page": {
             "type": "plane_ils",
             "ilsSize": [
-              0.2,
-              0.2
+              0.34,
+              0.34
             ],
             "ilsOffsetForce": 0.0,
             "brightnessMult": 3.5,
@@ -2449,8 +2685,10 @@
               10,
               255,
               10,
-              100
-            ]
+              120
+            ],
+            "bloomForce": 0.115,
+            "lineWidthScale": 1.0
           }
         }
       ]
@@ -2549,6 +2787,9 @@
       },
       {
         "blk": "gameData/sensors/jp_j_apr_4.blk"
+      },
+      {
+        "blk": "gameData/sensors/LaserDesignatorSensor.blk"
       }
     ]
   },
@@ -2710,7 +2951,7 @@
             {
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
-              "emitter": "nozzle1_25",
+              "emitter": "emtr_flare4",
               "bullets": 30,
               "external": true,
               "separate": true,
@@ -2719,7 +2960,25 @@
             {
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
-              "emitter": "nozzle1_27",
+              "emitter": "emtr_flare5",
+              "bullets": 30,
+              "external": true,
+              "separate": true,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare1",
+              "bullets": 30,
+              "external": true,
+              "separate": true,
+              "bulletsCartridge": 1
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "emitter": "emtr_flare1",
               "bullets": 30,
               "external": true,
               "separate": true,
@@ -2914,7 +3173,7 @@
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {
@@ -3093,7 +3352,7 @@
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {
@@ -3220,7 +3479,7 @@
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {
@@ -3403,7 +3662,7 @@
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {
@@ -3607,7 +3866,7 @@
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {
@@ -3785,7 +4044,7 @@
             }
           },
           {
-            "iconType": "missile_air_to_earth",
+            "iconType": "missile_air_to_earth_special",
             "name": "jp_asm1",
             "reqModification": "jp_asm1",
             "ShowNodes": {

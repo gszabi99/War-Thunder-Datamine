@@ -5,6 +5,14 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { getHasCompassObservable } = require("hudCompassState")
 let { stashBhvValueConfig } = require("%sqDagui/guiBhv/guiBhvValueConfig.nut")
 let { isPlayerAlive } = require("%scripts/hud/hudState.nut")
+let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
+
+function updatePosMultiplayerScore(obj, hasCompass, isInAntiAirMenu) {
+  let top = hasCompass && !isInAntiAirMenu
+    ? "1@multiplayerScoreTopPosUnderCompass"
+    : "0.015@shHud"
+  obj.top = top
+}
 
 gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
   scene = null
@@ -23,7 +31,13 @@ gui_handlers.BaseUnitHud <- class (gui_handlers.BaseGuiHandlerWT) {
     if (checkObj(multiplayerScoreObj)) {
       multiplayerScoreObj.setValue(stashBhvValueConfig([{
         watch = getHasCompassObservable()
-        updateFunc = @(obj, value) obj.top = value ? "1@multiplayerScoreTopPosUnderCompass" : "0.015@shHud"
+        updateFunc = @(obj, value) updatePosMultiplayerScore(
+          obj, value, isAAComplexMenuActive.get())
+      },
+      {
+        watch = isAAComplexMenuActive
+        updateFunc = @(obj, value) updatePosMultiplayerScore(
+          obj, getHasCompassObservable().get(), value)
       },
       {
         watch = isPlayerAlive

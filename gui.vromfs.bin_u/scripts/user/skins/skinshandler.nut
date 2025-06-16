@@ -330,7 +330,6 @@ local SkinsHandler = class (gui_handlers.BaseGuiHandlerWT) {
     let skinView = {
       skinName = decorator.getName()
       image = config?.image ?? decoratorTypes.SKINS.getImage(decorator)
-      ratio = config?.imgRatio ?? decoratorTypes.SKINS.getRatio(decorator)
       unlocked = skin.isUnlocked
       skinDesc = this.getSkinDesc(decorator)
       unlockProgress = progressData?.value

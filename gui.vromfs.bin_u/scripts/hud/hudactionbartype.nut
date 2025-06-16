@@ -28,14 +28,14 @@ let { EII_BULLET, EII_ARTILLERY_TARGET, EII_ANTI_AIR_TARGET, EII_EXTINGUISHER,
   EII_HUMAN_WEAPON, EII_TOGGLE_VIEW, EII_BURAV, EII_PERISCOPE, EII_EMERGENCY_SURFACING, EII_RADAR_TARGET_LOCK, EII_SELECT_SPECIAL_WEAPON,
   EII_MISSION_SUPPORT_PLANE, EII_BUILDING, EII_MANEUVERABILITY_MODE, EII_BOMBER_VIEW, EII_3RD_PERSON_VIEW, EII_BUOYANCY_UP = 88, EII_BUOYANCY_DOWN = 89,
   EII_SLAVE_UNIT_SPAWN, EII_SLAVE_UNIT_SWITCH, EII_LANDING_GEAR, EII_EXTERNAL_FUEL_TANK_AIR, EII_HOVER_MODE, EII_FBW_MODE,
-  EII_MOUSE_AIM_OVERRIDE_ROLL, EII_MULTI_FUNCTIONAL_MENU, EII_ANTI_AIR_COMPLEX_MENU
+  EII_MOUSE_AIM_OVERRIDE_ROLL, EII_MULTI_FUNCTIONAL_MENU, EII_ANTI_AIR_COMPLEX_MENU, EII_SLAVE_UNIT_STATUS
 } = require("hudActionBarConst")
 let { getHudUnitType } = require("hudState")
 let { HUD_UNIT_TYPE } = require("%scripts/hud/hudUnitType.nut")
 let { USEROPT_WHEEL_CONTROL_SHIP } = require("%scripts/options/optionsExtNames.nut")
 let { get_current_mission_info_cached } = require("blkGetters")
 let { get_option } = require("%scripts/options/optionsExt.nut")
-let { getSupportUnits, getSupportUnitImage } = require("%scripts/unit/supportUnits.nut")
+let { getSupportUnits, getBaseUnit, getSupportUnitImage } = require("%scripts/unit/supportUnits.nut")
 
 let shipTriggerGroupIcon = {
   [TRIGGER_GROUP_PRIMARY]         = "!ui/gameuiskin#artillery_weapon_state_indicator.svg",
@@ -1268,7 +1268,7 @@ enumsAddTypes(g_hud_action_bar_type, {
       let supportUnits = getSupportUnits(unit.name)
       if (supportUnits.len() == 0)
         return ""
-      let supportUnitImage = getSupportUnitImage(unit.name) 
+      let supportUnitImage = getSupportUnitImage(supportUnits[0])
       return handyman.renderCached("%gui/hud/supportUnitLayeredIcon.tpl", { supportUnitImage, isSpawn = true })
     }
   }
@@ -1281,10 +1281,27 @@ enumsAddTypes(g_hud_action_bar_type, {
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_SLAVE_UNIT_SWITCH"
     getLayeredIcon = function(_actionItem, _killStreakTag, unit, _hudUnitType = null) {
       let supportUnits = getSupportUnits(unit.name)
-      if (supportUnits.len() == 0)
-        return ""
-      let supportUnitImage = getSupportUnitImage(unit.name) 
-      return handyman.renderCached("%gui/hud/supportUnitLayeredIcon.tpl", { supportUnitImage })
+      let supportUnitImage = getSupportUnitImage(supportUnits.len() > 0 ? supportUnits[0] : getBaseUnit(unit.name))
+      return handyman.renderCached("%gui/hud/supportUnitLayeredIcon.tpl", { supportUnitImage, isChange = true })
+    }
+  }
+
+  SLAVE_UNIT_STATUS = {
+    code = EII_SLAVE_UNIT_STATUS
+    _name = "slave_unit_status"
+    _title = loc("hotkeys/EII_SLAVE_UNIT_STATUS")
+    _icon =  "#ui/gameuiskin#ugv_streak"
+    isForWheelMenu = @() false
+    getShortcut = function(actionItem = null, _hudUnitType = null) {
+      let idx = actionItem?.shortcutIdx ?? 0
+      if (idx < 0)
+        return null
+      return $"ID_SLAVE_UNIT_PROHIBIT_{idx}"
+    }
+    getLayeredIcon = function(_actionItem, _killStreakTag, unit, _hudUnitType = null) {
+      let supportUnits = getSupportUnits(unit.name)
+      let supportUnitImage = getSupportUnitImage(supportUnits.len() > 0 ? supportUnits[0] : unit.name)
+      return handyman.renderCached("%gui/hud/supportUnitLayeredIcon.tpl", { supportUnitImage, isSlave = true })
     }
   }
 

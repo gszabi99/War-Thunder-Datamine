@@ -51,8 +51,8 @@
   "fireParamsPreset": "200kph",
   "fightAiBehaviour": "helicopter",
   "customClassIco": "!#ui/gameuiskin#image_in_progress_ico.svg",
-  "customImage": "!#ui/unitskin#image_in_progress",
-  "customTooltipImage": "ui/aircrafts/image_in_progress",
+  "customImage": "!#ui/unitskin#image_in_progress.ddsx",
+  "customTooltipImage": "!#ui/aircrafts/image_in_progress.avif",
   "DamageParts": {
     "armor10": {
       "cannon1_dm": {
@@ -2109,7 +2109,7 @@
     "sensor": [
       {
         "blk": "gameData/sensors/ir_tracker.blk",
-        "node": "optic_gun1",
+        "node": "optic1_gun",
         "powerButtonIdx": -1
       },
       {
@@ -2117,7 +2117,7 @@
       },
       {
         "blk": "gameData/sensors/us_flir.blk",
-        "node": "optic_gun1"
+        "node": "optic1_gun"
       },
       {
         "blk": "gameData/sensors/cn_helicopter_z_lws.blk"
@@ -2213,7 +2213,7 @@
               "trigger": "gunner0",
               "triggerGroup": "primary",
               "blk": "gameData/Weapons/dummy_weapon.blk",
-              "emitter": "optic_gun1",
+              "emitter": "optic1_gun",
               "parkInDeadzone": false,
               "defaultYaw": 0.0,
               "defaultPitch": 0.0,
@@ -2222,7 +2222,7 @@
               "aimForOperatedShell": true,
               "turret": {
                 "head": "optic1_turret",
-                "gun": "optic_gun1",
+                "gun": "optic1_gun",
                 "playerControllable": false,
                 "mainTurret": true
               },
@@ -2335,7 +2335,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
               "emitter": "emtr_flare1",
               "bullets": 24,
               "bulletsCartridge": 1,
@@ -2346,7 +2346,7 @@
             },
             {
               "trigger": "countermeasures",
-              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet.blk",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_split_launcher_jet_maw.blk",
               "emitter": "emtr_flare2",
               "bullets": 24,
               "bulletsCartridge": 1,
@@ -3540,17 +3540,41 @@
       "modClass": "weapon",
       "tier": 3
     },
-    "countermeasures_launcher_chaff": {},
-    "countermeasures_belt_pack": {
+    "maw_countermeasures_launcher_chaff": {},
+    "MAW_system_heli_false_thermal_targets_large": {
+      "deactivationIsAllowed": true,
       "modClass": "weapon",
       "turn_it_off": false,
+      "tier": 1,
       "invertEnableLogic": false,
-      "group": "countermeasures",
-      "tier": 1
+      "effects": {
+        "sensors": {
+          "sensor": [
+            {
+              "blk": "gameData/sensors/ir_tracker.blk",
+              "node": "optic1_gun",
+              "powerButtonIdx": -1
+            },
+            {
+              "blk": "gameData/sensors/cn_helicopter_z_mlws.blk"
+            },
+            {
+              "blk": "gameData/sensors/cn_helicopter_z_rwr.blk"
+            },
+            {
+              "blk": "gameData/sensors/us_flir.blk",
+              "node": "optic1_gun"
+            },
+            {
+              "blk": "gameData/sensors/cn_helicopter_z_lws.blk"
+            }
+          ]
+        }
+      }
     },
     "heli_night_vision_system": {
-      "image": "#ui/gameuiskin#thermal_sight",
-      "prevModification": "countermeasures_belt_pack",
+      "image": "!#ui/gameuiskin#thermal_sight.avif",
+      "prevModification": "MAW_system_heli_false_thermal_targets_large",
       "tier": 3,
       "modClass": "weapon",
       "effects": {

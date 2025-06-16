@@ -13,7 +13,7 @@ let { is_stereo_mode } = require("vr")
 let { chatStatesCanUseVoice } = require("%scripts/chat/chatStates.nut")
 let { onSystemOptionsApply, canUseGraphicsOptions, getSystemOptionInfoView } = require("%scripts/options/systemOptions.nut")
 let { isPlatformSony, isPlatformXbox, isPlatformXboxScarlett } = require("%scripts/clientState/platform.nut")
-let { is_xboxone_X } = require("%sqstd/platform.nut")
+let { is_xboxone_X, is_ps5_pro } = require("%sqstd/platform.nut")
 
 
 
@@ -28,6 +28,7 @@ let { hasCustomSoundMods } = require("%scripts/options/customSoundMods.nut")
 let { isCrossNetworkChatEnabled } = require("%scripts/social/crossplay.nut")
 let { IS_SHIP_HIT_NOTIFICATIONS_VISIBLE } = require("%globalScripts/shipHitIconsConsts.nut")
 let { getDevFeaturesList } = require("%scripts/features/devFeatures.nut")
+let { getIsConsoleModeForceEnabled } = require("%scripts/options/consoleMode.nut")
 
 let getSystemOptions = @() {
   name = "graphicsParameters"
@@ -56,7 +57,7 @@ function getPrivacyOptionsList() {
 }
 
 function hasConsolePresets() {
-  return (is_xboxone_X || isPlatformXboxScarlett) && hasFeature("optionConsolePreset")
+  return (is_xboxone_X || isPlatformXboxScarlett || is_ps5_pro) && hasFeature("optionConsolePreset")
 }
 
 let otherOptionsList = @() [
@@ -293,7 +294,7 @@ let getMainOptions = function() {
       [USEROPT_MARK_DIRECT_MESSAGES_AS_PERSONAL, "spinner"],
 
       ["options/header/gamepad"],
-      [USEROPT_ENABLE_CONSOLE_MODE, "spinner", !::get_is_console_mode_force_enabled()],
+      [USEROPT_ENABLE_CONSOLE_MODE, "spinner", !getIsConsoleModeForceEnabled()],
       [USEROPT_GAMEPAD_CURSOR_CONTROLLER, "spinner", ::g_gamepad_cursor_controls.canChangeValue()],
       [USEROPT_XCHG_STICKS, "spinner"],
       [USEROPT_VIBRATION, "spinner"],

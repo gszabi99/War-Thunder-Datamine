@@ -6,11 +6,14 @@ let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { handyman } = require("%sqStdLibs/helpers/handyman.nut")
 let { handlersManager, loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
+let { register_command } = require("console")
 
 const ITEM_IMAGE_SIZE = "150@sf/@pf"
 const ITEM_IMAGE_MARGIN = "20@sf/@pf"
 const FRAME_PADDING = "50@sf/@pf"
 const MAX_COLUMNS = 5
+
+local debugItemIndex = 0
 
 function openOrUpdateRecycleCompleteWnd(params) {
   let itemsIds = params.itemsIds
@@ -36,13 +39,10 @@ gui_handlers.recycleCompleteWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
   sceneBlkName = "%gui/items/recycleCompleteWnd.blk"
   recycledItems = null
-
-  cachedRhInPix = 0
   cachedItemSizeInPix = 0
   cachedPaddingInPix = 0
 
   function initScreen() {
-    this.cachedRhInPix = to_pixels("1@rh")
     this.cachedItemSizeInPix = to_pixels($"{ITEM_IMAGE_SIZE} + 2*{ITEM_IMAGE_MARGIN}")
     this.cachedPaddingInPix = to_pixels(FRAME_PADDING)
     this.drawItems(this.recycledItems)
@@ -50,13 +50,6 @@ gui_handlers.recycleCompleteWnd <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function drawItems(items) {
     let columnsCount = min(items.len(), MAX_COLUMNS)
-    let maxHeight = 0.7 * this.cachedRhInPix
-    let rowsCount = (items.len() / columnsCount).tointeger()
-    let maxRowsCount = (maxHeight / this.cachedItemSizeInPix).tointeger()
-    if (rowsCount > maxRowsCount) {
-      let scrollContainer = this.scene.findObject("scroll_container")
-      scrollContainer["overflow-y"] = "auto"
-    }
     let frameObj = this.scene.findObject("recycle_frame")
     frameObj.width = columnsCount * this.cachedItemSizeInPix + this.cachedPaddingInPix * 2;
 
@@ -91,6 +84,25 @@ gui_handlers.recycleCompleteWnd <- class (gui_handlers.BaseGuiHandlerWT) {
     this.drawItems(this.recycledItems)
   }
 }
+
+function showDebugItems(count) {
+  let recycledItems = {}
+  for (local i = 0; i < count; i++) {
+    let item = findItemById("booster_shop_pub_wp_10")
+    if (item == null)
+      continue
+    recycledItems[debugItemIndex.tostring()] <- {item,  count = i}
+    debugItemIndex++
+  }
+  let recycledWnd = handlersManager.findHandlerClassInScene(gui_handlers.recycleCompleteWnd)
+  if (recycledWnd) {
+    recycledWnd.addItems(recycledItems)
+    return
+  }
+  loadHandler(gui_handlers.recycleCompleteWnd, {recycledItems})
+}
+
+register_command(showDebugItems, "debug.recycledWindow")
 
 return {
   openOrUpdateRecycleCompleteWnd

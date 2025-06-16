@@ -89,19 +89,19 @@
       "statType": "hydra",
       "caliber": 0.127,
       "length": 3.02,
-      "CxK": 2.25,
+      "CxK": 1.875,
       "wingAreaMult": 1.25,
       "finsAoaHor": 0.341152,
       "finsAoaVer": 0.341152,
       "finsLatAccel": 50.0,
-      "distFromCmToStab": 0.25,
+      "distFromCmToStab": 0.3,
       "mass": 85.2737,
       "massEnd": 58.05987,
       "timeFire": 5.23,
       "force": 11885.0,
       "fireDelay": 0.0,
       "timeLife": 40.0,
-      "thrustVectoringAngle": 0.025,
+      "thrustVectoringAngle": 0.075,
       "useStartSpeed": true,
       "startSpeed": 0.0,
       "machMax": 3.0,
@@ -114,7 +114,7 @@
       "guidanceSfx": "alarm_heatseeker_scan",
       "maxDeltaAngle": 2.0,
       "explosiveType": "pbxn_3",
-      "explosiveMass": 3.3566,
+      "explosiveMass": 3.5834,
       "normalizationPreset": "heat",
       "ricochetPreset": "he",
       "groundRicochetPreset": "he_ground",
@@ -138,8 +138,8 @@
       "groundRicochetEffect": "hit_133_160mm_dirt_ap",
       "visualShattersWaterOffset": 1.2,
       "visualShattersGroundOffset": 1.2,
-      "fireEffect": "fires_exhaust_jet_early_big",
-      "smokeEffect": "smoke_rocket_tail_light_huge",
+      "fireEffect": "fires_exhaust_jet_early_tiny",
+      "smokeEffect": "smoke_rocket_tail_short",
       "smokeEffect2": "",
       "hazeEffect": "haze_missile",
       "endSmokeViscosity": 0.05,
@@ -172,28 +172,11 @@
         "afterLaunchSpeedUp": 170.0,
         "lockAfterLaunch": true,
         "reacquireTarget": true,
-        "lockMode": "LOAL+LOBL",
+        "lockMode": "LOBL",
         "guidanceSfx": "",
         "breakLockMaxTime": 40.0,
         "inertialGuidance": {
           "inertialNavigationDriftSpeed": 0.1
-        },
-        "orientationAutopilot": {
-          "timeOut": 0.15,
-          "controlTime": 1.0,
-          "elevationAdd": 15.0,
-          "elevationToHeadingMult": [
-            20.0,
-            20.0,
-            -1.0,
-            -1.0
-          ],
-          "angleToAngularRate": 5.0,
-          "accelControlProp": 0.1,
-          "accelControlIntg": 0.0,
-          "accelControlIntgLim": 0.0,
-          "accelControlDiff": 0.0,
-          "useFinsToOrientation": true
         },
         "opticalSeeker": {
           "visibilityType": "infraRed",
@@ -220,41 +203,37 @@
           "surfaceAsTarget": false
         },
         "guidanceAutopilot": {
-          "loftEnabled": true,
-          "loftElevation": 20.0,
-          "loftTargetElevation": -10.0,
-          "loftAngleToAccelMult": 3.0,
-          "loftTargetOmegaMax": 0.75,
+          "timeOut": 0.15,
           "baseIndSpeed": 1800.0,
           "propNavMult": 4.0,
           "reqAccelMax": 50.0,
           "pid0": {
             "time": 2.0,
-            "prop": 0.0096,
+            "prop": 0.0056,
             "intg": 0.0,
             "intgLim": 0.0,
-            "diff": 0.0
+            "diff": 0.0002
           },
           "pid1": {
             "time": 3.0,
-            "prop": 0.006,
-            "intg": 0.023,
+            "prop": 0.001,
+            "intg": 0.02,
             "intgLim": 1.0,
-            "diff": 0.0003
+            "diff": 0.0002
           },
           "pid2": {
             "time": 4.0,
-            "prop": 0.006,
-            "intg": 0.023,
+            "prop": 0.001,
+            "intg": 0.02,
             "intgLim": 1.0,
-            "diff": 0.0003
+            "diff": 0.0002
           },
           "pid3": {
             "time": 5.0,
             "prop": 0.0031,
-            "intg": 0.0376,
+            "intg": 0.0381,
             "intgLim": 1.0,
-            "diff": 0.0002
+            "diff": 0.00015
           }
         }
       },
@@ -811,19 +790,19 @@
         "statType": "hydra",
         "caliber": 0.127,
         "length": 3.02,
-        "CxK": 2.25,
+        "CxK": 1.875,
         "wingAreaMult": 1.25,
         "finsAoaHor": 0.341152,
         "finsAoaVer": 0.341152,
         "finsLatAccel": 50.0,
-        "distFromCmToStab": 0.25,
+        "distFromCmToStab": 0.3,
         "mass": 85.2737,
         "massEnd": 58.05987,
         "timeFire": 5.23,
         "force": 11885.0,
         "fireDelay": 0.0,
         "timeLife": 40.0,
-        "thrustVectoringAngle": 0.025,
+        "thrustVectoringAngle": 0.075,
         "useStartSpeed": true,
         "startSpeed": 0.0,
         "machMax": 3.0,
@@ -836,7 +815,7 @@
         "guidanceSfx": "alarm_heatseeker_scan",
         "maxDeltaAngle": 2.0,
         "explosiveType": "pbxn_3",
-        "explosiveMass": 3.3566,
+        "explosiveMass": 3.5834,
         "normalizationPreset": "heat",
         "ricochetPreset": "he",
         "groundRicochetPreset": "he_ground",
@@ -860,8 +839,8 @@
         "groundRicochetEffect": "hit_133_160mm_dirt_ap",
         "visualShattersWaterOffset": 1.2,
         "visualShattersGroundOffset": 1.2,
-        "fireEffect": "fires_exhaust_jet_early_big",
-        "smokeEffect": "smoke_rocket_tail_light_huge",
+        "fireEffect": "fires_exhaust_jet_early_tiny",
+        "smokeEffect": "smoke_rocket_tail_short",
         "smokeEffect2": "",
         "hazeEffect": "haze_missile",
         "endSmokeViscosity": 0.05,
@@ -894,28 +873,11 @@
           "afterLaunchSpeedUp": 170.0,
           "lockAfterLaunch": true,
           "reacquireTarget": true,
-          "lockMode": "LOAL+LOBL",
+          "lockMode": "LOBL",
           "guidanceSfx": "",
           "breakLockMaxTime": 40.0,
           "inertialGuidance": {
             "inertialNavigationDriftSpeed": 0.1
-          },
-          "orientationAutopilot": {
-            "timeOut": 0.15,
-            "controlTime": 1.0,
-            "elevationAdd": 15.0,
-            "elevationToHeadingMult": [
-              20.0,
-              20.0,
-              -1.0,
-              -1.0
-            ],
-            "angleToAngularRate": 5.0,
-            "accelControlProp": 0.1,
-            "accelControlIntg": 0.0,
-            "accelControlIntgLim": 0.0,
-            "accelControlDiff": 0.0,
-            "useFinsToOrientation": true
           },
           "opticalSeeker": {
             "visibilityType": "infraRed",
@@ -942,41 +904,37 @@
             "surfaceAsTarget": false
           },
           "guidanceAutopilot": {
-            "loftEnabled": true,
-            "loftElevation": 20.0,
-            "loftTargetElevation": -10.0,
-            "loftAngleToAccelMult": 3.0,
-            "loftTargetOmegaMax": 0.75,
+            "timeOut": 0.15,
             "baseIndSpeed": 1800.0,
             "propNavMult": 4.0,
             "reqAccelMax": 50.0,
             "pid0": {
               "time": 2.0,
-              "prop": 0.0096,
+              "prop": 0.0056,
               "intg": 0.0,
               "intgLim": 0.0,
-              "diff": 0.0
+              "diff": 0.0002
             },
             "pid1": {
               "time": 3.0,
-              "prop": 0.006,
-              "intg": 0.023,
+              "prop": 0.001,
+              "intg": 0.02,
               "intgLim": 1.0,
-              "diff": 0.0003
+              "diff": 0.0002
             },
             "pid2": {
               "time": 4.0,
-              "prop": 0.006,
-              "intg": 0.023,
+              "prop": 0.001,
+              "intg": 0.02,
               "intgLim": 1.0,
-              "diff": 0.0003
+              "diff": 0.0002
             },
             "pid3": {
               "time": 5.0,
               "prop": 0.0031,
-              "intg": 0.0376,
+              "intg": 0.0381,
               "intgLim": 1.0,
-              "diff": 0.0002
+              "diff": 0.00015
             }
           }
         },

@@ -5,16 +5,12 @@ tdiv {
 
   tdiv{
     position:t='relative'
-    width:t='241@sf/@pf'
-    height:t='ph'
-    bigMedalPlace {
-      left:t='(pw-w)/2'
-      parentSize:t='true'
-      bigMedalImg {
-        max-height:t='<<ratio>>*h'
-        max-width:t='<<ratio>>*w'
-        background-image:t='<<image>>'
-      }
+    size:t='241@sf/@pf, 127@sf/@pf'
+    bigMedalImg {
+      pos:t='0.5pw-0.5w, 0.5ph-0.5h'
+      size:t='pw, ph'
+      background-image:t='<<image>>'
+      background-svg-size:t='pw, ph'
     }
   }
 

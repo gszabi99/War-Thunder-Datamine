@@ -3765,13 +3765,13 @@
       "onHit": [
         {
           "damageType": "fire",
-          "expl": 1.0,
+          "expl": 0.7,
           "damage": 55.0,
           "fHitCritical": false
         },
         {
           "damageType": "fire",
-          "expl": 0.08,
+          "expl": 0.9,
           "damage": 74.0,
           "fHitCritical": false
         }
@@ -3779,13 +3779,13 @@
     },
     "ammunition_storage_charges": {
       "onKill": {
-        "fire": 1.0,
+        "fire": 0.7,
         "fHitCritical": false
       },
       "onHit": [
         {
           "damageType": "fire",
-          "fire": 1.0,
+          "fire": 0.9,
           "damage": 55.0,
           "fHitCritical": false
         },
@@ -12852,25 +12852,21 @@
       "shells": {
         "damageEffect": "ammunition_storage_aux",
         "ammunition_storage_aux_04_dm": {
-          "count": 3100
+          "count": 1550
+        },
+        "ammunition_storage_aux_07_dm": {
+          "count": 1550
         }
       }
     },
     "ammo6": {
       "weaponTrigger": [
-        "gunner11",
-        "gunner13",
-        "gunner14",
         "gunner15",
         "gunner16",
         "gunner17",
         "gunner18",
         "gunner19",
-        "gunner20",
-        "gunner21",
-        "gunner22",
-        "gunner23",
-        "gunner24"
+        "gunner20"
       ],
       "entityMunition": "aux",
       "fatalExplosion": false,
@@ -12893,7 +12889,32 @@
         }
       }
     },
-    "ammo9": {
+    "ammo7": {
+      "weaponTrigger": [
+        "gunner11",
+        "gunner13",
+        "gunner14",
+        "gunner21",
+        "gunner22",
+        "gunner23",
+        "gunner24"
+      ],
+      "entityMunition": "aux",
+      "fatalExplosion": false,
+      "fireParamsPreset": "ship_ammo_fire",
+      "explosionEvent": "ammo_aux_explosion_1",
+      "fireEvent": "ammo_aux_fire_1",
+      "splashRadiusConstraint": 20.0,
+      "splashDamageConstraint": 2000.0,
+      "splashPenetrationConstraint": 15.0,
+      "shells": {
+        "damageEffect": "ammunition_storage_aux",
+        "ammunition_storage_aux_06_dm": {
+          "count": 85760
+        }
+      }
+    },
+    "ammo8": {
       "weaponTrigger": "gunner25",
       "entityMunition": "torpedo",
       "replenishmentDelay": 5.0,
@@ -12914,7 +12935,7 @@
         }
       }
     },
-    "ammo10": {
+    "ammo9": {
       "weaponTrigger": "gunner26",
       "entityMunition": "torpedo",
       "replenishmentDelay": 5.0,
@@ -12935,7 +12956,7 @@
         }
       }
     },
-    "ammo11": {
+    "ammo10": {
       "weaponTrigger": "gunner27",
       "entityMunition": "torpedo",
       "replenishmentDelay": 5.0,
@@ -12956,7 +12977,7 @@
         }
       }
     },
-    "ammo12": {
+    "ammo11": {
       "weaponTrigger": "gunner28",
       "entityMunition": "torpedo",
       "replenishmentDelay": 5.0,
@@ -12977,7 +12998,7 @@
         }
       }
     },
-    "ammo13": {
+    "ammo12": {
       "weaponTrigger": "gunner29",
       "entityMunition": "torpedo",
       "replenishmentDelay": 5.0,
@@ -12998,7 +13019,7 @@
         }
       }
     },
-    "ammo14": {
+    "ammo13": {
       "weaponTrigger": "gunner30",
       "entityMunition": "torpedo",
       "replenishmentDelay": 5.0,
@@ -13019,7 +13040,7 @@
         }
       }
     },
-    "ammo15": {
+    "ammo14": {
       "weaponTrigger": "gunner31",
       "entityMunition": "torpedo",
       "replenishmentDelay": 5.0,
@@ -13040,7 +13061,7 @@
         }
       }
     },
-    "ammo16": {
+    "ammo15": {
       "weaponTrigger": "gunner32",
       "entityMunition": "torpedo",
       "replenishmentDelay": 5.0,
@@ -14840,6 +14861,13 @@
       "nameLocId": "ship_flag_christmas_03/name",
       "descLocId": "ship_flag_christmas_03/desc",
       "texture": "flag_christmas_03_c*"
+    },
+    "ship_flag_hirihoukenten_01": {
+      "category": "other",
+      "unlockId": "ship_flag_hirihoukenten_01",
+      "nameLocId": "ship_flag_hirihoukenten_01/name",
+      "descLocId": "ship_flag_hirihoukenten_01/desc",
+      "texture": "flag_hirihoukenten_01_c*"
     }
   }
 }

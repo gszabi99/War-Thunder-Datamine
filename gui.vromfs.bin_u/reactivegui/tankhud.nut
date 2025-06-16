@@ -4,7 +4,7 @@ let { eventbus_send } = require("eventbus")
 let { mkRadar } = require("radarComponent.nut")
 let aamAim = require("rocketAamAim.nut")
 let agmAim = require("agmAim.nut")
-let actionBarTopPanel = require("hud/actionBarTopPanel.nut")
+let { actionBarTopPanel } = require("hud/actionBarTopPanel.nut")
 let { tws } = require("tws.nut")
 let { IsMlwsLwsHudVisible, CollapsedIcon } = require("twsState.nut")
 let sightIndicators = require("hud/tankSightIndicators.nut")
@@ -21,7 +21,7 @@ let sensorViewIndicators = require("%rGui/hud/sensorViewIndicator.nut")
 let { mkCollapseButton } = require("airHudComponents.nut")
 let mkTankSight = require("%rGui/tankSight.nut")
 let { aaComplexMenu } = require("%rGui/antiAirComplexMenu/antiAirComplexMenu.nut")
-let { isAAComplexMenuActive } = require("%rGui/antiAirComplexMenu/antiAirComplexMenuState.nut")
+let { isAAComplexMenuActive } = require("%appGlobals/hud/hudState.nut")
 
 
 
@@ -139,8 +139,15 @@ function Root() {
     valign = ALIGN_TOP
     watch = [IndicatorsVisible, isBScope, isAAComplexMenuActive]
     size = [sw(100), sh(100)]
-    children = [
-      isAAComplexMenuActive.get() ? null : mkRadar()
+    children = isAAComplexMenuActive.get() ?
+    [
+      aaComplexMenu
+      tankDmgIndicator
+      actionBarTopPanel
+      leftPanel
+    ]
+    :[
+      mkRadar()
       @(){
         watch = needRadarCollapsedIcon
         children = needRadarCollapsedIcon.value ? @(){
@@ -163,18 +170,17 @@ function Root() {
 
 
       @(){
-        watch = [isCollapsedRadarInReplay, isPlayingReplay, isAAComplexMenuActive]
+        watch = [isCollapsedRadarInReplay, isPlayingReplay]
         size = flex()
-        children = isAAComplexMenuActive.get()
-            ? aaComplexMenu
-            : !isCollapsedRadarInReplay.value ?
-        [
-          radarHud(isBScope.value ? sh(40) : sh(32), isBScope.value ? sh(40) : sh(32), radarPosComputed.value[0], radarPosComputed.value[1], radarColor, true)
-          isPlayingReplay.value ? mkCollapseButton([radarPosComputed.value[0] + (isBScope.value ? sh(40) : sh(32)), radarPosComputed.value[1]], isCollapsedRadarInReplay) : null
-        ] : null
+        children = !isCollapsedRadarInReplay.get()
+          ? [
+              radarHud(isBScope.value ? sh(40) : sh(32), isBScope.value ? sh(40) : sh(32), radarPosComputed.value[0], radarPosComputed.value[1], radarColor, true)
+              isPlayingReplay.value ? mkCollapseButton([radarPosComputed.value[0] + (isBScope.value ? sh(40) : sh(32)), radarPosComputed.value[1]], isCollapsedRadarInReplay) : null
+            ]
+          : null
       }
       radarIndication(radarColor)
-      IndicatorsVisible.value
+      IndicatorsVisible.get()
         ? @() {
             children = [
               sightIndicators(styleAamAim, colorWacthed)
