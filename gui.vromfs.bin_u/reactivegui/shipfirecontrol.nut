@@ -83,8 +83,8 @@ let progressBar = @() {
         @() {
           watch = fcsState.IsTargetDataAvailable
           isHidden = !fcsState.IsTargetDataAvailable.value
-          size = [SIZE_TO_CONTENT, sh(2)]
-          padding = [0, hdpx(5)]
+          size = const [SIZE_TO_CONTENT, sh(2)]
+          padding = const [0, hdpx(5)]
           color = Color(0, 0, 0, 255)
           valign = ALIGN_CENTER
           rendObj = ROBJ_INSCRIPTION
@@ -94,8 +94,8 @@ let progressBar = @() {
         @() {
           watch = fcsState.IsTargetDataAvailable
           isHidden = fcsState.IsTargetDataAvailable.value
-          size = [SIZE_TO_CONTENT, sh(2)]
-          padding = [0, hdpx(5)]
+          size = const [SIZE_TO_CONTENT, sh(2)]
+          padding = const [0, hdpx(5)]
           color = Color(0, 0, 0, 255)
           valign = ALIGN_CENTER
           halign = ALIGN_RIGHT
@@ -120,7 +120,7 @@ function drawDashLineToCircle(fromX, fromY, toX, toY, radius) {
 
   return {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     lineWidth = hdpx(3)
     color = greenColorGrid
     fillColor = Color(0, 0, 0, 0)
@@ -261,7 +261,7 @@ function mkCircle(size, color, fValue = 1, reloadSignalTrigger = "", playReloadS
     fValue = fValue
 
     children = (reloadSignalTrigger == "") ? null : {
-      size = [pw(120), pw(120)]
+      size = pw(120)
       rendObj = ROBJ_IMAGE
       vplace = ALIGN_CENTER
       hplace = ALIGN_CENTER
@@ -406,7 +406,7 @@ let mkGunStatus = @(gunStates, reloadedSignalTrigger) function() {
   }
 
   return {
-    size = [ph(100), ph(100)]
+    size = ph(100)
     watch = gunStates
     children = childrenCircles
   }
@@ -491,7 +491,7 @@ return @() {
   watch = [fcsState.IsVisible, fcsState.IsBinocular]
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
-  size = [sw(100), SIZE_TO_CONTENT]
+  size = const [sw(100), SIZE_TO_CONTENT]
   children = fcsState.IsVisible.value ? [root, weaponsStatus]
     : fcsState.IsBinocular.value ? [crosshairZeroMark, weaponsStatus]
     : weaponsStatus

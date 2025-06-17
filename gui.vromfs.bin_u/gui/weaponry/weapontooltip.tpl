@@ -4,7 +4,7 @@ tdiv {
   <<#topReqBlock>>
   weaponTooltipBlock {
     min-width:t='1@bulletTooltipCardWidthNarrow'
-    width:t='pw'
+    max-width:t='1@bulletTooltipCardWidth'
     margin-bottom:t='0.5*@bulletTooltipPadding'
     padding:t='@bulletTooltipPadding, 0.5*@bulletTooltipPadding'
     tooltipDesc {
@@ -14,9 +14,8 @@ tdiv {
   <</topReqBlock>>
 
   weaponTooltipBlock {
-    <<#topReqBlock>>
     min-width:t='1@bulletTooltipCardWidthNarrow'
-    <</topReqBlock>>
+    max-width:t='1@bulletTooltipCardWidth'
     padding:t='@bulletTooltipPadding, 0.5*@bulletTooltipPadding'
     flow:t='vertical'
 

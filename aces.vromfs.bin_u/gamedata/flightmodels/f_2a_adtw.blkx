@@ -2742,24 +2742,6 @@
     }
   },
   "gunnerOpticFps": {
-    "TV": {
-      "pos": [
-        2.6,
-        -0.15,
-        0.0
-      ],
-      "head": "optic2_turret",
-      "crosshairPreset": "test_crosshair",
-      "angularLimits": [
-        -30.0,
-        30.0,
-        -30.0,
-        30.0
-      ],
-      "opticType": "tv",
-      "turretNo": 0,
-      "nvIndex": 1
-    },
     "Target": {
       "pos": [
         0.6,
@@ -2769,7 +2751,7 @@
       "head": "optic1_turret",
       "crosshairPreset": "test_crosshair",
       "angularLimits": [
-        -30.0,
+        -90.0,
         30.0,
         -30.0,
         30.0
@@ -2939,12 +2921,12 @@
               },
               "limits": {
                 "yaw": [
-                  -20.0,
-                  20.0
+                  -90.0,
+                  90.0
                 ],
                 "pitch": [
-                  -20.0,
-                  20.0
+                  -90.0,
+                  90.0
                 ]
               }
             },
@@ -4332,6 +4314,18 @@
         "to": "f2a_adtw_n*"
       }
     ]
+  },
+  "parachutes": {
+    "emitterRange": [
+      1,
+      1
+    ],
+    "emitterName": "emtr_chute",
+    "chuteModel": "chute_f_100_char",
+    "chuteAnimVarName": "chute_state_switch",
+    "chuteFlapVarName": "fire_chute",
+    "chuteTimeScaleParam": "chute_time_scale",
+    "chuteFallSpeed": 1.6
   },
   "bailout": {
     "buttonHoldTime": 1.0,

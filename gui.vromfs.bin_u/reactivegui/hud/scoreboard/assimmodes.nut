@@ -12,7 +12,7 @@ let mainBlockDefFontStyles = {
 }
 
 let timerComp = {
-  size = [hdpx(52), hdpx(19)]
+  size = const [hdpx(52), hdpx(19)]
   pos = [0, -hdpx(9)]
   hplace = ALIGN_CENTER
   rendObj = ROBJ_VECTOR_CANVAS
@@ -40,7 +40,7 @@ function mkMainBlock (textAttack, textDefend, icon) {
     : missionProgressDefendShip.get())
 
   return {
-    padding = [hdpx(10), hdpx(30)]
+    padding = const [hdpx(10), hdpx(30)]
     rendObj = ROBJ_BOX
     fillColor = 0x99324149
     borderColor = 0xFF606F79
@@ -52,7 +52,7 @@ function mkMainBlock (textAttack, textDefend, icon) {
     children = [
       {
         size = [iconWidth, iconHeight]
-        margin = [0, hdpx(10)]
+        margin = const [0, hdpx(10)]
         rendObj = ROBJ_IMAGE
         image = Picture($"{icon}:{iconWidth}:{iconHeight}:K:P")
         keepAspect = true
@@ -67,7 +67,7 @@ function mkMainBlock (textAttack, textDefend, icon) {
       }.__update(mainBlockDefFontStyles)
       @() {
         watch = teamScore
-        margin = [0, hdpx(4)]
+        margin = const [0, hdpx(4)]
         rendObj = ROBJ_TEXT
         text = teamScore.get()
         font = Fonts.medium_text

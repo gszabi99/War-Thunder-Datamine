@@ -11,7 +11,7 @@ let baseLineWidth = 2
 let baseFontSize = 20
 
 let aircraft = {
-  size = [pw(80), ph(47)]
+  size = const [pw(80), ph(47)]
   pos = [pw(5), ph(26)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -149,7 +149,7 @@ function aamMark(pos, i) {
         text = SelectedWeapSlot.get() == WeaponSlots.get()[i] ? "RDY" : "STBY"
         children = SelectedWeapSlot.get() == WeaponSlots.get()[i] ? {
           rendObj = ROBJ_FRAME
-          size = [pw(105), ph(105)]
+          size = const [pw(105), ph(105)]
           pos = [-2, -2]
           color = Color(0, 255, 0, 255)
         } : null

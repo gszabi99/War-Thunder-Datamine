@@ -22,7 +22,7 @@ function mkCollapsedIcon(icon) {
     watch = collapsedIconPos
     rendObj = ROBJ_IMAGE
     pos = collapsedIconPos.value
-    size = [sh(5), sh(5)]
+    size = sh(5)
     color = Color(71, 232, 39, 240)
     image = icon
   }

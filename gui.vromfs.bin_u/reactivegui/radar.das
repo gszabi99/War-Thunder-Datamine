@@ -13,6 +13,7 @@ require Unit
 require WTInput
 require %rGui.utils.radar_common
 require %rGui.utils.constants_common
+require %rGui.utils.canvas_common
 
 let areaBackgroundColor = E3DCOLOR(Color4(float4(0., 0., 0., 0.5)))
 let transparentColor = E3DCOLOR(Color4(float4(0, 0, 0, 0)))
@@ -409,7 +410,10 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
   let lt = origin - size * 0.5
   let rb = origin + size * 0.5
   let isMouseOnEllement = lt.x <= mousePos.x && mousePos.x <= rb.x && lt.y <= mousePos.y && mousePos.y <= rb.y
-  var needToHandleMouseClick = data.handleClicks && is_mouse_btn_down(1) && isMouseOnEllement
+  var needToHandleMouseClick = data.handleClicks && is_mouse_btn_down(0) && isMouseOnEllement
+
+  var fctx : StdGuiFontContext
+  get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
 
   foreach_targets() <| $(var target)
     var distanceRel = 0.9
@@ -426,7 +430,9 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
 
     let sina = sin(angle)
     let cosa = cos(angle)
-    let pos = origin + float2(cosa * distanceRel * radius.x, sina * distanceRel * radius.y)
+    let targetDirection = float2(cosa, sina)
+    let targetRadiusVector = targetDirection * float2(distanceRel * radius.x, distanceRel * radius.y)
+    let pos = origin + targetRadiusVector
 
     var color = float4(Color4(is_color_or_white(data.targetColor)))
     let signalRel = target.signalRel < 0.01 ? 0. : cvt(target.signalRel, 0.05, 1., 0.3, 1.)
@@ -435,60 +441,103 @@ def polar_radar_targets(var ctx : GuiContext&; data : CanvasParams&; origin : fl
 
     var targetCircleRadius = radius * 0.04
 
+    var needToAnnotateTarget = data.annotateTargets
+    var targetAnnotationRadialOffset = float2(0.0)
+
     if target.targetType == int(RadarTargetType.TYPE_TARGET)
       let fullCircle = azimuthRange > PI + 0.035
       let angleLeft = fullCircle ? (angle - 0.5 * angularWidth) : max(angle - 0.5 * angularWidth, get_radar_hud_azimuth_min() - PI * 0.5)
       let angleRight = fullCircle ? (angle + 0.5 * angularWidth) : min(angle + 0.5 * angularWidth, get_radar_hud_azimuth_max() - PI * 0.5)
 
       if target.isSelected && get_radar_hud_has_azimuth_scale()
-        if target.losSpeed < 30000.
-          ctx |> render_ellipse_aa(pos, targetCircleRadius, ctx |> hdpx(2. * data.lineWidth), e3dColor, transparentColor)
-          let losPos = origin + float2((cosa * distanceRel + (cosa * target.losSpeed + sina * target.losHorSpeed) * 0.0002) * radius.x,
-           (sina * distanceRel + (sina * target.losSpeed - cosa * target.losHorSpeed) * 0.0002) * radius.y)
-          ctx |> set_color(e3dColor)
-          ctx |> draw_line(pos, losPos, ctx |> hdpx(2. * data.lineWidth))
+        let replaceTargetWithFullAnnotation = data.annotateTargets && data.isAAComplexMenuLayout && target.iconType != int(RadarTargetIconType.NONE)
+        if replaceTargetWithFullAnnotation
+          let targetPicture = Radar`getImageForTarget(target, data.planeTargetPicture, data.helicopterTargetPicture, data.rocketTargetPicture)
+          let angleNorthCorrection = angle - PI * 0.5
+          let pictureSize = targetCircleRadius * 1.5
+          let picturePos = pos - pictureSize * 0.5
+          setRotViewTm(ctx, pos.x, pos.y, angleNorthCorrection, 0.0, false)
+          render_picture(ctx, targetPicture, picturePos, pictureSize, data.targetColor)
+          resetViewTm(ctx)
+
+          var hasValidLos = false
+          var losDirection = float2(0.0)
+          if target.losSpeed < 30000.
+            let losMult = 0.0002
+            let losDelta = float2(
+              (cosa * target.losSpeed + sina * target.losHorSpeed),
+              (sina * target.losSpeed - cosa * target.losHorSpeed)) * losMult * radius
+            let losLengthSq = length_sq(losDelta)
+            if losLengthSq > 1e-6
+              losDirection = losDelta / sqrt(losLengthSq)
+              let losOffset = pictureSize * 0.5 * losDirection
+              ctx |> set_color(e3dColor)
+              ctx |> draw_line(pos + losOffset, pos + losOffset + losDelta, ctx |> hdpx(2. * data.lineWidth))
+              hasValidLos = true
+
+          let targetIndex = "{int(target.persistentIndex)}"
+          let annotationBox = get_str_bbox(targetIndex, targetIndex |> length(), fctx)
+
+          var radialOffsetSign = 1.0
+          if hasValidLos
+            let dotProd = dot(losDirection, targetDirection)
+            if dotProd < -0.7
+              radialOffsetSign = 1.0
+            elif dotProd < 0.7
+              radialOffsetSign = distanceRel < 0.5 ? 1.0 : -1.0
+            else
+              radialOffsetSign = -1.0
+          let radialOffset = (pictureSize * 0.5 + float2(ctx |> hdpx(4.0)) + annotationBox.width * 0.5) * radialOffsetSign
+          let annotationPos = origin + float2(distanceRel * radius.x + radialOffset.x, distanceRel * radius.y + radialOffset.y) * float2(cosa, sina)
+
+          let offsetX = -annotationBox.width.x * 0.5
+          let offsetY = annotationBox.width.y * 0.5
+
+          ctx |> goto_xy(annotationPos.x + offsetX, annotationPos.y + offsetY)
+          ctx |> draw_str_scaled(1.0, targetIndex, targetIndex |> length())
+          needToAnnotateTarget = false
         else
-          ctx |> render_ellipse_aa(pos, targetCircleRadius, ctx |> hdpx(2.), e3dColor, transparentColor)
+          ctx |> render_ellipse_aa(pos, targetCircleRadius, ctx |> hdpx(2. * data.lineWidth), e3dColor, transparentColor)
+          targetAnnotationRadialOffset = targetCircleRadius
+          if target.losSpeed < 30000.
+            let losPos = origin + float2((cosa * distanceRel + (cosa * target.losSpeed + sina * target.losHorSpeed) * 0.0002) * radius.x,
+            (sina * distanceRel + (sina * target.losSpeed - cosa * target.losHorSpeed) * 0.0002) * radius.y)
+            ctx |> set_color(e3dColor)
+            ctx |> draw_line(pos, losPos, ctx |> hdpx(2. * data.lineWidth))
       else
         ctx |> render_sector_aa(origin, radius * distanceRel, float2(angleLeft, angleRight), 100. * radialWidthRel, e3dColor, transparentColor)
         let sectorLinearSize = radius * distanceRel * angularWidth * 0.5 // tg x ~ x
         targetCircleRadius = max(radius * 0.02, sectorLinearSize)
 
-      if data.annotateTargets
-        var fctx : StdGuiFontContext
-        get_font_context(fctx, data.fontId, 0, 0, data.fontSize)
-        let drawBelow = pos.y > origin.y
-        let offsetY = (ctx |> hdpx(4.0) + targetCircleRadius.y) * (drawBelow ? -1.0 : 1.0)
-        let annotationPos = pos + float2(0.0, offsetY)
-        Radar`drawTargetAnnotation(ctx, target, fctx, annotationPos, drawBelow, data.planeTargetPicture, data.helicopterTargetPicture, data.rocketTargetPicture)
+      if needToAnnotateTarget
+        let targetIndex = "{int(target.persistentIndex)}"
+        let annotationBox = get_str_bbox(targetIndex, targetIndex |> length(), fctx)
+        let radialOffsetSign = distanceRel < 0.5 ? 1.0 : -1.0
+        let radialOffset = (float2(ctx |> hdpx(4.0)) + annotationBox.width * 0.5 + targetAnnotationRadialOffset) * radialOffsetSign
+        let annotationPos = origin + float2(distanceRel * radius.x + radialOffset.x, distanceRel * radius.y + radialOffset.y) * float2(cosa, sina)
+        let offsetX = -annotationBox.width.x * 0.5
+        let offsetY = annotationBox.width.y * 0.5
+        ctx |> goto_xy(annotationPos.x + offsetX, annotationPos.y + offsetY)
+        ctx |> draw_str_scaled(1.0, targetIndex, targetIndex |> length())
 
       if target.isDetected
-        if data.annotateTargets
-          let offset = float2(ctx |> hdpx(6.0), 0.0)
-          let targetLT = pos - targetCircleRadius - offset
-          let targetRB = pos + targetCircleRadius + offset
-          let lcoord <- to_array_move(fixed_array<float2>(targetLT, float2(targetLT.x, targetRB.y)))
-          ctx |> render_line_aa(lcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
-          let rcoord <- to_array_move(fixed_array<float2>(float2(targetRB.x, targetLT.y), targetRB))
-          ctx |> render_line_aa(rcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
-        else
-          let azimuthHalfWidth = get_radar_hud_is_visible2() ? get_radar_hud_azimuth_half_width2() : get_radar_hud_azimuth_half_width()
-          let angularGateWidthMult = calc_angular_gate_width_polar(distanceRel, azimuthHalfWidth)
-          let angularGateWidth = angularGateWidthMult * 2. * max(azimuthHalfWidth, angularGateBeamWidthMin)
-          var angleGateLeft = angle - 0.5 * angularGateWidth
-          var angleGateRight = angle + 0.5 * angularGateWidth
-          if azimuthRange < PI
-            angleGateLeft = max(angleGateLeft, get_radar_hud_azimuth_min() - PI * 0.5)
-            angleGateRight = min(angleGateRight, get_radar_hud_azimuth_max() - PI * 0.5)
-          let distanceGateHalfWidthRel = 0.5 * max(get_radar_hud_distance_gate_width_rel(), distanceGateWidthRelMin) * distanceGateWidthMult
-          let radiusInner = distanceRel - distanceGateHalfWidthRel
-          let radiusOuter = distanceRel + distanceGateHalfWidthRel
-          let lcoord <- to_array_move(fixed_array<float2>(origin + float2(cos(angleGateLeft) * radiusInner * radius.x, sin(angleGateLeft) * radiusInner * radius.y),
-            origin + float2(cos(angleGateLeft) * radiusOuter * radius.x, sin(angleGateLeft) * radiusOuter * radius.y)))
-          ctx |> render_line_aa(lcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
-          let rcoord <- to_array_move(fixed_array<float2>(origin + float2(cos(angleGateRight) * radiusInner * radius.x, sin(angleGateRight) * radiusInner * radius.y),
-            origin + float2(cos(angleGateRight) * radiusOuter * radius.x, sin(angleGateRight) * radiusOuter * radius.y)))
-          ctx |> render_line_aa(rcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
+        let azimuthHalfWidth = get_radar_hud_is_visible2() ? get_radar_hud_azimuth_half_width2() : get_radar_hud_azimuth_half_width()
+        let angularGateWidthMult = calc_angular_gate_width_polar(distanceRel, azimuthHalfWidth)
+        let angularGateWidth = angularGateWidthMult * 2. * max(azimuthHalfWidth, angularGateBeamWidthMin)
+        var angleGateLeft = angle - 0.5 * angularGateWidth
+        var angleGateRight = angle + 0.5 * angularGateWidth
+        if azimuthRange < PI
+          angleGateLeft = max(angleGateLeft, get_radar_hud_azimuth_min() - PI * 0.5)
+          angleGateRight = min(angleGateRight, get_radar_hud_azimuth_max() - PI * 0.5)
+        let distanceGateHalfWidthRel = 0.5 * max(get_radar_hud_distance_gate_width_rel(), distanceGateWidthRelMin) * distanceGateWidthMult
+        let radiusInner = distanceRel - distanceGateHalfWidthRel
+        let radiusOuter = distanceRel + distanceGateHalfWidthRel
+        let lcoord <- to_array_move(fixed_array<float2>(origin + float2(cos(angleGateLeft) * radiusInner * radius.x, sin(angleGateLeft) * radiusInner * radius.y),
+          origin + float2(cos(angleGateLeft) * radiusOuter * radius.x, sin(angleGateLeft) * radiusOuter * radius.y)))
+        ctx |> render_line_aa(lcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
+        let rcoord <- to_array_move(fixed_array<float2>(origin + float2(cos(angleGateRight) * radiusInner * radius.x, sin(angleGateRight) * radiusInner * radius.y),
+          origin + float2(cos(angleGateRight) * radiusOuter * radius.x, sin(angleGateRight) * radiusOuter * radius.y)))
+        ctx |> render_line_aa(rcoord, false, ctx |> hdpx(3. * data.lineWidth), float2(0, 0), e3dColor)
 
       if !target.isEnemy
         let iffDistReal = get_radar_hud_velocity_search() ? 0.9 : distanceRel + (0.5 + iffDistRelMult) * radialWidthRel

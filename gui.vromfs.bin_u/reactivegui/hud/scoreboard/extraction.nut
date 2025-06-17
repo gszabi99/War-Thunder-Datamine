@@ -170,7 +170,7 @@ let lootProgressBarComp = {
     @() {
       watch = lootState.Capacity
       pos = [hdpx(3), hdpx(2)]
-      size = [hdpx(223), hdpx(11)]
+      size = const [hdpx(223), hdpx(11)]
       rendObj = ROBJ_IMAGE
       image = Picture($"ui/gameuiskin#loot_scale_{getLootScaleSize(lootState.Capacity.get())}.svg:{hdpx(223)}:{hdpx(11)}:P")
     }
@@ -274,7 +274,7 @@ let furyGlowAnimGrad =  mkBitmapPictureLazy(gradTexSize, gradTexSize,
 
 let furySkullGlowAnim = {
   key = {}
-  size = [hdpx(54), hdpx(54)]
+  size = hdpx(54)
   rendObj = ROBJ_IMAGE
   image = furyGlowAnimGrad()
   opacity = 1
@@ -354,7 +354,7 @@ let skullFuryIndicatorComp = @() {
     mkFireIcon()
   ].extend(furyProgressBars.map(@(bar, i) @() {
     watch = lootState.Rage
-    size = [hdpx(14), hdpx(5)]
+    size = const [hdpx(14), hdpx(5)]
     rendObj = ROBJ_IMAGE
     image = Picture($"ui/gameuiskin#fury_progress_elem.svg:{hdpx(14)}:{hdpx(5)}:P")
     keepAspect = true
@@ -369,7 +369,7 @@ let mainHudComp = {
   pos = [0, hdpx(27)]
   size = [SIZE_TO_CONTENT, HUD_MODAL_HEIGHT]
   minWidth = HUD_MODAL_MIN_WIDTH
-  padding = [hdpx(17), hdpx(16), 0, hdpx(16)]
+  padding = const [hdpx(17), hdpx(16), 0, hdpx(16)]
   rendObj = ROBJ_9RECT
   screenOffs = dp(2)+1
   texOffs = dp(2)+1
@@ -386,7 +386,7 @@ let mainHudComp = {
       children = [
         timeLeftComp
         {
-          size = [hdpx(1), hdpx(14)]
+          size = const [hdpx(1), hdpx(14)]
           rendObj = ROBJ_BOX
           fillColor = 0xFF7A6F61
         }

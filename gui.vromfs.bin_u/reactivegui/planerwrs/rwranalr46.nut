@@ -48,7 +48,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
       color = color
       fontSize = objectStyle.fontScale * styleText.fontSize
       text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
-      padding = [2, 2]
+      padding = 2
     })
     let targetTypeTextSize = calc_comp_size(targetTypeText)
     targetType = @() {

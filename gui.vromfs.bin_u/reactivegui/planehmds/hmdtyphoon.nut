@@ -32,7 +32,7 @@ let addAnglePi = Computed(@() addAngle.get() * PI / 180.0)
 let rollPitch = @(){
   watch = addAngle
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [ph(20), ph(20)]
+  size = ph(20)
   pos = [pw(50), ph(50)]
   color = baseColor
   fillColor = 0
@@ -53,7 +53,7 @@ let rollPitch = @(){
 
 let airSymbol = {
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(2), ph(5)]
+  size = const [pw(2), ph(5)]
   pos = [pw(49), ph(45)]
   color = baseColor
   fillColor = 0
@@ -66,7 +66,7 @@ let airSymbol = {
 function ccrpReticle(width, height) {
   return @() {
     watch = TATargetVisible
-    size = [ph(3), ph(3)]
+    size = ph(3)
     children = TATargetVisible.get() ? [
       {
         size = flex()
@@ -119,7 +119,7 @@ let isAAMMode = Computed(@() GuidanceLockState.get() > GuidanceLockResult.RESULT
 function aamReticle(width, height) {
   return @() {
     watch = isAAMMode
-    size = [ph(2.0), ph(2.0)]
+    size = ph(2.0)
     animations = [
       { prop = AnimProp.opacity, from = 1, to = -1, duration = 0.5, loop = true, easing = InOutSine, trigger = "aam_seeker_limit" }
     ]

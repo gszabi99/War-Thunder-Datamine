@@ -56,6 +56,14 @@ let modeNames = [
   "hud/GTM VSL",
   "hud/GTM track",
 
+  "hud/SEA standby",
+  "hud/SEA search",
+  "hud/SEA acquisition",
+  "hud/SEA ACM",
+  "hud/SEA BST",
+  "hud/SEA VSL",
+  "hud/SEA track",
+
 
   "hud/LD standby",
   "hud/LD search",
@@ -92,6 +100,14 @@ let modeNames = [
   "hud/TWS GTM BST",
   "hud/TWS GTM VSL",
   "hud/TWS GTM track",
+
+  "hud/TWS SEA standby",
+  "hud/TWS SEA search",
+  "hud/TWS SEA acquisition",
+  "hud/TWS SEA ACM",
+  "hud/TWS SEA BST",
+  "hud/TWS SEA VSL",
+  "hud/TWS SEA track",
 
   "hud/IRST standby",
   "hud/IRST search",
@@ -299,7 +315,7 @@ interop.updateTarget <- function (index,
                                     azimuth_width_rel, elevation_width_rel, distance_width_rel,
                                     los_hor_speed, los_ver_speed, los_speed,
                                     age_rel, is_selected, is_detected, is_enemy, signal_rel,
-                                    typeId, icon_type, heightRel, radSpeed, objectId, targetType, persistent_index) {
+                                    type_id, icon_type, height_rel, rad_speed, object_id, target_type, persistent_index) {
   local needUpdate = false
   if (index >= targets.len()) {
     targets.resize(index + 1)
@@ -327,12 +343,12 @@ interop.updateTarget <- function (index,
     isDetected = is_detected
     isEnemy = is_enemy
     signalRel = signalRel
-    typeId = typeId
+    typeId = type_id
     iconType = icon_type
-    heightRel = heightRel
-    radSpeed = radSpeed
-    objectId = objectId
-    targetType = targetType
+    heightRel = height_rel
+    radSpeed = rad_speed
+    objectId = object_id
+    targetType = target_type
     persistentIndex = persistent_index
   }
   needUpdate = needUpdate || !isEqual(old_tgt, targets[index])

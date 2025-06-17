@@ -16,6 +16,7 @@ let { showUnitGoods } = require("%scripts/onlineShop/onlineShopModel.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { open_weapons_for_unit } = require("%scripts/weaponry/weaponryActions.nut")
 let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 let ACTION_FUNCTION_PARAMS = {
   availableFlushExp = 0
@@ -43,7 +44,7 @@ function getSlotActionFunctionName(unit, params) {
     return ""
   if (unit.isUsable() && !isUnitInSlotbar(unit))
     return "mainmenu/btnTakeAircraft"
-  if (!unit.isCrossPromo && (canBuyUnit(unit) || ::canBuyUnitOnline(unit)))
+  if (!unit.isCrossPromo && (canBuyUnit(unit) || canBuyUnitOnline(unit)))
     return "mainmenu/btnOrder"
 
   let isSquadronVehicle = unit.isSquadronVehicle()
@@ -81,7 +82,7 @@ function slotMainAction(unit, params = MAIN_FUNC_PARAMS) {
     return open_weapons_for_unit(unit, { curEdiff = params.curEdiff })
   if (unit.isUsable() && !isUnitInSlotbar(unit))
     return takeUnitInSlotbar(unit, params.onTakeParams)
-  if (::canBuyUnitOnline(unit))
+  if (canBuyUnitOnline(unit))
     return showUnitGoods(unit.name, "slot_action")
   if (canBuyUnit(unit))
     return buy(unit, "slotAction")

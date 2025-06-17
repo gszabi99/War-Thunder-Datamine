@@ -14,7 +14,7 @@ let tcsfAimMark = @() {
   children = TargetPosValid.value ? (
     !CCIPMode.value ?
     {
-      size = [pw(13), ph(13)]
+      size = const [pw(13), ph(13)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = Color(255, 70, 10)
       fillColor = Color(255, 70, 10)
@@ -57,7 +57,7 @@ let tcsfRadarAimMark = @() {
   size = flex()
   children = RadarTargetPosValid.value ? (
     {
-      size = [pw(8), ph(8)]
+      size = const [pw(8), ph(8)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = Color(255, 70, 10)
       fillColor = Color(255, 70, 10)
@@ -118,7 +118,7 @@ function altitude(height, generateFunc) {
 
   let getOffset = @() (max(2000.0 - BarAltitude.value, 0.0) * 0.00202 - 0.45) * height
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -143,7 +143,7 @@ function altWrap(width, height, generateFunc) {
 
 let generateAltMark = function(num) {
   return {
-    size = [pw(100), ph(10)]
+    size = const [pw(100), ph(10)]
     pos = [pw(15), 0]
     flow = FLOW_HORIZONTAL
     children = [
@@ -199,7 +199,7 @@ function pitch(width, height, generateFunc) {
 
 function generatePitchLine(num) {
   return {
-    size = [pw(100), ph(15)]
+    size = const [pw(100), ph(15)]
     flow = FLOW_VERTICAL
     children = (num == 0) ? @() {
         size = flex()

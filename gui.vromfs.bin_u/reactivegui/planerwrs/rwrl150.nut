@@ -79,10 +79,10 @@ function scope(scale, style) {
     children = [
       {
         pos = [pw(7), ph(0)],
-        size = [pw(90), ph(90)],
+        size = const [pw(90), ph(90)],
         children = [
           {
-            size = [pw(100), ph(100)],
+            size = const [pw(100), ph(100)],
             children = [
               rwrTargetsComponent(style.object, 100.0),
               createRwrGrid(style.grid),

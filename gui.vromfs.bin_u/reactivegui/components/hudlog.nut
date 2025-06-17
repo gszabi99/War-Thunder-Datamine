@@ -5,7 +5,7 @@ let scrollbar = require("scrollbar.nut")
 let { cursorVisible } = require("%rGui/ctrlsState.nut")
 
 let logContainer = @() {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   gap = hdpx(2)
   padding = [scrn_tgt(0.005),  scrn_tgt(0.005)]
   flow = FLOW_VERTICAL
@@ -19,7 +19,7 @@ let hudLog = function (params) {
   return @() {
     watch = cursorVisible
     rendObj = ROBJ_SOLID
-    size = [flex(), hdpx(158)]
+    size = const [flex(), hdpx(158)]
     clipChildren = true
     valign = ALIGN_BOTTOM
     color = colors.hud.hudLogBgColor

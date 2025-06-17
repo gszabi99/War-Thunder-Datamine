@@ -9,7 +9,7 @@ let createHintContent = function(text, override) {
   let { rows = [] } = cross_call.getHintConfig(text)
 
   return {
-    size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+    size = SIZE_TO_CONTENT
     flow = FLOW_VERTICAL
     valign = ALIGN_CENTER
 

@@ -9,7 +9,7 @@ let hudUnitType = require("%rGui/hudUnitType.nut")
 
 let ASP17crosshair = @() {
   watch = IlsColor
-  size = [pw(20), ph(20)]
+  size = const [pw(20), ph(20)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -25,7 +25,7 @@ let ASP17crosshair = @() {
 
 let ASP17Roll = @() {
   watch = IlsColor
-  size = [pw(20), ph(20)]
+  size = const [pw(20), ph(20)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -46,7 +46,7 @@ let ASP17Roll = @() {
 let DistToTargetWatch = Computed(@() cvt(DistToTarget.value, 450, 3000, -90, 15).tointeger())
 let ASP17Distances = @() {
   watch = [IlsColor, DistToTargetWatch]
-  size = [pw(20), ph(20)]
+  size = const [pw(20), ph(20)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -73,7 +73,7 @@ let ASP17Distances = @() {
 }
 
 let lockedReticle = {
-  size = [pw(50), ph(50)]
+  size = const [pw(50), ph(50)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = Color(20, 10, 1, 0)

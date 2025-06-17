@@ -134,6 +134,9 @@
       },
       "turret_02_bottom_dm": {
         "armorThickness": 40.0
+      },
+      "turret_04_bottom_dm": {
+        "armorThickness": 30.0
       }
     },
     "hull_composite_armor": {
@@ -227,6 +230,28 @@
         "hp": 150.0,
         "ignoreDeadWithSplash": true,
         "armorEffectiveThicknessMax": 50.0
+      },
+      "turret_04_top_dm": {
+        "armorThickness": 20.0,
+        "createSecondaryShatters": false
+      },
+      "turret_04_front_dm": {
+        "armorThickness": 30.0,
+        "createSecondaryShatters": false
+      },
+      "turret_03_bottom_dm": {
+        "armorThickness": 20.0
+      },
+      "turret_05_back_dm": {
+        "armorThickness": 25.0,
+        "createSecondaryShatters": false
+      },
+      "turret_05_top_dm": {
+        "armorThickness": 25.0,
+        "createSecondaryShatters": false
+      },
+      "turret_05_bottom_dm": {
+        "armorThickness": 45.0
       }
     },
     "xray_parts": {
@@ -1712,7 +1737,7 @@
         "armorArrayText": {
           "layer": [
             {
-              "dmPart": "turret_06_front_dm"
+              "dmPart": "turret_side_dm"
             },
             {
               "dmPart": "composite_armor_turret_01_dm",
@@ -1722,7 +1747,7 @@
               ]
             },
             {
-              "dmPart": "turret_front_dm"
+              "dmPart": "turret_06_front_dm"
             }
           ]
         }
@@ -1732,6 +1757,9 @@
         "armorArrayText": {
           "layer": [
             {
+              "dmPart": "turret_01_front_dm"
+            },
+            {
               "dmPart": "composite_armor_turret_03_dm",
               "xrayTextThickness": [
                 200.0,
@@ -1739,7 +1767,7 @@
               ]
             },
             {
-              "dmPart": "turret_01_front_dm"
+              "dmPart": "turret_04_bottom_dm"
             }
           ]
         }
@@ -1749,18 +1777,21 @@
         "armorArrayText": {
           "layer": [
             {
-              "dmPart": "turret_06_front_dm"
+              "dmPart": "turret_04_top_dm"
             },
             {
               "dmPart": "composite_armor_turret_04_dm",
               "xrayTextThickness": 360.0
             },
             {
-              "dmPart": "turret_front_dm"
+              "dmPart": "turret_04_front_dm"
             },
             {
               "dmPart": "composite_armor_turret_05_dm",
               "xrayTextThickness": 300.0
+            },
+            {
+              "dmPart": "turret_06_front_dm"
             }
           ]
         }

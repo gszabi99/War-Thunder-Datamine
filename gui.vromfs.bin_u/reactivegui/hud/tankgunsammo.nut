@@ -99,7 +99,7 @@ function mkTankGun(triggerGroupIcon, cartridges, bullets, cartridgeSizeValue, re
           @() {
             rendObj = ROBJ_TEXT
             watch = cartridges
-            padding = [hdpx(2), 0, 0, 0]
+            padding = const [hdpx(2), 0, 0, 0]
             color = activeColor
             text = cartridges.value
             fontSize = fontHeight

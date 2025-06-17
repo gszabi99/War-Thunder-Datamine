@@ -22,12 +22,12 @@ function getScoreObj(teamName) {
   return @() {
     watch = teamColors
     rendObj = ROBJ_BOX
-    size = [sh(5), sh(6)]
+    size = const [sh(5), sh(6)]
     valign = ALIGN_CENTER
     halign = ALIGN_CENTER
     fillColor = teamColors.value[scoreParams.fillColor]
     borderColor = teamColors.value[scoreParams.borderColor]
-    borderWidth = [hdpx(1)]
+    borderWidth = hdpx(1)
 
     children = @() {
       watch = scoreParams.score
@@ -47,7 +47,7 @@ return {
     getScoreObj("localTeam")
     {
       rendObj = ROBJ_SOLID
-      size = [sh(12), sh(4.5)]
+      size = const [sh(12), sh(4.5)]
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
       color = Color(0, 0, 0, 102)

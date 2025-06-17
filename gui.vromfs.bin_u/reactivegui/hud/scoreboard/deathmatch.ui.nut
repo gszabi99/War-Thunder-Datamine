@@ -42,10 +42,10 @@ function getScoreObj(teamName) {
   return @() {
     watch = [scoreParams.score, teamColors]
     rendObj = ROBJ_TEXT
-    size = [sh(9), sh(6)]
+    size = const [sh(9), sh(6)]
     valign = ALIGN_CENTER
     halign = scoreParams.halign
-    padding = [hdpx(4), hdpx(7)]
+    padding = const [hdpx(4), hdpx(7)]
     font = Fonts.big_text_hud
     color = teamColors.value[scoreParams.fontColor]
     fontFxFactor = 10
@@ -73,7 +73,7 @@ return {
         rendObj = ROBJ_SOLID
         size = SIZE_TO_CONTENT
         halign = ALIGN_CENTER
-        padding = [hdpx(5), hdpx(7), hdpx(2), hdpx(7)]
+        padding = const [hdpx(5), hdpx(7), hdpx(2), hdpx(7)]
         color = Color(42, 48, 55, 204)
         children = @() {
           watch = countKillsToWin

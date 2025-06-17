@@ -33,7 +33,7 @@ let activeAreaBounds = keepref(Computed(function() {
       areaY = 0
       areaWidth = 0
       areaHeight = 0
-      size = [0, 0]
+      size = 0
       rectangleArea = [0, 0]
     }
 

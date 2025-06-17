@@ -93,7 +93,7 @@ let opticalSight = @(width, height,
 
   
   let rollIndicator = @() {
-    size = [ph(15), ph(15)]
+    size = ph(15)
     pos = [0, ph(85)]
     children = [
       {
@@ -161,7 +161,7 @@ let opticalSight = @(width, height,
 
   let releaseTargetLockCursor = @() {
     watch = [ReleaseTargetCursorX, ReleaseTargetCursorY, isLockReleaseAreaVisible ]
-    size = [ph(1), ph(1)]
+    size = ph(1)
     rendObj = ROBJ_VECTOR_CANVAS
     color = opticColor
     lineWidth = lineWidth

@@ -153,7 +153,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
     color = iconColor
     fontSize = objectStyle.fontScale * styleText.fontSize * targetTypeFontSizeMult
     text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
-    padding = [2, 2]
+    padding = 2
   })
   let targetTypeTextSize = calc_comp_size(targetTypeText)
   local targetType = @() {
@@ -443,10 +443,10 @@ function scope(scale, style) {
     children = [
       {
         pos = [pw(7), ph(7)],
-        size = [pw(80), ph(80)],
+        size = const [pw(80), ph(80)],
         children = [
           {
-            size = [pw(100), ph(100)],
+            size = const [pw(100), ph(100)],
             children = [
               rwrTargetsComponent(style.object),
               createRwrGrid(style.grid)

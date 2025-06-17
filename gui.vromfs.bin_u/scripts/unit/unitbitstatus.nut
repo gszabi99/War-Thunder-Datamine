@@ -7,6 +7,7 @@ let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { isInFlight } = require("gameplayBinding")
 let { canResearchUnit, canBuyNotResearched } = require("%scripts/unit/unitStatus.nut")
 let { isUnitInSlotbar } = require("%scripts/unit/unitInSlotbarStatus.nut")
+let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 
 function getBitStatus(unit, params = {}) {
   let isLocalState = params?.isLocalState ?? true
@@ -37,7 +38,7 @@ function getBitStatus(unit, params = {}) {
     bitStatus = bit_unit_status.mounted
   else if (isOwn)
     bitStatus = bit_unit_status.owned
-  else if (canBuyUnit(unit) || ::canBuyUnitOnline(unit) || ::canBuyUnitOnMarketplace(unit))
+  else if (canBuyUnit(unit) || ::canBuyUnitOnline(unit) || canBuyUnitOnMarketplace(unit))
     bitStatus = bit_unit_status.canBuy
   else if (isLockedSquadronVehicle && (!unit.unitType.canSpendGold() || !canBuyNotResearched(unit)))
     bitStatus = bit_unit_status.locked

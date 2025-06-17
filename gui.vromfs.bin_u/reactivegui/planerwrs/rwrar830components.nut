@@ -51,7 +51,7 @@ function createCompass(gridStyle, color, backGroundColor, styleText) {
   }
 
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 3 * gridStyle.lineWidthScale
@@ -70,7 +70,7 @@ function createCompass(gridStyle, color, backGroundColor, styleText) {
 function createRwrGrid(gridStyle, color, backGroundColor) {
   return {
     pos = [pw(50), ph(50)],
-    size = [pw(100), ph(100)],
+    size = const [pw(100), ph(100)],
     children = [
       {
         size = flex()
@@ -199,7 +199,7 @@ function createRwrTarget(index, settingsIn, objectStyle, iconColor, backGroundCo
     color = iconColor
     fontSize = styleText.fontSize * objectStyle.fontScale * targetTypeFontSizeMult * newTargetFontSizeMultRwr.get()
     text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
-    padding = [2, 2]
+    padding = 2
   })
   let targetTypeTextSize = calc_comp_size(targetTypeText)
   local targetType = @() {

@@ -9,7 +9,7 @@ let { cvt } = require("dagor.math")
 let buccaneerSpdVal = Computed(@() cvt(Tas.value * mpsToKnots, 300, 600, 0, 100).tointeger())
 let buccaneerSpeed = @() {
   watch = [buccaneerSpdVal, IlsColor]
-  size = [pw(20), ph(5)]
+  size = const [pw(20), ph(5)]
   pos = [pw(40), ph(85)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -27,7 +27,7 @@ let DistToTargetBuc = Computed(@() cvt(TimeBeforeBombRelease.value, 0, 10.0, -90
 let BucDistMarkVis = Computed(@() TargetPosValid.value && BombingMode.value)
 let buccaneerCCRP = @() {
   watch = [BucDistMarkVis, DistToTargetBuc, IlsColor]
-  size = [pw(20), pw(20)]
+  size = pw(20)
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -46,7 +46,7 @@ function buccaneerAimMark(_width, _height) {
     children = [
       @() {
         watch = IlsColor
-        size = [pw(20), ph(20)]
+        size = const [pw(20), ph(20)]
         pos = [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -64,7 +64,7 @@ function buccaneerAimMark(_width, _height) {
       },
       @() {
         watch = IlsColor
-        size = [pw(30), ph(30)]
+        size = const [pw(30), ph(30)]
         pos = [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -85,7 +85,7 @@ function buccaneerAimMark(_width, _height) {
       buccaneerCCRP,
       @() {
         watch = IlsColor
-        size = [ph(1.2), ph(1.2)]
+        size = ph(1.2)
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = IlsColor.value

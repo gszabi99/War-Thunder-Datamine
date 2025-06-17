@@ -34,6 +34,7 @@ let MedalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType          = handlerType.CUSTOM
   sceneBlkName     = "%gui/profile/medalsPage.blk"
 
+  parent = null
   openParams = null
   applyFilterTimer = null
   medalNameFilter = ""
@@ -173,8 +174,8 @@ let MedalsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function onFilterCancel(filterObj) {
     if (filterObj.getValue() != "")
       filterObj.setValue("")
-    else
-      this.guiScene.performDelayed(this, this.goBack)
+    else if (this.parent != null)
+      this.guiScene.performDelayed(this.parent, this.parent.goBack)
   }
 
   function onMedalsCountrySelect(obj) {

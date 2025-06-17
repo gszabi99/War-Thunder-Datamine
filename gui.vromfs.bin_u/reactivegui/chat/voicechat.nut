@@ -33,7 +33,7 @@ let voiceChatElements = function() {
           rendObj = ROBJ_TEXTAREA
           behavior = Behaviors.TextArea
           text = voiceChatMember.name
-          size = [flex(15), SIZE_TO_CONTENT]
+          size = const [flex(15), SIZE_TO_CONTENT]
           font = fontsState.get("normal")
           color = colors.menu.activeTextColor
         }
@@ -55,7 +55,7 @@ let voiceChatElements = function() {
 }
 
 let voiceChatWidget = @() {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     valign = ALIGN_BOTTOM
     gap = fpx(2)

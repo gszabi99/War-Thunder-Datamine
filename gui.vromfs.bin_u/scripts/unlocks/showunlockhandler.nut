@@ -31,6 +31,7 @@ let { getNextAwardText } = require("%scripts/unlocks/unlocksModule.nut")
 let takeUnitInSlotbar = require("%scripts/unit/takeUnitInSlotbar.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { checkDelayedUnlockWnd } = require("%scripts/unlocks/showUnlockWnd.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -163,7 +164,7 @@ gui_handlers.ShowUnlockHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
 
     let showSetAir = this.unit != null && this.unit.isUsable() && !isUnitInSlotbar(this.unit)
-    let canBuyOnline = this.unit != null && ::canBuyUnitOnline(this.unit)
+    let canBuyOnline = this.unit != null && canBuyUnitOnline(this.unit)
     let canBuy = this.unit != null && !this.unit.isRented() && !this.unit.isBought() && (canBuyUnit(this.unit) || canBuyOnline)
     showObjById("btn_set_air", showSetAir, this.scene)
     let okObj = showObjById("btn_ok", !showSetAir, this.scene)

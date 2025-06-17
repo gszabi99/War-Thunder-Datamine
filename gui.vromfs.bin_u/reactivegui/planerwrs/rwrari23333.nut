@@ -46,7 +46,7 @@ let gridCommands = makeGridCommands()
 function createGrid(gridStyle) {
   return {
     pos = [pw(50), ph(50)]
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     color = color
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * gridStyle.lineWidthScale
@@ -110,7 +110,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
     color = color
     fontSize = styleText.fontSize * objectStyle.fontScale
     text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
-    padding = [2, 2]
+    padding = 2
   })
   let targetTypeTextSize = calc_comp_size(targetTypeText)
   local targetType = @() {

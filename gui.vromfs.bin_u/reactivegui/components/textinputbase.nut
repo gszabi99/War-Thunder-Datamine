@@ -54,15 +54,15 @@ function isStringLikelyEmail(strv, _verbose = true) {
 function defaultFrame(inputObj, group, sf) {
   return {
     rendObj = ROBJ_FRAME
-    borderWidth = [hdpx(1), hdpx(1), 0, hdpx(1)]
-    size = [flex(), SIZE_TO_CONTENT]
+    borderWidth = const [hdpx(1), hdpx(1), 0, hdpx(1)]
+    size = FLEX_H
     color = (sf & S_KB_FOCUS) ? Color(180, 180, 180) : Color(120, 120, 120)
     group = group
 
     children = {
       rendObj = ROBJ_FRAME
-      borderWidth = [0, 0, hdpx(1), 0]
-      size = [flex(), SIZE_TO_CONTENT]
+      borderWidth = const [0, 0, hdpx(1), 0]
+      size = FLEX_H
       color = (sf & S_KB_FOCUS) ? Color(250, 250, 250) : Color(180, 180, 180)
       group = group
 
@@ -111,8 +111,8 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
     setValue = @(v) text_state(v), inputType = null,
     placeholder = null, showPlaceHolderOnFocus = false, password = null, maxChars = null,
     title = null, font = null, fontSize = null, hotkeys = null,
-    size = [flex(), fontH(100)], textmargin = [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
-    margin = [sh(1), 0], padding = 0, borderRadius = hdpx(3), valign = ALIGN_CENTER,
+    size = [flex(), fontH(100)], textmargin = const [sh(1), sh(0.5)], valignText = ALIGN_BOTTOM,
+    margin = const [sh(1), 0], padding = 0, borderRadius = hdpx(3), valign = ALIGN_CENTER,
     xmbNode = null, imeOpenJoyBtn = null, charMask = null,
 
     
@@ -169,7 +169,7 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
       fontSize
       color = colors.placeHolderColor
       animations = [failAnim(text_state)]
-      margin = [0, sh(0.5)]
+      margin = const [0, sh(0.5)]
     }
     placeholderObj = placeholder instanceof Watched
       ? @() phBase.__update({ watch = placeholder, text = placeholder.value })
@@ -230,7 +230,7 @@ function textInput(text_state, options = {}, frameCtor = defaultFrame) {
     borderWidth = 0
     borderRadius
     clipChildren = true
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     group
     animations = [failAnim(text_state)]
     valign

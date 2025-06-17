@@ -64,7 +64,7 @@ let bulletsImpactLine = @() {
 let generateSpdMark = function(num) {
   let ofs = num < 10 ? pw(-15) : pw(-30)
   return {
-    size = [pw(100), ph(7.5)]
+    size = const [pw(100), ph(7.5)]
     pos = [pw(30), 0]
     children = [
       (num % 5 > 0 ? null :
@@ -101,7 +101,7 @@ function speed(height, generateFunc) {
 
   let getOffset = @() ((1000.0 - Speed.value * mpsToKnots) * 0.00745 - 0.5) * height
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -143,7 +143,7 @@ function speedWrap(width, height, generateFunc) {
 }
 
 let speedVal = @() {
-  size = [pw(10), ph(4)]
+  size = const [pw(10), ph(4)]
   pos = [pw(5), ph(43)]
   halign = ALIGN_RIGHT
   children = [
@@ -161,7 +161,7 @@ let speedVal = @() {
     @() {
       watch = [SpeedValue, IlsColor]
       size = SIZE_TO_CONTENT
-      padding = [0, 20]
+      padding = const [0, 20]
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
@@ -172,7 +172,7 @@ let speedVal = @() {
 
 let BarAltitudeValue = Computed(@() (BarAltitude.value * metrToFeet).tointeger())
 let AltVal = @() {
-  size = [pw(15), ph(4)]
+  size = const [pw(15), ph(4)]
   pos = [pw(82), ph(43)]
   halign = ALIGN_RIGHT
   children = [
@@ -190,7 +190,7 @@ let AltVal = @() {
     @() {
       watch = [BarAltitudeValue, IlsColor]
       size = SIZE_TO_CONTENT
-      padding = [0, 5]
+      padding = const [0, 5]
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
@@ -201,7 +201,7 @@ let AltVal = @() {
 
 let generateAltMark = function(num) {
   return {
-    size = [pw(100), ph(7.5)]
+    size = const [pw(100), ph(7.5)]
     pos = [pw(15), 0]
     flow = FLOW_HORIZONTAL
     children = [
@@ -238,7 +238,7 @@ function altitude(height, generateFunc) {
 
   let getOffset = @() ((65000 - BarAltitude.value * metrToFeet) * 0.0007425 - 0.48) * height
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -308,7 +308,7 @@ let mach = @() {
 let AltitudeValue = Computed(@() (Altitude.value * metrToFeet / 10).tointeger())
 let radioAlt = @() {
   watch = IlsColor
-  size = [pw(12), ph(4)]
+  size = const [pw(12), ph(4)]
   pos = [pw(80), ph(74)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -331,7 +331,7 @@ let radioAlt = @() {
     @() {
       watch = [AltitudeValue, IlsColor]
       size = SIZE_TO_CONTENT
-      padding = [0, 5]
+      padding = const [0, 5]
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       fontSize = 40
@@ -343,7 +343,7 @@ let radioAlt = @() {
 let adlMarker = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(3), ph(3)]
+  size = const [pw(3), ph(3)]
   color = IlsColor.value
   lineWidth = baseLineWidth * IlsLineScale.value
   commands = [
@@ -362,7 +362,7 @@ let adlMarker = @() {
 
 let roll = @() {
   watch = IlsColor
-  size = [pw(70), ph(70)]
+  size = const [pw(70), ph(70)]
   pos = [pw(15), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -417,7 +417,7 @@ function aamReticle(width, height) {
     children = isAAMMode.value ? [
       @() {
         watch = IlsColor
-        size = [pw(10), ph(10)]
+        size = const [pw(10), ph(10)]
         pos = [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -441,7 +441,7 @@ function aamReticle(width, height) {
       },
       @() {
         watch = IlsColor
-        size = [pw(2), ph(2)]
+        size = const [pw(2), ph(2)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)
@@ -467,7 +467,7 @@ function aamReticle(width, height) {
       },
       @() {
         watch = IlsColor
-        size = [pw(10), ph(10)]
+        size = const [pw(10), ph(10)]
         pos = [pw(50), ph(50)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -507,7 +507,7 @@ function ccipGun(width, height) {
     children = CannonMode.value && TargetPosValid.value ? [
       @() {
         watch = IlsColor
-        size = [pw(10), ph(10)]
+        size = const [pw(10), ph(10)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)
@@ -588,7 +588,7 @@ function ccipShell(width, height) {
     children = (RocketMode.value || BombCCIPMode.value) && TargetPosValid.value ? [
       @() {
         watch = IlsColor
-        size = [pw(3), ph(3)]
+        size = const [pw(3), ph(3)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)
@@ -640,7 +640,7 @@ let gunfireSolution = @() {
     @() {
       watch = IlsColor
       rendObj = ROBJ_VECTOR_CANVAS
-      size = [pw(1), ph(1)]
+      size = const [pw(1), ph(1)]
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.value
@@ -666,7 +666,7 @@ let orientation = @() {
     @() {
       watch = [OrientationSector, IlsColor]
       rendObj = ROBJ_VECTOR_CANVAS
-      size = [pw(20), ph(20)]
+      size = const [pw(20), ph(20)]
       pos = [pw(50), ph(50)]
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
@@ -697,7 +697,7 @@ function radarMark(width, height) {
     children = RadarTargetPosValid.value && !BombingMode.value && !isDGFTMode.value ? [
       (isAAMMode.value ? @() {
         watch = IlsColor
-        size = [pw(5), ph(5)]
+        size = const [pw(5), ph(5)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)
@@ -714,7 +714,7 @@ function radarMark(width, height) {
       } :
       @() {
         watch = IlsColor
-        size = [pw(5), ph(5)]
+        size = const [pw(5), ph(5)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)
@@ -829,7 +829,7 @@ function generatePitchLine(num) {
   let lineAngle =  num > 0 ? 0 : degToRad(min(20, newNum / 4))
   let offset = num > 0 ? 0 : (30.0 * sin(degToRad(min(20, newNum / 4))))
   return {
-    size = [pw(60), ph(50)]
+    size = const [pw(60), ph(50)]
     pos = [pw(20), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -839,7 +839,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.value
         color = IlsColor.value
-        padding = [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, 30, 5, 30, 0],
           [VECTOR_LINE, -20, 0, 30, 0],
@@ -910,7 +910,7 @@ function TvvLinked(width, height) {
       @() {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        size = [pw(6), ph(6)]
+        size = const [pw(6), ph(6)]
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.value
@@ -953,7 +953,7 @@ let aimLockMark = @(){
   children = AimLockValid.value ? [
     @(){
       watch = AimLockLimited
-      size = [pw(3), ph(3)]
+      size = const [pw(3), ph(3)]
       rendObj = ROBJ_VECTOR_CANVAS
       function onAttach() {
         updAimLockLimited()
@@ -1044,7 +1044,7 @@ let MinLaunchDgftPos = Computed(@() ((1.0 - AamLaunchZoneDistDgftMin.value) * 10
 let RadarClosureSpeed = Computed(@() (RadarTargetDistRate.value * mpsToKnots * -1.0).tointeger())
 let launchZone = @() {
   watch = IsLaunchZoneVisible
-  size = [pw(8), ph(30)]
+  size = const [pw(8), ph(30)]
   pos = [pw(75), ph(30)]
   children = IsLaunchZoneVisible.value ? [
     @(){
@@ -1064,7 +1064,7 @@ let launchZone = @() {
         },
         {
           rendObj = ROBJ_VECTOR_CANVAS
-          size = [pw(30), ph(7)]
+          size = const [pw(30), ph(7)]
           color = IlsColor.value
           lineWidth = baseLineWidth * IlsLineScale.value
           commands = [
@@ -1075,7 +1075,7 @@ let launchZone = @() {
       ]
     },
     {
-      size = [pw(25), flex()]
+      size = const [pw(25), flex()]
       flow = FLOW_VERTICAL
       children = [
         @(){

@@ -32,19 +32,19 @@ let isVisibleScoreBoard = Computed(@() missionProgressDefendShip.get() > 0)
 
 let killsText = @() textParams.__merge({
   watch = [missionProgressScore, missionProgressDefendShip]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   text = $"{missionProgressScore.get()}/{missionProgressDefendShip.get()}"
 })
 
 let timeIcon = {
   rendObj = ROBJ_IMAGE
-  size = [hdpx(32), hdpx(26)]
+  size = const [hdpx(32), hdpx(26)]
   image = Picture("ui/gameuiskin#objective_time.avif")
 }
 
 let timeText = @() textParams.__merge({
   watch = roundTimeLeft
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   text = secondsToTimeSimpleString(roundTimeLeft.value)
 })
 

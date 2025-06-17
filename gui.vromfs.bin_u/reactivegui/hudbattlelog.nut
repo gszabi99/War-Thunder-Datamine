@@ -10,7 +10,7 @@ let logEntryComponent = function (log_entry) {
   return function () {
     return  {
       watch = teamColors
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       rendObj = ROBJ_TEXTAREA
       behavior = Behaviors.TextArea
       text = log_entry.message
@@ -27,6 +27,6 @@ let logBox = hudLog({
 })
 
 return {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   children = logBox
 }

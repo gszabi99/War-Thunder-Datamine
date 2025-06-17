@@ -45,7 +45,7 @@ let HeiHundreds = Computed(@() (BarAltitude.value * metrToFeet / 100).tointeger(
 let HeiDozens = Computed(@() (BarAltitude.value * metrToFeet % 100.0 / 10).tointeger())
 let barAlt = {
   pos = [pw(75), ph(10)]
-  size = [pw(10), SIZE_TO_CONTENT]
+  size = const [pw(10), SIZE_TO_CONTENT]
   flow = FLOW_HORIZONTAL
   valign = ALIGN_BOTTOM
   halign = ALIGN_RIGHT
@@ -73,7 +73,7 @@ let AltValue = Computed(@() clamp(Altitude.value * metrToFeet, -1.0, 5001.0).toi
 let altitude = @() {
   watch = [AltValue, IlsColor]
   pos = [pw(70), ph(16)]
-  size = [pw(20), SIZE_TO_CONTENT]
+  size = const [pw(20), SIZE_TO_CONTENT]
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = IlsColor.value
@@ -85,7 +85,7 @@ let altitude = @() {
 let localTime = @() {
   watch = IlsColor
   rendObj = ROBJ_TEXT
-  size = [pw(20), SIZE_TO_CONTENT]
+  size = const [pw(20), SIZE_TO_CONTENT]
   halign = ALIGN_CENTER
   pos = [pw(40), ph(97)]
   color = IlsColor.get()
@@ -115,7 +115,7 @@ let overload = @() {
 
 let aoaWatched = Computed(@() (Aoa.get() * 10.0).tointeger())
 let aoa = @() {
-  size = [pw(5), pw(10)]
+  size = const [pw(5), pw(10)]
   flow = FLOW_HORIZONTAL
   halign = ALIGN_LEFT
   valign = ALIGN_BOTTOM
@@ -124,7 +124,7 @@ let aoa = @() {
     @(){
       watch = [IlsColor]
       rendObj = ROBJ_TEXT
-      size = [50  , SIZE_TO_CONTENT]
+      size = const [50  , SIZE_TO_CONTENT]
       color = IlsColor.get()
       fontSize = 55
       font = Fonts.mirage_ils
@@ -186,7 +186,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = [pw(60), ph(50)]
+    size = const [pw(60), ph(50)]
     pos = [pw(20), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -196,7 +196,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.value
         color = IlsColor.value
-        padding = [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, -100, 0, 200, 0]
         ]
@@ -229,7 +229,7 @@ let AccelPos = Computed(@() (48.5 - cvt(Accel.value, 10, -10, 10, -10)).tointege
 let acceleration = @() {
   watch = [IlsColor, AccelPos]
   pos = [pw(35), ph(AccelPos.value)]
-  size = [pw(30), ph(3)]
+  size = const [pw(30), ph(3)]
   color = IlsColor.value
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.value
@@ -249,7 +249,7 @@ let gunAimMark = @() {
   children = TargetPosValid.value ?
     @() {
       watch = [IlsColor, ccipDistF]
-      size = [pw(8), ph(8)]
+      size = const [pw(8), ph(8)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
@@ -281,7 +281,7 @@ let bombMark = @() {
   children = TargetPosValid.value ?
   @() {
     watch = IlsColor
-    size = [pw(5), ph(2)]
+    size = const [pw(5), ph(2)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
     lineWidth = baseLineWidth * IlsLineScale.value
@@ -376,7 +376,7 @@ let radarTargetDist = @() {
         }
         !CCIPMode.value ? @() {
           watch = IlsColor
-          size = [pw(12), ph(5)]
+          size = const [pw(12), ph(5)]
           pos = [pw(70), ph(55)]
           rendObj = ROBJ_VECTOR_CANVAS
           color = IlsColor.value
@@ -389,7 +389,7 @@ let radarTargetDist = @() {
             @() {
               watch = [IlsColor, raderClosureSpeed]
               size = flex()
-              padding = [0, 5]
+              padding = const [0, 5]
               rendObj = ROBJ_TEXT
               valign = ALIGN_CENTER
               color = IlsColor.value
@@ -409,7 +409,7 @@ function targetMark(width, height) {
   return @() {
     watch = [IlsColor, RadarTargetPosValid]
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [pw(7), ph(7)]
+    size = const [pw(7), ph(7)]
     color = IlsColor.value
     fillColor = Color(0, 0, 0, 0)
     lineWidth = baseLineWidth * IlsLineScale.value
@@ -445,7 +445,7 @@ function targetMark(width, height) {
 let AamIsReady = Computed(@() GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING)
 let aamTargetMarker = @() {
   watch = [IlsColor, AamIsReady]
-  size = [pw(10), ph(10)]
+  size = const [pw(10), ph(10)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
   fillColor = Color(0, 0, 0, 0)
@@ -483,7 +483,7 @@ function AamReady(is_left) {
       @() {
         watch = IsAamLaunchZoneVisible
         pos = [is_left ? pw(33.8) : pw(60.7), ph(85)]
-        size = [pw(5), ph(5)]
+        size = const [pw(5), ph(5)]
         children = IsAamLaunchZoneVisible.value ? [
           @() {
             watch = [CalcFlightTime, IlsColor]
@@ -502,7 +502,7 @@ function AamReady(is_left) {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
         pos = [is_left ? pw(33.8) : pw(60.7), ph(89.5)]
-        size = [pw(5), ph(5)]
+        size = const [pw(5), ph(5)]
         color = IlsColor.value
         lineWidth = IlsLineScale.value * baseLineWidth
         fillColor = Color(0, 0, 0, 0)
@@ -522,7 +522,7 @@ function targetDistScale(height) {
   let curDist = Computed(@() round(RadarTargetDist.value * metrToNavMile))
   return @() {
     watch = IsAamLaunchZoneVisible
-    size = [pw(10), ph(30)]
+    size = const [pw(10), ph(30)]
     pos = [pw(80), ph(60)]
     children = IsAamLaunchZoneVisible.value ? [
       @() {
@@ -556,7 +556,7 @@ function targetDistScale(height) {
         watch = [CurDistPos, IlsColor]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
-        size = [pw(45), ph(5)]
+        size = const [pw(45), ph(5)]
         pos = [pw(55), CurDistPos.value]
         lineWidth = baseLineWidth * IlsLineScale.value
         commands = [

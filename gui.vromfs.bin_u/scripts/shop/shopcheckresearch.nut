@@ -29,6 +29,7 @@ let { GuiBox } = require("%scripts/guiBox.nut")
 let { gui_modal_tutor } = require("%scripts/guiTutorial.nut")
 let { RESEARCHED_UNIT_FOR_CHECK } = require ("%scripts/researches/researchConsts.nut")
 let { checkNonApprovedResearches } = require("%scripts/researches/researchActions.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
   wndType = handlerType.MODAL
@@ -287,7 +288,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
         res = unit
         break
       }
-      else if (!res && (canBuyUnit(unit) || ::canBuyUnitOnline(unit)))
+      else if (!res && (canBuyUnit(unit) || canBuyUnitOnline(unit)))
         res = unit
 
     return res || getTblValue(0, unitsList)
@@ -306,7 +307,7 @@ gui_handlers.ShopCheckResearch <- class (gui_handlers.ShopMenuHandler) {
 
     let isFakeUnit = unit?.isFakeUnit ?? false
     let canBuyIngame = !isFakeUnit && canBuyUnit(unit)
-    let canBuyOnline = !isFakeUnit && ::canBuyUnitOnline(unit)
+    let canBuyOnline = !isFakeUnit && canBuyUnitOnline(unit)
     let showBuyUnit = canBuyIngame || canBuyOnline
     this.showNavButton("btn_buy_unit", showBuyUnit)
     if (showBuyUnit) {

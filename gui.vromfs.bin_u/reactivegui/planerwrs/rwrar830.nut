@@ -343,7 +343,7 @@ function scope(scale, style) {
         children = [
           {
             pos = [pw(10), ph(10)],
-            size = [pw(80), ph(80)],
+            size = const [pw(80), ph(80)],
             clipChildren = true,
             children = [
               rwrTargetsComponent(style.object),

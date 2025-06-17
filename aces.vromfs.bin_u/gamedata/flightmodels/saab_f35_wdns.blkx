@@ -152,7 +152,7 @@
       "airbrake_r_dm": {
         "hp": 19.5
       },
-      "cover1_dm": {
+      "blister1_dm": {
         "hp": 19.5
       }
     },
@@ -273,13 +273,13 @@
         "name": "airbrake_r_dm"
       },
       {
+        "name": "blister1_dm"
+      },
+      {
         "name": "cannon1_dm"
       },
       {
         "name": "cannon2_dm"
-      },
-      {
-        "name": "cover1_dm"
       },
       {
         "name": "elevon1_l_dm",
@@ -2421,6 +2421,8 @@
         "rocket_pylon4",
         "rocket_pylon5",
         "rocket_pylon6",
+        "rocket_pylon7",
+        "rocket_pylon8",
         "rakkaps_pylon1",
         "rakkaps_pylon2",
         "rakkaps_pylon3",
@@ -2429,6 +2431,7 @@
         "rakkaps_pylon6",
         "rakkaps_pylon7",
         "rakkaps_pylon8",
+        "rakkaps_pylon9",
         "tank_pylon1",
         "tank_pylon2",
         "alq_162_l",
@@ -2460,7 +2463,7 @@
               "emitter": "flare1",
               "flash": "flare1",
               "dm": "cannon1_dm",
-              "bullets": 100,
+              "bullets": 90,
               "spread": 1.0
             },
             {
@@ -2469,14 +2472,14 @@
               "emitter": "flare2",
               "flash": "flare2",
               "dm": "cannon2_dm",
-              "bullets": 100,
+              "bullets": 90,
               "spread": 1.0
             },
             {
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare1",
-              "bullets": 6,
+              "bullets": 12,
               "bulletsCartridge": 1,
               "external": true,
               "separate": true
@@ -2485,7 +2488,25 @@
               "trigger": "countermeasures",
               "blk": "gameData/Weapons/rocketGuns/countermeasure_large_split_launcher_jet.blk",
               "emitter": "emtr_flare2",
-              "bullets": 6,
+              "bullets": 12,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk",
+              "emitter": "emtr_flare5",
+              "bullets": 22,
+              "bulletsCartridge": 1,
+              "external": true,
+              "separate": true
+            },
+            {
+              "trigger": "countermeasures",
+              "blk": "gameData/Weapons/rocketGuns/countermeasure_chaff_only.blk",
+              "emitter": "emtr_flare6",
+              "bullets": 22,
               "bulletsCartridge": 1,
               "external": true,
               "separate": true
@@ -2503,7 +2524,10 @@
             "name": "aim_9b",
             "reqModification": "us_aim_9b",
             "ShowNodes": {
-              "node": "rocket_pylon3"
+              "node": [
+                "rakkaps_pylon7",
+                "rocket_pylon7"
+              ]
             },
             "Weapon": {
               "trigger": "aam",
@@ -2518,7 +2542,10 @@
             "iconType": "missile_type_b_air_to_air",
             "name": "aim_9n",
             "ShowNodes": {
-              "node": "rocket_pylon3"
+              "node": [
+                "rakkaps_pylon7",
+                "rocket_pylon7"
+              ]
             },
             "Weapon": {
               "trigger": "aam",
@@ -2887,14 +2914,151 @@
               "separate": true
             },
             "DependentWeaponPreset": {
-              "slot": 5,
-              "preset": "ptb_slot5"
+              "slot": 6,
+              "preset": "ptb_slot6"
             }
           }
         ]
       },
       {
         "index": 5,
+        "tier": 6,
+        "order": 9,
+        "notUseforDisbalanceCalculation": true,
+        "WeaponPreset": [
+          {
+            "iconType": "nar_ap_large",
+            "name": "lau3a_center",
+            "reqModification": "us_2_75_in_ffar_lau_3a",
+            "ShowNodes": {
+              "node": "rakkaps_pylon9"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_3a_ffar_mighty_mouse.blk",
+              "emitter": "rakkaps_m57_b009",
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "ptb_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "ptb_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "nar_ap_large",
+            "name": "lau_5003b_center",
+            "reqModification": "uk_lau_5003b_a",
+            "ShowNodes": {
+              "node": "rakkaps_pylon9"
+            },
+            "Weapon": {
+              "trigger": "rockets",
+              "blk": "gameData/Weapons/containers/lau_5003b_a_cvr_7_m247.blk",
+              "emitter": "rakkaps_m57_b009",
+              "external": true
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "ptb_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "ptb_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle",
+            "name": "mk82_center",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "rakkaps_pylon9"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp.blk",
+              "emitter": "us_1000lb_mk_83_ldgp_009",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "ptb_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "ptb_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_large",
+            "name": "mk83_center",
+            "reqModification": "us_1000lb_mk83",
+            "ShowNodes": {
+              "node": "rakkaps_pylon9"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_1000lb_mk_83_ldgp.blk",
+              "emitter": "us_1000lb_mk_83_ldgp_009",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "ptb_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "ptb_slot6"
+              }
+            ]
+          },
+          {
+            "iconType": "bombs_middle_high_drag",
+            "name": "mk82sn_center",
+            "reqModification": "us_500lb_mk82",
+            "ShowNodes": {
+              "node": "rakkaps_pylon9"
+            },
+            "Weapon": {
+              "trigger": "bombs",
+              "blk": "gameData/Weapons/BombGuns/us_500lb_mk_82_ldgp_snakeye.blk",
+              "emitter": "us_1000lb_mk_83_ldgp_009",
+              "bullets": 1,
+              "external": true,
+              "separate": true,
+              "machLimit": 1.01
+            },
+            "BannedWeaponPreset": [
+              {
+                "slot": 4,
+                "preset": "ptb_slot4"
+              },
+              {
+                "slot": 6,
+                "preset": "ptb_slot6"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "index": 6,
         "tier": 5,
         "order": 8,
         "notUseforDisbalanceCalculation": true,
@@ -2980,7 +3144,7 @@
           },
           {
             "iconType": "ptb",
-            "name": "ptb_slot5",
+            "name": "ptb_slot6",
             "showInWeaponMenu": true,
             "ShowNodes": {
               "node": "rakkaps_pylon2"
@@ -3004,7 +3168,7 @@
         ]
       },
       {
-        "index": 6,
+        "index": 7,
         "tier": 4,
         "order": 6,
         "notUseforDisbalanceCalculation": true,
@@ -3091,7 +3255,7 @@
         ]
       },
       {
-        "index": 7,
+        "index": 8,
         "tier": 3,
         "order": 4,
         "WeaponPreset": [
@@ -3177,7 +3341,7 @@
         ]
       },
       {
-        "index": 8,
+        "index": 9,
         "tier": 2,
         "order": 2,
         "WeaponPreset": [
@@ -3186,7 +3350,10 @@
             "name": "aim_9b",
             "reqModification": "us_aim_9b",
             "ShowNodes": {
-              "node": "rocket_pylon4"
+              "node": [
+                "rakkaps_pylon8",
+                "rocket_pylon8"
+              ]
             },
             "Weapon": {
               "trigger": "aam",
@@ -3201,7 +3368,10 @@
             "iconType": "missile_type_b_air_to_air",
             "name": "aim_9n",
             "ShowNodes": {
-              "node": "rocket_pylon4"
+              "node": [
+                "rakkaps_pylon8",
+                "rocket_pylon8"
+              ]
             },
             "Weapon": {
               "trigger": "aam",

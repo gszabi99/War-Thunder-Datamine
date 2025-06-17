@@ -38,6 +38,7 @@ let { isInFlight } = require("gameplayBinding")
 let { getCurMissionRules } = require("%scripts/misCustomRules/missionCustomState.nut")
 let { getDiscountByPath } = require("%scripts/discounts/discountUtils.nut")
 let UnitBulletsManager = require("%scripts/weaponry/unitBulletsManager.nut")
+let { getNextTierModsCount } = require("%scripts/weaponry/modsTree.nut")
 
 let TYPES_ARMOR_PIERCING = [TRIGGER_TYPE.ROCKETS, TRIGGER_TYPE.BOMBS, TRIGGER_TYPE.ATGM]
 const UI_BASE_REWARD_DECORATION = 10
@@ -456,7 +457,7 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
   if (hasPlayerInfo
     && !isWeaponTierAvailable(unit, curTier) && curTier > 1
     && !needShowWWSecondaryWeapons) {
-    let reqMods = ::getNextTierModsCount(unit, curTier - 1)
+    let reqMods = getNextTierModsCount(unit, curTier - 1)
     if (reqMods > 0)
       reqText = loc("weaponry/unlockModTierReq",
                       { tier = roman_numerals[curTier], amount = reqMods })
@@ -586,15 +587,6 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
   else if (item.type == weaponsItem.modification || item.type == weaponsItem.expendables) {
     if (item.type == weaponsItem.modification)
       res.modificationAnimation <- item?.modificationAnimation
-    if (effect) {
-      desc = getModificationInfo(unit, item.name).desc
-      addDesc = weaponryEffects.getDesc(unit, effect, { curEdiff = params?.curEdiff })
-    }
-    else {
-      let info = getModificationInfo(unit, item.name, false, false, this, updateEffectFunc)
-      desc = info.desc
-      res.delayed = info.delayed
-    }
 
     addBulletsParamToDesc(res, unit, item, isBulletCard)
     let { pairModName = null } = params
@@ -610,10 +602,30 @@ function getItemDescTbl(unit, item, params = null, effect = null, updateEffectFu
         let set = getBulletsSetData(unit, pairModName)
         if (set != null) {
           let { annotation } = getBulletsNamesBySet(set)
-          desc = $"{desc}\n{annotation}"
+          desc = annotation
         }
       }
     }
+
+    if (effect) {
+      let modInfo = getModificationInfo(unit, item.name).desc
+      if (modInfo.len())
+        desc = $"{modInfo}\n{desc}"
+      addDesc = weaponryEffects.getDesc(unit, effect, { curEdiff = params?.curEdiff })
+    }
+    else {
+      let info = getModificationInfo(unit, item.name,
+        { isShortDesc = false
+          isLimitedName = false
+          obj = this
+          itemDescrRewriteFunc = updateEffectFunc
+          needAddName = name == ""
+        })
+      if (info.len())
+        desc = $"{info.desc}\n{desc}"
+      res.delayed = info.delayed
+    }
+
   }
   else if (item.type == weaponsItem.spare) {
     desc = loc($"spare/{item.name}/desc")

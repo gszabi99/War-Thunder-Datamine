@@ -16,6 +16,7 @@ let { getUnitName, getUnitCountry } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 function getUnitsData(unlockId) {
   let data = {}
@@ -70,7 +71,7 @@ function getCountriesView(unlockId) {
               $"[{getUnitRankText(u)},{nbsp}{getUnitBrText(u, ediff)}]"),
             getUnitName(u, true))
           isUsable = u.isUsable()
-          canBuy   = canBuyUnit(u) || ::canBuyUnitOnline(u)
+          canBuy   = canBuyUnit(u) || canBuyUnitOnline(u)
         })
       })
     }

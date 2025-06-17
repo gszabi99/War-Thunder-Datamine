@@ -116,7 +116,7 @@ let shortcutByInputName = {
         })
     }
     return {
-      size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+      size = SIZE_TO_CONTENT
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
@@ -135,18 +135,18 @@ let shortcutByInputName = {
     let needArrows = shortcutConfig?.needArrows ?? false
     let sizeParam = shortcutsParamsByPlace()[override?.place ?? "defaultP"]
     return {
-      size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+      size = SIZE_TO_CONTENT
       flow = FLOW_HORIZONTAL
       valign = ALIGN_CENTER
       halign = ALIGN_CENTER
 
       children = [{
-        size = [SIZE_TO_CONTENT, flex()]
+        size = FLEX_V
         valign = needArrows ? ALIGN_CENTER : ALIGN_BOTTOM
         children = [getShortcut(shortcutConfig.elements?.leftKey, override)]
       },
       {
-        size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+        size = SIZE_TO_CONTENT
         flow = FLOW_VERTICAL
         valign = ALIGN_CENTER
         halign = ALIGN_CENTER
@@ -163,7 +163,7 @@ let shortcutByInputName = {
           getShortcut(shortcutConfig.elements?.downKey, override)]
       },
       {
-        size = [SIZE_TO_CONTENT, flex()]
+        size = FLEX_V
         valign = needArrows ? ALIGN_CENTER : ALIGN_BOTTOM
         children = [getShortcut(shortcutConfig.elements?.rightKey, override)]
       }]

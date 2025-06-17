@@ -502,7 +502,7 @@ function createParam(param, width, height, style, colorWatch, needCaption, for_i
     watch = [titleComputed, colorAlertCaptionW, alertStateCaptionComputed, colorFxCaption, factorFxCaption]
     rendObj = ROBJ_TEXT
     size = [SIZE_TO_CONTENT, height]
-    margin = [0, 0.0, 0, 0]
+    margin = const [0, 0.0, 0, 0]
     minWidth = 0.26 * width
     text = titleComputed.value
     color = colorAlertCaptionW.value
@@ -884,7 +884,7 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
       if (key == AirParamsMain.RADAR_ALTITUDE && is_aircraft) {
         children.append(@() style.__merge({
           rendObj = ROBJ_TEXT
-          size = [0, hdpx(12)]
+          size = const [0, hdpx(12)]
           text = @() ""
         }))
       }
@@ -900,7 +900,7 @@ function generateParamsTable(mainMask, secondaryMask, width, height, posWatched,
     if (is_aircraft) {
       children.append(@() style.__merge({
         rendObj = ROBJ_TEXT
-        size = [ 0, hdpx(12)]
+        size = const [ 0, hdpx(12)]
         text = @() ""
       }))
     }
@@ -1354,7 +1354,7 @@ function unitAngleBorder(launchZone, corner) {
 let zoneStyle = HudStyle.styleLineForeground.__merge({
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = hdpx(LINE_WIDTH)
-  size = [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
 })
 
 let blinking = [{
@@ -1463,7 +1463,7 @@ function launchDistanceMaxComponent(colorWatch, width, height, posX, posY) {
     pos = [posX + 1.6 * turretAnglesAspect * width * 0.5, posY - height * fullRangeMultInv]
     halign = ALIGN_LEFT
     valign = ALIGN_CENTER
-    size = [0, 0]
+    size = 0
     children = launchDistanceMax
   }
 
@@ -1483,7 +1483,7 @@ function rangeFinderComponent(colorWatch, posX, posY) {
   let resCompoment = @() {
     pos = [posX, posY]
     halign = ALIGN_CENTER
-    size = [0, 0]
+    size = 0
     children = rangefinder
   }
 

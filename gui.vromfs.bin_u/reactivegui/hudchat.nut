@@ -155,10 +155,10 @@ function getHintText() {
 
 let chatHint = @() {
   rendObj = ROBJ_9RECT
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   valign = ALIGN_CENTER
-  padding = [hdpx(4), hdpx(8)]
+  padding = const [hdpx(4), hdpx(8)]
   gap = { size = flex() }
   color = colors.hud.hudLogBgColor
   children = [
@@ -175,7 +175,7 @@ let chatHint = @() {
 
 
 let inputField = @() {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
   watch = state.modeId
   children = [
@@ -236,7 +236,7 @@ let messageComponent = @(message) function() {
   }
   return {
     watch = [teamColors, hudState.playerArmyForHud]
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     rendObj = ROBJ_TEXTAREA
     behavior = Behaviors.TextArea
     lineSpacing = hdpx(2)
@@ -262,7 +262,7 @@ let onInputToggle = function (enable) {
 }
 
 let bottomPanel = @() {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_VERTICAL
 
   children = [
@@ -289,7 +289,7 @@ return function () {
     children.append(bottomPanel)
 
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_VERTICAL
     gap = fpx(8)
     watch = state.canWriteToChat

@@ -494,6 +494,20 @@ let modsTree = {
   }
 }
 
+function getNextTierModsCount(unit, tier) {
+  if (tier < 1 || tier > unit.needBuyToOpenNextInTier.len() || !("modifications" in unit))
+    return 0
+
+  local req = unit.needBuyToOpenNextInTier[tier - 1]
+  foreach (mod in unit.modifications)
+    if (("tier" in mod) && mod.tier == tier
+      && isModificationInTree(unit, mod)
+      && isModResearched(unit, mod)
+    )
+      req--
+  return max(req, 0)
+}
+
 return {
   generateModsTree    = @(air) modsTree.generateTree(air)
   generateModsBgElems = @(air) modsTree.generateBlocksAndArrows(air)
@@ -502,4 +516,5 @@ return {
   commonProgressMods
   modsWndWidthRestrictions
   debugTree           = @(branch = null, addStr = "DD: ") modsTree.debugTree(branch, addStr)
+  getNextTierModsCount
 }

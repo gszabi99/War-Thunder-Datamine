@@ -1383,6 +1383,7 @@ enumsAddTypes(g_hud_action_bar_type, {
     _name = "anti_air_complex_menu"
     _title = loc("hotkeys/ID_TOGGLE_AA_COMPLEX_MENU")
     _icon = "#ui/gameuiskin#radar_control.avif"
+    isForWheelMenu = @() true
     getShortcut = @(_actionItem, _hudUnitType = null) "ID_TOGGLE_AA_COMPLEX_MENU"
   }
 

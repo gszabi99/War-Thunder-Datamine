@@ -27,7 +27,7 @@ let velocityVector = @() {
     @(){
       watch = [HorVelX, HorVelY, velVectLen]
       pos = [pw(50), ph(50)]
-      size = [ph(15), ph(15)]
+      size = ph(15)
       rendObj = ROBJ_VECTOR_CANVAS
       color = baseColor
       lineWidth = baseLineWidth
@@ -46,7 +46,7 @@ let accel = @() {
     @(){
       watch = [HorAccelX, HorAccelY, accVectLen]
       pos = [pw(50 - HorAccelY.value * accVectLen.value), ph(50 - HorAccelX.value * accVectLen.value)]
-      size = [ph(15), ph(15)]
+      size = ph(15)
       rendObj = ROBJ_VECTOR_CANVAS
       color = baseColor
       fillColor = Color(0, 0, 0, 0)
@@ -60,7 +60,7 @@ let accel = @() {
 
 let losReticle = {
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [ph(2.5), ph(2.5)]
+  size = ph(2.5)
   pos = [pw(50), ph(50)]
   color = baseColor
   lineWidth = baseLineWidth * 2.0
@@ -152,7 +152,7 @@ function compassWrap(width, height, generateFunc) {
 }
 
 let compassVal = @(){
-  size = [pw(4), ph(3)]
+  size = const [pw(4), ph(3)]
   pos = [pw(48), ph(24.5)]
   watch = CompassInt
   rendObj = ROBJ_TEXT
@@ -170,7 +170,7 @@ let cuedLosReticle = @(){
     size = flex()
     children = cuedLosReticleVis.value ? {
       rendObj = ROBJ_VECTOR_CANVAS
-      size = [ph(3), ph(3)]
+      size = ph(3)
       color = baseColor
       lineWidth = baseLineWidth * 2.0
       commands = [
@@ -258,7 +258,7 @@ let cueDots = @(){
 let showAltitudeBar = Computed(@() Altitude.value <= 60.96)
 let climbSpeedGrid = @(){
   watch = showAltitudeBar
-  size = [pw(2), ph(30)]
+  size = const [pw(2), ph(30)]
   pos = [pw(65), ph(35)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth
@@ -301,7 +301,7 @@ let climbSpeedGrid = @(){
 let altValue = Computed(@() (Altitude.value * metrToFeet < 50.0 ? Altitude.value * metrToFeet : Altitude.value * metrToFeet * 0.1).tointeger())
 let altitudeText = @() {
   watch = altValue
-  size = [pw(3), ph(2)]
+  size = const [pw(3), ph(2)]
   pos = [pw(61), ph(49.3)]
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -314,7 +314,7 @@ let altitudeText = @() {
 
 function climbSpeedMark(width, height){
   return {
-    size = [ph(1), ph(0.5)]
+    size = const [ph(1), ph(0.5)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = baseColor
     lineWidth = baseLineWidth
@@ -334,7 +334,7 @@ function climbSpeedMark(width, height){
 let altitudeBarLen = Computed(@() clamp(Altitude.value * metrToFeet * 0.5, 0.0, 100.0).tointeger())
 let altitudeBar = @(){
   watch = showAltitudeBar
-  size = [pw(2), ph(30)]
+  size = const [pw(2), ph(30)]
   pos = [pw(66), ph(35)]
   children = showAltitudeBar.value ? @(){
     watch = altitudeBarLen
@@ -383,7 +383,7 @@ let speed = @(){
   fontSize = hudFontHgt
   text = speedVal.value.tointeger()
   children = speedVal.value >= 210 ? {
-    size = [pw(150), ph(150)]
+    size = const [pw(150), ph(150)]
     pos = [pw(-25), ph(-25)]
     rendObj = ROBJ_BOX
     fillColor = Color(0, 0, 0, 0)
@@ -395,7 +395,7 @@ let speed = @(){
 
 let engineTorq = @(){
   watch = Rpm
-  size = [pw(2.5), ph(3)]
+  size = const [pw(2.5), ph(3)]
   pos = [pw(35.5), ph(35)]
   halign = ALIGN_CENTER
   valign = ALIGN_CENTER
@@ -421,7 +421,7 @@ let aimLockY = Computed(@() cvt(AimLockPitch.value, 20.0, -45.0, 0.0, 100.0).toi
 function fieldOfRegard(width, height) {
   return {
     rendObj = ROBJ_BOX
-    size = [ph(18), ph(6)]
+    size = const [ph(18), ph(6)]
     pos = [width * 0.5 - height * 0.09, ph(70)]
     fillColor = Color(0, 0, 0, 0)
     borderColor = baseColor
@@ -441,7 +441,7 @@ function fieldOfRegard(width, height) {
         children = [
           @(){
             watch = [hmdPosX, hmdPosY]
-            size = [pw(20), ph(40)]
+            size = const [pw(20), ph(40)]
             pos = [pw(hmdPosX.value), ph(hmdPosY.value)]
             rendObj = ROBJ_BOX
             fillColor = Color(0, 0, 0, 0)
@@ -493,7 +493,7 @@ let gunMode = @(){
 }
 
 let headTracker = {
-  size = [ph(3), ph(3)]
+  size = ph(3)
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
   lineWidth = baseLineWidth
@@ -537,7 +537,7 @@ let barAltitude = @(){
 
 let bank = Computed(@() cvt(HorAccelY.value * fabs(Accel.value), -1.5, 1.5, -50.0, 50.0).tointeger())
 let skidBall = {
-  size = [pw(3), ph(2)]
+  size = const [pw(3), ph(2)]
   pos = [pw(48.5), ph(68)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -549,7 +549,7 @@ let skidBall = {
   children = @(){
     watch = bank
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [pw(40), pw(40)]
+    size = pw(40)
     pos = [pw(50 - bank.value), ph(50)]
     lineWidth = baseLineWidth
     color = baseColor
@@ -578,7 +578,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 10)
   return {
-    size = [pw(60), ph(50)]
+    size = const [pw(60), ph(50)]
     pos = [pw(20), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -587,7 +587,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth
         color = baseColor
-        padding = [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, -50, 0, 150, 0]
         ]
@@ -648,7 +648,7 @@ let rocketReticle = @(){
   watch = [RocketMode, rocketVisible]
   size = flex()
   children = RocketMode.value && rocketVisible.value ? {
-    size = [pw(1), ph(3.2)]
+    size = const [pw(1), ph(3.2)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = baseColor
     lineWidth = baseLineWidth * 1.5
@@ -673,7 +673,7 @@ let tvvMark = @(){
   watch = isHoverMode
   size = flex()
   children = !isHoverMode.value ? {
-    size = [ph(2), ph(2)]
+    size = ph(2)
     rendObj = ROBJ_VECTOR_CANVAS
     color = baseColor
     fillColor = Color(0, 0, 0, 0)
@@ -696,7 +696,7 @@ let tvvMark = @(){
 function pitchWrap(width, height) {
   return @(){
     watch = [isHoverMode, isTransitionMode]
-    size = [pw(40), ph(50)]
+    size = const [pw(40), ph(50)]
     pos = [pw(30), ph(25)]
     clipChildren = true
     children = !isHoverMode.value && !isTransitionMode.value ? [
@@ -725,7 +725,7 @@ function pitchWrap(width, height) {
 function horizontLine(height) {
   return @() {
     watch = isTransitionMode
-    size = [pw(24), ph(50)]
+    size = const [pw(24), ph(50)]
     pos = [pw(38), ph(25)]
     clipChildren = true
     children = isTransitionMode.value ? {
@@ -754,7 +754,7 @@ let gunReticle = @(){
     size = flex()
     children = !RocketMode.value && HmdTargetPosValid.value && !TATargetVisible.value ? {
       rendObj = ROBJ_VECTOR_CANVAS
-      size = [ph(3), ph(3)]
+      size = ph(3)
       color = baseColor
       lineWidth = baseLineWidth * 2.0
       commands = [

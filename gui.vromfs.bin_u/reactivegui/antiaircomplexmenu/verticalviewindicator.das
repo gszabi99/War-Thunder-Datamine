@@ -8,6 +8,7 @@ require DagorSystem
 require RadarHud
 require app
 require %rGui.utils.radar_common
+require strings
 
 struct CanvasParams
   fontId : int = -1
@@ -118,11 +119,29 @@ class VerticalViewIndicator : Canvas
           drawLine(pos - float2(offset, h), pos + float2(-offset, h))
           drawLine(pos + float2(offset, h), pos + float2(offset, -h))
 
-        let annotationOffset = float2(0.0, h) * (y > 0.5 ? -1.0 : 1.0)
-        let annotationPos = toAbsPos(pos + annotationOffset)
+        let drawAbove = y < 0.5
+        let anchorVert = drawAbove ? AnchorVert.Bottom : AnchorVert.Top
+        let annotationOffset = float2(0.0, h + 0.01) * (drawAbove ? 1.0 : -1.0)
+        let annotationPos = pos + annotationOffset
+
         var fctx : StdGuiFontContext
         get_font_context(fctx, font.id, 0, 0, font.size)
-        Radar`drawTargetAnnotation(*ctx, target, fctx, annotationPos, y < 0.5, params.planeTargetPicture, params.helicopterTargetPicture, params.rocketTargetPicture)
+
+        let annotation = "{int(target.persistentIndex)}"
+
+        let picture = Radar`getImageForTarget(target, params.planeTargetPicture, params.helicopterTargetPicture, params.rocketTargetPicture)
+        if picture != null
+          let annotationBox = get_str_bbox(annotation, annotation |> length(), fctx).width
+          let pictureSize = float2(annotationBox.y * 1.5)
+          drawStrAnchored(annotationPos, annotation, AnchorHorz.Left, anchorVert)
+
+          let picturePos = toAbsPos(annotationPos) - pictureSize
+          render_picture(*ctx, picture, picturePos, pictureSize, targetColor)
+        else
+          let offsetY = 0.0 // toRelY(drawAbove ? float(get_font_descent(fctx)) : float(get_font_ascent(fctx)))
+          let targetIndexPos = annotationPos + float2(0.0, offsetY)
+          drawStrAnchored(targetIndexPos, annotation, AnchorHorz.Center, anchorVert)
+
 
     restoreViewport()
 
@@ -158,7 +177,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
 def setup(props : Properties&; var storage : CanvasParams&)
   storage.fontId = props |> getFontId()
   storage.fontSize = props |> getInt("fontSize", 20)
-  storage.maxHeight = props |> getFloat("maxHeight", 12.0)
+  storage.maxHeight = props |> getFloat("maxAltitude", 12.0)
   storage.planeTargetPicture = props |> getPicture("planeTargetPicture")
   storage.helicopterTargetPicture = props |> getPicture("helicopterTargetPicture")
   storage.rocketTargetPicture = props |> getPicture("rocketTargetPicture")

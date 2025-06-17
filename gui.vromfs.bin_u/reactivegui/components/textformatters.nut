@@ -42,7 +42,7 @@ function textArea(params, _formatTextFunc = noTextFormatFunc, style = defStyle) 
     behavior = Behaviors.TextArea
     color = style?.defTextColor ?? defStyle.defTextColor
     font = defStyle.textFont
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
   }.__update(params)
 }
 
@@ -77,7 +77,7 @@ function mkUlElement(bullet) {
     if (type(res) != "array")
       res = [res]
     return {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       children = [bullet].extend(res)
     }
@@ -87,7 +87,7 @@ function mkList(elemFunc) {
   return function(obj, formatTextFunc = noTextFormatFunc, style = defStyle) {
     return obj.__merge({
       flow = FLOW_VERTICAL
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       children = obj.v.map(@(elem) elemFunc(elem, formatTextFunc, style))
     })
   }
@@ -95,7 +95,7 @@ function mkList(elemFunc) {
 function horizontal(obj, formatTextFunc = noTextFormatFunc, _style = defStyle) {
   return obj.__merge({
     flow = FLOW_HORIZONTAL
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = obj.v.map(@(elem) formatTextFunc(elem))
   })
 }
@@ -103,7 +103,7 @@ function horizontal(obj, formatTextFunc = noTextFormatFunc, _style = defStyle) {
 function accent(obj, formatTextFunc = noTextFormatFunc, _style = defStyle) {
   return obj.__merge({
     flow = FLOW_HORIZONTAL
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     rendObj = ROBJ_SOLID
     color = Color(0, 30, 50, 30)
     children = obj.v.map(@(elem) formatTextFunc(elem))
@@ -113,7 +113,7 @@ function accent(obj, formatTextFunc = noTextFormatFunc, _style = defStyle) {
 function vertical(obj, formatTextFunc = noTextFormatFunc, _style = defStyle) {
   return obj.__merge({
     flow = FLOW_VERTICAL
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = obj.v.map(@(elem) formatTextFunc(elem))
   })
 }
@@ -133,7 +133,7 @@ function textParsed(params, formatTextFunc = noTextFormatFunc, style = defStyle)
 function column(obj, formatTextFunc = noTextFormatFunc, _style = defStyle) {
   return {
     flow = FLOW_VERTICAL
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = obj.v.map(@(elem) formatTextFunc(elem))
   }
 }
@@ -147,7 +147,7 @@ function columns(obj, formatTextFunc = noTextFormatFunc, _style = defStyle) {
   cols = cols.slice(0, preset.len())
   return {
     flow = FLOW_HORIZONTAL
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     children = cols.map(function(col, idx) {
       return {
         flow = FLOW_VERTICAL
@@ -181,7 +181,7 @@ function video(obj, _formatTextFunc, style = defStyle) {
       rendObj = ROBJ_SOLID
       color = Color(0, 0, 0, 150)
       halign = ALIGN_CENTER
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       children = { rendObj = ROBJ_TEXT text = obj?.caption
         ?? loc("Watch video") padding = fpx(5) }
     })

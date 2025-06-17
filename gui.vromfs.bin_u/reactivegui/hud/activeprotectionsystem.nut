@@ -44,7 +44,7 @@ function createModule(module) {
 }
 
 let activeProtection = @() {
-  size = [pw(70), ph(70)]
+  size = const [pw(70), ph(70)]
   watch = [activeProtectionSystemModulesCount]
   children = activeProtectionSystemModulesCount.value == 0 ? null
     : activeProtectionSystemModules.map(@(module) createModule(module))

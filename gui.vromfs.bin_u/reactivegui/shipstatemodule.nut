@@ -72,7 +72,7 @@ let fontFx = FFT_GLOW
 let maxFontBoxHeight = hdpx(18.5)
 
 let speedComp = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   hplace = ALIGN_CENTER
   halign = ALIGN_RIGHT
@@ -80,12 +80,12 @@ let speedComp = {
 
   children = [
     {
-      size = [flex(4), SIZE_TO_CONTENT]
+      size = const [flex(4), SIZE_TO_CONTENT]
       children = machineSpeed({ box = [hdpx(200), maxFontBoxHeight], fontSize = maxFontBoxHeight })
       halign = ALIGN_RIGHT
     }
     {
-      size = [flex(1.8), SIZE_TO_CONTENT]
+      size = const [flex(1.8), SIZE_TO_CONTENT]
       flow = FLOW_HORIZONTAL
       valign = ALIGN_BOTTOM
       children = [
@@ -259,13 +259,13 @@ let driverIndicator = @() {
 }
 
 let steeringLine = {
-  size = [hdpx(1), flex()]
+  size = const [hdpx(1), flex()]
   rendObj = ROBJ_SOLID
   color = shipSteeringGauge.serif
 }
 
 let steeringComp = {
-  size = [pw(50), hdpx(3)]
+  size = const [pw(50), hdpx(3)]
   hplace = ALIGN_CENTER
 
   children = [
@@ -288,7 +288,7 @@ let steeringComp = {
     }
     @() {
       watch = steering
-      size = [hdpx(12), hdpx(10)]
+      size = const [hdpx(12), hdpx(10)]
       pos = [pw(-steering.get() * 50), -hdpx(5)]
       hplace = ALIGN_CENTER
       rendObj = ROBJ_IMAGE
@@ -315,13 +315,13 @@ let dollFov = @() {
   }
   children = [
     {
-      size = [flex(), flex()]
+      size = flex()
       rendObj = ROBJ_IMAGE
       image = images.sightCone
       color = Color(155, 255, 0, 120)
     }
     {
-      size = [flex(), flex()]
+      size = flex()
       rendObj = ROBJ_IMAGE
       image = images.sightCone
       color = Color(155, 255, 0)
@@ -410,11 +410,11 @@ let leftBlock = damageModules
 
 let rightBlock = @() {
   watch = hasAiGunners
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   flow = FLOW_VERTICAL
   children = [
     stateBlock
-    { size = [SIZE_TO_CONTENT, flex()] }
+    { size = FLEX_V }
     hasAiGunners.get() ? aiGunners : null
     driverIndicator
   ]
@@ -440,7 +440,7 @@ let shipStateDisplay = {
 }
 
 let xraydoll = {
-  size = [1, 1]
+  size = 1
   rendObj = ROBJ_XRAYDOLL     
 }
 
@@ -512,7 +512,7 @@ let coverPartsIndicator = {
 }
 
 let crewIndicator = {
-  size = [hdpx(82), SIZE_TO_CONTENT]
+  size = const [hdpx(82), SIZE_TO_CONTENT]
   padding = hdpx(4)
   rendObj = ROBJ_SOLID
   color = hudLogBgColor
@@ -539,7 +539,7 @@ let crewIndicator = {
 }
 
 let topPanel = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   gap = hdpx(4)
   flow = FLOW_HORIZONTAL
   children = [
@@ -554,7 +554,7 @@ let mainPanel = {
   rendObj = ROBJ_SOLID
   color = hudLogBgColor
   flow = FLOW_VERTICAL
-  gap = { size = [flex(), hdpx(5)] }
+  gap = { size = const [flex(), hdpx(5)] }
   children = [
     speedComp
     shipStateDisplay

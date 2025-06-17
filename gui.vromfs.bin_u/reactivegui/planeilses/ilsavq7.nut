@@ -107,7 +107,7 @@ let climbMarkPos = Computed(@() (clamp(ClimbSpeed.value * mpsToFpm, -999, 999) %
 let climbMark = @() {
   watch = [climbMarkPos, IlsColor]
   pos = [0, ph(50 - climbMarkPos.value * 0.5)]
-  size = [hdpx(30), hdpx(30)]
+  size = hdpx(30)
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
   lineWidth = baseLineWidth * 0.5 * IlsLineScale.value
@@ -130,9 +130,9 @@ function altmeter(width, height) {
         children = [altColumn, altmeterGrid, climbMark]
       },
       {
-        size = [pw(100), ph(20)]
+        size = const [pw(100), ph(20)]
         flow = FLOW_VERTICAL
-        padding = [10, 0]
+        padding = const [10, 0]
         children = [
           @() {
             size = flex()
@@ -156,7 +156,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
       @() {
@@ -165,7 +165,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.value
         color = IlsColor.value
-        padding = [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, 0, 0, 34, 0],
           [VECTOR_LINE, 66, 0, 100, 0]
@@ -180,7 +180,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.value
         color = IlsColor.value
-        padding = [10, 10]
+        padding = 10
         commands = [
           [VECTOR_LINE, 0, 5 * sign, 0, 0],
           [VECTOR_LINE, 0, 0, 7, 0],
@@ -227,7 +227,7 @@ function pitch(width, height) {
 let maverickAimMark = @() {
   watch = [IlsAtgmLocked, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(2), ph(2)]
+  size = const [pw(2), ph(2)]
   color = IlsColor.value
   lineWidth = baseLineWidth * IlsLineScale.value
   commands = [
@@ -278,7 +278,7 @@ let pullupAnticipPos = Computed(@() clamp(0.35 + DistToSafety.value * 0.001, 0.1
 function pullupAnticipation(height) {
   return @() {
     watch = [IlsColor, pullupAnticipPos]
-    size = [pw(10), ph(5)]
+    size = const [pw(10), ph(5)]
     pos = [pw(10), height * pullupAnticipPos.value]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
@@ -306,7 +306,7 @@ function rotatedBombReleaseReticle(width, height) {
       pullupAnticipation(height),
       lowerSolutionCue(height, 5),
       {
-        size = [pw(20), flex()]
+        size = const [pw(20), flex()]
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         children = [solutionCue, bombFallingLine()]

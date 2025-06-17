@@ -20,7 +20,7 @@ let gunReadyState = Watched({
 
 let vertDistState = Watched({
   pos = [0, 0]
-  size = [hdpx(80), hdpx(50)]
+  size = const [hdpx(80), hdpx(50)]
 })
 
 let bulletTypeState = Watched({
@@ -65,7 +65,7 @@ let mkTankSight = @(isPreviewMode = false)
       @(){
         watch = turretState
         pos = turretState.get().pos
-        size = [hdpx(40), hdpx(70)]
+        size = const [hdpx(40), hdpx(70)]
         rendObj = ROBJ_DAS_CANVAS
         script = tankSightDas
         drawFunc = "draw_turret_orient_elem"
@@ -89,7 +89,7 @@ let mkTankSight = @(isPreviewMode = false)
       @(){
         watch = rangefinderState
         pos = rangefinderState.get().pos
-        size = [hdpx(90), hdpx(40)]
+        size = const [hdpx(90), hdpx(40)]
         rendObj = ROBJ_DAS_CANVAS
         script = tankSightDas
         drawFunc = "draw_rangefinder_elem"
@@ -113,7 +113,7 @@ let mkTankSight = @(isPreviewMode = false)
       @(){
         watch = gunReadyState
         pos = gunReadyState.get().pos
-        size = [hdpx(80), hdpx(50)]
+        size = const [hdpx(80), hdpx(50)]
         rendObj = ROBJ_DAS_CANVAS
         script = tankSightDas
         drawFunc = "draw_reload_progress_elem"
@@ -138,7 +138,7 @@ let mkTankSight = @(isPreviewMode = false)
       @(){
         watch = bulletTypeState
         pos = bulletTypeState.get().pos
-        size = [hdpx(120), hdpx(40)]
+        size = const [hdpx(120), hdpx(40)]
         rendObj = ROBJ_DAS_CANVAS
         script = tankSightDas
         drawFunc = "draw_bullet_type_elem"

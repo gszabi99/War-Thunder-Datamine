@@ -47,7 +47,7 @@ function speed(width, height, is_metric) {
         }
       }
       {
-        size = [pw(20), ph(8)]
+        size = const [pw(20), ph(8)]
         pos = [pw(70), ph(48)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -59,10 +59,10 @@ function speed(width, height, is_metric) {
       }
       @(){
         watch = is_metric ? speedKmhValue : speedMpsValue
-        size = [pw(70), SIZE_TO_CONTENT]
+        size = const [pw(70), SIZE_TO_CONTENT]
         pos = [0, ph(46)]
         rendObj = ROBJ_TEXT
-        padding = [0, 5]
+        padding = const [0, 5]
         halign= ALIGN_RIGHT
         color = IlsColor.value
         font = Fonts.mirage_ils
@@ -86,7 +86,7 @@ let mach = @() {
 
 let generateAltMark = function(num) {
   return {
-    size = [pw(100), ph(20)]
+    size = const [pw(100), ph(20)]
     pos = [pw(15), 0]
     flow = FLOW_HORIZONTAL
     children = [
@@ -108,11 +108,11 @@ let generateAltMark = function(num) {
       (num % 500 > 0 && num > 500 ? null :
         @() {
           watch = IlsColor
-          size = [SIZE_TO_CONTENT, flex()]
+          size = FLEX_V
           rendObj = ROBJ_TEXT
           color = IlsColor.value
           valign = ALIGN_CENTER
-          padding = [0, 0, 0, 10]
+          padding = const [0, 0, 0, 10]
           fontSize = 40
           font = Fonts.mirage_ils
           text = string.format("%d", num > 500 ? num / 1000 : num)
@@ -121,7 +121,7 @@ let generateAltMark = function(num) {
       (num % 500 > 0 || num <= 500 ? null :
         @() {
           watch = IlsColor
-          size = [SIZE_TO_CONTENT, flex()]
+          size = FLEX_V
           pos = [0, 5]
           rendObj = ROBJ_TEXT
           color = IlsColor.value
@@ -145,7 +145,7 @@ function altitude(height, generateFunc, is_metric) {
   let mul = is_metric ? 1.0 : metrToFeet
   let getOffset = @() ((65000 - max(BarAltitude.value * mul, 500)) * 0.0008 + (BarAltitude.value * mul >= 500 ? 0.0 : ((500 - BarAltitude.value * mul) * 0.002)) - 0.37) * height
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -176,7 +176,7 @@ function altCompressed(is_metric) {
             size = SIZE_TO_CONTENT
             rendObj = ROBJ_TEXT
             color = IlsColor.value
-            padding = [0, 5]
+            padding = const [0, 5]
             font = Fonts.mirage_ils
             fontSize = 45
             text = (is_metric ? altValueThousandM : altValueThousandF).get().tostring()
@@ -232,7 +232,7 @@ function altWrap(width, height, generateFunc, is_metric) {
 }
 
 let pitchWrap = @(){
-  size = [pw(800), ph(800)]
+  size = const [pw(800), ph(800)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
   fillColor = Color(0, 0, 0, 0)
@@ -649,7 +649,7 @@ let tvvLinked = {
     @(){
       watch = [IlsColor, airSymbolHide]
       rendObj = ROBJ_VECTOR_CANVAS
-      size = [pw(5), ph(5)]
+      size = const [pw(5), ph(5)]
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
       lineWidth = baseLineWidth * IlsLineScale.value * 0.7
@@ -687,7 +687,7 @@ let reticle = @(){
   watch = needReticle
   size = flex()
   children = needReticle.value ? {
-    size = [pw(8), ph(8)]
+    size = const [pw(8), ph(8)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
     lineWidth = baseLineWidth * IlsLineScale.value * 1.4
@@ -730,7 +730,7 @@ let reticleWithDist = @(){
     size = flex()
     children = [
       {
-        size = [pw(8), ph(8)]
+        size = const [pw(8), ph(8)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         lineWidth = baseLineWidth * IlsLineScale.value * 1.4
@@ -823,7 +823,7 @@ let reticleWithDist = @(){
       }
       @(){
         watch = radarDistWatched
-        size = [pw(16), SIZE_TO_CONTENT]
+        size = const [pw(16), SIZE_TO_CONTENT]
         pos = [pw(-8), ph(10)]
         rendObj = ROBJ_TEXT
         color = IlsColor.value
@@ -868,7 +868,7 @@ let radarTargetMark = @(){
   size = flex()
   children = radarTargetVisible.value ? [
     {
-      size = [pw(4), ph(4)]
+      size = const [pw(4), ph(4)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
@@ -941,7 +941,7 @@ let aamTargetMark = @(){
   size = flex()
   children = aamTargetVisible.value ? [
     {
-      size = [pw(4), ph(4)]
+      size = const [pw(4), ph(4)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
@@ -1005,7 +1005,7 @@ let aamReadyMark = @() {
   size = flex()
   children = aamReady.value ? @() {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [ph(1), ph(1)]
+    size = ph(1)
     color = IlsColor.value
     fillColor = Color(0, 0, 0, 0)
     lineWidth = baseLineWidth * IlsLineScale.value * 0.5
@@ -1050,7 +1050,7 @@ function launchZone(is_metric) {
     size = flex()
     pos = [pw(40), ph(60)]
     children = radarTargetVisible.value ? {
-      size = [pw(20), ph(10)]
+      size = const [pw(20), ph(10)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
@@ -1063,7 +1063,7 @@ function launchZone(is_metric) {
         {
           rendObj = ROBJ_TEXT
           pos = [pw(-5), ph(40)]
-          size = [pw(10), ph(20)]
+          size = const [pw(10), ph(20)]
           color = IlsColor.value
           halign = ALIGN_CENTER
           valign = ALIGN_CENTER
@@ -1107,7 +1107,7 @@ function launchZone(is_metric) {
         }
         @() {
           watch = is_metric ? distKm : distMiles
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           pos = [0, ph(70)]
           rendObj = ROBJ_TEXT
           color = IlsColor.value
@@ -1154,7 +1154,7 @@ let aimLock = @(){
   size = flex()
   children = AimLockValid.value ? @(){
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [pw(3), ph(3)]
+    size = const [pw(3), ph(3)]
     color = IlsColor.value
     fillColor = Color(0, 0, 0, 0)
     lineWidth = baseLineWidth * IlsLineScale.value * 0.7
@@ -1262,7 +1262,7 @@ function EP17(width, height, is_metric) {
       compassWrap(width, height, 0.1, generateCompassMarkSU145, 0.8, 5.0, false, 12, Fonts.mirage_ils)
       {
         rendObj = ROBJ_VECTOR_CANVAS
-        size = [pw(2), ph(2)]
+        size = const [pw(2), ph(2)]
         pos = [pw(49), ph(19)]
         color = IlsColor.value
         lineWidth = baseLineWidth * IlsLineScale.value * 0.7

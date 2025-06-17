@@ -729,8 +729,8 @@ function locEnding(locId, ending, defValue = null) {
 }
 
 
-function getModificationInfo(air, modifName, isShortDesc = false,
-  limitedName = false, obj = null, itemDescrRewriteFunc = null) {
+function getModificationInfo(air, modifName, p = {}) {
+  let { isShortDesc = false, isLimitedName = false, obj = null, itemDescrRewriteFunc = null, needAddName = true } = p
   let res = { desc = "", delayed = false }
   if (type(air) == "string")
     air = getAircraftByName(air)
@@ -743,6 +743,7 @@ function getModificationInfo(air, modifName, isShortDesc = false,
     return res
   }
 
+  local needAddNameToDesc = needAddName
   local mod = getModificationByName(air, modifName)
   local ammo_pack_len = 0
   if (modifName.indexof("_ammo_pack") != null && mod) {
@@ -761,10 +762,10 @@ function getModificationInfo(air, modifName, isShortDesc = false,
         itemDescrRewriteFunc, null) ?? true
 
     local locId = modifName
-    let ending = isShortDesc ? (limitedName ? "/short" : "") : "/desc"
+    let ending = isShortDesc ? (isLimitedName ? "/short" : "") : "/desc"
 
     res.desc = loc($"modification/{locId}{ending}", "")
-    if (res.desc == "" && isShortDesc && limitedName)
+    if (res.desc == "" && isShortDesc && isLimitedName)
       res.desc = loc($"modification/{locId}", "")
 
     if (!isShortDesc) {
@@ -779,7 +780,7 @@ function getModificationInfo(air, modifName, isShortDesc = false,
         if (locId.len() > n.len() && locId.slice(locId.len() - n.len()) == n) {
           locId = n
           caliber = ("caliber" in mod) ? mod.caliber : 0.0
-          if (limitedName)
+          if (isLimitedName)
             caliber = caliber.tointeger()
           break
         }
@@ -813,13 +814,15 @@ function getModificationInfo(air, modifName, isShortDesc = false,
   local shortDescr = "";
   if (isShortDesc || ammo_pack_len) { 
     local locId = modifName
-    let caliber = limitedName ? set.caliber.tointeger() : set.caliber
-    foreach (n in get_bullets_locId_by_caliber())
-      if (locId.len() > n.len() && locId.slice(locId.len() - n.len()) == n) {
-        locId = n
-        break
-      }
-    if (limitedName)
+    let caliber = isLimitedName ? set.caliber.tointeger() : set.caliber
+    if (!doesLocTextExist($"{locId}/name")) {
+      foreach (n in get_bullets_locId_by_caliber())
+        if (locId.len() > n.len() && locId.slice(locId.len() - n.len()) == n) {
+          locId = n
+          break
+        }
+    }
+    if (isLimitedName)
       shortDescr = loc($"{locId}/name/short", "")
     if (shortDescr == "")
       shortDescr = loc($"{locId}/name")
@@ -840,9 +843,11 @@ function getModificationInfo(air, modifName, isShortDesc = false,
 
   if (ammo_pack_len) {
     if ("bulletNames" in set && type(set.bulletNames) == "array"
-      && set.bulletNames.len())
+      && set.bulletNames.len()) {
         shortDescr = format(loc(set.isBulletBelt
           ? "modification/ammo_pack_belt/desc" : "modification/ammo_pack/desc"), shortDescr)
+        needAddNameToDesc = true
+      }
     if (ammo_pack_len > 1) {
       res.desc = shortDescr
       return res
@@ -851,7 +856,7 @@ function getModificationInfo(air, modifName, isShortDesc = false,
 
   let { setText, annotation } = getBulletsNamesBySet(set)
 
-  if (ammo_pack_len)
+  if (ammo_pack_len && needAddNameToDesc)
     res.desc = $"{shortDescr}\n"
   if (set.weaponType == WEAPON_TYPE.COUNTERMEASURES)
     res.desc = $"{res.desc}{loc("countermeasures/desc")}\n\n"
@@ -862,7 +867,8 @@ function getModificationInfo(air, modifName, isShortDesc = false,
 }
 
 function getModificationName(air, modifName, limitedName = false) {
-  return getModificationInfo(air, modifName, true, limitedName).desc
+  return getModificationInfo(air, modifName,
+    { isShortDesc = true, isLimitedName = limitedName }).desc
 }
 
 function appendOneBulletsItem(descr, modifName, air, amountText, genTexts, enabled = true, saveValue = null) {

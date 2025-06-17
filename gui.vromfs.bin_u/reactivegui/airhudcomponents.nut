@@ -17,7 +17,7 @@ function mkCollapseButton(position, direction){
   return  @(){
     watch = direction
     pos = position
-    size = [sh(3), sh(3)]
+    size = sh(3)
     rendObj = ROBJ_IMAGE
     flipY = !direction.value
     image = collapsePicUp
@@ -47,7 +47,7 @@ let twsElement = @(colorWatch, posWatched, size) function() {
   if (IsMlwsLwsHudVisible.value || IsRwrHudVisible.value) {
     return res.__update({
       pos = isPlayingReplay.value ? [posWatched.value[0], bh.value + 0.95 * rh.value] : [bw.value + 0.75 * rw.value, bh.value + 0.03 * rh.value]
-      size = [sh(5), sh(5)]
+      size = sh(5)
       rendObj = ROBJ_IMAGE
       image = !IsTwsDamaged.value ? rwrPic : rwrPicDamaged
       color = colorWatch.value
@@ -76,7 +76,7 @@ let radarElement = @(colorWatch, position) function() {
   if (IsRadarHudVisible.value) {
     return res.__update({
       pos = isPlayingReplay.value ? [bw.value + 0.75 * rw.value, bh.value + 0.95 * rh.value] : [bw.value + 0.75 * rw.value, bh.value + 0.1 * rh.value]
-      size = [sh(5), sh(5)]
+      size = sh(5)
       rendObj = ROBJ_IMAGE
       image = !IsRadarDamaged.value ? radarPic : radarPicDamaged
       color = colorWatch.value

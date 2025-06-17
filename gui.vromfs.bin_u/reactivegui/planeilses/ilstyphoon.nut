@@ -25,7 +25,7 @@ let BarAltValue = Computed(@() (BarAltitude.get() * metrToFeet * 0.1).tointeger(
 function altCircle(lineWidth, color, fontSize) {
   return @(){
     watch = IlsColor
-    size = [ph(16), ph(16)]
+    size = ph(16)
     pos = [pw(65), ph(18.5)]
     rendObj = ROBJ_VECTOR_CANVAS
     color
@@ -47,7 +47,7 @@ function altCircle(lineWidth, color, fontSize) {
       @() {
         watch = [AltThousandAngle, IlsColor]
         rendObj = ROBJ_VECTOR_CANVAS
-        size = [pw(50), ph(50)]
+        size = const [pw(50), ph(50)]
         pos = [pw(50), ph(50)]
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)
@@ -75,14 +75,14 @@ function altCircle(lineWidth, color, fontSize) {
 let AltitudeValue = Computed(@() (Altitude.get() * metrToFeet).tointeger())
 function altitude(fontSize) {
   return {
-    size = [pw(10), ph(5)]
+    size = const [pw(10), ph(5)]
     pos = [pw(78), ph(22.5)]
     flow = FLOW_VERTICAL
     children = [
       @(){
         watch = IlsColor
         rendObj = ROBJ_TEXT
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         color = IlsColor.get()
         font = Fonts.hud
         fontSize
@@ -92,7 +92,7 @@ function altitude(fontSize) {
       @(){
         watch = AltitudeValue
         rendObj = ROBJ_TEXT
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         color = IlsColor.get()
         font = Fonts.hud
         fontSize
@@ -107,7 +107,7 @@ let airSymbol = @(){
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
   pos = [pw(50), ph(50)]
-  size = [ph(5), ph(5)]
+  size = ph(5)
   color = IlsColor.get()
   fillColor = 0
   lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
@@ -121,7 +121,7 @@ let airSymbol = @(){
 let tvvLinked = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [ph(1), ph(1)]
+  size = ph(1)
   color = IlsColor.get()
   fillColor = Color(0, 0, 0, 0)
   lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
@@ -142,7 +142,7 @@ let tvvLinked = @() {
 let MachValue = Computed(@() (Mach.get() * 100.0).tointeger())
 function mach(fontSize) {
   return {
-    size = [pw(10), ph(5)]
+    size = const [pw(10), ph(5)]
     pos = [pw(5), ph(22.5)]
     flow = FLOW_VERTICAL
     children = [
@@ -228,7 +228,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = [pw(70), ph(50)]
+    size = const [pw(70), ph(50)]
     pos = [pw(15), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -238,7 +238,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.get() * 0.5
         color = IlsColor.get()
-        padding = [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, -100, 0, 35, 0],
           [VECTOR_LINE, 65, 0, 200, 0],
@@ -277,7 +277,7 @@ function generatePitchLine(num) {
 
 let generateCompassMark = function(num) {
   return {
-    size = [pw(15), ph(100)]
+    size = const [pw(15), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -445,7 +445,7 @@ let targetDist = Computed(@() (RadarTargetDist.get() * metrToNavMile * 10.0).toi
 function aamScale(fontSize) {
   return @(){
     watch = hasRadarTarget
-    size = [pw(10), ph(30)]
+    size = const [pw(10), ph(30)]
     pos = [pw(83), ph(20)]
     children = hasRadarTarget.get() ? [
       {
@@ -461,7 +461,7 @@ function aamScale(fontSize) {
       }
       @(){
         watch = DistanceMax
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         pos = [0, -fontSize]
         rendObj = ROBJ_TEXT
         color = IlsColor.get()
@@ -472,7 +472,7 @@ function aamScale(fontSize) {
       }
       @(){
         watch = distRate
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         pos = [0, ph(102)]
         rendObj = ROBJ_TEXT
         color = IlsColor.get()
@@ -484,7 +484,7 @@ function aamScale(fontSize) {
       @(){
         watch = aspect
         pos = [0, ph(110)]
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         rendObj = ROBJ_TEXT
         color = IlsColor.get()
         fontSize
@@ -537,7 +537,7 @@ function canShoot(fontSize, color) {
         fontSize
         font = Fonts.hud
         text = "SHOOT"
-        padding = [3, 0]
+        padding = const [3, 0]
         hplace = ALIGN_CENTER
         animations = [
           { prop = AnimProp.opacity, from = -1, to = 1, duration = 0.75, play = true, loop = true }
@@ -582,7 +582,7 @@ function flightTime(fontSize) {
   return @() {
     watch = timeVisible
     pos = [pw(86), ph(66)]
-    size = [pw(5), ph(5)]
+    size = const [pw(5), ph(5)]
     children = timeVisible.get() ?
       @() {
         watch = [CalcFlightTime, IlsColor]
@@ -636,7 +636,7 @@ let gunImpactLine = @(){
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       lineWidth = baseLineWidth * IlsLineScale.get()
-      size = [ph(2), ph(2)]
+      size = ph(2)
       pos = AdlPoint
       commands = [
         [VECTOR_LINE, 30, 0, 100, 0],
@@ -659,7 +659,7 @@ function intScale(height, watchV) {
         font = Fonts.hud
         fontSize = 30
         text = (i % 10).tostring()
-        padding = [2, 0]
+        padding = const [2, 0]
       }
     )
   }
@@ -682,7 +682,7 @@ let overloadInt = Computed(@() Overload.get() % 1.0 > 0.0 && Overload.get() % 1.
 function overload(height) {
   return {
     pos = [pw(20), ph(47.5)]
-    size = [pw(7), ph(3)]
+    size = const [pw(7), ph(3)]
     clipChildren = true
     flow = FLOW_HORIZONTAL
     children = [
@@ -703,7 +703,7 @@ function overload(height) {
 function aimPos(width, height) {
   return @() {
     watch = AimLockValid
-    size = [ph(3), ph(3)]
+    size = ph(3)
     children = AimLockValid.get() ? [
       @(){
         watch = IlsColor
@@ -758,7 +758,7 @@ function ccipImpactLine(height) {
       @() {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        size = [ph(2), ph(2)]
+        size = ph(2)
         lineWidth = baseLineWidth * 0.5 * IlsLineScale.get()
         color = IlsColor.get()
         commands = [
@@ -802,7 +802,7 @@ let aamReticle = function (width, height) {
       @(){
         watch = [IlsColor]
         rendObj = ROBJ_VECTOR_CANVAS
-        size = [ph(30), ph(30)]
+        size = ph(30)
         pos = [pw(50), ph(50)]
         color = IlsColor.get()
         fillColor = 0
@@ -818,7 +818,7 @@ let aamReticle = function (width, height) {
       (hasSector.get() ? @(){
         watch = distAngle
         rendObj = ROBJ_VECTOR_CANVAS
-        size = [ph(13), ph(13)]
+        size = ph(13)
         pos = [pw(50), ph(50)]
         color = IlsColor.get()
         fillColor = 0
@@ -833,7 +833,7 @@ let aamReticle = function (width, height) {
       } : null),
       @() {
         watch = [IlsColor]
-        size = [pw(1.5), ph(2)]
+        size = const [pw(1.5), ph(2)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.get()
         fillColor = Color(0, 0, 0, 0)

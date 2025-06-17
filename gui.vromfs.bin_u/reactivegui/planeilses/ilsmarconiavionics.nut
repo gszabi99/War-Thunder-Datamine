@@ -59,7 +59,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 2.5)
   return {
-    size = [pw(60), ph(40)]
+    size = const [pw(60), ph(40)]
     pos = [pw(20), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -69,7 +69,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.value
         color = IlsColor.value
-        padding = [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, -20, 0, 30, 0],
           [VECTOR_LINE, 70, 0, 120, 0]
@@ -107,7 +107,7 @@ function KaiserTvvLinked(width, height) {
       @() {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        size = [pw(4), ph(4)]
+        size = const [pw(4), ph(4)]
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.value
@@ -132,7 +132,7 @@ function KaiserTvvLinked(width, height) {
 let adlMarker = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(3), ph(3)]
+  size = const [pw(3), ph(3)]
   color = IlsColor.value
   lineWidth = baseLineWidth * IlsLineScale.value
   commands = [
@@ -152,7 +152,7 @@ let adlMarker = @() {
 let generateSpdMark = function(num) {
   let ofs = num < 10 ? pw(-15) : pw(-30)
   return {
-    size = [pw(100), ph(7.5)]
+    size = const [pw(100), ph(7.5)]
     pos = [pw(30), 0]
     children = [
       (num % 5 > 0 ? null :
@@ -189,7 +189,7 @@ function speed(height, generateFunc) {
 
   let getOffset = @() ((1000.0 - Speed.value * mpsToKnots) * 0.00745 - 0.5) * height
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -230,7 +230,7 @@ function speedWrap(width, height, generateFunc) {
 
 let generateAltMark = function(num) {
   return {
-    size = [pw(100), ph(7.5)]
+    size = const [pw(100), ph(7.5)]
     pos = [pw(15), 0]
     flow = FLOW_HORIZONTAL
     children = [
@@ -267,7 +267,7 @@ function altitude(height, generateFunc) {
 
   let getOffset = @() ((65000 - Altitude.value * metrToFeet) * 0.0007425 - 0.48) * height
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -336,7 +336,7 @@ let mach = @() {
 function radarTarget(width, height) {
   return @() {
     watch = IlsColor
-    size = [pw(8), ph(8)]
+    size = const [pw(8), ph(8)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
     fillColor = Color(0, 0, 0, 0)
@@ -420,7 +420,7 @@ let aamCircle = @() {
   children = IlsTrackerVisible.value ? [
     @() {
       watch = [AamIsReady, IlsColor]
-      size = [pw(10), ph(10)]
+      size = const [pw(10), ph(10)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
@@ -482,7 +482,7 @@ let lcos = @() {
   children = LCOSwatch.value ? [
     @() {
       watch = IlsColor
-      size = [pw(10), ph(10)]
+      size = const [pw(10), ph(10)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       lineWidth = baseLineWidth * IlsLineScale.value
@@ -511,7 +511,7 @@ function ccip(width, height) {
     [
       @() {
         watch = IlsColor
-        size = [pw(3), pw(3)]
+        size = pw(3)
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         lineWidth = baseLineWidth * IlsLineScale.value
@@ -552,7 +552,7 @@ function ccrp(height) {
     children = BombingMode.value && TargetPosValid.value ? [
       @() {
         watch = IlsColor
-        size = [pw(4), ph(4)]
+        size = const [pw(4), ph(4)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)

@@ -27,7 +27,7 @@ function generatePitchLine(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = [pw(80), ph(50)]
+    size = const [pw(80), ph(50)]
     pos = [pw(10), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -37,7 +37,7 @@ function generatePitchLine(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.value
         color = IlsColor.value
-        padding = [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, -10, 0, 30, 0],
           [VECTOR_LINE, 70, 0, 110, 0]
@@ -101,7 +101,7 @@ function KaiserTvvLinked(width, height) {
       @() {
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        size = [pw(4), ph(4)]
+        size = const [pw(4), ph(4)]
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)
         lineWidth = baseLineWidth * IlsLineScale.value
@@ -161,7 +161,7 @@ let a10Speed = @() {
 function climbSpeed(height){
   return @(){
     watch = IlsColor
-    size = [pw(4), ph(30)]
+    size = const [pw(4), ph(30)]
     pos = [pw(85), ph(40)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
@@ -178,7 +178,7 @@ function climbSpeed(height){
     ]
     children = {
       rendObj = ROBJ_VECTOR_CANVAS
-      size = [pw(50), pw(25)]
+      size = const [pw(50), pw(25)]
       pos = [pw(100), 0]
       color = IlsColor.value
       fillColor = IlsColor.value
@@ -201,7 +201,7 @@ function climbSpeed(height){
 
 let generateCompassMarkSU145 = function(num, _elemWidth, font) {
   return {
-    size = [pw(12), ph(100)]
+    size = const [pw(12), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -243,7 +243,7 @@ let gunAimMark = @() {
   children = TargetPosValid.value ?
     @() {
       watch = IlsColor
-      size = [pw(8), ph(8)]
+      size = const [pw(8), ph(8)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
@@ -351,7 +351,7 @@ function KaiserVDO(width, height) {
       @(){
         watch = IlsColor
         rendObj = ROBJ_VECTOR_CANVAS
-        size = [pw(1), pw(1)]
+        size = pw(1)
         pos = [pw(50), ph(26)]
         color = IlsColor.value
         lineWidth = 1

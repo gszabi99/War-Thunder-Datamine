@@ -20,6 +20,7 @@ local CollectionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType          = handlerType.CUSTOM
   sceneBlkName     = "%gui/collections/collectionsPage.blk"
 
+  parent = null
   applyFilterTimer = null
   collectionNameFilter = ""
   collectionsList = null
@@ -294,8 +295,8 @@ local CollectionsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function onFilterCancel(filterObj) {
     if (filterObj.getValue() != "")
       filterObj.setValue("")
-    else
-      this.guiScene.performDelayed(this, this.goBack)
+    else if (this.parent != null)
+      this.guiScene.performDelayed(this.parent, this.parent.goBack)
   }
 }
 

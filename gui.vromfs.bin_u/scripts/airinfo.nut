@@ -29,9 +29,7 @@ let { getCrewPoints } = require("%scripts/crew/crewSkills.nut")
 let { getWeaponInfoText, makeWeaponInfoData } = require("%scripts/weaponry/weaponryDescription.nut")
 let { getLastWeapon } = require("%scripts/weaponry/weaponryInfo.nut")
 let { placePriceTextToButton } = require("%scripts/viewUtils/objectTextUpdate.nut")
-let { isModResearched, getModificationByName
-} = require("%scripts/weaponry/modificationInfo.nut")
-let { isModificationInTree } = require("%scripts/weaponry/modsTree.nut")
+let { getModificationByName } = require("%scripts/weaponry/modificationInfo.nut")
 let { getActiveBoostersArray, getBoostersEffects } = require("%scripts/items/boosterEffect.nut")
 let { boosterEffectType } = require("%scripts/items/boosterEffectTypes.nut")
 let { NO_BONUS, PREM_ACC, PREM_MOD, BOOSTER } = require("%scripts/debriefing/rewardSources.nut")
@@ -66,7 +64,7 @@ let { getCrewLevel, getCrewName, getCrewStatus } = require("%scripts/crew/crew.n
 let { getFlapsDestructionIndSpeed, getGearDestructionIndSpeed, getWingPlaneStrength
 } = require("%scripts/airLimits.nut")
 let { getSpecTypeByCrewAndUnit } = require("%scripts/crew/crewSpecType.nut")
-let { isAvailableBuyUnitOnline, isAvailableBuyUnitOnMarketPlace } = require("%scripts/unit/availabilityBuyOnline.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 let { MAX_COUNTRY_RANK } = require("%scripts/ranks.nut")
 let { hasUnitCoupon } = require("%scripts/items/unitCoupons.nut")
 let { showAirDiscount } = require("%scripts/discounts/discountUtils.nut")
@@ -75,6 +73,7 @@ let { findWarbond } = require("%scripts/warbonds/warbondsManager.nut")
 let { getNotAvailableUnitByBRText } = require("%scripts/matchingRooms/sessionLobbyInfo.nut")
 let { getUnitRoleIconAndTypeCaption } = require("%scripts/unit/unitInfoRoles.nut")
 let { getUnitDiscountByName } = require("%scripts/discounts/discountsState.nut")
+let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 
 let usageRatingAmount = [0.0003, 0.0005, 0.001, 0.002]
 
@@ -104,14 +103,6 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
 }
 
 
-
-::canBuyUnitOnline <- function canBuyUnitOnline(unit) {
-  return !isUnitBought(unit) && isAvailableBuyUnitOnline(unit)
-}
-
-::canBuyUnitOnMarketplace <- function canBuyUnitOnMarketplace(unit) {
-  return !isUnitBought(unit) && isAvailableBuyUnitOnMarketPlace(unit)
-}
 
 ::isTestFlightAvailable <- function isTestFlightAvailable(unit, skipUnitCheck = false) {
   if (!isUnitAvailableForGM(unit, GM_TEST_FLIGHT))
@@ -201,19 +192,6 @@ function fillProgressBar(obj, curExp, newExp, maxExp, isPaused = false) {
   return true
 }
 
-::getNextTierModsCount <- function getNextTierModsCount(unit, tier) {
-  if (tier < 1 || tier > unit.needBuyToOpenNextInTier.len() || !("modifications" in unit))
-    return 0
-
-  local req = unit.needBuyToOpenNextInTier[tier - 1]
-  foreach (mod in unit.modifications)
-    if (("tier" in mod) && mod.tier == tier
-      && isModificationInTree(unit, mod)
-      && isModResearched(unit, mod)
-    )
-      req--
-  return max(req, 0)
-}
 
 function getHighestRankDiffNoPenalty(inverse = false) {
   let ranksBlk = get_ranks_blk()
@@ -1242,7 +1220,7 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
     }
   }
   else {
-    if (::canBuyUnitOnline(air)) {
+    if (canBuyUnitOnline(air)) {
       addInfoTextsList.append(colorize("userlogColoredText",
         format(loc($"shop/giftAir/{air.gift}/info"), air.giftParam ? loc(air.giftParam) : "")))
       if (showLocalState)
@@ -1254,12 +1232,12 @@ function showAirInfo(air, show, holderObj = null, handler = null, params = null)
       addInfoTextsList.append(loc("shop/reserve/info"))
     if (hasUnitCoupon(air.name))
       addInfoTextsList.append(colorize("userlogColoredText", loc("shop/object/can_get_from_coupon")))
-    else if (::canBuyUnitOnMarketplace(air))
+    else if (canBuyUnitOnMarketplace(air))
       addInfoTextsList.append(colorize("userlogColoredText", loc("shop/giftAir/coupon/info")))
   }
 
   let showPriceText = rentTimeHours == -1 && showLocalState && !isUnitBought(air)
-    && isUnitResearched(air) && !::canBuyUnitOnline(air) && canBuyUnit(air)
+    && isUnitResearched(air) && !canBuyUnitOnline(air) && canBuyUnit(air)
   let priceObj = showObjById("aircraft_price", showPriceText, holderObj)
 
   if(checkObj(priceObj))

@@ -6981,9 +6981,7 @@
         "dmPart": [
           "rangefinder_01_dm",
           "rangefinder_02_dm",
-          "rangefinder_03_dm",
-          "rangefinder_04_dm",
-          "rangefinder_05_dm"
+          "rangefinder_03_dm"
         ],
         "rotationSpeed": [
           0.0,
@@ -6996,6 +6994,26 @@
         "triggerGroupUse": {
           "primary": true,
           "secondary": false,
+          "machinegun": false
+        }
+      },
+      {
+        "dmPartMain": "fire_control_room_01_dm",
+        "dmPart": [
+          "rangefinder_04_dm",
+          "rangefinder_05_dm"
+        ],
+        "rotationSpeed": [
+          0.0,
+          20.0
+        ],
+        "measureAccuracy": 0.85,
+        "targetLockTime": 20.0,
+        "calcTime": 12.0,
+        "shipIndicationOn": true,
+        "triggerGroupUse": {
+          "primary": false,
+          "secondary": true,
           "machinegun": false
         }
       }
@@ -24685,7 +24703,7 @@
       },
       {
         "trigger": "gunner69",
-        "triggerGroup": "secondary",
+        "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_194",
         "flash": "emtr_gun_flame_194",
@@ -24694,6 +24712,7 @@
         "breechDP": "aa_gun_53_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
+        "isBulletBelt": true,
         "speedYaw": 75.0,
         "speedPitch": 65.0,
         "bullets": 1500,
@@ -24778,7 +24797,7 @@
       },
       {
         "trigger": "gunner70",
-        "triggerGroup": "secondary",
+        "triggerGroup": "machinegun",
         "blk": "gameData/Weapons/navalModels_weapons/25mm_60_type96_naval_user_cannon.blk",
         "emitter": "emtr_gun_flame_195",
         "flash": "emtr_gun_flame_195",
@@ -24787,6 +24806,7 @@
         "breechDP": "aa_gun_54_dm",
         "defaultYaw": 0.0,
         "defaultPitch": 0.0,
+        "isBulletBelt": true,
         "speedYaw": 75.0,
         "speedPitch": 65.0,
         "bullets": 1500,
@@ -26759,7 +26779,7 @@
           "fatalFire": false,
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_11_dm": {
-            "count": 20000
+            "count": 16800
           }
         },
         {
@@ -26767,7 +26787,7 @@
           "fatalFire": false,
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_12_dm": {
-            "count": 15000
+            "count": 16800
           }
         },
         {
@@ -26775,7 +26795,7 @@
           "fatalFire": false,
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_13_dm": {
-            "count": 15000
+            "count": 16800
           }
         },
         {
@@ -26783,7 +26803,7 @@
           "fatalFire": false,
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_14_dm": {
-            "count": 15500
+            "count": 16800
           }
         },
         {
@@ -26791,7 +26811,7 @@
           "fatalFire": false,
           "damageEffect": "ammunition_storage_aux",
           "ammunition_storage_aux_15_dm": {
-            "count": 15500
+            "count": 16800
           }
         }
       ]

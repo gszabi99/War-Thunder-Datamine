@@ -7,7 +7,7 @@ let horizontLine = @() {
   watch = IlsColor
   rendObj = ROBJ_SOLID
   pos = [pw(-50), 0]
-  size = [pw(200), ph(0.7)]
+  size = const [pw(200), ph(0.7)]
   color = IlsColor.value
 }
 
@@ -27,7 +27,7 @@ let horizont = {
 let target = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(1.2), ph(1.2)]
+  size = const [pw(1.2), ph(1.2)]
   color = IlsColor.value
   fillColor = IlsColor.value
   commands = [[VECTOR_ELLIPSE, 0, 0, 100, 100]]

@@ -14,12 +14,14 @@ let { safeAreaSizeHud, bh, rh } = require("%rGui/style/screenState.nut")
 let { needShowDmgIndicator, dmgIndicatorStates } = require("%rGui/hudState.nut")
 let { setRenderCameraToHudTexture } = require("hudState")
 let { logerr } = require("dagor.debug")
-let { mkFrame, mkShortcutButton, mkShortcutText, shortcutButtonPadding, frameHeaderHeight
+let { mkFrame, mkShortcutButton, mkShortcutButtonContinued, fireButtonShortcutHint,
+  mkShortcutText, shortcutButtonPadding, frameHeaderHeight,
 } = require("%rGui/antiAirComplexMenu/antiAirMenuBaseComps.nut")
 let { antiAirMenuShortcutHeight } = require("%rGui/hints/shortcuts.nut")
 let { actionBarSize } = require("%rGui/hud/actionBarState.nut")
 let { actionBarTopPanelMarginBottom, actionBarTopPanelHeight
 } = require("%rGui/hud/actionBarTopPanel.nut")
+let { aaMenuCfg } = require("antiAirComplexMenuState.nut")
 
 let radarColor = 0xFF00FF07
 let radarColorInactive = 0x66006602
@@ -46,7 +48,8 @@ let planeTargetPicture = Picture($"!ui/gameuiskin#voice_message_jet.svg")
 let helicopterTargetPicture = Picture($"!ui/gameuiskin#voice_message_helicopter.svg")
 let rocketTargetPicture = Picture($"!ui/gameuiskin#voice_message_missile.svg")
 
-let verticalViewIndicator = {
+let verticalViewIndicator = @() {
+  watch = aaMenuCfg
   size = [sidePanelsWidth, verticalViewIndicatorHeight]
   rendObj = ROBJ_DAS_CANVAS
   script = dasVerticalViewIndicator
@@ -57,6 +60,7 @@ let verticalViewIndicator = {
   planeTargetPicture
   helicopterTargetPicture
   rocketTargetPicture
+  maxAltitude = aaMenuCfg.get()?["verticalViewMaxAltitude"]
 }
 
 let verticalViewIndicatorFrame = @() {
@@ -166,8 +170,10 @@ let mkFireControl = @() {
       gap = panelsGap - shortcutButtonPadding
       flow = FLOW_VERTICAL
       children = [
-        mkShortcutButton("ID_FIRE_GM", mkShortcutText(loc("hotkeys/ID_FIRE_GM")))
-        mkShortcutButton("ID_FIRE_GM_SPECIAL_GUN",
+        mkShortcutButtonContinued("ID_FIRE_GM",
+          mkShortcutText(loc("hotkeys/ID_FIRE_GM")),
+          fireButtonShortcutHint, { hotkeys = [["^M:1"]] })
+        mkShortcutButtonContinued("ID_FIRE_GM_SPECIAL_GUN",
           mkShortcutText(loc("hotkeys/ID_FIRE_GM_SPECIAL_GUN")))
       ]
     }
@@ -202,7 +208,7 @@ let mkTargetCell = @(size, fontSize, text) {
   text
 }
 
-function createTargetListElement(index, azimuth, distance, height, speed, typeIcon, typeId, fontSize, isDetected = false, onClick = null){
+function createTargetListElement(index, azimuth, distance, height, speed, typeIcon, typeId, IFFText, fontSize, isDetected = false, onClick = null){
   return {
     size = [flex(), targetRowHeight]
     rendObj = ROBJ_SOLID
@@ -220,10 +226,11 @@ function createTargetListElement(index, azimuth, distance, height, speed, typeIc
       mkTargetCell([pw(17), flex()], fontSize, speed)
       {
         rendObj = ROBJ_IMAGE
-        size = [pw(4), flex()]
+        size = const [pw(4), flex()]
         image = typeIcon
       }
       mkTargetCell(flex(), fontSize, typeId)
+      mkTargetCell([pw(10), flex()], fontSize, IFFText)
     ]
   }
 }
@@ -247,6 +254,7 @@ function createTargetDist(index, hasAzimuthScale, azimuthMin, azimuthRange, hasD
   let speedText = target.radSpeed > -3000.0 ? string.format("%.1f", target.radSpeed) : "-"
 
   let typeIdText = loc(target.typeId)
+  let IFFText = target.isEnemy ? loc("hud/AAComplexMenu/IFF/enemy") : loc("hud/AAComplexMenu/IFF/ally")
 
   local icon = null
   let iconType = target.iconType
@@ -265,7 +273,7 @@ function createTargetDist(index, hasAzimuthScale, azimuthMin, azimuthRange, hasD
   local onClick = function() {
     radarSwitchToTarget(target.objectId)
   }
-  return createTargetListElement(target.persistentIndex, azimuthText, distanceText, heightText, speedText, icon, typeIdText, hdpx(16), target.isDetected, onClick)
+  return createTargetListElement(target.persistentIndex, azimuthText, distanceText, heightText, speedText, icon, typeIdText, IFFText, hdpx(16), target.isDetected, onClick)
 }
 
 let targetList = @() {
@@ -286,7 +294,8 @@ let targetListMain = @() {
   children = [
     createTargetListElement("#", loc("hud/AAComplexMenu/azimuth"),
       loc("hud/AAComplexMenu/distance"), loc("hud/AAComplexMenu/height"),
-      loc("hud/AAComplexMenu/speed"), null, loc("hud/AAComplexMenu/type"), hdpx(14)),
+      loc("hud/AAComplexMenu/speed"), null, loc("hud/AAComplexMenu/type"),
+      loc("hud/AAComplexMenu/IFF/header"), hdpx(14)),
     targetList
   ]
 }
@@ -297,16 +306,16 @@ let aaComplexMenu = {
   color = 0xDD101010
 
   children = @() {
-    watch = safeAreaSizeHud
+    watch = [safeAreaSizeHud, aaMenuCfg]
     size = flex()
     margin = safeAreaSizeHud.get().borders
     padding = [multiplayerScoreHeightWithOffset, 0, 0, 0]
 
     children = [
-      verticalViewIndicatorFrame
+      aaMenuCfg.get()?["hasVerticalView"] ? verticalViewIndicatorFrame : null
       mkCentralBlock()
-      mkFrame(targetListMain, loc("hud/target_list"), { hplace = ALIGN_RIGHT })
-      mkFrame(mkCameraRender(), loc("hud/sight_view"))
+      aaMenuCfg.get()?["hasTargetList"] ? mkFrame(targetListMain, loc("hud/target_list"), { hplace = ALIGN_RIGHT }) : null
+      aaMenuCfg.get()?["hasTurretView"] ? mkFrame(mkCameraRender(), loc("hud/sight_view")) : null
     ]
   }
 }

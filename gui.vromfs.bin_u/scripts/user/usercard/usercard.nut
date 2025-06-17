@@ -558,6 +558,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       return
     this.medalsPageHandlerWeak = openMedalsPage({
       scene = holder
+      parent = this
       player = this.player
       isOwnStats = this.isOwnStats
       openParams = {
@@ -573,6 +574,7 @@ gui_handlers.UserCardHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
     this.serviceRecordsPageHandlerWeak = openServiceRecordsPage({
       scene = holder
+      parent = this
       player = this.player
       isOwnStats = this.isOwnStats
       paginatorHolder = this.scene.findObject("paginator_place")

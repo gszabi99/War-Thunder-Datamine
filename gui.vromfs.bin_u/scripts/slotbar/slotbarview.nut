@@ -63,6 +63,7 @@ let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { gui_handlers } = require("%sqDagui/framework/gui_handlers.nut")
 let { getEntitlementUnitDiscount } = require("%scripts/discounts/discountsState.nut")
+let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 
 const DEFAULT_STATUS = "none"
 
@@ -677,7 +678,7 @@ function buildCommonUnitSlot(id, unit, params) {
   let special             = isUnitSpecial(unit)
   let isVehicleInResearch = isUnitInResearch(unit) && !forceNotInResearch
   let isSquadronVehicle   = unit.isSquadronVehicle()
-  let isMarketableVehicle = ::canBuyUnitOnMarketplace(unit)
+  let isMarketableVehicle = canBuyUnitOnMarketplace(unit)
   let unitReqExp          = getUnitReqExp(unit)
   local unitExpGranted      = getUnitExp(unit)
   let diffExp = isSquadronVehicle

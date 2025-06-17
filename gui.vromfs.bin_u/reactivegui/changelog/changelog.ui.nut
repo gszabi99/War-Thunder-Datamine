@@ -64,7 +64,7 @@ function patchnote(v) {
       : Color(0, 0, 0)
     borderColor = Color(178, 57, 29)
     borderWidth = isCurrent.value ? [0, 0, 2 * borderWidth, 0] : 0
-    size = [flex(1), ph(100)]
+    size = const [flex(1), ph(100)]
     maxWidth = maxPatchnoteWidth
     behavior = Behaviors.Button
     halign = ALIGN_CENTER
@@ -72,7 +72,7 @@ function patchnote(v) {
     onElemState = @(sf) stateFlags(sf)
     children = [
       {
-        size = [flex(), ph(100)]
+        size = const [flex(), ph(100)]
         maxWidth = maxPatchnoteWidth - 2 * scrn_tgt(0.01)
         behavior = Behaviors.TextArea
         rendObj = ROBJ_TEXTAREA
@@ -93,7 +93,7 @@ let topBorder = @(params = {}) {
 }.__merge(params)
 
 let patchnoteSelectorGamepadButton = @(hotkey, actionFunc) topBorder({
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   behavior = Behaviors.Button
   children = mkImageCompByDargKey(hotkey)
   onClick = actionFunc
@@ -162,7 +162,7 @@ let patchnoteLoading = freeze({
   flow  = FLOW_VERTICAL
   halign = ALIGN_CENTER
   gap = hdpx(20)
-  valign = ALIGN_CENTER size = [flex(), sh(20)]
+  valign = ALIGN_CENTER size = const [flex(), sh(20)]
   padding = sh(2)
 })
 
@@ -180,7 +180,7 @@ function selPatchnote() {
     size = flex()
     children = [
       scrollbar.makeSideScroll({
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         margin = [0, blockInterval]
         children = chosenPatchnoteLoaded.value ? formatText(text) : patchnoteLoading
       }, {
@@ -275,7 +275,7 @@ let changelogRoot = {
             children = selPatchnote
           }
           {
-            size = [flex(), SIZE_TO_CONTENT]
+            size = FLEX_H
             gap = blockInterval
             flow = FLOW_VERTICAL
             children = [

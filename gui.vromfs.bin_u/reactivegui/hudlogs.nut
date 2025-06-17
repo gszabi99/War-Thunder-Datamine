@@ -105,7 +105,7 @@ isInteractive.subscribe(function(value) {
 
 let logsHeader = @() {
   watch = [cursorVisible, currentTab]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   opacity = cursorVisible.value ? 1 : 0
   children = [
     tabs({
@@ -119,7 +119,7 @@ let logsHeader = @() {
 
 let logsContainer = @() {
   watch = currentLog
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   children = tabsList.findvalue(@(tab) tab.id == currentLog.value)?.content
   animations = logsContainerAnims
 }

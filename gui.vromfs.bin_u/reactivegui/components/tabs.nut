@@ -59,7 +59,7 @@ function tabCtor(tab, is_current, handler) {
 
 let tabsHolder = @(_params) {
   rendObj = ROBJ_SOLID
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   padding = [dp(2)]
   gap = dp()

@@ -64,7 +64,7 @@ local fitTextToBox = kwarg(function(box, text, font, fontSize = null, minSize = 
 let defFont = Fonts.tiny_text_hud
 
 function speedValue(params = {}) {
-  let { font = defFont, margin = [0, 0, 0, sh(1)], fontSize = null } = params
+  let { font = defFont, margin = const [0, 0, 0, sh(1)], fontSize = null } = params
   return @() {
     watch = speed
     rendObj = ROBJ_TEXT
@@ -85,7 +85,7 @@ function speedUnits(params = {}) {
       font
       fontSize = box ? fitTextToBox({ text, box, fontSize, font }) : fontSize
       text
-      margin = [0, 0, hdpx(1.5), sh(0.5)]
+      margin = const [0, 0, hdpx(1.5), sh(0.5)]
     }
   }
 }

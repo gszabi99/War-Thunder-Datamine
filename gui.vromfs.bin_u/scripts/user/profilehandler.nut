@@ -673,7 +673,11 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
   function showCollectionsSheet(decoratorId = null) {
     let collectionsDiv = this.showSheetDiv("collections", true)
-    openCollectionsPage({ scene = collectionsDiv, selectedDecoratorId = decoratorId ?? this.selectedDecoratorId })
+    openCollectionsPage({
+      scene = collectionsDiv
+      parent = this
+      selectedDecoratorId = decoratorId ?? this.selectedDecoratorId
+    })
   }
 
   function showSkinsSheet() {
@@ -683,6 +687,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
 
     this.skinsPageHandlerWeak = openSkinsPage({
       scene = holder
+      parent = this
       openParams = {
         initCountry = this.filterCountryName
         initUnitType = this.filterUnitTag
@@ -697,6 +702,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       return
     this.decalsPageHandlerWeak = openDecalsPage({
       scene = holder
+      parent = this
       openParams = {
         initCategory = this.filterGroupName
       }
@@ -709,6 +715,7 @@ gui_handlers.Profile <- class (gui_handlers.UserCardHandler) {
       return
     this.achievementsPageHandlerWeak = openAchievementsPage({
       scene = holder
+      parent = this
       openParams = {
         initCategory = this.curAchievementGroupName
       }

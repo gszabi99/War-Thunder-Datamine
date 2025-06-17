@@ -20,7 +20,7 @@ let baseColor = isInVr ? Color(10, 255, 10, 30) : Color(10, 255, 10, 10)
 
 let crosshair = {
   pos = [pw(50), ph(50)]
-  size = [ph(2), ph(2)]
+  size = ph(2)
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
   lineWidth = baseLineWidth
@@ -37,7 +37,7 @@ let SpeedValueM = Computed(@() round(Speed.value * mpsToKmh).tointeger())
 let speedVal = @(is_metric) function() {
   let valWatch = is_metric ? SpeedValueM : SpeedValue
   return {
-    size = [pw(3.5), ph(2.3)]
+    size = const [pw(3.5), ph(2.3)]
     pos = [pw(38), ph(49)]
     halign = ALIGN_RIGHT
     children = [
@@ -54,7 +54,7 @@ let speedVal = @(is_metric) function() {
       @() {
         watch = valWatch
         size = SIZE_TO_CONTENT
-        padding = [0, 5]
+        padding = const [0, 5]
         rendObj = ROBJ_TEXT
         color = baseColor
         fontSize = hudFontHgt * 1.2
@@ -69,7 +69,7 @@ let BarAltitudeValueM = Computed(@() BarAltitude.get().tointeger())
 let AltVal = @(is_metric) function() {
   let valWatch = is_metric ? BarAltitudeValueM : BarAltitudeValue
   return {
-    size = [pw(5), ph(2.3)]
+    size = const [pw(5), ph(2.3)]
     pos = [pw(60), ph(49)]
     halign = ALIGN_RIGHT
     children = [
@@ -86,7 +86,7 @@ let AltVal = @(is_metric) function() {
       @() {
         watch = valWatch
         size = SIZE_TO_CONTENT
-        padding = [0, 5]
+        padding = const [0, 5]
         rendObj = ROBJ_TEXT
         color = baseColor
         fontSize = hudFontHgt * 1.2
@@ -118,7 +118,7 @@ let overload = @() {
 
 let rwr = @() {
   watch = IsTwsActivated
-  size = [ph(7), ph(7)]
+  size = ph(7)
   pos = [pw(38), ph(35)]
   children = IsTwsActivated.value ? [
     @() {
@@ -236,7 +236,7 @@ function compassWrap(width, height, generateFunc) {
 
 let CompassInt = Computed(@() ((360.0 + CompassValue.value + HmdYaw.value) % 360.0).tointeger())
 let compassVal = {
-  size = [pw(4), ph(3)]
+  size = const [pw(4), ph(3)]
   pos = [pw(48), ph(66)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -266,7 +266,7 @@ let AamCancel = Computed(@() TrackerX.value < sw(37) || TrackerX.value > sw(65) 
 function aamReticle(width, height) {
   return @() {
     watch = isAAMMode
-    size = [ph(1.2), ph(1.2)]
+    size = ph(1.2)
     children = isAAMMode.value ? [
       {
         size = flex()
@@ -303,7 +303,7 @@ let AimLockLimited = Computed(@() TargetX.value < sw(37) || TargetX.value > sw(6
 function ccrpReticle(width, height) {
   return @() {
     watch = TATargetVisible
-    size = [ph(2), ph(2)]
+    size = ph(2)
     children = TATargetVisible.value ? [
       {
         size = flex()
@@ -356,7 +356,7 @@ let launchZone = @(is_metric) function() {
   let maxDistWatched = is_metric ? MaxDistLaunchKm : MaxDistLaunch
   return {
     watch = IsLaunchZoneVisible
-    size = [pw(2), ph(15)]
+    size = const [pw(2), ph(15)]
     pos = [pw(60.1), ph(30)]
     children = IsLaunchZoneVisible.value ? [
       @(){
@@ -376,7 +376,7 @@ let launchZone = @(is_metric) function() {
           },
           {
             rendObj = ROBJ_VECTOR_CANVAS
-            size = [pw(30), ph(7)]
+            size = const [pw(30), ph(7)]
             color = baseColor
             lineWidth = baseLineWidth
             commands = [
@@ -387,7 +387,7 @@ let launchZone = @(is_metric) function() {
         ]
       },
       {
-        size = [pw(25), flex()]
+        size = const [pw(25), flex()]
         flow = FLOW_VERTICAL
         children = [
           @(){
@@ -457,7 +457,7 @@ function targetDir(width, height) {
     watch = isTargetDirVisible
     size = flex()
     children = isTargetDirVisible.value ? {
-      size = [pw(4), ph(4)]
+      size = const [pw(4), ph(4)]
       pos = [pw(50), ph(50)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = baseColor

@@ -101,7 +101,7 @@ let periscopeDepthInd = @(){
   size = SIZE_TO_CONTENT
   children = periscopeIndVisible.value ? [
     @() {
-      size = [hdpx(62), hdpx(39)]
+      size = const [hdpx(62), hdpx(39)]
       rendObj = ROBJ_IMAGE
       color = Color(255, 255, 255, 255)
       image = Picture($"ui/gameuiskin#hud_periscope.svg:{hdpx(62)}:{hdpx(39)}")
@@ -129,7 +129,7 @@ function ShipVertSpeed() {
 let shellAimGimbal = function(line_style, color_func) {
   let circle = @() line_style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [sh(14.0), sh(14.0)]
+    size = sh(14.0)
     color = color_func()
     fillColor = Color(0, 0, 0, 0)
     commands = [
@@ -152,7 +152,7 @@ let shellAimGimbal = function(line_style, color_func) {
 let shellAimTracker = function(line_style, color_func) {
   let circle = @() line_style.__merge({
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [sh(14.0), sh(14.0)]
+    size = sh(14.0)
     color = color_func()
     fillColor = Color(0, 0, 0, 0)
     commands = [
@@ -233,7 +233,7 @@ function ShipShellAimState() {
 
 let shipHud = @() {
   watch = safeAreaSizeHud
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   margin = safeAreaSizeHud.value.borders
   padding = [0, 0, hdpx(32) + fpx(6), 0]
   flow = FLOW_VERTICAL
@@ -261,7 +261,7 @@ let sensorsHud = {
 let aimHud = {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
-  size = [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
   children = [
     ShipShellAimState
   ]

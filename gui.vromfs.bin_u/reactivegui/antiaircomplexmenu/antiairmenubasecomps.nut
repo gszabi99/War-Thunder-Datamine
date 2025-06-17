@@ -1,7 +1,9 @@
 from "%rGui/globals/ui_library.nut" import *
 let hints = require("%rGui/hints/hints.nut")
-let { toggleShortcut } = require("%globalScripts/controls/shortcutActions.nut")
-let { antiAirMenuShortcutHeight } = require("%rGui/hints/shortcuts.nut")
+let { toggleShortcut, setShortcutOn, setShortcutOff
+} = require("%globalScripts/controls/shortcutActions.nut")
+let { antiAirMenuShortcutHeight, getShortcut } = require("%rGui/hints/shortcuts.nut")
+let { showConsoleButtons } = require("%rGui/ctrlsState.nut")
 
 let frameHeaderPadding = hdpx(8)
 let frameHeaderHeight = evenPx(32)
@@ -38,32 +40,81 @@ let mkFrame = @(content, headerText, ovr = {}) {
   ]
 }.__update(ovr)
 
-function mkShortcutButton(shortcutId, textComp) {
+let mkHint = @(shortcutId) hints(shortcutId.concat("{{", "}}"), { place = "antiAirMenu" })
+
+let isActive = @(sf) (sf & S_ACTIVE) != 0
+
+let getShortcutButtonColor = @(sf)
+  isActive(sf) ? 0x99020509
+    : (sf & S_HOVER) ? 0xFF3A474F
+    : 0
+
+function mkShortcutButtonContinued(shortcutId, textComp, hintComp = null, ovr = {}) {
+  let stateFlags = Watched(0)
+  hintComp = hintComp ?? mkHint(shortcutId)
+  return @() {
+    watch = stateFlags
+    size = [SIZE_TO_CONTENT, shortcutButtonHeight]
+    behavior = Behaviors.Button
+    rendObj = ROBJ_SOLID
+    color = getShortcutButtonColor(stateFlags.get())
+    function onElemState(sf) {
+      let prevSf = stateFlags.get()
+      stateFlags(sf)
+      let active = isActive(sf)
+      if (active != isActive(prevSf))
+        if (active)
+          setShortcutOn(shortcutId)
+        else
+          setShortcutOff(shortcutId)
+    }
+    onDetach = @() setShortcutOff(shortcutId)
+    valign = ALIGN_CENTER
+    flow = FLOW_HORIZONTAL
+    padding = shortcutButtonPadding
+    gap = shortcutButtonGap
+    children = [
+      hintComp
+      textComp
+    ]
+  }.__update(ovr)
+}
+
+function mkShortcutButton(shortcutId, textComp, hintComp = null, ovr = {}) {
+  hintComp = hintComp ?? mkHint(shortcutId)
   return watchElemState(@(sf) {
     size = [SIZE_TO_CONTENT, shortcutButtonHeight]
     behavior = Behaviors.Button
     rendObj = ROBJ_SOLID
-    color = (sf & S_ACTIVE) ? 0x99020509
-      : (sf & S_HOVER) ? 0xFF3A474F
-      : 0
+    color = getShortcutButtonColor(sf)
     onClick = @() toggleShortcut(shortcutId)
     valign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     padding = shortcutButtonPadding
     gap = shortcutButtonGap
     children = [
-      hints(shortcutId.concat("{{", "}}"), { place = "antiAirMenu" })
+      hintComp
       textComp
     ]
-  })
+  }.__update(ovr))
 }
 
 let mkShortcutText = @(text) mkText({ color = 0x99999999, font = Fonts.very_tiny_text_hud, text })
 
+let fireButtonShortcutHint = @() {
+  watch = showConsoleButtons
+  children = showConsoleButtons.get() ? null
+    : getShortcut(
+        { inputName = "inputImage", buttonImage = "ui/gameuiskin#mouse_right" },
+        { place = "antiAirMenu" })
+}
+
 return {
   mkFrame
   mkShortcutButton
+  mkShortcutButtonContinued
   mkShortcutText
   shortcutButtonPadding
   frameHeaderHeight
+  fireButtonShortcutHint
 }

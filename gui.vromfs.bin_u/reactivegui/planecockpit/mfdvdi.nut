@@ -26,7 +26,7 @@ local airSymbol = @() {
 
 let generateCompassMark = function(num, _elemWidth, _font) {
   return {
-    size = [pw(7.5), ph(100)]
+    size = const [pw(7.5), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -56,7 +56,7 @@ let compass = function(width, height) {
     children = [
       compassWrap(width, height * 0.5, 0.1, generateCompassMark, 1.2, 5.0, false, 7.5),
       {
-        size = [pw(1), ph(2)]
+        size = const [pw(1), ph(2)]
         pos = [pw(50), ph(3)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = VdiColor.value
@@ -73,11 +73,11 @@ let compass = function(width, height) {
 function generatePitchLine(num, width) {
   let sign = num > 0 ? 1 : -1
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     children = num == 0 ?
     [
       {
-        size = [pw(400), ph(10)]
+        size = const [pw(400), ph(10)]
         pos = [pw(-150), 0]
         rendObj = ROBJ_SOLID
         lineWidth = baseLineWidth

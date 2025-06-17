@@ -63,7 +63,7 @@ function createRwrTarget(index, settings, objectStyle) {
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = baseLineWidth * 2 * objectStyle.lineWidthScale
       fillColor = 0
-      size = [pw(100), ph(100)]
+      size = const [pw(100), ph(100)]
       commands = [
         [ VECTOR_POLY,
           (target.x * targetRadiusRel - targetAttackIconSizeRel) * 100.0,
@@ -155,7 +155,7 @@ function createRwrTarget(index, settings, objectStyle) {
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 2 * objectStyle.lineWidthScale
     fillColor = backgroundColor
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     commands = commands
   }
 

@@ -16,7 +16,7 @@ let OverloadWatch = Computed(@() (floor(Overload.value * 10)).tointeger())
 
 let generateSpdMarkJ8 = function(num) {
   return {
-    size = [pw(100), ph(7.5)]
+    size = const [pw(100), ph(7.5)]
     pos = [pw(40), 0]
     children = [
       (num % 5 > 0 ? null :
@@ -53,7 +53,7 @@ function J8Speed(height, generateFunc) {
 
   let getOffset = @() ((2500 - Speed.value * mpsToKmh) * 0.007425 - 0.5) * height
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -178,7 +178,7 @@ function generatePitchLineJ8(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = [pw(60), ph(50)]
+    size = const [pw(60), ph(50)]
     pos = [pw(20), 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -188,7 +188,7 @@ function generatePitchLineJ8(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.value
         color = IlsColor.value
-        padding = [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, -20, 0, 30, 0],
           [VECTOR_LINE, 70, 0, 120, 0]
@@ -221,7 +221,7 @@ function generatePitchLineJ8(num) {
 
 let generateAltMarkJ8 = function(num) {
   return {
-    size = [pw(100), ph(7.5)]
+    size = const [pw(100), ph(7.5)]
     flow = FLOW_HORIZONTAL
     children = [
       @() {
@@ -289,7 +289,7 @@ let J8AirAimMark = {
   children =
     @() {
       watch = IlsColor
-      size = [pw(4), ph(3)]
+      size = const [pw(4), ph(3)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       lineWidth = baseLineWidth * IlsLineScale.value
@@ -317,7 +317,7 @@ function radarTarget(width, height) {
     children = RadarTargetPosValid.value ?
       @() {
         watch = IlsColor
-        size = [pw(8), ph(8)]
+        size = const [pw(8), ph(8)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)
@@ -355,7 +355,7 @@ let J8AamMode = @() {
   children = [
     @() {
       watch = IlsColor
-      size = [pw(10), ph(10)]
+      size = const [pw(10), ph(10)]
       pos = [pw(50), ph(50)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -368,7 +368,7 @@ let J8AamMode = @() {
     (GuidanceLockState.value == GuidanceLockResult.RESULT_TRACKING ?
     @() {
       watch = IlsColor
-      size = [pw(5), ph(5)]
+      size = const [pw(5), ph(5)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)

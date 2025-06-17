@@ -34,7 +34,7 @@ function defTab(tab_item, is_current, handler) {
 
       children = {
         rendObj = ROBJ_TEXT
-        margin = [sh(1), sh(2)]
+        margin = const [sh(1), sh(2)]
         color = textColor
 
         text = tab_item.text
@@ -48,9 +48,9 @@ function defTab(tab_item, is_current, handler) {
 function defHolder(_params) {
   return {
     rendObj = ROBJ_SOLID
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_HORIZONTAL
-    padding = [0, sh(1)]
+    padding = const [0, sh(1)]
     gap = sh(1)
 
     color = Color(255, 255, 255)

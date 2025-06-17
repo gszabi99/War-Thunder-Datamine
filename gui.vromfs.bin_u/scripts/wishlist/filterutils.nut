@@ -6,7 +6,8 @@ let { canBuyNotResearched, isUnitResearched } = require("%scripts/unit/unitStatu
 let { get_balance } = require("%scripts/user/balance.nut")
 let { getUnitCost } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit, isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { isAvailableBuyUnitOnline, isAvailableBuyUnitOnMarketPlace } = require("%scripts/unit/availabilityBuyOnline.nut")
+let { canBuyUnitOnline, isAvailableBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
+let { canBuyUnitOnMarketplace, isAvailableBuyUnitOnMarketPlace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 let { isUnlockOpened } = require("%scripts/unlocks/unlocksModule.nut")
 let { getUnitDiscount } = require("%scripts/discounts/discountsState.nut")
 
@@ -16,9 +17,9 @@ function getUnitBuyTypes(unit, isFriendWishList = false) {
     res.append("squadron")
   if(isUnitSpecial(unit))
     res.append("premium")
-  if(isFriendWishList ? isAvailableBuyUnitOnline(unit) : ::canBuyUnitOnline(unit))
+  if(isFriendWishList ? isAvailableBuyUnitOnline(unit) : canBuyUnitOnline(unit))
     res.append("shop")
-  if(isFriendWishList ? isAvailableBuyUnitOnMarketPlace(unit) : ::canBuyUnitOnMarketplace(unit))
+  if(isFriendWishList ? isAvailableBuyUnitOnMarketPlace(unit) : canBuyUnitOnMarketplace(unit))
     res.append("marketPlace")
 
 

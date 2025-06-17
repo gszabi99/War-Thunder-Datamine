@@ -44,12 +44,12 @@ let radarPosComputed = Computed(@() isPlayingReplay.value ? [bw.value + sw(12), 
 let tankXrayIndicator = @() {
   rendObj = ROBJ_XRAYDOLL
   rotateWithCamera = true
-  size = [pw(62), ph(62)]
+  size = const [pw(62), ph(62)]
 }
 
 let xraydoll = {
   rendObj = ROBJ_XRAYDOLL     
-  size = [1, 1]
+  size = 1
 }
 
 function tankDmgIndicator() {
@@ -104,7 +104,7 @@ function tankDmgIndicator() {
 let leftPanelGap = hdpx(10)
 
 let leftPanel = @() {
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   watch = [safeAreaSizeHud, isSpectatorMode, isAAComplexMenuActive,
     needShowDmgIndicator, dmgIndicatorStates]
   margin = [safeAreaSizeHud.get().borders[0], 0,
@@ -138,7 +138,7 @@ function Root() {
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
     watch = [IndicatorsVisible, isBScope, isAAComplexMenuActive]
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     children = isAAComplexMenuActive.get() ?
     [
       aaComplexMenu
@@ -153,7 +153,7 @@ function Root() {
         children = needRadarCollapsedIcon.value ? @(){
             watch = isPlayingReplay
             pos = [radarPosComputed.value[0] + sw(10), radarPosComputed.value[1] + (isPlayingReplay.value ? sh(5) : 0) ]
-            size = [sh(5), sh(5)]
+            size = sh(5)
             rendObj = ROBJ_IMAGE
             image = radarPic
             color = radarColor.value

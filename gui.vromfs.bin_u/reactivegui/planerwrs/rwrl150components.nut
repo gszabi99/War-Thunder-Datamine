@@ -151,7 +151,7 @@ function createRwrTarget(index, settingsIn, objectStyle, radius) {
     color = iconColor
     fontSize = objectStyle.fontScale * styleText.fontSize * targetTypeFontSizeMult * targetSizeMult
     text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
-    padding = [2, 2]
+    padding = 2
   })
   let targetTypeTextSize = calc_comp_size(targetTypeText)
   local targetType = @() {

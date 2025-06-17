@@ -132,7 +132,7 @@ function createRwrTarget(index, settingsIn, objectStyle) {
     size = SIZE_TO_CONTENT
     fontSize = styleText.fontSize * objectStyle.fontScale * newTargetFontSizeMultRwr.get()
     text = directionGroup != null ? directionGroup.text : settingsIn.unknownText
-    padding = [2, 2]
+    padding = 2
   })
   let targetTypeTextSize = calc_comp_size(targetTypeText)
   local targetType = @() {
@@ -275,12 +275,12 @@ function scope(scale, style) {
       createOuterGrid(style.grid),
       {
         pos = [pw(5), ph(5)],
-        size = [pw(90), ph(90)],
+        size = const [pw(90), ph(90)],
         children = [
           createCompass(style.grid),
           {
             pos = [pw(5), ph(5)],
-            size = [pw(90), ph(90)],
+            size = const [pw(90), ph(90)],
             children = [
               createInnerGrid(style.grid),
               rwrTargetsComponent(style.object)

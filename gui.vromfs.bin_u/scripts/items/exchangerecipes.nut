@@ -17,7 +17,7 @@ let startCraftWnd = require("%scripts/items/workshop/startCraftWnd.nut")
 let { getUserstatItemRewardData, userstatItemsListLocId
 } = require("%scripts/userstat/userstatItemsRewards.nut")
 let { autoConsumeItems } = require("%scripts/items/autoConsumeItems.nut")
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
+let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
 let { showExternalTrophyRewardWnd } = require("%scripts/items/showExternalTrophyRewardWnd.nut")
 let { get_cur_base_gui_handler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let chooseAmountWnd = require("%scripts/wndLib/chooseAmountWnd.nut")

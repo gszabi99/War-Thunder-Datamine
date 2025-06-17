@@ -73,6 +73,7 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   wndType          = handlerType.CUSTOM
   sceneBlkName     = "%gui/profile/achievementsPage.blk"
 
+  parent = null
   openParams = null
   treeHandlerWeak = null
   achievementsCache = null
@@ -231,8 +232,8 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
   function onFilterCancel(filterObj) {
     if (filterObj.getValue() != "")
       filterObj.setValue("")
-    else
-      this.guiScene.performDelayed(this, this.goBack)
+    else if (this.parent != null)
+      this.guiScene.performDelayed(this.parent, this.parent.goBack)
   }
 
   function updateAchievementsTree() {
@@ -414,8 +415,8 @@ local AchievementsHandler = class (gui_handlers.BaseGuiHandlerWT) {
       return
 
     broadcastEvent("ShowUnitInShop", { unitName })
-    let handler = this
-    defer(@() handler.goBack())
+    let handler = this.parent
+    defer(@() handler?.goBack())
   }
 
   function findGroupName(id) {

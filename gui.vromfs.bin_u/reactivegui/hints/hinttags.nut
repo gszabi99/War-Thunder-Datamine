@@ -7,7 +7,7 @@ let hintTags = {
   shortcut = getShortcut
   text = function(config, override) {
     return {
-      size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+      size = SIZE_TO_CONTENT
       flow = FLOW_HORIZONTAL
       children = config.text.map(@(text) {
         rendObj = ROBJ_TEXT
@@ -30,7 +30,7 @@ let getSlice = function(slice, override) {
 
 let getHintBySlices = function(slices, override) {
   return {
-    size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+    size = SIZE_TO_CONTENT
     flow = FLOW_HORIZONTAL
     valign = ALIGN_CENTER
 

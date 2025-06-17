@@ -4,10 +4,7 @@ let inventoryClient = require("%scripts/inventory/inventoryClient.nut")
 let { openUrl } = require("%scripts/onlineShop/url.nut")
 let { showGuestEmailRegistration, needShowGuestEmailRegistration
 } = require("%scripts/user/suggestionEmailRegistration.nut")
-
-
-let isMarketplaceEnabled = @() hasFeature("Marketplace")
-  && hasFeature("AllowExternalLink") && inventoryClient.getMarketplaceBaseUrl() != null
+let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
 
 function goToMarketplace() {
   if (!isMarketplaceEnabled())
@@ -22,6 +19,5 @@ function goToMarketplace() {
 }
 
 return {
-  isMarketplaceEnabled     = isMarketplaceEnabled
-  goToMarketplace          = goToMarketplace
+  goToMarketplace
 }

@@ -34,7 +34,7 @@ let shortcutText = @() {
   rendObj = ROBJ_TEXT
   font = fontsState.get("tiny")
   color = Color(190, 165, 75)
-  padding = [0, hdpx(4), 0, 0]
+  padding = const [0, hdpx(4), 0, 0]
   text = actionBarCollapseShText.get()
 }
 
@@ -64,7 +64,7 @@ let hintText = {
 let hintTextContainer = {
   halign = ALIGN_RIGHT
   pos = [0, ph(-100)]
-  size = [0, 0]
+  size = 0
   children = hintText
 }
 
@@ -114,7 +114,7 @@ function actionBarTopPanel() {
     size = [panelWidth.get(), panelHeight]
     halign = ALIGN_CENTER
     valign = ALIGN_BOTTOM
-    padding = [0, hdpx(6)]
+    padding = const [0, hdpx(6)]
 
     transform = { translate = [0, panelY.get()] }
     transitions = [{

@@ -11,7 +11,7 @@ let { eventbus_send } = require("eventbus")
 
 let xraydoll = {
   rendObj = ROBJ_XRAYDOLL
-  size = [1, 1]
+  size = 1
 }
 
 let xrayIndicator = @() {
@@ -47,7 +47,7 @@ let logsComp = {
 
 let panel = @() {
   watch = [safeAreaSizeHud, missionProgressHeight, isSpectatorMode]
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   padding = [0, 0, missionProgressHeight.value, 0]
   margin = safeAreaSizeHud.value.borders
   flow = FLOW_VERTICAL

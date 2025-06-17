@@ -45,6 +45,8 @@ let { getUnlockNameText } = require("%scripts/unlocks/unlocksViewModule.nut")
 let { get_units_count_at_rank } = require("%scripts/shop/shopCountryInfo.nut")
 let { get_unit_preset_img } = require("%scripts/options/optionsExt.nut")
 let { getUnitDiscount, getGroupDiscount } = require("%scripts/discounts/discountsState.nut")
+let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 let setBool = @(obj, prop, val) obj[prop] = val ? "yes" : "no"
 let {expNewNationBonusDailyBattleCount = 1} = get_ranks_blk()
@@ -416,7 +418,7 @@ let getUnitStatusTbl = function(unit, params) {
     isInactive          = (bit_unit_status.disabled & bitStatus) != 0
       || (shopResearchMode && (bit_unit_status.locked & bitStatus) != 0)
     isBroken            = isUnitBroken(unit)
-    isLocked            = !isUsable && !isSpecial && !unit.isSquadronVehicle() && !::canBuyUnitOnMarketplace(unit)
+    isLocked            = !isUsable && !isSpecial && !unit.isSquadronVehicle() && !canBuyUnitOnMarketplace(unit)
       && !isUnitsEraUnlocked(unit) && !unit.isCrossPromo
     needInService       = isUsable
     isMounted           = isUsable && isUnitInSlotbar(unit)
@@ -561,7 +563,7 @@ function getGroupStatusTbl(group, params) {
       researchingUnit = unit
       isGroupInResearch = isInResearch
     }
-    else if (!isUsable && !firstUnboughtUnit && (canBuyUnit(unit) || ::canBuyUnitOnline(unit)))
+    else if (!isUsable && !firstUnboughtUnit && (canBuyUnit(unit) || canBuyUnitOnline(unit)))
       firstUnboughtUnit = unit
 
     if (isUsable) {

@@ -31,7 +31,7 @@ let acceleration = @() {
   watch = IlsColor
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
-  size = [pw(10), ph(3.5)]
+  size = const [pw(10), ph(3.5)]
   pos = [pw(8), ph(21)]
   color = IlsColor.value
   commands = [
@@ -44,7 +44,7 @@ let acceleration = @() {
     watch = AccelWatch
     rendObj = ROBJ_VECTOR_CANVAS
     lineWidth = baseLineWidth * 0.8 * IlsLineScale.value
-    size = [pw(24), ph(66)]
+    size = const [pw(24), ph(66)]
     pos = AccelWatch.value ? [pw(98), ph(5)] : [0, ph(100)]
     color = IlsColor.value
     commands = [
@@ -94,7 +94,7 @@ let altitude = @() {
 
 let airSymbol = @() {
   watch = IlsColor
-  size = [pw(70), ph(70)]
+  size = const [pw(70), ph(70)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.value
   color = IlsColor.value
@@ -113,7 +113,7 @@ let airSymbol = @() {
 
 let rollIndicator = @() {
   watch = IlsColor
-  size = [pw(18), ph(18)]
+  size = const [pw(18), ph(18)]
   pos = [pw(50), ph(30)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.value
@@ -142,7 +142,7 @@ let rollIndicator = @() {
 let climbSpeedVal = Computed(@() ClimbSpeed.value.tointeger())
 let climb = @(){
   watch = IlsColor
-  size = [ph(20), ph(20)]
+  size = ph(20)
   rendObj = ROBJ_VECTOR_CANVAS
   pos = [pw(75), ph(20)]
   color = IlsColor.value
@@ -185,13 +185,13 @@ let climb = @(){
     },
     @(){
       watch = climbSpeedVal
-      size = [pw(40), ph(20)]
+      size = const [pw(40), ph(20)]
       pos = [pw(50), ph(40)]
       rendObj = ROBJ_TEXT
       color = IlsColor.value
       halign = ALIGN_RIGHT
       valign = ALIGN_CENTER
-      padding = [0, 10]
+      padding = const [0, 10]
       fontSize = 35
       font = Fonts.ils31
       text = climbSpeedVal.value.tostring()
@@ -202,7 +202,7 @@ let climb = @(){
 function generatePitchLine(num) {
   let sign = num < 0 ? -1 : 1
   return {
-    size = [pw(12), ph(30)]
+    size = const [pw(12), ph(30)]
     pos = [pw(12), 0]
     children = [
       @() {
@@ -217,12 +217,12 @@ function generatePitchLine(num) {
         ]
       },
       @() {
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         pos = [0, ph(-40)]
         watch = IlsColor
         rendObj = ROBJ_TEXT
         halign = ALIGN_RIGHT
-        padding = [0, 2]
+        padding = const [0, 2]
         color = IlsColor.value
         fontSize = 35
         font = Fonts.ils31
@@ -257,7 +257,7 @@ function pitch(width, height, generateFunc) {
 
 function pitchWrap(width, height) {
   return @() {
-    size = [pw(60), ph(30)]
+    size = const [pw(60), ph(30)]
     pos = [pw(20), ph(18)]
     clipChildren  = true
     children = [
@@ -298,7 +298,7 @@ let reticle = @(){
   size = flex()
   children = !IlsTrackerVisible.value ? @(){
     watch = IlsColor
-    size = [ph(5), ph(5)]
+    size = ph(5)
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
     fillColor = Color(0, 0, 0, 0)
@@ -335,7 +335,7 @@ let reticle = @(){
         },
         @(){
           watch = distValue
-          size = [pw(200), SIZE_TO_CONTENT]
+          size = const [pw(200), SIZE_TO_CONTENT]
           pos = [pw(-100), ph(-180)]
           rendObj = ROBJ_TEXT
           color = IlsColor.value
@@ -367,7 +367,7 @@ let cancel = @(){
   children = cancelVisible.value ? {
     rendObj = ROBJ_VECTOR_CANVAS
     pos = [pw(35), ph(45)]
-    size = [pw(30), ph(30)]
+    size = const [pw(30), ph(30)]
     color = IlsColor.value
     lineWidth = baseLineWidth * IlsLineScale.value
     commands = [
@@ -382,7 +382,7 @@ let distToTargetMarkPos = Computed(@() BombingMode.value ? clamp(100.0 - TimeBef
 let distToTargetMark = @(){
   watch = distToTargetMarkPos
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(70), ph(3)]
+  size = const [pw(70), ph(3)]
   pos = [pw(30), ph(distToTargetMarkPos.value)]
   color = IlsColor.value
   fillColor = Color(0, 0, 0, 0)
@@ -398,7 +398,7 @@ let distGrid = @(){
   children = !IlsTrackerVisible.value && (CCIPMode.value || BombingMode.value) ? @(){
     watch = BombingMode
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [pw(5), ph(30)]
+    size = const [pw(5), ph(30)]
     pos = [pw(20), ph(50)]
     color = IlsColor.value
     lineWidth = baseLineWidth * IlsLineScale.value
@@ -489,7 +489,7 @@ let mode = @(){
 
 let fuel = @(){
   watch = IlsColor
-  size = [pw(9), ph(4)]
+  size = const [pw(9), ph(4)]
   pos = [pw(8), ph(86)]
   color = IlsColor.value
   fillColor = Color(0, 0, 0, 0)
@@ -501,7 +501,7 @@ let fuel = @(){
     rendObj = ROBJ_TEXT
     halign = ALIGN_RIGHT
     valign = ALIGN_CENTER
-    padding = [0, 5]
+    padding = const [0, 5]
     color = IlsColor.value
     font = Fonts.ils31
     fontSize = 35
@@ -528,7 +528,7 @@ let aimLock = @(){
   watch = AimLockValid
   size = flex()
   children = AimLockValid.value ? {
-    size = [pw(5), ph(5)]
+    size = const [pw(5), ph(5)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
     fillColor = Color(0, 0, 0, 0)
@@ -550,7 +550,7 @@ let aimLockX = @(){
   watch = BombingMode
   size = flex()
   children = BombingMode.value ? {
-    size = [pw(2), ph(2)]
+    size = const [pw(2), ph(2)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
     fillColor = Color(0, 0, 0, 0)
@@ -610,7 +610,7 @@ function getWeaponSlotNumber(weaponSlotsV, weaponSlotActiveV) {
 
 let connectors = @() {
   watch = [WeaponSlots, IlsColor, IlsLineScale]
-  size = [pw(24), ph(3)]
+  size = const [pw(24), ph(3)]
   pos = [pw(50 - 12 * getWeaponSlotCnt(WeaponSlots.get()) / 7), ph(86)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -631,7 +631,7 @@ let rangefinder = @(){
   size = flex()
   children = rangefinderVisible.value ? {
     rendObj = ROBJ_VECTOR_CANVAS
-    size = [ph(5), ph(5)]
+    size = ph(5)
     pos = [pw(8), ph(45)]
     color = IlsColor.value
     fillColor = Color(0, 0, 0, 0)
@@ -676,7 +676,7 @@ let aamReticle = @() {
   [
     @() {
       watch = IlsColor
-      size = [pw(10), ph(10)]
+      size = const [pw(10), ph(10)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)

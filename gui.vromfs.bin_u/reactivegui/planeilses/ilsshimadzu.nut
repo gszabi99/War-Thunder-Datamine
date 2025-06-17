@@ -15,7 +15,7 @@ let CCIPMode = Computed(@() RocketMode.value || CannonMode.value || BombCCIPMode
 let generateSpdMarkShimadzu = function(num) {
   let ofs = num == 0 ? pw(-20) : (num < 100 ? pw(-30) : pw(-40))
   return {
-    size = [pw(100), ph(7.5)]
+    size = const [pw(100), ph(7.5)]
     pos = [pw(40), 0]
     children = [
       (num % 50 > 0 ? null :
@@ -52,7 +52,7 @@ function ShimadzuSpeed(height, generateFunc) {
 
   let getOffset = @() (Speed.value * mpsToKnots * 0.0075 - 0.5) * height
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -88,7 +88,7 @@ function ShimadzuSpeedWrap(width, height, generateFunc) {
 
 let generateAltMarkShimadzu = function(num) {
   return {
-    size = [pw(100), ph(7.5)]
+    size = const [pw(100), ph(7.5)]
     pos = [pw(15), 0]
     flow = FLOW_HORIZONTAL
     children = [
@@ -164,7 +164,7 @@ function generatePitchLineShim(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num >= 0 ? num : (num - 5)
   return {
-    size = [pw(100), ph(50)]
+    size = const [pw(100), ph(50)]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
       @() {
@@ -173,7 +173,7 @@ function generatePitchLineShim(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.value
         color = IlsColor.value
-        padding = [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, 0, 0, 34, 0],
           [VECTOR_LINE, 66, 0, 100, 0]
@@ -188,7 +188,7 @@ function generatePitchLineShim(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.value
         color = IlsColor.value
-        padding = [10, 10]
+        padding = 10
         commands = [
           [VECTOR_LINE, 0, 5 * sign, 0, 0],
           [VECTOR_LINE, 0, 0, num > 0 ? 34 : 7, 0],
@@ -208,7 +208,7 @@ function generatePitchLineShim(num) {
 function f16CcipMark(width, height) {
   return @() {
     watch = [IlsColor, TargetPosValid]
-    size = [pw(3), ph(3)]
+    size = const [pw(3), ph(3)]
     color = IlsColor.value
     lineWidth = baseLineWidth * IlsLineScale.value
     rendObj = ROBJ_VECTOR_CANVAS
@@ -249,7 +249,7 @@ function f16CcrpMark(_width, height) {
       },
       @() {
         watch = IlsColor
-        size = [pw(3), ph(3)]
+        size = const [pw(3), ph(3)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         lineWidth = baseLineWidth * IlsLineScale.value
@@ -299,7 +299,7 @@ function ShimadzuIls(width, height) {
       compassWrap(width, height, 0.85, generateCompassMarkShim, 1.0, 2.0),
       @() {
         watch = IlsColor
-        size = [pw(2), ph(3)]
+        size = const [pw(2), ph(3)]
         pos = [pw(50), ph(92)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -311,7 +311,7 @@ function ShimadzuIls(width, height) {
       },
       @() {
         watch = IlsColor
-        size = [pw(2), ph(10)]
+        size = const [pw(2), ph(10)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         lineWidth = baseLineWidth * IlsLineScale.value

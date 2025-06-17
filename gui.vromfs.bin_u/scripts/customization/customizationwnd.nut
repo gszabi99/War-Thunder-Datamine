@@ -88,6 +88,8 @@ let { addDelayedAction } = require("%scripts/utils/delayedActions.nut")
 let { updateGamercards } = require("%scripts/gamercard/gamercard.nut")
 let { checkPackageAndAskDownload } = require("%scripts/clientState/contentPacks.nut")
 let { canJoinFlightMsgBox } = require("%scripts/squads/squadUtils.nut")
+let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 let dmViewer = require("%scripts/dmViewer/dmViewer.nut")
 
@@ -830,11 +832,11 @@ gui_handlers.DecalMenuHandler <- class (gui_handlers.BaseGuiHandlerWT) {
 
   function updateButtons(decoratorType = null, needUpdateSlotDivs = true) {
     let isGift = isUnitGift(this.unit)
-    local canBuyOnline = ::canBuyUnitOnline(this.unit)
+    local canBuyOnline = canBuyUnitOnline(this.unit)
     let canBuyNotResearchedUnit = canBuyNotResearched(this.unit)
     let canBuyIngame = !canBuyOnline && (canBuyUnit(this.unit) || canBuyNotResearchedUnit)
     let canUseCoupon = hasUnitCoupon(this.unit.name) && !this.unit.isBought()
-    let canFindUnitOnMarketplace = !canUseCoupon && !canBuyOnline && !canBuyIngame && ::canBuyUnitOnMarketplace(this.unit)
+    let canFindUnitOnMarketplace = !canUseCoupon && !canBuyOnline && !canBuyIngame && canBuyUnitOnMarketplace(this.unit)
 
     if (isGift && canUseIngameShop() && getShopItemsTable().len() == 0) {
       

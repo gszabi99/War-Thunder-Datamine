@@ -143,7 +143,7 @@ def draw(var ctx : GuiContext&; rdata : ElemRenderData& const; rstate : RenderSt
       var width = 0.
       var height = 0.
 
-      let rktName = loc("weapons/{shell.name}/short")
+      let rktName = does_loc_text_exist(shell.name) ? loc(shell.name) : loc("weapons/{shell.name}/short")
       let rktNameBox = get_str_bbox(rktName, rktName |> length(), fctx)
       width = max(width, rktNameBox.width.x + padding * 2.)
       height += rktNameBox.width.y + padding * 2.

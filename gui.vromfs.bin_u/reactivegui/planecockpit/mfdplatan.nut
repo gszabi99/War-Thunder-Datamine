@@ -42,7 +42,7 @@ let crosshair = @(){
       [VECTOR_LINE, 50, 53, 50, 100]
     ]
   } : {
-    size = [pw(14), ph(10)]
+    size = const [pw(14), ph(10)]
     pos = [pw(43), ph(45)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = whiteColor
@@ -67,7 +67,7 @@ let crosshair = @(){
 let TurretYawMarkPos = Computed(@() (TurretYaw.get() * 100.0).tointeger())
 let turretYaw = {
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(20), ph(3)]
+  size = const [pw(20), ph(3)]
   pos = [pw(40), ph(10)]
   color = baseColor
   lineWidth = baseLineWidth
@@ -93,7 +93,7 @@ let turretYaw = {
 let TurretPitchMarkPos = Computed(@() 5 + cvt(-160.0 + TurretPitch.get() * 160.0, 0, -160, 0, 95).tointeger())
 let turretPitch = {
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(3), ph(40)]
+  size = const [pw(3), ph(40)]
   pos = [pw(90), ph(48)]
   color = baseColor
   lineWidth = baseLineWidth
@@ -118,7 +118,7 @@ let turretPitch = {
 
 let DistToTarget = Computed(@() AimLockDist.get() < 20000.0 ? cvt(AimLockDist.get(), 0.0, 20000.0, 100, 28.57).tointeger() : cvt(AimLockDist.get(), 20000, 40000.0, 28.57, 0).tointeger())
 let targetDistance = {
-  size = [pw(1.5), ph(50)]
+  size = const [pw(1.5), ph(50)]
   pos = [pw(10), ph(25)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = baseColor
@@ -143,7 +143,7 @@ let targetDistance = {
   ]
   children = [
     {
-      size = [pw(300), SIZE_TO_CONTENT]
+      size = const [pw(300), SIZE_TO_CONTENT]
       pos = [pw(-320), -baseFontSize * 0.5]
       rendObj = ROBJ_TEXT
       color = baseColor
@@ -156,7 +156,7 @@ let targetDistance = {
       halign = ALIGN_RIGHT
     }
     {
-      size = [pw(300), SIZE_TO_CONTENT]
+      size = const [pw(300), SIZE_TO_CONTENT]
       pos = [pw(-320), ph(12)]
       rendObj = ROBJ_TEXT
       color = baseColor
@@ -169,7 +169,7 @@ let targetDistance = {
       halign = ALIGN_RIGHT
     }
     {
-      size = [pw(300), SIZE_TO_CONTENT]
+      size = const [pw(300), SIZE_TO_CONTENT]
       pos = [pw(-320), ph(26)]
       rendObj = ROBJ_TEXT
       color = baseColor
@@ -182,7 +182,7 @@ let targetDistance = {
       halign = ALIGN_RIGHT
     }
     {
-      size = [pw(300), SIZE_TO_CONTENT]
+      size = const [pw(300), SIZE_TO_CONTENT]
       pos = [pw(-320), ph(40)]
       rendObj = ROBJ_TEXT
       color = baseColor
@@ -195,7 +195,7 @@ let targetDistance = {
       halign = ALIGN_RIGHT
     }
     {
-      size = [pw(300), SIZE_TO_CONTENT]
+      size = const [pw(300), SIZE_TO_CONTENT]
       pos = [pw(-320), ph(55)]
       rendObj = ROBJ_TEXT
       color = baseColor
@@ -208,7 +208,7 @@ let targetDistance = {
       halign = ALIGN_RIGHT
     }
     {
-      size = [pw(300), SIZE_TO_CONTENT]
+      size = const [pw(300), SIZE_TO_CONTENT]
       pos = [pw(-320), ph(69)]
       rendObj = ROBJ_TEXT
       color = baseColor
@@ -221,7 +221,7 @@ let targetDistance = {
       halign = ALIGN_RIGHT
     }
     {
-      size = [pw(300), SIZE_TO_CONTENT]
+      size = const [pw(300), SIZE_TO_CONTENT]
       pos = [pw(-320), ph(83)]
       rendObj = ROBJ_TEXT
       color = baseColor
@@ -234,7 +234,7 @@ let targetDistance = {
       halign = ALIGN_RIGHT
     }
     {
-      size = [pw(300), SIZE_TO_CONTENT]
+      size = const [pw(300), SIZE_TO_CONTENT]
       pos = [pw(-320), ph(97)]
       rendObj = ROBJ_TEXT
       color = baseColor
@@ -248,7 +248,7 @@ let targetDistance = {
     }
     @(){
       watch = DistToTarget
-      size = [pw(300), ph(3)]
+      size = const [pw(300), ph(3)]
       pos = [pw(100), ph(DistToTarget.get())]
       rendObj = ROBJ_VECTOR_CANVAS
       color = baseColor
@@ -297,7 +297,7 @@ let labels = {
     {
       rendObj = ROBJ_FRAME
       color = baseColor
-      size = [pw(3), ph(10)]
+      size = const [pw(3), ph(10)]
       pos = [2, ph(22)]
       borderWidth = 2
     }
@@ -403,7 +403,7 @@ let labels = {
       children = AimLockValid.get() ? {
         rendObj = ROBJ_FRAME
         color = baseColor
-        size = [pw(3), ph(13)]
+        size = const [pw(3), ph(13)]
         pos = [pw(96.5), ph(46)]
         borderWidth = 2
       } : null
@@ -518,7 +518,7 @@ let timerSector = Computed(@() cvt(TimeBeforeBombRelease.get(), 0.0, 60.0, -90.0
 let ccrpVisible = Computed(@() BombingMode.get() && TimeBeforeBombRelease.get() > 0.0)
 let timerCCRP = @(){
   watch = ccrpVisible
-  size = [pw(5), ph(5)]
+  size = const [pw(5), ph(5)]
   pos = [pw(10), ph(90)]
   children = ccrpVisible.get() ? @(){
     watch = timerSector
@@ -534,7 +534,7 @@ let timerCCRP = @(){
     children = @(){
       watch = timerValue
       rendObj = ROBJ_TEXT
-      size = [pw(200), ph(200)]
+      size = const [pw(200), ph(200)]
       pos = [pw(-100), ph(-100)]
       color = baseColor
       font = Fonts.ils31

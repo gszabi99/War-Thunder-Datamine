@@ -17,7 +17,7 @@ let SUMAoaMarkH = Computed(@() cvt(Aoa.value, -5, 20, 100, 0).tointeger())
 let SUMAoa = @() {
   watch = [SUMAoaMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(3), ph(40)]
+  size = const [pw(3), ph(40)]
   pos = [pw(15), ph(30)]
   color = IlsColor.value
   lineWidth = baseLineWidth * 3 * IlsLineScale.value
@@ -38,7 +38,7 @@ let SUMVSMarkH = Computed(@() cvt(ClimbSpeed.value * mpsToFpm, 1000, -2000, 0, 1
 let SUMVerticalSpeed = @() {
   watch = [SUMVSMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(3), ph(40)]
+  size = const [pw(3), ph(40)]
   pos = [pw(85), ph(30)]
   color = IlsColor.value
   lineWidth = baseLineWidth * 3 * IlsLineScale.value
@@ -59,7 +59,7 @@ let SUMVerticalSpeed = @() {
 
 let flyDirectionSUM = @() {
   watch = IlsColor
-  size = [pw(10), ph(10)]
+  size = const [pw(10), ph(10)]
   pos = [pw(50), ph(40)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -88,7 +88,7 @@ function generatePitchLineSum(num) {
   let sign = num > 0 ? 1 : -1
   let newNum = num < 0 ? (num / -10) : ((num - 30) / 10)
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
       @() {
@@ -97,7 +97,7 @@ function generatePitchLineSum(num) {
         rendObj = ROBJ_VECTOR_CANVAS
         lineWidth = baseLineWidth * IlsLineScale.value
         color = IlsColor.value
-        padding = [0, 10]
+        padding = const [0, 10]
         commands = [
           [VECTOR_LINE, 0, 0, 35, 0],
           [VECTOR_LINE, 35, 0, 35, 5],
@@ -127,7 +127,7 @@ function generatePitchLineSum(num) {
           rendObj = ROBJ_VECTOR_CANVAS
           lineWidth = baseLineWidth * IlsLineScale.value
           color = IlsColor.value
-          padding = [10, 10]
+          padding = 10
           commands = sign > 0 ? [
             [VECTOR_LINE, 0, 0, 5, 0],
             [VECTOR_LINE, 10, 0, 15, 0],
@@ -164,7 +164,7 @@ function pitchSum(height) {
   }
 
   return {
-    size = [pw(40), ph(50)]
+    size = const [pw(40), ph(50)]
     pos = [pw(30), ph(40)]
     flow = FLOW_VERTICAL
     children = children
@@ -198,7 +198,7 @@ function basic410SUM(width, height) {
 
 let SUMGunReticle = @() {
     watch = IlsColor
-    size = [pw(10), ph(10)]
+    size = const [pw(10), ph(10)]
     color = IlsColor.value
     lineWidth = baseLineWidth * IlsLineScale.value
     rendObj = ROBJ_VECTOR_CANVAS
@@ -227,7 +227,7 @@ let SUMGunReticle = @() {
 
 let SUMCCIPReticle = @() {
   watch = IlsColor
-  size = [pw(10), ph(10)]
+  size = const [pw(10), ph(10)]
   color = IlsColor.value
   lineWidth = baseLineWidth * IlsLineScale.value
   rendObj = ROBJ_VECTOR_CANVAS
@@ -249,7 +249,7 @@ let SUMCCIPReticle = @() {
 
 let BombCCIPModeComp = @() {
   watch = [BombCCIPMode, IlsColor]
-  size = [pw(3), ph(3)]
+  size = const [pw(3), ph(3)]
   pos = [pw(50), ph(BombCCIPMode.get() ? 50 : 30)]
   color = IlsColor.value
   lineWidth = baseLineWidth * IlsLineScale.get()
@@ -278,7 +278,7 @@ let SUMCCIPMode = @(){
 function SumAAMCrosshair(position, anim) {
   return @() {
     watch = IlsColor
-    size = [pw(2), ph(2)]
+    size = const [pw(2), ph(2)]
     pos = position
     color = IlsColor.value
     lineWidth = baseLineWidth * IlsLineScale.value
@@ -349,7 +349,7 @@ function rotatedBombReleaseSUM(width, height) {
     children = TargetPosValid.value ? [
       SUMCcrpTarget(width, height),
       {
-        size = [pw(20), flex()]
+        size = const [pw(20), flex()]
         flow = FLOW_VERTICAL
         halign = ALIGN_CENTER
         children = [bombFallingLine()]
@@ -373,7 +373,7 @@ let cancelBombingSUM = @() {
   children = cancelBombVisible.value ?
     @() {
       watch = IlsColor
-      size = [pw(7), ph(7)]
+      size = const [pw(7), ph(7)]
       pos = [pw(50), ph(30)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -390,7 +390,7 @@ let releaseMarkSector = Computed (@() cvt(TimeBeforeBombRelease.value, 10.0, 0, 
 let timeToRelease = @() {
   watch = [releaseMarkSector, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(8), ph(8)]
+  size = const [pw(8), ph(8)]
   pos = [pw(50), ph(30)]
   color = IlsColor.value
   fillColor = Color(0, 0, 0, 0)

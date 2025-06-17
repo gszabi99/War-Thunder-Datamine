@@ -187,7 +187,7 @@ let indicatorsCtor = @() {
 }
 
 let helicopterRoot = {
-  size = [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
   children = [
     leftPanel
     actionBarTopPanel

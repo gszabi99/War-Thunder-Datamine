@@ -331,6 +331,9 @@
       "body_front_dm": {},
       "body_side_dm": {},
       "body_top_dm": {},
+      "ex_decor_r_06_dm": {},
+      "ex_decor_l_06_dm": {},
+      "ex_decor_01_dm": {},
       "turret_side_dm": {},
       "ex_armor_04_dm": {},
       "ex_armor_05_dm": {},
@@ -341,9 +344,6 @@
       "collisionDamageMult": 3.0,
       "hp": 10.0,
       "ex_armor_02": {},
-      "ex_decor_01_dm": {},
-      "ex_decor_r_06_dm": {},
-      "ex_decor_l_06_dm": {},
       "ex_decor_07_dm": {}
     },
     "body_side_screens": {
@@ -1969,7 +1969,10 @@
       }
     },
     "animatedBones": {
-      "node": "bone_roll_02"
+      "node": [
+        "bone_roll_01",
+        "bone_roll_02"
+      ]
     }
   },
   "weapon_presets": {
@@ -3237,8 +3240,8 @@
       -9.5
     ],
     "headPosOnShooting": [
-      1.15,
-      3.4,
+      0.3,
+      2.4,
       0.0
     ],
     "zoomOutFov": 40.0,
@@ -3388,5 +3391,12 @@
       ],
       "radarParkingAzimuth": 0.0
     }
+  },
+  "antiAirComplexMenu": {
+    "isVerticalViewAvailable": true,
+    "hasTargetList": true,
+    "hasTurretView": false,
+    "hasVerticalView": true,
+    "verticalViewMaxAltitude": 12.0
   }
 }

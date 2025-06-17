@@ -21,7 +21,7 @@ let isAAMMode = Computed(@() GuidanceLockState.value > GuidanceLockResult.RESULT
 
 let rollIndicator = @(){
   watch = IlsColor
-  size = [pw(25), ph(25)]
+  size = const [pw(25), ph(25)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   lineWidth = baseLineWidth * IlsLineScale.value
@@ -41,7 +41,7 @@ let rollIndicator = @(){
   ]
   children = [
     {
-      size = [pw(70), ph(70)]
+      size = const [pw(70), ph(70)]
       rendObj = ROBJ_VECTOR_CANVAS
       lineWidth = baseLineWidth * IlsLineScale.value
       color = IlsColor.value
@@ -69,7 +69,7 @@ let rollIndicator = @(){
 let ClimbSpeedDir = Computed(@() ClimbSpeed.value >= 0.0 ? 1 : -1)
 let ClimbSpeedVal = Computed(@() (ClimbSpeed.value * 10.0).tointeger())
 let climbSpeed = @(){
-  size = [pw(10), ph(4)]
+  size = const [pw(10), ph(4)]
   pos = [pw(78), ph(46)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -109,7 +109,7 @@ let climbSpeed = @(){
 
 function generatePitchLine(num) {
   return {
-    size = [flex(), ph(10)]
+    size = const [flex(), ph(10)]
     flow = FLOW_HORIZONTAL
     halign = ALIGN_RIGHT
     children = [
@@ -119,7 +119,7 @@ function generatePitchLine(num) {
         color = IlsColor.value
         fontSize = 35
         font = Fonts.ils31
-        padding = [0, 10]
+        padding = const [0, 10]
         text = num.tostring()
       } : null),
       {
@@ -183,7 +183,7 @@ let speed = @() {
 
 let AltitudeVal = Computed(@() Altitude.value.tointeger() )
 let altitude = {
-  size = [pw(10), ph(4)]
+  size = const [pw(10), ph(4)]
   pos = [pw(70), ph(17)]
   flow = FLOW_HORIZONTAL
   halign = ALIGN_RIGHT
@@ -196,11 +196,11 @@ let altitude = {
       font = Fonts.ils31
       fontSize = 50
       text = AltitudeVal.value.tostring()
-      padding = [0, 3]
+      padding = const [0, 3]
     }
     @(){
       rendObj = ROBJ_VECTOR_CANVAS
-      size = [ph(30), ph(30)]
+      size = ph(30)
       pos = [0, ph(70)]
       color = IlsColor.value
       lineWidth = baseLineWidth * IlsLineScale.value * 0.7
@@ -223,7 +223,7 @@ let generateCompassMark = function(num, _elemWidth, _font) {
   if (num == 270)
     textVal = "W"
   return {
-    size = [pw(5), ph(100)]
+    size = const [pw(5), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -255,7 +255,7 @@ let compass = function(width, height) {
       compassWrap(width, height, 0.11, generateCompassMark, 1.0, 5.0, false, 5)
       @() {
         watch = IlsColor
-        size = [pw(1), ph(2)]
+        size = const [pw(1), ph(2)]
         pos = [pw(50), ph(8.5)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -273,7 +273,7 @@ let compass = function(width, height) {
         color = IlsColor.value
       }
       @(){
-        size = [pw(10), ph(4)]
+        size = const [pw(10), ph(4)]
         pos = [pw(45), ph(3.8)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
@@ -308,7 +308,7 @@ let reticle = @() {
   watch = [TargetPosValid, AimLockValid, AtgmMode, isAAMMode, GunMode]
   children = !isAAMMode.value && (AtgmMode.value || (GunMode.value && AimLockValid.value) ? AimLockValid.value : TargetPosValid.value) ? [
     @(){
-      size = [ph(2), ph(2)]
+      size = ph(2)
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       lineWidth = baseLineWidth * IlsLineScale.value
@@ -517,7 +517,7 @@ let pilotControl = @() {
   size = flex()
   children = TriggerPulled.value ? [
     {
-      size = [ph(2), ph(2)]
+      size = ph(2)
       pos= [pw(27), ph(88)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
@@ -554,7 +554,7 @@ let aamReticle = @() {
   size = flex()
   children = isAAMMode.value && IlsTrackerVisible.value ? [
     {
-      size = [ph(5), ph(5)]
+      size = ph(5)
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       fillColor = Color(0, 0, 0, 0)
@@ -574,7 +574,7 @@ let aamReticle = @() {
 
 let aamMode = @() {
   watch = [isAAMMode, RocketMode, BombCCIPMode]
-  size = [pw(100), SIZE_TO_CONTENT]
+  size = const [pw(100), SIZE_TO_CONTENT]
   pos = [0, ph(78)]
   halign = ALIGN_CENTER
   children = isAAMMode.value && !RocketMode.value && !BombCCIPMode.value ? [
@@ -627,7 +627,7 @@ let maneuverOrientation = @() {
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       lineWidth = baseLineWidth * IlsLineScale.value * 0.5
-      size = [pw(5), ph(5)]
+      size = const [pw(5), ph(5)]
       commands = maneuverDir.value > 0 ? [
         [VECTOR_LINE, 0, 0, 40, 0],
         [VECTOR_LINE, 0, 0, 20, 20],
@@ -658,7 +658,7 @@ let aimLockPosMark = @() {
   children = !AtgmMode.value && AimLockValid.value && !GunMode.value ? [
     @(){
       watch = IlsColor
-      size = [pw(2), pw(2)]
+      size = pw(2)
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       lineWidth = baseLineWidth * IlsLineScale.value

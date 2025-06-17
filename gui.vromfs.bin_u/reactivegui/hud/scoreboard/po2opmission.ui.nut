@@ -27,7 +27,7 @@ let killsIcon = textParams.__merge({
 
 let killsText = @() textParams.__merge({
   watch = missionProgressScore
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   text = missionProgressScore.value
 })
 
@@ -39,7 +39,7 @@ let timeIcon = textParams.__merge({
 
 let timeText = @() textParams.__merge({
   watch = roundTimeLeft
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   text = secondsToTimeSimpleString(roundTimeLeft.value)
 })
 

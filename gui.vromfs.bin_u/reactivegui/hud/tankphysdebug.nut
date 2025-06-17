@@ -23,7 +23,7 @@ let trackIcon = Picture($"!ui/gameuiskin#track_state_indicator.svg:{iconWidth}:{
 
 let engineRpmVal = @() {
   watch = [Rpm, MaxRpm]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = Rpm.value > MaxRpm.value * 0.9 ? critColor : Rpm.value > MaxRpm.value * 0.8 ? warningColor : baseColor
@@ -32,7 +32,7 @@ let engineRpmVal = @() {
 }
 
 let engineRpm = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     {
@@ -47,7 +47,7 @@ let engineRpm = {
 
 let engineOmegaVal = @() {
   watch = Omega
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -56,7 +56,7 @@ let engineOmegaVal = @() {
 }
 
 let engineOmega = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -71,7 +71,7 @@ let engineOmega = {
 
 let engineMaxRpmVal = @() {
   watch = MaxRpm
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -80,7 +80,7 @@ let engineMaxRpmVal = @() {
 }
 
 let engineMaxRpm = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -95,7 +95,7 @@ let engineMaxRpm = {
 
 let speedVal = @() {
   watch = Speed
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -104,7 +104,7 @@ let speedVal = @() {
 }
 
 let speed = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -118,7 +118,7 @@ let speed = {
 }
 
 let engine = {
-  size = [pw(10), ph(20)]
+  size = const [pw(10), ph(20)]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
   children = [
@@ -137,7 +137,7 @@ let engine = {
 
 let transCurGearVal = @() {
   watch = CurrentGear
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -146,7 +146,7 @@ let transCurGearVal = @() {
 }
 
 let transCurretGear = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -165,18 +165,18 @@ function getTransmissionTable() {
   let childrens = []
   for (local i = 0; i < GearCount.value; ++i) {
     childrens.append({
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       children = [
         {
-          size = [pw(20), SIZE_TO_CONTENT]
+          size = const [pw(20), SIZE_TO_CONTENT]
           rendObj = ROBJ_TEXT
           color = baseColor
           fontSize = baseFontSize
           text = NeutralGearIdx.value == i ? "N" : i < NeutralGearIdx.value ? string.format("R%d", NeutralGearIdx.value - i) : (i - NeutralGearIdx.value).tostring()
         }
         {
-          size = [pw(30), SIZE_TO_CONTENT]
+          size = const [pw(30), SIZE_TO_CONTENT]
           halign = ALIGN_RIGHT
           rendObj = ROBJ_TEXT
           color = baseColor
@@ -184,7 +184,7 @@ function getTransmissionTable() {
           text = string.format("%.2f", GearRatio.value[i])
         }
         {
-          size = [pw(40), SIZE_TO_CONTENT]
+          size = const [pw(40), SIZE_TO_CONTENT]
           halign = ALIGN_RIGHT
           rendObj = ROBJ_TEXT
           color = baseColor
@@ -199,7 +199,7 @@ function getTransmissionTable() {
 
 let doubleDiffRatioVal = @() {
   watch = DDGearRatio
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -208,7 +208,7 @@ let doubleDiffRatioVal = @() {
 }
 
 let doubleDiffRatio = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -222,7 +222,7 @@ let doubleDiffRatio = {
 }
 
 let transmission = {
-  size = [pw(15), ph(20)]
+  size = const [pw(15), ph(20)]
   pos = [0, ph(20)]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -235,18 +235,18 @@ let transmission = {
     }
     transCurretGear
     {
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_HORIZONTAL
       children = [
         {
-          size = [pw(20), SIZE_TO_CONTENT]
+          size = const [pw(20), SIZE_TO_CONTENT]
           rendObj = ROBJ_TEXT
           color = baseColor
           fontSize = baseFontSize
           text = "Gear:"
         }
         {
-          size = [pw(30), SIZE_TO_CONTENT]
+          size = const [pw(30), SIZE_TO_CONTENT]
           halign = ALIGN_RIGHT
           rendObj = ROBJ_TEXT
           color = baseColor
@@ -254,7 +254,7 @@ let transmission = {
           text = "Ratio:"
         }
         {
-          size = [pw(40), SIZE_TO_CONTENT]
+          size = const [pw(40), SIZE_TO_CONTENT]
           halign = ALIGN_RIGHT
           rendObj = ROBJ_TEXT
           color = baseColor
@@ -265,7 +265,7 @@ let transmission = {
     }
     @(){
       watch = GearCount
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       flow = FLOW_VERTICAL
       children = getTransmissionTable()
     }
@@ -277,7 +277,7 @@ let transmission = {
 let trackSpeedVal = @(watched_val) function() {
   return {
     watch = watched_val
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     halign = ALIGN_RIGHT
     rendObj = ROBJ_TEXT
     color = baseColor
@@ -287,7 +287,7 @@ let trackSpeedVal = @(watched_val) function() {
 }
 
 let trackSpeed = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -305,7 +305,7 @@ let trackSpeed = {
 
 let HillClimbVal = @() {
   watch = [HillClimbKx, HillClimbKy]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -314,7 +314,7 @@ let HillClimbVal = @() {
 }
 
 let hillClimbK = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -331,7 +331,7 @@ let hillClimbK = {
 
 let trackSideFricVal = @() {
   watch = [TrackFricSideX, TrackFricSideY, TrackFricSideZ, TrackFricSideW]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -340,7 +340,7 @@ let trackSideFricVal = @() {
 }
 
 let trackSideFric = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -357,7 +357,7 @@ let trackSideFric = {
 
 let trackFrontalFricVal = @() {
   watch = [TrackFricFront, TrackFricFrontSlide]
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -366,7 +366,7 @@ let trackFrontalFricVal = @() {
 }
 
 let trackFrontalFric = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -383,7 +383,7 @@ let trackFrontalFric = {
 
 let sideProjLerpVal = @() {
   watch = TrackFricSideProjLerp
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -392,7 +392,7 @@ let sideProjLerpVal = @() {
 }
 
 let sideProjLerp = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -409,18 +409,18 @@ let sideProjLerp = {
 
 let slidingVal = @(watched_val) function() {
   return {
-    size = [pw(28), ph(100)]
+    size = const [pw(28), ph(100)]
     children = [
       @(){
         pos = [pw(15), 0]
-        size = [pw(70), ph(100)]
+        size = const [pw(70), ph(100)]
         watch = watched_val
         rendObj = ROBJ_SOLID
         color = watched_val.value ? critColor : baseColor
       }
       @(){
           watch = watched_val
-          size = [flex(), SIZE_TO_CONTENT]
+          size = FLEX_H
           halign = ALIGN_CENTER
           rendObj = ROBJ_TEXT
           color = watched_val.value ? Color(255, 255, 255) : Color(0, 0, 0)
@@ -432,11 +432,11 @@ let slidingVal = @(watched_val) function() {
 }
 
 let sliding = {
-  size = [flex(), ph(10)]
+  size = const [flex(), ph(10)]
   flow = FLOW_HORIZONTAL
   children = [
     @(){
-      size = [pw(47), flex()]
+      size = const [pw(47), flex()]
       rendObj = ROBJ_TEXT
       color = baseColor
       fontSize = baseFontSize
@@ -451,7 +451,7 @@ let sliding = {
 
 let worldForceVal = @() {
   watch = WorldForceVal
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = baseColor
@@ -460,7 +460,7 @@ let worldForceVal = @() {
 }
 
 let worldForce = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -477,7 +477,7 @@ let worldForce = {
 
 let fricForceVal = @() {
   watch = [TrackForceVal, WorldForceVal]
-  size = [SIZE_TO_CONTENT, SIZE_TO_CONTENT]
+  size = SIZE_TO_CONTENT
   halign = ALIGN_RIGHT
   rendObj = ROBJ_TEXT
   color = TrackForceVal.value > WorldForceVal.value ? baseColor : critColor
@@ -486,7 +486,7 @@ let fricForceVal = @() {
 }
 
 let frictionForce = {
-  size = [flex(), SIZE_TO_CONTENT]
+  size = FLEX_H
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -502,7 +502,7 @@ let frictionForce = {
 }
 
 let tracks = {
-  size = [pw(18), ph(20)]
+  size = const [pw(18), ph(20)]
   pos = [pw(80), 0]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -526,7 +526,7 @@ let tracks = {
 
 let forceOrientUp = @(){
   watch = [WorldForceDirUp, TrackForceDirUp]
-  size = [pw(7.5), ph(10)]
+  size = const [pw(7.5), ph(10)]
   pos = [pw(92.5), ph(40)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = warningColor
@@ -545,7 +545,7 @@ let forceOrientUp = @(){
       text = "view from above:"
     }
     {
-      size = [pw(10), ph(20)]
+      size = const [pw(10), ph(20)]
       rendObj = ROBJ_SOLID
       pos = [pw(-5), ph(-10)]
       color = baseColor
@@ -555,7 +555,7 @@ let forceOrientUp = @(){
 
 let forceOrientFwd = @(){
   watch = [WorldForceDirForward, TrackForceDirForward]
-  size = [pw(7.5), ph(10)]
+  size = const [pw(7.5), ph(10)]
   pos = [pw(92.5), ph(60)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = warningColor
@@ -574,7 +574,7 @@ let forceOrientFwd = @(){
       text = "Front view:"
     }
     {
-      size = [pw(30), ph(20)]
+      size = const [pw(30), ph(20)]
       rendObj = ROBJ_SOLID
       pos = [pw(-15), ph(-10)]
       color = baseColor
@@ -584,7 +584,7 @@ let forceOrientFwd = @(){
 
 function axisVal(axis, main_color) {
   return {
-    size = [pw(50), ph(100)]
+    size = const [pw(50), ph(100)]
     children = [
       {
         rendObj = ROBJ_VECTOR_CANVAS
@@ -603,7 +603,7 @@ function axisVal(axis, main_color) {
       }
       @(){
         watch = axis
-        size = [flex(), SIZE_TO_CONTENT]
+        size = FLEX_H
         halign = ALIGN_CENTER
         rendObj = ROBJ_TEXT
         color = axis.value > 0.7 ? Color(0, 0, 0) : Color(255, 255, 255)
@@ -615,7 +615,7 @@ function axisVal(axis, main_color) {
 }
 
 let throttle = {
-  size = [pw(50), ph(12)]
+  size = const [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -630,9 +630,9 @@ let throttle = {
 }
 
 let leftBrake = {
-  size = [pw(50), ph(12)]
+  size = const [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
-  padding = [0, 0]
+  padding = 0
   children = [
     @(){
       size = flex()
@@ -646,9 +646,9 @@ let leftBrake = {
 }
 
 let rightBrake = {
-  size = [pw(50), ph(12)]
+  size = const [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
-  padding = [0, 0]
+  padding = 0
   children = [
     @(){
       size = flex()
@@ -662,9 +662,9 @@ let rightBrake = {
 }
 
 let leftClutch = {
-  size = [pw(50), ph(12)]
+  size = const [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
-  padding = [0, 0]
+  padding = 0
   children = [
     @(){
       size = flex()
@@ -678,9 +678,9 @@ let leftClutch = {
 }
 
 let rightClutch = {
-  size = [pw(50), ph(12)]
+  size = const [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
-  padding = [0, 0]
+  padding = 0
   children = [
     @(){
       size = flex()
@@ -695,7 +695,7 @@ let rightClutch = {
 
 let SteerLinePos = Computed(@() 50.0 + min(0, -Steering.value) * 50.0)
 let steeringVal = {
-  size = [pw(50), ph(100)]
+  size = const [pw(50), ph(100)]
   children = [
     {
       rendObj = ROBJ_VECTOR_CANVAS
@@ -715,7 +715,7 @@ let steeringVal = {
     }
     @(){
       watch = Steering
-      size = [flex(), SIZE_TO_CONTENT]
+      size = FLEX_H
       halign = ALIGN_CENTER
       rendObj = ROBJ_TEXT
       color = Color(255, 255, 255)
@@ -726,7 +726,7 @@ let steeringVal = {
 }
 
 let steering = {
-  size = [pw(50), ph(12)]
+  size = const [pw(50), ph(12)]
   flow = FLOW_HORIZONTAL
   children = [
     @(){
@@ -741,7 +741,7 @@ let steering = {
 }
 
 let axis = {
-  size = [pw(30), ph(20)]
+  size = const [pw(30), ph(20)]
   pos = [pw(35), ph(75)]
   flow = FLOW_VERTICAL
   halign = ALIGN_CENTER
@@ -783,7 +783,7 @@ function getTorqGraphCommands() {
 
 let torq = @(){
   watch = [TorqArray, MaxTorq]
-  size = [pw(15), ph(20)]
+  size = const [pw(15), ph(20)]
   pos = [pw(16), ph(10)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = warningColor

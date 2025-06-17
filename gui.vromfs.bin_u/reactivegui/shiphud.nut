@@ -20,7 +20,7 @@ let colorAlertWatched = Watched(redColor)
 
 let shipHud = @() {
   watch = [safeAreaSizeHud, missionProgressHeight, isSpectatorMode]
-  size = [SIZE_TO_CONTENT, flex()]
+  size = FLEX_V
   padding = [0, 0, missionProgressHeight.value, 0]
   margin = safeAreaSizeHud.value.borders
   flow = FLOW_VERTICAL

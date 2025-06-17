@@ -703,7 +703,7 @@ function createAdiValues(gridStyle) {
     children = [
       {
         pos = [pw(50), ph(50)],
-        size = [pw(80), ph(80)],
+        size = const [pw(80), ph(80)],
         children = [
           {
             size = flex(),
@@ -757,7 +757,7 @@ function createAdiValues(gridStyle) {
       },
       {
         pos = [pw(50), ph(50)],
-        size = [pw(80), ph(80)],
+        size = const [pw(80), ph(80)],
         children = [
           {
             size = flex(),
@@ -829,7 +829,7 @@ function scope(scale, style) {
         children = [
           {
             pos = [pw(10), ph(10)],
-            size = [pw(80), ph(80)],
+            size = const [pw(80), ph(80)],
             clipChildren = true,
             children = [
               rwrTargetsComponent(style.object),
@@ -849,7 +849,7 @@ function scope(scale, style) {
       },
       {
         pos = [pw(-12), ph(55)],
-        size = [pw(60), ph(60)],
+        size = const [pw(60), ph(60)],
         children = [
           createAdiValues(style.grid),
           createAdiGrid(style.grid)
@@ -857,7 +857,7 @@ function scope(scale, style) {
       },
       {
         pos = [pw(-10), ph(90)],
-        size = [pw(20), ph(20)],
+        size = const [pw(20), ph(20)],
         children = [
           createSpeedValues(style.grid),
           createSpeedScale(style.grid)
@@ -865,7 +865,7 @@ function scope(scale, style) {
       },
       {
         pos = [pw(-15), ph(125)],
-        size = [pw(15), ph(10)],
+        size = const [pw(15), ph(10)],
         children = [
           createAoaLoadFactorValue(style.grid),
           createAoaLoadFactorTable(style.grid)
@@ -873,7 +873,7 @@ function scope(scale, style) {
       },
       {
         pos = [pw(85), ph(90)],
-        size = [pw(20), ph(20)],
+        size = const [pw(20), ph(20)],
         children = [
           createAltitudeValue(style.grid),
           createAltitudeScale(style.grid)
@@ -881,7 +881,7 @@ function scope(scale, style) {
       },
       {
         pos = [pw(100), ph(125)],
-        size = [pw(12), ph(12)],
+        size = const [pw(12), ph(12)],
         children = [
           createFuelValue(style.grid),
           createFuelScale(style.grid)

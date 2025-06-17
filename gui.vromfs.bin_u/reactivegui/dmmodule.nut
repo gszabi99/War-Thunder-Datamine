@@ -46,8 +46,8 @@ let dotAlive = @(broken_count) {
   rendObj = ROBJ_IMAGE
   image = images.dotFilled
   color = broken_count > 0 ? colors.hud.damageModule.active : colors.hud.damageModule.inactive
-  size = [hdpx(10), hdpx(10)]
-  margin = [hdpx(2), hdpx(2)]
+  size = hdpx(10)
+  margin = hdpx(2)
 }
 
 
@@ -55,8 +55,8 @@ let dotDead = {
   rendObj = ROBJ_IMAGE
   image = images.dotHole
   color = colors.hud.damageModule.dmModuleDestroyed
-  size = [hdpx(10), hdpx(10)]
-  margin = [hdpx(2), hdpx(2)]
+  size = hdpx(10)
+  margin = hdpx(2)
   transform = {}
   animations = [
     {
@@ -78,7 +78,7 @@ let dots = function (total_count, broken_count) {
   }
 
   return {
-    size = [flex(), SIZE_TO_CONTENT]
+    size = FLEX_H
     flow = FLOW_HORIZONTAL
     halign = ALIGN_CENTER
     children = children

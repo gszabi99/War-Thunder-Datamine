@@ -1,11 +1,10 @@
 from "%sqstd/frp.nut" import *
-from "daRg" import *
+import "daRg" as darg
 import "daRg.behaviors" as Behaviors
 from "%sqstd/functools.nut" import Set
-
-let {tostring_r} = require("%sqstd/string.nut")
-let {min}  = require("math")
-
+from "%sqstd/string.nut" import tostring_r
+from "math" import min
+from "daRg" import sh, sw, calc_comp_size, gui_scene, Color, flex
 
 
 
@@ -60,8 +59,9 @@ let hdpxi = mark_pure(@(pixels) hdpx(pixels).tointeger())
 
 let fsh = mark_pure(sh(100) <= sw(75) ? sh : @(v) sw(0.75 * v))
 
+let numerics = Set("float", "integer")
 
-let wrapParams= {width=0, flowElemProto={}, hGap=null, vGap=0, height=null, flow=FLOW_HORIZONTAL}
+let wrapParams= const {width=0, flowElemProto={}, hGap=null, vGap=0, height=null, flow=FLOW_HORIZONTAL}
 function wrap(elems, params=wrapParams) {
   
   let paddingLeft=params?.paddingLeft
@@ -80,7 +80,7 @@ function wrap(elems, params=wrapParams) {
   let vgap = params?.vGap ?? wrapParams?.vGap
   local gap = isFlowHor ? hgap : vgap
   let secondaryGap = isFlowHor ? vgap : hgap
-  if (type(gap) in {float=1,integer=1})
+  if (type(gap) in numerics)
     gap = isFlowHor ? freeze({size=[gap,0]}) : freeze({size=[0,gap]})
   let flowElemProto = params?.flowElemProto ?? {}
   let flowElems = []
@@ -164,7 +164,23 @@ function mkWatched(persistFunc, persistKey, defVal=null, observableInitArg=null)
   return watch
 }
 
-return {
+let FLEX_H = const [flex(), SIZE_TO_CONTENT]
+let flex_h = mark_pure(function(val=null) {
+  if (val == null)
+    return FLEX_H
+  assert(typeof val in numerics, @() $"val can be only numerics, got {type(val)}")
+  return [flex(val), SIZE_TO_CONTENT]
+})
+
+let FLEX_V = [SIZE_TO_CONTENT, flex()]
+let flex_v = mark_pure(function(val=null) {
+  if (val == null)
+    return FLEX_H
+  assert(typeof val in numerics, @() $"val can be only numerics, got {type(val)}")
+  return [SIZE_TO_CONTENT, flex(val)]
+})
+
+return darg.__merge({
   mkWatched
   WatchedRo
   XmbNode
@@ -180,4 +196,8 @@ return {
   Behaviors
   getWatcheds
   Set
-}
+  FLEX_H
+  FLEX_V
+  flex_h
+  flex_v
+})

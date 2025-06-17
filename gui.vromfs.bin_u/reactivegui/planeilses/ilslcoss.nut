@@ -50,7 +50,7 @@ let LCOSSRollMark = @() {
 
 let LCOSSCrosshair = @() {
   watch = IlsColor
-  size = [pw(20), ph(20)]
+  size = const [pw(20), ph(20)]
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -75,7 +75,7 @@ let RadarDistAngle = Computed(@() PI * (BombingMode.value ? cvt(TimeBeforeBombRe
 let LCOSSRadarRangeMark = @() {
   watch = [RadarDistAngle, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(17), ph(17)]
+  size = const [pw(17), ph(17)]
   pos = [pw(50), ph(50)]
   color = IlsColor.value
   fillColor = Color(0, 0, 0, 0)
@@ -115,7 +115,7 @@ function LCOSS(width, height, hasCCRP) {
 
 let ASG23MainReticle = @(){
   watch = IlsColor
-  size = [ph(20), ph(20)]
+  size = ph(20)
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
   lineWidth = baseLineWidth * IlsLineScale.value * 1.5
@@ -168,7 +168,7 @@ let ASG23MainReticle = @(){
 
 let ASGRightScale = @() {
   watch = IlsColor
-  size = [pw(4), ph(32)]
+  size = const [pw(4), ph(32)]
   pos = [pw(25), ph(-16)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -188,7 +188,7 @@ let ASGRightScale = @() {
 
 let ASGLeftScale = @() {
   watch = IlsColor
-  size = [pw(4), ph(32)]
+  size = const [pw(4), ph(32)]
   pos = [pw(-29), ph(-16)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = IlsColor.value
@@ -218,7 +218,7 @@ let ASG23Distance = @() {
     @() {
       watch = [IlsColor, DistMarkAngle]
       rendObj = ROBJ_VECTOR_CANVAS
-      size = [ph(18.7), ph(18.7)]
+      size = ph(18.7)
       color = IlsColor.value
       lineWidth = baseLineWidth * IlsLineScale.value * 3
       fillColor = Color(0, 0, 0, 0)
@@ -238,7 +238,7 @@ let ASG23Course = @() {
   children = RadarTargetValid.value ? [
     @(){
       watch = CourseYawPos
-      size = [ph(19), ph(19)]
+      size = ph(19)
       rendObj = ROBJ_VECTOR_CANVAS
       color = Color(80, 255, 10)
       lineWidth = baseLineWidth * IlsLineScale.value * 1.5
@@ -248,7 +248,7 @@ let ASG23Course = @() {
     }
     @(){
       watch = CoursePitchPos
-      size = [ph(19), ph(19)]
+      size = ph(19)
       rendObj = ROBJ_VECTOR_CANVAS
       color = Color(80, 255, 10)
       lineWidth = baseLineWidth * IlsLineScale.value * 1.5

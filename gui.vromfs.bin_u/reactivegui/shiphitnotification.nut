@@ -31,8 +31,8 @@ function mkAppearAnim(trigger) {
 function mkIconHint(hintText) {
   return {
     pos = [0, ph(150)]
-    margin = [0, hdpx(12), 0, 0]
-    padding = [hdpx(5), hdpx(10)]
+    margin = const [0, hdpx(12), 0, 0]
+    padding = const [hdpx(5), hdpx(10)]
     minWidth = hdpx(50)
     zOrder = Layers.Tooltip
     fillColor = 0xFF2D343C
@@ -86,7 +86,7 @@ function mkIcon(baseCfg, iconCfg, watched) {
           rendObj = ROBJ_TEXT
           pos = [0, ph(48)]
           watch = text
-          padding = [0, 0, hdpx(10), 0]
+          padding = const [0, 0, hdpx(10), 0]
           text = text.get()
           size = flex()
           font = baseCfg.iconFont
@@ -284,7 +284,7 @@ let hitNotifications = function() {
   if (!alignHitCamera || !isHitcamSet.get()) {
     return res.__merge({
       hplace = ALIGN_CENTER
-      size = [SIZE_TO_CONTENT, flex()]
+      size = FLEX_V
       pos = isHitcamSet.get()
         ? [0, hudHitCameraState.get().pos[1] + hudHitCameraState.get().size[1]/1.15]
         : [0, hdpx(-140)]

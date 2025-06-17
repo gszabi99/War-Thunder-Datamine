@@ -11,6 +11,7 @@ require strings
 require DagorMath
 require darg
 require DagorSystem
+
 class Radar
   def static getModeName()
     let nameId = get_radar_hud_mode_name_id()
@@ -36,39 +37,18 @@ class Radar
     hmax = ownAltitude + distance * sin(get_radar_hud_scan_elevation_max() + tangage)
     return true
 
-  def static drawTargetAnnotation(var ctx : GuiContext &; target : RadarTarget const const#; fctx : StdGuiFontContext; pos : float2; drawBelow : bool;
+  def static getImageForTarget(target : RadarTarget const const#;
       planeTargetPicture : Picture ?;
       helicopterTargetPicture : Picture ?;
-      rocketTargetPicture : Picture ?)
-    var picture = null
+      rocketTargetPicture : Picture ?) : Picture ? const
     if target.iconType == int(RadarTargetIconType.NONE)
-      picture = null
+      return null
     elif target.iconType == int(RadarTargetIconType.JET)
-      picture = planeTargetPicture
+      return planeTargetPicture
     elif target.iconType == int(RadarTargetIconType.HELICOPTER)
-      picture = helicopterTargetPicture
+      return helicopterTargetPicture
     elif target.iconType == int(RadarTargetIconType.ROCKET)
-      picture = rocketTargetPicture
+      return rocketTargetPicture
     else
       logerr("could not find picture for radar target of type {target.iconType}")
-
-    let annotation = "{int(target.persistentIndex)}"
-    let annotationBox = get_str_bbox(annotation, annotation |> length(), fctx)
-
-    var offsetX = 0.0
-    if picture == null
-      offsetX = -annotationBox.width.x * 0.5
-
-    let offsetY = drawBelow ? \
-      - float(get_font_descent(fctx)) : \
-      + annotationBox.width.y + float(get_font_ascent(fctx))
-    let anchorPos = pos + float2(offsetX, offsetY)
-
-    if picture != null
-      let pictureSize = float2(annotationBox.width.y * 1.5)
-      let pictureOffset = float2(0.0, -annotationBox.width.y * 0.5 + pictureSize.y * 0.5)
-      let picturePos = anchorPos + pictureOffset - pictureSize
-      let c = E3DCOLOR(0xFF37FF37)
-      render_picture(ctx, picture, picturePos, pictureSize, c)
-    ctx |> goto_xy(anchorPos.x, anchorPos.y)
-    ctx |> draw_str_scaled(1.0, annotation, annotation |> length())
+    return null

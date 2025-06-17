@@ -819,7 +819,7 @@ function B_ScopeSquareMarkers(size, color, font_size) {
       fontFxFactor = fontOutlineFxFactor
       fontFxColor = Color(0, 0, 0, 120)
       fontSize = font_size
-      margin = [hdpx(4), 0, 0, 0]
+      margin = const [hdpx(4), 0, 0, 0]
       text = "".concat(floor((AzimuthMax.value - AzimuthMin.value) * radToDeg + 0.5), deg)
     })
   }
@@ -980,7 +980,7 @@ function B_ScopeSquare(size, color, hide_back, fontScale) {
     halign = ALIGN_CENTER
     flow = FLOW_HORIZONTAL
     gap = hdpx(30)
-    margin = [0, 0, hdpx(5), 0]
+    margin = const [0, 0, hdpx(5), 0]
     children = [radarModePlace, IsRadar2Visible.value ? radar2ModePlace : null]
   }
 
@@ -1437,8 +1437,8 @@ function B_ScopeCircleMarkers(size, color) {
     fontFxColor
     text = $"270{deg}"
   })
-  markers.radar1 <- makeRadarModeText({ size = [flex(), SIZE_TO_CONTENT] halign = ALIGN_RIGHT margin = hdpx(3) }, color)
-  markers.radar2 <- makeRadar2ModeText({ size = [flex(), SIZE_TO_CONTENT] margin = hdpx(3) }, color)
+  markers.radar1 <- makeRadarModeText({ size = FLEX_H halign = ALIGN_RIGHT margin = hdpx(3) }, color)
+  markers.radar2 <- makeRadar2ModeText({ size = FLEX_H margin = hdpx(3) }, color)
 
   let hideMeasures = Computed(@() !HasAzimuthScale.value || ScanAzimuthMax.value <= ScanAzimuthMin.value)
   let measuresComp = @() styleText.__merge({
@@ -1723,7 +1723,7 @@ let B_ScopeHalfCircleTopMarkers = @(size, color) function() {
   let isVisible = IsRadarVisible.value || IsRadar2Visible.value
   return {
     watch = [IsRadarVisible, IsRadar2Visible]
-    size = [SIZE_TO_CONTENT, hdpx(25)]
+    size = const [SIZE_TO_CONTENT, hdpx(25)]
     children = !isVisible ? null : [
       makeRadarModeText({ pos = [size[0] * (0.5 - 0.15), hdpx(5)] }, color)
       makeRadar2ModeText({ pos = [size[0] * (0.5 + 0.05), hdpx(5)] }, color)
@@ -1753,7 +1753,7 @@ let B_ScopeHalfCircleMarkers = @(size, color, font_size) function() {
     size = [offsetScaleFactor * size[0], offsetScaleFactor * size[1]]
     children = [
       {
-        size = [0, SIZE_TO_CONTENT]
+        size = const [0, SIZE_TO_CONTENT]
         children = !HasAzimuthScale.value || ScanAzimuthMax.value <= ScanAzimuthMin.value ? null
           : @() styleText.__merge({
             watch = [ ScanAzimuthMin, ScanAzimuthMax,
@@ -2408,7 +2408,7 @@ let forestallVisible = @(color) function() {
 
 let forestallComponent = @(color) function() {
   return {
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     children = IsForestallVisible.value ? forestallVisible(color) : null
     watch = IsForestallVisible
   }
@@ -2492,7 +2492,7 @@ function lockZoneComponentCommon(IsCustomLockZoneVisible, color, animations) {
     let mh = 100 / height
     let corner = IsRadarEmitting.value ? 0.1 : 0.02
     let lineWidth = hdpx(4)
-    let size = [sw(100), sh(100)]
+    let size = const [sw(100), sh(100)]
 
     let { x0, x1, x2, x3, y0, y1, y2, y3 } = LockZoneWatched.value
     let _x0 = (x0 + x1 + x2 + x3) * 0.25
@@ -2621,7 +2621,7 @@ let forestallTargetLine = @(color) function() {
   return !IsForestallVisible.value ? { watch = IsForestallVisible }
   : {
     watch = IsForestallVisible
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     children = forestallTgtLine(color)
   }
 }
@@ -2860,7 +2860,7 @@ function mkRadar(isAir = false, radar_color_watch = Watched(Color(0, 255, 0, 255
     return res.__update({
       halign = ALIGN_LEFT
       valign = ALIGN_TOP
-      size = [sw(100), sh(100)]
+      size = const [sw(100), sh(100)]
       children = radarHudVisibleChildren
     })
   }
@@ -2878,7 +2878,7 @@ let mkRadarForMfd = @(radarColorWatched) function() {
     watch = [MfdRadarEnabled, radarColorWatched, MfdRadarHideBkg, radarPosSizeW, radarPosSizeH, MfdRadarFontScale]
     halign = ALIGN_LEFT
     valign = ALIGN_TOP
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     children = [
       MfdRadarEnabled.value ? radarMfdBackground : null,
       MfdRadarEnabled.value

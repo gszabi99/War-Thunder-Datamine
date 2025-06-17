@@ -41,7 +41,7 @@ let EPAltCCIP = @() {
 function generatePitchLineEP(num, isEP12, textPad) {
   let newNum = num - 5
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     flow = FLOW_VERTICAL
     children = num >= 0 ? [
       @() {
@@ -146,7 +146,7 @@ let EP12RadarTargetMark = @(){
   size = flex()
   children = EP12RadarTargetVisible.get() ? [
     {
-      size = [pw(3), ph(3)]
+      size = const [pw(3), ph(3)]
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.get()
       fillColor = Color(0, 0, 0, 0)
@@ -182,7 +182,7 @@ let generateAltMarkEP = function(num) {
   let val = num < 100 ? (num * 10) : (num * 0.01)
   let small = num % 10 > 0
   return {
-    size = [pw(100), ph(10)]
+    size = const [pw(100), ph(10)]
     pos = [pw(10), 0]
     flow = FLOW_HORIZONTAL
     children = [
@@ -219,7 +219,7 @@ function EPAltitude(height, generateFunc) {
 
   let getOffset = @() (20.0 - Altitude.value * 0.001 - 0.25 + 0.05) * height * 2.0
   return {
-    size = [pw(100), ph(100)]
+    size = const [pw(100), ph(100)]
     behavior = Behaviors.RtPropUpdate
     update = @() {
       transform = {
@@ -261,7 +261,7 @@ function EPAltitudeWrap(width, height, generateFunc) {
 
 function EP08Alt(width, height) {
   return {
-    size = [pw(15), ph(10)]
+    size = const [pw(15), ph(10)]
     children = [EPAltCCIP]
     behavior = Behaviors.RtPropUpdate
     update = @() {
@@ -327,7 +327,7 @@ function EPAimMark(width, height, is_need_gun_ret) {
     children = CCIPMode.value || BombingMode.value ?
       @() {
         watch = [IlsColor, TargetPosValid, haveShell]
-        size = [pw(20), ph(10)]
+        size = const [pw(20), ph(10)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = IlsColor.value
@@ -353,7 +353,7 @@ function EPAimMark(width, height, is_need_gun_ret) {
       } :
       ( is_need_gun_ret ? @() {
         watch = [IlsColor, TargetPosValid]
-        size = [pw(7), ph(7)]
+        size = const [pw(7), ph(7)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = IlsColor.value
@@ -386,7 +386,7 @@ function EPCCRPTargetMark(width, height) {
     children = BombCCIPMode.value || BombingMode.value ?
       @() {
         watch = IlsColor
-        size = [pw(2), ph(2)]
+        size = const [pw(2), ph(2)]
         rendObj = ROBJ_VECTOR_CANVAS
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)

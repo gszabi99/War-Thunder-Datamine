@@ -62,6 +62,8 @@ let { checkQueueAndStart } = require("%scripts/queue/queueManager.nut")
 let { gui_modal_crew } = require("%scripts/crew/crewModalHandler.nut")
 let { delayedTooltipOnHover } = require("%scripts/utils/delayedTooltip.nut")
 let { gui_modal_convertExp } = require("%scripts/convertExpHandler.nut")
+let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = null, curEdiff = -1,
   isSlotbarEnabled = true, setResearchManually = null, needChosenResearchOfSquadron = false,
@@ -211,9 +213,9 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     else if (action == "buy") {
       let isSpecial   = isUnitSpecial(unit)
       let isGift   = isUnitGift(unit)
-      local canBuyOnline = ::canBuyUnitOnline(unit)
+      local canBuyOnline = canBuyUnitOnline(unit)
       let canBuyNotResearchedUnit = canBuyNotResearched(unit)
-      let canBuyAfterPrevUnit = !isUnitUsable(unit) && !::canBuyUnitOnMarketplace(unit)
+      let canBuyAfterPrevUnit = !isUnitUsable(unit) && !canBuyUnitOnMarketplace(unit)
         && (isSpecial || isUnitResearched(unit))
       let canBuyIngame = !canBuyOnline && (canBuyUnit(unit) || canBuyNotResearchedUnit || canBuyAfterPrevUnit)
       local forceShowBuyButton = false
@@ -339,7 +341,7 @@ let getActions = kwarg(function getActions(unitObj, unit, actionsNames, crew = n
     else if (action == "find_in_market") {
       actionText = loc("msgbox/btn_find_on_marketplace")
       icon       = "#ui/gameuiskin#gc.svg"
-      showAction = !hasUnitCoupon(unit.name) && ::canBuyUnitOnMarketplace(unit)
+      showAction = !hasUnitCoupon(unit.name) && canBuyUnitOnMarketplace(unit)
       isLink     = true
       actionFunc = function() {
         let item = findItemById(unit.marketplaceItemdefId)

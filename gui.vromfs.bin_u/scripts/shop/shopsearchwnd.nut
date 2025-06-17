@@ -15,6 +15,7 @@ let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { buildUnitSlot, fillUnitSlotTimers } = require("%scripts/slotbar/slotbarView.nut")
 let { getTooltipType } = require("%scripts/utils/genericTooltipTypes.nut")
 let { getUnitClassIco } = require("%scripts/unit/unitInfoTexts.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
   wndType = handlerType.MODAL
@@ -111,7 +112,7 @@ gui_handlers.ShopSearchWnd <- class (gui_handlers.BaseGuiHandlerWT) {
               text = nbsp.concat(colorize("fadedTextColor", format("[%.1f]", u.getBattleRating(ediff))),
                 getUnitName(u, true))
               isUsable = u.isUsable()
-              canBuy   = canBuyUnit(u) || ::canBuyUnitOnline(u)
+              canBuy   = canBuyUnit(u) || canBuyUnitOnline(u)
             })
           }
         }

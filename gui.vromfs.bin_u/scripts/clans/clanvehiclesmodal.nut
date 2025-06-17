@@ -12,6 +12,7 @@ let { getUnitName, getUnitReqExp, getUnitExp, getUnitCost
 } = require("%scripts/unit/unitInfo.nut")
 let { canBuyUnit } = require("%scripts/unit/unitShopInfo.nut")
 let { canResearchUnit, isUnitInResearch } = require("%scripts/unit/unitStatus.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 local handlerClass = class (vehiclesModal.handlerClass) {
   canQuitByGoBack       = false
@@ -82,7 +83,7 @@ local handlerClass = class (vehiclesModal.handlerClass) {
       return showObjById("btn_buy_unit", false, this.scene)
 
     let canBuyIngame = canBuyUnit(this.lastSelectedUnit)
-    let canBuyOnline = ::canBuyUnitOnline(this.lastSelectedUnit)
+    let canBuyOnline = canBuyUnitOnline(this.lastSelectedUnit)
     let needShowBuyUnitBtn = canBuyIngame || canBuyOnline
     showObjById("btn_buy_unit", needShowBuyUnitBtn, this.scene)
     if (!needShowBuyUnitBtn)

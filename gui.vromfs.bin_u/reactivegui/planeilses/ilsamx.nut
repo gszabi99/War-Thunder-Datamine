@@ -18,7 +18,7 @@ let SUMAoaMarkH = Computed(@() cvt(Aoa.value, 0, 25, 100, 0).tointeger())
 let SUMAoa = @() {
   watch = [SUMAoaMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(3), ph(30)]
+  size = const [pw(3), ph(30)]
   pos = [pw(15), ph(35)]
   color = IlsColor.value
   lineWidth = baseLineWidth * 2 * IlsLineScale.value
@@ -42,7 +42,7 @@ let SUMVSMarkH = Computed(@() cvt(ClimbSpeed.value * mpsToFpm, 1000, -2000, 0, 1
 let SUMVerticalSpeed = @() {
   watch = [SUMVSMarkH, IlsColor]
   rendObj = ROBJ_VECTOR_CANVAS
-  size = [pw(3), ph(30)]
+  size = const [pw(3), ph(30)]
   pos = [pw(78), ph(35)]
   color = IlsColor.value
   lineWidth = baseLineWidth * 2 * IlsLineScale.value
@@ -95,7 +95,7 @@ let AltitudeMark = {
 
 let AltThousandAngle = Computed(@() (Altitude.value * metrToFeet % 1000 / 2.7777 - 90.0).tointeger())
 let altCircle = @() {
-  size = [pw(16), pw(16)]
+  size = pw(16)
   pos = [pw(70), ph(15)]
   children = @() {
     watch = IlsColor
@@ -119,7 +119,7 @@ let altCircle = @() {
     children = [
       {
         rendObj = ROBJ_VECTOR_CANVAS
-        size = [pw(50), ph(50)]
+        size = const [pw(50), ph(50)]
         pos = [pw(50), ph(50)]
         color = IlsColor.value
         fillColor = Color(0, 0, 0, 0)
@@ -144,7 +144,7 @@ let altCircle = @() {
 let overloadValue = Computed(@() (Overload.value * 10.0).tointeger())
 let overload = @(){
   watch = IlsColor
-  size = [pw(5), ph(10)]
+  size = const [pw(5), ph(10)]
   pos = [pw(8), ph(37)]
   flow = FLOW_VERTICAL
   children = [
@@ -173,7 +173,7 @@ let overload = @(){
 let machValue = Computed(@() (Mach.value * 100.0).tointeger())
 let mach = @(){
   watch = machValue
-  size = [pw(8), ph(5)]
+  size = const [pw(8), ph(5)]
   pos = [pw(10), ph(16)]
   rendObj = ROBJ_TEXT
   color = IlsColor.value
@@ -186,7 +186,7 @@ let mach = @(){
 let speedValue = Computed(@() (Speed.value * mpsToKnots).tointeger())
 let speed = @(){
   watch = speedValue
-  size = [pw(8), ph(5)]
+  size = const [pw(8), ph(5)]
   pos = [pw(10), ph(20)]
   rendObj = ROBJ_TEXT
   color = IlsColor.value
@@ -239,7 +239,7 @@ function angleTxt(num, isLeft, invVPlace = 1, x = 0, y = 0) {
 function generatePitchLine(num) {
   let newNum = num <= 0 ? num : (num - 5)
   return {
-    size = [pw(100), ph(60)]
+    size = const [pw(100), ph(60)]
     pos = [0, 0]
     flow = FLOW_VERTICAL
     children = num == 0 ? [
@@ -286,7 +286,7 @@ let aircraftSymbol = @(){
   watch = [isCCIPMode, BombingMode]
   size = flex()
   children = isCCIPMode.value || BombingMode.value ? @() {
-    size = [pw(5), ph(5)]
+    size = const [pw(5), ph(5)]
     pos = [pw(50), ph(50)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
@@ -319,7 +319,7 @@ let gunReticle = @(){
   size = flex()
   children = !BombingMode.value && TargetPosValid.value ? [
     {
-      size = [ph(3), ph(3)]
+      size = ph(3)
       rendObj = ROBJ_VECTOR_CANVAS
       color = IlsColor.value
       lineWidth = baseLineWidth * IlsLineScale.value * 0.7
@@ -335,7 +335,7 @@ let gunReticle = @(){
       children = isCCIPMode.value || hasRadarTarget.value ? @(){
         watch = distanceSector
         rendObj = ROBJ_VECTOR_CANVAS
-        size = [ph(4), ph(4)]
+        size = ph(4)
         color = IlsColor.value
         lineWidth = baseLineWidth * IlsLineScale.value * 0.7
         fillColor = Color(0, 0, 0, 0)
@@ -429,7 +429,7 @@ let aamReticle = @(){
   size = flex()
   children = isAAMMode.value && IlsTrackerVisible.value ? @(){
     watch = GuidanceLockState
-    size = [pw(3), ph(3)]
+    size = const [pw(3), ph(3)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
     fillColor = Color(0, 0, 0, 0)
@@ -458,7 +458,7 @@ let aimLockMark = @(){
   watch = AimLockValid
   size = flex()
   children = AimLockValid.value ? @() {
-    size = [pw(4), ph(4)]
+    size = const [pw(4), ph(4)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value
     lineWidth = baseLineWidth * IlsLineScale.value
@@ -497,7 +497,7 @@ let aamLaunchZone = @(){
     }
     @() {
       watch = IsAamLaunchZoneVisible
-      size = [pw(8), ph(3)]
+      size = const [pw(8), ph(3)]
       children = IsAamLaunchZoneVisible.value ? [
         @(){
           watch = curDistMarkPos
@@ -570,7 +570,7 @@ let bulletsImpactLine = @() {
 
 let generateCompassMark = function(num) {
   return {
-    size = [pw(15), ph(100)]
+    size = const [pw(15), ph(100)]
     flow = FLOW_VERTICAL
     children = [
       @() {
@@ -649,7 +649,7 @@ let timeToReleaseBar = @() {
   size = flex()
   children = BombingMode.value ? @(){
     watch = timeReleaseSector
-    size = [pw(6), ph(6)]
+    size = const [pw(6), ph(6)]
     pos = [pw(50), ph(50)]
     rendObj = ROBJ_VECTOR_CANVAS
     color = IlsColor.value

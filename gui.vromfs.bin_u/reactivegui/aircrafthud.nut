@@ -185,7 +185,7 @@ function mkAgmAimIndicator(watchedColor, watchedAlertColor) {
 return {
   halign = ALIGN_LEFT
   valign = ALIGN_TOP
-  size = [sw(100), sh(100)]
+  size = const [sw(100), sh(100)]
   children = @() {
     watch = [OpticAtgmSightVisible, LaserAtgmSightVisible, isCollapsedRadarInReplay, IsRadarDamaged, IsTwsDamaged]
     size = flex()

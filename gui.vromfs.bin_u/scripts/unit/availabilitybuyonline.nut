@@ -3,9 +3,7 @@ from "%scripts/dagui_library.nut" import *
 let { getBundleId } = require("%scripts/onlineShop/onlineBundles.nut")
 let { getShopItem } = require("%scripts/onlineShop/entitlementsShopData.nut")
 let { isPlatformPC } = require("%scripts/clientState/platform.nut")
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
-let { isUnitGift } = require("%scripts/unit/unitShopInfo.nut")
-let { findItemById } = require("%scripts/items/itemsManager.nut")
+let { canBuyUnitOnMarketplace } = require("%scripts/unit/canBuyUnitOnMarketplace.nut")
 
 let isEventUnit = @(unit) unit.event != null
 
@@ -15,8 +13,8 @@ let hasShopItem = @(unit) unit.getEntitlements().findvalue(function(id) {
 }) != null
 
 function isAvailableBuyUnitOnline(unit) {
-  let canBuy = isUnitGift(unit) && !isEventUnit(unit) && unit.isVisibleInShop()
-  && !::canBuyUnitOnMarketplace(unit) && !unit.isCrossPromo
+  let canBuy = (unit.gift != null) && !isEventUnit(unit) && unit.isVisibleInShop()
+  && !canBuyUnitOnMarketplace(unit) && !unit.isCrossPromo
 
   if (isPlatformPC || !canBuy)
     return canBuy
@@ -24,13 +22,16 @@ function isAvailableBuyUnitOnline(unit) {
   return hasShopItem(unit)
 }
 
-function isAvailableBuyUnitOnMarketPlace(unit) {
-  return unit.marketplaceItemdefId != null
-    && isMarketplaceEnabled()
-    && (findItemById(unit.marketplaceItemdefId)?.hasLink() ?? false)
+function canBuyUnitOnline(unit) {
+  if (!unit)
+    return false
+  if (unit.isBought())
+    return false
+  return isAvailableBuyUnitOnline(unit)
 }
+::canBuyUnitOnline <- canBuyUnitOnline
 
 return {
   isAvailableBuyUnitOnline
-  isAvailableBuyUnitOnMarketPlace
+  canBuyUnitOnline
 }

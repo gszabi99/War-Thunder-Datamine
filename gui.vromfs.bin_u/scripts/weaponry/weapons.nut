@@ -16,7 +16,7 @@ let { handlerType } = require("%sqDagui/framework/handlerType.nut")
 let { toPixels, move_mouse_on_child, move_mouse_on_obj } = require("%sqDagui/daguiUtil.nut")
 let { handlersManager } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getModsTreeSize, generateModsTree, generateModsBgElems, commonProgressMods,
-  isModificationInTree, modsWndWidthRestrictions } = require("%scripts/weaponry/modsTree.nut")
+  isModificationInTree, modsWndWidthRestrictions, getNextTierModsCount } = require("%scripts/weaponry/modsTree.nut")
 let tutorialModule = require("%scripts/user/newbieTutorialDisplay.nut")
 let guiStartWeaponryPresets = require("%scripts/weaponry/guiStartWeaponryPresets.nut")
 let prepareUnitsForPurchaseMods = require("%scripts/weaponry/prepareUnitsForPurchaseMods.nut")
@@ -1254,7 +1254,7 @@ gui_handlers.WeaponsModalHandler <- class (gui_handlers.BaseGuiHandlerWT) {
       local reqTierMods = 0
       local reqMods = ""
       if ("tier" in item)
-        reqTierMods = ::getNextTierModsCount(this.air, item.tier - 1)
+        reqTierMods = getNextTierModsCount(this.air, item.tier - 1)
       if ("reqModification" in item)
         reqMods = getReqModsText(this.air, item)
 

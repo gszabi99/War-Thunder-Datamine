@@ -11,7 +11,7 @@ let { GuidanceLockResult } = require("guidanceConstants")
 
 
 let crosshair = @() {
-  size = [ph(10), ph(10)]
+  size = ph(10)
   pos = [pw(50), ph(50)]
   rendObj = ROBJ_VECTOR_CANVAS
   color = LaserAtgmSightColor.value
@@ -42,7 +42,7 @@ let status = @() {
       text = loc("HUD/TXT_AGM_SHORT")
     },
     @() {
-      size = [100, SIZE_TO_CONTENT]
+      size = const [100, SIZE_TO_CONTENT]
       watch = GuidanceLockState
       rendObj = ROBJ_TEXT
       font = Fonts.hud
@@ -51,7 +51,7 @@ let status = @() {
       fontFx = FFT_GLOW
       fontSize = hudFontHgt
       hplace = ALIGN_LEFT
-      padding = [0, 20]
+      padding = const [0, 20]
       text = GuidanceLockState.value == GuidanceLockResult.RESULT_INVALID ? ""
         : (GuidanceLockState.value == GuidanceLockResult.RESULT_STANDBY ? loc("HUD/TXT_STANDBY")
         : (GuidanceLockState.value == GuidanceLockResult.RESULT_WARMING_UP ? loc("HUD/TXT_WARM_UP")

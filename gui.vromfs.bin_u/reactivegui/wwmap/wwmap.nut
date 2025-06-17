@@ -224,7 +224,7 @@ let mapHolder = @() function() {
 
   return {
     watch = configurationLoaded
-    size = [sw(100), sh(100)]
+    size = const [sw(100), sh(100)]
     rendObj = ROBJ_SOLID
     color = backgroundColor
     children = mkMapContainer

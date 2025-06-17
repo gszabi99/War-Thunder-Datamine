@@ -21,6 +21,7 @@ let { isUnitSpecial } = require("%appGlobals/ranks_common_shared.nut")
 let { warningIfGold } = require("%scripts/viewUtils/objectTextUpdate.nut")
 let { loadHandler } = require("%scripts/baseGuiHandlerManagerWT.nut")
 let { getCantBuyUnitReason } = require("%scripts/unit/unitInfoTexts.nut")
+let { canBuyUnitOnline } = require("%scripts/unit/availabilityBuyOnline.nut")
 
 enum CheckFeatureLockAction {
   BUY,
@@ -200,7 +201,7 @@ function buy(unit, metric) {
   if (!unit)
     return
 
-  if (::canBuyUnitOnline(unit))
+  if (canBuyUnitOnline(unit))
     showUnitGoods(unit.name, metric)
   else
     buyUnit(unit)

@@ -7,7 +7,7 @@ let g_listener_priority = require("%scripts/g_listener_priority.nut")
 let { addListenersWithoutEnv } = require("%sqStdLibs/helpers/subscriptions.nut")
 let itemRarity = require("%scripts/items/itemRarity.nut")
 
-let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplace.nut")
+let { isMarketplaceEnabled } = require("%scripts/items/itemsMarketplaceStatus.nut")
 let { findItemById } = require("%scripts/items/itemsManager.nut")
 let { getSkinCost, getPlaneBySkinId } = require("%scripts/customization/skinUtils.nut")
 let { getLanguageName } = require("%scripts/langUtils/language.nut")
